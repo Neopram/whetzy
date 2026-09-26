@@ -17,7 +17,9 @@ from app.core.security import get_current_user
 from app.models.admin import GDPRRequest
 from app.models.auth import AuditLog, LoginAttempt
 from app.models.content import Question, Skill
+from app.models.duel import Duel
 from app.models.economy import CreditLedger, Referral
+from app.models.question_report import QuestionReport
 from app.models.session import Response, StudySession
 from app.models.user import User
 
@@ -47,7 +49,7 @@ def require_owner(user: User = Depends(get_current_user)) -> User:
 @router.get("/metrics/users", dependencies=[Depends(require_admin)])
 async def get_metrics_users(
     range_days: int = Query(default=7, ge=1, le=365),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     cutoff = datetime.now(UTC) - timedelta(days=range_days)
@@ -90,7 +92,7 @@ async def get_metrics_users(
 
 @router.get("/metrics/funnel", dependencies=[Depends(require_admin)])
 async def get_metrics_funnel(
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Conversion funnel (signup -> active 7d -> active 1d) by language segment.
@@ -143,7 +145,7 @@ async def get_metrics_funnel(
 
 @router.get("/metrics/ttfq", dependencies=[Depends(require_admin)])
 async def get_metrics_ttfq(
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Time-to-first-question (signup to first study session) percentiles by segment."""
@@ -266,9 +268,16 @@ async def get_security_ip_analysis(
     }
 
 
+@router.get("/security/rate-limit-hits", dependencies=[Depends(require_admin)])
+async def get_rate_limit_hits() -> dict[str, Any]:
+    from app.core.rate_limiter import get_rate_limit_stats
+
+    return get_rate_limit_stats().summary()
+
+
 @router.get("/content/gaps", dependencies=[Depends(require_admin)])
 async def get_content_gaps(
-    language: str = Query(default="es", regex="^(es|en)$"),
+    language: str = Query(default="es", pattern="^(es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     skills = await db.execute(select(Skill))
@@ -290,7 +299,7 @@ async def get_content_gaps(
 
 @router.get("/content/parity", dependencies=[Depends(require_admin)])
 async def get_content_parity(
-    segment: str = Query(default="questions", regex="^(questions|lessons)$"),
+    segment: str = Query(default="questions", pattern="^(questions|lessons)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Verify parity between ES and EN content (all questions should have both versions)."""
@@ -328,7 +337,7 @@ async def get_ops_health(
 
 @router.get("/ops/errors", dependencies=[Depends(require_admin)])
 async def get_ops_errors(
-    window: str = Query(default="1h", regex="^(1h|24h)$"),
+    window: str = Query(default="1h", pattern="^(1h|24h)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     hours = 1 if window == "1h" else 24
@@ -373,7 +382,7 @@ async def get_ops_database(
 
 @router.get("/gdpr/exports", dependencies=[Depends(require_owner)])
 async def get_gdpr_exports(
-    status: str = Query(default="pending", regex="^(pending|completed)$"),
+    status: str = Query(default="pending", pattern="^(pending|completed)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
@@ -404,7 +413,7 @@ async def get_gdpr_exports(
 
 @router.get("/gdpr/deletions", dependencies=[Depends(require_owner)])
 async def get_gdpr_deletions(
-    status: str = Query(default="pending", regex="^(pending|completed|cancelled)$"),
+    status: str = Query(default="pending", pattern="^(pending|completed|cancelled)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
@@ -489,7 +498,7 @@ def _segment_filter(query: Any, segment: str) -> Any:
 @router.get("/revenue/mrr", dependencies=[Depends(require_owner)])
 async def get_revenue_mrr(
     month: str = Query(default=None),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Monthly recurring revenue, optionally filtered by language segment.
@@ -527,7 +536,7 @@ async def get_revenue_mrr(
 @router.get("/revenue/conversions", dependencies=[Depends(require_owner)])
 async def get_revenue_conversions(
     range_days: int = Query(default=7, ge=1, le=365),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Registered users vs. those who ended up paying, in the same window."""
@@ -561,8 +570,8 @@ async def get_revenue_conversions(
 
 @router.get("/revenue/churn", dependencies=[Depends(require_owner)])
 async def get_revenue_churn(
-    window: str = Query(default="30d", regex="^(7d|30d|90d)$"),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    window: str = Query(default="30d", pattern="^(7d|30d|90d)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Cancelled subscriptions in the window over the paying base at its start."""
@@ -602,21 +611,68 @@ async def get_revenue_churn(
 @router.get("/economy/credits", dependencies=[Depends(require_admin)])
 async def get_economy_credits(
     user_id: uuid.UUID | None = Query(default=None),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    days: int = Query(default=30, ge=1, le=365),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
+    cutoff = datetime.now(UTC) - timedelta(days=days)
+
+    def _segment_filter(q):  # type: ignore[no-untyped-def]
+        if segment != "all":
+            return q.select_from(CreditLedger).join(User).where(
+                User.language == segment, CreditLedger.created_at >= cutoff,
+            )
+        return q.where(CreditLedger.created_at >= cutoff)
+
+    emitted_q = _segment_filter(
+        select(func.coalesce(func.sum(CreditLedger.amount), 0)).where(CreditLedger.amount > 0)
+    )
+    spent_q = _segment_filter(
+        select(func.coalesce(func.sum(func.abs(CreditLedger.amount)), 0)).where(
+            CreditLedger.amount < 0, CreditLedger.reason != "expire",
+        )
+    )
+    expired_q = _segment_filter(
+        select(func.coalesce(func.sum(func.abs(CreditLedger.amount)), 0)).where(
+            CreditLedger.reason == "expire",
+        )
+    )
+    by_reason_q = _segment_filter(
+        select(CreditLedger.reason, func.sum(CreditLedger.amount).label("total"))
+    ).group_by(CreditLedger.reason)
+
+    emitted = (await db.execute(emitted_q)).scalar() or 0
+    spent = (await db.execute(spent_q)).scalar() or 0
+    expired = (await db.execute(expired_q)).scalar() or 0
+
+    sink_source_ratio = round(spent / emitted, 4) if emitted else 0.0
+    inflation_alert = emitted > spent * 3 and days >= 30
+
+    by_reason_rows = (await db.execute(by_reason_q)).all()
+    by_reason = {r.reason: int(r.total) for r in by_reason_rows}
+
     query = select(CreditLedger).order_by(desc(CreditLedger.created_at))
     if user_id:
         query = query.where(CreditLedger.user_id == user_id)
     if segment != "all":
         query = query.select_from(CreditLedger).join(User).where(User.language == segment)
-    
+
     result = await db.execute(query.limit(limit).offset(offset))
     ledger_entries = result.scalars().all()
-    
+
     return {
+        "summary": {
+            "days": days,
+            "emitted": int(emitted),
+            "spent": int(spent),
+            "expired": int(expired),
+            "net": int(emitted) - int(spent) - int(expired),
+            "sink_source_ratio": sink_source_ratio,
+            "inflation_alert": inflation_alert,
+            "by_reason": by_reason,
+        },
         "entries": [
             {
                 "id": str(e.id),
@@ -638,8 +694,8 @@ async def get_economy_credits(
 
 @router.get("/economy/referrals", dependencies=[Depends(require_admin)])
 async def get_economy_referrals(
-    status: str = Query(default="all", regex="^(all|pending|completed)$"),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    status: str = Query(default="all", pattern="^(all|pending|completed)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
@@ -673,7 +729,7 @@ async def get_economy_referrals(
 
 @router.get("/economy/k-factor", dependencies=[Depends(require_admin)])
 async def get_economy_k_factor(
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     query_total = select(func.count(User.id))
@@ -698,6 +754,174 @@ async def get_economy_k_factor(
         "successful_referrals": completed,
         "segment": segment,
     }
+
+# ── Economy scorecard (29.12, ECONOMIA.md §7) ─────────────────────────────
+
+
+SCORECARD_TARGETS = {
+    "referral_registration_pct": {"m3": 5, "m6": 15, "m12": 25},
+    "k_factor": {"m3": 0.1, "m6": 0.3, "m12": 0.5},
+    "fraud_pct": {"m3": 2, "m6": 2, "m12": 2},
+    "sink_source_ratio": {"m3": 0.6, "m6": 0.7, "m12": 0.8},
+    "promo_redemption_rate": {"m3": 10, "m6": 15, "m12": 20},
+}
+
+
+@router.get("/economy/scorecard", dependencies=[Depends(require_admin)])
+async def get_economy_scorecard(
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    days: int = Query(default=30, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Economy scorecard: 5 live metrics against month 3/6/12 targets (ECONOMIA.md §7)."""
+    from app.models.economy import PromoCode, PromoCodeRedemption
+
+    cutoff = datetime.now(UTC) - timedelta(days=days)
+
+    def _seg(q, user_col=User.id):  # type: ignore[no-untyped-def]
+        if segment != "all":
+            return q.join(User, User.id == user_col).where(User.language == segment)
+        return q
+
+    total_users_q = select(func.count(User.id)).where(User.created_at >= cutoff)
+    if segment != "all":
+        total_users_q = total_users_q.where(User.language == segment)
+    total_users = (await db.execute(total_users_q)).scalar() or 0
+
+    referred_q = select(func.count(Referral.id)).where(
+        Referral.status == "completed", Referral.created_at >= cutoff,
+    )
+    if segment != "all":
+        referred_q = referred_q.join(User, User.id == Referral.referred_id).where(User.language == segment)
+    referred_count = (await db.execute(referred_q)).scalar() or 0
+
+    referral_pct = round((referred_count / total_users * 100) if total_users else 0, 2)
+
+    k_q = select(func.count(Referral.id)).where(Referral.status == "completed")
+    if segment != "all":
+        k_q = k_q.join(User, User.id == Referral.referrer_id).where(User.language == segment)
+    k_completed = (await db.execute(k_q)).scalar() or 0
+
+    all_users_q = select(func.count(User.id))
+    if segment != "all":
+        all_users_q = all_users_q.where(User.language == segment)
+    all_users = (await db.execute(all_users_q)).scalar() or 0
+    k_factor = round((k_completed / all_users) if all_users else 0, 4)
+
+    from app.models.antifraud import FraudReviewQueue
+
+    fraud_q = select(func.count(FraudReviewQueue.id)).where(
+        FraudReviewQueue.created_at >= cutoff,
+    )
+    total_activations_q = select(func.count(Referral.id)).where(
+        Referral.created_at >= cutoff,
+    )
+    fraud_count = (await db.execute(fraud_q)).scalar() or 0
+    total_activations = (await db.execute(total_activations_q)).scalar() or 0
+    fraud_pct = round((fraud_count / total_activations * 100) if total_activations else 0, 2)
+
+    emitted_q = select(func.coalesce(func.sum(CreditLedger.amount), 0)).where(
+        CreditLedger.amount > 0, CreditLedger.created_at >= cutoff,
+    )
+    spent_q = select(func.coalesce(func.sum(func.abs(CreditLedger.amount)), 0)).where(
+        CreditLedger.amount < 0, CreditLedger.reason != "expire",
+        CreditLedger.created_at >= cutoff,
+    )
+    if segment != "all":
+        emitted_q = emitted_q.select_from(CreditLedger).join(User).where(User.language == segment)
+        spent_q = spent_q.select_from(CreditLedger).join(User).where(User.language == segment)
+    emitted = (await db.execute(emitted_q)).scalar() or 0
+    spent = (await db.execute(spent_q)).scalar() or 0
+    sink_source = round(spent / emitted, 4) if emitted else 0.0
+
+    total_promos_q = select(func.count(PromoCode.id)).where(PromoCode.created_at >= cutoff)
+    redeemed_promos_q = select(func.count(func.distinct(PromoCodeRedemption.promo_code_id))).where(
+        PromoCodeRedemption.created_at >= cutoff,
+    )
+    total_promos = (await db.execute(total_promos_q)).scalar() or 0
+    redeemed_promos = (await db.execute(redeemed_promos_q)).scalar() or 0
+    promo_rate = round((redeemed_promos / total_promos * 100) if total_promos else 0, 2)
+
+    def _status(key: str, value: float) -> str:
+        targets = SCORECARD_TARGETS[key]
+        if key == "fraud_pct":
+            return "green" if value <= targets["m3"] else "red"
+        return "green" if value >= targets["m3"] else "yellow" if value >= targets["m3"] * 0.5 else "red"
+
+    metrics = [
+        {"key": "referral_registration_pct", "value": referral_pct, "unit": "%", "status": _status("referral_registration_pct", referral_pct)},
+        {"key": "k_factor", "value": k_factor, "unit": "", "status": _status("k_factor", k_factor)},
+        {"key": "fraud_pct", "value": fraud_pct, "unit": "%", "status": _status("fraud_pct", fraud_pct)},
+        {"key": "sink_source_ratio", "value": sink_source, "unit": "", "status": _status("sink_source_ratio", sink_source)},
+        {"key": "promo_redemption_rate", "value": promo_rate, "unit": "%", "status": _status("promo_redemption_rate", promo_rate)},
+    ]
+
+    return {
+        "days": days,
+        "segment": segment,
+        "metrics": metrics,
+        "targets": SCORECARD_TARGETS,
+    }
+
+
+# ── Tutor usage (22.16 / 38.6) ────────────────────────────────────────────
+
+@router.get("/ops/tutor-usage", dependencies=[Depends(require_admin)])
+async def get_tutor_usage(
+    days: int = Query(default=7, ge=1, le=90),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    from app.models.tutor_usage import TutorUsage
+
+    cutoff = (datetime.now(UTC) - timedelta(days=days)).date()
+
+    rows = (
+        await db.execute(
+            select(
+                TutorUsage.user_id,
+                User.email,
+                User.subscription_tier,
+                func.sum(TutorUsage.explanations).label("total"),
+                func.count(TutorUsage.day).label("active_days"),
+            )
+            .join(User, User.id == TutorUsage.user_id)
+            .where(TutorUsage.day >= cutoff)
+            .group_by(TutorUsage.user_id, User.email, User.subscription_tier)
+            .order_by(desc("total"))
+        )
+    ).all()
+
+    daily = (
+        await db.execute(
+            select(
+                TutorUsage.day,
+                func.sum(TutorUsage.explanations).label("total"),
+                func.count(TutorUsage.user_id.distinct()).label("users"),
+            )
+            .where(TutorUsage.day >= cutoff)
+            .group_by(TutorUsage.day)
+            .order_by(TutorUsage.day)
+        )
+    ).all()
+
+    return {
+        "days": days,
+        "per_user": [
+            {
+                "user_id": str(r.user_id),
+                "email": r.email,
+                "tier": r.subscription_tier,
+                "total_explanations": r.total,
+                "active_days": r.active_days,
+            }
+            for r in rows
+        ],
+        "per_day": [
+            {"day": str(r.day), "total": r.total, "users": r.users}
+            for r in daily
+        ],
+    }
+
 
 # ── Correo (H.30) ─────────────────────────────────────────────────────────
 
@@ -747,3 +971,458 @@ async def post_email_test(
             detail=f"No se pudo enviar: {exc}",
         ) from exc
     return {"sent": True, "provider": provider, "to": destino}
+
+
+# ── KPI dashboard (38.0) ────────────────────────────────────────────────────
+
+_KPI_OBJECTIVES = {
+    "registered":    {"m3": 500, "m6": 2_000, "m12": 10_000},
+    "paying":        {"m3": 25,  "m6": 200,   "m12": 1_000},
+    "mrr_usd":       {"m3": 375, "m6": 3_000, "m12": 15_000},
+    "retention_d30": {"m3": 5.0, "m6": 8.0,   "m12": 10.0},
+    "nps":           {"m3": None, "m6": None, "m12": None},
+    "k_factor":      {"m3": 0.1, "m6": 0.3,  "m12": 0.5},
+    "referral_pct":  {"m3": 5.0, "m6": 15.0, "m12": 25.0},
+}
+
+
+@router.get("/kpi/dashboard", dependencies=[Depends(require_owner)])
+async def get_kpi_dashboard(
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Consolidated KPI dashboard (38.0 / ADR-32).
+
+    Returns each KPI with its current value, the query source, and
+    M3/M6/M12 objectives. Uses "sin dato" where there is no data.
+    """
+    now = datetime.now(UTC)
+
+    total_q = select(func.count(User.id))
+    if segment != "all":
+        total_q = total_q.where(User.language == segment)
+    total = (await db.execute(total_q)).scalar() or 0
+
+    paying_q = select(func.count(User.id)).where(
+        User.subscription_status.in_(("active", "trialing"))
+    )
+    if segment != "all":
+        paying_q = paying_q.where(User.language == segment)
+    paying = (await db.execute(paying_q)).scalar() or 0
+
+    mrr_q = select(User.subscription_tier, func.count()).where(
+        User.subscription_status.in_(("active", "trialing"))
+    )
+    if segment != "all":
+        mrr_q = mrr_q.where(User.language == segment)
+    mrr_q = mrr_q.group_by(User.subscription_tier)
+    mrr_rows = (await db.execute(mrr_q)).all()
+    mrr = round(sum(_price_for(tier) * cnt for tier, cnt in mrr_rows), 2)
+
+    # D30 retention: users created >= 30 days ago who had a session in last 7 days.
+    d30_cutoff = now - timedelta(days=30)
+    eligible_q = select(func.count(User.id)).where(User.created_at <= d30_cutoff)
+    if segment != "all":
+        eligible_q = eligible_q.where(User.language == segment)
+    eligible = (await db.execute(eligible_q)).scalar() or 0
+
+    if eligible > 0:
+        retained_q = (
+            select(func.count(func.distinct(StudySession.user_id)))
+            .select_from(StudySession)
+            .join(User)
+            .where(User.created_at <= d30_cutoff, StudySession.started_at >= now - timedelta(days=7))
+        )
+        if segment != "all":
+            retained_q = retained_q.where(User.language == segment)
+        retained = (await db.execute(retained_q)).scalar() or 0
+        d30 = round(retained / eligible * 100, 2)
+    else:
+        d30 = "sin dato"
+
+    referral_q = select(func.count(Referral.id)).where(Referral.status == "completed")
+    if segment != "all":
+        referral_q = (
+            referral_q.select_from(Referral)
+            .join(User, User.id == Referral.referrer_id)
+            .where(User.language == segment)
+        )
+    completed_refs = (await db.execute(referral_q)).scalar() or 0
+    k_factor = round(completed_refs / total, 4) if total > 0 else "sin dato"
+    referral_pct = round(completed_refs / total * 100, 2) if total > 0 else "sin dato"
+
+    def _val_or_sin_dato(v: Any) -> Any:
+        return "sin dato" if total == 0 else v
+
+    kpis = {
+        "registered":    {"value": _val_or_sin_dato(total), "query": "SELECT count(*) FROM users", "objectives": _KPI_OBJECTIVES["registered"]},
+        "paying":        {"value": _val_or_sin_dato(paying), "query": "SELECT count(*) FROM users WHERE subscription_status IN ('active','trialing')", "objectives": _KPI_OBJECTIVES["paying"]},
+        "mrr_usd":       {"value": _val_or_sin_dato(mrr), "query": "SUM(tier_price) WHERE subscription_status IN ('active','trialing')", "objectives": _KPI_OBJECTIVES["mrr_usd"]},
+        "retention_d30": {"value": d30, "query": "users created>=30d ago with session in last 7d / total eligible", "objectives": _KPI_OBJECTIVES["retention_d30"]},
+        "nps":           {"value": "sin dato", "query": "no NPS survey model yet", "objectives": _KPI_OBJECTIVES["nps"]},
+        "k_factor":      {"value": k_factor, "query": "completed_referrals / total_users", "objectives": _KPI_OBJECTIVES["k_factor"]},
+        "referral_pct":  {"value": referral_pct, "query": "completed_referrals / total_users * 100", "objectives": _KPI_OBJECTIVES["referral_pct"]},
+    }
+
+    return {"segment": segment, "generated_at": now.isoformat(), "kpis": kpis}
+
+
+# --- 22.1 gap closers: engagement, reports, deploy info -----------------
+
+
+@router.get("/metrics/engagement", dependencies=[Depends(require_admin)])
+async def get_metrics_engagement(
+    range_days: int = Query(default=7, ge=1, le=365),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    cutoff = datetime.now(UTC) - timedelta(days=range_days)
+
+    sess_q = select(func.count(StudySession.id)).where(StudySession.started_at >= cutoff)
+    resp_q = select(func.count(Response.id)).where(Response.created_at >= cutoff)
+    correct_q = select(func.count(Response.id)).where(
+        Response.created_at >= cutoff, Response.correct.is_(True)
+    )
+    duel_q = select(func.count(Duel.id)).where(Duel.created_at >= cutoff)
+    duel_completed_q = select(func.count(Duel.id)).where(
+        Duel.created_at >= cutoff, Duel.status == "completed"
+    )
+
+    if segment != "all":
+        sess_q = sess_q.select_from(StudySession).join(User).where(User.language == segment)
+        resp_q = (
+            resp_q.select_from(Response)
+            .join(StudySession)
+            .join(User, User.id == StudySession.user_id)
+            .where(User.language == segment)
+        )
+        correct_q = (
+            correct_q.select_from(Response)
+            .join(StudySession)
+            .join(User, User.id == StudySession.user_id)
+            .where(User.language == segment)
+        )
+        duel_q = (
+            duel_q.select_from(Duel)
+            .join(User, User.id == Duel.challenger_id)
+            .where(User.language == segment)
+        )
+        duel_completed_q = (
+            duel_completed_q.select_from(Duel)
+            .join(User, User.id == Duel.challenger_id)
+            .where(User.language == segment)
+        )
+
+    sessions = (await db.execute(sess_q)).scalar() or 0
+    total_resp = (await db.execute(resp_q)).scalar() or 0
+    correct_resp = (await db.execute(correct_q)).scalar() or 0
+    duels_total = (await db.execute(duel_q)).scalar() or 0
+    duels_completed = (await db.execute(duel_completed_q)).scalar() or 0
+
+    accuracy = round(correct_resp / total_resp * 100, 2) if total_resp > 0 else 0
+
+    d30_cutoff = datetime.now(UTC) - timedelta(days=30)
+    d7_cutoff = datetime.now(UTC) - timedelta(days=7)
+    eligible_q = select(func.count(User.id)).where(User.created_at <= d30_cutoff)
+    retained_q = (
+        select(func.count(func.distinct(StudySession.user_id)))
+        .where(
+            StudySession.started_at >= d7_cutoff,
+            StudySession.user_id.in_(select(User.id).where(User.created_at <= d30_cutoff)),
+        )
+    )
+    if segment != "all":
+        eligible_q = eligible_q.where(User.language == segment)
+        retained_q = retained_q.where(
+            StudySession.user_id.in_(
+                select(User.id).where(User.created_at <= d30_cutoff, User.language == segment)
+            )
+        )
+    eligible = (await db.execute(eligible_q)).scalar() or 0
+    retained = (await db.execute(retained_q)).scalar() or 0
+    retention_d30 = round(retained / eligible * 100, 2) if eligible > 0 else 0
+
+    top_skills_q = (
+        select(Skill.id, Skill.name_es, func.count(Response.id).label("attempts"))
+        .select_from(Response)
+        .join(Question, Question.id == Response.question_id)
+        .join(Skill, Skill.id == Question.skill_id)
+        .where(Response.created_at >= cutoff)
+        .group_by(Skill.id, Skill.name_es)
+        .order_by(desc("attempts"))
+        .limit(10)
+    )
+    rows = (await db.execute(top_skills_q)).all()
+    top_skills = [{"skill_id": r[0], "name_es": r[1], "attempts": r[2]} for r in rows]
+
+    return {
+        "range_days": range_days,
+        "segment": segment,
+        "quiz_sessions": sessions,
+        "total_responses": total_resp,
+        "correct_responses": correct_resp,
+        "accuracy_pct": accuracy,
+        "retention_d30": retention_d30,
+        "duels_total": duels_total,
+        "duels_completed": duels_completed,
+        "top_skills": top_skills,
+    }
+
+
+@router.get("/metrics/reports", dependencies=[Depends(require_admin)])
+async def get_metrics_reports(
+    range_days: int = Query(default=30, ge=1, le=365),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    cutoff = datetime.now(UTC) - timedelta(days=range_days)
+
+    def _seg(q):  # type: ignore[no-untyped-def]
+        if segment != "all":
+            return q.select_from(QuestionReport).join(User, QuestionReport.user_id == User.id).where(User.language == segment)
+        return q
+
+    total_q = _seg(select(func.count(QuestionReport.id)).where(QuestionReport.created_at >= cutoff))
+    total = (await db.execute(total_q)).scalar() or 0
+
+    by_reason_q = _seg(
+        select(QuestionReport.reason, func.count(QuestionReport.id).label("count"))
+        .where(QuestionReport.created_at >= cutoff)
+        .group_by(QuestionReport.reason)
+        .order_by(desc("count"))
+    )
+    by_reason = {r[0]: r[1] for r in (await db.execute(by_reason_q)).all()}
+
+    most_reported_q = _seg(
+        select(QuestionReport.question_id, func.count(QuestionReport.id).label("count"))
+        .where(QuestionReport.created_at >= cutoff)
+        .group_by(QuestionReport.question_id)
+        .order_by(desc("count"))
+        .limit(10)
+    )
+    most_reported = [
+        {"question_id": r[0], "reports": r[1]}
+        for r in (await db.execute(most_reported_q)).all()
+    ]
+
+    return {
+        "range_days": range_days,
+        "segment": segment,
+        "total_reports": total,
+        "by_reason": by_reason,
+        "most_reported": most_reported,
+    }
+
+
+@router.get("/ops/deploy-info", dependencies=[Depends(require_admin)])
+async def get_deploy_info() -> dict[str, Any]:
+    import importlib
+    import os
+    import pathlib
+
+    alembic_head = "unknown"
+    versions_dir = pathlib.Path(__file__).resolve().parents[4] / "alembic" / "versions"
+    if versions_dir.is_dir():
+        files = sorted(versions_dir.glob("*.py"), key=lambda p: p.name, reverse=True)
+        if files:
+            alembic_head = files[0].stem
+
+    app_version = getattr(importlib.import_module("app"), "__version__", "unknown")
+    start_time = os.environ.get("APP_START_TIME", "unknown")
+    railway_deployment = os.environ.get("RAILWAY_DEPLOYMENT_ID", "unknown")
+
+    return {
+        "alembic_head": alembic_head,
+        "app_version": app_version,
+        "railway_deployment_id": railway_deployment,
+        "app_start_time": start_time,
+        "python_version": os.sys.version,
+    }
+
+
+# ── Promo code batch generation (29.4) ──────────────────────────────────────
+
+@router.post("/promo/batch", dependencies=[Depends(require_admin)])
+async def generate_promo_batch(
+    code_type: str = Query(pattern="^(onboarding|campaign|reactivation|referral_bonus|instructor)$"),
+    credits: int = Query(ge=1, le=10_000),
+    count: int = Query(ge=1, le=1000),
+    max_uses: int | None = Query(default=1, ge=1),
+    language: str | None = Query(default=None, pattern="^(es|en)$"),
+    campaign_id: str | None = Query(default=None),
+    expires_days: int | None = Query(default=None, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_admin),
+) -> dict[str, Any]:
+    from app.services.economy import PromoCodeService
+
+    expires_at = (
+        datetime.now(UTC) + timedelta(days=expires_days)
+        if expires_days
+        else None
+    )
+    codes = await PromoCodeService.generate_batch(
+        db,
+        code_type=code_type,
+        credits=credits,
+        count=count,
+        max_uses=max_uses,
+        expires_at=expires_at,
+        language=language,
+        campaign_id=campaign_id,
+        created_by=user.email,
+    )
+    await db.commit()
+    csv_lines = ["code,type,credits,max_uses,language,expires_at"]
+    for c in codes:
+        csv_lines.append(
+            f"{c.code},{c.code_type},{c.credits},{c.max_uses or ''},"
+            f"{c.language or ''},{c.expires_at.isoformat() if c.expires_at else ''}"
+        )
+    return {
+        "count": len(codes),
+        "csv": "\n".join(csv_lines),
+        "codes": [c.code for c in codes],
+    }
+
+
+# ── Instructor admin (28.6) ───────────────────────────────────────────────
+
+
+@router.get("/instructor/courses", dependencies=[Depends(require_admin)])
+async def admin_list_instructor_courses(
+    status_filter: str | None = Query(default=None, alias="status"),
+    page: int = Query(default=1, ge=1),
+    per_page: int = Query(default=20, ge=1, le=100),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """List all instructor courses with moderation info."""
+    from app.models.instructor import Instructor, InstructorCourse
+
+    q = (
+        select(InstructorCourse)
+        .join(Instructor)
+        .order_by(desc(InstructorCourse.created_at))
+    )
+    if status_filter:
+        q = q.where(InstructorCourse.status == status_filter)
+
+    count_q = select(func.count()).select_from(q.subquery())
+    total = (await db.execute(count_q)).scalar() or 0
+
+    rows = (
+        await db.execute(q.offset((page - 1) * per_page).limit(per_page))
+    ).scalars().all()
+
+    courses = []
+    for c in rows:
+        instructor = await db.get(Instructor, c.instructor_id)
+        courses.append({
+            "id": str(c.id),
+            "title": c.title,
+            "description": c.description,
+            "price_cents": c.price_cents,
+            "status": c.status,
+            "enrolled_count": c.enrolled_count,
+            "revenue_cents": c.revenue_cents,
+            "instructor_name": instructor.display_name if instructor else None,
+            "instructor_id": str(c.instructor_id),
+            "created_at": c.created_at.isoformat() if c.created_at else None,
+        })
+
+    return {"total": total, "page": page, "per_page": per_page, "courses": courses}
+
+
+@router.patch("/instructor/courses/{course_id}/status", dependencies=[Depends(require_admin)])
+async def admin_update_course_status(
+    course_id: uuid.UUID,
+    new_status: str = Query(pattern="^(draft|published|archived|rejected)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Approve, reject, or archive an instructor course."""
+    from app.models.instructor import InstructorCourse
+
+    course = await db.get(InstructorCourse, course_id)
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+
+    old_status = course.status
+    course.status = new_status
+    await db.commit()
+
+    return {
+        "id": str(course.id),
+        "title": course.title,
+        "old_status": old_status,
+        "new_status": new_status,
+    }
+
+
+@router.get("/instructor/payouts", dependencies=[Depends(require_admin)])
+async def admin_list_payouts(
+    status_filter: str | None = Query(default=None, alias="status"),
+    page: int = Query(default=1, ge=1),
+    per_page: int = Query(default=20, ge=1, le=100),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """List all instructor payouts for management."""
+    from app.models.instructor import Instructor, InstructorPayout
+
+    q = (
+        select(InstructorPayout)
+        .join(Instructor)
+        .order_by(desc(InstructorPayout.created_at))
+    )
+    if status_filter:
+        q = q.where(InstructorPayout.status == status_filter)
+
+    count_q = select(func.count()).select_from(q.subquery())
+    total = (await db.execute(count_q)).scalar() or 0
+
+    rows = (
+        await db.execute(q.offset((page - 1) * per_page).limit(per_page))
+    ).scalars().all()
+
+    payouts = []
+    for p in rows:
+        instructor = await db.get(Instructor, p.instructor_id)
+        payouts.append({
+            "id": str(p.id),
+            "instructor_name": instructor.display_name if instructor else None,
+            "instructor_id": str(p.instructor_id),
+            "period_start": p.period_start.isoformat(),
+            "period_end": p.period_end.isoformat(),
+            "earnings_cents": p.earnings_cents,
+            "status": p.status,
+            "payout_date": p.payout_date.isoformat() if p.payout_date else None,
+            "created_at": p.created_at.isoformat() if p.created_at else None,
+        })
+
+    return {"total": total, "page": page, "per_page": per_page, "payouts": payouts}
+
+
+@router.patch("/instructor/payouts/{payout_id}/status", dependencies=[Depends(require_admin)])
+async def admin_update_payout_status(
+    payout_id: uuid.UUID,
+    new_status: str = Query(pattern="^(pending|processing|completed|failed)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Update payout status (process, complete, or mark failed)."""
+    from app.models.instructor import InstructorPayout
+
+    payout = await db.get(InstructorPayout, payout_id)
+    if not payout:
+        raise HTTPException(status_code=404, detail="Payout not found")
+
+    old_status = payout.status
+    payout.status = new_status
+    if new_status == "completed":
+        payout.payout_date = datetime.now(UTC)
+    await db.commit()
+
+    return {
+        "id": str(payout.id),
+        "old_status": old_status,
+        "new_status": new_status,
+        "payout_date": payout.payout_date.isoformat() if payout.payout_date else None,
+    }

@@ -1,0 +1,13 @@
+{
+  "id": "les200103",
+  "skill_id": "sk200103",
+  "language": "es",
+  "executable": false,
+  "title_es": "Procesamiento de Streams en Tiempo Real",
+  "title_en": "Real-Time Stream Processing",
+  "body_es": "El procesamiento de streams (también llamado streaming) permite procesar eventos conforme llegan sin acumularlos primero. A diferencia del batch, no hay latencia esperando ventanas de tiempo. Tecnologías como Kafka Streams, Apache Flink y Spark Structured Streaming pueden procesar millones de eventos por segundo. El desafío principal es garantizar exactly-once delivery, manejar datos fuera de orden y mantener estado distribuido.",
+  "body_en": "Stream processing allows processing events as they arrive without accumulating first. Unlike batch, no latency waiting for time windows. Technologies like Kafka Streams, Apache Flink and Spark Structured Streaming can process millions of events per second. Main challenge is ensuring exactly-once delivery, handling out-of-order data and maintaining distributed state.",
+  "example_code": "from pyspark.sql import SparkSession\nspark = SparkSession.builder.appName('streaming').getOrCreate()\ndf = spark.readStream \\\n  .format('kafka') \\\n  .option('kafka.bootstrap.servers', 'localhost:9092') \\\n  .option('subscribe', 'topic') \\\n  .load()\ndf.writeStream.format('console').start()",
+  "example_output": "Procesamiento continuo de eventos desde Kafka con latencia de milisegundos, perfecto para alertas en tiempo real.",
+  "source": "https://spark.apache.org/docs/"
+}

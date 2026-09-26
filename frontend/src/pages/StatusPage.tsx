@@ -1,0 +1,138 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { API_BASE_URL } from '../services/api';
+import styles from './StatusPage.module.css';
+
+/** `API_BASE_URL` ends in `/api/v1`; the health check lives at the API's
+ *  origin instead, so this strips exactly that suffix rather than assuming
+ *  a fixed number of path segments. */
+const HEALTH_URL = `${API_BASE_URL.replace(/\/api\/v1\/?$/, '')}/health/ready`;
+
+const POLL_INTERVAL_MS = 30_000;
+
+type ComponentStatus = 'up' | 'down' | 'unknown';
+type OverallStatus = 'operational' | 'degraded' | 'down' | 'checking';
+
+interface HealthState {
+  overall: OverallStatus;
+  api: ComponentStatus;
+  db: ComponentStatus;
+  lastChecked: Date | null;
+}
+
+/** Best-effort read of a DB flag out of whatever shape `/health/ready`
+ *  returns. Kept loose on purpose: the page must not break if the backend
+ *  renames a field, it just falls back to "unknown". */
+function readDbStatus(body: unknown): ComponentStatus {
+  if (!body || typeof body !== 'object') return 'unknown';
+  const record = body as Record<string, unknown>;
+  const candidate = record.database ?? record.db ?? record.checks;
+  if (typeof candidate === 'string') {
+    return /ok|up|ready|healthy/i.test(candidate) ? 'up' : 'down';
+  }
+  if (candidate && typeof candidate === 'object') {
+    const nested = candidate as Record<string, unknown>;
+    const dbField = nested.database ?? nested.db;
+    if (typeof dbField === 'string') return /ok|up|ready|healthy/i.test(dbField) ? 'up' : 'down';
+    if (typeof dbField === 'boolean') return dbField ? 'up' : 'down';
+  }
+  return 'unknown';
+}
+
+async function checkHealth(): Promise<HealthState> {
+  const now = new Date();
+  try {
+    const res = await fetch(HEALTH_URL, { credentials: 'omit' });
+    if (!res.ok) {
+      return { overall: 'down', api: 'down', db: 'unknown', lastChecked: now };
+    }
+    const body: unknown = await res.json().catch(() => null);
+    const db = readDbStatus(body);
+    const overall: OverallStatus = db === 'down' ? 'degraded' : 'operational';
+    return { overall, api: 'up', db, lastChecked: now };
+  } catch {
+    return { overall: 'down', api: 'down', db: 'unknown', lastChecked: now };
+  }
+}
+
+/** Public `/status` page (no auth). Polls the backend's health endpoint every
+ *  30s so anyone — including someone locked out of the app — can see whether
+ *  Whetzy is up without opening a support ticket. */
+export default function StatusPage() {
+  const { t } = useTranslation();
+  const [state, setState] = useState<HealthState>({
+    overall: 'checking',
+    api: 'unknown',
+    db: 'unknown',
+    lastChecked: null,
+  });
+  const mounted = useRef(true);
+
+  const poll = useCallback(async () => {
+    const result = await checkHealth();
+    if (mounted.current) setState(result);
+  }, []);
+
+  useEffect(() => {
+    mounted.current = true;
+    poll();
+    const id = setInterval(poll, POLL_INTERVAL_MS);
+    return () => {
+      mounted.current = false;
+      clearInterval(id);
+    };
+  }, [poll]);
+
+  const overallLabel = {
+    checking: t('statusChecking'),
+    operational: t('statusOperational'),
+    degraded: t('statusDegraded'),
+    down: t('statusDown'),
+  }[state.overall];
+
+  const overallDot = {
+    checking: styles.dotUnknown,
+    operational: styles.dotUp,
+    degraded: styles.dotDegraded,
+    down: styles.dotDown,
+  }[state.overall];
+
+  const componentDot: Record<ComponentStatus, string> = {
+    up: styles.dotUp,
+    down: styles.dotDown,
+    unknown: styles.dotUnknown,
+  };
+
+  return (
+    <div className={styles.screen}>
+      <h1 className={styles.title}>Whetzy System Status</h1>
+
+      <div className={styles.overallCard}>
+        <span className={`${styles.dot} ${overallDot}`} aria-hidden="true" />
+        <span className={styles.overallLabel}>{overallLabel}</span>
+      </div>
+
+      <div className={styles.section}>
+        <div className={styles.row}>
+          <span className={styles.rowLabel}>{t('statusApi')}</span>
+          <span className={styles.rowValue}>
+            <span className={`${styles.dot} ${componentDot[state.api]}`} aria-hidden="true" />
+            {t(state.api === 'up' ? 'statusOperational' : state.api === 'down' ? 'statusDown' : 'statusChecking')}
+          </span>
+        </div>
+        <div className={styles.row}>
+          <span className={styles.rowLabel}>{t('statusDb')}</span>
+          <span className={styles.rowValue}>
+            <span className={`${styles.dot} ${componentDot[state.db]}`} aria-hidden="true" />
+            {t(state.db === 'up' ? 'statusOperational' : state.db === 'down' ? 'statusDown' : 'statusChecking')}
+          </span>
+        </div>
+      </div>
+
+      <p className={styles.lastChecked}>
+        {t('statusLastChecked')}: {state.lastChecked ? state.lastChecked.toLocaleTimeString() : t('statusChecking')}
+      </p>
+    </div>
+  );
+}

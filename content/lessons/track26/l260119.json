@@ -1,0 +1,12 @@
+{
+  "id": "l260119",
+  "skill_id": "sk260119",
+  "title_es": "Revisión de Código",
+  "title_en": "Code Review",
+  "body_es": "La revisión de código es un proceso donde otros desarrolladores examinan cambios antes de la fusión. Mejora la calidad, difunde conocimiento y previene bugs. En GitHub, esto ocurre en pull requests donde los revisores pueden comentar en líneas específicas. Una buena revisión busca legibilidad, corrección, tests y consistencia. Es importante ser respetuoso en comentarios y aprender de la retroalimentación. Las revisiones crean cultura de colaboración y mejora continua.",
+  "body_en": "Code review is a process where other developers examine changes before merging. It improves quality, spreads knowledge, and prevents bugs. On GitHub, this happens in pull requests where reviewers can comment on specific lines. A good review looks for readability, correctness, tests, and consistency. It is important to be respectful in comments and learn from feedback. Reviews create a culture of collaboration and continuous improvement.",
+  "example_code": "# After creating PR, request review from team\n# Reviewer examines changes\ngit diff origin/main feature/new-api\n# Leave comments\n# Author responds and updates\ngit commit --amend\ngit push --force-with-lease origin feature/new-api\n# After approval, merge\ngit checkout main\ngit merge --ff-only origin/feature/new-api",
+  "example_output": "diff --git a/api/users.js b/api/users.js\nindex 1a2b3c4..5d6e7f8 100644\n--- a/api/users.js\n+++ b/api/users.js\n@@ -42,5 +42,10 @@ async function getUser(id) {\n   return user.sanitize();\n }\n+// Missing error handling here\n\nPull Request Reviews:\n- @alice: Looks good, one question about error handling\n- @bob: Approved\n\nMerged: 8n9o0p1 Add user fetch endpoint",
+  "source": "Git Docs — https://git-scm.com/doc",
+  "order": 3
+}

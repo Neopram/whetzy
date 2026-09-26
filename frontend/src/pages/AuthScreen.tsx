@@ -28,6 +28,7 @@ export function AuthScreen({ onAuthed }: Props) {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [language, setLanguage] = useState<'es' | 'en'>('es');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(() => {
@@ -76,6 +77,7 @@ export function AuthScreen({ onAuthed }: Props) {
     }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return setError(t('auth.errEmail'));
     if (password.length < 8) return setError(t('auth.errPassword'));
+    if (mode === 'register' && !ageConfirmed) return setError(t('auth.errAge'));
 
     setLoading(true);
     try {
@@ -86,6 +88,7 @@ export function AuthScreen({ onAuthed }: Props) {
           display_name: displayName.trim(),
           password,
           language,
+          age_confirmed: ageConfirmed,
         };
         await auth.register(payload);
       } else {
@@ -209,6 +212,17 @@ export function AuthScreen({ onAuthed }: Props) {
               </button>
             </div>
           </div>
+        )}
+
+        {mode === 'register' && (
+          <label className={styles.field} style={{ flexDirection: 'row', alignItems: 'center', gap: '0.5rem' }}>
+            <input
+              type="checkbox"
+              checked={ageConfirmed}
+              onChange={(e) => setAgeConfirmed(e.target.checked)}
+            />
+            <span>{t('auth.ageLabel')}</span>
+          </label>
         )}
 
         {error && <p className={styles.error}>⚠️ {error}</p>}

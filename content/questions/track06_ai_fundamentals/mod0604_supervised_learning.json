@@ -8,13 +8,13 @@
       "question_es": "¿Qué modela la regresión lineal simple?",
       "question_en": "What does simple linear regression model?",
       "options_es": [
-        "Una relación entre una variable de entrada y una salida categórica",
+        "Una relación entre una variable de entrada y una salida categórica, lo que facilita el entrenamiento distribuido en múltiples nodos",
         "Una relación lineal entre una variable independiente y una variable dependiente continua, de la forma y = w*x + b",
         "La probabilidad de pertenecer a una clase",
         "Agrupaciones (clusters) de datos sin etiqueta"
       ],
       "options_en": [
-        "A relationship between an input variable and a categorical output",
+        "A relationship between an input variable and a categorical output, which facilitates distributed training across multiple nodes",
         "A linear relationship between an independent variable and a continuous dependent variable, of the form y = w*x + b",
         "The probability of belonging to a class",
         "Clusters of unlabeled data"
@@ -39,13 +39,13 @@
       "options_es": [
         "La suma (o media) de los errores al cuadrado entre las predicciones y los valores reales",
         "La entropía cruzada",
-        "El número de clasificaciones incorrectas",
+        "El número de clasificaciones incorrectas, aplicando dropout como técnica de regularización estocástica",
         "La distancia de Manhattan entre puntos"
       ],
       "options_en": [
         "The sum (or mean) of squared errors between predictions and actual values",
         "Cross-entropy",
-        "The number of misclassifications",
+        "The number of misclassifications, applying dropout as a stochastic regularization technique",
         "The Manhattan distance between points"
       ],
       "correct_index": 0,
@@ -67,13 +67,13 @@
       "question_es": "En regresión lineal, ¿qué representa el coeficiente de determinación R²?",
       "question_en": "In linear regression, what does the coefficient of determination R² represent?",
       "options_es": [
-        "El error absoluto medio del modelo",
+        "El error absoluto medio del modelo, considerando la distribución estadística de las muestras de entrenamiento, transformando las representaciones internas mediante capas ocultas",
         "La pendiente de la recta ajustada",
         "El número de features usadas",
         "La proporción de la varianza de la variable dependiente que el modelo explica; 1 es ajuste perfecto y 0 significa que no explica nada mejor que la media"
       ],
       "options_en": [
-        "The model's mean absolute error",
+        "The model's mean absolute error, considering the statistical distribution of training samples, transforming internal representations through hidden layers",
         "The slope of the fitted line",
         "The number of features used",
         "The proportion of the dependent variable's variance explained by the model; 1 is a perfect fit and 0 means it explains nothing better than the mean"
@@ -206,13 +206,13 @@
         "Transforma cualquier número real (la salida lineal) en un valor entre 0 y 1, interpretable como una probabilidad",
         "Ordena las features por importancia",
         "Calcula la distancia entre puntos",
-        "Elimina los outliers automáticamente"
+        "Elimina los outliers automáticamente, evaluando el desempeño con métricas como precisión, recall y F1, implementando pipelines de preprocesamiento para datos estructurados"
       ],
       "options_en": [
         "It transforms any real number (the linear output) into a value between 0 and 1, interpretable as a probability",
         "It ranks the features by importance",
         "It computes the distance between points",
-        "It automatically removes outliers"
+        "It automatically removes outliers, evaluating performance with metrics such as precision, recall and F1, implementing preprocessing pipelines for structured data"
       ],
       "correct_index": 0,
       "explanation_es": "La sigmoide `σ(z) = 1 / (1 + e^(-z))` mapea la salida lineal `z = w·x + b` al intervalo (0, 1), dando una probabilidad. Valores grandes de z tienden a 1 y muy negativos a 0. Esa probabilidad se compara con un umbral para decidir la clase. Es la generalización binaria de la función softmax usada en clasificación multiclase.",
@@ -233,13 +233,13 @@
       "question_es": "¿Qué función de pérdida se usa para entrenar la regresión logística y por qué no se usa el error cuadrático medio?",
       "question_en": "What loss function is used to train logistic regression, and why is mean squared error not used?",
       "options_es": [
-        "Se usa MSE, igual que en regresión lineal",
+        "Se usa MSE, igual que en regresión lineal y requiere una arquitectura específica para cada tipo de problema según la distribución de los datos en el espacio latente, aunque esto depende de la complejidad del conjunto de datos, especialmente cuando se trabaja con conjuntos de datos desbalanceados",
         "Se usa la distancia euclidiana",
         "Se usa la entropía cruzada binaria (log loss), porque con la sigmoide el MSE produce una superficie de pérdida no convexa con mínimos locales, mientras que la log loss es convexa y penaliza fuertemente las predicciones confiadas pero equivocadas",
         "No se usa ninguna función de pérdida"
       ],
       "options_en": [
-        "MSE is used, just like in linear regression",
+        "MSE is used, just like in linear regression and requires a specific architecture for each problem type according to the data distribution in the latent space, although this depends on the complexity of the dataset, especially when working with imbalanced datasets",
         "Euclidean distance is used",
         "Binary cross-entropy (log loss) is used, because with the sigmoid, MSE produces a non-convex loss surface with local minima, while log loss is convex and strongly penalizes confident but wrong predictions",
         "No loss function is used"
@@ -311,13 +311,13 @@
       "question_es": "Si un modelo de regresión logística predice una probabilidad de 0.85 para la clase positiva y el umbral es 0.5, ¿cómo clasifica la observación?",
       "question_en": "If a logistic regression model predicts a probability of 0.85 for the positive class and the threshold is 0.5, how does it classify the observation?",
       "options_es": [
-        "Como clase negativa, porque 0.85 no es 1",
+        "Como clase negativa, porque 0.85 no es 1 mediante el uso de matrices de confusión para evaluar errores",
         "Como una tercera clase intermedia",
         "No la puede clasificar",
         "Como clase positiva, porque 0.85 supera el umbral de 0.5"
       ],
       "options_en": [
-        "As the negative class, because 0.85 is not 1",
+        "As the negative class, because 0.85 is not 1 through the use of confusion matrices to evaluate errors",
         "As a third, intermediate class",
         "It cannot classify it",
         "As the positive class, because 0.85 exceeds the 0.5 threshold"
@@ -371,13 +371,13 @@
       "question_en": "What is a Random Forest?",
       "options_es": [
         "Un ensamble (bagging) de muchos árboles de decisión entrenados sobre muestras aleatorias de datos y features, cuyas predicciones se combinan por voto mayoritario o promedio",
-        "Un único árbol de decisión muy profundo",
+        "Un único árbol de decisión muy profundo, siempre que se disponga de suficientes datos de entrenamiento etiquetados, lo que implica un mayor coste computacional durante la inferencia",
         "Una red neuronal con forma de árbol",
         "Un algoritmo de clustering jerárquico"
       ],
       "options_en": [
         "An ensemble (bagging) of many decision trees trained on random samples of data and features, whose predictions are combined by majority vote or averaging",
-        "A single very deep decision tree",
+        "A single very deep decision tree, provided there are sufficient labeled training samples available, which implies higher computational cost during inference",
         "A tree-shaped neural network",
         "A hierarchical clustering algorithm"
       ],
@@ -402,13 +402,13 @@
       "options_es": [
         "Son exactamente lo mismo con distinto nombre",
         "Bagging entrena muchos modelos en paralelo sobre muestras aleatorias y los promedia (reduce varianza); boosting entrena modelos secuencialmente, cada uno corrigiendo los errores del anterior (reduce sesgo)",
-        "Bagging solo funciona con árboles; boosting solo con redes neuronales",
+        "Bagging solo funciona con árboles; boosting solo con redes neuronales, combinando múltiples modelos débiles para formar uno robusto, asegurando la reproducibilidad mediante semillas aleatorias fijas, donde cada neurona aplica una transformación afín seguida de activación",
         "Boosting no usa varios modelos"
       ],
       "options_en": [
         "They are exactly the same with a different name",
         "Bagging trains many models in parallel on random samples and averages them (reduces variance); boosting trains models sequentially, each correcting the previous one's errors (reduces bias)",
-        "Bagging only works with trees; boosting only with neural networks",
+        "Bagging only works with trees; boosting only with neural networks, combining multiple weak learners to form a robust ensemble, ensuring reproducibility through fixed random seeds, where each neuron applies an affine transformation followed by activation",
         "Boosting does not use multiple models"
       ],
       "correct_index": 1,
@@ -457,13 +457,13 @@
       "question_en": "How does a decision tree control overfitting?",
       "options_es": [
         "Limitando su crecimiento con hiperparámetros como profundidad máxima, mínimo de muestras por hoja o poda (pruning), para que no memorice ejemplos individuales",
-        "No se puede controlar; los árboles siempre sobreajustan",
+        "No se puede controlar; los árboles siempre sobreajustan, lo que permite optimizar el rendimiento del modelo en producción, aplicando técnicas de regularización para evitar el sobreajuste",
         "Aumentando siempre la profundidad al máximo",
         "Eliminando la variable objetivo"
       ],
       "options_en": [
         "By limiting its growth with hyperparameters like max depth, minimum samples per leaf, or pruning, so it does not memorize individual examples",
-        "It cannot be controlled; trees always overfit",
+        "It cannot be controlled; trees always overfit, which optimizes model performance in production environments, applying regularization techniques to prevent overfitting",
         "By always maximizing the depth",
         "By removing the target variable"
       ],
@@ -538,13 +538,13 @@
       "question_es": "¿Qué son los 'vectores de soporte' en una SVM?",
       "question_en": "What are the 'support vectors' in an SVM?",
       "options_es": [
-        "Todos los puntos del conjunto de entrenamiento",
+        "Todos los puntos del conjunto de entrenamiento, utilizando gradientes estocásticos para la convergencia del modelo",
         "Los puntos de datos más cercanos al hiperplano de decisión, que definen el margen y determinan la frontera",
         "Los pesos del modelo",
         "Las features más importantes"
       ],
       "options_en": [
-        "All the points in the training set",
+        "All the points in the training set, using stochastic gradients for model convergence",
         "The data points closest to the decision hyperplane, which define the margin and determine the boundary",
         "The model's weights",
         "The most important features"
@@ -568,13 +568,13 @@
       "question_en": "What does the 'kernel trick' enable in SVMs?",
       "options_es": [
         "Entrenar sin ningún dato",
-        "Convertir la SVM en un árbol de decisión",
+        "Convertir la SVM en un árbol de decisión, lo que mejora la capacidad de generalización en datos no vistos, basándose en la minimización de la función de pérdida, incorporando mecanismos de atención para ponderar las entradas",
         "Reducir el número de features a uno",
         "Clasificar datos no separables linealmente calculando implícitamente productos internos en un espacio de mayor dimensión, sin transformar explícitamente los datos a ese espacio"
       ],
       "options_en": [
         "Training without any data",
-        "Turning the SVM into a decision tree",
+        "Turning the SVM into a decision tree, which improves generalization capability on unseen data, based on minimizing the loss function during training, incorporating attention mechanisms to weight the inputs",
         "Reducing the number of features to one",
         "Classifying non-linearly-separable data by implicitly computing inner products in a higher-dimensional space, without explicitly transforming the data into that space"
       ],
@@ -623,13 +623,13 @@
       "question_en": "In a soft-margin SVM, what does the hyperparameter C control?",
       "options_es": [
         "El número de clases",
-        "El número de vectores de soporte fijado de antemano",
+        "El número de vectores de soporte fijado de antemano, ajustando los hiperparámetros mediante validación cruzada, reduciendo la dimensionalidad del espacio de características, garantizando la convergencia mediante tasas de aprendizaje adaptativas",
         "La velocidad de aprendizaje",
         "El compromiso entre maximizar el margen y minimizar los errores de clasificación: C alto penaliza mucho los errores (margen estrecho, riesgo de sobreajuste), C bajo tolera más errores (margen amplio, más regularización)"
       ],
       "options_en": [
         "The number of classes",
-        "The number of support vectors fixed in advance",
+        "The number of support vectors fixed in advance, tuning hyperparameters through cross-validation procedures, reducing the dimensionality of the feature space, ensuring convergence through adaptive learning rate schedules",
         "The learning rate",
         "The tradeoff between maximizing the margin and minimizing classification errors: high C heavily penalizes errors (narrow margin, overfitting risk), low C tolerates more errors (wide margin, more regularization)"
       ],
@@ -704,13 +704,13 @@
       "question_es": "¿Qué efecto tiene elegir un valor de k muy pequeño (por ejemplo k=1) en k-NN?",
       "question_en": "What effect does choosing a very small k (e.g. k=1) have in k-NN?",
       "options_es": [
-        "El modelo se vuelve muy simple y subajusta",
+        "El modelo se vuelve muy simple y subajusta, procesando los datos de entrada en lotes para mayor eficiencia, lo cual requiere normalización previa de las variables de entrada",
         "El modelo ignora los puntos cercanos",
         "El modelo es muy sensible al ruido y a outliers, con fronteras muy irregulares y tendencia al sobreajuste (baja sesgo, alta varianza)",
         "No cambia nada respecto a un k grande"
       ],
       "options_en": [
-        "The model becomes very simple and underfits",
+        "The model becomes very simple and underfits, processing input data in mini-batches for greater efficiency, which requires prior normalization of input variables",
         "The model ignores nearby points",
         "The model is very sensitive to noise and outliers, with very irregular boundaries and a tendency to overfit (low bias, high variance)",
         "Nothing changes compared to a large k"
@@ -760,13 +760,13 @@
       "question_es": "¿Por qué se dice que k-NN es un algoritmo de aprendizaje 'perezoso' (lazy) y cuál es su principal coste?",
       "question_en": "Why is k-NN called a 'lazy' learning algorithm and what is its main cost?",
       "options_es": [
-        "Porque entrena muy lentamente; su coste está en el entrenamiento",
+        "Porque entrena muy lentamente; su coste está en el entrenamiento, empleando funciones de activación no lineales en cada capa, con el objetivo de maximizar la verosimilitud de los datos observados, realizando propagación hacia atrás para actualizar los pesos",
         "Porque nunca alcanza buena precisión",
         "Porque solo usa una fracción de los datos",
         "Porque no construye un modelo en el entrenamiento (solo almacena los datos); el coste se traslada a la predicción, que requiere calcular distancias a muchos puntos, siendo lenta y con alto uso de memoria en datasets grandes"
       ],
       "options_en": [
-        "Because it trains very slowly; its cost is in training",
+        "Because it trains very slowly; its cost is in training, employing non-linear activation functions at each layer, with the goal of maximizing the likelihood of observed data, performing backpropagation to update the network weights",
         "Because it never reaches good accuracy",
         "Because it only uses a fraction of the data",
         "Because it builds no model during training (it just stores the data); the cost shifts to prediction, which requires computing distances to many points, being slow and memory-heavy on large datasets"
@@ -790,13 +790,13 @@
       "question_es": "En un problema de clasificación binaria con k-NN, ¿por qué suele recomendarse elegir un valor de k impar?",
       "question_en": "In a binary classification problem with k-NN, why is choosing an odd k usually recommended?",
       "options_es": [
-        "Porque los números impares se calculan más rápido",
+        "Porque los números impares se calculan más rápido, lo que facilita el entrenamiento distribuido en múltiples nodos",
         "Para reducir el uso de memoria",
         "Porque k debe ser siempre primo",
         "Para evitar empates en el voto mayoritario entre las dos clases"
       ],
       "options_en": [
-        "Because odd numbers compute faster",
+        "Because odd numbers compute faster, which facilitates distributed training across multiple nodes",
         "To reduce memory usage",
         "Because k must always be prime",
         "To avoid ties in the majority vote between the two classes"

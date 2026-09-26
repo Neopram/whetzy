@@ -1,0 +1,13 @@
+{
+  "id": "l410204",
+  "skill_id": "sk410204",
+  "language": "python",
+  "executable": true,
+  "title_es": "Excepciones personalizadas",
+  "title_en": "Custom Exceptions",
+  "body_es": "Puedes crear excepciones propias heredando de Exception o de sus subclases.",
+  "body_en": "You can create custom exceptions by inheriting from Exception or its subclasses.",
+  "example_code": "class ValidationError(Exception):\n    def __init__(self, field, message):\n        self.field = field\n        super().__init__(f'{field}: {message}')\n\ntry:\n    raise ValidationError('email', 'invalid format')\nexcept ValidationError as e:\n    print(e)",
+  "example_output": "email: invalid format",
+  "source": "Python docs: https://docs.python.org/3/"
+}

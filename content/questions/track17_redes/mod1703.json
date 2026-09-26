@@ -8,15 +8,15 @@
       "question_es": "¿Cuál es la función socket() en Python?",
       "question_en": "What is the socket() function in Python?",
       "options_es": [
-        "Crear un archivo",
+        "Crear un archivo temporal en el sistema",
         "Crear un socket de red",
-        "Enviar datos",
+        "Enviar datos al servidor remoto",
         "Recibir datos"
       ],
       "options_en": [
-        "Create a file",
+        "Create a temporary file on the system",
         "Create a network socket",
-        "Send data",
+        "Send data to the remote server",
         "Receive data"
       ],
       "correct_index": 1,
@@ -238,14 +238,14 @@
       "question_en": "What is the difference between send() and sendall()?",
       "options_es": [
         "send() puede enviar solo parte de los datos, sendall() garantiza todo",
-        "No hay diferencia",
-        "sendall() es más lento",
+        "No hay diferencia real entre ambos métodos ya que internamente usan la misma llamada al sistema",
+        "sendall() es más lento porque añade una capa de cifrado adicional a cada fragmento enviado",
         "send() es más seguro"
       ],
       "options_en": [
         "send() may send only part of data, sendall() guarantees all",
-        "No difference",
-        "sendall() is slower",
+        "There is no real difference between both methods since they internally use the same system call",
+        "sendall() is slower because it adds an extra encryption layer to each fragment sent",
         "send() is safer"
       ],
       "correct_index": 0,
@@ -313,15 +313,15 @@
       "question_en": "What is socket timeout?",
       "options_es": [
         "El tiempo entre paquetes",
-        "El tiempo de vida de la conexión",
+        "El tiempo de vida total de la conexión desde que se abre hasta que se cierra",
         "El máximo tiempo para que complete una operación",
-        "La latencia del servidor"
+        "La latencia del servidor medida en milisegundos durante la fase de autenticación"
       ],
       "options_en": [
         "Time between packets",
-        "Connection lifetime",
+        "The total lifetime of the connection from when it opens until it closes",
         "Max time for an operation to complete",
-        "Server latency"
+        "The server latency measured in milliseconds during the authentication phase"
       ],
       "correct_index": 2,
       "explanation_es": "El timeout define cuánto esperar antes de abandonar una operación (recv, connect, etc.). Se establece con settimeout(segundos). Evita bloqueos indefinidos.",
@@ -362,15 +362,15 @@
       "question_es": "¿Qué retorna accept() en un servidor?",
       "question_en": "What does accept() return on a server?",
       "options_es": [
-        "Un entero",
+        "Un entero que representa el descriptor del archivo del socket",
         "Una cadena",
-        "Un booleano",
+        "Un booleano indicando si la conexión fue aceptada correctamente",
         "Una tupla (socket, dirección)"
       ],
       "options_en": [
-        "An integer",
+        "An integer representing the socket's file descriptor",
         "A string",
-        "A boolean",
+        "A boolean indicating whether the connection was accepted correctly",
         "A tuple (socket, address)"
       ],
       "correct_index": 3,
@@ -521,14 +521,14 @@
       "question_en": "What does recvfrom() return?",
       "options_es": [
         "Una tupla (datos, dirección)",
-        "Solo datos",
-        "Solo dirección",
+        "Solo datos en formato de cadena de texto",
+        "Solo la dirección IP del remitente original",
         "Un booleano"
       ],
       "options_en": [
         "A tuple (data, address)",
-        "Only data",
-        "Only address",
+        "Only data in text string format",
+        "Only the IP address of the original sender",
         "A boolean"
       ],
       "correct_index": 0,
@@ -774,15 +774,15 @@
       "question_es": "¿Qué es el módulo ipaddress de Python?",
       "question_en": "What is Python's ipaddress module?",
       "options_es": [
-        "Controla DNS",
+        "Controla las consultas DNS y permite modificar los registros de nombres de dominio",
         "Proporciona clases para trabajar con direcciones IP",
-        "Cifra direcciones",
+        "Cifra direcciones IP antes de enviarlas por la red para proteger la privacidad",
         "Un servidor de mail"
       ],
       "options_en": [
-        "Controls DNS",
+        "Controls DNS queries and allows modifying domain name records",
         "Provides classes to work with IP addresses",
-        "Encrypts addresses",
+        "Encrypts IP addresses before sending them over the network to protect privacy",
         "A mail server"
       ],
       "correct_index": 1,
@@ -1104,15 +1104,15 @@
       "question_es": "¿Qué es subnet_of()?",
       "question_en": "What is subnet_of()?",
       "options_es": [
-        "Calcula subredes",
+        "Calcula las subredes posibles y devuelve un listado de sus direcciones de red",
         "Cuenta hosts",
-        "Obtiene la máscara",
+        "Obtiene la máscara de subred y la convierte a notación decimal con puntos",
         "Comprueba si una red es subred de otra"
       ],
       "options_en": [
-        "Calculates subnets",
+        "Calculates possible subnets and returns a list of their network addresses",
         "Counts hosts",
-        "Gets the mask",
+        "Gets the subnet mask and converts it to dotted decimal notation",
         "Checks if a network is subnet of another"
       ],
       "correct_index": 3,
@@ -1134,15 +1134,15 @@
       "question_en": "What is urllib?",
       "options_es": [
         "Un módulo para trabajar con URLs y HTTP",
-        "Un servidor web",
+        "Un servidor web embebido para desplegar aplicaciones locales",
         "Un framework",
-        "Un navegador"
+        "Un navegador web integrado en la biblioteca estándar de Python"
       ],
       "options_en": [
         "A module for working with URLs and HTTP",
-        "A web server",
+        "An embedded web server for deploying local applications",
         "A framework",
-        "A web browser"
+        "A web browser integrated into the Python standard library"
       ],
       "correct_index": 0,
       "explanation_es": "urllib proporciona urllib.request.urlopen(), urllib.parse.urlencode(), etc. Permite hacer solicitudes HTTP sin librerías externas.",
@@ -1259,14 +1259,14 @@
       "question_en": "What is http.client.HTTPConnection?",
       "options_es": [
         "Una clase para conexiones HTTP de bajo nivel",
-        "Una función",
-        "Un tipo de error",
+        "Una función auxiliar que convierte respuestas JSON en diccionarios de Python",
+        "Un tipo de error que se genera cuando el servidor devuelve un código 5xx",
         "Un servidor"
       ],
       "options_en": [
         "A class for low-level HTTP connections",
-        "A function",
-        "A type of error",
+        "A helper function that converts JSON responses into Python dictionaries",
+        "A type of error generated when the server returns a 5xx status code",
         "A server"
       ],
       "correct_index": 0,
@@ -1409,14 +1409,14 @@
       "question_en": "What is urlsplit()?",
       "options_es": [
         "Divide una URL en componentes",
-        "Codifica una URL",
-        "Descarga un archivo",
+        "Codifica una URL para transmitirla de forma segura",
+        "Descarga un archivo completo desde una URL remota",
         "Valida una URL"
       ],
       "options_en": [
         "Splits a URL into components",
-        "Encodes a URL",
-        "Downloads a file",
+        "Encodes a URL for secure transmission",
+        "Downloads a complete file from a remote URL",
         "Validates a URL"
       ],
       "correct_index": 0,
@@ -1483,15 +1483,15 @@
       "question_es": "¿Cuál es la diferencia entre requests y urllib?",
       "question_en": "What is the difference between requests and urllib?",
       "options_es": [
-        "Ninguna",
+        "No existe ninguna diferencia funcional significativa entre ambas bibliotecas de Python",
         "requests es tercero, urllib es stdlib; requests es más simple",
-        "urllib es más nuevo",
+        "urllib es más nuevo y fue diseñado como reemplazo moderno de la biblioteca requests",
         "requests solo para GET"
       ],
       "options_en": [
-        "None",
+        "There is no significant functional difference between both Python libraries",
         "requests is third-party, urllib is stdlib; requests is simpler",
-        "urllib is newer",
+        "urllib is newer and was designed as a modern replacement for the requests library",
         "requests only for GET"
       ],
       "correct_index": 1,

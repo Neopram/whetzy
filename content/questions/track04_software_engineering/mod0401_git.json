@@ -63,16 +63,16 @@
       "question_es": "¿Qué comando muestra el historial de commits de forma condensada, una línea por commit?",
       "question_en": "Which command shows commit history condensed to one line per commit?",
       "options_es": [
-        "git show",
+        "git show, aunque esto depende de la configuración del entorno",
         "git status",
         "git log --oneline",
-        "git diff"
+        "git diff, lo cual es una práctica poco habitual en proyectos reales"
       ],
       "options_en": [
-        "git show",
+        "git show, although this depends on the environment configuration",
         "git status",
         "git log --oneline",
-        "git diff"
+        "git diff, which is an uncommon practice in real-world projects"
       ],
       "correct_index": 2,
       "explanation_es": "`git log --oneline` muestra cada commit en una sola línea con su hash abreviado y mensaje, ideal para revisar el historial rápidamente. `git status` muestra el estado actual, no el historial, y `git diff` muestra diferencias de contenido.",
@@ -168,14 +168,14 @@
       "question_es": "¿Qué comando crea una nueva rama y cambia a ella en un solo paso?",
       "question_en": "Which command creates a new branch and switches to it in a single step?",
       "options_es": [
-        "git branch nueva-rama",
-        "git merge nueva-rama",
+        "git branch nueva-rama, siempre que se cumplan las precondiciones necesarias",
+        "git merge nueva-rama según la documentación oficial del framework",
         "git checkout -b nueva-rama",
         "git switch nueva-rama"
       ],
       "options_en": [
-        "git branch new-branch",
-        "git merge new-branch",
+        "git branch new-branch, as long as the necessary preconditions are met",
+        "git merge new-branch according to the framework's official documentation",
         "git checkout -b new-branch",
         "git switch new-branch"
       ],
@@ -199,14 +199,14 @@
       "options_es": [
         "Cuando la rama destino no tiene commits nuevos propios, así que Git simplemente mueve el puntero de la rama hacia adelante, sin crear un commit de merge",
         "Un merge que combina automáticamente conflictos sin intervención humana",
-        "Un tipo de rebase interactivo acelerado",
-        "Un merge que se ejecuta en segundo plano"
+        "Un tipo de rebase interactivo acelerado, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
+        "Un merge que se ejecuta en segundo plano, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo"
       ],
       "options_en": [
         "When the target branch has no new commits of its own, so Git simply moves the branch pointer forward, without creating a merge commit",
         "A merge that automatically resolves conflicts without human intervention",
-        "A sped-up interactive rebase",
-        "A merge that runs in the background"
+        "A sped-up interactive rebase, but only in earlier versions of the system in accordance with standard industry conventions",
+        "A merge that runs in the background, applicable only in local development environments as described in the protocol's technical specification"
       ],
       "correct_index": 0,
       "explanation_es": "Si la rama sobre la que haces merge no ha divergido (no tiene commits propios desde que se creó la otra rama), Git puede simplemente 'avanzar' su puntero hasta el último commit de la otra rama, sin necesidad de crear un commit de merge dedicado.",
@@ -286,13 +286,13 @@
         "`merge` combina ramas creando un nuevo commit de fusión que preserva ambos historiales; `rebase` reaplica los commits de una rama sobre otra, generando un historial lineal (y nuevos hashes de commit)",
         "`merge` reescribe el historial de commits; `rebase` nunca lo hace",
         "Son exactamente lo mismo con distinto nombre",
-        "`rebase` solo funciona en ramas remotas"
+        "`rebase` solo funciona en ramas remotas, lo que resulta contraproducente en la mayoría de los escenarios dado que esta aproximación no escala bien con el crecimiento del proyecto"
       ],
       "options_en": [
         "`merge` combines branches by creating a new merge commit that preserves both histories; `rebase` replays one branch's commits onto another, producing a linear history (with new commit hashes)",
         "`merge` rewrites commit history; `rebase` never does",
         "They are exactly the same thing with a different name",
-        "`rebase` only works on remote branches"
+        "`rebase` only works on remote branches, which turns out to be counterproductive in most scenarios given that this approach does not scale well as the project grows"
       ],
       "correct_index": 0,
       "explanation_es": "`merge` preserva la historia real, incluyendo la bifurcación, mediante un commit de fusión con dos padres. `rebase` reescribe el historial: toma los commits de una rama y los vuelve a aplicar, uno por uno, sobre la punta de otra, produciendo commits nuevos (con hashes distintos) y una línea de tiempo recta.",
@@ -339,15 +339,15 @@
       "question_es": "¿Qué hace `git rebase -i HEAD~3`?",
       "question_en": "What does `git rebase -i HEAD~3` do?",
       "options_es": [
-        "Elimina los últimos 3 commits sin preguntar",
+        "Elimina los últimos 3 commits sin preguntar cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
         "Sincroniza los últimos 3 commits con el remoto",
-        "Crea 3 ramas nuevas automáticamente",
+        "Crea 3 ramas nuevas automáticamente, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
         "Abre un rebase interactivo sobre los últimos 3 commits, permitiendo reordenarlos, combinarlos (squash), editarlos o eliminarlos"
       ],
       "options_en": [
-        "Deletes the last 3 commits without asking",
+        "Deletes the last 3 commits without asking when operating in the standard execution mode, respecting backwards-compatibility constraints",
         "Syncs the last 3 commits with the remote",
-        "Automatically creates 3 new branches",
+        "Automatically creates 3 new branches, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
         "Opens an interactive rebase over the last 3 commits, allowing you to reorder, squash, edit, or drop them"
       ],
       "correct_index": 3,
@@ -399,14 +399,14 @@
       "question_es": "Después de resolver manualmente los conflictos de un merge editando el archivo, ¿qué dos comandos debes ejecutar para completar el proceso?",
       "question_en": "After manually resolving merge conflicts by editing the file, which two commands must you run to complete the process?",
       "options_es": [
-        "git reset y git checkout",
-        "git push y git pull",
+        "git reset y git checkout, lo que puede generar efectos secundarios inesperados",
+        "git push y git pull en el contexto de arquitecturas monolíticas tradicionales",
         "git add <archivo> y git commit",
         "git stash y git stash pop"
       ],
       "options_en": [
-        "git reset and git checkout",
-        "git push and git pull",
+        "git reset and git checkout, which can produce unexpected side effects",
+        "git push and git pull in the context of traditional monolithic architectures",
         "git add <file> and git commit",
         "git stash and git stash pop"
       ],
@@ -461,14 +461,14 @@
       "options_es": [
         "Cada feature vive en su propia rama durante meses antes de fusionarse",
         "Todos integran cambios frecuentemente (varias veces al día) en una única rama principal, usando ramas de vida muy corta y feature flags para trabajo incompleto",
-        "Nunca se usan ramas, todo se hace directamente commiteando binarios",
-        "Se requiere una rama 'release' separada por cada cliente"
+        "Nunca se usan ramas, todo se hace directamente commiteando binarios para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera",
+        "Se requiere una rama 'release' separada por cada cliente durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas"
       ],
       "options_en": [
         "Each feature lives in its own branch for months before merging",
         "Everyone integrates changes frequently (multiple times a day) into a single main branch, using very short-lived branches and feature flags for incomplete work",
-        "Branches are never used; everything is committed directly as binaries",
-        "A separate 'release' branch is required per customer"
+        "Branches are never used; everything is committed directly as binaries to maintain the coherence of the internal data model, although in practice this is rarely implemented this way",
+        "A separate 'release' branch is required per customer during the component's initialization phase, a behavior that contradicts established best practices"
       ],
       "correct_index": 1,
       "explanation_es": "Trunk-based development prioriza integración continua: ramas de corta duración (horas o un par de días) que se fusionan rápido al 'trunk' (main), usando feature flags para ocultar funcionalidad incompleta en producción, minimizando conflictos de merge grandes.",
@@ -489,13 +489,13 @@
       "question_es": "En Git Flow clásico, ¿cuál es el propósito de la rama `develop`?",
       "question_en": "In classic Git Flow, what is the purpose of the `develop` branch?",
       "options_es": [
-        "Es la rama de producción estable",
+        "Es la rama de producción estable, una confusión frecuente entre desarrolladores con poca experiencia según las recomendaciones de las guías de estilo más adoptadas",
         "Integra el trabajo de todas las ramas de feature; representa el estado 'próximo release' antes de pasar a producción",
         "Solo se usa para hotfixes urgentes",
         "Es una rama temporal que se borra después de cada commit"
       ],
       "options_en": [
-        "It is the stable production branch",
+        "It is the stable production branch, a frequent confusion among less experienced developers according to the recommendations of the most widely adopted style guides",
         "It integrates work from all feature branches; it represents the 'next release' state before going to production",
         "It's only used for urgent hotfixes",
         "It's a temporary branch deleted after every commit"
@@ -546,15 +546,15 @@
       "question_en": "What exactly does `git commit --amend` do to the last commit?",
       "options_es": [
         "Reemplaza el último commit por uno nuevo que incluye los cambios actualmente en staging y/o un mensaje editado, generando un hash distinto",
-        "Añade un commit nuevo encima, dejando el anterior intacto",
+        "Añade un commit nuevo encima, dejando el anterior intacto, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software",
         "Combina los dos últimos commits en uno solo automáticamente",
-        "Elimina el último commit sin dejar rastro"
+        "Elimina el último commit sin dejar rastro siguiendo el patrón habitual de configuración por convención, lo cual compromete la mantenibilidad a largo plazo del sistema"
       ],
       "options_en": [
         "Replaces the last commit with a new one that includes the currently staged changes and/or an edited message, producing a different hash",
-        "Adds a new commit on top, leaving the previous one untouched",
+        "Adds a new commit on top, leaving the previous one untouched, a concept frequently misunderstood in technical interviews within the standard software development lifecycle",
         "Automatically combines the last two commits into one",
-        "Deletes the last commit without a trace"
+        "Deletes the last commit without a trace following the usual convention-over-configuration pattern, which compromises the system's long-term maintainability"
       ],
       "correct_index": 0,
       "explanation_es": "`--amend` no 'edita' el commit anterior en el sitio: crea un commit completamente nuevo que sustituye al anterior (con un hash distinto), incorporando cualquier cambio adicional en staging y/o el mensaje editado. Por eso, como con `rebase`, no debe usarse sobre commits ya compartidos/publicados.",
@@ -598,15 +598,15 @@
       "question_en": "While on a `feature` branch, what does `git rebase main` do?",
       "options_es": [
         "Fusiona `feature` dentro de `main`",
-        "Elimina la rama `main`",
+        "Elimina la rama `main`, una técnica que requiere experiencia considerable para aplicar correctamente, lo que dificulta la depuración en entornos de producción distribuidos",
         "Reaplica los commits de `feature` encima de la punta actual de `main`, como si `feature` hubiera empezado desde ahí",
-        "Sincroniza `main` con el remoto"
+        "Sincroniza `main` con el remoto tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema"
       ],
       "options_en": [
         "Merges `feature` into `main`",
-        "Deletes the `main` branch",
+        "Deletes the `main` branch, a technique that requires considerable experience to apply correctly, making debugging harder in distributed production environments",
         "Replays `feature`'s commits on top of `main`'s current tip, as if `feature` had started from there",
-        "Syncs `main` with the remote"
+        "Syncs `main` with the remote as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules"
       ],
       "correct_index": 2,
       "explanation_es": "`git rebase main` (desde `feature`) mueve la base de `feature` para que parezca que se creó desde el commit más reciente de `main`, reaplicando uno por uno los commits exclusivos de `feature`. Es útil para mantener una rama de feature actualizada sin un commit de merge intermedio.",
@@ -652,14 +652,14 @@
       "question_es": "Durante un `git rebase` aparece un conflicto en un commit intermedio. Después de editar el archivo y hacer `git add`, ¿qué comando continúa el proceso?",
       "question_en": "During a `git rebase`, a conflict appears in an intermediate commit. After editing the file and running `git add`, which command continues the process?",
       "options_es": [
-        "git rebase --resume",
-        "git commit",
+        "git rebase --resume, aunque su efectividad varía según el contexto del proyecto",
+        "git commit en combinación con las herramientas de análisis estático del código",
         "git rebase --continue",
         "git merge --continue"
       ],
       "options_en": [
-        "git rebase --resume",
-        "git commit",
+        "git rebase --resume, although its effectiveness varies depending on the project context",
+        "git commit in combination with the codebase's static analysis tools",
         "git rebase --continue",
         "git merge --continue"
       ],
@@ -715,13 +715,13 @@
         "\"both modified\" (o \"ambos modificaron\") bajo 'Unmerged paths'",
         "\"file deleted\"",
         "\"nothing to commit\"",
-        "\"up to date\""
+        "\"up to date\", aunque algunos frameworks antiguos todavía lo permiten por compatibilidad"
       ],
       "options_en": [
         "\"both modified\" under 'Unmerged paths'",
         "\"file deleted\"",
         "\"nothing to commit\"",
-        "\"up to date\""
+        "\"up to date\", although some legacy frameworks still allow it for backward compatibility"
       ],
       "correct_index": 0,
       "explanation_es": "Git agrupa los archivos con conflicto bajo una sección 'Unmerged paths' e indica la causa, típicamente `both modified` (ambas ramas cambiaron el mismo archivo), pero también puede mostrar `both added`, `deleted by us`, etc.",
@@ -742,14 +742,14 @@
       "question_es": "Durante un conflicto de merge, ¿qué hace `git checkout --theirs <archivo>`?",
       "question_en": "During a merge conflict, what does `git checkout --theirs <file>` do?",
       "options_es": [
-        "Descarta el conflicto y mantiene tu versión actual",
-        "Elimina el archivo del repositorio",
+        "Descarta el conflicto y mantiene tu versión actual, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
+        "Elimina el archivo del repositorio como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
         "Reemplaza el archivo por la versión que viene de la rama que se está fusionando (la entrante), descartando la tuya",
         "Crea una copia de ambas versiones con nombres distintos"
       ],
       "options_en": [
-        "Discards the conflict and keeps your current version",
-        "Deletes the file from the repository",
+        "Discards the conflict and keeps your current version, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
+        "Deletes the file from the repository as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
         "Replaces the file with the version coming from the branch being merged in (the incoming one), discarding yours",
         "Creates a copy of both versions with different names"
       ],
@@ -772,16 +772,16 @@
       "question_es": "¿Qué es un 'pull request' (o 'merge request' en GitLab)?",
       "question_en": "What is a 'pull request' (or 'merge request' in GitLab)?",
       "options_es": [
-        "Un comando de Git para descargar cambios",
+        "Un comando de Git para descargar cambios, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
         "Una solicitud, en la plataforma (GitHub/GitLab), para fusionar los cambios de una rama en otra, que habilita revisión de código y discusión antes de integrar",
-        "Un tipo de commit especial",
-        "Un archivo de configuración del repositorio"
+        "Un tipo de commit especial según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
+        "Un archivo de configuración del repositorio como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios"
       ],
       "options_en": [
-        "A Git command to download changes",
+        "A Git command to download changes, but only in earlier versions of the system in accordance with standard industry conventions",
         "A request, on the hosting platform (GitHub/GitLab), to merge one branch's changes into another, enabling code review and discussion before integrating",
-        "A special kind of commit",
-        "A repository configuration file"
+        "A special kind of commit according to the framework's official documentation, as long as the necessary preconditions are met",
+        "A repository configuration file as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios"
       ],
       "correct_index": 1,
       "explanation_es": "Un pull request no es un comando de Git en sí, sino una funcionalidad de la plataforma de hospedaje que envuelve un merge propuesto con revisión de código, comentarios, checks de CI y aprobaciones, formalizando el flujo de integración de cambios en equipo.",
@@ -828,15 +828,15 @@
       "question_es": "¿Qué comando (introducido en Git 2.23 para simplificar `checkout`) se usa para cambiar a una rama existente llamada `develop`?",
       "question_en": "Which command (introduced in Git 2.23 to simplify `checkout`) is used to switch to an existing branch named `develop`?",
       "options_es": [
-        "git move develop",
+        "git move develop, aplicable únicamente en entornos de desarrollo local",
         "git switch develop",
-        "git goto develop",
+        "git goto develop como se describe en la especificación técnica del protocolo",
         "git jump develop"
       ],
       "options_en": [
-        "git move develop",
+        "git move develop, applicable only in local development environments",
         "git switch develop",
-        "git goto develop",
+        "git goto develop as described in the protocol's technical specification",
         "git jump develop"
       ],
       "correct_index": 1,

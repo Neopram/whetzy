@@ -1,0 +1,12 @@
+{
+  "id": "l290204",
+  "skill_id": "sk290204",
+  "title_es": "unittest y Cobertura de Pruebas",
+  "title_en": "unittest and Test Coverage",
+  "body_es": "unittest es el framework de testing estándar de la biblioteca de Python, orientado a objetos e inspirado en xUnit. Usa clases que heredan de TestCase y métodos que comienzan con 'test_', aunque su sintaxis es más verbosa que pytest. La cobertura de pruebas mide qué porcentaje del código fue ejecutado durante los tests, usando herramientas como coverage.py. Una cobertura alta (típicamente 80-90%) reduce riesgos, pero no garantiza calidad: pruebas efectivas son más importantes que porcentajes altos. El equilibrio entre cobertura y esfuerzo es crucial.",
+  "body_en": "unittest is Python's standard testing framework, object-oriented and inspired by xUnit. It uses classes inheriting from TestCase and methods starting with 'test_', though its syntax is more verbose than pytest. Test coverage measures what percentage of code was executed during tests, using tools like coverage.py. High coverage (typically 80-90%) reduces risk, but doesn't guarantee quality: effective tests matter more than high percentages. The balance between coverage and effort is crucial.",
+  "example_code": "import unittest\n\nclass Calculator:\n    def add(self, a, b):\n        return a + b\n    def divide(self, a, b):\n        if b == 0:\n            raise ValueError('Cannot divide by zero')\n        return a / b\n\nclass TestCalculator(unittest.TestCase):\n    def setUp(self):\n        self.calc = Calculator()\n    \n    def test_add(self):\n        self.assertEqual(self.calc.add(5, 3), 8)\n    \n    def test_divide_success(self):\n        self.assertEqual(self.calc.divide(10, 2), 5)\n    \n    def test_divide_by_zero(self):\n        with self.assertRaises(ValueError):\n            self.calc.divide(10, 0)\n\n# Run coverage: coverage run -m unittest && coverage report",
+  "example_output": "test_add ... ok\ntest_divide_by_zero ... ok\ntest_divide_success ... ok\n3 tests passed\n\nCoverage: 95% (19 of 20 lines covered)",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 4
+}

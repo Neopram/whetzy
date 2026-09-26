@@ -27,25 +27,21 @@ checker solo podía terminar bien — cualquier fallo real moría en el print.
 
 from __future__ import annotations
 
-import json
 import os
 import re
 import subprocess
 import sys
 from pathlib import Path
 
+# project_snapshot.py is the single source of truth for project figures (31.0)
+from project_snapshot import snapshot
+
 ROOT = Path(__file__).parent.parent
 BACKEND = ROOT / "backend"
-CONTENT = ROOT / "content"
 DOCS_STATE = ROOT / "docs" / "AUTONOMOUS_STATE.md"
 CLAUDE_MD = ROOT / "CLAUDE.md"
-# Las cifras del catalogo se movieron a un modulo propio para que la landing
-# y /evidence no puedan discrepar: una sola copia, este guardia la vigila.
 EVIDENCE_TSX = ROOT / "frontend" / "src" / "lib" / "catalog.ts"
 
-# La consola de Windows no es UTF-8. Reconfigurar es lo que evita que el
-# checker muera al imprimir su propio fallo; el fallback ASCII cubre el caso
-# de un stream que no se puede reconfigurar (pipes de CI antiguos).
 _UNICODE_OK = True
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
@@ -73,54 +69,17 @@ def check(label: str, ok: bool, detail: str = "") -> None:
 
 
 # ---------------------------------------------------------------------------
-# Verdad canónica
+# Verdad canónica — single source via project_snapshot (31.0)
 # ---------------------------------------------------------------------------
 
-curriculum = json.loads((CONTENT / "curriculum" / "tracks.json").read_text(encoding="utf-8"))
-_tracks = curriculum["tracks"] if isinstance(curriculum, dict) else curriculum
-
-real_tracks = len(_tracks)
-real_skill_ids: set[str] = set()
-for _t in _tracks:
-    for _m in _t.get("modules", []):
-        for _s in _m.get("skills", []):
-            real_skill_ids.add(_s["id"] if isinstance(_s, dict) else _s)
-real_skills = len(real_skill_ids)
-
-# Un "curso" es un MODULO del molde (ADR-46 §2, fila 37.2): 4 skills, 60
-# preguntas, 4 lecciones. Hasta el 2026-09-25 era «track x nivel» (17.4), que
-# daba 49 y no era la unidad que se construye ni la que mide la meta de
-# ≥ 50 cursos por track.
-real_courses = sum(len(t.get("modules", [])) for t in _tracks)
-
-real_questions = 0
-for qfile in sorted((CONTENT / "questions").rglob("*.json")):
-    payload = json.loads(qfile.read_text(encoding="utf-8"))
-    items = payload if isinstance(payload, list) else payload.get("questions", [])
-    real_questions += len(items)
-
-lesson_skill_ids: set[str] = set()
-for lfile in sorted((CONTENT / "lessons").rglob("*.json")):
-    lesson = json.loads(lfile.read_text(encoding="utf-8"))
-    if lesson.get("skill_id"):
-        lesson_skill_ids.add(lesson["skill_id"])
-real_lessons = len(lesson_skill_ids)
-
-real_terms = 0
-for gfile in sorted((CONTENT / "glossary").rglob("*.json")):
-    payload = json.loads(gfile.read_text(encoding="utf-8"))
-    if isinstance(payload, list):
-        real_terms += len(payload)
-    else:
-        real_terms += len(payload.get("terms", payload.get("entries", [])))
-
-real_migrations = len(
-    [
-        p
-        for p in (BACKEND / "alembic" / "versions").glob("*.py")
-        if re.search(r"^revision(?::\s*str)?\s*=", p.read_text(encoding="utf-8"), re.M)
-    ]
-)
+_snap = snapshot()
+real_tracks = _snap["tracks"]
+real_skills = _snap["skills"]
+real_courses = _snap["courses"]
+real_questions = _snap["questions"]
+real_lessons = _snap["lessons"]
+real_terms = _snap["glossary_terms"]
+real_migrations = _snap["migrations"]
 
 # ---------------------------------------------------------------------------
 # Lado del doc: fila `Contenido` de la tabla de invariantes
@@ -155,17 +114,7 @@ def _from_row(row: str, pattern: str, label: str) -> int | None:
 
 print("\n[1] Alembic")
 try:
-    result = subprocess.run(
-        [sys.executable, "-m", "alembic", "heads"],
-        cwd=BACKEND,
-        capture_output=True,
-        text=True,
-        timeout=60,
-    )
-    # Los revision ids de este repo no son hex (`q7r8s9t0u1v2`): el regex
-    # `[0-9a-f]{12}` de la version anterior no podia casar ni uno.
-    heads = re.findall(r"^([0-9a-z_]{6,})\s*\(head\)", result.stdout, re.M)
-    real_head = heads[-1] if heads else "unknown"
+    real_head = _snap["alembic_head"]
 
     m = re.search(r"HEAD actual:\s*`([0-9a-z_]+)`", claude_text)
     claude_head = m.group(1) if m else "not_found"
@@ -254,7 +203,50 @@ else:
         )
 
 
-print("\n[5] API docs vs OpenAPI spec — check_api_docs.py (20.3)")
+print("\n[5a] ARCHITECTURE.md figures (31.0)")
+ARCH_MD = ROOT / "docs" / "ARCHITECTURE.md"
+if ARCH_MD.exists():
+    arch_text = ARCH_MD.read_text(encoding="utf-8")
+    arch_pairs = [
+        (r"(\d[\d.,]*)\s*questions", "ARCHITECTURE questions", real_questions),
+        (r"(\d[\d.,]*)\s*tracks", "ARCHITECTURE tracks", real_tracks),
+        (r"(\d[\d.,]*)\s*skills", "ARCHITECTURE skills", real_skills),
+        (r"(\d[\d.,]*)\s*lessons", "ARCHITECTURE lessons", real_lessons),
+        (r"(\d[\d.,]*)\s*glossary terms", "ARCHITECTURE glossary", real_terms),
+    ]
+    for pattern, label, real in arch_pairs:
+        m = re.search(pattern, arch_text)
+        if m:
+            doc_val = _num(m.group(1))
+            check(f"{label}: code={real} doc={doc_val}", doc_val == real, f"off by {real - doc_val}")
+        else:
+            check(label, False, "not found in ARCHITECTURE.md")
+else:
+    check("ARCHITECTURE.md exists", False, "file not found")
+
+
+print("\n[5b] CATALOGO_MAESTRO.md figures (31.0)")
+CATALOG_MD = ROOT / "docs" / "CATALOGO_MAESTRO.md"
+if CATALOG_MD.exists():
+    cat_text = CATALOG_MD.read_text(encoding="utf-8")
+    cat_pairs = [
+        (r"Tracks\s*\|\s*\*\*(\d[\d.,]*)\*\*", "CATALOGO tracks", real_tracks),
+        (r"Skills\s*\|\s*\*\*(\d[\d.,]*)\*\*", "CATALOGO skills", real_skills),
+        (r"Preguntas\s*\|\s*\*\*(\d[\d.,]*)\*\*", "CATALOGO questions", real_questions),
+        (r"Glosario\s*\|\s*\*\*(\d[\d.,]*)\*\*", "CATALOGO glossary", real_terms),
+    ]
+    for pattern, label, real in cat_pairs:
+        m = re.search(pattern, cat_text)
+        if m:
+            doc_val = _num(m.group(1))
+            check(f"{label}: code={real} doc={doc_val}", doc_val == real, f"off by {real - doc_val}")
+        else:
+            check(label, False, "not found in CATALOGO_MAESTRO.md §1")
+else:
+    check("CATALOGO_MAESTRO.md exists", False, "file not found")
+
+
+print("\n[5c] API docs vs OpenAPI spec — check_api_docs.py (20.3)")
 try:
     api_check = subprocess.run(
         [sys.executable, str(Path(__file__).parent / "check_api_docs.py")],
@@ -308,6 +300,62 @@ try:
         check("Legal facts (afirmaciones + borrador + codificacion + frontmatter + paridad)", True, "")
 except Exception as e:
     check("Legal facts (afirmaciones + borrador + codificacion + frontmatter + paridad)", False, str(e))
+
+print("\n[8] Ledger size guard (20.10)")
+_ledger_size = DOCS_STATE.stat().st_size
+_MAX_LEDGER = 61440  # 60 KB — enforced by 20.10 diet
+check(
+    f"AUTONOMOUS_STATE.md size: {_ledger_size:,} bytes <= {_MAX_LEDGER:,}",
+    _ledger_size <= _MAX_LEDGER,
+    f"{_ledger_size:,} bytes ({_ledger_size / 1024:.1f} KB)",
+)
+
+print("\n[9] ECONOMIA <> credits.json (29.2)")
+import json as _json
+
+_credits_path = ROOT / "content" / "economy" / "credits.json"
+_economia_path = ROOT / "docs" / "ECONOMIA.md"
+if _credits_path.exists() and _economia_path.exists():
+    _cj = _json.loads(_credits_path.read_text(encoding="utf-8"))
+    _eco_text = _economia_path.read_text(encoding="utf-8")
+    _cj_val = _cj.get("credit_value_usd")
+    _cj_cap = _cj.get("monthly_cap_learning")
+    _cj_exp = _cj.get("expiration_days")
+    _cj_ref = _cj.get("monthly_cap_referrals")
+
+    _eco_val_m = re.search(r"1\s*cr[eé]dito\s*[≈~]\s*\$?([\d.,]+)", _eco_text)
+    _eco_val = float(_eco_val_m.group(1).replace(",", ".")) if _eco_val_m else None
+    check(
+        f"credit_value_usd: credits.json={_cj_val} == ECONOMIA.md={_eco_val}",
+        _eco_val is not None and float(_cj_val) == _eco_val,
+        f"credits.json={_cj_val}, ECONOMIA.md={_eco_val}",
+    )
+
+    _eco_cap_m = re.search(r"([\d.]+)\s*cr[eé]ditos?/mes", _eco_text)
+    _eco_cap = int(_eco_cap_m.group(1).replace(".", "")) if _eco_cap_m else None
+    check(
+        f"monthly_cap_learning: credits.json={_cj_cap} == ECONOMIA.md={_eco_cap}",
+        _eco_cap is not None and int(_cj_cap) == _eco_cap,
+        f"credits.json={_cj_cap}, ECONOMIA.md={_eco_cap}",
+    )
+
+    _eco_exp_m = re.search(r"(\d+)\s*d[ií]as", _eco_text[_eco_text.find("Caducidad"):] if "Caducidad" in _eco_text else "")
+    _eco_exp = int(_eco_exp_m.group(1)) if _eco_exp_m else None
+    check(
+        f"expiration_days: credits.json={_cj_exp} == ECONOMIA.md={_eco_exp}",
+        _eco_exp is not None and int(_cj_exp) == _eco_exp,
+        f"credits.json={_cj_exp}, ECONOMIA.md={_eco_exp}",
+    )
+
+    _eco_ref_m = re.search(r"(\d+)\s*activaciones?/mes", _eco_text)
+    _eco_ref = int(_eco_ref_m.group(1)) if _eco_ref_m else None
+    check(
+        f"monthly_cap_referrals: credits.json={_cj_ref} == ECONOMIA.md={_eco_ref}",
+        _eco_ref is not None and int(_cj_ref) == _eco_ref,
+        f"credits.json={_cj_ref}, ECONOMIA.md={_eco_ref}",
+    )
+else:
+    check("ECONOMIA.md or credits.json exists", False, "file(s) missing")
 
 print()
 if errors:

@@ -10,7 +10,7 @@ const makeOk = (body: unknown) =>
 describe('api — extra coverage', () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem('whetzy_access_token', 'tok');
+    document.cookie = 'whetzy_logged_in=1; path=/';
     vi.resetModules();
   });
   afterEach(() => vi.unstubAllGlobals());

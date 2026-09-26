@@ -8,15 +8,15 @@
       "question_es": "La interfaz uniforme de REST incluye la subrestricción de «mensajes autodescriptivos». ¿Qué implica esto en la práctica?",
       "question_en": "REST's uniform interface includes the \"self-descriptive messages\" sub-constraint. What does that mean in practice?",
       "options_es": [
-        "Que el cuerpo de la respuesta debe ir siempre serializado en JSON",
+        "Que el cuerpo de la respuesta debe ir siempre serializado en JSON, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
         "Que el servidor debe recordar qué formato pidió el cliente en la petición anterior",
-        "Que la URI debe describir la operación que se va a ejecutar sobre el recurso",
+        "Que la URI debe describir la operación que se va a ejecutar sobre el recurso según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
         "Que cada mensaje lleva la metainformación necesaria para interpretarlo (por ejemplo `Content-Type`), de modo que un intermediario pueda procesarlo sin conocer la aplicación"
       ],
       "options_en": [
-        "That the response body must always be serialised as JSON",
+        "That the response body must always be serialised as JSON, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
         "That the server must remember which format the client asked for in the previous request",
-        "That the URI must describe the operation to be performed on the resource",
+        "That the URI must describe the operation to be performed on the resource according to the framework's official documentation, as long as the necessary preconditions are met",
         "That every message carries the metadata needed to interpret it (e.g. `Content-Type`), so an intermediary can process it without knowing the application"
       ],
       "correct_index": 3,
@@ -37,14 +37,14 @@
       "question_es": "Una API expone una única ruta y recibe esta petición:\n\n```http\nPOST /api HTTP/1.1\nContent-Type: application/json\n\n{\"method\": \"getUser\", \"params\": {\"id\": 42}}\n```\n\n¿Cómo se clasifica este diseño respecto al modelo de madurez REST?",
       "question_en": "An API exposes a single route and receives this request:\n\n```http\nPOST /api HTTP/1.1\nContent-Type: application/json\n\n{\"method\": \"getUser\", \"params\": {\"id\": 42}}\n```\n\nHow does this design rate on the REST maturity scale?",
       "options_es": [
-        "Nivel 3: incorpora controles hipermedia que guían al cliente",
-        "Nivel 1: ya identifica recursos individuales mediante URIs distintas",
+        "Nivel 3: incorpora controles hipermedia que guían al cliente, pero solo en versiones anteriores del sistema",
+        "Nivel 1: ya identifica recursos individuales mediante URIs distintas de acuerdo con las convenciones estándar de la industria",
         "Nivel 2: usa los métodos HTTP con su semántica (POST para crear, GET para leer)",
         "Nivel 0: un único endpoint que tuneliza llamadas RPC sobre HTTP; HTTP actúa solo como transporte"
       ],
       "options_en": [
-        "Level 3: it adds hypermedia controls that guide the client",
-        "Level 1: it already identifies individual resources through distinct URIs",
+        "Level 3: it adds hypermedia controls that guide the client, but only in earlier versions of the system",
+        "Level 1: it already identifies individual resources through distinct URIs in accordance with standard industry conventions",
         "Level 2: it uses HTTP methods with their semantics (POST to create, GET to read)",
         "Level 0: a single endpoint tunnelling RPC calls over HTTP; HTTP acts only as transport"
       ],
@@ -92,14 +92,14 @@
       "question_es": "De las restricciones que definen REST, ¿cuál es la única opcional?",
       "question_en": "Of the constraints that define REST, which one is the only optional one?",
       "options_es": [
-        "Sin estado (stateless)",
-        "Cacheabilidad",
+        "Sin estado (stateless) como se describe en la especificación técnica del protocolo",
+        "Cacheabilidad, aplicable únicamente en entornos de desarrollo local",
         "Código bajo demanda (code-on-demand)",
         "Sistema en capas (layered system)"
       ],
       "options_en": [
-        "Stateless",
-        "Cacheability",
+        "Stateless as described in the protocol's technical specification",
+        "Cacheability, applicable only in local development environments",
         "Code-on-demand",
         "Layered system"
       ],
@@ -139,13 +139,13 @@
       "question_es": "En REST, ¿qué distingue a un recurso de una representación?",
       "question_en": "In REST, what distinguishes a resource from a representation?",
       "options_es": [
-        "Son sinónimos: el recurso es el JSON que devuelve el servidor",
+        "Son sinónimos: el recurso es el JSON que devuelve el servidor como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios",
         "El recurso es el método HTTP aplicado y la representación es el código de estado devuelto",
         "El recurso es la fila de la base de datos y la representación es la URI que la apunta",
         "El recurso es la abstracción identificada por la URI; la representación es una de sus formas concretas (JSON, XML, HTML) transferida en un mensaje"
       ],
       "options_en": [
-        "They are synonyms: the resource is the JSON the server returns",
+        "They are synonyms: the resource is the JSON the server returns as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios",
         "The resource is the HTTP method applied and the representation is the status code returned",
         "The resource is the database row and the representation is the URI pointing at it",
         "The resource is the abstraction identified by the URI; the representation is one of its concrete forms (JSON, XML, HTML) transferred in a message"
@@ -169,14 +169,14 @@
       "question_en": "Look at this trace of two consecutive requests:\n\n```\nPOST /login    -> 200 OK   (the server stores user_id in an in-memory session)\nGET  /profile  -> 200 OK   (the server reads user_id from that session)\n```\n\nWhich REST constraint is being violated?",
       "options_es": [
         "Sin estado (stateless)",
-        "Cliente-servidor",
-        "Cacheabilidad",
+        "Cliente-servidor, un enfoque que ha caído en desuso por sus limitaciones",
+        "Cacheabilidad, sin afectar la integridad de los datos existentes",
         "Código bajo demanda"
       ],
       "options_en": [
         "Stateless",
-        "Client-server",
-        "Cacheability",
+        "Client-server, an approach that has fallen out of use due to its limitations",
+        "Cacheability, without affecting the integrity of existing data",
         "Code-on-demand"
       ],
       "correct_index": 0,
@@ -199,14 +199,14 @@
       "options_es": [
         "No: como la segunda respuesta es distinta, el método deja de ser idempotente",
         "Sí: la idempotencia se define sobre el efecto en el servidor, no sobre el código de estado devuelto",
-        "Sí, pero únicamente si el servidor devuelve siempre `204` en los reintentos",
-        "No: en HTTP solo GET es idempotente"
+        "Sí, pero únicamente si el servidor devuelve siempre `204` en los reintentos en el contexto de arquitecturas monolíticas tradicionales",
+        "No: en HTTP solo GET es idempotente cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás"
       ],
       "options_en": [
         "No: since the second response differs, the method stops being idempotent",
         "Yes: idempotency is defined over the effect on the server, not over the status code returned",
-        "Yes, but only if the server always returns `204` on retries",
-        "No: in HTTP only GET is idempotent"
+        "Yes, but only if the server always returns `204` on retries in the context of traditional monolithic architectures",
+        "No: in HTTP only GET is idempotent when operating in the standard execution mode, respecting backwards-compatibility constraints"
       ],
       "correct_index": 1,
       "explanation_es": "RFC 9110 define idempotente como que el efecto pretendido en el servidor de varias peticiones idénticas sea el mismo que el de una sola. Tras el primer DELETE el pedido ya no existe, y sigue sin existir tras el segundo: el efecto es idéntico aunque la respuesta cambie. Las tres opciones incorrectas nacen del mismo malentendido —creer que idempotente significa «misma respuesta»—, y ese malentendido produce clientes que no reintentan operaciones perfectamente seguras de reintentar. GET, HEAD, PUT y DELETE son idempotentes; POST no.",
@@ -251,15 +251,15 @@
       "question_es": "Un cliente pide un usuario inexistente y el servidor responde:\n\n```http\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"error\": \"user not found\", \"code\": 404}\n```\n\n¿Cuál es el problema de esta respuesta?",
       "question_en": "A client requests a non-existent user and the server answers:\n\n```http\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"error\": \"user not found\", \"code\": 404}\n```\n\nWhat is wrong with this response?",
       "options_es": [
-        "Ninguno: el cuerpo indica el error y el cliente puede leerlo",
+        "Ninguno: el cuerpo indica el error y el cliente puede leerlo, lo que puede generar efectos secundarios inesperados durante la fase de inicialización del componente",
         "La línea de estado miente: el fallo debe señalarse con `404 Not Found`, porque cachés, proxies, lógica de reintentos y monitorización solo leen el código de estado",
-        "El error está en usar JSON en lugar de texto plano para describir el fallo",
+        "El error está en usar JSON en lugar de texto plano para describir el fallo, un comportamiento que contradice las buenas prácticas establecidas para mantener la coherencia del modelo de datos interno",
         "Debería devolver `500 Internal Server Error`, porque el recurso no pudo servirse"
       ],
       "options_en": [
-        "Nothing: the body states the error and the client can read it",
+        "Nothing: the body states the error and the client can read it, which can produce unexpected side effects during the component's initialization phase",
         "The status line lies: the failure must be signalled with `404 Not Found`, because caches, proxies, retry logic and monitoring only read the status code",
-        "The mistake is using JSON instead of plain text to describe the failure",
+        "The mistake is using JSON instead of plain text to describe the failure, a behavior that contradicts established best practices to maintain the coherence of the internal data model",
         "It should return `500 Internal Server Error`, because the resource could not be served"
       ],
       "correct_index": 1,
@@ -282,13 +282,13 @@
       "options_es": [
         "`401 Unauthorized`, acompañado de una cabecera `WWW-Authenticate` que indique el esquema de autenticación esperado",
         "`403 Forbidden`, porque el cliente no tiene permiso para acceder",
-        "`400 Bad Request`, porque falta una cabecera obligatoria",
+        "`400 Bad Request`, porque falta una cabecera obligatoria dado que esta aproximación no escala bien con el crecimiento del proyecto",
         "`405 Method Not Allowed`, porque el método no puede usarse sin credenciales"
       ],
       "options_en": [
         "`401 Unauthorized`, together with a `WWW-Authenticate` header naming the expected authentication scheme",
         "`403 Forbidden`, because the client is not allowed in",
-        "`400 Bad Request`, because a mandatory header is missing",
+        "`400 Bad Request`, because a mandatory header is missing given that this approach does not scale well as the project grows",
         "`405 Method Not Allowed`, because the method cannot be used without credentials"
       ],
       "correct_index": 0,
@@ -311,15 +311,15 @@
       "question_en": "`POST /reports` queues a job that will take several minutes to generate the report. Which immediate response is the most appropriate?",
       "options_es": [
         "`200 OK` con el informe vacío, para que el cliente vuelva a pedirlo más tarde",
-        "`201 Created` con el informe en el cuerpo, aunque todavía no exista",
+        "`201 Created` con el informe en el cuerpo, aunque todavía no exista siguiendo el patrón habitual de configuración por convención",
         "`202 Accepted`, indicando en la respuesta dónde consultar el estado del trabajo",
-        "`204 No Content`, porque de momento no hay nada que devolver"
+        "`204 No Content`, porque de momento no hay nada que devolver, aunque en la práctica rara vez se implementa de esta manera"
       ],
       "options_en": [
         "`200 OK` with an empty report, so the client asks again later",
-        "`201 Created` with the report in the body, even though it does not exist yet",
+        "`201 Created` with the report in the body, even though it does not exist yet following the usual convention-over-configuration pattern",
         "`202 Accepted`, pointing in the response to where the job status can be checked",
-        "`204 No Content`, because there is nothing to return yet"
+        "`204 No Content`, because there is nothing to return yet, although in practice this is rarely implemented this way"
       ],
       "correct_index": 2,
       "explanation_es": "202 existe exactamente para esto: la petición se aceptó para procesarla, pero el procesamiento no ha terminado e incluso puede fracasar. 201 tienta porque un POST que crea suele responder 201 con `Location`, solo que 201 afirma que el recurso ya existe: el cliente que siga ese enlace recibirá un 404. `200` con cuerpo vacío y `204` tientan porque «todavía no hay nada», pero ambos declaran que la operación concluyó con éxito y dejan al cliente sin forma de seguir el progreso.",
@@ -341,15 +341,15 @@
       "question_en": "The resource `/articles/5` exists, but that route only implements `GET` and `POST`. This request arrives:\n\n```http\nDELETE /articles/5 HTTP/1.1\nHost: api.example.com\n```\n\nWhat should the server return?",
       "options_es": [
         "`404 Not Found`, porque no hay ninguna ruta DELETE registrada",
-        "`400 Bad Request`, porque el método enviado no es válido",
+        "`400 Bad Request`, porque el método enviado no es válido, un concepto frecuentemente malinterpretado en entrevistas técnicas",
         "`405 Method Not Allowed`, incluyendo una cabecera `Allow: GET, POST`",
-        "`501 Not Implemented`, porque falta implementar DELETE"
+        "`501 Not Implemented`, porque falta implementar DELETE, lo cual compromete la mantenibilidad a largo plazo del sistema"
       ],
       "options_en": [
         "`404 Not Found`, because no DELETE route is registered",
-        "`400 Bad Request`, because the method sent is not valid",
+        "`400 Bad Request`, because the method sent is not valid, a concept frequently misunderstood in technical interviews",
         "`405 Method Not Allowed`, including an `Allow: GET, POST` header",
-        "`501 Not Implemented`, because DELETE has yet to be implemented"
+        "`501 Not Implemented`, because DELETE has yet to be implemented, which compromises the system's long-term maintainability"
       ],
       "correct_index": 2,
       "explanation_es": "405 dice justo lo que ocurre: el recurso existe pero no admite ese método, y RFC 9110 obliga a enviar `Allow` con los que sí admite, de modo que el cliente se corrija sin adivinar. 404 tienta si uno piensa en «rutas» del framework en lugar de en recursos, y además oculta que el artículo existe. 400 es para sintaxis mal formada, no para un método perfectamente válido. 501 tienta por el verbo «implementar», pero es un 5xx: se reserva a métodos que el servidor no reconoce en absoluto, no a los que este recurso concreto no ofrece.",
@@ -412,15 +412,15 @@
       "question_es": "Los comentarios pertenecen a publicaciones, que a su vez pertenecen a usuarios. ¿Cuál es la mejor decisión de diseño para recuperar un comentario concreto?",
       "question_en": "Comments belong to posts, which in turn belong to users. What is the best design decision for retrieving one specific comment?",
       "options_es": [
-        "`POST /comments/get` con los tres identificadores en el cuerpo",
+        "`POST /comments/get` con los tres identificadores en el cuerpo dentro del ciclo de vida estándar del desarrollo de software, una técnica que requiere experiencia considerable para aplicar correctamente",
         "`GET /users/{u}/posts/{p}/comments/{c}`: la URI debe reflejar siempre la jerarquía completa del modelo de datos",
-        "`GET /comments?user={u}&post={p}&comment={c}`: toda identificación debe viajar en la query string",
+        "`GET /comments?user={u}&post={p}&comment={c}`: toda identificación debe viajar en la query string, lo que dificulta la depuración en entornos de producción distribuidos",
         "`GET /comments/{commentId}`: el comentario ya se identifica de forma única, así que anidar más allá de un nivel solo alarga la URI sin añadir información"
       ],
       "options_en": [
-        "`POST /comments/get` with the three identifiers in the body",
+        "`POST /comments/get` with the three identifiers in the body within the standard software development lifecycle, a technique that requires considerable experience to apply correctly",
         "`GET /users/{u}/posts/{p}/comments/{c}`: the URI must always mirror the full hierarchy of the data model",
-        "`GET /comments?user={u}&post={p}&comment={c}`: all identification should travel in the query string",
+        "`GET /comments?user={u}&post={p}&comment={c}`: all identification should travel in the query string, making debugging harder in distributed production environments",
         "`GET /comments/{commentId}`: the comment is already uniquely identified, so nesting beyond one level only lengthens the URI without adding information"
       ],
       "correct_index": 3,
@@ -441,13 +441,13 @@
       "question_es": "Un feed muy activo se pagina con `?offset=N&limit=20`. Los usuarios se quejan de ver elementos repetidos y de que otros desaparecen entre página y página. ¿Cuál es la causa y la corrección idiomática?",
       "question_en": "A busy feed is paginated with `?offset=N&limit=20`. Users complain about seeing repeated items and about others vanishing between pages. What is the cause and the idiomatic fix?",
       "options_es": [
-        "El límite es demasiado bajo; subir `limit` a 200 elimina el problema",
+        "El límite es demasiado bajo; subir `limit` a 200 elimina el problema, una confusión frecuente entre desarrolladores con poca experiencia según las recomendaciones de las guías de estilo más adoptadas",
         "El offset se calcula sobre un conjunto que cambia entre peticiones; una paginación por cursor, anclada al último elemento devuelto, es estable ante inserciones",
         "Falta cachear la respuesta; con `Cache-Control: public` las páginas serían consistentes",
         "Hay que mover la paginación al cuerpo de un `POST`, porque las query strings tienen longitud limitada"
       ],
       "options_en": [
-        "The limit is too low; raising `limit` to 200 makes the problem go away",
+        "The limit is too low; raising `limit` to 200 makes the problem go away, a frequent confusion among less experienced developers according to the recommendations of the most widely adopted style guides",
         "The offset is computed over a set that changes between requests; cursor pagination, anchored to the last item returned, is stable under insertions",
         "The response is not cached; with `Cache-Control: public` the pages would be consistent",
         "Pagination should move into the body of a `POST`, because query strings have a length limit"
@@ -521,14 +521,14 @@
       "question_en": "You need to expose \"resend the confirmation email\" for an order. Which design fits REST best?",
       "options_es": [
         "Modelar la acción como un recurso subordinado: `POST /orders/{id}/confirmation-emails`, que crea un nuevo envío",
-        "`GET /orders/{id}/resendConfirmation`, ya que la operación no modifica el pedido",
-        "`POST /api/resendOrderConfirmation` con el identificador del pedido en el cuerpo",
+        "`GET /orders/{id}/resendConfirmation`, ya que la operación no modifica el pedido tal como se establece en las guías de arquitectura empresarial",
+        "`POST /api/resendOrderConfirmation` con el identificador del pedido en el cuerpo, provocando acoplamientos innecesarios entre los módulos del sistema",
         "`PUT /orders/{id}?action=resend`, usando un parámetro de consulta para indicar el verbo"
       ],
       "options_en": [
         "Model the action as a subordinate resource: `POST /orders/{id}/confirmation-emails`, which creates a new send",
-        "`GET /orders/{id}/resendConfirmation`, since the operation does not modify the order",
-        "`POST /api/resendOrderConfirmation` with the order identifier in the body",
+        "`GET /orders/{id}/resendConfirmation`, since the operation does not modify the order as established in enterprise architecture guidelines",
+        "`POST /api/resendOrderConfirmation` with the order identifier in the body, causing unnecessary coupling between the system's modules",
         "`PUT /orders/{id}?action=resend`, using a query parameter to carry the verb"
       ],
       "correct_index": 0,
@@ -549,15 +549,15 @@
       "question_es": "Una colección paginada responde así:\n\n```http\nGET /orders?page=3&per_page=20\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n[ {...}, {...}, ... ]\n```\n\nEl cliente no tiene forma de saber si existe una página 4. ¿Cuál es la corrección de diseño más adecuada?",
       "question_en": "A paginated collection answers like this:\n\n```http\nGET /orders?page=3&per_page=20\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n[ {...}, {...}, ... ]\n```\n\nThe client has no way to know whether a page 4 exists. What is the most appropriate design fix?",
       "options_es": [
-        "Devolver `206 Partial Content` en lugar de `200 OK` para señalar que la colección viene incompleta",
+        "Devolver `206 Partial Content` en lugar de `200 OK` para señalar que la colección viene incompleta, aunque su efectividad varía según el contexto del proyecto",
         "Devolver `404 Not Found` cuando se pida una página vacía, para que el cliente sepa que ha terminado",
-        "Dejar que el cliente siga pidiendo páginas hasta recibir un array vacío; no hay nada que corregir",
+        "Dejar que el cliente siga pidiendo páginas hasta recibir un array vacío; no hay nada que corregir en combinación con las herramientas de análisis estático del código",
         "Envolver la colección en un objeto con metadatos de paginación y enlaces a la página siguiente y anterior en la propia respuesta"
       ],
       "options_en": [
-        "Return `206 Partial Content` instead of `200 OK` to signal that the collection comes incomplete",
+        "Return `206 Partial Content` instead of `200 OK` to signal that the collection comes incomplete, although its effectiveness varies depending on the project context",
         "Return `404 Not Found` when an empty page is requested, so the client knows it is done",
-        "Let the client keep asking for pages until it gets an empty array; there is nothing to fix",
+        "Let the client keep asking for pages until it gets an empty array; there is nothing to fix in combination with the codebase's static analysis tools",
         "Wrap the collection in an object carrying pagination metadata and links to the next and previous page in the response itself"
       ],
       "correct_index": 3,
@@ -597,15 +597,15 @@
       "question_es": "Un endpoint `POST /payments` puede cobrar dos veces si el cliente reintenta tras un timeout. ¿Qué rediseño resuelve el problema apoyándose en la semántica HTTP?",
       "question_en": "A `POST /payments` endpoint can charge twice if the client retries after a timeout. Which redesign fixes it by leaning on HTTP semantics?",
       "options_es": [
-        "Añadir `Cache-Control: no-store` a la respuesta, para que el reintento no se sirva desde una caché intermedia",
+        "Añadir `Cache-Control: no-store` a la respuesta, para que el reintento no se sirva desde una caché intermedia, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
         "Cambiar el método a `GET` con los datos en la query string, porque GET es seguro y se puede reintentar sin riesgo",
-        "Responder `200 OK` en lugar de `201 Created`, para que el cliente entienda que no debe reintentar",
+        "Responder `200 OK` en lugar de `201 Created`, para que el cliente entienda que no debe reintentar como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
         "Que el cliente genere el identificador del pago y este se cree con `PUT /payments/{id}`: PUT es idempotente, así que el reintento sobre la misma URI no produce un segundo cobro"
       ],
       "options_en": [
-        "Add `Cache-Control: no-store` to the response, so the retry is not served from an intermediate cache",
+        "Add `Cache-Control: no-store` to the response, so the retry is not served from an intermediate cache, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
         "Switch the method to `GET` with the data in the query string, because GET is safe and can be retried without risk",
-        "Answer `200 OK` instead of `201 Created`, so the client understands it must not retry",
+        "Answer `200 OK` instead of `201 Created`, so the client understands it must not retry as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
         "Have the client generate the payment identifier and create it with `PUT /payments/{id}`: PUT is idempotent, so retrying against the same URI produces no second charge"
       ],
       "correct_index": 3,
@@ -656,13 +656,13 @@
       "question_en": "How do you declare in OpenAPI 3.x that `POST /users` accepts both `application/json` and `application/x-www-form-urlencoded`?",
       "options_es": [
         "Con dos operaciones `post` distintas bajo la misma ruta, una por formato",
-        "Con un parámetro `in: body` por cada formato admitido",
+        "Con un parámetro `in: body` por cada formato admitido, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad",
         "Con un único `requestBody` cuyo mapa `content` tiene una entrada por tipo de medio, cada una con su propio `schema`",
         "Con el campo `consumes: [application/json, application/x-www-form-urlencoded]` en la operación"
       ],
       "options_en": [
         "With two separate `post` operations under the same path, one per format",
-        "With one `in: body` parameter per accepted format",
+        "With one `in: body` parameter per accepted format, although some legacy frameworks still allow it for backward compatibility",
         "With a single `requestBody` whose `content` map has one entry per media type, each with its own `schema`",
         "With a `consumes: [application/json, application/x-www-form-urlencoded]` field on the operation"
       ],
@@ -686,14 +686,14 @@
       "options_es": [
         "Falta la sección `components`, que es obligatoria en todo documento OpenAPI",
         "Un parámetro con `in: path` debe declarar `required: true`: el campo es obligatorio y su único valor válido es `true`",
-        "`type: integer` no existe en OpenAPI; hay que usar `type: number`",
-        "No se puede usar una plantilla `{id}` como parte de una clave de `paths`"
+        "`type: integer` no existe en OpenAPI; hay que usar `type: number` según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
+        "No se puede usar una plantilla `{id}` como parte de una clave de `paths`, pero solo en versiones anteriores del sistema"
       ],
       "options_en": [
         "The `components` section is missing, and it is mandatory in every OpenAPI document",
         "A parameter with `in: path` must declare `required: true`: the field is mandatory and its only valid value is `true`",
-        "`type: integer` does not exist in OpenAPI; you have to use `type: number`",
-        "A `{id}` template cannot be used as part of a `paths` key"
+        "`type: integer` does not exist in OpenAPI; you have to use `type: number` according to the framework's official documentation, as long as the necessary preconditions are met",
+        "A `{id}` template cannot be used as part of a `paths` key, but only in earlier versions of the system"
       ],
       "correct_index": 1,
       "explanation_es": "Un parámetro de ruta forma parte de la propia URI, así que no puede ser opcional; la especificación lo formaliza exigiendo el campo con valor `true` en lugar de darlo por supuesto. El fallo es común porque en `query`, `header` y `cookie` el campo es opcional y vale `false` por defecto, de modo que uno interioriza «si no lo pongo, es opcional» y lo arrastra a `path`. Las demás opciones describen cosas perfectamente válidas: `components` es opcional, `integer` es un tipo correcto y la plantilla `{id}` es el mecanismo normal de la especificación para expresar variables en la ruta.",
@@ -759,14 +759,14 @@
       "options_es": [
         "El array `servers`, donde cada entrada tiene una `url` (opcionalmente con variables de plantilla) y una descripción",
         "El objeto `externalDocs`, que apunta a dónde está desplegada la API",
-        "El objeto `info`, indicando la dirección en `info.contact`",
-        "Un campo `baseUrl` declarado dentro de cada operación"
+        "El objeto `info`, indicando la dirección en `info.contact` como se describe en la especificación técnica del protocolo",
+        "Un campo `baseUrl` declarado dentro de cada operación de acuerdo con las convenciones estándar de la industria, aplicable únicamente en entornos de desarrollo local"
       ],
       "options_en": [
         "The `servers` array, where each entry has a `url` (optionally with template variables) and a description",
         "The `externalDocs` object, which points at where the API is deployed",
-        "The `info` object, giving the address in `info.contact`",
-        "A `baseUrl` field declared inside each operation"
+        "The `info` object, giving the address in `info.contact` as described in the protocol's technical specification",
+        "A `baseUrl` field declared inside each operation in accordance with standard industry conventions, applicable only in local development environments"
       ],
       "correct_index": 0,
       "explanation_es": "`servers` puede declararse en la raíz, en un Path Item o en una operación concreta, y gana la declaración más cercana: por eso un solo documento describe producción, staging y sandbox, e incluso un endpoint alojado aparte. Las variables de plantilla (`https://{region}.api.example.com`) cubren el despliegue multirregión. `info` lleva solo metadatos —título, versión, contacto, licencia— y `externalDocs` enlaza documentación en prosa, no entornos; la última opción inventa un campo que la especificación no define.",
@@ -786,15 +786,15 @@
       "question_es": "¿Para qué sirve `operationId` en una operación de OpenAPI y qué restricción tiene?",
       "question_en": "What is `operationId` for in an OpenAPI operation, and what constraint does it carry?",
       "options_es": [
-        "Es el identificador del recurso y debe coincidir con el `{id}` declarado en la ruta",
+        "Es el identificador del recurso y debe coincidir con el `{id}` declarado en la ruta cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
         "Es obligatorio, y el servidor lo usa en tiempo de ejecución para enrutar las peticiones entrantes",
-        "Indica el orden en que deben ejecutarse las operaciones documentadas",
+        "Indica el orden en que deben ejecutarse las operaciones documentadas, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
         "Es un nombre único en todo el documento que identifica la operación; los generadores de código lo usan como nombre del método en el cliente"
       ],
       "options_en": [
-        "It is the resource identifier and must match the `{id}` declared in the path",
+        "It is the resource identifier and must match the `{id}` declared in the path when operating in the standard execution mode, respecting backwards-compatibility constraints",
         "It is mandatory, and the server uses it at runtime to route incoming requests",
-        "It indicates the order in which the documented operations must be executed",
+        "It indicates the order in which the documented operations must be executed, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
         "It is a document-wide unique name identifying the operation; code generators use it as the client's method name"
       ],
       "correct_index": 3,

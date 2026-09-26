@@ -1,0 +1,12 @@
+{
+  "id": "l260120",
+  "skill_id": "sk260120",
+  "title_es": "Integración Continua/Despliegue Continuo",
+  "title_en": "CI/CD Integration",
+  "body_es": "CI/CD automatiza testing, integración y despliegue de código. La integración continua (CI) ejecuta tests automáticamente cuando se hace push. El despliegue continuo (CD) lleva código a producción automáticamente. Herramientas como GitHub Actions, Jenkins y GitLab CI monitorizan repositorios y ejecutan workflows. Esto acelera entregas, reduce errores manuales y permite feedback rápido. Los workflows pueden ejecutar linters, tests, builds y despliegues. Git hooks pueden validar localmente antes de push.",
+  "body_en": "CI/CD automates testing, integration, and code deployment. Continuous integration (CI) runs tests automatically when you push. Continuous deployment (CD) takes code to production automatically. Tools like GitHub Actions, Jenkins, and GitLab CI monitor repositories and execute workflows. This speeds up deliveries, reduces manual errors, and enables quick feedback. Workflows can run linters, tests, builds, and deployments. Git hooks can validate locally before pushing.",
+  "example_code": "# GitHub Actions workflow example\ncat .github/workflows/ci.yml\n# Typical CI pipeline\n# - Run tests\n# - Run linter\n# - Build application\n# - Deploy to staging\n# - Run integration tests\n# - Deploy to production",
+  "example_output": "name: CI/CD Pipeline\non: [push, pull_request]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v2\n      - run: npm install\n      - run: npm test\n      - run: npm run lint\n  deploy:\n    needs: test\n    runs-on: ubuntu-latest\n    if: github.ref == 'refs/heads/main'\n    steps:\n      - uses: actions/checkout@v2\n      - run: npm run build\n      - run: npm run deploy",
+  "source": "Git Docs — https://git-scm.com/doc",
+  "order": 4
+}

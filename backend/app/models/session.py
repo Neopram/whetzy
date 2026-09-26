@@ -6,7 +6,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -73,5 +73,16 @@ class Response(Base):
     declared_unknown: Mapped[bool] = mapped_column(
         Boolean, default=False, nullable=False, server_default="false"
     )
+
+    event_id: Mapped[str | None] = mapped_column(
+        String(64), nullable=True, unique=True, index=True
+    )
+
+    # Per-response snapshots for calibration audit (32.0).
+    p_known_before: Mapped[float | None] = mapped_column(Float, nullable=True)
+    p_known_after: Mapped[float | None] = mapped_column(Float, nullable=True)
+    elo_before: Mapped[float | None] = mapped_column(Float, nullable=True)
+    elo_after: Mapped[float | None] = mapped_column(Float, nullable=True)
+    expected_p: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     session: Mapped[StudySession] = relationship(back_populates="responses")

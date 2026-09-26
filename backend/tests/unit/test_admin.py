@@ -313,3 +313,110 @@ async def test_admin_revenue_never_claims_live_without_a_live_key(
         ).json()
         assert data["stripe_mode"] in ("unconfigured", "test")
         assert data["status"] == "test_mode"
+
+
+@pytest.mark.asyncio
+async def test_admin_tutor_usage(
+    client: AsyncClient, owner: User, db_session
+) -> None:
+    """Tutor usage endpoint returns per-user and per-day data (22.16)."""
+    from datetime import date
+
+    from app.models.tutor_usage import TutorUsage
+
+    today = date.today()
+    row = TutorUsage(user_id=owner.id, day=today, explanations=5)
+    db_session.add(row)
+    await db_session.commit()
+
+    resp = await client.get(
+        "/api/v1/admin/ops/tutor-usage?days=7",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert resp.status_code == status.HTTP_200_OK
+    data = resp.json()
+    assert data["days"] == 7
+    assert len(data["per_user"]) >= 1
+    assert data["per_user"][0]["total_explanations"] == 5
+    assert len(data["per_day"]) >= 1
+    assert data["per_day"][0]["total"] == 5
+
+
+@pytest.mark.asyncio
+async def test_kpi_dashboard_returns_all_kpis(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/kpi/dashboard",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "kpis" in data
+    assert "segment" in data
+    kpis = data["kpis"]
+    for key in ("registered", "paying", "mrr_usd", "retention_d30", "nps", "k_factor", "referral_pct"):
+        assert key in kpis, f"Missing KPI: {key}"
+        assert "value" in kpis[key]
+        assert "query" in kpis[key]
+        assert "objectives" in kpis[key]
+        obj = kpis[key]["objectives"]
+        assert "m3" in obj and "m6" in obj and "m12" in obj
+
+
+@pytest.mark.asyncio
+async def test_kpi_dashboard_requires_owner(client: AsyncClient) -> None:
+    response = await client.get("/api/v1/admin/kpi/dashboard")
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+# --- 22.1 gap closers ---------------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_admin_engagement_metrics(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/metrics/engagement?range_days=7",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "quiz_sessions" in data
+    assert "accuracy_pct" in data
+    assert "retention_d30" in data
+    assert "duels_total" in data
+    assert "top_skills" in data
+    assert data["range_days"] == 7
+
+
+@pytest.mark.asyncio
+async def test_admin_engagement_with_segment(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/metrics/engagement?range_days=30&segment=es",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["segment"] == "es"
+
+
+@pytest.mark.asyncio
+async def test_admin_reports_metrics(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/metrics/reports?range_days=30",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "total_reports" in data
+    assert "by_reason" in data
+    assert "most_reported" in data
+
+
+@pytest.mark.asyncio
+async def test_admin_deploy_info(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/ops/deploy-info",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "alembic_head" in data
+    assert "python_version" in data

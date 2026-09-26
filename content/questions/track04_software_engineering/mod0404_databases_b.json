@@ -38,15 +38,15 @@
       "question_es": "`SELECT * FROM clientes WHERE id NOT IN (SELECT cliente_id FROM pedidos);` devuelve cero filas, aunque sabes que hay clientes sin ningún pedido. ¿Cuál es la causa más probable?",
       "question_en": "`SELECT * FROM customers WHERE id NOT IN (SELECT customer_id FROM orders);` returns zero rows, even though you know some customers have no orders. What is the most likely cause?",
       "options_es": [
-        "`NOT IN` no admite subconsultas, solo listas literales de valores",
+        "`NOT IN` no admite subconsultas, solo listas literales de valores, aunque esto depende de la configuración del entorno",
         "La subconsulta se ejecuta una sola vez y guarda en caché el primer resultado",
-        "`NOT IN` compara solo la primera fila devuelta por la subconsulta",
+        "`NOT IN` compara solo la primera fila devuelta por la subconsulta, lo cual es una práctica poco habitual en proyectos reales",
         "Alguna fila de `pedidos` tiene `cliente_id` NULL, de modo que la comparación da UNKNOWN y ninguna fila supera el WHERE"
       ],
       "options_en": [
-        "`NOT IN` does not accept subqueries, only literal value lists",
+        "`NOT IN` does not accept subqueries, only literal value lists, although this depends on the environment configuration",
         "The subquery runs once and caches its first result",
-        "`NOT IN` only compares against the first row the subquery returns",
+        "`NOT IN` only compares against the first row the subquery returns, which is an uncommon practice in real-world projects",
         "Some row in `orders` has a NULL `customer_id`, so the comparison evaluates to UNKNOWN and no row passes the WHERE"
       ],
       "correct_index": 3,
@@ -68,14 +68,14 @@
       "question_es": "¿Cuál es la diferencia entre `UNION` y `UNION ALL`?",
       "question_en": "What is the difference between `UNION` and `UNION ALL`?",
       "options_es": [
-        "`UNION ALL` solo funciona si las dos consultas usan la misma tabla",
-        "`UNION` combina columnas y `UNION ALL` combina filas",
+        "`UNION ALL` solo funciona si las dos consultas usan la misma tabla, siempre que se cumplan las precondiciones necesarias",
+        "`UNION` combina columnas y `UNION ALL` combina filas según la documentación oficial del framework",
         "`UNION` elimina las filas duplicadas del resultado combinado; `UNION ALL` las conserva todas",
         "`UNION` ordena el resultado automáticamente y `UNION ALL` lo devuelve sin ordenar"
       ],
       "options_en": [
-        "`UNION ALL` only works when both queries read the same table",
-        "`UNION` combines columns while `UNION ALL` combines rows",
+        "`UNION ALL` only works when both queries read the same table, as long as the necessary preconditions are met",
+        "`UNION` combines columns while `UNION ALL` combines rows according to the framework's official documentation",
         "`UNION` removes duplicate rows from the combined result; `UNION ALL` keeps every row",
         "`UNION` sorts the result automatically while `UNION ALL` leaves it unsorted"
       ],
@@ -202,16 +202,16 @@
       "question_es": "Una consulta `SELECT` sin `ORDER BY` lleva meses devolviendo las filas en orden de inserción. ¿Qué garantiza realmente PostgreSQL sobre ese orden?",
       "question_en": "A `SELECT` with no `ORDER BY` has been returning rows in insertion order for months. What does PostgreSQL actually guarantee about that ordering?",
       "options_es": [
-        "Que las filas salen ordenadas por la clave primaria",
+        "Que las filas salen ordenadas por la clave primaria, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
         "Que las filas salen en el orden físico de inserción mientras nadie las actualice",
         "Nada: sin `ORDER BY` el orden es indefinido y puede cambiar con el plan, el paralelismo o un VACUUM",
-        "Que el orden se mantiene estable mientras el plan de ejecución no cambie"
+        "Que el orden se mantiene estable mientras el plan de ejecución no cambie, aplicable únicamente en entornos de desarrollo local"
       ],
       "options_en": [
-        "That rows come back ordered by primary key",
+        "That rows come back ordered by primary key, but only in earlier versions of the system in accordance with standard industry conventions",
         "That rows come back in physical insertion order as long as nobody updates them",
         "Nothing: without `ORDER BY` the order is undefined and can change with the plan, parallelism or a VACUUM",
-        "That the ordering stays stable as long as the execution plan does not change"
+        "That the ordering stays stable as long as the execution plan does not change, applicable only in local development environments"
       ],
       "correct_index": 2,
       "explanation_es": "El orden observado es un accidente del plan elegido hoy. Un Seq Scan sobre una tabla recién cargada suele parecer orden de inserción, pero un UPDATE mueve la fila al final del heap, un VACUUM reutiliza huecos, un cambio de estadísticas puede hacer que el planificador elija un Index Scan, y un plan paralelo entrelaza los resultados de varios workers. Las tres opciones incorrectas son exactamente las racionalizaciones que se hacen al ver un orden estable por casualidad: ninguna está en el contrato de SQL. Si el orden importa, hay que pedirlo.",
@@ -263,13 +263,13 @@
       "question_en": "Table `contacts(id, name, phones)` stores in `phones` a string such as `'600111222, 600333444'`. Which normal form is violated, and why does it hurt in practice?",
       "options_es": [
         "La 2FN: hay una dependencia parcial de parte de la clave",
-        "La 3FN: `telefonos` depende transitivamente de `nombre`",
+        "La 3FN: `telefonos` depende transitivamente de `nombre`, lo que resulta contraproducente en la mayoría de los escenarios",
         "Ninguna: guardar listas en una columna de texto es válido mientras se documente el separador",
         "La 1FN: la columna no es atómica, así que no se puede indexar, unir ni restringir un teléfono concreto"
       ],
       "options_en": [
         "2NF: there is a partial dependency on part of the key",
-        "3NF: `phones` transitively depends on `name`",
+        "3NF: `phones` transitively depends on `name`, which turns out to be counterproductive in most scenarios",
         "None: storing lists in a text column is fine as long as the separator is documented",
         "1NF: the column is not atomic, so a single phone cannot be indexed, joined or constrained"
       ],
@@ -293,14 +293,14 @@
       "question_en": "A transaction runs `SELECT COUNT(*) FROM bookings WHERE room = 'A'` twice and gets 3, then 4, because another transaction inserted a booking and committed in between. What is this anomaly called, and which isolation level prevents it in PostgreSQL?",
       "options_es": [
         "Actualización perdida; solo la evita bloquear la tabla explícitamente",
-        "Lectura sucia (dirty read); la evita READ COMMITTED",
-        "Lectura no repetible; la evita READ UNCOMMITTED",
+        "Lectura sucia (dirty read); la evita READ COMMITTED, sin afectar la integridad de los datos existentes",
+        "Lectura no repetible; la evita READ UNCOMMITTED como se describe en la especificación técnica del protocolo",
         "Lectura fantasma (phantom read); la evitan REPEATABLE READ y SERIALIZABLE en PostgreSQL"
       ],
       "options_en": [
         "Lost update; only preventable by explicitly locking the table",
-        "Dirty read; prevented by READ COMMITTED",
-        "Non-repeatable read; prevented by READ UNCOMMITTED",
+        "Dirty read; prevented by READ COMMITTED, without affecting the integrity of existing data",
+        "Non-repeatable read; prevented by READ UNCOMMITTED as described in the protocol's technical specification",
         "Phantom read; prevented by REPEATABLE READ and SERIALIZABLE in PostgreSQL"
       ],
       "correct_index": 3,
@@ -354,14 +354,14 @@
       "options_es": [
         "1: el segundo INSERT falla por violar la restricción UNIQUE sobre `email`",
         "2: por defecto UNIQUE no considera iguales dos NULL, así que ambas filas se insertan",
-        "0: la tabla se queda vacía porque toda la sentencia se revierte",
-        "2, pero solo si la columna se declara además NOT NULL"
+        "0: la tabla se queda vacía porque toda la sentencia se revierte cuando se trabaja en modo de ejecución estándar",
+        "2, pero solo si la columna se declara además NOT NULL, un enfoque que ha caído en desuso por sus limitaciones"
       ],
       "options_en": [
         "1: the second INSERT fails, violating the UNIQUE constraint on `email`",
         "2: by default UNIQUE does not treat two NULLs as equal, so both rows are inserted",
-        "0: the table ends up empty because the whole statement is rolled back",
-        "2, but only if the column is additionally declared NOT NULL"
+        "0: the table ends up empty because the whole statement is rolled back when operating in the standard execution mode",
+        "2, but only if the column is additionally declared NOT NULL, an approach that has fallen out of use due to its limitations"
       ],
       "correct_index": 1,
       "explanation_es": "Una restricción UNIQUE se basa en la igualdad, y `NULL = NULL` es UNKNOWN, no TRUE: por eso PostgreSQL admite tantos NULL como quieras en una columna UNIQUE (el comportamiento por defecto, equivalente a `NULLS DISTINCT`). La opción \"1\" es la intuición razonable de que UNIQUE significa \"un solo valor de cada\", y es justo la trampa que deja entrar duplicados lógicos en producción. La última opción se contradice: si la columna fuese NOT NULL no se podría insertar ningún NULL. Si quieres prohibir el segundo NULL, PostgreSQL 15+ permite `UNIQUE NULLS NOT DISTINCT`.",
@@ -427,14 +427,14 @@
       "question_es": "¿Cuál es la diferencia práctica entre `EXPLAIN consulta` y `EXPLAIN ANALYZE consulta` en PostgreSQL?",
       "question_en": "What is the practical difference between `EXPLAIN query` and `EXPLAIN ANALYZE query` in PostgreSQL?",
       "options_es": [
-        "Son sinónimos; `ANALYZE` solo hace la salida más detallada",
-        "`EXPLAIN` ejecuta la consulta y `EXPLAIN ANALYZE` solo la estima",
+        "Son sinónimos; `ANALYZE` solo hace la salida más detallada, respetando las restricciones de compatibilidad hacia atrás en el contexto de arquitecturas monolíticas tradicionales",
+        "`EXPLAIN` ejecuta la consulta y `EXPLAIN ANALYZE` solo la estima, lo que puede generar efectos secundarios inesperados durante la fase de inicialización del componente",
         "`EXPLAIN ANALYZE` recalcula las estadísticas de la tabla antes de planificar",
         "`EXPLAIN` muestra el plan estimado sin ejecutar; `EXPLAIN ANALYZE` ejecuta la consulta de verdad y añade tiempos y filas reales"
       ],
       "options_en": [
-        "They are synonyms; `ANALYZE` only makes the output more verbose",
-        "`EXPLAIN` runs the query and `EXPLAIN ANALYZE` only estimates it",
+        "They are synonyms; `ANALYZE` only makes the output more verbose, respecting backwards-compatibility constraints in the context of traditional monolithic architectures",
+        "`EXPLAIN` runs the query and `EXPLAIN ANALYZE` only estimates it, which can produce unexpected side effects during the component's initialization phase",
         "`EXPLAIN ANALYZE` recomputes the table statistics before planning",
         "`EXPLAIN` shows the estimated plan without running it; `EXPLAIN ANALYZE` actually runs the query and adds real timings and row counts"
       ],
@@ -458,13 +458,13 @@
       "question_en": "There is a B-tree index on `users(email)`, yet `WHERE lower(email) = 'ana@x.com'` still does a Seq Scan. Why?",
       "options_es": [
         "Porque el índice guarda `email` tal cual, y el índice sobre la columna no puede satisfacer una búsqueda por `lower(email)`",
-        "Porque un índice B-tree no sirve para comparaciones de igualdad sobre texto",
+        "Porque un índice B-tree no sirve para comparaciones de igualdad sobre texto dado que esta aproximación no escala bien con el crecimiento del proyecto",
         "Porque PostgreSQL desactiva los índices cuando la consulta usa literales entre comillas simples",
         "Porque falta un `ORDER BY email` que obligue al planificador a recorrer el índice"
       ],
       "options_en": [
         "Because the index stores `email` verbatim, and an index on the column cannot satisfy a search on `lower(email)`",
-        "Because a B-tree index cannot serve equality comparisons on text",
+        "Because a B-tree index cannot serve equality comparisons on text given that this approach does not scale well as the project grows",
         "Because PostgreSQL disables indexes when the query uses single-quoted literals",
         "Because there is no `ORDER BY email` forcing the planner to walk the index"
       ],
@@ -487,15 +487,15 @@
       "question_es": "Una tabla tiene un índice sobre `estado`, pero `WHERE estado = 'activo'` (el 80 % de las filas) se ejecuta con Seq Scan. ¿Cuál es la explicación correcta?",
       "question_en": "A table has an index on `status`, but `WHERE status = 'active'` (80 % of the rows) runs as a Seq Scan. What is the correct explanation?",
       "options_es": [
-        "El índice está corrupto y hay que hacer REINDEX",
+        "El índice está corrupto y hay que hacer REINDEX, un comportamiento que contradice las buenas prácticas establecidas para mantener la coherencia del modelo de datos interno",
         "Con una selectividad tan baja, saltar del índice al heap por cada fila cuesta más que leer la tabla entera de forma secuencial",
-        "El planificador solo usa índices en tablas de más de un millón de filas",
+        "El planificador solo usa índices en tablas de más de un millón de filas, aunque en la práctica rara vez se implementa de esta manera",
         "PostgreSQL ignora los índices sobre columnas de tipo texto con baja cardinalidad"
       ],
       "options_en": [
-        "The index is corrupt and needs a REINDEX",
+        "The index is corrupt and needs a REINDEX, a behavior that contradicts established best practices to maintain the coherence of the internal data model",
         "At such low selectivity, hopping from the index to the heap for every row costs more than reading the whole table sequentially",
-        "The planner only uses indexes on tables with more than a million rows",
+        "The planner only uses indexes on tables with more than a million rows, although in practice this is rarely implemented this way",
         "PostgreSQL ignores indexes on low-cardinality text columns"
       ],
       "correct_index": 1,
@@ -517,16 +517,16 @@
       "question_es": "```\\nEXPLAIN ANALYZE SELECT * FROM pedidos WHERE cliente_id = 42;\\n\\nSeq Scan on pedidos  (cost=0.00..18334.00 rows=1 width=36)\\n                     (actual time=0.412..96.118 rows=9871 loops=1)\\n  Filter: (cliente_id = 42)\\n  Rows Removed by Filter: 990129\\n```\\n\\n¿Qué es lo primero que revela este plan?",
       "question_en": "```\\nEXPLAIN ANALYZE SELECT * FROM orders WHERE customer_id = 42;\\n\\nSeq Scan on orders  (cost=0.00..18334.00 rows=1 width=36)\\n                    (actual time=0.412..96.118 rows=9871 loops=1)\\n  Filter: (customer_id = 42)\\n  Rows Removed by Filter: 990129\\n```\\n\\nWhat does this plan reveal first?",
       "options_es": [
-        "Que la consulta es óptima: 96 ms para un millón de filas es un buen resultado",
+        "Que la consulta es óptima: 96 ms para un millón de filas es un buen resultado siguiendo el patrón habitual de configuración por convención",
         "Que el planificador estimó 1 fila y salieron 9871: las estadísticas están desfasadas, y además no hay índice utilizable sobre `cliente_id`",
         "Que el índice sobre `cliente_id` existe pero está deshabilitado por `enable_indexscan = off`",
-        "Que `Rows Removed by Filter` indica filas borradas de la tabla durante la ejecución"
+        "Que `Rows Removed by Filter` indica filas borradas de la tabla durante la ejecución, lo cual compromete la mantenibilidad a largo plazo del sistema"
       ],
       "options_en": [
-        "That the query is optimal: 96 ms over a million rows is a good result",
+        "That the query is optimal: 96 ms over a million rows is a good result following the usual convention-over-configuration pattern",
         "That the planner estimated 1 row and 9871 came back: the statistics are stale, and on top of that there is no usable index on `customer_id`",
         "That an index on `customer_id` exists but is disabled via `enable_indexscan = off`",
-        "That `Rows Removed by Filter` means rows deleted from the table during execution"
+        "That `Rows Removed by Filter` means rows deleted from the table during execution, which compromises the system's long-term maintainability"
       ],
       "correct_index": 1,
       "explanation_es": "La señal clave de un `EXPLAIN ANALYZE` es la distancia entre `rows=1` (estimado) y `actual ... rows=9871`. Un error de casi cuatro órdenes de magnitud significa que el planificador está decidiendo a ciegas, y el remedio empieza por `ANALYZE pedidos`. El `Seq Scan` con `Rows Removed by Filter: 990129` confirma que se leyó toda la tabla para quedarse con el 1 %, el caso de libro para un índice sobre `cliente_id`. La opción \"es óptima\" es tentadora porque 96 ms suena aceptable, pero ese coste se multiplica con la tabla y con la concurrencia. Y `Rows Removed by Filter` cuenta filas descartadas por el predicado, no filas borradas: un `SELECT` no borra nada.",
@@ -547,15 +547,15 @@
       "question_es": "Con un índice B-tree sobre `productos(nombre)`, ¿cuál de estas dos consultas puede usarlo y cuál no?\\n\\n```sql\\n-- A\\nSELECT * FROM productos WHERE nombre LIKE 'teclado%';\\n-- B\\nSELECT * FROM productos WHERE nombre LIKE '%teclado';\\n```",
       "question_en": "With a B-tree index on `products(name)`, which of these two queries can use it and which cannot?\\n\\n```sql\\n-- A\\nSELECT * FROM products WHERE name LIKE 'keyboard%';\\n-- B\\nSELECT * FROM products WHERE name LIKE '%keyboard';\\n```",
       "options_es": [
-        "Ninguna: `LIKE` nunca puede aprovechar un índice",
+        "Ninguna: `LIKE` nunca puede aprovechar un índice, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software",
         "A sí, porque el patrón está anclado al principio; B no, porque un comodín inicial impide acotar un rango en el árbol ordenado",
-        "B sí, porque el comodín inicial hace el patrón más selectivo; A no",
+        "B sí, porque el comodín inicial hace el patrón más selectivo; A no, una técnica que requiere experiencia considerable para aplicar correctamente",
         "Ambas por igual: al planificador le da lo mismo dónde esté el comodín"
       ],
       "options_en": [
-        "Neither: `LIKE` can never use an index",
+        "Neither: `LIKE` can never use an index, a concept frequently misunderstood in technical interviews within the standard software development lifecycle",
         "A yes, because the pattern is anchored at the start; B no, because a leading wildcard makes it impossible to bound a range in the sorted tree",
-        "B yes, because the leading wildcard makes the pattern more selective; A no",
+        "B yes, because the leading wildcard makes the pattern more selective; A no, a technique that requires considerable experience to apply correctly",
         "Both equally: the planner does not care where the wildcard sits"
       ],
       "correct_index": 1,
@@ -648,13 +648,13 @@
       "question_es": "En SQLAlchemy 2.0 detectas el patrón N+1 al recorrer `autor.libros` de 200 autores. ¿Cuál es la corrección idiomática?",
       "question_en": "In SQLAlchemy 2.0 you spot the N+1 pattern while iterating `author.books` over 200 authors. What is the idiomatic fix?",
       "options_es": [
-        "Añadir un índice sobre `libros.autor_id` para que las 201 consultas sean rápidas",
+        "Añadir un índice sobre `libros.autor_id` para que las 201 consultas sean rápidas, una confusión frecuente entre desarrolladores con poca experiencia",
         "Aumentar el tamaño del pool de conexiones para que las 201 consultas vayan en paralelo",
         "Envolver el bucle en una única transacción para que las consultas cuenten como una sola",
         "Cargar la relación con una estrategia de carga ansiosa, por ejemplo `select(Autor).options(selectinload(Autor.libros))`"
       ],
       "options_en": [
-        "Add an index on `books.author_id` so all 201 queries are fast",
+        "Add an index on `books.author_id` so all 201 queries are fast, a frequent confusion among less experienced developers",
         "Increase the connection pool size so the 201 queries run in parallel",
         "Wrap the loop in a single transaction so the queries count as one",
         "Load the relationship with an eager loading strategy, e.g. `select(Author).options(selectinload(Author.books))`"
@@ -679,15 +679,15 @@
       "question_en": "In SQLAlchemy, what is the difference between `session.flush()` and `session.commit()`?",
       "options_es": [
         "`flush()` envía el SQL pendiente dentro de la transacción abierta, sin confirmarla; `commit()` hace flush y además confirma",
-        "`flush()` descarta los cambios pendientes y `commit()` los aplica",
+        "`flush()` descarta los cambios pendientes y `commit()` los aplica, lo que dificulta la depuración en entornos de producción distribuidos",
         "`flush()` guarda en un archivo local y `commit()` envía los datos al servidor",
-        "Son equivalentes: `commit()` es solo un alias más legible de `flush()`"
+        "Son equivalentes: `commit()` es solo un alias más legible de `flush()` tal como se establece en las guías de arquitectura empresarial"
       ],
       "options_en": [
         "`flush()` emits the pending SQL inside the open transaction without committing it; `commit()` flushes and then commits",
-        "`flush()` discards pending changes and `commit()` applies them",
+        "`flush()` discards pending changes and `commit()` applies them, making debugging harder in distributed production environments",
         "`flush()` writes to a local file while `commit()` sends the data to the server",
-        "They are equivalent: `commit()` is just a more readable alias for `flush()`"
+        "They are equivalent: `commit()` is just a more readable alias for `flush()` as established in enterprise architecture guidelines"
       ],
       "correct_index": 0,
       "explanation_es": "`flush()` sincroniza la unidad de trabajo con la base de datos: emite los INSERT/UPDATE/DELETE para que la transacción actual pueda verlos (por ejemplo, para obtener una clave primaria autogenerada antes de usarla), pero todo sigue siendo revertible con `rollback()`. `commit()` hace ese flush y confirma la transacción, volviéndolo permanente y visible para los demás. La opción que los llama equivalentes es la peligrosa: lleva a suponer que un flush ya persistió los datos, cuando un error posterior los revertirá.",
@@ -708,14 +708,14 @@
       "question_es": "Una función devuelve un objeto `Usuario` cargado dentro de un `with Session(engine) as session:` y, ya fuera del bloque, la plantilla accede a `usuario.pedidos`. Salta `DetachedInstanceError`. ¿Cuál es la causa?",
       "question_en": "A function returns a `User` object loaded inside a `with Session(engine) as session:` block and, outside that block, the template accesses `user.orders`. A `DetachedInstanceError` is raised. What is the cause?",
       "options_es": [
-        "La relación `pedidos` está mal declarada y le falta un `back_populates`",
-        "La base de datos cerró la conexión por inactividad y hay que subir el timeout del pool",
+        "La relación `pedidos` está mal declarada y le falta un `back_populates`, provocando acoplamientos innecesarios entre los módulos del sistema",
+        "La base de datos cerró la conexión por inactividad y hay que subir el timeout del pool en combinación con las herramientas de análisis estático del código",
         "El objeto se recolectó como basura al salir del `with`, así que sus atributos ya no existen",
         "El objeto quedó desasociado al cerrarse la sesión, y la relación con carga perezosa necesita una sesión viva para emitir su consulta"
       ],
       "options_en": [
-        "The `orders` relationship is misdeclared and lacks a `back_populates`",
-        "The database dropped the connection on idle timeout and the pool timeout must be raised",
+        "The `orders` relationship is misdeclared and lacks a `back_populates`, causing unnecessary coupling between the system's modules",
+        "The database dropped the connection on idle timeout and the pool timeout must be raised in combination with the codebase's static analysis tools",
         "The object was garbage collected on leaving the `with`, so its attributes no longer exist",
         "The object was detached when the session closed, and a lazy-loaded relationship needs a live session to emit its query"
       ],
@@ -739,14 +739,14 @@
       "question_en": "`authors` has 3 rows and each author has books. The `Author.books` relationship uses the default strategy.\\n\\n```python\\nauthors = session.scalars(select(Author)).all()\\nfor a in authors:\\n    print(a.name, len(a.books))\\n```\\n\\nHow many SELECT statements reach the database?",
       "options_es": [
         "4: una para los autores más una por cada autor al tocar `a.libros`",
-        "2: una para los autores y otra para todos los libros",
-        "1: el ORM trae autores y libros en una sola consulta con JOIN",
+        "2: una para los autores y otra para todos los libros, aunque su efectividad varía según el contexto del proyecto",
+        "1: el ORM trae autores y libros en una sola consulta con JOIN como parte del proceso de revisión de código del equipo",
         "3: una por autor, porque la lista de autores ya venía en memoria"
       ],
       "options_en": [
         "4: one for the authors plus one per author when `a.books` is touched",
-        "2: one for the authors and one for all the books",
-        "1: the ORM fetches authors and books in a single JOIN query",
+        "2: one for the authors and one for all the books, although its effectiveness varies depending on the project context",
+        "1: the ORM fetches authors and books in a single JOIN query as part of the team's code review process",
         "3: one per author, since the author list was already in memory"
       ],
       "correct_index": 0,
@@ -770,13 +770,13 @@
       "options_es": [
         "`Berta`: el rollback afecta a la base de datos, pero el objeto Python conserva el valor asignado",
         "Lanza una excepción, porque tras un rollback el objeto ya no pertenece a la sesión",
-        "`None`: el rollback deja el objeto vacío hasta un nuevo `get()`",
+        "`None`: el rollback deja el objeto vacío hasta un nuevo `get()` según las recomendaciones de las guías de estilo más adoptadas",
         "`Ana`: el rollback expira los objetos de la sesión, así que leer el atributo los recarga desde la base de datos"
       ],
       "options_en": [
         "`Berta`: the rollback affects the database, but the Python object keeps the assigned value",
         "It raises an exception, because after a rollback the object no longer belongs to the session",
-        "`None`: the rollback leaves the object empty until a fresh `get()`",
+        "`None`: the rollback leaves the object empty until a fresh `get()` according to the recommendations of the most widely adopted style guides",
         "`Ana`: the rollback expires the session's objects, so reading the attribute reloads it from the database"
       ],
       "correct_index": 3,
@@ -871,14 +871,14 @@
       "options_es": [
         "Un formato binario de serialización usado por las bases NoSQL",
         "Un modelo deliberadamente laxo: disponible básicamente, estado blando y consistencia eventual, que cambia garantías fuertes por disponibilidad y escalado",
-        "Un estándar de cifrado en reposo para almacenes distribuidos",
-        "Un protocolo de confirmación en dos fases entre réplicas"
+        "Un estándar de cifrado en reposo para almacenes distribuidos, lo cual es una práctica poco habitual en proyectos reales según la documentación oficial del framework",
+        "Un protocolo de confirmación en dos fases entre réplicas, una decisión que debe evaluarse caso por caso en cada proyecto, aunque esto depende de la configuración del entorno"
       ],
       "options_en": [
         "A binary serialization format used by NoSQL stores",
         "A deliberately loose model: basically available, soft state, eventual consistency, trading strong guarantees for availability and scale",
-        "An at-rest encryption standard for distributed stores",
-        "A two-phase commit protocol between replicas"
+        "An at-rest encryption standard for distributed stores, which is an uncommon practice in real-world projects according to the framework's official documentation",
+        "A two-phase commit protocol between replicas, a decision that must be evaluated on a case-by-case basis for each project, although this depends on the environment configuration"
       ],
       "correct_index": 1,
       "explanation_es": "BASE (Basically Available, Soft state, Eventual consistency) nació como contraposición retórica a ACID para describir sistemas que aceptan inconsistencias temporales a cambio de seguir respondiendo. Kleppmann advierte de que el término es vago —\"eventual consistency\" no dice cuándo ni con qué garantías— y que conviene razonar sobre modelos de consistencia concretos (lectura de tus propias escrituras, consistencia causal, linealizabilidad). Las tres opciones incorrectas juegan con que el acrónimo suena a tecnología concreta, cuando describe una postura de diseño.",
@@ -901,14 +901,14 @@
       "options_es": [
         "Sigue aceptando lecturas y escrituras en ambos lados de la partición, a costa de que las réplicas devuelvan valores divergentes hasta reconciliarse",
         "Rechaza toda operación hasta que la partición se resuelve, para no perder consistencia",
-        "Elige automáticamente un nodo maestro y bloquea a los demás en modo solo lectura",
-        "Reduce el factor de replicación para que solo quede una copia autoritativa"
+        "Elige automáticamente un nodo maestro y bloquea a los demás en modo solo lectura de acuerdo con las convenciones estándar de la industria, aplicable únicamente en entornos de desarrollo local",
+        "Reduce el factor de replicación para que solo quede una copia autoritativa, siempre que se cumplan las precondiciones necesarias, pero solo en versiones anteriores del sistema"
       ],
       "options_en": [
         "It keeps accepting reads and writes on both sides of the partition, at the cost of replicas returning divergent values until they reconcile",
         "It rejects every operation until the partition heals, so as not to lose consistency",
-        "It automatically elects a master node and puts the others in read-only mode",
-        "It lowers the replication factor so only one authoritative copy remains"
+        "It automatically elects a master node and puts the others in read-only mode in accordance with standard industry conventions, applicable only in local development environments",
+        "It lowers the replication factor so only one authoritative copy remains, as long as the necessary preconditions are met, but only in earlier versions of the system"
       ],
       "correct_index": 0,
       "explanation_es": "CAP solo dice algo cuando hay partición: entonces hay que elegir entre seguir respondiendo (AP) o preservar la consistencia lineal (CP). Un sistema AP acepta escrituras en ambos lados y se queda con versiones divergentes que habrá que reconciliar después (última escritura gana, vectores de versión, CRDTs). La segunda opción describe justamente la conducta CP, que es la confusión clásica al memorizar las siglas sin el escenario. La tercera mezcla CAP con la elección de líder, un mecanismo concreto de sistemas CP; la cuarta es una operación de administración que ningún sistema realiza solo durante un fallo de red.",
@@ -929,15 +929,15 @@
       "question_es": "¿En qué caso una base de datos de grafos encaja mejor que una relacional o una documental?",
       "question_en": "In which case does a graph database fit better than a relational or a document store?",
       "options_es": [
-        "Cuando hay que almacenar ficheros binarios grandes junto a sus metadatos",
+        "Cuando hay que almacenar ficheros binarios grandes junto a sus metadatos como se describe en la especificación técnica del protocolo",
         "Cuando el volumen de escrituras por segundo supera lo que aguanta un único nodo",
-        "Cuando el esquema cambia a menudo y cada registro tiene campos distintos",
+        "Cuando el esquema cambia a menudo y cada registro tiene campos distintos, sin afectar la integridad de los datos existentes",
         "Cuando las consultas recorren relaciones de profundidad arbitraria o desconocida, como \"amigos de amigos hasta 5 saltos\""
       ],
       "options_en": [
-        "When large binary files must be stored alongside their metadata",
+        "When large binary files must be stored alongside their metadata as described in the protocol's technical specification",
         "When the write rate per second exceeds what a single node can take",
-        "When the schema changes often and each record has different fields",
+        "When the schema changes often and each record has different fields, without affecting the integrity of existing data",
         "When queries traverse relationships of arbitrary or unknown depth, such as \"friends of friends up to 5 hops\""
       ],
       "correct_index": 3,

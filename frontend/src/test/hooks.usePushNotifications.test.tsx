@@ -13,8 +13,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 
-const TOKEN_KEY = 'whetzy_access_token';
-
 // jsdom doesn't implement `atob`, so the hook's tests stub it in. This decodes
 // base64 to a binary string the same way the browser global does — written in
 // plain JS (no Node's `Buffer`) since this is standing in for a browser API,
@@ -98,10 +96,6 @@ function install({
 }
 
 describe('usePushNotifications', () => {
-  beforeEach(() => {
-    localStorage.setItem(TOKEN_KEY, 'tok123');
-  });
-
   afterEach(() => {
     vi.unstubAllGlobals();
     localStorage.clear();
@@ -148,18 +142,6 @@ describe('usePushNotifications', () => {
       });
       expect(ok).toBe(false);
       expect(h.fetchMock).not.toHaveBeenCalled();
-    });
-
-    it('refuses for a signed-out user without prompting', async () => {
-      localStorage.clear();
-      const h = install({ permission: 'default' });
-      const { result } = renderHook(() => usePushNotifications());
-      let ok = true;
-      await act(async () => {
-        ok = await result.current.subscribe();
-      });
-      expect(ok).toBe(false);
-      expect(h.requestPermission).not.toHaveBeenCalled();
     });
 
     it('gives up when the VAPID key cannot be fetched, before prompting', async () => {
@@ -214,7 +196,7 @@ describe('usePushNotifications', () => {
       );
       expect(post).toBeTruthy();
       const init = post![1] as RequestInit;
-      expect((init.headers as Record<string, string>).Authorization).toBe('Bearer tok123');
+      expect(init.credentials).toBe('include');
       expect(JSON.parse(init.body as string)).toEqual({
         endpoint: 'https://push.test/abc',
         keys: { p256dh: 'p', auth: 'a' },
@@ -267,16 +249,6 @@ describe('usePushNotifications', () => {
         ([, init]) => (init as RequestInit | undefined)?.method === 'DELETE',
       );
       expect(del).toBeFalsy();
-    });
-
-    it('is a no-op for a signed-out user', async () => {
-      localStorage.clear();
-      const h = install({ permission: 'granted', existingSub: fakeSubscription() });
-      const { result } = renderHook(() => usePushNotifications());
-      await act(async () => {
-        await result.current.unsubscribe();
-      });
-      expect(h.fetchMock).not.toHaveBeenCalled();
     });
 
     it('swallows a failing server delete without throwing', async () => {

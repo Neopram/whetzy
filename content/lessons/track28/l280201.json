@@ -1,0 +1,12 @@
+{
+  "id": "l280201",
+  "skill_id": "sk280201",
+  "title_es": "Rutas Básicas y Operaciones de Ruta",
+  "title_en": "Basic Routes and Path Operations",
+  "body_es": "Una ruta (path operation) en FastAPI define un endpoint asociando un método HTTP con una función. FastAPI automáticamente valida parámetros de ruta, parámetros de consulta y cuerpos de solicitud usando anotaciones de tipo. Los parámetros de ruta se definen entre llaves en la URL ({user_id}), los parámetros de consulta son valores opcionales después del ?, y el cuerpo contiene datos JSON. FastAPI genera documentación interactiva automáticamente y realiza conversión de tipos basada en las anotaciones.",
+  "body_en": "A route (path operation) in FastAPI defines an endpoint by associating an HTTP method with a function. FastAPI automatically validates path parameters, query parameters, and request bodies using type annotations. Path parameters are defined in curly braces in the URL ({user_id}), query parameters are optional values after ?, and the body contains JSON data. FastAPI automatically generates interactive documentation and performs type conversion based on annotations.",
+  "example_code": "from fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\nclass Item(BaseModel):\n    name: str\n    description: str = None\n    price: float\n\n@app.get(\"/items/{item_id}\")\nasync def get_item(item_id: int, skip: int = 0, limit: int = 10):\n    return {\"item_id\": item_id, \"skip\": skip, \"limit\": limit}\n\n@app.post(\"/items\")\nasync def create_item(item: Item):\n    return {\"name\": item.name, \"price\": item.price}\n\n@app.get(\"/users/{user_id}/items/{item_id}\")\nasync def get_user_item(user_id: int, item_id: int):\n    return {\"user_id\": user_id, \"item_id\": item_id}",
+  "example_output": "GET /items/42?skip=0&limit=10 → {\"item_id\": 42, \"skip\": 0, \"limit\": 10}\nPOST /items → {\"name\": \"Widget\", \"price\": 9.99}\nGET /users/1/items/5 → {\"user_id\": 1, \"item_id\": 5}",
+  "source": "FastAPI Docs — https://fastapi.tiangolo.com",
+  "order": 1
+}

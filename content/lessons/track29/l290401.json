@@ -1,0 +1,12 @@
+{
+  "id": "l290401",
+  "skill_id": "sk290401",
+  "title_es": "Fundamentos de Playwright",
+  "title_en": "Playwright Fundamentals",
+  "body_es": "Playwright es un framework moderno para testing E2E que automatiza navegadores Chromium, Firefox y WebKit desde una única API. Permite grabar acciones del usuario, interactuar con elementos del DOM, esperar condiciones (esperas inteligentes) y capturar pantallas. A diferencia de herramientas antiguas, Playwright es rápido, confiable y detecta automáticamente cuando los elementos están listos. Soporta pruebas en headless mode (sin interfaz gráfica) para CI/CD. Ofrece secciones de trazado y debugging integrado que facilitan la resolución de problemas.",
+  "body_en": "Playwright is a modern framework for E2E testing that automates Chromium, Firefox, and WebKit browsers from a single API. It lets you record user actions, interact with DOM elements, wait for conditions (smart waits), and take screenshots. Unlike legacy tools, Playwright is fast, reliable, and automatically detects when elements are ready. It supports headless testing (no GUI) for CI/CD. It offers built-in trace sections and debugging that simplify troubleshooting.",
+  "example_code": "from playwright.sync_api import sync_playwright\n\ndef test_login_flow():\n    with sync_playwright() as p:\n        browser = p.chromium.launch()\n        page = browser.new_page()\n        \n        # Navigate to login page\n        page.goto('https://example.com/login')\n        \n        # Fill login form\n        page.fill('input[name=\"email\"]', 'user@example.com')\n        page.fill('input[name=\"password\"]', 'password123')\n        page.click('button[type=\"submit\"]')\n        \n        # Wait for navigation and verify\n        page.wait_for_url('**/dashboard')\n        assert page.is_visible('text=Welcome')\n        \n        browser.close()",
+  "example_output": "test_login_flow PASSED (2.3s)\nPage navigated to: https://example.com/dashboard\nWelcome message visible on dashboard",
+  "source": "Playwright Docs — https://playwright.dev",
+  "order": 1
+}

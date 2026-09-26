@@ -1,0 +1,13 @@
+{
+  "id": "les200104",
+  "skill_id": "sk200104",
+  "language": "es",
+  "executable": false,
+  "title_es": "Batch Processing y Orquestación",
+  "title_en": "Batch Processing & Orchestration",
+  "body_es": "El procesamiento batch acumula datos en ventanas de tiempo y los procesa juntos, maximizando eficiencia pero con mayor latencia. Airflow es el orquestador más popular, permitiendo definir DAGs (Directed Acyclic Graphs) donde tasks tienen dependencias claras. Airflow maneja reintentos automáticos, monitoreo, alertas y backfilling, siendo esencial para pipelines empresariales confiables.",
+  "body_en": "Batch processing accumulates data in time windows and processes together, maximizing efficiency but with higher latency. Airflow is most popular orchestrator, allowing DAG definition with clear task dependencies. Airflow handles automatic retries, monitoring, alerts and backfilling, essential for reliable enterprise pipelines.",
+  "example_code": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndag = DAG('batch_pipeline', start_date=datetime(2024,1,1), schedule='@daily')\ntask1 = PythonOperator(task_id='extract', python_callable=extract_data, dag=dag)\ntask2 = PythonOperator(task_id='transform', python_callable=transform, dag=dag)\ntask1 >> task2  # Define dependency",
+  "example_output": "DAG ejecutándose diariamente, extrayendo datos, transformando, y cargando en almacén destino con manejo automático de fallos.",
+  "source": "https://airflow.apache.org/docs/"
+}

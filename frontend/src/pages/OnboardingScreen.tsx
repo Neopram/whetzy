@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '../stores/useAppStore'
-import { auth } from '../services/api'
+import { auth, economy } from '../services/api'
 import '../styles/onboarding.css'
 
 interface SegmentQuestion {
@@ -82,6 +82,13 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
         onboarding_weekly_time: answers[2],
       })
       .catch(() => { /* sin red: el onboarding no debe bloquear la entrada */ })
+    try {
+      const ref = localStorage.getItem('whetzy_ref')
+      if (ref) {
+        void economy.activateReferral(ref)
+          .finally(() => { try { localStorage.removeItem('whetzy_ref') } catch { /* ok */ } })
+      }
+    } catch { /* private mode: no localStorage */ }
     onDone()
     if ((answers[0] ?? 0) >= 1) startPlacement('track01')
   }

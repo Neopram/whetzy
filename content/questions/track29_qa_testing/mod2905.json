@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q290501_001",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal de un runner en un pipeline de CI/CD?",
+      "question_en": "What is the primary purpose of a runner in a CI/CD pipeline?",
+      "options_es": [
+        "Almacenar artefactos de compilación",
+        "Ejecutar trabajos definidos en el archivo de configuración del pipeline",
+        "Gestionar permisos de usuario de forma estándar",
+        "Monitorear la disponibilidad del servidor"
+      ],
+      "options_en": [
+        "Store build artifacts by default",
+        "Execute jobs defined in the pipeline configuration file",
+        "Manage user permissions",
+        "Monitor server availability"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un runner es una máquina que ejecuta los trabajos definidos en el archivo de configuración (como .yml en GitHub Actions). Los artefactos se almacenan después, los permisos se gestionan por separado, y el monitoreo es una función diferente.",
+      "explanation_en": "A runner is a machine that executes jobs defined in the configuration file (like .yml in GitHub Actions). Artifacts are stored afterwards, permissions are managed separately, and monitoring is a different function.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_002",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ventaja proporciona la ejecución paralela de tests en un pipeline de CI?",
+      "question_en": "What advantage does parallel test execution provide in a CI pipeline?",
+      "options_es": [
+        "Simplifica la escritura de tests",
+        "Garantiza que los tests sean más fiables",
+        "Disminuye el consumo de memoria en condiciones normales",
+        "Reduce el tiempo total de ejecución del pipeline"
+      ],
+      "options_en": [
+        "Simplifies test writing",
+        "Guarantees tests are more reliable",
+        "Decreases memory consumption in common practice",
+        "Reduces total pipeline execution time"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La ejecución paralela permite que múltiples tests se ejecuten simultáneamente en diferentes workers o máquinas, reduciendo significativamente el tiempo total. No afecta la fiabilidad, puede aumentar el consumo de memoria, ni simplifica la escritura.",
+      "explanation_en": "Parallel execution allows multiple tests to run simultaneously on different workers or machines, significantly reducing total time. It doesn't affect reliability, may increase memory usage, or simplify writing.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_003",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el orden típico de etapas en un pipeline de CI/CD?",
+      "question_en": "What is the typical order of stages in a CI/CD pipeline?",
+      "options_es": [
+        "Test, Build, Monitor, Deploy",
+        "Build, Test, Deploy, Monitor",
+        "Deploy, Test, Build, Monitor",
+        "Monitor, Build, Test, Deploy"
+      ],
+      "options_en": [
+        "Test, Build, Monitor, Deploy",
+        "Build, Test, Deploy, Monitor",
+        "Deploy, Test, Build, Monitor",
+        "Monitor, Build, Test, Deploy"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El flujo natural es: compilar (build) el código, ejecutar tests, desplegar a producción, y finalmente monitorear. Este orden asegura que solo código válido llega a producción.",
+      "explanation_en": "The natural flow is: build the code, run tests, deploy to production, and finally monitor. This order ensures only valid code reaches production.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_004",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué son los artefactos en un pipeline de CI/CD?",
+      "question_en": "What are artifacts in a CI/CD pipeline?",
+      "options_es": [
+        "Comentarios en el código fuente habitualmente",
+        "Scripts de Python que ejecutan los tests para la mayoría de proyectos de manera estándar",
+        "Ficheros generados durante la construcción que se preservan para etapas posteriores",
+        "Configuraciones de bases de datos"
+      ],
+      "options_en": [
+        "Comments in source code",
+        "Python scripts that run tests as a standard approach according to official documentation",
+        "Files generated during build that are preserved for later stages",
+        "Database configurations as a general rule"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los artefactos son ficheros generados durante la compilación (como ejecutables, archivos JAR, etc.) que se guardan y reutilizan en etapas posteriores del pipeline. Los scripts y configuraciones son diferentes componentes.",
+      "explanation_en": "Artifacts are files generated during build (like executables, JAR files, etc.) that are saved and reused in later pipeline stages. Scripts and configurations are different components.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_005",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un webhook en el contexto de pipelines de CI/CD?",
+      "question_en": "What is a webhook in the context of CI/CD pipelines?",
+      "options_es": [
+        "Un tipo de base de datos como regla general",
+        "Una herramienta para escribir tests en condiciones normales en este contexto para la mayoría de proyectos",
+        "Una notificación automática que desencadena el pipeline cuando ocurre un evento",
+        "Un protocolo de seguridad"
+      ],
+      "options_en": [
+        "A type of database in real environments",
+        "A tool for writing tests as a general rule within this paradigm as a recommended practice",
+        "An automatic notification that triggers the pipeline when an event occurs",
+        "A security protocol"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un webhook es un mecanismo que envía datos a una URL cuando ocurre un evento específico (como un push a Git), disparando automáticamente el pipeline. No es una herramienta de tests ni una base de datos.",
+      "explanation_en": "A webhook is a mechanism that sends data to a URL when a specific event occurs (like a Git push), automatically triggering the pipeline. It's not a testing tool or database.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_006",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un trigger manual y uno automático en CI/CD?",
+      "question_en": "What is the difference between manual and automatic triggers in CI/CD?",
+      "options_es": [
+        "Manual requiere intervención humana; automático se dispara por eventos (push, merge)",
+        "Manual es más rápido que automático por convención como regla general dentro de este paradigma",
+        "Automático solo funciona con GitHub",
+        "Manual es más seguro que automático"
+      ],
+      "options_en": [
+        "Manual requires human intervention; automatic triggers on events (push, merge)",
+        "Manual is faster than automatic in production environments under normal conditions",
+        "Automatic only works with GitHub",
+        "Manual is safer than automatic according to spec"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los triggers manuales necesitan que alguien inicie el pipeline manualmente. Los automáticos se activan por eventos en el repositorio. Ambos pueden ser igual de seguros y velocidad depende de la carga.",
+      "explanation_en": "Manual triggers require someone to start the pipeline manually. Automatic triggers activate on repository events. Both can be equally secure and speed depends on load.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_007",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una matriz (matrix) en la configuración de un pipeline?",
+      "question_en": "What is a matrix in pipeline configuration?",
+      "options_es": [
+        "Un tipo de test de rendimiento en entornos reales",
+        "Una forma de ejecutar el mismo job con diferentes combinaciones de variables",
+        "Una estructura de datos para almacenar resultados según la documentación oficial",
+        "Un archivo de configuración del sistema"
+      ],
+      "options_en": [
+        "A type of performance test typically",
+        "A way to run the same job with different combinations of variables",
+        "A data structure for storing results according to official documentation",
+        "A system configuration file"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una matriz permite ejecutar el mismo job con múltiples combinaciones de variables (como diferentes versiones de Python, OS, etc.), creando múltiples jobs en paralelo automáticamente.",
+      "explanation_en": "A matrix allows running the same job with multiple variable combinations (like different Python versions, OSes, etc.), automatically creating multiple parallel jobs.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_008",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito del caching en un pipeline de CI/CD?",
+      "question_en": "What is the purpose of caching in a CI/CD pipeline?",
+      "options_es": [
+        "Almacenar resultados de tests indefinidamente",
+        "Evitar descargar dependencias repetidamente para acelerar el pipeline",
+        "Cifrar datos sensibles en entornos reales",
+        "Balancear carga entre runners"
+      ],
+      "options_en": [
+        "Store test results indefinitely",
+        "Avoid downloading dependencies repeatedly to speed up the pipeline",
+        "Encrypt sensitive data in this context",
+        "Load balance between runners"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El caching almacena dependencias y archivos que no cambian frecuentemente (como paquetes npm), evitando descargas repetidas y acelerando el pipeline. No cifra datos ni balancea carga.",
+      "explanation_en": "Caching stores infrequently-changing dependencies and files (like npm packages), avoiding repeated downloads and speeding up the pipeline. It doesn't encrypt data or load balance.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_009",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa que una etapa sea \"dependent\" en un pipeline?",
+      "question_en": "What does it mean for a stage to be 'dependent' in a pipeline?",
+      "options_es": [
+        "Que no puede ejecutarse hasta que la etapa anterior se complete exitosamente",
+        "Que requiere permisos especiales para ejecutarse",
+        "Que está hospedada en una máquina diferente en entornos de producción según la documentación oficial",
+        "Que genera artefactos para almacenamiento"
+      ],
+      "options_en": [
+        "It cannot run until the previous stage completes successfully",
+        "It requires special permissions to run",
+        "It is hosted on a different machine in the most common case as a general guideline",
+        "It generates artifacts for storage"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una etapa dependiente tiene una dependencia de otra etapa: debe esperar a que la anterior termine exitosamente antes de empezar. Esto garantiza un flujo ordenado en el pipeline.",
+      "explanation_en": "A dependent stage has a dependency on another stage: it must wait for the previous one to finish successfully before starting. This ensures ordered pipeline flow.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_010",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de los runners auto-hospedados en lugar de usar runners en la nube?",
+      "question_en": "What is the advantage of self-hosted runners over cloud-based runners?",
+      "options_es": [
+        "Menor costo siempre habitualmente",
+        "Configuración más simple",
+        "Más seguridad de datos",
+        "Mayor control sobre el entorno y posibilidad de usar recursos personalizados"
+      ],
+      "options_en": [
+        "Always lower cost by convention",
+        "Simpler configuration",
+        "More data security",
+        "Greater control over the environment and ability to use custom resources"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los runners auto-hospedados permiten control total del ambiente, uso de hardware especializado, y mayor flexibilidad. El costo puede ser mayor, la seguridad depende de la configuración, y la configuración es más compleja.",
+      "explanation_en": "Self-hosted runners provide full environment control, specialized hardware use, and greater flexibility. Cost may be higher, security depends on configuration, and setup is more complex.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_011",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un job en el contexto de un pipeline de CI/CD?",
+      "question_en": "What is a job in the context of a CI/CD pipeline?",
+      "options_es": [
+        "Un archivo que contiene tests",
+        "Una unidad de trabajo que se ejecuta en un runner, compuesta de pasos",
+        "El nombre de la persona que mantiene el pipeline como práctica recomendada",
+        "Una máquina virtual que ejecuta múltiples pipelines"
+      ],
+      "options_en": [
+        "A file that contains tests",
+        "A unit of work that runs on a runner, composed of steps",
+        "The name of the person who maintains the pipeline as a recommended practice",
+        "A virtual machine that runs multiple pipelines"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un job es una unidad de trabajo dentro de un pipeline que se ejecuta en un runner. Se compone de múltiples pasos (steps) que se ejecutan secuencialmente. No es una persona, archivo o máquina.",
+      "explanation_en": "A job is a unit of work within a pipeline that runs on a runner. It consists of multiple steps executed sequentially. It's not a person, file, or machine.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_012",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de las condiciones (if conditions) en un pipeline?",
+      "question_en": "What is the purpose of conditional statements (if conditions) in a pipeline?",
+      "options_es": [
+        "Encriptar secretos como regla general",
+        "Controlar si un step o job debe ejecutarse basándose en ciertas condiciones",
+        "Validar la sintaxis de YAML en el caso más común como regla general dentro de este paradigma",
+        "Almacenar variables temporales"
+      ],
+      "options_en": [
+        "Encrypt secrets in this context",
+        "Control whether a step or job should run based on certain conditions",
+        "Validate YAML syntax in common practice according to official documentation as a standard approach",
+        "Store temporary variables"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las condiciones permiten ejecutar pasos o jobs condicionalmente basándose en evaluaciones lógicas (éxito anterior, rama, variables, etc.). No almacenan variables, no validan YAML ni encriptan.",
+      "explanation_en": "Conditions allow steps or jobs to run conditionally based on logical evaluations (previous success, branch, variables, etc.). They don't store variables, validate YAML, or encrypt.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_013",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una action en GitHub Actions?",
+      "question_en": "What is an action in GitHub Actions?",
+      "options_es": [
+        "Un evento que dispara un workflow",
+        "Un archivo que define los tests de forma estándar",
+        "Una máquina que ejecuta los workflows",
+        "Un componente reutilizable que ejecuta una tarea específica en un workflow"
+      ],
+      "options_en": [
+        "An event that triggers a workflow",
+        "A file that defines tests by convention",
+        "A machine that runs workflows",
+        "A reusable component that performs a specific task in a workflow"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una action es un componente reutilizable (creado por GitHub o la comunidad) que encapsula una tarea específica. Se usa en los steps de un job. No es un evento, máquina o archivo de tests.",
+      "explanation_en": "An action is a reusable component (created by GitHub or the community) that encapsulates a specific task. It's used in job steps. It's not an event, machine, or test file.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_014",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo se considera que un pipeline ha fallado?",
+      "question_en": "When is a pipeline considered to have failed?",
+      "options_es": [
+        "Cuando utiliza más de 2 GB de memoria",
+        "Cuando cualquier job o step tiene un estado de 'failure' y no hay manejo de errores",
+        "Cuando genera artefactos muy grandes en este contexto en condiciones normales para la mayoría de proyectos",
+        "Cuando tarda más de 30 minutos habitualmente"
+      ],
+      "options_en": [
+        "When it uses more than 2 GB of memory",
+        "When any job or step has a 'failure' status and there is no error handling",
+        "When it generates large artifacts according to spec in common practice in this context in production environments",
+        "When it takes more than 30 minutes"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un pipeline falla cuando algún job o step tiene estado 'failure'. Esto puede prevenirse con manejo de errores (continue-on-error). El tiempo, tamaño de artefactos y memoria no definen fallo por sí solos.",
+      "explanation_en": "A pipeline fails when any job or step has 'failure' status. This can be prevented with error handling (continue-on-error). Time, artifact size, and memory don't define failure on their own.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290501_015",
+      "skill_id": "sk290501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'checkout' en el primer paso de un pipeline típico?",
+      "question_en": "What is 'checkout' in the first step of a typical pipeline?",
+      "options_es": [
+        "Crear una copia de seguridad del código",
+        "Validar que el código sea correcto de manera estándar",
+        "Descargar el código fuente del repositorio al runner",
+        "Compilar el código fuente"
+      ],
+      "options_en": [
+        "Create a backup of the code",
+        "Validate that the code is correct in the most common case",
+        "Download the source code from the repository to the runner",
+        "Compile the source code in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El checkout obtiene el código fuente del repositorio y lo descarga en el runner para que puedan ejecutarse los pasos posteriores. No crea copias de seguridad, valida ni compila.",
+      "explanation_en": "Checkout fetches the source code from the repository and downloads it to the runner so subsequent steps can execute. It doesn't create backups, validate, or compile.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_001",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué mide la cobertura de línea (line coverage)?",
+      "question_en": "What does line coverage measure?",
+      "options_es": [
+        "El tiempo que tarda cada línea en ejecutarse",
+        "El número total de líneas en el proyecto",
+        "El porcentaje de líneas de código que han sido ejecutadas por los tests",
+        "La calidad del código escrito según la especificación de forma general en el caso más común"
+      ],
+      "options_en": [
+        "The time each line takes to execute",
+        "The total number of lines in the project",
+        "The percentage of lines of code that have been executed by tests",
+        "The quality of the code written in production environments as a general rule"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La cobertura de línea mide qué porcentaje de líneas de código ejecutables han sido tocadas por los tests. No mide cantidad total, calidad ni tiempo de ejecución.",
+      "explanation_en": "Line coverage measures what percentage of executable lines of code have been touched by tests. It doesn't measure total quantity, quality, or execution time.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_002",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es la cobertura de rama (branch coverage)?",
+      "question_en": "What is branch coverage?",
+      "options_es": [
+        "El número de funciones definidas en el código de manera estándar dentro de este paradigma",
+        "El tamaño del repositorio de código en entornos reales",
+        "La profundidad del árbol de llamadas",
+        "El porcentaje de ramificaciones condicionales (if, else) que han sido ejecutadas"
+      ],
+      "options_en": [
+        "The number of functions defined in the code in production environments as a general guideline",
+        "The size of the code repository",
+        "The depth of the call tree in this context",
+        "The percentage of conditional branches (if, else) that have been executed"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La cobertura de rama mide si todas las ramificaciones posibles (ambas partes de un if/else) han sido ejecutadas en los tests. No cuenta funciones, profundidad ni tamaño.",
+      "explanation_en": "Branch coverage measures if all possible branches (both parts of an if/else) have been executed in tests. It doesn't count functions, depth, or size.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_003",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es la cobertura de camino (path coverage)?",
+      "question_en": "What is path coverage?",
+      "options_es": [
+        "El porcentaje de archivos que contienen tests",
+        "El número de carpetas en el proyecto según la especificación",
+        "La distancia entre funciones en el código en la práctica habitual en la práctica habitual",
+        "El porcentaje de todas las rutas de ejecución posibles que han sido probadas"
+      ],
+      "options_en": [
+        "The percentage of files containing tests",
+        "The number of folders in the project",
+        "The distance between functions in the code as a general guideline in the most common case",
+        "The percentage of all possible execution paths that have been tested"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La cobertura de camino es más exhaustiva que la de rama: verifica que todas las combinaciones posibles de rutas de ejecución hayan sido probadas. No cuenta archivos, distancia ni carpetas.",
+      "explanation_en": "Path coverage is more exhaustive than branch coverage: it verifies that all possible combinations of execution paths have been tested. It doesn't count files, distance, or folders.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_004",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de establecer un umbral (threshold) de cobertura?",
+      "question_en": "What is the purpose of setting a coverage threshold?",
+      "options_es": [
+        "Reducir el tamaño de los artefactos",
+        "Acelerar la ejecución de los tests",
+        "Garantizar un mínimo de cobertura que el código debe alcanzar antes de ser mergeable",
+        "Simplificar la escritura de tests de forma estándar"
+      ],
+      "options_en": [
+        "Reduce artifact size in practice",
+        "Speed up test execution",
+        "Ensure a minimum coverage that code must reach before being mergeable",
+        "Simplify test writing"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un umbral de cobertura establece un requisito mínimo (ej: 80%) que debe cumplirse. Si no se alcanza, el pipeline falla. No acelera ejecución, reduce tamaño ni simplifica tests.",
+      "explanation_en": "A coverage threshold sets a minimum requirement (e.g., 80%) that must be met. If not reached, the pipeline fails. It doesn't speed execution, reduce size, or simplify tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_005",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es pytest-cov?",
+      "question_en": "What is pytest-cov?",
+      "options_es": [
+        "Una base de datos para almacenar resultados",
+        "Una herramienta para compilar código Python según la documentación oficial en entornos de producción",
+        "Un plugin de pytest que mide la cobertura de código durante la ejecución de tests",
+        "Un tipo de test de carga habitualmente"
+      ],
+      "options_en": [
+        "A database for storing results",
+        "A tool for compiling Python code as a standard approach in common practice",
+        "A pytest plugin that measures code coverage during test execution",
+        "A type of load test typically"
+      ],
+      "correct_index": 2,
+      "explanation_es": "pytest-cov es un plugin que se integra con pytest para automáticamente medir y reportar la cobertura de código. No compila, no es un test de carga ni una base de datos.",
+      "explanation_en": "pytest-cov is a plugin that integrates with pytest to automatically measure and report code coverage. It doesn't compile, is not a load test, or a database.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_006",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué información proporciona un reporte de cobertura?",
+      "question_en": "What information does a coverage report provide?",
+      "options_es": [
+        "Los nombres de los autores del código",
+        "El tiempo de ejecución de cada test",
+        "Porcentaje de cobertura global, cobertura por archivo, y líneas no cubiertas",
+        "La edad del repositorio por convención"
+      ],
+      "options_en": [
+        "The names of code authors in this context",
+        "The execution time of each test",
+        "Global coverage percentage, coverage per file, and uncovered lines",
+        "The age of the repository"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un reporte de cobertura muestra el porcentaje total, desglose por archivo, y específicamente qué líneas no fueron ejecutadas, ayudando a identificar áreas de código no probadas.",
+      "explanation_en": "A coverage report shows the total percentage, breakdown by file, and specifically which lines weren't executed, helping identify untested code areas.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_007",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué problema puede tener una cobertura muy alta (cercana al 100%)?",
+      "question_en": "What problem can very high coverage (close to 100%) have?",
+      "options_es": [
+        "Consume demasiada memoria según la especificación para la mayoría de proyectos",
+        "Ralentiza significativamente la ejecución del código",
+        "No garantiza que los tests sean de buena calidad o que detecten errores reales",
+        "Hace que el código sea menos mantenible"
+      ],
+      "options_en": [
+        "It consumes too much memory in real environments as a general guideline",
+        "It significantly slows down code execution",
+        "It doesn't guarantee tests are of good quality or detect real errors",
+        "It makes code less maintainable"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Alta cobertura solo significa que el código fue ejecutado, no que los tests sean efectivos o que verifiquen comportamientos correctos. Puede haber tests triviales sin aserciones reales.",
+      "explanation_en": "High coverage only means code was executed, not that tests are effective or verify correct behavior. There can be trivial tests without real assertions.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_008",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se excluyen líneas específicas de la medición de cobertura?",
+      "question_en": "How are specific lines excluded from coverage measurement?",
+      "options_es": [
+        "Borrando las líneas del código fuente",
+        "Modificando los tests habitualmente",
+        "Usando un archivo .gitignore",
+        "Usando comentarios como # pragma: no cover o configurando omit en .coveragerc"
+      ],
+      "options_en": [
+        "Deleting lines from source code",
+        "Modifying tests typically",
+        "Using a .gitignore file",
+        "Using comments like # pragma: no cover or configuring omit in .coveragerc"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se puede usar # pragma: no cover en líneas específicas o configurar patrones en .coveragerc para excluir archivos/directorios. Borrar código o modificar .gitignore no afecta cobertura.",
+      "explanation_en": "You can use # pragma: no cover on specific lines or configure patterns in .coveragerc to exclude files/directories. Deleting code or modifying .gitignore doesn't affect coverage.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_009",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es .coveragerc?",
+      "question_en": "What is .coveragerc?",
+      "options_es": [
+        "Un tipo de base de datos en entornos reales para la mayoría de proyectos según la documentación oficial",
+        "Un archivo que contiene tests de cobertura",
+        "Una herramienta ejecutable",
+        "Un archivo de configuración que define cómo se calcula y reporta la cobertura"
+      ],
+      "options_en": [
+        "A type of database for most projects as a general guideline",
+        "A file that contains coverage tests",
+        "An executable tool by default",
+        "A configuration file that defines how coverage is calculated and reported"
+      ],
+      "correct_index": 3,
+      "explanation_es": ".coveragerc permite configurar qué archivos incluir/excluir, umbral de cobertura, formato de reportes, etc. No contiene tests, no es ejecutable ni base de datos.",
+      "explanation_en": ".coveragerc allows configuring which files to include/exclude, coverage threshold, report format, etc. It doesn't contain tests, is not executable, or a database.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_010",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre cobertura de código e cobertura de statements?",
+      "question_en": "What is the difference between code coverage and statement coverage?",
+      "options_es": [
+        "Son términos similares; statement coverage es un tipo específico de cobertura de línea",
+        "Cobertura de código mide solo comentarios",
+        "Statement coverage incluye análisis de rendimiento según la documentación oficial en la práctica habitual",
+        "No hay diferencia, son sinónimos exactos según la especificación"
+      ],
+      "options_en": [
+        "They are similar terms; statement coverage is a specific type of line coverage",
+        "Code coverage measures only comments",
+        "Statement coverage includes performance analysis under normal conditions in this context",
+        "There is no difference, they are exact synonyms"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Statement coverage es técnicamente un tipo de cobertura de línea que mide si cada statement fue ejecutado. Cobertura de código es un término más general que puede incluir branch, path, etc.",
+      "explanation_en": "Statement coverage is technically a type of line coverage measuring if each statement was executed. Code coverage is a broader term that can include branch, path, etc.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_011",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un informe de cobertura delta?",
+      "question_en": "What is a delta coverage report?",
+      "options_es": [
+        "Un archivo de configuración de cobertura",
+        "Un reporte que mide solo funciones críticas",
+        "Un tipo de test de rendimiento habitualmente",
+        "Un reporte que muestra los cambios de cobertura entre dos versiones o commits"
+      ],
+      "options_en": [
+        "A coverage configuration file",
+        "A report that measures only critical functions",
+        "A type of performance test by convention",
+        "A report that shows coverage changes between two versions or commits"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un reporte delta compara la cobertura actual con una versión anterior, mostrando qué cambió. Útil para verificar si nuevos cambios redujeron la cobertura. No mide funciones críticas ni es test de rendimiento.",
+      "explanation_en": "A delta report compares current coverage with a previous version, showing what changed. Useful to verify if new changes reduced coverage. It doesn't measure critical functions or performance.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_012",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se integra generalmente un reporte de cobertura en un PR?",
+      "question_en": "How is a coverage report typically integrated in a PR?",
+      "options_es": [
+        "Almacenando solo en una base de datos sin mostrar como regla general dentro de este paradigma",
+        "Insertando el reporte en la descripción del PR manualmente",
+        "Como un comentario automático que muestra el cambio de cobertura respecto a la rama base",
+        "Enviando un email al autor habitualmente"
+      ],
+      "options_en": [
+        "Storing only in a database without displaying for most projects as a recommended practice",
+        "Inserting the report in the PR description manually",
+        "As an automatic comment showing coverage change against the base branch",
+        "Sending an email to the author"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Herramientas como Codecov o Coveralls generan comentarios automáticos mostrando cobertura nueva vs. base branch. Esto proporciona feedback inmediato al revisor. No requiere acciones manuales ni emails.",
+      "explanation_en": "Tools like Codecov or Coveralls generate automatic comments showing new vs. base branch coverage. This provides immediate reviewer feedback. It doesn't require manual actions or emails.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_013",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la métrica de cobertura más común en proyectos de producción?",
+      "question_en": "Which coverage metric is most common in production projects?",
+      "options_es": [
+        "Branch coverage, porque es la más fácil",
+        "Line coverage, por ser equilibrada entre facilidad de medir y utilidad",
+        "Path coverage, porque es la más completa",
+        "Function coverage, porque mide solo funciones dentro de este paradigma"
+      ],
+      "options_en": [
+        "Branch coverage, because it is the easiest",
+        "Line coverage, for being balanced between ease of measurement and utility",
+        "Path coverage, because it is the most complete",
+        "Function coverage, because it measures only functions as a standard approach"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Line coverage es el estándar de la industria porque es fácil de medir y proporciona valor práctico. Path coverage es costosa computacionalmente; function coverage es demasiado superficial.",
+      "explanation_en": "Line coverage is the industry standard because it's easy to measure and provides practical value. Path coverage is computationally expensive; function coverage is too superficial.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_014",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es la cobertura de rama condicional vs. branch coverage?",
+      "question_en": "What is conditional branch coverage vs. branch coverage?",
+      "options_es": [
+        "Condicional mide solo if, branch mide todo",
+        "Son completamente diferentes",
+        "Son términos similares; ambos se refieren a medir las ramificaciones en condiciones",
+        "Branch coverage es obsoleto como regla general"
+      ],
+      "options_en": [
+        "Conditional measures only if, branch measures everything",
+        "They are completely different",
+        "They are similar terms; both refer to measuring branches in conditions",
+        "Branch coverage is obsolete in practice"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Ambos términos son esencialmente sinónimos en cobertura de código. Se refieren a verificar que todas las ramas de ejecución (ambas partes de un if/else) hayan sido probadas.",
+      "explanation_en": "Both terms are essentially synonymous in code coverage. They refer to verifying all execution branches (both parts of if/else) have been tested.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290502_015",
+      "skill_id": "sk290502",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo un reporte de cobertura es \"falso positivo\"?",
+      "question_en": "When is a coverage report a 'false positive'?",
+      "options_es": [
+        "Cuando falla el pipeline de forma estándar en el caso más común en entornos de producción para la mayoría de proyectos",
+        "Cuando no se ejecuta código",
+        "Cuando el código es ejecutado pero no hay validaciones reales en los tests (tests triviales)",
+        "Cuando el reporte es incorrecto"
+      ],
+      "options_en": [
+        "When the pipeline fails in this context for most projects for most projects as a general rule",
+        "When code is not executed",
+        "When code is executed but there are no real validations in tests (trivial tests)",
+        "When the report is incorrect"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un falso positivo ocurre cuando se reporta cobertura alta pero los tests no verifican nada realmente (sin aserciones). El código se ejecuta pero no se valida su corrección.",
+      "explanation_en": "A false positive occurs when high coverage is reported but tests don't actually verify anything (no assertions). Code runs but its correctness isn't validated.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_001",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el ciclo de TDD (Test-Driven Development)?",
+      "question_en": "What is the TDD (Test-Driven Development) cycle?",
+      "options_es": [
+        "Código → Test → Compile → Deploy",
+        "Documentación → Diseño → Código → Test",
+        "Código → Test → Documentación → Revisión",
+        "Rojo (test falla) → Verde (test pasa) → Refactor (mejora código)"
+      ],
+      "options_en": [
+        "Code → Test → Compile → Deploy according to spec",
+        "Documentation → Design → Code → Test",
+        "Code → Test → Documentation → Review",
+        "Red (test fails) → Green (test passes) → Refactor (improve code)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El ciclo Red-Green-Refactor es fundamental en TDD: 1) Escribe un test que falla (rojo), 2) Escribe código mínimo para que pase (verde), 3) Mejora el código sin cambiar su comportamiento (refactor).",
+      "explanation_en": "The Red-Green-Refactor cycle is fundamental to TDD: 1) Write a failing test (red), 2) Write minimal code to pass it (green), 3) Improve code without changing behavior (refactor).",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_002",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la principal ventaja del Test-Driven Development?",
+      "question_en": "What is the main advantage of Test-Driven Development?",
+      "options_es": [
+        "Reduce bugs, mejora diseño del código, y proporciona documentación viva",
+        "Es más rápido que el desarrollo tradicional",
+        "No requiere revisión de código en entornos reales",
+        "Elimina la necesidad de debugging"
+      ],
+      "options_en": [
+        "Reduces bugs, improves code design, and provides living documentation",
+        "It is faster than traditional development",
+        "It doesn't require code review by convention",
+        "It eliminates the need for debugging"
+      ],
+      "correct_index": 0,
+      "explanation_es": "TDD produce código mejor diseñado, menos bugs (los tests actúan como red de seguridad), y los tests son documentación del comportamiento esperado. No es más rápido inicialmente ni elimina otras buenas prácticas.",
+      "explanation_en": "TDD produces better-designed code, fewer bugs (tests act as safety net), and tests document expected behavior. It's not faster initially or eliminate other best practices.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_003",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es BDD (Behavior-Driven Development)?",
+      "question_en": "What is BDD (Behavior-Driven Development)?",
+      "options_es": [
+        "Un framework de base de datos",
+        "Una metodología que enfatiza describir el comportamiento esperado en lenguaje natural",
+        "Una herramienta de compilación",
+        "Un tipo de test de carga de forma estándar"
+      ],
+      "options_en": [
+        "A database framework",
+        "A methodology that emphasizes describing expected behavior in natural language",
+        "A compilation tool as a general rule",
+        "A type of load test"
+      ],
+      "correct_index": 1,
+      "explanation_es": "BDD es una extensión de TDD que usa lenguaje natural (Gherkin) para describir escenarios. Mejora la comunicación entre desarrolladores y stakeholders. No es un test de carga ni herramienta de compilación.",
+      "explanation_en": "BDD is an extension of TDD using natural language (Gherkin) to describe scenarios. It improves communication between developers and stakeholders. It's not a load test or compilation tool.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_004",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es Gherkin?",
+      "question_en": "What is Gherkin?",
+      "options_es": [
+        "Una herramienta para compilar Python de forma general en este contexto como práctica recomendada",
+        "Un lenguaje para escribir escenarios de tests en formato legible por humanos",
+        "Un tipo de base de datos SQL",
+        "Un framework de frontend como regla general"
+      ],
+      "options_en": [
+        "A tool for compiling Python as a recommended practice in production environments within this paradigm",
+        "A language for writing test scenarios in human-readable format",
+        "A type of SQL database",
+        "A frontend framework in real environments"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Gherkin usa palabras clave como Given-When-Then para describir escenarios de forma legible. Se integra con BDD frameworks como Behave. No es una herramienta de compilación ni base de datos.",
+      "explanation_en": "Gherkin uses keywords like Given-When-Then to describe scenarios in readable form. It integrates with BDD frameworks like Behave. It's not a compilation tool or database.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_005",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la estructura básica de un escenario Gherkin?",
+      "question_en": "What is the basic structure of a Gherkin scenario?",
+      "options_es": [
+        "Feature → Scenario → Given-When-Then",
+        "Test → Setup → Execute → Assert",
+        "Describe → It → Expect",
+        "Class → Method → Assert en condiciones normales"
+      ],
+      "options_en": [
+        "Feature → Scenario → Given-When-Then",
+        "Test → Setup → Execute → Assert",
+        "Describe → It → Expect",
+        "Class → Method → Assert within this paradigm"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Feature agrupa escenarios relacionados. Cada Scenario describe un comportamiento específico usando Given (contexto), When (acción), Then (resultado esperado).",
+      "explanation_en": "A Feature groups related scenarios. Each Scenario describes specific behavior using Given (context), When (action), Then (expected result).",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_006",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es Behave?",
+      "question_en": "What is Behave?",
+      "options_es": [
+        "Una base de datos NoSQL",
+        "Un compilador de código",
+        "Un framework Python para ejecutar tests escritos en Gherkin",
+        "Un servidor web en la práctica como regla general en condiciones normales"
+      ],
+      "options_en": [
+        "A NoSQL database",
+        "A code compiler",
+        "A Python framework for running tests written in Gherkin",
+        "A web server as a general rule in common practice as a recommended practice"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Behave es el framework BDD estándar de Python que interpreta archivos .feature (Gherkin) y ejecuta los steps asociados. No es compilador, base de datos ni servidor.",
+      "explanation_en": "Behave is Python's standard BDD framework that interprets .feature files (Gherkin) and executes associated steps. It's not a compiler, database, or server.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_007",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa \"Given\" en un escenario Gherkin?",
+      "question_en": "What does 'Given' mean in a Gherkin scenario?",
+      "options_es": [
+        "Una verificación de error",
+        "La acción que se va a realizar en la práctica habitual",
+        "El resultado esperado",
+        "Establece el contexto inicial o estado previo"
+      ],
+      "options_en": [
+        "An error verification",
+        "The action to be performed in common practice",
+        "The expected result in real environments",
+        "Establishes the initial context or previous state"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Given prepara el escenario con datos o estados iniciales. When describe la acción. Then verifica el resultado. Son pasos secuenciales que forman el escenario.",
+      "explanation_en": "Given sets up the scenario with initial data or states. When describes the action. Then verifies the result. They are sequential steps that form the scenario.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_008",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre TDD y BDD?",
+      "question_en": "What is the difference between TDD and BDD?",
+      "options_es": [
+        "TDD solo funciona con Python",
+        "BDD es más rápido que TDD en la práctica",
+        "TDD enfatiza tests técnicos; BDD enfatiza comportamiento en lenguaje natural",
+        "No hay diferencia significativa para la mayoría de proyectos para la mayoría de proyectos"
+      ],
+      "options_en": [
+        "TDD only works with Python",
+        "BDD is faster than TDD by default",
+        "TDD emphasizes technical tests; BDD emphasizes behavior in natural language",
+        "There is no significant difference as a standard approach in common practice"
+      ],
+      "correct_index": 2,
+      "explanation_es": "TDD usa tests en código (aserciones). BDD usa Gherkin/escenarios para comunicar con stakeholders. BDD es una especialización de TDD enfocada en requisitos de negocio.",
+      "explanation_en": "TDD uses code-based tests (assertions). BDD uses Gherkin/scenarios to communicate with stakeholders. BDD is a specialization of TDD focused on business requirements.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_009",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'step' en Behave?",
+      "question_en": "What is a 'step' in Behave?",
+      "options_es": [
+        "Un commit en Git según la especificación",
+        "Una función Python que implementa una línea Given/When/Then de un escenario",
+        "Un tipo de test de rendimiento",
+        "Un archivo de configuración"
+      ],
+      "options_en": [
+        "A Git commit by default",
+        "A Python function that implements a Given/When/Then line from a scenario",
+        "A type of performance test",
+        "A configuration file"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un step es una función Python con un decorador (@given, @when, @then) que mapea una línea Gherkin a código ejecutable. Behave busca y ejecuta estos steps.",
+      "explanation_en": "A step is a Python function with a decorator (@given, @when, @then) that maps a Gherkin line to executable code. Behave finds and executes these steps.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_010",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el concepto \"test-first\"?",
+      "question_en": "What is the concept of 'test-first'?",
+      "options_es": [
+        "Escribir código primero y tests después",
+        "Escribir tests antes de escribir el código de producción",
+        "Escribir tests en paralelo con el código",
+        "Escribir tests solo para funciones críticas de forma general"
+      ],
+      "options_en": [
+        "Write code first and tests afterwards",
+        "Write tests before writing production code",
+        "Write tests in parallel with code",
+        "Write tests only for critical functions as a standard approach"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Test-first es el principio fundamental de TDD: el test se escribe primero (fallará), lo que guía el diseño del código. Esto es diferente al enfoque tradicional.",
+      "explanation_en": "Test-first is TDD's fundamental principle: write the test first (it will fail), which guides code design. This differs from traditional approaches.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_011",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se organizan los archivos .feature en Behave?",
+      "question_en": "How are .feature files organized in Behave?",
+      "options_es": [
+        "En una carpeta 'src'",
+        "En la carpeta 'tests' junto con tests de pytest",
+        "En una carpeta 'features' en la raíz del proyecto",
+        "No hay estructura estándar"
+      ],
+      "options_en": [
+        "In a 'src' folder",
+        "In the 'tests' folder alongside pytest tests",
+        "In a 'features' folder at the project root",
+        "There is no standard structure"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La convención estándar es una carpeta 'features/' en la raíz del proyecto conteniendo archivos .feature y una subcarpeta 'steps/' con el código Python de los steps.",
+      "explanation_en": "The standard convention is a 'features/' folder at project root containing .feature files and a 'steps/' subfolder with Python code for steps.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_012",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'outline' (Scenario Outline) en Gherkin?",
+      "question_en": "What is a 'Scenario Outline' in Gherkin?",
+      "options_es": [
+        "Un error en la sintaxis en entornos reales",
+        "Una plantilla de escenario que se ejecuta múltiples veces con diferentes datos",
+        "Un archivo de configuración",
+        "Un tipo de comentario en Gherkin"
+      ],
+      "options_en": [
+        "A syntax error according to spec",
+        "A scenario template that runs multiple times with different data",
+        "A configuration file",
+        "A type of comment in Gherkin"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un Scenario Outline permite parametrizar escenarios usando una tabla (Examples). Behave ejecuta el escenario una vez por fila, reemplazando variables. Evita duplicar código.",
+      "explanation_en": "A Scenario Outline parameterizes scenarios using a table (Examples). Behave runs the scenario once per row, replacing variables. It avoids code duplication.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_013",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa \"refactor\" en el ciclo Red-Green-Refactor?",
+      "question_en": "What does 'refactor' mean in the Red-Green-Refactor cycle?",
+      "options_es": [
+        "Compilar el código",
+        "Escribir más tests en entornos reales",
+        "Cambiar la funcionalidad del código",
+        "Mejorar el código sin cambiar su comportamiento externo"
+      ],
+      "options_en": [
+        "Compile the code",
+        "Write more tests by default",
+        "Change the code's functionality",
+        "Improve the code without changing its external behavior"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Refactor mejora la calidad, legibilidad y mantenibilidad del código sin alterar su comportamiento. Los tests existentes siguen pasando. Es una limpieza que añade valor.",
+      "explanation_en": "Refactor improves code quality, readability, and maintainability without altering behavior. Existing tests still pass. It's valuable cleanup.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_014",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'acceptance test' en BDD?",
+      "question_en": "What is an 'acceptance test' in BDD?",
+      "options_es": [
+        "Un test de carga del servidor",
+        "Un test que verifica si el software cumple los requisitos de negocio del usuario",
+        "Un test de sintaxis de código",
+        "Un test de seguridad habitualmente"
+      ],
+      "options_en": [
+        "A server load test",
+        "A test that verifies if the software meets user business requirements",
+        "A code syntax test",
+        "A security test typically"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los acceptance tests (tests de aceptación) verifican que el sistema cumple los requisitos funcionales del negocio. Generalmente se escriben con Gherkin en BDD y son ejecutables por stakeholders.",
+      "explanation_en": "Acceptance tests verify the system meets business functional requirements. They're typically written in Gherkin in BDD and executable by stakeholders.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290503_015",
+      "skill_id": "sk290503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar Gherkin para escribir tests?",
+      "question_en": "What is the advantage of using Gherkin to write tests?",
+      "options_es": [
+        "No requiere herramientas adicionales",
+        "Hace los tests más rápidos de forma estándar",
+        "Reduce el tamaño de los archivos en este contexto como regla general en condiciones normales",
+        "Permite que no-técnicos entiendan y validen los requisitos sin leer código"
+      ],
+      "options_en": [
+        "Doesn't require additional tools",
+        "Makes tests faster",
+        "Reduces file size as a general rule for most projects in this context in common practice",
+        "Allows non-technical people to understand and validate requirements without reading code"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Gherkin es legible por humanos, permitiendo que Product Managers, QA, y stakeholders entiendan los requisitos sin conocer Python. Facilita la comunicación y colaboración.",
+      "explanation_en": "Gherkin is human-readable, allowing Product Managers, QA, and stakeholders to understand requirements without knowing Python. It facilitates communication and collaboration.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_001",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un test de carga (load test)?",
+      "question_en": "What is a load test?",
+      "options_es": [
+        "Un test que verifica la compilación del código",
+        "Un test que valida la sintaxis como regla general en este contexto dentro de este paradigma",
+        "Un test que simula múltiples usuarios accediendo al sistema simultáneamente",
+        "Un test de seguridad de contraseñas"
+      ],
+      "options_en": [
+        "A test that verifies code compilation",
+        "A test that validates syntax in the most common case within this paradigm",
+        "A test that simulates multiple users accessing the system simultaneously",
+        "A password security test according to spec"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un test de carga simula una carga típica de usuarios para medir si el sistema mantiene el rendimiento y disponibilidad. No valida compilación ni sintaxis.",
+      "explanation_en": "A load test simulates typical user load to measure if the system maintains performance and availability. It doesn't validate compilation or syntax.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_002",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un test de carga y un test de estrés?",
+      "question_en": "What is the difference between a load test and a stress test?",
+      "options_es": [
+        "Stress es más lento que load",
+        "Son sinónimos perfectos según la especificación de forma general de manera estándar",
+        "Load simula carga normal; stress simula carga hasta el punto de quiebre",
+        "Load mide memoria, stress mide CPU"
+      ],
+      "options_en": [
+        "Stress is slower than load",
+        "They are perfect synonyms typically according to official documentation for most projects",
+        "Load simulates normal load; stress simulates load until breaking point",
+        "Load measures memory, stress measures CPU"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Load test mide el comportamiento bajo carga esperada. Stress test incrementa la carga gradualmente hasta encontrar el punto de fallo del sistema. Pruebas complementarias.",
+      "explanation_en": "Load test measures behavior under expected load. Stress test gradually increases load to find the system's breaking point. They are complementary tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_003",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es k6?",
+      "question_en": "What is k6?",
+      "options_es": [
+        "Un servidor web en la práctica en este contexto en la práctica habitual",
+        "Un framework de testing unitario",
+        "Una base de datos de pruebas",
+        "Una herramienta de testing de carga y rendimiento escrita en Go"
+      ],
+      "options_en": [
+        "A web server by default as a general rule as a recommended practice",
+        "A unit testing framework",
+        "A test database",
+        "A load and performance testing tool written in Go"
+      ],
+      "correct_index": 3,
+      "explanation_es": "k6 es una herramienta moderna para testing de carga que usa JavaScript para definir escenarios de prueba. Proporciona resultados en tiempo real y se integra fácilmente en CI/CD.",
+      "explanation_en": "k6 is a modern load testing tool using JavaScript to define test scenarios. It provides real-time results and integrates easily into CI/CD.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_004",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja principal de usar k6 sobre herramientas tradicionales como JMeter?",
+      "question_en": "What is the main advantage of k6 over traditional tools like JMeter?",
+      "options_es": [
+        "k6 solo funciona en Windows",
+        "k6 es más barato en la práctica",
+        "k6 es más antiguo",
+        "k6 permite escribir tests con JavaScript/Go en lugar de GUI, más integrable en código"
+      ],
+      "options_en": [
+        "k6 only works on Windows",
+        "k6 is cheaper",
+        "k6 is older according to spec",
+        "k6 allows writing tests with JavaScript/Go instead of GUI, more code-integrable"
+      ],
+      "correct_index": 3,
+      "explanation_es": "k6 usa código en lugar de interfaces gráficas, permitiendo versionado en Git, revisión de código, y fácil integración en pipelines de CI/CD. JMeter usa GUI, más difícil de versionar.",
+      "explanation_en": "k6 uses code instead of GUIs, enabling Git versioning, code review, and easy CI/CD integration. JMeter uses GUI, harder to version.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_005",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es Locust?",
+      "question_en": "What is Locust?",
+      "options_es": [
+        "Un framework de testing unitario",
+        "Un sistema operativo",
+        "Una base de datos en la práctica en entornos de producción",
+        "Una herramienta de testing de carga escrita en Python"
+      ],
+      "options_en": [
+        "A unit testing framework",
+        "An operating system",
+        "A database in real environments as a recommended practice",
+        "A load testing tool written in Python"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Locust es una herramienta de testing de carga basada en Python que permite escribir escenarios usando código Python. Proporciona una interfaz web para monitoreo en tiempo real.",
+      "explanation_en": "Locust is a Python-based load testing tool allowing scenario writing with Python code. It provides a web interface for real-time monitoring.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_006",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'scenario' en testing de rendimiento?",
+      "question_en": "What is a 'scenario' in performance testing?",
+      "options_es": [
+        "Un servidor de pruebas",
+        "Una secuencia de acciones que simula el comportamiento de un usuario",
+        "Un tipo de base de datos",
+        "Un error en el código en este contexto en este contexto como práctica recomendada"
+      ],
+      "options_en": [
+        "A test server typically",
+        "A sequence of actions simulating user behavior",
+        "A type of database",
+        "An error in the code as a standard approach under normal conditions"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un scenario es un guión que describe qué acciones realiza un usuario (login, búsqueda, compra, logout). En herramientas como k6 o Locust, se programan estos scenarios para simular usuarios reales.",
+      "explanation_en": "A scenario is a script describing user actions (login, search, purchase, logout). In tools like k6 or Locust, scenarios are programmed to simulate real users.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_007",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué métricas se miden en un test de carga?",
+      "question_en": "What metrics are measured in a load test?",
+      "options_es": [
+        "Solo la cantidad de líneas de código de forma general en este contexto",
+        "Solo la velocidad del código",
+        "Tiempo de respuesta, throughput, tasa de error, uso de recursos",
+        "Solo el tamaño del archivo habitualmente"
+      ],
+      "options_en": [
+        "Only lines of code in production environments as a general guideline",
+        "Only code speed",
+        "Response time, throughput, error rate, resource usage",
+        "Only file size in real environments"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las métricas clave incluyen: latencia (tiempo de respuesta), throughput (peticiones por segundo), tasa de error, uso de CPU/memoria. Proporcionan una visión completa del rendimiento.",
+      "explanation_en": "Key metrics include: latency (response time), throughput (requests per second), error rate, CPU/memory usage. They provide complete performance visibility.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_008",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Cuántos usuarios simultáneos se considera típicamente un test de carga normal?",
+      "question_en": "How many simultaneous users is typically considered a normal load test?",
+      "options_es": [
+        "Siempre exactamente 100 usuarios",
+        "Depende del sistema, pero generalmente desde decenas hasta miles de usuarios",
+        "Nunca más de 10 usuarios según la especificación",
+        "No importa, todos los sistemas son iguales dentro de este paradigma según la documentación oficial"
+      ],
+      "options_en": [
+        "Always exactly 100 users by default",
+        "Depends on the system, but typically from tens to thousands of users",
+        "Never more than 10 users",
+        "It doesn't matter, all systems are the same as a standard approach within this paradigm"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La cantidad de usuarios depende del sistema. Un API puede testear con millones; una aplicación web interna quizá con cientos. Se basa en proyecciones de uso real.",
+      "explanation_en": "User count depends on the system. An API might test with millions; an internal web app perhaps hundreds. It's based on real usage projections.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_009",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es JMeter?",
+      "question_en": "What is JMeter?",
+      "options_es": [
+        "Un lenguaje de programación",
+        "Una herramienta de testing de carga basada en Java con interfaz gráfica",
+        "Un servidor de aplicaciones",
+        "Un control de versiones de forma estándar"
+      ],
+      "options_en": [
+        "A programming language",
+        "A Java-based load testing tool with a graphical interface",
+        "An application server as a general rule",
+        "A version control system"
+      ],
+      "correct_index": 1,
+      "explanation_es": "JMeter es una herramienta clásica y ampliamente usada para testing de carga. Proporciona GUI para configurar escenarios sin escribir código, aunque esto lo hace menos versable que herramientas modernas.",
+      "explanation_en": "JMeter is a classic, widely-used load testing tool. It provides GUI for scenario configuration without coding, though this makes it less versionable than modern tools.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_010",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una 'rampa' (ramp) en testing de carga?",
+      "question_en": "What is a 'ramp' in load testing?",
+      "options_es": [
+        "Un descenso súbito de usuarios dentro de este paradigma para la mayoría de proyectos",
+        "Un tipo de gráfico por convención",
+        "Un error en el servidor",
+        "Un incremento gradual del número de usuarios durante el test"
+      ],
+      "options_en": [
+        "A sudden drop in users within this paradigm as a standard approach",
+        "A type of graph",
+        "A server error in real environments",
+        "A gradual increase in the number of users during the test"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una rampa permite aumentar usuarios gradualmente (ej: 100 usuarios/minuto) en lugar de crear todos a la vez. Esto simula un aumento realista del tráfico.",
+      "explanation_en": "A ramp gradually increases users (e.g., 100 users/minute) instead of creating all at once. This simulates realistic traffic increase.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_011",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'spike test'?",
+      "question_en": "What is a 'spike test'?",
+      "options_es": [
+        "Un test de memoria por convención",
+        "Un test que aumenta súbitamente el número de usuarios para ver cómo reacciona el sistema",
+        "Un test que disminuye usuarios",
+        "Un test de seguridad"
+      ],
+      "options_en": [
+        "A memory test by convention",
+        "A test that suddenly increases user count to see how the system reacts",
+        "A test that decreases users",
+        "A security test"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un spike test simula un pico repentino de tráfico (ej: Black Friday, evento viral). Verifica si el sistema puede recuperarse rápidamente del pico. Diferente de rampa que es gradual.",
+      "explanation_en": "A spike test simulates sudden traffic peaks (e.g., Black Friday, viral event). It verifies if the system can quickly recover from the spike. Different from ramp which is gradual.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_012",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo se debe realizar un test de rendimiento?",
+      "question_en": "When should performance testing be done?",
+      "options_es": [
+        "Antes de desplegar a producción y después de cambios significativos",
+        "Solo después de que los usuarios reporten problemas",
+        "Una sola vez al año de forma estándar",
+        "Nunca, es una pérdida de tiempo de manera estándar en este contexto"
+      ],
+      "options_en": [
+        "Before deploying to production and after significant changes",
+        "Only after users report problems",
+        "Once a year according to spec",
+        "Never, it's a waste of time in common practice according to official documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El testing de rendimiento debe ser parte del ciclo de desarrollo regular, no solo reactivo. Idealmente en cada CI/CD antes de producción. Detecta regresiones temprano.",
+      "explanation_en": "Performance testing should be part of regular development, not reactive. Ideally in each CI/CD before production. It detects regressions early.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_013",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'think time' en un test de carga?",
+      "question_en": "What is 'think time' in a load test?",
+      "options_es": [
+        "Una pausa entre acciones para simular el tiempo que un usuario real demora en leer o decidir",
+        "El tiempo que tarda el servidor en procesar",
+        "El tiempo de compilación",
+        "El tiempo de despliegue habitualmente"
+      ],
+      "options_en": [
+        "A pause between actions to simulate the time a real user takes to read or decide",
+        "The time it takes the server to process",
+        "Compilation time",
+        "Deployment time by default"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Think time añade realismo al test. Un usuario real no envía peticiones constantemente; espera para leer, pensar, buscar. Sin think time, el test es artificial y sobrecarga el servidor.",
+      "explanation_en": "Think time adds realism to tests. A real user doesn't constantly send requests; they wait to read, think, search. Without it, the test is artificial and overloads the server.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_014",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una 'curva de soak'?",
+      "question_en": "What is a 'soak curve'?",
+      "options_es": [
+        "Un test que mantiene carga constante durante un tiempo prolongado para detectar memory leaks",
+        "Un test que aumenta la carga rápidamente como regla general según la documentación oficial en este contexto",
+        "Un test que mide temperatura",
+        "Un tipo de base de datos en entornos reales"
+      ],
+      "options_en": [
+        "A test that maintains constant load for an extended time to detect memory leaks",
+        "A test that rapidly increases load under normal conditions in production environments as a standard approach",
+        "A test that measures temperature",
+        "A type of database in real environments"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un soak test ejecuta carga constante durante horas para detectar problemas que solo aparecen con tiempo (memory leaks, conexiones no liberadas, degradación gradual).",
+      "explanation_en": "A soak test runs constant load for hours to detect problems appearing only over time (memory leaks, unreleased connections, gradual degradation).",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290504_015",
+      "skill_id": "sk290504",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se interpreta un resultado de 'p95 latency = 500ms'?",
+      "question_en": "How should 'p95 latency = 500ms' be interpreted?",
+      "options_es": [
+        "El 95% de las peticiones respondió en 500ms o menos",
+        "El 95% de las peticiones fallaron",
+        "El 5% de las peticiones tuvieron éxito",
+        "La velocidad promedio es 500ms de forma general para la mayoría de proyectos"
+      ],
+      "options_en": [
+        "95% of requests responded in 500ms or less",
+        "95% of requests failed typically",
+        "5% of requests succeeded",
+        "Average speed is 500ms in this context in the most common case"
+      ],
+      "correct_index": 0,
+      "explanation_es": "p95 (percentil 95) significa que el 95% de las peticiones respondió en ese tiempo o mejor. El 5% restante fue más lento. Es una métrica más útil que el promedio.",
+      "explanation_en": "p95 (95th percentile) means 95% of requests responded in that time or better. The remaining 5% were slower. It's a more useful metric than average.",
+      "source": "https://docs.pytest.org"
+    }
+  ]
+}

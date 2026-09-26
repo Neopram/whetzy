@@ -1,0 +1,13 @@
+{
+  "id": "les200503",
+  "skill_id": "sk200503",
+  "language": "es",
+  "executable": false,
+  "title_es": "dbt: Analytics Engineering",
+  "title_en": "dbt: Analytics Engineering",
+  "body_es": "dbt (Data Build Tool) trata SQL de transformación como código: versionado, testeable, documentado. Models son archivos SQL compilados a tablas/vistas. Refs definen dependencias automáticamente. Tests validez de datos (unique, not_null, custom). Snapshots capturan cambios históricos. Materializaciones son: table (física), view (lógica), incremental (inserta solo nuevos), ephemeral (temporal). dbt compila a DAG ejecutado en BD destino.",
+  "body_en": "dbt treats transformation SQL as code: versioned, testable, documented. Models are SQL files compiled to tables/views. Refs automatically define dependencies. Tests validate data (unique, not_null, custom). Snapshots capture historical changes. Materializations are: table (physical), view (logical), incremental (insert new only), ephemeral (temporary). dbt compiles to DAG executed in destination DB.",
+  "example_code": "-- models/staging/stg_users.sql\n{{ config(materialized='table') }}\n\nSELECT \n  id,\n  LOWER(email) as email,\n  created_at::DATE as signup_date\nFROM {{ ref('raw_users') }}\nWHERE deleted_at IS NULL\n\n-- tests/stg_users/test_email_unique.sql\nSELECT email, COUNT(*)\nFROM {{ ref('stg_users') }}\nGROUP BY email\nHAVING COUNT(*) > 1",
+  "example_output": "dbt run compila 50 models, corre 100 tests, genera docs interactivos mostrando linaje datos de raw a reporting.",
+  "source": "https://airflow.apache.org/docs/"
+}

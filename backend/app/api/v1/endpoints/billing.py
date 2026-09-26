@@ -1,8 +1,9 @@
-"""Billing endpoints: Stripe checkout + webhook + subscription status (7.2)."""
+"""Billing endpoints: Stripe checkout + webhook + subscription status (7.2, 21.4)."""
 
 from __future__ import annotations
 
 import logging
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
@@ -20,6 +21,7 @@ router = APIRouter()
 
 class CheckoutRequest(BaseModel):
     price_id: str  # Stripe price ID, e.g. settings.STRIPE_PRICE_PLUS
+    eu_withdrawal_waiver: bool = False
 
 
 class CheckoutResponse(BaseModel):
@@ -41,6 +43,9 @@ async def create_checkout(
     user: User = Depends(get_current_user),
 ) -> CheckoutResponse:
     """Create a Stripe checkout session and return the hosted checkout URL."""
+    if body.eu_withdrawal_waiver:
+        user.eu_withdrawal_waiver_at = datetime.now(UTC)
+
     try:
         url = stripe_service.create_checkout_session(user, body.price_id)
     except RuntimeError as exc:
@@ -49,7 +54,6 @@ async def create_checkout(
         logger.exception("Stripe checkout error")
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Stripe error") from exc
 
-    # Persist stripe_customer_id that may have been set during checkout creation
     await db.commit()
     await db.refresh(user)
     return CheckoutResponse(checkout_url=url)

@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q180401001",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Cuál es el propósito de un Deployment en Kubernetes?",
+      "question_en": "What is the purpose of a Deployment in Kubernetes?",
+      "options_es": [
+        "Ejecutar trabajos únicos",
+        "Configurar redes según la documentación estándar del servicio",
+        "Describir el estado deseado de Pods y gestionar ReplicaSets",
+        "Almacenar datos persistentes"
+      ],
+      "options_en": [
+        "Run one-off jobs",
+        "Configure networks according to standard service documentation",
+        "Describe desired state of Pods and manage ReplicaSets",
+        "Store persistent data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un Deployment describe el estado deseado de Pods y gestiona automáticamente ReplicaSets para mantener ese estado.",
+      "explanation_en": "A Deployment describes the desired state of Pods and automatically manages ReplicaSets to maintain that state.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)"
+    },
+    {
+      "id": "q180401002",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Qué es una estrategia de actualización en un Deployment?",
+      "question_en": "What is an update strategy in a Deployment?",
+      "options_es": [
+        "La forma en que Kubernetes reemplaza Pods antiguos por nuevos",
+        "Un plan para actualizar la aplicación manualmente",
+        "Un protocolo de comunicación",
+        "Una política de backup en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "How Kubernetes replaces old Pods with new ones",
+        "A plan to update the application manually",
+        "A communication protocol",
+        "A backup policy in any implementation scenario"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las estrategias comunes son RollingUpdate (gradual) y Recreate (elimina todo antes de crear nuevo).",
+      "explanation_en": "Common strategies are RollingUpdate (gradual) and Recreate (delete all before creating new).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    },
+    {
+      "id": "q180401003",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Qué es RollingUpdate en un Deployment?",
+      "question_en": "What is RollingUpdate in a Deployment?",
+      "options_es": [
+        "Un tipo de configuración de red de manera exclusiva y permanente",
+        "Una estrategia que reemplaza Pods gradualmente sin tiempo de inactividad",
+        "Una estrategia que actualiza todos los Pods simultáneamente sin excepciones ni variantes",
+        "Una estrategia de respaldo sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "A type of network configuration exclusively and permanently",
+        "A strategy that gradually replaces Pods without downtime",
+        "A strategy that updates all Pods simultaneously without exceptions or variants",
+        "A backup strategy without considering other relevant factors"
+      ],
+      "correct_index": 1,
+      "explanation_es": "RollingUpdate es la estrategia predeterminada, reemplazando Pods gradualmente para mantener servicio disponible.",
+      "explanation_en": "RollingUpdate is the default strategy, gradually replacing Pods to keep service available.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    },
+    {
+      "id": "q180401004",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Qué es Recreate en un Deployment?",
+      "question_en": "What is Recreate in a Deployment?",
+      "options_es": [
+        "Un comando para recrear manualmente según la documentación estándar del servicio",
+        "Una estrategia que actualiza Pods gradualmente",
+        "Una estrategia que elimina todos los Pods antes de crear nuevos (downtime)",
+        "Una política de escalado de forma invariable y constante"
+      ],
+      "options_en": [
+        "A command to manually recreate according to standard service documentation",
+        "A strategy that gradually updates Pods",
+        "A strategy that deletes all Pods before creating new ones (downtime)",
+        "A scaling policy invariably and constantly"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Recreate es más simple pero causa downtime; se usa cuando la aplicación no puede tener dos versiones simultáneamente.",
+      "explanation_en": "Recreate is simpler but causes downtime; used when the application can't have two versions simultaneously.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    },
+    {
+      "id": "q180401005",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Qué es el progreso de una actualización de Deployment?",
+      "question_en": "What is deployment update progress?",
+      "options_es": [
+        "El número de Pods actualizados vs total",
+        "El tiempo que tarda la actualización",
+        "El porcentaje de CPU usado durante la actualización",
+        "La cantidad de espacios en disco usados"
+      ],
+      "options_en": [
+        "The number of Pods updated vs total",
+        "How long the update takes",
+        "The percentage of CPU used during update",
+        "The amount of disk space used"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El progreso muestra cuántos Pods se han actualizado vs. el número deseado, permitiendo monitorear el rollout.",
+      "explanation_en": "Progress shows how many Pods are updated vs. desired number, allowing rollout monitoring.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#monitoring-the-rollout-status)"
+    },
+    {
+      "id": "q180401006",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Qué es un rollback de Deployment?",
+      "question_en": "What is a Deployment rollback?",
+      "options_es": [
+        "Copias de seguridad automáticas",
+        "Un registro de cambios de forma invariable y constante",
+        "Un tipo de política de red",
+        "Revertir a una versión anterior de la aplicación"
+      ],
+      "options_en": [
+        "Automatic backups",
+        "A record of changes invariably and constantly",
+        "A type of network policy",
+        "Reverting to a previous application version"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un rollback revierte el Deployment a una revisión anterior si hay problemas con la actualización.",
+      "explanation_en": "A rollback reverts the Deployment to a previous revision if there are issues with the update.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment)"
+    },
+    {
+      "id": "q180401007",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Cómo se revierte un Deployment a una versión anterior?",
+      "question_en": "How do you revert a Deployment to a previous version?",
+      "options_es": [
+        "kubectl undo deployment nombre sin excepciones ni variantes",
+        "Editando el YAML e reaplicando",
+        "kubectl rollout undo deployment nombre",
+        "kubectl rollback deployment nombre"
+      ],
+      "options_en": [
+        "kubectl undo deployment name without exceptions or variants",
+        "By editing YAML and reapplying",
+        "kubectl rollout undo deployment name",
+        "kubectl rollback deployment name"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'kubectl rollout undo' revierte a la revisión anterior automáticamente.",
+      "explanation_en": "'kubectl rollout undo' reverts to the previous revision automatically.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment)"
+    },
+    {
+      "id": "q180401008",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Cuál es la diferencia entre maxSurge y maxUnavailable?",
+      "question_en": "What is the difference between maxSurge and maxUnavailable?",
+      "options_es": [
+        "Son parámetros de red independientemente del contexto aplicado",
+        "maxSurge = nuevos Pods adicionales, maxUnavailable = Pods antiguos que se pueden apagar",
+        "maxSurge es para CPU, maxUnavailable para memoria en cualquier escenario de implementación",
+        "No hay diferencia, son lo mismo en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "They are network parameters regardless of the applied context",
+        "maxSurge = extra new Pods, maxUnavailable = old Pods that can be shut down",
+        "maxSurge is for CPU, maxUnavailable for memory in any implementation scenario",
+        "There is no difference, they are the same in any implementation scenario"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Estos parámetros controlan la velocidad y suavidad del RollingUpdate.",
+      "explanation_en": "These parameters control the speed and smoothness of RollingUpdate.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    },
+    {
+      "id": "q180401009",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Qué es un sonda (probe) de readiness en Kubernetes?",
+      "question_en": "What is a readiness probe in Kubernetes?",
+      "options_es": [
+        "Una investigación del cluster independientemente del contexto aplicado",
+        "Una verificación de si el nodo está listo",
+        "Un tipo de firewall independientemente del contexto aplicado",
+        "Una verificación que indica si el Pod está listo para recibir tráfico"
+      ],
+      "options_en": [
+        "An investigation of the cluster regardless of the applied context",
+        "A check if the node is ready",
+        "A type of firewall regardless of the applied context",
+        "A check indicating if the Pod is ready to receive traffic"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La sonda de readiness indica si una aplicación está lista; si falla, el Pod se elimina del Service.",
+      "explanation_en": "Readiness probe indicates if an application is ready; if it fails, the Pod is removed from the Service.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)"
+    },
+    {
+      "id": "q180401010",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Qué es una sonda (probe) de liveness?",
+      "question_en": "What is a liveness probe?",
+      "options_es": [
+        "Una prueba de seguridad sin excepciones ni variantes",
+        "Un monitoreo del tiempo de ejecución sin considerar otros factores relevantes",
+        "Una verificación de si hay conectividad de red",
+        "Una verificación de si la aplicación está viva y respondiendo"
+      ],
+      "options_en": [
+        "A security test without exceptions or variants",
+        "A monitoring of execution time without considering other relevant factors",
+        "A check for network connectivity",
+        "A check if the application is alive and responding"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La sonda de liveness verifica si la aplicación está viva; si falla, Kubernetes reinicia el contenedor.",
+      "explanation_en": "Liveness probe checks if the application is alive; if it fails, Kubernetes restarts the container.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)"
+    },
+    {
+      "id": "q180401011",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Cuál es la diferencia entre sonda de readiness y liveness?",
+      "question_en": "What is the difference between readiness and liveness probes?",
+      "options_es": [
+        "Son parámetros de red en todos los casos posibles",
+        "Readiness = listo para tráfico, Liveness = vivo, reinicia si falla",
+        "No hay diferencia sin considerar otros factores relevantes",
+        "Readiness es más importante que Liveness sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "They are network parameters in all possible cases",
+        "Readiness = ready for traffic, Liveness = alive, restarts if fails",
+        "There is no difference without considering other relevant factors",
+        "Readiness is more important than Liveness without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Readiness dice si recibir tráfico, Liveness si está vivo. Ambas son importantes para confiabilidad.",
+      "explanation_en": "Readiness says if receiving traffic, Liveness if alive. Both important for reliability.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)"
+    },
+    {
+      "id": "q180401012",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Qué es el historial de revisiónde un Deployment?",
+      "question_en": "What is the revision history of a Deployment?",
+      "options_es": [
+        "Un registro de todos los cambios en el repositorio Git según la documentación estándar del servicio",
+        "Una copia de seguridad automática en todos los casos posibles",
+        "Un registro de todas las actualizaciones del Deployment que permite rollback",
+        "Un archivo de log del cluster en todos los casos posibles"
+      ],
+      "options_en": [
+        "A record of all changes in the Git repository according to standard service documentation",
+        "An automatic backup in all possible cases",
+        "A record of all Deployment updates allowing rollback",
+        "A cluster log file in all possible cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El historial mantiene ReplicaSets anteriores, permitiendo rollback a cualquier versión anterior.",
+      "explanation_en": "The history maintains previous ReplicaSets, allowing rollback to any previous version.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit)"
+    },
+    {
+      "id": "q180401013",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Cuántas revisiones previas se mantienen por defecto en Kubernetes?",
+      "question_en": "How many previous revisions are kept by default in Kubernetes?",
+      "options_es": [
+        "Solo la versión actual independientemente del contexto aplicado",
+        "No se mantiene historial",
+        "Las últimas 10 revisiones (revisionHistoryLimit = 10)",
+        "Todas las revisiones sin límite"
+      ],
+      "options_en": [
+        "Only the current version regardless of the applied context",
+        "No history is maintained",
+        "The last 10 revisions (revisionHistoryLimit = 10)",
+        "All revisions without limit"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Por defecto se mantienen las últimas 10 revisiones, controlado por revisionHistoryLimit.",
+      "explanation_en": "By default the last 10 revisions are kept, controlled by revisionHistoryLimit.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit)"
+    },
+    {
+      "id": "q180401014",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Cómo se pausa una actualización de Deployment?",
+      "question_en": "How do you pause a Deployment update?",
+      "options_es": [
+        "kubectl rollout pause deployment nombre",
+        "No es posible pausar independientemente del contexto aplicado",
+        "kubectl pause deployment nombre",
+        "kubectl stop deployment"
+      ],
+      "options_en": [
+        "kubectl rollout pause deployment name",
+        "It is not possible to pause regardless of the applied context",
+        "kubectl pause deployment name",
+        "kubectl stop deployment"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'kubectl rollout pause' pausa la actualización actual, permitiendo investigar problemas antes de continuar.",
+      "explanation_en": "'kubectl rollout pause' pauses the current update, allowing investigation before continuing.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-rollout)"
+    },
+    {
+      "id": "q180401015",
+      "type": "multiple_choice",
+      "skill_id": "sk180401",
+      "question_es": "¿Cómo se reanuda una actualización de Deployment pausada?",
+      "question_en": "How do you resume a paused Deployment update?",
+      "options_es": [
+        "kubectl rollout resume deployment nombre",
+        "Editando el YAML en todos los casos posibles",
+        "kubectl resume deployment nombre",
+        "kubectl start deployment"
+      ],
+      "options_en": [
+        "kubectl rollout resume deployment name",
+        "By editing YAML in all possible cases",
+        "kubectl resume deployment name",
+        "kubectl start deployment"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'kubectl rollout resume' reanuda la actualización pausada.",
+      "explanation_en": "'kubectl rollout resume' resumes the paused update.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#pausing-and-resuming-a-rollout)"
+    },
+    {
+      "id": "q180402001",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es el descubrimiento de servicios en Kubernetes?",
+      "question_en": "What is service discovery in Kubernetes?",
+      "options_es": [
+        "El mecanismo por el que Pods descubren y se conectan a Servicios",
+        "Un protocolo de seguridad sin excepciones ni variantes",
+        "Una herramienta para mapear red sin excepciones ni variantes",
+        "Encontrar manuales de servicios en Internet sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "The mechanism by which Pods discover and connect to Services",
+        "A security protocol without exceptions or variants",
+        "A tool for network mapping without exceptions or variants",
+        "Finding service manuals on the Internet without considering other relevant factors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Kubernetes proporciona DNS nativo para descubrimiento de servicios automático.",
+      "explanation_en": "Kubernetes provides native DNS for automatic service discovery.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#discovering-services)"
+    },
+    {
+      "id": "q180402002",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Cómo accede un Pod a otro Pod a través de un Service?",
+      "question_en": "How does a Pod access another Pod through a Service?",
+      "options_es": [
+        "Usando el nombre del Service como hostname (ejemplo: servicio:puerto)",
+        "Configurando rutas de red manualmente independientemente del contexto aplicado",
+        "Mediante un proxy externo en todos los casos posibles",
+        "Usando la dirección IP del Pod directamente"
+      ],
+      "options_en": [
+        "Using the Service name as hostname (example: service:port)",
+        "By manually configuring network routes regardless of the applied context",
+        "Through an external proxy in all possible cases",
+        "Using the Pod's IP address directly"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Kubernetes DNS traduce automáticamente el nombre del Service a la IP del endpoint.",
+      "explanation_en": "Kubernetes DNS automatically translates the Service name to the endpoint IP.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#dns)"
+    },
+    {
+      "id": "q180402003",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es una sesión sticky (afinidad de sesión) en Kubernetes?",
+      "question_en": "What is session stickiness in Kubernetes?",
+      "options_es": [
+        "Enrutar todas las solicitudes de un cliente al mismo Pod",
+        "Una política de red independientemente del contexto aplicado",
+        "Un tipo de almacenamiento",
+        "Una sesión pegajosa del navegador"
+      ],
+      "options_en": [
+        "Routing all requests from a client to the same Pod",
+        "A network policy regardless of the applied context",
+        "A type of storage",
+        "A sticky browser session"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La afinidad de sesión garantiza que todas las solicitudes de un cliente vayan al mismo Pod (útil para sesiones con estado).",
+      "explanation_en": "Session stickiness ensures all requests from a client go to the same Pod (useful for stateful sessions).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#client-affinity)"
+    },
+    {
+      "id": "q180402004",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Cómo se implementa la afinidad de sesión en un Service?",
+      "question_en": "How is session affinity implemented in a Service?",
+      "options_es": [
+        "Editando el archivo kubeconfig según la documentación estándar del servicio",
+        "No se puede implementar en Kubernetes",
+        "Automáticamente por defecto sin excepciones ni variantes",
+        "Con 'sessionAffinity: ClientIP' en la especificación del Service"
+      ],
+      "options_en": [
+        "By editing kubeconfig file according to standard service documentation",
+        "It cannot be implemented in Kubernetes",
+        "Automatically by default without exceptions or variants",
+        "With 'sessionAffinity: ClientIP' in the Service specification"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La opción 'sessionAffinity: ClientIP' implementa afinidad basada en la dirección IP del cliente.",
+      "explanation_en": "The 'sessionAffinity: ClientIP' option implements affinity based on client IP address.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#client-affinity)"
+    },
+    {
+      "id": "q180402005",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es un service de tipo ClusterIP?",
+      "question_en": "What is a ClusterIP type service?",
+      "options_es": [
+        "Un servicio accesible solo dentro del clúster (IP interna)",
+        "Un servicio sin IP en todos los casos posibles",
+        "Un servicio con IP pública en cualquier escenario de implementación",
+        "Un servicio accesible desde la IP del cluster"
+      ],
+      "options_en": [
+        "A service accessible only within the cluster (internal IP)",
+        "A service without IP in all possible cases",
+        "A service with public IP in any implementation scenario",
+        "A service accessible from cluster IP"
+      ],
+      "correct_index": 0,
+      "explanation_es": "ClusterIP es el tipo de servicio predeterminado, solo accesible dentro del clúster.",
+      "explanation_en": "ClusterIP is the default service type, only accessible within the cluster.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)"
+    },
+    {
+      "id": "q180402006",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es un service de tipo NodePort?",
+      "question_en": "What is a NodePort type service?",
+      "options_es": [
+        "Un servicio que expone un puerto en cada nodo del clúster",
+        "Un servicio solo en el nodo master",
+        "Un puerto para conectarse al kubelet",
+        "Un puerto de almacenamiento sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "A service that exposes a port on each cluster node",
+        "A service only on the master node",
+        "A port to connect to kubelet",
+        "A storage port without considering other relevant factors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "NodePort expone el servicio en un puerto en cada nodo, permitiendo acceso externo (30000-32767).",
+      "explanation_en": "NodePort exposes the service on a port on each node, allowing external access (30000-32767).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)"
+    },
+    {
+      "id": "q180402007",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es un service de tipo LoadBalancer?",
+      "question_en": "What is a LoadBalancer type service?",
+      "options_es": [
+        "Un servicio que provisiona un balanceador de carga externo (en la nube)",
+        "Un servicio sin balanceo sin excepciones ni variantes independientemente del contexto aplicado",
+        "Un balanceador de carga que equilibra Pods internamente",
+        "Un tipo de balanceo de CPU de forma invariable y constante"
+      ],
+      "options_en": [
+        "A service that provisions an external load balancer (in the cloud)",
+        "A service without balancing without exceptions or variants regardless of the applied context",
+        "A load balancer balancing Pods internally",
+        "A type of CPU balancing invariably and constantly"
+      ],
+      "correct_index": 0,
+      "explanation_es": "LoadBalancer expone el servicio externamente mediante un balanceador de carga (proveedor en la nube).",
+      "explanation_en": "LoadBalancer exposes the service externally through a load balancer (cloud provider).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer)"
+    },
+    {
+      "id": "q180402008",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es un service de tipo ExternalName?",
+      "question_en": "What is an ExternalName type service?",
+      "options_es": [
+        "Un servicio con un nombre público",
+        "Un servicio que expone un nombre externo",
+        "Un servicio sin endpoints independientemente del contexto aplicado",
+        "Un servicio que crea un alias DNS a un servicio externo"
+      ],
+      "options_en": [
+        "A service with a public name",
+        "A service that exposes an external name",
+        "A service without endpoints regardless of the applied context",
+        "A service that creates a DNS alias to an external service"
+      ],
+      "correct_index": 3,
+      "explanation_es": "ExternalName crea un alias CNAME a un servicio externo (ejemplo: base de datos externa).",
+      "explanation_en": "ExternalName creates a CNAME alias to an external service (example: external database).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#externalname)"
+    },
+    {
+      "id": "q180402009",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Cómo selecciona un Service qué Pods hacen routing?",
+      "question_en": "How does a Service select which Pods to route to?",
+      "options_es": [
+        "Por orden de creación según la documentación estándar del servicio",
+        "Configuración manual de endpoints",
+        "Usando selectores de etiquetas (labels) para coincidir con Pods",
+        "Automáticamente por tipo de Pod"
+      ],
+      "options_en": [
+        "By order of creation according to standard service documentation",
+        "Manual endpoint configuration",
+        "Using label selectors to match Pods",
+        "Automatically by Pod type"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los selectores en el Service coinciden con etiquetas en los Pods, determinando qué Pods reciben tráfico.",
+      "explanation_en": "Selectors in the Service match labels on Pods, determining which Pods receive traffic.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service)"
+    },
+    {
+      "id": "q180402010",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es un headless service en Kubernetes?",
+      "question_en": "What is a headless service in Kubernetes?",
+      "options_es": [
+        "Un servicio sin dirección IP de clúster (ClusterIP: None)",
+        "Un servicio que no tiene cabecera de red",
+        "Un servicio sin Pods de forma invariable y constante",
+        "Un servicio eliminado en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "A service without cluster IP (ClusterIP: None)",
+        "A service without network header",
+        "A service without Pods invariably and constantly",
+        "A deleted service in any implementation scenario"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un headless service no tiene dirección IP de clúster, permitiendo acceso directo a IPs de Pods.",
+      "explanation_en": "A headless service has no cluster IP, allowing direct access to Pod IPs.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)"
+    },
+    {
+      "id": "q180402011",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Cuándo se usa un headless service?",
+      "question_en": "When is a headless service used?",
+      "options_es": [
+        "Para aplicaciones stateful que necesitan identidad Pod específica",
+        "Solo en desarrollo en cualquier escenario de implementación",
+        "Para aumentar rendimiento sin excepciones ni variantes",
+        "Nunca, es inútil independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "For stateful applications needing specific Pod identity",
+        "Only in development in any implementation scenario",
+        "To increase performance without exceptions or variants",
+        "Never, it is useless regardless of the applied context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Headless services son útiles para StatefulSets y aplicaciones que necesitan acceso directo a Pods específicos.",
+      "explanation_en": "Headless services are useful for StatefulSets and applications needing direct access to specific Pods.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)"
+    },
+    {
+      "id": "q180402012",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es un endpoint en el contexto de un Service?",
+      "question_en": "What is an endpoint in the context of a Service?",
+      "options_es": [
+        "Una política de acceso en todos los casos posibles",
+        "Un recurso que lista las direcciones IP y puertos de Pods activos",
+        "Un puerto de red de manera exclusiva y permanente",
+        "Una URL del servicio de forma invariable y constante"
+      ],
+      "options_en": [
+        "An access policy in all possible cases",
+        "A resource listing IP addresses and ports of active Pods",
+        "A network port exclusively and permanently",
+        "A service URL invariably and constantly"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los endpoints se crean automáticamente cuando un Service coincide con Pods mediante selectores.",
+      "explanation_en": "Endpoints are automatically created when a Service matches Pods through selectors.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#endpoints)"
+    },
+    {
+      "id": "q180402013",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Cómo se crean endpoints personalizados en un Service?",
+      "question_en": "How do you create custom endpoints in a Service?",
+      "options_es": [
+        "Creando un objeto Endpoints con direcciones IP y puertos específicos",
+        "Mediante DNS externo de forma invariable y constante",
+        "No se pueden personalizar sin excepciones ni variantes",
+        "Automáticamente solo desde selectores independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "By creating an Endpoints object with specific IPs and ports",
+        "Through external DNS invariably and constantly",
+        "They cannot be customized without exceptions or variants",
+        "Automatically only from selectors regardless of the applied context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se puede crear un Service sin selectores y luego un Endpoints personalizado para servicios externos.",
+      "explanation_en": "A Service without selectors can be created and then a custom Endpoints for external services.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors)"
+    },
+    {
+      "id": "q180402014",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Qué es multi-puerto en un Service?",
+      "question_en": "What is multi-port in a Service?",
+      "options_es": [
+        "Un puerto que puede recibir múltiples conexiones",
+        "Exponer múltiples puertos en un único Service",
+        "Un tipo de balanceo",
+        "Un error de configuración"
+      ],
+      "options_en": [
+        "A port that can receive multiple connections",
+        "Expose multiple ports in a single Service",
+        "A type of balancing",
+        "A configuration error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un Service puede exponer múltiples puertos con diferentes nombres y protocolos.",
+      "explanation_en": "A Service can expose multiple ports with different names and protocols.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services)"
+    },
+    {
+      "id": "q180402015",
+      "type": "multiple_choice",
+      "skill_id": "sk180402",
+      "question_es": "¿Cómo se configura un Service para exponer múltiples puertos?",
+      "question_en": "How do you configure a Service to expose multiple ports?",
+      "options_es": [
+        "Con un LoadBalancer solo en cualquier escenario de implementación",
+        "Definiendo múltiples entradas en la sección 'ports' del Service",
+        "Con un único puerto mapeado",
+        "No es posible independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "With a LoadBalancer only in any implementation scenario",
+        "By defining multiple entries in the 'ports' section of the Service",
+        "With a single mapped port",
+        "It is not possible regardless of the applied context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Se define un array de puertos, cada uno con un nombre, puerto y protocolo específicos.",
+      "explanation_en": "Define an array of ports, each with specific name, port, and protocol.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services)"
+    },
+    {
+      "id": "q180403001",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Qué es Ingress en Kubernetes?",
+      "question_en": "What is Ingress in Kubernetes?",
+      "options_es": [
+        "Un servicio de red de forma invariable y constante",
+        "Un tipo de almacenamiento sin excepciones ni variantes",
+        "Un objeto que expone servicios HTTP/HTTPS externamente con hostname",
+        "Una forma de entrar al clúster según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "A network service invariably and constantly",
+        "A type of storage without exceptions or variants",
+        "An object exposing HTTP/HTTPS services externally with hostname",
+        "A way to enter the cluster according to standard service documentation"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Ingress proporciona enrutamiento basado en hostname/ruta para servicios, alternativa moderna a NodePort.",
+      "explanation_en": "Ingress provides hostname/path-based routing for services, modern alternative to NodePort.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/)"
+    },
+    {
+      "id": "q180403002",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Cuál es la diferencia entre Service y Ingress?",
+      "question_en": "What is the difference between Service and Ingress?",
+      "options_es": [
+        "Ingress no funciona con HTTP en cualquier escenario de implementación",
+        "Service es más nuevo que Ingress",
+        "Service expone Pods, Ingress expone Servicios HTTP/HTTPS con hostname",
+        "No hay diferencia, son lo mismo"
+      ],
+      "options_en": [
+        "Ingress doesn't work with HTTP in any implementation scenario",
+        "Service is newer than Ingress",
+        "Service exposes Pods, Ingress exposes HTTP/HTTPS Services with hostname",
+        "There is no difference, they are the same"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Service es nivel 4, Ingress es nivel 7 (aplicación), proporcionando enrutamiento basado en contenido.",
+      "explanation_en": "Service is layer 4, Ingress is layer 7 (application), providing content-based routing.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/)"
+    },
+    {
+      "id": "q180403003",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Qué es un Ingress Controller?",
+      "question_en": "What is an Ingress Controller?",
+      "options_es": [
+        "El componente que implementa las reglas de Ingress (nginx, traefik, etc.)",
+        "Un controlador de ingeniería sin excepciones ni variantes",
+        "Un tipo de Pod independientemente del contexto aplicado",
+        "Un servicio de seguridad sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "The component that implements Ingress rules (nginx, traefik, etc.)",
+        "An engineering controller without exceptions or variants",
+        "A type of Pod regardless of the applied context",
+        "A security service without considering other relevant factors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El Ingress Controller monitorea objetos Ingress y configura un balanceador de carga (nginx, HAProxy, etc.)",
+      "explanation_en": "The Ingress Controller monitors Ingress objects and configures a load balancer (nginx, HAProxy, etc.)",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)"
+    },
+    {
+      "id": "q180403004",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Cuáles son los Ingress Controllers más populares?",
+      "question_en": "What are the most popular Ingress Controllers?",
+      "options_es": [
+        "Solo Traefik",
+        "nginx, Traefik, HAProxy, Kong, AWS ALB",
+        "Solo nginx sin excepciones ni variantes",
+        "Ninguno, no se necesitan"
+      ],
+      "options_en": [
+        "Only Traefik",
+        "nginx, Traefik, HAProxy, Kong, AWS ALB",
+        "Only nginx without exceptions or variants",
+        "None, they are not needed"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Hay múltiples controladores disponibles, nginx es el más usado.",
+      "explanation_en": "Multiple controllers are available, nginx is the most popular.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)"
+    },
+    {
+      "id": "q180403005",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Cómo se especifica enrutamiento basado en hostname en Ingress?",
+      "question_en": "How do you specify hostname-based routing in Ingress?",
+      "options_es": [
+        "En la sección 'service' del Ingress independientemente del contexto aplicado",
+        "En el Service sin excepciones ni variantes",
+        "En la sección 'rules' especificando 'host' y 'http.paths'",
+        "No se puede especificar en todos los casos posibles"
+      ],
+      "options_en": [
+        "In the 'service' section of Ingress regardless of the applied context",
+        "In the Service without exceptions or variants",
+        "In the 'rules' section specifying 'host' and 'http.paths'",
+        "It cannot be specified in all possible cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las reglas de Ingress especifican hostname (ejemplo: api.ejemplo.com) y paths (/usuarios, /pedidos).",
+      "explanation_en": "Ingress rules specify hostname (example: api.example.com) and paths (/users, /orders).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-rules-and-routing)"
+    },
+    {
+      "id": "q180403006",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Cómo se especifica enrutamiento basado en ruta (path) en Ingress?",
+      "question_en": "How do you specify path-based routing in Ingress?",
+      "options_es": [
+        "No se puede especificar por ruta",
+        "Con una variable PATH en cualquier escenario de implementación",
+        "En 'http.paths' especificando 'path' y 'pathType'",
+        "En el nombre del Service"
+      ],
+      "options_en": [
+        "Path-based routing cannot be specified",
+        "With a PATH variable in any implementation scenario",
+        "In 'http.paths' specifying 'path' and 'pathType'",
+        "In the Service name"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Se define 'http.paths' con 'path' (ejemplo: /usuarios) y 'pathType' (Prefix, Exact, ImplementationSpecific).",
+      "explanation_en": "Define 'http.paths' with 'path' (example: /users) and 'pathType' (Prefix, Exact, ImplementationSpecific).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-rules-and-routing)"
+    },
+    {
+      "id": "q180403007",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Qué es TLS/SSL en Ingress?",
+      "question_en": "What is TLS/SSL in Ingress?",
+      "options_es": [
+        "Una política de firewall",
+        "Un servicio de seguridad sin considerar otros factores relevantes",
+        "La encriptación HTTPS configurada en Ingress usando Secrets",
+        "Un tipo de protocolo de red"
+      ],
+      "options_en": [
+        "A firewall policy",
+        "A security service without considering other relevant factors",
+        "HTTPS encryption configured in Ingress using Secrets",
+        "A type of network protocol"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Ingress puede usar TLS/SSL definiendo certificados en la sección 'tls' usando Secrets de Kubernetes.",
+      "explanation_en": "Ingress can use TLS/SSL by defining certificates in the 'tls' section using Kubernetes Secrets.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#tls)"
+    },
+    {
+      "id": "q180403008",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Cómo se configura TLS en un Ingress?",
+      "question_en": "How do you configure TLS in an Ingress?",
+      "options_es": [
+        "Automáticamente sin configuración sin excepciones ni variantes",
+        "En el Service en cualquier escenario de implementación",
+        "No se puede configurar TLS en todos los casos posibles",
+        "Creando un Secret con certificado y clave, luego referenciándolo en 'tls.secretName'"
+      ],
+      "options_en": [
+        "Automatically without configuration without exceptions or variants",
+        "In the Service in any implementation scenario",
+        "TLS cannot be configured in all possible cases",
+        "Creating a Secret with certificate and key, then referencing it in 'tls.secretName'"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se crea un Secret con el certificado y clave, luego se referencia en la sección 'tls' de Ingress.",
+      "explanation_en": "Create a Secret with the certificate and key, then reference it in the 'tls' section of Ingress.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#tls)"
+    },
+    {
+      "id": "q180403009",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Qué es cert-manager en Kubernetes?",
+      "question_en": "What is cert-manager in Kubernetes?",
+      "options_es": [
+        "No existe tal cosa en cualquier escenario de implementación",
+        "Un operador que automatiza obtención y renovación de certificados TLS",
+        "Un gestor de certificados X.509 manual en cualquier escenario de implementación",
+        "Un servicio de seguridad sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "No such thing exists in any implementation scenario",
+        "An operator automating TLS certificate acquisition and renewal",
+        "A manual X.509 certificate manager in any implementation scenario",
+        "A security service without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "cert-manager automatiza obtención y renovación de certificados (incluyendo Let's Encrypt) para Ingress.",
+      "explanation_en": "cert-manager automates certificate acquisition and renewal (including Let's Encrypt) for Ingress.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180403010",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Qué es un Ingress class?",
+      "question_en": "What is an Ingress class?",
+      "options_es": [
+        "Una política de enrutamiento según la documentación estándar del servicio",
+        "Una especificación del controlador Ingress a usar (nginx, traefik, etc.)",
+        "Una clase de objeto Ingress de forma invariable y constante",
+        "Un tipo de Ingress seguro de forma invariable y constante"
+      ],
+      "options_en": [
+        "A routing policy according to standard service documentation",
+        "A specification of which Ingress controller to use (nginx, traefik, etc.)",
+        "A class of Ingress object invariably and constantly",
+        "A type of secure Ingress invariably and constantly"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La clase de Ingress especifica qué controlador debe procesar el objeto Ingress.",
+      "explanation_en": "The Ingress class specifies which controller should process the Ingress object.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)"
+    },
+    {
+      "id": "q180403011",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Cómo se especifica el Ingress class en un recurso Ingress?",
+      "question_en": "How do you specify the Ingress class in an Ingress resource?",
+      "options_es": [
+        "En una anotación en todos los casos posibles",
+        "En el nombre del Ingress",
+        "Se asigna automáticamente",
+        "Con 'spec.ingressClassName'"
+      ],
+      "options_en": [
+        "In an annotation in all possible cases",
+        "In the Ingress name",
+        "It is assigned automatically",
+        "With 'spec.ingressClassName'"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'spec.ingressClassName' especifica qué controlador debe procesar este Ingress.",
+      "explanation_en": "'spec.ingressClassName' specifies which controller should process this Ingress.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)"
+    },
+    {
+      "id": "q180403012",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Qué es una anotación en Ingress?",
+      "question_en": "What is an annotation in Ingress?",
+      "options_es": [
+        "Un comentario en el archivo YAML de forma invariable y constante",
+        "No tienen propósito sin excepciones ni variantes",
+        "Metadatos clave-valor que afectan comportamiento específico del controlador",
+        "Una etiqueta de seguimiento en todos los casos posibles"
+      ],
+      "options_en": [
+        "A comment in the YAML file invariably and constantly",
+        "They have no purpose without exceptions or variants",
+        "Key-value metadata affecting controller-specific behavior",
+        "A tracking label in all possible cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las anotaciones permiten configuración adicional específica del controlador (ejemplo: nginx.ingress.kubernetes.io/rewrite-target).",
+      "explanation_en": "Annotations allow controller-specific configuration (example: nginx.ingress.kubernetes.io/rewrite-target).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#annotations)"
+    },
+    {
+      "id": "q180403013",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Qué es la reescritura de rutas (rewrite) en Ingress?",
+      "question_en": "What is path rewriting in Ingress?",
+      "options_es": [
+        "Modificar la ruta antes de enviarla al servicio backend",
+        "No se puede reescribir rutas según la documentación estándar del servicio",
+        "Copiar una ruta a otra en todos los casos posibles",
+        "Cambiar el nombre del archivo"
+      ],
+      "options_en": [
+        "Modify the path before sending it to the backend service",
+        "Paths cannot be rewritten according to standard service documentation",
+        "Copy a path to another in all possible cases",
+        "Change the filename"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La reescritura permite mapear /usuarios -> / en el servicio backend (ejemplo: nginx.ingress.kubernetes.io/rewrite-target).",
+      "explanation_en": "Rewriting allows mapping /users -> / in backend service (example: nginx.ingress.kubernetes.io/rewrite-target).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#annotations)"
+    },
+    {
+      "id": "q180403014",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Cómo se implementa balanceo de carga con Ingress?",
+      "question_en": "How is load balancing implemented with Ingress?",
+      "options_es": [
+        "No hay balanceo con Ingress sin considerar otros factores relevantes",
+        "El controlador y el Service juntos balancean el tráfico entre Pods",
+        "Solo en el backend en cualquier escenario de implementación",
+        "Solo en el controlador Ingress"
+      ],
+      "options_en": [
+        "There is no load balancing with Ingress without considering other relevant factors",
+        "The controller and Service together balance traffic between Pods",
+        "Only in the backend in any implementation scenario",
+        "Only in the Ingress controller"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El controlador Ingress balancea entre Servicios, el Service balancea entre Pods.",
+      "explanation_en": "Ingress controller balances between Services, Service balances between Pods.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/)"
+    },
+    {
+      "id": "q180403015",
+      "type": "multiple_choice",
+      "skill_id": "sk180403",
+      "question_es": "¿Cuál es la función de CORS en Ingress?",
+      "question_en": "What is the function of CORS in Ingress?",
+      "options_es": [
+        "Permitir solicitudes cross-origin desde navegadores (configurable en anotaciones)",
+        "Un tipo de certificado sin considerar otros factores relevantes",
+        "Una política de seguridad sin considerar otros factores relevantes",
+        "No tiene función sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "Allow cross-origin requests from browsers (configurable in annotations)",
+        "A type of certificate without considering other relevant factors",
+        "A security policy without considering other relevant factors",
+        "It has no function without considering other relevant factors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "CORS (Cross-Origin Resource Sharing) se configura mediante anotaciones del controlador Ingress.",
+      "explanation_en": "CORS (Cross-Origin Resource Sharing) is configured through Ingress controller annotations.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/ingress/#annotations)"
+    },
+    {
+      "id": "q180404001",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cuál es la principal diferencia entre ConfigMap y Secret?",
+      "question_en": "What is the main difference between ConfigMap and Secret?",
+      "options_es": [
+        "No hay diferencia, son lo mismo de forma invariable y constante",
+        "ConfigMap es para datos públicos, Secret para datos sensibles encriptados",
+        "ConfigMap solo para archivos, Secret solo para variables",
+        "Secret es más rápido sin excepciones ni variantes de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "There is no difference, they are the same invariably and constantly",
+        "ConfigMap is for public data, Secret for sensitive encrypted data",
+        "ConfigMap only for files, Secret only for variables",
+        "Secret is faster without exceptions or variants exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ConfigMap es para datos no sensibles, Secret para contraseñas, tokens, claves; proporciona encriptación adicional.",
+      "explanation_en": "ConfigMap is for non-sensitive data, Secret for passwords, tokens, keys; provides additional encryption.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/secret/)"
+    },
+    {
+      "id": "q180404002",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cómo se crean datos en un ConfigMap?",
+      "question_en": "How do you create data in a ConfigMap?",
+      "options_es": [
+        "Por archivos en 'binaryData'",
+        "Ambas opciones A y B son válidas",
+        "Por pares clave-valor en 'data'",
+        "No se pueden crear datos en ConfigMap"
+      ],
+      "options_en": [
+        "Files in 'binaryData'",
+        "Both options A and B are valid",
+        "Key-value pairs in 'data'",
+        "Data cannot be created in ConfigMap"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ConfigMap soporta datos de texto ('data') y binarios ('binaryData') para archivos como imágenes.",
+      "explanation_en": "ConfigMap supports text data ('data') and binary data ('binaryData') for files like images.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/configmap/)"
+    },
+    {
+      "id": "q180404003",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cuál es el límite de tamaño de un ConfigMap?",
+      "question_en": "What is the size limit of a ConfigMap?",
+      "options_es": [
+        "No tiene límite",
+        "10 MB",
+        "1 MB",
+        "1 GB"
+      ],
+      "options_en": [
+        "No limit",
+        "10 MB",
+        "1 MB",
+        "1 GB"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El límite por defecto es 1 MB, aunque puede configurarse. Para datos más grandes, usar volúmenes.",
+      "explanation_en": "Default limit is 1 MB, though configurable. For larger data, use volumes.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/configmap/)"
+    },
+    {
+      "id": "q180404004",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cómo accede un Pod a datos de un ConfigMap?",
+      "question_en": "How does a Pod access ConfigMap data?",
+      "options_es": [
+        "Solo como variables de entorno",
+        "Solo como volumen independientemente del contexto aplicado",
+        "Mediante una API especial",
+        "Como variables de entorno o volúmenes montados"
+      ],
+      "options_en": [
+        "Only as environment variables",
+        "Only as a volume regardless of the applied context",
+        "Through a special API",
+        "As environment variables or mounted volumes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los Pods pueden acceder a ConfigMap inyectando variables de entorno o montando como volumen.",
+      "explanation_en": "Pods can access ConfigMap by injecting environment variables or mounting as a volume.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/configmap/)"
+    },
+    {
+      "id": "q180404005",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cómo se inyectan variables de entorno desde ConfigMap?",
+      "question_en": "How do you inject environment variables from ConfigMap?",
+      "options_es": [
+        "Directamente en el Dockerfile",
+        "Usando 'envFrom' o 'env.valueFrom.configMapKeyRef' en el Pod",
+        "Mediante kubectl set env independientemente del contexto aplicado",
+        "No se pueden inyectar variables"
+      ],
+      "options_en": [
+        "Directly in the Dockerfile",
+        "Using 'envFrom' or 'env.valueFrom.configMapKeyRef' in the Pod",
+        "Using kubectl set env regardless of the applied context",
+        "Environment variables cannot be injected"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'envFrom' inyecta todos los datos del ConfigMap como variables, 'valueFrom' es selectivo.",
+      "explanation_en": "'envFrom' injects all ConfigMap data as variables, 'valueFrom' is selective.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)"
+    },
+    {
+      "id": "q180404006",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cuáles son los tipos de Secrets en Kubernetes?",
+      "question_en": "What are the types of Secrets in Kubernetes?",
+      "options_es": [
+        "Solo 'password' independientemente del contexto aplicado",
+        "Opaque, ServiceAccountToken, BasicAuth, SSHAuth, TLS, Dockercfg",
+        "Public y Private sin excepciones ni variantes",
+        "Text, Binary, Encrypted sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "Only 'password' regardless of the applied context",
+        "Opaque, ServiceAccountToken, BasicAuth, SSHAuth, TLS, Dockercfg",
+        "Public and Private without exceptions or variants",
+        "Text, Binary, Encrypted without considering other relevant factors"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los tipos principales incluyen Opaque (por defecto), ServiceAccountToken, BasicAuth, SSHAuth, TLS, Dockercfg.",
+      "explanation_en": "Main types include Opaque (default), ServiceAccountToken, BasicAuth, SSHAuth, TLS, Dockercfg.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/secret/#secret-types)"
+    },
+    {
+      "id": "q180404007",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cómo se crea un Secret de tipo TLS?",
+      "question_en": "How do you create a TLS Secret?",
+      "options_es": [
+        "kubectl create secret tls nombre --cert=cert.pem --key=key.pem",
+        "Manualmente en YAML de forma invariable y constante",
+        "Automáticamente por cert-manager según la documentación estándar del servicio",
+        "No se pueden crear Secrets de TLS"
+      ],
+      "options_en": [
+        "kubectl create secret tls name --cert=cert.pem --key=key.pem",
+        "Manually in YAML invariably and constantly",
+        "Automatically by cert-manager according to standard service documentation",
+        "TLS Secrets cannot be created"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El comando 'kubectl create secret tls' crea un Secret con certificado y clave para Ingress.",
+      "explanation_en": "The 'kubectl create secret tls' command creates a Secret with certificate and key for Ingress.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets)"
+    },
+    {
+      "id": "q180404008",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cómo se encriptan los Secrets en etcd?",
+      "question_en": "How are Secrets encrypted in etcd?",
+      "options_es": [
+        "Automáticamente con encriptación fuerte",
+        "Se encriptan con base64 solamente",
+        "Requiere configuración explícita del API server",
+        "No se encriptan en etcd de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "Automatically with strong encryption",
+        "They are encrypted with base64 only",
+        "Requires explicit API server configuration",
+        "They are not encrypted in etcd exclusively and permanently"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Requiere configurar '--encryption-provider-config' en el API server para encriptación real en etcd.",
+      "explanation_en": "Requires configuring '--encryption-provider-config' in the API server for real encryption in etcd.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)"
+    },
+    {
+      "id": "q180404009",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cuál es el riesgo de seguridad al usar base64 en Secrets?",
+      "question_en": "What is the security risk of using base64 in Secrets?",
+      "options_es": [
+        "Ninguno si usamos Secrets de manera exclusiva y permanente",
+        "Base64 es encriptación débil sin considerar otros factores relevantes",
+        "No hay riesgo, es seguro en cualquier escenario de implementación",
+        "Base64 no es encriptación, solo codificación; fácilmente decodificable"
+      ],
+      "options_en": [
+        "None if we use Secrets exclusively and permanently",
+        "Base64 is weak encryption without considering other relevant factors",
+        "There is no risk, it is secure in any implementation scenario",
+        "Base64 is not encryption, just encoding; easily decodable"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Base64 es solo codificación, no encriptación. Se debe usar encriptación real en etcd.",
+      "explanation_en": "Base64 is only encoding, not encryption. Real encryption in etcd should be used.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)"
+    },
+    {
+      "id": "q180404010",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cómo se crea un Secret desde un archivo?",
+      "question_en": "How do you create a Secret from a file?",
+      "options_es": [
+        "kubectl create secret generic nombre --from-file=archivo.txt",
+        "No se puede crear desde archivo",
+        "kubectl secret create file.txt de manera exclusiva y permanente",
+        "Copiando el archivo al clúster"
+      ],
+      "options_en": [
+        "kubectl create secret generic name --from-file=file.txt",
+        "Cannot create from file",
+        "kubectl secret create file.txt exclusively and permanently",
+        "By copying the file to the cluster"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'--from-file' lee el contenido del archivo y lo almacena en el Secret.",
+      "explanation_en": "'--from-file' reads file content and stores it in the Secret.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/)"
+    },
+    {
+      "id": "q180404011",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cómo se crea un Secret desde variables de entorno?",
+      "question_en": "How do you create a Secret from environment variables?",
+      "options_es": [
+        "Copiando las variables del host",
+        "No se puede crear de variables",
+        "Automáticamente sin hacer nada según la documentación estándar del servicio",
+        "kubectl create secret generic nombre --from-literal=clave=valor"
+      ],
+      "options_en": [
+        "By copying variables from the host",
+        "Cannot create from variables",
+        "Automatically without doing anything according to standard service documentation",
+        "kubectl create secret generic name --from-literal=key=value"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'--from-literal' permite pasar pares clave-valor directamente en el comando.",
+      "explanation_en": "'--from-literal' allows passing key-value pairs directly in the command.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/)"
+    },
+    {
+      "id": "q180404012",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cuándo se actualiza un Pod si cambia un ConfigMap?",
+      "question_en": "When is a Pod updated if a ConfigMap changes?",
+      "options_es": [
+        "Inmediatamente como concepto principal en cualquier escenario de implementación",
+        "El Pod no se actualiza automáticamente; requiere reinicio",
+        "Nunca se actualiza de forma invariable y constante",
+        "En la próxima actualización del Deployment"
+      ],
+      "options_en": [
+        "Immediately as the primary concept in any implementation scenario",
+        "Pod is not automatically updated; requires restart",
+        "Never updates invariably and constantly",
+        "On next Deployment update"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los cambios en ConfigMap no actualizan automáticamente Pods existentes; se requiere reinicio.",
+      "explanation_en": "Changes to ConfigMap do not automatically update existing Pods; restart is required.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/configmap/#immutability)"
+    },
+    {
+      "id": "q180404013",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Qué es immutability en ConfigMap/Secret?",
+      "question_en": "What is immutability in ConfigMap/Secret?",
+      "options_es": [
+        "Se actualiza automáticamente",
+        "Los datos no se pueden cambiar después de creados",
+        "Se elimina automáticamente independientemente del contexto aplicado",
+        "No se pueden leer los datos"
+      ],
+      "options_en": [
+        "It automatically updates",
+        "Data cannot be changed after creation",
+        "It automatically deletes regardless of the applied context",
+        "Data cannot be read"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La opción 'immutable: true' previene cambios accidentales a ConfigMap/Secret, mejorando seguridad.",
+      "explanation_en": "The 'immutable: true' option prevents accidental changes to ConfigMap/Secret, improving security.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/configmap/#immutability)"
+    },
+    {
+      "id": "q180404014",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cómo se visualizan los datos de un Secret de forma segura?",
+      "question_en": "How do you safely view Secret data?",
+      "options_es": [
+        "No se pueden ver datos de Secret independientemente del contexto aplicado",
+        "kubectl get secret nombre independientemente del contexto aplicado",
+        "Con kubectl describe sin excepciones ni variantes",
+        "kubectl get secret nombre -o yaml para ver valores (cuidado, son base64, no encriptados)"
+      ],
+      "options_en": [
+        "Secret data cannot be viewed regardless of the applied context",
+        "kubectl get secret name regardless of the applied context",
+        "With kubectl describe without exceptions or variants",
+        "kubectl get secret name -o yaml to see values (careful, they are base64, not encrypted)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los Secrets se pueden decodificar fácilmente si no están encriptados en etcd.",
+      "explanation_en": "Secrets can be easily decoded if not encrypted in etcd.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/secret/)"
+    },
+    {
+      "id": "q180404015",
+      "type": "multiple_choice",
+      "skill_id": "sk180404",
+      "question_es": "¿Cuál es la mejor práctica para gestionar Secrets en Kubernetes?",
+      "question_en": "What is the best practice for managing Secrets in Kubernetes?",
+      "options_es": [
+        "Usar herramientas externas como HashiCorp Vault o AWS Secrets Manager",
+        "Almacenaros en archivos locales sin excepciones ni variantes",
+        "Almacenarlos en Git en texto plano según la documentación estándar del servicio",
+        "Usar solo ConfigMaps de forma invariable y constante"
+      ],
+      "options_en": [
+        "Use external tools like HashiCorp Vault or AWS Secrets Manager",
+        "Store in local files without exceptions or variants",
+        "Store them in Git in plain text according to standard service documentation",
+        "Use only ConfigMaps invariably and constantly"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Integrar con herramientas externas de gestión de secretos proporciona seguridad, auditoría y rotación automática.",
+      "explanation_en": "Integrating with external secret management tools provides security, auditing, and automatic rotation.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/secret/)"
+    }
+  ]
+}

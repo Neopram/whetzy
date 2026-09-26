@@ -1,0 +1,12 @@
+{
+  "id": "l280301",
+  "skill_id": "sk280301",
+  "title_es": "Event Loop y Programación Asincrónica",
+  "title_en": "Event Loop and Asynchronous Programming",
+  "body_es": "Node.js usa un Event Loop basado en un único hilo que ejecuta código no bloqueante de manera eficiente. El Event Loop procesa callbacks de operaciones I/O completadas. Operaciones como lectura de archivos, requests HTTP, y queries de BD son asincrónicas mediante callbacks, Promises o async/await. async/await es la forma moderna y más legible de trabajar con código asincrónico. Entender el Event Loop es crucial para escribir aplicaciones Node.js eficientes y evitar problemas de bloqueo.",
+  "body_en": "Node.js uses a single-threaded Event Loop that executes non-blocking code efficiently. The Event Loop processes callbacks from completed I/O operations. Operations like file reading, HTTP requests, and database queries are asynchronous through callbacks, Promises, or async/await. async/await is the modern and most readable way to work with asynchronous code. Understanding the Event Loop is crucial for writing efficient Node.js applications and avoiding blocking issues.",
+  "example_code": "// Callback style\nconst fs = require('fs');\nfs.readFile('file.txt', 'utf8', (err, data) => {\n  if (err) console.error(err);\n  else console.log(data);\n});\n\n// Promise style\nconst readFilePromise = new Promise((resolve, reject) => {\n  fs.readFile('file.txt', 'utf8', (err, data) => {\n    if (err) reject(err);\n    else resolve(data);\n  });\n});\n\n// async/await style (modern)\nasync function readFileAsync() {\n  try {\n    const data = await fs.promises.readFile('file.txt', 'utf8');\n    console.log(data);\n  } catch (err) {\n    console.error(err);\n  }\n}\n\n// Non-blocking HTTP request\nconst http = require('http');\nasync function fetchData() {\n  return new Promise((resolve, reject) => {\n    http.get('http://example.com', (res) => {\n      let data = '';\n      res.on('data', chunk => data += chunk);\n      res.on('end', () => resolve(data));\n    }).on('error', reject);\n  });\n}",
+  "example_output": "File content is logged asynchronously without blocking\nMultiple operations execute concurrently due to non-blocking nature\n\nExample output:\n\"File contents here\"\nData fetched from HTTP: {...}",
+  "source": "Node.js Docs — https://nodejs.org/docs",
+  "order": 1
+}

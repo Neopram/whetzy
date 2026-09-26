@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from datetime import UTC, datetime
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -404,6 +404,7 @@ async def _certificate_public(db: AsyncSession, certificate: Certificate) -> Cer
 @router.get("/certificates/{code}", response_model=CertificatePublic)
 async def verify_certificate(
     code: str,
+    response: Response,
     db: AsyncSession = Depends(get_db),
 ) -> CertificatePublic:
     """Public verification. **No authentication on purpose.**
@@ -423,7 +424,65 @@ async def verify_certificate(
     certificate = (await db.scalars(select(Certificate).where(Certificate.code == code))).first()
     if certificate is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "certificate not found")
+    response.headers["Cache-Control"] = "public, max-age=3600"
     return await _certificate_public(db, certificate)
+
+
+@router.get("/certificates/{code}/badge")
+async def certificate_badge(
+    code: str,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+) -> Response:
+    """Open Badges 3.0 JSON-LD assertion (29.10, ADR-37). Public, no auth."""
+    from app.services.open_badges import build_credential, sign_credential
+
+    certificate = (await db.scalars(select(Certificate).where(Certificate.code == code))).first()
+    if certificate is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "certificate not found")
+
+    pub = await _certificate_public(db, certificate)
+    credential = build_credential(
+        code=pub.code,
+        username=pub.username,
+        track_id=pub.track_id,
+        track_name_en=pub.track_name_en,
+        track_name_es=pub.track_name_es,
+        score_pct=pub.score_pct,
+        questions=pub.questions,
+        issued_at=pub.issued_at,
+        revoked=pub.revoked,
+        is_certification=pub.is_certification,
+    )
+    signed = sign_credential(credential)
+
+    import json
+    body = json.dumps(signed, ensure_ascii=False, indent=2)
+    return Response(
+        content=body,
+        media_type="application/ld+json",
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
+
+
+@router.get("/certificates/{code}/qr")
+async def certificate_qr(
+    code: str,
+    db: AsyncSession = Depends(get_db),
+) -> Response:
+    """QR code PNG for the certificate verification URL (29.10). Public, no auth."""
+    from app.services.open_badges import qr_png_bytes
+
+    certificate = (await db.scalars(select(Certificate).where(Certificate.code == code))).first()
+    if certificate is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "certificate not found")
+
+    png = qr_png_bytes(code)
+    return Response(
+        content=png,
+        media_type="image/png",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 # ── Paid certifying exam (38.7, ADR-49) ──────────────────────────────────────

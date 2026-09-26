@@ -10,14 +10,14 @@
       "options_es": [
         "Un servicio de almacenamiento y distribución de imágenes, organizado en repositorios con etiquetas, del que `docker pull` descarga y al que `docker push` sube",
         "El proceso en segundo plano que ejecuta los contenedores en tu máquina",
-        "El archivo de texto donde describes cómo construir una imagen",
-        "La capa de escritura que cada contenedor añade sobre la imagen"
+        "El archivo de texto donde describes cómo construir una imagen, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
+        "La capa de escritura que cada contenedor añade sobre la imagen según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias"
       ],
       "options_en": [
         "A service that stores and distributes images, organised into repositories with tags, which `docker pull` downloads from and `docker push` uploads to",
         "The background process that runs containers on your machine",
-        "The text file where you describe how to build an image",
-        "The writable layer each container adds on top of the image"
+        "The text file where you describe how to build an image, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
+        "The writable layer each container adds on top of the image according to the framework's official documentation, as long as the necessary preconditions are met"
       ],
       "correct_index": 0,
       "explanation_es": "El registro es sólo un almacén remoto de imágenes. Las otras opciones son las piezas que se confunden con él: el *daemon* (`dockerd`) es quien ejecuta los contenedores localmente, el *Dockerfile* es la receta de construcción, y la capa de escritura pertenece al contenedor en ejecución. Confundir registro con daemon lleva al error clásico de creer que borrar una imagen local la borra de Docker Hub.",
@@ -38,15 +38,15 @@
       "question_es": "Ejecutas esto y el contenedor termina su trabajo. ¿Qué muestra el último comando?\n```bash\ndocker run --name saluda alpine echo hola\ndocker ps\n```",
       "question_en": "You run this and the container finishes its work. What does the last command show?\n```bash\ndocker run --name saluda alpine echo hola\ndocker ps\n```",
       "options_es": [
-        "El contenedor `saluda` en estado `Exited (0)`",
+        "El contenedor `saluda` en estado `Exited (0)`, pero solo en versiones anteriores del sistema",
         "Una tabla vacía: `docker ps` sólo lista contenedores en ejecución, y `saluda` ya terminó",
-        "Un error: el contenedor `saluda` ya no existe",
+        "Un error: el contenedor `saluda` ya no existe de acuerdo con las convenciones estándar de la industria",
         "El contenedor `saluda` en estado `Up`, porque `--name` lo mantiene vivo"
       ],
       "options_en": [
-        "The `saluda` container with status `Exited (0)`",
+        "The `saluda` container with status `Exited (0)`, but only in earlier versions of the system",
         "An empty table: `docker ps` only lists running containers, and `saluda` has already exited",
-        "An error: container `saluda` no longer exists",
+        "An error: container `saluda` no longer exists in accordance with standard industry conventions",
         "The `saluda` container with status `Up`, because `--name` keeps it alive"
       ],
       "correct_index": 1,
@@ -94,16 +94,16 @@
       "question_es": "Descargas dos imágenes de 900 MB cada una y ambas están construidas `FROM python:3.12-slim`. ¿Cuánto espacio ocupan en disco?",
       "question_en": "You pull two 900 MB images and both are built `FROM python:3.12-slim`. How much disk space do they take?",
       "options_es": [
-        "Exactamente 1800 MB: cada imagen es un archivo independiente",
-        "900 MB: Docker deduplica las imágenes completas y guarda sólo la más reciente",
+        "Exactamente 1800 MB: cada imagen es un archivo independiente, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo",
+        "900 MB: Docker deduplica las imágenes completas y guarda sólo la más reciente, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
         "Bastante menos de 1800 MB: las capas son inmutables y se identifican por su contenido, así que las capas comunes del sistema base se almacenan una sola vez y ambas imágenes las comparten",
-        "Depende del contenedor: hasta que no ejecutes un contenedor, las imágenes no ocupan nada"
+        "Depende del contenedor: hasta que no ejecutes un contenedor, las imágenes no ocupan nada como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios"
       ],
       "options_en": [
-        "Exactly 1800 MB: each image is a self-contained file",
-        "900 MB: Docker deduplicates whole images and keeps only the most recent one",
+        "Exactly 1800 MB: each image is a self-contained file, applicable only in local development environments as described in the protocol's technical specification",
+        "900 MB: Docker deduplicates whole images and keeps only the most recent one, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
         "Considerably less than 1800 MB: layers are immutable and identified by their content, so the shared base-system layers are stored once and both images reference them",
-        "It depends on the container: until you run a container, the images take no space"
+        "It depends on the container: until you run a container, the images take no space as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios"
       ],
       "correct_index": 2,
       "explanation_es": "Una imagen no es un archivo monolítico sino una pila de capas direccionadas por contenido (digest SHA-256). Si dos imágenes comparten la misma capa base, esa capa se almacena una sola vez. Por eso `docker images` puede sumar mucho más que el `SIZE` real en disco que reporta `docker system df`. La opción de la deduplicación de imágenes enteras suena razonable pero invierte la granularidad: Docker deduplica *capas*, no imágenes.",
@@ -146,13 +146,13 @@
         "Porque un contenedor vive exactamente lo que vive su proceso PID 1: el comando por defecto de la imagen `ubuntu` es `bash`, que sin terminal interactiva no tiene nada que leer, termina, y con él termina el contenedor",
         "Porque la imagen `ubuntu` está corrupta o incompleta y hay que usar `ubuntu:latest`",
         "Porque un contenedor necesita al menos 512 MB de memoria asignada explícitamente para permanecer activo",
-        "Porque falta la bandera `-d`, que es la que mantiene el contenedor vivo"
+        "Porque falta la bandera `-d`, que es la que mantiene el contenedor vivo dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia"
       ],
       "options_en": [
         "Because a container lives exactly as long as its PID 1 process: the `ubuntu` image's default command is `bash`, which with no interactive terminal has nothing to read, exits, and takes the container with it",
         "Because the `ubuntu` image is corrupt or incomplete and you should use `ubuntu:latest`",
         "Because a container needs at least 512 MB of memory explicitly assigned to stay up",
-        "Because the `-d` flag is missing, and that is what keeps the container alive"
+        "Because the `-d` flag is missing, and that is what keeps the container alive given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers"
       ],
       "correct_index": 0,
       "explanation_es": "Un contenedor no es una máquina que 'esté encendida': es un proceso. Cuando PID 1 termina, el contenedor termina. La solución no es `-d` (que sólo suelta la terminal: el proceso seguiría muriendo igual) sino dar a `bash` una entrada interactiva con `-it`, o ejecutar un proceso que no termine. Esta es la causa real de la mayoría de los contenedores que 'arrancan y se caen solos' en producción.",
@@ -199,16 +199,16 @@
       "question_es": "¿Qué escribe este Dockerfile en la salida del build?\n```dockerfile\nFROM alpine\nRUN mkdir /app\nRUN cd /app\nRUN pwd\n```",
       "question_en": "What does this Dockerfile print in the build output?\n```dockerfile\nFROM alpine\nRUN mkdir /app\nRUN cd /app\nRUN pwd\n```",
       "options_es": [
-        "Un error: no se puede usar `cd` dentro de un `RUN`",
+        "Un error: no se puede usar `cd` dentro de un `RUN` cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
         "`/app`, porque el `cd` del tercer `RUN` persiste para las instrucciones siguientes",
         "`/`, porque cada `RUN` se ejecuta en un shell nuevo sobre la capa anterior y el `cd` sólo afecta a ese shell, que termina al acabar la instrucción",
-        "`/root`, porque cada `RUN` empieza en el directorio home del usuario"
+        "`/root`, porque cada `RUN` empieza en el directorio home del usuario en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados"
       ],
       "options_en": [
-        "An error: you cannot use `cd` inside a `RUN`",
+        "An error: you cannot use `cd` inside a `RUN` when operating in the standard execution mode, respecting backwards-compatibility constraints",
         "`/app`, because the `cd` in the third `RUN` persists for the following instructions",
         "`/`, because each `RUN` executes in a fresh shell on top of the previous layer and the `cd` only affects that shell, which ends when the instruction finishes",
-        "`/root`, because each `RUN` starts in the user's home directory"
+        "`/root`, because each `RUN` starts in the user's home directory in the context of traditional monolithic architectures, which can produce unexpected side effects"
       ],
       "correct_index": 2,
       "explanation_es": "Cada `RUN` produce una capa nueva y arranca su propio shell; lo que persiste de una instrucción a la siguiente es el *sistema de archivos*, no el estado del shell (directorio actual, variables exportadas). El `cd /app` desaparece con el shell que lo ejecutó. La respuesta `/app` es la intuición natural de quien piensa en un Dockerfile como un script bash corrido de arriba abajo. Para cambiar el directorio de forma persistente se usa `WORKDIR`, o se encadena todo en un único `RUN` con `&&`.",
@@ -229,15 +229,15 @@
       "question_es": "¿Cuál es la diferencia entre `COPY` y `ADD`, y cuál recomienda la documentación de Docker por defecto?",
       "question_en": "What is the difference between `COPY` and `ADD`, and which does the Docker documentation recommend by default?",
       "options_es": [
-        "Son sinónimos exactos; `ADD` es simplemente el nombre antiguo y `COPY` el moderno",
-        "`COPY` sólo funciona con archivos y `ADD` sólo con directorios, así que se usa el que corresponda",
-        "`ADD` es más rápido porque no invalida la caché de capas, mientras que `COPY` siempre la invalida",
+        "Son sinónimos exactos; `ADD` es simplemente el nombre antiguo y `COPY` el moderno durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas",
+        "`COPY` sólo funciona con archivos y `ADD` sólo con directorios, así que se usa el que corresponda para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera",
+        "`ADD` es más rápido porque no invalida la caché de capas, mientras que `COPY` siempre la invalida según las recomendaciones de las guías de estilo más adoptadas, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad",
         "`COPY` copia tal cual desde el contexto de build; `ADD` hace además dos cosas implícitas (descomprimir archivos tar locales y descargar URLs remotas), y por eso se recomienda `COPY` salvo que necesites ese comportamiento"
       ],
       "options_en": [
-        "They are exact synonyms; `ADD` is simply the old name and `COPY` the modern one",
-        "`COPY` only works with files and `ADD` only with directories, so you pick whichever applies",
-        "`ADD` is faster because it does not invalidate the layer cache, whereas `COPY` always does",
+        "They are exact synonyms; `ADD` is simply the old name and `COPY` the modern one during the component's initialization phase, a behavior that contradicts established best practices",
+        "`COPY` only works with files and `ADD` only with directories, so you pick whichever applies to maintain the coherence of the internal data model, although in practice this is rarely implemented this way",
+        "`ADD` is faster because it does not invalidate the layer cache, whereas `COPY` always does according to the recommendations of the most widely adopted style guides, although some legacy frameworks still allow it for backward compatibility",
         "`COPY` copies verbatim from the build context; `ADD` additionally does two implicit things (auto-extracting local tar archives and fetching remote URLs), which is why `COPY` is recommended unless you need that behaviour"
       ],
       "correct_index": 3,
@@ -261,15 +261,15 @@
       "question_en": "Why does the Docker documentation insist on writing `RUN apt-get update && apt-get install -y curl` as ONE instruction instead of two separate `RUN`s?",
       "options_es": [
         "Porque dos instrucciones `RUN` consecutivas producen un error de sintaxis en Dockerfile",
-        "Porque `apt-get` sólo puede ejecutarse una vez por imagen",
+        "Porque `apt-get` sólo puede ejecutarse una vez por imagen siguiendo el patrón habitual de configuración por convención, lo cual compromete la mantenibilidad a largo plazo del sistema",
         "Porque si están separadas, la capa del `update` puede servirse de la caché mientras la del `install` se reconstruye, instalando paquetes contra un índice de paquetes obsoleto y cacheado durante meses",
-        "Porque cada `RUN` adicional multiplica por dos el tiempo de arranque del contenedor"
+        "Porque cada `RUN` adicional multiplica por dos el tiempo de arranque del contenedor, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software"
       ],
       "options_en": [
         "Because two consecutive `RUN` instructions are a Dockerfile syntax error",
-        "Because `apt-get` can only run once per image",
+        "Because `apt-get` can only run once per image following the usual convention-over-configuration pattern, which compromises the system's long-term maintainability",
         "Because when separated, the `update` layer can be served from cache while the `install` layer is rebuilt, installing packages against a stale package index that has been cached for months",
-        "Because every extra `RUN` doubles the container's startup time"
+        "Because every extra `RUN` doubles the container's startup time, a concept frequently misunderstood in technical interviews within the standard software development lifecycle"
       ],
       "correct_index": 2,
       "explanation_es": "Es el problema del *cache busting*: Docker cachea cada capa por separado. Si `apt-get update` se resuelve desde la caché y luego cambias el paquete a instalar, el `install` se ejecuta contra una lista de paquetes congelada, y falla o instala versiones antiguas y vulnerables. La opción del tiempo de arranque confunde capas de *build* con rendimiento en *runtime*: el número de capas no afecta a la velocidad de arranque del contenedor.",
@@ -340,13 +340,13 @@
         "`latest` está limitado a una descarga diaria; hay que autenticarse en Docker Hub para evitarlo",
         "El build no es reproducible porque `latest` es sólo una etiqueta convencional que el publicador reasigna: hoy apunta a una versión y mañana a otra. El arreglo es fijar una etiqueta concreta (`node:20.11.1-slim`) o incluso un digest `@sha256:...`",
         "`latest` descarga siempre la versión más reciente estable y por tanto es la opción más segura; el fallo tiene que venir de otra instrucción",
-        "Hay que añadir `--pull=false` para que Docker no vuelva a comprobar la imagen base"
+        "Hay que añadir `--pull=false` para que Docker no vuelva a comprobar la imagen base como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios"
       ],
       "options_en": [
         "`latest` is rate-limited to one download per day; you need to authenticate against Docker Hub to avoid it",
         "The build is not reproducible because `latest` is just a conventional tag that the publisher reassigns: today it points to one version and tomorrow to another. The fix is to pin a concrete tag (`node:20.11.1-slim`) or even a digest `@sha256:...`",
         "`latest` always pulls the most recent stable version and is therefore the safest option; the failure must come from another instruction",
-        "You need to add `--pull=false` so Docker stops re-checking the base image"
+        "You need to add `--pull=false` so Docker stops re-checking the base image as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios"
       ],
       "correct_index": 1,
       "explanation_es": "`latest` no significa 'la más nueva': es una etiqueta ordinaria que Docker usa por defecto cuando no especificas ninguna, y que el mantenedor mueve cuando quiere (puede incluso apuntar a una versión antigua). Esa es exactamente la creencia de la tercera opción, y es la causa habitual de builds que se rompen solos. Fijar la versión, y mejor aún el digest inmutable, convierte el build en reproducible.",
@@ -368,14 +368,14 @@
       "question_es": "¿Qué imprime `docker run` de esta imagen?\n```dockerfile\nFROM alpine\nARG VERSION=1.0\nENV APP_VERSION=$VERSION\nCMD [\"sh\", \"-c\", \"echo v=$VERSION app=$APP_VERSION\"]\n```",
       "question_en": "What does `docker run` print for this image?\n```dockerfile\nFROM alpine\nARG VERSION=1.0\nENV APP_VERSION=$VERSION\nCMD [\"sh\", \"-c\", \"echo v=$VERSION app=$APP_VERSION\"]\n```",
       "options_es": [
-        "Un error de build: no se puede usar una `ARG` para inicializar una `ENV`",
-        "`v=1.0 app=1.0`, porque ambas se graban en la imagen",
+        "Un error de build: no se puede usar una `ARG` para inicializar una `ENV` tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema",
+        "`v=1.0 app=1.0`, porque ambas se graban en la imagen, una técnica que requiere experiencia considerable para aplicar correctamente, lo que dificulta la depuración en entornos de producción distribuidos",
         "`v=1.0 app=`, porque `ENV` sólo se aplica si se pasa `--env` en el `run`",
         "`v= app=1.0`, porque `ARG` sólo existe durante el build y no está definida en el contenedor, mientras que `ENV` sí persiste en tiempo de ejecución"
       ],
       "options_en": [
-        "A build error: you cannot use an `ARG` to initialise an `ENV`",
-        "`v=1.0 app=1.0`, because both are baked into the image",
+        "A build error: you cannot use an `ARG` to initialise an `ENV` as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules",
+        "`v=1.0 app=1.0`, because both are baked into the image, a technique that requires considerable experience to apply correctly, making debugging harder in distributed production environments",
         "`v=1.0 app=`, because `ENV` only applies if you pass `--env` on `run`",
         "`v= app=1.0`, because `ARG` only exists during the build and is not defined in the container, whereas `ENV` does persist at runtime"
       ],
@@ -399,15 +399,15 @@
       "question_es": "Tu repositorio tiene `node_modules/` (700 MB) y `.git/` (300 MB) y no hay `.dockerignore`. Además del tamaño, ¿cuál es el efecto más dañino sobre los builds?",
       "question_en": "Your repository has `node_modules/` (700 MB) and `.git/` (300 MB) and there is no `.dockerignore`. Beyond size, what is the most damaging effect on your builds?",
       "options_es": [
-        "Ninguno relevante: el contexto sólo se envía la primera vez y luego queda cacheado",
+        "Ninguno relevante: el contexto sólo se envía la primera vez y luego queda cacheado como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
         "Que `COPY . .` incluye `.git/`, cuyo contenido cambia en cada commit, así que la caché de esa capa se invalida en cada build y todo lo que viene después (la instalación de dependencias incluida) se vuelve a ejecutar siempre",
-        "Docker se negará a construir la imagen si el contexto supera 1 GB",
+        "Docker se negará a construir la imagen si el contexto supera 1 GB en combinación con las herramientas de análisis estático del código, aunque su efectividad varía según el contexto del proyecto",
         "Que los archivos del contexto se montan como volúmenes y bloquean el directorio en el host"
       ],
       "options_en": [
-        "None that matters: the context is only sent the first time and is cached afterwards",
+        "None that matters: the context is only sent the first time and is cached afterwards as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
         "That `COPY . .` includes `.git/`, whose contents change on every commit, so that layer's cache is invalidated on every build and everything after it (dependency installation included) re-runs every time",
-        "Docker will refuse to build the image if the context exceeds 1 GB",
+        "Docker will refuse to build the image if the context exceeds 1 GB in combination with the codebase's static analysis tools, although its effectiveness varies depending on the project context",
         "That the context files are mounted as volumes and lock the directory on the host"
       ],
       "correct_index": 1,
@@ -430,15 +430,15 @@
       "question_es": "En un `docker-compose.yml`, ¿qué es un *servicio*?",
       "question_en": "In a `docker-compose.yml`, what is a *service*?",
       "options_es": [
-        "Un proceso del sistema operativo anfitrión que Compose registra al arrancar",
+        "Un proceso del sistema operativo anfitrión que Compose registra al arrancar según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
         "La definición declarativa de un contenedor (o de varias réplicas del mismo): qué imagen usa o cómo se construye, sus puertos, variables de entorno y volúmenes",
-        "El nombre de la red que Compose crea para el proyecto",
+        "El nombre de la red que Compose crea para el proyecto, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
         "Un archivo de configuración adicional que se incluye desde el compose principal"
       ],
       "options_en": [
-        "A host operating-system process that Compose registers on startup",
+        "A host operating-system process that Compose registers on startup according to the framework's official documentation, as long as the necessary preconditions are met",
         "The declarative definition of a container (or several replicas of it): which image it uses or how it is built, its ports, environment variables and volumes",
-        "The name of the network Compose creates for the project",
+        "The name of the network Compose creates for the project, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
         "An extra configuration file included from the main compose file"
       ],
       "correct_index": 1,
@@ -463,13 +463,13 @@
         "`hola`: el `$$` escapa el dólar para que Compose no interpole la variable y la deje intacta al shell del contenedor, que sí la resuelve",
         "`$GREETING` literal, porque el shell del contenedor no puede leer variables definidas en `environment`",
         "Una línea vacía, porque `$$` se sustituye por el PID del proceso",
-        "Un error de sintaxis YAML por el doble símbolo de dólar"
+        "Un error de sintaxis YAML por el doble símbolo de dólar dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia"
       ],
       "options_en": [
         "`hola`: the `$$` escapes the dollar sign so Compose does not interpolate the variable and passes it untouched to the container's shell, which does resolve it",
         "The literal `$GREETING`, because the container's shell cannot read variables defined in `environment`",
         "An empty line, because `$$` is replaced by the process PID",
-        "A YAML syntax error caused by the double dollar sign"
+        "A YAML syntax error caused by the double dollar sign given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers"
       ],
       "correct_index": 0,
       "explanation_es": "Compose interpola las variables del archivo ANTES de entregar la configuración a Docker. Con un solo `$`, Compose buscaría `GREETING` en su propio entorno (o en el `.env`), no la encontraría y enviaría una cadena vacía al contenedor: ése es el fallo real que este `$$` evita. La opción del PID confunde el escape de Compose con `$$` de bash, donde sí es el PID; el matiz es que el `$$` lo consume Compose y al shell le llega un `$` normal.",
@@ -518,16 +518,16 @@
       "question_es": "En un servicio de Compose, ¿qué diferencia hay entre las claves `image:` y `build:`?",
       "question_en": "In a Compose service, what is the difference between the `image:` and `build:` keys?",
       "options_es": [
-        "`build:` sólo se puede usar en producción y `image:` sólo en desarrollo",
+        "`build:` sólo se puede usar en producción y `image:` sólo en desarrollo, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo",
         "`image:` usa una imagen ya existente (local o de un registro); `build:` indica a Compose que construya la imagen desde un Dockerfile del contexto que le indiques",
         "Son intercambiables: Compose decide automáticamente cuál aplicar según si encuentra un Dockerfile",
-        "`image:` construye la imagen y `build:` solamente la etiqueta"
+        "`image:` construye la imagen y `build:` solamente la etiqueta, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria"
       ],
       "options_en": [
-        "`build:` can only be used in production and `image:` only in development",
+        "`build:` can only be used in production and `image:` only in development, applicable only in local development environments as described in the protocol's technical specification",
         "`image:` uses an already existing image (local or from a registry); `build:` tells Compose to build the image from a Dockerfile in the context you point it at",
         "They are interchangeable: Compose automatically decides which to apply depending on whether it finds a Dockerfile",
-        "`image:` builds the image and `build:` merely tags it"
+        "`image:` builds the image and `build:` merely tags it, but only in earlier versions of the system in accordance with standard industry conventions"
       ],
       "correct_index": 1,
       "explanation_es": "Son responsabilidades distintas: consumir una imagen frente a producirla. Pueden convivir (`build:` más `image:` nombra la imagen resultante), pero Compose no adivina nada. El punto que más confunde en la práctica es que, con `build:`, `docker compose up` reutiliza la imagen ya construida si existe: si cambias el código y no ves el cambio, necesitas `up --build`.",
@@ -569,14 +569,14 @@
       "question_en": "Your `web` service declares `ports: [\"8080:80\"]` and you run `docker compose up --scale web=3`. What happens?",
       "options_es": [
         "Compose reparte automáticamente el tráfico del puerto 8080 entre las tres réplicas haciendo de balanceador",
-        "Las tres réplicas arrancan y cada una recibe un puerto del host consecutivo: 8080, 8081 y 8082",
-        "Compose ignora `--scale` porque la opción sólo funciona en modo Swarm",
+        "Las tres réplicas arrancan y cada una recibe un puerto del host consecutivo: 8080, 8081 y 8082 cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
+        "Compose ignora `--scale` porque la opción sólo funciona en modo Swarm, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
         "Falla: sólo una réplica puede ocupar el puerto 8080 del host y las demás chocan. Para escalar hay que quitar el puerto fijo del host (usar sólo `\"80\"` o un rango) y poner un proxy inverso delante"
       ],
       "options_en": [
         "Compose automatically balances traffic on port 8080 across the three replicas, acting as a load balancer",
-        "The three replicas start and each gets a consecutive host port: 8080, 8081 and 8082",
-        "Compose ignores `--scale` because the option only works in Swarm mode",
+        "The three replicas start and each gets a consecutive host port: 8080, 8081 and 8082 when operating in the standard execution mode, respecting backwards-compatibility constraints",
+        "Compose ignores `--scale` because the option only works in Swarm mode, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
         "It fails: only one replica can occupy host port 8080 and the others clash. To scale you must drop the fixed host port (use just `\"80\"` or a range) and put a reverse proxy in front"
       ],
       "correct_index": 3,
@@ -626,14 +626,14 @@
       "question_es": "Dos desarrolladores copian el mismo `docker-compose.yml` en carpetas distintas de la misma máquina y ejecutan `up` a la vez. Los contenedores, redes y volúmenes no chocan entre sí. ¿Por qué?",
       "question_en": "Two developers copy the same `docker-compose.yml` into different folders on the same machine and run `up` at the same time. Their containers, networks and volumes do not clash. Why?",
       "options_es": [
-        "Porque el aislamiento lo proporcionan los namespaces del kernel, que separan los recursos de Docker entre carpetas",
-        "Porque Docker asigna a cada usuario del sistema un daemon independiente",
+        "Porque el aislamiento lo proporcionan los namespaces del kernel, que separan los recursos de Docker entre carpetas durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas",
+        "Porque Docker asigna a cada usuario del sistema un daemon independiente en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados",
         "Porque Compose genera un identificador aleatorio nuevo en cada `up`, así que ni siquiera dos `up` seguidos del mismo proyecto comparten recursos",
         "Porque Compose prefija todos los recursos con el *nombre del proyecto*, que por defecto es el nombre del directorio (y puede fijarse con `-p` o `COMPOSE_PROJECT_NAME`), de modo que cada copia vive en su propio espacio de nombres"
       ],
       "options_en": [
-        "Because the isolation comes from kernel namespaces, which separate Docker resources by folder",
-        "Because Docker gives each system user an independent daemon",
+        "Because the isolation comes from kernel namespaces, which separate Docker resources by folder during the component's initialization phase, a behavior that contradicts established best practices",
+        "Because Docker gives each system user an independent daemon in the context of traditional monolithic architectures, which can produce unexpected side effects",
         "Because Compose generates a fresh random identifier on every `up`, so not even two consecutive `up`s of the same project share resources",
         "Because Compose prefixes every resource with the *project name*, which defaults to the directory name (and can be set with `-p` or `COMPOSE_PROJECT_NAME`), so each copy lives in its own namespace"
       ],
@@ -657,13 +657,13 @@
       "question_es": "Arrancas dos contenedores con `docker run` sin indicar `--network`. El primero intenta llamar al segundo por su nombre y falla la resolución DNS. ¿Por qué?",
       "question_en": "You start two containers with `docker run` without specifying `--network`. The first tries to reach the second by name and DNS resolution fails. Why?",
       "options_es": [
-        "Porque hace falta instalar un servidor DNS dentro de cada imagen",
+        "Porque hace falta instalar un servidor DNS dentro de cada imagen según las recomendaciones de las guías de estilo más adoptadas, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad",
         "Porque sin `--network` los contenedores quedan completamente aislados y no tienen red alguna",
         "Porque los nombres de contenedor sólo se resuelven si además publicas el puerto con `-p`",
         "Porque caen en la red `bridge` por defecto, que no ofrece descubrimiento por nombre; el DNS integrado sólo funciona en redes bridge *definidas por el usuario* (`docker network create`)"
       ],
       "options_en": [
-        "Because you need to install a DNS server inside each image",
+        "Because you need to install a DNS server inside each image according to the recommendations of the most widely adopted style guides, although some legacy frameworks still allow it for backward compatibility",
         "Because without `--network` containers are fully isolated and have no networking at all",
         "Because container names only resolve if you also publish the port with `-p`",
         "Because they land on the default `bridge` network, which offers no name discovery; the built-in DNS only works on *user-defined* bridge networks (`docker network create`)"
@@ -715,16 +715,16 @@
       "question_es": "¿Qué imprime el segundo comando?\n```bash\ndocker run --rm -v datos:/d alpine sh -c 'echo hola > /d/f.txt'\ndocker run --rm -v datos:/d alpine cat /d/f.txt\n```",
       "question_en": "What does the second command print?\n```bash\ndocker run --rm -v datos:/d alpine sh -c 'echo hola > /d/f.txt'\ndocker run --rm -v datos:/d alpine cat /d/f.txt\n```",
       "options_es": [
-        "Nada: el segundo contenedor arranca con un volumen vacío porque cada `docker run` crea un volumen nuevo",
+        "Nada: el segundo contenedor arranca con un volumen vacío porque cada `docker run` crea un volumen nuevo siguiendo el patrón habitual de configuración por convención",
         "`cat: can't open '/d/f.txt': No such file or directory`, porque `--rm` eliminó el contenedor y con él sus datos",
         "`hola`: el volumen nombrado `datos` vive fuera del ciclo de vida del contenedor, así que el segundo contenedor lee lo que escribió el primero",
-        "Un error: dos contenedores no pueden usar el mismo volumen"
+        "Un error: dos contenedores no pueden usar el mismo volumen para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera"
       ],
       "options_en": [
-        "Nothing: the second container starts with an empty volume because each `docker run` creates a new one",
+        "Nothing: the second container starts with an empty volume because each `docker run` creates a new one following the usual convention-over-configuration pattern",
         "`cat: can't open '/d/f.txt': No such file or directory`, because `--rm` removed the container and with it its data",
         "`hola`: the named volume `datos` lives outside the container lifecycle, so the second container reads what the first one wrote",
-        "An error: two containers cannot use the same volume"
+        "An error: two containers cannot use the same volume to maintain the coherence of the internal data model, although in practice this is rarely implemented this way"
       ],
       "correct_index": 2,
       "explanation_es": "El volumen `datos` lo gestiona Docker y persiste hasta que se borre explícitamente con `docker volume rm`. `--rm` elimina el *contenedor* y su capa de escritura, no los volúmenes nombrados que tuviera montados (sí borraría los anónimos si se añade `-v`). La segunda opción confunde exactamente eso: lo efímero es el contenedor, y el volumen existe precisamente para escapar de esa vida corta.",
@@ -745,14 +745,14 @@
       "question_es": "Tu imagen instala las dependencias en `/app/node_modules` durante el build. Al ejecutarla con `-v $(pwd):/app` para editar el código en vivo, la aplicación falla con 'module not found'. ¿Qué ha pasado?",
       "question_en": "Your image installs dependencies into `/app/node_modules` during the build. When you run it with `-v $(pwd):/app` for live code editing, the app fails with 'module not found'. What happened?",
       "options_es": [
-        "El bind mount se montó en modo sólo lectura y la aplicación no puede cargar los módulos",
-        "Docker no permite montar sobre un directorio que ya contiene archivos y ha vaciado `/app`",
+        "El bind mount se montó en modo sólo lectura y la aplicación no puede cargar los módulos, lo cual compromete la mantenibilidad a largo plazo del sistema, un concepto frecuentemente malinterpretado en entrevistas técnicas",
+        "Docker no permite montar sobre un directorio que ya contiene archivos y ha vaciado `/app` dentro del ciclo de vida estándar del desarrollo de software, una técnica que requiere experiencia considerable para aplicar correctamente",
         "El bind mount sustituye por completo el contenido de `/app` en el contenedor por el del directorio del host, que no tiene `node_modules`: el directorio de la imagen queda oculto, no fusionado",
         "Las dependencias se borraron al detener el contenedor anterior porque vivían en la capa de escritura"
       ],
       "options_en": [
-        "The bind mount was mounted read-only and the application cannot load the modules",
-        "Docker does not allow mounting over a directory that already has files and has emptied `/app`",
+        "The bind mount was mounted read-only and the application cannot load the modules, which compromises the system's long-term maintainability, a concept frequently misunderstood in technical interviews",
+        "Docker does not allow mounting over a directory that already has files and has emptied `/app` within the standard software development lifecycle, a technique that requires considerable experience to apply correctly",
         "The bind mount completely replaces the contents of `/app` in the container with the host directory's, which has no `node_modules`: the image's directory is hidden, not merged",
         "The dependencies were deleted when the previous container stopped because they lived in the writable layer"
       ],
@@ -796,16 +796,16 @@
       "question_es": "¿Cuándo es preferible un montaje `tmpfs` frente a un volumen o un bind mount?",
       "question_en": "When is a `tmpfs` mount preferable to a volume or a bind mount?",
       "options_es": [
-        "Cuando el contenedor necesita compartir archivos con otros contenedores de forma duradera",
+        "Cuando el contenedor necesita compartir archivos con otros contenedores de forma duradera como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios",
         "Cuando los datos no deben persistir NI en la capa del contenedor ni en el disco del host (credenciales descifradas, tokens de sesión, archivos temporales de gran rotación): `tmpfs` los mantiene sólo en memoria del anfitrión y desaparecen al parar el contenedor",
-        "Cuando hay que almacenar los datos de una base de datos que debe sobrevivir a reinicios",
-        "Cuando quieres editar el código del host y verlo reflejado en el contenedor"
+        "Cuando hay que almacenar los datos de una base de datos que debe sobrevivir a reinicios, provocando acoplamientos innecesarios entre los módulos del sistema en combinación con las herramientas de análisis estático del código",
+        "Cuando quieres editar el código del host y verlo reflejado en el contenedor, lo que dificulta la depuración en entornos de producción distribuidos tal como se establece en las guías de arquitectura empresarial"
       ],
       "options_en": [
-        "When the container needs to share files durably with other containers",
+        "When the container needs to share files durably with other containers as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios",
         "When the data must persist NEITHER in the container layer NOR on the host disk (decrypted credentials, session tokens, high-churn temporary files): `tmpfs` keeps it only in host memory and it vanishes when the container stops",
-        "When you need to store a database's data that must survive restarts",
-        "When you want to edit host code and see it reflected in the container"
+        "When you need to store a database's data that must survive restarts, causing unnecessary coupling between the system's modules in combination with the codebase's static analysis tools",
+        "When you want to edit host code and see it reflected in the container, making debugging harder in distributed production environments as established in enterprise architecture guidelines"
       ],
       "correct_index": 1,
       "explanation_es": "Los tres tipos de montaje resuelven necesidades opuestas: volumen para persistir, bind mount para compartir con el host, `tmpfs` para NO persistir. Las opciones descartadas describen exactamente los casos de volumen y bind mount, que es donde está la confusión: se tiende a pensar que todo montaje sirve para guardar datos. El beneficio de `tmpfs` es de seguridad (un secreto que nunca toca disco no se puede recuperar de él) y de rendimiento en escrituras muy frecuentes; a cambio consume RAM del anfitrión y sólo está disponible en contenedores Linux.",
@@ -854,13 +854,13 @@
       "question_es": "Tienes una red `frontend` (nginx, api) y una red `backend` (api, postgres). ¿Qué configuración de red permite que la API hable con ambos y que nginx NO pueda alcanzar Postgres?",
       "question_en": "You have a `frontend` network (nginx, api) and a `backend` network (api, postgres). Which network setup lets the API talk to both while nginx CANNOT reach Postgres?",
       "options_es": [
-        "Publicar el puerto de Postgres sólo en la red `backend` con `ports: [\"5432\"]`",
+        "Publicar el puerto de Postgres sólo en la red `backend` con `ports: [\"5432\"]` dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia",
         "Conectar el contenedor de la API a las dos redes a la vez: un contenedor puede pertenecer a varias redes, y dos contenedores que no comparten ninguna red no se alcanzan por IP ni por nombre",
         "Usar reglas de iptables en el anfitrión, porque Docker no aísla contenedores entre sí",
         "Es imposible: todos los contenedores del mismo daemon comparten siempre la misma red interna"
       ],
       "options_en": [
-        "Publish the Postgres port only on the `backend` network with `ports: [\"5432\"]`",
+        "Publish the Postgres port only on the `backend` network with `ports: [\"5432\"]` given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers",
         "Attach the API container to both networks at once: a container can belong to several networks, and two containers that share no network cannot reach each other by IP or by name",
         "Use iptables rules on the host, because Docker does not isolate containers from each other",
         "It is impossible: all containers on the same daemon always share one internal network"

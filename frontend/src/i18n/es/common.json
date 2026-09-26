@@ -40,7 +40,9 @@
     "errGeneric": "Algo salió mal. Intenta de nuevo.",
     "orSeparator": "o",
     "continueWithGitHub": "Continuar con GitHub",
-    "continueWithGoogle": "Continuar con Google"
+    "continueWithGoogle": "Continuar con Google",
+    "ageLabel": "Confirmo que tengo 13 años o más",
+    "errAge": "Debes confirmar que tienes 13 años o más"
   },
   "onboarding": {
     "headline": "Aprende Python de 0 a AI Engineer",
@@ -273,7 +275,16 @@
       "placement": "Nivelación",
       "exam": "Examen"
     },
-    "mastery": "Dominio"
+    "mastery": "Dominio",
+    "reason": {
+      "skill_pinned": "Skill elegida",
+      "spaced_repetition_due": "Repaso pendiente",
+      "low_mastery": "Practicar lo débil",
+      "all_mastered": "Refuerzo general",
+      "no_skills": "Sin skills",
+      "difficulty": "Dificultad objetivo: {{val}}",
+      "expected": "Prob. acierto: {{val}}%"
+    }
   },
   "duel": {
     "loading": "Cargando...",
@@ -498,23 +509,50 @@
     "privacyL11": "Eliminación (solicita el borrado desde Perfil → Eliminar cuenta)",
     "privacyL12": "Oposición y limitación del tratamiento",
     "privacyRights": "Para ejercer tus derechos:",
+    "privacyGdprTitle": "Derechos RGPD (EEE y Reino Unido)",
+    "privacyGdprDesc": "Acceso (Art. 15), rectificación (Art. 16), supresión (Art. 17), limitación (Art. 18), portabilidad (Art. 20), oposición (Art. 21) y reclamación ante la autoridad de control.",
+    "privacyCcpaTitle": "Derechos CCPA/CPRA (California)",
+    "privacyCcpaDesc": "Saber, eliminar, optar por no participar en venta/compartición, no discriminación y corrección.",
+    "privacyCcpaOptOut": "No vender/compartir mis datos",
+    "privacyCcpaOptedOut": "Has optado por no participar en la venta de datos",
+    "privacyCoppaTitle": "Menores (COPPA)",
+    "privacyCoppaDesc": "Whetzy es para usuarios de 13 años en adelante. No recopilamos datos de menores de 13 años.",
+    "privacyCanSpam": "Todos los correos incluyen mecanismo de cancelación de suscripción (CAN-SPAM).",
+    "privacyCookies": "Solo usamos cookies técnicas necesarias. No se requiere banner de cookies.",
     "privacyH6": "6. Contacto",
     "termsTitle": "Términos de Servicio",
     "termsH1": "1. Aceptación",
     "termsP1": "Al usar Whetzy aceptas estos Términos. Si no los aceptas, no uses el servicio.",
-    "termsH2": "2. Uso aceptable",
+    "termsH2": "2. Elegibilidad",
+    "termsP2": "Debes tener al menos 13 años. Los menores de 18 necesitan consentimiento de un padre o tutor.",
+    "termsH3": "3. Planes y precios",
+    "termsP3plans": "Free (gratis), Pro (14,99 $/mes), Pro Max (19,99 $/mes — tutor IA ilimitado), Creador (99,99 $/mes — marketplace). Certificaciones: 39,99 $ de pago único con reintentos incluidos.",
+    "termsH4": "4. Pagos y cancelación",
+    "termsP4payments": "Suscripciones gestionadas por Stripe. Puedes cancelar en cualquier momento desde Ajustes; conservas el acceso hasta el final del período facturado.",
+    "termsH5": "5. Desistimiento UE",
+    "termsP5withdrawal": "Si resides en la UE, puedes desistir en 14 días (Directiva 2011/83/UE). Al iniciar el servicio digital, aceptas renunciar al desistimiento. Contacta support@whetzy.com para ejercerlo.",
+    "termsH6": "6. Renovación automática",
+    "termsP6renewal": "Las suscripciones se renuevan automáticamente. Te enviaremos un recordatorio al menos 7 días antes.",
+    "termsH7": "7. Uso aceptable",
     "termsL1": "No automatices ni extraigas el contenido sin autorización",
     "termsL2": "No compartas credenciales de acceso",
     "termsL3": "No intentes vulnerar la seguridad del servicio",
-    "termsH3": "3. Propiedad intelectual",
-    "termsP3": "El contenido educativo, algoritmos y diseño son propiedad de Whetzy. El código fuente de la plataforma está publicado bajo licencia MIT.",
-    "termsH4": "4. Limitación de responsabilidad",
-    "termsP4": "El servicio se proporciona \"tal cual\". No garantizamos resultados de aprendizaje específicos ni disponibilidad ininterrumpida.",
-    "termsH5": "5. Modificaciones",
-    "termsP5": "Podemos modificar estos Términos notificándote con 15 días de antelación. El uso continuado implica aceptación.",
-    "termsH6": "6. Ley aplicable",
-    "termsP6": "Estos Términos se rigen por la ley española y los tribunales competentes de Madrid.",
-    "termsH7": "7. Contacto"
+    "termsH8": "8. Propiedad intelectual",
+    "termsP8": "El contenido educativo, algoritmos y diseño son propiedad de Whetzy. El código fuente de la plataforma está publicado bajo licencia MIT.",
+    "termsH9": "9. Tutor IA",
+    "termsP9": "El tutor IA genera explicaciones usando modelos de lenguaje de terceros. Las respuestas son orientativas y pueden contener errores. No se envían datos personales al proveedor de IA.",
+    "termsH10": "10. Limitación de responsabilidad",
+    "termsP10": "El servicio se proporciona \"tal cual\". No garantizamos resultados de aprendizaje ni disponibilidad ininterrumpida. Para usuarios de la UE, esta cláusula no limita los derechos de protección al consumidor.",
+    "termsH11": "11. Modificaciones",
+    "termsP11": "Podemos modificar estos Términos notificándote con 30 días de antelación. El uso continuado implica aceptación.",
+    "termsH12": "12. Ley aplicable",
+    "termsP12": "Para usuarios de la UE: nada en estos Términos limita tus derechos bajo las leyes de protección al consumidor. Puedes reclamar en la plataforma ODR de la UE.",
+    "termsH13": "13. Contacto"
+  },
+  "checkout": {
+    "euWithdrawalWaiver": "Acepto que el servicio digital se active de inmediato y reconozco que pierdo mi derecho de desistimiento de 14 días una vez que el contenido se suministre (Art. 16.m, Directiva 2011/83/UE).",
+    "euWithdrawalRequired": "Debes aceptar la renuncia al desistimiento para continuar.",
+    "renewalNotice": "Tu suscripción se renovará automáticamente. Te enviaremos un recordatorio al menos 7 días antes de la renovación."
   },
   "deleteAccount": {
     "title": "Eliminar cuenta",
@@ -609,7 +647,9 @@
     "copied": "Enlace copiado",
     "shareHint": "Comparte este enlace con quien tenga que comprobarlo. No hace falta que tenga cuenta.",
     "titlePreparation": "Certificado Whetzy de preparación",
-    "preparationNote": "Acredita la preparación con Whetzy para esta certificación. No sustituye al examen oficial del proveedor."
+    "preparationNote": "Acredita la preparación con Whetzy para esta certificación. No sustituye al examen oficial del proveedor.",
+    "qrAlt": "Código QR de verificación del certificado",
+    "downloadBadge": "Descargar credencial Open Badge"
   },
   "admin": {
     "title": "Panel de administración",
@@ -920,7 +960,63 @@
     "startPractice": "Practicar ahora",
     "done": "Listo"
   },
+  "wallet": {
+    "title": "Cartera",
+    "balance": "Saldo",
+    "credits": "créditos",
+    "expiresIn": "Caducan en {{days}} días",
+    "earnCredits": "Cómo ganar créditos",
+    "spendCredits": "En qué gastarlos",
+    "referral": "Invitar amigos",
+    "referralDesc": "Comparte tu código y gana créditos cuando se registren",
+    "copyCode": "Copiar código",
+    "copied": "¡Copiado!",
+    "shareLink": "Compartir enlace",
+    "promo": "Código promocional",
+    "promoPlaceholder": "Ingresa tu código",
+    "redeem": "Canjear",
+    "redeemSuccess": "¡{{credits}} créditos añadidos!",
+    "redeemError": "Código inválido o expirado",
+    "perModule": "por módulo",
+    "perWeek": "por semana",
+    "perMonth": "por mes",
+    "once": "una vez",
+    "noBalance": "Aún no tienes créditos. ¡Empieza a estudiar para ganarlos!"
+  },
   "common": {
     "loading": "Cargando…"
+  },
+  "statusTitle": "Estado del sistema",
+  "statusOperational": "Todos los sistemas operativos",
+  "statusDegraded": "Rendimiento degradado",
+  "statusDown": "Sistema no disponible",
+  "statusApi": "API",
+  "statusDb": "Base de datos",
+  "statusLastChecked": "Última verificación",
+  "statusChecking": "Verificando...",
+  "playground": {
+    "title": "Playground",
+    "run": "Ejecutar",
+    "running": "Ejecutando…",
+    "loadingRuntime": "Cargando runtime…",
+    "loadingEditor": "Cargando editor…",
+    "output": "Salida",
+    "noOutput": "(sin salida)",
+    "timedOut": "Tiempo límite excedido (10 s)",
+    "runToSee": "Escribe código y pulsa Ejecutar para ver la salida.",
+    "history": "Historial",
+    "historyTitle": "Historial",
+    "clearHistory": "Borrar",
+    "noHistory": "Aún no has ejecutado nada.",
+    "openPlayground": "Playground"
+  },
+  "project": {
+    "title": "Proyectos",
+    "noProjects": "Aún no hay proyectos disponibles.",
+    "notFound": "Proyecto no encontrado",
+    "step": "Paso",
+    "runTests": "Probar",
+    "testsPassed": "✅ ¡Todos los tests pasaron!",
+    "completed": "¡Proyecto completado!"
   }
 }

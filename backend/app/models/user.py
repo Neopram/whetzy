@@ -62,6 +62,7 @@ class User(Base):
     subscription_status: Mapped[str | None] = mapped_column(String(32), nullable=True)  # active|canceled|past_due|trialing
     subscription_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro|creator (ADR-41)
     subscription_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    eu_withdrawal_waiver_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
 
     # Onboarding (24.3 / 34.11): índice de la opción elegida en cada pregunta
@@ -73,6 +74,16 @@ class User(Base):
     # Ligas opcionales (35.4): fuera de la clasificación, sin sumar XP de liga
     # y sin aparecer en la de nadie. El XP y el nivel propios siguen igual.
     leagues_opt_out: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=false(), nullable=False
+    )
+
+    # Age gate (19.11): user confirmed they are ≥13 years old at registration.
+    age_confirmed: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=false(), nullable=False
+    )
+
+    # CCPA/CPRA opt-out (21.3): user opted out of sale/sharing of personal data.
+    ccpa_opt_out: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=false(), nullable=False
     )
 

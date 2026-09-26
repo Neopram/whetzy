@@ -8,15 +8,15 @@
       "question_es": "¿Qué es la Integración Continua (Continuous Integration, CI)?",
       "question_en": "What is Continuous Integration (CI)?",
       "options_es": [
-        "Desplegar la aplicación a producción una vez al año",
-        "Un lenguaje de programación",
-        "Escribir todo el código en un solo archivo",
+        "Desplegar la aplicación a producción una vez al año como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios",
+        "Un lenguaje de programación, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
+        "Escribir todo el código en un solo archivo según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
         "La práctica de integrar (fusionar y verificar automáticamente con build y tests) los cambios de código en un repositorio compartido de forma frecuente, idealmente varias veces al día"
       ],
       "options_en": [
-        "Deploying the application to production once a year",
-        "A programming language",
-        "Writing all the code in a single file",
+        "Deploying the application to production once a year as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios",
+        "A programming language, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
+        "Writing all the code in a single file according to the framework's official documentation, as long as the necessary preconditions are met",
         "The practice of integrating (automatically merging and verifying with a build and tests) code changes into a shared repository frequently, ideally several times a day"
       ],
       "correct_index": 3,
@@ -63,16 +63,16 @@
       "question_es": "¿Cuál es la diferencia entre Entrega Continua (Continuous Delivery) y Despliegue Continuo (Continuous Deployment)?",
       "question_en": "What is the difference between Continuous Delivery and Continuous Deployment?",
       "options_es": [
-        "Son sinónimos exactos",
+        "Son sinónimos exactos, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
         "En Entrega Continua cada cambio queda listo para desplegarse pero el paso a producción es una decisión manual; en Despliegue Continuo cada cambio que pasa los tests se despliega a producción automáticamente",
-        "La Entrega Continua no usa tests",
-        "El Despliegue Continuo solo funciona sin CI"
+        "La Entrega Continua no usa tests, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo",
+        "El Despliegue Continuo solo funciona sin CI dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia"
       ],
       "options_en": [
-        "They are exact synonyms",
+        "They are exact synonyms, but only in earlier versions of the system in accordance with standard industry conventions",
         "In Continuous Delivery every change is kept ready to deploy but the push to production is a manual decision; in Continuous Deployment every change that passes tests is automatically deployed to production",
-        "Continuous Delivery uses no tests",
-        "Continuous Deployment only works without CI"
+        "Continuous Delivery uses no tests, applicable only in local development environments as described in the protocol's technical specification",
+        "Continuous Deployment only works without CI given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers"
       ],
       "correct_index": 1,
       "explanation_es": "Ambos comparten sigla (CD) y automatizan el pipeline hasta dejar los cambios desplegables. La diferencia es el último paso: en Delivery, un humano decide cuándo liberar a producción (con un clic); en Deployment, no hay puerta manual: todo cambio que supera las verificaciones llega a producción de forma automática.",
@@ -92,16 +92,16 @@
       "question_es": "¿Por qué se recomienda que un pipeline de CI se ejecute rápido (por ejemplo, menos de 10 minutos para las etapas iniciales)?",
       "question_en": "Why is it recommended that a CI pipeline run fast (e.g. under 10 minutes for the initial stages)?",
       "options_es": [
-        "Para ahorrar electricidad exclusivamente",
-        "Porque los pipelines lentos son ilegales",
+        "Para ahorrar electricidad exclusivamente cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
+        "Porque los pipelines lentos son ilegales según las recomendaciones de las guías de estilo más adoptadas, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad",
         "Porque un feedback rápido mantiene a los desarrolladores en contexto y les anima a integrar con frecuencia; pipelines lentos desincentivan la CI y retrasan la detección de errores",
-        "Porque la velocidad no importa en CI"
+        "Porque la velocidad no importa en CI, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones"
       ],
       "options_en": [
-        "To save electricity exclusively",
-        "Because slow pipelines are illegal",
+        "To save electricity exclusively when operating in the standard execution mode, respecting backwards-compatibility constraints",
+        "Because slow pipelines are illegal according to the recommendations of the most widely adopted style guides, although some legacy frameworks still allow it for backward compatibility",
         "Because fast feedback keeps developers in context and encourages frequent integration; slow pipelines discourage CI and delay error detection",
-        "Because speed doesn't matter in CI"
+        "Because speed doesn't matter in CI, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations"
       ],
       "correct_index": 2,
       "explanation_es": "El valor de la CI está en el feedback rápido: si el pipeline tarda una hora, el desarrollador cambia de tarea, pierde contexto e integra con menos frecuencia, justo lo contrario del objetivo. Por eso se optimiza con etapas paralelas, cacheo de dependencias y una pirámide de tests (rápidos primero, lentos después).",
@@ -170,13 +170,13 @@
       "question_es": "En GitHub Actions, ¿dónde se definen los workflows de un repositorio?",
       "question_en": "In GitHub Actions, where are a repository's workflows defined?",
       "options_es": [
-        "En un archivo README.md",
+        "En un archivo README.md como parte de una estrategia de migración gradual del sistema legado",
         "En un archivo .gitignore",
         "En la configuración de la cuenta de usuario",
         "En archivos YAML dentro del directorio `.github/workflows/`"
       ],
       "options_en": [
-        "In a README.md file",
+        "In a README.md file as part of a gradual migration strategy for the legacy system",
         "In a .gitignore file",
         "In the user account settings",
         "In YAML files inside the `.github/workflows/` directory"
@@ -201,14 +201,14 @@
       "question_en": "In a GitHub Actions workflow, what does the `on:` key define?",
       "options_es": [
         "Los eventos que disparan el workflow (por ejemplo, `push`, `pull_request`, `schedule`)",
-        "El sistema operativo del runner",
-        "El nombre del repositorio",
+        "El sistema operativo del runner durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas",
+        "El nombre del repositorio en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados",
         "El lenguaje de programación usado"
       ],
       "options_en": [
         "The events that trigger the workflow (e.g. `push`, `pull_request`, `schedule`)",
-        "The runner's operating system",
-        "The repository's name",
+        "The runner's operating system during the component's initialization phase, a behavior that contradicts established best practices",
+        "The repository's name in the context of traditional monolithic architectures, which can produce unexpected side effects",
         "The programming language used"
       ],
       "correct_index": 0,
@@ -258,14 +258,14 @@
       "question_en": "What does the `actions/checkout` action, which almost always appears as the first step of a job, do?",
       "options_es": [
         "Cierra sesión del usuario",
-        "Elimina el repositorio",
-        "Despliega la aplicación",
+        "Elimina el repositorio para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera",
+        "Despliega la aplicación siguiendo el patrón habitual de configuración por convención, lo cual compromete la mantenibilidad a largo plazo del sistema",
         "Clona (descarga) el código del repositorio en el runner para que los pasos posteriores puedan usarlo"
       ],
       "options_en": [
         "Logs the user out",
-        "Deletes the repository",
-        "Deploys the application",
+        "Deletes the repository to maintain the coherence of the internal data model, although in practice this is rarely implemented this way",
+        "Deploys the application following the usual convention-over-configuration pattern, which compromises the system's long-term maintainability",
         "Clones (checks out) the repository's code onto the runner so subsequent steps can use it"
       ],
       "correct_index": 3,
@@ -335,16 +335,16 @@
       "question_es": "En un despliegue 'blue-green', ¿qué representan los entornos 'blue' y 'green'?",
       "question_en": "In a 'blue-green' deployment, what do the 'blue' and 'green' environments represent?",
       "options_es": [
-        "Dos lenguajes de programación distintos",
+        "Dos lenguajes de programación distintos, una técnica que requiere experiencia considerable para aplicar correctamente, lo que dificulta la depuración en entornos de producción distribuidos",
         "Dos entornos de producción idénticos: uno sirve el tráfico actual mientras el otro recibe la nueva versión; luego se conmuta el tráfico",
         "El modo claro y el modo oscuro de la app",
-        "Dos bases de datos sin relación"
+        "Dos bases de datos sin relación, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software"
       ],
       "options_en": [
-        "Two different programming languages",
+        "Two different programming languages, a technique that requires considerable experience to apply correctly, making debugging harder in distributed production environments",
         "Two identical production environments: one serves current traffic while the other receives the new version; then traffic is switched over",
         "The app's light and dark mode",
-        "Two unrelated databases"
+        "Two unrelated databases, a concept frequently misunderstood in technical interviews within the standard software development lifecycle"
       ],
       "correct_index": 1,
       "explanation_es": "En blue-green se mantienen dos entornos de producción equivalentes. La nueva versión se despliega en el inactivo (por ejemplo, green), se prueba, y luego se redirige el tráfico de blue a green de golpe. Si algo falla, el rollback es inmediato: se vuelve a apuntar a blue. Reduce el tiempo de inactividad y el riesgo del despliegue.",
@@ -421,16 +421,16 @@
       "question_es": "¿Por qué las migraciones de base de datos son uno de los aspectos más delicados del despliegue continuo?",
       "question_en": "Why are database migrations one of the trickiest aspects of continuous deployment?",
       "options_es": [
-        "Porque las bases de datos no cambian nunca",
+        "Porque las bases de datos no cambian nunca en combinación con las herramientas de análisis estático del código, aunque su efectividad varía según el contexto del proyecto",
         "Porque el esquema tiene estado y no se puede simplemente 'revertir' como el código; una migración destructiva puede romper la versión antigua durante un despliegue gradual o impedir el rollback",
-        "Porque las migraciones son siempre instantáneas y sin riesgo",
-        "Porque SQL no se puede automatizar"
+        "Porque las migraciones son siempre instantáneas y sin riesgo, lo que resulta contraproducente en la mayoría de los escenarios dado que esta aproximación no escala bien con el crecimiento del proyecto",
+        "Porque SQL no se puede automatizar tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema"
       ],
       "options_en": [
-        "Because databases never change",
+        "Because databases never change in combination with the codebase's static analysis tools, although its effectiveness varies depending on the project context",
         "Because the schema is stateful and can't simply be 'reverted' like code; a destructive migration can break the old version during a gradual rollout or block rollback",
-        "Because migrations are always instantaneous and risk-free",
-        "Because SQL can't be automated"
+        "Because migrations are always instantaneous and risk-free, which turns out to be counterproductive in most scenarios given that this approach does not scale well as the project grows",
+        "Because SQL can't be automated as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules"
       ],
       "correct_index": 1,
       "explanation_es": "A diferencia del código sin estado, el esquema de la BD contiene datos: revertirlo puede implicar pérdida de datos, y durante un despliegue gradual coexisten versiones antigua y nueva de la app contra el mismo esquema. La práctica segura es hacer cambios compatibles hacia atrás (expand/contract): primero añadir, desplegar, migrar datos y solo después eliminar lo viejo.",
@@ -501,15 +501,15 @@
       "question_es": "¿Qué representa la 'pirámide de pruebas' (testing pyramid)?",
       "question_en": "What does the 'testing pyramid' represent?",
       "options_es": [
-        "Que todos los tipos de test cuestan lo mismo",
-        "Un tipo de gráfico de rendimiento",
-        "Que solo se deben escribir tests end-to-end",
+        "Que todos los tipos de test cuestan lo mismo, una confusión frecuente entre desarrolladores con poca experiencia según las recomendaciones de las guías de estilo más adoptadas",
+        "Un tipo de gráfico de rendimiento como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
+        "Que solo se deben escribir tests end-to-end, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
         "Una guía de proporciones: muchos tests unitarios (rápidos y baratos) en la base, menos tests de integración en medio, y pocos tests end-to-end (lentos y frágiles) en la cima"
       ],
       "options_en": [
-        "That all test types cost the same",
-        "A kind of performance chart",
-        "That you should only write end-to-end tests",
+        "That all test types cost the same, a frequent confusion among less experienced developers according to the recommendations of the most widely adopted style guides",
+        "A kind of performance chart as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
+        "That you should only write end-to-end tests, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
         "A guideline on proportions: many unit tests (fast, cheap) at the base, fewer integration tests in the middle, and few end-to-end tests (slow, fragile) at the top"
       ],
       "correct_index": 3,
@@ -557,14 +557,14 @@
       "question_es": "¿Qué mide la 'cobertura de código' (code coverage)?",
       "question_en": "What does 'code coverage' measure?",
       "options_es": [
-        "La velocidad de ejecución del programa",
-        "El número de usuarios de la aplicación",
+        "La velocidad de ejecución del programa según la documentación oficial del framework",
+        "El número de usuarios de la aplicación, siempre que se cumplan las precondiciones necesarias",
         "El porcentaje de líneas/ramas del código que son ejecutadas por la suite de pruebas",
         "La cantidad de comentarios en el código"
       ],
       "options_en": [
-        "The program's execution speed",
-        "The number of application users",
+        "The program's execution speed according to the framework's official documentation",
+        "The number of application users, as long as the necessary preconditions are met",
         "The percentage of the code's lines/branches that are executed by the test suite",
         "The amount of comments in the code"
       ],
@@ -588,13 +588,13 @@
       "question_en": "Why are 'flaky' tests (that pass or fail non-deterministically without code changes) especially harmful in a CI pipeline?",
       "options_es": [
         "Porque hacen el pipeline más rápido",
-        "Porque no consumen recursos",
+        "Porque no consumen recursos, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad como parte de una estrategia de migración gradual del sistema legado",
         "Porque aumentan la cobertura falsamente",
         "Porque erosionan la confianza en la suite: el equipo empieza a ignorar fallos ('reintenta y ya'), y así pueden colarse fallos reales; además bloquean merges de forma arbitraria"
       ],
       "options_en": [
         "Because they make the pipeline faster",
-        "Because they consume no resources",
+        "Because they consume no resources, although some legacy frameworks still allow it for backward compatibility as part of a gradual migration strategy for the legacy system",
         "Because they falsely increase coverage",
         "Because they erode trust in the suite: the team starts ignoring failures ('just re-run it'), letting real failures slip through, and they arbitrarily block merges"
       ],

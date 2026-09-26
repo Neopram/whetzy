@@ -1,0 +1,1316 @@
+{
+  "questions": [
+    {
+      "id": "q270301_01",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la complejidad temporal de la operación SET en Redis cuando la clave no existe previamente?",
+      "question_en": "What is the time complexity of the SET operation in Redis when the key does not previously exist?",
+      "options_es": [
+        "O(log n)",
+        "O(n log n)",
+        "O(n)",
+        "O(1)"
+      ],
+      "options_en": [
+        "O(log n)",
+        "O(n log n)",
+        "O(n)",
+        "O(1)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La operación SET en Redis tiene complejidad constante O(1) porque simplemente añade o reemplaza el valor asociado a una clave en la tabla hash interna, sin requerir iteración sobre elementos.",
+      "explanation_en": "The SET operation in Redis has constant time complexity O(1) because it simply adds or replaces the value associated with a key in the internal hash table without requiring iteration over elements.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/strings/)"
+    },
+    {
+      "id": "q270301_02",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de las siguientes es la estructura de datos más adecuada para almacenar una cola FIFO en Redis?",
+      "question_en": "Which of the following data structures is most appropriate for storing a FIFO queue in Redis?",
+      "options_es": [
+        "Sorted Set usando ZADD",
+        "List usando LPUSH y RPOP",
+        "Set usando SADD y SREM",
+        "Hash usando HSET en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Sorted Set using ZADD",
+        "List using LPUSH and RPOP",
+        "Set using SADD and SREM",
+        "Hash using HSET in any implementation scenario"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las listas en Redis mantienen el orden de inserción, permitiendo LPUSH para añadir elementos al inicio y RPOP para extraerlos del final, lo que implementa correctamente la semántica FIFO.",
+      "explanation_en": "Redis Lists maintain insertion order, allowing LPUSH to add elements at the beginning and RPOP to remove them from the end, correctly implementing FIFO semantics.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/lists/)"
+    },
+    {
+      "id": "q270301_03",
+      "skill_id": "sk270301",
+      "type": "true_false",
+      "question_es": "¿Es posible que dos claves diferentes en Redis contengan el mismo valor?",
+      "question_en": "Is it possible for two different keys in Redis to contain the same value?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, Redis es un almacén de clave-valor donde múltiples claves pueden apuntar a valores idénticos. No hay restricción de unicidad en los valores.",
+      "explanation_en": "Yes, Redis is a key-value store where multiple keys can point to identical values. There is no uniqueness constraint on values.",
+      "source": "Redis Documentation (https://redis.io/docs/)"
+    },
+    {
+      "id": "q270301_04",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el valor máximo que puede almacenar una clave de tipo String en Redis?",
+      "question_en": "What is the maximum value that a String type key can store in Redis?",
+      "options_es": [
+        "1 kilobyte",
+        "512 megabytes",
+        "100 megabytes",
+        "Sin límite definido"
+      ],
+      "options_en": [
+        "1 kilobyte",
+        "512 megabytes",
+        "100 megabytes",
+        "No defined limit"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Redis permite almacenar strings de hasta 512 MB de tamaño máximo. Este es el límite configurado por defecto en la mayoría de las implementaciones.",
+      "explanation_en": "Redis allows storing strings up to a maximum size of 512 MB. This is the default limit configured in most implementations.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/strings/)"
+    },
+    {
+      "id": "q270301_05",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia principal entre un Set y un Sorted Set en Redis?",
+      "question_en": "What is the main difference between a Set and a Sorted Set in Redis?",
+      "options_es": [
+        "Los Sorted Sets almacenan un score adicional para cada miembro",
+        "Los Sets son más rápidos que los Sorted Sets",
+        "Los Sets pueden contener valores duplicados sin excepciones ni variantes",
+        "Los Sorted Sets no permiten operaciones de intersección"
+      ],
+      "options_en": [
+        "Sorted Sets store an additional score for each member",
+        "Sets are faster than Sorted Sets",
+        "Sets can contain duplicate values without exceptions or variants",
+        "Sorted Sets do not allow intersection operations"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La diferencia fundamental es que cada miembro en un Sorted Set tiene un score numérico asociado que determina su orden, mientras que los Sets almacenan miembros únicos sin orden específico.",
+      "explanation_en": "The fundamental difference is that each member in a Sorted Set has an associated numeric score that determines its order, while Sets store unique members with no specific order.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/sorted-sets/)"
+    },
+    {
+      "id": "q270301_06",
+      "skill_id": "sk270301",
+      "type": "true_false",
+      "question_es": "¿Permiten los Hashes en Redis almacenar valores anidados de tipo Hash?",
+      "question_en": "Do Redis Hashes allow storing nested Hash type values?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los Hashes en Redis solo pueden almacenar strings como valores, no pueden contener Hashes anidados. Para datos anidados complejos, se debe usar JSON o serializar la estructura.",
+      "explanation_en": "Redis Hashes can only store strings as values, they cannot contain nested Hashes. For complex nested data, JSON must be used or the structure serialized.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/hashes/)"
+    },
+    {
+      "id": "q270301_07",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la complejidad temporal de la operación ZRANGE en un Sorted Set con n elementos?",
+      "question_en": "What is the time complexity of the ZRANGE operation on a Sorted Set with n elements?",
+      "options_es": [
+        "O(1) de forma invariable y constante",
+        "O(n) sin considerar otros factores relevantes",
+        "O(log n + k) donde k es el número de elementos retornados",
+        "O(n log n)"
+      ],
+      "options_en": [
+        "O(1) invariably and constantly",
+        "O(n) without considering other relevant factors",
+        "O(log n + k) where k is the number of elements returned",
+        "O(n log n)"
+      ],
+      "correct_index": 2,
+      "explanation_es": "ZRANGE usa un índice de skip list para acceder al rango en O(log n), y luego requiere O(k) tiempo para retornar los k elementos solicitados, resultando en O(log n + k).",
+      "explanation_en": "ZRANGE uses a skip list index to access the range in O(log n), then requires O(k) time to return the k requested elements, resulting in O(log n + k).",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/sorted-sets/)"
+    },
+    {
+      "id": "q270301_08",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de los siguientes métodos es el más eficiente para obtener el primer elemento de una Lista sin eliminarlo?",
+      "question_en": "Which of the following methods is most efficient to get the first element of a List without removing it?",
+      "options_es": [
+        "LRANGE desde 0 hasta 1",
+        "LPOP seguido de LPUSH",
+        "LPOS con RANK 1",
+        "LINDEX con índice 0"
+      ],
+      "options_en": [
+        "LRANGE from 0 to 1",
+        "LPOP followed by LPUSH",
+        "LPOS with RANK 1",
+        "LINDEX with index 0"
+      ],
+      "correct_index": 3,
+      "explanation_es": "LINDEX con índice 0 tiene complejidad O(1) cuando se accede al primer elemento de una lista, sin modificar la estructura y siendo la opción más simple y directa.",
+      "explanation_en": "LINDEX with index 0 has O(1) complexity when accessing the first element of a list, without modifying the structure and being the most simple and direct option.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/lists/)"
+    },
+    {
+      "id": "q270301_09",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la estructura de datos ideal para implementar un sistema de contadores distribuidos con operaciones atómicas?",
+      "question_en": "What is the ideal data structure for implementing a system of distributed counters with atomic operations?",
+      "options_es": [
+        "Hashes con HINCRBY",
+        "Sets con SADD de forma invariable y constante",
+        "Strings con INCR y DECR",
+        "Lists con LPUSH"
+      ],
+      "options_en": [
+        "Hashes with HINCRBY",
+        "Sets with SADD invariably and constantly",
+        "Strings with INCR and DECR",
+        "Lists with LPUSH"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los Strings en Redis con las operaciones INCR, DECR e INCRBY proporcionan incrementos y decrementos atómicos garantizados, siendo perfectos para contadores distribuidos.",
+      "explanation_en": "Redis Strings with INCR, DECR, and INCRBY operations provide guaranteed atomic increments and decrements, making them perfect for distributed counters.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/strings/)"
+    },
+    {
+      "id": "q270301_10",
+      "skill_id": "sk270301",
+      "type": "true_false",
+      "question_es": "¿Pueden los Streams de Redis almacenar solo valores numéricos?",
+      "question_en": "Can Redis Streams store only numeric values?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los Streams pueden almacenar cualquier tipo de datos que Redis soporta, incluyendo strings, números, y cualquier serialización. Cada entrada del stream es un set de pares field-value como un Hash.",
+      "explanation_en": "Streams can store any type of data that Redis supports, including strings, numbers, and any serialization. Each stream entry is a set of field-value pairs like a Hash.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/streams/)"
+    },
+    {
+      "id": "q270301_11",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la operación correcta para añadir un elemento a un Set solo si no existe previamente?",
+      "question_en": "What is the correct operation to add an element to a Set only if it does not previously exist?",
+      "options_es": [
+        "SADD devuelve 1 si se añadió, 0 si ya existía",
+        "SADDNX como operación segura",
+        "ZADD con un flag NX independientemente del contexto aplicado",
+        "SSET para una inserción segura"
+      ],
+      "options_en": [
+        "SADD returns 1 if added, 0 if already existed",
+        "SADDNX as a safe operation",
+        "ZADD with an NX flag regardless of the applied context",
+        "SSET for safe insertion"
+      ],
+      "correct_index": 0,
+      "explanation_es": "SADD automáticamente devuelve 1 si el elemento se añadió (no existía) o 0 si el elemento ya estaba presente en el set, proporcionando el comportamiento de idempotencia deseado.",
+      "explanation_en": "SADD automatically returns 1 if the element was added (did not exist) or 0 if the element was already present in the set, providing the desired idempotent behavior.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/sets/)"
+    },
+    {
+      "id": "q270301_12",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de las siguientes es la forma más eficiente de obtener múltiples valores de Hashes con HGETALL?",
+      "question_en": "Which of the following is the most efficient way to get multiple values from Hashes with HGETALL?",
+      "options_es": [
+        "Usar HMGET para campos específicos",
+        "Usar HGETALL una sola vez y parsear la respuesta",
+        "Usar pipelining con HGET",
+        "Hacer múltiples llamadas HGET para cada campo"
+      ],
+      "options_en": [
+        "Use HMGET for specific fields",
+        "Use HGETALL once and parse the response",
+        "Use pipelining with HGET",
+        "Make multiple HGET calls for each field"
+      ],
+      "correct_index": 0,
+      "explanation_es": "HMGET es la forma correcta cuando solo necesitas campos específicos, evitando transferir datos innecesarios. HGETALL es mejor solo cuando necesitas todos los campos sin excepción.",
+      "explanation_en": "HMGET is the correct way when you only need specific fields, avoiding unnecessary data transfer. HGETALL is better only when you need all fields without exception.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/hashes/)"
+    },
+    {
+      "id": "q270301_13",
+      "skill_id": "sk270301",
+      "type": "true_false",
+      "question_es": "¿Mantienen los Sets en Redis el orden de inserción de sus elementos?",
+      "question_en": "Do Sets in Redis maintain the insertion order of their elements?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los Sets en Redis no mantienen orden de inserción. Son colecciones no ordenadas de strings únicos. Si necesitas orden, debes usar Sorted Sets o Lists.",
+      "explanation_en": "Sets in Redis do not maintain insertion order. They are unordered collections of unique strings. If you need order, you must use Sorted Sets or Lists.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/sets/)"
+    },
+    {
+      "id": "q270301_14",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la utilidad principal de los Bitmaps en Redis para aplicaciones de análisis?",
+      "question_en": "What is the main utility of Bitmaps in Redis for analytics applications?",
+      "options_es": [
+        "Guardar imágenes en formato binario de forma invariable y constante",
+        "Reemplazar strings para ahorrar memoria",
+        "Acelerar búsquedas en texto completo de manera exclusiva y permanente",
+        "Almacenar información binaria comprimida y realizar operaciones de bit muy eficientes"
+      ],
+      "options_en": [
+        "Store images in binary format invariably and constantly",
+        "Replace strings to save memory",
+        "Accelerate full-text searches exclusively and permanently",
+        "Store compressed binary information and perform very efficient bit operations"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los Bitmaps permiten almacenar y manipular bits individuales de forma muy eficiente, siendo ideales para rastrear estados booleanos (activo/inactivo), conteos rápidos y análisis de datos con bajo consumo de memoria.",
+      "explanation_en": "Bitmaps allow storing and manipulating individual bits very efficiently, being ideal for tracking boolean states (active/inactive), rapid counting, and data analysis with low memory consumption.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/bitmaps/)"
+    },
+    {
+      "id": "q270301_15",
+      "skill_id": "sk270301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la operación correcta para extraer y eliminar simultáneamente el elemento más alto puntuado de un Sorted Set?",
+      "question_en": "What is the correct operation to extract and simultaneously remove the highest scored element from a Sorted Set?",
+      "options_es": [
+        "ZPOPMAX retorna el elemento y su score, eliminándolo",
+        "ZREVRANGE y luego ZREM sin excepciones ni variantes",
+        "ZMAX para obtener sin eliminar según la documentación estándar del servicio",
+        "ZREMRANGEBYRANK para el último elemento"
+      ],
+      "options_en": [
+        "ZPOPMAX returns the element and its score, removing it",
+        "ZREVRANGE and then ZREM without exceptions or variants",
+        "ZMAX to get without removing according to standard service documentation",
+        "ZREMRANGEBYRANK for the last element"
+      ],
+      "correct_index": 0,
+      "explanation_es": "ZPOPMAX es la operación atómica que extrae y retorna el elemento con la puntuación más alta junto con su score, eliminándolo del Sorted Set en una sola operación.",
+      "explanation_en": "ZPOPMAX is the atomic operation that extracts and returns the element with the highest score along with its score, removing it from the Sorted Set in a single operation.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/sorted-sets/)"
+    },
+    {
+      "id": "q270302_01",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el patrón de caché más simple y comúnmente usado en aplicaciones web?",
+      "question_en": "What is the simplest and most commonly used cache pattern in web applications?",
+      "options_es": [
+        "Write-through caching",
+        "Refresh-ahead caching",
+        "Write-behind caching sin excepciones ni variantes",
+        "Cache-aside (Lazy Loading)"
+      ],
+      "options_en": [
+        "Write-through caching",
+        "Refresh-ahead caching",
+        "Write-behind caching without exceptions or variants",
+        "Cache-aside (Lazy Loading)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El patrón cache-aside es el más simple: la aplicación primero consulta Redis, y si no encuentra el dato (cache miss), consulta la base de datos y actualiza el caché. Es flexible y ampliamente usado.",
+      "explanation_en": "The cache-aside pattern is the simplest: the application first queries Redis, and if it doesn't find the data (cache miss), it queries the database and updates the cache. It is flexible and widely used.",
+      "source": "AWS Caching Strategies (https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Strategies.html)"
+    },
+    {
+      "id": "q270302_02",
+      "skill_id": "sk270302",
+      "type": "true_false",
+      "question_es": "¿El patrón write-through garantiza que los datos en caché nunca estén inconsistentes con la base de datos?",
+      "question_en": "Does the write-through pattern guarantee that cached data is never inconsistent with the database?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sí, en el patrón write-through la escritura siempre ocurre primero en la base de datos y luego en el caché, garantizando consistencia. Sin embargo, puede haber latencia de escritura más alta.",
+      "explanation_en": "Yes, in the write-through pattern the write always occurs first in the database and then in the cache, guaranteeing consistency. However, there may be higher write latency.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/) / Redis Documentation (https://redis.io/docs/) / Neo4j Documentation (https://neo4j.com/docs/)"
+    },
+    {
+      "id": "q270302_03",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja principal del patrón write-behind (Write-back) en comparación con write-through?",
+      "question_en": "What is the main advantage of the write-behind (Write-back) pattern compared to write-through?",
+      "options_es": [
+        "Operaciones más seguras independientemente del contexto aplicado",
+        "Menor consumo de memoria",
+        "Mejor consistencia de datos",
+        "Mayor rendimiento porque las escrituras son asincrónicas"
+      ],
+      "options_en": [
+        "Safer operations regardless of the applied context",
+        "Lower memory consumption",
+        "Better data consistency",
+        "Higher performance because writes are asynchronous"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En write-behind, las escrituras se confirman inmediatamente en el caché y se sincronizan con la base de datos de forma asincrónica, proporcionando mejor rendimiento percibido, aunque con riesgo de inconsistencia temporal.",
+      "explanation_en": "In write-behind, writes are confirmed immediately in the cache and synchronized with the database asynchronously, providing better perceived performance, though with risk of temporary inconsistency.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/) / Redis Documentation (https://redis.io/docs/) / Neo4j Documentation (https://neo4j.com/docs/)"
+    },
+    {
+      "id": "q270302_04",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comando correcto en Redis para establecer un tiempo de expiración de 3600 segundos en una clave existente?",
+      "question_en": "What is the correct Redis command to set an expiration time of 3600 seconds on an existing key?",
+      "options_es": [
+        "EXPIRE nombre_clave 3600",
+        "EXPIREAT nombre_clave 3600",
+        "SETEX nombre_clave 3600 valor",
+        "TTL nombre_clave 3600"
+      ],
+      "options_en": [
+        "EXPIRE nombre_clave 3600",
+        "EXPIREAT nombre_clave 3600",
+        "SETEX nombre_clave 3600 valor",
+        "TTL nombre_clave 3600"
+      ],
+      "correct_index": 0,
+      "explanation_es": "EXPIRE es el comando correcto para establecer TTL en segundos sobre una clave que ya existe. SETEX es para crear una clave con TTL en una sola operación.",
+      "explanation_en": "EXPIRE is the correct command to set TTL in seconds on an already existing key. SETEX is for creating a key with TTL in a single operation.",
+      "source": "Redis Documentation (https://redis.io/commands/expire/)"
+    },
+    {
+      "id": "q270302_05",
+      "skill_id": "sk270302",
+      "type": "true_false",
+      "question_es": "¿Es posible que una clave en Redis tenga un tiempo de vida negativo?",
+      "question_en": "Is it possible for a key in Redis to have a negative time to live?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "No, un TTL negativo no es válido. Redis elimina claves inmediatamente si se intenta establecer un TTL negativo. El TTL debe ser un número positivo o no estar establecido.",
+      "explanation_en": "No, a negative TTL is not valid. Redis immediately deletes keys if a negative TTL is attempted. The TTL must be a positive number or not set.",
+      "source": "Redis Documentation (https://redis.io/commands/expire/)"
+    },
+    {
+      "id": "q270302_06",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la política de evicción predeterminada en Redis cuando la memoria alcanza su máximo?",
+      "question_en": "What is the default eviction policy in Redis when memory reaches its maximum?",
+      "options_es": [
+        "volatile-lru",
+        "random",
+        "noeviction",
+        "allkeys-lru"
+      ],
+      "options_en": [
+        "volatile-lru",
+        "random",
+        "noeviction",
+        "allkeys-lru"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La política predeterminada es 'noeviction', que significa que Redis rechazará operaciones de escritura y retornará errores cuando se alcance el límite de memoria, sin eliminar datos automáticamente.",
+      "explanation_en": "The default policy is 'noeviction', which means Redis will reject write operations and return errors when the memory limit is reached, without automatically deleting data.",
+      "source": "Redis Documentation (https://redis.io/docs/reference/eviction/)"
+    },
+    {
+      "id": "q270302_07",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre las políticas LRU (Least Recently Used) y LFU (Least Frequently Used)?",
+      "question_en": "What is the difference between LRU (Least Recently Used) and LFU (Least Frequently Used) policies?",
+      "options_es": [
+        "LFU es más eficiente pero consume más memoria de manera exclusiva y permanente",
+        "LRU elimina lo accedido hace más tiempo, LFU lo menos accedido frecuentemente",
+        "LRU es más rápido que LFU de manera exclusiva y permanente",
+        "LRU evita lo usado recientemente, LFU lo usado frecuentemente"
+      ],
+      "options_en": [
+        "LFU is more efficient but consumes more memory exclusively and permanently",
+        "LRU removes the least recently accessed, LFU the least frequently accessed",
+        "LRU is faster than LFU exclusively and permanently",
+        "LRU evicts recently used, LFU frequently used"
+      ],
+      "correct_index": 1,
+      "explanation_es": "LRU (Least Recently Used) elimina los datos que no han sido accedidos recientemente, basándose en tiempo. LFU (Least Frequently Used) elimina los datos que menos frecuentemente han sido accedidos, basándose en uso histórico.",
+      "explanation_en": "LRU (Least Recently Used) removes data that has not been accessed recently, based on time. LFU (Least Frequently Used) removes data that has been accessed least frequently, based on historical usage.",
+      "source": "Redis Documentation (https://redis.io/docs/reference/eviction/)"
+    },
+    {
+      "id": "q270302_08",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué estrategia de caché es mejor para datos que rara vez cambian pero se consultan frecuentemente?",
+      "question_en": "What caching strategy is best for data that rarely changes but is frequently queried?",
+      "options_es": [
+        "Write-behind con invalidación inmediata",
+        "Cache-aside con TTL largo",
+        "No usar caché",
+        "Refresh-ahead sin TTL"
+      ],
+      "options_en": [
+        "Write-behind with immediate invalidation",
+        "Cache-aside with long TTL",
+        "Do not use cache",
+        "Refresh-ahead without TTL"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Para datos estables y de consulta frecuente, cache-aside con un TTL largo (horas o días) es ideal. Permite high cache hit rate con mínima invalidación y refresco.",
+      "explanation_en": "For stable, frequently queried data, cache-aside with a long TTL (hours or days) is ideal. It allows high cache hit rate with minimal invalidation and refresh.",
+      "source": "Caching Best Practices (https://redis.io/docs/connect/clients/java/)"
+    },
+    {
+      "id": "q270302_09",
+      "skill_id": "sk270302",
+      "type": "true_false",
+      "question_es": "¿Puede Redis usar patrones de invalidación basados en etiquetas (tagging) para invalidar múltiples claves de una vez?",
+      "question_en": "Can Redis use tag-based invalidation patterns to invalidate multiple keys at once?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Redis no tiene etiquetas nativas. Sin embargo, se pueden simular usando convenciones de nomenclatura (ej: 'usuario:123:*') y luego usar KEYS o SCAN para encontrar y eliminar patrones, aunque esto no es una verdadera operación atómica.",
+      "explanation_en": "Redis has no native tags. However, they can be simulated using naming conventions (e.g., 'user:123:*') and then using KEYS or SCAN to find and delete patterns, though this is not a true atomic operation.",
+      "source": "Redis Documentation (https://redis.io/commands/keys/)"
+    },
+    {
+      "id": "q270302_10",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comando más eficiente para obtener el TTL restante de una clave sin obtener su valor?",
+      "question_en": "What is the most efficient command to get the remaining TTL of a key without retrieving its value?",
+      "options_es": [
+        "SCAN con MATCH",
+        "GET y analizar resultado",
+        "PTTL nombre_clave",
+        "TTL nombre_clave"
+      ],
+      "options_en": [
+        "SCAN with MATCH",
+        "GET and analyze result",
+        "PTTL nombre_clave",
+        "TTL nombre_clave"
+      ],
+      "correct_index": 3,
+      "explanation_es": "TTL retorna el tiempo de vida restante en segundos de forma O(1), sin acceder al valor. PTTL hace lo mismo pero en milisegundos. GET transferiría datos innecesarios.",
+      "explanation_en": "TTL returns the remaining time to live in seconds in O(1) time, without accessing the value. PTTL does the same but in milliseconds. GET would transfer unnecessary data.",
+      "source": "Redis Documentation (https://redis.io/commands/ttl/)"
+    },
+    {
+      "id": "q270302_11",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el riesgo principal del patrón cache-aside sin TTL establecido?",
+      "question_en": "What is the main risk of the cache-aside pattern without a set TTL?",
+      "options_es": [
+        "Los datos cachuteados pueden quedar obsoletos y nunca actualizarse",
+        "Consumo excesivo de memoria del servidor",
+        "Pérdida de datos al reiniciar de forma invariable y constante",
+        "Conflictos de concurrencia en todos los casos posibles"
+      ],
+      "options_en": [
+        "Cached data can become stale and never update",
+        "Excessive server memory consumption",
+        "Data loss on restart invariably and constantly",
+        "Concurrency conflicts in all possible cases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sin TTL, los datos permanecen en caché indefinidamente, causando stale data cuando la fuente cambia. Es crítico establecer un TTL apropiado basado en la tolerancia a inconsistencia.",
+      "explanation_en": "Without TTL, data remains in cache indefinitely, causing stale data when the source changes. It is critical to set an appropriate TTL based on tolerance for inconsistency.",
+      "source": "Redis Caching Patterns (https://redis.io/docs/manual/client-side-caching/)"
+    },
+    {
+      "id": "q270302_12",
+      "skill_id": "sk270302",
+      "type": "true_false",
+      "question_es": "¿El comando GETEX en Redis permite obtener un valor y establecer su TTL en la misma operación?",
+      "question_en": "Does the GETEX command in Redis allow getting a value and setting its TTL in the same operation?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sí, GETEX es una operación atómica que obtiene el valor de una clave y simultáneamente puede establecer, modificar o remover su TTL en una sola llamada.",
+      "explanation_en": "Yes, GETEX is an atomic operation that retrieves the value of a key and simultaneously can set, modify, or remove its TTL in a single call.",
+      "source": "Redis Documentation (https://redis.io/commands/getex/)"
+    },
+    {
+      "id": "q270302_13",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal de usar Bloom Filters en sistemas de caché?",
+      "question_en": "What is the main purpose of using Bloom Filters in cache systems?",
+      "options_es": [
+        "Acelerar operaciones de lectura en cualquier escenario de implementación",
+        "Evitar cache miss costosos comprobando si un dato existe antes de consultarlo",
+        "Comprimir datos para ahorrar memoria",
+        "Eliminar datos expirados de forma invariable y constante"
+      ],
+      "options_en": [
+        "Accelerate read operations in any implementation scenario",
+        "Avoid expensive cache misses by checking if data exists before querying it",
+        "Compress data to save memory",
+        "Remove expired data invariably and constantly"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un Bloom Filter es una estructura probabilística que responde rápidamente si un elemento NO existe (false negatives imposibles). Previene consultas de base de datos innecesarias ante cache miss casi seguro.",
+      "explanation_en": "A Bloom Filter is a probabilistic structure that quickly answers if an element does NOT exist (false negatives impossible). It prevents unnecessary database queries on almost certain cache misses.",
+      "source": "Bloom Filters (https://redis.io/docs/data-types/probabilistic/bloom-filter/)"
+    },
+    {
+      "id": "q270302_14",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué política de evicción es más adecuada cuando necesitas garantizar que claves con TTL establecido se eliminen primero?",
+      "question_en": "What eviction policy is more appropriate when you need to guarantee that keys with TTL set are deleted first?",
+      "options_es": [
+        "allkeys-lru o allkeys-lfu",
+        "random según la documentación estándar del servicio",
+        "volatile-lru o volatile-lfu",
+        "noeviction"
+      ],
+      "options_en": [
+        "allkeys-lru or allkeys-lfu",
+        "random according to standard service documentation",
+        "volatile-lru or volatile-lfu",
+        "noeviction"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las políticas 'volatile-*' solo evaden claves que tienen TTL establecido, protegiendo claves permanentes. Es ideal cuando tienes claves de corta vida (sesiones) y claves duraderas (config).",
+      "explanation_en": "The 'volatile-*' policies only evict keys with a TTL set, protecting permanent keys. It is ideal when you have short-lived keys (sessions) and durable keys (config).",
+      "source": "Redis Documentation (https://redis.io/docs/reference/eviction/)"
+    },
+    {
+      "id": "q270302_15",
+      "skill_id": "sk270302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar MGET en lugar de múltiples GET individuales para recuperar varios valores?",
+      "question_en": "What is the advantage of using MGET instead of multiple individual GET calls to retrieve multiple values?",
+      "options_es": [
+        "Reduce round-trips de red y proporciona mejor rendimiento total",
+        "Más seguro que GET individual según la documentación estándar del servicio",
+        "Evita errores de concurrencia",
+        "Usa menos memoria en el servidor"
+      ],
+      "options_en": [
+        "Reduces network round-trips and provides better overall performance",
+        "Safer than individual GET according to standard service documentation",
+        "Avoids concurrency errors",
+        "Uses less memory on the server"
+      ],
+      "correct_index": 0,
+      "explanation_es": "MGET permite recuperar múltiples claves en una sola llamada, eliminando latencia de red por cada valor individual. En aplicaciones con baja latencia, esto es crítico para rendimiento de caché.",
+      "explanation_en": "MGET allows retrieving multiple keys in a single call, eliminating network latency per individual value. In low-latency applications, this is critical for cache performance.",
+      "source": "Redis Documentation (https://redis.io/commands/mget/)"
+    },
+    {
+      "id": "q270303_01",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia fundamental entre el modelo Pub/Sub de Redis y un Message Broker tradicional?",
+      "question_en": "What is the fundamental difference between Redis Pub/Sub model and a traditional Message Broker?",
+      "options_es": [
+        "No hay diferencia significativa en cualquier escenario de implementación",
+        "Redis es más rápido pero menos confiable",
+        "Redis Pub/Sub usa colas while Message Brokers no",
+        "Redis Pub/Sub no persiste mensajes entre suscriptores desconectados"
+      ],
+      "options_en": [
+        "There is no significant difference in any implementation scenario",
+        "Redis is faster but less reliable",
+        "Redis Pub/Sub uses queues while Message Brokers don't",
+        "Redis Pub/Sub does not persist messages between disconnected subscribers"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Redis Pub/Sub es fire-and-forget: los mensajes se pierden si no hay suscriptores conectados. Un Message Broker tradicional persiste mensajes para entrega garantizada posterior.",
+      "explanation_en": "Redis Pub/Sub is fire-and-forget: messages are lost if there are no connected subscribers. A traditional Message Broker persists messages for guaranteed later delivery.",
+      "source": "Redis Documentation (https://redis.io/docs/interact/pubsub/)"
+    },
+    {
+      "id": "q270303_02",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comando correcto para suscribirse a un canal en Redis?",
+      "question_en": "What is the correct command to subscribe to a channel in Redis?",
+      "options_es": [
+        "SUB nombre_canal en cualquier escenario de implementación",
+        "SUBSCRIBE nombre_canal",
+        "LISTEN nombre_canal",
+        "WATCH nombre_canal"
+      ],
+      "options_en": [
+        "SUB nombre_canal in any implementation scenario",
+        "SUBSCRIBE nombre_canal",
+        "LISTEN nombre_canal",
+        "WATCH nombre_canal"
+      ],
+      "correct_index": 1,
+      "explanation_es": "SUBSCRIBE es el comando correcto para suscribirse a uno o más canales. Una vez suscritos, el cliente entra en modo de escucha y solo puede usar comandos de Pub/Sub.",
+      "explanation_en": "SUBSCRIBE is the correct command to subscribe to one or more channels. Once subscribed, the client enters listening mode and can only use Pub/Sub commands.",
+      "source": "Redis Documentation (https://redis.io/commands/subscribe/)"
+    },
+    {
+      "id": "q270303_03",
+      "skill_id": "sk270303",
+      "type": "true_false",
+      "question_es": "¿Puede un cliente Redis ejecutar operaciones de lectura/escritura de datos mientras está suscrito a un canal Pub/Sub?",
+      "question_en": "Can a Redis client execute data read/write operations while subscribed to a Pub/Sub channel?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "No, cuando un cliente entra en modo Pub/Sub (con SUBSCRIBE), solo puede usar comandos Pub/Sub (SUBSCRIBE, PSUBSCRIBE, UNSUBSCRIBE, etc.). Todas las demás operaciones están prohibidas.",
+      "explanation_en": "No, when a client enters Pub/Sub mode (with SUBSCRIBE), it can only use Pub/Sub commands (SUBSCRIBE, PSUBSCRIBE, UNSUBSCRIBE, etc.). All other operations are forbidden.",
+      "source": "Redis Documentation (https://redis.io/docs/interact/pubsub/)"
+    },
+    {
+      "id": "q270303_04",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la utilidad principal de los patrones de suscripción en Redis Pub/Sub?",
+      "question_en": "What is the main utility of subscription patterns in Redis Pub/Sub?",
+      "options_es": [
+        "Validar el contenido de los mensajes en todos los casos posibles",
+        "Filtrar mensajes duplicados de manera exclusiva y permanente",
+        "Aumentar la velocidad de transmisión",
+        "Permitir suscribirse a múltiples canales que coincidan con una expresión comodín"
+      ],
+      "options_en": [
+        "Validate message content in all possible cases",
+        "Filter duplicate messages exclusively and permanently",
+        "Increase transmission speed",
+        "Allow subscribing to multiple channels that match a wildcard expression"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con PSUBSCRIBE se pueden usar patrones como 'usuario:*' para suscribirse a todos los canales que coincidan con esa expresión, permitiendo estructuras de canales jerárquicas.",
+      "explanation_en": "With PSUBSCRIBE you can use patterns like 'user:*' to subscribe to all channels matching that expression, enabling hierarchical channel structures.",
+      "source": "Redis Documentation (https://redis.io/commands/psubscribe/)"
+    },
+    {
+      "id": "q270303_05",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comando para publicar un mensaje en un canal específico en Redis?",
+      "question_en": "What is the command to publish a message to a specific channel in Redis?",
+      "options_es": [
+        "BROADCAST nombre_canal mensaje",
+        "PUBLISH nombre_canal mensaje",
+        "EMIT nombre_canal mensaje",
+        "SEND nombre_canal mensaje"
+      ],
+      "options_en": [
+        "BROADCAST nombre_canal mensaje",
+        "PUBLISH nombre_canal mensaje",
+        "EMIT nombre_canal mensaje",
+        "SEND nombre_canal mensaje"
+      ],
+      "correct_index": 1,
+      "explanation_es": "PUBLISH es el comando correcto. Devuelve el número de suscriptores que recibieron el mensaje. Si no hay suscriptores, retorna 0 y el mensaje se pierde.",
+      "explanation_en": "PUBLISH is the correct command. It returns the number of subscribers who received the message. If there are no subscribers, it returns 0 and the message is lost.",
+      "source": "Redis Documentation (https://redis.io/commands/publish/)"
+    },
+    {
+      "id": "q270303_06",
+      "skill_id": "sk270303",
+      "type": "true_false",
+      "question_es": "¿Permiten los Streams de Redis la funcionalidad de Pub/Sub con garantía de entrega de mensajes?",
+      "question_en": "Do Redis Streams allow Pub/Sub functionality with guaranteed message delivery?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, los Streams pueden actuar como un mensaje broker con persistencia. Cada mensaje tiene un ID único y se mantiene en el stream, permitiendo que nuevos suscriptores lean histórico.",
+      "explanation_en": "Yes, Streams can act as a message broker with persistence. Each message has a unique ID and is kept in the stream, allowing new subscribers to read history.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/streams/)"
+    },
+    {
+      "id": "q270303_07",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar Streams sobre Pub/Sub tradicional para aplicaciones que requieren durabilidad?",
+      "question_en": "What is the advantage of using Streams over traditional Pub/Sub for applications requiring durability?",
+      "options_es": [
+        "Streams soportan patrones complejos sin excepciones ni variantes",
+        "Streams son más rápidos que Pub/Sub",
+        "Streams usan menos memoria de manera exclusiva y permanente",
+        "Streams persisten mensajes, permitiendo lectura histórica y consumidores retrasados"
+      ],
+      "options_en": [
+        "Streams support complex patterns without exceptions or variants",
+        "Streams are faster than Pub/Sub",
+        "Streams use less memory exclusively and permanently",
+        "Streams persist messages, allowing historical reading and delayed consumers"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Streams guardan todos los mensajes permanentemente (hasta limpiar explícitamente), permitiendo que consumidores se unan tarde y procesen todo el histórico, no solo mensajes futuros.",
+      "explanation_en": "Streams permanently store all messages (until explicitly cleaned), allowing consumers to join late and process the entire history, not just future messages.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/streams/)"
+    },
+    {
+      "id": "q270303_08",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el patrón más eficiente para implementar un sistema de cola de tareas con Pub/Sub en Redis?",
+      "question_en": "What is the most efficient pattern for implementing a task queue system with Pub/Sub in Redis?",
+      "options_es": [
+        "Usar Streams con consumer groups para procesamiento distribuido",
+        "Usar PUBLISH/SUBSCRIBE para notificaciones de tareas",
+        "Usar Sorted Sets para tareas programadas en todos los casos posibles",
+        "Usar Lists con BLPOP para colas de tareas"
+      ],
+      "options_en": [
+        "Use Streams with consumer groups for distributed processing",
+        "Use PUBLISH/SUBSCRIBE for task notifications",
+        "Use Sorted Sets for scheduled tasks in all possible cases",
+        "Use Lists with BLPOP for task queues"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Streams con consumer groups es la mejor solución: proporciona persistencia, reconocimiento de procesamiento, reentrega automática en fallos, y balance de carga entre múltiples workers.",
+      "explanation_en": "Streams with consumer groups is the best solution: it provides persistence, processing acknowledgment, automatic redelivery on failures, and load balancing across multiple workers.",
+      "source": "Redis Documentation (https://redis.io/docs/data-types/streams-tutorial/)"
+    },
+    {
+      "id": "q270303_09",
+      "skill_id": "sk270303",
+      "type": "true_false",
+      "question_es": "¿Es posible desuscribirse de un canal específico mientras se mantiene suscrito a otros canales?",
+      "question_en": "Is it possible to unsubscribe from a specific channel while remaining subscribed to other channels?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, UNSUBSCRIBE permite dejar de escuchar canales específicos mientras se mantiene la conexión activa para otros canales suscritos.",
+      "explanation_en": "Yes, UNSUBSCRIBE allows you to stop listening to specific channels while keeping the connection active for other subscribed channels.",
+      "source": "Redis Documentation (https://redis.io/commands/unsubscribe/)"
+    },
+    {
+      "id": "q270303_10",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la complejidad temporal de la operación PUBLISH en Redis?",
+      "question_en": "What is the time complexity of the PUBLISH operation in Redis?",
+      "options_es": [
+        "O(1) independientemente del contexto aplicado",
+        "O(N log N) sin excepciones ni variantes",
+        "O(N+M) donde N es número de suscriptores y M de suscripción patrones",
+        "O(n) donde n es tamaño del mensaje"
+      ],
+      "options_en": [
+        "O(1) regardless of the applied context",
+        "O(N log N) without exceptions or variants",
+        "O(N+M) where N is number of subscribers and M of pattern subscriptions",
+        "O(n) where n is message size"
+      ],
+      "correct_index": 2,
+      "explanation_es": "PUBLISH debe iterar sobre todos los suscriptores exactos (N) y también evaluando patrones de suscripción (M) para determinar quién recibe el mensaje, resultando en O(N+M).",
+      "explanation_en": "PUBLISH must iterate over all exact subscribers (N) and also evaluate subscription patterns (M) to determine who receives the message, resulting in O(N+M).",
+      "source": "Redis Documentation (https://redis.io/commands/publish/)"
+    },
+    {
+      "id": "q270303_11",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comando para obtener información sobre canales activos y sus suscriptores en Redis?",
+      "question_en": "What is the command to get information about active channels and their subscribers in Redis?",
+      "options_es": [
+        "LIST CHANNELS para obtener todos los canales",
+        "MONITOR CHANNELS para rastrear actividad",
+        "CHANNELS para mostrar información en cualquier escenario de implementación",
+        "PUBSUB CHANNELS para listar canales con suscriptores"
+      ],
+      "options_en": [
+        "LIST CHANNELS to get all channels",
+        "MONITOR CHANNELS to track activity",
+        "CHANNELS to show information in any implementation scenario",
+        "PUBSUB CHANNELS to list channels with subscribers"
+      ],
+      "correct_index": 3,
+      "explanation_es": "PUBSUB CHANNELS lista todos los canales activos (con al menos un suscriptor). También existen PUBSUB NUMSUB para contar suscriptores por canal y PUBSUB NUMPAT para patrones.",
+      "explanation_en": "PUBSUB CHANNELS lists all active channels (with at least one subscriber). There are also PUBSUB NUMSUB to count subscribers per channel and PUBSUB NUMPAT for patterns.",
+      "source": "Redis Documentation (https://redis.io/commands/pubsub-channels/)"
+    },
+    {
+      "id": "q270303_12",
+      "skill_id": "sk270303",
+      "type": "true_false",
+      "question_es": "¿Puede un publisher recibir su propio mensaje publicado en Redis?",
+      "question_en": "Can a publisher receive its own published message in Redis?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, si un cliente está suscrito al canal donde publica un mensaje, recibe su propio mensaje. No hay filtro que excluya al publisher de ser receptor.",
+      "explanation_en": "Yes, if a client is subscribed to the channel where it publishes a message, it receives its own message. There is no filter that excludes the publisher from being a receiver.",
+      "source": "Redis Documentation (https://redis.io/docs/interact/pubsub/)"
+    },
+    {
+      "id": "q270303_13",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el riesgo de usar Pub/Sub de Redis para aplicaciones críticas que no toleran pérdida de mensajes?",
+      "question_en": "What is the risk of using Redis Pub/Sub for critical applications that cannot tolerate message loss?",
+      "options_es": [
+        "Si no hay suscriptores conectados cuando se publica, el mensaje se pierde",
+        "Imposible escalar a múltiples nodos",
+        "Los patrones son ineficientes en cualquier escenario de implementación",
+        "Pub/Sub consume demasiada memoria de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "If there are no connected subscribers when publishing, the message is lost",
+        "Impossible to scale to multiple nodes",
+        "Patterns are inefficient in any implementation scenario",
+        "Pub/Sub consumes too much memory exclusively and permanently"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Pub/Sub es fire-and-forget. No persiste mensajes ni reintenta entregas. Para confiabilidad, debes usar Streams, que garantizan durabilidad y permiten reintentos.",
+      "explanation_en": "Pub/Sub is fire-and-forget. It does not persist messages or retry deliveries. For reliability, you must use Streams, which guarantee durability and allow retries.",
+      "source": "Redis Documentation (https://redis.io/docs/interact/pubsub/)"
+    },
+    {
+      "id": "q270303_14",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la forma más eficiente de implementar notificaciones en tiempo real entre múltiples clientes en Redis?",
+      "question_en": "What is the most efficient way to implement real-time notifications between multiple clients in Redis?",
+      "options_es": [
+        "Usar PUBLISH/SUBSCRIBE para bajo acoplamiento y latencia mínima",
+        "Usar Lists con polling continuo",
+        "Usar Hashes compartidos según la documentación estándar del servicio",
+        "Usar Sorted Sets con monitoreo"
+      ],
+      "options_en": [
+        "Use PUBLISH/SUBSCRIBE for low coupling and minimal latency",
+        "Use Lists with continuous polling",
+        "Use shared Hashes according to standard service documentation",
+        "Use Sorted Sets with monitoring"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Pub/Sub es ideal para notificaciones en tiempo real con latencia mínima, bajo acoplamiento entre cliente y servidor, y sin necesidad de polling. Es la solución correcta para este caso.",
+      "explanation_en": "Pub/Sub is ideal for real-time notifications with minimal latency, loose coupling between client and server, and no need for polling. It is the correct solution for this case.",
+      "source": "Redis Documentation (https://redis.io/docs/interact/pubsub/)"
+    },
+    {
+      "id": "q270303_15",
+      "skill_id": "sk270303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comportamiento correcto del comando UNSUBSCRIBE cuando se ejecuta sin argumentos?",
+      "question_en": "What is the correct behavior of the UNSUBSCRIBE command when executed without arguments?",
+      "options_es": [
+        "Desuscribe del cliente de TODOS los canales suscritos actualmente",
+        "Desuscribe del modo Pub/Sub completamente",
+        "No hace nada, requiere al menos un canal",
+        "Desuscribe solo del canal actual sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "Unsubscribes the client from ALL currently subscribed channels",
+        "Unsubscribes from Pub/Sub mode completely",
+        "Does nothing, requires at least one channel",
+        "Unsubscribes only from the current channel without considering other relevant factors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "UNSUBSCRIBE sin argumentos desuscribe del cliente de todos los canales simultáneamente, saliendo completamente del modo Pub/Sub si no hay patrones suscritos.",
+      "explanation_en": "UNSUBSCRIBE without arguments unsubscribes the client from all channels simultaneously, exiting Pub/Sub mode completely if there are no subscribed patterns.",
+      "source": "Redis Documentation (https://redis.io/commands/unsubscribe/)"
+    },
+    {
+      "id": "q270304_01",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia principal entre persistencia RDB (Snapshot) y AOF (Append-Only File)?",
+      "question_en": "What is the main difference between RDB (Snapshot) and AOF (Append-Only File) persistence?",
+      "options_es": [
+        "RDB es más rápido pero menos confiable que AOF",
+        "AOF solo funciona en cluster sin considerar otros factores relevantes",
+        "No hay diferencia significativa en todos los casos posibles",
+        "RDB guarda estado completo periódicamente, AOF registra cada comando modificador"
+      ],
+      "options_en": [
+        "RDB is faster but less reliable than AOF",
+        "AOF only works in cluster without considering other relevant factors",
+        "There is no significant difference in all possible cases",
+        "RDB saves complete state periodically, AOF logs each modifying command"
+      ],
+      "correct_index": 3,
+      "explanation_es": "RDB crea snapshots binarios comprimidos del estado completo en momentos específicos. AOF registra cada comando que modifica el estado. RDB es más compacto, AOF más granular.",
+      "explanation_en": "RDB creates compressed binary snapshots of the complete state at specific times. AOF logs every command that modifies the state. RDB is more compact, AOF more granular.",
+      "source": "Redis Documentation (https://redis.io/docs/management/persistence/)"
+    },
+    {
+      "id": "q270304_02",
+      "skill_id": "sk270304",
+      "type": "true_false",
+      "question_es": "¿Es seguro desactivar completamente la persistencia en Redis en producción?",
+      "question_en": "Is it safe to completely disable persistence in Redis in production?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "No, desactivar persistencia significa que cualquier reinicio o fallo perderá todos los datos. Solo es aceptable si Redis se usa como caché puro sin datos críticos, con replicación.",
+      "explanation_en": "No, disabling persistence means that any restart or failure will lose all data. It is only acceptable if Redis is used as a pure cache without critical data, with replication.",
+      "source": "Redis Documentation (https://redis.io/docs/management/persistence/)"
+    },
+    {
+      "id": "q270304_03",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la configuración más segura para garantizar máxima durabilidad en Redis?",
+      "question_en": "What is the safest configuration to guarantee maximum durability in Redis?",
+      "options_es": [
+        "Solo RDB con snapshots frecuentes",
+        "Sin persistencia y solo replicación",
+        "Solo AOF con fsync everysec sin considerar otros factores relevantes",
+        "Combinar RDB y AOF con fsync always en AOF"
+      ],
+      "options_en": [
+        "Only RDB with frequent snapshots",
+        "No persistence, only replication",
+        "Only AOF with fsync everysec without considering other relevant factors",
+        "Combine RDB and AOF with fsync always in AOF"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Usar RDB y AOF simultáneamente proporciona lo mejor de ambos: snapshot para recuperación rápida y AOF para durabilidad completa. AOF con fsync always garantiza durabilidad en el disco.",
+      "explanation_en": "Using both RDB and AOF simultaneously provides the best of both: snapshot for fast recovery and AOF for complete durability. AOF with fsync always guarantees disk durability.",
+      "source": "Redis Documentation (https://redis.io/docs/management/persistence/)"
+    },
+    {
+      "id": "q270304_04",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el impacto en el rendimiento de usar AOF con 'fsync always'?",
+      "question_en": "What is the performance impact of using AOF with 'fsync always'?",
+      "options_es": [
+        "Impacto solo en operaciones de lectura sin considerar otros factores relevantes",
+        "Sin impacto en el rendimiento según la documentación estándar del servicio",
+        "Latencia y throughput significativamente reducidos por sincronización de disco",
+        "Mejora el rendimiento al escribir más eficientemente"
+      ],
+      "options_en": [
+        "Impact only on read operations without considering other relevant factors",
+        "No performance impact according to standard service documentation",
+        "Latency and throughput significantly reduced by disk synchronization",
+        "Improves performance by writing more efficiently"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'fsync always' escribe en disco con cada comando, causando latencia significativa. Para mejor rendimiento se usa 'fsync everysec' (sincroniza cada segundo) o 'fsync no' (confía en el SO).",
+      "explanation_en": "'fsync always' writes to disk with every command, causing significant latency. For better performance, 'fsync everysec' (syncs every second) or 'fsync no' (trusts OS) are used.",
+      "source": "Redis Documentation (https://redis.io/docs/management/persistence/)"
+    },
+    {
+      "id": "q270304_05",
+      "skill_id": "sk270304",
+      "type": "true_false",
+      "question_es": "¿Bloquea el proceso BGSAVE la ejecución de comandos normales en Redis?",
+      "question_en": "Does the BGSAVE process block the execution of normal commands in Redis?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "No, BGSAVE (save en background) usa fork() para crear un proceso hijo que genera el snapshot sin bloquear la instancia principal. Esto permite que Redis continúe sirviendo comandos.",
+      "explanation_en": "No, BGSAVE (background save) uses fork() to create a child process that generates the snapshot without blocking the main instance. This allows Redis to continue serving commands.",
+      "source": "Redis Documentation (https://redis.io/commands/bgsave/)"
+    },
+    {
+      "id": "q270304_06",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la función principal de la replicación en Redis?",
+      "question_en": "What is the main function of replication in Redis?",
+      "options_es": [
+        "Duplicar datos en múltiples servidores para alta disponibilidad y escalabilidad de lectura",
+        "Reducir el consumo de memoria sin considerar otros factores relevantes",
+        "Mejorar la compresión de datos de manera exclusiva y permanente",
+        "Aumentar la velocidad de escritura"
+      ],
+      "options_en": [
+        "Duplicate data across multiple servers for high availability and read scalability",
+        "Reduce memory consumption without considering other relevant factors",
+        "Improve data compression exclusively and permanently",
+        "Increase write speed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La replicación crea copias de los datos en múltiples instancias (replicas) que síncrono o asincronía reciben cambios del master, permitiendo failover automático y distribuir lecturas.",
+      "explanation_en": "Replication creates copies of data across multiple instances (replicas) that synchronously or asynchronously receive changes from the master, enabling automatic failover and distributing reads.",
+      "source": "Redis Documentation (https://redis.io/docs/management/replication/)"
+    },
+    {
+      "id": "q270304_07",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la topología de replicación soportada nativamente en Redis?",
+      "question_en": "What replication topology is natively supported in Redis?",
+      "options_es": [
+        "Replicación en árbol (jerárquica)",
+        "Todas las anteriores",
+        "Replicación master-slave (uno-a-muchos)",
+        "Replicación peer-to-peer (muchos-a-muchos)"
+      ],
+      "options_en": [
+        "Hierarchical tree replication",
+        "All of the above",
+        "Master-slave replication (one-to-many)",
+        "Peer-to-peer replication (many-to-many)"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Redis soporta nativamente la topología master-slave donde un master recibe escrituras y múltiples slaves replicandatos. Es posible anidar slaves (slave de slave) pero no verdadera replicación peer-to-peer.",
+      "explanation_en": "Redis natively supports master-slave topology where one master receives writes and multiple slaves replicate data. It is possible to nest slaves (slave of slave) but not true peer-to-peer replication.",
+      "source": "Redis Documentation (https://redis.io/docs/management/replication/)"
+    },
+    {
+      "id": "q270304_08",
+      "skill_id": "sk270304",
+      "type": "true_false",
+      "question_es": "¿Pueden los slaves de Redis aceptar escrituras directas de clientes?",
+      "question_en": "Can Redis slaves accept direct writes from clients?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "No, los slaves son de solo lectura por defecto. Cualquier intento de escritura en un slave es rechazado. Solo el master acepta escrituras, que luego se replican a los slaves.",
+      "explanation_en": "No, slaves are read-only by default. Any write attempt on a slave is rejected. Only the master accepts writes, which are then replicated to the slaves.",
+      "source": "Redis Documentation (https://redis.io/docs/management/replication/)"
+    },
+    {
+      "id": "q270304_09",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de Redis Sentinel?",
+      "question_en": "What is the purpose of Redis Sentinel?",
+      "options_es": [
+        "Distribuir datos entre múltiples nodos",
+        "Comprimir datos para ahorrar memoria en cualquier escenario de implementación",
+        "Acelerar replicación según la documentación estándar del servicio",
+        "Monitorear la salud del master y promover un slave automáticamente si falla"
+      ],
+      "options_en": [
+        "Distribute data across multiple nodes",
+        "Compress data to save memory in any implementation scenario",
+        "Accelerate replication according to standard service documentation",
+        "Monitor master health and automatically promote a slave if it fails"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Sentinel es un sistema de administración que monitorea instancias Redis, detecta fallos, y automáticamente promueve un slave a master, realizando failover sin intervención manual.",
+      "explanation_en": "Sentinel is a management system that monitors Redis instances, detects failures, and automatically promotes a slave to master, performing failover without manual intervention.",
+      "source": "Redis Documentation (https://redis.io/docs/management/sentinel/)"
+    },
+    {
+      "id": "q270304_10",
+      "skill_id": "sk270304",
+      "type": "true_false",
+      "question_es": "¿Requiere Redis Sentinel menos de 3 instancias para funcionar correctamente?",
+      "question_en": "Does Redis Sentinel require fewer than 3 instances to work correctly?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "No, Sentinel requiere un mínimo de 3 instancias para tomar decisiones correctas mediante votación mayoritaria. Con menos de 3, no hay quórum y Sentinel no puede promover replicas.",
+      "explanation_en": "No, Sentinel requires a minimum of 3 instances to make correct decisions through majority voting. With fewer than 3, there is no quorum and Sentinel cannot promote replicas.",
+      "source": "Redis Documentation (https://redis.io/docs/management/sentinel/)"
+    },
+    {
+      "id": "q270304_11",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia principal entre Redis Sentinel y Redis Cluster?",
+      "question_en": "What is the main difference between Redis Sentinel and Redis Cluster?",
+      "options_es": [
+        "No hay diferencia significativa de forma invariable y constante",
+        "Sentinel es para HA de un master, Cluster distribuye datos entre múltiples masters",
+        "Cluster es más seguro que Sentinel de manera exclusiva y permanente",
+        "Sentinel es más rápido que Cluster"
+      ],
+      "options_en": [
+        "There is no significant difference invariably and constantly",
+        "Sentinel is for HA of one master, Cluster distributes data across multiple masters",
+        "Cluster is safer than Sentinel exclusively and permanently",
+        "Sentinel is faster than Cluster"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sentinel mantiene un único master con replicas para alta disponibilidad. Cluster particiona datos entre múltiples masters para escalabilidad, con cada partition siendo HA-ready.",
+      "explanation_en": "Sentinel maintains a single master with replicas for high availability. Cluster partitions data across multiple masters for scalability, with each partition being HA-ready.",
+      "source": "Redis Documentation (https://redis.io/docs/management/cluster-tutorial/)"
+    },
+    {
+      "id": "q270304_12",
+      "skill_id": "sk270304",
+      "type": "true_false",
+      "question_es": "¿Puede Redis Cluster funcionar correctamente con solo 3 nodos?",
+      "question_en": "Can Redis Cluster work correctly with only 3 nodes?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "No, Redis Cluster requiere un mínimo de 6 nodos para alta disponibilidad (3 masters + 3 replicas). Con solo 3 nodos, un fallo podría dejar partitions sin quórum.",
+      "explanation_en": "No, Redis Cluster requires a minimum of 6 nodes for high availability (3 masters + 3 replicas). With only 3 nodes, a failure could leave partitions without quorum.",
+      "source": "Redis Documentation (https://redis.io/docs/management/cluster-tutorial/)"
+    },
+    {
+      "id": "q270304_13",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comportamiento correcto de Redis ante un fallo de replicación?",
+      "question_en": "What is the correct behavior of Redis on a replication failure?",
+      "options_es": [
+        "Ambos se detienen de manera exclusiva y permanente",
+        "El master continúa sirviendo, el slave se reconecta automáticamente cuando es posible",
+        "El master se detiene hasta que la replicación funcione",
+        "Se inicia un failover automático en todos los casos posibles"
+      ],
+      "options_en": [
+        "Both stop exclusively and permanently",
+        "Master continues serving, slave reconnects automatically when possible",
+        "Master stops until replication works",
+        "Automatic failover is initiated in all possible cases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El master continúa sirviendo independientemente del estado de replicación. El slave intenta reconectarse automáticamente cuando está disponible el master.",
+      "explanation_en": "The master continues serving regardless of replication status. The slave automatically attempts to reconnect when the master is available.",
+      "source": "Redis Documentation (https://redis.io/docs/management/replication/)"
+    },
+    {
+      "id": "q270304_14",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la forma más eficiente de realizar una copia de seguridad de Redis sin interrumpir el servicio?",
+      "question_en": "What is the most efficient way to backup Redis without interrupting service?",
+      "options_es": [
+        "Usar replicación esclavo como backup según la documentación estándar del servicio",
+        "Copiar archivos de datos manualmente",
+        "Usar BGSAVE para crear un snapshot en segundo plano",
+        "Usar SAVE bloqueante sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Use slave replication as backup according to standard service documentation",
+        "Manually copy data files",
+        "Use BGSAVE to create a background snapshot",
+        "Use blocking SAVE without exceptions or variants"
+      ],
+      "correct_index": 2,
+      "explanation_es": "BGSAVE crea un snapshot sin bloquear Redis (usa fork), permitiendo que el servicio continúe sirviendo normalmente mientras se genera el backup.",
+      "explanation_en": "BGSAVE creates a snapshot without blocking Redis (uses fork), allowing the service to continue serving normally while the backup is generated.",
+      "source": "Redis Documentation (https://redis.io/commands/bgsave/)"
+    },
+    {
+      "id": "q270304_15",
+      "skill_id": "sk270304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el principal ventaja de usar replicación asincrónica en Redis?",
+      "question_en": "What is the main advantage of using asynchronous replication in Redis?",
+      "options_es": [
+        "Mejor compresión de datos sin considerar otros factores relevantes",
+        "Operaciones más seguras sin excepciones ni variantes",
+        "Menor latencia de escritura porque no espera confirmación de replicas",
+        "Mayor consistencia garantizada"
+      ],
+      "options_en": [
+        "Better data compression without considering other relevant factors",
+        "Safer operations without exceptions or variants",
+        "Lower write latency because it does not wait for replica confirmation",
+        "Greater guaranteed consistency"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La replicación asincrónica no espera confirmación de los slaves, permitiendo que las escrituras se confirmen inmediatamente en el master con mínima latencia, aunque con posible inconsistencia temporal.",
+      "explanation_en": "Asynchronous replication does not wait for slave confirmation, allowing writes to be confirmed immediately on the master with minimal latency, though with possible temporary inconsistency.",
+      "source": "Redis Documentation (https://redis.io/docs/management/replication/)"
+    }
+  ]
+}

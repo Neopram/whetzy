@@ -1,0 +1,12 @@
+{
+  "id": "l280101",
+  "skill_id": "sk280101",
+  "title_es": "Métodos HTTP",
+  "title_en": "HTTP Methods",
+  "body_es": "Los métodos HTTP definen la acción que se desea realizar sobre un recurso. GET recupera datos, POST crea nuevos recursos, PUT actualiza completamente un recurso, PATCH aplica actualizaciones parciales, y DELETE elimina recursos. Cada método tiene semántica específica: GET y HEAD son seguros y no modifican estado del servidor, mientras que POST, PUT, PATCH y DELETE sí generan cambios. Entender cuándo usar cada método es fundamental para diseñar APIs REST correctas y mantenibles.",
+  "body_en": "HTTP methods define the action to perform on a resource. GET retrieves data, POST creates new resources, PUT updates a resource completely, PATCH applies partial updates, and DELETE removes resources. Each method has specific semantics: GET and HEAD are safe and don't modify server state, while POST, PUT, PATCH, and DELETE do generate changes. Understanding when to use each method is fundamental for designing correct and maintainable REST APIs.",
+  "example_code": "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get(\"/users/{user_id}\")\nasync def get_user(user_id: int):\n    return {\"user_id\": user_id, \"name\": \"John\"}\n\n@app.post(\"/users\")\nasync def create_user(user_data: dict):\n    return {\"message\": \"User created\", \"data\": user_data}\n\n@app.put(\"/users/{user_id}\")\nasync def update_user(user_id: int, user_data: dict):\n    return {\"message\": \"User updated\", \"id\": user_id}\n\n@app.delete(\"/users/{user_id}\")\nasync def delete_user(user_id: int):\n    return {\"message\": \"User deleted\", \"id\": user_id}",
+  "example_output": "GET /users/1 → {\"user_id\": 1, \"name\": \"John\"}\nPOST /users → {\"message\": \"User created\"}\nPUT /users/1 → {\"message\": \"User updated\", \"id\": 1}\nDELETE /users/1 → {\"message\": \"User deleted\", \"id\": 1}",
+  "source": "FastAPI Docs — https://fastapi.tiangolo.com",
+  "order": 1
+}

@@ -10,7 +10,6 @@ export function DeleteAccountScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
-  const [token, setToken] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -26,14 +25,14 @@ export function DeleteAccountScreen() {
       const res = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        credentials: 'include',
         body: new URLSearchParams({ username: email, password }),
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || t('deleteAccount.badCredentials'));
       }
-      const data = await res.json();
-      setToken(data.access_token);
+      await res.json();
       setPhase('confirm');
     } catch (err: unknown) {
       setErrorMsg(err instanceof Error ? err.message : t('deleteAccount.networkError'));
@@ -53,7 +52,7 @@ export function DeleteAccountScreen() {
     try {
       const res = await fetch(`${BASE_URL}/auth/me/account`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       });
       if (!res.ok) throw new Error(t('deleteAccount.deleteFailed'));
       setPhase('done');

@@ -1,0 +1,19 @@
+{
+  "id": "les270304",
+  "skill_id": "sk270304",
+  "title_es": "Persistencia y Replicación en Redis",
+  "title_en": "Redis Persistence and Replication",
+  "resources_es": [
+    "RDB vs AOF",
+    "Replicación master-slave",
+    "Sentinela y Cluster"
+  ],
+  "resources_en": [
+    "RDB vs AOF",
+    "Master-slave replication",
+    "Sentinel and Cluster"
+  ],
+  "source": "Redis Documentation (https://redis.io/docs/management/persistence/)",
+  "body_es": "Redis es en memoria, pero ofrece persistencia. RDB (snapshotting): toma foto periódica del estado completo, rápida pero puede perder datos si falla entre snapshots. AOF (Append Only File): registra cada comando, más seguro pero más lento. Replicación: un master replica datos a slaves. Writes van al master, reads pueden distribuirse entre slaves. Sentinel monitorea la salud y realiza failover automático si el master falla. Redis Cluster distribuye datos: cada nodo es responsable de un rango de claves. Entender persistencia vs velocidad es crucial: máxima velocidad sacrifica durabilidad.",
+  "body_en": "Redis is in-memory but offers persistence. RDB (snapshotting): takes periodic snapshot of full state, fast but can lose data if failure between snapshots. AOF (Append Only File): records each command, safer but slower. Replication: a master replicates data to slaves. Writes go to master, reads can distribute among slaves. Sentinel monitors health and performs automatic failover if master fails. Redis Cluster distributes data: each node is responsible for key range. Understanding persistence vs speed is crucial: maximum speed sacrifices durability."
+}

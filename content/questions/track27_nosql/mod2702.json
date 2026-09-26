@@ -1,0 +1,1336 @@
+{
+  "questions": [
+    {
+      "id": "q270201_01",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el formato de almacenamiento nativo de los documentos en MongoDB?",
+      "question_en": "What is the native storage format for documents in MongoDB?",
+      "options_es": [
+        "XML (Lenguaje de marcas extensible)",
+        "BSON (Binary JSON) - representación binaria de datos JSON",
+        "CSV (Valores separados por comas)",
+        "Protobuf (Protocol Buffers) sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "XML (eXtensible Markup Language)",
+        "BSON (Binary JSON) - binary representation of JSON data",
+        "CSV (Comma Separated Values)",
+        "Protobuf (Protocol Buffers) without considering other relevant factors"
+      ],
+      "correct_index": 1,
+      "explanation_es": "MongoDB almacena documentos en formato BSON, que es una extensión binaria de JSON. BSON permite almacenar tipos de datos adicionales como fechas, números enteros y flotantes con mayor precisión que JSON puro.",
+      "explanation_en": "MongoDB stores documents in BSON format, which is a binary extension of JSON. BSON allows storing additional data types such as dates, integers, and floating-point numbers with greater precision than pure JSON.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/bson-type-comparison-order/)"
+    },
+    {
+      "id": "q270201_02",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el campo que MongoDB genera automáticamente en cada documento si no se especifica explícitamente?",
+      "question_en": "Which field does MongoDB automatically generate in every document if not explicitly specified?",
+      "options_es": [
+        "El campo _version que rastrea cambios",
+        "El campo _id que contiene un ObjectId único",
+        "El campo _index que ordena documentos",
+        "El campo _timestamp que registra la creación"
+      ],
+      "options_en": [
+        "The _version field tracking changes",
+        "The _id field containing a unique ObjectId",
+        "The _index field ordering documents",
+        "The _timestamp field recording creation time"
+      ],
+      "correct_index": 1,
+      "explanation_es": "MongoDB crea automáticamente un campo _id con un ObjectId único para cada documento. Este campo sirve como clave primaria y garantiza que cada documento sea identificable de manera única en la colección.",
+      "explanation_en": "MongoDB automatically creates an _id field with a unique ObjectId for each document. This field serves as the primary key and ensures each document is uniquely identifiable in the collection.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/document/#the-_id-field)"
+    },
+    {
+      "id": "q270201_03",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el tamaño máximo permitido para un documento individual en MongoDB?",
+      "question_en": "What is the maximum size allowed for an individual document in MongoDB?",
+      "options_es": [
+        "1 megabyte por defecto",
+        "512 kilobytes por defecto",
+        "16 megabytes por defecto",
+        "100 megabytes por defecto"
+      ],
+      "options_en": [
+        "1 megabyte by default",
+        "512 kilobytes by default",
+        "16 megabytes by default",
+        "100 megabytes by default"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El tamaño máximo de un documento en MongoDB es de 16 MB. Este límite existe para asegurar que los documentos se mantengan manejables en memoria y en la red. Los documentos más grandes deben dividirse en subdocumentos o utilizar GridFS.",
+      "explanation_en": "The maximum document size in MongoDB is 16 MB. This limit exists to ensure documents remain manageable in memory and over the network. Larger documents should be split into subdocuments or use GridFS.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/limits/#mongodb-limit-BSON-Document-Size)"
+    },
+    {
+      "id": "q270201_04",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se definen relaciones uno-a-muchos entre documentos en MongoDB de manera embebida?",
+      "question_en": "How are one-to-many relationships defined between documents in MongoDB using embedding?",
+      "options_es": [
+        "Creando una tabla de referencia cruzada separada independientemente del contexto aplicado",
+        "Definiendo restricciones de clave externa en el esquema",
+        "Usando únicamente identificadores en ambos documentos",
+        "Incluyendo un array de documentos anidados dentro del documento principal"
+      ],
+      "options_en": [
+        "Creating a separate cross-reference table regardless of the applied context",
+        "Defining foreign key constraints in the schema",
+        "Using identifiers only in both documents",
+        "Including an array of nested documents within the parent document"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En MongoDB, las relaciones uno-a-muchos pueden implementarse embebiendo un array de documentos dentro del documento principal. Esto permite mantener datos relacionados juntos y accesibles en una sola consulta, lo cual es más eficiente que las uniones en bases de datos relacionales.",
+      "explanation_en": "In MongoDB, one-to-many relationships can be implemented by embedding an array of documents within the parent document. This keeps related data together and accessible in a single query, which is more efficient than joins in relational databases.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/tutorial/model-embedded-one-to-many-relationships-between-documents/)"
+    },
+    {
+      "id": "q270201_05",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la profundidad máxima de anidamiento permitida en un documento BSON?",
+      "question_en": "What is the maximum nesting depth allowed in a BSON document?",
+      "options_es": [
+        "50 niveles de anidamiento en todos los casos posibles",
+        "10 niveles de anidamiento",
+        "No hay límite establecido",
+        "100 niveles de anidamiento"
+      ],
+      "options_en": [
+        "50 levels of nesting in all possible cases",
+        "10 levels of nesting",
+        "No established limit",
+        "100 levels of nesting"
+      ],
+      "correct_index": 3,
+      "explanation_es": "BSON permite hasta 100 niveles de anidamiento en un documento. Este límite ayuda a prevenir problemas de rendimiento y complejidad excesiva en la estructura de datos. En la práctica, los documentos bien diseñados rara vez necesitan profundidad de anidamiento cercana a este límite.",
+      "explanation_en": "BSON allows up to 100 levels of nesting in a document. This limit helps prevent performance issues and excessive complexity in data structures. In practice, well-designed documents rarely need nesting depth close to this limit.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/limits/)"
+    },
+    {
+      "id": "q270201_06",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia principal entre una colección fija (capped collection) y una colección normal?",
+      "question_en": "What is the main difference between a capped collection and a normal collection?",
+      "options_es": [
+        "Una colección fija tiene un tamaño máximo y reemplaza documentos antiguos automáticamente",
+        "Una colección fija solo puede contener números enteros",
+        "Una colección fija requiere un índice en cada campo independientemente del contexto aplicado",
+        "Una colección fija no permite modificar documentos existentes"
+      ],
+      "options_en": [
+        "A capped collection has a maximum size and automatically overwrites old documents",
+        "A capped collection can only contain integers",
+        "A capped collection requires an index on every field regardless of the applied context",
+        "A capped collection does not allow modifying existing documents"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las colecciones fijas (capped collections) tienen un tamaño máximo predefinido. Cuando se alcanza este límite, los documentos más antiguos se eliminan automáticamente para hacer espacio a los nuevos. Son ideales para logs y datos de sesión con ventanas de retención definidas.",
+      "explanation_en": "Capped collections have a predefined maximum size. When this limit is reached, the oldest documents are automatically deleted to make room for new ones. They are ideal for logs and session data with defined retention windows.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/capped-collections/)"
+    },
+    {
+      "id": "q270201_07",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué tipo de datos BSON se utiliza para almacenar fechas y horas en MongoDB?",
+      "question_en": "What BSON data type is used to store dates and times in MongoDB?",
+      "options_es": [
+        "Number - como valor numérico de segundos",
+        "Date - representa milisegundos desde la época Unix",
+        "Timestamp - almacena una marca de tiempo de 64 bits",
+        "String - en formato ISO 8601"
+      ],
+      "options_en": [
+        "Number - as numeric value of seconds",
+        "Date - represents milliseconds since Unix epoch",
+        "Timestamp - stores a 64-bit timestamp",
+        "String - in ISO 8601 format"
+      ],
+      "correct_index": 1,
+      "explanation_es": "MongoDB utiliza el tipo de dato BSON Date para almacenar fechas y horas. Internamente, representa el número de milisegundos transcurridos desde la época Unix (1 de enero de 1970). Este tipo permite consultas y ordenamientos precisos de datos temporales.",
+      "explanation_en": "MongoDB uses the BSON Date data type to store dates and times. Internally, it represents the number of milliseconds elapsed since the Unix epoch (January 1, 1970). This type enables precise queries and sorting of temporal data.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/bson-type-date/)"
+    },
+    {
+      "id": "q270201_08",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para modelar relaciones muchos-a-muchos en MongoDB?",
+      "question_en": "What is the best practice for modeling many-to-many relationships in MongoDB?",
+      "options_es": [
+        "Crear tablas separadas sin ninguna referencia cruzada",
+        "Almacenar arrays de referencias (ObjectIds) en ambos documentos o en una colección de unión",
+        "Embeber completamente un conjunto dentro del otro independientemente del contexto aplicado",
+        "Usar solo strings con identificadores concatenados sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Create separate tables with no cross-references",
+        "Store arrays of references (ObjectIds) in both documents or in a junction collection",
+        "Completely embed one collection within another regardless of the applied context",
+        "Use only concatenated identifier strings without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Para relaciones muchos-a-muchos, MongoDB recomienda almacenar arrays de referencias (ObjectIds). Se puede usar un enfoque de desnormalización parcial con arrays en ambos documentos, o crear una colección de unión separada. La elección depende de los patrones de consulta y la frecuencia de actualización.",
+      "explanation_en": "For many-to-many relationships, MongoDB recommends storing arrays of references (ObjectIds). You can use a partial denormalization approach with arrays in both documents, or create a separate junction collection. The choice depends on query patterns and update frequency.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/tutorial/model-many-to-many-relationships-between-documents/)"
+    },
+    {
+      "id": "q270201_09",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un campo de ruta de puntos (dot notation) en MongoDB?",
+      "question_en": "What is a dot notation path in MongoDB?",
+      "options_es": [
+        "Un tipo de índice especial para búsquedas rápidas",
+        "Un método para crear copias de documentos de forma invariable y constante",
+        "Un operador de agregación para concatenar strings",
+        "Una forma de acceder a campos anidados usando puntos como separadores"
+      ],
+      "options_en": [
+        "A special index type for fast searches",
+        "A method for creating document copies invariably and constantly",
+        "An aggregation operator for concatenating strings",
+        "A way to access nested fields using dots as separators"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La notación de puntos permite acceder a campos anidados en documentos MongoDB. Por ejemplo, 'address.city' accede al campo city dentro del subdocumento address. Esta notación se usa en filtros, proyecciones y operadores de actualización.",
+      "explanation_en": "Dot notation allows accessing nested fields in MongoDB documents. For example, 'address.city' accesses the city field within the address subdocument. This notation is used in filters, projections, and update operators.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/document/#dot-notation)"
+    },
+    {
+      "id": "q270201_10",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal de la validación de esquema en MongoDB?",
+      "question_en": "What is the main purpose of schema validation in MongoDB?",
+      "options_es": [
+        "Eliminar automáticamente documentos duplicados",
+        "Reemplazar la necesidad de índices según la documentación estándar del servicio",
+        "Aumentar automáticamente la velocidad de consultas",
+        "Asegurar que los documentos cumplan con reglas de estructura y tipos de datos"
+      ],
+      "options_en": [
+        "Automatically remove duplicate documents",
+        "Replace the need for indexes according to standard service documentation",
+        "Automatically increase query speed",
+        "Ensure documents comply with structural rules and data types"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La validación de esquema en MongoDB permite definir reglas sobre qué campos deben estar presentes y qué tipos de datos deben contener. Cuando se insertan o actualizan documentos, MongoDB verifica que cumplan con estas reglas. Esto proporciona consistencia de datos sin ser tan restrictivo como un esquema relacional.",
+      "explanation_en": "Schema validation in MongoDB allows defining rules about which fields must be present and what data types they should contain. When documents are inserted or updated, MongoDB checks compliance with these rules. This provides data consistency without being as restrictive as a relational schema.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/schema-validation/)"
+    },
+    {
+      "id": "q270201_11",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se especifica el tipo de datos en una definición de esquema JSON Schema en MongoDB?",
+      "question_en": "How do you specify data types in a JSON Schema definition in MongoDB?",
+      "options_es": [
+        "Usando '@type' con prefijo de espacio de nombres",
+        "Usando la palabra clave 'type' como en JSON Schema estándar",
+        "Usando 'dataType' seguido del nombre del tipo",
+        "Usando la palabra clave 'bsonType' con tipos BSON válidos"
+      ],
+      "options_en": [
+        "Using '@type' with namespace prefix",
+        "Using the 'type' keyword as in standard JSON Schema",
+        "Using 'dataType' followed by the type name",
+        "Using the 'bsonType' keyword with valid BSON types"
+      ],
+      "correct_index": 3,
+      "explanation_es": "MongoDB usa la palabra clave 'bsonType' en sus esquemas JSON Schema para especificar tipos de datos BSON. Esto es diferente del JSON Schema estándar que usa 'type'. Los tipos válidos incluyen 'string', 'int', 'double', 'object', 'array', 'date', etc.",
+      "explanation_en": "MongoDB uses the 'bsonType' keyword in its JSON Schema definitions to specify BSON data types. This differs from standard JSON Schema which uses 'type'. Valid types include 'string', 'int', 'double', 'object', 'array', 'date', etc.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/query/jsonSchema/)"
+    },
+    {
+      "id": "q270201_12",
+      "skill_id": "sk270201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué característica de MongoDB permite ver el historial completo de cambios en un documento?",
+      "question_en": "What MongoDB feature allows viewing the complete history of changes in a document?",
+      "options_es": [
+        "Snapshot History - guarda instantáneas automáticas cada minuto",
+        "Audit Logs - registra todas las operaciones en un archivo de auditoría",
+        "Document Versioning - mantiene copias automáticas de versiones anteriores",
+        "Change Streams - proporciona una transmisión de eventos de cambios"
+      ],
+      "options_en": [
+        "Snapshot History - automatically saves snapshots every minute",
+        "Audit Logs - records all operations in an audit file",
+        "Document Versioning - automatically maintains copies of previous versions",
+        "Change Streams - provides a stream of change events"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Change Streams es una característica de MongoDB que permite a las aplicaciones suscribirse a cambios en tiempo real en documentos, colecciones o bases de datos. Proporciona una transmisión de eventos que describe cada inserción, actualización o eliminación, permitiendo reacciones en tiempo real.",
+      "explanation_en": "Change Streams is a MongoDB feature that allows applications to subscribe to real-time changes in documents, collections, or databases. It provides a stream of events describing each insert, update, or delete, enabling real-time reactions.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/changeStreams/)"
+    },
+    {
+      "id": "q270201_13",
+      "skill_id": "sk270201",
+      "type": "true_false",
+      "question_es": "¿Es posible que dos documentos en una colección tengan la misma clave _id?",
+      "question_en": "Is it possible for two documents in a collection to have the same _id key?",
+      "options_es": [
+        "Verdadero - se permite duplicación si se deshabilita la validación",
+        "Falso - MongoDB garantiza que _id es único en cada colección"
+      ],
+      "options_en": [
+        "True - duplication is allowed if validation is disabled",
+        "False - MongoDB guarantees _id is unique in each collection"
+      ],
+      "correct_index": 1,
+      "explanation_es": "MongoDB garantiza automáticamente que el campo _id es único en cada colección. Esto es una restricción fundamental que no puede deshabilitarse. Intentar insertar un documento con un _id duplicado resultará en un error.",
+      "explanation_en": "MongoDB automatically guarantees that the _id field is unique in each collection. This is a fundamental constraint that cannot be disabled. Attempting to insert a document with a duplicate _id will result in an error.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/document/#the-_id-field)"
+    },
+    {
+      "id": "q270201_14",
+      "skill_id": "sk270201",
+      "type": "true_false",
+      "question_es": "¿Pueden los documentos en una colección de MongoDB tener diferentes estructuras de campos?",
+      "question_en": "Can documents in a MongoDB collection have different field structures?",
+      "options_es": [
+        "Verdadero - MongoDB es flexible con esquemas y permite estructuras heterogéneas",
+        "Falso - todos los documentos deben tener exactamente la misma estructura"
+      ],
+      "options_en": [
+        "True - MongoDB is schema-flexible and allows heterogeneous structures",
+        "False - all documents must have exactly the same structure"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Uno de los puntos fuertes de MongoDB es su flexibilidad de esquema. Los documentos en una colección pueden tener diferentes conjuntos de campos. Aunque es una buena práctica mantener consistencia mediante validación de esquema, MongoDB no lo requiere. Esto permite evolucionar la estructura de datos sin migraciones complejas.",
+      "explanation_en": "One of MongoDB's strengths is its schema flexibility. Documents in a collection can have different sets of fields. While it's good practice to maintain consistency through schema validation, MongoDB doesn't require it. This allows data structure evolution without complex migrations.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/schema-validation/)"
+    },
+    {
+      "id": "q270201_15",
+      "skill_id": "sk270201",
+      "type": "true_false",
+      "question_es": "¿Es el tipo de dato Null en MongoDB lo mismo que un campo inexistente?",
+      "question_en": "Is a Null data type in MongoDB the same as a non-existent field?",
+      "options_es": [
+        "Falso - Null es un valor presente explícitamente, diferente de un campo ausente",
+        "Verdadero - MongoDB trata Null y campos faltantes de manera idéntica"
+      ],
+      "options_en": [
+        "False - Null is an explicitly present value, different from a missing field",
+        "True - MongoDB treats Null and missing fields identically"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En MongoDB, un campo con valor Null es diferente de un campo que no existe. Un campo Null está presente en el documento pero tiene un valor nulo. Un campo inexistente no está presente en absoluto. Esto es importante para consultas y operaciones de proyección.",
+      "explanation_en": "In MongoDB, a field with a Null value is different from a non-existent field. A Null field is present in the document but has a null value. A non-existent field is not present at all. This is important for queries and projection operations.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/bson-type-comparison-order/)"
+    },
+    {
+      "id": "q270202_01",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la operación CRUD que crea nuevos documentos en una colección?",
+      "question_en": "Which CRUD operation creates new documents in a collection?",
+      "options_es": [
+        "Delete - utiliza deleteOne() o deleteMany()",
+        "Read - utiliza find() o findOne()",
+        "Create - utiliza insertOne() o insertMany()",
+        "Update - utiliza updateOne() o updateMany()"
+      ],
+      "options_en": [
+        "Delete - uses deleteOne() or deleteMany()",
+        "Read - uses find() or findOne()",
+        "Create - uses insertOne() or insertMany()",
+        "Update - uses updateOne() or updateMany()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La operación Create del ciclo CRUD inserta nuevos documentos en una colección. MongoDB proporciona insertOne() para insertar un único documento e insertMany() para insertar múltiples documentos. La operación devuelve los _id generados automáticamente.",
+      "explanation_en": "The Create operation in the CRUD cycle inserts new documents into a collection. MongoDB provides insertOne() to insert a single document and insertMany() to insert multiple documents. The operation returns the automatically generated _id values.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/crud/)"
+    },
+    {
+      "id": "q270202_02",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede cuando utilizas insertMany() con la opción ordered: false?",
+      "question_en": "What happens when you use insertMany() with the ordered: false option?",
+      "options_es": [
+        "Detiene la inserción al primer error encontrado",
+        "Continúa insertando documentos incluso si uno falla",
+        "Ordena los documentos alfabéticamente antes de insertar",
+        "Intenta insertar todos los documentos en paralelo"
+      ],
+      "options_en": [
+        "Stops insertion at the first error encountered",
+        "Continues inserting documents even if one fails",
+        "Sorts documents alphabetically before inserting",
+        "Attempts to insert all documents in parallel"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cuando insertMany() se ejecuta con ordered: false, MongoDB intenta insertar todos los documentos sin parar en errores. Los documentos sin errores se insertan exitosamente mientras que los que causan errores se reportan. Con ordered: true (por defecto), la inserción se detiene en el primer error.",
+      "explanation_en": "When insertMany() runs with ordered: false, MongoDB attempts to insert all documents without stopping at errors. Documents without errors are inserted successfully while those causing errors are reported. With ordered: true (default), insertion stops at the first error.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/)"
+    },
+    {
+      "id": "q270202_03",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre find() y findOne() en MongoDB?",
+      "question_en": "What is the difference between find() and findOne() in MongoDB?",
+      "options_es": [
+        "find() es más rápido que findOne() de forma invariable y constante",
+        "find() retorna un array, findOne() retorna un documento",
+        "findOne() solo funciona con índices",
+        "find() retorna un cursor, findOne() retorna un único documento"
+      ],
+      "options_en": [
+        "find() is faster than findOne() invariably and constantly",
+        "find() returns an array, findOne() returns a document",
+        "findOne() only works with indexes",
+        "find() returns a cursor, findOne() returns a single document"
+      ],
+      "correct_index": 3,
+      "explanation_es": "find() retorna un cursor iterable que permite procesar múltiples documentos, mientras que findOne() retorna directamente el primer documento que coincide con la consulta (o null si no hay coincidencias). findOne() es útil cuando solo necesitas un documento, mientras que find() es para procesamiento de múltiples resultados.",
+      "explanation_en": "find() returns an iterable cursor allowing processing of multiple documents, while findOne() directly returns the first matching document (or null if no matches). findOne() is useful when you only need one document, while find() is for processing multiple results.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/method/db.collection.find/)"
+    },
+    {
+      "id": "q270202_04",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el operador de actualización que incrementa un valor numérico en MongoDB?",
+      "question_en": "What is the update operator that increments a numeric value in MongoDB?",
+      "options_es": [
+        "$plus - añade el valor al campo",
+        "$add - suma un valor al campo",
+        "$increment - incrementa el campo especificado",
+        "$inc - incrementa un valor numérico existente"
+      ],
+      "options_en": [
+        "$plus - adds the value to the field",
+        "$add - adds a value to the field",
+        "$increment - increments the specified field",
+        "$inc - increments an existing numeric value"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El operador $inc incrementa un valor numérico en la cantidad especificada. Por ejemplo, {$inc: {contador: 1}} incrementa el campo contador en 1. Es idempotente y seguro para operaciones concurrentes. Si el campo no existe, se crea con el valor del incremento.",
+      "explanation_en": "The $inc operator increments a numeric value by the specified amount. For example, {$inc: {counter: 1}} increments the counter field by 1. It is idempotent and safe for concurrent operations. If the field doesn't exist, it is created with the increment value.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/update/inc/)"
+    },
+    {
+      "id": "q270202_05",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué operador de actualización se usa para reemplazar completamente un documento en MongoDB?",
+      "question_en": "What update operator is used to completely replace a document in MongoDB?",
+      "options_es": [
+        "replaceOne() - reemplaza todo el documento excepto _id",
+        "updateOne() con la opción replace: true",
+        "$set - modifica campos específicos sin excepciones ni variantes",
+        "$replace - reemplaza el documento completo"
+      ],
+      "options_en": [
+        "replaceOne() - replaces the entire document except _id",
+        "updateOne() with the replace: true option",
+        "$set - modifies specific fields without exceptions or variants",
+        "$replace - replaces the complete document"
+      ],
+      "correct_index": 0,
+      "explanation_es": "replaceOne() reemplaza completamente un documento con uno nuevo, manteniendo solo el campo _id original. A diferencia de updateOne() que modifica campos específicos, replaceOne() descarta todos los demás campos. Es útil cuando necesitas cambiar completamente la estructura de un documento.",
+      "explanation_en": "replaceOne() completely replaces a document with a new one, keeping only the original _id field. Unlike updateOne() which modifies specific fields, replaceOne() discards all other fields. It's useful when you need to completely change a document's structure.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/)"
+    },
+    {
+      "id": "q270202_06",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el operador que añade elementos a un array sin crear duplicados?",
+      "question_en": "Which operator adds elements to an array without creating duplicates?",
+      "options_es": [
+        "$uniq - elimina duplicados del array independientemente del contexto aplicado",
+        "$unique - fuerza unicidad en el array",
+        "$addToSet - añade elementos solo si no existen en el array",
+        "$push - añade elementos al array permitiendo duplicados"
+      ],
+      "options_en": [
+        "$uniq - removes duplicates from the array regardless of the applied context",
+        "$unique - enforces uniqueness in the array",
+        "$addToSet - adds elements only if they don't exist in the array",
+        "$push - adds elements to the array allowing duplicates"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El operador $addToSet añade un elemento a un array solo si no existe ya en el array, asegurando que no haya duplicados. Es diferente de $push que añade el elemento siempre, aunque sea duplicado. $addToSet es ideal para mantener colecciones de valores únicos.",
+      "explanation_en": "The $addToSet operator adds an element to an array only if it doesn't already exist, ensuring no duplicates. Unlike $push which adds the element regardless, $addToSet prevents duplicates. It's ideal for maintaining collections of unique values.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/)"
+    },
+    {
+      "id": "q270202_07",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se elimina un documento de una colección en MongoDB?",
+      "question_en": "How do you delete a document from a collection in MongoDB?",
+      "options_es": [
+        "Usando deleteOne() o deleteMany() para eliminar documentos coincidentes",
+        "Usando remove() que ha sido deprecado en todos los casos posibles",
+        "Usando drop() que elimina documentos individuales",
+        "Usando clear() para limpiar la colección en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Using deleteOne() or deleteMany() to remove matching documents",
+        "Using remove() which has been deprecated in all possible cases",
+        "Using drop() to remove individual documents",
+        "Using clear() to wipe the collection in any implementation scenario"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Para eliminar documentos, MongoDB proporciona deleteOne() que elimina el primer documento coincidente y deleteMany() que elimina todos los documentos coincidentes. El método antiguo remove() está deprecado. drop() elimina la colección completa, no documentos individuales.",
+      "explanation_en": "To delete documents, MongoDB provides deleteOne() which removes the first matching document and deleteMany() which removes all matching documents. The legacy remove() method is deprecated. drop() removes the entire collection, not individual documents.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/method/db.collection.deleteOne/)"
+    },
+    {
+      "id": "q270202_08",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método devuelve el número total de documentos que coinciden con una consulta sin traerlos?",
+      "question_en": "What method returns the total number of documents matching a query without fetching them?",
+      "options_es": [
+        "getCount() - obtiene el conteo de la colección sin considerar otros factores relevantes",
+        "estimatedDocumentCount() - devuelve una estimación sin filtro",
+        "find().length - obtiene el número de resultados",
+        "countDocuments() - cuenta documentos que coinciden con el filtro"
+      ],
+      "options_en": [
+        "getCount() - gets the collection count without considering other relevant factors",
+        "estimatedDocumentCount() - returns an estimate without filtering",
+        "find().length - gets the number of results",
+        "countDocuments() - counts documents matching the filter"
+      ],
+      "correct_index": 3,
+      "explanation_es": "countDocuments() cuenta los documentos que coinciden con un filtro específico. Para contar todos los documentos sin filtro, estimatedDocumentCount() es más rápido ya que usa metadatos. countDocuments() es más preciso cuando necesitas aplicar un filtro.",
+      "explanation_en": "countDocuments() counts documents matching a specific filter. To count all documents without filtering, estimatedDocumentCount() is faster as it uses metadata. countDocuments() is more accurate when you need to apply a filter.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/method/db.collection.countDocuments/)"
+    },
+    {
+      "id": "q270202_09",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué operador de comparación en MongoDB comprueba si un valor existe en un array de opciones?",
+      "question_en": "What comparison operator in MongoDB checks if a value exists in an array of options?",
+      "options_es": [
+        "$exists - comprueba si un campo existe según la documentación estándar del servicio",
+        "$contains - busca dentro de un string en todos los casos posibles",
+        "$includes - comprueba si un array contiene un valor",
+        "$in - devuelve documentos donde el campo tiene algún valor de la lista"
+      ],
+      "options_en": [
+        "$exists - checks if a field exists according to standard service documentation",
+        "$contains - searches within a string in all possible cases",
+        "$includes - checks if an array contains a value",
+        "$in - returns documents where the field has any value from the list"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El operador $in comprueba si el valor de un campo coincide con cualquiera de los valores en un array específico. Por ejemplo, {status: {$in: ['active', 'pending']}} retorna documentos donde status es 'active' o 'pending'. Es diferente de $nin que devuelve lo opuesto.",
+      "explanation_en": "The $in operator checks if a field's value matches any value in a specified array. For example, {status: {$in: ['active', 'pending']}} returns documents where status is 'active' or 'pending'. It's opposite to $nin which returns the negation.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/query/in/)"
+    },
+    {
+      "id": "q270202_10",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el operador que busca documentos donde un campo NO coincide con un valor específico?",
+      "question_en": "What is the operator that finds documents where a field does NOT match a specific value?",
+      "options_es": [
+        "$exclude - excluye valores específicos",
+        "$ne - no igual a, devuelve documentos que no coinciden",
+        "$not - negación lógica de una condición",
+        "$neq - no igual comparativo independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "$exclude - excludes specific values",
+        "$ne - not equal, returns documents that don't match",
+        "$not - logical negation of a condition",
+        "$neq - comparative not equal regardless of the applied context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El operador $ne (not equal) devuelve documentos donde el campo especificado no es igual al valor dado. Por ejemplo, {status: {$ne: 'inactive'}} retorna todos los documentos donde status no es 'inactive'. Nota que $ne también devuelve documentos donde el campo no existe.",
+      "explanation_en": "The $ne (not equal) operator returns documents where the specified field is not equal to the given value. For example, {status: {$ne: 'inactive'}} returns all documents where status is not 'inactive'. Note that $ne also returns documents where the field doesn't exist.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/query/ne/)"
+    },
+    {
+      "id": "q270202_11",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué operador se utiliza para actualizar un campo solo si la operación de actualización aún no ha ocurrido?",
+      "question_en": "What operator is used to update a field only if the update operation hasn't occurred yet?",
+      "options_es": [
+        "$updateOnce - actualiza solo una vez sin excepciones ni variantes",
+        "$setIfNull - actualiza solo si el campo es null",
+        "$setOnInsert - establece valores solo si es una inserción",
+        "$conditionalSet - actualiza condicionalmente"
+      ],
+      "options_en": [
+        "$updateOnce - updates only once without exceptions or variants",
+        "$setIfNull - updates only if the field is null",
+        "$setOnInsert - sets values only if it's an insert",
+        "$conditionalSet - conditionally updates"
+      ],
+      "correct_index": 2,
+      "explanation_es": "$setOnInsert se usa junto con la opción upsert: true en updateOne() o updateMany(). Especifica qué campos establecer SOLO si la operación es una inserción (el documento no existía). Si el documento ya existe, $setOnInsert se ignora.",
+      "explanation_en": "$setOnInsert is used with the upsert: true option in updateOne() or updateMany(). It specifies which fields to set ONLY if the operation is an insert (the document didn't exist). If the document already exists, $setOnInsert is ignored.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/update/setOnInsert/)"
+    },
+    {
+      "id": "q270202_12",
+      "skill_id": "sk270202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de la opción upsert en las operaciones de actualización?",
+      "question_en": "What is the purpose of the upsert option in update operations?",
+      "options_es": [
+        "Actualiza múltiples documentos a la vez independientemente del contexto aplicado",
+        "Ordena los resultados de la actualización",
+        "Inserta un documento si no existe o actualiza si existe",
+        "Comprime los documentos en la base de datos"
+      ],
+      "options_en": [
+        "Updates multiple documents at once regardless of the applied context",
+        "Sorts the results of the update",
+        "Inserts a document if it doesn't exist or updates if it does",
+        "Compresses documents in the database"
+      ],
+      "correct_index": 2,
+      "explanation_es": "upsert es una operación de MongoDB que combina 'update' e 'insert'. Cuando upsert: true, si no se encuentra un documento que coincida con el filtro, se inserta un nuevo documento con los valores del filtro y la actualización. Si existe, se actualiza normalmente.",
+      "explanation_en": "upsert is a MongoDB operation combining 'update' and 'insert'. When upsert: true, if no document matches the filter, a new document is inserted with filter values and the update. If it exists, it's updated normally.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/method/db.collection.updateOne/)"
+    },
+    {
+      "id": "q270202_13",
+      "skill_id": "sk270202",
+      "type": "true_false",
+      "question_es": "¿Cambia el campo _id cuando actualizas un documento en MongoDB?",
+      "question_en": "Does the _id field change when you update a document in MongoDB?",
+      "options_es": [
+        "Verdadero - el _id puede cambiar en actualizaciones",
+        "Falso - el _id nunca cambia, es inmutable"
+      ],
+      "options_en": [
+        "True - _id can change in updates",
+        "False - _id never changes, it is immutable"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El campo _id es inmutable en MongoDB. No puede cambiar una vez que se crea el documento. Si intentas actualizar _id usando updateOne() o cualquier otro método de actualización, MongoDB lanzará un error. Solo puedes 'cambiar' _id eliminando el documento e insertando uno nuevo.",
+      "explanation_en": "The _id field is immutable in MongoDB. It cannot change once the document is created. If you try to update _id using updateOne() or any other update method, MongoDB will throw an error. You can only 'change' _id by deleting the document and inserting a new one.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/document/#the-_id-field)"
+    },
+    {
+      "id": "q270202_14",
+      "skill_id": "sk270202",
+      "type": "true_false",
+      "question_es": "¿Puede insertMany() garantizar que todos los documentos se inserten en una transacción atómica?",
+      "question_en": "Can insertMany() guarantee that all documents are inserted in an atomic transaction?",
+      "options_es": [
+        "Falso - insertMany() no es atómica por defecto, necesita sesión",
+        "Verdadero - insertMany() siempre es atómica"
+      ],
+      "options_en": [
+        "False - insertMany() is not atomic by default, requires session",
+        "True - insertMany() is always atomic"
+      ],
+      "correct_index": 0,
+      "explanation_es": "insertMany() no es atómica por defecto. Para garantizar atomicidad, debes usar una sesión de transacción y estar conectado a un cluster con conjuntos de réplicas. Sin transacciones, si falla insertMany() a mitad de camino, algunos documentos pueden haberse insertado mientras otros no.",
+      "explanation_en": "insertMany() is not atomic by default. To guarantee atomicity, you must use a transaction session and be connected to a cluster with replica sets. Without transactions, if insertMany() fails partway, some documents may have been inserted while others weren't.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/transactions/)"
+    },
+    {
+      "id": "q270202_15",
+      "skill_id": "sk270202",
+      "type": "true_false",
+      "question_es": "¿Es posible eliminar un campo específico de un documento usando el operador $unset?",
+      "question_en": "Is it possible to remove a specific field from a document using the $unset operator?",
+      "options_es": [
+        "Falso - solo se pueden eliminar documentos completos",
+        "Verdadero - $unset elimina campos especificados del documento"
+      ],
+      "options_en": [
+        "False - only entire documents can be removed",
+        "True - $unset removes specified fields from the document"
+      ],
+      "correct_index": 1,
+      "explanation_es": "$unset es un operador de actualización que elimina campos específicos de un documento. Por ejemplo, {$unset: {descripcion: \"\"}} elimina el campo descripcion. El valor del campo (vacío en este caso) no importa; lo importante es que se especifique el campo a eliminar.",
+      "explanation_en": "$unset is an update operator that removes specific fields from a document. For example, {$unset: {description: \"\"}} removes the description field. The field's value (empty in this case) doesn't matter; what matters is specifying which field to remove.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/update/unset/)"
+    },
+    {
+      "id": "q270203_01",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal del pipeline de agregación en MongoDB?",
+      "question_en": "What is the main purpose of the aggregation pipeline in MongoDB?",
+      "options_es": [
+        "Copiar documentos de una colección a otra",
+        "Optimizar índices automáticamente de manera exclusiva y permanente",
+        "Transformar y procesar documentos mediante múltiples etapas",
+        "Establecer permisos de acceso a colecciones"
+      ],
+      "options_en": [
+        "Copy documents from one collection to another",
+        "Automatically optimize indexes exclusively and permanently",
+        "Transform and process documents through multiple stages",
+        "Set access permissions to collections"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El pipeline de agregación es una herramienta poderosa que procesa documentos en una serie de etapas (stages). Cada etapa transforma los datos: filtra, agrupa, ordena, proyecta campos, etc. Los documentos pasan de una etapa a la siguiente, permitiendo análisis complejos y transformaciones de datos.",
+      "explanation_en": "The aggregation pipeline is a powerful tool that processes documents through a series of stages. Each stage transforms the data: filters, groups, sorts, projects fields, etc. Documents pass from one stage to the next, enabling complex analysis and data transformations.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/aggregation-pipeline/)"
+    },
+    {
+      "id": "q270203_02",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la etapa del pipeline que filtra documentos basándose en condiciones?",
+      "question_en": "Which pipeline stage filters documents based on conditions?",
+      "options_es": [
+        "$search - busca texto completo en documentos",
+        "$match - filtra documentos que cumplen el criterio",
+        "$where - ejecuta código JavaScript personalizado",
+        "$filter - filtra campos dentro de arrays sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "$search - performs full-text search on documents",
+        "$match - filters documents matching the criteria",
+        "$where - executes custom JavaScript code",
+        "$filter - filters fields within arrays without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "$match es la etapa de filtrado del pipeline de agregación. Funciona similar a find() pero dentro del pipeline. Reduce el conjunto de documentos pasando solo aquellos que coinciden con la condición especificada a la siguiente etapa. Debe colocarse temprano en el pipeline para mejorar el rendimiento.",
+      "explanation_en": "$match is the filtering stage of the aggregation pipeline. It works similarly to find() but within the pipeline. It reduces the set of documents by passing only those matching the specified condition to the next stage. It should be placed early in the pipeline for better performance.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/match/)"
+    },
+    {
+      "id": "q270203_03",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué etapa del pipeline agrupa documentos por un campo específico?",
+      "question_en": "Which pipeline stage groups documents by a specific field?",
+      "options_es": [
+        "$sort - ordena documentos de forma invariable y constante",
+        "$group - agrupa documentos por un campo y calcula agregaciones",
+        "$facet - ejecuta múltiples pipelines paralelamente",
+        "$bucket - agrupa documentos en rangos en todos los casos posibles"
+      ],
+      "options_en": [
+        "$sort - sorts documents invariably and constantly",
+        "$group - groups documents by a field and calculates aggregations",
+        "$facet - runs multiple pipelines in parallel",
+        "$bucket - groups documents into ranges in all possible cases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "$group agrupa documentos basándose en una expresión _id y calcula agregaciones sobre cada grupo. Por ejemplo, {$group: {_id: '$categoria', total: {$sum: '$precio}}} agrupa por categoría y suma los precios. También puede usarse con $sum: 1 para contar documentos.",
+      "explanation_en": "$group groups documents based on an _id expression and calculates aggregations over each group. For example, {$group: {_id: '$category', total: {$sum: '$price}}} groups by category and sums prices. It can also use $sum: 1 to count documents.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/)"
+    },
+    {
+      "id": "q270203_04",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el operador de agregación que calcula la suma de un campo en una agrupación?",
+      "question_en": "What aggregation operator calculates the sum of a field in a grouping?",
+      "options_es": [
+        "$total - calcula el total de un campo",
+        "$add - suma dos valores específicos sin excepciones ni variantes",
+        "$sum - suma valores de un campo en cada grupo",
+        "$aggregate - calcula múltiples agregaciones"
+      ],
+      "options_en": [
+        "$total - calculates total of a field",
+        "$add - sums two specific values without exceptions or variants",
+        "$sum - sums values of a field in each group",
+        "$aggregate - calculates multiple aggregations"
+      ],
+      "correct_index": 2,
+      "explanation_es": "$sum es un operador de agregación usado en etapas $group para sumar valores. {$sum: '$monto'} suma todos los valores del campo monto en cada grupo. {$sum: 1} cuenta documentos. Se usa únicamente dentro del contexto de $group u otros operadores que acepten expresiones.",
+      "explanation_en": "$sum is an aggregation operator used in $group stages to sum values. {$sum: '$amount'} sums all values of the amount field in each group. {$sum: 1} counts documents. It's used only within the context of $group or other operators accepting expressions.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/sum/)"
+    },
+    {
+      "id": "q270203_05",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la etapa que ordena documentos en el pipeline de agregación?",
+      "question_en": "Which stage sorts documents in the aggregation pipeline?",
+      "options_es": [
+        "$arrange - reorganiza documentos según la documentación estándar del servicio",
+        "$sort - ordena documentos en orden ascendente o descendente",
+        "$order - ordena documentos por prioridad",
+        "$sequence - ordena secuencialmente"
+      ],
+      "options_en": [
+        "$arrange - reorganizes documents according to standard service documentation",
+        "$sort - sorts documents in ascending or descending order",
+        "$order - sorts documents by priority",
+        "$sequence - orders sequentially"
+      ],
+      "correct_index": 1,
+      "explanation_es": "$sort ordena los documentos en el pipeline según uno o más campos. {$sort: {precio: 1}} ordena en orden ascendente por precio; {$sort: {precio: -1}} ordena en orden descendente. Pueden ordenarse múltiples campos con prioridades diferentes.",
+      "explanation_en": "$sort orders documents in the pipeline according to one or more fields. {$sort: {price: 1}} sorts in ascending order by price; {$sort: {price: -1}} sorts in descending order. Multiple fields can be sorted with different priorities.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/sort/)"
+    },
+    {
+      "id": "q270203_06",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué etapa del pipeline selecciona solo ciertos campos para incluir o excluir?",
+      "question_en": "Which pipeline stage selects only certain fields to include or exclude?",
+      "options_es": [
+        "$fields - define campos visibles de forma invariable y constante",
+        "$extract - extrae campos específicos",
+        "$project - especifica qué campos incluir o excluir",
+        "$select - selecciona campos por nombre"
+      ],
+      "options_en": [
+        "$fields - defines visible fields invariably and constantly",
+        "$extract - extracts specific fields",
+        "$project - specifies which fields to include or exclude",
+        "$select - selects fields by name"
+      ],
+      "correct_index": 2,
+      "explanation_es": "$project es similar a la proyección en find() pero más poderosa. Puede incluir/excluir campos ({nombre: 1}), crear nuevos campos calculados ({totalImpuesto: {$multiply: ['$precio', 0.21]}}), y reorganizar la estructura de los documentos resultantes.",
+      "explanation_en": "$project is similar to projection in find() but more powerful. It can include/exclude fields ({name: 1}), create new calculated fields ({totalTax: {$multiply: ['$price', 0.21]}}), and reorganize the structure of resulting documents.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/project/)"
+    },
+    {
+      "id": "q270203_07",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de la etapa $lookup en el pipeline de agregación?",
+      "question_en": "What is the purpose of the $lookup stage in the aggregation pipeline?",
+      "options_es": [
+        "Agrupa documentos por valor",
+        "Realiza uniones entre colecciones (JOINs)",
+        "Busca documentos rápidamente usando índices",
+        "Limita la cantidad de documentos devueltos"
+      ],
+      "options_en": [
+        "Groups documents by value",
+        "Performs joins between collections (JOINs)",
+        "Quickly searches documents using indexes",
+        "Limits the number of returned documents"
+      ],
+      "correct_index": 1,
+      "explanation_es": "$lookup realiza una unión (JOIN) entre la colección actual y otra colección. Combina documentos que cumplen con una condición, similar a INNER JOIN en SQL. Esto permite correlacionar datos de múltiples colecciones en una sola consulta de agregación.",
+      "explanation_en": "$lookup performs a join between the current collection and another collection. It combines documents that match a condition, similar to INNER JOIN in SQL. This allows correlating data from multiple collections in a single aggregation query.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/)"
+    },
+    {
+      "id": "q270203_08",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué operador de agregación calcula el promedio de valores en un grupo?",
+      "question_en": "What aggregation operator calculates the average of values in a group?",
+      "options_es": [
+        "$avg - calcula el promedio de valores",
+        "$mean - calcula la media aritmética",
+        "$median - calcula la mediana independientemente del contexto aplicado",
+        "$average - obtiene el promedio"
+      ],
+      "options_en": [
+        "$avg - calculates the average of values",
+        "$mean - calculates the arithmetic mean",
+        "$median - calculates the median regardless of the applied context",
+        "$average - gets the average"
+      ],
+      "correct_index": 0,
+      "explanation_es": "$avg calcula el promedio aritmético de todos los valores de un campo en cada grupo. {$avg: '$calificación'} calcula la calificación promedio. Ignora automáticamente valores null y campos faltantes.",
+      "explanation_en": "$avg calculates the arithmetic average of all values of a field in each group. {$avg: '$rating'} calculates the average rating. It automatically ignores null values and missing fields.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/avg/)"
+    },
+    {
+      "id": "q270203_09",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la etapa que descompone arrays en documentos separados?",
+      "question_en": "Which stage decomposes arrays into separate documents?",
+      "options_es": [
+        "$expand - expande campos de manera exclusiva y permanente",
+        "$flatten - aplana estructuras anidadas",
+        "$explode - divide documentos",
+        "$unwind - expande arrays en documentos individuales"
+      ],
+      "options_en": [
+        "$expand - expands fields exclusively and permanently",
+        "$flatten - flattens nested structures",
+        "$explode - splits documents",
+        "$unwind - expands arrays into individual documents"
+      ],
+      "correct_index": 3,
+      "explanation_es": "$unwind toma un array y crea un documento separado para cada elemento del array. Si un documento tiene {tags: ['a', 'b', 'c']}, $unwind crea tres documentos, cada uno con un valor de tag diferente. Es útil para análisis donde necesitas trabajar con elementos de arrays individuales.",
+      "explanation_en": "$unwind takes an array and creates a separate document for each array element. If a document has {tags: ['a', 'b', 'c']}, $unwind creates three documents, each with a different tag value. It's useful for analysis where you need to work with individual array elements.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/unwind/)"
+    },
+    {
+      "id": "q270203_10",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué etapa limita el número de documentos en el pipeline?",
+      "question_en": "Which stage limits the number of documents in the pipeline?",
+      "options_es": [
+        "$limit - limita a un número específico de documentos",
+        "$cap - limita el tamaño de salida sin considerar otros factores relevantes",
+        "$first - devuelve solo el primer documento",
+        "$max - define el máximo de documentos"
+      ],
+      "options_en": [
+        "$limit - restricts to a specific number of documents",
+        "$cap - limits output size without considering other relevant factors",
+        "$first - returns only the first document",
+        "$max - defines maximum documents"
+      ],
+      "correct_index": 0,
+      "explanation_es": "$limit especifica cuántos documentos pasan a la siguiente etapa del pipeline. {$limit: 10} devuelve solo los primeros 10 documentos. Se usa comúnmente con $sort para obtener los N documentos principales (top N). $limit es más eficiente que obtener todos y procesar en la aplicación.",
+      "explanation_en": "$limit specifies how many documents pass to the next stage of the pipeline. {$limit: 10} returns only the first 10 documents. It's commonly used with $sort to get top N documents. $limit is more efficient than fetching all and processing in the application.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/limit/)"
+    },
+    {
+      "id": "q270203_11",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el operador que concatena strings en una agregación?",
+      "question_en": "What operator concatenates strings in an aggregation?",
+      "options_es": [
+        "$concat - concatena múltiples strings",
+        "$join - une strings con separador",
+        "$append - añade strings juntos",
+        "$combine - combina strings en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "$concat - concatenates multiple strings",
+        "$join - joins strings with separator",
+        "$append - appends strings together",
+        "$combine - combines strings in any implementation scenario"
+      ],
+      "correct_index": 0,
+      "explanation_es": "$concat une múltiples strings en uno solo. {$concat: ['$nombre', ' ', '$apellido']} crea un campo completo con nombre y apellido unidos. Ignora null y valores faltantes convirtiéndolos en vacío.",
+      "explanation_en": "$concat joins multiple strings into one. {$concat: ['$firstName', ' ', '$lastName']} creates a full name field. It ignores null and missing values by treating them as empty.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/concat/)"
+    },
+    {
+      "id": "q270203_12",
+      "skill_id": "sk270203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué etapa del pipeline expone documentos entre etapas del pipeline?",
+      "question_en": "Which pipeline stage writes documents to a collection?",
+      "options_es": [
+        "$export - exporta resultados en todos los casos posibles",
+        "$write - almacena en colección especificada",
+        "$save - guarda resultados en memoria",
+        "$out - escribe los resultados a una nueva colección"
+      ],
+      "options_en": [
+        "$export - exports results in all possible cases",
+        "$write - stores in specified collection",
+        "$save - saves results in memory",
+        "$out - writes results to a new collection"
+      ],
+      "correct_index": 3,
+      "explanation_es": "$out escribe los documentos resultantes del pipeline a una colección especificada. Si la colección no existe, la crea. Si existe, reemplaza su contenido. Debe ser la última etapa del pipeline y solo puede haber una etapa $out.",
+      "explanation_en": "$out writes the pipeline's resulting documents to a specified collection. If the collection doesn't exist, it creates it. If it exists, it replaces its contents. It must be the last stage of the pipeline and there can only be one $out stage.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/out/)"
+    },
+    {
+      "id": "q270203_13",
+      "skill_id": "sk270203",
+      "type": "true_false",
+      "question_es": "¿Puede un pipeline de agregación incluir múltiples etapas $group?",
+      "question_en": "Can an aggregation pipeline include multiple $group stages?",
+      "options_es": [
+        "Falso - solo una etapa $group está permitida por pipeline",
+        "Verdadero - puedes encadenar múltiples $group para agrupaciones sucesivas"
+      ],
+      "options_en": [
+        "False - only one $group stage is allowed per pipeline",
+        "True - you can chain multiple $group for successive groupings"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un pipeline puede tener múltiples etapas $group encadenadas. Esto permite agrupaciones en múltiples niveles. Por ejemplo, primero agrupar por categoría, luego por región, permitiendo análisis jerárquicos complejos.",
+      "explanation_en": "A pipeline can have multiple chained $group stages. This allows groupings at multiple levels. For example, first group by category, then by region, enabling complex hierarchical analysis.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/aggregation-pipeline/)"
+    },
+    {
+      "id": "q270203_14",
+      "skill_id": "sk270203",
+      "type": "true_false",
+      "question_es": "¿Es siempre recomendable colocar $sort antes que $match en el pipeline?",
+      "question_en": "Is it always recommended to place $sort before $match in the pipeline?",
+      "options_es": [
+        "Verdadero - $sort siempre debe ir primero",
+        "Falso - $match debe estar antes para filtrar primero y mejorar rendimiento"
+      ],
+      "options_en": [
+        "True - $sort should always go first",
+        "False - $match should be first to filter and improve performance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Es importante colocar $match al principio del pipeline porque reduce el número de documentos que necesitan procesamiento en etapas posteriores, mejorando significativamente el rendimiento. $sort debe colocarse después de $match para ordenar solo los documentos filtrados.",
+      "explanation_en": "It's important to place $match at the beginning of the pipeline because it reduces the number of documents needing processing in later stages, significantly improving performance. $sort should be placed after $match to sort only the filtered documents.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/aggregation-pipeline-optimization/)"
+    },
+    {
+      "id": "q270203_15",
+      "skill_id": "sk270203",
+      "type": "true_false",
+      "question_es": "¿Puede $lookup unirse con una colección en una base de datos diferente?",
+      "question_en": "Can $lookup join with a collection in a different database?",
+      "options_es": [
+        "Falso - solo funciona dentro de la misma base de datos",
+        "Verdadero - $lookup puede unirse entre bases de datos en la misma instancia"
+      ],
+      "options_en": [
+        "False - only works within the same database",
+        "True - $lookup can join across databases in the same instance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "$lookup puede unirse con colecciones en diferentes bases de datos dentro de la misma instancia de MongoDB. Se especifica usando 'db.colección' en el parámetro 'from'. Esto permite correlacionar datos entre múltiples bases de datos en una única operación de agregación.",
+      "explanation_en": "$lookup can join with collections in different databases within the same MongoDB instance. It's specified using 'db.collection' in the 'from' parameter. This allows correlating data across multiple databases in a single aggregation operation.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/)"
+    },
+    {
+      "id": "q270204_01",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal de los índices en MongoDB?",
+      "question_en": "What is the main purpose of indexes in MongoDB?",
+      "options_es": [
+        "Validar la integridad de los datos sin excepciones ni variantes",
+        "Crear copias de seguridad automáticas",
+        "Aumentar el espacio disponible en disco",
+        "Mejorar la velocidad de búsqueda y consultas"
+      ],
+      "options_en": [
+        "Validate data integrity without exceptions or variants",
+        "Create automatic backups",
+        "Increase available disk space",
+        "Improve search and query speed"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los índices en MongoDB mejoran dramáticamente la velocidad de consultas permitiendo que el motor de base de datos encuentre documentos sin escanear cada documento de la colección. Funcionan como índices de libros: en lugar de leer cada página, vas al índice para encontrar las páginas relevantes.",
+      "explanation_en": "Indexes in MongoDB dramatically improve query speed by allowing the database engine to find documents without scanning every document in the collection. They work like book indexes: instead of reading every page, you go to the index to find relevant pages.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/indexes/)"
+    },
+    {
+      "id": "q270204_02",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué tipo de índice se crea automáticamente en cada colección MongoDB?",
+      "question_en": "What type of index is automatically created on every MongoDB collection?",
+      "options_es": [
+        "Sin índice - todos deben crearse manualmente",
+        "Índice en _id - índice único en el campo _id",
+        "Índice primario - en el primer campo insertado",
+        "Índice por defecto - en todos los campos"
+      ],
+      "options_en": [
+        "No index - all must be created manually",
+        "_id index - unique index on _id field",
+        "Primary index - on the first inserted field",
+        "Default index - on all fields"
+      ],
+      "correct_index": 1,
+      "explanation_es": "MongoDB crea automáticamente un índice único en el campo _id de cada colección. Este es el único índice que se crea automáticamente. Todos los demás índices deben crearse explícitamente usando createIndex().",
+      "explanation_en": "MongoDB automatically creates a unique index on the _id field of every collection. This is the only automatically created index. All other indexes must be explicitly created using createIndex().",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/indexes/#_id-index)"
+    },
+    {
+      "id": "q270204_03",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un índice simple y un índice compuesto?",
+      "question_en": "What is the difference between a simple index and a compound index?",
+      "options_es": [
+        "Índice simple: ascendente; compuesto: descendente",
+        "Índice simple: un campo; compuesto: múltiples campos",
+        "Índice simple: número; compuesto: texto sin excepciones ni variantes",
+        "Índice simple: lento; compuesto: rápido"
+      ],
+      "options_en": [
+        "Simple index: ascending; compound: descending",
+        "Simple index: one field; compound: multiple fields",
+        "Simple index: number; compound: text without exceptions or variants",
+        "Simple index: slow; compound: fast"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un índice simple indexa un único campo. Un índice compuesto indexa múltiples campos juntos. Los índices compuestos son útiles para consultas que filtran por múltiples campos, permitiendo optimizaciones más sofisticadas del plan de ejecución.",
+      "explanation_en": "A simple index indexes a single field. A compound index indexes multiple fields together. Compound indexes are useful for queries filtering by multiple fields, allowing more sophisticated execution plan optimizations.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/index-compound/)"
+    },
+    {
+      "id": "q270204_04",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el orden correcto para indexar campos en una consulta múltiple?",
+      "question_en": "What is the correct order for indexing fields in a multi-field query?",
+      "options_es": [
+        "Campos de igualdad, rango, luego ordenamiento",
+        "Campos de rango, igualdad, luego ordenamiento",
+        "El orden no importa en absoluto",
+        "Campos de ordenamiento, igualdad, luego rango"
+      ],
+      "options_en": [
+        "Equality fields, range, then sorting",
+        "Range fields, equality, then sorting",
+        "The order doesn't matter at all",
+        "Sorting fields, equality, then range"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La regla ESR (Equality, Sort, Range) dictamina que los campos de igualdad deben indexarse primero, seguidos de campos para ordenamiento, luego campos de rango. Esto optimiza el uso del índice y mejora el rendimiento. {status: 1, fecha: 1, precio: 1} es mejor que otras permutaciones.",
+      "explanation_en": "The ESR rule (Equality, Sort, Range) dictates that equality fields should be indexed first, followed by sort fields, then range fields. This optimizes index usage and improves performance. {status: 1, date: 1, price: 1} is better than other permutations.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-index/)"
+    },
+    {
+      "id": "q270204_05",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una consulta cubierta (covered query) en MongoDB?",
+      "question_en": "What is a covered query in MongoDB?",
+      "options_es": [
+        "Consulta que filtra documentos de seguridad",
+        "Consulta que usa protección SSL/TLS sin considerar otros factores relevantes",
+        "Consulta donde todos los datos vienen del índice, sin leer documentos",
+        "Consulta que tarda menos de 100 milisegundos"
+      ],
+      "options_en": [
+        "Query that filters security documents",
+        "Query that uses SSL/TLS protection without considering other relevant factors",
+        "Query where all data comes from the index, without reading documents",
+        "Query that takes less than 100 milliseconds"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una consulta cubierta es aquella donde el índice contiene todos los campos necesarios para satisfacerla, sin necesidad de examinar los documentos reales. Esto es extremadamente rápido porque el motor solo consulta el índice. Requiere que la proyección no incluya _id y que todos los campos consultados estén en el índice.",
+      "explanation_en": "A covered query is one where the index contains all fields needed to satisfy it, without examining actual documents. This is extremely fast because the engine only queries the index. It requires the projection to exclude _id and all queried fields to be in the index.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/query-optimization/#covered-query)"
+    },
+    {
+      "id": "q270204_06",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el método para visualizar el plan de ejecución de una consulta?",
+      "question_en": "What method shows the execution plan of a query?",
+      "options_es": [
+        "analyzePlan() - analiza la eficiencia",
+        "showPlan() - muestra el plan de ejecución",
+        "explain() - devuelve el plan de ejecución detallado",
+        "queryPlan() - devuelve el plan en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "analyzePlan() - analyzes efficiency",
+        "showPlan() - displays the execution plan",
+        "explain() - returns the detailed execution plan",
+        "queryPlan() - returns the plan in any implementation scenario"
+      ],
+      "correct_index": 2,
+      "explanation_es": "explain() es un método que devuelve información sobre cómo MongoDB ejecuta una consulta. Incluye si se usan índices, número de documentos examinados, documentos retornados, y más. explain('executionStats') proporciona estadísticas detalladas de ejecución. Es esencial para optimizar consultas.",
+      "explanation_en": "explain() is a method that returns information about how MongoDB executes a query. It includes whether indexes are used, number of documents examined, documents returned, and more. explain('executionStats') provides detailed execution statistics. It's essential for query optimization.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/reference/method/db.collection.explain/)"
+    },
+    {
+      "id": "q270204_07",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un índice de texto (text index) en MongoDB?",
+      "question_en": "What is a text index in MongoDB?",
+      "options_es": [
+        "Índice que ordena strings alfabéticamente",
+        "Índice que permite búsquedas de texto completo en campos de string",
+        "Índice que valida formatos de texto en todos los casos posibles",
+        "Índice que comprime contenido de texto en todos los casos posibles"
+      ],
+      "options_en": [
+        "Index that sorts strings alphabetically",
+        "Index that enables full-text search in string fields",
+        "Index that validates text formats in all possible cases",
+        "Index that compresses text content in all possible cases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un índice de texto permite realizar búsquedas de texto completo en colecciones. Indexa palabras en campos de string, permitiendo consultas de texto natural sin necesidad de expresiones regulares complejas. Se crea con {campo: 'text'} y se usa con el operador $text.",
+      "explanation_en": "A text index enables full-text search capabilities in collections. It indexes words in string fields, allowing natural language text queries without complex regex. It's created with {field: 'text'} and used with the $text operator.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/index-text/)"
+    },
+    {
+      "id": "q270204_08",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el impacto de crear un índice en las operaciones de inserción y actualización?",
+      "question_en": "What is the impact of creating an index on insert and update operations?",
+      "options_es": [
+        "Acelera todas las operaciones automáticamente",
+        "Ralentiza inserciones y actualizaciones por mantenimiento del índice",
+        "No tiene impacto, solo mejora las búsquedas en todos los casos posibles",
+        "Elimina la necesidad de validación de datos"
+      ],
+      "options_en": [
+        "Automatically accelerates all operations",
+        "Slows down inserts and updates due to index maintenance",
+        "Has no impact, only improves searches in all possible cases",
+        "Eliminates the need for data validation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los índices mejoran significativamente la velocidad de lectura pero tienen un costo en escritura. Cada inserción o actualización requiere actualizar todos los índices relevantes, lo cual consume tiempo y recursos. Es un trade-off: se optimiza para lectura a expensas de escritura. Por esto, es importante crear solo índices necesarios.",
+      "explanation_en": "Indexes significantly improve read speed but have a cost on writes. Each insert or update requires updating all relevant indexes, consuming time and resources. It's a trade-off: optimizing for reads at the expense of writes. Therefore, create only necessary indexes.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/index-performance/)"
+    },
+    {
+      "id": "q270204_09",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el escaneo de colección (collection scan)?",
+      "question_en": "What is a collection scan?",
+      "options_es": [
+        "Examinar todos los documentos sin usar índices",
+        "Contar el número de documentos rápidamente",
+        "Crear un backup de toda la colección",
+        "Verificar la integridad de la estructura de la colección"
+      ],
+      "options_en": [
+        "Examining all documents without using indexes",
+        "Quickly counting the number of documents",
+        "Creating a backup of the entire collection",
+        "Verifying the structural integrity of a collection"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un escaneo de colección ocurre cuando MongoDB examina todos los documentos de una colección secuencialmente sin usar un índice. Es muy lento en colecciones grandes y debe evitarse. Usar explain() para identificar si una consulta realiza un escaneo de colección y crear índices apropiados.",
+      "explanation_en": "A collection scan occurs when MongoDB sequentially examines all documents in a collection without using an index. It's very slow in large collections and should be avoided. Use explain() to identify if a query performs a collection scan and create appropriate indexes.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/query-optimization/#query-selectivity)"
+    },
+    {
+      "id": "q270204_10",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un índice ascendente (1) y descendente (-1)?",
+      "question_en": "What is the difference between an ascending index (1) and descending index (-1)?",
+      "options_es": [
+        "No hay diferencia, es solo sintaxis en cualquier escenario de implementación",
+        "Descendente permite búsquedas negativas",
+        "Ascendente es más rápido, descendente es más lento",
+        "Descendente: ordena hacia atrás; ambos tienen el mismo rendimiento"
+      ],
+      "options_en": [
+        "No difference, it's just syntax in any implementation scenario",
+        "Descending allows negative searches",
+        "Ascending is faster, descending is slower",
+        "Descending: sorts backward; both have identical performance"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los índices ascendentes (1) y descendentes (-1) almacenan datos en diferente orden. Para índices simples, ambos tienen el mismo rendimiento de búsqueda. Sin embargo, para índices compuestos con múltiples direcciones, el orden importa. MongoDB puede usar índices en ambas direcciones.",
+      "explanation_en": "Ascending (1) and descending (-1) indexes store data in different order. For simple indexes, both have identical search performance. However, for compound indexes with multiple directions, the order matters. MongoDB can use indexes in both directions.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/index-types/#ascending-and-descending)"
+    },
+    {
+      "id": "q270204_11",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la opción de índice que permite ignorar valores nulos?",
+      "question_en": "What index option allows ignoring null values?",
+      "options_es": [
+        "unique: true - requiere valores únicos de forma invariable y constante",
+        "background: true - construye en segundo plano",
+        "sparse: true - excluye documentos sin el campo indexado",
+        "ignore_null: true - ignora valores null"
+      ],
+      "options_en": [
+        "unique: true - requires unique values invariably and constantly",
+        "background: true - builds in the background",
+        "sparse: true - excludes documents without the indexed field",
+        "ignore_null: true - ignores null values"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un índice sparse excluye documentos donde el campo indexado no existe o es null. Esto reduce el tamaño del índice y mejora rendimiento. Sin sparse: true, cada documento sin el campo se indexa como un valor null, lo que puede ser ineficiente si muchos documentos carecen del campo.",
+      "explanation_en": "A sparse index excludes documents where the indexed field doesn't exist or is null. This reduces index size and improves performance. Without sparse: true, each document missing the field is indexed as a null value, which can be inefficient if many documents lack the field.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/index-sparse/)"
+    },
+    {
+      "id": "q270204_12",
+      "skill_id": "sk270204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un índice geoespacial en MongoDB?",
+      "question_en": "What is a geospatial index in MongoDB?",
+      "options_es": [
+        "Índice que comprime datos geográficos",
+        "Índice que valida coordenadas GPS sin considerar otros factores relevantes",
+        "Índice que ordena por zona geográfica",
+        "Índice que permite consultas basadas en ubicación geográfica"
+      ],
+      "options_en": [
+        "Index that compresses geographic data",
+        "Index that validates GPS coordinates without considering other relevant factors",
+        "Index that sorts by geographic zone",
+        "Index that enables location-based queries"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un índice geoespacial permite realizar consultas basadas en ubicación, como encontrar restaurantes cercanos o dentro de un radio. Soporta búsquedas de proximidad, consultas de rango y otras operaciones geoespaciales. Se crea con {ubicación: '2dsphere'} para coordenadas esféricas.",
+      "explanation_en": "A geospatial index enables location-based queries, such as finding nearby restaurants or within a radius. It supports proximity searches, range queries, and other geospatial operations. It's created with {location: '2dsphere'} for spherical coordinates.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/geospatial-indexes/)"
+    },
+    {
+      "id": "q270204_13",
+      "skill_id": "sk270204",
+      "type": "true_false",
+      "question_es": "¿Es posible crear un índice en un campo que no existe en ningún documento de la colección?",
+      "question_en": "Is it possible to create an index on a field that doesn't exist in any document?",
+      "options_es": [
+        "Verdadero - MongoDB permite crear índices en campos inexistentes",
+        "Falso - el campo debe existir antes de crear un índice"
+      ],
+      "options_en": [
+        "True - MongoDB allows creating indexes on non-existent fields",
+        "False - the field must exist before creating an index"
+      ],
+      "correct_index": 0,
+      "explanation_es": "MongoDB permite crear índices en campos que no existen en ningún documento. Esto es útil para preparar la base de datos anticipadamente o para campos que se añadirán en el futuro. Los documentos sin el campo serán indexados como null (o excluidos si el índice es sparse).",
+      "explanation_en": "MongoDB allows creating indexes on fields that don't exist in any document. This is useful for preparing the database in advance or for fields that will be added in the future. Documents without the field will be indexed as null (or excluded if the index is sparse).",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/indexes/"
+    },
+    {
+      "id": "q270204_14",
+      "skill_id": "sk270204",
+      "type": "true_false",
+      "question_es": "¿Puede un índice único permitir múltiples valores null en el mismo campo?",
+      "question_en": "Can a unique index allow multiple null values in the same field?",
+      "options_es": [
+        "Falso - un índice único rechaza duplicados, incluidos nulls múltiples",
+        "Verdadero - los valores null se tratan como diferentes"
+      ],
+      "options_en": [
+        "False - a unique index rejects duplicates, including multiple nulls",
+        "True - null values are treated as different"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un índice único garantiza que no haya duplicados, y MongoDB trata múltiples valores null como duplicados. Solo un documento puede tener el valor null en un campo con índice único. Para permitir múltiples nulls, usa sparse: true, que excluye documentos sin el campo.",
+      "explanation_en": "A unique index ensures no duplicates, and MongoDB treats multiple null values as duplicates. Only one document can have a null value in a field with a unique index. To allow multiple nulls, use sparse: true, which excludes documents without the field.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/index-unique/)"
+    },
+    {
+      "id": "q270204_15",
+      "skill_id": "sk270204",
+      "type": "true_false",
+      "question_es": "¿Son los índices compartidos automáticamente entre réplicas en un replica set?",
+      "question_en": "Are indexes automatically shared between replicas in a replica set?",
+      "options_es": [
+        "Falso - cada réplica debe crear sus propios índices",
+        "Verdadero - los índices se replican automáticamente como parte de la replicación"
+      ],
+      "options_en": [
+        "False - each replica must create its own indexes",
+        "True - indexes are automatically replicated as part of replication"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los índices son parte de los datos replicados en MongoDB. Cuando creas un índice en el primario (primary) de un replica set, se replica automáticamente a los secundarios (secondaries). Los índices se construyen en paralelo en cada nodo para mejor rendimiento.",
+      "explanation_en": "Indexes are part of the replicated data in MongoDB. When you create an index on the primary in a replica set, it's automatically replicated to the secondaries. Indexes are built in parallel on each node for better performance.",
+      "source": "MongoDB Documentation (https://www.mongodb.com/docs/manual/core/replication-introduction/)"
+    }
+  ]
+}

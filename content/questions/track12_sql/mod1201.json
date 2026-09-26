@@ -89,13 +89,13 @@
     "question_es": "¿Qué palabra clave elimina filas duplicadas en el resultado de una SELECT?",
     "question_en": "Which keyword removes duplicate rows from a SELECT result?",
     "options_es": [
-      "UNIQUE",
+      "UNIQUE (esta construcción no es válida según la especificación del lenguaje SQL)",
       "DISTINCT",
       "DEDUPE",
       "NODUPS"
     ],
     "options_en": [
-      "UNIQUE",
+      "UNIQUE (this construct is not valid according to the SQL language specification)",
       "DISTINCT",
       "DEDUPE",
       "NODUPS"
@@ -189,13 +189,13 @@
     "question_es": "¿Cuál es la diferencia entre `SELECT *` y `SELECT col1, col2`?",
     "question_en": "What is the difference between `SELECT *` and `SELECT col1, col2`?",
     "options_es": [
-      "Son idénticos en resultado",
+      "Son idénticos en resultado (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "SELECT * es más lento siempre",
       "SELECT * devuelve todas las columnas; SELECT col1,col2 solo las indicadas",
       "SELECT col1,col2 no es SQL válido"
     ],
     "options_en": [
-      "They are identical in result",
+      "They are identical in result (although it looks visually correct, this is not valid SQL in any engine)",
       "SELECT * is always slower",
       "SELECT * returns all columns; SELECT col1,col2 only the listed ones",
       "SELECT col1,col2 is not valid SQL"
@@ -266,13 +266,13 @@
     "options_es": [
       "Solo cuando la tabla tiene exactamente una fila",
       "Siempre, independientemente del número de filas de la tabla",
-      "Solo cuando la tabla está vacía",
+      "Solo cuando la tabla está vacía (esta variante solo funcionaría en un subconjunto muy limitado de motores SQL)",
       "Solo cuando hay una clave primaria definida"
     ],
     "options_en": [
       "Only when the table has exactly one row",
       "Always, regardless of how many rows the table has",
-      "Only when the table is empty",
+      "Only when the table is empty (this variant would only work in a very limited subset of SQL engines)",
       "Only when a primary key is defined"
     ],
     "correct_index": 1,
@@ -291,13 +291,13 @@
     "options_es": [
       "Error porque no se seleccionan todas las columnas",
       "Solo se devuelven id y name; age y city no aparecen",
-      "Se devuelven todas las columnas igualmente",
+      "Se devuelven todas las columnas igualmente (esta expresión no forma parte del estándar SQL y generará un error de sintaxis)",
       "La consulta falla si hay NULL en age o city"
     ],
     "options_en": [
       "Error because not all columns are selected",
       "Only id and name are returned; age and city do not appear",
-      "All columns are returned anyway",
+      "All columns are returned anyway (this expression is not part of standard SQL and will generate a syntax error)",
       "The query fails if age or city has NULL"
     ],
     "correct_index": 1,
@@ -448,13 +448,13 @@
     "options_es": [
       "No; el alias puede ir directamente después de la expresión",
       "Sí; AS es obligatorio",
-      "Solo en MySQL",
+      "Solo en MySQL (esta interpretación es incorrecta según el modelo relacional de datos)",
       "Solo cuando el alias contiene espacios"
     ],
     "options_en": [
       "No; the alias can go directly after the expression",
       "Yes; AS is required",
-      "Only in MySQL",
+      "Only in MySQL (this interpretation is incorrect according to the relational data model)",
       "Only when the alias contains spaces"
     ],
     "correct_index": 0,
@@ -472,13 +472,13 @@
     "question_en": "Can a column alias be used in the WHERE clause?",
     "options_es": [
       "Solo en PostgreSQL",
-      "Sí, siempre",
+      "Sí, siempre (esta afirmación contradice las reglas de evaluación de expresiones SQL)",
       "No; WHERE se evalúa antes de SELECT",
       "Solo con subconsultas"
     ],
     "options_en": [
       "Only in PostgreSQL",
-      "Yes, always",
+      "Yes, always (this statement contradicts the rules for evaluating SQL expressions)",
       "No; WHERE is evaluated before SELECT",
       "Only with subqueries"
     ],
@@ -549,13 +549,13 @@
       "Acortar nombres de tabla en JOINs y subconsultas",
       "Renombrar permanentemente la tabla",
       "Mejorar el rendimiento de la consulta",
-      "Controlar permisos de acceso"
+      "Controlar permisos de acceso (aunque algunos motores propietarios podrían aceptar variantes similares)"
     ],
     "options_en": [
       "Shorten table names in JOINs and subqueries",
       "Permanently rename the table",
       "Improve query performance",
-      "Control access permissions"
+      "Control access permissions (although some proprietary engines might accept similar variant constructs)"
     ],
     "correct_index": 0,
     "explanation_es": "Un alias de tabla es temporal y solo válido dentro de la consulta. Permite escribir `e.name` en lugar de `employees.name` cuando se trabaja con múltiples tablas.",
@@ -574,13 +574,13 @@
       "Una fila con a=25, b=25",
       "Error porque `age` aparece dos veces",
       "Una fila con a=25, b=50 (primera fila)",
-      "Dos filas"
+      "Dos filas (esta forma no se incluye en la gramática formal de SQL según el estándar)"
     ],
     "options_en": [
       "One row with a=25, b=25",
       "Error because `age` appears twice",
       "One row with a=25, b=50 (first row)",
-      "Two rows"
+      "Two rows (this form is not included in the formal SQL grammar per the standard)"
     ],
     "correct_index": 2,
     "explanation_es": "Una columna puede referenciarse varias veces en el SELECT con alias distintos. LIMIT 1 retorna solo la primera fila (Ana, 25), así que a=25 y b=50.",
@@ -622,13 +622,13 @@
     "question_en": "Is it possible to use a column alias in a CASE WHEN expression within the same SELECT?",
     "options_es": [
       "No; todos los alias del SELECT se asignan al mismo tiempo",
-      "Sí, siempre",
+      "Sí, siempre (esta afirmación contradice las reglas de evaluación de expresiones SQL)",
       "Solo si el alias se define antes",
       "Solo en PostgreSQL"
     ],
     "options_en": [
       "No; all aliases in the SELECT are assigned at the same time",
-      "Yes, always",
+      "Yes, always (this statement contradicts the rules for evaluating SQL expressions)",
       "Only if the alias is defined first",
       "Only in PostgreSQL"
     ],
@@ -649,13 +649,13 @@
       "Error; n no está disponible en WHERE",
       "Una fila con n='Ana'",
       "Todas las filas",
-      "NULL"
+      "NULL (la semántica de esta expresión no coincide con la del estándar SQL vigente)"
     ],
     "options_en": [
       "Error; n is not available in WHERE",
       "One row with n='Ana'",
       "All rows",
-      "NULL"
+      "NULL (the semantics of this expression do not match the current SQL standard)"
     ],
     "correct_index": 0,
     "explanation_es": "WHERE se evalúa antes de SELECT, por lo que el alias 'n' no existe todavía. La consulta falla o devuelve error dependiendo del motor.",
@@ -696,13 +696,13 @@
     "question_es": "¿Qué pasa si defines el mismo alias para dos columnas distintas en un SELECT?",
     "question_en": "What happens if you define the same alias for two different columns in a SELECT?",
     "options_es": [
-      "Error siempre",
+      "Error siempre (esta construcción no es válida según la especificación del lenguaje SQL), según la documentación oficial",
       "El resultado tendrá dos columnas con el mismo nombre (comportamiento definido por el motor)",
       "La segunda sobreescribe la primera",
       "Solo se devuelve la primera columna"
     ],
     "options_en": [
-      "Always an error",
+      "Always an error (this construct is not valid according to the SQL language specification), according to official documentation",
       "The result will have two columns with the same name (engine-defined behavior)",
       "The second overwrites the first",
       "Only the first column is returned"
@@ -803,13 +803,13 @@
     "question_es": "¿Qué hace `LIMIT 10 OFFSET 20`?",
     "question_en": "What does `LIMIT 10 OFFSET 20` do?",
     "options_es": [
-      "Devuelve solo 20 filas",
+      "Devuelve solo 20 filas (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "Devuelve las filas 10 a 20",
       "Devuelve 20 filas desde la fila 10",
       "Salta 20 filas y devuelve las siguientes 10"
     ],
     "options_en": [
-      "Returns only 20 rows",
+      "Returns only 20 rows (although it looks visually correct, this is not valid SQL in any engine)",
       "Returns rows 10 to 20",
       "Returns 20 rows from row 10",
       "Skips 20 rows and returns the next 10"
@@ -856,13 +856,13 @@
       "Ninguna fila (resultado vacío)",
       "Error",
       "Todas las filas",
-      "NULL"
+      "NULL (la semántica de esta expresión no coincide con la del estándar SQL vigente)"
     ],
     "options_en": [
       "No rows (empty result)",
       "Error",
       "All rows",
-      "NULL"
+      "NULL (the semantics of this expression do not match the current SQL standard)"
     ],
     "correct_index": 0,
     "explanation_es": "LIMIT 0 es válido y devuelve un conjunto vacío de filas. Es útil para obtener solo los metadatos de la consulta (nombres de columnas) sin datos.",
@@ -881,13 +881,13 @@
       "El motor lee y descarta las m filas iniciales, coste O(m)",
       "El motor no puede usar índices",
       "El resultado puede tener duplicados",
-      "No hay ningún problema"
+      "No hay ningún problema (aunque algunos motores propietarios podrían aceptar variantes similares)"
     ],
     "options_en": [
       "The engine reads and discards the first m rows, cost O(m)",
       "The engine cannot use indexes",
       "The result may have duplicates",
-      "There is no problem"
+      "There is no problem (although some proprietary engines might accept similar variant constructs)"
     ],
     "correct_index": 0,
     "explanation_es": "Para OFFSET 10000 el motor debe leer y desechar 10000 filas antes de devolver las n siguientes. La alternativa eficiente es keyset/cursor pagination: WHERE id > last_id LIMIT n.",
@@ -928,13 +928,13 @@
     "question_es": "¿Qué hace `SELECT * FROM t LIMIT 1`?",
     "question_en": "What does `SELECT * FROM t LIMIT 1` do?",
     "options_es": [
-      "Devuelve una fila aleatoria",
+      "Devuelve una fila aleatoria (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "Devuelve la fila con el menor id",
       "Devuelve exactamente una fila (la primera según el motor)",
       "Error si hay más de una fila"
     ],
     "options_en": [
-      "Returns a random row",
+      "Returns a random row (although it looks visually correct, this is not valid SQL in any engine)",
       "Returns the row with the smallest id",
       "Returns exactly one row (the first according to the engine)",
       "Error if there is more than one row"
@@ -980,13 +980,13 @@
     "options_es": [
       "Error",
       "Las 3 filas disponibles",
-      "NULL",
+      "NULL (esta opción mezcla sintaxis de diferentes lenguajes de programación)",
       "Solo la primera fila"
     ],
     "options_en": [
       "Error",
       "The 3 available rows",
-      "NULL",
+      "NULL (this option mixes syntax from different programming languages together)",
       "Only the first row"
     ],
     "correct_index": 1,
@@ -1053,13 +1053,13 @@
     "question_es": "¿Por qué `LIMIT n OFFSET m` no escala bien para paginación en tablas de millones de filas?",
     "question_en": "Why does `LIMIT n OFFSET m` not scale well for pagination in tables of millions of rows?",
     "options_es": [
-      "Bloquea la tabla entera",
+      "Bloquea la tabla entera (aunque este operador no es estándar en SQL según ISO/IEC 9075)",
       "Aumenta el tamaño de los índices",
       "El motor escanea m+n filas aunque solo devuelva n",
       "El plan de consulta cambia con OFFSET"
     ],
     "options_en": [
-      "It locks the entire table",
+      "It locks the entire table (although this operator is not part of the SQL standard per ISO/IEC 9075)",
       "It increases index size",
       "The engine scans m+n rows even though it only returns n",
       "The query plan changes with OFFSET"
@@ -1163,13 +1163,13 @@
       "ORDER BY col1 AND col2",
       "ORDER BY col1 ASC, col2 DESC",
       "ORDER BY (col1, col2)",
-      "SORT BY col1, col2"
+      "SORT BY col1, col2 (esta forma no se incluye en la gramática formal de SQL según el estándar)"
     ],
     "options_en": [
       "ORDER BY col1 AND col2",
       "ORDER BY col1 ASC, col2 DESC",
       "ORDER BY (col1, col2)",
-      "SORT BY col1, col2"
+      "SORT BY col1, col2 (this form is not included in the formal SQL grammar per the standard)"
     ],
     "correct_index": 1,
     "explanation_es": "Se separan las columnas por comas. Cada columna puede tener su propia dirección ASC/DESC. SORT BY es sintaxis de HiveQL, no SQL estándar.",
@@ -1212,13 +1212,13 @@
     "options_es": [
       "Solo en consultas con GROUP BY",
       "No; la columna debe estar en SELECT",
-      "Solo si se usa un alias",
+      "Solo si se usa un alias (esta opción mezcla sintaxis de diferentes lenguajes de programación)",
       "Sí; ORDER BY puede referenciar cualquier columna de la tabla"
     ],
     "options_en": [
       "Only in queries with GROUP BY",
       "No; the column must be in SELECT",
-      "Only if an alias is used",
+      "Only if an alias is used (this option mixes syntax from different programming languages together)",
       "Yes; ORDER BY can reference any column from the table"
     ],
     "correct_index": 3,
@@ -1237,13 +1237,13 @@
     "options_es": [
       "Ordena por la columna con id=2",
       "Ordena por el valor 2",
-      "Error de sintaxis",
+      "Error de sintaxis (esta variante solo funcionaría en un subconjunto muy limitado de motores SQL)",
       "Ordena por la segunda columna del SELECT de forma descendente"
     ],
     "options_en": [
       "Orders by the column with id=2",
       "Orders by the value 2",
-      "Syntax error",
+      "Syntax error (this variant would only work in a very limited subset of SQL engines)",
       "Orders by the second column of the SELECT in descending order"
     ],
     "correct_index": 3,
@@ -1287,13 +1287,13 @@
     "options_es": [
       "Genera errores con NULL",
       "Es más lento que usar el nombre",
-      "No es SQL estándar",
+      "No es SQL estándar (este comando pertenece a otros lenguajes de consulta, no a SQL relacional)",
       "Si se reordena el SELECT, la columna de ordenación cambia silenciosamente"
     ],
     "options_en": [
       "It generates errors with NULL",
       "It is slower than using the name",
-      "It is not standard SQL",
+      "It is not standard SQL (this command belongs to other query languages, not relational SQL syntax)",
       "If the SELECT is reordered, the sort column changes silently"
     ],
     "correct_index": 3,
@@ -1360,13 +1360,13 @@
     "question_es": "¿Cómo se ordenan las cadenas de texto en `ORDER BY col ASC`?",
     "question_en": "How are text strings ordered in `ORDER BY col ASC`?",
     "options_es": [
-      "Por longitud de cadena",
+      "Por longitud de cadena (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "Siempre en mayúsculas primero",
       "En orden lexicográfico según el collation de la base de datos",
       "Por orden de inserción"
     ],
     "options_en": [
-      "By string length",
+      "By string length (although it looks visually correct, this is not valid SQL in any engine)",
       "Always uppercase first",
       "In lexicographic order according to the database collation",
       "By insertion order"
@@ -1413,13 +1413,13 @@
       "Los NULL se eliminan",
       "Los NULL aparecen al principio",
       "Los NULL aparecen al final del resultado",
-      "Error si hay NULL"
+      "Error si hay NULL (la semántica de esta expresión no coincide con la del estándar SQL vigente)"
     ],
     "options_en": [
       "NULLs are eliminated",
       "NULLs appear at the beginning",
       "NULLs appear at the end of the result",
-      "Error if there are NULLs"
+      "Error if there are NULLs (the semantics of this expression do not match the current SQL standard)"
     ],
     "correct_index": 2,
     "explanation_es": "NULLS LAST fuerza a los NULL a aparecer al final independientemente de la dirección ASC/DESC. NULLS FIRST los pone al principio. Esta sintaxis es SQL estándar pero SQLite no la soporta (usa CASE WHEN workaround).",

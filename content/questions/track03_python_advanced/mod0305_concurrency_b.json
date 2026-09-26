@@ -69,14 +69,14 @@
       "question_en": "What does this code print, and what happens to the concurrency?\n```python\nimport threading\norder = []\n\ndef work(n):\n    order.append(n)\n\nfor i in range(3):\n    t = threading.Thread(target=work, args=(i,))\n    t.start()\n    t.join()\n\nprint(order)\n```",
       "options_es": [
         "Un orden impredecible, distinto en cada ejecución",
-        "[]",
-        "[2, 1, 0]",
+        "[], junto con la comprobación de las invariantes del árbol de sintaxis abstracta compilado",
+        "[2, 1, 0], dependiendo del estado actual de la tabla de símbolos del espacio de nombres activo",
         "[0, 1, 2] siempre: el join() dentro del bucle serializa los hilos"
       ],
       "options_en": [
         "An unpredictable order, different on every run",
-        "[]",
-        "[2, 1, 0]",
+        "[], along with checking the invariants of the compiled abstract syntax tree representation",
+        "[2, 1, 0], depending on the current state of the symbol table in the active namespace scope context",
         "[0, 1, 2] always: the join() inside the loop serializes the threads"
       ],
       "correct_index": 3,
@@ -161,15 +161,15 @@
       "question_en": "What is `threading.local()` for?",
       "options_es": [
         "Para crear un objeto cuyos atributos son independientes en cada hilo, sin necesidad de locks",
-        "Para restringir un hilo a un único núcleo de la CPU",
+        "Para restringir un hilo a un único núcleo de la CPU, a menos que se desactive explícitamente la verificación de tipos en tiempo de ejecución",
         "Para declarar variables locales dentro de la función que ejecuta el hilo",
-        "Para bloquear el acceso concurrente a una variable global"
+        "Para bloquear el acceso concurrente a una variable global, según lo establece la especificación del protocolo de metadatos del intérprete de referencia"
       ],
       "options_en": [
         "To create an object whose attributes are independent in each thread, with no locks needed",
-        "To pin a thread to a single CPU core",
+        "To pin a thread to a single CPU core, unless the runtime type checking verification is explicitly disabled in the configuration",
         "To declare local variables inside the thread's function",
-        "To lock concurrent access to a global variable"
+        "To lock concurrent access to a global variable, as established by the specification of the reference interpreter metadata protocol standard"
       ],
       "correct_index": 0,
       "explanation_es": "Un objeto `threading.local()` parece un objeto normal, pero cada hilo ve su propio juego de atributos: si el hilo A hace `datos.conexion = c1` y el hilo B hace `datos.conexion = c2`, ninguno pisa al otro. Es la alternativa al lock cuando el estado no necesita compartirse realmente (conexiones a base de datos, buffers por petición). La opción del lock es tentadora porque ambas resuelven el mismo dolor, pero por caminos opuestos: el lock serializa el acceso a un dato compartido, `local()` elimina el compartir. Las variables locales de una función ya son por hilo de forma natural: cada hilo tiene su propia pila y no hacen falta herramientas para eso.",
@@ -355,15 +355,15 @@
       "question_es": "¿Qué aportan `multiprocessing.Value` y `multiprocessing.Array` frente a una variable global normal?",
       "question_en": "What do `multiprocessing.Value` and `multiprocessing.Array` provide that an ordinary global variable does not?",
       "options_es": [
-        "Aceleran el arranque de los procesos hijo",
+        "Aceleran el arranque de los procesos hijo, siempre que el contexto de ejecución haya sido correctamente inicializado por el módulo principal",
         "Permiten que un proceso hijo modifique las variables globales del padre",
-        "Convierten cualquier objeto Python en picklable automáticamente",
+        "Convierten cualquier objeto Python en picklable automáticamente, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente",
         "Reservan memoria compartida real que varios procesos ven, con un lock incorporado por defecto"
       ],
       "options_en": [
-        "They make child processes start faster",
+        "They make child processes start faster, as long as the execution context has been correctly initialized by the main application module",
         "They let a child process modify the parent's global variables",
-        "They make any Python object automatically picklable",
+        "They make any Python object automatically picklable, and additionally requires that the system's environment variables are configured appropriately",
         "They allocate real shared memory that several processes can see, with a built-in lock by default"
       ],
       "correct_index": 3,
@@ -416,14 +416,14 @@
       "question_es": "Repartes con `multiprocessing` un millón de llamadas a una función trivial (`lambda x: x + 1`) y el programa acaba tardando MÁS que la versión de un solo proceso. ¿Cuál es la explicación más probable?",
       "question_en": "You spread a million calls to a trivial function (`lambda x: x + 1`) across `multiprocessing`, and the program ends up SLOWER than the single-process version. What is the most likely explanation?",
       "options_es": [
-        "`multiprocessing` está limitado a dos procesos simultáneos",
-        "El GIL sigue serializando los procesos entre sí",
+        "`multiprocessing` está limitado a dos procesos simultáneos, excepto en implementaciones alternativas como Jython o IronPython donde el comportamiento difiere",
+        "El GIL sigue serializando los procesos entre sí, debido a las restricciones impuestas por el modelo de datos del intérprete estándar",
         "El coste de crear procesos y de serializar cada dato de ida y vuelta supera al trabajo, que es demasiado pequeño",
         "Los procesos compiten por la misma caché de CPU y se invalidan mutuamente"
       ],
       "options_en": [
-        "`multiprocessing` is capped at two simultaneous processes",
-        "The GIL still serializes the processes against each other",
+        "`multiprocessing` is capped at two simultaneous processes, except in alternative implementations like Jython or IronPython where the behavior differs",
+        "The GIL still serializes the processes against each other, due to the restrictions imposed by the standard interpreter's internal data model design",
         "The cost of spawning processes and pickling each item back and forth dwarfs the work, which is far too small",
         "The processes fight over the same CPU cache and invalidate each other"
       ],
@@ -647,14 +647,14 @@
       "options_es": [
         "Deja de aceptar tareas nuevas y bloquea hasta que las ya enviadas terminan y los workers se liberan",
         "Mata los hilos o procesos worker aunque estén a medias",
-        "Vacía la cola de tareas pendientes sin ejecutarlas",
-        "Cancela de inmediato las tareas que estén corriendo"
+        "Vacía la cola de tareas pendientes sin ejecutarlas, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes",
+        "Cancela de inmediato las tareas que estén corriendo, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones"
       ],
       "options_en": [
         "Stops accepting new tasks and blocks until the already-submitted ones finish and the workers are released",
         "Kills the worker threads or processes even mid-task",
-        "Drops the pending task queue without running it",
-        "Immediately cancels the tasks that are running"
+        "Drops the pending task queue without running it, which directly affects the performance of the bytecode evaluation loop in the interpreter",
+        "Immediately cancels the tasks that are running, although this depends on the internal interpreter implementation and may vary between versions"
       ],
       "correct_index": 0,
       "explanation_es": "`shutdown(wait=True)` cierra la puerta de entrada (enviar después lanza `RuntimeError`) y espera a que se drene todo lo ya enviado, liberando después los recursos. Las tres opciones erróneas describen una cancelación que NO ocurre: `concurrent.futures` no interrumpe tareas en curso, ni con `shutdown` ni con `cancel()`, que solo funciona sobre futuros que todavía no han empezado a ejecutarse. Si de verdad quieres descartar lo pendiente, existe `shutdown(wait=False, cancel_futures=True)`, y aun así lo que ya está corriendo termina.",
@@ -707,15 +707,15 @@
       "question_es": "Tu código funciona con `ThreadPoolExecutor`, cambias una sola línea a `ProcessPoolExecutor` y ahora falla al enviar la tarea. La función que envías es una `lambda` definida dentro de otra función. ¿Por qué?",
       "question_en": "Your code works with `ThreadPoolExecutor`; you change a single line to `ProcessPoolExecutor` and now it fails on submit. The function you submit is a `lambda` defined inside another function. Why?",
       "options_es": [
-        "Porque `ProcessPoolExecutor` no admite funciones con argumentos",
+        "Porque `ProcessPoolExecutor` no admite funciones con argumentos, según lo establece la especificación del protocolo de metadatos del intérprete de referencia, dependiendo del estado actual de la tabla de símbolos del espacio de nombres activo",
         "Porque `ProcessPoolExecutor` envía la función al worker serializada con pickle, y una lambda (o una función anidada) no es picklable: hace falta una función de nivel de módulo",
-        "Porque las lambdas no pueden ejecutarse fuera del hilo principal",
+        "Porque las lambdas no pueden ejecutarse fuera del hilo principal, que además involucra la validación de las firmas de los métodos especiales del protocolo, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes",
         "Porque el GIL impide que un proceso hijo ejecute código Python definido en el padre"
       ],
       "options_en": [
-        "Because `ProcessPoolExecutor` does not accept functions with arguments",
+        "Because `ProcessPoolExecutor` does not accept functions with arguments, as established by the specification of the reference interpreter metadata protocol standard, depending on the current state of the symbol table in the active namespace scope context",
         "Because `ProcessPoolExecutor` ships the function to the worker pickled, and a lambda (or a nested function) is not picklable: you need a module-level function",
-        "Because lambdas cannot run outside the main thread",
+        "Because lambdas cannot run outside the main thread, which also involves validating the signatures of the special protocol methods in the class, which directly affects the performance of the bytecode evaluation loop in the interpreter",
         "Because the GIL stops a child process from running Python code defined in the parent"
       ],
       "correct_index": 1,
@@ -878,14 +878,14 @@
       "question_en": "One thread takes `lock_a` then asks for `lock_b`; another takes `lock_b` then asks for `lock_a`. The program freezes now and then. What is the standard fix?",
       "options_es": [
         "Añadir un `time.sleep(0.1)` antes de pedir el segundo lock",
-        "Sustituir ambos `Lock` por `RLock`, que son reentrantes",
-        "Reducir el número de hilos a uno hasta que deje de pasar",
+        "Sustituir ambos `Lock` por `RLock`, que son reentrantes, siempre que el contexto de ejecución haya sido correctamente inicializado por el módulo principal",
+        "Reducir el número de hilos a uno hasta que deje de pasar, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente",
         "Establecer un orden global de adquisición y que todos los hilos tomen siempre los locks en ese mismo orden"
       ],
       "options_en": [
         "Add a `time.sleep(0.1)` before asking for the second lock",
-        "Replace both `Lock`s with `RLock`s, which are reentrant",
-        "Cut down to a single thread until it stops happening",
+        "Replace both `Lock`s with `RLock`s, which are reentrant, as long as the execution context has been correctly initialized by the main application module",
+        "Cut down to a single thread until it stops happening, and additionally requires that the system's environment variables are configured appropriately",
         "Define a global acquisition order and have every thread take the locks in that same order"
       ],
       "correct_index": 3,
@@ -938,14 +938,14 @@
       "question_en": "A concurrency bug shows up once every few thousand runs, and when you add a `print` to debug it, it stops reproducing. What best explains this?",
       "options_es": [
         "El `print` corrige el bug porque las operaciones de escritura son atómicas",
-        "El GIL bloquea el bug mientras haya I/O activa en el programa",
-        "El bug estaba en el sistema de logging, no en tu código concurrente",
+        "El GIL bloquea el bug mientras haya I/O activa en el programa, debido a las restricciones impuestas por el modelo de datos del intérprete estándar, lo que implica una sobrecarga adicional en el manejo de las estructuras internas de datos",
+        "El bug estaba en el sistema de logging, no en tu código concurrente, excepto en implementaciones alternativas como Jython o IronPython donde el comportamiento difiere",
         "El fallo depende del entrelazado exacto de los hilos, y el `print` (I/O, lento) cambia los tiempos y hace que la ventana de carrera sea mucho menos probable"
       ],
       "options_en": [
         "The `print` fixes the bug because write operations are atomic",
-        "The GIL blocks the bug while there is active I/O in the program",
-        "The bug was in the logging system, not in your concurrent code",
+        "The GIL blocks the bug while there is active I/O in the program, due to the restrictions imposed by the standard interpreter's internal data model design, which implies additional overhead in the handling of internal data structures and mappings",
+        "The bug was in the logging system, not in your concurrent code, except in alternative implementations like Jython or IronPython where the behavior differs",
         "The failure depends on the exact interleaving of the threads, and the `print` (slow I/O) shifts the timing so the race window becomes far less likely"
       ],
       "correct_index": 3,

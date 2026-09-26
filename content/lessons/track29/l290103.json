@@ -1,0 +1,12 @@
+{
+  "id": "l290103",
+  "skill_id": "sk290103",
+  "title_es": "Particionamiento de Equivalencia",
+  "title_en": "Equivalence Partitioning",
+  "body_es": "El particionamiento de equivalencia agrupa los datos de entrada en clases donde se espera que el programa se comporte de manera similar. En lugar de probar cada valor posible, seleccionamos un representante de cada partición, reduciendo significativamente el número de casos de prueba. Por ejemplo, para validar un número entre 1 y 100, creamos tres particiones: menores que 1 (inválido), entre 1-100 (válido), y mayores que 100 (inválido). Una prueba por partición es generalmente suficiente.",
+  "body_en": "Equivalence partitioning groups input data into classes where the program is expected to behave similarly. Instead of testing every possible value, we select a representative from each partition, significantly reducing the number of test cases. For example, validating a number between 1 and 100 creates three partitions: less than 1 (invalid), 1-100 (valid), and greater than 100 (invalid). One test per partition is generally sufficient.",
+  "example_code": "# Equivalence Partitioning Example\ndef grade_score(score):\n    if score < 0 or score > 100:\n        return 'Invalid'\n    elif score >= 90:\n        return 'A'\n    elif score >= 80:\n        return 'B'\n    else:\n        return 'C'\n\ndef test_score_partitions():\n    # Invalid partition: below range\n    assert grade_score(-5) == 'Invalid'\n    # Valid partition: A grade\n    assert grade_score(95) == 'A'\n    # Valid partition: B grade\n    assert grade_score(85) == 'B'\n    # Valid partition: C grade\n    assert grade_score(70) == 'C'\n    # Invalid partition: above range\n    assert grade_score(105) == 'Invalid'",
+  "example_output": "test_score_partitions PASSED\n5 assertions verified",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 3
+}

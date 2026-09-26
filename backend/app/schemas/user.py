@@ -15,6 +15,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str = Field(min_length=8, max_length=128)
+    age_confirmed: bool = False
 
 
 class UserLogin(BaseModel):

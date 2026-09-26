@@ -333,30 +333,40 @@ function CurriculumView({
                     {m.description_es && (
                       <p className={styles.moduleDesc}>{lang === 'es' ? m.description_es : m.description_en}</p>
                     )}
-                    {m.skills.map((s, si) => (
+                    {m.skills.map((s, si) => {
+                      const needsReview = !s.mastered && s.attempts > 0 && s.p_known < 0.3;
+                      return (
                       <motion.div
                         key={s.skill_id}
-                        className={styles.skill}
+                        className={`${styles.skill} ${needsReview ? styles.skillNeedsReview : ''}`}
                         initial={{ opacity: 0, x: -8 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: si * 0.04, duration: 0.15 }}
+                        onClick={needsReview ? () => startLesson(s.skill_id) : undefined}
+                        role={needsReview ? 'button' : undefined}
+                        tabIndex={needsReview ? 0 : undefined}
                       >
                         <span className={styles.skillDot} style={{
                           background: s.mastered ? 'var(--le-green)' : s.attempts > 0 ? 'var(--le-brand)' : 'var(--le-border)',
                         }} />
                         <span className={styles.skillName}>{lang === 'es' ? s.name_es : s.name_en}</span>
-                        <span className={styles.skillPct} style={{ color: s.mastered ? 'var(--le-green)' : undefined }}>
+                        {needsReview && <span className={styles.reviewBadge}>📖</span>}
+                        <span className={styles.skillPct} style={{ color: s.mastered ? 'var(--le-green)' : needsReview ? 'var(--le-orange)' : undefined }}>
                           {s.mastered ? '★' : `${Math.round(s.p_known * 100)}%`}
                         </span>
                       </motion.div>
-                    ))}
+                      );
+                    })}
                     {locked ? (
                       <p className={styles.lockNote}>🔒 {t('tracks.lockNote')}</p>
                     ) : (
                       <div className={styles.skillActions}>
                         <button
                           className={styles.learnBtn}
-                          onClick={() => startLesson(m.skills?.[0]?.skill_id ?? '')}
+                          onClick={() => {
+                            const weakest = [...m.skills].filter(s => !s.mastered).sort((a, b) => a.p_known - b.p_known)[0];
+                            startLesson(weakest?.skill_id ?? m.skills[0]?.skill_id ?? '');
+                          }}
                           title={t('tracks.learn')}
                         >
                           📖 {t('tracks.learn')}

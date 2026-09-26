@@ -211,7 +211,7 @@ def _download(url: str, dest: Path, timeout: float = 30.0) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     req = urllib.request.Request(url, headers={"User-Agent": "whetzy-kt-benchmark/1.0"})
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310
             data = resp.read()
     except urllib.error.HTTPError as exc:
         raise RuntimeError(f"HTTP {exc.code} {exc.reason} fetching {url}") from exc
@@ -429,7 +429,7 @@ def probe_assistments_2009(timeout: float = 15.0) -> dict[str, Any]:
     for url in ASSISTMENTS_2009_CANDIDATES:
         req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "whetzy-kt-benchmark/1.0"})
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310
                 status = resp.status
                 note = "200 OK, but no scriptable direct-download CSV" if "sites.google.com" in url else "200 OK (unexpected — re-verify)"
         except urllib.error.HTTPError as exc:

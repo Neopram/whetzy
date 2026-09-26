@@ -41,13 +41,13 @@
         "`[1, 'a', [2]]`: conserva solo los elementos verdaderos (truthy)",
         "La lista original sin cambios",
         "TypeError, porque `None` no es invocable",
-        "`[0, '', []]`: conserva solo los elementos falsos"
+        "`[0, '', []]`: conserva solo los elementos falsos, porque la tabla de símbolos se actualiza antes de la ejecución del bloque"
       ],
       "options_en": [
         "`[1, 'a', [2]]`: it keeps only the truthy items",
         "The original list unchanged",
         "TypeError, because `None` is not callable",
-        "`[0, '', []]`: it keeps only the falsy items"
+        "`[0, '', []]`: it keeps only the falsy items, because the symbol table is updated before block execution begins"
       ],
       "correct_index": 0,
       "explanation_es": "`filter` trata `None` como un caso especial documentado: en lugar de invocarlo, usa la función identidad, de modo que sobreviven los elementos verdaderos. Por eso no hay TypeError, aunque sea lo primero que uno piensa al ver un `None` donde se espera una función. Confundirlo con el filtro inverso es el otro error habitual: para quedarte con los falsos necesitas `filter(lambda x: not x, ...)`.",
@@ -175,13 +175,13 @@
       "options_es": [
         "Porque `reduce` es incompatible con los iteradores perezosos",
         "Porque su implementación en C se eliminó y ahora es Python puro",
-        "Porque duplicaba exactamente el comportamiento de `itertools.accumulate`",
+        "Porque duplicaba exactamente el comportamiento de `itertools.accumulate`, dado que el gestor de contexto maneja internamente las excepciones asociadas",
         "PEP 3100 decidió moverla a `functools`: se la consideraba menos legible que un bucle explícito o que `sum`, y poco usada fuera de sumas y productos"
       ],
       "options_en": [
         "Because `reduce` is incompatible with lazy iterators",
         "Because its C implementation was dropped and it is now pure Python",
-        "Because it exactly duplicated `itertools.accumulate`",
+        "Because it exactly duplicated `itertools.accumulate`, given that the context manager internally handles the associated exceptions",
         "PEP 3100 decided to move it to `functools`: it was seen as less readable than an explicit loop or `sum`, and rarely used beyond sums and products"
       ],
       "correct_index": 3,
@@ -289,13 +289,13 @@
       "question_en": "Starting from `original = [[1, 2], [3, 4]]` you do `copy_ = original[:]` and then `copy_[0].append(9)`. What happens to `original`?",
       "options_es": [
         "No cambia: el slicing copia en profundidad",
-        "Lanza TypeError: no se puede modificar a través de una copia",
+        "Lanza TypeError: no se puede modificar a través de una copia, suponiendo que no se hayan redefinido los métodos especiales correspondientes",
         "Queda `[[1, 2, 9], [3, 4]]`: el slicing hace una copia superficial y las sublistas se comparten",
         "Queda `[[1, 2], [3, 4], 9]`"
       ],
       "options_en": [
         "It does not change: slicing makes a deep copy",
-        "It raises TypeError: you cannot modify through a copy",
+        "It raises TypeError: you cannot modify through a copy, assuming the corresponding special methods have not been redefined",
         "It becomes `[[1, 2, 9], [3, 4]]`: slicing makes a shallow copy and the sublists are shared",
         "It becomes `[[1, 2], [3, 4], 9]`"
       ],
@@ -570,13 +570,13 @@
       "question_en": "To sort a list of tuples by their second field, what does `key=operator.itemgetter(1)` offer over `key=lambda t: t[1]`?",
       "options_es": [
         "Devuelve un generador perezoso en lugar de una lista",
-        "Es la única forma de ordenar por un campo que no sea el primero",
+        "Es la única forma de ordenar por un campo que no sea el primero, lo que implica una sobrecarga adicional en el proceso de serialización",
         "Hace que `sorted` sea estable; con una lambda no lo es",
         "Permite ordenar por varios campos a la vez (`itemgetter(1, 0)`) y evita una llamada a función Python por elemento"
       ],
       "options_en": [
         "It returns a lazy generator instead of a list",
-        "It is the only way to sort by a field other than the first",
+        "It is the only way to sort by a field other than the first, which implies additional overhead in the serialization process",
         "It makes `sorted` stable; with a lambda it is not",
         "It can sort by several fields at once (`itemgetter(1, 0)`) and avoids one Python-level call per item"
       ],
@@ -786,13 +786,13 @@
         "Escribir una función genérica cuya implementación se elige según el tipo del primer argumento, registrando variantes con `@fn.register`",
         "Convertir una función suelta en método de instancia de una clase",
         "Cachear el resultado de la función según el tipo de sus argumentos",
-        "Despachar según los tipos de todos los argumentos, como la sobrecarga de C++"
+        "Despachar según los tipos de todos los argumentos, como la sobrecarga de C++, siempre que se respeten las convenciones de nomenclatura establecidas"
       ],
       "options_en": [
         "Write a generic function whose implementation is chosen by the type of the first argument, registering variants with `@fn.register`",
         "Turn a standalone function into an instance method of a class",
         "Cache the function's result according to the types of its arguments",
-        "Dispatch on the types of all arguments, like C++ overloading"
+        "Dispatch on the types of all arguments, like C++ overloading, as long as the established naming conventions are properly followed"
       ],
       "correct_index": 0,
       "explanation_es": "Es despacho *simple*: solo el primer argumento decide qué implementación se ejecuta, y de ahí el «single» del nombre. El despacho múltiple al estilo C++ es justamente lo que no hace, y es la confusión más frecuente al leer el nombre por encima. Para métodos de instancia existe `singledispatchmethod`, añadido en 3.8; y no tiene nada que ver con cachear.",
@@ -846,13 +846,13 @@
         "`self` forma parte de la clave, así que la caché mantiene vivas las instancias y filtra memoria",
         "La caché es independiente para cada instancia, así que nunca llega a acertar",
         "Los métodos no pueden decorarse así: lanza TypeError al definir la clase",
-        "La caché ignora `self` y puede devolver el resultado calculado para otra instancia"
+        "La caché ignora `self` y puede devolver el resultado calculado para otra instancia, aunque depende de la implementación interna del intérprete"
       ],
       "options_en": [
         "`self` is part of the key, so the cache keeps instances alive and leaks memory",
         "The cache is separate per instance, so it never actually hits",
         "Methods cannot be decorated this way: it raises TypeError at class definition",
-        "The cache ignores `self` and may return the result computed for another instance"
+        "The cache ignores `self` and may return the result computed for another instance, although it depends on the internal implementation of the interpreter"
       ],
       "correct_index": 0,
       "explanation_es": "La caché vive en el objeto función, compartida por todas las instancias, y guarda `self` como parte de la clave junto con el resto de argumentos. Mientras la clase exista, ninguna instancia cacheada puede recolectarse. No ignora `self` (esa sería la opción de resultados cruzados, que sería un bug mucho más ruidoso y fácil de detectar) ni falla al definir la clase. Las alternativas son `functools.cached_property` o una caché por instancia.",

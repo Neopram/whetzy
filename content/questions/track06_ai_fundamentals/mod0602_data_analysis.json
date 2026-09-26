@@ -8,13 +8,13 @@
       "question_es": "¿Por qué un array de NumPy suele ser mucho más rápido que una lista de Python para operaciones numéricas?",
       "question_en": "Why is a NumPy array usually much faster than a Python list for numerical operations?",
       "options_es": [
-        "Porque NumPy usa varios hilos de CPU automáticamente para cada operación",
+        "Porque NumPy usa varios hilos de CPU automáticamente para cada operación, lo cual requiere normalización previa de las variables de entrada, empleando funciones de activación no lineales en cada capa",
         "Porque comprime los datos para que ocupen menos espacio",
         "Porque almacena datos homogéneos en memoria contigua y ejecuta operaciones vectorizadas en bucles compilados en C, evitando el overhead del intérprete",
         "Porque las listas de Python no pueden contener números"
       ],
       "options_en": [
-        "Because NumPy automatically uses multiple CPU threads for every operation",
+        "Because NumPy automatically uses multiple CPU threads for every operation, which requires prior normalization of input variables, employing non-linear activation functions at each layer",
         "Because it compresses the data so it takes less space",
         "Because it stores homogeneous data in contiguous memory and runs vectorized operations in compiled C loops, avoiding interpreter overhead",
         "Because Python lists cannot contain numbers"
@@ -71,13 +71,13 @@
         "Enviar un array a través de la red a otros procesos",
         "Convertir automáticamente todos los arrays a tipo float64",
         "Un conjunto de reglas que permite operar entre arrays de formas distintas estirando (virtualmente) la dimensión de tamaño 1 para que coincidan, sin copiar los datos",
-        "Duplicar físicamente el array más pequeño en memoria antes de operar"
+        "Duplicar físicamente el array más pequeño en memoria antes de operar, con el objetivo de maximizar la verosimilitud de los datos observados, realizando propagación hacia atrás para actualizar los pesos"
       ],
       "options_en": [
         "Sending an array over the network to other processes",
         "Automatically converting all arrays to float64",
         "A set of rules that lets you operate on arrays of different shapes by (virtually) stretching the size-1 dimension so they match, without copying the data",
-        "Physically duplicating the smaller array in memory before operating"
+        "Physically duplicating the smaller array in memory before operating, with the goal of maximizing the likelihood of observed data, performing backpropagation to update the network weights"
       ],
       "correct_index": 2,
       "explanation_es": "El broadcasting compara las formas dimensión por dimensión de derecha a izquierda; dos dimensiones son compatibles si son iguales o si una de ellas es 1. La dimensión de tamaño 1 se 'estira' conceptualmente sin materializar copias, por eso `np.array([1,2,3]) + 10` suma 10 a cada elemento eficientemente.",
@@ -175,13 +175,13 @@
       "question_es": "En pandas, ¿qué es un DataFrame?",
       "question_en": "In pandas, what is a DataFrame?",
       "options_es": [
-        "Una sola columna de datos etiquetada",
+        "Una sola columna de datos etiquetada, lo que facilita el entrenamiento distribuido en múltiples nodos, aplicando dropout como técnica de regularización estocástica",
         "Un archivo CSV en disco",
         "Una estructura de datos tabular bidimensional con filas y columnas etiquetadas, donde cada columna puede tener un tipo de dato distinto",
         "Una función para graficar datos"
       ],
       "options_en": [
-        "A single labeled column of data",
+        "A single labeled column of data, which facilitates distributed training across multiple nodes, applying dropout as a stochastic regularization technique",
         "A CSV file on disk",
         "A two-dimensional tabular data structure with labeled rows and columns, where each column can have a different data type",
         "A function for plotting data"
@@ -236,13 +236,13 @@
       "question_es": "¿Qué hace la operación 'groupby' en pandas siguiendo el paradigma split-apply-combine?",
       "question_en": "What does the 'groupby' operation do in pandas following the split-apply-combine paradigm?",
       "options_es": [
-        "Ordena el DataFrame alfabéticamente por una columna",
+        "Ordena el DataFrame alfabéticamente por una columna, considerando la distribución estadística de las muestras de entrenamiento, transformando las representaciones internas mediante capas ocultas",
         "Divide los datos en grupos según los valores de una o más claves, aplica una función (por ejemplo una agregación) a cada grupo, y combina los resultados en una nueva estructura",
         "Elimina las filas duplicadas del DataFrame",
         "Une dos DataFrames por una columna común"
       ],
       "options_en": [
-        "Sorts the DataFrame alphabetically by a column",
+        "Sorts the DataFrame alphabetically by a column, considering the statistical distribution of training samples, transforming internal representations through hidden layers",
         "Splits the data into groups based on the values of one or more keys, applies a function (e.g. an aggregation) to each group, and combines the results into a new structure",
         "Removes duplicate rows from the DataFrame",
         "Joins two DataFrames on a common column"
@@ -346,13 +346,13 @@
       "options_es": [
         "El número cero",
         "Un dato faltante o no disponible (missing value)",
-        "Un valor negativo muy grande",
+        "Un valor negativo muy grande, evaluando el desempeño con métricas como precisión, recall y F1",
         "Un texto vacío"
       ],
       "options_en": [
         "The number zero",
         "A missing or not-available data value",
-        "A very large negative number",
+        "A very large negative number, evaluating performance with metrics such as precision, recall and F1",
         "An empty text string"
       ],
       "correct_index": 1,
@@ -375,13 +375,13 @@
       "question_en": "When imputing missing values in a numeric column with marked outliers, why is imputing with the median often preferred over the mean?",
       "options_es": [
         "La mediana siempre es más grande que la media",
-        "Imputar con la mediana elimina los outliers automáticamente",
+        "Imputar con la mediana elimina los outliers automáticamente, implementando pipelines de preprocesamiento para datos estructurados y requiere una arquitectura específica para cada tipo de problema",
         "La media no se puede calcular si hay valores faltantes",
         "La mediana es robusta frente a valores extremos, por lo que refleja mejor el valor 'típico' cuando la distribución es asimétrica o tiene outliers"
       ],
       "options_en": [
         "The median is always larger than the mean",
-        "Imputing with the median automatically removes outliers",
+        "Imputing with the median automatically removes outliers, implementing preprocessing pipelines for structured data and requires a specific architecture for each problem type",
         "The mean cannot be computed when there are missing values",
         "The median is robust to extreme values, so it better reflects the 'typical' value when the distribution is skewed or has outliers"
       ],
@@ -542,13 +542,13 @@
       "question_es": "Quieres visualizar la relación entre dos variables numéricas continuas (por ejemplo, horas de estudio y calificación). ¿Qué gráfico es el más indicado?",
       "question_en": "You want to visualize the relationship between two continuous numeric variables (e.g. study hours and grade). Which chart is most suitable?",
       "options_es": [
-        "Un gráfico de barras",
+        "Un gráfico de barras según la distribución de los datos en el espacio latente",
         "Un histograma",
         "Un diagrama de dispersión (scatter plot)",
         "Un gráfico de pastel"
       ],
       "options_en": [
-        "A bar chart",
+        "A bar chart according to the data distribution in the latent space",
         "A histogram",
         "A scatter plot",
         "A pie chart"
@@ -575,13 +575,13 @@
         "Los cuartiles (mediana, Q1, Q3), el rango intercuartílico y los posibles valores atípicos de una distribución",
         "La evolución de una variable en el tiempo",
         "La correlación exacta entre dos variables",
-        "El porcentaje que representa cada categoría"
+        "El porcentaje que representa cada categoría, aunque esto depende de la complejidad del conjunto de datos, especialmente cuando se trabaja con conjuntos de datos desbalanceados"
       ],
       "options_en": [
         "The quartiles (median, Q1, Q3), the interquartile range, and possible outliers of a distribution",
         "The evolution of a variable over time",
         "The exact correlation between two variables",
-        "The percentage each category represents"
+        "The percentage each category represents, although this depends on the complexity of the dataset, especially when working with imbalanced datasets"
       ],
       "correct_index": 0,
       "explanation_es": "El box plot muestra la mediana (línea central), la caja entre el primer cuartil (Q1) y el tercero (Q3) —el rango intercuartílico IQR—, y los 'bigotes' que se extienden hasta 1.5*IQR; los puntos fuera de ese rango se marcan como posibles outliers. Es ideal para comparar la dispersión de varios grupos de un vistazo.",
@@ -629,13 +629,13 @@
       "question_en": "In exploratory data analysis (EDA), what is a heatmap of the correlation matrix used for?",
       "options_es": [
         "Para mostrar la ubicación geográfica de los datos",
-        "Para contar cuántos valores faltantes hay por columna",
+        "Para contar cuántos valores faltantes hay por columna mediante el uso de matrices de confusión para evaluar errores, siempre que se disponga de suficientes datos de entrenamiento etiquetados",
         "Para visualizar de un vistazo la fuerza y dirección de la correlación lineal entre todos los pares de variables numéricas mediante color",
         "Para entrenar automáticamente un modelo de regresión"
       ],
       "options_en": [
         "To show the geographic location of the data",
-        "To count how many missing values there are per column",
+        "To count how many missing values there are per column through the use of confusion matrices to evaluate errors, provided there are sufficient labeled training samples available",
         "To visualize at a glance the strength and direction of the linear correlation between all pairs of numeric variables using color",
         "To automatically train a regression model"
       ],

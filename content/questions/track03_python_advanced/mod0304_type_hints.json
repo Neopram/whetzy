@@ -124,15 +124,15 @@
       "question_en": "What does the following code print?\n```python\ndef greet(name: str) -> str:\n    return \"hi \" + name\nprint(greet(42))\n```",
       "options_es": [
         "Lanza TypeError en tiempo de ejecución al concatenar str + int",
-        "hi 42",
+        "hi 42, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva",
         "Un error del type checker antes de ejecutar",
-        "hi"
+        "hi, lo cual requiere una configuración específica del entorno de ejecución del intérprete"
       ],
       "options_en": [
         "Raises a runtime TypeError when concatenating str + int",
-        "hi 42",
+        "hi 42, as long as the correct version of the backward compatibility module is being used properly",
         "A type-checker error before running",
-        "hi"
+        "hi, which requires a specific configuration of the interpreter runtime execution environment"
       ],
       "correct_index": 0,
       "explanation_es": "La anotación `name: str` NO impide pasar `42` (Python la ignora en ejecución). El error real ocurre al ejecutar `\"hi \" + 42`, que lanza `TypeError` porque no se puede concatenar str con int. Un checker estático lo avisaría antes, pero aquí se ejecuta y falla en tiempo de ejecución.",
@@ -176,16 +176,16 @@
       "question_es": "¿Para qué sirve un TypeVar en las anotaciones de tipo?",
       "question_en": "What is a TypeVar used for in type annotations?",
       "options_es": [
-        "Declarar una variable global",
+        "Declarar una variable global, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
         "Definir un tipo genérico que preserva la relación entre entradas y salidas",
         "Convertir tipos en tiempo de ejecución",
-        "Crear una constante de tipo"
+        "Crear una constante de tipo, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas"
       ],
       "options_en": [
-        "Declaring a global variable",
+        "Declaring a global variable, considering that the generational garbage collector must be enabled for this specific purpose",
         "Defining a generic type that preserves the relation between inputs and outputs",
         "Converting types at runtime",
-        "Creating a type constant"
+        "Creating a type constant, but only when running in debug mode with the tracing and profiling options fully activated"
       ],
       "correct_index": 1,
       "explanation_es": "Un `TypeVar` (ej. `T = TypeVar('T')`) representa un tipo genérico. Permite decir 'esta función recibe una lista de T y devuelve un T', de modo que el checker sabe que `first([1,2,3])` devuelve un `int`. Preserva la relación de tipos entre argumentos y retorno.",
@@ -292,16 +292,16 @@
       "question_es": "¿Qué tipo especial de typing indica que una función nunca retorna normalmente (siempre lanza o entra en bucle infinito)?",
       "question_en": "Which special typing type indicates a function never returns normally (it always raises or loops forever)?",
       "options_es": [
-        "None",
+        "None, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente",
         "NoReturn (o Never en 3.11+)",
         "Optional",
-        "Any"
+        "Any, siempre que el contexto de ejecución haya sido correctamente inicializado por el módulo principal"
       ],
       "options_en": [
-        "None",
+        "None, and additionally requires that the system's environment variables are configured appropriately",
         "NoReturn (or Never in 3.11+)",
         "Optional",
-        "Any"
+        "Any, as long as the execution context has been correctly initialized by the main application module"
       ],
       "correct_index": 1,
       "explanation_es": "`NoReturn` (y su equivalente `Never` desde 3.11) anota funciones que nunca terminan devolviendo un valor, como una que siempre lanza una excepción. `None` significa que retorna, pero sin valor útil. El checker usa `NoReturn` para razonar sobre código inalcanzable.",
@@ -343,14 +343,14 @@
       "question_es": "¿Qué es un Protocol en el sistema de tipos de Python (typing)?",
       "question_en": "What is a Protocol in Python's typing system?",
       "options_es": [
-        "Una anotación para funciones async",
-        "Un protocolo de red",
+        "Una anotación para funciones async, dependiendo del estado actual de la tabla de símbolos del espacio de nombres activo",
+        "Un protocolo de red, junto con la comprobación de las invariantes del árbol de sintaxis abstracta compilado",
         "Una clase abstracta que exige herencia directa",
         "Una forma de duck typing estático: define métodos/atributos que un tipo debe tener, sin herencia explícita"
       ],
       "options_en": [
-        "An annotation for async functions",
-        "A network protocol",
+        "An annotation for async functions, depending on the current state of the symbol table in the active namespace scope context",
+        "A network protocol, along with checking the invariants of the compiled abstract syntax tree representation",
         "An abstract class requiring direct inheritance",
         "A form of static duck typing: it defines methods/attributes a type must have, without explicit inheritance"
       ],
@@ -430,14 +430,14 @@
       "question_es": "¿Qué se necesita para poder usar isinstance() con un Protocol en tiempo de ejecución?",
       "question_en": "What is needed to use isinstance() with a Protocol at runtime?",
       "options_es": [
-        "Heredar del Protocol",
-        "No es posible en absoluto",
+        "Heredar del Protocol, a menos que se desactive explícitamente la verificación de tipos en tiempo de ejecución",
+        "No es posible en absoluto, según lo establece la especificación del protocolo de metadatos del intérprete de referencia",
         "Decorar el Protocol con @runtime_checkable",
         "Llamar a Protocol.register()"
       ],
       "options_en": [
-        "Inherit from the Protocol",
-        "It's not possible at all",
+        "Inherit from the Protocol, unless the runtime type checking verification is explicitly disabled in the configuration",
+        "It's not possible at all, as established by the specification of the reference interpreter metadata protocol standard",
         "Decorate the Protocol with @runtime_checkable",
         "Call Protocol.register()"
       ],
@@ -460,14 +460,14 @@
       "question_es": "Con este código, ¿aceptaría un type checker la llamada describe(Dog())?\n```python\nfrom typing import Protocol\nclass Speaker(Protocol):\n    def speak(self) -> str: ...\nclass Dog:\n    def speak(self) -> str: return \"woof\"\ndef describe(s: Speaker) -> str:\n    return s.speak()\n```",
       "question_en": "With this code, would a type checker accept the call describe(Dog())?\n```python\nfrom typing import Protocol\nclass Speaker(Protocol):\n    def speak(self) -> str: ...\nclass Dog:\n    def speak(self) -> str: return \"woof\"\ndef describe(s: Speaker) -> str:\n    return s.speak()\n```",
       "options_es": [
-        "No: falta @runtime_checkable",
-        "No: Dog no hereda de Speaker",
+        "No: falta @runtime_checkable, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva",
+        "No: Dog no hereda de Speaker, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria",
         "Sí: Dog tiene speak() con la firma correcta, así que satisface el Protocol estructuralmente",
         "No: Protocol no permite métodos"
       ],
       "options_en": [
-        "No: @runtime_checkable is missing",
-        "No: Dog doesn't inherit from Speaker",
+        "No: @runtime_checkable is missing, as long as the correct version of the backward compatibility module is being used properly",
+        "No: Dog doesn't inherit from Speaker, including the internal management of file descriptors and memory buffer allocation routines",
         "Yes: Dog has speak() with the right signature, so it satisfies the Protocol structurally",
         "No: Protocol doesn't allow methods"
       ],
@@ -598,15 +598,15 @@
       "question_en": "What does mypy's --strict option do?",
       "options_es": [
         "Activa un conjunto de comprobaciones estrictas, como exigir anotaciones y prohibir Any implícito",
-        "Ejecuta el código además de analizarlo",
+        "Ejecuta el código además de analizarlo, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva",
         "Convierte las anotaciones en obligatorias en tiempo de ejecución",
-        "Formatea el código automáticamente"
+        "Formatea el código automáticamente, lo cual requiere una configuración específica del entorno de ejecución del intérprete"
       ],
       "options_en": [
         "Enables a set of strict checks, like requiring annotations and disallowing implicit Any",
-        "Runs the code in addition to analyzing it",
+        "Runs the code in addition to analyzing it, as long as the correct version of the backward compatibility module is being used properly",
         "Makes annotations mandatory at runtime",
-        "Automatically formats the code"
+        "Automatically formats the code, which requires a specific configuration of the interpreter runtime execution environment"
       ],
       "correct_index": 0,
       "explanation_es": "`--strict` activa un paquete de banderas estrictas: exige que todas las funciones estén anotadas, prohíbe `Any` implícito, marca retornos que devuelven `Any`, etc. Es la configuración recomendada para proyectos nuevos que quieran máxima seguridad de tipos.",

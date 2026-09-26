@@ -135,6 +135,77 @@ async def handle_dkt_retrain(job: Job, db: AsyncSession) -> dict[str, Any]:
     )
 
 
+@register_job_handler("reactivation_check")
+async def handle_reactivation_check(job: Job, db: AsyncSession) -> dict[str, Any]:
+    """Find users inactive >= 14 days, generate 72h promo codes, send emails (29.7)."""
+    from datetime import UTC, timedelta
+
+    from app.models.economy import PromoCode
+    from app.models.user import User
+    from app.services.economy import PromoCodeService
+    from app.services.email import send_reactivation
+
+    now = datetime.now(UTC)
+    cutoff = now - timedelta(days=14)
+
+    # 1. Find inactive users
+    inactive_users = (
+        await db.scalars(
+            select(User).where(
+                User.is_active == True,
+                (User.last_active < cutoff) | (User.last_active.is_(None)),
+            )
+        )
+    ).all()
+
+    # 2. Exclude users who already got a reactivation code in the last 30 days.
+    #    campaign_id stores the target user_id for deduplication.
+    recent_codes = (
+        await db.scalars(
+            select(PromoCode.campaign_id).where(
+                PromoCode.code_type == "reactivation",
+                PromoCode.created_at > now - timedelta(days=30),
+                PromoCode.campaign_id.is_not(None),
+            )
+        )
+    ).all()
+    already_sent = set(recent_codes)
+    inactive_users = [u for u in inactive_users if str(u.id) not in already_sent]
+
+    if not inactive_users:
+        logger.info("reactivation_check: no inactive users found")
+        return {"sent": 0, "skipped": 0}
+
+    sent = 0
+    skipped = 0
+    for user in inactive_users:
+        try:
+            codes = await PromoCodeService.generate_batch(
+                db,
+                code_type="reactivation",
+                credits=5,
+                count=1,
+                max_uses=1,
+                expires_at=now + timedelta(hours=72),
+                campaign_id=str(user.id),
+                created_by="reactivation_job",
+            )
+            await db.commit()
+            send_reactivation(
+                to=user.email,
+                name=user.display_name,
+                code=codes[0].code,
+                lang=user.language or "es",
+            )
+            sent += 1
+        except Exception:
+            logger.exception("reactivation_check: failed for user %s", user.id)
+            skipped += 1
+
+    logger.info("reactivation_check: sent=%d skipped=%d", sent, skipped)
+    return {"sent": sent, "skipped": skipped}
+
+
 @register_job_handler("run_payouts")
 async def handle_run_payouts(job: Job, db: AsyncSession) -> dict[str, Any]:
     """Handler for monthly payout processing (28.7).

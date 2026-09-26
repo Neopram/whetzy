@@ -1,0 +1,13 @@
+{
+  "id": "les200502",
+  "skill_id": "sk200502",
+  "language": "es",
+  "executable": false,
+  "title_es": "Databricks: Lakehouse Platform",
+  "title_en": "Databricks: Lakehouse Platform",
+  "body_es": "Databricks combina lago de datos y warehouse (lakehouse). Delta Lake agrega ACID, versionamiento y performance a Parquet. Workspace es entorno colaborativo con notebooks ejecutando Spark. Clusters escalables pueden ser all-purpose (reutilizables) o job-specific (single-use). SQL Endpoint proporciona interfaz SQL optimizada. Integración con dbt, Airflow y Git nativa.",
+  "body_en": "Databricks combines data lake and warehouse (lakehouse). Delta Lake adds ACID, versioning and performance to Parquet. Workspace is collaborative environment with notebooks running Spark. Scalable clusters can be all-purpose (reusable) or job-specific (single-use). SQL Endpoint provides optimized SQL interface. Native integration with dbt, Airflow and Git.",
+  "example_code": "# Databricks notebook\ndf = spark.read.parquet('/mnt/data/raw')\n\n# Crear Delta table\ndf.write.format('delta').mode('overwrite').save('/mnt/data/delta/users')\n\n# SQL en mismo notebook\n%sql\nSELECT COUNT(*), status \nFROM delta.`/mnt/data/delta/users`\nGROUP BY status\n\n# Time travel\ndf_old = spark.read.format('delta').option('versionAsOf', 5).load('/path')",
+  "example_output": "Notebook colaborativo ejecutando Spark + SQL, datos en Delta con versionamiento, 10x más rápido que Parquet puro.",
+  "source": "https://spark.apache.org/docs/"
+}

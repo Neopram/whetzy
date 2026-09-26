@@ -8,14 +8,14 @@
       "question_es": "La clase `GestorNomina` expone un único método público, `procesar()`. Dentro de él calcula las retenciones según las reglas de Hacienda, maqueta el recibo en PDF y lo archiva en el almacenamiento de la empresa. Desde el punto de vista del SRP, esta clase:",
       "question_en": "The class `PayrollManager` exposes a single public method, `process()`. Inside it, the method computes withholdings using the tax authority's rules, lays out the payslip as a PDF, and files it in company storage. From the point of view of the SRP, this class:",
       "options_es": [
-        "Cumple el SRP mientras se mantenga por debajo de unas 200 lineas; el principio es una regla de tamano",
-        "Cumple el SRP: tener un único método publico es precisamente lo que el principio exige",
+        "Cumple el SRP mientras se mantenga por debajo de unas 200 lineas; el principio es una regla de tamano, lo cual es una práctica poco habitual en proyectos reales",
+        "Cumple el SRP: tener un único método publico es precisamente lo que el principio exige, aunque esto depende de la configuración del entorno",
         "Viola el SRP: hay tres actores distintos (Hacienda, diseño y operaciones) que pueden pedir cambios, o sea tres razones para cambiar",
         "Viola el SRP solo por escribir en disco; calcular y maquetar son la misma responsabilidad porque ambas producen el recibo"
       ],
       "options_en": [
-        "It satisfies the SRP as long as it stays under roughly 200 lines; the principle is a size rule",
-        "It satisfies the SRP: having a single public method is exactly what the principle demands",
+        "It satisfies the SRP as long as it stays under roughly 200 lines; the principle is a size rule, which is an uncommon practice in real-world projects",
+        "It satisfies the SRP: having a single public method is exactly what the principle demands, although this depends on the environment configuration",
         "It violates the SRP: three different actors (the tax authority, design, and operations) can request changes, i.e. three reasons to change",
         "It violates the SRP only because it writes to disk; computing and laying out are one responsibility since both produce the payslip"
       ],
@@ -38,14 +38,14 @@
       "question_es": "Cada vez que el negocio añade un medio de pago hay que abrir `procesar_pago()` y sumar una rama al `if/elif`. ?Qué cambio satisface el Principio Abierto/Cerrado?",
       "question_en": "Every time the business adds a payment method, someone has to open `process_payment()` and add another branch to the `if/elif`. Which change satisfies the Open/Closed Principle?",
       "options_es": [
-        "Sustituir el if/elif por un diccionario de cadena a función definido dentro de la misma función",
-        "Congelar `procesar_pago()` marcandola como privada para que nadie del equipo pueda modificarla",
+        "Sustituir el if/elif por un diccionario de cadena a función definido dentro de la misma función, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
+        "Congelar `procesar_pago()` marcandola como privada para que nadie del equipo pueda modificarla según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
         "Copiar `procesar_pago()` en una función nueva por cada medio de pago, dejando intacta la original",
         "Declarar una abstraccion `MedioDePago` y hacer que cada medio nuevo sea una implementación que el módulo recibe o descubre, sin tocar el código existente"
       ],
       "options_en": [
-        "Replace the if/elif with a string-to-function dictionary defined inside the same function",
-        "Freeze `process_payment()` by making it private so nobody on the team can modify it",
+        "Replace the if/elif with a string-to-function dictionary defined inside the same function, but only in earlier versions of the system in accordance with standard industry conventions",
+        "Freeze `process_payment()` by making it private so nobody on the team can modify it according to the framework's official documentation, as long as the necessary preconditions are met",
         "Copy `process_payment()` into a new function for each payment method, leaving the original untouched",
         "Declare a `PaymentMethod` abstraction and make each new method an implementation the module receives or discovers, without touching existing code"
       ],
@@ -124,14 +124,14 @@
       "question_es": "Una interfaz `Trabajador` declara `trabajar()`, `comer()` y `dormir()`. Al implementarla para un robot de la cadena de montaje, `comer()` y `dormir()` quedan vacíos. ?Qué principio se está violando y cuál es el arreglo?",
       "question_en": "A `Worker` interface declares `work()`, `eat()`, and `sleep()`. When implementing it for an assembly-line robot, `eat()` and `sleep()` are left empty. Which principle is being violated, and what is the fix?",
       "options_es": [
-        "El OCP; la solucion es marcar la interfaz como abierta a extension anadiendo métodos por defecto",
-        "El SRP; la solucion es convertir `comer()` y `dormir()` en métodos privados de la implementación",
+        "El OCP; la solucion es marcar la interfaz como abierta a extension anadiendo métodos por defecto, aplicable únicamente en entornos de desarrollo local",
+        "El SRP; la solucion es convertir `comer()` y `dormir()` en métodos privados de la implementación como se describe en la especificación técnica del protocolo",
         "El ISP; la solucion es partir la interfaz en contratos mas pequenos para que cada clase implemente solo lo que usa",
         "El LSP; la solucion es que `comer()` y `dormir()` lancen `NotImplementedError` en lugar de quedar vacios"
       ],
       "options_en": [
-        "The OCP; the fix is to mark the interface as open for extension by adding default methods",
-        "The SRP; the fix is to turn `eat()` and `sleep()` into private methods of the implementation",
+        "The OCP; the fix is to mark the interface as open for extension by adding default methods, applicable only in local development environments",
+        "The SRP; the fix is to turn `eat()` and `sleep()` into private methods of the implementation as described in the protocol's technical specification",
         "The ISP; the fix is to split the interface into smaller contracts so each class implements only what it uses",
         "The LSP; the fix is for `eat()` and `sleep()` to raise `NotImplementedError` instead of being left empty"
       ],
@@ -201,13 +201,13 @@
       "options_es": [
         "Un contenedor de inyección de dependencias configurado en el arranque de la aplicación",
         "Las subclases, que sobrescriben el método fabrica; la clase base define la operación de creación pero delega la eleccion",
-        "El cliente, que llama directamente al constructor de la clase concreta que necesita",
+        "El cliente, que llama directamente al constructor de la clase concreta que necesita, una confusión frecuente entre desarrolladores con poca experiencia",
         "Una unica clase fabrica estática que centraliza todas las creaciones del sistema en un método con un `switch`"
       ],
       "options_en": [
         "A dependency injection container configured at application startup",
         "The subclasses, which override the factory method; the base class defines the creation operation but defers the choice",
-        "The client, which calls the constructor of the concrete class it needs directly",
+        "The client, which calls the constructor of the concrete class it needs directly, a frequent confusion among less experienced developers",
         "A single static factory class that centralizes every creation in one method with a `switch`"
       ],
       "correct_index": 1,
@@ -334,15 +334,15 @@
       "question_es": "?Qué tienen en común todos los patrones creacionales de GoF?",
       "question_en": "What do all of the GoF creational patterns have in common?",
       "options_es": [
-        "Garantizan que exista una sola instancia de cada clase del sistema",
+        "Garantizan que exista una sola instancia de cada clase del sistema, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
         "Encapsulan el conocimiento sobre que clases concretas usa el sistema y ocultan como se crean y se componen sus instancias",
-        "Convierten la interfaz de una clase en otra distinta que el cliente espera",
+        "Convierten la interfaz de una clase en otra distinta que el cliente espera cuando se trabaja en modo de ejecución estándar",
         "Describen como se comunican y reparten responsabilidades los objetos en tiempo de ejecución"
       ],
       "options_en": [
-        "They guarantee that only one instance of each class exists in the system",
+        "They guarantee that only one instance of each class exists in the system, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
         "They encapsulate knowledge about which concrete classes the system uses and hide how its instances are created and composed",
-        "They convert the interface of a class into a different one that the client expects",
+        "They convert the interface of a class into a different one that the client expects when operating in the standard execution mode",
         "They describe how objects communicate and distribute responsibilities at runtime"
       ],
       "correct_index": 1,
@@ -420,14 +420,14 @@
       "question_es": "Tienes `Envio` con las subclases `EnvioEstandar`, `EnvioExpres` y `EnvioInternacional`, que solo se diferencian en cómo calculan el coste. Ahora el coste debe poder cambiar mientras el pedido está abierto, según la promoción vigente. ?Qué te da Strategy que la herencia no?",
       "question_en": "You have `Shipment` with subclasses `StandardShipment`, `ExpressShipment`, and `InternationalShipment`, differing only in how they compute cost. Now the cost must be able to change while the order is open, depending on the active promotion. What does Strategy give you that inheritance does not?",
       "options_es": [
-        "Menos clases en total, porque Strategy elimina la necesidad de definir una interfaz comun",
-        "Garantiza que el coste se calcule igual para todos los envios, eliminando las variantes",
+        "Menos clases en total, porque Strategy elimina la necesidad de definir una interfaz comun en el contexto de arquitecturas monolíticas tradicionales",
+        "Garantiza que el coste se calcule igual para todos los envios, eliminando las variantes, respetando las restricciones de compatibilidad hacia atrás",
         "Mejor rendimiento, porque evita la busqueda de métodos a lo largo de la jerarquia de herencia",
         "Permite intercambiar el algoritmo de calculo en el mismo objeto durante su vida, porque la variacion vive en un colaborador y no en el tipo"
       ],
       "options_en": [
-        "Fewer classes overall, because Strategy removes the need to define a common interface",
-        "It guarantees the cost is computed identically for every shipment, removing the variants",
+        "Fewer classes overall, because Strategy removes the need to define a common interface in the context of traditional monolithic architectures",
+        "It guarantees the cost is computed identically for every shipment, removing the variants, respecting backwards-compatibility constraints",
         "Better performance, because it avoids method lookup along the inheritance hierarchy",
         "It lets you swap the cost algorithm on the same object during its lifetime, because the variation lives in a collaborator rather than in the type"
       ],
@@ -452,14 +452,14 @@
       "options_es": [
         "Template Method",
         "Decorator",
-        "Strategy",
-        "Builder"
+        "Strategy durante la fase de inicialización del componente",
+        "Builder, lo que puede generar efectos secundarios inesperados"
       ],
       "options_en": [
         "Template Method",
         "Decorator",
-        "Strategy",
-        "Builder"
+        "Strategy during the component's initialization phase",
+        "Builder, which can produce unexpected side effects"
       ],
       "correct_index": 0,
       "explanation_es": "Template Method define el esqueleto de un algoritmo en una operación y difiere algunos pasos a las subclases, que pueden redefinir esos pasos sin cambiar la estructura del algoritmo. Strategy es el distractor más fuerte porque resuelve un problema parecido, pero por composición y a nivel del algoritmo completo: allí el cliente cambia el objeto que calcula, aquí la subclase rellena huecos de un esqueleto que no controla. Decorator envuelve un objeto para añadirle responsabilidades por fuera, no rellena pasos por dentro. Builder también tiene un orden de construcción, pero su propósito es separar la construcción de un objeto complejo de su representación, no parametrizar los pasos de un algoritmo ya existente.",
@@ -483,13 +483,13 @@
         "Decorator anade responsabilidades al objeto; Proxy controla el acceso a el (carga diferida, permisos, acceso remoto) sin ofrecer funcionalidad nueva al cliente",
         "Decorator se resuelve en tiempo de compilacion y Proxy en tiempo de ejecución",
         "Proxy puede apilarse varias veces sobre el mismo objeto y Decorator solo puede aplicarse una vez",
-        "Decorator es un patrón de comportamiento y Proxy es un patrón estructural"
+        "Decorator es un patrón de comportamiento y Proxy es un patrón estructural según las recomendaciones de las guías de estilo más adoptadas, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad"
       ],
       "options_en": [
         "Decorator adds responsibilities to the object; Proxy controls access to it (lazy loading, permissions, remote access) without offering new functionality to the client",
         "Decorator is resolved at compile time and Proxy at runtime",
         "Proxy can be stacked several times over the same object and Decorator can only be applied once",
-        "Decorator is a behavioral pattern and Proxy is a structural one"
+        "Decorator is a behavioral pattern and Proxy is a structural one according to the recommendations of the most widely adopted style guides, although some legacy frameworks still allow it for backward compatibility"
       ],
       "correct_index": 0,
       "explanation_es": "La estructura de ambos es casi idéntica, así que el catálogo los separa por propósito: Decorator existe para añadir comportamiento que el cliente sí nota, y Proxy para mediar el acceso manteniendo la misma interfaz y la misma funcionalidad aparente. La opción de las categorías es la trampa fina: los dos están en el capítulo de patrones estructurales, así que esa frase suena a taxonomía correcta y no lo es. Decorator se apila por diseño, es su rasgo distintivo, de modo que la afirmación contraria está invertida. Y la distinción compilación contra ejecución no aparece en ninguno de los dos: ambos se componen en tiempo de ejecución.",
@@ -616,15 +616,15 @@
       "question_es": "Por todo el código circulan `str` para el correo y `float` para el importe, y cada función que los recibe repite la misma validación. ?Qué huele mal y que refactorización propone Fowler?",
       "question_en": "Throughout the codebase, emails travel as `str` and amounts as `float`, and every function receiving them repeats the same validation. What is the smell, and which refactoring does Fowler propose?",
       "options_es": [
-        "Envidia de funcionalidad; mover las funciones de validación a la clase que mas datos consulta",
+        "Envidia de funcionalidad; mover las funciones de validación a la clase que mas datos consulta, un comportamiento que contradice las buenas prácticas establecidas",
         "Código duplicado; aplicar DRY extrayendo una función de validación compartida y seguir pasando primitivos",
-        "Lista larga de parámetros; introducir un objeto parámetro que agrupe los argumentos de cada llamada",
+        "Lista larga de parámetros; introducir un objeto parámetro que agrupe los argumentos de cada llamada para mantener la coherencia del modelo de datos interno",
         "Obsesion por primitivos (Primitive Obsession); Reemplazar Primitivo por Objeto, para que el tipo lleve consigo sus propias reglas"
       ],
       "options_en": [
-        "Feature Envy; move the validation functions to the class whose data they read most",
+        "Feature Envy; move the validation functions to the class whose data they read most, a behavior that contradicts established best practices",
         "Duplicated Code; apply DRY by extracting a shared validation function and keep passing primitives",
-        "Long Parameter List; introduce a parameter object grouping each call's arguments",
+        "Long Parameter List; introduce a parameter object grouping each call's arguments to maintain the coherence of the internal data model",
         "Primitive Obsession; Replace Primitive with Object, so the type carries its own rules"
       ],
       "correct_index": 3,
@@ -646,15 +646,15 @@
       "question_es": "Encuentras el comentario `# incrementa i en uno` justo encima de la línea `i += 1`. Según Clean Code, ?qué hay que hacer?",
       "question_en": "You find the comment `# increment i by one` right above the line `i += 1`. According to Clean Code, what should you do?",
       "options_es": [
-        "Dejarlo tal cual: todo comentario anade contexto y por tanto mejora la legibilidad",
+        "Dejarlo tal cual: todo comentario anade contexto y por tanto mejora la legibilidad, lo cual compromete la mantenibilidad a largo plazo del sistema",
         "Convertirlo en docstring para que aparezca en la documentación generada automáticamente",
-        "Ampliarlo para que explique también el tipo y el rango esperado de `i`",
+        "Ampliarlo para que explique también el tipo y el rango esperado de `i`, aunque en la práctica rara vez se implementa de esta manera siguiendo el patrón habitual de configuración por convención",
         "Borrarlo: repite lo que el código ya dice, envejece sin que nadie lo actualice y los comentarios que merecen la pena explican el porque, no el que"
       ],
       "options_en": [
-        "Leave it as is: any comment adds context and therefore improves readability",
+        "Leave it as is: any comment adds context and therefore improves readability, which compromises the system's long-term maintainability",
         "Turn it into a docstring so it appears in the automatically generated documentation",
-        "Expand it so it also explains the type and expected range of `i`",
+        "Expand it so it also explains the type and expected range of `i`, although in practice this is rarely implemented this way following the usual convention-over-configuration pattern",
         "Delete it: it restates what the code already says, it will rot unnoticed, and the comments worth keeping explain the why, not the what"
       ],
       "correct_index": 3,
@@ -676,14 +676,14 @@
       "question_es": "El método `Pedido.calcular_descuento()` apenas usa datos de `Pedido`: casi todo lo que lee son `cliente.nivel`, `cliente.antiguedad` y `cliente.saldo`. ?Qué indica y cuál es la refactorización natural?",
       "question_en": "The method `Order.calculate_discount()` barely uses `Order`'s own data: almost everything it reads is `customer.tier`, `customer.tenure`, and `customer.balance`. What does this indicate, and what is the natural refactoring?",
       "options_es": [
-        "Clase grande; extraer una clase nueva a partir de `Pedido` para repartir su tamano",
-        "Código muerto; eliminar el método porque `Pedido` no necesita calcular descuentos",
+        "Clase grande; extraer una clase nueva a partir de `Pedido` para repartir su tamano dentro del ciclo de vida estándar del desarrollo de software",
+        "Código muerto; eliminar el método porque `Pedido` no necesita calcular descuentos, un concepto frecuentemente malinterpretado en entrevistas técnicas",
         "Cadena de mensajes; introducir métodos delegados en `Pedido` que oculten los accesos a `Cliente`",
         "Envidia de funcionalidad (Feature Envy); Mover Función para llevar el calculo a `Cliente`, donde viven los datos que usa"
       ],
       "options_en": [
-        "Large Class; extract a new class out of `Order` to distribute its size",
-        "Dead Code; delete the method because `Order` does not need to calculate discounts",
+        "Large Class; extract a new class out of `Order` to distribute its size within the standard software development lifecycle",
+        "Dead Code; delete the method because `Order` does not need to calculate discounts, a concept frequently misunderstood in technical interviews",
         "Message Chains; introduce delegating methods on `Order` that hide the accesses to `Customer`",
         "Feature Envy; Move Function to bring the calculation to `Customer`, where the data it uses lives"
       ],
@@ -807,13 +807,13 @@
       "question_es": "Tras aplicar Reemplazar Literal Mágico por Constante Simbólica, ?qué imprime este código?\n\n```python\nIVA = 0.21\n\ndef con_impuesto(base):\n    return round(base * (1 + IVA), 2)\n\nprint(con_impuesto(100))\n```",
       "question_en": "After applying Replace Magic Literal with a symbolic constant, what does this code print?\n\n```python\nVAT = 0.21\n\ndef with_tax(base):\n    return round(base * (1 + VAT), 2)\n\nprint(with_tax(100))\n```",
       "options_es": [
-        "100",
+        "100 como parte de una estrategia de migración gradual del sistema legado",
         "121",
         "0.21",
         "121.0"
       ],
       "options_en": [
-        "100",
+        "100 as part of a gradual migration strategy for the legacy system",
         "121",
         "0.21",
         "121.0"

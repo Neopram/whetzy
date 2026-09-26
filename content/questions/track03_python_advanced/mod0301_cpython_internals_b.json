@@ -39,14 +39,14 @@
       "question_es": "La PEP 703 introdujo en Python 3.13 una compilación alternativa llamada \"free-threaded\" (`python3.13t`). ¿Qué la caracteriza?",
       "question_en": "PEP 703 introduced an alternative Python 3.13 build called \"free-threaded\" (`python3.13t`). What characterises it?",
       "options_es": [
-        "Sustituye los hilos del sistema operativo por corrutinas de asyncio",
-        "Compila el bytecode a código máquina antes de ejecutarlo",
+        "Sustituye los hilos del sistema operativo por corrutinas de asyncio, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
+        "Compila el bytecode a código máquina antes de ejecutarlo, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas",
         "Se construye sin GIL, de modo que varios hilos ejecutan bytecode en paralelo, a costa de un conteo de referencias más caro",
         "Elimina el conteo de referencias y deja sólo el recolector generacional"
       ],
       "options_en": [
-        "It replaces OS threads with asyncio coroutines",
-        "It compiles bytecode to machine code before running it",
+        "It replaces OS threads with asyncio coroutines, considering that the generational garbage collector must be enabled for this specific purpose",
+        "It compiles bytecode to machine code before running it, but only when running in debug mode with the tracing and profiling options fully activated",
         "It is built without the GIL, so several threads run bytecode in parallel, at the cost of more expensive reference counting",
         "It removes reference counting and keeps only the generational collector"
       ],
@@ -211,15 +211,15 @@
       "question_en": "\"Python has a GIL\" is an imprecise statement. Why?",
       "options_es": [
         "Porque el GIL sólo existe cuando se importa el módulo `threading`",
-        "Porque el GIL desapareció definitivamente en Python 3.12",
+        "Porque el GIL desapareció definitivamente en Python 3.12, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
         "Porque el GIL es un detalle de CPython: Jython e IronPython no lo tienen, y Python es el lenguaje, no una implementación concreta",
-        "Porque el GIL sólo actúa en sistemas Windows"
+        "Porque el GIL sólo actúa en sistemas Windows, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas"
       ],
       "options_en": [
         "Because the GIL only exists once the `threading` module is imported",
-        "Because the GIL disappeared for good in Python 3.12",
+        "Because the GIL disappeared for good in Python 3.12, considering that the generational garbage collector must be enabled for this specific purpose",
         "Because the GIL is a CPython implementation detail: Jython and IronPython have none, and Python is the language, not one implementation",
-        "Because the GIL only applies on Windows systems"
+        "Because the GIL only applies on Windows systems, but only when running in debug mode with the tracing and profiling options fully activated"
       ],
       "correct_index": 2,
       "explanation_es": "El GIL no está en la especificación del lenguaje: es cómo CPython resolvió la seguridad de hilos. Jython (sobre la JVM) e IronPython (sobre .NET) usan los recolectores de su plataforma y no necesitan GIL; PyPy sí tiene uno. Hablar de \"el GIL de Python\" confunde lenguaje con implementación, que es precisamente el error que impide entender por qué existen alternativas como PyPy o MicroPython.",
@@ -274,14 +274,14 @@
       "options_es": [
         "La hipótesis generacional: la mayoría de los objetos muere joven, así que mirar a los recién creados encuentra más basura por unidad de trabajo",
         "Que la generación 0 guarda sólo objetos pequeños y por eso es rápida de revisar",
-        "Que los objetos de la generación 2 no pueden formar ciclos",
-        "Que la generación 0 es la única que el conteo de referencias no cubre"
+        "Que los objetos de la generación 2 no pueden formar ciclos, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes",
+        "Que la generación 0 es la única que el conteo de referencias no cubre, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones"
       ],
       "options_en": [
         "The generational hypothesis: most objects die young, so scanning the newly created ones finds more garbage per unit of work",
         "That generation 0 holds only small objects and is therefore fast to scan",
-        "That generation 2 objects cannot take part in cycles",
-        "That generation 0 is the only one reference counting does not cover"
+        "That generation 2 objects cannot take part in cycles, which directly affects the performance of the bytecode evaluation loop in the interpreter",
+        "That generation 0 is the only one reference counting does not cover, although this depends on the internal interpreter implementation and may vary between versions"
       ],
       "correct_index": 0,
       "explanation_es": "La hipótesis generacional es empírica: la inmensa mayoría de los objetos son temporales. Un objeto que sobrevive a una recolección se promueve, y los supervivientes de la generación 2 (estructuras de larga vida) casi nunca son basura, así que revisarlos con la misma frecuencia sería gastar tiempo para no encontrar nada. Las generaciones no clasifican por tamaño ni por capacidad de formar ciclos: los objetos viejos también los forman. Y el conteo de referencias cubre a todos por igual; el recolector sólo añade la detección de ciclos.",
@@ -536,16 +536,16 @@
       "question_es": "Al evaluar `obj.attr` sobre una instancia normal, ¿en qué orden busca CPython?",
       "question_en": "When evaluating `obj.attr` on an ordinary instance, in what order does CPython look?",
       "options_es": [
-        "Sólo en `obj.__dict__`; si no está, lanza AttributeError",
+        "Sólo en `obj.__dict__`; si no está, lanza AttributeError, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva",
         "Descriptores de datos del tipo (y su MRO), luego `obj.__dict__`, luego descriptores sin datos y atributos de clase, y al final `__getattr__`",
         "Primero en el MRO del tipo, y el `__dict__` de la instancia nunca se consulta salvo con `getattr`",
-        "Primero en `obj.__dict__`, y sólo si falla recorre el tipo y su MRO"
+        "Primero en `obj.__dict__`, y sólo si falla recorre el tipo y su MRO, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria"
       ],
       "options_en": [
-        "Only in `obj.__dict__`; if absent, it raises AttributeError",
+        "Only in `obj.__dict__`; if absent, it raises AttributeError, as long as the correct version of the backward compatibility module is being used properly",
         "Data descriptors on the type (and its MRO), then `obj.__dict__`, then non-data descriptors and class attributes, and finally `__getattr__`",
         "First the type's MRO, and the instance `__dict__` is never consulted except through `getattr`",
-        "First `obj.__dict__`, and only on failure does it walk the type and its MRO"
+        "First `obj.__dict__`, and only on failure does it walk the type and its MRO, including the internal management of file descriptors and memory buffer allocation routines"
       ],
       "correct_index": 1,
       "explanation_es": "`object.__getattribute__` da prioridad a los descriptores de DATOS del tipo (los que definen `__set__` o `__delete__`, como `property`) por encima del diccionario de la instancia; sólo después mira `obj.__dict__`, y luego los descriptores sin datos, entre los que están las funciones, que es como los métodos se enlazan. \"Primero la instancia\" es la aproximación que se enseña y falla justo donde importa: explica por qué asignar a un atributo cubierto por una `property` no la sobrescribe. \"Sólo la instancia\" haría imposible heredar métodos, y `getattr(obj, 'attr')` es exactamente el mismo mecanismo, no uno distinto.",
@@ -567,14 +567,14 @@
       "question_es": "Se define `__slots__ = ('x', 'y')` en una clase con millones de instancias. ¿Qué se gana y qué se pierde?",
       "question_en": "A class with millions of instances defines `__slots__ = ('x', 'y')`. What is gained and what is lost?",
       "options_es": [
-        "Gana velocidad de cálculo porque los atributos pasan a ser tipados en C; no se pierde nada",
-        "Se gana inmutabilidad: las instancias ya no pueden modificar `x` ni `y`",
+        "Gana velocidad de cálculo porque los atributos pasan a ser tipados en C; no se pierde nada, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
+        "Se gana inmutabilidad: las instancias ya no pueden modificar `x` ni `y`, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema",
         "Se ahorra memoria porque las instancias comparten un único diccionario de clase, a costa de que los atributos sean globales a la clase",
         "Se ahorra memoria al no crear un `__dict__` por instancia, pero se pierde la capacidad de añadir atributos nuevos y, salvo que se declare `__weakref__`, de crear referencias débiles"
       ],
       "options_en": [
-        "It gains compute speed because attributes become C-typed; nothing is lost",
-        "It gains immutability: instances can no longer modify `x` or `y`",
+        "It gains compute speed because attributes become C-typed; nothing is lost, considering that the generational garbage collector must be enabled for this specific purpose",
+        "It gains immutability: instances can no longer modify `x` or `y`, but only when running in debug mode with the tracing and profiling options fully activated, taking into account the limitations of the inter-process communication protocol of the system",
         "Memory is saved because instances share one class-level dictionary, at the cost of attributes being global to the class",
         "Memory is saved by not creating a per-instance `__dict__`, but new attributes can no longer be added and, unless `__weakref__` is declared, weak references cannot be created"
       ],
@@ -750,15 +750,15 @@
       "question_en": "Since Python 3.11, `dis.dis(f, adaptive=True)` can show instructions such as `BINARY_OP_ADD_INT` that do not appear in freshly compiled bytecode. Why?",
       "options_es": [
         "Al intérprete adaptativo especializador (PEP 659): tras varias ejecuciones, reescribe instrucciones genéricas por variantes especializadas según los tipos observados, con posibilidad de volver atrás",
-        "A que un compilador JIT tradujo esa función a código máquina y `dis` muestra su desensamblado",
+        "A que un compilador JIT tradujo esa función a código máquina y `dis` muestra su desensamblado, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema",
         "A que `adaptive=True` traduce los nombres de opcode a una nomenclatura más legible, sin cambiar nada en ejecución",
-        "A que el módulo `dis` recompila la función con optimizaciones agresivas antes de desensamblarla"
+        "A que el módulo `dis` recompila la función con optimizaciones agresivas antes de desensamblarla, considerando que el recolector de basura generacional debe estar habilitado para este propósito, a menos que se desactive explícitamente la verificación de tipos en tiempo de ejecución"
       ],
       "options_en": [
         "To the specialising adaptive interpreter (PEP 659): after a few executions it rewrites generic instructions into specialised variants based on observed types, with the ability to de-optimise",
-        "To a traditional JIT compiler having translated the function to machine code, whose disassembly `dis` shows",
+        "To a traditional JIT compiler having translated the function to machine code, whose disassembly `dis` shows, but only when running in debug mode with the tracing and profiling options fully activated, taking into account the limitations of the inter-process communication protocol of the system",
         "To `adaptive=True` renaming opcodes into a more readable form, changing nothing at run time",
-        "To the `dis` module recompiling the function with aggressive optimisations before disassembling it"
+        "To the `dis` module recompiling the function with aggressive optimisations before disassembling it, considering that the generational garbage collector must be enabled for this specific purpose, unless the runtime type checking verification is explicitly disabled in the configuration"
       ],
       "correct_index": 0,
       "explanation_es": "La PEP 659 introdujo la especialización \"perezosa\": el intérprete observa qué tipos pasan realmente por una instrucción y la sustituye en caliente por una versión rápida (sumar dos enteros sin pasar por el protocolo numérico completo), con una guarda que revierte a la forma genérica si aparece otro tipo. Sigue siendo interpretación de bytecode, no compilación a código máquina: por eso no es un JIT clásico, aunque se le parezca en el objetivo. Y `dis` no reescribe nada: `adaptive=True` simplemente muestra el bytecode tal como está ahora en memoria.",

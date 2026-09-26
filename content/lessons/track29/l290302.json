@@ -1,0 +1,12 @@
+{
+  "id": "l290302",
+  "skill_id": "sk290302",
+  "title_es": "requests y httpx",
+  "title_en": "requests and httpx",
+  "body_es": "requests es la librería más popular para hacer peticiones HTTP en Python, con una API simple e intuitiva para GET, POST, PUT, DELETE. Maneja automáticamente detalles como encoding, sesiones y timeouts. httpx es una alternativa moderna que añade soporte para async/await nativo, permitiendo pruebas más rápidas en paralelo. Ambas permiten configurar headers, cookies, autenticación y body en formato JSON o form. Para testing de APIs, estas librerías son fundamentales para hacer requests controlados y verificar respuestas.",
+  "body_en": "requests is Python's most popular library for making HTTP calls, with a simple intuitive API for GET, POST, PUT, DELETE. It automatically handles details like encoding, sessions, and timeouts. httpx is a modern alternative adding native async/await support, enabling faster parallel testing. Both allow configuring headers, cookies, authentication, and body in JSON or form format. For API testing, these libraries are essential for making controlled requests and verifying responses.",
+  "example_code": "import requests\nimport httpx\nimport asyncio\n\n# Using requests\nresponse = requests.get('https://api.example.com/data')\nresponse.raise_for_status()  # Raises exception for 4xx/5xx\ndata = response.json()\n\n# Using httpx with headers and timeout\nresponse = requests.post(\n    'https://api.example.com/users',\n    json={'name': 'Alice'},\n    headers={'Authorization': 'Bearer token123'},\n    timeout=5\n)\n\n# Using httpx async\nasync def fetch_data():\n    async with httpx.AsyncClient() as client:\n        response = await client.get('https://api.example.com/data')\n        return response.json()\n\n# results = asyncio.run(fetch_data())",
+  "example_output": "Response Status: 200\nResponse Time: 145ms\nData retrieved: {'id': 1, 'name': 'Alice', 'email': 'alice@example.com'}",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 2
+}

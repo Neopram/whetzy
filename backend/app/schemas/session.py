@@ -43,11 +43,19 @@ class QuizStartRequest(BaseModel):
     force_question_id: str | None = None
 
 
+class SelectionReason(BaseModel):
+    pool: str
+    skill_strategy: str | None = None
+    difficulty_target: float | None = None
+    expected_p: float | None = None
+
+
 class QuizStartResponse(BaseModel):
     session_id: uuid.UUID
     mode: str
     question: QuestionPublic | None = None
     reviews_due: int = 0
+    selection_reason: SelectionReason | None = None
 
 
 class QuizAnswerRequest(BaseModel):
@@ -62,6 +70,8 @@ class QuizAnswerRequest(BaseModel):
     # produced by the client's Pyodide run.  Server validates against the stored
     # correct_answer to prevent the client from falsifying correctness.
     exec_output: str | None = None
+    # Client-generated UUID for offline queue idempotency (33.2).
+    event_id: str | None = None
 
 
 class QuizAnswerResponse(BaseModel):
@@ -78,6 +88,7 @@ class QuizAnswerResponse(BaseModel):
     skill_mastery: dict[str, float]
     session_accuracy: float
     next_question: QuestionPublic | None = None
+    next_selection_reason: SelectionReason | None = None
 
 
 class QuizEndRequest(BaseModel):

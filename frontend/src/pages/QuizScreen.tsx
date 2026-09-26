@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse } from '../services/api';
+import { quiz as quizApi, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason } from '../services/api';
 import { enqueue } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
@@ -70,6 +70,7 @@ export function QuizScreen() {
   // respuesta no hay medicion, y una barra a medias inventada es peor que
   // ninguna barra.
   const [mastery, setMastery] = useState<number | null>(null);
+  const [selectionReason, setSelectionReason] = useState<SelectionReason | null>(null);
 
   // Which language this question is *shown* in. Separate from the app language
   // on purpose: peeking at the English wording of one question should not
@@ -105,6 +106,7 @@ export function QuizScreen() {
         if (cancelled) return;
         setSessionId(res.session_id);
         setQuestion(res.question);
+        setSelectionReason(res.selection_reason ?? null);
         questionStart.current = Date.now();
         setLoading(false);
         if (!res.question) setError(t('quiz.noQuestions'));
@@ -204,6 +206,7 @@ export function QuizScreen() {
             skill_mastery: {},
             session_accuracy: 0,
             next_question: null,
+            next_selection_reason: null,
           });
           showToast(t('quiz.savedOffline'), 'info');
         } else {
@@ -296,6 +299,7 @@ export function QuizScreen() {
     const next = feedback.next_question;
     if (next && index + 1 < TARGET_QUESTIONS) {
       setQuestion(next);
+      setSelectionReason(feedback.next_selection_reason ?? null);
       setIndex((i) => i + 1);
       setSelected(null);
       setFeedback(null);
@@ -401,7 +405,17 @@ export function QuizScreen() {
   const questionCard = (
     <div className={styles.questionCard}>
       <div className={styles.questionTop}>
-        <span className={styles.topic}>{t(`quiz.mode.${mode}`) ?? mode}</span>
+        <span className={styles.topic}>
+          {t(`quiz.mode.${mode}`) ?? mode}
+          {selectionReason && (
+            <span className={styles.selectionReason}>
+              {' · '}{t(`quiz.reason.${selectionReason.pool}`)}
+              {selectionReason.expected_p != null && (
+                <> · {t('quiz.reason.expected', { val: Math.round(selectionReason.expected_p * 100) })}</>
+              )}
+            </span>
+          )}
+        </span>
         <button
           type="button"
           className={styles.langToggle}

@@ -1,0 +1,13 @@
+{
+  "id": "les200401",
+  "skill_id": "sk200401",
+  "language": "es",
+  "executable": false,
+  "title_es": "Validación de Datos y Calidad",
+  "title_en": "Data Validation & Quality",
+  "body_es": "La validación asegura que datos cumplen estándares antes de uso. Dimensiones clave: completitud (sin NULLs), exactitud (contra fuente), consistencia (datos relacionados), integridad (constraints), actualidad (freshness). Great Expectations y dbt tests automatizar validación. Reglas de negocio verifican lógica aplicable (ej: edad > 0). Datos inválidos deben ser quarantine investigados, no simplemente descartados.",
+  "body_en": "Validation ensures data meets standards before use. Key dimensions: completeness (no NULLs), accuracy (vs source), consistency (related data), integrity (constraints), freshness (timeliness). Great Expectations and dbt tests automate validation. Business rules verify applicable logic (e.g., age > 0). Invalid data should be quarantined and investigated, not simply discarded.",
+  "example_code": "from great_expectations.dataset import PandasDataset\n\ndata = PandasDataset(df)\n\n# Validaciones\ndata.expect_column_values_to_be_not_null('email')\ndata.expect_column_values_to_be_in_set('status', ['active', 'inactive'])\ndata.expect_column_values_to_match_regex('email', r'^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$')\n\nvalidation_results = data.validate()\nif not validation_results.success:\n  print('Data quality issues found')",
+  "example_output": "Validación: 100,000 filas, 5 en lista negra por email inválido, 200 por status unknown.",
+  "source": "https://www.postgresql.org/docs/"
+}

@@ -112,6 +112,8 @@ GET  /exams/certification/{track_id}/readiness → readiness score + domain gaps
 GET  /exams/certification/{track_id}/access    → price, paywall on/off, purchased, can_start (38.7) 🔒
 POST /exams/certification/{track_id}/start     → certifying exam: mock blueprint + Whetzy pass mark (38.7) 🔒
 GET  /exams/certificates/{code}             → PUBLIC, no auth
+GET  /exams/certificates/{code}/badge      → Open Badges 3.0 JSON-LD (29.10), PUBLIC
+GET  /exams/certificates/{code}/qr         → QR code PNG for verification URL (29.10), PUBLIC
 ```
 
 | Endpoint | Gotcha |
@@ -123,6 +125,8 @@ GET  /exams/certificates/{code}             → PUBLIC, no auth
 | Certification mock `pass_pct` | `null` — only `track_final` and `test_out` carry a pass mark |
 | Late submission | Still graded but `status` becomes `expired` and earns **no** certificate |
 | `GET /exams/certificates/{code}` | **Unauthenticated**: the 128-bit code is the only key |
+| `GET /exams/certificates/{code}/badge` | Returns `application/ld+json`; signed with Ed25519 only when `OB_SIGNING_PRIVATE_KEY` is set |
+| `GET /exams/certificates/{code}/qr` | Returns `image/png`; encodes `whetzy.com/verify/{code}` |
 | Certificate uniqueness | One per (user, track); re-sitting returns the same code |
 
 ## Glossary endpoints
@@ -132,6 +136,29 @@ GET  /glossary/{track_id}  → [{term_es, term_en, definition_es, definition_en}
 ```
 
 `track_id` is a string like `"track01"`. Unauthenticated.
+
+## Bootcamp endpoints
+
+```
+GET  /bootcamps                    → [{id, slug, name_es, name_en, description_es, description_en, duration_weeks, daily_goal_minutes, icon, color, order}]
+GET  /bootcamps/{slug}             → {…bootcamp, weeks: [{id, week_number, track_id, title_es, title_en}]}
+POST /bootcamps/{slug}/enroll      → {id, bootcamp_id, started_at, current_week, completed_at} 🔒  201 | 409 already enrolled
+GET  /bootcamps/{slug}/progress    → {id, bootcamp_id, started_at, current_week, completed_at} 🔒  404 if not enrolled
+```
+
+List and detail are unauthenticated; enroll and progress require login.
+
+## Projects endpoints
+
+```
+GET  /projects                         → [{id, slug, track_id, runtime, name_es, name_en, description_es, description_en, difficulty, source_url, source_license, order}]  ?track_id=&runtime=
+GET  /projects/{slug}                  → {…project, steps: [{id, step_number, title_es, title_en, instructions_es, instructions_en, starter_code, test_code}]}
+POST /projects/{slug}/start            → {id, project_id, current_step, completed, started_at, completed_at} 🔒  201 | 409 already started
+GET  /projects/{slug}/progress         → {id, project_id, current_step, completed, started_at, completed_at} 🔒  404 if not started
+POST /projects/{slug}/submit-step      → {id, project_id, current_step, completed, started_at, completed_at} 🔒  body: {step_number, passed}
+```
+
+List and detail are unauthenticated; start, progress and submit-step require login.
 
 ## Lessons endpoints
 
@@ -195,7 +222,7 @@ Admin routes require `X-Admin-Key` header.
 ## Billing endpoints
 
 ```
-POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session
+POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session (accepts eu_withdrawal_waiver: bool)
 GET  /billing/subscription → {plan, status, renews_at} 🔒
 POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC)
 ```
@@ -219,7 +246,7 @@ se guarda en ninguna columna.
 GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[]} — público
 GET  /economy/balance           → {balance, currency, expires_in_days} 🔒
 GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea si no existe
-POST /economy/promo/redeem      → {credits, balance, message} 🔒
+POST /economy/promo/redeem      → {credits, balance, message} 🔒 — solo web (X-Platform ios/android → 403); rate limit 5/10 min por usuario
 POST /economy/referral/activate → {activated, referrer_id} 🔒
 GET  /economy/streak-freeze     → {price, balance, held, max_held, purchases_this_week, max_per_week, can_buy, blocked_by} 🔒 — comodín de racha (35.3)
 POST /economy/streak-freeze     {request_id: uuid} → mismo cuerpo + {replayed} 🔒 — compra con créditos; 409 `insufficient_credits` · `max_held` · `weekly_limit`; el mismo `request_id` nunca cobra dos veces
@@ -274,6 +301,14 @@ POST  /content/duplicates                   → embedding-based duplicate detect
 
 All admin routes require `X-Admin-Key` header.
 
+### Instructor moderation (28.6)
+```
+GET   /admin/instructor/courses                      → paginated course list with instructor info 🔒 admin — ?status=draft|published|archived|rejected &page= &per_page=
+PATCH /admin/instructor/courses/{course_id}/status   → approve/reject/archive a course 🔒 admin — ?new_status=published|rejected|archived|draft
+GET   /admin/instructor/payouts                      → paginated payout list 🔒 admin — ?status=pending|processing|completed|failed &page= &per_page=
+PATCH /admin/instructor/payouts/{payout_id}/status   → process/complete/fail a payout 🔒 admin — ?new_status=pending|processing|completed|failed
+```
+
 ### Content management
 ```
 GET  /admin/content/gaps                 → gaps in question coverage
@@ -288,9 +323,11 @@ POST /admin/email/test                   → {sent, provider, to} 🔒 owner —
 
 ### Economy & credits
 ```
-GET  /admin/economy/credits              → credit allocation summary
+GET  /admin/economy/credits              → credit summary (emitted/spent/expired, sink/source ratio, inflation alert) + ledger rows
 GET  /admin/economy/k-factor             → K-factor statistics
 GET  /admin/economy/referrals            → referral program analytics
+GET  /admin/economy/scorecard            → 5 KPI metrics vs m3/m6/m12 targets (ECONOMIA.md §7) 🔒 admin — ?segment=all|es|en &days=30
+POST /admin/promo/batch ?code_type&credits&count&max_uses&language&campaign_id&expires_days → {count, codes[], csv} — genera lote de códigos promocionales; tipos: onboarding|campaign|reactivation|referral_bonus|instructor; alfabeto seguro sin 0OIL1
 ```
 
 ### GDPR & user management
@@ -305,13 +342,22 @@ POST /admin/gdpr/deletions/{user_id}/cancel → cancel deletion request
 GET  /admin/metrics/funnel               → conversion funnel metrics
 GET  /admin/metrics/ttfq                 → time-to-first-question metrics
 GET  /admin/metrics/users                → user engagement metrics
+GET  /admin/metrics/engagement           → quiz sessions, accuracy, retention D30, duels, top skills 🔒 admin
+GET  /admin/metrics/reports              → question reports summary by reason + most reported 🔒 admin
 ```
 
 ### Operations
 ```
 GET  /admin/ops/database                 → database health & stats
+GET  /admin/ops/deploy-info              → Alembic head, app version, Railway deployment 🔒 admin
 GET  /admin/ops/errors                   → recent error logs
 GET  /admin/ops/health                   → system health status
+GET  /admin/ops/tutor-usage              → per-user and per-day tutor explanation counts 🔒 admin
+```
+
+### KPI Dashboard
+```
+GET  /admin/kpi/dashboard                → consolidated KPIs with M3/M6/M12 objectives 🔒 owner
 ```
 
 ### Revenue
@@ -326,11 +372,21 @@ GET  /admin/revenue/mrr                  → monthly recurring revenue
 GET  /admin/security/auth-events         → authentication event log
 GET  /admin/security/ip-analysis         → IP reputation & geo analysis
 GET  /admin/security/lockouts            → account lockout events
+GET  /admin/security/rate-limit-hits     → rate-limit denial stats (22.1)
 ```
 ## Export endpoints
 
 ```
 GET  /export/data          → GDPR data export (JSON) 🔒
+```
+
+## Privacy endpoints (21.3)
+
+```
+POST   /privacy/ccpa-opt-out      → Record CCPA "Do Not Sell/Share" opt-out 🔒
+DELETE /privacy/ccpa-opt-out      → Revoke CCPA opt-out (opt back in) 🔒
+GET    /privacy/ccpa-disclosure   → CCPA data-collection disclosure (§1798.100) — public
+GET    /privacy/rights            → Jurisdiction-aware privacy rights summary — public
 ```
 
 ## Health endpoints
@@ -354,8 +410,8 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-108 paths (104 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **111 method+path endpoints** total.
+137 paths (133 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **146 method+path endpoints** total.
 Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
 
 

@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q180501001",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Qué es el escalado automático de Pods (HPA) en Kubernetes?",
+      "question_en": "What is horizontal Pod autoscaling (HPA) in Kubernetes?",
+      "options_es": [
+        "Ajustar automáticamente el número de replicas de Pods basándose en métricas",
+        "Cambiar el tipo de nodo sin excepciones ni variantes",
+        "Aumentar memoria a cada Pod sin excepciones ni variantes",
+        "Aumentar el tamaño del clúster sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Automatically adjust number of Pod replicas based on metrics",
+        "Change node type without exceptions or variants",
+        "Increase memory for each Pod without exceptions or variants",
+        "Increase cluster size without exceptions or variants"
+      ],
+      "correct_index": 0,
+      "explanation_es": "HPA escala horizontalmente (más Pods) basándose en métricas como CPU, memoria o métricas personalizadas.",
+      "explanation_en": "HPA scales horizontally (more Pods) based on metrics like CPU, memory, or custom metrics.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)"
+    },
+    {
+      "id": "q180501002",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Cuáles son las métricas comunes para HPA?",
+      "question_en": "What are common metrics for HPA?",
+      "options_es": [
+        "CPU, memoria, métricas personalizadas",
+        "Solo CPU en todos los casos posibles",
+        "Solo latencia",
+        "Solo memoria en todos los casos posibles"
+      ],
+      "options_en": [
+        "CPU, memory, custom metrics",
+        "Only CPU in all possible cases",
+        "Only latency",
+        "Only memory in all possible cases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "HPA soporta CPU, memoria, y métricas personalizadas obtenidas de Prometheus o similar.",
+      "explanation_en": "HPA supports CPU, memory, and custom metrics from Prometheus or similar.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#metrics)"
+    },
+    {
+      "id": "q180501003",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Cómo se crea un HPA?",
+      "question_en": "How do you create an HPA?",
+      "options_es": [
+        "kubectl hpa create nombre de manera exclusiva y permanente",
+        "Manualmente en YAML en todos los casos posibles",
+        "kubectl autoscale deployment nombre --min=1 --max=10 --cpu-percent=80",
+        "Automáticamente sin hacer nada de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "kubectl hpa create name exclusively and permanently",
+        "Manually in YAML in all possible cases",
+        "kubectl autoscale deployment name --min=1 --max=10 --cpu-percent=80",
+        "Automatically without doing anything exclusively and permanently"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'kubectl autoscale' es la forma rápida; también se puede crear un objeto HorizontalPodAutoscaler en YAML.",
+      "explanation_en": "'kubectl autoscale' is the quick way; can also create a HorizontalPodAutoscaler object in YAML.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)"
+    },
+    {
+      "id": "q180501004",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Qué es el escalado vertical de Pods (VPA)?",
+      "question_en": "What is vertical Pod autoscaling (VPA)?",
+      "options_es": [
+        "Aumentar el número de Pods independientemente del contexto aplicado",
+        "No existe VPA sin excepciones ni variantes",
+        "Aumentar automáticamente las requests/limits de CPU y memoria de Pods",
+        "Un tipo de almacenamiento de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "Increase number of Pods regardless of the applied context",
+        "VPA does not exist without exceptions or variants",
+        "Automatically increase CPU/memory requests/limits of Pods",
+        "A type of storage exclusively and permanently"
+      ],
+      "correct_index": 2,
+      "explanation_es": "VPA ajusta los recursos solicitados basándose en el uso real, diferente de HPA que ajusta réplicas.",
+      "explanation_en": "VPA adjusts requested resources based on actual usage, different from HPA which adjusts replicas.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/run-application/vertical-pod-autoscale/)"
+    },
+    {
+      "id": "q180501005",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Cuál es la diferencia entre HPA y VPA?",
+      "question_en": "What is the difference between HPA and VPA?",
+      "options_es": [
+        "HPA es más antiguo de manera exclusiva y permanente",
+        "No hay diferencia en todos los casos posibles",
+        "HPA escala réplicas de Pods, VPA escala recursos de Pods",
+        "Son lo mismo independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "HPA is older exclusively and permanently",
+        "There is no difference in all possible cases",
+        "HPA scales Pod replicas, VPA scales Pod resources",
+        "They are the same regardless of the applied context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "HPA añade más Pods, VPA da más recursos a cada Pod. Se pueden usar juntos.",
+      "explanation_en": "HPA adds more Pods, VPA gives more resources to each Pod. Can be used together.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/run-application/vertical-pod-autoscale/)"
+    },
+    {
+      "id": "q180501006",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Qué es Cluster Autoscaler?",
+      "question_en": "What is Cluster Autoscaler?",
+      "options_es": [
+        "Un monitor de recursos de manera exclusiva y permanente",
+        "Un balanceador de carga de forma invariable y constante",
+        "Un componente que añade/quita nodos del clúster basándose en demanda",
+        "Un escalador de Pods de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "A resource monitor exclusively and permanently",
+        "A load balancer invariably and constantly",
+        "A component that adds/removes nodes from the cluster based on demand",
+        "A Pod scaler exclusively and permanently"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Cluster Autoscaler añade nodos cuando HPA no puede escalar Pods por falta de recursos, quita nodos no usados.",
+      "explanation_en": "Cluster Autoscaler adds nodes when HPA cannot scale Pods due to lack of resources, removes unused nodes.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/administer-cluster/cluster-autoscaling/)"
+    },
+    {
+      "id": "q180501007",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Cómo funciona Cluster Autoscaler?",
+      "question_en": "How does Cluster Autoscaler work?",
+      "options_es": [
+        "Solo añade nodos, nunca elimina en cualquier escenario de implementación",
+        "Intenta escalar Pods, si faltan recursos añade nodos; elimina nodos subutilizados",
+        "Solo elimina nodos, nunca añade en todos los casos posibles",
+        "Monitorea nodos no usados y los elimina inmediatamente en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Only adds nodes, never removes in any implementation scenario",
+        "Attempts to scale Pods, adds nodes if resources lack; removes underutilized nodes",
+        "Only removes nodes, never adds in all possible cases",
+        "Monitors unused nodes and removes them immediately in any implementation scenario"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cluster Autoscaler trabaja con HPA para escalar tanto Pods como infraestructura.",
+      "explanation_en": "Cluster Autoscaler works with HPA to scale both Pods and infrastructure.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/administer-cluster/cluster-autoscaling/)"
+    },
+    {
+      "id": "q180501008",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Qué es Quality of Service (QoS) en Kubernetes?",
+      "question_en": "What is Quality of Service (QoS) in Kubernetes?",
+      "options_es": [
+        "Clasificación de Pods según requests y limits de recursos",
+        "Un tipo de almacenamiento de forma invariable y constante",
+        "La calidad del servicio de red",
+        "Una política de seguridad"
+      ],
+      "options_en": [
+        "Pod classification based on resource requests and limits",
+        "A type of storage invariably and constantly",
+        "Network service quality",
+        "A security policy"
+      ],
+      "correct_index": 0,
+      "explanation_es": "QoS clasifica Pods en Guaranteed, Burstable, BestEffort basándose en requests/limits.",
+      "explanation_en": "QoS classifies Pods into Guaranteed, Burstable, BestEffort based on requests/limits.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/)"
+    },
+    {
+      "id": "q180501009",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Cuáles son las clases de QoS en Kubernetes?",
+      "question_en": "What are the QoS classes in Kubernetes?",
+      "options_es": [
+        "High, Medium, Low de forma invariable y constante",
+        "Premium, Standard, Economy",
+        "Good, Bad, Terrible",
+        "Guaranteed, Burstable, BestEffort"
+      ],
+      "options_en": [
+        "High, Medium, Low invariably and constantly",
+        "Premium, Standard, Economy",
+        "Good, Bad, Terrible",
+        "Guaranteed, Burstable, BestEffort"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Guaranteed = requests=limits; Burstable = algunos limits; BestEffort = sin limits.",
+      "explanation_en": "Guaranteed = requests=limits; Burstable = some limits; BestEffort = no limits.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#qos-classes)"
+    },
+    {
+      "id": "q180501010",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Qué Pods se desalojan primero en un nodo con falta de recursos?",
+      "question_en": "Which Pods are evicted first when a node runs out of resources?",
+      "options_es": [
+        "Los BestEffort, luego Burstable, finalmente Guaranteed",
+        "Los más nuevos independientemente del contexto aplicado",
+        "Se elige aleatoriamente",
+        "Los más antiguos"
+      ],
+      "options_en": [
+        "BestEffort, then Burstable, finally Guaranteed",
+        "The newest regardless of the applied context",
+        "Random selection",
+        "The oldest"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Kubernetes desaloja en orden de QoS: primero BestEffort (sin garantías), luego Burstable, Guaranteed lo último.",
+      "explanation_en": "Kubernetes evicts in QoS order: first BestEffort (no guarantees), then Burstable, Guaranteed last.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/#how-requests-and-limits-help-with-resource-allocation)"
+    },
+    {
+      "id": "q180501011",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Qué es Karpenter en Kubernetes?",
+      "question_en": "What is Karpenter in Kubernetes?",
+      "options_es": [
+        "Un provisioner de nodos flexible y eficiente para escalar infraestructura",
+        "Un tipo de herramienta de carpintería según la documentación estándar del servicio",
+        "Un driver de almacenamiento según la documentación estándar del servicio",
+        "Un monitor de red en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "A flexible and efficient node provisioner for scaling infrastructure",
+        "A type of carpentry tool according to standard service documentation",
+        "A storage driver according to standard service documentation",
+        "A network monitor in any implementation scenario"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Karpenter es una alternativa moderna a Cluster Autoscaler, más rápido y con mejor empaquetamiento.",
+      "explanation_en": "Karpenter is a modern alternative to Cluster Autoscaler, faster with better binpacking.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180501012",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Cómo se monitorean las métricas de un clúster Kubernetes?",
+      "question_en": "How do you monitor metrics in a Kubernetes cluster?",
+      "options_es": [
+        "No hay forma de monitorear sin considerar otros factores relevantes",
+        "Solo con kubectl top en todos los casos posibles",
+        "Usando Metrics Server para CPU/memoria, Prometheus para métricas personalizadas",
+        "Manualmente como concepto principal independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "There is no way to monitor without considering other relevant factors",
+        "Only with kubectl top in all possible cases",
+        "Using Metrics Server for CPU/memory, Prometheus for custom metrics",
+        "Manually as the primary concept regardless of the applied context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Metrics Server proporciona métricas básicas, Prometheus se integra para análisis avanzado.",
+      "explanation_en": "Metrics Server provides basic metrics, Prometheus integrates for advanced analysis.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/)"
+    },
+    {
+      "id": "q180501013",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Qué es el limit de memoria (memory limit) en un contenedor?",
+      "question_en": "What is the memory limit in a container?",
+      "options_es": [
+        "La cantidad máxima de memoria garantizada sin considerar otros factores relevantes",
+        "La cantidad máxima de memoria que puede usar, si excede se mata el Pod",
+        "El total de memoria del nodo en todos los casos posibles",
+        "La memoria mínima requerida de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "The guaranteed maximum memory amount without considering other relevant factors",
+        "The maximum memory the container can use; if exceeded, Pod is killed",
+        "Total node memory in all possible cases",
+        "The minimum required memory exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Si un contenedor excede su memory limit, Kubernetes lo mata (OOMKilled). Es un hard limit.",
+      "explanation_en": "If container exceeds memory limit, Kubernetes kills it (OOMKilled). It is a hard limit.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)"
+    },
+    {
+      "id": "q180501014",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Qué es el CPU limit en un contenedor?",
+      "question_en": "What is the CPU limit in a container?",
+      "options_es": [
+        "La cantidad máxima de CPU (en milicores) que puede usar en ese momento",
+        "La CPU garantizada en cualquier escenario de implementación",
+        "El uso promedio de CPU en todos los casos posibles",
+        "El número de núcleos de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "Maximum CPU (in millicores) the container can use at that moment",
+        "Guaranteed CPU in any implementation scenario",
+        "Average CPU usage in all possible cases",
+        "Number of cores exclusively and permanently"
+      ],
+      "correct_index": 0,
+      "explanation_es": "CPU limit se mide en millicores (1000m = 1 CPU). Es un throttle, no un kill como memory.",
+      "explanation_en": "CPU limit is measured in millicores (1000m = 1 CPU). It throttles, not kills like memory.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)"
+    },
+    {
+      "id": "q180501015",
+      "type": "multiple_choice",
+      "skill_id": "sk180501",
+      "question_es": "¿Cómo se definen requests y limits en un Pod?",
+      "question_en": "How do you define requests and limits in a Pod?",
+      "options_es": [
+        "En la sección 'resources' de cada contenedor del Pod",
+        "En variables de entorno en todos los casos posibles",
+        "En el archivo kubeconfig independientemente del contexto aplicado",
+        "En el nombre del Pod en todos los casos posibles"
+      ],
+      "options_en": [
+        "In the 'resources' section of each container in the Pod",
+        "In environment variables in all possible cases",
+        "In kubeconfig file regardless of the applied context",
+        "In the Pod name in all possible cases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se definen en 'spec.containers[].resources.requests' y '.limits' para cada contenedor.",
+      "explanation_en": "Defined in 'spec.containers[].resources.requests' and '.limits' for each container.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)"
+    },
+    {
+      "id": "q180502001",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Qué es Helm en Kubernetes?",
+      "question_en": "What is Helm in Kubernetes?",
+      "options_es": [
+        "Un gestor de paquetes para Kubernetes (como apt o npm)",
+        "Un timón para controlar Kubernetes",
+        "Un controlador de red en cualquier escenario de implementación",
+        "Un driver de almacenamiento"
+      ],
+      "options_en": [
+        "A package manager for Kubernetes (like apt or npm)",
+        "A helm to control Kubernetes",
+        "A network controller in any implementation scenario",
+        "A storage driver"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Helm es un gestor de paquetes que simplifica el despliegue de aplicaciones complejas en Kubernetes.",
+      "explanation_en": "Helm is a package manager that simplifies deploying complex applications on Kubernetes.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502002",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Qué es un Helm Chart?",
+      "question_en": "What is a Helm Chart?",
+      "options_es": [
+        "Un tipo de volumen según la documentación estándar del servicio",
+        "Un tablero de control en todos los casos posibles",
+        "Un gráfico de datos independientemente del contexto aplicado",
+        "Un paquete que contiene archivos YAML templados para desplegar aplicaciones"
+      ],
+      "options_en": [
+        "A type of volume according to standard service documentation",
+        "A control dashboard in all possible cases",
+        "A data chart regardless of the applied context",
+        "A package containing templated YAML files to deploy applications"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un Chart de Helm contiene todas las plantillas de Kubernetes para desplegar una aplicación con valores personalizables.",
+      "explanation_en": "A Helm Chart contains all Kubernetes templates to deploy an application with customizable values.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502003",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Cuál es la estructura básica de un Helm Chart?",
+      "question_en": "What is the basic structure of a Helm Chart?",
+      "options_es": [
+        "Chart.yaml, values.yaml, templates/, charts/, LICENSE, README.md",
+        "Solo templates en una carpeta",
+        "Un archivo YAML único de forma invariable y constante",
+        "Un solo archivo Chart.yaml según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "Chart.yaml, values.yaml, templates/, charts/, LICENSE, README.md",
+        "Only templates in one folder",
+        "A single YAML file invariably and constantly",
+        "A single Chart.yaml file according to standard service documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Chart tiene Chart.yaml (metadata), values.yaml (valores por defecto), templates/ (YAML templados).",
+      "explanation_en": "A Chart has Chart.yaml (metadata), values.yaml (default values), templates/ (templated YAMLs).",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502004",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Cómo se instala un Helm Chart?",
+      "question_en": "How do you install a Helm Chart?",
+      "options_es": [
+        "helm new nombre",
+        "helm deploy según la documentación estándar del servicio",
+        "helm install nombre chart-name",
+        "kubectl apply -f chart"
+      ],
+      "options_en": [
+        "helm new name",
+        "helm deploy according to standard service documentation",
+        "helm install name chart-name",
+        "kubectl apply -f chart"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'helm install' desplega un Chart. Se puede usar desde un repositorio o una carpeta local.",
+      "explanation_en": "'helm install' deploys a Chart. Can be from a repository or local folder.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502005",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Cómo se actualiza un Helm Chart instalado?",
+      "question_en": "How do you update an installed Helm Chart?",
+      "options_es": [
+        "helm upgrade release-name chart-name",
+        "kubectl set image en cualquier escenario de implementación",
+        "helm update nombre",
+        "helm install nuevamente"
+      ],
+      "options_en": [
+        "helm upgrade release-name chart-name",
+        "kubectl set image in any implementation scenario",
+        "helm update name",
+        "helm install again"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'helm upgrade' actualiza una versión ya desplegada a una nueva versión del Chart.",
+      "explanation_en": "'helm upgrade' updates a deployed release to a new Chart version.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502006",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Qué es un Helm Repository?",
+      "question_en": "What is a Helm Repository?",
+      "options_es": [
+        "Un repositorio de código fuente sin considerar otros factores relevantes",
+        "Un servidor HTTP que almacena Charts disponibles para instalar",
+        "Un tipo de volumen de forma invariable y constante",
+        "Un almacén de datos en todos los casos posibles"
+      ],
+      "options_en": [
+        "A source code repository without considering other relevant factors",
+        "An HTTP server storing available Charts to install",
+        "A type of volume invariably and constantly",
+        "A data store in all possible cases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un repositorio Helm centraliza Charts permitiendo instalación fácil mediante 'helm install repo/chart'.",
+      "explanation_en": "A Helm repository centralizes Charts allowing easy installation via 'helm install repo/chart'.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502007",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Cómo se añade un repositorio Helm?",
+      "question_en": "How do you add a Helm repository?",
+      "options_es": [
+        "helm add-repo nombre",
+        "helm repository add",
+        "helm repo add nombre URL",
+        "No se pueden añadir repositorios"
+      ],
+      "options_en": [
+        "helm add-repo name",
+        "helm repository add",
+        "helm repo add name URL",
+        "Repositories cannot be added"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'helm repo add' registra un nuevo repositorio de Charts para instalación.",
+      "explanation_en": "'helm repo add' registers a new repository of Charts for installation.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502008",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Qué es values.yaml en un Helm Chart?",
+      "question_en": "What is values.yaml in a Helm Chart?",
+      "options_es": [
+        "El archivo con valores por defecto que se pueden sobrescribir durante instalación",
+        "Valores de variables globales de manera exclusiva y permanente",
+        "Un archivo de datos de manera exclusiva y permanente",
+        "Un archivo de configuración del sistema en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "The file with default values that can be overridden during installation",
+        "Global variable values exclusively and permanently",
+        "A data file exclusively and permanently",
+        "A system configuration file in any implementation scenario"
+      ],
+      "correct_index": 0,
+      "explanation_es": "values.yaml define valores por defecto que pueden ser sobrescritos con '-f' o '--set' en helm install/upgrade.",
+      "explanation_en": "values.yaml defines default values that can be overridden with '-f' or '--set' in helm install/upgrade.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502009",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Cómo se sobrescriben valores al instalar un Chart?",
+      "question_en": "How do you override values when installing a Chart?",
+      "options_es": [
+        "Con '--set clave=valor' o '-f custom-values.yaml'",
+        "En variables de entorno",
+        "Editando Chart.yaml independientemente del contexto aplicado",
+        "No se pueden sobrescribir"
+      ],
+      "options_en": [
+        "With '--set key=value' or '-f custom-values.yaml'",
+        "In environment variables",
+        "By editing Chart.yaml regardless of the applied context",
+        "Values cannot be overridden"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'--set' para valores simples, '-f' para archivos completos de valores personalizados.",
+      "explanation_en": "'--set' for simple values, '-f' for complete custom value files.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502010",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Qué es un Helm Release?",
+      "question_en": "What is a Helm Release?",
+      "options_es": [
+        "Un repositorio de Charts",
+        "Una versión del Chart según la documentación estándar del servicio",
+        "Una actualización de Helm",
+        "Una instancia de un Chart desplegado en el clúster"
+      ],
+      "options_en": [
+        "A Chart repository",
+        "A version of the Chart according to standard service documentation",
+        "A Helm update",
+        "An instance of a Chart deployed in the cluster"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un Release es una instancia específica de un Chart. Se puede tener múltiples releases del mismo Chart.",
+      "explanation_en": "A Release is a specific instance of a Chart. Multiple releases of the same Chart can exist.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502011",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Cómo se desinstala un Helm Release?",
+      "question_en": "How do you uninstall a Helm Release?",
+      "options_es": [
+        "helm uninstall release-name",
+        "helm delete release-name",
+        "kubectl delete release",
+        "helm remove nombre independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "helm uninstall release-name",
+        "helm delete release-name",
+        "kubectl delete release",
+        "helm remove name regardless of the applied context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'helm uninstall' (o 'helm delete' en versiones antiguas) elimina completamente un Release.",
+      "explanation_en": "'helm uninstall' (or 'helm delete' in older versions) completely removes a Release.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502012",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Cómo se ven los Releases instalados?",
+      "question_en": "How do you list installed Releases?",
+      "options_es": [
+        "helm list",
+        "helm get releases",
+        "kubectl get releases",
+        "helm show all"
+      ],
+      "options_en": [
+        "helm list",
+        "helm get releases",
+        "kubectl get releases",
+        "helm show all"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'helm list' muestra todos los Releases instalados en el clúster.",
+      "explanation_en": "'helm list' shows all installed Releases in the cluster.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502013",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Qué es rollback en Helm?",
+      "question_en": "What is rollback in Helm?",
+      "options_es": [
+        "Copiar un Chart en todos los casos posibles",
+        "Revertir un Release a una versión anterior del Chart",
+        "Volver a una versión anterior de un Chart según la documentación estándar del servicio",
+        "No existe rollback de forma invariable y constante"
+      ],
+      "options_en": [
+        "Copy a Chart in all possible cases",
+        "Revert a Release to a previous Chart version",
+        "Go back to a previous Chart version according to standard service documentation",
+        "Rollback does not exist invariably and constantly"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'helm rollback' revierte un Release a una revisión anterior automáticamente.",
+      "explanation_en": "'helm rollback' reverts a Release to a previous revision automatically.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502014",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Cómo se crea un nuevo Helm Chart?",
+      "question_en": "How do you create a new Helm Chart?",
+      "options_es": [
+        "helm new nombre-chart",
+        "helm create nombre-chart",
+        "Manualmente creando carpetas",
+        "helm generate"
+      ],
+      "options_en": [
+        "helm new name-chart",
+        "helm create name-chart",
+        "Manually by creating folders",
+        "helm generate"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'helm create' crea la estructura básica de un nuevo Chart con templates ejemplo.",
+      "explanation_en": "'helm create' creates the basic structure of a new Chart with example templates.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180502015",
+      "type": "multiple_choice",
+      "skill_id": "sk180502",
+      "question_es": "¿Qué es un Helm Hook?",
+      "question_en": "What is a Helm Hook?",
+      "options_es": [
+        "Un gancho de seguridad en cualquier escenario de implementación",
+        "Un mecanismo para ejecutar acciones en puntos específicos del ciclo de vida",
+        "Una política de red en todos los casos posibles",
+        "Un tipo de almacenamiento sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "A security hook in any implementation scenario",
+        "A mechanism to execute actions at specific lifecycle points",
+        "A network policy in all possible cases",
+        "A type of storage without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los Hooks permiten ejecutar tareas pre/post instalación, upgrade, delete (ejemplo: migrations, backups).",
+      "explanation_en": "Hooks allow running tasks pre/post install, upgrade, delete (example: migrations, backups).",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180503001",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es RBAC en Kubernetes?",
+      "question_en": "What is RBAC in Kubernetes?",
+      "options_es": [
+        "Control de Acceso Basado en Roles que define quién puede hacer qué",
+        "Un tipo de almacenamiento en cualquier escenario de implementación",
+        "Un protocolo de seguridad de red",
+        "Un monitor de recursos sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "Role-Based Access Control defining who can do what",
+        "A type of storage in any implementation scenario",
+        "A network security protocol",
+        "A resource monitor without considering other relevant factors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "RBAC define Roles y RoleBindings que especifican permisos para usuarios y ServiceAccounts.",
+      "explanation_en": "RBAC defines Roles and RoleBindings specifying permissions for users and ServiceAccounts.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/access-authn-authz/rbac/)"
+    },
+    {
+      "id": "q180503002",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un Role en RBAC?",
+      "question_en": "What is a Role in RBAC?",
+      "options_es": [
+        "Un perfil de usuario sin considerar otros factores relevantes",
+        "Una definición de permisos para recursos específicos en un namespace",
+        "Un tipo de cuenta en todos los casos posibles",
+        "Una política de almacenamiento independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "A user profile without considering other relevant factors",
+        "A definition of permissions for specific resources in a namespace",
+        "A type of account in all possible cases",
+        "A storage policy regardless of the applied context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un Role define qué acciones (verbs) se pueden hacer en qué recursos (resources) en un namespace.",
+      "explanation_en": "A Role defines what actions (verbs) can be performed on what resources in a namespace.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole)"
+    },
+    {
+      "id": "q180503003",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un ClusterRole en RBAC?",
+      "question_en": "What is a ClusterRole in RBAC?",
+      "options_es": [
+        "Un Role que aplica a todos los namespaces del clúster",
+        "Una política de red global",
+        "El rol del clúster master en todos los casos posibles",
+        "Un tipo de usuario administrativo"
+      ],
+      "options_en": [
+        "A Role that applies to all namespaces in the cluster",
+        "A global network policy",
+        "The cluster master role in all possible cases",
+        "A type of administrative user"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un ClusterRole es como Role pero aplica globalmente a todo el clúster, no solo a un namespace.",
+      "explanation_en": "A ClusterRole is like Role but applies globally to the entire cluster, not just one namespace.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole)"
+    },
+    {
+      "id": "q180503004",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un RoleBinding en RBAC?",
+      "question_en": "What is a RoleBinding in RBAC?",
+      "options_es": [
+        "Una política de red de forma invariable y constante",
+        "Una conexión entre Pods de manera exclusiva y permanente",
+        "Una restricción de acceso",
+        "Vincula un Role a un usuario/ServiceAccount específico"
+      ],
+      "options_en": [
+        "A network policy invariably and constantly",
+        "A connection between Pods exclusively and permanently",
+        "An access restriction",
+        "Binds a Role to a specific user/ServiceAccount"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un RoleBinding asigna permisos (Role) a un usuario, grupo o ServiceAccount en un namespace.",
+      "explanation_en": "A RoleBinding assigns permissions (Role) to a user, group, or ServiceAccount in a namespace.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)"
+    },
+    {
+      "id": "q180503005",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un ClusterRoleBinding en RBAC?",
+      "question_en": "What is a ClusterRoleBinding in RBAC?",
+      "options_es": [
+        "Vincula un ClusterRole a un usuario/ServiceAccount globalmente",
+        "Un binding solo del master independientemente del contexto aplicado",
+        "Un binding de almacenamiento",
+        "Un tipo de restricción de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "Binds a ClusterRole to a user/ServiceAccount globally",
+        "A binding only for the master regardless of the applied context",
+        "A storage binding",
+        "A type of restriction exclusively and permanently"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un ClusterRoleBinding asigna permisos globales (ClusterRole) a un usuario en todo el clúster.",
+      "explanation_en": "A ClusterRoleBinding assigns global permissions (ClusterRole) to a user across the cluster.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)"
+    },
+    {
+      "id": "q180503006",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un ServiceAccount en Kubernetes?",
+      "question_en": "What is a ServiceAccount in Kubernetes?",
+      "options_es": [
+        "Una cuenta de servicio del sistema operativo sin considerar otros factores relevantes",
+        "Una cuenta de usuario humano en todos los casos posibles",
+        "Un tipo de almacenamiento en todos los casos posibles",
+        "Una identidad para Pods que permite autenticarse con la API"
+      ],
+      "options_en": [
+        "An operating system service account without considering other relevant factors",
+        "A human user account in all possible cases",
+        "A type of storage in all possible cases",
+        "An identity for Pods to authenticate with the API"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un ServiceAccount es una identidad que los Pods usan para acceder a la API de Kubernetes.",
+      "explanation_en": "A ServiceAccount is an identity that Pods use to access the Kubernetes API.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)"
+    },
+    {
+      "id": "q180503007",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Cómo se asigna un ServiceAccount a un Pod?",
+      "question_en": "How do you assign a ServiceAccount to a Pod?",
+      "options_es": [
+        "No se pueden asignar ServiceAccounts según la documentación estándar del servicio",
+        "Con 'spec.serviceAccountName' en la especificación del Pod",
+        "Automáticamente se asigna el default",
+        "Mediante una etiqueta sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "ServiceAccounts cannot be assigned according to standard service documentation",
+        "With 'spec.serviceAccountName' in the Pod spec",
+        "Default is automatically assigned",
+        "Through a label without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Se especifica en 'spec.serviceAccountName' o por defecto se usa 'default' del namespace.",
+      "explanation_en": "Specified in 'spec.serviceAccountName' or defaults to 'default' of the namespace.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)"
+    },
+    {
+      "id": "q180503008",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un token en un ServiceAccount?",
+      "question_en": "What is a token in a ServiceAccount?",
+      "options_es": [
+        "Una clave criptográfica",
+        "Un credencial JWT usado para autenticarse con la API",
+        "Un código de acceso temporal",
+        "Un permiso especial de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "A cryptographic key",
+        "A JWT credential used to authenticate with the API",
+        "A temporary access code",
+        "A special permission exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El token es un JWT que el Pod usa automáticamente (montado como Secret) para acceder a la API.",
+      "explanation_en": "The token is a JWT that the Pod automatically uses (mounted as Secret) to access the API.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)"
+    },
+    {
+      "id": "q180503009",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es una política de red en Kubernetes?",
+      "question_en": "What is a network policy in Kubernetes?",
+      "options_es": [
+        "Una configuración de firewall del host",
+        "Un tipo de almacenamiento sin excepciones ni variantes",
+        "Una regla que controla el tráfico de red entre Pods",
+        "Una política de ancho de banda"
+      ],
+      "options_en": [
+        "A host firewall configuration",
+        "A type of storage without exceptions or variants",
+        "A rule controlling network traffic between Pods",
+        "A bandwidth policy"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las NetworkPolicies definen qué Pods pueden comunicarse entre sí (ingress/egress).",
+      "explanation_en": "NetworkPolicies define which Pods can communicate (ingress/egress).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/network-policies/)"
+    },
+    {
+      "id": "q180503010",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un PodSecurityPolicy?",
+      "question_en": "What is a PodSecurityPolicy?",
+      "options_es": [
+        "Una política que controla los privilegios y capacidades de seguridad de Pods",
+        "Una contraseña de Pod sin considerar otros factores relevantes",
+        "Un tipo de Red sin excepciones ni variantes",
+        "Una política de almacenamiento independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "A policy controlling security privileges and capabilities of Pods",
+        "A Pod password without considering other relevant factors",
+        "A type of network without exceptions or variants",
+        "A storage policy regardless of the applied context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "PodSecurityPolicy define qué configuraciones de seguridad se permiten (privilegios, volúmenes, etc.)",
+      "explanation_en": "PodSecurityPolicy defines allowed security configurations (privileges, volumes, etc.)",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/security/pod-security-policy/)"
+    },
+    {
+      "id": "q180503011",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Cuál es la alternativa moderna a PodSecurityPolicy?",
+      "question_en": "What is the modern alternative to PodSecurityPolicy?",
+      "options_es": [
+        "No hay alternativa en cualquier escenario de implementación",
+        "NetworkPolicy solo",
+        "RBAC solo independientemente del contexto aplicado",
+        "Pod Security Standards (PSS) y Pod Security Admission"
+      ],
+      "options_en": [
+        "There is no alternative in any implementation scenario",
+        "NetworkPolicy only",
+        "RBAC only regardless of the applied context",
+        "Pod Security Standards (PSS) and Pod Security Admission"
+      ],
+      "correct_index": 3,
+      "explanation_es": "PSS es más moderno y flexible que PodSecurityPolicy, con mejores estándares.",
+      "explanation_en": "PSS is more modern and flexible than PodSecurityPolicy, with better standards.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/security/pod-security-standards/)"
+    },
+    {
+      "id": "q180503012",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un contexto de seguridad (securityContext)?",
+      "question_en": "What is a securityContext?",
+      "options_es": [
+        "Un contexto de usuario en el terminal de forma invariable y constante",
+        "Una política de almacenamiento sin considerar otros factores relevantes",
+        "Una configuración de seguridad para un Pod o contenedor (usuario, permisos, etc.)",
+        "Un tipo de red segura en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "A user context in the terminal invariably and constantly",
+        "A storage policy without considering other relevant factors",
+        "A security configuration for a Pod or container (user, permissions, etc.)",
+        "A type of secure network in any implementation scenario"
+      ],
+      "correct_index": 2,
+      "explanation_es": "securityContext define uid, gid, priviligios, capacidades, readOnlyRootFilesystem, etc.",
+      "explanation_en": "securityContext defines uid, gid, privileges, capabilities, readOnlyRootFilesystem, etc.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)"
+    },
+    {
+      "id": "q180503013",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es un privileged container?",
+      "question_en": "What is a privileged container?",
+      "options_es": [
+        "Un contenedor VIP sin excepciones ni variantes",
+        "Un contenedor en Kubernetes Premium",
+        "Un contenedor con todas las capacidades del kernel del host",
+        "Un contenedor con acceso especial en todos los casos posibles"
+      ],
+      "options_en": [
+        "A VIP container without exceptions or variants",
+        "A Premium Kubernetes container",
+        "A container with all kernel capabilities of the host",
+        "A container with special access in all possible cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un contenedor privilegiado (privileged: true) tiene todas las capacidades, riesgo de seguridad.",
+      "explanation_en": "A privileged container (privileged: true) has all capabilities, security risk.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod)"
+    },
+    {
+      "id": "q180503014",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Qué es runAsNonRoot en securityContext?",
+      "question_en": "What is runAsNonRoot in securityContext?",
+      "options_es": [
+        "No ejecutar Kubernetes en root de manera exclusiva y permanente",
+        "Una política de almacenamiento en cualquier escenario de implementación",
+        "Una configuración que obliga al contenedor a correr con usuario no-root",
+        "Una restricción de red independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "Do not run Kubernetes as root exclusively and permanently",
+        "A storage policy in any implementation scenario",
+        "A configuration forcing the container to run as non-root user",
+        "A network restriction regardless of the applied context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "runAsNonRoot: true previene que contenedores corran como root, mejorando seguridad.",
+      "explanation_en": "runAsNonRoot: true prevents containers from running as root, improving security.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)"
+    },
+    {
+      "id": "q180503015",
+      "type": "multiple_choice",
+      "skill_id": "sk180503",
+      "question_es": "¿Cómo se verifica acceso en RBAC?",
+      "question_en": "How is access verified in RBAC?",
+      "options_es": [
+        "Mediante DNS en todos los casos posibles",
+        "No se verifica acceso de forma invariable y constante",
+        "El API server verifica si el usuario tiene Role/RoleBinding para la acción",
+        "Automáticamente sin verificación de forma invariable y constante"
+      ],
+      "options_en": [
+        "Through DNS in all possible cases",
+        "Access is not verified invariably and constantly",
+        "API server verifies if user has Role/RoleBinding for the action",
+        "Automatically without verification invariably and constantly"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El API server consulta RBAC antes de permitir cualquier acción en recursos.",
+      "explanation_en": "API server consults RBAC before allowing any action on resources.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/access-authn-authz/rbac/)"
+    },
+    {
+      "id": "q180504001",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es observabilidad en Kubernetes?",
+      "question_en": "What is observability in Kubernetes?",
+      "options_es": [
+        "Una política de red sin excepciones ni variantes",
+        "Poder observar el comportamiento del clúster a través de logs, métricas y trazas",
+        "Un tipo de almacenamiento de manera exclusiva y permanente",
+        "Un monitor de seguridad según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "A network policy without exceptions or variants",
+        "The ability to understand cluster behavior through logs, metrics, and traces",
+        "A type of storage exclusively and permanently",
+        "A security monitor according to standard service documentation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La observabilidad comprende logs (qué pasó), métricas (cuánto), trazas (cómo).",
+      "explanation_en": "Observability includes logs (what happened), metrics (how much), traces (how).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/debug-application-cluster/)"
+    },
+    {
+      "id": "q180504002",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es Prometheus en Kubernetes?",
+      "question_en": "What is Prometheus in Kubernetes?",
+      "options_es": [
+        "Un dios del monitoreo en cualquier escenario de implementación",
+        "Una herramienta de backup según la documentación estándar del servicio",
+        "Un controlador de red de manera exclusiva y permanente",
+        "Un sistema de monitoreo que recoge métricas de aplicaciones y clúster"
+      ],
+      "options_en": [
+        "A monitoring god in any implementation scenario",
+        "A backup tool according to standard service documentation",
+        "A network controller exclusively and permanently",
+        "A monitoring system that collects metrics from applications and cluster"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Prometheus es el estándar de facto para monitoreo en Kubernetes, recolecta y almacena métricas.",
+      "explanation_en": "Prometheus is the de facto standard for monitoring in Kubernetes, collects and stores metrics.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504003",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es Grafana en monitoreo?",
+      "question_en": "What is Grafana in monitoring?",
+      "options_es": [
+        "Una herramienta para recoger métricas de manera exclusiva y permanente",
+        "Una herramienta de visualización para mostrar dashboards de datos",
+        "Un sistema de alertas sin excepciones ni variantes",
+        "Un backup de datos sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "A tool for collecting metrics exclusively and permanently",
+        "A visualization tool for displaying data dashboards",
+        "An alerting system without exceptions or variants",
+        "A data backup without considering other relevant factors"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Grafana es una plataforma de visualización que puede conectarse a Prometheus y otras fuentes.",
+      "explanation_en": "Grafana is a visualization platform that can connect to Prometheus and other sources.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504004",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es Elasticsearch en logging?",
+      "question_en": "What is Elasticsearch in logging?",
+      "options_es": [
+        "Una herramienta de monitoreo según la documentación estándar del servicio",
+        "Un almacén de datos persistentes",
+        "Un servidor de configuración",
+        "Un motor de búsqueda para indexar y almacenar logs"
+      ],
+      "options_en": [
+        "A monitoring tool according to standard service documentation",
+        "A persistent data store",
+        "A configuration server",
+        "A search engine for indexing and storing logs"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Elasticsearch indexa logs para búsqueda rápida, parte común del stack ELK.",
+      "explanation_en": "Elasticsearch indexes logs for fast searching, common part of ELK stack.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504005",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es Logstash en logging?",
+      "question_en": "What is Logstash in logging?",
+      "options_es": [
+        "Un depósito de logs independientemente del contexto aplicado",
+        "Una herramienta de búsqueda sin considerar otros factores relevantes",
+        "Un servidor de aplicaciones independientemente del contexto aplicado",
+        "Un procesador que transforma y enriquece logs antes de enviar a Elasticsearch"
+      ],
+      "options_en": [
+        "A log repository regardless of the applied context",
+        "A search tool without considering other relevant factors",
+        "An application server regardless of the applied context",
+        "A processor that transforms and enriches logs before sending to Elasticsearch"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Logstash procesa y transforma logs, filtrándolos y añadiendo campos, parte del stack ELK.",
+      "explanation_en": "Logstash processes and transforms logs, filtering and adding fields, part of ELK stack.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504006",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es Kibana en logging?",
+      "question_en": "What is Kibana in logging?",
+      "options_es": [
+        "Una interfaz de visualización para Elasticsearch que muestra dashboards de logs",
+        "Un procesador de logs en cualquier escenario de implementación",
+        "Un almacén de logs sin considerar otros factores relevantes",
+        "Un servidor de almacenamiento según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "A visualization interface for Elasticsearch showing log dashboards",
+        "A log processor in any implementation scenario",
+        "A log store without considering other relevant factors",
+        "A storage server according to standard service documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Kibana es el frontend para explorar y visualizar logs en Elasticsearch, parte del stack ELK.",
+      "explanation_en": "Kibana is the frontend for exploring and visualizing logs in Elasticsearch, part of ELK stack.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504007",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es Jaeger en trazado?",
+      "question_en": "What is Jaeger in tracing?",
+      "options_es": [
+        "Una herramienta de seguridad en cualquier escenario de implementación",
+        "Un cazador de bugs según la documentación estándar del servicio",
+        "Un monitor de red independientemente del contexto aplicado",
+        "Un sistema de trazado distribuido para seguir solicitudes entre servicios"
+      ],
+      "options_en": [
+        "A security tool in any implementation scenario",
+        "A bug hunter according to standard service documentation",
+        "A network monitor regardless of the applied context",
+        "A distributed tracing system for tracking requests across services"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Jaeger permite rastrear solicitudes a través de múltiples microservicios para debugging.",
+      "explanation_en": "Jaeger allows tracing requests across multiple microservices for debugging.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504008",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es un operador en Kubernetes?",
+      "question_en": "What is an operator in Kubernetes?",
+      "options_es": [
+        "Un programa que extiende Kubernetes con lógica de aplicaciones específicas",
+        "Una persona que maneja Kubernetes en cualquier escenario de implementación",
+        "Un controlador de red sin excepciones ni variantes",
+        "Un tipo de nodo según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "A program that extends Kubernetes with application-specific logic",
+        "A person who operates Kubernetes in any implementation scenario",
+        "A network controller without exceptions or variants",
+        "A type of node according to standard service documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los operadores automatización tareas complejas como backups, scaling automático, etc.",
+      "explanation_en": "Operators automate complex tasks like backups, automatic scaling, etc.",
+      "source": "Kubernetes Operators Documentation (https://kubernetes.io/docs/concepts/extend-kubernetes/operator/)"
+    },
+    {
+      "id": "q180504009",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Cómo se registran Pods en Kubernetes?",
+      "question_en": "How are Pods logged in Kubernetes?",
+      "options_es": [
+        "kubectl logs muestra stdout del contenedor",
+        "Con archivos de log manuales",
+        "No hay logs en cualquier escenario de implementación",
+        "No se pueden registrar Pods"
+      ],
+      "options_en": [
+        "kubectl logs displays container stdout",
+        "With manual log files",
+        "There are no logs in any implementation scenario",
+        "Pods cannot be logged"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'kubectl logs' muestra la salida estándar de un contenedor, o '-f' para seguir en tiempo real.",
+      "explanation_en": "'kubectl logs' displays container standard output, or '-f' to follow in real-time.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/)"
+    },
+    {
+      "id": "q180504010",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es un metrics server?",
+      "question_en": "What is a metrics server?",
+      "options_es": [
+        "Un almacén de datos de manera exclusiva y permanente",
+        "Un tipo de almacenamiento sin excepciones ni variantes",
+        "Un componente que recolecta CPU/memoria de kubelet y expone la API",
+        "Un servidor de métricas externo sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "A data store exclusively and permanently",
+        "A type of storage without exceptions or variants",
+        "A component that collects CPU/memory from kubelet and exposes the API",
+        "An external metrics server without considering other relevant factors"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Metrics Server es requerido para HPA y 'kubectl top', recolecta métricas de kubelet.",
+      "explanation_en": "Metrics Server is required for HPA and 'kubectl top', collects metrics from kubelet.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/)"
+    },
+    {
+      "id": "q180504011",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es un alert en monitoreo?",
+      "question_en": "What is an alert in monitoring?",
+      "options_es": [
+        "Una notificación de que algo pasó",
+        "Un error del sistema según la documentación estándar del servicio",
+        "Una advertencia de seguridad",
+        "Una regla que dispara cuando una condición se cumple (CPU > 80%)"
+      ],
+      "options_en": [
+        "A notification that something happened",
+        "A system error according to standard service documentation",
+        "A security warning",
+        "A rule that triggers when a condition is met (CPU > 80%)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los alerts disparan automáticamente cuando se cumplen condiciones, notificando a operadores.",
+      "explanation_en": "Alerts automatically trigger when conditions are met, notifying operators.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504012",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es AlertManager en Prometheus?",
+      "question_en": "What is AlertManager in Prometheus?",
+      "options_es": [
+        "Un monitor de alertas sin excepciones ni variantes",
+        "Una política de seguridad independientemente del contexto aplicado",
+        "Un componente que agrupa, deduplica y enruta alertas a canales (email, slack)",
+        "Un filtro de alertas de forma invariable y constante"
+      ],
+      "options_en": [
+        "An alert monitor without exceptions or variants",
+        "A security policy regardless of the applied context",
+        "A component that groups, deduplicates, and routes alerts to channels (email, slack)",
+        "An alert filter invariably and constantly"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AlertManager gestiona cómo se notifican alertas de Prometheus (email, Slack, PagerDuty, etc.)",
+      "explanation_en": "AlertManager manages how Prometheus alerts are notified (email, Slack, PagerDuty, etc.)",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504013",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Qué es un dashboard en monitoreo?",
+      "question_en": "What is a dashboard in monitoring?",
+      "options_es": [
+        "Una página de inicio sin considerar otros factores relevantes",
+        "Una visualización con gráficos y métricas en tiempo real",
+        "Un tablero de control del coche",
+        "Un archivo de configuración"
+      ],
+      "options_en": [
+        "A home page without considering other relevant factors",
+        "A visualization with real-time graphs and metrics",
+        "A car control panel",
+        "A configuration file"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los dashboards en Grafana muestran gráficos de métricas de Prometheus para monitoreo visual.",
+      "explanation_en": "Dashboards in Grafana display Prometheus metric graphs for visual monitoring.",
+      "source": "Docker Documentation (https://docs.docker.com) / Kubernetes Documentation (https://kubernetes.io/docs/)"
+    },
+    {
+      "id": "q180504014",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Cómo se implementa el escalado reactivo con monitoreo?",
+      "question_en": "How is reactive scaling implemented with monitoring?",
+      "options_es": [
+        "Solo con Cluster Autoscaler sin excepciones ni variantes",
+        "Manualmente ajustando replicas",
+        "No se puede escalar reactivamente",
+        "HPA usando métricas de Prometheus y AlertManager"
+      ],
+      "options_en": [
+        "Only with Cluster Autoscaler without exceptions or variants",
+        "Manually adjusting replicas",
+        "Reactive scaling is not possible",
+        "HPA using Prometheus metrics and AlertManager"
+      ],
+      "correct_index": 3,
+      "explanation_es": "HPA se integra con Prometheus para escalado automático basado en métricas personalizadas.",
+      "explanation_en": "HPA integrates with Prometheus for automatic scaling based on custom metrics.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#custom-metrics)"
+    },
+    {
+      "id": "q180504015",
+      "type": "multiple_choice",
+      "skill_id": "sk180504",
+      "question_es": "¿Cuál es la mejor práctica en logging?",
+      "question_en": "What is a best practice in logging?",
+      "options_es": [
+        "No registrar nada para privacidad en todos los casos posibles",
+        "Registrar solo en archivos locales de manera exclusiva y permanente",
+        "Registrar TODO en nivel DEBUG en todos los casos posibles",
+        "Usar niveles apropiados (INFO, WARN, ERROR), centralizar logs, indexar para búsqueda"
+      ],
+      "options_en": [
+        "Log nothing for privacy in all possible cases",
+        "Log only to local files exclusively and permanently",
+        "Log EVERYTHING at DEBUG level in all possible cases",
+        "Use appropriate levels (INFO, WARN, ERROR), centralize logs, index for searching"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Logs bien estructurados, centralizados e indexados mejoran debugging y observabilidad.",
+      "explanation_en": "Well-structured, centralized, indexed logs improve debugging and observability.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/debug-application-cluster/logging-architecture/)"
+    }
+  ]
+}

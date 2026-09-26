@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q200201_001",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre una CTE (Common Table Expression) y una subconsulta?",
+      "question_en": "What is the difference between a CTE and a subquery?",
+      "options_es": [
+        "No hay diferencia de manera exclusiva y permanente",
+        "CTE es reutilizable en una misma query, subconsulta no",
+        "CTEs requieren índices",
+        "Las subconsultas son más rápidas"
+      ],
+      "options_en": [
+        "No difference exclusively and permanently",
+        "CTE is reusable in same query, subquery is not",
+        "CTEs require indexes",
+        "Subqueries are faster"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una CTE (WITH clause) se define una vez y se puede referir múltiples veces en la misma consulta, mejorando legibilidad.",
+      "explanation_en": "A CTE (WITH clause) is defined once and can be referenced multiple times in same query, improving readability.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_002",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué función window permite calcular un ranking sin empates?",
+      "question_en": "Which window function calculates ranking without ties?",
+      "options_es": [
+        "RANK() como concepto principal",
+        "ROW_NUMBER() como concepto principal",
+        "COUNT() como concepto principal",
+        "DENSE_RANK() como concepto principal"
+      ],
+      "options_en": [
+        "RANK() as the primary concept",
+        "ROW_NUMBER() as the primary concept",
+        "COUNT() as the primary concept",
+        "DENSE_RANK() as the primary concept"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ROW_NUMBER() asigna un número secuencial único a cada fila, incluso con valores iguales en la columna de ordenamiento.",
+      "explanation_en": "ROW_NUMBER() assigns unique sequential number to each row, even with equal values in order column.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_003",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre INNER JOIN y LEFT JOIN en términos de filas retornadas?",
+      "question_en": "What is the difference between INNER JOIN and LEFT JOIN in returned rows?",
+      "options_es": [
+        "LEFT es más rápido",
+        "No importa el tipo",
+        "Retornan lo mismo en todos los casos posibles",
+        "INNER retorna solo coincidencias, LEFT incluye todas del lado izquierdo"
+      ],
+      "options_en": [
+        "LEFT is faster",
+        "Type doesn't matter",
+        "Same return in all possible cases",
+        "INNER returns only matches, LEFT includes all left side"
+      ],
+      "correct_index": 3,
+      "explanation_es": "INNER JOIN retorna solo filas con coincidencia en ambas tablas; LEFT JOIN retorna todas las del lado izquierdo, con NULL en el derecho si no hay coincidencia.",
+      "explanation_en": "INNER JOIN returns only matching rows; LEFT JOIN returns all left rows, with NULL on right if no match.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_004",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo se debe usar UNION vs UNION ALL?",
+      "question_en": "When should UNION be used vs UNION ALL?",
+      "options_es": [
+        "UNION es obsoleto",
+        "UNION elimina duplicados, UNION ALL los mantiene",
+        "Son equivalentes sin considerar otros factores relevantes",
+        "UNION ALL es siempre mejor"
+      ],
+      "options_en": [
+        "UNION is obsolete",
+        "UNION removes duplicates, UNION ALL keeps them",
+        "They are equivalent without considering other relevant factors",
+        "UNION ALL always better"
+      ],
+      "correct_index": 1,
+      "explanation_es": "UNION elimina duplicados (más lento); UNION ALL los mantiene (más rápido); usar UNION ALL si duplicados no importan.",
+      "explanation_en": "UNION removes duplicates (slower); UNION ALL keeps them (faster); use UNION ALL if duplicates don't matter.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_005",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una 'recursive CTE' y para qué sirve?",
+      "question_en": "What is a 'recursive CTE' and what is it for?",
+      "options_es": [
+        "Una CTE que se llama a sí misma para procesar datos jerárquicos",
+        "No existe independientemente del contexto aplicado",
+        "Optimización de índices",
+        "Una forma de eliminar datos"
+      ],
+      "options_en": [
+        "A CTE that calls itself to process hierarchical data",
+        "Doesn't exist regardless of the applied context",
+        "Index optimization",
+        "Way to delete data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las CTEs recursivas permiten procesar jerarquías (ej: árboles de categorías, organigramas) de forma elegante sin cursores.",
+      "explanation_en": "Recursive CTEs allow processing hierarchies (e.g., category trees, org charts) elegantly without cursors.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_006",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de la cláusula GROUP BY en una agregación?",
+      "question_en": "What is the purpose of GROUP BY clause in aggregation?",
+      "options_es": [
+        "Ordenar filas sin considerar otros factores relevantes",
+        "Limitar resultados",
+        "Agrupar filas por valores comunes antes de aplicar función de agregación",
+        "Seleccionar columnas"
+      ],
+      "options_en": [
+        "Sort rows without considering other relevant factors",
+        "Limit results",
+        "Group rows by common values before applying aggregate function",
+        "Select columns"
+      ],
+      "correct_index": 2,
+      "explanation_es": "GROUP BY agrupa filas con valores idénticos en las columnas especificadas, permitiendo calcular agregaciones por grupo.",
+      "explanation_en": "GROUP BY groups rows with identical values in specified columns, allowing aggregate calculation per group.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_007",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre WHERE y HAVING en una consulta con GROUP BY?",
+      "question_en": "What is the difference between WHERE and HAVING in GROUP BY query?",
+      "options_es": [
+        "Son sinónimos en todos los casos posibles",
+        "WHERE filtra filas antes de agrupar, HAVING filtra grupos después",
+        "No hay diferencia",
+        "HAVING es obsoleto"
+      ],
+      "options_en": [
+        "They are synonyms in all possible cases",
+        "WHERE filters rows before grouping, HAVING filters groups after",
+        "No difference",
+        "HAVING is obsolete"
+      ],
+      "correct_index": 1,
+      "explanation_es": "WHERE actúa sobre filas individuales antes de agrupar; HAVING actúa sobre grupos después de calcular agregaciones.",
+      "explanation_en": "WHERE acts on individual rows before grouping; HAVING acts on groups after aggregate calculation.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_008",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'query plan' y cómo se visualiza en PostgreSQL?",
+      "question_en": "What is the 'query plan' and how is it visualized in PostgreSQL?",
+      "options_es": [
+        "Una copia de seguridad de manera exclusiva y permanente",
+        "La estrategia de ejecución de una consulta, visualizada con EXPLAIN",
+        "Un documento de arquitectura",
+        "Un diagrama de base de datos"
+      ],
+      "options_en": [
+        "Backup as the primary concept exclusively and permanently",
+        "Query execution strategy, visualized with EXPLAIN",
+        "Architecture document",
+        "Database diagram"
+      ],
+      "correct_index": 1,
+      "explanation_es": "EXPLAIN muestra cómo PostgreSQL ejecutará una consulta (nodos, costos estimados), permitiendo optimizaciones.",
+      "explanation_en": "EXPLAIN shows how PostgreSQL will execute a query (nodes, estimated costs), enabling optimizations.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_009",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la complejidad de un CROSS JOIN entre dos tablas de N y M filas?",
+      "question_en": "What is the complexity of a CROSS JOIN between two N and M row tables?",
+      "options_es": [
+        "O(N log M)",
+        "O(N + M)",
+        "O(N * M)",
+        "O(log N * M)"
+      ],
+      "options_en": [
+        "O(N log M)",
+        "O(N + M)",
+        "O(N * M)",
+        "O(log N * M)"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un CROSS JOIN produce el producto cartesiano: cada fila de tabla 1 se empareja con cada fila de tabla 2, resultando N*M filas.",
+      "explanation_en": "CROSS JOIN produces Cartesian product: each row of table 1 paired with each row of table 2, resulting N*M rows.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_010",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se optimiza típicamente una consulta con múltiples JOINs?",
+      "question_en": "How is a query with multiple JOINs typically optimized?",
+      "options_es": [
+        "Usar denormalización siempre",
+        "Usar EXPLAIN, crear índices en columnas de join, revisar order de JOINs",
+        "No se puede optimizar",
+        "Agregar más RAM según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "Always denormalize",
+        "Use EXPLAIN, create indexes on join columns, review JOIN order",
+        "Cannot be optimized",
+        "Add more RAM according to standard service documentation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Índices en columnas de join, EXPLAIN para entender la estrategia y orden apropiado de joins reducen significativamente el tiempo.",
+      "explanation_en": "Indexes on join columns, EXPLAIN to understand strategy and proper JOIN order significantly reduce time.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_011",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar una vista materializada en PostgreSQL?",
+      "question_en": "What is the advantage of using a materialized view in PostgreSQL?",
+      "options_es": [
+        "Reemplaza índices",
+        "Todos los datos van a memoria",
+        "Almacena resultados de una consulta compleja para relectura rápida",
+        "Sin ventaja en todos los casos posibles"
+      ],
+      "options_en": [
+        "Replaces indexes",
+        "All data goes to memory",
+        "Stores complex query results for fast re-read",
+        "No advantage in all possible cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una vista materializada almacena físicamente los resultados de una consulta, permitiendo lecturas rápidas sin recomputar.",
+      "explanation_en": "A materialized view physically stores query results, enabling fast reads without recomputing.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_012",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si una consulta contiene ORDER BY pero no LIMIT?",
+      "question_en": "What happens if a query contains ORDER BY but no LIMIT?",
+      "options_es": [
+        "Se ignora ORDER BY",
+        "Toda la tabla se ordena, potencialmente lenta sin índice",
+        "Error de sintaxis",
+        "Se asume LIMIT 1 de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "ORDER BY ignored",
+        "Entire table is sorted, potentially slow without index",
+        "Syntax error",
+        "LIMIT 1 is assumed exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sin LIMIT, la BD ordena todas las filas, lo cual es costoso; siempre considerar LIMIT si solo necesitas N primeras filas.",
+      "explanation_en": "Without LIMIT, DB sorts all rows, which is costly; always consider LIMIT if you only need N first rows.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_013",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de usar DISTINCT en una consulta?",
+      "question_en": "What is the purpose of DISTINCT in a query?",
+      "options_es": [
+        "Ordenar resultados",
+        "Limitar número de filas",
+        "Filtrar nulos en cualquier escenario de implementación",
+        "Retornar solo filas únicas, eliminando duplicados"
+      ],
+      "options_en": [
+        "Sort results",
+        "Limit row count",
+        "Filter nulls in any implementation scenario",
+        "Return only unique rows, removing duplicates"
+      ],
+      "correct_index": 3,
+      "explanation_es": "DISTINCT retorna combinaciones únicas de columnas especificadas, eliminando duplicados; costoso sin índices.",
+      "explanation_en": "DISTINCT returns unique combinations of specified columns, removing duplicates; expensive without indexes.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_014",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué diferencia hay entre LEFT OUTER JOIN y LEFT JOIN?",
+      "question_en": "What is the difference between LEFT OUTER JOIN and LEFT JOIN?",
+      "options_es": [
+        "Son sinónimos, OUTER es opcional",
+        "No se puede usar OUTER sin excepciones ni variantes",
+        "Significativamente diferente",
+        "LEFT JOIN es más rápido"
+      ],
+      "options_en": [
+        "They are synonyms, OUTER is optional",
+        "Cannot use OUTER without exceptions or variants",
+        "Significantly different",
+        "LEFT JOIN is faster"
+      ],
+      "correct_index": 0,
+      "explanation_es": "LEFT OUTER JOIN y LEFT JOIN son exactamente lo mismo; OUTER es palabr a reservada pero opcional en SQL estándar.",
+      "explanation_en": "LEFT OUTER JOIN and LEFT JOIN are identical; OUTER is reserved word but optional in standard SQL.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200201_015",
+      "skill_id": "sk200201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para mejorar rendimiento de consultas complejas?",
+      "question_en": "What is best practice for improving complex query performance?",
+      "options_es": [
+        "Aumentar RAM infinitamente",
+        "Más workers siempre sin excepciones ni variantes",
+        "Executar varias veces hasta mejorar",
+        "Usar EXPLAIN, crear índices inteligentes, descomponer en pasos"
+      ],
+      "options_en": [
+        "Increase RAM infinitely",
+        "More workers always without exceptions or variants",
+        "Run multiple times until better",
+        "Use EXPLAIN, create smart indexes, break into steps"
+      ],
+      "correct_index": 3,
+      "explanation_es": "EXPLAIN identifica cuellos de botella, índices estratégicos mejoran joins, descomponer lógica evita consultas enormes.",
+      "explanation_en": "EXPLAIN identifies bottlenecks, strategic indexes improve joins, decomposing logic avoids huge queries.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_001",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la principal ventaja de PostgreSQL sobre otras bases de datos relacionales?",
+      "question_en": "What is PostgreSQL's main advantage over other relational databases?",
+      "options_es": [
+        "Mejor interfaz gráfica",
+        "Es la más rápida siempre",
+        "No tiene limitaciones de forma invariable y constante",
+        "Extensibilidad con tipos personalizados y funciones"
+      ],
+      "options_en": [
+        "Better GUI",
+        "Always fastest",
+        "No limitations invariably and constantly",
+        "Extensibility with custom types and functions"
+      ],
+      "correct_index": 3,
+      "explanation_es": "PostgreSQL es muy extensible: permite crear tipos de datos, operadores y funciones personalizadas, diferenciándolo de DBs más cerradas.",
+      "explanation_en": "PostgreSQL is highly extensible: allows custom data types, operators and functions, differentiating it from closed databases.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_002",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'tablespace' en PostgreSQL?",
+      "question_en": "What is a 'tablespace' in PostgreSQL?",
+      "options_es": [
+        "Memoria caché de forma invariable y constante",
+        "Una ubicación en disco donde se almacenan los datos de BD",
+        "Una tabla especial",
+        "Espacio en fila para datos"
+      ],
+      "options_en": [
+        "Cache memory invariably and constantly",
+        "Disk location where DB data is stored",
+        "Special table",
+        "Row space for data"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los tablespaces permiten mapear tablas/índices a diferentes ubicaciones en disco, útil para optimización de rendimiento y gestión de espacio.",
+      "explanation_en": "Tablespaces map tables/indexes to different disk locations, useful for performance optimization and space management.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_003",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre una 'database' y una 'schema' en PostgreSQL?",
+      "question_en": "What is the difference between a 'database' and a 'schema' in PostgreSQL?",
+      "options_es": [
+        "Son lo mismo sin considerar otros factores relevantes",
+        "DB es colección de schemas, schema es colección de tablas",
+        "No hay relación",
+        "Schema es más grande"
+      ],
+      "options_en": [
+        "They are same without considering other relevant factors",
+        "DB is collection of schemas, schema is collection of tables",
+        "No relationship",
+        "Schema is larger"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un servidor PostgreSQL contiene múltiples bases de datos; cada BD contiene múltiples schemas; cada schema contiene tablas, vistas, funciones, etc.",
+      "explanation_en": "A PostgreSQL server contains multiple databases; each DB contains multiple schemas; each schema contains tables, views, functions, etc.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_004",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué rol es típicamente necesario para realizar un VACUUM en PostgreSQL?",
+      "question_en": "What role is typically needed to perform VACUUM in PostgreSQL?",
+      "options_es": [
+        "Dueño de la tabla o superuser",
+        "No requiere permisos",
+        "Rol especial 'vacuum_user'",
+        "Cualquier usuario sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Table owner or superuser",
+        "No permissions needed",
+        "Special 'vacuum_user' role",
+        "Any user without exceptions or variants"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Solo el dueño de la tabla o un superuser pueden ejecutar VACUUM, que libera espacio limpiando dead tuples.",
+      "explanation_en": "Only table owner or superuser can run VACUUM, which frees space by cleaning dead tuples.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_005",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de ANALYZE en PostgreSQL?",
+      "question_en": "What is the purpose of ANALYZE in PostgreSQL?",
+      "options_es": [
+        "Recopilar estadísticas para optimización del query planner",
+        "Comprimir la BD de forma invariable y constante",
+        "Crear índices automáticamente",
+        "Eliminar filas duplicadas"
+      ],
+      "options_en": [
+        "Gather statistics for query planner optimization",
+        "Compress DB invariably and constantly",
+        "Create indexes automatically",
+        "Remove duplicate rows"
+      ],
+      "correct_index": 0,
+      "explanation_es": "ANALYZE recopila estadísticas sobre la distribución de datos (histogramas, valores típicos) que el query planner usa para decisiones.",
+      "explanation_en": "ANALYZE collects statistics on data distribution (histograms, typical values) that query planner uses for decisions.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_006",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es la 'replicación' en PostgreSQL y cuál es su utilidad?",
+      "question_en": "What is 'replication' in PostgreSQL and what is its use?",
+      "options_es": [
+        "Duplicar datos para hacer backups",
+        "Duplicación de cambios a servidores secundarios para alta disponibilidad",
+        "Replicar consultas independientemente del contexto aplicado",
+        "Sin utilidad práctica"
+      ],
+      "options_en": [
+        "Duplicate data for backups",
+        "Replicate changes to standby servers for high availability",
+        "Replicate queries regardless of the applied context",
+        "No practical use"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La replicación streaming copia los cambios de un servidor primario a secundarios, permitiendo failover y distribución de lecturas.",
+      "explanation_en": "Streaming replication copies changes from primary to standby servers, enabling failover and read distribution.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_007",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre AUTOVACUUM y VACUUM manual?",
+      "question_en": "What is the difference between AUTOVACUUM and manual VACUUM?",
+      "options_es": [
+        "AUTOVACUUM se ejecuta automáticamente, manual es bajo demanda",
+        "No hay diferencia en todos los casos posibles",
+        "Manual es más eficiente",
+        "AUTOVACUUM es lento"
+      ],
+      "options_en": [
+        "AUTOVACUUM runs automatically, manual on demand",
+        "No difference in all possible cases",
+        "Manual more efficient",
+        "AUTOVACUUM is slow"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AUTOVACUUM es un proceso de fondo que se ejecuta periódicamente; VACUUM manual lo ejecutas cuando lo necesitas.",
+      "explanation_en": "AUTOVACUUM is background process running periodically; manual VACUUM you run when needed.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_008",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué tipo de datos está optimizado para almacenar JSON en PostgreSQL?",
+      "question_en": "What data type is optimized for storing JSON in PostgreSQL?",
+      "options_es": [
+        "TEXT únicamente",
+        "No hay soporte según la documentación estándar del servicio",
+        "JSON o JSONB (JSONB es más eficiente)",
+        "DOCUMENT tipo especial"
+      ],
+      "options_en": [
+        "TEXT only",
+        "No support according to standard service documentation",
+        "JSON or JSONB (JSONB more efficient)",
+        "DOCUMENT special type"
+      ],
+      "correct_index": 2,
+      "explanation_es": "JSONB es tipo binario optimizado: soporta índices, es más rápido que JSON (texto), y permite queries eficientes de subelementos.",
+      "explanation_en": "JSONB is optimized binary type: supports indexes, faster than JSON (text), and enables efficient subelement queries.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_009",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comando para ver qué conexiones están activas en PostgreSQL?",
+      "question_en": "What command shows active connections in PostgreSQL?",
+      "options_es": [
+        "SELECT * FROM pg_stat_activity",
+        "LIST CONNECTIONS",
+        "DESCRIBE USERS de forma invariable y constante",
+        "SHOW CONNECTIONS"
+      ],
+      "options_en": [
+        "SELECT * FROM pg_stat_activity",
+        "LIST CONNECTIONS",
+        "DESCRIBE USERS invariably and constantly",
+        "SHOW CONNECTIONS"
+      ],
+      "correct_index": 0,
+      "explanation_es": "pg_stat_activity es una vista del sistema que muestra información de conexiones activas: usuario, query, estado, etc.",
+      "explanation_en": "pg_stat_activity is system view showing active connections info: user, query, state, etc.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_010",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se crea un usuario/rol en PostgreSQL?",
+      "question_en": "How is a user/role created in PostgreSQL?",
+      "options_es": [
+        "CREATE USER 'nombre'@'host'",
+        "CREATE ROLE nombre WITH LOGIN PASSWORD 'pass'",
+        "No se pueden crear",
+        "INSERT INTO users en todos los casos posibles"
+      ],
+      "options_en": [
+        "CREATE USER 'name'@'host'",
+        "CREATE ROLE name WITH LOGIN PASSWORD 'pass'",
+        "Cannot be created",
+        "INSERT INTO users in all possible cases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "CREATE ROLE es el comando para crear usuarios; WITH LOGIN lo hace capaz de conectarse; WITH PASSWORD establece contraseña.",
+      "explanation_en": "CREATE ROLE is command for user creation; WITH LOGIN makes it connectable; WITH PASSWORD sets password.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_011",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'trigger' en PostgreSQL?",
+      "question_en": "What is a 'trigger' in PostgreSQL?",
+      "options_es": [
+        "Un botón en la interfaz",
+        "Un tipo de índice en todos los casos posibles",
+        "Una alarma de base de datos",
+        "Una función que se ejecuta automáticamente ante INSERT, UPDATE o DELETE"
+      ],
+      "options_en": [
+        "GUI button",
+        "Index type in all possible cases",
+        "A database alarm",
+        "Function auto-executed on INSERT, UPDATE or DELETE"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los triggers ejecutan lógica personalizada antes/después de modificaciones de datos, útiles para auditoría, validaciones y mantenimiento de integridad.",
+      "explanation_en": "Triggers execute custom logic before/after data modifications, useful for audit, validation and integrity maintenance.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_012",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la máxima cantidad de columnas que puede tener una tabla en PostgreSQL?",
+      "question_en": "What is maximum columns a PostgreSQL table can have?",
+      "options_es": [
+        "Ilimitado como concepto principal",
+        "1600 como concepto principal",
+        "256 como concepto principal",
+        "10000 como concepto principal"
+      ],
+      "options_en": [
+        "Unlimited as the primary concept",
+        "1600 as the primary concept",
+        "256 as the primary concept",
+        "10000 as the primary concept"
+      ],
+      "correct_index": 1,
+      "explanation_es": "PostgreSQL permite hasta 1600 columnas por tabla (antes era 512); esto es límite práctica del sistema.",
+      "explanation_en": "PostgreSQL allows up to 1600 columns per table (was 512); practical system limit.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_013",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es 'WAL' (Write-Ahead Logging) en PostgreSQL?",
+      "question_en": "What is 'WAL' (Write-Ahead Logging) in PostgreSQL?",
+      "options_es": [
+        "Web access layer de forma invariable y constante",
+        "Log de cambios escrito antes de aplicar a datos",
+        "Copia automática en nube",
+        "Wall (pared) de datos"
+      ],
+      "options_en": [
+        "Web access layer invariably and constantly",
+        "Change log written before applying to data",
+        "Automatic cloud copy",
+        "Wall of data"
+      ],
+      "correct_index": 1,
+      "explanation_es": "WAL escribe cambios en un log antes de aplicarlos a datos, garantizando recuperabilidad ante crashes y base para replicación.",
+      "explanation_en": "WAL writes changes to log before applying to data, guaranteeing recoverability from crashes and basis for replication.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_014",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se visualiza el tamaño de una tabla en PostgreSQL?",
+      "question_en": "How to see table size in PostgreSQL?",
+      "options_es": [
+        "SELECT COUNT(*)",
+        "DESCRIBE tabla en cualquier escenario de implementación",
+        "SELECT pg_size_pretty(pg_total_relation_size('tabla'))",
+        "SIZE tabla FROM information_schema"
+      ],
+      "options_en": [
+        "SELECT COUNT(*)",
+        "DESCRIBE table in any implementation scenario",
+        "SELECT pg_size_pretty(pg_total_relation_size('table'))",
+        "SIZE table FROM information_schema"
+      ],
+      "correct_index": 2,
+      "explanation_es": "pg_total_relation_size() retorna bytes ocupados por tabla + índices; pg_size_pretty() lo convierte a formato legible (KB, MB, etc).",
+      "explanation_en": "pg_total_relation_size() returns bytes for table + indexes; pg_size_pretty() converts to readable format (KB, MB, etc).",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200202_015",
+      "skill_id": "sk200202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para respaldar una base de datos PostgreSQL?",
+      "question_en": "What is best practice for PostgreSQL database backup?",
+      "options_es": [
+        "Copiar archivos de BD directamente",
+        "Usar pg_dump para respaldo lógico o PITR para completo",
+        "Sin necesidad de respaldar",
+        "Replicación solamente en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Copy DB files directly",
+        "Use pg_dump for logical or PITR for full",
+        "No need for backup",
+        "Replication only in any implementation scenario"
+      ],
+      "correct_index": 1,
+      "explanation_es": "pg_dump genera respaldo lógico portable; PITR (Point-in-Time Recovery) con WAL permite restaurar a cualquier momento.",
+      "explanation_en": "pg_dump generates portable logical backup; PITR with WAL allows restore to any point in time.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_001",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el tipo de índice más común en bases de datos relacionales?",
+      "question_en": "What is the most common index type in relational databases?",
+      "options_es": [
+        "Índice de hash",
+        "Índice inverso",
+        "Índice bitmap",
+        "Índice B-tree"
+      ],
+      "options_en": [
+        "Hash index",
+        "Inverted index",
+        "Bitmap index",
+        "B-tree index"
+      ],
+      "correct_index": 3,
+      "explanation_es": "B-tree es el tipo estándar: balanceado, eficiente para búsquedas, rangos y ordenamiento.",
+      "explanation_en": "B-tree is standard: balanced, efficient for searches, ranges and sorting.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_002",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo es ineficiente crear un índice en una columna?",
+      "question_en": "When is creating an index on a column inefficient?",
+      "options_es": [
+        "Cuando tiene baja selectividad o muchos NULLs",
+        "Cuando está ordenada",
+        "Nunca es ineficiente",
+        "Cuando es varchar sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "When it has low selectivity or many NULLs",
+        "When it is sorted",
+        "Never inefficient",
+        "When it is varchar without exceptions or variants"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Si una columna tiene muchos valores repetidos o NULLs, el índice raramente excluye filas, siendo casi inútil.",
+      "explanation_en": "If column has many repeated values or NULLs, index rarely excludes rows, being nearly useless.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_003",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'índice compuesto' o 'índice multi-columna'?",
+      "question_en": "What is a 'composite' or 'multi-column' index?",
+      "options_es": [
+        "Un índice en la nube",
+        "Un índice sobre múltiples columnas en orden",
+        "Un índice de tabla de forma invariable y constante",
+        "Un índice duplicado"
+      ],
+      "options_en": [
+        "Cloud index",
+        "Index over multiple columns in order",
+        "Table index invariably and constantly",
+        "Duplicate index"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un índice compuesto indexa varias columnas juntas; el orden importa (first_name, last_name es diferente a last_name, first_name).",
+      "explanation_en": "Composite index indexes multiple columns together; order matters (first_name, last_name differs from last_name, first_name).",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_004",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el costo de mantener un índice cuando hay INSERTs frecuentes?",
+      "question_en": "What is the cost of maintaining an index with frequent INSERTs?",
+      "options_es": [
+        "Debe actualizarse el índice, ralentizando INSERTs",
+        "Sin costo de forma invariable y constante",
+        "Solo al final del día",
+        "Mejora INSERTs"
+      ],
+      "options_en": [
+        "Index must update, slowing INSERTs",
+        "No cost invariably and constantly",
+        "Only at end of day",
+        "Improves INSERTs"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada INSERT debe actualizar índices de la tabla, incrementando el tiempo; hay que balancear escrituras vs lecturas.",
+      "explanation_en": "Each INSERT must update table indexes, increasing time; must balance writes vs reads.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_005",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una 'índice parcial' en PostgreSQL?",
+      "question_en": "What is a 'partial index' in PostgreSQL?",
+      "options_es": [
+        "Un índice del 50%",
+        "Un índice que solo indexa filas que cumplan una condición WHERE",
+        "Un índice temporal",
+        "Un índice roto sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "50% index",
+        "Index that only indexes rows matching WHERE condition",
+        "Temporary index",
+        "A broken index without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un índice parcial reduce espacio indexando solo filas relevantes; útil para columnas con muchos NULLs o con filtros comunes.",
+      "explanation_en": "Partial index saves space by indexing only relevant rows; useful for columns with many NULLs or common filters.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_006",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se determina si un índice está siendo usado en PostgreSQL?",
+      "question_en": "How to determine if an index is being used in PostgreSQL?",
+      "options_es": [
+        "Usar pg_stat_user_indexes y revisar idx_scan",
+        "No se puede saber sin excepciones ni variantes",
+        "Ver tamaño del archivo",
+        "Ejecutar queries varias veces"
+      ],
+      "options_en": [
+        "Use pg_stat_user_indexes and check idx_scan",
+        "Cannot know without exceptions or variants",
+        "Check file size",
+        "Run queries multiple times"
+      ],
+      "correct_index": 0,
+      "explanation_es": "pg_stat_user_indexes muestra idx_scan (número de usos); un valor bajo indica que el índice no es útil.",
+      "explanation_en": "pg_stat_user_indexes shows idx_scan (usage count); low value means index not useful.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_007",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'covering index' o 'índice de cobertura'?",
+      "question_en": "What is a 'covering index'?",
+      "options_es": [
+        "Un índice que oculta datos",
+        "Índice en el techo",
+        "Índice de reserva sin considerar otros factores relevantes",
+        "Índice que contiene todas las columnas necesarias para responder una query"
+      ],
+      "options_en": [
+        "Index that hides data",
+        "Roof index",
+        "Backup index without considering other relevant factors",
+        "Index containing all columns needed to answer a query"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un índice de cobertura contiene todas las columnas de la query, permitiendo responder sin acceder a la tabla.",
+      "explanation_en": "Covering index contains all query columns, allowing response without table access.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_008",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el impacto de un índice ineficiente en operaciones DELETE?",
+      "question_en": "What is the impact of an inefficient index on DELETE operations?",
+      "options_es": [
+        "Sin impacto de manera exclusiva y permanente",
+        "DELETE es lento porque busca filas con índice ineficiente",
+        "DELETE es más rápido",
+        "No se usan índices en DELETE"
+      ],
+      "options_en": [
+        "No impact exclusively and permanently",
+        "DELETE slow because finds rows with inefficient index",
+        "DELETE faster",
+        "Indexes not used in DELETE"
+      ],
+      "correct_index": 1,
+      "explanation_es": "DELETE debe encontrar filas primero; un índice ineficiente hace búsqueda lenta, ralentizando el DELETE.",
+      "explanation_en": "DELETE must find rows first; inefficient index makes search slow, slowing DELETE.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_009",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es 'index bloat' o 'inflamiento de índice'?",
+      "question_en": "What is 'index bloat'?",
+      "options_es": [
+        "Índice con demasiadas filas",
+        "Índice corrupto sin excepciones ni variantes",
+        "Espacio inútil en índice por actualizaciones frecuentes",
+        "Índice muy grande"
+      ],
+      "options_en": [
+        "Index with too many rows",
+        "Corrupt index without exceptions or variants",
+        "Wasted space in index from frequent updates",
+        "Very large index"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las actualizaciones crean espacio muerto en el índice; REINDEX o VACUUM FULL lo compactan.",
+      "explanation_en": "Updates create dead space in index; REINDEX or VACUUM FULL compacts it.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_010",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un índice único y una restricción UNIQUE?",
+      "question_en": "What is the difference between a UNIQUE index and UNIQUE constraint?",
+      "options_es": [
+        "El índice es para datos históricos",
+        "Sin diferencia práctica",
+        "Son lo mismo de manera exclusiva y permanente",
+        "UNIQUE constraint usa índice único internamente"
+      ],
+      "options_en": [
+        "Index for historical data",
+        "No practical difference",
+        "Same thing exclusively and permanently",
+        "UNIQUE constraint uses unique index internally"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una restricción UNIQUE crea un índice único automáticamente; conceptualmente son lo mismo pero UNIQUE es semántico.",
+      "explanation_en": "UNIQUE constraint creates unique index automatically; conceptually same but UNIQUE is semantic.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_011",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si intenta crear un índice sobre dos columnas con orden diferente?",
+      "question_en": "What happens when creating index on two columns with different order?",
+      "options_es": [
+        "Crea un índice diferente optimizado para ese orden",
+        "No se permite según la documentación estándar del servicio",
+        "Error como concepto principal",
+        "Se ignora la diferencia"
+      ],
+      "options_en": [
+        "Creates different index optimized for that order",
+        "Not allowed according to standard service documentation",
+        "Error as the primary concept",
+        "Ignores difference"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El orden en un índice compuesto es crítico; (A,B) es diferente de (B,A) en eficiencia.",
+      "explanation_en": "Order in composite index is critical; (A,B) differs from (B,A) in efficiency.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_012",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo debe usar un índice HASH vs B-tree en PostgreSQL?",
+      "question_en": "When should you use HASH vs B-tree index in PostgreSQL?",
+      "options_es": [
+        "No importa sin considerar otros factores relevantes",
+        "HASH siempre",
+        "B-tree para rangos/orden, HASH solo para igualdad",
+        "HASH es nuevo, mejor"
+      ],
+      "options_en": [
+        "Doesn't matter without considering other relevant factors",
+        "HASH always",
+        "B-tree for ranges/order, HASH only for equality",
+        "HASH is new, better"
+      ],
+      "correct_index": 2,
+      "explanation_es": "HASH es solo para búsquedas de igualdad (=); B-tree maneja >, <, BETWEEN, ORDER BY; B-tree es más versátil.",
+      "explanation_en": "HASH only for equality searches (=); B-tree handles >, <, BETWEEN, ORDER BY; B-tree more versatile.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_013",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'índice de expresión' en PostgreSQL?",
+      "question_en": "What is an 'expression index' in PostgreSQL?",
+      "options_es": [
+        "Un índice con múltiples tablas",
+        "Un índice temporal en cualquier escenario de implementación",
+        "Índice creado sobre el resultado de una función",
+        "Índice de fórmulas matemáticas"
+      ],
+      "options_en": [
+        "Index on multiple tables",
+        "Temporary index in any implementation scenario",
+        "Index created on function result",
+        "Math formula index"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un índice de expresión indexa el resultado de una función (ej: LOWER(nombre)), útil para búsquedas case-insensitive.",
+      "explanation_en": "Expression index indexes function result (e.g., LOWER(name)), useful for case-insensitive searches.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_014",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el impacto en rendimiento de actualizar una columna indexada frecuentemente?",
+      "question_en": "What is performance impact of frequently updating an indexed column?",
+      "options_es": [
+        "Degradación significativa: índice debe reordenarse constantemente",
+        "Sin impacto según la documentación estándar del servicio",
+        "Solo afecta lecturas",
+        "Mejora rendimiento"
+      ],
+      "options_en": [
+        "Significant degradation: index must constantly reorder",
+        "No impact according to standard service documentation",
+        "Only affects reads",
+        "Improves performance"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Actualizar columnas indexadas es costoso; el índice debe mantenerse consistente, aumentando I/O.",
+      "explanation_en": "Updating indexed columns is costly; index must stay consistent, increasing I/O.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200203_015",
+      "skill_id": "sk200203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor estrategia para optimizar un índice que se ha fragmentado?",
+      "question_en": "What is best strategy for optimizing a fragmented index?",
+      "options_es": [
+        "Esperar a que se recomponga solo",
+        "Usar REINDEX para reconstruir el índice",
+        "Cambiar a otro tipo",
+        "Aumentar RAM de forma invariable y constante"
+      ],
+      "options_en": [
+        "Wait for self-repair",
+        "Use REINDEX to rebuild index",
+        "Change to another type",
+        "Increase RAM invariably and constantly"
+      ],
+      "correct_index": 1,
+      "explanation_es": "REINDEX reconstruye un índice desde cero, eliminando fragmentación y espacio muerto.",
+      "explanation_en": "REINDEX rebuilds index from scratch, removing fragmentation and dead space.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_001",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de las transacciones ACID en una base de datos?",
+      "question_en": "What is the purpose of ACID transactions in a database?",
+      "options_es": [
+        "Eliminar duplicados",
+        "Guardar espacio en cualquier escenario de implementación",
+        "Acelerar consultas",
+        "Garantizar integridad y consistencia de datos en operaciones"
+      ],
+      "options_en": [
+        "Remove duplicates",
+        "Save space in any implementation scenario",
+        "Accelerate queries",
+        "Guarantee data integrity and consistency in operations"
+      ],
+      "correct_index": 3,
+      "explanation_es": "ACID garantiza que datos permanecen consistentes incluso con fallos o accesos concurrentes.",
+      "explanation_en": "ACID ensures data stays consistent even with failures or concurrent access.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_002",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa la 'A' en ACID?",
+      "question_en": "What does the 'A' in ACID mean?",
+      "options_es": [
+        "Actualización como concepto principal",
+        "Acceso como concepto principal",
+        "Atomicidad: todo o nada",
+        "Análisis como concepto principal"
+      ],
+      "options_en": [
+        "Update as the primary concept",
+        "Access as the primary concept",
+        "Atomicity: all or nothing",
+        "Analysis as the primary concept"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Atomicidad: la transacción se ejecuta completamente o no se ejecuta en absoluto; no hay ejecuciones parciales.",
+      "explanation_en": "Atomicity: transaction executes completely or not at all; no partial execution.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_003",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el nivel de aislamiento más bajo en transacciones?",
+      "question_en": "What is the lowest isolation level in transactions?",
+      "options_es": [
+        "SERIALIZABLE como concepto principal",
+        "READ UNCOMMITTED",
+        "READ COMMITTED",
+        "REPEATABLE READ"
+      ],
+      "options_en": [
+        "SERIALIZABLE as the primary concept",
+        "READ UNCOMMITTED",
+        "READ COMMITTED",
+        "REPEATABLE READ"
+      ],
+      "correct_index": 1,
+      "explanation_es": "READ UNCOMMITTED permite leer datos no comprometidos (dirty reads), pero es rara en BD modernas.",
+      "explanation_en": "READ UNCOMMITTED allows reading uncommitted data (dirty reads), but rare in modern DBs.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_004",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'dirty read'?",
+      "question_en": "What is a 'dirty read'?",
+      "options_es": [
+        "Leer sin índices sin excepciones ni variantes",
+        "Leer datos no comprometidos de otra transacción",
+        "Leer datos borrados",
+        "Leer desde archivo sin limpiar"
+      ],
+      "options_en": [
+        "Read without indexes without exceptions or variants",
+        "Read uncommitted data from another transaction",
+        "Read deleted data",
+        "Read from unclean file"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un dirty read ocurre cuando una transacción lee datos que otra transacción modificó pero aún no confirmó.",
+      "explanation_en": "Dirty read occurs when transaction reads data another transaction modified but not yet committed.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_005",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'deadlock' en bases de datos?",
+      "question_en": "What is a 'deadlock' in databases?",
+      "options_es": [
+        "Dos transacciones esperan mutuamente recursos bloqueados",
+        "Candado roto sin excepciones ni variantes",
+        "Error de conexión",
+        "Bloqueo de escritura"
+      ],
+      "options_en": [
+        "Two transactions waiting for each other's locked resources",
+        "Broken lock without exceptions or variants",
+        "Connection error",
+        "Write block"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un deadlock ocurre cuando T1 espera recurso A (bloqueado por T2) y T2 espera recurso B (bloqueado por T1).",
+      "explanation_en": "Deadlock occurs when T1 waits for resource A (locked by T2) and T2 waits for resource B (locked by T1).",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_006",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo resuelve típicamente una base de datos un deadlock?",
+      "question_en": "How does a database typically resolve a deadlock?",
+      "options_es": [
+        "Congela ambas independientemente del contexto aplicado",
+        "Sin resolución",
+        "Espera infinitamente",
+        "Aborta una transacción automáticamente"
+      ],
+      "options_en": [
+        "Freezes both regardless of the applied context",
+        "No resolution",
+        "Waits infinitely",
+        "Automatically aborts one transaction"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La BD detecta deadlock y aborta una transacción, permitiendo que la otra continúe; la abortada puede reintentar.",
+      "explanation_en": "DB detects deadlock and aborts one transaction, allowing other to continue; aborted one can retry.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_007",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'control de concurrencia optimista' vs 'pesimista'?",
+      "question_en": "What is 'optimistic' vs 'pessimistic' concurrency control?",
+      "options_es": [
+        "Son lo mismo en cualquier escenario de implementación",
+        "Optimista es más lento",
+        "Solo existe uno",
+        "Optimista asume conflictos raros, pesimista bloquea preventivamente"
+      ],
+      "options_en": [
+        "Same thing in any implementation scenario",
+        "Optimistic slower",
+        "Only one exists",
+        "Optimistic assumes conflicts rare, pessimistic locks preventively"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Optimista: permite modificaciones sin bloqueos, valida conflictos al final (mejor para lecturas). Pesimista: bloquea al inicio (mejor para escrituras).",
+      "explanation_en": "Optimistic: allows changes without locks, validates conflicts at end (good for reads). Pessimistic: locks at start (good for writes).",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_008",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un LOCK y un lock de fila en PostgreSQL?",
+      "question_en": "What is the difference between a table LOCK and a row lock in PostgreSQL?",
+      "options_es": [
+        "Sin diferencia",
+        "Tabla bloquea tabla completa, fila bloquea una fila",
+        "Son sinónimos de forma invariable y constante",
+        "Fila bloquea tabla"
+      ],
+      "options_en": [
+        "No difference",
+        "Table locks entire table, row locks single row",
+        "They are synonyms invariably and constantly",
+        "Row locks table"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un lock de tabla bloquea acceso a toda la tabla; un lock de fila solo bloquea esa fila, permitiendo acceso a otras.",
+      "explanation_en": "Table lock blocks entire table access; row lock only blocks that row, allowing access to others.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_009",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'phantom read' en transacciones?",
+      "question_en": "What is 'phantom read' in transactions?",
+      "options_es": [
+        "Lectura de caché",
+        "Lectura de NULL independientemente del contexto aplicado",
+        "Lectura de fantasmas",
+        "Leer filas nuevas que otra transacción insertó en la misma consulta"
+      ],
+      "options_en": [
+        "Cache read",
+        "Reading NULL regardless of the applied context",
+        "Reading ghosts",
+        "Reading new rows another transaction inserted in same query"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Phantom read: ejecutas una query, otra transacción inserta filas que coinciden, ejecutas la query nuevamente y ves filas nuevas.",
+      "explanation_en": "Phantom read: run query, another transaction inserts matching rows, run query again and see new rows.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_010",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre ROLLBACK y COMMIT en transacciones?",
+      "question_en": "What is the difference between ROLLBACK and COMMIT?",
+      "options_es": [
+        "Son lo mismo en cualquier escenario de implementación",
+        "COMMIT confirma cambios, ROLLBACK descarta cambios",
+        "ROLLBACK es más rápido",
+        "No hay diferencia"
+      ],
+      "options_en": [
+        "Same thing in any implementation scenario",
+        "COMMIT confirms changes, ROLLBACK discards changes",
+        "ROLLBACK faster",
+        "No difference"
+      ],
+      "correct_index": 1,
+      "explanation_es": "COMMIT hace permanentes todos los cambios de la transacción; ROLLBACK deshace todo, volviendo al estado inicial.",
+      "explanation_en": "COMMIT makes all transaction changes permanent; ROLLBACK undoes everything, returning to initial state.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_011",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa 'aislamiento serializable'?",
+      "question_en": "What does 'serializable isolation' mean?",
+      "options_es": [
+        "Máximo nivel: transacciones se comportan como si se ejecutaran una tras otra",
+        "Todos serializan datos",
+        "No hay concurrencia sin considerar otros factores relevantes",
+        "Transacciones en serie lentamente"
+      ],
+      "options_en": [
+        "Highest level: transactions behave as if executed one after another",
+        "All serialize data",
+        "No concurrency without considering other relevant factors",
+        "Transactions slow series"
+      ],
+      "correct_index": 0,
+      "explanation_es": "SERIALIZABLE es el nivel más alto: garantiza que el resultado es equivalente a ejecutar transacciones secuencialmente.",
+      "explanation_en": "SERIALIZABLE is highest level: guarantees result equivalent to sequential transaction execution.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_012",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de 'savepoints' en transacciones?",
+      "question_en": "What is the purpose of 'savepoints' in transactions?",
+      "options_es": [
+        "Permitir rollback parcial dentro de una transacción",
+        "Salvar memoria de forma invariable y constante",
+        "Guardar en disco",
+        "Guardar automáticamente"
+      ],
+      "options_en": [
+        "Allow partial rollback within transaction",
+        "Save memory invariably and constantly",
+        "Save to disk",
+        "Auto-save as the primary concept"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los savepoints permiten hacer ROLLBACK a un punto dentro de la transacción sin abortar todo.",
+      "explanation_en": "Savepoints allow ROLLBACK to point within transaction without aborting everything.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_013",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es 'non-repeatable read'?",
+      "question_en": "What is 'non-repeatable read'?",
+      "options_es": [
+        "Lectura fallida",
+        "Sin lectura en cualquier escenario de implementación",
+        "No se pueden leer datos",
+        "Otra transacción modifica datos entre dos lecturas de la misma query"
+      ],
+      "options_en": [
+        "Read failure",
+        "No read in any implementation scenario",
+        "Cannot read data",
+        "Another transaction modifies data between two reads of same query"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Non-repeatable read: lees fila, otra transacción la modifica, relees y obtienes valor diferente.",
+      "explanation_en": "Non-repeatable read: read row, another transaction modifies it, reread and get different value.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_014",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo previene PostgreSQL anomalías de concurrencia en READ COMMITTED?",
+      "question_en": "How does PostgreSQL prevent concurrency anomalies in READ COMMITTED?",
+      "options_es": [
+        "Row versioning: cada lectura ve snapshot consistente",
+        "Bloquea todo en cualquier escenario de implementación",
+        "No las previene",
+        "No hay solución"
+      ],
+      "options_en": [
+        "Row versioning: each read sees consistent snapshot",
+        "Blocks everything in any implementation scenario",
+        "Doesn't prevent",
+        "No solution"
+      ],
+      "correct_index": 0,
+      "explanation_es": "PostgreSQL usa MVCC (Multi-Version Concurrency Control): cada transacción ve un snapshot consistente de datos.",
+      "explanation_en": "PostgreSQL uses MVCC (Multi-Version Concurrency Control): each transaction sees consistent data snapshot.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200204_015",
+      "skill_id": "sk200204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si una transacción larga bloquea actualizaciones por mucho tiempo?",
+      "question_en": "What happens if long transaction blocks updates for long time?",
+      "options_es": [
+        "Se aborta automáticamente",
+        "Escritores esperan, BD puede quedarse sin espacio de versiones",
+        "Sin problema sin excepciones ni variantes",
+        "No hay bloqueos"
+      ],
+      "options_en": [
+        "Auto aborts",
+        "Writers wait, DB can run out of version space",
+        "No problem without exceptions or variants",
+        "No blocks"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las transacciones largas previenen limpieza de versiones viejas, causando bloat y degradación de rendimiento.",
+      "explanation_en": "Long transactions prevent cleanup of old versions, causing bloat and performance degradation.",
+      "source": "https://www.postgresql.org/docs/"
+    }
+  ]
+}

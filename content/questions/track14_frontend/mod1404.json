@@ -1,0 +1,1401 @@
+{
+  "questions": [
+    {
+      "id": "q140401001",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una función callback?",
+      "question_en": "What is a callback function?",
+      "options_es": [
+        "Una función que reemplaza a las Promises como se define",
+        "Una función que devuelve siempre un booleano según el estándar",
+        "Una función que se ejecuta cuando ocurre un evento o se completa una tarea",
+        "Una función que solo se puede llamar una vez en JavaScript en este contexto"
+      ],
+      "options_en": [
+        "A function that replaces Promises as defined",
+        "A function that always returns a boolean per the standard",
+        "A function that executes when an event occurs or a task completes",
+        "A function that can only be called once in JavaScript in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un callback es una función pasada como argumento a otra función que se ejecuta más tarde cuando ocurra un evento o se complete una operación asincrónica.",
+      "explanation_en": "A callback is a function passed as an argument to another function that executes later when an event occurs or an async operation completes.",
+      "source": "https://developer.mozilla.org/en-US/docs/Glossary/Callback_function"
+    },
+    {
+      "id": "q140401002",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'callback hell' o 'pyramid of doom'?",
+      "question_en": "What is 'callback hell' or 'pyramid of doom'?",
+      "options_es": [
+        "Una característica de JavaScript que rechaza callbacks muy rápido en la mayoría de los casos",
+        "Un error que ocurre cuando usas demasiados callbacks",
+        "Callbacks anidados profundamente que hacen el código difícil de leer",
+        "El momento en que el navegador rechaza ejecutar más callbacks"
+      ],
+      "options_en": [
+        "A JavaScript feature that rejects callbacks very quickly in most cases",
+        "An error that occurs when you use too many callbacks",
+        "Deeply nested callbacks that make code hard to read",
+        "The moment when the browser refuses to execute more callbacks"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Callback hell es un patrón donde múltiples callbacks están anidados unos dentro de otros, creando código difícil de entender y mantener.",
+      "explanation_en": "Callback hell is a pattern where multiple callbacks are nested inside each other, creating code that is hard to understand and maintain.",
+      "source": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises"
+    },
+    {
+      "id": "q140401003",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el orden de ejecución en el event loop?",
+      "question_en": "What is the execution order in the event loop?",
+      "options_es": [
+        "Microtask queue → Call stack → Task queue",
+        "Task queue → Microtask queue → Call stack",
+        "Call stack → Task queue → Microtask queue",
+        "Call stack → Microtask queue → Task queue"
+      ],
+      "options_en": [
+        "Microtask queue → Call stack → Task queue",
+        "Task queue → Microtask queue → Call stack",
+        "Call stack → Task queue → Microtask queue",
+        "Call stack → Microtask queue → Task queue"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El event loop primero ejecuta todo en el call stack, luego procesa todas las microtasks (Promises), y finalmente ejecuta las macrotasks (setTimeout, eventos).",
+      "explanation_en": "The event loop first executes everything in the call stack, then processes all microtasks (Promises), and finally executes macrotasks (setTimeout, events).",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop"
+    },
+    {
+      "id": "q140401004",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es la task queue (o macrotask queue)?",
+      "question_en": "What is the task queue (or macrotask queue)?",
+      "options_es": [
+        "Una cola que se ejecuta antes que el call stack necesariamente como resultado",
+        "Una cola donde se almacenan tareas como setTimeout, setInterval, eventos del DOM",
+        "La ubicación donde se almacenan todas las variables globales para este caso",
+        "Una estructura que almacena solo errores de JavaScript como se define"
+      ],
+      "options_en": [
+        "A queue that executes before the call stack necessarily as a result",
+        "A queue where tasks like setTimeout, setInterval, and DOM events are stored",
+        "The location where all global variables are stored for this case",
+        "A structure that stores only JavaScript errors as defined"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La task queue almacena macrotasks como setTimeout, setInterval, requestAnimationFrame e eventos del DOM que se ejecutan después de las microtasks.",
+      "explanation_en": "The task queue stores macrotasks like setTimeout, setInterval, requestAnimationFrame, and DOM events that execute after microtasks.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop"
+    },
+    {
+      "id": "q140401005",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es la microtask queue?",
+      "question_en": "What is the microtask queue?",
+      "options_es": [
+        "Una cola que se ejecuta cuando el DOM necesita actualización de forma predeterminada",
+        "Una cola para tareas de alto prioridad como Promises, MutationObserver",
+        "Una cola de errores que ocurren en segundo plano",
+        "Un sistema de caché para funciones reutilizadas"
+      ],
+      "options_en": [
+        "A queue that executes when the DOM needs updating by default",
+        "A queue for high-priority tasks like Promises and MutationObserver",
+        "A queue of errors that occur in the background",
+        "A caching system for reused functions"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La microtask queue contiene tareas de alta prioridad como los callbacks de Promises (.then, .catch) y MutationObserver que se ejecutan antes que las macrotasks.",
+      "explanation_en": "The microtask queue contains high-priority tasks like Promise callbacks (.then, .catch) and MutationObserver that execute before macrotasks.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop"
+    },
+    {
+      "id": "q140401006",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo se ejecuta una función pasada a setTimeout(fn, 0)?",
+      "question_en": "When does a function passed to setTimeout(fn, 0) execute?",
+      "options_es": [
+        "Solo después de que pasen exactamente 0 milisegundos de forma predeterminada",
+        "Después de que el call stack esté vacío y se procesen todas las microtasks",
+        "Cuando el navegador lo crea conveniente",
+        "Inmediatamente, antes que cualquier otro código siempre"
+      ],
+      "options_en": [
+        "Only after exactly 0 milliseconds pass by default",
+        "After the call stack is empty and all microtasks are processed",
+        "Whenever the browser thinks it's convenient",
+        "Immediately, before any other code always"
+      ],
+      "correct_index": 1,
+      "explanation_es": "setTimeout con 0 ms se ejecuta como una macrotask después de que se complete el call stack y se procesen todas las microtasks, no inmediatamente.",
+      "explanation_en": "setTimeout with 0ms executes as a macrotask after the call stack completes and all microtasks are processed, not immediately.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/API/setTimeout"
+    },
+    {
+      "id": "q140401007",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de estos ejemplos NO es un ejemplo de callback hell?",
+      "question_en": "Which of these is NOT an example of callback hell?",
+      "options_es": [
+        "Una secuencia de 5+ niveles de callbacks anidados",
+        "asyncFunc1(function(err, result) { asyncFunc2(result, function(err, result) { asyncFunc3(result, function(err, result) { console.log(result) }) }) })",
+        "Múltiples funciones callbacks anidadas profundamente",
+        "asyncFunc1().then(result => asyncFunc2(result))"
+      ],
+      "options_en": [
+        "A sequence of 5+ levels of nested callbacks",
+        "asyncFunc1(function(err, result) { asyncFunc2(result, function(err, result) { asyncFunc3(result, function(err, result) { console.log(result) }) }) })",
+        "Multiple deeply nested callback functions",
+        "asyncFunc1().then(result => asyncFunc2(result))"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La primera opción usa Promises con .then() que es legible y manejable. Las otras son ejemplos de callbacks anidados profundamente (callback hell).",
+      "explanation_en": "The first option uses Promises with .then() which is readable and manageable. The others are examples of deeply nested callbacks (callback hell).",
+      "source": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises"
+    },
+    {
+      "id": "q140401008",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿En qué momento del event loop se ejecuta requestAnimationFrame?",
+      "question_en": "When in the event loop does requestAnimationFrame execute?",
+      "options_es": [
+        "Junto con las macrotasks en la task queue en el navegador como resultado",
+        "Antes que el call stack",
+        "Después de las microtasks, antes de renderizar el siguiente frame",
+        "Solo cuando el usuario interactúa con la página"
+      ],
+      "options_en": [
+        "Together with macrotasks in the task queue in the browser as a result",
+        "Before the call stack",
+        "After microtasks, before rendering the next frame",
+        "Only when the user interacts with the page"
+      ],
+      "correct_index": 2,
+      "explanation_es": "requestAnimationFrame se ejecuta en una fase especial del event loop después de procesar microtasks pero antes de que el navegador renderice el siguiente frame.",
+      "explanation_en": "requestAnimationFrame executes in a special phase of the event loop after processing microtasks but before the browser renders the next frame.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"
+    },
+    {
+      "id": "q140401009",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el order de ejecución de este código?\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));",
+      "question_en": "What is the execution order of this code?\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));",
+      "options_es": [
+        "3, 1, 2",
+        "1, 3, 2",
+        "1, 2, 3",
+        "2, 1, 3"
+      ],
+      "options_en": [
+        "3, 1, 2",
+        "1, 3, 2",
+        "1, 2, 3",
+        "2, 1, 3"
+      ],
+      "correct_index": 1,
+      "explanation_es": "1 se ejecuta primero (sincrónico), 3 después (microtask de Promise), y 2 al final (macrotask de setTimeout).",
+      "explanation_en": "1 executes first (synchronous), 3 next (Promise microtask), and 2 last (setTimeout macrotask).",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop"
+    },
+    {
+      "id": "q140401010",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal del call stack?",
+      "question_en": "What is the main purpose of the call stack?",
+      "options_es": [
+        "Almacenar todos los callbacks para ejecutarlos después",
+        "Guardar los Promises hasta que se resuelvan",
+        "Controlar cuándo se ejecutan los setTimeout",
+        "Rastrear y ejecutar las funciones sincrónicas en orden"
+      ],
+      "options_en": [
+        "Store all callbacks to execute later",
+        "Keep Promises until they resolve",
+        "Control when setTimeout executes",
+        "Track and execute synchronous functions in order"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El call stack es una estructura de datos que rastrea las funciones que se están ejecutando actualmente en orden LIFO (Last In, First Out).",
+      "explanation_en": "The call stack is a data structure that tracks currently executing functions in LIFO (Last In, First Out) order.",
+      "source": "https://developer.mozilla.org/en-US/docs/Glossary/Call_stack"
+    },
+    {
+      "id": "q140401011",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué parámetro representa el segundo argumento de una función callback tradicional?",
+      "question_en": "What does the second parameter represent in a traditional callback function?",
+      "options_es": [
+        "El tiempo que tardó la operación en este contexto",
+        "Un ID único para la operación de forma obligatoria según la especificación",
+        "Una función para cancelar la operación",
+        "El resultado o datos retornados por la operación asincrónica"
+      ],
+      "options_en": [
+        "The time the operation took in this context",
+        "A unique ID for the operation mandatory according to the specification",
+        "A function to cancel the operation",
+        "The result or data returned by the async operation"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En el patrón callback tradicional (especialmente en Node.js), el primer parámetro es el error y el segundo es el resultado de la operación.",
+      "explanation_en": "In the traditional callback pattern (especially in Node.js), the first parameter is the error and the second is the operation result.",
+      "source": "https://developer.mozilla.org/en-US/docs/Glossary/Callback_function"
+    },
+    {
+      "id": "q140401012",
+      "skill_id": "sk140401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo se vacía el call stack?",
+      "question_en": "When is the call stack emptied?",
+      "options_es": [
+        "Cada vez que se ejecuta una función asincrónica en este contexto",
+        "Cada milisegundo según la especificación",
+        "Cuando el usuario cierra el navegador en JavaScript de forma predeterminada",
+        "Cuando todas las funciones sincrónicas activas terminan de ejecutarse"
+      ],
+      "options_en": [
+        "Every time an async function executes in this context",
+        "Every millisecond according to the specification",
+        "When the user closes the browser in JavaScript by default",
+        "When all active synchronous functions finish executing"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El call stack se vacía cuando se han completado todas las funciones sincrónicas que se estaban ejecutando. Solo entonces el event loop procesa las microtasks y macrotasks.",
+      "explanation_en": "The call stack empties when all executing synchronous functions complete. Only then does the event loop process microtasks and macrotasks.",
+      "source": "https://developer.mozilla.org/en-US/docs/Glossary/Call_stack"
+    },
+    {
+      "id": "q140401013",
+      "skill_id": "sk140401",
+      "type": "true_false",
+      "question_es": "Los callbacks son la única forma de manejar operaciones asincrónicas en JavaScript.",
+      "question_en": "Callbacks are the only way to handle async operations in JavaScript.",
+      "options_es": [
+        "Verdadero",
+        "Falso según la especificación"
+      ],
+      "options_en": [
+        "True",
+        "False according to the specification"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Ahora tenemos Promises y async/await que son alternativas más modernas y legibles para manejar operaciones asincrónicas.",
+      "explanation_en": "Today we have Promises and async/await which are more modern and readable alternatives for handling async operations.",
+      "source": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous"
+    },
+    {
+      "id": "q140401014",
+      "skill_id": "sk140401",
+      "type": "true_false",
+      "question_es": "setTimeout con un delay de 0 milisegundos ejecuta la función inmediatamente después de la línea actual.",
+      "question_en": "setTimeout with 0ms delay executes the function immediately after the current line.",
+      "options_es": [
+        "Verdadero",
+        "Falso para este caso"
+      ],
+      "options_en": [
+        "True",
+        "False for this case"
+      ],
+      "correct_index": 0,
+      "explanation_es": "setTimeout(fn, 0) es una macrotask que se ejecuta solo después de que el call stack esté vacío y se procesen todas las microtasks.",
+      "explanation_en": "setTimeout(fn, 0) is a macrotask that executes only after the call stack is empty and all microtasks are processed.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/API/setTimeout"
+    },
+    {
+      "id": "q140401015",
+      "skill_id": "sk140401",
+      "type": "true_false",
+      "question_es": "Las microtasks se ejecutan antes que las macrotasks en el event loop.",
+      "question_en": "Microtasks execute before macrotasks in the event loop.",
+      "options_es": [
+        "Verdadero",
+        "Falso en este contexto"
+      ],
+      "options_en": [
+        "True",
+        "False in this context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las microtasks (Promises, MutationObserver) siempre se ejecutan antes que las macrotasks (setTimeout, setInterval, eventos) en cada ciclo del event loop.",
+      "explanation_en": "Microtasks (Promises, MutationObserver) always execute before macrotasks (setTimeout, setInterval, events) in each event loop cycle.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop"
+    },
+    {
+      "id": "q140402001",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuáles son los tres estados de una Promise?",
+      "question_en": "What are the three states of a Promise?",
+      "options_es": [
+        "Pending, fulfilled, rejected",
+        "Created, executed, finished en la mayoría de los casos",
+        "Waiting, done, error",
+        "Starting, running, stopped"
+      ],
+      "options_en": [
+        "Pending, fulfilled, rejected",
+        "Created, executed, finished in most cases",
+        "Waiting, done, error",
+        "Starting, running, stopped"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una Promise comienza en estado pending, y luego pasa a fulfilled (si se resuelve) o rejected (si se rechaza). Una vez establecida no puede cambiar.",
+      "explanation_en": "A Promise starts in pending state, then transitions to fulfilled (if resolved) or rejected (if rejected). Once settled it cannot change.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+    },
+    {
+      "id": "q140402002",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué acepta el constructor de Promise?",
+      "question_en": "What does the Promise constructor accept?",
+      "options_es": [
+        "Una función ejecutor con parámetros resolve y reject",
+        "Un valor que ya está resuelto como se define",
+        "Un ID único para identificar la promesa según el estándar",
+        "Una cadena con el mensaje de la promesa siempre"
+      ],
+      "options_en": [
+        "An executor function with resolve and reject parameters",
+        "A value that is already resolved as defined",
+        "A unique ID to identify the promise per the standard",
+        "A string with the promise message always"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El constructor de Promise recibe una función ejecutor que toma dos parámetros: resolve para cumplir la promesa y reject para rechazarla.",
+      "explanation_en": "The Promise constructor receives an executor function that takes two parameters: resolve to fulfill the promise and reject to reject it.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise"
+    },
+    {
+      "id": "q140402003",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué devuelve el método .then()?",
+      "question_en": "What does the .then() method return?",
+      "options_es": [
+        "Undefined siempre",
+        "Una nueva Promise",
+        "Un booleano indicando si funcionó",
+        "El valor resuelto de la Promise anterior"
+      ],
+      "options_en": [
+        "Always undefined",
+        "A new Promise",
+        "A boolean indicating if it worked",
+        "The resolved value of the previous Promise"
+      ],
+      "correct_index": 1,
+      "explanation_es": ".then() devuelve una nueva Promise, lo que permite encadenar múltiples .then() en secuencia.",
+      "explanation_en": ".then() returns a new Promise, which allows chaining multiple .then() calls in sequence.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then"
+    },
+    {
+      "id": "q140402004",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se propaga un error a través de una cadena de Promises?",
+      "question_en": "How does an error propagate through a Promise chain?",
+      "options_es": [
+        "Baja por la cadena hasta encontrar un .catch() o rechazar la cadena completa",
+        "Se envía al navegador como un error crítico según el estándar",
+        "Se detiene en el primer .then() sin hacer nada en este escenario",
+        "Se ignora silenciosamente de forma obligatoria en este contexto"
+      ],
+      "options_en": [
+        "Travels down the chain until finding a .catch() or rejecting the entire chain",
+        "Is sent to the browser as a critical error per the standard",
+        "Stops at the first .then() doing nothing in this scenario",
+        "Is silently ignored mandatory in this context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cuando una Promise se rechaza, el error se propaga a través de la cadena hasta encontrar un .catch() que lo maneje, o rechaza toda la cadena.",
+      "explanation_en": "When a Promise rejects, the error propagates through the chain until finding a .catch() to handle it, or it rejects the entire chain.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch"
+    },
+    {
+      "id": "q140402005",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo se ejecuta el callback de .finally()?",
+      "question_en": "When does the .finally() callback execute?",
+      "options_es": [
+        "Siempre, independientemente de si la Promise se cumple o se rechaza",
+        "Solo si la Promise se rechaza siempre en la mayoría de los casos",
+        "Solo si la Promise se cumple como resultado",
+        "Nunca, es obsoleto en JavaScript"
+      ],
+      "options_en": [
+        "Always, regardless of whether the Promise is fulfilled or rejected",
+        "Only if the Promise is rejected always in most cases",
+        "Only if the Promise is fulfilled as a result",
+        "Never, it's obsolete in JavaScript"
+      ],
+      "correct_index": 0,
+      "explanation_es": ".finally() se ejecuta siempre cuando la Promise se establece, ya sea en estado fulfilled o rejected, útil para limpiar recursos.",
+      "explanation_en": ".finally() always executes when the Promise settles, whether fulfilled or rejected, useful for cleanup.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally"
+    },
+    {
+      "id": "q140402006",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace Promise.resolve()?",
+      "question_en": "What does Promise.resolve() do?",
+      "options_es": [
+        "Intenta ejecutar una función de nuevo de forma obligatoria en este contexto",
+        "Cancela todas las Promises pendientes",
+        "Devuelve un error si la Promise no existe",
+        "Crea una Promise que ya está resuelta con el valor proporcionado"
+      ],
+      "options_en": [
+        "Attempts to execute a function again mandatory in this context",
+        "Cancels all pending Promises",
+        "Returns an error if the Promise doesn't exist",
+        "Creates a Promise that is already resolved with the provided value"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Promise.resolve() crea una Promise que ya está en estado fulfilled con el valor que le pasas, útil para valores que ya tienes.",
+      "explanation_en": "Promise.resolve() creates a Promise that is already in fulfilled state with the value you pass, useful for values you already have.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve"
+    },
+    {
+      "id": "q140402007",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace Promise.reject()?",
+      "question_en": "What does Promise.reject() do?",
+      "options_es": [
+        "Rechaza el último .then() en la cadena según el estándar",
+        "Detiene la ejecución de código asincrónico de forma obligatoria en este escenario",
+        "Elimina todas las Promises de la memoria",
+        "Crea una Promise que ya está rechazada con la razón proporcionada"
+      ],
+      "options_en": [
+        "Rejects the last .then() in the chain per the standard",
+        "Stops the execution of async code mandatory in this scenario",
+        "Removes all Promises from memory",
+        "Creates a Promise that is already rejected with the provided reason"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Promise.reject() crea una Promise que ya está en estado rejected con la razón que le pasas, útil para simular errores o crear Promises fallidas.",
+      "explanation_en": "Promise.reject() creates a Promise that is already rejected with the reason you pass, useful for simulating errors.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/reject"
+    },
+    {
+      "id": "q140402008",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Dónde se atrapa un error si ocurre en el segundo .then() de una cadena?",
+      "question_en": "Where is an error caught if it occurs in the second .then() of a chain?",
+      "options_es": [
+        "En el primer .catch() de la cadena",
+        "En el .catch() más cercano que esté después en la cadena",
+        "Nunca se atrapa, causa un error no controlado",
+        "Solo en un .catch() que esté exactamente después del .then() donde ocurrió"
+      ],
+      "options_en": [
+        "In the first .catch() of the chain",
+        "In the nearest .catch() that comes after it in the chain",
+        "It's never caught, causes an unhandled error",
+        "Only in a .catch() immediately after the .then() where it occurred"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un error en cualquier punto de la cadena viaja hacia adelante hasta encontrar el primer .catch() que lo maneje.",
+      "explanation_en": "An error at any point in the chain travels forward until finding the first .catch() to handle it.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch"
+    },
+    {
+      "id": "q140402009",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "Si tienes múltiples .then() handlers en una Promise, ¿en qué orden se ejecutan?",
+      "question_en": "If you have multiple .then() handlers on a Promise, in what order do they execute?",
+      "options_es": [
+        "En orden inverso al que fueron añadidos (LIFO)",
+        "Aleatoriamente",
+        "Todos al mismo tiempo en paralelo",
+        "En el orden en que fueron añadidos (FIFO)"
+      ],
+      "options_en": [
+        "In reverse order of when they were added (LIFO)",
+        "Randomly",
+        "All at the same time in parallel",
+        "In the order they were added (FIFO)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los handlers .then() se ejecutan en el orden FIFO (First In, First Out) - el primero añadido se ejecuta primero.",
+      "explanation_en": "The .then() handlers execute in FIFO (First In, First Out) order - the first added runs first.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then"
+    },
+    {
+      "id": "q140402010",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "Si una Promise se ha cumplido, ¿se ejecuta su .catch()?",
+      "question_en": "If a Promise is fulfilled, does its .catch() execute?",
+      "options_es": [
+        "Depende del navegador siempre como resultado",
+        "Solo si hubo un error en el .then() anterior en JavaScript",
+        "No, .catch() solo ejecuta si la Promise fue rechazada",
+        "Sí, siempre se ejecuta"
+      ],
+      "options_en": [
+        "It depends on the browser always as a result",
+        "Only if there was an error in the previous .then() in JavaScript",
+        "No, .catch() only executes if the Promise was rejected",
+        "Yes, it always executes"
+      ],
+      "correct_index": 2,
+      "explanation_es": ".catch() solo se ejecuta si la Promise fue rechazada o si hay un error en un .then() previo. Si todo va bien, se salta.",
+      "explanation_en": ".catch() only executes if the Promise was rejected or if there's an error in a previous .then(). If all goes well, it's skipped.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch"
+    },
+    {
+      "id": "q140402011",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Puede una Promise cambiar de estado, por ejemplo de fulfilled a rejected?",
+      "question_en": "Can a Promise change its state, for example from fulfilled to rejected?",
+      "options_es": [
+        "Sí, se puede cambiar llamando a reject() después de resolve()",
+        "Depende de cómo se haya creado la Promise",
+        "No, una Promise es inmutable una vez resuelta o rechazada",
+        "Sí, pero solo dentro del constructor"
+      ],
+      "options_en": [
+        "Yes, you can change it by calling reject() after resolve()",
+        "It depends on how the Promise was created",
+        "No, a Promise is immutable once resolved or rejected",
+        "Yes, but only inside the constructor"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una vez que una Promise se establece (fulfilled o rejected), su estado es final e inmutable. Solo la primera llamada a resolve() o reject() tiene efecto.",
+      "explanation_en": "Once a Promise settles (fulfilled or rejected), its state is final and immutable. Only the first call to resolve() or reject() takes effect.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+    },
+    {
+      "id": "q140402012",
+      "skill_id": "sk140402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si retornas un valor en un .then()?",
+      "question_en": "What happens if you return a value in a .then()?",
+      "options_es": [
+        "Ese valor se resuelve en la Promise retornada por .then()",
+        "El valor se ignora completamente en este escenario",
+        "El valor se devuelve al .catch() anterior en este contexto",
+        "Se rechaza la cadena de Promises en JavaScript"
+      ],
+      "options_en": [
+        "That value is resolved in the Promise returned by .then()",
+        "The value is completely ignored in this scenario",
+        "The value is returned to the previous .catch() in this context",
+        "The Promise chain is rejected in JavaScript"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cuando retornas un valor en .then(), ese valor se resuelve automáticamente en la nueva Promise que .then() retorna.",
+      "explanation_en": "When you return a value in .then(), that value is automatically resolved in the new Promise that .then() returns.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then"
+    },
+    {
+      "id": "q140402013",
+      "skill_id": "sk140402",
+      "type": "true_false",
+      "question_es": ".finally() recibe el valor o error de la Promise anterior como parámetro.",
+      "question_en": ".finally() receives the value or error from the previous Promise as a parameter.",
+      "options_es": [
+        "Verdadero",
+        "Falso como se define"
+      ],
+      "options_en": [
+        "True",
+        "False as defined"
+      ],
+      "correct_index": 0,
+      "explanation_es": ".finally() no recibe ningún parámetro, ya que está diseñado para código de limpieza que no necesita el resultado.",
+      "explanation_en": ".finally() receives no parameters, as it's designed for cleanup code that doesn't need the result.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally"
+    },
+    {
+      "id": "q140402014",
+      "skill_id": "sk140402",
+      "type": "true_false",
+      "question_es": "Puedes adjuntar .then() a una Promise después de que ya esté resuelta.",
+      "question_en": "You can attach .then() to a Promise after it's already settled.",
+      "options_es": [
+        "Verdadero",
+        "Falso como se define"
+      ],
+      "options_en": [
+        "True",
+        "False as defined"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las Promises en JavaScript permiten adjuntar handlers incluso después de que se hayan resuelto. El handler se ejecutará inmediatamente.",
+      "explanation_en": "JavaScript Promises allow attaching handlers even after they've settled. The handler will execute immediately.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then"
+    },
+    {
+      "id": "q140402015",
+      "skill_id": "sk140402",
+      "type": "true_false",
+      "question_es": "Una Promise rechazada sin .catch() genera un error no controlado que detiene la ejecución del código.",
+      "question_en": "An unhandled rejected Promise generates an error that stops code execution.",
+      "options_es": [
+        "Verdadero",
+        "Falso para este caso"
+      ],
+      "options_en": [
+        "True",
+        "False for this case"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una Promise rechazada sin .catch() genera una advertencia 'unhandledRejection', pero el código continúa ejecutándose. No detiene el programa.",
+      "explanation_en": "An unhandled rejected Promise triggers an 'unhandledRejection' warning, but the code continues. It doesn't stop the program.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+    },
+    {
+      "id": "q140403001",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué devuelve siempre una función async?",
+      "question_en": "What does an async function always return?",
+      "options_es": [
+        "Undefined",
+        "Una Promise",
+        "Un booleano",
+        "Un valor sincrónico"
+      ],
+      "options_en": [
+        "Undefined",
+        "A Promise",
+        "A boolean",
+        "A synchronous value"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una función async siempre retorna una Promise, incluso si retornas un valor sincrónico directamente en la función.",
+      "explanation_en": "An async function always returns a Promise, even if you return a synchronous value directly.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+    },
+    {
+      "id": "q140403002",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace el operador await?",
+      "question_en": "What does the await operator do?",
+      "options_es": [
+        "Convierte una Promise a un valor sincrónico instantáneamente",
+        "Cancela la ejecución de la Promise",
+        "Pausa la ejecución hasta que la Promise se resuelva",
+        "Ejecuta múltiples Promises en paralelo"
+      ],
+      "options_en": [
+        "Instantly converts a Promise to a synchronous value",
+        "Cancels Promise execution",
+        "Pauses execution until the Promise resolves",
+        "Executes multiple Promises in parallel"
+      ],
+      "correct_index": 2,
+      "explanation_es": "await pausa la ejecución de la función async y espera a que la Promise se resuelva, devolviendo el valor resuelto.",
+      "explanation_en": "await pauses the async function's execution and waits for the Promise to resolve, returning the resolved value.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await"
+    },
+    {
+      "id": "q140403003",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Dónde se puede usar el operador await?",
+      "question_en": "Where can you use the await operator?",
+      "options_es": [
+        "En cualquier lugar del código como se define",
+        "Solo en funciones flecha siempre según el estándar",
+        "Dentro de una función async o top-level await en módulos",
+        "Solo dentro de callbacks en este contexto"
+      ],
+      "options_en": [
+        "Anywhere in the code as defined",
+        "Only in arrow functions always per the standard",
+        "Inside an async function or top-level await in modules",
+        "Only inside callbacks in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "await solo se puede usar dentro de una función async (o en top-level await que es una característica más reciente de módulos ES).",
+      "explanation_en": "await can only be used inside an async function (or top-level await in modules, a newer feature).",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await"
+    },
+    {
+      "id": "q140403004",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se manejan los errores en async/await?",
+      "question_en": "How are errors handled in async/await?",
+      "options_es": [
+        "No se pueden manejar errores en async/await",
+        "Los errores se ignoran automáticamente",
+        "Usando .catch() en cada await",
+        "Usando try/catch alrededor de los await"
+      ],
+      "options_en": [
+        "Errors cannot be handled in async/await",
+        "Errors are automatically ignored",
+        "Using .catch() on each await",
+        "Using try/catch around the awaits"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los errores en async/await se manejan con try/catch tradicional, lo que hace que el código sea más legible que encadenar .catch().",
+      "explanation_en": "Errors in async/await are handled with traditional try/catch, making code more readable than chaining .catch().",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+    },
+    {
+      "id": "q140403005",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre await secuencial y await en paralelo?",
+      "question_en": "What is the difference between sequential and parallel await?",
+      "options_es": [
+        "Sequential: un await espera a completarse antes del siguiente. Paralelo: múltiples awaits simultáneamente",
+        "Paralelo solo funciona con Promises, sequential con valores según el estándar",
+        "No hay diferencia, siempre son simultáneos en este escenario",
+        "Sequential es más rápido que paralelo en el navegador en este contexto"
+      ],
+      "options_en": [
+        "Sequential: one await waits before the next. Parallel: multiple awaits simultaneously",
+        "Parallel only works with Promises, sequential with values per the standard",
+        "There's no difference, they're always simultaneous in this scenario",
+        "Sequential is faster than parallel in the browser in this context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "await secuencial espera a que cada Promise termine antes de continuar. Paralelo (con Promise.all) inicia múltiples Promises simultáneamente.",
+      "explanation_en": "Sequential await waits for each Promise to finish before continuing. Parallel (with Promise.all) starts multiple Promises simultaneously.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await"
+    },
+    {
+      "id": "q140403006",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace 'top-level await'?",
+      "question_en": "What does 'top-level await' do?",
+      "options_es": [
+        "Aguarda a que todos los módulos se carguen de forma predeterminada",
+        "Permite usar await en el nivel superior de un módulo sin async",
+        "Cancela la carga de módulos en JavaScript",
+        "Solo funciona en navegadores antiguos"
+      ],
+      "options_en": [
+        "Waits for all modules to load by default",
+        "Allows using await at the module's top level without async",
+        "Cancels module loading in JavaScript",
+        "Only works in older browsers"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Top-level await es una característica reciente que permite usar await en el cuerpo principal de un módulo ES sin envolver en una función async.",
+      "explanation_en": "Top-level await is a recent feature allowing await in a module's main body without wrapping in an async function.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await"
+    },
+    {
+      "id": "q140403007",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "Si una Promise se rechaza dentro de un await sin try/catch, ¿qué pasa?",
+      "question_en": "If a Promise is rejected inside an await without try/catch, what happens?",
+      "options_es": [
+        "Se convierte en un error sincrónico según el estándar",
+        "Se ignora silenciosamente siempre en este escenario",
+        "El código continúa ejecutándose normalmente en este contexto",
+        "La función async se rechaza (devuelve una Promise rechazada)"
+      ],
+      "options_en": [
+        "It becomes a synchronous error per the standard",
+        "It's silently ignored always in this scenario",
+        "The code continues executing normally in this context",
+        "The async function is rejected (returns a rejected Promise)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Si una Promise se rechaza en un await sin try/catch, toda la función async se rechaza y devuelve una Promise rechazada.",
+      "explanation_en": "If a Promise rejects in an await without try/catch, the entire async function is rejected and returns a rejected Promise.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+    },
+    {
+      "id": "q140403008",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el efecto de múltiples awaits consecutivos en rendimiento?",
+      "question_en": "What is the performance effect of multiple consecutive awaits?",
+      "options_es": [
+        "Todas se ejecutan en paralelo automáticamente en JavaScript",
+        "El navegador optimiza automáticamente a paralelo siempre para este caso",
+        "Se espera a cada Promise secuencialmente, el tiempo es la suma de todos",
+        "No hay diferencia de rendimiento"
+      ],
+      "options_en": [
+        "They all execute in parallel automatically in JavaScript",
+        "The browser automatically optimizes to parallel always for this case",
+        "Each Promise is awaited sequentially, total time is the sum",
+        "There's no performance difference"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Múltiples awaits consecutivos son secuenciales - el tiempo total es la suma de todos. Para paralelismo usa Promise.all().",
+      "explanation_en": "Multiple consecutive awaits are sequential - total time is the sum of all. Use Promise.all() for parallelism.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await"
+    },
+    {
+      "id": "q140403009",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Se puede usar async en funciones flecha (arrow functions)?",
+      "question_en": "Can you use async in arrow functions?",
+      "options_es": [
+        "Sí, pero solo con una línea de código",
+        "No, los navegadores no lo soportan",
+        "Sí, solo necesitas escribir: async () => { }",
+        "No, async solo funciona en funciones declaradas"
+      ],
+      "options_en": [
+        "Yes, but only with one line of code",
+        "No, browsers don't support it",
+        "Yes, you just need to write: async () => { }",
+        "No, async only works in function declarations"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las funciones flecha pueden ser async igual que las funciones declaradas, simplemente escribes async antes de los parámetros.",
+      "explanation_en": "Arrow functions can be async just like regular functions, you simply write async before the parameters.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+    },
+    {
+      "id": "q140403010",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede cuando esperas en Promise.resolve()?",
+      "question_en": "What happens when you await Promise.resolve()?",
+      "options_es": [
+        "Genera un error en JavaScript según la especificación",
+        "Se obtiene inmediatamente el valor resuelto",
+        "Regresa undefined",
+        "Se espera 1 milisegundo"
+      ],
+      "options_en": [
+        "It generates an error in JavaScript according to the specification",
+        "You get the resolved value immediately",
+        "It returns undefined",
+        "It waits 1 millisecond"
+      ],
+      "correct_index": 1,
+      "explanation_es": "await Promise.resolve(valor) devuelve el valor de inmediato ya que la Promise ya está resuelta.",
+      "explanation_en": "await Promise.resolve(value) returns the value immediately since the Promise is already resolved.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve"
+    },
+    {
+      "id": "q140403011",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el valor de retorno de una función async que no tiene return explícito?",
+      "question_en": "What is the return value of an async function with no explicit return?",
+      "options_es": [
+        "Undefined literal como se define",
+        "Una Promise resuelta con undefined",
+        "Una Promise rechazada en este escenario",
+        "Null necesariamente"
+      ],
+      "options_en": [
+        "Undefined literal as defined",
+        "A Promise resolved with undefined",
+        "A rejected Promise in this scenario",
+        "Null necessarily"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una función async siempre retorna una Promise. Si no hay return explícito, retorna una Promise resuelta con undefined.",
+      "explanation_en": "An async function always returns a Promise. With no explicit return, it returns a Promise resolved with undefined.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+    },
+    {
+      "id": "q140403012",
+      "skill_id": "sk140403",
+      "type": "multiple_choice",
+      "question_es": "¿Es necesario usar try/catch en TODAS las funciones async?",
+      "question_en": "Is try/catch necessary in ALL async functions?",
+      "options_es": [
+        "No, los errores se manejan automáticamente como se define",
+        "Sí, pero solo para la primera línea en JavaScript",
+        "Sí, siempre es obligatorio",
+        "No, solo cuando esperes Promises que podrían rechazarse"
+      ],
+      "options_en": [
+        "No, errors are handled automatically as defined",
+        "Yes, but only for the first line in JavaScript",
+        "Yes, it's always mandatory",
+        "No, only when you await Promises that might reject"
+      ],
+      "correct_index": 3,
+      "explanation_es": "try/catch es opcional en funciones async. Solo lo necesitas cuando hay awaits que podrían rechazarse.",
+      "explanation_en": "try/catch is optional in async functions. You only need it when there are awaits that might reject.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+    },
+    {
+      "id": "q140403013",
+      "skill_id": "sk140403",
+      "type": "true_false",
+      "question_es": "await solo funciona dentro de funciones async.",
+      "question_en": "await only works inside async functions.",
+      "options_es": [
+        "Verdadero",
+        "Falso según la especificación"
+      ],
+      "options_en": [
+        "True",
+        "False according to the specification"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Aunque es la forma más común, también existe top-level await en módulos ES, que permite usar await fuera de async en ciertos contextos.",
+      "explanation_en": "While it's the most common way, top-level await in ES modules allows using await outside async in certain contexts.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await"
+    },
+    {
+      "id": "q140403014",
+      "skill_id": "sk140403",
+      "type": "true_false",
+      "question_es": "Un error lanzado en una función async se captura automáticamente por try/catch del código que la llamó.",
+      "question_en": "An error thrown in an async function is automatically caught by try/catch of the calling code.",
+      "options_es": [
+        "Verdadero",
+        "Falso de forma predeterminada"
+      ],
+      "options_en": [
+        "True",
+        "False by default"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los errores en async se convierten en rechazos de Promise. El código que llama debe manejar la Promise rechazada o usar .catch().",
+      "explanation_en": "Errors in async become Promise rejections. Calling code must handle the rejected Promise or use .catch().",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+    },
+    {
+      "id": "q140403015",
+      "skill_id": "sk140403",
+      "type": "true_false",
+      "question_es": "Una función async siempre devuelve una Promise, incluso si retorna un valor sincrónico directamente.",
+      "question_en": "An async function always returns a Promise, even if it returns a synchronous value directly.",
+      "options_es": [
+        "Verdadero",
+        "Falso como se define"
+      ],
+      "options_en": [
+        "True",
+        "False as defined"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cualquier cosa que retorne una función async se envuelve automáticamente en una Promise resuelta.",
+      "explanation_en": "Anything an async function returns is automatically wrapped in a resolved Promise.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+    },
+    {
+      "id": "q140404001",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace Promise.all()?",
+      "question_en": "What does Promise.all() do?",
+      "options_es": [
+        "Ejecuta todas las Promises en un orden específico para este caso",
+        "Cancela las Promises que fallen como se define",
+        "Retorna solo la primera Promise resuelta en el navegador según el estándar",
+        "Espera a que todas las Promises se resuelvan; si una falla, rechaza todo"
+      ],
+      "options_en": [
+        "Executes all Promises in a specific order for this case",
+        "Cancels Promises that fail as defined",
+        "Returns only the first resolved Promise in the browser per the standard",
+        "Waits for all Promises to resolve; if one fails, rejects everything"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Promise.all() es fail-fast: espera a todas las Promises, pero si una se rechaza, inmediatamente rechaza todo.",
+      "explanation_en": "Promise.all() is fail-fast: waits for all Promises, but if one rejects, it immediately rejects everything.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+    },
+    {
+      "id": "q140404002",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué tipo de entrada acepta Promise.all()?",
+      "question_en": "What type of input does Promise.all() accept?",
+      "options_es": [
+        "Solo arrays de Promises",
+        "Un único valor o Promise",
+        "Funciones que retornan Promises en el navegador",
+        "Un iterable (array, Set, etc.) de Promises"
+      ],
+      "options_en": [
+        "Only arrays of Promises",
+        "A single value or Promise",
+        "Functions that return Promises in the browser",
+        "An iterable (array, Set, etc.) of Promises"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Promise.all() acepta cualquier iterable: arrays, Sets, etc., siempre que contenga Promises.",
+      "explanation_en": "Promise.all() accepts any iterable: arrays, Sets, etc., as long as it contains Promises.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+    },
+    {
+      "id": "q140404003",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué devuelve Promise.all()?",
+      "question_en": "What does Promise.all() return?",
+      "options_es": [
+        "Una Promise que se resuelve con un array de resultados en el mismo orden",
+        "Un objeto con los resultados según la especificación",
+        "Un array de Promises siempre de forma predeterminada",
+        "El resultado de la primera Promise en la mayoría de los casos"
+      ],
+      "options_en": [
+        "A Promise resolved with an array of results in the same order",
+        "An object with the results according to the specification",
+        "An array of Promises always by default",
+        "The result of the first Promise in most cases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Promise.all() devuelve una Promise que se resuelve con un array donde cada elemento es el resultado de la Promise correspondiente en el mismo orden.",
+      "explanation_en": "Promise.all() returns a Promise resolved with an array where each element is the result of the corresponding Promise in the same order.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+    },
+    {
+      "id": "q140404004",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre Promise.all() y Promise.allSettled()?",
+      "question_en": "What is the difference between Promise.all() and Promise.allSettled()?",
+      "options_es": [
+        "Promise.allSettled() es más rápido según el estándar",
+        "Promise.all() falla si una Promise falla; allSettled() siempre espera a todas",
+        "Promise.all() solo funciona con arrays; allSettled() con cualquier iterable en este contexto",
+        "No hay diferencia"
+      ],
+      "options_en": [
+        "Promise.allSettled() is faster per the standard",
+        "Promise.all() fails if one Promise fails; allSettled() always waits for all",
+        "Promise.all() only works with arrays; allSettled() with any iterable in this context",
+        "There's no difference"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Promise.all() es fail-fast y rechaza si cualquier Promise falla. allSettled() espera a todas, independientemente de si se resuelven o rechazan.",
+      "explanation_en": "Promise.all() is fail-fast and rejects if any Promise fails. allSettled() waits for all regardless of resolution or rejection.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled"
+    },
+    {
+      "id": "q140404005",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué devuelve Promise.allSettled()?",
+      "question_en": "What does Promise.allSettled() return?",
+      "options_es": [
+        "Un objeto con los errores necesariamente según la especificación",
+        "Un array de objetos {status, value} o {status, reason}",
+        "Undefined siempre",
+        "Un array de solo los valores resueltos"
+      ],
+      "options_en": [
+        "An object with the errors necessarily according to the specification",
+        "An array of {status, value} or {status, reason} objects",
+        "Always undefined",
+        "An array of only resolved values"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Promise.allSettled() devuelve un array de objetos descriptores con status ('fulfilled' o 'rejected'), value o reason según corresponda.",
+      "explanation_en": "Promise.allSettled() returns an array of descriptors with status ('fulfilled' or 'rejected'), and value or reason accordingly.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled"
+    },
+    {
+      "id": "q140404006",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace Promise.race()?",
+      "question_en": "What does Promise.race() do?",
+      "options_es": [
+        "Devuelve una Promise que se resuelve con el resultado de la primera Promise que se resuelva o rechace",
+        "Ejecuta todas las Promises simultáneamente como resultado",
+        "Devuelve la Promise resuelta más rápido en todos los casos en JavaScript",
+        "Devuelve un array de ganadores para este caso"
+      ],
+      "options_en": [
+        "Returns a Promise resolved with the result of the first Promise to settle",
+        "Executes all Promises simultaneously as a result",
+        "Returns the fastest resolved Promise in all cases in JavaScript",
+        "Returns an array of winners for this case"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Promise.race() devuelve una Promise que se resuelve tan pronto como cualquiera de las Promises en el array se resuelve o rechaza (la primera en 'settlar').",
+      "explanation_en": "Promise.race() returns a Promise that resolves as soon as any Promise in the array settles (first to settle).",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race"
+    },
+    {
+      "id": "q140404007",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace Promise.any()?",
+      "question_en": "What does Promise.any() do?",
+      "options_es": [
+        "Devuelve una Promise resuelta con el resultado de la primera Promise que se resuelva",
+        "Ejecuta una sola Promise aleatoriamente en todos los casos en este contexto",
+        "Devuelve una Promise resuelta con cualquier resultado según la especificación",
+        "Devuelve una Promise rechazada si alguna falla de forma predeterminada"
+      ],
+      "options_en": [
+        "Returns a Promise resolved with the result of the first Promise to fulfill",
+        "Executes a single Promise randomly in all cases in this context",
+        "Returns a Promise resolved with any result according to the specification",
+        "Returns a rejected Promise if any fails by default"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Promise.any() devuelve una Promise que se resuelve tan pronto como una Promise se cumple (fulfilled), ignorando los rechazos.",
+      "explanation_en": "Promise.any() returns a Promise that resolves as soon as one Promise fulfills, ignoring rejections.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any"
+    },
+    {
+      "id": "q140404008",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo usarías Promise.all()?",
+      "question_en": "When would you use Promise.all()?",
+      "options_es": [
+        "Cuando necesitas ignorar los errores en JavaScript para este caso",
+        "Cuando hay solo una Promise como se define",
+        "Cuando necesitas que todos los resultados estén disponibles y alguno falla debe fallar todo",
+        "Cuando necesitas esperar solo a la primera en este escenario"
+      ],
+      "options_en": [
+        "When you need to ignore errors in JavaScript for this case",
+        "When there's only one Promise as defined",
+        "When you need all results and any failure fails everything",
+        "When you need to wait for only the first in this scenario"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Promise.all() es ideal para operaciones que dependen unas de otras y necesitas todos los resultados, como cargar múltiples recursos críticos.",
+      "explanation_en": "Promise.all() is ideal for dependent operations where you need all results, like loading multiple critical resources.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+    },
+    {
+      "id": "q140404009",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo usarías Promise.race()?",
+      "question_en": "When would you use Promise.race()?",
+      "options_es": [
+        "Cuando necesitas ignorar errores en JavaScript de forma predeterminada",
+        "Cuando hay solo una Promise en la mayoría de los casos",
+        "Cuando quieres el resultado de la primera Promise que termine (timeout, primera respuesta rápida)",
+        "Cuando necesitas todos los resultados en JavaScript"
+      ],
+      "options_en": [
+        "When you need to ignore errors in JavaScript by default",
+        "When there's only one Promise in most cases",
+        "When you want the result of the first Promise to finish (timeout, first response)",
+        "When you need all results in JavaScript"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Promise.race() es útil para timeouts, implementar 'first-to-respond' patterns, o manejar competencia entre múltiples fuentes.",
+      "explanation_en": "Promise.race() is useful for timeouts, 'first-to-respond' patterns, or handling competition between sources.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race"
+    },
+    {
+      "id": "q140404010",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo usarías Promise.allSettled()?",
+      "question_en": "When would you use Promise.allSettled()?",
+      "options_es": [
+        "Cuando necesitas fallar si alguna Promise falla de forma predeterminada",
+        "Cuando hay solo una Promise necesariamente",
+        "Cuando necesitas esperar a todas las Promises incluso si algunas fallan",
+        "Cuando necesitas solo los valores exitosos"
+      ],
+      "options_en": [
+        "When you need to fail if any Promise fails by default",
+        "When there's only one Promise necessarily",
+        "When you need to wait for all Promises even if some fail",
+        "When you need only successful values"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Promise.allSettled() es perfecto cuando necesitas el resultado de todas las operaciones independientemente de si algunas fallan, como procesar un lote de archivos.",
+      "explanation_en": "Promise.allSettled() is perfect when you need results of all operations regardless of failures, like batch processing files.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled"
+    },
+    {
+      "id": "q140404011",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué devuelve Promise.all() si le pasas un array vacío?",
+      "question_en": "What does Promise.all() return with an empty array?",
+      "options_es": [
+        "Una Promise rechazada en este contexto",
+        "Una Promise resuelta con un array vacío",
+        "Undefined de forma predeterminada",
+        "Una Promise que nunca se resuelve en la mayoría de los casos"
+      ],
+      "options_en": [
+        "A rejected Promise in this context",
+        "A Promise resolved with an empty array",
+        "Undefined by default",
+        "A Promise that never resolves in most cases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Promise.all([]) devuelve una Promise que se resuelve inmediatamente con un array vacío, ya que no hay Promises a esperar.",
+      "explanation_en": "Promise.all([]) returns a Promise that immediately resolves with an empty array since there are no Promises to wait for.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+    },
+    {
+      "id": "q140404012",
+      "skill_id": "sk140404",
+      "type": "multiple_choice",
+      "question_es": "¿Se ejecutan las Promises en paralelo o en secuencia al usar Promise.all()?",
+      "question_en": "Do Promises execute in parallel or sequence with Promise.all()?",
+      "options_es": [
+        "Se ejecutan secuencialmente, una tras otra en el navegador en la mayoría de los casos",
+        "Promise.all() las ejecuta secuencialmente por seguridad",
+        "Depende del navegador",
+        "Todas se inician en paralelo; Promise.all() solo espera a que todas terminen"
+      ],
+      "options_en": [
+        "They execute sequentially, one after another in the browser in most cases",
+        "Promise.all() executes them sequentially for safety",
+        "It depends on the browser",
+        "All start in parallel; Promise.all() just waits for all to finish"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las Promises se inician en paralelo automáticamente cuando se crean. Promise.all() solo espera a que todas terminen, no las secuencia.",
+      "explanation_en": "Promises start in parallel automatically when created. Promise.all() just waits for all to complete, it doesn't sequence them.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+    },
+    {
+      "id": "q140404013",
+      "skill_id": "sk140404",
+      "type": "true_false",
+      "question_es": "Promise.all() espera a que todas las Promises se completen incluso si una falla.",
+      "question_en": "Promise.all() waits for all Promises to complete even if one fails.",
+      "options_es": [
+        "Verdadero",
+        "Falso en la mayoría de los casos"
+      ],
+      "options_en": [
+        "True",
+        "False in most cases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Promise.all() es fail-fast: rechaza inmediatamente cuando cualquier Promise falla, sin esperar a las otras.",
+      "explanation_en": "Promise.all() is fail-fast: it rejects immediately when any Promise fails, without waiting for others.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+    },
+    {
+      "id": "q140404014",
+      "skill_id": "sk140404",
+      "type": "true_false",
+      "question_es": "Promise.race() devuelve el valor de la primera Promise que se resuelva, ignorando los rechazos.",
+      "question_en": "Promise.race() returns the value of the first Promise to resolve, ignoring rejections.",
+      "options_es": [
+        "Verdadero",
+        "Falso en este contexto"
+      ],
+      "options_en": [
+        "True",
+        "False in this context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Promise.race() devuelve la primera Promise que se 'settle' (resuelva o rechace), sin importar el resultado.",
+      "explanation_en": "Promise.race() returns the first Promise to settle (resolve or reject), regardless of the outcome.",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race"
+    },
+    {
+      "id": "q140404015",
+      "skill_id": "sk140404",
+      "type": "true_false",
+      "question_es": "Promise.any() rechaza solo si todas sus Promises se rechazan.",
+      "question_en": "Promise.any() rejects only if all its Promises reject.",
+      "options_es": [
+        "Verdadero",
+        "Falso en la mayoría de los casos"
+      ],
+      "options_en": [
+        "True",
+        "False in most cases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Promise.any() se resuelve con la primera Promise cumplida (fulfilled), pero rechaza solo si todas se rechazan (con AggregateError).",
+      "explanation_en": "Promise.any() resolves with the first fulfilled Promise, but rejects only if all reject (with AggregateError).",
+      "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any"
+    },
+    {
+      "id": "q140401_js_001",
+      "skill_id": "sk140401",
+      "type": "js_exec",
+      "question_es": "¿Cuál es la salida del siguiente código?\n\n```javascript\nconst arr = [1, 2, 3];\nconst doubled = arr.map(x => x * 2);\nconsole.log(doubled.join(\",\"));\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nconst arr = [1, 2, 3];\nconst doubled = arr.map(x => x * 2);\nconsole.log(doubled.join(\",\"));\n```",
+      "code": "const arr = [1, 2, 3];\nconst doubled = arr.map(x => x * 2);\nconsole.log(doubled.join(\",\"));",
+      "correct_answer_es": "2,4,6",
+      "correct_answer_en": "2,4,6",
+      "explanation_es": "El método map() crea un nuevo array aplicando una función a cada elemento. La función x => x * 2 multiplica cada elemento por 2, produciendo [2, 4, 6]. El método join(\",\") convierte el array en una cadena separada por comas.",
+      "explanation_en": "The map() method creates a new array by applying a function to each element. The function x => x * 2 multiplies each element by 2, producing [2, 4, 6]. The join(\",\") method converts the array to a comma-separated string.",
+      "source": "MDN Web Docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map"
+    },
+    {
+      "id": "q140401_js_002",
+      "skill_id": "sk140401",
+      "type": "js_exec",
+      "question_es": "¿Cuál es la salida del siguiente código?\n\n```javascript\nconst arr = [1, 2, 3, 4, 5];\nconst evens = arr.filter(x => x % 2 === 0);\nconsole.log(evens.join(\",\"));\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nconst arr = [1, 2, 3, 4, 5];\nconst evens = arr.filter(x => x % 2 === 0);\nconsole.log(evens.join(\",\"));\n```",
+      "code": "const arr = [1, 2, 3, 4, 5];\nconst evens = arr.filter(x => x % 2 === 0);\nconsole.log(evens.join(\",\"));",
+      "correct_answer_es": "2,4",
+      "correct_answer_en": "2,4",
+      "explanation_es": "El método filter() crea un nuevo array con los elementos que cumplen una condición. La función x => x % 2 === 0 verifica si un número es par. Solo 2 y 4 son pares, así que el resultado es [2, 4].",
+      "explanation_en": "The filter() method creates a new array with elements that satisfy a condition. The function x => x % 2 === 0 checks if a number is even. Only 2 and 4 are even, so the result is [2, 4].",
+      "source": "MDN Web Docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter"
+    },
+    {
+      "id": "q140401_js_003",
+      "skill_id": "sk140401",
+      "type": "js_exec",
+      "question_es": "¿Cuál es la salida del siguiente código?\n\n```javascript\nconst arr = [1, 2, 3, 4];\nconst sum = arr.reduce((acc, x) => acc + x, 0);\nconsole.log(sum);\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nconst arr = [1, 2, 3, 4];\nconst sum = arr.reduce((acc, x) => acc + x, 0);\nconsole.log(sum);\n```",
+      "code": "const arr = [1, 2, 3, 4];\nconst sum = arr.reduce((acc, x) => acc + x, 0);\nconsole.log(sum);",
+      "correct_answer_es": "10",
+      "correct_answer_en": "10",
+      "explanation_es": "El método reduce() aplica una función a cada elemento del array de izquierda a derecha, usando un acumulador. Comenzando con 0, se suma cada elemento: 0 + 1 + 2 + 3 + 4 = 10.",
+      "explanation_en": "The reduce() method applies a function to each element of the array from left to right, using an accumulator. Starting with 0, each element is added: 0 + 1 + 2 + 3 + 4 = 10.",
+      "source": "MDN Web Docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce"
+    },
+    {
+      "id": "q140401_js_004",
+      "skill_id": "sk140401",
+      "type": "js_exec",
+      "question_es": "¿Cuál es la salida del siguiente código?\n\n```javascript\nconst [a, b, c] = [10, 20, 30];\nconsole.log(a + b + c);\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nconst [a, b, c] = [10, 20, 30];\nconsole.log(a + b + c);\n```",
+      "code": "const [a, b, c] = [10, 20, 30];\nconsole.log(a + b + c);",
+      "correct_answer_es": "60",
+      "correct_answer_en": "60",
+      "explanation_es": "La desestructuración de arrays permite extraer valores de un array y asignarlos a variables. [a, b, c] = [10, 20, 30] asigna a = 10, b = 20, c = 30. La suma es 10 + 20 + 30 = 60.",
+      "explanation_en": "Array destructuring allows extracting values from an array and assigning them to variables. [a, b, c] = [10, 20, 30] assigns a = 10, b = 20, c = 30. The sum is 10 + 20 + 30 = 60.",
+      "source": "MDN Web Docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment"
+    },
+    {
+      "id": "q140401_js_005",
+      "skill_id": "sk140401",
+      "type": "js_exec",
+      "question_es": "¿Cuál es la salida del siguiente código?\n\n```javascript\nconst arr1 = [1, 2];\nconst arr2 = [3, 4];\nconst combined = [...arr1, ...arr2];\nconsole.log(combined.join(\",\"));\n```",
+      "question_en": "What is the output of the following code?\n\n```javascript\nconst arr1 = [1, 2];\nconst arr2 = [3, 4];\nconst combined = [...arr1, ...arr2];\nconsole.log(combined.join(\",\"));\n```",
+      "code": "const arr1 = [1, 2];\nconst arr2 = [3, 4];\nconst combined = [...arr1, ...arr2];\nconsole.log(combined.join(\",\"));",
+      "correct_answer_es": "1,2,3,4",
+      "correct_answer_en": "1,2,3,4",
+      "explanation_es": "El operador spread (...) expande un array en elementos individuales. [...arr1, ...arr2] expande ambos arrays y los combina en uno nuevo: [1, 2, 3, 4]. El método join(\",\") los une con comas.",
+      "explanation_en": "The spread operator (...) expands an array into individual elements. [...arr1, ...arr2] expands both arrays and combines them into a new one: [1, 2, 3, 4]. The join(\",\") method joins them with commas.",
+      "source": "MDN Web Docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax"
+    }
+  ]
+}

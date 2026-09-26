@@ -37,15 +37,15 @@
       "question_es": "¿Cuál es la diferencia entre un INNER JOIN y un LEFT JOIN?",
       "question_en": "What is the difference between an INNER JOIN and a LEFT JOIN?",
       "options_es": [
-        "No hay diferencia; son sinónimos",
-        "INNER JOIN solo funciona con dos tablas y LEFT JOIN con más",
-        "LEFT JOIN es más rápido siempre",
+        "No hay diferencia; son sinónimos según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
+        "INNER JOIN solo funciona con dos tablas y LEFT JOIN con más como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios",
+        "LEFT JOIN es más rápido siempre, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
         "INNER JOIN devuelve solo las filas con coincidencia en ambas tablas; LEFT JOIN devuelve todas las filas de la tabla izquierda, con NULL donde no hay coincidencia en la derecha"
       ],
       "options_en": [
-        "There is no difference; they are synonyms",
-        "INNER JOIN only works with two tables and LEFT JOIN with more",
-        "LEFT JOIN is always faster",
+        "There is no difference; they are synonyms according to the framework's official documentation, as long as the necessary preconditions are met",
+        "INNER JOIN only works with two tables and LEFT JOIN with more as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios",
+        "LEFT JOIN is always faster, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
         "INNER JOIN returns only rows with a match in both tables; LEFT JOIN returns all rows from the left table, with NULL where there's no match on the right"
       ],
       "correct_index": 3,
@@ -92,15 +92,15 @@
       "question_en": "Given a table `sales(region, amount)`, which query returns the total `amount` per `region`?",
       "options_es": [
         "SELECT region, SUM(monto) FROM ventas GROUP BY region",
-        "SELECT region, SUM(monto) FROM ventas",
+        "SELECT region, SUM(monto) FROM ventas, pero solo en versiones anteriores del sistema",
         "SELECT region, monto FROM ventas ORDER BY region",
-        "SELECT SUM(monto) FROM ventas WHERE region"
+        "SELECT SUM(monto) FROM ventas WHERE region de acuerdo con las convenciones estándar de la industria"
       ],
       "options_en": [
         "SELECT region, SUM(amount) FROM sales GROUP BY region",
-        "SELECT region, SUM(amount) FROM sales",
+        "SELECT region, SUM(amount) FROM sales, but only in earlier versions of the system",
         "SELECT region, amount FROM sales ORDER BY region",
-        "SELECT SUM(amount) FROM sales WHERE region"
+        "SELECT SUM(amount) FROM sales WHERE region in accordance with standard industry conventions"
       ],
       "correct_index": 0,
       "explanation_es": "Para agregar por grupo se necesita `GROUP BY region`, de modo que `SUM(monto)` se calcule por cada valor distinto de región. Sin `GROUP BY`, mezclar una columna no agregada (`region`) con una función de agregación (`SUM`) es un error en SQL estándar/PostgreSQL.",
@@ -121,14 +121,14 @@
       "question_es": "¿En qué orden lógico procesa el motor SQL las cláusulas principales de una consulta SELECT?",
       "question_en": "In what logical order does the SQL engine process the main clauses of a SELECT query?",
       "options_es": [
-        "SELECT → FROM → WHERE → GROUP BY → ORDER BY",
-        "ORDER BY → SELECT → WHERE → FROM",
+        "SELECT → FROM → WHERE → GROUP BY → ORDER BY como se describe en la especificación técnica del protocolo",
+        "ORDER BY → SELECT → WHERE → FROM, aplicable únicamente en entornos de desarrollo local",
         "WHERE → FROM → SELECT → ORDER BY → GROUP BY",
         "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY"
       ],
       "options_en": [
-        "SELECT → FROM → WHERE → GROUP BY → ORDER BY",
-        "ORDER BY → SELECT → WHERE → FROM",
+        "SELECT → FROM → WHERE → GROUP BY → ORDER BY as described in the protocol's technical specification",
+        "ORDER BY → SELECT → WHERE → FROM, applicable only in local development environments",
         "WHERE → FROM → SELECT → ORDER BY → GROUP BY",
         "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY"
       ],
@@ -173,13 +173,13 @@
       "options_es": [
         "Una columna que referencia la clave primaria de otra tabla, estableciendo una relación e integridad referencial entre ambas",
         "Una columna que identifica de forma única cada fila de su propia tabla",
-        "Una clave usada para cifrar la tabla",
+        "Una clave usada para cifrar la tabla dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia",
         "El nombre de la base de datos externa"
       ],
       "options_en": [
         "A column that references another table's primary key, establishing a relationship and referential integrity between the two",
         "A column that uniquely identifies each row in its own table",
-        "A key used to encrypt the table",
+        "A key used to encrypt the table given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers",
         "The name of the external database"
       ],
       "correct_index": 0,
@@ -201,14 +201,14 @@
       "question_en": "In relational modeling, how is a many-to-many relationship (e.g. students and courses) typically implemented?",
       "options_es": [
         "Con una tabla intermedia (de unión/junction) que contiene claves foráneas a ambas tablas",
-        "Con una sola columna que contiene una lista separada por comas",
-        "Duplicando la tabla de estudiantes por cada curso",
+        "Con una sola columna que contiene una lista separada por comas, un enfoque que ha caído en desuso por sus limitaciones",
+        "Duplicando la tabla de estudiantes por cada curso, sin afectar la integridad de los datos existentes",
         "No es posible representar muchos-a-muchos en bases relacionales"
       ],
       "options_en": [
         "With an intermediate (junction/join) table holding foreign keys to both tables",
-        "With a single column holding a comma-separated list",
-        "By duplicating the students table for each course",
+        "With a single column holding a comma-separated list, an approach that has fallen out of use due to its limitations",
+        "By duplicating the students table for each course, without affecting the integrity of existing data",
         "It's not possible to represent many-to-many in relational databases"
       ],
       "correct_index": 0,
@@ -254,14 +254,14 @@
       "question_es": "Una tabla tiene columnas `(pedido_id, producto_id, nombre_producto, precio_producto)` con clave primaria `(pedido_id, producto_id)`. ¿Qué problema de normalización presenta?",
       "question_en": "A table has columns `(order_id, product_id, product_name, product_price)` with primary key `(order_id, product_id)`. What normalization problem does it have?",
       "options_es": [
-        "Ninguno; está perfectamente normalizada",
-        "Tiene demasiadas columnas",
+        "Ninguno; está perfectamente normalizada en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados",
+        "Tiene demasiadas columnas cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
         "Viola la 1FN por tener valores no atómicos",
         "Viola la 2FN: `nombre_producto` y `precio_producto` dependen solo de `producto_id` (parte de la clave), no de la clave completa"
       ],
       "options_en": [
-        "None; it's perfectly normalized",
-        "It has too many columns",
+        "None; it's perfectly normalized in the context of traditional monolithic architectures, which can produce unexpected side effects",
+        "It has too many columns when operating in the standard execution mode, respecting backwards-compatibility constraints",
         "It violates 1NF by having non-atomic values",
         "It violates 2NF: `product_name` and `product_price` depend only on `product_id` (part of the key), not on the whole key"
       ],
@@ -331,14 +331,14 @@
       "question_en": "What is a database index primarily for?",
       "options_es": [
         "Para acelerar la búsqueda y recuperación de filas, evitando escanear la tabla completa",
-        "Para cifrar los datos de una columna",
-        "Para hacer copias de seguridad automáticas",
+        "Para cifrar los datos de una columna durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas",
+        "Para hacer copias de seguridad automáticas para mantener la coherencia del modelo de datos interno",
         "Para reducir el tamaño en disco de la tabla"
       ],
       "options_en": [
         "To speed up searching and retrieving rows, avoiding a full table scan",
-        "To encrypt a column's data",
-        "To make automatic backups",
+        "To encrypt a column's data during the component's initialization phase, a behavior that contradicts established best practices",
+        "To make automatic backups to maintain the coherence of the internal data model",
         "To reduce the table's on-disk size"
       ],
       "correct_index": 0,
@@ -416,13 +416,13 @@
       "options_es": [
         "WHERE nombre = 'Ana' (solo por nombre)",
         "WHERE apellido = 'García' (o apellido y nombre juntos)",
-        "WHERE UPPER(apellido) = 'GARCIA'",
+        "WHERE UPPER(apellido) = 'GARCIA' según las recomendaciones de las guías de estilo más adoptadas",
         "Ninguna consulta puede usar índices compuestos"
       ],
       "options_en": [
         "WHERE first_name = 'Ana' (only by first name)",
         "WHERE last_name = 'García' (or last_name and first_name together)",
-        "WHERE UPPER(last_name) = 'GARCIA'",
+        "WHERE UPPER(last_name) = 'GARCIA' according to the recommendations of the most widely adopted style guides",
         "No query can use composite indexes"
       ],
       "correct_index": 1,
@@ -491,16 +491,16 @@
       "question_es": "¿Qué es un ORM (Object-Relational Mapper) como SQLAlchemy?",
       "question_en": "What is an ORM (Object-Relational Mapper) like SQLAlchemy?",
       "options_es": [
-        "Un motor de base de datos propio",
+        "Un motor de base de datos propio, lo cual compromete la mantenibilidad a largo plazo del sistema, un concepto frecuentemente malinterpretado en entrevistas técnicas",
         "Un formato de archivo para exportar datos",
         "Una capa que mapea filas de tablas a objetos del lenguaje, permitiendo trabajar con la BD usando código orientado a objetos en lugar de SQL crudo",
-        "Un servidor web"
+        "Un servidor web, aunque en la práctica rara vez se implementa de esta manera siguiendo el patrón habitual de configuración por convención"
       ],
       "options_en": [
-        "Its own database engine",
+        "Its own database engine, which compromises the system's long-term maintainability, a concept frequently misunderstood in technical interviews",
         "A file format for exporting data",
         "A layer that maps table rows to language objects, letting you work with the DB using object-oriented code instead of raw SQL",
-        "A web server"
+        "A web server, although in practice this is rarely implemented this way following the usual convention-over-configuration pattern"
       ],
       "correct_index": 2,
       "explanation_es": "Un ORM traduce entre el mundo de objetos (clases, instancias) y el relacional (tablas, filas). SQLAlchemy permite definir modelos como clases Python y consultar con una API en lugar de escribir SQL a mano, aunque también deja ejecutar SQL crudo cuando conviene. No es un motor de BD: se conecta a uno (PostgreSQL, SQLite, etc.).",
@@ -548,14 +548,14 @@
       "options_es": [
         "El ORM siempre genera SQL más rápido que uno escrito a mano",
         "Protege contra inyección SQL, porque los valores se envían como parámetros vinculados y no se interpolan directamente en el texto de la consulta",
-        "El ORM elimina la necesidad de una base de datos",
-        "Permite prescindir de índices"
+        "El ORM elimina la necesidad de una base de datos, lo que dificulta la depuración en entornos de producción distribuidos tal como se establece en las guías de arquitectura empresarial",
+        "Permite prescindir de índices dentro del ciclo de vida estándar del desarrollo de software, una técnica que requiere experiencia considerable para aplicar correctamente"
       ],
       "options_en": [
         "The ORM always generates faster SQL than hand-written SQL",
         "It protects against SQL injection, because values are sent as bound parameters and not interpolated directly into the query text",
-        "The ORM removes the need for a database",
-        "It lets you do without indexes"
+        "The ORM removes the need for a database, making debugging harder in distributed production environments as established in enterprise architecture guidelines",
+        "It lets you do without indexes within the standard software development lifecycle, a technique that requires considerable experience to apply correctly"
       ],
       "correct_index": 1,
       "explanation_es": "Al usar parámetros vinculados (bind parameters), los valores del usuario nunca se mezclan con la sintaxis SQL, evitando la inyección SQL. Concatenar strings de usuario en una consulta es la causa clásica de esa vulnerabilidad. Nota: un ORM no garantiza SQL más rápido; a veces genera consultas subóptimas que hay que ajustar.",
@@ -577,15 +577,15 @@
       "question_en": "What best describes the 'object-relational impedance mismatch'?",
       "options_es": [
         "Las diferencias conceptuales entre el modelo de objetos (herencia, referencias, encapsulación) y el modelo relacional (tablas, filas, claves) que un ORM debe reconciliar",
-        "Un error eléctrico en el servidor de base de datos",
-        "La latencia de red entre cliente y servidor",
-        "Un tipo de índice especial"
+        "Un error eléctrico en el servidor de base de datos, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad como parte de una estrategia de migración gradual del sistema legado",
+        "La latencia de red entre cliente y servidor, aunque su efectividad varía según el contexto del proyecto como parte del proceso de revisión de código del equipo",
+        "Un tipo de índice especial, provocando acoplamientos innecesarios entre los módulos del sistema en combinación con las herramientas de análisis estático del código"
       ],
       "options_en": [
         "The conceptual differences between the object model (inheritance, references, encapsulation) and the relational model (tables, rows, keys) that an ORM must reconcile",
-        "An electrical fault in the database server",
-        "The network latency between client and server",
-        "A special kind of index"
+        "An electrical fault in the database server, although some legacy frameworks still allow it for backward compatibility as part of a gradual migration strategy for the legacy system",
+        "The network latency between client and server, although its effectiveness varies depending on the project context as part of the team's code review process",
+        "A special kind of index, causing unnecessary coupling between the system's modules in combination with the codebase's static analysis tools"
       ],
       "correct_index": 0,
       "explanation_es": "El desajuste de impedancia se refiere a que los objetos y las tablas relacionales representan la información de forma diferente (por ejemplo, la herencia no existe en SQL, y las referencias entre objetos se traducen a claves foráneas). El ORM oculta gran parte de esa fricción, pero entenderla ayuda a diagnosticar problemas como el N+1.",
@@ -706,14 +706,14 @@
       "question_es": "¿Cuándo suele ser preferible una base de datos relacional (SQL) sobre una NoSQL?",
       "question_en": "When is a relational (SQL) database usually preferable to a NoSQL one?",
       "options_es": [
-        "Nunca; NoSQL siempre es mejor",
-        "Solo cuando hay menos de 10 usuarios",
+        "Nunca; NoSQL siempre es mejor, una decisión que debe evaluarse caso por caso en cada proyecto, aunque esto depende de la configuración del entorno",
+        "Solo cuando hay menos de 10 usuarios, lo cual es una práctica poco habitual en proyectos reales según la documentación oficial del framework",
         "Cuando los datos están altamente estructurados y relacionados, y se necesitan transacciones ACID fuertes y consultas complejas con JOINs",
         "Cuando no se conoce nada sobre los datos"
       ],
       "options_en": [
-        "Never; NoSQL is always better",
-        "Only when there are fewer than 10 users",
+        "Never; NoSQL is always better, a decision that must be evaluated on a case-by-case basis for each project, although this depends on the environment configuration",
+        "Only when there are fewer than 10 users, which is an uncommon practice in real-world projects according to the framework's official documentation",
         "When data is highly structured and related, and you need strong ACID transactions and complex queries with JOINs",
         "When nothing is known about the data"
       ],
@@ -737,14 +737,14 @@
       "options_es": [
         "Que se pueden garantizar simultáneamente consistencia, disponibilidad y tolerancia a particiones sin límite",
         "Que ante una partición de red (P), un sistema debe elegir entre consistencia (C) y disponibilidad (A); no puede maximizar ambas durante la partición",
-        "Que todos los sistemas distribuidos son inconsistentes",
-        "Que las bases NoSQL no pueden distribuirse"
+        "Que todos los sistemas distribuidos son inconsistentes de acuerdo con las convenciones estándar de la industria, aplicable únicamente en entornos de desarrollo local",
+        "Que las bases NoSQL no pueden distribuirse, siempre que se cumplan las precondiciones necesarias, pero solo en versiones anteriores del sistema"
       ],
       "options_en": [
         "That consistency, availability, and partition tolerance can all be guaranteed simultaneously without limit",
         "That during a network partition (P), a system must choose between consistency (C) and availability (A); it can't maximize both during the partition",
-        "That all distributed systems are inconsistent",
-        "That NoSQL databases cannot be distributed"
+        "That all distributed systems are inconsistent in accordance with standard industry conventions, applicable only in local development environments",
+        "That NoSQL databases cannot be distributed, as long as the necessary preconditions are met, but only in earlier versions of the system"
       ],
       "correct_index": 1,
       "explanation_es": "El teorema CAP dice que, cuando ocurre una partición de red (algo inevitable en sistemas distribuidos), hay que sacrificar consistencia o disponibilidad. No es que 'elijas 2 de 3 siempre': la P es obligatoria, así que la decisión real es C vs A durante particiones. Muchos sistemas NoSQL priorizan disponibilidad con consistencia eventual.",

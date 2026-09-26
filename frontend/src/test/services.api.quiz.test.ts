@@ -17,7 +17,7 @@ const makeErr = (status: number, detail: string) =>
 describe('api — quiz', () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem('whetzy_access_token', 'tok');
+    document.cookie = 'whetzy_logged_in=1; path=/';
     vi.resetModules();
   });
   afterEach(() => vi.unstubAllGlobals());
@@ -50,7 +50,7 @@ describe('api — quiz', () => {
 describe('api — progress', () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem('whetzy_access_token', 'tok');
+    document.cookie = 'whetzy_logged_in=1; path=/';
     vi.resetModules();
   });
   afterEach(() => vi.unstubAllGlobals());
@@ -73,7 +73,7 @@ describe('api — progress', () => {
 describe('api — glossary', () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem('whetzy_access_token', 'tok');
+    document.cookie = 'whetzy_logged_in=1; path=/';
     vi.resetModules();
   });
   afterEach(() => vi.unstubAllGlobals());
@@ -89,7 +89,7 @@ describe('api — glossary', () => {
 describe('api — placement', () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem('whetzy_access_token', 'tok');
+    document.cookie = 'whetzy_logged_in=1; path=/';
     vi.resetModules();
   });
   afterEach(() => vi.unstubAllGlobals());

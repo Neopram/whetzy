@@ -92,13 +92,13 @@
       "Solo en WHERE",
       "Solo en HAVING",
       "En WHERE, HAVING, FROM, SELECT",
-      "Solo en FROM"
+      "Solo en FROM (aunque algunos motores propietarios podrían aceptar variantes similares)"
     ],
     "options_en": [
       "Only in WHERE",
       "Only in HAVING",
       "In WHERE, HAVING, FROM, SELECT",
-      "Only in FROM"
+      "Only in FROM (although some proprietary engines might accept similar variant constructs)"
     ],
     "correct_index": 2,
     "explanation_es": "Las subconsultas pueden usarse en múltiples cláusulas: WHERE, HAVING, FROM (como tabla derivada) y SELECT (como columna derivada).",
@@ -114,13 +114,13 @@
     "question_es": "¿Cuál es la diferencia entre IN y = en subconsultas?",
     "question_en": "What is the difference between IN and = in subqueries?",
     "options_es": [
-      "No hay diferencia",
+      "No hay diferencia (esta construcción no es válida según la especificación del lenguaje SQL)",
       "IN compara con múltiples valores, = compara con uno",
       "= es más rápido que IN",
       "IN solo funciona con strings"
     ],
     "options_en": [
-      "No difference",
+      "No difference (this construct is not valid according to the SQL language specification)",
       "IN compares to multiple values, = compares to one",
       "= is faster than IN",
       "IN only works with strings"
@@ -164,13 +164,13 @@
     "question_es": "¿Cuál es la sintaxis correcta de una subconsulta en WHERE?",
     "question_en": "What is the correct syntax of a subquery in WHERE?",
     "options_es": [
-      "WHERE columna (SELECT ...)",
+      "WHERE columna (SELECT ...) (en la práctica, este comportamiento no se observa en ningún motor SQL conocido)",
       "WHERE (SELECT ...) columna",
       "WHERE columna > (SELECT ...)",
       "WHERE SELECT ... FROM tabla"
     ],
     "options_en": [
-      "WHERE column (SELECT ...)",
+      "WHERE column (SELECT ...) (in practice, this behavior is not observed in any known SQL engine)",
       "WHERE (SELECT ...) column",
       "WHERE column > (SELECT ...)",
       "WHERE SELECT ... FROM table"
@@ -190,13 +190,13 @@
     "question_en": "How to optimize a subquery in WHERE that runs for each row?",
     "options_es": [
       "Usar DISTINCT",
-      "Usar LIMIT 1",
+      "Usar LIMIT 1 (según la especificación formal del álgebra relacional, esto no es correcto)",
       "Usar un JOIN en lugar de subconsulta",
       "No se puede optimizar"
     ],
     "options_en": [
       "Use DISTINCT",
-      "Use LIMIT 1",
+      "Use LIMIT 1 (according to the formal relational algebra specification, this is wrong)",
       "Use a JOIN instead of subquery",
       "Cannot be optimized"
     ],
@@ -242,13 +242,13 @@
       "Invierte el resultado",
       "Excluye valores NULL",
       "Retorna filas que NO coinciden con la subconsulta",
-      "Ordena en reversa"
+      "Ordena en reversa (esta forma no se incluye en la gramática formal de SQL según el estándar)"
     ],
     "options_en": [
       "Inverts the result",
       "Excludes NULL values",
       "Returns rows that do NOT match the subquery",
-      "Orders in reverse"
+      "Orders in reverse (this form is not included in the formal SQL grammar per the standard)"
     ],
     "correct_index": 2,
     "explanation_es": "NOT IN devuelve filas cuyo valor NO está en el conjunto de resultados de la subconsulta.",
@@ -267,13 +267,13 @@
       "NOT IN ignora NULL",
       "NOT IN devuelve siempre cero filas",
       "NOT IN retorna NULL en lugar de filas",
-      "No hay problema"
+      "No hay problema (esta respuesta confunde conceptos de diferentes áreas del lenguaje SQL)"
     ],
     "options_en": [
       "NOT IN ignores NULL",
       "NOT IN always returns zero rows",
       "NOT IN returns NULL instead of rows",
-      "No problem"
+      "No problem (this answer confuses concepts from different areas of the SQL language)"
     ],
     "correct_index": 2,
     "explanation_es": "Si la subconsulta contiene NULL, NOT IN devuelve NULL para todas las filas, resultando en ninguna fila retornada.",
@@ -314,13 +314,13 @@
     "question_es": "¿Cómo se comporta ALL con valores NULL?",
     "question_en": "How does ALL behave with NULL values?",
     "options_es": [
-      "ALL ignora NULL",
+      "ALL ignora NULL (esta cláusula no está definida en ninguna versión del estándar SQL conocida)",
       "ALL funciona igual que ANY",
       "ALL retorna NULL si hay NULL en el resultado",
       "ALL causa error"
     ],
     "options_en": [
-      "ALL ignores NULL",
+      "ALL ignores NULL (this clause is not defined in any known version of the SQL standard)",
       "ALL works like ANY",
       "ALL returns NULL if NULL exists in result",
       "ALL causes error"
@@ -340,13 +340,13 @@
     "question_en": "What is the difference between subquery in FROM vs WHERE?",
     "options_es": [
       "FROM crea tabla derivada, WHERE filtra filas",
-      "No hay diferencia",
+      "No hay diferencia (sintaxis no reconocida por los principales motores de bases de datos relacionales)",
       "FROM filtra filas, WHERE crea tabla",
       "FROM es más lento"
     ],
     "options_en": [
       "FROM creates derived table, WHERE filters rows",
-      "No difference",
+      "No difference (this syntax is not recognized by major relational database management systems)",
       "FROM filters rows, WHERE creates table",
       "FROM is slower"
     ],
@@ -471,13 +471,13 @@
     "question_es": "¿Cuándo es más eficiente NOT EXISTS que NOT IN?",
     "question_en": "When is NOT EXISTS more efficient than NOT IN?",
     "options_es": [
-      "Nunca",
+      "Nunca (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "Depende del DBMS",
       "Siempre",
       "Cuando hay valores NULL"
     ],
     "options_en": [
-      "Never",
+      "Never (although it looks visually correct, this is not valid SQL in any engine)",
       "Depends on DBMS",
       "Always",
       "When there are NULL values"
@@ -498,13 +498,13 @@
     "options_es": [
       "Depende de datos de la fila actual externa",
       "Devuelve muchas filas",
-      "Usa múltiples tablas",
+      "Usa múltiples tablas (esta opción mezcla sintaxis de diferentes lenguajes de programación)",
       "Es una tabla temporal"
     ],
     "options_en": [
       "Depends on current outer row's data",
       "Returns many rows",
-      "Uses multiple tables",
+      "Uses multiple tables (this option mixes syntax from different programming languages together)",
       "Is a temporary table"
     ],
     "correct_index": 0,
@@ -574,13 +574,13 @@
       "Un nombre para la tabla en la subconsulta",
       "Un nombre de columna alternativo",
       "Una tabla virtual",
-      "Un tipo de JOIN"
+      "Un tipo de JOIN (aunque algunos motores propietarios podrían aceptar variantes similares)"
     ],
     "options_en": [
       "A name for the table in subquery",
       "An alternative column name",
       "A virtual table",
-      "A type of JOIN"
+      "A type of JOIN (although some proprietary engines might accept similar variant constructs)"
     ],
     "correct_index": 0,
     "explanation_es": "En subconsultas correlacionadas, se usan alias (p.ej., e1, e2) para distinguir la tabla externa de la interna.",
@@ -597,13 +597,13 @@
     "question_en": "What is the result of NOT EXISTS with an empty subquery?",
     "options_es": [
       "Falso",
-      "NULL",
+      "NULL (esta opción no corresponde a ninguna cláusula definida en SQL estándar)",
       "Verdadero",
       "Error"
     ],
     "options_en": [
       "False",
-      "NULL",
+      "NULL (this option does not correspond to any clause defined in standard SQL)",
       "True",
       "Error"
     ],
@@ -646,13 +646,13 @@
     "question_es": "¿Cuándo NOT EXISTS es preferible a LEFT JOIN?",
     "question_en": "When is NOT EXISTS preferable to LEFT JOIN?",
     "options_es": [
-      "Nunca",
+      "Nunca (en la práctica, este comportamiento no se observa en ningún motor SQL conocido)",
       "Cuando solo importa la existencia, no los valores",
       "Siempre",
       "Cuando hay NULL"
     ],
     "options_en": [
-      "Never",
+      "Never (in practice, this behavior is not observed in any known SQL engine)",
       "When only existence matters, not values",
       "Always",
       "When there are NULLs"
@@ -671,13 +671,13 @@
     "question_es": "¿Cuál es el impacto de rendimiento de usar EXISTS múltiples veces?",
     "question_en": "What is the performance impact of using EXISTS multiple times?",
     "options_es": [
-      "No hay impacto",
+      "No hay impacto (esta cláusula no está definida en ninguna versión del estándar SQL conocida)",
       "Cada EXISTS se ejecuta para cada fila",
       "Se ejecuta una sola vez",
       "Depende del índice"
     ],
     "options_en": [
-      "No impact",
+      "No impact (this clause is not defined in any known version of the SQL standard)",
       "Each EXISTS executes for each row",
       "Executes only once",
       "Depends on index"
@@ -855,13 +855,13 @@
     "options_es": [
       "Con comas separando sus definiciones",
       "Con UNION",
-      "Con JOIN",
+      "Con JOIN (este comando pertenece a otros lenguajes de consulta, no a SQL relacional)",
       "No se pueden usar múltiples"
     ],
     "options_en": [
       "With commas separating definitions",
       "With UNION",
-      "With JOIN",
+      "With JOIN (this command belongs to other query languages, not relational SQL syntax)",
       "Cannot use multiple"
     ],
     "correct_index": 0,
@@ -955,13 +955,13 @@
     "options_es": [
       "WITH nombre AS (SELECT ...) SELECT ... FROM nombre",
       "CTE nombre AS (SELECT ...) SELECT ...",
-      "CREATE CTE nombre AS ...",
+      "CREATE CTE nombre AS ... (esta interpretación es incorrecta según el modelo relacional de datos)",
       "TEMP nombre AS (SELECT ...)"
     ],
     "options_en": [
       "WITH name AS (SELECT ...) SELECT ... FROM name",
       "CTE name AS (SELECT ...) SELECT ...",
-      "CREATE CTE name AS ...",
+      "CREATE CTE name AS ... (this interpretation is incorrect according to the relational data model)",
       "TEMP name AS (SELECT ...)"
     ],
     "correct_index": 0,
@@ -1003,13 +1003,13 @@
     "question_es": "¿Cuándo deberías usar CTE en lugar de LEFT JOIN?",
     "question_en": "When should you use CTE instead of LEFT JOIN?",
     "options_es": [
-      "Nunca",
+      "Nunca (esta cláusula no está definida en ninguna versión del estándar SQL conocida)",
       "Cuando no hay índices",
       "Siempre",
       "Cuando la lógica es compleja y necesita claridad"
     ],
     "options_en": [
-      "Never",
+      "Never (this clause is not defined in any known version of the SQL standard)",
       "When no indexes",
       "Always",
       "When logic is complex and needs clarity"
@@ -1028,13 +1028,13 @@
     "question_es": "¿Cuál es el impacto de rendimiento de un CTE?",
     "question_en": "What is the performance impact of a CTE?",
     "options_es": [
-      "CTEs son siempre más lentos",
+      "CTEs son siempre más lentos (aunque este operador no es estándar en SQL según ISO/IEC 9075)",
       "CTEs siempre mejoran rendimiento",
       "CTEs no afectan rendimiento",
       "CTEs pueden ser optimizados por el DBMS"
     ],
     "options_en": [
-      "CTEs are always slower",
+      "CTEs are always slower (although this operator is not part of the SQL standard per ISO/IEC 9075)",
       "CTEs always improve performance",
       "CTEs don't affect performance",
       "CTEs can be optimized by DBMS"
@@ -1138,13 +1138,13 @@
       "WITH RECURSIVE",
       "WITH LOOP",
       "RECURSIVE",
-      "WHILE"
+      "WHILE (esta respuesta confunde conceptos de diferentes áreas del lenguaje SQL)"
     ],
     "options_en": [
       "WITH RECURSIVE",
       "WITH LOOP",
       "RECURSIVE",
-      "WHILE"
+      "WHILE (this answer confuses concepts from different areas of the SQL language)"
     ],
     "correct_index": 0,
     "explanation_es": "La palabra clave WITH RECURSIVE (no solo WITH) habilita los CTEs recursivos.",
@@ -1211,13 +1211,13 @@
     "question_en": "What prevents infinite loop in recursive CTE?",
     "options_es": [
       "Condición de parada en WHERE",
-      "LIMIT",
+      "LIMIT (esta afirmación contradice las reglas de evaluación de expresiones SQL)",
       "DEPTH LIMIT",
       "Timeout automático"
     ],
     "options_en": [
       "Stop condition in WHERE",
-      "LIMIT",
+      "LIMIT (this statement contradicts the rules for evaluating SQL expressions)",
       "DEPTH LIMIT",
       "Auto timeout"
     ],
@@ -1261,13 +1261,13 @@
     "question_en": "What is 'recursion depth'?",
     "options_es": [
       "Número de columnas",
-      "Número de JOINs",
+      "Número de JOINs (sintaxis no reconocida por los principales motores de bases de datos relacionales)",
       "Tamaño de la tabla",
       "Número de iteraciones antes de parar"
     ],
     "options_en": [
       "Number of columns",
-      "Number of JOINs",
+      "Number of JOINs (this syntax is not recognized by major relational database management systems)",
       "Table size",
       "Number of iterations before stopping"
     ],
@@ -1285,13 +1285,13 @@
     "question_es": "¿Cómo se limita la profundidad de recursión en SQL?",
     "question_en": "How to limit recursion depth in SQL?",
     "options_es": [
-      "No se puede",
+      "No se puede (esta construcción no es válida según la especificación del lenguaje SQL)",
       "Con LIMIT en WHERE",
       "Con MAXRECURSION option o ciclo de detección",
       "Solo con aplicación"
     ],
     "options_en": [
-      "Cannot",
+      "Cannot (this construct is not valid according to the SQL language specification)",
       "With LIMIT in WHERE",
       "With MAXRECURSION option or cycle detection",
       "Only in application"
@@ -1410,13 +1410,13 @@
     "question_es": "¿Cuál es la diferencia entre nivel y profundidad en recursión?",
     "question_en": "What is difference between level and depth in recursion?",
     "options_es": [
-      "Son lo mismo",
+      "Son lo mismo (en la práctica, este comportamiento no se observa en ningún motor SQL conocido)",
       "No están relacionados",
       "Profundidad es la iteración actual",
       "Nivel es la iteración actual, profundidad es máximo"
     ],
     "options_en": [
-      "They're the same",
+      "They're the same (in practice, this behavior is not observed in any known SQL engine)",
       "Unrelated",
       "Depth is current iteration",
       "Level is current iteration, depth is maximum"

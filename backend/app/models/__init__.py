@@ -13,7 +13,9 @@ oauth, payment— que tenian migraciones aplicadas y datos en produccion.
 from app.core.db import Base
 from app.models.admin import GDPRRequest
 from app.models.analytics import AnalyticsEvent
+from app.models.antifraud import DeviceFingerprint, FraudReviewQueue
 from app.models.auth import AuditLog, LoginAttempt, RefreshToken, User2FA, UserSession
+from app.models.bootcamp import Bootcamp, BootcampEnrollment, BootcampWeek
 from app.models.campaign import Campaign, CampaignClick
 from app.models.content import Domain, GlossaryTerm, Module, Question, Skill, Track
 from app.models.duel import Duel
@@ -26,7 +28,7 @@ from app.models.economy import (
     ReferralCode,
 )
 from app.models.email_verification import EmailVerificationToken
-from app.models.exam import CertificationPurchase, MockExamAttempt
+from app.models.exam import Certificate, CertificationPurchase, MockExamAttempt
 from app.models.experiment import Experiment, ExperimentAssignment
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
 from app.models.instructor import (
@@ -45,6 +47,7 @@ from app.models.payment import (
     PaymentWebhook,
     StripeCustomer,
 )
+from app.models.project import Project, ProjectStep, ProjectSubmission
 from app.models.push_subscription import PushSubscription
 from app.models.question_report import QuestionReport
 from app.models.session import Response, StudySession
@@ -56,16 +59,22 @@ __all__ = [
     "AuditLog",
     "Badge",
     "Base",
+    "Bootcamp",
+    "BootcampEnrollment",
+    "BootcampWeek",
     "Campaign",
     "CampaignClick",
+    "Certificate",
     "CertificationPurchase",
     "CreditExpenseCap",
     "CreditLedger",
+    "DeviceFingerprint",
     "Domain",
     "Duel",
     "EmailVerificationToken",
     "Experiment",
     "ExperimentAssignment",
+    "FraudReviewQueue",
     "GDPRRequest",
     "GlossaryTerm",
     "Instructor",
@@ -86,6 +95,9 @@ __all__ = [
     "PasswordResetToken",
     "PaymentRailConfig",
     "PaymentWebhook",
+    "Project",
+    "ProjectStep",
+    "ProjectSubmission",
     "PromoCode",
     "PromoCodeRedemption",
     "PushSubscription",

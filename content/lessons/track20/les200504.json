@@ -1,0 +1,13 @@
+{
+  "id": "les200504",
+  "skill_id": "sk200504",
+  "language": "es",
+  "executable": false,
+  "title_es": "Airflow: Orquestación de Workflows",
+  "title_en": "Airflow: Workflow Orchestration",
+  "body_es": "Airflow es plataforma para orquestar workflows complejos como DAGs (Directed Acyclic Graphs). Operadores definen tasks (Bash, Python, SQL, etc). Scheduler ejecuta según cron o triggers. Web UI monitorea ejecución, logs y SLAs. XCom permite comunicación entre tasks. Backfilling ejecuta DAG retroactivamente. Dynamic tasks generan tasks en paralelo. Airflow es el estándar de la industria para data pipelines.",
+  "body_en": "Airflow is platform for orchestrating complex workflows as DAGs. Operators define tasks (Bash, Python, SQL, etc). Scheduler runs per cron or triggers. Web UI monitors execution, logs and SLAs. XCom enables inter-task communication. Backfilling runs DAG retroactively. Dynamic tasks generate tasks in parallel. Airflow is industry standard for data pipelines.",
+  "example_code": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom airflow.operators.postgres_operator import PostgresOperator\nfrom datetime import datetime, timedelta\n\ndefault_args = {'start_date': datetime(2024,1,1), 'retries': 3, 'retry_delay': timedelta(minutes=5)}\n\ndag = DAG('etl_pipeline', default_args=default_args, schedule='0 2 * * *')\n\ntask1 = PythonOperator(task_id='extract', python_callable=extract_data, dag=dag)\ntask2 = PostgresOperator(task_id='load', sql='INSERT INTO table SELECT ...', dag=dag)\n\ntask1 >> task2",
+  "example_output": "DAG ejecutándose a las 2 AM diariamente, extrayendo datos, cargando en BD, retry automático si falla, monitoreo en web UI.",
+  "source": "https://airflow.apache.org/docs/"
+}

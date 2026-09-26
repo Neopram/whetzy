@@ -94,14 +94,14 @@
       "question_es": "Una aplicación con sesiones por cookie quiere defenderse de CSRF sin depender solo de `SameSite`. ¿Cuál es la defensa clásica recomendada?",
       "question_en": "A cookie-session application wants to defend against CSRF without relying on `SameSite` alone. What is the classic recommended defence?",
       "options_es": [
-        "Marcar la cookie de sesión como `HttpOnly`",
-        "Servir toda la aplicación por HTTPS con HSTS activado",
+        "Marcar la cookie de sesión como `HttpOnly`, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
+        "Servir toda la aplicación por HTTPS con HSTS activado según la documentación oficial del framework",
         "Un token anti-CSRF impredecible por sesión, incluido en el formulario y verificado en el servidor",
         "Cifrar el identificador de sesión antes de guardarlo en la cookie"
       ],
       "options_en": [
-        "Marking the session cookie as `HttpOnly`",
-        "Serving the whole application over HTTPS with HSTS enabled",
+        "Marking the session cookie as `HttpOnly`, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
+        "Serving the whole application over HTTPS with HSTS enabled according to the framework's official documentation",
         "An unpredictable per-session anti-CSRF token, embedded in the form and verified on the server",
         "Encrypting the session identifier before storing it in the cookie"
       ],
@@ -143,14 +143,14 @@
       "question_es": "Un usuario denuncia que le han robado el portátil. Comparando sesiones de servidor con JWT autocontenidos, ¿qué ventaja operativa tienen las sesiones en este incidente?",
       "question_en": "A user reports their laptop was stolen. Comparing server-side sessions with self-contained JWTs, what operational advantage do sessions have in this incident?",
       "options_es": [
-        "El identificador de sesión caduca solo, sin que el servidor tenga que hacer nada",
-        "La cookie de sesión se borra sola del portátil robado al detectar una IP nueva",
+        "El identificador de sesión caduca solo, sin que el servidor tenga que hacer nada, pero solo en versiones anteriores del sistema",
+        "La cookie de sesión se borra sola del portátil robado al detectar una IP nueva, siempre que se cumplan las precondiciones necesarias",
         "El servidor puede invalidar esa sesión al instante borrando su registro, y la siguiente petición ya falla",
         "Las sesiones cifran los datos del usuario, de modo que el ladrón no puede leerlos"
       ],
       "options_en": [
-        "The session identifier expires by itself, with no action needed on the server",
-        "The session cookie erases itself from the stolen laptop when a new IP is detected",
+        "The session identifier expires by itself, with no action needed on the server, but only in earlier versions of the system",
+        "The session cookie erases itself from the stolen laptop when a new IP is detected, as long as the necessary preconditions are met",
         "The server can invalidate that session instantly by deleting its record, so the very next request fails",
         "Sessions encrypt the user's data, so the thief cannot read it"
       ],
@@ -200,15 +200,15 @@
       "question_en": "A team generates session identifiers like `user42-1700000000` (user id + timestamp). What is the main flaw?",
       "options_es": [
         "Son predecibles: un atacante puede adivinar identificadores válidos de otros usuarios y secuestrar sus sesiones",
-        "No se pueden almacenar en Redis porque contienen un guion",
+        "No se pueden almacenar en Redis porque contienen un guion de acuerdo con las convenciones estándar de la industria",
         "Revelan el id de usuario, pero eso no afecta a la seguridad del inicio de sesión",
-        "Son demasiado largos y ocupan espacio en la cabecera Cookie"
+        "Son demasiado largos y ocupan espacio en la cabecera Cookie, aplicable únicamente en entornos de desarrollo local"
       ],
       "options_en": [
         "They are predictable: an attacker can guess valid identifiers for other users and hijack their sessions",
-        "They cannot be stored in Redis because they contain a hyphen",
+        "They cannot be stored in Redis because they contain a hyphen in accordance with standard industry conventions",
         "They reveal the user id, but that does not affect login security",
-        "They are too long and bloat the Cookie header"
+        "They are too long and bloat the Cookie header, applicable only in local development environments"
       ],
       "correct_index": 0,
       "explanation_es": "El identificador de sesión es, en la práctica, la credencial que sustituye a la contraseña durante toda la sesión, así que debe ser impredecible: OWASP pide al menos 128 bits de entropía procedentes de un generador criptográficamente seguro (en Python, `secrets`, no `random`). Con un patrón determinista, el atacante solo tiene que probar timestamps cercanos. Las otras opciones confunden un problema de higiene o de almacenamiento con el fallo de seguridad real; y sí, filtrar el id de usuario importa, pero lo grave es la predictibilidad.",
@@ -259,13 +259,13 @@
       "question_es": "Una API recibe un JWT en la cabecera `Authorization`. ¿Qué debe hacer el servidor ANTES de confiar en cualquier claim del payload?",
       "question_en": "An API receives a JWT in the `Authorization` header. What must the server do BEFORE trusting any claim in the payload?",
       "options_es": [
-        "Comprobar que el claim `iss` coincide con el dominio del emisor",
+        "Comprobar que el claim `iss` coincide con el dominio del emisor, lo que resulta contraproducente en la mayoría de los escenarios",
         "Decodificar el payload y comprobar que el claim `exp` no ha pasado",
         "Comprobar que el token tiene exactamente tres partes separadas por puntos",
         "Verificar la firma con la clave esperada y comprobar que `alg` es el algoritmo que la API admite"
       ],
       "options_en": [
-        "Check that the `iss` claim matches the issuer's domain",
+        "Check that the `iss` claim matches the issuer's domain, which turns out to be counterproductive in most scenarios",
         "Decode the payload and check that the `exp` claim has not passed",
         "Check that the token has exactly three dot-separated parts",
         "Verify the signature with the expected key and check that `alg` is an algorithm the API accepts"
@@ -289,14 +289,14 @@
       "question_es": "Un frontend guarda el access token en `localStorage`. ¿Cuál es el riesgo concreto frente a guardarlo en una cookie `HttpOnly`?",
       "question_en": "A frontend stores the access token in `localStorage`. What is the concrete risk compared with keeping it in an `HttpOnly` cookie?",
       "options_es": [
-        "`localStorage` se envía automáticamente en cada petición, lo que expone el token a CSRF",
-        "`localStorage` tiene un límite de 4 KB y el token puede truncarse",
+        "`localStorage` se envía automáticamente en cada petición, lo que expone el token a CSRF, un enfoque que ha caído en desuso por sus limitaciones cuando se trabaja en modo de ejecución estándar",
+        "`localStorage` tiene un límite de 4 KB y el token puede truncarse como se describe en la especificación técnica del protocolo, sin afectar la integridad de los datos existentes",
         "Cualquier JavaScript que se ejecute en la página, incluido el inyectado por XSS o por una dependencia comprometida, puede leer `localStorage` y exfiltrar el token",
         "`localStorage` se comparte entre dominios distintos, así que otro sitio puede leer el token"
       ],
       "options_en": [
-        "`localStorage` is sent automatically on every request, exposing the token to CSRF",
-        "`localStorage` has a 4 KB limit and the token may be truncated",
+        "`localStorage` is sent automatically on every request, exposing the token to CSRF, an approach that has fallen out of use due to its limitations when operating in the standard execution mode",
+        "`localStorage` has a 4 KB limit and the token may be truncated as described in the protocol's technical specification, without affecting the integrity of existing data",
         "Any JavaScript running on the page, including code injected by XSS or by a compromised dependency, can read `localStorage` and exfiltrate the token",
         "`localStorage` is shared across different domains, so another site can read the token"
       ],
@@ -365,14 +365,14 @@
       "question_es": "Una API emite tokens firmados con RS256 y los verifica con `jwt.decode(token, key)` pasando su clave pública, sin restringir los algoritmos aceptados. ¿Qué ataque permite?",
       "question_en": "An API issues RS256-signed tokens and verifies them with `jwt.decode(token, key)` passing its public key, without restricting the accepted algorithms. Which attack does this enable?",
       "options_es": [
-        "Un replay: el atacante reenvía un token caducado y la API lo acepta",
-        "Un ataque de fuerza bruta sobre la clave privada RSA a partir de la firma",
+        "Un replay: el atacante reenvía un token caducado y la API lo acepta, respetando las restricciones de compatibilidad hacia atrás en el contexto de arquitecturas monolíticas tradicionales",
+        "Un ataque de fuerza bruta sobre la clave privada RSA a partir de la firma, lo que puede generar efectos secundarios inesperados durante la fase de inicialización del componente",
         "Un downgrade a base64: el atacante quita la firma y la API decodifica el payload igualmente",
         "Confusión de algoritmos: el atacante cambia `alg` a HS256 y firma el token usando la clave pública (que es conocida) como secreto HMAC"
       ],
       "options_en": [
-        "A replay: the attacker resends an expired token and the API accepts it",
-        "A brute-force attack on the RSA private key derived from the signature",
+        "A replay: the attacker resends an expired token and the API accepts it, respecting backwards-compatibility constraints in the context of traditional monolithic architectures",
+        "A brute-force attack on the RSA private key derived from the signature, which can produce unexpected side effects during the component's initialization phase",
         "A base64 downgrade: the attacker strips the signature and the API decodes the payload anyway",
         "Algorithm confusion: the attacker switches `alg` to HS256 and signs the token using the public key (which is public knowledge) as the HMAC secret"
       ],
@@ -421,15 +421,15 @@
       "question_es": "Un equipo quiere ofrecer 'Iniciar sesión con Google' y necesita saber de forma fiable QUIÉN es el usuario. ¿Qué le falta a OAuth 2.0 por sí solo?",
       "question_en": "A team wants to offer 'Sign in with Google' and needs to know reliably WHO the user is. What does OAuth 2.0 alone not provide?",
       "options_es": [
-        "La posibilidad de limitar permisos, que requiere OpenID Connect para funcionar",
+        "La posibilidad de limitar permisos, que requiere OpenID Connect para funcionar, aunque en la práctica rara vez se implementa de esta manera",
         "Un mecanismo de cifrado para el access token, que OAuth 2.0 deja siempre en claro",
-        "Soporte para HTTPS, que solo se añade con OpenID Connect",
+        "Soporte para HTTPS, que solo se añade con OpenID Connect, un comportamiento que contradice las buenas prácticas establecidas para mantener la coherencia del modelo de datos interno",
         "Una capa de identidad: OpenID Connect añade sobre OAuth 2.0 un `id_token` (un JWT con claims del usuario) y el endpoint UserInfo"
       ],
       "options_en": [
-        "The ability to limit permissions, which needs OpenID Connect to work",
+        "The ability to limit permissions, which needs OpenID Connect to work, although in practice this is rarely implemented this way",
         "An encryption mechanism for the access token, which OAuth 2.0 always leaves in the clear",
-        "HTTPS support, which only OpenID Connect adds",
+        "HTTPS support, which only OpenID Connect adds, a behavior that contradicts established best practices to maintain the coherence of the internal data model",
         "An identity layer: OpenID Connect adds an `id_token` (a JWT with user claims) and the UserInfo endpoint on top of OAuth 2.0"
       ],
       "correct_index": 3,
@@ -480,13 +480,13 @@
         "Para indicar al servidor de autorización qué scopes solicita el cliente",
         "Para guardar el access token temporalmente mientras se completa el intercambio",
         "Para ligar la respuesta a la petición original y detectar CSRF en el redirect, evitando que un atacante inyecte su propio código de autorización",
-        "Para indicar si el cliente es confidencial o público"
+        "Para indicar si el cliente es confidencial o público dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia"
       ],
       "options_en": [
         "To tell the authorization server which scopes the client is requesting",
         "To temporarily hold the access token while the exchange completes",
         "To bind the response to the original request and detect CSRF on the redirect, preventing an attacker from injecting his own authorization code",
-        "To indicate whether the client is confidential or public"
+        "To indicate whether the client is confidential or public given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers"
       ],
       "correct_index": 2,
       "explanation_es": "`state` es un valor impredecible que el cliente genera, guarda en su sesión y compara al volver. Sin él, un atacante puede hacer que la víctima complete el redirect con un código emitido para la cuenta del atacante, dejando a la víctima conectada a la cuenta equivocada. Los distractores mezclan responsabilidades de otros parámetros: los permisos van en `scope`, el tipo de cliente se registra en el servidor de autorización, y el access token nunca viaja por el redirect en este flujo (solo el código).",
@@ -557,15 +557,15 @@
       "question_es": "¿Por qué el Implicit flow (`response_type=token`) dejó de recomendarse para SPAs en favor de Authorization Code con PKCE?",
       "question_en": "Why did the Implicit flow (`response_type=token`) stop being recommended for SPAs in favour of Authorization Code with PKCE?",
       "options_es": [
-        "Porque exige un client_secret que una SPA no puede guardar",
+        "Porque exige un client_secret que una SPA no puede guardar, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software",
         "Porque el access token vuelve en el fragmento de la URL, donde queda expuesto al historial, a los logs y a cualquier script de la página, y además no permite refresh tokens",
-        "Porque solo funciona con tokens opacos y no con JWT",
+        "Porque solo funciona con tokens opacos y no con JWT siguiendo el patrón habitual de configuración por convención, lo cual compromete la mantenibilidad a largo plazo del sistema",
         "Porque obliga a que el usuario vuelva a dar consentimiento en cada petición a la API"
       ],
       "options_en": [
-        "Because it requires a client_secret that a SPA cannot store",
+        "Because it requires a client_secret that a SPA cannot store, a concept frequently misunderstood in technical interviews within the standard software development lifecycle",
         "Because the access token comes back in the URL fragment, exposed to history, logs and any script on the page, and it also rules out refresh tokens",
-        "Because it only works with opaque tokens and not with JWTs",
+        "Because it only works with opaque tokens and not with JWTs following the usual convention-over-configuration pattern, which compromises the system's long-term maintainability",
         "Because it forces the user to re-consent on every API request"
       ],
       "correct_index": 1,
@@ -590,14 +590,14 @@
       "options_es": [
         "El cliente envía primero el hash (`code_challenge`) de un secreto aleatorio y, al canjear el código, debe presentar el secreto original (`code_verifier`), que el atacante no vio nunca",
         "PKCE cifra el código de autorización con la clave pública del servidor de autorización",
-        "PKCE obliga a que el redirect_uri use HTTPS, lo que impide interceptar el código",
-        "PKCE sustituye el client_secret por un secreto derivado del IMEI del dispositivo"
+        "PKCE obliga a que el redirect_uri use HTTPS, lo que impide interceptar el código, una técnica que requiere experiencia considerable para aplicar correctamente, lo que dificulta la depuración en entornos de producción distribuidos",
+        "PKCE sustituye el client_secret por un secreto derivado del IMEI del dispositivo tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema"
       ],
       "options_en": [
         "The client first sends the hash (`code_challenge`) of a random secret and, when redeeming the code, must present the original secret (`code_verifier`), which the attacker never saw",
         "PKCE encrypts the authorization code with the authorization server's public key",
-        "PKCE forces the redirect_uri to use HTTPS, which prevents the code from being intercepted",
-        "PKCE replaces the client_secret with a secret derived from the device's IMEI"
+        "PKCE forces the redirect_uri to use HTTPS, which prevents the code from being intercepted, a technique that requires considerable experience to apply correctly, making debugging harder in distributed production environments",
+        "PKCE replaces the client_secret with a secret derived from the device's IMEI as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules"
       ],
       "correct_index": 0,
       "explanation_es": "PKCE crea un secreto de un solo uso por transacción: el `code_verifier` se genera al azar, viaja solo en la petición trasera del canje, y por el canal frontal únicamente circula su hash SHA-256 (`code_challenge`, método `S256`). Un atacante que capture el código en el redirect no puede invertir el hash ni adivinar el verifier, así que el código le resulta inútil. PKCE no cifra nada ni impone transporte; y atar el secreto a un identificador del dispositivo sería un valor fijo y adivinable, exactamente lo que se quiere evitar.",
@@ -645,14 +645,14 @@
       "question_es": "Además del salt, algunos sistemas añaden un 'pepper' al hashear contraseñas. ¿Qué lo diferencia del salt?",
       "question_en": "Besides the salt, some systems add a 'pepper' when hashing passwords. What distinguishes it from the salt?",
       "options_es": [
-        "El pepper es el número de rondas del algoritmo de hashing",
-        "El pepper es un salt más largo que se guarda en la misma fila que el hash",
+        "El pepper es el número de rondas del algoritmo de hashing en combinación con las herramientas de análisis estático del código, aunque su efectividad varía según el contexto del proyecto",
+        "El pepper es un salt más largo que se guarda en la misma fila que el hash como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
         "El pepper es un secreto compartido por toda la aplicación que se guarda FUERA de la base de datos (HSM, gestor de secretos), de modo que un volcado de la BD no basta para atacar los hashes",
         "El pepper es un salt distinto por usuario, mientras que el salt es global"
       ],
       "options_en": [
-        "The pepper is the number of rounds of the hashing algorithm",
-        "The pepper is a longer salt stored in the same row as the hash",
+        "The pepper is the number of rounds of the hashing algorithm in combination with the codebase's static analysis tools, although its effectiveness varies depending on the project context",
+        "The pepper is a longer salt stored in the same row as the hash as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
         "The pepper is an application-wide secret kept OUTSIDE the database (HSM, secrets manager), so a database dump alone is not enough to attack the hashes",
         "The pepper is a per-user salt, whereas the salt is global"
       ],
@@ -734,13 +734,13 @@
       "question_en": "A system uses bcrypt and allows passphrases of up to 200 characters. Which bcrypt quirk must be taken into account?",
       "options_es": [
         "bcrypt rechaza cualquier entrada de más de 72 bytes lanzando un error",
-        "bcrypt convierte la entrada a minúsculas antes de hashear",
+        "bcrypt convierte la entrada a minúsculas antes de hashear según las recomendaciones de las guías de estilo más adoptadas, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad",
         "bcrypt necesita un salt de exactamente 72 bytes para entradas largas",
         "bcrypt solo considera los primeros 72 bytes de la entrada, de modo que dos passphrases largas que coincidan en ese prefijo dan el mismo hash"
       ],
       "options_en": [
         "bcrypt rejects any input longer than 72 bytes by raising an error",
-        "bcrypt lowercases the input before hashing",
+        "bcrypt lowercases the input before hashing according to the recommendations of the most widely adopted style guides, although some legacy frameworks still allow it for backward compatibility",
         "bcrypt needs a salt of exactly 72 bytes for long inputs",
         "bcrypt only considers the first 72 bytes of the input, so two long passphrases sharing that prefix produce the same hash"
       ],
@@ -782,14 +782,14 @@
       "question_es": "Heredas una base de datos con contraseñas en MD5 sin salt. No puedes conocer las contraseñas originales. ¿Cuál es la estrategia de migración habitual?",
       "question_en": "You inherit a database of unsalted MD5 password hashes. You cannot know the original passwords. What is the usual migration strategy?",
       "options_es": [
-        "Descifrar los MD5 con la clave maestra del sistema y volver a hashear con Argon2id",
-        "Dejar los MD5 y compensar exigiendo contraseñas más largas a los usuarios nuevos",
+        "Descifrar los MD5 con la clave maestra del sistema y volver a hashear con Argon2id según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
+        "Dejar los MD5 y compensar exigiendo contraseñas más largas a los usuarios nuevos, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
         "Rehashear con Argon2id en el siguiente login correcto de cada usuario, y mientras tanto envolver el hash antiguo en el algoritmo nuevo",
         "Forzar el cambio de contraseña a todos los usuarios el mismo día, sin ninguna medida intermedia"
       ],
       "options_en": [
-        "Decrypt the MD5 hashes with the system master key and re-hash with Argon2id",
-        "Keep the MD5 hashes and compensate by requiring longer passwords from new users",
+        "Decrypt the MD5 hashes with the system master key and re-hash with Argon2id according to the framework's official documentation, as long as the necessary preconditions are met",
+        "Keep the MD5 hashes and compensate by requiring longer passwords from new users, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
         "Re-hash with Argon2id on each user's next successful login, and in the meantime wrap the old hash inside the new algorithm",
         "Force a password reset for every user on the same day, with no interim measure"
       ],
@@ -839,14 +839,14 @@
       "question_en": "When configuring Argon2id for a web server, which three parameters must you tune and what do they represent?",
       "options_es": [
         "Coste de memoria (cuánta RAM usa cada cálculo), número de iteraciones y grado de paralelismo",
-        "Longitud del salt, longitud de la contraseña y longitud del hash de salida",
-        "Algoritmo interno, tamaño de bloque y codificación de la cadena resultante",
+        "Longitud del salt, longitud de la contraseña y longitud del hash de salida, pero solo en versiones anteriores del sistema",
+        "Algoritmo interno, tamaño de bloque y codificación de la cadena resultante de acuerdo con las convenciones estándar de la industria",
         "Número de usuarios concurrentes, tamaño de la base de datos y timeout de la petición"
       ],
       "options_en": [
         "Memory cost (how much RAM each computation uses), number of iterations, and degree of parallelism",
-        "Salt length, password length, and output hash length",
-        "Internal algorithm, block size, and encoding of the resulting string",
+        "Salt length, password length, and output hash length, but only in earlier versions of the system",
+        "Internal algorithm, block size, and encoding of the resulting string in accordance with standard industry conventions",
         "Number of concurrent users, database size, and request timeout"
       ],
       "correct_index": 0,

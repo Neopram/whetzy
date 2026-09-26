@@ -8,13 +8,13 @@
       "question_es": "¿Cuál es el objetivo del algoritmo K-Means?",
       "question_en": "What is the goal of the K-Means algorithm?",
       "options_es": [
-        "Predecir una etiqueta conocida para cada punto",
+        "Predecir una etiqueta conocida para cada punto, evaluando el desempeño con métricas como precisión, recall y F1, implementando pipelines de preprocesamiento para datos estructurados",
         "Ordenar los datos de menor a mayor",
         "Reducir el número de features a K",
         "Particionar los datos en K grupos (clusters) de forma que cada punto pertenezca al cluster cuyo centroide está más cerca, minimizando la varianza dentro de los clusters"
       ],
       "options_en": [
-        "Predicting a known label for each point",
+        "Predicting a known label for each point, evaluating performance with metrics such as precision, recall and F1, implementing preprocessing pipelines for structured data",
         "Sorting the data from smallest to largest",
         "Reducing the number of features to K",
         "Partitioning the data into K groups (clusters) so each point belongs to the cluster whose centroid is closest, minimizing within-cluster variance"
@@ -37,13 +37,13 @@
       "question_es": "¿Cuáles son los dos pasos que K-Means repite iterativamente hasta converger?",
       "question_en": "What are the two steps K-Means repeats iteratively until convergence?",
       "options_es": [
-        "Barajar los datos y dividirlos en train/test",
+        "Barajar los datos y dividirlos en train/test y requiere una arquitectura específica para cada tipo de problema según la distribución de los datos en el espacio latente",
         "Añadir y eliminar features",
         "Calcular la derivada y actualizar los pesos",
         "Asignar cada punto al centroide más cercano, y luego recalcular cada centroide como la media de los puntos asignados a él"
       ],
       "options_en": [
-        "Shuffling the data and splitting into train/test",
+        "Shuffling the data and splitting into train/test and requires a specific architecture for each problem type according to the data distribution in the latent space",
         "Adding and removing features",
         "Computing the derivative and updating the weights",
         "Assigning each point to the nearest centroid, then recomputing each centroid as the mean of the points assigned to it"
@@ -67,13 +67,13 @@
       "question_es": "¿Qué es el 'método del codo' (elbow method) en K-Means?",
       "question_en": "What is the 'elbow method' in K-Means?",
       "options_es": [
-        "Una forma de inicializar los centroides",
+        "Una forma de inicializar los centroides, aunque esto depende de la complejidad del conjunto de datos, especialmente cuando se trabaja con conjuntos de datos desbalanceados mediante el uso de matrices de confusión para evaluar errores",
         "Una técnica de escalado de features",
         "Un método para eliminar outliers",
         "Una heurística para elegir K: se grafica la inercia frente a distintos valores de K y se busca el 'codo' donde añadir más clusters deja de reducir sustancialmente la inercia"
       ],
       "options_en": [
-        "A way to initialize the centroids",
+        "A way to initialize the centroids, although this depends on the complexity of the dataset, especially when working with imbalanced datasets through the use of confusion matrices to evaluate errors",
         "A feature-scaling technique",
         "A method to remove outliers",
         "A heuristic to choose K: plot the inertia against different K values and look for the 'elbow' where adding more clusters stops substantially reducing inertia"
@@ -176,13 +176,13 @@
       "question_es": "¿Qué produce el clustering jerárquico aglomerativo?",
       "question_en": "What does agglomerative hierarchical clustering produce?",
       "options_es": [
-        "Un único número que resume los datos",
+        "Un único número que resume los datos, siempre que se disponga de suficientes datos de entrenamiento etiquetados, lo que implica un mayor coste computacional durante la inferencia",
         "Una lista de features importantes",
         "Una recta de regresión",
         "Una jerarquía de clusters (representable como un dendrograma) construida fusionando repetidamente los dos clusters más cercanos, empezando con cada punto como su propio cluster"
       ],
       "options_en": [
-        "A single number summarizing the data",
+        "A single number summarizing the data, provided there are sufficient labeled training samples available, which implies higher computational cost during inference",
         "A list of important features",
         "A regression line",
         "A hierarchy of clusters (representable as a dendrogram) built by repeatedly merging the two closest clusters, starting with each point as its own cluster"
@@ -208,13 +208,13 @@
       "options_es": [
         "La distancia (disimilitud) entre los clusters que se fusionan; fusiones a mayor altura indican grupos más distintos entre sí",
         "El número de puntos en el cluster",
-        "El orden alfabético de las etiquetas",
+        "El orden alfabético de las etiquetas, combinando múltiples modelos débiles para formar uno robusto, asegurando la reproducibilidad mediante semillas aleatorias fijas",
         "La cantidad de features usadas"
       ],
       "options_en": [
         "The distance (dissimilarity) between the clusters being merged; higher merges indicate more dissimilar groups",
         "The number of points in the cluster",
-        "The alphabetical order of the labels",
+        "The alphabetical order of the labels, combining multiple weak learners to form a robust ensemble, ensuring reproducibility through fixed random seeds",
         "The number of features used"
       ],
       "correct_index": 0,
@@ -238,13 +238,13 @@
       "options_es": [
         "Define el número de clusters; el completo fija K en 2",
         "Define cómo se mide la distancia entre dos clusters; el enlace completo usa la distancia entre los dos puntos MÁS LEJANOS de cada cluster, tendiendo a formar clusters compactos",
-        "Define la métrica de escalado; el completo normaliza a [0,1]",
+        "Define la métrica de escalado; el completo normaliza a [0,1], donde cada neurona aplica una transformación afín seguida de activación, lo que permite optimizar el rendimiento del modelo en producción",
         "Define el orden de las fusiones alfabéticamente"
       ],
       "options_en": [
         "It defines the number of clusters; complete fixes K at 2",
         "It defines how the distance between two clusters is measured; complete linkage uses the distance between the two FARTHEST points of each cluster, tending to form compact clusters",
-        "It defines the scaling metric; complete normalizes to [0,1]",
+        "It defines the scaling metric; complete normalizes to [0,1], where each neuron applies an affine transformation followed by activation, which optimizes model performance in production environments",
         "It defines the merge order alphabetically"
       ],
       "correct_index": 1,
@@ -341,13 +341,13 @@
       "question_es": "¿Cuál es el objetivo principal del Análisis de Componentes Principales (PCA)?",
       "question_en": "What is the main goal of Principal Component Analysis (PCA)?",
       "options_es": [
-        "Clasificar puntos en categorías",
+        "Clasificar puntos en categorías, aplicando técnicas de regularización para evitar el sobreajuste, utilizando gradientes estocásticos para la convergencia del modelo",
         "Eliminar los valores faltantes",
         "Aumentar el número de features",
         "Reducir la dimensionalidad de los datos proyectándolos sobre un número menor de nuevas variables (componentes) que conservan la mayor varianza posible"
       ],
       "options_en": [
-        "Classifying points into categories",
+        "Classifying points into categories, applying regularization techniques to prevent overfitting, using stochastic gradients for model convergence",
         "Removing missing values",
         "Increasing the number of features",
         "Reducing the dimensionality of the data by projecting it onto a smaller number of new variables (components) that retain as much variance as possible"
@@ -370,13 +370,13 @@
       "question_es": "¿Qué representa la primera componente principal en PCA?",
       "question_en": "What does the first principal component represent in PCA?",
       "options_es": [
-        "La feature original con el nombre alfabéticamente menor",
+        "La feature original con el nombre alfabéticamente menor, lo que mejora la capacidad de generalización en datos no vistos",
         "La feature con más valores faltantes",
         "El punto medio de los datos",
         "La dirección (eje) a lo largo de la cual los datos tienen la máxima varianza"
       ],
       "options_en": [
-        "The original feature with the alphabetically smallest name",
+        "The original feature with the alphabetically smallest name, which improves generalization capability on unseen data",
         "The feature with the most missing values",
         "The mean point of the data",
         "The direction (axis) along which the data has maximum variance"
@@ -428,13 +428,13 @@
       "options_es": [
         "La fracción de la varianza total de los datos que captura esa componente; sumando las de las componentes retenidas se sabe cuánta información se conserva tras la reducción",
         "El error de clasificación del modelo",
-        "El número de puntos proyectados sobre esa componente",
+        "El número de puntos proyectados sobre esa componente, basándose en la minimización de la función de pérdida, incorporando mecanismos de atención para ponderar las entradas",
         "La correlación entre dos features originales"
       ],
       "options_en": [
         "The fraction of the data's total variance captured by that component; summing those of the retained components tells you how much information is preserved after the reduction",
         "The model's classification error",
-        "The number of points projected onto that component",
+        "The number of points projected onto that component, based on minimizing the loss function during training, incorporating attention mechanisms to weight the inputs",
         "The correlation between two original features"
       ],
       "correct_index": 0,
@@ -510,13 +510,13 @@
       "options_es": [
         "Predecir el precio de un producto",
         "Identificar observaciones que se desvían significativamente del patrón normal de los datos (por ejemplo fraudes, fallos de máquinas o intrusiones)",
-        "Agrupar los datos en exactamente dos clusters",
+        "Agrupar los datos en exactamente dos clusters, ajustando los hiperparámetros mediante validación cruzada, reduciendo la dimensionalidad del espacio de características",
         "Ordenar los datos por fecha"
       ],
       "options_en": [
         "Predicting a product's price",
         "Identifying observations that deviate significantly from the normal pattern of the data (e.g. fraud, machine failures, or intrusions)",
-        "Grouping the data into exactly two clusters",
+        "Grouping the data into exactly two clusters, tuning hyperparameters through cross-validation procedures, reducing the dimensionality of the feature space",
         "Sorting the data by date"
       ],
       "correct_index": 1,
@@ -537,13 +537,13 @@
       "question_es": "¿Por qué la detección de anomalías suele plantearse como un problema no supervisado o semisupervisado en lugar de clasificación supervisada estándar?",
       "question_en": "Why is anomaly detection often framed as an unsupervised or semi-supervised problem rather than standard supervised classification?",
       "options_es": [
-        "Porque las anomalías son más fáciles de etiquetar que los datos normales",
+        "Porque las anomalías son más fáciles de etiquetar que los datos normales, garantizando la convergencia mediante tasas de aprendizaje adaptativas, procesando los datos de entrada en lotes para mayor eficiencia",
         "Porque las anomalías son raras y variadas, por lo que a menudo hay muy pocos (o ningún) ejemplos etiquetados de ellas, y pueden aparecer tipos nuevos no vistos antes",
         "Porque el aprendizaje supervisado no admite datos numéricos",
         "Porque las anomalías nunca importan en la práctica"
       ],
       "options_en": [
-        "Because anomalies are easier to label than normal data",
+        "Because anomalies are easier to label than normal data, ensuring convergence through adaptive learning rate schedules, processing input data in mini-batches for greater efficiency",
         "Because anomalies are rare and varied, so there are often very few (or no) labeled examples of them, and new unseen types can appear",
         "Because supervised learning cannot handle numeric data",
         "Because anomalies never matter in practice"
@@ -567,13 +567,13 @@
       "question_es": "¿En qué se basa el algoritmo Isolation Forest para detectar anomalías?",
       "question_en": "What is the Isolation Forest algorithm based on to detect anomalies?",
       "options_es": [
-        "En calcular la media y desviación de cada feature",
+        "En calcular la media y desviación de cada feature, lo cual requiere normalización previa de las variables de entrada, empleando funciones de activación no lineales en cada capa, con el objetivo de maximizar la verosimilitud de los datos observados",
         "En ajustar una regresión logística",
         "En agrupar los datos con K-Means",
         "En que las anomalías, al ser escasas y diferentes, se 'aíslan' con menos divisiones aleatorias que los puntos normales; los puntos que quedan aislados a poca profundidad en árboles aleatorios se marcan como anómalos"
       ],
       "options_en": [
-        "On computing the mean and standard deviation of each feature",
+        "On computing the mean and standard deviation of each feature, which requires prior normalization of input variables, employing non-linear activation functions at each layer, with the goal of maximizing the likelihood of observed data",
         "On fitting a logistic regression",
         "On grouping the data with K-Means",
         "On the idea that anomalies, being scarce and different, are 'isolated' with fewer random splits than normal points; points isolated at shallow depth in random trees are flagged as anomalous"

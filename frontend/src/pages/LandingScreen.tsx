@@ -117,8 +117,7 @@ export default function LandingScreen() {
     if (i18n.language !== l) void i18n.changeLanguage(l);
     document.documentElement.lang = l;
     try {
-      // Misma clave que services/api.ts: la que escribe el login.
-      setHasSession(Boolean(localStorage.getItem('whetzy_access_token')));
+      setHasSession(document.cookie.split(';').some((c) => c.trim().startsWith('whetzy_logged_in=')));
     } catch {
       setHasSession(false);
     }

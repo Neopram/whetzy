@@ -1,0 +1,12 @@
+{
+  "id": "l290202",
+  "skill_id": "sk290202",
+  "title_es": "Mocking y Fixtures",
+  "title_en": "Mocking and Fixtures",
+  "body_es": "Las fixtures en pytest son funciones que preparan datos o recursos necesarios para las pruebas, eliminando duplicación y mejorando la legibilidad. Se definen con el decorador @pytest.fixture y pueden tener alcances como function, class o session. El mocking reemplaza objetos reales (como APIs externas o bases de datos) con versiones falsas controlables, permitiendo aislar el código a probar. unittest.mock proporciona Mock y patch para crear estos doubles de prueba. Juntos, fixtures y mocking permiten pruebas rápidas, confiables y aisladas del mundo externo.",
+  "body_en": "Fixtures in pytest are functions that prepare data or resources needed for tests, eliminating duplication and improving readability. They're defined with the @pytest.fixture decorator and can have scopes like function, class, or session. Mocking replaces real objects (like external APIs or databases) with controllable fake versions, allowing you to isolate code under test. unittest.mock provides Mock and patch to create these test doubles. Together, fixtures and mocking enable fast, reliable tests isolated from the outside world.",
+  "example_code": "import pytest\nfrom unittest.mock import Mock, patch\n\n@pytest.fixture\ndef user_data():\n    return {'id': 1, 'name': 'John', 'email': 'john@example.com'}\n\ndef test_get_user_with_fixture(user_data):\n    assert user_data['name'] == 'John'\n\n@patch('requests.get')\ndef test_api_call(mock_get):\n    mock_get.return_value.status_code = 200\n    mock_get.return_value.json.return_value = {'status': 'ok'}\n    \n    response = mock_get('https://api.example.com')\n    assert response.status_code == 200",
+  "example_output": "test_get_user_with_fixture PASSED\ntest_api_call PASSED\n2 passed in 0.08s",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 2
+}
