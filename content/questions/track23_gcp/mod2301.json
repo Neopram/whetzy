@@ -1088,20 +1088,20 @@
       "question_es": "¿Cómo gestiona GKE la carga entre nodos?",
       "question_en": "How does GKE manage load across nodes?",
       "options_es": [
-        "Menor escalabilidad independientemente del contexto aplicado",
-        "Sin soporte para múltiples zonas",
-        "Gestión automática de clusters y orquestación",
-        "Requiere gestión manual"
+        "Cada nodo recibe siempre la misma cantidad de peticiones fijas",
+        "El tráfico se asigna al nodo con más CPU libre del proyecto",
+        "Un Service reparte el tráfico entre los pods y un balanceador de carga de Google lo expone",
+        "Los usuarios eligen manualmente el nodo al que conectarse"
       ],
       "options_en": [
-        "Lower scalability regardless of the applied context",
-        "No multi-zone support",
-        "Automatic cluster management and orchestration",
-        "Requires manual management"
+        "Each node always receives the same fixed number of requests",
+        "Traffic goes to the node with the most free CPU in the project",
+        "A Service spreads traffic across pods and a Google load balancer exposes it",
+        "Users manually pick which node to connect to"
       ],
       "correct_index": 2,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "En GKE el tráfico no se dirige a nodos concretos: un Service de Kubernetes reparte las peticiones entre los pods que cumplen su selector y, con tipo LoadBalancer o un Ingress, Google Cloud Load Balancing lo expone hacia fuera. Elegir nodos a mano o por CPU libre no es cómo funciona el plano de datos.",
+      "explanation_en": "In GKE traffic is not aimed at specific nodes: a Kubernetes Service spreads requests across the pods matching its selector and, with type LoadBalancer or an Ingress, Google Cloud Load Balancing exposes it. Picking nodes by hand or by free CPU is not how the data plane works.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1111,20 +1111,20 @@
       "question_es": "¿Qué es el autoscaling en GKE?",
       "question_en": "What is autoscaling in GKE?",
       "options_es": [
-        "Menor escalabilidad de forma invariable y constante",
-        "Requiere gestión manual",
-        "Sin soporte para múltiples zonas",
-        "Gestión automática de clusters y orquestación"
+        "Aumentar la CPU de cada nodo sin reiniciarlo",
+        "Programar reinicios nocturnos de todos los pods",
+        "Copiar el clúster a otra región cuando falla",
+        "Ajustar automáticamente el número de pods o de nodos según la demanda"
       ],
       "options_en": [
-        "Lower scalability invariably and constantly",
-        "Requires manual management",
-        "No multi-zone support",
-        "Automatic cluster management and orchestration"
+        "Raising each node's CPU without restarting it",
+        "Scheduling nightly restarts of every pod",
+        "Copying the cluster to another region when it fails",
+        "Automatically adjusting the number of pods or nodes to demand"
       ],
       "correct_index": 3,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "El autoscaling en GKE combina el Horizontal Pod Autoscaler, que cambia el número de réplicas según métricas, y el cluster autoscaler, que añade o quita nodos cuando faltan o sobran recursos. No redimensiona la CPU de un nodo en caliente ni replica el clúster entre regiones.",
+      "explanation_en": "Autoscaling in GKE combines the Horizontal Pod Autoscaler, which changes the replica count based on metrics, and the cluster autoscaler, which adds or removes nodes when resources run short or sit idle. It does not resize a node's CPU live or replicate the cluster across regions.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1134,20 +1134,20 @@
       "question_es": "¿Cómo se actualizan los nodos en GKE?",
       "question_en": "How are nodes updated in GKE?",
       "options_es": [
-        "Requiere gestión manual",
-        "Menor escalabilidad en todos los casos posibles",
-        "Sin soporte para múltiples zonas",
-        "Gestión automática de clusters y orquestación"
+        "Borrando el clúster y creándolo de nuevo con la versión nueva",
+        "Ejecutando apt upgrade por SSH en cada nodo a mano",
+        "Los nodos nunca se actualizan una vez creados",
+        "Con actualizaciones automáticas o manuales del grupo de nodos, que los drena y reemplaza de forma progresiva"
       ],
       "options_en": [
-        "Requires manual management",
-        "Lower scalability in all possible cases",
-        "No multi-zone support",
-        "Automatic cluster management and orchestration"
+        "By deleting the cluster and recreating it on the new version",
+        "By running apt upgrade over SSH on each node by hand",
+        "Nodes are never upgraded once created",
+        "With automatic or manual node pool upgrades that drain and replace nodes progressively"
       ],
       "correct_index": 3,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "GKE actualiza los grupos de nodos (automáticamente o cuando lo pides) con una estrategia progresiva: drena cada nodo, mueve sus pods y lo sustituye por uno con la versión nueva. Recrear el clúster o parchear por SSH rompe la disponibilidad y va contra el modelo gestionado.",
+      "explanation_en": "GKE upgrades node pools (automatically or on request) with a rolling strategy: it drains each node, moves its pods and replaces it with a node on the new version. Recreating the cluster or patching over SSH breaks availability and goes against the managed model.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1157,20 +1157,20 @@
       "question_es": "¿Qué es un pod en Kubernetes?",
       "question_en": "What is a pod in Kubernetes?",
       "options_es": [
-        "Gestión automática de clusters y orquestación",
-        "Menor escalabilidad sin considerar otros factores relevantes",
-        "Sin soporte para múltiples zonas",
-        "Requiere gestión manual"
+        "La unidad mínima que se despliega: uno o varios contenedores que comparten red y almacenamiento",
+        "Una máquina virtual completa dentro del clúster",
+        "Un grupo de nodos con la misma configuración",
+        "Un fichero YAML que describe todo el clúster"
       ],
       "options_en": [
-        "Automatic cluster management and orchestration",
-        "Lower scalability without considering other relevant factors",
-        "No multi-zone support",
-        "Requires manual management"
+        "The smallest deployable unit: one or more containers sharing network and storage",
+        "A full virtual machine inside the cluster",
+        "A group of nodes with the same configuration",
+        "A YAML file that describes the whole cluster"
       ],
       "correct_index": 0,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "Un pod es la unidad más pequeña que Kubernetes programa: agrupa uno o varios contenedores que comparten la misma IP, puertos y volúmenes. Un grupo de nodos iguales es un node pool, y una máquina virtual es un nodo, no un pod.",
+      "explanation_en": "A pod is the smallest unit Kubernetes schedules: it groups one or more containers that share the same IP, ports and volumes. A group of identical nodes is a node pool, and a virtual machine is a node, not a pod.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1180,20 +1180,20 @@
       "question_es": "¿Cuál es la diferencia entre un deployment y un stateful set?",
       "question_en": "What is the difference between a deployment and a stateful set?",
       "options_es": [
-        "Requiere gestión manual",
-        "Menor escalabilidad independientemente del contexto aplicado",
-        "Sin soporte para múltiples zonas",
-        "Gestión automática de clusters y orquestación"
+        "El Deployment solo funciona con una réplica",
+        "El StatefulSet no puede escalar más allá de un pod",
+        "No hay diferencia; son nombres distintos del mismo objeto",
+        "El StatefulSet da a cada réplica una identidad estable y su propio almacenamiento persistente"
       ],
       "options_en": [
-        "Requires manual management",
-        "Lower scalability regardless of the applied context",
-        "No multi-zone support",
-        "Automatic cluster management and orchestration"
+        "A Deployment only works with a single replica",
+        "A StatefulSet cannot scale beyond one pod",
+        "There is no difference; they are two names for the same object",
+        "A StatefulSet gives each replica a stable identity and its own persistent storage"
       ],
       "correct_index": 3,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "Un Deployment trata sus réplicas como intercambiables, lo que encaja con servicios sin estado. Un StatefulSet mantiene nombres estables (app-0, app-1…) y un volumen persistente por réplica, que es lo que necesitan bases de datos o colas.",
+      "explanation_en": "A Deployment treats its replicas as interchangeable, which suits stateless services. A StatefulSet keeps stable names (app-0, app-1…) and one persistent volume per replica, which is what databases or queues need.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1203,20 +1203,20 @@
       "question_es": "¿Cómo se configura el networking en GKE?",
       "question_en": "How is networking configured in GKE?",
       "options_es": [
-        "Gestión automática de clusters y orquestación",
-        "Requiere gestión manual",
-        "Menor escalabilidad sin excepciones ni variantes",
-        "Sin soporte para múltiples zonas"
+        "Con una red VPC: los pods reciben IP de rangos secundarios de la subred (clúster nativo de VPC)",
+        "Cada pod necesita una IP pública para comunicarse",
+        "Los nodos se conectan entre sí solo por VPN",
+        "GKE no permite comunicación entre pods de distintos nodos"
       ],
       "options_en": [
-        "Automatic cluster management and orchestration",
-        "Requires manual management",
-        "Lower scalability without exceptions or variants",
-        "No multi-zone support"
+        "Through a VPC network: pods get IPs from the subnet's secondary ranges (VPC-native cluster)",
+        "Every pod needs a public IP to communicate",
+        "Nodes only connect to each other over VPN",
+        "GKE does not allow communication between pods on different nodes"
       ],
       "correct_index": 0,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "En un clúster nativo de VPC, GKE asigna a los pods y a los Services direcciones de rangos secundarios de la subred, así que son enrutables dentro de la VPC sin IP públicas. Los pods de nodos distintos se comunican directamente por esa red.",
+      "explanation_en": "In a VPC-native cluster, GKE gives pods and Services addresses from the subnet's secondary ranges, so they are routable inside the VPC without public IPs. Pods on different nodes talk to each other directly over that network.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1226,20 +1226,20 @@
       "question_es": "¿Qué es Istio en el contexto de GKE?",
       "question_en": "What is Istio in the context of GKE?",
       "options_es": [
-        "Sin soporte para múltiples zonas",
-        "Requiere gestión manual",
-        "Menor escalabilidad de forma invariable y constante",
-        "Gestión automática de clusters y orquestación"
+        "El sistema de ficheros por defecto de los nodos de GKE",
+        "El nombre del plano de control que crea los clústeres",
+        "Una base de datos gestionada para guardar métricas",
+        "Una malla de servicios que gestiona el tráfico, el mTLS y la observabilidad entre microservicios"
       ],
       "options_en": [
-        "No multi-zone support",
-        "Requires manual management",
-        "Lower scalability invariably and constantly",
-        "Automatic cluster management and orchestration"
+        "The default file system of GKE nodes",
+        "The name of the control plane that creates clusters",
+        "A managed database for storing metrics",
+        "A service mesh that handles traffic, mTLS and observability between microservices"
       ],
       "correct_index": 3,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "Istio es una malla de servicios: añade proxies junto a cada servicio para controlar el enrutamiento, cifrar el tráfico entre servicios con mTLS y recoger métricas y trazas. No crea clústeres ni almacena datos; en Google Cloud su versión gestionada es Cloud Service Mesh.",
+      "explanation_en": "Istio is a service mesh: it adds proxies next to each service to control routing, encrypt service-to-service traffic with mTLS and collect metrics and traces. It does not create clusters or store data; its managed version on Google Cloud is Cloud Service Mesh.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1249,20 +1249,20 @@
       "question_es": "¿Cómo se implementa el auto-scaling horizontal?",
       "question_en": "How is horizontal auto-scaling implemented?",
       "options_es": [
-        "Requiere gestión manual",
-        "Sin soporte para múltiples zonas",
-        "Menor escalabilidad según la documentación estándar del servicio",
-        "Gestión automática de clusters y orquestación"
+        "Aumentando la memoria de cada pod mientras se ejecuta",
+        "Creando manualmente un Deployment nuevo en cada pico",
+        "Activando la opción de alta disponibilidad del proyecto",
+        "Con un HorizontalPodAutoscaler que cambia el número de réplicas según métricas como la CPU"
       ],
       "options_en": [
-        "Requires manual management",
-        "No multi-zone support",
-        "Lower scalability according to standard service documentation",
-        "Automatic cluster management and orchestration"
+        "Increasing each pod's memory while it runs",
+        "Manually creating a new Deployment at every peak",
+        "Turning on the project's high-availability option",
+        "With a HorizontalPodAutoscaler that changes the replica count based on metrics such as CPU"
       ],
       "correct_index": 3,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "El escalado horizontal añade o quita réplicas; en Kubernetes lo hace el HorizontalPodAutoscaler comparando una métrica (CPU, memoria o una propia) con su objetivo. Subir la memoria de un pod es escalado vertical, que es otra cosa.",
+      "explanation_en": "Horizontal scaling adds or removes replicas; in Kubernetes the HorizontalPodAutoscaler does it by comparing a metric (CPU, memory or a custom one) with its target. Raising a pod's memory is vertical scaling, which is something else.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1272,20 +1272,20 @@
       "question_es": "¿Qué es Prometheus en GKE?",
       "question_en": "What is Prometheus in GKE?",
       "options_es": [
-        "Requiere gestión manual",
-        "Gestión automática de clusters y orquestación",
-        "Sin soporte para múltiples zonas",
-        "Menor escalabilidad en cualquier escenario de implementación"
+        "Un balanceador de carga para el tráfico HTTP",
+        "Un sistema de monitorización que recoge métricas como series temporales",
+        "El servicio que actualiza los nodos del clúster",
+        "Un gestor de secretos para las credenciales"
       ],
       "options_en": [
-        "Requires manual management",
-        "Automatic cluster management and orchestration",
-        "No multi-zone support",
-        "Lower scalability in any implementation scenario"
+        "A load balancer for HTTP traffic",
+        "A monitoring system that collects metrics as time series",
+        "The service that upgrades the cluster's nodes",
+        "A secrets manager for credentials"
       ],
       "correct_index": 1,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "Prometheus recoge métricas de aplicaciones y del clúster, las guarda como series temporales y permite consultarlas y crear alertas. En GKE existe su versión gestionada (Managed Service for Prometheus); no enruta tráfico ni guarda secretos.",
+      "explanation_en": "Prometheus scrapes metrics from applications and the cluster, stores them as time series and lets you query them and set alerts. GKE offers a managed version (Managed Service for Prometheus); it does not route traffic or store secrets.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1295,20 +1295,20 @@
       "question_es": "¿Cómo se manejan los secrets en GKE?",
       "question_en": "How are secrets managed in GKE?",
       "options_es": [
-        "Gestión automática de clusters y orquestación",
-        "Requiere gestión manual",
-        "Sin soporte para múltiples zonas",
-        "Menor escalabilidad sin excepciones ni variantes"
+        "Como objetos Secret de Kubernetes, que pueden cifrarse con claves de Cloud KMS o sincronizarse con Secret Manager",
+        "Escribiéndolos en la imagen del contenedor",
+        "Guardándolos como variables en el Dockerfile público",
+        "GKE no ofrece ninguna forma de manejar secretos"
       ],
       "options_en": [
-        "Automatic cluster management and orchestration",
-        "Requires manual management",
-        "No multi-zone support",
-        "Lower scalability without exceptions or variants"
+        "As Kubernetes Secret objects, which can be encrypted with Cloud KMS keys or synced with Secret Manager",
+        "Baking them into the container image",
+        "Storing them as variables in the public Dockerfile",
+        "GKE offers no way to handle secrets"
       ],
       "correct_index": 0,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "Los secretos se guardan como objetos Secret y se montan en los pods como volúmenes o variables; GKE permite cifrarlos en etcd con claves de Cloud KMS o leerlos desde Secret Manager. Meterlos en la imagen los expone a cualquiera que la descargue.",
+      "explanation_en": "Secrets are stored as Secret objects and mounted into pods as volumes or variables; GKE can encrypt them in etcd with Cloud KMS keys or read them from Secret Manager. Baking them into the image exposes them to anyone who pulls it.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1318,20 +1318,20 @@
       "question_es": "¿Qué es un ingress en Kubernetes?",
       "question_en": "What is an ingress in Kubernetes?",
       "options_es": [
-        "Menor escalabilidad de manera exclusiva y permanente",
-        "Sin soporte para múltiples zonas",
-        "Gestión automática de clusters y orquestación",
-        "Requiere gestión manual"
+        "Un volumen que guarda los datos de entrada de los pods",
+        "El proceso que arranca los contenedores en cada nodo",
+        "Un objeto que define reglas HTTP(S) para dirigir tráfico externo a distintos Services",
+        "Una política que bloquea todo el tráfico de entrada"
       ],
       "options_en": [
-        "Lower scalability exclusively and permanently",
-        "No multi-zone support",
-        "Automatic cluster management and orchestration",
-        "Requires manual management"
+        "A volume that stores the pods' input data",
+        "The process that starts containers on each node",
+        "An object that defines HTTP(S) rules to route external traffic to different Services",
+        "A policy that blocks all incoming traffic"
       ],
       "correct_index": 2,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "Un Ingress declara reglas por host y ruta (por ejemplo /api hacia un Service y /web hacia otro) y, en GKE, se materializa como un balanceador de carga HTTP(S) de Google. Bloquear tráfico es tarea de las NetworkPolicy, no del Ingress.",
+      "explanation_en": "An Ingress declares host and path rules (for example /api to one Service and /web to another) and, in GKE, becomes a Google HTTP(S) load balancer. Blocking traffic is the job of NetworkPolicy, not Ingress.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1341,20 +1341,20 @@
       "question_es": "¿Cómo se implementa CI/CD con GKE?",
       "question_en": "How is CI/CD implemented with GKE?",
       "options_es": [
-        "Menor escalabilidad en todos los casos posibles",
-        "Gestión automática de clusters y orquestación",
-        "Sin soporte para múltiples zonas",
-        "Requiere gestión manual"
+        "Copiando el código fuente a cada nodo por SCP",
+        "Con una canalización que construye la imagen, la sube a Artifact Registry y la despliega en el clúster",
+        "Editando los pods en producción a mano después de cada cambio",
+        "GKE no admite ningún tipo de CI/CD"
       ],
       "options_en": [
-        "Lower scalability in all possible cases",
-        "Automatic cluster management and orchestration",
-        "No multi-zone support",
-        "Requires manual management"
+        "Copying the source code to each node over SCP",
+        "With a pipeline that builds the image, pushes it to Artifact Registry and deploys it to the cluster",
+        "Editing production pods by hand after each change",
+        "GKE does not support any kind of CI/CD"
       ],
       "correct_index": 1,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "El flujo habitual es construir la imagen (por ejemplo con Cloud Build), guardarla en Artifact Registry y desplegarla con kubectl, Cloud Deploy u otra herramienta. Editar pods a mano no deja rastro y se pierde cuando el pod se recrea.",
+      "explanation_en": "The usual flow is to build the image (for example with Cloud Build), store it in Artifact Registry and deploy it with kubectl, Cloud Deploy or another tool. Editing pods by hand leaves no trail and is lost when the pod is recreated.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     },
     {
@@ -1364,20 +1364,20 @@
       "question_es": "¿Cuál es el modelo de seguridad en GKE?",
       "question_en": "What is the security model in GKE?",
       "options_es": [
-        "Sin soporte para múltiples zonas",
-        "Gestión automática de clusters y orquestación",
-        "Menor escalabilidad en todos los casos posibles",
-        "Requiere gestión manual"
+        "Google se encarga de toda la seguridad, incluidas las aplicaciones",
+        "Responsabilidad compartida: Google protege el plano de control y el cliente sus cargas, con IAM, RBAC y Workload Identity",
+        "La seguridad depende solo de la contraseña del proyecto",
+        "Los clústeres de GKE no admiten control de acceso"
       ],
       "options_en": [
-        "No multi-zone support",
-        "Automatic cluster management and orchestration",
-        "Lower scalability in all possible cases",
-        "Requires manual management"
+        "Google handles all security, including the applications",
+        "Shared responsibility: Google secures the control plane and the customer secures workloads, with IAM, RBAC and Workload Identity",
+        "Security depends only on the project password",
+        "GKE clusters do not support access control"
       ],
       "correct_index": 1,
-      "explanation_es": "GKE implementa estas prácticas de Kubernetes nativamente",
-      "explanation_en": "GKE implements these Kubernetes practices natively",
+      "explanation_es": "En GKE Google gestiona y protege el plano de control y la infraestructura, y el cliente es responsable de sus cargas, sus imágenes y sus permisos. Para eso usa IAM y RBAC para el acceso y Workload Identity para que los pods usen cuentas de servicio sin claves.",
+      "explanation_en": "In GKE Google manages and secures the control plane and infrastructure, and the customer is responsible for their workloads, images and permissions. For that they use IAM and RBAC for access and Workload Identity so pods use service accounts without keys.",
       "source": "Google Cloud Documentation (https://cloud.google.com/docs)"
     }
   ]
