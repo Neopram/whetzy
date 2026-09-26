@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20260926_eu_withdrawal` (42 migraciones) |
+| Alembic HEAD | `20260927_lesson_views` (43 migraciones) |
 | Contenido | **10.989 preguntas** / 35 tracks / 723 skills / **723 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
@@ -154,12 +154,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 18. Techo de código — todo el catálogo, sin racionar (abierta 2026-09-16, sesión au)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 18.3 | **1** | **Runtime JS real + track Frontend (track14)** | **DONE** | **DONE** (2026-09-26) 221c3af — 6 mod, 24 skills, 355 Q (54 js_exec, 15.2%), 24 lessons, 40 gloss |
 | 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE… | **DONE** | **DONE** (2026-09-18) → §I |
-| 18.5 | **2** | **Certificaciones P1: PCAP, MLA-C01, AZ-900, AI-900, DP-900, Security+** | **DONE** | **DONE** (2026-09-26) — 6 cert tracks (track41–46): 741 Q total (300+300+165+90+90+96), 503 lessons, 20 Security+ lessons, source index updated, diversity guards PASS, `check_question_bank.py` + `check_docs.py` green |
-| 18.6 | **3** | **DevOps y Cloud: Docker/K8s (18), IaC+CI/CD (19), Azure (22), GCP (23)** | **DONE** | **DONE** (2026-09-26) f8015da — 4 tracks × 5 mod × 4 skills = 80 skills, 1.200 Q, lessons + glossary. Sources indexed, diversity guards PASS, `check_question_bank.py` + `check_docs.py` green |
-| 18.7 | **3** | **Datos: Data Engineering (20), Data Science (21), NoSQL (27)** | **DONE** | **DONE** (2026-09-26) f8015da — 3 tracks × 5 mod × 4 skills = 60 skills, 900 Q, lessons + glossary. Sources indexed, diversity guards PASS |
-| 18.8 | **3** | **Proyectos multi-paso con tests en runtime** | **DONE** | Backend: Project+Step+Submission models, migración `20260926_projects`, API 5 endpoints, 3 tests. Frontend: ProjectScreen + Home shortcut + i18n ES/EN. `0f61442` |
 | 18.9 | **4** | **Vídeo explicativo — piloto que decide** | TODO | → LEDGER_HISTORY.md §E |
 | 18.10 | **4** | **Resto del catálogo: tracks 24-26, 28-31 y certs P2-P3** | **PARCIAL** | 26/28/29/30 en `1d76762`+`6e2778a` (1.200 Q, 80 lecciones); faltan 24, 25, 31 y relleno a 300 → §E |
 | 18.11 | **2** | **Store-ready sin cuenta** | **PARCIAL** | `docs/STORE_LISTING.md` consolidado (iOS + Android), precios IAP actualizados a ADR-41/49, checklist actualizado (A3 age gate DONE por 19.11). Cuenta delete: endpoint + pantalla DONE. Privacy/Terms: DONE. Falta: screenshots con Playwright (necesita backend local), `codemagic.yaml` iOS build (H.14 macOS runner). |
@@ -168,60 +163,30 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 19. Lo que Educative y las tiendas exigen — social login, bootcamps, proyectos, autoría con fuentes libres (abierta 2026-09-18, sesión…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 19.1 | **1** | **Social login web: GitHub + Google (OAuth 2.0 por redirección)** | **DONE** | Backend: `GET /auth/oauth/{provider}/start`… |
 | 19.2 | **1** | **Sign in with Apple** — obligatorio por App Store Review 4.8 en cuanto exista 19.1 | HUMAN-BLOCKED (H.2) | Necesita… |
 | 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | |
-| 19.5 | **2** | **Playground libre (Python · SQL · JS)** | **DONE** | PlaygroundScreen + playgroundDb (IndexedDB history) + Monaco editor + 3 runtimes + i18n ES/EN + Home shortcut. `d8427ae` |
-| 19.6 | **3** | **Proyectos multi-paso** | **DONE** | = 18.8. `0f61442` |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
 | 19.8 | **3** | **Landing y SEO de whetzy.com al nivel de Educative** | TODO | → LEDGER_HISTORY.md §E |
 | 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (meta ADR-46) | TODO | → LEDGER_HISTORY.md §E |
 | 19.10 | **4** | **Vídeo: Manim + Remotion (`editor-pro-max`)** — absorbe 18.9 | TODO | → LEDGER_HISTORY.md §E |
-| 19.11 | **2** | **Confirmación de edad mínima en el registro** («tengo 13 años o más» / por país… | **DONE** | **DONE** `cf2fc58` → §I |
 
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 20.0 | **0** | **Cerrojo de sesión + salida limpia** — `.session.lock` (gitignored) + comprobación de `list_task_runs` en el pre-flight… | **DONE** | **DONE** (2026-09-18) → §I |
-| 20.1 | **0** | **Inventario de afirmaciones** de los 11 docs vivos + `store/` + `legal/` + `CLAUDE.md` →… | **DONE** | **DONE** (2026-09-18) → §I |
-| 20.2 | **0** | **Ledger fila a fila** (protocolo §5): cada `DONE` reejecutado con fecha; `TODO` contrastados con `git log --grep`… | **DONE** | **DONE** `bec734c` (2026-09-18) → §I |
-| 20.3 | **1** | **`API.md` ↔ OpenAPI bidireccional = 0 diferencias** (`scripts/check_api_docs.py`); `ARCHITECTURE.md` ↔ árbol real de… | **DONE** | **DONE** (2026-09-18) → §I |
-| 20.4 | **1** | `legal/` vs. realidad: errores de hecho en textos legales | **DONE** | `16b4e39` (2026-09-18) CONFIRMADA → §I |
-| 20.5 | **1** | **Fuentes**: cada URL de `CATALOGO_MAESTRO.md` §2.1/§2.2 resuelve; para cada repo clonado, `LICENSE` leído == licencia de… | **DONE** | **DONE** (2026-09-18) → §I |
-| 20.6 | **1** | **Dieta del ledger**: evidencia histórica de filas `DONE` → `docs/archive/LEDGER_HISTORY.md` (ancla por ID); en la fila… | **DONE** | **DONE** `50d0c18` (2026-09-18) → §I |
 | 20.7 | **1** | CI ciego: `verify_ci_local.ps1` replica `ci.yml` paso a paso | **DOING** | Evidencia sesión bg; falta verificador adversario → §I |
-| 20.8 | **1** | **Verificador adversario en el loop** (ADR-20): plantilla literal del protocolo §7 usada por el orquestador antes de cada… | **DONE** | **DONE** `b82b377` → §I |
-| 20.10 | **2** | REGRESIÓN dieta ledger (20.6). Reducir a <60 KB + guarda mecánica | **DONE** | 221→52 KB. §G/H/I/J/K archivados. `check_docs.py` guarda 61440 testeada ambos sentidos (2026-09-26) |
 
 ### 21. Legal y fiscal a coste cero — investigación, borradores, gates humanos (abierta 2026-09-18, sesión bf — **H.20 SIGUE ABIERTO** — el…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 21.0 | **0** | REGRESIÓN P0 — textos legales con entidad inexistente y decisión no autorizada | **DONE** | `16b4e39`+`ea7707d` (2026-09-19) check_legal_facts.py 21 variantes → §I |
 | 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; la entidad y la jurisdicción están sin decidir, H.29. Se conserva el enunciado… | | |
 | 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | | |
-| 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) ·… | **DONE** | Privacy policy reescrita con secciones GDPR (bases legales, DPO, SCCs), CCPA/CPRA (§1798.100-125), COPPA, CAN-SPAM (List-Unsubscribe), ePrivacy cookies. Backend: 4 endpoints privacy + ccpa_opt_out col + CAN-SPAM headers. Frontend: i18n + API. 4 tests. `2c4c95a` |
-| 21.4 | **2** | **Consumo y suscripciones**: desistimiento UE 14 días para contenido digital (renuncia expresa en checkout), renovación… | **DONE** | Checkout acepta `eu_withdrawal_waiver` (Art. 16.m Dir 2011/83); `eu_withdrawal_waiver_at` en User + migración 42. Renovación: email `renewal_reminder` (ES/EN, 7 días antes). Frontend: billing API con waiver, i18n checkout keys. ToS §5-6 ya cubren la renuncia y el preaviso. 4 tests. |
 | 21.5 | **2** | **AI Act, DSA, EAA**: obligaciones de *deployer* del tutor… | **PARCIAL** | **PARCIAL** `5f7bd7b` (2026-09-19) → §I |
 | 21.6 | **2** | **Propiedad intelectual**: búsqueda de marca «Whetzy» (EUIPO,… | **PARCIAL** | **PARCIAL** `8e7812a` (2026-09-19) → §I |
-| 21.7 | **2** | **Redacción**: ToS · Privacidad · Cookies (sin banner si solo cookies necesarias — mantenerlo así) · DPA plantilla para… | **DONE** | ToS reescrito con 18 secciones ES/EN: planes ADR-41/49, desistimiento UE 14 días (Dir 2011/83), renovación automática, tutor IA, ODR UE, divisibilidad. DPA template creado (`legal/dpa-template.md`) con TOMs, sub-processors, Art. 28 obligations. Cookies: confirmado solo técnicas, sin banner. Frontend i18n actualizado (13 secciones), LegalScreen expandido. Build + i18n parity + contract test + check_docs verdes. |
-| 21.8 | **3** | **Procedimientos internos**: brecha de seguridad (72 h, plantilla de notificación), DSAR (export/delete ya existen → SLA y… | **DONE** | `legal/security-breach-procedure.md`: severity classification (Critical/High/Medium/Low), GDPR Art. 33-34 timeline (72 h), notification templates (supervisory authority + users), post-incident plan. DSAR SLA: self-service endpoints (export, delete, CCPA opt-out) + manual 30 days (Art. 12.3), request types table (Art. 15-21), refusal grounds (Art. 12.5). |
-| 21.9 | **3** | **Proceso DMCA / retirada de contenido y DPIA** (`legal/README.md:116-127`): página `/legal/dmca` ES/EN con formulario por… | **DONE** | `legal/dmca-policy.md`: bilingual ES/EN DMCA takedown process per 17 U.S.C. § 512(c)(3) — 6-point notice requirements, response procedure (3 biz days ack, 10 biz days eval), counter-notification (5 points), repeat infringer policy. Contact: support@whetzy.com. |
 
 ### 22. Blindaje, admin y preparación para un millón — todo a coste cero (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21)**;…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 22.0 | **0** | **REGRESIÓN P0 — el backend de producción estuvo 2 h 30 min en 502.** `alembic upgrade head` moría en `u1v2w3x4y5z6`: la… | **DONE** | **DONE** `414e2f6` (2026-09-19) → §I |
-| 22.10 | **0** | **`POST /auth/login` devolvía 500 con `created_at` naive** (`check_lockout` restaba un datetime sin zona de… | **DONE** | **DONE** `e9161d7` (2026-09-19) → §I |
-| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle… | **DONE** | **DONE** `7016b9a` (2026-09-26) — 11/11 del criterio: engagement (D30, quiz, accuracy, duels, top skills), tutor-usage, reports, deploy-info (alembic head, deploy), rate-limit-hits `7016b9a`, password_change audit `7016b9a`; 42 tests |
-| 22.2 | **1** | **Threat model STRIDE** documentado en `ARCHITECTURE.md` + cabeceras de… | **DONE** | **DONE** (2026-09-25) → §I |
 | 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | |
-| 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **DONE** | **DONE** (2026-09-26) — 8/8: RateLimiter InMemory/Redis, pool asyncpg, capacity.md, k6, db_restore, job worker, Cache-Control en 6 GETs, paginación 13/15 (tracks/skills acotados); `cache.py` helper sin uso eliminado |
-| 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo… | **DONE** | **DONE** `f36218f` (2026-09-19) → §I |
-| 22.9 | **1** | **Test de frontend rojo en `master`**: `src/test/hooks.useRuntime.test.tsx` falla con `ReferenceError: Worker is not… | **DONE** | **DONE** `7e1b8d4` (2026-09-19) → §I ||
-| 22.11 | **1** | **`AdminScreen.tsx` estaba 100 % en inglés** — títulos, pestañas, estados, mensajes de error y unidades eran cadenas… | **DONE** | **DONE** `13d8904` (2026-09-19) → §I |
-| 22.12 | **2** | **Deuda de lint y tipos que dejaron las series 22-23**: 21 errores de… | **DONE** | **DONE** `83c6bf1` (2026-09-19) → §I |
-| 22.14 | **1** | **Arranque en frío de Railway** (`AUDITORIA_EXTERNA_2026-09-19.md:203`): la… | **DONE** | **DONE** (2026-09-19) → §I |
-| 22.15 | **2** | **Fase 3 del modelo de amenazas** (`design/threat-model-stride.md:157-161`): firma… | **DONE** | **DONE** `ef00ff3` → §I |
 
 ### 23. Dos segmentos, un producto — ES y EN sin mezclar (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21)**; ADR-17)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |

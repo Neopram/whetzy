@@ -2003,7 +2003,7 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 
 ## §L — Filas DONE retiradas de §2 el 2026-09-26 (guarda de tamaño 20.10)
 
-> Copiadas tal cual desde `AUTONOMOUS_STATE.md` §2 para dejar sitio a la serie 39. El detalle de cada una sigue en §I.
+> Copiadas tal cual desde `AUTONOMOUS_STATE.md` §2 para dejar sitio a la serie 39. El detalle de cada una sigue en §I. Segunda tanda (filas DONE de las series 18-22) retirada la noche del 2026-09-26.
 
 | ID | PRI | Tarea | Estado | Evidencia |
 |---|---|---|---|---|
@@ -2047,3 +2047,38 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 | 39.16 | **1** | Pesos de dominio de track44–46 suman 95/95/96 | **DONE** | Puntos medios oficiales normalizados a 100 (Microsoft Learn, leídos 2026-09-26): AZ-900 28/39/33 (guía 20-07-2026), DP-900 29/24/18/29 (21-07-2026), AI-900 19×4/24 |
 | 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | **DONE** | 286 términos sin `track_id` (tracks 18/20/21/23/27/44-46); arreglado; loader local `skipped: 0`, `glossary: 1044`; test rojo sobre master |
 | 39.19 | **2** | 115 rutas en local frente a 141 en producción | **DONE** | Sin diferencia: `openapi.json` local y de producción = 141 paths / 146 operaciones, idénticas (2026-09-26); «115» era el recuento filtrado del test de contrato |
+| 18.3 | **1** | **Runtime JS real + track Frontend (track14)** | **DONE** | **DONE** (2026-09-26) 221c3af — 6 mod, 24 skills, 355 Q (54 js_exec, 15.2%), 24 lessons, 40 gloss |
+| 18.5 | **2** | **Certificaciones P1: PCAP, MLA-C01, AZ-900, AI-900, DP-900, Security+** | **DONE** | **DONE** (2026-09-26) — 6 cert tracks (track41–46): 741 Q total (300+300+165+90+90+96), 503 lessons, 20 Security+ lessons, source index updated, diversity guards PASS, `check_question_bank.py` + `check_docs.py` green |
+| 18.6 | **3** | **DevOps y Cloud: Docker/K8s (18), IaC+CI/CD (19), Azure (22), GCP (23)** | **DONE** | **DONE** (2026-09-26) f8015da — 4 tracks × 5 mod × 4 skills = 80 skills, 1.200 Q, lessons + glossary. Sources indexed, diversity guards PASS, `check_question_bank.py` + `check_docs.py` green |
+| 18.7 | **3** | **Datos: Data Engineering (20), Data Science (21), NoSQL (27)** | **DONE** | **DONE** (2026-09-26) f8015da — 3 tracks × 5 mod × 4 skills = 60 skills, 900 Q, lessons + glossary. Sources indexed, diversity guards PASS |
+| 18.8 | **3** | **Proyectos multi-paso con tests en runtime** | **DONE** | Backend: Project+Step+Submission models, migración `20260926_projects`, API 5 endpoints, 3 tests. Frontend: ProjectScreen + Home shortcut + i18n ES/EN. `0f61442` |
+| 19.1 | **1** | **Social login web: GitHub + Google (OAuth 2.0 por redirección)** | **DONE** | Backend: `GET /auth/oauth/{provider}/start`… |
+| 19.5 | **2** | **Playground libre (Python · SQL · JS)** | **DONE** | PlaygroundScreen + playgroundDb (IndexedDB history) + Monaco editor + 3 runtimes + i18n ES/EN + Home shortcut. `d8427ae` |
+| 19.6 | **3** | **Proyectos multi-paso** | **DONE** | = 18.8. `0f61442` |
+| 19.11 | **2** | **Confirmación de edad mínima en el registro** («tengo 13 años o más» / por país… | **DONE** | **DONE** `cf2fc58` → §I |
+| 20.0 | **0** | **Cerrojo de sesión + salida limpia** — `.session.lock` (gitignored) + comprobación de `list_task_runs` en el pre-flight… | **DONE** | **DONE** (2026-09-18) → §I |
+| 20.1 | **0** | **Inventario de afirmaciones** de los 11 docs vivos + `store/` + `legal/` + `CLAUDE.md` →… | **DONE** | **DONE** (2026-09-18) → §I |
+| 20.2 | **0** | **Ledger fila a fila** (protocolo §5): cada `DONE` reejecutado con fecha; `TODO` contrastados con `git log --grep`… | **DONE** | **DONE** `bec734c` (2026-09-18) → §I |
+| 20.3 | **1** | **`API.md` ↔ OpenAPI bidireccional = 0 diferencias** (`scripts/check_api_docs.py`); `ARCHITECTURE.md` ↔ árbol real de… | **DONE** | **DONE** (2026-09-18) → §I |
+| 20.4 | **1** | `legal/` vs. realidad: errores de hecho en textos legales | **DONE** | `16b4e39` (2026-09-18) CONFIRMADA → §I |
+| 20.5 | **1** | **Fuentes**: cada URL de `CATALOGO_MAESTRO.md` §2.1/§2.2 resuelve; para cada repo clonado, `LICENSE` leído == licencia de… | **DONE** | **DONE** (2026-09-18) → §I |
+| 20.6 | **1** | **Dieta del ledger**: evidencia histórica de filas `DONE` → `docs/archive/LEDGER_HISTORY.md` (ancla por ID); en la fila… | **DONE** | **DONE** `50d0c18` (2026-09-18) → §I |
+| 20.8 | **1** | **Verificador adversario en el loop** (ADR-20): plantilla literal del protocolo §7 usada por el orquestador antes de cada… | **DONE** | **DONE** `b82b377` → §I |
+| 20.10 | **2** | REGRESIÓN dieta ledger (20.6). Reducir a <60 KB + guarda mecánica | **DONE** | 221→52 KB. §G/H/I/J/K archivados. `check_docs.py` guarda 61440 testeada ambos sentidos (2026-09-26) |
+| 21.0 | **0** | REGRESIÓN P0 — textos legales con entidad inexistente y decisión no autorizada | **DONE** | `16b4e39`+`ea7707d` (2026-09-19) check_legal_facts.py 21 variantes → §I |
+| 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) ·… | **DONE** | Privacy policy reescrita con secciones GDPR (bases legales, DPO, SCCs), CCPA/CPRA (§1798.100-125), COPPA, CAN-SPAM (List-Unsubscribe), ePrivacy cookies. Backend: 4 endpoints privacy + ccpa_opt_out col + CAN-SPAM headers. Frontend: i18n + API. 4 tests. `2c4c95a` |
+| 21.4 | **2** | **Consumo y suscripciones**: desistimiento UE 14 días para contenido digital (renuncia expresa en checkout), renovación… | **DONE** | Checkout acepta `eu_withdrawal_waiver` (Art. 16.m Dir 2011/83); `eu_withdrawal_waiver_at` en User + migración 42. Renovación: email `renewal_reminder` (ES/EN, 7 días antes). Frontend: billing API con waiver, i18n checkout keys. ToS §5-6 ya cubren la renuncia y el preaviso. 4 tests. |
+| 21.7 | **2** | **Redacción**: ToS · Privacidad · Cookies (sin banner si solo cookies necesarias — mantenerlo así) · DPA plantilla para… | **DONE** | ToS reescrito con 18 secciones ES/EN: planes ADR-41/49, desistimiento UE 14 días (Dir 2011/83), renovación automática, tutor IA, ODR UE, divisibilidad. DPA template creado (`legal/dpa-template.md`) con TOMs, sub-processors, Art. 28 obligations. Cookies: confirmado solo técnicas, sin banner. Frontend i18n actualizado (13 secciones), LegalScreen expandido. Build + i18n parity + contract test + check_docs verdes. |
+| 21.8 | **3** | **Procedimientos internos**: brecha de seguridad (72 h, plantilla de notificación), DSAR (export/delete ya existen → SLA y… | **DONE** | `legal/security-breach-procedure.md`: severity classification (Critical/High/Medium/Low), GDPR Art. 33-34 timeline (72 h), notification templates (supervisory authority + users), post-incident plan. DSAR SLA: self-service endpoints (export, delete, CCPA opt-out) + manual 30 days (Art. 12.3), request types table (Art. 15-21), refusal grounds (Art. 12.5). |
+| 21.9 | **3** | **Proceso DMCA / retirada de contenido y DPIA** (`legal/README.md:116-127`): página `/legal/dmca` ES/EN con formulario por… | **DONE** | `legal/dmca-policy.md`: bilingual ES/EN DMCA takedown process per 17 U.S.C. § 512(c)(3) — 6-point notice requirements, response procedure (3 biz days ack, 10 biz days eval), counter-notification (5 points), repeat infringer policy. Contact: support@whetzy.com. |
+| 22.0 | **0** | **REGRESIÓN P0 — el backend de producción estuvo 2 h 30 min en 502.** `alembic upgrade head` moría en `u1v2w3x4y5z6`: la… | **DONE** | **DONE** `414e2f6` (2026-09-19) → §I |
+| 22.10 | **0** | **`POST /auth/login` devolvía 500 con `created_at` naive** (`check_lockout` restaba un datetime sin zona de… | **DONE** | **DONE** `e9161d7` (2026-09-19) → §I |
+| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle… | **DONE** | **DONE** `7016b9a` (2026-09-26) — 11/11 del criterio: engagement (D30, quiz, accuracy, duels, top skills), tutor-usage, reports, deploy-info (alembic head, deploy), rate-limit-hits `7016b9a`, password_change audit `7016b9a`; 42 tests |
+| 22.2 | **1** | **Threat model STRIDE** documentado en `ARCHITECTURE.md` + cabeceras de… | **DONE** | **DONE** (2026-09-25) → §I |
+| 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **DONE** | **DONE** (2026-09-26) — 8/8: RateLimiter InMemory/Redis, pool asyncpg, capacity.md, k6, db_restore, job worker, Cache-Control en 6 GETs, paginación 13/15 (tracks/skills acotados); `cache.py` helper sin uso eliminado |
+| 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo… | **DONE** | **DONE** `f36218f` (2026-09-19) → §I |
+| 22.9 | **1** | **Test de frontend rojo en `master`**: `src/test/hooks.useRuntime.test.tsx` falla con `ReferenceError: Worker is not… | **DONE** | **DONE** `7e1b8d4` (2026-09-19) → §I ||
+| 22.11 | **1** | **`AdminScreen.tsx` estaba 100 % en inglés** — títulos, pestañas, estados, mensajes de error y unidades eran cadenas… | **DONE** | **DONE** `13d8904` (2026-09-19) → §I |
+| 22.12 | **2** | **Deuda de lint y tipos que dejaron las series 22-23**: 21 errores de… | **DONE** | **DONE** `83c6bf1` (2026-09-19) → §I |
+| 22.14 | **1** | **Arranque en frío de Railway** (`AUDITORIA_EXTERNA_2026-09-19.md:203`): la… | **DONE** | **DONE** (2026-09-19) → §I |
+| 22.15 | **2** | **Fase 3 del modelo de amenazas** (`design/threat-model-stride.md:157-161`): firma… | **DONE** | **DONE** `ef00ff3` → §I |
