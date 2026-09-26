@@ -154,8 +154,8 @@ tarea del backlog es arquitectura irreversible). Tú decides el modelo de cada s
 
 | Modelo | Para | Cómo |
 |---|---|---|
-| **Haiku** (por defecto) | Inventarios, greps masivos, leer 20 archivos, diffs doc↔código, **verificación adversaria** (`PROTOCOLO_VERIFICACION.md` §7), scaffolding repetitivo, formateo, borradores, **autoría de contenido por fichero** (preguntas, lecciones, glosario) — **siempre** detrás de la puerta de calidad de `CATALOGO_MAESTRO.md` §7: verificador propio fuera del scratchpad, ejecución real, tildes, sesgo de posición | `Agent` + `model: "haiku"`; bloques grandes con `Workflow` |
-| **Sonnet** | Integrar y decidir lo reversible (tú), y como worker **solo** si la tarea escribe en la lista de ficheros de riesgo del protocolo §2 (core, auth/oauth, billing, entitlements, engine, alembic, main, api.ts, App.tsx, `legal/`) o tras dos refutaciones seguidas de un worker Haiku | Tú, o `Agent` + `model: "sonnet"` |
+| **Haiku** (solo lectura) | Inventarios, greps masivos, leer 20 archivos, diffs doc↔código, verificación adversaria de tareas que **no** son contenido (`PROTOCOLO_VERIFICACION.md` §7). Nunca escribe contenido que ve el alumno (enmienda a ADR-50, 2026-09-26) | `Agent` + `model: "haiku"` |
+| **Sonnet** | **Autoría, revisión y corrección de contenido** (lecciones, preguntas, distractores, explicaciones, revisión adversaria de contenido), siempre detrás de la puerta de `CATALOGO_MAESTRO.md` §7 y de `scripts/content_qa/`; y como worker si la tarea escribe en la lista de ficheros de riesgo del protocolo §2 (core, auth/oauth, billing, entitlements, engine, alembic, main, api.ts, App.tsx, `legal/`) | `Agent` + `model: "sonnet"`; bloques grandes con `Workflow` |
 | ~~Opus~~ / ~~Fable~~ | — | **No en sesiones programadas.** Si crees que hace falta, es `HUMAN-BLOCKED`. Excepción (ADR-50): en una sesión **arrancada por el dueño**, el hilo principal es Opus 5.5 (effort high); los subagentes siguen siendo Haiku/Sonnet y nunca Fable |
 
 **Dieta de contexto (ADR-14):** lee `AUTONOMOUS_STATE.md` **por secciones** (`## 0`,
@@ -305,9 +305,10 @@ Agent({
 })
 ```
 
-- **Máximo 3 workers Sonnet simultáneos.** Autoría de contenido: hasta **8 Haiku**
-  sobre ficheros disjuntos, o un `Workflow` — y el bloque entero pasa la puerta de
-  calidad (`CATALOGO_MAESTRO.md` §7) antes de un solo commit
+- **Máximo 3 workers Sonnet simultáneos** con `Agent`. Autoría de contenido: Sonnet
+  sobre ficheros disjuntos en un `Workflow` de menos de 10 agentes (escritor, revisor
+  distinto y corrector) — y el bloque entero pasa la puerta de calidad
+  (`CATALOGO_MAESTRO.md` §7) y `scripts/content_qa/` antes de un solo commit
 - Cada worker toca **solo** los archivos de su tarea; la disjunción la garantiza
   el ledger. Si dudas, no paralelices
 - Los workers no commitean ni escriben el ledger. Solo tú

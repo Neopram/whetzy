@@ -49,7 +49,8 @@ verificación**. De ahí las cinco reglas de §1.
 | Rol | Modelo | Regla |
 |---|---|---|
 | Hilo principal (orquestador) | Sonnet 4.6 (`settings.json`) | Decide, integra, commitea. No lee lo que puede delegar. |
-| Workers por defecto | **Haiku 4.5** | Inventarios, diffs doc↔código, greps, verificación adversaria, autoría de contenido tras la puerta §7 del catálogo, redacción de borradores. |
+| Workers de lectura | **Haiku 4.5** | Inventarios, diffs doc↔código, greps, verificación adversaria de tareas que no son contenido. No escribe nada que vea el alumno (enmienda a ADR-50, 2026-09-26). |
+| Workers de contenido | **Sonnet 5** | Autoría, revisión adversaria y corrección de lecciones, preguntas, distractores y explicaciones, tras la puerta §7 del catálogo y `scripts/content_qa/`. |
 | Workers de riesgo | Sonnet 4.6 | Solo si la tarea **escribe** en: `backend/app/core/**`, `backend/app/api/v1/endpoints/auth*.py`, `oauth*`, `billing*`, `entitlements*`, `backend/app/services/engine/**`, `backend/alembic/**`, `backend/app/main.py`, `frontend/src/services/api.ts`, `frontend/src/App.tsx`, cualquier fichero de `legal/`. |
 | Opus / Fable | **Prohibidos** en sesiones autónomas | Si una tarea parece necesitarlos, es `HUMAN-BLOCKED`: describe qué decisión irreversible hay y sigue con otra. |
 
@@ -63,7 +64,7 @@ verificación**. De ahí las cinco reglas de §1.
 2. `STATUS.md` (62 KB) y `docs/archive/` **no se leen** en sesiones autónomas.
 3. Un worker recibe **rutas exactas y el criterio de aceptación**, nunca «lee el repo».
 4. Un worker devuelve **≤ 300 palabras + la salida de los comandos**, no prosa.
-5. Bloques de contenido: `Workflow` con Haiku por fichero; el orquestador no lee los
+5. Bloques de contenido: `Workflow` con Sonnet por fichero (escritor, revisor y corrector distintos); el orquestador no lee los
    ficheros producidos, corre las guardias (`pytest tests/content`,
    `check_question_bank.py`, `check_docs.py`) y lee solo los fallos.
 6. Ninguna sesión reescribe un documento entero para cambiar tres líneas: `Edit`,
@@ -207,7 +208,7 @@ Reglas:
 1. Cerrojo (§3) → pre-flight de `ORCHESTRATOR.md` → leer el ledger por secciones (§2).
 2. Elegir la fila `TODO` de menor PRI con dependencias `DONE`. Si es de la Serie 20,
    seguir §4-§5; si no, implementar con test primero.
-3. Worker (Haiku salvo lista de riesgo) con rutas exactas y criterio literal.
+3. Worker (Sonnet si escribe contenido o toca la lista de riesgo; Haiku si solo lee) con rutas exactas y criterio literal.
 4. Guardias locales: las del `README.md` §Verificación que apliquen a las rutas tocadas.
 5. Verificador adversario §7.
 6. Fila del ledger + commit de la tarea (`-- <rutas>`), sin push.

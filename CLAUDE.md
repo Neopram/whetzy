@@ -59,11 +59,13 @@ qué hacer; el ledger lo sabe.
 
 Hilo principal: el que fije `settings.json` (Sonnet 4.6). **Sesiones autónomas programadas: sin
 Opus ni Fable** (ADR-14, propuesta del dueño 2026-09-18); **una sesión interactiva usa el
-modelo con el que el dueño la arranca** (ADR-47); **en esas sesiones el hilo es Opus 5.5 (effort high) y los subagentes Haiku 4.5 / Sonnet 5** (ADR-14 enmendada por ADR-50). Subagentes: **Haiku por
-defecto** — inventarios, lecturas masivas, diffs doc↔código, verificación adversaria y
-**autoría de contenido por fichero** (siempre con la puerta de calidad de
-`CATALOGO_MAESTRO.md` §7); Sonnet solo cuando la tarea escribe en la lista de ficheros de
-riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2. Dieta de contexto: el ledger se lee por
+modelo con el que el dueño la arranca** (ADR-47); **en esas sesiones el hilo es Opus 5.5 (effort high) y los subagentes Haiku 4.5 / Sonnet 5** (ADR-14 enmendada por ADR-50). Subagentes
+(enmienda a ADR-50 del 2026-09-26): **Sonnet** para todo lo que escribe o revisa contenido
+que ve el alumno — lecciones, preguntas, distractores, explicaciones y revisión adversaria,
+siempre con la puerta de calidad de `CATALOGO_MAESTRO.md` §7 y `scripts/content_qa/` — y
+para lo que escribe en la lista de ficheros de riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2;
+**Haiku solo** para lecturas, inventarios y diffs que no escriben nada. Nunca Fable; nunca
+Opus como subagente. Dieta de contexto: el ledger se lee por
 secciones, nunca entero; `STATUS.md` y `archive/` no se leen. Bloques de contenido
 grandes: `Workflow` paralelo, un bloque = un commit verde. Cada `DONE` pasa por el
 verificador adversario (protocolo §7) antes de escribirse.
