@@ -1111,3 +1111,10 @@ renumeradas **una vez** con un script (comentarios de código y docs; 0 cambios 
 - **Lección de autoría:** los tres lotes Haiku de distractores se rechazaron (relleno,
   correctas duplicadas, frases cortadas) y sus informes decían lo contrario. Con Sonnet y un
   validador en el scratchpad, sí. El autoinforme de un subagente no es evidencia.
+
+## 2026-09-26 (noche, control total — sesión trusting-franklin)
+
+- Producción caída 09:35–10:48 UTC tras `ec97405` (`KeyError: 'order'` en `content_loader`); arreglada en #28 y verificada con los logs de Railway.
+- Cloudflare Pages no publicaba desde las subidas de dependabot; #28 y #29 revierten dos majors y hacen el prerender compatible con Node 20.
+- Aprobación en bloque del dueño registrada como ADR-50. Ejecutado: Sentry (`whetzy-backend` + `SENTRY_DSN`), H.30 honesto. Resueltas por verificación: H.15, H.31, H.33, H.34.
+- Serie 39 abierta con la deuda de la oleada 18.10 (coletillas de relleno en 1.200 preguntas, fuentes inferidas en 146 lecciones) y la calidad transversal.

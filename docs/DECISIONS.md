@@ -243,6 +243,8 @@ roja 5: redirección pura).
 
 ## ADR-14 — Modelos y tokens: sin Opus ni Fable en sesiones autónomas; Haiku por defecto (ACEPTADA 2026-09-18)
 
+> **Enmendada por ADR-50 el 2026-09-26:** en sesiones arrancadas por el dueño, hilo Opus 5.5 y subagentes Haiku 4.5 / Sonnet 5 (frase literal del dueño en ADR-50). Las sesiones programadas siguen con esta ADR.
+
 **Decisión:** El hilo principal autónomo corre en Sonnet 4.6 (`settings.json`, sin
 cambios). Los workers son **Haiku 4.5 por defecto**; Sonnet solo cuando la tarea
 **escribe** en la lista de ficheros de riesgo de `PROTOCOLO_VERIFICACION.md` §2.
@@ -992,3 +994,42 @@ certificado:
 **Choca con** la ficha de App Store (`docs/store/ios/listing.md:152`,
 `app.whetzy.plus.yearly $39.99/año`): ese importe anual no sale de ninguna decisión del
 dueño y ahora, además, coincide con el precio de la certificación. Se limpia en 38.1.
+
+---
+
+## ADR-50 — Aprobación en bloque del dueño y decisiones de la noche del 2026-09-26 (DUEÑO en bloque; valores elegidos por la sesión)
+
+**Origen.** Mensajes del dueño en la sesión interactiva del 2026-09-26, citados tal cual:
+«DESBLOQUEA TODO, MI DESICIONES SON A TODO APROBADO!», «HAZLO TODO SI ESTA EN TUS MANOS»,
+«PROCEDE Y ADEMAS DECIDE POR MI TODO ESTO» (sobre H.31, H.30, H.13/H.17, H.15, H.41 y H.16).
+El dueño aprobó **en bloque**; **los valores concretos los eligió la sesión** y aquí se
+dice cuál es cuál. Cualquiera se revierte con una línea del dueño.
+
+**Límites que la aprobación no levanta** (prompt de control total v5, §2): no fusionar
+`master` (ADR-45), no gastar dinero, no abrir cuentas, no publicar, no escribir datos de
+personas reales. La única escritura en producción de la noche fue la de H.41, pedida por el
+dueño por su nombre.
+
+| # | Punto | Decisión y estado |
+|---|---|---|
+| a | Plan Free | 5 lecciones y 30 preguntas **nuevas** al día, reinicio a medianoche UTC; exentos los repasos FSRS, el placement y los exámenes. Detrás de `FREE_DAILY_QUOTA_ENABLED=false` hasta que abra el cobro (H.19/H.29): limitar para empujar a un plan que nadie puede comprar cierra el producto. El tutor sigue sin acceso en Free (`tutor.py`, `require_tier("plus")`). |
+| b | Anuncios | No en la v1 (ATT de Apple, consentimiento, COPPA). Se revisa con ≥ 20K usuarios activos al mes. |
+| c | Precio por plataforma | El mismo en web, iOS y Android. |
+| d | Formato de lección (§25 de la evaluación) | En la **plantilla** de `LessonScreen` (secciones con icono accesible, `aria-hidden` en lo decorativo); no se reescribe el texto de las lecciones. |
+| e | LICENSE | Código y contenido original propietarios («All rights reserved»); el contenido de terceros conserva su licencia y su atribución según `content/sources/index.json`. |
+| f | LLM de respaldo | Proveedor compatible con OpenAI configurable por entorno; vacío = sin respaldo. |
+| g | Emails de re-enganche | 3, 7 y 30 días de inactividad, baja en un clic (CAN-SPAM), flag apagado. |
+| h | Certificaciones siguientes | CCNA → CompTIA Security+ → AZ-900 → LPIC-1 → CKA → GCP ACE (dentro de 37.10), tras comprobar qué cubren hoy track43–46. |
+| i | Idiomas | ES y EN. El siguiente, pt-BR, solo con revisión nativa. |
+| j | Analítica de producto (H.42) | **PostHog**; Mixpanel no se instrumenta. La landing promete «sin analítica de terceros»: la instrumentación va detrás de clave vacía y consentimiento, y la copia de la landing y la política de privacidad se actualizan en el mismo PR que la active. |
+| k | Errores (H.41) | **Sentry, ejecutado.** Proyecto `whetzy-backend` (org `whetzy`, región `de.sentry.io`) creado con el conector y `SENTRY_DSN` puesto en Railway. Deploy `f097361c` en `SUCCESS` con el log `Sentry initialised (env=production, traces_sample_rate=0.1)` (11:34 UTC). `send_default_pii=False`. El cambio de variable produjo ~20 s de 502 (11:34:31–11:34:41 UTC). El monitor de uptime de Sentry **no** se creó: puede consumir cuota de pago. |
+| l | H.30 correo | Proveedor por defecto: **Resend** (el código ya lo soporta con solo `RESEND_API_KEY`). Crear la cuenta y la clave es del dueño. Mientras tanto, `bb59562`: en producción sin proveedor, `forgot-password` y `resend-verification` responden 503 `email_not_configured` y la pantalla lo dice, en vez de afirmar que el enlace se envió. |
+| m | H.31 landing | **Ya resuelta**: la landing servida el 2026-09-26 no contiene testimonios ni «1.2M»; las tarjetas muestran afirmaciones comprobables («Cada pregunta cita su fuente»). |
+| n | H.15 proxy de vite | **Ya resuelta**: el proxy apunta a `127.0.0.1:8000` y `pretest:e2e` (`scripts/check-e2e-target.mjs`) impide correr e2e contra producción. |
+| o | H.13/H.17 GitHub Actions | GitHub → Settings → Billing: poner el **spending limit de Actions a $0** y corregir el método de pago si hay factura fallida. Solo el dueño puede. Mientras tanto, la puerta es local (`.githooks/pre-push` + `ci_local.sh`). |
+| p | H.16 / 30.2 / 31.1 despliegue y staging | Se mantiene el despliegue automático desde `master` (ADR-45). Se aprueba **proteger `master`** (PR obligatorio, sin push directo; las fusiones del dueño y de Dependabot pasan por PR) — lo configura el dueño en GitHub → Settings → Branches. Se aprueba el **staging** de 31.1 (entorno Railway `staging` + preview de Pages); su alta cuesta dinero y la hace el dueño. Hasta entonces, la prueba de arranque local (Postgres 16, `start.sh` paso a paso) es la puerta obligatoria para `content/` y `backend/`. |
+
+> **Enmienda a ADR-14 (2026-09-26).** Frase del dueño: «ACTUALIZALO PARA QUE USE LAS LLM QUE ME
+> RECOMIENDAS TANTO EL MODELO PRINCIPAL COMO LOS SUBAGENTES». En las sesiones **arrancadas por el
+> dueño**: hilo principal Opus 5.5 (effort high), subagentes Haiku 4.5 y Sonnet 5 solo para
+> escribir en la lista de riesgo. ADR-14 sigue igual para las sesiones programadas.

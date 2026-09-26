@@ -156,7 +156,7 @@ tarea del backlog es arquitectura irreversible). Tú decides el modelo de cada s
 |---|---|---|
 | **Haiku** (por defecto) | Inventarios, greps masivos, leer 20 archivos, diffs doc↔código, **verificación adversaria** (`PROTOCOLO_VERIFICACION.md` §7), scaffolding repetitivo, formateo, borradores, **autoría de contenido por fichero** (preguntas, lecciones, glosario) — **siempre** detrás de la puerta de calidad de `CATALOGO_MAESTRO.md` §7: verificador propio fuera del scratchpad, ejecución real, tildes, sesgo de posición | `Agent` + `model: "haiku"`; bloques grandes con `Workflow` |
 | **Sonnet** | Integrar y decidir lo reversible (tú), y como worker **solo** si la tarea escribe en la lista de ficheros de riesgo del protocolo §2 (core, auth/oauth, billing, entitlements, engine, alembic, main, api.ts, App.tsx, `legal/`) o tras dos refutaciones seguidas de un worker Haiku | Tú, o `Agent` + `model: "sonnet"` |
-| ~~Opus~~ / ~~Fable~~ | — | **No.** Si crees que hace falta, es `HUMAN-BLOCKED`: describe la decisión irreversible y sigue con otra tarea |
+| ~~Opus~~ / ~~Fable~~ | — | **No en sesiones programadas.** Si crees que hace falta, es `HUMAN-BLOCKED`. Excepción (ADR-50): en una sesión **arrancada por el dueño**, el hilo principal es Opus 5.5 (effort high); los subagentes siguen siendo Haiku/Sonnet y nunca Fable |
 
 **Dieta de contexto (ADR-14):** lee `AUTONOMOUS_STATE.md` **por secciones** (`## 0`,
 `## 1`, la serie abierta de menor PRI, `## 3`, últimas 3 filas de `## 6`), nunca entero;

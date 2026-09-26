@@ -74,6 +74,33 @@ matches `check_question_bank.py` output (currently 6233), not a hardcoded
 number. Any non-zero `skipped` count means a question references a skill_id
 that does not exist in `curriculum/tracks.json`.
 
+## Prueba de arranque y de build web (obligatorias antes de push, desde 2026-09-26)
+
+**Por qué.** El 2026-09-26 `ec97405` llegó a `master` con contenido que el loader no sabía leer. `start.sh` corre con `set -e`, el contenedor murió antes de gunicorn y la API dio 502 de 09:35 a 10:48 UTC (logs de Railway, deploy `620edcd3`: `KeyError: 'order'` en bucle). Los recuentos de `check_docs` estaban en verde: contar no es cargar. El mismo día, el build de Cloudflare Pages falló en Node 20.19 (`navigator is not defined`) mientras en local, con Node 22, pasaba.
+
+**Arranque (content/ o backend/).** Sin Docker, con Postgres 16 del sistema:
+
+```bash
+D=/var/tmp/pgw; mkdir -p $D && chown postgres $D
+su postgres -c "/usr/lib/postgresql/16/bin/initdb -D $D/data -A trust -U postgres"
+su postgres -c "/usr/lib/postgresql/16/bin/pg_ctl -D $D/data -o '-p 5433 -k /tmp' -l $D/log start"
+psql -h /tmp -p 5433 -U postgres -c "create user neurium with password 'neurium_dev' superuser;" -c "create database neurium owner neurium;"
+cd backend && export DATABASE_URL=postgresql+asyncpg://neurium:neurium_dev@localhost:5433/neurium SECRET_KEY=x ENVIRONMENT=development OWNER_EMAIL=owner@example.test OWNER_PASSWORD='Local-test-pass-123!'
+alembic upgrade head && python -m app.services.content_loader && python -m app.services.bootstrap_owner && python -m app.services.seed
+```
+
+Después `gunicorn app.main:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 127.0.0.1:8765` y `/health` = 200. No pongas la base en un directorio cuyos permisos puedan cambiar (el scratchpad de una sesión): Postgres se cae.
+
+**Build web (frontend/).** Checkout limpio (`git worktree add`), `npm ci` y el build con la versión de `.nvmrc`:
+
+```bash
+npx -y -p node@20.19.0 -- sh -c 'node node_modules/typescript/bin/tsc -b && node node_modules/vite/bin/vite.js build'
+```
+
+Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modules/` o `dist/` viejos esconden fallos (dependabot subió `@vitejs/plugin-react` a 6.x, que exige Vite 8, y pyodide a 314.x, sin `pyodide.asm.js`).
+
+**Verificar un despliegue.** Conector Railway: `list-deployments` (último en `SUCCESS`) y `get-logs` con filtro `"[start]" OR "[owner]" OR "Content loaded" OR "Traceback"`; luego `node frontend/scripts/check-deployed.mjs` (desde `frontend/`).
+
 ## DB migrations
 
 ```bash
