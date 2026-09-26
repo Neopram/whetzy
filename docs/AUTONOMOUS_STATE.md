@@ -200,7 +200,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 21. Legal y fiscal a coste cero — investigación, borradores, gates humanos (abierta 2026-09-18, sesión bf — **H.20 SIGUE ABIERTO** — el…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 21.0 | **0** | **REGRESIÓN P0 — los textos legales de `master` afirman una entidad que no existe y una decisión que el dueño no tomó.**… | |
+| 21.0 | **0** | REGRESIÓN P0 — textos legales con entidad inexistente y decisión no autorizada | **DONE** | `16b4e39`+`ea7707d` (2026-09-19) check_legal_facts.py 21 variantes → §I |
 | 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; la entidad y la jurisdicción están sin decidir, H.29. Se conserva el enunciado… | | |
 | 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | | |
 | 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) ·… | | |
