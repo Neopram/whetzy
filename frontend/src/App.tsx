@@ -59,6 +59,7 @@ const ReadinessScreen = lazy(() =>
 const AdminScreen = lazy(() => import('./pages/AdminScreen').then((m) => ({ default: m.AdminScreen })));
 const InstructorScreen = lazy(() => import('./pages/InstructorScreen'));
 const MarketplaceScreen = lazy(() => import('./pages/MarketplaceScreen').then((m) => ({ default: m.MarketplaceScreen })));
+const WalletScreen = lazy(() => import('./pages/WalletScreen'));
 
 // URL-based routing for standalone pages (no React Router needed)
 const STANDALONE_DOC: Record<string, string> = {
@@ -373,6 +374,7 @@ function App() {
       case 'admin': return <AdminScreen />;
       case 'instructor': return <InstructorScreen />;
       case 'marketplace': return <MarketplaceScreen />;
+      case 'wallet': return <WalletScreen />;
       default: return <HomeScreen />;
     }
   };

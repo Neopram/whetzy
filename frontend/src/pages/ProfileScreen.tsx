@@ -106,6 +106,14 @@ export function ProfileScreen() {
           <button
             type="button"
             className={styles.setting}
+            onClick={() => setScreen('wallet')}
+          >
+            <span className={styles.settingLabel}>{t('wallet.title')}</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <button
+            type="button"
+            className={styles.setting}
             onClick={() => setScreen('marketplace')}
           >
             <span className={styles.settingLabel}>{t('profile.goCatalog')}</span>

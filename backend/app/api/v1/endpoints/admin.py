@@ -1063,14 +1063,20 @@ async def get_metrics_engagement(
 @router.get("/metrics/reports", dependencies=[Depends(require_admin)])
 async def get_metrics_reports(
     range_days: int = Query(default=30, ge=1, le=365),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     cutoff = datetime.now(UTC) - timedelta(days=range_days)
 
-    total_q = select(func.count(QuestionReport.id)).where(QuestionReport.created_at >= cutoff)
+    def _seg(q):  # type: ignore[no-untyped-def]
+        if segment != "all":
+            return q.select_from(QuestionReport).join(User, QuestionReport.user_id == User.id).where(User.language == segment)
+        return q
+
+    total_q = _seg(select(func.count(QuestionReport.id)).where(QuestionReport.created_at >= cutoff))
     total = (await db.execute(total_q)).scalar() or 0
 
-    by_reason_q = (
+    by_reason_q = _seg(
         select(QuestionReport.reason, func.count(QuestionReport.id).label("count"))
         .where(QuestionReport.created_at >= cutoff)
         .group_by(QuestionReport.reason)
@@ -1078,7 +1084,7 @@ async def get_metrics_reports(
     )
     by_reason = {r[0]: r[1] for r in (await db.execute(by_reason_q)).all()}
 
-    most_reported_q = (
+    most_reported_q = _seg(
         select(QuestionReport.question_id, func.count(QuestionReport.id).label("count"))
         .where(QuestionReport.created_at >= cutoff)
         .group_by(QuestionReport.question_id)
@@ -1092,6 +1098,7 @@ async def get_metrics_reports(
 
     return {
         "range_days": range_days,
+        "segment": segment,
         "total_reports": total,
         "by_reason": by_reason,
         "most_reported": most_reported,

@@ -591,12 +591,48 @@ export interface StreakFreezeQuote {
   blocked_by: StreakFreezeBlock | null;
 }
 
+export interface CreditBalance {
+  balance: number;
+  currency: string;
+  expires_in_days: number;
+}
+
+export interface ReferralCodeInfo {
+  code: string;
+  share_url: string;
+}
+
+export interface PromoRedeemResult {
+  credits: number;
+  balance: number;
+  message: string;
+}
+
+export interface CreditPrices {
+  credit_value_usd: number;
+  grifos: { event: string; credits: number; cap: string }[];
+  sumideros: { item: string; cost: number }[];
+}
+
 export const economy = {
+  async balance() {
+    return request<CreditBalance>('/economy/balance');
+  },
+  async prices() {
+    return request<CreditPrices>('/economy/prices');
+  },
+  async referralCode() {
+    return request<ReferralCodeInfo>('/economy/referral/code');
+  },
+  async redeemPromo(code: string) {
+    return request<PromoRedeemResult>('/economy/promo/redeem', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    });
+  },
   async streakFreeze() {
     return request<StreakFreezeQuote>('/economy/streak-freeze');
   },
-  /** `requestId` se genera una vez por intento y se reutiliza en los
-   *  reintentos: el backend no cobra dos veces el mismo id. */
   async buyStreakFreeze(requestId: string) {
     return request<StreakFreezeQuote & { replayed: boolean }>('/economy/streak-freeze', {
       method: 'POST',
