@@ -1134,3 +1134,22 @@ que nombran cada H; ese recuento es una aproximación de cuánto desbloquea):
    H.28, H.24 · H.6, H.7, H.18, H.8, H.9.
 
 Primero el bloque 1; después H.23 y H.29, que juntas desbloquean 20 filas.
+
+### 2026-09-26 (tarde) — Short de 60 s de prueba, generado de punta a punta
+
+- **Pipeline en el repo:** `frontend/scripts/short-capture.cjs` registra un usuario en el
+  stack **local**, responde con la opción correcta leída de la base local y captura a
+  1080×1920; `scripts/video/solve_blank.py` resuelve los huecos ejecutables probando
+  candidatos contra la salida esperada (sin `eval`/`exec`); `scripts/video/build_short.py`
+  monta zoom lento, rótulo, voz Piper y fundidos (H.264, 30 fps). Narración y fuentes por
+  escena: `scripts/video/escenas_es.json`. Voz `es_MX-ald-medium` (repo MIT, dataset
+  Unlicense, leído en el MODEL_CARD). Sin música.
+- **Resultado:** 59,54 s, 1080×1920, AAC; reproducido dos veces solo con los scripts del
+  repo. El binario no se versiona. Las preguntas cambian por sesión: antes de publicar, el
+  dueño elige la toma.
+- **Guion corregido:** el «47 % menos tiempo» y las «500 preguntas únicas» de 24.13 no
+  tenían fuente; fuera en ES y EN.
+- **Hallazgos, a filas:** 34.12 (plural «1 días», `/evidence` solo en inglés) y 37.17
+  (282 «Completa el blank», opciones ES en inglés, ejecutables donde `eval` o la función
+  equivocada dan la salida esperada; sin probar si la app los acepta). `ledger.py check` falla con 57 problemas también en `master` limpio
+  (filas compactadas con estado «ABIERTA»): anterior a esta rama.

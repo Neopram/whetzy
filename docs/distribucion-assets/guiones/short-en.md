@@ -6,7 +6,7 @@ Viral TikTok/YouTube Shorts. Quick hook for career-switchers. Target: 18-35, soc
 ## Structure (Tight 60 seconds)
 
 ### Hook (0:00-0:10)
-- **Visual:** Red screen, big text: "Learn Python in 3 months?"
+- **Visual:** Big title card: "Want to learn to code without wasting time?"
 - **Quick narration:** "Yes. Actually learn it."
 - **SFX:** Whoosh, beat drop
 
@@ -14,8 +14,8 @@ Viral TikTok/YouTube Shorts. Quick hook for career-switchers. Target: 18-35, soc
 - **Visual:** Split screen montage
   - **Left:** Generic competitor (slow, boring)
   - **Right:** Whetzy (fast, right questions)
-- **Quick narration:** "Whetzy gives you 500 unique questions *tailored to YOU*. No time wasted on stuff you know."
-- **Stat appears:** "47% less time than traditional courses"
+- **Narration:** "Every question is picked by an adaptive engine, based on what you already know."
+- **No time-saving stat:** v1's "47% less time" and "500 unique questions" had no source (red line: no figure without a source). Use only the landing figures (18 tracks · 6,305 questions, `catalog.ts`)
 - **Visual:** Progress bar filling fast, fire emoji (streak)
 
 ### CTA (0:45-0:60)

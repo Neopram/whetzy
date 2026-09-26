@@ -457,6 +457,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 34.0 | **0** | **Guarda de contrato `.tsx` ↔ `.module.css`** (`src/test/cssModules.contract.test.ts`) en modo trinquete: la deuda de hoy… | **DONE** | **DONE** → §I |
 | 34.10 | **0** | **La suite e2e está roja desde el 2026-09-19 y nadie lo vio** (CI ciego por facturación y, después, sin… | **DONE** | **DONE** → §I |
 | 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
+| 34.12 | **2** | **Plural e idioma en la UI** (visto al grabar el short, 2026-09-26): `HomeScreen.tsx:183` pinta «Tu racha: 1 días» (`t('home.days')` sin `count`); `home.decayInDays` («en {{count}} días») no tiene variante `_one`; `/evidence` está en inglés fijo (`EvidenceScreen.tsx` no usa `useTranslation`) | **TODO** | «1 día» y «en 1 día» con test de i18n; `/evidence` en ES y EN nativos, con captura a 390 px en los dos idiomas |
 | 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **PARCIAL** | **PARCIAL** `d11db88` (2026-09-25) → §I |
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** → §I |
@@ -512,6 +513,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | **DONE** `fbf9baf` (2026-09-25) → §I |
 | 37.15 | **1** | **Fuentes sin indexar:** 3.906 de 6.305 preguntas (62 %) no llevan URL en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | **DONE** `46764ff` (2026-09-26): 8 tracks restantes (02-04, 06, 08, 10, 12, 17) corregidos; todos ≤22 %. Banco PASS, diversidad PASS, content 38062 passed → §I |
+| 37.17 | **1** | **Inglés dentro del español y ejecutables que aceptan atajos** (medido 2026-09-26 con grep y `scripts/video/solve_blank.py`, que prueba candidatos contra la salida esperada): 282 enunciados ES en 9 ficheros empiezan «Completa el blank»; `track11_aws_aif_c01/mod01.json:715` dice «directional»; la pregunta ES de EC2 con 100.000 conexiones TCP tiene las opciones en inglés. Respuestas equivocadas dan la salida esperada (Python local): en `q060104ex010` (varianza) `median_low` y `mode` imprimen `4` igual que `pvariance`; en `q010105ex001` `eval` imprime lo mismo que `int`. Si la corrección solo compara la salida, las acepta; sin probar en la app (el sandbox podría bloquear `eval`) | **TODO** | 0 «blank» en `question_es`; una guarda que falle con palabras EN frecuentes en campos `_es`; datos de los ejecutables que distingan la función pedida (varianza ≠ mediana ≠ moda); `eval`/`exec` rechazados en el sandbox o en la corrección, con test |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 
