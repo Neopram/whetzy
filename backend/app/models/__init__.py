@@ -13,6 +13,7 @@ oauth, payment— que tenian migraciones aplicadas y datos en produccion.
 from app.core.db import Base
 from app.models.admin import GDPRRequest
 from app.models.analytics import AnalyticsEvent
+from app.models.antifraud import DeviceFingerprint, FraudReviewQueue
 from app.models.auth import AuditLog, LoginAttempt, RefreshToken, User2FA, UserSession
 from app.models.campaign import Campaign, CampaignClick
 from app.models.content import Domain, GlossaryTerm, Module, Question, Skill, Track
@@ -62,11 +63,13 @@ __all__ = [
     "CertificationPurchase",
     "CreditExpenseCap",
     "CreditLedger",
+    "DeviceFingerprint",
     "Domain",
     "Duel",
     "EmailVerificationToken",
     "Experiment",
     "ExperimentAssignment",
+    "FraudReviewQueue",
     "GDPRRequest",
     "GlossaryTerm",
     "Instructor",
