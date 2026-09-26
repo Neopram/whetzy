@@ -60,6 +60,9 @@ const AdminScreen = lazy(() => import('./pages/AdminScreen').then((m) => ({ defa
 const InstructorScreen = lazy(() => import('./pages/InstructorScreen'));
 const MarketplaceScreen = lazy(() => import('./pages/MarketplaceScreen').then((m) => ({ default: m.MarketplaceScreen })));
 const WalletScreen = lazy(() => import('./pages/WalletScreen'));
+// Public, unauthenticated status page — checked before any auth machinery so
+// it stays reachable even when the backend is down.
+const StatusPage = lazy(() => import('./pages/StatusPage'));
 
 // URL-based routing for standalone pages (no React Router needed)
 const STANDALONE_DOC: Record<string, string> = {
@@ -174,6 +177,10 @@ function App() {
       </Screen>
     );
   }
+
+  // Public status page: no auth, no store, reachable even if the backend
+  // that the rest of the app depends on is the very thing that's down.
+  if (path === '/status') return <Screen><StatusPage /></Screen>;
 
   if (path.startsWith('/r/')) {
     const code = path.slice(3);

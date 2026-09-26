@@ -222,7 +222,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 22.4 | **2** | **Cadena de suministro a €0**: Dependabot (config), `gitleaks` en pre-commit y en `verify_ci_local.ps1`, `bandit` +… | **DONE** | **DONE** → §I |
 | 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | |
 | 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **DONE** | **DONE** (2026-09-26) — 8/8: RateLimiter InMemory/Redis, pool asyncpg, capacity.md, k6, db_restore, job worker, Cache-Control en 6 GETs, paginación 13/15 (tracks/skills acotados); `cache.py` helper sin uso eliminado |
-| 22.7 | **3** | **Incidentes y estado**: runbook de incidentes (severidades, quién, qué, plantilla de postmortem), página de estado… | | |
+| 22.7 | **3** | **Incidentes y estado**: runbook de incidentes (severidades, quién, qué, plantilla de postmortem), página de estado… | DONE | RUNBOOK.md §Incident Management + `/status` page frontend |
 | 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo… | **DONE** | **DONE** `f36218f` (2026-09-19) → §I |
 | 22.9 | **1** | **Test de frontend rojo en `master`**: `src/test/hooks.useRuntime.test.tsx` falla con `ReferenceError: Worker is not… | **DONE** | **DONE** `7e1b8d4` (2026-09-19) → §I ||
 | 22.11 | **1** | **`AdminScreen.tsx` estaba 100 % en inglés** — títulos, pestañas, estados, mensajes de error y unidades eran cadenas… | **DONE** | **DONE** `13d8904` (2026-09-19) → §I |
@@ -365,7 +365,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | **PARCIAL** — Verificado 2026-09-25 contra el… | |
 | 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | |
 | 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | |
-| 28.6 | **4** | Panel admin: aprobación de cursos, moderación, gestión de payouts | **TODO** — Verificado 2026-09-25 contra el criterio:… | | |
+| 28.6 | **4** | Panel admin: aprobación de cursos, moderación, gestión de payouts | DONE | 4 admin endpoints: list/status courses + list/status payouts |
 | 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | | |
 | 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | | |

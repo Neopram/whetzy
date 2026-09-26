@@ -1284,3 +1284,145 @@ async def generate_promo_batch(
         "csv": "\n".join(csv_lines),
         "codes": [c.code for c in codes],
     }
+
+
+# ── Instructor admin (28.6) ───────────────────────────────────────────────
+
+
+@router.get("/instructor/courses", dependencies=[Depends(require_admin)])
+async def admin_list_instructor_courses(
+    status_filter: str | None = Query(default=None, alias="status"),
+    page: int = Query(default=1, ge=1),
+    per_page: int = Query(default=20, ge=1, le=100),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """List all instructor courses with moderation info."""
+    from app.models.instructor import Instructor, InstructorCourse
+
+    q = (
+        select(InstructorCourse)
+        .join(Instructor)
+        .order_by(desc(InstructorCourse.created_at))
+    )
+    if status_filter:
+        q = q.where(InstructorCourse.status == status_filter)
+
+    count_q = select(func.count()).select_from(q.subquery())
+    total = (await db.execute(count_q)).scalar() or 0
+
+    rows = (
+        await db.execute(q.offset((page - 1) * per_page).limit(per_page))
+    ).scalars().all()
+
+    courses = []
+    for c in rows:
+        instructor = await db.get(Instructor, c.instructor_id)
+        courses.append({
+            "id": str(c.id),
+            "title": c.title,
+            "description": c.description,
+            "price_cents": c.price_cents,
+            "status": c.status,
+            "enrolled_count": c.enrolled_count,
+            "revenue_cents": c.revenue_cents,
+            "instructor_name": instructor.display_name if instructor else None,
+            "instructor_id": str(c.instructor_id),
+            "created_at": c.created_at.isoformat() if c.created_at else None,
+        })
+
+    return {"total": total, "page": page, "per_page": per_page, "courses": courses}
+
+
+@router.patch("/instructor/courses/{course_id}/status", dependencies=[Depends(require_admin)])
+async def admin_update_course_status(
+    course_id: uuid.UUID,
+    new_status: str = Query(pattern="^(draft|published|archived|rejected)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Approve, reject, or archive an instructor course."""
+    from app.models.instructor import InstructorCourse
+
+    course = await db.get(InstructorCourse, course_id)
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+
+    old_status = course.status
+    course.status = new_status
+    await db.commit()
+
+    return {
+        "id": str(course.id),
+        "title": course.title,
+        "old_status": old_status,
+        "new_status": new_status,
+    }
+
+
+@router.get("/instructor/payouts", dependencies=[Depends(require_admin)])
+async def admin_list_payouts(
+    status_filter: str | None = Query(default=None, alias="status"),
+    page: int = Query(default=1, ge=1),
+    per_page: int = Query(default=20, ge=1, le=100),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """List all instructor payouts for management."""
+    from app.models.instructor import Instructor, InstructorPayout
+
+    q = (
+        select(InstructorPayout)
+        .join(Instructor)
+        .order_by(desc(InstructorPayout.created_at))
+    )
+    if status_filter:
+        q = q.where(InstructorPayout.status == status_filter)
+
+    count_q = select(func.count()).select_from(q.subquery())
+    total = (await db.execute(count_q)).scalar() or 0
+
+    rows = (
+        await db.execute(q.offset((page - 1) * per_page).limit(per_page))
+    ).scalars().all()
+
+    payouts = []
+    for p in rows:
+        instructor = await db.get(Instructor, p.instructor_id)
+        payouts.append({
+            "id": str(p.id),
+            "instructor_name": instructor.display_name if instructor else None,
+            "instructor_id": str(p.instructor_id),
+            "period_start": p.period_start.isoformat(),
+            "period_end": p.period_end.isoformat(),
+            "earnings_cents": p.earnings_cents,
+            "status": p.status,
+            "payout_date": p.payout_date.isoformat() if p.payout_date else None,
+            "created_at": p.created_at.isoformat() if p.created_at else None,
+        })
+
+    return {"total": total, "page": page, "per_page": per_page, "payouts": payouts}
+
+
+@router.patch("/instructor/payouts/{payout_id}/status", dependencies=[Depends(require_admin)])
+async def admin_update_payout_status(
+    payout_id: uuid.UUID,
+    new_status: str = Query(pattern="^(pending|processing|completed|failed)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Update payout status (process, complete, or mark failed)."""
+    from app.models.instructor import InstructorPayout
+
+    payout = await db.get(InstructorPayout, payout_id)
+    if not payout:
+        raise HTTPException(status_code=404, detail="Payout not found")
+
+    old_status = payout.status
+    payout.status = new_status
+    if new_status == "completed":
+        payout.payout_date = datetime.now(UTC)
+    await db.commit()
+
+    return {
+        "id": str(payout.id),
+        "old_status": old_status,
+        "new_status": new_status,
+        "payout_date": payout.payout_date.isoformat() if payout.payout_date else None,
+    }

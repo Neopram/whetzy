@@ -278,6 +278,14 @@ POST  /content/duplicates                   → embedding-based duplicate detect
 
 All admin routes require `X-Admin-Key` header.
 
+### Instructor moderation (28.6)
+```
+GET   /admin/instructor/courses                      → paginated course list with instructor info 🔒 admin — ?status=draft|published|archived|rejected &page= &per_page=
+PATCH /admin/instructor/courses/{course_id}/status   → approve/reject/archive a course 🔒 admin — ?new_status=published|rejected|archived|draft
+GET   /admin/instructor/payouts                      → paginated payout list 🔒 admin — ?status=pending|processing|completed|failed &page= &per_page=
+PATCH /admin/instructor/payouts/{payout_id}/status   → process/complete/fail a payout 🔒 admin — ?new_status=pending|processing|completed|failed
+```
+
 ### Content management
 ```
 GET  /admin/content/gaps                 → gaps in question coverage
@@ -370,8 +378,8 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-112 paths (108 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **115 method+path endpoints** total.
+116 paths (112 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **119 method+path endpoints** total.
 Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
 
 
