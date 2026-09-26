@@ -3,8 +3,6 @@
   "skill_id": "sk270302",
   "title_es": "Estrategias de Caché con Redis",
   "title_en": "Redis Caching Strategies",
-  "content_es": "Las estrategias de caché determinan cómo Redis interactúa con la fuente de datos. Cache-aside: verificar Redis, si no hay, consultar BD e insertar en Redis. Write-through: escribir en Redis y BD simultáneamente, consistencia fuerte pero más latencia. Write-behind: escribir en Redis y actualizar BD asincronamente después, rápido pero riesgo de pérdida. TTL (Time To Live) es crítico: EXPIRE establece cuándo una clave se elimina automáticamente. Cache Stampede ocurre cuando una clave popular expira y muchas solicitudes golpean BD simultáneamente; prevenirlo con refresh en background. Usar MGET para obtener múltiples claves en una operación.",
-  "content_en": "Caching strategies determine how Redis interacts with data source. Cache-aside: check Redis, if not, query DB and insert in Redis. Write-through: write to Redis and DB simultaneously, strong consistency but more latency. Write-behind: write to Redis and update DB asynchronously later, fast but loss risk. TTL (Time To Live) is critical: EXPIRE sets when key auto-deletes. Cache Stampede occurs when popular key expires and many requests hit DB simultaneously; prevent with background refresh. Use MGET to get multiple keys in one operation.",
   "resources_es": [
     "Patrones de caché",
     "Expiración y evicción",
@@ -15,5 +13,7 @@
     "Expiration and eviction",
     "Rate limiting"
   ],
-  "source": "Redis Documentation (https://redis.io/docs/manual/client-side-caching/)"
+  "source": "Redis Documentation (https://redis.io/docs/manual/client-side-caching/)",
+  "body_es": "Las estrategias de caché determinan cómo Redis interactúa con la fuente de datos. Cache-aside: verificar Redis, si no hay, consultar BD e insertar en Redis. Write-through: escribir en Redis y BD simultáneamente, consistencia fuerte pero más latencia. Write-behind: escribir en Redis y actualizar BD asincronamente después, rápido pero riesgo de pérdida. TTL (Time To Live) es crítico: EXPIRE establece cuándo una clave se elimina automáticamente. Cache Stampede ocurre cuando una clave popular expira y muchas solicitudes golpean BD simultáneamente; prevenirlo con refresh en background. Usar MGET para obtener múltiples claves en una operación.",
+  "body_en": "Caching strategies determine how Redis interacts with data source. Cache-aside: check Redis, if not, query DB and insert in Redis. Write-through: write to Redis and DB simultaneously, strong consistency but more latency. Write-behind: write to Redis and update DB asynchronously later, fast but loss risk. TTL (Time To Live) is critical: EXPIRE sets when key auto-deletes. Cache Stampede occurs when popular key expires and many requests hit DB simultaneously; prevent with background refresh. Use MGET to get multiple keys in one operation."
 }
