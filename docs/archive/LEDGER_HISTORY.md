@@ -2044,3 +2044,6 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 | 22.7 | **3** | **Incidentes y estado**: runbook de incidentes (severidades, quién, qué, plantilla de postmortem), página de estado… | DONE | RUNBOOK.md §Incident Management + `/status` page frontend |
 | 28.6 | **4** | Panel admin: aprobación de cursos, moderación, gestión de payouts | DONE | 4 admin endpoints: list/status courses + list/status payouts |
 | 19.4 | **2** | **Bootcamps: secuencia de tracks con calendario y meta diaria** | DONE | Modelos + migración + API + seed data + 7 tests. `7768bc7` |
+| 39.16 | **1** | Pesos de dominio de track44–46 suman 95/95/96 | **DONE** | Puntos medios oficiales normalizados a 100 (Microsoft Learn, leídos 2026-09-26): AZ-900 28/39/33 (guía 20-07-2026), DP-900 29/24/18/29 (21-07-2026), AI-900 19×4/24 |
+| 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | **DONE** | 286 términos sin `track_id` (tracks 18/20/21/23/27/44-46); arreglado; loader local `skipped: 0`, `glossary: 1044`; test rojo sobre master |
+| 39.19 | **2** | 115 rutas en local frente a 141 en producción | **DONE** | Sin diferencia: `openapi.json` local y de producción = 141 paths / 146 operaciones, idénticas (2026-09-26); «115» era el recuento filtrado del test de contrato |
