@@ -221,7 +221,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 22.3 | **2** | **Auth hardening**: lockout progresivo tras N fallos, refresh tokens con rotación y revocación, sesiones por dispositivo… | **DONE** | **DONE** → §I |
 | 22.4 | **2** | **Cadena de suministro a €0**: Dependabot (config), `gitleaks` en pre-commit y en `verify_ci_local.ps1`, `bandit` +… | **DONE** | **DONE** → §I |
 | 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | |
-| 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **PARCIAL** | **PARCIAL** `e5efdb7` (2026-09-26) → §I |
+| 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **DONE** | **DONE** (2026-09-26) — 8/8: RateLimiter InMemory/Redis, pool asyncpg, capacity.md, k6, db_restore, job worker, Cache-Control en 6 GETs, paginación 13/15 (tracks/skills acotados); `cache.py` helper sin uso eliminado |
 | 22.7 | **3** | **Incidentes y estado**: runbook de incidentes (severidades, quién, qué, plantilla de postmortem), página de estado… | | |
 | 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo… | **DONE** | **DONE** `f36218f` (2026-09-19) → §I |
 | 22.9 | **1** | **Test de frontend rojo en `master`**: `src/test/hooks.useRuntime.test.tsx` falla con `ReferenceError: Worker is not… | **DONE** | **DONE** `7e1b8d4` (2026-09-19) → §I ||
