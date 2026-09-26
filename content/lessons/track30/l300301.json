@@ -1,0 +1,12 @@
+{
+  "id": "l300301",
+  "skill_id": "sk300301",
+  "title_es": "Fundamentos de Kanban",
+  "title_en": "Kanban Fundamentals",
+  "body_es": "Kanban es un sistema de gestión visual del flujo de trabajo que utiliza tarjetas para representar tareas y columnas para mostrar estados (por ejemplo: A Hacer, En Progreso, Completado). Se basa en los principios de limitación del trabajo en progreso (WIP) para mejorar el flujo y mantener el equipo enfocado. A diferencia de Scrum que usa sprints, Kanban enfatiza el flujo continuo, permitiendo que los elementos se muevan a través del sistema a su propio ritmo mientras se respetan los límites WIP. Esto lo hace especialmente útil para equipos con trabajo impredecible o que manejan solicitudes urgentes.",
+  "body_en": "Kanban is a visual work flow management system that uses cards to represent tasks and columns to show states (for example: To Do, In Progress, Done). It is based on principles of limiting work in progress (WIP) to improve flow and keep the team focused. Unlike Scrum which uses sprints, Kanban emphasizes continuous flow, allowing items to move through the system at their own pace while respecting WIP limits. This makes it especially useful for teams with unpredictable work or handling urgent requests.",
+  "example_code": "# Kanban Board Structure (YAML)\nkanban_board:\n  columns:\n    backlog:\n      name: \"Backlog\"\n      wip_limit: null\n      items_count: 25\n    \n    to_do:\n      name: \"To Do\"\n      wip_limit: 5\n      items_count: 5\n      items:\n        - \"Feature A implementation\"\n        - \"Bug fix in API\"\n        - \"Documentation update\"\n        - \"Performance optimization\"\n        - \"Security audit\"\n    \n    in_progress:\n      name: \"In Progress\"\n      wip_limit: 3\n      items_count: 2\n      items:\n        - \"Feature B development (started 2h ago)\"\n        - \"Code review for Feature A\"\n    \n    in_review:\n      name: \"In Review\"\n      wip_limit: 3\n      items_count: 2\n    \n    done:\n      name: \"Done\"\n      wip_limit: null\n      items_count: 42\n\n  wip_philosophy: \"Limit work to prevent multitasking and context switching\"",
+  "example_output": "Kanban Board Status:\n\nBacklog: ▓▓▓▓▓ (5 WIP)\nTo Do: ▓▓▓▓▓ (5 WIP) [AT LIMIT]\nIn Progress: ▓▓ (2 WIP) [CAN ADD 1 MORE]\nIn Review: ▓▓ (2 WIP)\nDone: ▓▓▓▓▓▓▓▓▓▓ (42 completed)\n\nFlow Metrics:\n- Average cycle time: 3 days\n- Throughput: 8 items/week\n- Team velocity: Increasing",
+  "source": "Agile Manifesto — https://agilemanifesto.org",
+  "order": 1
+}

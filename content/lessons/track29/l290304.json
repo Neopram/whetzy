@@ -1,0 +1,12 @@
+{
+  "id": "l290304",
+  "skill_id": "sk290304",
+  "title_es": "Testing de Base de Datos",
+  "title_en": "Database Testing",
+  "body_es": "El testing de base de datos valida la integridad de datos, operaciones CRUD (crear, leer, actualizar, eliminar) y transacciones. Se prueban consultas SQL, integridad referencial, índices y rendimiento. Las mejores prácticas incluyen usar una base de datos de prueba aislada, limpiar datos después de cada prueba, y usar transacciones para rollback automático. Librerías como sqlalchemy facilitan pruebas agnósticas del motor de base de datos. Las migraciones de esquema también deben probarse para detectar errores antes de producción.",
+  "body_en": "Database testing validates data integrity, CRUD operations (create, read, update, delete), and transactions. SQL queries, referential integrity, indexes, and performance are tested. Best practices include using an isolated test database, cleaning data after each test, and using transactions for automatic rollback. Libraries like sqlalchemy facilitate database-agnostic testing. Schema migrations should also be tested to catch errors before production.",
+  "example_code": "import pytest\nfrom sqlalchemy import create_engine\nfrom sqlalchemy.orm import sessionmaker\n\n@pytest.fixture\ndef db_session():\n    # Use in-memory SQLite for testing\n    engine = create_engine('sqlite:///:memory:')\n    Base.metadata.create_all(engine)\n    Session = sessionmaker(bind=engine)\n    session = Session()\n    yield session\n    session.rollback()  # Rollback after test\n\ndef test_create_user(db_session):\n    user = User(name='Bob', email='bob@example.com')\n    db_session.add(user)\n    db_session.commit()\n    \n    retrieved = db_session.query(User).filter_by(email='bob@example.com').first()\n    assert retrieved.name == 'Bob'\n\ndef test_update_user(db_session):\n    user = User(name='Charlie', email='charlie@example.com')\n    db_session.add(user)\n    db_session.commit()\n    \n    user.name = 'Charles'\n    db_session.commit()\n    \n    assert user.name == 'Charles'",
+  "example_output": "test_create_user PASSED\ntest_update_user PASSED\n2 passed in 0.12s\n\nDatabase state rolled back after each test",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 4
+}

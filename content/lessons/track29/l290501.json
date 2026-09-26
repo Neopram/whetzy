@@ -1,0 +1,12 @@
+{
+  "id": "l290501",
+  "skill_id": "sk290501",
+  "title_es": "Pipelines de Automatización de Pruebas",
+  "title_en": "Test Automation Pipelines",
+  "body_es": "Un pipeline de CI/CD automatiza la ejecución de pruebas cada vez que se hace commit de código. Herramientas como GitHub Actions, GitLab CI y Jenkins ejecutan tests en servidores dedicados, reportan resultados y bloquean merges si falla la calidad. Un pipeline típico incluye: linting (análisis estático), tests unitarios, tests de integración, tests E2E, y análisis de cobertura. Los pipelines deben ser rápidos (feedback inmediato), confiables (sin falsos positivos) y paralelos (ejecutar tests simultáneamente). Configurar correctamente un pipeline es crucial para mantener calidad.",
+  "body_en": "A CI/CD pipeline automates test execution whenever code is committed. Tools like GitHub Actions, GitLab CI, and Jenkins run tests on dedicated servers, report results, and block merges if quality fails. A typical pipeline includes: linting (static analysis), unit tests, integration tests, E2E tests, and coverage analysis. Pipelines should be fast (immediate feedback), reliable (no false positives), and parallel (run tests simultaneously). Properly configuring a pipeline is crucial for maintaining quality.",
+  "example_code": "# GitHub Actions workflow example (.github/workflows/test.yml)\nname: Test Pipeline\n\non: [push, pull_request]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    strategy:\n      matrix:\n        python-version: ['3.9', '3.10', '3.11']\n    \n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Set up Python\n      uses: actions/setup-python@v4\n      with:\n        python-version: ${{ matrix.python-version }}\n    \n    - name: Install dependencies\n      run: |\n        pip install -r requirements-dev.txt\n    \n    - name: Run linting\n      run: flake8 . --count --select=E9,F63,F7,F82\n    \n    - name: Run unit tests\n      run: pytest tests/unit -v --cov\n    \n    - name: Run integration tests\n      run: pytest tests/integration -v",
+  "example_output": "Linting: PASSED\nUnit tests: 156 passed in 12s\nIntegration tests: 48 passed in 35s\nPipeline: SUCCESS",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 1
+}

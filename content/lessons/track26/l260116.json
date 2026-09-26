@@ -1,0 +1,12 @@
+{
+  "id": "l260116",
+  "skill_id": "sk260116",
+  "title_es": "Reflog y Hooks",
+  "title_en": "Reflog and Hooks",
+  "body_es": "`git reflog` registra todos los movimientos del HEAD, permitiendo recuperar trabajo que parecía perdido. Es una red de seguridad cuando accidentalmente resets o rebases eliminan commits. Los hooks de Git son scripts que se ejecutan automáticamente en eventos como commits o pushes. Los hooks pre-commit pueden validar código; los hooks post-commit pueden enviar notificaciones. Se guardan en `.git/hooks/` y permiten automatizar workflows.",
+  "body_en": "`git reflog` records all HEAD movements, allowing you to recover work that seemed lost. It is a safety net when accidental resets or rebases delete commits. Git hooks are scripts that run automatically on events like commits or pushes. Pre-commit hooks can validate code; post-commit hooks can send notifications. They are stored in `.git/hooks/` and allow workflow automation.",
+  "example_code": "git reflog\ngit reset --hard 5x6y7z8\ngit reflog\n# View hooks\nls -la .git/hooks/\ncat .git/hooks/pre-commit",
+  "example_output": "5x6y7z8 HEAD@{0}: reset: moving to 5x6y7z8\n9k0l1m2 HEAD@{1}: commit: Fix critical bug\n4a5b6c7 HEAD@{2}: checkout: moving from develop to master\n\n-rwxr-xr-x 1 user user  452 Sep 24 10:30 pre-commit\n-rwxr-xr-x 1 user user  189 Sep 24 10:30 pre-push\n-rwxr-xr-x 1 user user  224 Sep 24 10:30 commit-msg\n\n#!/bin/sh\necho \"Running linter before commit...\"\nnpx eslint .",
+  "source": "Git Docs — https://git-scm.com/doc",
+  "order": 4
+}

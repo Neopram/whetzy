@@ -1,0 +1,12 @@
+{
+  "id": "l290203",
+  "skill_id": "sk290203",
+  "title_es": "Parametrización y Organización de Pruebas",
+  "title_en": "Parametrization and Test Organization",
+  "body_es": "La parametrización permite ejecutar la misma función de prueba con múltiples conjuntos de datos usando @pytest.mark.parametrize, evitando código duplicado. En lugar de escribir 10 funciones de prueba similares, una sola función parametrizada ejecuta 10 casos con datos diferentes. La organización estructurada de pruebas en carpetas, módulos y clases facilita el mantenimiento. Las convenciones de nombres claras (test_<funcionalidad>) y el agrupamiento lógico hacen que encontrar y ejecutar pruebas sea eficiente.",
+  "body_en": "Parametrization enables running the same test function with multiple datasets using @pytest.mark.parametrize, avoiding code duplication. Instead of writing 10 similar test functions, one parametrized function runs 10 test cases with different data. Organizing tests into folders, modules, and classes makes maintenance easier. Clear naming conventions (test_<functionality>) and logical grouping make finding and running tests efficient.",
+  "example_code": "import pytest\n\n@pytest.mark.parametrize('input_val,expected', [\n    (1, 'odd'),\n    (2, 'even'),\n    (3, 'odd'),\n    (4, 'even'),\n    (0, 'even')\n])\ndef test_check_odd_even(input_val, expected):\n    result = 'odd' if input_val % 2 != 0 else 'even'\n    assert result == expected\n\n# Directory structure:\n# tests/\n#   unit/\n#     test_math.py\n#     test_string.py\n#   integration/\n#     test_database.py\n#   conftest.py",
+  "example_output": "test_check_odd_even[1-odd] PASSED\ntest_check_odd_even[2-even] PASSED\ntest_check_odd_even[3-odd] PASSED\ntest_check_odd_even[4-even] PASSED\ntest_check_odd_even[0-even] PASSED\n5 passed in 0.06s",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 3
+}

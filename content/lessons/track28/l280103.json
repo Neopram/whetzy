@@ -1,0 +1,12 @@
+{
+  "id": "l280103",
+  "skill_id": "sk280103",
+  "title_es": "Encabezados HTTP",
+  "title_en": "HTTP Headers",
+  "body_es": "Los encabezados HTTP transmiten información adicional sobre la solicitud o respuesta. Los encabezados de solicitud incluyen User-Agent, Accept, Authorization y Content-Type, mientras que los de respuesta incluyen Set-Cookie, Cache-Control, Content-Type y Access-Control-Allow-Origin. Los encabezados personalizados permiten aplicaciones específicas pasar datos adicionales. Dominar los encabezados más comunes es esencial para implementar características como autenticación, caché, CORS y negociación de contenido.",
+  "body_en": "HTTP headers transmit additional information about the request or response. Request headers include User-Agent, Accept, Authorization, and Content-Type, while response headers include Set-Cookie, Cache-Control, Content-Type, and Access-Control-Allow-Origin. Custom headers allow application-specific data to be passed. Mastering common headers is essential for implementing features like authentication, caching, CORS, and content negotiation.",
+  "example_code": "from fastapi import FastAPI, Header\nfrom fastapi.responses import JSONResponse\n\napp = FastAPI()\n\n@app.get(\"/protected\")\nasync def protected_route(authorization: str = Header(...)):\n    return {\"message\": \"Access granted\", \"token\": authorization}\n\n@app.post(\"/data\")\nasync def create_data(content_type: str = Header(...)):\n    if \"json\" not in content_type:\n        return JSONResponse(status_code=400, content={\"error\": \"Invalid content type\"})\n    return {\"message\": \"Data received\"}\n\n@app.get(\"/cached\")\nasync def get_cached_data():\n    return JSONResponse(\n        content={\"data\": \"cached value\"},\n        headers={\"Cache-Control\": \"max-age=3600\", \"X-Custom-Header\": \"value\"}\n    )",
+  "example_output": "Request: GET /protected\nHeader: Authorization: Bearer token123\nResponse: {\"message\": \"Access granted\", \"token\": \"Bearer token123\"}\n\nResponse Headers: Cache-Control: max-age=3600, X-Custom-Header: value",
+  "source": "FastAPI Docs — https://fastapi.tiangolo.com",
+  "order": 3
+}
