@@ -37,7 +37,7 @@ Cubre el camino completo: desde las primeras líneas de Python hasta arquitectur
 - **Motor adaptativo.** BKT + FSRS deciden qué practicas y cuándo repasas. No adivinamos: lo calculamos.
 - **Código que se ejecuta.** Los ejemplos de Python, SQL y JavaScript corren de verdad en la app, sin servidor externo, sin copiar y pegar.
 - **Bilingüe nativo.** Todo el contenido está escrito en español e inglés por separado — no es una traducción automática.
-- **18 tracks. 378 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
+- **18 tracks. 401 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
 - **Sin anuncios. Sin rastreo.**
 
 **Cómo funciona**
@@ -60,7 +60,7 @@ It covers the full path: from your first lines of Python to microservice archite
 - **Adaptive engine.** BKT + FSRS decide what you practice and when you review. We don't guess: we calculate it.
 - **Code that runs.** Python, SQL and JavaScript examples actually execute inside the app — no external server, no copy-paste.
 - **Natively bilingual.** All content is written in Spanish and English separately — not machine-translated.
-- **18 tracks. 378 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
+- **18 tracks. 401 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
 - **No ads. No tracking.**
 
 **How it works**

@@ -41,11 +41,11 @@ profundidad de producto*, no adquisición.
 | Métrica | Valor 2026-09-18 | Comando |
 |---|---|---|
 | Tracks | **18** (track01–17 + track40) | `python scripts/check_docs.py` |
-| Cursos (track × nivel) | **49** | ídem |
-| Skills | **378** | ídem |
-| Preguntas | **6.305** | `python scripts/check_question_bank.py` |
-| Lecciones | 378/378 (100 %) | `pytest tests/content/test_lessons.py` |
-| Glosario | **622** | `check_docs.py` |
+| Cursos (= módulos, ADR-46 37.2) | **97** | ídem |
+| Skills | **401** | ídem |
+| Preguntas | **6.648** | `python scripts/check_question_bank.py` |
+| Lecciones | 401/401 (100 %) | `pytest tests/content/test_lessons.py` |
+| Glosario | **656** | `check_docs.py` |
 | Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9) | `check_question_bank.py` |
 | Certificaciones | **5** (CLF-C02, PCEP, SAA-C03, AIF-C01, **ISC2 CC = track40**) — blueprints corregidos en 18.1 (8 passed / 0 xfail) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
@@ -71,7 +71,7 @@ compran libros para parafrasearlos y los PDFs pirateados no entran ni como cita.
 camino con cualquier fuente es el mismo: leer → escribir lección/pregunta original en
 ES y EN → citar. Los hechos son libres; la redacción no.
 
-**Meta por track (ADR-46): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 6.305; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
+**Meta por track (ADR-46): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 6.648; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
 
 | # | Área | Track | Id | Estado | Fuentes con licencia | Runtime | Certs asociadas (→ §3) |
 |---|---|---|---|---|---|---|---|
@@ -84,7 +84,7 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 7 | IA | Ingeniería de IA / LLMs | track07 | ✅ | `generative-ai-for-beginners` MIT, `dair-ai/PEG` MIT, arXiv | Python stdlib | AIF-C01 ✅, AI-102 |
 | 8 | Datos | SQL | track12 | ✅ (18.0 lo deja verde) | SQLite docs (dominio público), PostgreSQL docs | **SQL (sql.js)** | PostgreSQL Associate, DP-900 |
 | 9 | Seguridad | Ciberseguridad — fundamentos | track13 | ✅ (25.0: scaffolding + 500 Q mock, 15 % exec) | NIST SP 800-53/61/63 (PD) + OWASP CheatSheets (CC BY-SA) | Python `fix_bug_exec` (hashlib, hmac, secrets, html, re, ipaddress) | ISC2 CC, Security+ |
-| 10 | Web | Frontend (JS/TS/React) | track14 | stub ✅ (18.3) — 12 Q, 2 js_exec, 1 lección, 6 términos | `lydiahallie/javascript-questions` MIT, `Web-Dev-For-Beginners` MIT, MDN (CC BY-SA → cita) | **JS Worker sandbox real (18.3)** | JSE-1 |
+| 10 | Web | Frontend (JS/TS/React) | track14 | ✅ (18.3: 6 módulos, 24 skills, 24 lecciones, 40 términos glosario, JS Worker sandbox) | `lydiahallie/javascript-questions` MIT, `Web-Dev-For-Beginners` MIT, MDN (CC BY-SA → cita) | **JS Worker sandbox real (18.3)** | JSE-1 |
 | 11 | Fundamentos | Linux / shell | track15 | ✅ (18.4, `bec734c`: 180 Q, 3 módulos, 12 lecciones, exento ADR-9) | `exercism/bash` MIT, man-pages (cita), *The Linux Command Line* (cita) | exento (fill_blank de comandos) | LPIC-1, Linux+, LFCS |
 | 12 | Fundamentos | Algoritmos y estructuras | track16 | ✅ (18.4: 158 Q, 44,9 % exec, 12 lecciones) | `TheAlgorithms/Python` MIT, `tech-interview-handbook` MIT; `coding-interview-university` (BY-SA → H.LIC) | Python (≥ 30 %) | — |
 | 13 | Fundamentos | Redes | track17 | ✅ (18.4: 180 Q, mod1703 36,7 % exec, 12 lecciones) | RFCs (IETF), *Computer Networking* (cita), Cisco docs (cita) | Python (`socket`, `ipaddress`) | CCNA, Network+ |
