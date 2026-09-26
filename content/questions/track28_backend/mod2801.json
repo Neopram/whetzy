@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q280101_001",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la principal diferencia entre GET y POST en HTTP?",
+      "question_en": "What is the main difference between GET and POST in HTTP?",
+      "options_es": [
+        "GET envía datos en el cuerpo, POST en la URL",
+        "GET es idempotente y no modifica datos; POST puede crear recursos",
+        "GET es más rápido que POST",
+        "GET solo funciona con JSON, POST con cualquier formato"
+      ],
+      "options_en": [
+        "GET sends data in the body, POST in the URL",
+        "GET is idempotent and does not modify data; POST can create resources",
+        "GET is faster than POST by convention",
+        "GET only works with JSON, POST with any format"
+      ],
+      "correct_index": 1,
+      "explanation_es": "GET es idempotente y se usa para recuperar datos sin efectos secundarios. POST se usa para crear nuevos recursos y puede tener efectos secundarios. Esta es la distinción semántica fundamental entre estos métodos.",
+      "explanation_en": "GET is idempotent and used to retrieve data without side effects. POST is used to create new resources and can have side effects. This is the fundamental semantic distinction between these methods.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_002",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de los siguientes métodos HTTP es idempotente?",
+      "question_en": "Which of the following HTTP methods is idempotent?",
+      "options_es": [
+        "POST",
+        "HEAD",
+        "PATCH",
+        "DELETE"
+      ],
+      "options_en": [
+        "POST",
+        "HEAD",
+        "PATCH",
+        "DELETE"
+      ],
+      "correct_index": 3,
+      "explanation_es": "DELETE es idempotente porque eliminar el mismo recurso múltiples veces produce el mismo resultado. POST no es idempotente (crea nuevos recursos cada vez), PATCH puede no serlo (depende de la implementación), y HEAD es similar a GET (también idempotente, pero DELETE es la respuesta clara aquí).",
+      "explanation_en": "DELETE is idempotent because deleting the same resource multiple times produces the same result. POST is not idempotent (creates new resources each time), PATCH may not be (depends on implementation), and HEAD is similar to GET (also idempotent, but DELETE is the clearest answer here).",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_003",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo usarías PUT en lugar de POST?",
+      "question_en": "When would you use PUT instead of POST?",
+      "options_es": [
+        "Cuando quieres actualizar parcialmente un recurso",
+        "Cuando reemplazas completamente un recurso existente usando su identificador conocido",
+        "Cuando necesitas validar datos antes de crear un recurso",
+        "Cuando el cliente no tiene permiso para crear recursos"
+      ],
+      "options_en": [
+        "When you want to partially update a resource",
+        "When you completely replace an existing resource using its known identifier",
+        "When you need to validate data before creating a resource",
+        "When the client does not have permission to create resources"
+      ],
+      "correct_index": 1,
+      "explanation_es": "PUT se usa para reemplazar completamente un recurso identificado. Es idempotente: llamarlo múltiples veces con los mismos datos produce el mismo estado. POST se usa para crear nuevos recursos o cuando el servidor genera el identificador.",
+      "explanation_en": "PUT is used to completely replace an identified resource. It is idempotent: calling it multiple times with the same data produces the same state. POST is used to create new resources or when the server generates the identifier.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_004",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué se usa el método PATCH?",
+      "question_en": "What is the PATCH method used for?",
+      "options_es": [
+        "Para cambiar la versión de la API",
+        "Para aplicar modificaciones parciales a un recurso",
+        "Para eliminar partes específicas de un recurso en el caso más común",
+        "Para verificar si un servidor está disponible"
+      ],
+      "options_en": [
+        "To change the API version",
+        "To apply partial modifications to a resource",
+        "To delete specific parts of a resource for most projects",
+        "To check if a server is available"
+      ],
+      "correct_index": 1,
+      "explanation_es": "PATCH se usa para aplicar modificaciones parciales a un recurso. A diferencia de PUT que reemplaza todo, PATCH actualiza solo los campos especificados. Esto es útil cuando solo necesitas cambiar una parte de un recurso grande.",
+      "explanation_en": "PATCH is used to apply partial modifications to a resource. Unlike PUT which replaces everything, PATCH updates only the specified fields. This is useful when you only need to change part of a large resource.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_005",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa que un método HTTP sea 'idempotente'?",
+      "question_en": "What does it mean for an HTTP method to be 'idempotent'?",
+      "options_es": [
+        "Que hacer la misma solicitud múltiples veces produce el mismo resultado",
+        "Que la respuesta siempre contiene caché",
+        "Que el cliente debe enviar un token de autenticación en entornos de producción",
+        "Que el servidor puede rechazar la solicitud"
+      ],
+      "options_en": [
+        "That making the same request multiple times produces the same result",
+        "That the response always contains cache",
+        "That the client must send an authentication token as a general rule",
+        "That the server can reject the request"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un método idempotente produce el mismo resultado del servidor sin importar cuántas veces se ejecute. GET, PUT y DELETE son idempotentes. POST y PATCH típicamente no lo son. Esta es una propiedad clave para diseñar APIs confiables.",
+      "explanation_en": "An idempotent method produces the same server-side result regardless of how many times it is executed. GET, PUT, and DELETE are idempotent. POST and PATCH typically are not. This is a key property for designing reliable APIs.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_006",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito del método HEAD?",
+      "question_en": "What is the purpose of the HEAD method?",
+      "options_es": [
+        "Actualizar solo los encabezados de un recurso",
+        "Crear una copia de un recurso existente",
+        "Obtener los mismos datos que GET pero sin el cuerpo de la respuesta",
+        "Eliminar solo los metadatos de un recurso"
+      ],
+      "options_en": [
+        "Update only the headers of a resource",
+        "Create a copy of an existing resource",
+        "Get the same data as GET but without the response body",
+        "Delete only the metadata of a resource"
+      ],
+      "correct_index": 2,
+      "explanation_es": "HEAD es idéntico a GET pero sin el cuerpo de la respuesta. Se usa para verificar si un recurso existe o para obtener metadatos sin descargar el contenido completo, lo que es útil para archivos grandes.",
+      "explanation_en": "HEAD is identical to GET but without the response body. It is used to check if a resource exists or to get metadata without downloading the full content, which is useful for large files.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_007",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué los navegadores no permiten POST en formularios HTML tradicionales si quieres enviar datos?",
+      "question_en": "Why do web browsers allow POST in traditional HTML forms but not PUT or DELETE?",
+      "options_es": [
+        "Porque PUT y DELETE son métodos administrativos no disponibles para usuarios",
+        "Porque PUT y DELETE son más lentos",
+        "Porque PUT y DELETE requieren una conexión HTTPS obligatoria",
+        "Porque los formularios HTML solo soportan GET y POST de forma nativa"
+      ],
+      "options_en": [
+        "Because PUT and DELETE are administrative methods not available to users",
+        "Because PUT and DELETE are slower",
+        "Because PUT and DELETE require mandatory HTTPS connection",
+        "Because HTML forms natively support only GET and POST"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los formularios HTML tradicionales solo soportan GET y POST. Para usar PUT, DELETE y otros métodos, necesitas usar fetch() o una librería AJAX. Esto es una limitación del navegador, no de HTTP.",
+      "explanation_en": "Traditional HTML forms only support GET and POST. To use PUT, DELETE, and other methods, you need to use fetch() or an AJAX library. This is a browser limitation, not an HTTP limitation.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_008",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método HTTP deberías usar para obtener todos los usuarios de una API?",
+      "question_en": "Which HTTP method should you use to retrieve all users from an API?",
+      "options_es": [
+        "POST /users",
+        "DELETE /users",
+        "GET /users",
+        "PUT /users"
+      ],
+      "options_en": [
+        "POST /users",
+        "DELETE /users",
+        "GET /users",
+        "PUT /users"
+      ],
+      "correct_index": 2,
+      "explanation_es": "GET se usa para recuperar datos. GET /users es la forma RESTful correcta de obtener la lista de todos los usuarios. Es seguro, idempotente y no modifica estado del servidor.",
+      "explanation_en": "GET is used to retrieve data. GET /users is the correct RESTful way to get a list of all users. It is safe, idempotent, and does not modify server state.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_009",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia principal entre PUT y PATCH?",
+      "question_en": "What is the main difference between PUT and PATCH?",
+      "options_es": [
+        "PATCH es más seguro que PUT",
+        "PUT usa menos ancho de banda",
+        "PUT reemplaza el recurso completo; PATCH modifica parcialmente",
+        "PUT solo funciona con números; PATCH con strings"
+      ],
+      "options_en": [
+        "PATCH is more secure than PUT",
+        "PUT uses less bandwidth in practice",
+        "PUT replaces the entire resource; PATCH modifies it partially",
+        "PUT only works with numbers; PATCH with strings"
+      ],
+      "correct_index": 2,
+      "explanation_es": "PUT reemplaza completamente el recurso con los datos enviados. PATCH aplica cambios parciales, enviando solo los campos a actualizar. PUT es más predictible (idempotente), mientras que PATCH puede o no serlo según la implementación.",
+      "explanation_en": "PUT completely replaces the resource with the sent data. PATCH applies partial changes, sending only the fields to update. PUT is more predictable (idempotent), while PATCH may or may not be depending on implementation.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_010",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Qué pasa si llamas GET /users/123 múltiples veces?",
+      "question_en": "What happens if you call GET /users/123 multiple times?",
+      "options_es": [
+        "Obtienes los mismos datos del usuario 123 cada vez (idempotente)",
+        "El usuario se marca como 'accedido' en la base de datos en condiciones normales",
+        "El usuario 123 se duplica cada vez",
+        "La API rechaza las solicitudes repetidas como fraude"
+      ],
+      "options_en": [
+        "You get the same data for user 123 each time (idempotent)",
+        "The user is marked as 'accessed' in the database in the most common case",
+        "User 123 is duplicated each time",
+        "The API rejects repeated requests as fraud"
+      ],
+      "correct_index": 0,
+      "explanation_es": "GET es idempotente. Llamarlo múltiples veces produce exactamente el mismo resultado sin efectos secundarios. Esto permite reintentos seguros en caso de fallos de red.",
+      "explanation_en": "GET is idempotent. Calling it multiple times produces exactly the same result without side effects. This allows safe retries in case of network failures.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_011",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el método HTTP más seguro para enviar credenciales de usuario?",
+      "question_en": "Which HTTP method is safest for sending user credentials?",
+      "options_es": [
+        "GET con parámetros en la URL como regla general",
+        "PUT en texto plano",
+        "POST con datos en el cuerpo encriptado (HTTPS)",
+        "DELETE con autenticación HTTP básica"
+      ],
+      "options_en": [
+        "GET with parameters in the URL as a standard approach",
+        "PUT in plain text",
+        "POST with data in the encrypted body (HTTPS)",
+        "DELETE with basic HTTP authentication"
+      ],
+      "correct_index": 2,
+      "explanation_es": "POST con HTTPS es más seguro porque: 1) Los datos van en el cuerpo (no visibles en logs de URL), 2) HTTPS encripta toda la comunicación. GET expone credenciales en la URL. PUT y DELETE no son apropiados para autenticación.",
+      "explanation_en": "POST with HTTPS is safest because: 1) Data goes in the body (not visible in URL logs), 2) HTTPS encrypts all communication. GET exposes credentials in the URL. PUT and DELETE are not appropriate for authentication.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_012",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si intentas hacer PUT a un recurso que no existe?",
+      "question_en": "What happens if you try to PUT to a resource that does not exist?",
+      "options_es": [
+        "Siempre devuelve 404 Not Found",
+        "El servidor ignora la solicitud silenciosamente",
+        "Puede crear el recurso (201 Created) si el servidor lo permite, o devolver 404",
+        "Devuelve 500 Internal Server Error obligatoriamente como regla general en este contexto"
+      ],
+      "options_en": [
+        "Always returns 404 Not Found by convention",
+        "The server silently ignores the request",
+        "May create the resource (201 Created) if the server allows it, or return 404",
+        "Returns 500 Internal Server Error mandatory as a recommended practice according to official documentation"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El comportamiento de PUT en un recurso inexistente depende de la implementación del servidor. Algunos crean el recurso (201 Created), otros devuelven 404. Por eso POST es más común para crear nuevos recursos, porque es explícitamente creativo.",
+      "explanation_en": "The behavior of PUT on a non-existent resource depends on server implementation. Some create the resource (201 Created), others return 404. That's why POST is more common for creating new resources, as it's explicitly creative.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_013",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué DELETE es idempotente si el recurso no existe en el segundo intento?",
+      "question_en": "Why is DELETE idempotent even if the resource does not exist on the second attempt?",
+      "options_es": [
+        "Porque DELETE nunca borra realmente, solo marca como inactivo",
+        "Porque el servidor recupera automáticamente los datos borrados en el caso más común",
+        "Porque la idempotencia solo se aplica a métodos seguros",
+        "Porque devuelve el mismo código de estado (204 o 404) ambas veces"
+      ],
+      "options_en": [
+        "Because DELETE never actually deletes, only marks as inactive",
+        "Because the server automatically recovers deleted data within this paradigm",
+        "Because idempotency only applies to safe methods",
+        "Because it returns the same status code (204 or 404) both times"
+      ],
+      "correct_index": 3,
+      "explanation_es": "DELETE es idempotente porque el resultado final es siempre el mismo: el recurso no existe. Aunque el primer DELETE devuelva 204 (No Content) y el segundo 404 (Not Found), el estado final es idéntico. La idempotencia trata del resultado, no del código de estado.",
+      "explanation_en": "DELETE is idempotent because the final result is always the same: the resource does not exist. Although the first DELETE may return 204 (No Content) and the second 404 (Not Found), the final state is identical. Idempotency is about the result, not the status code.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_014",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo es apropiado usar OPTIONS en HTTP?",
+      "question_en": "When is it appropriate to use OPTIONS in HTTP?",
+      "options_es": [
+        "Para borrar opciones de configuración",
+        "Para obtener la lista de métodos permitidos en un recurso",
+        "Para enviar múltiples solicitudes en una sola",
+        "Para cambiar entre versiones de API"
+      ],
+      "options_en": [
+        "To delete configuration options",
+        "To get the list of allowed methods on a resource",
+        "To send multiple requests in one",
+        "To switch between API versions"
+      ],
+      "correct_index": 1,
+      "explanation_es": "OPTIONS se usa para consultar qué métodos HTTP son permitidos en un recurso específico. También se usa en preflight de CORS antes de hacer solicitudes cross-origin. Devuelve un encabezado Allow con los métodos permitidos.",
+      "explanation_en": "OPTIONS is used to query which HTTP methods are allowed on a specific resource. It's also used for CORS preflight before making cross-origin requests. It returns an Allow header with permitted methods.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280101_015",
+      "skill_id": "sk280101",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método HTTP es seguro pero no idempotente?",
+      "question_en": "Which HTTP method is safe but not idempotent?",
+      "options_es": [
+        "GET",
+        "PUT",
+        "DELETE",
+        "POST"
+      ],
+      "options_en": [
+        "GET",
+        "PUT",
+        "DELETE",
+        "POST"
+      ],
+      "correct_index": 3,
+      "explanation_es": "POST es seguro (no modifica el estado intencionalmente de forma insegura en el sentido de que es una operación que está permitida), pero no es idempotente. Llamar POST /users múltiples veces crea múltiples usuarios diferentes. GET es seguro e idempotente. DELETE y PUT son idempotentes pero POST no.",
+      "explanation_en": "POST is safe (it's a permitted operation), but not idempotent. Calling POST /users multiple times creates multiple different users. GET is both safe and idempotent. DELETE and PUT are idempotent, but POST is not.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_001",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa un código de estado HTTP 200?",
+      "question_en": "What does an HTTP status code 200 mean?",
+      "options_es": [
+        "La solicitud fue aceptada pero aún se está procesando",
+        "Hay un error de autenticación",
+        "El recurso se ha movido permanentemente en la práctica habitual",
+        "La solicitud fue exitosa y la respuesta contiene el resultado"
+      ],
+      "options_en": [
+        "The request was accepted but is still being processed",
+        "There is an authentication error",
+        "The resource has moved permanently under normal conditions",
+        "The request was successful and the response contains the result"
+      ],
+      "correct_index": 3,
+      "explanation_es": "200 OK es el código de estado más común que indica que la solicitud fue exitosa y la respuesta contiene los datos solicitados. Pertenece a la familia 2xx (éxito).",
+      "explanation_en": "200 OK is the most common status code indicating that the request was successful and the response contains the requested data. It belongs to the 2xx (success) family.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_002",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre 201 Created y 200 OK?",
+      "question_en": "What is the difference between 201 Created and 200 OK?",
+      "options_es": [
+        "201 es para métodos POST, 200 para GET",
+        "201 es más rápido que 200 en entornos reales",
+        "201 se usa cuando se crea un nuevo recurso, 200 para respuestas generales exitosas",
+        "201 contiene caché, 200 no"
+      ],
+      "options_en": [
+        "201 is for POST methods, 200 for GET",
+        "201 is faster than 200 in real environments",
+        "201 is used when a new resource is created, 200 for general successful responses",
+        "201 contains cache, 200 does not"
+      ],
+      "correct_index": 2,
+      "explanation_es": "201 Created indica que un nuevo recurso fue creado exitosamente, típicamente en respuesta a POST. Debe incluir un encabezado Location con la URL del nuevo recurso. 200 OK es más general y se usa para otros métodos exitosos.",
+      "explanation_en": "201 Created indicates that a new resource was successfully created, typically in response to POST. It should include a Location header with the URL of the new resource. 200 OK is more general and used for other successful methods.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_003",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo usarías un código de estado 204 No Content?",
+      "question_en": "When would you use a 204 No Content status code?",
+      "options_es": [
+        "Cuando el cliente no envía contenido en la solicitud en la práctica habitual",
+        "Cuando el servidor rechaza la solicitud",
+        "Cuando la solicitud fue exitosa pero no hay contenido para devolver",
+        "Cuando hay un conflicto en la base de datos"
+      ],
+      "options_en": [
+        "When the client does not send content in the request within this paradigm",
+        "When the server rejects the request",
+        "When the request was successful but there is no content to return",
+        "When there is a database conflict"
+      ],
+      "correct_index": 2,
+      "explanation_es": "204 No Content se usa cuando la solicitud fue exitosa pero no hay contenido en la respuesta. Es común en DELETE (recurso eliminado) o PUT (actualización completada). El cliente no debe esperar un cuerpo de respuesta.",
+      "explanation_en": "204 No Content is used when the request was successful but there is no content in the response. It's common for DELETE (resource deleted) or PUT (update completed). The client should not expect a response body.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_004",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa un código 301 Moved Permanently?",
+      "question_en": "What does a 301 Moved Permanently status code mean?",
+      "options_es": [
+        "El servidor no puede encontrar el recurso",
+        "El recurso fue temporalmente movido a otra ubicación",
+        "El navegador debe actualizar la página como regla general de manera estándar como regla general",
+        "El recurso se ha movido permanentemente y las solicitudes futuras deben ir a la nueva URL"
+      ],
+      "options_en": [
+        "The server cannot find the resource",
+        "The resource was temporarily moved to another location",
+        "The browser must refresh the page by convention under normal conditions for most projects",
+        "The resource has been permanently moved and future requests should go to the new URL"
+      ],
+      "correct_index": 3,
+      "explanation_es": "301 Moved Permanently indica que el recurso se ha movido permanentemente. El encabezado Location proporciona la nueva URL. Los clientes inteligentes actualizarán sus referencias. A diferencia de 302 que es temporal.",
+      "explanation_en": "301 Moved Permanently indicates that the resource has permanently moved. The Location header provides the new URL. Smart clients will update their references. Unlike 302 which is temporary.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_005",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre 302 Found y 307 Temporary Redirect?",
+      "question_en": "What is the difference between 302 Found and 307 Temporary Redirect?",
+      "options_es": [
+        "No hay diferencia, son sinónimos de manera estándar de forma general de forma general",
+        "302 permite cambiar el método HTTP al redirigir; 307 no",
+        "302 es más rápida que 307 como regla general",
+        "307 es más nueva y más específica sobre mantener el método HTTP original"
+      ],
+      "options_en": [
+        "There is no difference, they are synonyms for most projects in common practice in production environments",
+        "302 allows changing the HTTP method when redirecting; 307 does not",
+        "302 is faster than 307",
+        "307 is newer and more specific about maintaining the original HTTP method"
+      ],
+      "correct_index": 3,
+      "explanation_es": "302 es una redirección temporal del HTTP/1.0 que permitía cambiar POST a GET al redirigir. 307 es la versión HTTP/1.1 que específicamente garantiza mantener el mismo método. 303 se usa cuando quieres cambiar a GET explícitamente.",
+      "explanation_en": "302 is a temporary redirect from HTTP/1.0 that allowed changing POST to GET when redirecting. 307 is the HTTP/1.1 version that specifically guarantees maintaining the same method. 303 is used when you explicitly want to change to GET.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_006",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué se usa el código 304 Not Modified?",
+      "question_en": "What is the 304 Not Modified status code used for?",
+      "options_es": [
+        "Cuando el cliente solicita cambiar un recurso pero el servidor rechaza",
+        "Cuando el servidor está en modo mantenimiento de manera estándar en entornos de producción",
+        "Para caché: cuando el cliente envia If-Modified-Since y el contenido no cambió",
+        "Cuando hay un error en la validación de datos"
+      ],
+      "options_en": [
+        "When the client requests to change a resource but the server rejects",
+        "When the server is in maintenance mode within this paradigm as a general guideline",
+        "For caching: when the client sends If-Modified-Since and content hasn't changed",
+        "When there is a data validation error"
+      ],
+      "correct_index": 2,
+      "explanation_es": "304 Not Modified es una respuesta de caché. Cuando un cliente envía If-Modified-Since o ETag y el contenido no ha cambiado, el servidor devuelve 304 sin enviar el cuerpo, ahorrando ancho de banda.",
+      "explanation_en": "304 Not Modified is a cache response. When a client sends If-Modified-Since or ETag and content hasn't changed, the server returns 304 without sending the body, saving bandwidth.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_007",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa un código 400 Bad Request?",
+      "question_en": "What does a 400 Bad Request status code mean?",
+      "options_es": [
+        "El cliente no tiene permiso para acceder al recurso",
+        "La solicitud contiene errores de sintaxis o datos inválidos",
+        "El recurso no existe como regla general para la mayoría de proyectos",
+        "El servidor está sobrecargado"
+      ],
+      "options_en": [
+        "The client does not have permission to access the resource",
+        "The request contains syntax errors or invalid data",
+        "The resource does not exist within this paradigm as a standard approach",
+        "The server is overloaded"
+      ],
+      "correct_index": 1,
+      "explanation_es": "400 Bad Request indica que el servidor no puede procesar la solicitud porque hay errores en ella: JSON malformado, parámetros faltantes, validación fallida, etc. El cliente debe corregir la solicitud.",
+      "explanation_en": "400 Bad Request indicates that the server cannot process the request because there are errors in it: malformed JSON, missing parameters, validation failure, etc. The client must fix the request.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_008",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre 401 Unauthorized y 403 Forbidden?",
+      "question_en": "What is the difference between 401 Unauthorized and 403 Forbidden?",
+      "options_es": [
+        "401 es más grave que 403 en este contexto según la documentación oficial para la mayoría de proyectos",
+        "401 significa autenticación faltante; 403 significa autenticación correcta pero sin permisos",
+        "403 es temporal, 401 es permanente",
+        "No hay diferencia en la práctica"
+      ],
+      "options_en": [
+        "401 is more serious than 403 by default in the most common case under normal conditions",
+        "401 means missing authentication; 403 means correct authentication but no permission",
+        "403 is temporary, 401 is permanent",
+        "There is no practical difference"
+      ],
+      "correct_index": 1,
+      "explanation_es": "401 Unauthorized significa que el cliente no está autenticado o su autenticación es inválida (missing/expired token). 403 Forbidden significa que el cliente está autenticado pero no tiene permiso para acceder. Es una distinción importante en seguridad.",
+      "explanation_en": "401 Unauthorized means the client is not authenticated or their authentication is invalid (missing/expired token). 403 Forbidden means the client is authenticated but does not have permission. This is an important security distinction.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_009",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo debe devolver el servidor un código 404 Not Found?",
+      "question_en": "When should the server return a 404 Not Found status code?",
+      "options_es": [
+        "Cuando el cliente envia datos en formato incorrecto",
+        "Cuando el cliente no tiene autenticación",
+        "Cuando el servidor no puede procesar la solicitud rápidamente",
+        "Cuando el recurso solicitado no existe en el servidor"
+      ],
+      "options_en": [
+        "When the client sends data in incorrect format",
+        "When the client does not have authentication",
+        "When the server cannot process the request quickly",
+        "When the requested resource does not exist on the server"
+      ],
+      "correct_index": 3,
+      "explanation_es": "404 Not Found indica que el recurso solicitado (ya sea /users/999 o una página web) no existe en el servidor. Es específico del recurso, no del cliente o de la autenticación.",
+      "explanation_en": "404 Not Found indicates that the requested resource (whether /users/999 or a web page) does not exist on the server. It is specific to the resource, not the client or authentication.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_010",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa un código 409 Conflict?",
+      "question_en": "What does a 409 Conflict status code mean?",
+      "options_es": [
+        "Hay un conflicto entre el cliente y el servidor",
+        "La solicitud entra en conflicto con el estado actual del recurso (ej: actualización de versión vencida)",
+        "El servidor está bajo una ciberataque en la práctica",
+        "Dos usuarios intentan acceder al mismo recurso simultáneamente"
+      ],
+      "options_en": [
+        "There is a conflict between the client and server",
+        "The request conflicts with the current state of the resource (e.g., updating stale version)",
+        "The server is under a cyberattack in practice",
+        "Two users try to access the same resource simultaneously"
+      ],
+      "correct_index": 1,
+      "explanation_es": "409 Conflict se usa en situaciones como: actualizar un recurso con una versión vencida, intentar crear un recurso que ya existe, o violar restricciones de integridad. Es común en operaciones de actualización con control de versión.",
+      "explanation_en": "409 Conflict is used in situations like: updating a resource with a stale version, trying to create a resource that already exists, or violating integrity constraints. It's common in update operations with version control.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_011",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa un código 500 Internal Server Error?",
+      "question_en": "What does a 500 Internal Server Error status code mean?",
+      "options_es": [
+        "El cliente envió una solicitud inválida",
+        "El servidor está momentáneamente no disponible",
+        "El recurso no tiene permiso de acceso como regla general",
+        "El servidor encontró una condición inesperada y no pudo cumplir la solicitud"
+      ],
+      "options_en": [
+        "The client sent an invalid request by default",
+        "The server is momentarily unavailable",
+        "The resource has no access permission",
+        "The server encountered an unexpected condition and could not fulfill the request"
+      ],
+      "correct_index": 3,
+      "explanation_es": "500 Internal Server Error es un error genérico que indica que el servidor tuvo un problema interno: excepción no manejada, error de base de datos, etc. Es responsabilidad del desarrollador investigar los logs.",
+      "explanation_en": "500 Internal Server Error is a generic error indicating the server had an internal problem: unhandled exception, database error, etc. It's the developer's responsibility to investigate the logs.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_012",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre 502 Bad Gateway y 503 Service Unavailable?",
+      "question_en": "What is the difference between 502 Bad Gateway and 503 Service Unavailable?",
+      "options_es": [
+        "502 es cuando un proxy recibe una respuesta inválida; 503 es cuando el servidor está temporalmente no disponible",
+        "Son exactamente lo mismo según la especificación",
+        "502 es permanente, 503 es temporal como práctica recomendada dentro de este paradigma en este contexto como regla general",
+        "502 afecta a todos los usuarios, 503 solo a algunos"
+      ],
+      "options_en": [
+        "502 is when a proxy receives an invalid response; 503 is when the server is temporarily unavailable",
+        "They are exactly the same in practice",
+        "502 is permanent, 503 is temporary in production environments in production environments in common practice as a standard approach",
+        "502 affects all users, 503 affects only some"
+      ],
+      "correct_index": 0,
+      "explanation_es": "502 Bad Gateway indica que un proxy/gateway recibió una respuesta inválida del servidor upstream. 503 Service Unavailable indica que el servidor está temporalmente no disponible (mantenimiento, sobrecargado). 503 implica un estado temporal.",
+      "explanation_en": "502 Bad Gateway indicates that a proxy/gateway received an invalid response from the upstream server. 503 Service Unavailable indicates the server is temporarily unavailable (maintenance, overloaded). 503 implies a temporary state.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_013",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué familia de códigos de estado representa el éxito?",
+      "question_en": "Which family of status codes represents success?",
+      "options_es": [
+        "3xx",
+        "4xx",
+        "2xx",
+        "5xx"
+      ],
+      "options_en": [
+        "3xx",
+        "4xx",
+        "2xx",
+        "5xx"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los códigos 2xx (200-299) representan éxito. Incluyen 200 OK, 201 Created, 202 Accepted, 204 No Content, etc. Son los códigos que indican que la solicitud fue procesada correctamente.",
+      "explanation_en": "Status codes 2xx (200-299) represent success. They include 200 OK, 201 Created, 202 Accepted, 204 No Content, etc. These codes indicate the request was processed successfully.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_014",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué familia de códigos representa redirecciones?",
+      "question_en": "Which family of codes represents redirects?",
+      "options_es": [
+        "2xx",
+        "5xx",
+        "4xx",
+        "3xx"
+      ],
+      "options_en": [
+        "2xx",
+        "5xx",
+        "4xx",
+        "3xx"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los códigos 3xx (300-399) representan redirecciones. Incluyen 301 Moved Permanently, 302 Found, 307 Temporary Redirect, 304 Not Modified, etc. Indican que se necesitan acciones adicionales.",
+      "explanation_en": "Status codes 3xx (300-399) represent redirects. They include 301 Moved Permanently, 302 Found, 307 Temporary Redirect, 304 Not Modified, etc. They indicate additional actions are needed.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280102_015",
+      "skill_id": "sk280102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa el código 429 Too Many Requests?",
+      "question_en": "What does the 429 Too Many Requests status code mean?",
+      "options_es": [
+        "El cliente envió demasiada información según la especificación",
+        "La solicitud es demasiado compleja de procesar",
+        "El servidor tiene demasiadas conexiones",
+        "El cliente ha hecho demasiadas solicitudes en un corto período (rate limiting)"
+      ],
+      "options_en": [
+        "The client sent too much information",
+        "The request is too complex to process",
+        "The server has too many connections by default",
+        "The client has made too many requests in a short period (rate limiting)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "429 Too Many Requests se usa en rate limiting. Indica que el cliente ha excedido el límite de solicitudes permitidas en un período de tiempo. El encabezado Retry-After puede indicar cuándo reintentar.",
+      "explanation_en": "429 Too Many Requests is used for rate limiting. It indicates the client has exceeded the allowed request limit in a time period. The Retry-After header may indicate when to retry.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_001",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito del encabezado Content-Type?",
+      "question_en": "What is the purpose of the Content-Type header?",
+      "options_es": [
+        "Indicar la ubicación física del servidor",
+        "Controlar la caché del navegador",
+        "Validar la autenticación del cliente",
+        "Especificar el tipo MIME del contenido en la solicitud o respuesta"
+      ],
+      "options_en": [
+        "Indicate the physical location of the server",
+        "Control browser caching",
+        "Validate client authentication",
+        "Specify the MIME type of content in the request or response"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Content-Type especifica el formato del contenido usando MIME types. Ejemplos: 'application/json', 'text/html', 'application/xml'. Es esencial para que el cliente sepa cómo parsear la respuesta.",
+      "explanation_en": "Content-Type specifies the content format using MIME types. Examples: 'application/json', 'text/html', 'application/xml'. It's essential for the client to know how to parse the response.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_002",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el Content-Type correcto para una API REST que devuelve JSON?",
+      "question_en": "What is the correct Content-Type for a REST API that returns JSON?",
+      "options_es": [
+        "text/json",
+        "application/json",
+        "text/plain",
+        "application/xml"
+      ],
+      "options_en": [
+        "text/json",
+        "application/json",
+        "text/plain",
+        "application/xml"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El MIME type correcto para JSON es 'application/json'. 'text/json' es técnicamente incorrecto aunque muchos navegadores lo acepten. Es importante usar el tipo correcto para interoperabilidad.",
+      "explanation_en": "The correct MIME type for JSON is 'application/json'. 'text/json' is technically incorrect although many browsers accept it. It's important to use the correct type for interoperability.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_003",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué se usa el encabezado Authorization?",
+      "question_en": "What is the Authorization header used for?",
+      "options_es": [
+        "Para especificar la codificación del contenido",
+        "Para indicar qué métodos HTTP son permitidos",
+        "Para controlar el acceso entre dominios",
+        "Para enviar credenciales de autenticación al servidor"
+      ],
+      "options_en": [
+        "To specify content encoding",
+        "To indicate which HTTP methods are allowed",
+        "To control cross-domain access",
+        "To send authentication credentials to the server"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El encabezado Authorization lleva credenciales de autenticación. Formatos comunes: 'Bearer <token>' para JWT, 'Basic <base64>' para HTTP Basic Auth. Es enviado por el cliente en cada solicitud autenticada.",
+      "explanation_en": "The Authorization header carries authentication credentials. Common formats: 'Bearer <token>' for JWT, 'Basic <base64>' for HTTP Basic Auth. It's sent by the client with each authenticated request.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_004",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el formato correcto del encabezado Authorization para JWT?",
+      "question_en": "What is the correct format of the Authorization header for JWT?",
+      "options_es": [
+        "Authorization: Bearer <token>",
+        "Authorization: <token>",
+        "Authorization: Token <token>",
+        "Authorization: JWT <token> como práctica recomendada"
+      ],
+      "options_en": [
+        "Authorization: Bearer <token>",
+        "Authorization: <token>",
+        "Authorization: Token <token>",
+        "Authorization: JWT <token> in this context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El formato estándar para JWT es 'Bearer <token>'. Este es el formato oficial de RFC 6750 para tokens de acceso. FastAPI y la mayoría de frameworks lo usan por defecto.",
+      "explanation_en": "The standard format for JWT is 'Bearer <token>'. This is the official RFC 6750 format for access tokens. FastAPI and most frameworks use it by default.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_005",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito del encabezado Cache-Control?",
+      "question_en": "What is the purpose of the Cache-Control header?",
+      "options_es": [
+        "Validar la integridad del contenido en entornos de producción en el caso más común",
+        "Especificar cómo el contenido debe ser cacheado por clientes y proxies",
+        "Indicar la ubicación del servidor de caché",
+        "Controlar permisos de acceso según la especificación"
+      ],
+      "options_en": [
+        "Validate content integrity in this context as a general rule as a general guideline",
+        "Specify how content should be cached by clients and proxies",
+        "Indicate the location of the cache server",
+        "Control access permissions"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cache-Control controla la estrategia de caché. Ejemplos: 'max-age=3600' (cachear 1 hora), 'no-cache' (validar con servidor), 'no-store' (no cachear). Es crítico para rendimiento y actualizaciones.",
+      "explanation_en": "Cache-Control controls caching strategy. Examples: 'max-age=3600' (cache 1 hour), 'no-cache' (validate with server), 'no-store' (do not cache). It's critical for performance and updates.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_006",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa 'Cache-Control: no-store'?",
+      "question_en": "What does 'Cache-Control: no-store' mean?",
+      "options_es": [
+        "El contenido puede cachearse pero debe validarse antes de usarse",
+        "El contenido se cachea por el tiempo especificado",
+        "El contenido no debe ser almacenado en caché por ningún cliente o proxy",
+        "El servidor no almacena cookies del cliente en entornos de producción en este contexto"
+      ],
+      "options_en": [
+        "Content can be cached but must be validated before use",
+        "Content is cached for the specified time",
+        "Content must not be stored in cache by any client or proxy",
+        "The server does not store client cookies as a general rule within this paradigm"
+      ],
+      "correct_index": 2,
+      "explanation_es": "no-store indica que el contenido no debe ser almacenado en caché de ninguna forma. Esto es diferente de no-cache que permite caché pero requiere validación. Se usa para información sensible.",
+      "explanation_en": "no-store indicates content must not be cached in any way. This is different from no-cache which allows caching but requires validation. Used for sensitive information.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_007",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué se usan los encabezados CORS (Cross-Origin Resource Sharing)?",
+      "question_en": "What are CORS (Cross-Origin Resource Sharing) headers used for?",
+      "options_es": [
+        "Para permitir que navegadores accedan a recursos desde orígenes diferentes",
+        "Para rastrear el comportamiento de usuarios en entornos de producción en entornos de producción",
+        "Para encriptar la comunicación entre cliente y servidor",
+        "Para comprimir el contenido de la respuesta"
+      ],
+      "options_en": [
+        "To allow browsers to access resources from different origins",
+        "To track user behavior in common practice as a standard approach",
+        "To encrypt communication between client and server",
+        "To compress response content"
+      ],
+      "correct_index": 0,
+      "explanation_es": "CORS controla qué orígenes pueden acceder a recursos. Encabezados clave: Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers. Sin CORS, el navegador rechaza solicitudes cross-origin.",
+      "explanation_en": "CORS controls which origins can access resources. Key headers: Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers. Without CORS, browsers reject cross-origin requests.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_008",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el encabezado CORS que especifica qué orígenes pueden acceder?",
+      "question_en": "Which CORS header specifies which origins can access the resource?",
+      "options_es": [
+        "Access-Control-Allow-Methods",
+        "Access-Control-Max-Age",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin"
+      ],
+      "options_en": [
+        "Access-Control-Allow-Methods",
+        "Access-Control-Max-Age",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Access-Control-Allow-Origin especifica qué origen (dominio) puede acceder al recurso. Ejemplo: 'Access-Control-Allow-Origin: https://example.com' o '*' para permitir cualquiera.",
+      "explanation_en": "Access-Control-Allow-Origin specifies which origin (domain) can access the resource. Example: 'Access-Control-Allow-Origin: https://example.com' or '*' to allow any.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_009",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el encabezado CORS que especifica qué métodos HTTP son permitidos?",
+      "question_en": "Which CORS header specifies which HTTP methods are allowed?",
+      "options_es": [
+        "Access-Control-Allow-Methods",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin",
+        "Access-Control-Max-Age"
+      ],
+      "options_en": [
+        "Access-Control-Allow-Methods",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin",
+        "Access-Control-Max-Age"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Access-Control-Allow-Methods especifica qué métodos HTTP se permiten. Ejemplo: 'Access-Control-Allow-Methods: GET, POST, PUT, DELETE'. Es importante para las solicitudes preflight.",
+      "explanation_en": "Access-Control-Allow-Methods specifies which HTTP methods are allowed. Example: 'Access-Control-Allow-Methods: GET, POST, PUT, DELETE'. Important for preflight requests.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_010",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el encabezado CORS que especifica qué encabezados de solicitud son permitidos?",
+      "question_en": "Which CORS header specifies which request headers are allowed?",
+      "options_es": [
+        "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Methods",
+        "Content-Type",
+        "Access-Control-Allow-Headers"
+      ],
+      "options_en": [
+        "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Methods",
+        "Content-Type",
+        "Access-Control-Allow-Headers"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Access-Control-Allow-Headers especifica qué encabezados de solicitud son permitidos. Ejemplo: 'Access-Control-Allow-Headers: Content-Type, Authorization'. Necesario cuando el cliente envía encabezados personalizados.",
+      "explanation_en": "Access-Control-Allow-Headers specifies which request headers are allowed. Example: 'Access-Control-Allow-Headers: Content-Type, Authorization'. Necessary when client sends custom headers.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_011",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una solicitud CORS preflight?",
+      "question_en": "What is a CORS preflight request?",
+      "options_es": [
+        "Una solicitud OPTIONS automática que el navegador envía antes de ciertos tipos de solicitudes",
+        "Una solicitud que verifica si el servidor está disponible",
+        "Una solicitud que valida el certificado SSL por convención",
+        "Una solicitud que almacena información en caché"
+      ],
+      "options_en": [
+        "An automatic OPTIONS request the browser sends before certain types of requests",
+        "A request that checks if the server is available",
+        "A request that validates SSL certificate",
+        "A request that stores information in cache"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El navegador envía una solicitud preflight (OPTIONS) antes de hacer solicitudes 'complejas' (POST con Content-Type específico, con encabezados personalizados, etc.). El servidor responde con encabezados CORS para indicar qué está permitido.",
+      "explanation_en": "The browser sends a preflight request (OPTIONS) before making 'complex' requests (POST with specific Content-Type, with custom headers, etc.). Server responds with CORS headers to indicate what's allowed.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_012",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué se usa el encabezado ETag?",
+      "question_en": "What is the ETag header used for?",
+      "options_es": [
+        "Para autenticar al cliente en entornos reales",
+        "Para identificar versiones de un recurso y permitir caché validado",
+        "Para especificar el tipo de compresión",
+        "Para indicar el tamaño del contenido"
+      ],
+      "options_en": [
+        "To authenticate the client",
+        "To identify resource versions and enable validated caching",
+        "To specify compression type",
+        "To indicate content size in real environments"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ETag es un identificador opaco para una versión específica de un recurso. El cliente puede enviar If-None-Match con el ETag anterior, y si coincide, el servidor devuelve 304 Not Modified sin enviar el contenido.",
+      "explanation_en": "ETag is an opaque identifier for a specific version of a resource. Client can send If-None-Match with previous ETag, and if it matches, server returns 304 Not Modified without sending content.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_013",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué se usa el encabezado Last-Modified?",
+      "question_en": "What is the Last-Modified header used for?",
+      "options_es": [
+        "Indica cuándo el cliente modificó por última vez su navegador",
+        "Controla permisos de escritura",
+        "Especifica cuándo expira la sesión del cliente",
+        "Indica cuándo el recurso fue modificado por última vez en el servidor"
+      ],
+      "options_en": [
+        "Indicates when the client last modified their browser",
+        "Controls write permissions",
+        "Specifies when the client session expires",
+        "Indicates when the resource was last modified on the server"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Last-Modified indica la fecha/hora de la última modificación del recurso. El cliente puede usar If-Modified-Since en una solicitud posterior. Si el recurso no cambió, el servidor devuelve 304 Not Modified.",
+      "explanation_en": "Last-Modified indicates the date/time of the resource's last modification. Client can use If-Modified-Since in a later request. If resource didn't change, server returns 304 Not Modified.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_014",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué se usa el encabezado Content-Length?",
+      "question_en": "What is the Content-Length header used for?",
+      "options_es": [
+        "Especificar el algoritmo de compresión usado",
+        "Indicar el tamaño en bytes del cuerpo de la respuesta",
+        "Limiticar el tamaño máximo de solicitudes",
+        "Validar la integridad del contenido como regla general"
+      ],
+      "options_en": [
+        "Specify the compression algorithm used",
+        "Indicate the size in bytes of the response body",
+        "Limit the maximum size of requests",
+        "Validate content integrity in this context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Content-Length especifica el tamaño exacto en bytes del cuerpo de la respuesta. Permite que el cliente sepa cuándo ha recibido completamente el contenido. Es importante para conexiones persistentes.",
+      "explanation_en": "Content-Length specifies the exact size in bytes of the response body. It lets the client know when it has fully received the content. Important for persistent connections.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280103_015",
+      "skill_id": "sk280103",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué se usa el encabezado Content-Encoding?",
+      "question_en": "What is the Content-Encoding header used for?",
+      "options_es": [
+        "Indicar qué compresión se ha aplicado al contenido (gzip, deflate, etc.)",
+        "Validar la autenticación del cliente",
+        "Controlar el caché del navegador como regla general",
+        "Especificar el formato MIME del contenido"
+      ],
+      "options_en": [
+        "Indicate what compression has been applied to the content (gzip, deflate, etc.)",
+        "Validate client authentication",
+        "Control browser cache in this context",
+        "Specify the MIME format of the content"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Content-Encoding especifica qué transformaciones se han aplicado al cuerpo (comúnmente 'gzip', 'deflate'). El cliente debe descomprimir usando el algoritmo indicado. Es diferente de Content-Type.",
+      "explanation_en": "Content-Encoding specifies what transformations have been applied to the body (commonly 'gzip', 'deflate'). Client must decompress using the indicated algorithm. Different from Content-Type.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_001",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un recurso en REST?",
+      "question_en": "What is a resource in REST?",
+      "options_es": [
+        "Un mecanismo de autenticación en la práctica",
+        "Un servidor que procesa solicitudes",
+        "Un archivo de configuración del servidor",
+        "Una entidad identificable por una URL (ej: /users/123, /posts/456)"
+      ],
+      "options_en": [
+        "An authentication mechanism",
+        "A server that processes requests",
+        "A server configuration file as a general rule",
+        "An entity identifiable by a URL (e.g., /users/123, /posts/456)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En REST, un recurso es una abstracción de una entidad identificable y direccionable mediante una URL. Ejemplos: un usuario, un producto, un comentario. Los recursos tienen representaciones (JSON, XML, etc.).",
+      "explanation_en": "In REST, a resource is an abstraction of an identifiable and addressable entity via URL. Examples: a user, a product, a comment. Resources have representations (JSON, XML, etc.).",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_002",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la principal característica del principio REST de statelessness (sin estado)?",
+      "question_en": "What is the main characteristic of the REST statelessness principle?",
+      "options_es": [
+        "El servidor no puede almacenar datos",
+        "La base de datos no puede tener relaciones",
+        "Cada solicitud contiene toda la información necesaria para ser procesada; el servidor no guarda estado de sesión entre solicitudes",
+        "El cliente no puede enviar cookies como regla general"
+      ],
+      "options_en": [
+        "The server cannot store data",
+        "Database cannot have relationships",
+        "Each request contains all information needed to be processed; server does not maintain session state between requests",
+        "Client cannot send cookies in real environments"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Statelessness significa que cada solicitud HTTP es independiente. El servidor no debe depender del estado de solicitudes anteriores. Esto permite escalabilidad horizontal: cualquier servidor puede manejar cualquier solicitud.",
+      "explanation_en": "Statelessness means each HTTP request is independent. The server should not rely on state from previous requests. This enables horizontal scalability: any server can handle any request.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_003",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de las siguientes es una URI RESTful mal diseñada?",
+      "question_en": "Which of the following is a poorly designed RESTful URI?",
+      "options_es": [
+        "GET /users/123 como regla general",
+        "POST /users",
+        "GET /getUser?id=123",
+        "DELETE /users/123"
+      ],
+      "options_en": [
+        "GET /users/123 in production environments",
+        "POST /users",
+        "GET /getUser?id=123",
+        "DELETE /users/123"
+      ],
+      "correct_index": 2,
+      "explanation_es": "GET /getUser?id=123 es mal diseñada porque usa un verbo (get) en la URI. REST usa métodos HTTP para acciones. La forma correcta sería GET /users/123. Las URIs deben ser sustantivos (nombres de recursos).",
+      "explanation_en": "GET /getUser?id=123 is poorly designed because it uses a verb in the URI. REST uses HTTP methods for actions. The correct form would be GET /users/123. URIs should be nouns (resource names).",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_004",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo debería diseñarse una URI para obtener los comentarios de un post?",
+      "question_en": "How should a URI be designed to get comments of a post?",
+      "options_es": [
+        "GET /posts/123/getComments",
+        "GET /comments?post_id=123",
+        "GET /getPostComments/123",
+        "GET /posts/123/comments"
+      ],
+      "options_en": [
+        "GET /posts/123/getComments",
+        "GET /comments?post_id=123",
+        "GET /getPostComments/123",
+        "GET /posts/123/comments"
+      ],
+      "correct_index": 3,
+      "explanation_es": "GET /posts/123/comments es la forma RESTful correcta. Usa la estructura jerárquica de recursos: el recurso 'comments' es subrecurso de 'posts/123'. No incluye verbos. Es clara e intuitivadelta.",
+      "explanation_en": "GET /posts/123/comments is the correct RESTful form. It uses hierarchical resource structure: 'comments' resource is a sub-resource of 'posts/123'. No verbs. It's clear and intuitive.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_005",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es HATEOAS en REST?",
+      "question_en": "What is HATEOAS in REST?",
+      "options_es": [
+        "Hypermedia As The Engine Of Application State: incluir links en respuestas para navegar",
+        "Un tipo de compresión de datos de forma estándar",
+        "Un protocolo de autenticación segura dentro de este paradigma en entornos de producción",
+        "Un patrón de caché distribuido"
+      ],
+      "options_en": [
+        "Hypermedia As The Engine Of Application State: include links in responses to navigate",
+        "A data compression type in practice",
+        "A secure authentication protocol according to official documentation under normal conditions",
+        "A distributed caching pattern"
+      ],
+      "correct_index": 0,
+      "explanation_es": "HATEOAS significa que las respuestas incluyen links a otros recursos relacionados. Ejemplo: una respuesta de usuario incluye link a sus posts, comentarios, etc. Permite descubrimiento de API sin documentación.",
+      "explanation_en": "HATEOAS means responses include links to related resources. Example: a user response includes links to their posts, comments, etc. Enables API discovery without documentation.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_006",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre una API RESTful y una API RPC?",
+      "question_en": "What is the difference between a RESTful API and an RPC API?",
+      "options_es": [
+        "RESTful es más nueva que RPC como regla general como práctica recomendada",
+        "No hay diferencia significativa",
+        "RESTful usa recursos y métodos HTTP; RPC usa acciones nombradas en la URL",
+        "RPC es más segura que RESTful"
+      ],
+      "options_en": [
+        "RESTful is newer than RPC in practice for most projects",
+        "There is no significant difference",
+        "RESTful uses resources and HTTP methods; RPC uses named actions in the URL",
+        "RPC is more secure than RESTful"
+      ],
+      "correct_index": 2,
+      "explanation_es": "RESTful: GET /users/123, POST /users. RPC: /api/getUser?id=123, /api/createUser. RPC expone acciones, REST expone recursos. REST es más escalable y sigue estándares web.",
+      "explanation_en": "RESTful: GET /users/123, POST /users. RPC: /api/getUser?id=123, /api/createUser. RPC exposes actions, REST exposes resources. REST is more scalable and follows web standards.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_007",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la URL RESTful correcta para crear un nuevo post?",
+      "question_en": "Which is the correct RESTful URL to create a new post?",
+      "options_es": [
+        "GET /createPost",
+        "POST /posts/create",
+        "PUT /posts/new",
+        "POST /posts"
+      ],
+      "options_en": [
+        "GET /createPost",
+        "POST /posts/create",
+        "PUT /posts/new",
+        "POST /posts"
+      ],
+      "correct_index": 3,
+      "explanation_es": "POST /posts es la forma correcta. El verbo HTTP (POST) indica la acción (crear), y el sustantivo (posts) indica el recurso. No hay necesidad de incluir palabras como 'create' en la URL.",
+      "explanation_en": "POST /posts is the correct form. The HTTP verb (POST) indicates the action (create), and the noun (posts) indicates the resource. No need to include words like 'create' in the URL.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_008",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la URL RESTful correcta para actualizar un post existente?",
+      "question_en": "Which is the correct RESTful URL to update an existing post?",
+      "options_es": [
+        "GET /updatePost/123",
+        "POST /posts/update?id=123",
+        "PUT /posts/123",
+        "PATCH /posts/edit/123"
+      ],
+      "options_en": [
+        "GET /updatePost/123",
+        "POST /posts/update?id=123",
+        "PUT /posts/123",
+        "PATCH /posts/edit/123"
+      ],
+      "correct_index": 2,
+      "explanation_es": "PUT /posts/123 es correcto para reemplazo completo. PATCH /posts/123 sería correcto para actualizaciones parciales. Ambas son válidas; la elección depende de si actualizar totalmente o parcialmente.",
+      "explanation_en": "PUT /posts/123 is correct for full replacement. PATCH /posts/123 would be correct for partial updates. Both are valid; choice depends on whether updating entirely or partially.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_009",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la URL RESTful correcta para eliminar un post?",
+      "question_en": "Which is the correct RESTful URL to delete a post?",
+      "options_es": [
+        "GET /deletePost?id=123",
+        "POST /posts/delete/123",
+        "PUT /posts/123/delete",
+        "DELETE /posts/123"
+      ],
+      "options_en": [
+        "GET /deletePost?id=123",
+        "POST /posts/delete/123",
+        "PUT /posts/123/delete",
+        "DELETE /posts/123"
+      ],
+      "correct_index": 3,
+      "explanation_es": "DELETE /posts/123 es la forma RESTful correcta. El método HTTP DELETE indica la acción, y la URL identifica el recurso. Es simple, clara y sigue los estándares.",
+      "explanation_en": "DELETE /posts/123 is the correct RESTful form. The HTTP DELETE method indicates the action, and the URL identifies the resource. Simple, clear, and follows standards.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_010",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es un ejemplo de buena paginación en una URI RESTful?",
+      "question_en": "Which is an example of good pagination in a RESTful URI?",
+      "options_es": [
+        "GET /posts?page=2&limit=10",
+        "POST /posts?page=2",
+        "GET /getPosts/page/2",
+        "GET /posts/page=2&limit=10"
+      ],
+      "options_en": [
+        "GET /posts?page=2&limit=10",
+        "POST /posts?page=2",
+        "GET /getPosts/page/2",
+        "GET /posts/page=2&limit=10"
+      ],
+      "correct_index": 0,
+      "explanation_es": "GET /posts?page=2&limit=10 es buena práctica. Los parámetros de paginación van en el query string, no en la ruta. La ruta identifica el recurso, los query params refinan la solicitud.",
+      "explanation_en": "GET /posts?page=2&limit=10 is best practice. Pagination parameters go in the query string, not the path. Path identifies the resource, query params refine the request.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_011",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es un ejemplo de buen filtrado en una URI RESTful?",
+      "question_en": "Which is an example of good filtering in a RESTful URI?",
+      "options_es": [
+        "GET /posts?author=john&status=published",
+        "GET /filterPostsByAuthor?author=john",
+        "POST /posts/filter",
+        "GET /posts/author=john como práctica recomendada"
+      ],
+      "options_en": [
+        "GET /posts?author=john&status=published",
+        "GET /filterPostsByAuthor?author=john",
+        "POST /posts/filter",
+        "GET /posts/author=john in this context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "GET /posts?author=john&status=published es la forma correcta. Los filtros van en parámetros de query, no en la ruta. Es flexible, estándar y escalable.",
+      "explanation_en": "GET /posts?author=john&status=published is the correct form. Filters go in query parameters, not the path. It's flexible, standard, and scalable.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_012",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué REST usa sustantivos en las URIs y no verbos?",
+      "question_en": "Why does REST use nouns in URIs and not verbs?",
+      "options_es": [
+        "Porque los sustantivos son más cortos por convención",
+        "Porque los verbos se especifican mediante métodos HTTP (GET, POST, PUT, DELETE)",
+        "Porque los navegadores no entienden verbos para la mayoría de proyectos en la práctica habitual",
+        "Porque los sustantivos son más seguros"
+      ],
+      "options_en": [
+        "Because nouns are shorter by default",
+        "Because verbs are specified using HTTP methods (GET, POST, PUT, DELETE)",
+        "Because browsers do not understand verbs in this context as a standard approach",
+        "Because nouns are more secure"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los verbos (acciones) están en los métodos HTTP. Las URIs representan recursos (sustantivos). Esta separación hace que REST sea uniforme, escalable y fácil de entender.",
+      "explanation_en": "Verbs (actions) are in HTTP methods. URIs represent resources (nouns). This separation makes REST uniform, scalable, and easy to understand.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_013",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa que una API sea 'RESTful'?",
+      "question_en": "What does it mean for an API to be 'RESTful'?",
+      "options_es": [
+        "Que funciona rápidamente en la práctica",
+        "Que es más segura que otras APIs",
+        "Que usa REST como arquitectura base siguiendo sus principios (recursos, métodos HTTP, statelessness, etc.)",
+        "Que es desarrollada por una compañía grande"
+      ],
+      "options_en": [
+        "That it works quickly according to spec",
+        "That it is more secure than other APIs",
+        "That it uses REST as base architecture following its principles (resources, HTTP methods, statelessness, etc.)",
+        "That it is developed by a large company"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una API RESTful sigue los principios de REST: usa recursos identificados por URIs, métodos HTTP para acciones, es stateless, es cacheable, etc. No todas las APIs HTTP son RESTful.",
+      "explanation_en": "A RESTful API follows REST principles: uses resources identified by URIs, HTTP methods for actions, is stateless, is cacheable, etc. Not all HTTP APIs are RESTful.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_014",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuáles son los principios principales de REST? (Selecciona el conjunto más completo)",
+      "question_en": "What are the main principles of REST? (Select the most complete set)",
+      "options_es": [
+        "Cliente-servidor, statelessness, cacheable",
+        "Cliente-servidor, statelessness, cacheable, uniform interface, layered system, code on demand",
+        "JSON, HTTP, seguridad como regla general de forma general de manera estándar dentro de este paradigma",
+        "Rápido, seguro, simple"
+      ],
+      "options_en": [
+        "Client-server, statelessness, cacheable",
+        "Client-server, statelessness, cacheable, uniform interface, layered system, code on demand",
+        "JSON, HTTP, security according to spec for most projects in this context as a standard approach",
+        "Fast, secure, simple"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los seis principios de REST (según Roy Fielding) son: Cliente-servidor, Statelessness, Cacheable, Uniform Interface, Layered System, Code On Demand (opcional). Son fundamentales para la arquitectura REST.",
+      "explanation_en": "The six REST principles (according to Roy Fielding) are: Client-Server, Statelessness, Cacheable, Uniform Interface, Layered System, Code On Demand (optional). They are fundamental to REST architecture.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280104_015",
+      "skill_id": "sk280104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja principal del principio 'Layered System' en REST?",
+      "question_en": "What is the main advantage of the 'Layered System' principle in REST?",
+      "options_es": [
+        "Permite que el cliente no sepa si está conectado directamente al servidor final o a través de intermediarios",
+        "Reduce el tamaño de las respuestas",
+        "Mejora la seguridad eliminando tokens",
+        "Hace que el API sea más rápido de forma estándar"
+      ],
+      "options_en": [
+        "Allows client to not know if connected directly to final server or through intermediaries",
+        "Reduces response size",
+        "Improves security by eliminating tokens",
+        "Makes the API faster in this context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Layered System permite arquitecturas complejas con proxies, load balancers, caches, etc., sin que el cliente lo sepa. Mejora escalabilidad, permite distribuir responsabilidades y facilita mantenimiento.",
+      "explanation_en": "Layered System allows complex architectures with proxies, load balancers, caches, etc., without client awareness. Improves scalability, distributes responsibilities, and facilitates maintenance.",
+      "source": "https://fastapi.tiangolo.com"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
  *  separan. Escribirlas a mano en un componente es lo que provoco el incidente
  *  17.12 y lo que repitio la serie 24.2: no lo hagas, importa de aqui.
  */
-export const CATALOG_TRACKS = 31;
+export const CATALOG_TRACKS = 35;
 /** Curso = módulo del molde (ADR-46, 37.2); antes «track × nivel» (49). */
-export const CATALOG_COURSES = 157;
-export const CATALOG_QUESTIONS = 9789;
+export const CATALOG_COURSES = 177;
+export const CATALOG_QUESTIONS = 10989;

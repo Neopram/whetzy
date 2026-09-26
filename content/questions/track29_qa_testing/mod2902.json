@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q290201_001",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo descubre pytest automáticamente los archivos de prueba?",
+      "question_en": "How does pytest automatically discover test files?",
+      "options_es": [
+        "Escanea solo el directorio 'tests/' del proyecto",
+        "Solo funciona con archivos llamados unittest.py",
+        "Requiere que registres todos los tests manualmente",
+        "Busca archivos nombrados test_*.py o *_test.py"
+      ],
+      "options_en": [
+        "It scans only the project's 'tests/' directory",
+        "It only works with files named unittest.py",
+        "You must manually register all tests",
+        "It searches for files named test_*.py or *_test.py"
+      ],
+      "correct_index": 3,
+      "explanation_es": "pytest usa convención sobre configuración. Busca automáticamente archivos que coincidan con test_*.py o *_test.py en el directorio actual y subdirectorios.",
+      "explanation_en": "pytest uses convention over configuration. It automatically searches for files matching test_*.py or *_test.py in the current directory and subdirectories.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_002",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la forma más simple de afirmar en pytest?",
+      "question_en": "What is the simplest way to assert in pytest?",
+      "options_es": [
+        "assert result == expected",
+        "self.assertEqual(result, expected)",
+        "pytest.raises(AssertionError)",
+        "pytest.mark.assert"
+      ],
+      "options_en": [
+        "assert result == expected",
+        "self.assertEqual(result, expected)",
+        "pytest.raises(AssertionError)",
+        "pytest.mark.assert"
+      ],
+      "correct_index": 0,
+      "explanation_es": "pytest soporta la declaración assert de Python estándar con introspeción inteligente de mensajes de error. No requiere métodos especiales como unittest.",
+      "explanation_en": "pytest supports the standard Python assert statement with smart error introspection. It doesn't require special methods like unittest.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_003",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué sirve el archivo conftest.py?",
+      "question_en": "What is the purpose of conftest.py?",
+      "options_es": [
+        "Declarar las dependencias del proyecto",
+        "Definir fixtures compartidas y hooks de pytest",
+        "Configurar la conexión a la base de datos",
+        "Almacenar credenciales de prueba en este contexto"
+      ],
+      "options_en": [
+        "Declare project dependencies",
+        "Define shared fixtures and pytest hooks",
+        "Configure database connection",
+        "Store test credentials as a recommended practice"
+      ],
+      "correct_index": 1,
+      "explanation_es": "conftest.py es un archivo de configuración especial de pytest que contiene fixtures reutilizables, hooks, y configuraciones que se aplican a todos los tests en ese directorio y subdirectorios.",
+      "explanation_en": "conftest.py is a special pytest configuration file that contains reusable fixtures, hooks, and configurations applicable to all tests in that directory and subdirectories.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_004",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una fixture en pytest?",
+      "question_en": "What is a fixture in pytest?",
+      "options_es": [
+        "Un tipo de afirmación especial",
+        "Una función que prepara datos o estado para las pruebas",
+        "Un archivo de configuración",
+        "Un plugin de terceros en este contexto como regla general"
+      ],
+      "options_en": [
+        "A special type of assertion",
+        "A function that prepares data or state for tests",
+        "A configuration file in practice",
+        "A third-party plugin as a recommended practice"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las fixtures son funciones que preparan condiciones necesarias para las pruebas, como crear objetos, conectar bases de datos, o preparar archivos temporales. Se usan con el decorador @pytest.fixture.",
+      "explanation_en": "Fixtures are functions that prepare necessary conditions for tests, such as creating objects, connecting databases, or preparing temporary files. They are used with the @pytest.fixture decorator.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_005",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el alcance (scope) por defecto de una fixture?",
+      "question_en": "What is the default scope of a fixture?",
+      "options_es": [
+        "class",
+        "session",
+        "function",
+        "module"
+      ],
+      "options_en": [
+        "class",
+        "session",
+        "function",
+        "module"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El alcance por defecto es 'function', lo que significa que la fixture se ejecuta antes de cada función de prueba y se limpia después.",
+      "explanation_en": "The default scope is 'function', meaning the fixture runs before each test function and is cleaned up afterward.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_006",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se ejecuta una prueba que depende de una fixture?",
+      "question_en": "How is a test that depends on a fixture executed?",
+      "options_es": [
+        "Se requiere un decorador especial en la función de prueba en el caso más común",
+        "Debes crear una instancia manualmente de la fixture",
+        "La fixture debe estar importada con 'from' al inicio",
+        "pytest inyecta la fixture como parámetro en la función de prueba"
+      ],
+      "options_en": [
+        "A special decorator is required on the test function according to official documentation",
+        "You must manually create an instance of the fixture",
+        "The fixture must be imported with 'from' at the start",
+        "pytest injects the fixture as a parameter in the test function"
+      ],
+      "correct_index": 3,
+      "explanation_es": "pytest realiza inyección de dependencias automáticamente. Solo necesitas incluir el nombre de la fixture como parámetro en tu función de prueba.",
+      "explanation_en": "pytest performs automatic dependency injection. You simply need to include the fixture name as a parameter in your test function.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_007",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué opción describe mejor cómo pytest descubre tests dentro de clases?",
+      "question_en": "Which best describes how pytest discovers tests within classes?",
+      "options_es": [
+        "Las clases de prueba deben estar en un módulo separado",
+        "Solo descubre tests en clases que hereden de unittest.TestCase",
+        "Requiere que la clase tenga un método __init__ según la documentación oficial",
+        "Busca clases que comiencen con 'Test' y métodos que comiencen con 'test_'"
+      ],
+      "options_en": [
+        "Test classes must be in a separate module",
+        "It only discovers tests in classes inheriting from unittest.TestCase",
+        "The class must have an __init__ method within this paradigm",
+        "It searches for classes starting with 'Test' and methods starting with 'test_'"
+      ],
+      "correct_index": 3,
+      "explanation_es": "pytest descubre clases de prueba por convención: nombres que comienzan con 'Test' (sin herencia requerida) y métodos que comienzan con 'test_'.",
+      "explanation_en": "pytest discovers test classes by convention: names starting with 'Test' (no inheritance required) and methods starting with 'test_'.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_008",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de pytest.fixture(autouse=True)?",
+      "question_en": "What is the purpose of pytest.fixture(autouse=True)?",
+      "options_es": [
+        "Aumentar el rendimiento de las pruebas",
+        "Permitir que la fixture se use en múltiples módulos",
+        "Ejecutar la fixture automáticamente para cada test sin parámetro explícito",
+        "Deshabilitar la inyección de dependencias manual como práctica recomendada"
+      ],
+      "options_en": [
+        "Increase test performance according to spec",
+        "Allow the fixture to be used across multiple modules",
+        "Run the fixture automatically for each test without explicit parameter",
+        "Disable manual dependency injection as a general rule"
+      ],
+      "correct_index": 2,
+      "explanation_es": "autouse=True hace que una fixture se ejecute automáticamente para cada test que está en su alcance, sin necesidad de incluirla como parámetro.",
+      "explanation_en": "autouse=True makes a fixture run automatically for each test in its scope, without needing to include it as a parameter.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_009",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué decorador se usa para marcar funciones como fixtures?",
+      "question_en": "Which decorator is used to mark functions as fixtures?",
+      "options_es": [
+        "@fixture",
+        "@pytest.fixture",
+        "@pytest.mark.fixture",
+        "@setup_fixture"
+      ],
+      "options_en": [
+        "@fixture",
+        "@pytest.fixture",
+        "@pytest.mark.fixture",
+        "@setup_fixture"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El decorador correcto es @pytest.fixture. Esto le indica a pytest que la función es una fixture que puede ser inyectada en las pruebas.",
+      "explanation_en": "The correct decorator is @pytest.fixture. This tells pytest that the function is a fixture that can be injected into tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_010",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un fixture con scope='session' y scope='function'?",
+      "question_en": "What's the difference between a fixture with scope='session' vs scope='function'?",
+      "options_es": [
+        "No hay diferencia en el comportamiento",
+        "session se ejecuta antes de cada test; function solo en módulos",
+        "session requiere conftest.py; function no",
+        "session se ejecuta una sola vez; function se ejecuta antes de cada test"
+      ],
+      "options_en": [
+        "No behavioral difference",
+        "session runs before each test; function only in modules",
+        "session requires conftest.py; function doesn't",
+        "session runs once; function runs before each test"
+      ],
+      "correct_index": 3,
+      "explanation_es": "session ejecuta la fixture una sola vez para toda la sesión de pruebas y reutiliza el resultado. function ejecuta antes de cada test individual, siendo el comportamiento por defecto.",
+      "explanation_en": "session runs the fixture once for the entire test session and reuses it. function runs before each individual test, the default behavior.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_011",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se puede usar pytest.raises para verificar excepciones?",
+      "question_en": "How is pytest.raises used to verify exceptions?",
+      "options_es": [
+        "try: function_that_fails() except pytest.raises(ValueError)",
+        "pytest.raises(ValueError, function_that_fails())",
+        "with pytest.raises(ValueError): function_that_fails()",
+        "pytest.assert_raises(ValueError, function_that_fails())"
+      ],
+      "options_en": [
+        "try: function_that_fails() except pytest.raises(ValueError)",
+        "pytest.raises(ValueError, function_that_fails())",
+        "with pytest.raises(ValueError): function_that_fails()",
+        "pytest.assert_raises(ValueError, function_that_fails())"
+      ],
+      "correct_index": 2,
+      "explanation_es": "pytest.raises se usa como gestor de contexto (with statement) para capturar y verificar que se lance una excepción específica.",
+      "explanation_en": "pytest.raises is used as a context manager (with statement) to capture and verify that a specific exception is raised.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_012",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace el flag -v en pytest?",
+      "question_en": "What does the -v flag do in pytest?",
+      "options_es": [
+        "Valida la sintaxis de los tests",
+        "Verifica que todas las fixtures estén definidas",
+        "Muestra salida detallada con nombres de cada test",
+        "Visualiza el árbol de dependencias"
+      ],
+      "options_en": [
+        "Validates the syntax of tests",
+        "Verifies all fixtures are defined",
+        "Shows verbose output with the name of each test",
+        "Visualizes the dependency tree"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El flag -v (verbose) hace que pytest imprima información detallada sobre cada test que se ejecuta, incluyendo su nombre y resultado.",
+      "explanation_en": "The -v (verbose) flag makes pytest print detailed information about each test run, including its name and result.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_013",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito del parámetro 'params' en una fixture?",
+      "question_en": "What is the purpose of the 'params' parameter in a fixture?",
+      "options_es": [
+        "Especificar argumentos de línea de comandos en este contexto en condiciones normales",
+        "Definir los parámetros de la función siendo testeada",
+        "Permitir que una fixture se ejecute varias veces con diferentes valores",
+        "Configurar variables de entorno"
+      ],
+      "options_en": [
+        "Specify command-line arguments as a recommended practice as a general rule",
+        "Define parameters of the function being tested",
+        "Allow a fixture to run multiple times with different values",
+        "Configure environment variables"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El parámetro 'params' en una fixture permite que ésta genere múltiples instancias con diferentes valores, útil para pruebas parametrizadas.",
+      "explanation_en": "The 'params' parameter in a fixture allows it to generate multiple instances with different values, useful for parametrized tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_014",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué opción es la forma correcta de ejecutar un solo test?",
+      "question_en": "Which is the correct way to run a single test?",
+      "options_es": [
+        "pytest run test_file.py::test_function",
+        "pytest -t test_function",
+        "pytest test_function",
+        "pytest path/to/test_file.py::test_function"
+      ],
+      "options_en": [
+        "pytest run test_file.py::test_function",
+        "pytest -t test_function",
+        "pytest test_function",
+        "pytest path/to/test_file.py::test_function"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Usa la sintaxis archivo.py::nombre_test para ejecutar un test específico. El doble colon (::) indica la ruta al test dentro del archivo.",
+      "explanation_en": "Use the file.py::test_name syntax to run a specific test. The double colon (::) indicates the path to the test within the file.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290201_015",
+      "skill_id": "sk290201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para nombrar funciones de prueba?",
+      "question_en": "What is the best practice for naming test functions?",
+      "options_es": [
+        "Usar nombres cortos como 't1', 't2'",
+        "Comenzar con 'test_' seguido de una descripción clara",
+        "Incluir el número de línea en el nombre",
+        "Usar camelCase comenzando con mayúscula"
+      ],
+      "options_en": [
+        "Use short names like 't1', 't2'",
+        "Start with 'test_' followed by a clear description",
+        "Include the line number in the name",
+        "Use camelCase starting with uppercase"
+      ],
+      "correct_index": 1,
+      "explanation_es": "pytest requiere que el nombre comience con 'test_' para descubrimiento automático. Además, nombres descriptivos hacen las pruebas más mantenibles.",
+      "explanation_en": "pytest requires names to start with 'test_' for automatic discovery. Additionally, descriptive names make tests more maintainable.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_001",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal de unittest.mock?",
+      "question_en": "What is the main purpose of unittest.mock?",
+      "options_es": [
+        "Crear fixtures automáticamente como regla general para la mayoría de proyectos",
+        "Reemplazar partes del código con objetos mock para aislar tests",
+        "Validar la sintaxis del código",
+        "Mejorar el rendimiento de las pruebas"
+      ],
+      "options_en": [
+        "Automatically create fixtures under normal conditions",
+        "Replace parts of code with mock objects to isolate tests",
+        "Validate code syntax by convention",
+        "Improve test performance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "unittest.mock proporciona herramientas para crear objetos mock que simulan comportamientos reales, permitiendo pruebas aisladas sin dependencias externas.",
+      "explanation_en": "unittest.mock provides tools to create mock objects that simulate real behaviors, enabling isolated tests without external dependencies.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_002",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un Mock en unittest.mock?",
+      "question_en": "What is a Mock in unittest.mock?",
+      "options_es": [
+        "Un tipo especial de fixture en este contexto para la mayoría de proyectos",
+        "Una copia exacta del objeto original",
+        "Un objeto que registra cómo se le llama y permite aserciones sobre su uso",
+        "Una herramienta para depuración"
+      ],
+      "options_en": [
+        "A special type of fixture as a standard approach",
+        "An exact copy of the original object",
+        "An object that records how it's called and allows assertions about its usage",
+        "A debugging tool typically"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un Mock es un objeto que registra todas las llamadas, argumentos y atributos accedidos, permitiendo verificaciones sobre cómo fue utilizado.",
+      "explanation_en": "A Mock is an object that records all calls, arguments, and accessed attributes, allowing verification of how it was used.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_003",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se usa @patch para mockear una función?",
+      "question_en": "How is @patch used to mock a function?",
+      "options_es": [
+        "@patch requiere importar unittest.mock explícitamente",
+        "@patch('module.function') reemplaza la función permanentemente",
+        "@patch('module.function') inyecta un mock como parámetro",
+        "@patch solo funciona con métodos de clase"
+      ],
+      "options_en": [
+        "@patch requires explicit unittest.mock import",
+        "@patch('module.function') permanently replaces the function",
+        "@patch('module.function') injects a mock as a parameter",
+        "@patch only works with class methods"
+      ],
+      "correct_index": 2,
+      "explanation_es": "@patch es un decorador que reemplaza temporalmente una función con un mock durante el test, y lo inyecta como parámetro en la función de prueba.",
+      "explanation_en": "@patch is a decorator that temporarily replaces a function with a mock during the test, and injects it as a parameter in the test function.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_004",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre MagicMock y Mock?",
+      "question_en": "What's the difference between MagicMock and Mock?",
+      "options_es": [
+        "Mock es más rápido que MagicMock",
+        "MagicMock soporta métodos mágicos como __len__, __getitem__",
+        "MagicMock solo funciona con objetos legacy en entornos de producción",
+        "No hay diferencia práctica"
+      ],
+      "options_en": [
+        "Mock is faster than MagicMock",
+        "MagicMock supports magic methods like __len__, __getitem__",
+        "MagicMock only works with legacy objects as a standard approach",
+        "No practical difference in practice"
+      ],
+      "correct_index": 1,
+      "explanation_es": "MagicMock extiende Mock con soporte para métodos mágicos de Python (__str__, __len__, etc.), lo que la hace más versatile para mockear objetos complejos.",
+      "explanation_en": "MagicMock extends Mock with support for Python magic methods (__str__, __len__, etc.), making it more versatile for mocking complex objects.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_005",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se verifica que un mock fue llamado?",
+      "question_en": "How do you verify that a mock was called?",
+      "options_es": [
+        "check_mock_calls(mock)",
+        "assert mock.called == True",
+        "mock.assert_called()",
+        "mock.verify()"
+      ],
+      "options_en": [
+        "check_mock_calls(mock)",
+        "assert mock.called == True",
+        "mock.assert_called()",
+        "mock.verify()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El método assert_called() en un mock lanza una excepción si el mock no fue llamado, permitiendo verificar que se hizo el llamado esperado.",
+      "explanation_en": "The assert_called() method on a mock raises an exception if it wasn't called, verifying that the expected call was made.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_006",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué opción describe correctly el scope 'function' de una fixture?",
+      "question_en": "Which correctly describes the 'function' scope of a fixture?",
+      "options_es": [
+        "La fixture no se limpia después de cada test",
+        "La fixture se ejecuta una sola vez para todo el módulo",
+        "La fixture se ejecuta antes de cada función de prueba",
+        "La fixture debe retornar None"
+      ],
+      "options_en": [
+        "The fixture is not cleaned up after each test",
+        "The fixture runs once for the entire module",
+        "The fixture runs before each test function",
+        "The fixture must return None"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El scope 'function' es el por defecto. La fixture se ejecuta antes de cada función de prueba y se limpia después, aislando cada test.",
+      "explanation_en": "The 'function' scope is the default. The fixture runs before each test function and is cleaned up after, isolating each test.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_007",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se configura un mock para retornar un valor específico?",
+      "question_en": "How do you configure a mock to return a specific value?",
+      "options_es": [
+        "return mock(expected_value)",
+        "mock.return_value = expected_value",
+        "mock.returns = expected_value",
+        "mock.set_return(expected_value)"
+      ],
+      "options_en": [
+        "return mock(expected_value)",
+        "mock.return_value = expected_value",
+        "mock.returns = expected_value",
+        "mock.set_return(expected_value)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Usando mock.return_value, se establece qué valor retorna el mock cuando es llamado. Esto es fundamental para simular comportamientos específicos.",
+      "explanation_en": "Using mock.return_value, you set what value the mock returns when called. This is essential to simulate specific behaviors.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_008",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una yield fixture?",
+      "question_en": "What is a yield fixture?",
+      "options_es": [
+        "Una fixture que retorna múltiples valores en este contexto según la documentación oficial",
+        "Un fixture que solo funciona con generadores",
+        "Una fixture con scope='session'",
+        "Una fixture que usa yield en lugar de return para setup/teardown"
+      ],
+      "options_en": [
+        "A fixture that returns multiple values in this context under normal conditions",
+        "A fixture that only works with generators",
+        "A fixture with scope='session'",
+        "A fixture that uses yield instead of return for setup/teardown"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una yield fixture permite ejecutar código después del test (teardown/cleanup). El código antes de yield es setup, y después de yield es teardown.",
+      "explanation_en": "A yield fixture allows running code after the test (teardown/cleanup). Code before yield is setup, and after yield is teardown.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_009",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar patch.object?",
+      "question_en": "What is the advantage of using patch.object?",
+      "options_es": [
+        "Es más rápido que @patch",
+        "Funciona solo con clases",
+        "Mockear atributos específicos de un objeto sin reemplazar el módulo",
+        "Requiere menos código por convención"
+      ],
+      "options_en": [
+        "It's faster than @patch",
+        "It only works with classes",
+        "Mock specific attributes of an object without replacing the module",
+        "It requires less code according to spec"
+      ],
+      "correct_index": 2,
+      "explanation_es": "patch.object permite mockear un atributo específico de un objeto en particular, dando más control que reemplazar todo un módulo.",
+      "explanation_en": "patch.object allows mocking a specific attribute of a particular object, giving more control than replacing an entire module.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_010",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué registra mock.call_args?",
+      "question_en": "What does mock.call_args record?",
+      "options_es": [
+        "El nombre de la función llamada",
+        "El número total de llamados de forma estándar en condiciones normales",
+        "Una lista de todos los argumentos",
+        "Los argumentos posicionales y nombrados del último llamado"
+      ],
+      "options_en": [
+        "The name of the called function",
+        "The total number of calls under normal conditions",
+        "A list of all arguments typically",
+        "The positional and keyword arguments of the last call"
+      ],
+      "correct_index": 3,
+      "explanation_es": "mock.call_args captura los argumentos del último llamado, permitiendo verificar con qué parámetros fue invocado el mock.",
+      "explanation_en": "mock.call_args captures the arguments of the last call, allowing you to verify with what parameters the mock was invoked.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_011",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se mockea un constructor de clase?",
+      "question_en": "How do you mock a class constructor?",
+      "options_es": [
+        "No se puede mockear constructores",
+        "mock.patch_constructor(ClassName) como práctica recomendada",
+        "@patch('module.ClassName') reemplaza la clase completa",
+        "Debe usarse unittest en lugar de pytest"
+      ],
+      "options_en": [
+        "Constructors cannot be mocked",
+        "mock.patch_constructor(ClassName) in the most common case",
+        "@patch('module.ClassName') replaces the entire class",
+        "unittest must be used instead of pytest"
+      ],
+      "correct_index": 2,
+      "explanation_es": "@patch reemplaza la clase completa, incluyendo su constructor. El mock se comportará como la clase original pero registrará todas las interacciones.",
+      "explanation_en": "@patch replaces the entire class, including its constructor. The mock will behave like the original class but record all interactions.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_012",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es side_effect en un mock?",
+      "question_en": "What is side_effect in a mock?",
+      "options_es": [
+        "Un efecto secundario no deseado del mock",
+        "Una decorador para mocks en este contexto en este contexto de manera estándar",
+        "Ejecutar una función o lanzar una excepción cuando el mock es llamado",
+        "Un tipo de fixture de forma estándar"
+      ],
+      "options_en": [
+        "An unwanted side effect of the mock",
+        "A decorator for mocks for most projects as a recommended practice in common practice",
+        "Execute a function or raise an exception when the mock is called",
+        "A type of fixture in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "side_effect permite ejecutar código arbitrario o lanzar excepciones cuando el mock es llamado, útil para simular comportamientos complejos.",
+      "explanation_en": "side_effect allows executing arbitrary code or raising exceptions when the mock is called, useful for simulating complex behaviors.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_013",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se verifica que un mock fue llamado con argumentos específicos?",
+      "question_en": "How do you verify a mock was called with specific arguments?",
+      "options_es": [
+        "assert mock.args == (arg1, arg2)",
+        "mock.called_with(arg1, arg2)",
+        "mock.assert_called_with(arg1, arg2)",
+        "verify_call(mock, arg1, arg2)"
+      ],
+      "options_en": [
+        "assert mock.args == (arg1, arg2)",
+        "mock.called_with(arg1, arg2)",
+        "mock.assert_called_with(arg1, arg2)",
+        "verify_call(mock, arg1, arg2)"
+      ],
+      "correct_index": 2,
+      "explanation_es": "assert_called_with() verifica que el mock fue llamado exactamente con los argumentos especificados, lanzando AssertionError si no coinciden.",
+      "explanation_en": "assert_called_with() verifies the mock was called exactly with the specified arguments, raising AssertionError if they don't match.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_014",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el scope='class' de una fixture?",
+      "question_en": "What does scope='class' mean for a fixture?",
+      "options_es": [
+        "La fixture se ejecuta una sola vez por clase de prueba",
+        "La fixture solo funciona dentro de clases",
+        "La fixture se ejecuta en cada método de la clase",
+        "La fixture no puede ser usada fuera de clases"
+      ],
+      "options_en": [
+        "The fixture runs once per test class",
+        "The fixture only works inside classes",
+        "The fixture runs for each class method",
+        "The fixture cannot be used outside classes"
+      ],
+      "correct_index": 0,
+      "explanation_es": "scope='class' ejecuta la fixture una sola vez por clase de prueba, reutilizando el mismo estado para todos los métodos en esa clase.",
+      "explanation_en": "scope='class' runs the fixture once per test class, reusing the same state for all methods in that class.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290202_015",
+      "skill_id": "sk290202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se hace reset a un mock después de las aserciones?",
+      "question_en": "How do you reset a mock after assertions?",
+      "options_es": [
+        "mock.restart()",
+        "mock.clear()",
+        "del mock según la documentación oficial",
+        "mock.reset_mock()"
+      ],
+      "options_en": [
+        "mock.restart()",
+        "mock.clear()",
+        "del mock in the most common case",
+        "mock.reset_mock()"
+      ],
+      "correct_index": 3,
+      "explanation_es": "reset_mock() limpia el historial de llamadas y retorna el mock a su estado inicial, permitiendo reutilizar el mock en diferentes partes del test.",
+      "explanation_en": "reset_mock() clears the call history and returns the mock to its initial state, allowing reuse in different parts of the test.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_001",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de pytest.mark.parametrize?",
+      "question_en": "What is the purpose of pytest.mark.parametrize?",
+      "options_es": [
+        "Definir parámetros de línea de comandos en este contexto en el caso más común",
+        "Configurar el timeout de los tests",
+        "Crear fixtures automáticamente por convención",
+        "Ejecutar un test múltiples veces con diferentes conjuntos de datos"
+      ],
+      "options_en": [
+        "Define command-line parameters in production environments for most projects",
+        "Configure test timeout in real environments",
+        "Automatically create fixtures",
+        "Run a test multiple times with different data sets"
+      ],
+      "correct_index": 3,
+      "explanation_es": "pytest.mark.parametrize permite ejecutar la misma función de prueba con múltiples conjuntos de argumentos, reduciendo duplicación de código.",
+      "explanation_en": "pytest.mark.parametrize allows running the same test function with multiple sets of arguments, reducing code duplication.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_002",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la sintaxis correcta para parametrizar un test?",
+      "question_en": "What is the correct syntax for parametrizing a test?",
+      "options_es": [
+        "@pytest.mark.param('arg', [value1, value2])",
+        "@parametrize('arg', [value1, value2])",
+        "@pytest.mark.parametrize('arg', [value1, value2])",
+        "def test_func(parametrize=['arg', [value1, value2]])"
+      ],
+      "options_en": [
+        "@pytest.mark.param('arg', [value1, value2])",
+        "@parametrize('arg', [value1, value2])",
+        "@pytest.mark.parametrize('arg', [value1, value2])",
+        "def test_func(parametrize=['arg', [value1, value2]])"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La sintaxis es @pytest.mark.parametrize con el nombre del parámetro como string y una lista de valores a usar.",
+      "explanation_en": "The syntax is @pytest.mark.parametrize with the parameter name as a string and a list of values to use.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_003",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se parametrizan múltiples argumentos?",
+      "question_en": "How do you parametrize multiple arguments?",
+      "options_es": [
+        "pytest.parametrize_all([('arg1', val1), ('arg2', val2)])",
+        "@pytest.mark.parametrize('arg1,arg2', [(val1, val2), ...])",
+        "@pytest.mark.parametrize('arg1', val1) @pytest.mark.parametrize('arg2', val2)",
+        "@pytest.mark.parametrize(['arg1', 'arg2'], [(val1, val2), ...])"
+      ],
+      "options_en": [
+        "pytest.parametrize_all([('arg1', val1), ('arg2', val2)])",
+        "@pytest.mark.parametrize('arg1,arg2', [(val1, val2), ...])",
+        "@pytest.mark.parametrize('arg1', val1) @pytest.mark.parametrize('arg2', val2)",
+        "@pytest.mark.parametrize(['arg1', 'arg2'], [(val1, val2), ...])"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Para múltiples argumentos, usa una string con nombres separados por comas y tuplas de valores en la lista.",
+      "explanation_en": "For multiple arguments, use a string with comma-separated names and tuples of values in the list.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_004",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es pytest.mark?",
+      "question_en": "What is pytest.mark?",
+      "options_es": [
+        "Un archivo de configuración",
+        "Una función para crear fixtures",
+        "Un decorador para marcar tests con metadatos especiales",
+        "Un tipo de aserción en este contexto"
+      ],
+      "options_en": [
+        "A configuration file",
+        "A function to create fixtures",
+        "A decorator to mark tests with special metadata",
+        "A type of assertion by convention"
+      ],
+      "correct_index": 2,
+      "explanation_es": "pytest.mark permite marcar tests con metadatos, como skip, xfail, parametrize, etc., permitiendo control granular de la ejecución.",
+      "explanation_en": "pytest.mark allows marking tests with metadata, such as skip, xfail, parametrize, etc., enabling granular execution control.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_005",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre pytest.mark.skip y pytest.mark.xfail?",
+      "question_en": "What's the difference between pytest.mark.skip and pytest.mark.xfail?",
+      "options_es": [
+        "skip no ejecuta el test; xfail lo ejecuta pero espera que falle",
+        "xfail marca el test como deprecated",
+        "skip es temporal; xfail es permanente de forma general en el caso más común",
+        "No hay diferencia habitualmente"
+      ],
+      "options_en": [
+        "skip doesn't run the test; xfail runs it but expects it to fail",
+        "xfail marks the test as deprecated",
+        "skip is temporary; xfail is permanent for most projects in the most common case",
+        "There's no difference as a general rule"
+      ],
+      "correct_index": 0,
+      "explanation_es": "skip omite la ejecución del test completamente. xfail ejecuta el test pero marca como esperado que falle, útil para tests relacionados a bugs conocidos.",
+      "explanation_en": "skip skips test execution entirely. xfail runs the test but marks it as expected to fail, useful for tests related to known bugs.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_006",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un pytest plugin?",
+      "question_en": "What is a pytest plugin?",
+      "options_es": [
+        "Un tipo de fixture",
+        "Un archivo de configuración de tests",
+        "Un paquete que extiende la funcionalidad de pytest",
+        "Una herramienta de debugging"
+      ],
+      "options_en": [
+        "A type of fixture",
+        "A test configuration file",
+        "A package that extends pytest functionality",
+        "A debugging tool in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los plugins de pytest permiten extender funcionalidad, como agregar marcadores personalizados, hooks especiales, o reportes customizados.",
+      "explanation_en": "pytest plugins allow extending functionality, such as adding custom markers, special hooks, or custom reports.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_007",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se crea un marcador personalizado de pytest?",
+      "question_en": "How do you create a custom pytest marker?",
+      "options_es": [
+        "Registrarlo en pytest.ini con [tool:pytest] markers",
+        "Usar @pytest.custom_marker como regla general como práctica recomendada",
+        "Definirlo en conftest.py con @pytest.fixture",
+        "Importarlo de pytest.markers"
+      ],
+      "options_en": [
+        "Register it in pytest.ini with [tool:pytest] markers",
+        "Use @pytest.custom_marker within this paradigm as a recommended practice",
+        "Define it in conftest.py with @pytest.fixture",
+        "Import it from pytest.markers"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los marcadores personalizados se registran en pytest.ini o setup.cfg en la sección [tool:pytest] o [pytest] respectivamente.",
+      "explanation_en": "Custom markers are registered in pytest.ini or setup.cfg under the [tool:pytest] or [pytest] section respectively.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_008",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se ejecutan solo los tests con un marcador específico?",
+      "question_en": "How do you run only tests with a specific marker?",
+      "options_es": [
+        "pytest | grep nombre_marcador",
+        "pytest --marker nombre_marcador",
+        "pytest -m nombre_marcador",
+        "pytest -mark nombre_marcador"
+      ],
+      "options_en": [
+        "pytest | grep marker_name",
+        "pytest --marker marker_name",
+        "pytest -m marker_name",
+        "pytest -mark marker_name"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El flag -m (o --mark) en pytest permite ejecutar solo tests que tengan un marcador específico.",
+      "explanation_en": "The -m (or --mark) flag in pytest runs only tests with a specific marker.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_009",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de pytest.mark.slow?",
+      "question_en": "What is the purpose of pytest.mark.slow?",
+      "options_es": [
+        "Desactivar optimizaciones",
+        "Aumentar el timeout automáticamente",
+        "Ejecutar tests en paralelo",
+        "Marcar tests lentos para ejecutarlos por separado"
+      ],
+      "options_en": [
+        "Disable optimizations",
+        "Automatically increase timeout",
+        "Run tests in parallel",
+        "Mark slow tests to run separately"
+      ],
+      "correct_index": 3,
+      "explanation_es": "pytest.mark.slow es un marcador personalizado (si está registrado) que permite ejecutar solo tests lentos o excluirlos de ejecuciones rápidas con pytest -m slow o pytest -m 'not slow'.",
+      "explanation_en": "pytest.mark.slow is a custom marker that allows running only slow tests or excluding them from quick runs with pytest -m slow or pytest -m 'not slow'.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_010",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es pytest-cov?",
+      "question_en": "What is pytest-cov?",
+      "options_es": [
+        "Una herramienta para copiar archivos de prueba",
+        "Un formatter de código",
+        "Un plugin de pytest para medir cobertura de código",
+        "Una extensión para parametrización para la mayoría de proyectos"
+      ],
+      "options_en": [
+        "A tool for copying test files",
+        "A code formatter",
+        "A pytest plugin for measuring code coverage",
+        "An extension for parametrization as a standard approach"
+      ],
+      "correct_index": 2,
+      "explanation_es": "pytest-cov integra coverage.py con pytest, permitiendo medir qué porcentaje de código es ejecutado por los tests.",
+      "explanation_en": "pytest-cov integrates coverage.py with pytest, allowing measurement of what percentage of code is executed by tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_011",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se generan reportes de cobertura con pytest?",
+      "question_en": "How do you generate coverage reports with pytest?",
+      "options_es": [
+        "pytest --report=coverage",
+        "pytest coverage module_name",
+        "coverage pytest --html como regla general en este contexto",
+        "pytest --cov=module_name --cov-report=html"
+      ],
+      "options_en": [
+        "pytest --report=coverage",
+        "pytest coverage module_name",
+        "coverage pytest --html in production environments in the most common case",
+        "pytest --cov=module_name --cov-report=html"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con pytest-cov instalado, usa --cov para especificar qué módulo medir y --cov-report para el formato del reporte (html, xml, term, etc.).",
+      "explanation_en": "With pytest-cov installed, use --cov to specify which module to measure and --cov-report for the report format (html, xml, term, etc.).",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_012",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar conftest.py para marcadores?",
+      "question_en": "What's the advantage of using conftest.py for markers?",
+      "options_es": [
+        "Es más rápido que pytest.ini habitualmente",
+        "Los marcadores se comparten automáticamente con todos los tests del directorio",
+        "Permite usar sintaxis Python completa de manera estándar de forma general de manera estándar",
+        "Los marcadores se heredan a todos los proyectos"
+      ],
+      "options_en": [
+        "It's faster than pytest.ini by default",
+        "Markers are automatically shared with all tests in the directory",
+        "It allows full Python syntax as a general guideline for most projects in production environments",
+        "Markers are inherited by all projects"
+      ],
+      "correct_index": 1,
+      "explanation_es": "conftest.py permite definir lógica compleja de pytest en Python, incluyendo marcadores, sin necesidad de archivos de configuración separados.",
+      "explanation_en": "conftest.py allows defining complex pytest logic in Python, including markers, without separate configuration files.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_013",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace @pytest.mark.usefixtures?",
+      "question_en": "What does @pytest.mark.usefixtures do?",
+      "options_es": [
+        "Declara una nueva fixture habitualmente",
+        "Aplica fixtures sin incluirlas como parámetro en la función de prueba",
+        "Exporta fixtures a otros módulos",
+        "Configura el scope de la fixture en el caso más común en la práctica habitual"
+      ],
+      "options_en": [
+        "Declares a new fixture in practice",
+        "Applies fixtures without including them as a parameter",
+        "Exports fixtures to other modules",
+        "Configures fixture scope according to official documentation as a recommended practice"
+      ],
+      "correct_index": 1,
+      "explanation_es": "usefixtures permite usar una fixture sin que aparezca como parámetro, útil cuando necesitas el efecto secundario de la fixture pero no su valor de retorno.",
+      "explanation_en": "usefixtures allows using a fixture without it being a parameter, useful when you need the fixture's side effect but not its return value.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_014",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se ejecutan tests en paralelo con pytest?",
+      "question_en": "How do you run tests in parallel with pytest?",
+      "options_es": [
+        "pytest -p multiprocessing",
+        "pytest --parallel",
+        "Instala pytest-xdist y usa pytest -n auto",
+        "Se requiere unittest para paralelismo"
+      ],
+      "options_en": [
+        "pytest -p multiprocessing",
+        "pytest --parallel",
+        "Install pytest-xdist and use pytest -n auto",
+        "unittest is required for parallelism"
+      ],
+      "correct_index": 2,
+      "explanation_es": "pytest-xdist es un plugin que permite ejecución en paralelo. Con -n auto usa tantos procesos como núcleos disponibles.",
+      "explanation_en": "pytest-xdist is a plugin enabling parallel execution. With -n auto it uses as many processes as available cores.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290203_015",
+      "skill_id": "sk290203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de pytest-mock?",
+      "question_en": "What is the purpose of pytest-mock?",
+      "options_es": [
+        "Hacer que los mocks sean más rápidos",
+        "Reemplazar unittest.mock completamente dentro de este paradigma para la mayoría de proyectos",
+        "Un plugin que proporciona fixture 'mocker' para simplificar mocking",
+        "Un tipo de fixture de forma estándar"
+      ],
+      "options_en": [
+        "Make mocks faster typically",
+        "Completely replace unittest.mock as a general rule as a recommended practice",
+        "A plugin providing 'mocker' fixture to simplify mocking",
+        "A type of fixture"
+      ],
+      "correct_index": 2,
+      "explanation_es": "pytest-mock proporciona la fixture 'mocker' que envuelve unittest.mock de manera más conveniente para uso con pytest.",
+      "explanation_en": "pytest-mock provides the 'mocker' fixture that wraps unittest.mock in a more convenient way for pytest.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_001",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre pytest y unittest?",
+      "question_en": "What's the difference between pytest and unittest?",
+      "options_es": [
+        "unittest es más rápido que pytest en condiciones normales como práctica recomendada",
+        "pytest usa assert simple; unittest requiere self.assertEqual",
+        "pytest no soporta test discovery",
+        "unittest es más moderno según la especificación"
+      ],
+      "options_en": [
+        "unittest is faster than pytest in this context in production environments",
+        "pytest uses simple assert; unittest requires self.assertEqual",
+        "pytest doesn't support test discovery",
+        "unittest is more modern in this context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "pytest usa la declaración assert de Python estándar, mientras que unittest (basado en xUnit) requiere métodos como assertEqual, assertTrue, etc.",
+      "explanation_en": "pytest uses the standard Python assert statement, while unittest (xUnit-based) requires methods like assertEqual, assertTrue, etc.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_002",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es TestCase en unittest?",
+      "question_en": "What is TestCase in unittest?",
+      "options_es": [
+        "Una clase base para escribir casos de prueba en unittest",
+        "Una fixture de pytest",
+        "Un tipo de error habitualmente como práctica recomendada",
+        "Un modulo de configuración"
+      ],
+      "options_en": [
+        "A base class for writing test cases in unittest",
+        "A pytest fixture",
+        "A type of error typically under normal conditions",
+        "A configuration module"
+      ],
+      "correct_index": 0,
+      "explanation_es": "TestCase es la clase base que proporcionan unittest. Las pruebas heredan de TestCase y usan métodos como setUp, tearDown, y asserts especiales.",
+      "explanation_en": "TestCase is the base class provided by unittest. Tests inherit from TestCase and use methods like setUp, tearDown, and special assert methods.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_003",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de setUp en unittest?",
+      "question_en": "What is the purpose of setUp in unittest?",
+      "options_es": [
+        "Configurar el archivo de tests",
+        "Ejecutar código antes de cada test para preparar el estado",
+        "Importar módulos necesarios según la especificación según la documentación oficial",
+        "Declarar variables globales"
+      ],
+      "options_en": [
+        "Configure the test file in real environments",
+        "Execute code before each test to prepare the state",
+        "Import necessary modules as a recommended practice",
+        "Declare global variables"
+      ],
+      "correct_index": 1,
+      "explanation_es": "setUp es un método especial que se ejecuta antes de cada test en una clase TestCase, permitiendo inicializar datos o recursos necesarios.",
+      "explanation_en": "setUp is a special method that runs before each test in a TestCase class, allowing initialization of necessary data or resources.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_004",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de tearDown en unittest?",
+      "question_en": "What is the purpose of tearDown in unittest?",
+      "options_es": [
+        "Eliminar archivos de prueba",
+        "Limpiar recursos después de cada test",
+        "Revertir cambios en la base de datos",
+        "Validar que los tests pasaron"
+      ],
+      "options_en": [
+        "Delete test files",
+        "Clean up resources after each test",
+        "Revert database changes",
+        "Validate that tests passed"
+      ],
+      "correct_index": 1,
+      "explanation_es": "tearDown se ejecuta después de cada test y se usa para liberar recursos, cerrar conexiones, o limpiar archivos temporales.",
+      "explanation_en": "tearDown runs after each test and is used to release resources, close connections, or clean up temporary files.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_005",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de coverage.py?",
+      "question_en": "What is the purpose of coverage.py?",
+      "options_es": [
+        "Medir qué porcentaje del código es ejecutado por las pruebas",
+        "Ejecutar tests automáticamente",
+        "Generar datos de prueba en entornos reales",
+        "Validar la sintaxis del código de manera estándar en condiciones normales"
+      ],
+      "options_en": [
+        "Measure what percentage of code is executed by tests",
+        "Run tests automatically",
+        "Generate test data according to spec",
+        "Validate code syntax within this paradigm as a recommended practice"
+      ],
+      "correct_index": 0,
+      "explanation_es": "coverage.py es una herramienta que rastrea qué líneas de código son ejecutadas durante las pruebas y reporta el porcentaje de cobertura.",
+      "explanation_en": "coverage.py is a tool that tracks which lines of code are executed during tests and reports the coverage percentage.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_006",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se corre coverage con unittest?",
+      "question_en": "How do you run coverage with unittest?",
+      "options_es": [
+        "coverage-unittest según la especificación",
+        "coverage run -m unittest discover; coverage report",
+        "python -m coverage unittest",
+        "unittest --coverage"
+      ],
+      "options_en": [
+        "coverage-unittest by default",
+        "coverage run -m unittest discover; coverage report",
+        "python -m coverage unittest",
+        "unittest --coverage"
+      ],
+      "correct_index": 1,
+      "explanation_es": "coverage run ejecuta el comando (unittest discover) y rastrea cobertura. Luego coverage report muestra los resultados.",
+      "explanation_en": "coverage run executes the command (unittest discover) and tracks coverage. Then coverage report shows the results.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_007",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es branch coverage en coverage.py?",
+      "question_en": "What is branch coverage in coverage.py?",
+      "options_es": [
+        "La cobertura de importaciones",
+        "Medir si todas las ramas de decisión (if/else) son ejecutadas",
+        "El porcentaje de funciones testeadas",
+        "La cobertura de comentarios en entornos reales"
+      ],
+      "options_en": [
+        "Coverage of imports in this context",
+        "Measure if all decision branches (if/else) are executed",
+        "The percentage of tested functions",
+        "Coverage of comments"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Branch coverage es más riguroso que line coverage. Verifica no solo que las líneas se ejecuten, sino que todos los caminos posibles en decisiones condicionales se prueben.",
+      "explanation_en": "Branch coverage is stricter than line coverage. It verifies not only that lines run, but that all possible paths in conditional decisions are tested.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_008",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se habilita branch coverage en coverage.py?",
+      "question_en": "How do you enable branch coverage in coverage.py?",
+      "options_es": [
+        "coverage run --branch ...",
+        "coverage --branch-coverage",
+        "coverage enable-branch",
+        ".coveragerc con [run] branch=True"
+      ],
+      "options_en": [
+        "coverage run --branch ...",
+        "coverage --branch-coverage",
+        "coverage enable-branch",
+        ".coveragerc with [run] branch=True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El flag --branch habilita el seguimiento de ramas. También se puede configurar en .coveragerc con [run] branch=True.",
+      "explanation_en": "The --branch flag enables branch tracking. It can also be configured in .coveragerc with [run] branch=True.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_009",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué métodos proporciona unittest para verificaciones?",
+      "question_en": "Which methods does unittest provide for verification?",
+      "options_es": [
+        "assertTrue, assertEqual, assertRaises, assertIn, etc.",
+        "assert_true, assert_equal, assert_raises",
+        "verify_true, check_equal, check_raises",
+        "assert, check, verify"
+      ],
+      "options_en": [
+        "assertTrue, assertEqual, assertRaises, assertIn, etc.",
+        "assert_true, assert_equal, assert_raises",
+        "verify_true, check_equal, check_raises",
+        "assert, check, verify"
+      ],
+      "correct_index": 0,
+      "explanation_es": "unittest proporciona una amplia variedad de métodos de aserción como assertEqual, assertTrue, assertFalse, assertRaises, assertIn, etc.",
+      "explanation_en": "unittest provides a wide variety of assert methods like assertEqual, assertTrue, assertFalse, assertRaises, assertIn, etc.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_010",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es setUpClass en unittest?",
+      "question_en": "What is setUpClass in unittest?",
+      "options_es": [
+        "Configura el nombre de la clase",
+        "Se ejecuta antes de cada test",
+        "Importa módulos globales como regla general",
+        "Un método de clase que se ejecuta una sola vez antes de todos los tests de la clase"
+      ],
+      "options_en": [
+        "Configures the class name",
+        "Runs before each test in practice",
+        "Imports global modules",
+        "A class method that runs once before all tests in the class"
+      ],
+      "correct_index": 3,
+      "explanation_es": "setUpClass es un método de clase (decorado con @classmethod) que se ejecuta una sola vez antes de todos los tests de una clase TestCase.",
+      "explanation_en": "setUpClass is a class method (decorated with @classmethod) that runs once before all tests in a TestCase class.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_011",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se ejecutan tests de unittest desde la línea de comandos?",
+      "question_en": "How do you run unittest tests from the command line?",
+      "options_es": [
+        "python unittest.py",
+        "unittest run en este contexto",
+        "python -m unittest discover",
+        "unittest --run"
+      ],
+      "options_en": [
+        "python unittest.py",
+        "unittest run in practice",
+        "python -m unittest discover",
+        "unittest --run"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El módulo unittest se ejecuta con python -m unittest discover para auto-descubrimiento de tests.",
+      "explanation_en": "The unittest module is run with python -m unittest discover for automatic test discovery.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_012",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre omitir líneas y excluirlas en coverage?",
+      "question_en": "What's the difference between omitting lines vs excluding them in coverage?",
+      "options_es": [
+        "Omitidas son permanentes; excluidas temporales",
+        "Ambas hacen lo mismo",
+        "Excluidas no se ejecutan; omitidas sí",
+        "Omitidas no se reportan; excluidas se restan del denominador"
+      ],
+      "options_en": [
+        "Omitted is permanent; excluded is temporary",
+        "Both do the same thing in this context",
+        "Excluded lines don't run; omitted do",
+        "Omitted lines aren't reported; excluded lines are removed from denominator"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Omitidas se reportan sin cobertura pero se cuentan. Excluidas se sacan completamente del cálculo de porcentaje.",
+      "explanation_en": "Omitted lines are reported without coverage but counted. Excluded lines are completely removed from percentage calculation.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_013",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se reporta cobertura en HTML con coverage.py?",
+      "question_en": "How do you generate an HTML coverage report with coverage.py?",
+      "options_es": [
+        "coverage run ...; coverage html",
+        "coverage --html",
+        "coverage report --format=html",
+        "coverage generate html"
+      ],
+      "options_en": [
+        "coverage run ...; coverage html",
+        "coverage --html",
+        "coverage report --format=html",
+        "coverage generate html"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Primero ejecuta coverage run para recopilar datos, luego coverage html genera reportes interactivos en HTML.",
+      "explanation_en": "First run coverage run to collect data, then coverage html generates interactive HTML reports.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_014",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de .coveragerc?",
+      "question_en": "What is the purpose of .coveragerc?",
+      "options_es": [
+        "Un reporte de cobertura",
+        "Archivo de configuración para coverage.py",
+        "Un módulo de tests habitualmente",
+        "Una herramienta de CI de manera estándar en entornos de producción"
+      ],
+      "options_en": [
+        "A coverage report",
+        "Configuration file for coverage.py",
+        "A test module",
+        "A CI tool as a general rule as a standard approach under normal conditions"
+      ],
+      "correct_index": 1,
+      "explanation_es": ".coveragerc permite configurar opciones de coverage como qué archivos incluir/excluir, habilitar branch coverage, etc.",
+      "explanation_en": ".coveragerc allows configuring coverage options such as which files to include/exclude, enable branch coverage, etc.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290204_015",
+      "skill_id": "sk290204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se especifican umbrales mínimos de cobertura en coverage.py?",
+      "question_en": "How do you specify minimum coverage thresholds in coverage.py?",
+      "options_es": [
+        "En .coveragerc con [report] fail_under=80",
+        "coverage --min-coverage 80",
+        "coverage set-threshold 80",
+        "En conftest.py con pytest.ini"
+      ],
+      "options_en": [
+        "In .coveragerc with [report] fail_under=80",
+        "coverage --min-coverage 80",
+        "coverage set-threshold 80",
+        "In conftest.py with pytest.ini"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En .coveragerc, la opción fail_under en [report] hace que coverage falle si no alcanza el porcentaje especificado.",
+      "explanation_en": "In .coveragerc, the fail_under option in [report] makes coverage fail if it doesn't reach the specified percentage.",
+      "source": "https://docs.pytest.org"
+    }
+  ]
+}
