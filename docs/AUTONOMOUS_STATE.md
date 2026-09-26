@@ -189,10 +189,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 20.1 | **0** | **Inventario de afirmaciones** de los 11 docs vivos + `store/` + `legal/` + `CLAUDE.md` →… | **DONE** | **DONE** (2026-09-18) → §I |
 | 20.2 | **0** | **Ledger fila a fila** (protocolo §5): cada `DONE` reejecutado con fecha; `TODO` contrastados con `git log --grep`… | **DONE** | **DONE** `bec734c` (2026-09-18) → §I |
 | 20.3 | **1** | **`API.md` ↔ OpenAPI bidireccional = 0 diferencias** (`scripts/check_api_docs.py`); `ARCHITECTURE.md` ↔ árbol real de… | **DONE** | **DONE** (2026-09-18) → §I |
-| 20.4 | **1** | **`legal/` vs. realidad como errores de hecho**: «Learning Engine» → Whetzy; planes = `entitlements`/`billing` reales… | | | |
+| 20.4 | **1** | `legal/` vs. realidad: errores de hecho en textos legales | **DONE** | `16b4e39` (2026-09-18) CONFIRMADA → §I |
 | 20.5 | **1** | **Fuentes**: cada URL de `CATALOGO_MAESTRO.md` §2.1/§2.2 resuelve; para cada repo clonado, `LICENSE` leído == licencia de… | **DONE** | **DONE** (2026-09-18) → §I |
 | 20.6 | **1** | **Dieta del ledger**: evidencia histórica de filas `DONE` → `docs/archive/LEDGER_HISTORY.md` (ancla por ID); en la fila… | **DONE** | **DONE** `50d0c18` (2026-09-18) → §I |
-| 20.7 | **1** | **CI ciego**: `scripts/verify_ci_local.ps1` que replica `.github/workflows/ci.yml` paso a paso (mismas versiones, mismo… | | |
+| 20.7 | **1** | CI ciego: `verify_ci_local.ps1` replica `ci.yml` paso a paso | **DOING** | Evidencia sesión bg; falta verificador adversario → §I |
 | 20.8 | **1** | **Verificador adversario en el loop** (ADR-20): plantilla literal del protocolo §7 usada por el orquestador antes de cada… | **DONE** | **DONE** `b82b377` → §I |
 | 20.9 | **2** | **Coherencia final**: README/CLAUDE/ORCHESTRATOR/DECISIONS/CATALOGO/teardown sin contradicciones entre sí ni con el… | **DONE** | **DONE** → §I |
 | 20.10 | **2** | REGRESIÓN dieta ledger (20.6). Reducir a <60 KB + guarda mecánica | **DONE** | 221→52 KB. §G/H/I/J/K archivados. `check_docs.py` guarda 61440 testeada ambos sentidos (2026-09-26) |
