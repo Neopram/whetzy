@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
@@ -44,7 +44,7 @@ async def create_checkout(
 ) -> CheckoutResponse:
     """Create a Stripe checkout session and return the hosted checkout URL."""
     if body.eu_withdrawal_waiver:
-        user.eu_withdrawal_waiver_at = datetime.now(timezone.utc)
+        user.eu_withdrawal_waiver_at = datetime.now(UTC)
 
     try:
         url = stripe_service.create_checkout_session(user, body.price_id)
