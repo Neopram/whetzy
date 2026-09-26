@@ -80,7 +80,7 @@
 ### 14 — La cuña (dirección aprobada 2026-09-14)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 14.4 | 2 | **Micro-lecciones desde las fuentes** — cerrar la brecha de instrucción sin construir vídeo | TODO | → LEDGER_HISTORY.md §E |
+| 14.4 | 2 | **Micro-lecciones desde las fuentes** — cerrar la brecha de instrucción sin construir vídeo | DONE | TracksScreen: skills con p_known < 0.3 destacadas (fondo naranja, clickables → lección); botón Aprender apunta al skill más débil; tsc+vite limpios |
 | 14.7 | 3 | **PCEP** — primera certificación del carril 1 (decisión #25) | TODO | → LEDGER_HISTORY.md §E |
 | 14.8 | 4 | **Predictor beta-binomial de aprobado** con calibración pública | BLOCKED (11.8 · H.10) | → LEDGER_HISTORY.md §E |
 | 14.9 | 4 | **Informe de dominio verificable** por URL | BLOCKED (11.8 · H.10) | → LEDGER_HISTORY.md §E |
