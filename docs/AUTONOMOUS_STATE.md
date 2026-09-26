@@ -527,7 +527,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.19 | **2** | 115 rutas en local frente a 141 en producción | **DONE** | Sin diferencia: `openapi.json` local y de producción = 141 paths / 146 operaciones, idénticas (2026-09-26); «115» era el recuento filtrado del test de contrato |
 | 39.20 | **2** | PostHog en el frontend (ADR-50j) | TODO | Clave vacía = no-op, consentimiento, CSP, landing y privacidad actualizadas |
 | 39.21 | **2** | Sentry en el frontend (ADR-50k) | TODO | `VITE_SENTRY_DSN` vacío = no-op; CSP; test |
-| 39.22 | **2** | Backups: `backup_db.sh` + `restore_check.sh` + runbook | TODO | Restauración probada en Postgres local |
+| 39.22 | **2** | Backups: `backup_db.sh` + `restore_check.sh` + runbook | **DONE** | Ya existían (`db_backup.sh`, `db_restore*.sh`); estaban sin bit de ejecución; simulacro 2026-09-26 en verde sobre el catálogo completo; `backups/*.dump` ignorado. El backup programado en Railway sigue siendo del dueño |
 | 39.23 | **1** | H.30 honesto: sin proveedor, 503 `email_not_configured` | **DONE** | `bb59562`; mutación → rojo |
 
 ## 3. Cola HUMAN-BLOCKED

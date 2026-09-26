@@ -292,8 +292,7 @@ the backup *before* the owner merges. Store production backups off-machine; neve
 
 Recovery: pick the last clean dump (`ls -lht backups/`) → `createdb` an empty target →
 `db_restore.sh` → point `DATABASE_URL` at it → `GET /health/ready` → `db_restore_test.sh <dump>`
-for row parity → swap traffic. Last full test: 2026-09-08 (7 tracks / 1253 questions
-at the time, < 5 s from a 544 KB dump); the scripts have not changed since.
+for row parity → swap traffic. Last full test: **2026-09-26** on the full catalogue (35 tracks, 177 modules, 723 skills): all tables match and a truncated dump is rejected (`docs/restore_log.md`). The three scripts were `100644` in git and failed with "Permission denied" when chained; now executable. Dumps (`backups/*.dump`) are git-ignored.
 
 ---
 
