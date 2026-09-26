@@ -12,7 +12,7 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -141,9 +141,14 @@ def verify_token(token: str, expected_type: TokenType = "access") -> TokenPayloa
 # FastAPI dependencies
 # --------------------------------------------------------------------------
 async def get_current_user(
+    request: Request,
     token: str | None = Depends(oauth2_scheme),
     db: AsyncSession = Depends(get_db),
 ) -> User:
+    from app.core.cookies import ACCESS_COOKIE
+
+    if token is None:
+        token = request.cookies.get(ACCESS_COOKIE)
     if token is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

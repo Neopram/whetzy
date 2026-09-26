@@ -33,7 +33,8 @@ export function ProfileScreen() {
     try {
       await fetch(`${API_BASE_URL}/push/preferences`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('whetzy_access_token') ?? ''}` },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ streak_enabled: next }),
       });
     } catch { /* ignore */ }

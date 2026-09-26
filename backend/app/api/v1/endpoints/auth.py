@@ -7,12 +7,13 @@ import secrets
 import uuid
 from datetime import UTC, datetime, timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.cookies import clear_auth_cookies, set_auth_cookies
 from app.core.db import get_db
 from app.core.security import (
     _DUMMY_HASH,
@@ -60,7 +61,11 @@ class ChangePasswordRequest(BaseModel):
 
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
-async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> Token:
+async def register(
+    payload: UserCreate,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+) -> Token:
     if not payload.age_confirmed:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -107,15 +112,18 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> T
     )
     email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
 
-    return Token(
+    token = Token(
         access_token=create_access_token(user.id, jwt_version=user.jwt_version),
         refresh_token=create_refresh_token(user.id, jwt_version=user.jwt_version),
     )
+    set_auth_cookies(response, token.access_token, token.refresh_token)
+    return token
 
 
 @router.post("/login", response_model=Token)
 async def login(
     request: Request,
+    response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db),
 ) -> Token:
@@ -197,24 +205,33 @@ async def login(
         db=db,
     )
 
-    return Token(
+    token = Token(
         access_token=create_access_token(user.id, jwt_version=user.jwt_version),
         refresh_token=create_refresh_token(user.id, jwt_version=user.jwt_version),
     )
+    set_auth_cookies(response, token.access_token, token.refresh_token)
+    return token
 
 
 @router.post("/refresh", response_model=Token)
 async def refresh(
     request: Request,
-    payload: RefreshRequest,
+    response: Response,
+    payload: RefreshRequest | None = None,
     db: AsyncSession = Depends(get_db),
 ) -> Token:
     """Refresh access token using refresh token. Includes audit logging."""
-    # Extract IP and user-agent from request
+    from app.core.cookies import REFRESH_COOKIE
+
     client_ip = request.client.host if request.client else "unknown"
     user_agent = request.headers.get("user-agent", "")
 
-    token_data = verify_token(payload.refresh_token, expected_type="refresh")
+    refresh_tok = (payload.refresh_token if payload and payload.refresh_token else None)
+    if not refresh_tok:
+        refresh_tok = request.cookies.get(REFRESH_COOKIE)
+    if not refresh_tok:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing refresh token")
+    token_data = verify_token(refresh_tok, expected_type="refresh")
 
     try:
         user_id = uuid.UUID(token_data.sub) if token_data.sub else None
@@ -256,26 +273,25 @@ async def refresh(
         db=db,
     )
 
-    return Token(
+    token = Token(
         access_token=create_access_token(user.id, jwt_version=user.jwt_version),
         refresh_token=create_refresh_token(user.id, jwt_version=user.jwt_version),
     )
+    set_auth_cookies(response, token.access_token, token.refresh_token)
+    return token
 
 
 @router.post("/logout", status_code=status.HTTP_200_OK)
 async def logout(
     request: Request,
+    response: Response,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
-    """Logout: revoke current session and log the event."""
-    # Extract IP and user-agent from request
+    """Logout: revoke current session, clear cookies, and log the event."""
     client_ip = request.client.host if request.client else "unknown"
     user_agent = request.headers.get("user-agent", "")
 
-    # Revoke current session if available
-    # In a real implementation, we would need to extract the session_id from the token or context
-    # For now, we'll just log the logout event
     await log_audit_event(
         current_user.id,
         "logout",
@@ -285,6 +301,7 @@ async def logout(
         db=db,
     )
 
+    clear_auth_cookies(response)
     return {"message": "Logged out successfully"}
 
 @router.get("/me", response_model=UserRead)

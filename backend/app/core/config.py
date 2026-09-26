@@ -59,6 +59,8 @@ class Settings(BaseSettings):
     JWT_PUBLIC_KEY: str = ""
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
+    COOKIE_DOMAIN: str = ""
+    COOKIE_SECURE: bool = True
 
     # --- Rate limiting -------------------------------------------------------
     # /auth and /tutor get a stricter budget than the rest of the API (see

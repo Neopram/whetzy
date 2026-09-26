@@ -29,83 +29,47 @@ const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
  *  (incidente de login 2026-09-24); `test/api.baseUrl.test.ts` lo vigila. */
 export const API_BASE_URL = BASE_URL;
 
-// Consume OAuth tokens from URL params immediately at module-import time.
-// The backend redirects here after OAuth callback with ?oauth_token=...&oauth_refresh=...
-// Writing directly to localStorage (not via persistTokens) avoids the TDZ problem:
-// `accessToken` / `refreshToken` are declared with `let` AFTER this code, so they
-// are in the Temporal Dead Zone here. localStorage is always available.
-(function consumeOAuthParams() {
+// Migration cleanup: remove legacy localStorage tokens from pre-cookie auth.
+// The backend now sets HttpOnly cookies; these keys are no longer written.
+(function clearLegacyTokens() {
   try {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('oauth_token');
-    const refresh = params.get('oauth_refresh');
-    if (token) {
-      localStorage.setItem('whetzy_access_token', token);
-      if (refresh) localStorage.setItem('whetzy_refresh_token', refresh);
-      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
-    }
+    localStorage.removeItem('whetzy_access_token');
+    localStorage.removeItem('whetzy_refresh_token');
   } catch {
-    /* storage unavailable in this context */
+    /* storage unavailable */
   }
 })();
 
-const ACCESS_KEY = 'whetzy_access_token';
-const REFRESH_KEY = 'whetzy_refresh_token';
+const LOGGED_IN_COOKIE = 'whetzy_logged_in';
 
-let accessToken: string | null = readStorage(ACCESS_KEY);
-let refreshToken: string | null = readStorage(REFRESH_KEY);
-
-function readStorage(key: string): string | null {
+function hasCookie(name: string): boolean {
   try {
-    return localStorage.getItem(key);
+    return document.cookie.split(';').some((c) => c.trim().startsWith(name + '='));
   } catch {
-    return null;
+    return false;
   }
-}
-
-function persistTokens(access: string | null, refresh: string | null) {
-  accessToken = access;
-  refreshToken = refresh;
-  try {
-    if (access) localStorage.setItem(ACCESS_KEY, access);
-    else localStorage.removeItem(ACCESS_KEY);
-    if (refresh) localStorage.setItem(REFRESH_KEY, refresh);
-    else localStorage.removeItem(REFRESH_KEY);
-  } catch {
-    /* storage unavailable — tokens still held in memory */
-  }
-}
-
-/** El token de acceso vigente, el mismo que usa este modulo (clave `whetzy_access_token`). */
-export function getAccessToken(): string | null {
-  return accessToken;
 }
 
 export function isAuthenticated(): boolean {
-  return accessToken !== null;
+  return hasCookie(LOGGED_IN_COOKIE);
 }
 
 export function logout() {
-  persistTokens(null, null);
+  // Server clears HttpOnly cookies via /auth/logout; nothing to do client-side.
 }
 
 function getHeaders(): HeadersInit {
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
-  return headers;
+  return { 'Content-Type': 'application/json' };
 }
 
 async function tryRefresh(): Promise<boolean> {
-  if (!refreshToken) return false;
   try {
     const res = await fetch(`${BASE_URL}/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refresh_token: refreshToken }),
+      credentials: 'include',
     });
     if (!res.ok) return false;
-    const data = (await res.json()) as { access_token: string; refresh_token: string };
-    persistTokens(data.access_token, data.refresh_token);
     return true;
   } catch {
     return false;
@@ -116,13 +80,13 @@ async function request<T>(path: string, options: RequestInit = {}, retry = true)
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: { ...getHeaders(), ...options.headers },
+    credentials: 'include',
   });
 
   if (res.status === 401 && retry && path !== '/auth/refresh') {
     if (await tryRefresh()) {
       return request<T>(path, options, false);
     }
-    persistTokens(null, null);
     throw new ApiError('Unauthorized', 401);
   }
 
@@ -176,16 +140,13 @@ export type OAuthProvider = 'github' | 'google';
 
 export const auth = {
   async register(payload: RegisterPayload) {
-    const data = await request<{ access_token: string; refresh_token: string }>('/auth/register', {
+    return request<{ access_token: string; refresh_token: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
-    persistTokens(data.access_token, data.refresh_token);
-    return data;
   },
 
   async login(email: string, password: string) {
-    // Backend uses OAuth2PasswordRequestForm → form-encoded, `username` field carries the email.
     const form = new URLSearchParams();
     form.set('username', email);
     form.set('password', password);
@@ -193,14 +154,13 @@ export const auth = {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: form.toString(),
+      credentials: 'include',
     });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new Error(typeof body.detail === 'string' ? body.detail : 'Incorrect email or password');
     }
-    const data = (await res.json()) as { access_token: string; refresh_token: string };
-    persistTokens(data.access_token, data.refresh_token);
-    return data;
+    return (await res.json()) as { access_token: string; refresh_token: string };
   },
 
   async me() {
