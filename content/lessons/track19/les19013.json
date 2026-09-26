@@ -1,12 +1,15 @@
 {
-  "id": "les19013",
-  "skill_id": "sk190401",
-  "description_es": "Lección completa sobre Workflows",
-  "description_en": "Complete lesson on Workflows",
-  "duration_minutes": 50,
-  "title_es": "Sintaxis de workflows y desencadenantes",
-  "title_en": "Workflow Syntax and Triggers",
-  "body_es": "Esta lección cubre los aspectos fundamentales y avanzados de Workflows. Los conceptos clave incluyen la comprensión profunda de cómo funciona cada componente. Se presentan casos de uso prácticos y mejores prácticas de la industria. El aprendizaje incluye tanto teoría como aplicación práctica. Se abordan desafíos comunes y soluciones. La lección proporciona una comprensión integral del tema para profesionales en infraestructura y DevOps.",
-  "body_en": "This lesson covers fundamental and advanced aspects of Workflows. Key concepts include deep understanding of how each component works. Practical use cases and industry best practices are presented. Learning includes both theory and practical application. Common challenges and solutions are addressed. The lesson provides comprehensive understanding of the topic for infrastructure and DevOps professionals.",
-  "source": "GitHub Actions (https://docs.github.com/en/actions)"
+    "id": "les19013",
+    "skill_id": "sk190401",
+    "description_es": "Lección completa sobre Workflows",
+    "description_en": "Complete lesson on Workflows",
+    "duration_minutes": 50,
+    "title_es": "Sintaxis de workflows y desencadenantes",
+    "title_en": "Workflow Syntax and Triggers",
+    "body_es": "La sintaxis de un workflow de integración continua describe, en un archivo declarativo (normalmente YAML), qué eventos lo disparan y qué trabajos ejecuta. La sección de desencadenantes (triggers) —la clave \"on\"— es la que decide cuándo arranca: puede ser un push a una rama concreta, una pull request, una etiqueta creada, un horario tipo cron o un disparo manual. Importa porque el mismo repositorio puede necesitar comportamientos distintos según el evento: correr pruebas en cada pull request pero solo desplegar cuando se hace push a la rama principal. El mecanismo es de coincidencia de patrones: la plataforma recibe el evento con sus metadatos (tipo de evento, rama, etiqueta) y lo compara contra los filtros declarados en cada trigger; solo si coincide arranca el workflow, y dentro de él los jobs y steps se ejecutan en el orden y con las dependencias que indica el archivo. Por ejemplo, un workflow puede declarar \"on: push\" filtrado a la rama \"main\" para desplegar, y por separado \"on: pull_request\" sin filtro de rama para correr pruebas en cualquier propuesta de cambio. Un error común es usar un filtro de rama demasiado amplio o ausente, lo que hace que un trigger de despliegue se dispare también desde ramas de prueba y termine desplegando código que nadie revisó.",
+    "body_en": "The syntax of a continuous integration workflow describes, in a declarative file (usually YAML), which events trigger it and which jobs it runs. The trigger section —the \"on\" key— is what decides when it starts: it can be a push to a specific branch, a pull request, a tag being created, a cron schedule, or a manual dispatch. It matters because the same repository may need different behavior depending on the event: run tests on every pull request but only deploy when a push lands on the main branch. The mechanism is pattern matching: the platform receives the event with its metadata (event type, branch, tag) and compares it against the filters declared on each trigger; the workflow only starts if it matches, and inside it the jobs and steps run in the order and with the dependencies the file specifies. For example, a workflow can declare \"on: push\" filtered to the \"main\" branch to deploy, and separately \"on: pull_request\" with no branch filter to run tests on any proposed change. A common mistake is using a branch filter that is too broad or missing entirely, which lets a deployment trigger also fire from test branches and end up deploying code that nobody reviewed.",
+    "language": "python",
+    "example_code": "def matches(event, branch, rule):\n    if rule[\"event\"] != event:\n        return False\n    allowed = rule.get(\"branches\")\n    if allowed is not None and branch not in allowed:\n        return False\n    return True\n\nrules = [\n    {\"job\": \"test\", \"event\": \"pull_request\", \"branches\": None},\n    {\"job\": \"deploy\", \"event\": \"push\", \"branches\": [\"main\"]},\n]\n\nincoming = [\n    (\"pull_request\", \"feature/login\"),\n    (\"push\", \"feature/login\"),\n    (\"push\", \"main\"),\n]\n\nfor event, branch in incoming:\n    triggered = [r[\"job\"] for r in rules if matches(event, branch, r)]\n    print(f\"{event} en {branch}: {triggered or 'ningun job'}\")\n",
+    "example_output": "pull_request en feature/login: ['test']\npush en feature/login: ningun job\npush en main: ['deploy']",
+    "source": "GitHub Actions - Workflow syntax reference (https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions)"
 }
