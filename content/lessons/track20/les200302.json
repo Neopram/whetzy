@@ -1,0 +1,13 @@
+{
+  "id": "les200302",
+  "skill_id": "sk200302",
+  "language": "es",
+  "executable": false,
+  "title_es": "Spark SQL y Optimizer Catalyst",
+  "title_en": "Spark SQL & Catalyst Optimizer",
+  "body_es": "Spark SQL proporciona interfaz SQL sobre RDDs/DataFrames. DataFrames son más eficientes que RDDs porque tienen schema. El optimizer Catalyst automáticamente reordena operaciones, elimina cálculos innecesarios y pushes filtros al origen. Predicate pushdown es crucial: filtrar datos en la fuente reduce I/O. Spark SQL compile a código optimizado, típicamente más rápido que código manual.",
+  "body_en": "Spark SQL provides SQL interface over RDDs/DataFrames. DataFrames are more efficient than RDDs because they have schema. Catalyst optimizer automatically reorders operations, eliminates unnecessary calculations and pushes filters to source. Predicate pushdown is crucial: filtering at source reduces I/O. Spark SQL compiles to optimized code, typically faster than manual code.",
+  "example_code": "from pyspark.sql import SparkSession\nspark = SparkSession.builder.appName('sql').getOrCreate()\n\ndf = spark.read.parquet('/data/users')\ndf.createOrReplaceTempView('users')\n\n# SQL query con optimizer\nresult = spark.sql('''\n  SELECT dept, COUNT(*) as cnt\n  FROM users\n  WHERE salary > 50000\n  GROUP BY dept\n''')\n\n# EXPLAIN ve el plan\nresult.explain()",
+  "example_output": "Plan de ejecución muestra predicate pushdown donde WHERE se aplica antes de GROUP BY, reduciendo datos procesados.",
+  "source": "https://spark.apache.org/docs/"
+}

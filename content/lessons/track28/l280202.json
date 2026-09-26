@@ -1,0 +1,12 @@
+{
+  "id": "l280202",
+  "skill_id": "sk280202",
+  "title_es": "Modelos de Solicitud y Respuesta",
+  "title_en": "Request and Response Models",
+  "body_es": "Los modelos de solicitud y respuesta en FastAPI usan Pydantic para definir la estructura de datos esperada. El modelo de solicitud valida automáticamente los datos entrantes, mientras que el modelo de respuesta documenta y valida los datos salientes. Usando response_model en el decorador, FastAPI asegura que la respuesta coincida con el esquema definido y genera documentación OpenAPI automáticamente. Los modelos pueden anidarse, tener valores por defecto, y validadores personalizados.",
+  "body_en": "Request and response models in FastAPI use Pydantic to define expected data structure. The request model automatically validates incoming data, while the response model documents and validates outgoing data. Using response_model in the decorator, FastAPI ensures the response matches the defined schema and automatically generates OpenAPI documentation. Models can be nested, have default values, and custom validators.",
+  "example_code": "from fastapi import FastAPI\nfrom pydantic import BaseModel, Field\nfrom typing import List, Optional\n\napp = FastAPI()\n\nclass Address(BaseModel):\n    street: str\n    city: str\n    country: str\n\nclass User(BaseModel):\n    id: int\n    name: str = Field(..., min_length=1, max_length=50)\n    email: str\n    age: Optional[int] = None\n    address: Optional[Address] = None\n\nclass UserResponse(BaseModel):\n    id: int\n    name: str\n    email: str\n\n@app.post(\"/users\", response_model=UserResponse, status_code=201)\nasync def create_user(user: User):\n    return {\"id\": 1, \"name\": user.name, \"email\": user.email}\n\n@app.get(\"/users/{user_id}\", response_model=User)\nasync def get_user(user_id: int):\n    return {\n        \"id\": user_id,\n        \"name\": \"John\",\n        \"email\": \"john@example.com\",\n        \"address\": {\"street\": \"Main St\", \"city\": \"NYC\", \"country\": \"USA\"}\n    }",
+  "example_output": "POST /users with {\"name\": \"Alice\", \"email\": \"alice@example.com\", \"age\": 30}\n→ 201 {\"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\"}\n\nGET /users/1 → {\"id\": 1, \"name\": \"John\", \"email\": \"john@example.com\", \"address\": {...}}",
+  "source": "FastAPI Docs — https://fastapi.tiangolo.com",
+  "order": 2
+}

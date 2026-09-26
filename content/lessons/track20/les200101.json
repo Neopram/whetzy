@@ -1,0 +1,13 @@
+{
+  "id": "les200101",
+  "skill_id": "sk200101",
+  "language": "es",
+  "executable": false,
+  "title_es": "Arquitectura de Pipelines ETL/ELT",
+  "title_en": "ETL/ELT Pipeline Architecture",
+  "body_es": "Los pipelines de datos modernos utilizan arquitecturas ETL (Extract-Transform-Load) o ELT (Extract-Load-Transform) dependiendo del almacén destino. En ETL, los datos se transforman antes de cargar, útil para sistemas legacy. En ELT, los datos se cargan sin procesar y se transforman en el destino, aprovechando la potencia computacional del almacén moderno. La selección depende de rendimiento, costo y tipo de almacén.",
+  "body_en": "Modern data pipelines use ETL or ELT architectures depending on destination warehouse. In ETL, data is transformed before loading, useful for legacy systems. In ELT, data is loaded raw and transformed at destination, leveraging modern warehouse computing power. Selection depends on performance, cost, and warehouse type.",
+  "example_code": "# ELT Pattern Example\nsource_data = load_from_api()\nload_to_warehouse(source_data)  # Load raw\ntransform_sql = 'SELECT * FROM raw_table WHERE valid_data'\nexecute_in_warehouse(transform_sql)",
+  "example_output": "Datos cargados en zona raw, luego transformados en warehouse destino sin overhead de transformación intermedia.",
+  "source": "https://spark.apache.org/docs/"
+}

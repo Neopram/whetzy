@@ -5,7 +5,7 @@ gunicorn==23.0.0
 # Database
 sqlalchemy[asyncio]==2.0.54
 asyncpg==0.31.0
-aiosqlite>=0.20
+aiosqlite==0.22.1
 alembic==1.20.0
 
 # Settings & validation
@@ -36,15 +36,15 @@ httpx==0.28.1
 rank-bm25==0.2.2
 
 # OpenTelemetry (tracing)
-opentelemetry-api>=1.44.0
-opentelemetry-sdk>=1.44.0
-opentelemetry-instrumentation-fastapi>=0.45b0
-opentelemetry-instrumentation-sqlalchemy>=0.45b0
-opentelemetry-exporter-otlp-proto-grpc>=1.44.0
+opentelemetry-api==1.44.0
+opentelemetry-sdk==1.44.0
+opentelemetry-instrumentation-fastapi==0.65b0
+opentelemetry-instrumentation-sqlalchemy==0.65b0
+opentelemetry-exporter-otlp-proto-grpc==1.44.0
 
 # Observability
-prometheus-client>=0.20
-sentry-sdk[fastapi]>=2.0
+prometheus-client==0.26.0
+sentry-sdk[fastapi]==2.70.0
 
 # Commerce (Stripe)
 stripe==11.4.1
@@ -52,9 +52,16 @@ stripe==11.4.1
 # Web Push / VAPID (3.3)
 pywebpush==2.5.0
 
-# Testing
+# Testing & Security scanning
 pytest==9.1.1
 pytest-asyncio==1.4.0
+bandit==1.9.4
+
+# Open Badges 3.0 / QR codes (29.10, ADR-37)
+qrcode[pil]==8.2
+
+# SBOM (Supply Chain - 22.4)
+cyclonedx-bom==7.4.0
 
 # ML evaluation (11.3 KT benchmark) — AUC only, torch stays optional (see DECISIONS.md #4)
 scikit-learn==1.9.1

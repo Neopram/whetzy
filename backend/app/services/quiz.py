@@ -37,6 +37,7 @@ from app.schemas.session import (
     QuizEndResponse,
     QuizStartRequest,
     QuizStartResponse,
+    SelectionReason,
 )
 from app.services.ab_harness import get_cohort
 from app.services.engine import (
@@ -156,9 +157,9 @@ async def _candidate_skill_ids(
     mode: str,
     track_id: str | None,
     skill_id: str | None,
-) -> list[str]:
+) -> tuple[list[str], str]:
     if skill_id:
-        return [skill_id]
+        return [skill_id], "skill_pinned"
 
     now = _now()
 
@@ -175,7 +176,7 @@ async def _candidate_skill_ids(
         result = await db.execute(query)
         due = [row[0] for row in result.all()]
         if due:
-            return due
+            return due, "spaced_repetition_due"
         # fall through to study-mode selection if nothing is due
 
     modules_query = select(Module).options(selectinload(Module.skills))
@@ -190,7 +191,7 @@ async def _candidate_skill_ids(
             unlocked_skill_ids.extend(s.id for s in module.skills)
 
     if not unlocked_skill_ids:
-        return []
+        return [], "no_skills"
 
     states_result = await db.execute(
         select(UserSkillState.skill_id, UserSkillState.p_known).where(
@@ -203,7 +204,9 @@ async def _candidate_skill_ids(
     not_mastered = [
         sid for sid in unlocked_skill_ids if mastery_by_skill.get(sid, 0.0) < 0.95
     ]
-    return not_mastered or unlocked_skill_ids
+    if not_mastered:
+        return not_mastered, "low_mastery"
+    return unlocked_skill_ids, "all_mastered"
 
 
 def _weighted_choice(items: list[str], weights: list[float]) -> str:
@@ -221,11 +224,11 @@ def _weighted_choice(items: list[str], weights: list[float]) -> str:
 
 async def _select_skill(
     db: AsyncSession, user: User, candidate_skill_ids: list[str]
-) -> str | None:
+) -> tuple[str | None, str]:
     if not candidate_skill_ids:
-        return None
+        return None, "no_candidates"
     if len(candidate_skill_ids) == 1:
-        return candidate_skill_ids[0]
+        return candidate_skill_ids[0], "single_candidate"
 
     # A/B experiment (4.6): DKT cohort uses deep knowledge tracing predictions
     if get_cohort(user.id) == "dkt":
@@ -244,7 +247,7 @@ async def _select_skill(
             predictions = _dkt.predict(history)
             if predictions:
                 weights = [1.1 - predictions.get(sid, 0.5) for sid in candidate_skill_ids]
-                return _weighted_choice(candidate_skill_ids, weights)
+                return _weighted_choice(candidate_skill_ids, weights), "dkt_prediction"
 
     states_result = await db.execute(
         select(UserSkillState.skill_id, UserSkillState.p_known).where(
@@ -255,7 +258,7 @@ async def _select_skill(
     mastery_by_skill = {row[0]: row[1] for row in states_result.all()}
 
     weights = [1.1 - mastery_by_skill.get(sid, 0.1) for sid in candidate_skill_ids]
-    return _weighted_choice(candidate_skill_ids, weights)
+    return _weighted_choice(candidate_skill_ids, weights), "mastery_weighting"
 
 
 async def _select_question(
@@ -263,7 +266,7 @@ async def _select_question(
     user: User,
     skill_id: str,
     exclude_question_ids: set[str] | None = None,
-) -> Question | None:
+) -> tuple[Question | None, float | None]:
     # Serve index-graded (mcq/true_false/code_output) and exec-graded
     # (fill_blank_exec/fix_bug) questions; skip legacy fill_blank which has no
     # correct_index and no correct_answer field.
@@ -279,7 +282,7 @@ async def _select_question(
     result = await db.execute(query)
     questions = result.scalars().all()
     if not questions:
-        return None
+        return None, None
 
     state = await _get_or_create_skill_state(db, user.id, skill_id)
     user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
@@ -288,11 +291,12 @@ async def _select_question(
     for q in questions:
         item_entity = EloEntity(rating=q.elo_rating, interactions=30)
         p = elo.expected_score(user_entity.rating, item_entity.rating)
-        scored.append((q, abs(p - TARGET_SUCCESS_PROBABILITY)))
+        scored.append((q, abs(p - TARGET_SUCCESS_PROBABILITY), p))
 
     scored.sort(key=lambda x: x[1])
     top_n = scored[:CANDIDATE_POOL_SIZE]
-    return random.choice(top_n)[0]
+    chosen = random.choice(top_n)
+    return chosen[0], round(chosen[2], 3)
 
 
 async def _to_question_public(question: Question) -> QuestionPublic:
@@ -321,6 +325,7 @@ async def start_session(
     await db.flush()
 
     question_public = None
+    reason: SelectionReason | None = None
     if req.force_question_id is not None:
         if settings.ENVIRONMENT == "production":
             raise HTTPException(
@@ -332,13 +337,20 @@ async def start_session(
         if question is None:
             raise HTTPException(status_code=404, detail=f"Unknown question_id '{req.force_question_id}'")
         question_public = await _to_question_public(question)
+        reason = SelectionReason(pool="forced")
     else:
-        candidate_skill_ids = await _candidate_skill_ids(db, user, req.mode, req.track_id, req.skill_id)
-        skill_id = await _select_skill(db, user, candidate_skill_ids)
+        candidate_skill_ids, pool = await _candidate_skill_ids(db, user, req.mode, req.track_id, req.skill_id)
+        skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
         if skill_id:
-            question = await _select_question(db, user, skill_id)
+            question, expected_p = await _select_question(db, user, skill_id)
             if question:
                 question_public = await _to_question_public(question)
+                reason = SelectionReason(
+                    pool=pool,
+                    skill_strategy=strategy,
+                    difficulty_target=TARGET_SUCCESS_PROBABILITY,
+                    expected_p=expected_p,
+                )
 
     reviews_due = await count_due_reviews(db, user)
     await db.commit()
@@ -348,6 +360,7 @@ async def start_session(
         mode=session.mode,
         question=question_public,
         reviews_due=reviews_due,
+        selection_reason=reason,
     )
 
 
@@ -430,6 +443,31 @@ async def _current_combo(db: AsyncSession, session_id: uuid.UUID) -> int:
 async def submit_answer(
     db: AsyncSession, user: User, req: QuizAnswerRequest
 ) -> QuizAnswerResponse:
+    # Idempotency: if the client resends an answer with the same event_id,
+    # return the cached result instead of double-counting (33.2).
+    if req.event_id:
+        dup = (
+            await db.execute(
+                select(Response).where(Response.event_id == req.event_id)
+            )
+        ).scalar_one_or_none()
+        if dup is not None:
+            q = (await db.execute(select(Question).where(Question.id == dup.question_id))).scalar_one()
+            state = await _get_or_create_skill_state(db, user.id, q.skill_id)
+            return QuizAnswerResponse(
+                correct=dup.correct,
+                correct_index=q.correct_index,
+                explanation_es=q.explanation_es or "",
+                explanation_en=q.explanation_en or "",
+                source=q.source,
+                grade=dup.grade,
+                xp_earned=0,
+                combo=0,
+                user_elo=state.elo_rating,
+                skill_mastery={q.skill_id: state.p_known},
+                session_accuracy=0.0,
+            )
+
     session_result = await db.execute(
         select(StudySession).where(StudySession.id == req.session_id, StudySession.user_id == user.id)
     )
@@ -477,10 +515,13 @@ async def submit_answer(
 
     state = await _get_or_create_skill_state(db, user.id, question.skill_id)
 
+    p_known_before = state.p_known
+    elo_before = state.elo_rating
+
     # --- Elo: two-sided update between user's per-skill ability and item difficulty ---
     user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
     item_entity = EloEntity(rating=question.elo_rating, interactions=30)
-    user_entity, item_entity, _expected = elo.update(user_entity, item_entity, correct)
+    user_entity, item_entity, expected_p = elo.update(user_entity, item_entity, correct)
     state.elo_rating = user_entity.rating
     if not declared_unknown:
         question.elo_rating = item_entity.rating
@@ -528,6 +569,12 @@ async def submit_answer(
         response_time_ms=req.response_time_ms,
         question_version=question.content_version,
         declared_unknown=declared_unknown,
+        event_id=req.event_id,
+        p_known_before=p_known_before,
+        p_known_after=state.p_known,
+        elo_before=elo_before,
+        elo_after=state.elo_rating,
+        expected_p=expected_p,
     )
     db.add(response)
     await db.flush()
@@ -560,14 +607,23 @@ async def submit_answer(
     # Pick the next question, avoiding an immediate repeat of the same item.
     # Same scope the session was opened with: passing None here is how
     # «Practicar» on one module drifted to other tracks from question two.
-    candidate_skill_ids = await _candidate_skill_ids(
+    candidate_skill_ids, pool = await _candidate_skill_ids(
         db, user, session.mode, session.track_id, session.skill_id
     )
-    next_skill_id = await _select_skill(db, user, candidate_skill_ids) or question.skill_id
-    next_question = await _select_question(
+    next_skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
+    next_skill_id = next_skill_id or question.skill_id
+    next_question, next_expected_p = await _select_question(
         db, user, next_skill_id, exclude_question_ids={question.id}
     )
     next_question_public = await _to_question_public(next_question) if next_question else None
+    next_reason: SelectionReason | None = None
+    if next_question:
+        next_reason = SelectionReason(
+            pool=pool,
+            skill_strategy=strategy,
+            difficulty_target=TARGET_SUCCESS_PROBABILITY,
+            expected_p=next_expected_p,
+        )
 
     session_accuracy = session.correct_count / max(1, session.questions_answered)
 
@@ -588,6 +644,7 @@ async def submit_answer(
         skill_mastery={question.skill_id: state.p_known},
         session_accuracy=round(session_accuracy, 4),
         next_question=next_question_public,
+        next_selection_reason=next_reason,
     )
 
 

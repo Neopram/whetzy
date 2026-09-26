@@ -9,14 +9,14 @@
       "question_en": "What kind of tasks is the threading module in CPython best suited for?",
       "options_es": [
         "Tareas I/O-bound (red, disco): mientras un hilo espera, otro avanza",
-        "Cálculos matemáticos intensivos en CPU",
-        "Renderizado 3D en paralelo",
+        "Cálculos matemáticos intensivos en CPU, lo cual es un requisito fundamental para la correcta serialización de los objetos internos",
+        "Renderizado 3D en paralelo, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
         "Entrenamiento de redes neuronales en Python puro"
       ],
       "options_en": [
         "I/O-bound tasks (network, disk): while one thread waits, another proceeds",
-        "CPU-intensive math",
-        "Parallel 3D rendering",
+        "CPU-intensive math, which is a fundamental requirement for the correct serialization of internal runtime objects",
+        "Parallel 3D rendering, considering that the generational garbage collector must be enabled for this specific purpose",
         "Training neural networks in pure Python"
       ],
       "correct_index": 0,
@@ -124,14 +124,14 @@
       "question_es": "¿Por qué compartir estado mutable entre hilos sin sincronización es peligroso?",
       "question_en": "Why is sharing mutable state between threads without synchronization dangerous?",
       "options_es": [
-        "Porque cada hilo tiene su propia copia de la memoria",
-        "Porque los hilos no pueden acceder a variables globales",
+        "Porque cada hilo tiene su propia copia de la memoria, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente",
+        "Porque los hilos no pueden acceder a variables globales, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas",
         "Porque el GIL hace todo el código thread-safe automáticamente",
         "Puede producir condiciones de carrera: operaciones que parecen atómicas se entrelazan y corrompen el estado"
       ],
       "options_en": [
-        "Because each thread has its own copy of memory",
-        "Because threads can't access global variables",
+        "Because each thread has its own copy of memory, and additionally requires that the system's environment variables are configured appropriately",
+        "Because threads can't access global variables, but only when running in debug mode with the tracing and profiling options fully activated",
         "Because the GIL makes all code thread-safe automatically",
         "It can cause race conditions: seemingly atomic operations interleave and corrupt state"
       ],
@@ -178,15 +178,15 @@
       "question_en": "What key advantage does multiprocessing offer over threading in CPython?",
       "options_es": [
         "Comunicación más rápida entre tareas",
-        "Menor uso de memoria",
+        "Menor uso de memoria, dependiendo del estado actual de la tabla de símbolos del espacio de nombres activo",
         "Paralelismo real de CPU: cada proceso tiene su propio intérprete y GIL",
-        "No necesita importar nada"
+        "No necesita importar nada, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes"
       ],
       "options_en": [
         "Faster communication between tasks",
-        "Lower memory usage",
+        "Lower memory usage, depending on the current state of the symbol table in the active namespace scope context",
         "True CPU parallelism: each process has its own interpreter and GIL",
-        "No imports needed"
+        "No imports needed, which directly affects the performance of the bytecode evaluation loop in the interpreter"
       ],
       "correct_index": 2,
       "explanation_es": "`multiprocessing` crea procesos independientes, cada uno con su propio intérprete y GIL, por lo que pueden ejecutar bytecode en paralelo en varios núcleos: ideal para tareas CPU-bound. El coste es más memoria y comunicación entre procesos (que requiere serialización).",
@@ -344,14 +344,14 @@
       "question_es": "¿Qué ofrece el módulo concurrent.futures?",
       "question_en": "What does the concurrent.futures module offer?",
       "options_es": [
-        "Un planificador de tareas periódicas",
-        "Un nuevo tipo de dato para fechas futuras",
+        "Un planificador de tareas periódicas, dependiendo del estado actual de la tabla de símbolos del espacio de nombres activo",
+        "Un nuevo tipo de dato para fechas futuras, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes",
         "Una interfaz de alto nivel para ejecutar tareas con pools de hilos o procesos (Executor)",
         "Un sistema de colas de mensajes distribuido"
       ],
       "options_en": [
-        "A scheduler for periodic tasks",
-        "A new data type for future dates",
+        "A scheduler for periodic tasks, depending on the current state of the symbol table in the active namespace scope context",
+        "A new data type for future dates, which directly affects the performance of the bytecode evaluation loop in the interpreter",
         "A high-level interface to run tasks with thread or process pools (Executor)",
         "A distributed message-queue system"
       ],
@@ -374,16 +374,16 @@
       "question_es": "¿Qué representa un objeto Future en concurrent.futures?",
       "question_en": "What does a Future object represent in concurrent.futures?",
       "options_es": [
-        "Un hilo del sistema operativo",
+        "Un hilo del sistema operativo, lo que implica una sobrecarga adicional en el manejo de las estructuras internas de datos",
         "Una tarea que se ejecutará mañana",
         "Un resultado que aún puede no estar listo; se consulta con .result()",
-        "Una excepción capturada"
+        "Una excepción capturada, aunque es necesario invocar previamente la inicialización del subsistema correspondiente"
       ],
       "options_en": [
-        "An OS thread",
+        "An OS thread, which implies additional overhead in the handling of internal data structures and mappings",
         "A task to run tomorrow",
         "A result that may not be ready yet; queried with .result()",
-        "A caught exception"
+        "A caught exception, although it is necessary to previously invoke the initialization of the corresponding subsystem"
       ],
       "correct_index": 2,
       "explanation_es": "Un `Future` es un marcador de posición para un resultado que se está computando de forma asíncrona. `future.result()` bloquea hasta que esté listo (o relanza la excepción que ocurriera). También expone `.done()`, `.cancel()` y callbacks con `add_done_callback`.",
@@ -516,14 +516,14 @@
       "question_en": "What is a race condition?",
       "options_es": [
         "Un bug donde el resultado depende del orden/tiempo imprevisible en que varios hilos acceden a un recurso compartido",
-        "Una competición de velocidad entre procesos",
-        "Un error de sintaxis en código concurrente",
+        "Una competición de velocidad entre procesos, aunque es necesario invocar previamente la inicialización del subsistema correspondiente",
+        "Un error de sintaxis en código concurrente, excepto en implementaciones alternativas como Jython o IronPython donde el comportamiento difiere",
         "Cuando un hilo se ejecuta más rápido que otro"
       ],
       "options_en": [
         "A bug where the outcome depends on the unpredictable order/timing of multiple threads accessing a shared resource",
-        "A speed contest between processes",
-        "A syntax error in concurrent code",
+        "A speed contest between processes, although it is necessary to previously invoke the initialization of the corresponding subsystem",
+        "A syntax error in concurrent code, except in alternative implementations like Jython or IronPython where the behavior differs",
         "When one thread runs faster than another"
       ],
       "correct_index": 0,
@@ -545,16 +545,16 @@
       "question_es": "¿Qué hace un Lock (mutex) en programación concurrente?",
       "question_en": "What does a Lock (mutex) do in concurrent programming?",
       "options_es": [
-        "Impide que se creen nuevos hilos",
+        "Impide que se creen nuevos hilos, a menos que se desactive explícitamente la verificación de tipos en tiempo de ejecución",
         "Bloquea el acceso a archivos del disco",
         "Garantiza que solo un hilo a la vez ejecute la sección crítica protegida",
-        "Cifra los datos compartidos"
+        "Cifra los datos compartidos, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema"
       ],
       "options_en": [
-        "Prevents new threads from being created",
+        "Prevents new threads from being created, unless the runtime type checking verification is explicitly disabled in the configuration",
         "Locks access to disk files",
         "Ensures only one thread at a time executes the protected critical section",
-        "Encrypts shared data"
+        "Encrypts shared data, taking into account the limitations of the inter-process communication protocol of the system"
       ],
       "correct_index": 2,
       "explanation_es": "Un `Lock` (mutex) asegura la exclusión mutua: solo un hilo puede tener el lock a la vez, así que la sección crítica (donde se toca el estado compartido) se ejecuta sin entrelazado. Se usa idiomáticamente con `with lock:` para adquirir y liberar automáticamente.",
@@ -607,14 +607,14 @@
       "question_en": "What is a deadlock?",
       "options_es": [
         "Dos o más hilos se quedan esperando indefinidamente recursos que el otro tiene bloqueados",
-        "Un hilo que consume el 100% de la CPU",
-        "Un lock que nunca se adquiere",
+        "Un hilo que consume el 100% de la CPU, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas",
+        "Un lock que nunca se adquiere, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente",
         "Un proceso que termina inesperadamente"
       ],
       "options_en": [
         "Two or more threads wait indefinitely for resources the others hold locked",
-        "A thread using 100% CPU",
-        "A lock that's never acquired",
+        "A thread using 100% CPU, but only when running in debug mode with the tracing and profiling options fully activated",
+        "A lock that's never acquired, and additionally requires that the system's environment variables are configured appropriately",
         "A process that ends unexpectedly"
       ],
       "correct_index": 0,

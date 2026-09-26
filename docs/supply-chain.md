@@ -58,16 +58,26 @@ pre-commit run --all-files
 
 ## SBOM (Software Bill of Materials)
 
-Generate a CycloneDX JSON SBOM before release:
+Generate CycloneDX JSON SBOMs before release using the automated script:
 
 ```bash
-pip install cyclonedx-python
-cyclonedx-python -o requirements.txt --output-file sbom.json
+# Automatically generates SBOMs for Python (backend) and Node.js (frontend)
+bash scripts/generate_sbom.sh
 ```
 
-Output is `sbom.json` (machine-readable inventory of all dependencies, versions, and license metadata). Used by security scanners and compliance audits.
+This generates:
+- `sbom/sbom-python.json` — Inventory of Python dependencies from `backend/requirements.txt`
+- `sbom/sbom-nodejs.json` — Inventory of Node.js dependencies from `frontend/package-lock.json` (if npm is available)
 
-**When to generate**: Before each production release (see `docs/RELEASE.md`).
+Output files contain machine-readable inventory of all dependencies, versions, and license metadata. Used by security scanners and compliance audits.
+
+**Setup**: `cyclonedx-bom` is pinned in `backend/requirements.txt` (v7.4.0). The script installs it if missing and uses the `cyclonedx-py` CLI tool.
+
+**When to generate**: Before each production release (see `docs/RELEASE.md`). CI/CD pipelines should run this and commit or archive the SBOMs as build artifacts.
+
+**Limitations**: 
+- Node.js SBOM generation (`cyclonedx-npm`) is not currently available due to package availability issues. Python SBOM generation is reliable and required.
+- For Node.js, you can manually inspect `frontend/package-lock.json` or use other npm-based SBOM tools if needed.
 
 ## Artifact Registry Check
 
@@ -108,9 +118,12 @@ grep -r "PRIVATE_KEY\|API_KEY\|SECRET" .env  # Should find nothing
 - [ ] Dependabot enabled in GitHub (repository settings → Code security → Dependabot)
 - [ ] CI pipeline runs `pip-audit` on every push (verify in `.github/workflows/ci.yml`)
 - [ ] Requirements.txt pinned to exact versions (no `>=`, `~=`, `*`)
-- [ ] SBOM generated before each production release
+- [ ] SBOM generation script configured: `bash scripts/generate_sbom.sh`
+- [ ] `cyclonedx-bom` in `backend/requirements.txt` for Python SBOM generation
+- [ ] SBOMs generated before each production release
 - [ ] `.env` and secrets are gitignored (check `.gitignore`)
 - [ ] No API keys hardcoded in the codebase (run `gitleaks detect -v` locally)
+- [ ] `sbom/` directory added to `.gitignore` (generated artifacts, not source)
 
 ## Integration with CI/CD
 

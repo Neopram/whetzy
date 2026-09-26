@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q200101_001",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la principal diferencia entre ETL y ELT en arquitecturas modernas de datos?",
+      "question_en": "What is the main difference between ETL and ELT in modern data architectures?",
+      "options_es": [
+        "ELT solo funciona con datos estructurados",
+        "ETL transforma en el origen y ELT transforma en el destino",
+        "ETL es más rápido que ELT siempre según la documentación estándar del servicio",
+        "ETL carga sin procesar y ELT procesa antes de cargar"
+      ],
+      "options_en": [
+        "ELT only works with structured data",
+        "ETL transforms at source and ELT transforms at destination",
+        "ETL is always faster than ELT according to standard service documentation",
+        "ETL loads raw data and ELT processes before loading"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La diferencia clave es dónde ocurre la transformación: ETL (Extract-Transform-Load) transforma antes de cargar, mientras que ELT (Extract-Load-Transform) carga primero y luego transforma en el destino, aprovechando la potencia computacional del almacén de datos.",
+      "explanation_en": "The key difference is where transformation occurs: ETL (Extract-Transform-Load) transforms before loading, while ELT (Extract-Load-Transform) loads first and transforms at destination, leveraging the data warehouse's computational power.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200101_002",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "En un pipeline de datos típico, ¿cuál es el propósito de la capa de transformación?",
+      "question_en": "In a typical data pipeline, what is the purpose of the transformation layer?",
+      "options_es": [
+        "Almacenar datos sin procesar de forma invariable y constante",
+        "Generar reportes de auditoría",
+        "Replicar datos entre sistemas",
+        "Limpiar, validar y enriquecer los datos cargados"
+      ],
+      "options_en": [
+        "Store raw data invariably and constantly",
+        "Generate audit reports",
+        "Replicate data between systems",
+        "Clean, validate and enrich loaded data"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La capa de transformación es responsable de aplicar reglas de negocio, limpiar datos inconsistentes, validar integridad y enriquecer los datos con información adicional antes de que lleguen al usuario final.",
+      "explanation_en": "The transformation layer applies business rules, cleans inconsistent data, validates integrity, and enriches data with additional information before reaching end users.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200101_003",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de los siguientes es un desafío común al implementar pipelines de datos a escala?",
+      "question_en": "Which of the following is a common challenge when implementing data pipelines at scale?",
+      "options_es": [
+        "Centralizar todos los datos en una sola ubicación",
+        "Evitar completamente cualquier transformación",
+        "Usar solo sistemas SQL",
+        "Garantizar la idempotencia y manejo de fallos"
+      ],
+      "options_en": [
+        "Centralizing all data in a single location",
+        "Avoiding any transformation entirely",
+        "Using only SQL systems",
+        "Ensuring idempotence and failure handling"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La idempotencia (garantizar que reintentos produzcan el mismo resultado) y el manejo robusto de fallos son esenciales en pipelines a escala para evitar duplicados y inconsistencias cuando fallan conectores o servicios.",
+      "explanation_en": "Idempotence (ensuring retries produce the same result) and robust failure handling are essential in scaled pipelines to prevent duplicates and inconsistencies when connectors or services fail.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200101_004",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Qué modelo de datos es más apropiado para un pipeline de datos que procesa múltiples fuentes heterogéneas?",
+      "question_en": "Which data model is most appropriate for a pipeline processing multiple heterogeneous sources?",
+      "options_es": [
+        "Modelo jerárquico de archivos",
+        "Modelo estrella normalizado",
+        "Modelo de lago de datos con zonas (raw, processed)",
+        "Tabla única desnormalizada sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Hierarchical file model",
+        "Normalized star schema",
+        "Data lake model with zones (raw, processed)",
+        "Single denormalized table without exceptions or variants"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un data lake con zonas permite almacenar datos heterogéneos sin transformar inicialmente (zona raw), luego procesarlos y validarlos (zona processed), manteniendo flexibilidad y auditabilidad.",
+      "explanation_en": "A data lake with zones allows storing heterogeneous data without initial transformation (raw zone), then processing and validating it (processed zone), maintaining flexibility and auditability.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200101_005",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "En un patrón de ingesta incremental, ¿cuál es el beneficio principal del Change Data Capture (CDC)?",
+      "question_en": "In an incremental ingestion pattern, what is the main benefit of Change Data Capture (CDC)?",
+      "options_es": [
+        "Cargar toda la base de datos cada vez",
+        "Eliminar datos históricos automáticamente",
+        "Capturar solo los cambios desde la última ejecución",
+        "Replicar solo datos estructurados sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Load entire database every time",
+        "Automatically delete historical data",
+        "Capture only changes since last run",
+        "Replicate only structured data without exceptions or variants"
+      ],
+      "correct_index": 2,
+      "explanation_es": "CDC captura únicamente los cambios (inserts, updates, deletes) desde la última sincronización, reduciendo significativamente el volumen de datos procesados y mejorando la eficiencia.",
+      "explanation_en": "CDC captures only changes (inserts, updates, deletes) since last sync, significantly reducing data volume processed and improving efficiency.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200101_006",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de implementar un buffer o cola de mensajes entre la extracción y carga en un pipeline?",
+      "question_en": "What is the purpose of implementing a message queue between extraction and loading in a pipeline?",
+      "options_es": [
+        "Desacoplar sistemas y gestionar picos de volumen",
+        "Validar esquemas de datos",
+        "Replicar datos en múltiples regiones",
+        "Almacenar datos transformados de forma permanente"
+      ],
+      "options_en": [
+        "Decouple systems and manage volume spikes",
+        "Validate data schemas",
+        "Replicate data across regions",
+        "Permanently store transformed data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una cola de mensajes actúa como amortiguador entre productor y consumidor, permitiendo que sistemas independientes operen a diferentes velocidades y manejando picos de carga sin pérdida de datos.",
+      "explanation_en": "A message queue acts as a buffer between producer and consumer, allowing independent systems to operate at different speeds and handling load spikes without data loss.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200101_007",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "En un pipeline de datos distribuido, ¿qué garantiza que un registro no se procese dos veces?",
+      "question_en": "In a distributed data pipeline, what ensures a record is not processed twice?",
+      "options_es": [
+        "Eliminar automáticamente duplicados después del procesamiento",
+        "Usar índices de base de datos",
+        "Cifrar los datos en tránsito",
+        "Implementar idempotencia con checkpoints y offsets"
+      ],
+      "options_en": [
+        "Automatically remove duplicates after processing",
+        "Use database indexes",
+        "Encrypt data in transit",
+        "Implement idempotence with checkpoints and offsets"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los checkpoints registran exactamente dónde se pausó el procesamiento (usando offsets en colas), permitiendo reintentos sin reprocesar registros ya completados.",
+      "explanation_en": "Checkpoints record exactly where processing paused (using offsets in queues), allowing retries without reprocessing already-completed records.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200101_008",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de estos patrones es más adecuado para un escenario de ingesta de eventos en tiempo real con bajo latency?",
+      "question_en": "Which pattern is most suitable for real-time event ingestion with low latency?",
+      "options_es": [
+        "Descarga manual de archivos CSV",
+        "Procesamiento batch nocturno con histórico completo",
+        "Streaming con procesamiento de micro-batches",
+        "Replicación de base de datos semanal"
+      ],
+      "options_en": [
+        "Manual CSV file downloads",
+        "Nightly batch processing with full history",
+        "Streaming with micro-batch processing",
+        "Weekly database replication"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El procesamiento de micro-batches (como Spark Streaming) balancean latencia baja con procesamiento distribuido eficiente, ideal para eventos en tiempo real.",
+      "explanation_en": "Micro-batch processing (like Spark Streaming) balances low latency with efficient distributed processing, ideal for real-time events.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200101_009",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Qué métrica es más importante para monitorear la salud de un pipeline de datos crítico?",
+      "question_en": "What metric is most important to monitor for the health of a critical data pipeline?",
+      "options_es": [
+        "Tiempo transcurrido desde la última ejecución exitosa",
+        "Tamaño total de archivos procesados",
+        "Velocidad de red de la red local independientemente del contexto aplicado",
+        "Número de intentos fallidos acumulados"
+      ],
+      "options_en": [
+        "Time elapsed since last successful run",
+        "Total size of processed files",
+        "Local network speed regardless of the applied context",
+        "Number of accumulated failed attempts"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El tiempo desde la última ejecución exitosa (SLA) es crítico para detectar fallos o retrasos que afecten la disponibilidad de datos para usuarios finales.",
+      "explanation_en": "Time since last successful run (SLA) is critical for detecting failures or delays affecting data availability for end users.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200101_010",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "En un contexto de GDPR y privacidad, ¿cuál es el enfoque recomendado para datos sensibles en pipelines?",
+      "question_en": "In GDPR and privacy context, what is the recommended approach for sensitive data in pipelines?",
+      "options_es": [
+        "Almacenar en texto plano con acceso restringido",
+        "Aplicar enmascaramiento y anonimización en la ingesta",
+        "Procesar sin restricciones y auditar después",
+        "Guardar en múltiples copias sin encriptación de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "Store in plain text with restricted access",
+        "Apply masking and anonymization at ingestion",
+        "Process unrestricted and audit later",
+        "Save in multiple unencrypted copies exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El enmascaramiento y anonimización aplicados temprano en el pipeline reducen riesgos de privacidad y simplifican el cumplimiento normativo.",
+      "explanation_en": "Masking and anonymization applied early in the pipeline reduce privacy risks and simplify regulatory compliance.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200101_011",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja principal de usar un formato columnar como Parquet en pipelines de datos?",
+      "question_en": "What is the main advantage of using a columnar format like Parquet in data pipelines?",
+      "options_es": [
+        "Cifrado nativo integrado en cualquier escenario de implementación",
+        "Mejor compresión y lectura selectiva por columnas",
+        "Compatibilidad universal con todos los sistemas",
+        "Eliminación automática de duplicados"
+      ],
+      "options_en": [
+        "Built-in native encryption in any implementation scenario",
+        "Better compression and selective column reading",
+        "Universal compatibility with all systems",
+        "Automatic duplicate elimination"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Parquet comprime mejor que CSV y permite lectura selectiva de solo las columnas necesarias, mejorando rendimiento y reduciendo consumo de ancho de banda.",
+      "explanation_en": "Parquet compresses better than CSV and allows selective reading of only needed columns, improving performance and reducing bandwidth consumption.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200101_012",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "En un escenario de múltiples consumidores con diferentes velocidades de procesamiento, ¿qué patrón es más apropiado?",
+      "question_en": "In a scenario with multiple consumers at different processing speeds, which pattern is most appropriate?",
+      "options_es": [
+        "Usar una arquitectura con cola central y consumidores independientes",
+        "Almacenar todos los datos en memoria compartida",
+        "Duplicar datos en cada consumidor de forma invariable y constante",
+        "Procesar secuencialmente un consumidor a la vez"
+      ],
+      "options_en": [
+        "Use architecture with central queue and independent consumers",
+        "Store all data in shared memory",
+        "Duplicate data in each consumer invariably and constantly",
+        "Process sequentially one consumer at a time"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una cola central permite que múltiples consumidores lean independientemente a su propio ritmo, sin bloquear unos a otros.",
+      "explanation_en": "A central queue allows multiple consumers to read independently at their own pace, without blocking each other.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200101_013",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Qué técnica se utiliza para garantizar consistencia transaccional en un pipeline que escribe en múltiples destinos?",
+      "question_en": "What technique ensures transactional consistency when writing to multiple destinations in a pipeline?",
+      "options_es": [
+        "Depender de la sincronización automática",
+        "Usar 2-phase commit o similar mecanismo de coordinación",
+        "Escribir en paralelo a todos los destinos sin coordinación",
+        "Escribir primero en uno y copiar después"
+      ],
+      "options_en": [
+        "Rely on automatic synchronization",
+        "Use 2-phase commit or similar coordination mechanism",
+        "Write in parallel to all destinations without coordination",
+        "Write first to one then copy later"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El protocolo de 2-phase commit asegura que todos los destinos se actualicen de forma atómica, o ninguno si alguno falla.",
+      "explanation_en": "2-phase commit protocol ensures all destinations update atomically, or none if any fails.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200101_014",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "En un pipeline que integra datos de APIs externas, ¿cuál es el riesgo principal sin rate limiting?",
+      "question_en": "In a pipeline integrating external APIs, what is the main risk without rate limiting?",
+      "options_es": [
+        "Duplicación de esquemas sin considerar otros factores relevantes",
+        "Pérdida de conectividad permanente",
+        "Bloqueo de IP o throttling de la API",
+        "Menor precisión de datos"
+      ],
+      "options_en": [
+        "Schema duplication without considering other relevant factors",
+        "Permanent connectivity loss",
+        "API IP blocking or throttling",
+        "Lower data accuracy"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Sin rate limiting, un pipeline puede sobrecargar la API externa y ser bloqueado, interrumpiendo la ingesta de datos.",
+      "explanation_en": "Without rate limiting, a pipeline can overload external APIs and be blocked, interrupting data ingestion.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200101_015",
+      "skill_id": "sk200101",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para versionar esquemas de datos en un pipeline de datos empresarial?",
+      "question_en": "What is the best practice for versioning data schemas in an enterprise data pipeline?",
+      "options_es": [
+        "Mantener múltiples copias de esquemas en archivos",
+        "Almacenar esquemas en bases de datos separadas",
+        "Cambiar esquemas sin documentación en cualquier escenario de implementación",
+        "Usar un registro de esquema centralizado con evolución controlada"
+      ],
+      "options_en": [
+        "Keep multiple schema copies in files",
+        "Store schemas in separate databases",
+        "Change schemas without documentation in any implementation scenario",
+        "Use centralized schema registry with controlled evolution"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un registro de esquema centralizado (como Confluent Schema Registry) controla cambios, valida compatibilidad y mantiene historial de evolución.",
+      "explanation_en": "A centralized schema registry (like Confluent Schema Registry) controls changes, validates compatibility, and maintains evolution history.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_001",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de la capa Raw o Bronze en una arquitectura de data lake?",
+      "question_en": "What is the purpose of the Raw or Bronze layer in a data lake architecture?",
+      "options_es": [
+        "Datos optimizados para reportes de manera exclusiva y permanente",
+        "Datos cifrados sin transformación",
+        "Datos completamente limpios listos para análisis",
+        "Almacenar datos exactamente como se recibieron de la fuente"
+      ],
+      "options_en": [
+        "Data optimized for reporting exclusively and permanently",
+        "Encrypted data without transformation",
+        "Completely clean data ready for analysis",
+        "Store data exactly as received from source"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La capa Raw/Bronze mantiene una copia fiel de los datos originales sin transformación, proporcionando auditabilidad total y un punto de inicio para reprocessamiento.",
+      "explanation_en": "The Raw/Bronze layer maintains a faithful copy of original data without transformation, providing complete auditability and a starting point for reprocessing.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_002",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "En un data lake, ¿qué características define la capa Silver o Processed?",
+      "question_en": "What characteristics define the Silver or Processed layer in a data lake?",
+      "options_es": [
+        "Datos limpios, validados y enriquecidos",
+        "Datos listos para machine learning",
+        "Datos sin transformar del origen",
+        "Datos cifrados y comprimidos en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Clean, validated and enriched data",
+        "Data ready for machine learning",
+        "Raw untransformed data from source",
+        "Encrypted and compressed data in any implementation scenario"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La capa Silver aplica transformaciones de limpieza, validación y enriquecimiento, creando datos de calidad superior listos para análisis.",
+      "explanation_en": "The Silver layer applies cleaning, validation, and enrichment transformations, creating higher-quality data ready for analysis.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_003",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la estrategia de particionamiento más común en un data lake HDFS para optimizar consultas?",
+      "question_en": "What is the most common partitioning strategy in an HDFS data lake to optimize queries?",
+      "options_es": [
+        "Sin particiones, almacenar todo en un archivo",
+        "Particionar por fecha/día para consultas temporales",
+        "Particionar por tipo de datos sin excepciones ni variantes",
+        "Particionar por hash aleatorio"
+      ],
+      "options_en": [
+        "No partitions, store everything in one file",
+        "Partition by date/day for temporal queries",
+        "Partition by data type without exceptions or variants",
+        "Partition by random hash"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Particionar por fecha permite que las consultas filtren rápidamente solo los datos del período necesario, mejorando dramáticamente el rendimiento.",
+      "explanation_en": "Partitioning by date allows queries to quickly filter only data from needed period, dramatically improving performance.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_004",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué desafío principal enfrenta un data lake sin gobernanza de datos adecuada?",
+      "question_en": "What main challenge does a data lake without proper data governance face?",
+      "options_es": [
+        "Costos reducidos de almacenamiento",
+        "Mejor acceso de usuarios de forma invariable y constante",
+        "Mayor velocidad de consultas",
+        "Pantano de datos con documentación inexistente"
+      ],
+      "options_en": [
+        "Reduced storage costs",
+        "Better user access invariably and constantly",
+        "Faster query speed",
+        "Data swamp with no documentation"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Sin gobernanza, un data lake se convierte en un pantano de datos donde nadie entiende qué datos existen, su calidad o linaje, tornando inutilizable la información.",
+      "explanation_en": "Without governance, a data lake becomes a data swamp where nobody understands what data exists, its quality or lineage, making information useless.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_005",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el beneficio de usar formatos de compresión como Snappy o Gzip en un data lake?",
+      "question_en": "What is the benefit of using compression formats like Snappy or Gzip in a data lake?",
+      "options_es": [
+        "Encriptación automática de datos",
+        "Mayor precisión de datos en cualquier escenario de implementación",
+        "Reducción de espacio de almacenamiento y ancho de banda",
+        "Mejora de velocidad de lectura directa"
+      ],
+      "options_en": [
+        "Automatic data encryption",
+        "Higher data accuracy in any implementation scenario",
+        "Reduction of storage space and bandwidth",
+        "Improved direct read speed"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La compresión reduce significativamente el espacio en disco y el ancho de banda de red requerido, bajando costos de infraestructura.",
+      "explanation_en": "Compression significantly reduces disk space and network bandwidth required, lowering infrastructure costs.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_006",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se implementa típicamente la seguridad a nivel de filas en un data lake?",
+      "question_en": "How is row-level security typically implemented in a data lake?",
+      "options_es": [
+        "Usar contraseñas en archivos de datos según la documentación estándar del servicio",
+        "Implementar vistas virtuales con filtros en la capa de acceso",
+        "Aplicar políticas en el sistema operativo",
+        "Separar datos en carpetas encriptadas"
+      ],
+      "options_en": [
+        "Use passwords in data files according to standard service documentation",
+        "Implement virtual views with filters at access layer",
+        "Apply policies at OS level",
+        "Separate data into encrypted folders"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las vistas virtuales con filtros aplicados en la capa de consulta o catálogo permiten que diferentes usuarios vean solo los datos permitidos sin duplicar archivos.",
+      "explanation_en": "Virtual views with filters applied at query or catalog layer allow different users to see only permitted data without duplicating files.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200102_007",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de implementar la deduplicación de datos en un data lake?",
+      "question_en": "What is the advantage of implementing data deduplication in a data lake?",
+      "options_es": [
+        "Acelerar la ingesta de datos nuevos en todos los casos posibles",
+        "Reducir espacio de almacenamiento eliminando copias idénticas",
+        "Mejorar la seguridad de contraseñas",
+        "Facilitar búsquedas de texto completo"
+      ],
+      "options_en": [
+        "Accelerate new data ingestion in all possible cases",
+        "Reduce storage by eliminating identical copies",
+        "Improve password security",
+        "Facilitate full-text searches"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La deduplicación identifica y elimina registros idénticos, reduciendo significativamente el espacio requerido y mejorando la relación costo-beneficio.",
+      "explanation_en": "Deduplication identifies and removes identical records, significantly reducing required space and improving cost-benefit ratio.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_008",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la estrategia más efectiva para manejar datos faltantes (NULL) en un data lake?",
+      "question_en": "What is the most effective strategy for handling missing (NULL) data in a data lake?",
+      "options_es": [
+        "Llenar con ceros siempre sin considerar otros factores relevantes",
+        "Eliminar completamente columnas con NULL",
+        "Ignorar filas con valores NULL",
+        "Documentar patrones NULL y decidir según el contexto"
+      ],
+      "options_en": [
+        "Always fill with zeros without considering other relevant factors",
+        "Completely remove columns with NULLs",
+        "Ignore rows with NULL values",
+        "Document NULL patterns and decide by context"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los valores NULL pueden ser legítimos (información faltante) o indicar problemas de calidad; documentar y analizar patrones permite tomar decisiones apropiadas.",
+      "explanation_en": "NULL values may be legitimate (missing information) or indicate quality issues; documenting and analyzing patterns allows appropriate decisions.",
+      "source": "https://www.postgresql.org/docs/"
+    },
+    {
+      "id": "q200102_009",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el rol de la metadata en la gobernanza de un data lake?",
+      "question_en": "What is the role of metadata in data lake governance?",
+      "options_es": [
+        "Cifrar datos sensibles independientemente del contexto aplicado",
+        "Describe qué datos existen, su calidad, propietario y linaje",
+        "Acelerar solo consultas de análisis",
+        "Solo documentación visual"
+      ],
+      "options_en": [
+        "Encrypt sensitive data regardless of the applied context",
+        "Describe what data exists, quality, owner and lineage",
+        "Accelerate only analytics queries",
+        "Only visual documentation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La metadata actúa como catálogo y documentación viviente, indicando qué datos disponibles, quién los posee, de dónde vienen y cómo se relacionan.",
+      "explanation_en": "Metadata acts as a living catalog and documentation, indicating available data, ownership, sources, and relationships.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_010",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ventaja proporciona usar compresión de bloque en lugar de compresión a nivel de archivo en HDFS?",
+      "question_en": "What advantage does block-level compression provide over file-level compression in HDFS?",
+      "options_es": [
+        "Mejor compatibilidad con sistemas legacy",
+        "Permite procesamiento paralelo en bloques comprimidos",
+        "Menor requerimiento de memoria de forma invariable y constante",
+        "Simplifica copias de seguridad"
+      ],
+      "options_en": [
+        "Better compatibility with legacy systems",
+        "Enables parallel processing of compressed blocks",
+        "Lower memory requirement invariably and constantly",
+        "Simplifies backups"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La compresión de bloque permite que MapReduce procese bloques en paralelo sin descomprimir todo el archivo, mejorando la escalabilidad.",
+      "explanation_en": "Block-level compression allows MapReduce to process blocks in parallel without decompressing entire file, improving scalability.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_011",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la práctica recomendada para el versionamiento de datos en un data lake?",
+      "question_en": "What is the recommended practice for data versioning in a data lake?",
+      "options_es": [
+        "Mantener snapshots o timestamps en rutas separadas",
+        "Sobrescribir archivos existentes sin histórico",
+        "Usar nombres de archivo genéricos de forma invariable y constante",
+        "Guardar solo cambios de última semana"
+      ],
+      "options_en": [
+        "Maintain snapshots or timestamps in separate paths",
+        "Overwrite existing files without history",
+        "Use generic file names invariably and constantly",
+        "Keep only changes from last week"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Mantener versiones con timestamps permite auditar cambios, revertir a estados anteriores si falla una transformación, y rastrear evolución de datos.",
+      "explanation_en": "Keeping versions with timestamps enables auditing changes, reverting to prior states if transformation fails, and tracking data evolution.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_012",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se evita típicamente el problema de 'late-arriving data' en un data lake?",
+      "question_en": "How is the 'late-arriving data' problem typically avoided in a data lake?",
+      "options_es": [
+        "Almacenar datos en caché temporalmente independientemente del contexto aplicado",
+        "Usar solo datos de APIs en tiempo real",
+        "Aplicar ventanas de tolerancia y reprocesar particiones afectadas",
+        "Rechazar datos después de una fecha límite"
+      ],
+      "options_en": [
+        "Temporarily cache data regardless of the applied context",
+        "Use only real-time API data",
+        "Apply tolerance windows and reprocess affected partitions",
+        "Reject data after cutoff date"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las ventanas de tolerancia permiten que datos atrasados se integren sin fallar, y reprocessar solo particiones afectadas es eficiente.",
+      "explanation_en": "Tolerance windows allow late data to integrate without failing, and reprocessing only affected partitions is efficient.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_013",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la implicación principal de elegir formato de almacenamiento abierto vs propietario en un data lake?",
+      "question_en": "What is the main implication of choosing open vs proprietary storage format in a data lake?",
+      "options_es": [
+        "Sin diferencia significativa sin considerar otros factores relevantes",
+        "Formatos abiertos evitan vendor lock-in y facilitan integración",
+        "Solo los abiertos soportan compresión",
+        "Formatos propietarios son siempre más rápidos"
+      ],
+      "options_en": [
+        "No significant difference without considering other relevant factors",
+        "Open formats avoid vendor lock-in and facilitate integration",
+        "Only open formats support compression",
+        "Proprietary formats always faster"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Usar formatos abiertos como Parquet o ORC previene dependencia de proveedores específicos y permite portabilidad entre herramientas.",
+      "explanation_en": "Using open formats like Parquet or ORC prevents vendor lock-in and enables portability between tools.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_014",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el beneficio principal de segregar datos por dominio de negocio en un data lake?",
+      "question_en": "What is the main benefit of segregating data by business domain in a data lake?",
+      "options_es": [
+        "Acelerar todas las consultas sin excepción",
+        "Reducir el tamaño total del almacenamiento",
+        "Mejorar organización, propiedad clara y facilitar gobernanza",
+        "Simplificar migraciones a la nube sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Accelerate all queries without exception",
+        "Reduce total storage size",
+        "Improve organization, clear ownership and governance",
+        "Simplify cloud migrations without exceptions or variants"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La segregación por dominio (ej: ventas, finanzas, RH) clarifican propiedad, responsabilidades y facilita aplicar políticas específicas.",
+      "explanation_en": "Domain segregation (e.g., sales, finance, HR) clarifies ownership, responsibilities and facilitates applying specific policies.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200102_015",
+      "skill_id": "sk200102",
+      "type": "multiple_choice",
+      "question_es": "¿Qué considera la Ley de Amdahl en el contexto de procesamiento paralelo en data lakes?",
+      "question_en": "What does Amdahl's Law consider in the context of parallel processing in data lakes?",
+      "options_es": [
+        "El límite de mejora al paralelizar código con partes secuenciales",
+        "La velocidad de red entre nodos sin considerar otros factores relevantes",
+        "El costo de energía de servidores",
+        "La capacidad de almacenamiento total"
+      ],
+      "options_en": [
+        "The limit of improvement when parallelizing code with serial parts",
+        "Network speed between nodes without considering other relevant factors",
+        "Power cost of servers",
+        "Total storage capacity"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La Ley de Amdahl indica que si parte del código debe ejecutarse serialmente, el speedup total es limitado; relevante para optimizar pipelines distribuidos.",
+      "explanation_en": "Amdahl's Law states if part of code must run serially, total speedup is limited; relevant for optimizing distributed pipelines.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_001",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia clave entre procesamiento batch y stream processing?",
+      "question_en": "What is the key difference between batch and stream processing?",
+      "options_es": [
+        "Batch procesa datos históricos, stream procesa datos en vivo",
+        "Stream es más lento que batch",
+        "Son términos equivalentes sin considerar otros factores relevantes",
+        "Batch requiere más memoria"
+      ],
+      "options_en": [
+        "Batch processes historical data, stream processes live data",
+        "Stream is slower than batch",
+        "They are equivalent terms without considering other relevant factors",
+        "Batch requires more memory"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El procesamiento batch acumula datos y los procesa periódicamente, mientras que stream processing procesa eventos conforme llegan en tiempo real.",
+      "explanation_en": "Batch processing accumulates data and processes it periodically, while stream processing handles events as they arrive in real time.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_002",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el desafío principal del procesamiento de streams con garantía 'exactly-once'?",
+      "question_en": "What is the main challenge of stream processing with 'exactly-once' guarantee?",
+      "options_es": [
+        "Solo aplica a datos estructurados",
+        "Funciona automáticamente sin configuración",
+        "Requiere seguimiento de estado y checkpoints coordina dos",
+        "No es técnicamente posible en todos los casos posibles"
+      ],
+      "options_en": [
+        "Only applies to structured data",
+        "Works automatically without configuration",
+        "Requires stateful tracking and coordinated checkpoints",
+        "Not technically possible in all possible cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Garantizar exactly-once requiere mantener estado de qué registros se han procesado, usar checkpoints y manejar fallos de forma coordina da sin duplicar ni perder datos.",
+      "explanation_en": "Ensuring exactly-once requires maintaining state of processed records, using checkpoints and coordinated failure handling without duplicates or loss.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_003",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de estos sistemas es más adecuado para procesamiento de streams con baja latencia sub-segundo?",
+      "question_en": "Which of these systems is most suitable for sub-second latency stream processing?",
+      "options_es": [
+        "Apache Flink o Kafka Streams",
+        "Apache Spark Streaming",
+        "Cron jobs programados",
+        "Hadoop batch semanal en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Apache Flink or Kafka Streams",
+        "Apache Spark Streaming",
+        "Scheduled cron jobs",
+        "Weekly Hadoop batch in any implementation scenario"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Flink y Kafka Streams están diseñados para baja latencia verdadera en milisegundos, mientras que Spark Streaming usa micro-batches (mínimo ~0.5s).",
+      "explanation_en": "Flink and Kafka Streams are designed for true sub-millisecond latency, while Spark Streaming uses micro-batches (minimum ~0.5s).",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_004",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Qué técnica se utiliza para manejar datos fuera de orden en procesamiento de streams?",
+      "question_en": "What technique handles out-of-order data in stream processing?",
+      "options_es": [
+        "Requerir que el origen ordene datos",
+        "Procesar solo datos perfectamente ordenados",
+        "Rechazar datos desordenados según la documentación estándar del servicio",
+        "Usar ventanas de tiempo con marca de evento vs marca de procesamiento"
+      ],
+      "options_en": [
+        "Require source to order data",
+        "Process only perfectly ordered data",
+        "Reject out-of-order data according to standard service documentation",
+        "Use time windows with event timestamp vs processing timestamp"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las ventanas basadas en timestamp de evento (no de procesamiento) permiten tolerar datos que llegan fuera de orden mientras permanecen dentro de la ventana temporal.",
+      "explanation_en": "Event-timestamp windows (not processing timestamp) allow tolerating out-of-order data while remaining within time window.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_005",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de las ventanas deslizantes en procesamiento de streams?",
+      "question_en": "What is the purpose of sliding windows in stream processing?",
+      "options_es": [
+        "Reducir la latencia a cero",
+        "Cifrar datos en tránsito independientemente del contexto aplicado",
+        "Calcular agregaciones sobre períodos superpuestos de tiempo",
+        "Eliminar duplicados automáticamente"
+      ],
+      "options_en": [
+        "Reduce latency to zero",
+        "Encrypt data in transit regardless of the applied context",
+        "Calculate aggregations over overlapping time periods",
+        "Automatically remove duplicates"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las ventanas deslizantes (ej: 5 minutos cada minuto) crean múltiples períodos superpuestos para cálculos como promedios móviles y detección de anomalías.",
+      "explanation_en": "Sliding windows (e.g., 5-min every 1-min) create overlapping periods for calculations like moving averages and anomaly detection.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_006",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se implementa típicamente la tolerancia a fallos en un pipeline de streaming?",
+      "question_en": "How is fault tolerance typically implemented in a streaming pipeline?",
+      "options_es": [
+        "Duplicar todos los datos en memoria",
+        "Confiar en que los sistemas nunca fallan",
+        "No se implementa, se reinicia desde cero",
+        "Usar checkpoints y replaying de fuentes"
+      ],
+      "options_en": [
+        "Duplicate all data in memory",
+        "Trust systems never fail",
+        "Not implemented, restart from beginning",
+        "Use checkpoints and source replaying"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los checkpoints guardan el estado, permitiendo que al reiniciar, se lea nuevamente la fuente desde el último checkpoint sin perder ni duplicar datos.",
+      "explanation_en": "Checkpoints save state, allowing restart to read source from last checkpoint without losing or duplicating data.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_007",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'watermark' en procesamiento de streams y cuál es su utilidad?",
+      "question_en": "What is a 'watermark' in stream processing and what is its utility?",
+      "options_es": [
+        "Límite de tiempo para aceptar datos atrasados",
+        "Token de autenticación sin excepciones ni variantes",
+        "Copia de seguridad automática",
+        "Marca de cifrado en datos"
+      ],
+      "options_en": [
+        "Time limit for accepting late data",
+        "Authentication token without exceptions or variants",
+        "Automatic backup",
+        "Encryption mark on data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El watermark define cuánto tiempo después de la ventana temporal se aceptan datos atrasados, balanceando completitud vs latencia.",
+      "explanation_en": "The watermark defines how long after time window late data is accepted, balancing completeness vs latency.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_008",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar Apache Kafka como fuente para procesamiento de streams?",
+      "question_en": "What is the advantage of using Apache Kafka as source for stream processing?",
+      "options_es": [
+        "Solo almacena datos en memoria",
+        "Es más lento que APIs REST de forma invariable y constante",
+        "No permite reprocessamiento",
+        "Proporciona durabilidad, replay y escalabilidad horizontal"
+      ],
+      "options_en": [
+        "Only stores data in memory",
+        "Slower than REST APIs invariably and constantly",
+        "No reprocessing allowed",
+        "Provides durability, replay and horizontal scalability"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Kafka mantiene logs durables permitiendo reprocessar datos históricos si falla un consumidor, y escala horizontalmente agregando particiones.",
+      "explanation_en": "Kafka maintains durable logs allowing reprocessing if consumer fails, and scales horizontally by adding partitions.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_009",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se maneja el estado en un pipeline de streaming con múltiples instancias?",
+      "question_en": "How is state managed in a streaming pipeline with multiple instances?",
+      "options_es": [
+        "Almacenar en cada instancia sin sincronización",
+        "Usar un almacén de estado distribuido y escalable",
+        "Procesar siempre en una sola instancia",
+        "No mantener estado sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Store in each instance without sync",
+        "Use distributed and scalable state store",
+        "Always process in single instance",
+        "Maintain no state without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un almacén de estado distribuido (ej: RocksDB en Kafka Streams) permite que instancias compartan estado sin perder consistencia.",
+      "explanation_en": "A distributed state store (e.g., RocksDB in Kafka Streams) allows instances to share state without losing consistency.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_010",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el compromiso entre latencia y throughput en procesamiento de streams?",
+      "question_en": "What is the tradeoff between latency and throughput in stream processing?",
+      "options_es": [
+        "Son independientes independientemente del contexto aplicado",
+        "No existe compromiso",
+        "Mayor throughput siempre significa menor latencia",
+        "Mayor latencia usualmente permite mayor throughput"
+      ],
+      "options_en": [
+        "They are independent regardless of the applied context",
+        "No tradeoff",
+        "Higher throughput always means lower latency",
+        "Higher latency usually allows higher throughput"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Micro-batches más grandes procesan más eventos juntos (mayor throughput) pero con más espera (mayor latencia); es un balance a configurar.",
+      "explanation_en": "Larger micro-batches process more events together (higher throughput) but with more wait (higher latency); balance to configure.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_011",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Qué patrón se usa para implementar joins entre streams en tiempo real?",
+      "question_en": "What pattern is used to implement joins between streams in real time?",
+      "options_es": [
+        "No se pueden hacer joins en streams",
+        "Mantener estado de ambos streams y emparejar en ventanas",
+        "Requerimiento imposible en todos los casos posibles",
+        "Solo joins con tablas estáticas"
+      ],
+      "options_en": [
+        "Joins cannot be done on streams",
+        "Maintain state of both streams and match in windows",
+        "Impossible requirement in all possible cases",
+        "Only joins with static tables"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Se mantiene un buffer de ambos streams y se emparejan registros que coinciden en tiempo o claves dentro de una ventana definida.",
+      "explanation_en": "Buffers of both streams are maintained and records matching by time or keys are joined within a defined window.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_012",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se evita el problema de 'backpressure' en pipelines de streaming?",
+      "question_en": "How is the 'backpressure' problem avoided in streaming pipelines?",
+      "options_es": [
+        "Procesando datos más rápido de lo que llegan",
+        "Descartar datos excedentes",
+        "No se puede evitar en todos los casos posibles",
+        "Parar ingesta si el procesador no sigue el ritmo"
+      ],
+      "options_en": [
+        "Processing data faster than it arrives",
+        "Discard excess data",
+        "Cannot be avoided in all possible cases",
+        "Pause ingestion if processor cannot keep up"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El backpressure pausar la ingesta cuando el procesador se retrasa, evitando acumular datos en memoria y causar crashes.",
+      "explanation_en": "Backpressure pauses ingestion when processor lags, avoiding memory accumulation and crashes.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_013",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la métrica más importante para monitorear un pipeline de streaming en producción?",
+      "question_en": "What is the most important metric to monitor for a production streaming pipeline?",
+      "options_es": [
+        "Memoria total consumida",
+        "Latencia end-to-end desde evento hasta salida",
+        "Tamaño del archivo de log",
+        "Número de reintentos sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "Total memory consumed",
+        "End-to-end latency from event to output",
+        "Log file size",
+        "Number of retries without considering other relevant factors"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La latencia end-to-end indica si el pipeline se está atrasando respecto a los eventos en tiempo real, alertando sobre degradación.",
+      "explanation_en": "End-to-end latency indicates if pipeline is falling behind real-time events, alerting to degradation.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_014",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre 'at-least-once' y 'exactly-once' en semántica de entrega?",
+      "question_en": "What is the difference between 'at-least-once' and 'exactly-once' delivery semantics?",
+      "options_es": [
+        "No importa la diferencia",
+        "Son sinónimos independientemente del contexto aplicado",
+        "At-least-once puede duplicar, exactly-once garantiza sin duplicados",
+        "Exactly-once nunca reentrega"
+      ],
+      "options_en": [
+        "Difference doesn't matter",
+        "They are synonyms regardless of the applied context",
+        "At-least-once may duplicate, exactly-once guarantees no duplicates",
+        "Exactly-once never redelivers"
+      ],
+      "correct_index": 2,
+      "explanation_es": "At-least-once reentrega si falla pero puede causar duplicados; exactly-once usa deduplicación para garantizar sin duplicados.",
+      "explanation_en": "At-least-once redelivers on failure but may cause duplicates; exactly-once uses deduplication to guarantee no duplicates.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200103_015",
+      "skill_id": "sk200103",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar Spark Structured Streaming vs Spark RDD Streaming?",
+      "question_en": "What is the advantage of Spark Structured Streaming vs Spark RDD Streaming?",
+      "options_es": [
+        "RDD es más moderno",
+        "No hay diferencia de manera exclusiva y permanente",
+        "Structured es más simple, optimizado automáticamente y compatible con SQL",
+        "RDD es siempre más rápido"
+      ],
+      "options_en": [
+        "RDD is more modern",
+        "No difference exclusively and permanently",
+        "Structured is simpler, auto-optimized and SQL-compatible",
+        "RDD always faster"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Structured Streaming proporciona API más simple, optimización automática con Catalyst y soporte nativo para SQL.",
+      "explanation_en": "Structured Streaming provides simpler API, automatic optimization with Catalyst and native SQL support.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200104_001",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja principal del procesamiento batch sobre procesamiento en tiempo real?",
+      "question_en": "What is the main advantage of batch processing over real-time processing?",
+      "options_es": [
+        "Mayor latencia garantizada",
+        "Mejor eficiencia de recursos y throughput",
+        "Menos confiable independientemente del contexto aplicado",
+        "Más seguro automáticamente"
+      ],
+      "options_en": [
+        "Guaranteed higher latency",
+        "Better resource efficiency and throughput",
+        "Less reliable regardless of the applied context",
+        "Automatically more secure"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El batch puede acumular datos y procesarlos juntos, maximizando paralelismo y eficiencia de recursos, aceptando mayor latencia.",
+      "explanation_en": "Batch can accumulate and process data together, maximizing parallelism and resource efficiency, accepting higher latency.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200104_002",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'job' en el contexto de Airflow y qué es un 'task'?",
+      "question_en": "What is a 'job' in Airflow context and what is a 'task'?",
+      "options_es": [
+        "No tienen relación",
+        "Un DAG contiene tasks, un run es una ejecución del DAG",
+        "Un job es una tarea simple",
+        "Son sinónimos sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "No relationship",
+        "A DAG contains tasks, a run is a DAG execution",
+        "A job is a single task",
+        "They are synonyms without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un DAG (Directed Acyclic Graph) contiene múltiples tasks; cada ejecución del DAG es un 'run' que ejecuta todas las tasks.",
+      "explanation_en": "A DAG contains multiple tasks; each DAG execution is a 'run' that executes all tasks.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_003",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre scheduling cron y scheduling por triggers en Airflow?",
+      "question_en": "What is the difference between cron scheduling and trigger-based scheduling in Airflow?",
+      "options_es": [
+        "Cron es temporal periódico, triggers disparan por eventos",
+        "No hay diferencia independientemente del contexto aplicado",
+        "Solo cron funciona",
+        "Los triggers son obsoletos"
+      ],
+      "options_en": [
+        "Cron is periodic timing, triggers fire on events",
+        "No difference regardless of the applied context",
+        "Only cron works",
+        "Triggers are obsolete"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cron ejecuta según horario (ej: diariamente a las 2 AM), mientras que triggers ejecutan cuando ocurre un evento (ej: archivo cargado).",
+      "explanation_en": "Cron executes by schedule (e.g., daily at 2 AM), while triggers fire on events (e.g., file uploaded).",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_004",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Qué operador de Airflow es el más apropiado para ejecutar una consulta SQL?",
+      "question_en": "Which Airflow operator is most appropriate to execute a SQL query?",
+      "options_es": [
+        "No hay soporte para SQL",
+        "SQLOperator o PostgresOperator según BD",
+        "PythonOperator para todo",
+        "BashOperator siempre independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "No SQL support",
+        "SQLOperator or PostgresOperator by DB",
+        "PythonOperator for everything",
+        "BashOperator always regardless of the applied context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los operadores específicos de BD (PostgresOperator, MySQLOperator, etc.) ofrecen integración directa y manejo de conexiones.",
+      "explanation_en": "DB-specific operators (PostgresOperator, MySQLOperator, etc.) offer direct integration and connection handling.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_005",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para manejar dependencias complejas entre tasks en Airflow?",
+      "question_en": "What is the best practice for handling complex dependencies between tasks in Airflow?",
+      "options_es": [
+        "Todas las tasks en paralelo",
+        "No importa el orden independientemente del contexto aplicado",
+        "Una sola task secuencial",
+        "Definir explícitamente >> y << para orden"
+      ],
+      "options_en": [
+        "All tasks in parallel",
+        "Order doesn't matter regardless of the applied context",
+        "Single sequential task",
+        "Explicitly define >> and << for order"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los operadores >> y << definen claramente el flujo DAG, permitiendo que Airflow entienda y optimice dependencias.",
+      "explanation_en": "Operators >> and << clearly define DAG flow, allowing Airflow to understand and optimize dependencies.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_006",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se implementa típicamente la idempotencia en un job batch?",
+      "question_en": "How is idempotence typically implemented in a batch job?",
+      "options_es": [
+        "Depender del sistema operativo",
+        "No es posible en batch sin considerar otros factores relevantes",
+        "Ejecutar con transacciones sin rollback",
+        "Usar checksums o markers para detectar si ya se procesó"
+      ],
+      "options_en": [
+        "Depend on OS",
+        "Not possible in batch without considering other relevant factors",
+        "Execute with transactions without rollback",
+        "Use checksums or markers to detect if already processed"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los markers o checksums registran que un lote se ha procesado; si el job falla y reintenta, puede detectar y saltar lotes completados.",
+      "explanation_en": "Markers or checksums record batch processing; if job fails and retries, it can detect and skip completed batches.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_007",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es backfilling en el contexto de DAGs y cuándo es necesario?",
+      "question_en": "What is backfilling in the context of DAGs and when is it needed?",
+      "options_es": [
+        "Ejecutar DAG retroactivamente en períodos históricos",
+        "Actualizar dependencias",
+        "Borrar datos antiguos de manera exclusiva y permanente",
+        "Llenar espacios en disco"
+      ],
+      "options_en": [
+        "Run DAG retroactively over historical periods",
+        "Update dependencies",
+        "Delete old data exclusively and permanently",
+        "Fill disk spaces"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Backfilling permite ejecutar un DAG para fechas pasadas (ej: días anteriores a su creación), llenando brechas de datos.",
+      "explanation_en": "Backfilling allows running DAG for past dates (e.g., days before DAG creation), filling data gaps.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_008",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la estrategia recomendada para particionar un job batch muy grande?",
+      "question_en": "What is the recommended strategy for partitioning a very large batch job?",
+      "options_es": [
+        "Esperar a procesar secuencialmente",
+        "No se puede particionar en todos los casos posibles",
+        "Ejecutar todo de una vez",
+        "Dividir por date ranges o ID ranges"
+      ],
+      "options_en": [
+        "Wait for sequential processing",
+        "Cannot be partitioned in all possible cases",
+        "Run everything at once",
+        "Split by date ranges or ID ranges"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Particionar por rangos permite paralelizar ejecuciones y manejar fallos de particiones individuales sin reprocessar todo.",
+      "explanation_en": "Partitioning by ranges enables parallel execution and handles individual partition failures without reprocessing all.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200104_009",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Qué métrica es más crítica para monitorear en un batch job de larga duración?",
+      "question_en": "What metric is most critical to monitor in a long-duration batch job?",
+      "options_es": [
+        "Uso de red según la documentación estándar del servicio",
+        "Número de líneas de log",
+        "Throughput (registros/segundo) y tiempo estimado de finalización",
+        "Temperatura del servidor"
+      ],
+      "options_en": [
+        "Network usage according to standard service documentation",
+        "Number of log lines",
+        "Throughput (records/second) and estimated completion time",
+        "Server temperature"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El throughput indica si el job progresa al ritmo esperado; una caída significa degradación y permite alertas tempranas.",
+      "explanation_en": "Throughput indicates if job progresses as expected; a drop means degradation and enables early alerts.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_010",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se implementa típicamente el retry automático en Airflow?",
+      "question_en": "How is automatic retry typically implemented in Airflow?",
+      "options_es": [
+        "Configurar max_tries y retry_delay en tasks",
+        "No hay soporte de manera exclusiva y permanente",
+        "Reiniciar todo el DAG manualmente",
+        "Esperar intervención humana"
+      ],
+      "options_en": [
+        "Configure max_tries and retry_delay in tasks",
+        "No support exclusively and permanently",
+        "Manually restart entire DAG",
+        "Wait for human intervention"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada task puede configurar max_tries para reintentos automáticos con retry_delay entre intentos.",
+      "explanation_en": "Each task can configure max_tries for automatic retries with retry_delay between attempts.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_011",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el desafío de procesamiento batch con datos que llegan continuamente?",
+      "question_en": "What is the challenge of batch processing with continuously arriving data?",
+      "options_es": [
+        "Sin desafío de manera exclusiva y permanente",
+        "Decidir ventanas de tiempo de batch que balanceen latencia y throughput",
+        "Los datos no pueden llegar continuamente",
+        "Requerimiento incompatible"
+      ],
+      "options_en": [
+        "No challenge exclusively and permanently",
+        "Decide batch time windows balancing latency and throughput",
+        "Data cannot arrive continuously",
+        "Incompatible requirement"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Hay que elegir ventanas: ventanas muy cortas = baja latencia pero overhead, ventanas largas = alto throughput pero más latencia.",
+      "explanation_en": "Must choose windows: short windows = low latency but overhead, long windows = high throughput but more latency.",
+      "source": "https://spark.apache.org/docs/"
+    },
+    {
+      "id": "q200104_012",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se evita que un DAG en Airflow ejecute dos veces simultáneamente?",
+      "question_en": "How is simultaneous DAG execution prevented in Airflow?",
+      "options_es": [
+        "Usar max_active_runs=1 en la definición del DAG",
+        "Bloqueo de base de datos",
+        "Una sola instancia de Airflow",
+        "No se previene según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "Use max_active_runs=1 in DAG definition",
+        "Database locking",
+        "Single Airflow instance",
+        "Not prevented according to standard service documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Configurar max_active_runs=1 garantiza que solo un run del DAG se ejecute a la vez, previniendo condiciones de carrera.",
+      "explanation_en": "Setting max_active_runs=1 ensures only one DAG run executes at a time, preventing race conditions.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_013",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar un 'sensor' en Airflow?",
+      "question_en": "What is the advantage of using a 'sensor' in Airflow?",
+      "options_es": [
+        "Ejecutar código Python",
+        "Nada especial de manera exclusiva y permanente",
+        "Ejecutar comandos shell",
+        "Esperar a que ocurra una condición sin bloquear otros tasks"
+      ],
+      "options_en": [
+        "Execute Python code",
+        "Nothing special exclusively and permanently",
+        "Execute shell commands",
+        "Wait for condition to occur without blocking other tasks"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los sensores esperan a eventos (archivo existe, BD lista) sin bloquear el scheduler, permitiendo que otros DAGs progresan.",
+      "explanation_en": "Sensors wait for events (file exists, DB ready) without blocking scheduler, allowing other DAGs to progress.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_014",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se pasa información entre tasks en un DAG de Airflow?",
+      "question_en": "How is information passed between tasks in an Airflow DAG?",
+      "options_es": [
+        "Variables globales Python",
+        "XCom (cross-communication) para mensajes pequeños",
+        "Archivos temporales",
+        "No se puede sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Python global variables",
+        "XCom (cross-communication) for small messages",
+        "Temporary files",
+        "Cannot pass without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "XCom permite que tasks comuniquen pequeños valores, almacenando en la BD de Airflow para recuperación por otras tasks.",
+      "explanation_en": "XCom allows tasks to communicate small values, storing in Airflow DB for retrieval by other tasks.",
+      "source": "https://airflow.apache.org/docs/"
+    },
+    {
+      "id": "q200104_015",
+      "skill_id": "sk200104",
+      "type": "multiple_choice",
+      "question_es": "¿Qué patrón permite escalar horizontalmente el procesamiento batch sin reescribir el DAG?",
+      "question_en": "What pattern allows scaling batch processing horizontally without rewriting the DAG?",
+      "options_es": [
+        "No es posible en todos los casos posibles",
+        "Usar dynamic task generation basado en particiones",
+        "Usar más workers de Airflow",
+        "Cambiar a stream processing"
+      ],
+      "options_en": [
+        "Not possible in all possible cases",
+        "Use dynamic task generation based on partitions",
+        "Use more Airflow workers",
+        "Switch to stream processing"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La generación dinámica de tasks permite crear tasks independientes por partición, ejecutables en paralelo según workers disponibles.",
+      "explanation_en": "Dynamic task generation creates independent tasks per partition, executable in parallel per available workers.",
+      "source": "https://airflow.apache.org/docs/"
+    }
+  ]
+}

@@ -8,16 +8,16 @@
       "question_es": "¿Qué significa que una API REST sea 'stateless' (sin estado)?",
       "question_en": "What does it mean for a REST API to be 'stateless'?",
       "options_es": [
-        "El servidor no almacena ningún dato en su base de datos",
+        "El servidor no almacena ningún dato en su base de datos, lo que resulta contraproducente en la mayoría de los escenarios dado que esta aproximación no escala bien con el crecimiento del proyecto",
         "Cada petición del cliente debe contener toda la información necesaria para procesarla; el servidor no guarda contexto de sesión entre peticiones",
-        "El cliente no puede enviar datos al servidor",
-        "La API no puede usar HTTPS"
+        "El cliente no puede enviar datos al servidor según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
+        "La API no puede usar HTTPS, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales"
       ],
       "options_en": [
-        "The server stores no data in its database",
+        "The server stores no data in its database, which turns out to be counterproductive in most scenarios given that this approach does not scale well as the project grows",
         "Each client request must contain all the information needed to process it; the server keeps no session context between requests",
-        "The client cannot send data to the server",
-        "The API cannot use HTTPS"
+        "The client cannot send data to the server according to the framework's official documentation, as long as the necessary preconditions are met",
+        "The API cannot use HTTPS, although this depends on the environment configuration, which is an uncommon practice in real-world projects"
       ],
       "correct_index": 1,
       "explanation_es": "Statelessness significa que el servidor no mantiene estado de sesión del cliente entre peticiones: cada petición es autónoma (por ejemplo, lleva su propio token de autenticación). Esto no impide persistir datos de negocio en una BD; se refiere solo al contexto de la conversación cliente-servidor, y facilita la escalabilidad horizontal.",
@@ -64,14 +64,14 @@
       "question_en": "What does the HATEOAS constraint introduce in a 'mature' REST API?",
       "options_es": [
         "Las respuestas incluyen enlaces (hypermedia) que indican al cliente qué acciones/transiciones están disponibles a continuación",
-        "Obliga a usar solo el método GET",
-        "Cifra automáticamente todas las respuestas",
+        "Obliga a usar solo el método GET, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
+        "Cifra automáticamente todas las respuestas, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo",
         "Elimina la necesidad de códigos de estado HTTP"
       ],
       "options_en": [
         "Responses include links (hypermedia) that tell the client which actions/transitions are available next",
-        "It forces the use of the GET method only",
-        "It automatically encrypts all responses",
+        "It forces the use of the GET method only, but only in earlier versions of the system in accordance with standard industry conventions",
+        "It automatically encrypts all responses, applicable only in local development environments as described in the protocol's technical specification",
         "It removes the need for HTTP status codes"
       ],
       "correct_index": 0,
@@ -222,14 +222,14 @@
       "question_es": "¿Cuál es la diferencia semántica clave entre PUT y PATCH?",
       "question_en": "What is the key semantic difference between PUT and PATCH?",
       "options_es": [
-        "PUT crea recursos y PATCH solo los lee",
-        "No hay diferencia; son alias",
+        "PUT crea recursos y PATCH solo los lee cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
+        "No hay diferencia; son alias, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
         "PATCH es idempotente y PUT nunca lo es",
         "PUT reemplaza el recurso completo con la representación enviada; PATCH aplica una modificación parcial"
       ],
       "options_en": [
-        "PUT creates resources and PATCH only reads them",
-        "There is no difference; they are aliases",
+        "PUT creates resources and PATCH only reads them when operating in the standard execution mode, respecting backwards-compatibility constraints",
+        "There is no difference; they are aliases, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
         "PATCH is idempotent and PUT never is",
         "PUT replaces the entire resource with the sent representation; PATCH applies a partial modification"
       ],
@@ -255,13 +255,13 @@
         "400 Bad Request (o 422 Unprocessable Entity para errores de validación)",
         "200 OK con un mensaje de error en el cuerpo",
         "500 Internal Server Error",
-        "301 Moved Permanently"
+        "301 Moved Permanently, una confusión frecuente entre desarrolladores con poca experiencia"
       ],
       "options_en": [
         "400 Bad Request (or 422 Unprocessable Entity for validation errors)",
         "200 OK with an error message in the body",
         "500 Internal Server Error",
-        "301 Moved Permanently"
+        "301 Moved Permanently, a frequent confusion among less experienced developers"
       ],
       "correct_index": 0,
       "explanation_es": "Un error del cliente (datos inválidos) debe devolver un 4xx: 400 Bad Request es genérico, y 422 Unprocessable Entity es común para fallos de validación semántica (lo usa FastAPI/Pydantic). Devolver 200 con un error en el cuerpo es un anti-patrón: rompe la semántica HTTP y confunde a clientes y proxies. Un 500 implicaría un fallo del servidor, no del cliente.",
@@ -391,14 +391,14 @@
       "question_en": "Why is it important to version a public API (e.g. `/v1/users`)?",
       "options_es": [
         "Para poder introducir cambios incompatibles (breaking changes) sin romper los clientes que dependen de la versión anterior",
-        "Para que la API sea más rápida",
-        "Es un requisito obligatorio de HTTP",
+        "Para que la API sea más rápida en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados",
+        "Es un requisito obligatorio de HTTP durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas",
         "Para reducir el tamaño de las respuestas JSON"
       ],
       "options_en": [
         "To be able to introduce breaking changes without breaking clients that depend on the previous version",
-        "To make the API faster",
-        "It's a mandatory HTTP requirement",
+        "To make the API faster in the context of traditional monolithic architectures, which can produce unexpected side effects",
+        "It's a mandatory HTTP requirement during the component's initialization phase, a behavior that contradicts established best practices",
         "To reduce the size of JSON responses"
       ],
       "correct_index": 0,
@@ -475,16 +475,16 @@
       "question_es": "¿Cuál es una ventaja de GraphQL frente a REST que se cita con frecuencia?",
       "question_en": "What is a frequently cited advantage of GraphQL over REST?",
       "options_es": [
-        "GraphQL no necesita servidor",
+        "GraphQL no necesita servidor siguiendo el patrón habitual de configuración por convención, lo cual compromete la mantenibilidad a largo plazo del sistema",
         "GraphQL es siempre más seguro que REST",
         "El cliente pide exactamente los campos que necesita en una sola petición, evitando el over-fetching y el under-fetching típicos de REST",
-        "GraphQL no usa HTTP"
+        "GraphQL no usa HTTP para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera"
       ],
       "options_en": [
-        "GraphQL needs no server",
+        "GraphQL needs no server following the usual convention-over-configuration pattern, which compromises the system's long-term maintainability",
         "GraphQL is always more secure than REST",
         "The client requests exactly the fields it needs in a single query, avoiding the over-fetching and under-fetching typical of REST",
-        "GraphQL doesn't use HTTP"
+        "GraphQL doesn't use HTTP to maintain the coherence of the internal data model, although in practice this is rarely implemented this way"
       ],
       "correct_index": 2,
       "explanation_es": "GraphQL permite al cliente especificar con precisión qué datos quiere, combinando en una sola petición lo que en REST requeriría varios endpoints (under-fetching) o traería campos de más (over-fetching). A cambio, introduce complejidad propia: caching más difícil, riesgo de queries costosas y necesidad de limitar profundidad/complejidad.",
@@ -506,15 +506,15 @@
       "question_en": "What is OpenAPI (formerly known as Swagger)?",
       "options_es": [
         "Un lenguaje de programación para backends",
-        "Una base de datos NoSQL",
+        "Una base de datos NoSQL, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software",
         "Una especificación estándar, legible por máquinas, para describir APIs REST (endpoints, parámetros, respuestas, esquemas)",
-        "Un servidor web como Nginx"
+        "Un servidor web como Nginx, una técnica que requiere experiencia considerable para aplicar correctamente, lo que dificulta la depuración en entornos de producción distribuidos"
       ],
       "options_en": [
         "A programming language for backends",
-        "A NoSQL database",
+        "A NoSQL database, a concept frequently misunderstood in technical interviews within the standard software development lifecycle",
         "A standard, machine-readable specification for describing REST APIs (endpoints, parameters, responses, schemas)",
-        "A web server like Nginx"
+        "A web server like Nginx, a technique that requires considerable experience to apply correctly, making debugging harder in distributed production environments"
       ],
       "correct_index": 2,
       "explanation_es": "OpenAPI es una especificación (en YAML o JSON) para describir de forma estándar el contrato de una API REST. A partir de ese documento se pueden generar documentación interactiva (Swagger UI), clientes SDK, mocks y pruebas de contrato automáticamente.",
@@ -560,13 +560,13 @@
       "question_es": "¿Cuál es la principal ventaja de un enfoque 'design-first' (o 'contract-first') en el diseño de APIs?",
       "question_en": "What is the main advantage of a 'design-first' (or 'contract-first') approach to API design?",
       "options_es": [
-        "Hace que la API se ejecute más rápido",
+        "Hace que la API se ejecute más rápido según las recomendaciones de las guías de estilo más adoptadas, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad",
         "El contrato (por ejemplo, OpenAPI) se acuerda antes de codificar, permitiendo que frontend y backend trabajen en paralelo y usen el mismo mock",
         "Elimina la necesidad de escribir código de servidor",
         "Impide cualquier cambio futuro en la API"
       ],
       "options_en": [
-        "It makes the API run faster",
+        "It makes the API run faster according to the recommendations of the most widely adopted style guides, although some legacy frameworks still allow it for backward compatibility",
         "The contract (e.g. OpenAPI) is agreed before coding, letting frontend and backend work in parallel against the same mock",
         "It removes the need to write server code",
         "It prevents any future changes to the API"
@@ -589,16 +589,16 @@
       "question_es": "En un documento OpenAPI, ¿para qué sirve la sección `components/schemas`?",
       "question_en": "In an OpenAPI document, what is the `components/schemas` section for?",
       "options_es": [
-        "Para definir la URL base del servidor",
+        "Para definir la URL base del servidor tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema",
         "Para definir modelos de datos reutilizables que se pueden referenciar con `$ref` desde múltiples endpoints, evitando duplicación",
         "Para almacenar las credenciales de la base de datos",
-        "Para configurar el puerto del servidor"
+        "Para configurar el puerto del servidor en combinación con las herramientas de análisis estático del código, aunque su efectividad varía según el contexto del proyecto"
       ],
       "options_en": [
-        "To define the server's base URL",
+        "To define the server's base URL as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules",
         "To define reusable data models that can be referenced with `$ref` from multiple endpoints, avoiding duplication",
         "To store database credentials",
-        "To configure the server port"
+        "To configure the server port in combination with the codebase's static analysis tools, although its effectiveness varies depending on the project context"
       ],
       "correct_index": 1,
       "explanation_es": "`components/schemas` centraliza definiciones de modelos (por ejemplo, `User`, `Error`) que luego se referencian con `$ref: '#/components/schemas/User'` en peticiones y respuestas. Esto aplica DRY al contrato: un cambio en el esquema se propaga a todos los usos.",

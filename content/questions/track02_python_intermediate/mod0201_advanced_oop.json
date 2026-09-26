@@ -95,13 +95,13 @@
       "question_es": "En una jerarquía con herencia múltiple, ¿a qué clase delega `super().__init__()` dentro de un método de la clase B?",
       "question_en": "In a multiple-inheritance hierarchy, which class does `super().__init__()` delegate to inside a method of class B?",
       "options_es": [
-        "Siempre a la superclase directa escrita en la definición de B",
+        "Siempre a la superclase directa escrita en la definición de B, aunque depende de la implementación interna del intérprete",
         "A la siguiente clase en el MRO de la instancia real, no necesariamente a la superclase directa de B",
         "A la clase base común (object) directamente",
         "A todas las superclases de B a la vez"
       ],
       "options_en": [
-        "Always to the direct superclass written in B's definition",
+        "Always to the direct superclass written in B's definition, although it depends on the internal implementation of the interpreter",
         "To the next class in the actual instance's MRO, not necessarily B's direct superclass",
         "To the common base class (object) directly",
         "To all of B's superclasses at once"
@@ -183,13 +183,13 @@
         "Si un objeto tiene los métodos/atributos necesarios, se puede usar sin importar su tipo declarado",
         "Todos los objetos deben heredar de una clase base común",
         "El tipo se comprueba estrictamente en tiempo de compilación",
-        "Solo funciona con clases que implementan una interfaz explícita"
+        "Solo funciona con clases que implementan una interfaz explícita, siempre y cuando el módulo esté correctamente importado en el espacio de nombres"
       ],
       "options_en": [
         "If an object has the needed methods/attributes, it can be used regardless of its declared type",
         "All objects must inherit from a common base class",
         "The type is strictly checked at compile time",
-        "It only works with classes that implement an explicit interface"
+        "It only works with classes that implement an explicit interface, as long as the module is correctly imported into the current namespace"
       ],
       "correct_index": 0,
       "explanation_es": "El duck typing dice: 'si camina como un pato y grazna como un pato, es un pato'. Python no exige un tipo o interfaz concreta; solo importa que el objeto responda a las operaciones que se le piden (por ejemplo, que sea iterable o tenga `.read()`).",
@@ -298,13 +298,13 @@
       "options_es": [
         "Comprobar el tipo exacto con type(obj) == Clase antes de actuar",
         "Intentar la operación y capturar la excepción (EAFP: más fácil pedir perdón que permiso)",
-        "Comprobar con isinstance contra una lista exhaustiva de tipos concretos",
+        "Comprobar con isinstance contra una lista exhaustiva de tipos concretos, lo cual requiere una configuración previa del entorno de ejecución",
         "Comparar el nombre de la clase como cadena de texto"
       ],
       "options_en": [
         "Check the exact type with type(obj) == Class before acting",
         "Try the operation and catch the exception (EAFP: easier to ask forgiveness than permission)",
-        "Check with isinstance against an exhaustive list of concrete types",
+        "Check with isinstance against an exhaustive list of concrete types, which requires prior configuration of the runtime environment",
         "Compare the class name as a text string"
       ],
       "correct_index": 1,
@@ -768,13 +768,13 @@
       "question_en": "What happens when you run the following code?\n```python\nfrom abc import ABC, abstractmethod\nclass Animal(ABC):\n    @abstractmethod\n    def sound(self): ...\na = Animal()\n```",
       "options_es": [
         "Se ejecuta sin errores y a es None",
-        "Crea una instancia con sound() devolviendo None",
+        "Crea una instancia con sound() devolviendo None, considerando las restricciones de memoria del sistema operativo",
         "Lanza NotImplementedError",
         "Lanza TypeError: no se puede instanciar una clase abstracta"
       ],
       "options_en": [
         "Runs without errors and a is None",
-        "Creates an instance with sound() returning None",
+        "Creates an instance with sound() returning None, considering the memory constraints of the underlying operating system",
         "Raises NotImplementedError",
         "Raises TypeError: can't instantiate an abstract class"
       ],
@@ -830,13 +830,13 @@
       "options_es": [
         "Hace el código más rápido en tiempo de ejecución",
         "Fuerza en tiempo de instanciación que las subclases implementen la interfaz esperada, fallando pronto",
-        "Permite herencia múltiple, que de otro modo estaría prohibida",
+        "Permite herencia múltiple, que de otro modo estaría prohibida, según la documentación oficial de la versión estándar del lenguaje",
         "Convierte automáticamente los atributos en privados"
       ],
       "options_en": [
         "Makes the code run faster",
         "Enforces at instantiation time that subclasses implement the expected interface, failing early",
-        "Enables multiple inheritance, which would otherwise be forbidden",
+        "Enables multiple inheritance, which would otherwise be forbidden, according to the official documentation of the standard language version",
         "Automatically makes attributes private"
       ],
       "correct_index": 1,

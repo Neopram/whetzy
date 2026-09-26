@@ -1,0 +1,12 @@
+{
+  "id": "l290404",
+  "skill_id": "sk290404",
+  "title_es": "Visual Regression Testing",
+  "title_en": "Visual Regression Testing",
+  "body_es": "El testing de regresión visual detecta cambios inesperados en la interfaz de usuario capturando pantallas y comparándolas con líneas base. Herramientas como Playwright, Percy y BackstopJS automatizan este proceso. Se capturan screenshots de componentes o páginas, se comparan píxel a píxel con referencias anteriores, y se reportan diferencias. Es útil para detectar bugs de CSS, cambios de layout no intencionados, y problemas de compatibilidad entre navegadores. Requiere gestionar falsos positivos cuando cambios son intencionales, aprovechando líneas base de aprobación manual.",
+  "body_en": "Visual regression testing detects unexpected UI changes by capturing screenshots and comparing them to baselines. Tools like Playwright, Percy, and BackstopJS automate this process. Screenshots of components or pages are captured, compared pixel-by-pixel to previous references, and differences are reported. It's useful for catching CSS bugs, unintended layout changes, and cross-browser compatibility issues. It requires managing false positives when changes are intentional, leveraging manual approval baselines.",
+  "example_code": "from playwright.sync_api import sync_playwright\n\ndef test_visual_regression_homepage():\n    with sync_playwright() as p:\n        browser = p.chromium.launch()\n        page = browser.new_page()\n        page.goto('https://example.com')\n        \n        # Capture full page screenshot\n        page.screenshot(path='homepage.png')\n        \n        # Or capture specific element\n        header = page.locator('header')\n        header.screenshot(path='header.png')\n\n# Using Playwright's built-in visual comparison\ndef test_with_visual_comparison(page):\n    page.goto('https://example.com')\n    \n    # First run creates baseline, subsequent runs compare\n    expect(page).to_have_screenshot('homepage.png')\n    \n    # Test specific component\n    button = page.locator('button.primary')\n    expect(button).to_have_screenshot('button.png')",
+  "example_output": "test_visual_regression_homepage PASSED\nScreenshot saved: homepage.png (baseline)\n\ntest_with_visual_comparison PASSED\nVisual comparison: button appearance unchanged",
+  "source": "Playwright Docs — https://playwright.dev",
+  "order": 4
+}

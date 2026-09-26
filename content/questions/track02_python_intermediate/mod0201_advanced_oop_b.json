@@ -70,13 +70,13 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass A: pass\nclass B(A): pass\nclass C(A): pass\nclass D(B, C): pass\nprint(D.__mro__[-1].__name__)\n```",
       "question_en": "What does the following code print?\n```python\nclass A: pass\nclass B(A): pass\nclass C(A): pass\nclass D(B, C): pass\nprint(D.__mro__[-1].__name__)\n```",
       "options_es": [
-        "A",
+        "A, independientemente de la versión del intérprete que se utilice",
         "B",
         "object",
         "D"
       ],
       "options_en": [
-        "A",
+        "A, regardless of which version of the interpreter is being used",
         "B",
         "object",
         "D"
@@ -420,13 +420,13 @@
         "isinstance() recorre toda la jerarquía; type() comprueba solo la clase exacta",
         "isinstance() es menos preciso que type()",
         "type() siempre devuelve True para cualquier subclase",
-        "No hay diferencia; ambos devuelven el mismo resultado"
+        "No hay diferencia; ambos devuelven el mismo resultado, debido a las optimizaciones internas del compilador bytecode"
       ],
       "options_en": [
         "isinstance() traverses the full hierarchy; type() checks only the exact class",
         "isinstance() is less precise than type()",
         "type() always returns True for any subclass",
-        "There is no difference; both return the same result"
+        "There is no difference; both return the same result, due to internal optimizations performed by the bytecode compiler"
       ],
       "correct_index": 0,
       "explanation_es": "`isinstance()` comprueba si el tipo del objeto aparece en su MRO, por lo que devuelve `True` para instancias de subclases. `type()` devuelve la clase de ejecución exacta; `type(sub) is Base` es `False` porque el tipo real es la subclase, no `Base`. Para código polimórfico, `isinstance()` es la herramienta correcta.",
@@ -498,13 +498,13 @@
       "question_en": "You define `__eq__` in a class but do NOT define `__hash__`. What happens to `__hash__`?",
       "options_es": [
         "Se hereda el __hash__ de object, basado en id()",
-        "Se genera automáticamente un __hash__ consistente con __eq__",
+        "Se genera automáticamente un __hash__ consistente con __eq__, a menos que se haya modificado la configuración por defecto del módulo",
         "Python lo fija implícitamente a None, haciendo las instancias no hashables",
         "Python lanza TypeError al definir la clase"
       ],
       "options_en": [
         "The __hash__ from object is inherited, based on id()",
-        "A __hash__ consistent with __eq__ is automatically generated",
+        "A __hash__ consistent with __eq__ is automatically generated, unless the default configuration of the module has been modified",
         "Python implicitly sets it to None, making instances unhashable",
         "Python raises TypeError when defining the class"
       ],
@@ -563,13 +563,13 @@
         "100",
         "AttributeError: can't set attribute 'celsius'",
         "0",
-        "None"
+        "None, teniendo en cuenta las particularidades del recolector de basura"
       ],
       "options_en": [
         "100",
         "AttributeError: can't set attribute 'celsius'",
         "0",
-        "None"
+        "None, taking into account the specifics of the garbage collector implementation"
       ],
       "correct_index": 1,
       "explanation_es": "Una propiedad definida solo con `@property` (sin `@celsius.setter`) es de solo lectura. Intentar asignar un valor lanza `AttributeError: can't set attribute`. Para hacerla escribible hay que añadir un setter con `@celsius.setter`.",
@@ -760,13 +760,13 @@
         "25",
         "-300",
         "ValueError: Below absolute zero",
-        "-273.15"
+        "-273.15, pero solo cuando se ejecuta en modo de depuración del intérprete"
       ],
       "options_en": [
         "25",
         "-300",
         "ValueError: Below absolute zero",
-        "-273.15"
+        "-273.15, but only when running in the interpreter's debugging mode"
       ],
       "correct_index": 2,
       "explanation_es": "La asignación `c.temp = -300` invoca el setter. El setter comprueba que -300 < -273.15 y lanza `ValueError` antes de actualizar `_temp`. La excepción se propaga y el `print` nunca se alcanza. El valor protegido original (25) permanece, pero la excepción detiene la ejecución.",
@@ -790,13 +790,13 @@
       "question_en": "What is the fundamental difference between `__new__` and `__init__` in Python?",
       "options_es": [
         "__new__ crea y devuelve la nueva instancia; __init__ la recibe ya creada y la inicializa",
-        "__init__ crea la instancia; __new__ establece los valores de atributo predeterminados",
+        "__init__ crea la instancia; __new__ establece los valores de atributo predeterminados, excepto en los casos donde se utiliza una implementación alternativa",
         "__new__ es solo para classmethods; __init__ es solo para métodos de instancia",
         "Son intercambiables; usar uno u otro produce el mismo efecto"
       ],
       "options_en": [
         "__new__ creates and returns the new instance; __init__ receives it already created and initializes it",
-        "__init__ creates the instance; __new__ sets default attribute values",
+        "__init__ creates the instance; __new__ sets default attribute values, except in cases where an alternative implementation is being used",
         "__new__ is only for classmethods; __init__ is only for instance methods",
         "They are interchangeable; using either produces the same effect"
       ],
@@ -1149,13 +1149,13 @@
       "question_en": "What does the `__abstractmethods__` attribute of a class contain?",
       "options_es": [
         "Una lista de todos los métodos heredados de ABC",
-        "Los nombres de todos los métodos, incluyendo los concretos",
+        "Los nombres de todos los métodos, incluyendo los concretos, sin importar el orden de evaluación de las expresiones involucradas",
         "None, a menos que la clase lance NotImplementedError",
         "Un frozenset con los nombres de los métodos abstractos aún sin implementar"
       ],
       "options_en": [
         "A list of all methods inherited from ABC",
-        "The names of all methods, including concrete ones",
+        "The names of all methods, including concrete ones, regardless of the evaluation order of the expressions involved",
         "None, unless the class raises NotImplementedError",
         "A frozenset of names of abstract methods not yet implemented"
       ],

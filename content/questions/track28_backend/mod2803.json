@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q280301_001",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuáles son las fases principales del event loop en Node.js?",
+      "question_en": "What are the main phases of the event loop in Node.js?",
+      "options_es": [
+        "microtasks, macrotasks, rendering, idle",
+        "timers, pending callbacks, idle/prepare, poll, check, close",
+        "callbacks, promises, async, await",
+        "input, process, output, complete"
+      ],
+      "options_en": [
+        "microtasks, macrotasks, rendering, idle",
+        "timers, pending callbacks, idle/prepare, poll, check, close",
+        "callbacks, promises, async, await",
+        "input, process, output, complete"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El event loop en Node.js tiene 6 fases principales: timers (setInterval, setTimeout), pending callbacks, idle/prepare, poll (I/O), check (setImmediate), y close callbacks. Estas fases se ejecutan en orden repetidamente.",
+      "explanation_en": "The Node.js event loop has 6 main phases: timers (setInterval, setTimeout), pending callbacks, idle/prepare, poll (I/O), check (setImmediate), and close callbacks. These phases execute in order repeatedly.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_002",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre setTimeout y setImmediate?",
+      "question_en": "What is the difference between setTimeout and setImmediate?",
+      "options_es": [
+        "setTimeout ejecuta en la fase de timers, setImmediate en la fase de check",
+        "setImmediate ejecuta primero, siempre",
+        "No hay diferencia, son alias por convención",
+        "setTimeout no es bloqueante, setImmediate sí"
+      ],
+      "options_en": [
+        "setTimeout executes in the timers phase, setImmediate in the check phase",
+        "setImmediate executes first, always",
+        "There is no difference, they are aliases",
+        "setTimeout is non-blocking, setImmediate is blocking"
+      ],
+      "correct_index": 0,
+      "explanation_es": "setTimeout ejecuta callbacks en la fase 'timers' después de un retraso, mientras que setImmediate ejecuta callbacks en la fase 'check' durante el ciclo actual del event loop. En la mayoría de casos, setImmediate ejecuta antes.",
+      "explanation_en": "setTimeout executes callbacks in the 'timers' phase after a delay, while setImmediate executes callbacks in the 'check' phase during the current event loop cycle. In most cases, setImmediate executes first.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_003",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una Promise en JavaScript?",
+      "question_en": "What is a Promise in JavaScript?",
+      "options_es": [
+        "Una función que se ejecuta de forma síncrona de manera estándar como práctica recomendada",
+        "Un objeto que representa el resultado eventual de una operación asincrónica",
+        "Un tipo de callback que siempre rechaza",
+        "Un mecanismo para bloquear el event loop"
+      ],
+      "options_en": [
+        "A function that executes synchronously in common practice in common practice",
+        "An object that represents the eventual result of an asynchronous operation",
+        "A type of callback that always rejects",
+        "A mechanism to block the event loop in this context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una Promise es un objeto que representa el resultado eventual (resolved o rejected) de una operación asincrónica. Tiene tres estados: pending, fulfilled, y rejected. Se resuelve mediante .then() o .catch().",
+      "explanation_en": "A Promise is an object that represents the eventual result (resolved or rejected) of an asynchronous operation. It has three states: pending, fulfilled, and rejected. It resolves through .then() or .catch().",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_004",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el orden de ejecución de este código? console.log(1); Promise.resolve().then(()=>console.log(2)); console.log(3);",
+      "question_en": "What is the execution order? console.log(1); Promise.resolve().then(()=>console.log(2)); console.log(3);",
+      "options_es": [
+        "3, 2, 1",
+        "1, 2, 3",
+        "1, 3, 2",
+        "2, 1, 3"
+      ],
+      "options_en": [
+        "3, 2, 1",
+        "1, 2, 3",
+        "1, 3, 2",
+        "2, 1, 3"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los console.log síncrónos (1 y 3) se ejecutan primero en orden. El .then() de la Promise se añade a la microtask queue y se ejecuta después de que se complete el código síncrono, pero antes de la próxima fase del event loop.",
+      "explanation_en": "Synchronous console.log statements (1 and 3) execute first in order. The Promise .then() is added to the microtask queue and executes after synchronous code completes, but before the next event loop phase.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_005",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa 'async/await'?",
+      "question_en": "What does 'async/await' mean?",
+      "options_es": [
+        "Un mecanismo para evitar el event loop",
+        "Una forma de hacer código síncrono más rápido",
+        "Sintaxis azucarada para trabajar con Promises de forma más legible",
+        "Un reemplazo para callbacks que siempre resuelve"
+      ],
+      "options_en": [
+        "A mechanism to avoid the event loop",
+        "A way to make synchronous code faster",
+        "Syntactic sugar for working with Promises in a more readable way",
+        "A replacement for callbacks that always resolves"
+      ],
+      "correct_index": 2,
+      "explanation_es": "async/await es sintaxis azucarada que permite escribir código asincrónico que parece síncrono. Una función async devuelve una Promise, y await pausa la ejecución hasta que la Promise se resuelva.",
+      "explanation_en": "async/await is syntactic sugar that allows writing asynchronous code that looks synchronous. An async function returns a Promise, and await pauses execution until the Promise resolves.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_006",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si una Promise no tiene un .catch() o try/catch?",
+      "question_en": "What happens if a Promise has no .catch() or try/catch?",
+      "options_es": [
+        "La aplicación se cuelga en entornos reales",
+        "El error se silencia silenciosamente como práctica recomendada como regla general",
+        "El event loop se detiene",
+        "Se lanza un evento 'unhandledRejection' que puede ser capturado"
+      ],
+      "options_en": [
+        "The application hangs",
+        "The error is silently ignored for most projects in this context",
+        "The event loop stops by default",
+        "An 'unhandledRejection' event is thrown that can be caught"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Cuando una Promise se rechaza sin un manejador de error, Node.js emite un evento 'unhandledRejection'. Esto puede capturarse con process.on('unhandledRejection', ...).",
+      "explanation_en": "When a Promise rejects without an error handler, Node.js emits an 'unhandledRejection' event. This can be caught with process.on('unhandledRejection', ...).",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_007",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre callbacks y Promises?",
+      "question_en": "What is the difference between callbacks and Promises?",
+      "options_es": [
+        "Los callbacks son la forma moderna, las Promises son antiguas",
+        "Los callbacks son más rápidos que las Promises",
+        "Promises son más legibles, permiten encadenamiento y mejor manejo de errores",
+        "Las Promises no pueden rechazarse, solo resolverse"
+      ],
+      "options_en": [
+        "Callbacks are modern, Promises are outdated",
+        "Callbacks are faster than Promises typically",
+        "Promises are more readable, allow chaining, and have better error handling",
+        "Promises cannot reject, only resolve"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las Promises ofrecen mejor legibilidad, evitan 'callback hell', permiten encadenamiento con .then() y .catch(), y tienen manejo centralizado de errores. Los callbacks son más antiguos y propensos a errores.",
+      "explanation_en": "Promises offer better readability, avoid 'callback hell', allow chaining with .then() and .catch(), and have centralized error handling. Callbacks are older and error-prone.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_008",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es 'callback hell' o 'pyramid of doom'?",
+      "question_en": "What is 'callback hell' or 'pyramid of doom'?",
+      "options_es": [
+        "Un error que ocurre cuando hay demasiadas Promises en este contexto",
+        "Una característica del event loop que ralentiza la ejecución",
+        "Un problema de memoria en Node.js",
+        "Múltiples callbacks anidados que hacen el código difícil de leer"
+      ],
+      "options_en": [
+        "An error that occurs with too many Promises in the most common case",
+        "An event loop feature that slows execution",
+        "A memory issue in Node.js",
+        "Multiple nested callbacks that make code difficult to read"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Callback hell ocurre cuando se anidan muchos callbacks, creando una estructura piramidal y difícil de mantener. Las Promises y async/await solucionan este problema permitiendo código más plano y legible.",
+      "explanation_en": "Callback hell occurs when many callbacks are nested, creating a pyramid structure that is hard to maintain. Promises and async/await solve this by allowing flatter, more readable code.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_009",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo se ejecutan las microtasks en relación al event loop?",
+      "question_en": "When do microtasks execute in relation to the event loop?",
+      "options_es": [
+        "Al inicio de cada fase del event loop",
+        "Después de que se complete todo el event loop dentro de este paradigma en este contexto en el caso más común",
+        "Solo en la fase 'poll' como regla general",
+        "Después de que se complete el código síncrono, antes de la siguiente fase del event loop"
+      ],
+      "options_en": [
+        "At the beginning of each event loop phase",
+        "After the entire event loop completes as a recommended practice in this context in common practice",
+        "Only in the 'poll' phase typically",
+        "After synchronous code completes, before the next event loop phase"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las microtasks (Promise callbacks, process.nextTick) se ejecutan después de que se complete el código síncrono actual, pero antes de que el event loop continúe con la siguiente fase. Esto es importante para entender el orden de ejecución.",
+      "explanation_en": "Microtasks (Promise callbacks, process.nextTick) execute after the current synchronous code completes, but before the event loop proceeds to the next phase. This is crucial for understanding execution order.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_010",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es process.nextTick()?",
+      "question_en": "What is process.nextTick()?",
+      "options_es": [
+        "Una función que ejecuta un callback antes de que el event loop continúe",
+        "Una función que ejecuta un callback en la próxima iteración del event loop",
+        "Un alias para setTimeout(..., 0)",
+        "Una función que detiene el event loop"
+      ],
+      "options_en": [
+        "A function that executes a callback before the event loop continues",
+        "A function that executes a callback in the next event loop iteration",
+        "An alias for setTimeout(..., 0)",
+        "A function that stops the event loop"
+      ],
+      "correct_index": 0,
+      "explanation_es": "process.nextTick() añade un callback a la microtask queue que se ejecuta inmediatamente después del código síncrono actual, pero antes de que cualquier I/O sea procesado. Es más rápido que setTimeout.",
+      "explanation_en": "process.nextTick() adds a callback to the microtask queue that executes immediately after the current synchronous code, but before any I/O is processed. It's faster than setTimeout.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_011",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre Promise.all() y Promise.race()?",
+      "question_en": "What is the difference between Promise.all() and Promise.race()?",
+      "options_es": [
+        "Promise.all() espera todas, Promise.race() devuelve la primera",
+        "Promise.all() es más rápido que Promise.race() como práctica recomendada",
+        "Promise.race() es solo para callbacks",
+        "No hay diferencia funcional, solo de nombre"
+      ],
+      "options_en": [
+        "Promise.all() waits for all, Promise.race() returns the first",
+        "Promise.all() is faster than Promise.race() in common practice",
+        "Promise.race() is only for callbacks",
+        "There is no functional difference, only naming"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Promise.all() espera a que todas las Promises se resuelvan o rechaza si alguna falla. Promise.race() devuelve el resultado de la primera Promise que se complete (sin importar si resuelve o rechaza).",
+      "explanation_en": "Promise.all() waits for all Promises to resolve or rejects if any fails. Promise.race() returns the result of whichever Promise completes first (whether it resolves or rejects).",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_012",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una operación asincrónica?",
+      "question_en": "What is an asynchronous operation?",
+      "options_es": [
+        "Una operación que siempre es más lenta que las síncronas",
+        "Una operación que no bloquea el event loop y permite que otras tareas continúen",
+        "Una operación que requiere múltiples threads",
+        "Una operación que no puede retornar un valor"
+      ],
+      "options_en": [
+        "An operation that is always slower than synchronous operations",
+        "An operation that does not block the event loop and allows other tasks to continue",
+        "An operation that requires multiple threads",
+        "An operation that cannot return a value"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una operación asincrónica no bloquea la ejecución del event loop. Mientras se ejecuta (por ejemplo, lectura de archivo, llamada HTTP), el event loop puede procesar otras tareas. Cuando termina, se ejecuta el callback o se resuelve la Promise.",
+      "explanation_en": "An asynchronous operation does not block event loop execution. While it runs (e.g., file read, HTTP call), the event loop can process other tasks. When it completes, the callback executes or the Promise resolves.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_013",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede cuando se llama a await en una función async?",
+      "question_en": "What happens when await is called in an async function?",
+      "options_es": [
+        "Se bloquea todo el event loop",
+        "La función se detiene permanentemente",
+        "Se lanza un error inmediatamente",
+        "La función se pausa hasta que la Promise se resuelva"
+      ],
+      "options_en": [
+        "The entire event loop blocks",
+        "The function stops permanently",
+        "An error is thrown immediately",
+        "The function pauses until the Promise resolves"
+      ],
+      "correct_index": 3,
+      "explanation_es": "await pausa la ejecución de la función async hasta que la Promise se resuelva. No bloquea el event loop; simplemente pausa esa función específica, permitiendo que otras tareas continúen.",
+      "explanation_en": "await pauses the async function's execution until the Promise resolves. It doesn't block the event loop; it just pauses that specific function, allowing other tasks to continue.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_014",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor forma de manejar errores en async/await?",
+      "question_en": "What is the best way to handle errors in async/await?",
+      "options_es": [
+        "Lanzar excepciones nuevamente",
+        "Usar .catch() después del await",
+        "Ignorar errores y continuar en entornos de producción",
+        "Usar try/catch alrededor del await"
+      ],
+      "options_en": [
+        "Throw exceptions again",
+        "Use .catch() after the await",
+        "Ignore errors and continue in the most common case",
+        "Use try/catch around the await"
+      ],
+      "correct_index": 3,
+      "explanation_es": "try/catch es el enfoque estándar para manejar errores en async/await. Permite capturar rechazos de Promises de forma similar a como se manejan excepciones síncronas.",
+      "explanation_en": "try/catch is the standard approach for handling errors in async/await. It allows catching Promise rejections similarly to handling synchronous exceptions.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280301_015",
+      "skill_id": "sk280301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es la 'backpressure' en Node.js streams?",
+      "question_en": "What is 'backpressure' in Node.js streams?",
+      "options_es": [
+        "Un error que siempre detiene la aplicación según la documentación oficial",
+        "Cuando el búfer se llena y el escritor debe pausar",
+        "Una presión de aire en el sistema operativo",
+        "Una característica de las Promises"
+      ],
+      "options_en": [
+        "An error that always stops the application under normal conditions",
+        "When the buffer fills up and the writer must pause",
+        "Air pressure in the operating system",
+        "A Promise feature"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Backpressure ocurre cuando el búfer interno de un stream se llena. El método write() devuelve false para indicar que el escritor debe pausar hasta que se procese más datos. Ignorar backpressure puede causar problemas de memoria.",
+      "explanation_en": "Backpressure occurs when a stream's internal buffer fills up. The write() method returns false to indicate the writer should pause until more data is processed. Ignoring backpressure can cause memory issues.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_001",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un middleware en Express?",
+      "question_en": "What is middleware in Express?",
+      "options_es": [
+        "Un sistema de enrutamiento avanzado en este contexto para la mayoría de proyectos",
+        "Un tipo de base de datos de forma estándar",
+        "Un método para enviar respuestas JSON",
+        "Una función que tiene acceso a req, res y next para procesar solicitudes"
+      ],
+      "options_en": [
+        "An advanced routing system in production environments for most projects",
+        "A type of database by convention",
+        "A method to send JSON responses",
+        "A function with access to req, res, and next to process requests"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un middleware es una función que tiene acceso a los objetos request (req) y response (res), y a la función next(). Puede realizar tareas como validación, autenticación, o transformar datos antes de pasar al siguiente middleware.",
+      "explanation_en": "Middleware is a function with access to request (req) and response (res) objects, and the next() function. It can perform tasks like validation, authentication, or transform data before passing to the next middleware.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_002",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de la función next() en Express?",
+      "question_en": "What is the purpose of the next() function in Express?",
+      "options_es": [
+        "Enviar una respuesta JSON de manera estándar en condiciones normales",
+        "Finalizar la solicitud inmediatamente",
+        "Pasar el control al siguiente middleware o ruta",
+        "Cancelar la solicitud"
+      ],
+      "options_en": [
+        "Send a JSON response as a general rule as a general rule",
+        "End the request immediately",
+        "Pass control to the next middleware or route",
+        "Cancel the request in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La función next() es esencial en Express. Cuando se llama, pasa el control al siguiente middleware en la cadena. Si no se llama, la solicitud se detiene y no se procesa el siguiente middleware.",
+      "explanation_en": "The next() function is essential in Express. When called, it passes control to the next middleware in the chain. If not called, the request stops and the next middleware is not processed.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_003",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace app.use() en Express?",
+      "question_en": "What does app.use() do in Express?",
+      "options_es": [
+        "Crea un nuevo Router en entornos reales como práctica recomendada",
+        "Define una ruta específica GET",
+        "Valida automáticamente los parámetros",
+        "Registra un middleware para procesar todas las solicitudes"
+      ],
+      "options_en": [
+        "Creates a new Router in the most common case",
+        "Defines a specific GET route",
+        "Automatically validates parameters",
+        "Registers middleware to process all requests"
+      ],
+      "correct_index": 3,
+      "explanation_es": "app.use() registra un middleware que se ejecutará en todas las solicitudes que coincidan con la ruta especificada (o todas si no se especifica ruta). Se ejecuta en el orden en que se registra.",
+      "explanation_en": "app.use() registers middleware that executes on all requests matching the specified path (or all if no path is specified). It runs in the order it is registered.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_004",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre app.use(middleware) y app.get('/ruta', middleware)?",
+      "question_en": "What is the difference between app.use(middleware) and app.get('/ruta', middleware)?",
+      "options_es": [
+        "app.use es solo para errores por convención",
+        "app.get es más rápido que app.use",
+        "No hay diferencia, son alias",
+        "app.use aplica a todas las rutas, app.get solo a GET en esa ruta"
+      ],
+      "options_en": [
+        "app.use is only for errors in this context",
+        "app.get is faster than app.use",
+        "There is no difference, they are aliases",
+        "app.use applies to all routes, app.get only to GET on that route"
+      ],
+      "correct_index": 3,
+      "explanation_es": "app.use() registra middleware que se aplica a todas las solicitudes (GET, POST, etc.) en todas las rutas. app.get() es un método de enrutamiento específico que solo se aplica a solicitudes GET en esa ruta exacta.",
+      "explanation_en": "app.use() registers middleware applied to all requests (GET, POST, etc.) on all routes. app.get() is a specific routing method that only applies to GET requests on that exact route.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_005",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es Express Router?",
+      "question_en": "What is Express Router?",
+      "options_es": [
+        "Una base de datos integrada",
+        "Un mecanismo para enviar datos entre servidores",
+        "Un tipo de autenticación en la práctica en entornos de producción",
+        "Un objeto que permite agrupar rutas relacionadas y middleware"
+      ],
+      "options_en": [
+        "An integrated database typically",
+        "A mechanism to send data between servers",
+        "A type of authentication within this paradigm",
+        "An object that allows grouping related routes and middleware"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Express Router es un mini-aplicación que puede tener sus propias rutas y middleware. Permite organizar las rutas en módulos separados y reutilizables, mejorando la estructura del código.",
+      "explanation_en": "Express Router is a mini-application that can have its own routes and middleware. It allows organizing routes into separate, reusable modules, improving code structure.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_006",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se registra un Router en Express?",
+      "question_en": "How do you register a Router in Express?",
+      "options_es": [
+        "Usando app.use('/ruta', router)",
+        "Usando app.router('/ruta', router)",
+        "Los Routers se registran automáticamente",
+        "Usando app.mount(router)"
+      ],
+      "options_en": [
+        "Using app.use('/ruta', router)",
+        "Using app.router('/ruta', router)",
+        "Routers are automatically registered",
+        "Using app.mount(router)"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Router se registra usando app.use(). Esto permite que las rutas definidas en el Router se manejen bajo la ruta especificada. Por ejemplo, app.use('/api', apiRouter) hace que las rutas del Router estén disponibles bajo /api.",
+      "explanation_en": "A Router is registered using app.use(). This allows routes defined in the Router to be handled under the specified path. For example, app.use('/api', apiRouter) makes the Router's routes available under /api.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_007",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el orden de ejecución del middleware en Express?",
+      "question_en": "What is the order of middleware execution in Express?",
+      "options_es": [
+        "Siempre en orden alfabético",
+        "El orden inverso del registro",
+        "El orden en que se registra con app.use() o app.METHOD()",
+        "No hay orden, se ejecutan en paralelo de forma general en condiciones normales"
+      ],
+      "options_en": [
+        "Always in alphabetical order in real environments",
+        "The reverse order of registration",
+        "The order in which it is registered with app.use() or app.METHOD()",
+        "There is no order, they execute in parallel in production environments in production environments"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El middleware en Express se ejecuta en el orden exacto en que se registra. Si se registra primero un middleware A y luego B, A se ejecutará siempre primero.",
+      "explanation_en": "Middleware in Express executes in the exact order it is registered. If middleware A is registered first and then B, A will always execute first.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_008",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un middleware de error en Express?",
+      "question_en": "What is error middleware in Express?",
+      "options_es": [
+        "Middleware que previene todos los errores",
+        "Middleware que solo se ejecuta en producción para la mayoría de proyectos",
+        "Un tipo de middleware asincrónico",
+        "Middleware con 4 parámetros (err, req, res, next) que maneja errores"
+      ],
+      "options_en": [
+        "Middleware that prevents all errors",
+        "Middleware that only executes in production as a general guideline",
+        "A type of asynchronous middleware in real environments",
+        "Middleware with 4 parameters (err, req, res, next) that handles errors"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un middleware de error en Express es una función con 4 parámetros: (err, req, res, next). Express lo identifica por el número de parámetros y lo ejecuta cuando se llama a next(error).",
+      "explanation_en": "Error middleware in Express is a function with 4 parameters: (err, req, res, next). Express identifies it by the parameter count and executes it when next(error) is called.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_009",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Dónde debe registrarse el middleware de error?",
+      "question_en": "Where should error middleware be registered?",
+      "options_es": [
+        "Solo en desarrollo, no en producción",
+        "Al inicio, antes de cualquier otra ruta",
+        "Al final, después de todas las otras rutas y middleware",
+        "En un archivo separado que se carga automáticamente"
+      ],
+      "options_en": [
+        "Only in development, not in production",
+        "At the beginning, before any other routes",
+        "At the end, after all other routes and middleware",
+        "In a separate file that loads automatically"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El middleware de error debe registrarse al final de app.use() y las rutas, porque Express recurre a él cuando ocurre un error en cualquier parte anterior. Si está al inicio, no detectará errores en rutas posteriores.",
+      "explanation_en": "Error middleware should be registered at the end of app.use() and routes, because Express refers to it when an error occurs anywhere prior. If placed at the beginning, it won't catch errors in later routes.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_010",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se pasa un error al siguiente middleware en Express?",
+      "question_en": "How do you pass an error to the next middleware in Express?",
+      "options_es": [
+        "Usando res.error(error)",
+        "Lanzando throw error",
+        "Llamando a next(error)",
+        "Asignando error a req.error"
+      ],
+      "options_en": [
+        "Using res.error(error)",
+        "Throwing throw error",
+        "Calling next(error)",
+        "Assigning error to req.error"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En Express, se pasa un error al siguiente middleware usando next(error). Esto permite que el error sea capturado por el middleware de error que tenga 4 parámetros.",
+      "explanation_en": "In Express, you pass an error to the next middleware using next(error). This allows the error to be caught by the 4-parameter error middleware.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_011",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una ruta con parámetros en Express?",
+      "question_en": "What is a route with parameters in Express?",
+      "options_es": [
+        "Una ruta que requiere autenticación",
+        "Una ruta que solo acepta POST",
+        "Una ruta que contiene valores variables como /usuario/:id",
+        "Una ruta que valida automáticamente datos como práctica recomendada"
+      ],
+      "options_en": [
+        "A route that requires authentication",
+        "A route that only accepts POST",
+        "A route containing variable values like /user/:id",
+        "A route that automatically validates data as a general rule"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una ruta con parámetros usa dos puntos para definir variables dinámicas. Por ejemplo, /usuario/:id captura el valor en req.params.id. También se pueden usar comodines como /usuario/:id/posts/:postId.",
+      "explanation_en": "A route with parameters uses a colon to define dynamic variables. For example, /user/:id captures the value in req.params.id. Wildcards can also be used like /user/:id/posts/:postId.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_012",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un middleware global en Express?",
+      "question_en": "What is global middleware in Express?",
+      "options_es": [
+        "Middleware que comparte datos entre usuarios",
+        "Middleware que se ejecuta en todas las solicitudes antes de las rutas",
+        "Middleware que se ejecuta en navegadores remotos dentro de este paradigma",
+        "Middleware que solo se ejecuta una vez al iniciar la aplicación"
+      ],
+      "options_en": [
+        "Middleware that shares data between users",
+        "Middleware that executes on all requests before routes",
+        "Middleware that executes in remote browsers as a standard approach",
+        "Middleware that only executes once when the application starts"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un middleware global es aquel registrado con app.use() sin una ruta específica (o con una ruta general como '/'). Se ejecuta en todas las solicitudes que llegan a la aplicación.",
+      "explanation_en": "Global middleware is registered with app.use() without a specific path (or with a general path like '/'). It executes on all requests that arrive at the application.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_013",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre middleware de ruta y middleware global?",
+      "question_en": "What is the difference between route middleware and global middleware?",
+      "options_es": [
+        "No hay diferencia, son lo mismo en este contexto",
+        "De ruta es más rápido que global",
+        "Global solo funciona en desarrollo de manera estándar como práctica recomendada",
+        "Global se aplica a todas las rutas, de ruta solo a rutas específicas"
+      ],
+      "options_en": [
+        "There is no difference, they are the same",
+        "Route is faster than global in practice",
+        "Global only works in development in common practice in this context",
+        "Global applies to all routes, route-specific only applies to specific routes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Middleware global se aplica a todas las solicitudes. Middleware de ruta (registrado con app.METHOD() o router.METHOD()) se aplica solo a esa ruta y método específicos.",
+      "explanation_en": "Global middleware applies to all requests. Route middleware (registered with app.METHOD() or router.METHOD()) applies only to that specific route and method.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_014",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define una ruta en Express que acepta múltiples métodos HTTP?",
+      "question_en": "How do you define a route in Express that accepts multiple HTTP methods?",
+      "options_es": [
+        "Usando app.all('/ruta', handler) o registrando cada método por separado",
+        "Los métodos se detectan automáticamente",
+        "No es posible, cada método requiere su propia ruta",
+        "Usando app.multiple('/ruta', handler)"
+      ],
+      "options_en": [
+        "Using app.all('/ruta', handler) or registering each method separately",
+        "Methods are automatically detected",
+        "It's not possible, each method requires its own route",
+        "Using app.multiple('/ruta', handler)"
+      ],
+      "correct_index": 0,
+      "explanation_es": "app.all() maneja todos los métodos HTTP en una ruta. Alternativamente, se puede registrar cada método por separado (app.get(), app.post(), etc.). También se pueden encadenar: app.route('/ruta').get(...).post(...).",
+      "explanation_en": "app.all() handles all HTTP methods on a route. Alternatively, each method can be registered separately (app.get(), app.post(), etc.). Methods can also be chained: app.route('/route').get(...).post(...).",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280302_015",
+      "skill_id": "sk280302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es encadenamiento de middleware?",
+      "question_en": "What is middleware chaining?",
+      "options_es": [
+        "Ejecutar múltiples middlewares secuencialmente en la misma ruta",
+        "Vincular múltiples servidores",
+        "Crear un ciclo infinito de middleware",
+        "Una característica de seguridad que previene ataques"
+      ],
+      "options_en": [
+        "Executing multiple middlewares sequentially on the same route",
+        "Linking multiple servers",
+        "Creating an infinite middleware loop",
+        "A security feature that prevents attacks"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Encadenamiento de middleware permite ejecutar múltiples funciones secuencialmente en la misma ruta. Se logra pasando un array de funciones o registrando múltiples app.use() para la misma ruta. Cada uno debe llamar a next().",
+      "explanation_en": "Middleware chaining allows executing multiple functions sequentially on the same route. It's accomplished by passing an array of functions or registering multiple app.use() for the same path. Each must call next().",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_001",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es req.body en Express?",
+      "question_en": "What is req.body in Express?",
+      "options_es": [
+        "Un objeto que contiene los datos del cuerpo de la solicitud",
+        "El tamaño de la solicitud en bytes dentro de este paradigma",
+        "Un método para enviar datos como regla general",
+        "Un objeto que almacena cookies"
+      ],
+      "options_en": [
+        "An object containing the data from the request body",
+        "The size of the request in bytes in common practice",
+        "A method to send data according to spec",
+        "An object that stores cookies"
+      ],
+      "correct_index": 0,
+      "explanation_es": "req.body es un objeto que contiene los datos parseados del cuerpo de la solicitud. Para poblarlo, se necesita middleware como express.json() o express.urlencoded().",
+      "explanation_en": "req.body is an object containing parsed data from the request body. To populate it, middleware like express.json() or express.urlencoded() is needed.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_002",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué middleware se necesita para parsear JSON en Express?",
+      "question_en": "What middleware is needed to parse JSON in Express?",
+      "options_es": [
+        "express.json()",
+        "express.parse()",
+        "express.body()",
+        "express.jsonify()"
+      ],
+      "options_en": [
+        "express.json()",
+        "express.parse()",
+        "express.body()",
+        "express.jsonify()"
+      ],
+      "correct_index": 0,
+      "explanation_es": "express.json() es el middleware incorporado de Express que parsea solicitudes con Content-Type 'application/json'. Se registra con app.use(express.json()).",
+      "explanation_en": "express.json() is Express's built-in middleware that parses requests with Content-Type 'application/json'. It's registered with app.use(express.json()).",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_003",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es req.params en Express?",
+      "question_en": "What is req.params in Express?",
+      "options_es": [
+        "Un objeto que contiene datos del cuerpo",
+        "Un objeto que contiene parámetros de consulta",
+        "Un método para validar solicitudes",
+        "Un objeto que contiene los parámetros de ruta"
+      ],
+      "options_en": [
+        "An object containing body data",
+        "An object containing query parameters",
+        "A method to validate requests",
+        "An object containing route parameters"
+      ],
+      "correct_index": 3,
+      "explanation_es": "req.params es un objeto que contiene los valores de los parámetros de ruta. Por ejemplo, en la ruta /usuario/:id, req.params.id contiene el valor de :id.",
+      "explanation_en": "req.params is an object containing the values of route parameters. For example, in the route /user/:id, req.params.id contains the value of :id.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_004",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es req.query en Express?",
+      "question_en": "What is req.query in Express?",
+      "options_es": [
+        "Un objeto que contiene los parámetros de consulta (query string)",
+        "Un método para enviar consultas a la base de datos",
+        "Un objeto que contiene parámetros de ruta",
+        "Un objeto que valida solicitudes"
+      ],
+      "options_en": [
+        "An object containing query string parameters",
+        "A method to send queries to the database",
+        "An object containing route parameters",
+        "An object that validates requests"
+      ],
+      "correct_index": 0,
+      "explanation_es": "req.query es un objeto que contiene los parámetros de consulta de la URL. Por ejemplo, en /usuario?nombre=Juan&edad=30, req.query.nombre es 'Juan' y req.query.edad es '30'.",
+      "explanation_en": "req.query is an object containing URL query string parameters. For example, in /user?name=John&age=30, req.query.name is 'John' and req.query.age is '30'.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_005",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre req.params y req.query?",
+      "question_en": "What is the difference between req.params and req.query?",
+      "options_es": [
+        "No hay diferencia, son intercambiables",
+        "query son más rápidos que params",
+        "params son de la ruta, query son de la URL query string",
+        "params solo funciona con GET"
+      ],
+      "options_en": [
+        "There is no difference, they are interchangeable",
+        "query are faster than params",
+        "params are from the route, query are from the URL query string",
+        "params only works with GET"
+      ],
+      "correct_index": 2,
+      "explanation_es": "req.params extrae valores de la ruta (/usuario/:id). req.query extrae valores del query string (?id=123). Son conceptos diferentes y se usan en contextos distintos.",
+      "explanation_en": "req.params extracts values from the route (/user/:id). req.query extracts values from the query string (?id=123). They are different concepts used in different contexts.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_006",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se envía una respuesta JSON en Express?",
+      "question_en": "How do you send a JSON response in Express?",
+      "options_es": [
+        "Usando res.json()",
+        "Todas las opciones anteriores",
+        "Usando res.write() y res.end()",
+        "Usando res.send()"
+      ],
+      "options_en": [
+        "Using res.json()",
+        "All of the above",
+        "Using res.write() and res.end()",
+        "Using res.send()"
+      ],
+      "correct_index": 1,
+      "explanation_es": "res.json() es el método más directo para enviar JSON. res.send() también puede enviar JSON. res.write() y res.end() son más bajos nivel pero también funcionan. res.json() establece automáticamente Content-Type a application/json.",
+      "explanation_en": "res.json() is the most direct method to send JSON. res.send() can also send JSON. res.write() and res.end() are lower level but also work. res.json() automatically sets Content-Type to application/json.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_007",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace res.status() en Express?",
+      "question_en": "What does res.status() do in Express?",
+      "options_es": [
+        "Establece el código de estado HTTP de la respuesta",
+        "Verifica si la solicitud fue exitosa dentro de este paradigma",
+        "Cierra la conexión como regla general",
+        "Envía un mensaje de error"
+      ],
+      "options_en": [
+        "Sets the HTTP status code of the response",
+        "Checks if the request was successful in the most common case",
+        "Closes the connection",
+        "Sends an error message"
+      ],
+      "correct_index": 0,
+      "explanation_es": "res.status() establece el código de estado HTTP (200, 404, 500, etc.). Generalmente se encadena con res.json(), res.send(), etc. Por ejemplo: res.status(404).json({error: 'No encontrado'}).",
+      "explanation_en": "res.status() sets the HTTP status code (200, 404, 500, etc.). It is usually chained with res.json(), res.send(), etc. For example: res.status(404).json({error: 'Not found'}).",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_008",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es res.send() en Express?",
+      "question_en": "What is res.send() in Express?",
+      "options_es": [
+        "Un método asincrónico en entornos reales",
+        "Un método para enviar solo texto plano",
+        "Un método que envía una respuesta y la finaliza automáticamente",
+        "Un método que envía sin codificar"
+      ],
+      "options_en": [
+        "An asynchronous method in real environments",
+        "A method to send only plain text",
+        "A method that sends a response and automatically ends it",
+        "A method that sends without encoding"
+      ],
+      "correct_index": 2,
+      "explanation_es": "res.send() envía una respuesta y la finaliza automáticamente. Puede enviar strings, objetos JSON, buffers, etc. Establece automáticamente Content-Length y Content-Type.",
+      "explanation_en": "res.send() sends a response and automatically ends it. It can send strings, JSON objects, buffers, etc. It automatically sets Content-Length and Content-Type.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_009",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre res.send() y res.json()?",
+      "question_en": "What is the difference between res.send() and res.json()?",
+      "options_es": [
+        "res.json() fuerza JSON, res.send() detecta el tipo",
+        "res.send() es más rápido",
+        "res.json() solo envía arrays",
+        "No hay diferencia de forma estándar como regla general"
+      ],
+      "options_en": [
+        "res.json() forces JSON, res.send() detects the type",
+        "res.send() is faster in this context",
+        "res.json() only sends arrays",
+        "There is no difference according to official documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "res.json() siempre establece Content-Type a 'application/json' y serializa objetos a JSON. res.send() detecta automáticamente el tipo y puede enviar diferentes formatos.",
+      "explanation_en": "res.json() always sets Content-Type to 'application/json' and serializes objects to JSON. res.send() auto-detects the type and can send different formats.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_010",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es req.headers en Express?",
+      "question_en": "What is req.headers in Express?",
+      "options_es": [
+        "Un método para validar la solicitud",
+        "Un método para establecer encabezados de respuesta",
+        "Un objeto que almacena información de sesión",
+        "Un objeto que contiene los encabezados HTTP de la solicitud"
+      ],
+      "options_en": [
+        "A method to validate the request",
+        "A method to set response headers",
+        "An object that stores session information",
+        "An object containing the HTTP headers of the request"
+      ],
+      "correct_index": 3,
+      "explanation_es": "req.headers es un objeto que contiene todos los encabezados HTTP enviados por el cliente. Por ejemplo, req.headers['content-type'], req.headers['authorization'], etc.",
+      "explanation_en": "req.headers is an object containing all HTTP headers sent by the client. For example, req.headers['content-type'], req.headers['authorization'], etc.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_011",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se establece un encabezado de respuesta en Express?",
+      "question_en": "How do you set a response header in Express?",
+      "options_es": [
+        "Usando res.headers =",
+        "Usando res.setHeader()",
+        "Usando res.set() o res.header()",
+        "Usando res.header en lugar de res.set()"
+      ],
+      "options_en": [
+        "Using res.headers =",
+        "Using res.setHeader()",
+        "Using res.set() or res.header()",
+        "Using res.header instead of res.set()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "res.set() es el método recomendado en Express para establecer encabezados. res.header() es un alias. Ejemplo: res.set('Content-Type', 'application/json').",
+      "explanation_en": "res.set() is the recommended method in Express to set headers. res.header() is an alias. Example: res.set('Content-Type', 'application/json').",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_012",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es req.method en Express?",
+      "question_en": "What is req.method in Express?",
+      "options_es": [
+        "Un objeto que almacena datos de método",
+        "Un método para cambiar el tipo de solicitud",
+        "Una función para procesar solicitudes",
+        "Una propiedad que contiene el método HTTP de la solicitud"
+      ],
+      "options_en": [
+        "An object that stores method data",
+        "A method to change the request type",
+        "A function to process requests",
+        "A property containing the HTTP method of the request"
+      ],
+      "correct_index": 3,
+      "explanation_es": "req.method es una propiedad que devuelve el método HTTP de la solicitud ('GET', 'POST', 'PUT', 'DELETE', etc.).",
+      "explanation_en": "req.method is a property that returns the HTTP method of the request ('GET', 'POST', 'PUT', 'DELETE', etc.).",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_013",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es req.url en Express?",
+      "question_en": "What is req.url in Express?",
+      "options_es": [
+        "Una propiedad que contiene la URL solicitada",
+        "Un método para redirigir a otra URL",
+        "Un objeto que valida URLs",
+        "Un método para obtener el dominio"
+      ],
+      "options_en": [
+        "A property containing the requested URL",
+        "A method to redirect to another URL",
+        "An object that validates URLs",
+        "A method to get the domain"
+      ],
+      "correct_index": 0,
+      "explanation_es": "req.url es una propiedad que contiene la URL completa solicitada, incluyendo el query string. Por ejemplo: /usuario?id=123.",
+      "explanation_en": "req.url is a property containing the full requested URL, including the query string. For example: /user?id=123.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_014",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se envía un archivo como respuesta en Express?",
+      "question_en": "How do you send a file as a response in Express?",
+      "options_es": [
+        "Usando res.file() en la práctica",
+        "Usando res.send()",
+        "Usando res.download() o res.sendFile()",
+        "Usando res.attachment()"
+      ],
+      "options_en": [
+        "Using res.file() according to spec",
+        "Using res.send()",
+        "Using res.download() or res.sendFile()",
+        "Using res.attachment()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "res.sendFile() envía un archivo como respuesta. res.download() envía un archivo con descarga automática. Ambos establecen los encabezados apropiados.",
+      "explanation_en": "res.sendFile() sends a file as a response. res.download() sends a file with automatic download. Both set appropriate headers.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280303_015",
+      "skill_id": "sk280303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una redirección en Express?",
+      "question_en": "What is a redirect in Express?",
+      "options_es": [
+        "Un mecanismo para retrasar respuestas",
+        "Un error que detiene la aplicación",
+        "Enviar una respuesta que dirige al cliente a otra URL",
+        "Un método para cambiar el puerto"
+      ],
+      "options_en": [
+        "A mechanism to delay responses",
+        "An error that stops the application",
+        "Sending a response that directs the client to another URL",
+        "A method to change the port as a general rule"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una redirección en Express se envía con res.redirect(). Por defecto usa el código 302, pero se puede especificar otro: res.redirect(301, '/nueva-url'). El navegador sigue automáticamente la redirección.",
+      "explanation_en": "A redirect in Express is sent with res.redirect(). It defaults to status 302, but can specify another: res.redirect(301, '/new-url'). The browser automatically follows the redirect.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_001",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un middleware de manejo de errores en Express?",
+      "question_en": "What is error handling middleware in Express?",
+      "options_es": [
+        "Una función que solo registra errores",
+        "Una función que previene todos los errores",
+        "Una función con 4 parámetros que captura y procesa errores",
+        "Una función que reinicia la aplicación"
+      ],
+      "options_en": [
+        "A function that only logs errors",
+        "A function that prevents all errors",
+        "A function with 4 parameters that catches and processes errors",
+        "A function that restarts the application"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un middleware de error en Express tiene 4 parámetros: (err, req, res, next). Express lo identifica automáticamente y lo ejecuta cuando se llama a next(error).",
+      "explanation_en": "Error middleware in Express has 4 parameters: (err, req, res, next). Express automatically identifies it and executes it when next(error) is called.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_002",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor forma de manejar excepciones síncronas en Express?",
+      "question_en": "What is the best way to handle synchronous exceptions in Express?",
+      "options_es": [
+        "Usar try/catch",
+        "Usar .catch()",
+        "Ignorar la excepción",
+        "Usar res.error()"
+      ],
+      "options_en": [
+        "Use try/catch",
+        "Use .catch()",
+        "Ignore the exception",
+        "Use res.error()"
+      ],
+      "correct_index": 0,
+      "explanation_es": "try/catch es la forma estándar de capturar excepciones síncronas en JavaScript. En una ruta Express, se usa dentro de un try/catch y se llama a next(error) en el catch para pasar el error al middleware de error.",
+      "explanation_en": "try/catch is the standard way to catch synchronous exceptions in JavaScript. In an Express route, it's used in a try/catch block and next(error) is called in the catch to pass the error to error middleware.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_003",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se manejan errores en funciones asincrónicas en Express?",
+      "question_en": "How do you handle errors in asynchronous functions in Express?",
+      "options_es": [
+        "Los errores se manejan automáticamente en el caso más común",
+        "Usando try/catch o .catch() para Promises",
+        "Solo se pueden usar callbacks",
+        "No se pueden manejar errores asincronos"
+      ],
+      "options_en": [
+        "Errors are automatically handled according to official documentation",
+        "Using try/catch or .catch() for Promises",
+        "Only callbacks can be used",
+        "Asynchronous errors cannot be handled"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En funciones async, se usa try/catch. Para Promises, se usa .catch(). Si no se captura el error, se llama a next(error) en el middleware para pasar el error al manejador centralizado.",
+      "explanation_en": "In async functions, use try/catch. For Promises, use .catch(). If the error is not caught, next(error) is called to pass the error to the centralized handler.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_004",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es Winston en Node.js?",
+      "question_en": "What is Winston in Node.js?",
+      "options_es": [
+        "Una herramienta para gestionar bases de datos",
+        "Una librería de logging flexible y extensible",
+        "Un framework de pruebas",
+        "Un middleware de autenticación"
+      ],
+      "options_en": [
+        "A tool for managing databases",
+        "A flexible and extensible logging library",
+        "A testing framework",
+        "An authentication middleware"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Winston es una librería popular de logging en Node.js que permite configurar múltiples transportes (consola, archivos, servicios remotos) y niveles de log (error, warn, info, debug).",
+      "explanation_en": "Winston is a popular logging library in Node.js that allows configuring multiple transports (console, files, remote services) and log levels (error, warn, info, debug).",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_005",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es Morgan en Express?",
+      "question_en": "What is Morgan in Express?",
+      "options_es": [
+        "Un validador de datos según la documentación oficial",
+        "Una librería de criptografía",
+        "Un gestor de sesiones en este contexto",
+        "Un middleware de logging de solicitudes HTTP"
+      ],
+      "options_en": [
+        "A data validator as a general guideline",
+        "A cryptography library",
+        "A session manager",
+        "HTTP request logging middleware"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Morgan es un middleware que registra automáticamente detalles de cada solicitud HTTP (método, URL, código de estado, tiempo de respuesta). Se configura con app.use(morgan('combined')) o similar.",
+      "explanation_en": "Morgan is middleware that automatically logs details of each HTTP request (method, URL, status code, response time). It's configured with app.use(morgan('combined')) or similar.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_006",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuáles son los niveles de log en Winston?",
+      "question_en": "What are the log levels in Winston?",
+      "options_es": [
+        "critical, severe, normal",
+        "error, warn, info, debug",
+        "trace, debug, error",
+        "low, medium, high"
+      ],
+      "options_en": [
+        "critical, severe, normal",
+        "error, warn, info, debug",
+        "trace, debug, error",
+        "low, medium, high"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los niveles estándar de Winston son: error (0), warn (1), info (2), debug (3). Se pueden configurar niveles adicionales. Solo se registran mensajes del nivel configurado e inferiores.",
+      "explanation_en": "Winston's standard log levels are: error (0), warn (1), info (2), debug (3). Additional levels can be configured. Only messages at the configured level and below are logged.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_007",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el módulo 'debug' en Node.js?",
+      "question_en": "What is the 'debug' module in Node.js?",
+      "options_es": [
+        "Una librería de debugging que usa variables de entorno para controlar salida",
+        "Un método para detener la ejecución",
+        "Un inspector de código por convención",
+        "Una herramienta de profiling en el caso más común en entornos de producción en la práctica habitual"
+      ],
+      "options_en": [
+        "A debugging library that uses environment variables to control output",
+        "A method to stop execution",
+        "A code inspector by default",
+        "A profiling tool in common practice in production environments in the most common case"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El módulo 'debug' permite logging condicional basado en la variable de entorno DEBUG. Por ejemplo: DEBUG=app:* node app.js mostrará solo logs del namespace 'app'.",
+      "explanation_en": "The 'debug' module enables conditional logging based on the DEBUG environment variable. For example: DEBUG=app:* node app.js shows only logs from the 'app' namespace.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_008",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se detectan errores no manejados en Node.js?",
+      "question_en": "How are uncaught errors detected in Node.js?",
+      "options_es": [
+        "No se pueden detectar errores no manejados dentro de este paradigma",
+        "Los errores se silencian automáticamente",
+        "Con process.on('uncaughtException', handler)",
+        "Con app.onError()"
+      ],
+      "options_en": [
+        "Uncaught errors cannot be detected as a general rule",
+        "Errors are automatically silenced",
+        "With process.on('uncaughtException', handler)",
+        "With app.onError()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "process.on('uncaughtException', (err) => {...}) permite capturar excepciones que no fueron manejadas. Es importante registrarlo temprano en la aplicación. Se recomienda terminar el proceso después.",
+      "explanation_en": "process.on('uncaughtException', (err) => {...}) allows catching unhandled exceptions. It should be registered early in the application. It's recommended to terminate the process afterwards.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_009",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre logging y debugging?",
+      "question_en": "What is the difference between logging and debugging?",
+      "options_es": [
+        "Debugging solo funciona en navegadores",
+        "Son lo mismo en la práctica",
+        "Logging registra eventos en producción, debugging es para desarrollo",
+        "Logging es más lento"
+      ],
+      "options_en": [
+        "Debugging only works in browsers",
+        "They are the same by default",
+        "Logging records events in production, debugging is for development",
+        "Logging is slower"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Logging es el registro permanente de eventos para monitoreo y análisis en producción. Debugging es una herramienta interactiva para desarrollo, que permite pausar y inspeccionar código.",
+      "explanation_en": "Logging is the permanent recording of events for monitoring and analysis in production. Debugging is an interactive tool for development that allows pausing and inspecting code.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_010",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se configura Winston para escribir en archivos?",
+      "question_en": "How do you configure Winston to write to files?",
+      "options_es": [
+        "Usando el transporte 'File' o 'DailyRotateFile'",
+        "Winston solo puede escribir en consola",
+        "Usando fs.writeFile() en este contexto según la documentación oficial",
+        "Usando winston.log()"
+      ],
+      "options_en": [
+        "Using the 'File' or 'DailyRotateFile' transport",
+        "Winston can only write to console",
+        "Using fs.writeFile() as a general guideline according to official documentation",
+        "Using winston.log() in real environments"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Winston permite múltiples transportes. El transporte 'File' escribe en un archivo, 'DailyRotateFile' rota logs diarios. Se configura en el array de transportes del logger.",
+      "explanation_en": "Winston supports multiple transports. The 'File' transport writes to a file, 'DailyRotateFile' rotates daily logs. It's configured in the logger's transports array.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_011",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una promesa rechazada no manejada?",
+      "question_en": "What is an unhandled Promise rejection?",
+      "options_es": [
+        "Una Promise que nunca se resuelve",
+        "Una Promise dentro de un bloque try",
+        "Una Promise que se rechaza sin .catch() ni try/catch",
+        "Una Promise que lanza un error síncronamente dentro de este paradigma"
+      ],
+      "options_en": [
+        "A Promise that never resolves",
+        "A Promise inside a try block",
+        "A Promise that rejects without .catch() or try/catch",
+        "A Promise that throws a synchronous error in the most common case"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una Promise rechazada no manejada ocurre cuando se rechaza una Promise pero no hay .catch() ni try/catch. Node.js emite el evento 'unhandledRejection' que puede capturarse con process.on().",
+      "explanation_en": "An unhandled Promise rejection occurs when a Promise rejects but there's no .catch() or try/catch. Node.js emits the 'unhandledRejection' event which can be caught with process.on().",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_012",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se registran Promises rechazadas no manejadas?",
+      "question_en": "How do you log unhandled Promise rejections?",
+      "options_es": [
+        "Con app.onError() de forma estándar",
+        "Con process.on('unhandledRejection', (reason, promise) => {...})",
+        "Las promesas rechazadas no se pueden registrar",
+        "Con process.on('error', ...)"
+      ],
+      "options_en": [
+        "With app.onError() according to spec",
+        "With process.on('unhandledRejection', (reason, promise) => {...})",
+        "Rejected promises cannot be logged",
+        "With process.on('error', ...)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "process.on('unhandledRejection', (reason, promise) => {...}) permite capturar y registrar Promises rechazadas no manejadas. Esto es crucial para detectar bugs en código asincrónico.",
+      "explanation_en": "process.on('unhandledRejection', (reason, promise) => {...}) allows catching and logging unhandled Promise rejections. This is crucial for detecting bugs in asynchronous code.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_013",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un stack trace?",
+      "question_en": "What is a stack trace?",
+      "options_es": [
+        "Un tipo de memoria en entornos reales dentro de este paradigma",
+        "Un error de sintaxis",
+        "Un método de optimización",
+        "Un registro de la pila de llamadas en el momento de un error"
+      ],
+      "options_en": [
+        "A type of memory in this context",
+        "A syntax error as a general rule",
+        "An optimization method",
+        "A record of the call stack at the time of an error"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un stack trace es una lista de las funciones llamadas en orden inverso hasta que se produjo un error. Ayuda a identificar dónde ocurrió el error y cómo se llegó a ese punto.",
+      "explanation_en": "A stack trace is a list of functions called in reverse order up to the error. It helps identify where the error occurred and how execution reached that point.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_014",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se envía información de error en una respuesta Express?",
+      "question_en": "How do you send error information in an Express response?",
+      "options_es": [
+        "Con res.status(statusCode).json({error: message})",
+        "Con res.error() como regla general de forma general",
+        "Con throw error",
+        "Con res.send(error)"
+      ],
+      "options_en": [
+        "With res.status(statusCode).json({error: message})",
+        "With res.error() by convention in the most common case",
+        "With throw error",
+        "With res.send(error)"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Es común responder con un código de estado de error (400, 404, 500, etc.) y un objeto JSON con información del error. Esto permite que el cliente entienda qué salió mal.",
+      "explanation_en": "It's common to respond with an error status code (400, 404, 500, etc.) and a JSON object with error information. This allows the client to understand what went wrong.",
+      "source": "https://nodejs.org/docs"
+    },
+    {
+      "id": "q280304_015",
+      "skill_id": "sk280304",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el mejor lugar para registrar errores en una aplicación?",
+      "question_en": "What is the best place to log errors in an application?",
+      "options_es": [
+        "Solo en producción",
+        "En cada función que puede fallar de forma general",
+        "En el middleware de error centralizado",
+        "Nunca registrar errores"
+      ],
+      "options_en": [
+        "Only in production",
+        "In every function that can fail in production environments",
+        "In the centralized error middleware",
+        "Never log errors"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un middleware de error centralizado permite registrar todos los errores en un lugar consistente. Esto facilita el monitoreo y debugging, evita duplicación de código, y asegura que no se pierda ningún error.",
+      "explanation_en": "Centralized error middleware allows logging all errors in one consistent place. This facilitates monitoring and debugging, avoids code duplication, and ensures no errors are missed.",
+      "source": "https://nodejs.org/docs"
+    }
+  ]
+}

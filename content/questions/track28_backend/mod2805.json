@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q280501_001",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la estructura básica de un JWT (JSON Web Token)?",
+      "question_en": "What is the basic structure of a JWT (JSON Web Token)?",
+      "options_es": [
+        "Encabezado.Carga útil.Firma",
+        "Encabezado.Datos",
+        "Firma.Encabezado.Datos en entornos de producción",
+        "Carga útil.Firma"
+      ],
+      "options_en": [
+        "Header.Payload.Signature",
+        "Header.Data",
+        "Signature.Header.Data as a standard approach",
+        "Payload.Signature"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un JWT se compone de tres partes separadas por puntos: Encabezado (header), Carga útil (payload) y Firma (signature). Cada parte está codificada en Base64URL.",
+      "explanation_en": "A JWT consists of three parts separated by dots: Header, Payload, and Signature. Each part is Base64URL encoded.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_002",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué información se almacena típicamente en las 'claims' de un JWT?",
+      "question_en": "What information is typically stored in the 'claims' of a JWT?",
+      "options_es": [
+        "Solo el ID de usuario en entornos reales",
+        "La contraseña encriptada",
+        "Identificadores, permisos, roles y otros datos de usuario",
+        "Solo la fecha de expiración"
+      ],
+      "options_en": [
+        "Only the user ID in this context",
+        "The encrypted password",
+        "Identifiers, permissions, roles and other user data",
+        "Only the expiration date"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las claims del JWT contienen información sobre el usuario (identificadores, roles, permisos) y metadatos de la sesión. Nunca deben contener contraseñas.",
+      "explanation_en": "JWT claims contain information about the user (identifiers, roles, permissions) and session metadata. They should never contain passwords.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_003",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la función principal de un 'refresh token' en OAuth 2.0?",
+      "question_en": "What is the main function of a 'refresh token' in OAuth 2.0?",
+      "options_es": [
+        "Recargar la página del navegador automáticamente",
+        "Obtener un nuevo access token sin pedir credenciales de nuevo",
+        "Aumentar la seguridad eliminando el access token",
+        "Sincronizar datos entre servidores"
+      ],
+      "options_en": [
+        "Reload the browser page automatically",
+        "Obtain a new access token without asking for credentials again",
+        "Increase security by eliminating the access token",
+        "Synchronize data between servers"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El refresh token permite obtener un nuevo access token de corta vida sin que el usuario deba volver a autenticarse. El access token expira pronto por seguridad, mientras que el refresh token tiene una vida más larga.",
+      "explanation_en": "The refresh token allows obtaining a new short-lived access token without requiring the user to re-authenticate. The access token expires quickly for security, while the refresh token has a longer lifespan.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_004",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el flujo OAuth 2.0 más apropiado para una aplicación web tradicional con backend?",
+      "question_en": "Which OAuth 2.0 flow is most appropriate for a traditional web application with backend?",
+      "options_es": [
+        "Implicit Flow",
+        "Client Credentials Flow",
+        "Authorization Code Flow",
+        "Device Authorization Grant"
+      ],
+      "options_en": [
+        "Implicit Flow",
+        "Client Credentials Flow",
+        "Authorization Code Flow",
+        "Device Authorization Grant"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El Authorization Code Flow es el más seguro para aplicaciones web con backend. El código de autorización se intercambia en el backend (lado del servidor) por un token de acceso, manteniendo el cliente secreto seguro.",
+      "explanation_en": "The Authorization Code Flow is the most secure for web applications with backend. The authorization code is exchanged on the backend (server-side) for an access token, keeping the client secret secure.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_005",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa 'exp' (expiration time) en un JWT?",
+      "question_en": "What does 'exp' (expiration time) mean in a JWT?",
+      "options_es": [
+        "El tiempo en segundos desde la época Unix en que el token expira",
+        "El nombre del proveedor de autenticación externo",
+        "La experiencia del usuario con la API",
+        "El número de intentos permitidos antes de bloqueo"
+      ],
+      "options_en": [
+        "The time in seconds since Unix epoch when the token expires",
+        "The name of the external authentication provider",
+        "The user experience with the API",
+        "The number of allowed attempts before lockout"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'exp' es un claim estándar en JWT que indica cuando el token expira, representado como segundos desde el 1 de enero de 1970 (Unix timestamp). Los servidores deben rechazar tokens expirados.",
+      "explanation_en": "'exp' is a standard JWT claim that indicates when the token expires, represented as seconds since January 1, 1970 (Unix timestamp). Servers must reject expired tokens.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_006",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Dónde debe almacenarse típicamente un JWT en una aplicación web moderna?",
+      "question_en": "Where should a JWT typically be stored in a modern web application?",
+      "options_es": [
+        "En una cookie HttpOnly segura",
+        "En localStorage sin cifrar",
+        "En una variable global de JavaScript",
+        "En la URL de la página"
+      ],
+      "options_en": [
+        "In a secure HttpOnly cookie",
+        "In unencrypted localStorage",
+        "In a global JavaScript variable",
+        "In the page URL"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un JWT debe almacenarse en una cookie HttpOnly, Secure y SameSite para protegerlo de ataques XSS y CSRF. Las cookies HttpOnly no son accesibles desde JavaScript, lo que previene robo por XSS.",
+      "explanation_en": "A JWT should be stored in an HttpOnly, Secure, and SameSite cookie to protect it from XSS and CSRF attacks. HttpOnly cookies are not accessible from JavaScript, preventing XSS theft.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_007",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar 'token signing' en un JWT?",
+      "question_en": "What is the advantage of using 'token signing' in a JWT?",
+      "options_es": [
+        "Hace que el token sea más pequeño en tamaño",
+        "Permite verificar que el token no ha sido modificado y fue emitido por un servidor confiable",
+        "Aumenta automáticamente el tiempo de expiración",
+        "Oculta toda la información del usuario de forma estándar"
+      ],
+      "options_en": [
+        "Makes the token smaller in size",
+        "Allows verifying that the token has not been modified and was issued by a trusted server",
+        "Automatically increases expiration time",
+        "Hides all user information in practice"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La firma del JWT permite detectar cualquier modificación del token y verificar su autenticidad. Se realiza con una clave secreta que solo el servidor conoce, previniendo que un cliente modifique maliciosamente el token.",
+      "explanation_en": "JWT signing allows detecting any token modification and verifying its authenticity. It is performed with a secret key only the server knows, preventing a client from maliciously modifying the token.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_008",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es PKCE (Proof Key for Public Clients) en OAuth 2.0?",
+      "question_en": "What is PKCE (Proof Key for Public Clients) in OAuth 2.0?",
+      "options_es": [
+        "Un método para encriptar contraseñas de usuarios para la mayoría de proyectos dentro de este paradigma",
+        "Una técnica para acelerar tokens de acceso como regla general",
+        "Un protocolo para sincronización de bases de datos",
+        "Una extensión de seguridad para proteger a clientes públicos en el Authorization Code Flow"
+      ],
+      "options_en": [
+        "A method to encrypt user passwords in practice in the most common case under normal conditions",
+        "A technique to speed up access tokens",
+        "A protocol for database synchronization",
+        "A security extension to protect public clients in the Authorization Code Flow"
+      ],
+      "correct_index": 3,
+      "explanation_es": "PKCE es una extensión OAuth 2.0 que proporciona protección adicional para aplicaciones públicas (como aplicaciones móviles o SPA) previniendo ataques de intercepción de código de autorización.",
+      "explanation_en": "PKCE is an OAuth 2.0 extension that provides additional protection for public applications (like mobile apps or SPAs) by preventing authorization code interception attacks.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_009",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre 'sub' y 'aud' en las claims de JWT?",
+      "question_en": "What is the difference between 'sub' and 'aud' in JWT claims?",
+      "options_es": [
+        "'sub' es la fecha de creación y 'aud' es la fecha de expiración",
+        "'sub' es la firma y 'aud' es el tema en la práctica habitual en el caso más común",
+        "No hay diferencia, son sinónimos",
+        "'sub' es el tema del token y 'aud' es la audiencia (a quién va dirigido)"
+      ],
+      "options_en": [
+        "'sub' is the creation date and 'aud' is the expiration date",
+        "'sub' is the signature and 'aud' is the subject in this context as a general rule",
+        "There is no difference, they are synonyms",
+        "'sub' is the subject of the token and 'aud' is the audience (who it's intended for)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'sub' (subject) identifica al usuario o entidad titular del token, mientras que 'aud' (audience) especifica a qué aplicación o recurso va dirigido el token. Esto previene uso de tokens en contextos no autorizados.",
+      "explanation_en": "'sub' (subject) identifies the user or entity that owns the token, while 'aud' (audience) specifies which application or resource the token is intended for. This prevents token usage in unauthorized contexts.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_010",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué es importante validar el 'iat' (issued at) en un JWT?",
+      "question_en": "Why is it important to validate the 'iat' (issued at) in a JWT?",
+      "options_es": [
+        "Para asegurar que el token fue emitido recientemente y no es obsoleto",
+        "Para encriptar el contenido del token",
+        "Para aumentar el tamaño del token",
+        "No es importante validarlo de forma estándar en condiciones normales de manera estándar"
+      ],
+      "options_en": [
+        "To ensure the token was recently issued and is not obsolete",
+        "To encrypt the token content",
+        "To increase the token size by convention",
+        "It is not important to validate it as a recommended practice for most projects"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Validar 'iat' (tiempo de emisión) ayuda a detectar tokens obsoletos o falsificados. Cuando un usuario cambia su contraseña, todos los tokens con 'iat' anterior al cambio deben considerarse inválidos.",
+      "explanation_en": "Validating 'iat' (issued at time) helps detect obsolete or forged tokens. When a user changes their password, all tokens with 'iat' before the change should be considered invalid.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_011",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el flujo OAuth 2.0 adecuado para una aplicación de escritorio o CLI?",
+      "question_en": "Which OAuth 2.0 flow is appropriate for a desktop or CLI application?",
+      "options_es": [
+        "Device Authorization Grant Flow",
+        "Authorization Code Flow",
+        "Implicit Flow en condiciones normales",
+        "Password Grant Flow"
+      ],
+      "options_en": [
+        "Device Authorization Grant Flow",
+        "Authorization Code Flow",
+        "Implicit Flow as a recommended practice",
+        "Password Grant Flow"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El Device Authorization Grant Flow es ideal para dispositivos sin navegador web, como aplicaciones CLI, smartTVs o dispositivos IoT. Permite la autenticación sin que el usuario ingrese credenciales en el dispositivo.",
+      "explanation_en": "The Device Authorization Grant Flow is ideal for devices without a web browser, like CLI applications, smart TVs, or IoT devices. It allows authentication without the user entering credentials on the device.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_012",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué debe hacer un servidor cuando recibe un token JWT expirado?",
+      "question_en": "What should a server do when it receives an expired JWT token?",
+      "options_es": [
+        "Aceptarlo y procesarlo normalmente de forma estándar",
+        "Guardarlo en una base de datos de tokens revocados en este contexto en este contexto de manera estándar",
+        "Extender automáticamente la expiración",
+        "Rechazarlo con un error 401 Unauthorized y solicitar que el cliente use el refresh token"
+      ],
+      "options_en": [
+        "Accept it and process it normally by default",
+        "Store it in a revoked tokens database for most projects for most projects in the most common case",
+        "Automatically extend the expiration",
+        "Reject it with a 401 Unauthorized error and request the client use the refresh token"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un servidor debe rechazar un JWT expirado con un código 401. El cliente debe entonces usar el refresh token para obtener uno nuevo. Esto mantiene la seguridad requiriendo re-autenticación periódica.",
+      "explanation_en": "A server must reject an expired JWT with a 401 code. The client should then use the refresh token to obtain a new one. This maintains security by requiring periodic re-authentication.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_013",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué algoritmo de firma es más seguro para JWTs en producción?",
+      "question_en": "Which signing algorithm is most secure for JWTs in production?",
+      "options_es": [
+        "RS256 (RSA con SHA-256)",
+        "HS256 (HMAC con SHA-256)",
+        "none (sin firma)",
+        "HS256 es igual de seguro que RS256"
+      ],
+      "options_en": [
+        "RS256 (RSA with SHA-256)",
+        "HS256 (HMAC with SHA-256)",
+        "none (no signature)",
+        "HS256 is equally secure as RS256"
+      ],
+      "correct_index": 0,
+      "explanation_es": "RS256 (asimétrico) es más seguro que HS256 (simétrico) para JWTs porque la clave privada nunca necesita ser compartida. En HS256, ambas partes necesitan la misma clave secreta, aumentando el riesgo de compromiso.",
+      "explanation_en": "RS256 (asymmetric) is more secure than HS256 (symmetric) for JWTs because the private key never needs to be shared. With HS256, both parties need the same secret key, increasing the risk of compromise.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_014",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es 'token revocation' y por qué es importante?",
+      "question_en": "What is 'token revocation' and why is it important?",
+      "options_es": [
+        "Es lo mismo que token expiration en entornos reales",
+        "Es la capacidad de invalidar un token antes de su expiración, útil cuando un usuario cierra sesión o su cuenta se compromete",
+        "Es una técnica para aumentar tokens",
+        "No tiene importancia en APIs modernas dentro de este paradigma según la documentación oficial en este contexto en entornos de producción"
+      ],
+      "options_en": [
+        "It is the same as token expiration according to spec",
+        "It is the ability to invalidate a token before its expiration, useful when a user logs out or their account is compromised",
+        "It is a technique to increase tokens",
+        "It is not important in modern APIs in the most common case according to official documentation as a general guideline under normal conditions"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La revocación de tokens permite invalidar inmediatamente un token válido antes de su expiración. Es esencial para logout inmediato y para revocar acceso cuando se detecta una cuenta comprometida.",
+      "explanation_en": "Token revocation allows immediately invalidating a valid token before its expiration. It is essential for immediate logout and revoking access when a compromised account is detected.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280501_015",
+      "skill_id": "sk280501",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar 'OpenID Connect' sobre 'OAuth 2.0' puro?",
+      "question_en": "What is the advantage of using 'OpenID Connect' over pure 'OAuth 2.0'?",
+      "options_es": [
+        "Es más fácil de implementar como regla general para la mayoría de proyectos en la práctica habitual",
+        "Proporciona una capa de identidad que incluye información del usuario verificada",
+        "Es más rápido que OAuth 2.0",
+        "Elimina la necesidad de tokens de actualización"
+      ],
+      "options_en": [
+        "It is easier to implement in this context as a general rule in production environments",
+        "It provides an identity layer that includes verified user information",
+        "It is faster than OAuth 2.0",
+        "It eliminates the need for refresh tokens"
+      ],
+      "correct_index": 1,
+      "explanation_es": "OpenID Connect es un protocolo de identidad construido sobre OAuth 2.0 que proporciona autenticación verificada e información del usuario (perfil, email). OAuth 2.0 puro solo proporciona autorización, no identidad verificada.",
+      "explanation_en": "OpenID Connect is an identity protocol built on top of OAuth 2.0 that provides verified authentication and user information (profile, email). Pure OAuth 2.0 only provides authorization, not verified identity.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_001",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es rate limiting en una API?",
+      "question_en": "What is rate limiting in an API?",
+      "options_es": [
+        "Una técnica para cifrar datos en tránsito",
+        "Un método para comprimir respuestas HTTP",
+        "Una estrategia para limitar el número de solicitudes que un cliente puede hacer en un período de tiempo",
+        "Una forma de autenticar usuarios en este contexto"
+      ],
+      "options_en": [
+        "A technique to encrypt data in transit",
+        "A method to compress HTTP responses",
+        "A strategy to limit the number of requests a client can make in a time period",
+        "A way to authenticate users typically"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Rate limiting controla cuántas solicitudes puede hacer un cliente en un período determinado. Protege el servidor de abuso, ataques DDoS y uso no autorizado de la API.",
+      "explanation_en": "Rate limiting controls how many requests a client can make in a given time period. It protects the server from abuse, DDoS attacks, and unauthorized API usage.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_002",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el patrón de rate limiting más común?",
+      "question_en": "What is the most common rate limiting pattern?",
+      "options_es": [
+        "Fixed Window",
+        "Sliding Window",
+        "Leaky Bucket",
+        "Token Bucket"
+      ],
+      "options_en": [
+        "Fixed Window",
+        "Sliding Window",
+        "Leaky Bucket",
+        "Token Bucket"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Token Bucket es el patrón más popular. Un bucket virtual contiene tokens que se reponen a tasa constante. Cada solicitud consume un token. Si no hay tokens, la solicitud se rechaza o se pone en cola.",
+      "explanation_en": "Token Bucket is the most popular pattern. A virtual bucket contains tokens that are replenished at a constant rate. Each request consumes a token. If there are no tokens, the request is rejected or queued.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_003",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué encabezado HTTP se utiliza para informar al cliente sobre los límites de velocidad?",
+      "question_en": "Which HTTP header is used to inform the client about rate limits?",
+      "options_es": [
+        "Todas las anteriores",
+        "X-Rate-Limit-Limit",
+        "X-Rate-Limit-Reset",
+        "X-Rate-Limit-Remaining"
+      ],
+      "options_en": [
+        "All of the above",
+        "X-Rate-Limit-Limit",
+        "X-Rate-Limit-Reset",
+        "X-Rate-Limit-Remaining"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los servidores usan múltiples encabezados X-Rate-Limit-* para informar: Limit (máximo), Remaining (restante), Reset (cuándo se reinicia). Estos datos ayudan al cliente a gestionar sus solicitudes inteligentemente.",
+      "explanation_en": "Servers use multiple X-Rate-Limit-* headers to inform: Limit (maximum), Remaining (remaining), Reset (when it resets). This data helps clients manage their requests intelligently.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_004",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el código HTTP apropiado para rechazar una solicitud por exceso de rate limit?",
+      "question_en": "What is the appropriate HTTP status code to reject a request due to rate limit exceeded?",
+      "options_es": [
+        "400 Bad Request",
+        "403 Forbidden",
+        "429 Too Many Requests",
+        "503 Service Unavailable"
+      ],
+      "options_en": [
+        "400 Bad Request",
+        "403 Forbidden",
+        "429 Too Many Requests",
+        "503 Service Unavailable"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El código 429 Too Many Requests es el estándar HTTP para rechazar solicitudes cuando se excede el límite de velocidad. Comunica claramente al cliente que debe esperar antes de reintentar.",
+      "explanation_en": "The 429 Too Many Requests status code is the HTTP standard for rejecting requests when rate limit is exceeded. It clearly communicates to the client that they should wait before retrying.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_005",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es CORS (Cross-Origin Resource Sharing)?",
+      "question_en": "What is CORS (Cross-Origin Resource Sharing)?",
+      "options_es": [
+        "Un protocolo de encriptación para HTTPS",
+        "Un mecanismo de seguridad del navegador que controla qué origen puede acceder a recursos",
+        "Un método para comprimir datos JSON",
+        "Un tipo de base de datos en este contexto"
+      ],
+      "options_en": [
+        "An encryption protocol for HTTPS",
+        "A browser security mechanism that controls which origin can access resources",
+        "A method to compress JSON data",
+        "A type of database as a general rule"
+      ],
+      "correct_index": 1,
+      "explanation_es": "CORS es un mecanismo de seguridad del navegador que restringe qué aplicaciones (orígenes) pueden acceder a recursos en un servidor diferente. Sin CORS apropiado, el navegador bloquea las solicitudes cross-origin.",
+      "explanation_en": "CORS is a browser security mechanism that restricts which applications (origins) can access resources on a different server. Without proper CORS, the browser blocks cross-origin requests.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_006",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una solicitud 'preflight' en CORS?",
+      "question_en": "What is a 'preflight' request in CORS?",
+      "options_es": [
+        "Una solicitud GET inicial para verificar la conexión",
+        "Una solicitud que comprime datos habitualmente",
+        "Una solicitud que requiere autenticación",
+        "Una solicitud OPTIONS que el navegador envía antes de hacer la solicitud real"
+      ],
+      "options_en": [
+        "An initial GET request to verify connection",
+        "A request that compresses data typically",
+        "A request that requires authentication",
+        "An OPTIONS request that the browser sends before making the actual request"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El navegador envía una solicitud preflight (OPTIONS) antes de solicitudes complejas (POST, PUT, DELETE con headers personalizados) para verificar si el servidor permite la solicitud cross-origin.",
+      "explanation_en": "The browser sends a preflight request (OPTIONS) before complex requests (POST, PUT, DELETE with custom headers) to verify if the server allows the cross-origin request.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_007",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué encabezado especifica qué orígenes pueden acceder a un recurso?",
+      "question_en": "Which header specifies which origins can access a resource?",
+      "options_es": [
+        "Access-Control-Allow-Methods",
+        "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Max-Age"
+      ],
+      "options_en": [
+        "Access-Control-Allow-Methods",
+        "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Max-Age"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El encabezado Access-Control-Allow-Origin especifica qué orígenes (dominio + puerto + protocolo) pueden acceder al recurso. Por ejemplo: 'Access-Control-Allow-Origin: https://example.com'",
+      "explanation_en": "The Access-Control-Allow-Origin header specifies which origins (domain + port + protocol) can access the resource. For example: 'Access-Control-Allow-Origin: https://example.com'",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_008",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa Access-Control-Allow-Origin: '*'?",
+      "question_en": "What does Access-Control-Allow-Origin: '*' mean?",
+      "options_es": [
+        "Cualquier origen puede acceder al recurso",
+        "Solo el servidor actual puede acceder como práctica recomendada",
+        "Se permite cualquier método HTTP",
+        "Se permiten todos los headers"
+      ],
+      "options_en": [
+        "Any origin can access the resource",
+        "Only the current server can access in this context",
+        "Any HTTP method is allowed",
+        "All headers are allowed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El asterisco (*) permite que cualquier origen acceda al recurso. Aunque es simple, no es seguro para APIs que requieren autenticación. Se recomienda especificar orígenes específicos.",
+      "explanation_en": "The asterisk (*) allows any origin to access the resource. While simple, it is not secure for APIs requiring authentication. It is recommended to specify specific origins.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_009",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de Access-Control-Allow-Methods?",
+      "question_en": "What is the purpose of Access-Control-Allow-Methods?",
+      "options_es": [
+        "Autenticar al usuario por convención",
+        "Definir la velocidad de transferencia",
+        "Especificar qué métodos HTTP se permiten (GET, POST, PUT, DELETE)",
+        "Encriptar las solicitudes HTTP"
+      ],
+      "options_en": [
+        "Authenticate the user",
+        "Define the transfer rate",
+        "Specify which HTTP methods are allowed (GET, POST, PUT, DELETE)",
+        "Encrypt HTTP requests according to spec"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Access-Control-Allow-Methods especifica qué métodos HTTP puede usar un cliente cross-origin. Por ejemplo: 'Access-Control-Allow-Methods: GET, POST, PUT, DELETE'",
+      "explanation_en": "Access-Control-Allow-Methods specifies which HTTP methods a cross-origin client can use. For example: 'Access-Control-Allow-Methods: GET, POST, PUT, DELETE'",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_010",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el 'Access-Control-Max-Age'?",
+      "question_en": "What is 'Access-Control-Max-Age'?",
+      "options_es": [
+        "Cuántos segundos el navegador puede cachear los resultados de la solicitud preflight",
+        "La edad máxima de los datos en la respuesta",
+        "El tiempo máximo que puede durar una sesión",
+        "El tiempo antes de que expire el token en la práctica"
+      ],
+      "options_en": [
+        "How many seconds the browser can cache the preflight request results",
+        "The maximum age of data in the response",
+        "The maximum time a session can last",
+        "The time before the token expires by convention"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Access-Control-Max-Age especifica cuántos segundos el navegador puede cachear los resultados de una solicitud preflight. Esto reduce solicitudes preflight redundantes, mejorando el rendimiento.",
+      "explanation_en": "Access-Control-Max-Age specifies how many seconds the browser can cache preflight request results. This reduces redundant preflight requests, improving performance.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_011",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué algoritmo sería más apropiado para rate limiting con baja latencia?",
+      "question_en": "Which algorithm would be more appropriate for low-latency rate limiting?",
+      "options_es": [
+        "Token Bucket",
+        "Leaky Bucket",
+        "Fixed Window Counter",
+        "Sliding Window Log"
+      ],
+      "options_en": [
+        "Token Bucket",
+        "Leaky Bucket",
+        "Fixed Window Counter",
+        "Sliding Window Log"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Token Bucket es muy eficiente en latencia baja porque usa operaciones simples (restar del bucket). Sliding Window Log requiere acceso a registros históricos, lo que es más lento.",
+      "explanation_en": "Token Bucket is very efficient at low latency because it uses simple operations (subtract from bucket). Sliding Window Log requires access to historical records, which is slower.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_012",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es 'distributed rate limiting'?",
+      "question_en": "What is 'distributed rate limiting'?",
+      "options_es": [
+        "Rate limiting en un servidor único según la especificación",
+        "Rate limiting que cambia según la hora del día",
+        "Rate limiting que se distribuye entre diferentes clientes",
+        "Rate limiting coordinado entre múltiples servidores para limitar un cliente globalmente"
+      ],
+      "options_en": [
+        "Rate limiting on a single server",
+        "Rate limiting that changes based on time of day",
+        "Rate limiting distributed among different clients",
+        "Rate limiting coordinated between multiple servers to limit a client globally"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Distributed rate limiting sincroniza límites entre múltiples servidores para evitar que un cliente contaminado burle los límites usando diferentes servidores. Usa una tienda compartida (Redis, Memcached).",
+      "explanation_en": "Distributed rate limiting synchronizes limits across multiple servers to prevent a malicious client from bypassing limits by using different servers. It uses a shared store (Redis, Memcached).",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_013",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué encabezado indica credenciales en solicitudes CORS?",
+      "question_en": "Which header indicates credentials in CORS requests?",
+      "options_es": [
+        "Access-Control-Request-Method en entornos de producción",
+        "Access-Control-Request-Headers",
+        "Access-Control-Expose-Headers",
+        "Access-Control-Allow-Credentials"
+      ],
+      "options_en": [
+        "Access-Control-Request-Method as a recommended practice",
+        "Access-Control-Request-Headers",
+        "Access-Control-Expose-Headers",
+        "Access-Control-Allow-Credentials"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Access-Control-Allow-Credentials: true indica que las solicitudes cross-origin pueden incluir credenciales (cookies, tokens). Sin este encabezado, el navegador rechaza credenciales en solicitudes cross-origin.",
+      "explanation_en": "Access-Control-Allow-Credentials: true indicates that cross-origin requests can include credentials (cookies, tokens). Without this header, the browser rejects credentials in cross-origin requests.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_014",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Qué encabezado especifica qué headers puede usar un cliente en solicitudes CORS?",
+      "question_en": "Which header specifies which headers a client can use in CORS requests?",
+      "options_es": [
+        "Access-Control-Allow-Headers",
+        "Access-Control-Request-Headers",
+        "Access-Control-Expose-Headers",
+        "Access-Control-Allow-Methods"
+      ],
+      "options_en": [
+        "Access-Control-Allow-Headers",
+        "Access-Control-Request-Headers",
+        "Access-Control-Expose-Headers",
+        "Access-Control-Allow-Methods"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Access-Control-Allow-Headers especifica qué headers personalizados puede usar el cliente. Por ejemplo: 'Access-Control-Allow-Headers: Content-Type, Authorization, X-Custom-Header'",
+      "explanation_en": "Access-Control-Allow-Headers specifies which custom headers the client can use. For example: 'Access-Control-Allow-Headers: Content-Type, Authorization, X-Custom-Header'",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280502_015",
+      "skill_id": "sk280502",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué es importante configurar CORS correctamente?",
+      "question_en": "Why is it important to configure CORS correctly?",
+      "options_es": [
+        "Para mejorar la velocidad de transferencia",
+        "Para reducir el uso de ancho de banda",
+        "Para compresión de datos según la especificación",
+        "Para proteger contra ataques y controlar qué aplicaciones pueden acceder a los recursos"
+      ],
+      "options_en": [
+        "To improve transfer speed",
+        "To reduce bandwidth usage",
+        "For data compression according to spec",
+        "To protect against attacks and control which applications can access resources"
+      ],
+      "correct_index": 3,
+      "explanation_es": "CORS bien configurado previene que sitios maliciosos accedan a datos sensibles. Una configuración demasiado permisiva expone datos; muy restrictiva bloquea aplicaciones legítimas.",
+      "explanation_en": "Properly configured CORS prevents malicious sites from accessing sensitive data. Too permissive configuration exposes data; too restrictive blocks legitimate applications.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_001",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es OpenAPI (anteriormente conocida como Swagger)?",
+      "question_en": "What is OpenAPI (formerly known as Swagger)?",
+      "options_es": [
+        "Un servidor de base de datos",
+        "Un lenguaje de programación de forma estándar",
+        "Una especificación estándar para describir APIs REST",
+        "Un protocolo de autenticación como práctica recomendada"
+      ],
+      "options_en": [
+        "A database server by convention",
+        "A programming language",
+        "A standard specification for describing REST APIs",
+        "An authentication protocol in production environments"
+      ],
+      "correct_index": 2,
+      "explanation_es": "OpenAPI es una especificación estandarizada que describe cómo una API REST está estructurada, qué endpoints tiene, qué parámetros acepta y qué respuestas retorna. Facilita documentación interactiva y generación de clientes.",
+      "explanation_en": "OpenAPI is a standardized specification that describes how a REST API is structured, what endpoints it has, what parameters it accepts, and what responses it returns. It facilitates interactive documentation and client generation.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_002",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar Swagger UI?",
+      "question_en": "What is the advantage of using Swagger UI?",
+      "options_es": [
+        "Aumenta la seguridad de la API",
+        "Encripta las solicitudes HTTP en la práctica",
+        "Proporciona una interfaz web interactiva para explorar y probar la API",
+        "Comprime automáticamente las respuestas"
+      ],
+      "options_en": [
+        "Increases API security in real environments",
+        "Encrypts HTTP requests",
+        "Provides an interactive web interface to explore and test the API",
+        "Automatically compresses responses"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Swagger UI genera una interfaz visual interactiva basada en OpenAPI donde los desarrolladores pueden ver documentación completa de la API, parámetros, respuestas y probar endpoints directamente.",
+      "explanation_en": "Swagger UI generates an interactive visual interface based on OpenAPI where developers can see complete API documentation, parameters, responses, and test endpoints directly.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_003",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'schema' en OpenAPI?",
+      "question_en": "What is a 'schema' in OpenAPI?",
+      "options_es": [
+        "Una definición de la estructura de datos (formato, tipo, campos) que una API usa o retorna",
+        "Una configuración de servidor web según la especificación",
+        "Un conjunto de reglas de seguridad",
+        "Una estructura de base de datos SQL en condiciones normales de forma general de forma general"
+      ],
+      "options_en": [
+        "A definition of the data structure (format, type, fields) that an API uses or returns",
+        "A web server configuration",
+        "A set of security rules in practice",
+        "A SQL database structure as a standard approach as a general guideline according to official documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En OpenAPI, un schema describe la estructura de los datos. Define qué propiedades tiene un objeto, sus tipos de datos, si son requeridos, valores por defecto, etc. Facilita validación y generación de clientes.",
+      "explanation_en": "In OpenAPI, a schema describes the structure of data. It defines what properties an object has, their data types, whether they are required, default values, etc. It facilitates validation and client generation.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_004",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre parámetro 'path', 'query' y 'body' en OpenAPI?",
+      "question_en": "What is the difference between 'path', 'query', and 'body' parameters in OpenAPI?",
+      "options_es": [
+        "No hay diferencia, son sinónimos en entornos reales como regla general en la práctica habitual",
+        "Query va siempre en el encabezado",
+        "Path va en la URL, query como parámetro de cadena, body en el cuerpo de la solicitud",
+        "Todos van en el cuerpo de la solicitud"
+      ],
+      "options_en": [
+        "There is no difference, they are synonyms in production environments in the most common case",
+        "Query always goes in the header",
+        "Path goes in the URL, query as string parameter, body in the request body",
+        "They all go in the request body as a general rule"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Path son variables en la URL (/users/{id}), query parámetros opcionales (?page=1), body datos complejos en la solicitud. Cada uno tiene un propósito diferente y se documenta en OpenAPI.",
+      "explanation_en": "Path are URL variables (/users/{id}), query optional parameters (?page=1), body complex data in the request. Each has a different purpose and is documented in OpenAPI.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_005",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué herramienta se usa para generar un cliente HTTP desde OpenAPI?",
+      "question_en": "What tool is used to generate an HTTP client from OpenAPI?",
+      "options_es": [
+        "OpenAPI Generator",
+        "Postman",
+        "httpx",
+        "pip en entornos reales"
+      ],
+      "options_en": [
+        "OpenAPI Generator",
+        "Postman",
+        "httpx",
+        "pip as a general rule"
+      ],
+      "correct_index": 0,
+      "explanation_es": "OpenAPI Generator es una herramienta que lee una especificación OpenAPI y genera clientes, servidores y documentación en múltiples lenguajes. Automatiza la creación de código boilerplate.",
+      "explanation_en": "OpenAPI Generator is a tool that reads an OpenAPI specification and generates clients, servers, and documentation in multiple languages. It automates boilerplate code creation.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_006",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es httpx en Python?",
+      "question_en": "What is httpx in Python?",
+      "options_es": [
+        "Una base de datos NoSQL",
+        "Un framework web como FastAPI como práctica recomendada según la documentación oficial",
+        "Un cliente HTTP moderno que soporta requests síncronos y asíncronos",
+        "Un servidor de caché en este contexto"
+      ],
+      "options_en": [
+        "A NoSQL database",
+        "A web framework like FastAPI for most projects according to official documentation",
+        "A modern HTTP client that supports synchronous and asynchronous requests",
+        "A cache server in real environments"
+      ],
+      "correct_index": 2,
+      "explanation_es": "httpx es una librería Python moderna para hacer solicitudes HTTP. Soporta requests síncronos (requests tradicionales) y asíncronos (await), siendo ideal para APIs modernas y testing.",
+      "explanation_en": "httpx is a modern Python library for making HTTP requests. It supports both synchronous (traditional requests) and asynchronous (await) requests, ideal for modern APIs and testing.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_007",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se describe un código de respuesta exitosa en OpenAPI?",
+      "question_en": "How is a successful response code described in OpenAPI?",
+      "options_es": [
+        "responses: '400' en este contexto en la práctica habitual",
+        "responses: '200': {description: 'OK', schema: {...}}",
+        "errors: '200' como regla general",
+        "No es necesario describir códigos de éxito"
+      ],
+      "options_en": [
+        "responses: '400' as a general guideline according to official documentation",
+        "responses: '200': {description: 'OK', schema: {...}}",
+        "errors: '200' according to spec",
+        "It is not necessary to describe successful codes"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En OpenAPI, cada respuesta se describe en la sección 'responses' con el código de estado (200, 201, 404, etc.), una descripción, y el schema del cuerpo de respuesta.",
+      "explanation_en": "In OpenAPI, each response is described in the 'responses' section with the status code (200, 201, 404, etc.), a description, and the schema of the response body.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_008",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es ReDoc?",
+      "question_en": "What is ReDoc?",
+      "options_es": [
+        "Otra herramienta para documentación interactiva de OpenAPI",
+        "Un editor de código fuente dentro de este paradigma en el caso más común",
+        "Una base de datos de forma estándar",
+        "Un framework de testing"
+      ],
+      "options_en": [
+        "Another tool for interactive OpenAPI documentation",
+        "A source code editor in production environments as a standard approach",
+        "A database in real environments",
+        "A testing framework"
+      ],
+      "correct_index": 0,
+      "explanation_es": "ReDoc es una alternativa a Swagger UI que genera documentación interactiva y responsiva desde OpenAPI. Es más enfocada en la documentación legible que en testing de endpoints.",
+      "explanation_en": "ReDoc is an alternative to Swagger UI that generates interactive and responsive documentation from OpenAPI. It is more focused on readable documentation than endpoint testing.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_009",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'security scheme' en OpenAPI?",
+      "question_en": "What is a 'security scheme' in OpenAPI?",
+      "options_es": [
+        "Un tipo de base de datos",
+        "Un protocolo de cifrado habitualmente",
+        "Una definición de cómo se autentica en la API (Basic Auth, Bearer Token, OAuth2, etc.)",
+        "Un tipo de servidor web"
+      ],
+      "options_en": [
+        "A type of database as a general rule",
+        "An encryption protocol",
+        "A definition of how to authenticate with the API (Basic Auth, Bearer Token, OAuth2, etc.)",
+        "A type of web server"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Security schemes en OpenAPI describen los métodos de autenticación disponibles (Bearer token, Basic auth, OAuth2, API Key). Facilita que clientes autogenerados incluyan autenticación correcta.",
+      "explanation_en": "Security schemes in OpenAPI describe available authentication methods (Bearer token, Basic auth, OAuth2, API Key). It facilitates auto-generated clients to include proper authentication.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_010",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de tener una especificación OpenAPI para testing?",
+      "question_en": "What is the advantage of having an OpenAPI specification for testing?",
+      "options_es": [
+        "No tiene ventaja por convención",
+        "Permite generar tests automáticamente y validar que la API cumple con la especificación",
+        "Reduce el tiempo de compilación",
+        "Aumenta la seguridad del servidor"
+      ],
+      "options_en": [
+        "It has no advantage as a general rule",
+        "It allows automatically generating tests and validating that the API complies with the specification",
+        "Reduces compilation time",
+        "Increases server security"
+      ],
+      "correct_index": 1,
+      "explanation_es": "OpenAPI permite testing automático verificando que la API real coincida con la especificación documentada. Detecta desviaciones como parámetros faltantes, esquemas incorrectos o códigos de estado inesperados.",
+      "explanation_en": "OpenAPI allows automatic testing by verifying that the real API matches the documented specification. It detects deviations like missing parameters, incorrect schemas, or unexpected status codes.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_011",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué formato usa OpenAPI para describir esquemas de datos?",
+      "question_en": "What format does OpenAPI use to describe data schemas?",
+      "options_es": [
+        "JSON Schema (compatible)",
+        "DTD en entornos reales",
+        "XML Schema",
+        "YAML puro"
+      ],
+      "options_en": [
+        "JSON Schema (compatible)",
+        "DTD as a general rule",
+        "XML Schema",
+        "Pure YAML"
+      ],
+      "correct_index": 0,
+      "explanation_es": "OpenAPI usa JSON Schema para describir esquemas de datos. Aunque OpenAPI se puede escribir en YAML, los esquemas dentro usan JSON Schema compatible.",
+      "explanation_en": "OpenAPI uses JSON Schema to describe data schemas. Although OpenAPI can be written in YAML, the schemas within use compatible JSON Schema.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_012",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'endpoint' en OpenAPI?",
+      "question_en": "What is an 'endpoint' in OpenAPI?",
+      "options_es": [
+        "La dirección IP del servidor",
+        "El certificado SSL/TLS de la API",
+        "Una ruta específica de la API con un método HTTP",
+        "El puerto en el que escucha el servidor"
+      ],
+      "options_en": [
+        "The IP address of the server",
+        "The SSL/TLS certificate of the API",
+        "A specific route of the API with an HTTP method",
+        "The port on which the server listens"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En OpenAPI, un endpoint es una combinación de ruta (ej: /users/{id}) y método HTTP (GET, POST, PUT, DELETE). Cada endpoint se documenta con sus parámetros, respuestas y autenticación.",
+      "explanation_en": "In OpenAPI, an endpoint is a combination of a route (e.g., /users/{id}) and HTTP method (GET, POST, PUT, DELETE). Each endpoint is documented with its parameters, responses, and authentication.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_013",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué información debe contener un buen esquema OpenAPI?",
+      "question_en": "What information should a good OpenAPI schema contain?",
+      "options_es": [
+        "Solo las rutas de la API en la práctica",
+        "Solo información de seguridad",
+        "Rutas, métodos, parámetros, esquemas, respuestas, seguridad y ejemplos",
+        "Solo los códigos de error"
+      ],
+      "options_en": [
+        "Only the API routes",
+        "Only security information",
+        "Routes, methods, parameters, schemas, responses, security, and examples",
+        "Only error codes by convention"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una buena especificación OpenAPI incluye: rutas, métodos HTTP, parámetros (path, query, body), esquemas de datos, códigos de respuesta esperados, requirements de seguridad y ejemplos de uso.",
+      "explanation_en": "A good OpenAPI specification includes: routes, HTTP methods, parameters (path, query, body), data schemas, expected response codes, security requirements, and usage examples.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_014",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se describe una propiedad requerida en un schema OpenAPI?",
+      "question_en": "How is a required property described in an OpenAPI schema?",
+      "options_es": [
+        "Con 'required: true' en la propiedad",
+        "Listando el nombre en la sección 'required'",
+        "Con 'mandatory: true' según la documentación oficial",
+        "Con 'obligatory: yes'"
+      ],
+      "options_en": [
+        "With 'required: true' in the property",
+        "By listing the name in the 'required' section",
+        "With 'mandatory: true' in common practice",
+        "With 'obligatory: yes'"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En JSON Schema (usado por OpenAPI), las propiedades requeridas se listan en un array 'required' al nivel del objeto. Ej: 'required: [\"id\", \"name\"]'",
+      "explanation_en": "In JSON Schema (used by OpenAPI), required properties are listed in a 'required' array at the object level. E.g.: 'required: [\"id\", \"name\"]'",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280503_015",
+      "skill_id": "sk280503",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la versión más reciente de OpenAPI?",
+      "question_en": "What is the latest version of OpenAPI?",
+      "options_es": [
+        "2.0 (Swagger)",
+        "3.0.x",
+        "4.0",
+        "3.1.x"
+      ],
+      "options_en": [
+        "2.0 (Swagger)",
+        "3.0.x",
+        "4.0",
+        "3.1.x"
+      ],
+      "correct_index": 3,
+      "explanation_es": "OpenAPI 3.1.x es la versión más reciente (2026), con mejor compatibilidad con JSON Schema y más funcionalidades. Se recomienda usar 3.1.x para nuevos proyectos.",
+      "explanation_en": "OpenAPI 3.1.x is the latest version (2026), with better JSON Schema compatibility and more features. It is recommended to use 3.1.x for new projects.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_001",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la amenaza más común a las APIs?",
+      "question_en": "What is the most common threat to APIs?",
+      "options_es": [
+        "Problemas de conectividad de red",
+        "Ataques de acceso físico en entornos reales para la mayoría de proyectos",
+        "Falta de espacio en disco",
+        "Inyección de SQL y validación de entrada insuficiente"
+      ],
+      "options_en": [
+        "Network connectivity issues",
+        "Physical access attacks as a general rule",
+        "Lack of disk space by default",
+        "SQL injection and insufficient input validation"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La inyección SQL y validación de entrada insuficiente son vulnerabilidades críticas. Ocurren cuando no se valida entrada del usuario, permitiendo a atacantes ejecutar código malicioso.",
+      "explanation_en": "SQL injection and insufficient input validation are critical vulnerabilities. They occur when user input is not validated, allowing attackers to execute malicious code.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_002",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es validación de entrada?",
+      "question_en": "What is input validation?",
+      "options_es": [
+        "Registrar quién accede a la API",
+        "Verificar que los datos recibidos cumplan con formato, tipo y restricciones esperadas",
+        "Encriptar datos en tránsito",
+        "Comprimir respuestas HTTP en la práctica en condiciones normales en la práctica habitual"
+      ],
+      "options_en": [
+        "Logging who accesses the API",
+        "Verifying that received data meets expected format, type, and constraints",
+        "Encrypting data in transit by convention",
+        "Compressing HTTP responses in production environments as a standard approach"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Validación de entrada verifica que los datos cumplan con lo esperado: tipo de dato correcto, rango válido, formato correcto. Previene inyecciones, ataques XSS y lógica corrupta.",
+      "explanation_en": "Input validation verifies that data meets expectations: correct data type, valid range, correct format. It prevents injections, XSS attacks, and corrupted logic.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_003",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es SQL Injection?",
+      "question_en": "What is SQL Injection?",
+      "options_es": [
+        "Una técnica para optimizar queries SQL",
+        "Un ataque donde entrada maliciosa modifica la query SQL ejecutada",
+        "Un método para inyectar datos en la base de datos",
+        "Un proceso de migración de datos"
+      ],
+      "options_en": [
+        "A technique to optimize SQL queries",
+        "An attack where malicious input modifies the executed SQL query",
+        "A method to inject data into the database",
+        "A data migration process typically"
+      ],
+      "correct_index": 1,
+      "explanation_es": "SQL Injection ocurre cuando entrada del usuario se concatena directamente en queries SQL sin escape. Un atacante puede modificar la query, acceder a datos no autorizados o eliminar información.",
+      "explanation_en": "SQL Injection occurs when user input is concatenated directly into SQL queries without escaping. An attacker can modify the query, access unauthorized data, or delete information.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_004",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se previene SQL Injection?",
+      "question_en": "How is SQL Injection prevented?",
+      "options_es": [
+        "Usando prepared statements o parameterized queries",
+        "Usando encriptación en la base de datos en condiciones normales",
+        "Comprimiendo las respuestas",
+        "Aumentando el timeout de las conexiones"
+      ],
+      "options_en": [
+        "Using prepared statements or parameterized queries",
+        "Using database encryption in production environments",
+        "Compressing responses as a general rule",
+        "Increasing connection timeout"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Prepared statements separan la estructura SQL de los datos. La SQL se compila con placeholders, luego los datos se vinculan de forma segura, evitando que entrada maliciosa modifique la query.",
+      "explanation_en": "Prepared statements separate SQL structure from data. SQL is compiled with placeholders, then data is safely bound, preventing malicious input from modifying the query.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_005",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es XSS (Cross-Site Scripting)?",
+      "question_en": "What is XSS (Cross-Site Scripting)?",
+      "options_es": [
+        "Un tipo de encriptación como regla general en condiciones normales",
+        "Un tipo de servidor web",
+        "Un protocolo de seguridad",
+        "Un ataque donde código malicioso se inyecta en páginas web"
+      ],
+      "options_en": [
+        "A type of encryption in production environments",
+        "A type of web server",
+        "A security protocol in this context",
+        "An attack where malicious code is injected into web pages"
+      ],
+      "correct_index": 3,
+      "explanation_es": "XSS ocurre cuando entrada del usuario se renderiza en HTML sin escapar. Un atacante puede inyectar JavaScript que ejecute en el navegador de otras víctimas, robando datos o sesiones.",
+      "explanation_en": "XSS occurs when user input is rendered in HTML without escaping. An attacker can inject JavaScript that executes in victims' browsers, stealing data or sessions.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_006",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se previene XSS?",
+      "question_en": "How is XSS prevented?",
+      "options_es": [
+        "Escapando caracteres especiales HTML cuando se renderiza entrada del usuario",
+        "Usando cookies HttpOnly por convención",
+        "Usando HTTPS obligatoriamente",
+        "Aumentando la velocidad de la API"
+      ],
+      "options_en": [
+        "Escaping special HTML characters when rendering user input",
+        "Using HttpOnly cookies",
+        "Using HTTPS mandatory",
+        "Increasing API speed as a general rule"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Escapar HTML convierte caracteres especiales (<, >, &, \", ') en entidades HTML (&lt;, &gt;, etc.), previniendo que navegadores interpreten entrada como código ejecutable.",
+      "explanation_en": "HTML escaping converts special characters (<, >, &, \", ') to HTML entities (&lt;, &gt;, etc.), preventing browsers from interpreting input as executable code.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_007",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué es importante usar HTTPS en todas las APIs?",
+      "question_en": "Why is it important to use HTTPS on all APIs?",
+      "options_es": [
+        "Para aumentar la velocidad de transferencia",
+        "Para reducir el uso de ancho de banda",
+        "Para encriptar datos en tránsito y prevenir man-in-the-middle attacks",
+        "Para comprimir automáticamente las respuestas según la documentación oficial"
+      ],
+      "options_en": [
+        "To increase transfer speed",
+        "To reduce bandwidth usage in this context",
+        "To encrypt data in transit and prevent man-in-the-middle attacks",
+        "To automatically compress responses as a general guideline"
+      ],
+      "correct_index": 2,
+      "explanation_es": "HTTPS encripta la comunicación entre cliente y servidor. Sin HTTPS, en conexiones inseguras (WiFi público) un atacante puede interceptar tokens, contraseñas y datos sensibles.",
+      "explanation_en": "HTTPS encrypts communication between client and server. Without HTTPS, on insecure connections (public WiFi), an attacker can intercept tokens, passwords, and sensitive data.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_008",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una lista blanca (whitelist) en seguridad de APIs?",
+      "question_en": "What is a whitelist in API security?",
+      "options_es": [
+        "Un lista de usuarios confiables según la documentación oficial",
+        "Una lista de valores permitidos; todo lo demás se rechaza",
+        "Una lista de errores permitidos",
+        "Una lista de países permitidos en este contexto"
+      ],
+      "options_en": [
+        "A list of trusted users in real environments as a general rule",
+        "A list of allowed values; everything else is rejected",
+        "A list of allowed errors",
+        "A list of allowed countries"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una whitelist define valores válidos y rechaza implícitamente todo lo demás. Es más seguro que blacklists porque nuevos ataques se rechazan automáticamente.",
+      "explanation_en": "A whitelist defines valid values and implicitly rejects everything else. It is more secure than blacklists because new attacks are automatically rejected.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_009",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es 'Content Security Policy' (CSP)?",
+      "question_en": "What is 'Content Security Policy' (CSP)?",
+      "options_es": [
+        "Un encabezado HTTP que restringe qué recursos pueden cargar las páginas web",
+        "Una técnica de compresión",
+        "Un tipo de base de datos como regla general en este contexto en el caso más común",
+        "Un protocolo de encriptación"
+      ],
+      "options_en": [
+        "An HTTP header that restricts what resources web pages can load",
+        "A compression technique",
+        "A type of database in practice within this paradigm as a recommended practice",
+        "An encryption protocol"
+      ],
+      "correct_index": 0,
+      "explanation_es": "CSP es un encabezado HTTP que especifica qué scripts, estilos e imágenes pueden cargarse. Previene XSS permitiendo solo recursos de origen confiable.",
+      "explanation_en": "CSP is an HTTP header that specifies what scripts, styles, and images can be loaded. It prevents XSS by allowing only resources from trusted origins.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_010",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué encabezado previene ataques de clickjacking?",
+      "question_en": "Which header prevents clickjacking attacks?",
+      "options_es": [
+        "Strict-Transport-Security",
+        "X-Frame-Options",
+        "X-Content-Type-Options",
+        "X-XSS-Protection"
+      ],
+      "options_en": [
+        "Strict-Transport-Security",
+        "X-Frame-Options",
+        "X-Content-Type-Options",
+        "X-XSS-Protection"
+      ],
+      "correct_index": 1,
+      "explanation_es": "X-Frame-Options especifica si una página puede ser enmarcada (iframe) en otro sitio. DENY previene cualquier enmarcado; SAMEORIGIN permite solo el mismo origen.",
+      "explanation_en": "X-Frame-Options specifies whether a page can be framed (iframe) on another site. DENY prevents any framing; SAMEORIGIN allows only the same origin.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_011",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es OWASP Top 10?",
+      "question_en": "What is OWASP Top 10?",
+      "options_es": [
+        "Un listado de las 10 vulnerabilidades web más críticas y cómo mitigarlas",
+        "Un conjunto de herramientas de testing",
+        "Un framework de seguridad habitualmente",
+        "Un protocolo de encriptación"
+      ],
+      "options_en": [
+        "A list of the 10 most critical web vulnerabilities and how to mitigate them",
+        "A set of testing tools",
+        "A security framework in practice",
+        "An encryption protocol"
+      ],
+      "correct_index": 0,
+      "explanation_es": "OWASP Top 10 es una lista mantenida por la Open Web Application Security Project de las vulnerabilidades web más críticas. Incluye inyección, broken auth, XSS, y otras.",
+      "explanation_en": "OWASP Top 10 is a list maintained by the Open Web Application Security Project of the most critical web vulnerabilities. It includes injection, broken auth, XSS, and others.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_012",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre autenticación y autorización?",
+      "question_en": "What is the difference between authentication and authorization?",
+      "options_es": [
+        "No hay diferencia en la práctica",
+        "Son el mismo concepto con nombres diferentes de forma general de manera estándar",
+        "Autenticación verifica quién eres; autorización verifica qué puedes hacer",
+        "Autenticación es más importante que autorización"
+      ],
+      "options_en": [
+        "There is no difference as a general rule",
+        "They are the same concept with different names as a standard approach under normal conditions",
+        "Authentication verifies who you are; authorization verifies what you can do",
+        "Authentication is more important than authorization"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Autenticación es verificar la identidad (ej: login con usuario/contraseña). Autorización es verificar permisos (ej: si puede acceder a un recurso). Ambas son necesarias.",
+      "explanation_en": "Authentication is verifying identity (e.g., login with username/password). Authorization is verifying permissions (e.g., whether they can access a resource). Both are necessary.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_013",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es hashing de contraseña?",
+      "question_en": "What is password hashing?",
+      "options_es": [
+        "Encriptar contraseñas con una clave simétrica",
+        "Dividir la contraseña en partes según la especificación como regla general de manera estándar",
+        "Aplicar una función unidireccional que transforma la contraseña en un hash único",
+        "Almacenar contraseñas en texto plano"
+      ],
+      "options_en": [
+        "Encrypting passwords with a symmetric key",
+        "Splitting the password into parts for most projects as a standard approach",
+        "Applying a one-way function that transforms the password into a unique hash",
+        "Storing passwords in plain text by default"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Hashing es una función unidireccional: password → hash, pero hash ≠> password. Es imposible recuperar la contraseña del hash. Al autenticar, se hashea la entrada y se compara con el hash almacenado.",
+      "explanation_en": "Hashing is a one-way function: password → hash, but hash ≠> password. It is impossible to recover the password from the hash. When authenticating, the input is hashed and compared with the stored hash.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_014",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el algoritmo de hashing más seguro para contraseñas?",
+      "question_en": "Which is the most secure hashing algorithm for passwords?",
+      "options_es": [
+        "Base64",
+        "SHA-1",
+        "MD5",
+        "bcrypt"
+      ],
+      "options_en": [
+        "Base64",
+        "SHA-1",
+        "MD5",
+        "bcrypt"
+      ],
+      "correct_index": 3,
+      "explanation_es": "bcrypt es un algoritmo de hashing especialmente diseñado para contraseñas. Incluye salt y es lento intencionalmente, haciendo ataques de fuerza bruta impracticables. MD5 y SHA-1 están comprometidos.",
+      "explanation_en": "bcrypt is a hashing algorithm specifically designed for passwords. It includes salt and is intentionally slow, making brute force attacks impractical. MD5 and SHA-1 are compromised.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280504_015",
+      "skill_id": "sk280504",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es 'salt' en el contexto de hashing?",
+      "question_en": "What is 'salt' in the context of hashing?",
+      "options_es": [
+        "Un condimento usado en seguridad en este contexto",
+        "Un tipo de algoritmo de encriptación",
+        "Un método de compresión de datos",
+        "Un valor aleatorio único agregado antes de hashear para prevenir rainbow tables"
+      ],
+      "options_en": [
+        "A seasoning used in security",
+        "A type of encryption algorithm",
+        "A data compression method as a general rule",
+        "A random unique value added before hashing to prevent rainbow tables"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Salt es un valor aleatorio único por usuario que se prepende a la contraseña antes de hashear. Esto previene que dos usuarios con la misma contraseña tengan el mismo hash, y hace inútiles los rainbow tables precomputados.",
+      "explanation_en": "Salt is a random unique value per user prepended to the password before hashing. This prevents two users with the same password from having the same hash, and makes precomputed rainbow tables useless.",
+      "source": "https://fastapi.tiangolo.com"
+    }
+  ]
+}

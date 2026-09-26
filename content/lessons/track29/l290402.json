@@ -1,0 +1,12 @@
+{
+  "id": "l290402",
+  "skill_id": "sk290402",
+  "title_es": "Selenium WebDriver",
+  "title_en": "Selenium WebDriver",
+  "body_es": "Selenium WebDriver es el estándar de facto para automatización web, soportando todos los navegadores principales (Chrome, Firefox, Safari, Edge) y múltiples lenguajes de programación. Interactúa directamente con el navegador a través del protocolo WebDriver. Ofrece métodos para buscar elementos (find_element), interactuar con ellos (click, send_keys) y esperar condiciones (WebDriverWait). Selenium es ampliamente usado en industria y tiene comunidad grande. Sin embargo, es más lento y menos confiable que herramientas modernas como Playwright, especialmente en waits implícitos.",
+  "body_en": "Selenium WebDriver is the de facto standard for web automation, supporting all major browsers (Chrome, Firefox, Safari, Edge) and multiple programming languages. It interacts directly with the browser through the WebDriver protocol. It offers methods to find elements (find_element), interact with them (click, send_keys), and wait for conditions (WebDriverWait). Selenium is widely used in industry with a large community. However, it's slower and less reliable than modern tools like Playwright, especially with implicit waits.",
+  "example_code": "from selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\n\ndef test_search_functionality():\n    driver = webdriver.Chrome()\n    driver.get('https://example.com')\n    \n    # Find search input and type\n    search_box = driver.find_element(By.ID, 'search')\n    search_box.send_keys('python testing')\n    search_box.submit()\n    \n    # Wait for results to appear\n    wait = WebDriverWait(driver, 10)\n    results = wait.until(\n        EC.presence_of_all_elements_located((By.CLASS_NAME, 'result-item'))\n    )\n    \n    assert len(results) > 0\n    driver.quit()",
+  "example_output": "test_search_functionality PASSED (4.2s)\nSearch results found: 42 items\nBrowser closed successfully",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 2
+}

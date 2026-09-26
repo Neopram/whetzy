@@ -37,7 +37,7 @@ Cubre el camino completo: desde las primeras líneas de Python hasta arquitectur
 - **Motor adaptativo.** BKT + FSRS deciden qué practicas y cuándo repasas. No adivinamos: lo calculamos.
 - **Código que se ejecuta.** Los ejemplos de Python, SQL y JavaScript corren de verdad en la app, sin servidor externo, sin copiar y pegar.
 - **Bilingüe nativo.** Todo el contenido está escrito en español e inglés por separado — no es una traducción automática.
-- **18 tracks. 378 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
+- **18 tracks. 401 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
 - **Sin anuncios. Sin rastreo.**
 
 **Cómo funciona**
@@ -60,7 +60,7 @@ It covers the full path: from your first lines of Python to microservice archite
 - **Adaptive engine.** BKT + FSRS decide what you practice and when you review. We don't guess: we calculate it.
 - **Code that runs.** Python, SQL and JavaScript examples actually execute inside the app — no external server, no copy-paste.
 - **Natively bilingual.** All content is written in Spanish and English separately — not machine-translated.
-- **18 tracks. 378 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
+- **18 tracks. 401 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
 - **No ads. No tracking.**
 
 **How it works**
@@ -146,9 +146,11 @@ Generar con Playwright (`npm run screenshots:ios`) o manualmente en simulador.
 
 ## IAP (In-App Purchases) — RevenueCat (17.14)
 
-| Product ID | Tipo | Precio sugerido |
+| Product ID | Tipo | Precio (ADR-41/49) |
 |---|---|---|
-| `app.whetzy.plus.monthly` | Auto-renovable | $4.99/mes |
-| `app.whetzy.plus.yearly` | Auto-renovable | $39.99/año |
+| `app.whetzy.pro.monthly` | Auto-renovable | $14,99/mes |
+| `app.whetzy.promax.monthly` | Auto-renovable | $19,99/mes |
+| `app.whetzy.creator.monthly` | Auto-renovable | $99,99/mes |
+| `app.whetzy.cert.*` | Consumible (pago único) | $39,99 c/u |
 
 > 17.14 está HUMAN-BLOCKED (H.2 + H.5). Sin estos productos configurados en App Store Connect, Apple rechaza cualquier referencia a compras en la app.

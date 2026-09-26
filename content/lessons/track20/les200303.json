@@ -1,0 +1,13 @@
+{
+  "id": "les200303",
+  "skill_id": "sk200303",
+  "language": "es",
+  "executable": false,
+  "title_es": "Computación Distribuida y Particionamiento",
+  "title_en": "Distributed Computing & Partitioning",
+  "body_es": "La computación distribuida divide datos en partitions procesadas en paralelo. Particionamiento apropiado es crítico: pocos partitions = subutilización de workers, muchos = overhead. Data skew (datos desbalanceados) causa que algunos workers se atrasen. Técnicas como salting modifican claves para distribuir uniformemente. Data locality asegura que tasks se ejecuten donde residen datos, minimizando red.",
+  "body_en": "Distributed computing divides data into partitions processed in parallel. Proper partitioning is critical: few partitions = worker underutilization, many = overhead. Data skew (imbalanced data) causes some workers to lag. Techniques like salting modify keys for uniform distribution. Data locality ensures tasks run where data resides, minimizing network.",
+  "example_code": "from pyspark.sql.functions import col, rand\n\ndf = spark.read.parquet('/data/large_file')\n\n# Repartition para 100 partitions\ndf_repart = df.repartition(100)\n\n# Salting para skew: agregar salt aleatorio a clave\ndf_salted = df.withColumn(\n  'key_salted', \n  concat(col('key'), lit('_'), (rand() * 10).cast('int'))\n)\ndf_salted.repartition(100, 'key_salted')\n\n# Data locality: Spark automáticamente lo considera",
+  "example_output": "1000 partitions en vez de 10 distribuidas uniformemente, reduciendo tiempo de ejecución 10x.",
+  "source": "https://spark.apache.org/docs/"
+}

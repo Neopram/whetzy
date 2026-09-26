@@ -323,16 +323,16 @@
       "question_es": "¿Qué sucede con las cabeceras en la desencapsulación en el destino?",
       "question_en": "What happens to headers during decapsulation at the destination?",
       "options_es": [
-        "Se conservan todas",
+        "Se conservan todas y se reenvían a la capa superior intactas",
         "Cada capa extrae su cabecera y la descarta",
         "Se descartan todas",
-        "Se copian a memoria"
+        "Se copian a memoria antes de pasar a la capa siguiente sin cambios"
       ],
       "options_en": [
-        "All are preserved",
+        "All are preserved and forwarded to the upper layer intact",
         "Each layer removes and discards its header",
         "All are discarded",
-        "They are copied to memory"
+        "They are copied to memory before passing to the next layer unchanged"
       ],
       "correct_index": 1,
       "explanation_es": "En la desencapsulación, cada capa extrae su propia cabecera y la descarta después de procesarla. Solo los datos útiles (payload) se pasan a la capa superior. Este proceso es la inversa de la encapsulación.",
@@ -407,16 +407,16 @@
       "question_es": "¿Qué es una PDU (Protocol Data Unit)?",
       "question_en": "What is a PDU (Protocol Data Unit)?",
       "options_es": [
-        "Un cable de red",
+        "Un cable de red utilizado para conectar dispositivos de la capa física entre sí",
         "Una dirección MAC",
         "Una unidad de datos con cabecera y datos útiles en cada capa",
-        "Un puerto de red"
+        "Un puerto de red asignado por el sistema operativo para cada conexión activa"
       ],
       "options_en": [
-        "A network cable",
+        "A network cable used to connect physical layer devices to each other",
         "A MAC address",
         "A unit of data with header and payload at each layer",
-        "A network port"
+        "A network port assigned by the operating system for each active connection"
       ],
       "correct_index": 2,
       "explanation_es": "Una PDU es la unidad básica de datos en cada capa del modelo OSI. Consiste en la cabecera (header) agregada por esa capa más los datos útiles (payload) de las capas superiores. En cada capa tiene un nombre diferente: bit, trama, paquete, segmento.",
@@ -498,15 +498,15 @@
       "question_en": "What is a subnet mask?",
       "options_es": [
         "Un número secreto",
-        "Un identificador único del dispositivo",
+        "Un identificador único del dispositivo asignado por el fabricante de hardware de red",
         "Un número que define qué porción de una IP pertenece a la red",
-        "Un protocolo de seguridad"
+        "Un protocolo de seguridad diseñado para cifrar todo el tráfico de la red local"
       ],
       "options_en": [
         "A secret number",
-        "A unique device identifier",
+        "A unique device identifier assigned by the network hardware manufacturer",
         "A number that defines which portion of an IP belongs to the network",
-        "A security protocol"
+        "A security protocol designed to encrypt all traffic on the local network"
       ],
       "correct_index": 2,
       "explanation_es": "Una máscara de subred indica qué bits de una dirección IP corresponden a la red y cuáles al host. Ejemplo: 255.255.255.0 en /24 significa que los primeros 24 bits son la red.",
@@ -556,16 +556,16 @@
       "question_es": "¿Qué es CIDR?",
       "question_en": "What is CIDR?",
       "options_es": [
-        "Un protocolo de seguridad",
+        "Un protocolo de seguridad avanzado para proteger las comunicaciones de la capa de red",
         "Un puerto de red",
         "Notación de barras que especifica el número de bits de red",
-        "Un tipo de malware"
+        "Un tipo de malware que infecta los enrutadores de la red y modifica las tablas de rutas"
       ],
       "options_en": [
-        "A security protocol",
+        "An advanced security protocol to protect network layer communications",
         "A network port",
         "Slash notation specifying the number of network bits",
-        "A type of malware"
+        "A type of malware that infects network routers and modifies their routing tables"
       ],
       "correct_index": 2,
       "explanation_es": "CIDR (Classless Inter-Domain Routing) es una notación que especifica una dirección IP y el número de bits de red usando una barra: 192.168.1.0/24. Reemplazó el sistema de clases A, B, C.",
@@ -1143,15 +1143,15 @@
       "question_en": "What is the checksum in TCP and UDP?",
       "options_es": [
         "Una verificación de integridad de datos",
-        "Un número de puerto",
+        "Un número de puerto reservado para la validación del sistema operativo",
         "Una dirección MAC",
-        "Un identificador de sesión"
+        "Un identificador de sesión generado automáticamente por el servidor remoto"
       ],
       "options_en": [
         "A data integrity check",
-        "A port number",
+        "A port number reserved for operating system validation",
         "A MAC address",
-        "A session identifier"
+        "A session identifier generated automatically by the remote server"
       ],
       "correct_index": 0,
       "explanation_es": "El checksum verifica que los datos no han sido corruptos. Tanto TCP como UDP calculan y verifican checksum. Si falla, UDP descarta el paquete, TCP solicita retransmisión.",
@@ -1250,13 +1250,13 @@
       "question_es": "¿Cuál es el tamaño máximo de un datagrama UDP?",
       "question_en": "What is the maximum size of a UDP datagram?",
       "options_es": [
-        "1500 bytes",
+        "1500 bytes como máximo",
         "65535 bytes",
         "256 bytes",
         "Ilimitado"
       ],
       "options_en": [
-        "1500 bytes",
+        "1500 bytes at maximum",
         "65535 bytes",
         "256 bytes",
         "Unlimited"
@@ -1281,14 +1281,14 @@
       "question_en": "What is DNS (Domain Name System)?",
       "options_es": [
         "Un sistema que traduce nombres de dominio a direcciones IP",
-        "Un protocolo de enrutamiento",
-        "Una dirección de mail",
+        "Un protocolo de enrutamiento dinámico utilizado por los routers en redes empresariales",
+        "Una dirección de correo electrónico cifrada para verificar la identidad del remitente",
         "Un tipo de malware"
       ],
       "options_en": [
         "A system that translates domain names to IP addresses",
-        "A routing protocol",
-        "An email address",
+        "A dynamic routing protocol used by routers in enterprise networks",
+        "An encrypted email address used to verify the identity of the sender",
         "A type of malware"
       ],
       "correct_index": 0,
@@ -1557,15 +1557,15 @@
       "question_es": "¿Cuál es la función de DNSSEC?",
       "question_en": "What is the function of DNSSEC?",
       "options_es": [
-        "Cifrar consultas DNS",
+        "Cifrar consultas DNS de extremo a extremo para evitar inspección de tráfico",
         "Verificar la autenticidad de respuestas DNS",
-        "Bloquear malware",
+        "Bloquear malware y sitios maliciosos a nivel de resolución de nombres de dominio",
         "Acelerar DNS"
       ],
       "options_en": [
-        "Encrypt DNS queries",
+        "Encrypt DNS queries end-to-end to prevent traffic inspection",
         "Verify the authenticity of DNS responses",
-        "Block malware",
+        "Block malware and malicious sites at the domain name resolution level",
         "Speed up DNS"
       ],
       "correct_index": 1,

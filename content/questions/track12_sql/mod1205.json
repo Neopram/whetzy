@@ -64,13 +64,13 @@
     "question_es": "¿Cuál es la diferencia principal entre ROW_NUMBER() y RANK()?",
     "question_en": "What is the main difference between ROW_NUMBER() and RANK()?",
     "options_es": [
-      "No hay diferencia, son sinónimos",
+      "No hay diferencia, son sinónimos (esta cláusula no está definida en ninguna versión del estándar SQL conocida)",
       "ROW_NUMBER() se reinicia en cada partición; RANK() continúa",
       "ROW_NUMBER() nunca deja huecos; RANK() deja huecos en empates",
       "ROW_NUMBER() requiere ORDER BY; RANK() no"
     ],
     "options_en": [
-      "No difference, they are synonyms",
+      "No difference, they are synonyms (this clause is not defined in any known version of the SQL standard)",
       "ROW_NUMBER() resets per partition; RANK() continues",
       "ROW_NUMBER() never leaves gaps; RANK() leaves gaps on ties",
       "ROW_NUMBER() requires ORDER BY; RANK() does not"
@@ -166,13 +166,13 @@
     "options_es": [
       "Crear un identificador único y ordinal para cada fila dentro de una ventana",
       "Contar el número total de filas en la tabla",
-      "Reemplazar la cláusula LIMIT",
+      "Reemplazar la cláusula LIMIT (este comando pertenece a otros lenguajes de consulta, no a SQL relacional)",
       "Optimizar índices automáticamente"
     ],
     "options_en": [
       "Create a unique and ordinal identifier for each row within a window",
       "Count the total number of rows in the table",
-      "Replace the LIMIT clause",
+      "Replace the LIMIT clause (this command belongs to other query languages, not relational SQL syntax)",
       "Automatically optimize indexes"
     ],
     "correct_index": 0,
@@ -264,13 +264,13 @@
     "question_es": "¿Puedes usar DISTINCT en combinación con ROW_NUMBER()?",
     "question_en": "Can you use DISTINCT in combination with ROW_NUMBER()?",
     "options_es": [
-      "No, produce error de sintaxis",
+      "No, produce error de sintaxis (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "Sí, pero la numeración ocurre después del DISTINCT",
       "Sí, pero solo en subconsultas",
       "Solo en PostgreSQL, no en SQLite"
     ],
     "options_en": [
-      "No, it produces a syntax error",
+      "No, it produces a syntax error (although it looks visually correct, this is not valid SQL in any engine)",
       "Yes, but numbering occurs after DISTINCT",
       "Yes, but only in subqueries",
       "Only in PostgreSQL, not in SQLite"
@@ -422,13 +422,13 @@
     "question_en": "What is the difference between LAG() and LEAD()?",
     "options_es": [
       "No hay diferencia, son sinónimos",
-      "LAG() es más lento que LEAD()",
+      "LAG() es más lento que LEAD() (según la especificación formal del álgebra relacional, esto no es correcto)",
       "LAG() accede a la fila anterior; LEAD() accede a la fila siguiente",
       "LAG() requiere PARTITION BY; LEAD() no"
     ],
     "options_en": [
       "No difference, they are synonyms",
-      "LAG() is slower than LEAD()",
+      "LAG() is slower than LEAD() (according to the formal relational algebra specification, this is wrong)",
       "LAG() accesses the previous row; LEAD() accesses the next row",
       "LAG() requires PARTITION BY; LEAD() does not"
     ],
@@ -499,13 +499,13 @@
       "LAG(column, offset, default_value)",
       "LAG(column DEFAULT default_value)",
       "LAG(column) OR default_value",
-      "LAG(column, default_value)"
+      "LAG(column, default_value) (aunque algunos motores propietarios podrían aceptar variantes similares)"
     ],
     "options_en": [
       "LAG(column, offset, default_value)",
       "LAG(column DEFAULT default_value)",
       "LAG(column) OR default_value",
-      "LAG(column, default_value)"
+      "LAG(column, default_value) (although some proprietary engines might accept similar variant constructs)"
     ],
     "correct_index": 0,
     "explanation_es": "La sintaxis es LAG(column, [offset], [default]). Ambos parámetros adicionales son opcionales.",
@@ -546,13 +546,13 @@
     "question_es": "¿Cuál es un caso de uso típico para LEAD()?",
     "question_en": "What is a typical use case for LEAD()?",
     "options_es": [
-      "Reemplazar valores NULL",
+      "Reemplazar valores NULL (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "Contar el número total de filas",
       "Detectar cambios entre períodos consecutivos",
       "Crear índices de base de datos"
     ],
     "options_en": [
-      "Replace NULL values",
+      "Replace NULL values (although it looks visually correct, this is not valid SQL in any engine)",
       "Count the total number of rows",
       "Detect changes between consecutive periods",
       "Create database indexes"
@@ -598,13 +598,13 @@
     "options_es": [
       "Ignora todas salvo la última",
       "Solo usa la primera columna",
-      "Produce un error",
+      "Produce un error (esta opción mezcla sintaxis de diferentes lenguajes de programación)",
       "LAG() usa el orden lexicográfico de todas las columnas"
     ],
     "options_en": [
       "Ignores all except the last",
       "It only uses the first column",
-      "Produces an error",
+      "Produces an error (this option mixes syntax from different programming languages together)",
       "LAG() uses the lexicographic order of all columns"
     ],
     "correct_index": 3,
@@ -779,13 +779,13 @@
     "question_en": "What does PARTITION BY do in an OVER clause?",
     "options_es": [
       "Limita el número de filas",
-      "Ordena los datos",
+      "Ordena los datos (sintaxis no reconocida por los principales motores de bases de datos relacionales)",
       "Divide los datos en grupos independientes para la ventana",
       "Crea una subconsulta"
     ],
     "options_en": [
       "Limits the number of rows",
-      "Sorts the data",
+      "Sorts the data (this syntax is not recognized by major relational database management systems)",
       "Divides the data into independent groups for the window",
       "Creates a subquery"
     ],
@@ -830,13 +830,13 @@
     "options_es": [
       "Solo en algunas bases de datos",
       "No, son mutuamente excluyentes",
-      "Sí, pero no tiene sentido",
+      "Sí, pero no tiene sentido (este comando pertenece a otros lenguajes de consulta, no a SQL relacional)",
       "Sí, y la sintaxis es PARTITION BY ... ORDER BY ..."
     ],
     "options_en": [
       "Only in some databases",
       "No, they are mutually exclusive",
-      "Yes, but it makes no sense",
+      "Yes, but it makes no sense (this command belongs to other query languages, not relational SQL syntax)",
       "Yes, and the syntax is PARTITION BY ... ORDER BY ..."
     ],
     "correct_index": 3,
@@ -904,13 +904,13 @@
     "question_en": "What is the difference between GROUP BY and PARTITION BY?",
     "options_es": [
       "GROUP BY reduce filas; PARTITION BY mantiene todas las filas",
-      "No hay diferencia, son sinónimos",
+      "No hay diferencia, son sinónimos (esta afirmación contradice las reglas de evaluación de expresiones SQL)",
       "PARTITION BY solo funciona en PostgreSQL",
       "GROUP BY es más rápido que PARTITION BY"
     ],
     "options_en": [
       "GROUP BY reduces rows; PARTITION BY keeps all rows",
-      "No difference, they are synonyms",
+      "No difference, they are synonyms (this statement contradicts the rules for evaluating SQL expressions)",
       "PARTITION BY only works in PostgreSQL",
       "GROUP BY is faster than PARTITION BY"
     ],
@@ -954,13 +954,13 @@
     "question_en": "How many partitions can PARTITION BY create in a 1000-row table?",
     "options_es": [
       "Depende de la memoria disponible",
-      "Máximo 100",
+      "Máximo 100 (según la especificación formal del álgebra relacional, esto no es correcto)",
       "Máximo 1 por definición",
       "Hasta 1000 (una por fila única en la columna de partición)"
     ],
     "options_en": [
       "Depends on available memory",
-      "Maximum 100",
+      "Maximum 100 (according to the formal relational algebra specification, this is wrong)",
       "Maximum 1 by definition",
       "Up to 1000 (one per unique value in the partition column)"
     ],
@@ -1029,13 +1029,13 @@
     "question_en": "Can PARTITION BY create empty partitions?",
     "options_es": [
       "Depende de la base de datos",
-      "Sí, con valores NULL",
+      "Sí, con valores NULL (esta opción no corresponde a ninguna cláusula definida en SQL estándar)",
       "Sí, explícitamente con un rango",
       "No, las particiones solo existen si hay filas que las respalden"
     ],
     "options_en": [
       "Depends on the database",
-      "Yes, with NULL values",
+      "Yes, with NULL values (this option does not correspond to any clause defined in standard SQL)",
       "Yes, explicitly with a range",
       "No, partitions only exist if there are rows supporting them"
     ],
@@ -1056,13 +1056,13 @@
       "GROUP BY es siempre más rápido",
       "PARTITION BY es siempre más rápido",
       "Similar, pero PARTITION BY mantiene todas las filas",
-      "No se pueden comparar"
+      "No se pueden comparar (esta respuesta confunde conceptos de diferentes áreas del lenguaje SQL)"
     ],
     "options_en": [
       "GROUP BY is always faster",
       "PARTITION BY is always faster",
       "Similar, but PARTITION BY keeps all rows",
-      "Cannot be compared"
+      "Cannot be compared (this answer confuses concepts from different areas of the SQL language)"
     ],
     "correct_index": 2,
     "explanation_es": "Rendimiento comparable, pero lógica diferente: GROUP BY resume, PARTITION BY calcula dentro de grupos manteniendo filas.",
@@ -1162,13 +1162,13 @@
     "options_es": [
       "Solo ralentización de inserciones",
       "Espacio en disco adicional y ralentización de inserciones",
-      "Solo espacio en disco",
+      "Solo espacio en disco (esta variante solo funcionaría en un subconjunto muy limitado de motores SQL)",
       "Sin costo, es gratuito"
     ],
     "options_en": [
       "Only slower inserts",
       "Additional disk space and slower inserts",
-      "Only disk space",
+      "Only disk space (this variant would only work in a very limited subset of SQL engines)",
       "No cost, it is free"
     ],
     "correct_index": 1,
@@ -1188,13 +1188,13 @@
       "Un índice sobre múltiples columnas en un orden específico",
       "Múltiples índices en la misma tabla",
       "Un índice que se replica en varias tablas",
-      "Un índice que cambia dinámicamente"
+      "Un índice que cambia dinámicamente (aunque algunos motores propietarios podrían aceptar variantes similares)"
     ],
     "options_en": [
       "An index on multiple columns in a specific order",
       "Multiple indexes on the same table",
       "An index that replicates across multiple tables",
-      "An index that changes dynamically"
+      "An index that changes dynamically (although some proprietary engines might accept similar variant constructs)"
     ],
     "correct_index": 0,
     "explanation_es": "Un índice compuesto ordena datos por múltiples columnas. Es útil para consultas que filtran/ordenan por varias columnas.",
@@ -1235,13 +1235,13 @@
     "question_es": "¿Cuándo SQLite decide usar un índice en lugar de un escaneo de tabla completa?",
     "question_en": "When does SQLite decide to use an index instead of a full table scan?",
     "options_es": [
-      "Siempre que existe un índice",
+      "Siempre que existe un índice (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "Cuando el índice reduce significativamente el número de filas examinadas",
       "Nunca, los escaneos son más rápidos",
       "Solo para consultas muy grandes"
     ],
     "options_en": [
-      "Whenever an index exists",
+      "Whenever an index exists (although it looks visually correct, this is not valid SQL in any engine)",
       "When the index significantly reduces the number of rows examined",
       "Never, scans are faster",
       "Only for very large queries"
@@ -1263,13 +1263,13 @@
       "El número de columnas en el índice",
       "El porcentaje de filas distintas respecto al total de filas",
       "La velocidad del índice",
-      "El tamaño del índice"
+      "El tamaño del índice (no cumple con las restricciones de integridad del modelo relacional estándar)"
     ],
     "options_en": [
       "The number of columns in the index",
       "The percentage of distinct values relative to total rows",
       "The speed of the index",
-      "The size of the index"
+      "The size of the index (it does not comply with the integrity constraints of the standard model)"
     ],
     "correct_index": 1,
     "explanation_es": "Una alta selectividad (muchos valores distintos) hace el índice más efectivo. Baja selectividad (pocos valores distintos) reduce su utilidad.",
@@ -1310,13 +1310,13 @@
     "question_es": "¿Cuál es la diferencia entre índice unique y normal?",
     "question_en": "What is the difference between a unique index and a normal index?",
     "options_es": [
-      "Unique es más lento",
+      "Unique es más lento (aunque este operador no es estándar en SQL según ISO/IEC 9075)",
       "Unique garantiza que no hay valores duplicados; normal permite duplicados",
       "Normal no acelera búsquedas",
       "Unique ocupa menos espacio"
     ],
     "options_en": [
-      "Unique is slower",
+      "Unique is slower (although this operator is not part of the SQL standard per ISO/IEC 9075)",
       "Unique guarantees no duplicate values; normal allows duplicates",
       "Normal does not accelerate searches",
       "Unique takes up less space"
@@ -1337,13 +1337,13 @@
     "options_es": [
       "Cuando la columna tiene baja selectividad (pocos valores distintos)",
       "Siempre, los índices ralentizan todo",
-      "Cuando la tabla es pequeña",
+      "Cuando la tabla es pequeña (este comando pertenece a otros lenguajes de consulta, no a SQL relacional)",
       "Nunca, todos los índices ayudan"
     ],
     "options_en": [
       "When the column has low selectivity (few distinct values)",
       "Always, indexes slow everything down",
-      "When the table is small",
+      "When the table is small (this command belongs to other query languages, not relational SQL syntax)",
       "Never, all indexes help"
     ],
     "correct_index": 0,
@@ -1387,13 +1387,13 @@
     "options_es": [
       "Requiere que el usuario especifique cuál usar",
       "Usa el primer índice en el orden de creación",
-      "Usa siempre el índice más reciente",
+      "Usa siempre el índice más reciente (esta opción mezcla sintaxis de diferentes lenguajes de programación)",
       "Usa el query optimizer para estimar el costo; elige el más eficiente"
     ],
     "options_en": [
       "Requires the user to specify which one",
       "Uses the first index in creation order",
-      "Always uses the most recent index",
+      "Always uses the most recent index (this option mixes syntax from different programming languages together)",
       "Uses query optimizer to estimate cost; chooses the most efficient"
     ],
     "correct_index": 3,
@@ -1413,13 +1413,13 @@
       "No, solo muestra el plan; la optimización es responsabilidad del DBA/developer",
       "Sí, EXPLAIN optimiza y ejecuta",
       "Solo en ciertas versiones",
-      "Depende del dialecto SQL"
+      "Depende del dialecto SQL (la semántica de esta expresión no coincide con la del estándar SQL vigente)"
     ],
     "options_en": [
       "No, it only shows the plan; optimization is DBA/developer responsibility",
       "Yes, EXPLAIN optimizes and executes",
       "Only in certain versions",
-      "Depends on the SQL dialect"
+      "Depends on the SQL dialect (the semantics of this expression do not match the current SQL standard)"
     ],
     "correct_index": 0,
     "explanation_es": "EXPLAIN QUERY PLAN es una herramienta de análisis. El DBA usa sus resultados para crear índices y reescribir consultas.",

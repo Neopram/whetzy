@@ -1,0 +1,291 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: var(--le-bg);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-sm) var(--le-space-md);
+  border-bottom: 1px solid var(--le-border);
+  background: var(--le-surface);
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--le-text);
+  padding: var(--le-space-xs);
+}
+
+.title {
+  flex: 1;
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-bold);
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: var(--le-brand-light);
+  color: var(--le-brand-text);
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ===== Step sidebar/tabs ===== */
+.stepTabs {
+  display: flex;
+  gap: 4px;
+  padding: var(--le-space-sm) var(--le-space-md);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--le-border);
+  background: var(--le-surface);
+}
+
+.stepTab {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--le-radius-sm);
+  border: 2px solid var(--le-border);
+  background: var(--le-surface);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--le-transition-base);
+}
+
+.stepTab.active {
+  border-color: var(--le-brand);
+  color: var(--le-brand);
+  background: var(--le-brand-light);
+}
+
+.stepTab.completed {
+  border-color: var(--le-green);
+  background: var(--le-green-light);
+  color: var(--le-green);
+}
+
+/* ===== Instructions panel ===== */
+.instructions {
+  padding: var(--le-space-md);
+  border-bottom: 1px solid var(--le-border);
+  background: var(--le-surface);
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.stepTitle {
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+  margin-bottom: var(--le-space-xs);
+}
+
+.stepInstructions {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* ===== Editor area ===== */
+.editorArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.editorContainer {
+  flex: 1;
+  min-height: 150px;
+}
+
+/* ===== Controls ===== */
+.controls {
+  display: flex;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-sm) var(--le-space-md);
+  border-top: 1px solid var(--le-border);
+  background: var(--le-surface);
+}
+
+.runBtn {
+  flex: 1;
+  padding: var(--le-space-sm) var(--le-space-md);
+  background: var(--le-brand);
+  color: var(--le-text-inverse);
+  border: none;
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-black);
+  cursor: pointer;
+  transition: transform var(--le-transition-base);
+}
+
+.runBtn:active {
+  transform: scale(0.97);
+}
+
+.runBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.testBtn {
+  flex: 1;
+  padding: var(--le-space-sm) var(--le-space-md);
+  background: var(--le-green);
+  color: var(--le-text-inverse);
+  border: none;
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-black);
+  cursor: pointer;
+  transition: transform var(--le-transition-base);
+}
+
+.testBtn:active {
+  transform: scale(0.97);
+}
+
+.testBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ===== Output panel ===== */
+.outputPanel {
+  padding: var(--le-space-sm) var(--le-space-md);
+  max-height: 25vh;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  border-top: 1px solid var(--le-border);
+  background: var(--le-bg);
+}
+
+.errorOutput {
+  color: var(--le-error);
+  white-space: pre-wrap;
+}
+
+.stdOutput {
+  color: var(--le-text);
+  white-space: pre-wrap;
+}
+
+.passOutput {
+  color: var(--le-green);
+  font-weight: var(--le-fw-bold);
+  white-space: pre-wrap;
+}
+
+/* ===== Project list (before selecting a project) ===== */
+.listScreen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+  padding: var(--le-space-md);
+  padding-bottom: calc(var(--le-nav-height) + var(--le-space-xl));
+}
+
+.projectCard {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-md);
+  padding: var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  background: var(--le-surface);
+  cursor: pointer;
+  transition: border-color var(--le-transition-base);
+}
+
+.projectCard:hover {
+  border-color: var(--le-brand);
+}
+
+.projectInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.projectName {
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}
+
+.projectMeta {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-secondary);
+  margin-top: 2px;
+}
+
+.runtimeBadge {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+.runtimePython {
+  background: #3776ab20;
+  color: #3776ab;
+}
+
+.runtimeSql {
+  background: #e4891620;
+  color: #e48916;
+}
+
+.runtimeJs {
+  background: #f7df1e20;
+  color: #b8a600;
+}
+
+.empty {
+  text-align: center;
+  padding: var(--le-space-xl);
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-sm);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--le-space-xl);
+  color: var(--le-text-muted);
+}
+
+.completedBanner {
+  padding: var(--le-space-md);
+  background: var(--le-green-light);
+  color: var(--le-success-on-tint);
+  text-align: center;
+  font-weight: var(--le-fw-bold);
+  font-size: var(--le-fs-md);
+}

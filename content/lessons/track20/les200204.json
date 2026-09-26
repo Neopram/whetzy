@@ -1,0 +1,13 @@
+{
+  "id": "les200204",
+  "skill_id": "sk200204",
+  "language": "es",
+  "executable": false,
+  "title_es": "Transacciones ACID y Control de Concurrencia",
+  "title_en": "ACID Transactions & Concurrency Control",
+  "body_es": "Las transacciones ACID garantizan confiabilidad: Atomicity (todo o nada), Consistency (datos válidos), Isolation (no interferencia), Durability (persistencia). PostgreSQL usa MVCC (Multi-Version Concurrency Control) permitiendo lecturas concurrentes sin locks. Los niveles de aislamiento varían: READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE. Elegir el nivel correcto balancean rendimiento y seguridad.",
+  "body_en": "ACID transactions guarantee reliability: Atomicity (all or nothing), Consistency (valid data), Isolation (no interference), Durability (persistence). PostgreSQL uses MVCC allowing concurrent reads without locks. Isolation levels vary: READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE. Choosing correct level balances performance and safety.",
+  "example_code": "BEGIN TRANSACTION;\nSET TRANSACTION ISOLATION LEVEL REPEATABLE READ;\n\nUPDATE accounts SET balance = balance - 100 WHERE id = 1;\nUPDATE accounts SET balance = balance + 100 WHERE id = 2;\n\nCOMMIT;  -- O ROLLBACK si hay error\n\n-- Ver transacciones activas\nSELECT * FROM pg_stat_activity WHERE state = 'active';",
+  "example_output": "Transferencia bancaria atómica: ambas actualizaciones se ejecutan juntas o ninguna, garantizando consistencia.",
+  "source": "https://www.postgresql.org/docs/"
+}

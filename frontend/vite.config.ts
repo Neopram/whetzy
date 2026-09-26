@@ -361,6 +361,9 @@ export default defineConfig({
     // ~1 MB gz). They are code-split and only loaded when a fix_bug or
     // fill_blank_exec question is first shown. The initial bundle stays ≤300 KB gz.
     chunkSizeWarningLimit: 5000,
+    // Disable the modulepreload polyfill so Vite emits no inline <script>
+    // in the HTML — required for CSP without 'unsafe-inline' (22.2).
+    modulePreload: { polyfill: false },
   },
   server: {
     // Cross-Origin isolation required by SharedArrayBuffer (pyodide interrupt).

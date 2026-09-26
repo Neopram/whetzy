@@ -29,83 +29,47 @@ const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
  *  (incidente de login 2026-09-24); `test/api.baseUrl.test.ts` lo vigila. */
 export const API_BASE_URL = BASE_URL;
 
-// Consume OAuth tokens from URL params immediately at module-import time.
-// The backend redirects here after OAuth callback with ?oauth_token=...&oauth_refresh=...
-// Writing directly to localStorage (not via persistTokens) avoids the TDZ problem:
-// `accessToken` / `refreshToken` are declared with `let` AFTER this code, so they
-// are in the Temporal Dead Zone here. localStorage is always available.
-(function consumeOAuthParams() {
+// Migration cleanup: remove legacy localStorage tokens from pre-cookie auth.
+// The backend now sets HttpOnly cookies; these keys are no longer written.
+(function clearLegacyTokens() {
   try {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('oauth_token');
-    const refresh = params.get('oauth_refresh');
-    if (token) {
-      localStorage.setItem('whetzy_access_token', token);
-      if (refresh) localStorage.setItem('whetzy_refresh_token', refresh);
-      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
-    }
+    localStorage.removeItem('whetzy_access_token');
+    localStorage.removeItem('whetzy_refresh_token');
   } catch {
-    /* storage unavailable in this context */
+    /* storage unavailable */
   }
 })();
 
-const ACCESS_KEY = 'whetzy_access_token';
-const REFRESH_KEY = 'whetzy_refresh_token';
+const LOGGED_IN_COOKIE = 'whetzy_logged_in';
 
-let accessToken: string | null = readStorage(ACCESS_KEY);
-let refreshToken: string | null = readStorage(REFRESH_KEY);
-
-function readStorage(key: string): string | null {
+function hasCookie(name: string): boolean {
   try {
-    return localStorage.getItem(key);
+    return document.cookie.split(';').some((c) => c.trim().startsWith(name + '='));
   } catch {
-    return null;
+    return false;
   }
-}
-
-function persistTokens(access: string | null, refresh: string | null) {
-  accessToken = access;
-  refreshToken = refresh;
-  try {
-    if (access) localStorage.setItem(ACCESS_KEY, access);
-    else localStorage.removeItem(ACCESS_KEY);
-    if (refresh) localStorage.setItem(REFRESH_KEY, refresh);
-    else localStorage.removeItem(REFRESH_KEY);
-  } catch {
-    /* storage unavailable — tokens still held in memory */
-  }
-}
-
-/** El token de acceso vigente, el mismo que usa este modulo (clave `whetzy_access_token`). */
-export function getAccessToken(): string | null {
-  return accessToken;
 }
 
 export function isAuthenticated(): boolean {
-  return accessToken !== null;
+  return hasCookie(LOGGED_IN_COOKIE);
 }
 
 export function logout() {
-  persistTokens(null, null);
+  // Server clears HttpOnly cookies via /auth/logout; nothing to do client-side.
 }
 
 function getHeaders(): HeadersInit {
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
-  return headers;
+  return { 'Content-Type': 'application/json' };
 }
 
 async function tryRefresh(): Promise<boolean> {
-  if (!refreshToken) return false;
   try {
     const res = await fetch(`${BASE_URL}/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refresh_token: refreshToken }),
+      credentials: 'include',
     });
     if (!res.ok) return false;
-    const data = (await res.json()) as { access_token: string; refresh_token: string };
-    persistTokens(data.access_token, data.refresh_token);
     return true;
   } catch {
     return false;
@@ -116,13 +80,13 @@ async function request<T>(path: string, options: RequestInit = {}, retry = true)
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: { ...getHeaders(), ...options.headers },
+    credentials: 'include',
   });
 
   if (res.status === 401 && retry && path !== '/auth/refresh') {
     if (await tryRefresh()) {
       return request<T>(path, options, false);
     }
-    persistTokens(null, null);
     throw new ApiError('Unauthorized', 401);
   }
 
@@ -159,6 +123,7 @@ export interface RegisterPayload {
   display_name: string;
   password: string;
   language: 'es' | 'en';
+  age_confirmed: boolean;
 }
 
 export interface UpdateMePayload {
@@ -175,16 +140,13 @@ export type OAuthProvider = 'github' | 'google';
 
 export const auth = {
   async register(payload: RegisterPayload) {
-    const data = await request<{ access_token: string; refresh_token: string }>('/auth/register', {
+    return request<{ access_token: string; refresh_token: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
-    persistTokens(data.access_token, data.refresh_token);
-    return data;
   },
 
   async login(email: string, password: string) {
-    // Backend uses OAuth2PasswordRequestForm → form-encoded, `username` field carries the email.
     const form = new URLSearchParams();
     form.set('username', email);
     form.set('password', password);
@@ -192,14 +154,13 @@ export const auth = {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: form.toString(),
+      credentials: 'include',
     });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new Error(typeof body.detail === 'string' ? body.detail : 'Incorrect email or password');
     }
-    const data = (await res.json()) as { access_token: string; refresh_token: string };
-    persistTokens(data.access_token, data.refresh_token);
-    return data;
+    return (await res.json()) as { access_token: string; refresh_token: string };
   },
 
   async me() {
@@ -268,11 +229,19 @@ export interface QuestionPublic {
   expected_time_ms: number;
 }
 
+export interface SelectionReason {
+  pool: string;
+  skill_strategy: string | null;
+  difficulty_target: number | null;
+  expected_p: number | null;
+}
+
 export interface QuizStartResponse {
   session_id: string;
   mode: string;
   question: QuestionPublic | null;
   reviews_due: number;
+  selection_reason: SelectionReason | null;
 }
 
 export interface QuizAnswerResponse {
@@ -289,6 +258,7 @@ export interface QuizAnswerResponse {
   skill_mastery: Record<string, number>;
   session_accuracy: number;
   next_question: QuestionPublic | null;
+  next_selection_reason: SelectionReason | null;
 }
 
 export interface QuizEndResponse {
@@ -314,6 +284,7 @@ export const quiz = {
     selectedIndex: number | null,
     responseTimeMs: number,
     declaredUnknown = false,
+    eventId?: string,
   ) {
     return request<QuizAnswerResponse>('/quiz/answer', {
       method: 'POST',
@@ -323,6 +294,7 @@ export const quiz = {
         selected_index: selectedIndex,
         response_time_ms: responseTimeMs,
         declared_unknown: declaredUnknown,
+        ...(eventId ? { event_id: eventId } : {}),
       }),
     });
   },
@@ -619,16 +591,58 @@ export interface StreakFreezeQuote {
   blocked_by: StreakFreezeBlock | null;
 }
 
+export interface CreditBalance {
+  balance: number;
+  currency: string;
+  expires_in_days: number;
+}
+
+export interface ReferralCodeInfo {
+  code: string;
+  share_url: string;
+}
+
+export interface PromoRedeemResult {
+  credits: number;
+  balance: number;
+  message: string;
+}
+
+export interface CreditPrices {
+  credit_value_usd: number;
+  grifos: { event: string; credits: number; cap: string }[];
+  sumideros: { item: string; cost: number }[];
+}
+
 export const economy = {
+  async balance() {
+    return request<CreditBalance>('/economy/balance');
+  },
+  async prices() {
+    return request<CreditPrices>('/economy/prices');
+  },
+  async referralCode() {
+    return request<ReferralCodeInfo>('/economy/referral/code');
+  },
+  async redeemPromo(code: string) {
+    return request<PromoRedeemResult>('/economy/promo/redeem', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    });
+  },
   async streakFreeze() {
     return request<StreakFreezeQuote>('/economy/streak-freeze');
   },
-  /** `requestId` se genera una vez por intento y se reutiliza en los
-   *  reintentos: el backend no cobra dos veces el mismo id. */
   async buyStreakFreeze(requestId: string) {
     return request<StreakFreezeQuote & { replayed: boolean }>('/economy/streak-freeze', {
       method: 'POST',
       body: JSON.stringify({ request_id: requestId }),
+    });
+  },
+  async activateReferral(referralCode: string) {
+    return request<{ activated: boolean; message?: string }>('/economy/referral/activate', {
+      method: 'POST',
+      body: JSON.stringify({ referral_code: referralCode }),
     });
   },
 };
@@ -1069,4 +1083,126 @@ export const instructor = {
   },
 };
 
+// ── Projects (18.8 / 19.6) ────────────────────────────────────────────
 
+export interface ProjectStepRead {
+  id: string;
+  step_number: number;
+  title_es: string;
+  title_en: string;
+  instructions_es: string;
+  instructions_en: string;
+  starter_code: string;
+  test_code: string;
+}
+
+export interface ProjectRead {
+  id: string;
+  slug: string;
+  track_id: string;
+  runtime: 'python' | 'sql' | 'js';
+  name_es: string;
+  name_en: string;
+  description_es: string;
+  description_en: string;
+  difficulty: number;
+  source_url: string;
+  source_license: string;
+  order: number;
+}
+
+export interface ProjectDetail extends ProjectRead {
+  steps: ProjectStepRead[];
+}
+
+export interface ProjectSubmissionRead {
+  id: string;
+  project_id: string;
+  current_step: number;
+  completed: boolean;
+  started_at: string;
+  completed_at: string | null;
+}
+
+export const projects = {
+  async list(trackId?: string, runtime?: string) {
+    const params = new URLSearchParams();
+    if (trackId) params.set('track_id', trackId);
+    if (runtime) params.set('runtime', runtime);
+    const qs = params.toString();
+    const path = '/projects' + (qs ? '?' + qs : '');
+    return request<ProjectRead[]>(path);
+  },
+
+  async get(slug: string) {
+    return request<ProjectDetail>(`/projects/${slug}`);
+  },
+
+  async start(slug: string) {
+    return request<ProjectSubmissionRead>(`/projects/${slug}/start`, { method: 'POST' });
+  },
+
+  async progress(slug: string) {
+    return request<ProjectSubmissionRead>(`/projects/${slug}/progress`);
+  },
+
+  async submitStep(slug: string, stepNumber: number, passed: boolean) {
+    return request<ProjectSubmissionRead>(`/projects/${slug}/submit-step`, {
+      method: 'POST',
+      body: JSON.stringify({ step_number: stepNumber, passed }),
+    });
+  },
+};
+
+// ── Privacy (21.3) ──────────────────────────────────────────────────────────
+
+export interface CcpaOptOutResponse {
+  ccpa_opt_out: boolean;
+}
+
+export interface CcpaDisclosure {
+  categories_collected: string[];
+  categories_shared: string[];
+  business_purpose: string[];
+  sale_of_data: string;
+  right_to_delete: string;
+  right_to_know: string;
+  right_to_opt_out: string;
+  non_discrimination: string;
+}
+
+export interface PrivacyRights {
+  jurisdiction_note: string;
+  rights: string[];
+  data_export_url: string;
+  delete_account_url: string;
+  contact: string;
+}
+
+export const privacy = {
+  ccpaOptOut: () => request<CcpaOptOutResponse>('/privacy/ccpa-opt-out', { method: 'POST' }),
+  ccpaOptIn: () => request<CcpaOptOutResponse>('/privacy/ccpa-opt-out', { method: 'DELETE' }),
+  ccpaDisclosure: () => request<CcpaDisclosure>('/privacy/ccpa-disclosure'),
+  rights: () => request<PrivacyRights>('/privacy/rights'),
+};
+
+export interface CheckoutResponse {
+  checkout_url: string;
+}
+
+export interface SubscriptionResponse {
+  is_premium: boolean;
+  subscription_status: string | null;
+  subscription_tier: string | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+}
+
+export const billing = {
+  checkout: (priceId: string, euWithdrawalWaiver: boolean = false) =>
+    request<CheckoutResponse>('/billing/checkout', {
+      method: 'POST',
+      body: JSON.stringify({ price_id: priceId, eu_withdrawal_waiver: euWithdrawalWaiver }),
+    }),
+  subscription: () => request<SubscriptionResponse>('/billing/subscription'),
+};

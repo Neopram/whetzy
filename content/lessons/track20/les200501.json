@@ -1,0 +1,13 @@
+{
+  "id": "les200501",
+  "skill_id": "sk200501",
+  "language": "es",
+  "executable": false,
+  "title_es": "Snowflake: Warehouse Cloud Moderno",
+  "title_en": "Snowflake: Modern Cloud Warehouse",
+  "body_es": "Snowflake es cloud warehouse separando compute (ephemeral) de storage (durable). Puedes crear múltiples warehouses compartiendo el mismo storage, escalando independientemente. Precios por segundo de compute usado. Time Travel permite acceder datos de hace 90 días (configurable). Fail-safe protege contra desastres 7 días más allá de Time Travel. Auto-scaling ajusta recursos automáticamente según carga.",
+  "body_en": "Snowflake is cloud warehouse separating compute (ephemeral) from storage (durable). Can create multiple warehouses sharing same storage, scaling independently. Pay per second of compute used. Time Travel allows accessing data from 90 days ago (configurable). Fail-safe protects against disasters 7 more days beyond Time Travel. Auto-scaling adjusts resources automatically per load.",
+  "example_code": "-- Crear warehouse\nCREATE WAREHOUSE compute_warehouse WITH\n  WAREHOUSE_SIZE = 'LARGE'\n  AUTO_SUSPEND = 600\n  AUTO_RESUME = TRUE\n  SCALING_POLICY = 'STANDARD';\n\n-- Time Travel: restaurar a timestamp\nSELECT * FROM table_name \nBEFORE(TIMESTAMP => '2024-01-15 10:30:00'::TIMESTAMP_NTZ);\n\n-- Clustering para optimizar queries\nALTER TABLE large_table \nCLUSTER BY (date, customer_id);",
+  "example_output": "Warehouse escalando de 2 a 8 clusters automáticamente durante pico, comprimiendo datos 90% con Parquet.",
+  "source": "https://spark.apache.org/docs/"
+}

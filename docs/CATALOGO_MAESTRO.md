@@ -40,14 +40,14 @@ profundidad de producto*, no adquisición.
 
 | Métrica | Valor 2026-09-18 | Comando |
 |---|---|---|
-| Tracks | **18** (track01–17 + track40) | `python scripts/check_docs.py` |
-| Cursos (track × nivel) | **49** | ídem |
-| Skills | **378** | ídem |
-| Preguntas | **6.305** | `python scripts/check_question_bank.py` |
-| Lecciones | 378/378 (100 %) | `pytest tests/content/test_lessons.py` |
-| Glosario | **622** | `check_docs.py` |
-| Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9) | `check_question_bank.py` |
-| Certificaciones | **5** (CLF-C02, PCEP, SAA-C03, AIF-C01, **ISC2 CC = track40**) — blueprints corregidos en 18.1 (8 passed / 0 xfail) | `pytest tests/content/test_certification_blueprints.py` |
+| Tracks | **35** (track01–23 + track26–30 + track40–46) | `python scripts/check_docs.py` |
+| Cursos (= módulos, ADR-46 37.2) | **177** | ídem |
+| Skills | **723** | ídem |
+| Preguntas | **10.989** | `python scripts/check_question_bank.py` |
+| Lecciones | 656/643 | `pytest tests/content/test_lessons.py` |
+| Glosario | **1.044** | `check_docs.py` |
+| Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9; track41 PCAP Python exec; certs track42–46 exentos) | `check_question_bank.py` |
+| Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900**, **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |
 
@@ -71,7 +71,7 @@ compran libros para parafrasearlos y los PDFs pirateados no entran ni como cita.
 camino con cualquier fuente es el mismo: leer → escribir lección/pregunta original en
 ES y EN → citar. Los hechos son libres; la redacción no.
 
-**Meta por track (ADR-46): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 6.305; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
+**Meta por track (ADR-46): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 9.789; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
 
 | # | Área | Track | Id | Estado | Fuentes con licencia | Runtime | Certs asociadas (→ §3) |
 |---|---|---|---|---|---|---|---|
@@ -84,7 +84,7 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 7 | IA | Ingeniería de IA / LLMs | track07 | ✅ | `generative-ai-for-beginners` MIT, `dair-ai/PEG` MIT, arXiv | Python stdlib | AIF-C01 ✅, AI-102 |
 | 8 | Datos | SQL | track12 | ✅ (18.0 lo deja verde) | SQLite docs (dominio público), PostgreSQL docs | **SQL (sql.js)** | PostgreSQL Associate, DP-900 |
 | 9 | Seguridad | Ciberseguridad — fundamentos | track13 | ✅ (25.0: scaffolding + 500 Q mock, 15 % exec) | NIST SP 800-53/61/63 (PD) + OWASP CheatSheets (CC BY-SA) | Python `fix_bug_exec` (hashlib, hmac, secrets, html, re, ipaddress) | ISC2 CC, Security+ |
-| 10 | Web | Frontend (JS/TS/React) | track14 | stub ✅ (18.3) — 12 Q, 2 js_exec, 1 lección, 6 términos | `lydiahallie/javascript-questions` MIT, `Web-Dev-For-Beginners` MIT, MDN (CC BY-SA → cita) | **JS Worker sandbox real (18.3)** | JSE-1 |
+| 10 | Web | Frontend (JS/TS/React) | track14 | ✅ (18.3: 6 módulos, 24 skills, 24 lecciones, 40 términos glosario, JS Worker sandbox) | `lydiahallie/javascript-questions` MIT, `Web-Dev-For-Beginners` MIT, MDN (CC BY-SA → cita) | **JS Worker sandbox real (18.3)** | JSE-1 |
 | 11 | Fundamentos | Linux / shell | track15 | ✅ (18.4, `bec734c`: 180 Q, 3 módulos, 12 lecciones, exento ADR-9) | `exercism/bash` MIT, man-pages (cita), *The Linux Command Line* (cita) | exento (fill_blank de comandos) | LPIC-1, Linux+, LFCS |
 | 12 | Fundamentos | Algoritmos y estructuras | track16 | ✅ (18.4: 158 Q, 44,9 % exec, 12 lecciones) | `TheAlgorithms/Python` MIT, `tech-interview-handbook` MIT; `coding-interview-university` (BY-SA → H.LIC) | Python (≥ 30 %) | — |
 | 13 | Fundamentos | Redes | track17 | ✅ (18.4: 180 Q, mod1703 36,7 % exec, 12 lecciones) | RFCs (IETF), *Computer Networking* (cita), Cisco docs (cita) | Python (`socket`, `ipaddress`) | CCNA, Network+ |
@@ -134,7 +134,7 @@ razón (ADR-9), como Linux.
 
 `track40` ya existe (ISC2 CC, certificación); por eso la numeración salta.
 
-### 2.0.1 Inventario de la industria frente al catálogo (35.1, 2026-09-25)
+### 2.0.1 Inventario de la industria frente al catálogo (37.1, 2026-09-25)
 
 Fuentes descargadas por la sesión, sin registrarse. La hora es la de la descarga (UTC).
 Los recuentos se reproducen con el comando indicado; no se copian a mano en otros docs.
@@ -185,8 +185,8 @@ sus certificaciones siguen en §3, con la fuente de su fila.
 
 **Propuestos** (≥ 2 fuentes: roadmap.sh + Stack Overflow Survey 2025, donde PHP, Ruby, R,
 Laravel, Ruby on Rails y WordPress aparecen por nombre): `track48` PHP, `track49` Ruby,
-`track50` R. Se añaden a la meta de ADR-42 cuando el dueño no los vete. Las fuentes libres
-de cada uno se buscan con el pipeline de 35.3 antes de escribir una sola pregunta (35.0).
+`track50` R. Se añaden a la meta de ADR-46 cuando el dueño no los vete. Las fuentes libres
+de cada uno se buscan con el pipeline de 37.3 antes de escribir una sola pregunta (37.0).
 
 ### 2.1 Biblioteca de fuentes libres por área (ADR-11 — solo gratis y legal)
 
@@ -355,9 +355,9 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 
 | Capa | Hoy | Objetivo | Cómo se verifica |
 |---|---|---|---|
-| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 281/301 → 301/301 (18.0) | 1/skill en todos los tracks (meta: 28 + 14 de §2.0 y los que 35.1 confirme, ADR-42) | `test_lessons.py` (ratchet `MIN_LESSONS`) |
+| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 281/301 → 301/301 (18.0) | 1/skill en todos los tracks (meta: 28 + 14 de §2.0 y los que 37.1 confirme, ADR-46) | `test_lessons.py` (ratchet `MIN_LESSONS`) |
 | Ejemplo resuelto + problema de completar (fading) | solo la lección | 1 secuencia por skill | test de estructura |
-| Práctica adaptativa (quiz) | ✅ 5.024 Q | ≥ 15 Q/skill en todos los tracks (meta ADR-42: ≥ 50 cursos × ≥ 42 tracks) | `check_question_bank.py` |
+| Práctica adaptativa (quiz) | ✅ 5.024 Q | ≥ 15 Q/skill en todos los tracks (meta ADR-46: ≥ 50 cursos × ≥ 42 tracks) | `check_question_bank.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
 | Simulacro de certificación en formato real | ✅ 4 (3 mal) | 55 | `test_certification_blueprints.py` sin xfail |
@@ -385,7 +385,7 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
   decide si escala. Sin piloto verificado en navegador, no se autora en masa.
 - **Post-producción (19.10):** `Hainrixz/editor-pro-max` (MIT) sobre Remotion —
   títulos, subtítulos ES/EN con Whisper, export para redes. Remotion es gratuita
-  para individuos y empresas de ≤ 3 personas; si la entidad (sin decidir, H.29; ADR-43 suspende la premisa griega) crece, se paga o se cambia.
+  para individuos y empresas de ≤ 3 personas; si la entidad (sin decidir, H.29; ADR-47 suspende la premisa griega) crece, se paga o se cambia.
 
 ---
 
@@ -478,7 +478,7 @@ existe: no se cuenta, no se anota, no se despliega.
 | **Educative** | **2.200+ cursos · 330+ proyectos · 330+ Cloud Labs · 3 M usuarios** | **verificado en vivo 2026-09-18** (educative.io, sesión logueada; teardown §11.3) |
 | **Whetzy** | **15 tracks · 43 cursos · 5.715 Q** | `check_docs.py` |
 
-Lectura honesta *(histórica, 2026-09-16; meta actual ADR-42: ≥ 50 cursos × ≥ 42 tracks)*: con 27 tracks × 3 niveles ≈ 80 cursos, Whetzy queda en la liga
+Lectura honesta *(histórica, 2026-09-16; meta actual ADR-46: ≥ 50 cursos × ≥ 42 tracks)*: con 27 tracks × 3 niveles ≈ 80 cursos, Whetzy queda en la liga
 de **Boot.dev / Sololearn / Mimo** — que son exactamente las apps que monetizan
 catálogos pequeños con motor y móvil — y **no** en la de Platzi/Udemy, que viven de
 creadores externos y años. La tesis defendible sigue siendo la de §8.4 del
@@ -492,8 +492,8 @@ auditado + ejecución en navegador), no «abarcar todo».
 - **Marketplace de creadores** (estrategia v3, Parte III-IV): **no hasta ≥ 100
   usuarios activos verificados.** Con 0 usuarios es una sala vacía; ninguna de
   las apps de la liga objetivo tiene uno. El marketplace es la **serie 28** (se
-  construye entera; no se abre al público antes de ≥ 100 usuarios activos, ADR-43).
-  Precio del plan Creador y reparto 80/20: ADR-45. La antigua «fase 10» (10.1-10.3,
+  construye entera; no se abre al público antes de ≥ 100 usuarios activos, ADR-47).
+  Precio del plan Creador y reparto 80/20: ADR-41. La antigua «fase 10» (10.1-10.3,
   simulacro de certificación) no es el marketplace.
 - **Shell real en navegador (v86)**: imagen Alpine ≈ 20 MB en móvil, línea roja 8.
   Linux se enseña con `fill_blank` de comandos + salida real ilustrativa (ADR-9).
@@ -538,7 +538,7 @@ La frase literal del estudio:
 
 Whetzy es exactamente eso. El estudio confirma que el gap existe y que los incumbentes (Platzi, EDteam, Desafío Latam, KeepCoding) están agregando "chatbot/AI-tutor overlays on top of video/cohort content — not genuine adaptive engines."
 
-**Lo que esto significa para el catálogo:** El motor BKT+FSRS+Elo+DKT no es una ventaja técnica abstracta — es la diferenciación que el mercado de $350B no tiene en español. Cerrar el catálogo a ≥ 50 cursos × ≥ 42 tracks (ADR-42; antes «2,700 cursos», ADR-25) convierte esa diferenciación en un producto inalcanzable para los incumbentes en el corto plazo.
+**Lo que esto significa para el catálogo:** El motor BKT+FSRS+Elo+DKT no es una ventaja técnica abstracta — es la diferenciación que el mercado de $350B no tiene en español. Cerrar el catálogo a ≥ 50 cursos × ≥ 42 tracks (ADR-46; antes «2,700 cursos», ADR-25) convierte esa diferenciación en un producto inalcanzable para los incumbentes en el corto plazo.
 
 ### 11.2 Benchmarks del mercado (verificados en el estudio)
 
@@ -596,7 +596,7 @@ El estudio advierte explícitamente:
 
 Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es la puntuación en cada dimensión:
 
-| Dimensión | Peso | Hoy (44/100) | Al 100% técnico (~66) | Con ADR-25 (histórico: 2,700 cursos; meta actual ADR-42: ≥ 50 cursos × ≥ 42 tracks) | Con usuarios |
+| Dimensión | Peso | Hoy (44/100) | Al 100% técnico (~66) | Con ADR-25 (histórico: 2,700 cursos; meta actual ADR-46: ≥ 50 cursos × ≥ 42 tracks) | Con usuarios |
 |---|---|---|---|---|---|
 | Distribución | 0.34 | 0 | 0 | 0 | Variable |
 | Motor adaptativo | 0.14 | 12 | 14 | 14 | 14 |
@@ -630,7 +630,7 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 | Credenciales verificables (Open Badges 3.0) | ❌ | ❌ | ❌ | ❌ | **✅ 29.10 (ADR-37)** |
 | Token / cripto propia | ❌ | ❌ | ❌ | ❌ | **❌ a propósito (ADR-33)** |
 | B2B ready | ✅ | ✅ | ❌ | ✅ | **✅ (Serie 22)** |
-| Precio base (verificado 2026-09-24 salvo DataCamp/Educative; COMPETENCIA §A) | $49/mo · $249/año | ~$39/mo (sin verificar) | $59/mo · $399/año | ~$20/mo (sin verificar) | **Pro $14.99/mo (ADR-45; cobro sin abrir, H.19)** |
+| Precio base (verificado 2026-09-24 salvo DataCamp/Educative; COMPETENCIA §A) | $49/mo · $249/año | ~$39/mo (sin verificar) | $59/mo · $399/año | ~$20/mo (sin verificar) | **Pro $14.99/mo (ADR-41; cobro sin abrir, H.19)** |
 | Empleabilidad real | Bajo (70% no termina) | Medio | Alto | Medio | **sin dato hasta H.10 (objetivo ADR-32: completion > 50 %)** |
 
 **Whetzy con ADR-25 completo es técnicamente superior en todas las dimensiones relevantes para el nicho Python→AI Engineer en español.** La única ventaja que los incumbentes mantienen es brand recognition — y eso se construye con distribución, no con código.

@@ -42,6 +42,7 @@ async def test_register_happy_path(client):
         "password": "Str0ng!Pass",
         "display_name": "New User",
         "language": "en",
+        "age_confirmed": True,
     }
     r = await client.post(f"{AUTH}/register", json=payload, headers=_h())
     assert r.status_code == 201
@@ -59,6 +60,7 @@ async def test_register_duplicate_email_returns_409(client):
         "password": "Str0ng!Pass",
         "display_name": "Dup",
         "language": "es",
+        "age_confirmed": True,
     }
     r1 = await client.post(f"{AUTH}/register", json=payload, headers=h)
     assert r1.status_code == 201
@@ -77,6 +79,7 @@ async def test_register_duplicate_username_returns_409(client):
         "password": "Str0ng!Pass",
         "display_name": "First",
         "language": "es",
+        "age_confirmed": True,
     }
     await client.post(f"{AUTH}/register", json=payload, headers=h)
 
@@ -84,6 +87,20 @@ async def test_register_duplicate_username_returns_409(client):
     payload2["email"] = "second@example.com"  # different email, same username
     r = await client.post(f"{AUTH}/register", json=payload2, headers=h)
     assert r.status_code == 409
+
+
+async def test_register_without_age_confirmed_returns_400(client):
+    payload = {
+        "email": "underage@example.com",
+        "username": "underage01",
+        "password": "Str0ng!Pass",
+        "display_name": "No Age",
+        "language": "es",
+        "age_confirmed": False,
+    }
+    r = await client.post(f"{AUTH}/register", json=payload, headers=_h())
+    assert r.status_code == 400
+    assert "age" in r.json()["detail"].lower()
 
 
 async def test_register_missing_required_field_returns_422(client):
@@ -143,6 +160,7 @@ async def test_me_happy_path(client):
         "password": "Str0ng!Pass",
         "display_name": "Me Tester",
         "language": "en",
+        "age_confirmed": True,
     }, headers=h)
     assert reg.status_code == 201
     token = reg.json()["access_token"]

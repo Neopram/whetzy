@@ -1,0 +1,12 @@
+{
+  "id": "l290504",
+  "skill_id": "sk290504",
+  "title_es": "Testing de Rendimiento",
+  "title_en": "Performance Testing",
+  "body_es": "El testing de rendimiento valida que la aplicación cumple objetivos de velocidad y escalabilidad bajo carga. Incluye: pruebas de carga (comportamiento con usuarios típicos), stress testing (límites máximos), spike testing (cambios súbitos de carga). Herramientas como Locust, JMeter y k6 simulan múltiples usuarios concurrentes. Se miden métricas como tiempo de respuesta, throughput (solicitudes por segundo), y consumo de recursos. Los profilers de Python (cProfile, line_profiler) identifican cuellos de botella en código. El testing de rendimiento es crítico en aplicaciones web y móviles para garantizar experiencia de usuario aceptable.",
+  "body_en": "Performance testing validates that the application meets speed and scalability objectives under load. It includes: load testing (behavior with typical users), stress testing (maximum limits), spike testing (sudden load changes). Tools like Locust, JMeter, and k6 simulate multiple concurrent users. Metrics measured include response time, throughput (requests per second), and resource consumption. Python profilers (cProfile, line_profiler) identify code bottlenecks. Performance testing is critical in web and mobile applications to ensure acceptable user experience.",
+  "example_code": "# Using Locust for load testing\nfrom locust import HttpUser, task, between\n\nclass UserBehavior(HttpUser):\n    wait_time = between(1, 3)  # Wait 1-3 seconds between requests\n    \n    @task(3)  # Weight: 3 parts\n    def view_homepage(self):\n        self.client.get('/')\n    \n    @task(1)  # Weight: 1 part\n    def search_products(self):\n        self.client.get('/search?q=python')\n    \n    @task\n    def add_to_cart(self):\n        self.client.post('/cart', json={'product_id': 123})\n\n# Run: locust -f locustfile.py --host=https://example.com\n\n# Using pytest-benchmark for micro-benchmarks\nimport pytest\n\ndef fibonacci(n):\n    return n if n <= 1 else fibonacci(n-1) + fibonacci(n-2)\n\ndef test_fibonacci_performance(benchmark):\n    result = benchmark(fibonacci, 10)\n    assert result == 55",
+  "example_output": "Locust Load Test Results\nTotal requests: 10,500\nAverage response time: 145ms\nP95 response time: 312ms\nP99 response time: 589ms\nThroughput: 450 requests/second\nFailure rate: 0.2%\n\nBenchmark: fibonacci(10) = 1.23 µs per call",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 4
+}

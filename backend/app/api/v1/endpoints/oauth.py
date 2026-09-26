@@ -19,7 +19,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -77,12 +77,13 @@ def _callback_uri(provider: str) -> str:
 
 
 @router.get("/providers")
-async def oauth_providers() -> dict[str, list[str]]:
+async def oauth_providers(response: Response) -> dict[str, list[str]]:
     """Proveedores con credenciales configuradas en este servidor.
 
     El frontend pinta solo los botones que salen aquí: un «Continuar con
     Google» que responde 503 al pulsarlo es peor que ningún botón.
     """
+    response.headers["Cache-Control"] = "public, max-age=3600"
     return {"providers": [name for name, cfg in _PROVIDERS.items() if cfg["client_id"]()]}
 
 
@@ -186,11 +187,14 @@ async def oauth_callback(
 
     user = await _find_or_create_user(db, email, provider, provider_user_id)
 
+    from app.core.cookies import set_auth_cookies
+
     access_token = create_access_token(user.id, jwt_version=user.jwt_version)
     refresh_token = create_refresh_token(user.id, jwt_version=user.jwt_version)
 
-    qs = urllib.parse.urlencode({"oauth_token": access_token, "oauth_refresh": refresh_token})
-    return RedirectResponse(url=f"{settings.FRONTEND_BASE_URL}/?{qs}", status_code=302)
+    redirect = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL}/", status_code=302)
+    set_auth_cookies(redirect, access_token, refresh_token)
+    return redirect
 
 
 # --------------------------------------------------------------------------

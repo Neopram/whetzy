@@ -1,10 +1,15 @@
 """Economy services: credits, referrals, promo codes."""
 
+import secrets
 import uuid
 from datetime import UTC, datetime, timedelta
+from typing import ClassVar
 
 from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+# Alphabet without ambiguous chars: 0, O, 1, I, L removed.
+_SAFE_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"
 
 from app.models.economy import (
     CreditLedger,
@@ -247,6 +252,9 @@ class ReferralService:
         await db.flush()
         return ref_code.user_id
 
+    # Escalera de créditos por número de referidos activados (ECONOMIA.md §3)
+    _CREDIT_LADDER: ClassVar[list[tuple[int, int]]] = [(1, 50), (3, 100), (10, 200), (25, 500)]
+
     @staticmethod
     async def activate_referral(db: AsyncSession, referred_user_id: uuid.UUID) -> bool:
         """Activate referral after user completes onboarding."""
@@ -261,15 +269,108 @@ class ReferralService:
         referral = result.scalar()
         if not referral:
             return False
-        
+
         referral.status = "activated"
         referral.activated_at = datetime.now(UTC)
         await db.flush()
         return True
 
+    @staticmethod
+    async def credit_matured_referrals(
+        db: AsyncSession,
+        delay_days: int = 7,
+    ) -> int:
+        """Credit referrers whose referred users activated ≥ delay_days ago.
+
+        Returns the number of referrals credited this run.
+        """
+        cutoff = datetime.now(UTC) - timedelta(days=delay_days)
+        result = await db.execute(
+            select(Referral).where(
+                and_(
+                    Referral.status == "activated",
+                    Referral.activated_at <= cutoff,
+                )
+            )
+        )
+        matured = list(result.scalars().all())
+        credited = 0
+
+        for referral in matured:
+            count_result = await db.execute(
+                select(func.count()).select_from(Referral).where(
+                    and_(
+                        Referral.referrer_id == referral.referrer_id,
+                        Referral.status == "credited",
+                    )
+                )
+            )
+            already_credited = count_result.scalar() or 0
+
+            credits = ReferralService._ladder_credits(already_credited + 1)
+            await CreditsService.grant_credits(
+                db,
+                user_id=referral.referrer_id,
+                amount=credits,
+                reason=CreditReasonEnum.REFERRAL_ACTIVATED.value,
+                ref_type="referral",
+                ref_id=str(referral.id),
+            )
+            referral.status = "credited"
+            referral.credited_at = datetime.now(UTC)
+            credited += 1
+
+        if credited:
+            await db.flush()
+        return credited
+
+    @classmethod
+    def _ladder_credits(cls, nth: int) -> int:
+        """Credits for the nth credited referral (1-indexed)."""
+        credits = cls._CREDIT_LADDER[0][1]
+        for threshold, amount in cls._CREDIT_LADDER:
+            if nth >= threshold:
+                credits = amount
+        return credits
+
 
 class PromoCodeService:
     """Service for promo code management."""
+
+    @staticmethod
+    def _generate_code(length: int = 8) -> str:
+        return "".join(secrets.choice(_SAFE_ALPHABET) for _ in range(length))
+
+    @staticmethod
+    async def generate_batch(
+        db: AsyncSession,
+        *,
+        code_type: str,
+        credits: int,
+        count: int,
+        max_uses: int | None = None,
+        expires_at: datetime | None = None,
+        language: str | None = None,
+        campaign_id: str | None = None,
+        created_by: str = "admin",
+    ) -> list[PromoCode]:
+        codes: list[PromoCode] = []
+        for _ in range(count):
+            code = PromoCodeService._generate_code()
+            promo = PromoCode(
+                code=code,
+                code_type=code_type,
+                credits=credits,
+                max_uses=max_uses,
+                language=language,
+                expires_at=expires_at,
+                campaign_id=campaign_id,
+                created_by=created_by,
+            )
+            db.add(promo)
+            codes.append(promo)
+        await db.flush()
+        return codes
 
     @staticmethod
     async def redeem_code(

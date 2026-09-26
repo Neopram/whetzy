@@ -13,7 +13,7 @@ from __future__ import annotations
 import logging
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -159,6 +159,8 @@ async def create_course(
 
 @router.get("/courses", response_model=list[CourseResponse])
 async def list_courses(
+    limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> list[CourseResponse]:
@@ -168,6 +170,8 @@ async def list_courses(
         select(InstructorCourse)
         .where(InstructorCourse.instructor_id == instructor.id)
         .order_by(InstructorCourse.created_at.desc())
+        .limit(limit)
+        .offset(offset)
     )
     return [_course_payload(c) for c in courses]
 

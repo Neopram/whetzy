@@ -174,8 +174,17 @@ correr "backend: contenido"    "$ARBOL/backend" \
 # las dependencias del proyecto (2026-09-24: un mypy de uv sin pydantic dio
 # cientos de «Class cannot subclass BaseModel» falsos; con el intérprete del
 # proyecto, 0 errores en 117 ficheros).
+correr "backend: migración con datos" "$ARBOL/backend" \
+  python ../scripts/test_migration_data.py
 correr "backend: mypy --strict" "$ARBOL/backend" \
   python -m mypy app --strict --ignore-missing-imports
+
+if command -v bandit >/dev/null 2>&1; then
+  correr "backend: bandit (seguridad)" "$ARBOL/backend" \
+    bandit -r app/ -c "$ARBOL/.bandit.yml" -ll -q
+else
+  titulo "backend: bandit"; echo "[--] bandit no instalado; me lo salto"
+fi
 
 if [ -d "$ARBOL/frontend/node_modules" ]; then
   correr "frontend: tipos"  "$ARBOL/frontend" npx tsc -b

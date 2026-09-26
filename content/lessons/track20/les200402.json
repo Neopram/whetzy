@@ -1,0 +1,13 @@
+{
+  "id": "les200402",
+  "skill_id": "sk200402",
+  "language": "es",
+  "executable": false,
+  "title_es": "Linaje de Datos y Rastreabilidad",
+  "title_en": "Data Lineage & Traceability",
+  "body_es": "El linaje documenta el camino de datos: de origen a consumo, incluyendo transformaciones intermedias. Upstream muestra fuentes, downstream muestra consumidores. Linaje es crítico para GDPR (saber dónde están los datos), debugging (qué transformación causó el problema) y análisis de impacto (cambiar upstream afecta qué downstream). Herramientas como Apache Atlas automatizar rastreo; dbt genera linaje automáticamente.",
+  "body_en": "Lineage documents data path: from source to consumption, including intermediate transformations. Upstream shows sources, downstream shows consumers. Lineage is critical for GDPR (know where data is), debugging (what transformation caused issue) and impact analysis (changing upstream affects what downstream). Tools like Apache Atlas automate tracking; dbt generates lineage automatically.",
+  "example_code": "# dbt genera linaje automáticamente\n# models/staging/stg_users.sql\nSELECT id, email FROM {{ ref('raw_users') }}\nWHERE deleted_at IS NULL\n\n# dbt DAG:\n# raw_users → stg_users → fct_users → report_users\n# dbt docs genera visualización interactiva del DAG",
+  "example_output": "Gráfico DAG mostrando: raw_users importa de API, transformado en staging, en facts, en reports. Cambio en raw_users impacta toda cadena.",
+  "source": "https://spark.apache.org/docs/"
+}

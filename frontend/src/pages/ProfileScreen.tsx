@@ -33,7 +33,8 @@ export function ProfileScreen() {
     try {
       await fetch(`${API_BASE_URL}/push/preferences`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('whetzy_access_token') ?? ''}` },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ streak_enabled: next }),
       });
     } catch { /* ignore */ }
@@ -102,6 +103,14 @@ export function ProfileScreen() {
       <Card>
         <h2 className={styles.cardTitle}>{t('profile.explore')}</h2>
         <div className={styles.settings}>
+          <button
+            type="button"
+            className={styles.setting}
+            onClick={() => setScreen('wallet')}
+          >
+            <span className={styles.settingLabel}>{t('wallet.title')}</span>
+            <span aria-hidden="true">→</span>
+          </button>
           <button
             type="button"
             className={styles.setting}

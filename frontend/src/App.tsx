@@ -59,6 +59,16 @@ const ReadinessScreen = lazy(() =>
 const AdminScreen = lazy(() => import('./pages/AdminScreen').then((m) => ({ default: m.AdminScreen })));
 const InstructorScreen = lazy(() => import('./pages/InstructorScreen'));
 const MarketplaceScreen = lazy(() => import('./pages/MarketplaceScreen').then((m) => ({ default: m.MarketplaceScreen })));
+const WalletScreen = lazy(() => import('./pages/WalletScreen'));
+const PlaygroundScreen = lazy(() =>
+  import('./pages/PlaygroundScreen').then((m) => ({ default: m.PlaygroundScreen }))
+);
+const ProjectScreen = lazy(() =>
+  import('./pages/ProjectScreen').then((m) => ({ default: m.ProjectScreen }))
+);
+// Public, unauthenticated status page — checked before any auth machinery so
+// it stays reachable even when the backend is down.
+const StatusPage = lazy(() => import('./pages/StatusPage'));
 
 // URL-based routing for standalone pages (no React Router needed)
 const STANDALONE_DOC: Record<string, string> = {
@@ -174,6 +184,21 @@ function App() {
     );
   }
 
+  // Public status page: no auth, no store, reachable even if the backend
+  // that the rest of the app depends on is the very thing that's down.
+  if (path === '/status') return <Screen><StatusPage /></Screen>;
+
+  if (path.startsWith('/r/')) {
+    const code = path.slice(3);
+    if (code) {
+      try { localStorage.setItem('whetzy_ref', code); } catch { /* private mode */ }
+      const lang = navigator.language?.startsWith('es') ? 'es' : 'en';
+      i18n.changeLanguage(lang);
+    }
+    window.location.assign('/register');
+    return null;
+  }
+
   if (path === '/auth' || path === '/login' || path === '/register') return <AuthRoute />;
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
   // Both returns sit above every hook in this component, which is the only
@@ -181,6 +206,9 @@ function App() {
   // the screen for every signed-in user in 16.8.
   if (path.startsWith(CERTIFICATE_PATH)) {
     return <StandaloneCertificate code={path.slice(CERTIFICATE_PATH.length)} />;
+  }
+  if (path.startsWith('/verify/')) {
+    return <StandaloneCertificate code={path.slice(8)} />;
   }
   if (path.startsWith('/u/')) {
     return <Screen><PublicProfileScreen handle={path.slice(3)} /></Screen>;
@@ -362,6 +390,9 @@ function App() {
       case 'admin': return <AdminScreen />;
       case 'instructor': return <InstructorScreen />;
       case 'marketplace': return <MarketplaceScreen />;
+      case 'wallet': return <WalletScreen />;
+      case 'playground': return <PlaygroundScreen />;
+      case 'projects': return <ProjectScreen />;
       default: return <HomeScreen />;
     }
   };
@@ -401,11 +432,11 @@ function App() {
  *  mid-exam. It is a set rather than a chain of `!==` so adding a screen is one
  *  entry instead of one more clause nobody remembers to extend — 'trackexam'
  *  was the fifth, and the chain was already four deep. */
-const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson', 'readiness']);
+const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson', 'readiness', 'playground', 'projects']);
 
 const SCREEN_ORDER: Record<string, number> = {
   home: 0, tracks: 1, stats: 2, league: 3, profile: 4, marketplace: 14,
-  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10, readiness: 11, admin: 12, instructor: 13,
+  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10, readiness: 11, admin: 12, instructor: 13, playground: 15, projects: 16,
 };
 function screenOrder(s: string) { return SCREEN_ORDER[s] ?? 0; }
 

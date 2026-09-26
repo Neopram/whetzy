@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q260109_001",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comando básico para clonar un repositorio remoto?",
+      "question_en": "What is the basic command to clone a remote repository?",
+      "options_es": [
+        "git pull https://github.com/user/repo.git",
+        "git fetch https://github.com/user/repo.git",
+        "git clone https://github.com/user/repo.git",
+        "git download https://github.com/user/repo.git"
+      ],
+      "options_en": [
+        "git pull https://github.com/user/repo.git",
+        "git fetch https://github.com/user/repo.git",
+        "git clone https://github.com/user/repo.git",
+        "git download https://github.com/user/repo.git"
+      ],
+      "correct_index": 2,
+      "explanation_es": "git clone descarga todo el repositorio remoto incluyendo historial y crea una copia local. git pull actualiza cambios existentes, git fetch solo descarga sin fusionar.",
+      "explanation_en": "git clone downloads the entire remote repository including history and creates a local copy. git pull updates existing changes, git fetch only downloads without merging.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_002",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Qué bandera se utiliza para hacer un clone superficial (shallow clone) limitando el historial?",
+      "question_en": "What flag is used to create a shallow clone limiting the history?",
+      "options_es": [
+        "--surface 1",
+        "--shallow 1",
+        "--depth 1",
+        "--limit-history 1"
+      ],
+      "options_en": [
+        "--surface 1",
+        "--shallow 1",
+        "--depth 1",
+        "--limit-history 1"
+      ],
+      "correct_index": 2,
+      "explanation_es": "--depth N descarga solo los últimos N commits, reduciendo tamaño y tiempo. Útil para repositorios grandes.",
+      "explanation_en": "--depth N downloads only the last N commits, reducing size and time. Useful for large repositories.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_003",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un clone regular y un clone mirror (--mirror)?",
+      "question_en": "What is the difference between a regular clone and a mirror clone (--mirror)?",
+      "options_es": [
+        "El mirror clone incluye solo HEAD",
+        "El mirror clone copia el archivo .git entero en este contexto como práctica recomendada",
+        "El mirror clone es más lento que un clone regular",
+        "El mirror clone es un clon bare que espeja todas las ramas y tags"
+      ],
+      "options_en": [
+        "The mirror clone includes only HEAD",
+        "The mirror clone copies the entire .git file as a general rule for most projects",
+        "The mirror clone is slower than a regular clone",
+        "The mirror clone is a bare clone that mirrors all branches and tags"
+      ],
+      "correct_index": 3,
+      "explanation_es": "--mirror crea un repositorio bare que espeja exactamente la estructura remota, incluyendo todas las ramas y tags. Se usa para backups o replicar repositorios.",
+      "explanation_en": "--mirror creates a bare repository that mirrors the exact remote structure, including all branches and tags. Used for backups or replicating repositories.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_004",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Qué comando clonaría solo una rama específica (main)?",
+      "question_en": "What command would clone only a specific branch (main)?",
+      "options_es": [
+        "git clone --single-branch --branch main repo.git",
+        "git clone --depth=1 --branch main repo.git",
+        "git clone main repo.git",
+        "git clone --branch main repo.git en la práctica habitual"
+      ],
+      "options_en": [
+        "git clone --single-branch --branch main repo.git",
+        "git clone main repo.git",
+        "git clone --depth=1 --branch main repo.git",
+        "git clone --branch main repo.git in this context"
+      ],
+      "correct_index": 0,
+      "explanation_es": "--single-branch junto con --branch especifica clonar solo esa rama. Sin --single-branch, todas las ramas se descargan aunque se checkout una específica.",
+      "explanation_en": "--single-branch with --branch specifies cloning only that branch. Without --single-branch, all branches are downloaded even if one is checked out.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_005",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de la bandera --recursive al clonar?",
+      "question_en": "What is the purpose of the --recursive flag when cloning?",
+      "options_es": [
+        "Descargar solo el historial recursivo en la práctica habitual",
+        "Clonar múltiples repositorios en paralelo",
+        "Crear clones recursivos en carpetas anidadas",
+        "Inicializar y actualizar submódulos automáticamente"
+      ],
+      "options_en": [
+        "Download only recursive history for most projects",
+        "Clone multiple repositories in parallel",
+        "Create recursive clones in nested folders",
+        "Automatically initialize and update submodules"
+      ],
+      "correct_index": 3,
+      "explanation_es": "--recursive automáticamente inicializa y actualiza todos los submódulos del repositorio. Equivalente a git clone seguido de git submodule update --init --recursive.",
+      "explanation_en": "--recursive automatically initializes and updates all submodules of the repository. Equivalent to git clone followed by git submodule update --init --recursive.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_006",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Qué crea un repositorio bare (--bare) al clonar?",
+      "question_en": "What does a bare repository (--bare) create when cloning?",
+      "options_es": [
+        "Un repositorio sin historial",
+        "Un repositorio sin directorio de trabajo (solo objetos Git)",
+        "Un repositorio descifrado sin compresión",
+        "Un repositorio temporal de solo lectura"
+      ],
+      "options_en": [
+        "A repository without history",
+        "A repository without working directory (only Git objects)",
+        "A decrypted repository without compression",
+        "A temporary read-only repository"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un repositorio bare no tiene directorio de trabajo; solo contiene los contenidos del directorio .git. Se usa típicamente en servidores para recibir pushes.",
+      "explanation_en": "A bare repository has no working directory; it only contains the contents of the .git directory. Typically used on servers to receive pushes.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_007",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar SSH (git@github.com:user/repo.git) sobre HTTPS al clonar?",
+      "question_en": "What is the advantage of using SSH (git@github.com:user/repo.git) over HTTPS when cloning?",
+      "options_es": [
+        "SSH es más rápido que HTTPS",
+        "SSH soporta repositorios más grandes",
+        "SSH permite autenticación sin contraseña usando claves",
+        "SSH tiene mejor compresión"
+      ],
+      "options_en": [
+        "SSH is faster than HTTPS by default",
+        "SSH supports larger repositories",
+        "SSH allows authentication without password using keys",
+        "SSH has better compression"
+      ],
+      "correct_index": 2,
+      "explanation_es": "SSH usa autenticación por claves públicas/privadas, permitiendo acceso sin escribir contraseña cada vez. HTTPS requiere token o contraseña en cada interacción.",
+      "explanation_en": "SSH uses public/private key authentication, allowing access without typing a password each time. HTTPS requires a token or password on each interaction.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_008",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ocurre si intentas clonar un repositorio privado sin las credenciales adecuadas?",
+      "question_en": "What happens if you try to clone a private repository without proper credentials?",
+      "options_es": [
+        "El clone falla con error de autenticación",
+        "Se descarga una versión pública del repositorio",
+        "Se clona pero sin historial",
+        "Se abre un formulario de login en el navegador"
+      ],
+      "options_en": [
+        "The clone fails with an authentication error",
+        "A public version of the repository is downloaded",
+        "It clones but without history",
+        "A login form opens in the browser"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sin credenciales válidas, Git rechaza el acceso al repositorio privado. Necesitas configurar SSH keys, tokens de acceso o credenciales HTTPS válidas.",
+      "explanation_en": "Without valid credentials, Git denies access to the private repository. You need to configure SSH keys, access tokens, or valid HTTPS credentials.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_009",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el contenido de un repositorio clonado inmediatamente después de git clone?",
+      "question_en": "What is the content of a repository immediately after git clone?",
+      "options_es": [
+        "La rama configurada como upstream",
+        "Solo la rama main en HEAD",
+        "Solo los archivos sin historial",
+        "Todas las ramas remotas y la rama actual en HEAD"
+      ],
+      "options_en": [
+        "The configured upstream branch",
+        "Only the main branch in HEAD",
+        "Only files without history as a general rule",
+        "All remote branches and the current branch checked out in HEAD"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Después de clonar, tienes acceso a todas las ramas remotas (como origin/main, origin/develop) pero solo una rama está en HEAD (generalmente la rama default del repositorio remoto).",
+      "explanation_en": "After cloning, you have access to all remote branches (like origin/main, origin/develop) but only one branch is checked out in HEAD (usually the default branch of the remote repository).",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_010",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Qué información almacena Git automáticamente durante el clone sobre el repositorio remoto?",
+      "question_en": "What information does Git automatically store during clone about the remote repository?",
+      "options_es": [
+        "La URL remota, el nombre del remoto (origin) y la rama de tracking",
+        "La URL y todas las credenciales de manera estándar para la mayoría de proyectos",
+        "Solo la URL del remoto",
+        "Solo la rama actual habitualmente"
+      ],
+      "options_en": [
+        "The remote URL, the remote name (origin), and the tracking branch",
+        "The URL and all credentials under normal conditions as a standard approach",
+        "Only the remote URL by default",
+        "Only the current branch"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Git almacena el remoto 'origin' con su URL y crea tracking branches (como origin/main) para cada rama remota. Esta información se guarda en .git/config.",
+      "explanation_en": "Git stores the 'origin' remote with its URL and creates tracking branches (like origin/main) for each remote branch. This information is saved in .git/config.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_011",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el tamaño típico de un shallow clone con --depth 1 comparado con un clone completo?",
+      "question_en": "What is the typical size of a shallow clone with --depth 1 compared to a full clone?",
+      "options_es": [
+        "Casi el mismo tamaño como regla general",
+        "10-20% del tamaño completo en repositorios grandes",
+        "Exactamente la mitad según la documentación oficial",
+        "El 1% del tamaño original"
+      ],
+      "options_en": [
+        "Almost the same size",
+        "10-20% of the full size for large repositories",
+        "Exactly half by convention under normal conditions",
+        "1% of the original size"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un shallow clone descargar solo el último commit de cada rama, ahorrando significativamente en repositorios con largo historial, típicamente 10-20% del tamaño completo.",
+      "explanation_en": "A shallow clone downloads only the latest commit of each branch, saving significantly in repositories with long history, typically 10-20% of the full size.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_012",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Qué comando usarías para convertir un clone normal en uno con profundidad ilimitada después de clonarlo?",
+      "question_en": "What command would you use to convert a shallow clone to one with unlimited depth after cloning?",
+      "options_es": [
+        "git clone --unshallow",
+        "git fetch --depth=0",
+        "git fetch --unshallow",
+        "git convert --shallow-to-full"
+      ],
+      "options_en": [
+        "git clone --unshallow",
+        "git fetch --depth=0",
+        "git fetch --unshallow",
+        "git convert --shallow-to-full"
+      ],
+      "correct_index": 2,
+      "explanation_es": "git fetch --unshallow descarga el historial completo de un shallow clone. Esto descarga todos los commits anteriores que estaban omitidos.",
+      "explanation_en": "git fetch --unshallow downloads the complete history of a shallow clone. This downloads all previous commits that were omitted.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_013",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo especificarías un directorio diferente al nombre por defecto para el clone?",
+      "question_en": "How would you specify a different directory than the default name for the clone?",
+      "options_es": [
+        "git clone repo.git --directory mydir",
+        "git clone repo.git -into mydir",
+        "git clone repo.git --output mydir",
+        "git clone repo.git mydir"
+      ],
+      "options_en": [
+        "git clone repo.git --directory mydir",
+        "git clone repo.git -into mydir",
+        "git clone repo.git --output mydir",
+        "git clone repo.git mydir"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El último argumento del comando git clone especifica el directorio destino. Si se omite, Git usa el nombre del repositorio.",
+      "explanation_en": "The last argument of the git clone command specifies the destination directory. If omitted, Git uses the repository name.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_014",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa que una rama es una 'tracking branch' después de clonar?",
+      "question_en": "What does it mean that a branch is a 'tracking branch' after cloning?",
+      "options_es": [
+        "La rama está configurada para seguir una rama remota específica",
+        "La rama mantiene registro de cambios locales para la mayoría de proyectos",
+        "La rama registra todas las operaciones Git",
+        "La rama está vinculada a múltiples remotes"
+      ],
+      "options_en": [
+        "The branch is configured to follow a specific remote branch",
+        "The branch keeps track of local changes in this context",
+        "The branch logs all Git operations",
+        "The branch is linked to multiple remotes"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una tracking branch sigue automáticamente una rama remota. Cuando haces git push/pull sin argumentos, usa la rama remota asociada. Se establece con git branch --set-upstream-to.",
+      "explanation_en": "A tracking branch automatically follows a remote branch. When you do git push/pull without arguments, it uses the associated remote branch. Set with git branch --set-upstream-to.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260109_015",
+      "skill_id": "sk260109",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede al clonar si hay un archivo de configuración en el repositorio remoto (.git/config)?",
+      "question_en": "What happens when cloning if there is a configuration file in the remote repository (.git/config)?",
+      "options_es": [
+        "Se importa automáticamente la configuración del remoto",
+        "Se crea un nuevo .git/config solo con la información del remoto",
+        "Cada usuario clona con su propia configuración independiente",
+        "Se fusionan las configuraciones locales y remotas"
+      ],
+      "options_en": [
+        "The remote's configuration is automatically imported",
+        "A new .git/config is created with only the remote information",
+        "Each user clones with their own independent configuration",
+        "Local and remote configurations are merged"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Cada clon crea su propio .git/config independiente con información del remoto (origin). No se importan configuraciones privadas del remoto por razones de seguridad.",
+      "explanation_en": "Each clone creates its own independent .git/config with remote information (origin). Private configurations from the remote are not imported for security reasons.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_001",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el comando básico para enviar (push) cambios a un repositorio remoto?",
+      "question_en": "What is the basic command to push changes to a remote repository?",
+      "options_es": [
+        "git send origin main",
+        "git submit origin main",
+        "git push origin main",
+        "git upload origin main"
+      ],
+      "options_en": [
+        "git send origin main",
+        "git submit origin main",
+        "git push origin main",
+        "git upload origin main"
+      ],
+      "correct_index": 2,
+      "explanation_es": "git push envía commits locales al repositorio remoto. El formato es git push <remoto> <rama>. Origin es el remoto por defecto.",
+      "explanation_en": "git push sends local commits to the remote repository. The format is git push <remote> <branch>. Origin is the default remote.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_002",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Qué riesgo principal existe al usar git push --force?",
+      "question_en": "What is the main risk of using git push --force?",
+      "options_es": [
+        "Puede reescribir historial público y perder cambios de otros colaboradores",
+        "Puede provocar caída del servidor",
+        "Aumenta el uso de ancho de banda según la especificación",
+        "Elimina automáticamente ramas locales según la documentación oficial en este contexto"
+      ],
+      "options_en": [
+        "It can rewrite public history and lose changes from other collaborators",
+        "It can cause server downtime in real environments",
+        "It increases bandwidth usage",
+        "It automatically deletes local branches as a standard approach in the most common case"
+      ],
+      "correct_index": 0,
+      "explanation_es": "--force sobrescribe el historial remoto. Si otros colaboradores trabajaban en esa rama, sus cambios se perderán. Se debe evitar en ramas compartidas.",
+      "explanation_en": "--force overwrites remote history. If other collaborators were working on that branch, their changes will be lost. Should be avoided on shared branches.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_003",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una rama upstream y cómo se configura?",
+      "question_en": "What is an upstream branch and how is it configured?",
+      "options_es": [
+        "Una rama en un servidor aguas arriba del proyecto",
+        "Una rama que solo almacena cambios sin aplicarlos",
+        "Una rama remota configurada como referencia default para push/pull",
+        "Una rama que se sincroniza automáticamente cada hora"
+      ],
+      "options_en": [
+        "A branch on a server upstream of the project",
+        "A branch that only stores changes without applying them",
+        "A remote branch configured as the default reference for push/pull",
+        "A branch that automatically synchronizes every hour"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un upstream (o tracking branch) vincula una rama local a una remota. Se configura con git push -u origin rama o git branch --set-upstream-to=origin/rama. Luego git push/pull usa esa rama automáticamente.",
+      "explanation_en": "An upstream (or tracking branch) links a local branch to a remote one. Set with git push -u origin branch or git branch --set-upstream-to=origin/branch. Then git push/pull uses that branch automatically.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_004",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo empujarías cambios a una rama remota con diferente nombre que la local?",
+      "question_en": "How would you push changes to a remote branch with a different name than the local one?",
+      "options_es": [
+        "git push origin remote=local",
+        "git push origin --rename remote",
+        "git push origin local:remote",
+        "git push origin --map local->remote"
+      ],
+      "options_en": [
+        "git push origin remote=local",
+        "git push origin --rename remote",
+        "git push origin local:remote",
+        "git push origin --map local->remote"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La sintaxis local:remote permite especificar diferentes nombres. Por ejemplo, git push origin feature:feature-nueva envía la rama local 'feature' como 'feature-nueva' en el remoto.",
+      "explanation_en": "The local:remote syntax allows specifying different names. For example, git push origin feature:feature-new sends the local 'feature' branch as 'feature-new' on the remote.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_005",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre git push --force y git push --force-with-lease?",
+      "question_en": "What is the difference between git push --force and git push --force-with-lease?",
+      "options_es": [
+        "No hay diferencia, son aliases en este contexto",
+        "--force-with-lease requiere confirmación manual",
+        "--force es más rápido que --force-with-lease",
+        "--force-with-lease es más seguro porque solo sobrescribe si nadie más ha empujado cambios"
+      ],
+      "options_en": [
+        "There is no difference, they are aliases as a general rule",
+        "--force-with-lease requires manual confirmation",
+        "--force is faster than --force-with-lease",
+        "--force-with-lease is safer because it only overwrites if no one else has pushed changes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "--force-with-lease comprueba si el remoto ha avanzado desde tu último fetch. Si ha habido cambios, rechaza el push. Previene perder trabajo de colaboradores.",
+      "explanation_en": "--force-with-lease checks if the remote has advanced since your last fetch. If there have been changes, it rejects the push. It prevents losing collaborators' work.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_006",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo eliminarías una rama remota usando git push?",
+      "question_en": "How would you delete a remote branch using git push?",
+      "options_es": [
+        "git push origin -d rama",
+        "git push origin --delete rama",
+        "Todas las anteriores son válidas",
+        "git push origin :rama"
+      ],
+      "options_en": [
+        "git push origin -d rama",
+        "git push origin --delete rama",
+        "All of the above are valid",
+        "git push origin :rama"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las tres formas son equivalentes. -d y --delete son flags explícitos, mientras que :rama indica empujar 'nada' a esa rama (borrándola). Todas logran el mismo resultado.",
+      "explanation_en": "All three forms are equivalent. -d and --delete are explicit flags, while :rama indicates pushing 'nothing' to that branch (deleting it). All achieve the same result.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_007",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa el error 'rejected' cuando intentas hacer push?",
+      "question_en": "What does the 'rejected' error mean when you try to push?",
+      "options_es": [
+        "El servidor está rechazando conexiones",
+        "Tu rama local está vacía",
+        "Falta autenticación o permisos insuficientes en el caso más común",
+        "El remoto tiene cambios que tu rama local no tiene"
+      ],
+      "options_en": [
+        "The server is rejecting connections",
+        "Your local branch is empty",
+        "Missing authentication or insufficient permissions in this context",
+        "The remote has changes that your local branch doesn't have"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un rechazo ocurre cuando el remoto ha avanzado más que tu rama local. Necesitas hacer git pull para sincronizar antes de hacer push.",
+      "explanation_en": "A rejection occurs when the remote has advanced further than your local branch. You need to do git pull to synchronize before pushing.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_008",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de git push origin --tags?",
+      "question_en": "What is the purpose of git push origin --tags?",
+      "options_es": [
+        "Descarga todos los tags del remoto",
+        "Etiqueta el push actual",
+        "Envía todos los tags locales al remoto",
+        "Crea un tag con el nombre de la rama"
+      ],
+      "options_en": [
+        "Downloads all tags from the remote",
+        "Tags the current push",
+        "Sends all local tags to the remote",
+        "Creates a tag with the branch name"
+      ],
+      "correct_index": 2,
+      "explanation_es": "git push origin --tags envía todos los tags creados localmente al repositorio remoto. Sin esta bandera, los tags solo se empacan localmente.",
+      "explanation_en": "git push origin --tags sends all locally created tags to the remote repository. Without this flag, tags only exist locally.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_009",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace git push origin --all?",
+      "question_en": "What does git push origin --all do?",
+      "options_es": [
+        "Empuja todos los cambios sin confirmación",
+        "Empuja todas las ramas locales al remoto",
+        "Empuja el repositorio entero incluyendo la base de datos",
+        "Sincroniza todas las máquinas conectadas"
+      ],
+      "options_en": [
+        "Pushes all changes without confirmation",
+        "Pushes all local branches to the remote",
+        "Pushes the entire repository including the database",
+        "Synchronizes all connected machines"
+      ],
+      "correct_index": 1,
+      "explanation_es": "git push origin --all envía todas las ramas locales al remoto en un solo comando. Útil para sincronizar múltiples ramas de desarrollo.",
+      "explanation_en": "git push origin --all sends all local branches to the remote in one command. Useful for synchronizing multiple development branches.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_010",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el rol de un pre-push hook en Git?",
+      "question_en": "What is the role of a pre-push hook in Git?",
+      "options_es": [
+        "Registra quién hace push",
+        "Valida cambios antes de hacer push",
+        "Crea un backup automático antes de push",
+        "Cancela el push si es viernes"
+      ],
+      "options_en": [
+        "Logs who does the push",
+        "Validates changes before doing push",
+        "Creates an automatic backup before push",
+        "Cancels push if it is Friday"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un pre-push hook es un script que se ejecuta antes de git push. Puede validar tests, linters, o cualquier condición. Si falla, cancela el push.",
+      "explanation_en": "A pre-push hook is a script that runs before git push. It can validate tests, linters, or any condition. If it fails, it cancels the push.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_011",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Qué configuración permite hacer push a múltiples remotes simultáneamente?",
+      "question_en": "What configuration allows pushing to multiple remotes simultaneously?",
+      "options_es": [
+        "Usar git push --all con múltiples remotes",
+        "Ejecutar git push varias veces",
+        "Usar un alias con múltiples URLs en .git/config",
+        "Crear un remoto con múltiples URLs"
+      ],
+      "options_en": [
+        "Use git push --all with multiple remotes",
+        "Run git push multiple times",
+        "Use an alias with multiple URLs in .git/config",
+        "Create a remote with multiple URLs"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Puedes configurar un remoto con múltiples URLs en .git/config. Cuando haces push a ese remoto, se envía a todas las URLs configuradas.",
+      "explanation_en": "You can configure a remote with multiple URLs in .git/config. When you push to that remote, it sends to all configured URLs.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_012",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa un push 'atomic'?",
+      "question_en": "What does an 'atomic' push mean?",
+      "options_es": [
+        "Un push que se completa en menos de 1 segundo",
+        "Un push que no deja rastro",
+        "Un push de un solo commit según la especificación",
+        "Un push que se ejecuta como una transacción única - todo o nada"
+      ],
+      "options_en": [
+        "A push that completes in less than 1 second",
+        "A push that leaves no trace",
+        "A push of a single commit by default",
+        "A push that executes as a single transaction - all or nothing"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un push atomic con --atomic es una transacción: o todos los cambios se aplican o ninguno lo hace. Previene estados inconsistentes en el remoto.",
+      "explanation_en": "An atomic push with --atomic is a transaction: either all changes are applied or none of them are. It prevents inconsistent states on the remote.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_013",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si hay conflictos durante un push?",
+      "question_en": "What happens if there are conflicts during a push?",
+      "options_es": [
+        "El push se completa ignorando los conflictos",
+        "El push falla y necesitas sincronizar con git pull",
+        "Los conflictos se resuelven automáticamente según la documentación oficial",
+        "Solo se empujan los cambios sin conflicto"
+      ],
+      "options_en": [
+        "The push completes ignoring the conflicts",
+        "The push fails and you need to synchronize with git pull",
+        "Conflicts are resolved automatically within this paradigm",
+        "Only changes without conflict are pushed"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Git rechaza el push si el remoto ha avanzado. Debes hacer git pull, resolver conflictos de merge, y luego intentar git push nuevamente.",
+      "explanation_en": "Git rejects the push if the remote has advanced. You must do git pull, resolve merge conflicts, and then try git push again.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_014",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo enviarías solo cambios no publicados (non-ff) al hacer push?",
+      "question_en": "How would you send only unpublished (non-ff) changes when pushing?",
+      "options_es": [
+        "git push origin --ff-only",
+        "git push origin HEAD",
+        "git push origin master..feature",
+        "git push origin --new-commits de manera estándar"
+      ],
+      "options_en": [
+        "git push origin --ff-only",
+        "git push origin HEAD",
+        "git push origin master..feature",
+        "git push origin --new-commits according to official documentation"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La sintaxis A..B envía commits en B que no están en A. master..feature envía commits de feature no presentes en master, útil para PRs.",
+      "explanation_en": "The A..B syntax sends commits in B that are not in A. master..feature sends commits from feature not present in master, useful for PRs.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260110_015",
+      "skill_id": "sk260110",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si no has configurado una rama upstream y haces git push sin argumentos?",
+      "question_en": "What happens if you have not configured an upstream branch and do git push without arguments?",
+      "options_es": [
+        "Git empuja automáticamente a origin",
+        "Git empuja a la rama más antigua",
+        "Git intenta empujar a master según la documentación oficial",
+        "Git rechaza el push y pide especificar rama y remoto"
+      ],
+      "options_en": [
+        "Git automatically pushes to origin",
+        "Git pushes to the oldest branch",
+        "Git tries to push to master as a general rule in this context",
+        "Git rejects the push and asks you to specify branch and remote"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Sin upstream configurado, Git necesita saber dónde empujar. Te pedirá especificar git push origin rama o configurar el upstream con git push -u.",
+      "explanation_en": "Without upstream configured, Git needs to know where to push. It will ask you to specify git push origin branch or set upstream with git push -u.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_001",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la principal diferencia entre git pull y git fetch?",
+      "question_en": "What is the main difference between git pull and git fetch?",
+      "options_es": [
+        "git fetch descarga sin fusionar, git pull descarga y fusiona",
+        "git pull descarga sin fusionar, git fetch descarga y fusiona",
+        "git pull solo descarga, git fetch descarga y fusiona",
+        "No hay diferencia, son sinónimos"
+      ],
+      "options_en": [
+        "git fetch downloads without merging, git pull downloads and merges",
+        "git pull downloads without merging, git fetch downloads and merges",
+        "git pull only downloads, git fetch downloads and merges",
+        "There is no difference, they are synonyms"
+      ],
+      "correct_index": 0,
+      "explanation_es": "git fetch descarga cambios remotos pero NO los fusiona en tu rama. git pull = git fetch + git merge. Fetch es más seguro para ver cambios antes de integrarlos.",
+      "explanation_en": "git fetch downloads remote changes but does NOT merge them into your branch. git pull = git fetch + git merge. Fetch is safer to see changes before integrating them.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_002",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace git pull --rebase en lugar de git pull normal?",
+      "question_en": "What does git pull --rebase do instead of normal git pull?",
+      "options_es": [
+        "Descarga cambios pero no hace nada",
+        "Rebaja la importancia de los cambios remotos",
+        "Usa rebase en lugar de merge para integrar cambios",
+        "Revierte los cambios remotos"
+      ],
+      "options_en": [
+        "Downloads changes but does nothing",
+        "Reduces the importance of remote changes",
+        "Uses rebase instead of merge to integrate changes",
+        "Reverts remote changes"
+      ],
+      "correct_index": 2,
+      "explanation_es": "git pull --rebase hace git fetch + git rebase. Reaplica tus commits sobre los cambios remotos, creando un historial lineal sin merge commits.",
+      "explanation_en": "git pull --rebase does git fetch + git rebase. It reapplies your commits on top of remote changes, creating a linear history without merge commits.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_003",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Qué son las 'tracking branches' en el contexto de pull?",
+      "question_en": "What are 'tracking branches' in the context of pull?",
+      "options_es": [
+        "Ramas que rastrean uso de memoria",
+        "Ramas eliminadas después de hacer pull como regla general como regla general",
+        "Ramas locales vinculadas a ramas remotas para pull/push automático",
+        "Ramas que graban cada operación del usuario"
+      ],
+      "options_en": [
+        "Branches that track memory usage",
+        "Branches deleted after pulling in practice as a general rule in the most common case",
+        "Local branches linked to remote branches for automatic pull/push",
+        "Branches that record every user operation"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una tracking branch es una rama local vinculada a una rama remota. Cuando haces git pull sin argumentos en una tracking branch, automáticamente usa su rama remota.",
+      "explanation_en": "A tracking branch is a local branch linked to a remote branch. When you do git pull without arguments on a tracking branch, it automatically uses its remote branch.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_004",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo crearías una tracking branch para origin/feature?",
+      "question_en": "How would you create a tracking branch for origin/feature?",
+      "options_es": [
+        "git pull origin feature",
+        "Todas las anteriores funcionan",
+        "git branch --track origin/feature",
+        "git checkout --track origin/feature"
+      ],
+      "options_en": [
+        "git pull origin feature",
+        "All of the above work",
+        "git branch --track origin/feature",
+        "git checkout --track origin/feature"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las tres formas crean una tracking branch. git checkout automáticamente crea una si no existe. git branch --track lo hace explícitamente. git pull también crea una si no existe.",
+      "explanation_en": "All three forms create a tracking branch. git checkout automatically creates one if it doesn't exist. git branch --track does it explicitly. git pull also creates one if it doesn't exist.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_005",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Qué información puedes ver con git branch -vv?",
+      "question_en": "What information can you see with git branch -vv?",
+      "options_es": [
+        "Versión del programa Git según la especificación",
+        "Verificación de integridad de ramas",
+        "Historial de cambios verboso en la práctica habitual en la práctica habitual",
+        "Ramas con sus tracking branches y divergencia de commits"
+      ],
+      "options_en": [
+        "Version of Git program typically",
+        "Branch integrity verification",
+        "Verbose change history within this paradigm within this paradigm",
+        "Branches with their tracking branches and commit divergence"
+      ],
+      "correct_index": 3,
+      "explanation_es": "git branch -vv muestra cada rama local, su tracking branch y cuántos commits está adelante/atrás. Útil para ver el estado antes de pull/push.",
+      "explanation_en": "git branch -vv shows each local branch, its tracking branch, and how many commits ahead/behind. Useful to see status before pull/push.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_006",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo descargarias cambios de un remoto específico sin fusionarlos?",
+      "question_en": "How would you download changes from a specific remote without merging them?",
+      "options_es": [
+        "git sync upstream",
+        "git pull upstream",
+        "git fetch upstream",
+        "git download upstream"
+      ],
+      "options_en": [
+        "git sync upstream",
+        "git pull upstream",
+        "git fetch upstream",
+        "git download upstream"
+      ],
+      "correct_index": 2,
+      "explanation_es": "git fetch upstream descarga cambios del remoto 'upstream' sin fusionarlos. Puedes revisar los cambios antes de hacer merge si deseas.",
+      "explanation_en": "git fetch upstream downloads changes from the 'upstream' remote without merging. You can review changes before merging if you wish.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_007",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace git fetch origin --prune?",
+      "question_en": "What does git fetch origin --prune do?",
+      "options_es": [
+        "Borra archivos locales según la especificación",
+        "Descarga solo ramas importantes",
+        "Limpia la base de datos de Git",
+        "Descarga cambios y elimina referencias locales de ramas eliminadas en el remoto"
+      ],
+      "options_en": [
+        "Deletes local files in this context",
+        "Downloads only important branches",
+        "Cleans up the Git database",
+        "Downloads changes and removes local references to branches deleted on the remote"
+      ],
+      "correct_index": 3,
+      "explanation_es": "--prune elimina referencias locales (origin/rama) de ramas que ya no existen en el remoto. Mantiene tu repositorio limpio sin referencias fantasma.",
+      "explanation_en": "--prune removes local references (origin/branch) to branches that no longer exist on the remote. Keeps your repository clean without ghost references.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_008",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre merge y rebase al integrar cambios remotos?",
+      "question_en": "What is the difference between merge and rebase when integrating remote changes?",
+      "options_es": [
+        "Merge es más rápido que rebase",
+        "No hay diferencia práctica habitualmente",
+        "Rebase crea un merge commit, merge reaplica commits",
+        "Merge crea un merge commit, rebase reaplica commits sin merge commit"
+      ],
+      "options_en": [
+        "Merge is faster than rebase in real environments",
+        "There is no practical difference",
+        "Rebase creates a merge commit, merge reapplies commits",
+        "Merge creates a merge commit, rebase reapplies commits without a merge commit"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Merge integra cambios creando un commit de merge que muestra la convergencia. Rebase reaplica tus commits sobre cambios remotos sin commit de merge, creando historial lineal.",
+      "explanation_en": "Merge integrates changes by creating a merge commit showing convergence. Rebase reapplies your commits on top of remote changes without a merge commit, creating linear history.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_009",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa 'fast-forward' en el contexto de pull?",
+      "question_en": "What does 'fast-forward' mean in the context of pull?",
+      "options_es": [
+        "Una estrategia de merge que crea commits adicionales",
+        "Acelerar la velocidad de descarga",
+        "Cuando la rama local es más reciente que la remota",
+        "Cuando la rama remota es un descendiente directo de la local, solo se mueve HEAD"
+      ],
+      "options_en": [
+        "A merge strategy that creates additional commits",
+        "Speed up download speed in this context",
+        "When the local branch is more recent than the remote",
+        "When the remote branch is a direct descendant of the local one, only HEAD moves"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un fast-forward ocurre cuando tu rama no tiene commits que el remoto no tenga. Git solo mueve HEAD, sin crear un commit de merge.",
+      "explanation_en": "A fast-forward occurs when your branch has no commits that the remote doesn't have. Git only moves HEAD, without creating a merge commit.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_010",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo manejarías cambios locales no confirmados cuando necesitas hacer pull?",
+      "question_en": "How would you handle uncommitted local changes when you need to pull?",
+      "options_es": [
+        "Hacer pull directamente, los cambios se ignorarán",
+        "Hacer stash de cambios, luego pull, luego aplicar stash",
+        "Eliminar cambios locales antes de pull",
+        "Hacer pull en una rama diferente"
+      ],
+      "options_en": [
+        "Do pull directly, the changes will be ignored",
+        "Stash changes, then pull, then apply stash",
+        "Delete local changes before pulling",
+        "Pull to a different branch"
+      ],
+      "correct_index": 1,
+      "explanation_es": "git stash guarda cambios temporalmente, permitiéndote hacer pull. Luego git stash pop restaura tus cambios. Esto evita conflictos de merge.",
+      "explanation_en": "git stash saves changes temporarily, allowing you to do pull. Then git stash pop restores your changes. This avoids merge conflicts.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_011",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si hay conflictos de merge durante git pull?",
+      "question_en": "What happens if there are merge conflicts during git pull?",
+      "options_es": [
+        "El pull se completa ignorando conflictos",
+        "Los conflictos se resuelven automáticamente",
+        "El pull falla completamente sin cambios",
+        "Git pausa el merge y te pide resolver conflictos"
+      ],
+      "options_en": [
+        "The pull completes ignoring conflicts",
+        "Conflicts are resolved automatically",
+        "The pull fails completely without changes",
+        "Git pauses the merge and asks you to resolve conflicts"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Git marca archivos en conflicto y pausa el merge. Debes editar manualmente para resolver conflictos, luego hacer git add y git commit para completar el merge.",
+      "explanation_en": "Git marks conflicted files and pauses the merge. You must manually edit to resolve conflicts, then do git add and git commit to complete the merge.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_012",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo descargarias cambios de todas las ramas remotas?",
+      "question_en": "How would you download changes from all remote branches?",
+      "options_es": [
+        "git fetch",
+        "git fetch --all",
+        "git pull --all en el caso más común",
+        "git sync"
+      ],
+      "options_en": [
+        "git fetch",
+        "git fetch --all",
+        "git pull --all as a general guideline",
+        "git sync"
+      ],
+      "correct_index": 1,
+      "explanation_es": "git fetch descarga cambios del remoto default (origin). git fetch --all descarga de todos los remotes configurados (origin, upstream, etc.).",
+      "explanation_en": "git fetch downloads changes from the default remote (origin). git fetch --all downloads from all configured remotes (origin, upstream, etc.).",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_013",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace git fetch origin --tags?",
+      "question_en": "What does git fetch origin --tags do?",
+      "options_es": [
+        "Descarga commits y todos los tags del remoto",
+        "Descarga solo tags sin commits",
+        "Etiqueta los cambios descargados en la práctica habitual",
+        "Crea tags locales del remoto"
+      ],
+      "options_en": [
+        "Downloads commits and all tags from the remote",
+        "Downloads only tags without commits",
+        "Tags the downloaded changes in common practice",
+        "Creates local tags from the remote"
+      ],
+      "correct_index": 0,
+      "explanation_es": "git fetch origin --tags descarga commits y todos los tags del remoto. Sin --tags, solo se descargan tags que se referencian en commits.",
+      "explanation_en": "git fetch origin --tags downloads commits and all tags from the remote. Without --tags, only tags referenced in commits are downloaded.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_014",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo verificarías qué cambios traería un pull antes de aplicarlos?",
+      "question_en": "How would you verify what changes a pull would bring before applying them?",
+      "options_es": [
+        "git pull --dry-run",
+        "git preview pull de forma estándar según la documentación oficial",
+        "git fetch y luego git diff HEAD origin/rama",
+        "No es posible verificar antes"
+      ],
+      "options_en": [
+        "git pull --dry-run",
+        "git preview pull typically as a recommended practice",
+        "git fetch and then git diff HEAD origin/rama",
+        "It is not possible to verify before"
+      ],
+      "correct_index": 2,
+      "explanation_es": "git fetch descarga cambios. Luego git diff HEAD origin/main muestra qué cambiaría. Esto es más seguro que --dry-run que no existe para pull.",
+      "explanation_en": "git fetch downloads changes. Then git diff HEAD origin/main shows what would change. This is safer than --dry-run which doesn't exist for pull.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260111_015",
+      "skill_id": "sk260111",
+      "type": "multiple_choice",
+      "question_es": "¿Qué configuración hace que git pull use rebase por defecto?",
+      "question_en": "What configuration makes git pull use rebase by default?",
+      "options_es": [
+        "git config rebase.default true",
+        "git config merge.rebase true",
+        "git config pull.rebase true",
+        "git config pull.strategy rebase"
+      ],
+      "options_en": [
+        "git config rebase.default true",
+        "git config merge.rebase true",
+        "git config pull.rebase true",
+        "git config pull.strategy rebase"
+      ],
+      "correct_index": 2,
+      "explanation_es": "git config pull.rebase true configura globalmente que git pull use rebase. Puedes usar --global para aplicarlo a todos los repositorios.",
+      "explanation_en": "git config pull.rebase true configures globally that git pull uses rebase. You can use --global to apply it to all repositories.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_001",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la principal diferencia entre un fork y un clone en GitHub?",
+      "question_en": "What is the main difference between a fork and a clone on GitHub?",
+      "options_es": [
+        "Fork crea una copia en tu cuenta GitHub, clone descarga a tu máquina",
+        "No hay diferencia, son lo mismo",
+        "Clone es más seguro que fork como regla general",
+        "Fork es solo para repositorios privados de manera estándar en este contexto"
+      ],
+      "options_en": [
+        "Fork creates a copy in your GitHub account, clone downloads to your machine",
+        "There is no difference, they are the same",
+        "Clone is safer than fork in practice",
+        "Fork is only for private repositories in the most common case as a general rule"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Fork crea un repositorio independiente en tu cuenta GitHub bajo tu control. Clone descarga un repositorio a tu máquina local. Fork + clone es flujo típico para contribuir.",
+      "explanation_en": "Fork creates an independent repository in your GitHub account under your control. Clone downloads a repository to your local machine. Fork + clone is typical flow to contribute.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_002",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de un pull request en GitHub?",
+      "question_en": "What is the purpose of a pull request on GitHub?",
+      "options_es": [
+        "Descargar código de otro usuario",
+        "Proponer cambios para que sean revisados e integrados en el repositorio principal",
+        "Crear una rama nueva en este contexto",
+        "Solicitar permisos de escritura dentro de este paradigma en la práctica habitual según la documentación oficial"
+      ],
+      "options_en": [
+        "Download code from another user",
+        "Propose changes to be reviewed and integrated into the main repository",
+        "Create a new branch in practice",
+        "Request write permissions under normal conditions as a general guideline under normal conditions"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un PR es una solicitud para fusionar cambios de tu rama al repositorio principal. Permite revisión de código, discusión y validación antes de integrar.",
+      "explanation_en": "A PR is a request to merge changes from your branch into the main repository. It allows code review, discussion, and validation before integration.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_003",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo es apropiado usar una 'conversation' vs una 'pull request' en GitHub?",
+      "question_en": "When is it appropriate to use a 'discussion' vs a 'pull request' on GitHub?",
+      "options_es": [
+        "Los PRs son para cualquier tema",
+        "No hay diferencia de forma estándar en este contexto en condiciones normales",
+        "Las discussions para preguntas/ideas, PRs para cambios de código",
+        "Las discussions solo para repositorios privados"
+      ],
+      "options_en": [
+        "PRs are for any topic by default",
+        "There is no difference according to official documentation in the most common case",
+        "Discussions for questions/ideas, PRs for code changes",
+        "Discussions only for private repositories"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Discussions son para preguntas, ideas y conversa general. PRs son específicamente para proponer cambios de código. Discussions no afectan el código.",
+      "explanation_en": "Discussions are for questions, ideas, and general conversation. PRs are specifically to propose code changes. Discussions do not affect code.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_004",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'code review' en GitHub?",
+      "question_en": "What is a 'code review' on GitHub?",
+      "options_es": [
+        "Una auditoría de seguridad",
+        "El proceso de examinar código propuesto antes de fusionarlo",
+        "Un reporte de errores en entornos reales",
+        "Una copia de seguridad automática"
+      ],
+      "options_en": [
+        "A security audit",
+        "The process of examining proposed code before merging it",
+        "A bug report by default",
+        "An automatic backup"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Code review es cuando otro desarrollador examina cambios del PR, comenta, sugiere mejoras, y aprueba o solicita cambios antes de merge.",
+      "explanation_en": "Code review is when another developer examines PR changes, comments, suggests improvements, and approves or requests changes before merge.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_005",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo agregarías un reviewer a tu pull request en GitHub?",
+      "question_en": "How would you add a reviewer to your pull request on GitHub?",
+      "options_es": [
+        "Con git request-review usuario",
+        "En GitHub UI, sección 'Reviewers' del PR",
+        "Con git reviewer add usuario",
+        "Los reviewers se asignan automáticamente"
+      ],
+      "options_en": [
+        "With git request-review username",
+        "In GitHub UI, PR 'Reviewers' section",
+        "With git reviewer add username",
+        "Reviewers are assigned automatically"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En la página del PR en GitHub, hay una sección 'Reviewers' donde puedes seleccionar y asignar revisores. Necesitas permisos adecuados en el repositorio.",
+      "explanation_en": "On the PR page on GitHub, there is a 'Reviewers' section where you can select and assign reviewers. You need appropriate permissions in the repository.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_006",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa 'squash commits' en un merge de PR?",
+      "question_en": "What does 'squash commits' mean in a PR merge?",
+      "options_es": [
+        "Comprimir archivos antes de merge",
+        "Combinar múltiples commits en uno solo antes de fusionar",
+        "Eliminar commits antiguos",
+        "Deshacer commits según la especificación de manera estándar"
+      ],
+      "options_en": [
+        "Compress files before merge",
+        "Combine multiple commits into one before merging",
+        "Delete old commits",
+        "Undo commits according to spec for most projects"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Squash combina todos los commits del PR en un único commit antes de merge. Limpia el historial pero pierde información de commits individuales.",
+      "explanation_en": "Squash combines all PR commits into a single commit before merge. It cleans up history but loses information about individual commits.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_007",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de rebasear antes de mergear un PR?",
+      "question_en": "What is the advantage of rebasing before merging a PR?",
+      "options_es": [
+        "Crea un historial lineal sin merge commits innecesarios",
+        "Hace el código más rápido en entornos reales de forma general",
+        "Mejora la seguridad del código",
+        "Reduce el tamaño del archivo .git"
+      ],
+      "options_en": [
+        "Creates a linear history without unnecessary merge commits",
+        "Makes code faster according to spec as a general rule",
+        "Improves code security",
+        "Reduces .git file size"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Rebase crea un historial lineal y limpio. Merge crea commits de merge que muestran convergencia. Rebase es preferido en algunos equipos para historial más claro.",
+      "explanation_en": "Rebase creates a clean linear history. Merge creates merge commits showing convergence. Rebase is preferred in some teams for clearer history.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_008",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se crea un pull request para contribuir a un proyecto?",
+      "question_en": "How do you create a pull request to contribute to a project?",
+      "options_es": [
+        "Fork, crea rama local, hace cambios, push, abre PR desde GitHub UI",
+        "Solo fork y edita en GitHub directamente en el caso más común para la mayoría de proyectos",
+        "Edita directamente en master del proyecto original",
+        "Envía cambios por email"
+      ],
+      "options_en": [
+        "Fork, create local branch, make changes, push, open PR from GitHub UI",
+        "Just fork and edit on GitHub directly as a standard approach as a recommended practice",
+        "Edit directly on master of the original project",
+        "Send changes by email as a general rule"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El flujo es: 1) Fork del proyecto, 2) Clonas tu fork, 3) Creas rama, 4) Haces cambios, 5) Pushes a tu fork, 6) Abres PR desde GitHub UI.",
+      "explanation_en": "The flow is: 1) Fork the project, 2) Clone your fork, 3) Create branch, 4) Make changes, 5) Push to your fork, 6) Open PR from GitHub UI.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_009",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Qué son las 'protected branches' en GitHub?",
+      "question_en": "What are 'protected branches' on GitHub?",
+      "options_es": [
+        "Ramas que solo el propietario puede ver",
+        "Ramas que requieren PR review y checks antes de permitir merge",
+        "Ramas que no se pueden eliminar",
+        "Ramas secretas del repositorio por convención"
+      ],
+      "options_en": [
+        "Branches that only the owner can view",
+        "Branches that require PR review and checks before allowing merge",
+        "Branches that cannot be deleted in practice",
+        "Secret branches of the repository"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Protected branches aplican reglas: requieren PR reviews aprobadas, status checks passing, y pueden prohibir force pushes. Protegen ramas críticas como master/main.",
+      "explanation_en": "Protected branches enforce rules: require approved PR reviews, passing status checks, and can prohibit force pushes. They protect critical branches like master/main.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_010",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'status check' en un PR de GitHub?",
+      "question_en": "What is a 'status check' in a GitHub PR?",
+      "options_es": [
+        "Un reporte del estado del servidor",
+        "Un comentario manual del revisor en la práctica",
+        "Una verificación de seguridad de contraseñas",
+        "Una validación automática (tests, lint, builds) que debe pasar antes de merge"
+      ],
+      "options_en": [
+        "A report of server status as a general rule",
+        "A manual reviewer comment",
+        "A password security check",
+        "An automatic validation (tests, lint, builds) that must pass before merge"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Status checks son validaciones automáticas (CI/CD) que corren en cada PR. Ejemplos: tests pasan, linter aprueba, build sucede. El PR no puede mergear si checks fallan.",
+      "explanation_en": "Status checks are automatic validations (CI/CD) that run on each PR. Examples: tests pass, linter approves, build succeeds. PR cannot merge if checks fail.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_011",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo asignarías un 'assignee' a un issue en GitHub?",
+      "question_en": "How would you assign an 'assignee' to an issue on GitHub?",
+      "options_es": [
+        "En GitHub UI en la sección 'Assignees' del issue",
+        "Automáticamente por GitHub",
+        "Con un comando Git por convención",
+        "No es posible asignar issues"
+      ],
+      "options_en": [
+        "In GitHub UI in the 'Assignees' section of the issue",
+        "Automatically by GitHub",
+        "With a Git command typically",
+        "It is not possible to assign issues"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En la página del issue en GitHub, hay una sección 'Assignees' donde puedes seleccionar personas responsables de trabajar en ese issue.",
+      "explanation_en": "On the issue page in GitHub, there is an 'Assignees' section where you can select people responsible for working on that issue.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_012",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un 'CODEOWNERS' file en GitHub?",
+      "question_en": "What is a 'CODEOWNERS' file in GitHub?",
+      "options_es": [
+        "Una lista de precios del código en entornos reales",
+        "Una configuración de permisos de GitHub",
+        "Un registro de cambios de propietario",
+        "Un archivo que especifica quién es responsable de cada parte del código"
+      ],
+      "options_en": [
+        "A code price list in real environments",
+        "A GitHub permissions configuration",
+        "A log of ownership changes",
+        "A file that specifies who is responsible for each part of the code"
+      ],
+      "correct_index": 3,
+      "explanation_es": "CODEOWNERS es un archivo que mapea rutas del repositorio a propietarios. Cuando se abre un PR que toca esas rutas, los propietarios son automáticamente asignados como reviewers.",
+      "explanation_en": "CODEOWNERS is a file that maps repository paths to owners. When a PR is opened that touches those paths, the owners are automatically assigned as reviewers.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_013",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué sirven las issue templates en GitHub?",
+      "question_en": "What are issue templates for on GitHub?",
+      "options_es": [
+        "Para crear nuevas ramas de forma estándar",
+        "Para cerrar issues automáticamente",
+        "Para enviar emails sobre issues",
+        "Para estandarizar la información que se incluye al reportar issues"
+      ],
+      "options_en": [
+        "To create new branches in practice",
+        "To automatically close issues",
+        "To send emails about issues",
+        "To standardize the information included when reporting issues"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Issue templates son formularios predefinidos que guían a usuarios a reportar información consistente. Evita reportes incompletos o confusos.",
+      "explanation_en": "Issue templates are predefined forms that guide users to report consistent information. Prevents incomplete or confusing reports.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_014",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre 'Request changes' y 'Comment' en un code review?",
+      "question_en": "What is the difference between 'Request changes' and 'Comment' in a code review?",
+      "options_es": [
+        "No hay diferencia en la práctica",
+        "Request changes bloquea el merge, Comment solo deja feedback",
+        "Comment bloquea, Request changes no",
+        "Ambos son idénticos en efecto"
+      ],
+      "options_en": [
+        "There is no difference by default",
+        "Request changes blocks merge, Comment only leaves feedback",
+        "Comment blocks, Request changes does not",
+        "Both are identical in effect"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Request changes pone el PR en estado 'Cambios solicitados' bloqueando merge hasta que se resuelvan. Comment solo deja feedback sin bloquear.",
+      "explanation_en": "Request changes puts the PR in 'Changes Requested' state blocking merge until resolved. Comment only leaves feedback without blocking.",
+      "source": "https://git-scm.com/doc"
+    },
+    {
+      "id": "q260112_015",
+      "skill_id": "sk260112",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo sincronizarías tu fork con cambios del repositorio original?",
+      "question_en": "How would you sync your fork with changes from the original repository?",
+      "options_es": [
+        "Los forks se sincronizan automáticamente",
+        "Re-forquear el repositorio habitualmente",
+        "No se pueden sincronizar forks según la documentación oficial según la documentación oficial",
+        "Configurar upstream, hacer git fetch upstream, y mergear origen/main en tu main local"
+      ],
+      "options_en": [
+        "Forks sync automatically",
+        "Re-fork the repository",
+        "Forks cannot be synced in this context in common practice according to official documentation",
+        "Configure upstream, do git fetch upstream, and merge origin/main into your local main"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Configura el remoto 'upstream' apuntando al repo original. Luego git fetch upstream y git merge upstream/main sincroniza tu fork con cambios upstream.",
+      "explanation_en": "Configure the 'upstream' remote pointing to the original repo. Then git fetch upstream and git merge upstream/main syncs your fork with upstream changes.",
+      "source": "https://git-scm.com/doc"
+    }
+  ]
+}

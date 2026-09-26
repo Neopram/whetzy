@@ -1,0 +1,13 @@
+{
+  "id": "les200301",
+  "skill_id": "sk200301",
+  "language": "es",
+  "executable": false,
+  "title_es": "Apache Spark: RDDs y Transformaciones",
+  "title_en": "Apache Spark: RDDs & Transformations",
+  "body_es": "Spark es un motor de computación distribuida. RDDs (Resilient Distributed Datasets) son la abstracción base: colecciones de objetos que se procesan en paralelo. Transformaciones (map, filter, flatMap) son lazy: se definen pero no se ejecutan hasta una action. Actions (collect, save) disparan la ejecución. Partitions permiten paralelismo: más partitions = más paralelismo pero más overhead.",
+  "body_en": "Spark is distributed computing engine. RDDs are base abstraction: object collections processed in parallel. Transformations (map, filter, flatMap) are lazy: defined but not executed until action. Actions (collect, save) trigger execution. Partitions enable parallelism: more partitions = more parallelism but more overhead.",
+  "example_code": "from pyspark import SparkContext\nsc = SparkContext('local', 'RDD Example')\n\n# Crear RDD desde lista\nrdd = sc.parallelize([1,2,3,4,5], numPartitions=2)\n\n# Transformaciones (lazy)\nrdd2 = rdd.map(lambda x: x*2)  # [2,4,6,8,10]\nrdd3 = rdd2.filter(lambda x: x > 5)  # [6,8,10]\n\n# Action (ejecuta todo)\nresult = rdd3.collect()  # Ahora se ejecuta\nprint(result)",
+  "example_output": "[6, 8, 10] - Spark ejecutó las transformaciones lazy cuando se llamó collect().",
+  "source": "https://spark.apache.org/docs/"
+}

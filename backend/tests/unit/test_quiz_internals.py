@@ -396,34 +396,39 @@ class TestIsModuleUnlocked:
 class TestCandidateSkillIds:
     @pytest.mark.asyncio
     async def test_explicit_skill_short_circuits(self, db_session, user: User) -> None:
-        got = await _candidate_skill_ids(db_session, user, "study", None, "whatever")
+        got, reason = await _candidate_skill_ids(db_session, user, "study", None, "whatever")
         assert got == ["whatever"]
+        assert reason == "skill_pinned"
 
     @pytest.mark.asyncio
     async def test_study_mode_returns_only_unlocked_skills(
         self, db_session, user: User
     ) -> None:
         await build_track(db_session)
-        got = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
+        got, reason = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
         assert set(got) == {"trkA_m0_s0", "trkA_m0_s1"}  # module 1 still locked
+        assert reason == "low_mastery"
 
     @pytest.mark.asyncio
     async def test_no_content_returns_empty(self, db_session, user: User) -> None:
-        assert await _candidate_skill_ids(db_session, user, "study", None, None) == []
+        got, reason = await _candidate_skill_ids(db_session, user, "study", None, None)
+        assert got == []
+        assert reason == "no_skills"
 
     @pytest.mark.asyncio
     async def test_track_filter_excludes_other_tracks(self, db_session, user: User) -> None:
         await build_track(db_session, "trkA")
         await build_track(db_session, "trkB")
-        got = await _candidate_skill_ids(db_session, user, "study", "trkB", None)
+        got, _ = await _candidate_skill_ids(db_session, user, "study", "trkB", None)
         assert all(sid.startswith("trkB") for sid in got)
 
     @pytest.mark.asyncio
     async def test_mastered_skills_are_dropped(self, db_session, user: User) -> None:
         await build_track(db_session)
         await set_mastery(db_session, user.id, "trkA_m0_s0", 0.99)
-        got = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
+        got, reason = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
         assert got == ["trkA_m0_s1"]
+        assert reason == "low_mastery"
 
     @pytest.mark.asyncio
     async def test_all_mastered_falls_back_to_everything(self, db_session, user: User) -> None:
@@ -431,8 +436,9 @@ class TestCandidateSkillIds:
         await build_track(db_session, n_modules=1)
         await set_mastery(db_session, user.id, "trkA_m0_s0", 0.99)
         await set_mastery(db_session, user.id, "trkA_m0_s1", 0.99)
-        got = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
+        got, reason = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
         assert set(got) == {"trkA_m0_s0", "trkA_m0_s1"}
+        assert reason == "all_mastered"
 
     @pytest.mark.asyncio
     async def test_review_mode_returns_due_skills(self, db_session, user: User) -> None:
@@ -446,15 +452,16 @@ class TestCandidateSkillIds:
             )
         )
         await db_session.commit()
-        got = await _candidate_skill_ids(db_session, user, "review", None, None)
+        got, reason = await _candidate_skill_ids(db_session, user, "review", None, None)
         assert got == ["trkA_m0_s0"]
+        assert reason == "spaced_repetition_due"
 
     @pytest.mark.asyncio
     async def test_review_mode_falls_through_when_nothing_is_due(
         self, db_session, user: User
     ) -> None:
         await build_track(db_session)
-        got = await _candidate_skill_ids(db_session, user, "review", "trkA", None)
+        got, _ = await _candidate_skill_ids(db_session, user, "review", "trkA", None)
         assert set(got) == {"trkA_m0_s0", "trkA_m0_s1"}
 
     @pytest.mark.asyncio
@@ -469,7 +476,7 @@ class TestCandidateSkillIds:
             )
         )
         await db_session.commit()
-        got = await _candidate_skill_ids(db_session, user, "review", "trkA", None)
+        got, _ = await _candidate_skill_ids(db_session, user, "review", "trkA", None)
         assert set(got) == {"trkA_m0_s0", "trkA_m0_s1"}  # fell through to study
 
 
@@ -479,16 +486,20 @@ class TestCandidateSkillIds:
 class TestSelectSkill:
     @pytest.mark.asyncio
     async def test_empty_pool_returns_none(self, db_session, user: User) -> None:
-        assert await _select_skill(db_session, user, []) is None
+        got, reason = await _select_skill(db_session, user, [])
+        assert got is None
+        assert reason == "no_candidates"
 
     @pytest.mark.asyncio
     async def test_single_candidate_short_circuits(self, db_session, user: User) -> None:
-        assert await _select_skill(db_session, user, ["only"]) == "only"
+        got, reason = await _select_skill(db_session, user, ["only"])
+        assert got == "only"
+        assert reason == "single_candidate"
 
     @pytest.mark.asyncio
     async def test_returns_a_candidate(self, db_session, user: User) -> None:
         await build_track(db_session)
-        got = await _select_skill(db_session, user, ["trkA_m0_s0", "trkA_m0_s1"])
+        got, _ = await _select_skill(db_session, user, ["trkA_m0_s0", "trkA_m0_s1"])
         assert got in {"trkA_m0_s0", "trkA_m0_s1"}
 
     @pytest.mark.asyncio
@@ -498,10 +509,48 @@ class TestSelectSkill:
         await set_mastery(db_session, user.id, "trkA_m0_s1", 0.95)
         random.seed(99)
         picks = [
-            await _select_skill(db_session, user, ["trkA_m0_s0", "trkA_m0_s1"])
+            (await _select_skill(db_session, user, ["trkA_m0_s0", "trkA_m0_s1"]))[0]
             for _ in range(60)
         ]
         assert picks.count("trkA_m0_s0") > picks.count("trkA_m0_s1")
+
+
+# ── SelectionReason contract (32.3) ──────────────────────────────────────────
+
+
+class TestSelectionReasonContract:
+    def test_quiz_start_response_has_selection_reason(self) -> None:
+        from app.schemas.session import QuizStartResponse, SelectionReason
+
+        fields = QuizStartResponse.model_fields
+        assert "selection_reason" in fields
+        assert fields["selection_reason"].annotation == SelectionReason | None
+
+    def test_quiz_answer_response_has_next_selection_reason(self) -> None:
+        from app.schemas.session import QuizAnswerResponse, SelectionReason
+
+        fields = QuizAnswerResponse.model_fields
+        assert "next_selection_reason" in fields
+        assert fields["next_selection_reason"].annotation == SelectionReason | None
+
+    def test_selection_reason_fields(self) -> None:
+        from app.schemas.session import SelectionReason
+
+        reason = SelectionReason(pool="low_mastery", skill_strategy="dkt_prediction",
+                                 difficulty_target=0.75, expected_p=0.68)
+        d = reason.model_dump()
+        assert d == {"pool": "low_mastery", "skill_strategy": "dkt_prediction",
+                     "difficulty_target": 0.75, "expected_p": 0.68}
+
+    def test_selection_reason_optional_fields(self) -> None:
+        from app.schemas.session import SelectionReason
+
+        reason = SelectionReason(pool="skill_pinned")
+        d = reason.model_dump()
+        assert d["pool"] == "skill_pinned"
+        assert d["skill_strategy"] is None
+        assert d["difficulty_target"] is None
+        assert d["expected_p"] is None
 
 
 # ── _current_combo ────────────────────────────────────────────────────────────

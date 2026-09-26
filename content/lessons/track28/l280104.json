@@ -1,0 +1,12 @@
+{
+  "id": "l280104",
+  "skill_id": "sk280104",
+  "title_es": "Principios REST",
+  "title_en": "REST Principles",
+  "body_es": "REST (Transferencia de Estado Representacional) se basa en seis principios: arquitectura cliente-servidor, ausencia de estado (stateless), interfaz uniforme con recursos identificables, representación de recursos mediante múltiples formatos (JSON, XML), y HATEOAS para navegación. Las APIs REST tratan datos como recursos con URIs únicas, utilizan métodos HTTP estándar para operaciones, y responden con representaciones del estado actual. Seguir principios REST produce APIs predecibles, escalables y fáciles de usar.",
+  "body_en": "REST (Representational State Transfer) is based on six principles: client-server architecture, statelessness, uniform interface with identifiable resources, resource representation through multiple formats (JSON, XML), and HATEOAS for navigation. REST APIs treat data as resources with unique URIs, use standard HTTP methods for operations, and respond with representations of current state. Following REST principles produces predictable, scalable, and easy-to-use APIs.",
+  "example_code": "from fastapi import FastAPI\nfrom pydantic import BaseModel\nfrom typing import List\n\napp = FastAPI()\n\nclass User(BaseModel):\n    id: int\n    name: str\n    email: str\n\nusers_db = {\n    1: {\"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\"},\n    2: {\"id\": 2, \"name\": \"Bob\", \"email\": \"bob@example.com\"}\n}\n\n@app.get(\"/users\", response_model=List[User])\nasync def list_users():\n    return list(users_db.values())\n\n@app.get(\"/users/{user_id}\", response_model=User)\nasync def get_user(user_id: int):\n    return users_db[user_id]\n\n@app.post(\"/users\", response_model=User, status_code=201)\nasync def create_user(user: User):\n    users_db[user.id] = user.dict()\n    return user\n\n@app.put(\"/users/{user_id}\", response_model=User)\nasync def update_user(user_id: int, user: User):\n    users_db[user_id] = user.dict()\n    return user",
+  "example_output": "GET /users → [{\"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\"}, {\"id\": 2, \"name\": \"Bob\", \"email\": \"bob@example.com\"}]\nGET /users/1 → {\"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\"}\nPOST /users → 201 Created with new user data\nPUT /users/1 → {\"id\": 1, \"name\": \"Alice Updated\", \"email\": \"alice.new@example.com\"}",
+  "source": "FastAPI Docs — https://fastapi.tiangolo.com",
+  "order": 4
+}

@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q280201_001",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el decorador correcto para crear una ruta GET en FastAPI?",
+      "question_en": "Which decorator is correct for creating a GET route in FastAPI?",
+      "options_es": [
+        "@app.retrieve('/path')",
+        "@app.fetch('/path')",
+        "@app.get('/path')",
+        "@app.query('/path')"
+      ],
+      "options_en": [
+        "@app.retrieve('/path')",
+        "@app.fetch('/path')",
+        "@app.get('/path')",
+        "@app.query('/path')"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El decorador @app.get() se utiliza en FastAPI para definir operaciones GET. Es el estándar para crear rutas que recuperan datos.",
+      "explanation_en": "The @app.get() decorator is used in FastAPI to define GET operations. It is the standard for creating routes that retrieve data.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_002",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "En FastAPI, ¿cómo se define un parámetro de ruta en la URL?",
+      "question_en": "In FastAPI, how are path parameters defined in the URL?",
+      "options_es": [
+        "Entre comillas: '/items/\"id\"'",
+        "Con signo de dólar: '/items/$id'",
+        "Entre llaves: '/items/{id}'",
+        "Con corchetes: '/items/[id]'"
+      ],
+      "options_en": [
+        "In quotes: '/items/\"id\"'",
+        "With dollar sign: '/items/$id'",
+        "In curly braces: '/items/{id}'",
+        "In square brackets: '/items/[id]'"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los parámetros de ruta en FastAPI se definen entre llaves {} en la cadena de la ruta, como /items/{id}.",
+      "explanation_en": "Path parameters in FastAPI are defined in curly braces {} in the route string, like /items/{id}.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_003",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia principal entre parámetros de ruta y parámetros de consulta en FastAPI?",
+      "question_en": "What is the main difference between path parameters and query parameters in FastAPI?",
+      "options_es": [
+        "Los parámetros de ruta van en la URL después de '?', los de consulta en {}.",
+        "Los parámetros de ruta se usan solo en POST, los de consulta en GET dentro de este paradigma",
+        "Los parámetros de ruta están en la URL como {id}, los de consulta van después de '?'.",
+        "No hay diferencia, son sinónimos."
+      ],
+      "options_en": [
+        "Path parameters go in the URL after '?', query parameters in {}.",
+        "Path parameters are only used in POST, query parameters in GET as a standard approach",
+        "Path parameters are in the URL like {id}, query parameters go after '?'.",
+        "There is no difference, they are synonyms."
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los parámetros de ruta son parte de la URL como /items/{id}, mientras que los parámetros de consulta aparecen después del '?' como ?skip=0&limit=10.",
+      "explanation_en": "Path parameters are part of the URL like /items/{id}, while query parameters appear after '?' like ?skip=0&limit=10.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_004",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se declara un parámetro de consulta opcional en FastAPI?",
+      "question_en": "How is an optional query parameter declared in FastAPI?",
+      "options_es": [
+        "Ambas opciones funcionan en FastAPI",
+        "Con type | None de forma general en el caso más común",
+        "Con Optional[type] = None",
+        "Con Optional[type] solamente"
+      ],
+      "options_en": [
+        "Both options work in FastAPI",
+        "With type | None in production environments as a recommended practice",
+        "With Optional[type] = None",
+        "With Optional[type] only"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En FastAPI, ambas sintaxis funcionan: Optional[type] = None (typing antiguo) y type | None (Python 3.10+) son equivalentes.",
+      "explanation_en": "In FastAPI, both syntaxes work: Optional[type] = None (older typing) and type | None (Python 3.10+) are equivalent.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_005",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el decorador para crear una ruta POST en FastAPI?",
+      "question_en": "Which decorator creates a POST route in FastAPI?",
+      "options_es": [
+        "@app.create('/path')",
+        "@app.add('/path')",
+        "@app.insert('/path')",
+        "@app.post('/path')"
+      ],
+      "options_en": [
+        "@app.create('/path')",
+        "@app.add('/path')",
+        "@app.insert('/path')",
+        "@app.post('/path')"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El decorador @app.post() se utiliza para crear rutas POST que aceptan datos del cliente.",
+      "explanation_en": "The @app.post() decorator is used to create POST routes that accept data from the client.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_006",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se captura un parámetro de ruta en una función de FastAPI?",
+      "question_en": "How is a path parameter captured in a FastAPI function?",
+      "options_es": [
+        "Accediendo a una variable global",
+        "Usando request.args",
+        "Como un argumento de la función con el mismo nombre",
+        "Usando @app.param según la especificación"
+      ],
+      "options_en": [
+        "Accessing a global variable",
+        "Using request.args",
+        "As a function argument with the same name",
+        "Using @app.param as a general rule"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En FastAPI, los parámetros de ruta se capturan como argumentos de la función con el mismo nombre que aparece en {nombre}.",
+      "explanation_en": "In FastAPI, path parameters are captured as function arguments with the same name that appears in {name}.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_007",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el decorador para una ruta PUT en FastAPI?",
+      "question_en": "Which decorator is used for a PUT route in FastAPI?",
+      "options_es": [
+        "@app.put('/path')",
+        "@app.update('/path')",
+        "@app.modify('/path')",
+        "@app.replace('/path')"
+      ],
+      "options_en": [
+        "@app.put('/path')",
+        "@app.update('/path')",
+        "@app.modify('/path')",
+        "@app.replace('/path')"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El decorador @app.put() se utiliza para crear rutas PUT que reemplazan recursos completos.",
+      "explanation_en": "The @app.put() decorator is used to create PUT routes that replace entire resources.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_008",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el decorador para una ruta DELETE en FastAPI?",
+      "question_en": "Which decorator is used for a DELETE route in FastAPI?",
+      "options_es": [
+        "@app.delete('/path')",
+        "@app.drop('/path')",
+        "@app.remove('/path')",
+        "@app.erase('/path')"
+      ],
+      "options_en": [
+        "@app.delete('/path')",
+        "@app.drop('/path')",
+        "@app.remove('/path')",
+        "@app.erase('/path')"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El decorador @app.delete() se utiliza para crear rutas DELETE que eliminan recursos.",
+      "explanation_en": "The @app.delete() decorator is used to create DELETE routes that remove resources.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_009",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el decorador para una ruta PATCH en FastAPI?",
+      "question_en": "Which decorator is used for a PATCH route in FastAPI?",
+      "options_es": [
+        "@app.fix('/path')",
+        "@app.edit('/path')",
+        "@app.partial('/path')",
+        "@app.patch('/path')"
+      ],
+      "options_en": [
+        "@app.fix('/path')",
+        "@app.edit('/path')",
+        "@app.partial('/path')",
+        "@app.patch('/path')"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El decorador @app.patch() se utiliza para actualizaciones parciales de recursos.",
+      "explanation_en": "The @app.patch() decorator is used for partial resource updates.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_010",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "En FastAPI, ¿qué validación se aplica automáticamente a los parámetros de ruta?",
+      "question_en": "In FastAPI, what validation is automatically applied to path parameters?",
+      "options_es": [
+        "Codificación URL",
+        "Validación de longitud máxima",
+        "Conversión de tipo según la anotación",
+        "Todas las anteriores"
+      ],
+      "options_en": [
+        "URL encoding as a general rule",
+        "Maximum length validation",
+        "Type conversion according to annotation",
+        "All of the above"
+      ],
+      "correct_index": 2,
+      "explanation_es": "FastAPI convierte automáticamente el parámetro de ruta al tipo especificado en la anotación (int, str, float, etc.).",
+      "explanation_en": "FastAPI automatically converts the path parameter to the type specified in the annotation (int, str, float, etc.).",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_011",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se especifican múltiples parámetros de consulta en FastAPI?",
+      "question_en": "How are multiple query parameters specified in FastAPI?",
+      "options_es": [
+        "En una lista",
+        "Como argumentos separados en la función",
+        "Dentro de un diccionario",
+        "No se puede especificar más de uno"
+      ],
+      "options_en": [
+        "In a list in real environments",
+        "As separate arguments in the function",
+        "Inside a dictionary",
+        "Cannot specify more than one"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los múltiples parámetros de consulta se especifican como argumentos separados en la función, cada uno como un parámetro distinto.",
+      "explanation_en": "Multiple query parameters are specified as separate function arguments, each as a distinct parameter.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_012",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "En FastAPI, ¿qué sucede si un parámetro de ruta tiene el tipo int y se pasa un valor no numérico?",
+      "question_en": "In FastAPI, what happens if a path parameter has type int and a non-numeric value is passed?",
+      "options_es": [
+        "Se convierte a string automáticamente en entornos de producción",
+        "Se ignora el parámetro",
+        "FastAPI devuelve un error 422 Unprocessable Entity",
+        "Se convierte a 0 de forma estándar"
+      ],
+      "options_en": [
+        "It is automatically converted to string as a recommended practice",
+        "The parameter is ignored",
+        "FastAPI returns a 422 Unprocessable Entity error",
+        "It is converted to 0"
+      ],
+      "correct_index": 2,
+      "explanation_es": "FastAPI valida automáticamente el tipo y devuelve un error 422 si la validación falla, por ejemplo, si se espera int pero se pasa un string no numérico.",
+      "explanation_en": "FastAPI automatically validates the type and returns a 422 error if validation fails, for example, if int is expected but a non-numeric string is passed.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_013",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define una ruta con parámetro de ruta obligatorio y parámetros de consulta opcionales?",
+      "question_en": "How is a route with a mandatory path parameter and optional query parameters defined?",
+      "options_es": [
+        "def get_item(item_id, q) de manera estándar como práctica recomendada",
+        "def get_item(item_id: int, q: Optional[str] = None)",
+        "def get_item(item_id = None, q = None)",
+        "def get_item(item_id: Optional[int], q: str)"
+      ],
+      "options_en": [
+        "def get_item(item_id, q) for most projects within this paradigm",
+        "def get_item(item_id: int, q: Optional[str] = None)",
+        "def get_item(item_id = None, q = None)",
+        "def get_item(item_id: Optional[int], q: str)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los parámetros de ruta sin valor por defecto son obligatorios (item_id: int), mientras que los de consulta con valor por defecto son opcionales (q: Optional[str] = None).",
+      "explanation_en": "Path parameters without default values are mandatory (item_id: int), while query parameters with default values are optional (q: Optional[str] = None).",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_014",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué HTTP status code devuelve FastAPI por defecto en una ruta GET exitosa?",
+      "question_en": "What HTTP status code does FastAPI return by default for a successful GET route?",
+      "options_es": [
+        "204 No Content",
+        "200 OK",
+        "201 Created",
+        "202 Accepted"
+      ],
+      "options_en": [
+        "204 No Content",
+        "200 OK",
+        "201 Created",
+        "202 Accepted"
+      ],
+      "correct_index": 1,
+      "explanation_es": "FastAPI devuelve 200 OK por defecto para rutas GET exitosas. Para POST que crea recursos, devuelve 201 Created.",
+      "explanation_en": "FastAPI returns 200 OK by default for successful GET routes. For POST that creates resources, it returns 201 Created.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280201_015",
+      "skill_id": "sk280201",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la orden correcta de los parámetros en una función de ruta de FastAPI?",
+      "question_en": "What is the correct order of parameters in a FastAPI route function?",
+      "options_es": [
+        "Parámetros de consulta, parámetros de ruta, cuerpo",
+        "Parámetros de ruta, parámetros de consulta, cuerpo",
+        "No importa el orden",
+        "Cuerpo, parámetros de ruta, parámetros de consulta"
+      ],
+      "options_en": [
+        "Query parameters, path parameters, body",
+        "Path parameters, query parameters, body",
+        "Order does not matter",
+        "Body, path parameters, query parameters"
+      ],
+      "correct_index": 2,
+      "explanation_es": "FastAPI es flexible con el orden de los parámetros. Lo que importa es la anotación de tipo y los valores por defecto.",
+      "explanation_en": "FastAPI is flexible with parameter order. What matters is the type annotation and default values.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_001",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un modelo Pydantic en FastAPI?",
+      "question_en": "What is a Pydantic model in FastAPI?",
+      "options_es": [
+        "Una función decoradora para rutas",
+        "Una clase que hereda de BaseModel para validación de datos",
+        "Un middleware para procesar solicitudes",
+        "Un tipo de base de datos"
+      ],
+      "options_en": [
+        "A decorator function for routes",
+        "A class that inherits from BaseModel for data validation",
+        "A middleware for processing requests",
+        "A type of database in real environments"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los modelos Pydantic son clases que heredan de BaseModel y proporcionan validación automática de datos, serialización y documentación.",
+      "explanation_en": "Pydantic models are classes that inherit from BaseModel and provide automatic data validation, serialization, and documentation.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_002",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define un modelo Pydantic para un usuario?",
+      "question_en": "How is a Pydantic model defined for a user?",
+      "options_es": [
+        "class User(BaseModel):",
+        "class User(dict):",
+        "class User(Model):",
+        "class User(Schema):"
+      ],
+      "options_en": [
+        "class User(BaseModel):",
+        "class User(dict):",
+        "class User(Model):",
+        "class User(Schema):"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los modelos Pydantic deben heredar de BaseModel, que se importa desde pydantic.",
+      "explanation_en": "Pydantic models must inherit from BaseModel, which is imported from pydantic.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_003",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se especifica que un campo en un modelo Pydantic es requerido?",
+      "question_en": "How is a required field specified in a Pydantic model?",
+      "options_es": [
+        "Sin valor por defecto: name: str",
+        "Con Optional[type]",
+        "Con required=True",
+        "Con @required como regla general"
+      ],
+      "options_en": [
+        "Without default value: name: str",
+        "With Optional[type]",
+        "With required=True",
+        "With @required by convention"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En Pydantic, un campo es requerido si no tiene un valor por defecto. Por ejemplo: name: str es requerido.",
+      "explanation_en": "In Pydantic, a field is required if it has no default value. For example: name: str is required.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_004",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el parámetro response_model en FastAPI?",
+      "question_en": "What is the response_model parameter in FastAPI?",
+      "options_es": [
+        "Define el modelo de datos esperado en la solicitud",
+        "Define el formato de la URL como regla general en este contexto",
+        "Define el modelo de datos que se devuelve en la respuesta",
+        "Define el middleware a usar"
+      ],
+      "options_en": [
+        "Defines the expected data model in the request",
+        "Defines the URL format within this paradigm in production environments",
+        "Defines the data model returned in the response",
+        "Defines the middleware to use"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El parámetro response_model especifica el modelo Pydantic que se utilizará para serializar la respuesta del endpoint.",
+      "explanation_en": "The response_model parameter specifies the Pydantic model that will be used to serialize the endpoint response.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_005",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define un campo opcional en un modelo Pydantic?",
+      "question_en": "How is an optional field defined in a Pydantic model?",
+      "options_es": [
+        "Con Optional[type] = None",
+        "Con type | None",
+        "Con @optional",
+        "Ambas opciones funcionan"
+      ],
+      "options_en": [
+        "With Optional[type] = None",
+        "With type | None",
+        "With @optional",
+        "Both options work"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En Pydantic, ambas sintaxis funcionan para campos opcionales: Optional[type] = None y type | None = None.",
+      "explanation_en": "In Pydantic, both syntaxes work for optional fields: Optional[type] = None and type | None = None.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_006",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace Pydantic automáticamente cuando recibe datos en un modelo?",
+      "question_en": "What does Pydantic automatically do when receiving data in a model?",
+      "options_es": [
+        "Todas las anteriores",
+        "Convierte los tipos de datos",
+        "Genera errores si falta un campo requerido",
+        "Valida los datos contra el esquema"
+      ],
+      "options_en": [
+        "All of the above",
+        "Converts data types",
+        "Generates errors if a required field is missing",
+        "Validates data against the schema"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Pydantic valida, convierte tipos y verifica campos requeridos automáticamente. Si algo falla, lanza un ValidationError.",
+      "explanation_en": "Pydantic validates, converts types, and checks required fields automatically. If anything fails, it raises a ValidationError.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_007",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se usa el cuerpo de la solicitud en FastAPI con un modelo Pydantic?",
+      "question_en": "How is the request body used in FastAPI with a Pydantic model?",
+      "options_es": [
+        "Como argumento de la función sin anotación especial",
+        "Accediendo a request.body dentro de este paradigma en condiciones normales",
+        "Como argumento de la función con anotación de modelo Pydantic",
+        "Con @body como regla general"
+      ],
+      "options_en": [
+        "As a function argument without special annotation",
+        "Accessing request.body for most projects as a general guideline",
+        "As a function argument with Pydantic model annotation",
+        "With @body in real environments"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En FastAPI, solo necesitas anotar el parámetro con un modelo Pydantic para que entienda que es el cuerpo: def create_item(item: Item):",
+      "explanation_en": "In FastAPI, you simply annotate the parameter with a Pydantic model for it to understand it's the body: def create_item(item: Item):",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_008",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es JSONResponse en FastAPI?",
+      "question_en": "What is JSONResponse in FastAPI?",
+      "options_es": [
+        "Una función para validar JSON para la mayoría de proyectos",
+        "Una clase para devolver respuestas JSON personalizadas",
+        "Un middleware para JSON",
+        "Un tipo de caché en entornos reales"
+      ],
+      "options_en": [
+        "A function for validating JSON as a recommended practice",
+        "A class for returning custom JSON responses",
+        "A middleware for JSON",
+        "A cache type by default"
+      ],
+      "correct_index": 1,
+      "explanation_es": "JSONResponse es una clase de respuesta que permite controlar manualmente la serialización JSON, status_code y headers.",
+      "explanation_en": "JSONResponse is a response class that allows manual control of JSON serialization, status_code, and headers.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_009",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se devuelve un JSONResponse personalizado en FastAPI?",
+      "question_en": "How is a custom JSONResponse returned in FastAPI?",
+      "options_es": [
+        "return JSONResponse({'data': value})",
+        "return json.dumps({'data': value})",
+        "return {'data': value}",
+        "return Response({'data': value})"
+      ],
+      "options_en": [
+        "return JSONResponse({'data': value})",
+        "return json.dumps({'data': value})",
+        "return {'data': value}",
+        "return Response({'data': value})"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se importa JSONResponse de fastapi.responses y se devuelve como return JSONResponse(content={...}, status_code=..., headers={...})",
+      "explanation_en": "JSONResponse is imported from fastapi.responses and returned as return JSONResponse(content={...}, status_code=..., headers={...})",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_010",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se puede especificar un valor por defecto en un modelo Pydantic?",
+      "question_en": "How can a default value be specified in a Pydantic model?",
+      "options_es": [
+        "field: type = default_value",
+        "field: type = Field(default=default_value)",
+        "Ambas opciones funcionan",
+        "No se puede especificar valor por defecto"
+      ],
+      "options_en": [
+        "field: type = default_value",
+        "field: type = Field(default=default_value)",
+        "Both options work",
+        "Cannot specify default value"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Ambas formas funcionan: field: str = 'default' o field: str = Field(default='default'). La segunda permite más control.",
+      "explanation_en": "Both work: field: str = 'default' or field: str = Field(default='default'). The latter allows more control.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_011",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué información genera automáticamente FastAPI a partir de los modelos Pydantic?",
+      "question_en": "What information does FastAPI automatically generate from Pydantic models?",
+      "options_es": [
+        "Documentación OpenAPI",
+        "Esquemas JSON",
+        "Todas las anteriores",
+        "Ejemplos de solicitud/respuesta"
+      ],
+      "options_en": [
+        "OpenAPI documentation",
+        "JSON schemas",
+        "All of the above",
+        "Request/response examples"
+      ],
+      "correct_index": 2,
+      "explanation_es": "FastAPI genera automáticamente documentación OpenAPI, esquemas JSON y ejemplos de las solicitudes/respuestas basados en los modelos Pydantic.",
+      "explanation_en": "FastAPI automatically generates OpenAPI documentation, JSON schemas, and request/response examples based on Pydantic models.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_012",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se anota un campo como lista de elementos en un modelo Pydantic?",
+      "question_en": "How is a field annotated as a list of items in a Pydantic model?",
+      "options_es": [
+        "items: [str]",
+        "items: list[str]",
+        "items: List[str]",
+        "Todas son válidas"
+      ],
+      "options_en": [
+        "items: [str]",
+        "items: list[str]",
+        "items: List[str]",
+        "All are valid"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En Python 3.9+, list[str] es válido. En versiones anteriores, se usa List[str] (importado de typing). Pydantic soporta ambas.",
+      "explanation_en": "In Python 3.9+, list[str] is valid. In earlier versions, List[str] (imported from typing) is used. Pydantic supports both.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_013",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ocurre si se intenta asignar un tipo incorrecto a un campo Pydantic?",
+      "question_en": "What happens if an incorrect type is assigned to a Pydantic field?",
+      "options_es": [
+        "Se ignora el campo como práctica recomendada como práctica recomendada",
+        "Pydantic intenta convertirlo al tipo correcto",
+        "Se lanza una excepción ValidationError",
+        "Se convierte a None"
+      ],
+      "options_en": [
+        "The field is ignored for most projects within this paradigm",
+        "Pydantic tries to convert it to the correct type",
+        "A ValidationError exception is raised",
+        "It is converted to None"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Pydantic intenta convertir el valor al tipo especificado (p.ej., convierte '123' a 123 si el campo es int). Si falla, lanza ValidationError.",
+      "explanation_en": "Pydantic tries to convert the value to the specified type (e.g., converts '123' to 123 if the field is int). If it fails, it raises ValidationError.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_014",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define un modelo Pydantic anidado?",
+      "question_en": "How is a nested Pydantic model defined?",
+      "options_es": [
+        "Usando dict para campos anidados",
+        "Usando otro modelo Pydantic como tipo de campo",
+        "Usando @nested en este contexto",
+        "No se puede anidar modelos"
+      ],
+      "options_en": [
+        "Using dict for nested fields",
+        "Using another Pydantic model as a field type",
+        "Using @nested by convention",
+        "Models cannot be nested"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Se define un modelo Pydantic y luego se usa como tipo en otro modelo: class User(BaseModel): address: Address",
+      "explanation_en": "A Pydantic model is defined and then used as a type in another model: class User(BaseModel): address: Address",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280202_015",
+      "skill_id": "sk280202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué diferencia hay entre status_code en @app.post() y en response_model?",
+      "question_en": "What is the difference between status_code in @app.post() and in response_model?",
+      "options_es": [
+        "response_model especifica el código HTTP de respuesta",
+        "status_code especifica el código HTTP de respuesta",
+        "Son lo mismo",
+        "No hay relación entre ellos"
+      ],
+      "options_en": [
+        "response_model specifies the HTTP response code",
+        "status_code specifies the HTTP response code",
+        "They are the same",
+        "There is no relationship between them"
+      ],
+      "correct_index": 1,
+      "explanation_es": "status_code define el código HTTP que se devuelve (p.ej., 201 Created). response_model define la estructura de datos de la respuesta, no el status code.",
+      "explanation_en": "status_code defines the HTTP code returned (e.g., 201 Created). response_model defines the response data structure, not the status code.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_001",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es la inyección de dependencias en FastAPI?",
+      "question_en": "What is dependency injection in FastAPI?",
+      "options_es": [
+        "Una forma de conectar a bases de datos",
+        "Un módulo para importar librerías",
+        "Un patrón para pasar datos entre funciones automáticamente",
+        "Un middleware de seguridad"
+      ],
+      "options_en": [
+        "A way to connect to databases",
+        "A module for importing libraries",
+        "A pattern for passing data between functions automatically",
+        "A security middleware typically"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La inyección de dependencias permite reutilizar lógica compartida entre múltiples rutas de forma limpia y declarativa.",
+      "explanation_en": "Dependency injection allows reusing shared logic across multiple routes in a clean and declarative way.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_002",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se declara una dependencia en FastAPI?",
+      "question_en": "How is a dependency declared in FastAPI?",
+      "options_es": [
+        "Usando @app.dependency",
+        "Con import ...",
+        "Como parámetro de función con anotación Depends()",
+        "Con @requires como regla general"
+      ],
+      "options_en": [
+        "Using @app.dependency",
+        "With import ...",
+        "As a function parameter with Depends() annotation",
+        "With @requires in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las dependencias se declaran como parámetros de función con anotación: def get_items(common: CommonQueryParams = Depends(CommonQueryParams))",
+      "explanation_en": "Dependencies are declared as function parameters: def get_items(common: CommonQueryParams = Depends(CommonQueryParams))",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_003",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar Depends en FastAPI?",
+      "question_en": "What is the advantage of using Depends in FastAPI?",
+      "options_es": [
+        "Reutilizar lógica en múltiples rutas",
+        "Todas las anteriores",
+        "Simplificar la validación",
+        "Mejorar el rendimiento"
+      ],
+      "options_en": [
+        "Reuse logic across multiple routes",
+        "All of the above",
+        "Simplify validation",
+        "Improve performance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Depends permite reutilizar lógica (parámetros comunes, autenticación, validación), mejora la legibilidad y permite que FastAPI inyecte valores.",
+      "explanation_en": "Depends allows reusing logic (common parameters, authentication, validation), improves readability, and enables FastAPI to inject values.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_004",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un middleware en FastAPI?",
+      "question_en": "What is middleware in FastAPI?",
+      "options_es": [
+        "Un decorador para validar datos",
+        "Un modelo de base de datos de forma estándar",
+        "Una función que se ejecuta antes y después de cada solicitud",
+        "Una forma de autenticación"
+      ],
+      "options_en": [
+        "A decorator for validating data",
+        "A database model in practice",
+        "A function that runs before and after each request",
+        "A form of authentication"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El middleware es una función que se ejecuta antes de que la solicitud llegue a la ruta y después de que la respuesta se genera.",
+      "explanation_en": "Middleware is a function that runs before the request reaches the route and after the response is generated.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_005",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se añade un middleware en FastAPI?",
+      "question_en": "How is middleware added in FastAPI?",
+      "options_es": [
+        "Con @app.middleware('http')",
+        "Con @middleware",
+        "Ambas opciones funcionan",
+        "Con app.add_middleware()"
+      ],
+      "options_en": [
+        "With @app.middleware('http')",
+        "With @middleware",
+        "Both options work",
+        "With app.add_middleware()"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se usa app.add_middleware(YourMiddleware) o el decorador @app.middleware('http') para añadir middleware.",
+      "explanation_en": "app.add_middleware(YourMiddleware) or the @app.middleware('http') decorator is used to add middleware.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_006",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el lifespan en FastAPI?",
+      "question_en": "What is lifespan in FastAPI?",
+      "options_es": [
+        "El tiempo que una solicitud tarda en procesarse",
+        "Un tipo de middleware en este contexto",
+        "Un contexto para ejecutar código al inicio y cierre de la aplicación",
+        "Una métrica de rendimiento"
+      ],
+      "options_en": [
+        "The time it takes for a request to be processed",
+        "A type of middleware",
+        "A context for running code at app startup and shutdown",
+        "A performance metric as a general rule"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El lifespan permite ejecutar código al iniciar y cerrar la aplicación, útil para conexiones a DB, logging, etc.",
+      "explanation_en": "Lifespan allows running code at app startup and shutdown, useful for database connections, logging, etc.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_007",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define un lifespan en FastAPI?",
+      "question_en": "How is a lifespan defined in FastAPI?",
+      "options_es": [
+        "Con app.add_event_handler()",
+        "Con un async context manager",
+        "Todas las anteriores",
+        "Con @app.lifespan"
+      ],
+      "options_en": [
+        "With app.add_event_handler()",
+        "With an async context manager",
+        "All of the above",
+        "With @app.lifespan"
+      ],
+      "correct_index": 2,
+      "explanation_es": "FastAPI soporta múltiples formas: @app.lifespan, context managers async, y add_event_handler('startup'/'shutdown').",
+      "explanation_en": "FastAPI supports multiple forms: @app.lifespan, async context managers, and add_event_handler('startup'/'shutdown').",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_008",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué diferencia hay entre una dependencia y un middleware?",
+      "question_en": "What is the difference between a dependency and middleware?",
+      "options_es": [
+        "Las dependencias se aplican a rutas específicas, el middleware a todas las solicitudes",
+        "No hay diferencia en este contexto",
+        "Las dependencias solo funcionan en GET, el middleware en todas",
+        "Las dependencias son más rápidas que el middleware"
+      ],
+      "options_en": [
+        "Dependencies apply to specific routes, middleware to all requests",
+        "There is no difference",
+        "Dependencies only work in GET, middleware in all",
+        "Dependencies are faster than middleware"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las dependencias se aplican a rutas específicas mediante Depends(), el middleware se ejecuta en todas las solicitudes antes de llegar a las rutas.",
+      "explanation_en": "Dependencies apply to specific routes via Depends(), middleware runs on all requests before reaching routes.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_009",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se reutiliza una dependencia en múltiples rutas en FastAPI?",
+      "question_en": "How is a dependency reused across multiple routes in FastAPI?",
+      "options_es": [
+        "Cada ruta debe definir su propia dependencia",
+        "No se puede reutilizar",
+        "Con un decorador compartido",
+        "Definiéndola una sola vez y usándola en cada ruta"
+      ],
+      "options_en": [
+        "Each route must define its own dependency",
+        "Cannot be reused",
+        "With a shared decorator",
+        "Defining it once and using it in each route"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se define una función de dependencia una sola vez y se usa en múltiples rutas: def get_items(common: Depends(CommonParams))",
+      "explanation_en": "A dependency function is defined once and used in multiple routes: def get_items(common: Depends(CommonParams))",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_010",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si una dependencia lanza una excepción en FastAPI?",
+      "question_en": "What happens if a dependency raises an exception in FastAPI?",
+      "options_es": [
+        "Se pasa al manejador de excepciones",
+        "FastAPI la captura y devuelve un error 500",
+        "Todas las anteriores",
+        "Se ignora la excepción"
+      ],
+      "options_en": [
+        "It is passed to the exception handler",
+        "FastAPI catches it and returns a 500 error",
+        "All of the above",
+        "The exception is ignored"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las excepciones en dependencias se pasan a los manejadores de excepciones de FastAPI. Si no hay manejador, devuelve error 500.",
+      "explanation_en": "Exceptions in dependencies are passed to FastAPI's exception handlers. If no handler exists, a 500 error is returned.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_011",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Pueden las dependencias ser asincrónicas en FastAPI?",
+      "question_en": "Can dependencies be asynchronous in FastAPI?",
+      "options_es": [
+        "No, deben ser síncronas",
+        "Sí, usando async def",
+        "Solo en middleware",
+        "Solo en rutas"
+      ],
+      "options_en": [
+        "No, they must be synchronous",
+        "Yes, using async def",
+        "Only in middleware",
+        "Only in routes"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las dependencias pueden ser tanto síncronas como asincrónicas. FastAPI detecta automáticamente el tipo.",
+      "explanation_en": "Dependencies can be both synchronous and asynchronous. FastAPI automatically detects the type.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_012",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se cachean los resultados de dependencias en FastAPI?",
+      "question_en": "How are dependency results cached in FastAPI?",
+      "options_es": [
+        "Manualmente con @cache",
+        "Automáticamente por request",
+        "No se cachean",
+        "Con Redis según la especificación"
+      ],
+      "options_en": [
+        "Manually with @cache",
+        "Automatically per request",
+        "They are not cached",
+        "With Redis"
+      ],
+      "correct_index": 1,
+      "explanation_es": "FastAPI cachea automáticamente el resultado de una dependencia dentro del mismo request si se usa múltiples veces.",
+      "explanation_en": "FastAPI automatically caches a dependency result within the same request if used multiple times.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_013",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una dependencia de clase en FastAPI?",
+      "question_en": "What is a class dependency in FastAPI?",
+      "options_es": [
+        "Un tipo especial de middleware",
+        "Una dependencia para modelos Pydantic en la práctica habitual dentro de este paradigma",
+        "Un middleware de seguridad en entornos reales",
+        "Una dependencia definida como una clase en lugar de una función"
+      ],
+      "options_en": [
+        "A special type of middleware",
+        "A dependency for Pydantic models in production environments as a general guideline",
+        "A security middleware in real environments",
+        "A dependency defined as a class instead of a function"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se puede definir una dependencia como clase con __init__ y usarla: def get_items(common: CommonParams = Depends(CommonParams))",
+      "explanation_en": "A dependency can be defined as a class with __init__ and used: def get_items(common: CommonParams = Depends(CommonParams))",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_014",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se anidan dependencias en FastAPI?",
+      "question_en": "How are dependencies nested in FastAPI?",
+      "options_es": [
+        "Solo en middleware como regla general",
+        "No se pueden anidar dependencias",
+        "Una dependencia puede usar otra dependencia con Depends()",
+        "Con decoradores especiales"
+      ],
+      "options_en": [
+        "Only in middleware according to spec",
+        "Dependencies cannot be nested",
+        "A dependency can use another dependency with Depends()",
+        "With special decorators"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las dependencias pueden ser anidadas, una dependencia puede usar otra mediante Depends().",
+      "explanation_en": "Dependencies can be nested, one dependency can use another via Depends().",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280203_015",
+      "skill_id": "sk280203",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el orden de ejecución en una solicitud FastAPI?",
+      "question_en": "What is the execution order in a FastAPI request?",
+      "options_es": [
+        "Middleware -> Dependencias -> Ruta -> Respuesta",
+        "Dependencias -> Middleware -> Ruta -> Respuesta",
+        "Ruta -> Dependencias -> Middleware -> Respuesta",
+        "No hay un orden específico"
+      ],
+      "options_en": [
+        "Middleware -> Dependencies -> Route -> Response",
+        "Dependencies -> Middleware -> Route -> Response",
+        "Route -> Dependencies -> Middleware -> Response",
+        "There is no specific order"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El orden es: Middleware (procesa request) -> Dependencias (se resuelven) -> Ruta (se ejecuta) -> Respuesta.",
+      "explanation_en": "The order is: Middleware (process request) -> Dependencies (resolve) -> Route (execute) -> Response.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_001",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es HTTPException en FastAPI?",
+      "question_en": "What is HTTPException in FastAPI?",
+      "options_es": [
+        "Una clase para manejar solicitudes HTTP",
+        "Una validación de tipo",
+        "Un middleware de seguridad",
+        "Una excepción para errores HTTP"
+      ],
+      "options_en": [
+        "A class for handling HTTP requests",
+        "A type validation",
+        "A security middleware",
+        "An exception for HTTP errors"
+      ],
+      "correct_index": 3,
+      "explanation_es": "HTTPException es una excepción que permite devolver respuestas de error HTTP con status_code y detail personalizados.",
+      "explanation_en": "HTTPException is an exception that allows returning HTTP error responses with custom status_code and detail.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_002",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se lanza una HTTPException con status code 404?",
+      "question_en": "How is an HTTPException raised with status code 404?",
+      "options_es": [
+        "raise HTTPException(status_code=404, detail='Not Found')",
+        "raise NotFoundError()",
+        "raise HTTPError(404) por convención",
+        "raise HTTPException(404, 'Not Found')"
+      ],
+      "options_en": [
+        "raise HTTPException(status_code=404, detail='Not Found')",
+        "raise NotFoundError()",
+        "raise HTTPError(404) in real environments",
+        "raise HTTPException(404, 'Not Found')"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se usa HTTPException con parámetros nombrados: raise HTTPException(status_code=404, detail='Not Found')",
+      "explanation_en": "HTTPException is used with named parameters: raise HTTPException(status_code=404, detail='Not Found')",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_003",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué status code debe devolver FastAPI por defecto para una solicitud POST que crea un recurso?",
+      "question_en": "What status code should FastAPI return by default for a successful POST request that creates a resource?",
+      "options_es": [
+        "200 OK",
+        "204 No Content",
+        "201 Created",
+        "202 Accepted"
+      ],
+      "options_en": [
+        "200 OK",
+        "204 No Content",
+        "201 Created",
+        "202 Accepted"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Para POST que crea recursos, FastAPI debería devolver 201 Created. Se especifica con status_code=201 en el decorador.",
+      "explanation_en": "For POST that creates resources, FastAPI should return 201 Created. Specified with status_code=201 in the decorator.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_004",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se especifica un status code personalizado en una ruta FastAPI?",
+      "question_en": "How is a custom status code specified in a FastAPI route?",
+      "options_es": [
+        "Con el parámetro status_code en el decorador",
+        "Con response.status_code",
+        "Con HTTPException de forma estándar como regla general",
+        "Ambas opciones funcionan"
+      ],
+      "options_en": [
+        "With the status_code parameter in the decorator",
+        "With response.status_code",
+        "With HTTPException in common practice",
+        "Both options work in real environments"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se especifica en el decorador: @app.post('/items', status_code=201) o HTTPException para errores.",
+      "explanation_en": "Specified in the decorator: @app.post('/items', status_code=201) or HTTPException for errors.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_005",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se maneja un error de validación en FastAPI?",
+      "question_en": "How is a validation error handled in FastAPI?",
+      "options_es": [
+        "Con try/except",
+        "No se puede manejar validación",
+        "Con @validate habitualmente",
+        "Automáticamente devuelve 422 con detalles del error"
+      ],
+      "options_en": [
+        "With try/except",
+        "Validation cannot be handled",
+        "With @validate by convention",
+        "Automatically returns 422 with error details"
+      ],
+      "correct_index": 3,
+      "explanation_es": "FastAPI valida automáticamente y devuelve 422 Unprocessable Entity con detalles de qué falló.",
+      "explanation_en": "FastAPI automatically validates and returns 422 Unprocessable Entity with details of what failed.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_006",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se crea un validador personalizado en Pydantic para FastAPI?",
+      "question_en": "How is a custom validator created in Pydantic for FastAPI?",
+      "options_es": [
+        "Con @check_data para la mayoría de proyectos",
+        "Con @validate_data",
+        "Con el decorador @validator",
+        "No se puede personalizar"
+      ],
+      "options_en": [
+        "With @check_data according to official documentation",
+        "With @validate_data",
+        "With the @validator decorator",
+        "Cannot be customized"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Se usa @validator('field_name') o field_validator en Pydantic v2 para crear validadores personalizados.",
+      "explanation_en": "@validator('field_name') or field_validator in Pydantic v2 is used for custom validators.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_007",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se devuelve un error personalizado desde un manejador de excepciones en FastAPI?",
+      "question_en": "How is a custom error returned from an exception handler in FastAPI?",
+      "options_es": [
+        "Con @error_handler",
+        "Con try/except habitualmente",
+        "Con @app.exception_handler(Exception)",
+        "No se puede personalizar"
+      ],
+      "options_en": [
+        "With @error_handler",
+        "With try/except typically",
+        "With @app.exception_handler(Exception)",
+        "Cannot be customized"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Se usa @app.exception_handler(Exception) para crear manejadores personalizados de excepciones.",
+      "explanation_en": "@app.exception_handler(Exception) is used to create custom exception handlers.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_008",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué información incluye por defecto el error 422 de FastAPI?",
+      "question_en": "What information does FastAPI's 422 error include by default?",
+      "options_es": [
+        "Solo el código de error",
+        "El mensaje y el código",
+        "Una URL de ayuda de forma estándar",
+        "Detalles de cada campo que falló la validación"
+      ],
+      "options_en": [
+        "Only the error code",
+        "The message and code",
+        "A help URL according to spec",
+        "Details of each field that failed validation"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El error 422 incluye un array con detalles de cada campo que falló: field name, error type, y mensaje de error.",
+      "explanation_en": "The 422 error includes an array with details of each failed field: field name, error type, and error message.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_009",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se valida que un campo sea mayor a un valor específico en Pydantic?",
+      "question_en": "How is field validation for a value greater than a specific number done in Pydantic?",
+      "options_es": [
+        "Con Field(min=value)",
+        "Con @validator",
+        "Con Field(gt=value)",
+        "Con @check_gt"
+      ],
+      "options_en": [
+        "With Field(min=value)",
+        "With @validator",
+        "With Field(gt=value)",
+        "With @check_gt"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En Pydantic, se usa Field(gt=valor) para mayor que, Field(lt=valor) para menor que, ge= para mayor o igual, le= para menor o igual.",
+      "explanation_en": "In Pydantic, Field(gt=value) for greater than, Field(lt=value) for less than, ge= for greater or equal, le= for less or equal.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_010",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se valida la longitud de un string en Pydantic?",
+      "question_en": "How is the length of a string validated in Pydantic?",
+      "options_es": [
+        "Con Field(min_length=..., max_length=...)",
+        "Con @validator habitualmente",
+        "Con Field(length=...)",
+        "Con @check_length"
+      ],
+      "options_en": [
+        "With Field(min_length=..., max_length=...)",
+        "With @validator by convention",
+        "With Field(length=...)",
+        "With @check_length"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se usa Field(min_length=n, max_length=n) para validar la longitud de strings.",
+      "explanation_en": "Field(min_length=n, max_length=n) is used to validate string length.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_011",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el status code para una solicitud no autorizada en FastAPI?",
+      "question_en": "What is the status code for an unauthorized request in FastAPI?",
+      "options_es": [
+        "400 Bad Request",
+        "401 Unauthorized",
+        "403 Forbidden",
+        "404 Not Found"
+      ],
+      "options_en": [
+        "400 Bad Request",
+        "401 Unauthorized",
+        "403 Forbidden",
+        "404 Not Found"
+      ],
+      "correct_index": 1,
+      "explanation_es": "401 Unauthorized indica que el cliente no está autenticado. 403 Forbidden indica que está autenticado pero sin permisos.",
+      "explanation_en": "401 Unauthorized means the client is not authenticated. 403 Forbidden means authenticated but without permissions.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_012",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se valida que un email sea válido en Pydantic?",
+      "question_en": "How is email validation done in Pydantic?",
+      "options_es": [
+        "Con regex",
+        "Con Field(pattern=...)",
+        "Con @validator",
+        "Con EmailStr"
+      ],
+      "options_en": [
+        "With regex",
+        "With Field(pattern=...)",
+        "With @validator",
+        "With EmailStr"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se importa EmailStr de pydantic y se usa como tipo: email: EmailStr. Pydantic valida automáticamente el formato de email.",
+      "explanation_en": "EmailStr is imported from pydantic and used as a type: email: EmailStr. Pydantic automatically validates email format.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_013",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace FastAPI cuando un validador personalizado falla?",
+      "question_en": "What does FastAPI do when a custom validator fails?",
+      "options_es": [
+        "Devuelve 422 con el mensaje del error",
+        "Ignora el error",
+        "Devuelve 500 en entornos reales según la documentación oficial",
+        "Se detiene la aplicación"
+      ],
+      "options_en": [
+        "Returns 422 with the error message",
+        "Ignores the error",
+        "Returns 500 as a general rule according to official documentation",
+        "The application stops"
+      ],
+      "correct_index": 0,
+      "explanation_es": "FastAPI devuelve 422 Unprocessable Entity con detalles del error de validación personalizado.",
+      "explanation_en": "FastAPI returns 422 Unprocessable Entity with custom validation error details.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_014",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se captura una HTTPException en FastAPI?",
+      "question_en": "How is an HTTPException caught in FastAPI?",
+      "options_es": [
+        "Con try/except HTTPException",
+        "Con @app.exception_handler en entornos de producción",
+        "FastAPI la maneja automáticamente",
+        "No se puede capturar"
+      ],
+      "options_en": [
+        "With try/except HTTPException",
+        "With @app.exception_handler as a general rule",
+        "FastAPI handles it automatically",
+        "Cannot be caught"
+      ],
+      "correct_index": 2,
+      "explanation_es": "FastAPI maneja automáticamente HTTPException. No necesitas try/except; simplemente lanzarla devuelve la respuesta de error.",
+      "explanation_en": "FastAPI automatically handles HTTPException. No try/except needed; raising it returns the error response.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280204_015",
+      "skill_id": "sk280204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se personaliza el formato de error en FastAPI?",
+      "question_en": "How is the error format customized in FastAPI?",
+      "options_es": [
+        "Con @app.exception_handler",
+        "Todas las anteriores",
+        "Devolviendo JSONResponse personalizado",
+        "Con manejadores de excepciones personalizados"
+      ],
+      "options_en": [
+        "With @app.exception_handler",
+        "All of the above",
+        "Returning custom JSONResponse",
+        "With custom exception handlers"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Se puede personalizar con @app.exception_handler, devolviendo JSONResponse personalizado desde manejadores de excepciones.",
+      "explanation_en": "Customizable with @app.exception_handler, returning custom JSONResponse from exception handlers.",
+      "source": "https://fastapi.tiangolo.com"
+    }
+  ]
+}

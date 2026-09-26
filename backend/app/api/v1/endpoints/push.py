@@ -13,7 +13,7 @@ import logging
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
 from pydantic import BaseModel
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -49,13 +49,14 @@ class PushUnsubscribeRequest(BaseModel):
 
 
 @router.get("/vapid-key")
-async def get_vapid_key() -> dict[str, Any]:
+async def get_vapid_key(response: Response) -> dict[str, Any]:
     """Return the VAPID public key so the frontend can subscribe."""
     if not settings.VAPID_PUBLIC_KEY:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Web Push not configured",
         )
+    response.headers["Cache-Control"] = "public, max-age=86400"
     return {"vapid_public_key": settings.VAPID_PUBLIC_KEY}
 
 

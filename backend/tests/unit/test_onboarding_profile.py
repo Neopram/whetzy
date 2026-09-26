@@ -16,7 +16,7 @@ async def _registrar(client: AsyncClient) -> dict[str, str]:
     u = f"ob{uuid.uuid4().hex[:10]}"
     r = await client.post(
         "/api/v1/auth/register",
-        json={"email": f"{u}@example.com", "username": u, "display_name": "Ob", "password": "pass-onboarding-1", "language": "es"},
+        json={"email": f"{u}@example.com", "username": u, "display_name": "Ob", "password": "pass-onboarding-1", "language": "es", "age_confirmed": True},
     )
     assert r.status_code in (200, 201), r.text
     return {"Authorization": f"Bearer {r.json()['access_token']}"}

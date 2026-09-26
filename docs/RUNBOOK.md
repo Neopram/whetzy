@@ -27,7 +27,15 @@ First time per machine requires `npx wrangler login` (opens browser OAuth). The 
 
 To monitor deployment:
 1. Check Railway dashboard for build status
-2. Verify: `curl https://api-production-9751.up.railway.app/health`
+2. Run the post-deploy smoke tests:
+   ```bash
+   ./scripts/smoke_post_deploy.sh
+   # With QA login (optional):
+   QA_EMAIL=qa@example.com QA_PASSWORD=secret ./scripts/smoke_post_deploy.sh
+   ```
+   The script checks `/health/ready`, OpenAPI, auth, tracks, latency, and
+   optionally logs in with a QA account to verify `/quiz/start` end-to-end.
+   A deploy is not done until it prints `RESULT: PASS`.
 
 ### Recovering from "Application not found" (incident H.1)
 
@@ -253,3 +261,113 @@ Recovery: pick the last clean dump (`ls -lht backups/`) → `createdb` an empty 
 `db_restore.sh` → point `DATABASE_URL` at it → `GET /health/ready` → `db_restore_test.sh <dump>`
 for row parity → swap traffic. Last full test: 2026-09-08 (7 tracks / 1253 questions
 at the time, < 5 s from a 544 KB dump); the scripts have not changed since.
+
+---
+
+## Service Level Objectives (SLO) — 33.0
+
+| SLO | Target | Prometheus metric | Window | Status |
+|-----|--------|-------------------|--------|--------|
+| API availability | ≥ 99.5 % | `http_requests_total{status!~"5.."}` / `http_requests_total` | 30 days rolling | **measured** — ratio of non-5xx to total requests |
+| Quiz latency (p95) | < 500 ms | `http_request_duration_seconds{path="/api/v1/quiz/answer"}` (histogram_quantile 0.95) | 30 days rolling | **measured** — `/quiz/start` and `/quiz/answer` both instrumented |
+| Health/ready latency (p95) | < 500 ms | — | — | **sin medir** — `/health*` excluded from metrics middleware (`_SKIP_PREFIXES`) to avoid cardinality explosion; manual checks only |
+| RPO (Recovery Point Objective) | ≤ 24 h | — | — | **sin medir** — Railway Postgres daily backups assumed; no Prometheus metric; verify backup age via Railway dashboard |
+| RTO (Recovery Time Objective) | ≤ 60 min | — | — | **sin medir** — recovery is manual (`db_restore.sh`); no automated measurement; monthly drill (`db_restore_test.sh`) validates the procedure |
+
+### Alerting
+
+No Prometheus alerting is configured. Railway provides basic uptime monitoring.
+When Prometheus/Grafana is set up, add these rules:
+
+```yaml
+# Availability drops below 99.5% over 1 hour
+- alert: APIAvailabilityLow
+  expr: (sum(rate(http_requests_total{status!~"5.."}[1h])) / sum(rate(http_requests_total[1h]))) < 0.995
+
+# Quiz p95 latency exceeds 500ms over 5 minutes
+- alert: QuizLatencyHigh
+  expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{path=~"/api/v1/quiz/.*"}[5m])) by (le)) > 0.5
+```
+
+### Monthly restoration drill
+
+Run `scripts/db_restore_test.sh` against the latest backup once per month.
+The script dumps the current DB, restores to a recovery database, compares
+row counts per table, and reports PASS/FAIL. A truncated dump must produce
+FAIL (the script validates this). Log the result in `docs/restore_log.md`.
+
+## Incident Management (22.7)
+
+### Severity Levels
+
+| Severity | Definition | Response time | Example |
+|----------|-----------|---------------|---------|
+| SEV-1 (Critical) | Service down, data loss risk, security breach | Immediate (< 15 min) | API returning 502, DB corruption, auth bypass |
+| SEV-2 (Major) | Core feature broken, significant user impact | < 1 hour | Quiz flow broken, payments failing, login errors for subset of users |
+| SEV-3 (Minor) | Non-core feature degraded, workaround exists | < 4 hours | Leaderboard stale, badge rendering broken, push notifications delayed |
+| SEV-4 (Low) | Cosmetic issue, internal-only impact | Next business day | Admin panel typo, non-user-facing log noise, dev tooling broken |
+
+### Escalation
+
+Only the owner operates Whetzy (single-person team as of 2026-09-26):
+1. Automated: Railway sends email on deploy failure or crash loop
+2. Manual: owner monitors `GET /health/ready` and `/status` page
+3. Runbook here is the single source of truth for recovery procedures
+
+### Incident Response Checklist
+
+1. **Acknowledge**: note the time and symptoms
+2. **Classify**: assign severity (SEV-1 through SEV-4)
+3. **Contain**: if SEV-1, immediately check Railway dashboard for crash/restart; check `/health/ready`
+4. **Diagnose**: check deploy logs, `GET /admin/ops/errors`, `GET /admin/ops/health`
+5. **Fix**: apply the fix, push to branch, merge via PR (ADR-45)
+6. **Verify**: `scripts/smoke_post_deploy.sh` must PASS; `node scripts/check-deployed.mjs` must PASS
+7. **Document**: fill in the postmortem template below
+
+### Postmortem Template
+
+```markdown
+# Postmortem: [TITLE]
+
+**Date**: YYYY-MM-DD
+**Severity**: SEV-N
+**Duration**: HH:MM (from detection to resolution)
+**Author**: [name]
+
+## Summary
+One paragraph: what happened, who was affected, what was the impact.
+
+## Timeline (UTC)
+- HH:MM — First symptom detected
+- HH:MM — Root cause identified
+- HH:MM — Fix deployed
+- HH:MM — Service confirmed healthy
+
+## Root Cause
+What broke and why. Be specific: commit hash, config change, external dependency.
+
+## Impact
+- Users affected: N (or %)
+- Duration of degraded service: HH:MM
+- Data loss: yes/no (describe if yes)
+
+## Resolution
+What was done to fix it. Link to the PR/commit.
+
+## Lessons Learned
+- What went well
+- What went poorly
+- Where we got lucky
+
+## Action Items
+| Action | Owner | Due | Status |
+|--------|-------|-----|--------|
+| [description] | [who] | [when] | TODO/DONE |
+```
+
+### Past Incidents
+
+| Date | Severity | Title | Duration | Postmortem |
+|------|----------|-------|----------|------------|
+| 2026-09-18 | SEV-1 | Backend 502 for 2h30m (22.0) | 2h 30m | Recovery: redeployed with correct Alembic head |
+| 2026-09-24 | SEV-1 | Login broken in production (30.0) | ~4h | Root cause: Cloudflare Pages dashboard variable overrode .env.production API URL |

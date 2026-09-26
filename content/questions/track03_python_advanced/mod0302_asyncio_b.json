@@ -9,14 +9,14 @@
       "question_en": "What happens when this code runs?\n```python\nimport asyncio\nasync def get():\n    return 1\nasync def main():\n    c = get()\n    print(await c)\n    print(await c)\nasyncio.run(main())\n```",
       "options_es": [
         "Imprime 1 y luego lanza RuntimeError: cannot reuse already awaited coroutine",
-        "Imprime 1 y luego 1 otra vez",
-        "Imprime 1 y luego None",
+        "Imprime 1 y luego 1 otra vez, junto con la comprobación de las invariantes del árbol de sintaxis abstracta compilado",
+        "Imprime 1 y luego None, que además involucra la validación de las firmas de los métodos especiales del protocolo",
         "Lanza SyntaxError: no se puede hacer await dos veces sobre el mismo nombre"
       ],
       "options_en": [
         "Prints 1 and then raises RuntimeError: cannot reuse already awaited coroutine",
-        "Prints 1 and then 1 again",
-        "Prints 1 and then None",
+        "Prints 1 and then 1 again, along with checking the invariants of the compiled abstract syntax tree representation",
+        "Prints 1 and then None, which also involves validating the signatures of the special protocol methods in the class",
         "Raises SyntaxError: the same name cannot be awaited twice"
       ],
       "correct_index": 0,
@@ -162,16 +162,16 @@
       "question_es": "¿Qué obtienes al escribir `yield` dentro del cuerpo de una función declarada con `async def`?",
       "question_en": "What do you get when you write `yield` inside the body of a function declared with `async def`?",
       "options_es": [
-        "Un SyntaxError: yield y async def son incompatibles",
+        "Un SyntaxError: yield y async def son incompatibles, según lo establece la especificación del protocolo de metadatos del intérprete de referencia",
         "Una función generadora asíncrona: al llamarla devuelve un async generator que se consume con `async for`",
         "Una corrutina normal; el yield se ignora y actúa como return",
-        "Un generador clásico idéntico al que daría una def normal"
+        "Un generador clásico idéntico al que daría una def normal, que además involucra la validación de las firmas de los métodos especiales del protocolo"
       ],
       "options_en": [
-        "A SyntaxError: yield and async def are incompatible",
+        "A SyntaxError: yield and async def are incompatible, as established by the specification of the reference interpreter metadata protocol standard",
         "An asynchronous generator function: calling it returns an async generator consumed with `async for`",
         "An ordinary coroutine; the yield is ignored and behaves like return",
-        "A classic generator identical to what a plain def would give"
+        "A classic generator identical to what a plain def would give, which also involves validating the signatures of the special protocol methods in the class"
       ],
       "correct_index": 1,
       "explanation_es": "PEP 525 añadió los generadores asíncronos: `async def` con `yield` produce un `async_generator`, que NO es awaitable y por tanto no se usa con `await`, sino con `async for` (o `__anext__`). La primera opción era correcta en 3.5 y sobrevive como recuerdo obsoleto. La cuarta es la trampa importante: un generador clásico se recorre con `for` y no puede contener `await`; el asíncrono sí puede suspenderse entre elementos, que es justo para lo que existe.",
@@ -193,15 +193,15 @@
       "question_en": "You have your own class and want its instances to work directly with `await my_object`. What must the class implement?",
       "options_es": [
         "El método `__await__`, que debe devolver un iterador",
-        "Los métodos `__aiter__` y `__anext__`",
+        "Los métodos `__aiter__` y `__anext__`, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria",
         "El método `__next__`, igual que un iterador clásico",
-        "Los métodos `__aenter__` y `__aexit__`"
+        "Los métodos `__aenter__` y `__aexit__`, debido a las restricciones impuestas por el modelo de datos del intérprete estándar"
       ],
       "options_en": [
         "The `__await__` method, which must return an iterator",
-        "The `__aiter__` and `__anext__` methods",
+        "The `__aiter__` and `__anext__` methods, including the internal management of file descriptors and memory buffer allocation routines",
         "The `__next__` method, just like a classic iterator",
-        "The `__aenter__` and `__aexit__` methods"
+        "The `__aenter__` and `__aexit__` methods, due to the restrictions imposed by the standard interpreter's internal data model design"
       ],
       "correct_index": 0,
       "explanation_es": "PEP 492 define el protocolo awaitable: un objeto es awaitable si su tipo implementa `__await__` devolviendo un iterador, que es lo que `await` acciona. `__aiter__`/`__anext__` son el protocolo de iteración asíncrona, para `async for`, y `__aenter__`/`__aexit__` el de `async with`: los tres protocolos son distintos y se confunden con facilidad porque comparten el prefijo `a`. `__next__` es el protocolo síncrono y no interviene en absoluto.",
@@ -639,15 +639,15 @@
       "question_en": "What is the structural difference between a coroutine object and an `asyncio.Task`?",
       "options_es": [
         "Task es una subclase de Future que envuelve la corrutina y la agenda en el loop; el objeto corrutina es solo un valor perezoso que nadie ha agendado",
-        "No hay diferencia real: Task es solo un alias tipado de la corrutina",
+        "No hay diferencia real: Task es solo un alias tipado de la corrutina, a menos que se desactive explícitamente la verificación de tipos en tiempo de ejecución",
         "El Task corre en un hilo propio; la corrutina corre en el hilo principal",
-        "La corrutina puede cancelarse y el Task no"
+        "La corrutina puede cancelarse y el Task no, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema, que además involucra la validación de las firmas de los métodos especiales del protocolo"
       ],
       "options_en": [
         "Task is a Future subclass that wraps the coroutine and schedules it on the loop; the coroutine object is just a lazy value nobody has scheduled",
-        "There is no real difference: Task is just a typed alias of the coroutine",
+        "There is no real difference: Task is just a typed alias of the coroutine, unless the runtime type checking verification is explicitly disabled in the configuration",
         "The Task runs on its own thread; the coroutine runs on the main thread",
-        "The coroutine can be cancelled and the Task cannot"
+        "The coroutine can be cancelled and the Task cannot, taking into account the limitations of the inter-process communication protocol of the system, which also involves validating the signatures of the special protocol methods in the class"
       ],
       "correct_index": 0,
       "explanation_es": "Un objeto corrutina es inerte hasta que alguien lo hace avanzar. `Task` hereda de `Future`, envuelve la corrutina y le pide al loop que la ejecute; por eso expone `cancel()`, `done()`, `result()` y `add_done_callback()`, que la corrutina no tiene. La primera opción mete hilos donde no los hay. La cuarta invierte la realidad: cancelar es precisamente una capacidad del Task. La segunda es la confusión de fondo: `await coro()` y `await create_task(coro())` dan el mismo resultado en un caso aislado, y de ahí se deduce que son lo mismo, aunque solo el segundo permite concurrencia.",
@@ -701,14 +701,14 @@
       "question_en": "What does `asyncio.TaskGroup` (3.11+) give you that `asyncio.gather` does not?",
       "options_es": [
         "Devuelve los resultados en orden de finalización en lugar de orden de envío",
-        "Reparte las tareas entre varios núcleos de CPU",
-        "Es más rápido porque evita pasar por el event loop",
+        "Reparte las tareas entre varios núcleos de CPU, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva, excepto en implementaciones alternativas como Jython o IronPython donde el comportamiento difiere",
+        "Es más rápido porque evita pasar por el event loop, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria, aunque es necesario invocar previamente la inicialización del subsistema correspondiente",
         "Si una tarea falla, cancela automáticamente a sus hermanas y al salir del bloque agrupa los errores en un ExceptionGroup; ninguna tarea queda huérfana"
       ],
       "options_en": [
         "It returns results in completion order instead of submission order",
-        "It spreads tasks across several CPU cores",
-        "It is faster because it bypasses the event loop",
+        "It spreads tasks across several CPU cores, as long as the correct version of the backward compatibility module is being used properly, except in alternative implementations like Jython or IronPython where the behavior differs",
+        "It is faster because it bypasses the event loop, including the internal management of file descriptors and memory buffer allocation routines, although it is necessary to previously invoke the initialization of the corresponding subsystem",
         "If one task fails it automatically cancels its siblings, and on leaving the block it groups the errors into an ExceptionGroup; no task is left orphaned"
       ],
       "correct_index": 3,
@@ -900,15 +900,15 @@
       "question_en": "You launch 50 concurrent downloads and want to process each result as soon as it arrives, without waiting for all of them. What do you use?",
       "options_es": [
         "asyncio.gather(*tareas) y luego iterar la lista devuelta",
-        "asyncio.wait_for sobre cada tarea con un timeout corto",
+        "asyncio.wait_for sobre cada tarea con un timeout corto, debido a las restricciones impuestas por el modelo de datos del intérprete estándar",
         "asyncio.as_completed(tareas), iterando y haciendo await de cada futuro conforme se completa",
-        "Un bucle con await sobre cada tarea, una por una"
+        "Un bucle con await sobre cada tarea, una por una, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria"
       ],
       "options_en": [
         "asyncio.gather(*tasks) and then iterate the returned list",
-        "asyncio.wait_for on each task with a short timeout",
+        "asyncio.wait_for on each task with a short timeout, due to the restrictions imposed by the standard interpreter's internal data model design",
         "asyncio.as_completed(tasks), iterating and awaiting each future as it completes",
-        "A loop awaiting each task one by one"
+        "A loop awaiting each task one by one, including the internal management of file descriptors and memory buffer allocation routines"
       ],
       "correct_index": 2,
       "explanation_es": "`as_completed` devuelve un iterador que entrega los awaitables en orden de finalización, que es exactamente 'procesar conforme llega'. `gather` es la tentación obvia y sí ejecuta concurrentemente, pero su lista solo está disponible cuando TODAS han acabado: la concurrencia es correcta y la latencia de primer resultado es la peor posible. La opción 3 no procesa antes: en el peor caso esperas a la más lenta sin ganar nada, y si las tareas no estaban ya creadas, elimina toda la concurrencia. `wait_for` impone plazos, no reordena por finalización.",

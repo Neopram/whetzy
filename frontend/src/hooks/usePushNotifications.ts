@@ -15,15 +15,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { API_BASE_URL } from '../services/api';
 
 const API_BASE = `${API_BASE_URL}/push`;
-const ACCESS_KEY = 'whetzy_access_token';
-
-function getToken(): string | null {
-  try {
-    return localStorage.getItem(ACCESS_KEY);
-  } catch {
-    return null;
-  }
-}
 
 async function fetchVapidKey(): Promise<string | null> {
   try {
@@ -43,31 +34,24 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return Uint8Array.from([...raw].map((c) => c.charCodeAt(0)));
 }
 
-async function postSubscription(
-  sub: PushSubscription,
-  token: string,
-): Promise<void> {
+async function postSubscription(sub: PushSubscription): Promise<void> {
   const { endpoint, keys } = sub.toJSON() as {
     endpoint: string;
     keys: { p256dh: string; auth: string };
   };
   await fetch(`${API_BASE}/subscribe`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({ endpoint, keys }),
   });
 }
 
-async function deleteSubscription(endpoint: string, token: string): Promise<void> {
+async function deleteSubscription(endpoint: string): Promise<void> {
   await fetch(`${API_BASE}/subscribe`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({ endpoint }),
   });
 }
@@ -81,8 +65,6 @@ export interface PushState {
 }
 
 export function usePushNotifications(): PushState {
-  const token = getToken();
-
   const supported =
     typeof window !== 'undefined' &&
     'serviceWorker' in navigator &&
@@ -94,7 +76,6 @@ export function usePushNotifications(): PushState {
   );
   const [subscribed, setSubscribed] = useState(false);
 
-  // Check initial subscription state
   useEffect(() => {
     if (!supported) return;
     navigator.serviceWorker.ready
@@ -104,7 +85,7 @@ export function usePushNotifications(): PushState {
   }, [supported]);
 
   const subscribe = useCallback(async (): Promise<boolean> => {
-    if (!supported || !token) return false;
+    if (!supported) return false;
     const vapidKey = await fetchVapidKey();
     if (!vapidKey) return false;
 
@@ -121,27 +102,27 @@ export function usePushNotifications(): PushState {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(vapidKey),
       });
-      await postSubscription(sub, token);
+      await postSubscription(sub);
       setSubscribed(true);
       return true;
     } catch {
       return false;
     }
-  }, [supported, token]);
+  }, [supported]);
 
   const unsubscribe = useCallback(async (): Promise<void> => {
-    if (!supported || !token) return;
+    if (!supported) return;
     try {
       const reg = await navigator.serviceWorker.ready;
       const sub = await reg.pushManager.getSubscription();
       if (!sub) return;
-      await deleteSubscription(sub.endpoint, token);
+      await deleteSubscription(sub.endpoint);
       await sub.unsubscribe();
       setSubscribed(false);
     } catch {
       /* ignore */
     }
-  }, [supported, token]);
+  }, [supported]);
 
   return { supported, permission, subscribed, subscribe, unsubscribe };
 }

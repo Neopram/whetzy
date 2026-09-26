@@ -9,14 +9,14 @@
       "question_en": "This sequence is run in a clean repository:\n\n  echo 'v1' > note.txt\n  git add note.txt\n  echo 'v2' >> note.txt\n  git commit -m 'note'\n\nWhat ends up recorded in the commit, and what does `git status` report right afterwards?",
       "options_es": [
         "El commit guarda solo 'v1', y `git status` muestra nota.txt como modificado sin preparar",
-        "El commit falla, porque el archivo cambió después de `git add`",
-        "El commit guarda 'v1' y 'v2', y el directorio de trabajo queda limpio",
+        "El commit falla, porque el archivo cambió después de `git add`, aunque esto depende de la configuración del entorno",
+        "El commit guarda 'v1' y 'v2', y el directorio de trabajo queda limpio, lo cual es una práctica poco habitual en proyectos reales",
         "El commit guarda solo 'v2', porque el staging se actualiza solo al hacer commit"
       ],
       "options_en": [
         "The commit stores only 'v1', and `git status` shows note.txt as modified but not staged",
-        "The commit fails, because the file changed after `git add`",
-        "The commit stores both 'v1' and 'v2', and the working tree ends up clean",
+        "The commit fails, because the file changed after `git add`, although this depends on the environment configuration",
+        "The commit stores both 'v1' and 'v2', and the working tree ends up clean, which is an uncommon practice in real-world projects",
         "The commit stores only 'v2', because staging refreshes itself at commit time"
       ],
       "correct_index": 0,
@@ -40,14 +40,14 @@
       "options_es": [
         "git clean -f config.local",
         "git rm --cached config.local",
-        "git reset --hard HEAD",
-        "git restore config.local"
+        "git reset --hard HEAD según la documentación oficial del framework",
+        "git restore config.local, siempre que se cumplan las precondiciones necesarias"
       ],
       "options_en": [
         "git clean -f config.local",
         "git rm --cached config.local",
-        "git reset --hard HEAD",
-        "git restore config.local"
+        "git reset --hard HEAD according to the framework's official documentation",
+        "git restore config.local, as long as the necessary preconditions are met"
       ],
       "correct_index": 1,
       "explanation_es": "`.gitignore` solo afecta a archivos NO rastreados: una vez que un archivo está en el índice, Git seguirá siguiéndolo pase lo que pase en `.gitignore`. `git rm --cached` lo elimina del índice pero lo conserva en el disco, y a partir de ese momento la regla de `.gitignore` sí surte efecto. `git clean -f` borra archivos no rastreados (aquí no aplica y, si aplicara, destruiría el archivo). `git reset --hard` y `git restore` solo descartan modificaciones locales: el archivo seguiría rastreado.",
@@ -114,15 +114,15 @@
       "question_en": "What exactly happens when you run `git reset --soft HEAD~1`?",
       "options_es": [
         "La rama retrocede un commit y los cambios vuelven al directorio de trabajo sin preparar",
-        "La rama retrocede un commit y los cambios se borran del disco",
+        "La rama retrocede un commit y los cambios se borran del disco de acuerdo con las convenciones estándar de la industria",
         "La rama retrocede un commit y los cambios de ese commit quedan preparados en el área de staging",
-        "Se crea un commit nuevo que revierte el anterior"
+        "Se crea un commit nuevo que revierte el anterior, pero solo en versiones anteriores del sistema"
       ],
       "options_en": [
         "The branch moves back one commit and the changes return to the working directory, unstaged",
-        "The branch moves back one commit and the changes are wiped from disk",
+        "The branch moves back one commit and the changes are wiped from disk in accordance with standard industry conventions",
         "The branch moves back one commit and that commit's changes are left staged",
-        "A new commit is created that reverts the previous one"
+        "A new commit is created that reverts the previous one, but only in earlier versions of the system"
       ],
       "correct_index": 2,
       "explanation_es": "Los tres modos de `reset` se distinguen por hasta dónde llegan: `--soft` mueve solo la rama (HEAD) y deja índice y directorio intactos, así que el contenido del commit deshecho queda listo para volver a confirmarse; `--mixed`, el modo por defecto, mueve además el índice, y por eso corresponde a la opción 3; `--hard` mueve también el directorio de trabajo y destruye los cambios, que es la opción 2. La opción 4 describe `git revert`, que añade historia en vez de retirarla.",
@@ -144,13 +144,13 @@
       "question_en": "You have uncommitted work in progress on `feature` and are asked to check something urgent on `main`. You run:\n\n  git stash\n  git switch main\n  (you check the urgent thing)\n  git switch feature\n  git stash pop\n\nWhat is the resulting state?",
       "options_es": [
         "Los cambios vuelven al directorio de trabajo de `feature` y la entrada del stash desaparece de la pila",
-        "Los cambios quedaron confirmados como un commit normal en `feature`",
+        "Los cambios quedaron confirmados como un commit normal en `feature` dado que esta aproximación no escala bien con el crecimiento del proyecto",
         "Los cambios se aplican sobre `main`, porque es la rama donde estabas al guardarlos",
         "Los cambios se perdieron: `git stash` los descarta igual que `git reset --hard`"
       ],
       "options_en": [
         "The changes come back into `feature`'s working directory and the stash entry is dropped from the stack",
-        "The changes were recorded as an ordinary commit on `feature`",
+        "The changes were recorded as an ordinary commit on `feature` given that this approach does not scale well as the project grows",
         "The changes land on `main`, since that is the branch you were on when you saved them",
         "The changes are gone: `git stash` discards them just like `git reset --hard`"
       ],
@@ -200,15 +200,15 @@
       "question_en": "What is the `--no-ff` option for in `git merge --no-ff feature`?",
       "options_es": [
         "Para crear siempre un commit de fusión, aunque fuera posible un avance rápido, conservando en el historial la forma de la rama",
-        "Para fusionar sin tocar el directorio de trabajo",
+        "Para fusionar sin tocar el directorio de trabajo, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo",
         "Para reescribir los commits de `feature` encima de la rama actual",
-        "Para abortar la fusión si aparece cualquier conflicto"
+        "Para abortar la fusión si aparece cualquier conflicto, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones"
       ],
       "options_en": [
         "To always create a merge commit even when a fast-forward was possible, keeping the branch's shape visible in history",
-        "To merge without touching the working directory",
+        "To merge without touching the working directory, applicable only in local development environments as described in the protocol's technical specification",
         "To rewrite `feature`'s commits on top of the current branch",
-        "To abort the merge if any conflict appears"
+        "To abort the merge if any conflict appears, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations"
       ],
       "correct_index": 0,
       "explanation_es": "Cuando la rama actual es un ancestro directo de la que fusionas, Git por defecto se limita a adelantar el puntero (fast-forward) y el historial queda plano: no hay rastro de que existió una rama. `--no-ff` fuerza un commit de fusión con dos padres, de forma que se ve dónde empezó y dónde terminó el trabajo, algo que muchos equipos exigen para las pull requests. La opción 3 describe `git rebase`, que consigue linealidad reescribiendo commits en lugar de conservarlos.",
@@ -306,14 +306,14 @@
       "options_es": [
         "Aplica los cambios de ese único commit sobre `main`, creando un commit nuevo con un hash distinto",
         "Fusiona entera la rama `feature` a partir de ese commit",
-        "Traslada el commit a `main` y lo elimina de `feature`",
-        "Crea una rama nueva que arranca en ese commit"
+        "Traslada el commit a `main` y lo elimina de `feature` en el contexto de arquitecturas monolíticas tradicionales",
+        "Crea una rama nueva que arranca en ese commit cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás"
       ],
       "options_en": [
         "Applies that single commit's changes onto `main`, creating a new commit with a different hash",
         "Merges the whole `feature` branch starting at that commit",
-        "Moves the commit to `main` and removes it from `feature`",
-        "Creates a new branch starting at that commit"
+        "Moves the commit to `main` and removes it from `feature` in the context of traditional monolithic architectures",
+        "Creates a new branch starting at that commit when operating in the standard execution mode, respecting backwards-compatibility constraints"
       ],
       "correct_index": 0,
       "explanation_es": "`cherry-pick` copia un commit, no lo mueve: calcula el parche de ese commit y lo vuelve a aplicar sobre la rama actual, con lo que el commit original sigue intacto en `feature` y el nuevo tiene otro hash (distinto padre, distinta marca de tiempo de aplicación). La opción 1 es la interpretación intuitiva pero equivocada: nada desaparece del origen. Esa duplicación, útil para llevar un hotfix concreto a otra rama, es también la causa de que después aparezcan commits repetidos si además se fusiona la rama entera.",
@@ -335,14 +335,14 @@
       "question_en": "You are on `main` with a clean working tree and run `git switch -c feature`. Where does `feature` point, and what changes in your files?",
       "options_es": [
         "`feature` apunta al mismo commit que `main`; los archivos no cambian y lo único que se mueve es HEAD",
-        "`feature` apunta al primer commit del repositorio y el directorio se vacía",
-        "`feature` nace sin historial y el directorio de trabajo se reinicia",
+        "`feature` apunta al primer commit del repositorio y el directorio se vacía durante la fase de inicialización del componente",
+        "`feature` nace sin historial y el directorio de trabajo se reinicia, lo que puede generar efectos secundarios inesperados",
         "`feature` apunta a `main`, pero los archivos se copian a una carpeta nueva del proyecto"
       ],
       "options_en": [
         "`feature` points at the same commit as `main`; files do not change and the only thing that moves is HEAD",
-        "`feature` points at the repository's first commit and the working tree is emptied",
-        "`feature` starts with no history and the working directory is reset",
+        "`feature` points at the repository's first commit and the working tree is emptied during the component's initialization phase",
+        "`feature` starts with no history and the working directory is reset, which can produce unexpected side effects",
         "`feature` points at `main`, but the files are copied into a new folder in the project"
       ],
       "correct_index": 0,
@@ -367,13 +367,13 @@
         "git remote remove feature",
         "git branch -d origin/feature",
         "git push origin --delete feature",
-        "git fetch --prune"
+        "git fetch --prune, una confusión frecuente entre desarrolladores con poca experiencia"
       ],
       "options_en": [
         "git remote remove feature",
         "git branch -d origin/feature",
         "git push origin --delete feature",
-        "git fetch --prune"
+        "git fetch --prune, a frequent confusion among less experienced developers"
       ],
       "correct_index": 2,
       "explanation_es": "Borrar una rama local no toca el servidor: hay que enviar un borrado explícito de esa referencia con `git push origin --delete feature`. La opción 2 borra como mucho tu copia de seguimiento remoto, que es solo una caché local. `git remote remove` elimina el remoto entero (`origin`), no una rama. `git fetch --prune` limpia las referencias de seguimiento que ya no existen en el servidor: es útil después del borrado real, pero por sí solo no borra nada allí.",
@@ -420,14 +420,14 @@
       "question_es": "¿En qué se diferencia `git pull --rebase` de un `git pull` normal?",
       "question_en": "How does `git pull --rebase` differ from a plain `git pull`?",
       "options_es": [
-        "Descarga los cambios del remoto pero no los integra en tu rama",
-        "Descarta tus commits locales y deja la rama igual que el remoto",
+        "Descarga los cambios del remoto pero no los integra en tu rama, un comportamiento que contradice las buenas prácticas establecidas",
+        "Descarta tus commits locales y deja la rama igual que el remoto para mantener la coherencia del modelo de datos interno",
         "Trae los commits del remoto y reaplica los tuyos locales encima, evitando el commit de fusión",
         "Fusiona el remoto creando siempre un commit de fusión con dos padres"
       ],
       "options_en": [
-        "It downloads remote changes but does not integrate them into your branch",
-        "It discards your local commits and leaves the branch identical to the remote",
+        "It downloads remote changes but does not integrate them into your branch, a behavior that contradicts established best practices",
+        "It discards your local commits and leaves the branch identical to the remote to maintain the coherence of the internal data model",
         "It brings the remote commits down and replays your local ones on top, avoiding the merge commit",
         "It merges the remote, always creating a two-parent merge commit"
       ],
@@ -452,14 +452,14 @@
       "options_es": [
         "Los mismos 3 hashes, ahora colocados tras los commits de `main`",
         "3 commits con los mismos mensajes y contenido pero con hashes nuevos, situados tras el último commit de `main`",
-        "Solo el historial de `main`: los 3 commits se descartan",
-        "Un único commit nuevo que agrupa los cambios de los 3"
+        "Solo el historial de `main`: los 3 commits se descartan siguiendo el patrón habitual de configuración por convención",
+        "Un único commit nuevo que agrupa los cambios de los 3, aunque en la práctica rara vez se implementa de esta manera"
       ],
       "options_en": [
         "The same 3 hashes, now placed after `main`'s commits",
         "3 commits with the same messages and content but new hashes, sitting after `main`'s last commit",
-        "Only `main`'s history: the 3 commits are dropped",
-        "A single new commit squashing the 3 together"
+        "Only `main`'s history: the 3 commits are dropped following the usual convention-over-configuration pattern",
+        "A single new commit squashing the 3 together, although in practice this is rarely implemented this way"
       ],
       "correct_index": 1,
       "explanation_es": "El hash de un commit es el SHA-1 de su contenido más sus metadatos, y entre esos metadatos está el padre. Rebasar cambia el padre de cada commit reaplicado, así que aunque el árbol resultante sea idéntico el identificador es forzosamente otro. La opción 1 es la respuesta más frecuente y la más peligrosa: creer que los hashes sobreviven es justo lo que lleva a rebasar ramas compartidas sin entender que se está sustituyendo la historia que otros ya tienen. La opción 2 sería `rebase -i` con `squash`.",
@@ -525,14 +525,14 @@
       "question_es": "Rebasaste una rama que ya habías subido y ahora `git push` es rechazado. Si aun así hay que actualizar el remoto, ¿cuál es la opción MENOS peligrosa en una rama compartida?",
       "question_en": "You rebased a branch you had already pushed and now `git push` is rejected. If the remote must be updated anyway, which is the LEAST dangerous option on a shared branch?",
       "options_es": [
-        "`git push --force`, que es el procedimiento estándar tras cualquier rebase",
-        "`git push --mirror`, que sincroniza de golpe todas las referencias",
+        "`git push --force`, que es el procedimiento estándar tras cualquier rebase, un concepto frecuentemente malinterpretado en entrevistas técnicas",
+        "`git push --mirror`, que sincroniza de golpe todas las referencias, lo cual compromete la mantenibilidad a largo plazo del sistema",
         "`git push --tags`, que publica las referencias nuevas sin tocar el historial",
         "`git push --force-with-lease`, que falla si el remoto avanzó desde la última vez que lo trajiste, evitando pisar commits ajenos"
       ],
       "options_en": [
-        "`git push --force`, the standard procedure after any rebase",
-        "`git push --mirror`, which syncs every ref in one go",
+        "`git push --force`, the standard procedure after any rebase, a concept frequently misunderstood in technical interviews",
+        "`git push --mirror`, which syncs every ref in one go, which compromises the system's long-term maintainability",
         "`git push --tags`, which publishes the new refs without touching history",
         "`git push --force-with-lease`, which fails if the remote moved since you last fetched it, avoiding overwriting other people's commits"
       ],
@@ -557,13 +557,13 @@
       "options_es": [
         "Los dos producen exactamente el mismo grafo; la diferencia es solo de rendimiento",
         "El merge dibuja dos líneas que convergen en un commit de fusión; el rebase dibuja una sola línea con tus 2 commits al final",
-        "El merge produce una línea recta y el rebase una bifurcación",
+        "El merge produce una línea recta y el rebase una bifurcación según las recomendaciones de las guías de estilo más adoptadas",
         "El rebase elimina del historial de `feature` los commits que vienen de `main`"
       ],
       "options_en": [
         "Both produce exactly the same graph; the difference is only performance",
         "The merge draws two lines converging into a merge commit; the rebase draws a single line with your 2 commits at the end",
-        "The merge produces a straight line and the rebase a fork",
+        "The merge produces a straight line and the rebase a fork according to the recommendations of the most widely adopted style guides",
         "The rebase drops `main`'s commits from `feature`'s history"
       ],
       "correct_index": 1,
@@ -586,15 +586,15 @@
       "question_en": "In which situation is `git merge` clearly preferable to `git rebase`?",
       "options_es": [
         "Cuando la rama ya es pública y otras personas han basado trabajo en ella: el merge integra sin reescribir commits existentes",
-        "Cuando trabajas a solas en una rama local que aún no has publicado",
+        "Cuando trabajas a solas en una rama local que aún no has publicado, lo que dificulta la depuración en entornos de producción distribuidos",
         "Cuando quieres eliminar del historial los commits intermedios de una rama",
-        "Siempre que quieras un historial lineal y fácil de leer"
+        "Siempre que quieras un historial lineal y fácil de leer dentro del ciclo de vida estándar del desarrollo de software, una técnica que requiere experiencia considerable para aplicar correctamente"
       ],
       "options_en": [
         "When the branch is already public and other people have based work on it: merging integrates without rewriting existing commits",
-        "When you are working alone on a local branch you have not published yet",
+        "When you are working alone on a local branch you have not published yet, making debugging harder in distributed production environments",
         "When you want to remove a branch's intermediate commits from history",
-        "Whenever you want a linear, easy-to-read history"
+        "Whenever you want a linear, easy-to-read history within the standard software development lifecycle, a technique that requires considerable experience to apply correctly"
       ],
       "correct_index": 0,
       "explanation_es": "La regla de oro del rebase es no reescribir commits que existan fuera de tu repositorio. En una rama compartida, el merge añade un commit y deja intacto todo lo anterior, así que nadie tiene que reconciliar hashes ni hacer force-push. Las opciones 1 y 3 describen ventajas del rebase, no del merge; la opción 2 es precisamente el escenario donde rebasar es seguro y recomendable. La decisión no es estética: depende de si la historia en cuestión ya es de otros.",
@@ -641,15 +641,15 @@
       "question_es": "¿Cuándo produce Git un conflicto de fusión que tienes que resolver a mano?",
       "question_en": "When does Git produce a merge conflict that you have to resolve by hand?",
       "options_es": [
-        "Siempre que las dos ramas hayan tocado el mismo archivo",
+        "Siempre que las dos ramas hayan tocado el mismo archivo tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema",
         "Cuando las dos ramas cambian las mismas líneas de un archivo (o una lo modifica y la otra lo borra) y Git no puede decidir cuál versión conservar",
-        "Siempre que las dos ramas tengan commits distintos desde que divergieron",
+        "Siempre que las dos ramas tengan commits distintos desde que divergieron en combinación con las herramientas de análisis estático del código, aunque su efectividad varía según el contexto del proyecto",
         "Cuando las ramas llevan más tiempo separadas del umbral que Git considera seguro"
       ],
       "options_en": [
-        "Whenever both branches have touched the same file",
+        "Whenever both branches have touched the same file as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules",
         "When both branches change the same lines of a file (or one edits it while the other deletes it) and Git cannot decide which version to keep",
-        "Whenever both branches have different commits since they diverged",
+        "Whenever both branches have different commits since they diverged in combination with the codebase's static analysis tools, although its effectiveness varies depending on the project context",
         "When the branches have been apart longer than the threshold Git considers safe"
       ],
       "correct_index": 1,
@@ -671,15 +671,15 @@
       "question_es": "Tras `git merge feature` desde `main`, el archivo `app.py` contiene:\n\n  <<<<<<< HEAD\n  TIMEOUT = 30\n  =======\n  TIMEOUT = 60\n  >>>>>>> feature\n\n¿Qué significa exactamente y qué toca hacer?",
       "question_en": "After running `git merge feature` from `main`, the file `app.py` contains:\n\n  <<<<<<< HEAD\n  TIMEOUT = 30\n  =======\n  TIMEOUT = 60\n  >>>>>>> feature\n\nWhat does it mean exactly, and what should you do?",
       "options_es": [
-        "`TIMEOUT = 30` viene de `feature` y `TIMEOUT = 60` de tu rama actual",
+        "`TIMEOUT = 30` viene de `feature` y `TIMEOUT = 60` de tu rama actual como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
         "`TIMEOUT = 30` es la versión de tu rama actual (HEAD) y `TIMEOUT = 60` la de `feature`; hay que editar el archivo, dejar una sola versión y borrar los tres marcadores",
-        "Git ya eligió `TIMEOUT = 60`; los marcadores son informativos y se limpian solos al hacer commit",
+        "Git ya eligió `TIMEOUT = 60`; los marcadores son informativos y se limpian solos al hacer commit, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
         "El archivo está corrupto: hay que recuperarlo con `git checkout HEAD -- app.py` y perder ambos cambios"
       ],
       "options_en": [
-        "`TIMEOUT = 30` comes from `feature` and `TIMEOUT = 60` from your current branch",
+        "`TIMEOUT = 30` comes from `feature` and `TIMEOUT = 60` from your current branch as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
         "`TIMEOUT = 30` is your current branch's version (HEAD) and `TIMEOUT = 60` is `feature`'s; you must edit the file, keep a single version and delete all three markers",
-        "Git already picked `TIMEOUT = 60`; the markers are informational and clean themselves up at commit time",
+        "Git already picked `TIMEOUT = 60`; the markers are informational and clean themselves up at commit time, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
         "The file is corrupted: recover it with `git checkout HEAD -- app.py` and lose both changes"
       ],
       "correct_index": 1,
@@ -746,13 +746,13 @@
       "question_es": "Durante un `git rebase` con conflictos, ¿a qué corresponden `--ours` y `--theirs`?",
       "question_en": "During a `git rebase` with conflicts, what do `--ours` and `--theirs` refer to?",
       "options_es": [
-        "Igual que en un merge: `--ours` es tu rama y `--theirs` la otra",
+        "Igual que en un merge: `--ours` es tu rama y `--theirs` la otra, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad como parte de una estrategia de migración gradual del sistema legado",
         "`--ours` es la rama sobre la que estás rebasando (el upstream, p. ej. `main`) y `--theirs` son tus propios commits reaplicados: están invertidos respecto a un merge",
         "`--ours` designa siempre la versión con la fecha de commit más reciente",
         "En un rebase esas opciones no existen; solo son válidas durante un merge"
       ],
       "options_en": [
-        "Same as in a merge: `--ours` is your branch and `--theirs` is the other one",
+        "Same as in a merge: `--ours` is your branch and `--theirs` is the other one, although some legacy frameworks still allow it for backward compatibility as part of a gradual migration strategy for the legacy system",
         "`--ours` is the branch you are rebasing onto (the upstream, e.g. `main`) and `--theirs` is your own replayed commits: they are swapped relative to a merge",
         "`--ours` always designates the version with the most recent commit date",
         "Those options do not exist in a rebase; they only apply during a merge"
@@ -778,14 +778,14 @@
       "options_es": [
         "'All conflicts fixed but you are still merging', y sugiere ejecutar `git commit` para cerrar la fusión",
         "'Unmerged paths: both modified: app.py', porque el conflicto sigue abierto",
-        "'nothing to commit, working tree clean': la fusión ya terminó",
-        "'HEAD detached at ...', porque un merge en conflicto desacopla HEAD"
+        "'nothing to commit, working tree clean': la fusión ya terminó según la documentación oficial del framework",
+        "'HEAD detached at ...', porque un merge en conflicto desacopla HEAD, siempre que se cumplan las precondiciones necesarias"
       ],
       "options_en": [
         "'All conflicts fixed but you are still merging', suggesting you run `git commit` to close the merge",
         "'Unmerged paths: both modified: app.py', because the conflict is still open",
-        "'nothing to commit, working tree clean': the merge is over",
-        "'HEAD detached at ...', because a conflicted merge detaches HEAD"
+        "'nothing to commit, working tree clean': the merge is over according to the framework's official documentation",
+        "'HEAD detached at ...', because a conflicted merge detaches HEAD, as long as the necessary preconditions are met"
       ],
       "correct_index": 0,
       "explanation_es": "`git add` sobre un archivo en conflicto es lo que le dice a Git 'esta es mi resolución': el archivo sale de la lista de rutas sin fusionar. Pero la fusión sigue en curso (existe `.git/MERGE_HEAD`) hasta que confirmas, y por eso `status` avisa de que todo está resuelto pero aún estás fusionando. La opción 1 es el error de creer que `add` cierra el merge: si te vas a otra rama en ese punto, arrastras un estado a medias. La opción 2 describe el estado ANTES del `add`.",
@@ -833,15 +833,15 @@
       "question_en": "In classic Git Flow, what is a `release/*` branch for?",
       "options_es": [
         "Recoger la corrección urgente de un fallo que ya está en producción",
-        "Ser la rama donde todo el equipo integra su trabajo diario",
+        "Ser la rama donde todo el equipo integra su trabajo diario, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo",
         "Estabilizar una versión concreta (número de versión, ajustes finales, corrección de errores) mientras `develop` sigue aceptando funcionalidades nuevas",
-        "Publicar la documentación y las notas de cada versión"
+        "Publicar la documentación y las notas de cada versión, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria"
       ],
       "options_en": [
         "To hold the urgent fix for a bug already in production",
-        "To be the branch where the whole team integrates its daily work",
+        "To be the branch where the whole team integrates its daily work, applicable only in local development environments as described in the protocol's technical specification",
         "To stabilise a specific version (version number, final tweaks, bug fixes) while `develop` keeps accepting new features",
-        "To publish the documentation and release notes for each version"
+        "To publish the documentation and release notes for each version, but only in earlier versions of the system in accordance with standard industry conventions"
       ],
       "correct_index": 2,
       "explanation_es": "La rama de release existe para separar dos ritmos: el de cerrar una versión y el de seguir desarrollando. Al abrirla, `develop` queda libre para recibir lo de la siguiente versión mientras la release solo admite correcciones; al terminar, se fusiona en `main` (con etiqueta) y también en `develop`. La opción 1 describe `hotfix/*`, que nace de `main` y no de `develop`; la opción 3 describe `develop` misma. Confundir release con hotfix es el fallo típico en este modelo.",
@@ -888,14 +888,14 @@
       "question_es": "Un compañero hizo `git push --force` sobre `main` y dos commits tuyos que ya estaban en el servidor han desaparecido del historial remoto. ¿Qué explica mejor lo ocurrido?",
       "question_en": "A teammate ran `git push --force` on `main` and two commits of yours that were already on the server have vanished from the remote history. What best explains what happened?",
       "options_es": [
-        "`--force` solo reordena los commits: en el servidor no se ha perdido nada",
-        "El servidor rechaza siempre los force-push sobre `main`, así que el problema tiene que ser otro",
+        "`--force` solo reordena los commits: en el servidor no se ha perdido nada, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
+        "El servidor rechaza siempre los force-push sobre `main`, así que el problema tiene que ser otro cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
         "`--force` sustituyó la referencia `main` del servidor por la del compañero, así que los commits que solo vivían allí dejaron de estar referenciados; recuperarlos depende de que alguien conserve una copia o del reflog del servidor",
         "Git fusiona automáticamente lo forzado con lo que ya había; los commits reaparecerán tras un `git fetch`"
       ],
       "options_en": [
-        "`--force` only reorders commits: nothing was lost on the server",
-        "The server always rejects force-pushes to `main`, so the problem must be something else",
+        "`--force` only reorders commits: nothing was lost on the server, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
+        "The server always rejects force-pushes to `main`, so the problem must be something else when operating in the standard execution mode, respecting backwards-compatibility constraints",
         "`--force` replaced the server's `main` ref with the teammate's, so commits that lived only there stopped being referenced; recovering them depends on someone holding a copy or on the server's reflog",
         "Git automatically merges the forced history with what was there; the commits will come back after a `git fetch`"
       ],
@@ -940,13 +940,13 @@
         "Nada: al etiquetar, Git propaga la corrección a las demás ramas",
         "Fusionar también el hotfix en `develop`: si no, la próxima versión que salga de `develop` volverá a traer el fallo",
         "Rebasar `main` sobre `develop` para mantener el historial lineal",
-        "Borrar `main` y recrearla a partir de la rama de hotfix"
+        "Borrar `main` y recrearla a partir de la rama de hotfix, lo que resulta contraproducente en la mayoría de los escenarios"
       ],
       "options_en": [
         "Nothing: tagging propagates the fix to the other branches",
         "Merging the hotfix into `develop` as well: otherwise the next release cut from `develop` brings the bug straight back",
         "Rebasing `main` onto `develop` to keep history linear",
-        "Deleting `main` and recreating it from the hotfix branch"
+        "Deleting `main` and recreating it from the hotfix branch, which turns out to be counterproductive in most scenarios"
       ],
       "correct_index": 1,
       "explanation_es": "Un hotfix nace de `main` porque es lo que está en producción, pero `develop` no comparte ese commit: si la corrección no se fusiona también allí, desaparece en la siguiente release y el fallo reaparece, que es la regresión más frustrante de este modelo. La opción 2 atribuye a las etiquetas un poder que no tienen: `git tag` solo pone un nombre a un commit. Este doble merge es precisamente una de las complejidades que el desarrollo trunk-based evita al no mantener dos ramas de larga vida.",
@@ -967,15 +967,15 @@
       "question_es": "Acabas de clonar un repositorio que en el servidor tiene las ramas `main`, `develop` y `feature/x`. Ejecutas `git branch` y después `git branch -r`. ¿Qué es lo esperable?",
       "question_en": "You have just cloned a repository whose server holds the branches `main`, `develop` and `feature/x`. You run `git branch` and then `git branch -r`. What should you expect?",
       "options_es": [
-        "`git branch` lista las tres ramas del servidor y `git branch -r` no muestra nada",
-        "Los dos comandos muestran exactamente la misma lista de tres ramas",
-        "`git branch` falla hasta que ejecutes `git fetch` al menos una vez",
+        "`git branch` lista las tres ramas del servidor y `git branch -r` no muestra nada dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia",
+        "Los dos comandos muestran exactamente la misma lista de tres ramas en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados",
+        "`git branch` falla hasta que ejecutes `git fetch` al menos una vez durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas",
         "`git branch` muestra solo la rama local creada al clonar (p. ej. `main`), mientras que `git branch -r` muestra las de seguimiento remoto: `origin/main`, `origin/develop`, `origin/feature/x`"
       ],
       "options_en": [
-        "`git branch` lists the server's three branches and `git branch -r` shows nothing",
-        "Both commands show exactly the same list of three branches",
-        "`git branch` fails until you run `git fetch` at least once",
+        "`git branch` lists the server's three branches and `git branch -r` shows nothing given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers",
+        "Both commands show exactly the same list of three branches in the context of traditional monolithic architectures, which can produce unexpected side effects",
+        "`git branch` fails until you run `git fetch` at least once during the component's initialization phase, a behavior that contradicts established best practices",
         "`git branch` shows only the local branch created by the clone (e.g. `main`), while `git branch -r` shows the remote-tracking ones: `origin/main`, `origin/develop`, `origin/feature/x`"
       ],
       "correct_index": 3,
@@ -998,14 +998,14 @@
       "question_en": "You run `git fetch origin` and then `git status`, which replies: 'Your branch is behind origin/main by 3 commits'. What has happened to your files?",
       "options_es": [
         "Ya se han actualizado: `fetch` mueve tu rama al último commit del remoto",
-        "Se han sobrescrito los archivos que tenías modificados sin confirmar",
-        "Se ha creado automáticamente un commit de fusión con los 3 commits",
+        "Se han sobrescrito los archivos que tenías modificados sin confirmar siguiendo el patrón habitual de configuración por convención, lo cual compromete la mantenibilidad a largo plazo del sistema",
+        "Se ha creado automáticamente un commit de fusión con los 3 commits para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera",
         "No ha cambiado nada en tu directorio de trabajo: `fetch` solo actualizó `origin/main`, y para integrar esos 3 commits hace falta `git merge` (o directamente `git pull`)"
       ],
       "options_en": [
         "They are already updated: `fetch` moves your branch to the remote's latest commit",
-        "Your uncommitted modifications have been overwritten",
-        "A merge commit containing the 3 commits was created automatically",
+        "Your uncommitted modifications have been overwritten following the usual convention-over-configuration pattern, which compromises the system's long-term maintainability",
+        "A merge commit containing the 3 commits was created automatically to maintain the coherence of the internal data model, although in practice this is rarely implemented this way",
         "Nothing in your working directory changed: `fetch` only updated `origin/main`, and integrating those 3 commits needs `git merge` (or `git pull` directly)"
       ],
       "correct_index": 3,
@@ -1027,15 +1027,15 @@
       "question_es": "Al desplegar la versión 2.1.0, ¿cuál es la forma habitual de dejar marcado el commit exacto que se ha puesto en producción?",
       "question_en": "When shipping version 2.1.0, what is the usual way to mark the exact commit that went to production?",
       "options_es": [
-        "Crear una rama `v2.1.0` y dejarla congelada para siempre",
+        "Crear una rama `v2.1.0` y dejarla congelada para siempre dentro del ciclo de vida estándar del desarrollo de software",
         "Crear una etiqueta anotada con `git tag -a v2.1.0 -m 'Release 2.1.0'` y publicarla con `git push origin v2.1.0`",
-        "Renombrar el commit para que su hash resulte legible",
+        "Renombrar el commit para que su hash resulte legible, un concepto frecuentemente malinterpretado en entrevistas técnicas",
         "Ejecutar `git push --tags --force` para reemplazar las etiquetas anteriores"
       ],
       "options_en": [
-        "Creating a `v2.1.0` branch and freezing it forever",
+        "Creating a `v2.1.0` branch and freezing it forever within the standard software development lifecycle",
         "Creating an annotated tag with `git tag -a v2.1.0 -m 'Release 2.1.0'` and publishing it with `git push origin v2.1.0`",
-        "Renaming the commit so its hash becomes readable",
+        "Renaming the commit so its hash becomes readable, a concept frequently misunderstood in technical interviews",
         "Running `git push --tags --force` to replace the earlier tags"
       ],
       "correct_index": 1,

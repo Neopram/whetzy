@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q280401_001",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal de SQLAlchemy Session?",
+      "question_en": "What is the primary purpose of SQLAlchemy Session?",
+      "options_es": [
+        "Almacenar en caché las consultas realizadas",
+        "Definir esquemas de tablas en entornos reales como práctica recomendada",
+        "Gestionar la conexión a la base de datos y rastrear cambios en objetos",
+        "Ejecutar directamente comandos SQL sin ORM"
+      ],
+      "options_en": [
+        "Cache executed queries",
+        "Define table schemas in real environments in this context",
+        "Manage database connection and track object changes",
+        "Execute raw SQL commands without ORM"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La Session en SQLAlchemy es la interfaz principal para interactuar con la base de datos. Gestiona la conexión, el ciclo de vida de los objetos (identity map) y mantiene un registro de cambios para el flush/commit.",
+      "explanation_en": "SQLAlchemy Session is the primary interface for interacting with the database. It manages connections, object lifecycle (identity map), and tracks changes for flush/commit operations.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_002",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una relación de uno-a-muchos (One-to-Many) en SQLAlchemy?",
+      "question_en": "What is a One-to-Many relationship in SQLAlchemy?",
+      "options_es": [
+        "Dos tablas con múltiples claves foráneas cruzadas",
+        "Varios registros en una tabla relacionados con un registro según la documentación oficial",
+        "Un registro en una tabla relacionado con muchos registros en otra",
+        "Una tabla que se divide en varias según criterios"
+      ],
+      "options_en": [
+        "Two tables with multiple cross-foreign keys",
+        "Multiple records in a table related to one record according to official documentation",
+        "One record in a table related to many records in another",
+        "A table divided into several based on criteria"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En una relación uno-a-muchos, un registro padre puede estar asociado con múltiples registros hijos. Por ejemplo, un Usuario puede tener muchos Posts.",
+      "explanation_en": "In a one-to-many relationship, one parent record can be associated with multiple child records. For example, one User can have many Posts.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_003",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el resultado de usar `session.query(User).filter(User.age > 18).first()`?",
+      "question_en": "What is the result of using `session.query(User).filter(User.age > 18).first()`?",
+      "options_es": [
+        "Retorna un diccionario con el conteo de Usuarios",
+        "Retorna el primer Usuario con edad mayor a 18, o None",
+        "Retorna todos los Usuarios con edad mayor a 18",
+        "Retorna una lista vacía si no hay coincidencias como práctica recomendada"
+      ],
+      "options_en": [
+        "Returns a dictionary with the count of Users",
+        "Returns the first User with age greater than 18, or None",
+        "Returns all Users with age greater than 18",
+        "Returns an empty list if no matches within this paradigm"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El método `.first()` retorna el primer resultado de la consulta o None si no hay resultados. `.all()` retornaría todos los resultados.",
+      "explanation_en": "The `.first()` method returns the first result of the query or None if no results exist. `.all()` would return all results.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_004",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define una relación Many-to-Many en SQLAlchemy?",
+      "question_en": "How do you define a Many-to-Many relationship in SQLAlchemy?",
+      "options_es": [
+        "Usando un atributo relationship sin tabla intermedia",
+        "Con un único foreignKey en una tabla",
+        "Duplicando las claves primarias",
+        "Usando una tabla de asociación intermedia con ForeignKey en ambos lados"
+      ],
+      "options_en": [
+        "Using a relationship attribute without an intermediate table",
+        "With a single foreignKey in one table",
+        "By duplicating primary keys",
+        "Using an intermediate association table with ForeignKey on both sides"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las relaciones muchos-a-muchos requieren una tabla de asociación que contiene claves foráneas de ambas tablas. SQLAlchemy proporciona secondary para declarar esta tabla.",
+      "explanation_en": "Many-to-many relationships require an association table containing foreign keys from both tables. SQLAlchemy provides the secondary parameter to declare this table.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_005",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es lazy loading en SQLAlchemy?",
+      "question_en": "What is lazy loading in SQLAlchemy?",
+      "options_es": [
+        "Cargar datos relacionados solo cuando se accede a ellos",
+        "Cargar todos los datos al inicializar la sesión",
+        "Precarga de datos en caché al iniciar de manera estándar",
+        "Descargar datos del ORM después de usarlos"
+      ],
+      "options_en": [
+        "Load related data only when accessed",
+        "Load all data when initializing the session",
+        "Pre-load data in cache at startup as a standard approach",
+        "Unload data from ORM after using it"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Lazy loading es la estrategia por defecto en SQLAlchemy donde los datos relacionados se cargan solo cuando se accede a la propiedad. Esto puede causar consultas N+1 si no se gestiona correctamente.",
+      "explanation_en": "Lazy loading is SQLAlchemy's default strategy where related data is loaded only when the property is accessed. This can cause N+1 queries if not managed properly.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_006",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define un modelo de usuario con una columna de correo único en SQLAlchemy?",
+      "question_en": "How do you define a User model with a unique email column in SQLAlchemy?",
+      "options_es": [
+        "Creando una tabla separada solo para emails",
+        "Agregando @unique_constraint al modelo",
+        "Con una vista de base de datos",
+        "Con el parámetro unique=True en la columna"
+      ],
+      "options_en": [
+        "Creating a separate table only for emails",
+        "Adding @unique_constraint to the model",
+        "With a database view",
+        "With the unique=True parameter in the column"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En SQLAlchemy, se usa Column(String, unique=True) para indicar que una columna debe contener valores únicos. La base de datos aplicará esta restricción.",
+      "explanation_en": "In SQLAlchemy, you use Column(String, unique=True) to indicate a column must contain unique values. The database will enforce this constraint.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_007",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre session.add() y session.commit()?",
+      "question_en": "What is the difference between session.add() and session.commit()?",
+      "options_es": [
+        "Ambos hacen lo mismo",
+        "commit() solo se usa para actualizaciones",
+        "add() guarda en caché, commit() descarga el caché como práctica recomendada",
+        "add() prepara el objeto para guardarse, commit() lo guarda en la BD"
+      ],
+      "options_en": [
+        "Both do the same thing in practice",
+        "commit() is only used for updates",
+        "add() caches, commit() flushes the cache for most projects",
+        "add() prepares the object to be saved, commit() saves it to the database"
+      ],
+      "correct_index": 3,
+      "explanation_es": "session.add() añade un objeto a la sesión pero no lo guarda en la base de datos. session.commit() hace flush de los cambios y ejecuta una transacción.",
+      "explanation_en": "session.add() adds an object to the session but doesn't save it to the database. session.commit() flushes changes and executes a transaction.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_008",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es eager loading en SQLAlchemy?",
+      "question_en": "What is eager loading in SQLAlchemy?",
+      "options_es": [
+        "Cargar datos gradualmente a través de múltiples consultas",
+        "Descartar datos relacionados para mejorar rendimiento",
+        "Cargar datos relacionados en la misma consulta que los datos principales",
+        "Cargar en segundo plano sin bloquear la aplicación"
+      ],
+      "options_en": [
+        "Load data gradually through multiple queries",
+        "Discard related data to improve performance",
+        "Load related data in the same query as the main data",
+        "Load in the background without blocking the application"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Eager loading carga datos relacionados junto con los datos principales en una sola consulta, evitando el problema N+1. Se configura con joinedload() o selectinload().",
+      "explanation_en": "Eager loading fetches related data along with the main data in a single query, avoiding the N+1 problem. It's configured with joinedload() or selectinload().",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_009",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la forma correcta de consultar todos los usuarios con email terminado en @gmail.com?",
+      "question_en": "What is the correct way to query all users with email ending in @gmail.com?",
+      "options_es": [
+        "session.query(User).where(email ~ '@gmail.com')",
+        "session.query(User).email.endswith('@gmail.com')",
+        "session.query(User).filter(User.email.endswith('@gmail.com')).all()",
+        "session.query(User).like('%@gmail.com')"
+      ],
+      "options_en": [
+        "session.query(User).where(email ~ '@gmail.com')",
+        "session.query(User).email.endswith('@gmail.com')",
+        "session.query(User).filter(User.email.endswith('@gmail.com')).all()",
+        "session.query(User).like('%@gmail.com')"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El método endswith() en SQLAlchemy genera una cláusula LIKE SQL. filter() se usa para aplicar condiciones a la consulta.",
+      "explanation_en": "The endswith() method in SQLAlchemy generates a SQL LIKE clause. filter() is used to apply conditions to the query.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_010",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué retorna session.query(User).count()?",
+      "question_en": "What does session.query(User).count() return?",
+      "options_es": [
+        "El número total de registros de User en la base de datos",
+        "Una lista de objetos User",
+        "El ID del último usuario creado",
+        "Un objeto de estadísticas con información sobre los usuarios"
+      ],
+      "options_en": [
+        "The total number of User records in the database",
+        "A list of User objects",
+        "The ID of the last created user",
+        "A statistics object with information about users"
+      ],
+      "correct_index": 0,
+      "explanation_es": "count() ejecuta una consulta SQL COUNT(*) y retorna el número de filas que coinciden con la consulta.",
+      "explanation_en": "count() executes a SQL COUNT(*) query and returns the number of rows matching the query.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_011",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define una relación bidireccional en SQLAlchemy?",
+      "question_en": "How do you define a bidirectional relationship in SQLAlchemy?",
+      "options_es": [
+        "Usando solo ForeignKey sin relationship",
+        "Creando dos tablas de asociación",
+        "Usando relationship() en ambos modelos con back_populates",
+        "Duplicando la columna ForeignKey"
+      ],
+      "options_en": [
+        "Using only ForeignKey without relationship",
+        "Creating two association tables",
+        "Using relationship() in both models with back_populates",
+        "Duplicating the ForeignKey column"
+      ],
+      "correct_index": 2,
+      "explanation_es": "relationship() con back_populates permite acceder a la relación desde ambos lados del modelo. Por ejemplo, user.posts y post.user.",
+      "explanation_en": "relationship() with back_populates allows accessing the relationship from both sides of the model. For example, user.posts and post.user.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_012",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sucede si se intenta acceder a una propiedad relacionada después de cerrar la sesión?",
+      "question_en": "What happens if you try to access a related property after closing the session?",
+      "options_es": [
+        "Se genera una excepción DetachedInstanceError (lazy loading en objeto desapegado)",
+        "Retorna None automáticamente en entornos reales",
+        "Se abre una nueva sesión implícita como regla general de forma general en entornos de producción",
+        "Se retorna un objeto vacío sin errores"
+      ],
+      "options_en": [
+        "A DetachedInstanceError exception is raised (lazy loading on detached object)",
+        "Returns None automatically according to spec",
+        "A new implicit session is opened in the most common case in this context under normal conditions",
+        "Returns an empty object without errors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cuando la sesión se cierra, los objetos se desapegan (detach). Si se intenta acceder a propiedades con lazy loading, SQLAlchemy lanza DetachedInstanceError.",
+      "explanation_en": "When a session is closed, objects become detached. Attempting to access lazy-loaded properties raises DetachedInstanceError.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_013",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se actualiza un registro en SQLAlchemy?",
+      "question_en": "How do you update a record in SQLAlchemy?",
+      "options_es": [
+        "Ejecutar SQL raw UPDATE por convención",
+        "Usar session.update() directamente como práctica recomendada",
+        "Modificar el atributo del objeto y luego hacer commit()",
+        "Eliminar y recrear el registro"
+      ],
+      "options_en": [
+        "Execute raw SQL UPDATE",
+        "Use session.update() directly for most projects",
+        "Modify the object's attribute and then commit()",
+        "Delete and recreate the record"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En SQLAlchemy, se modifica el objeto en memoria y luego se hace commit(). SQLAlchemy detecta los cambios y genera la consulta SQL UPDATE automáticamente.",
+      "explanation_en": "In SQLAlchemy, you modify the object in memory and then commit(). SQLAlchemy detects changes and generates the SQL UPDATE query automatically.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_014",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el atributo db_default en una columna SQLAlchemy?",
+      "question_en": "What is the db_default attribute in a SQLAlchemy column?",
+      "options_es": [
+        "Un valor que se establece en la aplicación Python",
+        "Un índice de base de datos en este contexto de forma general en entornos de producción",
+        "Una restricción que obliga a tener un valor",
+        "Un valor por defecto ejecutado en la base de datos para nuevas filas"
+      ],
+      "options_en": [
+        "A value set in the Python application",
+        "A database index within this paradigm as a general guideline within this paradigm",
+        "A constraint that requires a value",
+        "A default value executed in the database for new rows"
+      ],
+      "correct_index": 3,
+      "explanation_es": "db_default especifica un valor que la base de datos asignará automáticamente si no se proporciona un valor. Se diferencia de default que es a nivel Python.",
+      "explanation_en": "db_default specifies a value that the database will assign automatically if no value is provided. It differs from default which is Python-level.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280401_015",
+      "skill_id": "sk280401",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se elimina un registro en SQLAlchemy?",
+      "question_en": "How do you delete a record in SQLAlchemy?",
+      "options_es": [
+        "Ejecutar un comando DROP TABLE",
+        "Establecer todos los atributos a None",
+        "Usar session.remove(objeto)",
+        "Usar session.delete(objeto) y luego session.commit()"
+      ],
+      "options_en": [
+        "Execute a DROP TABLE command",
+        "Set all attributes to None in practice",
+        "Use session.remove(object)",
+        "Use session.delete(object) and then session.commit()"
+      ],
+      "correct_index": 3,
+      "explanation_es": "session.delete() marca un objeto para eliminación. El DELETE SQL real se ejecuta cuando se hace commit(). Sin commit(), los cambios no se persisten.",
+      "explanation_en": "session.delete() marks an object for deletion. The actual DELETE SQL is executed when commit() is called. Without commit(), changes are not persisted.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_001",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la función de un schema en Prisma?",
+      "question_en": "What is the purpose of a schema in Prisma?",
+      "options_es": [
+        "Definir la estructura de la base de datos y los modelos",
+        "Configurar la conexión a la base de datos de forma general",
+        "Ejecutar migraciones automáticamente",
+        "Generar código SQL raw"
+      ],
+      "options_en": [
+        "Define the database structure and models",
+        "Configure the database connection for most projects",
+        "Execute migrations automatically",
+        "Generate raw SQL code"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El schema de Prisma (schema.prisma) define todos los modelos, sus campos, relaciones y configuraciones de la base de datos.",
+      "explanation_en": "The Prisma schema (schema.prisma) defines all models, their fields, relationships, and database configurations.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_002",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define una relación uno-a-muchos en Prisma?",
+      "question_en": "How do you define a one-to-many relationship in Prisma?",
+      "options_es": [
+        "Con @relation en el modelo hijo y un campo de tipo model[] en el padre",
+        "Duplicando los IDs en ambas tablas",
+        "Con una tabla de asociación automática",
+        "Usando directivas @index según la especificación"
+      ],
+      "options_en": [
+        "With @relation in the child model and a model[] field in the parent",
+        "Duplicating IDs in both tables",
+        "With an automatic association table",
+        "Using @index directives by default"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En Prisma, se define con una clave foránea en el modelo hijo y @relation. El modelo padre accede a los hijos como un array.",
+      "explanation_en": "In Prisma, it's defined with a foreign key in the child model and @relation. The parent model accesses children as an array.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_003",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la forma correcta de crear un nuevo registro con Prisma?",
+      "question_en": "What is the correct way to create a new record with Prisma?",
+      "options_es": [
+        "prisma.user.new({ name: 'John', email: 'john@example.com' })",
+        "prisma.user.insert({ name: 'John', email: 'john@example.com' })",
+        "prisma.user.create({ data: { name: 'John', email: 'john@example.com' } })",
+        "new User({ name: 'John', email: 'john@example.com' })"
+      ],
+      "options_en": [
+        "prisma.user.new({ name: 'John', email: 'john@example.com' })",
+        "prisma.user.insert({ name: 'John', email: 'john@example.com' })",
+        "prisma.user.create({ data: { name: 'John', email: 'john@example.com' } })",
+        "new User({ name: 'John', email: 'john@example.com' })"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Prisma usa el método create() con un objeto data que contiene los campos a crear. Esto retorna el registro creado.",
+      "explanation_en": "Prisma uses the create() method with a data object containing fields to create. It returns the created record.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_004",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se consultan todos los usuarios con Prisma?",
+      "question_en": "How do you query all users with Prisma?",
+      "options_es": [
+        "prisma.user.getAll()",
+        "prisma.user.all()",
+        "prisma.user.findMany()",
+        "prisma.user.list()"
+      ],
+      "options_en": [
+        "prisma.user.getAll()",
+        "prisma.user.all()",
+        "prisma.user.findMany()",
+        "prisma.user.list()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "findMany() es el método de Prisma para recuperar múltiples registros. Retorna un array de objetos.",
+      "explanation_en": "findMany() is Prisma's method to retrieve multiple records. It returns an array of objects.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_005",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se actualiza un registro en Prisma?",
+      "question_en": "How do you update a record in Prisma?",
+      "options_es": [
+        "prisma.user.update({ where: { id: 1 }, data: { name: 'Jane' } })",
+        "prisma.user.patch({ id: 1, name: 'Jane' })",
+        "prisma.user.modify({ id: 1, name: 'Jane' }) en entornos de producción",
+        "prisma.user(1).update({ name: 'Jane' })"
+      ],
+      "options_en": [
+        "prisma.user.update({ where: { id: 1 }, data: { name: 'Jane' } })",
+        "prisma.user.patch({ id: 1, name: 'Jane' })",
+        "prisma.user.modify({ id: 1, name: 'Jane' }) as a recommended practice",
+        "prisma.user(1).update({ name: 'Jane' })"
+      ],
+      "correct_index": 0,
+      "explanation_es": "update() requiere dos parámetros: where (condición) y data (valores a actualizar). Retorna el registro actualizado.",
+      "explanation_en": "update() requires two parameters: where (condition) and data (values to update). It returns the updated record.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_006",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se elimina un registro en Prisma?",
+      "question_en": "How do you delete a record in Prisma?",
+      "options_es": [
+        "prisma.user.delete({ where: { id: 1 } })",
+        "prisma.user.remove({ id: 1 }) según la documentación oficial",
+        "prisma.user.destroy({ id: 1 })",
+        "prisma.user.erase({ id: 1 })"
+      ],
+      "options_en": [
+        "prisma.user.delete({ where: { id: 1 } })",
+        "prisma.user.remove({ id: 1 }) within this paradigm",
+        "prisma.user.destroy({ id: 1 })",
+        "prisma.user.erase({ id: 1 })"
+      ],
+      "correct_index": 0,
+      "explanation_es": "delete() en Prisma recibe un objeto where que especifica qué registro eliminar. Retorna el registro eliminado.",
+      "explanation_en": "delete() in Prisma takes a where object specifying which record to delete. It returns the deleted record.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_007",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se consulta un usuario por ID con Prisma?",
+      "question_en": "How do you query a user by ID with Prisma?",
+      "options_es": [
+        "prisma.user.fetch({ id: 1 }) dentro de este paradigma",
+        "prisma.user.findById(1)",
+        "prisma.user.get(1) como regla general",
+        "prisma.user.findUnique({ where: { id: 1 } })"
+      ],
+      "options_en": [
+        "prisma.user.fetch({ id: 1 }) as a recommended practice",
+        "prisma.user.findById(1)",
+        "prisma.user.get(1) by convention",
+        "prisma.user.findUnique({ where: { id: 1 } })"
+      ],
+      "correct_index": 3,
+      "explanation_es": "findUnique() se usa para campos únicos (como ID). Retorna un único registro o null si no existe.",
+      "explanation_en": "findUnique() is used for unique fields (like ID). It returns a single record or null if it doesn't exist.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_008",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es npx prisma generate?",
+      "question_en": "What does npx prisma generate do?",
+      "options_es": [
+        "Ejecuta todas las migraciones pendientes",
+        "Crea un nuevo archivo schema.prisma",
+        "Genera SQL raw desde el schema",
+        "Genera el cliente Prisma desde el schema.prisma"
+      ],
+      "options_en": [
+        "Executes all pending migrations",
+        "Creates a new schema.prisma file",
+        "Generates raw SQL from the schema",
+        "Generates the Prisma client from schema.prisma"
+      ],
+      "correct_index": 3,
+      "explanation_es": "generate regenera el cliente Prisma (PrismaClient). Se ejecuta automáticamente después de cambios en el schema.",
+      "explanation_en": "generate regenerates the Prisma client (PrismaClient). It runs automatically after schema changes.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_009",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se cargan relaciones en Prisma?",
+      "question_en": "How do you load relationships in Prisma?",
+      "options_es": [
+        "Con el parámetro include en findMany() o findUnique()",
+        "Automáticamente cuando se accede a la propiedad de manera estándar",
+        "Usando un método separate()",
+        "Con una consulta SQL manual"
+      ],
+      "options_en": [
+        "With the include parameter in findMany() or findUnique()",
+        "Automatically when accessing the property within this paradigm",
+        "Using a separate() method",
+        "With a manual SQL query typically"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El parámetro include permite cargar relaciones. Por ejemplo: { include: { posts: true } } carga los posts del usuario.",
+      "explanation_en": "The include parameter allows loading relationships. For example: { include: { posts: true } } loads the user's posts.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_010",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una transacción en Prisma?",
+      "question_en": "What is a transaction in Prisma?",
+      "options_es": [
+        "Una conexión persistente a la BD",
+        "Una consulta de lectura únicamente",
+        "Un respaldo automático de la base de datos en este contexto",
+        "Un conjunto de operaciones que se ejecutan de forma atómica"
+      ],
+      "options_en": [
+        "A persistent database connection",
+        "A read-only query",
+        "An automatic database backup in common practice",
+        "A set of operations that execute atomically"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las transacciones garantizan que múltiples operaciones se completan todas o ninguna. Se usan con $transaction en Prisma.",
+      "explanation_en": "Transactions ensure multiple operations complete all-or-nothing. They're used with $transaction in Prisma.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_011",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define un campo DateTime con valor por defecto en Prisma?",
+      "question_en": "How do you define a DateTime field with a default value in Prisma?",
+      "options_es": [
+        "createdAt DateTime @now",
+        "createdAt DateTime @default(now())",
+        "createdAt DateTime default(now())",
+        "createdAt DateTime @defaultValue(now())"
+      ],
+      "options_en": [
+        "createdAt DateTime @now",
+        "createdAt DateTime @default(now())",
+        "createdAt DateTime default(now())",
+        "createdAt DateTime @defaultValue(now())"
+      ],
+      "correct_index": 1,
+      "explanation_es": "@default(now()) asigna la fecha y hora actual automáticamente cuando se crea un registro.",
+      "explanation_en": "@default(now()) automatically assigns the current date and time when a record is created.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_012",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define un campo requerido en Prisma?",
+      "question_en": "How do you define a required field in Prisma?",
+      "options_es": [
+        "Con @required en el caso más común en condiciones normales",
+        "Con !String como regla general",
+        "Sin el signo ? (por ejemplo: name String)",
+        "Con required: true"
+      ],
+      "options_en": [
+        "With @required in the most common case within this paradigm",
+        "With !String in this context",
+        "Without the ? sign (for example: name String)",
+        "With required: true"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En Prisma, un campo es requerido por defecto. El signo ? indica un campo opcional.",
+      "explanation_en": "In Prisma, a field is required by default. The ? sign indicates an optional field.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_013",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es Sequelize?",
+      "question_en": "What is Sequelize?",
+      "options_es": [
+        "Un lenguaje de consultas SQL en el caso más común como práctica recomendada",
+        "Un framework web como regla general",
+        "Una herramienta de migración de bases de datos",
+        "Un ORM para Node.js que soporta múltiples bases de datos SQL"
+      ],
+      "options_en": [
+        "A SQL query language according to official documentation in production environments",
+        "A web framework as a general rule",
+        "A database migration tool",
+        "An ORM for Node.js that supports multiple SQL databases"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Sequelize es un ORM que permite trabajar con SQL a través de objetos JavaScript, soportando PostgreSQL, MySQL, SQLite y otros.",
+      "explanation_en": "Sequelize is an ORM that allows working with SQL through JavaScript objects, supporting PostgreSQL, MySQL, SQLite, and others.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_014",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se define un modelo en Sequelize?",
+      "question_en": "How do you define a model in Sequelize?",
+      "options_es": [
+        "Con un archivo JSON de configuración",
+        "Con sequelize.define() o extendiendo Model",
+        "Con una clase decorator de manera estándar",
+        "Automáticamente desde el esquema de la BD"
+      ],
+      "options_en": [
+        "With a JSON configuration file",
+        "With sequelize.define() or extending Model",
+        "With a class decorator under normal conditions",
+        "Automatically from the database schema"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sequelize permite definir modelos usando sequelize.define() o extendiendo la clase Model con propiedades y tipos.",
+      "explanation_en": "Sequelize allows defining models using sequelize.define() or extending the Model class with properties and types.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280402_015",
+      "skill_id": "sk280402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se consultan registros con Sequelize?",
+      "question_en": "How do you query records with Sequelize?",
+      "options_es": [
+        "Con findAll(), findOne() o findByPk()",
+        "Con select().from()",
+        "Con query() en entornos reales en el caso más común",
+        "Con fetch()"
+      ],
+      "options_en": [
+        "With findAll(), findOne(), or findByPk()",
+        "With select().from()",
+        "With query() according to spec as a general rule",
+        "With fetch()"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sequelize proporciona findAll() para múltiples registros, findOne() para un registro, y findByPk() para buscar por clave primaria.",
+      "explanation_en": "Sequelize provides findAll() for multiple records, findOne() for a single record, and findByPk() to find by primary key.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_001",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de Alembic en SQLAlchemy?",
+      "question_en": "What is the purpose of Alembic in SQLAlchemy?",
+      "options_es": [
+        "Generar modelos desde la BD",
+        "Optimizar consultas SQL en entornos reales",
+        "Crear copias de seguridad automáticas",
+        "Gestionar versionado y migraciones de esquema de base de datos"
+      ],
+      "options_en": [
+        "Generate models from the database",
+        "Optimize SQL queries in real environments",
+        "Create automatic backups",
+        "Manage database schema versioning and migrations"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Alembic es una herramienta de migraciones que permite versionar cambios en el esquema y aplicarlos de forma controlada (up/down).",
+      "explanation_en": "Alembic is a migration tool that allows versioning schema changes and applying them in a controlled manner (up/down).",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_002",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se crea una nueva migración en Alembic?",
+      "question_en": "How do you create a new migration in Alembic?",
+      "options_es": [
+        "Con el comando alembic revision --autogenerate -m 'mensaje'",
+        "Creando un archivo Python manualmente",
+        "Con alembic init habitualmente",
+        "Con SQL raw directamente"
+      ],
+      "options_en": [
+        "With the command alembic revision --autogenerate -m 'message'",
+        "By manually creating a Python file",
+        "With alembic init typically",
+        "With raw SQL directly"
+      ],
+      "correct_index": 0,
+      "explanation_es": "--autogenerate compara el esquema actual con los modelos SQLAlchemy y genera automáticamente los cambios.",
+      "explanation_en": "--autogenerate compares the current schema with SQLAlchemy models and automatically generates the changes.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_003",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué archivo contiene la información de conexión en Alembic?",
+      "question_en": "What file contains connection information in Alembic?",
+      "options_es": [
+        "config.py",
+        "migration.json",
+        "alembic.ini",
+        "database.yaml"
+      ],
+      "options_en": [
+        "config.py",
+        "migration.json",
+        "alembic.ini",
+        "database.yaml"
+      ],
+      "correct_index": 2,
+      "explanation_es": "alembic.ini contiene la configuración de Alembic, incluyendo la cadena de conexión a la base de datos (sqlalchemy.url).",
+      "explanation_en": "alembic.ini contains Alembic configuration, including the database connection string (sqlalchemy.url).",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_004",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se aplican las migraciones en Alembic?",
+      "question_en": "How do you apply migrations in Alembic?",
+      "options_es": [
+        "Con alembic upgrade head",
+        "Con alembic run de forma general",
+        "Con alembic execute",
+        "Con alembic apply"
+      ],
+      "options_en": [
+        "With alembic upgrade head",
+        "With alembic run in common practice",
+        "With alembic execute",
+        "With alembic apply"
+      ],
+      "correct_index": 0,
+      "explanation_es": "alembic upgrade head aplica todas las migraciones pendientes hasta la más reciente. upgrade <revision> va a una versión específica.",
+      "explanation_en": "alembic upgrade head applies all pending migrations up to the latest. upgrade <revision> goes to a specific version.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_005",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se revierten las migraciones en Alembic?",
+      "question_en": "How do you revert migrations in Alembic?",
+      "options_es": [
+        "Con alembic revert en la práctica habitual según la documentación oficial",
+        "Con alembic downgrade -1 (una versión) o downgrade <revision>",
+        "Con alembic undo por convención",
+        "Con alembic rollback"
+      ],
+      "options_en": [
+        "With alembic revert as a general rule as a general guideline",
+        "With alembic downgrade -1 (one version) or downgrade <revision>",
+        "With alembic undo in real environments",
+        "With alembic rollback"
+      ],
+      "correct_index": 1,
+      "explanation_es": "downgrade revierte migraciones. -1 revierte una versión, o se puede especificar una revisión concreta.",
+      "explanation_en": "downgrade reverts migrations. -1 reverts one version, or you can specify a specific revision.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_006",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una migración manual en Alembic?",
+      "question_en": "What is a manual migration in Alembic?",
+      "options_es": [
+        "Una migración donde se escribe el SQL o los cambios de esquema a mano",
+        "Una migración generada automáticamente",
+        "Una migración ejecutada sin registrar",
+        "Una migración que no se puede deshacer"
+      ],
+      "options_en": [
+        "A migration where SQL or schema changes are written manually",
+        "An automatically generated migration",
+        "A migration executed without recording",
+        "A migration that cannot be undone"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las migraciones manuales se crean sin --autogenerate y se escriben a mano en las funciones upgrade() y downgrade().",
+      "explanation_en": "Manual migrations are created without --autogenerate and written by hand in upgrade() and downgrade() functions.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_007",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué registra Alembic en la base de datos?",
+      "question_en": "What does Alembic record in the database?",
+      "options_es": [
+        "Logs de errores de migraciones",
+        "El historial de migraciones aplicadas en la tabla alembic_version",
+        "El SQL de cada migración habitualmente",
+        "Todos los cambios realizados en cada tabla"
+      ],
+      "options_en": [
+        "Migration error logs in practice",
+        "The history of applied migrations in the alembic_version table",
+        "The SQL of each migration",
+        "All changes made to each table"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La tabla alembic_version almacena los IDs de revisión de las migraciones aplicadas para rastrear el estado actual.",
+      "explanation_en": "The alembic_version table stores the revision IDs of applied migrations to track the current state.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_008",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la estructura de una revisión de Alembic?",
+      "question_en": "What is the structure of an Alembic revision?",
+      "options_es": [
+        "Es un archivo JSON de configuración para la mayoría de proyectos dentro de este paradigma",
+        "Solo contiene SQL raw en la práctica",
+        "Tiene solo una función apply()",
+        "Tiene un down_revision, revision_id, funciones upgrade() y downgrade()"
+      ],
+      "options_en": [
+        "Is a JSON configuration file under normal conditions for most projects",
+        "Only contains raw SQL by convention",
+        "Has only an apply() function",
+        "Has down_revision, revision_id, upgrade() and downgrade() functions"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Cada archivo de revisión tiene un ID de revisión, referencia a la revisión anterior (down_revision), y dos funciones para aplicar y revertir cambios.",
+      "explanation_en": "Each revision file has a revision ID, reference to the previous revision (down_revision), and two functions to apply and revert changes.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_009",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una rama (branch) en Alembic?",
+      "question_en": "What is a branch in Alembic?",
+      "options_es": [
+        "Una herramienta para paralelizar migraciones",
+        "Una copia de la base de datos",
+        "Un tipo de base de datos soportada",
+        "Un camino de migraciones independiente que diverge en algún punto"
+      ],
+      "options_en": [
+        "A tool to parallelize migrations",
+        "A copy of the database in practice",
+        "A supported database type",
+        "An independent path of migrations that diverges at some point"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las ramas en Alembic ocurren cuando dos desarrolladores crean migraciones diferentes desde la misma revisión padre.",
+      "explanation_en": "Branches in Alembic occur when two developers create different migrations from the same parent revision.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_010",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se inicia un proyecto Alembic?",
+      "question_en": "How do you initialize an Alembic project?",
+      "options_es": [
+        "Con alembic setup",
+        "Con alembic init <nombre_proyecto>",
+        "Con alembic create",
+        "Manualmente creando los directorios"
+      ],
+      "options_en": [
+        "With alembic setup",
+        "With alembic init <project_name>",
+        "With alembic create",
+        "By manually creating directories"
+      ],
+      "correct_index": 1,
+      "explanation_es": "alembic init crea la estructura de directorios, archivos de configuración y el directorio de versiones.",
+      "explanation_en": "alembic init creates the directory structure, configuration files, and versions directory.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_011",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se visualiza el historial de migraciones en Alembic?",
+      "question_en": "How do you view the migration history in Alembic?",
+      "options_es": [
+        "Leyendo directamente el archivo alembic.ini",
+        "Con alembic log",
+        "Con alembic history",
+        "Con alembic status"
+      ],
+      "options_en": [
+        "By reading the alembic.ini file directly",
+        "With alembic log",
+        "With alembic history",
+        "With alembic status"
+      ],
+      "correct_index": 2,
+      "explanation_es": "alembic history muestra todas las revisiones en orden cronológico, mostrando qué ha sido aplicado y qué no.",
+      "explanation_en": "alembic history shows all revisions in chronological order, showing what has been applied and what hasn't.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_012",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el versionado de esquema?",
+      "question_en": "What is schema versioning?",
+      "options_es": [
+        "Generar documentación del esquema por convención",
+        "Copiar el esquema a múltiples bases de datos según la documentación oficial según la documentación oficial",
+        "Rastrear y controlar cambios en la estructura de la base de datos a lo largo del tiempo",
+        "Comprimir los archivos de esquema"
+      ],
+      "options_en": [
+        "Generating schema documentation",
+        "Copying the schema to multiple databases as a recommended practice within this paradigm",
+        "Tracking and controlling changes to database structure over time",
+        "Compressing schema files in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El versionado de esquema permite que múltiples desarrolladores colaboren, revertir cambios y mantener la BD sincronizada con el código.",
+      "explanation_en": "Schema versioning allows multiple developers to collaborate, revert changes, and keep the database synchronized with the code.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_013",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se nombran los archivos de migración en Alembic?",
+      "question_en": "How are migration files named in Alembic?",
+      "options_es": [
+        "Con UUID aleatorio habitualmente",
+        "Secuencialmente: 001, 002, 003 según la documentación oficial",
+        "Con una versión (timestamp o secuencial) y un nombre descriptivo",
+        "Con la fecha del día"
+      ],
+      "options_en": [
+        "With random UUID in real environments",
+        "Sequentially: 001, 002, 003 according to official documentation",
+        "With a version (timestamp or sequential) and a descriptive name",
+        "With the date of the day"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Alembic genera archivos como 20230615_123456_add_user_table.py con timestamp o secuencia, seguido de un mensaje descriptivo.",
+      "explanation_en": "Alembic generates files like 20230615_123456_add_user_table.py with timestamp or sequence, followed by a descriptive message.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_014",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar migraciones autogeneradas en Alembic?",
+      "question_en": "What is the advantage of using autogenerated migrations in Alembic?",
+      "options_es": [
+        "Elimina datos innecesarios por convención",
+        "Reduce el tiempo de ejecución de consultas",
+        "Optimiza automáticamente índices",
+        "Detecta automáticamente cambios en los modelos SQLAlchemy y genera SQL correspondiente"
+      ],
+      "options_en": [
+        "Removes unnecessary data by convention",
+        "Reduces query execution time",
+        "Automatically optimizes indexes",
+        "Automatically detects changes in SQLAlchemy models and generates corresponding SQL"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las migraciones autogeneradas comparan los modelos actuales con el esquema de BD y generan los cambios SQL automáticamente.",
+      "explanation_en": "Autogenerated migrations compare current models with the database schema and automatically generate SQL changes.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280403_015",
+      "skill_id": "sk280403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué se debe hacer después de escribir una migración manual?",
+      "question_en": "What should you do after writing a manual migration?",
+      "options_es": [
+        "Aplicarla inmediatamente a producción",
+        "Ejecutar todas las migraciones juntas dentro de este paradigma de manera estándar",
+        "Guardarla sin probarla según la especificación",
+        "Testearla en desarrollo con upgrade y downgrade antes de aplicar a producción"
+      ],
+      "options_en": [
+        "Apply it immediately to production",
+        "Execute all migrations together as a general rule as a standard approach",
+        "Save it without testing in real environments",
+        "Test it in development with upgrade and downgrade before applying to production"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Siempre probar migraciones en desarrollo. Verificar que upgrade() aplicar los cambios correctamente y downgrade() los revierte.",
+      "explanation_en": "Always test migrations in development. Verify that upgrade() applies changes correctly and downgrade() reverts them.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_001",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un pool de conexiones en bases de datos?",
+      "question_en": "What is a connection pool in databases?",
+      "options_es": [
+        "Una sola conexión compartida entre todos los usuarios",
+        "Una copia de seguridad de conexiones",
+        "Un conjunto de conexiones reutilizables mantenidas abiertas para mejor rendimiento",
+        "Un registro de todas las conexiones históricas"
+      ],
+      "options_en": [
+        "A single connection shared among all users",
+        "A backup of connections in this context",
+        "A set of reusable connections kept open for better performance",
+        "A log of all historical connections"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un pool mantiene conexiones preparadas y reutilizables, evitando el costo de crear nuevas conexiones para cada operación.",
+      "explanation_en": "A pool maintains prepared and reusable connections, avoiding the cost of creating new connections for each operation.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_002",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es pool_size en SQLAlchemy?",
+      "question_en": "What is pool_size in SQLAlchemy?",
+      "options_es": [
+        "El número de conexiones mantenidas en el pool por defecto",
+        "El tamaño máximo de datos que puede pasar por la conexión",
+        "El tiempo máximo de vida de una conexión",
+        "La cantidad de memoria usada por el pool"
+      ],
+      "options_en": [
+        "The number of connections maintained in the pool by default",
+        "The maximum size of data that can pass through the connection",
+        "The maximum lifetime of a connection",
+        "The amount of memory used by the pool"
+      ],
+      "correct_index": 0,
+      "explanation_es": "pool_size especifica cuántas conexiones se crean y mantienen activas. El valor por defecto es generalmente 5.",
+      "explanation_en": "pool_size specifies how many connections are created and kept active. The default value is typically 5.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_003",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es max_overflow en SQLAlchemy?",
+      "question_en": "What is max_overflow in SQLAlchemy?",
+      "options_es": [
+        "El tiempo máximo de espera para una conexión",
+        "La cantidad máxima de datos en una transacción",
+        "Conexiones adicionales que se crean cuando el pool se agota",
+        "El límite de memoria del pool"
+      ],
+      "options_en": [
+        "The maximum wait time for a connection",
+        "The maximum amount of data in a transaction",
+        "Additional connections created when the pool is exhausted",
+        "The memory limit of the pool"
+      ],
+      "correct_index": 2,
+      "explanation_es": "max_overflow permite crear conexiones temporales extra cuando todas las del pool están en uso. Por defecto es 10.",
+      "explanation_en": "max_overflow allows creating temporary extra connections when all pool connections are in use. Default is 10.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_004",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el problema N+1 en queries?",
+      "question_en": "What is the N+1 query problem?",
+      "options_es": [
+        "1 consulta principal + N consultas adicionales para cargar relaciones de cada fila",
+        "Ejecutar N consultas en paralelo",
+        "Tener N conexiones abiertas simultáneamente",
+        "Usar N índices en una tabla según la especificación de forma general como regla general"
+      ],
+      "options_en": [
+        "1 main query + N additional queries to load relationships for each row",
+        "Execute N queries in parallel",
+        "Have N open connections simultaneously",
+        "Use N indexes on a table typically for most projects under normal conditions"
+      ],
+      "correct_index": 0,
+      "explanation_es": "N+1 ocurre con lazy loading: 1 consulta obtiene N registros, luego se hacen N consultas más para cada relación, totalizado N+1.",
+      "explanation_en": "N+1 occurs with lazy loading: 1 query fetches N records, then N more queries for each relationship, totaling N+1.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_005",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se evita el problema N+1?",
+      "question_en": "How do you avoid the N+1 problem?",
+      "options_es": [
+        "Usando más conexiones de forma estándar",
+        "Aumentando el pool_size",
+        "Usando eager loading (joinedload, selectinload) o consultas específicas",
+        "Reduciendo el número de registros en el caso más común para la mayoría de proyectos"
+      ],
+      "options_en": [
+        "Using more connections",
+        "Increasing pool_size in real environments",
+        "Using eager loading (joinedload, selectinload) or specific queries",
+        "Reducing the number of records as a general rule under normal conditions"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Cargar relaciones junto con los datos principales en una sola consulta usando eager loading strategies.",
+      "explanation_en": "Load relationships along with main data in a single query using eager loading strategies.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_006",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es lazy loading en relación al rendimiento?",
+      "question_en": "What is lazy loading in relation to performance?",
+      "options_es": [
+        "Cargar datos relacionados solo cuando se necesitan, mejorando inicial pero causando N+1",
+        "Cargar todos los datos de una vez",
+        "No cargar datos relacionados de forma estándar en la práctica habitual según la documentación oficial",
+        "Almacenar datos en caché permanente"
+      ],
+      "options_en": [
+        "Load related data only when needed, improving initial performance but causing N+1",
+        "Load all data at once in real environments",
+        "Don't load related data in the most common case as a general rule",
+        "Store data in permanent cache"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Lazy loading es más rápido inicialmente pero puede causar problemas N+1 si se accede a relaciones dentro de bucles.",
+      "explanation_en": "Lazy loading is faster initially but can cause N+1 problems if accessing relationships inside loops.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_007",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es el timeout en una conexión de base de datos?",
+      "question_en": "What is timeout in a database connection?",
+      "options_es": [
+        "El tiempo para ejecutar una consulta",
+        "El tiempo total que una conexión puede estar abierta para la mayoría de proyectos",
+        "El tiempo entre intentos de reconexión",
+        "El máximo tiempo que una operación puede esperar antes de fallar"
+      ],
+      "options_en": [
+        "The time to execute a query",
+        "The total time a connection can be open as a general guideline",
+        "The time between reconnection attempts",
+        "The maximum time an operation can wait before failing"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un timeout previene que las operaciones se queden esperando indefinidamente. Si expira, la operación falla.",
+      "explanation_en": "A timeout prevents operations from waiting indefinitely. If it expires, the operation fails.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_008",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se configura pool_size y max_overflow en SQLAlchemy?",
+      "question_en": "How do you configure pool_size and max_overflow in SQLAlchemy?",
+      "options_es": [
+        "En el archivo alembic.ini",
+        "En el archivo de configuración de la BD",
+        "En create_engine(url, pool_size=5, max_overflow=10)",
+        "En una directiva del modelo"
+      ],
+      "options_en": [
+        "In the alembic.ini file",
+        "In the database configuration file",
+        "In create_engine(url, pool_size=5, max_overflow=10)",
+        "In a model directive in this context"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los parámetros se pasan directamente a create_engine() al crear la Engine de SQLAlchemy.",
+      "explanation_en": "The parameters are passed directly to create_engine() when creating the SQLAlchemy Engine.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_009",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es connection pooling beneficioso para?",
+      "question_en": "What is connection pooling beneficial for?",
+      "options_es": [
+        "Almacenar datos en caché según la especificación",
+        "Ejecutar consultas en paralelo",
+        "Reducir latencia reutilizando conexiones y mejorar rendimiento general",
+        "Reducir el tamaño de la base de datos"
+      ],
+      "options_en": [
+        "Store data in cache by convention",
+        "Execute queries in parallel",
+        "Reduce latency by reusing connections and improve overall performance",
+        "Reduce database size"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Reutilizar conexiones evita el costo de crear nuevas conexiones para cada operación, mejorando rendimiento significativamente.",
+      "explanation_en": "Reusing connections avoids the cost of creating new connections for each operation, significantly improving performance.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_010",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es joinedload en SQLAlchemy?",
+      "question_en": "What is joinedload in SQLAlchemy?",
+      "options_es": [
+        "Una forma de hacer lazy loading según la especificación",
+        "Una estrategia de eager loading que usa SQL JOIN para cargar datos relacionados",
+        "Una función para eliminar datos relacionados en entornos de producción como práctica recomendada",
+        "Un tipo de índice de base de datos"
+      ],
+      "options_en": [
+        "A way of doing lazy loading",
+        "An eager loading strategy that uses SQL JOIN to load related data",
+        "A function to delete related data as a recommended practice in production environments",
+        "A type of database index by default"
+      ],
+      "correct_index": 1,
+      "explanation_es": "joinedload() genera un SQL JOIN que trae datos principales y relacionados en una sola consulta.",
+      "explanation_en": "joinedload() generates a SQL JOIN that fetches main and related data in a single query.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_011",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es selectinload en SQLAlchemy?",
+      "question_en": "What is selectinload in SQLAlchemy?",
+      "options_es": [
+        "Una forma de hacer lazy loading de manera estándar en el caso más común de forma general",
+        "Un tipo de índice de base de datos",
+        "Una estrategia que ejecuta una consulta SELECT adicional para cargar datos relacionados",
+        "Una función para eliminar datos en entornos reales"
+      ],
+      "options_en": [
+        "A way of doing lazy loading as a general rule for most projects as a general guideline",
+        "A type of database index as a general rule",
+        "A strategy that executes an additional SELECT query to load related data",
+        "A function to delete data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "selectinload() genera 2 consultas: una para los datos principales y otra para los relacionados, mejor que N+1 pero no tan óptimo como join.",
+      "explanation_en": "selectinload() generates 2 queries: one for main data and one for related data, better than N+1 but not as optimal as join.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_012",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se implementa selectinload en una consulta SQLAlchemy?",
+      "question_en": "How do you implement selectinload in a SQLAlchemy query?",
+      "options_es": [
+        "session.query(User).options(selectinload(User.posts)).all()",
+        "session.query(User).selectinload(User.posts)",
+        "session.query(User).load(User.posts)",
+        "session.query(User).join(User.posts)"
+      ],
+      "options_en": [
+        "session.query(User).options(selectinload(User.posts)).all()",
+        "session.query(User).selectinload(User.posts)",
+        "session.query(User).load(User.posts)",
+        "session.query(User).join(User.posts)"
+      ],
+      "correct_index": 0,
+      "explanation_es": "options() acepta estrategias de carga como selectinload(). Se importa desde sqlalchemy.orm.",
+      "explanation_en": "options() accepts loading strategies like selectinload(). It's imported from sqlalchemy.orm.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_013",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el impacto de pool_size demasiado pequeño?",
+      "question_en": "What is the impact of pool_size being too small?",
+      "options_es": [
+        "Acelera las consultas",
+        "Las conexiones pueden no estar disponibles causando esperas y degradación del rendimiento",
+        "Reduce el uso de memoria",
+        "Mejora el rendimiento habitualmente"
+      ],
+      "options_en": [
+        "Accelerates queries by convention",
+        "Connections may not be available causing waits and performance degradation",
+        "Reduces memory usage",
+        "Improves performance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un pool_size muy pequeño causa contención: múltiples solicitudes compiten por pocas conexiones disponibles.",
+      "explanation_en": "A small pool_size causes contention: multiple requests compete for few available connections.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_014",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el impacto de pool_size demasiado grande?",
+      "question_en": "What is the impact of pool_size being too large?",
+      "options_es": [
+        "No tiene impacto de forma estándar en la práctica habitual en la práctica habitual",
+        "Mejora el rendimiento exponencialmente",
+        "Consume más recursos del servidor de base de datos sin beneficio proporcional",
+        "Acelera las consultas significativamente"
+      ],
+      "options_en": [
+        "Has no impact typically as a general guideline according to official documentation",
+        "Improves performance exponentially",
+        "Consumes more database server resources without proportional benefit",
+        "Significantly accelerates queries"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un pool_size muy grande desperdicia recursos del servidor sin beneficio significativo. Hay un punto óptimo.",
+      "explanation_en": "A large pool_size wastes database server resources without significant benefit. There's an optimal point.",
+      "source": "https://fastapi.tiangolo.com"
+    },
+    {
+      "id": "q280404_015",
+      "skill_id": "sk280404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor estrategia de carga para evitar N+1 y mantener flexibilidad?",
+      "question_en": "What is the best loading strategy to avoid N+1 and maintain flexibility?",
+      "options_es": [
+        "Usar lazy loading para todo para la mayoría de proyectos en entornos de producción",
+        "Usar eager loading para todo",
+        "Usar lazy loading por defecto y eager loading solo cuando sea necesario",
+        "No cargar ninguna relación por convención"
+      ],
+      "options_en": [
+        "Use lazy loading for everything in this context as a general rule",
+        "Use eager loading for everything",
+        "Use lazy loading by default and eager loading only when necessary",
+        "Load no relationships typically"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Lazy loading es flexible pero puede causar N+1. Usar eager loading selectivamente donde se acceda a relaciones en bucles.",
+      "explanation_en": "Lazy loading is flexible but can cause N+1. Use eager loading selectively where accessing relationships in loops.",
+      "source": "https://fastapi.tiangolo.com"
+    }
+  ]
+}

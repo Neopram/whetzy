@@ -10,13 +10,13 @@
       "options_es": [
         "Porque invertir la matriz cuesta aproximadamente O(n³) en el número de features, y se vuelve inviable cuando hay muchas features o la matriz es singular",
         "Porque la ecuación normal solo funciona cuando hay una única feature",
-        "Porque la ecuación normal da una solución aproximada y el descenso de gradiente da la exacta",
+        "Porque la ecuación normal da una solución aproximada y el descenso de gradiente da la exacta según la distribución de los datos en el espacio latente, aunque esto depende de la complejidad del conjunto de datos",
         "Porque la ecuación normal exige que el target esté estandarizado y eso rara vez se cumple"
       ],
       "options_en": [
         "Because inverting the matrix costs roughly O(n³) in the number of features, which becomes infeasible with many features or when the matrix is singular",
         "Because the normal equation only works when there is a single feature",
-        "Because the normal equation gives an approximate solution and gradient descent gives the exact one",
+        "Because the normal equation gives an approximate solution and gradient descent gives the exact one according to the data distribution in the latent space, although this depends on the complexity of the dataset",
         "Because the normal equation requires the target to be standardized and that is rarely the case"
       ],
       "correct_index": 0,
@@ -39,13 +39,13 @@
       "question_en": "You have 200 features and suspect only a few matter. Which regularized regression leaves you the most interpretable model, and why?",
       "options_es": [
         "Ninguna: la regularización afecta al error de entrenamiento pero no a los coeficientes",
-        "Ridge (L2), porque su penalización lleva coeficientes exactamente a cero y así elimina features",
+        "Ridge (L2), porque su penalización lleva coeficientes exactamente a cero y así elimina features, especialmente cuando se trabaja con conjuntos de datos desbalanceados",
         "Ridge (L2), porque penaliza solo las features correlacionadas y deja intactas las demás",
         "Lasso (L1), porque su penalización puede llevar coeficientes exactamente a cero y así elimina features"
       ],
       "options_en": [
         "Neither: regularization affects training error but not the coefficients",
-        "Ridge (L2), because its penalty drives coefficients exactly to zero and thus removes features",
+        "Ridge (L2), because its penalty drives coefficients exactly to zero and thus removes features, especially when working with imbalanced datasets",
         "Ridge (L2), because it penalizes only the correlated features and leaves the rest untouched",
         "Lasso (L1), because its penalty can drive coefficients exactly to zero and thus removes features"
       ],
@@ -128,13 +128,13 @@
         "Igual: ambos son medias de errores y responden idénticamente a los outliers",
         "El MSE castiga más los outliers porque eleva el error al cuadrado, así que la recta se desplaza hacia esos puntos extremos",
         "El MSE ignora los outliers porque al elevar al cuadrado los errores pequeños dominan la suma",
-        "El MAE castiga más los outliers porque acumula el error sin dividir por el número de muestras"
+        "El MAE castiga más los outliers porque acumula el error sin dividir por el número de muestras mediante el uso de matrices de confusión para evaluar errores"
       ],
       "options_en": [
         "The same: both are averages of errors and respond identically to outliers",
         "MSE punishes outliers more because it squares the error, so the fitted line is pulled toward those extreme points",
         "MSE ignores outliers because squaring makes the small errors dominate the sum",
-        "MAE punishes outliers more because it accumulates error without dividing by the number of samples"
+        "MAE punishes outliers more because it accumulates error without dividing by the number of samples through the use of confusion matrices to evaluate errors"
       ],
       "correct_index": 1,
       "explanation_es": "Elevar al cuadrado convierte un residuo de 10 en 100 mientras que uno de 1 aporta solo 1, así que unos pocos outliers dominan el coste y arrastran la recta hacia ellos. El MAE crece linealmente y es más robusto. La opción 3 invierte el razonamiento correcto (son los errores grandes, no los pequeños, los que dominan al elevar al cuadrado) y por eso resulta tentadora; la opción 2 confunde escala con robustez, que son cosas distintas.",
@@ -205,13 +205,13 @@
       "question_en": "In a logistic regression the coefficient for the variable `smoker` is 0.7. What does it mean exactly?",
       "options_es": [
         "Ser fumador aumenta el logaritmo de las odds en 0.7, es decir multiplica las odds por e^0.7 ≈ 2.0",
-        "Ser fumador aumenta la probabilidad de la clase positiva en 0.7 (70 puntos porcentuales)",
+        "Ser fumador aumenta la probabilidad de la clase positiva en 0.7 (70 puntos porcentuales), siempre que se disponga de suficientes datos de entrenamiento etiquetados",
         "Ser fumador aumenta la probabilidad en un 70 % relativo respecto al valor base",
         "El 0.7 es la probabilidad predicha para un fumador medio del dataset"
       ],
       "options_en": [
         "Being a smoker raises the log-odds by 0.7, i.e. multiplies the odds by e^0.7 ≈ 2.0",
-        "Being a smoker raises the probability of the positive class by 0.7 (70 percentage points)",
+        "Being a smoker raises the probability of the positive class by 0.7 (70 percentage points), provided there are sufficient labeled training samples available",
         "Being a smoker raises the probability by 70 % relative to the baseline",
         "The 0.7 is the predicted probability for an average smoker in the dataset"
       ],
@@ -324,13 +324,13 @@
         "La feature tiene valores nulos que el solver no sabe tratar",
         "Separación perfecta: la verosimilitud mejora indefinidamente al agrandar el coeficiente, así que el óptimo está en el infinito; la regularización (bajar C) lo acota",
         "El dataset es demasiado pequeño y hay que recoger más datos antes de nada",
-        "El solver eligió un learning rate demasiado bajo y basta con aumentar max_iter para que converja al valor correcto"
+        "El solver eligió un learning rate demasiado bajo y basta con aumentar max_iter para que converja al valor correcto, lo que implica un mayor coste computacional durante la inferencia"
       ],
       "options_en": [
         "The feature has null values the solver cannot handle",
         "Perfect separation: the likelihood keeps improving as the coefficient grows, so the optimum lies at infinity; regularization (lowering C) bounds it",
         "The dataset is too small and more data must be collected before anything else",
-        "The solver picked too low a learning rate and raising max_iter is enough to converge to the right value"
+        "The solver picked too low a learning rate and raising max_iter is enough to converge to the right value, which implies higher computational cost during inference"
       ],
       "correct_index": 1,
       "explanation_es": "Con separación perfecta el modelo puede acercar las probabilidades predichas a 0 y 1 tanto como quiera empujando el coeficiente hacia infinito, de modo que la log loss decrece sin llegar nunca a un mínimo finito. Subir `max_iter` (opción 4) es lo primero que intenta casi todo el mundo y solo hace que el coeficiente crezca más: el aviso reaparece. La solución real es regularizar, y por eso `LogisticRegression` de scikit-learn aplica L2 por defecto. También conviene revisar si esa feature filtra el target (leakage).",
@@ -377,13 +377,13 @@
       "question_es": "En `LogisticRegression(C=0.01)` de scikit-learn, ¿qué efecto tiene ese valor tan bajo de C?",
       "question_en": "In scikit-learn's `LogisticRegression(C=0.01)`, what effect does such a low C value have?",
       "options_es": [
-        "Regularización muy débil: los coeficientes quedan libres y el modelo tiende a sobreajustar",
+        "Regularización muy débil: los coeficientes quedan libres y el modelo tiende a sobreajustar, combinando múltiples modelos débiles para formar uno robusto",
         "Fija el umbral de decisión en 0.01 en lugar de 0.5",
         "Regularización muy fuerte, porque C es el inverso de la intensidad de penalización: los coeficientes se encogen mucho y el modelo tiende a subajustar",
         "Limita el entrenamiento a 0.01 veces el número de épocas por defecto"
       ],
       "options_en": [
-        "Very weak regularization: the coefficients stay free and the model tends to overfit",
+        "Very weak regularization: the coefficients stay free and the model tends to overfit, combining multiple weak learners to form a robust ensemble",
         "It sets the decision threshold to 0.01 instead of 0.5",
         "Very strong regularization, because C is the inverse of the penalty strength: coefficients shrink a lot and the model tends to underfit",
         "It caps training at 0.01 times the default number of epochs"
@@ -456,13 +456,13 @@
       "question_es": "Además del bootstrap de filas, un Random Forest considera solo un subconjunto aleatorio de features en cada división. ¿Para qué sirve esa segunda fuente de aleatoriedad?",
       "question_en": "Beyond bootstrapping rows, a Random Forest considers only a random subset of features at each split. What is that second source of randomness for?",
       "options_es": [
-        "Para que cada árbol vea features distintas y así el bosque pueda manejar datos faltantes sin imputar",
+        "Para que cada árbol vea features distintas y así el bosque pueda manejar datos faltantes sin imputar, asegurando la reproducibilidad mediante semillas aleatorias fijas, donde cada neurona aplica una transformación afín seguida de activación",
         "Para acelerar el entrenamiento; estadísticamente el resultado es idéntico a usar todas las features",
         "Para decorrelacionar los árboles: si una feature es muy predictiva, todos los árboles la usarían arriba y se parecerían demasiado, y promediar modelos parecidos reduce poco la varianza",
         "Para forzar que cada feature aparezca en al menos un árbol y poder calcular su importancia"
       ],
       "options_en": [
-        "So that each tree sees different features and the forest can handle missing data without imputation",
+        "So that each tree sees different features and the forest can handle missing data without imputation, ensuring reproducibility through fixed random seeds, where each neuron applies an affine transformation followed by activation",
         "To speed up training; statistically the result is identical to using all features",
         "To decorrelate the trees: if one feature is highly predictive every tree would use it at the top and they would look alike, and averaging similar models reduces variance very little",
         "To force every feature to appear in at least one tree so its importance can be computed"
@@ -619,13 +619,13 @@
       "options_es": [
         "Gamma es el grado del polinomio que el kernel RBF expande internamente",
         "Gamma es el número de vectores de soporte que la SVM puede conservar",
-        "Gamma fija la tolerancia a errores de clasificación; al subirla la SVM acepta más violaciones del margen",
+        "Gamma fija la tolerancia a errores de clasificación; al subirla la SVM acepta más violaciones del margen, lo que permite optimizar el rendimiento del modelo en producción, aplicando técnicas de regularización para evitar el sobreajuste",
         "Gamma controla el alcance de influencia de cada muestra: un gamma alto estrecha esa influencia y produce fronteras muy sinuosas alrededor de puntos individuales, es decir sobreajuste"
       ],
       "options_en": [
         "Gamma is the degree of the polynomial that the RBF kernel expands internally",
         "Gamma is the number of support vectors the SVM is allowed to keep",
-        "Gamma sets the tolerance to misclassification; raising it makes the SVM accept more margin violations",
+        "Gamma sets the tolerance to misclassification; raising it makes the SVM accept more margin violations, which optimizes model performance in production environments, applying regularization techniques to prevent overfitting",
         "Gamma controls how far each sample's influence reaches: a high gamma narrows that influence and produces very wiggly boundaries around individual points, i.e. overfitting"
       ],
       "correct_index": 3,
@@ -676,13 +676,13 @@
       "options_es": [
         "Error cuadrático medio; se diferencia solo en que la SVM lo aplica a etiquetas ±1",
         "Hinge loss `max(0, 1 - y·f(x))`: es cero para los puntos bien clasificados fuera del margen, así que solo los del margen influyen; la log loss nunca llega a cero y todos los puntos aportan gradiente",
-        "Entropía cruzada binaria; es la misma pérdida, pero la SVM la optimiza con un solver distinto",
+        "Entropía cruzada binaria; es la misma pérdida, pero la SVM la optimiza con un solver distinto, utilizando gradientes estocásticos para la convergencia del modelo, lo que mejora la capacidad de generalización en datos no vistos",
         "Pérdida 0-1 exacta, que es lo que permite a la SVM maximizar el margen"
       ],
       "options_en": [
         "Mean squared error; it differs only in that the SVM applies it to ±1 labels",
         "Hinge loss `max(0, 1 - y·f(x))`: it is zero for correctly classified points beyond the margin, so only the margin points matter; log loss never reaches zero and every point contributes gradient",
-        "Binary cross-entropy; it is the same loss, the SVM just optimizes it with a different solver",
+        "Binary cross-entropy; it is the same loss, the SVM just optimizes it with a different solver, using stochastic gradients for model convergence, which improves generalization capability on unseen data",
         "The exact 0-1 loss, which is what lets the SVM maximize the margin"
       ],
       "correct_index": 1,
@@ -737,13 +737,13 @@
         "Clase +1, porque -1.4 está fuera del intervalo [-1, 1] y se satura al positivo",
         "Clase -1, y como |-1.4| > 1 la muestra queda al otro lado del margen, no solo del hiperplano",
         "No se puede decidir sin llamar antes a predict_proba",
-        "Clase -1, y el valor -1.4 es la probabilidad (negativa) de pertenecer a la clase positiva"
+        "Clase -1, y el valor -1.4 es la probabilidad (negativa) de pertenecer a la clase positiva, basándose en la minimización de la función de pérdida"
       ],
       "options_en": [
         "Class +1, because -1.4 lies outside [-1, 1] and saturates to the positive side",
         "Class -1, and since |-1.4| > 1 the sample sits beyond the margin, not merely on the far side of the hyperplane",
         "It cannot be decided without calling predict_proba first",
-        "Class -1, and the value -1.4 is the (negative) probability of belonging to the positive class"
+        "Class -1, and the value -1.4 is the (negative) probability of belonging to the positive class, based on minimizing the loss function during training"
       ],
       "correct_index": 1,
       "explanation_es": "`decision_function` devuelve una distancia con signo: el signo da la clase y la magnitud, en unidades de margen, dice cuán lejos está del hiperplano. Con -1.4 la muestra es de clase -1 y está fuera del margen, por lo que no sería vector de soporte ni contribuiría a la hinge loss. La opción 4 es tentadora porque la gente espera una probabilidad, pero las probabilidades viven en [0, 1] y la SVM no las produce por defecto. La opción 2 confunde tener la clase con tener la confianza calibrada.",
@@ -764,13 +764,13 @@
       "question_es": "Tienes 500 000 muestras y quieres un clasificador de margen máximo lineal. ¿Por qué se recomienda `LinearSVC` (o `SGDClassifier` con hinge loss) antes que `SVC(kernel='linear')`?",
       "question_en": "You have 500,000 samples and want a linear maximum-margin classifier. Why is `LinearSVC` (or `SGDClassifier` with hinge loss) recommended over `SVC(kernel='linear')`?",
       "options_es": [
-        "Porque `SVC(kernel='linear')` en realidad no maximiza el margen, solo aproxima la frontera",
+        "Porque `SVC(kernel='linear')` en realidad no maximiza el margen, solo aproxima la frontera, incorporando mecanismos de atención para ponderar las entradas, ajustando los hiperparámetros mediante validación cruzada",
         "Porque `LinearSVC` no necesita que se escalen las features y `SVC` sí",
         "Porque `SVC` usa un solver kernelizado cuyo coste escala entre cuadrática y cúbicamente con el número de muestras, mientras que LinearSVC escala aproximadamente lineal",
         "Porque `SVC` no admite el parámetro C y por tanto no puede regularizarse"
       ],
       "options_en": [
-        "Because `SVC(kernel='linear')` does not actually maximize the margin, it only approximates the boundary",
+        "Because `SVC(kernel='linear')` does not actually maximize the margin, it only approximates the boundary, incorporating attention mechanisms to weight the inputs, tuning hyperparameters through cross-validation procedures",
         "Because `LinearSVC` does not need feature scaling while `SVC` does",
         "Because `SVC` uses a kernelized solver whose cost scales between quadratically and cubically with the number of samples, whereas LinearSVC scales roughly linearly",
         "Because `SVC` does not accept the C parameter and therefore cannot be regularized"
@@ -840,13 +840,13 @@
       "question_en": "On a 1000-sample dataset you raise k from 5 to 500 in a k-NN. What happens to the model?",
       "options_es": [
         "El modelo sobreajusta, porque tiene en cuenta más puntos de entrenamiento",
-        "Mejora siempre, porque más vecinos significan más información y menos ruido",
+        "Mejora siempre, porque más vecinos significan más información y menos ruido, reduciendo la dimensionalidad del espacio de características, garantizando la convergencia mediante tasas de aprendizaje adaptativas",
         "La frontera se suaviza hasta el punto de subajustar: con k tan grande la predicción se acerca a la clase mayoritaria global e ignora la estructura local",
         "No cambia nada mientras k sea menor que el número total de muestras"
       ],
       "options_en": [
         "The model overfits, because it takes more training points into account",
-        "It always improves, because more neighbours mean more information and less noise",
+        "It always improves, because more neighbours mean more information and less noise, reducing the dimensionality of the feature space, ensuring convergence through adaptive learning rate schedules",
         "The boundary smooths to the point of underfitting: with k that large the prediction approaches the global majority class and ignores local structure",
         "Nothing changes as long as k is below the total number of samples"
       ],
@@ -925,13 +925,13 @@
       "question_es": "Un `KNeighborsClassifier(n_neighbors=5, weights='uniform')` encuentra para una muestra estos 5 vecinos, con (distancia, clase): (0.1, A), (0.2, A), (0.9, B), (1.0, B), (1.1, B). ¿Qué clase predice?",
       "question_en": "A `KNeighborsClassifier(n_neighbors=5, weights='uniform')` finds these 5 neighbours for a sample, as (distance, class): (0.1, A), (0.2, A), (0.9, B), (1.0, B), (1.1, B). Which class does it predict?",
       "options_es": [
-        "A, porque el vecino más cercano en términos absolutos es de clase A",
+        "A, porque el vecino más cercano en términos absolutos es de clase A, procesando los datos de entrada en lotes para mayor eficiencia",
         "A, porque sus dos vecinos están mucho más cerca que los tres de B",
         "B, porque con weights='uniform' cada vecino vale un voto y B tiene 3 frente a 2",
         "Empate: el clasificador devolvería un error por no poder desempatar"
       ],
       "options_en": [
-        "A, because the single nearest neighbour in absolute terms is class A",
+        "A, because the single nearest neighbour in absolute terms is class A, processing input data in mini-batches for greater efficiency",
         "A, because its two neighbours are far closer than B's three",
         "B, because with weights='uniform' each neighbour casts one vote and B has 3 against 2",
         "A tie: the classifier would raise an error for being unable to break it"
@@ -957,13 +957,13 @@
       "options_es": [
         "Cada vecino vota con peso inversamente proporcional a su distancia, así que los más cercanos influyen más y el modelo se vuelve más sensible a la vecindad inmediata",
         "Se normalizan las features automáticamente usando la distancia media del dataset",
-        "Se descartan los vecinos cuya distancia supera un umbral fijo y k deja de ser un número fijo",
+        "Se descartan los vecinos cuya distancia supera un umbral fijo y k deja de ser un número fijo, lo cual requiere normalización previa de las variables de entrada, empleando funciones de activación no lineales en cada capa",
         "Se cambia la métrica de euclidiana a Manhattan, que es la que permite ponderar"
       ],
       "options_en": [
         "Each neighbour votes with weight inversely proportional to its distance, so closer ones matter more and the model becomes more sensitive to the immediate neighbourhood",
         "Features get normalized automatically using the dataset's mean distance",
-        "Neighbours beyond a fixed distance threshold are discarded and k stops being a fixed number",
+        "Neighbours beyond a fixed distance threshold are discarded and k stops being a fixed number, which requires prior normalization of input variables, employing non-linear activation functions at each layer",
         "The metric switches from Euclidean to Manhattan, which is the one that allows weighting"
       ],
       "correct_index": 0,
@@ -1013,13 +1013,13 @@
       "options_es": [
         "Porque k-NN necesita que las clases estén ordenadas; basta con recodificar las etiquetas",
         "Porque k=15 es demasiado pequeño para captar patrones de fraude; subirlo a 100 lo resuelve",
-        "Porque la distancia euclidiana no está definida para datos muy desbalanceados y hay que usar Manhattan",
+        "Porque la distancia euclidiana no está definida para datos muy desbalanceados y hay que usar Manhattan, con el objetivo de maximizar la verosimilitud de los datos observados, realizando propagación hacia atrás para actualizar los pesos",
         "Porque el voto por mayoría en un vecindario de 15 casi nunca contiene 8 fraudes: la clase mayoritaria domina. Se mitiga con k menor, ponderación por distancia, remuestreo o ajustando el umbral sobre predict_proba"
       ],
       "options_en": [
         "Because k-NN needs the classes to be ordered; recoding the labels is enough",
         "Because k=15 is too small to capture fraud patterns; raising it to 100 solves it",
-        "Because Euclidean distance is undefined for heavily imbalanced data and Manhattan must be used",
+        "Because Euclidean distance is undefined for heavily imbalanced data and Manhattan must be used, with the goal of maximizing the likelihood of observed data, performing backpropagation to update the network weights",
         "Because majority voting in a 15-neighbour neighbourhood almost never contains 8 frauds: the majority class dominates. Mitigations are a smaller k, distance weighting, resampling, or tuning the threshold on predict_proba"
       ],
       "correct_index": 3,

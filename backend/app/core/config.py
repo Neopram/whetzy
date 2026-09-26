@@ -55,8 +55,12 @@ class Settings(BaseSettings):
     # --- Auth / JWT --------------------------------------------------------
     SECRET_KEY: str = "insecure-dev-secret-key-change-me-in-production-0123456789"
     JWT_ALGORITHM: str = "HS256"
+    JWT_PRIVATE_KEY: str = ""
+    JWT_PUBLIC_KEY: str = ""
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
+    COOKIE_DOMAIN: str = ""
+    COOKIE_SECURE: bool = True
 
     # --- Rate limiting -------------------------------------------------------
     # /auth and /tutor get a stricter budget than the rest of the API (see
@@ -203,6 +207,13 @@ class Settings(BaseSettings):
     # razón que CREATOR_PLAN_REQUIRED: exigir un pago imposible cierra el producto.
     CERTIFICATION_PAYWALL: bool = False
     CERTIFICATION_PRICE_USD: float = 39.99
+
+    # --- Open Badges 3.0 / Verifiable Credentials (29.10, ADR-37) -----------
+    # Ed25519 private key in PEM format. Generate with:
+    #   python -c "from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey; from cryptography.hazmat.primitives.serialization import Encoding, PrivateFormat, NoEncryption; k=Ed25519PrivateKey.generate(); print(k.private_bytes(Encoding.PEM, PrivateFormat.PKCS8, NoEncryption()).decode())"
+    # Keep in env, never in the repo.
+    OB_SIGNING_PRIVATE_KEY: str = ""
+    OB_SIGNING_PUBLIC_KEY: str = ""  # auto-derived from private if empty
 
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"

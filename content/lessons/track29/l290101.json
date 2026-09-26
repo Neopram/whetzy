@@ -1,0 +1,12 @@
+{
+  "id": "l290101",
+  "skill_id": "sk290101",
+  "title_es": "Tipos de Pruebas y Pirámide de Testing",
+  "title_en": "Test Types and Test Pyramid",
+  "body_es": "La pirámide de testing es un modelo que organiza las pruebas en tres niveles: unitarias (base), integración (medio) y extremo a extremo (E2E, cúspide). Las pruebas unitarias son rápidas y baratas, probando componentes aislados; las de integración verifican cómo trabajan juntos varios módulos; las E2E validan flujos completos desde la perspectiva del usuario. Una buena estrategia de testing invierte la mayoría del esfuerzo en pruebas unitarias, menos en integración, y pocas E2E para optimizar velocidad y mantenibilidad.",
+  "body_en": "The test pyramid is a model that organizes tests into three levels: unit (base), integration (middle), and end-to-end (E2E, apex). Unit tests are fast and cheap, testing isolated components; integration tests verify how multiple modules work together; E2E tests validate complete workflows from the user's perspective. A good testing strategy invests most effort in unit tests, less in integration, and few E2E tests to optimize speed and maintainability.",
+  "example_code": "# Unit Test - Tests a single function\ndef add(a, b):\n    return a + b\n\ndef test_add():\n    assert add(2, 3) == 5\n    assert add(-1, 1) == 0\n\n# Integration Test - Tests multiple components together\ndef test_user_registration():\n    user = create_user('john@example.com')\n    db.save(user)\n    retrieved = db.get_by_email('john@example.com')\n    assert retrieved.email == 'john@example.com'",
+  "example_output": "test_add PASSED\ntest_user_registration PASSED\n2 passed in 0.15s",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 1
+}

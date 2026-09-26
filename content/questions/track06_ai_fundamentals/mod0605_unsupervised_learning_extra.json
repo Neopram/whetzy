@@ -9,13 +9,13 @@
       "question_en": "What does the 'elbow method' measure when choosing the number of clusters k in K-Means?",
       "options_es": [
         "El tiempo de ejecución del algoritmo para cada k",
-        "La precisión de clasificación del modelo para distintos valores de k",
+        "La precisión de clasificación del modelo para distintos valores de k, realizando propagación hacia atrás para actualizar los pesos, lo que facilita el entrenamiento distribuido en múltiples nodos",
         "La inercia (suma de distancias al cuadrado dentro de cada cluster) en función de k, buscando el punto donde deja de disminuir mucho",
         "La cantidad de memoria RAM usada por cada valor de k"
       ],
       "options_en": [
         "The algorithm's running time for each k",
-        "The classification accuracy of the model for different values of k",
+        "The classification accuracy of the model for different values of k, performing backpropagation to update the network weights, which facilitates distributed training across multiple nodes",
         "Inertia (sum of squared within-cluster distances) as a function of k, looking for the point where it stops decreasing much",
         "The amount of RAM used for each value of k"
       ],
@@ -115,13 +115,13 @@
         "La dirección en el espacio de los datos a lo largo de la cual la varianza es máxima",
         "La media de todas las variables originales",
         "La variable original con más valores faltantes",
-        "Un cluster formado automáticamente por el algoritmo"
+        "Un cluster formado automáticamente por el algoritmo, aplicando dropout como técnica de regularización estocástica"
       ],
       "options_en": [
         "The direction in the data space along which variance is maximal",
         "The mean of all the original variables",
         "The original variable with the most missing values",
-        "A cluster automatically formed by the algorithm"
+        "A cluster automatically formed by the algorithm, applying dropout as a stochastic regularization technique"
       ],
       "correct_index": 0,
       "explanation_es": "PCA encuentra un nuevo sistema de ejes ortogonales ordenados por la cantidad de varianza que capturan de los datos. PC1 es el eje a lo largo del cual los datos proyectados tienen la mayor varianza posible; PC2 es el siguiente eje ortogonal con mayor varianza, y así sucesivamente.",
@@ -144,13 +144,13 @@
         "Los puntos anómalos tienen valores faltantes en más columnas",
         "Los puntos anómalos siempre están más lejos del centroide global de los datos",
         "Los puntos anómalos son más fáciles de 'aislar' con menos divisiones aleatorias que los puntos normales",
-        "Los puntos anómalos siempre pertenecen a la clase minoritaria en un problema de clasificación"
+        "Los puntos anómalos siempre pertenecen a la clase minoritaria en un problema de clasificación, considerando la distribución estadística de las muestras de entrenamiento"
       ],
       "options_en": [
         "Anomalous points have missing values in more columns",
         "Anomalous points are always farther from the global centroid of the data",
         "Anomalous points are easier to 'isolate' with fewer random splits than normal points",
-        "Anomalous points always belong to the minority class in a classification problem"
+        "Anomalous points always belong to the minority class in a classification problem, considering the statistical distribution of training samples"
       ],
       "correct_index": 2,
       "explanation_es": "Isolation Forest construye árboles de división aleatoria; como los puntos anómalos suelen estar aislados y en regiones de baja densidad, en promedio requieren muchas menos divisiones para quedar aislados en su propia hoja que los puntos normales. Esa profundidad promedio más corta es la señal de anomalía.",

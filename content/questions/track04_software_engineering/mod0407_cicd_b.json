@@ -8,16 +8,16 @@
       "question_es": "En Continuous Delivery, ¿qué es el *deployment pipeline* (canalización de despliegue)?",
       "question_en": "In Continuous Delivery, what is the *deployment pipeline*?",
       "options_es": [
-        "El script de despliegue final que copia los archivos al servidor",
-        "El conjunto de servidores físicos sobre los que corre la aplicación en producción",
+        "El script de despliegue final que copia los archivos al servidor, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
+        "El conjunto de servidores físicos sobre los que corre la aplicación en producción, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad como parte de una estrategia de migración gradual del sistema legado",
         "La manifestación automatizada del proceso que lleva un cambio desde el control de versiones hasta el usuario, dividida en etapas sucesivas que van ganando confianza y por las que un mismo artefacto avanza o es rechazado",
-        "La rama de integración donde se acumulan los cambios hasta la fecha de release"
+        "La rama de integración donde se acumulan los cambios hasta la fecha de release según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias"
       ],
       "options_en": [
-        "The final deployment script that copies files to the server",
-        "The set of physical servers the application runs on in production",
+        "The final deployment script that copies files to the server, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
+        "The set of physical servers the application runs on in production, although some legacy frameworks still allow it for backward compatibility as part of a gradual migration strategy for the legacy system",
         "The automated manifestation of the process that takes a change from version control to the user, split into successive stages of increasing confidence, through which one same artifact either advances or is rejected",
-        "The integration branch where changes accumulate until release day"
+        "The integration branch where changes accumulate until release day according to the framework's official documentation, as long as the necessary preconditions are met"
       ],
       "correct_index": 2,
       "explanation_es": "El pipeline es el modelo central del libro: un camino único y automatizado a producción cuyas etapas se ordenan de más rápidas y baratas a más lentas y costosas, para que los fallos más probables se detecten primero. Confundirlo con el script final de despliegue (tercera opción) es lo más común y deja fuera lo esencial: que el pipeline es también el mecanismo que *rechaza* candidatos y da visibilidad del estado de cada cambio.",
@@ -64,16 +64,16 @@
       "question_es": "¿Por qué Continuous Delivery insiste en que cualquier desarrollador pueda reproducir el build completo en su máquina con un solo comando?",
       "question_en": "Why does Continuous Delivery insist that any developer be able to reproduce the full build on their own machine with a single command?",
       "options_es": [
-        "Porque así se puede prescindir del servidor de CI y ahorrar su coste",
-        "Porque la política de la mayoría de las empresas exige que los tests se ejecuten fuera de la nube",
+        "Porque así se puede prescindir del servidor de CI y ahorrar su coste, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
+        "Porque la política de la mayoría de las empresas exige que los tests se ejecuten fuera de la nube, lo que resulta contraproducente en la mayoría de los escenarios dado que esta aproximación no escala bien con el crecimiento del proyecto",
         "Porque si el build sólo existe como una serie de pasos configurados a mano dentro del servidor de CI, ese proceso no está versionado, no se puede depurar localmente ni reconstruir si se pierde, y la diferencia entre 'en mi máquina funciona' y el pipeline deja de ser investigable",
-        "Porque ejecutar el build localmente es siempre más rápido que en el servidor de CI"
+        "Porque ejecutar el build localmente es siempre más rápido que en el servidor de CI, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo"
       ],
       "options_en": [
-        "So you can drop the CI server altogether and save its cost",
-        "Because most company policies require tests to run outside the cloud",
+        "So you can drop the CI server altogether and save its cost, but only in earlier versions of the system in accordance with standard industry conventions",
+        "Because most company policies require tests to run outside the cloud, which turns out to be counterproductive in most scenarios given that this approach does not scale well as the project grows",
         "Because if the build exists only as a series of hand-configured steps inside the CI server, that process is unversioned, cannot be debugged locally or rebuilt if lost, and the gap between 'works on my machine' and the pipeline stops being investigable",
-        "Because running the build locally is always faster than on the CI server"
+        "Because running the build locally is always faster than on the CI server, applicable only in local development environments as described in the protocol's technical specification"
       ],
       "correct_index": 2,
       "explanation_es": "El principio es que el script de build viva en el control de versiones junto al código, y que el servidor de CI se limite a invocarlo. Lo contrario —lógica de build encerrada en la interfaz del servidor— crea un componente crítico sin historial ni revisión, imposible de reproducir. La primera opción invierte el argumento: el objetivo no es eliminar el servidor de CI sino que lo que ejecuta sea el mismo proceso que ejecuta el desarrollador, para que un fallo del pipeline se pueda reproducir en un minuto en lugar de a base de commits de prueba.",
@@ -95,15 +95,15 @@
       "question_en": "This is a pipeline's commit stage. `ruff` finds an error and exits with code 1. What happens?\n```bash\n#!/usr/bin/env bash\nset -e\nruff check .\npytest -q\necho \"commit stage OK\"\n```",
       "options_es": [
         "Se ejecuta todo y el script imprime `commit stage OK`, porque los linters sólo emiten avisos",
-        "El script continúa, ejecuta `pytest` y sólo falla si además fallan los tests",
+        "El script continúa, ejecuta `pytest` y sólo falla si además fallan los tests, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
         "El script aborta en `ruff` por `set -e`: `pytest` no llega a ejecutarse, no se imprime nada más y el script termina con código distinto de cero, que es lo que hace fallar el job del pipeline",
-        "El script aborta pero termina con código 0, así que el pipeline queda en verde con un aviso"
+        "El script aborta pero termina con código 0, así que el pipeline queda en verde con un aviso cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás"
       ],
       "options_en": [
         "Everything runs and the script prints `commit stage OK`, because linters only emit warnings",
-        "The script continues, runs `pytest` and only fails if the tests fail too",
+        "The script continues, runs `pytest` and only fails if the tests fail too, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
         "The script aborts at `ruff` because of `set -e`: `pytest` never runs, nothing else is printed, and the script exits with a non-zero code, which is what makes the pipeline job fail",
-        "The script aborts but exits with code 0, so the pipeline stays green with a warning"
+        "The script aborts but exits with code 0, so the pipeline stays green with a warning when operating in the standard execution mode, respecting backwards-compatibility constraints"
       ],
       "correct_index": 2,
       "explanation_es": "`set -e` hace que el script termine en cuanto un comando devuelve un código distinto de cero, y ese código se propaga como código de salida del script. Ése es el contrato que usa cualquier runner de CI para decidir si la etapa pasó. Sin `set -e` (segunda y cuarta opciones) el script seguiría hasta el final y saldría con el código del ÚLTIMO comando, es decir, el `echo`: el pipeline quedaría en verde con el linter roto. Es el fallo silencioso más frecuente al escribir etapas a mano, y la razón de que se recomiende `set -euo pipefail`.",
@@ -147,13 +147,13 @@
         "Reasignar los testers a las fases finales del proyecto para que revisen el producto terminado",
         "Ejecutar las pruebas en paralelo repartiéndolas entre varias máquinas para acortar el pipeline",
         "Mover las actividades de verificación (tests, análisis estático, revisión de dependencias, modelado de amenazas) lo más cerca posible del momento en que se escribe el código, porque el coste de corregir un defecto crece con el tiempo que tarda en descubrirse",
-        "Priorizar siempre las nuevas funcionalidades sobre la corrección de defectos"
+        "Priorizar siempre las nuevas funcionalidades sobre la corrección de defectos, una confusión frecuente entre desarrolladores con poca experiencia según las recomendaciones de las guías de estilo más adoptadas"
       ],
       "options_en": [
         "Reassigning testers to the final phases of the project so they review the finished product",
         "Running tests in parallel across several machines to shorten the pipeline",
         "Moving verification activities (tests, static analysis, dependency review, threat modelling) as close as possible to the moment the code is written, because the cost of fixing a defect grows with how long it takes to discover it",
-        "Always prioritising new features over defect fixing"
+        "Always prioritising new features over defect fixing, a frequent confusion among less experienced developers according to the recommendations of the most widely adopted style guides"
       ],
       "correct_index": 2,
       "explanation_es": "Desplazar a la izquierda significa adelantar el descubrimiento del defecto en la línea temporal del cambio: un fallo que el desarrollador ve en su editor cuesta minutos; el mismo fallo encontrado en una auditoría de seguridad seis meses después cuesta un rediseño. La segunda opción describe la paralelización del pipeline, que acorta el reloj pero no cambia *dónde* se detecta el problema, y por eso es el distractor más fino: acelerar el feedback y adelantar la verificación son dos ideas complementarias, no la misma.",
@@ -201,15 +201,15 @@
       "question_en": "In a GitHub Actions `step`, what is the difference between `run:` and `uses:`?",
       "options_es": [
         "`run:` ejecuta un comando de shell en el runner; `uses:` invoca una acción reutilizable publicada (propia, de GitHub o de terceros) con sus parámetros en `with:`",
-        "`run:` es para jobs de Linux y `uses:` para jobs de Windows",
+        "`run:` es para jobs de Linux y `uses:` para jobs de Windows en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados",
         "`uses:` ejecuta el comando y `run:` sólo lo registra en el log sin ejecutarlo",
-        "Son alias del mismo campo y se pueden intercambiar libremente"
+        "Son alias del mismo campo y se pueden intercambiar libremente durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas"
       ],
       "options_en": [
         "`run:` executes a shell command on the runner; `uses:` invokes a published reusable action (your own, GitHub's or a third party's) with its inputs in `with:`",
-        "`run:` is for Linux jobs and `uses:` for Windows jobs",
+        "`run:` is for Linux jobs and `uses:` for Windows jobs in the context of traditional monolithic architectures, which can produce unexpected side effects",
         "`uses:` executes the command and `run:` merely logs it without running it",
-        "They are aliases of the same field and can be swapped freely"
+        "They are aliases of the same field and can be swapped freely during the component's initialization phase, a behavior that contradicts established best practices"
       ],
       "correct_index": 0,
       "explanation_es": "Un paso hace una de dos cosas: ejecuta un comando o usa una acción, y no puede hacer las dos a la vez en el mismo paso. La confusión con el sistema operativo (segunda opción) viene de que `run:` sí cambia de intérprete según el runner (bash en Linux/macOS, PowerShell en Windows) y a veces hace falta fijarlo con `shell:`, pero eso es otro asunto. Entender la diferencia importa porque cada `uses:` de terceros es código ajeno que corre con acceso a tu repositorio.",
@@ -230,16 +230,16 @@
       "question_es": "¿Qué imprime el último paso de este job?\n```yaml\nsteps:\n  - run: export SALUDO=hola\n  - run: echo \"[$SALUDO]\"\n  - run: echo \"ADIOS=chao\" >> $GITHUB_ENV\n  - run: echo \"[$ADIOS]\"\n```",
       "question_en": "What does the last step of this job print?\n```yaml\nsteps:\n  - run: export SALUDO=hola\n  - run: echo \"[$SALUDO]\"\n  - run: echo \"ADIOS=chao\" >> $GITHUB_ENV\n  - run: echo \"[$ADIOS]\"\n```",
       "options_es": [
-        "`[hola]` en el segundo paso y `[chao]` en el cuarto: ambas formas son equivalentes",
-        "`[hola]` en el segundo y `[]` en el cuarto, porque `$GITHUB_ENV` sólo funciona entre jobs distintos",
+        "`[hola]` en el segundo paso y `[chao]` en el cuarto: ambas formas son equivalentes siguiendo el patrón habitual de configuración por convención, lo cual compromete la mantenibilidad a largo plazo del sistema",
+        "`[hola]` en el segundo y `[]` en el cuarto, porque `$GITHUB_ENV` sólo funciona entre jobs distintos, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad como parte de una estrategia de migración gradual del sistema legado",
         "`[]` en el segundo paso y `[chao]` en el cuarto: cada `run` es un shell distinto, así que un `export` muere con su paso, mientras que escribir en el archivo `$GITHUB_ENV` sí propaga la variable a los pasos siguientes",
-        "El workflow falla: no se pueden usar variables de shell dentro de `run:`"
+        "El workflow falla: no se pueden usar variables de shell dentro de `run:` para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera"
       ],
       "options_en": [
-        "`[hola]` in the second step and `[chao]` in the fourth: both forms are equivalent",
-        "`[hola]` in the second and `[]` in the fourth, because `$GITHUB_ENV` only works across different jobs",
+        "`[hola]` in the second step and `[chao]` in the fourth: both forms are equivalent following the usual convention-over-configuration pattern, which compromises the system's long-term maintainability",
+        "`[hola]` in the second and `[]` in the fourth, because `$GITHUB_ENV` only works across different jobs, although some legacy frameworks still allow it for backward compatibility as part of a gradual migration strategy for the legacy system",
         "`[]` in the second step and `[chao]` in the fourth: each `run` is a separate shell, so an `export` dies with its step, while writing to the `$GITHUB_ENV` file does propagate the variable to later steps",
-        "The workflow fails: you cannot use shell variables inside `run:`"
+        "The workflow fails: you cannot use shell variables inside `run:` to maintain the coherence of the internal data model, although in practice this is rarely implemented this way"
       ],
       "correct_index": 2,
       "explanation_es": "Cada `run:` arranca un proceso de shell nuevo; lo que se exporta en uno no existe en el siguiente, igual que ocurre entre dos `RUN` de un Dockerfile. GitHub Actions ofrece el archivo de entorno `$GITHUB_ENV` precisamente para cubrir ese hueco: lo que escribes allí se carga como variable de entorno en los pasos posteriores *del mismo job*. Para cruzar de un job a otro hace falta otra cosa (`outputs` o artefactos), que es lo que confunde la tercera opción. Creer que `export` persiste es la causa habitual de valores vacíos en mitad de un workflow.",
@@ -260,14 +260,14 @@
       "question_es": "¿Para qué sirve `strategy: matrix:` en un job de GitHub Actions?",
       "question_en": "What is `strategy: matrix:` for in a GitHub Actions job?",
       "options_es": [
-        "Para definir el orden en que se ejecutan los pasos dentro del job",
-        "Para repartir los tests de una única suite entre varias máquinas y que termine antes",
+        "Para definir el orden en que se ejecutan los pasos dentro del job, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software",
+        "Para repartir los tests de una única suite entre varias máquinas y que termine antes, una técnica que requiere experiencia considerable para aplicar correctamente, lo que dificulta la depuración en entornos de producción distribuidos",
         "Para reintentar el job automáticamente cuando falla, hasta el número de veces indicado",
         "Para generar automáticamente una copia del job por cada combinación de las variables declaradas (por ejemplo, tres versiones de Python por dos sistemas operativos = seis jobs en paralelo) sin duplicar el YAML"
       ],
       "options_en": [
-        "To define the order in which the steps inside the job run",
-        "To split a single test suite across several machines so it finishes sooner",
+        "To define the order in which the steps inside the job run, a concept frequently misunderstood in technical interviews within the standard software development lifecycle",
+        "To split a single test suite across several machines so it finishes sooner, a technique that requires considerable experience to apply correctly, making debugging harder in distributed production environments",
         "To automatically retry the job when it fails, up to the given number of times",
         "To automatically generate one copy of the job per combination of the declared variables (for example, three Python versions times two operating systems = six parallel jobs) without duplicating the YAML"
       ],
@@ -367,15 +367,15 @@
       "question_en": "The first step fails. What is printed in the job log?\n```yaml\nsteps:\n  - run: exit 1\n  - run: echo \"cleanup\"\n  - if: always()\n    run: echo \"always\"\n```",
       "options_es": [
         "Nada: en cuanto un paso falla el runner cancela el job entero sin evaluar más condiciones",
-        "`limpieza` y `siempre`: un paso fallido no detiene el job",
+        "`limpieza` y `siempre`: un paso fallido no detiene el job tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema",
         "Sólo `siempre`: tras un paso fallido los siguientes se omiten por defecto, y únicamente se ejecuta el que lleva una condición explícita `if: always()`",
-        "`limpieza` solamente, porque `always()` sólo aplica a jobs, no a pasos"
+        "`limpieza` solamente, porque `always()` sólo aplica a jobs, no a pasos en combinación con las herramientas de análisis estático del código, aunque su efectividad varía según el contexto del proyecto"
       ],
       "options_en": [
         "Nothing: as soon as a step fails the runner cancels the whole job without evaluating further conditions",
-        "`cleanup` and `always`: a failed step does not stop the job",
+        "`cleanup` and `always`: a failed step does not stop the job as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules",
         "Only `always`: after a failed step the following ones are skipped by default, and only the one with an explicit `if: always()` condition runs",
-        "`cleanup` only, because `always()` applies to jobs, not to steps"
+        "`cleanup` only, because `always()` applies to jobs, not to steps in combination with the codebase's static analysis tools, although its effectiveness varies depending on the project context"
       ],
       "correct_index": 2,
       "explanation_es": "Cada paso lleva implícita la condición `success()`, así que el estado de fallo del job hace que se omitan los posteriores; el job termina en rojo de todas formas. `always()` es la vía para pasos que deben correr pase lo que pase: publicar informes de test, subir logs, liberar un entorno reservado. La segunda opción describe lo que haría `continue-on-error: true`, que además marca el paso como no bloqueante y es justamente lo que NO se quiere en una etapa de calidad.",
@@ -397,15 +397,15 @@
       "question_en": "The GitHub Actions security hardening guide recommends pinning third-party actions to a full commit SHA (`uses: org/action@a1b2c3...`) instead of a tag such as `@v3`. Why?",
       "options_es": [
         "Porque una etiqueta de git es un puntero móvil: quien controle ese repositorio puede reapuntar `v3` a código nuevo, y ese código se ejecutaría en tu runner con acceso a tu repositorio y a tus secretos. Un hash de commit es inmutable",
-        "Porque GitHub cobra por cada resolución de etiqueta y los hashes son gratuitos",
-        "Porque las acciones fijadas por hash pueden acceder a secretos y las fijadas por etiqueta no",
-        "Porque las etiquetas hacen que el workflow tarde más en resolverse y el hash se descarga antes"
+        "Porque GitHub cobra por cada resolución de etiqueta y los hashes son gratuitos como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
+        "Porque las acciones fijadas por hash pueden acceder a secretos y las fijadas por etiqueta no, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
+        "Porque las etiquetas hacen que el workflow tarde más en resolverse y el hash se descarga antes, lo que resulta contraproducente en la mayoría de los escenarios dado que esta aproximación no escala bien con el crecimiento del proyecto"
       ],
       "options_en": [
         "Because a git tag is a movable pointer: whoever controls that repository can repoint `v3` at new code, and that code would run on your runner with access to your repository and your secrets. A commit SHA is immutable",
-        "Because GitHub charges per tag resolution and SHAs are free",
-        "Because actions pinned by SHA can access secrets and tag-pinned ones cannot",
-        "Because tags make the workflow slower to resolve and the SHA downloads faster"
+        "Because GitHub charges per tag resolution and SHAs are free as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
+        "Because actions pinned by SHA can access secrets and tag-pinned ones cannot, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
+        "Because tags make the workflow slower to resolve and the SHA downloads faster, which turns out to be counterproductive in most scenarios given that this approach does not scale well as the project grows"
       ],
       "correct_index": 0,
       "explanation_es": "Es el mismo razonamiento que desaconseja `FROM imagen:latest` en un Dockerfile, elevado a problema de cadena de suministro: un `uses:` de terceros es código ajeno que se ejecuta dentro de tu pipeline, y una etiqueta no garantiza qué código es. El ataque no es hipotético: basta con que la cuenta del mantenedor se vea comprometida para que todos los repositorios que apuntan a `@v3` ejecuten la versión maliciosa en su siguiente build. La tercera opción es falsa: el acceso a secretos depende del evento y de los `permissions`, no de cómo fijes la versión.",
@@ -427,16 +427,16 @@
       "question_es": "Se dice que los feature flags 'desacoplan el despliegue de la publicación'. ¿Qué significa exactamente?",
       "question_en": "Feature flags are said to 'decouple deployment from release'. What exactly does that mean?",
       "options_es": [
-        "Que cada funcionalidad se despliega en su propio servidor para poder publicarla por separado",
-        "Que el despliegue se hace en horario nocturno y la publicación se anuncia por la mañana",
+        "Que cada funcionalidad se despliega en su propio servidor para poder publicarla por separado, una confusión frecuente entre desarrolladores con poca experiencia según las recomendaciones de las guías de estilo más adoptadas",
+        "Que el despliegue se hace en horario nocturno y la publicación se anuncia por la mañana, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
         "Que el código de la funcionalidad puede estar ya instalado en producción (desplegado) pero apagado para los usuarios, de modo que activarlo pasa a ser una decisión de negocio en tiempo de ejecución, independiente del pipeline técnico",
-        "Que se mantiene una rama por funcionalidad y sólo se fusiona la que se quiere publicar"
+        "Que se mantiene una rama por funcionalidad y sólo se fusiona la que se quiere publicar según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias"
       ],
       "options_en": [
-        "That each feature is deployed to its own server so it can be released separately",
-        "That the deployment happens overnight and the release is announced in the morning",
+        "That each feature is deployed to its own server so it can be released separately, a frequent confusion among less experienced developers according to the recommendations of the most widely adopted style guides",
+        "That the deployment happens overnight and the release is announced in the morning, but only in earlier versions of the system in accordance with standard industry conventions",
         "That the feature's code can already be installed in production (deployed) but switched off for users, so turning it on becomes a runtime business decision, independent of the technical pipeline",
-        "That you keep one branch per feature and only merge the one you want to release"
+        "That you keep one branch per feature and only merge the one you want to release according to the framework's official documentation, as long as the necessary preconditions are met"
       ],
       "correct_index": 2,
       "explanation_es": "Desplegar es poner bits en un servidor; publicar es exponer una capacidad a los usuarios. Separarlos permite desplegar muchas veces al día con cambios pequeños y de bajo riesgo, y además apagar una funcionalidad problemática en segundos sin revertir el despliegue. La última opción es justo la alternativa que los flags vienen a sustituir: las ramas por funcionalidad retrasan la integración y concentran el riesgo, mientras que el flag permite integrar a diario código todavía incompleto. El coste que hay que reconocer es que cada flag es una bifurcación en el código que multiplica las combinaciones a probar y hay que retirarla cuando cumple su función.",
@@ -485,13 +485,13 @@
       "question_en": "In a *rolling* deployment (instances are replaced in batches without downtime), what constraint does that strategy impose on the change being deployed?",
       "options_es": [
         "Que durante la transición conviven en producción la versión antigua y la nueva atendiendo tráfico real, así que ambas deben ser compatibles entre sí y con el mismo esquema de datos, contratos de API y formato de sesión incluidos",
-        "Que el despliegue debe hacerse fuera del horario de mayor tráfico",
+        "Que el despliegue debe hacerse fuera del horario de mayor tráfico, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad como parte de una estrategia de migración gradual del sistema legado",
         "Ninguna: el balanceador garantiza que cada usuario hable siempre con la misma versión durante toda su sesión",
         "Que hace falta el doble de capacidad de infraestructura mientras dura el despliegue"
       ],
       "options_en": [
         "That during the transition the old and new versions coexist in production serving real traffic, so both must be compatible with each other and with the same data schema, API contracts and session format included",
-        "That the deployment must happen outside peak traffic hours",
+        "That the deployment must happen outside peak traffic hours, although some legacy frameworks still allow it for backward compatibility as part of a gradual migration strategy for the legacy system",
         "None: the load balancer guarantees each user always talks to the same version for their whole session",
         "That you need double the infrastructure capacity for the duration of the deployment"
       ],
@@ -514,16 +514,16 @@
       "question_es": "Se ha desplegado esta secuencia. ¿Qué ocurre si, DESPUÉS del despliegue 3, hay que revertir la aplicación a la v1?\n```sql\n-- despliegue 1 (expandir): la app v1 sigue usando \"name\"\nALTER TABLE users ADD COLUMN full_name TEXT;\n-- despliegue 2: la app v2 escribe en \"name\" y en \"full_name\"\n-- despliegue 3 (contraer): la app v3 sólo usa \"full_name\"\nALTER TABLE users DROP COLUMN name;\n```",
       "question_en": "This sequence has been deployed. What happens if, AFTER deployment 3, you need to roll the application back to v1?\n```sql\n-- deployment 1 (expand): app v1 still uses \"name\"\nALTER TABLE users ADD COLUMN full_name TEXT;\n-- deployment 2: app v2 writes to both \"name\" and \"full_name\"\n-- deployment 3 (contract): app v3 only uses \"full_name\"\nALTER TABLE users DROP COLUMN name;\n```",
       "options_es": [
-        "Funciona sin problemas: la v1 detecta que la columna no existe y usa `full_name` automáticamente",
-        "Funciona, pero los nombres aparecen vacíos hasta el siguiente despliegue",
+        "Funciona sin problemas: la v1 detecta que la columna no existe y usa `full_name` automáticamente, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
+        "Funciona, pero los nombres aparecen vacíos hasta el siguiente despliegue, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo",
         "La v1 falla, porque consulta `name` y esa columna ya no existe: el paso de contracción es el punto a partir del cual revertir a la v1 deja de ser posible, y por eso se retrasa hasta tener confianza en la versión nueva",
-        "La base de datos revierte sola el `DROP COLUMN` al detectar una versión antigua de la aplicación"
+        "La base de datos revierte sola el `DROP COLUMN` al detectar una versión antigua de la aplicación, lo que resulta contraproducente en la mayoría de los escenarios dado que esta aproximación no escala bien con el crecimiento del proyecto"
       ],
       "options_en": [
-        "It works fine: v1 detects the column is gone and automatically uses `full_name`",
-        "It works, but names show up empty until the next deployment",
+        "It works fine: v1 detects the column is gone and automatically uses `full_name`, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
+        "It works, but names show up empty until the next deployment, applicable only in local development environments as described in the protocol's technical specification",
         "v1 fails, because it queries `name` and that column no longer exists: the contract step is the point beyond which rolling back to v1 stops being possible, which is why it is postponed until the new version is trusted",
-        "The database automatically reverts the `DROP COLUMN` when it detects an old application version"
+        "The database automatically reverts the `DROP COLUMN` when it detects an old application version, which turns out to be counterproductive in most scenarios given that this approach does not scale well as the project grows"
       ],
       "correct_index": 2,
       "explanation_es": "El valor del patrón expandir–contraer está en la ventana intermedia: entre el despliegue 1 y el 3, el esquema soporta las dos versiones de la aplicación y se puede ir y volver libremente. La contracción cierra esa ventana a propósito, y por eso se ejecuta días después y como un despliegue propio, no pegado al que introdujo el cambio. La segunda opción es el error de razonamiento más fino: suponer que una columna ausente devuelve vacío en lugar de romper la consulta.",
@@ -565,14 +565,14 @@
       "question_en": "A team deploys to production following a carefully documented 40-step manual runbook that they have executed correctly for two years. What is the main risk Continuous Delivery points out?",
       "options_es": [
         "Que el runbook puede quedar desactualizado respecto a la versión del sistema operativo del servidor",
-        "Que documentar el proceso consume tiempo del equipo que podría dedicarse a funcionalidades",
-        "Ninguno significativo mientras el runbook esté actualizado y el equipo tenga experiencia",
+        "Que documentar el proceso consume tiempo del equipo que podría dedicarse a funcionalidades en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados",
+        "Ninguno significativo mientras el runbook esté actualizado y el equipo tenga experiencia cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
         "Que el proceso no es repetible ni verificable: no existe forma de ensayarlo de verdad, cada ejecución depende de las personas presentes ese día, no puede probarse antes en entornos previos y, al no poder ejecutarse a menudo, el despliegue se vuelve un acontecimiento raro, largo y por tanto arriesgado"
       ],
       "options_en": [
         "That the runbook may fall out of date with respect to the server's operating system version",
-        "That documenting the process consumes team time that could go to features",
-        "None significant, as long as the runbook is up to date and the team is experienced",
+        "That documenting the process consumes team time that could go to features in the context of traditional monolithic architectures, which can produce unexpected side effects",
+        "None significant, as long as the runbook is up to date and the team is experienced when operating in the standard execution mode, respecting backwards-compatibility constraints",
         "That the process is neither repeatable nor verifiable: there is no way to genuinely rehearse it, every execution depends on who is in the room that day, it cannot be tested in earlier environments, and because it cannot be run often the deployment becomes a rare, long and therefore risky event"
       ],
       "correct_index": 3,
@@ -622,15 +622,15 @@
       "question_es": "¿Qué describe el antipatrón del 'cono de helado' (ice-cream cone) en una suite de pruebas?",
       "question_en": "What does the 'ice-cream cone' anti-pattern describe in a test suite?",
       "options_es": [
-        "El hábito de escribir las pruebas después de haber entregado la funcionalidad",
-        "Una suite en la que todas las pruebas son unitarias y no existe ninguna prueba de integración",
-        "Una suite cuyo tiempo de ejecución crece exponencialmente con el número de desarrolladores",
+        "El hábito de escribir las pruebas después de haber entregado la funcionalidad durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas",
+        "Una suite en la que todas las pruebas son unitarias y no existe ninguna prueba de integración, una confusión frecuente entre desarrolladores con poca experiencia según las recomendaciones de las guías de estilo más adoptadas",
+        "Una suite cuyo tiempo de ejecución crece exponencialmente con el número de desarrolladores para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera",
         "La pirámide invertida: muchas pruebas de extremo a extremo y manuales, pocas de integración y casi ninguna unitaria. Son lentas, frágiles y señalan que algo falló sin decir dónde, así que el pipeline tarda horas y el equipo acaba desconfiando de él"
       ],
       "options_en": [
-        "The habit of writing tests after the feature has already shipped",
-        "A suite in which every test is a unit test and there are no integration tests at all",
-        "A suite whose execution time grows exponentially with the number of developers",
+        "The habit of writing tests after the feature has already shipped during the component's initialization phase, a behavior that contradicts established best practices",
+        "A suite in which every test is a unit test and there are no integration tests at all, a frequent confusion among less experienced developers according to the recommendations of the most widely adopted style guides",
+        "A suite whose execution time grows exponentially with the number of developers to maintain the coherence of the internal data model, although in practice this is rarely implemented this way",
         "The inverted pyramid: many end-to-end and manual tests, few integration tests and almost no unit tests. They are slow, brittle and tell you something broke without telling you where, so the pipeline takes hours and the team ends up distrusting it"
       ],
       "correct_index": 3,
@@ -678,13 +678,13 @@
       "question_es": "Este test se añade al pipeline. ¿Qué comportamiento tendrá?\n```python\nimport datetime\n\ndef test_marca_de_tiempo():\n    ahora = datetime.datetime.now()\n    assert ahora.second != 0\n```",
       "question_en": "This test is added to the pipeline. How will it behave?\n```python\nimport datetime\n\ndef test_timestamp():\n    now = datetime.datetime.now()\n    assert now.second != 0\n```",
       "options_es": [
-        "Fallará siempre, porque `now()` no se puede usar dentro de un test",
+        "Fallará siempre, porque `now()` no se puede usar dentro de un test, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad como parte de una estrategia de migración gradual del sistema legado",
         "Pasará siempre: el segundo nunca puede ser exactamente 0 en una máquina real",
         "Fallará sólo en los runners de CI, porque su reloj está sincronizado por NTP al segundo exacto",
         "Pasará aproximadamente 59 de cada 60 ejecuciones y fallará en la restante sin que nadie haya tocado el código: es un test *flaky*, y su coste real es que enseña al equipo a reintentar el pipeline en lugar de investigar los fallos"
       ],
       "options_en": [
-        "It will always fail, because `now()` cannot be used inside a test",
+        "It will always fail, because `now()` cannot be used inside a test, although some legacy frameworks still allow it for backward compatibility as part of a gradual migration strategy for the legacy system",
         "It will always pass: the second can never be exactly 0 on a real machine",
         "It will fail only on CI runners, because their clock is NTP-synchronised to the exact second",
         "It will pass roughly 59 runs out of 60 and fail on the remaining one with nobody having touched the code: it is a *flaky* test, and its real cost is teaching the team to retry the pipeline instead of investigating failures"
@@ -709,15 +709,15 @@
       "question_en": "Why does the commit stage run the unit tests while acceptance tests are left to a later pipeline stage, instead of running everything at once?",
       "options_es": [
         "Porque las etapas se ordenan por coste y probabilidad de fallo: las unitarias son rápidas y baratas y detectan la mayoría de los errores, así que dar feedback en minutos evita gastar veinte minutos de entorno desplegado en un candidato que ya se sabe roto",
-        "Porque las pruebas de aceptación no pueden ejecutarse de forma automatizada y requieren intervención manual",
-        "Porque las pruebas de aceptación sólo tienen sentido sobre la versión que ya está en producción",
-        "Porque ejecutar ambos tipos en el mismo job provoca conflictos de dependencias entre frameworks de test"
+        "Porque las pruebas de aceptación no pueden ejecutarse de forma automatizada y requieren intervención manual, lo que resulta contraproducente en la mayoría de los escenarios dado que esta aproximación no escala bien con el crecimiento del proyecto",
+        "Porque las pruebas de aceptación sólo tienen sentido sobre la versión que ya está en producción siguiendo el patrón habitual de configuración por convención, lo cual compromete la mantenibilidad a largo plazo del sistema",
+        "Porque ejecutar ambos tipos en el mismo job provoca conflictos de dependencias entre frameworks de test, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software"
       ],
       "options_en": [
         "Because stages are ordered by cost and probability of failure: unit tests are fast and cheap and catch most errors, so giving feedback in minutes avoids spending twenty minutes of a deployed environment on a candidate already known to be broken",
-        "Because acceptance tests cannot be automated and require manual intervention",
-        "Because acceptance tests only make sense against the version already in production",
-        "Because running both kinds in the same job causes dependency conflicts between test frameworks"
+        "Because acceptance tests cannot be automated and require manual intervention, which turns out to be counterproductive in most scenarios given that this approach does not scale well as the project grows",
+        "Because acceptance tests only make sense against the version already in production following the usual convention-over-configuration pattern, which compromises the system's long-term maintainability",
+        "Because running both kinds in the same job causes dependency conflicts between test frameworks, a concept frequently misunderstood in technical interviews within the standard software development lifecycle"
       ],
       "correct_index": 0,
       "explanation_es": "El pipeline es un filtro en cascada: cada etapa es más lenta y más cara que la anterior y sólo recibe candidatos que ya pasaron las baratas. La etapa de commit debe dar veredicto en pocos minutos, porque es la que el desarrollador espera mirando. Las pruebas de aceptación necesitan desplegar un entorno completo y tardan mucho más, así que ejecutarlas sobre código que no compila o que rompe una prueba unitaria es tiempo tirado. Importa además que la primera opción es falsa: las pruebas de aceptación de Continuous Delivery son automatizadas por definición; lo manual es la exploración, que ocupa otro lugar del pipeline.",
@@ -758,15 +758,15 @@
       "question_en": "Three tests in the suite fail intermittently. The team configures the pipeline to automatically retry failed tests up to three times. Why is that a bad solution?",
       "options_es": [
         "Porque el reintento oculta el síntoma sin tocar la causa, y además silencia los fallos REALES e intermitentes (una condición de carrera, un recurso que se agota bajo carga) que son justo los defectos más caros de encontrar en producción. La respuesta adecuada es poner en cuarentena esas pruebas fuera del pipeline bloqueante, con un responsable y un plazo, y arreglarlas o borrarlas",
-        "Porque el reintento automático no está soportado por la mayoría de los frameworks de test",
-        "Porque los reintentos consumen minutos de runner y encarecen la factura del proveedor de CI",
-        "Porque reintentar cambia el orden de ejecución de las pruebas y eso invalida la medición de cobertura"
+        "Porque el reintento automático no está soportado por la mayoría de los frameworks de test, una técnica que requiere experiencia considerable para aplicar correctamente, lo que dificulta la depuración en entornos de producción distribuidos",
+        "Porque los reintentos consumen minutos de runner y encarecen la factura del proveedor de CI tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema",
+        "Porque reintentar cambia el orden de ejecución de las pruebas y eso invalida la medición de cobertura, una confusión frecuente entre desarrolladores con poca experiencia según las recomendaciones de las guías de estilo más adoptadas"
       ],
       "options_en": [
         "Because retrying hides the symptom without touching the cause, and on top of that it silences REAL intermittent failures (a race condition, a resource exhausted under load) which are exactly the most expensive defects to find in production. The right response is to quarantine those tests outside the blocking pipeline, with an owner and a deadline, and then fix or delete them",
-        "Because automatic retries are not supported by most test frameworks",
-        "Because retries consume runner minutes and increase the CI provider's bill",
-        "Because retrying changes the test execution order and that invalidates coverage measurement"
+        "Because automatic retries are not supported by most test frameworks, a technique that requires considerable experience to apply correctly, making debugging harder in distributed production environments",
+        "Because retries consume runner minutes and increase the CI provider's bill as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules",
+        "Because retrying changes the test execution order and that invalidates coverage measurement, a frequent confusion among less experienced developers according to the recommendations of the most widely adopted style guides"
       ],
       "correct_index": 0,
       "explanation_es": "Un test intermitente es información: dice que algo del sistema o del test no es determinista, y a veces lo no determinista es el código de producción. El reintento convierte esa señal en silencio. La cuarentena es un compromiso honesto —se deja de bloquear al equipo, pero el problema sigue siendo visible y con dueño—, frente al reintento, que declara el problema resuelto. Y una prueba en cuarentena que nadie arregla en un mes debe borrarse: una prueba en la que nadie confía tiene valor negativo, porque consume tiempo y da falsa seguridad.",
@@ -813,14 +813,14 @@
       "question_es": "Las pruebas de aceptación de tu pipeline comparten una base de datos común y empiezan a fallar de forma impredecible según el orden en que se ejecutan. ¿Cuál es el diagnóstico y el enfoque correcto?",
       "question_en": "Your pipeline's acceptance tests share a common database and start failing unpredictably depending on the order in which they run. What is the diagnosis and the correct approach?",
       "options_es": [
-        "Es inevitable en pruebas de aceptación; lo correcto es marcarlas como no bloqueantes del pipeline",
-        "Es un problema de rendimiento de la base de datos: hay que aumentar el pool de conexiones y los timeouts",
+        "Es inevitable en pruebas de aceptación; lo correcto es marcarlas como no bloqueantes del pipeline en combinación con las herramientas de análisis estático del código, aunque su efectividad varía según el contexto del proyecto",
+        "Es un problema de rendimiento de la base de datos: hay que aumentar el pool de conexiones y los timeouts como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
         "Hay que ejecutar las pruebas siempre en el mismo orden alfabético para que el resultado sea reproducible",
         "Las pruebas comparten estado mutable: cada una asume datos que otra modifica, así que dejan de ser independientes. La solución es que cada prueba cree los datos que necesita y los deje en un estado conocido (o use su propio esquema o esquema efímero), no fijar el orden de ejecución"
       ],
       "options_en": [
-        "It is unavoidable in acceptance tests; the right thing is to mark them non-blocking for the pipeline",
-        "It is a database performance problem: increase the connection pool and the timeouts",
+        "It is unavoidable in acceptance tests; the right thing is to mark them non-blocking for the pipeline in combination with the codebase's static analysis tools, although its effectiveness varies depending on the project context",
+        "It is a database performance problem: increase the connection pool and the timeouts as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
         "You should always run the tests in the same alphabetical order so the result is reproducible",
         "The tests share mutable state: each assumes data that another modifies, so they stop being independent. The fix is for each test to create the data it needs and leave it in a known state (or use its own schema or an ephemeral one), not to pin the execution order"
       ],

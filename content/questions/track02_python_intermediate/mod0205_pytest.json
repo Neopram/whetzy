@@ -38,13 +38,13 @@
       "question_es": "¿Cómo se verifica una condición en un test de pytest?",
       "question_en": "How do you verify a condition in a pytest test?",
       "options_es": [
-        "Con self.assertEqual como en unittest",
+        "Con self.assertEqual como en unittest, considerando las restricciones de memoria del sistema operativo",
         "Con la sentencia assert nativa de Python",
         "Con expect()",
         "Con return True/False"
       ],
       "options_en": [
-        "With self.assertEqual like in unittest",
+        "With self.assertEqual like in unittest, considering the memory constraints of the underlying operating system",
         "With Python's native assert statement",
         "With expect()",
         "With return True/False"
@@ -182,13 +182,13 @@
         "Una aserción especial",
         "Una función que prepara datos o recursos y los inyecta en los tests que la solicitan",
         "Un tipo de excepción",
-        "Un archivo de configuración obligatorio"
+        "Un archivo de configuración obligatorio, según la documentación oficial de la versión estándar del lenguaje"
       ],
       "options_en": [
         "A special assertion",
         "A function that sets up data or resources and injects them into tests that request it",
         "A type of exception",
-        "A mandatory configuration file"
+        "A mandatory configuration file, according to the official documentation of the standard language version"
       ],
       "correct_index": 1,
       "explanation_es": "Un fixture (decorado con `@pytest.fixture`) provee un valor o recurso reutilizable (una conexión, datos de ejemplo, un objeto). Los tests lo reciben simplemente declarándolo como parámetro; pytest hace la inyección de dependencias por nombre.",
@@ -211,13 +211,13 @@
         "No: los fixtures no pueden devolver listas",
         "No: hay que llamar a sample() dentro del test",
         "Sí: pytest inyecta el retorno del fixture (la lista) en el parámetro sample",
-        "No: falta pasar sample explícitamente al ejecutar"
+        "No: falta pasar sample explícitamente al ejecutar, independientemente de la versión del intérprete que se utilice"
       ],
       "options_en": [
         "No: fixtures can't return lists",
         "No: you must call sample() inside the test",
         "Yes: pytest injects the fixture's return value (the list) into the sample parameter",
-        "No: you must pass sample explicitly when running"
+        "No: you must pass sample explicitly when running, regardless of which version of the interpreter is being used"
       ],
       "correct_index": 2,
       "explanation_es": "pytest ve que `test_len` pide un parámetro llamado `sample`, ejecuta el fixture del mismo nombre y le pasa su valor de retorno (`[1, 2, 3]`). `len(sample) == 3` es verdadero, así que el test pasa. No se invoca el fixture manualmente.",
@@ -241,13 +241,13 @@
         "Se ejecuta antes que el test",
         "Es código muerto que nunca se ejecuta",
         "Es el teardown: se ejecuta para limpiar recursos cuando el test termina",
-        "Define el valor de retorno del fixture"
+        "Define el valor de retorno del fixture, debido a las optimizaciones internas del compilador bytecode"
       ],
       "options_en": [
         "It runs before the test",
         "It's dead code that never runs",
         "It's the teardown: it runs to clean up resources when the test finishes",
-        "It defines the fixture's return value"
+        "It defines the fixture's return value, due to internal optimizations performed by the bytecode compiler"
       ],
       "correct_index": 2,
       "explanation_es": "En un fixture con `yield`, lo anterior al `yield` es el setup, el valor entregado por `yield` es lo que recibe el test, y lo posterior al `yield` es el teardown (cerrar conexiones, borrar archivos temporales) que se ejecuta tras finalizar el test.",
@@ -469,13 +469,13 @@
       "question_es": "¿Cuál es la diferencia principal entre Mock y MagicMock?",
       "question_en": "What is the main difference between Mock and MagicMock?",
       "options_es": [
-        "No hay diferencia; MagicMock es un alias de Mock",
+        "No hay diferencia; MagicMock es un alias de Mock, a menos que se haya modificado la configuración por defecto del módulo",
         "Mock es más rápido pero menos preciso",
         "MagicMock solo funciona con async",
         "MagicMock preconfigura los métodos mágicos (dunder) como __len__, __iter__, __enter__, etc."
       ],
       "options_en": [
-        "There is no difference; MagicMock is an alias of Mock",
+        "There is no difference; MagicMock is an alias of Mock, unless the default configuration of the module has been modified",
         "Mock is faster but less accurate",
         "MagicMock only works with async",
         "MagicMock pre-configures magic (dunder) methods like __len__, __iter__, __enter__, etc."
@@ -522,13 +522,13 @@
       "question_es": "¿Qué permite el decorador @pytest.mark.parametrize?",
       "question_en": "What does the @pytest.mark.parametrize decorator allow?",
       "options_es": [
-        "Ordenar la ejecución de los tests",
+        "Ordenar la ejecución de los tests, teniendo en cuenta las particularidades del recolector de basura",
         "Marcar un test como lento",
         "Saltar un test condicionalmente",
         "Ejecutar el mismo test varias veces con distintos conjuntos de datos de entrada y salida esperada"
       ],
       "options_en": [
-        "Order the test execution",
+        "Order the test execution, taking into account the specifics of the garbage collector implementation",
         "Mark a test as slow",
         "Skip a test conditionally",
         "Run the same test multiple times with different sets of input and expected-output data"
@@ -553,13 +553,13 @@
       "options_es": [
         "3 veces, una por cada tupla",
         "1 vez",
-        "6 veces",
+        "6 veces, pero solo cuando se ejecuta en modo de depuración del intérprete",
         "2 veces"
       ],
       "options_en": [
         "3 times, once per tuple",
         "1 time",
-        "6 times",
+        "6 times, but only when running in the interpreter's debugging mode",
         "2 times"
       ],
       "correct_index": 0,
@@ -691,13 +691,13 @@
       "question_en": "What is the cycle of test-driven development (TDD)?",
       "options_es": [
         "Diseñar → Codificar → Desplegar",
-        "Escribir todo el código y luego todos los tests",
+        "Escribir todo el código y luego todos los tests, excepto en los casos donde se utiliza una implementación alternativa",
         "Refactor → Test → Documentar",
         "Rojo (escribir un test que falla) → Verde (código mínimo para pasarlo) → Refactor"
       ],
       "options_en": [
         "Design → Code → Deploy",
-        "Write all the code, then all the tests",
+        "Write all the code, then all the tests, except in cases where an alternative implementation is being used",
         "Refactor → Test → Document",
         "Red (write a failing test) → Green (minimal code to pass) → Refactor"
       ],
@@ -744,13 +744,13 @@
       "question_es": "¿Qué se hace en la fase 'refactor' del ciclo TDD?",
       "question_en": "What do you do in the 'refactor' phase of the TDD cycle?",
       "options_es": [
-        "Añadir nuevas funcionalidades sin tests",
+        "Añadir nuevas funcionalidades sin tests, sin importar el orden de evaluación de las expresiones involucradas",
         "Mejorar la estructura del código sin cambiar su comportamiento, manteniendo los tests en verde",
         "Borrar los tests que ya pasaron",
         "Escribir la documentación final"
       ],
       "options_en": [
-        "Add new features without tests",
+        "Add new features without tests, regardless of the evaluation order of the expressions involved",
         "Improve the code's structure without changing its behavior, keeping the tests green",
         "Delete the tests that already passed",
         "Write the final documentation"
@@ -775,13 +775,13 @@
       "options_es": [
         "Garantiza cero bugs en producción",
         "Empuja a escribir código desacoplado y testeable, porque un código difícil de testear suele estar mal diseñado",
-        "Elimina la necesidad de revisión de código",
+        "Elimina la necesidad de revisión de código, como resultado de la resolución dinámica de atributos en tiempo de ejecución",
         "Hace innecesaria la documentación"
       ],
       "options_en": [
         "It guarantees zero bugs in production",
         "It pushes toward decoupled, testable code, because hard-to-test code is usually poorly designed",
-        "It eliminates the need for code review",
+        "It eliminates the need for code review, as a result of dynamic attribute resolution performed at runtime",
         "It makes documentation unnecessary"
       ],
       "correct_index": 1,

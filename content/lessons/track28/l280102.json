@@ -1,0 +1,12 @@
+{
+  "id": "l280102",
+  "skill_id": "sk280102",
+  "title_es": "Códigos de Estado HTTP",
+  "title_en": "HTTP Status Codes",
+  "body_es": "Los códigos de estado HTTP comunican el resultado de una solicitud entre cliente y servidor. Los códigos 2xx indican éxito (200 OK, 201 Created), 3xx indican redirección (301 Moved Permanently, 304 Not Modified), 4xx indican errores del cliente (400 Bad Request, 404 Not Found, 401 Unauthorized), y 5xx indican errores del servidor (500 Internal Server Error, 503 Service Unavailable). Utilizar códigos de estado apropiados es crucial para que los clientes entiendan correctamente la respuesta y reaccionen de manera adecuada.",
+  "body_en": "HTTP status codes communicate the result of a request between client and server. 2xx codes indicate success (200 OK, 201 Created), 3xx indicate redirection (301 Moved Permanently, 304 Not Modified), 4xx indicate client errors (400 Bad Request, 404 Not Found, 401 Unauthorized), and 5xx indicate server errors (500 Internal Server Error, 503 Service Unavailable). Using appropriate status codes is crucial for clients to understand the response correctly and react appropriately.",
+  "example_code": "from fastapi import FastAPI, status\nfrom fastapi.responses import JSONResponse\n\napp = FastAPI()\n\n@app.get(\"/users/{user_id}\", status_code=200)\nasync def get_user(user_id: int):\n    if user_id <= 0:\n        return JSONResponse(status_code=400, content={\"error\": \"Invalid ID\"})\n    return {\"id\": user_id, \"name\": \"John\"}\n\n@app.post(\"/users\", status_code=201)\nasync def create_user(name: str):\n    return {\"id\": 1, \"name\": name}\n\n@app.get(\"/users/deleted/{user_id}\", status_code=404)\nasync def get_deleted_user(user_id: int):\n    return {\"error\": \"User not found\"}",
+  "example_output": "GET /users/1 → 200 {\"id\": 1, \"name\": \"John\"}\nGET /users/0 → 400 {\"error\": \"Invalid ID\"}\nPOST /users → 201 {\"id\": 1, \"name\": \"Alice\"}\nGET /users/deleted/1 → 404 {\"error\": \"User not found\"}",
+  "source": "FastAPI Docs — https://fastapi.tiangolo.com",
+  "order": 2
+}

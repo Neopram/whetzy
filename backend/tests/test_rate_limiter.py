@@ -1,8 +1,8 @@
-"""Tests for rate limiting (Series 22.6)."""
+"""Tests for rate limiting (Series 22.6) and rate-limit stats (22.1)."""
 
 import pytest
 
-from app.core.rate_limiter import InMemoryRateLimiter, get_rate_limiter
+from app.core.rate_limiter import InMemoryRateLimiter, RateLimitStats, get_rate_limiter
 
 
 @pytest.mark.asyncio
@@ -67,3 +67,25 @@ def test_get_rate_limiter_factory():
     # Should not raise
     limiter = get_rate_limiter()
     assert limiter is not None
+
+
+def test_rate_limit_stats_empty():
+    stats = RateLimitStats()
+    s = stats.summary()
+    assert s["total_blocked"] == 0
+    assert s["by_bucket"] == {}
+    assert s["top_ips"] == []
+
+
+def test_rate_limit_stats_records_hits():
+    stats = RateLimitStats()
+    stats.record_hit("1.2.3.4", "auth")
+    stats.record_hit("1.2.3.4", "auth")
+    stats.record_hit("5.6.7.8", "api")
+    s = stats.summary()
+    assert s["total_blocked"] == 3
+    assert s["by_bucket"]["auth"] == 2
+    assert s["by_bucket"]["api"] == 1
+    assert len(s["top_ips"]) == 2
+    assert s["top_ips"][0]["ip"] == "1.2.3.4"
+    assert s["top_ips"][0]["hits"] == 2

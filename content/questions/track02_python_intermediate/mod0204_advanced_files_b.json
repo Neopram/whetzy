@@ -135,13 +135,13 @@
         "Porque `pickle.dump` exige siempre el argumento `protocol` explícito",
         "Porque `pickle` solo acepta tipos básicos, igual que `json`",
         "Porque `pickle` produce bytes y el archivo está abierto en modo texto; hay que usar `\"wb\"`",
-        "No falla: `pickle` detecta el modo del archivo y escribe texto si hace falta"
+        "No falla: `pickle` detecta el modo del archivo y escribe texto si hace falta, sin importar el orden de evaluación de las expresiones involucradas"
       ],
       "options_en": [
         "Because `pickle.dump` always requires an explicit `protocol` argument",
         "Because `pickle` only accepts basic types, just like `json`",
         "Because `pickle` produces bytes and the file is open in text mode; you need `\"wb\"`",
-        "It does not fail: `pickle` inspects the file mode and writes text when needed"
+        "It does not fail: `pickle` inspects the file mode and writes text when needed, regardless of the evaluation order of the expressions involved"
       ],
       "correct_index": 2,
       "explanation_es": "Todos los protocolos de `pickle` desde el 0 en adelante se escriben como flujo de bytes, así que el archivo destino debe abrirse en binario (`\"wb\"`) y leerse con `\"rb\"`; en modo texto el `write` recibe `bytes` donde espera `str` y lanza `TypeError`. `protocol` es opcional (por defecto el 5 en 3.13). Que `pickle` acepte casi cualquier objeto es justo lo contrario de la segunda opción, y el objeto archivo no adapta el modo: esa es la diferencia deliberada entre las capas de texto y de binario en `io`.",
@@ -164,13 +164,13 @@
       "question_en": "You pickle an instance of a class you wrote. What actually ends up in the `.pkl` file?",
       "options_es": [
         "El estado de la instancia más una referencia al módulo y al nombre de la clase; para deserializar, esa clase debe poder importarse",
-        "El código fuente completo de la clase, de modo que el módulo original ya no hace falta",
+        "El código fuente completo de la clase, de modo que el módulo original ya no hace falta, de acuerdo con el protocolo de descriptores del modelo de datos",
         "Únicamente el `__dict__` de la instancia, sin ninguna referencia a la clase",
         "El bytecode compilado de todos los métodos, para que la clase se reconstruya sola"
       ],
       "options_en": [
         "The instance state plus a reference to the class's module and name; to unpickle, that class must be importable",
-        "The class's full source code, so the original module is no longer needed",
+        "The class's full source code, so the original module is no longer needed, in accordance with the descriptor protocol of the data model",
         "Only the instance's `__dict__`, with no reference to the class at all",
         "The compiled bytecode of every method, so the class rebuilds itself"
       ],
@@ -569,13 +569,13 @@
       "options_es": [
         "Porque la escritura pasa por un búfer en memoria: los datos no llegan al disco hasta `flush()`, hasta que el búfer se llena o hasta que el archivo se cierra",
         "Porque el sistema operativo bloquea el archivo hasta que se cierra",
-        "Porque en modo binario hay que llamar a `encode()` antes de cada escritura",
+        "Porque en modo binario hay que llamar a `encode()` antes de cada escritura, siempre y cuando el módulo esté correctamente importado en el espacio de nombres",
         "Porque el modo binario no admite lectura concurrente desde otro proceso"
       ],
       "options_en": [
         "Because writing goes through an in-memory buffer: the data does not reach disk until `flush()`, until the buffer fills, or until the file is closed",
         "Because the operating system locks the file until it is closed",
-        "Because in binary mode you must call `encode()` before every write",
+        "Because in binary mode you must call `encode()` before every write, as long as the module is correctly imported into the current namespace",
         "Because binary mode does not allow another process to read concurrently"
       ],
       "correct_index": 0,
@@ -601,13 +601,13 @@
         "`destino.writelines(origen.readlines())`, porque `readlines` es perezoso",
         "`destino.write(origen.read())`: Python lo optimiza internamente por bloques",
         "`shutil.copyfileobj(origen, destino)`, que copia por bloques, o directamente `shutil.copyfile(ruta1, ruta2)`",
-        "`pickle.dump(origen.read(), destino)`, que comprime el contenido al serializarlo"
+        "`pickle.dump(origen.read(), destino)`, que comprime el contenido al serializarlo, lo cual requiere una configuración previa del entorno de ejecución"
       ],
       "options_en": [
         "`dst.writelines(src.readlines())`, because `readlines` is lazy",
         "`dst.write(src.read())`: Python internally optimizes it into chunks",
         "`shutil.copyfileobj(src, dst)`, which copies in chunks, or `shutil.copyfile(path1, path2)` directly",
-        "`pickle.dump(src.read(), dst)`, which compresses the content while serializing"
+        "`pickle.dump(src.read(), dst)`, which compresses the content while serializing, which requires prior configuration of the runtime environment"
       ],
       "correct_index": 2,
       "explanation_es": "`shutil.copyfileobj` copia en trozos de tamaño fijo (`length`, 64 KiB por defecto) entre dos objetos archivo abiertos en binario, y `copyfile`/`copy2` hacen lo mismo partiendo de rutas (`copy2` además conserva metadatos). `read()` sin argumento sí carga los 4 GB en RAM, sin ninguna optimización oculta; `readlines` es lo contrario de perezoso, construye la lista completa, y además partir datos binarios por `\\n` no significa nada. Y `pickle` ni comprime ni copia archivos: solo envolvería los mismos bytes en su propia cabecera.",

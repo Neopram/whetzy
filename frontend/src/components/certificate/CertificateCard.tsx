@@ -9,7 +9,7 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { CertificatePublic } from '../../services/api';
+import { API_BASE_URL, type CertificatePublic } from '../../services/api';
 import styles from './CertificateCard.module.css';
 
 /** Where the certificate lives. Built from the current origin so it is right in
@@ -82,12 +82,28 @@ export function CertificateCard({ certificate, showShare = true }: Props) {
         </div>
       </dl>
 
+      <img
+        className={styles.qr}
+        src={`${API_BASE_URL}/exams/certificates/${certificate.code}/qr`}
+        alt={t('certificate.qrAlt')}
+        width={120}
+        height={120}
+      />
+
       {showShare && (
         <>
           <p className={styles.url}>{url}</p>
           <button className={styles.copy} onClick={() => void copy()}>
             {copied ? t('certificate.copied') : t('certificate.copyLink')}
           </button>
+          <a
+            className={styles.badge}
+            href={`${API_BASE_URL}/exams/certificates/${certificate.code}/badge`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('certificate.downloadBadge')}
+          </a>
           <p className={styles.hint}>{t('certificate.shareHint')}</p>
         </>
       )}

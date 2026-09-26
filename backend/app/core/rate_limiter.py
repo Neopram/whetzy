@@ -1,6 +1,7 @@
 """Rate limiting abstraction with in-memory and Redis backends.
 
 Series 22.6: Use Redis if REDIS_URL is set, otherwise fall back to in-memory.
+22.1: Rate-limit hit stats for admin visibility.
 """
 
 from __future__ import annotations
@@ -9,8 +10,43 @@ import logging
 import time
 from abc import ABC, abstractmethod
 from collections import defaultdict
+from dataclasses import dataclass, field
+from datetime import UTC, datetime
 
 logger = logging.getLogger("whetzy")
+
+
+@dataclass
+class RateLimitStats:
+    """In-process counters for rate-limit denials (22.1)."""
+
+    _hits: dict[str, int] = field(default_factory=lambda: defaultdict(int))
+    _first_seen: datetime = field(default_factory=lambda: datetime.now(UTC))
+
+    def record_hit(self, client_ip: str, bucket: str) -> None:
+        self._hits[f"{client_ip}:{bucket}"] += 1
+
+    def summary(self) -> dict[str, object]:
+        by_bucket: dict[str, int] = defaultdict(int)
+        by_ip: dict[str, int] = defaultdict(int)
+        for key, count in self._hits.items():
+            ip, bucket = key.rsplit(":", 1)
+            by_bucket[bucket] += count
+            by_ip[ip] += count
+        top_ips = sorted(by_ip.items(), key=lambda x: x[1], reverse=True)[:20]
+        return {
+            "total_blocked": sum(self._hits.values()),
+            "since": self._first_seen.isoformat(),
+            "by_bucket": dict(by_bucket),
+            "top_ips": [{"ip": ip, "hits": h} for ip, h in top_ips],
+        }
+
+
+_rate_limit_stats = RateLimitStats()
+
+
+def get_rate_limit_stats() -> RateLimitStats:
+    return _rate_limit_stats
 
 
 class RateLimiter(ABC):

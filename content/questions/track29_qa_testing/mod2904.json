@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q290401_001",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal del método `page.goto()` en Playwright?",
+      "question_en": "What is the primary purpose of the `page.goto()` method in Playwright?",
+      "options_es": [
+        "Simular un clic en un elemento",
+        "Extraer texto de un elemento",
+        "Esperar a que un elemento sea visible",
+        "Navegar a una URL especificada"
+      ],
+      "options_en": [
+        "Simulate a click on an element",
+        "Extract text from an element",
+        "Wait for an element to be visible",
+        "Navigate to a specified URL"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El método `page.goto()` se utiliza para navegar a una URL específica en el navegador. Es una de las funciones más fundamentales en Playwright para cargar páginas web.",
+      "explanation_en": "`page.goto()` is used to navigate to a specific URL in the browser. It is one of the most fundamental functions in Playwright for loading web pages.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_002",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué característica de Playwright permite que los tests esperen automáticamente a que los elementos estén listos?",
+      "question_en": "What Playwright feature allows tests to automatically wait for elements to be ready?",
+      "options_es": [
+        "Browser pooling",
+        "Async rendering",
+        "Lazy loading",
+        "Auto-waiting"
+      ],
+      "options_en": [
+        "Browser pooling",
+        "Async rendering",
+        "Lazy loading",
+        "Auto-waiting"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Auto-waiting es una característica de Playwright que espera automáticamente a que los elementos estén en un estado actionable antes de realizar acciones. Esto reduce los problemas de timing.",
+      "explanation_en": "Auto-waiting is a Playwright feature that automatically waits for elements to be in an actionable state before performing actions. This reduces timing-related issues.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_003",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia principal entre un `Page` y un `BrowserContext` en Playwright?",
+      "question_en": "What is the main difference between a `Page` and a `BrowserContext` in Playwright?",
+      "options_es": [
+        "Page es más rápido que BrowserContext",
+        "BrowserContext es un contenedor para múltiples Pages con estado aislado",
+        "Page no puede ejecutar JavaScript por convención",
+        "BrowserContext solo funciona con Firefox"
+      ],
+      "options_en": [
+        "Page is faster than BrowserContext",
+        "BrowserContext is a container for multiple Pages with isolated state",
+        "Page cannot execute JavaScript in real environments",
+        "BrowserContext only works with Firefox"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un BrowserContext es una instancia aislada del navegador que puede contener múltiples Pages. Cada context tiene su propia cookie, localStorage y sesión, lo que permite pruebas paralelas e independientes.",
+      "explanation_en": "A BrowserContext is an isolated instance of the browser that can contain multiple Pages. Each context has its own cookies, localStorage, and session, enabling parallel and independent tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_004",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método se utiliza para encontrar elementos en Playwright usando selectores CSS?",
+      "question_en": "What method is used to find elements in Playwright using CSS selectors?",
+      "options_es": [
+        "page.find_element()",
+        "page.get_element()",
+        "page.query_selector()",
+        "page.locator()"
+      ],
+      "options_en": [
+        "page.find_element()",
+        "page.get_element()",
+        "page.query_selector()",
+        "page.locator()"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El método `page.locator()` es la forma preferida en Playwright para encontrar elementos. Retorna un objeto Locator que puede ser utilizado para interactuar con el elemento.",
+      "explanation_en": "`page.locator()` is the preferred way in Playwright to find elements. It returns a Locator object that can be used to interact with the element.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_005",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el beneficio principal de usar Locators en lugar de selectores directos?",
+      "question_en": "What is the main benefit of using Locators instead of direct selectors?",
+      "options_es": [
+        "Los Locators son más rápidos",
+        "Los Locators solo funcionan en Chrome",
+        "Los Locators incluyen esperas automáticas y re-queries",
+        "Los Locators no requieren navegador"
+      ],
+      "options_en": [
+        "Locators are faster",
+        "Locators only work in Chrome",
+        "Locators include automatic waits and re-queries",
+        "Locators don't require a browser"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los Locators incluyen auto-waiting y capacidad de re-query. Si un elemento no está encontrado, Playwright reintentar automáticamente, mejorando la confiabilidad de los tests.",
+      "explanation_en": "Locators include auto-waiting and re-query capability. If an element isn't found, Playwright automatically retries, improving test reliability.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_006",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método se usa para hacer clic en un elemento en Playwright?",
+      "question_en": "What method is used to click an element in Playwright?",
+      "options_es": [
+        "locator.press()",
+        "locator.click()",
+        "locator.tap()",
+        "locator.submit()"
+      ],
+      "options_en": [
+        "locator.press()",
+        "locator.click()",
+        "locator.tap()",
+        "locator.submit()"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El método `locator.click()` se utiliza para hacer clic en un elemento. Playwright automáticamente espera a que el elemento sea clickeable antes de ejecutar la acción.",
+      "explanation_en": "`locator.click()` is used to click an element. Playwright automatically waits for the element to be clickable before executing the action.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_007",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de los siguientes es un evento que puede ser interceptado en Playwright?",
+      "question_en": "Which of the following is an event that can be intercepted in Playwright?",
+      "options_es": [
+        "Todas las anteriores",
+        "page.on('error')",
+        "page.on('response')",
+        "page.on('request')"
+      ],
+      "options_en": [
+        "All of the above",
+        "page.on('error')",
+        "page.on('response')",
+        "page.on('request')"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Playwright permite interceptar múltiples eventos, incluyendo errores, requests, responses y más. Esto es útil para monitoreo y validación en los tests.",
+      "explanation_en": "Playwright allows intercepting multiple events, including errors, requests, responses, and more. This is useful for monitoring and validation in tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_008",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se captura una screenshot en Playwright?",
+      "question_en": "How do you capture a screenshot in Playwright?",
+      "options_es": [
+        "page.screenshot_sync()",
+        "page.take_screenshot()",
+        "page.screenshot()",
+        "browser.capture()"
+      ],
+      "options_en": [
+        "page.screenshot_sync()",
+        "page.take_screenshot()",
+        "page.screenshot()",
+        "browser.capture()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El método `page.screenshot()` se utiliza para capturar una screenshot de la página. Puede guardarse en un archivo especificando el parámetro `path`.",
+      "explanation_en": "`page.screenshot()` is used to capture a screenshot of the page. It can be saved to a file by specifying the `path` parameter.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_009",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué parámetro se utiliza para especificar el tiempo de espera máximo en Playwright?",
+      "question_en": "What parameter is used to specify the maximum wait time in Playwright?",
+      "options_es": [
+        "wait_time",
+        "timeout",
+        "delay",
+        "duration"
+      ],
+      "options_en": [
+        "wait_time",
+        "timeout",
+        "delay",
+        "duration"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El parámetro `timeout` se utiliza para especificar el máximo tiempo de espera. Es importante configurar timeouts apropiados para evitar que los tests se bloqueen indefinidamente.",
+      "explanation_en": "The `timeout` parameter is used to specify the maximum wait time. It's important to set appropriate timeouts to prevent tests from blocking indefinitely.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_010",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la forma correcta de escribir texto en un campo de entrada en Playwright?",
+      "question_en": "What is the correct way to type text into an input field in Playwright?",
+      "options_es": [
+        "locator.type_text('texto')",
+        "locator.write('texto')",
+        "locator.type('texto')",
+        "locator.fill('texto')"
+      ],
+      "options_en": [
+        "locator.type_text('text')",
+        "locator.write('text')",
+        "locator.type('text')",
+        "locator.fill('text')"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El método `locator.fill()` es la forma preferida para escribir texto en campos de entrada. Limpia el campo primero y luego escribe el texto.",
+      "explanation_en": "`locator.fill()` is the preferred way to type text into input fields. It clears the field first and then types the text.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_011",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método se utiliza para esperar explícitamente a un elemento en Playwright?",
+      "question_en": "What method is used to explicitly wait for an element in Playwright?",
+      "options_es": [
+        "locator.wait()",
+        "locator.wait_for()",
+        "page.wait_for_selector()",
+        "page.wait()"
+      ],
+      "options_en": [
+        "locator.wait()",
+        "locator.wait_for()",
+        "page.wait_for_selector()",
+        "page.wait()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`page.wait_for_selector()` espera a que un elemento correspondiente al selector esté presente en el DOM. Aunque Playwright tiene auto-waiting, a veces es necesario esperar explícitamente.",
+      "explanation_en": "`page.wait_for_selector()` waits for an element matching the selector to be present in the DOM. Although Playwright has auto-waiting, sometimes explicit waits are necessary.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_012",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de los siguientes es un selector válido en Playwright?",
+      "question_en": "Which of the following is a valid selector in Playwright?",
+      "options_es": [
+        "css=#submit-btn",
+        "Todas las anteriores",
+        "text=Click me",
+        "xpath=//button[@id='submit']"
+      ],
+      "options_en": [
+        "css=#submit-btn",
+        "All of the above",
+        "text=Click me",
+        "xpath=//button[@id='submit']"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Playwright soporta múltiples tipos de selectores: CSS, XPath, texto y más. El prefijo especifica el tipo de selector a utilizar.",
+      "explanation_en": "Playwright supports multiple selector types: CSS, XPath, text, and more. The prefix specifies the type of selector to use.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_013",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar `page.wait_for_load_state()` en lugar de sleep()?",
+      "question_en": "What is the advantage of using `page.wait_for_load_state()` instead of sleep()?",
+      "options_es": [
+        "Espera solo el tiempo necesario, no un tiempo fijo",
+        "No requiere parámetros",
+        "Es más rápido como regla general",
+        "Funciona en todos los navegadores"
+      ],
+      "options_en": [
+        "It waits only as long as necessary, not a fixed time",
+        "It doesn't require parameters",
+        "It's faster in this context",
+        "It works in all browsers"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`page.wait_for_load_state()` espera a que la página alcance un estado específico (como 'networkidle'), en lugar de dormir un tiempo fijo, lo que hace los tests más confiables.",
+      "explanation_en": "`page.wait_for_load_state()` waits for the page to reach a specific state (like 'networkidle'), rather than sleeping for a fixed time, making tests more reliable.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_014",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se accede al contenido de un iframe en Playwright?",
+      "question_en": "How do you access content inside an iframe in Playwright?",
+      "options_es": [
+        "page.get_frame()",
+        "page.iframe()",
+        "page.frame()",
+        "page.access_frame()"
+      ],
+      "options_en": [
+        "page.get_frame()",
+        "page.iframe()",
+        "page.frame()",
+        "page.access_frame()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El método `page.frame()` se utiliza para acceder a un iframe específico. Luego se pueden usar locators en el frame retornado para interactuar con sus elementos.",
+      "explanation_en": "`page.frame()` is used to access a specific iframe. Then locators can be used on the returned frame to interact with its elements.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290401_015",
+      "skill_id": "sk290401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método se utiliza para obtener el HTML de un elemento en Playwright?",
+      "question_en": "What method is used to get the HTML content of an element in Playwright?",
+      "options_es": [
+        "locator.inner_html()",
+        "locator.get_html()",
+        "locator.html()",
+        "locator.content()"
+      ],
+      "options_en": [
+        "locator.inner_html()",
+        "locator.get_html()",
+        "locator.html()",
+        "locator.content()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El método `locator.html()` retorna el contenido HTML del elemento. También existe `locator.inner_html()` para obtener solo el HTML interno sin la etiqueta del elemento.",
+      "explanation_en": "`locator.html()` returns the HTML content of the element. There's also `locator.inner_html()` to get only the inner HTML without the element tag.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_001",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la clase principal de Selenium WebDriver?",
+      "question_en": "What is the main class of Selenium WebDriver?",
+      "options_es": [
+        "Browser",
+        "WebDriver",
+        "Locator",
+        "Session en este contexto"
+      ],
+      "options_en": [
+        "Browser",
+        "WebDriver",
+        "Locator",
+        "Session as a general rule"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La clase `WebDriver` es la interfaz principal en Selenium. Representa una sesión del navegador y se utiliza para interactuar con él.",
+      "explanation_en": "The `WebDriver` class is the main interface in Selenium. It represents a browser session and is used to interact with it.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_002",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el método correcto para encontrar un elemento por ID en Selenium?",
+      "question_en": "What is the correct method to find an element by ID in Selenium?",
+      "options_es": [
+        "driver.find_element_by_id('id') en el caso más común",
+        "driver.find_element(By.ID, 'id')",
+        "driver.get_element_by_id('id')",
+        "driver.locate(id='id')"
+      ],
+      "options_en": [
+        "driver.find_element_by_id('id') as a general guideline",
+        "driver.find_element(By.ID, 'id')",
+        "driver.get_element_by_id('id')",
+        "driver.locate(id='id')"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El método `driver.find_element(By.ID, 'id')` es la forma moderna de encontrar elementos por ID en Selenium. La versión 4 usa el parámetro `By` explícitamente.",
+      "explanation_en": "`driver.find_element(By.ID, 'id')` is the modern way to find elements by ID in Selenium. Version 4 uses the `By` parameter explicitly.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_003",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre `find_element()` y `find_elements()` en Selenium?",
+      "question_en": "What is the difference between `find_element()` and `find_elements()` in Selenium?",
+      "options_es": [
+        "No hay diferencia en la práctica",
+        "`find_element()` funciona con selectores CSS",
+        "`find_elements()` es más rápido",
+        "`find_element()` retorna un elemento, `find_elements()` retorna una lista"
+      ],
+      "options_en": [
+        "There is no difference as a general rule",
+        "`find_element()` works with CSS selectors",
+        "`find_elements()` is faster",
+        "`find_element()` returns an element, `find_elements()` returns a list"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`find_element()` retorna el primer elemento encontrado (o lanza una excepción si no encuentra ninguno). `find_elements()` retorna una lista de todos los elementos coincidentes.",
+      "explanation_en": "`find_element()` returns the first element found (or raises an exception if none are found). `find_elements()` returns a list of all matching elements.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_004",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la clase utilizada para especificar estrategias de espera en Selenium?",
+      "question_en": "What class is used to specify wait strategies in Selenium?",
+      "options_es": [
+        "Wait habitualmente",
+        "WaitFor",
+        "Waiter",
+        "WebDriverWait"
+      ],
+      "options_en": [
+        "Wait in this context",
+        "WaitFor",
+        "Waiter",
+        "WebDriverWait"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`WebDriverWait` es la clase en Selenium para esperas explícitas. Se usa con `expected_conditions` para esperar a que se cumplan condiciones específicas.",
+      "explanation_en": "`WebDriverWait` is the Selenium class for explicit waits. It's used with `expected_conditions` to wait for specific conditions to be met.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_005",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se espera a que un elemento sea clickeable en Selenium?",
+      "question_en": "How do you wait for an element to be clickable in Selenium?",
+      "options_es": [
+        "wait.until(EC.is_clickable((By.ID, 'id')))",
+        "wait.until(EC.clickable((By.ID, 'id')))",
+        "wait.until(EC.element_to_be_clickable((By.ID, 'id')))",
+        "wait.wait_clickable((By.ID, 'id'))"
+      ],
+      "options_en": [
+        "wait.until(EC.is_clickable((By.ID, 'id')))",
+        "wait.until(EC.clickable((By.ID, 'id')))",
+        "wait.until(EC.element_to_be_clickable((By.ID, 'id')))",
+        "wait.wait_clickable((By.ID, 'id'))"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La condición `element_to_be_clickable()` espera a que el elemento esté visible y habilitado. Es la forma correcta de asegurar que un elemento puede ser clickeado.",
+      "explanation_en": "The `element_to_be_clickable()` condition waits for the element to be visible and enabled. It's the correct way to ensure an element can be clicked.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_006",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método se utiliza para hacer clic en un elemento en Selenium?",
+      "question_en": "What method is used to click an element in Selenium?",
+      "options_es": [
+        "element.click()",
+        "element.press()",
+        "element.tap()",
+        "driver.click_on(element)"
+      ],
+      "options_en": [
+        "element.click()",
+        "element.press()",
+        "element.tap()",
+        "driver.click_on(element)"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El método `element.click()` se utiliza para hacer clic en un elemento en Selenium. Es un método del objeto WebElement.",
+      "explanation_en": "`element.click()` is used to click an element in Selenium. It's a method of the WebElement object.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_007",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la clase para realizar acciones avanzadas en Selenium como mover el ratón?",
+      "question_en": "What is the class for performing advanced actions in Selenium like moving the mouse?",
+      "options_es": [
+        "MouseActions",
+        "AdvancedActions",
+        "ActionChain",
+        "Actions"
+      ],
+      "options_en": [
+        "MouseActions",
+        "AdvancedActions",
+        "ActionChain",
+        "Actions"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La clase `Actions` en Selenium se utiliza para realizar acciones complejas como mover el ratón, arrastrar y soltar, etc. Se instancia con el driver.",
+      "explanation_en": "The `Actions` class in Selenium is used for complex actions like moving the mouse, drag and drop, etc. It's instantiated with the driver.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_008",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se escribir texto en un campo en Selenium?",
+      "question_en": "How do you type text into a field in Selenium?",
+      "options_es": [
+        "element.send_keys('texto')",
+        "element.type('texto')",
+        "element.write('texto')",
+        "driver.type_text('texto')"
+      ],
+      "options_en": [
+        "element.send_keys('text')",
+        "element.type('text')",
+        "element.write('text')",
+        "driver.type_text('text')"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`element.send_keys()` se utiliza para escribir texto en un elemento en Selenium. También se puede usar para enviar teclas especiales.",
+      "explanation_en": "`element.send_keys()` is used to type text into an element in Selenium. It can also be used to send special keys.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_009",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la forma correcta de obtener el texto de un elemento en Selenium?",
+      "question_en": "What is the correct way to get the text of an element in Selenium?",
+      "options_es": [
+        "element.get_text()",
+        "element.text",
+        "element.get_content()",
+        "driver.get_text(element)"
+      ],
+      "options_en": [
+        "element.get_text()",
+        "element.text",
+        "element.get_content()",
+        "driver.get_text(element)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La propiedad `element.text` retorna el texto visible del elemento. No es un método, sino una propiedad del WebElement.",
+      "explanation_en": "The `element.text` property returns the visible text of the element. It's not a method, but a property of the WebElement.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_010",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se cambia a una ventana o pestaña diferente en Selenium?",
+      "question_en": "How do you switch to a different window or tab in Selenium?",
+      "options_es": [
+        "driver.switch_window('window_id')",
+        "driver.switch_to.window(window_handle)",
+        "driver.change_window(handle)",
+        "driver.select_window(id)"
+      ],
+      "options_en": [
+        "driver.switch_window('window_id')",
+        "driver.switch_to.window(window_handle)",
+        "driver.change_window(handle)",
+        "driver.select_window(id)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`driver.switch_to.window()` se utiliza para cambiar a una ventana o pestaña específica usando su handle. `driver.window_handles` proporciona una lista de todos los handles.",
+      "explanation_en": "`driver.switch_to.window()` is used to switch to a specific window or tab using its handle. `driver.window_handles` provides a list of all handles.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_011",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la forma correcta de cambiar a un iframe en Selenium?",
+      "question_en": "What is the correct way to switch to an iframe in Selenium?",
+      "options_es": [
+        "driver.switch_to.iframe(0)",
+        "driver.switch_to.frame('name')",
+        "driver.switch_to.frame(element)",
+        "Todas las anteriores"
+      ],
+      "options_en": [
+        "driver.switch_to.iframe(0)",
+        "driver.switch_to.frame('name')",
+        "driver.switch_to.frame(element)",
+        "All of the above"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`driver.switch_to.frame()` acepta múltiples parámetros: índice, nombre de iframe o elemento WebElement. Todos son válidos dependiendo del contexto.",
+      "explanation_en": "`driver.switch_to.frame()` accepts multiple parameters: index, iframe name, or WebElement. All are valid depending on the context.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_012",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se cambia de un iframe al contenido principal en Selenium?",
+      "question_en": "How do you switch from an iframe back to the main content in Selenium?",
+      "options_es": [
+        "driver.reset_frame()",
+        "driver.switch_to.main()",
+        "driver.switch_to.default_content()",
+        "driver.switch_to.parent()"
+      ],
+      "options_en": [
+        "driver.reset_frame()",
+        "driver.switch_to.main()",
+        "driver.switch_to.default_content()",
+        "driver.switch_to.parent()"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`driver.switch_to.default_content()` cambia el contexto de vuelta al contenido principal de la página desde cualquier iframe.",
+      "explanation_en": "`driver.switch_to.default_content()` switches the context back to the main page content from any iframe.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_013",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el tiempo de espera implícito predeterminado en Selenium?",
+      "question_en": "What is the default implicit wait timeout in Selenium?",
+      "options_es": [
+        "5 segundos",
+        "0 segundos",
+        "10 segundos",
+        "Variable según el navegador"
+      ],
+      "options_en": [
+        "5 seconds",
+        "0 seconds",
+        "10 seconds",
+        "Varies by browser"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Por defecto, no hay espera implícita (0 segundos). La espera implícita debe configurarse explícitamente usando `driver.implicitly_wait()` si se necesita.",
+      "explanation_en": "By default, there is no implicit wait (0 seconds). Implicit wait must be set explicitly using `driver.implicitly_wait()` if needed.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_014",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se cierra el navegador en Selenium?",
+      "question_en": "How do you close the browser in Selenium?",
+      "options_es": [
+        "driver.quit()",
+        "driver.exit()",
+        "driver.close_browser()",
+        "driver.close()"
+      ],
+      "options_en": [
+        "driver.quit()",
+        "driver.exit()",
+        "driver.close_browser()",
+        "driver.close()"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`driver.quit()` cierra todas las ventanas y termina la sesión. `driver.close()` solo cierra la ventana actual. `quit()` es lo preferido para limpiar al final de los tests.",
+      "explanation_en": "`driver.quit()` closes all windows and ends the session. `driver.close()` only closes the current window. `quit()` is preferred for cleanup at the end of tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290402_015",
+      "skill_id": "sk290402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué método obtiene el atributo de un elemento en Selenium?",
+      "question_en": "What method gets an attribute of an element in Selenium?",
+      "options_es": [
+        "element.attr('name')",
+        "element.attribute('name')",
+        "element.get_attribute('name')",
+        "driver.get_attribute(element, 'name')"
+      ],
+      "options_en": [
+        "element.attr('name')",
+        "element.attribute('name')",
+        "element.get_attribute('name')",
+        "driver.get_attribute(element, 'name')"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`element.get_attribute('name')` retorna el valor del atributo especificado del elemento. Es útil para verificar propiedades HTML como href, src, etc.",
+      "explanation_en": "`element.get_attribute('name')` returns the value of the specified attribute of the element. It's useful for checking HTML properties like href, src, etc.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_001",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal del Page Object Model?",
+      "question_en": "What is the main purpose of the Page Object Model?",
+      "options_es": [
+        "Aumentar la velocidad de los tests",
+        "Reducir el número de navegadores",
+        "Eliminar la necesidad de esperas",
+        "Crear una abstracción de elementos y acciones de página"
+      ],
+      "options_en": [
+        "Increase test speed typically",
+        "Reduce the number of browsers",
+        "Eliminate the need for waits",
+        "Create an abstraction of page elements and actions"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El Page Object Model encapsula elementos y acciones de una página en una clase, mejorando la mantenibilidad y reutilización del código de tests.",
+      "explanation_en": "The Page Object Model encapsulates page elements and actions in a class, improving maintainability and code reuse in tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_002",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja principal de usar POM en mantenimiento?",
+      "question_en": "What is the main advantage of using POM in maintenance?",
+      "options_es": [
+        "No requiere cambios cuando cambiar los selectores",
+        "Cambios en selectores se hacen en un único lugar",
+        "Mejora la seguridad",
+        "Reduce memoria"
+      ],
+      "options_en": [
+        "No changes needed when selectors change",
+        "Changes to selectors are made in one place",
+        "Improves security",
+        "Reduces memory"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cuando un selector cambia, solo se actualiza en la clase Page Object. Los tests que usan esa página no necesitan cambios, reduciendo el mantenimiento.",
+      "explanation_en": "When a selector changes, it's updated only in the Page Object class. Tests using that page don't need changes, reducing maintenance.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_003",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se estructura típicamente una clase Page Object?",
+      "question_en": "How is a Page Object class typically structured?",
+      "options_es": [
+        "Solo métodos como regla general",
+        "Funciones globales",
+        "Solo atributos como práctica recomendada de manera estándar",
+        "Locators como atributos, acciones como métodos"
+      ],
+      "options_en": [
+        "Only methods by default",
+        "Global functions",
+        "Only attributes in common practice under normal conditions",
+        "Locators as attributes, actions as methods"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una clase Page Object típicamente tiene locadores como atributos de clase y acciones de usuario como métodos. Esto mantiene separadas las localizaciones del comportamiento.",
+      "explanation_en": "A Page Object class typically has locators as class attributes and user actions as methods. This keeps locations separate from behavior.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_004",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué debería contener el constructor de una clase Page Object?",
+      "question_en": "What should the constructor of a Page Object class contain?",
+      "options_es": [
+        "Búsqueda de todos los elementos",
+        "Datos de test",
+        "La instancia del driver",
+        "Validaciones de la página"
+      ],
+      "options_en": [
+        "Search for all elements",
+        "Test data",
+        "The driver instance",
+        "Page validations"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El constructor típicamente recibe la instancia del driver y la almacena como atributo de instancia para usar en los métodos de la clase.",
+      "explanation_en": "The constructor typically receives the driver instance and stores it as an instance attribute for use in class methods.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_005",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para nombrar métodos en una Page Object?",
+      "question_en": "What is the best practice for naming methods in a Page Object?",
+      "options_es": [
+        "Nombres cortos como 'click'",
+        "Nombres técnicos como 'find_and_click'",
+        "Nombres descriptivos de acciones de usuario como 'login_user'",
+        "Nombres aleatorios habitualmente"
+      ],
+      "options_en": [
+        "Short names like 'click'",
+        "Technical names like 'find_and_click'",
+        "Descriptive user action names like 'login_user'",
+        "Random names by convention"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los métodos deben nombrar acciones de usuario o negocio, no acciones técnicas. Esto hace los tests más legibles y enfocados en el comportamiento esperado.",
+      "explanation_en": "Methods should name user or business actions, not technical actions. This makes tests more readable and focused on expected behavior.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_006",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Debería una Page Object validar el contenido de la página?",
+      "question_en": "Should a Page Object validate page content?",
+      "options_es": [
+        "No, solo interactuar",
+        "Sí, siempre por convención según la documentación oficial para la mayoría de proyectos",
+        "Sí, pero no con assertions, con métodos que devuelven datos",
+        "Depende del framework"
+      ],
+      "options_en": [
+        "No, only interact",
+        "Yes, always in real environments in this context in production environments",
+        "Yes, but not with assertions, with methods that return data",
+        "Depends on the framework"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una Page Object puede incluir métodos que devuelvan datos para que los tests verifiquen. No debería contener assertions; es responsabilidad del test.",
+      "explanation_en": "A Page Object can include methods that return data for tests to verify. It shouldn't contain assertions; that's the test's responsibility.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_007",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se manejan múltiples páginas en un proyecto con POM?",
+      "question_en": "How are multiple pages handled in a POM project?",
+      "options_es": [
+        "b y c son correctas",
+        "Una clase Page Object por página",
+        "Una sola clase Page Object",
+        "Page Objects heredadas de una clase base"
+      ],
+      "options_en": [
+        "b and c are correct",
+        "One Page Object class per page",
+        "One Page Object class",
+        "Page Objects inheriting from a base class"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Generalmente, se crea una clase Page Object para cada página o componente. Es común usar una clase base que contenga funcionalidad común a todas las páginas.",
+      "explanation_en": "Generally, one Page Object class is created for each page or component. It's common to use a base class containing functionality common to all pages.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_008",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el beneficio de heredar Page Objects de una clase base?",
+      "question_en": "What is the benefit of inheriting Page Objects from a base class?",
+      "options_es": [
+        "Reutilizar código común",
+        "Facilitar mantenimiento",
+        "Todas las anteriores",
+        "Mejorar legibilidad"
+      ],
+      "options_en": [
+        "Reuse common code",
+        "Ease maintenance",
+        "All of the above",
+        "Improve readability"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una clase base puede contener métodos comunes como 'ir a URL', 'cerrar ventana', etc. Esto reduce duplicación y mejora la mantenibilidad.",
+      "explanation_en": "A base class can contain common methods like 'go to URL', 'close window', etc. This reduces duplication and improves maintainability.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_009",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se manejan los flujos de navegación entre páginas en POM?",
+      "question_en": "How are navigation flows between pages handled in POM?",
+      "options_es": [
+        "En una clase de utilidad",
+        "En el test directamente",
+        "Los métodos retornan la siguiente Page Object",
+        "No se manejan en POM por convención"
+      ],
+      "options_en": [
+        "In a utility class typically",
+        "In the test directly",
+        "Methods return the next Page Object",
+        "Not handled in POM"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una buena práctica es que los métodos que causan navegación retornen la siguiente Page Object. Esto permite encadenar acciones de forma fluida.",
+      "explanation_en": "A best practice is for methods that cause navigation to return the next Page Object. This allows chaining actions fluently.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_010",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Dónde deberían ubicarse los locadores en una Page Object?",
+      "question_en": "Where should locators be placed in a Page Object?",
+      "options_es": [
+        "Dentro de los métodos",
+        "Como atributos privados de clase",
+        "En un archivo separado",
+        "En el constructor en el caso más común"
+      ],
+      "options_en": [
+        "Inside methods",
+        "As private class attributes",
+        "In a separate file",
+        "In the constructor as a general guideline"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los locadores deberían ser atributos privados o protegidos de la clase para mantenerlos separados de la lógica de acciones. Esto facilita el mantenimiento.",
+      "explanation_en": "Locators should be private or protected class attributes to keep them separate from action logic. This eases maintenance.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_011",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar tipos de retorno explícitos en métodos POM?",
+      "question_en": "What is the advantage of using explicit return types in POM methods?",
+      "options_es": [
+        "Proporciona claridad sobre qué esperar del método",
+        "Mejora la velocidad según la especificación",
+        "Reduce el tamaño del código",
+        "Elimina la necesidad de waits"
+      ],
+      "options_en": [
+        "Provides clarity about what to expect from the method",
+        "Improves speed in real environments",
+        "Reduces code size",
+        "Eliminates the need for waits"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Tipos de retorno explícitos documentan lo que el método devuelve, mejorando la legibilidad y facilitando el uso correcto en los tests.",
+      "explanation_en": "Explicit return types document what the method returns, improving readability and facilitating correct usage in tests.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_012",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para manejar esperas en una Page Object?",
+      "question_en": "What is the best practice for handling waits in a Page Object?",
+      "options_es": [
+        "Encapsularlas en métodos de la Page Object",
+        "No usar esperas en entornos reales",
+        "Dejarlas en los tests",
+        "Usar solo esperas implícitas"
+      ],
+      "options_en": [
+        "Encapsulate them in Page Object methods",
+        "Don't use waits typically",
+        "Leave them in tests",
+        "Use only implicit waits"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las esperas deben encapsularse dentro de los métodos de la Page Object para que los tests sean más limpios y las esperas sean transparentes.",
+      "explanation_en": "Waits should be encapsulated within Page Object methods so tests are cleaner and waits are transparent.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_013",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una Page Factory?",
+      "question_en": "What is a Page Factory?",
+      "options_es": [
+        "Una clase que crea instancias de páginas",
+        "Un framework de tests",
+        "Una herramienta que genera Page Objects automáticamente",
+        "Un patrón de inicialización de elementos en Selenium"
+      ],
+      "options_en": [
+        "A class that creates page instances",
+        "A test framework",
+        "A tool that generates Page Objects automatically",
+        "An element initialization pattern in Selenium"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Page Factory es un patrón que inicializa locadores usando anotaciones, reduciendo el boilerplate en los Page Objects.",
+      "explanation_en": "Page Factory is a pattern that initializes locators using annotations, reducing boilerplate in Page Objects.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_014",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el principio SOLID más importante en POM?",
+      "question_en": "Which SOLID principle is most important in POM?",
+      "options_es": [
+        "Liskov Substitution",
+        "Open/Closed",
+        "Single Responsibility",
+        "Dependency Inversion en este contexto"
+      ],
+      "options_en": [
+        "Liskov Substitution",
+        "Open/Closed",
+        "Single Responsibility",
+        "Dependency Inversion according to official documentation"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Single Responsibility es crucial en POM. Cada Page Object debe representar una sola página y cada método debe hacer una sola cosa.",
+      "explanation_en": "Single Responsibility is crucial in POM. Each Page Object should represent a single page and each method should do one thing.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290403_015",
+      "skill_id": "sk290403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se prueban los Page Objects?",
+      "question_en": "How are Page Objects tested?",
+      "options_es": [
+        "No se prueban",
+        "Se prueban durante la ejecución de tests de UI",
+        "Se prueban a través de tests de integración",
+        "Se prueban con unit tests directamente"
+      ],
+      "options_en": [
+        "They are not tested",
+        "They are tested during UI test execution",
+        "They are tested through integration tests",
+        "They are tested with unit tests directly"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los Page Objects se validan indirectamente a través de los tests de UI. También pueden añadirse métodos de validación que aseguren que estamos en la página correcta.",
+      "explanation_en": "Page Objects are validated indirectly through UI tests. Validation methods can also be added to ensure we're on the correct page.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_001",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito principal de las pruebas de regresión visual?",
+      "question_en": "What is the main purpose of visual regression testing?",
+      "options_es": [
+        "Verificar que el código compile",
+        "Verificar el rendimiento",
+        "Aumentar la cobertura de código",
+        "Detectar cambios inesperados en la interfaz visual"
+      ],
+      "options_en": [
+        "Verify that code compiles",
+        "Verify performance as a general rule",
+        "Increase code coverage",
+        "Detect unexpected changes in the visual interface"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las pruebas de regresión visual detectan cambios no deseados en el aspecto visual de la aplicación comparando screenshots.",
+      "explanation_en": "Visual regression testing detects unwanted changes in the visual appearance of the application by comparing screenshots.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_002",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre una línea base y una screenshot de prueba?",
+      "question_en": "What is the difference between a baseline and a test screenshot?",
+      "options_es": [
+        "No hay diferencia de forma estándar",
+        "La prueba es más precisa",
+        "La línea base es la referencia, la prueba es la captura actual",
+        "La línea base es más rápida"
+      ],
+      "options_en": [
+        "There is no difference by convention",
+        "The test is more accurate",
+        "The baseline is the reference, the test is the current capture",
+        "The baseline is faster"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La línea base (baseline) es la screenshot de referencia esperada. La screenshot de prueba es la captura actual. Se comparan para detectar diferencias.",
+      "explanation_en": "The baseline is the expected reference screenshot. The test screenshot is the current capture. They are compared to detect differences.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_003",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué técnica se utiliza para comparar dos screenshots en visual testing?",
+      "question_en": "What technique is used to compare two screenshots in visual testing?",
+      "options_es": [
+        "Diferencia de píxeles (pixel-by-pixel)",
+        "Análisis de contenido HTML",
+        "Comparación de hash en condiciones normales",
+        "Inspección manual"
+      ],
+      "options_en": [
+        "Pixel difference (pixel-by-pixel)",
+        "HTML content analysis",
+        "Hash comparison by default as a general guideline",
+        "Manual inspection"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La comparación pixel a pixel es la técnica estándar. Las herramientas calculan la diferencia de píxeles entre la línea base y la screenshot actual.",
+      "explanation_en": "Pixel-by-pixel comparison is the standard technique. Tools calculate the pixel difference between the baseline and current screenshot.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_004",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es un desafío común en visual regression testing?",
+      "question_en": "What is a common challenge in visual regression testing?",
+      "options_es": [
+        "Cambios de fuente anti-aliasing entre navegadores",
+        "Variaciones de colores por el navegador",
+        "Todas las anteriores",
+        "Diferencias en el renderizado del sistema operativo"
+      ],
+      "options_en": [
+        "Font anti-aliasing changes between browsers",
+        "Color variations by browser",
+        "All of the above",
+        "Differences in OS rendering"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los desafíos comunes incluyen diferencias entre navegadores, sistemas operativos, resoluciones y otras variables de renderizado que pueden causar falsos positivos.",
+      "explanation_en": "Common challenges include differences between browsers, operating systems, resolutions, and other rendering variables that can cause false positives.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_005",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se manejan los elementos dinámicos en visual regression testing?",
+      "question_en": "How are dynamic elements handled in visual regression testing?",
+      "options_es": [
+        "Se ignoran completamente en este contexto como práctica recomendada",
+        "Se capturan sin cambios",
+        "Se ocultan o se excluyen de la comparación",
+        "Se validan manualmente"
+      ],
+      "options_en": [
+        "They are completely ignored as a general guideline as a recommended practice",
+        "They are captured without changes",
+        "They are hidden or excluded from comparison",
+        "They are validated manually"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los elementos dinámicos como timestamps o contadores se ocultan o excluyen de las screenshots para evitar falsos positivos.",
+      "explanation_en": "Dynamic elements like timestamps or counters are hidden or excluded from screenshots to prevent false positives.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_006",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la mejor práctica para crear líneas base en visual testing?",
+      "question_en": "What is the best practice for creating baselines in visual testing?",
+      "options_es": [
+        "Una sola línea base para todo",
+        "Crear una por navegador y resolución",
+        "Crear una por plataforma",
+        "Crear una por usuario"
+      ],
+      "options_en": [
+        "One baseline for everything",
+        "Create one per browser and resolution",
+        "Create one per platform",
+        "Create one per user"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Se deben crear líneas base separadas para cada combinación de navegador y resolución para evitar falsos positivos por diferencias de renderizado.",
+      "explanation_en": "Separate baselines should be created for each browser and resolution combination to avoid false positives from rendering differences.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_007",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué herramienta es común para visual regression testing con Playwright?",
+      "question_en": "What is a common tool for visual regression testing with Playwright?",
+      "options_es": [
+        "Applitools",
+        "Todas las anteriores",
+        "PixelMatch",
+        "Percy por convención"
+      ],
+      "options_en": [
+        "Applitools",
+        "All of the above",
+        "PixelMatch",
+        "Percy according to spec"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Existen múltiples herramientas: Applitools y Percy son servicios en la nube populares; PixelMatch es una librería de código abierto.",
+      "explanation_en": "Multiple tools exist: Applitools and Percy are popular cloud services; PixelMatch is an open-source library.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_008",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el umbral de tolerancia típico en visual testing?",
+      "question_en": "What is the typical tolerance threshold in visual testing?",
+      "options_es": [
+        "0% - Coincidencia perfecta",
+        "Varía según el caso de uso",
+        "5-10% - Cambios moderados",
+        "1-2% - Variaciones menores"
+      ],
+      "options_en": [
+        "0% - Perfect match",
+        "Varies by use case",
+        "5-10% - Moderate changes",
+        "1-2% - Minor variations"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El umbral de tolerancia depende del proyecto. Algunos requieren coincidencia perfecta, otros permiten variaciones menores para anti-aliasing o rendering.",
+      "explanation_en": "The tolerance threshold depends on the project. Some require perfect match, others allow minor variations for anti-aliasing or rendering.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_009",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se captura una screenshot de solo una parte de la página?",
+      "question_en": "How do you capture a screenshot of only part of a page?",
+      "options_es": [
+        "driver.capture_region()",
+        "page.screenshot(full_page=False)",
+        "page.region_screenshot()",
+        "element.screenshot()"
+      ],
+      "options_en": [
+        "driver.capture_region()",
+        "page.screenshot(full_page=False)",
+        "page.region_screenshot()",
+        "element.screenshot()"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`element.screenshot()` captura solo el elemento especificado, útil para pruebas de componentes específicos.",
+      "explanation_en": "`element.screenshot()` captures only the specified element, useful for testing specific components.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_010",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el formato de archivo más común para guardar screenshots?",
+      "question_en": "What is the most common file format for saving screenshots?",
+      "options_es": [
+        "BMP",
+        "PNG",
+        "JPG",
+        "GIF"
+      ],
+      "options_en": [
+        "BMP",
+        "PNG",
+        "JPG",
+        "GIF"
+      ],
+      "correct_index": 1,
+      "explanation_es": "PNG es el formato estándar porque ofrece compresión sin pérdida, importante para comparaciones exactas pixel a pixel.",
+      "explanation_en": "PNG is the standard format because it offers lossless compression, important for exact pixel-by-pixel comparisons.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_011",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se actualizan las líneas base cuando los cambios visuales son correctos?",
+      "question_en": "How are baselines updated when visual changes are correct?",
+      "options_es": [
+        "Manualmente reemplazando el archivo",
+        "Automáticamente por la herramienta",
+        "Usando un comando específico",
+        "Todas las anteriores"
+      ],
+      "options_en": [
+        "By manually replacing the file",
+        "Automatically by the tool",
+        "Using a specific command",
+        "All of the above"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Existen múltiples métodos según la herramienta: reemplazo manual, actualización automática o comandos especiales.",
+      "explanation_en": "Multiple methods exist depending on the tool: manual replacement, automatic update, or special commands.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_012",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es una 'clipping' en el contexto de visual regression testing?",
+      "question_en": "What is 'clipping' in the context of visual regression testing?",
+      "options_es": [
+        "Cortar la pantalla antes de capturar",
+        "Comprimir la imagen",
+        "Excluir áreas específicas de la comparación",
+        "Zoom en un área como regla general"
+      ],
+      "options_en": [
+        "Cut the screen before capturing",
+        "Compress the image",
+        "Exclude specific areas from comparison",
+        "Zoom in on an area"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Clipping permite excluir regiones específicas de la captura, útil para ignorar elementos dinámicos o no relevantes.",
+      "explanation_en": "Clipping allows excluding specific regions from capture, useful for ignoring dynamic or irrelevant elements.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_013",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja de usar visual testing en CI/CD?",
+      "question_en": "What is the advantage of using visual testing in CI/CD?",
+      "options_es": [
+        "Detecta regresos sin intervención manual",
+        "Más rápido que pruebas manuales",
+        "Automatiza validación visual",
+        "Todas las anteriores"
+      ],
+      "options_en": [
+        "Detects regressions without manual intervention",
+        "Faster than manual testing",
+        "Automates visual validation",
+        "All of the above"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Visual testing en CI/CD automatiza la validación, acelera el proceso de QA y detecta problemas rápidamente sin intervención manual.",
+      "explanation_en": "Visual testing in CI/CD automates validation, accelerates QA, and detects issues quickly without manual intervention.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_014",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se pueden evitar falsos positivos en visual testing?",
+      "question_en": "How can false positives be avoided in visual testing?",
+      "options_es": [
+        "Usando umbrales de tolerancia altos",
+        "Ocultando elementos dinámicos",
+        "Ejecutando en navegadores consistentes",
+        "Todas las anteriores"
+      ],
+      "options_en": [
+        "Using high tolerance thresholds",
+        "Hiding dynamic elements",
+        "Running in consistent browsers",
+        "All of the above"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se evitan falsos positivos combinando múltiples técnicas: umbrales apropiados, exclusión de elementos dinámicos y entornos consistentes.",
+      "explanation_en": "False positives are avoided by combining multiple techniques: appropriate thresholds, excluding dynamic elements, and consistent environments.",
+      "source": "https://docs.pytest.org"
+    },
+    {
+      "id": "q290404_015",
+      "skill_id": "sk290404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el impacto del tamaño de pantalla en visual regression testing?",
+      "question_en": "What is the impact of screen size on visual regression testing?",
+      "options_es": [
+        "No tiene impacto habitualmente",
+        "Cada resolución puede necesitar una línea base diferente",
+        "Solo importa la resolución del monitor",
+        "Solo afecta a sitios responsive"
+      ],
+      "options_en": [
+        "It has no impact",
+        "Each resolution may need a different baseline",
+        "Only the monitor resolution matters",
+        "Only affects responsive sites"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El tamaño de pantalla afecta el renderizado visual. Se recomiendan líneas base separadas para diferentes resoluciones y dispositivos.",
+      "explanation_en": "Screen size affects visual rendering. Separate baselines are recommended for different resolutions and devices.",
+      "source": "https://docs.pytest.org"
+    }
+  ]
+}

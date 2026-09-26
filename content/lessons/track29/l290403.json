@@ -1,0 +1,12 @@
+{
+  "id": "l290403",
+  "skill_id": "sk290403",
+  "title_es": "Page Object Model",
+  "title_en": "Page Object Model",
+  "body_es": "El Page Object Model (POM) es un patrón de diseño que encapsula los elementos y acciones de una página en una clase, separando la lógica de test de los detalles de implementación. Cada página tiene su propia clase con métodos que representan acciones (login, buscar) y propiedades que acceden a elementos. Esto mejora mantenibilidad: cambios en la UI solo requieren actualizar la clase, no todos los tests. POM reduce duplicación, mejora legibilidad y facilita reutilización. Es especialmente útil en proyectos grandes con muchas pruebas E2E.",
+  "body_en": "Page Object Model (POM) is a design pattern that encapsulates page elements and actions in a class, separating test logic from implementation details. Each page has its own class with methods representing actions (login, search) and properties accessing elements. This improves maintainability: UI changes only require updating the class, not all tests. POM reduces duplication, improves readability, and facilitates reuse. It's especially useful in large projects with many E2E tests.",
+  "example_code": "from playwright.sync_api import Page\n\nclass LoginPage:\n    def __init__(self, page: Page):\n        self.page = page\n        self.email_input = 'input[name=\"email\"]'\n        self.password_input = 'input[name=\"password\"]'\n        self.login_button = 'button[type=\"submit\"]'\n    \n    def navigate(self):\n        self.page.goto('https://example.com/login')\n    \n    def login(self, email, password):\n        self.page.fill(self.email_input, email)\n        self.page.fill(self.password_input, password)\n        self.page.click(self.login_button)\n\nclass DashboardPage:\n    def __init__(self, page: Page):\n        self.page = page\n    \n    def is_logged_in(self):\n        return self.page.is_visible('text=Welcome')\n\n# Test using POM\ndef test_login_with_pom(page):\n    login_page = LoginPage(page)\n    login_page.navigate()\n    login_page.login('user@example.com', 'password123')\n    \n    dashboard = DashboardPage(page)\n    assert dashboard.is_logged_in()",
+  "example_output": "test_login_with_pom PASSED\nLogin successful\nUser dashboard loaded",
+  "source": "Playwright Docs — https://playwright.dev",
+  "order": 3
+}

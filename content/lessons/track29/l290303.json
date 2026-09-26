@@ -1,0 +1,12 @@
+{
+  "id": "l290303",
+  "skill_id": "sk290303",
+  "title_es": "Contratos de API y Documentación",
+  "title_en": "API Contracts and Documentation",
+  "body_es": "Un contrato de API especifica el acuerdo entre cliente y servidor: qué endpoints existen, qué parámetros aceptan, qué estructura tienen las respuestas y qué códigos de error devuelven. OpenAPI (anteriormente Swagger) y JSON Schema definen formalmente estos contratos en formato legible por máquinas. La documentación clara previene malentendidos y facilita el mantenimiento. El testing de contratos verifica que la API real cumple la especificación, detectando cambios incompatibles antes de que afecten a los clientes. Herramientas como Pact automatizan estas verificaciones.",
+  "body_en": "An API contract specifies the agreement between client and server: what endpoints exist, what parameters they accept, what response structure looks like, and what error codes return. OpenAPI (formerly Swagger) and JSON Schema formally define these contracts in machine-readable format. Clear documentation prevents misunderstandings and facilitates maintenance. Contract testing verifies the actual API meets the specification, detecting breaking changes before they affect clients. Tools like Pact automate these verifications.",
+  "example_code": "# OpenAPI specification example (YAML)\nopenapi: 3.0.0\ninfo:\n  title: User API\n  version: 1.0.0\npaths:\n  /users/{id}:\n    get:\n      parameters:\n        - name: id\n          in: path\n          required: true\n          schema:\n            type: integer\n      responses:\n        '200':\n          description: User found\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  id:\n                    type: integer\n                  name:\n                    type: string\n                  email:\n                    type: string\n        '404':\n          description: User not found",
+  "example_output": "API Contract Validated\nEndpoint: GET /users/{id}\nResponse Schema: Valid\nAll required fields present",
+  "source": "Pytest Docs — https://docs.pytest.org",
+  "order": 3
+}

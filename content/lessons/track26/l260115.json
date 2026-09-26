@@ -1,0 +1,12 @@
+{
+  "id": "l260115",
+  "skill_id": "sk260115",
+  "title_es": "Bisect para Debugging",
+  "title_en": "Bisect Debugging",
+  "body_es": "`git bisect` encuentra automáticamente el commit que introdujo un bug. Realiza una búsqueda binaria en el historial, pidiendo al usuario que marque cada versión como buena o mala. Es potente para rastrear cuándo algo se rompió cuando no sabes qué cambio lo causó. Puedes automatizar el proceso con un script de prueba. Bisect divide el rango de commits a verificar por la mitad en cada iteración, haciendo la búsqueda muy eficiente.",
+  "body_en": "`git bisect` automatically finds the commit that introduced a bug. It performs a binary search through history, asking the user to mark each version as good or bad. It is powerful for tracking when something broke when you don't know which change caused it. You can automate the process with a test script. Bisect divides the range of commits to check in half at each iteration, making the search very efficient.",
+  "example_code": "git bisect start\ngit bisect bad HEAD\ngit bisect good v1.0\n# Test the current commit\ngit bisect good  # or git bisect bad\n# Repeat until bisect identifies the bad commit\ngit bisect reset",
+  "example_output": "status: waiting for both good and bad commits\n\nTesting commit 5x6y7z8...\nBisecting: 5 revisions left to test after this (roughly 3 steps)\n[2k3l4m5] Add new feature\n\nBisecting: 2 revisions left to test after this (roughly 1 step)\n9k0l1m2 is the first bad commit\ncommit 9k0l1m2\nAuthor: Jane Doe <jane@example.com>\nDate:   Thu Sep 23 10:15:22 2026 +0200",
+  "source": "Git Docs — https://git-scm.com/doc",
+  "order": 3
+}
