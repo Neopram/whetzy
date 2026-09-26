@@ -5,10 +5,9 @@ Flow:
      Backend stores a CSRF state nonce and redirects to the provider auth page.
   2. Provider → GET /auth/oauth/{provider}/callback?code=…&state=…
      Backend validates state, exchanges code for provider token, resolves email,
-     finds or creates user, issues JWT pair, redirects to FRONTEND_BASE_URL with
-     oauth_token + oauth_refresh query params.
-  3. Frontend (api.ts module load) reads those params from window.location.search,
-     stores them as the regular access/refresh tokens, and clears the URL.
+     finds or creates user, issues JWT pair and redirects to FRONTEND_BASE_URL
+     with both tokens in HttpOnly cookies (`set_auth_cookies`), never in the URL.
+  3. Frontend loads with the session cookie already set, like after a password login.
 """
 from __future__ import annotations
 
