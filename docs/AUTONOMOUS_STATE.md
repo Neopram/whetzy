@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20260926_bootcamps` (39 migraciones) |
+| Alembic HEAD | `20260926_projects` (40 migraciones) |
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
@@ -161,7 +161,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 18.5 | **2** | **Certificaciones P1: PCAP, MLA-C01, AZ-900, AI-900, DP-900, Security+** | TODO | → LEDGER_HISTORY.md §E |
 | 18.6 | **3** | **DevOps y Cloud: Docker/K8s (18), IaC+CI/CD (19), Azure (22), GCP (23)** | TODO | → LEDGER_HISTORY.md §E |
 | 18.7 | **3** | **Datos: Data Engineering (20), Data Science (21), NoSQL (27)** | TODO | → LEDGER_HISTORY.md §E |
-| 18.8 | **3** | **Proyectos multi-paso con tests en runtime** | TODO | → LEDGER_HISTORY.md §E |
+| 18.8 | **3** | **Proyectos multi-paso con tests en runtime** | **DONE** | Backend: Project+Step+Submission models, migración `20260926_projects`, API 5 endpoints, 3 tests. Frontend: ProjectScreen + Home shortcut + i18n ES/EN. `0f61442` |
 | 18.9 | **4** | **Vídeo explicativo — piloto que decide** | TODO | → LEDGER_HISTORY.md §E |
 | 18.10 | **4** | **Resto del catálogo: tracks 24-26, 28-31 y certs P2-P3** | TODO | → LEDGER_HISTORY.md §E |
 | 18.11 | **2** | **Store-ready sin cuenta** | TODO | → LEDGER_HISTORY.md §E |
@@ -175,7 +175,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | |
 | 19.4 | **2** | **Bootcamps: secuencia de tracks con calendario y meta diaria** | DONE | Modelos + migración + API + seed data + 7 tests. `7768bc7` |
 | 19.5 | **2** | **Playground libre (Python · SQL · JS)** | **DONE** | PlaygroundScreen + playgroundDb (IndexedDB history) + Monaco editor + 3 runtimes + i18n ES/EN + Home shortcut. `d8427ae` |
-| 19.6 | **3** | **Proyectos multi-paso** | TODO | → LEDGER_HISTORY.md §E |
+| 19.6 | **3** | **Proyectos multi-paso** | **DONE** | = 18.8. `0f61442` |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
 | 19.8 | **3** | **Landing y SEO de whetzy.com al nivel de Educative** | TODO | → LEDGER_HISTORY.md §E |
 | 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (meta ADR-46) | TODO | → LEDGER_HISTORY.md §E |

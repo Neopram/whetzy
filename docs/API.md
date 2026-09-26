@@ -148,6 +148,18 @@ GET  /bootcamps/{slug}/progress    → {id, bootcamp_id, started_at, current_wee
 
 List and detail are unauthenticated; enroll and progress require login.
 
+## Projects endpoints
+
+```
+GET  /projects                         → [{id, slug, track_id, runtime, name_es, name_en, description_es, description_en, difficulty, source_url, source_license, order}]  ?track_id=&runtime=
+GET  /projects/{slug}                  → {…project, steps: [{id, step_number, title_es, title_en, instructions_es, instructions_en, starter_code, test_code}]}
+POST /projects/{slug}/start            → {id, project_id, current_step, completed, started_at, completed_at} 🔒  201 | 409 already started
+GET  /projects/{slug}/progress         → {id, project_id, current_step, completed, started_at, completed_at} 🔒  404 if not started
+POST /projects/{slug}/submit-step      → {id, project_id, current_step, completed, started_at, completed_at} 🔒  body: {step_number, passed}
+```
+
+List and detail are unauthenticated; start, progress and submit-step require login.
+
 ## Lessons endpoints
 
 ```
