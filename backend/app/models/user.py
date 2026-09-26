@@ -62,6 +62,7 @@ class User(Base):
     subscription_status: Mapped[str | None] = mapped_column(String(32), nullable=True)  # active|canceled|past_due|trialing
     subscription_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro|creator (ADR-41)
     subscription_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    eu_withdrawal_waiver_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
 
     # Onboarding (24.3 / 34.11): índice de la opción elegida en cada pregunta

@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20260926_privacy_ccpa` (41 migraciones) |
+| Alembic HEAD | `20260926_eu_withdrawal` (42 migraciones) |
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
@@ -204,7 +204,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; la entidad y la jurisdicción están sin decidir, H.29. Se conserva el enunciado… | | |
 | 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | | |
 | 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) ·… | **DONE** | Privacy policy reescrita con secciones GDPR (bases legales, DPO, SCCs), CCPA/CPRA (§1798.100-125), COPPA, CAN-SPAM (List-Unsubscribe), ePrivacy cookies. Backend: 4 endpoints privacy + ccpa_opt_out col + CAN-SPAM headers. Frontend: i18n + API. 4 tests. `2c4c95a` |
-| 21.4 | **2** | **Consumo y suscripciones**: desistimiento UE 14 días para contenido digital (renuncia expresa en checkout), renovación… | | |
+| 21.4 | **2** | **Consumo y suscripciones**: desistimiento UE 14 días para contenido digital (renuncia expresa en checkout), renovación… | **DONE** | Checkout acepta `eu_withdrawal_waiver` (Art. 16.m Dir 2011/83); `eu_withdrawal_waiver_at` en User + migración 42. Renovación: email `renewal_reminder` (ES/EN, 7 días antes). Frontend: billing API con waiver, i18n checkout keys. ToS §5-6 ya cubren la renuncia y el preaviso. 4 tests. |
 | 21.5 | **2** | **AI Act, DSA, EAA**: obligaciones de *deployer* del tutor… | **PARCIAL** | **PARCIAL** `5f7bd7b` (2026-09-19) → §I |
 | 21.6 | **2** | **Propiedad intelectual**: búsqueda de marca «Whetzy» (EUIPO,… | **PARCIAL** | **PARCIAL** `8e7812a` (2026-09-19) → §I |
 | 21.7 | **2** | **Redacción**: ToS · Privacidad · Cookies (sin banner si solo cookies necesarias — mantenerlo así) · DPA plantilla para… | **DONE** | ToS reescrito con 18 secciones ES/EN: planes ADR-41/49, desistimiento UE 14 días (Dir 2011/83), renovación automática, tutor IA, ODR UE, divisibilidad. DPA template creado (`legal/dpa-template.md`) con TOMs, sub-processors, Art. 28 obligations. Cookies: confirmado solo técnicas, sin banner. Frontend i18n actualizado (13 secciones), LegalScreen expandido. Build + i18n parity + contract test + check_docs verdes. |

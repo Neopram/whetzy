@@ -222,7 +222,7 @@ Admin routes require `X-Admin-Key` header.
 ## Billing endpoints
 
 ```
-POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session
+POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session (accepts eu_withdrawal_waiver: bool)
 GET  /billing/subscription → {plan, status, renews_at} 🔒
 POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC)
 ```

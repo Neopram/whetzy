@@ -1185,3 +1185,24 @@ export const privacy = {
   ccpaDisclosure: () => request<CcpaDisclosure>('/privacy/ccpa-disclosure'),
   rights: () => request<PrivacyRights>('/privacy/rights'),
 };
+
+export interface CheckoutResponse {
+  checkout_url: string;
+}
+
+export interface SubscriptionResponse {
+  is_premium: boolean;
+  subscription_status: string | null;
+  subscription_tier: string | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+}
+
+export const billing = {
+  checkout: (priceId: string, euWithdrawalWaiver: boolean = false) =>
+    request<CheckoutResponse>('/billing/checkout', {
+      method: 'POST',
+      body: JSON.stringify({ price_id: priceId, eu_withdrawal_waiver: euWithdrawalWaiver }),
+    }),
+  subscription: () => request<SubscriptionResponse>('/billing/subscription'),
+};

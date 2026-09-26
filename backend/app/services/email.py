@@ -159,6 +159,32 @@ border-radius:6px;text-decoration:none;">Back to Whetzy</a></p>
 <p>If you'd rather not receive these emails, just ignore this one.</p>""",
         },
     },
+    "renewal_reminder": {
+        "es": {
+            "subject": "Tu suscripción Whetzy se renueva el {renewal_date}",
+            "html": """\
+<h2>Hola, {name}!</h2>
+<p>Tu suscripción <strong>{plan_name}</strong> se renovará automáticamente
+el <strong>{renewal_date}</strong> por <strong>{amount}</strong>.</p>
+<p>Si deseas cancelar la renovación automática, puedes hacerlo desde
+Ajustes → Suscripción en la app antes de esa fecha.</p>
+<p>Gracias por seguir aprendiendo con <strong>Whetzy</strong>.</p>
+<p style="font-size:12px;color:#888;">Si tienes preguntas sobre tu suscripción,
+contacta a support@whetzy.com</p>""",
+        },
+        "en": {
+            "subject": "Your Whetzy subscription renews on {renewal_date}",
+            "html": """\
+<h2>Hi, {name}!</h2>
+<p>Your <strong>{plan_name}</strong> subscription will automatically renew
+on <strong>{renewal_date}</strong> for <strong>{amount}</strong>.</p>
+<p>If you wish to cancel automatic renewal, you can do so from
+Settings → Subscription in the app before that date.</p>
+<p>Thank you for continuing to learn with <strong>Whetzy</strong>.</p>
+<p style="font-size:12px;color:#888;">If you have questions about your subscription,
+contact support@whetzy.com</p>""",
+        },
+    },
     "support_resolved": {
         "es": {
             "subject": "Tu ticket de soporte {ticket_id} ha sido resuelto",
@@ -409,5 +435,15 @@ def send_reactivation(to: str, name: str, code: str, lang: str = "es") -> None:
     from app.core.config import settings
 
     subject, html = _render("reactivation", lang, name=name, code=code, base_url=settings.FRONTEND_BASE_URL)
+    _dispatch(to, subject, html)
+
+
+def send_renewal_reminder(
+    to: str, name: str, plan_name: str, renewal_date: str, amount: str, lang: str = "es",
+) -> None:
+    subject, html = _render(
+        "renewal_reminder", lang,
+        name=name, plan_name=plan_name, renewal_date=renewal_date, amount=amount,
+    )
     _dispatch(to, subject, html)
 
