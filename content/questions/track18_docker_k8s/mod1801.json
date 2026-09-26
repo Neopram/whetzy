@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q180101001",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cuál es la diferencia fundamental entre una imagen Docker y un contenedor Docker?",
+      "question_en": "What is the fundamental difference between a Docker image and a Docker container?",
+      "options_es": [
+        "Un contenedor es solo para Linux, una imagen funciona en cualquier sistema operativo",
+        "Una imagen es una plantilla estática inmutable, mientras que un contenedor es una instancia en ejecución de esa imagen",
+        "Las imágenes se usan solo en desarrollo y los contenedores en producción",
+        "Una imagen es un contenedor ejecutándose en el sistema sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "A container is only for Linux, an image works on any operating system",
+        "An image is a static immutable template, while a container is a running instance of that image",
+        "Images are used only in development and containers in production",
+        "An image is a container running on the system without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una imagen Docker es una plantilla inmutable que contiene todo lo necesario para ejecutar una aplicación. Un contenedor es una instancia en ejecución de esa imagen con su propio sistema de archivos y procesos aislados.",
+      "explanation_en": "A Docker image is an immutable template containing everything needed to run an application. A container is a running instance of that image with its own isolated filesystem and processes.",
+      "source": "Docker Documentation (https://docs.docker.com/get-started/)"
+    },
+    {
+      "id": "q180101002",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Qué comando Docker se utiliza para listar todas las imágenes disponibles localmente?",
+      "question_en": "Which Docker command is used to list all locally available images?",
+      "options_es": [
+        "docker get-images",
+        "docker list containers",
+        "docker show images",
+        "docker images"
+      ],
+      "options_en": [
+        "docker get-images",
+        "docker list containers",
+        "docker show images",
+        "docker images"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El comando 'docker images' lista todas las imágenes disponibles en el sistema local, mostrando información como el repositorio, etiqueta, ID de imagen, tamaño y fecha de creación.",
+      "explanation_en": "The 'docker images' command lists all locally available images, displaying information such as repository, tag, image ID, size, and creation date.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/images/)"
+    },
+    {
+      "id": "q180101003",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cuál es el propósito principal del comando 'docker run'?",
+      "question_en": "What is the main purpose of the 'docker run' command?",
+      "options_es": [
+        "Crear e iniciar un nuevo contenedor basado en una imagen",
+        "Pausar todos los contenedores en ejecución",
+        "Eliminar un contenedor que ya no se necesita",
+        "Actualizar una imagen Docker existente en todos los casos posibles"
+      ],
+      "options_en": [
+        "Create and start a new container based on an image",
+        "Pause all running containers",
+        "Delete a container that is no longer needed",
+        "Update an existing Docker image in all possible cases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El comando 'docker run' crea un nuevo contenedor a partir de una imagen especificada e inmediatamente lo inicia. Permite pasar opciones como puertos, volúmenes y variables de entorno.",
+      "explanation_en": "The 'docker run' command creates a new container from a specified image and immediately starts it. It allows passing options such as ports, volumes, and environment variables.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/run/)"
+    },
+    {
+      "id": "q180101004",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Qué es un contenedor efímero en Docker?",
+      "question_en": "What is an ephemeral container in Docker?",
+      "options_es": [
+        "Un contenedor cuya data se borra automáticamente cuando se detiene",
+        "Un contenedor que no tiene asignado ningún puerto según la documentación estándar del servicio",
+        "Un contenedor que se detiene automáticamente después de 30 segundos",
+        "Un contenedor creado con la flag --rm que se elimina automáticamente al detener"
+      ],
+      "options_en": [
+        "A container whose data is automatically deleted when stopped",
+        "A container with no ports assigned according to standard service documentation",
+        "A container that automatically stops after 30 seconds",
+        "A container created with the --rm flag that automatically removes itself when stopped"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un contenedor efímero es aquel creado con la flag '--rm' en el comando 'docker run'. Esto asegura que el contenedor sea eliminado automáticamente cuando se detiene, liberando recursos.",
+      "explanation_en": "An ephemeral container is one created with the '--rm' flag in the 'docker run' command. This ensures the container is automatically deleted when stopped, freeing up resources.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/run/#clean-up)"
+    },
+    {
+      "id": "q180101005",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cuál es la diferencia entre 'docker ps' y 'docker ps -a'?",
+      "question_en": "What is the difference between 'docker ps' and 'docker ps -a'?",
+      "options_es": [
+        "No hay diferencia, ambos comandos son sinónimos independientemente del contexto aplicado",
+        "'docker ps' muestra solo imágenes, 'docker ps -a' muestra contenedores",
+        "'docker ps' requiere permisos de administrador, 'docker ps -a' no",
+        "'docker ps' muestra contenedores activos, 'docker ps -a' muestra todos incluyendo detenidos"
+      ],
+      "options_en": [
+        "There is no difference, both commands are synonymous regardless of the applied context",
+        "'docker ps' shows only images, 'docker ps -a' shows containers",
+        "'docker ps' requires administrator permissions, 'docker ps -a' does not",
+        "'docker ps' shows active containers, 'docker ps -a' shows all including stopped ones"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'docker ps' lista solo los contenedores en ejecución, mientras que 'docker ps -a' (all) muestra todos los contenedores, incluyendo los que están detenidos o han terminado.",
+      "explanation_en": "'docker ps' lists only running containers, while 'docker ps -a' (all) shows all containers including stopped or exited ones.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/ps/)"
+    },
+    {
+      "id": "q180101006",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cómo se accede a la terminal interactiva de un contenedor en ejecución?",
+      "question_en": "How do you access the interactive terminal of a running container?",
+      "options_es": [
+        "Usando 'docker exec -it' para ejecutar una shell interactiva en el contenedor",
+        "Usando 'docker connect' para conectar la terminal independientemente del contexto aplicado",
+        "Usando 'docker shell' para obtener acceso de terminal",
+        "Usando 'docker attach' para conectarse al contenedor"
+      ],
+      "options_en": [
+        "Using 'docker exec -it' to run an interactive shell in the container",
+        "Using 'docker connect' to connect the terminal regardless of the applied context",
+        "Using 'docker shell' to get terminal access",
+        "Using 'docker attach' to connect to the container"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El comando 'docker exec -it' permite ejecutar un comando de manera interactiva dentro de un contenedor. Las banderas 'i' (interactive) y 't' (tty) permiten interactuar con la shell.",
+      "explanation_en": "The 'docker exec -it' command allows running a command interactively inside a container. The 'i' (interactive) and 't' (tty) flags enable interaction with the shell.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/exec/)"
+    },
+    {
+      "id": "q180101007",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Qué información se proporciona al ejecutar 'docker inspect' en un contenedor?",
+      "question_en": "What information is provided when running 'docker inspect' on a container?",
+      "options_es": [
+        "Solo el estado actual del contenedor de manera exclusiva y permanente",
+        "Información detallada como configuración, redes, volúmenes, variables de entorno y estado",
+        "Solo el nombre y el ID del contenedor",
+        "Solo los puertos expuestos del contenedor"
+      ],
+      "options_en": [
+        "Only the current state of the container exclusively and permanently",
+        "Detailed information such as configuration, networks, volumes, environment variables, and state",
+        "Only the container name and ID",
+        "Only the exposed ports of the container"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'docker inspect' proporciona información completa y detallada sobre un contenedor en formato JSON, incluyendo su configuración, estado, conexiones de red, volúmenes montados y muchas otras propiedades.",
+      "explanation_en": "'docker inspect' provides comprehensive detailed information about a container in JSON format, including its configuration, state, network connections, mounted volumes, and many other properties.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/inspect/)"
+    },
+    {
+      "id": "q180101008",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cuál es el propósito de la etiqueta o 'tag' en una imagen Docker?",
+      "question_en": "What is the purpose of a tag in a Docker image?",
+      "options_es": [
+        "Asignar versiones o identificadores descriptivos a las imágenes",
+        "Especificar el sistema operativo de la imagen",
+        "Identificar el autor de la imagen sin excepciones ni variantes",
+        "Controlar los permisos de acceso a la imagen"
+      ],
+      "options_en": [
+        "Assign versions or descriptive identifiers to images",
+        "Specify the operating system of the image",
+        "Identify the author of the image without exceptions or variants",
+        "Control access permissions to the image"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las etiquetas (tags) en Docker permiten identificar diferentes versiones de una imagen. Por ejemplo, 'nginx:latest' identifica la versión más reciente, 'nginx:1.19' identifica una versión específica.",
+      "explanation_en": "Tags in Docker allow identifying different versions of an image. For example, 'nginx:latest' identifies the latest version, 'nginx:1.19' identifies a specific version.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/tag/)"
+    },
+    {
+      "id": "q180101009",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cuándo se ejecuta el comando ENTRYPOINT definido en una imagen Docker?",
+      "question_en": "When is the ENTRYPOINT command defined in a Docker image executed?",
+      "options_es": [
+        "Se ejecuta cuando se construye la imagen sin excepciones ni variantes",
+        "Se ejecuta solo si se especifica explícitamente en 'docker run'",
+        "Se ejecuta cada vez que se inicia un contenedor desde esa imagen",
+        "Se ejecuta cuando se sube la imagen a un registro"
+      ],
+      "options_en": [
+        "It is executed when the image is built without exceptions or variants",
+        "It is executed only if explicitly specified in 'docker run'",
+        "It is executed each time a container is started from that image",
+        "It is executed when the image is pushed to a registry"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El ENTRYPOINT es el comando que se ejecuta automáticamente cuando se inicia un contenedor. Es diferente de CMD que puede ser sobrescrito fácilmente.",
+      "explanation_en": "ENTRYPOINT is the command that automatically executes when a container is started. It differs from CMD which can be easily overridden.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#entrypoint)"
+    },
+    {
+      "id": "q180101010",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Qué sucede cuando ejecutas 'docker stop' en un contenedor?",
+      "question_en": "What happens when you run 'docker stop' on a container?",
+      "options_es": [
+        "Se pausa el contenedor temporalmente sin terminarlo",
+        "Se elimina el contenedor del sistema completamente en cualquier escenario de implementación",
+        "Se mata inmediatamente el proceso sin enviar señal alguna",
+        "Se envía una señal SIGTERM al proceso principal del contenedor para terminarlo gracefully"
+      ],
+      "options_en": [
+        "The container is temporarily paused without terminating",
+        "The container is completely deleted from the system in any implementation scenario",
+        "The process is immediately killed without any signal",
+        "A SIGTERM signal is sent to the main process of the container for graceful termination"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'docker stop' envía una señal SIGTERM al proceso principal del contenedor, permitiendo que se termine gracefully. Si después de un tiempo no se termina, Docker lo fuerza con SIGKILL.",
+      "explanation_en": "'docker stop' sends a SIGTERM signal to the container's main process, allowing graceful termination. If it doesn't stop after a timeout, Docker forces it with SIGKILL.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/stop/)"
+    },
+    {
+      "id": "q180101011",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cuál es la diferencia entre 'docker stop' y 'docker kill'?",
+      "question_en": "What is the difference between 'docker stop' and 'docker kill'?",
+      "options_es": [
+        "'docker stop' elimina el contenedor, 'docker kill' solo lo detiene",
+        "'docker stop' envía SIGTERM (terminación graciosa), 'docker kill' envía SIGKILL (terminación inmediata)",
+        "'docker stop' requiere confirmación, 'docker kill' no",
+        "No hay diferencia, ambos detienen el contenedor en todos los casos posibles"
+      ],
+      "options_en": [
+        "'docker stop' deletes the container, 'docker kill' only stops it",
+        "'docker stop' sends SIGTERM (graceful termination), 'docker kill' sends SIGKILL (immediate termination)",
+        "'docker stop' requires confirmation, 'docker kill' does not",
+        "There is no difference, both stop the container in all possible cases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'docker stop' permite que la aplicación se cierre gracefully, mientras que 'docker kill' termina el proceso inmediatamente. 'stop' es preferible porque permite limpiar recursos.",
+      "explanation_en": "'docker stop' allows the application to shut down gracefully, while 'docker kill' immediately terminates the process. 'stop' is preferable because it allows cleanup of resources.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/kill/)"
+    },
+    {
+      "id": "q180101012",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Qué almacena Docker en el archivo '.dockerignore'?",
+      "question_en": "What does Docker store in the '.dockerignore' file?",
+      "options_es": [
+        "Información de la versión de Docker en todos los casos posibles",
+        "Credenciales de acceso al registro Docker",
+        "Patrones de archivos y directorios a excluir del contexto de construcción",
+        "Configuración de seguridad del contenedor"
+      ],
+      "options_en": [
+        "Docker version information in all possible cases",
+        "Credentials for Docker registry access",
+        "Patterns of files and directories to exclude from the build context",
+        "Container security configuration"
+      ],
+      "correct_index": 2,
+      "explanation_es": ".dockerignore funciona como .gitignore y especifica archivos y directorios que Docker debe ignorar al construir una imagen, reduciendo el tamaño del contexto de construcción.",
+      "explanation_en": ".dockerignore works like .gitignore and specifies files and directories that Docker should ignore when building an image, reducing the build context size.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#dockerignore-file)"
+    },
+    {
+      "id": "q180101013",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cuál es el significado de 'layer' en el contexto de imágenes Docker?",
+      "question_en": "What is the meaning of 'layer' in the context of Docker images?",
+      "options_es": [
+        "Un nivel de aislamiento entre contenedores",
+        "Una capas de código fuente del contenedor sin excepciones ni variantes",
+        "Una partición del disco duro dedicada a Docker",
+        "Cada instrucción en un Dockerfile crea una capa incremental read-only que se apila para formar la imagen"
+      ],
+      "options_en": [
+        "A level of isolation between containers",
+        "A layer of container source code without exceptions or variants",
+        "A disk partition dedicated to Docker",
+        "Each instruction in a Dockerfile creates an incremental read-only layer that stacks to form the image"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las capas (layers) en Docker son resultado de cada instrucción en el Dockerfile. Docker utiliza un sistema de capas para aprovechar el almacenamiento en caché y reutilizar capas comunes entre imágenes.",
+      "explanation_en": "Layers in Docker result from each instruction in the Dockerfile. Docker uses a layered system to leverage caching and reuse common layers between images.",
+      "source": "Docker Documentation (https://docs.docker.com/build/building/best-practices/#minimize-layers)"
+    },
+    {
+      "id": "q180101014",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Cómo se puede ver el historial de capas de una imagen Docker?",
+      "question_en": "How can you view the layer history of a Docker image?",
+      "options_es": [
+        "Usando 'docker inspect --layers <imagen>'",
+        "Leyendo directamente el Dockerfile original",
+        "Usando 'docker layers <imagen>' independientemente del contexto aplicado",
+        "Usando 'docker history <imagen>' para mostrar cada capa y su tamaño"
+      ],
+      "options_en": [
+        "Using 'docker inspect --layers <image>'",
+        "Reading directly from the original Dockerfile",
+        "Using 'docker layers <image>' regardless of the applied context",
+        "Using 'docker history <image>' to show each layer and its size"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'docker history' muestra todas las capas de una imagen, incluyendo el comando que las creó, el tamaño de cada capa y el ID de la capa.",
+      "explanation_en": "'docker history' shows all layers of an image, including the command that created them, the size of each layer, and the layer ID.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/history/)"
+    },
+    {
+      "id": "q180101015",
+      "type": "multiple_choice",
+      "skill_id": "sk180101",
+      "question_es": "¿Qué es un contenedor privilegiado en Docker?",
+      "question_en": "What is a privileged container in Docker?",
+      "options_es": [
+        "Un contenedor que tiene acceso a todos los dispositivos del host",
+        "Un contenedor que corre con permisos de usuario raíz independientemente del contexto aplicado",
+        "Un contenedor con acceso administrativo a otras imágenes",
+        "Un contenedor que recibe todas las capacidades del kernel del host"
+      ],
+      "options_en": [
+        "A container that has access to all host devices",
+        "A container that runs with root user permissions regardless of the applied context",
+        "A container with administrative access to other images",
+        "A container that receives all kernel capabilities of the host"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un contenedor privilegiado es uno que se ejecuta con la flag '--privileged', recibiendo todas las capacidades del kernel del host y acceso a todos los dispositivos. Se debe usar con precaución por razones de seguridad.",
+      "explanation_en": "A privileged container is one run with the '--privileged' flag, receiving all host kernel capabilities and device access. It should be used cautiously for security reasons.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities)"
+    },
+    {
+      "id": "q180102001",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es la estructura básica de un Dockerfile?",
+      "question_en": "What is the basic structure of a Dockerfile?",
+      "options_es": [
+        "Es un archivo de configuración JSON para registros Docker",
+        "Es un archivo YAML con configuración de contenedores en todos los casos posibles",
+        "Es un script de shell que se ejecuta dentro del contenedor",
+        "Es un archivo de texto con instrucciones para construir una imagen Docker paso a paso"
+      ],
+      "options_en": [
+        "It is a JSON configuration file for Docker registries",
+        "It is a YAML file with container configuration in all possible cases",
+        "It is a shell script that runs inside the container",
+        "It is a text file with instructions to build a Docker image step by step"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un Dockerfile es un archivo de texto que contiene una serie de instrucciones para construir una imagen Docker. Cada instrucción se ejecuta secuencialmente creando capas que forman la imagen final.",
+      "explanation_en": "A Dockerfile is a text file containing a series of instructions to build a Docker image. Each instruction executes sequentially creating layers that form the final image.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/)"
+    },
+    {
+      "id": "q180102002",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es el propósito de la instrucción 'FROM' en un Dockerfile?",
+      "question_en": "What is the purpose of the 'FROM' instruction in a Dockerfile?",
+      "options_es": [
+        "Definir el comando a ejecutar cuando inicia el contenedor",
+        "Importar paquetes externos al contenedor independientemente del contexto aplicado",
+        "Especificar la imagen base sobre la cual se construirá la nueva imagen",
+        "Especificar archivos a ignorar en la construcción"
+      ],
+      "options_en": [
+        "Define the command to run when the container starts",
+        "Import external packages into the container regardless of the applied context",
+        "Specify the base image on which the new image will be built",
+        "Specify files to ignore in the build"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La instrucción 'FROM' es la primera línea requerida en un Dockerfile que especifica la imagen base. Todas las instrucciones posteriores se aplican sobre esta imagen base.",
+      "explanation_en": "The 'FROM' instruction is the first required line in a Dockerfile that specifies the base image. All subsequent instructions are applied on top of this base image.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#from)"
+    },
+    {
+      "id": "q180102003",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es la diferencia entre 'RUN' y 'CMD' en un Dockerfile?",
+      "question_en": "What is the difference between 'RUN' and 'CMD' in a Dockerfile?",
+      "options_es": [
+        "'RUN' ejecuta comandos durante la construcción, 'CMD' proporciona el comando por defecto al iniciar el contenedor",
+        "'RUN' requiere permisos de root, 'CMD' no en cualquier escenario de implementación",
+        "No hay diferencia, ambos ejecutan comandos",
+        "'RUN' es para comandos de ejecución rápida, 'CMD' para procesos de larga duración"
+      ],
+      "options_en": [
+        "'RUN' executes commands during build, 'CMD' provides the default command when starting the container",
+        "'RUN' requires root permissions, 'CMD' does not in any implementation scenario",
+        "There is no difference, both execute commands",
+        "'RUN' is for quick execution commands, 'CMD' for long-running processes"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'RUN' se ejecuta durante la construcción de la imagen y sus cambios se guardan en una capa. 'CMD' define el comando que se ejecuta por defecto cuando se inicia un contenedor.",
+      "explanation_en": "'RUN' executes during image build and its changes are saved in a layer. 'CMD' defines the command that runs by default when a container starts.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#cmd)"
+    },
+    {
+      "id": "q180102004",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es el propósito de 'COPY' en un Dockerfile?",
+      "question_en": "What is the purpose of 'COPY' in a Dockerfile?",
+      "options_es": [
+        "Copiar y descomprimir archivos automáticamente",
+        "Crear una copia de la imagen actual independientemente del contexto aplicado",
+        "Copiar archivos del contexto de construcción al interior de la imagen",
+        "Copiar archivos del contenedor al host local"
+      ],
+      "options_en": [
+        "Copy and automatically decompress files",
+        "Create a copy of the current image regardless of the applied context",
+        "Copy files from the build context into the image",
+        "Copy files from the container to the local host"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'COPY' toma archivos o directorios del contexto de construcción (el directorio donde se ejecuta docker build) y los copia al interior de la imagen.",
+      "explanation_en": "'COPY' takes files or directories from the build context (the directory where docker build is run) and copies them into the image.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#copy)"
+    },
+    {
+      "id": "q180102005",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es la diferencia entre 'COPY' y 'ADD' en un Dockerfile?",
+      "question_en": "What is the difference between 'COPY' and 'ADD' in a Dockerfile?",
+      "options_es": [
+        "No hay diferencia, son sinónimos de forma invariable y constante",
+        "'COPY' es simple, 'ADD' tiene funciones adicionales como descomprimir archivos y copiar desde URLs",
+        "'COPY' funciona solo con directorios, 'ADD' solo con archivos",
+        "'ADD' no se recomienda usar, 'COPY' es la alternativa moderna"
+      ],
+      "options_en": [
+        "There is no difference, they are synonymous invariably and constantly",
+        "'COPY' is simple, 'ADD' has extra features like extracting files and copying from URLs",
+        "'COPY' works only with directories, 'ADD' only with files",
+        "'ADD' is not recommended to use, 'COPY' is the modern alternative"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Aunque parecidas, 'ADD' tiene características adicionales como descomprimir archivos comprimidos y copiar desde URLs. 'COPY' es más transparente y se recomienda usar a menos que necesites las características extras de 'ADD'.",
+      "explanation_en": "Although similar, 'ADD' has extra features like extracting compressed files and copying from URLs. 'COPY' is more straightforward and recommended unless you need ADD's extra features.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#add)"
+    },
+    {
+      "id": "q180102006",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Para qué se usa la instrucción 'WORKDIR' en un Dockerfile?",
+      "question_en": "What is 'WORKDIR' used for in a Dockerfile?",
+      "options_es": [
+        "Definir el usuario que ejecuta los comandos según la documentación estándar del servicio",
+        "Configurar variables de entorno del contenedor",
+        "Asignar permisos de archivo en el contenedor",
+        "Especificar el directorio de trabajo dentro del contenedor"
+      ],
+      "options_en": [
+        "Define the user who executes commands according to standard service documentation",
+        "Configure environment variables for the container",
+        "Set file permissions in the container",
+        "Specify the working directory inside the container"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'WORKDIR' establece el directorio de trabajo para cualquier instrucción 'RUN', 'CMD', 'ENTRYPOINT', 'COPY' y 'ADD' que la siga en el Dockerfile.",
+      "explanation_en": "'WORKDIR' sets the working directory for any 'RUN', 'CMD', 'ENTRYPOINT', 'COPY', and 'ADD' instructions that follow it in the Dockerfile.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#workdir)"
+    },
+    {
+      "id": "q180102007",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es el propósito de 'ENV' en un Dockerfile?",
+      "question_en": "What is the purpose of 'ENV' in a Dockerfile?",
+      "options_es": [
+        "Especificar archivos a no incluir en la imagen en todos los casos posibles",
+        "Especificar la versión mínima de Docker requerida",
+        "Configurar el entorno de construcción de Docker",
+        "Definir variables de entorno que estarán disponibles en el contenedor"
+      ],
+      "options_en": [
+        "Specify files not to include in the image in all possible cases",
+        "Specify the minimum Docker version required",
+        "Configure the Docker build environment",
+        "Define environment variables that will be available in the container"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'ENV' define variables de entorno que se pueden usar tanto durante la construcción como en el contenedor en tiempo de ejecución.",
+      "explanation_en": "'ENV' defines environment variables that can be used both during build and in the running container.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#env)"
+    },
+    {
+      "id": "q180102008",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Qué instrucción Dockerfile se usa para exponer puertos del contenedor?",
+      "question_en": "Which Dockerfile instruction is used to expose container ports?",
+      "options_es": [
+        "OPEN como concepto principal",
+        "PUBLISH como concepto principal",
+        "EXPOSE como concepto principal",
+        "PORTS como concepto principal"
+      ],
+      "options_en": [
+        "OPEN as the primary concept",
+        "PUBLISH as the primary concept",
+        "EXPOSE as the primary concept",
+        "PORTS as the primary concept"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'EXPOSE' documenta qué puertos el contenedor escucha en tiempo de ejecución. Nota: no publica realmente los puertos; debes usar 'docker run -p' para mapear puertos.",
+      "explanation_en": "'EXPOSE' documents which ports the container listens on at runtime. Note: it doesn't actually publish ports; you must use 'docker run -p' to map ports.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#expose)"
+    },
+    {
+      "id": "q180102009",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es el propósito de 'HEALTHCHECK' en un Dockerfile?",
+      "question_en": "What is the purpose of 'HEALTHCHECK' in a Dockerfile?",
+      "options_es": [
+        "Validar la sintaxis del Dockerfile de manera exclusiva y permanente",
+        "Generar reportes de salud del host",
+        "Verificar la seguridad de la imagen",
+        "Definir un comando para comprobar el estado de salud del contenedor"
+      ],
+      "options_en": [
+        "Validate Dockerfile syntax exclusively and permanently",
+        "Generate health reports of the host",
+        "Verify the security of the image",
+        "Define a command to check the health status of the container"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'HEALTHCHECK' define un comando que Docker ejecuta periódicamente para determinar si el contenedor está saludable. Esto permite orquestadores como Kubernetes tomar decisiones sobre reinicio.",
+      "explanation_en": "'HEALTHCHECK' defines a command that Docker runs periodically to determine if the container is healthy. This allows orchestrators like Kubernetes to make restart decisions.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#healthcheck)"
+    },
+    {
+      "id": "q180102010",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es la diferencia entre un Dockerfile multi-stage y un Dockerfile de una sola etapa?",
+      "question_en": "What is the difference between a multi-stage Dockerfile and a single-stage Dockerfile?",
+      "options_es": [
+        "Multi-stage es más lento que single-stage en cualquier escenario de implementación",
+        "No hay diferencia en funcionalidad, solo en legibilidad",
+        "Multi-stage permite usar múltiples 'FROM' para reducir el tamaño final de la imagen",
+        "Multi-stage solo funciona en sistemas Linux"
+      ],
+      "options_en": [
+        "Multi-stage is slower than single-stage in any implementation scenario",
+        "There is no functional difference, only in readability",
+        "Multi-stage allows multiple 'FROM' statements to reduce final image size",
+        "Multi-stage only works on Linux systems"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los Dockerfiles multi-stage permiten usar múltiples etapas de construcción, copiando solo los artefactos necesarios al contenedor final, reduciendo significativamente el tamaño de la imagen.",
+      "explanation_en": "Multi-stage Dockerfiles allow multiple build stages, copying only necessary artifacts to the final container, significantly reducing image size.",
+      "source": "Docker Documentation (https://docs.docker.com/build/building/multi-stage/)"
+    },
+    {
+      "id": "q180102011",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es el comando para construir una imagen Docker a partir de un Dockerfile?",
+      "question_en": "What is the command to build a Docker image from a Dockerfile?",
+      "options_es": [
+        "docker build -t nombre:tag .",
+        "docker make -f Dockerfile",
+        "docker create -f Dockerfile",
+        "docker compile Dockerfile sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "docker build -t nombre:tag .",
+        "docker make -f Dockerfile",
+        "docker create -f Dockerfile",
+        "docker compile Dockerfile without considering other relevant factors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'docker build' construye una imagen a partir de un Dockerfile y un contexto de construcción. La opción '-t' asigna un nombre y etiqueta a la imagen.",
+      "explanation_en": "'docker build' constructs an image from a Dockerfile and build context. The '-t' option assigns a name and tag to the image.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/build/)"
+    },
+    {
+      "id": "q180102012",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Qué es el contexto de construcción en Docker?",
+      "question_en": "What is the build context in Docker?",
+      "options_es": [
+        "El historial de comandos ejecutados durante la construcción",
+        "La configuración global de Docker en el sistema según la documentación estándar del servicio",
+        "El conjunto de archivos y directorios en el disco que Docker accede durante la construcción",
+        "El contenedor que ejecuta la construcción de la imagen"
+      ],
+      "options_en": [
+        "The history of commands executed during the build",
+        "The global Docker configuration on the system according to standard service documentation",
+        "The set of files and directories on disk that Docker accesses during the build",
+        "The container that runs the image build"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El contexto de construcción es el directorio (y subdirectorios) del cual Docker extrae archivos para copiar a la imagen. Se especifica en 'docker build' como último argumento (usualmente '.').",
+      "explanation_en": "The build context is the directory (and subdirectories) from which Docker extracts files to copy into the image. It's specified in 'docker build' as the last argument (usually '.').",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#description)"
+    },
+    {
+      "id": "q180102013",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cuál es el propósito de 'ARG' en un Dockerfile?",
+      "question_en": "What is the purpose of 'ARG' in a Dockerfile?",
+      "options_es": [
+        "Definir variables que pueden ser pasadas en tiempo de construcción con 'docker build --build-arg'",
+        "Definir argumentos persistentes en la imagen final",
+        "Especificar argumentos que se pasan al comando CMD de manera exclusiva y permanente",
+        "Configurar argumentos de línea de comandos del contenedor"
+      ],
+      "options_en": [
+        "Define variables that can be passed at build time with 'docker build --build-arg'",
+        "Define persistent arguments in the final image",
+        "Specify arguments passed to the CMD command exclusively and permanently",
+        "Configure command-line arguments of the container"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'ARG' define variables de construcción que pueden ser pasadas mediante 'docker build --build-arg variable=valor'. No están disponibles en tiempo de ejecución como ENV.",
+      "explanation_en": "'ARG' defines build-time variables that can be passed with 'docker build --build-arg variable=value'. They are not available at runtime like ENV.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/builder/#arg)"
+    },
+    {
+      "id": "q180102014",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Qué es una estrategia de caché en la construcción de Docker?",
+      "question_en": "What is a caching strategy in Docker builds?",
+      "options_es": [
+        "Un método para sincronizar imágenes entre registros",
+        "Un archivo que almacena temporalmente datos durante la construcción",
+        "Una forma de acelerar compilaciones reutilizando capas sin cambios",
+        "Una técnica para optimizar la memoria del contenedor"
+      ],
+      "options_en": [
+        "A method to sync images between registries",
+        "A file that temporarily stores data during build",
+        "A way to speed up builds by reusing unchanged layers",
+        "A technique to optimize container memory"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Docker utiliza un sistema de caché de capas: si una instrucción no ha cambiado y sus inputs son los mismos, Docker reutiliza la capa anterior en lugar de reconstruirla.",
+      "explanation_en": "Docker uses a layer caching system: if an instruction hasn't changed and its inputs are the same, Docker reuses the previous layer instead of rebuilding it.",
+      "source": "Docker Documentation (https://docs.docker.com/build/building/best-practices/#use-the-docker-build-cache)"
+    },
+    {
+      "id": "q180102015",
+      "type": "multiple_choice",
+      "skill_id": "sk180102",
+      "question_es": "¿Cómo se puede invalidar la caché de construcción en Docker?",
+      "question_en": "How can you invalidate the build cache in Docker?",
+      "options_es": [
+        "Usando 'docker clean-cache'",
+        "Eliminando el archivo .dockercache",
+        "Usando 'docker build --no-cache .'",
+        "Reiniciando el daemon de Docker"
+      ],
+      "options_en": [
+        "Using 'docker clean-cache'",
+        "Deleting the .dockercache file",
+        "Using 'docker build --no-cache .'",
+        "Restarting the Docker daemon"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La opción '--no-cache' en 'docker build' obliga a Docker a reconstruir todas las capas sin usar la caché, útil cuando necesitas asegurar que todas las dependencias se descarguen de nuevo.",
+      "explanation_en": "The '--no-cache' option in 'docker build' forces Docker to rebuild all layers without using cache, useful when you need to ensure all dependencies are downloaded fresh.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/build/#options)"
+    },
+    {
+      "id": "q180103001",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cuál es el propósito principal de Docker Compose?",
+      "question_en": "What is the main purpose of Docker Compose?",
+      "options_es": [
+        "Gestionar registros de imágenes Docker independientemente del contexto aplicado",
+        "Compilar imágenes Docker más rápidamente",
+        "Monitorear contenedores en tiempo de ejecución",
+        "Definir y ejecutar múltiples contenedores Docker como un único servicio"
+      ],
+      "options_en": [
+        "Manage Docker image registries regardless of the applied context",
+        "Compile Docker images more quickly",
+        "Monitor containers at runtime",
+        "Define and run multiple Docker containers as a single service"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Docker Compose permite definir una aplicación multi-contenedor en un archivo YAML y luego ejecutar toda la aplicación con un solo comando, simplificando significativamente la orquestación local.",
+      "explanation_en": "Docker Compose allows defining a multi-container application in a YAML file and then running the entire application with a single command, significantly simplifying local orchestration.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/)"
+    },
+    {
+      "id": "q180103002",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cuál es el nombre del archivo de configuración predeterminado en Docker Compose?",
+      "question_en": "What is the name of the default configuration file in Docker Compose?",
+      "options_es": [
+        "docker-compose.yaml como concepto principal",
+        "docker.compose como concepto principal",
+        "compose.json como concepto principal sin considerar otros factores relevantes",
+        "docker-config.yml como concepto principal"
+      ],
+      "options_en": [
+        "docker-compose.yaml as the primary concept",
+        "docker.compose as the primary concept",
+        "compose.json as the primary concept without considering other relevant factors",
+        "docker-config.yml as the primary concept"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El archivo predeterminado es 'docker-compose.yaml' (o 'docker-compose.yml'). Docker Compose busca automáticamente este archivo en el directorio actual.",
+      "explanation_en": "The default file is 'docker-compose.yaml' (or 'docker-compose.yml'). Docker Compose automatically looks for this file in the current directory.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/compose-file/)"
+    },
+    {
+      "id": "q180103003",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Qué estructura tiene un archivo docker-compose.yaml básico?",
+      "question_en": "What structure does a basic docker-compose.yaml file have?",
+      "options_es": [
+        "Un objeto JSON con la clave 'containers'",
+        "Un archivo YAML con versión, servicios, redes y volúmenes",
+        "Un script de shell con comandos 'docker run'",
+        "Una lista de imágenes a descargar sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "A JSON object with the 'containers' key",
+        "A YAML file with version, services, networks, and volumes",
+        "A shell script with 'docker run' commands",
+        "A list of images to download without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un archivo docker-compose.yaml contiene secciones para versión (versión de la sintaxis), servicios (contenedores a ejecutar), redes, volúmenes y otras configuraciones.",
+      "explanation_en": "A docker-compose.yaml file contains sections for version (syntax version), services (containers to run), networks, volumes, and other configurations.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/compose-file/compose-file-v3/)"
+    },
+    {
+      "id": "q180103004",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cuál es el comando para iniciar servicios definidos en docker-compose.yaml?",
+      "question_en": "What is the command to start services defined in docker-compose.yaml?",
+      "options_es": [
+        "docker-compose start",
+        "docker-compose launch",
+        "docker-compose run",
+        "docker-compose up"
+      ],
+      "options_en": [
+        "docker-compose start",
+        "docker-compose launch",
+        "docker-compose run",
+        "docker-compose up"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'docker-compose up' crea e inicia todos los servicios definidos en el archivo. La opción '-d' ejecuta en modo detached (background).",
+      "explanation_en": "'docker-compose up' creates and starts all services defined in the file. The '-d' option runs in detached mode (background).",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/compose_up/)"
+    },
+    {
+      "id": "q180103005",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Qué hace el comando 'docker-compose down'?",
+      "question_en": "What does the 'docker-compose down' command do?",
+      "options_es": [
+        "Detiene y elimina contenedores, redes y volúmenes definidos",
+        "Baja el disco de almacenamiento Docker",
+        "Pausa todos los servicios temporalmente",
+        "Remueve solo los volúmenes datos sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Stops and removes containers, networks, and defined volumes",
+        "Brings down Docker storage disk",
+        "Pauses all services temporarily",
+        "Removes only data volumes without exceptions or variants"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'docker-compose down' detiene y elimina todos los contenedores, redes y volúmenes creados por 'docker-compose up'. Es útil para limpiar el entorno.",
+      "explanation_en": "'docker-compose down' stops and removes all containers, networks, and volumes created by 'docker-compose up'. It's useful for cleaning up the environment.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/compose_down/)"
+    },
+    {
+      "id": "q180103006",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cómo se comunican los servicios entre sí en Docker Compose?",
+      "question_en": "How do services communicate with each other in Docker Compose?",
+      "options_es": [
+        "Mediante URLs HTTP expuestas públicamente",
+        "Mediante el nombre del servicio como hostname automáticamente resuelto",
+        "Mediante configuración manual de DNS en cualquier escenario de implementación",
+        "Mediante direcciones IP externas del host"
+      ],
+      "options_en": [
+        "Via publicly exposed HTTP URLs",
+        "Via the service name as automatically resolved hostname",
+        "Via manual DNS configuration in any implementation scenario",
+        "Via external host IP addresses"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Docker Compose crea una red bridge por defecto donde cada servicio puede acceder a otros usando el nombre del servicio. Por ejemplo, desde 'web' puedes conectar a 'db:5432'.",
+      "explanation_en": "Docker Compose creates a default bridge network where each service can access others using the service name. For example, from 'web' you can connect to 'db:5432'.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/networking/)"
+    },
+    {
+      "id": "q180103007",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Qué es la sección 'services' en un archivo docker-compose.yaml?",
+      "question_en": "What is the 'services' section in a docker-compose.yaml file?",
+      "options_es": [
+        "La definición de cada contenedor a ejecutar con su configuración",
+        "Una lista de servicios HTTP disponibles públicamente",
+        "Los puertos expuestos del host sin excepciones ni variantes",
+        "Los scripts a ejecutar después de iniciar los contenedores"
+      ],
+      "options_en": [
+        "The definition of each container to run with its configuration",
+        "A list of publicly available HTTP services",
+        "The exposed ports of the host without exceptions or variants",
+        "Scripts to run after containers start"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La sección 'services' define cada contenedor individualmente, especificando la imagen, puertos, volúmenes, variables de entorno y otras configuraciones.",
+      "explanation_en": "The 'services' section defines each container individually, specifying the image, ports, volumes, environment variables, and other configurations.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/compose-file/compose-file-v3/#services)"
+    },
+    {
+      "id": "q180103008",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cuál es la sección 'volumes' en docker-compose?",
+      "question_en": "What is the 'volumes' section in docker-compose?",
+      "options_es": [
+        "Define archivos de registro del contenedor sin considerar otros factores relevantes",
+        "Lista todos los archivos copiados al contenedor",
+        "Define volúmenes nombrados reutilizables y su configuración",
+        "Especifica directorios a excluir de la caché"
+      ],
+      "options_en": [
+        "Defines container log files without considering other relevant factors",
+        "Lists all files copied to the container",
+        "Defines reusable named volumes and their configuration",
+        "Specifies directories to exclude from cache"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La sección 'volumes' permite definir volúmenes nombrados que pueden ser compartidos entre múltiples servicios y persisten más allá del ciclo de vida del contenedor.",
+      "explanation_en": "The 'volumes' section allows defining named volumes that can be shared between multiple services and persist beyond the container's lifecycle.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes)"
+    },
+    {
+      "id": "q180103009",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Qué hace la opción 'depends_on' en docker-compose?",
+      "question_en": "What does the 'depends_on' option do in docker-compose?",
+      "options_es": [
+        "Define el orden de inicio de los servicios",
+        "Especifica qué imagen debe descargarse primero",
+        "Limita el número de contenedores que se pueden ejecutar simultáneamente",
+        "Asigna permisos de dependencia entre servicios"
+      ],
+      "options_en": [
+        "Defines the startup order of services",
+        "Specifies which image should be downloaded first",
+        "Limits the number of containers that can run simultaneously",
+        "Assigns permission dependencies between services"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'depends_on' asegura que un servicio se inicia solo después de que sus dependencias se han iniciado. Nota: no espera a que estén listos, solo a que se hayan iniciado.",
+      "explanation_en": "'depends_on' ensures a service starts only after its dependencies have started. Note: it doesn't wait for readiness, just for startup.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/compose-file/compose-file-v3/#depends_on)"
+    },
+    {
+      "id": "q180103010",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cómo se pueden pasar variables de entorno a los servicios en docker-compose?",
+      "question_en": "How can you pass environment variables to services in docker-compose?",
+      "options_es": [
+        "Mediante archivos de configuración en el contenedor",
+        "Definiendo 'environment' o '.env' en el servicio",
+        "Solo a través de la línea de comandos de 'docker-compose'",
+        "Usando 'export' en el terminal antes de ejecutar 'docker-compose up'"
+      ],
+      "options_en": [
+        "Through configuration files in the container",
+        "By defining 'environment' or '.env' in the service",
+        "Only through the 'docker-compose' command line",
+        "Using 'export' in the terminal before running 'docker-compose up'"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Se pueden pasar variables de entorno de varias formas: directamente en 'environment', desde un archivo '.env', o usando interpolación en el yaml.",
+      "explanation_en": "Environment variables can be passed several ways: directly in 'environment', from a '.env' file, or using interpolation in the yaml.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/environment-variables/)"
+    },
+    {
+      "id": "q180103011",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Qué es una red en docker-compose?",
+      "question_en": "What is a network in docker-compose?",
+      "options_es": [
+        "Una conexión directa a la red del host sin considerar otros factores relevantes",
+        "Una conexión virtual donde los servicios pueden comunicarse entre sí",
+        "Una lista de puertos abiertos en el host",
+        "Un archivo de configuración de firewall"
+      ],
+      "options_en": [
+        "A direct connection to the host network without considering other relevant factors",
+        "A virtual connection where services can communicate with each other",
+        "A list of open ports on the host",
+        "A firewall configuration file"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las redes en docker-compose permiten que los servicios se comuniquen entre sí. Por defecto, se crea una red bridge que incluye todos los servicios.",
+      "explanation_en": "Networks in docker-compose allow services to communicate with each other. By default, a bridge network is created that includes all services.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/networking/)"
+    },
+    {
+      "id": "q180103012",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cuál es el comando para ejecutar un comando en un servicio de docker-compose?",
+      "question_en": "What is the command to run a command in a docker-compose service?",
+      "options_es": [
+        "docker-compose send nombre_servicio comando",
+        "docker-compose execute nombre_servicio comando",
+        "docker-compose run nombre_servicio comando",
+        "docker-compose call nombre_servicio comando"
+      ],
+      "options_en": [
+        "docker-compose send nombre_servicio comando",
+        "docker-compose execute nombre_servicio comando",
+        "docker-compose run nombre_servicio comando",
+        "docker-compose call nombre_servicio comando"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'docker-compose run' ejecuta un comando puntual en un servicio. Es útil para tareas de una sola ejecución como migraciones de base de datos.",
+      "explanation_en": "'docker-compose run' executes a one-off command in a service. It's useful for one-time tasks like database migrations.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/compose_run/)"
+    },
+    {
+      "id": "q180103013",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cómo se escalaban servicios en docker-compose?",
+      "question_en": "How can you scale services in docker-compose?",
+      "options_es": [
+        "Ambas opciones A y C son válidas",
+        "Definiendo 'replicas' en el archivo yaml",
+        "Usando 'docker-compose up --scale servicio=N'",
+        "Usando 'docker-compose scale servicio=N'"
+      ],
+      "options_en": [
+        "Both options A and C are valid",
+        "By defining 'replicas' in the yaml file",
+        "Using 'docker-compose up --scale servicio=N'",
+        "Using 'docker-compose scale servicio=N'"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Hay múltiples formas de escalar servicios, incluyendo 'docker-compose scale' (versión 2) y '--scale' (versión 3). También se puede usar 'deploy.replicas' en versiones modernas.",
+      "explanation_en": "There are multiple ways to scale services, including 'docker-compose scale' (version 2) and '--scale' (version 3). You can also use 'deploy.replicas' in modern versions.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/compose-file/compose-file-v3/#deploy)"
+    },
+    {
+      "id": "q180103014",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Cuál es la diferencia entre 'build' e 'image' en docker-compose?",
+      "question_en": "What is the difference between 'build' and 'image' in docker-compose?",
+      "options_es": [
+        "'image' es más rápido que 'build'",
+        "No hay diferencia, son sinónimos según la documentación estándar del servicio",
+        "'build' es para desarrollo, 'image' para producción",
+        "'build' construye la imagen desde un Dockerfile, 'image' usa una imagen existente"
+      ],
+      "options_en": [
+        "'image' is faster than 'build'",
+        "There is no difference, they are synonymous according to standard service documentation",
+        "'build' is for development, 'image' for production",
+        "'build' constructs the image from a Dockerfile, 'image' uses an existing image"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'build' especifica un contexto y Dockerfile para construir la imagen, 'image' especifica una imagen preexistente a descargar.",
+      "explanation_en": "'build' specifies a context and Dockerfile to construct the image, 'image' specifies a pre-existing image to download.",
+      "source": "Docker Documentation (https://docs.docker.com/compose/compose-file/compose-file-v3/#build)"
+    },
+    {
+      "id": "q180103015",
+      "type": "multiple_choice",
+      "skill_id": "sk180103",
+      "question_es": "¿Qué hace 'docker-compose logs'?",
+      "question_en": "What does 'docker-compose logs' do?",
+      "options_es": [
+        "Muestra los registros (stdout/stderr) de los servicios",
+        "Borra los registros de los servicios",
+        "Comprime los registros antiguos en todos los casos posibles",
+        "Guarda los registros en un archivo específico"
+      ],
+      "options_en": [
+        "Shows the logs (stdout/stderr) of services",
+        "Deletes service logs",
+        "Compresses old logs in all possible cases",
+        "Saves logs to a specific file"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'docker-compose logs' muestra la salida de todos los servicios. Con 'docker-compose logs -f' puedes seguir los logs en tiempo real.",
+      "explanation_en": "'docker-compose logs' displays output from all services. With 'docker-compose logs -f' you can follow logs in real-time.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/compose_logs/)"
+    },
+    {
+      "id": "q180104001",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Qué es un registro Docker (Docker Registry)?",
+      "question_en": "What is a Docker Registry?",
+      "options_es": [
+        "Una lista de contenedores en ejecución de forma invariable y constante",
+        "Un archivo de configuración local de Docker",
+        "Un protocolo de comunicación entre contenedores",
+        "Un almacén centralizado donde se distribuyen y descargan imágenes Docker"
+      ],
+      "options_en": [
+        "A list of running containers invariably and constantly",
+        "A local Docker configuration file",
+        "A communication protocol between containers",
+        "A centralized storage where Docker images are distributed and downloaded"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un registro Docker es un servidor que almacena imágenes Docker permitiendo que otros usuarios las descarguen. Docker Hub es el registro público por defecto.",
+      "explanation_en": "A Docker Registry is a server that stores Docker images allowing other users to download them. Docker Hub is the default public registry.",
+      "source": "Docker Documentation (https://docs.docker.com/registry/)"
+    },
+    {
+      "id": "q180104002",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cuál es el registro Docker público predeterminado?",
+      "question_en": "What is the default public Docker registry?",
+      "options_es": [
+        "Docker Store",
+        "Docker Hub",
+        "Docker Repository",
+        "Docker Cloud"
+      ],
+      "options_en": [
+        "Docker Store",
+        "Docker Hub",
+        "Docker Repository",
+        "Docker Cloud"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Docker Hub es el registro público oficial donde se alojan miles de imágenes públicas. Es el destino predeterminado cuando usas 'docker pull' sin especificar un registro.",
+      "explanation_en": "Docker Hub is the official public registry where thousands of public images are hosted. It's the default destination when using 'docker pull' without specifying a registry.",
+      "source": "Docker Documentation (https://docs.docker.com/docker-hub/)"
+    },
+    {
+      "id": "q180104003",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cómo se especifica el registro al trabajar con imágenes Docker?",
+      "question_en": "How do you specify the registry when working with Docker images?",
+      "options_es": [
+        "Usando el formato 'registro/usuario/nombre:etiqueta' en comandos como 'docker pull'",
+        "Mediante variables de entorno globales sin excepciones ni variantes",
+        "En el archivo docker-compose.yaml solamente",
+        "En el archivo de configuración de Docker daemon"
+      ],
+      "options_en": [
+        "Using the format 'registry/user/name:tag' in commands like 'docker pull'",
+        "Through global environment variables without exceptions or variants",
+        "Only in the docker-compose.yaml file",
+        "In the Docker daemon configuration file"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se especifica el registro en la URL de la imagen. Por ejemplo: 'gcr.io/proyecto/imagen:tag' para Google Container Registry, o simplemente 'usuario/imagen' para Docker Hub.",
+      "explanation_en": "The registry is specified in the image URL. For example: 'gcr.io/proyecto/imagen:tag' for Google Container Registry, or simply 'usuario/imagen' for Docker Hub.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/pull/)"
+    },
+    {
+      "id": "q180104004",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cuál es el propósito de 'docker login'?",
+      "question_en": "What is the purpose of 'docker login'?",
+      "options_es": [
+        "Activar el modo administrador en Docker",
+        "Conectarse a un contenedor Docker",
+        "Iniciar sesión en un registro Docker para pushear imágenes privadas",
+        "Verificar el acceso al host en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Activate admin mode in Docker",
+        "Connect to a Docker container",
+        "Log in to a Docker registry to push private images",
+        "Verify access to the host in any implementation scenario"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'docker login' autentica con un registro Docker, típicamente Docker Hub o un registro privado. Permite pushear y pullear imágenes privadas.",
+      "explanation_en": "'docker login' authenticates with a Docker registry, typically Docker Hub or a private registry. It allows pushing and pulling private images.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/login/)"
+    },
+    {
+      "id": "q180104005",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cuál es el comando para subir una imagen a un registro?",
+      "question_en": "What is the command to push an image to a registry?",
+      "options_es": [
+        "docker upload",
+        "docker push",
+        "docker publish",
+        "docker send"
+      ],
+      "options_en": [
+        "docker upload",
+        "docker push",
+        "docker publish",
+        "docker send"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'docker push' sube una imagen local a un registro remoto. La imagen debe estar etiquetada con el nombre del registro.",
+      "explanation_en": "'docker push' uploads a local image to a remote registry. The image must be tagged with the registry name.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/push/)"
+    },
+    {
+      "id": "q180104006",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Qué es una imagen pública en Docker Hub?",
+      "question_en": "What is a public image in Docker Hub?",
+      "options_es": [
+        "Una imagen que está respaldada por una garantía oficial",
+        "Una imagen que cualquier usuario puede descargar sin autenticación",
+        "Una imagen que solo puedes usar si pagas sin excepciones ni variantes",
+        "Una imagen creada por Docker Inc exclusivamente"
+      ],
+      "options_en": [
+        "An image that is backed by an official guarantee",
+        "An image that any user can download without authentication",
+        "An image you can only use if you pay without exceptions or variants",
+        "An image created exclusively by Docker Inc"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las imágenes públicas pueden ser descargadas por cualquiera sin autenticación. Las imágenes privadas requieren autenticación con 'docker login'.",
+      "explanation_en": "Public images can be downloaded by anyone without authentication. Private images require authentication with 'docker login'.",
+      "source": "Docker Documentation (https://docs.docker.com/docker-hub/repos/)"
+    },
+    {
+      "id": "q180104007",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cuál es el comando para descargar una imagen de un registro?",
+      "question_en": "What is the command to download an image from a registry?",
+      "options_es": [
+        "docker download",
+        "docker fetch",
+        "docker pull",
+        "docker get"
+      ],
+      "options_en": [
+        "docker download",
+        "docker fetch",
+        "docker pull",
+        "docker get"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'docker pull' descarga una imagen del registro. Si no especificas registro, usa Docker Hub por defecto.",
+      "explanation_en": "'docker pull' downloads an image from the registry. If you don't specify a registry, it uses Docker Hub by default.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/pull/)"
+    },
+    {
+      "id": "q180104008",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cómo se etiqueta una imagen para subirla a un registro personalizado?",
+      "question_en": "How do you tag an image to upload it to a custom registry?",
+      "options_es": [
+        "Usando 'docker tag imagen registro/usuario/nombre:etiqueta'",
+        "Mediante el daemon de Docker en settings.json",
+        "Usando 'docker rename' en el contenedor según la documentación estándar del servicio",
+        "Editando el nombre en el archivo docker-compose.yaml"
+      ],
+      "options_en": [
+        "Using 'docker tag image registry/user/name:tag'",
+        "Through the Docker daemon in settings.json",
+        "Using 'docker rename' on the container according to standard service documentation",
+        "Editing the name in the docker-compose.yaml file"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'docker tag' crea un alias para una imagen local con el nombre del registro de destino. Esto permite que 'docker push' sepa a dónde subirla.",
+      "explanation_en": "'docker tag' creates an alias for a local image with the destination registry name. This tells 'docker push' where to upload it.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/tag/)"
+    },
+    {
+      "id": "q180104009",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Qué es un registro privado en Docker?",
+      "question_en": "What is a private registry in Docker?",
+      "options_es": [
+        "Un registro que no tiene conexión a Internet sin considerar otros factores relevantes",
+        "Un registro que solo puede usarse en redes internas",
+        "Un registro que se ejecuta en tu máquina local",
+        "Un registro que solo ciertos usuarios autorizados pueden acceder"
+      ],
+      "options_en": [
+        "A registry with no Internet connection without considering other relevant factors",
+        "A registry that can only be used on internal networks",
+        "A registry that runs on your local machine",
+        "A registry that only authorized users can access"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un registro privado es controlado y requiere autenticación. Puede ser auto-alojado o un servicio en la nube con controles de acceso.",
+      "explanation_en": "A private registry is controlled and requires authentication. It can be self-hosted or a cloud service with access controls.",
+      "source": "Docker Documentation (https://docs.docker.com/registry/deploying/)"
+    },
+    {
+      "id": "q180104010",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cómo se elimina una imagen del registro local?",
+      "question_en": "How do you delete an image from the local registry?",
+      "options_es": [
+        "docker uninstall nombre:etiqueta",
+        "docker remove nombre:etiqueta",
+        "docker rmi nombre:etiqueta",
+        "docker delete nombre:etiqueta"
+      ],
+      "options_en": [
+        "docker uninstall name:tag",
+        "docker remove name:tag",
+        "docker rmi name:tag",
+        "docker delete name:tag"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'docker rmi' (remove image) elimina una imagen local. Solo puedes eliminar una imagen si no hay contenedores usándola.",
+      "explanation_en": "'docker rmi' (remove image) deletes a local image. You can only delete an image if no containers are using it.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/rmi/)"
+    },
+    {
+      "id": "q180104011",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Qué es 'docker pull' con el parámetro 'latest'?",
+      "question_en": "What does 'docker pull' with the 'latest' parameter do?",
+      "options_es": [
+        "Descarga la versión más reciente de una imagen",
+        "Extrae la última capa de una imagen",
+        "Descarga solo las imágenes actualizadas recientemente",
+        "Verifica si hay nuevas versiones disponibles"
+      ],
+      "options_en": [
+        "Downloads the latest version of an image",
+        "Extracts the latest layer of an image",
+        "Downloads only recently updated images",
+        "Checks if new versions are available"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'latest' es la etiqueta predeterminada si no especificas una. Aunque es conveniente, no es recomendable en producción porque puede cambiar inesperadamente.",
+      "explanation_en": "'latest' is the default tag if you don't specify one. While convenient, it's not recommended in production because it can change unexpectedly.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/pull/)"
+    },
+    {
+      "id": "q180104012",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cuál es la diferencia entre una imagen 'official' y una 'community' en Docker Hub?",
+      "question_en": "What is the difference between an 'official' and a 'community' image on Docker Hub?",
+      "options_es": [
+        "No hay diferencia técnica, solo en popularidad independientemente del contexto aplicado",
+        "Las imágenes 'official' son mantenidas por Docker/proveedores, las 'community' por usuarios",
+        "Las 'official' requieren pago, las 'community' son gratuitas",
+        "Las 'official' no pueden tener vulnerabilidades"
+      ],
+      "options_en": [
+        "There is no technical difference, only in popularity regardless of the applied context",
+        "'Official' images are maintained by Docker/vendors, 'community' by users",
+        "'Official' requires payment, 'community' is free",
+        "'Official' images cannot have vulnerabilities"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las imágenes oficiales son verificadas y mantenidas por Docker o los proveedores del software. Las community son mantenidas por usuarios y pueden variar en calidad y seguridad.",
+      "explanation_en": "Official images are verified and maintained by Docker or software vendors. Community images are maintained by users and may vary in quality and security.",
+      "source": "Docker Documentation (https://docs.docker.com/docker-hub/official_repos/)"
+    },
+    {
+      "id": "q180104013",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Qué es un 'Docker registry pull-through cache'?",
+      "question_en": "What is a 'Docker registry pull-through cache'?",
+      "options_es": [
+        "Un registro que bloquea descargas de imágenes no autorizadas",
+        "Un filtro que elimina imágenes malware sin excepciones ni variantes",
+        "Un sistema de caché en la nube para imágenes",
+        "Un cache local que reduce la latencia al descargar imágenes repetidas"
+      ],
+      "options_en": [
+        "A registry that blocks downloads of unauthorized images",
+        "A filter that removes malware images without exceptions or variants",
+        "A cloud-based caching system for images",
+        "A local cache that reduces latency when downloading repeated images"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un pull-through cache es un registro privado que actúa como intermediario, descargando imágenes de Docker Hub y cacheándolas localmente para reduc",
+      "explanation_en": "A pull-through cache is a private registry that acts as a proxy, downloading images from Docker Hub and caching them locally to reduce bandwidth and latency.",
+      "source": "Docker Documentation (https://docs.docker.com/registry/recipes/mirror/)"
+    },
+    {
+      "id": "q180104014",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Cómo se buscan imágenes en Docker Hub desde la línea de comandos?",
+      "question_en": "How do you search for images on Docker Hub from the command line?",
+      "options_es": [
+        "docker query nombre",
+        "docker lookup nombre",
+        "docker search nombre",
+        "docker find nombre"
+      ],
+      "options_en": [
+        "docker query name",
+        "docker lookup name",
+        "docker search name",
+        "docker find name"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'docker search' busca imágenes en Docker Hub que coincidan con el término de búsqueda, mostrando descripción, estrellas y si es oficial.",
+      "explanation_en": "'docker search' searches for images on Docker Hub matching the search term, showing description, stars, and whether it's official.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/search/)"
+    },
+    {
+      "id": "q180104015",
+      "type": "multiple_choice",
+      "skill_id": "sk180104",
+      "question_es": "¿Qué sucede cuando ejecutas 'docker pull' en una imagen que ya tienes localmente?",
+      "question_en": "What happens when you run 'docker pull' on an image you already have locally?",
+      "options_es": [
+        "Se crea una copia con un nombre diferente en todos los casos posibles",
+        "Se descarga una nueva copia, reemplazando la local",
+        "Docker advierte que ya existe y no hace nada",
+        "Se verifica si hay actualizaciones y solo descarga las capas nuevas"
+      ],
+      "options_en": [
+        "A copy is created with a different name in all possible cases",
+        "A new copy is downloaded, replacing the local one",
+        "Docker warns that it already exists and does nothing",
+        "It checks for updates and only downloads new layers"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'docker pull' verifica si hay una versión más reciente en el registro. Gracias al sistema de capas, solo descarga las que han cambiado.",
+      "explanation_en": "'docker pull' checks if there's a newer version in the registry. Thanks to the layer system, it only downloads what has changed.",
+      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/pull/)"
+    }
+  ]
+}

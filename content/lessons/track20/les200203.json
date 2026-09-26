@@ -1,0 +1,13 @@
+{
+  "id": "les200203",
+  "skill_id": "sk200203",
+  "language": "es",
+  "executable": false,
+  "title_es": "Estrategias de Indexación",
+  "title_en": "Indexing Strategies",
+  "body_es": "Los índices son estructuras que aceleran búsquedas pero ralentizan escrituras. B-tree es el tipo estándar, eficiente para búsquedas exactas y rangos. Índices parciales indexan solo filas relevantes, reduciendo espacio. Índices compuestos permiten optimizar múltiples columnas juntas. La elección correcta de índices es crítica: demasiados ralentizan inserts, muy pocos ralentizan queries.",
+  "body_en": "Indexes accelerate searches but slow writes. B-tree is standard type, efficient for exact searches and ranges. Partial indexes index only relevant rows, reducing space. Composite indexes optimize multiple columns together. Correct index choice is critical: too many slow inserts, too few slow queries.",
+  "example_code": "-- Índice B-tree simple\nCREATE INDEX idx_users_email ON users(email);\n\n-- Índice compuesto\nCREATE INDEX idx_orders_user_date ON orders(user_id, order_date DESC);\n\n-- Índice parcial\nCREATE INDEX idx_active_users ON users(email) WHERE status = 'active';\n\n-- Ver uso de índices\nSELECT * FROM pg_stat_user_indexes;",
+  "example_output": "Consultas sobre email se aceleran 100x, escrituras aumentan minimalamente, índice parcial ocupa 30% menos espacio.",
+  "source": "https://www.postgresql.org/docs/"
+}

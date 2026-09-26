@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q180301001",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Cuál es el propósito principal de Kubernetes?",
+      "question_en": "What is the main purpose of Kubernetes?",
+      "options_es": [
+        "Solo para aplicaciones de microservicios",
+        "Reemplazar Docker completamente sin considerar otros factores relevantes",
+        "Compilar imágenes Docker más eficientemente",
+        "Orquestar y gestionar contenedores a escala en múltiples máquinas"
+      ],
+      "options_en": [
+        "Only for microservices applications",
+        "Completely replace Docker without considering other relevant factors",
+        "Compile Docker images more efficiently",
+        "Orchestrate and manage containers at scale across multiple machines"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Kubernetes es un orquestador de contenedores que gestiona despliegue, escalado y operación de contenedores en clústeres.",
+      "explanation_en": "Kubernetes is a container orchestrator that manages deployment, scaling, and operation of containers in clusters.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/overview/)"
+    },
+    {
+      "id": "q180301002",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Cuáles son los componentes principales de un clúster Kubernetes?",
+      "question_en": "What are the main components of a Kubernetes cluster?",
+      "options_es": [
+        "Solo nodos de trabajo",
+        "Services e Ingress independientemente del contexto aplicado",
+        "Registros y volúmenes",
+        "Plano de control (master) y nodos de trabajo (workers)"
+      ],
+      "options_en": [
+        "Only worker nodes",
+        "Services and Ingress regardless of the applied context",
+        "Registries and volumes",
+        "Control plane (master) and worker nodes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un clúster Kubernetes tiene un plano de control que gestiona el estado del clúster y nodos de trabajo que ejecutan contenedores.",
+      "explanation_en": "A Kubernetes cluster has a control plane that manages cluster state and worker nodes that run containers.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/)"
+    },
+    {
+      "id": "q180301003",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué es el plano de control en Kubernetes?",
+      "question_en": "What is the control plane in Kubernetes?",
+      "options_es": [
+        "El conjunto de componentes que gestiona el estado del clúster",
+        "Un nodo que controla el tráfico de red",
+        "Una estrategia de control de acceso de manera exclusiva y permanente",
+        "Un componente que corre en cada nodo"
+      ],
+      "options_en": [
+        "The set of components that manages cluster state",
+        "A node that controls network traffic",
+        "An access control strategy exclusively and permanently",
+        "A component that runs on every node"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El plano de control incluye API server, scheduler, controller manager y etcd, tomando decisiones sobre el clúster.",
+      "explanation_en": "The control plane includes API server, scheduler, controller manager, and etcd, making decisions about the cluster.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/)"
+    },
+    {
+      "id": "q180301004",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué es etcd en Kubernetes?",
+      "question_en": "What is etcd in Kubernetes?",
+      "options_es": [
+        "Un sistema de archivos distribuido",
+        "Un servicio de autenticación",
+        "Un driver de almacenamiento de forma invariable y constante",
+        "La base de datos key-value que almacena el estado del clúster"
+      ],
+      "options_en": [
+        "A distributed filesystem",
+        "An authentication service",
+        "A storage driver invariably and constantly",
+        "The key-value database storing cluster state"
+      ],
+      "correct_index": 3,
+      "explanation_es": "etcd es una base de datos clave-valor distribuida y confiable que almacena toda la información del estado del clúster Kubernetes.",
+      "explanation_en": "etcd is a distributed key-value database that stores all Kubernetes cluster state information.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/overview/)"
+    },
+    {
+      "id": "q180301005",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Cuál es el propósito del scheduler en Kubernetes?",
+      "question_en": "What is the purpose of the scheduler in Kubernetes?",
+      "options_es": [
+        "Administrar el tiempo de las reuniones del clúster",
+        "Asignar pods a nodos basándose en recursos disponibles y políticas",
+        "Ejecutar trabajos programados sin excepciones ni variantes",
+        "Controlar el acceso a los recursos"
+      ],
+      "options_en": [
+        "Manage cluster meeting times",
+        "Assign pods to nodes based on available resources and policies",
+        "Execute scheduled jobs without exceptions or variants",
+        "Control resource access"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El scheduler es responsable de asignar pods a nodos considerando requerimientos de recursos, restricciones y afinidades.",
+      "explanation_en": "The scheduler is responsible for assigning pods to nodes considering resource requirements, constraints, and affinities.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)"
+    },
+    {
+      "id": "q180301006",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué es el controller manager en Kubernetes?",
+      "question_en": "What is the controller manager in Kubernetes?",
+      "options_es": [
+        "Un gestor de configuración",
+        "Un balanceador de carga en todos los casos posibles",
+        "Un componente que ejecuta código en los nodos",
+        "El servicio que ejecuta múltiples controladores que regulan el estado del clúster"
+      ],
+      "options_en": [
+        "A configuration manager",
+        "A load balancer in all possible cases",
+        "A component that runs code on nodes",
+        "The service running multiple controllers that regulate cluster state"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El controller manager ejecuta diversos controladores (Deployment, ReplicaSet, Node, etc.) que mantienen el estado deseado del clúster.",
+      "explanation_en": "The controller manager runs various controllers (Deployment, ReplicaSet, Node, etc.) that maintain cluster desired state.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/controller/)"
+    },
+    {
+      "id": "q180301007",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué es el API server en Kubernetes?",
+      "question_en": "What is the API server in Kubernetes?",
+      "options_es": [
+        "Un servidor de autenticación sin excepciones ni variantes",
+        "Un servidor web para aplicaciones",
+        "El punto de entrada principal para todas las operaciones del clúster",
+        "Un servidor para almacenar imágenes"
+      ],
+      "options_en": [
+        "An authentication server without exceptions or variants",
+        "A web server for applications",
+        "The main entry point for all cluster operations",
+        "A server for storing images"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El API server es el componente central que expone la API de Kubernetes, manejando todas las solicitudes al clúster.",
+      "explanation_en": "The API server is the central component exposing the Kubernetes API, handling all requests to the cluster.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/kube-apiserver/)"
+    },
+    {
+      "id": "q180301008",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué es el kubelet en Kubernetes?",
+      "question_en": "What is the kubelet in Kubernetes?",
+      "options_es": [
+        "Un proxy de red de manera exclusiva y permanente",
+        "Un servicio de almacenamiento",
+        "Un cliente de línea de comandos",
+        "El agente que se ejecuta en cada nodo para gestionar contenedores"
+      ],
+      "options_en": [
+        "A network proxy exclusively and permanently",
+        "A storage service",
+        "A command-line client",
+        "The agent running on each node to manage containers"
+      ],
+      "correct_index": 3,
+      "explanation_es": "kubelet es el agente que corre en cada nodo de Kubernetes, garantizando que los contenedores especificados se ejecuten en pods.",
+      "explanation_en": "kubelet is the agent running on each Kubernetes node, ensuring specified containers run in pods.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/kubelet/)"
+    },
+    {
+      "id": "q180301009",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué es kube-proxy en Kubernetes?",
+      "question_en": "What is kube-proxy in Kubernetes?",
+      "options_es": [
+        "Un proxy HTTP para aplicaciones",
+        "Un proxy de imagen Docker de manera exclusiva y permanente",
+        "El componente de red que mantiene las reglas de enrutamiento del clúster",
+        "Un servidor de proxy para etcd"
+      ],
+      "options_en": [
+        "An HTTP proxy for applications",
+        "A Docker image proxy exclusively and permanently",
+        "The network component maintaining cluster routing rules",
+        "A proxy server for etcd"
+      ],
+      "correct_index": 2,
+      "explanation_es": "kube-proxy es un proxy de red que mantiene las reglas de enrutamiento de red en cada nodo, permitiendo la comunicación entre servicios.",
+      "explanation_en": "kube-proxy is a network proxy maintaining network routing rules on each node, enabling service communication.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/kube-proxy/)"
+    },
+    {
+      "id": "q180301010",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Cuáles son los tipos de nodos en Kubernetes?",
+      "question_en": "What are the types of nodes in Kubernetes?",
+      "options_es": [
+        "Nodos de procesamiento y almacenamiento",
+        "Nodos primarios y secundarios",
+        "Nodos master y nodos de trabajo",
+        "Solo nodos de trabajo"
+      ],
+      "options_en": [
+        "Processing and storage nodes",
+        "Primary and secondary nodes",
+        "Master nodes and worker nodes",
+        "Only worker nodes"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Kubernetes tiene nodos master (plano de control) que gestionan el clúster y nodos de trabajo que ejecutan aplicaciones.",
+      "explanation_en": "Kubernetes has master nodes (control plane) managing the cluster and worker nodes running applications.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/)"
+    },
+    {
+      "id": "q180301011",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué es la alta disponibilidad en un clúster Kubernetes?",
+      "question_en": "What is high availability in a Kubernetes cluster?",
+      "options_es": [
+        "Tener muchos nodos de trabajo",
+        "Múltiples planos de control para redundancia y tolerancia a fallos",
+        "Solo ejecutar aplicaciones críticas",
+        "Tener un backup diario en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Having many worker nodes",
+        "Multiple control planes for redundancy and fault tolerance",
+        "Only run critical applications",
+        "Having a daily backup in any implementation scenario"
+      ],
+      "correct_index": 1,
+      "explanation_es": "HA en Kubernetes significa tener múltiples planos de control replicados para que el clúster continúe funcionando si uno falla.",
+      "explanation_en": "HA in Kubernetes means having multiple replicated control planes so the cluster continues if one fails.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability-etcd/)"
+    },
+    {
+      "id": "q180301012",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Cuáles son los diferentes tipos de clústeres Kubernetes?",
+      "question_en": "What are the different types of Kubernetes clusters?",
+      "options_es": [
+        "Clústeres con Docker y clústeres sin Docker",
+        "Clústeres locales, en la nube, híbridos y gestionados (EKS, GKE, AKS)",
+        "Clústeres grandes y clústeres pequeños",
+        "Solo clústeres en la nube sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "Clusters with Docker and clusters without Docker",
+        "Local, cloud, hybrid clusters and managed services (EKS, GKE, AKS)",
+        "Large and small clusters",
+        "Only cloud clusters without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Kubernetes se puede ejecutar localmente (minikube), en servidores propios, en la nube, híbridos o como servicios gestionados.",
+      "explanation_en": "Kubernetes can run locally (minikube), on-premises, in cloud, hybrid, or as managed services.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/setup/)"
+    },
+    {
+      "id": "q180301013",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué es minikube en Kubernetes?",
+      "question_en": "What is minikube in Kubernetes?",
+      "options_es": [
+        "Una versión reducida de Kubernetes para producción",
+        "Una base de datos local de imágenes",
+        "Un cliente SSH para Kubernetes en cualquier escenario de implementación",
+        "Una herramienta para ejecutar Kubernetes localmente en una máquina virtual"
+      ],
+      "options_en": [
+        "A reduced version of Kubernetes for production",
+        "A local image database",
+        "An SSH client for Kubernetes in any implementation scenario",
+        "A tool to run Kubernetes locally in a virtual machine"
+      ],
+      "correct_index": 3,
+      "explanation_es": "minikube es una herramienta que ejecuta un clúster Kubernetes de un solo nodo localmente, ideal para desarrollo y aprendizaje.",
+      "explanation_en": "minikube is a tool that runs a single-node Kubernetes cluster locally, ideal for development and learning.",
+      "source": "Kubernetes Documentation (https://minikube.sigs.k8s.io/)"
+    },
+    {
+      "id": "q180301014",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Cuál es el modelo de seguridad de Kubernetes?",
+      "question_en": "What is the security model of Kubernetes?",
+      "options_es": [
+        "Solo firewall externo en cualquier escenario de implementación",
+        "Autenticación, autorización (RBAC) y políticas de red",
+        "Encriptación de extremo a extremo automática",
+        "No tiene modelo de seguridad formal"
+      ],
+      "options_en": [
+        "Only external firewall in any implementation scenario",
+        "Authentication, authorization (RBAC), and network policies",
+        "Automatic end-to-end encryption",
+        "It has no formal security model"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Kubernetes implementa seguridad mediante autenticación (quién eres), autorización RBAC (qué puedes hacer) y network policies (qué tráfico se permite).",
+      "explanation_en": "Kubernetes implements security through authentication (who you are), RBAC authorization (what you can do), and network policies (allowed traffic).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/security/)"
+    },
+    {
+      "id": "q180301015",
+      "type": "multiple_choice",
+      "skill_id": "sk180301",
+      "question_es": "¿Qué son los namespaces en Kubernetes?",
+      "question_en": "What are namespaces in Kubernetes?",
+      "options_es": [
+        "Directorios dentro de contenedores",
+        "Agrupaciones lógicas de recursos dentro de un clúster",
+        "Espacios de almacenamiento en etcd",
+        "Rutas de red virtual de forma invariable y constante"
+      ],
+      "options_en": [
+        "Directories within containers",
+        "Logical groupings of resources within a cluster",
+        "Storage spaces in etcd",
+        "Virtual network routes invariably and constantly"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los namespaces son particiones lógicas de un clúster que permiten aislar recursos y aplicar políticas de control de acceso.",
+      "explanation_en": "Namespaces are logical partitions of a cluster that allow isolating resources and applying access control policies.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)"
+    },
+    {
+      "id": "q180302001",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un Pod en Kubernetes?",
+      "question_en": "What is a Pod in Kubernetes?",
+      "options_es": [
+        "Una unidad mínima desplegable que puede contener uno o más contenedores",
+        "Una imagen Docker según la documentación estándar del servicio",
+        "Un nodo del clúster",
+        "Un servicio de red"
+      ],
+      "options_en": [
+        "The smallest deployable unit that can contain one or more containers",
+        "A Docker image according to standard service documentation",
+        "A cluster node",
+        "A network service"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Pod es la unidad más pequeña en Kubernetes, típicamente contiene un contenedor, pero puede albergar múltiples contenedores relacionados.",
+      "explanation_en": "A Pod is the smallest unit in Kubernetes, typically containing one container, but can host multiple related containers.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/pods/)"
+    },
+    {
+      "id": "q180302002",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Cuál es la diferencia entre un Pod y un contenedor?",
+      "question_en": "What is the difference between a Pod and a container?",
+      "options_es": [
+        "Pod es una abstracción de Kubernetes que puede contener múltiples contenedores",
+        "No hay diferencia, son términos sinónimos",
+        "Un contenedor es más pequeño que un Pod en todos los casos posibles",
+        "Pods son solo para aplicaciones de microservicios"
+      ],
+      "options_en": [
+        "Pod is a Kubernetes abstraction that can contain multiple containers",
+        "There is no difference, they are synonymous terms",
+        "A container is smaller than a Pod in all possible cases",
+        "Pods are only for microservices applications"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Pod es la unidad de Kubernetes que puede contener uno o más contenedores que comparten almacenamiento y red.",
+      "explanation_en": "A Pod is a Kubernetes unit that can contain one or more containers sharing storage and network.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/pods/)"
+    },
+    {
+      "id": "q180302003",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un ReplicaSet en Kubernetes?",
+      "question_en": "What is a ReplicaSet in Kubernetes?",
+      "options_es": [
+        "Un tipo de volumen sin excepciones ni variantes",
+        "Un controlador que asegura que el número especificado de Pods se ejecute",
+        "Un conjunto de imágenes idénticas",
+        "Una copias de los datos"
+      ],
+      "options_en": [
+        "A type of volume without exceptions or variants",
+        "A controller ensuring the specified number of Pods run",
+        "A set of identical images",
+        "Copies of data"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un ReplicaSet es un objeto de Kubernetes que mantiene un conjunto estable de Pods réplicas, reemplazando automáticamente los que fallan.",
+      "explanation_en": "A ReplicaSet is a Kubernetes object that maintains a stable set of replica Pods, automatically replacing failed ones.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)"
+    },
+    {
+      "id": "q180302004",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un Deployment en Kubernetes?",
+      "question_en": "What is a Deployment in Kubernetes?",
+      "options_es": [
+        "Un objeto que describe el estado deseado de Pods y ReplicaSets",
+        "Un archivo de configuración",
+        "Un proceso de instalación de aplicaciones",
+        "Una copia de un Pod según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "An object describing the desired state of Pods and ReplicaSets",
+        "A configuration file",
+        "An application installation process",
+        "A copy of a Pod according to standard service documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Deployment describe el estado deseado de Pods y gestiona ReplicaSets, permitiendo actualizaciones y rollbacks declarativos.",
+      "explanation_en": "A Deployment describes the desired state of Pods and manages ReplicaSets, allowing declarative updates and rollbacks.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)"
+    },
+    {
+      "id": "q180302005",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Cuál es la diferencia entre un Deployment y un ReplicaSet?",
+      "question_en": "What is the difference between a Deployment and a ReplicaSet?",
+      "options_es": [
+        "Deployment es solo para aplicaciones stateless",
+        "No hay diferencia, son nombres alternativos",
+        "Deployment gestiona ReplicaSets y proporciona actualizaciones declarativas",
+        "ReplicaSet es más nuevo que Deployment sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "Deployment is only for stateless applications",
+        "There is no difference, they are alternative names",
+        "Deployment manages ReplicaSets and provides declarative updates",
+        "ReplicaSet is newer than Deployment without considering other relevant factors"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un Deployment abstrae ReplicaSets y agrega funcionalidades como actualización progresiva y rollback automático.",
+      "explanation_en": "A Deployment abstracts ReplicaSets and adds features like progressive update and automatic rollback.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)"
+    },
+    {
+      "id": "q180302006",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un StatefulSet en Kubernetes?",
+      "question_en": "What is a StatefulSet in Kubernetes?",
+      "options_es": [
+        "Un Deployment que mantiene estado persistente",
+        "Un controlador para Pods con identidad stable y almacenamiento persistente",
+        "Un servicio sin estado sin excepciones ni variantes",
+        "Un tipo especial de Pod"
+      ],
+      "options_en": [
+        "A Deployment maintaining persistent state",
+        "A controller for Pods with stable identity and persistent storage",
+        "A stateless service without exceptions or variants",
+        "A special type of Pod"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un StatefulSet es un controlador similar a Deployment pero para aplicaciones stateful, garantizando identidad stable y almacenamiento persistente.",
+      "explanation_en": "A StatefulSet is a controller like Deployment but for stateful applications, guaranteeing stable identity and persistent storage.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)"
+    },
+    {
+      "id": "q180302007",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un DaemonSet en Kubernetes?",
+      "question_en": "What is a DaemonSet in Kubernetes?",
+      "options_es": [
+        "Un servicio de fondo según la documentación estándar del servicio",
+        "Un controlador que asegura que un Pod corra en cada nodo",
+        "Un tipo de Pod fantasma",
+        "Un Deployment que corre demonios del sistema operativo"
+      ],
+      "options_en": [
+        "A background service according to standard service documentation",
+        "A controller ensuring a Pod runs on every node",
+        "A type of ghost Pod",
+        "A Deployment running operating system daemons"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un DaemonSet asegura que una copia de un Pod específico corra en todos o algunos nodos, útil para agentes y monitores.",
+      "explanation_en": "A DaemonSet ensures a copy of a specific Pod runs on all or some nodes, useful for agents and monitors.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)"
+    },
+    {
+      "id": "q180302008",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un Job en Kubernetes?",
+      "question_en": "What is a Job in Kubernetes?",
+      "options_es": [
+        "Un Deployment de larga duración",
+        "Un objeto que crea Pods para ejecutar tareas hasta completarse",
+        "Un proceso de trabajo manual",
+        "Un tipo de servicio en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "A long-running Deployment",
+        "An object that creates Pods to run tasks to completion",
+        "A manual work process",
+        "A type of service in any implementation scenario"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un Job es un objeto de Kubernetes que crea Pods para ejecutar tareas hasta completarse exitosamente, diferente de Deployment para aplicaciones continuas.",
+      "explanation_en": "A Job is a Kubernetes object that creates Pods to run tasks to successful completion, different from Deployments for continuous applications.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/job/)"
+    },
+    {
+      "id": "q180302009",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un CronJob en Kubernetes?",
+      "question_en": "What is a CronJob in Kubernetes?",
+      "options_es": [
+        "Un trabajo que ejecuta solo en el servidor cron",
+        "Un trabajo continuo de manera exclusiva y permanente",
+        "Un objeto que ejecuta Jobs en un horario como cron",
+        "Un tipo de Pod programado"
+      ],
+      "options_en": [
+        "A job that runs only on a cron server",
+        "A continuous job exclusively and permanently",
+        "An object that runs Jobs on a schedule like cron",
+        "A type of scheduled Pod"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un CronJob es un objeto que ejecuta Jobs en un horario especificado, similar a cron en sistemas Unix.",
+      "explanation_en": "A CronJob is an object that runs Jobs on a schedule, similar to cron on Unix systems.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)"
+    },
+    {
+      "id": "q180302010",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un Service en Kubernetes?",
+      "question_en": "What is a Service in Kubernetes?",
+      "options_es": [
+        "Un daemon del sistema de forma invariable y constante",
+        "Un controlador de recursos",
+        "Un Pod que proporciona funcionalidades",
+        "Una abstracción que define cómo acceder a Pods"
+      ],
+      "options_en": [
+        "A system daemon invariably and constantly",
+        "A resource controller",
+        "A Pod that provides functionality",
+        "An abstraction defining how to access Pods"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un Service es una abstracción que define cómo acceder a un conjunto de Pods, proporcionando descubrimiento de servicios y balanceo de carga.",
+      "explanation_en": "A Service is an abstraction defining how to access a set of Pods, providing service discovery and load balancing.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/)"
+    },
+    {
+      "id": "q180302011",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Cuáles son los tipos de Services en Kubernetes?",
+      "question_en": "What are the types of Services in Kubernetes?",
+      "options_es": [
+        "ClusterIP, NodePort, LoadBalancer, ExternalName",
+        "Solo ClusterIP en todos los casos posibles",
+        "Internal, External, Proxy",
+        "Local, Remote, Hybrid"
+      ],
+      "options_en": [
+        "ClusterIP, NodePort, LoadBalancer, ExternalName",
+        "Only ClusterIP in all possible cases",
+        "Internal, External, Proxy",
+        "Local, Remote, Hybrid"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los tipos principales son ClusterIP (acceso interno), NodePort (puerto en cada nodo), LoadBalancer (IP externa), y ExternalName (alias DNS).",
+      "explanation_en": "Main types are ClusterIP (internal access), NodePort (port on each node), LoadBalancer (external IP), and ExternalName (DNS alias).",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)"
+    },
+    {
+      "id": "q180302012",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un ConfigMap en Kubernetes?",
+      "question_en": "What is a ConfigMap in Kubernetes?",
+      "options_es": [
+        "Un tipo de Secret según la documentación estándar del servicio",
+        "Un mapa de configuración del clúster",
+        "Un objeto para almacenar datos de configuración no sensibles en pares clave-valor",
+        "Un archivo de configuración Docker"
+      ],
+      "options_en": [
+        "A type of Secret according to standard service documentation",
+        "A cluster configuration map",
+        "An object to store non-sensitive configuration data in key-value pairs",
+        "A Docker configuration file"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un ConfigMap es un objeto de Kubernetes para almacenar datos de configuración no sensibles, accesibles a Pods como variables de entorno o volúmenes.",
+      "explanation_en": "A ConfigMap is a Kubernetes object for storing non-sensitive configuration data, accessible to Pods as environment variables or volumes.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/configmap/)"
+    },
+    {
+      "id": "q180302013",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un Secret en Kubernetes?",
+      "question_en": "What is a Secret in Kubernetes?",
+      "options_es": [
+        "Un controlador de acceso de manera exclusiva y permanente",
+        "Un tipo especial de Pod secreto",
+        "Un objeto para almacenar datos sensibles como contraseñas y claves",
+        "Un tipo de almacenamiento encriptado"
+      ],
+      "options_en": [
+        "An access controller exclusively and permanently",
+        "A special type of secret Pod",
+        "An object to store sensitive data like passwords and keys",
+        "A type of encrypted storage"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un Secret es un objeto que almacena datos sensibles de forma encriptada o codificada en base64, accesibles a Pods de forma segura.",
+      "explanation_en": "A Secret is an object storing sensitive data in an encrypted or base64-encoded way, securely accessible to Pods.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/secret/)"
+    },
+    {
+      "id": "q180302014",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Cuál es la diferencia entre ConfigMap y Secret?",
+      "question_en": "What is the difference between ConfigMap and Secret?",
+      "options_es": [
+        "No hay diferencia funcional sin excepciones ni variantes",
+        "ConfigMap es para datos no sensibles, Secret para datos sensibles",
+        "Secret es más rápido que ConfigMap",
+        "ConfigMap solo funciona con archivos"
+      ],
+      "options_en": [
+        "No functional difference without exceptions or variants",
+        "ConfigMap is for non-sensitive data, Secret for sensitive data",
+        "Secret is faster than ConfigMap",
+        "ConfigMap only works with files"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ConfigMap es para datos no sensibles, Secret para datos sensibles. Secret proporciona encriptación adicional y control de acceso.",
+      "explanation_en": "ConfigMap is for non-sensitive data, Secret for sensitive data. Secret provides additional encryption and access control.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/secret/)"
+    },
+    {
+      "id": "q180302015",
+      "type": "multiple_choice",
+      "skill_id": "sk180302",
+      "question_es": "¿Qué es un PersistentVolume en Kubernetes?",
+      "question_en": "What is a PersistentVolume in Kubernetes?",
+      "options_es": [
+        "Un volumen que persiste dentro de un contenedor",
+        "Un tipo de Secret para almacenamiento",
+        "Un recurso de almacenamiento del clúster independiente de Pods",
+        "Un volumen temporal en memoria según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "A volume that persists within a container",
+        "A type of Secret for storage",
+        "A cluster storage resource independent of Pods",
+        "A temporary in-memory volume according to standard service documentation"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un PersistentVolume es un recurso de almacenamiento del clúster que existe independientemente de Pods, permitiendo persistencia de datos.",
+      "explanation_en": "A PersistentVolume is a cluster storage resource existing independently of Pods, allowing data persistence.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/storage/persistent-volumes/)"
+    },
+    {
+      "id": "q180303001",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Cuál es la función principal de un nodo en Kubernetes?",
+      "question_en": "What is the main function of a node in Kubernetes?",
+      "options_es": [
+        "Gestionar el estado del clúster",
+        "Balancear carga de red",
+        "Almacenar datos de etcd",
+        "Ejecutar contenedores en Pods"
+      ],
+      "options_en": [
+        "Manage cluster state",
+        "Balance network load",
+        "Store etcd data",
+        "Run containers in Pods"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los nodos son máquinas que ejecutan Pods y los contenedores que contienen, bajo la dirección del plano de control.",
+      "explanation_en": "Nodes are machines that run Pods and their containers, under direction from the control plane.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/nodes/)"
+    },
+    {
+      "id": "q180303002",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Cómo se añade un nodo a un clúster Kubernetes?",
+      "question_en": "How do you add a node to a Kubernetes cluster?",
+      "options_es": [
+        "Editando el archivo kubeconfig",
+        "Con kubectl add node independientemente del contexto aplicado",
+        "Con docker-compose deploy",
+        "Instalando kubelet y kube-proxy en la máquina"
+      ],
+      "options_en": [
+        "By editing the kubeconfig file",
+        "With kubectl add node regardless of the applied context",
+        "With docker-compose deploy",
+        "By installing kubelet and kube-proxy on the machine"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se instala kubelet y kube-proxy en la máquina, y se une al clúster usando kubeadm o similar. El nodo se registra automáticamente.",
+      "explanation_en": "Install kubelet and kube-proxy on the machine, joining the cluster using kubeadm or similar. The node self-registers automatically.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)"
+    },
+    {
+      "id": "q180303003",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Qué es el estado de un nodo en Kubernetes?",
+      "question_en": "What is the status of a node in Kubernetes?",
+      "options_es": [
+        "Solo si está online u offline",
+        "Una indicación de su condición y disponibilidad (Ready, NotReady, Unknown)",
+        "Su capacidad de almacenamiento",
+        "El número de Pods ejecutando de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "Only if it is online or offline",
+        "An indication of its condition and availability (Ready, NotReady, Unknown)",
+        "Its storage capacity",
+        "The number of Pods running exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El estado de un nodo indica si está listo para recibir Pods (Ready), no disponible (NotReady), o si su estado es desconocido.",
+      "explanation_en": "Node status indicates if it's ready to receive Pods (Ready), unavailable (NotReady), or status is unknown.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/architecture/nodes/#status)"
+    },
+    {
+      "id": "q180303004",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Cómo se elimina un nodo del clúster?",
+      "question_en": "How do you remove a node from the cluster?",
+      "options_es": [
+        "Con docker-compose down sin considerar otros factores relevantes",
+        "Con kubectl drain y luego kubectl delete node",
+        "Editando directamente etcd",
+        "Apagando la máquina simplemente"
+      ],
+      "options_en": [
+        "With docker-compose down without considering other relevant factors",
+        "With kubectl drain then kubectl delete node",
+        "By directly editing etcd",
+        "By simply shutting down the machine"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'kubectl drain' desaloja los Pods gracefully, luego 'kubectl delete node' elimina el nodo del clúster.",
+      "explanation_en": "'kubectl drain' gracefully evicts Pods, then 'kubectl delete node' removes the node from the cluster.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/manage-compute-resources-container/)"
+    },
+    {
+      "id": "q180303005",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Qué es tainting un nodo en Kubernetes?",
+      "question_en": "What is tainting a node in Kubernetes?",
+      "options_es": [
+        "Encriptar los datos del nodo",
+        "Colorear un nodo para identificarlo",
+        "Marcar un nodo como corrupto de manera exclusiva y permanente",
+        "Aplicar una restricción que evita que ciertos Pods se ejecuten en él"
+      ],
+      "options_en": [
+        "Encrypt node data",
+        "Color a node for identification",
+        "Mark a node as corrupt exclusively and permanently",
+        "Apply a restriction preventing certain Pods from running on it"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Tainting establece restricciones en un nodo; los Pods que toleren el taint pueden ejecutarse, otros no.",
+      "explanation_en": "Tainting sets restrictions on a node; Pods tolerating the taint can run, others cannot.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)"
+    },
+    {
+      "id": "q180303006",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Qué es una tolerancia (toleration) en Kubernetes?",
+      "question_en": "What is a toleration in Kubernetes?",
+      "options_es": [
+        "Una configuración que permite que un Pod se ejecute en nodos con taints específicos",
+        "Un nivel de tolerancia de fallos",
+        "Un tipo de política de red en todos los casos posibles",
+        "La cantidad de error permitida en una aplicación"
+      ],
+      "options_en": [
+        "A configuration allowing a Pod to run on nodes with specific taints",
+        "A level of fault tolerance",
+        "A type of network policy in all possible cases",
+        "The amount of error allowed in an application"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una tolerancia permite que un Pod tolere y se ejecute en nodos que han sido tainted con restricciones específicas.",
+      "explanation_en": "A toleration allows a Pod to tolerate and run on nodes that have been tainted with specific restrictions.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)"
+    },
+    {
+      "id": "q180303007",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Qué son los recursos solicitados (requests) en Kubernetes?",
+      "question_en": "What are resource requests in Kubernetes?",
+      "options_es": [
+        "La cantidad de CPU y memoria que un contenedor necesita garantizada",
+        "Una solicitud para obtener nuevos recursos del cluster",
+        "Un tipo de API de Kubernetes sin considerar otros factores relevantes",
+        "Una solicitud de autenticación"
+      ],
+      "options_en": [
+        "The guaranteed amount of CPU and memory a container needs",
+        "A request to obtain new resources from the cluster",
+        "A type of Kubernetes API without considering other relevant factors",
+        "An authentication request"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los requests especifican la cantidad mínima de recursos que un contenedor necesita, asegurando disponibilidad.",
+      "explanation_en": "Requests specify the minimum resources a container needs, ensuring availability.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)"
+    },
+    {
+      "id": "q180303008",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Qué son los límites de recursos (limits) en Kubernetes?",
+      "question_en": "What are resource limits in Kubernetes?",
+      "options_es": [
+        "Una restricción de tiempo de ejecución",
+        "El máximo de nodos que puede usar un Pod",
+        "La cantidad máxima de CPU y memoria que un contenedor puede usar",
+        "Un límite de número de Pods por nodo de forma invariable y constante"
+      ],
+      "options_en": [
+        "A runtime execution limit",
+        "The maximum number of nodes a Pod can use",
+        "The maximum CPU and memory a container can use",
+        "A limit on number of Pods per node invariably and constantly"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los limits especifican la cantidad máxima de recursos que un contenedor puede consumir, evitando contención excesiva.",
+      "explanation_en": "Limits specify the maximum resources a container can consume, preventing excessive contention.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)"
+    },
+    {
+      "id": "q180303009",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Cuál es la diferencia entre requests y limits?",
+      "question_en": "What is the difference between requests and limits?",
+      "options_es": [
+        "No hay diferencia, son sinónimos en todos los casos posibles",
+        "Requests es para staging, Limits para producción",
+        "Requests = garantía mínima, Limits = máximo permitido",
+        "Requests es para CPU, Limits para memoria"
+      ],
+      "options_en": [
+        "There is no difference, they are synonymous in all possible cases",
+        "Requests is for staging, Limits for production",
+        "Requests = guaranteed minimum, Limits = maximum allowed",
+        "Requests is for CPU, Limits for memory"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Requests garantiza recursos mínimos, Limits evita uso excesivo. Ambos son importantes para estabilidad del clúster.",
+      "explanation_en": "Requests guarantees minimum resources, Limits prevents excess usage. Both are important for cluster stability.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)"
+    },
+    {
+      "id": "q180303010",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Qué es una clase de almacenamiento (StorageClass) en Kubernetes?",
+      "question_en": "What is a StorageClass in Kubernetes?",
+      "options_es": [
+        "Una estrategia de respaldo sin excepciones ni variantes",
+        "Un archivo de configuración de almacenamiento",
+        "Un tipo de datos almacenados",
+        "Una descripción de características de almacenamiento disponibles en el clúster"
+      ],
+      "options_en": [
+        "A backup strategy without exceptions or variants",
+        "A storage configuration file",
+        "A type of stored data",
+        "A description of available storage characteristics in the cluster"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una StorageClass describe tipos de almacenamiento disponibles (SSD, HDD, NAS) permitiendo que Pods soliciten específicamente.",
+      "explanation_en": "A StorageClass describes available storage types (SSD, HDD, NAS) allowing Pods to request specifically.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/storage/storage-classes/)"
+    },
+    {
+      "id": "q180303011",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Qué es un PersistentVolumeClaim (PVC) en Kubernetes?",
+      "question_en": "What is a PersistentVolumeClaim (PVC) in Kubernetes?",
+      "options_es": [
+        "Un tipo de Secret sin considerar otros factores relevantes",
+        "Un controlador de almacenamiento",
+        "Un volumen persistente encriptado",
+        "Una reclamación de almacenamiento hecha por un Pod"
+      ],
+      "options_en": [
+        "A type of Secret without considering other relevant factors",
+        "A storage controller",
+        "An encrypted persistent volume",
+        "A storage claim made by a Pod"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un PVC es una solicitud de almacenamiento que un Pod realiza; Kubernetes vincula el PVC a un PersistentVolume disponible.",
+      "explanation_en": "A PVC is a storage request made by a Pod; Kubernetes binds the PVC to an available PersistentVolume.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/storage/persistent-volumes/)"
+    },
+    {
+      "id": "q180303012",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Cómo se monitorean los recursos de un nodo?",
+      "question_en": "How do you monitor node resources?",
+      "options_es": [
+        "Con 'kubectl get nodes' solamente",
+        "Con herramientas externas solo según la documentación estándar del servicio",
+        "No hay forma de monitorear nodos en Kubernetes",
+        "Con 'kubectl top nodes' para ver uso de CPU y memoria en tiempo real"
+      ],
+      "options_en": [
+        "With 'kubectl get nodes' only",
+        "With external tools only according to standard service documentation",
+        "There is no way to monitor nodes in Kubernetes",
+        "With 'kubectl top nodes' to see real-time CPU and memory usage"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'kubectl top nodes' muestra el uso de recursos en tiempo real; requiere Metrics Server instalado.",
+      "explanation_en": "'kubectl top nodes' shows real-time resource usage; requires Metrics Server to be installed.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/)"
+    },
+    {
+      "id": "q180303013",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Qué es un endpoint en Kubernetes?",
+      "question_en": "What is an endpoint in Kubernetes?",
+      "options_es": [
+        "Una dirección IP y puerto de un Pod expuesto por un Service",
+        "Una política de red independientemente del contexto aplicado",
+        "Un tipo de almacenamiento",
+        "Un URL de una aplicación"
+      ],
+      "options_en": [
+        "An IP address and port of a Pod exposed by a Service",
+        "A network policy regardless of the applied context",
+        "A type of storage",
+        "A URL of an application"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un endpoint es la combinación de dirección IP y puerto de un Pod; múltiples endpoints forman el conjunto de un Service.",
+      "explanation_en": "An endpoint is the combination of IP address and port of a Pod; multiple endpoints form a Service's set.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/services-networking/service/)"
+    },
+    {
+      "id": "q180303014",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Cómo se cordonan (cordon) los nodos en Kubernetes?",
+      "question_en": "How do you cordon nodes in Kubernetes?",
+      "options_es": [
+        "No existe ese comando",
+        "Editando el archivo de configuración",
+        "Con 'kubectl cordon' para evitar que nuevos Pods se asignen al nodo",
+        "Con una cuerda física en todos los casos posibles"
+      ],
+      "options_en": [
+        "That command does not exist",
+        "By editing the configuration file",
+        "With 'kubectl cordon' to prevent new Pods from being assigned to the node",
+        "With a physical rope in all possible cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'kubectl cordon' marca un nodo como no schedulable, evitando que se asignen nuevos Pods sin afectar los existentes.",
+      "explanation_en": "'kubectl cordon' marks a node as unschedulable, preventing new Pod assignments without affecting existing ones.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)"
+    },
+    {
+      "id": "q180303015",
+      "type": "multiple_choice",
+      "skill_id": "sk180303",
+      "question_es": "¿Cuál es la diferencia entre cordon y drain?",
+      "question_en": "What is the difference between cordon and drain?",
+      "options_es": [
+        "No hay diferencia independientemente del contexto aplicado",
+        "'cordon' previene asignación de nuevos Pods, 'drain' desaloja Pods existentes",
+        "'drain' es más rápido que 'cordon'",
+        "'cordon' elimina el nodo, 'drain' lo pausa"
+      ],
+      "options_en": [
+        "There is no difference regardless of the applied context",
+        "'cordon' prevents new Pod assignment, 'drain' evicts existing Pods",
+        "'drain' is faster than 'cordon'",
+        "'cordon' deletes the node, 'drain' pauses it"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'cordon' solo previene nuevos Pods, 'drain' además desaloja los Pods existentes del nodo.",
+      "explanation_en": "'cordon' only prevents new Pods, 'drain' also evicts existing Pods from the node.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)"
+    },
+    {
+      "id": "q180304001",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Qué es kubectl en Kubernetes?",
+      "question_en": "What is kubectl in Kubernetes?",
+      "options_es": [
+        "Un servicio de Kubernetes",
+        "La herramienta de línea de comandos para interactuar con el clúster",
+        "Un tipo de Pod sin excepciones ni variantes",
+        "Un driver de almacenamiento"
+      ],
+      "options_en": [
+        "A Kubernetes service",
+        "The command-line tool to interact with the cluster",
+        "A type of Pod without exceptions or variants",
+        "A storage driver"
+      ],
+      "correct_index": 1,
+      "explanation_es": "kubectl es la herramienta de línea de comandos principal para interactuar con clústeres Kubernetes.",
+      "explanation_en": "kubectl is the primary command-line tool to interact with Kubernetes clusters.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/kubectl/)"
+    },
+    {
+      "id": "q180304002",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se configura kubectl para conectarse a un clúster?",
+      "question_en": "How do you configure kubectl to connect to a cluster?",
+      "options_es": [
+        "Con una variable de entorno KUBERNETES_URL",
+        "Editando el archivo kubeconfig en ~/.kube/config con credenciales del clúster",
+        "Manualmente editando el Dockerfile",
+        "Automáticamente sin configuración sin excepciones ni variantes"
+      ],
+      "options_en": [
+        "With an environment variable KUBERNETES_URL",
+        "By editing the kubeconfig file at ~/.kube/config with cluster credentials",
+        "By manually editing the Dockerfile",
+        "Automatically without configuration without exceptions or variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El archivo kubeconfig (~/.kube/config) contiene la información del clúster, usuario y contexto para que kubectl se conecte.",
+      "explanation_en": "The kubeconfig file (~/.kube/config) contains cluster info, user, and context so kubectl can connect.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/)"
+    },
+    {
+      "id": "q180304003",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cuál es el comando para crear un recurso en Kubernetes?",
+      "question_en": "What is the command to create a resource in Kubernetes?",
+      "options_es": [
+        "kubectl create o kubectl apply",
+        "kubectl build",
+        "kubectl deploy",
+        "kubectl init de forma invariable y constante"
+      ],
+      "options_en": [
+        "kubectl create or kubectl apply",
+        "kubectl build",
+        "kubectl deploy",
+        "kubectl init invariably and constantly"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'kubectl create' crea recursos nuevos, 'kubectl apply' es idempotente y se prefiere para IaC.",
+      "explanation_en": "'kubectl create' creates new resources, 'kubectl apply' is idempotent and preferred for IaC.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/)"
+    },
+    {
+      "id": "q180304004",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cuál es el comando para actualizar un recurso en Kubernetes?",
+      "question_en": "What is the command to update a resource in Kubernetes?",
+      "options_es": [
+        "kubectl modify",
+        "kubectl update",
+        "kubectl patch sin excepciones ni variantes",
+        "kubectl apply o kubectl set"
+      ],
+      "options_en": [
+        "kubectl modify",
+        "kubectl update",
+        "kubectl patch without exceptions or variants",
+        "kubectl apply or kubectl set"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'kubectl apply' es el método recomendado, 'kubectl set' para cambios simples, 'kubectl patch' para cambios parciales.",
+      "explanation_en": "'kubectl apply' is recommended, 'kubectl set' for simple changes, 'kubectl patch' for partial changes.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/manage-kubernetes-objects/declarative-config/)"
+    },
+    {
+      "id": "q180304005",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cuál es el comando para eliminar un recurso en Kubernetes?",
+      "question_en": "What is the command to delete a resource in Kubernetes?",
+      "options_es": [
+        "kubectl remove",
+        "kubectl delete",
+        "kubectl uninstall",
+        "kubectl destroy"
+      ],
+      "options_en": [
+        "kubectl remove",
+        "kubectl delete",
+        "kubectl uninstall",
+        "kubectl destroy"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'kubectl delete' elimina recursos especificados. Se puede usar '--cascade=orphan' para no eliminar dependientes.",
+      "explanation_en": "'kubectl delete' deletes specified resources. Can use '--cascade=orphan' to not delete dependents.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#delete)"
+    },
+    {
+      "id": "q180304006",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se obtiene información detallada de un recurso con kubectl?",
+      "question_en": "How do you get detailed information about a resource with kubectl?",
+      "options_es": [
+        "kubectl show recurso",
+        "kubectl describe recurso",
+        "kubectl info recurso",
+        "kubectl get recurso de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "kubectl show resource",
+        "kubectl describe resource",
+        "kubectl info resource",
+        "kubectl get resource exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'kubectl describe' proporciona información detallada incluyendo eventos y estado de un recurso.",
+      "explanation_en": "'kubectl describe' provides detailed information including events and status of a resource.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#describe)"
+    },
+    {
+      "id": "q180304007",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se ven los logs de un Pod con kubectl?",
+      "question_en": "How do you view logs of a Pod with kubectl?",
+      "options_es": [
+        "kubectl debug pod-name",
+        "kubectl show-logs pod-name",
+        "kubectl tail pod-name",
+        "kubectl logs pod-name"
+      ],
+      "options_en": [
+        "kubectl debug pod-name",
+        "kubectl show-logs pod-name",
+        "kubectl tail pod-name",
+        "kubectl logs pod-name"
+      ],
+      "correct_index": 3,
+      "explanation_es": "'kubectl logs' muestra los logs del Pod. Con '-f' sigue los logs en tiempo real.",
+      "explanation_en": "'kubectl logs' displays Pod logs. With '-f' follows logs in real-time.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#logs)"
+    },
+    {
+      "id": "q180304008",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se ejecuta un comando dentro de un Pod con kubectl?",
+      "question_en": "How do you run a command inside a Pod with kubectl?",
+      "options_es": [
+        "kubectl exec pod-name -- comando",
+        "kubectl run comando de manera exclusiva y permanente",
+        "kubectl shell pod-name",
+        "kubectl console pod-name"
+      ],
+      "options_en": [
+        "kubectl exec pod-name -- command",
+        "kubectl run command exclusively and permanently",
+        "kubectl shell pod-name",
+        "kubectl console pod-name"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'kubectl exec' ejecuta un comando en un Pod en ejecución. Con '-it' proporciona terminal interactiva.",
+      "explanation_en": "'kubectl exec' runs a command in a running Pod. With '-it' provides interactive terminal.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#exec)"
+    },
+    {
+      "id": "q180304009",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Qué es el auto-complete de kubectl?",
+      "question_en": "What is kubectl autocompletion?",
+      "options_es": [
+        "Un tipo de compresión de datos de forma invariable y constante",
+        "Una herramienta de análisis de comandos",
+        "Una característica de seguridad",
+        "La capacidad de completar automáticamente comandos y recursos al presionar TAB"
+      ],
+      "options_en": [
+        "A type of data compression invariably and constantly",
+        "A command analysis tool",
+        "A security feature",
+        "The ability to auto-complete commands and resources by pressing TAB"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El auto-complete hace más rápido trabajar con kubectl, completando comandos, recursos y namespaces con TAB.",
+      "explanation_en": "Autocompletion makes working with kubectl faster, completing commands, resources, and namespaces with TAB.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion)"
+    },
+    {
+      "id": "q180304010",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se pueden ver todos los recursos de un namespace?",
+      "question_en": "How do you view all resources in a namespace?",
+      "options_es": [
+        "kubectl get all -n namespace",
+        "kubectl list namespace",
+        "kubectl show namespace",
+        "kubectl describe all de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "kubectl get all -n namespace",
+        "kubectl list namespace",
+        "kubectl show namespace",
+        "kubectl describe all exclusively and permanently"
+      ],
+      "correct_index": 0,
+      "explanation_es": "'kubectl get all -n <namespace>' lista todos los recursos en ese namespace específico.",
+      "explanation_en": "'kubectl get all -n <namespace>' lists all resources in that specific namespace.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#get)"
+    },
+    {
+      "id": "q180304011",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se cambia el namespace por defecto en kubectl?",
+      "question_en": "How do you change the default namespace in kubectl?",
+      "options_es": [
+        "Editando ~/.kube/config manualmente",
+        "Con una variable de entorno KUBENAMESPACE",
+        "kubectl set-namespace según la documentación estándar del servicio",
+        "kubectl config set-context --current --namespace=<namespace>"
+      ],
+      "options_en": [
+        "By editing ~/.kube/config manually",
+        "With a KUBENAMESPACE environment variable",
+        "kubectl set-namespace according to standard service documentation",
+        "kubectl config set-context --current --namespace=<namespace>"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El comando config set-context cambia el namespace por defecto para el contexto actual.",
+      "explanation_en": "The config set-context command changes the default namespace for the current context.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)"
+    },
+    {
+      "id": "q180304012",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se etiquetan (label) recursos en Kubernetes?",
+      "question_en": "How do you label resources in Kubernetes?",
+      "options_es": [
+        "Con una instrucción LABEL en Dockerfile",
+        "En el archivo kubeconfig en cualquier escenario de implementación",
+        "Con 'kubectl label' para asignar etiquetas clave-valor",
+        "Automáticamente por Kubernetes"
+      ],
+      "options_en": [
+        "With a LABEL instruction in Dockerfile",
+        "In the kubeconfig file in any implementation scenario",
+        "With 'kubectl label' to assign key-value labels",
+        "Automatically by Kubernetes"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'kubectl label' asigna etiquetas a recursos, permitiendo selección y agrupación de recursos.",
+      "explanation_en": "'kubectl label' assigns labels to resources, allowing resource selection and grouping.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-label-selectors/)"
+    },
+    {
+      "id": "q180304013",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se escalan réplicas de un Deployment con kubectl?",
+      "question_en": "How do you scale a Deployment's replicas with kubectl?",
+      "options_es": [
+        "kubectl replicate deployment nombre",
+        "kubectl increase deployment nombre independientemente del contexto aplicado",
+        "kubectl scale deployment nombre --replicas=N",
+        "Editando el YAML y aplicando con apply"
+      ],
+      "options_en": [
+        "kubectl replicate deployment name",
+        "kubectl increase deployment name regardless of the applied context",
+        "kubectl scale deployment name --replicas=N",
+        "By editing YAML and applying with apply"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'kubectl scale' cambia rápidamente el número de réplicas sin modificar el archivo YAML.",
+      "explanation_en": "'kubectl scale' quickly changes the number of replicas without modifying the YAML file.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#scale)"
+    },
+    {
+      "id": "q180304014",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se obtiene información del clúster con kubectl?",
+      "question_en": "How do you get cluster information with kubectl?",
+      "options_es": [
+        "kubectl describe cluster",
+        "kubectl get cluster",
+        "kubectl cluster-info",
+        "kubectl status cluster"
+      ],
+      "options_en": [
+        "kubectl describe cluster",
+        "kubectl get cluster",
+        "kubectl cluster-info",
+        "kubectl status cluster"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'kubectl cluster-info' muestra información del clúster como URL de API y servicios disponibles.",
+      "explanation_en": "'kubectl cluster-info' displays cluster information such as API URL and available services.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#cluster-info)"
+    },
+    {
+      "id": "q180304015",
+      "type": "multiple_choice",
+      "skill_id": "sk180304",
+      "question_es": "¿Cómo se valida un archivo YAML antes de aplicarlo en kubectl?",
+      "question_en": "How do you validate a YAML file before applying it in kubectl?",
+      "options_es": [
+        "No hay forma de validar antes",
+        "kubectl check archivo.yaml independientemente del contexto aplicado",
+        "kubectl apply -f archivo.yaml --dry-run=client",
+        "Se valida automáticamente al aplicar"
+      ],
+      "options_en": [
+        "There is no way to validate before",
+        "kubectl check file.yaml regardless of the applied context",
+        "kubectl apply -f file.yaml --dry-run=client",
+        "It validates automatically when applying"
+      ],
+      "correct_index": 2,
+      "explanation_es": "'--dry-run=client' valida el YAML sin crear recursos, mostrando si hay errores.",
+      "explanation_en": "'--dry-run=client' validates YAML without creating resources, showing any errors.",
+      "source": "Kubernetes Documentation (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#apply)"
+    }
+  ]
+}

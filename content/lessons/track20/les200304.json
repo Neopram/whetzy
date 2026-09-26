@@ -1,0 +1,13 @@
+{
+  "id": "les200304",
+  "skill_id": "sk200304",
+  "language": "es",
+  "executable": false,
+  "title_es": "MapReduce y Paradigma Hadoop",
+  "title_en": "MapReduce & Hadoop Paradigm",
+  "body_es": "MapReduce es paradigma: mappers procesan datos en paralelo emitiendo pares clave-valor, shuffles agrupa valores por clave, reducers agregan valores por clave. Hadoop es ecosistema: HDFS almacena datos distribuidos, YARN gestiona recursos. MapReduce es lento en comparación a Spark (3-10x más lento) pero sirve para batch simple. HDFS replica datos (típicamente 3 copias) para tolerancia a fallos.",
+  "body_en": "MapReduce is paradigm: mappers process data in parallel emitting key-value pairs, shuffle groups values by key, reducers aggregate values by key. Hadoop is ecosystem: HDFS stores distributed data, YARN manages resources. MapReduce is slow compared to Spark (3-10x slower) but works for simple batch. HDFS replicates data (typically 3 copies) for fault tolerance.",
+  "example_code": "# Pseudo-código MapReduce\nclass Mapper:\n  def map(key, value):\n    for word in value.split():\n      emit(word, 1)\n\nclass Reducer:\n  def reduce(key, values):\n    emit(key, sum(values))\n\n# Ejecución:\n# Map: archivo → (word, 1)\n# Shuffle: agrupa (word, [1,1,1,...])\n# Reduce: suma valores por palabra",
+  "example_output": "Conteo de palabras en corpus: ('hello', 1000), ('world', 800), etc.",
+  "source": "https://spark.apache.org/docs/"
+}

@@ -40,12 +40,12 @@ profundidad de producto*, no adquisición.
 
 | Métrica | Valor 2026-09-18 | Comando |
 |---|---|---|
-| Tracks | **24** (track01–17 + track40–46) | `python scripts/check_docs.py` |
-| Cursos (= módulos, ADR-46 37.2) | **122** | ídem |
-| Skills | **503** | ídem |
-| Preguntas | **7.689** | `python scripts/check_question_bank.py` |
-| Lecciones | 503/503 (100 %) | `pytest tests/content/test_lessons.py` |
-| Glosario | **818** | `check_docs.py` |
+| Tracks | **31** (track01–23 + track27 + track40–46) | `python scripts/check_docs.py` |
+| Cursos (= módulos, ADR-46 37.2) | **157** | ídem |
+| Skills | **643** | ídem |
+| Preguntas | **9.789** | `python scripts/check_question_bank.py` |
+| Lecciones | 656/643 | `pytest tests/content/test_lessons.py` |
+| Glosario | **1.044** | `check_docs.py` |
 | Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9; track41 PCAP Python exec; certs track42–46 exentos) | `check_question_bank.py` |
 | Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900**, **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
@@ -71,7 +71,7 @@ compran libros para parafrasearlos y los PDFs pirateados no entran ni como cita.
 camino con cualquier fuente es el mismo: leer → escribir lección/pregunta original en
 ES y EN → citar. Los hechos son libres; la redacción no.
 
-**Meta por track (ADR-46): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 7.689; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
+**Meta por track (ADR-46): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 9.789; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
 
 | # | Área | Track | Id | Estado | Fuentes con licencia | Runtime | Certs asociadas (→ §3) |
 |---|---|---|---|---|---|---|---|

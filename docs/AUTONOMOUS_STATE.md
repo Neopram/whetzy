@@ -26,7 +26,7 @@
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
 | Alembic HEAD | `20260926_eu_withdrawal` (42 migraciones) |
-| Contenido | **7.689 preguntas** / 24 tracks / 503 skills / **503 lecciones (100 %)** / **818 términos glosario**. Tracks 09/10/11 =… |
+| Contenido | **9.789 preguntas** / 31 tracks / 643 skills / **643 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
 

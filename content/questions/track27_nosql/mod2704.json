@@ -1,0 +1,1336 @@
+{
+  "questions": [
+    {
+      "id": "q270401_01",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la estructura fundamental de una base de datos de grafos?",
+      "question_en": "What is the fundamental structure of a graph database?",
+      "options_es": [
+        "Nodos conectados mediante aristas que representan relaciones explícitas entre entidades",
+        "Índice invertido de pares clave-valor almacenados en memoria",
+        "Tablas normalizadas con claves foráneas que simulan conexiones",
+        "Documento JSON anidado con estructura jerárquica de referencias"
+      ],
+      "options_en": [
+        "Nodes connected via edges that represent explicit relationships between entities",
+        "Inverted index of key-value pairs stored in memory",
+        "Normalized tables with foreign keys that simulate connections",
+        "Nested JSON documents with hierarchical reference structure"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una base de datos de grafos almacena datos como nodos (entidades) y aristas (relaciones), permitiendo consultas eficientes de relaciones sin costosas uniones de tablas. Las aristas son first-class objects con propiedades, a diferencia de las referencias normalizadas en bases de datos relacionales.",
+      "explanation_en": "A graph database stores data as nodes (entities) and edges (relationships), enabling efficient querying of relationships without expensive table joins. Edges are first-class objects with properties, unlike normalized references in relational databases.",
+      "source": "Neo4j Documentation (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270401_02",
+      "skill_id": "sk270401",
+      "type": "true_false",
+      "question_es": "¿Las propiedades de las aristas en una base de datos de grafos pueden almacenar múltiples atributos?",
+      "question_en": "Can edge properties in a graph database store multiple attributes?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las aristas (relaciones) en una base de datos de grafos pueden tener múltiples propiedades, como peso, tipo, timestamp, confianza, etc. Esta capacidad es fundamental para modelar relaciones complejas con metadatos.",
+      "explanation_en": "Edges (relationships) in a graph database can have multiple properties, such as weight, type, timestamp, confidence, and more. This capability is fundamental for modeling complex relationships with metadata.",
+      "source": "Neo4j Cypher Manual (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270401_03",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la ventaja principal de las bases de datos de grafos sobre bases de datos relacionales para análisis de relaciones profundas?",
+      "question_en": "What is the primary advantage of graph databases over relational databases for analyzing deep relationships?",
+      "options_es": [
+        "Los índices de grafos se actualizan automáticamente sin bloqueos de lectura",
+        "Las propiedades del nodo no necesitan ser tipadas ni validadas",
+        "Los grafos usan menos almacenamiento al no requerir tablas de unión explícitas",
+        "Las consultas de relaciones profundas mantienen tiempo constante sin importar la profundidad del grafo"
+      ],
+      "options_en": [
+        "Graph indices are automatically updated without read locks",
+        "Node properties do not need to be typed or validated",
+        "Graphs use less storage by not requiring explicit junction tables",
+        "Deep relationship queries maintain constant time regardless of graph depth"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las bases de datos de grafos como Neo4j usan índices de aristas para hacer consultas de relaciones profundas en tiempo sublineal, mientras que las bases de datos relacionales deben hacer múltiples uniones (joins) cuya complejidad aumenta exponencialmente con la profundidad. Una consulta de amigos-de-amigos-de-amigos es trivial en un grafo pero costosa en SQL.",
+      "explanation_en": "Graph databases like Neo4j use edge indices to perform deep relationship queries in sublinear time, while relational databases must perform multiple joins whose complexity increases exponentially with depth. A query for friends-of-friends-of-friends is trivial in a graph but expensive in SQL.",
+      "source": "Neo4j Performance Tuning Guide (https://neo4j.com/docs/operations-manual/)"
+    },
+    {
+      "id": "q270401_04",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un grafo etiquetado en el contexto de bases de datos de grafos?",
+      "question_en": "What is a labeled graph in the context of graph databases?",
+      "options_es": [
+        "Un grafo donde los nodos están ordenados topológicamente según su profundidad",
+        "Un grafo donde cada borde tiene un peso numérico que representa su importancia",
+        "Un grafo donde las aristas forman un árbol sin ciclos",
+        "Un grafo donde los nodos y aristas tienen etiquetas de tipo que categorizan su naturaleza"
+      ],
+      "options_en": [
+        "A graph where nodes are topologically ordered according to their depth",
+        "A graph where each edge has a numeric weight representing its importance",
+        "A graph where edges form a tree without cycles",
+        "A graph where nodes and edges have type labels that categorize their nature"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un grafo etiquetado permite distinguir diferentes tipos de nodos (Usuario, Producto, Categoría) y diferentes tipos de relaciones (COMPRA, SIGUE, RECOMENDACIÓN). Las etiquetas permiten consultas semánticamente más ricas y esquemas más expresivos sin sacrificar flexibilidad.",
+      "explanation_en": "A labeled graph allows distinguishing between different types of nodes (User, Product, Category) and different types of relationships (PURCHASES, FOLLOWS, RECOMMENDS). Labels enable semantically richer queries and more expressive schemas without sacrificing flexibility.",
+      "source": "Neo4j Graph Database Concepts (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270401_05",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de las siguientes es una propiedad característica de una base de datos de grafos nativa?",
+      "question_en": "Which of the following is a characteristic property of a native graph database?",
+      "options_es": [
+        "Uso de sharding horizontal para distribuir nodos entre múltiples servidores",
+        "Conversión de datos relacionales a representación de grafos mediante un motor ETL",
+        "Replicación de solo lectura con consistencia eventual entre réplicas",
+        "Almacenamiento y procesamiento optimizado para estructuras de grafos con índices de aristas"
+      ],
+      "options_en": [
+        "Horizontal sharding to distribute nodes across multiple servers",
+        "Conversion of relational data to graph representation via an ETL engine",
+        "Read-only replication with eventual consistency across replicas",
+        "Optimized storage and processing for graph structures with edge indices"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una base de datos de grafos nativa está construida desde cero para almacenar y procesar grafos de manera eficiente. Usa índices de aristas para evitar búsquedas de tabla completa (full table scans) al navegar relaciones, a diferencia de bases de datos relacionales que no fueron diseñadas para grafos.",
+      "explanation_en": "A native graph database is built from the ground up to store and process graphs efficiently. It uses edge indices to avoid full table scans when navigating relationships, unlike relational databases not designed for graphs.",
+      "source": "Neo4j Native Graph Database Architecture (https://neo4j.com/docs/operations-manual/)"
+    },
+    {
+      "id": "q270401_06",
+      "skill_id": "sk270401",
+      "type": "true_false",
+      "question_es": "¿Una base de datos de grafos es apropiada solo para redes sociales y no para datos empresariales?",
+      "question_en": "Is a graph database appropriate only for social networks and not for enterprise data?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los grafos son efectivos para muchas aplicaciones empresariales: recomendaciones, análisis de fraude, gestión de identidades, catálogos de productos interconectados, rutas logísticas, análisis de impacto de cambios de configuración, etc. Cualquier problema que implique relaciones entre entidades se beneficia de una base de datos de grafos.",
+      "explanation_en": "Graphs are effective for many enterprise applications: recommendations, fraud analysis, identity management, interconnected product catalogs, logistics routing, change impact analysis, etc. Any problem involving relationships between entities benefits from a graph database.",
+      "source": "Neo4j Use Cases (https://neo4j.com/use-cases/)"
+    },
+    {
+      "id": "q270401_07",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué modelo de consistencia implementan típicamente las bases de datos de grafos distribuidas?",
+      "question_en": "What consistency model do distributed graph databases typically implement?",
+      "options_es": [
+        "Consistencia eventual con garantías de convergencia en todas las réplicas",
+        "ACID para escrituras en la réplica primaria con replicación asincrónica en secundarias",
+        "Read-your-writes con invalidación de caché entre nodos",
+        "Linearizability total con confirmación sincrónica de todas las réplicas"
+      ],
+      "options_en": [
+        "Eventual consistency with convergence guarantees across all replicas",
+        "ACID for writes on the primary replica with asynchronous replication to secondaries",
+        "Read-your-writes with cache invalidation between nodes",
+        "Total linearizability with synchronous confirmation from all replicas"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Neo4j Enterprise implementa ACID en la réplica primaria pero replicación asincrónica en las secundarias. Esto garantiza consistencia fuerte para escrituras pero permite lectura distribuida de escalado horizontal. Otros grafos como ArangoDB ofrecen opciones diferentes según la configuración.",
+      "explanation_en": "Neo4j Enterprise implements ACID on the primary replica with asynchronous replication to secondaries. This ensures strong consistency for writes but allows horizontally scalable distributed reads. Other graphs like ArangoDB offer different options based on configuration.",
+      "source": "Neo4j Causal Clustering (https://neo4j.com/docs/operations-manual/)"
+    },
+    {
+      "id": "q270401_08",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un grafo de propiedades y un grafo RDF?",
+      "question_en": "What is the difference between a property graph and an RDF graph?",
+      "options_es": [
+        "El grafo de propiedades es solo para datos de redes sociales; RDF es para ontologías semánticas",
+        "El RDF es más rápido porque usa compresión de bits; el grafo de propiedades almacena datos sin comprimir",
+        "RDF soporta grafos cíclicos; los grafos de propiedades no",
+        "El grafo de propiedades permite propiedades arbitrarias en nodos y aristas; RDF usa triples sujeto-predicado-objeto predefinidos"
+      ],
+      "options_en": [
+        "Property graphs are only for social network data; RDF is for semantic ontologies",
+        "RDF is faster because it uses bit compression; property graphs store uncompressed data",
+        "RDF supports cyclic graphs; property graphs do not",
+        "Property graphs allow arbitrary properties on nodes and edges; RDF uses predefined subject-predicate-object triples"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un grafo de propiedades (como Neo4j) permite nodos y aristas con conjuntos arbitrarios de propiedades con valores tipados. RDF (usado en SPARQL) modela todo como triples (sujeto, predicado, objeto) y es más rígido pero mejor para interoperabilidad semántica. Neo4j es más flexible y rápido para la mayoría de casos operacionales.",
+      "explanation_en": "A property graph (like Neo4j) allows nodes and edges with arbitrary sets of typed-value properties. RDF (used in SPARQL) models everything as triples (subject, predicate, object) and is more rigid but better for semantic interoperability. Neo4j is more flexible and faster for most operational cases.",
+      "source": "Neo4j vs RDF Comparison (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270401_09",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un índice de aristas en una base de datos de grafos?",
+      "question_en": "What is an edge index in a graph database?",
+      "options_es": [
+        "Una jerarquía de categorías que organiza las aristas por etiqueta de tipo",
+        "Un archivo comprimido que almacena snapshots periódicos del estado del grafo",
+        "Una estructura que mapea tipos de aristas y propiedades a los nodos que conectan para optimizar traversals",
+        "Un contador que registra el número total de aristas en cada partición del grafo"
+      ],
+      "options_en": [
+        "A hierarchy of categories that organizes edges by type label",
+        "A compressed file that stores periodic snapshots of the graph state",
+        "A structure that maps edge types and properties to the nodes they connect to optimize traversals",
+        "A counter that records the total number of edges in each graph partition"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los índices de aristas permiten que Neo4j acceda directamente a las aristas de un nodo sin buscar en toda la base de datos. Por ejemplo, dado un usuario, encontrar rápidamente todas sus aristas COMPRA sin una búsqueda completa. Esta es la razón por la que los grafos son tan eficientes para consultas de relaciones.",
+      "explanation_en": "Edge indices allow Neo4j to directly access a node's edges without searching the entire database. For example, given a user, quickly find all their PURCHASE edges without a full scan. This is why graphs are so efficient for relationship queries.",
+      "source": "Neo4j Index Configuration (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270401_10",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el principal desafío de las bases de datos de grafos a gran escala?",
+      "question_en": "What is the main challenge of large-scale graph databases?",
+      "options_es": [
+        "La tendencia del tamaño del grafo a disminuir exponencialmente en consultas profundas",
+        "La falta de lenguajes de consulta estándar comparables a SQL",
+        "La imposibilidad de mantener índices actualizados durante escrituras concurrentes",
+        "Particionar el grafo sin romper aristas entre particiones, lo que genera tráfico de red y latencia"
+      ],
+      "options_en": [
+        "The graph size tends to decrease exponentially in deep queries",
+        "Lack of standard query languages comparable to SQL",
+        "Inability to maintain indices during concurrent writes",
+        "Partitioning the graph without breaking edges across partitions, which generates network traffic and latency"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El particionamiento de grafos es NP-duro. Dividir un grafo entre servidores sin cortar muchas aristas es muy difícil, y las aristas inter-partición generan latencia de red. Algunos sistemas usan sharding por nodo, otros por vecindario. Sin una buena estrategia, un grafo distribuido puede ser más lento que centralizado.",
+      "explanation_en": "Graph partitioning is NP-hard. Dividing a graph across servers without cutting many edges is very difficult, and inter-partition edges generate network latency. Some systems use node-based sharding, others neighborhood-based. Without a good strategy, a distributed graph can be slower than centralized.",
+      "source": "Distributed Graph Processing Survey (https://neo4j.com/docs/operations-manual/)"
+    },
+    {
+      "id": "q270401_11",
+      "skill_id": "sk270401",
+      "type": "true_false",
+      "question_es": "¿Los ciclos en un grafo son un problema que debe evitarse en el modelado de datos?",
+      "question_en": "Are cycles in a graph a problem that should be avoided in data modeling?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los ciclos son completamente normales y útiles en grafos. Representan relaciones mutuas (A sigue a B, B sigue a A), dependencias circulares, caminos de transacción, etc. Los algoritmos de grafos modernos están diseñados para manejar ciclos de manera eficiente.",
+      "explanation_en": "Cycles are completely normal and useful in graphs. They represent mutual relationships (A follows B, B follows A), circular dependencies, transaction paths, etc. Modern graph algorithms are designed to handle cycles efficiently.",
+      "source": "Graph Theory Fundamentals (https://en.wikipedia.org/wiki/Cycle_(graph_theory))"
+    },
+    {
+      "id": "q270401_12",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de las siguientes afirmaciones describe mejor una base de datos de grafos de propiedades?",
+      "question_en": "Which of the following best describes a property graph database?",
+      "options_es": [
+        "Solo nodos sin propiedades conectados por aristas no tipadas",
+        "Propiedades en nodos solamente, sin capacidad de propiedades en aristas",
+        "Propiedades de solo lectura que se definen en el esquema y no pueden cambiar",
+        "Nodos y aristas con propiedades tipadas, permitiendo modelado flexible y consultas expresivas"
+      ],
+      "options_en": [
+        "Only nodes without properties connected by untyped edges",
+        "Properties on nodes only, with no capability for edge properties",
+        "Read-only properties defined in the schema that cannot change",
+        "Nodes and edges with typed properties, enabling flexible modeling and expressive queries"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una base de datos de propiedades es flexible: permite nodos y aristas con múltiples propiedades de diferentes tipos (strings, números, booleanos, etc.). Esto permite modelar datos del mundo real sin esquemas rígidos mientras se mantiene validación de tipos.",
+      "explanation_en": "A property database is flexible: it allows nodes and edges with multiple properties of different types (strings, numbers, booleans, etc.). This allows modeling real-world data without rigid schemas while maintaining type validation.",
+      "source": "Property Graph Data Model (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270401_13",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ventaja proporciona el almacenamiento nativo de aristas sobre una aproximación relacional?",
+      "question_en": "What advantage does native edge storage provide over a relational approach?",
+      "options_es": [
+        "Traversals sin requierir uniones (joins), lo que reduce drasticamente la complejidad del plan de ejecución",
+        "Validación de integridad referencial más estricta que SQL",
+        "Mejor compresión de datos al eliminar columnas redundantes",
+        "Soporte automático para transacciones distribuidas entre servidores"
+      ],
+      "options_en": [
+        "Traversals without requiring joins, drastically reducing execution plan complexity",
+        "Stricter referential integrity validation than SQL",
+        "Better data compression by eliminating redundant columns",
+        "Automatic support for distributed transactions across servers"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El almacenamiento nativo de aristas significa que la relación entre dos nodos se representa directamente, sin necesidad de una tabla de unión intermedia. Una consulta puede seguir una arista sin unir tablas, lo que es órdenes de magnitud más rápido para grafos grandes.",
+      "explanation_en": "Native edge storage means the relationship between two nodes is represented directly, without needing an intermediate junction table. A query can follow an edge without joining tables, which is orders of magnitude faster for large graphs.",
+      "source": "Neo4j Storage Architecture (https://neo4j.com/docs/operations-manual/)"
+    },
+    {
+      "id": "q270401_14",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un grafo ponderado y uno no ponderado?",
+      "question_en": "What is the difference between a weighted graph and an unweighted graph?",
+      "options_es": [
+        "Los grafos ponderados no pueden tener ciclos, a diferencia de los no ponderados",
+        "Los grafos ponderados requieren más memoria porque almacenan metadatos adicionales",
+        "Las aristas ponderadas tienen valores numéricos que representan costo, distancia o confianza",
+        "Solo los grafos ponderados soportan algoritmos de camino más corto"
+      ],
+      "options_en": [
+        "Weighted graphs cannot have cycles, unlike unweighted ones",
+        "Weighted graphs require more memory because they store additional metadata",
+        "Weighted edges have numeric values representing cost, distance, or confidence",
+        "Only weighted graphs support shortest path algorithms"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En un grafo ponderado, cada arista tiene un peso asociado que se usa en algoritmos como Dijkstra o Floyd-Warshall. En un grafo no ponderado, todas las aristas tienen peso implícito de 1. Las propiedades de las aristas en una base de datos de grafos (como 'peso' o 'distancia') los hacen ponderados.",
+      "explanation_en": "In a weighted graph, each edge has an associated weight used in algorithms like Dijkstra or Floyd-Warshall. In an unweighted graph, all edges have an implicit weight of 1. Edge properties in a graph database (like 'weight' or 'distance') make them weighted.",
+      "source": "Graph Algorithms (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270401_15",
+      "skill_id": "sk270401",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el impacto de la densidad del grafo en el rendimiento de consultas de alcance?",
+      "question_en": "What is the impact of graph density on the performance of reachability queries?",
+      "options_es": [
+        "Los grafos más densos siempre son más rápidos porque tienen menos saltos entre nodos",
+        "La densidad no afecta el rendimiento porque los índices de aristas lo normalizan",
+        "La densidad solo afecta el almacenamiento, no el tiempo de consulta",
+        "En grafos densos, las consultas de alcance pueden ser más lentas porque hay más caminos que explorar"
+      ],
+      "options_en": [
+        "Denser graphs are always faster because they have fewer hops between nodes",
+        "Density does not affect performance because edge indices normalize it",
+        "Density only affects storage, not query time",
+        "In dense graphs, reachability queries can be slower because there are more paths to explore"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un grafo muy denso (muchas aristas por nodo) puede ralentizar consultas de alcance porque el algoritmo debe explorar más caminos potenciales. Sin embargo, un grafo denso también puede significar caminos más cortos. El balance depende de la estructura: los grafos de pequeño mundo tienen baja densidad pero diámetro pequeño.",
+      "explanation_en": "A very dense graph (many edges per node) can slow reachability queries because the algorithm must explore more potential paths. However, a dense graph can also mean shorter paths. The balance depends on structure: small-world graphs have low density but small diameter.",
+      "source": "Graph Analysis and Algorithms (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270402_01",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la cláusula fundamental en una consulta Cypher para navegar relaciones?",
+      "question_en": "What is the fundamental clause in a Cypher query to navigate relationships?",
+      "options_es": [
+        "MATCH, que especifica el patrón de nodos y aristas a buscar",
+        "WITH, que encadena múltiples consultas en una sola",
+        "WHERE, que filtra resultados por condiciones booleanas",
+        "RETURN, que especifica qué proyectar en el resultado"
+      ],
+      "options_en": [
+        "MATCH, which specifies the pattern of nodes and edges to find",
+        "WITH, which chains multiple queries into one",
+        "WHERE, which filters results by boolean conditions",
+        "RETURN, which specifies what to project in the result"
+      ],
+      "correct_index": 0,
+      "explanation_es": "MATCH es la cláusula principal de Cypher para especificar patrones de búsqueda. Define qué nodos, aristas y propiedades buscar en el grafo. La sintaxis (n:Label)-[:TIPO]->(m) describe el patrón a encontrar.",
+      "explanation_en": "MATCH is Cypher's primary clause for specifying search patterns. It defines which nodes, edges, and properties to find in the graph. The syntax (n:Label)-[:TYPE]->(m) describes the pattern to find.",
+      "source": "Cypher Query Language (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_02",
+      "skill_id": "sk270402",
+      "type": "true_false",
+      "question_es": "¿En Cypher, la flecha en una relación (->/<-) indica la dirección de la relación?",
+      "question_en": "In Cypher, does the arrow in a relationship (->/←) indicate the direction of the relationship?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sí, la flecha especifica la dirección en la que se navega la relación en la consulta. (a)-[:SIGUE]->(b) busca donde 'a' sigue a 'b'. (a)<-[:SIGUE]-(b) busca donde 'b' sigue a 'a'. Sin flecha (a)-[:SIGUE]-(b) ignora la dirección (consulta bidireccional).",
+      "explanation_en": "Yes, the arrow specifies the direction in which to traverse the relationship in the query. (a)-[:FOLLOWS]->(b) finds where 'a' follows 'b'. (a)<-[:FOLLOWS]-(b) finds where 'b' follows 'a'. No arrow (a)-[:FOLLOWS]-(b) ignores direction (bidirectional query).",
+      "source": "Cypher Patterns (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_03",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la función de la cláusula RETURN en Cypher?",
+      "question_en": "What is the function of the RETURN clause in Cypher?",
+      "options_es": [
+        "Revertir cambios si se encuentra un error durante la ejecución",
+        "Especificar qué variables, propiedades y expresiones incluir en el resultado de la consulta",
+        "Terminar la transacción y confirmar cambios en la base de datos",
+        "Iterar sobre resultados intermedios para aplicar filtros adicionales"
+      ],
+      "options_en": [
+        "Revert changes if an error is found during execution",
+        "Specify which variables, properties, and expressions to include in the query result",
+        "Commit the transaction and confirm changes to the database",
+        "Iterate over intermediate results to apply additional filters"
+      ],
+      "correct_index": 1,
+      "explanation_es": "RETURN define qué se proyecta en el conjunto de resultados. RETURN n devuelve nodos completos; RETURN n.nombre devuelve solo la propiedad; RETURN count(n) devuelve un agregado. Sin RETURN, la consulta ejecuta pero no devuelve nada.",
+      "explanation_en": "RETURN defines what is projected in the result set. RETURN n returns full nodes; RETURN n.name returns only the property; RETURN count(n) returns an aggregate. Without RETURN, the query executes but returns nothing.",
+      "source": "Cypher Projections (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_04",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace la cláusula WHERE en una consulta Cypher?",
+      "question_en": "What does the WHERE clause do in a Cypher query?",
+      "options_es": [
+        "Define la orden en que se devuelven los resultados",
+        "Agrupa resultados por propiedades específicas",
+        "Filtra resultados de MATCH según condiciones booleanas sobre propiedades y relaciones",
+        "Limita el número máximo de resultados devueltos"
+      ],
+      "options_en": [
+        "Defines the order in which results are returned",
+        "Groups results by specific properties",
+        "Filters MATCH results based on boolean conditions on properties and relationships",
+        "Limits the maximum number of results returned"
+      ],
+      "correct_index": 2,
+      "explanation_es": "WHERE aplica filtros booleanos tras el MATCH. WHERE n.edad > 18 filtra nodos con edad mayor a 18. WHERE r.peso < 100 filtra aristas con peso menor a 100. WHERE funciona después del matching, no durante, por lo que puede referenciar variables del MATCH.",
+      "explanation_en": "WHERE applies boolean filters after MATCH. WHERE n.age > 18 filters nodes with age greater than 18. WHERE r.weight < 100 filters edges with weight less than 100. WHERE works after matching, not during, so it can reference variables from MATCH.",
+      "source": "Cypher Filtering (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_05",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la sintaxis correcta en Cypher para buscar nodos con una etiqueta específica?",
+      "question_en": "What is the correct syntax in Cypher to find nodes with a specific label?",
+      "options_es": [
+        "(n:Usuario) en la cláusula MATCH",
+        "[n:Usuario] en la cláusula MATCH",
+        "NODE(Usuario) como función de filtro",
+        "(n.Label=Usuario) en la cláusula WHERE"
+      ],
+      "options_en": [
+        "(n:Usuario) in the MATCH clause",
+        "[n:Usuario] in the MATCH clause",
+        "NODE(Usuario) as a filter function",
+        "(n.Label=Usuario) in the WHERE clause"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La sintaxis (n:Label) especifica una etiqueta de nodo. MATCH (n:Usuario) busca nodos con etiqueta Usuario. Se pueden usar múltiples etiquetas: (n:Usuario:Admin) busca nodos con ambas etiquetas.",
+      "explanation_en": "The syntax (n:Label) specifies a node label. MATCH (n:Usuario) finds nodes with the Usuario label. Multiple labels can be used: (n:Usuario:Admin) finds nodes with both labels.",
+      "source": "Cypher Node Patterns (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_06",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de la cláusula WITH en Cypher?",
+      "question_en": "What is the purpose of the WITH clause in Cypher?",
+      "options_es": [
+        "Crear vistas temporales que se conservan entre sesiones",
+        "Definir variables locales dentro de una función de usuario",
+        "Encadenar múltiples MATCH en una sola consulta, pasando resultados intermedios",
+        "Especificar transacciones anidadas con sus propias garantías ACID"
+      ],
+      "options_en": [
+        "Create temporary views that persist between sessions",
+        "Define local variables within a user-defined function",
+        "Chain multiple MATCH operations in a single query, passing intermediate results",
+        "Specify nested transactions with their own ACID guarantees"
+      ],
+      "correct_index": 2,
+      "explanation_es": "WITH actúa como intermediaria: toma los resultados de un MATCH y los pasa al siguiente. Permite composición de consultas complejas. MATCH (n) WITH n WHERE ... es una práctica común para lógica multi-etapa.",
+      "explanation_en": "WITH acts as an intermediary: it takes results from one MATCH and passes them to the next. It enables composition of complex queries. MATCH (n) WITH n WHERE ... is common practice for multi-stage logic.",
+      "source": "Cypher Query Composition (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_07",
+      "skill_id": "sk270402",
+      "type": "true_false",
+      "question_es": "¿Cypher soporta operaciones de agregación como COUNT, SUM, y AVG?",
+      "question_en": "Does Cypher support aggregation operations like COUNT, SUM, and AVG?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, Cypher tiene funciones de agregación: COUNT(n) cuenta resultados, SUM(n.valor) suma valores, AVG(n.edad) promedia edades, MAX/MIN encuentran extremos, COLLECT(n) agrupa en listas. Estas funcionan con GROUP BY implícito cuando hay otras variables no agregadas en RETURN.",
+      "explanation_en": "Yes, Cypher has aggregation functions: COUNT(n) counts results, SUM(n.value) sums values, AVG(n.age) averages ages, MAX/MIN find extremes, COLLECT(n) groups into lists. These work with implicit GROUP BY when there are other non-aggregated variables in RETURN.",
+      "source": "Cypher Aggregation (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_08",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la sintaxis en Cypher para buscar relaciones de cualquier tipo entre dos nodos?",
+      "question_en": "What is the syntax in Cypher to find relationships of any type between two nodes?",
+      "options_es": [
+        "(a)->>(b) operador de enlace genérico",
+        "(a)-[*]-(b) con comodín explícito",
+        "(a)--(b) para bidireccional o (a)-[:*]->(b) para cualquier tipo directo",
+        "(a)~(b) operador de proximidad"
+      ],
+      "options_en": [
+        "(a)->>(b) generic linking operator",
+        "(a)-[*]-(b) with explicit wildcard",
+        "(a)--(b) for bidirectional or (a)-[:*]->(b) for any direct type",
+        "(a)~(b) proximity operator"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La sintaxis (a)--(b) sin especificar tipo busca cualquier relación bidireccional. (a)-[:*]->(b) busca cualquier tipo de relación con dirección. Se pueden combinar con longitud variable: (a)-[*1..3]->(b) busca caminos de 1 a 3 aristas.",
+      "explanation_en": "The syntax (a)--(b) without specifying type finds any bidirectional relationship. (a)-[:*]->(b) finds any relationship type with direction. These can be combined with variable length: (a)-[*1..3]->(b) finds paths 1 to 3 edges long.",
+      "source": "Cypher Relationship Patterns (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_09",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace la función size() en una consulta Cypher?",
+      "question_en": "What does the size() function do in a Cypher query?",
+      "options_es": [
+        "Devuelve la profundidad máxima de anidamiento en un grafo",
+        "Devuelve el tamaño en bytes de una propiedad almacenada",
+        "Comprime un nodo o relación para reducir su tamaño de almacenamiento",
+        "Devuelve el número de elementos en una colección o la cantidad de aristas de un nodo"
+      ],
+      "options_en": [
+        "Returns the maximum nesting depth in a graph",
+        "Returns the size in bytes of a stored property",
+        "Compresses a node or relationship to reduce storage size",
+        "Returns the number of elements in a collection or the number of edges of a node"
+      ],
+      "correct_index": 3,
+      "explanation_es": "size() devuelve el número de elementos. size(['a','b','c']) = 3. size((n)-[]->()) devuelve el número de aristas salientes del nodo n. Es útil para filtrar nodos por grado: WHERE size((n)--()) > 10.",
+      "explanation_en": "size() returns the number of elements. size(['a','b','c']) = 3. size((n)-[]->()) returns the number of outgoing edges from node n. Useful for filtering nodes by degree: WHERE size((n)--()) > 10.",
+      "source": "Cypher Functions (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_10",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre MATCH y OPTIONAL MATCH en Cypher?",
+      "question_en": "What is the difference between MATCH and OPTIONAL MATCH in Cypher?",
+      "options_es": [
+        "OPTIONAL MATCH es más lento pero más preciso que MATCH",
+        "Solo OPTIONAL MATCH soporta patrones complejos con múltiples etiquetas",
+        "MATCH devuelve NULL para valores nulos, OPTIONAL MATCH los omite",
+        "OPTIONAL MATCH devuelve NULL si el patrón no se encuentra, mientras que MATCH excluye filas sin coincidencias"
+      ],
+      "options_en": [
+        "OPTIONAL MATCH is slower but more accurate than MATCH",
+        "Only OPTIONAL MATCH supports complex patterns with multiple labels",
+        "MATCH returns NULL for missing values, OPTIONAL MATCH omits them",
+        "OPTIONAL MATCH returns NULL if the pattern is not found, while MATCH excludes unmatched rows"
+      ],
+      "correct_index": 3,
+      "explanation_es": "MATCH falla si no hay coincidencia (filtra filas). OPTIONAL MATCH continúa y establece variables en NULL. Ejemplo: si no todo usuario tiene correo, OPTIONAL MATCH (...)-[:TIENE_EMAIL]->(email) establece email en NULL en lugar de excluir el usuario.",
+      "explanation_en": "MATCH fails if there is no match (filters rows). OPTIONAL MATCH continues and sets variables to NULL. Example: if not every user has email, OPTIONAL MATCH (...)-[:HAS_EMAIL]->(email) sets email to NULL instead of excluding the user.",
+      "source": "Cypher OPTIONAL MATCH (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_11",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se escribe una consulta Cypher para buscar caminos de longitud variable?",
+      "question_en": "How do you write a Cypher query to find paths of variable length?",
+      "options_es": [
+        "Usando la sintaxis -[:TIPO*min..max]-> para especificar rango de saltos",
+        "Usando EXPAND para exploración ilimitada",
+        "Usando LOOP para iterar múltiples veces",
+        "Usando RECURSIVE para definición recursiva de patrones"
+      ],
+      "options_en": [
+        "Using -[:TYPE*min..max]-> syntax to specify hop range",
+        "Using EXPAND for unlimited exploration",
+        "Using LOOP to iterate multiple times",
+        "Using RECURSIVE for recursive pattern definition"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La sintaxis (a)-[:TIPO*1..5]->(b) busca caminos de 1 a 5 saltos de tipo TIPO entre a y b. (a)-[:TIPO*]->(b) busca cualquier longitud. -[:TIPO*..3]-> es máximo 3 saltos. Esta es la forma de encontrar amigos de amigos o rutas alternativas.",
+      "explanation_en": "The syntax (a)-[:TYPE*1..5]->(b) finds paths 1 to 5 hops of type TYPE between a and b. (a)-[:TYPE*]->(b) finds any length. -[:TYPE*..3]-> is maximum 3 hops. This is how to find friends-of-friends or alternative routes.",
+      "source": "Cypher Variable-Length Paths (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_12",
+      "skill_id": "sk270402",
+      "type": "true_false",
+      "question_es": "¿Es posible crear nodos y relaciones en una consulta Cypher usando CREATE?",
+      "question_en": "Is it possible to create nodes and relationships in a Cypher query using CREATE?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sí, CREATE (n:Label {propiedad: valor}) crea nodos. CREATE (a)-[:TIPO]->(b) crea relaciones. MERGE es variante que actualiza si existe. Cypher es completo para CRUD, no solo lectura.",
+      "explanation_en": "Yes, CREATE (n:Label {property: value}) creates nodes. CREATE (a)-[:TYPE]->(b) creates relationships. MERGE is a variant that updates if it exists. Cypher is complete for CRUD, not just read.",
+      "source": "Cypher Write Operations (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_13",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito de la función coalesce() en Cypher?",
+      "question_en": "What is the purpose of the coalesce() function in Cypher?",
+      "options_es": [
+        "Convertir un tipo de dato a otro tipo diferente",
+        "Reemplazar valores nulos con su valor anterior en la secuencia",
+        "Devolver el primer argumento no NULL de una lista de valores",
+        "Combinar múltiples strings en un solo string con separador"
+      ],
+      "options_en": [
+        "Convert one data type to another different type",
+        "Replace NULL values with their previous value in the sequence",
+        "Return the first non-NULL argument from a list of values",
+        "Combine multiple strings into a single string with separator"
+      ],
+      "correct_index": 2,
+      "explanation_es": "coalesce(a.email, a.teléfono, 'no contacto') devuelve el email si existe, sino el teléfono, sino el literal 'no contacto'. Es esencial para manejar datos incompletos en grafos con esquemas flexibles.",
+      "explanation_en": "coalesce(a.email, a.phone, 'no contact') returns the email if it exists, otherwise the phone, otherwise the literal 'no contact'. Essential for handling incomplete data in graphs with flexible schemas.",
+      "source": "Cypher Functions (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_14",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué función de Cypher se usa para contar el número de resultados sin necesidad de contar manualmente?",
+      "question_en": "What Cypher function is used to count the number of results without manually counting?",
+      "options_es": [
+        "rows() que devuelve el número de filas procesadas",
+        "distinct() que elimina duplicados y cuenta únicos",
+        "total() que suma todos los valores en la columna",
+        "count(*) en la cláusula RETURN con o sin GROUP BY"
+      ],
+      "options_en": [
+        "rows() which returns the number of rows processed",
+        "distinct() which removes duplicates and counts unique ones",
+        "total() which sums all values in the column",
+        "count(*) in the RETURN clause with or without GROUP BY"
+      ],
+      "correct_index": 3,
+      "explanation_es": "RETURN count(*) devuelve el número total de filas. RETURN n.tipo, count(*) agrupa por tipo y cuenta cada grupo. Sin GROUP BY explícito, count() es agregación implícita que combina todas las filas.",
+      "explanation_en": "RETURN count(*) returns the total number of rows. RETURN n.type, count(*) groups by type and counts each group. Without explicit GROUP BY, count() is implicit aggregation combining all rows.",
+      "source": "Cypher Aggregation (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270402_15",
+      "skill_id": "sk270402",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre la función labels() y la cláusula WHERE en Cypher?",
+      "question_en": "What is the difference between the labels() function and the WHERE clause in Cypher?",
+      "options_es": [
+        "No hay diferencia, son sinónimos",
+        "WHERE es para nodos; labels() es solo para relaciones",
+        "labels() devuelve strings; WHERE devuelve booleanos",
+        "labels() extrae etiquetas dinámicamente; WHERE filtra patrones conocidos en tiempo de escritura"
+      ],
+      "options_en": [
+        "There is no difference, they are synonyms",
+        "WHERE is for nodes; labels() is only for relationships",
+        "labels() returns strings; WHERE returns booleans",
+        "labels() extracts labels dynamically; WHERE filters known patterns at write time"
+      ],
+      "correct_index": 3,
+      "explanation_es": "labels(n) es una función que devuelve la lista de etiquetas de un nodo en tiempo de ejecución, útil para exploración dinámica. WHERE filtra durante el matching. MATCH (n) WHERE 'Usuario' IN labels(n) es más flexible que MATCH (n:Usuario) porque maneja casos donde la etiqueta puede variar.",
+      "explanation_en": "labels(n) is a function that returns the list of labels of a node at runtime, useful for dynamic exploration. WHERE filters during matching. MATCH (n) WHERE 'User' IN labels(n) is more flexible than MATCH (n:User) because it handles cases where the label might vary.",
+      "source": "Cypher Functions (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270403_01",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el primer paso en el modelado de un grafo para una aplicación?",
+      "question_en": "What is the first step in modeling a graph for an application?",
+      "options_es": [
+        "Identificar las entidades del dominio y sus relaciones naturales",
+        "Normalizar todas las entidades en una estructura jerárquica",
+        "Elegir el software de base de datos de grafos más popular",
+        "Crear índices en todas las propiedades para optimizar la velocidad"
+      ],
+      "options_en": [
+        "Identify domain entities and their natural relationships",
+        "Normalize all entities into a hierarchical structure",
+        "Choose the most popular graph database software",
+        "Create indices on all properties to optimize speed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El modelado debe empezar por entender el dominio: ¿qué entidades existen? ¿cómo se relacionan naturalmente? Un grafo bien diseñado refleja el modelo mental del dominio, haciendo las consultas intuitivas y eficientes.",
+      "explanation_en": "Modeling should start by understanding the domain: what entities exist? how do they naturally relate? A well-designed graph reflects the domain's mental model, making queries intuitive and efficient.",
+      "source": "Neo4j Graph Database Design (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_02",
+      "skill_id": "sk270403",
+      "type": "true_false",
+      "question_es": "¿En el modelado de grafos, es recomendable crear nodos para cada atributo de una entidad?",
+      "question_en": "In graph modeling, is it recommended to create nodes for every attribute of an entity?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "No. Las propiedades simples (nombre, email, edad) deben ser propiedades del nodo, no nodos separados. Solo crear nodos para entidades que tienen identidad propia y relaciones con otras entidades. Hacer nodos de todo causa explosión de tamaño y consultas lentísimas.",
+      "explanation_en": "No. Simple properties (name, email, age) should be properties of the node, not separate nodes. Only create nodes for entities that have their own identity and relationships with other entities. Making nodes of everything causes size explosion and very slow queries.",
+      "source": "Graph Modeling Best Practices (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_03",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo es apropiado crear un nodo intermediario en un grafo?",
+      "question_en": "When is it appropriate to create an intermediate node in a graph?",
+      "options_es": [
+        "Cuando la base de datos de grafos tiene límite en el número de propiedades",
+        "Cuando una relación tiene propiedades propias y puede ser consultada como entidad independiente",
+        "Cuando hay más de dos entidades relacionadas en el dominio",
+        "Cuando se necesita mejorar el rendimiento de las consultas"
+      ],
+      "options_en": [
+        "When the graph database has a limit on the number of properties",
+        "When a relationship has its own properties and can be queried as an independent entity",
+        "When there are more than two entities related in the domain",
+        "When performance of queries needs to be improved"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un nodo intermediario se crea cuando una relación es importante en sí misma. Ejemplo: una arista COMPRA entre Usuario y Producto puede convertirse en un nodo Pedido si el pedido tiene propiedades (fecha, cantidad, estado) y otras relaciones (con Almacén, Transportista).",
+      "explanation_en": "An intermediate node is created when a relationship is important in itself. Example: a PURCHASE edge between User and Product can become an Order node if the order has properties (date, quantity, status) and other relationships (with Warehouse, Shipper).",
+      "source": "Graph Modeling Patterns (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_04",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es una mala práctica común en el modelado de grafos?",
+      "question_en": "What is a common bad practice in graph modeling?",
+      "options_es": [
+        "Crear propiedades que contienen listas en lugar de nodos separados cuando son consultables",
+        "Desnormalizar datos creando aristas redundantes para optimizar queries sin medir impacto",
+        "Todas las anteriores",
+        "Usar etiquetas de nodo para categorías que cambian frecuentemente"
+      ],
+      "options_en": [
+        "Creating properties that contain lists instead of separate nodes when they are queryable",
+        "Denormalizing data by creating redundant edges to optimize queries without measuring impact",
+        "All of the above",
+        "Using node labels for categories that change frequently"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las tres son malas prácticas. La desnormalización sin análisis puede causar inconsistencia. Las etiquetas dinámicas son costosas de actualizar. Las listas de valores queryables deberían ser nodos separados. Un buen diseño balancea flexibilidad, eficiencia y mantenibilidad.",
+      "explanation_en": "All three are bad practices. Denormalization without analysis can cause inconsistency. Dynamic labels are expensive to update. Queryable value lists should be separate nodes. Good design balances flexibility, efficiency, and maintainability.",
+      "source": "Neo4j Modeling Anti-patterns (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_05",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se modela una relación many-to-many en un grafo?",
+      "question_en": "How is a many-to-many relationship modeled in a graph?",
+      "options_es": [
+        "Duplicando las propiedades en ambos nodos",
+        "Usando arrays multidimensionales como propiedades",
+        "Con aristas directas entre nodos, sin tabla de unión intermedia requerida",
+        "Creando un nodo intermedio que se conecta a ambos lados"
+      ],
+      "options_en": [
+        "Duplicating properties on both nodes",
+        "Using multidimensional arrays as properties",
+        "With direct edges between nodes, no intermediate junction table required",
+        "Creating an intermediate node that connects to both sides"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una de las ventajas clave de los grafos es que las relaciones many-to-many son nativas. Un usuario puede SEGUIR a muchos usuarios, y un usuario puede ser SEGUIDO por muchos. No necesita tabla de unión intermedia; las aristas modelan directamente la relación.",
+      "explanation_en": "One of the key advantages of graphs is that many-to-many relationships are native. A user can FOLLOW many users, and a user can be FOLLOWED by many. No intermediate junction table needed; edges directly model the relationship.",
+      "source": "Graph Data Model (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_06",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el patrón de modelado recomendado para representar entidades con propiedades opcionales?",
+      "question_en": "What is the recommended modeling pattern for entities with optional properties?",
+      "options_es": [
+        "Crear nodos separados para cada combinación de propiedades presentes",
+        "Usar etiquetas diferentes para cada variante de la entidad",
+        "Almacenar como propiedades NULL en el nodo y filtrar con WHERE cuando sea necesario",
+        "Dividir en múltiples tablas de entidad por tipo de propiedad"
+      ],
+      "options_en": [
+        "Create separate nodes for each combination of properties present",
+        "Use different labels for each variant of the entity",
+        "Store as NULL properties on the node and filter with WHERE when needed",
+        "Split into multiple entity tables by property type"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las bases de datos de grafos son flexibles: un nodo puede tener propiedades que otros no tienen. Un Usuario puede tener teléfono mientras otro no. Usar NULL es natural y eficiente, mucho mejor que crear nodos redundantes o tablas separadas.",
+      "explanation_en": "Graph databases are flexible: a node can have properties that others don't. One User can have a phone while another doesn't. Using NULL is natural and efficient, much better than creating redundant nodes or separate tables.",
+      "source": "Flexible Schema in Graphs (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_07",
+      "skill_id": "sk270403",
+      "type": "true_false",
+      "question_es": "¿Los tipos de etiqueta en los nodos deben ser inmutables una vez creados?",
+      "question_en": "Should node label types be immutable once created?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "No. Las etiquetas pueden agregarse y removerse en Cypher con SET n:NuevaEtiqueta o REMOVE n:EtiquetaAntigua. Sin embargo, cambios frecuentes de etiquetas indican mal diseño. Las etiquetas deben representar categorías estables del dominio, no estado transitorio.",
+      "explanation_en": "No. Labels can be added and removed in Cypher with SET n:NewLabel or REMOVE n:OldLabel. However, frequent label changes indicate poor design. Labels should represent stable domain categories, not transient state.",
+      "source": "Cypher Node Label Management (https://neo4j.com/docs/cypher-manual/)"
+    },
+    {
+      "id": "q270403_08",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es una ventaja de usar tipos de relaciones específicos (AMIGO, SIGUE, COMPRA) en lugar de una relación genérica?",
+      "question_en": "What is an advantage of using specific relationship types (FRIEND, FOLLOWS, PURCHASES) instead of a generic relationship?",
+      "options_es": [
+        "Reduce el tamaño total de almacenamiento del grafo",
+        "Mejora automáticamente el rendimiento de todas las consultas",
+        "Elimina la necesidad de propiedades en las relaciones",
+        "Permite consultas semánticamente claras y análisis específico por tipo de relación"
+      ],
+      "options_en": [
+        "Reduces the total storage size of the graph",
+        "Automatically improves performance of all queries",
+        "Eliminates the need for properties on relationships",
+        "Enables semantically clear queries and type-specific analysis"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Tipos específicos hacen el grafo auto-documentable: COMPRA es más claro que RELACION_TIPO_1. Permiten análisis independientes: qué productos compra cada usuario, qué a quién sigue. Pueden tener propiedades propias (fecha de compra, cantidad).",
+      "explanation_en": "Specific types make the graph self-documenting: PURCHASE is clearer than RELATION_TYPE_1. They allow independent analysis: what products each user buys, who follows whom. They can have their own properties (purchase date, quantity).",
+      "source": "Graph Modeling Best Practices (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_09",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se modela una estructura jerárquica (como un árbol organizacional) en un grafo?",
+      "question_en": "How is a hierarchical structure (like an organizational tree) modeled in a graph?",
+      "options_es": [
+        "Creando un nodo raíz especial que contiene referencias a todos los descendientes",
+        "Con aristas PADRES_DE que conectan cada nodo a su padre, permitiendo traversals de cualquier profundidad",
+        "Desnormalizando la jerarquía en propiedades de ruta completa en cada nodo",
+        "Almacenando el nivel de jerarquía como propiedad de cada nodo"
+      ],
+      "options_en": [
+        "Creating a special root node that contains references to all descendants",
+        "With PARENT_OF edges connecting each node to its parent, allowing traversals of any depth",
+        "Denormalizing the hierarchy into full-path properties on each node",
+        "Storing the hierarchy level as a property of each node"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las aristas PADRE_DE o similar permiten que cualquier profundidad se consulte sin cambiar el esquema. Encontrar todos los subordinados directos: MATCH (jefe)-[:DIRIGE]->(subordinado). Encontrar toda la cadena de mando: MATCH (jefe)-[:DIRIGE*1..]->(empleado).",
+      "explanation_en": "PARENT_OF or similar edges allow any depth to be queried without schema changes. Find all direct reports: MATCH (boss)-[:MANAGES]->(subordinate). Find the entire chain of command: MATCH (boss)-[:MANAGES*1..]->(employee).",
+      "source": "Tree Structures in Graphs (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_10",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es una técnica para modelar propiedades que cambian en el tiempo (temporales)?",
+      "question_en": "What is a technique for modeling properties that change over time (temporal)?",
+      "options_es": [
+        "Usar una columna especial de versionado en la base de datos",
+        "Sobrescribir la propiedad y perder el histórico",
+        "Duplicar nodos por cada período de tiempo",
+        "Crear nodos de evento conectados a la entidad principal con propiedades de timestamp"
+      ],
+      "options_en": [
+        "Use a special versioning column in the database",
+        "Overwrite the property and lose the history",
+        "Duplicate nodes for each time period",
+        "Create event nodes connected to the main entity with timestamp properties"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Para auditoría y análisis temporal, crear nodos Estado conectados con aristas TIENE_ESTADO a la entidad principal. Cada nodo Estado tiene fecha_inicio, fecha_fin, y valores. Permite consultar qué estado tenía en una fecha particular, ver tendencias, auditar cambios.",
+      "explanation_en": "For audit and temporal analysis, create State nodes connected with HAS_STATE edges to the main entity. Each State node has start_date, end_date, and values. Allows querying what state it had at a particular date, seeing trends, auditing changes.",
+      "source": "Temporal Graphs (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_11",
+      "skill_id": "sk270403",
+      "type": "true_false",
+      "question_es": "¿En el modelado de grafos, es mejor crear muchas aristas con diferentes tipos o pocas aristas genéricas?",
+      "question_en": "In graph modeling, is it better to create many edges with different types or fewer generic edges?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Muchos tipos específicos es mejor: SIGUE, COMPRA, RECOMIENDA son claros semánticamente. El almacenamiento no es problema; la claridad y queryabilidad sí lo son. Se puede filtrar fácilmente: MATCH (n)-[:COMPRA]->(p).",
+      "explanation_en": "Many specific types is better: FOLLOWS, PURCHASES, RECOMMENDS are semantically clear. Storage is not a problem; clarity and queryability are. Easy to filter: MATCH (n)-[:PURCHASES]->(p).",
+      "source": "Graph Modeling Patterns (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_12",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre una relación de es-un (herencia) y una de tiene-un (composición) en un grafo?",
+      "question_en": "What is the difference between an is-a (inheritance) relationship and a has-a (composition) relationship in a graph?",
+      "options_es": [
+        "Es-un conecta a un tipo general; tiene-un conecta a una parte componente específica",
+        "Es-un puede tener múltiples padres; tiene-un solo uno",
+        "Ambas son idénticas en términos de modelado en grafos",
+        "Es-un se representa con propiedades; tiene-un con aristas"
+      ],
+      "options_en": [
+        "Is-a connects to a general type; has-a connects to a specific component part",
+        "Is-a can have multiple parents; has-a has only one",
+        "Both are identical in terms of graph modeling",
+        "Is-a is represented with properties; has-a with edges"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Usuario es-un Persona (categorización), conectado por aristas de tipo o propiedades de etiqueta. Persona tiene-un Dirección (composición), conectado por aristas TIENE_DIRECCION a un nodo Dirección separado. Es-un es más sobre clasificación; tiene-un sobre estructura.",
+      "explanation_en": "User is-a Person (categorization), connected by type edges or label properties. Person has-a Address (composition), connected by HAS_ADDRESS edges to a separate Address node. Is-a is more about classification; has-a about structure.",
+      "source": "Graph Modeling Patterns (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_13",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es una estrategia para modelar una red de dependencias complejas?",
+      "question_en": "What is a strategy for modeling a complex dependency network?",
+      "options_es": [
+        "Almacenar todas las dependencias en un único nodo maestro",
+        "Usar una matriz de adyacencia plana en una tabla SQL",
+        "Crear nodos para cada componente y aristas DEPENDE_DE con propiedades de versión",
+        "Separar completamente cada conjunto de dependencias sin conexiones cruzadas"
+      ],
+      "options_en": [
+        "Store all dependencies in a single master node",
+        "Use a flat adjacency matrix in a SQL table",
+        "Create nodes for each component and DEPENDS_ON edges with version properties",
+        "Completely separate each set of dependencies without cross-connections"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Nodos componentes conectados por aristas DEPENDE_DE permiten queries simples de impacto: si cambio componente X, qué se rompe? Aristas con propiedades de versión permiten saber si X 1.0 es compatible con Y 2.0.",
+      "explanation_en": "Component nodes connected by DEPENDS_ON edges allow simple impact queries: if I change component X, what breaks? Edges with version properties let you know if X 1.0 is compatible with Y 2.0.",
+      "source": "Dependency Management in Graphs (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_14",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el patrón recomendado para modelar roles y permisos?",
+      "question_en": "What is the recommended pattern for modeling roles and permissions?",
+      "options_es": [
+        "Usar etiquetas dinámicas para cada rol en cada usuario",
+        "Crear una tabla de matriz de permisos global",
+        "Almacenar roles como propiedades de string en cada nodo Usuario",
+        "Nodos Rol conectados a Usuarios con aristas TIENE_ROL, y Permisos conectados a Roles con PERMITE"
+      ],
+      "options_en": [
+        "Use dynamic labels for each role on each user",
+        "Create a global permission matrix table",
+        "Store roles as string properties on each User node",
+        "Role nodes connected to Users with HAS_ROLE edges, and Permissions connected to Roles with GRANTS"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Nodos Rol permiten reutilización (múltiples usuarios tienen ADMIN), y cambios centralizados (modificar qué permisos tiene ADMIN afecta a todos). Consulta: MATCH (usuario)-[:TIENE_ROLE]->(rol)-[:PERMITE]->(permiso).",
+      "explanation_en": "Role nodes enable reuse (multiple users have ADMIN) and centralized changes (modifying what ADMIN permits affects everyone). Query: MATCH (user)-[:HAS_ROLE]->(role)-[:GRANTS]->(permission).",
+      "source": "Access Control Patterns (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270403_15",
+      "skill_id": "sk270403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se valida que un modelo de grafo es correcto antes de llevar a producción?",
+      "question_en": "How is a graph model validated to be correct before going to production?",
+      "options_es": [
+        "Ejecutar consultas típicas del dominio y verificar que el grafo responde de manera intuitiva y eficiente",
+        "Revisar solo el tamaño de almacenamiento total",
+        "No hay forma de validar hasta después de la producción",
+        "Confiar en que la base de datos lo validará automáticamente"
+      ],
+      "options_en": [
+        "Execute typical domain queries and verify the graph responds intuitively and efficiently",
+        "Review only the total storage size",
+        "There is no way to validate until after production",
+        "Trust that the database will automatically validate it"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La validación real es ejecutar las consultas que el sistema necesitará en producción: recomendaciones, búsquedas, análisis. Si las consultas son complejas, lentas o poco intuitivas, el modelo está mal. Usar datos de muestra y medir performance.",
+      "explanation_en": "Real validation is executing the queries the system will need in production: recommendations, searches, analysis. If queries are complex, slow, or unintuitive, the model is wrong. Use sample data and measure performance.",
+      "source": "Testing Graph Models (https://neo4j.com/docs/getting-started/)"
+    },
+    {
+      "id": "q270404_01",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un camino (path) en un grafo?",
+      "question_en": "What is a path in a graph?",
+      "options_es": [
+        "Un conjunto desordenado de nodos conectados entre sí",
+        "Una secuencia alternada de nodos y aristas que conectan dos nodos sin repetir aristas",
+        "Una lista de propiedades que un nodo debe cumplir",
+        "Una jerarquía de etiquetas de tipo"
+      ],
+      "options_en": [
+        "An unordered set of nodes connected to each other",
+        "An alternating sequence of nodes and edges connecting two nodes without repeating edges",
+        "A list of properties a node must fulfill",
+        "A hierarchy of type labels"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un camino es la secuencia: nodo -> arista -> nodo -> arista -> ... -> nodo. La propiedad crucial es que no se repite ninguna arista. Un camino conecta una fuente a un destino. Cypher retorna caminos con la función relationships() y nodes().",
+      "explanation_en": "A path is the sequence: node -> edge -> node -> edge -> ... -> node. The crucial property is that no edge repeats. A path connects a source to a destination. Cypher returns paths using relationships() and nodes() functions.",
+      "source": "Graph Algorithms (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270404_02",
+      "skill_id": "sk270404",
+      "type": "true_false",
+      "question_es": "¿El camino más corto entre dos nodos siempre es único?",
+      "question_en": "Is the shortest path between two nodes always unique?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 0,
+      "explanation_es": "No. Puede haber múltiples caminos de la misma longitud mínima. En un grafo de ciudad, hay múltiples rutas de distancia mínima entre dos puntos. Los algoritmos encuentran A camino más corto, no necesariamente el único.",
+      "explanation_en": "No. There can be multiple paths of the same minimum length. In a city graph, there are multiple routes of minimum distance between two points. Algorithms find A shortest path, not necessarily the unique one.",
+      "source": "Shortest Path Algorithms (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270404_03",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el algoritmo clásico para encontrar el camino más corto en un grafo ponderado?",
+      "question_en": "What is the classical algorithm for finding the shortest path in a weighted graph?",
+      "options_es": [
+        "Algoritmo genético que evoluciona soluciones candidatas",
+        "Búsqueda en profundidad (DFS) que explora todos los caminos posibles",
+        "Búsqueda en amplitud (BFS) que explora por niveles de distancia",
+        "Algoritmo de Dijkstra, que explora nodos por orden de distancia mínima acumulada"
+      ],
+      "options_en": [
+        "Genetic algorithm which evolves candidate solutions",
+        "Depth-first search (DFS) which explores all possible paths",
+        "Breadth-first search (BFS) which explores by distance levels",
+        "Dijkstra's algorithm, which explores nodes by minimum accumulated distance"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Dijkstra mantiene un conjunto de nodos visitados y explora siempre el nodo no visitado con menor distancia acumulada desde el origen. Es óptimo para pesos no negativos. BFS es un caso especial de Dijkstra cuando todos los pesos son iguales.",
+      "explanation_en": "Dijkstra maintains a set of visited nodes and always explores the unvisited node with the smallest accumulated distance from the start. It's optimal for non-negative weights. BFS is a special case of Dijkstra when all weights are equal.",
+      "source": "Graph Algorithms (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270404_04",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la complejidad temporal del algoritmo de Dijkstra en un grafo con V nodos y E aristas?",
+      "question_en": "What is the time complexity of Dijkstra's algorithm in a graph with V nodes and E edges?",
+      "options_es": [
+        "O(V!) en el peor caso porque debe revisar todas las permutaciones",
+        "O(V^2) siempre sin importar el tipo de grafo",
+        "O(E) porque solo se procesan las aristas",
+        "O((V + E) log V) con un heap binario como cola de prioridad"
+      ],
+      "options_en": [
+        "O(V!) in the worst case because all permutations must be checked",
+        "O(V^2) always regardless of graph type",
+        "O(E) because only edges are processed",
+        "O((V + E) log V) with a binary heap as priority queue"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con un heap binario bien implementado, Dijkstra es O((V + E) log V). Cada nodo se procesa una vez, y cada arista se examina una vez. Sin heap (búsqueda lineal), sería O(V^2). Neo4j y sistemas especializados usan implementaciones optimizadas.",
+      "explanation_en": "With a well-implemented binary heap, Dijkstra is O((V + E) log V). Each node is processed once, each edge examined once. Without a heap (linear search), it would be O(V^2). Neo4j and specialized systems use optimized implementations.",
+      "source": "Algorithm Complexity (https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)"
+    },
+    {
+      "id": "q270404_05",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito del algoritmo de profundidad (BFS vs DFS)?",
+      "question_en": "What is the purpose of depth-first vs breadth-first traversal algorithms?",
+      "options_es": [
+        "DFS es siempre más rápido que BFS",
+        "BFS solo funciona en grafos dirigidos; DFS en no dirigidos",
+        "Ambos encuentran el mismo resultado en el mismo tiempo",
+        "BFS encuentra el camino más corto por número de saltos; DFS explora todas las ramas profundamente"
+      ],
+      "options_en": [
+        "DFS is always faster than BFS",
+        "BFS only works on directed graphs; DFS on undirected ones",
+        "Both find the same result in the same time",
+        "BFS finds the shortest path by hops; DFS explores all branches deeply"
+      ],
+      "correct_index": 3,
+      "explanation_es": "BFS usa cola (FIFO) y explora por niveles. DFS usa pila (LIFO) y explora verticalmente. BFS es ideal para camino más corto en grafos no ponderados. DFS es ideal para exploración exhaustiva, detección de ciclos, ordenamiento topológico.",
+      "explanation_en": "BFS uses a queue (FIFO) and explores by levels. DFS uses a stack (LIFO) and explores vertically. BFS is ideal for shortest path in unweighted graphs. DFS is ideal for exhaustive exploration, cycle detection, topological sorting.",
+      "source": "Graph Traversal Algorithms (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270404_06",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se detectan ciclos en un grafo dirigido?",
+      "question_en": "How are cycles detected in a directed graph?",
+      "options_es": [
+        "Buscando nodos con grado entrante y saliente iguales",
+        "Verificando si el grafo está conectado",
+        "Usando DFS y marcando nodos como visitados y en-pila; un borde a en-pila indica ciclo",
+        "Contando aristas totales; si E >= V hay ciclo"
+      ],
+      "options_en": [
+        "Finding nodes with equal in-degree and out-degree",
+        "Checking if the graph is connected",
+        "Using DFS and marking nodes as visited and on-stack; edge to on-stack indicates cycle",
+        "Counting total edges; if E >= V there is a cycle"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En DFS, colorea nodos como Blanco (no visitado), Gris (en pila actual) o Negro (completo). Si encuentras una arista hacia un nodo Gris, hay ciclo. Este es el algoritmo estándar en enseñanza.",
+      "explanation_en": "In DFS, color nodes as White (unvisited), Gray (in current stack) or Black (complete). If you find an edge to a Gray node, there's a cycle. This is the standard teaching algorithm.",
+      "source": "Cycle Detection (https://en.wikipedia.org/wiki/Cycle_(graph_theory))"
+    },
+    {
+      "id": "q270404_07",
+      "skill_id": "sk270404",
+      "type": "true_false",
+      "question_es": "¿El algoritmo de Floyd-Warshall encuentra el camino más corto entre todos los pares de nodos?",
+      "question_en": "Does the Floyd-Warshall algorithm find the shortest path between all pairs of nodes?",
+      "options_es": [
+        "Falso",
+        "Verdadero"
+      ],
+      "options_en": [
+        "False",
+        "True"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sí, Floyd-Warshall calcula una matriz de distancias mínimas entre todos los pares. Complejidad O(V^3), útil solo para grafos pequeños. Para grafos grandes, Dijkstra desde múltiples fuentes es más eficiente.",
+      "explanation_en": "Yes, Floyd-Warshall computes a matrix of minimum distances between all pairs. Complexity O(V^3), useful only for small graphs. For large graphs, Dijkstra from multiple sources is more efficient.",
+      "source": "All-Pairs Shortest Path (https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)"
+    },
+    {
+      "id": "q270404_08",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el algoritmo para encontrar la centralidad de un nodo (importancia relativa)?",
+      "question_en": "What algorithm is used to find the centrality of a node (relative importance)?",
+      "options_es": [
+        "Betweenness centrality mide cuántos caminos más cortos pasan por ese nodo",
+        "Degree centrality cuenta el número de aristas incidentes",
+        "Todas las anteriores son medidas válidas de centralidad",
+        "Closeness centrality mide la proximidad promedio a otros nodos"
+      ],
+      "options_en": [
+        "Betweenness centrality measures how many shortest paths pass through that node",
+        "Degree centrality counts the number of incident edges",
+        "All of the above are valid centrality measures",
+        "Closeness centrality measures average proximity to other nodes"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Existen múltiples métricas de centralidad. Grado (cuántos vecinos). Cercanía (distancia promedio a otros). Intermediación (control de caminos). PageRank (influencia en grafos). Elegir según el contexto: para influencers en redes sociales, betweenness; para hubs, grado.",
+      "explanation_en": "Multiple centrality metrics exist. Degree (how many neighbors). Closeness (average distance to others). Betweenness (control of paths). PageRank (influence in graphs). Choose by context: for social influencers, betweenness; for hubs, degree.",
+      "source": "Network Analysis (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270404_09",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el propósito del algoritmo PageRank?",
+      "question_en": "What is the purpose of the PageRank algorithm?",
+      "options_es": [
+        "Calcular la importancia iterativa de nodos basada en la importancia de sus vecinos entrantes",
+        "Detectar comunidades en grafos no dirigidos",
+        "Encontrar el camino más corto en grafos con pesos negativos",
+        "Ordenar topológicamente los nodos de un DAG"
+      ],
+      "options_en": [
+        "Calculate the iterative importance of nodes based on the importance of their incoming neighbors",
+        "Detect communities in undirected graphs",
+        "Find shortest path in graphs with negative weights",
+        "Topologically sort nodes in a DAG"
+      ],
+      "correct_index": 0,
+      "explanation_es": "PageRank, usado por Google, calcula la importancia iterativa: un nodo es importante si recibe aristas de nodos importantes. Converge después de varias iteraciones. Es excelente para ranking de relevancia en grafos de web o citas.",
+      "explanation_en": "PageRank, used by Google, iteratively calculates importance: a node is important if it receives edges from important nodes. Converges after several iterations. Excellent for relevance ranking in web graphs or citations.",
+      "source": "PageRank Algorithm (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270404_10",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el algoritmo para detectar comunidades (clustering) en un grafo?",
+      "question_en": "What algorithm is used to detect communities (clustering) in a graph?",
+      "options_es": [
+        "Huffman que comprime la representación del grafo",
+        "K-means que particiona nodos por proximidad euclidiana",
+        "Treap que ordena nodos por peso",
+        "Louvain o Label Propagation que agrupan nodos densamente conectados"
+      ],
+      "options_en": [
+        "Huffman which compresses the graph representation",
+        "K-means which partitions nodes by Euclidean proximity",
+        "Treap which sorts nodes by weight",
+        "Louvain or Label Propagation that group densely connected nodes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Louvain maximiza modularidad iterativamente. Label Propagation propaga etiquetas por aristas. Ambos encuentran comunidades donde hay más densidad de aristas internas que externas. Útil para segmentación, detección de fraude, análisis de redes sociales.",
+      "explanation_en": "Louvain iteratively maximizes modularity. Label Propagation propagates labels across edges. Both find communities with higher internal than external edge density. Useful for segmentation, fraud detection, social network analysis.",
+      "source": "Community Detection (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270404_11",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la diferencia entre un DAG y un grafo general?",
+      "question_en": "What is the difference between a DAG and a general graph?",
+      "options_es": [
+        "Un DAG (Directed Acyclic Graph) no tiene ciclos; un grafo general puede tenerlos",
+        "Un DAG es no dirigido; un grafo general es dirigido",
+        "Un DAG siempre es conexo; un grafo general puede tener componentes desconectadas",
+        "Un DAG tiene menos nodos que un grafo general"
+      ],
+      "options_en": [
+        "A DAG (Directed Acyclic Graph) has no cycles; a general graph can have them",
+        "A DAG is undirected; a general graph is directed",
+        "A DAG is always connected; a general graph may have disconnected components",
+        "A DAG has fewer nodes than a general graph"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un DAG es un grafo dirigido sin ciclos. Permite ordenamiento topológico, procesamiento de dependencias sin deadlocks. Ejemplos: árbol de dependencias de compilación, flujo de tareas en un proyecto.",
+      "explanation_en": "A DAG is a directed graph without cycles. Allows topological ordering, dependency processing without deadlocks. Examples: compilation dependency tree, task flow in a project.",
+      "source": "Directed Acyclic Graphs (https://en.wikipedia.org/wiki/Directed_acyclic_graph)"
+    },
+    {
+      "id": "q270404_12",
+      "skill_id": "sk270404",
+      "type": "true_false",
+      "question_es": "¿El ordenamiento topológico es posible en cualquier grafo dirigido?",
+      "question_en": "Is topological ordering possible on any directed graph?",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Solo es posible en DAG (sin ciclos). Si hay ciclos, no hay orden válido. El algoritmo de Kahn o DFS detecta ciclos si el ordenamiento falla.",
+      "explanation_en": "Only possible in DAGs (without cycles). If there are cycles, no valid order exists. Kahn's algorithm or DFS detects cycles if ordering fails.",
+      "source": "Topological Sorting (https://en.wikipedia.org/wiki/Topological_sorting)"
+    },
+    {
+      "id": "q270404_13",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el algoritmo para encontrar el árbol de expansión mínimo (MST) en un grafo ponderado?",
+      "question_en": "What is the algorithm for finding the minimum spanning tree (MST) in a weighted graph?",
+      "options_es": [
+        "DFS, que explora en profundidad",
+        "Dijkstra, que encuentra camino más corto desde una fuente",
+        "Kruskal o Prim, que seleccionan aristas de menor peso sin crear ciclos",
+        "Floyd-Warshall, que calcula todas las distancias pares"
+      ],
+      "options_en": [
+        "DFS, which explores in depth",
+        "Dijkstra, which finds shortest path from a source",
+        "Kruskal or Prim, which select lowest-weight edges without creating cycles",
+        "Floyd-Warshall, which computes all pair distances"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Kruskal ordena aristas por peso y añade sin crear ciclos (usando Union-Find). Prim crece el árbol desde un nodo inicial. Ambos garantizan suma mínima de pesos. Útil para diseño de redes con costo mínimo.",
+      "explanation_en": "Kruskal sorts edges by weight and adds without creating cycles (using Union-Find). Prim grows the tree from an initial node. Both guarantee minimum sum of weights. Useful for minimum-cost network design.",
+      "source": "Minimum Spanning Tree (https://en.wikipedia.org/wiki/Minimum_spanning_tree)"
+    },
+    {
+      "id": "q270404_14",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es la aplicación práctica de la detección de componentes conectados?",
+      "question_en": "What is the practical application of connected components detection?",
+      "options_es": [
+        "Aumentar la velocidad de consultas Cypher",
+        "Optimizar el almacenamiento de índices",
+        "Normalizar esquemas de base de datos",
+        "Identificar grupos desconectados de usuarios en una red social o clusters en datos"
+      ],
+      "options_en": [
+        "Increase Cypher query speed",
+        "Optimize index storage",
+        "Normalize database schemas",
+        "Identify disconnected groups of users in a social network or clusters in data"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Encontrar componentes conectadas permite identificar subgrafos aislados. En redes sociales, cada componente es una red separada sin conexión entre ellas. Útil para análisis de fragmentación y alcance de propagación.",
+      "explanation_en": "Finding connected components identifies isolated subgraphs. In social networks, each component is a separate network with no connection between them. Useful for fragmentation analysis and propagation reach.",
+      "source": "Connected Components (https://neo4j.com/docs/graph-data-science/)"
+    },
+    {
+      "id": "q270404_15",
+      "skill_id": "sk270404",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se implementa búsqueda de amigos-de-amigos eficientemente en un grafo?",
+      "question_en": "How is friends-of-friends search implemented efficiently in a graph?",
+      "options_es": [
+        "Recuperando todos los usuarios y filtrando localmente",
+        "Usando PageRank para ranking de proximidad",
+        "Con una consulta de camino variable de longitud 2: (usuario)-[:SIGUE*2..2]->(fof)",
+        "Calculando matriz de adyacencia al cuadrado"
+      ],
+      "options_en": [
+        "Fetching all users and filtering locally",
+        "Using PageRank for proximity ranking",
+        "With a variable-length path query of length 2: (user)-[:FOLLOWS*2..2]->(fof)",
+        "Computing the adjacency matrix squared"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Cypher permite MATCH (u:Usuario)-[:SIGUE*2..2]->(fof) que es extremadamente eficiente porque el grafo navega directamente en dos saltos. Comparado con SQL que requeriría dos uniones (joins), es órdenes de magnitud más rápido.",
+      "explanation_en": "Cypher allows MATCH (u:User)-[:FOLLOWS*2..2]->(fof) which is extremely efficient because the graph navigates directly in two hops. Compared to SQL requiring two joins, it's orders of magnitude faster.",
+      "source": "Neo4j Variable-Length Paths (https://neo4j.com/docs/cypher-manual/)"
+    }
+  ]
+}

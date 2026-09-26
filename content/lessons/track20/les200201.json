@@ -1,0 +1,13 @@
+{
+  "id": "les200201",
+  "skill_id": "sk200201",
+  "language": "es",
+  "executable": false,
+  "title_es": "SQL Avanzado y Window Functions",
+  "title_en": "Advanced SQL & Window Functions",
+  "body_es": "SQL avanzado incluye CTEs (Common Table Expressions), window functions (ROW_NUMBER, RANK, LAG, LEAD) y operaciones complejas de join. Las CTEs mejoran legibilidad permitiendo definir subconsultas nomb radas reutilizables. Las window functions calculan valores sobre particiones de datos sin agrupar, ideales para rangos, correlaciones y análisis de tendencias.",
+  "body_en": "Advanced SQL includes CTEs, window functions (ROW_NUMBER, RANK, LAG, LEAD) and complex join operations. CTEs improve readability by allowing reusable named subqueries. Window functions calculate values over data partitions without grouping, ideal for ranks, correlations and trend analysis.",
+  "example_code": "WITH monthly_sales AS (\n  SELECT month, amount, SUM(amount) OVER (ORDER BY month) as running_total\n  FROM sales\n)\nSELECT month, amount, running_total,\n  ROW_NUMBER() OVER (ORDER BY amount DESC) as rank\nFROM monthly_sales",
+  "example_output": "Resultado con totales acumulativos y ranking de ventas, combinando transformaciones complejas en una sola query eficiente.",
+  "source": "https://www.postgresql.org/docs/"
+}

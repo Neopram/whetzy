@@ -1,0 +1,1384 @@
+{
+  "questions": [
+    {
+      "id": "q190201001",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Qué es un módulo en Terraform?",
+      "question_en": "What is a module in Terraform?",
+      "options_es": [
+        "Un formato de almacenamiento de estado",
+        "Un archivo de configuración de una sola línea",
+        "Un tipo de variable especial",
+        "Un contenedor reutilizable de recursos"
+      ],
+      "options_en": [
+        "A state storage format",
+        "A single-line configuration file",
+        "A special type of variable",
+        "A reusable container of resources"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un módulo es un conjunto de archivos Terraform que contiene recursos, variables y outputs reutilizables para encapsular funcionalidad.",
+      "explanation_en": "A module is a set of Terraform files containing reusable resources, variables, and outputs to encapsulate functionality.",
+      "source": "Terraform Modules (https://developer.hashicorp.com/terraform/language/modules)"
+    },
+    {
+      "id": "q190201002",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cuál es la estructura de directorios típica de un módulo de Terraform?",
+      "question_en": "What is the typical directory structure of a Terraform module?",
+      "options_es": [
+        "Solo un archivo main.tf sin considerar otros factores relevantes",
+        "main.tf, variables.tf, outputs.tf, y opcionalmente README.md",
+        "Una carpeta con un archivo index.json",
+        "Archivos de extensión .module únicamente"
+      ],
+      "options_en": [
+        "Only a main.tf file without considering other relevant factors",
+        "main.tf, variables.tf, outputs.tf, and optionally README.md",
+        "A folder with an index.json file",
+        ".module extension files only"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La estructura típica es main.tf (recursos), variables.tf (variables de entrada), outputs.tf (valores de salida), y README.md (documentación).",
+      "explanation_en": "The typical structure is main.tf (resources), variables.tf (input variables), outputs.tf (output values), and README.md (documentation).",
+      "source": "Terraform Module Structure (https://developer.hashicorp.com/terraform/language/modules/develop)"
+    },
+    {
+      "id": "q190201003",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cómo se llama un módulo desde otra configuración de Terraform?",
+      "question_en": "How do you call a module from another Terraform configuration?",
+      "options_es": [
+        "include \"nombre\" { path = \"ruta\" }",
+        "import \"nombre\" { source = \"ruta\" }",
+        "module \"nombre\" { source = \"ruta\" }",
+        "require \"nombre\" { source = \"ruta\" }"
+      ],
+      "options_en": [
+        "include \"name\" { path = \"path\" }",
+        "import \"name\" { source = \"path\" }",
+        "module \"name\" { source = \"path\" }",
+        "require \"name\" { source = \"path\" }"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los módulos se invocan con el bloque 'module \"nombre\" { source = \"ruta\" }', donde source puede ser local, remoto o de Terraform Registry.",
+      "explanation_en": "Modules are invoked with the 'module \"name\" { source = \"path\" }' block, where source can be local, remote, or from Terraform Registry.",
+      "source": "Terraform Module Configuration (https://developer.hashicorp.com/terraform/language/modules)"
+    },
+    {
+      "id": "q190201004",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cuál es el beneficio principal de usar módulos de Terraform?",
+      "question_en": "What is the primary benefit of using Terraform modules?",
+      "options_es": [
+        "Mejorar la seguridad del estado de manera exclusiva y permanente",
+        "Aumentar la velocidad de despliegue",
+        "Facilitar la creación de backends remotos",
+        "Reducir complejidad mediante reutilización de código"
+      ],
+      "options_en": [
+        "Improve state security exclusively and permanently",
+        "Increase deployment speed",
+        "Facilitate remote backend creation",
+        "Reduce complexity through code reusability"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los módulos permiten encapsular configuración relacionada y reutilizarla, reduciendo complejidad y promoviendo mantenibilidad.",
+      "explanation_en": "Modules allow encapsulating related configuration and reusing it, reducing complexity and promoting maintainability.",
+      "source": "{'url': 'https://www.terraform.io/language/modules', 'title': 'Terraform Modules'}"
+    },
+    {
+      "id": "q190201005",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Qué archivos son esenciales en un módulo de Terraform?",
+      "question_en": "What files are essential in a Terraform module?",
+      "options_es": [
+        "main.tf, backend.tf, state.tf",
+        "resources.tf, variables.tf, data.tf",
+        "main.tf, variables.tf, outputs.tf",
+        "configuration.tf, provider.tf, registry.tf"
+      ],
+      "options_en": [
+        "main.tf, backend.tf, state.tf",
+        "resources.tf, variables.tf, data.tf",
+        "main.tf, variables.tf, outputs.tf",
+        "configuration.tf, provider.tf, registry.tf"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un módulo típico contiene main.tf (recursos), variables.tf (entrada) y outputs.tf (salida).",
+      "explanation_en": "A typical module contains main.tf (resources), variables.tf (inputs), and outputs.tf (outputs).",
+      "source": "{'url': 'https://www.terraform.io/language/modules/develop', 'title': 'Module Development'}"
+    },
+    {
+      "id": "q190201006",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cómo se invoca un módulo de Terraform en la configuración principal?",
+      "question_en": "How do you invoke a Terraform module in the main configuration?",
+      "options_es": [
+        "Usando el comando terraform module load",
+        "Usando el bloque module con source y parámetros",
+        "Usando el bloque include con la ruta del módulo",
+        "Usando el bloque import con el nombre del módulo"
+      ],
+      "options_en": [
+        "Using terraform module load command",
+        "Using module block with source and parameters",
+        "Using include block with module path",
+        "Using import block with module name"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los módulos se invocan con el bloque module, especificando source (ubicación) y parámetros de entrada.",
+      "explanation_en": "Modules are invoked with module block, specifying source (location) and input parameters.",
+      "source": "{'url': 'https://www.terraform.io/language/modules/syntax', 'title': 'Module Syntax'}"
+    },
+    {
+      "id": "q190201007",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cuál es la diferencia entre módulos locales y módulos del registry?",
+      "question_en": "What is the difference between local modules and registry modules?",
+      "options_es": [
+        "Locales son en tu máquina, registry son compartidos públicamente",
+        "Locales son más rápidos que registry",
+        "Locales requieren versionamiento, registry no",
+        "Locales solo funcionan con AWS según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "Local modules are on your machine, registry are publicly shared",
+        "Local modules are faster than registry",
+        "Local modules require versioning, registry don't",
+        "Local modules only work with AWS according to standard service documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Módulos locales están en tu sistema, registry son módulos públicos o compartidos en un registro centralizado.",
+      "explanation_en": "Local modules are in your system, registry modules are public or shared in centralized registry.",
+      "source": "{'url': 'https://registry.terraform.io/', 'title': 'Terraform Registry'}"
+    },
+    {
+      "id": "q190201008",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cómo se accede a los outputs de un módulo en la configuración principal?",
+      "question_en": "How do you access module outputs in the main configuration?",
+      "options_es": [
+        "var.module.<nombre_módulo> como concepto principal",
+        "module.<nombre_módulo>.<nombre_output> como concepto principal",
+        "output.<nombre_módulo>.<nombre_output> como concepto principal",
+        "data.module.<nombre_módulo> como concepto principal"
+      ],
+      "options_en": [
+        "var.module.<module_name> as the primary concept",
+        "module.<module_name>.<output_name> as the primary concept",
+        "output.<module_name>.<output_name> as the primary concept",
+        "data.module.<module_name> as the primary concept"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los outputs de módulos se acceden con la sintaxis module.nombre_módulo.nombre_output.",
+      "explanation_en": "Module outputs are accessed with module.module_name.output_name syntax.",
+      "source": "{'url': 'https://www.terraform.io/language/modules/develop/outputs', 'title': 'Module Outputs'}"
+    },
+    {
+      "id": "q190201009",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Qué es el versionamiento en módulos del Terraform Registry?",
+      "question_en": "What is versioning in Terraform Registry modules?",
+      "options_es": [
+        "Proceso de actualizar el estado de Terraform",
+        "Sistema para especificar qué versión de módulo usar",
+        "Manera de crear backups del módulo de manera exclusiva y permanente",
+        "Técnica para bloquear cambios de módulos"
+      ],
+      "options_en": [
+        "Process of updating Terraform state",
+        "System for specifying which module version to use",
+        "Way to create module backups exclusively and permanently",
+        "Technique for locking module changes"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El versionamiento permite especificar versiones específicas de módulos del registry para reproducibilidad.",
+      "explanation_en": "Versioning allows specifying specific module versions from registry for reproducibility.",
+      "source": "{'url': 'https://www.terraform.io/language/modules/syntax#version', 'title': 'Module Versioning'}"
+    },
+    {
+      "id": "q190201010",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cuál es la mejor práctica para organizar módulos en un proyecto Terraform?",
+      "question_en": "What is the best practice for organizing modules in a Terraform project?",
+      "options_es": [
+        "Crear directorio modules/ con subdirectorios por componente",
+        "Almacenar todos los módulos en el directorio raíz",
+        "Usar un único archivo module.tf de forma invariable y constante",
+        "Distribuir módulos en directorios al azar"
+      ],
+      "options_en": [
+        "Create modules/ directory with subdirectories per component",
+        "Store all modules in root directory",
+        "Use single module.tf file invariably and constantly",
+        "Distribute modules randomly across directories"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La mejor práctica es crear un directorio modules/ con subdirectorios organizados por componente o funcionalidad.",
+      "explanation_en": "Best practice is to create modules/ directory with subdirectories organized by component or function.",
+      "source": "{'url': 'https://www.terraform.io/language/modules/develop/structure', 'title': 'Module Structure'}"
+    },
+    {
+      "id": "q190201011",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Qué permite el atributo 'count' en módulos de Terraform?",
+      "question_en": "What does the 'count' attribute enable in Terraform modules?",
+      "options_es": [
+        "Versionar el módulo automáticamente",
+        "Contar recursos en el módulo",
+        "Crear múltiples instancias del mismo módulo",
+        "Limitar el acceso al módulo en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "Automatically version the module",
+        "Count resources in the module",
+        "Create multiple instances of the same module",
+        "Limit access to the module in any implementation scenario"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El atributo count permite crear múltiples instancias de un módulo basado en un número o condición.",
+      "explanation_en": "The count attribute allows creating multiple instances of a module based on a number or condition.",
+      "source": "{'url': 'https://www.terraform.io/language/meta-arguments/count', 'title': 'Count Meta-Argument'}"
+    },
+    {
+      "id": "q190201012",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Qué es for_each en módulos de Terraform?",
+      "question_en": "What is for_each in Terraform modules?",
+      "options_es": [
+        "Meta-argumento para crear múltiples instancias basadas en maps",
+        "Comando para ejecutar módulos en secuencia",
+        "Variable de entorno para módulos en todos los casos posibles",
+        "Función para iterar sobre strings"
+      ],
+      "options_en": [
+        "Meta-argument to create multiple instances based on maps",
+        "Command to execute modules sequentially",
+        "Environment variable for modules in all possible cases",
+        "Function to iterate over strings"
+      ],
+      "correct_index": 0,
+      "explanation_es": "for_each es un meta-argumento que permite crear múltiples instancias usando maps, permitiendo mejor control que count.",
+      "explanation_en": "for_each is a meta-argument allowing multiple instances using maps, providing better control than count.",
+      "source": "{'url': 'https://www.terraform.io/language/meta-arguments/for_each', 'title': 'For Each Meta-Argument'}"
+    },
+    {
+      "id": "q190201013",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cómo se proporciona valor a variables de entrada de módulos?",
+      "question_en": "How do you provide values to module input variables?",
+      "options_es": [
+        "Modificando el archivo variables.tf del módulo",
+        "Especificando parámetros en el bloque module",
+        "Usando comandos terraform var",
+        "Usando variables de entorno del sistema"
+      ],
+      "options_en": [
+        "Modifying module's variables.tf file",
+        "Specifying parameters in module block",
+        "Using terraform var commands",
+        "Using system environment variables"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los valores se proporcionan como parámetros en el bloque module donde se invoca.",
+      "explanation_en": "Values are provided as parameters in the module block where it's invoked.",
+      "source": "{'url': 'https://www.terraform.io/language/modules/syntax#passing-input-variables', 'title': 'Passing Input Variables'}"
+    },
+    {
+      "id": "q190201014",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Cuál es la ventaja de usar módulos del Terraform Registry?",
+      "question_en": "What is the advantage of using Terraform Registry modules?",
+      "options_es": [
+        "Acceso a módulos mantenidos por la comunidad y HashiCorp",
+        "Mayor velocidad de despliegue automático",
+        "Mejor seguridad que módulos locales sin excepciones ni variantes",
+        "Reducción de costos de infraestructura"
+      ],
+      "options_en": [
+        "Access to modules maintained by community and HashiCorp",
+        "Faster automatic deployment speed",
+        "Better security than local modules without exceptions or variants",
+        "Reduced infrastructure costs"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El registry proporciona módulos reutilizables mantenidos por la comunidad, ahorrando tiempo de desarrollo.",
+      "explanation_en": "Registry provides reusable modules maintained by community, saving development time.",
+      "source": "{'url': 'https://registry.terraform.io/', 'title': 'Terraform Registry'}"
+    },
+    {
+      "id": "q190201015",
+      "type": "multiple_choice",
+      "skill_id": "sk190201",
+      "question_es": "¿Qué es una variable local (locals) en módulos de Terraform?",
+      "question_en": "What is a local variable (locals) in Terraform modules?",
+      "options_es": [
+        "Variable que no puede ser exportada a otros módulos",
+        "Variable que se almacena en el archivo local.tfstate",
+        "Variable que solo existe en desarrollo sin excepciones ni variantes",
+        "Valor que se calcula localmente dentro del módulo para reutilización"
+      ],
+      "options_en": [
+        "Variable that cannot be exported to other modules",
+        "Variable stored in local.tfstate file",
+        "Variable that only exists in development without exceptions or variants",
+        "Value computed locally within module for reuse"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Locals son valores calculados dentro del módulo que se pueden reutilizar, útiles para valores derivados.",
+      "explanation_en": "Locals are values computed within module for reuse, useful for derived values.",
+      "source": "{'url': 'https://www.terraform.io/language/values/locals', 'title': 'Local Values'}"
+    },
+    {
+      "id": "q190202001",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Qué parámetro de un módulo permite personalizar su comportamiento?",
+      "question_en": "What module parameter allows customizing its behavior?",
+      "options_es": [
+        "El directorio source del módulo",
+        "El archivo terraform.tfvars de manera exclusiva y permanente",
+        "El parámetro version del módulo",
+        "Los valores de variables de entrada"
+      ],
+      "options_en": [
+        "The module source directory",
+        "The terraform.tfvars file exclusively and permanently",
+        "The module version parameter",
+        "The input variable values"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las variables de entrada permiten personalizar el comportamiento del módulo sin modificar su código interno, proporcionando flexibilidad.",
+      "explanation_en": "Input variables allow customizing module behavior without modifying its internal code, providing flexibility.",
+      "source": "Terraform Module Variables (https://developer.hashicorp.com/terraform/language/modules/develop/variables)"
+    },
+    {
+      "id": "q190202002",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cuál es el propósito de las 'outputs' en un módulo?",
+      "question_en": "What is the purpose of 'outputs' in a module?",
+      "options_es": [
+        "Exponer valores calculados del módulo al exterior",
+        "Definir backends de almacenamiento en todos los casos posibles",
+        "Documentar el módulo automáticamente",
+        "Definir archivos de salida del módulo"
+      ],
+      "options_en": [
+        "Expose calculated module values externally",
+        "Define storage backends in all possible cases",
+        "Automatically document the module",
+        "Define output files of the module"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las outputs permiten que un módulo exponga valores internos (como IDs de recursos) para que sean utilizados por configuraciones que lo invocan.",
+      "explanation_en": "Outputs allow a module to expose internal values (like resource IDs) to be used by configurations that call it.",
+      "source": "Terraform Module Outputs (https://developer.hashicorp.com/terraform/language/modules/develop/outputs)"
+    },
+    {
+      "id": "q190202003",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cómo se accede a un output de un módulo desde la configuración que lo llama?",
+      "question_en": "How do you access a module's output from the calling configuration?",
+      "options_es": [
+        "Usando nombre.output_name",
+        "Usando output.module.nombre",
+        "Usando get_module(nombre).output_name",
+        "Usando module.nombre.output_name"
+      ],
+      "options_en": [
+        "Using name.output_name",
+        "Using output.module.name",
+        "Using get_module(name).output_name",
+        "Using module.name.output_name"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los outputs de módulos se acceden con la sintaxis 'module.nombre_modulo.nombre_output', permitiendo reutilizar valores generados.",
+      "explanation_en": "Module outputs are accessed with the syntax 'module.module_name.output_name', allowing reuse of generated values.",
+      "source": "Terraform Module Usage (https://developer.hashicorp.com/terraform/language/modules/use)"
+    },
+    {
+      "id": "q190202004",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cuál es la diferencia entre un módulo local y un módulo remoto?",
+      "question_en": "What is the difference between a local and remote module?",
+      "options_es": [
+        "Los locales no soportan recursos sin considerar otros factores relevantes",
+        "Los remotos no pueden usar variables",
+        "Ambos son idénticos en funcionamiento",
+        "Un local está en el disco, uno remoto en un repositorio"
+      ],
+      "options_en": [
+        "Local ones don't support resources without considering other relevant factors",
+        "Remote ones cannot use variables",
+        "Both are identical in function",
+        "A local is on disk, a remote is in a repository"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los módulos locales están en el sistema de archivos local (source = \"./modulo\"), mientras que los remotos están en repositorios Git o registries.",
+      "explanation_en": "Local modules are in the local file system (source = \"./module\"), while remote modules are in Git repositories or registries.",
+      "source": "Terraform Module Sources (https://developer.hashicorp.com/terraform/language/modules/sources)"
+    },
+    {
+      "id": "q190202005",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Qué es la reutilización de código en el contexto de módulos de Terraform?",
+      "question_en": "What is code reusability in the context of Terraform modules?",
+      "options_es": [
+        "La habilidad de usar el mismo módulo en múltiples lugares",
+        "El versionado de archivos de manera exclusiva y permanente",
+        "Una restricción de Terraform",
+        "La capacidad de copiar y pegar configuración"
+      ],
+      "options_en": [
+        "The ability to use the same module in multiple places",
+        "File versioning exclusively and permanently",
+        "A Terraform restriction",
+        "The ability to copy and paste configuration"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La reutilización de código permite definir una vez un módulo y llamarlo múltiples veces en diferentes configuraciones, evitando duplicación.",
+      "explanation_en": "Code reusability allows defining a module once and calling it multiple times in different configurations, avoiding duplication.",
+      "source": "Terraform Module Benefits (https://developer.hashicorp.com/terraform/language/modules)"
+    },
+    {
+      "id": "q190202006",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cuál es el mejor práctica para estructurar módulos reutilizables?",
+      "question_en": "What is the best practice for structuring reusable modules?",
+      "options_es": [
+        "Usar nombres genéricos para todos los archivos",
+        "Incluir estado compartido en el módulo en cualquier escenario de implementación",
+        "Incluir toda la lógica en un solo archivo",
+        "Separar recursos, variables y outputs en archivos dedicados"
+      ],
+      "options_en": [
+        "Use generic names for all files",
+        "Include shared state in the module in any implementation scenario",
+        "Include all logic in a single file",
+        "Separate resources, variables, and outputs in dedicated files"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La mejor práctica es separar en main.tf, variables.tf, outputs.tf, y opcionalmente readme.md para claridad y mantenibilidad.",
+      "explanation_en": "Best practice is to separate into main.tf, variables.tf, outputs.tf, and optionally readme.md for clarity and maintainability.",
+      "source": "Terraform Module Development (https://developer.hashicorp.com/terraform/language/modules/develop)"
+    },
+    {
+      "id": "q190202007",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Qué es un módulo raíz en Terraform?",
+      "question_en": "What is a root module in Terraform?",
+      "options_es": [
+        "Un módulo de solo lectura de manera exclusiva y permanente",
+        "El módulo que debe tener privilegios especiales",
+        "Un módulo obligatorio en todo proyecto",
+        "La configuración Terraform principal en el directorio de trabajo"
+      ],
+      "options_en": [
+        "A read-only module exclusively and permanently",
+        "The module that must have special privileges",
+        "A mandatory module in every project",
+        "The main Terraform configuration in the working directory"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El módulo raíz es la configuración Terraform principal en el directorio de trabajo actual, que puede invocar otros módulos secundarios.",
+      "explanation_en": "The root module is the main Terraform configuration in the current working directory, which can invoke other child modules.",
+      "source": "Terraform Root Module (https://developer.hashicorp.com/terraform/language/modules)"
+    },
+    {
+      "id": "q190202008",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cómo se especifica la versión de un módulo en un source remoto?",
+      "question_en": "How do you specify the version of a module in a remote source?",
+      "options_es": [
+        "Usando source con etiqueta de versión en Git",
+        "No es posible especificar versiones",
+        "Agregando version = \"1.0\" después del source",
+        "Agregando ?version=1.0 al source"
+      ],
+      "options_en": [
+        "Using source with version tag in Git",
+        "It's not possible to specify versions",
+        "Adding version = \"1.0\" after source",
+        "Adding ?version=1.0 to source"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Para módulos Git remotos, se especifica la versión añadiendo ?ref=v1.0 al URL del repositorio para usar una etiqueta específica.",
+      "explanation_en": "For remote Git modules, version is specified by adding ?ref=v1.0 to the repository URL to use a specific tag.",
+      "source": "Terraform Module Source Git (https://developer.hashicorp.com/terraform/language/modules/sources#git)"
+    },
+    {
+      "id": "q190202009",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Qué es el 'Terraform Registry' en relación a módulos?",
+      "question_en": "What is the 'Terraform Registry' in relation to modules?",
+      "options_es": [
+        "Un repositorio público de módulos Terraform certificados",
+        "Una herramienta de compilación",
+        "Un archivo de configuración local",
+        "Un archivo de estado remoto en todos los casos posibles"
+      ],
+      "options_en": [
+        "A public repository of certified Terraform modules",
+        "A build tool",
+        "A local configuration file",
+        "A remote state file in all possible cases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El Terraform Registry es un repositorio público en registry.terraform.io que aloja módulos verificados y reutilizables creados por la comunidad.",
+      "explanation_en": "The Terraform Registry is a public repository at registry.terraform.io hosting verified and reusable modules created by the community.",
+      "source": "Terraform Registry (https://registry.terraform.io/)"
+    },
+    {
+      "id": "q190202010",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cómo se especifica un módulo desde el Terraform Registry?",
+      "question_en": "How do you specify a module from the Terraform Registry?",
+      "options_es": [
+        "source = \"terraform:namespace/name\"",
+        "source = \"namespace/name/provider/version\"",
+        "source = \"registry://namespace/name\"",
+        "source = \"registry.terraform.io/namespace/name\""
+      ],
+      "options_en": [
+        "source = \"terraform:namespace/name\"",
+        "source = \"namespace/name/provider/version\"",
+        "source = \"registry://namespace/name\"",
+        "source = \"registry.terraform.io/namespace/name\""
+      ],
+      "correct_index": 1,
+      "explanation_es": "El formato es 'namespace/name/provider/version', que Terraform automáticamente resuelve a la URL del Registry.",
+      "explanation_en": "The format is 'namespace/name/provider/version', which Terraform automatically resolves to the Registry URL.",
+      "source": "Terraform Registry Module Source (https://registry.terraform.io/)"
+    },
+    {
+      "id": "q190202011",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cuál es el beneficio de usar módulos en un proyecto grande?",
+      "question_en": "What is the benefit of using modules in a large project?",
+      "options_es": [
+        "Elimina la necesidad de validación",
+        "Divide la lógica en componentes manejables y reutilizables",
+        "Reduce archivos de configuración según la documentación estándar del servicio",
+        "Acelera las compilaciones automáticamente"
+      ],
+      "options_en": [
+        "Eliminates the need for validation",
+        "Divides logic into manageable and reusable components",
+        "Reduces configuration files according to standard service documentation",
+        "Automatically accelerates builds"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los módulos permiten dividir la infraestructura en componentes lógicos independientes, mejorar mantenibilidad y permitir reutilización.",
+      "explanation_en": "Modules allow dividing infrastructure into independent logical components, improving maintainability and enabling reuse.",
+      "source": "Terraform Module Benefits (https://developer.hashicorp.com/terraform/language/modules)"
+    },
+    {
+      "id": "q190202012",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Qué sucede cuando llamas un módulo multiple veces en la misma configuración?",
+      "question_en": "What happens when you call a module multiple times in the same configuration?",
+      "options_es": [
+        "Se comparten todos los recursos entre instancias",
+        "Se crean múltiples instancias independientes del módulo",
+        "Solo se ejecuta una vez y se cachea",
+        "Se genera un error de duplicación sin considerar otros factores relevantes"
+      ],
+      "options_en": [
+        "All resources are shared between instances",
+        "Multiple independent module instances are created",
+        "It only runs once and is cached",
+        "A duplication error is generated without considering other relevant factors"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cada invocación de módulo crea una instancia independiente con sus propios recursos, permitiendo desplegar la misma infraestructura múltiples veces.",
+      "explanation_en": "Each module call creates an independent instance with its own resources, allowing deploying the same infrastructure multiple times.",
+      "source": "Terraform Module Instances (https://developer.hashicorp.com/terraform/language/modules)"
+    },
+    {
+      "id": "q190202013",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cómo se pasan valores a variables de entrada de un módulo?",
+      "question_en": "How do you pass values to module input variables?",
+      "options_es": [
+        "Usando terraform.tfvars global en todos los casos posibles",
+        "Especificando argumentos en el bloque module",
+        "Mediante variables de entorno del sistema",
+        "Editando variables.tf del módulo"
+      ],
+      "options_en": [
+        "Using global terraform.tfvars in all possible cases",
+        "By specifying arguments in the module block",
+        "Through system environment variables",
+        "By editing the module's variables.tf"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los valores se pasan especificando argumentos directamente en el bloque 'module', como: module \"ejemplo\" { variable_entrada = \"valor\" }",
+      "explanation_en": "Values are passed by specifying arguments directly in the 'module' block, like: module \"example\" { input_variable = \"value\" }",
+      "source": "Terraform Module Arguments (https://developer.hashicorp.com/terraform/language/modules)"
+    },
+    {
+      "id": "q190202014",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Qué es un módulo composable en Terraform?",
+      "question_en": "What is a composable module in Terraform?",
+      "options_es": [
+        "Un módulo que puede ser combinado con otros módulos",
+        "Un módulo de solo lectura sin considerar otros factores relevantes",
+        "Un módulo para compilación de código",
+        "Un módulo que solo funciona localmente"
+      ],
+      "options_en": [
+        "A module that can be combined with other modules",
+        "A read-only module without considering other relevant factors",
+        "A module for code compilation",
+        "A module that only works locally"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un módulo composable está diseñado para ser combinado con otros módulos, facilitando construcción de arquitecturas complejas.",
+      "explanation_en": "A composable module is designed to be combined with other modules, facilitating construction of complex architectures.",
+      "source": "Terraform Module Composition (https://developer.hashicorp.com/terraform/language/modules)"
+    },
+    {
+      "id": "q190202015",
+      "type": "multiple_choice",
+      "skill_id": "sk190202",
+      "question_es": "¿Cuál es el propósito del archivo README.md en un módulo?",
+      "question_en": "What is the purpose of the README.md file in a module?",
+      "options_es": [
+        "Almacenar valores de estado",
+        "Configurar el backend independientemente del contexto aplicado",
+        "Documentar el módulo, sus variables y outputs",
+        "Definir proveedores requeridos"
+      ],
+      "options_en": [
+        "Store state values",
+        "Configure the backend regardless of the applied context",
+        "Document the module, its variables, and outputs",
+        "Define required providers"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El README.md documenta la funcionalidad del módulo, describe variables de entrada, outputs esperados y proporciona ejemplos de uso.",
+      "explanation_en": "The README.md documents module functionality, describes input variables, expected outputs, and provides usage examples.",
+      "source": "Terraform Module Documentation (https://developer.hashicorp.com/terraform/language/modules/develop)"
+    },
+    {
+      "id": "q190203001",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cuál es el propósito de un backend remoto en Terraform?",
+      "question_en": "What is the purpose of a remote backend in Terraform?",
+      "options_es": [
+        "Ejecutar proveedores en la nube independientemente del contexto aplicado",
+        "Sincronizar automáticamente cambios",
+        "Almacenar el archivo de estado de forma centralizada",
+        "Compilar código en servidores remotos"
+      ],
+      "options_en": [
+        "Run providers in the cloud regardless of the applied context",
+        "Automatically sync changes",
+        "Store the state file centrally",
+        "Compile code on remote servers"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un backend remoto centraliza el almacenamiento del archivo de estado en un servicio remoto como S3, Terraform Cloud o Azure Storage.",
+      "explanation_en": "A remote backend centralizes state file storage in a remote service like S3, Terraform Cloud, or Azure Storage.",
+      "source": "Terraform Remote Backends (https://developer.hashicorp.com/terraform/language/settings/backends)"
+    },
+    {
+      "id": "q190203002",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cuáles son los beneficios de usar un backend remoto?",
+      "question_en": "What are the benefits of using a remote backend?",
+      "options_es": [
+        "Mejora solo la documentación",
+        "Facilita colaboración, seguridad, y versionado del estado",
+        "Acelera solo las operaciones sin excepciones ni variantes",
+        "Solo reduce tamaño de archivos"
+      ],
+      "options_en": [
+        "Only improves documentation",
+        "Enables collaboration, security, and state versioning",
+        "Only accelerates operations without exceptions or variants",
+        "Only reduces file size"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los backends remotos facilitan que múltiples usuarios colaboren, protegen con encriptación y permiten versionado automático del estado.",
+      "explanation_en": "Remote backends enable multiple users to collaborate, protect with encryption, and allow automatic state versioning.",
+      "source": "Terraform Remote State (https://developer.hashicorp.com/terraform/language/state/remote)"
+    },
+    {
+      "id": "q190203003",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cómo se configura un backend remoto en Terraform?",
+      "question_en": "How do you configure a remote backend in Terraform?",
+      "options_es": [
+        "En el bloque terraform dentro de un archivo .tf",
+        "En variables.tf del proyecto sin considerar otros factores relevantes",
+        "Solo con variables de entorno",
+        "En un archivo externo backend.hcl"
+      ],
+      "options_en": [
+        "In the terraform block within a .tf file",
+        "In the project's variables.tf without considering other relevant factors",
+        "Only with environment variables",
+        "In an external backend.hcl file"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los backends se configuran en el bloque 'terraform' con 'backend \"tipo\" { }' en cualquier archivo .tf de la configuración.",
+      "explanation_en": "Backends are configured in the 'terraform' block with 'backend \"type\" { }' in any .tf file of the configuration.",
+      "source": "Terraform Backend Configuration (https://developer.hashicorp.com/terraform/language/settings/backends)"
+    },
+    {
+      "id": "q190203004",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Qué es 'state locking' en el contexto de backends remotos?",
+      "question_en": "What is 'state locking' in the context of remote backends?",
+      "options_es": [
+        "Una restricción de permisos de lectura",
+        "Un archivo de backup automático en cualquier escenario de implementación",
+        "Prevenir cambios simultáneos del estado por múltiples usuarios",
+        "Un proceso para encriptar el estado"
+      ],
+      "options_en": [
+        "A read permission restriction",
+        "An automatic backup file in any implementation scenario",
+        "Prevent simultaneous state changes by multiple users",
+        "A process to encrypt state"
+      ],
+      "correct_index": 2,
+      "explanation_es": "State locking previene que dos Terraform apliquen cambios simultáneamente al mismo estado, evitando corrupción de datos.",
+      "explanation_en": "State locking prevents two Terraform instances from applying changes simultaneously to the same state, avoiding data corruption.",
+      "source": "Terraform State Locking (https://developer.hashicorp.com/terraform/language/state/locking)"
+    },
+    {
+      "id": "q190203005",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cuál es la configuración mínima para un backend S3?",
+      "question_en": "What is the minimum configuration for an S3 backend?",
+      "options_es": [
+        "bucket y region de AWS",
+        "Solo bucket nombre",
+        "Acceso key, secret key, bucket, region",
+        "Solo credenciales de AWS"
+      ],
+      "options_en": [
+        "bucket and AWS region",
+        "Only bucket name",
+        "Access key, secret key, bucket, region",
+        "Only AWS credentials"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Mínimo se necesita: bucket = \"nombre\" y region = \"us-east-1\" (u otra). Las credenciales se obtienen de variables de entorno o archivo ~/.aws/credentials.",
+      "explanation_en": "Minimum required: bucket = \"name\" and region = \"us-east-1\" (or other). Credentials come from environment variables or ~/.aws/credentials file.",
+      "source": "Terraform S3 Backend Configuration (https://developer.hashicorp.com/terraform/language/settings/backends/s3)"
+    },
+    {
+      "id": "q190203006",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Qué es 'Terraform Cloud' en relación a backends?",
+      "question_en": "What is 'Terraform Cloud' in relation to backends?",
+      "options_es": [
+        "Un conjunto de proveedores de nube",
+        "Un servicio remoto de backend administrado por HashiCorp",
+        "Una versión de Terraform para la nube",
+        "Un compilador de Terraform de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "A set of cloud providers",
+        "A remote backend service managed by HashiCorp",
+        "A version of Terraform for the cloud",
+        "A Terraform compiler exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Terraform Cloud es un servicio SaaS que proporciona backends remotos administrados, runs de Terraform, versionado y colaboración.",
+      "explanation_en": "Terraform Cloud is a SaaS service providing managed remote backends, Terraform runs, versioning, and collaboration.",
+      "source": "Terraform Cloud (https://cloud.hashicorp.com/products/terraform)"
+    },
+    {
+      "id": "q190203007",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cuáles son los tipos comunes de backends remotos?",
+      "question_en": "What are common types of remote backends?",
+      "options_es": [
+        "Solo bases de datos",
+        "S3, Azure Storage, Google Cloud Storage, Terraform Cloud",
+        "Solo almacenamiento de archivos",
+        "Solo S3 y local independientemente del contexto aplicado"
+      ],
+      "options_en": [
+        "Only databases",
+        "S3, Azure Storage, Google Cloud Storage, Terraform Cloud",
+        "Only file storage",
+        "Only S3 and local regardless of the applied context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los backends remotos comunes incluyen S3 (AWS), Azure Storage, Google Cloud Storage, Terraform Cloud, y otros servicios de almacenamiento.",
+      "explanation_en": "Common remote backends include S3 (AWS), Azure Storage, Google Cloud Storage, Terraform Cloud, and other storage services.",
+      "source": "Terraform Backend Types (https://developer.hashicorp.com/terraform/language/settings/backends)"
+    },
+    {
+      "id": "q190203008",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cómo se migra del backend local al remoto?",
+      "question_en": "How do you migrate from local to remote backend?",
+      "options_es": [
+        "Requiere eliminar y recrear infraestructura",
+        "No es posible migrar backends de manera exclusiva y permanente",
+        "Copiando el archivo manualmente",
+        "Configurar el nuevo backend y ejecutar terraform init"
+      ],
+      "options_en": [
+        "Requires deleting and recreating infrastructure",
+        "It's not possible to migrate backends exclusively and permanently",
+        "By copying the file manually",
+        "Configure new backend and run terraform init"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se configura el nuevo backend en el bloque terraform, se ejecuta 'terraform init' y Terraform propone migrar el estado automáticamente.",
+      "explanation_en": "Configure the new backend in the terraform block, run 'terraform init' and Terraform proposes to migrate state automatically.",
+      "source": "Terraform Backend Migration (https://developer.hashicorp.com/terraform/language/settings/backends)"
+    },
+    {
+      "id": "q190203009",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Qué beneficio proporciona encriptación del backend?",
+      "question_en": "What benefit does backend encryption provide?",
+      "options_es": [
+        "Mejora velocidad de operaciones",
+        "Protege datos sensibles en el estado",
+        "Permite acceso público seguro",
+        "Reduce tamaño de archivos de manera exclusiva y permanente"
+      ],
+      "options_en": [
+        "Improves operation speed",
+        "Protects sensitive data in state",
+        "Enables safe public access",
+        "Reduces file size exclusively and permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La encriptación protege información sensible como contraseñas y claves de acceso que pueden estar en el archivo de estado.",
+      "explanation_en": "Encryption protects sensitive information like passwords and access keys that may be in the state file.",
+      "source": "Terraform Backend Encryption (https://developer.hashicorp.com/terraform/language/state/sensitive-data)"
+    },
+    {
+      "id": "q190203010",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cuál es el rol del 'workspace' en backends remotos?",
+      "question_en": "What is the role of 'workspace' in remote backends?",
+      "options_es": [
+        "No tienen relación con backends",
+        "Permitir múltiples instancias de estado en el mismo backend",
+        "Definir permisos de acceso en cualquier escenario de implementación",
+        "Configurar regiones geográficas"
+      ],
+      "options_en": [
+        "They have no relation to backends",
+        "Allow multiple state instances in the same backend",
+        "Define access permissions in any implementation scenario",
+        "Configure geographic regions"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los workspaces permiten múltiples instancias de estado independientes en el mismo backend, útil para entornos (dev, prod).",
+      "explanation_en": "Workspaces allow multiple independent state instances in the same backend, useful for environments (dev, prod).",
+      "source": "Terraform Workspaces (https://developer.hashicorp.com/terraform/language/state/workspaces)"
+    },
+    {
+      "id": "q190203011",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Qué comando lista los workspaces disponibles?",
+      "question_en": "What command lists available workspaces?",
+      "options_es": [
+        "terraform show workspaces",
+        "terraform workspace list",
+        "terraform list environments",
+        "terraform state workspaces"
+      ],
+      "options_en": [
+        "terraform show workspaces",
+        "terraform workspace list",
+        "terraform list environments",
+        "terraform state workspaces"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El comando 'terraform workspace list' muestra todos los workspaces disponibles, marcando el actual con un asterisco.",
+      "explanation_en": "The 'terraform workspace list' command shows all available workspaces, marking the current one with an asterisk.",
+      "source": "Terraform Workspace Commands (https://developer.hashicorp.com/terraform/cli/commands/workspace)"
+    },
+    {
+      "id": "q190203012",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cómo se cambia entre workspaces?",
+      "question_en": "How do you switch between workspaces?",
+      "options_es": [
+        "terraform workspace select nombre",
+        "terraform use workspace",
+        "terraform switch nombre en todos los casos posibles",
+        "terraform select workspace"
+      ],
+      "options_en": [
+        "terraform workspace select name",
+        "terraform use workspace",
+        "terraform switch name in all possible cases",
+        "terraform select workspace"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El comando 'terraform workspace select nombre_workspace' cambia al workspace especificado.",
+      "explanation_en": "The 'terraform workspace select workspace_name' command switches to the specified workspace.",
+      "source": "Terraform Workspace Management (https://developer.hashicorp.com/terraform/cli/commands/workspace)"
+    },
+    {
+      "id": "q190203013",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Qué sucede cuando se utiliza el estado remoto con múltiples usuarios?",
+      "question_en": "What happens when remote state is used with multiple users?",
+      "options_es": [
+        "Todos ven el mismo archivo de estado sincronizado",
+        "Se generan conflictos automáticos de manera exclusiva y permanente",
+        "El estado se duplica en cada máquina",
+        "Cada usuario tiene su propia copia"
+      ],
+      "options_en": [
+        "Everyone sees the same synchronized state file",
+        "Automatic conflicts are generated exclusively and permanently",
+        "State is duplicated on each machine",
+        "Each user has their own copy"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con backends remotos, todos los usuarios ven el mismo estado sincronizado, con bloqueos previniendo cambios simultáneos.",
+      "explanation_en": "With remote backends, all users see the same synchronized state, with locks preventing simultaneous changes.",
+      "source": "Terraform Shared State (https://developer.hashicorp.com/terraform/language/state/remote)"
+    },
+    {
+      "id": "q190203014",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Cuál es el propósito de variables de configuración en backends?",
+      "question_en": "What is the purpose of configuration variables in backends?",
+      "options_es": [
+        "Definir el tipo de recurso sin considerar otros factores relevantes",
+        "Almacenar valores de estado",
+        "Controlar acceso a proveedores",
+        "Personalizar parámetros del backend dinámicamente"
+      ],
+      "options_en": [
+        "Define the type of resource without considering other relevant factors",
+        "Store state values",
+        "Control provider access",
+        "Customize backend parameters dynamically"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las variables de backend permiten parametrizar la configuración, usando diferentes valores según el entorno sin cambiar código.",
+      "explanation_en": "Backend variables allow parameterizing configuration, using different values per environment without code changes.",
+      "source": "Terraform Backend Configuration (https://developer.hashicorp.com/terraform/language/settings/backends)"
+    },
+    {
+      "id": "q190203015",
+      "type": "multiple_choice",
+      "skill_id": "sk190203",
+      "question_es": "¿Qué es un 'state drift' en contexto de backends remotos?",
+      "question_en": "What is 'state drift' in remote backend context?",
+      "options_es": [
+        "Una desconexión del backend",
+        "Una actualización del backend",
+        "Cambios en infraestructura real no reflejados en estado",
+        "Un error de sincronización en cualquier escenario de implementación"
+      ],
+      "options_en": [
+        "A backend disconnection",
+        "A backend update",
+        "Changes in real infrastructure not reflected in state",
+        "A synchronization error in any implementation scenario"
+      ],
+      "correct_index": 2,
+      "explanation_es": "State drift es cuando la infraestructura real ha sido modificada fuera de Terraform, causando diferencias con el estado almacenado.",
+      "explanation_en": "State drift is when actual infrastructure has been modified outside Terraform, causing differences with stored state.",
+      "source": "Terraform Drift Detection (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204001",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Qué es la 'detección de desviación' (drift detection) en Terraform?",
+      "question_en": "What is 'drift detection' in Terraform?",
+      "options_es": [
+        "Un tipo de backend de manera exclusiva y permanente",
+        "Una versión de Terraform",
+        "Proceso de identificar cambios no rastreados en infraestructura",
+        "Un error de sincronización"
+      ],
+      "options_en": [
+        "A backend type exclusively and permanently",
+        "A Terraform version",
+        "Process to identify untracked infrastructure changes",
+        "A sync error"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Drift detection identifica cuando la infraestructura real ha sido modificada fuera de Terraform, sin actualizar el estado.",
+      "explanation_en": "Drift detection identifies when actual infrastructure has been modified outside Terraform without updating state.",
+      "source": "Terraform Drift Detection (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204002",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Cómo Terraform detecta desviación?",
+      "question_en": "How does Terraform detect drift?",
+      "options_es": [
+        "Comparando archivos locales",
+        "Comparando estado registrado con infraestructura real",
+        "Consultando APIs automáticamente",
+        "Monitoreando logs de forma invariable y constante"
+      ],
+      "options_en": [
+        "Comparing local files",
+        "Comparing recorded state with actual infrastructure",
+        "Polling APIs automatically",
+        "Monitoring logs invariably and constantly"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Terraform compara el estado registrado con el estado real de los recursos consultando APIs del proveedor.",
+      "explanation_en": "Terraform compares recorded state with real resource state by querying provider APIs.",
+      "source": "Terraform Drift Detection (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204003",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Cuál es el comando que muestra desviación de estado?",
+      "question_en": "What command shows state drift?",
+      "options_es": [
+        "terraform sync de forma invariable y constante",
+        "terraform plan muestra cambios necesarios",
+        "terraform drift",
+        "terraform check"
+      ],
+      "options_en": [
+        "terraform sync invariably and constantly",
+        "terraform plan shows needed changes",
+        "terraform drift",
+        "terraform check"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El comando 'terraform plan' detecta y muestra cambios necesarios para reconciliar el estado con la infraestructura real.",
+      "explanation_en": "The 'terraform plan' command detects and shows changes needed to reconcile state with actual infrastructure.",
+      "source": "Terraform Plan and Drift (https://developer.hashicorp.com/terraform/cli/commands/plan)"
+    },
+    {
+      "id": "q190204004",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Qué causa desviación en infraestructura?",
+      "question_en": "What causes infrastructure drift?",
+      "options_es": [
+        "Cambios manuales, actualizaciones externas, bugs de API",
+        "Actualizaciones de proveedores",
+        "Cambios en versión según la documentación estándar del servicio",
+        "Errores de Terraform"
+      ],
+      "options_en": [
+        "Manual changes, external updates, API bugs",
+        "Provider updates",
+        "Version changes according to standard service documentation",
+        "Terraform errors"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Drift es causado por cambios manuales vía consola, automatización externa, bugs, o actualizaciones no-Terraform.",
+      "explanation_en": "Drift is caused by manual changes via console, external automation, bugs, or non-Terraform updates.",
+      "source": "Causes of Drift (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204005",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Cómo se reconcilia desviación de estado?",
+      "question_en": "How do you reconcile state drift?",
+      "options_es": [
+        "Eliminando recursos independientemente del contexto aplicado",
+        "Recreando infraestructura",
+        "Ejecutando terraform apply para sincronizar estado",
+        "Ignorando los cambios"
+      ],
+      "options_en": [
+        "Deleting resources regardless of the applied context",
+        "Recreating infrastructure",
+        "Running terraform apply to sync state",
+        "Ignoring changes"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Se ejecuta 'terraform apply' que sincroniza la infraestructura real con el estado definido en Terraform.",
+      "explanation_en": "Run 'terraform apply' which syncs actual infrastructure with Terraform-defined state.",
+      "source": "Reconciling Drift (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204006",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Cuál es el riesgo de no manejar desviación?",
+      "question_en": "What is the risk of not managing drift?",
+      "options_es": [
+        "Inconsistencia, cambios inesperados, pérdida de control",
+        "Solo en desarrollo",
+        "Ninguno como concepto principal",
+        "Solo afecta logs según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "Inconsistency, unexpected changes, loss of control",
+        "Only in development",
+        "None as the primary concept",
+        "Only affects logs according to standard service documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sin manejar drift, la infraestructura real diverge del código, causando cambios inesperados y pérdida de control.",
+      "explanation_en": "Unmanaged drift causes actual infrastructure to diverge from code, causing unexpected changes and control loss.",
+      "source": "Drift Risk Management (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204007",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Qué es un 'refresh' en Terraform?",
+      "question_en": "What is a 'refresh' in Terraform?",
+      "options_es": [
+        "Actualizar estado consultando infraestructura real sin cambios",
+        "Un reinicio del servidor",
+        "Recargar proveedores",
+        "Eliminar caché de forma invariable y constante"
+      ],
+      "options_en": [
+        "Update state by querying real infrastructure without changes",
+        "A server restart",
+        "Reload providers",
+        "Clear cache invariably and constantly"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Refresh actualiza el estado de Terraform consultando el estado real de recursos sin hacer cambios.",
+      "explanation_en": "Refresh updates Terraform state by querying actual resource state without making changes.",
+      "source": "Terraform Refresh (https://developer.hashicorp.com/terraform/cli/commands/refresh)"
+    },
+    {
+      "id": "q190204008",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Cómo se ejecuta un refresh manual?",
+      "question_en": "How do you run a manual refresh?",
+      "options_es": [
+        "terraform refresh",
+        "terraform sync independientemente del contexto aplicado",
+        "terraform refresh es reemplazado por terraform apply -refresh-only",
+        "terraform update"
+      ],
+      "options_en": [
+        "terraform refresh",
+        "terraform sync regardless of the applied context",
+        "terraform refresh is replaced by terraform apply -refresh-only",
+        "terraform update"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Antes se usaba 'terraform refresh', ahora se recomienda 'terraform apply -refresh-only' para actualizar estado.",
+      "explanation_en": "Previously 'terraform refresh', now recommended 'terraform apply -refresh-only' to update state.",
+      "source": "Terraform Refresh (https://developer.hashicorp.com/terraform/cli/commands/refresh)"
+    },
+    {
+      "id": "q190204009",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Qué diferencia hay entre 'plan' y 'refresh'?",
+      "question_en": "What is the difference between 'plan' and 'refresh'?",
+      "options_es": [
+        "refresh aplica cambios",
+        "plan actualiza estado",
+        "plan muestra cambios a aplicar, refresh solo actualiza estado sin cambios",
+        "No hay diferencia según la documentación estándar del servicio"
+      ],
+      "options_en": [
+        "refresh applies changes",
+        "plan updates state",
+        "plan shows changes to apply, refresh only updates state without changes",
+        "No difference according to standard service documentation"
+      ],
+      "correct_index": 2,
+      "explanation_es": "plan muestra qué cambios se harían; refresh actualiza el estado consultando recursos sin hacer cambios.",
+      "explanation_en": "plan shows what changes would be made; refresh updates state by querying resources without making changes.",
+      "source": "Plan vs Refresh (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204010",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Cómo se previene desviación?",
+      "question_en": "How do you prevent drift?",
+      "options_es": [
+        "Usar solo Terraform para cambios, restringir acceso manual, auditoría",
+        "Desabilitar recursos",
+        "No se puede prevenir de forma invariable y constante",
+        "Ignorar cambios externos"
+      ],
+      "options_en": [
+        "Use only Terraform for changes, restrict manual access, audit",
+        "Disable resources",
+        "Cannot be prevented invariably and constantly",
+        "Ignore external changes"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La prevención incluye usar solo Terraform, restringir acceso manual, auditoría y monitoreo de cambios.",
+      "explanation_en": "Prevention includes using only Terraform, restricting manual access, auditing and monitoring changes.",
+      "source": "Preventing Drift (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204011",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Qué es una política de detección de desviación automática?",
+      "question_en": "What is an automatic drift detection policy?",
+      "options_es": [
+        "Un archivo de configuración",
+        "Un hook de Git sin excepciones ni variantes",
+        "Un tipo de recurso",
+        "Una política que ejecuta plan periódicamente para detectar cambios"
+      ],
+      "options_en": [
+        "A config file",
+        "A Git hook without exceptions or variants",
+        "A resource type",
+        "A policy that runs plan periodically to detect changes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una política ejecuta 'terraform plan' periódicamente (cron) para detectar automáticamente cambios en infraestructura.",
+      "explanation_en": "A policy runs 'terraform plan' periodically (cron) to automatically detect infrastructure changes.",
+      "source": "Automatic Drift Detection (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204012",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Cómo se implementa drift detection en CI/CD?",
+      "question_en": "How do you implement drift detection in CI/CD?",
+      "options_es": [
+        "Solo manualmente",
+        "Como un job post-deploy",
+        "No es posible según la documentación estándar del servicio",
+        "Mediante workflow scheduled que ejecuta terraform plan"
+      ],
+      "options_en": [
+        "Only manually",
+        "As post-deploy job",
+        "Not possible according to standard service documentation",
+        "Via scheduled workflow running terraform plan"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Se implementa con workflows programados (GitHub Actions cron) que ejecutan terraform plan para detectar desviación.",
+      "explanation_en": "Implemented with scheduled workflows (GitHub Actions cron) running terraform plan to detect drift.",
+      "source": "Drift Detection in CI/CD (https://docs.github.com/en/actions)"
+    },
+    {
+      "id": "q190204013",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Qué herramientas detectan desviación automáticamente?",
+      "question_en": "What tools automatically detect drift?",
+      "options_es": [
+        "Solo Pulumi independientemente del contexto aplicado",
+        "Terraform Cloud, Spacelift, CloudFormation Drift",
+        "Solo Terraform",
+        "Solo CloudFormation"
+      ],
+      "options_en": [
+        "Only Pulumi regardless of the applied context",
+        "Terraform Cloud, Spacelift, CloudFormation Drift",
+        "Only Terraform",
+        "Only CloudFormation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Herramientas como Terraform Cloud, Spacelift y AWS CloudFormation Drift Detection ofrecen detección automática.",
+      "explanation_en": "Tools like Terraform Cloud, Spacelift, and AWS CloudFormation Drift Detection offer automatic detection.",
+      "source": "Drift Detection Tools (https://developer.hashicorp.com/terraform/cloud)"
+    },
+    {
+      "id": "q190204014",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Cuál es la mejor práctica para manejar desviación detectada?",
+      "question_en": "What is the best practice for handling detected drift?",
+      "options_es": [
+        "Eliminar infraestructura",
+        "Ignorarla siempre según la documentación estándar del servicio",
+        "Recrear desde cero",
+        "Investigar causa, reconciliar o documentar razón válida"
+      ],
+      "options_en": [
+        "Delete infrastructure",
+        "Always ignore it according to standard service documentation",
+        "Recreate from scratch",
+        "Investigate cause, reconcile or document valid reason"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Investigar qué causó el cambio, reconciliar si es error, o documentar si hay razón válida para la desviación.",
+      "explanation_en": "Investigate what caused the change, reconcile if error, or document if there's valid reason for drift.",
+      "source": "Drift Management Best Practice (https://developer.hashicorp.com/terraform/language/state)"
+    },
+    {
+      "id": "q190204015",
+      "type": "multiple_choice",
+      "skill_id": "sk190204",
+      "question_es": "¿Qué cambios externos no son considerados desviación?",
+      "question_en": "What external changes are not considered drift?",
+      "options_es": [
+        "Cambios que Terraform no administra, como etiquetas sin definir",
+        "Cambios de IP sin considerar otros factores relevantes",
+        "Ninguno es diferente",
+        "Cambios en base de datos"
+      ],
+      "options_en": [
+        "Changes Terraform doesn't manage, like undefined tags",
+        "IP changes without considering other relevant factors",
+        "None are different",
+        "Database changes"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cambios que Terraform no administra (like tags no definidas) no son drift, Terraform solo rastrea lo que define.",
+      "explanation_en": "Changes Terraform doesn't manage (like undefined tags) are not drift, Terraform only tracks what it defines.",
+      "source": "What is Drift (https://developer.hashicorp.com/terraform/language/state)"
+    }
+  ]
+}
