@@ -6,7 +6,6 @@ import { useApi } from '../hooks/useApi';
 import { useRuntime, type RuntimeType } from '../hooks/useRuntime';
 import {
   projects as projectsApi,
-  type ProjectDetail,
   type ProjectStepRead,
 } from '../services/api';
 import styles from './ProjectScreen.module.css';
@@ -22,9 +21,6 @@ const MONACO_LANG: Record<RuntimeType, string> = {
 };
 
 export function ProjectScreen() {
-  const { t } = useTranslation();
-  const lang = useAppStore((s) => s.user.language);
-  const setScreen = useAppStore((s) => s.setScreen);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
 
   if (selectedSlug) {
