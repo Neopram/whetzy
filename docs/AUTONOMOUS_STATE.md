@@ -525,8 +525,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | **DONE** | 286 términos sin `track_id` (tracks 18/20/21/23/27/44-46); arreglado; loader local `skipped: 0`, `glossary: 1044`; test rojo sobre master |
 | 39.18 | **1** | vitest: 4 fallos (`StatusPage` `/api/v1` relativo, `common.back`, `useRuntime` bajo jsdom) | TODO | `npx vitest run` 0 fallos |
 | 39.19 | **2** | 115 rutas en local frente a 141 en producción | **DONE** | Sin diferencia: `openapi.json` local y de producción = 141 paths / 146 operaciones, idénticas (2026-09-26); «115» era el recuento filtrado del test de contrato |
-| 39.20 | **2** | PostHog en el frontend (ADR-50j) | TODO | Clave vacía = no-op, consentimiento, CSP, landing y privacidad actualizadas |
-| 39.21 | **2** | Sentry en el frontend (ADR-50k) | TODO | `VITE_SENTRY_DSN` vacío = no-op; CSP; test |
+| 39.20 | **2** | PostHog en el frontend (ADR-50j) | **DECIDIDO: no** | La analítica ya es propia (`analytics_events` + embudo admin); PostHog en el navegador rompería la promesa de la landing y la CSP (ADR-50j revisada) |
+| 39.21 | **2** | Sentry en el frontend (ADR-50k) | **DECIDIDO: no** | Solo backend; privacidad y DPA ES/EN actualizados: Sentry activo desde 2026-09-26, UE, sin PII |
 | 39.22 | **2** | Backups: `backup_db.sh` + `restore_check.sh` + runbook | **DONE** | Ya existían (`db_backup.sh`, `db_restore*.sh`); estaban sin bit de ejecución; simulacro 2026-09-26 en verde sobre el catálogo completo; `backups/*.dump` ignorado. El backup programado en Railway sigue siendo del dueño |
 | 39.23 | **1** | H.30 honesto: sin proveedor, 503 `email_not_configured` | **DONE** | `bb59562`; mutación → rojo |
 

@@ -112,7 +112,7 @@ Otro: Email a legal@whetzy.com
 - Groq: inferencia del tutor de IA (modelo qwen/qwen3.8-27b)
 - Stripe: pagos (hoy solo en modo test, sin cobros reales; la cuenta live está pendiente — H.4)
 - Proveedor de email: SMTP o Resend, según la variable EMAIL_PROVIDER
-- Sentry: error tracking (deshabilitado; SENTRY_DSN vacío por defecto)
+- Sentry: registro de errores del servidor, activo desde el 26-09-2026 (región UE, de.sentry.io; `send_default_pii=False`; no se usa en el navegador)
 
 ### 4.2 Cambios de Subprocesadores
 
