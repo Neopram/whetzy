@@ -164,7 +164,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 18.8 | **3** | **Proyectos multi-paso con tests en runtime** | **DONE** | Backend: Project+Step+Submission models, migración `20260926_projects`, API 5 endpoints, 3 tests. Frontend: ProjectScreen + Home shortcut + i18n ES/EN. `0f61442` |
 | 18.9 | **4** | **Vídeo explicativo — piloto que decide** | TODO | → LEDGER_HISTORY.md §E |
 | 18.10 | **4** | **Resto del catálogo: tracks 24-26, 28-31 y certs P2-P3** | TODO | → LEDGER_HISTORY.md §E |
-| 18.11 | **2** | **Store-ready sin cuenta** | TODO | → LEDGER_HISTORY.md §E |
+| 18.11 | **2** | **Store-ready sin cuenta** | **PARCIAL** | `docs/STORE_LISTING.md` consolidado (iOS + Android), precios IAP actualizados a ADR-41/49, checklist actualizado (A3 age gate DONE por 19.11). Cuenta delete: endpoint + pantalla DONE. Privacy/Terms: DONE. Falta: screenshots con Playwright (necesita backend local), `codemagic.yaml` iOS build (H.14 macOS runner). |
 | 18.12 | **3** | **Re-puntuación con URLs fechadas** | TODO | → LEDGER_HISTORY.md §E |
 
 ### 19. Lo que Educative y las tiendas exigen — social login, bootcamps, proyectos, autoría con fuentes libres (abierta 2026-09-18, sesión…

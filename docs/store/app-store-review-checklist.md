@@ -75,7 +75,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 | 5.1.2.1 | Data collection & use | ✅ | Privacy policy lists all data types; see play-store-data-safety.md for inventory |
 | 5.1.2.2 | App Tracking Transparency (ATT) | ✅ | Whetzy does NOT use IDFA or cross-app tracking → ATT prompt not required |
 | 5.1.2.4 | Data minimization | ✅ | Only email + username + quiz performance collected |
-| 5.1.2.5 | Age gates / minors | ⚠️ | App has no age gate on registration. If users under 13 may register, COPPA/GDPR-K compliance is needed. Recommended: add age confirmation step or set minimum age 13 in ToS (link shown on AuthScreen) |
+| 5.1.2.5 | Age gates / minors | ✅ | Registration requires age confirmation ("I am 13 or older" / parental consent per jurisdiction); 19.11 DONE |
 | 5.1.3 | Health and health research | N/A | No HealthKit |
 | 5.1.5 | Location services | N/A | Not used |
 | 5.2 | Intellectual Property | ⚠️ | All questions must have `source` field populated with citable reference (task P.8 criterion). Verify 100% source coverage before submission |
@@ -100,7 +100,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 |---|---|---|
 | A1 | No actual screenshots (9.3 pending) | Complete task 9.3; capture on iPhone 15 Pro Max (6.7") and iPhone SE (4.7") |
 | A2 | App Store Connect metadata not created | Create listing in App Store Connect; fill EN + ES localizations |
-| A3 | Age gate / minors | Add minimum-age confirmation (e.g., "I am 13 or older") to AuthScreen registration |
+| ~~A3~~ | ~~Age gate / minors~~ | ✅ DONE (19.11) — age confirmation in registration |
 | A4 | Source coverage for all questions | 100% of questions must have non-empty `source` field (monitor via `GET /api/v1/content/questions?source=null`) |
 | A5 | Privacy policy URL in App Store Connect | Enter `https://whetzy.com/privacy` in the ASC app record |
 | A6 | Support URL and email in App Store Connect | Enter `https://whetzy.com` and support email |
