@@ -91,13 +91,13 @@
 |---|---|---|---|---|
 
 
-| 16.17 | ~~0~~ | **El proxy de `vite` apunta a PRODUCCION en el arbol de trabajo (sin commitear)** | **RESUELTA 2026-09-24** —… | |
+| 16.17 | **2** | 16.17 | **RESUELTA** | **RESUELTA** (2026-09-24) → §I |
 
 | 22x | ~~0~~ | **Sesiones y 2FA estaban escritos, probados y sin registrar** | **RESUELTA 2026-09-19 (sesión bj)** —… |
 | 28x | **0** | **El webhook de Paddle aceptaba firmas falsas, y esta publicado en produccion** | **CORREGIDA 2026-09-19 (sesión bj)** —… |
 | 25x | ~~0~~ | **`check_docs.py` da 12 fallos y arreglarlos por el camino corto publicaría cifras falsas** | **RESUELTA 2026-09-24** —… | |
-| 24.5x | ~~0~~ | **La serie 24 borró el motor de quiz: 822 preguntas ejecutables se quedaron sin interfaz** | **RESUELTA 2026-09-19… |
-| 17.1x | ~~0~~ | **DOS sesiones estan escribiendo lecciones de 17.1 a la vez, sobre los mismos ficheros** | **RESUELTA 2026-09-24** —… | |
+| 24.5x | **2** | 24.5x | **RESUELTA** | **RESUELTA** `ed680ef` (2026-09-19) → §I |
+| 17.1x | **2** | 17.1x | **RESUELTA** | **RESUELTA** `17dc7b7` (2026-09-24) → §I |
 
 | 14.10 | 5 | **IRT (θ) — el modelo de Vicks** | BLOCKED (datos) | → LEDGER_HISTORY.md §E |
 
@@ -157,7 +157,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 18.3 | **1** | **Runtime JS real + track Frontend (track14)** | TODO | → LEDGER_HISTORY.md §E |
-| 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE 2026-09-18** | CI-LOCAL 2026-09-18 exit 0 · commit… |
+| 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE… | **DONE** | **DONE** (2026-09-18) → §I |
 | 18.5 | **2** | **Certificaciones P1: PCAP, MLA-C01, AZ-900, AI-900, DP-900, Security+** | TODO | → LEDGER_HISTORY.md §E |
 | 18.6 | **3** | **DevOps y Cloud: Docker/K8s (18), IaC+CI/CD (19), Azure (22), GCP (23)** | TODO | → LEDGER_HISTORY.md §E |
 | 18.7 | **3** | **Datos: Data Engineering (20), Data Science (21), NoSQL (27)** | TODO | → LEDGER_HISTORY.md §E |
@@ -205,8 +205,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | | |
 | 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) ·… | | |
 | 21.4 | **2** | **Consumo y suscripciones**: desistimiento UE 14 días para contenido digital (renuncia expresa en checkout), renovación… | | |
-| 21.5 | **2** | **AI Act, DSA, EAA**: obligaciones de *deployer* del tutor (transparencia: etiqueta «IA» y aviso de posible error),… | |
-| 21.6 | **2** | **Propiedad intelectual**: búsqueda de marca «Whetzy» (EUIPO, USPTO, WIPO — gratis; **no registrar aún**), disclaimers de… | | |
+| 21.5 | **2** | **AI Act, DSA, EAA**: obligaciones de *deployer* del tutor… | **PARCIAL** | **PARCIAL** `5f7bd7b` (2026-09-19) → §I |
+| 21.6 | **2** | **Propiedad intelectual**: búsqueda de marca «Whetzy» (EUIPO,… | **PARCIAL** | **PARCIAL** `8e7812a` (2026-09-19) → §I |
 | 21.7 | **2** | **Redacción**: ToS · Privacidad · Cookies (sin banner si solo cookies necesarias — mantenerlo así) · DPA plantilla para… | | |
 | 21.8 | **3** | **Procedimientos internos**: brecha de seguridad (72 h, plantilla de notificación), DSAR (export/delete ya existen → SLA y… | | |
 | 21.9 | **3** | **Proceso DMCA / retirada de contenido y DPIA** (`legal/README.md:116-127`): página `/legal/dmca` ES/EN con formulario por… | | |
@@ -216,17 +216,17 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 22.0 | **0** | **REGRESIÓN P0 — el backend de producción estuvo 2 h 30 min en 502.** `alembic upgrade head` moría en `u1v2w3x4y5z6`: la… | **DONE** | **DONE** `414e2f6` (2026-09-19) → §I |
 | 22.10 | **0** | **`POST /auth/login` devolvía 500 con `created_at` naive** (`check_lockout` restaba un datetime sin zona de… | **DONE** | **DONE** `e9161d7` (2026-09-19) → §I |
-| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle público; **criterio recortado el 2026-09-19 por… | | |
+| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle… | **PARCIAL** | **PARCIAL** (2026-09-19) → §I |
 | 22.2 | **1** | **Threat model STRIDE** documentado en `ARCHITECTURE.md` + cabeceras de seguridad (CSP sin `unsafe-inline` salvo lo que… | | |
 | 22.3 | **2** | **Auth hardening**: lockout progresivo tras N fallos, refresh tokens con rotación y revocación, sesiones por dispositivo… | **DONE** | **DONE** → §I |
 | 22.4 | **2** | **Cadena de suministro a €0**: Dependabot (config), `gitleaks` en pre-commit y en `verify_ci_local.ps1`, `bandit` +… | **DONE** | **DONE** → §I |
 | 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | |
-| 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz `RateLimiter`/`Cache` con impl. memoria y Redis tras `REDIS_URL` (vacío =… | | |
+| 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **PARCIAL** | **PARCIAL** `e5efdb7` (2026-09-26) → §I |
 | 22.7 | **3** | **Incidentes y estado**: runbook de incidentes (severidades, quién, qué, plantilla de postmortem), página de estado… | | |
-| 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo §5): `f36218f`/`9198474` metieron `admin.py` (600… | | | |
+| 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo… | **DONE** | **DONE** `f36218f` (2026-09-19) → §I |
 | 22.9 | **1** | **Test de frontend rojo en `master`**: `src/test/hooks.useRuntime.test.tsx` falla con `ReferenceError: Worker is not… | **DONE** | **DONE** `7e1b8d4` (2026-09-19) → §I ||
 | 22.11 | **1** | **`AdminScreen.tsx` estaba 100 % en inglés** — títulos, pestañas, estados, mensajes de error y unidades eran cadenas… | **DONE** | **DONE** `13d8904` (2026-09-19) → §I |
-| 22.12 | **2** | **Deuda de lint y tipos que dejaron las series 22-23**: 21 errores de `ruff` y 4 de `mypy` en `admin.py`,… | | | |
+| 22.12 | **2** | **Deuda de lint y tipos que dejaron las series 22-23**: 21 errores de… | **DONE** | **DONE** `83c6bf1` (2026-09-19) → §I |
 | 22.13 | **2** | **Test con presupuesto de tiempo absoluto que falla con la máquina cargada**:… | | |
 | 22.14 | **1** | **Arranque en frío de Railway** (`AUDITORIA_EXTERNA_2026-09-19.md:203`): la primera petición tras inactividad devuelve… | | |
 | 22.15 | **2** | **Fase 3 del modelo de amenazas** (`design/threat-model-stride.md:157-161`): firma HMAC obligatoria en webhooks internos,… | | |
@@ -235,7 +235,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 23. Dos segmentos, un producto — ES y EN sin mezclar (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21)**; ADR-17)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 23.1 | **1** | **Auditoría E2E por idioma**: cada pantalla, email, push, PDF/certificado, página legal, landing, tienda y respuesta del… | | |
+| 23.1 | **1** | **Auditoría E2E por idioma**: cada pantalla, email, push, PDF/certificado,… | **PARCIAL** | **PARCIAL** (2026-09-19) → §I |
 | 23.2 | **2** | **Landing y SEO por segmento**: `/es` y `/en` con copy nativo (no traducido), `hreflang` (existe), `sitemap` por idioma,… | | |
 | 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas,… | | |
 | 23.4 | **3** | **Segmento en el admin**: todas las métricas de 22.1 filtrables por idioma; cohortes ES vs. EN | TODO | →… |
@@ -250,15 +250,15 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8 competidores directos de `COMPETENCIA.md` §1 con el… | | |
-| 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía con fallback, espaciado, radios, modo oscuro,… | | |
-| 24.2 | **1** | **Landing que vende** (`/es`, `/en`; absorbe 19.8 y 23.2): hero con el motor visible (demo de 3 preguntas sin registro),… | | |
-| 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo la app diferencia segmentos») + diagnóstico;… | | |
-| 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como «territorio»), próximo repaso FSRS con fecha,… | | |
+| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 24.2 | **1** | **Landing que vende** (`/es`, `/en`; absorbe 19.8 y 23.2): hero con el… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.5 | **0** | **Sesión adaptativa con BKT visual**: barra de dominio en vivo, «por qué esta pregunta», feedback explicativo (no solo… | **DONE** | **DONE** → §I |
-| 24.6 | **2** | **Gamificación original + wallet de créditos**: racha con identidad Whetzy, logros, ligas y duelos existentes integrados;… | | |
+| 24.6 | **2** | **Gamificación original + wallet de créditos**: racha con identidad… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.7 | **2** | **Panel de certificación**: readiness por dominio (18.1), simulacros (comprables con créditos), certificado… | | |
-| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado, certificados, proyectos, badge Embajador; OG image generada… | | |
+| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.9 | **2** | **Panel B2B** (`SEGMENTOS.md` segmento 5): progreso por empleado, tiempo, certificaciones, comparativa anónima, import… | | |
 | 24.10 | **3** | **Panel de instructor** (UI de `MARKETPLACE.md` §4) con datos de prueba hasta Serie 28 | DONE (8ad5afd, sesión anterior)… | |
 | 24.11 | **3** | **Marketplace UI**: catálogo con filtros, ratings, preview de primera lección; mock hasta 28.4 | DONE (b97c0ee) |… |
@@ -359,14 +359,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 28.0 | **4** | Schema DB: `instructor_profiles`, `marketplace_courses`, `course_purchases`, `instructor_payouts` — migración Alembic |… | |
-| 28.1 | **4** | API: CRUD cursos instructor, upload contenido JSON, preview; **código de instructor `PROF-…` (29.4) con descuento y… | | |
+| 28.0 | **4** | Schema DB: `instructor_profiles`, `marketplace_courses`,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 28.1 | **4** | API: CRUD cursos instructor, upload contenido JSON, preview; **código de… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.2 | **4** | Quality gate pipeline para instructores: `scripts/instructor_quality_gate.py` corriendo en upload | **TODO** — Verificado… | |
 | 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | **PARCIAL** — Verificado 2026-09-25 contra el… | |
 | 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | |
 | 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | |
 | 28.6 | **4** | Panel admin: aprobación de cursos, moderación, gestión de payouts | **TODO** — Verificado 2026-09-25 contra el criterio:… | | |
-| 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por el instructor: Stripe Connect donde exista, USDC… | | |
+| 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | | |
 | 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | | |
 
@@ -382,9 +382,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.0 | **1** | **Schema**: `credit_ledger`, `promo_codes`, `promo_redemptions`, `referral_codes`, `referrals` (`ECONOMIA.md` §2.5, §4.2)… | | |
 | 29.1 | **1** | **Servicio de créditos** `services/economy/credits.py`: abono con lote y `expires_at`, gasto FIFO, caducidad diaria (job… | | |
 | 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json` (ES/EN en etiquetas) + `GET /economy/prices`… | | |
-| 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija idioma (ADR-17), evento de activación (email +… | | |
+| 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **PARCIAL** | **PARCIAL** `89eb7a7` → §I |
 | 29.4 | **2** | **Códigos de cinco tipos** (`ECONOMIA.md` §4): generación de lotes (CSV), alfabeto sin `0 O 1 I L`, idioma por código,… | | |
-| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal rotativa (sin terceros), 1 activación por… | | |
+| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **PARCIAL** | **PARCIAL** (2026-09-26) → §I |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | | |
 | 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | | |
 | 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | | |
@@ -402,15 +402,15 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 30.0 | **0** | **Login roto en producción.** Medido 2026-09-24: el bundle servido (`index-ocm9s-Mo.js`) tiene `const… | | |
+| 30.0 | **0** | **Login roto en producción.** Medido 2026-09-24: el bundle servido… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
 | 30.1 | **0** | **La landing en producción publica testimonios y cifras inventados.** El chunk `LandingScreen-*.js` servido hoy contiene… | **DONE** | **DONE** → §I |
 | 30.2 | **1** | **Se puede publicar sin puerta.** `ba686fc`, `50e73ea`, `46789fa`, `f8719b1`, `2efdfb7` y `8a0dce0` entraron en `master`… | | |
 | 30.3 | **1** | **Guarda de repo para la configuración de Pages.** Un test (en `pytest tests/content` o en el pre-push) que falle si… | **DONE** | **DONE** → §I |
-| 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba `lnd-hero__h1`, clase que desapareció con la… | | |
-| 30.5 | **2** | El script `build` ya no corre `tsc -b` (lo quitó `8a0dce0`, «Update package.json», también desde la UI web); hoy pasa,… | **DONE** | **DONE** → §I |
+| 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **PARCIAL** | **PARCIAL** `394c660` → §I |
+| 30.5 | **2** | El script `build` ya no corre `tsc -b` (lo quitó `8a0dce0`,… | **PARCIAL** | **PARCIAL** `8a0dce0` (2026-09-24) → §I |
 | 30.6 | **1** | **La puerta local no puerta en Linux/macOS.** `.githooks/pre-push` está en git como `100644` (sin bit de ejecución): git… | **DONE** | **DONE** → §I |
-| 30.7 | **0** | **El mismo fallo que el login en cinco llamadas más.** `usePushNotifications.ts` (`/api/v1/push`), `ProfileScreen.tsx`… | | | | |
-| 30.8 | **0** | **Producción arrancaba sin contenido y sin cuenta de dueño utilizable.** `start.sh` dejó de correr `content_loader` en… | | |
+| 30.7 | **0** | **El mismo fallo que el login en cinco llamadas más.**… | **PARCIAL** | **PARCIAL** `4c63686` (2026-09-25) → §I |
+| 30.8 | **0** | **Producción arrancaba sin contenido y sin cuenta de dueño… | **PARCIAL** | **PARCIAL** `12ff838` (2026-09-22) → §I |
 
 ### 31. Fuente única de cifras, staging y migraciones con datos (del plan del 2026-09-24, cuyo fichero no está en el repo: estas filas son…
 
@@ -456,15 +456,15 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 34.0 | **0** | **Guarda de contrato `.tsx` ↔ `.module.css`** (`src/test/cssModules.contract.test.ts`) en modo trinquete: la deuda de hoy… | **DONE** | **DONE** → §I |
 | 34.10 | **0** | **La suite e2e está roja desde el 2026-09-19 y nadie lo vio** (CI ciego por facturación y, después, sin… | **DONE** | **DONE** → §I |
-| 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a) el onboarding de 24.3 recoge 3 respuestas de… | | |
-| 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero, recuperar las reglas borradas (`git show <commit>^:<css>`),… | | |
-| 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o `styles/design-tokens.css`, no las dos) con los… | | |
-| 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`, `Sheet`, `Toast`, `ProgressBar`,… | | |
-| 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding, Placement — el embudo que decide si alguien se… | | |
+| 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
+| 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **PARCIAL** | **PARCIAL** `d11db88` (2026-09-25) → §I |
+| 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
+| 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** → §I |
+| 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.5 | **1** | **Aprendizaje**: Home, Tracks, Lesson y Quiz (con Monaco, WhyButton, GlossaryText, TermCard) | **PARCIAL** — pantallas del… | |
-| 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam, TrackExam, Certificate, PublicProfile |… | |
+| 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** — pantallas del bloque revisadas… | |
-| 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio) comparadas contra la última aprobada, +… | | |
+| 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | **PARCIAL** → §I |
 | 34.9 | **2** | **Verificación y re-puntuación**: verificador adversario (protocolo §7) de 34.0–34.8 y fila nueva en el teardown… | | |
 
 ### 35. Lo que el mercado enseña: competencia verificada → producto (abierta 2026-09-24, a petición del dueño)
@@ -483,7 +483,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 35.6 | **2** | **Refresco trimestral de §A.1**: re-descargar las páginas de precios, cambiar cifras y `COMPARISON_CHECKED_ON` | TODO —… | |
 | 35.7 | **1** | **Precios del dueño en producto** (ADR-41): landing con 4 planes, perfil, comparativa; tier `creator` (rango sobre `pro`),… | **DONE** | **DONE** → §I |
 | 35.8 | **2** | **Cada deploy de Railway deja ~1 min de 502/503.** Medido 2026-09-24: tras los pushes `a6a5a91` y `f2ea9cb`, `/health` dio… | | |
-| 35.9 | **2** | **El nivel 2 de la puerta (`ci_local.sh`) corre sobre el árbol de trabajo**, no sobre el commit empujado: si se edita… | **DONE** | **DONE** → §I |
+| 35.9 | **2** | **El nivel 2 de la puerta (`ci_local.sh`) corre sobre el árbol… | **PARCIAL** | **PARCIAL** `a021e92` (2026-09-24) → §I |
 
 
 ### 37. Catálogo total — todos los tracks de la industria, ≥ 50 cursos por track, sobre un corpus abierto (ADR-46; abierta 2026-09-24)
@@ -496,10 +496,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 37.0 | **1** | **Guarda de diversidad semántica** en `scripts/check_question_bank.py`: por track, enunciados distintos ≥ 90 %, opciones… | **DONE** | **DONE** → §I |
-| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar `CATALOGO_MAESTRO.md` §2 + §2.0 contra roadmap.sh, la encuesta… | | |
+| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.2 | **1** | **Recuento por módulos**: `check_docs.py` y `lib/catalog.ts` pasan de «curso = track × nivel» a «curso = módulo» en el… | **DONE** | **DONE** → §I |
 | 37.3 | **1** | **Pipeline de corpus** `scripts/corpus/`: `fetch.py` (git/dump/torrent oficial), `verify_license.py` (lee… | **DONE** | **DONE** → §I |
-| 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en el PR): Fundamentos/Python, Ingeniería, IA,… | | |
+| 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | |
 | 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | |
 | 37.7 | **2** | **Tracks del mapa sin construir** (18-23, 26-27, 29-32) al molde mínimo primero (20 skills · 300 Q) y luego a 50 cursos —… | | |
@@ -510,8 +510,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | |
 | 37.13 | **3** | **Scorecard ADR-46** (absorbe 25.13): tracks × cursos × 37.0 verde; re-puntuación de Contenido en el teardown con… | | |
 | 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 % distintos**, por debajo del 90 % de ADR-46 (medido por… | | |
-| 37.15 | **1** | **Fuentes sin indexar:** 3.906 de 6.305 preguntas (62 %) no llevan URL en `source`, y las que sí la llevan citan… | | |
-| 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre 4.304 preguntas de opciones: en el **66,9 %** la correcta… | | |
+| 37.15 | **1** | **Fuentes sin indexar:** 3.906 de 6.305 preguntas (62 %) no llevan URL en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **PARCIAL** | **PARCIAL** `2041992` (2026-09-25) → §I |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 
@@ -560,10 +560,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.29 | ABIERTO 2026-09-19 — Decisión: Grecia + 3 rails de pagos + a… |
 | H.30 | PRI 0 — el correo no sale de la maquina, y la pantalla dice … |
 | H.31 | PRI 0 — la landing de producción publica testimonios con nom… |
-| H.32 | RESUELTA EN CÓDIGO 2026-09-24 — el log del build de producci… |
+| H.32 | **2** | H.32 | **RESUELTA** | **RESUELTA** `e40ba75` (2026-09-24) → §I |
 | H.33 | Variables del dueño en Railway (30.8) |
 | H.34 | Conector de Railway para Claude (verificación de 30.8 sin ad… |
-| H.35 | PARCIAL 2026-09-25 — el dueño fijó los mensuales (ADR-41): P… |
+| H.35 | **2** | H.35 | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | H.38 | Afiliación con Python Institute y CompTIA (38.3) |
 | H.39 | 3 pilotos B2B gratuitos (38.2, ADR-22) |
 | H.40 | Reclutar 5 instructores fundadores (28.9) |
