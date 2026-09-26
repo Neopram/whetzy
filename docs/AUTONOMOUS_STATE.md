@@ -503,7 +503,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 39.0 | **0** | **Producción caída 09:35–10:48 UTC tras `ec97405`**: `content_loader` con `KeyError: 'order'` (logs Railway) y lecciones fuera de esquema | **DONE** | #28 (`c5100e1`), `test_loader_schema.py` rojo sobre `ec97405`; deploy `b64e2a9a` SUCCESS |
-| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | PARCIAL: track26 hecho (0 coletillas, correcta más larga 15 %, revisión adversaria de las 300: 6 defectos corregidos); trinquete `test_no_filler_options.py` (mutación en rojo); 28/29/30 en curso | 0 coletillas por grep; 37.16 ≤ 40 % con distractores reales; `test_no_new_file_is_a_pure_rotation` verde |
+| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | PARCIAL: track26 (correcta más larga 15 %; revisión adversaria de las 300: 7 defectos corregidos) y track28 (11,7 %; 10 corregidos, 4 eran la correcta movida a otra ranura por el reescritor y 1 ya era falsa en el original) con 0 coletillas; trinquete `test_no_filler_options.py` (mutación en rojo); 29/30 en curso | 0 coletillas por grep; 37.16 ≤ 40 % con distractores reales; `test_no_new_file_is_a_pure_rotation` verde |
 | 39.2 | **1** | Fuentes inferidas en 146 lecciones normalizadas en #28 | TODO | Fuente comprobada por lección (WebFetch) o sustituida |
 | 39.3 | **1** | `tests/content` en verde (1.254 fallos en master, 792 tras #28) | TODO | 0 fallos sin bajar umbrales |
 | 39.4 | **2** | `content_quota` detrás de flag (ADR-50a) | TODO | Tests con flag on/off, exenciones, paridad con `plans.ts` |

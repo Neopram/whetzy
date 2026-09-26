@@ -32,7 +32,7 @@ FILLERS = (
     "in real environments",
 )
 
-# Medido el 2026-09-26 tras reescribir track26 (0). Solo baja.
+# Medido el 2026-09-26 tras reescribir track26 y track28 (0). Solo baja.
 BASELINE = {
     "track03_python_advanced": 1,
     "track04_software_engineering": 8,
@@ -46,7 +46,6 @@ BASELINE = {
     "track16_algoritmos": 1,
     "track22_azure": 1,
     "track27_nosql": 3,
-    "track28_backend": 464,
     "track29_qa_testing": 426,
     "track30_agile": 610,
     "track42_security_plus": 66,
