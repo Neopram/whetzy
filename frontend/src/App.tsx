@@ -60,6 +60,9 @@ const AdminScreen = lazy(() => import('./pages/AdminScreen').then((m) => ({ defa
 const InstructorScreen = lazy(() => import('./pages/InstructorScreen'));
 const MarketplaceScreen = lazy(() => import('./pages/MarketplaceScreen').then((m) => ({ default: m.MarketplaceScreen })));
 const WalletScreen = lazy(() => import('./pages/WalletScreen'));
+const PlaygroundScreen = lazy(() =>
+  import('./pages/PlaygroundScreen').then((m) => ({ default: m.PlaygroundScreen }))
+);
 // Public, unauthenticated status page — checked before any auth machinery so
 // it stays reachable even when the backend is down.
 const StatusPage = lazy(() => import('./pages/StatusPage'));
@@ -385,6 +388,7 @@ function App() {
       case 'instructor': return <InstructorScreen />;
       case 'marketplace': return <MarketplaceScreen />;
       case 'wallet': return <WalletScreen />;
+      case 'playground': return <PlaygroundScreen />;
       default: return <HomeScreen />;
     }
   };
@@ -424,11 +428,11 @@ function App() {
  *  mid-exam. It is a set rather than a chain of `!==` so adding a screen is one
  *  entry instead of one more clause nobody remembers to extend — 'trackexam'
  *  was the fifth, and the chain was already four deep. */
-const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson', 'readiness']);
+const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson', 'readiness', 'playground']);
 
 const SCREEN_ORDER: Record<string, number> = {
   home: 0, tracks: 1, stats: 2, league: 3, profile: 4, marketplace: 14,
-  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10, readiness: 11, admin: 12, instructor: 13,
+  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10, readiness: 11, admin: 12, instructor: 13, playground: 15,
 };
 function screenOrder(s: string) { return SCREEN_ORDER[s] ?? 0; }
 
