@@ -380,6 +380,15 @@ GET  /admin/security/rate-limit-hits     → rate-limit denial stats (22.1)
 GET  /export/data          → GDPR data export (JSON) 🔒
 ```
 
+## Privacy endpoints (21.3)
+
+```
+POST   /privacy/ccpa-opt-out      → Record CCPA "Do Not Sell/Share" opt-out 🔒
+DELETE /privacy/ccpa-opt-out      → Revoke CCPA opt-out (opt back in) 🔒
+GET    /privacy/ccpa-disclosure   → CCPA data-collection disclosure (§1798.100) — public
+GET    /privacy/rights            → Jurisdiction-aware privacy rights summary — public
+```
+
 ## Health endpoints
 
 ```
@@ -401,8 +410,8 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-133 paths (129 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **137 method+path endpoints** total.
+137 paths (133 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **146 method+path endpoints** total.
 Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
 
 

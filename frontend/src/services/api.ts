@@ -1153,3 +1153,35 @@ export const projects = {
     });
   },
 };
+
+// ── Privacy (21.3) ──────────────────────────────────────────────────────────
+
+export interface CcpaOptOutResponse {
+  ccpa_opt_out: boolean;
+}
+
+export interface CcpaDisclosure {
+  categories_collected: string[];
+  categories_shared: string[];
+  business_purpose: string[];
+  sale_of_data: string;
+  right_to_delete: string;
+  right_to_know: string;
+  right_to_opt_out: string;
+  non_discrimination: string;
+}
+
+export interface PrivacyRights {
+  jurisdiction_note: string;
+  rights: string[];
+  data_export_url: string;
+  delete_account_url: string;
+  contact: string;
+}
+
+export const privacy = {
+  ccpaOptOut: () => request<CcpaOptOutResponse>('/privacy/ccpa-opt-out', { method: 'POST' }),
+  ccpaOptIn: () => request<CcpaOptOutResponse>('/privacy/ccpa-opt-out', { method: 'DELETE' }),
+  ccpaDisclosure: () => request<CcpaDisclosure>('/privacy/ccpa-disclosure'),
+  rights: () => request<PrivacyRights>('/privacy/rights'),
+};

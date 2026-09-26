@@ -23,6 +23,7 @@ from app.api.v1.endpoints import (
     ml,
     oauth,
     placement,
+    privacy,
     progress,
     project,
     push,
@@ -61,3 +62,4 @@ api_router.include_router(experiments.router, prefix="/experiments", tags=["expe
 api_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
 api_router.include_router(bootcamp.router, prefix="/bootcamps", tags=["bootcamps"])
 api_router.include_router(project.router, prefix="/projects", tags=["projects"])
+api_router.include_router(privacy.router, prefix="/privacy", tags=["privacy"])

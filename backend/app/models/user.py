@@ -81,6 +81,11 @@ class User(Base):
         Boolean, default=False, server_default=false(), nullable=False
     )
 
+    # CCPA/CPRA opt-out (21.3): user opted out of sale/sharing of personal data.
+    ccpa_opt_out: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=false(), nullable=False
+    )
+
     skill_states: Mapped[list[UserSkillState]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )

@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20260926_projects` (40 migraciones) |
+| Alembic HEAD | `20260926_privacy_ccpa` (41 migraciones) |
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados

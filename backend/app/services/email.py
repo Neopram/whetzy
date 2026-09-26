@@ -203,6 +203,8 @@ def _send_smtp(to: str, subject: str, html: str) -> None:
     msg["Subject"] = subject
     msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM_ADDRESS}>"
     msg["To"] = to
+    msg["List-Unsubscribe"] = f"<mailto:{settings.EMAIL_FROM_ADDRESS}?subject=unsubscribe>"
+    msg["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
     msg.attach(MIMEText(html, "html", "utf-8"))
 
     context = ssl.create_default_context()
@@ -232,6 +234,10 @@ def _send_resend(to: str, subject: str, html: str) -> None:
             "to": [to],
             "subject": subject,
             "html": html,
+            "headers": {
+                "List-Unsubscribe": f"<mailto:{settings.EMAIL_FROM_ADDRESS}?subject=unsubscribe>",
+                "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+            },
         },
         headers={"Authorization": f"Bearer {settings.RESEND_API_KEY}"},
         timeout=10.0,
