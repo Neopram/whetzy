@@ -101,6 +101,33 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 
 **Verificar un despliegue.** Conector Railway: `list-deployments` (último en `SUCCESS`) y `get-logs` con filtro `"[start]" OR "[owner]" OR "Content loaded" OR "Traceback"`; luego `node frontend/scripts/check-deployed.mjs` (desde `frontend/`).
 
+## Contenido reescrito por agentes (desde 2026-09-26)
+
+**Herramientas** en `scripts/content_qa/` (tabla en su README). Se ejecutan desde la raíz del repo y los agentes no las editan: el 26-09 un agente sobrescribió el validador del scratchpad.
+
+**Proceso por lote**, sin excepciones:
+
+1. **Escritor** Sonnet por fichero (o 10 lecciones) que escribe solo en el scratchpad, nunca en el repo.
+2. **Revisor** Sonnet distinto que no escribe y devuelve problemas con la corrección.
+3. **Corrector** Sonnet que aplica la revisión y vuelve a validar.
+4. **Comprobación propia** antes de copiar al repo:
+   - `validate_lessons.py` en OK;
+   - `check_key_drift.py` y `check_expl_key.py` sin sospechosos sin explicar. Son sospechas, no veredictos: se leen una a una;
+   - `check_only_fields.py --fields ...` si el encargo era tocar solo unos campos;
+   - `check_urls.py` sin fallos. Un 403 se abre a mano con WebFetch;
+   - lectura de al menos dos piezas enteras.
+5. `pytest tests/content`, prueba de arranque de arriba y un commit por track.
+
+**Fallos observados, cada uno con su defensa:**
+
+- **Haiku** escribió lecciones con relleno sin sentido y errores técnicos (7 de 10 en el piloto de track28). Para autoría y revisión se usa Sonnet (enmienda a ADR-50).
+- **El reescritor movió la clave** a otra ranura (track28, track29, `mod3002` entero) y dijo «todo correcto». Defensa: `check_key_drift.py`. Si una posición del repo rota 0,1,2,3…, `rebalance_positions.py`.
+- **Los agentes inventan URLs** (404 en las lecciones NoSQL de track27) y copian datos personales del contexto (el correo del dueño en `l260101`). Defensas: `check_urls.py` y `test_no_personal_data.py`. Los ejemplos usan `ada@example.com`.
+- **No se toca un fichero que un workflow está leyendo**: un `git stash` a mitad cambió la base de un agente y su salida mezcló dos versiones.
+- **`content_loader` nunca borra preguntas**: se arregla en su sitio sin renombrar ids; un id nuevo deja la vieja viva en producción.
+- **Lecciones SQL**: el test las ejecuta con SQLite, así que no se usa sintaxis solo de PostgreSQL en el ejemplo (o se explica en el texto sin ejecutarla).
+- **`logging` escribe en stderr**: no cuenta como salida del ejemplo; `logging.basicConfig(stream=sys.stdout)` si la salida es parte de la lección.
+
 ## LLM: techo diario y respaldo (39.11, 39.12)
 
 - `LLM_DAILY_CALL_LIMIT` (por defecto 2000): llamadas al LLM por día UTC **y por proceso** (Railway corre 2 workers de gunicorn y no hay Redis: el techo real es el doble). Al superarlo el tutor responde con el contexto de la pregunta y el log dice `llm_daily_budget_exhausted`. `0` = sin techo.

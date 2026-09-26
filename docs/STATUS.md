@@ -1118,3 +1118,21 @@ renumeradas **una vez** con un script (comentarios de código y docs; 0 cambios 
 - Cloudflare Pages no publicaba desde las subidas de dependabot; #28 y #29 revierten dos majors y hacen el prerender compatible con Node 20.
 - Aprobación en bloque del dueño registrada como ADR-50. Ejecutado: Sentry (`whetzy-backend` + `SENTRY_DSN`), H.30 honesto. Resueltas por verificación: H.15, H.31, H.33, H.34.
 - Serie 39 abierta con la deuda de la oleada 18.10 (coletillas de relleno en 1.200 preguntas, fuentes inferidas en 146 lecciones) y la calidad transversal.
+
+### Tarde (11:00–17:30 UTC): PR #30, #31, #32 fusionados por el dueño; #33 abierto
+
+- **Fusiones** (hora UTC del merge en `master`): #30 16:00, #31 16:11, #32 17:00. Tras #32 (`80e9f5a`): deploy Railway `ded9ecc9` en `SUCCESS` con `Content loaded ... skipped 0`, `/health` 200 y `check-deployed` en PASS.
+- **Claves de verdadero/falso de track42 aleatorias**: 153 corregidas, 110 duplicadas reescritas, 480 explicaciones reales (`dba80c5`); guarda nueva `test_tf_consistency.py`.
+- **39.29**: 1.404 explicaciones de plantilla («Explicación no disponible.») sustituidas por explicaciones reales en track41-46 y track23; 13 preguntas de GKE reescritas. `audit_ai_traces.py` marca 0 huellas en el banco vivo.
+- **39.1**: distractores reales en 26/28/29/30; la revisión adversaria cazó claves movidas por el reescritor (4 en track28, `mod3002` entero en track30), reparadas por similitud con la clave original.
+- **39.3**: lecciones de 18, 19, 20 y 26-30 al listón de `test_lessons.py` (autor, revisor y corrector Sonnet; lectura y ejecución propias; URLs comprobadas). `tests/content`: 792 fallos tras #28 → **440** (17:20 UTC), todos en lecciones de 14, 22 y 41-46.
+- **Guardas nuevas**, cada una con mutación en rojo: `test_no_filler_options.py` (trinquete por track, segunda familia de coletillas contada → 39.28), `check_originality.py`, `audit_ai_traces.py`, `test_tf_consistency.py` y `test_no_personal_data.py`.
+- **39.30**: una lección de git enseñaba el nombre y el correo del dueño y un redactor lo copió; reescrita con `ada@example.com`. El correo del dueño en `/evidence` queda para él (H.47).
+- **Herramientas de revisión de contenido** en `scripts/content_qa/` (validador de lecciones, deriva de clave, explicación contra clave, solo-campos-permitidos, reequilibrio de posiciones, URLs) con test `test_content_qa_tools.py`.
+
+**Lo aprendido** (detalle en RUNBOOK, «Contenido reescrito por agentes»):
+- Haiku no sirve para escribir lecciones: en el piloto de track28, 7 de 10 traían relleno, errores técnicos o fuentes que no casaban, y un lote volvió vacío. Sonnet escribe y revisa; Haiku solo lee (enmienda a ADR-50 en DECISIONS).
+- El reescritor (Sonnet) movió claves sin avisar en 28, 29 y `mod3002`; cada lote pasa por `check_key_drift.py` y `check_expl_key.py`.
+- Los agentes inventan URLs (5 de 20 en 404 en track27) y copian datos personales del contexto.
+- No se toca un fichero que un workflow está leyendo: un `git stash` a mitad corrompió la base de un agente.
+- `content_loader` nunca borra preguntas, así que se arreglan en su sitio, sin renombrar ids.
