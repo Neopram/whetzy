@@ -70,26 +70,44 @@ function TermsContent() {
       <p>{t('legal.termsP1')}</p>
 
       <h2>{t('legal.termsH2')}</h2>
+      <p>{t('legal.termsP2')}</p>
+
+      <h2>{t('legal.termsH3')}</h2>
+      <p>{t('legal.termsP3plans')}</p>
+
+      <h2>{t('legal.termsH4')}</h2>
+      <p>{t('legal.termsP4payments')}</p>
+
+      <h2>{t('legal.termsH5')}</h2>
+      <p>{t('legal.termsP5withdrawal')}</p>
+
+      <h2>{t('legal.termsH6')}</h2>
+      <p>{t('legal.termsP6renewal')}</p>
+
+      <h2>{t('legal.termsH7')}</h2>
       <ul>
         <li>{t('legal.termsL1')}</li>
         <li>{t('legal.termsL2')}</li>
         <li>{t('legal.termsL3')}</li>
       </ul>
 
-      <h2>{t('legal.termsH3')}</h2>
-      <p>{t('legal.termsP3')}</p>
+      <h2>{t('legal.termsH8')}</h2>
+      <p>{t('legal.termsP8')}</p>
 
-      <h2>{t('legal.termsH4')}</h2>
-      <p>{t('legal.termsP4')}</p>
+      <h2>{t('legal.termsH9')}</h2>
+      <p>{t('legal.termsP9')}</p>
 
-      <h2>{t('legal.termsH5')}</h2>
-      <p>{t('legal.termsP5')}</p>
+      <h2>{t('legal.termsH10')}</h2>
+      <p>{t('legal.termsP10')}</p>
 
-      <h2>{t('legal.termsH6')}</h2>
-      <p>{t('legal.termsP6')}</p>
+      <h2>{t('legal.termsH11')}</h2>
+      <p>{t('legal.termsP11')}</p>
 
-      <h2>{t('legal.termsH7')}</h2>
-      <p>Whetzy · <a href="mailto:legal@whetzy.com">legal@whetzy.com</a></p>
+      <h2>{t('legal.termsH12')}</h2>
+      <p>{t('legal.termsP12')}</p>
+
+      <h2>{t('legal.termsH13')}</h2>
+      <p>Whetzy · <a href="mailto:support@whetzy.com">support@whetzy.com</a></p>
     </article>
   );
 }

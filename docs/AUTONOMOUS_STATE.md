@@ -203,11 +203,11 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 21.0 | **0** | REGRESIÓN P0 — textos legales con entidad inexistente y decisión no autorizada | **DONE** | `16b4e39`+`ea7707d` (2026-09-19) check_legal_facts.py 21 variantes → §I |
 | 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; la entidad y la jurisdicción están sin decidir, H.29. Se conserva el enunciado… | | |
 | 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | | |
-| 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) ·… | | |
+| 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) ·… | **DONE** | Privacy policy reescrita con secciones GDPR (bases legales, DPO, SCCs), CCPA/CPRA (§1798.100-125), COPPA, CAN-SPAM (List-Unsubscribe), ePrivacy cookies. Backend: 4 endpoints privacy + ccpa_opt_out col + CAN-SPAM headers. Frontend: i18n + API. 4 tests. `2c4c95a` |
 | 21.4 | **2** | **Consumo y suscripciones**: desistimiento UE 14 días para contenido digital (renuncia expresa en checkout), renovación… | | |
 | 21.5 | **2** | **AI Act, DSA, EAA**: obligaciones de *deployer* del tutor… | **PARCIAL** | **PARCIAL** `5f7bd7b` (2026-09-19) → §I |
 | 21.6 | **2** | **Propiedad intelectual**: búsqueda de marca «Whetzy» (EUIPO,… | **PARCIAL** | **PARCIAL** `8e7812a` (2026-09-19) → §I |
-| 21.7 | **2** | **Redacción**: ToS · Privacidad · Cookies (sin banner si solo cookies necesarias — mantenerlo así) · DPA plantilla para… | | |
+| 21.7 | **2** | **Redacción**: ToS · Privacidad · Cookies (sin banner si solo cookies necesarias — mantenerlo así) · DPA plantilla para… | **DONE** | ToS reescrito con 18 secciones ES/EN: planes ADR-41/49, desistimiento UE 14 días (Dir 2011/83), renovación automática, tutor IA, ODR UE, divisibilidad. DPA template creado (`legal/dpa-template.md`) con TOMs, sub-processors, Art. 28 obligations. Cookies: confirmado solo técnicas, sin banner. Frontend i18n actualizado (13 secciones), LegalScreen expandido. Build + i18n parity + contract test + check_docs verdes. |
 | 21.8 | **3** | **Procedimientos internos**: brecha de seguridad (72 h, plantilla de notificación), DSAR (export/delete ya existen → SLA y… | | |
 | 21.9 | **3** | **Proceso DMCA / retirada de contenido y DPIA** (`legal/README.md:116-127`): página `/legal/dmca` ES/EN con formulario por… | | |
 
