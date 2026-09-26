@@ -1047,3 +1047,21 @@ dueño por su nombre.
 > más la verificación propia con `scripts/content_qa/`, las lecciones de 18-20 y 26-30 y las
 > 1.404 explicaciones de 39.29 entraron sin fallos de guarda. Coste mayor por fichero y
 > aceptado: un banco con claves malas es peor que uno más corto.
+
+## ADR-51 — Decisiones de la sesión del 2026-09-26 por la noche (delegación total del dueño; valores elegidos por la sesión)
+
+**Contexto.** El dueño arrancó la sesión con el prompt de control total v6.1 («DESBLOQUEA TODO,
+MI DESICIONES SON A TODO APROBADO!», «HAZLO TODO SI ESTA EN TUS MANOS») y se fue a dormir. Lo que
+aprobó en bloque es ADR-50; lo que sigue son valores que eligió la sesión, cada uno con su motivo.
+
+| # | Tema | Decisión de la sesión | Motivo |
+|---|---|---|---|
+| a | Rama | Se trabaja en `claude/gallant-tesla-fnzy1g` (la asignada a la sesión) con un *merge* de `claude/trusting-franklin-2wwmmr`; el PR nuevo (#34) contiene #33 | La sesión no puede empujar a otra rama sin permiso; un merge no reescribe historia (ADR-45) |
+| b | 39.4 «pregunta nueva» | La primera respuesta del usuario a esa pregunta, hoy (UTC), en una sesión `study`. Repaso, placement y examen no gastan ni se bloquean | ADR-50a exime repasos FSRS, placement y exámenes; contar por respuesta (no por pregunta servida) evita gastar cupo con preguntas que el alumno no llegó a ver |
+| c | 39.4 al agotarse | `POST /quiz/start` → 429 `{code: free_daily_quota, kind, limit, resets_at}`; `POST /quiz/answer` → `next_question: null` + `quota_reached: true` | El cliente ya trata `next_question: null` como fin de sesión («Ver resultados»); el 429 lleva cuándo se reinicia |
+| d | 39.4 lecciones | Se cuentan solo con sesión iniciada (`get_optional_user`; un token malo = anónimo). Sin sesión la lección sigue pública | Cerrar las lecciones públicas rompería la landing y el SEO, y ADR-50a no lo pide. Limitación conocida: quien cierre sesión lee sin cupo. Antes de encender el flag falta el texto de la UI (ES/EN) |
+| e | 39.28 alcance | La fila nombraba dos familias de coletillas; se amplía a la tercera (minada del banco: colas de 2-6 palabras en cientos de incorrectas y 0-2 correctas) y a «as the primary concept» (673 opciones EN que la guarda no veía) | Es el mismo defecto de generador; dejarlo fuera habría dado el track por limpio con la mitad de la coletilla dentro. La línea base se re-midió al alza porque la guarda ve más, no porque el banco empeorase |
+| f | 39.28 método | Parches por pregunta (solo `options_es`/`options_en`), aplicados por script; nunca el fichero entero reescrito por un agente | Por construcción no cambian ids, claves, enunciados ni explicaciones; `check_only_fields` y `check_key_drift` lo confirman |
+| g | Claves falsas encontradas | Se corrigen en su sitio con la doc oficial abierta (p. ej. `q220103001`: la duración **máxima** en el plan de consumo de Azure Functions es 10 min, no 5) | `content_loader` nunca borra preguntas: se arreglan sin renombrar ids |
+| h | Tests que ya fallaban en `master` | OAuth (esperaban el token en la URL, el código usa cookies HttpOnly) y `ledger.py check` (55 problemas): se arreglan en este PR | «Correr la suite entera» no sirve de puerta si ya está roja |
+| i | Capturas de 39.5 | Van a `frontend/test-results/` (ignorado) y al informe, no al repo | Límite duro: sin binarios en el repo |

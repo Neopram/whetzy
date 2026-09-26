@@ -128,6 +128,18 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 - **Lecciones SQL**: el test las ejecuta con SQLite, así que no se usa sintaxis solo de PostgreSQL en el ejemplo (o se explica en el texto sin ejecutarla).
 - **`logging` escribe en stderr**: no cuenta como salida del ejemplo; `logging.basicConfig(stream=sys.stdout)` si la salida es parte de la lección.
 
+- **Los revisores también fallan en las dos direcciones** (noche del 26-09): dejaron pasar que un /24 de Google Cloud da 254 IP utilizables (son 252: Google reserva las dos primeras y las dos últimas) y tacharon de «inventada» una frase que está literal en `docs.python.org/3/library/exceptions.html`. Defensa: la lectura propia de al menos dos piezas por lote no es opcional, y cualquier cifra de nube se contrasta con la página oficial.
+- **Opciones de preguntas (39.28): parche, no fichero.** El agente escribe `qpatch/<track>/<módulo>.pN.json` con solo `options_es`/`options_en` de las preguntas que toca; un script lo aplica sobre la copia original y lo comprueba (coletillas, número de opciones, repetidas, clave movida por similitud, correcta más larga). Así no puede cambiar ids, claves ni explicaciones aunque quiera. Las claves falsas que aparezcan se corrigen aparte, a mano y con la fuente abierta, después de aplicar los parches.
+- **El límite de uso de la cuenta mata a los subagentes a mitad** (26-09, 20:20 UTC): los workflows devuelven `null` por agente. Se reanudan con `resumeFromRunId` y los mismos `args`: lo terminado sale de caché y lo cortado se repite desde el principio (sobrescribe sus ficheros a medias). No lances más de 6-7 workflows a la vez.
+- **Coletillas: la lista no está cerrada.** La tercera familia salió minando el banco (colas de 2-6 palabras frecuentes en incorrectas y casi nunca en correctas). Antes de dar un track por limpio, repite esa minería; la guarda solo ve lo que conoce.
+
+## Suite backend: tiempos y entorno (26-09)
+
+- La suite sin `tests/content` tarda ~37 min en este contenedor; ~28 min son de `tests/integration/test_rag_self_retrieval.py::test_index_memory_bounded_and_hits_self_retrieval_bar`, cuadrático en el tamaño del banco (11 000 preguntas × 2 idiomas × 12 000 documentos). No está colgada: `py-spy dump --pid N` lo muestra en `rag.py:190`.
+- En un contenedor nuevo: `SETUPTOOLS_USE_DISTUTILS=stdlib pip install http-ece` antes de `pip install -r requirements.txt`, y `pip install --ignore-installed cryptography` si pip no puede desinstalar la de Debian.
+- El hook exige la ruff de CI (0.16.8). Si el PATH trae otra antes (`/root/.local/bin`), empuja con `PATH=/usr/local/bin:$PATH git push`.
+- Playwright con el Chromium preinstalado de otra versión: un `playwright.sandbox.config.ts` local (sin commitear) que herede de `playwright.config.ts` y ponga `launchOptions.executablePath` a `/opt/pw-browsers/chromium-*/chrome-linux/chrome`.
+
 ## LLM: techo diario y respaldo (39.11, 39.12)
 
 - `LLM_DAILY_CALL_LIMIT` (por defecto 2000): llamadas al LLM por día UTC **y por proceso** (Railway corre 2 workers de gunicorn y no hay Redis: el techo real es el doble). Al superarlo el tutor responde con el contexto de la pregunta y el log dice `llm_daily_budget_exhausted`. `0` = sin techo.
