@@ -128,6 +128,13 @@ paso "ruff ${ruff_ci:-?} (la de CI)" bash -c "
     echo \"ruff local '$ruff_local' ≠ CI '$ruff_ci': pip install ruff==$ruff_ci\"; exit 1
   fi
   cd backend && ruff check app tests"
+if command -v gitleaks >/dev/null 2>&1; then
+  paso "gitleaks (secretos)" \
+       gitleaks detect --source . --no-git --config .gitleaks.toml --no-banner
+else
+  gris  "  --   gitleaks no instalado (pip install gitleaks o descargar binario)"
+fi
+
 paso "guardas de esquema y contrato" \
      bash -c "cd backend && python -m pytest \
         tests/test_modelos_registrados.py \

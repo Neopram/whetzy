@@ -177,6 +177,13 @@ correr "backend: contenido"    "$ARBOL/backend" \
 correr "backend: mypy --strict" "$ARBOL/backend" \
   python -m mypy app --strict --ignore-missing-imports
 
+if command -v bandit >/dev/null 2>&1; then
+  correr "backend: bandit (seguridad)" "$ARBOL/backend" \
+    bandit -r app/ -c "$ARBOL/.bandit.yml" -ll -q
+else
+  titulo "backend: bandit"; echo "[--] bandit no instalado; me lo salto"
+fi
+
 if [ -d "$ARBOL/frontend/node_modules" ]; then
   correr "frontend: tipos"  "$ARBOL/frontend" npx tsc -b
   # oxlint se comprueba ANTES de usarlo. Si no arranca, el paso se salta con
