@@ -55,6 +55,8 @@ class Settings(BaseSettings):
     # --- Auth / JWT --------------------------------------------------------
     SECRET_KEY: str = "insecure-dev-secret-key-change-me-in-production-0123456789"
     JWT_ALGORITHM: str = "HS256"
+    JWT_PRIVATE_KEY: str = ""
+    JWT_PUBLIC_KEY: str = ""
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
 

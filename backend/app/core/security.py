@@ -52,6 +52,16 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 # --------------------------------------------------------------------------
 # Token creation
 # --------------------------------------------------------------------------
+def _signing_config() -> tuple[str, str]:
+    """Return (key, algorithm) for signing new tokens.
+
+    Uses RS256 when JWT_PRIVATE_KEY is configured, falls back to HS256.
+    """
+    if settings.JWT_PRIVATE_KEY:
+        return settings.JWT_PRIVATE_KEY, "RS256"
+    return settings.SECRET_KEY, settings.JWT_ALGORITHM
+
+
 def _create_token(
     subject: str | uuid.UUID,
     token_type: TokenType,
@@ -64,9 +74,10 @@ def _create_token(
         "type": token_type,
         "iat": int(now.timestamp()),
         "exp": now + expires_delta,
-        "jvs": jwt_version,  # version counter for revocation (ASVS V3.3)
+        "jvs": jwt_version,
     }
-    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM)  # type: ignore[no-any-return]
+    key, algorithm = _signing_config()
+    return jwt.encode(to_encode, key, algorithm=algorithm)  # type: ignore[no-any-return]
 
 
 def create_access_token(
@@ -90,18 +101,35 @@ def create_refresh_token(
 # --------------------------------------------------------------------------
 # Token verification
 # --------------------------------------------------------------------------
+def _verification_keys() -> list[tuple[str, list[str]]]:
+    """Return ordered list of (key, algorithms) to try when verifying.
+
+    RS256 first (if configured), then HS256 fallback for pre-migration tokens.
+    """
+    keys: list[tuple[str, list[str]]] = []
+    if settings.JWT_PUBLIC_KEY:
+        keys.append((settings.JWT_PUBLIC_KEY, ["RS256"]))
+    keys.append((settings.SECRET_KEY, [settings.JWT_ALGORITHM]))
+    return keys
+
+
 def verify_token(token: str, expected_type: TokenType = "access") -> TokenPayload:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    try:
-        payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
-        )
-    except JWTError as exc:
-        raise credentials_exception from exc
+
+    payload = None
+    for key, algorithms in _verification_keys():
+        try:
+            payload = jwt.decode(token, key, algorithms=algorithms)
+            break
+        except JWTError:
+            continue
+
+    if payload is None:
+        raise credentials_exception
 
     token_data = TokenPayload(**payload)
     if token_data.sub is None or token_data.type != expected_type:
