@@ -5,6 +5,26 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-09-26 (noche tardía, control total — rama `claude/gallant-tesla-fnzy1g`, PR #34)
+
+**ES**
+
+- **Cupo diario del plan Free, apagado por defecto** (39.4, ADR-50a/51): 30 preguntas nuevas y 5 lecciones al día (UTC); el repaso espaciado, el placement y los exámenes no cuentan. Se enciende con `FREE_DAILY_QUOTA_ENABLED` cuando abra el cobro.
+- **La insignia «Perfeccionista» ya se concede** (39.5): nunca se otorgaba, y en la décima respuesta perfecta llegaba tarde. Prueba de punta a punta con capturas de XP, racha, liga e insignia.
+- **Pruebas e2e**: el registro de prueba no marcaba la casilla de «13 años o más» y dejaba rotos todos los recorridos que crean un usuario.
+- **Inicio de sesión social**: sus pruebas exigen ahora la sesión en cookies HttpOnly y ningún token en la URL.
+- **Lecciones al listón** en JavaScript (14), Ciencia de Datos (21), Azure (22), Google Cloud (23) y PCAP (41), con fuentes oficiales comprobadas.
+- **Guarda de coletillas ampliada** a una tercera familia de relleno en las opciones.
+
+**EN**
+
+- **Free plan daily quota, off by default** (39.4, ADR-50a/51): 30 new questions and 5 lessons per UTC day; spaced review, placement and exams do not count. Turned on with `FREE_DAILY_QUOTA_ENABLED` once billing opens.
+- **The "Perfectionist" badge is now awarded** (39.5): it was never granted, and on the tenth perfect answer it arrived late. End-to-end test with screenshots of XP, streak, league and badge.
+- **E2E tests**: the test sign-up did not tick the "13 or older" box, which broke every journey that creates a user.
+- **Social login**: its tests now require the session in HttpOnly cookies and no token in the URL.
+- **Lessons brought up to the bar** in JavaScript (14), Data Science (21), Azure (22), Google Cloud (23) and PCAP (41), with official sources checked.
+- **Filler-ending guard extended** to a third family of padding in answer options.
+
 ## [Unreleased] — 2026-09-26 (noche, control total)
 
 **ES**
