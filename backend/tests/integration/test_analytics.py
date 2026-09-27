@@ -15,6 +15,7 @@ import itertools
 from sqlalchemy import select
 
 from app.models.analytics import AnalyticsEvent
+from app.models.lesson_completion import LessonCompletion
 
 ANALYTICS = "/api/v1/analytics"
 QUIZ = "/api/v1/quiz"
@@ -27,6 +28,12 @@ ADMIN_KEY = "test-admin-key-analytics"
 def _ip() -> str:
     n = next(_ip_counter)
     return f"192.0.2.{n % 255 or 255}"
+
+
+async def _see_lesson(db_session, user, *skill_ids: str) -> None:
+    for skill_id in skill_ids:
+        db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
+    await db_session.commit()
 
 
 def _h(extra: dict | None = None) -> dict:
@@ -62,7 +69,8 @@ async def test_register_fires_user_registered_event(client, db_session):
     assert any(str(e.user_id) == str(e.user_id) for e in events)  # at least one event exists
 
 
-async def test_first_quiz_answer_event(client, auth_headers, content_seed, db_session):
+async def test_first_quiz_answer_event(client, auth_headers, content_seed, db_session, user):
+    await _see_lesson(db_session, user, content_seed["skill_id"])
     # Start a quiz session
     start = await client.post(
         f"{QUIZ}/start",
@@ -95,7 +103,8 @@ async def test_first_quiz_answer_event(client, auth_headers, content_seed, db_se
     assert after == before + 1
 
 
-async def test_second_quiz_answer_does_not_fire_event(client, auth_headers, content_seed, db_session):
+async def test_second_quiz_answer_does_not_fire_event(client, auth_headers, content_seed, db_session, user):
+    await _see_lesson(db_session, user, content_seed["skill_id"])
     # First answer (fires the event)
     start1 = await client.post(
         f"{QUIZ}/start",

@@ -13,6 +13,7 @@ import uuid as _uuid
 
 from sqlalchemy import select
 
+from app.models.lesson_completion import LessonCompletion
 from app.models.session import Response
 
 CONTENT = "/api/v1/content"
@@ -24,6 +25,12 @@ _ip_counter = itertools.count(200)
 def _ip() -> str:
     n = next(_ip_counter)
     return f"203.0.113.{n % 255 or 255}"
+
+
+async def _see_lesson(db_session, user, *skill_ids: str) -> None:
+    for skill_id in skill_ids:
+        db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
+    await db_session.commit()
 
 
 def _h(extra: dict | None = None) -> dict:
@@ -108,9 +115,10 @@ async def test_patch_question_empty_payload_does_not_bump(client, content_seed, 
 
 
 async def test_response_records_question_version_1_by_default(
-    client, auth_headers, content_seed, db_session
+    client, auth_headers, content_seed, db_session, user
 ):
     """Answering a fresh question stamps question_version=1 on the Response."""
+    await _see_lesson(db_session, user, content_seed["skill_id"])
     start = await client.post(
         f"{QUIZ}/start",
         json={"skill_id": content_seed["skill_id"], "mode": "study"},
@@ -135,12 +143,13 @@ async def test_response_records_question_version_1_by_default(
 
 
 async def test_response_records_updated_version_after_patch(
-    client, auth_headers, content_seed, db_session, monkeypatch
+    client, auth_headers, content_seed, db_session, monkeypatch, user
 ):
     """After PATCH bumps version to 2, a new response records question_version=2."""
     from app.core import config as config_module
 
     monkeypatch.setattr(config_module.settings, "CONTENT_ADMIN_KEY", ADMIN_KEY)
+    await _see_lesson(db_session, user, content_seed["skill_id"])
 
     patch = await client.patch(
         f"{CONTENT}/questions/{content_seed['question_id']}",

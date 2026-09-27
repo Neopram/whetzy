@@ -10,6 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.gamification import League, LeagueEntry
+from app.models.lesson_completion import LessonCompletion
 from app.models.user import User
 from app.services.gamification.service import (
     get_current_standings,
@@ -98,6 +99,8 @@ async def test_answering_while_opted_out_adds_no_league_xp(
     await _seed_league(db_session)
     uid = user.id
     await client.put(f"{URL}/participation", json={"participate": False}, headers=auth_headers)
+    db_session.add(LessonCompletion(user_id=user.id, skill_id=content_seed["skill_id"]))
+    await db_session.commit()
 
     start = await client.post(
         "/api/v1/quiz/start", json={"skill_id": content_seed["skill_id"], "mode": "study"}, headers=auth_headers
