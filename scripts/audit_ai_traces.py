@@ -58,7 +58,9 @@ KNOWN_PLACEHOLDERS = {
 }
 # Plantilla que cambia en cada pregunta y por eso no la ve el umbral de repetidas: «Explicación
 # para ¿Desventajas PCA?» (356 preguntas en track20/21, hallado el 2026-09-27, 39.37).
-TEMPLATE_PREFIX = re.compile(r"^(?:explicación para|explanation for)\b")
+TEMPLATE_PREFIX = re.compile(
+    r"^(?:explicación (?:para|detallada para)|explanation for|detailed explanation for)\b"
+)
 TOOL_MARKUP = re.compile(r"</?(?:invoke|parameter|function_calls|antml:[a-z_]+)\b")
 ASSISTANT_VOICE = re.compile(
     r"\b(?:as an ai\b|certainly!|i hope this helps|como modelo de lenguaje|aquí tienes (?:la|el|una|un)\b)",

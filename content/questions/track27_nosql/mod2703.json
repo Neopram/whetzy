@@ -33,13 +33,13 @@
         "Sorted Set usando ZADD",
         "List usando LPUSH y RPOP",
         "Set usando SADD y SREM",
-        "Hash usando HSET en cualquier escenario de implementación"
+        "Hash usando HSET (no preserva orden FIFO)"
       ],
       "options_en": [
         "Sorted Set using ZADD",
         "List using LPUSH and RPOP",
         "Set using SADD and SREM",
-        "Hash using HSET in any implementation scenario"
+        "Hash using HSET (does not preserve FIFO order)"
       ],
       "correct_index": 1,
       "explanation_es": "Las listas en Redis mantienen el orden de inserción, permitiendo LPUSH para añadir elementos al inicio y RPOP para extraerlos del final, lo que implementa correctamente la semántica FIFO.",
@@ -97,13 +97,13 @@
       "options_es": [
         "Los Sorted Sets almacenan un score adicional para cada miembro",
         "Los Sets son más rápidos que los Sorted Sets",
-        "Los Sets pueden contener valores duplicados sin excepciones ni variantes",
+        "Los Sets pueden contener valores duplicados pero rechaza strings no únicos",
         "Los Sorted Sets no permiten operaciones de intersección"
       ],
       "options_en": [
         "Sorted Sets store an additional score for each member",
         "Sets are faster than Sorted Sets",
-        "Sets can contain duplicate values without exceptions or variants",
+        "Sets can contain duplicate values but reject non-unique strings",
         "Sorted Sets do not allow intersection operations"
       ],
       "correct_index": 0,
@@ -137,15 +137,15 @@
       "question_es": "¿Cuál es la complejidad temporal de la operación ZRANGE en un Sorted Set con n elementos?",
       "question_en": "What is the time complexity of the ZRANGE operation on a Sorted Set with n elements?",
       "options_es": [
-        "O(1) de forma invariable y constante",
-        "O(n) sin considerar otros factores relevantes",
-        "O(log n + k) donde k es el número de elementos retornados",
+        "O(1) excepto para acceso a elementos del rango",
+        "O(n) porque requiere evaluar todos los elementos",
+        "O(log n + k) con k elementos retornados",
         "O(n log n)"
       ],
       "options_en": [
-        "O(1) invariably and constantly",
-        "O(n) without considering other relevant factors",
-        "O(log n + k) where k is the number of elements returned",
+        "O(1) except for accessing range elements",
+        "O(n) because it requires evaluating all elements",
+        "O(log n + k) with k elements returned",
         "O(n log n)"
       ],
       "correct_index": 2,
@@ -184,13 +184,13 @@
       "question_en": "What is the ideal data structure for implementing a system of distributed counters with atomic operations?",
       "options_es": [
         "Hashes con HINCRBY",
-        "Sets con SADD de forma invariable y constante",
+        "Sets con SADD (no soportan incremento atómico directo)",
         "Strings con INCR y DECR",
         "Lists con LPUSH"
       ],
       "options_en": [
         "Hashes with HINCRBY",
-        "Sets with SADD invariably and constantly",
+        "Sets with SADD (do not support direct atomic increment)",
         "Strings with INCR and DECR",
         "Lists with LPUSH"
       ],
@@ -227,13 +227,13 @@
       "options_es": [
         "SADD devuelve 1 si se añadió, 0 si ya existía",
         "SADDNX como operación segura",
-        "ZADD con un flag NX independientemente del contexto aplicado",
+        "ZADD con flag NX (funciona en Sorted Sets, no en Sets)",
         "SSET para una inserción segura"
       ],
       "options_en": [
         "SADD returns 1 if added, 0 if already existed",
         "SADDNX as a safe operation",
-        "ZADD with an NX flag regardless of the applied context",
+        "ZADD with NX flag (works on Sorted Sets, not on Sets)",
         "SSET for safe insertion"
       ],
       "correct_index": 0,
@@ -290,16 +290,16 @@
       "question_es": "¿Cuál es la utilidad principal de los Bitmaps en Redis para aplicaciones de análisis?",
       "question_en": "What is the main utility of Bitmaps in Redis for analytics applications?",
       "options_es": [
-        "Guardar imágenes en formato binario de forma invariable y constante",
+        "Guardar imágenes (requiere encoding custom, no es uso nativo)",
         "Reemplazar strings para ahorrar memoria",
-        "Acelerar búsquedas en texto completo de manera exclusiva y permanente",
-        "Almacenar información binaria comprimida y realizar operaciones de bit muy eficientes"
+        "Acelerar búsquedas en texto (incompatible con bits)",
+        "Almacenar información binaria comprimida y realizar operaciones de bit eficientes"
       ],
       "options_en": [
-        "Store images in binary format invariably and constantly",
+        "Store images (requires custom encoding, not native usage)",
         "Replace strings to save memory",
-        "Accelerate full-text searches exclusively and permanently",
-        "Store compressed binary information and perform very efficient bit operations"
+        "Accelerate text searches (incompatible with bits)",
+        "Store compressed binary information and perform bit operations efficiently"
       ],
       "correct_index": 3,
       "explanation_es": "Los Bitmaps permiten almacenar y manipular bits individuales de forma muy eficiente, siendo ideales para rastrear estados booleanos (activo/inactivo), conteos rápidos y análisis de datos con bajo consumo de memoria.",
@@ -314,14 +314,14 @@
       "question_en": "What is the correct operation to extract and simultaneously remove the highest scored element from a Sorted Set?",
       "options_es": [
         "ZPOPMAX retorna el elemento y su score, eliminándolo",
-        "ZREVRANGE y luego ZREM sin excepciones ni variantes",
-        "ZMAX para obtener sin eliminar según la documentación estándar del servicio",
+        "ZREVRANGE y luego ZREM (no es atómica, riesgo de race condition)",
+        "ZMAX para obtener sin eliminar (comando no existe en Redis)",
         "ZREMRANGEBYRANK para el último elemento"
       ],
       "options_en": [
         "ZPOPMAX returns the element and its score, removing it",
-        "ZREVRANGE and then ZREM without exceptions or variants",
-        "ZMAX to get without removing according to standard service documentation",
+        "ZREVRANGE and then ZREM (not atomic, risk of race condition)",
+        "ZMAX to get without removing (command does not exist in Redis)",
         "ZREMRANGEBYRANK for the last element"
       ],
       "correct_index": 0,
@@ -338,13 +338,13 @@
       "options_es": [
         "Write-through caching",
         "Refresh-ahead caching",
-        "Write-behind caching sin excepciones ni variantes",
+        "Write-behind caching (con riesgo de inconsistencia temporal)",
         "Cache-aside (Lazy Loading)"
       ],
       "options_en": [
         "Write-through caching",
         "Refresh-ahead caching",
-        "Write-behind caching without exceptions or variants",
+        "Write-behind caching (with risk of temporary inconsistency)",
         "Cache-aside (Lazy Loading)"
       ],
       "correct_index": 3,
@@ -378,13 +378,13 @@
       "question_es": "¿Cuál es la ventaja principal del patrón write-behind (Write-back) en comparación con write-through?",
       "question_en": "What is the main advantage of the write-behind (Write-back) pattern compared to write-through?",
       "options_es": [
-        "Operaciones más seguras independientemente del contexto aplicado",
+        "Operaciones más seguras (pero riesgo de inconsistencia)",
         "Menor consumo de memoria",
         "Mejor consistencia de datos",
         "Mayor rendimiento porque las escrituras son asincrónicas"
       ],
       "options_en": [
-        "Safer operations regardless of the applied context",
+        "Safer operations (but risk of inconsistency)",
         "Lower memory consumption",
         "Better data consistency",
         "Higher performance because writes are asynchronous"
@@ -466,15 +466,15 @@
       "question_es": "¿Cuál es la diferencia entre las políticas LRU (Least Recently Used) y LFU (Least Frequently Used)?",
       "question_en": "What is the difference between LRU (Least Recently Used) and LFU (Least Frequently Used) policies?",
       "options_es": [
-        "LFU es más eficiente pero consume más memoria de manera exclusiva y permanente",
-        "LRU elimina lo accedido hace más tiempo, LFU lo menos accedido frecuentemente",
-        "LRU es más rápido que LFU de manera exclusiva y permanente",
+        "LFU es más eficiente pero requiere tracking adicional",
+        "LRU elimina lo menos reciente, LFU lo menos frecuente",
+        "LRU es más rápido que LFU (ambos similares, LFU requiere más cómputo)",
         "LRU evita lo usado recientemente, LFU lo usado frecuentemente"
       ],
       "options_en": [
-        "LFU is more efficient but consumes more memory exclusively and permanently",
-        "LRU removes the least recently accessed, LFU the least frequently accessed",
-        "LRU is faster than LFU exclusively and permanently",
+        "LFU is more efficient but requires additional tracking",
+        "LRU removes least recent, LFU removes least frequently accessed",
+        "LRU is faster than LFU (both similar, LFU requires more computation)",
         "LRU evicts recently used, LFU frequently used"
       ],
       "correct_index": 1,
@@ -556,14 +556,14 @@
       "options_es": [
         "Los datos cachuteados pueden quedar obsoletos y nunca actualizarse",
         "Consumo excesivo de memoria del servidor",
-        "Pérdida de datos al reiniciar de forma invariable y constante",
-        "Conflictos de concurrencia en todos los casos posibles"
+        "Pérdida de datos al reiniciar (pero igual con TTL, esperado)",
+        "Conflictos de concurrencia (solo con múltiples writers)"
       ],
       "options_en": [
         "Cached data can become stale and never update",
         "Excessive server memory consumption",
-        "Data loss on restart invariably and constantly",
-        "Concurrency conflicts in all possible cases"
+        "Data loss on restart (but same with TTL, expected)",
+        "Concurrency conflicts (only with multiple writers)"
       ],
       "correct_index": 0,
       "explanation_es": "Sin TTL, los datos permanecen en caché indefinidamente, causando stale data cuando la fuente cambia. Es crítico establecer un TTL apropiado basado en la tolerancia a inconsistencia.",
@@ -596,16 +596,16 @@
       "question_es": "¿Cuál es el propósito principal de usar Bloom Filters en sistemas de caché?",
       "question_en": "What is the main purpose of using Bloom Filters in cache systems?",
       "options_es": [
-        "Acelerar operaciones de lectura en cualquier escenario de implementación",
+        "Acelerar operaciones de lectura (pero Bloom Filter tiene falsos positivos)",
         "Evitar cache miss costosos comprobando si un dato existe antes de consultarlo",
         "Comprimir datos para ahorrar memoria",
-        "Eliminar datos expirados de forma invariable y constante"
+        "Eliminar datos expirados (pero Bloom Filters no almacenan datos)"
       ],
       "options_en": [
-        "Accelerate read operations in any implementation scenario",
+        "Accelerate read operations (but Bloom Filter has false positives)",
         "Avoid expensive cache misses by checking if data exists before querying it",
         "Compress data to save memory",
-        "Remove expired data invariably and constantly"
+        "Remove expired data (but Bloom Filters do not store data)"
       ],
       "correct_index": 1,
       "explanation_es": "Un Bloom Filter es una estructura probabilística que responde rápidamente si un elemento NO existe (false negatives imposibles). Previene consultas de base de datos innecesarias ante cache miss casi seguro.",
@@ -620,13 +620,13 @@
       "question_en": "What eviction policy is more appropriate when you need to guarantee that keys with TTL set are deleted first?",
       "options_es": [
         "allkeys-lru o allkeys-lfu",
-        "random según la documentación estándar del servicio",
+        "random (pero no respeta TTL, elimina claves de largo plazo)",
         "volatile-lru o volatile-lfu",
         "noeviction"
       ],
       "options_en": [
         "allkeys-lru or allkeys-lfu",
-        "random according to standard service documentation",
+        "random (but does not respect TTL, deletes long-lived keys)",
         "volatile-lru or volatile-lfu",
         "noeviction"
       ],
@@ -643,13 +643,13 @@
       "question_en": "What is the advantage of using MGET instead of multiple individual GET calls to retrieve multiple values?",
       "options_es": [
         "Reduce round-trips de red y proporciona mejor rendimiento total",
-        "Más seguro que GET individual según la documentación estándar del servicio",
+        "Más seguro que GET individual (pero devuelve nil si no existe)",
         "Evita errores de concurrencia",
         "Usa menos memoria en el servidor"
       ],
       "options_en": [
         "Reduces network round-trips and provides better overall performance",
-        "Safer than individual GET according to standard service documentation",
+        "Safer than individual GET (but returns nil if not exists)",
         "Avoids concurrency errors",
         "Uses less memory on the server"
       ],
@@ -665,13 +665,13 @@
       "question_es": "¿Cuál es la diferencia fundamental entre el modelo Pub/Sub de Redis y un Message Broker tradicional?",
       "question_en": "What is the fundamental difference between Redis Pub/Sub model and a traditional Message Broker?",
       "options_es": [
-        "No hay diferencia significativa en cualquier escenario de implementación",
+        "No hay diferencia significativa (ambos son sistemas similares)",
         "Redis es más rápido pero menos confiable",
         "Redis Pub/Sub usa colas while Message Brokers no",
         "Redis Pub/Sub no persiste mensajes entre suscriptores desconectados"
       ],
       "options_en": [
-        "There is no significant difference in any implementation scenario",
+        "No significant difference (both are similar systems)",
         "Redis is faster but less reliable",
         "Redis Pub/Sub uses queues while Message Brokers don't",
         "Redis Pub/Sub does not persist messages between disconnected subscribers"
@@ -688,13 +688,13 @@
       "question_es": "¿Cuál es el comando correcto para suscribirse a un canal en Redis?",
       "question_en": "What is the correct command to subscribe to a channel in Redis?",
       "options_es": [
-        "SUB nombre_canal en cualquier escenario de implementación",
+        "SUB nombre_canal (es un alias no reconocido en protocolo)",
         "SUBSCRIBE nombre_canal",
         "LISTEN nombre_canal",
         "WATCH nombre_canal"
       ],
       "options_en": [
-        "SUB nombre_canal in any implementation scenario",
+        "SUB nombre_canal (unrecognized alias in protocol)",
         "SUBSCRIBE nombre_canal",
         "LISTEN nombre_canal",
         "WATCH nombre_canal"
@@ -730,16 +730,16 @@
       "question_es": "¿Cuál es la utilidad principal de los patrones de suscripción en Redis Pub/Sub?",
       "question_en": "What is the main utility of subscription patterns in Redis Pub/Sub?",
       "options_es": [
-        "Validar el contenido de los mensajes en todos los casos posibles",
-        "Filtrar mensajes duplicados de manera exclusiva y permanente",
+        "Validar contenido de mensajes (patrones solo filtran por nombre)",
+        "Filtrar mensajes duplicados (patrones no deduplicación)",
         "Aumentar la velocidad de transmisión",
-        "Permitir suscribirse a múltiples canales que coincidan con una expresión comodín"
+        "Permitir suscribirse a múltiples canales con una expresión comodín"
       ],
       "options_en": [
-        "Validate message content in all possible cases",
-        "Filter duplicate messages exclusively and permanently",
+        "Validate message content (patterns only filter by name)",
+        "Filter duplicate messages (patterns no deduplication)",
         "Increase transmission speed",
-        "Allow subscribing to multiple channels that match a wildcard expression"
+        "Allow subscribing to multiple channels with a wildcard expression"
       ],
       "correct_index": 3,
       "explanation_es": "Con PSUBSCRIBE se pueden usar patrones como 'usuario:*' para suscribirse a todos los canales que coincidan con esa expresión, permitiendo estructuras de canales jerárquicas.",
@@ -795,15 +795,15 @@
       "question_es": "¿Cuál es la ventaja de usar Streams sobre Pub/Sub tradicional para aplicaciones que requieren durabilidad?",
       "question_en": "What is the advantage of using Streams over traditional Pub/Sub for applications requiring durability?",
       "options_es": [
-        "Streams soportan patrones complejos sin excepciones ni variantes",
+        "Streams soportan patrones complejos usando expresiones regulares en lugar de wildcards",
         "Streams son más rápidos que Pub/Sub",
-        "Streams usan menos memoria de manera exclusiva y permanente",
+        "Streams requieren almacenamiento en disco para persistencia, aumentando consumo de recursos",
         "Streams persisten mensajes, permitiendo lectura histórica y consumidores retrasados"
       ],
       "options_en": [
-        "Streams support complex patterns without exceptions or variants",
+        "Streams support complex patterns using regular expressions instead of wildcards",
         "Streams are faster than Pub/Sub",
-        "Streams use less memory exclusively and permanently",
+        "Streams require disk storage for persistence, increasing resource consumption",
         "Streams persist messages, allowing historical reading and delayed consumers"
       ],
       "correct_index": 3,
@@ -820,13 +820,13 @@
       "options_es": [
         "Usar Streams con consumer groups para procesamiento distribuido",
         "Usar PUBLISH/SUBSCRIBE para notificaciones de tareas",
-        "Usar Sorted Sets para tareas programadas en todos los casos posibles",
+        "Usar Sorted Sets indexados por score UNIX en colas de tareas FIFO",
         "Usar Lists con BLPOP para colas de tareas"
       ],
       "options_en": [
         "Use Streams with consumer groups for distributed processing",
         "Use PUBLISH/SUBSCRIBE for task notifications",
-        "Use Sorted Sets for scheduled tasks in all possible cases",
+        "Use Sorted Sets indexed by UNIX score in FIFO task queues",
         "Use Lists with BLPOP for task queues"
       ],
       "correct_index": 0,
@@ -860,14 +860,14 @@
       "question_es": "¿Cuál es la complejidad temporal de la operación PUBLISH en Redis?",
       "question_en": "What is the time complexity of the PUBLISH operation in Redis?",
       "options_es": [
-        "O(1) independientemente del contexto aplicado",
-        "O(N log N) sin excepciones ni variantes",
+        "O(1) constante en la tabla de hash de canales",
+        "O(N log N) con sorting de suscriptores por identificador único",
         "O(N+M) donde N es número de suscriptores y M de suscripción patrones",
         "O(n) donde n es tamaño del mensaje"
       ],
       "options_en": [
-        "O(1) regardless of the applied context",
-        "O(N log N) without exceptions or variants",
+        "O(1) constant in the channel hash table",
+        "O(N log N) with sorting of subscribers by unique identifier",
         "O(N+M) where N is number of subscribers and M of pattern subscriptions",
         "O(n) where n is message size"
       ],
@@ -885,13 +885,13 @@
       "options_es": [
         "LIST CHANNELS para obtener todos los canales",
         "MONITOR CHANNELS para rastrear actividad",
-        "CHANNELS para mostrar información en cualquier escenario de implementación",
+        "CHANNELS para mostrar información del registro global sin filtrar por suscriptores",
         "PUBSUB CHANNELS para listar canales con suscriptores"
       ],
       "options_en": [
         "LIST CHANNELS to get all channels",
         "MONITOR CHANNELS to track activity",
-        "CHANNELS to show information in any implementation scenario",
+        "CHANNELS to show information from the global registry without filtering by subscribers",
         "PUBSUB CHANNELS to list channels with subscribers"
       ],
       "correct_index": 3,
@@ -927,14 +927,14 @@
       "options_es": [
         "Si no hay suscriptores conectados cuando se publica, el mensaje se pierde",
         "Imposible escalar a múltiples nodos",
-        "Los patrones son ineficientes en cualquier escenario de implementación",
-        "Pub/Sub consume demasiada memoria de manera exclusiva y permanente"
+        "Los patrones utilizan expresiones regulares compiladas con caché persistente",
+        "Pub/Sub almacena historial de mensajes en buffer de memoria circular"
       ],
       "options_en": [
         "If there are no connected subscribers when publishing, the message is lost",
         "Impossible to scale to multiple nodes",
-        "Patterns are inefficient in any implementation scenario",
-        "Pub/Sub consumes too much memory exclusively and permanently"
+        "Patterns use compiled regular expressions with persistent cache",
+        "Pub/Sub stores message history in circular memory buffer"
       ],
       "correct_index": 0,
       "explanation_es": "Pub/Sub es fire-and-forget. No persiste mensajes ni reintenta entregas. Para confiabilidad, debes usar Streams, que garantizan durabilidad y permiten reintentos.",
@@ -950,13 +950,13 @@
       "options_es": [
         "Usar PUBLISH/SUBSCRIBE para bajo acoplamiento y latencia mínima",
         "Usar Lists con polling continuo",
-        "Usar Hashes compartidos según la documentación estándar del servicio",
+        "Usar Hashes compartidos con WATCH para transacciones optimistas",
         "Usar Sorted Sets con monitoreo"
       ],
       "options_en": [
         "Use PUBLISH/SUBSCRIBE for low coupling and minimal latency",
         "Use Lists with continuous polling",
-        "Use shared Hashes according to standard service documentation",
+        "Use shared Hashes with WATCH for optimistic transactions",
         "Use Sorted Sets with monitoring"
       ],
       "correct_index": 0,
@@ -974,13 +974,13 @@
         "Desuscribe del cliente de TODOS los canales suscritos actualmente",
         "Desuscribe del modo Pub/Sub completamente",
         "No hace nada, requiere al menos un canal",
-        "Desuscribe solo del canal actual sin considerar otros factores relevantes"
+        "Desuscribe solo del canal principal, manteniendo patrones activos"
       ],
       "options_en": [
         "Unsubscribes the client from ALL currently subscribed channels",
         "Unsubscribes from Pub/Sub mode completely",
         "Does nothing, requires at least one channel",
-        "Unsubscribes only from the current channel without considering other relevant factors"
+        "Unsubscribes only from the main channel, keeping patterns active"
       ],
       "correct_index": 0,
       "explanation_es": "UNSUBSCRIBE sin argumentos desuscribe del cliente de todos los canales simultáneamente, saliendo completamente del modo Pub/Sub si no hay patrones suscritos.",
@@ -995,14 +995,14 @@
       "question_en": "What is the main difference between RDB (Snapshot) and AOF (Append-Only File) persistence?",
       "options_es": [
         "RDB es más rápido pero menos confiable que AOF",
-        "AOF solo funciona en cluster sin considerar otros factores relevantes",
-        "No hay diferencia significativa en todos los casos posibles",
+        "AOF requiere reescritura en cluster para evitar fragmentación",
+        "La diferencia es solo cosmética en la interface de configuración",
         "RDB guarda estado completo periódicamente, AOF registra cada comando modificador"
       ],
       "options_en": [
         "RDB is faster but less reliable than AOF",
-        "AOF only works in cluster without considering other relevant factors",
-        "There is no significant difference in all possible cases",
+        "AOF requires rewriting in cluster to avoid fragmentation",
+        "The difference is only cosmetic in the configuration interface",
         "RDB saves complete state periodically, AOF logs each modifying command"
       ],
       "correct_index": 3,
@@ -1038,13 +1038,13 @@
       "options_es": [
         "Solo RDB con snapshots frecuentes",
         "Sin persistencia y solo replicación",
-        "Solo AOF con fsync everysec sin considerar otros factores relevantes",
+        "Solo AOF con fsync no garantiza durabilidad entre fallos de sistema",
         "Combinar RDB y AOF con fsync always en AOF"
       ],
       "options_en": [
         "Only RDB with frequent snapshots",
         "No persistence, only replication",
-        "Only AOF with fsync everysec without considering other relevant factors",
+        "Only AOF with fsync no does not guarantee durability between system failures",
         "Combine RDB and AOF with fsync always in AOF"
       ],
       "correct_index": 3,
@@ -1059,14 +1059,14 @@
       "question_es": "¿Cuál es el impacto en el rendimiento de usar AOF con 'fsync always'?",
       "question_en": "What is the performance impact of using AOF with 'fsync always'?",
       "options_es": [
-        "Impacto solo en operaciones de lectura sin considerar otros factores relevantes",
-        "Sin impacto en el rendimiento según la documentación estándar del servicio",
+        "Mejora el rendimiento de lectura mediante caché de inodes del filesystem",
+        "El impacto es mínimo porque usa thread pool asincrónico",
         "Latencia y throughput significativamente reducidos por sincronización de disco",
         "Mejora el rendimiento al escribir más eficientemente"
       ],
       "options_en": [
-        "Impact only on read operations without considering other relevant factors",
-        "No performance impact according to standard service documentation",
+        "Improves read performance through filesystem inode caching",
+        "The impact is minimal because it uses asynchronous thread pool",
         "Latency and throughput significantly reduced by disk synchronization",
         "Improves performance by writing more efficiently"
       ],
@@ -1102,14 +1102,14 @@
       "question_en": "What is the main function of replication in Redis?",
       "options_es": [
         "Duplicar datos en múltiples servidores para alta disponibilidad y escalabilidad de lectura",
-        "Reducir el consumo de memoria sin considerar otros factores relevantes",
-        "Mejorar la compresión de datos de manera exclusiva y permanente",
+        "Reducir latencia comprimiendo datos, usando el algoritmo Zstandard que Redis habilita por defecto desde la versión 5",
+        "Mejorar throughput mediante compresión LZ4 de snapshots",
         "Aumentar la velocidad de escritura"
       ],
       "options_en": [
         "Duplicate data across multiple servers for high availability and read scalability",
-        "Reduce memory consumption without considering other relevant factors",
-        "Improve data compression exclusively and permanently",
+        "Reduce latency by compressing data, using the Zstandard algorithm Redis enables by default since version 5",
+        "Improve throughput using LZ4 compression of snapshots",
         "Increase write speed"
       ],
       "correct_index": 0,
@@ -1167,14 +1167,14 @@
       "question_en": "What is the purpose of Redis Sentinel?",
       "options_es": [
         "Distribuir datos entre múltiples nodos",
-        "Comprimir datos para ahorrar memoria en cualquier escenario de implementación",
-        "Acelerar replicación según la documentación estándar del servicio",
+        "Comprimir logs de operaciones mediante deduplicación de comandos",
+        "Acelerar replicación parcial con PSYNC",
         "Monitorear la salud del master y promover un slave automáticamente si falla"
       ],
       "options_en": [
         "Distribute data across multiple nodes",
-        "Compress data to save memory in any implementation scenario",
-        "Accelerate replication according to standard service documentation",
+        "Compress operation logs through command deduplication",
+        "Accelerate partial replication with PSYNC",
         "Monitor master health and automatically promote a slave if it fails"
       ],
       "correct_index": 3,
@@ -1208,15 +1208,15 @@
       "question_es": "¿Cuál es la diferencia principal entre Redis Sentinel y Redis Cluster?",
       "question_en": "What is the main difference between Redis Sentinel and Redis Cluster?",
       "options_es": [
-        "No hay diferencia significativa de forma invariable y constante",
+        "La diferencia es principalmente de marketing y naming de productos",
         "Sentinel es para HA de un master, Cluster distribuye datos entre múltiples masters",
-        "Cluster es más seguro que Sentinel de manera exclusiva y permanente",
+        "Cluster está diseñado para distribuir seguridad entre nodos",
         "Sentinel es más rápido que Cluster"
       ],
       "options_en": [
-        "There is no significant difference invariably and constantly",
+        "The difference is mainly marketing and product naming",
         "Sentinel is for HA of one master, Cluster distributes data across multiple masters",
-        "Cluster is safer than Sentinel exclusively and permanently",
+        "Cluster is designed to distribute security across nodes",
         "Sentinel is faster than Cluster"
       ],
       "correct_index": 1,
@@ -1250,16 +1250,16 @@
       "question_es": "¿Cuál es el comportamiento correcto de Redis ante un fallo de replicación?",
       "question_en": "What is the correct behavior of Redis on a replication failure?",
       "options_es": [
-        "Ambos se detienen de manera exclusiva y permanente",
+        "Ambos se pausan esperando sincronización con polling continuo",
         "El master continúa sirviendo, el slave se reconecta automáticamente cuando es posible",
         "El master se detiene hasta que la replicación funcione",
-        "Se inicia un failover automático en todos los casos posibles"
+        "Failover requiere Sentinel; replicación sola no lo inicia"
       ],
       "options_en": [
-        "Both stop exclusively and permanently",
+        "Both pause waiting for synchronization with continuous polling",
         "Master continues serving, slave reconnects automatically when possible",
         "Master stops until replication works",
-        "Automatic failover is initiated in all possible cases"
+        "Failover requires Sentinel; replication alone does not initiate it"
       ],
       "correct_index": 1,
       "explanation_es": "El master continúa sirviendo independientemente del estado de replicación. El slave intenta reconectarse automáticamente cuando está disponible el master.",
@@ -1273,16 +1273,16 @@
       "question_es": "¿Cuál es la forma más eficiente de realizar una copia de seguridad de Redis sin interrumpir el servicio?",
       "question_en": "What is the most efficient way to backup Redis without interrupting service?",
       "options_es": [
-        "Usar replicación esclavo como backup según la documentación estándar del servicio",
+        "Usar replicación esclavo como backup requiere BGSAVE también en el slave",
         "Copiar archivos de datos manualmente",
         "Usar BGSAVE para crear un snapshot en segundo plano",
-        "Usar SAVE bloqueante sin excepciones ni variantes"
+        "Usar SAVE con timeouts cortos para completar backups rápidamente"
       ],
       "options_en": [
-        "Use slave replication as backup according to standard service documentation",
+        "Using slave replication as backup also requires BGSAVE on the slave",
         "Manually copy data files",
         "Use BGSAVE to create a background snapshot",
-        "Use blocking SAVE without exceptions or variants"
+        "Use SAVE with short timeouts to complete backups quickly"
       ],
       "correct_index": 2,
       "explanation_es": "BGSAVE crea un snapshot sin bloquear Redis (usa fork), permitiendo que el servicio continúe sirviendo normalmente mientras se genera el backup.",
@@ -1296,14 +1296,14 @@
       "question_es": "¿Cuál es el principal ventaja de usar replicación asincrónica en Redis?",
       "question_en": "What is the main advantage of using asynchronous replication in Redis?",
       "options_es": [
-        "Mejor compresión de datos sin considerar otros factores relevantes",
-        "Operaciones más seguras sin excepciones ni variantes",
+        "Mejor compresión de datos entre master y slave con algoritmo LZ4",
+        "Operaciones más seguras con ACLs granulares en el slave",
         "Menor latencia de escritura porque no espera confirmación de replicas",
         "Mayor consistencia garantizada"
       ],
       "options_en": [
-        "Better data compression without considering other relevant factors",
-        "Safer operations without exceptions or variants",
+        "Better data compression between master and slave with LZ4 algorithm",
+        "Safer operations with granular ACLs on the slave",
         "Lower write latency because it does not wait for replica confirmation",
         "Greater guaranteed consistency"
       ],
