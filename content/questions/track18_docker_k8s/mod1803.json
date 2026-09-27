@@ -8,13 +8,13 @@
       "question_en": "What is the main purpose of Kubernetes?",
       "options_es": [
         "Solo para aplicaciones de microservicios",
-        "Reemplazar Docker completamente sin considerar otros factores relevantes",
+        "Reemplazar por completo el motor de compilación de imágenes de Docker y su daemon de construcción",
         "Compilar imágenes Docker más eficientemente",
         "Orquestar y gestionar contenedores a escala en múltiples máquinas"
       ],
       "options_en": [
         "Only for microservices applications",
-        "Completely replace Docker without considering other relevant factors",
+        "Completely replace Docker's image-building engine, daemon, and build pipeline",
         "Compile Docker images more efficiently",
         "Orchestrate and manage containers at scale across multiple machines"
       ],
@@ -31,13 +31,13 @@
       "question_en": "What are the main components of a Kubernetes cluster?",
       "options_es": [
         "Solo nodos de trabajo",
-        "Services e Ingress independientemente del contexto aplicado",
+        "Services e Ingress, que exponen aplicaciones al tráfico externo",
         "Registros y volúmenes",
         "Plano de control (master) y nodos de trabajo (workers)"
       ],
       "options_en": [
         "Only worker nodes",
-        "Services and Ingress regardless of the applied context",
+        "Services and Ingress, which expose applications to external traffic",
         "Registries and volumes",
         "Control plane (master) and worker nodes"
       ],
@@ -55,13 +55,13 @@
       "options_es": [
         "El conjunto de componentes que gestiona el estado del clúster",
         "Un nodo que controla el tráfico de red",
-        "Una estrategia de control de acceso de manera exclusiva y permanente",
+        "Una estrategia de control de acceso basada en certificados por nodo",
         "Un componente que corre en cada nodo"
       ],
       "options_en": [
         "The set of components that manages cluster state",
         "A node that controls network traffic",
-        "An access control strategy exclusively and permanently",
+        "An access control strategy based on per-node certificates",
         "A component that runs on every node"
       ],
       "correct_index": 0,
@@ -77,14 +77,14 @@
       "question_en": "What is etcd in Kubernetes?",
       "options_es": [
         "Un sistema de archivos distribuido",
-        "Un servicio de autenticación en cualquier escenario de implementación",
-        "Un driver de almacenamiento de forma invariable y constante",
+        "Un servicio de autenticación basado en tokens JWT firmados por el API server",
+        "Un driver de almacenamiento que monta volúmenes en cada pod",
         "La base de datos key-value que almacena el estado del clúster"
       ],
       "options_en": [
         "A distributed filesystem",
-        "An authentication service in any implementation scenario",
-        "A storage driver invariably and constantly",
+        "An authentication service based on JWT tokens signed by the API server",
+        "A storage driver that mounts volumes into each pod",
         "The key-value database storing cluster state"
       ],
       "correct_index": 3,
@@ -99,16 +99,16 @@
       "question_es": "¿Cuál es el propósito del scheduler en Kubernetes?",
       "question_en": "What is the purpose of the scheduler in Kubernetes?",
       "options_es": [
-        "Administrar el tiempo de las reuniones del clúster en cualquier escenario de implementación",
+        "Administrar el tiempo de las reuniones del clúster mediante un calendario compartido",
         "Asignar pods a nodos basándose en recursos disponibles y políticas",
-        "Ejecutar trabajos programados sin excepciones ni variantes",
-        "Controlar el acceso a los recursos sin excepciones ni variantes"
+        "Ejecutar trabajos programados mediante un cron interno del nodo",
+        "Controlar el acceso a los recursos mediante certificados TLS de cliente emitidos por el API server"
       ],
       "options_en": [
-        "Manage cluster meeting times in any implementation scenario",
+        "Manage cluster meeting times through a shared calendar",
         "Assign pods to nodes based on available resources and policies",
-        "Execute scheduled jobs without exceptions or variants",
-        "Control resource access without exceptions or variants"
+        "Execute scheduled jobs through the node's internal cron",
+        "Control resource access through per-user TLS client certificates issued by the API server"
       ],
       "correct_index": 1,
       "explanation_es": "El scheduler es responsable de asignar pods a nodos considerando requerimientos de recursos, restricciones y afinidades.",
@@ -122,15 +122,15 @@
       "question_es": "¿Qué es el controller manager en Kubernetes?",
       "question_en": "What is the controller manager in Kubernetes?",
       "options_es": [
-        "Un gestor de configuración independientemente del contexto aplicado",
-        "Un balanceador de carga en todos los casos posibles",
-        "Un componente que ejecuta código en los nodos independientemente del contexto aplicado",
+        "Un gestor de configuración que sincroniza ficheros YAML entre nodos",
+        "Un balanceador de carga que reparte tráfico HTTP y TCP entre los pods de un Service",
+        "Un componente que ejecuta código de usuario dentro de cada contenedor",
         "El servicio que ejecuta múltiples controladores que regulan el estado del clúster"
       ],
       "options_en": [
-        "A configuration manager regardless of the applied context",
-        "A load balancer in all possible cases",
-        "A component that runs code on nodes regardless of the applied context",
+        "A configuration manager that syncs YAML files between nodes",
+        "A load balancer that distributes HTTP and TCP traffic across a Service's pods",
+        "A component that runs user code inside each container",
         "The service running multiple controllers that regulate cluster state"
       ],
       "correct_index": 3,
@@ -145,16 +145,16 @@
       "question_es": "¿Qué es el API server en Kubernetes?",
       "question_en": "What is the API server in Kubernetes?",
       "options_es": [
-        "Un servidor de autenticación sin excepciones ni variantes",
-        "Un servidor web para aplicaciones de forma invariable y constante",
+        "Un servidor de autenticación que emite certificados de cliente",
+        "Un servidor web que sirve páginas estáticas de la aplicación y gestiona cachés en memoria",
         "El punto de entrada principal para todas las operaciones del clúster",
-        "Un servidor para almacenar imágenes de forma invariable y constante"
+        "Un servidor para almacenar imágenes que sustituye a un registry"
       ],
       "options_en": [
-        "An authentication server without exceptions or variants",
-        "A web server for applications invariably and constantly",
+        "An authentication server that issues client certificates",
+        "A web server that serves the application's static pages and manages in-memory caches",
         "The main entry point for all cluster operations",
-        "A server for storing images invariably and constantly"
+        "A server for storing images that replaces a registry"
       ],
       "correct_index": 2,
       "explanation_es": "El API server es el componente central que expone la API de Kubernetes, manejando todas las solicitudes al clúster.",
@@ -168,14 +168,14 @@
       "question_es": "¿Qué es el kubelet en Kubernetes?",
       "question_en": "What is the kubelet in Kubernetes?",
       "options_es": [
-        "Un proxy de red de manera exclusiva y permanente",
-        "Un servicio de almacenamiento según la documentación estándar del servicio",
+        "Un proxy de red que solo reenvía tráfico UDP",
+        "Un servicio de almacenamiento que expone un sistema de ficheros NFS compartido entre todos los pods",
         "Un cliente de línea de comandos",
         "El agente que se ejecuta en cada nodo para gestionar contenedores"
       ],
       "options_en": [
-        "A network proxy exclusively and permanently",
-        "A storage service according to standard service documentation",
+        "A network proxy that only forwards UDP traffic",
+        "A storage service that exposes an NFS filesystem shared across all pods",
         "A command-line client",
         "The agent running on each node to manage containers"
       ],
@@ -191,16 +191,16 @@
       "question_es": "¿Qué es kube-proxy en Kubernetes?",
       "question_en": "What is kube-proxy in Kubernetes?",
       "options_es": [
-        "Un proxy HTTP para aplicaciones según la documentación estándar del servicio",
-        "Un proxy de imagen Docker de manera exclusiva y permanente",
+        "Un proxy HTTP para aplicaciones que termina conexiones TLS antes de reenviarlas al backend",
+        "Un proxy de imagen Docker que cachea capas localmente",
         "El componente de red que mantiene las reglas de enrutamiento del clúster",
-        "Un servidor de proxy para etcd de forma invariable y constante"
+        "Un servidor de proxy para etcd que replica sus datos entre nodos"
       ],
       "options_en": [
-        "An HTTP proxy for applications according to standard service documentation",
-        "A Docker image proxy exclusively and permanently",
+        "An HTTP proxy for applications that terminates TLS connections before forwarding them to the backend",
+        "A Docker image proxy that caches layers locally",
         "The network component maintaining cluster routing rules",
-        "A proxy server for etcd invariably and constantly"
+        "A proxy server for etcd that replicates its data across nodes"
       ],
       "correct_index": 2,
       "explanation_es": "kube-proxy es un proxy de red que mantiene las reglas de enrutamiento de red en cada nodo, permitiendo la comunicación entre servicios.",
@@ -237,16 +237,16 @@
       "question_es": "¿Qué es la alta disponibilidad en un clúster Kubernetes?",
       "question_en": "What is high availability in a Kubernetes cluster?",
       "options_es": [
-        "Tener muchos nodos de trabajo de manera exclusiva y permanente",
+        "Tener muchos nodos de trabajo dentro de una única zona de disponibilidad",
         "Múltiples planos de control para redundancia y tolerancia a fallos",
-        "Solo ejecutar aplicaciones críticas en todos los casos posibles",
-        "Tener un backup diario en cualquier escenario de implementación"
+        "Solo ejecutar aplicaciones críticas en nodos dedicados",
+        "Tener un backup diario del disco de cada nodo replicado en otra región"
       ],
       "options_en": [
-        "Having many worker nodes exclusively and permanently",
+        "Having many worker nodes within a single availability zone",
         "Multiple control planes for redundancy and fault tolerance",
-        "Only run critical applications in all possible cases",
-        "Having a daily backup in any implementation scenario"
+        "Only running critical applications on dedicated nodes",
+        "Having a daily backup of each node's disk replicated to another region"
       ],
       "correct_index": 1,
       "explanation_es": "HA en Kubernetes significa tener múltiples planos de control replicados para que el clúster continúe funcionando si uno falla.",
@@ -262,14 +262,14 @@
       "options_es": [
         "Clústeres con Docker y clústeres sin Docker",
         "Clústeres locales, en la nube, híbridos y gestionados (EKS, GKE, AKS)",
-        "Clústeres grandes y clústeres pequeños según la documentación estándar del servicio",
-        "Solo clústeres en la nube sin excepciones ni variantes"
+        "Clústeres grandes y clústeres pequeños según el número de núcleos",
+        "Solo clústeres en la nube contratados por suscripción con facturación por uso medido en horas"
       ],
       "options_en": [
         "Clusters with Docker and clusters without Docker",
         "Local, cloud, hybrid clusters and managed services (EKS, GKE, AKS)",
-        "Large and small clusters according to standard service documentation",
-        "Only cloud clusters without exceptions or variants"
+        "Large and small clusters based on core count",
+        "Only cloud clusters billed by subscription with hourly usage-based billing"
       ],
       "correct_index": 1,
       "explanation_es": "Kubernetes se puede ejecutar localmente (minikube), en servidores propios, en la nube, híbridos o como servicios gestionados.",
@@ -284,14 +284,14 @@
       "question_en": "What is minikube in Kubernetes?",
       "options_es": [
         "Una versión reducida de Kubernetes para producción",
-        "Una base de datos local de imágenes independientemente del contexto aplicado",
-        "Un cliente SSH para Kubernetes en cualquier escenario de implementación",
+        "Una base de datos local de imágenes indexadas por hash SHA y firmadas digitalmente",
+        "Un cliente SSH para Kubernetes que abre una shell remota",
         "Una herramienta para ejecutar Kubernetes localmente en una máquina virtual"
       ],
       "options_en": [
         "A reduced version of Kubernetes for production",
-        "A local image database regardless of the applied context",
-        "An SSH client for Kubernetes in any implementation scenario",
+        "A local image database indexed by SHA hash and digitally signed",
+        "An SSH client for Kubernetes that opens a remote shell",
         "A tool to run Kubernetes locally in a virtual machine"
       ],
       "correct_index": 3,
@@ -306,13 +306,13 @@
       "question_es": "¿Cuál es el modelo de seguridad de Kubernetes?",
       "question_en": "What is the security model of Kubernetes?",
       "options_es": [
-        "Solo firewall externo en cualquier escenario de implementación",
+        "Solo firewall externo configurado a nivel de router y reglas de NAT",
         "Autenticación, autorización (RBAC) y políticas de red",
         "Encriptación de extremo a extremo automática",
         "No tiene modelo de seguridad formal"
       ],
       "options_en": [
-        "Only external firewall in any implementation scenario",
+        "Only an external firewall configured at the router level with NAT rules",
         "Authentication, authorization (RBAC), and network policies",
         "Automatic end-to-end encryption",
         "It has no formal security model"
@@ -329,16 +329,16 @@
       "question_es": "¿Qué son los namespaces en Kubernetes?",
       "question_en": "What are namespaces in Kubernetes?",
       "options_es": [
-        "Directorios dentro de contenedores sin excepciones ni variantes",
+        "Directorios dentro de contenedores creados por el runtime",
         "Agrupaciones lógicas de recursos dentro de un clúster",
         "Espacios de almacenamiento en etcd",
-        "Rutas de red virtual de forma invariable y constante"
+        "Rutas de red virtual configuradas manualmente en cada nodo"
       ],
       "options_en": [
-        "Directories within containers without exceptions or variants",
+        "Directories within containers created by the runtime",
         "Logical groupings of resources within a cluster",
         "Storage spaces in etcd",
-        "Virtual network routes invariably and constantly"
+        "Virtual network routes configured manually on each node"
       ],
       "correct_index": 1,
       "explanation_es": "Los namespaces son particiones lógicas de un clúster que permiten aislar recursos y aplicar políticas de control de acceso.",
@@ -353,15 +353,15 @@
       "question_en": "What is a Pod in Kubernetes?",
       "options_es": [
         "Una unidad mínima desplegable que puede contener uno o más contenedores",
-        "Una imagen Docker según la documentación estándar del servicio",
-        "Un nodo del clúster de manera exclusiva y permanente",
-        "Un servicio de red en cualquier escenario de implementación"
+        "Una imagen Docker publicada en un registry privado y firmada con Notary",
+        "Un nodo del clúster dedicado exclusivamente al plano de control",
+        "Un servicio de red que expone un puerto fijo en todos los nodos"
       ],
       "options_en": [
         "The smallest deployable unit that can contain one or more containers",
-        "A Docker image according to standard service documentation",
-        "A cluster node exclusively and permanently",
-        "A network service in any implementation scenario"
+        "A Docker image published to a private registry and signed with Notary",
+        "A cluster node dedicated solely to the control plane",
+        "A network service exposing a fixed port on every node"
       ],
       "correct_index": 0,
       "explanation_es": "Un Pod es la unidad más pequeña en Kubernetes, típicamente contiene un contenedor, pero puede albergar múltiples contenedores relacionados.",
@@ -376,15 +376,15 @@
       "question_en": "What is the difference between a Pod and a container?",
       "options_es": [
         "Pod es una abstracción de Kubernetes que puede contener múltiples contenedores",
-        "No hay diferencia, son términos sinónimos sin excepciones ni variantes",
-        "Un contenedor es más pequeño que un Pod en todos los casos posibles",
-        "Pods son solo para aplicaciones de microservicios en cualquier escenario de implementación"
+        "No hay diferencia, son términos sinónimos en la documentación de Docker",
+        "Un contenedor es una unidad de Kubernetes más grande que engloba varios Pods",
+        "Pods son solo para aplicaciones de microservicios escritas en el lenguaje de programación Go"
       ],
       "options_en": [
         "Pod is a Kubernetes abstraction that can contain multiple containers",
-        "There is no difference, they are synonymous terms without exceptions or variants",
-        "A container is smaller than a Pod in all possible cases",
-        "Pods are only for microservices applications in any implementation scenario"
+        "There is no difference, they are synonymous terms in Docker's documentation",
+        "A container is a larger Kubernetes unit that groups together several Pods",
+        "Pods are only for microservices applications written in the Go programming language"
       ],
       "correct_index": 0,
       "explanation_es": "Un Pod es la unidad de Kubernetes que puede contener uno o más contenedores que comparten almacenamiento y red.",
@@ -398,16 +398,16 @@
       "question_es": "¿Qué es un ReplicaSet en Kubernetes?",
       "question_en": "What is a ReplicaSet in Kubernetes?",
       "options_es": [
-        "Un tipo de volumen sin excepciones ni variantes",
+        "Un tipo de volumen que se monta como solo lectura en varios pods a la vez",
         "Un controlador que asegura que el número especificado de Pods se ejecute",
-        "Un conjunto de imágenes idénticas sin considerar otros factores relevantes",
-        "Una copias de los datos de forma invariable y constante"
+        "Un conjunto de imágenes idénticas almacenadas en el mismo registry",
+        "Unas copias de los datos que se sincronizan entre nodos"
       ],
       "options_en": [
-        "A type of volume without exceptions or variants",
+        "A type of volume mounted as read-only across multiple pods at once",
         "A controller ensuring the specified number of Pods run",
-        "A set of identical images without considering other relevant factors",
-        "Copies of data invariably and constantly"
+        "A set of identical images stored in the same registry",
+        "Copies of data synchronized across nodes"
       ],
       "correct_index": 1,
       "explanation_es": "Un ReplicaSet es un objeto de Kubernetes que mantiene un conjunto estable de Pods réplicas, reemplazando automáticamente los que fallan.",
@@ -424,13 +424,13 @@
         "Un objeto que describe el estado deseado de Pods y ReplicaSets",
         "Un archivo de configuración",
         "Un proceso de instalación de aplicaciones",
-        "Una copia de un Pod según la documentación estándar del servicio"
+        "Una copia de un Pod que se genera automáticamente al reiniciar el nodo y pierde su volumen"
       ],
       "options_en": [
         "An object describing the desired state of Pods and ReplicaSets",
         "A configuration file",
         "An application installation process",
-        "A copy of a Pod according to standard service documentation"
+        "A copy of a Pod generated automatically when the node restarts and loses its volume"
       ],
       "correct_index": 0,
       "explanation_es": "Un Deployment describe el estado deseado de Pods y gestiona ReplicaSets, permitiendo actualizaciones y rollbacks declarativos.",
@@ -447,13 +447,13 @@
         "Deployment es solo para aplicaciones stateless",
         "No hay diferencia, son nombres alternativos",
         "Deployment gestiona ReplicaSets y proporciona actualizaciones declarativas",
-        "ReplicaSet es más nuevo que Deployment sin considerar otros factores relevantes"
+        "ReplicaSet es más nuevo que Deployment y lo sustituye completamente en todos los clústeres modernos"
       ],
       "options_en": [
         "Deployment is only for stateless applications",
         "There is no difference, they are alternative names",
         "Deployment manages ReplicaSets and provides declarative updates",
-        "ReplicaSet is newer than Deployment without considering other relevant factors"
+        "ReplicaSet is newer than Deployment and completely replaces it in all modern clusters"
       ],
       "correct_index": 2,
       "explanation_es": "Un Deployment abstrae ReplicaSets y agrega funcionalidades como actualización progresiva y rollback automático.",
@@ -467,16 +467,16 @@
       "question_es": "¿Qué es un StatefulSet en Kubernetes?",
       "question_en": "What is a StatefulSet in Kubernetes?",
       "options_es": [
-        "Un Deployment que mantiene estado persistente según la documentación estándar del servicio",
+        "Un Deployment que mantiene estado persistente guardando snapshots en disco",
         "Un controlador para Pods con identidad stable y almacenamiento persistente",
-        "Un servicio sin estado sin excepciones ni variantes",
-        "Un tipo especial de Pod en cualquier escenario de implementación"
+        "Un servicio sin estado que solo expone un endpoint HTTP",
+        "Un tipo especial de Pod que se reinicia sin conservar su nombre ni su volumen"
       ],
       "options_en": [
-        "A Deployment maintaining persistent state according to standard service documentation",
+        "A Deployment maintaining persistent state by saving snapshots to disk",
         "A controller for Pods with stable identity and persistent storage",
-        "A stateless service without exceptions or variants",
-        "A special type of Pod in any implementation scenario"
+        "A stateless service that only exposes an HTTP endpoint",
+        "A special type of Pod that restarts without keeping its name or volume"
       ],
       "correct_index": 1,
       "explanation_es": "Un StatefulSet es un controlador similar a Deployment pero para aplicaciones stateful, garantizando identidad stable y almacenamiento persistente.",
@@ -490,13 +490,13 @@
       "question_es": "¿Qué es un DaemonSet en Kubernetes?",
       "question_en": "What is a DaemonSet in Kubernetes?",
       "options_es": [
-        "Un servicio de fondo según la documentación estándar del servicio",
+        "Un servicio de fondo que se instala mediante un paquete del sistema operativo",
         "Un controlador que asegura que un Pod corra en cada nodo",
         "Un tipo de Pod fantasma",
         "Un Deployment que corre demonios del sistema operativo"
       ],
       "options_en": [
-        "A background service according to standard service documentation",
+        "A background service installed via an operating system package",
         "A controller ensuring a Pod runs on every node",
         "A type of ghost Pod",
         "A Deployment running operating system daemons"
@@ -513,16 +513,16 @@
       "question_es": "¿Qué es un Job en Kubernetes?",
       "question_en": "What is a Job in Kubernetes?",
       "options_es": [
-        "Un Deployment de larga duración de manera exclusiva y permanente",
+        "Un Deployment de larga duración que nunca termina su ejecución",
         "Un objeto que crea Pods para ejecutar tareas hasta completarse",
-        "Un proceso de trabajo manual de manera exclusiva y permanente",
-        "Un tipo de servicio en cualquier escenario de implementación"
+        "Un proceso de trabajo manual que un operador ejecuta desde su terminal",
+        "Un tipo de servicio que expone un puerto TCP fijo"
       ],
       "options_en": [
-        "A long-running Deployment exclusively and permanently",
+        "A long-running Deployment that never finishes execution",
         "An object that creates Pods to run tasks to completion",
-        "A manual work process exclusively and permanently",
-        "A type of service in any implementation scenario"
+        "A manual work process an operator runs from their terminal",
+        "A type of service exposing a fixed TCP port"
       ],
       "correct_index": 1,
       "explanation_es": "Un Job es un objeto de Kubernetes que crea Pods para ejecutar tareas hasta completarse exitosamente, diferente de Deployment para aplicaciones continuas.",
@@ -537,13 +537,13 @@
       "question_en": "What is a CronJob in Kubernetes?",
       "options_es": [
         "Un trabajo que ejecuta solo en el servidor cron",
-        "Un trabajo continuo de manera exclusiva y permanente",
+        "Un trabajo continuo que nunca finaliza ni crea nuevos Pods",
         "Un objeto que ejecuta Jobs en un horario como cron",
         "Un tipo de Pod programado"
       ],
       "options_en": [
         "A job that runs only on a cron server",
-        "A continuous job exclusively and permanently",
+        "A continuous job that never finishes or creates new Pods",
         "An object that runs Jobs on a schedule like cron",
         "A type of scheduled Pod"
       ],
@@ -559,13 +559,13 @@
       "question_es": "¿Qué es un Service en Kubernetes?",
       "question_en": "What is a Service in Kubernetes?",
       "options_es": [
-        "Un daemon del sistema de forma invariable y constante",
+        "Un daemon del sistema que corre fuera del clúster",
         "Un controlador de recursos",
         "Un Pod que proporciona funcionalidades",
         "Una abstracción que define cómo acceder a Pods"
       ],
       "options_en": [
-        "A system daemon invariably and constantly",
+        "A system daemon that runs outside the cluster",
         "A resource controller",
         "A Pod that provides functionality",
         "An abstraction defining how to access Pods"
@@ -583,15 +583,15 @@
       "question_en": "What are the types of Services in Kubernetes?",
       "options_es": [
         "ClusterIP, NodePort, LoadBalancer, ExternalName",
-        "Solo ClusterIP en todos los casos posibles",
+        "Solo ClusterIP, porque los demás tipos fueron retirados",
         "Internal, External, Proxy",
-        "Local, Remote, Hybrid de forma invariable y constante"
+        "Local, Remote, Hybrid definidos por el administrador del clúster"
       ],
       "options_en": [
         "ClusterIP, NodePort, LoadBalancer, ExternalName",
-        "Only ClusterIP in all possible cases",
+        "Only ClusterIP, because the other types were removed",
         "Internal, External, Proxy",
-        "Local, Remote, Hybrid invariably and constantly"
+        "Local, Remote, Hybrid defined by the cluster administrator"
       ],
       "correct_index": 0,
       "explanation_es": "Los tipos principales son ClusterIP (acceso interno), NodePort (puerto en cada nodo), LoadBalancer (IP externa), y ExternalName (alias DNS).",
@@ -605,16 +605,16 @@
       "question_es": "¿Qué es un ConfigMap en Kubernetes?",
       "question_en": "What is a ConfigMap in Kubernetes?",
       "options_es": [
-        "Un tipo de Secret según la documentación estándar del servicio",
-        "Un mapa de configuración del clúster independientemente del contexto aplicado",
+        "Un tipo de Secret que se cifra con una clave maestra distinta",
+        "Un mapa de configuración del clúster gestionado únicamente por el kubelet",
         "Un objeto para almacenar datos de configuración no sensibles en pares clave-valor",
-        "Un archivo de configuración Docker según la documentación estándar del servicio"
+        "Un archivo de configuración Docker que se monta como volumen de solo lectura dentro de cada contenedor"
       ],
       "options_en": [
-        "A type of Secret according to standard service documentation",
-        "A cluster configuration map regardless of the applied context",
+        "A type of Secret encrypted with a separate master key",
+        "A cluster configuration map managed solely by the kubelet",
         "An object to store non-sensitive configuration data in key-value pairs",
-        "A Docker configuration file according to standard service documentation"
+        "A Docker configuration file mounted as a read-only volume inside every container in the Pod"
       ],
       "correct_index": 2,
       "explanation_es": "Un ConfigMap es un objeto de Kubernetes para almacenar datos de configuración no sensibles, accesibles a Pods como variables de entorno o volúmenes.",
@@ -628,16 +628,16 @@
       "question_es": "¿Qué es un Secret en Kubernetes?",
       "question_en": "What is a Secret in Kubernetes?",
       "options_es": [
-        "Un controlador de acceso de manera exclusiva y permanente",
-        "Un tipo especial de Pod secreto sin excepciones ni variantes",
+        "Un controlador de acceso que valida tokens de servicio",
+        "Un tipo especial de Pod secreto que no aparece en 'kubectl get pods'",
         "Un objeto para almacenar datos sensibles como contraseñas y claves",
-        "Un tipo de almacenamiento encriptado sin considerar otros factores relevantes"
+        "Un tipo de almacenamiento encriptado que reside solo en memoria del nodo"
       ],
       "options_en": [
-        "An access controller exclusively and permanently",
-        "A special type of secret Pod without exceptions or variants",
+        "An access controller that validates service tokens",
+        "A special type of secret Pod that doesn't appear in 'kubectl get pods'",
         "An object to store sensitive data like passwords and keys",
-        "A type of encrypted storage without considering other relevant factors"
+        "A type of encrypted storage that lives only in the node's memory"
       ],
       "correct_index": 2,
       "explanation_es": "Un Secret es un objeto que almacena datos sensibles de forma encriptada o codificada en base64, accesibles a Pods de forma segura.",
@@ -651,15 +651,15 @@
       "question_es": "¿Cuál es la diferencia entre ConfigMap y Secret?",
       "question_en": "What is the difference between ConfigMap and Secret?",
       "options_es": [
-        "No hay diferencia funcional sin excepciones ni variantes",
+        "No hay diferencia funcional entre ambos objetos",
         "ConfigMap es para datos no sensibles, Secret para datos sensibles",
-        "Secret es más rápido que ConfigMap sin considerar otros factores relevantes",
+        "Secret es más rápido que ConfigMap porque se guarda en memoria compartida",
         "ConfigMap solo funciona con archivos"
       ],
       "options_en": [
-        "No functional difference without exceptions or variants",
+        "There is no functional difference between the two objects",
         "ConfigMap is for non-sensitive data, Secret for sensitive data",
-        "Secret is faster than ConfigMap without considering other relevant factors",
+        "Secret is faster than ConfigMap because it is stored in shared memory",
         "ConfigMap only works with files"
       ],
       "correct_index": 1,
@@ -677,13 +677,13 @@
         "Un volumen que persiste dentro de un contenedor",
         "Un tipo de Secret para almacenamiento",
         "Un recurso de almacenamiento del clúster independiente de Pods",
-        "Un volumen temporal en memoria según la documentación estándar del servicio"
+        "Un volumen temporal en memoria que se borra al reiniciar el kubelet"
       ],
       "options_en": [
         "A volume that persists within a container",
         "A type of Secret for storage",
         "A cluster storage resource independent of Pods",
-        "A temporary in-memory volume according to standard service documentation"
+        "A temporary in-memory volume that is erased when the kubelet restarts"
       ],
       "correct_index": 2,
       "explanation_es": "Un PersistentVolume es un recurso de almacenamiento del clúster que existe independientemente de Pods, permitiendo persistencia de datos.",
@@ -721,13 +721,13 @@
       "question_en": "How do you add a node to a Kubernetes cluster?",
       "options_es": [
         "Editando el archivo kubeconfig",
-        "Con kubectl add node independientemente del contexto aplicado",
+        "Con 'kubectl add node' pasando el token de kubeadm como argumento",
         "Con docker-compose deploy",
         "Instalando kubelet y kube-proxy en la máquina"
       ],
       "options_en": [
         "By editing the kubeconfig file",
-        "With kubectl add node regardless of the applied context",
+        "With 'kubectl add node' passing the kubeadm token as an argument",
         "With docker-compose deploy",
         "By installing kubelet and kube-proxy on the machine"
       ],
@@ -743,16 +743,16 @@
       "question_es": "¿Qué es el estado de un nodo en Kubernetes?",
       "question_en": "What is the status of a node in Kubernetes?",
       "options_es": [
-        "Solo si está online u offline de manera exclusiva y permanente",
+        "Solo si está online u offline, un valor booleano fijo en el YAML del nodo y en el estado interno del kubelet",
         "Una indicación de su condición y disponibilidad (Ready, NotReady, Unknown)",
-        "Su capacidad de almacenamiento sin excepciones ni variantes",
-        "El número de Pods ejecutando de manera exclusiva y permanente"
+        "Su capacidad de almacenamiento en disco asignada por el StorageClass",
+        "El número de Pods ejecutando, un contador que se reinicia cada 24 horas"
       ],
       "options_en": [
-        "Only if it is online or offline exclusively and permanently",
+        "Only online or offline, a fixed boolean value in the node's YAML and in the kubelet's internal state",
         "An indication of its condition and availability (Ready, NotReady, Unknown)",
-        "Its storage capacity without exceptions or variants",
-        "The number of Pods running exclusively and permanently"
+        "Its disk storage capacity assigned by the StorageClass",
+        "The number of Pods running, a counter that resets every 24 hours"
       ],
       "correct_index": 1,
       "explanation_es": "El estado de un nodo indica si está listo para recibir Pods (Ready), no disponible (NotReady), o si su estado es desconocido.",
@@ -766,13 +766,13 @@
       "question_es": "¿Cómo se elimina un nodo del clúster?",
       "question_en": "How do you remove a node from the cluster?",
       "options_es": [
-        "Con docker-compose down sin considerar otros factores relevantes",
+        "Con 'docker-compose down' ejecutado desde el nodo master",
         "Con kubectl drain y luego kubectl delete node",
         "Editando directamente etcd",
         "Apagando la máquina simplemente"
       ],
       "options_en": [
-        "With docker-compose down without considering other relevant factors",
+        "With 'docker-compose down' run from the master node",
         "With kubectl drain then kubectl delete node",
         "By directly editing etcd",
         "By simply shutting down the machine"
@@ -789,15 +789,15 @@
       "question_es": "¿Qué es tainting un nodo en Kubernetes?",
       "question_en": "What is tainting a node in Kubernetes?",
       "options_es": [
-        "Encriptar los datos del nodo en todos los casos posibles",
-        "Colorear un nodo para identificarlo sin excepciones ni variantes",
-        "Marcar un nodo como corrupto de manera exclusiva y permanente",
+        "Encriptar los datos del nodo con una clave AES gestionada por etcd",
+        "Colorear un nodo en el dashboard para identificarlo visualmente",
+        "Marcar un nodo como corrupto hasta que un administrador lo repare manualmente",
         "Aplicar una restricción que evita que ciertos Pods se ejecuten en él"
       ],
       "options_en": [
-        "Encrypt node data in all possible cases",
-        "Color a node for identification without exceptions or variants",
-        "Mark a node as corrupt exclusively and permanently",
+        "Encrypt the node's data with an AES key managed by etcd",
+        "Color a node in the dashboard to identify it visually",
+        "Mark a node as corrupt until an administrator repairs it manually",
         "Apply a restriction preventing certain Pods from running on it"
       ],
       "correct_index": 3,
@@ -813,15 +813,15 @@
       "question_en": "What is a toleration in Kubernetes?",
       "options_es": [
         "Una configuración que permite que un Pod se ejecute en nodos con taints específicos",
-        "Un nivel de tolerancia de fallos sin considerar otros factores relevantes",
-        "Un tipo de política de red en todos los casos posibles",
-        "La cantidad de error permitida en una aplicación en cualquier escenario de implementación"
+        "Un nivel de tolerancia de fallos calculado por el kube-scheduler",
+        "Un tipo de política de red definida en un NetworkPolicy",
+        "La cantidad de error permitida en una aplicación, medida en el readiness probe configurado en el Pod"
       ],
       "options_en": [
         "A configuration allowing a Pod to run on nodes with specific taints",
-        "A level of fault tolerance without considering other relevant factors",
-        "A type of network policy in all possible cases",
-        "The amount of error allowed in an application in any implementation scenario"
+        "A fault tolerance level calculated by the kube-scheduler",
+        "A type of network policy defined in a NetworkPolicy",
+        "The amount of error allowed in an application, measured by the readiness probe configured in the Pod"
       ],
       "correct_index": 0,
       "explanation_es": "Una tolerancia permite que un Pod tolere y se ejecute en nodos que han sido tainted con restricciones específicas.",
@@ -837,13 +837,13 @@
       "options_es": [
         "La cantidad de CPU y memoria que un contenedor necesita garantizada",
         "Una solicitud para obtener nuevos recursos del cluster",
-        "Un tipo de API de Kubernetes sin considerar otros factores relevantes",
+        "Un tipo de API de Kubernetes expuesta solo al API server interno del clúster",
         "Una solicitud de autenticación"
       ],
       "options_en": [
         "The guaranteed amount of CPU and memory a container needs",
         "A request to obtain new resources from the cluster",
-        "A type of Kubernetes API without considering other relevant factors",
+        "A type of Kubernetes API exposed only to the API server within the cluster",
         "An authentication request"
       ],
       "correct_index": 0,
@@ -861,13 +861,13 @@
         "Una restricción de tiempo de ejecución",
         "El máximo de nodos que puede usar un Pod",
         "La cantidad máxima de CPU y memoria que un contenedor puede usar",
-        "Un límite de número de Pods por nodo de forma invariable y constante"
+        "Un límite de número de Pods por nodo fijado en el kubelet con --max-pods"
       ],
       "options_en": [
         "A runtime execution limit",
         "The maximum number of nodes a Pod can use",
         "The maximum CPU and memory a container can use",
-        "A limit on number of Pods per node invariably and constantly"
+        "A limit on number of Pods per node set in the kubelet with --max-pods"
       ],
       "correct_index": 2,
       "explanation_es": "Los limits especifican la cantidad máxima de recursos que un contenedor puede consumir, evitando contención excesiva.",
@@ -881,13 +881,13 @@
       "question_es": "¿Cuál es la diferencia entre requests y limits?",
       "question_en": "What is the difference between requests and limits?",
       "options_es": [
-        "No hay diferencia, son sinónimos en todos los casos posibles",
+        "No hay diferencia, el scheduler los combina en un solo valor",
         "Requests es para staging, Limits para producción",
         "Requests = garantía mínima, Limits = máximo permitido",
         "Requests es para CPU, Limits para memoria"
       ],
       "options_en": [
-        "There is no difference, they are synonymous in all possible cases",
+        "There is no difference, the scheduler merges them into a single value",
         "Requests is for staging, Limits for production",
         "Requests = guaranteed minimum, Limits = maximum allowed",
         "Requests is for CPU, Limits for memory"
@@ -904,15 +904,15 @@
       "question_es": "¿Qué es una clase de almacenamiento (StorageClass) en Kubernetes?",
       "question_en": "What is a StorageClass in Kubernetes?",
       "options_es": [
-        "Una estrategia de respaldo sin excepciones ni variantes",
-        "Un archivo de configuración de almacenamiento sin excepciones ni variantes",
-        "Un tipo de datos almacenados en todos los casos posibles",
+        "Una estrategia de respaldo automático ejecutada por CronJob",
+        "Un archivo de configuración de almacenamiento ubicado en /etc/kubernetes/manifests",
+        "Un tipo de datos almacenados que se cifra automáticamente en reposo sin excepción alguna en el disco",
         "Una descripción de características de almacenamiento disponibles en el clúster"
       ],
       "options_en": [
-        "A backup strategy without exceptions or variants",
-        "A storage configuration file without exceptions or variants",
-        "A type of stored data in all possible cases",
+        "An automatic backup strategy run by a CronJob",
+        "A storage configuration file located in /etc/kubernetes/manifests directory",
+        "A type of stored data that is automatically encrypted at rest with no exception on disk",
         "A description of available storage characteristics in the cluster"
       ],
       "correct_index": 3,
@@ -927,13 +927,13 @@
       "question_es": "¿Qué es un PersistentVolumeClaim (PVC) en Kubernetes?",
       "question_en": "What is a PersistentVolumeClaim (PVC) in Kubernetes?",
       "options_es": [
-        "Un tipo de Secret sin considerar otros factores relevantes",
+        "Un tipo de Secret montado como variable de entorno",
         "Un controlador de almacenamiento",
         "Un volumen persistente encriptado",
         "Una reclamación de almacenamiento hecha por un Pod"
       ],
       "options_en": [
-        "A type of Secret without considering other relevant factors",
+        "A type of Secret mounted as an environment variable",
         "A storage controller",
         "An encrypted persistent volume",
         "A storage claim made by a Pod"
@@ -951,13 +951,13 @@
       "question_en": "How do you monitor node resources?",
       "options_es": [
         "Con 'kubectl get nodes' solamente",
-        "Con herramientas externas solo según la documentación estándar del servicio",
+        "Con herramientas externas como Prometheus, sin usar kubectl ni la API de métricas del clúster",
         "No hay forma de monitorear nodos en Kubernetes",
         "Con 'kubectl top nodes' para ver uso de CPU y memoria en tiempo real"
       ],
       "options_en": [
         "With 'kubectl get nodes' only",
-        "With external tools only according to standard service documentation",
+        "With external tools like Prometheus, without using kubectl or the cluster's metrics API",
         "There is no way to monitor nodes in Kubernetes",
         "With 'kubectl top nodes' to see real-time CPU and memory usage"
       ],
@@ -974,13 +974,13 @@
       "question_en": "What is an endpoint in Kubernetes?",
       "options_es": [
         "Una dirección IP y puerto de un Pod expuesto por un Service",
-        "Una política de red independientemente del contexto aplicado",
+        "Una política de red que bloquea el tráfico entre namespaces",
         "Un tipo de almacenamiento",
         "Un URL de una aplicación"
       ],
       "options_en": [
         "An IP address and port of a Pod exposed by a Service",
-        "A network policy regardless of the applied context",
+        "A network policy that blocks traffic between namespaces",
         "A type of storage",
         "A URL of an application"
       ],
@@ -996,16 +996,16 @@
       "question_es": "¿Cómo se cordonan (cordon) los nodos en Kubernetes?",
       "question_en": "How do you cordon nodes in Kubernetes?",
       "options_es": [
-        "No existe ese comando en cualquier escenario de implementación",
-        "Editando el archivo de configuración sin considerar otros factores relevantes",
+        "No existe ese comando; el efecto solo se consigue reiniciando el kubelet del nodo, lo que además reinicia todos sus Pods",
+        "Editando el archivo /etc/kubernetes/kubelet.conf directamente",
         "Con 'kubectl cordon' para evitar que nuevos Pods se asignen al nodo",
-        "Con una cuerda física en todos los casos posibles"
+        "Con una cuerda física conectada al puerto de red del nodo"
       ],
       "options_en": [
-        "That command does not exist in any implementation scenario",
-        "By editing the configuration file without considering other relevant factors",
+        "That command does not exist; the effect can only be achieved by restarting the node's kubelet, which also restarts all of its Pods",
+        "By directly editing the /etc/kubernetes/kubelet.conf file",
         "With 'kubectl cordon' to prevent new Pods from being assigned to the node",
-        "With a physical rope in all possible cases"
+        "With a physical rope connected to the node's network port"
       ],
       "correct_index": 2,
       "explanation_es": "'kubectl cordon' marca un nodo como no schedulable, evitando que se asignen nuevos Pods sin afectar los existentes.",
@@ -1019,16 +1019,16 @@
       "question_es": "¿Cuál es la diferencia entre cordon y drain?",
       "question_en": "What is the difference between cordon and drain?",
       "options_es": [
-        "No hay diferencia independientemente del contexto aplicado",
+        "No hay diferencia, ambos comandos ejecutan el mismo código interno",
         "'cordon' previene asignación de nuevos Pods, 'drain' desaloja Pods existentes",
-        "'drain' es más rápido que 'cordon' de forma invariable y constante",
-        "'cordon' elimina el nodo, 'drain' lo pausa sin considerar otros factores relevantes"
+        "'drain' es más rápido que 'cordon' porque omite la comprobación del PodDisruptionBudget y no ejecuta un desalojo controlado de los Pods",
+        "'cordon' elimina el nodo del clúster, 'drain' solo lo reinicia"
       ],
       "options_en": [
-        "There is no difference regardless of the applied context",
+        "There is no difference, both commands run the same internal code",
         "'cordon' prevents new Pod assignment, 'drain' evicts existing Pods",
-        "'drain' is faster than 'cordon' invariably and constantly",
-        "'cordon' deletes the node, 'drain' pauses it without considering other relevant factors"
+        "'drain' is faster than 'cordon' because it skips the PodDisruptionBudget check and does not perform a controlled eviction of the Pods",
+        "'cordon' removes the node from the cluster, 'drain' only restarts it"
       ],
       "correct_index": 1,
       "explanation_es": "'cordon' solo previene nuevos Pods, 'drain' además desaloja los Pods existentes del nodo.",
@@ -1042,16 +1042,16 @@
       "question_es": "¿Qué es kubectl en Kubernetes?",
       "question_en": "What is kubectl in Kubernetes?",
       "options_es": [
-        "Un servicio de Kubernetes independientemente del contexto aplicado",
+        "Un servicio de Kubernetes que se ejecuta dentro del clúster como Pod",
         "La herramienta de línea de comandos para interactuar con el clúster",
-        "Un tipo de Pod sin excepciones ni variantes",
-        "Un driver de almacenamiento según la documentación estándar del servicio"
+        "Un tipo de Pod que se despliega automáticamente en cada nodo",
+        "Un driver de almacenamiento compilado dentro del kubelet"
       ],
       "options_en": [
-        "A Kubernetes service regardless of the applied context",
+        "A Kubernetes service that runs inside the cluster as a Pod",
         "The command-line tool to interact with the cluster",
-        "A type of Pod without exceptions or variants",
-        "A storage driver according to standard service documentation"
+        "A type of Pod that is automatically deployed on every node",
+        "A storage driver compiled into the kubelet"
       ],
       "correct_index": 1,
       "explanation_es": "kubectl es la herramienta de línea de comandos principal para interactuar con clústeres Kubernetes.",
@@ -1065,16 +1065,16 @@
       "question_es": "¿Cómo se configura kubectl para conectarse a un clúster?",
       "question_en": "How do you configure kubectl to connect to a cluster?",
       "options_es": [
-        "Con una variable de entorno KUBERNETES_URL en todos los casos posibles",
+        "Con una variable de entorno KUBERNETES_URL que kubectl lee al iniciar antes de cada llamada a la API",
         "Editando el archivo kubeconfig en ~/.kube/config con credenciales del clúster",
-        "Manualmente editando el Dockerfile de manera exclusiva y permanente",
-        "Automáticamente sin configuración sin excepciones ni variantes"
+        "Manualmente editando el Dockerfile de la imagen del clúster",
+        "Automáticamente sin configuración, detectando el clúster por DNS"
       ],
       "options_en": [
-        "With an environment variable KUBERNETES_URL in all possible cases",
+        "With an environment variable KUBERNETES_URL that kubectl reads on startup before every API call",
         "By editing the kubeconfig file at ~/.kube/config with cluster credentials",
-        "By manually editing the Dockerfile exclusively and permanently",
-        "Automatically without configuration without exceptions or variants"
+        "By manually editing the cluster image's Dockerfile",
+        "Automatically without configuration, detecting the cluster via DNS"
       ],
       "correct_index": 1,
       "explanation_es": "El archivo kubeconfig (~/.kube/config) contiene la información del clúster, usuario y contexto para que kubectl se conecte.",
@@ -1091,13 +1091,13 @@
         "kubectl create o kubectl apply",
         "kubectl build",
         "kubectl deploy",
-        "kubectl init de forma invariable y constante"
+        "kubectl init, que descarga la imagen base del clúster"
       ],
       "options_en": [
         "kubectl create or kubectl apply",
         "kubectl build",
         "kubectl deploy",
-        "kubectl init invariably and constantly"
+        "kubectl init, which downloads the cluster's base image"
       ],
       "correct_index": 0,
       "explanation_es": "'kubectl create' crea recursos nuevos, 'kubectl apply' es idempotente y se prefiere para IaC.",
@@ -1113,13 +1113,13 @@
       "options_es": [
         "kubectl modify",
         "kubectl update",
-        "kubectl patch sin excepciones ni variantes",
+        "kubectl patch, pero solo acepta borrar campos, nunca añadirlos",
         "kubectl apply o kubectl set"
       ],
       "options_en": [
         "kubectl modify",
         "kubectl update",
-        "kubectl patch without exceptions or variants",
+        "kubectl patch, but it only accepts removing fields, never adding them",
         "kubectl apply or kubectl set"
       ],
       "correct_index": 3,
@@ -1160,13 +1160,13 @@
         "kubectl show recurso",
         "kubectl describe recurso",
         "kubectl info recurso",
-        "kubectl get recurso de manera exclusiva y permanente"
+        "kubectl get recurso, que incluye los eventos del historial completo"
       ],
       "options_en": [
         "kubectl show resource",
         "kubectl describe resource",
         "kubectl info resource",
-        "kubectl get resource exclusively and permanently"
+        "kubectl get resource, which includes the full history of events"
       ],
       "correct_index": 1,
       "explanation_es": "'kubectl describe' proporciona información detallada incluyendo eventos y estado de un recurso.",
@@ -1204,13 +1204,13 @@
       "question_en": "How do you run a command inside a Pod with kubectl?",
       "options_es": [
         "kubectl exec pod-name -- comando",
-        "kubectl run comando de manera exclusiva y permanente",
+        "kubectl run comando, que crea un nuevo Deployment para ejecutarlo",
         "kubectl shell pod-name",
         "kubectl console pod-name"
       ],
       "options_en": [
         "kubectl exec pod-name -- command",
-        "kubectl run command exclusively and permanently",
+        "kubectl run command, which creates a new Deployment to run it",
         "kubectl shell pod-name",
         "kubectl console pod-name"
       ],
@@ -1226,15 +1226,15 @@
       "question_es": "¿Qué es el auto-complete de kubectl?",
       "question_en": "What is kubectl autocompletion?",
       "options_es": [
-        "Un tipo de compresión de datos de forma invariable y constante",
-        "Una herramienta de análisis de comandos de forma invariable y constante",
-        "Una característica de seguridad sin excepciones ni variantes",
+        "Un tipo de compresión de datos usada al transferir manifiestos YAML",
+        "Una herramienta de análisis de comandos que se ejecuta como Job aparte",
+        "Una característica de seguridad que exige autenticación por certificado registrada en el AdmissionController",
         "La capacidad de completar automáticamente comandos y recursos al presionar TAB"
       ],
       "options_en": [
-        "A type of data compression invariably and constantly",
-        "A command analysis tool invariably and constantly",
-        "A security feature without exceptions or variants",
+        "A type of data compression used when transferring YAML manifests",
+        "A command analysis tool that runs as a separate Job",
+        "A security feature that requires certificate-based authentication registered in the AdmissionController",
         "The ability to auto-complete commands and resources by pressing TAB"
       ],
       "correct_index": 3,
@@ -1252,13 +1252,13 @@
         "kubectl get all -n namespace",
         "kubectl list namespace",
         "kubectl show namespace",
-        "kubectl describe all de manera exclusiva y permanente"
+        "kubectl describe all, que solo funciona en el namespace default"
       ],
       "options_en": [
         "kubectl get all -n namespace",
         "kubectl list namespace",
         "kubectl show namespace",
-        "kubectl describe all exclusively and permanently"
+        "kubectl describe all, which only works in the default namespace"
       ],
       "correct_index": 0,
       "explanation_es": "'kubectl get all -n <namespace>' lista todos los recursos en ese namespace específico.",
@@ -1274,13 +1274,13 @@
       "options_es": [
         "Editando ~/.kube/config manualmente",
         "Con una variable de entorno KUBENAMESPACE",
-        "kubectl set-namespace según la documentación estándar del servicio",
+        "kubectl set-namespace, que requiere reiniciar el proxy de kubectl",
         "kubectl config set-context --current --namespace=<namespace>"
       ],
       "options_en": [
         "By editing ~/.kube/config manually",
         "With a KUBENAMESPACE environment variable",
-        "kubectl set-namespace according to standard service documentation",
+        "kubectl set-namespace, which requires restarting the kubectl proxy",
         "kubectl config set-context --current --namespace=<namespace>"
       ],
       "correct_index": 3,
@@ -1296,13 +1296,13 @@
       "question_en": "How do you label resources in Kubernetes?",
       "options_es": [
         "Con una instrucción LABEL en Dockerfile",
-        "En el archivo kubeconfig en cualquier escenario de implementación",
+        "En el archivo kubeconfig, dentro del bloque de credenciales del usuario",
         "Con 'kubectl label' para asignar etiquetas clave-valor",
         "Automáticamente por Kubernetes"
       ],
       "options_en": [
         "With a LABEL instruction in Dockerfile",
-        "In the kubeconfig file in any implementation scenario",
+        "In the kubeconfig file, inside the user's credentials block",
         "With 'kubectl label' to assign key-value labels",
         "Automatically by Kubernetes"
       ],
@@ -1319,13 +1319,13 @@
       "question_en": "How do you scale a Deployment's replicas with kubectl?",
       "options_es": [
         "kubectl replicate deployment nombre",
-        "kubectl increase deployment nombre independientemente del contexto aplicado",
+        "kubectl increase deployment nombre, que suma una réplica cada vez",
         "kubectl scale deployment nombre --replicas=N",
         "Editando el YAML y aplicando con apply"
       ],
       "options_en": [
         "kubectl replicate deployment name",
-        "kubectl increase deployment name regardless of the applied context",
+        "kubectl increase deployment name, which adds one replica each time",
         "kubectl scale deployment name --replicas=N",
         "By editing YAML and applying with apply"
       ],
@@ -1365,13 +1365,13 @@
       "question_en": "How do you validate a YAML file before applying it in kubectl?",
       "options_es": [
         "No hay forma de validar antes",
-        "kubectl check archivo.yaml independientemente del contexto aplicado",
+        "kubectl check archivo.yaml, que solo valida la sintaxis JSON",
         "kubectl apply -f archivo.yaml --dry-run=client",
         "Se valida automáticamente al aplicar"
       ],
       "options_en": [
         "There is no way to validate before",
-        "kubectl check file.yaml regardless of the applied context",
+        "kubectl check file.yaml, which only validates JSON syntax",
         "kubectl apply -f file.yaml --dry-run=client",
         "It validates automatically when applying"
       ],

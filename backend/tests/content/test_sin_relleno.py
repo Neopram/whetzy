@@ -29,16 +29,7 @@ RELLENO = {
 
 
 def _es_relleno(q: dict) -> bool:
-    return bool(
-        cqb.PLACEHOLDER_STEM.match(q.get("question_es") or "")
-        or cqb.PLACEHOLDER_STEM.match(q.get("question_en") or "")
-        or [str(o).strip() for o in (q.get("options_es") or [])]
-        in cqb.PLACEHOLDER_OPTIONS
-        or (q.get("explanation_es") or "").strip().lower()
-        in cqb.PLACEHOLDER_EXPLANATIONS
-        or (q.get("explanation_en") or "").strip().lower()
-        in cqb.PLACEHOLDER_EXPLANATIONS
-    )
+    return cqb.is_placeholder(q)
 
 
 @pytest.mark.parametrize(
@@ -49,6 +40,11 @@ def _es_relleno(q: dict) -> bool:
         ("options_es", ["A", "B", "C", "D"]),
         ("explanation_es", "Explicacion correcta"),
         ("explanation_en", "Correct explanation"),
+        # Segunda forma (39.37): track20 mod2003-2005.
+        ("options_es", ["Opción C 1", "Opción D 1", "Opción B 1", "Opción A 1"]),
+        ("options_es", ["Snowflake A 6", "Snowflake D 6", "Snowflake C 6", "Snowflake B 6"]),
+        ("explanation_es", "Respuesta para pregunta 1"),
+        ("explanation_en", "Snowflake answer 6"),
     ],
 )
 def test_cada_senal_de_relleno_se_detecta_sola(campo: str, valor: object) -> None:
@@ -84,14 +80,27 @@ def _preguntas(p: Path) -> list[dict]:
     return data if isinstance(data, list) else data.get("questions", [])
 
 
-def test_el_banco_no_tiene_relleno() -> None:
-    relleno = [
-        f"{p.relative_to(ROOT).as_posix()} {q.get('id')}"
+def _relleno_del_banco() -> list[str]:
+    return [
+        str(q.get("id"))
         for p in sorted((ROOT / "content" / "questions").rglob("*.json"))
         for q in _preguntas(p)
         if _es_relleno(q)
     ]
-    assert relleno == [], f"{len(relleno)} preguntas de relleno: {relleno[:5]}"
+
+
+def test_el_banco_no_tiene_relleno_nuevo() -> None:
+    """El relleno conocido (39.37) espera su reescritura; uno nuevo no entra."""
+    conocido = set(json.loads(cqb.PLACEHOLDER_KNOWN.read_text(encoding="utf-8")))
+    nuevo = sorted(set(_relleno_del_banco()) - conocido)
+    assert nuevo == [], f"{len(nuevo)} preguntas de relleno nuevas: {nuevo[:5]}"
+
+
+def test_la_lista_de_relleno_conocido_solo_encoge() -> None:
+    """Una pregunta reescrita sale de la lista en el mismo commit: si no, la lista tapa relleno futuro."""
+    conocido = set(json.loads(cqb.PLACEHOLDER_KNOWN.read_text(encoding="utf-8")))
+    arreglado = sorted(conocido - set(_relleno_del_banco()))
+    assert arreglado == [], f"ya no son relleno, quítalos de {cqb.PLACEHOLDER_KNOWN.name}: {arreglado[:5]}"
 
 
 def test_la_muestra_de_track13_es_relleno() -> None:

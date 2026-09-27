@@ -7,15 +7,15 @@
       "question_es": "¿Cuál es el principal desafío cuando se implementa sharding en una base de datos NoSQL?",
       "question_en": "What is the primary challenge when implementing sharding in a NoSQL database?",
       "options_es": [
-        "Eliminar completamente la replicación de datos",
-        "Implementar un único índice global compartido independientemente del contexto aplicado",
-        "Asegurar que todos los servidores tengan exactamente el mismo hardware",
+        "Eliminar completamente la replicación de datos para simplificar la arquitectura",
+        "Implementar un único índice global compartido a nivel de cluster",
+        "Asegurar que todos los servidores tengan exactamente el mismo hardware y configuración",
         "Distribuir datos de manera que las consultas se balanceen uniformemente entre nodos"
       ],
       "options_en": [
-        "Completely eliminating data replication",
-        "Implementing a single global shared index regardless of the applied context",
-        "Ensuring all servers have exactly identical hardware",
+        "Completely eliminating data replication to simplify the architecture",
+        "Implementing a single global shared index at the cluster level",
+        "Ensuring all servers have exactly identical hardware and configuration",
         "Distributing data so queries are evenly balanced across nodes"
       ],
       "correct_index": 3,
@@ -30,15 +30,15 @@
       "question_es": "¿Qué problema surge cuando se elige un shard key con baja cardinalidad?",
       "question_en": "What problem arises when choosing a shard key with low cardinality?",
       "options_es": [
-        "Los índices se comprimen y pierden eficiencia sin excepciones ni variantes",
+        "Los índices se comprimen automáticamente con algoritmo LZ4, perdiendo la capacidad de búsqueda rápida",
         "Se crean distribuciones sesgadas donde algunos shards almacenan muchos más datos",
-        "Se incrementa automáticamente la velocidad de replicación de manera exclusiva y permanente",
+        "Los clientes no pueden conectarse a múltiples shards simultáneamente sin ejecutar réplicas",
         "Los clientes no pueden conectarse a múltiples shards simultáneamente"
       ],
       "options_en": [
-        "Indexes compress and lose efficiency without exceptions or variants",
+        "Indexes automatically compress with LZ4 algorithm, losing fast search capacity",
         "Creates skewed distributions where some shards store much more data",
-        "Replication speed automatically increases exclusively and permanently",
+        "Clients cannot connect to multiple shards without running replica nodes",
         "Clients cannot connect to multiple shards simultaneously"
       ],
       "correct_index": 1,
@@ -72,15 +72,15 @@
       "question_es": "¿Cuál es la función principal del mongos en una arquitectura de MongoDB sharded?",
       "question_en": "What is the primary function of mongos in a MongoDB sharded architecture?",
       "options_es": [
-        "Ejecuta todas las operaciones de replicación entre nodos",
-        "Almacena todos los datos de configuración del cluster",
-        "Comprime datos para reducir el uso de almacenamiento en todos los casos posibles",
+        "Ejecuta todas las operaciones de replicación entre nodos del cluster",
+        "Almacena todos los datos de configuración del cluster y metadatos",
+        "Comprime datos usando algoritmo snappy para reducir uso de almacenamiento",
         "Actúa como un enrutador que dirige las consultas al shard correcto"
       ],
       "options_en": [
-        "Executes all replication operations between nodes",
-        "Stores all cluster configuration data",
-        "Compresses data to reduce storage usage in all possible cases",
+        "Executes all replication operations between cluster nodes",
+        "Stores all cluster configuration data and metadata",
+        "Compresses data using snappy algorithm to reduce storage usage",
         "Acts as a router that directs queries to the correct shard"
       ],
       "correct_index": 3,
@@ -118,16 +118,16 @@
       "question_es": "¿Cuál es una desventaja del sharding por rangos comparado con el hash sharding?",
       "question_en": "What is a disadvantage of range sharding compared to hash sharding?",
       "options_es": [
-        "Los valores secuenciales pueden crear hot spots si la distribución no es uniforme",
-        "Requiere más memoria RAM en cada cliente conectado",
-        "Impide la replicación de datos entre nodos sin considerar otros factores relevantes",
-        "Reduce la capacidad de búsqueda por rango (range queries)"
+        "Los valores secuenciales pueden causar hot spots si la distribución de datos no es uniforme",
+        "Requiere significativamente más memoria RAM en cada cliente conectado al cluster",
+        "Impide por completo la replicación de datos entre nodos en múltiples datacenters",
+        "Reduce la capacidad de búsqueda por rango (range queries) en índices del cluster"
       ],
       "options_en": [
-        "Sequential values can create hot spots if distribution is not uniform",
-        "Requires more RAM on each connected client",
-        "Prevents data replication between nodes without considering other relevant factors",
-        "Reduces the ability to perform range queries"
+        "Sequential values can cause hot spots if data distribution is not uniform across nodes",
+        "Requires significantly more RAM on each client connected in the cluster",
+        "Completely prevents data replication between nodes in multi-datacenter setups",
+        "Reduces range query ability (range queries) on cluster indexes"
       ],
       "correct_index": 0,
       "explanation_es": "El sharding por rangos divide los datos en rangos de valores. Si los datos son secuenciales o tienen una distribución desigual (ej: muchos datos en un rango), se crean hot spots. El hash sharding mitiga esto distribuyendo uniformemente independientemente del patrón de valores.",
@@ -141,15 +141,15 @@
       "question_es": "¿Cómo se manejaban las transacciones multi-shard antes de MongoDB 4.0?",
       "question_en": "How were multi-shard transactions handled before MongoDB 4.0?",
       "options_es": [
-        "Se realizaban mediante cambios de esquema automáticos de forma invariable y constante",
-        "Se delegaban completamente al sistema operativo para coordinar",
-        "Se ejecutaban automáticamente de manera atómica en todos los shards",
+        "Se realizaban mediante cambios de esquema automáticos ejecutados por el balancer del cluster",
+        "Se delegaban completamente al sistema operativo para coordinar la consistencia global",
+        "Se ejecutaban automáticamente de manera atómica en todos los shards simultáneamente",
         "No eran completamente soportadas; se requería lógica de aplicación para consistencia"
       ],
       "options_en": [
-        "Performed through automatic schema changes invariably and constantly",
-        "Delegated entirely to the operating system for coordination",
-        "Executed automatically atomically across all shards",
+        "Performed through automatic schema changes executed by the cluster balancer",
+        "Delegated entirely to the operating system for coordinating global consistency",
+        "Executed automatically atomically across all shards simultaneously",
         "Were not fully supported; application logic was required for consistency"
       ],
       "correct_index": 3,
@@ -183,16 +183,16 @@
       "question_es": "¿Cuál es el impacto de realizar una agregación que requiere datos de múltiples shards?",
       "question_en": "What is the impact of performing an aggregation that requires data from multiple shards?",
       "options_es": [
-        "El trabajo se distribuye entre los shards, pero el merge final ocurre en mongos o en el shard primario",
-        "Se rechaza la consulta para proteger la consistencia de datos en todos los casos posibles",
-        "Se crea automáticamente un índice global que mejora el rendimiento sin excepciones ni variantes",
-        "El rendimiento se duplica automáticamente al usar múltiples shards"
+        "El trabajo se distribuye entre los shards, pero el merge final ocurre en mongos",
+        "Se rechaza por completo la consulta para proteger la integridad referencial",
+        "Se crea automáticamente un índice global que acelera el merge de resultados",
+        "El rendimiento se duplica automáticamente al usar múltiples shards en distribución"
       ],
       "options_en": [
-        "The work is distributed across shards, but final merge occurs on mongos or primary shard",
-        "The query is rejected to protect data consistency in all possible cases",
-        "A global index is automatically created to improve performance without exceptions or variants",
-        "Performance automatically doubles by using multiple shards"
+        "The work is distributed across shards, but final merge occurs on mongos",
+        "The query is completely rejected to protect referential integrity",
+        "A global index is automatically created to speed up result merging",
+        "Performance automatically doubles when using multiple shards in distribution"
       ],
       "correct_index": 0,
       "explanation_es": "En agregaciones multi-shard, cada shard procesa su porción de datos. Los resultados intermedios se envían a mongos (o al shard primario si está en una transacción), donde se combinan y finalizan. Esta operación es más costosa que una consulta local porque requiere comunicación entre nodos.",
@@ -206,16 +206,16 @@
       "question_es": "¿Qué es un 'jumbo chunk' y por qué es problemático?",
       "question_en": "What is a 'jumbo chunk' and why is it problematic?",
       "options_es": [
-        "Una colección que ha sido comprimida para reducir su tamaño en cualquier escenario de implementación",
-        "Un shard que se ha desconectado del cluster sin considerar otros factores relevantes",
-        "Un documento individual que ocupa más de 1 GB de almacenamiento",
-        "Un chunk que no puede dividirse más porque sus documentos comparten la misma shard key"
+        "Una colección que ha sido comprimida para reducir tamaño con algoritmo ZSTD avanzado",
+        "Un shard que se ha desconectado durante una ventana de mantenimiento del cluster",
+        "Un documento individual que ocupa más de 1 GB de almacenamiento en el disco duro",
+        "Un chunk que no puede dividirse más porque sus documentos comparten la shard key"
       ],
       "options_en": [
-        "A collection that has been compressed to reduce its size in any implementation scenario",
-        "A shard that has disconnected from the cluster without considering other relevant factors",
-        "An individual document that occupies more than 1 GB of storage",
-        "A chunk that cannot be split further because its documents share the same shard key"
+        "A collection that has been compressed to reduce size with advanced ZSTD algorithm",
+        "A shard that has disconnected during a maintenance window of the cluster",
+        "An individual document that occupies more than 1 GB of storage on disk drive",
+        "A chunk that cannot be split further because its documents share the shard key"
       ],
       "correct_index": 3,
       "explanation_es": "Un jumbo chunk es un chunk que no puede dividirse porque muchos documentos comparten la misma shard key, volviéndolo muy grande (típicamente > 128 MB). Esto es problemático porque evita que el balancer distribuya datos uniformemente, creando un hot spot permanente.",
@@ -229,16 +229,16 @@
       "question_es": "¿Cuál es la principal ventaja de usar un shard key 'inmutable' en MongoDB?",
       "question_en": "What is the primary advantage of using an 'immutable' shard key in MongoDB?",
       "options_es": [
-        "Permite cambiar la shard key sin redistribuir datos",
-        "Mejora automáticamente el cifrado de todos los datos",
-        "Se evita accidentalmente cambiar documentos que requieren re-sharding",
-        "Reduce el consumo de memoria en todos los clientes de forma invariable y constante"
+        "Permite cambiar la shard key sin tener que redistribuir datos a otros nodos del cluster",
+        "Mejora automáticamente el cifrado de todos los datos de la colección",
+        "Se evita accidentalmente cambiar documentos que requieren re-sharding automático",
+        "Reduce significativamente el consumo de memoria en todos los clientes conectados"
       ],
       "options_en": [
-        "Allows changing shard key without redistributing data",
-        "Automatically improves encryption of all data",
-        "Prevents accidentally changing documents that would require re-sharding",
-        "Reduces memory consumption on all clients invariably and constantly"
+        "Allows changing shard key without redistributing data to other cluster nodes",
+        "Automatically improves encryption of all data in the collection",
+        "Prevents accidentally changing documents requiring automatic re-sharding",
+        "Significantly reduces memory consumption on all connected clients"
       ],
       "correct_index": 2,
       "explanation_es": "Una shard key inmutable es aquella que no cambia durante la vida útil del documento. MongoDB 5.0+ permite shard keys mutables, pero las inmutables son preferidas porque cambiar una shard key requeriría mover el documento a otro shard, lo que es costoso. Las shard keys inmutables garantizan que no habrá sorpresas.",
@@ -294,16 +294,16 @@
       "question_es": "¿Cuál es el impacto de tener demasiados shards para un conjunto de datos pequeño?",
       "question_en": "What is the impact of having too many shards for a small dataset?",
       "options_es": [
-        "Se cifran automáticamente todos los datos para mayor seguridad",
+        "Se cifran automáticamente todos los datos para proporcionar mayor seguridad",
         "Automáticamente se mejora el rendimiento porque hay más paralelismo",
-        "Se reduce la cantidad de RAM necesaria en todos los nodos de manera exclusiva y permanente",
-        "Se incrementa la sobrecarga de coordinación sin beneficio de rendimiento"
+        "Se reduce significativamente la cantidad de RAM necesaria en todos los nodos del cluster",
+        "Se incrementa la sobrecarga de coordinación sin beneficio real de rendimiento"
       ],
       "options_en": [
-        "Automatically encrypts all data for added security",
-        "Automatically improves performance because of more parallelism",
-        "Reduces the amount of RAM needed on all nodes exclusively and permanently",
-        "Increases coordination overhead without performance benefit"
+        "Automatically encrypts all data to provide additional security",
+        "Automatically improves performance because of greater parallelism",
+        "Significantly reduces RAM needed on all cluster nodes",
+        "Increases coordination overhead without real performance benefit"
       ],
       "correct_index": 3,
       "explanation_es": "Tener muchos shards para pocos datos incrementa innecesariamente la complejidad operativa. Cada shard requiere coordinación, y si la mayoría están casi vacíos, se desperdician recursos. El sharding debe considerarse cuando el volumen de datos justifica la complejidad añadida.",
@@ -317,15 +317,15 @@
       "question_es": "¿Qué herramienta o proceso se encarga de balancear chunks entre shards en MongoDB?",
       "question_en": "What tool or process is responsible for balancing chunks between shards in MongoDB?",
       "options_es": [
-        "El cliente debe implementar manualmente la lógica de re-balancing",
-        "Un algoritmo que se ejecuta en tiempo de consulta en mongos",
-        "Un job cron externo que se ejecuta cada hora según la documentación estándar del servicio",
+        "El cliente debe implementar manualmente toda la lógica completa de re-balancing",
+        "Un algoritmo que se ejecuta en tiempo de consulta dentro de mongos",
+        "Un job cron externo que se ejecuta cada hora en el servidor de configuración",
         "El balancer, que es un proceso de background que se ejecuta en el config server"
       ],
       "options_en": [
-        "The client must manually implement re-balancing logic",
-        "An algorithm executed at query time in mongos",
-        "An external cron job that runs every hour according to standard service documentation",
+        "The client must manually implement all complete re-balancing logic",
+        "An algorithm executed at query time within mongos",
+        "An external cron job that runs every hour on configuration server",
         "The balancer, a background process running on the config server"
       ],
       "correct_index": 3,
@@ -340,16 +340,16 @@
       "question_es": "¿Cuál es la diferencia entre replicación asíncrona y síncrona en bases de datos NoSQL?",
       "question_en": "What is the difference between asynchronous and synchronous replication in NoSQL databases?",
       "options_es": [
-        "La replicación asíncrona es más rápida y siempre es mejor en cualquier escenario de implementación",
-        "La replicación síncrona espera confirmación del replica antes de retornar al cliente; la asíncrona retorna inmediatamente",
-        "La replicación síncrona usa más CPU; la asíncrona usa más memoria",
-        "La replicación síncrona solo funciona con datos encriptados en todos los casos posibles"
+        "La replicación asíncrona es más rápida pero puede perder datos si maestro falla",
+        "La replicación síncrona espera confirmación del replica antes de retornar",
+        "La replicación síncrona usa significativamente más CPU que la asíncrona",
+        "La replicación síncrona solo funciona cuando los datos están cifrados"
       ],
       "options_en": [
-        "Asynchronous replication is faster and always better in any implementation scenario",
-        "Synchronous replication waits for replica confirmation before returning to client; asynchronous returns immediately",
-        "Synchronous replication uses more CPU; asynchronous uses more memory",
-        "Synchronous replication only works with encrypted data in all possible cases"
+        "Asynchronous replication is faster but can lose data if master fails",
+        "Synchronous replication waits for replica confirmation before returning to client",
+        "Synchronous replication uses significantly more CPU than asynchronous",
+        "Synchronous replication only works when data is encrypted"
       ],
       "correct_index": 1,
       "explanation_es": "En replicación síncrona, el maestro espera a que al menos un replica confirme la escritura antes de reconocer al cliente. En replicación asíncrona, el maestro reconoce al cliente inmediatamente y replica después. La síncrona es más segura pero más lenta; la asíncrona es más rápida pero puede perder datos si el maestro falla.",
@@ -363,16 +363,16 @@
       "question_es": "¿Qué es un 'read preference' en MongoDB y cuándo es útil?",
       "question_en": "What is a 'read preference' in MongoDB and when is it useful?",
       "options_es": [
-        "Una configuración que especifica qué nodos se pueden usar para lecturas",
-        "Una regla que determina si se usa sharding o replicación de forma invariable y constante",
-        "Un protocolo que acelera automáticamente todas las consultas",
-        "Un algoritmo que comprime datos antes de enviarlos al cliente"
+        "Una configuración que especifica qué nodos pueden usar para lecturas",
+        "Una regla que determina automáticamente si se usa sharding o replicación",
+        "Un protocolo que acelera automáticamente todas las consultas del cliente",
+        "Un algoritmo que comprime datos antes de enviarlos al cliente remoto"
       ],
       "options_en": [
         "A configuration specifying which nodes can be used for reads",
-        "A rule determining whether to use sharding or replication invariably and constantly",
-        "A protocol that automatically accelerates all queries",
-        "An algorithm that compresses data before sending to client"
+        "A rule determining automatically whether to use sharding or replication",
+        "A protocol that automatically accelerates all client queries",
+        "An algorithm that compresses data before sending to remote client"
       ],
       "correct_index": 0,
       "explanation_es": "Read preference permite especificar dónde se ejecutan lecturas: en el primario, en secundarios, o en una mezcla. Es útil para balancear la carga de lectura (usando secundarios), o para leer datos consistentes (primario). Diferentes modos: PRIMARY, PRIMARY_PREFERRED, SECONDARY, SECONDARY_PREFERRED, NEAREST.",
@@ -405,16 +405,16 @@
       "question_es": "¿Cuál es el propósito de un 'arbiter' en un conjunto de replicación?",
       "question_en": "What is the purpose of an 'arbiter' in a replica set?",
       "options_es": [
-        "Almacenar y replicar datos como un nodo normal según la documentación estándar del servicio",
-        "Coordinar backups automáticos de la base de datos",
-        "Ejecutar queries de solo lectura de manera rápida",
-        "Participar en elecciones de primario sin almacenar datos"
+        "Almacenar y replicar datos como un nodo normal en el replica set",
+        "Coordinar backups automáticos de la base de datos en intervalos regulares",
+        "Ejecutar queries de solo lectura de manera rápida desde caché",
+        "Participar en elecciones de primario sin almacenar datos de usuario"
       ],
       "options_en": [
-        "Store and replicate data like a normal node according to standard service documentation",
-        "Coordinate automatic database backups",
-        "Execute read-only queries quickly",
-        "Participate in primary elections without storing data"
+        "Store and replicate data like a normal node in the replica set",
+        "Coordinate automatic database backups at regular intervals",
+        "Execute read-only queries quickly from cache",
+        "Participate in primary elections without storing user data"
       ],
       "correct_index": 3,
       "explanation_es": "Un arbiter es un nodo especial que participa en elecciones de primario pero no replica datos. Es útil para alcanzar quórum en réplicas sets pequeños sin duplicar datos. Un arbiter no puede ser elegido como primario ni para servirle lecturas. Su costo operativo es muy bajo.",
@@ -429,7 +429,7 @@
       "question_en": "How is a failed primary detected in a replica set?",
       "options_es": [
         "Se requiere intervención manual para declarar el primario como caído",
-        "El cliente automaticamente envia un ping a todos los nodos cada segundo",
+        "El cliente automáticamente envía un ping a todos los nodos cada segundo",
         "Los secundarios detectan heartbeats perdidos y lanzan una elección",
         "El primario envía un mensaje de confirmación cada hora"
       ],
@@ -451,16 +451,16 @@
       "question_es": "¿Cuál es una estrategia común para garantizar recuperación rápida ante fallos en replicación?",
       "question_en": "What is a common strategy for ensuring fast recovery from replication failures?",
       "options_es": [
-        "Deshabilitar la replicación y usar respaldos diarios independientemente del contexto aplicado",
+        "Deshabilitar completamente la replicación y usar respaldos diarios del sistema",
         "Duplicar todos los datos en tres ubicaciones geográficas diferentes",
-        "Reconstruir completamente el replica secundario desde cero",
-        "Usar oplog pre-imágenes para validar y aplicar cambios sin re-sincronización completa"
+        "Reconstruir completamente el replica secundario desde cero del primario",
+        "Usar oplog pre-imágenes para validar y aplicar cambios sin re-sincronización"
       ],
       "options_en": [
-        "Disable replication and use daily backups regardless of the applied context",
+        "Completely disable replication and use daily system backups",
         "Duplicate all data in three different geographic locations",
-        "Completely rebuild the secondary replica from scratch",
-        "Use oplog pre-images to validate and apply changes without full re-sync"
+        "Completely rebuild the secondary replica from scratch from primary",
+        "Use oplog pre-images to validate and apply changes without re-sync"
       ],
       "correct_index": 3,
       "explanation_es": "MongoDB usa el oplog (log de operaciones) para rastrear cambios. Si un replica secundario se desconecta, puede recuperar datos desde el oplog sin re-sincronización completa. Las pre-imágenes en el oplog (MongoDB 5.0+) permiten reversiones de operaciones. Esto acelera significativamente la recuperación.",
@@ -474,16 +474,16 @@
       "question_es": "¿Qué es la 'replicación en cascada' y bajo qué circunstancias se usa?",
       "question_en": "What is 'chained replication' and under what circumstances is it used?",
       "options_es": [
-        "Múltiples primarios replican entre sí en una topología de anillo",
-        "Un secundario replica desde otro secundario en lugar del primario",
-        "Un mecanismo de cifrado que encadena bloques de datos",
-        "Un proceso que aplica escrituras en orden de llegada en todos los casos posibles"
+        "Múltiples primarios replican entre sí en una topología de anillo circular",
+        "Un secundario replica desde otro secundario en lugar del primario directo",
+        "Un mecanismo de cifrado que encadena bloques de datos para seguridad",
+        "Un proceso que aplica escrituras en orden estricto de timestamp lógico"
       ],
       "options_en": [
-        "Multiple primaries replicate each other in a ring topology",
-        "A secondary replicates from another secondary instead of the primary",
-        "An encryption mechanism that chains data blocks",
-        "A process that applies writes in order of arrival in all possible cases"
+        "Multiple primaries replicate each other in a circular ring topology",
+        "A secondary replicates from another secondary instead of direct primary",
+        "An encryption mechanism that chains data blocks for security",
+        "A process that applies writes in strict order per logical timestamp"
       ],
       "correct_index": 1,
       "explanation_es": "La replicación en cascada permite que un secundario replique desde otro secundario. Es útil en réplicas sets grandes o geograficamente distribuidas para reducir la carga en el primario. MongoDB lo soporta nativamente. Sin embargo, aumenta la latencia de replicación.",
@@ -539,16 +539,16 @@
       "question_es": "¿Cómo se garantiza la durabilidad de una escritura en un conjunto de replicación?",
       "question_en": "How is write durability guaranteed in a replica set?",
       "options_es": [
-        "Mediante encriptación automática de todos los datos escritos",
-        "Guardando un backup cada vez que se escribe un documento de forma invariable y constante",
+        "Mediante encriptación automática de todos los datos nuevos que se escriben en DB",
+        "Guardando un backup incremental cada vez que se escribe un documento nuevo",
         "Escribiendo en el journal primario y esperando confirmación de múltiples nodos según write concern",
-        "Usando solo almacenamiento en estado sólido (SSD) según la documentación estándar del servicio"
+        "Usando solo almacenamiento en estado sólido (SSD) de confiabilidad comprobada"
       ],
       "options_en": [
-        "Through automatic encryption of all written data",
-        "Taking a backup every time a document is written invariably and constantly",
-        "Writing to primary journal and waiting for confirmation from multiple nodes based on write concern",
-        "Using only solid-state storage (SSD) according to standard service documentation"
+        "Through automatic encryption of all new data being written in DB",
+        "Taking an incremental backup every time a new document is written",
+        "Writing to primary journal and waiting for confirmation from multiple nodes per write concern",
+        "Using only solid-state storage (SSD) of proven reliability"
       ],
       "correct_index": 2,
       "explanation_es": "MongoDB usa write concern para controlar la durabilidad. Se puede requerir que la escritura sea confirmada por múltiples réplicas antes de reconocer al cliente. Write concern 'majority' espera confirmación de la mayoría de nodos. El journal en el primario ofrece durabilidad adicional.",
@@ -562,16 +562,16 @@
       "question_es": "¿Qué sucede cuando un replica secundario falla y luego se recupera después de un largo tiempo?",
       "question_en": "What happens when a replica secondary fails and then recovers after a long time?",
       "options_es": [
-        "Intenta usar partial resync del oplog si está disponible; si no, hace full re-sync",
-        "Fuerza automáticamente una elección de nuevo primario independientemente del contexto aplicado",
-        "Se descarta automáticamente y se crea un nuevo nodo sin excepciones ni variantes",
-        "Se desconecta permanentemente del conjunto de replicación"
+        "Intenta usar partial resync del oplog si está disponible",
+        "Fuerza automáticamente una elección de nuevo primario en el replica set",
+        "Se descarta automáticamente y se crea un nuevo nodo de replicación",
+        "Se desconecta permanentemente del conjunto de replicación del cluster"
       ],
       "options_en": [
-        "Attempts oplog partial resync if available; otherwise performs full re-sync",
-        "Automatically forces new primary election regardless of the applied context",
-        "Automatically discarded and new node created without exceptions or variants",
-        "Permanently disconnects from replica set"
+        "Attempts partial resync from oplog if available",
+        "Automatically forces new primary election in the replica set",
+        "Automatically discarded and new replication node created",
+        "Permanently disconnects from the cluster's replica set"
       ],
       "correct_index": 0,
       "explanation_es": "MongoDB intenta usar el oplog para recuperación parcial. Si los cambios caben en el oplog disponible, se sincroniza desde ahí. Si el gap es muy grande y el oplog fue 'rotado', el nodo debe hacer una re-sincronización completa desde el primario. Esto es transparente para el usuario.",
@@ -604,16 +604,16 @@
       "question_es": "¿Cuál es la principal ventaja de usar 'write concern: majority' en lugar de 'write concern: 1'?",
       "question_en": "What is the primary advantage of using 'write concern: majority' over 'write concern: 1'?",
       "options_es": [
-        "Acelera automáticamente todas las operaciones de escritura",
-        "Reduce el uso de almacenamiento en todos los nodos sin considerar otros factores relevantes",
-        "Permite escrituras sin confirmar a ningún nodo secundario",
-        "Garantiza que la mayoría de nodos ha persistido la escritura antes de reconocer"
+        "Acelera automáticamente todas las operaciones de escritura del cliente",
+        "Reduce significativamente el uso de almacenamiento en todos los nodos",
+        "Permite escrituras sin confirmar a ningún nodo secundario remoto",
+        "Garantiza que la mayoría de nodos ha persistido la escritura"
       ],
       "options_en": [
-        "Automatically speeds up all write operations",
-        "Reduces storage usage on all nodes without considering other relevant factors",
-        "Allows writes without confirming to any secondary",
-        "Guarantees majority of nodes have persisted the write before acknowledging"
+        "Automatically speeds up all client write operations",
+        "Significantly reduces storage usage on all cluster nodes",
+        "Allows writes without confirming to any remote secondary node",
+        "Guarantees majority of nodes have persisted the write"
       ],
       "correct_index": 3,
       "explanation_es": "Write concern 1 significa que se reconoce al cliente cuando el primario escribe. Si el primario falla inmediatamente después, la escritura puede perderse. Write concern majority requiere confirmación de la mayoría (primario + múltiples secundarios), garantizando sobrevivencia ante fallos de un primario.",
@@ -650,16 +650,16 @@
       "question_es": "¿Cuál es el propósito del config server en un conjunto de replicación?",
       "question_en": "What is the purpose of the config server in a replica set?",
       "options_es": [
-        "Procesar todas las operaciones de escritura del sistema",
-        "Almacenar metadatos del cluster pero no datos de usuario",
-        "Replicar automáticamente todos los datos de usuario sin excepciones ni variantes",
-        "Ejecutar consultas analíticas complejas del usuario"
+        "Procesar todas las operaciones de escritura del sistema de la base de datos",
+        "Almacenar metadatos del cluster pero no datos de usuario en el servidor",
+        "Replicar automáticamente todos los datos de usuario a otros nodos",
+        "Ejecutar consultas analíticas complejas del usuario en caché distribuido"
       ],
       "options_en": [
-        "Process all system write operations",
-        "Store cluster metadata but not user data",
-        "Automatically replicate all user data without exceptions or variants",
-        "Execute complex analytical queries for users"
+        "Process all system write operations of the database",
+        "Store cluster metadata but not user data on the server",
+        "Automatically replicate all user data to other nodes",
+        "Execute complex analytical user queries on distributed cache"
       ],
       "correct_index": 1,
       "explanation_es": "El config server (en sharded clusters) almacena metadatos como configuración de shards, ranges de chunks, información de balancing. No almacena datos de usuario. Típicamente es un replica set separado con 3 nodos. El balancer se ejecuta en el config server primario.",
@@ -674,15 +674,15 @@
       "question_en": "What does 'eventual consistency' mean in NoSQL databases?",
       "options_es": [
         "Los datos serán consistentes en todos los nodos eventualmente después de un tiempo",
-        "Los datos nunca se replican entre servidores sin considerar otros factores relevantes",
-        "Solo el primario puede servir lecturas consistentes",
-        "Se garantiza consistencia inmediata en todas las lecturas"
+        "Los datos nunca se replican entre servidores bajo ninguna garantía de consistencia",
+        "Solo el nodo primario puede servir lecturas que garanticen consistencia",
+        "Se garantiza consistencia inmediata en todas las lecturas del cliente"
       ],
       "options_en": [
         "Data will be consistent across all nodes eventually after a time",
-        "Data is never replicated between servers without considering other relevant factors",
-        "Only primary can serve consistent reads",
-        "Immediate consistency is guaranteed in all reads"
+        "Data is never replicated between servers under any consistency guarantee",
+        "Only the primary node can serve reads guaranteeing consistency",
+        "Immediate consistency is guaranteed in all client reads"
       ],
       "correct_index": 0,
       "explanation_es": "Eventual consistency es un modelo donde no se garantiza que todos los nodos tengan datos idénticos en cada momento. Sin embargo, si no hay nuevas escrituras, los datos eventualmente convergerán. Es un tradeoff entre disponibilidad y consistencia inmediata.",
@@ -699,13 +699,13 @@
         "Afirma que la consistencia siempre es más importante que la disponibilidad",
         "Garantiza que solo 2 de 3 propiedades pueden satisfacerse simultáneamente en sistemas distribuidos",
         "Establece que las bases de datos deben estar siempre disponibles",
-        "Define que el particionamiento de red nunca puede ocurrir sin considerar otros factores relevantes"
+        "Define que el particionamiento de red nunca puede ocurrir"
       ],
       "options_en": [
         "Asserts that consistency is always more important than availability",
         "Guarantees only 2 of 3 properties can be satisfied simultaneously in distributed systems",
         "Establishes that databases must always be available",
-        "Defines that network partitioning can never occur without considering other relevant factors"
+        "Defines that network partitioning can never occur"
       ],
       "correct_index": 1,
       "explanation_es": "El teorema CAP (Consistency, Availability, Partition tolerance) afirma que en un sistema distribuido, cuando hay particionamiento de red, se debe elegir entre consistencia (todos ven datos iguales) o disponibilidad (sistema sigue funcionando). No se pueden tener las tres garantías simultáneamente.",
@@ -738,15 +738,15 @@
       "question_es": "¿Cuál es la diferencia entre 'strong consistency' y 'linearizability'?",
       "question_en": "What is the difference between 'strong consistency' and 'linearizability'?",
       "options_es": [
-        "No hay diferencia significativa; son sinónimos en todos los casos posibles",
+        "No hay diferencia significativa; son sinónimos",
         "Strong consistency garantiza todos ven cambios en orden; linearizability añade orden real en tiempo",
-        "Linearizability es más débil que strong consistency independientemente del contexto aplicado",
+        "Linearizability es más débil que strong consistency",
         "Strong consistency es para lecturas; linearizability es para escrituras"
       ],
       "options_en": [
-        "No significant difference; they are synonyms in all possible cases",
+        "No significant difference; they are synonyms",
         "Strong consistency ensures all see changes in order; linearizability adds real-time ordering",
-        "Linearizability is weaker than strong consistency regardless of the applied context",
+        "Linearizability is weaker than strong consistency",
         "Strong consistency is for reads; linearizability is for writes"
       ],
       "correct_index": 1,
@@ -764,13 +764,13 @@
         "Prohíbe que usuarios lean datos que ellos mismos escribieron",
         "Requiere que todas las lecturas y escrituras usen el mismo servidor",
         "Garantiza que un usuario ve sus propias escrituras incluso leyendo de réplicas",
-        "Es un mecanismo para cifrar datos específicos del usuario sin considerar otros factores relevantes"
+        "Es un mecanismo para cifrar datos específicos del usuario"
       ],
       "options_en": [
         "Prohibits users from reading data they wrote themselves",
         "Requires all reads and writes to use the same server",
         "Guarantees a user sees their own writes even when reading from replicas",
-        "Is a mechanism to encrypt user-specific data without considering other relevant factors"
+        "Is a mechanism to encrypt user-specific data"
       ],
       "correct_index": 2,
       "explanation_es": "RYOW es importante para experiencia de usuario. Si un usuario escribe un documento y luego intenta leerlo desde un replica con replicación lag, podría no ver su propio cambio. Esto causa confusión. MongoDB lo resuelve con session causal consistency.",
@@ -784,15 +784,15 @@
       "question_es": "¿Qué es 'causal consistency' y cómo se implementa en MongoDB?",
       "question_en": "What is 'causal consistency' and how is it implemented in MongoDB?",
       "options_es": [
-        "Un mecanismo que prohíbe operaciones paralelas sin excepciones ni variantes",
-        "Una forma de compresión de datos que respeta la cronología",
-        "Un protocolo de replicación síncrona obligatoria de forma invariable y constante",
+        "Un mecanismo que prohíbe operaciones paralelas",
+        "Una forma de compresión de datos que respeta la cronología utilizando el algoritmo LZ4 modificado que MongoDB emplea en el oplog",
+        "Un protocolo de replicación síncrona obligatoria",
         "Garantiza que operaciones relacionadas causalmente se ven en orden correcto usando session tokens"
       ],
       "options_en": [
-        "A mechanism that prohibits parallel operations without exceptions or variants",
-        "A data compression method that respects chronology",
-        "A mandatory synchronous replication protocol invariably and constantly",
+        "A mechanism that prohibits parallel operations",
+        "A data compression method that respects chronology using the modified LZ4 algorithm that MongoDB employs in the oplog",
+        "A mandatory synchronous replication protocol",
         "Guarantees causally related operations appear in correct order using session tokens"
       ],
       "correct_index": 3,
@@ -808,14 +808,14 @@
       "question_en": "What is the cost of enforcing 'read concern: majority' in MongoDB?",
       "options_es": [
         "Latencia más alta porque espera confirmación de múltiples nodos",
-        "Requiere duplicar todos los datos en todos los casos posibles",
-        "Ningún costo; es completamente transparente sin considerar otros factores relevantes",
+        "Requiere duplicar todos los datos",
+        "Ningún costo; es completamente transparente",
         "Impide simultáneamente todas las escrituras"
       ],
       "options_en": [
         "Higher latency because it waits for multiple node confirmation",
-        "Requires duplicating all data in all possible cases",
-        "No cost; it is completely transparent without considering other relevant factors",
+        "Requires duplicating all data",
+        "No cost; it is completely transparent",
         "Prevents all simultaneous writes"
       ],
       "correct_index": 0,
@@ -873,15 +873,15 @@
       "question_en": "What is the consistency model of Cassandra?",
       "options_es": [
         "Eventual consistency con control fino mediante consistency levels",
-        "Consistency idéntica a MongoDB de forma invariable y constante",
+        "Consistency idéntica a MongoDB",
         "Strong consistency garantizada en todas las operaciones",
-        "No ofrece ninguna garantía de consistencia según la documentación estándar del servicio"
+        "No ofrece ninguna garantía de consistencia"
       ],
       "options_en": [
         "Eventual consistency with fine-grained control via consistency levels",
-        "Consistency identical to MongoDB invariably and constantly",
+        "Consistency identical to MongoDB",
         "Strong consistency guaranteed in all operations",
-        "Offers no consistency guarantees according to standard service documentation"
+        "Offers no consistency guarantees"
       ],
       "correct_index": 0,
       "explanation_es": "Cassandra usa eventual consistency pero permite control granular mediante 'consistency levels' (ALL, QUORUM, LOCAL_QUORUM, ONE, etc.). ONE da máxima disponibilidad, ALL da máxima consistencia. Es un sistema AP del CAP theorem.",
@@ -895,13 +895,13 @@
       "question_es": "¿Qué garantiza 'snapshot isolation' en bases de datos transaccionales?",
       "question_en": "What does 'snapshot isolation' guarantee in transactional databases?",
       "options_es": [
-        "Las transacciones siempre se ejecutan antes que otras sin excepciones ni variantes",
+        "Las transacciones siempre se ejecutan antes que otras",
         "Transacciones ven una vista consistente de los datos a un punto en el tiempo",
         "Se prohíben todas las lecturas durante transacciones en escritura",
         "Todos los datos se copian antes de iniciar una transacción"
       ],
       "options_en": [
-        "Transactions always execute before others without exceptions or variants",
+        "Transactions always execute before others",
         "Transactions see consistent view of data at point in time",
         "All reads are prohibited during write transactions",
         "All data is copied before starting transaction"
@@ -937,13 +937,13 @@
       "question_es": "¿Qué es 'vector clocks' y para qué se usa en sistemas distribuidos?",
       "question_en": "What are 'vector clocks' and what are they used for in distributed systems?",
       "options_es": [
-        "Una técnica para cifrar información temporal según la documentación estándar del servicio",
+        "Una técnica para cifrar información temporal",
         "Una estrategia para sincronizar relojes físicos entre servidores",
         "Un algoritmo de compresión de datos basado en tiempo",
         "Mecanismo para detectar causalidad y ordenamiento parcial de eventos"
       ],
       "options_en": [
-        "Technique to encrypt temporal information according to standard service documentation",
+        "Technique to encrypt temporal information",
         "Strategy for synchronizing physical clocks between servers",
         "Data compression algorithm based on time",
         "Mechanism to detect causality and partial ordering of events"
@@ -962,13 +962,13 @@
       "options_es": [
         "Se requieren múltiples confirmaciones antes de completar",
         "Máxima velocidad pero sin garantía de que la escritura sucedió",
-        "Escrituras se cifran automáticamente en cualquier escenario de implementación",
+        "Escrituras se cifran automáticamente",
         "Es idéntico a 'write concern: majority'"
       ],
       "options_en": [
         "Multiple confirmations required before completion",
         "Maximum speed but no guarantee write occurred",
-        "Writes are automatically encrypted in any implementation scenario",
+        "Writes are automatically encrypted",
         "Identical to 'write concern: majority'"
       ],
       "correct_index": 1,
@@ -984,15 +984,15 @@
       "question_en": "How does MongoDB choose which node to read from with NEAREST read preference?",
       "options_es": [
         "Elige aleatoriamente entre todos los nodos disponibles",
-        "Siempre selecciona el primario sin excepciones ni variantes",
+        "Siempre selecciona el primario",
         "Usa la latencia de red medida para seleccionar el nodo con menor latencia",
-        "Selecciona el nodo más antiguo del conjunto independientemente del contexto aplicado"
+        "Selecciona el nodo más antiguo del conjunto"
       ],
       "options_en": [
         "Randomly chooses among available nodes",
-        "Always selects the primary without exceptions or variants",
+        "Always selects the primary",
         "Uses measured network latency to select lowest-latency node",
-        "Selects oldest node in the set regardless of the applied context"
+        "Selects oldest node in the set"
       ],
       "correct_index": 2,
       "explanation_es": "NEAREST selecciona el nodo con la latencia de red más baja medida. MongoDB mantiene métricas de latencia entre el cliente y cada nodo (usando heartbeats). Útil para minimizar latencia de lectura en aplicaciones geográficamente distribuidas.",
@@ -1008,13 +1008,13 @@
       "options_es": [
         "Se deben optimizar para acceso, no para almacenamiento normalizado",
         "NoSQL requiere un esquema más rígido que SQL",
-        "No se permiten relaciones entre documentos de manera exclusiva y permanente",
+        "No se permiten relaciones entre documentos",
         "Los índices funcionan de manera completamente diferente"
       ],
       "options_en": [
         "Must optimize for access patterns, not normalized storage",
         "NoSQL requires more rigid schema than SQL",
-        "No relationships between documents allowed exclusively and permanently",
+        "No relationships between documents allowed",
         "Indexes function completely differently"
       ],
       "correct_index": 0,
@@ -1029,15 +1029,15 @@
       "question_es": "¿Cuándo es apropiado usar embedding (documentos anidados) vs referencias en MongoDB?",
       "question_en": "When is it appropriate to use embedding (nested documents) vs references in MongoDB?",
       "options_es": [
-        "Siempre usar embedding porque es más rápido independientemente del contexto aplicado",
-        "Usar referencias para todos los datos relacionados",
-        "La elección no afecta el rendimiento de forma invariable y constante",
+        "Siempre usar embedding porque es más rápido",
+        "Usar referencias para todos los datos relacionados conforme a la Tercera Forma Normal (3NF), el modelo que MongoDB exige internamente",
+        "La elección no afecta el rendimiento",
         "Embedding para datos frecuentemente accedidos juntos; referencias para relaciones grandes"
       ],
       "options_en": [
-        "Always use embedding because it's faster regardless of the applied context",
-        "Use references for all related data",
-        "Choice doesn't affect performance invariably and constantly",
+        "Always use embedding because it's faster",
+        "Use references for all related data in accordance with Third Normal Form (3NF), the model MongoDB enforces internally",
+        "Choice doesn't affect performance",
         "Embedding for frequently accessed together data; references for large relationships"
       ],
       "correct_index": 3,
@@ -1096,13 +1096,13 @@
       "options_es": [
         "MongoDB no soporta relaciones many-to-many",
         "Arrays de referencias en ambos lados o una colección de conexión",
-        "Solo con referencias unidireccionales en cualquier escenario de implementación",
+        "Solo con referencias unidireccionales",
         "Embedding completo de un lado en el otro"
       ],
       "options_en": [
         "MongoDB doesn't support many-to-many",
         "Arrays of references on both sides or connection collection",
-        "Only with one-way references in any implementation scenario",
+        "Only with one-way references",
         "Complete embedding of one side in other"
       ],
       "correct_index": 1,
@@ -1117,15 +1117,15 @@
       "question_es": "¿Cuál es el patrón 'subset pattern' en MongoDB data modeling?",
       "question_en": "What is the 'subset pattern' in MongoDB data modeling?",
       "options_es": [
-        "Implementar diferentes esquemas para diferentes versiones",
-        "Dividir aleatoriamente datos entre múltiples documentos en todos los casos posibles",
-        "Usar solo un subconjunto de campos en cada documento de manera exclusiva y permanente",
+        "Implementar diferentes esquemas para diferentes versiones usando el campo __v de Mongoose para migrar automáticamente los documentos antiguos",
+        "Dividir aleatoriamente datos entre múltiples documentos",
+        "Usar solo un subconjunto de campos en cada documento",
         "Mantener datos frecuentemente accedidos en el documento principal; datos raros en otra colección"
       ],
       "options_en": [
-        "Implement different schemas for different versions",
-        "Randomly split data across multiple documents in all possible cases",
-        "Use only subset of fields in each document exclusively and permanently",
+        "Implement different schemas for different versions using Mongoose's __v field to automatically migrate old documents",
+        "Randomly split data across multiple documents",
+        "Use only subset of fields in each document",
         "Keep frequently accessed data in main document; rare data in separate collection"
       ],
       "correct_index": 3,
@@ -1159,15 +1159,15 @@
       "question_es": "¿Cuál es el propósito del patrón 'computed pattern' en modeling de datos?",
       "question_en": "What is the purpose of the 'computed pattern' in data modeling?",
       "options_es": [
-        "Evitar cualquier agregación de datos de manera exclusiva y permanente",
+        "Evitar cualquier agregación de datos",
         "Pre-calcular y almacenar valores derivados para evitar cálculos en queries",
-        "Compilar código dentro de los documentos independientemente del contexto aplicado",
+        "Compilar código dentro de los documentos",
         "Aplicar operaciones matemáticas en tiempo de lectura"
       ],
       "options_en": [
-        "Avoid any data aggregation exclusively and permanently",
+        "Avoid any data aggregation",
         "Pre-calculate and store derived values to avoid calculations in queries",
-        "Compile code within documents regardless of the applied context",
+        "Compile code within documents",
         "Apply mathematical operations at read time"
       ],
       "correct_index": 1,
@@ -1182,16 +1182,16 @@
       "question_es": "¿Cómo se maneja la denormalización en bases de datos NoSQL sin crear inconsistencias?",
       "question_en": "How is denormalization handled in NoSQL databases to avoid inconsistencies?",
       "options_es": [
-        "Nunca actualizar datos duplicados independientemente del contexto aplicado",
+        "Nunca actualizar datos duplicados",
         "Copiar datos en múltiples lugares pero tener un 'source of truth' claro y actualizar con transacciones",
-        "Aceptar inconsistencias como inevitable en cualquier escenario de implementación",
-        "Usar replicación bidireccional automática"
+        "Aceptar inconsistencias como inevitable",
+        "Usar replicación bidireccional automática implementada mediante el protocolo Multi-Master Paxos que MongoDB activa por defecto en clústeres shard"
       ],
       "options_en": [
-        "Never update duplicated data regardless of the applied context",
+        "Never update duplicated data",
         "Copy data in multiple places but have clear 'source of truth' and update with transactions",
-        "Accept inconsistencies as inevitable in any implementation scenario",
-        "Use automatic bidirectional replication"
+        "Accept inconsistencies as inevitable",
+        "Use automatic bidirectional replication implemented via the Multi-Master Paxos protocol that MongoDB enables by default on sharded clusters"
       ],
       "correct_index": 1,
       "explanation_es": "La denormalización deliberada es válida en NoSQL, pero requiere disciplina. Mantener un 'source of truth' (ej: descripción de producto en colección de productos, no en cada pedido). Usar transacciones multi-documento (MongoDB 4.0+) para actualizar todas las copias simultáneamente.",
@@ -1208,13 +1208,13 @@
         "Siempre mejor rendimiento en todas las operaciones",
         "Flexibilidad para cambiar estructura sin migraciones de esquema complejas",
         "Requiere menos espacio de almacenamiento",
-        "Elimina la necesidad de índices según la documentación estándar del servicio"
+        "Elimina la necesidad de índices"
       ],
       "options_en": [
         "Always better performance in all operations",
         "Flexibility to change structure without complex schema migrations",
         "Requires less storage space",
-        "Eliminates need for indexes according to standard service documentation"
+        "Eliminates need for indexes"
       ],
       "correct_index": 1,
       "explanation_es": "NoSQL permite esquemas flexibles. Se pueden añadir campos a documentos sin afectar otros. SQL requiere ALTER TABLE que puede ser costoso en tablas grandes. Esta flexibilidad es especialmente valiosa en desarrollo temprano o datos heterogéneos.",
@@ -1228,16 +1228,16 @@
       "question_es": "¿Cuál es el patrón 'bucket pattern' usado para?",
       "question_en": "What is the 'bucket pattern' used for?",
       "options_es": [
-        "Cifrar datos en grupos pequeños sin considerar otros factores relevantes",
-        "Comprimir archivos grandes en todos los casos posibles",
+        "Cifrar datos en grupos pequeños",
+        "Comprimir archivos grandes",
         "Agrupar datos con timestamp en 'buckets' de tiempo para optimizar queries por rango",
-        "Dividir datos uniformemente entre múltiples servidores"
+        "Dividir datos uniformemente entre múltiples servidores utilizando el algoritmo de hash consistente que MongoDB llama 'bucket sharding' desde la versión 3.4"
       ],
       "options_en": [
-        "Encrypt data in small groups without considering other relevant factors",
-        "Compress large files in all possible cases",
+        "Encrypt data in small groups",
+        "Compress large files",
         "Group timestamped data into time 'buckets' to optimize range queries",
-        "Uniformly divide data across multiple servers"
+        "Uniformly divide data across multiple servers using the consistent-hashing algorithm MongoDB calls 'bucket sharding' since version 3.4"
       ],
       "correct_index": 2,
       "explanation_es": "Bucket pattern es útil para datos con timestamp frecuentemente consultados por rango de tiempo (ej: métricas cada minuto). En lugar de un documento por datapoint, agrupa múltiples puntos en un documento 'bucket' de una hora. Reduce número de documentos dramáticamente.",
@@ -1271,15 +1271,15 @@
       "question_en": "How are category hierarchies modeled in MongoDB?",
       "options_es": [
         "Usando referencias parentales, árbol materializado, o array de ancestros",
-        "Embedding completo de todas las categorías",
-        "Solo con referencias bidireccionales según la documentación estándar del servicio",
-        "MongoDB no soporta jerarquías en todos los casos posibles"
+        "Embedding completo de todas las categorías, lo cual MongoDB exige obligatoriamente para consultas con el operador $graphLookup",
+        "Solo con referencias bidireccionales",
+        "MongoDB no soporta jerarquías"
       ],
       "options_en": [
         "Using parent references, materialized tree, or array of ancestors",
-        "Complete embedding of all categories",
-        "Only with bidirectional references according to standard service documentation",
-        "MongoDB doesn't support hierarchies in all possible cases"
+        "Complete embedding of all categories, which MongoDB mandatorily requires for queries using the $graphLookup operator",
+        "Only with bidirectional references",
+        "MongoDB doesn't support hierarchies"
       ],
       "correct_index": 0,
       "explanation_es": "Se pueden usar varias estrategias: (1) Referencia parental: cada categoría apunta a su padre. (2) Árbol materializado: cada doc tiene array de ancestros. (3) Nested arrays. La elección depende de si se consulta frecuentemente hijos, padres o el árbol completo.",
@@ -1316,16 +1316,16 @@
       "question_es": "¿Qué consideración es crítica cuando se modelan datos para análisis vs transacciones?",
       "question_en": "What consideration is critical when modeling data for analytics vs transactions?",
       "options_es": [
-        "Análisis es siempre más importante según la documentación estándar del servicio",
+        "Análisis es siempre más importante",
         "Análisis necesita datos desnormalizados y agregados; transacciones necesita actualización rápida",
-        "No hay diferencia en los requisitos sin excepciones ni variantes",
-        "Ambos requieren exactamente el mismo modelado"
+        "No hay diferencia en los requisitos",
+        "Ambos requieren exactamente el mismo modelado porque el motor de almacenamiento WiredTiger unifica automáticamente los esquemas OLTP y OLAP"
       ],
       "options_en": [
-        "Analytics is always more important according to standard service documentation",
+        "Analytics is always more important",
         "Analytics needs denormalized aggregated data; transactions need fast updates",
-        "No difference in requirements without exceptions or variants",
-        "Both require exactly same modeling"
+        "No difference in requirements",
+        "Both require exactly same modeling because the WiredTiger storage engine automatically unifies OLTP and OLAP schemas"
       ],
       "correct_index": 1,
       "explanation_es": "Workloads analíticas y transaccionales tienen requisitos opuestos. Transacciones necesitan inserción/actualización rápida (menos desnormalización). Análisis necesita acceso rápido a datos combinados (más desnormalización). La solución es separación: OLTP en una DB, OLAP en data warehouse replicado.",

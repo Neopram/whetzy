@@ -7,39 +7,39 @@
       "question_es": "¿Qué capa OSI usa firewall?",
       "question_en": "Which OSI layer uses firewall?",
       "options_es": [
-        "Capa 7 en este contexto",
+        "Capa 7, propia de un proxy",
         "Capa 1",
-        "Todas como concepto principal",
+        "Todas las capas, con DPI",
         "Capa 3-4"
       ],
       "options_en": [
-        "Layer 7 in this context",
+        "Layer 7, only via a proxy",
         "Layer 1",
-        "All as the primary concept",
+        "All layers, via DPI",
         "Layer 3-4"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Capa 3-4\": un firewall tradicional de filtrado de paquetes toma decisiones de permitir o bloquear tráfico examinando direcciones IP y puertos, que corresponden a las capas 3 (red) y 4 (transporte) del modelo OSI, en su forma básica. La opción \"Capa 7\" es la más tentadora porque los firewalls de nueva generación y los proxies inspeccionan también el contenido de aplicación, pero eso es una capacidad añadida, no la operación básica de un firewall.",
+      "explanation_en": "The correct answer is \"Layer 3-4\": a traditional packet-filtering firewall decides to allow or block traffic by inspecting IP addresses and ports, which map to OSI layers 3 (network) and 4 (transport), in its basic form. \"Layer 7\" is the most tempting wrong option because next-generation firewalls and proxies also inspect application content, but that is an added capability, not the firewall's basic operation.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420301_002",
       "skill_id": "sk420301",
       "type": "true_false",
-      "question_es": "NAT enmascara IPs internas",
-      "question_en": "NAT masks internal IPs",
+      "question_es": "NAT oculta las direcciones IP internas detrás de una dirección pública.",
+      "question_en": "NAT hides internal IP addresses behind a public address.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Verdadero. NAT traduce las direcciones privadas a una o varias públicas, así que desde fuera no se ven las IP internas. No es un control de seguridad por sí mismo, pero reduce la exposición.",
+      "explanation_en": "True. NAT translates private addresses into one or more public ones, so internal IPs are not visible from outside. It is not a security control on its own, but it reduces exposure.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -49,39 +49,39 @@
       "question_es": "¿Qué es proxy inverso?",
       "question_en": "What is reverse proxy?",
       "options_es": [
-        "Ninguno en la mayoría de los casos",
-        "Cliente como concepto principal",
-        "Ambos como concepto principal",
-        "Servidor como concepto principal"
+        "Ninguno, solo enruta IP",
+        "Cliente, al reenviar peticiones",
+        "Ambos, cliente y servidor a la vez",
+        "Del lado del servidor"
       ],
       "options_en": [
-        "Neither in most cases",
-        "Client as the primary concept",
-        "Both as the primary concept",
-        "Server as the primary concept"
+        "Neither, only routes IP",
+        "Client, when forwarding requests",
+        "Both, client and server at once",
+        "Server side"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Del lado del servidor\": un proxy inverso se coloca delante de uno o varios servidores backend y recibe las peticiones en nombre de ellos, ocultando su existencia y distribuyendo la carga, en su forma básica. \"Cliente\" es la opción tentadora porque se confunde con un proxy directo (forward proxy), que actúa en nombre de los clientes, exactamente el papel opuesto.",
+      "explanation_en": "The correct answer is \"Server side\": a reverse proxy sits in front of one or more backend servers and receives requests on their behalf, hiding their existence and distributing load, in its basic form. \"Client\" is the tempting option because it is confused with a forward proxy, which acts on behalf of clients — exactly the opposite role.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420301_004",
       "skill_id": "sk420301",
       "type": "true_false",
-      "question_es": "VPN encripta comunicación",
-      "question_en": "VPN encrypts communication",
+      "question_es": "Una VPN cifra el tráfico entre los extremos del túnel.",
+      "question_en": "A VPN encrypts traffic between the tunnel endpoints.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Verdadero. Las VPN con IPsec o TLS cifran el tráfico dentro del túnel, lo que protege su confidencialidad al cruzar redes no confiables.",
+      "explanation_en": "True. VPNs using IPsec or TLS encrypt the traffic inside the tunnel, protecting its confidentiality across untrusted networks.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -91,39 +91,39 @@
       "question_es": "¿Protocolo VPN?",
       "question_en": "VPN protocol?",
       "options_es": [
-        "TCP como resultado",
-        "UDP como concepto principal",
-        "HTTP como concepto principal",
-        "IPsec como concepto principal"
+        "TCP, sin cifrado nativo",
+        "UDP, sin confirmación",
+        "HTTP, en texto plano",
+        "IPsec"
       ],
       "options_en": [
-        "TCP as a result",
-        "UDP as the primary concept",
-        "HTTP as the primary concept",
-        "IPsec as the primary concept"
+        "TCP, no native encryption",
+        "UDP, without ACKs",
+        "HTTP, in plaintext",
+        "IPsec"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"IPsec\": IPsec es un conjunto de protocolos diseñado específicamente para autenticar y cifrar tráfico IP, y es el estándar detrás de VPNs de sitio a sitio y de acceso remoto, en su forma básica. TCP y UDP son protocolos de transporte genéricos que pueden llevar tráfico VPN encapsulado, pero por sí solos no ofrecen cifrado ni autenticación, por lo que no son \"el\" protocolo VPN.",
+      "explanation_en": "The correct answer is \"IPsec\": IPsec is a protocol suite designed specifically to authenticate and encrypt IP traffic, and it is the standard behind site-to-site and remote-access VPNs, in its basic form. TCP and UDP are generic transport protocols that can carry encapsulated VPN traffic, but on their own they provide no encryption or authentication, so neither is \"the\" VPN protocol.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420301_006",
       "skill_id": "sk420301",
       "type": "true_false",
-      "question_es": "IPS bloquea ataques",
-      "question_en": "IPS blocks attacks",
+      "question_es": "Un IPS puede bloquear ataques en línea, no solo detectarlos.",
+      "question_en": "An IPS can block attacks inline, not just detect them.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El IPS se coloca en el camino del tráfico y puede descartar paquetes maliciosos; el IDS solo detecta y alerta.",
+      "explanation_en": "True. An IPS sits in the traffic path and can drop malicious packets; an IDS only detects and alerts.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -133,39 +133,39 @@
       "question_es": "¿Qué es VLAN?",
       "question_en": "What is VLAN?",
       "options_es": [
-        "Proxy según la especificación",
-        "Protección como concepto principal",
+        "Proxy entre cliente y servidor",
+        "Protección por listas de acceso",
         "Firewall de red",
         "Red virtual"
       ],
       "options_en": [
-        "Proxy according to the specification",
-        "Protection as the primary concept",
-        "Firewall as the primary concept",
+        "Proxy between client and server",
+        "Protection via access lists",
+        "Network firewall",
         "Virtual network"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Red virtual\": una VLAN (Virtual LAN) segmenta lógicamente una red física a nivel de capa 2 en dominios de difusión separados, sin necesidad de cableado adicional, en su forma básica. Confundirla con un \"firewall\" es el error típico, porque ambas ayudan a segmentar la red, pero la VLAN no filtra ni bloquea tráfico por sí misma: solo lo aísla en broadcast domains distintos.",
+      "explanation_en": "The correct answer is \"Virtual network\": a VLAN (Virtual LAN) logically segments a physical network at layer 2 into separate broadcast domains, without requiring additional cabling, in its basic form. Confusing it with a \"firewall\" is the typical mistake, because both help segment the network, but a VLAN does not filter or block traffic by itself — it only isolates it into different broadcast domains.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420301_008",
       "skill_id": "sk420301",
       "type": "true_false",
-      "question_es": "AES-256 es fuerte",
-      "question_en": "AES-256 is strong",
+      "question_es": "AES-256 se considera un cifrado simétrico fuerte.",
+      "question_en": "AES-256 is considered a strong symmetric cipher.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Verdadero. AES con clave de 256 bits es un estándar aprobado por NIST y no tiene ataques prácticos conocidos contra el algoritmo completo.",
+      "explanation_en": "True. AES with a 256-bit key is a NIST-approved standard with no known practical attacks against the full algorithm.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -175,39 +175,39 @@
       "question_es": "¿Qué capa OSI usa firewall en un entorno empresarial?",
       "question_en": "Which OSI layer uses firewall in an enterprise environment?",
       "options_es": [
-        "Capa 7 en general",
+        "Capa 7, solo por un WAF",
         "Capa 3-4",
-        "Todas como concepto principal",
+        "Todas las capas, con DPI",
         "Capa 1"
       ],
       "options_en": [
-        "Layer 7 in general",
+        "Layer 7, only via a WAF",
         "Layer 3-4",
-        "All as the primary concept",
+        "All layers, via DPI",
         "Layer 1"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Capa 3-4\": un firewall tradicional de filtrado de paquetes toma decisiones de permitir o bloquear tráfico examinando direcciones IP y puertos, que corresponden a las capas 3 (red) y 4 (transporte) del modelo OSI, en un entorno empresarial. La opción \"Capa 7\" es la más tentadora porque los firewalls de nueva generación y los proxies inspeccionan también el contenido de aplicación, pero eso es una capacidad añadida, no la operación básica de un firewall.",
+      "explanation_en": "The correct answer is \"Layer 3-4\": a traditional packet-filtering firewall decides to allow or block traffic by inspecting IP addresses and ports, which map to OSI layers 3 (network) and 4 (transport), in an enterprise environment. \"Layer 7\" is the most tempting wrong option because next-generation firewalls and proxies also inspect application content, but that is an added capability, not the firewall's basic operation.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420301_010",
       "skill_id": "sk420301",
       "type": "true_false",
-      "question_es": "NAT enmascara IPs internas en un entorno empresarial?",
-      "question_en": "NAT masks internal IPs in an enterprise environment?",
+      "question_es": "NAT permite que varios dispositivos internos compartan una única dirección IP pública.",
+      "question_en": "NAT allows multiple internal devices to share a single public IP address.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Verdadero. Mediante la traducción de direcciones, muchos equipos con direcciones privadas pueden salir a internet usando una sola dirección pública compartida.",
+      "explanation_en": "True. Through address translation, many devices with private addresses can reach the internet using a single shared public address.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -217,39 +217,39 @@
       "question_es": "¿Qué es proxy inverso en un entorno empresarial?",
       "question_en": "What is reverse proxy in an enterprise environment?",
       "options_es": [
-        "Ninguno en este contexto",
-        "Ambos como concepto principal",
-        "Cliente como concepto principal",
-        "Servidor como concepto principal"
+        "Ninguno, solo enruta IP",
+        "Ambos, cliente y servidor a la vez",
+        "Cliente, al reenviar peticiones",
+        "Del lado del servidor"
       ],
       "options_en": [
-        "Neither in this context",
-        "Both as the primary concept",
-        "Client as the primary concept",
-        "Server as the primary concept"
+        "Neither, only routes IP",
+        "Both, client and server at once",
+        "Client, when forwarding requests",
+        "Server side"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Del lado del servidor\": un proxy inverso se coloca delante de uno o varios servidores backend y recibe las peticiones en nombre de ellos, ocultando su existencia y distribuyendo la carga, en un entorno empresarial. \"Cliente\" es la opción tentadora porque se confunde con un proxy directo (forward proxy), que actúa en nombre de los clientes, exactamente el papel opuesto.",
+      "explanation_en": "The correct answer is \"Server side\": a reverse proxy sits in front of one or more backend servers and receives requests on their behalf, hiding their existence and distributing load, in an enterprise environment. \"Client\" is the tempting option because it is confused with a forward proxy, which acts on behalf of clients — exactly the opposite role.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420301_012",
       "skill_id": "sk420301",
       "type": "true_false",
-      "question_es": "VPN encripta comunicación en un entorno empresarial?",
-      "question_en": "VPN encrypts communication in an enterprise environment?",
+      "question_es": "Una VPN de túnel dividido (split-tunnel) enruta solo parte del tráfico por el túnel cifrado, mientras el resto va directo a internet.",
+      "question_en": "A split-tunnel VPN routes only some traffic through the encrypted tunnel while the rest goes directly to the internet.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. En el túnel dividido, el usuario decide qué tráfico pasa por la VPN corporativa y cuál sale directamente por su conexión local, a diferencia de un túnel completo que lo enruta todo.",
+      "explanation_en": "True. In split tunneling, the user decides which traffic goes through the corporate VPN and which goes out directly over their local connection, unlike a full tunnel that routes everything.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -259,39 +259,39 @@
       "question_es": "¿Protocolo VPN en un entorno empresarial?",
       "question_en": "VPN protocol in an enterprise environment?",
       "options_es": [
-        "UDP en este contexto",
-        "IPsec como concepto principal",
-        "TCP como concepto principal",
-        "HTTP como concepto principal"
+        "UDP, sin confirmación",
+        "IPsec",
+        "TCP, sin cifrado nativo",
+        "HTTP, en texto plano"
       ],
       "options_en": [
-        "UDP in this context",
-        "IPsec as the primary concept",
-        "TCP as the primary concept",
-        "HTTP as the primary concept"
+        "UDP, without ACKs",
+        "IPsec",
+        "TCP, no native encryption",
+        "HTTP, in plaintext"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"IPsec\": IPsec es un conjunto de protocolos diseñado específicamente para autenticar y cifrar tráfico IP, y es el estándar detrás de VPNs de sitio a sitio y de acceso remoto, en un entorno empresarial. TCP y UDP son protocolos de transporte genéricos que pueden llevar tráfico VPN encapsulado, pero por sí solos no ofrecen cifrado ni autenticación, por lo que no son \"el\" protocolo VPN.",
+      "explanation_en": "The correct answer is \"IPsec\": IPsec is a protocol suite designed specifically to authenticate and encrypt IP traffic, and it is the standard behind site-to-site and remote-access VPNs, in an enterprise environment. TCP and UDP are generic transport protocols that can carry encapsulated VPN traffic, but on their own they provide no encryption or authentication, so neither is \"the\" VPN protocol.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420301_014",
       "skill_id": "sk420301",
       "type": "true_false",
-      "question_es": "IPS bloquea ataques en un entorno empresarial?",
-      "question_en": "IPS blocks attacks in an enterprise environment?",
+      "question_es": "Un IPS suele desplegarse en línea, directamente en la ruta del tráfico, a diferencia de un IDS pasivo.",
+      "question_en": "An IPS is typically deployed inline, directly in the traffic path, unlike a passive IDS.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Al situarse en línea, el IPS puede examinar cada paquete y decidir en tiempo real si lo deja pasar o lo bloquea, algo que un IDS pasivo, conectado fuera del camino, no puede hacer.",
+      "explanation_en": "True. Because it sits inline, the IPS can inspect every packet and decide in real time whether to let it through or block it, something a passive IDS, connected off the traffic path, cannot do.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -301,39 +301,39 @@
       "question_es": "¿Qué es VLAN en un entorno empresarial?",
       "question_en": "What is VLAN in an enterprise environment?",
       "options_es": [
-        "Firewall en general",
-        "Proxy como concepto principal",
+        "Firewall entre subredes",
+        "Proxy entre cliente y servidor",
         "Red virtual",
-        "Protección como concepto principal"
+        "Protección por listas de acceso"
       ],
       "options_en": [
-        "Firewall in general",
-        "Proxy as the primary concept",
+        "Firewall between subnets",
+        "Proxy between client and server",
         "Virtual network",
-        "Protection as the primary concept"
+        "Protection via access lists"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Red virtual\": una VLAN (Virtual LAN) segmenta lógicamente una red física a nivel de capa 2 en dominios de difusión separados, sin necesidad de cableado adicional, en un entorno empresarial. Confundirla con un \"firewall\" es el error típico, porque ambas ayudan a segmentar la red, pero la VLAN no filtra ni bloquea tráfico por sí misma: solo lo aísla en broadcast domains distintos.",
+      "explanation_en": "The correct answer is \"Virtual network\": a VLAN (Virtual LAN) logically segments a physical network at layer 2 into separate broadcast domains, without requiring additional cabling, in an enterprise environment. Confusing it with a \"firewall\" is the typical mistake, because both help segment the network, but a VLAN does not filter or block traffic by itself — it only isolates it into different broadcast domains.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420302_001",
       "skill_id": "sk420302",
       "type": "true_false",
-      "question_es": "AES-256 es fuerte en un entorno empresarial?",
-      "question_en": "AES-256 is strong in an enterprise environment?",
+      "question_es": "AES-256 usa una clave de 256 bits y funciona como un cifrado simétrico por bloques con un tamaño de bloque de 128 bits.",
+      "question_en": "AES-256 uses a 256-bit key and works as a symmetric block cipher with a 128-bit block size.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. AES cifra los datos en bloques fijos de 128 bits y, en su variante de 256 bits, usa una clave de esa longitud, con la misma clave para cifrar y descifrar.",
+      "explanation_en": "True. AES encrypts data in fixed 128-bit blocks and, in its 256-bit variant, uses a key of that length, with the same key used to encrypt and decrypt.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -343,39 +343,39 @@
       "question_es": "¿Qué capa OSI usa firewall según las mejores prácticas de seguridad?",
       "question_en": "Which OSI layer uses firewall according to security best practices?",
       "options_es": [
-        "Capa 1 según la especificación",
+        "Capa 1, solo cableado físico",
         "Capa 3-4",
-        "Todas como concepto principal",
+        "Todas las capas, con DPI",
         "Capa 7"
       ],
       "options_en": [
-        "Layer 1 according to the specification",
+        "Layer 1, physical cabling only",
         "Layer 3-4",
-        "All as the primary concept",
+        "All layers, via DPI",
         "Layer 7"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Capa 3-4\": un firewall tradicional de filtrado de paquetes toma decisiones de permitir o bloquear tráfico examinando direcciones IP y puertos, que corresponden a las capas 3 (red) y 4 (transporte) del modelo OSI, según las mejores prácticas de seguridad. La opción \"Capa 7\" es la más tentadora porque los firewalls de nueva generación y los proxies inspeccionan también el contenido de aplicación, pero eso es una capacidad añadida, no la operación básica de un firewall.",
+      "explanation_en": "The correct answer is \"Layer 3-4\": a traditional packet-filtering firewall decides to allow or block traffic by inspecting IP addresses and ports, which map to OSI layers 3 (network) and 4 (transport), according to security best practices. \"Layer 7\" is the most tempting wrong option because next-generation firewalls and proxies also inspect application content, but that is an added capability, not the firewall's basic operation.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420302_003",
       "skill_id": "sk420302",
       "type": "true_false",
-      "question_es": "NAT enmascara IPs internas según las mejores prácticas de seguridad?",
-      "question_en": "NAT masks internal IPs according to security best practices?",
+      "question_es": "NAT proporciona cifrado fuerte para el tráfico que sale de la red.",
+      "question_en": "NAT provides strong encryption for traffic leaving the network.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Falso. NAT solo traduce direcciones IP; no cifra el contenido del tráfico, por lo que no sustituye a una VPN ni a TLS si se necesita confidencialidad.",
+      "explanation_en": "False. NAT only translates IP addresses; it does not encrypt the traffic's content, so it is no substitute for a VPN or TLS when confidentiality is needed.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -385,39 +385,39 @@
       "question_es": "¿Qué es proxy inverso según las mejores prácticas de seguridad?",
       "question_en": "What is reverse proxy according to security best practices?",
       "options_es": [
-        "Cliente en general",
-        "Ninguno como concepto principal",
-        "Ambos como concepto principal",
-        "Servidor como concepto principal"
+        "Cliente, al reenviar peticiones",
+        "Ninguno, solo enruta IP",
+        "Ambos, cliente y servidor a la vez",
+        "Del lado del servidor"
       ],
       "options_en": [
-        "Client in general",
-        "Neither as the primary concept",
-        "Both as the primary concept",
-        "Server as the primary concept"
+        "Client, when forwarding requests",
+        "Neither, only routes IP",
+        "Both, client and server at once",
+        "Server side"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Del lado del servidor\": un proxy inverso se coloca delante de uno o varios servidores backend y recibe las peticiones en nombre de ellos, ocultando su existencia y distribuyendo la carga, según las mejores prácticas de seguridad. \"Cliente\" es la opción tentadora porque se confunde con un proxy directo (forward proxy), que actúa en nombre de los clientes, exactamente el papel opuesto.",
+      "explanation_en": "The correct answer is \"Server side\": a reverse proxy sits in front of one or more backend servers and receives requests on their behalf, hiding their existence and distributing load, according to security best practices. \"Client\" is the tempting option because it is confused with a forward proxy, which acts on behalf of clients — exactly the opposite role.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420302_005",
       "skill_id": "sk420302",
       "type": "true_false",
-      "question_es": "VPN encripta comunicación según las mejores prácticas de seguridad?",
-      "question_en": "VPN encrypts communication according to security best practices?",
+      "question_es": "Una VPN garantiza protección contra los ataques de phishing.",
+      "question_en": "A VPN guarantees protection against phishing attacks.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 1,
+      "explanation_es": "Falso. Una VPN cifra el tráfico de red, pero no impide que un usuario introduzca sus credenciales en un sitio de phishing; eso requiere formación y filtrado de correo o web.",
+      "explanation_en": "False. A VPN encrypts network traffic, but it does not stop a user from entering credentials on a phishing site; that requires training and email or web filtering.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -427,39 +427,39 @@
       "question_es": "¿Protocolo VPN según las mejores prácticas de seguridad?",
       "question_en": "VPN protocol according to security best practices?",
       "options_es": [
-        "HTTP como resultado",
-        "UDP como concepto principal",
-        "IPsec como concepto principal",
-        "TCP como concepto principal"
+        "HTTP, en texto plano",
+        "UDP, sin confirmación",
+        "IPsec",
+        "TCP, sin cifrado nativo"
       ],
       "options_en": [
-        "HTTP as a result",
-        "UDP as the primary concept",
-        "IPsec as the primary concept",
-        "TCP as the primary concept"
+        "HTTP, in plaintext",
+        "UDP, without ACKs",
+        "IPsec",
+        "TCP, no native encryption"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"IPsec\": IPsec es un conjunto de protocolos diseñado específicamente para autenticar y cifrar tráfico IP, y es el estándar detrás de VPNs de sitio a sitio y de acceso remoto, según las mejores prácticas de seguridad. TCP y UDP son protocolos de transporte genéricos que pueden llevar tráfico VPN encapsulado, pero por sí solos no ofrecen cifrado ni autenticación, por lo que no son \"el\" protocolo VPN.",
+      "explanation_en": "The correct answer is \"IPsec\": IPsec is a protocol suite designed specifically to authenticate and encrypt IP traffic, and it is the standard behind site-to-site and remote-access VPNs, according to security best practices. TCP and UDP are generic transport protocols that can carry encapsulated VPN traffic, but on their own they provide no encryption or authentication, so neither is \"the\" VPN protocol.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420302_007",
       "skill_id": "sk420302",
       "type": "true_false",
-      "question_es": "IPS bloquea ataques según las mejores prácticas de seguridad?",
-      "question_en": "IPS blocks attacks according to security best practices?",
+      "question_es": "Un IPS solo puede monitorizar el tráfico de forma pasiva y no puede descartar paquetes maliciosos.",
+      "question_en": "An IPS can only monitor traffic passively and cannot drop malicious packets.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Falso. Un sistema puramente pasivo que solo alerta es un IDS; el IPS se distingue precisamente porque puede actuar de forma activa y descartar el tráfico malicioso en tiempo real.",
+      "explanation_en": "False. A purely passive system that only alerts is an IDS; what distinguishes an IPS is precisely that it can act actively and drop malicious traffic in real time.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -469,39 +469,39 @@
       "question_es": "¿Qué es VLAN según las mejores prácticas de seguridad?",
       "question_en": "What is VLAN according to security best practices?",
       "options_es": [
-        "Proxy de forma predeterminada",
+        "Proxy entre cliente y servidor",
         "Firewall de red",
         "Red virtual",
-        "Protección como concepto principal"
+        "Protección por listas de acceso"
       ],
       "options_en": [
-        "Proxy by default",
-        "Firewall as the primary concept",
+        "Proxy between client and server",
+        "Network firewall",
         "Virtual network",
-        "Protection as the primary concept"
+        "Protection via access lists"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Red virtual\": una VLAN (Virtual LAN) segmenta lógicamente una red física a nivel de capa 2 en dominios de difusión separados, sin necesidad de cableado adicional, según las mejores prácticas de seguridad. Confundirla con un \"firewall\" es el error típico, porque ambas ayudan a segmentar la red, pero la VLAN no filtra ni bloquea tráfico por sí misma: solo lo aísla en broadcast domains distintos.",
+      "explanation_en": "The correct answer is \"Virtual network\": a VLAN (Virtual LAN) logically segments a physical network at layer 2 into separate broadcast domains, without requiring additional cabling, according to security best practices. Confusing it with a \"firewall\" is the typical mistake, because both help segment the network, but a VLAN does not filter or block traffic by itself — it only isolates it into different broadcast domains.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420302_009",
       "skill_id": "sk420302",
       "type": "true_false",
-      "question_es": "AES-256 es fuerte según las mejores prácticas de seguridad?",
-      "question_en": "AES-256 is strong according to security best practices?",
+      "question_es": "AES-256 es un algoritmo de cifrado asimétrico que usa un par de claves pública y privada.",
+      "question_en": "AES-256 is an asymmetric encryption algorithm that uses a public/private key pair.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 1,
+      "explanation_es": "Falso. AES es un cifrado simétrico: usa la misma clave para cifrar y descifrar. Los algoritmos de clave pública y privada, como RSA, son los asimétricos.",
+      "explanation_en": "False. AES is a symmetric cipher: it uses the same key to encrypt and decrypt. Public/private key algorithms, like RSA, are the asymmetric ones.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -512,38 +512,38 @@
       "question_en": "Which OSI layer uses firewall in the context of cybersecurity?",
       "options_es": [
         "Capa 3-4",
-        "Todas en la mayoría de los casos",
+        "Todas las capas, sin excepción",
         "Capa 7",
         "Capa 1"
       ],
       "options_en": [
         "Layer 3-4",
-        "All in most cases",
+        "All layers, no exceptions",
         "Layer 7",
         "Layer 1"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Capa 3-4\": un firewall tradicional de filtrado de paquetes toma decisiones de permitir o bloquear tráfico examinando direcciones IP y puertos, que corresponden a las capas 3 (red) y 4 (transporte) del modelo OSI, en el contexto de la ciberseguridad. La opción \"Capa 7\" es la más tentadora porque los firewalls de nueva generación y los proxies inspeccionan también el contenido de aplicación, pero eso es una capacidad añadida, no la operación básica de un firewall.",
+      "explanation_en": "The correct answer is \"Layer 3-4\": a traditional packet-filtering firewall decides to allow or block traffic by inspecting IP addresses and ports, which map to OSI layers 3 (network) and 4 (transport), in the context of cybersecurity. \"Layer 7\" is the most tempting wrong option because next-generation firewalls and proxies also inspect application content, but that is an added capability, not the firewall's basic operation.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420302_011",
       "skill_id": "sk420302",
       "type": "true_false",
-      "question_es": "NAT enmascara IPs internas en el contexto de la ciberseguridad?",
-      "question_en": "NAT masks internal IPs in the context of cybersecurity?",
+      "question_es": "La traducción de direcciones por puertos (PAT) es una forma habitual de NAT que asigna muchas direcciones privadas a una sola dirección pública usando distintos puertos.",
+      "question_en": "Port Address Translation (PAT) is a common form of NAT that maps many private addresses to a single public address using different ports.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. PAT distingue las sesiones de los distintos dispositivos internos asignando a cada una un puerto de origen diferente sobre la misma dirección IP pública.",
+      "explanation_en": "True. PAT tells apart the sessions of different internal devices by assigning each one a different source port on the same public IP address.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -553,39 +553,39 @@
       "question_es": "¿Qué es proxy inverso en el contexto de la ciberseguridad?",
       "question_en": "What is reverse proxy in the context of cybersecurity?",
       "options_es": [
-        "Servidor como concepto principal",
-        "Ambos en la mayoría de los casos",
-        "Ninguno como concepto principal",
-        "Cliente como concepto principal"
+        "Del lado del servidor",
+        "Ambos, cliente y servidor a la vez",
+        "Ninguno, solo enruta IP",
+        "Cliente, al reenviar peticiones"
       ],
       "options_en": [
-        "Server as the primary concept",
-        "Both in most cases",
-        "Neither as the primary concept",
-        "Client as the primary concept"
+        "Server side",
+        "Both, client and server at once",
+        "Neither, only routes IP",
+        "Client, when forwarding requests"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Del lado del servidor\": un proxy inverso se coloca delante de uno o varios servidores backend y recibe las peticiones en nombre de ellos, ocultando su existencia y distribuyendo la carga, en el contexto de la ciberseguridad. \"Cliente\" es la opción tentadora porque se confunde con un proxy directo (forward proxy), que actúa en nombre de los clientes, exactamente el papel opuesto.",
+      "explanation_en": "The correct answer is \"Server side\": a reverse proxy sits in front of one or more backend servers and receives requests on their behalf, hiding their existence and distributing load, in the context of cybersecurity. \"Client\" is the tempting option because it is confused with a forward proxy, which acts on behalf of clients — exactly the opposite role.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420302_013",
       "skill_id": "sk420302",
       "type": "true_false",
-      "question_es": "VPN encripta comunicación en el contexto de la ciberseguridad?",
-      "question_en": "VPN encrypts communication in the context of cybersecurity?",
+      "question_es": "Las VPN de sitio a sitio conectan redes completas, mientras que las VPN de acceso remoto conectan clientes individuales a una red.",
+      "question_en": "Site-to-site VPNs connect entire networks, while remote-access VPNs connect individual clients to a network.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Una VPN de sitio a sitio une dos oficinas o centros de datos como si fueran una sola red, mientras que una VPN de acceso remoto da a un usuario individual acceso a esa red desde fuera.",
+      "explanation_en": "True. A site-to-site VPN joins two offices or data centers as if they were a single network, while a remote-access VPN gives an individual user access to that network from outside.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -595,39 +595,39 @@
       "question_es": "¿Protocolo VPN en el contexto de la ciberseguridad?",
       "question_en": "VPN protocol in the context of cybersecurity?",
       "options_es": [
-        "TCP de forma predeterminada",
-        "IPsec como concepto principal",
-        "UDP como concepto principal",
-        "HTTP como concepto principal"
+        "TCP, sin cifrado nativo",
+        "IPsec",
+        "UDP, sin confirmación",
+        "HTTP, en texto plano"
       ],
       "options_en": [
-        "TCP by default",
-        "IPsec as the primary concept",
-        "UDP as the primary concept",
-        "HTTP as the primary concept"
+        "TCP, no native encryption",
+        "IPsec",
+        "UDP, without ACKs",
+        "HTTP, in plaintext"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"IPsec\": IPsec es un conjunto de protocolos diseñado específicamente para autenticar y cifrar tráfico IP, y es el estándar detrás de VPNs de sitio a sitio y de acceso remoto, en el contexto de la ciberseguridad. TCP y UDP son protocolos de transporte genéricos que pueden llevar tráfico VPN encapsulado, pero por sí solos no ofrecen cifrado ni autenticación, por lo que no son \"el\" protocolo VPN.",
+      "explanation_en": "The correct answer is \"IPsec\": IPsec is a protocol suite designed specifically to authenticate and encrypt IP traffic, and it is the standard behind site-to-site and remote-access VPNs, in the context of cybersecurity. TCP and UDP are generic transport protocols that can carry encapsulated VPN traffic, but on their own they provide no encryption or authentication, so neither is \"the\" VPN protocol.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420302_015",
       "skill_id": "sk420302",
       "type": "true_false",
-      "question_es": "IPS bloquea ataques en el contexto de la ciberseguridad?",
-      "question_en": "IPS blocks attacks in the context of cybersecurity?",
+      "question_es": "Un IPS mal configurado puede generar falsos positivos que bloqueen tráfico legítimo.",
+      "question_en": "A poorly tuned IPS can generate false positives that block legitimate traffic.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Si las reglas o firmas del IPS son demasiado agresivas, puede confundir tráfico legítimo con un ataque y bloquearlo, afectando a la disponibilidad del servicio.",
+      "explanation_en": "True. If the IPS's rules or signatures are too aggressive, it can mistake legitimate traffic for an attack and block it, hurting the service's availability.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -638,38 +638,38 @@
       "question_en": "What is VLAN in the context of cybersecurity?",
       "options_es": [
         "Red virtual",
-        "Firewall en este contexto",
-        "Proxy como concepto principal",
-        "Protección como concepto principal"
+        "Firewall entre subredes",
+        "Proxy entre cliente y servidor",
+        "Protección por listas de acceso"
       ],
       "options_en": [
         "Virtual network",
-        "Firewall in this context",
-        "Proxy as the primary concept",
-        "Protection as the primary concept"
+        "Firewall between subnets",
+        "Proxy between client and server",
+        "Protection via access lists"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Red virtual\": una VLAN (Virtual LAN) segmenta lógicamente una red física a nivel de capa 2 en dominios de difusión separados, sin necesidad de cableado adicional, en el contexto de la ciberseguridad. Confundirla con un \"firewall\" es el error típico, porque ambas ayudan a segmentar la red, pero la VLAN no filtra ni bloquea tráfico por sí misma: solo lo aísla en broadcast domains distintos.",
+      "explanation_en": "The correct answer is \"Virtual network\": a VLAN (Virtual LAN) logically segments a physical network at layer 2 into separate broadcast domains, without requiring additional cabling, in the context of cybersecurity. Confusing it with a \"firewall\" is the typical mistake, because both help segment the network, but a VLAN does not filter or block traffic by itself — it only isolates it into different broadcast domains.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420303_002",
       "skill_id": "sk420303",
       "type": "true_false",
-      "question_es": "AES-256 es fuerte en el contexto de la ciberseguridad?",
-      "question_en": "AES-256 is strong in the context of cybersecurity?",
+      "question_es": "AES admite claves de 128, 192 y 256 bits.",
+      "question_en": "AES supports 128-, 192- and 256-bit keys.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El estándar AES (FIPS 197) define tres longitudes de clave, 128, 192 y 256 bits, todas con un bloque de 128 bits; AES-256 es la variante con la clave más larga.",
+      "explanation_en": "True. The AES standard (FIPS 197) defines three key lengths, 128, 192 and 256 bits, all with a 128-bit block; AES-256 is the variant with the longest key.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -679,39 +679,39 @@
       "question_es": "¿Qué capa OSI usa firewall para proteger la infraestructura?",
       "question_en": "Which OSI layer uses firewall to protect infrastructure?",
       "options_es": [
-        "Capa 1 según la especificación",
-        "Todas como concepto principal",
+        "Capa 1, solo cableado físico",
+        "Todas las capas, con DPI",
         "Capa 7",
         "Capa 3-4"
       ],
       "options_en": [
-        "Layer 1 according to the specification",
-        "All as the primary concept",
+        "Layer 1, physical cabling only",
+        "All layers, via DPI",
         "Layer 7",
         "Layer 3-4"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Capa 3-4\": un firewall tradicional de filtrado de paquetes toma decisiones de permitir o bloquear tráfico examinando direcciones IP y puertos, que corresponden a las capas 3 (red) y 4 (transporte) del modelo OSI, para proteger la infraestructura. La opción \"Capa 7\" es la más tentadora porque los firewalls de nueva generación y los proxies inspeccionan también el contenido de aplicación, pero eso es una capacidad añadida, no la operación básica de un firewall.",
+      "explanation_en": "The correct answer is \"Layer 3-4\": a traditional packet-filtering firewall decides to allow or block traffic by inspecting IP addresses and ports, which map to OSI layers 3 (network) and 4 (transport), to protect infrastructure. \"Layer 7\" is the most tempting wrong option because next-generation firewalls and proxies also inspect application content, but that is an added capability, not the firewall's basic operation.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420303_004",
       "skill_id": "sk420303",
       "type": "true_false",
-      "question_es": "NAT enmascara IPs internas para proteger la infraestructura?",
-      "question_en": "NAT masks internal IPs to protect infrastructure?",
+      "question_es": "NAT opera en la capa de aplicación del modelo OSI.",
+      "question_en": "NAT operates at the application layer of the OSI model.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Falso. NAT trabaja reescribiendo direcciones y puertos en las cabeceras de red y transporte (capas 3 y 4), no inspeccionando ni modificando el contenido de la capa de aplicación.",
+      "explanation_en": "False. NAT works by rewriting addresses and ports in the network and transport headers (layers 3 and 4), not by inspecting or modifying application-layer content.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -721,39 +721,39 @@
       "question_es": "¿Qué es proxy inverso para proteger la infraestructura?",
       "question_en": "What is reverse proxy to protect infrastructure?",
       "options_es": [
-        "Ambos en general",
-        "Cliente como concepto principal",
-        "Servidor como concepto principal",
-        "Ninguno como concepto principal"
+        "Ambos, cliente y servidor a la vez",
+        "Cliente, al reenviar peticiones",
+        "Del lado del servidor",
+        "Ninguno, solo enruta IP"
       ],
       "options_en": [
-        "Both in general",
-        "Client as the primary concept",
-        "Server as the primary concept",
-        "Neither as the primary concept"
+        "Both, client and server at once",
+        "Client, when forwarding requests",
+        "Server side",
+        "Neither, only routes IP"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Del lado del servidor\": un proxy inverso se coloca delante de uno o varios servidores backend y recibe las peticiones en nombre de ellos, ocultando su existencia y distribuyendo la carga, para proteger la infraestructura. \"Cliente\" es la opción tentadora porque se confunde con un proxy directo (forward proxy), que actúa en nombre de los clientes, exactamente el papel opuesto.",
+      "explanation_en": "The correct answer is \"Server side\": a reverse proxy sits in front of one or more backend servers and receives requests on their behalf, hiding their existence and distributing load, to protect infrastructure. \"Client\" is the tempting option because it is confused with a forward proxy, which acts on behalf of clients — exactly the opposite role.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420303_006",
       "skill_id": "sk420303",
       "type": "true_false",
-      "question_es": "VPN encripta comunicación para proteger la infraestructura?",
-      "question_en": "VPN encrypts communication to protect infrastructure?",
+      "question_es": "Una VPN elimina la necesidad de contar con software antivirus en los equipos.",
+      "question_en": "A VPN removes the need for endpoint antivirus software.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Falso. Una VPN protege el tráfico en tránsito, pero no detecta ni bloquea malware que ya se ejecute en el equipo; para eso sigue haciendo falta protección de endpoint.",
+      "explanation_en": "False. A VPN protects traffic in transit, but it does not detect or block malware already running on the device; endpoint protection is still needed for that.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -763,39 +763,39 @@
       "question_es": "¿Protocolo VPN para proteger la infraestructura?",
       "question_en": "VPN protocol to protect infrastructure?",
       "options_es": [
-        "UDP en este contexto",
-        "IPsec como concepto principal",
-        "TCP como concepto principal",
-        "HTTP como concepto principal"
+        "UDP, sin confirmación",
+        "IPsec",
+        "TCP, sin cifrado nativo",
+        "HTTP, en texto plano"
       ],
       "options_en": [
-        "UDP in this context",
-        "IPsec as the primary concept",
-        "TCP as the primary concept",
-        "HTTP as the primary concept"
+        "UDP, without ACKs",
+        "IPsec",
+        "TCP, no native encryption",
+        "HTTP, in plaintext"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"IPsec\": IPsec es un conjunto de protocolos diseñado específicamente para autenticar y cifrar tráfico IP, y es el estándar detrás de VPNs de sitio a sitio y de acceso remoto, para proteger la infraestructura. TCP y UDP son protocolos de transporte genéricos que pueden llevar tráfico VPN encapsulado, pero por sí solos no ofrecen cifrado ni autenticación, por lo que no son \"el\" protocolo VPN.",
+      "explanation_en": "The correct answer is \"IPsec\": IPsec is a protocol suite designed specifically to authenticate and encrypt IP traffic, and it is the standard behind site-to-site and remote-access VPNs, to protect infrastructure. TCP and UDP are generic transport protocols that can carry encapsulated VPN traffic, but on their own they provide no encryption or authentication, so neither is \"the\" VPN protocol.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420303_008",
       "skill_id": "sk420303",
       "type": "true_false",
-      "question_es": "IPS bloquea ataques para proteger la infraestructura?",
-      "question_en": "IPS blocks attacks to protect infrastructure?",
+      "question_es": "Un IPS opera exclusivamente en la capa física del modelo OSI.",
+      "question_en": "An IPS operates exclusively at the physical layer of the OSI model.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 1,
+      "explanation_es": "Falso. Un IPS inspecciona cabeceras y, en muchos casos, contenido de aplicación en capas superiores (red, transporte e incluso aplicación), no solo señales físicas de la capa 1.",
+      "explanation_en": "False. An IPS inspects headers and, in many cases, application content at higher layers (network, transport and even application), not only physical-layer signals.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -806,38 +806,38 @@
       "question_en": "What is VLAN to protect infrastructure?",
       "options_es": [
         "Red virtual",
-        "Firewall en este contexto",
-        "Protección como concepto principal",
-        "Proxy como concepto principal"
+        "Firewall entre subredes",
+        "Protección por listas de acceso",
+        "Proxy entre cliente y servidor"
       ],
       "options_en": [
         "Virtual network",
-        "Firewall in this context",
-        "Protection as the primary concept",
-        "Proxy as the primary concept"
+        "Firewall between subnets",
+        "Protection via access lists",
+        "Proxy between client and server"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Red virtual\": una VLAN (Virtual LAN) segmenta lógicamente una red física a nivel de capa 2 en dominios de difusión separados, sin necesidad de cableado adicional, para proteger la infraestructura. Confundirla con un \"firewall\" es el error típico, porque ambas ayudan a segmentar la red, pero la VLAN no filtra ni bloquea tráfico por sí misma: solo lo aísla en broadcast domains distintos.",
+      "explanation_en": "The correct answer is \"Virtual network\": a VLAN (Virtual LAN) logically segments a physical network at layer 2 into separate broadcast domains, without requiring additional cabling, to protect infrastructure. Confusing it with a \"firewall\" is the typical mistake, because both help segment the network, but a VLAN does not filter or block traffic by itself — it only isolates it into different broadcast domains.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420303_010",
       "skill_id": "sk420303",
       "type": "true_false",
-      "question_es": "AES-256 es fuerte para proteger la infraestructura?",
-      "question_en": "AES-256 is strong to protect infrastructure?",
+      "question_es": "AES-256 se usa principalmente para generar firmas digitales.",
+      "question_en": "AES-256 is primarily used to generate digital signatures.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Falso. Las firmas digitales se generan con criptografía asimétrica (por ejemplo RSA o ECDSA) sobre un hash del mensaje; AES-256 es un cifrado simétrico usado para proteger confidencialidad, no para firmar.",
+      "explanation_en": "False. Digital signatures are generated with asymmetric cryptography (for example RSA or ECDSA) over a hash of the message; AES-256 is a symmetric cipher used to protect confidentiality, not to sign.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -847,39 +847,39 @@
       "question_es": "¿Qué capa OSI usa firewall en la gestión de riesgos?",
       "question_en": "Which OSI layer uses firewall in risk management?",
       "options_es": [
-        "Capa 7 de forma predeterminada",
+        "Capa 7, solo con DPI",
         "Capa 3-4",
-        "Todas como concepto principal",
+        "Todas las capas, con DPI",
         "Capa 1"
       ],
       "options_en": [
-        "Layer 7 by default",
+        "Layer 7, only with DPI",
         "Layer 3-4",
-        "All as the primary concept",
+        "All layers, via DPI",
         "Layer 1"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Capa 3-4\": un firewall tradicional de filtrado de paquetes toma decisiones de permitir o bloquear tráfico examinando direcciones IP y puertos, que corresponden a las capas 3 (red) y 4 (transporte) del modelo OSI, en la gestión de riesgos. La opción \"Capa 7\" es la más tentadora porque los firewalls de nueva generación y los proxies inspeccionan también el contenido de aplicación, pero eso es una capacidad añadida, no la operación básica de un firewall.",
+      "explanation_en": "The correct answer is \"Layer 3-4\": a traditional packet-filtering firewall decides to allow or block traffic by inspecting IP addresses and ports, which map to OSI layers 3 (network) and 4 (transport), in risk management. \"Layer 7\" is the most tempting wrong option because next-generation firewalls and proxies also inspect application content, but that is an added capability, not the firewall's basic operation.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420303_012",
       "skill_id": "sk420303",
       "type": "true_false",
-      "question_es": "NAT enmascara IPs internas en la gestión de riesgos?",
-      "question_en": "NAT masks internal IPs in risk management?",
+      "question_es": "NAT puede complicar los túneles IPsec de extremo a extremo porque modifica las cabeceras de los paquetes.",
+      "question_en": "NAT can complicate end-to-end IPsec tunnels because it modifies packet headers.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Verdadero. Como IPsec puede proteger la integridad de las cabeceras, la reescritura que hace NAT puede invalidar esa protección, por lo que suele requerir NAT-Traversal (NAT-T) para funcionar.",
+      "explanation_en": "True. Since IPsec can protect header integrity, the rewriting that NAT performs can invalidate that protection, which is why NAT Traversal (NAT-T) is usually required to make it work.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -889,39 +889,39 @@
       "question_es": "¿Qué es proxy inverso en la gestión de riesgos?",
       "question_en": "What is reverse proxy in risk management?",
       "options_es": [
-        "Servidor como concepto principal",
-        "Ambos en general",
-        "Ninguno como concepto principal",
-        "Cliente como concepto principal"
+        "Del lado del servidor",
+        "Ambos, cliente y servidor a la vez",
+        "Ninguno, solo enruta IP",
+        "Cliente, al reenviar peticiones"
       ],
       "options_en": [
-        "Server as the primary concept",
-        "Both in general",
-        "Neither as the primary concept",
-        "Client as the primary concept"
+        "Server side",
+        "Both, client and server at once",
+        "Neither, only routes IP",
+        "Client, when forwarding requests"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Del lado del servidor\": un proxy inverso se coloca delante de uno o varios servidores backend y recibe las peticiones en nombre de ellos, ocultando su existencia y distribuyendo la carga, en la gestión de riesgos. \"Cliente\" es la opción tentadora porque se confunde con un proxy directo (forward proxy), que actúa en nombre de los clientes, exactamente el papel opuesto.",
+      "explanation_en": "The correct answer is \"Server side\": a reverse proxy sits in front of one or more backend servers and receives requests on their behalf, hiding their existence and distributing load, in risk management. \"Client\" is the tempting option because it is confused with a forward proxy, which acts on behalf of clients — exactly the opposite role.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420303_014",
       "skill_id": "sk420303",
       "type": "true_false",
-      "question_es": "VPN encripta comunicación en la gestión de riesgos?",
-      "question_en": "VPN encrypts communication in risk management?",
+      "question_es": "Las VPN basadas en TLS, como OpenVPN, pueden operar sobre puertos HTTPS estándar para evitar cortafuegos restrictivos.",
+      "question_en": "TLS-based VPNs, such as OpenVPN, can operate over standard HTTPS ports to get past restrictive firewalls.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Al usar el puerto 443 y el protocolo TLS, este tipo de VPN se mezcla con el tráfico web normal y suele atravesar cortafuegos que solo permiten HTTPS saliente.",
+      "explanation_en": "True. By using port 443 and the TLS protocol, this kind of VPN blends in with normal web traffic and can usually get through firewalls that only allow outbound HTTPS.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -931,39 +931,39 @@
       "question_es": "¿Protocolo VPN en la gestión de riesgos?",
       "question_en": "VPN protocol in risk management?",
       "options_es": [
-        "TCP de forma predeterminada",
-        "IPsec como concepto principal",
-        "HTTP como concepto principal",
-        "UDP como concepto principal"
+        "TCP, sin cifrado nativo",
+        "IPsec",
+        "HTTP, en texto plano",
+        "UDP, sin confirmación"
       ],
       "options_en": [
-        "TCP by default",
-        "IPsec as the primary concept",
-        "HTTP as the primary concept",
-        "UDP as the primary concept"
+        "TCP, no native encryption",
+        "IPsec",
+        "HTTP, in plaintext",
+        "UDP, without ACKs"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"IPsec\": IPsec es un conjunto de protocolos diseñado específicamente para autenticar y cifrar tráfico IP, y es el estándar detrás de VPNs de sitio a sitio y de acceso remoto, en la gestión de riesgos. TCP y UDP son protocolos de transporte genéricos que pueden llevar tráfico VPN encapsulado, pero por sí solos no ofrecen cifrado ni autenticación, por lo que no son \"el\" protocolo VPN.",
+      "explanation_en": "The correct answer is \"IPsec\": IPsec is a protocol suite designed specifically to authenticate and encrypt IP traffic, and it is the standard behind site-to-site and remote-access VPNs, in risk management. TCP and UDP are generic transport protocols that can carry encapsulated VPN traffic, but on their own they provide no encryption or authentication, so neither is \"the\" VPN protocol.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420304_001",
       "skill_id": "sk420304",
       "type": "true_false",
-      "question_es": "IPS bloquea ataques en la gestión de riesgos?",
-      "question_en": "IPS blocks attacks in risk management?",
+      "question_es": "La detección por firmas y la detección por anomalías son dos técnicas habituales que usa un IPS.",
+      "question_en": "Signature-based and anomaly-based detection are both common techniques used by an IPS.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Un IPS suele combinar firmas conocidas de ataques con líneas base de comportamiento normal para detectar tanto amenazas conocidas como desviaciones inusuales.",
+      "explanation_en": "True. An IPS typically combines known attack signatures with baselines of normal behavior to detect both known threats and unusual deviations.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -973,39 +973,39 @@
       "question_es": "¿Qué es VLAN en la gestión de riesgos?",
       "question_en": "What is VLAN in risk management?",
       "options_es": [
-        "Proxy de forma predeterminada",
+        "Proxy entre cliente y servidor",
         "Red virtual",
-        "Protección como concepto principal",
+        "Protección por listas de acceso",
         "Firewall de red"
       ],
       "options_en": [
-        "Proxy by default",
+        "Proxy between client and server",
         "Virtual network",
-        "Protection as the primary concept",
-        "Firewall as the primary concept"
+        "Protection via access lists",
+        "Network firewall"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Red virtual\": una VLAN (Virtual LAN) segmenta lógicamente una red física a nivel de capa 2 en dominios de difusión separados, sin necesidad de cableado adicional, en la gestión de riesgos. Confundirla con un \"firewall\" es el error típico, porque ambas ayudan a segmentar la red, pero la VLAN no filtra ni bloquea tráfico por sí misma: solo lo aísla en broadcast domains distintos.",
+      "explanation_en": "The correct answer is \"Virtual network\": a VLAN (Virtual LAN) logically segments a physical network at layer 2 into separate broadcast domains, without requiring additional cabling, in risk management. Confusing it with a \"firewall\" is the typical mistake, because both help segment the network, but a VLAN does not filter or block traffic by itself — it only isolates it into different broadcast domains.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420304_003",
       "skill_id": "sk420304",
       "type": "true_false",
-      "question_es": "AES-256 es fuerte en la gestión de riesgos?",
-      "question_en": "AES-256 is strong in risk management?",
+      "question_es": "AES opera mediante varias rondas de sustitución y permutación sobre bloques de datos.",
+      "question_en": "AES operates through multiple rounds of substitution and permutation on blocks of data.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. AES aplica repetidamente pasos de sustitución de bytes, desplazamiento de filas, mezcla de columnas y suma de la clave de ronda, en varias rondas según la longitud de la clave.",
+      "explanation_en": "True. AES repeatedly applies byte substitution, row shifting, column mixing and round-key addition steps, across several rounds depending on the key length.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -1016,38 +1016,38 @@
       "question_en": "Which OSI layer uses firewall according to the NIST framework?",
       "options_es": [
         "Capa 3-4",
-        "Capa 1 de forma predeterminada",
+        "Capa 1, con repetidores",
         "Capa 7",
-        "Todas como concepto principal"
+        "Todas las capas, con DPI"
       ],
       "options_en": [
         "Layer 3-4",
-        "Layer 1 by default",
+        "Layer 1, via repeaters",
         "Layer 7",
-        "All as the primary concept"
+        "All layers, via DPI"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Capa 3-4\": un firewall tradicional de filtrado de paquetes toma decisiones de permitir o bloquear tráfico examinando direcciones IP y puertos, que corresponden a las capas 3 (red) y 4 (transporte) del modelo OSI, según el marco NIST. La opción \"Capa 7\" es la más tentadora porque los firewalls de nueva generación y los proxies inspeccionan también el contenido de aplicación, pero eso es una capacidad añadida, no la operación básica de un firewall.",
+      "explanation_en": "The correct answer is \"Layer 3-4\": a traditional packet-filtering firewall decides to allow or block traffic by inspecting IP addresses and ports, which map to OSI layers 3 (network) and 4 (transport), according to the NIST framework. \"Layer 7\" is the most tempting wrong option because next-generation firewalls and proxies also inspect application content, but that is an added capability, not the firewall's basic operation.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420304_005",
       "skill_id": "sk420304",
       "type": "true_false",
-      "question_es": "NAT enmascara IPs internas según el marco NIST?",
-      "question_en": "NAT masks internal IPs according to the NIST framework?",
+      "question_es": "NAT es una forma de cifrado de extremo a extremo entre hosts.",
+      "question_en": "NAT is a form of end-to-end encryption between hosts.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Falso. NAT solo traduce direcciones IP para permitir la conectividad; no aporta cifrado ni protege la confidencialidad del contenido entre los hosts.",
+      "explanation_en": "False. NAT only translates IP addresses to allow connectivity; it provides no encryption and does not protect the confidentiality of the content between hosts.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -1057,39 +1057,39 @@
       "question_es": "¿Qué es proxy inverso según el marco NIST?",
       "question_en": "What is reverse proxy according to the NIST framework?",
       "options_es": [
-        "Servidor como concepto principal",
-        "Ambos de forma predeterminada",
-        "Ninguno como concepto principal",
-        "Cliente como concepto principal"
+        "Del lado del servidor",
+        "Ambos, cliente y servidor a la vez",
+        "Ninguno, solo enruta IP",
+        "Cliente, al reenviar peticiones"
       ],
       "options_en": [
-        "Server as the primary concept",
-        "Both by default",
-        "Neither as the primary concept",
-        "Client as the primary concept"
+        "Server side",
+        "Both, client and server at once",
+        "Neither, only routes IP",
+        "Client, when forwarding requests"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Del lado del servidor\": un proxy inverso se coloca delante de uno o varios servidores backend y recibe las peticiones en nombre de ellos, ocultando su existencia y distribuyendo la carga, según el marco NIST. \"Cliente\" es la opción tentadora porque se confunde con un proxy directo (forward proxy), que actúa en nombre de los clientes, exactamente el papel opuesto.",
+      "explanation_en": "The correct answer is \"Server side\": a reverse proxy sits in front of one or more backend servers and receives requests on their behalf, hiding their existence and distributing load, according to the NIST framework. \"Client\" is the tempting option because it is confused with a forward proxy, which acts on behalf of clients — exactly the opposite role.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420304_007",
       "skill_id": "sk420304",
       "type": "true_false",
-      "question_es": "VPN encripta comunicación según el marco NIST?",
-      "question_en": "VPN encrypts communication according to the NIST framework?",
+      "question_es": "Una VPN impide que un atacante que ya controla el dispositivo final vea el tráfico descifrado.",
+      "question_en": "A VPN prevents an attacker who already controls the endpoint device from viewing decrypted traffic.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Falso. La VPN solo protege los datos mientras viajan por la red; si el dispositivo ya está comprometido, el atacante puede ver el tráfico una vez descifrado en ese equipo.",
+      "explanation_en": "False. A VPN only protects data while it travels across the network; if the device is already compromised, the attacker can view the traffic once it is decrypted on that machine.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -1099,39 +1099,39 @@
       "question_es": "¿Protocolo VPN según el marco NIST?",
       "question_en": "VPN protocol according to the NIST framework?",
       "options_es": [
-        "HTTP según la especificación",
-        "TCP como concepto principal",
-        "IPsec como concepto principal",
-        "UDP como concepto principal"
+        "HTTP, en texto plano",
+        "TCP, sin cifrado nativo",
+        "IPsec",
+        "UDP, sin confirmación"
       ],
       "options_en": [
-        "HTTP according to the specification",
-        "TCP as the primary concept",
-        "IPsec as the primary concept",
-        "UDP as the primary concept"
+        "HTTP, in plaintext",
+        "TCP, no native encryption",
+        "IPsec",
+        "UDP, without ACKs"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"IPsec\": IPsec es un conjunto de protocolos diseñado específicamente para autenticar y cifrar tráfico IP, y es el estándar detrás de VPNs de sitio a sitio y de acceso remoto, según el marco NIST. TCP y UDP son protocolos de transporte genéricos que pueden llevar tráfico VPN encapsulado, pero por sí solos no ofrecen cifrado ni autenticación, por lo que no son \"el\" protocolo VPN.",
+      "explanation_en": "The correct answer is \"IPsec\": IPsec is a protocol suite designed specifically to authenticate and encrypt IP traffic, and it is the standard behind site-to-site and remote-access VPNs, according to the NIST framework. TCP and UDP are generic transport protocols that can carry encapsulated VPN traffic, but on their own they provide no encryption or authentication, so neither is \"the\" VPN protocol.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420304_009",
       "skill_id": "sk420304",
       "type": "true_false",
-      "question_es": "IPS bloquea ataques según el marco NIST?",
-      "question_en": "IPS blocks attacks according to the NIST framework?",
+      "question_es": "Un IPS garantiza cero falsos negativos frente a cualquier ataque de día cero.",
+      "question_en": "An IPS guarantees zero false negatives against any zero-day attack.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Falso. Ningún IPS puede garantizar la detección de todo ataque de día cero, ya que estos aprovechan vulnerabilidades y comportamientos aún no conocidos por sus firmas o modelos.",
+      "explanation_en": "False. No IPS can guarantee detecting every zero-day attack, since these exploit vulnerabilities and behaviors not yet known to its signatures or models.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -1141,39 +1141,39 @@
       "question_es": "¿Qué es VLAN según el marco NIST?",
       "question_en": "What is VLAN according to the NIST framework?",
       "options_es": [
-        "Protección según la especificación",
+        "Protección por listas de acceso",
         "Firewall de red",
         "Red virtual",
-        "Proxy como concepto principal"
+        "Proxy entre cliente y servidor"
       ],
       "options_en": [
-        "Protection according to the specification",
-        "Firewall as the primary concept",
+        "Protection via access lists",
+        "Network firewall",
         "Virtual network",
-        "Proxy as the primary concept"
+        "Proxy between client and server"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Red virtual\": una VLAN (Virtual LAN) segmenta lógicamente una red física a nivel de capa 2 en dominios de difusión separados, sin necesidad de cableado adicional, según el marco NIST. Confundirla con un \"firewall\" es el error típico, porque ambas ayudan a segmentar la red, pero la VLAN no filtra ni bloquea tráfico por sí misma: solo lo aísla en broadcast domains distintos.",
+      "explanation_en": "The correct answer is \"Virtual network\": a VLAN (Virtual LAN) logically segments a physical network at layer 2 into separate broadcast domains, without requiring additional cabling, according to the NIST framework. Confusing it with a \"firewall\" is the typical mistake, because both help segment the network, but a VLAN does not filter or block traffic by itself — it only isolates it into different broadcast domains.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420304_011",
       "skill_id": "sk420304",
       "type": "true_false",
-      "question_es": "AES-256 es fuerte según el marco NIST?",
-      "question_en": "AES-256 is strong according to the NIST framework?",
+      "question_es": "AES-256 fue roto mediante un ataque práctico de fuerza bruta en 2023.",
+      "question_en": "AES-256 was broken by a practical brute-force attack in 2023.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 1,
+      "explanation_es": "Falso. No existe ningún ataque práctico conocido que rompa AES-256 por fuerza bruta; el espacio de claves de 256 bits es demasiado grande para agotarlo con la tecnología actual.",
+      "explanation_en": "False. There is no known practical attack that breaks AES-256 by brute force; the 256-bit key space is far too large to exhaust with current technology.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -1183,39 +1183,39 @@
       "question_es": "¿Qué capa OSI usa firewall en la respuesta a incidentes?",
       "question_en": "Which OSI layer uses firewall in incident response?",
       "options_es": [
-        "Todas en la mayoría de los casos",
+        "Todas las capas, sin excepción",
         "Capa 7",
         "Capa 3-4",
         "Capa 1"
       ],
       "options_en": [
-        "All in most cases",
+        "All layers, no exceptions",
         "Layer 7",
         "Layer 3-4",
         "Layer 1"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Capa 3-4\": un firewall tradicional de filtrado de paquetes toma decisiones de permitir o bloquear tráfico examinando direcciones IP y puertos, que corresponden a las capas 3 (red) y 4 (transporte) del modelo OSI, en la respuesta a incidentes. La opción \"Capa 7\" es la más tentadora porque los firewalls de nueva generación y los proxies inspeccionan también el contenido de aplicación, pero eso es una capacidad añadida, no la operación básica de un firewall.",
+      "explanation_en": "The correct answer is \"Layer 3-4\": a traditional packet-filtering firewall decides to allow or block traffic by inspecting IP addresses and ports, which map to OSI layers 3 (network) and 4 (transport), in incident response. \"Layer 7\" is the most tempting wrong option because next-generation firewalls and proxies also inspect application content, but that is an added capability, not the firewall's basic operation.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420304_013",
       "skill_id": "sk420304",
       "type": "true_false",
-      "question_es": "NAT enmascara IPs internas en la respuesta a incidentes?",
-      "question_en": "NAT masks internal IPs in incident response?",
+      "question_es": "NAT se desarrolló originalmente para ayudar a conservar el limitado espacio de direcciones IPv4.",
+      "question_en": "NAT was originally developed to help conserve the limited pool of IPv4 addresses.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "Verdadero. Ante el agotamiento de direcciones IPv4 públicas, NAT permitió que muchos dispositivos con direcciones privadas compartieran unas pocas direcciones públicas.",
+      "explanation_en": "True. Facing the exhaustion of public IPv4 addresses, NAT let many devices with private addresses share a small number of public addresses.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
@@ -1225,39 +1225,39 @@
       "question_es": "¿Qué es proxy inverso en la respuesta a incidentes?",
       "question_en": "What is reverse proxy in incident response?",
       "options_es": [
-        "Cliente en la mayoría de los casos",
-        "Ninguno como concepto principal",
-        "Servidor como concepto principal",
-        "Ambos como concepto principal"
+        "Cliente, al reenviar peticiones",
+        "Ninguno, solo enruta IP",
+        "Del lado del servidor",
+        "Ambos, cliente y servidor a la vez"
       ],
       "options_en": [
-        "Client in most cases",
-        "Neither as the primary concept",
-        "Server as the primary concept",
-        "Both as the primary concept"
+        "Client, when forwarding requests",
+        "Neither, only routes IP",
+        "Server side",
+        "Both, client and server at once"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "explanation_es": "La respuesta correcta es \"Del lado del servidor\": un proxy inverso se coloca delante de uno o varios servidores backend y recibe las peticiones en nombre de ellos, ocultando su existencia y distribuyendo la carga, en la respuesta a incidentes. \"Cliente\" es la opción tentadora porque se confunde con un proxy directo (forward proxy), que actúa en nombre de los clientes, exactamente el papel opuesto.",
+      "explanation_en": "The correct answer is \"Server side\": a reverse proxy sits in front of one or more backend servers and receives requests on their behalf, hiding their existence and distributing load, in incident response. \"Client\" is the tempting option because it is confused with a forward proxy, which acts on behalf of clients — exactly the opposite role.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     },
     {
       "id": "q420304_015",
       "skill_id": "sk420304",
       "type": "true_false",
-      "question_es": "VPN encripta comunicación en la respuesta a incidentes?",
-      "question_en": "VPN encrypts communication in incident response?",
+      "question_es": "Una VPN de túnel completo (full-tunnel) enruta todo el tráfico del cliente a través de la red corporativa.",
+      "question_en": "A full-tunnel VPN routes all of a client's traffic through the corporate network.",
       "options_es": [
-        "Verdadero como concepto principal",
-        "Falso como concepto principal"
+        "Verdadero",
+        "Falso"
       ],
       "options_en": [
-        "True as the primary concept",
-        "False as the primary concept"
+        "True",
+        "False"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación no disponible.",
-      "explanation_en": "Explanation not available.",
+      "correct_index": 0,
+      "explanation_es": "Verdadero. A diferencia del túnel dividido, el túnel completo obliga a que absolutamente todo el tráfico del usuario, incluido el de internet general, pase por la red corporativa y sus controles.",
+      "explanation_en": "True. Unlike split tunneling, a full tunnel forces absolutely all of the user's traffic, including general internet traffic, to pass through the corporate network and its controls.",
       "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
     }
   ]

@@ -155,16 +155,18 @@ async def explain_question(
     history = conversation_history if conversation_history else None
 
     provider = get_provider()
-    explanation = await provider.complete(
-        system_prompt,
-        user_prompt,
-        max_tokens=500,
-        history=history,
-    )
+    complete_named = getattr(provider, "complete_named", None)
+    if complete_named is not None:
+        explanation, provider_name = await complete_named(
+            system_prompt, user_prompt, max_tokens=500, history=history
+        )
+    else:
+        explanation = await provider.complete(system_prompt, user_prompt, max_tokens=500, history=history)
+        provider_name = provider.name
 
     return {
         "explanation": explanation,
-        "provider": provider.name,
+        "provider": provider_name,
         "grounded": grounded,
         "times_missed": missed,
     }

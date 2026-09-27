@@ -121,6 +121,32 @@ async def test_curriculum_ok(client, user, auth_headers, content_seed):
 
 
 @pytest.mark.asyncio
+async def test_curriculum_lesson_seen_reflects_lesson_completions(
+    client, user, auth_headers, db_session, content_seed
+):
+    """32.4: el frontend usa esto para avisar antes de mandar a un quiz que el
+    backend va a bloquear igual."""
+    resp = await client.get(
+        f"{BASE}/curriculum",
+        params={"track_id": content_seed["track_id"]},
+        headers=auth_headers,
+    )
+    assert resp.json()["modules"][0]["skills"][0]["lesson_seen"] is False
+
+    from app.models.lesson_completion import LessonCompletion
+
+    db_session.add(LessonCompletion(user_id=user.id, skill_id=content_seed["skill_id"]))
+    await db_session.commit()
+
+    resp = await client.get(
+        f"{BASE}/curriculum",
+        params={"track_id": content_seed["track_id"]},
+        headers=auth_headers,
+    )
+    assert resp.json()["modules"][0]["skills"][0]["lesson_seen"] is True
+
+
+@pytest.mark.asyncio
 async def test_curriculum_unknown_track_returns_empty(client, user, auth_headers):
     """Service returns an empty CurriculumResponse for unknown tracks (no 404)."""
     resp = await client.get(

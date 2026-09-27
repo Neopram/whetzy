@@ -2002,3 +2002,117 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 
 <!-- L536 original -->
 | 38.7 | **2** | **Certificación a 39,99 $ de pago único** (ADR-49). Hoy los tracks `is_certification` no emiten certificado (`track_exam.py:214`). Construir: (a) derecho de compra por usuario × track de certificación (tabla + migración Alembic); (b) examen certificador con el blueprint oficial (reusa `mock_exam`), que al aprobar emite un certificado verificable «Certificado Whetzy de preparación para …»; (c) reintentos sin nuevo pago; (d) `CERTIFICATION_PAYWALL` apagado hasta H.19 (con el flag apagado, el examen certificador queda abierto a todos, como hoy el final de track); (e) precio en la constante única de precios (38.1), ES/EN; nunca «certificación oficial» | DONE 2026-09-25 rama `claude/trusting-franklin-2wwmmr` commit `843015e` — cobrar de verdad = H.19/H.29 | Tests: sin compra y con el flag encendido → 402; con compra → examen y certificado; un suspenso y un reintento no piden pago; el certificado se verifica por `/exams/certificates/{code}`; los certificados de tracks de aprendizaje siguen gratis; grep: ninguna pantalla dice «certificación oficial» |
+
+## §L — Filas DONE retiradas de §2 el 2026-09-26 (guarda de tamaño 20.10)
+
+> Copiadas tal cual desde `AUTONOMOUS_STATE.md` §2 para dejar sitio a la serie 39. El detalle de cada una sigue en §I. Segunda tanda (filas DONE de las series 18-22) retirada la noche del 2026-09-26.
+
+| ID | PRI | Tarea | Estado | Evidencia |
+|---|---|---|---|---|
+| 17.2 | **1** | **Examen final de track + certificado + «test-out»** | DONE (76c1897, sesión autónoma) |… | **DONE** | **DONE** → §I |
+| 20.9 | **2** | **Coherencia final**: README/CLAUDE/ORCHESTRATOR/DECISIONS/CATALOGO/teardown sin contradicciones entre sí ni con el… | **DONE** | **DONE** → §I |
+| 22.3 | **2** | **Auth hardening**: lockout progresivo tras N fallos, refresh tokens con rotación y revocación, sesiones por dispositivo… | **DONE** | **DONE** → §I |
+| 22.4 | **2** | **Cadena de suministro a €0**: Dependabot (config), `gitleaks` en pre-commit y en `verify_ci_local.ps1`, `bandit` +… | **DONE** | **DONE** → §I |
+| 22.13 | **2** | **Test con presupuesto de tiempo absoluto que falla con la máquina cargada**:… | **DONE** | **DONE** → §I |
+| 22.16 | **2** | **Cuota de tokens por usuario en `/tutor`** (`ARCHITECTURE.md` riesgos): contador en… | **DONE** | **DONE** → §I |
+| 24.5 | **0** | **Sesión adaptativa con BKT visual**: barra de dominio en vivo, «por qué esta pregunta», feedback explicativo (no solo… | **DONE** | **DONE** → §I |
+| 24.10 | **3** | **Panel de instructor** (UI de `MARKETPLACE.md` §4) con datos de prueba hasta Serie 28 |… | **DONE** | **DONE** → §I |
+| 24.11 | **3** | **Marketplace UI**: catálogo con filtros, ratings, preview de primera lección; mock hasta… | **DONE** | **DONE** → §I |
+| 24.12 | **2** | **Mobile polish**: Capacitor Android, safe areas, gestos, estado offline básico, rendimiento… | **DONE** | **DONE** → §I |
+| 24.13 | **2** | **Tres vídeos demo, ES y EN nativos**: producto 2 min, motor 5 min, short 60s | DONE… | **DONE** | **DONE** → §I |
+| 24.14 | **3** | **Framework A/B**: tabla experiments, asignación estable por usuario, flag en frontend |… | **DONE** | **DONE** → §I |
+| 29.4 | **2** | **Códigos de cinco tipos** (`ECONOMIA.md` §4): generación de lotes (CSV), alfabeto sin `0 O 1… | **DONE** | **DONE** → §I |
+| 30.1 | **0** | **La landing en producción publica testimonios y cifras inventados.** El chunk `LandingScreen-*.js` servido hoy contiene… | **DONE** | **DONE** → §I |
+| 30.3 | **1** | **Guarda de repo para la configuración de Pages.** Un test (en `pytest tests/content` o en el pre-push) que falle si… | **DONE** | **DONE** → §I |
+| 30.6 | **1** | **La puerta local no puerta en Linux/macOS.** `.githooks/pre-push` está en git como `100644` (sin bit de ejecución): git… | **DONE** | **DONE** → §I |
+| 31.0 | **1** | `scripts/project_snapshot.py`: extraer a un módulo el recuento que `check_docs.py` ya hace… | **DONE** | **DONE** → §I |
+| 32.0 | **2** | Inventario: qué guarda hoy cada respuesta (p_known antes/después, Elo, S/D de FSRS,… | **DONE** | **DONE** → §I |
+| 32.1 | **2** | Curva de fiabilidad de `p_known`: 5 tramos, predicho contra acierto real posterior; script… | **DONE** | **DONE** → §I |
+| 33.0 | **2** | SLO escritos en `RUNBOOK.md` (disponibilidad API ≥ 99,5 %, quiz p95 < 500 ms, `/health/ready`… | **DONE** | **DONE** → §I |
+| 33.2 | **2** | Cola offline idempotente: `event_id` UUID por respuesta en… | **DONE** | **DONE** → §I |
+| 34.0 | **0** | **Guarda de contrato `.tsx` ↔ `.module.css`** (`src/test/cssModules.contract.test.ts`) en modo trinquete: la deuda de hoy… | **DONE** | **DONE** → §I |
+| 34.10 | **0** | **La suite e2e está roja desde el 2026-09-19 y nadie lo vio** (CI ciego por facturación y, después, sin… | **DONE** | **DONE** → §I |
+| 35.2 | **1** | **«Salta lo que ya sabes», explicado**: tras la prueba de nivel, enseñar qué módulos se marcaron como dominados y por qué… | **DONE** | **DONE** → §I |
+| 35.3 | **1** | **Racha amable**: 1 comodín gratis por semana ISO (sin acumular; los comprados se conservan), visible en Home, y «perder… | **DONE** | **DONE** → §I |
+| 35.5 | **1** | ***Readiness* por dominio como producto estrella de las rutas cloud y seguridad**, en ES y EN: visible desde Tracks y la… | **DONE** | **DONE** → §I |
+| 35.7 | **1** | **Precios del dueño en producto** (ADR-41): landing con 4 planes, perfil, comparativa; tier `creator` (rango sobre `pro`),… | **DONE** | **DONE** → §I |
+| 37.0 | **1** | **Guarda de diversidad semántica** en `scripts/check_question_bank.py`: por track, enunciados distintos ≥ 90 %, opciones… | **DONE** | **DONE** → §I |
+| 37.2 | **1** | **Recuento por módulos**: `check_docs.py` y `lib/catalog.ts` pasan de «curso = track × nivel» a «curso = módulo» en el… | **DONE** | **DONE** → §I |
+| 37.3 | **1** | **Pipeline de corpus** `scripts/corpus/`: `fetch.py` (git/dump/torrent oficial), `verify_license.py` (lee… | **DONE** | **DONE** → §I |
+| 38.0 | **2** | **KPIs de `DISTRIBUCION.md` §10 y ADR-32 en el admin** (22.1): registrados, pagos, MRR, D30,… | **DONE** | **DONE** → §I |
+| 38.4 | **3** | **Kit de reclutamiento de instructores** — es la fila 28.9; aquí solo para que la serie 38 lo… | **DONE** | **DONE** → §I |
+| 14.4 | 2 | **Micro-lecciones desde las fuentes** — cerrar la brecha de instrucción sin construir vídeo | DONE | TracksScreen: skills con p_known < 0.3 destacadas (fondo naranja, clickables → lección); botón Aprender apunta al skill más débil; tsc+vite limpios |
+| 29.12 | **3** | **Scorecard de la serie**: métricas `ECONOMIA.md` §7 visibles en admin con objetivos mes 3/6/12; **verificación… | DONE | `GET /admin/economy/scorecard` — 5 KPI con semáforo vs targets m3/m6/m12 |
+| 22.7 | **3** | **Incidentes y estado**: runbook de incidentes (severidades, quién, qué, plantilla de postmortem), página de estado… | DONE | RUNBOOK.md §Incident Management + `/status` page frontend |
+| 28.6 | **4** | Panel admin: aprobación de cursos, moderación, gestión de payouts | DONE | 4 admin endpoints: list/status courses + list/status payouts |
+| 19.4 | **2** | **Bootcamps: secuencia de tracks con calendario y meta diaria** | DONE | Modelos + migración + API + seed data + 7 tests. `7768bc7` |
+| 39.16 | **1** | Pesos de dominio de track44–46 suman 95/95/96 | **DONE** | Puntos medios oficiales normalizados a 100 (Microsoft Learn, leídos 2026-09-26): AZ-900 28/39/33 (guía 20-07-2026), DP-900 29/24/18/29 (21-07-2026), AI-900 19×4/24 |
+| 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | **DONE** | 286 términos sin `track_id` (tracks 18/20/21/23/27/44-46); arreglado; loader local `skipped: 0`, `glossary: 1044`; test rojo sobre master |
+| 39.19 | **2** | 115 rutas en local frente a 141 en producción | **DONE** | Sin diferencia: `openapi.json` local y de producción = 141 paths / 146 operaciones, idénticas (2026-09-26); «115» era el recuento filtrado del test de contrato |
+| 18.3 | **1** | **Runtime JS real + track Frontend (track14)** | **DONE** | **DONE** (2026-09-26) 221c3af — 6 mod, 24 skills, 355 Q (54 js_exec, 15.2%), 24 lessons, 40 gloss |
+| 18.5 | **2** | **Certificaciones P1: PCAP, MLA-C01, AZ-900, AI-900, DP-900, Security+** | **DONE** | **DONE** (2026-09-26) — 6 cert tracks (track41–46): 741 Q total (300+300+165+90+90+96), 503 lessons, 20 Security+ lessons, source index updated, diversity guards PASS, `check_question_bank.py` + `check_docs.py` green |
+| 18.6 | **3** | **DevOps y Cloud: Docker/K8s (18), IaC+CI/CD (19), Azure (22), GCP (23)** | **DONE** | **DONE** (2026-09-26) f8015da — 4 tracks × 5 mod × 4 skills = 80 skills, 1.200 Q, lessons + glossary. Sources indexed, diversity guards PASS, `check_question_bank.py` + `check_docs.py` green |
+| 18.7 | **3** | **Datos: Data Engineering (20), Data Science (21), NoSQL (27)** | **DONE** | **DONE** (2026-09-26) f8015da — 3 tracks × 5 mod × 4 skills = 60 skills, 900 Q, lessons + glossary. Sources indexed, diversity guards PASS |
+| 18.8 | **3** | **Proyectos multi-paso con tests en runtime** | **DONE** | Backend: Project+Step+Submission models, migración `20260926_projects`, API 5 endpoints, 3 tests. Frontend: ProjectScreen + Home shortcut + i18n ES/EN. `0f61442` |
+| 19.1 | **1** | **Social login web: GitHub + Google (OAuth 2.0 por redirección)** | **DONE** | Backend: `GET /auth/oauth/{provider}/start`… |
+| 19.5 | **2** | **Playground libre (Python · SQL · JS)** | **DONE** | PlaygroundScreen + playgroundDb (IndexedDB history) + Monaco editor + 3 runtimes + i18n ES/EN + Home shortcut. `d8427ae` |
+| 19.6 | **3** | **Proyectos multi-paso** | **DONE** | = 18.8. `0f61442` |
+| 19.11 | **2** | **Confirmación de edad mínima en el registro** («tengo 13 años o más» / por país… | **DONE** | **DONE** `cf2fc58` → §I |
+| 20.0 | **0** | **Cerrojo de sesión + salida limpia** — `.session.lock` (gitignored) + comprobación de `list_task_runs` en el pre-flight… | **DONE** | **DONE** (2026-09-18) → §I |
+| 20.1 | **0** | **Inventario de afirmaciones** de los 11 docs vivos + `store/` + `legal/` + `CLAUDE.md` →… | **DONE** | **DONE** (2026-09-18) → §I |
+| 20.2 | **0** | **Ledger fila a fila** (protocolo §5): cada `DONE` reejecutado con fecha; `TODO` contrastados con `git log --grep`… | **DONE** | **DONE** `bec734c` (2026-09-18) → §I |
+| 20.3 | **1** | **`API.md` ↔ OpenAPI bidireccional = 0 diferencias** (`scripts/check_api_docs.py`); `ARCHITECTURE.md` ↔ árbol real de… | **DONE** | **DONE** (2026-09-18) → §I |
+| 20.4 | **1** | `legal/` vs. realidad: errores de hecho en textos legales | **DONE** | `16b4e39` (2026-09-18) CONFIRMADA → §I |
+| 20.5 | **1** | **Fuentes**: cada URL de `CATALOGO_MAESTRO.md` §2.1/§2.2 resuelve; para cada repo clonado, `LICENSE` leído == licencia de… | **DONE** | **DONE** (2026-09-18) → §I |
+| 20.6 | **1** | **Dieta del ledger**: evidencia histórica de filas `DONE` → `docs/archive/LEDGER_HISTORY.md` (ancla por ID); en la fila… | **DONE** | **DONE** `50d0c18` (2026-09-18) → §I |
+| 20.8 | **1** | **Verificador adversario en el loop** (ADR-20): plantilla literal del protocolo §7 usada por el orquestador antes de cada… | **DONE** | **DONE** `b82b377` → §I |
+| 20.10 | **2** | REGRESIÓN dieta ledger (20.6). Reducir a <60 KB + guarda mecánica | **DONE** | 221→52 KB. §G/H/I/J/K archivados. `check_docs.py` guarda 61440 testeada ambos sentidos (2026-09-26) |
+| 21.0 | **0** | REGRESIÓN P0 — textos legales con entidad inexistente y decisión no autorizada | **DONE** | `16b4e39`+`ea7707d` (2026-09-19) check_legal_facts.py 21 variantes → §I |
+| 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) ·… | **DONE** | Privacy policy reescrita con secciones GDPR (bases legales, DPO, SCCs), CCPA/CPRA (§1798.100-125), COPPA, CAN-SPAM (List-Unsubscribe), ePrivacy cookies. Backend: 4 endpoints privacy + ccpa_opt_out col + CAN-SPAM headers. Frontend: i18n + API. 4 tests. `2c4c95a` |
+| 21.4 | **2** | **Consumo y suscripciones**: desistimiento UE 14 días para contenido digital (renuncia expresa en checkout), renovación… | **DONE** | Checkout acepta `eu_withdrawal_waiver` (Art. 16.m Dir 2011/83); `eu_withdrawal_waiver_at` en User + migración 42. Renovación: email `renewal_reminder` (ES/EN, 7 días antes). Frontend: billing API con waiver, i18n checkout keys. ToS §5-6 ya cubren la renuncia y el preaviso. 4 tests. |
+| 21.7 | **2** | **Redacción**: ToS · Privacidad · Cookies (sin banner si solo cookies necesarias — mantenerlo así) · DPA plantilla para… | **DONE** | ToS reescrito con 18 secciones ES/EN: planes ADR-41/49, desistimiento UE 14 días (Dir 2011/83), renovación automática, tutor IA, ODR UE, divisibilidad. DPA template creado (`legal/dpa-template.md`) con TOMs, sub-processors, Art. 28 obligations. Cookies: confirmado solo técnicas, sin banner. Frontend i18n actualizado (13 secciones), LegalScreen expandido. Build + i18n parity + contract test + check_docs verdes. |
+| 21.8 | **3** | **Procedimientos internos**: brecha de seguridad (72 h, plantilla de notificación), DSAR (export/delete ya existen → SLA y… | **DONE** | `legal/security-breach-procedure.md`: severity classification (Critical/High/Medium/Low), GDPR Art. 33-34 timeline (72 h), notification templates (supervisory authority + users), post-incident plan. DSAR SLA: self-service endpoints (export, delete, CCPA opt-out) + manual 30 days (Art. 12.3), request types table (Art. 15-21), refusal grounds (Art. 12.5). |
+| 21.9 | **3** | **Proceso DMCA / retirada de contenido y DPIA** (`legal/README.md:116-127`): página `/legal/dmca` ES/EN con formulario por… | **DONE** | `legal/dmca-policy.md`: bilingual ES/EN DMCA takedown process per 17 U.S.C. § 512(c)(3) — 6-point notice requirements, response procedure (3 biz days ack, 10 biz days eval), counter-notification (5 points), repeat infringer policy. Contact: support@whetzy.com. |
+| 22.0 | **0** | **REGRESIÓN P0 — el backend de producción estuvo 2 h 30 min en 502.** `alembic upgrade head` moría en `u1v2w3x4y5z6`: la… | **DONE** | **DONE** `414e2f6` (2026-09-19) → §I |
+| 22.10 | **0** | **`POST /auth/login` devolvía 500 con `created_at` naive** (`check_lockout` restaba un datetime sin zona de… | **DONE** | **DONE** `e9161d7` (2026-09-19) → §I |
+| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle… | **DONE** | **DONE** `7016b9a` (2026-09-26) — 11/11 del criterio: engagement (D30, quiz, accuracy, duels, top skills), tutor-usage, reports, deploy-info (alembic head, deploy), rate-limit-hits `7016b9a`, password_change audit `7016b9a`; 42 tests |
+| 22.2 | **1** | **Threat model STRIDE** documentado en `ARCHITECTURE.md` + cabeceras de… | **DONE** | **DONE** (2026-09-25) → §I |
+| 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **DONE** | **DONE** (2026-09-26) — 8/8: RateLimiter InMemory/Redis, pool asyncpg, capacity.md, k6, db_restore, job worker, Cache-Control en 6 GETs, paginación 13/15 (tracks/skills acotados); `cache.py` helper sin uso eliminado |
+| 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo… | **DONE** | **DONE** `f36218f` (2026-09-19) → §I |
+| 22.9 | **1** | **Test de frontend rojo en `master`**: `src/test/hooks.useRuntime.test.tsx` falla con `ReferenceError: Worker is not… | **DONE** | **DONE** `7e1b8d4` (2026-09-19) → §I ||
+| 22.11 | **1** | **`AdminScreen.tsx` estaba 100 % en inglés** — títulos, pestañas, estados, mensajes de error y unidades eran cadenas… | **DONE** | **DONE** `13d8904` (2026-09-19) → §I |
+| 22.12 | **2** | **Deuda de lint y tipos que dejaron las series 22-23**: 21 errores de… | **DONE** | **DONE** `83c6bf1` (2026-09-19) → §I |
+| 22.14 | **1** | **Arranque en frío de Railway** (`AUDITORIA_EXTERNA_2026-09-19.md:203`): la… | **DONE** | **DONE** (2026-09-19) → §I |
+| 22.15 | **2** | **Fase 3 del modelo de amenazas** (`design/threat-model-stride.md:157-161`): firma… | **DONE** | **DONE** `ef00ff3` → §I |
+
+## §M — Filas DONE retiradas de §2 el 2026-09-27 (guarda de tamaño, sesión gallant-tesla)
+
+> Copiadas tal cual desde `AUTONOMOUS_STATE.md` §2 para dejar sitio a la serie 39. El detalle de cada una queda aquí; no hay seguimiento pendiente.
+
+| ID | PRI | Tarea | Estado | Evidencia |
+|---|---|---|---|---|
+| 39.0 | **0** | **Producción caída 09:35–10:48 UTC tras `ec97405`**: `content_loader` con `KeyError: 'order'` (logs Railway) y lecciones fuera de esquema | **DONE** | #28 (`c5100e1`), `test_loader_schema.py` rojo sobre `ec97405`; deploy `b64e2a9a` SUCCESS |
+| 39.6 | **2** | `audit_ai_traces.py` | DONE | `scripts/audit_ai_traces.py`: informe por fichero (explicación de plantilla, marcado de herramienta, voz de asistente) y trinquete `ai_traces_baseline.json`; `tests/content/test_ai_traces.py`, mutación en rojo (2026-09-26). Encontró 1.404 campos de explicación de plantilla → 39.29 |
+| 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | `scripts/check_originality.py` (Jaccard trigramas ≥ 0.8 + misma respuesta, por track) con trinquete `KNOWN`; `tests/content/test_originality.py`; mutación (pareja nueva) en rojo, restaurado verde (2026-09-26) |
+| 39.11 | **2** | Límite de gasto de Groq por usuario y global | **DONE** | Por usuario ya existía (cupo Pro, ADR-49); global: `LLM_DAILY_CALL_LIMIT`=2000/día UTC por proceso → respuesta con el contexto, no error; `test_llm_guard.py` |
+| 39.12 | **3** | LLM de respaldo (ADR-50f) | **DONE** | `LLM_FALLBACK_*` (vacío = sin respaldo); timeout/5xx/429 → respaldo → contexto; 4xx no se esconde; tests |
+| 39.15 | **1** | Fichero `LICENSE` (ADR-50e) | **DONE** | `LICENSE` (código propietario, contenido CC BY-NC-ND 4.0 como los Términos §3.1, terceros según índice) y README |
+| 39.18 | **1** | vitest: 4 fallos (`StatusPage` `/api/v1` relativo, `common.back`, `useRuntime` bajo jsdom) | DONE | `8489ab6`: `npx vitest run` 31 ficheros, 249/249 (re-ejecutado 2026-09-26 12:07 UTC) |
+| 39.22 | **2** | Backups: `backup_db.sh` + `restore_check.sh` + runbook | **DONE** | Ya existían (`db_backup.sh`, `db_restore*.sh`); estaban sin bit de ejecución; simulacro 2026-09-26 en verde sobre el catálogo completo; `backups/*.dump` ignorado. El backup programado en Railway sigue siendo del dueño |
+| 39.23 | **1** | H.30 honesto: sin proveedor, 503 `email_not_configured` | **DONE** | `bb59562`; mutación → rojo |
+| 39.30 | **1** | Datos personales en el contenido: `l260101` (18.10) enseñaba `git config` con el nombre y el correo del dueño, y un redactor lo repitió | DONE | Lección reescrita con ada@example.com; guarda `test_no_personal_data.py` (buzones de proveedores reales), mutación en rojo con la versión anterior (2026-09-26) |
+| 39.35 | **0** | El limitador de peticiones de producción fallaba en abierto: `REDIS_URL` cae por defecto en `localhost:6379`, que en Railway no existe, y cada petición salía por «allowing request» (logs de `ded9ecc9` y `2884c831`): login sin límite | **DONE** (código) | Si Redis no responde se limita en memoria por instancia; test con Redis inalcanzable (3 pasan, la 4.ª no) y mutación en rojo. Llega a producción cuando el dueño fusione. Opcional para el dueño: Redis real o `REDIS_URL` vacío |
+| 39.38 | **0** | Dos claves falsas de Bicep en track22 (`q220503008`: «using» no importa módulos; `q220503009`: `bicep validate` no existe) | **DONE** | Corregidas con Microsoft Learn (módulos: palabra clave `module`; CLI: `bicep lint`, sin `validate` en la lista real) → §I |
+
+## §N — Filas DONE retiradas de §2 el 2026-09-27 (guarda de tamaño, sesión youthful-allen)
+
+> 29.5, 29.10 y 29.11 copiadas tal cual. 30.0, 30.7 y 30.8 con la evidencia completa de la reverificación en vivo; en §2 la serie 30 sigue abierta por 30.2, 30.4, 30.5 y 30.9.
+
+| ID | PRI | Tarea | Estado | Evidencia |
+|---|---|---|---|---|
+| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **DONE** | **DONE**: AntiFraudService wired into economy endpoints — `check_email_verified` + `is_disposable_email` guard on promo redeem; full `validate_activation` pipeline on referral activate (email, disposable, self-referral, device/IP, velocity); 77 tests pass → §I |
+| 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET`… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
+| 29.11 | **2** | **Cláusulas legales**: créditos (tres reglas §1), referidos, antifraude, caducidad, clawback — ES y EN nativos → entran… | **DONE** — `content/legal/credits_terms_{es,en}.md`: 11 secciones (naturaleza, 3 reglas, cómo se ganan, caducidad FIFO 90d, referidos, códigos promo, antifraude, clawback, gasto, modificaciones, jurisdicción) | |
+| 30.0 | **0** | **Login roto en producción** (`POST whetzy.com/auth/login` → 405: el bundle usaba el propio frontend como API) | **DONE** | `b590b81` (PR #6, fusionado 2026-09-24). Reverificado en vivo 2026-09-27 18:00 UTC: `node frontend/scripts/check-deployed.mjs` → PASS en las 8 comprobaciones (el bundle `index-Dm1Hxd5R.js` contiene `https://api-production-9751.up.railway.app/api/v1` y ningún `whetzy.com/api`; `POST whetzy.com/api/v1/auth/login` → 404; `POST <railway>/api/v1/auth/login` → 422 de validación, no 405). No cubre la persistencia de sesión: eso es 30.9 |
+| 30.7 | **0** | **El mismo fallo que el login en cinco llamadas más** (push, admin, experimentos, banner) | **DONE** | `4c63686` (2026-09-25). Mismo PASS de `check-deployed.mjs` del 2026-09-27: el bundle servido no llama al dominio del frontend |
+| 30.8 | **0** | **Producción arrancaba sin contenido y sin cuenta de dueño** | **DONE** | `12ff838` (2026-09-22) + `c5100e1` (arranque restaurado tras el crash de `content_loader`, 39.0). 2026-09-27: `GET https://api-production-9751.up.railway.app/health` → 200 `{"status":"healthy"}`; PR #34 cita el deploy `2884c831` con `Content loaded ... skipped 0` (10.989 preguntas) |

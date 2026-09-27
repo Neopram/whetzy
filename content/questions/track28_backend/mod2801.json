@@ -7,16 +7,16 @@
       "question_es": "¿Cuál es la principal diferencia entre GET y POST en HTTP?",
       "question_en": "What is the main difference between GET and POST in HTTP?",
       "options_es": [
-        "GET envía datos en el cuerpo, POST en la URL",
-        "GET es idempotente y no modifica datos; POST puede crear recursos",
-        "GET es más rápido que POST",
-        "GET solo funciona con JSON, POST con cualquier formato"
+        "GET envía los datos de la solicitud en el cuerpo y POST los envía en la URL",
+        "GET no modifica datos y es idempotente; POST puede crear recursos",
+        "GET siempre se ejecuta más rápido que POST en el servidor",
+        "GET solo admite respuestas en JSON; POST admite cualquier formato"
       ],
       "options_en": [
-        "GET sends data in the body, POST in the URL",
-        "GET is idempotent and does not modify data; POST can create resources",
-        "GET is faster than POST by convention",
-        "GET only works with JSON, POST with any format"
+        "GET sends the request data in the body and POST sends it in the URL",
+        "GET does not modify data and is idempotent; POST can create resources",
+        "GET always executes faster than POST on the server",
+        "GET only supports JSON responses; POST supports any format"
       ],
       "correct_index": 1,
       "explanation_es": "GET es idempotente y se usa para recuperar datos sin efectos secundarios. POST se usa para crear nuevos recursos y puede tener efectos secundarios. Esta es la distinción semántica fundamental entre estos métodos.",
@@ -31,14 +31,14 @@
       "question_en": "Which of the following HTTP methods is idempotent?",
       "options_es": [
         "POST",
-        "HEAD",
         "PATCH",
+        "HEAD",
         "DELETE"
       ],
       "options_en": [
         "POST",
-        "HEAD",
         "PATCH",
+        "HEAD",
         "DELETE"
       ],
       "correct_index": 3,
@@ -53,16 +53,16 @@
       "question_es": "¿Cuándo usarías PUT en lugar de POST?",
       "question_en": "When would you use PUT instead of POST?",
       "options_es": [
-        "Cuando quieres actualizar parcialmente un recurso",
-        "Cuando reemplazas completamente un recurso existente usando su identificador conocido",
-        "Cuando necesitas validar datos antes de crear un recurso",
-        "Cuando el cliente no tiene permiso para crear recursos"
+        "Cuando quieres modificar solo algunos campos del recurso sin reemplazarlo entero",
+        "Cuando reemplazas por completo un recurso existente cuyo id ya conoces",
+        "Cuando el servidor debe generar el identificador del nuevo recurso creado",
+        "Cuando el cliente carece de permisos para crear recursos nuevos"
       ],
       "options_en": [
-        "When you want to partially update a resource",
-        "When you completely replace an existing resource using its known identifier",
-        "When you need to validate data before creating a resource",
-        "When the client does not have permission to create resources"
+        "When you want to modify only some fields of the resource without replacing it entirely",
+        "When you completely replace an existing resource whose id you already know",
+        "When the server must generate the identifier of the newly created resource",
+        "When the client lacks permission to create new resources"
       ],
       "correct_index": 1,
       "explanation_es": "PUT se usa para reemplazar completamente un recurso identificado. Es idempotente: llamarlo múltiples veces con los mismos datos produce el mismo estado. POST se usa para crear nuevos recursos o cuando el servidor genera el identificador.",
@@ -76,16 +76,16 @@
       "question_es": "¿Para qué se usa el método PATCH?",
       "question_en": "What is the PATCH method used for?",
       "options_es": [
-        "Para cambiar la versión de la API",
-        "Para aplicar modificaciones parciales a un recurso",
-        "Para eliminar partes específicas de un recurso en el caso más común",
-        "Para verificar si un servidor está disponible"
+        "Para cambiar la versión de la API expuesta a los clientes que la consumen",
+        "Para aplicar modificaciones parciales a un recurso existente",
+        "Para eliminar campos específicos de un recurso sin borrarlo entero",
+        "Para comprobar si un servidor remoto sigue respondiendo peticiones"
       ],
       "options_en": [
-        "To change the API version",
-        "To apply partial modifications to a resource",
-        "To delete specific parts of a resource for most projects",
-        "To check if a server is available"
+        "To change the API version exposed to the clients that consume it",
+        "To apply partial modifications to an existing resource",
+        "To delete specific fields of a resource without deleting it entirely",
+        "To check whether a remote server is still responding to requests"
       ],
       "correct_index": 1,
       "explanation_es": "PATCH se usa para aplicar modificaciones parciales a un recurso. A diferencia de PUT que reemplaza todo, PATCH actualiza solo los campos especificados. Esto es útil cuando solo necesitas cambiar una parte de un recurso grande.",
@@ -99,16 +99,16 @@
       "question_es": "¿Qué significa que un método HTTP sea 'idempotente'?",
       "question_en": "What does it mean for an HTTP method to be 'idempotent'?",
       "options_es": [
-        "Que hacer la misma solicitud múltiples veces produce el mismo resultado",
-        "Que la respuesta siempre contiene caché",
-        "Que el cliente debe enviar un token de autenticación en entornos de producción",
-        "Que el servidor puede rechazar la solicitud"
+        "Que repetir la misma solicitud produce siempre el mismo resultado",
+        "Que el servidor puede rechazar la solicitud sin dar ningún motivo",
+        "Que el cliente debe reenviar su token de autenticación en cada llamada",
+        "Que la respuesta del servidor se guarda siempre en caché"
       ],
       "options_en": [
-        "That making the same request multiple times produces the same result",
-        "That the response always contains cache",
-        "That the client must send an authentication token as a general rule",
-        "That the server can reject the request"
+        "That repeating the same request always produces the same result",
+        "That the server can reject the request without giving any reason",
+        "That the client must resend its authentication token on every call",
+        "That the server's response is always stored in cache"
       ],
       "correct_index": 0,
       "explanation_es": "Un método idempotente produce el mismo resultado del servidor sin importar cuántas veces se ejecute. GET, PUT y DELETE son idempotentes. POST y PATCH típicamente no lo son. Esta es una propiedad clave para diseñar APIs confiables.",
@@ -122,16 +122,16 @@
       "question_es": "¿Cuál es el propósito del método HEAD?",
       "question_en": "What is the purpose of the HEAD method?",
       "options_es": [
-        "Actualizar solo los encabezados de un recurso",
-        "Crear una copia de un recurso existente",
-        "Obtener los mismos datos que GET pero sin el cuerpo de la respuesta",
-        "Eliminar solo los metadatos de un recurso"
+        "Actualizar únicamente los encabezados de un recurso existente",
+        "Eliminar únicamente los metadatos asociados a un recurso",
+        "Obtener los mismos encabezados que GET pero sin cuerpo",
+        "Crear una copia nueva de un recurso ya existente"
       ],
       "options_en": [
-        "Update only the headers of a resource",
-        "Create a copy of an existing resource",
-        "Get the same data as GET but without the response body",
-        "Delete only the metadata of a resource"
+        "Update only the headers of an existing resource",
+        "Delete only the metadata associated with a resource",
+        "Get the same headers as GET but without a body",
+        "Create a new copy of an already existing resource"
       ],
       "correct_index": 2,
       "explanation_es": "HEAD es idéntico a GET pero sin el cuerpo de la respuesta. Se usa para verificar si un recurso existe o para obtener metadatos sin descargar el contenido completo, lo que es útil para archivos grandes.",
@@ -145,15 +145,15 @@
       "question_es": "¿Por qué los navegadores no permiten POST en formularios HTML tradicionales si quieres enviar datos?",
       "question_en": "Why do web browsers allow POST in traditional HTML forms but not PUT or DELETE?",
       "options_es": [
-        "Porque PUT y DELETE son métodos administrativos no disponibles para usuarios",
-        "Porque PUT y DELETE son más lentos",
-        "Porque PUT y DELETE requieren una conexión HTTPS obligatoria",
-        "Porque los formularios HTML solo soportan GET y POST de forma nativa"
+        "Porque PUT y DELETE tardan más en procesarse en el servidor que POST",
+        "Porque PUT y DELETE exigen forzosamente usar una conexión HTTPS",
+        "Porque PUT y DELETE son métodos reservados solo a administradores",
+        "Porque los formularios HTML solo admiten de forma nativa GET y POST"
       ],
       "options_en": [
-        "Because PUT and DELETE are administrative methods not available to users",
-        "Because PUT and DELETE are slower",
-        "Because PUT and DELETE require mandatory HTTPS connection",
+        "Because PUT and DELETE take longer to process on the server than POST",
+        "Because PUT and DELETE mandatorily require using an HTTPS connection",
+        "Because PUT and DELETE are methods reserved only for administrators",
         "Because HTML forms natively support only GET and POST"
       ],
       "correct_index": 3,
@@ -191,16 +191,16 @@
       "question_es": "¿Cuál es la diferencia principal entre PUT y PATCH?",
       "question_en": "What is the main difference between PUT and PATCH?",
       "options_es": [
-        "PATCH es más seguro que PUT",
-        "PUT usa menos ancho de banda",
-        "PUT reemplaza el recurso completo; PATCH modifica parcialmente",
-        "PUT solo funciona con números; PATCH con strings"
+        "PUT consume menos ancho de banda que PATCH en cada llamada realizada",
+        "PATCH cifra los datos enviados y PUT los transmite sin cifrar",
+        "PUT reemplaza el recurso completo; PATCH lo modifica parcialmente",
+        "PUT solo acepta campos numéricos; PATCH acepta cadenas de texto"
       ],
       "options_en": [
-        "PATCH is more secure than PUT",
-        "PUT uses less bandwidth in practice",
+        "PUT uses less bandwidth than PATCH on every call made",
+        "PATCH encrypts the sent data and PUT transmits it unencrypted",
         "PUT replaces the entire resource; PATCH modifies it partially",
-        "PUT only works with numbers; PATCH with strings"
+        "PUT only accepts numeric fields; PATCH accepts text strings"
       ],
       "correct_index": 2,
       "explanation_es": "PUT reemplaza completamente el recurso con los datos enviados. PATCH aplica cambios parciales, enviando solo los campos a actualizar. PUT es más predictible (idempotente), mientras que PATCH puede o no serlo según la implementación.",
@@ -214,16 +214,16 @@
       "question_es": "¿Qué pasa si llamas GET /users/123 múltiples veces?",
       "question_en": "What happens if you call GET /users/123 multiple times?",
       "options_es": [
-        "Obtienes los mismos datos del usuario 123 cada vez (idempotente)",
-        "El usuario se marca como 'accedido' en la base de datos en condiciones normales",
-        "El usuario 123 se duplica cada vez",
-        "La API rechaza las solicitudes repetidas como fraude"
+        "Obtienes los mismos datos del usuario, porque GET es idempotente",
+        "El usuario 123 queda duplicado cada vez que se hace la llamada",
+        "El usuario queda marcado como 'accedido' dentro de la base de datos",
+        "La API rechaza las llamadas repetidas por considerarlas un fraude"
       ],
       "options_en": [
-        "You get the same data for user 123 each time (idempotent)",
-        "The user is marked as 'accessed' in the database in the most common case",
-        "User 123 is duplicated each time",
-        "The API rejects repeated requests as fraud"
+        "You get the same data for the user, because GET is idempotent",
+        "User 123 ends up duplicated every time the call is made",
+        "The user is flagged as 'accessed' inside the database",
+        "The API rejects the repeated calls as suspected fraud"
       ],
       "correct_index": 0,
       "explanation_es": "GET es idempotente. Llamarlo múltiples veces produce exactamente el mismo resultado sin efectos secundarios. Esto permite reintentos seguros en caso de fallos de red.",
@@ -237,16 +237,16 @@
       "question_es": "¿Cuál es el método HTTP más seguro para enviar credenciales de usuario?",
       "question_en": "Which HTTP method is safest for sending user credentials?",
       "options_es": [
-        "GET con parámetros en la URL como regla general",
-        "PUT en texto plano",
-        "POST con datos en el cuerpo encriptado (HTTPS)",
-        "DELETE con autenticación HTTP básica"
+        "GET, enviando las credenciales como parámetros dentro de la URL",
+        "PUT, enviando las credenciales sin cifrar en texto plano",
+        "POST, con las credenciales en el cuerpo sobre una conexión HTTPS",
+        "DELETE, combinado con autenticación HTTP básica en cada solicitud"
       ],
       "options_en": [
-        "GET with parameters in the URL as a standard approach",
-        "PUT in plain text",
-        "POST with data in the encrypted body (HTTPS)",
-        "DELETE with basic HTTP authentication"
+        "GET, sending the credentials as parameters inside the URL",
+        "PUT, sending the credentials unencrypted in plain text",
+        "POST, with the credentials in the body over an HTTPS connection",
+        "DELETE, combined with basic HTTP authentication on every request"
       ],
       "correct_index": 2,
       "explanation_es": "POST con HTTPS es más seguro porque: 1) Los datos van en el cuerpo (no visibles en logs de URL), 2) HTTPS encripta toda la comunicación. GET expone credenciales en la URL. PUT y DELETE no son apropiados para autenticación.",
@@ -260,16 +260,16 @@
       "question_es": "¿Qué sucede si intentas hacer PUT a un recurso que no existe?",
       "question_en": "What happens if you try to PUT to a resource that does not exist?",
       "options_es": [
-        "Siempre devuelve 404 Not Found",
-        "El servidor ignora la solicitud silenciosamente",
-        "Puede crear el recurso (201 Created) si el servidor lo permite, o devolver 404",
-        "Devuelve 500 Internal Server Error obligatoriamente como regla general en este contexto"
+        "Siempre devuelve 404 Not Found, sin ninguna excepción posible",
+        "El servidor descarta la solicitud entera sin responder nada al cliente",
+        "Puede crear el recurso con 201 si el servidor lo permite",
+        "Devuelve obligatoriamente 500 Internal Server Error en todos los casos"
       ],
       "options_en": [
-        "Always returns 404 Not Found by convention",
-        "The server silently ignores the request",
-        "May create the resource (201 Created) if the server allows it, or return 404",
-        "Returns 500 Internal Server Error mandatory as a recommended practice according to official documentation"
+        "It always returns 404 Not Found, with no possible exception",
+        "The server discards the whole request without responding to the client at all",
+        "It may create the resource with 201 if the server allows it",
+        "It mandatorily returns 500 Internal Server Error in every case"
       ],
       "correct_index": 2,
       "explanation_es": "El comportamiento de PUT en un recurso inexistente depende de la implementación del servidor. Algunos crean el recurso (201 Created), otros devuelven 404. Por eso POST es más común para crear nuevos recursos, porque es explícitamente creativo.",
@@ -283,16 +283,16 @@
       "question_es": "¿Por qué DELETE es idempotente si el recurso no existe en el segundo intento?",
       "question_en": "Why is DELETE idempotent even if the resource does not exist on the second attempt?",
       "options_es": [
-        "Porque DELETE nunca borra realmente, solo marca como inactivo",
-        "Porque el servidor recupera automáticamente los datos borrados en el caso más común",
-        "Porque la idempotencia solo se aplica a métodos seguros",
-        "Porque devuelve el mismo código de estado (204 o 404) ambas veces"
+        "Porque la idempotencia solo se aplica a los métodos considerados seguros",
+        "Porque DELETE nunca borra de verdad, solo marca el recurso como inactivo",
+        "Porque devuelve el mismo código, 204 o 404, en cada uno de los intentos",
+        "Porque el estado final es idéntico: el recurso deja de existir en ambos casos"
       ],
       "options_en": [
-        "Because DELETE never actually deletes, only marks as inactive",
-        "Because the server automatically recovers deleted data within this paradigm",
-        "Because idempotency only applies to safe methods",
-        "Because it returns the same status code (204 or 404) both times"
+        "Because idempotency only applies to methods considered safe",
+        "Because DELETE never actually deletes, it only marks the resource as inactive",
+        "Because it returns the same code, 204 or 404, on each of the attempts",
+        "Because the final state is identical: the resource no longer exists either way"
       ],
       "correct_index": 3,
       "explanation_es": "DELETE es idempotente porque el resultado final es siempre el mismo: el recurso no existe. Aunque el primer DELETE devuelva 204 (No Content) y el segundo 404 (Not Found), el estado final es idéntico. La idempotencia trata del resultado, no del código de estado.",
@@ -306,16 +306,16 @@
       "question_es": "¿Cuándo es apropiado usar OPTIONS en HTTP?",
       "question_en": "When is it appropriate to use OPTIONS in HTTP?",
       "options_es": [
-        "Para borrar opciones de configuración",
-        "Para obtener la lista de métodos permitidos en un recurso",
-        "Para enviar múltiples solicitudes en una sola",
-        "Para cambiar entre versiones de API"
+        "Para borrar opciones de configuración que ya están guardadas en el servidor",
+        "Para obtener la lista de métodos permitidos sobre un recurso concreto",
+        "Para agrupar varias solicitudes distintas dentro de una sola llamada",
+        "Para cambiar entre versiones distintas de una misma API expuesta"
       ],
       "options_en": [
-        "To delete configuration options",
-        "To get the list of allowed methods on a resource",
-        "To send multiple requests in one",
-        "To switch between API versions"
+        "To delete configuration options that are already stored on the server",
+        "To get the list of methods allowed on a specific resource",
+        "To group several different requests inside a single call",
+        "To switch between different versions of the same exposed API"
       ],
       "correct_index": 1,
       "explanation_es": "OPTIONS se usa para consultar qué métodos HTTP son permitidos en un recurso específico. También se usa en preflight de CORS antes de hacer solicitudes cross-origin. Devuelve un encabezado Allow con los métodos permitidos.",
@@ -330,14 +330,14 @@
       "question_en": "Which HTTP method is safe but not idempotent?",
       "options_es": [
         "GET",
-        "PUT",
         "DELETE",
+        "PUT",
         "POST"
       ],
       "options_en": [
         "GET",
-        "PUT",
         "DELETE",
+        "PUT",
         "POST"
       ],
       "correct_index": 3,
@@ -352,16 +352,16 @@
       "question_es": "¿Qué significa un código de estado HTTP 200?",
       "question_en": "What does an HTTP status code 200 mean?",
       "options_es": [
-        "La solicitud fue aceptada pero aún se está procesando",
-        "Hay un error de autenticación",
-        "El recurso se ha movido permanentemente en la práctica habitual",
-        "La solicitud fue exitosa y la respuesta contiene el resultado"
+        "La solicitud fue aceptada pero el servidor todavía sigue procesándola",
+        "El recurso solicitado se ha movido de forma permanente a otra URL",
+        "Hubo un fallo de autenticación al intentar procesar la solicitud",
+        "La solicitud tuvo éxito y la respuesta incluye el resultado pedido"
       ],
       "options_en": [
-        "The request was accepted but is still being processed",
-        "There is an authentication error",
-        "The resource has moved permanently under normal conditions",
-        "The request was successful and the response contains the result"
+        "The request was accepted but the server is still processing it",
+        "The requested resource has permanently moved to another URL",
+        "There was an authentication failure while trying to process the request",
+        "The request succeeded and the response includes the requested result"
       ],
       "correct_index": 3,
       "explanation_es": "200 OK es el código de estado más común que indica que la solicitud fue exitosa y la respuesta contiene los datos solicitados. Pertenece a la familia 2xx (éxito).",
@@ -375,16 +375,16 @@
       "question_es": "¿Cuál es la diferencia entre 201 Created y 200 OK?",
       "question_en": "What is the difference between 201 Created and 200 OK?",
       "options_es": [
-        "201 es para métodos POST, 200 para GET",
-        "201 es más rápido que 200 en entornos reales",
-        "201 se usa cuando se crea un nuevo recurso, 200 para respuestas generales exitosas",
-        "201 contiene caché, 200 no"
+        "201 solo aparece en respuestas a POST, y 200 solo en respuestas a GET",
+        "201 incluye cabeceras de caché que 200 nunca llega a incluir",
+        "201 se usa al crear un nuevo recurso; 200 es para éxitos generales",
+        "201 se procesa en el servidor más rápido que una respuesta 200"
       ],
       "options_en": [
-        "201 is for POST methods, 200 for GET",
-        "201 is faster than 200 in real environments",
-        "201 is used when a new resource is created, 200 for general successful responses",
-        "201 contains cache, 200 does not"
+        "201 only appears in responses to POST, and 200 only in responses to GET",
+        "201 includes cache headers that 200 never ends up including",
+        "201 is used on creating a new resource; 200 is for general success",
+        "201 gets processed on the server faster than a 200 response"
       ],
       "correct_index": 2,
       "explanation_es": "201 Created indica que un nuevo recurso fue creado exitosamente, típicamente en respuesta a POST. Debe incluir un encabezado Location con la URL del nuevo recurso. 200 OK es más general y se usa para otros métodos exitosos.",
@@ -398,16 +398,16 @@
       "question_es": "¿Cuándo usarías un código de estado 204 No Content?",
       "question_en": "When would you use a 204 No Content status code?",
       "options_es": [
-        "Cuando el cliente no envía contenido en la solicitud en la práctica habitual",
-        "Cuando el servidor rechaza la solicitud",
-        "Cuando la solicitud fue exitosa pero no hay contenido para devolver",
-        "Cuando hay un conflicto en la base de datos"
+        "Cuando el cliente no envía ningún contenido dentro de la solicitud",
+        "Cuando el servidor decide rechazar la solicitud que ha recibido",
+        "Cuando la solicitud tuvo éxito pero no hay cuerpo que devolver",
+        "Cuando surge un conflicto de escritura dentro de la base de datos"
       ],
       "options_en": [
-        "When the client does not send content in the request within this paradigm",
-        "When the server rejects the request",
-        "When the request was successful but there is no content to return",
-        "When there is a database conflict"
+        "When the client does not send any content inside the request",
+        "When the server decides to reject the request it received",
+        "When the request succeeded but there is no body to return",
+        "When a write conflict arises inside the database"
       ],
       "correct_index": 2,
       "explanation_es": "204 No Content se usa cuando la solicitud fue exitosa pero no hay contenido en la respuesta. Es común en DELETE (recurso eliminado) o PUT (actualización completada). El cliente no debe esperar un cuerpo de respuesta.",
@@ -421,16 +421,16 @@
       "question_es": "¿Qué significa un código 301 Moved Permanently?",
       "question_en": "What does a 301 Moved Permanently status code mean?",
       "options_es": [
-        "El servidor no puede encontrar el recurso",
-        "El recurso fue temporalmente movido a otra ubicación",
-        "El navegador debe actualizar la página como regla general de manera estándar como regla general",
-        "El recurso se ha movido permanentemente y las solicitudes futuras deben ir a la nueva URL"
+        "El recurso se ha trasladado de forma temporal a otra ubicación distinta",
+        "El navegador debe volver a cargar por completo la página actual",
+        "El servidor no logra localizar el recurso que se está pidiendo",
+        "El recurso se movió para siempre; usa la nueva URL en el futuro"
       ],
       "options_en": [
-        "The server cannot find the resource",
-        "The resource was temporarily moved to another location",
-        "The browser must refresh the page by convention under normal conditions for most projects",
-        "The resource has been permanently moved and future requests should go to the new URL"
+        "The resource was temporarily moved to a different location",
+        "The browser must fully reload the current page",
+        "The server fails to locate the resource being requested",
+        "The resource moved permanently; use the new URL going forward"
       ],
       "correct_index": 3,
       "explanation_es": "301 Moved Permanently indica que el recurso se ha movido permanentemente. El encabezado Location proporciona la nueva URL. Los clientes inteligentes actualizarán sus referencias. A diferencia de 302 que es temporal.",
@@ -444,16 +444,16 @@
       "question_es": "¿Cuál es la diferencia entre 302 Found y 307 Temporary Redirect?",
       "question_en": "What is the difference between 302 Found and 307 Temporary Redirect?",
       "options_es": [
-        "No hay diferencia, son sinónimos de manera estándar de forma general de forma general",
-        "302 permite cambiar el método HTTP al redirigir; 307 no",
-        "302 es más rápida que 307 como regla general",
-        "307 es más nueva y más específica sobre mantener el método HTTP original"
+        "No hay ninguna diferencia real entre ambos, son sinónimos exactos",
+        "302 solo puede usarse con GET; 307 admite cualquier método HTTP",
+        "302 responde bastante más rápido que 307 en la mayoría de servidores",
+        "307 garantiza mantener el método HTTP original; 302 permite cambiarlo a GET"
       ],
       "options_en": [
-        "There is no difference, they are synonyms for most projects in common practice in production environments",
-        "302 allows changing the HTTP method when redirecting; 307 does not",
-        "302 is faster than 307",
-        "307 is newer and more specific about maintaining the original HTTP method"
+        "There is no real difference between the two, they are exact synonyms",
+        "302 can only be used with GET; 307 supports any HTTP method",
+        "302 responds quite a bit faster than 307 on most servers",
+        "307 guarantees keeping the original HTTP method; 302 allows changing it to GET"
       ],
       "correct_index": 3,
       "explanation_es": "302 es una redirección temporal del HTTP/1.0 que permitía cambiar POST a GET al redirigir. 307 es la versión HTTP/1.1 que específicamente garantiza mantener el mismo método. 303 se usa cuando quieres cambiar a GET explícitamente.",
@@ -467,16 +467,16 @@
       "question_es": "¿Para qué se usa el código 304 Not Modified?",
       "question_en": "What is the 304 Not Modified status code used for?",
       "options_es": [
-        "Cuando el cliente solicita cambiar un recurso pero el servidor rechaza",
-        "Cuando el servidor está en modo mantenimiento de manera estándar en entornos de producción",
-        "Para caché: cuando el cliente envia If-Modified-Since y el contenido no cambió",
-        "Cuando hay un error en la validación de datos"
+        "Cuando el cliente pide modificar un recurso y el servidor lo rechaza",
+        "Cuando falla la validación de los datos que envió el cliente",
+        "Para caché: el cliente envía If-Modified-Since y nada cambió",
+        "Cuando el servidor entra en un modo de mantenimiento programado"
       ],
       "options_en": [
-        "When the client requests to change a resource but the server rejects",
-        "When the server is in maintenance mode within this paradigm as a general guideline",
-        "For caching: when the client sends If-Modified-Since and content hasn't changed",
-        "When there is a data validation error"
+        "When the client asks to modify a resource and the server rejects it",
+        "When validation of the data the client sent fails",
+        "For caching: the client sends If-Modified-Since and nothing changed",
+        "When the server enters a scheduled maintenance mode"
       ],
       "correct_index": 2,
       "explanation_es": "304 Not Modified es una respuesta de caché. Cuando un cliente envía If-Modified-Since o ETag y el contenido no ha cambiado, el servidor devuelve 304 sin enviar el cuerpo, ahorrando ancho de banda.",
@@ -490,16 +490,16 @@
       "question_es": "¿Qué significa un código 400 Bad Request?",
       "question_en": "What does a 400 Bad Request status code mean?",
       "options_es": [
-        "El cliente no tiene permiso para acceder al recurso",
-        "La solicitud contiene errores de sintaxis o datos inválidos",
-        "El recurso no existe como regla general para la mayoría de proyectos",
-        "El servidor está sobrecargado"
+        "El cliente no tiene permiso para acceder al recurso que ha pedido",
+        "La solicitud contiene errores de sintaxis o datos no válidos",
+        "El recurso solicitado no existe en absoluto dentro del servidor",
+        "El servidor está saturado y ya no admite más conexiones nuevas"
       ],
       "options_en": [
-        "The client does not have permission to access the resource",
+        "The client does not have permission to access the resource it requested",
         "The request contains syntax errors or invalid data",
-        "The resource does not exist within this paradigm as a standard approach",
-        "The server is overloaded"
+        "The requested resource does not exist at all on the server",
+        "The server is overloaded and can no longer accept new connections"
       ],
       "correct_index": 1,
       "explanation_es": "400 Bad Request indica que el servidor no puede procesar la solicitud porque hay errores en ella: JSON malformado, parámetros faltantes, validación fallida, etc. El cliente debe corregir la solicitud.",
@@ -513,16 +513,16 @@
       "question_es": "¿Cuál es la diferencia entre 401 Unauthorized y 403 Forbidden?",
       "question_en": "What is the difference between 401 Unauthorized and 403 Forbidden?",
       "options_es": [
-        "401 es más grave que 403 en este contexto según la documentación oficial para la mayoría de proyectos",
-        "401 significa autenticación faltante; 403 significa autenticación correcta pero sin permisos",
-        "403 es temporal, 401 es permanente",
-        "No hay diferencia en la práctica"
+        "401 se considera un error más grave para el servidor que 403",
+        "401 significa sin autenticar; 403, autenticado sin permiso",
+        "403 dura poco tiempo y 401 permanece de forma indefinida",
+        "El servidor trata ambos códigos exactamente de la misma forma"
       ],
       "options_en": [
-        "401 is more serious than 403 by default in the most common case under normal conditions",
-        "401 means missing authentication; 403 means correct authentication but no permission",
-        "403 is temporary, 401 is permanent",
-        "There is no practical difference"
+        "401 is considered a more serious error for the server than 403",
+        "401 means unauthenticated; 403 means authenticated without permission",
+        "403 lasts only a short time and 401 stays indefinitely",
+        "The server treats both codes in exactly the same way"
       ],
       "correct_index": 1,
       "explanation_es": "401 Unauthorized significa que el cliente no está autenticado o su autenticación es inválida (missing/expired token). 403 Forbidden significa que el cliente está autenticado pero no tiene permiso para acceder. Es una distinción importante en seguridad.",
@@ -536,15 +536,15 @@
       "question_es": "¿Cuándo debe devolver el servidor un código 404 Not Found?",
       "question_en": "When should the server return a 404 Not Found status code?",
       "options_es": [
-        "Cuando el cliente envia datos en formato incorrecto",
-        "Cuando el cliente no tiene autenticación",
-        "Cuando el servidor no puede procesar la solicitud rápidamente",
-        "Cuando el recurso solicitado no existe en el servidor"
+        "Cuando el cliente envía los datos usando un formato que es incorrecto",
+        "Cuando el cliente no presenta ninguna autenticación en la solicitud",
+        "Cuando el servidor tarda demasiado en procesar la solicitud recibida",
+        "Cuando el recurso pedido no existe dentro del servidor"
       ],
       "options_en": [
-        "When the client sends data in incorrect format",
-        "When the client does not have authentication",
-        "When the server cannot process the request quickly",
+        "When the client sends the data using a format that is incorrect",
+        "When the client presents no authentication at all in the request",
+        "When the server takes too long to process the received request",
         "When the requested resource does not exist on the server"
       ],
       "correct_index": 3,
@@ -559,16 +559,16 @@
       "question_es": "¿Qué significa un código 409 Conflict?",
       "question_en": "What does a 409 Conflict status code mean?",
       "options_es": [
-        "Hay un conflicto entre el cliente y el servidor",
-        "La solicitud entra en conflicto con el estado actual del recurso (ej: actualización de versión vencida)",
-        "El servidor está bajo una ciberataque en la práctica",
-        "Dos usuarios intentan acceder al mismo recurso simultáneamente"
+        "Existe un conflicto de red puntual entre el cliente y el servidor",
+        "La solicitud choca con el estado actual del recurso pedido",
+        "El servidor está sufriendo en ese momento un ataque informático",
+        "Dos usuarios intentan leer el mismo recurso al mismo tiempo"
       ],
       "options_en": [
-        "There is a conflict between the client and server",
-        "The request conflicts with the current state of the resource (e.g., updating stale version)",
-        "The server is under a cyberattack in practice",
-        "Two users try to access the same resource simultaneously"
+        "There is a one-off network conflict between the client and the server",
+        "The request clashes with the current state of the requested resource",
+        "The server is undergoing a cyberattack at that moment",
+        "Two users try to read the same resource at the same time"
       ],
       "correct_index": 1,
       "explanation_es": "409 Conflict se usa en situaciones como: actualizar un recurso con una versión vencida, intentar crear un recurso que ya existe, o violar restricciones de integridad. Es común en operaciones de actualización con control de versión.",
@@ -582,16 +582,16 @@
       "question_es": "¿Qué significa un código 500 Internal Server Error?",
       "question_en": "What does a 500 Internal Server Error status code mean?",
       "options_es": [
-        "El cliente envió una solicitud inválida",
-        "El servidor está momentáneamente no disponible",
-        "El recurso no tiene permiso de acceso como regla general",
-        "El servidor encontró una condición inesperada y no pudo cumplir la solicitud"
+        "El cliente envió una solicitud construida con un formato inválido",
+        "El recurso pedido carece por completo de permiso de acceso",
+        "El servidor se encuentra momentáneamente fuera de servicio",
+        "El servidor halló un fallo interno y no completó la solicitud"
       ],
       "options_en": [
-        "The client sent an invalid request by default",
-        "The server is momentarily unavailable",
-        "The resource has no access permission",
-        "The server encountered an unexpected condition and could not fulfill the request"
+        "The client sent a request built with an invalid format",
+        "The requested resource entirely lacks access permission",
+        "The server is momentarily out of service",
+        "The server hit an internal fault and did not complete the request"
       ],
       "correct_index": 3,
       "explanation_es": "500 Internal Server Error es un error genérico que indica que el servidor tuvo un problema interno: excepción no manejada, error de base de datos, etc. Es responsabilidad del desarrollador investigar los logs.",
@@ -605,16 +605,16 @@
       "question_es": "¿Cuál es la diferencia entre 502 Bad Gateway y 503 Service Unavailable?",
       "question_en": "What is the difference between 502 Bad Gateway and 503 Service Unavailable?",
       "options_es": [
-        "502 es cuando un proxy recibe una respuesta inválida; 503 es cuando el servidor está temporalmente no disponible",
-        "Son exactamente lo mismo según la especificación",
-        "502 es permanente, 503 es temporal como práctica recomendada dentro de este paradigma en este contexto como regla general",
-        "502 afecta a todos los usuarios, 503 solo a algunos"
+        "502 es un proxy con respuesta inválida; 503 es servidor caído",
+        "Son exactamente el mismo código de estado con un número distinto",
+        "502 es un fallo permanente que exige reiniciar el servicio entero",
+        "502 afecta a todos los usuarios; 503 afecta solo a una parte de ellos"
       ],
       "options_en": [
-        "502 is when a proxy receives an invalid response; 503 is when the server is temporarily unavailable",
-        "They are exactly the same in practice",
-        "502 is permanent, 503 is temporary in production environments in production environments in common practice as a standard approach",
-        "502 affects all users, 503 affects only some"
+        "502 is a proxy getting an invalid response; 503 is a server that's down",
+        "They are exactly the same status code with a different number",
+        "502 is a permanent failure that requires restarting the whole service",
+        "502 affects every user; 503 affects only some of them"
       ],
       "correct_index": 0,
       "explanation_es": "502 Bad Gateway indica que un proxy/gateway recibió una respuesta inválida del servidor upstream. 503 Service Unavailable indica que el servidor está temporalmente no disponible (mantenimiento, sobrecargado). 503 implica un estado temporal.",
@@ -652,14 +652,14 @@
       "question_en": "Which family of codes represents redirects?",
       "options_es": [
         "2xx",
-        "5xx",
         "4xx",
+        "5xx",
         "3xx"
       ],
       "options_en": [
         "2xx",
-        "5xx",
         "4xx",
+        "5xx",
         "3xx"
       ],
       "correct_index": 3,
@@ -674,16 +674,16 @@
       "question_es": "¿Qué significa el código 429 Too Many Requests?",
       "question_en": "What does the 429 Too Many Requests status code mean?",
       "options_es": [
-        "El cliente envió demasiada información según la especificación",
-        "La solicitud es demasiado compleja de procesar",
-        "El servidor tiene demasiadas conexiones",
-        "El cliente ha hecho demasiadas solicitudes en un corto período (rate limiting)"
+        "El cliente envió un volumen de información demasiado grande de golpe",
+        "El servidor mantiene abiertas demasiadas conexiones simultáneas a la vez",
+        "La solicitud resulta demasiado compleja para que el servidor la procese",
+        "El cliente superó el límite de solicitudes permitidas (rate limiting)"
       ],
       "options_en": [
-        "The client sent too much information",
-        "The request is too complex to process",
-        "The server has too many connections by default",
-        "The client has made too many requests in a short period (rate limiting)"
+        "The client sent an overly large volume of information all at once",
+        "The server is keeping too many simultaneous connections open at once",
+        "The request turns out too complex for the server to process",
+        "The client exceeded the allowed request limit (rate limiting)"
       ],
       "correct_index": 3,
       "explanation_es": "429 Too Many Requests se usa en rate limiting. Indica que el cliente ha excedido el límite de solicitudes permitidas en un período de tiempo. El encabezado Retry-After puede indicar cuándo reintentar.",
@@ -697,16 +697,16 @@
       "question_es": "¿Cuál es el propósito del encabezado Content-Type?",
       "question_en": "What is the purpose of the Content-Type header?",
       "options_es": [
-        "Indicar la ubicación física del servidor",
-        "Controlar la caché del navegador",
-        "Validar la autenticación del cliente",
-        "Especificar el tipo MIME del contenido en la solicitud o respuesta"
+        "Indicar en qué centro de datos concreto se encuentra alojado el servidor",
+        "Controlar durante cuánto tiempo el navegador guarda una página en caché",
+        "Confirmar que el cliente que llama está autenticado correctamente",
+        "Especificar el tipo MIME del contenido de la solicitud o respuesta"
       ],
       "options_en": [
-        "Indicate the physical location of the server",
-        "Control browser caching",
-        "Validate client authentication",
-        "Specify the MIME type of content in the request or response"
+        "Indicate in which specific data center the server is hosted",
+        "Control how long the browser keeps a page stored in cache",
+        "Confirm that the calling client is correctly authenticated",
+        "Specify the MIME type of the request or response content"
       ],
       "correct_index": 3,
       "explanation_es": "Content-Type especifica el formato del contenido usando MIME types. Ejemplos: 'application/json', 'text/html', 'application/xml'. Es esencial para que el cliente sepa cómo parsear la respuesta.",
@@ -743,16 +743,16 @@
       "question_es": "¿Para qué se usa el encabezado Authorization?",
       "question_en": "What is the Authorization header used for?",
       "options_es": [
-        "Para especificar la codificación del contenido",
-        "Para indicar qué métodos HTTP son permitidos",
-        "Para controlar el acceso entre dominios",
-        "Para enviar credenciales de autenticación al servidor"
+        "Para indicar qué métodos HTTP están permitidos sobre un recurso dado",
+        "Para restringir el acceso entre distintos dominios de origen web",
+        "Para especificar la codificación que se aplicó al contenido enviado",
+        "Para enviar al servidor las credenciales del cliente que llama"
       ],
       "options_en": [
-        "To specify content encoding",
-        "To indicate which HTTP methods are allowed",
-        "To control cross-domain access",
-        "To send authentication credentials to the server"
+        "To indicate which HTTP methods are allowed on a given resource",
+        "To restrict access between different web origin domains",
+        "To specify the encoding that was applied to the sent content",
+        "To send the calling client's credentials to the server"
       ],
       "correct_index": 3,
       "explanation_es": "El encabezado Authorization lleva credenciales de autenticación. Formatos comunes: 'Bearer <token>' para JWT, 'Basic <base64>' para HTTP Basic Auth. Es enviado por el cliente en cada solicitud autenticada.",
@@ -767,15 +767,15 @@
       "question_en": "What is the correct format of the Authorization header for JWT?",
       "options_es": [
         "Authorization: Bearer <token>",
-        "Authorization: <token>",
+        "Authorization: JWT <token>",
         "Authorization: Token <token>",
-        "Authorization: JWT <token> como práctica recomendada"
+        "Authorization: <token>"
       ],
       "options_en": [
         "Authorization: Bearer <token>",
-        "Authorization: <token>",
+        "Authorization: JWT <token>",
         "Authorization: Token <token>",
-        "Authorization: JWT <token> in this context"
+        "Authorization: <token>"
       ],
       "correct_index": 0,
       "explanation_es": "El formato estándar para JWT es 'Bearer <token>'. Este es el formato oficial de RFC 6750 para tokens de acceso. FastAPI y la mayoría de frameworks lo usan por defecto.",
@@ -789,16 +789,16 @@
       "question_es": "¿Cuál es el propósito del encabezado Cache-Control?",
       "question_en": "What is the purpose of the Cache-Control header?",
       "options_es": [
-        "Validar la integridad del contenido en entornos de producción en el caso más común",
-        "Especificar cómo el contenido debe ser cacheado por clientes y proxies",
-        "Indicar la ubicación del servidor de caché",
-        "Controlar permisos de acceso según la especificación"
+        "Comprobar que el contenido que se descargó no fue alterado en tránsito",
+        "Indicar cómo deben cachear el contenido los clientes y los proxies",
+        "Señalar en qué servidor físico concreto se guarda la caché",
+        "Restringir qué usuarios concretos pueden acceder a un recurso"
       ],
       "options_en": [
-        "Validate content integrity in this context as a general rule as a general guideline",
-        "Specify how content should be cached by clients and proxies",
-        "Indicate the location of the cache server",
-        "Control access permissions"
+        "Check that the downloaded content was not altered in transit",
+        "Indicate how clients and proxies should cache the content",
+        "Point out on which specific physical server the cache is stored",
+        "Restrict which specific users can access a resource"
       ],
       "correct_index": 1,
       "explanation_es": "Cache-Control controla la estrategia de caché. Ejemplos: 'max-age=3600' (cachear 1 hora), 'no-cache' (validar con servidor), 'no-store' (no cachear). Es crítico para rendimiento y actualizaciones.",
@@ -812,16 +812,16 @@
       "question_es": "¿Qué significa 'Cache-Control: no-store'?",
       "question_en": "What does 'Cache-Control: no-store' mean?",
       "options_es": [
-        "El contenido puede cachearse pero debe validarse antes de usarse",
-        "El contenido se cachea por el tiempo especificado",
-        "El contenido no debe ser almacenado en caché por ningún cliente o proxy",
-        "El servidor no almacena cookies del cliente en entornos de producción en este contexto"
+        "El contenido puede cachearse pero hay que validarlo antes de usarlo",
+        "El contenido se guarda en caché durante el tiempo que se indique",
+        "El contenido no debe guardarse en caché por ningún cliente ni proxy",
+        "El servidor deja de aceptar las cookies que envía el cliente"
       ],
       "options_en": [
         "Content can be cached but must be validated before use",
-        "Content is cached for the specified time",
+        "Content is cached for however long is specified",
         "Content must not be stored in cache by any client or proxy",
-        "The server does not store client cookies as a general rule within this paradigm"
+        "The server stops accepting the cookies the client sends"
       ],
       "correct_index": 2,
       "explanation_es": "no-store indica que el contenido no debe ser almacenado en caché de ninguna forma. Esto es diferente de no-cache que permite caché pero requiere validación. Se usa para información sensible.",
@@ -835,16 +835,16 @@
       "question_es": "¿Para qué se usan los encabezados CORS (Cross-Origin Resource Sharing)?",
       "question_en": "What are CORS (Cross-Origin Resource Sharing) headers used for?",
       "options_es": [
-        "Para permitir que navegadores accedan a recursos desde orígenes diferentes",
-        "Para rastrear el comportamiento de usuarios en entornos de producción en entornos de producción",
-        "Para encriptar la comunicación entre cliente y servidor",
-        "Para comprimir el contenido de la respuesta"
+        "Para que un navegador acceda a recursos de otro origen",
+        "Para cifrar por completo la comunicación entre cliente y servidor",
+        "Para registrar el comportamiento de navegación de un usuario dado",
+        "Para reducir el peso de la respuesta mediante compresión de datos"
       ],
       "options_en": [
-        "To allow browsers to access resources from different origins",
-        "To track user behavior in common practice as a standard approach",
-        "To encrypt communication between client and server",
-        "To compress response content"
+        "So a browser can access resources from another origin",
+        "To fully encrypt the communication between client and server",
+        "To log the browsing behavior of a given user",
+        "To reduce the response size through data compression"
       ],
       "correct_index": 0,
       "explanation_es": "CORS controla qué orígenes pueden acceder a recursos. Encabezados clave: Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers. Sin CORS, el navegador rechaza solicitudes cross-origin.",
@@ -859,14 +859,14 @@
       "question_en": "Which CORS header specifies which origins can access the resource?",
       "options_es": [
         "Access-Control-Allow-Methods",
-        "Access-Control-Max-Age",
         "Access-Control-Allow-Headers",
+        "Access-Control-Max-Age",
         "Access-Control-Allow-Origin"
       ],
       "options_en": [
         "Access-Control-Allow-Methods",
-        "Access-Control-Max-Age",
         "Access-Control-Allow-Headers",
+        "Access-Control-Max-Age",
         "Access-Control-Allow-Origin"
       ],
       "correct_index": 3,
@@ -882,14 +882,14 @@
       "question_en": "Which CORS header specifies which HTTP methods are allowed?",
       "options_es": [
         "Access-Control-Allow-Methods",
-        "Access-Control-Allow-Headers",
         "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Headers",
         "Access-Control-Max-Age"
       ],
       "options_en": [
         "Access-Control-Allow-Methods",
-        "Access-Control-Allow-Headers",
         "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Headers",
         "Access-Control-Max-Age"
       ],
       "correct_index": 0,
@@ -927,16 +927,16 @@
       "question_es": "¿Qué es una solicitud CORS preflight?",
       "question_en": "What is a CORS preflight request?",
       "options_es": [
-        "Una solicitud OPTIONS automática que el navegador envía antes de ciertos tipos de solicitudes",
-        "Una solicitud que verifica si el servidor está disponible",
-        "Una solicitud que valida el certificado SSL por convención",
-        "Una solicitud que almacena información en caché"
+        "Una OPTIONS que el navegador envía antes de llamadas complejas",
+        "Una solicitud que comprueba si el servidor sigue estando disponible",
+        "Una solicitud que revisa la validez del certificado SSL del sitio",
+        "Una solicitud que guarda información previamente dentro de la caché"
       ],
       "options_en": [
-        "An automatic OPTIONS request the browser sends before certain types of requests",
-        "A request that checks if the server is available",
-        "A request that validates SSL certificate",
-        "A request that stores information in cache"
+        "An OPTIONS request the browser sends before complex calls",
+        "A request that checks whether the server is still available",
+        "A request that checks the validity of the site's SSL certificate",
+        "A request that stores information inside the cache beforehand"
       ],
       "correct_index": 0,
       "explanation_es": "El navegador envía una solicitud preflight (OPTIONS) antes de hacer solicitudes 'complejas' (POST con Content-Type específico, con encabezados personalizados, etc.). El servidor responde con encabezados CORS para indicar qué está permitido.",
@@ -950,16 +950,16 @@
       "question_es": "¿Para qué se usa el encabezado ETag?",
       "question_en": "What is the ETag header used for?",
       "options_es": [
-        "Para autenticar al cliente en entornos reales",
-        "Para identificar versiones de un recurso y permitir caché validado",
-        "Para especificar el tipo de compresión",
-        "Para indicar el tamaño del contenido"
+        "Para autenticar al cliente frente al servidor en cada llamada",
+        "Identificar la versión de un recurso y habilitar caché validado",
+        "Para indicar qué algoritmo de compresión se aplicó al contenido",
+        "Para señalar el tamaño total del contenido que se envía"
       ],
       "options_en": [
-        "To authenticate the client",
-        "To identify resource versions and enable validated caching",
-        "To specify compression type",
-        "To indicate content size in real environments"
+        "To authenticate the client against the server on every call",
+        "Identify a resource's version and enable validated caching",
+        "To indicate which compression algorithm was applied to the content",
+        "To state the total size of the content being sent"
       ],
       "correct_index": 1,
       "explanation_es": "ETag es un identificador opaco para una versión específica de un recurso. El cliente puede enviar If-None-Match con el ETag anterior, y si coincide, el servidor devuelve 304 Not Modified sin enviar el contenido.",
@@ -973,15 +973,15 @@
       "question_es": "¿Para qué se usa el encabezado Last-Modified?",
       "question_en": "What is the Last-Modified header used for?",
       "options_es": [
-        "Indica cuándo el cliente modificó por última vez su navegador",
-        "Controla permisos de escritura",
-        "Especifica cuándo expira la sesión del cliente",
-        "Indica cuándo el recurso fue modificado por última vez en el servidor"
+        "Indica en qué momento el cliente actualizó su navegador por última vez",
+        "Indica en qué momento expira la sesión activa del cliente actual",
+        "Controla qué usuarios concretos tienen permiso de escritura",
+        "Indica cuándo se modificó el recurso por última vez en el servidor"
       ],
       "options_en": [
-        "Indicates when the client last modified their browser",
-        "Controls write permissions",
-        "Specifies when the client session expires",
+        "Indicates the moment the client last updated their browser",
+        "Indicates the moment the current client's active session expires",
+        "Controls which specific users have write permission",
         "Indicates when the resource was last modified on the server"
       ],
       "correct_index": 3,
@@ -996,16 +996,16 @@
       "question_es": "¿Para qué se usa el encabezado Content-Length?",
       "question_en": "What is the Content-Length header used for?",
       "options_es": [
-        "Especificar el algoritmo de compresión usado",
+        "Especificar qué algoritmo concreto de compresión se ha usado",
         "Indicar el tamaño en bytes del cuerpo de la respuesta",
-        "Limiticar el tamaño máximo de solicitudes",
-        "Validar la integridad del contenido como regla general"
+        "Establecer el tamaño máximo permitido para las solicitudes entrantes",
+        "Confirmar que el contenido recibido no llegó corrompido"
       ],
       "options_en": [
-        "Specify the compression algorithm used",
+        "Specify which specific compression algorithm was used",
         "Indicate the size in bytes of the response body",
-        "Limit the maximum size of requests",
-        "Validate content integrity in this context"
+        "Set the maximum size allowed for incoming requests",
+        "Confirm that the received content did not arrive corrupted"
       ],
       "correct_index": 1,
       "explanation_es": "Content-Length especifica el tamaño exacto en bytes del cuerpo de la respuesta. Permite que el cliente sepa cuándo ha recibido completamente el contenido. Es importante para conexiones persistentes.",
@@ -1019,16 +1019,16 @@
       "question_es": "¿Para qué se usa el encabezado Content-Encoding?",
       "question_en": "What is the Content-Encoding header used for?",
       "options_es": [
-        "Indicar qué compresión se ha aplicado al contenido (gzip, deflate, etc.)",
-        "Validar la autenticación del cliente",
-        "Controlar el caché del navegador como regla general",
-        "Especificar el formato MIME del contenido"
+        "Indicar la compresión aplicada al contenido, como gzip",
+        "Especificar el formato MIME concreto del contenido que se envía",
+        "Controlar cómo el navegador guarda la página dentro de la caché",
+        "Confirmar la identidad del cliente que hace la solicitud actual"
       ],
       "options_en": [
-        "Indicate what compression has been applied to the content (gzip, deflate, etc.)",
-        "Validate client authentication",
-        "Control browser cache in this context",
-        "Specify the MIME format of the content"
+        "Indicate the compression applied to the content, such as gzip",
+        "Specify the specific MIME format of the content being sent",
+        "Control how the browser stores the page inside the cache",
+        "Confirm the identity of the client making the current request"
       ],
       "correct_index": 0,
       "explanation_es": "Content-Encoding especifica qué transformaciones se han aplicado al cuerpo (comúnmente 'gzip', 'deflate'). El cliente debe descomprimir usando el algoritmo indicado. Es diferente de Content-Type.",
@@ -1042,16 +1042,16 @@
       "question_es": "¿Qué es un recurso en REST?",
       "question_en": "What is a resource in REST?",
       "options_es": [
-        "Un mecanismo de autenticación en la práctica",
-        "Un servidor que procesa solicitudes",
-        "Un archivo de configuración del servidor",
-        "Una entidad identificable por una URL (ej: /users/123, /posts/456)"
+        "Un servidor encargado de procesar las solicitudes que llegan",
+        "Un fichero interno de configuración que usa el servidor",
+        "Un mecanismo que se usa para autenticar al cliente que llama",
+        "Una entidad identificable mediante una URL, como /users/123 o /posts/456"
       ],
       "options_en": [
-        "An authentication mechanism",
-        "A server that processes requests",
-        "A server configuration file as a general rule",
-        "An entity identifiable by a URL (e.g., /users/123, /posts/456)"
+        "A server in charge of processing the requests that arrive",
+        "An internal configuration file that the server uses",
+        "A mechanism used to authenticate the calling client",
+        "An entity identifiable via a URL, such as /users/123 or /posts/456"
       ],
       "correct_index": 3,
       "explanation_es": "En REST, un recurso es una abstracción de una entidad identificable y direccionable mediante una URL. Ejemplos: un usuario, un producto, un comentario. Los recursos tienen representaciones (JSON, XML, etc.).",
@@ -1065,16 +1065,16 @@
       "question_es": "¿Cuál es la principal característica del principio REST de statelessness (sin estado)?",
       "question_en": "What is the main characteristic of the REST statelessness principle?",
       "options_es": [
-        "El servidor no puede almacenar datos",
-        "La base de datos no puede tener relaciones",
-        "Cada solicitud contiene toda la información necesaria para ser procesada; el servidor no guarda estado de sesión entre solicitudes",
-        "El cliente no puede enviar cookies como regla general"
+        "El servidor no tiene permitido almacenar ningún dato en absoluto",
+        "El cliente no puede enviar cookies dentro de sus solicitudes",
+        "Cada solicitud lleva su información; no hay sesión guardada",
+        "La base de datos no admite relaciones entre distintas tablas"
       ],
       "options_en": [
-        "The server cannot store data",
-        "Database cannot have relationships",
-        "Each request contains all information needed to be processed; server does not maintain session state between requests",
-        "Client cannot send cookies in real environments"
+        "The server is not allowed to store any data whatsoever",
+        "The client cannot send cookies inside its requests",
+        "Each request carries its own info; no session is kept",
+        "The database does not support relationships between different tables"
       ],
       "correct_index": 2,
       "explanation_es": "Statelessness significa que cada solicitud HTTP es independiente. El servidor no debe depender del estado de solicitudes anteriores. Esto permite escalabilidad horizontal: cualquier servidor puede manejar cualquier solicitud.",
@@ -1088,13 +1088,13 @@
       "question_es": "¿Cuál de las siguientes es una URI RESTful mal diseñada?",
       "question_en": "Which of the following is a poorly designed RESTful URI?",
       "options_es": [
-        "GET /users/123 como regla general",
+        "GET /users/123",
         "POST /users",
         "GET /getUser?id=123",
         "DELETE /users/123"
       ],
       "options_en": [
-        "GET /users/123 in production environments",
+        "GET /users/123",
         "POST /users",
         "GET /getUser?id=123",
         "DELETE /users/123"
@@ -1134,16 +1134,16 @@
       "question_es": "¿Qué es HATEOAS en REST?",
       "question_en": "What is HATEOAS in REST?",
       "options_es": [
-        "Hypermedia As The Engine Of Application State: incluir links en respuestas para navegar",
-        "Un tipo de compresión de datos de forma estándar",
-        "Un protocolo de autenticación segura dentro de este paradigma en entornos de producción",
-        "Un patrón de caché distribuido"
+        "Incluir enlaces de navegación en las respuestas (HATEOAS)",
+        "Un protocolo dedicado exclusivamente a la autenticación segura",
+        "Una técnica de compresión que se aplica sobre los datos",
+        "Un patrón de caché repartido entre distintos servidores"
       ],
       "options_en": [
-        "Hypermedia As The Engine Of Application State: include links in responses to navigate",
-        "A data compression type in practice",
-        "A secure authentication protocol according to official documentation under normal conditions",
-        "A distributed caching pattern"
+        "Include navigation links in the responses (HATEOAS)",
+        "A protocol dedicated exclusively to secure authentication",
+        "A compression technique applied on top of the data",
+        "A caching pattern spread across different servers"
       ],
       "correct_index": 0,
       "explanation_es": "HATEOAS significa que las respuestas incluyen links a otros recursos relacionados. Ejemplo: una respuesta de usuario incluye link a sus posts, comentarios, etc. Permite descubrimiento de API sin documentación.",
@@ -1157,16 +1157,16 @@
       "question_es": "¿Cuál es la diferencia entre una API RESTful y una API RPC?",
       "question_en": "What is the difference between a RESTful API and an RPC API?",
       "options_es": [
-        "RESTful es más nueva que RPC como regla general como práctica recomendada",
-        "No hay diferencia significativa",
-        "RESTful usa recursos y métodos HTTP; RPC usa acciones nombradas en la URL",
-        "RPC es más segura que RESTful"
+        "RESTful surgió después de RPC y por ese motivo lo termina reemplazando",
+        "RPC ofrece bastante más protección frente a ataques que RESTful",
+        "RESTful usa recursos y métodos HTTP; RPC usa acciones nombradas",
+        "No existe ninguna diferencia relevante entre ambos estilos"
       ],
       "options_en": [
-        "RESTful is newer than RPC in practice for most projects",
-        "There is no significant difference",
-        "RESTful uses resources and HTTP methods; RPC uses named actions in the URL",
-        "RPC is more secure than RESTful"
+        "RESTful appeared after RPC and that is why it ends up replacing it",
+        "RPC offers noticeably stronger protection against attacks than RESTful",
+        "RESTful uses resources and HTTP methods; RPC uses named actions",
+        "There is no relevant difference between the two styles"
       ],
       "correct_index": 2,
       "explanation_es": "RESTful: GET /users/123, POST /users. RPC: /api/getUser?id=123, /api/createUser. RPC expone acciones, REST expone recursos. REST es más escalable y sigue estándares web.",
@@ -1181,14 +1181,14 @@
       "question_en": "Which is the correct RESTful URL to create a new post?",
       "options_es": [
         "GET /createPost",
-        "POST /posts/create",
         "PUT /posts/new",
+        "POST /posts/create",
         "POST /posts"
       ],
       "options_en": [
         "GET /createPost",
-        "POST /posts/create",
         "PUT /posts/new",
+        "POST /posts/create",
         "POST /posts"
       ],
       "correct_index": 3,
@@ -1250,14 +1250,14 @@
       "question_en": "Which is an example of good pagination in a RESTful URI?",
       "options_es": [
         "GET /posts?page=2&limit=10",
-        "POST /posts?page=2",
         "GET /getPosts/page/2",
+        "POST /posts?page=2",
         "GET /posts/page=2&limit=10"
       ],
       "options_en": [
         "GET /posts?page=2&limit=10",
-        "POST /posts?page=2",
         "GET /getPosts/page/2",
+        "POST /posts?page=2",
         "GET /posts/page=2&limit=10"
       ],
       "correct_index": 0,
@@ -1275,13 +1275,13 @@
         "GET /posts?author=john&status=published",
         "GET /filterPostsByAuthor?author=john",
         "POST /posts/filter",
-        "GET /posts/author=john como práctica recomendada"
+        "GET /posts/author=john"
       ],
       "options_en": [
         "GET /posts?author=john&status=published",
         "GET /filterPostsByAuthor?author=john",
         "POST /posts/filter",
-        "GET /posts/author=john in this context"
+        "GET /posts/author=john"
       ],
       "correct_index": 0,
       "explanation_es": "GET /posts?author=john&status=published es la forma correcta. Los filtros van en parámetros de query, no en la ruta. Es flexible, estándar y escalable.",
@@ -1295,16 +1295,16 @@
       "question_es": "¿Por qué REST usa sustantivos en las URIs y no verbos?",
       "question_en": "Why does REST use nouns in URIs and not verbs?",
       "options_es": [
-        "Porque los sustantivos son más cortos por convención",
-        "Porque los verbos se especifican mediante métodos HTTP (GET, POST, PUT, DELETE)",
-        "Porque los navegadores no entienden verbos para la mayoría de proyectos en la práctica habitual",
-        "Porque los sustantivos son más seguros"
+        "Porque los sustantivos ocupan bastantes menos caracteres en la URL",
+        "Porque los verbos ya quedan expresados mediante los métodos HTTP",
+        "Porque los navegadores no son capaces de interpretar verbos en rutas",
+        "Porque las URIs formadas con sustantivos son más difíciles de atacar"
       ],
       "options_en": [
-        "Because nouns are shorter by default",
-        "Because verbs are specified using HTTP methods (GET, POST, PUT, DELETE)",
-        "Because browsers do not understand verbs in this context as a standard approach",
-        "Because nouns are more secure"
+        "Because nouns take up quite a few fewer characters in the URL",
+        "Because verbs are already expressed through the HTTP methods",
+        "Because browsers are not able to interpret verbs inside routes",
+        "Because URIs built with nouns are harder to attack"
       ],
       "correct_index": 1,
       "explanation_es": "Los verbos (acciones) están en los métodos HTTP. Las URIs representan recursos (sustantivos). Esta separación hace que REST sea uniforme, escalable y fácil de entender.",
@@ -1318,16 +1318,16 @@
       "question_es": "¿Qué significa que una API sea 'RESTful'?",
       "question_en": "What does it mean for an API to be 'RESTful'?",
       "options_es": [
-        "Que funciona rápidamente en la práctica",
-        "Que es más segura que otras APIs",
-        "Que usa REST como arquitectura base siguiendo sus principios (recursos, métodos HTTP, statelessness, etc.)",
-        "Que es desarrollada por una compañía grande"
+        "Que responde a las solicitudes que recibe con bastante rapidez",
+        "Que resulta más segura frente a ataques que otro tipo de APIs",
+        "Que sigue los principios de REST: recursos y métodos HTTP",
+        "Que fue construida por una empresa de gran tamaño y renombre"
       ],
       "options_en": [
-        "That it works quickly according to spec",
-        "That it is more secure than other APIs",
-        "That it uses REST as base architecture following its principles (resources, HTTP methods, statelessness, etc.)",
-        "That it is developed by a large company"
+        "That it responds to the requests it receives quite quickly",
+        "That it is more secure against attacks than other kinds of APIs",
+        "That it follows REST's principles: resources and HTTP methods",
+        "That it was built by a large, well-known company"
       ],
       "correct_index": 2,
       "explanation_es": "Una API RESTful sigue los principios de REST: usa recursos identificados por URIs, métodos HTTP para acciones, es stateless, es cacheable, etc. No todas las APIs HTTP son RESTful.",
@@ -1341,16 +1341,16 @@
       "question_es": "¿Cuáles son los principios principales de REST? (Selecciona el conjunto más completo)",
       "question_en": "What are the main principles of REST? (Select the most complete set)",
       "options_es": [
-        "Cliente-servidor, statelessness, cacheable",
-        "Cliente-servidor, statelessness, cacheable, uniform interface, layered system, code on demand",
-        "JSON, HTTP, seguridad como regla general de forma general de manera estándar dentro de este paradigma",
-        "Rápido, seguro, simple"
+        "Cliente-servidor, statelessness, cacheable, uniform interface, layered system y microservicios",
+        "Cliente-servidor, statelessness, cacheable, uniform interface, layered system y code on demand",
+        "Formato JSON, protocolo HTTP y mecanismos de seguridad del servidor",
+        "Que sea rápida, segura y sencilla de mantener en el tiempo"
       ],
       "options_en": [
-        "Client-server, statelessness, cacheable",
-        "Client-server, statelessness, cacheable, uniform interface, layered system, code on demand",
-        "JSON, HTTP, security according to spec for most projects in this context as a standard approach",
-        "Fast, secure, simple"
+        "Client-server, statelessness, cacheable, uniform interface, layered system, and microservices",
+        "Client-server, statelessness, cacheable, uniform interface, layered system, and code on demand",
+        "JSON format, the HTTP protocol, and the server's security mechanisms",
+        "That it be fast, secure, and simple to maintain over time"
       ],
       "correct_index": 1,
       "explanation_es": "Los seis principios de REST (según Roy Fielding) son: Cliente-servidor, Statelessness, Cacheable, Uniform Interface, Layered System, Code On Demand (opcional). Son fundamentales para la arquitectura REST.",
@@ -1364,16 +1364,16 @@
       "question_es": "¿Cuál es la ventaja principal del principio 'Layered System' en REST?",
       "question_en": "What is the main advantage of the 'Layered System' principle in REST?",
       "options_es": [
-        "Permite que el cliente no sepa si está conectado directamente al servidor final o a través de intermediarios",
-        "Reduce el tamaño de las respuestas",
-        "Mejora la seguridad eliminando tokens",
-        "Hace que el API sea más rápido de forma estándar"
+        "El cliente no distingue el servidor final del intermediario",
+        "Consigue que la API entera responda con bastante más velocidad",
+        "Refuerza la seguridad general eliminando el uso de tokens",
+        "Reduce bastante el peso de las respuestas enviadas al cliente"
       ],
       "options_en": [
-        "Allows client to not know if connected directly to final server or through intermediaries",
-        "Reduces response size",
-        "Improves security by eliminating tokens",
-        "Makes the API faster in this context"
+        "The client can't tell the final server from an intermediary",
+        "It makes the whole API respond quite a bit faster",
+        "It strengthens overall security by removing the use of tokens",
+        "It considerably reduces the size of the responses sent to the client"
       ],
       "correct_index": 0,
       "explanation_es": "Layered System permite arquitecturas complejas con proxies, load balancers, caches, etc., sin que el cliente lo sepa. Mejora escalabilidad, permite distribuir responsabilidades y facilita mantenimiento.",

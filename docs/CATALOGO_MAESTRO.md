@@ -47,7 +47,7 @@ profundidad de producto*, no adquisición.
 | Lecciones | 656/643 | `pytest tests/content/test_lessons.py` |
 | Glosario | **1.044** | `check_docs.py` |
 | Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9; track41 PCAP Python exec; certs track42–46 exentos) | `check_question_bank.py` |
-| Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900**, **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
+| Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900** (retirado por Microsoft el 30-06-2026; sustituto AI-901, fila 39.24), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |
 
@@ -88,23 +88,23 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 11 | Fundamentos | Linux / shell | track15 | ✅ (18.4, `bec734c`: 180 Q, 3 módulos, 12 lecciones, exento ADR-9) | `exercism/bash` MIT, man-pages (cita), *The Linux Command Line* (cita) | exento (fill_blank de comandos) | LPIC-1, Linux+, LFCS |
 | 12 | Fundamentos | Algoritmos y estructuras | track16 | ✅ (18.4: 158 Q, 44,9 % exec, 12 lecciones) | `TheAlgorithms/Python` MIT, `tech-interview-handbook` MIT; `coding-interview-university` (BY-SA → H.LIC) | Python (≥ 30 %) | — |
 | 13 | Fundamentos | Redes | track17 | ✅ (18.4: 180 Q, mod1703 36,7 % exec, 12 lecciones) | RFCs (IETF), *Computer Networking* (cita), Cisco docs (cita) | Python (`socket`, `ipaddress`) | CCNA, Network+ |
-| 14 | DevOps | Docker y Kubernetes | track18 | ❌ | Docs Kubernetes CC BY 4.0, Docker docs (cita) | exento (escenario + decisión) | KCNA, CKA, CKAD, CKS |
-| 15 | DevOps | IaC y CI/CD (Terraform, GitHub Actions) | track19 | ❌ | Terraform docs (cita), GitHub Actions docs (cita), `actions/*` MIT | exento | Terraform Associate, GitHub Actions |
-| 16 | Datos | Data Engineering | track20 | ❌ | `Data-Science-For-Beginners` MIT, PostgreSQL docs, DuckDB docs MIT | SQL (duckdb-wasm o sql.js) | DP-203, GCP PDE, Databricks DE |
-| 17 | Datos | Data Science / Analytics | track21 | ❌ | Kaggle Learn Apache-2, *Python Data Science Handbook* (cita) | Python stdlib (`statistics`, `csv`) | DP-100, Google Data Analytics |
-| 18 | Cloud | Azure | track22 | ❌ | Microsoft Learn (cita; propietario) | exento | AZ-900, AZ-104, AZ-204, AI-900, DP-900 |
-| 19 | Cloud | GCP | track23 | ❌ | Google Cloud docs (cita; propietario) | exento | Digital Leader, ACE, PCA, PMLE |
-| 20 | Seguridad | Ofensiva / pentest | track24 | ✅ (25.0: scaffolding + 500 Q mock, 15 % exec) | OWASP WSTG (CC BY-SA) + MITRE ATT&CK (PD) + NIST SP 800-115 (PD) | Python stdlib | eJPT, PenTest+, CEH (cita) |
-| 21 | Seguridad | Seguridad en la nube | track25 | ✅ (25.0: scaffolding + 500 Q mock, 15 % exec) | NIST SP 800-144 (PD) + OWASP ASVS (CC BY-SA) + CIS Benchmarks (cita) | exento | AWS Security Specialty, CCSP |
-| 22 | Fundamentos | Git y herramientas de desarrollo | track26 | ❌ | Pro Git (CC BY-NC-SA → cita), git docs (GPL → cita), GitHub docs | exento | GitHub Foundations |
-| 23 | Datos | NoSQL | track27 | ❌ | MongoDB docs (cita), Redis docs (cita) | exento | MongoDB Associate |
-| 24 | Web | Backend (FastAPI / Node) | track28 | ❌ | FastAPI docs MIT, *Full Stack Python* MIT, Node docs MIT | Python stdlib (`http.server`, `json`) | — |
-| 25 | Ingeniería | QA y testing | track29 | ❌ | pytest docs MIT, ISTQB syllabus (cita), Playwright docs Apache-2 | Python (`unittest`, `assert`) | ISTQB CTFL |
-| 26 | Ingeniería | Agile y producto | track30 | ❌ | Scrum Guide (CC BY-SA → cita), Agile Manifesto (cita) | exento | PSM I |
+| 14 | DevOps | Docker y Kubernetes | track18 | ✅ (18.6: 300 Q, 5 módulos, 20 lecciones) | Docs Kubernetes CC BY 4.0, Docker docs (cita) | exento (escenario + decisión) | KCNA, CKA, CKAD, CKS |
+| 15 | DevOps | IaC y CI/CD (Terraform, GitHub Actions) | track19 | ✅ (18.6: 300 Q, 5 módulos, 20 lecciones) | Terraform docs (cita), GitHub Actions docs (cita), `actions/*` MIT | exento | Terraform Associate, GitHub Actions |
+| 16 | Datos | Data Engineering | track20 | ✅ (18.7: 300 Q, 5 módulos, 20 lecciones) | `Data-Science-For-Beginners` MIT, PostgreSQL docs, DuckDB docs MIT | SQL (duckdb-wasm o sql.js) | DP-203, GCP PDE, Databricks DE |
+| 17 | Datos | Data Science / Analytics | track21 | ✅ (18.7: 300 Q, 5 módulos, 20 lecciones) | Kaggle Learn Apache-2, *Python Data Science Handbook* (cita) | Python stdlib (`statistics`, `csv`) | DP-100, Google Data Analytics |
+| 18 | Cloud | Azure | track22 | ✅ (18.6: 300 Q, 5 módulos, 20 lecciones) | Microsoft Learn (cita; propietario) | exento | AZ-900, AZ-104, AZ-204, AI-900, DP-900 |
+| 19 | Cloud | GCP | track23 | ✅ (18.6: 300 Q, 5 módulos, 20 lecciones) | Google Cloud docs (cita; propietario) | exento | Digital Leader, ACE, PCA, PMLE |
+| 20 | Seguridad | Ofensiva / pentest | track24 | ⚠️ en cuarentena (25.0): no está en `tracks.json`; se reconstruye en 18.10 | OWASP WSTG (CC BY-SA) + MITRE ATT&CK (PD) + NIST SP 800-115 (PD) | Python stdlib | eJPT, PenTest+, CEH (cita) |
+| 21 | Seguridad | Seguridad en la nube | track25 | ⚠️ en cuarentena (25.0): no está en `tracks.json`; se reconstruye en 18.10 | NIST SP 800-144 (PD) + OWASP ASVS (CC BY-SA) + CIS Benchmarks (cita) | exento | AWS Security Specialty, CCSP |
+| 22 | Fundamentos | Git y herramientas de desarrollo | track26 | ✅ (18.10: 300 Q, 5 módulos, 20 lecciones) | Pro Git (CC BY-NC-SA → cita), git docs (GPL → cita), GitHub docs | exento | GitHub Foundations |
+| 23 | Datos | NoSQL | track27 | ✅ (18.7: 300 Q, 5 módulos, 20 lecciones) | MongoDB docs (cita), Redis docs (cita) | exento | MongoDB Associate |
+| 24 | Web | Backend (FastAPI / Node) | track28 | ✅ (18.10: 300 Q, 5 módulos, 20 lecciones) | FastAPI docs MIT, *Full Stack Python* MIT, Node docs MIT | Python stdlib (`http.server`, `json`) | — |
+| 25 | Ingeniería | QA y testing | track29 | ✅ (18.10: 300 Q, 5 módulos, 20 lecciones) | pytest docs MIT, ISTQB syllabus (cita), Playwright docs Apache-2 | Python (`unittest`, `assert`) | ISTQB CTFL |
+| 26 | Ingeniería | Agile y producto | track30 | ✅ (18.10: 300 Q, 5 módulos, 20 lecciones) | Scrum Guide (CC BY-SA → cita), Agile Manifesto (cita) | exento | PSM I |
 | 27 | Móvil | Móvil (Android/Kotlin · iOS/Swift · Flutter/RN) | track31 | ❌ (último: sin runtime en navegador) | Android docs Apache-2, Flutter docs BSD, Apple docs (cita) | exento | — |
 | 28 | Web3 | Solana / Web3 developer (ADR-38) | track32 | ❌ (25.14) | `solana-labs/solana` y `solana-program-library` Apache-2, `solana-developers` cookbook/docs MIT, `@solana/web3.js` MIT, Anchor Apache-2 — confirmar `LICENSE` en 25.14 antes de reutilizar texto | **JS (`@solana/web3.js` en el Worker de 18.3)** + Python stdlib (hash, base58, serialización); Rust/Anchor = escenario + decisión (exento ADR-9) | — (sin cert oficial; evidencia = bounties Superteam Earn resueltos) |
 
-**Cobertura hoy: 16 de 28 filas (57 %).** 8 tracks completados + track13/24/25 Seguridad (scaffolding + 500 Q mock cada uno, 25.0) + track14 Frontend JS (stub, 12 Q) + track15/16/17 (18.4). Faltan **12**: Docker/K8s (18), IaC+CI/CD (19), Data Eng (20), Data Science (21), Azure (22), GCP (23), Git (26), NoSQL (27), Backend (28), QA (29), Agile (30), Móvil (31), **Solana/Web3 (32, ADR-38)**.
+**Cobertura hoy (2026-09-26, `project_snapshot.py`): 24 de 28 filas (86 %).** En `tracks.json` están todos los tracks de la tabla salvo track24 y track25 (en cuarentena, serie 25), track31 (móvil, el último) y track32 (Solana, bloqueado por 25.14). Por debajo de 300 preguntas: track09 (267), track11 (225), track15 (180), track16 (158), track17 (180) y las certificaciones track43 (165), track44 (90), track45 (90) y track46 (96).
 
 ### 2.0 Ampliación a toda la industria (ADR-46) — 14 tracks más, ids `track33`+
 
@@ -326,7 +326,7 @@ peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar pesos.
 | ISC2 | SSCP · CCSP · CISSP | track13/25 | ❌ | P3 |
 | CompTIA | **Security+ SY0-701** | track13 | ❌ (48 % de ofertas cyber, estrategia v3) | P1 |
 | CompTIA | Network+ · Linux+ · PenTest+ · CySA+ | track17/15/24 | ❌ | P2 |
-| Microsoft | AZ-900 · AI-900 · DP-900 | track22/06/12 | ❌ | P1 (fundamentals: 3 exámenes, un molde) |
+| Microsoft | AZ-900 · AI-900 → AI-901 · DP-900 | track44/45/46 | ✅ (AI-900 retirado 30-06-2026; migrar track45 a AI-901, 39.24) | P1 (fundamentals: 3 exámenes, un molde) |
 | Microsoft | AZ-104 · AZ-204 · AI-102 · DP-100 · DP-203 · AZ-305 | track22/07/21/20 | ❌ | P2 |
 | Google Cloud | Digital Leader · ACE · PCA · PDE · PMLE | track23/20/07 | ❌ | P2 |
 | CNCF | KCNA · CKA · CKAD · CKS | track18 | ❌ | P2 (CKA/CKAD son prácticos: solo teoría + escenario) |
@@ -457,8 +457,9 @@ Ninguna autoría en masa entra en `master` sin pasar **las cinco**:
 5. **Sesgo de posición y opciones repetidas**: `check_question_bank.py` PASS
    (Haiku entrega el 100 % en la posición A si no se rebalancea).
 
-Modelo por tarea: **autoría → Haiku; verificación y código → Sonnet; el hilo
-principal el que fije `settings.json`**. Un bloque que no pasa la puerta no
+Modelo por tarea (ADR-52, 2026-09-27): **autoría masiva → Haiku 4.5; revisión adversaria
+completa y corrección → Sonnet 5; lecturas e inventarios → Haiku 4.5; hilo interactivo →
+Sonnet 5; nunca Fable ni Opus 4.x**. Herramientas del lote: `scripts/content_qa/`. Un bloque que no pasa la puerta no
 existe: no se cuenta, no se anota, no se despliega.
 
 ---
@@ -519,8 +520,8 @@ social login web antes que nada — es lo que convierte y lo que las tiendas exi
 **19.7** biblioteca de fuentes libres (alimenta cada bloque de la 18), **19.4** y
 **19.5** cuando haya sesión interactiva para la captura.
 
-Cada bloque de contenido corre como **Workflow paralelo** (autoría Haiku por
-fichero → verificador propio → QA Sonnet → `pytest tests/content` →
+Cada bloque de contenido corre como **Workflow paralelo** (autoría Haiku 4.5 por
+fichero → revisor y corrector Sonnet 5, ADR-52 → `scripts/content_qa/` → `pytest tests/content` →
 `check_question_bank.py` → `check_docs.py` → commit). Un bloque = un commit
 verde. Nunca un track a medias en `master` otra vez.
 

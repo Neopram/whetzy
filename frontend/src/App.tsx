@@ -2,8 +2,8 @@ import { useEffect, useState, lazy, Suspense, useRef } from 'react';
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
-import { useAppStore } from './stores/useAppStore';
-import { ApiError, isAuthenticated, logout } from './services/api';
+import { useAppStore, DEFAULT_USER_ID } from './stores/useAppStore';
+import { ApiError, logout } from './services/api';
 import { TopBar } from './components/layout/TopBar';
 import { BottomNav } from './components/layout/BottomNav';
 import { Toast } from './components/common/Toast';
@@ -252,9 +252,13 @@ function App() {
     onSwipeLeft: () => { if (currentScreen !== 'marketplace') setScreen('marketplace'); },
   });
 
-  const [authState, setAuthState] = useState<AuthState>(() =>
-    isAuthenticated() ? 'checking' : 'unauthed'
-  );
+  // Siempre se pregunta al servidor: la cookie `whetzy_logged_in` es
+  // host-only del dominio que respondió al login, así que en producción
+  // (whetzy.com contra api-production-9751.up.railway.app, dominios
+  // distintos) nunca es visible aquí, haya o no sesión — decidir
+  // 'unauthed' a partir de esa cookie mandaba a cualquier login real de
+  // vuelta al landing (30.9). `/auth/me` es la única fuente fiable.
+  const [authState, setAuthState] = useState<AuthState>('checking');
   const [showOnboarding, setShowOnboarding] = useState(false);
   const reintentos = useRef(0);
 
@@ -287,10 +291,12 @@ function App() {
   // it has no way to reach this component's local `authState`, so without this
   // the app kept rendering the authenticated shell around a reset placeholder
   // user until the next reload. Watch the store's user instead: whenever it
-  // changes while we believe we are authed, re-read the only real source of
-  // truth — whether a token still exists — and fall back to the auth screen.
+  // resets to the anonymous default while we believe we are authed, fall back
+  // to the auth screen. (Used to re-check the `whetzy_logged_in` cookie
+  // instead, which is invisible cross-domain in production — 30.9 — so this
+  // never actually fired there.)
   useEffect(() => {
-    if (authState === 'authed' && !isAuthenticated()) {
+    if (authState === 'authed' && userId === DEFAULT_USER_ID) {
       setShowOnboarding(false);
       setAuthState('unauthed');
     }

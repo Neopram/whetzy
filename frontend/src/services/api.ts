@@ -50,12 +50,27 @@ function hasCookie(name: string): boolean {
   }
 }
 
+/** Solo fiable cuando frontend y backend comparten dominio (desarrollo local):
+ *  `whetzy_logged_in` es un cookie host-only del dominio que respondió al
+ *  login, así que en producción (`whetzy.com` contra
+ *  `api-production-9751.up.railway.app`, dominios distintos) nunca es
+ *  visible aquí, entre o no la sesión (30.9). `App.tsx` ya no confía en
+ *  esto para decidir el estado inicial: siempre pregunta a `/auth/me`. */
 export function isAuthenticated(): boolean {
   return hasCookie(LOGGED_IN_COOKIE);
 }
 
-export function logout() {
-  // Server clears HttpOnly cookies via /auth/logout; nothing to do client-side.
+/** Antes no llamaba a nada («el servidor limpia los cookies vía
+ *  /auth/logout» era el comentario, pero /auth/logout nunca se invocaba):
+ *  cerrar sesión solo borraba el estado local, y las cookies HttpOnly
+ *  seguían siendo válidas en el navegador — al recargar, la sesión "cerrada"
+ *  volvía. Best-effort: si ya no hay sesión que revocar, el 401 se ignora. */
+export async function logout(): Promise<void> {
+  try {
+    await request('/auth/logout', { method: 'POST' });
+  } catch {
+    /* la sesión ya no era válida, o no hay red: no hay nada más que hacer aquí */
+  }
 }
 
 function getHeaders(): HeadersInit {
@@ -259,6 +274,8 @@ export interface QuizAnswerResponse {
   session_accuracy: number;
   next_question: QuestionPublic | null;
   next_selection_reason: SelectionReason | null;
+  /** Free daily quota used up (39.4): no next question until the next UTC day. */
+  quota_reached?: boolean;
 }
 
 export interface QuizEndResponse {
@@ -358,6 +375,8 @@ export interface CurriculumSkill {
   p_known: number;
   mastered: boolean;
   attempts: number;
+  /** 32.4: si ya abrió la lección de este skill — el backend bloquea el quiz si no. */
+  lesson_seen: boolean;
 }
 
 export interface CurriculumModule {

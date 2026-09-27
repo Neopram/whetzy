@@ -7,20 +7,20 @@
       "question_es": "¿Qué es ensamble?",
       "question_en": "What is ensemble?",
       "options_es": [
-        "Copia como concepto principal",
-        "Promedios como concepto principal",
+        "Copia datos sin procesamiento",
+        "Promedia todos los modelos",
         "Combina múltiples modelos débiles",
-        "Un modelo fuerte"
+        "Un único modelo fuerte, nunca combinado con otros"
       ],
       "options_en": [
-        "Copia as the primary concept",
-        "Promedios as the primary concept",
+        "Copies data without processing",
+        "Averages all models",
         "Combina múltiples modelos débiles",
-        "Un modelo fuerte"
+        "A single strong model, never combined with others"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es ensamble?",
-      "explanation_en": "Explanation for What is ensemble?",
+      "explanation_es": "Un ensamble combina las predicciones de varios modelos para lograr un resultado más robusto que el de cualquiera por separado, como hacen bagging, boosting y stacking.",
+      "explanation_en": "An ensemble combines the predictions of several models into a single, more robust result — the same idea behind bagging, boosting and stacking.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -30,20 +30,20 @@
       "question_es": "¿Qué es bagging?",
       "question_en": "What is bagging?",
       "options_es": [
-        "Todas filas",
-        "Único modelo",
+        "Todas las filas, sin muestreo aleatorio",
+        "Un único modelo entrenado con todos los datos",
         "Bootstrap aggregating subsets",
-        "Embolsado como concepto principal"
+        "Embolsado de características"
       ],
       "options_en": [
-        "Todas filas",
-        "Único modelo",
+        "All rows, with no random sampling",
+        "A single model trained on the entire dataset",
         "Bootstrap aggregating subsets",
-        "Embolsado as the primary concept"
+        "Bagged features"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es bagging?",
-      "explanation_en": "Explanation for What is bagging?",
+      "explanation_es": "Bagging significa \"bootstrap aggregating\": entrena el mismo modelo sobre múltiples muestras bootstrap y agrega sus predicciones.",
+      "explanation_en": "Bagging stands for \"bootstrap aggregating\": it trains the same model on multiple bootstrap subsets and aggregates their predictions.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -53,20 +53,20 @@
       "question_es": "¿Cómo funciona bagging?",
       "question_en": "How does bagging work?",
       "options_es": [
-        "Estratificado como concepto principal",
-        "Secuencial como concepto principal",
-        "Sin reemplazo de forma invariable y constante",
+        "Estratificado por nivel, conserva proporciones exactas",
+        "Secuencial por índice, sin componente aleatorio",
+        "Sin reemplazo de las muestras",
         "Muestrea con reemplazo, entrena múltiples"
       ],
       "options_en": [
-        "Estratificado as the primary concept",
-        "Secuencial as the primary concept",
-        "Sin reemplazo invariably and constantly",
+        "Stratified by level, preserving exact proportions",
+        "Sequential by index, with no random component",
+        "Without replacement of samples",
         "Muestrea con reemplazo, entrena múltiples"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo funciona bagging?",
-      "explanation_en": "Explanation for How does bagging work?",
+      "explanation_es": "Bagging muestrea con reemplazo (bootstrap) para crear varios subconjuntos del mismo tamaño que el original y entrena un modelo distinto sobre cada uno.",
+      "explanation_en": "Bagging samples with replacement (bootstrap) to build several subsets the same size as the original data and trains a separate model on each one.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -78,18 +78,18 @@
       "options_es": [
         "Bagging árboles decisión",
         "Selva aleatoria",
-        "Un árbol según la documentación estándar del servicio",
+        "Un árbol de profundidad fija",
         "Bosque datos"
       ],
       "options_en": [
         "Bagging árboles decisión",
         "Selva aleatoria",
-        "Un árbol according to standard service documentation",
+        "A single tree with fixed depth",
         "Bosque datos"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es Random Forest?",
-      "explanation_en": "Explanation for What is Random Forest?",
+      "explanation_es": "Random Forest aplica bagging sobre árboles de decisión, y además en cada división considera solo un subconjunto aleatorio de columnas para aumentar la diversidad.",
+      "explanation_en": "Random Forest applies bagging to decision trees, and at every split it also considers only a random subset of columns to add diversity.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -100,19 +100,19 @@
       "question_en": "How many trees in RF?",
       "options_es": [
         "100-1000 típico, prueba",
-        "1 árbol según la documentación estándar del servicio",
-        "Menos mejor",
-        "No importa"
+        "1 árbol por dataset",
+        "Menos árboles: 3-5 bastan siempre para converger",
+        "No importa la cantidad: el accuracy es idéntico con cualquier n"
       ],
       "options_en": [
         "100-1000 típico, prueba",
-        "1 árbol according to standard service documentation",
-        "Menos mejor",
-        "No importa"
+        "1 tree per dataset",
+        "Fewer trees: 3-5 always suffice to converge",
+        "The count does not matter: accuracy is identical for any n"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cuántos árboles en RF?",
-      "explanation_en": "Explanation for How many trees in RF?",
+      "explanation_es": "No hay un número fijo: se suele probar entre 100 y 1000 árboles y ajustar según el rendimiento de validación.",
+      "explanation_en": "There's no fixed number: a typical range is 100 to 1000 trees, tuned by checking validation performance.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -122,20 +122,20 @@
       "question_es": "¿Qué es boosting?",
       "question_en": "What is boosting?",
       "options_es": [
-        "Igual bagging en todos los casos posibles",
-        "Paralelo como concepto principal",
-        "Pausa entrenamiento",
+        "Igual a bagging con pesos fijos",
+        "Paralelo en cada iteración",
+        "Pausa el entrenamiento hasta que el usuario lo reanude",
         "Entrena secuencial corrigiendo errores"
       ],
       "options_en": [
-        "Igual bagging in all possible cases",
-        "Paralelo as the primary concept",
-        "Pausa entrenamiento",
+        "Same as bagging with fixed weights",
+        "Parallel in each iteration",
+        "Pauses training until the user manually resumes it",
         "Entrena secuencial corrigiendo errores"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es boosting?",
-      "explanation_en": "Explanation for What is boosting?",
+      "explanation_es": "Boosting entrena los modelos en secuencia, y cada uno se enfoca en corregir los errores que cometió el anterior.",
+      "explanation_en": "Boosting trains models one after another in sequence, with each new model focused on correcting the previous one's errors.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -146,19 +146,19 @@
       "question_en": "Difference bagging vs boosting?",
       "options_es": [
         "Bagging paralelo aleatorio, boosting secuencial",
-        "Boosting más simple",
-        "Bagging superior sin considerar otros factores relevantes",
-        "Igual como concepto principal"
+        "Boosting es más simple porque omite el cálculo del error",
+        "Bagging superior en datasets grandes",
+        "Igual en varianza y sesgo"
       ],
       "options_en": [
         "Bagging paralelo aleatorio, boosting secuencial",
-        "Boosting más simple",
-        "Bagging superior without considering other relevant factors",
-        "Igual as the primary concept"
+        "Boosting is simpler because it skips computing the error",
+        "Bagging superior in large datasets",
+        "Same variance and bias"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Diferencia bagging vs boosting?",
-      "explanation_en": "Explanation for Difference bagging vs boosting?",
+      "explanation_es": "Bagging entrena sus modelos en paralelo sobre muestras aleatorias independientes, mientras que boosting los entrena en secuencia, cada uno corrigiendo al anterior.",
+      "explanation_en": "Bagging trains its models in parallel on independent random samples, while boosting trains them sequentially, each one correcting the last.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -168,20 +168,20 @@
       "question_es": "¿Qué es AdaBoost?",
       "question_en": "What is AdaBoost?",
       "options_es": [
-        "Moderno como concepto principal",
-        "Promedia como concepto principal",
+        "Es una versión más moderna publicada después de XGBoost",
+        "Promedia con pesos iguales",
         "Ajusta pesos incorrectos progresivamente",
-        "Todos igual sin excepciones ni variantes"
+        "Todos modelos con igual importancia"
       ],
       "options_en": [
-        "Moderno as the primary concept",
-        "Promedia as the primary concept",
+        "It is a newer version published after XGBoost",
+        "Averages with equal weights",
         "Ajusta pesos incorrectos progresivamente",
-        "Todos igual without exceptions or variants"
+        "All models with equal importance"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es AdaBoost?",
-      "explanation_en": "Explanation for What is AdaBoost?",
+      "explanation_es": "AdaBoost es una forma de boosting que, en cada ronda, aumenta el peso de los ejemplos mal clasificados para que el siguiente modelo se concentre en ellos.",
+      "explanation_en": "AdaBoost is a boosting method that increases the weight of misclassified examples after each round, so the next model focuses on them.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -191,20 +191,20 @@
       "question_es": "¿Qué es Gradient Boosting?",
       "question_en": "What is Gradient Boosting?",
       "options_es": [
-        "Avanzado solo",
-        "Sin gradiente según la documentación estándar del servicio",
-        "Boosting simple",
+        "Avanzado y exclusivo de redes neuronales profundas",
+        "Sin componentes de gradiente",
+        "Boosting simple que promedia sin ajustar residuos",
         "Entrena árboles dirección gradiente negativo"
       ],
       "options_en": [
-        "Avanzado solo",
-        "Sin gradiente according to standard service documentation",
-        "Boosting simple",
+        "Advanced and exclusive to deep neural networks",
+        "Without gradient components",
+        "Simple boosting that averages without fitting residuals",
         "Entrena árboles dirección gradiente negativo"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es Gradient Boosting?",
-      "explanation_en": "Explanation for What is Gradient Boosting?",
+      "explanation_es": "Gradient Boosting ajusta cada nuevo árbol a los residuos (errores) del modelo acumulado hasta el momento, moviéndose en la dirección que reduce la función de pérdida.",
+      "explanation_en": "Gradient Boosting fits each new tree to the residuals — the errors — of the model built so far, moving in the direction that reduces the loss function.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -214,20 +214,20 @@
       "question_es": "¿Cuándo XGBoost supera GB?",
       "question_en": "When XGBoost beats GB?",
       "options_es": [
-        "Nunca como concepto principal",
+        "Nunca supera a GB, ni siquiera en datasets pequeños",
         "Regularización, paralelización, optimizaciones",
-        "Siempre igual sin excepciones ni variantes",
-        "Depende azar de forma invariable y constante"
+        "Siempre es superior sin importar los hiperparámetros",
+        "Depende de inicialización aleatoria"
       ],
       "options_en": [
-        "Nunca as the primary concept",
+        "Never beats GB, not even on small datasets",
         "Regularización, paralelización, optimizaciones",
-        "Siempre igual without exceptions or variants",
-        "Depende azar invariably and constantly"
+        "Always superior regardless of the hyperparameters used",
+        "Depends on random initialization"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo XGBoost supera GB?",
-      "explanation_en": "Explanation for When XGBoost beats GB?",
+      "explanation_es": "XGBoost es una implementación optimizada de gradient boosting que añade regularización contra el sobreajuste y aprovecha la paralelización, por lo que suele superar a una implementación estándar de GB.",
+      "explanation_en": "XGBoost is an optimized gradient boosting implementation with built-in regularization against overfitting plus parallelization, which is why it tends to outperform a plain GB implementation.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -237,20 +237,20 @@
       "question_es": "¿Qué es stacking?",
       "question_en": "What is stacking?",
       "options_es": [
-        "Apila datos de forma invariable y constante",
+        "Apila solo datos de entrenamiento",
         "Meta-learner combina predicciones base",
-        "Apilamiento físico",
-        "Múltiples pisos"
+        "Apilamiento físico de servidores para entrenar en paralelo",
+        "Múltiples pisos de una arquitectura de red neuronal"
       ],
       "options_en": [
-        "Apila datos invariably and constantly",
+        "Stacks only training data",
         "Meta-learner combina predicciones base",
-        "Apilamiento físico",
-        "Múltiples pisos"
+        "Physical stacking of servers to train in parallel",
+        "Multiple floors of a neural network architecture"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es stacking?",
-      "explanation_en": "Explanation for What is stacking?",
+      "explanation_es": "Stacking combina las predicciones de varios modelos base distintos mediante un meta-modelo que aprende a ponderarlas.",
+      "explanation_en": "Stacking combines the predictions of several different base models through a meta-model that learns how to weight them.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -262,18 +262,18 @@
       "options_es": [
         "Datos enteros",
         "Cross-validation normal",
-        "Hold-out solo en todos los casos posibles",
+        "Hold-out solo con 50% datos",
         "Sin validación"
       ],
       "options_en": [
         "Datos enteros",
         "Cross-validation normal",
-        "Hold-out solo in all possible cases",
+        "Hold-out only with 50% data",
         "Sin validación"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo validar ensamble?",
-      "explanation_en": "Explanation for How to validate ensemble?",
+      "explanation_es": "Un ensamble se valida igual que cualquier otro modelo supervisado: con validación cruzada estándar sobre datos no vistos durante el entrenamiento.",
+      "explanation_en": "An ensemble is validated the same way as any other supervised model: with standard cross-validation on data held out from training.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -285,18 +285,18 @@
       "options_es": [
         "Complejidad siempre",
         "Siempre ensamble",
-        "Nunca solista en todos los casos posibles",
+        "Nunca usar un solo modelo, ni con datos simples",
         "Modelo simple suficiente"
       ],
       "options_en": [
         "Complejidad siempre",
         "Siempre ensamble",
-        "Nunca solista in all possible cases",
+        "Never use a single model, not even with simple data",
         "Modelo simple suficiente"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuándo NOT usar ensamble?",
-      "explanation_en": "Explanation for When NOT to use ensemble?",
+      "explanation_es": "Si un modelo simple ya da buen rendimiento, un ensamble añade cómputo y complejidad sin aportar una mejora que lo justifique.",
+      "explanation_en": "When a single simple model already performs well, an ensemble just adds computation and complexity without a real payoff.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -306,20 +306,20 @@
       "question_es": "¿Overfitting en ensambles?",
       "question_en": "Overfitting in ensembles?",
       "options_es": [
-        "Imposible como concepto principal",
+        "Imposible con modelos variados",
         "Posible si modelos bases similar",
-        "Garantizado como concepto principal",
-        "Raro como concepto principal"
+        "Garantizado con correlación alta",
+        "Raro porque el meta-modelo memoriza automáticamente los datos de validación"
       ],
       "options_en": [
-        "Imposible as the primary concept",
+        "Impossible with diverse models",
         "Posible si modelos bases similar",
-        "Garantizado as the primary concept",
-        "Raro as the primary concept"
+        "Guaranteed with high correlation",
+        "Rare because the meta-model automatically memorizes the validation data"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Overfitting en ensambles?",
-      "explanation_en": "Explanation for Overfitting in ensembles?",
+      "explanation_es": "El sobreajuste sigue siendo posible en un ensamble si los modelos base son muy parecidos entre sí, porque entonces sus errores no se cancelan y el conjunto hereda el mismo sesgo.",
+      "explanation_en": "Overfitting is still possible in an ensemble when the base models are too similar to each other, since their errors don't cancel out and the ensemble just inherits the same bias.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -329,20 +329,20 @@
       "question_es": "¿Computación ensambles?",
       "question_en": "Computational cost ensembles?",
       "options_es": [
-        "Prohibitivo como concepto principal",
-        "Muy barato",
-        "Sin costo",
+        "Prohibitivo sin hardware especializado tipo GPU dedicada",
+        "Muy barato: cuesta lo mismo que un único árbol",
+        "Sin costo adicional respecto a un modelo base individual",
         "Mayor training pero parallelizable"
       ],
       "options_en": [
-        "Prohibitivo as the primary concept",
-        "Muy barato",
-        "Sin costo",
+        "Prohibitive without specialized dedicated GPU hardware",
+        "Very cheap: it costs the same as a single tree",
+        "No extra cost compared to a single base model",
         "Mayor training pero parallelizable"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Computación ensambles?",
-      "explanation_en": "Explanation for Computational cost ensembles?",
+      "explanation_es": "Entrenar un ensamble cuesta más cómputo que un solo modelo porque hay que entrenar varios, pero ese trabajo (sobre todo en bagging) se puede paralelizar.",
+      "explanation_en": "Training an ensemble costs more compute than a single model since several must be trained, but that work — especially in bagging — can be parallelized.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -352,20 +352,20 @@
       "question_es": "¿Cuándo reducir dimensionalidad?",
       "question_en": "When to reduce dimensionality?",
       "options_es": [
-        "Siempre como concepto principal",
+        "Siempre con muchas features",
         "Muchas features ruido complejidad",
-        "Nunca como concepto principal",
-        "Raramente como concepto principal"
+        "Nunca es necesario, ni con miles de columnas",
+        "Raramente justificado"
       ],
       "options_en": [
-        "Siempre as the primary concept",
+        "Always with many features",
         "Muchas features ruido complejidad",
-        "Nunca as the primary concept",
-        "Raramente as the primary concept"
+        "Never necessary, not even with thousands of columns",
+        "Rarely justified"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo reducir dimensionalidad?",
-      "explanation_en": "Explanation for When to reduce dimensionality?",
+      "explanation_es": "Conviene reducir la dimensionalidad cuando hay muchas variables, porque eso añade ruido y complejidad sin necesariamente aportar información útil.",
+      "explanation_en": "Dimensionality reduction is worthwhile when there are many features, since that adds noise and complexity without necessarily adding useful information.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -375,20 +375,20 @@
       "question_es": "¿Ventajas reducción?",
       "question_en": "Advantages of reduction?",
       "options_es": [
-        "Complejidad como concepto principal",
+        "Complejidad aumentada",
         "Menos ruido visualización, más rápido",
-        "Pérdida info sin considerar otros factores relevantes",
-        "Ninguna como concepto principal"
+        "Pérdida de información importante",
+        "Ningún beneficio real más allá de ahorrar espacio en disco"
       ],
       "options_en": [
-        "Complejidad as the primary concept",
+        "Increased complexity",
         "Menos ruido visualización, más rápido",
-        "Pérdida info without considering other relevant factors",
-        "Ninguna as the primary concept"
+        "Loss of important information",
+        "No real benefit beyond saving disk space"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Ventajas reducción?",
-      "explanation_en": "Explanation for Advantages of reduction?",
+      "explanation_es": "Reducir dimensionalidad disminuye el ruido, facilita la visualización en 2D o 3D y acelera el entrenamiento al trabajar con menos variables.",
+      "explanation_en": "Reducing dimensionality cuts down noise, makes 2D or 3D visualization possible, and speeds up training since there are fewer variables to process.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -398,20 +398,20 @@
       "question_es": "¿Cómo elige PCA componentes?",
       "question_en": "How does PCA choose components?",
       "options_es": [
-        "Aleatorio como concepto principal",
+        "Aleatorio por componente, sin criterio matemático",
         "Máxima varianza direcciones ortogonales",
-        "Iguales tamaños según la documentación estándar del servicio",
-        "Usuario como concepto principal"
+        "Iguales tamaños de componentes",
+        "Usuario especifica manualmente"
       ],
       "options_en": [
-        "Aleatorio as the primary concept",
+        "Random per component, with no mathematical criterion",
         "Máxima varianza direcciones ortogonales",
-        "Iguales tamaños according to standard service documentation",
-        "Usuario as the primary concept"
+        "Equal component sizes",
+        "User specifies manually"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo elige PCA componentes?",
-      "explanation_en": "Explanation for How does PCA choose components?",
+      "explanation_es": "PCA elige direcciones ordenadas por la varianza que capturan: la primera es la de mayor varianza, y cada siguiente es ortogonal a las anteriores capturando la mayor varianza restante.",
+      "explanation_en": "PCA picks directions ordered by how much variance they capture: the first captures the most, and each following one is orthogonal to the previous ones while capturing the largest remaining variance.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -421,20 +421,20 @@
       "question_es": "¿Cuántos PC mantener?",
       "question_en": "How many PCs to keep?",
       "options_es": [
-        "Uno solo",
-        "Todos como concepto principal",
+        "Uno solo, siempre basta para cualquier dataset",
+        "Todos los componentes",
         "Explicar 90-95% varianza",
-        "Mitad como concepto principal"
+        "Mitad de componentes"
       ],
       "options_en": [
-        "Uno solo",
-        "Todos as the primary concept",
+        "Just one, always enough for any dataset",
+        "All components",
         "Explicar 90-95% varianza",
-        "Mitad as the primary concept"
+        "Half of components"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuántos PC mantener?",
-      "explanation_en": "Explanation for How many PCs to keep?",
+      "explanation_es": "El criterio habitual es sumar los autovalores más grandes hasta cubrir, por ejemplo, entre el 90% y el 95% de la varianza total.",
+      "explanation_en": "The usual rule is to keep adding the largest eigenvalues until they cover something like 90-95% of the total variance.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -444,20 +444,20 @@
       "question_es": "¿Qué es scree plot?",
       "question_en": "What is scree plot?",
       "options_es": [
-        "Gráfico tiempo",
-        "Histograma como concepto principal",
+        "Gráfico de tiempo contra número de observaciones",
+        "Histograma de frecuencias",
         "Varianza explicada vs componentes",
-        "Datos brutos"
+        "Datos brutos sin procesamiento estadístico"
       ],
       "options_en": [
-        "Gráfico tiempo",
-        "Histograma as the primary concept",
+        "Time graph against number of observations",
+        "Frequency histogram",
         "Varianza explicada vs componentes",
-        "Datos brutos"
+        "Raw data with no statistical processing"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es scree plot?",
-      "explanation_en": "Explanation for What is scree plot?",
+      "explanation_es": "El scree plot grafica la varianza explicada por cada componente frente a su número, y sirve para decidir visualmente cuántos componentes conservar.",
+      "explanation_en": "A scree plot graphs the variance explained by each component against its component number, helping decide visually how many to keep.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -467,44 +467,44 @@
       "question_es": "¿Ventajas PCA?",
       "question_en": "Advantages of PCA?",
       "options_es": [
-        "Ninguna como concepto principal",
-        "Lento como concepto principal",
+        "Ninguna ventaja frente a un modelo sin reducir",
+        "Lento para calcular",
         "Simple rápido interpretable",
-        "Complejo como concepto principal"
+        "Complejo de implementar"
       ],
       "options_en": [
-        "Ninguna as the primary concept",
-        "Lento as the primary concept",
+        "No advantage compared to a model without reduction",
+        "Slow to compute",
         "Simple rápido interpretable",
-        "Complejo as the primary concept"
+        "Difficult to implement"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Ventajas PCA?",
-      "explanation_en": "Explanation for Advantages of PCA?",
+      "explanation_es": "PCA es simple de calcular, rápido y sus componentes (como combinaciones lineales de las variables originales) son relativamente interpretables.",
+      "explanation_en": "PCA is simple to compute, fast, and its components — being linear combinations of the original variables — are relatively easy to interpret.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
       "id": "q210502007",
       "skill_id": "sk210502",
       "type": "multiple_choice",
-      "question_es": "¿Desventajas PCA?",
-      "question_en": "Disadvantages of PCA?",
+      "question_es": "¿Cuál es una desventaja de PCA?",
+      "question_en": "What is a disadvantage of PCA?",
       "options_es": [
-        "Perda info sin excepciones ni variantes",
-        "Ningunas como concepto principal",
-        "Nuevos features combinaciones (interpretable)",
-        "No es verdadero en todos los casos posibles"
+        "Pierde parte de la información y los componentes cuesta interpretarlos",
+        "No tiene desventajas: conserva toda la información original",
+        "Exige etiquetas de clase para poder calcular los componentes principales",
+        "Solo admite variables categóricas, nunca numéricas continuas"
       ],
       "options_en": [
-        "Perda info without exceptions or variants",
-        "Ningunas as the primary concept",
-        "Nuevos features combinaciones (interpretable)",
-        "No es verdadero in all possible cases"
+        "Some information is lost and the components are hard to interpret",
+        "No drawbacks: it keeps all of the original information",
+        "It needs class labels to compute the principal components",
+        "It only accepts categorical variables, never continuous ones"
       ],
-      "correct_index": 2,
-      "explanation_es": "Explicación para ¿Desventajas PCA?",
-      "explanation_en": "Explanation for Disadvantages of PCA?",
-      "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
+      "correct_index": 0,
+      "explanation_es": "PCA descompone los datos en componentes ortogonales que explican la máxima varianza. Al quedarse con menos componentes se pierde parte de la información, y cada componente mezcla todas las variables originales, así que cuesta interpretarlo. Es un método no supervisado (no usa etiquetas) y trabaja con variables numéricas.",
+      "explanation_en": "PCA decomposes the data into orthogonal components that explain the maximum variance. Keeping fewer components loses some information, and each component mixes all the original variables, so it is hard to interpret. It is unsupervised (it uses no labels) and works on numeric variables.",
+      "source": "scikit-learn — Decomposing signals in components, PCA (https://scikit-learn.org/stable/modules/decomposition.html)"
     },
     {
       "id": "q210502008",
@@ -513,20 +513,20 @@
       "question_es": "¿Qué es t-SNE en este contexto?",
       "question_en": "What is t-SNE in this context?",
       "options_es": [
-        "Regresión como concepto principal",
+        "Regresión lineal de los datos originales sin transformar",
         "Visualización preserva proximidad local",
-        "Clustering como concepto principal",
-        "Lo mismo PCA sin excepciones ni variantes"
+        "Clustering de observaciones mediante centroides fijos",
+        "Lo mismo que PCA"
       ],
       "options_en": [
-        "Regresión as the primary concept",
+        "Linear regression of the original untransformed data",
         "Visualización preserva proximidad local",
-        "Clustering as the primary concept",
-        "Lo mismo PCA without exceptions or variants"
+        "Clustering of observations using fixed centroids",
+        "Same as PCA"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es t-SNE?",
-      "explanation_en": "Explanation for What is t-SNE?",
+      "explanation_es": "t-SNE es una técnica de visualización que preserva qué puntos eran vecinos cercanos en el espacio original, útil para ver agrupamientos en 2D.",
+      "explanation_en": "t-SNE is a visualization technique that preserves which points were close neighbors in the original space, useful for spotting clusters in 2D.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -536,20 +536,20 @@
       "question_es": "¿Cuándo usar t-SNE?",
       "question_en": "When to use t-SNE?",
       "options_es": [
-        "Producción como concepto principal",
+        "Producción en línea con predicciones en tiempo real",
         "Exploración visual clusters datos",
-        "Siempre como concepto principal",
-        "Nunca como concepto principal"
+        "Siempre para el análisis final antes de publicar el modelo",
+        "Nunca para datos"
       ],
       "options_en": [
-        "Producción as the primary concept",
+        "Online production with real-time predictions",
         "Exploración visual clusters datos",
-        "Siempre as the primary concept",
-        "Nunca as the primary concept"
+        "Always for the final analysis before publishing the model",
+        "Never for data"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo usar t-SNE?",
-      "explanation_en": "Explanation for When to use t-SNE?",
+      "explanation_es": "t-SNE se usa para explorar visualmente si existen agrupamientos en los datos, no para producir features que alimenten un modelo en producción.",
+      "explanation_en": "t-SNE is meant for visually exploring whether clusters exist in the data, not for producing features to feed into a production model.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -559,20 +559,20 @@
       "question_es": "¿Qué es UMAP?",
       "question_en": "What is UMAP?",
       "options_es": [
-        "Todas como concepto principal",
+        "Todas las anteriores",
         "Mejor visualización",
         "Alternativa t-SNE rápida",
         "Preserva estructura local global"
       ],
       "options_en": [
-        "Todas as the primary concept",
+        "All of the above",
         "Mejor visualización",
         "Alternativa t-SNE rápida",
         "Preserva estructura local global"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es UMAP?",
-      "explanation_en": "Explanation for What is UMAP?",
+      "explanation_es": "UMAP es una alternativa a t-SNE que suele ser más rápida y preserva tanto la estructura local como parte de la global, por lo que puede dar una visualización mejor en muchos casos: de ahí que las tres afirmaciones sean ciertas.",
+      "explanation_en": "UMAP is an alternative to t-SNE that tends to run faster and preserves both local and some global structure, often giving a better visualization — which is why all three statements hold.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -583,19 +583,19 @@
       "question_en": "What is autoencoder?",
       "options_es": [
         "Red neuronal compresión descompresión",
-        "Algoritmo clásico",
-        "Codificador datos en cualquier escenario de implementación",
-        "Máquina como concepto principal"
+        "Algoritmo clásico sin capa neuronal",
+        "Codificador de datos comprimidos",
+        "Máquina de aprendizaje"
       ],
       "options_en": [
         "Red neuronal compresión descompresión",
-        "Algoritmo clásico",
-        "Codificador datos in any implementation scenario",
-        "Máquina as the primary concept"
+        "A classical algorithm with no neural layers",
+        "Compressed-data encoder",
+        "Learning machine"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Autoencoder qué es?",
-      "explanation_en": "Explanation for What is autoencoder?",
+      "explanation_es": "Un autoencoder es una red neuronal que aprende a comprimir los datos en una representación de menor dimensión y luego reconstruirlos, funcionando como una alternativa no lineal a PCA.",
+      "explanation_en": "An autoencoder is a neural network that learns to compress data into a lower-dimensional representation and then reconstruct it, acting as a nonlinear alternative to PCA.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -605,20 +605,20 @@
       "question_es": "¿Feature selection vs extraction?",
       "question_en": "Feature selection vs extraction?",
       "options_es": [
-        "Selection inútil",
-        "Igual como concepto principal",
-        "Extraction mejor de forma invariable y constante",
+        "Selection es inútil frente a cualquier método de extracción",
+        "Igual en resultado, sin diferencia práctica",
+        "Extrae mejor en producción",
         "Selección elige existentes, extrae crea"
       ],
       "options_en": [
-        "Selection inútil",
-        "Igual as the primary concept",
-        "Extraction mejor invariably and constantly",
+        "Selection is useless compared to any extraction method",
+        "Identical in result, with no practical difference",
+        "Extraction better in production",
         "Selección elige existentes, extrae crea"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Feature selection vs extraction?",
-      "explanation_en": "Explanation for Feature selection vs extraction?",
+      "explanation_es": "La selección de características elige un subconjunto de las variables originales y las deja intactas, mientras que la extracción (como PCA) crea variables nuevas combinando las existentes.",
+      "explanation_en": "Feature selection picks a subset of the original variables and leaves them untouched, while extraction (like PCA) creates new variables by combining the existing ones.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -628,20 +628,20 @@
       "question_es": "¿Métodos feature selection?",
       "question_en": "Feature selection methods?",
       "options_es": [
-        "Manual como concepto principal",
-        "Ninguno como concepto principal",
-        "Solo correlación en todos los casos posibles",
+        "Manual por experto, imposible de automatizar o repetir",
+        "Ninguno disponible fuera de herramientas comerciales",
+        "Solo correlación numérica",
         "Univariado, árbol importance, RFE"
       ],
       "options_en": [
-        "Manual as the primary concept",
-        "Ninguno as the primary concept",
-        "Solo correlación in all possible cases",
+        "Manual by expert, impossible to automate or repeat",
+        "None available outside of commercial tools",
+        "Only numerical correlation",
         "Univariado, árbol importance, RFE"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Métodos feature selection?",
-      "explanation_en": "Explanation for Feature selection methods?",
+      "explanation_es": "Entre los métodos de selección de características están los filtros univariados, la importancia calculada por árboles de decisión y la eliminación recursiva de características (RFE).",
+      "explanation_en": "Common feature selection methods include univariate filters, tree-based importance scores, and recursive feature elimination (RFE).",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -651,20 +651,20 @@
       "question_es": "¿Recursive Feature Elimination?",
       "question_en": "Recursive Feature Elimination?",
       "options_es": [
-        "Teoría como concepto principal",
+        "Teoría de conjuntos aplicada a las columnas del dataset",
         "Elimina features iterativamente",
-        "Azar como concepto principal de forma invariable y constante",
-        "Agrega como concepto principal"
+        "Azar en el orden de las columnas sin criterio",
+        "Agrega features linealmente"
       ],
       "options_en": [
-        "Teoría as the primary concept",
+        "Set theory applied to the dataset's columns",
         "Elimina features iterativamente",
-        "Azar as the primary concept invariably and constantly",
-        "Agrega as the primary concept"
+        "Randomness in column order with no criterion",
+        "Adds features linearly"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Recursive Feature Elimination?",
-      "explanation_en": "Explanation for Recursive Feature Elimination?",
+      "explanation_es": "RFE (Recursive Feature Elimination) entrena el modelo, descarta la característica menos importante y repite el proceso iterativamente hasta quedarse con el subconjunto deseado.",
+      "explanation_en": "RFE (Recursive Feature Elimination) trains the model, drops the least important feature, and repeats that process iteratively until it's left with the desired subset.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -675,19 +675,19 @@
       "question_en": "When NOT to reduce?",
       "options_es": [
         "Siempre reducir",
-        "A veces independientemente del contexto aplicado",
+        "Beneficioso solo si el dataset supera el terabyte de tamaño",
         "Nunca reducir",
         "Features ya interpretables y necesarios"
       ],
       "options_en": [
-        "Siempre reducir",
-        "A veces regardless of the applied context",
+        "Always reduce",
+        "Beneficial only if the dataset exceeds one terabyte in size",
         "Nunca reducir",
         "Features ya interpretables y necesarios"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuándo no reducir?",
-      "explanation_en": "Explanation for When NOT to reduce?",
+      "explanation_es": "No conviene reducir dimensionalidad cuando las variables ya son pocas, interpretables y todas necesarias para el problema: transformarlas solo perdería claridad sin ganar nada.",
+      "explanation_en": "It's not worth reducing dimensionality when the features are already few, interpretable, and all needed for the problem — transforming them would only lose clarity for no gain.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -699,18 +699,18 @@
       "options_es": [
         "Tendencia estacionalidad residuos",
         "Datos puros",
-        "Fechas como concepto principal",
-        "Predicciones como concepto principal"
+        "Fechas y marcas de tiempo",
+        "Predicciones futuras del modelo entrenado"
       ],
       "options_en": [
         "Tendencia estacionalidad residuos",
         "Datos puros",
-        "Fechas as the primary concept",
-        "Predicciones as the primary concept"
+        "Dates and timestamps",
+        "Future predictions from the trained model"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Componentes serie temporal?",
-      "explanation_en": "Explanation for Time series components?",
+      "explanation_es": "Una serie temporal se descompone típicamente en tendencia, estacionalidad y residuo.",
+      "explanation_en": "A time series is typically broken down into trend, seasonality and residual.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -721,19 +721,19 @@
       "question_en": "What is trend?",
       "options_es": [
         "Cambio promedio largo plazo",
-        "Ciclo como concepto principal",
-        "Fluctuación como concepto principal",
-        "Ruido como concepto principal"
+        "Ciclo repetido a intervalos regulares",
+        "Fluctuación sin patrón recurrente",
+        "Ruido aleatorio de corto plazo"
       ],
       "options_en": [
         "Cambio promedio largo plazo",
-        "Ciclo as the primary concept",
-        "Fluctuación as the primary concept",
-        "Ruido as the primary concept"
+        "Cycle repeated at regular intervals",
+        "Fluctuation with no recurring pattern",
+        "Random short-term noise"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es tendencia?",
-      "explanation_en": "Explanation for What is trend?",
+      "explanation_es": "La tendencia es el movimiento de largo plazo de la serie, generalmente capturado mediante una media móvil.",
+      "explanation_en": "Trend is the long-run movement of the series, typically captured with a moving average.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -744,19 +744,19 @@
       "question_en": "What is seasonality?",
       "options_es": [
         "Patrón repetido período fijo",
-        "Aleatoriedad como concepto principal",
-        "Tendencia como concepto principal",
+        "Aleatoriedad pura sin patrón determinista",
+        "Tendencia lineal creciente o decreciente",
         "Cambio único"
       ],
       "options_en": [
         "Patrón repetido período fijo",
-        "Aleatoriedad as the primary concept",
-        "Tendencia as the primary concept",
+        "Pure randomness without deterministic pattern",
+        "Linear trend increasing or decreasing",
         "Cambio único"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es estacionalidad?",
-      "explanation_en": "Explanation for What is seasonality?",
+      "explanation_es": "La estacionalidad es un patrón que se repite a intervalos fijos, como ciclos diarios, semanales o anuales.",
+      "explanation_en": "Seasonality is a pattern that repeats at fixed intervals, such as daily, weekly or yearly cycles.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -766,20 +766,20 @@
       "question_es": "¿Cómo descomponer serie?",
       "question_en": "How to decompose time series?",
       "options_es": [
-        "Visualmente como concepto principal",
-        "Manualmente como concepto principal",
-        "Imposible como concepto principal",
+        "Inspeccionar la serie gráficamente sin métodos",
+        "Separación manual en hojas de cálculo",
+        "Imposible sin datos adicionales",
         "seasonal_decompose() Statsmodels"
       ],
       "options_en": [
-        "Visualmente as the primary concept",
-        "Manualmente as the primary concept",
-        "Imposible as the primary concept",
+        "Inspect graphically without methods",
+        "Separation manual in spreadsheets",
+        "Impossible without additional data",
         "seasonal_decompose() Statsmodels"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo descomponer serie?",
-      "explanation_en": "Explanation for How to decompose time series?",
+      "explanation_es": "La función seasonal_decompose() de Statsmodels separa automáticamente una serie en tendencia, estacionalidad y residuo.",
+      "explanation_en": "The seasonal_decompose() function in Statsmodels automatically splits a series into trend, seasonality and residual.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -789,20 +789,20 @@
       "question_es": "¿Qué es autocorrelación?",
       "question_en": "What is autocorrelation?",
       "options_es": [
-        "Ruido como concepto principal",
-        "Correlación entre variables sin considerar otros factores relevantes",
+        "Ruido aleatorio sin estructura temporal",
+        "Correlación entre dos variables independientes",
         "Correlación serie consigo atrasada",
-        "Tendencia como concepto principal"
+        "Tendencia determinística lineal"
       ],
       "options_en": [
-        "Ruido as the primary concept",
-        "Correlación entre variables without considering other relevant factors",
+        "Random noise without temporal structure",
+        "Correlation between two independent variables",
         "Correlación serie consigo atrasada",
-        "Tendencia as the primary concept"
+        "Linear deterministic trend"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es autocorrelación?",
-      "explanation_en": "Explanation for What is autocorrelation?",
+      "explanation_es": "La autocorrelación mide cuánto se parece la serie a versiones desplazadas (rezagadas) de sí misma.",
+      "explanation_en": "Autocorrelation measures how much the series resembles lagged — shifted — versions of itself.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -812,20 +812,20 @@
       "question_es": "¿Qué es ACF?",
       "question_en": "What is ACF?",
       "options_es": [
-        "Diferenciación como concepto principal",
+        "Diferenciación de la serie temporal",
         "Media móvil",
         "Correlación pura",
         "Función autocorrelación en lags"
       ],
       "options_en": [
-        "Diferenciación as the primary concept",
+        "Differentiation of the time series",
         "Media móvil",
         "Correlación pura",
         "Función autocorrelación en lags"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es ACF?",
-      "explanation_en": "Explanation for What is ACF?",
+      "explanation_es": "ACF es la función de autocorrelación: mide la correlación de la serie consigo misma en distintos rezagos.",
+      "explanation_en": "ACF is the autocorrelation function: it measures the series' correlation with itself at different lags.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -838,17 +838,17 @@
         "Aprendizaje no supervisado",
         "Solo clasificación",
         "Autoregressive Integrated Moving Average",
-        "Alternativa PCA de forma invariable y constante"
+        "Alternativa a PCA para reducción dimensional"
       ],
       "options_en": [
         "Aprendizaje no supervisado",
         "Solo clasificación",
         "Autoregressive Integrated Moving Average",
-        "Alternativa PCA invariably and constantly"
+        "Alternative to PCA for dimensional reduction"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es ARIMA?",
-      "explanation_en": "Explanation for What is ARIMA?",
+      "explanation_es": "ARIMA significa Autoregressive Integrated Moving Average: combina componentes autorregresivos, de integración (diferenciación) y de promedio móvil.",
+      "explanation_en": "ARIMA stands for Autoregressive Integrated Moving Average, combining autoregressive, integration (differencing) and moving-average components.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -858,20 +858,20 @@
       "question_es": "¿Componentes ARIMA?",
       "question_en": "ARIMA components?",
       "options_es": [
-        "Datos como concepto principal",
+        "Factores de entrada de la serie",
         "AR (p) I (d) MA (q)",
         "Tres iguales",
         "Dos partes"
       ],
       "options_en": [
-        "Datos as the primary concept",
+        "Input factors of the series",
         "AR (p) I (d) MA (q)",
         "Tres iguales",
         "Dos partes"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Componentes ARIMA?",
-      "explanation_en": "Explanation for ARIMA components?",
+      "explanation_es": "ARIMA se define con tres parámetros: AR (p) autorregresivo, I (d) el orden de diferenciación, y MA (q) el promedio móvil.",
+      "explanation_en": "ARIMA is defined by three parameters: AR (p) the autoregressive order, I (d) the differencing order, and MA (q) the moving-average order.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -882,19 +882,19 @@
       "question_en": "How to choose p d q?",
       "options_es": [
         "ACF PACF pruebas análisis",
-        "Libro como concepto principal",
-        "Azar como concepto principal",
+        "Según recomendación de un libro",
+        "Azar o prueba-error sin análisis",
         "Iguales siempre"
       ],
       "options_en": [
         "ACF PACF pruebas análisis",
-        "Libro as the primary concept",
-        "Azar as the primary concept",
+        "According to book recommendation",
+        "Random or trial-error without analysis",
         "Iguales siempre"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo elegir p d q?",
-      "explanation_en": "Explanation for How to choose p d q?",
+      "explanation_es": "Los valores de p, d y q se eligen analizando los gráficos de ACF y PACF junto con pruebas de estacionariedad, no al azar.",
+      "explanation_en": "The values of p, d and q are chosen by analyzing the ACF and PACF plots along with stationarity tests, not picked at random.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -904,20 +904,20 @@
       "question_es": "¿Qué es SARIMA?",
       "question_en": "What is SARIMA?",
       "options_es": [
-        "Clasificación como concepto principal",
+        "Modelo de clasificación supervisada",
         "ARIMA + Seasonal",
         "Sin estacionalidad",
-        "Regresión como concepto principal"
+        "Modelo de regresión lineal"
       ],
       "options_en": [
-        "Clasificación as the primary concept",
+        "Supervised classification model",
         "ARIMA + Seasonal",
         "Sin estacionalidad",
-        "Regresión as the primary concept"
+        "Linear regression model"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es SARIMA?",
-      "explanation_en": "Explanation for What is SARIMA?",
+      "explanation_es": "SARIMA es ARIMA con un componente estacional explícito añadido, útil cuando la serie muestra patrones que se repiten periódicamente.",
+      "explanation_en": "SARIMA is ARIMA with an explicit seasonal component added, useful when the series shows periodically repeating patterns.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -927,20 +927,20 @@
       "question_es": "¿Cuándo usar exponencial smoothing?",
       "question_en": "When to use exp smoothing?",
       "options_es": [
-        "Nunca como concepto principal",
+        "Nunca, es obsoleto",
         "Solo larga",
         "Series corta, patrón simple",
-        "Siempre como concepto principal"
+        "Siempre, reemplaza todo"
       ],
       "options_en": [
-        "Nunca as the primary concept",
+        "Never, it is obsolete",
         "Solo larga",
         "Series corta, patrón simple",
-        "Siempre as the primary concept"
+        "Always, replaces everything"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuándo usar exponencial smoothing?",
-      "explanation_en": "Explanation for When to use exp smoothing?",
+      "explanation_es": "El suavizado exponencial funciona bien en series relativamente cortas con patrones simples, ponderando las observaciones recientes más que las lejanas.",
+      "explanation_en": "Exponential smoothing works well on relatively short series with simple patterns, weighting recent observations more heavily than distant ones.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -952,18 +952,18 @@
       "options_es": [
         "Entrena [0:t] prueba [t:t+h]",
         "Último 20%",
-        "Aleatorio como concepto principal",
+        "Aleatorio con cross-validation estándar",
         "Sin validación"
       ],
       "options_en": [
         "Entrena [0:t] prueba [t:t+h]",
         "Último 20%",
-        "Aleatorio as the primary concept",
+        "Random with standard cross-validation",
         "Sin validación"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Validación temporal cómo?",
-      "explanation_en": "Explanation for Time series validation how?",
+      "explanation_es": "La validación temporal entrena con datos hasta un punto t y prueba con el periodo siguiente [t:t+h], respetando el orden cronológico.",
+      "explanation_en": "Time series validation trains on data up to a point t and tests on the following period [t:t+h], respecting chronological order.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -976,17 +976,17 @@
         "No",
         "Sí ARIMA requiere",
         "A veces",
-        "Desconocido como concepto principal"
+        "Desconocido en estadística"
       ],
       "options_en": [
         "No",
         "Sí ARIMA requiere",
         "A veces",
-        "Desconocido as the primary concept"
+        "Unknown in statistics"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Stationarity importante?",
-      "explanation_en": "Explanation for Is stationarity important?",
+      "explanation_es": "Sí: ARIMA requiere que la serie sea estacionaria (o se vuelva estacionaria mediante diferenciación) para funcionar correctamente.",
+      "explanation_en": "Yes: ARIMA requires the series to be stationary — or made stationary through differencing — in order to work properly.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -998,18 +998,18 @@
       "options_es": [
         "No se puede",
         "ADF test",
-        "Suponer como concepto principal",
-        "Visualmente como concepto principal"
+        "Suponer basado en intuición",
+        "Observar visualmente sin pruebas"
       ],
       "options_en": [
         "No se puede",
         "ADF test",
-        "Suponer as the primary concept",
-        "Visualmente as the primary concept"
+        "Assume based on intuition",
+        "Visually observe without tests"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo verificar stationarity?",
-      "explanation_en": "Explanation for How to check stationarity?",
+      "explanation_es": "La estacionariedad se comprueba con pruebas formales como el test ADF (Augmented Dickey-Fuller).",
+      "explanation_en": "Stationarity is checked with formal tests such as the ADF (Augmented Dickey-Fuller) test.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1020,19 +1020,19 @@
       "question_en": "How to make stationary?",
       "options_es": [
         "Diferenciación log transformación",
-        "No es posible de manera exclusiva y permanente",
-        "Esperar como concepto principal",
-        "Ignorar como concepto principal"
+        "No es posible técnicamente",
+        "Esperar hasta que ocurra naturalmente",
+        "Ignorar y proceder igual"
       ],
       "options_en": [
         "Diferenciación log transformación",
-        "No es posible exclusively and permanently",
-        "Esperar as the primary concept",
-        "Ignorar as the primary concept"
+        "Not technically possible",
+        "Wait until it occurs naturally",
+        "Ignore and proceed anyway"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo hacer estacionaria?",
-      "explanation_en": "Explanation for How to make stationary?",
+      "explanation_es": "Una serie no estacionaria se puede volver estacionaria aplicando diferenciación o transformaciones como el logaritmo.",
+      "explanation_en": "A non-stationary series can be made stationary by applying differencing or transformations such as a log transform.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1043,19 +1043,19 @@
       "question_en": "What is NLP?",
       "options_es": [
         "Red neuronal",
-        "Compilador como concepto principal",
+        "Compilador de lenguajes de programación",
         "Procesamiento lenguaje natural",
         "Análisis estadístico"
       ],
       "options_en": [
         "Red neuronal",
-        "Compilador as the primary concept",
+        "Programming language compiler",
         "Procesamiento lenguaje natural",
         "Análisis estadístico"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es NLP?",
-      "explanation_en": "Explanation for What is NLP?",
+      "explanation_es": "NLP es el procesamiento de lenguaje natural, el campo que se ocupa de que las máquinas trabajen con texto humano.",
+      "explanation_en": "NLP stands for natural language processing, the field concerned with getting machines to work with human text.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1065,20 +1065,20 @@
       "question_es": "¿Qué es tokenización?",
       "question_en": "What is tokenization?",
       "options_es": [
-        "Encriptación como concepto principal",
-        "Compresión como concepto principal",
+        "Encriptación de caracteres",
+        "Compresión de datos binarios",
         "Crear palabras",
         "Dividir texto en tokens"
       ],
       "options_en": [
-        "Encriptación as the primary concept",
-        "Compresión as the primary concept",
+        "Character encryption",
+        "Binary data compression",
         "Crear palabras",
         "Dividir texto en tokens"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es tokenización?",
-      "explanation_en": "Explanation for What is tokenization?",
+      "explanation_es": "La tokenización separa el texto en palabras o subpalabras (tokens), el primer paso habitual de cualquier pipeline de NLP.",
+      "explanation_en": "Tokenization splits text into words or subwords (tokens), the usual first step of any NLP pipeline.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1088,20 +1088,20 @@
       "question_es": "¿Qué son stopwords?",
       "question_en": "What are stopwords?",
       "options_es": [
-        "Caracteres como concepto principal",
+        "Caracteres especiales y símbolos",
         "Palabras comunes sin significado (el, la)",
         "Valores faltantes",
-        "Todas palabras en todos los casos posibles"
+        "Todas las palabras del texto"
       ],
       "options_en": [
-        "Caracteres as the primary concept",
+        "Special characters and symbols",
         "Palabras comunes sin significado (el, la)",
         "Valores faltantes",
-        "Todas palabras in all possible cases"
+        "Absolutely every word that appears anywhere in the text"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué son stopwords?",
-      "explanation_en": "Explanation for What are stopwords?",
+      "explanation_es": "Las stopwords son palabras muy frecuentes y poco informativas, como artículos y preposiciones, que suelen eliminarse antes de procesar el texto.",
+      "explanation_en": "Stopwords are frequent, low-information words — like articles and prepositions — that are typically removed before further processing.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1111,20 +1111,20 @@
       "question_es": "¿Cuándo remover stopwords?",
       "question_en": "When to remove stopwords?",
       "options_es": [
-        "Construcción como concepto principal",
-        "Siempre como concepto principal",
+        "Durante la construcción de diccionarios",
+        "Siempre, para reducir el vocabulario a la mitad",
         "Generalmente sí, depende tarea",
-        "Nunca como concepto principal"
+        "Nunca, son necesarios"
       ],
       "options_en": [
-        "Construcción as the primary concept",
-        "Siempre as the primary concept",
+        "During dictionary construction",
+        "Always, to cut the vocabulary size in half",
         "Generalmente sí, depende tarea",
-        "Nunca as the primary concept"
+        "Never, they are necessary"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuándo remover stopwords?",
-      "explanation_en": "Explanation for When to remove stopwords?",
+      "explanation_es": "Por lo general conviene eliminarlas, pero depende de la tarea: en análisis de sentimiento, por ejemplo, algunas negaciones o matices pueden perderse si se quitan sin cuidado.",
+      "explanation_en": "Generally it's a good idea, but it depends on the task: in sentiment analysis, for instance, careless removal can strip out negations or nuance that matter.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1135,19 +1135,19 @@
       "question_en": "What is stemming?",
       "options_es": [
         "Plurales solo",
-        "Mayúsculas como concepto principal",
-        "Puntuación como concepto principal",
+        "Conversión a mayúsculas",
+        "Eliminación de puntuación",
         "Reduce palabra a raíz"
       ],
       "options_en": [
         "Plurales solo",
-        "Mayúsculas as the primary concept",
-        "Puntuación as the primary concept",
+        "Conversion to uppercase",
+        "Punctuation removal",
         "Reduce palabra a raíz"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es stemming?",
-      "explanation_en": "Explanation for What is stemming?",
+      "explanation_es": "El stemming recorta una palabra hasta su raíz usando reglas simples de sufijos, sin garantizar que el resultado sea una palabra real.",
+      "explanation_en": "Stemming chops a word down to its stem using simple suffix rules, with no guarantee the result is a real word.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1157,20 +1157,20 @@
       "question_es": "¿Diferencia stemming lematización?",
       "question_en": "Stemming vs lemmatization?",
       "options_es": [
-        "Stem mejor de forma invariable y constante",
-        "Igual como concepto principal",
+        "Stem es mejor solo si el vocabulario es muy reducido",
+        "Igual efecto",
         "Stem heurístico, lemma lingüístico",
         "Lemma básico"
       ],
       "options_en": [
-        "Stem mejor invariably and constantly",
-        "Igual as the primary concept",
+        "Stem is better only when the vocabulary is very small",
+        "Same effect",
         "Stem heurístico, lemma lingüístico",
         "Lemma básico"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Diferencia stemming lematización?",
-      "explanation_en": "Explanation for Stemming vs lemmatization?",
+      "explanation_es": "El stemming aplica reglas heurísticas simples para recortar sufijos, mientras que la lematización busca la forma canónica de la palabra en un diccionario, siendo más lenta pero más precisa.",
+      "explanation_en": "Stemming applies simple heuristic rules to chop off suffixes, while lemmatization looks up the word's canonical form in a dictionary — slower, but more accurate.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1181,19 +1181,19 @@
       "question_en": "What is bag of words?",
       "options_es": [
         "Vector frecuencia palabras",
-        "Diccionario como concepto principal",
+        "Diccionario de palabras ordenado",
         "Matriz densa",
         "Orden conservado"
       ],
       "options_en": [
         "Vector frecuencia palabras",
-        "Diccionario as the primary concept",
+        "Ordered word dictionary",
         "Matriz densa",
         "Orden conservado"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es bag of words?",
-      "explanation_en": "Explanation for What is bag of words?",
+      "explanation_es": "Bag of words representa el texto como un vector con el conteo de apariciones de cada palabra, sin tener en cuenta el orden.",
+      "explanation_en": "Bag of words represents text as a vector counting how many times each word appears, ignoring word order.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1206,17 +1206,17 @@
         "Importancia palabra en documento",
         "Frecuencia pura",
         "Longitud texto",
-        "Raros solo sin excepciones ni variantes"
+        "Solo cuenta palabras raras, ignora la frecuencia"
       ],
       "options_en": [
         "Importancia palabra en documento",
         "Frecuencia pura",
         "Longitud texto",
-        "Raros solo without exceptions or variants"
+        "Only counts rare words, ignoring frequency"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es TF-IDF?",
-      "explanation_en": "Explanation for What is TF-IDF?",
+      "explanation_es": "TF-IDF mide la importancia de una palabra dentro de un documento, penalizando las palabras que aparecen en casi todos los documentos del corpus.",
+      "explanation_en": "TF-IDF measures how important a word is within a document, penalizing words that show up in almost every document in the corpus.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1226,20 +1226,20 @@
       "question_es": "¿Cuándo usar TF-IDF?",
       "question_en": "When to use TF-IDF?",
       "options_es": [
-        "Siempre como concepto principal",
-        "Embeddings como concepto principal",
-        "Nunca como concepto principal",
+        "Siempre en cada proyecto",
+        "Solo útil para embeddings neuronales modernos",
+        "Nunca obsoleto",
         "Clasificación documento, búsqueda"
       ],
       "options_en": [
-        "Siempre as the primary concept",
-        "Embeddings as the primary concept",
-        "Nunca as the primary concept",
+        "Always in every project",
+        "Only useful for modern neural embeddings",
+        "Never obsolete",
         "Clasificación documento, búsqueda"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuándo usar TF-IDF?",
-      "explanation_en": "Explanation for When to use TF-IDF?",
+      "explanation_es": "TF-IDF se usa típicamente en clasificación de documentos y en sistemas de búsqueda, donde interesa distinguir qué palabras son realmente informativas de un texto.",
+      "explanation_en": "TF-IDF is typically used in document classification and search systems, where the goal is to tell which words are genuinely informative for a given text.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1251,18 +1251,18 @@
       "options_es": [
         "Embedding semántico continuo",
         "Números solamente",
-        "Método viejo sin considerar otros factores relevantes",
+        "Método antiguo sin validación moderna",
         "Bolsa palabras"
       ],
       "options_en": [
         "Embedding semántico continuo",
         "Números solamente",
-        "Método viejo without considering other relevant factors",
+        "Old method without modern validation",
         "Bolsa palabras"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es Word2Vec?",
-      "explanation_en": "Explanation for What is Word2Vec?",
+      "explanation_es": "Word2Vec representa cada palabra como un vector denso (embedding) en el que palabras con contextos similares terminan cerca, capturando relaciones semánticas.",
+      "explanation_en": "Word2Vec represents each word as a dense embedding vector where words used in similar contexts end up close together, capturing semantic relationships.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1272,20 +1272,20 @@
       "question_es": "¿Qué es análisis sentimiento?",
       "question_en": "What is sentiment analysis?",
       "options_es": [
-        "Opinión pura sin excepciones ni variantes",
-        "Emociones todo",
+        "Opinión del usuario pura",
+        "Emociones detectadas mediante reconocimiento facial",
         "Clasificar positivo negativo neutral",
-        "Adjetivos como concepto principal"
+        "Adjetivos únicamente"
       ],
       "options_en": [
-        "Opinión pura without exceptions or variants",
-        "Emociones todo",
+        "Pure user opinion",
+        "Emotions detected through facial recognition",
         "Clasificar positivo negativo neutral",
-        "Adjetivos as the primary concept"
+        "Adjectives only"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es análisis sentimiento?",
-      "explanation_en": "Explanation for What is sentiment analysis?",
+      "explanation_es": "El análisis de sentimientos clasifica un texto como positivo, negativo o neutro según el tono que expresa.",
+      "explanation_en": "Sentiment analysis classifies a piece of text as positive, negative or neutral based on the tone it expresses.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1295,20 +1295,20 @@
       "question_es": "¿Herramientas sentimiento?",
       "question_en": "Sentiment analysis tools?",
       "options_es": [
-        "Imposible como concepto principal",
+        "Imposible automatizar",
         "TextBlob VADER BERT",
         "Solo diccionario",
-        "Manual como concepto principal"
+        "Manual por expertos"
       ],
       "options_en": [
-        "Imposible as the primary concept",
+        "Impossible to automate",
         "TextBlob VADER BERT",
         "Solo diccionario",
-        "Manual as the primary concept"
+        "Manual by experts"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Herramientas sentimiento?",
-      "explanation_en": "Explanation for Sentiment analysis tools?",
+      "explanation_es": "Entre las herramientas comunes para análisis de sentimientos están TextBlob, VADER y modelos basados en BERT.",
+      "explanation_en": "Common tools for sentiment analysis include TextBlob, VADER, and BERT-based models.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1318,20 +1318,20 @@
       "question_es": "¿Qué es NER?",
       "question_en": "What is NER?",
       "options_es": [
-        "Análisis oracional de manera exclusiva y permanente",
+        "Análisis sintáctico de toda la oración completa",
         "Named Entity Recognition personas lugares",
-        "Documentos como concepto principal",
-        "Párrafos como concepto principal"
+        "Clasificación de documentos",
+        "Identificación de párrafos"
       ],
       "options_en": [
-        "Análisis oracional exclusively and permanently",
+        "Syntactic analysis of the entire sentence",
         "Named Entity Recognition personas lugares",
-        "Documentos as the primary concept",
-        "Párrafos as the primary concept"
+        "Document classification",
+        "Paragraph identification"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es NER?",
-      "explanation_en": "Explanation for What is NER?",
+      "explanation_es": "NER (reconocimiento de entidades nombradas) identifica en el texto menciones de personas, lugares u organizaciones.",
+      "explanation_en": "NER (named entity recognition) identifies mentions of people, places or organizations within the text.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1341,20 +1341,20 @@
       "question_es": "¿Cuándo usar BERT?",
       "question_en": "When to use BERT?",
       "options_es": [
-        "Lento como concepto principal",
-        "Siempre como concepto principal",
+        "Lento, evitar siempre",
+        "Siempre, incluso para clasificar un solo carácter",
         "Contexto complejo tareas avanzadas",
-        "Nunca como concepto principal en todos los casos posibles"
+        "Nunca, por su enorme costo de memoria"
       ],
       "options_en": [
-        "Lento as the primary concept",
-        "Siempre as the primary concept",
+        "Slow, always avoid",
+        "Always, even to classify a single character",
         "Contexto complejo tareas avanzadas",
-        "Nunca as the primary concept in all possible cases"
+        "Never, due to its huge memory cost"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuándo usar BERT?",
-      "explanation_en": "Explanation for When to use BERT?",
+      "explanation_es": "BERT conviene en tareas avanzadas que requieren entender el contexto completo de la oración, ya que usa una arquitectura transformer que procesa toda la oración a la vez.",
+      "explanation_en": "BERT is a good fit for advanced tasks that need to understand full sentence context, since its transformer architecture processes the entire sentence at once.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1364,20 +1364,20 @@
       "question_es": "¿Desafíos NLP?",
       "question_en": "NLP challenges?",
       "options_es": [
-        "Ninguno como concepto principal",
-        "Facilidades como concepto principal",
-        "Tiempo como concepto principal",
+        "Ninguno",
+        "Facilidades técnicas",
+        "Tiempo de procesamiento únicamente",
         "Ambigüedad contexto idioma datos"
       ],
       "options_en": [
-        "Ninguno as the primary concept",
-        "Facilidades as the primary concept",
-        "Tiempo as the primary concept",
+        "None",
+        "Highly specialized technical facilities required",
+        "Processing time only, never accuracy issues",
         "Ambigüedad contexto idioma datos"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Desafíos NLP?",
-      "explanation_en": "Explanation for NLP challenges?",
+      "explanation_es": "Los principales desafíos del NLP incluyen la ambigüedad del lenguaje, la dependencia del contexto, las diferencias entre idiomas y la disponibilidad de datos de calidad.",
+      "explanation_en": "The main challenges in NLP include language ambiguity, context-dependence, differences between languages, and the availability of quality data.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     }
   ]

@@ -74,6 +74,78 @@ matches `check_question_bank.py` output (currently 6233), not a hardcoded
 number. Any non-zero `skipped` count means a question references a skill_id
 that does not exist in `curriculum/tracks.json`.
 
+## Prueba de arranque y de build web (obligatorias antes de push, desde 2026-09-26)
+
+**Por qué.** El 2026-09-26 `ec97405` llegó a `master` con contenido que el loader no sabía leer. `start.sh` corre con `set -e`, el contenedor murió antes de gunicorn y la API dio 502 de 09:35 a 10:48 UTC (logs de Railway, deploy `620edcd3`: `KeyError: 'order'` en bucle). Los recuentos de `check_docs` estaban en verde: contar no es cargar. El mismo día, el build de Cloudflare Pages falló en Node 20.19 (`navigator is not defined`) mientras en local, con Node 22, pasaba.
+
+**Arranque (content/ o backend/).** Sin Docker, con Postgres 16 del sistema:
+
+```bash
+D=/var/tmp/pgw; mkdir -p $D && chown postgres $D
+su postgres -c "/usr/lib/postgresql/16/bin/initdb -D $D/data -A trust -U postgres"
+su postgres -c "/usr/lib/postgresql/16/bin/pg_ctl -D $D/data -o '-p 5433 -k /tmp' -l $D/log start"
+psql -h /tmp -p 5433 -U postgres -c "create user neurium with password 'neurium_dev' superuser;" -c "create database neurium owner neurium;"
+cd backend && export DATABASE_URL=postgresql+asyncpg://neurium:neurium_dev@localhost:5433/neurium SECRET_KEY=x ENVIRONMENT=development OWNER_EMAIL=owner@example.test OWNER_PASSWORD='Local-test-pass-123!'
+alembic upgrade head && python -m app.services.content_loader && python -m app.services.bootstrap_owner && python -m app.services.seed
+```
+
+Después `gunicorn app.main:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 127.0.0.1:8765` y `/health` = 200. No pongas la base en un directorio cuyos permisos puedan cambiar (el scratchpad de una sesión): Postgres se cae.
+
+**Build web (frontend/).** Checkout limpio (`git worktree add`), `npm ci` y el build con la versión de `.nvmrc`:
+
+```bash
+npx -y -p node@20.19.0 -- sh -c 'node node_modules/typescript/bin/tsc -b && node node_modules/vite/bin/vite.js build'
+```
+
+Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modules/` o `dist/` viejos esconden fallos (dependabot subió `@vitejs/plugin-react` a 6.x, que exige Vite 8, y pyodide a 314.x, sin `pyodide.asm.js`).
+
+**Verificar un despliegue.** Conector Railway: `list-deployments` (último en `SUCCESS`) y `get-logs` con filtro `"[start]" OR "[owner]" OR "Content loaded" OR "Traceback"`; luego `node frontend/scripts/check-deployed.mjs` (desde `frontend/`).
+
+## Contenido reescrito por agentes (desde 2026-09-26)
+
+**Herramientas** en `scripts/content_qa/` (tabla en su README). Se ejecutan desde la raíz del repo y los agentes no las editan: el 26-09 un agente sobrescribió el validador del scratchpad.
+
+**Proceso por lote**, sin excepciones:
+
+1. **Escritor** Haiku 4.5 (ADR-52; hasta el 2026-09-26, Sonnet) por fichero (o 10 lecciones) que escribe solo en el scratchpad, nunca en el repo.
+2. **Revisor** Sonnet 5 distinto, que revisa **todas** las piezas, que no escribe y devuelve problemas con la corrección.
+3. **Corrector** Sonnet 5 que aplica la revisión y vuelve a validar.
+4. **Comprobación propia** antes de copiar al repo:
+   - `validate_lessons.py` en OK;
+   - `check_key_drift.py` y `check_expl_key.py` sin sospechosos sin explicar. Son sospechas, no veredictos: se leen una a una;
+   - `check_only_fields.py --fields ...` si el encargo era tocar solo unos campos;
+   - `check_urls.py` sin fallos. Un 403 se abre a mano con WebFetch;
+   - lectura de al menos dos piezas enteras.
+5. `pytest tests/content`, prueba de arranque de arriba y un commit por track.
+
+**Fallos observados, cada uno con su defensa:**
+
+- **Haiku** escribió lecciones con relleno sin sentido y errores técnicos (7 de 10 en el piloto de track28). Por eso la enmienda a ADR-50 pasó la autoría a Sonnet; ADR-52 (2026-09-27, dueño) la devuelve a Haiku con revisión completa de Sonnet 5 y un piloto de 10 ítems: más de 3 con `blocker`/`major` para el bloque y lo decide el dueño.
+- **El reescritor movió la clave** a otra ranura (track28, track29, `mod3002` entero) y dijo «todo correcto». Defensa: `check_key_drift.py`. Si una posición del repo rota 0,1,2,3…, `rebalance_positions.py`.
+- **Los agentes inventan URLs** (404 en las lecciones NoSQL de track27) y copian datos personales del contexto (el correo del dueño en `l260101`). Defensas: `check_urls.py` y `test_no_personal_data.py`. Los ejemplos usan `ada@example.com`.
+- **No se toca un fichero que un workflow está leyendo**: un `git stash` a mitad cambió la base de un agente y su salida mezcló dos versiones.
+- **`content_loader` nunca borra preguntas**: se arregla en su sitio sin renombrar ids; un id nuevo deja la vieja viva en producción.
+- **Lecciones SQL**: el test las ejecuta con SQLite, así que no se usa sintaxis solo de PostgreSQL en el ejemplo (o se explica en el texto sin ejecutarla).
+- **`logging` escribe en stderr**: no cuenta como salida del ejemplo; `logging.basicConfig(stream=sys.stdout)` si la salida es parte de la lección.
+
+- **Los revisores también fallan en las dos direcciones** (noche del 26-09): dejaron pasar que un /24 de Google Cloud da 254 IP utilizables (son 252: Google reserva las dos primeras y las dos últimas) y tacharon de «inventada» una frase que está literal en `docs.python.org/3/library/exceptions.html`. Defensa: la lectura propia de al menos dos piezas por lote no es opcional, y cualquier cifra de nube se contrasta con la página oficial.
+- **Opciones de preguntas (39.28): parche, no fichero.** El agente escribe `qpatch/<track>/<módulo>.pN.json` con solo `options_es`/`options_en` de las preguntas que toca; un script lo aplica sobre la copia original y lo comprueba (coletillas, número de opciones, repetidas, clave movida por similitud, correcta más larga). Así no puede cambiar ids, claves ni explicaciones aunque quiera. Las claves falsas que aparezcan se corrigen aparte, a mano y con la fuente abierta, después de aplicar los parches.
+- **El límite de uso de la cuenta mata a los subagentes a mitad** (26-09, 20:20 UTC): los workflows devuelven `null` por agente. Se reanudan con `resumeFromRunId` y los mismos `args`: lo terminado sale de caché y lo cortado se repite desde el principio (sobrescribe sus ficheros a medias). No lances más de 6-7 workflows a la vez.
+- **Coletillas: la lista no está cerrada.** La tercera familia salió minando el banco (colas de 2-6 palabras frecuentes en incorrectas y casi nunca en correctas). Antes de dar un track por limpio, repite esa minería; la guarda solo ve lo que conoce.
+
+## Suite backend: tiempos y entorno (26-09)
+
+- La suite sin `tests/content` tarda ~37 min en este contenedor; ~28 min son de `tests/integration/test_rag_self_retrieval.py::test_index_memory_bounded_and_hits_self_retrieval_bar`, cuadrático en el tamaño del banco (11 000 preguntas × 2 idiomas × 12 000 documentos). No está colgada: `py-spy dump --pid N` lo muestra en `rag.py:190`.
+- En un contenedor nuevo: `SETUPTOOLS_USE_DISTUTILS=stdlib pip install http-ece` antes de `pip install -r requirements.txt`, y `pip install --ignore-installed cryptography` si pip no puede desinstalar la de Debian.
+- El hook exige la ruff de CI (0.16.8). Si el PATH trae otra antes (`/root/.local/bin`), empuja con `PATH=/usr/local/bin:$PATH git push`.
+- Playwright con el Chromium preinstalado de otra versión: un `playwright.sandbox.config.ts` local (sin commitear) que herede de `playwright.config.ts` y ponga `launchOptions.executablePath` a `/opt/pw-browsers/chromium-*/chrome-linux/chrome`.
+
+## LLM: techo diario y respaldo (39.11, 39.12)
+
+- `LLM_DAILY_CALL_LIMIT` (por defecto 2000): llamadas al LLM por día UTC **y por proceso** (Railway corre 2 workers de gunicorn y no hay Redis: el techo real es el doble). Al superarlo el tutor responde con el contexto de la pregunta y el log dice `llm_daily_budget_exhausted`. `0` = sin techo.
+- `LLM_FALLBACK_BASE_URL`, `LLM_FALLBACK_API_KEY`, `LLM_FALLBACK_MODEL`: proveedor compatible con OpenAI que entra si Groq da timeout, error de red, 5xx o 429. Vacíos = sin respaldo; entonces se responde con el contexto. Un 4xx distinto de 429 (clave mala, petición mal formada) **no** se esconde.
+- El campo `provider` de `POST /tutor/explain` dice quién respondió: `groq`, `fallback-llm` o `fallback` (contexto).
+
 ## DB migrations
 
 ```bash
@@ -259,8 +331,7 @@ the backup *before* the owner merges. Store production backups off-machine; neve
 
 Recovery: pick the last clean dump (`ls -lht backups/`) → `createdb` an empty target →
 `db_restore.sh` → point `DATABASE_URL` at it → `GET /health/ready` → `db_restore_test.sh <dump>`
-for row parity → swap traffic. Last full test: 2026-09-08 (7 tracks / 1253 questions
-at the time, < 5 s from a 544 KB dump); the scripts have not changed since.
+for row parity → swap traffic. Last full test: **2026-09-26** on the full catalogue (35 tracks, 177 modules, 723 skills): all tables match and a truncated dump is rejected (`docs/restore_log.md`). The three scripts were `100644` in git and failed with "Permission denied" when chained; now executable. Dumps (`backups/*.dump`) are git-ignored.
 
 ---
 

@@ -51,3 +51,41 @@ def test_every_declared_exam_domain_has_the_fields_the_loader_requires() -> None
         if any(k not in d for k in DOMAIN_REQUIRED)
     ]
     assert not broken, f"exam domains would crash the loader: {broken}"
+
+
+def _skill_ids() -> set[str]:
+    return {s["id"] for t in _tracks() for m in t["modules"] for s in m["skills"]}
+
+
+def test_every_glossary_term_reaches_a_track() -> None:
+    """A term without `track_id` (file or term level) is silently skipped by the loader.
+
+    On 2026-09-26 that was 286 of 1,044 terms (tracks 18, 20, 21, 23, 27, 44-46):
+    the loader reported them as `skipped` and production served those tracks
+    with no glossary.
+    """
+    track_ids = {t["id"] for t in _tracks()}
+    broken: list[str] = []
+    for gfile in sorted((_content_root() / "glossary").glob("*.json")):
+        payload = json.loads(gfile.read_text(encoding="utf-8"))
+        terms = payload if isinstance(payload, list) else payload.get("terms", [])
+        file_track = None if isinstance(payload, list) else payload.get("track_id")
+        for i, term in enumerate(terms):
+            track = term.get("track_id", file_track)
+            missing = [k for k in ("term_es", "term_en", "definition_es", "definition_en") if not term.get(k)]
+            if track not in track_ids or missing:
+                broken.append(f"{gfile.name}[{i}] track={track} missing={missing}")
+    assert not broken, f"{len(broken)} glossary terms would be skipped or crash: {broken[:10]}"
+
+
+def test_every_question_reaches_a_skill() -> None:
+    skills = _skill_ids()
+    broken: list[str] = []
+    for qfile in sorted((_content_root() / "questions").rglob("*.json")):
+        payload = json.loads(qfile.read_text(encoding="utf-8"))
+        items = payload if isinstance(payload, list) else payload.get("questions", [])
+        for q in items:
+            missing = [k for k in ("id", "skill_id", "question_es", "question_en") if not q.get(k)]
+            if missing or q.get("skill_id") not in skills:
+                broken.append(f"{qfile.name}:{q.get('id')} missing={missing}")
+    assert not broken, f"{len(broken)} questions would be skipped or crash: {broken[:10]}"

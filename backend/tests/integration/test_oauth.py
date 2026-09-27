@@ -7,6 +7,9 @@ from __future__ import annotations
 
 import itertools
 
+from app.core.cookies import ACCESS_COOKIE, REFRESH_COOKIE
+from app.core.security import verify_token
+
 OAUTH = "/api/v1/auth/oauth"
 
 _ip_counter = itertools.count(200)
@@ -86,6 +89,14 @@ async def test_callback_wrong_provider_returns_400(client):
     assert r.status_code in (400, 404)
 
 
+def _session_user(response) -> str:
+    """User id (`sub`) of the access cookie a callback response sets."""
+    for c in response.headers.get_list("set-cookie"):
+        if c.startswith(f"{ACCESS_COOKIE}="):
+            return verify_token(c.split(";", 1)[0].split("=", 1)[1], expected_type="access").sub
+    raise AssertionError("no access cookie")
+
+
 async def test_callback_test_provider_creates_new_user(client):
     # Start → get state from redirect
     start = await client.get(f"{OAUTH}/test/start", headers=_h(), follow_redirects=False)
@@ -93,7 +104,9 @@ async def test_callback_test_provider_creates_new_user(client):
     location = start.headers["location"]
     qs = dict(p.split("=", 1) for p in location.split("?")[1].split("&"))
 
-    # Callback → redirects to FRONTEND_BASE_URL with tokens
+    # Callback → redirects to FRONTEND_BASE_URL with the session in HttpOnly cookies.
+    # The JWT pair used to travel as ?oauth_token=&oauth_refresh= (browser history,
+    # Referer, proxy logs); since the cookie migration it must not appear in the URL.
     r = await client.get(
         f"{OAUTH}/test/callback",
         params={"code": qs["code"], "state": qs["state"]},
@@ -102,8 +115,10 @@ async def test_callback_test_provider_creates_new_user(client):
     )
     assert r.status_code == 302
     final = r.headers["location"]
-    assert "oauth_token=" in final
-    assert "oauth_refresh=" in final
+    assert "oauth_token" not in final and "oauth_refresh" not in final
+    cookies = r.headers.get_list("set-cookie")
+    assert any(c.startswith(f"{ACCESS_COOKIE}=") and "HttpOnly" in c for c in cookies)
+    assert any(c.startswith(f"{REFRESH_COOKIE}=") and "HttpOnly" in c for c in cookies)
 
 
 async def test_callback_test_provider_idempotent(client):
@@ -136,7 +151,9 @@ async def test_callback_test_provider_idempotent(client):
         follow_redirects=False,
     )
     assert r2.status_code == 302
-    assert "oauth_token=" in r2.headers["location"]
+    assert "oauth_token" not in r2.headers["location"]
+    # Same email → same account: both sessions belong to one user id.
+    assert _session_user(r1) == _session_user(r2)
 
 
 async def test_oauth_user_cannot_login_with_password(client):

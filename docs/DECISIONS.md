@@ -243,6 +243,8 @@ roja 5: redirección pura).
 
 ## ADR-14 — Modelos y tokens: sin Opus ni Fable en sesiones autónomas; Haiku por defecto (ACEPTADA 2026-09-18)
 
+> **Enmendada por ADR-50 el 2026-09-26 y por ADR-52 el 2026-09-27:** en sesiones arrancadas por el dueño, hilo **Sonnet 5**, autoría masiva Haiku 4.5 y revisor Sonnet 5 (ADR-52); Fable y Opus 4.x prohibidos. Las sesiones programadas siguen con esta ADR (workers Haiku 4.5).
+
 **Decisión:** El hilo principal autónomo corre en Sonnet 4.6 (`settings.json`, sin
 cambios). Los workers son **Haiku 4.5 por defecto**; Sonnet solo cuando la tarea
 **escribe** en la lista de ficheros de riesgo de `PROTOCOLO_VERIFICACION.md` §2.
@@ -992,3 +994,119 @@ certificado:
 **Choca con** la ficha de App Store (`docs/store/ios/listing.md:152`,
 `app.whetzy.plus.yearly $39.99/año`): ese importe anual no sale de ninguna decisión del
 dueño y ahora, además, coincide con el precio de la certificación. Se limpia en 38.1.
+
+---
+
+## ADR-50 — Aprobación en bloque del dueño y decisiones de la noche del 2026-09-26 (DUEÑO en bloque; valores elegidos por la sesión)
+
+**Origen.** Mensajes del dueño en la sesión interactiva del 2026-09-26, citados tal cual:
+«DESBLOQUEA TODO, MI DESICIONES SON A TODO APROBADO!», «HAZLO TODO SI ESTA EN TUS MANOS»,
+«PROCEDE Y ADEMAS DECIDE POR MI TODO ESTO» (sobre H.31, H.30, H.13/H.17, H.15, H.41 y H.16).
+El dueño aprobó **en bloque**; **los valores concretos los eligió la sesión** y aquí se
+dice cuál es cuál. Cualquiera se revierte con una línea del dueño.
+
+**Límites que la aprobación no levanta** (prompt de control total v5, §2): no fusionar
+`master` (ADR-45), no gastar dinero, no abrir cuentas, no publicar, no escribir datos de
+personas reales. La única escritura en producción de la noche fue la de H.41, pedida por el
+dueño por su nombre.
+
+| # | Punto | Decisión y estado |
+|---|---|---|
+| a | Plan Free | 5 lecciones y 30 preguntas **nuevas** al día, reinicio a medianoche UTC; exentos los repasos FSRS, el placement y los exámenes. Detrás de `FREE_DAILY_QUOTA_ENABLED=false` hasta que abra el cobro (H.19/H.29): limitar para empujar a un plan que nadie puede comprar cierra el producto. El tutor sigue sin acceso en Free (`tutor.py`, `require_tier("plus")`). |
+| b | Anuncios | No en la v1 (ATT de Apple, consentimiento, COPPA). Se revisa con ≥ 20K usuarios activos al mes. |
+| c | Precio por plataforma | El mismo en web, iOS y Android. |
+| d | Formato de lección (§25 de la evaluación) | En la **plantilla** de `LessonScreen` (secciones con icono accesible, `aria-hidden` en lo decorativo); no se reescribe el texto de las lecciones. |
+| e | LICENSE | Código propietario («All rights reserved»); contenido educativo original **CC BY-NC-ND 4.0**, porque es lo que ya publican los Términos (§3.1) y un LICENSE no puede contradecirlos; el material de terceros conserva su licencia según `content/sources/index.json`. Hecho: `LICENSE` en la raíz. |
+| f | LLM de respaldo | Proveedor compatible con OpenAI configurable por entorno; vacío = sin respaldo. |
+| g | Emails de re-enganche | 3, 7 y 30 días de inactividad, baja en un clic (CAN-SPAM), flag apagado. |
+| h | Certificaciones siguientes | Las 11 actuales ya incluyen Security+ (track42) y AZ-900/AI-900/DP-900 (track44–46). Siguientes, dentro de 37.10: **CCNA → LPIC-1 → CKA → GCP Associate Cloud Engineer**. |
+| i | Idiomas | ES y EN. El siguiente, pt-BR, solo con revisión nativa. |
+| j | Analítica de producto (H.42) | **Revisada la misma noche:** la analítica ya es **propia** (`services/analytics.py` → tabla `analytics_events`, embudo registro→primer quiz→D1→D7 en el admin) y la landing promete «sin analítica de terceros» y no hay banner de consentimiento. Por eso **no se instala PostHog ni Mixpanel en el navegador**. Si hace falta un panel externo, PostHog entra solo como destino **desde el backend**, con la política de privacidad actualizada antes (fila H). |
+| k | Errores (H.41) | **Sentry, ejecutado, solo en el backend** (en el navegador sería un origen de terceros con la CSP y la promesa de la landing en contra). Privacidad y DPA actualizados el mismo día. Proyecto `whetzy-backend` (org `whetzy`, región `de.sentry.io`) creado con el conector y `SENTRY_DSN` puesto en Railway. Deploy `f097361c` en `SUCCESS` con el log `Sentry initialised (env=production, traces_sample_rate=0.1)` (11:34 UTC). `send_default_pii=False`. El cambio de variable produjo ~20 s de 502 (11:34:31–11:34:41 UTC). El monitor de uptime de Sentry **no** se creó: puede consumir cuota de pago. |
+| l | H.30 correo | Proveedor por defecto: **Resend** (el código ya lo soporta con solo `RESEND_API_KEY`). Crear la cuenta y la clave es del dueño. Mientras tanto, `bb59562`: en producción sin proveedor, `forgot-password` y `resend-verification` responden 503 `email_not_configured` y la pantalla lo dice, en vez de afirmar que el enlace se envió. |
+| m | H.31 landing | **Ya resuelta**: la landing servida el 2026-09-26 no contiene testimonios ni «1.2M»; las tarjetas muestran afirmaciones comprobables («Cada pregunta cita su fuente»). |
+| n | H.15 proxy de vite | **Ya resuelta**: el proxy apunta a `127.0.0.1:8000` y `pretest:e2e` (`scripts/check-e2e-target.mjs`) impide correr e2e contra producción. |
+| o | H.13/H.17 GitHub Actions | GitHub → Settings → Billing: poner el **spending limit de Actions a $0** y corregir el método de pago si hay factura fallida. Solo el dueño puede. Mientras tanto, la puerta es local (`.githooks/pre-push` + `ci_local.sh`). |
+| p | H.16 / 30.2 / 31.1 despliegue y staging | Se mantiene el despliegue automático desde `master` (ADR-45). Se aprueba **proteger `master`** (PR obligatorio, sin push directo; las fusiones del dueño y de Dependabot pasan por PR) — lo configura el dueño en GitHub → Settings → Branches. Se aprueba el **staging** de 31.1 (entorno Railway `staging` + preview de Pages); su alta cuesta dinero y la hace el dueño. Hasta entonces, la prueba de arranque local (Postgres 16, `start.sh` paso a paso) es la puerta obligatoria para `content/` y `backend/`. |
+
+> **Enmienda a ADR-14 (2026-09-26).** Frase del dueño: «ACTUALIZALO PARA QUE USE LAS LLM QUE ME
+> RECOMIENDAS TANTO EL MODELO PRINCIPAL COMO LOS SUBAGENTES». En las sesiones **arrancadas por el
+> dueño**: hilo principal Opus 5.5 (effort high), subagentes Haiku 4.5 y Sonnet 5 solo para
+> escribir en la lista de riesgo. ADR-14 sigue igual para las sesiones programadas.
+
+> **Enmienda a ADR-50 y a CLAUDE.md §Modelos (2026-09-26, tarde; decisión de la sesión con la
+> delegación del dueño).** **Autoría y revisión de contenido: Sonnet, no Haiku.** Haiku queda
+> para lecturas, inventarios y diffs de solo lectura. Evidencia: en el piloto de lecciones de
+> track28 (2026-09-26), 7 de 10 lecciones escritas por Haiku traían frases de relleno sin
+> sentido, errores técnicos (un 302 presentado como redirección permanente) o fuentes que no
+> respaldaban el texto, y un segundo lote no devolvió nada; en la sesión anterior, las tres
+> reescrituras de distractores de track11 hechas por Haiku se rechazaron (relleno, opciones
+> duplicadas, la correcta copiada en otra ranura en 51 preguntas). Sonnet tampoco es fiable
+> solo: el reescritor Sonnet movió claves de ranura en track28 (4), track29 (6) y `mod3002`
+> (52), por eso cada lote pasa por `check_key_drift.py`. Con Sonnet como autor, revisor y corrector,
+> más la verificación propia con `scripts/content_qa/`, las lecciones de 18-20 y 26-30 y las
+> 1.404 explicaciones de 39.29 entraron sin fallos de guarda. Coste mayor por fichero y
+> aceptado: un banco con claves malas es peor que uno más corto.
+
+## ADR-51 — Decisiones de la sesión del 2026-09-26 por la noche (delegación total del dueño; valores elegidos por la sesión)
+
+**Contexto.** El dueño arrancó la sesión con el prompt de control total v6.1 («DESBLOQUEA TODO,
+MI DESICIONES SON A TODO APROBADO!», «HAZLO TODO SI ESTA EN TUS MANOS») y se fue a dormir. Lo que
+aprobó en bloque es ADR-50; lo que sigue son valores que eligió la sesión, cada uno con su motivo.
+
+| # | Tema | Decisión de la sesión | Motivo |
+|---|---|---|---|
+| a | Rama | Se trabaja en `claude/gallant-tesla-fnzy1g` (la asignada a la sesión) con un *merge* de `claude/trusting-franklin-2wwmmr`; el PR nuevo (#34) contiene #33 | La sesión no puede empujar a otra rama sin permiso; un merge no reescribe historia (ADR-45) |
+| b | 39.4 «pregunta nueva» | La primera respuesta del usuario a esa pregunta, hoy (UTC), en una sesión `study`. Repaso, placement y examen no gastan ni se bloquean | ADR-50a exime repasos FSRS, placement y exámenes; contar por respuesta (no por pregunta servida) evita gastar cupo con preguntas que el alumno no llegó a ver |
+| c | 39.4 al agotarse | `POST /quiz/start` → 429 `{code: free_daily_quota, kind, limit, resets_at}`; `POST /quiz/answer` → `next_question: null` + `quota_reached: true` | El cliente ya trata `next_question: null` como fin de sesión («Ver resultados»); el 429 lleva cuándo se reinicia |
+| d | 39.4 lecciones | Se cuentan solo con sesión iniciada (`get_optional_user`; un token malo = anónimo). Sin sesión la lección sigue pública | Cerrar las lecciones públicas rompería la landing y el SEO, y ADR-50a no lo pide. Limitación conocida: quien cierre sesión lee sin cupo. Antes de encender el flag falta el texto de la UI (ES/EN) |
+| e | 39.28 alcance | La fila nombraba dos familias de coletillas; se amplía a la tercera (minada del banco: colas de 2-6 palabras en cientos de incorrectas y 0-2 correctas) y a «as the primary concept» (673 opciones EN que la guarda no veía) | Es el mismo defecto de generador; dejarlo fuera habría dado el track por limpio con la mitad de la coletilla dentro. La línea base se re-midió al alza porque la guarda ve más, no porque el banco empeorase |
+| f | 39.28 método | Parches por pregunta (solo `options_es`/`options_en`), aplicados por script; nunca el fichero entero reescrito por un agente | Por construcción no cambian ids, claves, enunciados ni explicaciones; `check_only_fields` y `check_key_drift` lo confirman |
+| g | Claves falsas encontradas | Se corrigen en su sitio con la doc oficial abierta (p. ej. `q220103001`: la duración **máxima** en el plan de consumo de Azure Functions es 10 min, no 5) | `content_loader` nunca borra preguntas: se arreglan sin renombrar ids |
+| h | Tests que ya fallaban en `master` | OAuth (esperaban el token en la URL, el código usa cookies HttpOnly) y `ledger.py check` (55 problemas): se arreglan en este PR | «Correr la suite entera» no sirve de puerta si ya está roja |
+| i | Capturas de 39.5 | Van a `frontend/test-results/` (ignorado) y al informe, no al repo | Límite duro: sin binarios en el repo |
+
+## ADR-52 — Política de modelos del dueño (DUEÑO, 2026-09-27; sustituye la línea de modelos de ADR-50 y su enmienda del 2026-09-26)
+
+**Decisión del dueño (literal, 2026-09-27):**
+
+```
+Hilo principal interactivo (tú aquí):  Sonnet 5   → −33% vs ahora, mejor cutoff
+Subagentes de autoría masiva:          Haiku 4.5  → sin cambio (ya es el más barato)
+  + Batch API para fillers:            Haiku 4.5  → −50% adicional por lote
+Revisor de calidad en Workflow:        Sonnet 5   → −33% vs Sonnet 4.6
+Sesiones autónomas programadas:        Haiku 4.5  → ADR-14 ya lo manda
+
+Fable 5.1 y Opus 4.x: no usar para Whetzy.
+  Fable = razonamiento largo; no es el cuello de botella aquí.
+  Opus 4.x = legacy más caro que Sonnet 5 con peor conocimiento.
+```
+
+**Cómo lo aplica el repo:**
+
+| Papel | Modelo | Notas |
+|---|---|---|
+| Hilo principal de una sesión interactiva | **Sonnet 5** | Lo fija el dueño al arrancar la sesión; una sesión no puede cambiar su propio modelo. Sustituye «hilo Opus 5.5 effort high» de ADR-50 |
+| Autoría masiva de contenido (lecciones, preguntas, distractores, explicaciones) | **Haiku 4.5** | `Workflow` con `model: "haiku"` para el escritor |
+| Revisor de calidad y corrector en `Workflow` | **Sonnet 5** | Revisión adversaria **completa** (no por muestreo) de todo lo que escribe Haiku, más `scripts/content_qa/` y la puerta de `CATALOGO_MAESTRO.md` §7 |
+| Worker que escribe en la lista de riesgo (`PROTOCOLO_VERIFICACION.md` §2) | **Sonnet 5** | La tabla del dueño no lo nombra; la sesión lo asimila al papel de «revisor de calidad» (es código de riesgo, no autoría masiva) |
+| Lecturas, inventarios, diffs, verificador §7 de tareas que no son contenido | **Haiku 4.5** | Sin cambio |
+| Sesiones autónomas programadas | **Haiku 4.5** en los workers | ADR-14 tal cual: workers Haiku; el hilo, el que fije `settings.json` hasta que el dueño lo cambie |
+| Fable (cualquier versión) y Opus 4.x | **Prohibidos** en cualquier papel | Opus 5.5 tampoco tiene papel: el hilo interactivo pasa a Sonnet 5 |
+
+**Riesgo que la sesión deja escrito (no cambia la decisión):** la enmienda a ADR-50 del
+2026-09-26 pasó la autoría a Sonnet por evidencia medida, no por preferencia: en el piloto de
+track28, 7 de 10 lecciones escritas por Haiku traían relleno, errores técnicos o fuentes que no
+casaban, y un lote volvió vacío (RUNBOOK, «Contenido reescrito por agentes»). Con Haiku de
+escritor, el revisor Sonnet 5 debe esperar más rechazos por lote. Mitigación que aplica la
+sesión: el primer bloque de Haiku va como piloto de 10 ítems con revisión completa; si más de 3
+de 10 salen con problema `blocker` o `major`, se para y se anota en el ledger para que el dueño
+decida, sin volver a Sonnet por cuenta propia.
+
+**Batch API:** ningún código del repo llama a la API de Anthropic (búsqueda del 2026-09-27 de
+`anthropic` y `claude-` en `*.py`, `*.ts`, `*.toml`, `*.txt` y `*.json` fuera de `content/`
+y `node_modules`: 0 resultados). Un lote por Batch API necesita un script nuevo y una clave de
+API con gasto, es decir, una cuenta y un secreto: queda en la cola humana (H.48) hasta que el
+dueño ponga la clave. Hasta entonces los rellenos van por `Workflow` sin descuento de lote.
+
+**Cifras:** los porcentajes de ahorro son del dueño; la sesión no los ha comprobado.

@@ -10,17 +10,17 @@
         "Figure contiene axes contiene patches",
         "Solo datos sin estructura",
         "Arrays NumPy directamente",
-        "Lista de puntos x,y sin excepciones ni variantes"
+        "Lista de puntos x,y sin relación jerárquica"
       ],
       "options_en": [
         "Figure contiene axes contiene patches",
         "Solo datos sin estructura",
         "Arrays NumPy directamente",
-        "Lista de puntos x,y without exceptions or variants"
+        "List of x,y points with no hierarchical relation"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cuál es estructura básica Matplotlib?",
-      "explanation_en": "Explanation for What is basic Matplotlib structure?",
+      "explanation_es": "En Matplotlib la Figure es el lienzo completo y contiene uno o varios Axes, que a su vez alojan los elementos gráficos como líneas y parches.",
+      "explanation_en": "In Matplotlib the Figure is the overall canvas holding one or more Axes, which in turn contain the plotted elements like lines and patches.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -30,20 +30,20 @@
       "question_es": "¿Cómo crear figura en Matplotlib?",
       "question_en": "How to create figure in Matplotlib?",
       "options_es": [
-        "plt.new_plot() como concepto principal",
+        "plt.new_plot() retornando figura",
         "plt.figure() o plt.subplots()",
-        "plt.create() como concepto principal",
-        "Automático como concepto principal"
+        "plt.create() con parámetros de lienzo",
+        "Automático al invocar plt.show()"
       ],
       "options_en": [
-        "plt.new_plot() as the primary concept",
+        "plt.new_plot() returning a figure",
         "plt.figure() o plt.subplots()",
-        "plt.create() as the primary concept",
-        "Automático as the primary concept"
+        "plt.create() with canvas parameters",
+        "Automatic when calling plt.show()"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo crear figura en Matplotlib?",
-      "explanation_en": "Explanation for How to create figure in Matplotlib?",
+      "explanation_es": "plt.subplots() (o plt.figure()) es la forma estándar de crear la figura y sus ejes a la vez, devolviendo fig y ax listos para dibujar.",
+      "explanation_en": "plt.subplots() (or plt.figure()) is the standard way to create the figure and its axes together, returning fig and ax ready for plotting.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -55,18 +55,18 @@
       "options_es": [
         "Axes más grande",
         "Figura solo para decoración",
-        "Son lo mismo en cualquier escenario de implementación",
+        "Son exactamente la misma estructura en Matplotlib",
         "Figure contenedor, axes sistema coordenadas"
       ],
       "options_en": [
         "Axes más grande",
         "Figura solo para decoración",
-        "Son lo mismo in any implementation scenario",
+        "They are exactly the same structure in Matplotlib",
         "Figure contenedor, axes sistema coordenadas"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué diferencia hay entre figura y eje?",
-      "explanation_en": "Explanation for What is difference between figure and ax",
+      "explanation_es": "La figura actúa como contenedor general, mientras que cada eje (axes) es el panel con su propio sistema de coordenadas donde se dibujan los datos.",
+      "explanation_en": "The figure is the overall container, while each axes is the panel with its own coordinate system where the data actually gets drawn.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -78,18 +78,18 @@
       "options_es": [
         "Múltiples plt.plot()",
         "Solo con Seaborn",
-        "plt.multi_plot() como concepto principal",
+        "plt.multi_plot() con grid",
         "plt.subplots(rows, cols)"
       ],
       "options_en": [
         "Múltiples plt.plot()",
         "Solo con Seaborn",
-        "plt.multi_plot() as the primary concept",
+        "plt.multi_plot() with grid",
         "plt.subplots(rows, cols)"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo hacer múltiples gráficos?",
-      "explanation_en": "Explanation for How to make multiple plots?",
+      "explanation_es": "plt.subplots(nrows, ncols) devuelve una rejilla de ejes indexable, la forma habitual de crear varios gráficos dentro de una misma figura.",
+      "explanation_en": "plt.subplots(nrows, ncols) returns an indexable grid of axes, the standard way to create multiple plots within one figure.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -102,17 +102,17 @@
         "plt.style.use(), colores, linewidth",
         "Todos predeterminados",
         "No personalizables",
-        "Solo con Seaborn sin excepciones ni variantes"
+        "Solo con Seaborn mediante sns.set_theme()"
       ],
       "options_en": [
         "plt.style.use(), colores, linewidth",
         "Todos predeterminados",
         "No personalizables",
-        "Solo con Seaborn without exceptions or variants"
+        "Only with Seaborn via sns.set_theme()"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué opciones de estilo hay?",
-      "explanation_en": "Explanation for What style options exist?",
+      "explanation_es": "La personalización de estilo en Matplotlib pasa por opciones como plt.style.use(), el color y el grosor de línea (linewidth), entre otros parámetros de ax.",
+      "explanation_en": "Style customization in Matplotlib includes options like plt.style.use(), color, and linewidth, among other axes parameters.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -122,20 +122,20 @@
       "question_es": "¿Cómo guardar figura?",
       "question_en": "How to save figure?",
       "options_es": [
-        "Manual en archivo independientemente del contexto aplicado",
-        "plt.save() como concepto principal",
-        "plt.savefig('nombre.png') como concepto principal",
-        "plt.export() como concepto principal"
+        "Manual en archivo local",
+        "plt.save() con parámetro format",
+        "plt.savefig('nombre.png')",
+        "plt.export() a servidor remoto"
       ],
       "options_en": [
-        "Manual en archivo regardless of the applied context",
-        "plt.save() as the primary concept",
-        "plt.savefig('nombre.png') as the primary concept",
-        "plt.export() as the primary concept"
+        "Manual in a local file",
+        "plt.save() with a format arg",
+        "plt.savefig('nombre.png')",
+        "plt.export() to a remote server"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo guardar figura?",
-      "explanation_en": "Explanation for How to save figure?",
+      "explanation_es": "fig.savefig (o plt.savefig) con un nombre de archivo es el método estándar para exportar la figura, por ejemplo a PNG o PDF.",
+      "explanation_en": "fig.savefig (or plt.savefig) with a filename is the standard method to export the figure, for example to PNG or PDF.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -148,17 +148,17 @@
         "Todos los textos",
         "Explicación de líneas/elementos",
         "Etiquetas ejes",
-        "Título gráfico en cualquier escenario de implementación"
+        "Título del gráfico en la parte superior"
       ],
       "options_en": [
         "Todos los textos",
         "Explicación de líneas/elementos",
         "Etiquetas ejes",
-        "Título gráfico in any implementation scenario"
+        "Chart title shown at the top of the plot"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es leyenda en gráfico?",
-      "explanation_en": "Explanation for What is legend in plot?",
+      "explanation_es": "La leyenda (legend) identifica qué representa cada línea o elemento del gráfico, normalmente construida a partir de las etiquetas pasadas en cada plot.",
+      "explanation_en": "The legend identifies what each line or plotted element represents, typically built from the labels passed to each plot call.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -168,20 +168,20 @@
       "question_es": "¿Cómo añadir anotaciones?",
       "question_en": "How to add annotations?",
       "options_es": [
-        "Automático como concepto principal",
+        "Automático al mostrar en pantalla",
         "plt.annotate() o plt.text()",
         "No es posible",
         "En el archivo"
       ],
       "options_en": [
-        "Automático as the primary concept",
+        "Automatic when shown on screen",
         "plt.annotate() o plt.text()",
         "No es posible",
         "En el archivo"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo añadir anotaciones?",
-      "explanation_en": "Explanation for How to add annotations?",
+      "explanation_es": "plt.annotate() y plt.text() permiten añadir texto o anotaciones que señalan puntos concretos del gráfico.",
+      "explanation_en": "plt.annotate() and plt.text() let you add text or annotations pointing to specific points on the chart.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -192,19 +192,19 @@
       "question_en": "What are ticks?",
       "options_es": [
         "Marcas en ejes números",
-        "Espesor líneas en cualquier escenario de implementación",
+        "Espesor de línea en puntos",
         "Colores de líneas",
         "Puntos de datos"
       ],
       "options_en": [
         "Marcas en ejes números",
-        "Espesor líneas in any implementation scenario",
+        "Line thickness in points",
         "Colores de líneas",
         "Puntos de datos"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué son los ticks?",
-      "explanation_en": "Explanation for What are ticks?",
+      "explanation_es": "Los ticks son las marcas numeradas sobre los ejes que indican la escala de los datos representados.",
+      "explanation_en": "Ticks are the numbered marks along the axes that indicate the scale of the plotted data.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -215,19 +215,19 @@
       "question_en": "How to change axis limits?",
       "options_es": [
         "Automático siempre",
-        "Con DataFrame sin excepciones ni variantes",
+        "Con el método .describe()",
         "plt.xlim(), plt.ylim()",
         "Configuración archivo"
       ],
       "options_en": [
         "Automático siempre",
-        "Con DataFrame without exceptions or variants",
+        "With the .describe() method",
         "plt.xlim(), plt.ylim()",
         "Configuración archivo"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo cambiar límites ejes?",
-      "explanation_en": "Explanation for How to change axis limits?",
+      "explanation_es": "plt.xlim() y plt.ylim() (o los métodos equivalentes de ax) son la forma de fijar manualmente los límites de cada eje.",
+      "explanation_en": "plt.xlim() and plt.ylim() (or the equivalent ax methods) are how axis limits get set manually.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -240,17 +240,17 @@
         "Línea, scatter, barras, histograma, etc",
         "No hay opciones",
         "Depende Matplotlib",
-        "Solo línea en cualquier escenario de implementación"
+        "Solo gráficos de línea, sin barras ni dispersión"
       ],
       "options_en": [
         "Línea, scatter, barras, histograma, etc",
         "No hay opciones",
         "Depende Matplotlib",
-        "Solo línea in any implementation scenario"
+        "Only line charts, no bars or scatter plots"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué tipos gráficos existen?",
-      "explanation_en": "Explanation for What plot types exist?",
+      "explanation_es": "Matplotlib ofrece múltiples tipos de gráfico mediante métodos de ax como plot (línea), scatter, bar e histogramas, entre otros.",
+      "explanation_en": "Matplotlib supports many chart types through ax methods like plot (line), scatter, bar, and histograms, among others.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -260,20 +260,20 @@
       "question_es": "¿Cómo usar colores?",
       "question_en": "How to use colors?",
       "options_es": [
-        "Solo nombres según la documentación estándar del servicio",
+        "Solo con nombres predefinidos",
         "Nombres, hex, RGB, números",
         "Seaborn solo",
         "Siempre azul"
       ],
       "options_en": [
-        "Solo nombres according to standard service documentation",
+        "Only via predefined color names",
         "Nombres, hex, RGB, números",
         "Seaborn solo",
         "Siempre azul"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo usar colores?",
-      "explanation_en": "Explanation for How to use colors?",
+      "explanation_es": "El parámetro color acepta varias formas de especificación: nombres predefinidos, códigos hexadecimales, tuplas RGB o valores numéricos.",
+      "explanation_en": "The color parameter accepts several specification forms: predefined names, hex codes, RGB tuples, or numeric values.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -286,17 +286,17 @@
         "Profundidad imagen",
         "Resolución puntos por pulgada",
         "Dimensiones gráfico",
-        "Color primario sin considerar otros factores relevantes"
+        "Color primario de las marcas de datos"
       ],
       "options_en": [
         "Profundidad imagen",
         "Resolución puntos por pulgada",
         "Dimensiones gráfico",
-        "Color primario without considering other relevant factors"
+        "Primary color of data markers"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es DPI?",
-      "explanation_en": "Explanation for What is DPI?",
+      "explanation_es": "DPI (puntos por pulgada) controla la resolución del PNG exportado: a mayor dpi, mayor nitidez de la imagen.",
+      "explanation_en": "DPI (dots per inch) controls the resolution of the exported PNG: a higher dpi means a sharper image.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -308,18 +308,18 @@
       "options_es": [
         "mplot3d, scatter, surface",
         "Solo scatter",
-        "Con Plotly independientemente del contexto aplicado",
+        "Con Plotly, no con Matplotlib",
         "No disponible"
       ],
       "options_en": [
         "mplot3d, scatter, surface",
         "Solo scatter",
-        "Con Plotly regardless of the applied context",
+        "With Plotly, not with Matplotlib",
         "No disponible"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo crear 3D plots?",
-      "explanation_en": "Explanation for How to create 3D plots?",
+      "explanation_es": "Matplotlib admite gráficos tridimensionales mediante el módulo mplot3d, con tipos como scatter 3D y superficies.",
+      "explanation_en": "Matplotlib supports 3D plotting through the mplot3d module, with types like 3D scatter and surface plots.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -331,18 +331,18 @@
       "options_es": [
         "Nunca en producción",
         "Análisis rápido, visualización estática",
-        "Solo académico sin considerar otros factores relevantes",
-        "Siempre como concepto principal"
+        "Solo en entornos académicos, no en producción",
+        "Siempre para tableros interactivos en tiempo real"
       ],
       "options_en": [
         "Nunca en producción",
         "Análisis rápido, visualización estática",
-        "Solo académico without considering other relevant factors",
-        "Siempre as the primary concept"
+        "Only in academic settings, not in production",
+        "Always for real-time interactive dashboards"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo usar Matplotlib?",
-      "explanation_en": "Explanation for When to use Matplotlib?",
+      "explanation_es": "Matplotlib es la herramienta habitual para el análisis exploratorio rápido y para visualizaciones estáticas, como las que se guardan en PNG o PDF.",
+      "explanation_en": "Matplotlib is the go-to tool for quick exploratory analysis and static visualizations, the kind saved as PNG or PDF.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -354,18 +354,18 @@
       "options_es": [
         "Alternativa Matplotlib",
         "Solo distribuciones",
-        "Herramienta web de manera exclusiva y permanente",
+        "Herramienta de visualización web en JavaScript",
         "Gráficos estadísticos sobre Matplotlib"
       ],
       "options_en": [
         "Alternativa Matplotlib",
         "Solo distribuciones",
-        "Herramienta web exclusively and permanently",
+        "Pure JavaScript-based web visualization tool",
         "Gráficos estadísticos sobre Matplotlib"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Para qué sirve Seaborn?",
-      "explanation_en": "Explanation for What is Seaborn for?",
+      "explanation_es": "Seaborn se construye sobre Matplotlib y está pensado específicamente para crear gráficos estadísticos a partir de datos tabulares.",
+      "explanation_en": "Seaborn is built on top of Matplotlib and is specifically designed for statistical charts drawn from tabular data.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -375,20 +375,20 @@
       "question_es": "¿Cuál es función principal Seaborn?",
       "question_en": "What is main Seaborn function?",
       "options_es": [
-        "Genera datos sin excepciones ni variantes",
+        "Genera datos ficticios aleatorios en memoria",
         "Limpia datos",
         "sns.scatterplot(), sns.barplot(), etc",
         "Un único gráfico"
       ],
       "options_en": [
-        "Genera datos without exceptions or variants",
+        "Generates random dummy data in memory",
         "Limpia datos",
         "sns.scatterplot(), sns.barplot(), etc",
         "Un único gráfico"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuál es función principal Seaborn?",
-      "explanation_en": "Explanation for What is main Seaborn function?",
+      "explanation_es": "Las funciones de trazado de Seaborn, como sns.scatterplot() o sns.barplot(), reciben directamente estructuras tabulares y nombres de columnas.",
+      "explanation_en": "Seaborn's plotting functions, like sns.scatterplot() or sns.barplot(), work directly with tabular structures and column names.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -399,19 +399,19 @@
       "question_en": "What is color palette?",
       "options_es": [
         "Random siempre",
-        "Predeterminado como concepto principal",
+        "Predeterminado con 10 colores base",
         "Un solo color",
         "Conjunto colores coordenados"
       ],
       "options_en": [
         "Random siempre",
-        "Predeterminado as the primary concept",
+        "Default, with 10 base colors",
         "Un solo color",
         "Conjunto colores coordenados"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es paleta de colores?",
-      "explanation_en": "Explanation for What is color palette?",
+      "explanation_es": "Una paleta de colores es un conjunto de colores coordinados pensado para que las categorías o valores se distingan siguiendo criterios perceptuales.",
+      "explanation_en": "A color palette is a coordinated set of colors designed so categories or values stay visually distinct, following perceptual rules.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -423,18 +423,18 @@
       "options_es": [
         "Importadas Excel",
         "Muchas: husl, deep, pastel, etc",
-        "Ninguna como concepto principal",
-        "Una como concepto principal"
+        "Ninguna definida, se crean a mano",
+        "Una sola paleta fija sin opciones"
       ],
       "options_en": [
         "Importadas Excel",
         "Muchas: husl, deep, pastel, etc",
-        "Ninguna as the primary concept",
-        "Una as the primary concept"
+        "None defined, created by hand",
+        "Just one fixed palette, no options"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuántas paletas hay?",
-      "explanation_en": "Explanation for How many palettes exist?",
+      "explanation_es": "Seaborn incluye numerosas paletas predefinidas, como deep, viridis o coolwarm, además de opciones como husl y pastel.",
+      "explanation_en": "Seaborn ships with many built-in palettes, such as deep, viridis, or coolwarm, alongside options like husl and pastel.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -445,19 +445,19 @@
       "question_en": "What is hue parameter?",
       "options_es": [
         "Tamaño punto",
-        "Transparencia como concepto principal",
+        "Transparencia con el parámetro alpha",
         "Colorea por variable categórica",
         "Estilo línea"
       ],
       "options_en": [
         "Tamaño punto",
-        "Transparencia as the primary concept",
+        "Transparency via the alpha parameter",
         "Colorea por variable categórica",
         "Estilo línea"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es parámetro hue?",
-      "explanation_en": "Explanation for What is hue parameter?",
+      "explanation_es": "El parámetro hue colorea los puntos o barras según una tercera variable categórica, sin necesidad de dibujar cada grupo por separado.",
+      "explanation_en": "The hue parameter colors points or bars by a third categorical variable, without needing to plot each group separately.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -469,18 +469,18 @@
       "options_es": [
         "Nombres variables",
         "Estilo marca/línea por variable",
-        "Tamaño punto sin excepciones ni variantes",
+        "Tamaño de punto en rango numérico fijo",
         "Color por variable"
       ],
       "options_en": [
         "Nombres variables",
         "Estilo marca/línea por variable",
-        "Tamaño punto without exceptions or variants",
+        "Point size in a fixed numeric range",
         "Color por variable"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es parámetro style?",
-      "explanation_en": "Explanation for What is style parameter?",
+      "explanation_es": "El parámetro style varía el estilo de marca o de línea según los valores de una variable, complementando lo que hace hue con el color.",
+      "explanation_en": "The style parameter varies the marker or line style according to a variable's values, complementing what hue does with color.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -491,19 +491,19 @@
       "question_en": "How to create heatmap?",
       "options_es": [
         "No disponible",
-        "sns.barplot() como concepto principal",
-        "plt.scatter() como concepto principal",
+        "sns.barplot() con anotaciones",
+        "plt.scatter() sin color",
         "sns.heatmap() con matriz"
       ],
       "options_en": [
         "No disponible",
-        "sns.barplot() as the primary concept",
-        "plt.scatter() as the primary concept",
+        "sns.barplot() with annotations",
+        "plt.scatter() without color",
         "sns.heatmap() con matriz"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo hacer heatmap?",
-      "explanation_en": "Explanation for How to create heatmap?",
+      "explanation_es": "sns.heatmap() dibuja una matriz de valores, por ejemplo correlaciones, como un mapa de calor coloreado según la magnitud.",
+      "explanation_en": "sns.heatmap() renders a matrix of values, like correlations, as a heatmap colored by magnitude.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -514,19 +514,19 @@
       "question_en": "What is FacetGrid?",
       "options_es": [
         "Formato datos",
-        "Datos en grid independientemente del contexto aplicado",
+        "Datos estructurados en filas y columnas",
         "Un gráfico grande",
         "Múltiples gráficos por categoría"
       ],
       "options_en": [
         "Formato datos",
-        "Datos en grid regardless of the applied context",
+        "Data structured in rows and columns",
         "Un gráfico grande",
         "Múltiples gráficos por categoría"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es FacetGrid?",
-      "explanation_en": "Explanation for What is FacetGrid?",
+      "explanation_es": "Un FacetGrid genera una rejilla de subgráficos, uno por cada nivel de una variable categórica, sin necesidad de escribir un bucle manual.",
+      "explanation_en": "A FacetGrid produces a grid of subplots, one per level of a categorical variable, without writing a manual loop.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -537,19 +537,19 @@
       "question_en": "How to use FacetGrid?",
       "options_es": [
         "Matplotlib solo",
-        "Automático como concepto principal",
-        "grid.plot() como concepto principal",
+        "Automático sin especificar variables",
+        "grid.plot() llamado directamente",
         "grid = sns.FacetGrid(), grid.map()"
       ],
       "options_en": [
         "Matplotlib solo",
-        "Automático as the primary concept",
-        "grid.plot() as the primary concept",
+        "Automatic without specifying variables",
+        "grid.plot() called directly",
         "grid = sns.FacetGrid(), grid.map()"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo usar FacetGrid?",
-      "explanation_en": "Explanation for How to use FacetGrid?",
+      "explanation_es": "Se crea el objeto con sns.FacetGrid() indicando las variables de faceteo, y luego se traza el gráfico deseado en cada panel con grid.map().",
+      "explanation_en": "You create the object with sns.FacetGrid() specifying the faceting variables, then draw the desired plot on each panel with grid.map().",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -559,20 +559,20 @@
       "question_es": "¿Qué es violin plot?",
       "question_en": "What is violin plot?",
       "options_es": [
-        "Caja de valores sin considerar otros factores relevantes",
+        "Caja de valores con la mediana marcada",
         "Puntos aleatorios",
         "Distribución con kernel density",
         "Línea individual"
       ],
       "options_en": [
-        "Caja de valores without considering other relevant factors",
+        "Box of values with the median marked",
         "Puntos aleatorios",
         "Distribución con kernel density",
         "Línea individual"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es violin plot?",
-      "explanation_en": "Explanation for What is violin plot?",
+      "explanation_es": "El violin plot muestra la forma completa de la distribución de los datos, estimada mediante densidad de kernel (KDE).",
+      "explanation_en": "A violin plot shows the full shape of the data's distribution, estimated using kernel density (KDE).",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -585,17 +585,17 @@
         "Boxplot resumido, violin distribución",
         "Siempre igual",
         "Violin obsoleto",
-        "Solo boxplot sin considerar otros factores relevantes"
+        "Solo boxplot, nunca para variables continuas"
       ],
       "options_en": [
         "Boxplot resumido, violin distribución",
         "Siempre igual",
         "Violin obsoleto",
-        "Solo boxplot without considering other relevant factors"
+        "Only boxplot, never for continuous variables"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cuándo usar boxplot vs violinplot?",
-      "explanation_en": "Explanation for When to use boxplot vs violinplot?",
+      "explanation_es": "El boxplot resume la distribución en cuartiles, mientras que el violin plot añade la forma completa de la distribución alrededor de ese resumen.",
+      "explanation_en": "A boxplot summarizes the distribution via quartiles, while a violin plot adds the full shape of the distribution around that summary.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -605,20 +605,20 @@
       "question_es": "¿Qué es regplot?",
       "question_en": "What is regplot?",
       "options_es": [
-        "Histograma como concepto principal",
+        "Histograma con bins automáticos",
         "Solo scatter",
         "Scatter con línea regresión",
         "Línea promedio"
       ],
       "options_en": [
-        "Histograma as the primary concept",
+        "Histogram with automatic bins",
         "Solo scatter",
         "Scatter con línea regresión",
         "Línea promedio"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es regplot?",
-      "explanation_en": "Explanation for What is regplot?",
+      "explanation_es": "sns.regplot() dibuja un diagrama de dispersión junto con la línea de regresión ajustada a esos puntos.",
+      "explanation_en": "sns.regplot() draws a scatter plot together with the regression line fitted to those points.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -628,20 +628,20 @@
       "question_es": "¿Cómo crear pair plot?",
       "question_en": "How to create pair plot?",
       "options_es": [
-        "Matplotlib como concepto principal",
+        "Matplotlib sin pares automáticos",
         "sns.pairplot() todas variables",
-        "sns.scatter() como concepto principal",
+        "sns.scatter() sin múltiples ejes",
         "Dos variables solo"
       ],
       "options_en": [
-        "Matplotlib as the primary concept",
+        "Matplotlib without automatic pairing",
         "sns.pairplot() todas variables",
-        "sns.scatter() as the primary concept",
+        "sns.scatter() without multiple axes",
         "Dos variables solo"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo crear pair plot?",
-      "explanation_en": "Explanation for How to create pair plot?",
+      "explanation_es": "sns.pairplot() genera automáticamente una rejilla con las relaciones entre todas las variables numéricas del dataset.",
+      "explanation_en": "sns.pairplot() automatically generates a grid showing the relationships between every numeric variable in the dataset.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -654,17 +654,17 @@
         "Bivariado con marginales",
         "Matriz correlación",
         "Un univariado",
-        "Grafo red de manera exclusiva y permanente"
+        "Grafo de red con varios nodos"
       ],
       "options_en": [
         "Bivariado con marginales",
         "Matriz correlación",
         "Un univariado",
-        "Grafo red exclusively and permanently"
+        "Network graph with nodes"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es joint plot?",
-      "explanation_en": "Explanation for What is joint plot?",
+      "explanation_es": "Un joint plot combina un gráfico bivariado central, por ejemplo un scatter, con las distribuciones marginales de cada variable en los bordes.",
+      "explanation_en": "A joint plot combines a central bivariate plot, like a scatter, with the marginal distributions of each variable along the edges.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -674,20 +674,20 @@
       "question_es": "¿Cuándo usar Seaborn?",
       "question_en": "When to use Seaborn?",
       "options_es": [
-        "Solo exploración independientemente del contexto aplicado",
-        "Nunca como concepto principal",
+        "Solo para exploración rápida de datos",
+        "Nunca en reportes finales",
         "Gráficos estadísticos complejos",
         "Siempre sobre Matplotlib"
       ],
       "options_en": [
-        "Solo exploración regardless of the applied context",
-        "Nunca as the primary concept",
+        "Only for quick exploration of raw data",
+        "Never in final reports",
         "Gráficos estadísticos complejos",
         "Siempre sobre Matplotlib"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuándo usar Seaborn?",
-      "explanation_en": "Explanation for When to use Seaborn?",
+      "explanation_es": "Seaborn conviene cuando se necesitan gráficos estadísticos más elaborados, como distribuciones, correlaciones o relaciones entre variables, con poco código.",
+      "explanation_en": "Seaborn is the right choice for more elaborate statistical charts, like distributions, correlations, or relationships between variables, with little code.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -697,20 +697,20 @@
       "question_es": "¿Qué es jerarquía visual?",
       "question_en": "What is visual hierarchy?",
       "options_es": [
-        "Orden alfabético de forma invariable y constante",
+        "Orden alfabético de los elementos, no por su tamaño",
         "Énfasis elementos importantes tamaño/posición",
-        "Números solamente",
-        "Sin estructura sin excepciones ni variantes"
+        "Números solamente, sin elemento visual",
+        "Sin estructura, todos con el mismo peso visual"
       ],
       "options_en": [
-        "Orden alfabético invariably and constantly",
+        "Alphabetical order of elements, not by their size",
         "Énfasis elementos importantes tamaño/posición",
-        "Números solamente",
-        "Sin estructura without exceptions or variants"
+        "Numbers only, with no visual element",
+        "No structure, everything has equal visual weight"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es jerarquía visual?",
-      "explanation_en": "Explanation for What is visual hierarchy?",
+      "explanation_es": "La jerarquía visual usa el tamaño, el contraste y la posición para dirigir la atención hacia los elementos más importantes primero.",
+      "explanation_en": "Visual hierarchy uses size, contrast, and position to draw attention to the most important elements first.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -721,19 +721,19 @@
       "question_en": "Maximum charts per dashboard?",
       "options_es": [
         "5-7 con propósito claro",
-        "20+ como concepto principal",
-        "1 gráfico",
-        "Sin límite"
+        "20+ sin agruparlos por tema",
+        "1 gráfico, sin otra métrica",
+        "Sin límite, satura toda la pantalla"
       ],
       "options_en": [
         "5-7 con propósito claro",
-        "20+ as the primary concept",
-        "1 gráfico",
-        "Sin límite"
+        "20+ without grouping them by topic",
+        "1 chart, with no other metric",
+        "No limit, it overwhelms the whole screen"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cuántos gráficos máximo en dashboard?",
-      "explanation_en": "Explanation for Maximum charts per dashboard?",
+      "explanation_es": "Más de seis o siete visualizaciones por pantalla superan lo que se procesa en una revisión rápida, así que ese es el rango recomendado.",
+      "explanation_en": "More than six or seven visualizations per screen exceed what a quick review can process, so that's the recommended range.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -743,20 +743,20 @@
       "question_es": "¿Qué es KPI?",
       "question_en": "What is KPI?",
       "options_es": [
-        "Dato histórico",
+        "Dato histórico ya sin vigencia",
         "Métrica clave negocio",
-        "Gráfico bonito de manera exclusiva y permanente",
+        "Gráfico bonito sin cifra",
         "Cualquier número"
       ],
       "options_en": [
-        "Dato histórico",
+        "Historical data, no longer relevant",
         "Métrica clave negocio",
-        "Gráfico bonito exclusively and permanently",
+        "A nice chart with no figures",
         "Cualquier número"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es KPI?",
-      "explanation_en": "Explanation for What is KPI?",
+      "explanation_es": "Un KPI es una métrica clave para el negocio, y por su importancia suele ubicarse en la esquina superior izquierda del dashboard.",
+      "explanation_en": "A KPI is a key business metric, and because of its importance it usually sits in the upper-left corner of the dashboard.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -767,19 +767,19 @@
       "question_en": "How to choose chart type?",
       "options_es": [
         "Más complejo mejor",
-        "Todos igual según la documentación estándar del servicio",
+        "Todos igual, sin importar el mensaje",
         "Según datos y mensaje",
         "Favorito personal"
       ],
       "options_en": [
         "Más complejo mejor",
-        "Todos igual according to standard service documentation",
+        "All the same, no matter the message",
         "Según datos y mensaje",
         "Favorito personal"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo elegir tipo gráfico?",
-      "explanation_en": "Explanation for How to choose chart type?",
+      "explanation_es": "El tipo de gráfico debe coincidir con la pregunta que se quiere responder: las series temporales piden líneas, las comparaciones piden barras.",
+      "explanation_en": "Chart type must match the question being asked: time series call for lines, comparisons call for bars.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -789,20 +789,20 @@
       "question_es": "¿Qué es interactividad?",
       "question_en": "What is interactivity?",
       "options_es": [
-        "Colores solo",
-        "Gráfico estático",
-        "JavaScript como concepto principal",
+        "Colores solo, sin acción del usuario",
+        "Gráfico estático, no responde a ningún clic",
+        "JavaScript, sin relación con el dashboard",
         "Filtros, drill-down, hover"
       ],
       "options_en": [
-        "Colores solo",
-        "Gráfico estático",
-        "JavaScript as the primary concept",
+        "Colors only, with no user action",
+        "A static chart that responds to no clicks",
+        "JavaScript, unrelated to the dashboard",
         "Filtros, drill-down, hover"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es interactividad?",
-      "explanation_en": "Explanation for What is interactivity?",
+      "explanation_es": "La interactividad incluye elementos como filtros, navegación de detalle (drill-down) e información al pasar el cursor (hover).",
+      "explanation_en": "Interactivity includes elements like filters, drill-down navigation, and hover-triggered information.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -812,20 +812,20 @@
       "question_es": "¿Cuándo usar Plotly?",
       "question_en": "When to use Plotly?",
       "options_es": [
-        "Gráficos simples",
-        "Sempre como concepto principal",
+        "Gráficos simples, sin interacción",
+        "Siempre sin necesidad de conexión web",
         "Dashboards interactivos web",
-        "Reports estáticos"
+        "Reports estáticos, sin gráfico dinámico"
       ],
       "options_en": [
-        "Gráficos simples",
-        "Sempre as the primary concept",
+        "Simple charts, with no interaction",
+        "Always, with no need for a web connection",
         "Dashboards interactivos web",
-        "Reports estáticos"
+        "Static reports, with no dynamic chart"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuándo usar Plotly?",
-      "explanation_en": "Explanation for When to use Plotly?",
+      "explanation_es": "Plotly se usa cuando se necesitan gráficos interactivos pensados para entornos web, más allá de la visualización estática de Matplotlib.",
+      "explanation_en": "Plotly is used when interactive charts built for web environments are needed, beyond Matplotlib's static visualizations.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -835,20 +835,20 @@
       "question_es": "¿Cuándo usar Dash?",
       "question_en": "When to use Dash?",
       "options_es": [
-        "Consultas solo independientemente del contexto aplicado",
+        "Consultas solo, sin interfaz gráfica",
         "Dashboards apps Python full",
-        "Gráficos únicos",
+        "Gráficos únicos, sin actualización automática",
         "Visualización estática"
       ],
       "options_en": [
-        "Consultas solo regardless of the applied context",
+        "Queries only, with no graphical interface",
         "Dashboards apps Python full",
-        "Gráficos únicos",
+        "One-off charts, with no automatic refresh",
         "Visualización estática"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo usar Dash?",
-      "explanation_en": "Explanation for When to use Dash?",
+      "explanation_es": "Dash permite construir aplicaciones web completas de dashboards interactivos usando solo Python.",
+      "explanation_en": "Dash lets you build full interactive dashboard web applications using only Python.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -858,20 +858,20 @@
       "question_es": "¿Qué es responsive design?",
       "question_en": "What is responsive design?",
       "options_es": [
-        "Gráfico grande",
-        "Tema solo de manera exclusiva y permanente",
+        "Gráfico grande, sin importar el tamaño de pantalla",
+        "Tema solo, sin cambiar el tamaño de nada",
         "Adapta tamaños diferentes pantallas",
-        "Funciona una resolución"
+        "Funciona una resolución, se rompe en las demás"
       ],
       "options_en": [
-        "Gráfico grande",
-        "Tema solo exclusively and permanently",
+        "A large chart, no matter the screen size",
+        "Theme only, nothing changes size",
         "Adapta tamaños diferentes pantallas",
-        "Funciona una resolución"
+        "Works at one resolution, breaks at every other"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es responsive design?",
-      "explanation_en": "Explanation for What is responsive design?",
+      "explanation_es": "El diseño responsive adapta el dashboard a distintos tamaños de pantalla, reordenando los paneles en una sola columna cuando el espacio es estrecho.",
+      "explanation_en": "Responsive design adapts the dashboard to different screen sizes, reflowing panels into a single column on narrow screens.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -881,20 +881,20 @@
       "question_es": "¿Cómo agrupar gráficos?",
       "question_en": "How to group charts?",
       "options_es": [
-        "Colores como concepto principal",
-        "Tamaño decreciente",
-        "Orden aleatorio de manera exclusiva y permanente",
+        "Colores, sin relación con el tema del negocio",
+        "Tamaño decreciente, sin criterio de negocio",
+        "Orden aleatorio, cambia cada vez que se abre",
         "Por tema negocio, índice superior"
       ],
       "options_en": [
-        "Colores as the primary concept",
-        "Tamaño decreciente",
-        "Orden aleatorio exclusively and permanently",
+        "Colors, unrelated to the business topic",
+        "Decreasing size, with no business criteria",
+        "Random order, it changes every time it opens",
         "Por tema negocio, índice superior"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo agrupar gráficos?",
-      "explanation_en": "Explanation for How to group charts?",
+      "explanation_es": "Los gráficos se agrupan por tema de negocio, colocando los indicadores más relevantes en la parte superior para que se vean primero.",
+      "explanation_en": "Charts are grouped by business topic, with the most relevant indicators placed at the top so they're seen first.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -904,20 +904,20 @@
       "question_es": "¿Qué es color coding?",
       "question_en": "What is color coding?",
       "options_es": [
-        "Colores random",
-        "Decoración como concepto principal",
-        "Estetética como concepto principal",
+        "Colores random sin criterio de asignación",
+        "Decoración, sin relación con los datos",
+        "Estetética, cambia sin patrón fijo",
         "Asigna color significado semántico"
       ],
       "options_en": [
-        "Colores random",
-        "Decoración as the primary concept",
-        "Estetética as the primary concept",
+        "Random colors with no assignment criteria",
+        "Decoration, with no relation to the data",
+        "Aesthetics, it changes with no fixed pattern",
         "Asigna color significado semántico"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es color coding?",
-      "explanation_en": "Explanation for What is color coding?",
+      "explanation_es": "El color coding asigna un significado semántico consistente al color, por ejemplo rojo para alerta, en lugar de un uso puramente decorativo.",
+      "explanation_en": "Color coding assigns a consistent semantic meaning to color, for example red for an alert, rather than a purely decorative use.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -927,20 +927,20 @@
       "question_es": "¿Cuándo usar tablas?",
       "question_en": "When to use tables?",
       "options_es": [
-        "Relleno como concepto principal",
-        "Nunca necesarias",
+        "Relleno, sin dato que respalde el número",
+        "Nunca necesarias, aunque el dato sea exacto",
         "Siempre visualizar",
         "Datos específicos exactos"
       ],
       "options_en": [
-        "Relleno as the primary concept",
-        "Nunca necesarias",
+        "Filler, with no data backing the number",
+        "Never necessary, even when the figure is exact",
         "Siempre visualizar",
         "Datos específicos exactos"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuándo usar tablas?",
-      "explanation_en": "Explanation for When to use tables?",
+      "explanation_es": "Las tablas son útiles cuando el usuario necesita cifras específicas y exactas, algo que un gráfico no siempre transmite con precisión.",
+      "explanation_en": "Tables are useful when the user needs specific, exact figures, something a chart doesn't always convey with precision.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -950,20 +950,20 @@
       "question_es": "¿Cómo validar dashboard?",
       "question_en": "How to validate dashboard?",
       "options_es": [
-        "Más gráficos mejor",
-        "Sin validación sin excepciones ni variantes",
+        "Más gráficos mejor, sin importar si se entienden",
+        "Sin validación, se publica directo a producción",
         "Usuarios entienden mensaje/actúan",
-        "Opinión experto"
+        "Opinión experto, sin probarlo con usuarios reales"
       ],
       "options_en": [
-        "Más gráficos mejor",
-        "Sin validación without exceptions or variants",
+        "More charts is better, whether they're understood or not",
+        "No validation, it ships straight to production",
         "Usuarios entienden mensaje/actúan",
-        "Opinión experto"
+        "Expert opinion, without testing it on real users"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo validar dashboard?",
-      "explanation_en": "Explanation for How to validate dashboard?",
+      "explanation_es": "Un dashboard se valida comprobando que los usuarios reales entienden el mensaje y pueden actuar a partir de él.",
+      "explanation_en": "A dashboard is validated by checking that real users understand the message and can act on it.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -974,19 +974,19 @@
       "question_en": "What is drill-down?",
       "options_es": [
         "Navega datos general a detalle",
-        "Gráfico secundario",
-        "Zoom automático",
-        "Almacenamiento como concepto principal"
+        "Gráfico secundario, sin interacción",
+        "Zoom automático, sin que el usuario haga nada",
+        "Almacenamiento, no tiene relación con navegar datos"
       ],
       "options_en": [
         "Navega datos general a detalle",
-        "Gráfico secundario",
-        "Zoom automático",
-        "Almacenamiento as the primary concept"
+        "A secondary chart, with no interaction",
+        "Automatic zoom, with no user action involved",
+        "Storage, unrelated to navigating data"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es drill-down?",
-      "explanation_en": "Explanation for What is drill-down?",
+      "explanation_es": "El drill-down permite navegar desde una vista general hacia el detalle subyacente de los datos.",
+      "explanation_en": "Drill-down lets you navigate from a general view down into the underlying detail of the data.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -996,20 +996,20 @@
       "question_es": "¿Herramientas dashboards?",
       "question_en": "What dashboard tools exist?",
       "options_es": [
-        "Excel solamente",
-        "Solo Matplotlib",
+        "Excel solamente, sin otra herramienta",
+        "Solo Matplotlib, sin dashboard interactivo",
         "Power BI, Tableau, Plotly, etc",
-        "Pen and paper de manera exclusiva y permanente"
+        "Pen and paper, sin dato digital"
       ],
       "options_en": [
-        "Excel solamente",
-        "Solo Matplotlib",
+        "Excel only, with no other tool",
+        "Only Matplotlib, with no interactive dashboard",
         "Power BI, Tableau, Plotly, etc",
-        "Pen and paper exclusively and permanently"
+        "Pen and paper, with no digital data"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Herramientas dashboards?",
-      "explanation_en": "Explanation for What dashboard tools exist?",
+      "explanation_es": "Entre las herramientas habituales para construir dashboards están Power BI, Tableau y Plotly, entre otras.",
+      "explanation_en": "Common tools for building dashboards include Power BI, Tableau, and Plotly, among others.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1019,20 +1019,20 @@
       "question_es": "¿Cómo actualizar datos?",
       "question_en": "How to update data?",
       "options_es": [
-        "No se actualiza",
-        "Screenshot como concepto principal",
+        "No se actualiza, queda fijo desde el primer día",
+        "Screenshot, congela el dato en un momento fijo",
         "Conexión en vivo, batch, API",
-        "Manual como concepto principal"
+        "Manual, alguien debe copiarlo cada vez"
       ],
       "options_en": [
-        "No se actualiza",
-        "Screenshot as the primary concept",
+        "It never updates, frozen from day one",
+        "A screenshot, it freezes the data at one moment",
         "Conexión en vivo, batch, API",
-        "Manual as the primary concept"
+        "Manual, someone has to copy it every time"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo actualizar datos?",
-      "explanation_en": "Explanation for How to update data?",
+      "explanation_es": "Los datos de un dashboard pueden actualizarse mediante conexión en vivo, procesos por lotes (batch) o llamadas a una API.",
+      "explanation_en": "A dashboard's data can be refreshed through a live connection, batch processes, or API calls.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1042,20 +1042,20 @@
       "question_es": "¿Qué es narrativa de datos?",
       "question_en": "What is data storytelling?",
       "options_es": [
-        "Gráficos bonitos",
-        "Solo números de forma invariable y constante",
-        "Artístico como concepto principal",
+        "Gráficos bonitos, sin dato real detrás",
+        "Solo números, sin gráfico que los acompañe",
+        "Artístico, sin relación con los datos",
         "Combina datos visualización contexto"
       ],
       "options_en": [
-        "Gráficos bonitos",
-        "Solo números invariably and constantly",
-        "Artístico as the primary concept",
+        "Nice-looking charts, with no real data behind them",
+        "Numbers only, with no chart to show them",
+        "Artistic, with no relation to the data",
         "Combina datos visualización contexto"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es narrativa de datos?",
-      "explanation_en": "Explanation for What is data storytelling?",
+      "explanation_es": "La narrativa de datos combina los datos, su visualización y el contexto necesario para convertir un número en información con sentido.",
+      "explanation_en": "Data storytelling combines data, its visualization, and the context needed to turn a number into meaningful information.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1065,20 +1065,20 @@
       "question_es": "¿Cuál es estructura narrativa?",
       "question_en": "What is narrative structure?",
       "options_es": [
-        "Sin estructura de forma invariable y constante",
-        "Fin-medio-inicio como concepto principal",
-        "Aleatorio como concepto principal en todos los casos posibles",
-        "Situación-complicación-resolución como concepto principal"
+        "Sin estructura, solo datos sueltos sin orden",
+        "Fin-medio-inicio invertido en el tiempo",
+        "Aleatorio, sin patrón identificable",
+        "Situación-complicación-resolución"
       ],
       "options_en": [
-        "Sin estructura invariably and constantly",
-        "Fin-medio-inicio as the primary concept",
-        "Aleatorio as the primary concept in all possible cases",
-        "Situación-complicación-resolución as the primary concept"
+        "No structure, just scattered data with no order",
+        "End-middle-beginning in reverse order",
+        "Random, with no identifiable pattern",
+        "Situation-complication-resolution"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuál es estructura narrativa?",
-      "explanation_en": "Explanation for What is narrative structure?",
+      "explanation_es": "La estructura narrativa típica sigue tres partes: situación (contexto conocido), complicación (el problema) y resolución (la acción o el desenlace).",
+      "explanation_en": "The typical narrative structure follows three parts: situation (known context), complication (the problem), and resolution (the action or outcome).",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1088,20 +1088,20 @@
       "question_es": "¿Por qué contexto importante?",
       "question_en": "Why is context important?",
       "options_es": [
-        "Confunde como concepto principal",
-        "Relleno sin valor de forma invariable y constante",
-        "Opcional como concepto principal",
+        "Confunde en vez de aclarar bien el mensaje",
+        "Relleno sin valor, no aporta nada al análisis",
+        "Opcional, se puede quitar sin perder nada",
         "Ayuda audiencia entender significancia"
       ],
       "options_en": [
-        "Confunde as the primary concept",
-        "Relleno sin valor invariably and constantly",
-        "Opcional as the primary concept",
+        "Confuses rather than clarifying the message",
+        "Padding with no value, it adds nothing to the analysis",
+        "Optional, it can be removed without losing anything",
         "Ayuda audiencia entender significancia"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Por qué contexto importante?",
-      "explanation_en": "Explanation for Why is context important?",
+      "explanation_es": "El contexto ayuda a la audiencia a entender la relevancia real de una cifra, convirtiendo el número en información.",
+      "explanation_en": "Context helps the audience grasp a figure's real significance, turning the number into information.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1111,20 +1111,20 @@
       "question_es": "¿Cómo captar atención?",
       "question_en": "How to capture attention?",
       "options_es": [
-        "Colores brillantes",
+        "Colores brillantes, sin relación con el dato",
         "Sorpresa, relevancia personal, conflicto",
-        "Musik como concepto principal",
-        "Más gráficos sin considerar otros factores relevantes"
+        "Musik y efectos de sonido dentro del propio gráfico",
+        "Más gráficos, sin hilo narrativo"
       ],
       "options_en": [
-        "Colores brillantes",
+        "Bright colors, unrelated to the data",
         "Sorpresa, relevancia personal, conflicto",
-        "Musik as the primary concept",
-        "Más gráficos without considering other relevant factors"
+        "Musik and sound effects embedded in the chart itself",
+        "More charts, with no narrative thread"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo captar atención?",
-      "explanation_en": "Explanation for How to capture attention?",
+      "explanation_es": "Captar la atención suele apoyarse en elementos como la sorpresa, la relevancia personal para la audiencia o un conflicto que resolver.",
+      "explanation_en": "Capturing attention usually relies on elements like surprise, personal relevance to the audience, or a conflict to resolve.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1134,20 +1134,20 @@
       "question_es": "¿Qué es sesgo visual?",
       "question_en": "What is visual bias?",
       "options_es": [
-        "Honesto siempre",
-        "Necesario como concepto principal",
-        "No existe sin considerar otros factores relevantes",
+        "Honesto siempre, sin excepción posible",
+        "Necesario, todo dashboard lo necesita siempre",
+        "No existe, todo gráfico ya es neutral",
         "Manipular con colores/gráfico tipos"
       ],
       "options_en": [
-        "Honesto siempre",
-        "Necesario as the primary concept",
-        "No existe without considering other relevant factors",
+        "Always honest, with no possible exception",
+        "Necessary, every dashboard always needs it",
+        "It doesn't exist, every chart is neutral",
         "Manipular con colores/gráfico tipos"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es sesgo visual?",
-      "explanation_en": "Explanation for What is visual bias?",
+      "explanation_es": "El sesgo visual consiste en manipular la percepción mediante el color o el tipo de gráfico elegido, por ejemplo truncando ejes para exagerar diferencias.",
+      "explanation_en": "Visual bias means manipulating perception through color choices or chart type, for example truncating axes to exaggerate differences.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1158,19 +1158,19 @@
       "question_en": "How to avoid confusing charts?",
       "options_es": [
         "Claro único mensaje por gráfico",
-        "Máximo info posible",
-        "Arte sobre datos",
-        "Decorado como concepto principal"
+        "Máximo info posible, aunque nadie logre leerlo",
+        "Arte sobre datos, sin cifra real",
+        "Decorado, sin relación con ningún dato"
       ],
       "options_en": [
         "Claro único mensaje por gráfico",
-        "Máximo info posible",
-        "Arte sobre datos",
-        "Decorado as the primary concept"
+        "As much info as possible, even if no one can read it",
+        "Art over data, with no real figure",
+        "Decorated, with no relation to any data"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo evitar gráficos confusos?",
-      "explanation_en": "Explanation for How to avoid confusing charts?",
+      "explanation_es": "Evitar gráficos confusos pasa por transmitir un único mensaje claro por gráfico, en vez de saturarlo con información.",
+      "explanation_en": "Avoiding confusing charts means conveying one clear message per chart, instead of overloading it with information.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1180,20 +1180,20 @@
       "question_es": "¿Audiencias diferentes?",
       "question_en": "Different audiences?",
       "options_es": [
-        "Mismo mensaje",
-        "No importa",
-        "Un público de manera exclusiva y permanente",
+        "Mismo mensaje, sin adaptar nada a la audiencia",
+        "No importa, la audiencia da siempre lo mismo",
+        "Un único público sirve para cualquier caso",
         "Técnico, ejecutivo, público general"
       ],
       "options_en": [
-        "Mismo mensaje",
-        "No importa",
-        "Un público exclusively and permanently",
+        "Same message, with nothing adapted to the audience",
+        "It doesn't matter, the audience is always the same",
+        "One single audience fits every possible case",
         "Técnico, ejecutivo, público general"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Audiencias diferentes?",
-      "explanation_en": "Explanation for Different audiences?",
+      "explanation_es": "Adaptar el análisis a audiencias distintas significa reconocer perfiles como el técnico, el ejecutivo y el público general, cada uno con necesidades propias.",
+      "explanation_en": "Adapting analysis for different audiences means recognizing profiles like technical, executive, and general public, each with different needs.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1203,20 +1203,20 @@
       "question_es": "¿Cómo comunicar a ejecutivos?",
       "question_en": "How to communicate to executives?",
       "options_es": [
-        "Detalles técnicos",
-        "Todoslos datos de forma invariable y constante",
+        "Detalles técnicos, sin resumen ejecutivo",
+        "Todos los datos, sin priorización",
         "ROI, impacto negocio, acción clara",
-        "Gráficos solos"
+        "Gráficos solos, sin número de contexto"
       ],
       "options_en": [
-        "Detalles técnicos",
-        "Todoslos datos invariably and constantly",
+        "Technical details, with no executive summary",
+        "All the data, with no prioritization",
         "ROI, impacto negocio, acción clara",
-        "Gráficos solos"
+        "Charts alone, with no supporting number"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo comunicar a ejecutivos?",
-      "explanation_en": "Explanation for How to communicate to executives?",
+      "explanation_es": "Para un ejecutivo conviene priorizar el ROI, el impacto en el negocio y una acción clara, dejando el detalle técnico para después.",
+      "explanation_en": "For executives it's best to lead with ROI, business impact, and a clear action, leaving technical detail for later.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1226,20 +1226,20 @@
       "question_es": "¿Cómo comunicar técnicamente?",
       "question_en": "How to communicate technically?",
       "options_es": [
-        "Ningún detalle sin excepciones ni variantes",
-        "Diversión como concepto principal",
-        "Resultados solo",
+        "Ningún detalle, solo la conclusión final",
+        "Diversión y anécdotas sin dato de respaldo",
+        "Resultados solo, sin explicar cómo se llegó",
         "Métodos, supuestos, validaciones, código"
       ],
       "options_en": [
-        "Ningún detalle without exceptions or variants",
-        "Diversión as the primary concept",
-        "Resultados solo",
+        "No detail at all, just the final conclusion",
+        "Fun and anecdotes without any supporting data",
+        "Results only, without explaining how they were reached",
         "Métodos, supuestos, validaciones, código"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo comunicar técnicamente?",
-      "explanation_en": "Explanation for How to communicate technically?",
+      "explanation_es": "Comunicar técnicamente implica mostrar los métodos, los supuestos, las validaciones y el código, que es el nivel de detalle que espera un equipo técnico.",
+      "explanation_en": "Communicating technically means showing methods, assumptions, validations, and code, the level of detail a technical team expects.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1250,19 +1250,19 @@
       "question_en": "What is conflict in data?",
       "options_es": [
         "Expectativa vs realidad",
-        "Problema técnico",
-        "Error como concepto principal",
-        "Desacuerdo como concepto principal"
+        "Problema técnico sin relación con los datos",
+        "Error, se corrige y desaparece del todo",
+        "Desacuerdo, sin dato real detrás"
       ],
       "options_en": [
         "Expectativa vs realidad",
-        "Problema técnico",
-        "Error as the primary concept",
-        "Desacuerdo as the primary concept"
+        "A technical problem unrelated to the data",
+        "An error, it gets fixed and disappears completely",
+        "Disagreement, with no real data behind it"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es conflicto en datos?",
-      "explanation_en": "Explanation for What is conflict in data?",
+      "explanation_es": "El conflicto en la narrativa de datos es la tensión entre lo que se esperaba y lo que realmente muestran los datos, el problema que rompe la normalidad.",
+      "explanation_en": "Conflict in data storytelling is the tension between what was expected and what the data actually shows, the problem breaking the normal pattern.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1272,20 +1272,20 @@
       "question_es": "¿Cuándo usar números absolutos?",
       "question_en": "When to use absolute numbers?",
       "options_es": [
-        "Nunca como concepto principal",
+        "Nunca, el porcentaje siempre es mejor",
         "Cantidades totales",
         "Siempre porcentajes",
         "Ambos contexto"
       ],
       "options_en": [
-        "Nunca as the primary concept",
+        "Never, percentage is always better",
         "Cantidades totales",
         "Siempre porcentajes",
         "Ambos contexto"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo usar números absolutos?",
-      "explanation_en": "Explanation for When to use absolute numbers?",
+      "explanation_es": "Los números absolutos se usan cuando interesa la cantidad total en sí, no la proporción respecto a otra cifra.",
+      "explanation_en": "Absolute numbers are used when the total quantity itself matters, not its proportion relative to another figure.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1295,20 +1295,20 @@
       "question_es": "¿Cuándo usar porcentajes?",
       "question_en": "When to use percentages?",
       "options_es": [
-        "Nunca como concepto principal",
-        "Siempre como concepto principal",
-        "Confuso como concepto principal",
+        "Nunca, el número absoluto siempre basta solo",
+        "Siempre, aunque no haya nada con qué comparar",
+        "Confuso, sin importar el dato",
         "Cambio relativo, comparación"
       ],
       "options_en": [
-        "Nunca as the primary concept",
-        "Siempre as the primary concept",
-        "Confuso as the primary concept",
+        "Never, the absolute number is always enough alone",
+        "Always, even with nothing to compare it to",
+        "Confusing no matter which data",
         "Cambio relativo, comparación"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuándo usar porcentajes?",
-      "explanation_en": "Explanation for When to use percentages?",
+      "explanation_es": "Los porcentajes se usan para mostrar cambio relativo o para comparar magnitudes distintas sobre una base común.",
+      "explanation_en": "Percentages are used to show relative change or to compare different magnitudes on a common basis.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1318,20 +1318,20 @@
       "question_es": "¿Cómo documentar análisis?",
       "question_en": "How to document analysis?",
       "options_es": [
-        "No documentar de forma invariable y constante",
-        "Resultados como concepto principal",
+        "No documentar, nadie lo va a revisar después",
+        "Resultados, sin explicar cómo se obtuvieron",
         "Métodos datos limitaciones conclusiones",
-        "Títulos como concepto principal"
+        "Solo los títulos de cada sección, sin nada más"
       ],
       "options_en": [
-        "No documentar invariably and constantly",
-        "Resultados as the primary concept",
+        "Not documenting it, no one will review it later",
+        "Results, without explaining how they were obtained",
         "Métodos datos limitaciones conclusiones",
-        "Títulos as the primary concept"
+        "Only the titles of each section, with nothing else"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo documentar análisis?",
-      "explanation_en": "Explanation for How to document analysis?",
+      "explanation_es": "Documentar un análisis implica registrar los métodos, los datos usados, las limitaciones y las conclusiones alcanzadas.",
+      "explanation_en": "Documenting an analysis means recording the methods, the data used, the limitations, and the conclusions reached.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1341,20 +1341,20 @@
       "question_es": "¿Qué es llamada a acción?",
       "question_en": "What is call to action?",
       "options_es": [
-        "Reflexión como concepto principal",
-        "Innecesario como concepto principal",
+        "Reflexión sin acción sugerida",
+        "Innecesario, el dato ya habla por sí solo",
         "Sugiere qué hacer con insights",
-        "Conclusión solo"
+        "Conclusión solo, sin recomendación"
       ],
       "options_en": [
-        "Reflexión as the primary concept",
-        "Innecesario as the primary concept",
+        "Reflection without any suggested action",
+        "Unnecessary, the data already speaks for itself",
         "Sugiere qué hacer con insights",
-        "Conclusión solo"
+        "Conclusion only, with no recommendation"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es llamada a acción?",
-      "explanation_en": "Explanation for What is call to action?",
+      "explanation_es": "Una llamada a la acción sugiere qué hacer a partir de los insights obtenidos, en línea con la resolución que cierra la narrativa.",
+      "explanation_en": "A call to action suggests what to do with the insights uncovered, in line with the resolution that closes the narrative.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1364,20 +1364,20 @@
       "question_es": "¿Cómo practicar storytelling?",
       "question_en": "How to practice storytelling?",
       "options_es": [
-        "Observar otros",
-        "Escritura como concepto principal",
-        "Teoría como concepto principal",
+        "Observar otros, sin practicar nunca uno mismo",
+        "Escritura, sin dato ni gráfico de por medio",
+        "Teoría únicamente, sin práctica real",
         "Presenta, recibe feedback, mejora"
       ],
       "options_en": [
-        "Observar otros",
-        "Escritura as the primary concept",
-        "Teoría as the primary concept",
+        "Watching others, without ever practicing yourself",
+        "Writing, with no data or chart involved",
+        "Theory only, with no real practice involved",
         "Presenta, recibe feedback, mejora"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo practicar storytelling?",
-      "explanation_en": "Explanation for How to practice storytelling?",
+      "explanation_es": "El storytelling se practica presentando de verdad, recibiendo retroalimentación sobre esas presentaciones y mejorando con cada ciclo.",
+      "explanation_en": "Storytelling is practiced by actually presenting, receiving feedback on those presentations, and improving with each cycle.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     }
   ]

@@ -80,7 +80,7 @@ Covers: Data controller role, subject rights, sub-processors, security, breach r
 - Railway (USA/EU) — hosting and PostgreSQL
 - Cloudflare (USA/EU) — CDN and Pages
 - Email provider — SMTP or Resend, per `EMAIL_PROVIDER`
-- Sentry — error tracking, **disabled by default** (`SENTRY_DSN` empty)
+- Sentry — server-side error tracking, **active since 2026-09-26** (project `whetzy-backend`, EU region `de.sentry.io`, `send_default_pii=False`, ADR-50k); not used in the browser
 
 > Google Analytics was listed here by commit `5f7bd7b`. It is **not used**: red line 5
 > forbids third-party trackers without explicit consent, and

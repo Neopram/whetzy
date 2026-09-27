@@ -12,7 +12,7 @@ qué hacer; el ledger lo sabe.
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §13 ADR-46; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 catálogo total ≥ 50 cursos/track sobre corpus abierto, ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único**)
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 catálogo total ≥ 50 cursos/track sobre corpus abierto, ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica PostHog, Sentry, correo, staging)**)
 - Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
 - Auditoría externa más reciente (producción medida en vivo, CI, coste de contexto): `docs/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
@@ -51,19 +51,27 @@ qué hacer; el ledger lo sabe.
 - Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA **no** se reutiliza (ADR-47, valor por defecto de H.LIC); CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
 - Social login: si existe cualquier OAuth, **Sign in with Apple es obligatorio** antes de enviar a App Store (4.8, ADR-13)
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`
-- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260926_eu_withdrawal` (42 migraciones)
+- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260927_lesson_completions` (44 migraciones)
 - LLM: `qwen/qwen3.8-27b` en Groq
 - OpenAPI en `/api/v1/openapi.json`; `POST /quiz/start` devuelve el id en `.question.id`
 
 ## Modelos
 
-Hilo principal: el que fije `settings.json` (Sonnet 4.6). **Sesiones autónomas programadas: sin
-Opus ni Fable** (ADR-14, propuesta del dueño 2026-09-18); **una sesión interactiva usa el
-modelo con el que el dueño la arranca** (ADR-47). Subagentes: **Haiku por
-defecto** — inventarios, lecturas masivas, diffs doc↔código, verificación adversaria y
-**autoría de contenido por fichero** (siempre con la puerta de calidad de
-`CATALOGO_MAESTRO.md` §7); Sonnet solo cuando la tarea escribe en la lista de ficheros de
-riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2. Dieta de contexto: el ledger se lee por
+**Política del dueño del 2026-09-27 (ADR-52, sustituye la de ADR-50):**
+
+| Papel | Modelo |
+|---|---|
+| Hilo principal de una sesión interactiva | **Sonnet 5** (lo fija el dueño al arrancar) |
+| Autoría masiva de contenido (escritor en `Workflow`) | **Haiku 4.5** (+ Batch API para rellenos cuando exista clave: H.48) |
+| Revisor y corrector de calidad en `Workflow`; workers de la lista de riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2 | **Sonnet 5** |
+| Lecturas, inventarios, diffs | **Haiku 4.5** |
+| Sesiones autónomas programadas | workers **Haiku 4.5** (ADR-14); hilo, el de `settings.json` |
+| Fable (cualquier versión), Opus 4.x | **Nunca**, en ningún papel |
+
+Todo lo que escribe Haiku para el alumno pasa revisión adversaria **completa** de Sonnet 5, la
+puerta de `CATALOGO_MAESTRO.md` §7 y `scripts/content_qa/`. Primer bloque de Haiku: piloto de
+10 ítems; si más de 3 salen con `blocker`/`major`, se para y lo decide el dueño (ADR-52; el
+piloto de track28 del 2026-09-26 dio 7 de 10 malas). Dieta de contexto: el ledger se lee por
 secciones, nunca entero; `STATUS.md` y `archive/` no se leen. Bloques de contenido
 grandes: `Workflow` paralelo, un bloque = un commit verde. Cada `DONE` pasa por el
 verificador adversario (protocolo §7) antes de escribirse.

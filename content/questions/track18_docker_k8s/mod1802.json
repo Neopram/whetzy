@@ -8,13 +8,13 @@
       "question_en": "What is the purpose of volumes in Docker?",
       "options_es": [
         "Persistir datos más allá del ciclo de vida del contenedor",
-        "Limitar el ancho de banda de red independientemente del contexto aplicado",
+        "Limitar el ancho de banda de red asignado a la interfaz virtual del contenedor",
         "Compresión automática de archivos",
         "Especificar la cantidad de RAM asignada a un contenedor"
       ],
       "options_en": [
         "Persist data beyond the container's lifecycle",
-        "Limit network bandwidth regardless of the applied context",
+        "Limit the network bandwidth assigned to the container's virtual interface",
         "Automatic file compression",
         "Specify the amount of RAM allocated to a container"
       ],
@@ -77,13 +77,13 @@
       "question_en": "How do you mount a volume to a container?",
       "options_es": [
         "docker run -mount volumen:/ruta/en/contenedor imagen",
-        "docker run -v volumen:/ruta/en/contenedor imagen según la documentación estándar del servicio",
+        "docker run -v volumen:/ruta/en/contenedor imagen (sintaxis heredada, aún soportada)",
         "Ambas opciones B y C son válidas (pero -v es el corto para --mount)",
         "docker run -volume volumen:/ruta/en/contenedor imagen"
       ],
       "options_en": [
         "docker run -mount volume:/path/in/container image",
-        "docker run -v volume:/path/in/container image according to standard service documentation",
+        "docker run -v volume:/path/in/container image (legacy syntax, still valid)",
         "Both options B and C are valid (but -v is short for --mount)",
         "docker run -volume volume:/path/in/container image"
       ],
@@ -99,15 +99,15 @@
       "question_es": "¿Cuál es la diferencia entre un volumen y un bind mount?",
       "question_en": "What is the difference between a volume and a bind mount?",
       "options_es": [
-        "Volumen solo funciona en Linux, bind mount en todos lados en todos los casos posibles",
-        "No hay diferencia, son la misma cosa sin excepciones ni variantes",
-        "Bind mount es más rápido que volumen sin considerar otros factores relevantes",
+        "Volumen solo funciona en Linux, bind mount funciona en Linux y Windows mediante rutas absolutas del host",
+        "No hay diferencia entre ambos, Docker los trata como alias del mismo comando '--mount'",
+        "Bind mount es siempre más rápido que un volumen porque evita el driver de almacenamiento de Docker",
         "Volumen es manejado por Docker, bind mount monta un directorio del host específico"
       ],
       "options_en": [
-        "Volume only works on Linux, bind mount on all platforms in all possible cases",
-        "There is no difference, they are the same without exceptions or variants",
-        "Bind mount is faster than volume without considering other relevant factors",
+        "Volume only works on Linux, bind mount works on Linux and Windows via absolute host paths",
+        "There is no difference between them, Docker treats them as aliases of the same '--mount' command",
+        "Bind mount is always faster than a volume because it bypasses Docker's storage driver",
         "Volume is managed by Docker, bind mount mounts a specific host directory"
       ],
       "correct_index": 3,
@@ -122,13 +122,13 @@
       "question_es": "¿Qué es un volumen nombrado en Docker?",
       "question_en": "What is a named volume in Docker?",
       "options_es": [
-        "Un volumen que solo puede tener un contenedor independientemente del contexto aplicado",
+        "Un volumen que solo puede montarse en un único contenedor a la vez por diseño del driver 'local'",
         "Un volumen creado explícitamente con 'docker volume create' y un nombre específico",
         "Un volumen con un identificador único generado automáticamente",
         "Un volumen que se sincroniza automáticamente con la nube"
       ],
       "options_en": [
-        "A volume that can only have one container regardless of the applied context",
+        "A volume that can only be mounted in a single container at a time by design of the 'local' driver",
         "A volume explicitly created with 'docker volume create' and a specific name",
         "A volume with a unique auto-generated identifier",
         "A volume that automatically syncs to the cloud"
@@ -145,21 +145,21 @@
       "question_es": "¿Cómo se listan los volúmenes existentes?",
       "question_en": "How do you list existing volumes?",
       "options_es": [
-        "docker volume ls sin excepciones ni variantes",
+        "Solo docker volume list; ls no existe para volúmenes",
         "docker volumes show",
-        "docker volume list",
-        "Ambas opciones A y B son correctas"
+        "docker volume inspect sin argumentos",
+        "Tanto docker volume ls como su alias docker volume list"
       ],
       "options_en": [
-        "docker volume ls without exceptions or variants",
+        "Only docker volume list; ls does not exist for volumes",
         "docker volumes show",
-        "docker volume list",
-        "Both options A and B are correct"
+        "docker volume inspect with no arguments",
+        "Both docker volume ls and its alias docker volume list"
       ],
       "correct_index": 3,
-      "explanation_es": "Tanto 'docker volume list' como 'docker volume ls' funcionan, siendo 'ls' la forma corta.",
-      "explanation_en": "Both 'docker volume list' and 'docker volume ls' work, with 'ls' being the short form.",
-      "source": "Docker Documentation (https://docs.docker.com/engine/reference/commandline/volume_ls/)"
+      "explanation_es": "docker volume ls lista los volúmenes y docker volume list es su alias oficial. docker volumes show no existe, y docker volume inspect exige al menos un volumen: muestra su detalle en JSON, no la lista.",
+      "explanation_en": "docker volume ls lists volumes and docker volume list is its official alias. docker volumes show does not exist, and docker volume inspect needs at least one volume: it prints that volume's details as JSON, not the list.",
+      "source": "Docker Docs — docker volume ls (https://docs.docker.com/reference/cli/docker/volume/ls/)"
     },
     {
       "id": "q180201008",
@@ -193,13 +193,13 @@
       "options_es": [
         "Almacenar archivos de caché de corta duración en memoria",
         "Sincronizar archivos entre contenedores",
-        "Crear un volumen de respaldo temporal en cualquier escenario de implementación",
+        "Crear un volumen de respaldo persistente que se guarda automáticamente en disco tras cada escritura",
         "Especificar el sistema de archivos del contenedor"
       ],
       "options_en": [
         "Store short-lived cache files in memory",
         "Synchronize files between containers",
-        "Create a temporary backup volume in any implementation scenario",
+        "Create a persistent backup volume that automatically saves to disk after each write",
         "Specify the container's filesystem"
       ],
       "correct_index": 0,
@@ -217,13 +217,13 @@
         "Montando el mismo volumen nombrado en múltiples contenedores",
         "Los volúmenes no pueden ser compartidos entre contenedores",
         "Creando copias del volumen para cada contenedor",
-        "Usando solo bind mounts, no volúmenes según la documentación estándar del servicio"
+        "Usando solo bind mounts, ya que los volúmenes nombrados no admiten más de un punto de montaje simultáneo"
       ],
       "options_en": [
         "By mounting the same named volume in multiple containers",
         "Volumes cannot be shared between containers",
         "By creating copies of the volume for each container",
-        "By using only bind mounts, not volumes according to standard service documentation"
+        "Using only bind mounts, since named volumes don't support more than one simultaneous mount point"
       ],
       "correct_index": 0,
       "explanation_es": "Se puede montar el mismo volumen en múltiples contenedores, permitiéndoles compartir datos. Es una característica poderosa de Docker.",
@@ -239,13 +239,13 @@
       "options_es": [
         "Inspeccionar archivos dentro del volumen",
         "Mostrar información detallada sobre un volumen específico",
-        "Analizar el rendimiento del volumen de forma invariable y constante",
+        "Analizar el rendimiento del volumen midiendo IOPS y latencia en tiempo real",
         "Verificar si un volumen tiene corrupción de datos"
       ],
       "options_en": [
         "Inspect files within the volume",
         "Show detailed information about a specific volume",
-        "Analyze volume performance invariably and constantly",
+        "Analyze the volume's performance by measuring real-time IOPS and latency",
         "Check if a volume has data corruption"
       ],
       "correct_index": 1,
@@ -308,13 +308,13 @@
       "options_es": [
         "Un archivo de configuración para volúmenes",
         "Un programa que controla el acceso a los volúmenes",
-        "Una red virtual para volúmenes sin considerar otros factores relevantes",
+        "Una red virtual dedicada que conecta volúmenes entre distintos hosts Swarm",
         "Un plugin que implementa la lógica de almacenamiento de volúmenes"
       ],
       "options_en": [
         "A configuration file for volumes",
         "A program that controls access to volumes",
-        "A virtual network for volumes without considering other relevant factors",
+        "A dedicated virtual network that connects volumes across different Swarm hosts",
         "A plugin that implements volume storage logic"
       ],
       "correct_index": 3,
@@ -355,13 +355,13 @@
         "internal, external, custom",
         "public, private, hybrid",
         "bridge, host, none, overlay, macvlan",
-        "bridge, host, overlay de manera exclusiva y permanente"
+        "bridge, host, overlay, sin incluir macvlan porque Docker lo eliminó en versiones recientes"
       ],
       "options_en": [
         "internal, external, custom",
         "public, private, hybrid",
         "bridge, host, none, overlay, macvlan",
-        "bridge, host, overlay exclusively and permanently"
+        "bridge, host, overlay, without macvlan because Docker removed it in recent versions"
       ],
       "correct_index": 2,
       "explanation_es": "Los tipos principales de redes Docker son: bridge (red privada por defecto), host (usa la red del host), none (sin red), overlay (para clústeres) y macvlan (MAC virtual).",
@@ -424,13 +424,13 @@
         "Un servidor DNS ejecutándose en cada contenedor",
         "Un servicio DNS centralizado en Docker Hub",
         "La resolución automática de nombres de contenedores en redes custom",
-        "El DNS del host del sistema operativo sin considerar otros factores relevantes"
+        "El DNS del host del sistema operativo, heredado solo en modo de red host"
       ],
       "options_en": [
         "A DNS server running in each container",
         "A centralized DNS service on Docker Hub",
         "Automatic hostname resolution of containers in custom networks",
-        "The host operating system DNS without considering other relevant factors"
+        "The host operating system's DNS, inherited only in host network mode"
       ],
       "correct_index": 2,
       "explanation_es": "Docker proporciona un servidor DNS embebido que permite que los contenedores en la misma red custom se resuelvan por nombre automáticamente.",
@@ -467,13 +467,13 @@
       "question_es": "¿Cuál es la diferencia entre red bridge y red host?",
       "question_en": "What is the difference between bridge and host networks?",
       "options_es": [
-        "Host es más seguro que bridge sin considerar otros factores relevantes",
+        "Host es más seguro que bridge porque elimina la traducción de direcciones NAT",
         "No hay diferencia, son la misma cosa",
         "Bridge es más rápido que host",
         "Bridge aísla el contenedor, host usa directamente la red del host"
       ],
       "options_en": [
-        "Host is more secure than bridge without considering other relevant factors",
+        "Host is more secure than bridge because it removes NAT address translation",
         "There is no difference, they are the same",
         "Bridge is faster than host",
         "Bridge isolates the container, host directly uses the host's network"
@@ -514,13 +514,13 @@
       "question_en": "What is an overlay network in Docker?",
       "options_es": [
         "Una red que se superpone visualmente en la interfaz gráfica",
-        "Un tipo de red que solo funciona en Linux independientemente del contexto aplicado",
+        "Un tipo de red que solo funciona en hosts Linux, nunca en Docker Desktop para Windows o macOS",
         "Una red distribuida que permite comunicación entre contenedores en múltiples hosts",
         "Una capa de seguridad adicional para la red"
       ],
       "options_en": [
         "A network that visually overlays on the graphical interface",
-        "A type of network that only works on Linux regardless of the applied context",
+        "A type of network that only works on Linux hosts, never in Docker Desktop for Windows or macOS",
         "A distributed network that allows communication between containers on multiple hosts",
         "An additional security layer for the network"
       ],
@@ -536,13 +536,13 @@
       "question_es": "¿Cuál es el propósito de mapeo de puertos en Docker?",
       "question_en": "What is the purpose of port mapping in Docker?",
       "options_es": [
-        "Crear rutas de red entre contenedores según la documentación estándar del servicio",
+        "Crear rutas de red directas entre contenedores sin pasar por el kernel del host",
         "Asignar direcciones IP a los contenedores",
         "Aumentar la velocidad de comunicación entre contenedores",
         "Exponer puertos del contenedor a través de puertos del host"
       ],
       "options_en": [
-        "Create network routes between containers according to standard service documentation",
+        "Create direct network routes between containers without going through the host kernel",
         "Assign IP addresses to containers",
         "Increase communication speed between containers",
         "Expose container ports through host ports"
@@ -606,15 +606,15 @@
       "question_en": "What information does 'docker network inspect' provide?",
       "options_es": [
         "Información detallada de la red incluyendo contenedores conectados y configuración",
-        "Solo el nombre y driver de la red en cualquier escenario de implementación",
-        "Un test de velocidad de la red sin excepciones ni variantes",
-        "El historial de cambios en la red sin excepciones ni variantes"
+        "Solo el nombre y el driver de la red, sin exponer los contenedores conectados",
+        "Un test de velocidad de la red que mide el throughput entre contenedores",
+        "El historial de cambios en la configuración de red guardado en un log persistente"
       ],
       "options_en": [
         "Detailed network information including connected containers and configuration",
-        "Only the network name and driver in any implementation scenario",
-        "A network speed test without exceptions or variants",
-        "The history of network changes without exceptions or variants"
+        "Only the network's name and driver, without exposing the connected containers",
+        "A network speed test that measures throughput between containers",
+        "The history of network configuration changes stored in a persistent log"
       ],
       "correct_index": 0,
       "explanation_es": "'docker network inspect' muestra detalles completos de una red incluyendo contenedores conectados, configuración IPAM, y otras propiedades.",
@@ -651,15 +651,15 @@
       "question_es": "¿Qué es IPAM en Docker?",
       "question_en": "What is IPAM in Docker?",
       "options_es": [
-        "Internet Protocol Access Manager de manera exclusiva y permanente",
-        "Un tipo de driver de red personalizado sin excepciones ni variantes",
-        "Un protocolo de comunicación entre contenedores independientemente del contexto aplicado",
+        "Internet Protocol Access Manager, un servicio que autentica el acceso a la red",
+        "Un tipo de driver de red personalizado que sustituye al driver bridge por defecto",
+        "Un protocolo de comunicación entre contenedores basado en gRPC",
         "IP Address Management, gestión de direcciones IP de redes y contenedores"
       ],
       "options_en": [
-        "Internet Protocol Access Manager exclusively and permanently",
-        "A type of custom network driver without exceptions or variants",
-        "A communication protocol between containers regardless of the applied context",
+        "Internet Protocol Access Manager, a service that authenticates network access",
+        "A type of custom network driver that replaces the default bridge driver",
+        "A container-to-container communication protocol based on gRPC",
         "IP Address Management, manages IP addresses for networks and containers"
       ],
       "correct_index": 3,
@@ -675,13 +675,13 @@
       "question_en": "What is the difference between a published port and an exposed port?",
       "options_es": [
         "Publicado es en producción, expuesto en desarrollo",
-        "No hay diferencia, son sinónimos independientemente del contexto aplicado",
+        "No hay diferencia, ambos términos son sinónimos que describen el mismo mapeo",
         "Ambos tienen la misma funcionalidad pero diferentes sintaxis",
         "Expuesto es documentación, publicado es el mapeo real del puerto"
       ],
       "options_en": [
         "Published is in production, exposed in development",
-        "There is no difference, they are synonyms regardless of the applied context",
+        "There is no difference, both terms are synonyms describing the same mapping",
         "Both have the same functionality but different syntax",
         "Exposed is documentation, published is the actual port mapping"
       ],
@@ -697,15 +697,15 @@
       "question_es": "¿Cuáles son los drivers de almacenamiento principales en Docker?",
       "question_en": "What are the main storage drivers in Docker?",
       "options_es": [
-        "local, remote, cloud sin excepciones ni variantes",
-        "overlay, aufs, devicemapper independientemente del contexto aplicado",
-        "ext4, ntfs, fat32 de manera exclusiva y permanente",
+        "local, remote, cloud, gestionados todos por el driver overlay2",
+        "overlay, aufs, devicemapper, siendo esta la lista completa y definitiva",
+        "ext4, ntfs, fat32, sistemas de archivos nativos que Docker usa como drivers de almacenamiento",
         "overlay2, overlay, aufs, devicemapper, btrfs, zfs, vfs"
       ],
       "options_en": [
-        "local, remote, cloud without exceptions or variants",
-        "overlay, aufs, devicemapper regardless of the applied context",
-        "ext4, ntfs, fat32 exclusively and permanently",
+        "local, remote, cloud, all managed by the overlay2 driver",
+        "overlay, aufs, devicemapper, being the complete and definitive list",
+        "ext4, ntfs, fat32, native filesystems that Docker uses as storage drivers",
         "overlay2, overlay, aufs, devicemapper, btrfs, zfs, vfs"
       ],
       "correct_index": 3,
@@ -720,16 +720,16 @@
       "question_es": "¿Cuál es el driver de almacenamiento recomendado en Docker moderno?",
       "question_en": "What is the recommended storage driver in modern Docker?",
       "options_es": [
-        "btrfs como concepto principal",
-        "overlay2 como concepto principal",
-        "devicemapper como concepto principal",
-        "aufs como concepto principal"
+        "btrfs",
+        "overlay2",
+        "devicemapper",
+        "aufs"
       ],
       "options_en": [
-        "btrfs as the primary concept",
-        "overlay2 as the primary concept",
-        "devicemapper as the primary concept",
-        "aufs as the primary concept"
+        "btrfs",
+        "overlay2",
+        "devicemapper",
+        "aufs"
       ],
       "correct_index": 1,
       "explanation_es": "overlay2 es el driver de almacenamiento predeterminado y recomendado en Docker moderno por su rendimiento y estabilidad.",
@@ -746,13 +746,13 @@
         "docker daemon --show-driver",
         "docker info | grep 'Storage Driver'",
         "docker config show storage",
-        "docker storage status de forma invariable y constante"
+        "docker storage status --verbose"
       ],
       "options_en": [
         "docker daemon --show-driver",
         "docker info | grep 'Storage Driver'",
         "docker config show storage",
-        "docker storage status invariably and constantly"
+        "docker storage status --verbose"
       ],
       "correct_index": 1,
       "explanation_es": "'docker info' muestra información del daemon de Docker incluyendo el driver de almacenamiento actual.",
@@ -767,13 +767,13 @@
       "question_en": "What is 'thin provisioning' in storage drivers?",
       "options_es": [
         "Asignar solo el espacio que se usa, no el máximo posible",
-        "Un tipo de encriptación de datos en cualquier escenario de implementación",
+        "Un tipo de cifrado de datos que se aplica automáticamente a cada volumen creado",
         "Una estrategia de caché para mejorar velocidad",
         "Un sistema de respaldo que ahorra espacio"
       ],
       "options_en": [
         "Allocate only the space being used, not the maximum possible",
-        "A type of data encryption in any implementation scenario",
+        "A type of data encryption automatically applied to every volume created",
         "A caching strategy to improve speed",
         "A backup system that saves space"
       ],
@@ -791,13 +791,13 @@
       "options_es": [
         "Ambos son idénticos en funcionalidad",
         "overlay2 solo funciona en Linux más nuevo",
-        "overlay2 usa menos memoria según la documentación estándar del servicio",
+        "overlay2 usa menos memoria porque comprime los archivos en cada capa",
         "overlay2 soporta múltiples capas inferiores, mejor rendimiento"
       ],
       "options_en": [
         "Both are identical in functionality",
         "overlay2 only works on newer Linux",
-        "overlay2 uses less memory according to standard service documentation",
+        "overlay2 uses less memory because it compresses files in each layer",
         "overlay2 supports multiple lower layers, better performance"
       ],
       "correct_index": 3,
@@ -812,13 +812,13 @@
       "question_es": "¿Qué es 'copy-on-write' en drivers de almacenamiento?",
       "question_en": "What is 'copy-on-write' in storage drivers?",
       "options_es": [
-        "Un tipo de almacenamiento en caché independientemente del contexto aplicado",
+        "Un tipo de almacenamiento en caché que copia todos los datos al iniciar el contenedor",
         "Un proceso de escritura que requiere confirmación",
         "Copiar datos solo cuando se modifican, compartiendo datos sin cambios",
         "Un protocolo de sincronización de archivos"
       ],
       "options_en": [
-        "A type of caching storage regardless of the applied context",
+        "A caching type that copies all data when the container starts",
         "A write process that requires confirmation",
         "Copy data only when modified, sharing unmodified data",
         "A file synchronization protocol"
@@ -835,13 +835,13 @@
       "question_es": "¿Cuál es el propósito del driver 'devicemapper'?",
       "question_en": "What is the purpose of the 'devicemapper' driver?",
       "options_es": [
-        "Mapear puertos de red entre dispositivos sin considerar otros factores relevantes",
+        "Mapear puertos de red entre dispositivos solo por UDP, nunca por TCP ni SCTP",
         "Controlar acceso a dispositivos específicos",
         "Gestionar almacenamiento por bloques para contenedores",
         "Mapear dispositivos físicos a contenedores"
       ],
       "options_en": [
-        "Map network ports between devices without considering other relevant factors",
+        "Map network ports between devices via UDP only",
         "Control access to specific devices",
         "Manage block storage for containers",
         "Map physical devices to containers"
@@ -859,14 +859,14 @@
       "question_en": "What is 'btrfs' in the context of Docker drivers?",
       "options_es": [
         "Un sistema de archivos con características copy-on-write nativas",
-        "Un tipo de encriptación en todos los casos posibles",
-        "Un driver de red para Docker sin considerar otros factores relevantes",
+        "Un tipo de encriptación que cifra bloques con AES-128 automáticamente",
+        "Un driver de red para Docker basado en el protocolo VXLAN",
         "Un protocolo de comunicación"
       ],
       "options_en": [
         "A filesystem with native copy-on-write features",
-        "A type of encryption in all possible cases",
-        "A Docker network driver without considering other relevant factors",
+        "A type of encryption that ciphers blocks using AES-128",
+        "A Docker network driver based on the VXLAN protocol",
         "A communication protocol"
       ],
       "correct_index": 0,
@@ -883,13 +883,13 @@
       "options_es": [
         "aufs tiene mejor rendimiento que overlay",
         "aufs es más antiguo, overlay es más moderno y soportado por el kernel",
-        "No hay diferencia funcional importante independientemente del contexto aplicado",
+        "No hay diferencia funcional importante, solo cambia el nombre del binario",
         "overlay solo funciona en contenedores privilegiados"
       ],
       "options_en": [
         "aufs has better performance than overlay",
         "aufs is older, overlay is modern and supported by the kernel",
-        "No significant functional difference regardless of the applied context",
+        "No significant functional difference, only the binary name changes",
         "overlay only works in privileged containers"
       ],
       "correct_index": 1,
@@ -904,16 +904,16 @@
       "question_es": "¿Cómo se cambia el driver de almacenamiento en Docker?",
       "question_en": "How do you change the storage driver in Docker?",
       "options_es": [
-        "Usando docker config set storage-driver en cualquier escenario de implementación",
+        "Usando el comando docker config set storage-driver sin reiniciar el servicio",
         "Editando /etc/docker/daemon.json y reiniciando el daemon",
         "En el archivo de configuración de Docker Compose",
-        "Con un comando de docker en todos los casos posibles"
+        "Con el comando docker storage-driver set aplicado en caliente"
       ],
       "options_en": [
-        "Using docker config set storage-driver in any implementation scenario",
+        "Using the docker config set storage-driver command without a restart",
         "By editing /etc/docker/daemon.json and restarting the daemon",
         "In the Docker Compose configuration file",
-        "With a docker command in all possible cases"
+        "With the docker storage-driver set command applied live"
       ],
       "correct_index": 1,
       "explanation_es": "Se edita /etc/docker/daemon.json añadiendo 'storage-driver' y se reinicia el daemon. Requiere eliminar imágenes/contenedores existentes.",
@@ -951,13 +951,13 @@
       "question_en": "What is the impact of storage driver on performance?",
       "options_es": [
         "Impacto mayor en I/O, velocidad de arranque y uso de inodos",
-        "No tiene impacto significativo sin considerar otros factores relevantes",
+        "No tiene impacto significativo, solo cambia el nombre del proceso",
         "Solo importante en producción, no en desarrollo",
         "Solo afecta el tamaño de la imagen"
       ],
       "options_en": [
         "Major impact on I/O, startup speed, and inode usage",
-        "No significant impact without considering other relevant factors",
+        "No significant impact, only the process name changes",
         "Only important in production, not development",
         "Only affects image size"
       ],
@@ -976,13 +976,13 @@
         "Un sistema de archivos con snapshots, compresión y replicación",
         "Un protocolo de seguridad",
         "Un formato de compresión de imágenes",
-        "Un tipo de driver de red en cualquier escenario de implementación"
+        "Un tipo de driver de red para Docker que asigna direcciones MAC virtuales en modo macvlan"
       ],
       "options_en": [
         "A filesystem with snapshots, compression, and replication",
         "A security protocol",
         "An image compression format",
-        "A type of network driver in any implementation scenario"
+        "A type of Docker network driver that assigns virtual MAC addresses in macvlan mode"
       ],
       "correct_index": 0,
       "explanation_es": "ZFS es un sistema de archivos avanzado con características como snapshots, compresión, RAID y replicación. Puede ser driver Docker.",
@@ -996,15 +996,15 @@
       "question_es": "¿Cuál es la ventaja principal de usar volúmenes sobre drivers de almacenamiento?",
       "question_en": "What is the main advantage of using volumes over storage drivers?",
       "options_es": [
-        "Volúmenes ocupan menos espacio en todos los casos posibles",
-        "Volúmenes son más rápidos según la documentación estándar del servicio",
-        "Volúmenes permiten múltiples contenedores automáticamente en todos los casos posibles",
+        "Volúmenes ocupan menos espacio porque comprimen los datos automáticamente",
+        "Volúmenes son más rápidos porque usan RAM en lugar de disco",
+        "Volúmenes permiten múltiples contenedores automáticamente sin configurar montajes",
         "Volúmenes son manejados por Docker independientemente del driver subyacente"
       ],
       "options_en": [
-        "Volumes use less space in all possible cases",
-        "Volumes are faster according to standard service documentation",
-        "Volumes allow multiple containers automatically in all possible cases",
+        "Volumes use less space because they compress data automatically",
+        "Volumes are faster because they use RAM instead of disk",
+        "Volumes allow multiple containers automatically without configuring mounts",
         "Volumes are managed by Docker independent of the underlying driver"
       ],
       "correct_index": 3,
@@ -1020,15 +1020,15 @@
       "question_en": "How do you monitor Docker storage statistics?",
       "options_es": [
         "docker system df muestra uso de almacenamiento de imágenes, contenedores y volúmenes",
-        "Usando herramientas externas solamente sin excepciones ni variantes",
-        "No hay manera de monitorear almacenamiento independientemente del contexto aplicado",
-        "docker stats solo muestra CPU y memoria independientemente del contexto aplicado"
+        "Usando herramientas externas solamente, porque Docker no expone esos datos por su cuenta",
+        "No hay manera de monitorear almacenamiento, Docker no guarda esos datos",
+        "docker stats solo muestra CPU y memoria, nunca uso de disco"
       ],
       "options_en": [
         "docker system df shows storage usage for images, containers, and volumes",
-        "Using external tools only without exceptions or variants",
-        "There is no way to monitor storage regardless of the applied context",
-        "docker stats only shows CPU and memory regardless of the applied context"
+        "Using external tools only, because Docker itself never exposes that disk usage data",
+        "There is no way to monitor storage, Docker keeps no such data",
+        "docker stats only shows CPU and memory, never disk usage"
       ],
       "correct_index": 0,
       "explanation_es": "'docker system df' proporciona un resumen del uso de disco en imágenes, contenedores y volúmenes.",
@@ -1042,13 +1042,13 @@
       "question_es": "¿Cuál es el patrón 'ambassador' en networking con contenedores?",
       "question_en": "What is the 'ambassador' pattern in container networking?",
       "options_es": [
-        "Un patrón de seguridad para contenedores independientemente del contexto aplicado",
+        "Un patrón de seguridad para contenedores que cifra el tráfico interno",
         "Un contenedor que representa al host ante otros contenedores",
         "Un contenedor proxy que actúa de intermediario entre contenedores",
         "Un contenedor que gestiona todas las conexiones de red"
       ],
       "options_en": [
-        "A security pattern for containers regardless of the applied context",
+        "A security pattern for containers that encrypts internal traffic end to end",
         "A container representing the host to other containers",
         "A proxy container that acts as an intermediary between containers",
         "A container managing all network connections"
@@ -1065,13 +1065,13 @@
       "question_es": "¿Qué es el patrón 'logging driver' en Docker?",
       "question_en": "What is the 'logging driver' pattern in Docker?",
       "options_es": [
-        "Una estrategia de backup de datos sin considerar otros factores relevantes",
+        "Una estrategia de backup de datos que se ejecuta cada hora automáticamente",
         "Un mecanismo de Docker para centralizar registros de contenedores",
         "Un patrón para registrar errores de contenedores",
         "Un tipo de driver de almacenamiento"
       ],
       "options_en": [
-        "A data backup strategy without considering other relevant factors",
+        "A data backup strategy that runs automatically every hour",
         "A Docker mechanism to centralize container logs",
         "A pattern for logging container errors",
         "A type of storage driver"
@@ -1088,13 +1088,13 @@
       "question_es": "¿Cómo se configura un logging driver en Docker?",
       "question_en": "How do you configure a logging driver in Docker?",
       "options_es": [
-        "Mediante variables de entorno independientemente del contexto aplicado",
+        "Mediante variables de entorno como LOG_DRIVER en el shell de cada contenedor",
         "Solo a través de docker-compose.yaml",
         "En /etc/docker/daemon.json o por contenedor con --log-driver",
         "En el Dockerfile con instrucción LOG"
       ],
       "options_en": [
-        "Through environment variables regardless of the applied context",
+        "Through environment variables like LOG_DRIVER set in each container's shell",
         "Only through docker-compose.yaml",
         "In /etc/docker/daemon.json or per container with --log-driver",
         "In the Dockerfile with LOG instruction"
@@ -1111,15 +1111,15 @@
       "question_es": "¿Cuál es el patrón 'sidecar' en Docker?",
       "question_en": "What is the 'sidecar' pattern in Docker?",
       "options_es": [
-        "Un patrón de replicación de datos sin considerar otros factores relevantes",
+        "Un patrón de replicación de datos entre distintas regiones geográficas del planeta",
         "Un contenedor auxiliar que extiende funcionalidades de otro contenedor",
-        "Una estrategia de almacenamiento de forma invariable y constante",
+        "Una estrategia de almacenamiento que fija el tamaño del volumen",
         "Un contenedor que corre al lado de otro sin conexión"
       ],
       "options_en": [
-        "A data replication pattern without considering other relevant factors",
+        "A data replication pattern across distinct geographic regions of the planet",
         "An auxiliary container that extends another container's functionality",
-        "A storage strategy invariably and constantly",
+        "A storage strategy that fixes the volume size permanently",
         "A container running alongside another without connection"
       ],
       "correct_index": 1,
@@ -1160,13 +1160,13 @@
         "Una estrategia de escalado solo en Kubernetes",
         "Un mecanismo automático del daemon Docker",
         "Un contenedor que distribuye tráfico entre múltiples instancias",
-        "Un driver de red especial en cualquier escenario de implementación"
+        "Un driver de red especial que requiere modo host obligatorio en cada nodo"
       ],
       "options_en": [
         "A scaling strategy only in Kubernetes",
         "An automatic Docker daemon mechanism",
         "A container distributing traffic among multiple instances",
-        "A special network driver in any implementation scenario"
+        "A special network driver that requires mandatory host mode"
       ],
       "correct_index": 2,
       "explanation_es": "El patrón load balancer usa contenedores como nginx o HAProxy para distribuir tráfico entre múltiples contenedores backend.",
@@ -1180,14 +1180,14 @@
       "question_es": "¿Cómo se puede monitorear la salud de contenedores en multi-contenedor?",
       "question_en": "How can you monitor the health of containers in multi-container setup?",
       "options_es": [
-        "Con HEALTHCHECK en Dockerfile de forma invariable y constante",
-        "Todas las opciones anteriores son válidas",
+        "Solo con HEALTHCHECK en el Dockerfile, sin otra vía",
+        "Cualquiera de estas vías: HEALTHCHECK, logs o monitoreo externo",
         "Analizando logs con patrones específicos",
         "Con herramientas de monitoreo externas"
       ],
       "options_en": [
-        "With HEALTHCHECK in Dockerfile invariably and constantly",
-        "All above options are valid",
+        "Only with HEALTHCHECK in the Dockerfile, no other way",
+        "Any of these: HEALTHCHECK, logs or external monitoring",
         "By analyzing logs with specific patterns",
         "With external monitoring tools"
       ],
@@ -1203,13 +1203,13 @@
       "question_es": "¿Qué es el patrón 'db pattern' o 'persistent pattern'?",
       "question_en": "What is the 'db pattern' or 'persistent pattern'?",
       "options_es": [
-        "Una estrategia de replicación de datos de manera exclusiva y permanente",
+        "Una estrategia de replicación de datos entre tres nodos maestros con quorum",
         "Un patrón donde la BD corre en un contenedor separado con volúmenes",
         "Un patrón de copia de seguridad automática",
         "Una configuración de redundancia de red"
       ],
       "options_en": [
-        "A data replication strategy exclusively and permanently",
+        "A data replication strategy across three master nodes using a quorum vote",
         "A pattern where DB runs in a separate container with volumes",
         "An automatic backup pattern",
         "A network redundancy configuration"
@@ -1229,13 +1229,13 @@
         "Mediante volúmenes compartidos y coordinación de aplicación",
         "Solo en Kubernetes, no en Docker puro",
         "No se sincroniza, cada contenedor tiene su copia",
-        "Automáticamente por Docker según la documentación estándar del servicio"
+        "Automáticamente por Docker mediante un daemon de replicación interno"
       ],
       "options_en": [
         "Through shared volumes and application coordination",
         "Only in Kubernetes, not in pure Docker",
         "Not synchronized, each container has its copy",
-        "Automatically by Docker according to standard service documentation"
+        "Automatically by Docker through an internal replication daemon"
       ],
       "correct_index": 0,
       "explanation_es": "Se usa volúmenes compartidos para datos comunes y se implementa sincronización en la lógica de la aplicación.",
@@ -1249,14 +1249,14 @@
       "question_es": "¿Cuál es el impacto del aislamiento de red en seguridad multi-contenedor?",
       "question_en": "What is the impact of network isolation on multi-container security?",
       "options_es": [
-        "Aumenta la complejidad sin beneficios de seguridad según la documentación estándar del servicio",
-        "Solo es relevante en producción de manera exclusiva y permanente",
+        "Aumenta la complejidad sin ningún beneficio real de seguridad medible",
+        "Solo es relevante en producción, nunca en desarrollo local",
         "Reduce significativamente el riesgo de compromiso de contenedores",
         "No tiene impacto, la seguridad depende solo de firewall"
       ],
       "options_en": [
-        "Increases complexity without security benefits according to standard service documentation",
-        "Only relevant in production exclusively and permanently",
+        "Increases complexity without any real security benefit",
+        "Only relevant in production, never in local development",
         "Significantly reduces risk of container compromise",
         "No impact, security depends only on firewall"
       ],
@@ -1298,13 +1298,13 @@
         "No hay desafíos, es igual que single-container",
         "Acceso a logs distribuidos de múltiples contenedores",
         "Los contenedores son demasiado rápidos",
-        "Docker no soporta debugging independientemente del contexto aplicado"
+        "Docker no soporta debugging, solo Kubernetes lo permite"
       ],
       "options_en": [
         "No challenges, it's the same as single-container",
         "Access to distributed logs from multiple containers",
         "Containers are too fast",
-        "Docker doesn't support debugging regardless of the applied context"
+        "Docker doesn't support debugging, only Kubernetes allows it"
       ],
       "correct_index": 1,
       "explanation_es": "La principal dificultad es correlacionar eventos y logs de múltiples contenedores independientes, requiriendo herramientas centralizadas.",
@@ -1321,13 +1321,13 @@
         "Usando archivos .env, secretos de Kubernetes o Docker Swarm",
         "Usando solo variables de entorno del host",
         "Pasando como variables de entorno en docker-compose",
-        "Codificándolos directamente en Dockerfile según la documentación estándar del servicio"
+        "Codificándolos directamente en Dockerfile, como recomienda Docker"
       ],
       "options_en": [
         "Using .env files, Kubernetes secrets, or Docker Swarm",
         "Using only host environment variables",
         "Passing as environment variables in docker-compose",
-        "Hardcoding in Dockerfile according to standard service documentation"
+        "Hardcoding in Dockerfile, as Docker itself recommends"
       ],
       "correct_index": 0,
       "explanation_es": "Se usan .env files, Docker secrets en Swarm, o Kubernetes secrets. Nunca codificar en Dockerfile.",
@@ -1342,13 +1342,13 @@
       "question_en": "What is the 'health-check proxy' pattern?",
       "options_es": [
         "Una estrategia de failover automático",
-        "Un tipo de load balancer especial en cualquier escenario de implementación",
+        "Un tipo de load balancer especial que exige asignar una dirección IP fija al servicio",
         "Un proxy que detecta contenedores no saludables y los excluye",
         "Un proxy que solo chequea la salud de otros proxies"
       ],
       "options_en": [
         "An automatic failover strategy",
-        "A special type of load balancer in any implementation scenario",
+        "A special type of load balancer that requires assigning a fixed IP to the service",
         "A proxy that detects unhealthy containers and excludes them",
         "A proxy that only checks the health of other proxies"
       ],
@@ -1364,13 +1364,13 @@
       "question_es": "¿Cómo se pueden manejar transacciones distribuidas en multi-contenedor?",
       "question_en": "How can you handle distributed transactions in multi-container systems?",
       "options_es": [
-        "Solo Kubernetes soporta transacciones distribuidas en cualquier escenario de implementación",
+        "Solo Kubernetes soporta transacciones distribuidas mediante su API de coordinación interna",
         "Las transacciones ACID no son posibles en contenedores",
         "Docker maneja automáticamente transacciones distribuidas",
         "Usando patrones como Saga, eventual consistency, o coordinación en aplicación"
       ],
       "options_en": [
-        "Only Kubernetes supports distributed transactions in any implementation scenario",
+        "Only Kubernetes supports distributed transactions through its internal coordination API",
         "ACID transactions are not possible in containers",
         "Docker automatically handles distributed transactions",
         "Using patterns like Saga, eventual consistency, or application coordination"

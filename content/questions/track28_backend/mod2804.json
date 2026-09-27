@@ -7,16 +7,16 @@
       "question_es": "¿Cuál es el propósito principal de SQLAlchemy Session?",
       "question_en": "What is the primary purpose of SQLAlchemy Session?",
       "options_es": [
-        "Almacenar en caché las consultas realizadas",
-        "Definir esquemas de tablas en entornos reales como práctica recomendada",
-        "Gestionar la conexión a la base de datos y rastrear cambios en objetos",
-        "Ejecutar directamente comandos SQL sin ORM"
+        "Definir esquemas de tablas",
+        "Ejecutar directamente comandos SQL sin ORM",
+        "Gestionar la conexión y el ciclo de vida de los objetos",
+        "Almacenar en una caché local las consultas SQL ya realizadas"
       ],
       "options_en": [
-        "Cache executed queries",
-        "Define table schemas in real environments in this context",
-        "Manage database connection and track object changes",
-        "Execute raw SQL commands without ORM"
+        "Define table schemas",
+        "Execute raw SQL commands without ORM",
+        "Manage the connection and the lifecycle of the objects",
+        "Store previously executed SQL queries in a local cache"
       ],
       "correct_index": 2,
       "explanation_es": "La Session en SQLAlchemy es la interfaz principal para interactuar con la base de datos. Gestiona la conexión, el ciclo de vida de los objetos (identity map) y mantiene un registro de cambios para el flush/commit.",
@@ -30,15 +30,15 @@
       "question_es": "¿Qué es una relación de uno-a-muchos (One-to-Many) en SQLAlchemy?",
       "question_en": "What is a One-to-Many relationship in SQLAlchemy?",
       "options_es": [
+        "Muchos registros de una tabla ligados a muchos de otra",
         "Dos tablas con múltiples claves foráneas cruzadas",
-        "Varios registros en una tabla relacionados con un registro según la documentación oficial",
-        "Un registro en una tabla relacionado con muchos registros en otra",
+        "Un solo registro relacionado con varios de otra tabla",
         "Una tabla que se divide en varias según criterios"
       ],
       "options_en": [
+        "Many records in one table linked to many in another",
         "Two tables with multiple cross-foreign keys",
-        "Multiple records in a table related to one record according to official documentation",
-        "One record in a table related to many records in another",
+        "A single record related to several records in another table",
         "A table divided into several based on criteria"
       ],
       "correct_index": 2,
@@ -53,16 +53,16 @@
       "question_es": "¿Cuál es el resultado de usar `session.query(User).filter(User.age > 18).first()`?",
       "question_en": "What is the result of using `session.query(User).filter(User.age > 18).first()`?",
       "options_es": [
-        "Retorna un diccionario con el conteo de Usuarios",
-        "Retorna el primer Usuario con edad mayor a 18, o None",
         "Retorna todos los Usuarios con edad mayor a 18",
-        "Retorna una lista vacía si no hay coincidencias como práctica recomendada"
+        "El primer Usuario con más de 18 años, o None",
+        "Retorna un diccionario con el conteo de Usuarios",
+        "Retorna una lista vacía si no hay coincidencias"
       ],
       "options_en": [
-        "Returns a dictionary with the count of Users",
-        "Returns the first User with age greater than 18, or None",
         "Returns all Users with age greater than 18",
-        "Returns an empty list if no matches within this paradigm"
+        "The first User over 18, or None",
+        "Returns a dictionary with the count of Users",
+        "Returns an empty list if no matches"
       ],
       "correct_index": 1,
       "explanation_es": "El método `.first()` retorna el primer resultado de la consulta o None si no hay resultados. `.all()` retornaría todos los resultados.",
@@ -76,16 +76,16 @@
       "question_es": "¿Cómo se define una relación Many-to-Many en SQLAlchemy?",
       "question_en": "How do you define a Many-to-Many relationship in SQLAlchemy?",
       "options_es": [
-        "Usando un atributo relationship sin tabla intermedia",
         "Con un único foreignKey en una tabla",
         "Duplicando las claves primarias",
-        "Usando una tabla de asociación intermedia con ForeignKey en ambos lados"
+        "Usando un atributo relationship sin tabla intermedia",
+        "Con una tabla de asociación con claves foráneas"
       ],
       "options_en": [
-        "Using a relationship attribute without an intermediate table",
         "With a single foreignKey in one table",
         "By duplicating primary keys",
-        "Using an intermediate association table with ForeignKey on both sides"
+        "Using a relationship attribute without an intermediate table",
+        "With an association table holding foreign keys from both sides"
       ],
       "correct_index": 3,
       "explanation_es": "Las relaciones muchos-a-muchos requieren una tabla de asociación que contiene claves foráneas de ambas tablas. SQLAlchemy proporciona secondary para declarar esta tabla.",
@@ -99,15 +99,15 @@
       "question_es": "¿Qué es lazy loading en SQLAlchemy?",
       "question_en": "What is lazy loading in SQLAlchemy?",
       "options_es": [
-        "Cargar datos relacionados solo cuando se accede a ellos",
+        "Cargar relaciones solo al acceder a ellas",
         "Cargar todos los datos al inicializar la sesión",
-        "Precarga de datos en caché al iniciar de manera estándar",
+        "Precarga de datos en caché al iniciar",
         "Descargar datos del ORM después de usarlos"
       ],
       "options_en": [
-        "Load related data only when accessed",
+        "Load relationships only when accessed",
         "Load all data when initializing the session",
-        "Pre-load data in cache at startup as a standard approach",
+        "Pre-load data in cache at startup",
         "Unload data from ORM after using it"
       ],
       "correct_index": 0,
@@ -122,14 +122,14 @@
       "question_es": "¿Cómo se define un modelo de usuario con una columna de correo único en SQLAlchemy?",
       "question_en": "How do you define a User model with a unique email column in SQLAlchemy?",
       "options_es": [
-        "Creando una tabla separada solo para emails",
         "Agregando @unique_constraint al modelo",
+        "Creando una tabla separada solo para emails",
         "Con una vista de base de datos",
         "Con el parámetro unique=True en la columna"
       ],
       "options_en": [
-        "Creating a separate table only for emails",
         "Adding @unique_constraint to the model",
+        "Creating a separate table only for emails",
         "With a database view",
         "With the unique=True parameter in the column"
       ],
@@ -146,15 +146,15 @@
       "question_en": "What is the difference between session.add() and session.commit()?",
       "options_es": [
         "Ambos hacen lo mismo",
+        "add() guarda en caché, commit() descarga el caché",
         "commit() solo se usa para actualizaciones",
-        "add() guarda en caché, commit() descarga el caché como práctica recomendada",
-        "add() prepara el objeto para guardarse, commit() lo guarda en la BD"
+        "add() prepara el objeto, commit() lo persiste"
       ],
       "options_en": [
-        "Both do the same thing in practice",
+        "Both do the same thing",
+        "add() caches, commit() flushes the cache",
         "commit() is only used for updates",
-        "add() caches, commit() flushes the cache for most projects",
-        "add() prepares the object to be saved, commit() saves it to the database"
+        "add() stages the object, commit() persists it"
       ],
       "correct_index": 3,
       "explanation_es": "session.add() añade un objeto a la sesión pero no lo guarda en la base de datos. session.commit() hace flush de los cambios y ejecuta una transacción.",
@@ -170,13 +170,13 @@
       "options_es": [
         "Cargar datos gradualmente a través de múltiples consultas",
         "Descartar datos relacionados para mejorar rendimiento",
-        "Cargar datos relacionados en la misma consulta que los datos principales",
+        "Cargar los datos relacionados junto con los principales",
         "Cargar en segundo plano sin bloquear la aplicación"
       ],
       "options_en": [
         "Load data gradually through multiple queries",
         "Discard related data to improve performance",
-        "Load related data in the same query as the main data",
+        "Load related data together with the main data",
         "Load in the background without blocking the application"
       ],
       "correct_index": 2,
@@ -191,14 +191,14 @@
       "question_es": "¿Cuál es la forma correcta de consultar todos los usuarios con email terminado en @gmail.com?",
       "question_en": "What is the correct way to query all users with email ending in @gmail.com?",
       "options_es": [
+        "session.query(User).filter_by(email__endswith='@gmail.com').fetchall()",
         "session.query(User).where(email ~ '@gmail.com')",
-        "session.query(User).email.endswith('@gmail.com')",
         "session.query(User).filter(User.email.endswith('@gmail.com')).all()",
         "session.query(User).like('%@gmail.com')"
       ],
       "options_en": [
+        "session.query(User).filter_by(email__endswith='@gmail.com').fetchall()",
         "session.query(User).where(email ~ '@gmail.com')",
-        "session.query(User).email.endswith('@gmail.com')",
         "session.query(User).filter(User.email.endswith('@gmail.com')).all()",
         "session.query(User).like('%@gmail.com')"
       ],
@@ -237,16 +237,16 @@
       "question_es": "¿Cómo se define una relación bidireccional en SQLAlchemy?",
       "question_en": "How do you define a bidirectional relationship in SQLAlchemy?",
       "options_es": [
-        "Usando solo ForeignKey sin relationship",
         "Creando dos tablas de asociación",
-        "Usando relationship() en ambos modelos con back_populates",
-        "Duplicando la columna ForeignKey"
+        "Duplicando la columna ForeignKey",
+        "Usar relationship() con back_populates en ambos modelos",
+        "Usando solo ForeignKey sin declarar ningún relationship()"
       ],
       "options_en": [
-        "Using only ForeignKey without relationship",
         "Creating two association tables",
-        "Using relationship() in both models with back_populates",
-        "Duplicating the ForeignKey column"
+        "Duplicating the ForeignKey column",
+        "Use relationship() with back_populates on both models",
+        "Using only ForeignKey without declaring any relationship()"
       ],
       "correct_index": 2,
       "explanation_es": "relationship() con back_populates permite acceder a la relación desde ambos lados del modelo. Por ejemplo, user.posts y post.user.",
@@ -260,15 +260,15 @@
       "question_es": "¿Qué sucede si se intenta acceder a una propiedad relacionada después de cerrar la sesión?",
       "question_en": "What happens if you try to access a related property after closing the session?",
       "options_es": [
-        "Se genera una excepción DetachedInstanceError (lazy loading en objeto desapegado)",
-        "Retorna None automáticamente en entornos reales",
-        "Se abre una nueva sesión implícita como regla general de forma general en entornos de producción",
+        "Lanza una excepción DetachedInstanceError",
+        "Retorna None automáticamente",
+        "Se abre una nueva sesión de manera totalmente implícita",
         "Se retorna un objeto vacío sin errores"
       ],
       "options_en": [
-        "A DetachedInstanceError exception is raised (lazy loading on detached object)",
-        "Returns None automatically according to spec",
-        "A new implicit session is opened in the most common case in this context under normal conditions",
+        "It raises a DetachedInstanceError exception",
+        "Returns None automatically",
+        "A new session opens automatically in a completely implicit way",
         "Returns an empty object without errors"
       ],
       "correct_index": 0,
@@ -283,15 +283,15 @@
       "question_es": "¿Cómo se actualiza un registro en SQLAlchemy?",
       "question_en": "How do you update a record in SQLAlchemy?",
       "options_es": [
-        "Ejecutar SQL raw UPDATE por convención",
-        "Usar session.update() directamente como práctica recomendada",
-        "Modificar el atributo del objeto y luego hacer commit()",
+        "Usar session.update() de forma directa sobre el objeto",
+        "Ejecutar SQL raw UPDATE",
+        "Modificar el atributo y hacer commit()",
         "Eliminar y recrear el registro"
       ],
       "options_en": [
+        "Use session.update() directly on the object",
         "Execute raw SQL UPDATE",
-        "Use session.update() directly for most projects",
-        "Modify the object's attribute and then commit()",
+        "Modify the attribute and call commit()",
         "Delete and recreate the record"
       ],
       "correct_index": 2,
@@ -307,15 +307,15 @@
       "question_en": "What is the db_default attribute in a SQLAlchemy column?",
       "options_es": [
         "Un valor que se establece en la aplicación Python",
-        "Un índice de base de datos en este contexto de forma general en entornos de producción",
         "Una restricción que obliga a tener un valor",
-        "Un valor por defecto ejecutado en la base de datos para nuevas filas"
+        "Un índice de base de datos",
+        "Un valor que la base de datos asigna por defecto"
       ],
       "options_en": [
         "A value set in the Python application",
-        "A database index within this paradigm as a general guideline within this paradigm",
         "A constraint that requires a value",
-        "A default value executed in the database for new rows"
+        "A database index",
+        "A default value that the database assigns"
       ],
       "correct_index": 3,
       "explanation_es": "db_default especifica un valor que la base de datos asignará automáticamente si no se proporciona un valor. Se diferencia de default que es a nivel Python.",
@@ -329,16 +329,16 @@
       "question_es": "¿Cómo se elimina un registro en SQLAlchemy?",
       "question_en": "How do you delete a record in SQLAlchemy?",
       "options_es": [
-        "Ejecutar un comando DROP TABLE",
         "Establecer todos los atributos a None",
         "Usar session.remove(objeto)",
-        "Usar session.delete(objeto) y luego session.commit()"
+        "Ejecutar un comando DROP TABLE",
+        "session.delete() y después commit()"
       ],
       "options_en": [
-        "Execute a DROP TABLE command",
-        "Set all attributes to None in practice",
+        "Set all attributes to None",
         "Use session.remove(object)",
-        "Use session.delete(object) and then session.commit()"
+        "Execute a DROP TABLE command",
+        "session.delete() followed by commit()"
       ],
       "correct_index": 3,
       "explanation_es": "session.delete() marca un objeto para eliminación. El DELETE SQL real se ejecuta cuando se hace commit(). Sin commit(), los cambios no se persisten.",
@@ -352,14 +352,14 @@
       "question_es": "¿Cuál es la función de un schema en Prisma?",
       "question_en": "What is the purpose of a schema in Prisma?",
       "options_es": [
-        "Definir la estructura de la base de datos y los modelos",
-        "Configurar la conexión a la base de datos de forma general",
+        "Definir modelos y estructura de la BD",
+        "Configurar la conexión a la base de datos",
         "Ejecutar migraciones automáticamente",
         "Generar código SQL raw"
       ],
       "options_en": [
-        "Define the database structure and models",
-        "Configure the database connection for most projects",
+        "Define models and the database structure",
+        "Configure the database connection",
         "Execute migrations automatically",
         "Generate raw SQL code"
       ],
@@ -375,16 +375,16 @@
       "question_es": "¿Cómo se define una relación uno-a-muchos en Prisma?",
       "question_en": "How do you define a one-to-many relationship in Prisma?",
       "options_es": [
-        "Con @relation en el modelo hijo y un campo de tipo model[] en el padre",
+        "Con @relation y un campo model[] en el padre",
         "Duplicando los IDs en ambas tablas",
-        "Con una tabla de asociación automática",
-        "Usando directivas @index según la especificación"
+        "Con una tabla de asociación intermedia creada de forma automática",
+        "Usando directivas @index"
       ],
       "options_en": [
-        "With @relation in the child model and a model[] field in the parent",
+        "With @relation and a model[] field in the parent",
         "Duplicating IDs in both tables",
-        "With an automatic association table",
-        "Using @index directives by default"
+        "With an intermediate association table created automatically",
+        "Using @index directives"
       ],
       "correct_index": 0,
       "explanation_es": "En Prisma, se define con una clave foránea en el modelo hijo y @relation. El modelo padre accede a los hijos como un array.",
@@ -399,13 +399,13 @@
       "question_en": "What is the correct way to create a new record with Prisma?",
       "options_es": [
         "prisma.user.new({ name: 'John', email: 'john@example.com' })",
-        "prisma.user.insert({ name: 'John', email: 'john@example.com' })",
+        "prisma.user.insertOne({ data: { name: 'John', email: 'john@example.com' } })",
         "prisma.user.create({ data: { name: 'John', email: 'john@example.com' } })",
         "new User({ name: 'John', email: 'john@example.com' })"
       ],
       "options_en": [
         "prisma.user.new({ name: 'John', email: 'john@example.com' })",
-        "prisma.user.insert({ name: 'John', email: 'john@example.com' })",
+        "prisma.user.insertOne({ data: { name: 'John', email: 'john@example.com' } })",
         "prisma.user.create({ data: { name: 'John', email: 'john@example.com' } })",
         "new User({ name: 'John', email: 'john@example.com' })"
       ],
@@ -421,14 +421,14 @@
       "question_es": "¿Cómo se consultan todos los usuarios con Prisma?",
       "question_en": "How do you query all users with Prisma?",
       "options_es": [
-        "prisma.user.getAll()",
         "prisma.user.all()",
+        "prisma.user.getAllRecords()",
         "prisma.user.findMany()",
         "prisma.user.list()"
       ],
       "options_en": [
-        "prisma.user.getAll()",
         "prisma.user.all()",
+        "prisma.user.getAllRecords()",
         "prisma.user.findMany()",
         "prisma.user.list()"
       ],
@@ -444,15 +444,15 @@
       "question_es": "¿Cómo se actualiza un registro en Prisma?",
       "question_en": "How do you update a record in Prisma?",
       "options_es": [
-        "prisma.user.update({ where: { id: 1 }, data: { name: 'Jane' } })",
+        "prisma.user.update({where:{id:1},data:{name:'Jane'}})",
         "prisma.user.patch({ id: 1, name: 'Jane' })",
-        "prisma.user.modify({ id: 1, name: 'Jane' }) en entornos de producción",
+        "prisma.user.modifyRecord({ id: 1, name: 'Jane' }, { sync: true })",
         "prisma.user(1).update({ name: 'Jane' })"
       ],
       "options_en": [
-        "prisma.user.update({ where: { id: 1 }, data: { name: 'Jane' } })",
+        "prisma.user.update({where:{id:1},data:{name:'Jane'}})",
         "prisma.user.patch({ id: 1, name: 'Jane' })",
-        "prisma.user.modify({ id: 1, name: 'Jane' }) as a recommended practice",
+        "prisma.user.modifyRecord({ id: 1, name: 'Jane' }, { sync: true })",
         "prisma.user(1).update({ name: 'Jane' })"
       ],
       "correct_index": 0,
@@ -467,15 +467,15 @@
       "question_es": "¿Cómo se elimina un registro en Prisma?",
       "question_en": "How do you delete a record in Prisma?",
       "options_es": [
-        "prisma.user.delete({ where: { id: 1 } })",
-        "prisma.user.remove({ id: 1 }) según la documentación oficial",
-        "prisma.user.destroy({ id: 1 })",
+        "prisma.user.delete({where:{id:1}})",
+        "prisma.user.remove({ id: 1 })",
+        "prisma.user.destroyRecord({ id: 1 })",
         "prisma.user.erase({ id: 1 })"
       ],
       "options_en": [
-        "prisma.user.delete({ where: { id: 1 } })",
-        "prisma.user.remove({ id: 1 }) within this paradigm",
-        "prisma.user.destroy({ id: 1 })",
+        "prisma.user.delete({where:{id:1}})",
+        "prisma.user.remove({ id: 1 })",
+        "prisma.user.destroyRecord({ id: 1 })",
         "prisma.user.erase({ id: 1 })"
       ],
       "correct_index": 0,
@@ -490,15 +490,15 @@
       "question_es": "¿Cómo se consulta un usuario por ID con Prisma?",
       "question_en": "How do you query a user by ID with Prisma?",
       "options_es": [
-        "prisma.user.fetch({ id: 1 }) dentro de este paradigma",
         "prisma.user.findById(1)",
-        "prisma.user.get(1) como regla general",
+        "prisma.user.get(1)",
+        "prisma.user.fetch({ id: 1 })",
         "prisma.user.findUnique({ where: { id: 1 } })"
       ],
       "options_en": [
-        "prisma.user.fetch({ id: 1 }) as a recommended practice",
         "prisma.user.findById(1)",
-        "prisma.user.get(1) by convention",
+        "prisma.user.get(1)",
+        "prisma.user.fetch({ id: 1 })",
         "prisma.user.findUnique({ where: { id: 1 } })"
       ],
       "correct_index": 3,
@@ -513,16 +513,16 @@
       "question_es": "¿Qué es npx prisma generate?",
       "question_en": "What does npx prisma generate do?",
       "options_es": [
-        "Ejecuta todas las migraciones pendientes",
         "Crea un nuevo archivo schema.prisma",
+        "Ejecuta todas las migraciones pendientes",
         "Genera SQL raw desde el schema",
-        "Genera el cliente Prisma desde el schema.prisma"
+        "Genera el cliente Prisma del schema"
       ],
       "options_en": [
-        "Executes all pending migrations",
         "Creates a new schema.prisma file",
+        "Executes all pending migrations",
         "Generates raw SQL from the schema",
-        "Generates the Prisma client from schema.prisma"
+        "Generates the Prisma client from the schema"
       ],
       "correct_index": 3,
       "explanation_es": "generate regenera el cliente Prisma (PrismaClient). Se ejecuta automáticamente después de cambios en el schema.",
@@ -536,16 +536,16 @@
       "question_es": "¿Cómo se cargan relaciones en Prisma?",
       "question_en": "How do you load relationships in Prisma?",
       "options_es": [
-        "Con el parámetro include en findMany() o findUnique()",
-        "Automáticamente cuando se accede a la propiedad de manera estándar",
+        "Con include en findMany() o findUnique()",
+        "Automáticamente cuando se accede a la propiedad",
         "Usando un método separate()",
         "Con una consulta SQL manual"
       ],
       "options_en": [
-        "With the include parameter in findMany() or findUnique()",
-        "Automatically when accessing the property within this paradigm",
+        "With include in findMany() or findUnique()",
+        "Automatically when accessing the property",
         "Using a separate() method",
-        "With a manual SQL query typically"
+        "With a manual SQL query"
       ],
       "correct_index": 0,
       "explanation_es": "El parámetro include permite cargar relaciones. Por ejemplo: { include: { posts: true } } carga los posts del usuario.",
@@ -559,16 +559,16 @@
       "question_es": "¿Qué es una transacción en Prisma?",
       "question_en": "What is a transaction in Prisma?",
       "options_es": [
-        "Una conexión persistente a la BD",
         "Una consulta de lectura únicamente",
-        "Un respaldo automático de la base de datos en este contexto",
-        "Un conjunto de operaciones que se ejecutan de forma atómica"
+        "Un respaldo automático de la base de datos",
+        "Una conexión persistente a la BD",
+        "Operaciones ejecutadas de manera atómica"
       ],
       "options_en": [
-        "A persistent database connection",
         "A read-only query",
-        "An automatic database backup in common practice",
-        "A set of operations that execute atomically"
+        "An automatic database backup",
+        "A persistent database connection",
+        "Operations executed atomically"
       ],
       "correct_index": 3,
       "explanation_es": "Las transacciones garantizan que múltiples operaciones se completan todas o ninguna. Se usan con $transaction en Prisma.",
@@ -582,16 +582,16 @@
       "question_es": "¿Cómo se define un campo DateTime con valor por defecto en Prisma?",
       "question_en": "How do you define a DateTime field with a default value in Prisma?",
       "options_es": [
-        "createdAt DateTime @now",
+        "createdAt DateTime @defaultValue(now())",
         "createdAt DateTime @default(now())",
         "createdAt DateTime default(now())",
-        "createdAt DateTime @defaultValue(now())"
+        "createdAt DateTime @now"
       ],
       "options_en": [
-        "createdAt DateTime @now",
+        "createdAt DateTime @defaultValue(now())",
         "createdAt DateTime @default(now())",
         "createdAt DateTime default(now())",
-        "createdAt DateTime @defaultValue(now())"
+        "createdAt DateTime @now"
       ],
       "correct_index": 1,
       "explanation_es": "@default(now()) asigna la fecha y hora actual automáticamente cuando se crea un registro.",
@@ -605,16 +605,16 @@
       "question_es": "¿Cómo se define un campo requerido en Prisma?",
       "question_en": "How do you define a required field in Prisma?",
       "options_es": [
-        "Con @required en el caso más común en condiciones normales",
-        "Con !String como regla general",
-        "Sin el signo ? (por ejemplo: name String)",
-        "Con required: true"
+        "Con el atributo @required declarado",
+        "Con el tipo !String explícito",
+        "Sin el signo ? en la definición",
+        "Con la opción required: true"
       ],
       "options_en": [
-        "With @required in the most common case within this paradigm",
-        "With !String in this context",
-        "Without the ? sign (for example: name String)",
-        "With required: true"
+        "With the @required attribute declared",
+        "With the explicit !String type",
+        "Without the ? sign in the definition",
+        "With the required: true option"
       ],
       "correct_index": 2,
       "explanation_es": "En Prisma, un campo es requerido por defecto. El signo ? indica un campo opcional.",
@@ -628,16 +628,16 @@
       "question_es": "¿Qué es Sequelize?",
       "question_en": "What is Sequelize?",
       "options_es": [
-        "Un lenguaje de consultas SQL en el caso más común como práctica recomendada",
-        "Un framework web como regla general",
+        "Un lenguaje de consultas SQL",
         "Una herramienta de migración de bases de datos",
-        "Un ORM para Node.js que soporta múltiples bases de datos SQL"
+        "Un framework web",
+        "Un ORM para Node.js con soporte multi-BD SQL"
       ],
       "options_en": [
-        "A SQL query language according to official documentation in production environments",
-        "A web framework as a general rule",
+        "A SQL query language",
         "A database migration tool",
-        "An ORM for Node.js that supports multiple SQL databases"
+        "A web framework",
+        "An ORM for Node.js with multi-database SQL support"
       ],
       "correct_index": 3,
       "explanation_es": "Sequelize es un ORM que permite trabajar con SQL a través de objetos JavaScript, soportando PostgreSQL, MySQL, SQLite y otros.",
@@ -651,15 +651,15 @@
       "question_es": "¿Cómo se define un modelo en Sequelize?",
       "question_en": "How do you define a model in Sequelize?",
       "options_es": [
-        "Con un archivo JSON de configuración",
+        "Con una clase decorator",
         "Con sequelize.define() o extendiendo Model",
-        "Con una clase decorator de manera estándar",
+        "Automáticamente a partir del esquema completo de la BD",
         "Automáticamente desde el esquema de la BD"
       ],
       "options_en": [
-        "With a JSON configuration file",
+        "With a class decorator",
         "With sequelize.define() or extending Model",
-        "With a class decorator under normal conditions",
+        "Automatically from the entire database schema",
         "Automatically from the database schema"
       ],
       "correct_index": 1,
@@ -675,14 +675,14 @@
       "question_en": "How do you query records with Sequelize?",
       "options_es": [
         "Con findAll(), findOne() o findByPk()",
-        "Con select().from()",
-        "Con query() en entornos reales en el caso más común",
+        "Con una sentencia select().from() manual",
+        "Con query()",
         "Con fetch()"
       ],
       "options_en": [
         "With findAll(), findOne(), or findByPk()",
-        "With select().from()",
-        "With query() according to spec as a general rule",
+        "With a manual select().from() statement",
+        "With query()",
         "With fetch()"
       ],
       "correct_index": 0,
@@ -697,16 +697,16 @@
       "question_es": "¿Cuál es el propósito de Alembic en SQLAlchemy?",
       "question_en": "What is the purpose of Alembic in SQLAlchemy?",
       "options_es": [
+        "Optimizar consultas SQL",
         "Generar modelos desde la BD",
-        "Optimizar consultas SQL en entornos reales",
-        "Crear copias de seguridad automáticas",
-        "Gestionar versionado y migraciones de esquema de base de datos"
+        "Crear copias de seguridad automáticas de toda la base",
+        "Gestionar el versionado y migraciones del esquema"
       ],
       "options_en": [
+        "Optimize SQL queries",
         "Generate models from the database",
-        "Optimize SQL queries in real environments",
-        "Create automatic backups",
-        "Manage database schema versioning and migrations"
+        "Create automatic backups of the entire database",
+        "Manage schema versioning and migrations"
       ],
       "correct_index": 3,
       "explanation_es": "Alembic es una herramienta de migraciones que permite versionar cambios en el esquema y aplicarlos de forma controlada (up/down).",
@@ -720,15 +720,15 @@
       "question_es": "¿Cómo se crea una nueva migración en Alembic?",
       "question_en": "How do you create a new migration in Alembic?",
       "options_es": [
-        "Con el comando alembic revision --autogenerate -m 'mensaje'",
-        "Creando un archivo Python manualmente",
-        "Con alembic init habitualmente",
+        "Con alembic revision --autogenerate -m 'mensaje'",
+        "Creando manualmente un archivo Python de revisión",
+        "Con alembic init",
         "Con SQL raw directamente"
       ],
       "options_en": [
-        "With the command alembic revision --autogenerate -m 'message'",
-        "By manually creating a Python file",
-        "With alembic init typically",
+        "With alembic revision --autogenerate -m 'message'",
+        "By manually creating a Python revision file",
+        "With alembic init",
         "With raw SQL directly"
       ],
       "correct_index": 0,
@@ -743,14 +743,14 @@
       "question_es": "¿Qué archivo contiene la información de conexión en Alembic?",
       "question_en": "What file contains connection information in Alembic?",
       "options_es": [
-        "config.py",
         "migration.json",
+        "config.py",
         "alembic.ini",
         "database.yaml"
       ],
       "options_en": [
-        "config.py",
         "migration.json",
+        "config.py",
         "alembic.ini",
         "database.yaml"
       ],
@@ -767,13 +767,13 @@
       "question_en": "How do you apply migrations in Alembic?",
       "options_es": [
         "Con alembic upgrade head",
-        "Con alembic run de forma general",
+        "Con alembic run-migrations",
         "Con alembic execute",
         "Con alembic apply"
       ],
       "options_en": [
         "With alembic upgrade head",
-        "With alembic run in common practice",
+        "With alembic run-migrations",
         "With alembic execute",
         "With alembic apply"
       ],
@@ -789,16 +789,16 @@
       "question_es": "¿Cómo se revierten las migraciones en Alembic?",
       "question_en": "How do you revert migrations in Alembic?",
       "options_es": [
-        "Con alembic revert en la práctica habitual según la documentación oficial",
-        "Con alembic downgrade -1 (una versión) o downgrade <revision>",
-        "Con alembic undo por convención",
-        "Con alembic rollback"
+        "Con el comando alembic revert-migration --force",
+        "Con alembic downgrade -1 o downgrade <revisión>",
+        "Con alembic undo",
+        "Con alembic rollback-all"
       ],
       "options_en": [
-        "With alembic revert as a general rule as a general guideline",
-        "With alembic downgrade -1 (one version) or downgrade <revision>",
-        "With alembic undo in real environments",
-        "With alembic rollback"
+        "With the alembic revert-migration --force command",
+        "With alembic downgrade -1 or downgrade <revision>",
+        "With alembic undo",
+        "With alembic rollback-all"
       ],
       "correct_index": 1,
       "explanation_es": "downgrade revierte migraciones. -1 revierte una versión, o se puede especificar una revisión concreta.",
@@ -812,13 +812,13 @@
       "question_es": "¿Qué es una migración manual en Alembic?",
       "question_en": "What is a manual migration in Alembic?",
       "options_es": [
-        "Una migración donde se escribe el SQL o los cambios de esquema a mano",
+        "Una migración escrita a mano",
         "Una migración generada automáticamente",
         "Una migración ejecutada sin registrar",
         "Una migración que no se puede deshacer"
       ],
       "options_en": [
-        "A migration where SQL or schema changes are written manually",
+        "A migration written by hand",
         "An automatically generated migration",
         "A migration executed without recording",
         "A migration that cannot be undone"
@@ -835,16 +835,16 @@
       "question_es": "¿Qué registra Alembic en la base de datos?",
       "question_en": "What does Alembic record in the database?",
       "options_es": [
-        "Logs de errores de migraciones",
-        "El historial de migraciones aplicadas en la tabla alembic_version",
-        "El SQL de cada migración habitualmente",
-        "Todos los cambios realizados en cada tabla"
+        "Todos los cambios realizados en cada tabla",
+        "El historial de migraciones aplicadas",
+        "El SQL de cada migración",
+        "Logs de errores de migraciones"
       ],
       "options_en": [
-        "Migration error logs in practice",
-        "The history of applied migrations in the alembic_version table",
+        "All changes made to each table",
+        "The history of applied migrations",
         "The SQL of each migration",
-        "All changes made to each table"
+        "Migration error logs"
       ],
       "correct_index": 1,
       "explanation_es": "La tabla alembic_version almacena los IDs de revisión de las migraciones aplicadas para rastrear el estado actual.",
@@ -858,16 +858,16 @@
       "question_es": "¿Cuál es la estructura de una revisión de Alembic?",
       "question_en": "What is the structure of an Alembic revision?",
       "options_es": [
-        "Es un archivo JSON de configuración para la mayoría de proyectos dentro de este paradigma",
-        "Solo contiene SQL raw en la práctica",
+        "Solo contiene SQL raw",
         "Tiene solo una función apply()",
-        "Tiene un down_revision, revision_id, funciones upgrade() y downgrade()"
+        "Es simplemente un archivo de configuración en formato JSON",
+        "Tiene revision_id, down_revision, upgrade() y downgrade()"
       ],
       "options_en": [
-        "Is a JSON configuration file under normal conditions for most projects",
-        "Only contains raw SQL by convention",
+        "Only contains raw SQL",
         "Has only an apply() function",
-        "Has down_revision, revision_id, upgrade() and downgrade() functions"
+        "It is simply a configuration file in JSON format",
+        "Has revision_id, down_revision, upgrade() and downgrade()"
       ],
       "correct_index": 3,
       "explanation_es": "Cada archivo de revisión tiene un ID de revisión, referencia a la revisión anterior (down_revision), y dos funciones para aplicar y revertir cambios.",
@@ -881,16 +881,16 @@
       "question_es": "¿Qué es una rama (branch) en Alembic?",
       "question_en": "What is a branch in Alembic?",
       "options_es": [
-        "Una herramienta para paralelizar migraciones",
         "Una copia de la base de datos",
         "Un tipo de base de datos soportada",
-        "Un camino de migraciones independiente que diverge en algún punto"
+        "Una herramienta para paralelizar migraciones",
+        "Un camino de migraciones que diverge"
       ],
       "options_en": [
-        "A tool to parallelize migrations",
-        "A copy of the database in practice",
+        "A copy of the database",
         "A supported database type",
-        "An independent path of migrations that diverges at some point"
+        "A tool to parallelize migrations",
+        "A path of migrations that diverges"
       ],
       "correct_index": 3,
       "explanation_es": "Las ramas en Alembic ocurren cuando dos desarrolladores crean migraciones diferentes desde la misma revisión padre.",
@@ -927,16 +927,16 @@
       "question_es": "¿Cómo se visualiza el historial de migraciones en Alembic?",
       "question_en": "How do you view the migration history in Alembic?",
       "options_es": [
-        "Leyendo directamente el archivo alembic.ini",
         "Con alembic log",
+        "Con alembic status",
         "Con alembic history",
-        "Con alembic status"
+        "Leyendo directamente el archivo alembic.ini"
       ],
       "options_en": [
-        "By reading the alembic.ini file directly",
         "With alembic log",
+        "With alembic status",
         "With alembic history",
-        "With alembic status"
+        "By reading the alembic.ini file directly"
       ],
       "correct_index": 2,
       "explanation_es": "alembic history muestra todas las revisiones en orden cronológico, mostrando qué ha sido aplicado y qué no.",
@@ -950,16 +950,16 @@
       "question_es": "¿Qué es el versionado de esquema?",
       "question_en": "What is schema versioning?",
       "options_es": [
-        "Generar documentación del esquema por convención",
-        "Copiar el esquema a múltiples bases de datos según la documentación oficial según la documentación oficial",
-        "Rastrear y controlar cambios en la estructura de la base de datos a lo largo del tiempo",
+        "Copiar el mismo esquema hacia múltiples bases de datos distintas",
+        "Generar documentación del esquema",
+        "Rastrear y controlar cambios del esquema en el tiempo",
         "Comprimir los archivos de esquema"
       ],
       "options_en": [
+        "Copying the same schema to multiple different databases",
         "Generating schema documentation",
-        "Copying the schema to multiple databases as a recommended practice within this paradigm",
-        "Tracking and controlling changes to database structure over time",
-        "Compressing schema files in this context"
+        "Track and control schema changes over time",
+        "Compressing schema files"
       ],
       "correct_index": 2,
       "explanation_es": "El versionado de esquema permite que múltiples desarrolladores colaboren, revertir cambios y mantener la BD sincronizada con el código.",
@@ -973,16 +973,16 @@
       "question_es": "¿Cómo se nombran los archivos de migración en Alembic?",
       "question_en": "How are migration files named in Alembic?",
       "options_es": [
-        "Con UUID aleatorio habitualmente",
-        "Secuencialmente: 001, 002, 003 según la documentación oficial",
-        "Con una versión (timestamp o secuencial) y un nombre descriptivo",
-        "Con la fecha del día"
+        "De forma secuencial: 001, 002, 003, etc.",
+        "Con la fecha del día",
+        "Con una versión y un nombre descriptivo",
+        "Con UUID aleatorio"
       ],
       "options_en": [
-        "With random UUID in real environments",
-        "Sequentially: 001, 002, 003 according to official documentation",
-        "With a version (timestamp or sequential) and a descriptive name",
-        "With the date of the day"
+        "Sequentially: 001, 002, 003, etc.",
+        "With the date of the day",
+        "With a version and a descriptive name",
+        "With random UUID"
       ],
       "correct_index": 2,
       "explanation_es": "Alembic genera archivos como 20230615_123456_add_user_table.py con timestamp o secuencia, seguido de un mensaje descriptivo.",
@@ -996,16 +996,16 @@
       "question_es": "¿Cuál es la ventaja de usar migraciones autogeneradas en Alembic?",
       "question_en": "What is the advantage of using autogenerated migrations in Alembic?",
       "options_es": [
-        "Elimina datos innecesarios por convención",
-        "Reduce el tiempo de ejecución de consultas",
+        "Reduce de forma notable el tiempo de ejecución de las consultas",
         "Optimiza automáticamente índices",
-        "Detecta automáticamente cambios en los modelos SQLAlchemy y genera SQL correspondiente"
+        "Elimina datos innecesarios",
+        "Detecta cambios en los modelos y genera el SQL correspondiente"
       ],
       "options_en": [
-        "Removes unnecessary data by convention",
-        "Reduces query execution time",
+        "Noticeably reduces query execution time",
         "Automatically optimizes indexes",
-        "Automatically detects changes in SQLAlchemy models and generates corresponding SQL"
+        "Removes unnecessary data",
+        "Detects model changes and generates the corresponding SQL"
       ],
       "correct_index": 3,
       "explanation_es": "Las migraciones autogeneradas comparan los modelos actuales con el esquema de BD y generan los cambios SQL automáticamente.",
@@ -1020,15 +1020,15 @@
       "question_en": "What should you do after writing a manual migration?",
       "options_es": [
         "Aplicarla inmediatamente a producción",
-        "Ejecutar todas las migraciones juntas dentro de este paradigma de manera estándar",
-        "Guardarla sin probarla según la especificación",
-        "Testearla en desarrollo con upgrade y downgrade antes de aplicar a producción"
+        "Guardarla sin probarla",
+        "Ejecutar todas las migraciones juntas",
+        "Probarla con upgrade y downgrade"
       ],
       "options_en": [
         "Apply it immediately to production",
-        "Execute all migrations together as a general rule as a standard approach",
-        "Save it without testing in real environments",
-        "Test it in development with upgrade and downgrade before applying to production"
+        "Save it without testing",
+        "Execute all migrations together",
+        "Test it with upgrade and downgrade"
       ],
       "correct_index": 3,
       "explanation_es": "Siempre probar migraciones en desarrollo. Verificar que upgrade() aplicar los cambios correctamente y downgrade() los revierte.",
@@ -1044,13 +1044,13 @@
       "options_es": [
         "Una sola conexión compartida entre todos los usuarios",
         "Una copia de seguridad de conexiones",
-        "Un conjunto de conexiones reutilizables mantenidas abiertas para mejor rendimiento",
+        "Un conjunto de conexiones reutilizables ya abiertas",
         "Un registro de todas las conexiones históricas"
       ],
       "options_en": [
         "A single connection shared among all users",
-        "A backup of connections in this context",
-        "A set of reusable connections kept open for better performance",
+        "A backup of connections",
+        "A set of reusable, already-open connections",
         "A log of all historical connections"
       ],
       "correct_index": 2,
@@ -1071,7 +1071,7 @@
         "La cantidad de memoria usada por el pool"
       ],
       "options_en": [
-        "The number of connections maintained in the pool by default",
+        "The default number of connections kept in the pool",
         "The maximum size of data that can pass through the connection",
         "The maximum lifetime of a connection",
         "The amount of memory used by the pool"
@@ -1088,15 +1088,15 @@
       "question_es": "¿Qué es max_overflow en SQLAlchemy?",
       "question_en": "What is max_overflow in SQLAlchemy?",
       "options_es": [
-        "El tiempo máximo de espera para una conexión",
         "La cantidad máxima de datos en una transacción",
-        "Conexiones adicionales que se crean cuando el pool se agota",
+        "El tiempo máximo de espera para una conexión",
+        "Conexiones extra al agotarse el pool",
         "El límite de memoria del pool"
       ],
       "options_en": [
-        "The maximum wait time for a connection",
         "The maximum amount of data in a transaction",
-        "Additional connections created when the pool is exhausted",
+        "The maximum wait time for a connection",
+        "Extra connections when the pool runs out",
         "The memory limit of the pool"
       ],
       "correct_index": 2,
@@ -1111,16 +1111,16 @@
       "question_es": "¿Qué es el problema N+1 en queries?",
       "question_en": "What is the N+1 query problem?",
       "options_es": [
-        "1 consulta principal + N consultas adicionales para cargar relaciones de cada fila",
+        "1 consulta más N consultas adicionales",
         "Ejecutar N consultas en paralelo",
         "Tener N conexiones abiertas simultáneamente",
-        "Usar N índices en una tabla según la especificación de forma general como regla general"
+        "Usar N índices en una tabla"
       ],
       "options_en": [
-        "1 main query + N additional queries to load relationships for each row",
+        "1 main query plus N additional queries",
         "Execute N queries in parallel",
         "Have N open connections simultaneously",
-        "Use N indexes on a table typically for most projects under normal conditions"
+        "Use N indexes on a table"
       ],
       "correct_index": 0,
       "explanation_es": "N+1 ocurre con lazy loading: 1 consulta obtiene N registros, luego se hacen N consultas más para cada relación, totalizado N+1.",
@@ -1134,16 +1134,16 @@
       "question_es": "¿Cómo se evita el problema N+1?",
       "question_en": "How do you avoid the N+1 problem?",
       "options_es": [
-        "Usando más conexiones de forma estándar",
         "Aumentando el pool_size",
-        "Usando eager loading (joinedload, selectinload) o consultas específicas",
-        "Reduciendo el número de registros en el caso más común para la mayoría de proyectos"
+        "Usando más conexiones",
+        "Usando eager loading",
+        "Reduciendo el número de registros"
       ],
       "options_en": [
+        "Increasing pool_size",
         "Using more connections",
-        "Increasing pool_size in real environments",
-        "Using eager loading (joinedload, selectinload) or specific queries",
-        "Reducing the number of records as a general rule under normal conditions"
+        "Using eager loading",
+        "Reducing the number of records"
       ],
       "correct_index": 2,
       "explanation_es": "Cargar relaciones junto con los datos principales en una sola consulta usando eager loading strategies.",
@@ -1157,15 +1157,15 @@
       "question_es": "¿Qué es lazy loading en relación al rendimiento?",
       "question_en": "What is lazy loading in relation to performance?",
       "options_es": [
-        "Cargar datos relacionados solo cuando se necesitan, mejorando inicial pero causando N+1",
+        "Cargar datos al necesitarlos",
         "Cargar todos los datos de una vez",
-        "No cargar datos relacionados de forma estándar en la práctica habitual según la documentación oficial",
+        "No cargar datos relacionados",
         "Almacenar datos en caché permanente"
       ],
       "options_en": [
-        "Load related data only when needed, improving initial performance but causing N+1",
-        "Load all data at once in real environments",
-        "Don't load related data in the most common case as a general rule",
+        "Load data only when needed",
+        "Load all data at once",
+        "Don't load related data",
         "Store data in permanent cache"
       ],
       "correct_index": 0,
@@ -1180,16 +1180,16 @@
       "question_es": "¿Qué es el timeout en una conexión de base de datos?",
       "question_en": "What is timeout in a database connection?",
       "options_es": [
-        "El tiempo para ejecutar una consulta",
-        "El tiempo total que una conexión puede estar abierta para la mayoría de proyectos",
+        "El tiempo total que una conexión puede estar abierta",
         "El tiempo entre intentos de reconexión",
-        "El máximo tiempo que una operación puede esperar antes de fallar"
+        "El tiempo para ejecutar una consulta",
+        "El tiempo máximo de espera antes de fallar"
       ],
       "options_en": [
-        "The time to execute a query",
-        "The total time a connection can be open as a general guideline",
+        "The total time a connection can be open",
         "The time between reconnection attempts",
-        "The maximum time an operation can wait before failing"
+        "The time to execute a query",
+        "The maximum wait time before failing"
       ],
       "correct_index": 3,
       "explanation_es": "Un timeout previene que las operaciones se queden esperando indefinidamente. Si expira, la operación falla.",
@@ -1203,16 +1203,16 @@
       "question_es": "¿Cómo se configura pool_size y max_overflow en SQLAlchemy?",
       "question_en": "How do you configure pool_size and max_overflow in SQLAlchemy?",
       "options_es": [
-        "En el archivo alembic.ini",
-        "En el archivo de configuración de la BD",
+        "En el propio archivo de configuración de la base de datos",
+        "En una directiva del modelo",
         "En create_engine(url, pool_size=5, max_overflow=10)",
-        "En una directiva del modelo"
+        "En el archivo alembic.ini"
       ],
       "options_en": [
-        "In the alembic.ini file",
-        "In the database configuration file",
+        "In the database's own configuration file",
+        "In a model directive",
         "In create_engine(url, pool_size=5, max_overflow=10)",
-        "In a model directive in this context"
+        "In the alembic.ini file"
       ],
       "correct_index": 2,
       "explanation_es": "Los parámetros se pasan directamente a create_engine() al crear la Engine de SQLAlchemy.",
@@ -1226,16 +1226,16 @@
       "question_es": "¿Qué es connection pooling beneficioso para?",
       "question_en": "What is connection pooling beneficial for?",
       "options_es": [
-        "Almacenar datos en caché según la especificación",
+        "Almacenar datos en caché",
         "Ejecutar consultas en paralelo",
-        "Reducir latencia reutilizando conexiones y mejorar rendimiento general",
-        "Reducir el tamaño de la base de datos"
+        "Reducir latencia reutilizando conexiones",
+        "Reducir considerablemente el tamaño de la base de datos"
       ],
       "options_en": [
-        "Store data in cache by convention",
+        "Store data in cache",
         "Execute queries in parallel",
-        "Reduce latency by reusing connections and improve overall performance",
-        "Reduce database size"
+        "Reduce latency by reusing connections",
+        "Considerably reduce the size of the database"
       ],
       "correct_index": 2,
       "explanation_es": "Reutilizar conexiones evita el costo de crear nuevas conexiones para cada operación, mejorando rendimiento significativamente.",
@@ -1249,16 +1249,16 @@
       "question_es": "¿Qué es joinedload en SQLAlchemy?",
       "question_en": "What is joinedload in SQLAlchemy?",
       "options_es": [
-        "Una forma de hacer lazy loading según la especificación",
-        "Una estrategia de eager loading que usa SQL JOIN para cargar datos relacionados",
-        "Una función para eliminar datos relacionados en entornos de producción como práctica recomendada",
+        "Una función para eliminar datos relacionados",
+        "Eager loading que usa un SQL JOIN",
+        "Una forma de hacer lazy loading",
         "Un tipo de índice de base de datos"
       ],
       "options_en": [
+        "A function to delete related data",
+        "Eager loading that uses a SQL JOIN",
         "A way of doing lazy loading",
-        "An eager loading strategy that uses SQL JOIN to load related data",
-        "A function to delete related data as a recommended practice in production environments",
-        "A type of database index by default"
+        "A type of database index"
       ],
       "correct_index": 1,
       "explanation_es": "joinedload() genera un SQL JOIN que trae datos principales y relacionados en una sola consulta.",
@@ -1272,16 +1272,16 @@
       "question_es": "¿Qué es selectinload en SQLAlchemy?",
       "question_en": "What is selectinload in SQLAlchemy?",
       "options_es": [
-        "Una forma de hacer lazy loading de manera estándar en el caso más común de forma general",
         "Un tipo de índice de base de datos",
-        "Una estrategia que ejecuta una consulta SELECT adicional para cargar datos relacionados",
-        "Una función para eliminar datos en entornos reales"
+        "Una función para eliminar datos",
+        "Ejecuta un SELECT adicional",
+        "Una forma de hacer lazy loading"
       ],
       "options_en": [
-        "A way of doing lazy loading as a general rule for most projects as a general guideline",
-        "A type of database index as a general rule",
-        "A strategy that executes an additional SELECT query to load related data",
-        "A function to delete data"
+        "A type of database index",
+        "A function to delete data",
+        "Executes an additional SELECT",
+        "A way of doing lazy loading"
       ],
       "correct_index": 2,
       "explanation_es": "selectinload() genera 2 consultas: una para los datos principales y otra para los relacionados, mejor que N+1 pero no tan óptimo como join.",
@@ -1296,13 +1296,13 @@
       "question_en": "How do you implement selectinload in a SQLAlchemy query?",
       "options_es": [
         "session.query(User).options(selectinload(User.posts)).all()",
-        "session.query(User).selectinload(User.posts)",
+        "session.query(User).selectinload(User.posts).filter_by(active=True).all()",
         "session.query(User).load(User.posts)",
         "session.query(User).join(User.posts)"
       ],
       "options_en": [
         "session.query(User).options(selectinload(User.posts)).all()",
-        "session.query(User).selectinload(User.posts)",
+        "session.query(User).selectinload(User.posts).filter_by(active=True).all()",
         "session.query(User).load(User.posts)",
         "session.query(User).join(User.posts)"
       ],
@@ -1318,16 +1318,16 @@
       "question_es": "¿Cuál es el impacto de pool_size demasiado pequeño?",
       "question_en": "What is the impact of pool_size being too small?",
       "options_es": [
-        "Acelera las consultas",
-        "Las conexiones pueden no estar disponibles causando esperas y degradación del rendimiento",
-        "Reduce el uso de memoria",
-        "Mejora el rendimiento habitualmente"
+        "Mejora notablemente el rendimiento general",
+        "Provoca esperas y degrada el rendimiento",
+        "Reduce notablemente el uso de memoria",
+        "Acelera todas las consultas ejecutadas"
       ],
       "options_en": [
-        "Accelerates queries by convention",
-        "Connections may not be available causing waits and performance degradation",
-        "Reduces memory usage",
-        "Improves performance"
+        "Noticeably improves overall performance",
+        "Causes waits and degrades performance",
+        "Noticeably reduces memory usage",
+        "Speeds up every executed query"
       ],
       "correct_index": 1,
       "explanation_es": "Un pool_size muy pequeño causa contención: múltiples solicitudes compiten por pocas conexiones disponibles.",
@@ -1341,15 +1341,15 @@
       "question_es": "¿Cuál es el impacto de pool_size demasiado grande?",
       "question_en": "What is the impact of pool_size being too large?",
       "options_es": [
-        "No tiene impacto de forma estándar en la práctica habitual en la práctica habitual",
         "Mejora el rendimiento exponencialmente",
-        "Consume más recursos del servidor de base de datos sin beneficio proporcional",
+        "No tiene impacto",
+        "Consume recursos sin beneficio real",
         "Acelera las consultas significativamente"
       ],
       "options_en": [
-        "Has no impact typically as a general guideline according to official documentation",
         "Improves performance exponentially",
-        "Consumes more database server resources without proportional benefit",
+        "Has no impact",
+        "Uses resources without real benefit",
         "Significantly accelerates queries"
       ],
       "correct_index": 2,
@@ -1364,16 +1364,16 @@
       "question_es": "¿Cuál es la mejor estrategia de carga para evitar N+1 y mantener flexibilidad?",
       "question_en": "What is the best loading strategy to avoid N+1 and maintain flexibility?",
       "options_es": [
-        "Usar lazy loading para todo para la mayoría de proyectos en entornos de producción",
-        "Usar eager loading para todo",
-        "Usar lazy loading por defecto y eager loading solo cuando sea necesario",
-        "No cargar ninguna relación por convención"
+        "Usar siempre eager loading para todas las relaciones",
+        "Usar siempre lazy loading para todas las relaciones",
+        "Lazy loading por defecto y eager loading puntual",
+        "No cargar ninguna de las relaciones"
       ],
       "options_en": [
-        "Use lazy loading for everything in this context as a general rule",
-        "Use eager loading for everything",
-        "Use lazy loading by default and eager loading only when necessary",
-        "Load no relationships typically"
+        "Always use eager loading for every relationship",
+        "Always use lazy loading for every relationship",
+        "Lazy loading by default, eager loading when needed",
+        "Load none of the relationships"
       ],
       "correct_index": 2,
       "explanation_es": "Lazy loading es flexible pero puede causar N+1. Usar eager loading selectivamente donde se acceda a relaciones en bucles.",

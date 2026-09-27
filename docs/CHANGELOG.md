@@ -5,6 +5,66 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-09-26 (noche tardía, control total — rama `claude/gallant-tesla-fnzy1g`, PR #34)
+
+**ES**
+
+- **Cupo diario del plan Free, apagado por defecto** (39.4, ADR-50a/51): 30 preguntas nuevas y 5 lecciones al día (UTC); el repaso espaciado, el placement y los exámenes no cuentan. Se enciende con `FREE_DAILY_QUOTA_ENABLED` cuando abra el cobro.
+- **La insignia «Perfeccionista» ya se concede** (39.5): nunca se otorgaba, y en la décima respuesta perfecta llegaba tarde. Prueba de punta a punta con capturas de XP, racha, liga e insignia.
+- **Pruebas e2e**: el registro de prueba no marcaba la casilla de «13 años o más» y dejaba rotos todos los recorridos que crean un usuario.
+- **Inicio de sesión social**: sus pruebas exigen ahora la sesión en cookies HttpOnly y ningún token en la URL.
+- **Lecciones al listón** en JavaScript (14), Ciencia de Datos (21), Azure (22), Google Cloud (23) y PCAP (41), con fuentes oficiales comprobadas.
+- **Guarda de coletillas ampliada** a una tercera familia de relleno en las opciones.
+- **Tracks 18-22 sin coletillas** (39.28): 18, 19, 20, 21 y 22 a cero, con revisión adversaria completa por módulo. Varias claves falsas encontradas y corregidas en su sitio: un comando de Docker que no existe, una pregunta de Gradle que se citaba a sí misma, una desventaja de PCA al revés y dos comandos de Bicep inventados.
+- **El limitador de peticiones ya no falla en abierto** (39.35): si Redis no responde, limita en memoria en vez de dejar pasar todo — el login en producción no tenía límite.
+- **Política de modelos actualizada** (ADR-52): el hilo de una sesión interactiva pasa a Sonnet 5.
+
+**EN**
+
+- **Free plan daily quota, off by default** (39.4, ADR-50a/51): 30 new questions and 5 lessons per UTC day; spaced review, placement and exams do not count. Turned on with `FREE_DAILY_QUOTA_ENABLED` once billing opens.
+- **The "Perfectionist" badge is now awarded** (39.5): it was never granted, and on the tenth perfect answer it arrived late. End-to-end test with screenshots of XP, streak, league and badge.
+- **E2E tests**: the test sign-up did not tick the "13 or older" box, which broke every journey that creates a user.
+- **Social login**: its tests now require the session in HttpOnly cookies and no token in the URL.
+- **Lessons brought up to the bar** in JavaScript (14), Data Science (21), Azure (22), Google Cloud (23) and PCAP (41), with official sources checked.
+- **Filler-ending guard extended** to a third family of padding in answer options.
+- **Tracks 18-22 free of filler endings** (39.28): 18, 19, 20, 21 and 22 at zero, each with a full adversarial review. Several false keys found and fixed in place: a non-existent Docker command, a Gradle question that quoted itself, a PCA disadvantage stated backwards, and two invented Bicep commands.
+- **The rate limiter no longer fails open** (39.35): when Redis is unreachable it now limits in memory instead of letting every request through — production login had no limit.
+- **Model policy updated** (ADR-52): an interactive session's main thread moves to Sonnet 5.
+
+## [Unreleased] — 2026-09-26 (noche, control total)
+
+**ES**
+
+- **Producción recuperada** (#28): el backend no arrancaba desde `ec97405` por contenido fuera del esquema del loader; test nuevo `test_loader_schema.py`.
+- **Deploy web recuperado** (#29 y siguientes): dependencias de dependabot revertidas (`@vitejs/plugin-react` 4.x, pyodide 0.26.2) y prerender compatible con Node 20.
+- **Sentry activo** en el backend (ADR-50k).
+- **Recuperar contraseña ya no finge**: sin proveedor de correo, la API responde 503 y la pantalla lo dice (H.30).
+- **ADR-50**: aprobación en bloque del dueño (Free, anuncios, precios, analítica PostHog, staging, protección de `master`).
+- **Conectores de Claude** documentados en `docs/CONECTORES.md`.
+- **Track42: claves de verdadero/falso corregidas** (153) y 110 duplicadas reescritas; guarda `test_tf_consistency.py`.
+- **1.404 explicaciones de plantilla sustituidas** por explicaciones reales (track41-46, track23); 0 huellas de generador en el banco vivo.
+- **Distractores reales** en tracks 26, 28, 29 y 30 (sin coletillas de relleno; la correcta ya no es casi siempre la más larga).
+- **Lecciones de 18, 19, 20 y 26-30** al listón (150-300 palabras por idioma, fuente real, código que imprime lo que dice); fallos de `tests/content` 792 → 440.
+- **Guardas nuevas**: coletillas por track, casi-duplicados, huellas de generador, verdadero/falso coherente y datos personales en el contenido.
+- **Herramientas de revisión de contenido** en `scripts/content_qa/`.
+
+**EN**
+
+- **Production restored** (#28): the backend failed to boot after `ec97405` because content did not match the loader schema; new `test_loader_schema.py`.
+- **Web deploy restored** (#29 onward): dependabot majors reverted and the prerender made Node 20 safe.
+- **Sentry live** on the backend (ADR-50k).
+- **Password reset stops pretending**: with no email provider, the API answers 503 and the page says so (H.30).
+- **ADR-50**: owner's blanket approval (Free tier, ads, pricing, PostHog analytics, staging, `master` protection).
+- **Claude connectors** documented in `docs/CONECTORES.md`.
+- **Track42 true/false answer keys fixed** (153) and 110 duplicates rewritten; new `test_tf_consistency.py` guard.
+- **1,404 placeholder explanations replaced** with real ones (track41-46, track23); 0 generator traces left in the live bank.
+- **Real distractors** in tracks 26, 28, 29 and 30 (no filler endings; the correct option is no longer usually the longest).
+- **Lessons for tracks 18, 19, 20 and 26-30** meet the bar (150-300 words per language, real source, code prints what it claims); `tests/content` failures 792 → 440.
+- **New guards**: per-track filler endings, near-duplicates, generator traces, consistent true/false keys and personal data in content.
+- **Content review tools** in `scripts/content_qa/`.
+
+---
+
 ## [Unreleased] — 2026-09-18 (sesión bc)
 
 **ES**

@@ -105,7 +105,7 @@ Ningún tercero anunciante, corredor de datos o red social.
 - Groq — inferencia del tutor de IA (modelo qwen/qwen3.8-27b)
 - Stripe — pagos (hoy solo en modo test, sin cobros reales)
 - Proveedor de email — SMTP o Resend, según configuración
-- Sentry — error tracking (deshabilitado por defecto)
+- Sentry — registro de errores del servidor, activo desde el 26-09-2026; región UE (de.sentry.io); se envía sin datos personales (`send_default_pii=False`); no se usa en el navegador
 
 ---
 

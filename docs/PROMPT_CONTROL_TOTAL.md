@@ -160,8 +160,8 @@ Fuentes solo gratuitas y legales (ADR-11; CC BY-SA no, ADR-47); nada pirata ni c
 cita. Ningún precio, testimonio, cifra de usuarios o «calibrado con datos reales»
 publicado, salvo los precios de ADR-41 (30.1/H.31/ADR-47). ES y EN nativos, nunca traducción. El motor, los datos y
 la API no se tocan desde una serie de UI. Cachés de herramientas fuera del proyecto.
-Subagentes Haiku por defecto; Sonnet solo en ficheros de riesgo (PROTOCOLO §2); el
-hilo principal usa el modelo con el que el dueño te arrancó. Lo que exige gasto, claves
+Modelos (ADR-52, 2026-09-27): hilo interactivo Sonnet 5; escritor de autoría masiva Haiku 4.5 (Batch API cuando haya clave, H.48);
+revisor y corrector en Workflow y ficheros de riesgo (PROTOCOLO §2) Sonnet 5; lecturas Haiku 4.5; nunca Fable ni Opus 4.x. Lo que exige gasto, claves
 live, DNS, DB de producción, tiendas, secretos, cuentas nuevas o reabrir una decisión:
 se prepara, va a HUMAN-BLOCKED con su valor por defecto (ADR-47) y se sigue.
 Conectores: clase L y E sin preguntar; clase H nunca desde una sesión autónoma (variables,

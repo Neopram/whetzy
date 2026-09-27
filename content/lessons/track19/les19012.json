@@ -1,12 +1,15 @@
 {
-  "id": "les19012",
-  "skill_id": "sk190304",
-  "description_es": "Lección completa sobre Build Tools",
-  "description_en": "Complete lesson on Build Tools",
-  "duration_minutes": 50,
-  "title_es": "Herramientas y sistemas de compilación",
-  "title_en": "Build Tools and Build Systems",
-  "body_es": "Esta lección cubre los aspectos fundamentales y avanzados de Build Tools. Los conceptos clave incluyen la comprensión profunda de cómo funciona cada componente. Se presentan casos de uso prácticos y mejores prácticas de la industria. El aprendizaje incluye tanto teoría como aplicación práctica. Se abordan desafíos comunes y soluciones. La lección proporciona una comprensión integral del tema para profesionales en infraestructura y DevOps.",
-  "body_en": "This lesson covers fundamental and advanced aspects of Build Tools. Key concepts include deep understanding of how each component works. Practical use cases and industry best practices are presented. Learning includes both theory and practical application. Common challenges and solutions are addressed. The lesson provides comprehensive understanding of the topic for infrastructure and DevOps professionals.",
-  "source": "Build Tools Overview (https://docs.github.com/en/actions)"
+    "id": "les19012",
+    "skill_id": "sk190304",
+    "description_es": "Lección completa sobre Build Tools",
+    "description_en": "Complete lesson on Build Tools",
+    "duration_minutes": 50,
+    "title_es": "Herramientas y sistemas de compilación",
+    "title_en": "Build Tools and Build Systems",
+    "body_es": "Una herramienta de compilación (build tool) transforma código fuente en artefactos listos para ejecutarse o desplegarse: compila, transpila, empaqueta dependencias y minifica, y en el proceso deja trazado un grafo de tareas con dependencias entre sí, como «compilar antes de empaquetar» o «generar antes de firmar». Importa porque automatiza pasos que a mano son lentos y propensos a error, y porque hace reproducible el resultado: el mismo código fuente siempre produce el mismo artefacto. El mecanismo típico es incremental: la herramienta calcula un hash o marca de tiempo de cada entrada, y si no cambió desde la última ejecución, reutiliza el resultado en caché en vez de rehacer el trabajo; esto es lo que hace que reconstruir un proyecto grande tras un cambio pequeño tome segundos en vez de minutos. Herramientas como Vite, Webpack o Make siguen esta misma idea aunque difieran en sintaxis. Por ejemplo, un pipeline de CI puede definir las tareas «instalar», «compilar» y «empaquetar» en ese orden, y saltarse «compilar» si el código fuente no cambió desde la última ejecución exitosa. Un error común es no declarar correctamente las dependencias entre tareas: si «empaquetar» no depende explícitamente de «compilar», el sistema puede ejecutarlas en paralelo y empaquetar un artefacto desactualizado sin que nadie lo note hasta producción.",
+    "body_en": "A build tool turns source code into artifacts that are ready to run or deploy: it compiles, transpiles, bundles dependencies and minifies, and in doing so it traces a graph of tasks with dependencies between them, such as \"compile before bundling\" or \"generate before signing\". It matters because it automates steps that are slow and error-prone by hand, and because it makes the result reproducible: the same source code always produces the same artifact. The typical mechanism is incremental: the tool computes a hash or timestamp for each input, and if it has not changed since the last run, it reuses the cached result instead of redoing the work; this is what lets rebuilding a large project after a small change take seconds instead of minutes. Tools like Vite, Webpack or Make follow this same idea even though their syntax differs. For example, a CI pipeline can define the tasks \"install\", \"compile\" and \"package\" in that order, and skip \"compile\" if the source code has not changed since the last successful run. A common mistake is not declaring task dependencies correctly: if \"package\" does not explicitly depend on \"compile\", the system may run them in parallel and package a stale artifact without anyone noticing until it reaches production.",
+    "language": "python",
+    "example_code": "import hashlib\n\ndef content_hash(text):\n    return hashlib.sha256(text.encode()).hexdigest()[:8]\n\ncache = {}\n\ndef build_task(name, source):\n    h = content_hash(source)\n    if cache.get(name) == h:\n        return f\"{name}: sin cambios, se usa cache\"\n    cache[name] = h\n    return f\"{name}: reconstruido\"\n\nsource_v1 = \"def add(a, b):\\n    return a + b\\n\"\nprint(build_task(\"compile\", source_v1))\nprint(build_task(\"compile\", source_v1))\nsource_v2 = source_v1 + \"\\ndef sub(a, b):\\n    return a - b\\n\"\nprint(build_task(\"compile\", source_v2))\n",
+    "example_output": "compile: reconstruido\ncompile: sin cambios, se usa cache\ncompile: reconstruido",
+    "source": "Vite - Why Vite (build tool concepts) (https://vitejs.dev/guide/why.html)"
 }

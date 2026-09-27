@@ -1,6 +1,15 @@
 {
   "id": "les210402",
   "skill_id": "sk210402",
+  "language": "text",
+  "executable": false,
+  "title_es": "Seaborn para Visualización Estadística",
+  "title_en": "Seaborn for Statistical Visualization",
+  "body_es": "Seaborn se apoya en Matplotlib pero trabaja directamente con estructuras tabulares -listas de diccionarios o DataFrames de pandas- y con nombres de columnas en lugar de arrays sueltos, lo que reduce el código necesario para gráficos estadísticos. Funciones como `sns.boxplot`, `sns.histplot` o `sns.heatmap` calculan internamente cuartiles, densidades o correlaciones antes de dibujar, en vez de exigir ese cálculo previo al usuario. El parámetro `hue` colorea automáticamente por una tercera variable categórica dentro del mismo gráfico, y `col` o `row` en las funciones de tipo `sns.relplot` generan una rejilla de subgráficos -una faceta por cada valor de esa variable- sin escribir el bucle manualmente. Las paletas de color incluidas, como `deep`, `viridis` o `coolwarm`, siguen criterios perceptuales para que las diferencias de valor se perciban proporcionalmente y funcionen para personas con daltonismo. Gráficos habituales incluyen histogramas con estimación de densidad (KDE) superpuesta, violin plots que muestran la forma completa de la distribución en vez de solo cuartiles, pair plots que cruzan todas las variables numéricas entre sí, y mapas de calor de matrices de correlación. Un error común es pasar datos ya agregados -como promedios por grupo- a `sns.boxplot`: la función espera las observaciones individuales para calcular sus propios cuartiles, y con datos ya resumidos dibuja cajas sin sentido estadístico, del tamaño de un solo punto.",
+  "body_en": "Seaborn builds on Matplotlib but works directly with tabular structures -lists of dictionaries or pandas DataFrames- and with column names instead of loose arrays, which cuts down the code needed for statistical charts. Functions like `sns.boxplot`, `sns.histplot` or `sns.heatmap` compute quartiles, densities or correlations internally before drawing, rather than requiring that computation upfront from the caller. The `hue` argument automatically colors points by a third categorical variable within the same chart, and `col` or `row` in functions like `sns.relplot` generate a grid of subplots -one facet per value of that variable- without writing the loop by hand. The built-in palettes, such as `deep`, `viridis` or `coolwarm`, follow perceptual rules so value differences read proportionally and remain distinguishable for colorblind viewers. Common chart types include histograms with an overlaid kernel density estimate (KDE), violin plots that show a distribution's full shape instead of just its quartiles, pair plots that cross every numeric variable against every other, and correlation-matrix heatmaps. A common mistake is feeding already-aggregated data -such as per-group averages- into `sns.boxplot`: the function expects individual observations so it can compute its own quartiles, and with pre-summarized input it draws boxes collapsed to a single point, with no statistical meaning left.",
+  "example_code": "import matplotlib.pyplot as plt\nimport seaborn as sns\n\ndatos = {\"grupo\": [\"A\", \"A\", \"B\", \"B\", \"C\", \"C\"], \"valor\": [12, 15, 22, 19, 8, 11]}\n\nfig, ax = plt.subplots(figsize=(5, 4))\nsns.boxplot(x=datos[\"grupo\"], y=datos[\"valor\"], hue=datos[\"grupo\"], legend=False, ax=ax, palette=\"deep\")\nax.set_title(\"Distribución de valores por grupo\")\nfig.savefig(\"boxplot_grupos.png\")\n\nprint(f\"Grupos graficados: {sorted(set(datos['grupo']))}\")\nprint(f\"Total de observaciones: {len(datos['valor'])}\")",
+  "example_output": "Grupos graficados: ['A', 'B', 'C']\nTotal de observaciones: 6",
+  "source": "seaborn Documentation — An introduction to seaborn (https://seaborn.pydata.org/tutorial/introduction.html)",
   "duration_minutes": 45,
   "objectives_es": [
     "Crear gráficos estadísticos",
@@ -13,10 +22,5 @@
     "Use color palettes",
     "Explore correlations",
     "Communicate statistics visually"
-  ],
-  "title_es": "Seaborn para Visualización Estadística",
-  "title_en": "Seaborn for Statistical Visualization",
-  "body_es": "Seaborn construye sobre Matplotlib para facilitar visualización estadística. Especializándose en gráficos estadísticos complejos, crea heatmaps, gráficos de distribución, y relaciones entre variables con código conciso. Los paletas de colores integradas siguen principios científicos. Las opciones de hue y faceting permiten explorar múltiples dimensiones. Aprenderás gráficos como histogramas con KDE, violin plots, pair plots y correlation matrices. Seaborn es ideal cuando necesitas comunicar estadísticas, no solo datos brutos.",
-  "body_en": "Seaborn builds on Matplotlib to ease statistical visualization. Specializing in complex statistical plots, creates heatmaps, distribution plots, and variable relationships with concise code. Integrated color palettes follow scientific principles. Hue and faceting options allow exploring multiple dimensions. You'll learn plots like histograms with KDE, violin plots, pair plots and correlation matrices. Seaborn ideal when communicating statistics, not just raw data.",
-  "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
+  ]
 }

@@ -30,13 +30,13 @@
       "question_es": "¿Cuál es la estructura de directorios típica de un módulo de Terraform?",
       "question_en": "What is the typical directory structure of a Terraform module?",
       "options_es": [
-        "Solo un archivo main.tf sin considerar otros factores relevantes",
+        "Solo un archivo main.tf, sin variables.tf ni outputs.tf definidos",
         "main.tf, variables.tf, outputs.tf, y opcionalmente README.md",
         "Una carpeta con un archivo index.json",
         "Archivos de extensión .module únicamente"
       ],
       "options_en": [
-        "Only a main.tf file without considering other relevant factors",
+        "Only a main.tf file, with no variables.tf or outputs.tf defined",
         "main.tf, variables.tf, outputs.tf, and optionally README.md",
         "A folder with an index.json file",
         ".module extension files only"
@@ -76,13 +76,13 @@
       "question_es": "¿Cuál es el beneficio principal de usar módulos de Terraform?",
       "question_en": "What is the primary benefit of using Terraform modules?",
       "options_es": [
-        "Mejorar la seguridad del estado de manera exclusiva y permanente",
+        "Mejorar la seguridad cifrando el archivo .tfstate en reposo",
         "Aumentar la velocidad de despliegue",
         "Facilitar la creación de backends remotos",
         "Reducir complejidad mediante reutilización de código"
       ],
       "options_en": [
-        "Improve state security exclusively and permanently",
+        "Improve security by encrypting the .tfstate file at rest",
         "Increase deployment speed",
         "Facilitate remote backend creation",
         "Reduce complexity through code reusability"
@@ -148,13 +148,13 @@
         "Locales son en tu máquina, registry son compartidos públicamente",
         "Locales son más rápidos que registry",
         "Locales requieren versionamiento, registry no",
-        "Locales solo funcionan con AWS según la documentación estándar del servicio"
+        "Locales solo funcionan con el proveedor AWS, nunca con Azure o GCP"
       ],
       "options_en": [
         "Local modules are on your machine, registry are publicly shared",
         "Local modules are faster than registry",
         "Local modules require versioning, registry don't",
-        "Local modules only work with AWS according to standard service documentation"
+        "Local modules only work with the AWS provider, never Azure or GCP"
       ],
       "correct_index": 0,
       "explanation_es": "Módulos locales están en tu sistema, registry son módulos públicos o compartidos en un registro centralizado.",
@@ -168,16 +168,16 @@
       "question_es": "¿Cómo se accede a los outputs de un módulo en la configuración principal?",
       "question_en": "How do you access module outputs in the main configuration?",
       "options_es": [
-        "var.module.<nombre_módulo> como concepto principal",
-        "module.<nombre_módulo>.<nombre_output> como concepto principal",
-        "output.<nombre_módulo>.<nombre_output> como concepto principal",
-        "data.module.<nombre_módulo> como concepto principal"
+        "var.module.<nombre_módulo> para leer un output",
+        "module.<nombre_módulo>.<nombre_output>",
+        "output.<nombre_módulo>.<output> sintaxis inválida",
+        "data.module.<nombre_módulo> para leer un output"
       ],
       "options_en": [
-        "var.module.<module_name> as the primary concept",
-        "module.<module_name>.<output_name> as the primary concept",
-        "output.<module_name>.<output_name> as the primary concept",
-        "data.module.<module_name> as the primary concept"
+        "var.module.<module_name> to read an output",
+        "module.<module_name>.<output_name>",
+        "output.<module_name>.<output> invalid syntax",
+        "data.module.<module_name> to read an output"
       ],
       "correct_index": 1,
       "explanation_es": "Los outputs de módulos se acceden con la sintaxis module.nombre_módulo.nombre_output.",
@@ -193,13 +193,13 @@
       "options_es": [
         "Proceso de actualizar el estado de Terraform",
         "Sistema para especificar qué versión de módulo usar",
-        "Manera de crear backups del módulo de manera exclusiva y permanente",
+        "Manera de crear backups del módulo cada vez que se aplica",
         "Técnica para bloquear cambios de módulos"
       ],
       "options_en": [
         "Process of updating Terraform state",
         "System for specifying which module version to use",
-        "Way to create module backups exclusively and permanently",
+        "Way to create a full backup of the module on every apply",
         "Technique for locking module changes"
       ],
       "correct_index": 1,
@@ -216,13 +216,13 @@
       "options_es": [
         "Crear directorio modules/ con subdirectorios por componente",
         "Almacenar todos los módulos en el directorio raíz",
-        "Usar un único archivo module.tf de forma invariable y constante",
+        "Usar un único archivo module.tf con todos los recursos mezclados",
         "Distribuir módulos en directorios al azar"
       ],
       "options_en": [
         "Create modules/ directory with subdirectories per component",
         "Store all modules in root directory",
-        "Use single module.tf file invariably and constantly",
+        "Use a single module.tf file mixing every resource together",
         "Distribute modules randomly across directories"
       ],
       "correct_index": 0,
@@ -240,13 +240,13 @@
         "Versionar el módulo automáticamente",
         "Contar recursos en el módulo",
         "Crear múltiples instancias del mismo módulo",
-        "Limitar el acceso al módulo en cualquier escenario de implementación"
+        "Limitar el acceso al módulo según permisos IAM"
       ],
       "options_en": [
         "Automatically version the module",
         "Count resources in the module",
         "Create multiple instances of the same module",
-        "Limit access to the module in any implementation scenario"
+        "Limit access to the module via IAM permissions"
       ],
       "correct_index": 2,
       "explanation_es": "El atributo count permite crear múltiples instancias de un módulo basado en un número o condición.",
@@ -262,14 +262,14 @@
       "options_es": [
         "Meta-argumento para crear múltiples instancias basadas en maps",
         "Comando para ejecutar módulos en secuencia",
-        "Variable de entorno para módulos en todos los casos posibles",
-        "Función para iterar sobre strings sin excepciones ni variantes"
+        "Variable de entorno que fija la versión exacta del proveedor a usar",
+        "Función para iterar sobre strings carácter por carácter"
       ],
       "options_en": [
         "Meta-argument to create multiple instances based on maps",
         "Command to execute modules sequentially",
-        "Environment variable for modules in all possible cases",
-        "Function to iterate over strings without exceptions or variants"
+        "Environment variable that pins the exact provider version to use",
+        "Function to iterate over strings character by character"
       ],
       "correct_index": 0,
       "explanation_es": "for_each es un meta-argumento que permite crear múltiples instancias usando maps, permitiendo mejor control que count.",
@@ -308,13 +308,13 @@
       "options_es": [
         "Acceso a módulos mantenidos por la comunidad y HashiCorp",
         "Mayor velocidad de despliegue automático",
-        "Mejor seguridad que módulos locales sin excepciones ni variantes",
+        "Mejor seguridad que módulos locales gracias a un firewall integrado",
         "Reducción de costos de infraestructura"
       ],
       "options_en": [
         "Access to modules maintained by community and HashiCorp",
         "Faster automatic deployment speed",
-        "Better security than local modules without exceptions or variants",
+        "Better security than local modules thanks to a built-in firewall",
         "Reduced infrastructure costs"
       ],
       "correct_index": 0,
@@ -329,15 +329,15 @@
       "question_es": "¿Qué es una variable local (locals) en módulos de Terraform?",
       "question_en": "What is a local variable (locals) in Terraform modules?",
       "options_es": [
-        "Variable que no puede ser exportada a otros módulos en todos los casos posibles",
+        "Variable que nunca puede leerse fuera del bloque locals",
         "Variable que se almacena en el archivo local.tfstate",
-        "Variable que solo existe en desarrollo sin excepciones ni variantes",
+        "Variable que solo existe mientras dura el comando terraform plan",
         "Valor que se calcula localmente dentro del módulo para reutilización"
       ],
       "options_en": [
-        "Variable that cannot be exported to other modules in all possible cases",
+        "Variable that can never be read outside the locals block",
         "Variable stored in local.tfstate file",
-        "Variable that only exists in development without exceptions or variants",
+        "Variable that only exists for the duration of terraform plan",
         "Value computed locally within module for reuse"
       ],
       "correct_index": 3,
@@ -353,13 +353,13 @@
       "question_en": "What module parameter allows customizing its behavior?",
       "options_es": [
         "El directorio source del módulo",
-        "El archivo terraform.tfvars de manera exclusiva y permanente",
-        "El parámetro version del módulo",
+        "El archivo terraform.tfvars de la raíz",
+        "El parámetro `version` del módulo",
         "Los valores de variables de entrada"
       ],
       "options_en": [
         "The module source directory",
-        "The terraform.tfvars file exclusively and permanently",
+        "The root's terraform.tfvars file",
         "The module version parameter",
         "The input variable values"
       ],
@@ -376,13 +376,13 @@
       "question_en": "What is the purpose of 'outputs' in a module?",
       "options_es": [
         "Exponer valores calculados del módulo al exterior",
-        "Definir backends de almacenamiento en todos los casos posibles",
+        "Definir backends de almacenamiento como S3 o Azure Storage",
         "Documentar el módulo automáticamente",
         "Definir archivos de salida del módulo"
       ],
       "options_en": [
         "Expose calculated module values externally",
-        "Define storage backends in all possible cases",
+        "Define storage backends such as S3 or Azure Storage",
         "Automatically document the module",
         "Define output files of the module"
       ],
@@ -421,13 +421,13 @@
       "question_es": "¿Cuál es la diferencia entre un módulo local y un módulo remoto?",
       "question_en": "What is the difference between a local and remote module?",
       "options_es": [
-        "Los locales no soportan recursos sin considerar otros factores relevantes",
+        "Los locales no pueden declarar recursos, solo variables",
         "Los remotos no pueden usar variables",
         "Ambos son idénticos en funcionamiento",
         "Un local está en el disco, uno remoto en un repositorio"
       ],
       "options_en": [
-        "Local ones don't support resources without considering other relevant factors",
+        "Local ones cannot declare resources, only variables",
         "Remote ones cannot use variables",
         "Both are identical in function",
         "A local is on disk, a remote is in a repository"
@@ -445,13 +445,13 @@
       "question_en": "What is code reusability in the context of Terraform modules?",
       "options_es": [
         "La habilidad de usar el mismo módulo en múltiples lugares",
-        "El versionado de archivos de manera exclusiva y permanente",
+        "El versionado de archivos mediante etiquetas y ramas en un repositorio Git",
         "Una restricción de Terraform",
         "La capacidad de copiar y pegar configuración"
       ],
       "options_en": [
         "The ability to use the same module in multiple places",
-        "File versioning exclusively and permanently",
+        "File versioning through tags and branches in a shared Git repository",
         "A Terraform restriction",
         "The ability to copy and paste configuration"
       ],
@@ -468,13 +468,13 @@
       "question_en": "What is the best practice for structuring reusable modules?",
       "options_es": [
         "Usar nombres genéricos para todos los archivos",
-        "Incluir estado compartido en el módulo en cualquier escenario de implementación",
+        "Incluir un backend remoto propio configurado dentro de cada módulo hijo",
         "Incluir toda la lógica en un solo archivo",
         "Separar recursos, variables y outputs en archivos dedicados"
       ],
       "options_en": [
         "Use generic names for all files",
-        "Include shared state in the module in any implementation scenario",
+        "Include a separately configured remote backend inside each child module",
         "Include all logic in a single file",
         "Separate resources, variables, and outputs in dedicated files"
       ],
@@ -490,15 +490,15 @@
       "question_es": "¿Qué es un módulo raíz en Terraform?",
       "question_en": "What is a root module in Terraform?",
       "options_es": [
-        "Un módulo de solo lectura de manera exclusiva y permanente",
+        "Un módulo que solo admite el comando terraform plan",
         "El módulo que debe tener privilegios especiales",
-        "Un módulo obligatorio en todo proyecto sin excepciones ni variantes",
+        "Un módulo obligatorio que Terraform genera automáticamente en cada init",
         "La configuración Terraform principal en el directorio de trabajo"
       ],
       "options_en": [
-        "A read-only module exclusively and permanently",
+        "A module that only supports the terraform plan command",
         "The module that must have special privileges",
-        "A mandatory module in every project without exceptions or variants",
+        "A mandatory module that Terraform generates on every init run",
         "The main Terraform configuration in the working directory"
       ],
       "correct_index": 3,
@@ -515,8 +515,8 @@
       "options_es": [
         "Usando source con etiqueta de versión en Git",
         "No es posible especificar versiones",
-        "Agregando version = \"1.0\" después del source",
-        "Agregando ?version=1.0 al source"
+        "Agregando `version = \"1.0\"` después del `source`",
+        "Agregando `?version=1.0` al `source`"
       ],
       "options_en": [
         "Using source with version tag in Git",
@@ -537,15 +537,15 @@
       "question_en": "What is the 'Terraform Registry' in relation to modules?",
       "options_es": [
         "Un repositorio público de módulos Terraform certificados",
-        "Una herramienta de compilación de manera exclusiva y permanente",
+        "Una herramienta de compilación escrita en Go",
         "Un archivo de configuración local",
-        "Un archivo de estado remoto en todos los casos posibles"
+        "Un archivo de estado remoto alojado por HashiCorp Cloud"
       ],
       "options_en": [
         "A public repository of certified Terraform modules",
-        "A build tool exclusively and permanently",
+        "A build tool written in the Go language, unrelated to Terraform",
         "A local configuration file",
-        "A remote state file in all possible cases"
+        "A remote state file hosted by HashiCorp Cloud"
       ],
       "correct_index": 0,
       "explanation_es": "El Terraform Registry es un repositorio público en registry.terraform.io que aloja módulos verificados y reutilizables creados por la comunidad.",
@@ -584,13 +584,13 @@
       "options_es": [
         "Elimina la necesidad de validación",
         "Divide la lógica en componentes manejables y reutilizables",
-        "Reduce archivos de configuración según la documentación estándar del servicio",
+        "Reduce archivos de configuración fusionándolos en uno solo",
         "Acelera las compilaciones automáticamente"
       ],
       "options_en": [
         "Eliminates the need for validation",
         "Divides logic into manageable and reusable components",
-        "Reduces configuration files according to standard service documentation",
+        "Reduces configuration files by merging them into one",
         "Automatically accelerates builds"
       ],
       "correct_index": 1,
@@ -608,13 +608,13 @@
         "Se comparten todos los recursos entre instancias",
         "Se crean múltiples instancias independientes del módulo",
         "Solo se ejecuta una vez y se cachea",
-        "Se genera un error de duplicación sin considerar otros factores relevantes"
+        "Se genera un error de duplicación de nombre de recurso"
       ],
       "options_en": [
         "All resources are shared between instances",
         "Multiple independent module instances are created",
         "It only runs once and is cached",
-        "A duplication error is generated without considering other relevant factors"
+        "A resource name duplication error is generated"
       ],
       "correct_index": 1,
       "explanation_es": "Cada invocación de módulo crea una instancia independiente con sus propios recursos, permitiendo desplegar la misma infraestructura múltiples veces.",
@@ -628,13 +628,13 @@
       "question_es": "¿Cómo se pasan valores a variables de entrada de un módulo?",
       "question_en": "How do you pass values to module input variables?",
       "options_es": [
-        "Usando terraform.tfvars global en todos los casos posibles",
+        "Usando terraform.tfvars global del módulo raíz",
         "Especificando argumentos en el bloque module",
         "Mediante variables de entorno del sistema",
         "Editando variables.tf del módulo"
       ],
       "options_en": [
-        "Using global terraform.tfvars in all possible cases",
+        "Using the root module's global terraform.tfvars",
         "By specifying arguments in the module block",
         "Through system environment variables",
         "By editing the module's variables.tf"
@@ -652,13 +652,13 @@
       "question_en": "What is a composable module in Terraform?",
       "options_es": [
         "Un módulo que puede ser combinado con otros módulos",
-        "Un módulo de solo lectura sin considerar otros factores relevantes",
+        "Un módulo de solo lectura que bloquea el estado al aplicarse",
         "Un módulo para compilación de código",
         "Un módulo que solo funciona localmente"
       ],
       "options_en": [
         "A module that can be combined with other modules",
-        "A read-only module without considering other relevant factors",
+        "A read-only module that locks the state on apply",
         "A module for code compilation",
         "A module that only works locally"
       ],
@@ -675,13 +675,13 @@
       "question_en": "What is the purpose of the README.md file in a module?",
       "options_es": [
         "Almacenar valores de estado",
-        "Configurar el backend independientemente del contexto aplicado",
+        "Configurar el backend remoto que usará el propio módulo",
         "Documentar el módulo, sus variables y outputs",
         "Definir proveedores requeridos"
       ],
       "options_en": [
         "Store state values",
-        "Configure the backend regardless of the applied context",
+        "Configure the remote backend the module itself will use",
         "Document the module, its variables, and outputs",
         "Define required providers"
       ],
@@ -697,13 +697,13 @@
       "question_es": "¿Cuál es el propósito de un backend remoto en Terraform?",
       "question_en": "What is the purpose of a remote backend in Terraform?",
       "options_es": [
-        "Ejecutar proveedores en la nube independientemente del contexto aplicado",
+        "Ejecutar los proveedores directamente en la nube",
         "Sincronizar automáticamente cambios",
         "Almacenar el archivo de estado de forma centralizada",
         "Compilar código en servidores remotos"
       ],
       "options_en": [
-        "Run providers in the cloud regardless of the applied context",
+        "Run the providers directly in the cloud",
         "Automatically sync changes",
         "Store the state file centrally",
         "Compile code on remote servers"
@@ -722,13 +722,13 @@
       "options_es": [
         "Mejora solo la documentación",
         "Facilita colaboración, seguridad, y versionado del estado",
-        "Acelera solo las operaciones sin excepciones ni variantes",
+        "Acelera solo la ejecución de terraform plan, no apply ni destroy",
         "Solo reduce tamaño de archivos"
       ],
       "options_en": [
         "Only improves documentation",
         "Enables collaboration, security, and state versioning",
-        "Only accelerates operations without exceptions or variants",
+        "Only speeds up the terraform plan command, not apply or destroy",
         "Only reduces file size"
       ],
       "correct_index": 1,
@@ -744,13 +744,13 @@
       "question_en": "How do you configure a remote backend in Terraform?",
       "options_es": [
         "En el bloque terraform dentro de un archivo .tf",
-        "En variables.tf del proyecto sin considerar otros factores relevantes",
+        "En variables.tf del proyecto, como valor por defecto",
         "Solo con variables de entorno",
         "En un archivo externo backend.hcl"
       ],
       "options_en": [
         "In the terraform block within a .tf file",
-        "In the project's variables.tf without considering other relevant factors",
+        "In the project's variables.tf, as a default value",
         "Only with environment variables",
         "In an external backend.hcl file"
       ],
@@ -767,13 +767,13 @@
       "question_en": "What is 'state locking' in the context of remote backends?",
       "options_es": [
         "Una restricción de permisos de lectura",
-        "Un archivo de backup automático en cualquier escenario de implementación",
+        "Un archivo de backup automático que Terraform genera antes de cada apply",
         "Prevenir cambios simultáneos del estado por múltiples usuarios",
         "Un proceso para encriptar el estado"
       ],
       "options_en": [
         "A read permission restriction",
-        "An automatic backup file in any implementation scenario",
+        "An automatic backup file that Terraform generates before every apply",
         "Prevent simultaneous state changes by multiple users",
         "A process to encrypt state"
       ],
@@ -815,13 +815,13 @@
         "Un conjunto de proveedores de nube",
         "Un servicio remoto de backend administrado por HashiCorp",
         "Una versión de Terraform para la nube",
-        "Un compilador de Terraform de manera exclusiva y permanente"
+        "Un compilador de Terraform que genera binarios ejecutables"
       ],
       "options_en": [
         "A set of cloud providers",
         "A remote backend service managed by HashiCorp",
         "A version of Terraform for the cloud",
-        "A Terraform compiler exclusively and permanently"
+        "A compiler that generates executable Terraform binaries"
       ],
       "correct_index": 1,
       "explanation_es": "Terraform Cloud es un servicio SaaS que proporciona backends remotos administrados, runs de Terraform, versionado y colaboración.",
@@ -838,13 +838,13 @@
         "Solo bases de datos",
         "S3, Azure Storage, Google Cloud Storage, Terraform Cloud",
         "Solo almacenamiento de archivos",
-        "Solo S3 y local independientemente del contexto aplicado"
+        "Solo S3 y almacenamiento local, sin soporte para otros proveedores"
       ],
       "options_en": [
         "Only databases",
         "S3, Azure Storage, Google Cloud Storage, Terraform Cloud",
         "Only file storage",
-        "Only S3 and local regardless of the applied context"
+        "Only S3 and local storage, with no support for other providers"
       ],
       "correct_index": 1,
       "explanation_es": "Los backends remotos comunes incluyen S3 (AWS), Azure Storage, Google Cloud Storage, Terraform Cloud, y otros servicios de almacenamiento.",
@@ -859,13 +859,13 @@
       "question_en": "How do you migrate from local to remote backend?",
       "options_es": [
         "Requiere eliminar y recrear infraestructura",
-        "No es posible migrar backends de manera exclusiva y permanente",
+        "No es posible migrar backends sin destruir el estado existente",
         "Copiando el archivo manualmente",
         "Configurar el nuevo backend y ejecutar terraform init"
       ],
       "options_en": [
         "Requires deleting and recreating infrastructure",
-        "It's not possible to migrate backends exclusively and permanently",
+        "Backends cannot be migrated without destroying state",
         "By copying the file manually",
         "Configure new backend and run terraform init"
       ],
@@ -884,13 +884,13 @@
         "Mejora velocidad de operaciones",
         "Protege datos sensibles en el estado",
         "Permite acceso público seguro",
-        "Reduce tamaño de archivos de manera exclusiva y permanente"
+        "Reduce el tamaño del archivo de estado mediante compresión"
       ],
       "options_en": [
         "Improves operation speed",
         "Protects sensitive data in state",
         "Enables safe public access",
-        "Reduces file size exclusively and permanently"
+        "Reduces the state file size through compression"
       ],
       "correct_index": 1,
       "explanation_es": "La encriptación protege información sensible como contraseñas y claves de acceso que pueden estar en el archivo de estado.",
@@ -906,13 +906,13 @@
       "options_es": [
         "No tienen relación con backends",
         "Permitir múltiples instancias de estado en el mismo backend",
-        "Definir permisos de acceso en cualquier escenario de implementación",
+        "Definir permisos de acceso mediante políticas IAM del backend",
         "Configurar regiones geográficas"
       ],
       "options_en": [
         "They have no relation to backends",
         "Allow multiple state instances in the same backend",
-        "Define access permissions in any implementation scenario",
+        "Define access permissions through the backend's IAM policies",
         "Configure geographic regions"
       ],
       "correct_index": 1,
@@ -952,13 +952,13 @@
       "options_es": [
         "terraform workspace select nombre",
         "terraform use workspace",
-        "terraform switch nombre en todos los casos posibles",
+        "terraform switch nombre",
         "terraform select workspace"
       ],
       "options_en": [
         "terraform workspace select name",
         "terraform use workspace",
-        "terraform switch name in all possible cases",
+        "terraform switch name",
         "terraform select workspace"
       ],
       "correct_index": 0,
@@ -974,13 +974,13 @@
       "question_en": "What happens when remote state is used with multiple users?",
       "options_es": [
         "Todos ven el mismo archivo de estado sincronizado",
-        "Se generan conflictos automáticos de manera exclusiva y permanente",
+        "Se generan conflictos automáticos que corrompen el archivo .tfstate",
         "El estado se duplica en cada máquina",
         "Cada usuario tiene su propia copia"
       ],
       "options_en": [
         "Everyone sees the same synchronized state file",
-        "Automatic conflicts are generated exclusively and permanently",
+        "Automatic conflicts are generated that corrupt the .tfstate file",
         "State is duplicated on each machine",
         "Each user has their own copy"
       ],
@@ -996,13 +996,13 @@
       "question_es": "¿Cuál es el propósito de variables de configuración en backends?",
       "question_en": "What is the purpose of configuration variables in backends?",
       "options_es": [
-        "Definir el tipo de recurso sin considerar otros factores relevantes",
+        "Definir el tipo de recurso que Terraform va a crear",
         "Almacenar valores de estado",
         "Controlar acceso a proveedores",
         "Personalizar parámetros del backend dinámicamente"
       ],
       "options_en": [
-        "Define the type of resource without considering other relevant factors",
+        "Define the type of resource that Terraform will create",
         "Store state values",
         "Control provider access",
         "Customize backend parameters dynamically"
@@ -1022,13 +1022,13 @@
         "Una desconexión del backend",
         "Una actualización del backend",
         "Cambios en infraestructura real no reflejados en estado",
-        "Un error de sincronización en cualquier escenario de implementación"
+        "Un error de sincronización que bloquea permanentemente el archivo de estado"
       ],
       "options_en": [
         "A backend disconnection",
         "A backend update",
         "Changes in real infrastructure not reflected in state",
-        "A synchronization error in any implementation scenario"
+        "A synchronization error that permanently locks the state file"
       ],
       "correct_index": 2,
       "explanation_es": "State drift es cuando la infraestructura real ha sido modificada fuera de Terraform, causando diferencias con el estado almacenado.",
@@ -1042,14 +1042,14 @@
       "question_es": "¿Qué es la 'detección de desviación' (drift detection) en Terraform?",
       "question_en": "What is 'drift detection' in Terraform?",
       "options_es": [
-        "Un tipo de backend de manera exclusiva y permanente",
-        "Una versión de Terraform de manera exclusiva y permanente",
+        "Un tipo de backend que almacena el estado cifrado",
+        "Una versión de Terraform lanzada solo para clientes empresariales de pago",
         "Proceso de identificar cambios no rastreados en infraestructura",
         "Un error de sincronización"
       ],
       "options_en": [
-        "A backend type exclusively and permanently",
-        "A Terraform version exclusively and permanently",
+        "A backend type that stores encrypted state",
+        "A Terraform version released only for paying enterprise customers",
         "Process to identify untracked infrastructure changes",
         "A sync error"
       ],
@@ -1065,16 +1065,16 @@
       "question_es": "¿Cómo Terraform detecta desviación?",
       "question_en": "How does Terraform detect drift?",
       "options_es": [
-        "Comparando archivos locales en cualquier escenario de implementación",
+        "Comparando archivos locales de configuración .tf entre sí",
         "Comparando estado registrado con infraestructura real",
         "Consultando APIs automáticamente",
-        "Monitoreando logs de forma invariable y constante"
+        "Monitoreando logs del proveedor cloud en tiempo real"
       ],
       "options_en": [
-        "Comparing local files in any implementation scenario",
+        "Comparing local .tf configuration files against each other",
         "Comparing recorded state with actual infrastructure",
         "Polling APIs automatically",
-        "Monitoring logs invariably and constantly"
+        "Monitoring cloud provider logs in real time"
       ],
       "correct_index": 1,
       "explanation_es": "Terraform compara el estado registrado con el estado real de los recursos consultando APIs del proveedor.",
@@ -1088,13 +1088,13 @@
       "question_es": "¿Cuál es el comando que muestra desviación de estado?",
       "question_en": "What command shows state drift?",
       "options_es": [
-        "terraform sync de forma invariable y constante",
+        "terraform state diff",
         "terraform plan muestra cambios necesarios",
         "terraform drift",
         "terraform check"
       ],
       "options_en": [
-        "terraform sync invariably and constantly",
+        "terraform state diff",
         "terraform plan shows needed changes",
         "terraform drift",
         "terraform check"
@@ -1113,13 +1113,13 @@
       "options_es": [
         "Cambios manuales, actualizaciones externas, bugs de API",
         "Actualizaciones de proveedores",
-        "Cambios en versión según la documentación estándar del servicio",
+        "Cambios en la versión del proveedor de Terraform instalado",
         "Errores de Terraform"
       ],
       "options_en": [
         "Manual changes, external updates, API bugs",
         "Provider updates",
-        "Version changes according to standard service documentation",
+        "Changes in the installed Terraform provider version",
         "Terraform errors"
       ],
       "correct_index": 0,
@@ -1134,13 +1134,13 @@
       "question_es": "¿Cómo se reconcilia desviación de estado?",
       "question_en": "How do you reconcile state drift?",
       "options_es": [
-        "Eliminando recursos independientemente del contexto aplicado",
+        "Eliminando los recursos y quitándolos del estado de Terraform",
         "Recreando infraestructura",
         "Ejecutando terraform apply para sincronizar estado",
         "Ignorando los cambios"
       ],
       "options_en": [
-        "Deleting resources regardless of the applied context",
+        "Deleting the resources and removing them from Terraform state",
         "Recreating infrastructure",
         "Running terraform apply to sync state",
         "Ignoring changes"
@@ -1159,14 +1159,14 @@
       "options_es": [
         "Inconsistencia, cambios inesperados, pérdida de control",
         "Solo en desarrollo",
-        "Ninguno como concepto principal",
-        "Solo afecta logs según la documentación estándar del servicio"
+        "Ninguno, Terraform corrige toda la desviación automáticamente en cada apply",
+        "Solo afecta los logs de auditoría del backend"
       ],
       "options_en": [
         "Inconsistency, unexpected changes, loss of control",
         "Only in development",
-        "None as the primary concept",
-        "Only affects logs according to standard service documentation"
+        "None, Terraform corrects all drift automatically during every apply",
+        "Only affects the backend's audit logs"
       ],
       "correct_index": 0,
       "explanation_es": "Sin manejar drift, la infraestructura real diverge del código, causando cambios inesperados y pérdida de control.",
@@ -1182,14 +1182,14 @@
       "options_es": [
         "Actualizar estado consultando infraestructura real sin cambios",
         "Un reinicio del servidor",
-        "Recargar proveedores sin excepciones ni variantes",
-        "Eliminar caché de forma invariable y constante"
+        "Recargar los plugins de proveedores instalados en la caché local del sistema",
+        "Eliminar la caché local de módulos descargados"
       ],
       "options_en": [
         "Update state by querying real infrastructure without changes",
         "A server restart",
-        "Reload providers without exceptions or variants",
-        "Clear cache invariably and constantly"
+        "Reload the cached provider plugins that are installed on the local system",
+        "Clear the local cache of downloaded modules"
       ],
       "correct_index": 0,
       "explanation_es": "Refresh actualiza el estado de Terraform consultando el estado real de recursos sin hacer cambios.",
@@ -1204,15 +1204,15 @@
       "question_en": "How do you run a manual refresh?",
       "options_es": [
         "terraform refresh",
-        "terraform sync independientemente del contexto aplicado",
+        "terraform state sync (subcomando que no existe; el estado solo se actualiza con apply, apply -refresh-only o import)",
         "terraform refresh es reemplazado por terraform apply -refresh-only",
-        "terraform update en cualquier escenario de implementación"
+        "terraform apply -update (bandera que no existe; el equivalente real para refrescar sin cambios es -refresh-only)"
       ],
       "options_en": [
         "terraform refresh",
-        "terraform sync regardless of the applied context",
+        "terraform state sync (a subcommand that does not exist; state is only updated via apply, apply -refresh-only, or import)",
         "terraform refresh is replaced by terraform apply -refresh-only",
-        "terraform update in any implementation scenario"
+        "terraform apply -update (a flag that does not exist; the real equivalent for refreshing without changes is -refresh-only)"
       ],
       "correct_index": 2,
       "explanation_es": "Antes se usaba 'terraform refresh', ahora se recomienda 'terraform apply -refresh-only' para actualizar estado.",
@@ -1227,15 +1227,15 @@
       "question_en": "What is the difference between 'plan' and 'refresh'?",
       "options_es": [
         "refresh aplica cambios",
-        "plan actualiza estado en cualquier escenario de implementación",
+        "plan actualiza el estado y lo sobrescribe sin pedir ninguna confirmación al usuario",
         "plan muestra cambios a aplicar, refresh solo actualiza estado sin cambios",
-        "No hay diferencia según la documentación estándar del servicio"
+        "No hay diferencia, ambos ejecutan los mismos cambios"
       ],
       "options_en": [
         "refresh applies changes",
-        "plan updates state in any implementation scenario",
+        "plan updates state and overwrites it without asking the user for any confirmation",
         "plan shows changes to apply, refresh only updates state without changes",
-        "No difference according to standard service documentation"
+        "No difference, both run the exact same changes"
       ],
       "correct_index": 2,
       "explanation_es": "plan muestra qué cambios se harían; refresh actualiza el estado consultando recursos sin hacer cambios.",
@@ -1250,14 +1250,14 @@
       "question_en": "How do you prevent drift?",
       "options_es": [
         "Usar solo Terraform para cambios, restringir acceso manual, auditoría",
-        "Desabilitar recursos de forma invariable y constante",
-        "No se puede prevenir de forma invariable y constante",
+        "Deshabilitar recursos que ya no se necesitan",
+        "No se puede prevenir, solo se puede detectar después de que ya ha ocurrido",
         "Ignorar cambios externos"
       ],
       "options_en": [
         "Use only Terraform for changes, restrict manual access, audit",
-        "Disable resources invariably and constantly",
-        "Cannot be prevented invariably and constantly",
+        "Disable resources that are no longer needed",
+        "It cannot be prevented, it can only be detected after it has already happened",
         "Ignore external changes"
       ],
       "correct_index": 0,
@@ -1273,14 +1273,14 @@
       "question_en": "What is an automatic drift detection policy?",
       "options_es": [
         "Un archivo de configuración",
-        "Un hook de Git sin excepciones ni variantes",
-        "Un tipo de recurso según la documentación estándar del servicio",
+        "Un hook de Git que se ejecuta antes de cada commit",
+        "Un tipo de recurso definido específicamente en el proveedor de AWS",
         "Una política que ejecuta plan periódicamente para detectar cambios"
       ],
       "options_en": [
         "A config file",
-        "A Git hook without exceptions or variants",
-        "A resource type according to standard service documentation",
+        "A Git hook that runs before every commit",
+        "A resource type defined specifically in the AWS provider",
         "A policy that runs plan periodically to detect changes"
       ],
       "correct_index": 3,
@@ -1297,13 +1297,13 @@
       "options_es": [
         "Solo manualmente",
         "Como un job post-deploy",
-        "No es posible según la documentación estándar del servicio",
+        "No es posible, GitHub Actions no admite tareas programadas cron",
         "Mediante workflow scheduled que ejecuta terraform plan"
       ],
       "options_en": [
         "Only manually",
         "As post-deploy job",
-        "Not possible according to standard service documentation",
+        "Not possible, GitHub Actions does not support cron",
         "Via scheduled workflow running terraform plan"
       ],
       "correct_index": 3,
@@ -1318,13 +1318,13 @@
       "question_es": "¿Qué herramientas detectan desviación automáticamente?",
       "question_en": "What tools automatically detect drift?",
       "options_es": [
-        "Solo Pulumi independientemente del contexto aplicado",
+        "Solo Pulumi, ninguna otra herramienta de infraestructura lo soporta",
         "Terraform Cloud, Spacelift, CloudFormation Drift",
         "Solo Terraform",
         "Solo CloudFormation"
       ],
       "options_en": [
-        "Only Pulumi regardless of the applied context",
+        "Only Pulumi, no other infrastructure tool supports it at all",
         "Terraform Cloud, Spacelift, CloudFormation Drift",
         "Only Terraform",
         "Only CloudFormation"
@@ -1342,13 +1342,13 @@
       "question_en": "What is the best practice for handling detected drift?",
       "options_es": [
         "Eliminar infraestructura",
-        "Ignorarla siempre según la documentación estándar del servicio",
+        "Ignorarla siempre y continuar con el siguiente despliegue",
         "Recrear desde cero",
         "Investigar causa, reconciliar o documentar razón válida"
       ],
       "options_en": [
         "Delete infrastructure",
-        "Always ignore it according to standard service documentation",
+        "Always ignore it and proceed with the next deployment",
         "Recreate from scratch",
         "Investigate cause, reconcile or document valid reason"
       ],
@@ -1365,14 +1365,14 @@
       "question_en": "What external changes are not considered drift?",
       "options_es": [
         "Cambios que Terraform no administra, como etiquetas sin definir",
-        "Cambios de IP sin considerar otros factores relevantes",
-        "Ninguno es diferente en todos los casos posibles",
+        "Cambios de IP asignados dinámicamente por el proveedor de nube pública",
+        "Ninguno es diferente, todo cambio externo cuenta como drift",
         "Cambios en base de datos"
       ],
       "options_en": [
         "Changes Terraform doesn't manage, like undefined tags",
-        "IP changes without considering other relevant factors",
-        "None are different in all possible cases",
+        "IP changes dynamically assigned by the cloud provider",
+        "None is different, every external change counts as drift",
         "Database changes"
       ],
       "correct_index": 0,

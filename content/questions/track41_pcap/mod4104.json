@@ -8,19 +8,19 @@
       "question_en": "What is a generator?",
       "options_es": [
         "Función con yield",
-        "Decorador según la documentación estándar del servicio",
+        "Decorador que envuelve otra función",
         "Función normal",
         "Clase especial"
       ],
       "options_en": [
         "Function with yield",
-        "Decorator according to standard service documentation",
+        "Decorator wrapping another function",
         "Normal function",
         "Special class"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un generador es una función que contiene al menos una sentencia yield; al llamarla no ejecuta el cuerpo de inmediato, sino que devuelve un objeto generador que produce valores de forma perezosa cada vez que se pide el siguiente con next(). No es una función normal, porque una función normal ejecuta todo su cuerpo y devuelve un único valor con return, sin conservar su estado entre llamadas.",
+      "explanation_en": "A generator is a function that contains at least one yield statement; calling it does not run the body immediately but returns a generator object that lazily produces values each time next() asks for one. It is not a normal function, since a normal function runs its whole body and returns a single value via return, without keeping state between calls.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -32,18 +32,18 @@
       "options_es": [
         "Termina función",
         "Retorna y pausa ejecución",
-        "Crea lista de manera exclusiva y permanente",
+        "Crea lista con valores precalculados",
         "Imprime valor"
       ],
       "options_en": [
         "Ends function",
         "Returns and pauses",
-        "Creates list exclusively and permanently",
+        "Creates list with precalculated values",
         "Prints value"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "yield devuelve un valor al que lo llama y pausa la ejecución de la función, conservando el estado local (variables, punto de ejecución) hasta que se invoca next() de nuevo. No termina la función, como sí ocurre con return: la ejecución se reanuda justo después del yield en la siguiente llamada.",
+      "explanation_en": "yield returns a value to the caller and pauses the function's execution, keeping its local state (variables, execution point) until next() is called again. It does not end the function the way return does: execution resumes right after the yield on the following call.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -56,17 +56,17 @@
         "Función recursiva",
         "Función anónima",
         "Función que accede a variables externas",
-        "Función inline de manera exclusiva y permanente"
+        "Función inline copiada en el código fuente en cada llamada"
       ],
       "options_en": [
         "Recursive function",
         "Anonymous function",
         "Function accessing outer vars",
-        "Inline function exclusively and permanently"
+        "Inline function copied into the source code at each call site"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Una clausura es una función anidada que captura y accede a variables del ámbito de la función que la envuelve, incluso después de que esa función externa haya terminado de ejecutarse. No es lo mismo que una función anónima: una lambda puede o no ser una clausura, y una función definida con def que capture una variable externa sí lo es.",
+      "explanation_en": "A closure is a nested function that captures and accesses variables from the scope of its enclosing function, even after that outer function has finished executing. It is not the same as an anonymous function: a lambda may or may not be a closure, and a plain function defined with def that captures an outer variable is one.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -88,8 +88,8 @@
         "load('file')"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "En Python, un archivo se abre con la función incorporada open('archivo'), que devuelve un objeto de archivo sobre el que luego se llaman métodos como read() o readline(). No existe una función incorporada read() que abra archivos directamente: read es un método del objeto que devuelve open(), no una función independiente.",
+      "explanation_en": "In Python, a file is opened with the built-in open('file'), which returns a file object on which methods such as read() or readline() are then called. There is no built-in read() function that opens files directly: read is a method of the object open() returns, not a standalone function.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -101,18 +101,18 @@
       "options_es": [
         "Cierra automáticamente",
         "Escribe datos",
-        "Lee archivo en cualquier escenario de implementación",
+        "Lee todo el archivo con read()",
         "Crea archivo"
       ],
       "options_en": [
         "Auto closes file",
         "Writes data",
-        "Reads file in any implementation scenario",
+        "Reads the whole file via read()",
         "Creates file"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "with implementa el protocolo de gestor de contexto: al abrir el archivo dentro de un bloque with, Python llama automáticamente a su método __exit__ y cierra el archivo al salir del bloque, incluso si se produce una excepción. No es una operación de lectura: leer datos sigue requiriendo llamar a read() o readline() sobre el objeto de archivo.",
+      "explanation_en": "with implements the context manager protocol: opening a file inside a with block makes Python automatically call its __exit__ method and close the file when the block ends, even if an exception occurs. It is not a read operation: reading data still requires calling read() or readline() on the file object.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -125,17 +125,17 @@
         "readline devuelve list",
         "read todo, readline una línea",
         "read más rápido",
-        "Sin diferencia de manera exclusiva y permanente"
+        "Sin diferencia real, solo cambia el nombre"
       ],
       "options_en": [
         "readline returns list",
         "read all, readline one line",
         "read faster",
-        "No difference exclusively and permanently"
+        "No real difference, just the name changes"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "read() lee todo el contenido restante del archivo en una sola cadena, mientras que readline() lee solo la siguiente línea, incluyendo el salto de línea final. readline() no devuelve una lista: la función que devuelve una lista de líneas es readlines(), con 's' al final, que es un método distinto.",
+      "explanation_en": "read() reads the whole remaining content of the file into a single string, while readline() reads only the next line, including its trailing newline. readline() does not return a list: the method that returns a list of lines is readlines(), with a trailing 's', which is a different method.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -146,19 +146,19 @@
       "question_en": "What is map()?",
       "options_es": [
         "Filtra elementos",
-        "Ordena lista independientemente del contexto aplicado",
+        "Ordena lista comparando pares adyacentes",
         "Crea diccionario",
         "Aplica función a iterable"
       ],
       "options_en": [
         "Filter elements",
-        "Sort list regardless of the applied context",
+        "Sort list comparing adjacent pairs",
         "Create dictionary",
         "Apply function to iterable"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "map() aplica una función a cada elemento de un iterable y devuelve un objeto map perezoso con el mismo número de elementos, cada uno transformado. No filtra elementos: filtrar (descartar los que no cumplen una condición) es el trabajo de filter(), no de map().",
+      "explanation_en": "map() applies a function to every element of an iterable and returns a lazy map object with the same number of elements, each one transformed. It does not filter elements: filtering (dropping the ones that fail a condition) is the job of filter(), not map().",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -170,18 +170,18 @@
       "options_es": [
         "Ordena datos",
         "Aplica función",
-        "Crea mapa sin considerar otros factores relevantes",
+        "Crea mapa a partir de pares clave-valor",
         "Retorna elementos que cumplen"
       ],
       "options_en": [
         "Sort data",
         "Apply function",
-        "Create map without considering other relevant factors",
+        "Creates map from key-value pairs",
         "Returns elements matching"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "filter() recorre un iterable y devuelve únicamente los elementos para los que la función dada devuelve un valor verdadero. Aunque también invoca una función sobre cada elemento como map(), la diferencia clave es que filter() descarta los elementos que no cumplen la condición en lugar de transformar todos los elementos.",
+      "explanation_en": "filter() walks an iterable and returns only the elements for which the given function returns a truthy value. Although it also calls a function on each element like map(), the key difference is that filter() discards elements that fail the condition instead of transforming every element.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -203,8 +203,8 @@
         "Variable type"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "lambda es la sintaxis para crear una función anónima de una sola expresión, sin necesidad de asignarle un nombre con def. Aunque lambda es técnicamente una palabra clave del lenguaje, lo que produce al evaluarse es un objeto función real y utilizable, no solo un marcador de sintaxis.",
+      "explanation_en": "lambda is the syntax for creating an anonymous, single-expression function without giving it a name via def. Although lambda is technically a language keyword, evaluating it produces a real, usable function object, not just a syntax marker.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -215,19 +215,19 @@
       "question_en": "How to use next() with generator?",
       "options_es": [
         "next termina gen",
-        "next imprime de forma invariable y constante",
+        "next imprime el valor sin devolverlo",
         "next devuelve lista",
         "next(gen) obtiene próximo"
       ],
       "options_en": [
         "next ends gen",
-        "next prints invariably and constantly",
+        "next prints the value without returning it",
         "next returns list",
         "next(gen) gets next"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "next(gen) reanuda la ejecución del generador hasta el siguiente yield y devuelve ese valor. next() no termina el generador: solo lo hace, lanzando StopIteration, cuando el cuerpo de la función termina sin encontrar otro yield.",
+      "explanation_en": "next(gen) resumes the generator's execution up to the next yield and returns that value. next() does not end the generator: it only does so, by raising StopIteration, once the function body finishes without hitting another yield.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -237,20 +237,20 @@
       "question_es": "¿Qué es un generador en Python?",
       "question_en": "What is a generator in Python?",
       "options_es": [
-        "Decorador independientemente del contexto aplicado",
+        "Decorador que envuelve otra función",
         "Función normal",
         "Función con yield",
         "Clase especial"
       ],
       "options_en": [
-        "Decorator regardless of the applied context",
+        "Decorator wrapping another function",
         "Normal function",
         "Function with yield",
         "Special class"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un generador es una función que contiene al menos una sentencia yield en Python; al llamarla no ejecuta el cuerpo de inmediato, sino que devuelve un objeto generador que produce valores de forma perezosa cada vez que se pide el siguiente con next(). No es una función normal, porque una función normal ejecuta todo su cuerpo y devuelve un único valor con return, sin conservar su estado entre llamadas.",
+      "explanation_en": "A generator is a function that contains at least one yield statement in Python; calling it does not run the body immediately but returns a generator object that lazily produces values each time next() asks for one. It is not a normal function, since a normal function runs its whole body and returns a single value via return, without keeping state between calls.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -263,17 +263,17 @@
         "Retorna y pausa ejecución",
         "Imprime valor",
         "Termina función",
-        "Crea lista según la documentación estándar del servicio"
+        "Crea lista con valores precalculados"
       ],
       "options_en": [
         "Returns and pauses",
         "Prints value",
         "Ends function",
-        "Creates list according to standard service documentation"
+        "Creates list with precalculated values"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "yield devuelve un valor al que lo llama y pausa la ejecución de la función en Python, conservando el estado local (variables, punto de ejecución) hasta que se invoca next() de nuevo. No termina la función, como sí ocurre con return: la ejecución se reanuda justo después del yield en la siguiente llamada.",
+      "explanation_en": "yield returns a value to the caller and pauses the function's execution in Python, keeping its local state (variables, execution point) until next() is called again. It does not end the function the way return does: execution resumes right after the yield on the following call.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -284,19 +284,19 @@
       "question_en": "What is a closure in Python?",
       "options_es": [
         "Función que accede a variables externas",
-        "Función inline sin excepciones ni variantes",
+        "Función inline copiada en el código fuente en cada llamada",
         "Función anónima",
         "Función recursiva"
       ],
       "options_en": [
         "Function accessing outer vars",
-        "Inline function without exceptions or variants",
+        "Inline function copied into the source code at each call site",
         "Anonymous function",
         "Recursive function"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Una clausura es una función anidada que captura y accede a variables del ámbito de la función que la envuelve, incluso después de que esa función externa haya terminado de ejecutarse en Python. No es lo mismo que una función anónima: una lambda puede o no ser una clausura, y una función definida con def que capture una variable externa sí lo es.",
+      "explanation_en": "A closure is a nested function that captures and accesses variables from the scope of its enclosing function, even after that outer function has finished executing in Python. It is not the same as an anonymous function: a lambda may or may not be a closure, and a plain function defined with def that captures an outer variable is one.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -318,8 +318,8 @@
         "open('file')"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "En Python, un archivo se abre con la función incorporada open('archivo') en Python, que devuelve un objeto de archivo sobre el que luego se llaman métodos como read() o readline(). No existe una función incorporada read() que abra archivos directamente: read es un método del objeto que devuelve open(), no una función independiente.",
+      "explanation_en": "In Python, a file is opened with the built-in open('file') in Python, which returns a file object on which methods such as read() or readline() are then called. There is no built-in read() function that opens files directly: read is a method of the object open() returns, not a standalone function.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -331,18 +331,18 @@
       "options_es": [
         "Escribe datos",
         "Crea archivo",
-        "Lee archivo sin considerar otros factores relevantes",
+        "Lee todo el archivo con read()",
         "Cierra automáticamente"
       ],
       "options_en": [
         "Writes data",
         "Creates file",
-        "Reads file without considering other relevant factors",
+        "Reads the whole file via read()",
         "Auto closes file"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "with implementa el protocolo de gestor de contexto: al abrir el archivo dentro de un bloque with, Python llama automáticamente a su método __exit__ y cierra el archivo al salir del bloque en Python, incluso si se produce una excepción. No es una operación de lectura: leer datos sigue requiriendo llamar a read() o readline() sobre el objeto de archivo.",
+      "explanation_en": "with implements the context manager protocol: opening a file inside a with block makes Python automatically call its __exit__ method and close the file when the block ends in Python, even if an exception occurs. It is not a read operation: reading data still requires calling read() or readline() on the file object.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -352,20 +352,20 @@
       "question_es": "¿Diferencia read vs readline en Python?",
       "question_en": "Difference read vs readline in Python?",
       "options_es": [
-        "Sin diferencia de manera exclusiva y permanente",
+        "Sin diferencia real, solo cambia el nombre",
         "read más rápido",
         "readline devuelve list",
         "read todo, readline una línea"
       ],
       "options_en": [
-        "No difference exclusively and permanently",
+        "No real difference, just the name changes",
         "read faster",
         "readline returns list",
         "read all, readline one line"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "read() lee todo el contenido restante del archivo en una sola cadena, mientras que readline() lee solo la siguiente línea, incluyendo el salto de línea final en Python. readline() no devuelve una lista: la función que devuelve una lista de líneas es readlines(), con 's' al final, que es un método distinto.",
+      "explanation_en": "read() reads the whole remaining content of the file into a single string, while readline() reads only the next line, including its trailing newline in Python. readline() does not return a list: the method that returns a list of lines is readlines(), with a trailing 's', which is a different method.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -377,18 +377,18 @@
       "options_es": [
         "Crea diccionario",
         "Filtra elementos",
-        "Ordena lista sin excepciones ni variantes",
+        "Ordena lista comparando pares adyacentes",
         "Aplica función a iterable"
       ],
       "options_en": [
         "Create dictionary",
         "Filter elements",
-        "Sort list without exceptions or variants",
+        "Sort list comparing adjacent pairs",
         "Apply function to iterable"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "map() aplica una función a cada elemento de un iterable y devuelve un objeto map perezoso con el mismo número de elementos, cada uno transformado en Python. No filtra elementos: filtrar (descartar los que no cumplen una condición) es el trabajo de filter(), no de map().",
+      "explanation_en": "map() applies a function to every element of an iterable and returns a lazy map object with the same number of elements, each one transformed in Python. It does not filter elements: filtering (dropping the ones that fail a condition) is the job of filter(), not map().",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -400,18 +400,18 @@
       "options_es": [
         "Aplica función",
         "Ordena datos",
-        "Crea mapa según la documentación estándar del servicio",
+        "Crea mapa a partir de pares clave-valor",
         "Retorna elementos que cumplen"
       ],
       "options_en": [
         "Apply function",
         "Sort data",
-        "Create map according to standard service documentation",
+        "Creates map from key-value pairs",
         "Returns elements matching"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "filter() recorre un iterable y devuelve únicamente los elementos para los que la función dada devuelve un valor verdadero en Python. Aunque también invoca una función sobre cada elemento como map(), la diferencia clave es que filter() descarta los elementos que no cumplen la condición en lugar de transformar todos los elementos.",
+      "explanation_en": "filter() walks an iterable and returns only the elements for which the given function returns a truthy value in Python. Although it also calls a function on each element like map(), the key difference is that filter() discards elements that fail the condition instead of transforming every element.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -433,8 +433,8 @@
         "Variable type"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "lambda es la sintaxis para crear una función anónima de una sola expresión, sin necesidad de asignarle un nombre con def en Python. Aunque lambda es técnicamente una palabra clave del lenguaje, lo que produce al evaluarse es un objeto función real y utilizable, no solo un marcador de sintaxis.",
+      "explanation_en": "lambda is the syntax for creating an anonymous, single-expression function without giving it a name via def in Python. Although lambda is technically a language keyword, evaluating it produces a real, usable function object, not just a syntax marker.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -446,18 +446,18 @@
       "options_es": [
         "next devuelve lista",
         "next termina gen",
-        "next imprime en todos los casos posibles",
+        "next imprime el valor sin devolverlo",
         "next(gen) obtiene próximo"
       ],
       "options_en": [
         "next returns list",
         "next ends gen",
-        "next prints in all possible cases",
+        "next prints the value without returning it",
         "next(gen) gets next"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "next(gen) reanuda la ejecución del generador hasta el siguiente yield y devuelve ese valor en Python. next() no termina el generador: solo lo hace, lanzando StopIteration, cuando el cuerpo de la función termina sin encontrar otro yield.",
+      "explanation_en": "next(gen) resumes the generator's execution up to the next yield and returns that value in Python. next() does not end the generator: it only does so, by raising StopIteration, once the function body finishes without hitting another yield.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -470,17 +470,17 @@
         "Función con yield",
         "Función normal",
         "Clase especial",
-        "Decorador en todos los casos posibles"
+        "Decorador que envuelve otra función"
       ],
       "options_en": [
         "Function with yield",
         "Normal function",
         "Special class",
-        "Decorator in all possible cases"
+        "Decorator wrapping another function"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un generador es una función que contiene al menos una sentencia yield al usarlo mediante módulos estándar de la biblioteca; al llamarla no ejecuta el cuerpo de inmediato, sino que devuelve un objeto generador que produce valores de forma perezosa cada vez que se pide el siguiente con next(). No es una función normal, porque una función normal ejecuta todo su cuerpo y devuelve un único valor con return, sin conservar su estado entre llamadas.",
+      "explanation_en": "A generator is a function that contains at least one yield statement when used through standard library modules; calling it does not run the body immediately but returns a generator object that lazily produces values each time next() asks for one. It is not a normal function, since a normal function runs its whole body and returns a single value via return, without keeping state between calls.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -493,17 +493,17 @@
         "Termina función",
         "Imprime valor",
         "Retorna y pausa ejecución",
-        "Crea lista sin considerar otros factores relevantes"
+        "Crea lista con valores precalculados"
       ],
       "options_en": [
         "Ends function",
         "Prints value",
         "Returns and pauses",
-        "Creates list without considering other relevant factors"
+        "Creates list with precalculated values"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "yield devuelve un valor al que lo llama y pausa la ejecución de la función al usarlo mediante módulos estándar de la biblioteca, conservando el estado local (variables, punto de ejecución) hasta que se invoca next() de nuevo. No termina la función, como sí ocurre con return: la ejecución se reanuda justo después del yield en la siguiente llamada.",
+      "explanation_en": "yield returns a value to the caller and pauses the function's execution when used through standard library modules, keeping its local state (variables, execution point) until next() is called again. It does not end the function the way return does: execution resumes right after the yield on the following call.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -515,18 +515,18 @@
       "options_es": [
         "Función recursiva",
         "Función que accede a variables externas",
-        "Función inline independientemente del contexto aplicado",
+        "Función inline copiada en el código fuente en cada llamada",
         "Función anónima"
       ],
       "options_en": [
         "Recursive function",
         "Function accessing outer vars",
-        "Inline function regardless of the applied context",
+        "Inline function copied into the source code at each call site",
         "Anonymous function"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Una clausura es una función anidada que captura y accede a variables del ámbito de la función que la envuelve, incluso después de que esa función externa haya terminado de ejecutarse al usarlo mediante módulos estándar de la biblioteca. No es lo mismo que una función anónima: una lambda puede o no ser una clausura, y una función definida con def que capture una variable externa sí lo es.",
+      "explanation_en": "A closure is a nested function that captures and accesses variables from the scope of its enclosing function, even after that outer function has finished executing when used through standard library modules. It is not the same as an anonymous function: a lambda may or may not be a closure, and a plain function defined with def that captures an outer variable is one.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -548,8 +548,8 @@
         "open('file')"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "En Python, un archivo se abre con la función incorporada open('archivo') al usarlo mediante módulos estándar de la biblioteca, que devuelve un objeto de archivo sobre el que luego se llaman métodos como read() o readline(). No existe una función incorporada read() que abra archivos directamente: read es un método del objeto que devuelve open(), no una función independiente.",
+      "explanation_en": "In Python, a file is opened with the built-in open('file') when used through standard library modules, which returns a file object on which methods such as read() or readline() are then called. There is no built-in read() function that opens files directly: read is a method of the object open() returns, not a standalone function.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -559,20 +559,20 @@
       "question_es": "¿Qué es with en archivos usando módulos estándar?",
       "question_en": "What is with for files using standard modules?",
       "options_es": [
-        "Lee archivo en cualquier escenario de implementación",
+        "Lee todo el archivo con read()",
         "Cierra automáticamente",
         "Escribe datos",
         "Crea archivo"
       ],
       "options_en": [
-        "Reads file in any implementation scenario",
+        "Reads the whole file via read()",
         "Auto closes file",
         "Writes data",
         "Creates file"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "with implementa el protocolo de gestor de contexto: al abrir el archivo dentro de un bloque with, Python llama automáticamente a su método __exit__ y cierra el archivo al salir del bloque al usarlo mediante módulos estándar de la biblioteca, incluso si se produce una excepción. No es una operación de lectura: leer datos sigue requiriendo llamar a read() o readline() sobre el objeto de archivo.",
+      "explanation_en": "with implements the context manager protocol: opening a file inside a with block makes Python automatically call its __exit__ method and close the file when the block ends when used through standard library modules, even if an exception occurs. It is not a read operation: reading data still requires calling read() or readline() on the file object.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -582,20 +582,20 @@
       "question_es": "¿Diferencia read vs readline usando módulos estándar?",
       "question_en": "Difference read vs readline using standard modules?",
       "options_es": [
-        "Sin diferencia en cualquier escenario de implementación",
+        "Sin diferencia real, solo cambia el nombre",
         "read más rápido",
         "readline devuelve list",
         "read todo, readline una línea"
       ],
       "options_en": [
-        "No difference in any implementation scenario",
+        "No real difference, just the name changes",
         "read faster",
         "readline returns list",
         "read all, readline one line"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "read() lee todo el contenido restante del archivo en una sola cadena, mientras que readline() lee solo la siguiente línea, incluyendo el salto de línea final al usarlo mediante módulos estándar de la biblioteca. readline() no devuelve una lista: la función que devuelve una lista de líneas es readlines(), con 's' al final, que es un método distinto.",
+      "explanation_en": "read() reads the whole remaining content of the file into a single string, while readline() reads only the next line, including its trailing newline when used through standard library modules. readline() does not return a list: the method that returns a list of lines is readlines(), with a trailing 's', which is a different method.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -605,20 +605,20 @@
       "question_es": "¿Qué es map() usando módulos estándar?",
       "question_en": "What is map() using standard modules?",
       "options_es": [
-        "Ordena lista sin considerar otros factores relevantes",
+        "Ordena lista comparando pares adyacentes",
         "Crea diccionario",
         "Filtra elementos",
         "Aplica función a iterable"
       ],
       "options_en": [
-        "Sort list without considering other relevant factors",
+        "Sort list comparing adjacent pairs",
         "Create dictionary",
         "Filter elements",
         "Apply function to iterable"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "map() aplica una función a cada elemento de un iterable y devuelve un objeto map perezoso con el mismo número de elementos, cada uno transformado al usarlo mediante módulos estándar de la biblioteca. No filtra elementos: filtrar (descartar los que no cumplen una condición) es el trabajo de filter(), no de map().",
+      "explanation_en": "map() applies a function to every element of an iterable and returns a lazy map object with the same number of elements, each one transformed when used through standard library modules. It does not filter elements: filtering (dropping the ones that fail a condition) is the job of filter(), not map().",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -630,18 +630,18 @@
       "options_es": [
         "Aplica función",
         "Ordena datos",
-        "Crea mapa en cualquier escenario de implementación",
+        "Crea mapa a partir de pares clave-valor",
         "Retorna elementos que cumplen"
       ],
       "options_en": [
         "Apply function",
         "Sort data",
-        "Create map in any implementation scenario",
+        "Creates map from key-value pairs",
         "Returns elements matching"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "filter() recorre un iterable y devuelve únicamente los elementos para los que la función dada devuelve un valor verdadero al usarlo mediante módulos estándar de la biblioteca. Aunque también invoca una función sobre cada elemento como map(), la diferencia clave es que filter() descarta los elementos que no cumplen la condición en lugar de transformar todos los elementos.",
+      "explanation_en": "filter() walks an iterable and returns only the elements for which the given function returns a truthy value when used through standard library modules. Although it also calls a function on each element like map(), the key difference is that filter() discards elements that fail the condition instead of transforming every element.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -663,8 +663,8 @@
         "Special keyword"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "lambda es la sintaxis para crear una función anónima de una sola expresión, sin necesidad de asignarle un nombre con def al usarlo mediante módulos estándar de la biblioteca. Aunque lambda es técnicamente una palabra clave del lenguaje, lo que produce al evaluarse es un objeto función real y utilizable, no solo un marcador de sintaxis.",
+      "explanation_en": "lambda is the syntax for creating an anonymous, single-expression function without giving it a name via def when used through standard library modules. Although lambda is technically a language keyword, evaluating it produces a real, usable function object, not just a syntax marker.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -677,17 +677,17 @@
         "next termina gen",
         "next devuelve lista",
         "next(gen) obtiene próximo",
-        "next imprime en cualquier escenario de implementación"
+        "next imprime el valor sin devolverlo"
       ],
       "options_en": [
         "next ends gen",
         "next returns list",
         "next(gen) gets next",
-        "next prints in any implementation scenario"
+        "next prints the value without returning it"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "next(gen) reanuda la ejecución del generador hasta el siguiente yield y devuelve ese valor al usarlo mediante módulos estándar de la biblioteca. next() no termina el generador: solo lo hace, lanzando StopIteration, cuando el cuerpo de la función termina sin encontrar otro yield.",
+      "explanation_en": "next(gen) resumes the generator's execution up to the next yield and returns that value when used through standard library modules. next() does not end the generator: it only does so, by raising StopIteration, once the function body finishes without hitting another yield.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -697,20 +697,20 @@
       "question_es": "¿Qué es un generador con estructuras de datos?",
       "question_en": "What is a generator with data structures?",
       "options_es": [
-        "Decorador en cualquier escenario de implementación",
+        "Decorador que usa @wraps",
         "Clase especial",
         "Función normal",
         "Función con yield"
       ],
       "options_en": [
-        "Decorator in any implementation scenario",
+        "Decorator using @wraps",
         "Special class",
         "Normal function",
         "Function with yield"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un generador es una función que contiene al menos una sentencia yield al combinarlo con estructuras de datos como listas; al llamarla no ejecuta el cuerpo de inmediato, sino que devuelve un objeto generador que produce valores de forma perezosa cada vez que se pide el siguiente con next(). No es una función normal, porque una función normal ejecuta todo su cuerpo y devuelve un único valor con return, sin conservar su estado entre llamadas.",
+      "explanation_en": "A generator is a function that contains at least one yield statement when combined with data structures such as lists; calling it does not run the body immediately but returns a generator object that lazily produces values each time next() asks for one. It is not a normal function, since a normal function runs its whole body and returns a single value via return, without keeping state between calls.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -721,19 +721,19 @@
       "question_en": "What does yield do with data structures?",
       "options_es": [
         "Imprime valor",
-        "Crea lista sin considerar otros factores relevantes",
+        "Lista creada con append()",
         "Termina función",
         "Retorna y pausa ejecución"
       ],
       "options_en": [
         "Prints value",
-        "Creates list without considering other relevant factors",
+        "List built via append()",
         "Ends function",
         "Returns and pauses"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "yield devuelve un valor al que lo llama y pausa la ejecución de la función al combinarlo con estructuras de datos como listas, conservando el estado local (variables, punto de ejecución) hasta que se invoca next() de nuevo. No termina la función, como sí ocurre con return: la ejecución se reanuda justo después del yield en la siguiente llamada.",
+      "explanation_en": "yield returns a value to the caller and pauses the function's execution when combined with data structures such as lists, keeping its local state (variables, execution point) until next() is called again. It does not end the function the way return does: execution resumes right after the yield on the following call.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -746,17 +746,17 @@
         "Función anónima",
         "Función que accede a variables externas",
         "Función recursiva",
-        "Función inline sin excepciones ni variantes"
+        "Función optimizada por el compilador"
       ],
       "options_en": [
         "Anonymous function",
         "Function accessing outer vars",
         "Recursive function",
-        "Inline function without exceptions or variants"
+        "Function optimized by compiler"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Una clausura es una función anidada que captura y accede a variables del ámbito de la función que la envuelve, incluso después de que esa función externa haya terminado de ejecutarse al combinarlo con estructuras de datos como listas. No es lo mismo que una función anónima: una lambda puede o no ser una clausura, y una función definida con def que capture una variable externa sí lo es.",
+      "explanation_en": "A closure is a nested function that captures and accesses variables from the scope of its enclosing function, even after that outer function has finished executing when combined with data structures such as lists. It is not the same as an anonymous function: a lambda may or may not be a closure, and a plain function defined with def that captures an outer variable is one.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -778,8 +778,8 @@
         "load('file')"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "En Python, un archivo se abre con la función incorporada open('archivo') al combinarlo con estructuras de datos como listas, que devuelve un objeto de archivo sobre el que luego se llaman métodos como read() o readline(). No existe una función incorporada read() que abra archivos directamente: read es un método del objeto que devuelve open(), no una función independiente.",
+      "explanation_en": "In Python, a file is opened with the built-in open('file') when combined with data structures such as lists, which returns a file object on which methods such as read() or readline() are then called. There is no built-in read() function that opens files directly: read is a method of the object open() returns, not a standalone function.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -791,18 +791,18 @@
       "options_es": [
         "Cierra automáticamente",
         "Escribe datos",
-        "Lee archivo de manera exclusiva y permanente",
+        "Lee línea por línea",
         "Crea archivo"
       ],
       "options_en": [
         "Auto closes file",
         "Writes data",
-        "Reads file exclusively and permanently",
+        "Reads line by line",
         "Creates file"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "with implementa el protocolo de gestor de contexto: al abrir el archivo dentro de un bloque with, Python llama automáticamente a su método __exit__ y cierra el archivo al salir del bloque al combinarlo con estructuras de datos como listas, incluso si se produce una excepción. No es una operación de lectura: leer datos sigue requiriendo llamar a read() o readline() sobre el objeto de archivo.",
+      "explanation_en": "with implements the context manager protocol: opening a file inside a with block makes Python automatically call its __exit__ method and close the file when the block ends when combined with data structures such as lists, even if an exception occurs. It is not a read operation: reading data still requires calling read() or readline() on the file object.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -814,18 +814,18 @@
       "options_es": [
         "read más rápido",
         "read todo, readline una línea",
-        "Sin diferencia en todos los casos posibles",
+        "Solo cambia el nombre",
         "readline devuelve list"
       ],
       "options_en": [
         "read faster",
         "read all, readline one line",
-        "No difference in all possible cases",
+        "Only the name differs",
         "readline returns list"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "read() lee todo el contenido restante del archivo en una sola cadena, mientras que readline() lee solo la siguiente línea, incluyendo el salto de línea final al combinarlo con estructuras de datos como listas. readline() no devuelve una lista: la función que devuelve una lista de líneas es readlines(), con 's' al final, que es un método distinto.",
+      "explanation_en": "read() reads the whole remaining content of the file into a single string, while readline() reads only the next line, including its trailing newline when combined with data structures such as lists. readline() does not return a list: the method that returns a list of lines is readlines(), with a trailing 's', which is a different method.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -835,20 +835,20 @@
       "question_es": "¿Qué es map() con estructuras de datos?",
       "question_en": "What is map() with data structures?",
       "options_es": [
-        "Ordena lista sin considerar otros factores relevantes",
+        "Ordena usando sorted()",
         "Filtra elementos",
         "Crea diccionario",
         "Aplica función a iterable"
       ],
       "options_en": [
-        "Sort list without considering other relevant factors",
+        "Sorts using sorted()",
         "Filter elements",
         "Create dictionary",
         "Apply function to iterable"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "map() aplica una función a cada elemento de un iterable y devuelve un objeto map perezoso con el mismo número de elementos, cada uno transformado al combinarlo con estructuras de datos como listas. No filtra elementos: filtrar (descartar los que no cumplen una condición) es el trabajo de filter(), no de map().",
+      "explanation_en": "map() applies a function to every element of an iterable and returns a lazy map object with the same number of elements, each one transformed when combined with data structures such as lists. It does not filter elements: filtering (dropping the ones that fail a condition) is the job of filter(), not map().",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -859,19 +859,19 @@
       "question_en": "What is filter() with data structures?",
       "options_es": [
         "Retorna elementos que cumplen",
-        "Crea mapa en cualquier escenario de implementación",
+        "Crea mapa de pares clave-valor",
         "Ordena datos",
         "Aplica función"
       ],
       "options_en": [
         "Returns elements matching",
-        "Create map in any implementation scenario",
+        "Creates key-value pair maps",
         "Sort data",
         "Apply function"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "filter() recorre un iterable y devuelve únicamente los elementos para los que la función dada devuelve un valor verdadero al combinarlo con estructuras de datos como listas. Aunque también invoca una función sobre cada elemento como map(), la diferencia clave es que filter() descarta los elementos que no cumplen la condición en lugar de transformar todos los elementos.",
+      "explanation_en": "filter() walks an iterable and returns only the elements for which the given function returns a truthy value when combined with data structures such as lists. Although it also calls a function on each element like map(), the key difference is that filter() discards elements that fail the condition instead of transforming every element.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -893,8 +893,8 @@
         "Special keyword"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "lambda es la sintaxis para crear una función anónima de una sola expresión, sin necesidad de asignarle un nombre con def al combinarlo con estructuras de datos como listas. Aunque lambda es técnicamente una palabra clave del lenguaje, lo que produce al evaluarse es un objeto función real y utilizable, no solo un marcador de sintaxis.",
+      "explanation_en": "lambda is the syntax for creating an anonymous, single-expression function without giving it a name via def when combined with data structures such as lists. Although lambda is technically a language keyword, evaluating it produces a real, usable function object, not just a syntax marker.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -907,17 +907,17 @@
         "next termina gen",
         "next devuelve lista",
         "next(gen) obtiene próximo",
-        "next imprime de forma invariable y constante"
+        "next imprime en stdout"
       ],
       "options_en": [
         "next ends gen",
         "next returns list",
         "next(gen) gets next",
-        "next prints invariably and constantly"
+        "next prints to stdout"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "next(gen) reanuda la ejecución del generador hasta el siguiente yield y devuelve ese valor al combinarlo con estructuras de datos como listas. next() no termina el generador: solo lo hace, lanzando StopIteration, cuando el cuerpo de la función termina sin encontrar otro yield.",
+      "explanation_en": "next(gen) resumes the generator's execution up to the next yield and returns that value when combined with data structures such as lists. next() does not end the generator: it only does so, by raising StopIteration, once the function body finishes without hitting another yield.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -929,18 +929,18 @@
       "options_es": [
         "Función con yield",
         "Clase especial",
-        "Decorador independientemente del contexto aplicado",
+        "Decorador con @wraps",
         "Función normal"
       ],
       "options_en": [
         "Function with yield",
         "Special class",
-        "Decorator regardless of the applied context",
+        "Decorator with @wraps",
         "Normal function"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un generador es una función que contiene al menos una sentencia yield en el contexto de la programación orientada a objetos; al llamarla no ejecuta el cuerpo de inmediato, sino que devuelve un objeto generador que produce valores de forma perezosa cada vez que se pide el siguiente con next(). No es una función normal, porque una función normal ejecuta todo su cuerpo y devuelve un único valor con return, sin conservar su estado entre llamadas.",
+      "explanation_en": "A generator is a function that contains at least one yield statement in the context of object-oriented programming; calling it does not run the body immediately but returns a generator object that lazily produces values each time next() asks for one. It is not a normal function, since a normal function runs its whole body and returns a single value via return, without keeping state between calls.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -953,17 +953,17 @@
         "Retorna y pausa ejecución",
         "Imprime valor",
         "Termina función",
-        "Crea lista según la documentación estándar del servicio"
+        "Agrega a una lista"
       ],
       "options_en": [
         "Returns and pauses",
         "Prints value",
         "Ends function",
-        "Creates list according to standard service documentation"
+        "Appends to a list"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "yield devuelve un valor al que lo llama y pausa la ejecución de la función en el contexto de la programación orientada a objetos, conservando el estado local (variables, punto de ejecución) hasta que se invoca next() de nuevo. No termina la función, como sí ocurre con return: la ejecución se reanuda justo después del yield en la siguiente llamada.",
+      "explanation_en": "yield returns a value to the caller and pauses the function's execution in the context of object-oriented programming, keeping its local state (variables, execution point) until next() is called again. It does not end the function the way return does: execution resumes right after the yield on the following call.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -974,19 +974,19 @@
       "question_en": "What is a closure in object-oriented programming?",
       "options_es": [
         "Función anónima",
-        "Función inline independientemente del contexto aplicado",
+        "Función optimizada por el compilador",
         "Función recursiva",
         "Función que accede a variables externas"
       ],
       "options_en": [
         "Anonymous function",
-        "Inline function regardless of the applied context",
+        "Function optimized by compiler",
         "Recursive function",
         "Function accessing outer vars"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Una clausura es una función anidada que captura y accede a variables del ámbito de la función que la envuelve, incluso después de que esa función externa haya terminado de ejecutarse en el contexto de la programación orientada a objetos. No es lo mismo que una función anónima: una lambda puede o no ser una clausura, y una función definida con def que capture una variable externa sí lo es.",
+      "explanation_en": "A closure is a nested function that captures and accesses variables from the scope of its enclosing function, even after that outer function has finished executing in the context of object-oriented programming. It is not the same as an anonymous function: a lambda may or may not be a closure, and a plain function defined with def that captures an outer variable is one.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1008,8 +1008,8 @@
         "open('file')"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "En Python, un archivo se abre con la función incorporada open('archivo') en el contexto de la programación orientada a objetos, que devuelve un objeto de archivo sobre el que luego se llaman métodos como read() o readline(). No existe una función incorporada read() que abra archivos directamente: read es un método del objeto que devuelve open(), no una función independiente.",
+      "explanation_en": "In Python, a file is opened with the built-in open('file') in the context of object-oriented programming, which returns a file object on which methods such as read() or readline() are then called. There is no built-in read() function that opens files directly: read is a method of the object open() returns, not a standalone function.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1019,20 +1019,20 @@
       "question_es": "¿Qué es with en archivos en programación orientada a objetos?",
       "question_en": "What is with for files in object-oriented programming?",
       "options_es": [
-        "Lee archivo según la documentación estándar del servicio",
+        "Lee todo el archivo",
         "Cierra automáticamente",
         "Escribe datos",
         "Crea archivo"
       ],
       "options_en": [
-        "Reads file according to standard service documentation",
+        "Reads the whole file",
         "Auto closes file",
         "Writes data",
         "Creates file"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "with implementa el protocolo de gestor de contexto: al abrir el archivo dentro de un bloque with, Python llama automáticamente a su método __exit__ y cierra el archivo al salir del bloque en el contexto de la programación orientada a objetos, incluso si se produce una excepción. No es una operación de lectura: leer datos sigue requiriendo llamar a read() o readline() sobre el objeto de archivo.",
+      "explanation_en": "with implements the context manager protocol: opening a file inside a with block makes Python automatically call its __exit__ method and close the file when the block ends in the context of object-oriented programming, even if an exception occurs. It is not a read operation: reading data still requires calling read() or readline() on the file object.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1043,19 +1043,19 @@
       "question_en": "Difference read vs readline in object-oriented programming?",
       "options_es": [
         "read todo, readline una línea",
-        "Sin diferencia sin excepciones ni variantes",
+        "Solo cambia el nombre",
         "readline devuelve list",
         "read más rápido"
       ],
       "options_en": [
         "read all, readline one line",
-        "No difference without exceptions or variants",
+        "Only the name differs",
         "readline returns list",
         "read faster"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "read() lee todo el contenido restante del archivo en una sola cadena, mientras que readline() lee solo la siguiente línea, incluyendo el salto de línea final en el contexto de la programación orientada a objetos. readline() no devuelve una lista: la función que devuelve una lista de líneas es readlines(), con 's' al final, que es un método distinto.",
+      "explanation_en": "read() reads the whole remaining content of the file into a single string, while readline() reads only the next line, including its trailing newline in the context of object-oriented programming. readline() does not return a list: the method that returns a list of lines is readlines(), with a trailing 's', which is a different method.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1068,17 +1068,17 @@
         "Crea diccionario",
         "Filtra elementos",
         "Aplica función a iterable",
-        "Ordena lista sin considerar otros factores relevantes"
+        "Ordena usando sorted()"
       ],
       "options_en": [
         "Create dictionary",
         "Filter elements",
         "Apply function to iterable",
-        "Sort list without considering other relevant factors"
+        "Sorts using sorted()"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "map() aplica una función a cada elemento de un iterable y devuelve un objeto map perezoso con el mismo número de elementos, cada uno transformado en el contexto de la programación orientada a objetos. No filtra elementos: filtrar (descartar los que no cumplen una condición) es el trabajo de filter(), no de map().",
+      "explanation_en": "map() applies a function to every element of an iterable and returns a lazy map object with the same number of elements, each one transformed in the context of object-oriented programming. It does not filter elements: filtering (dropping the ones that fail a condition) is the job of filter(), not map().",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1091,17 +1091,17 @@
         "Ordena datos",
         "Aplica función",
         "Retorna elementos que cumplen",
-        "Crea mapa independientemente del contexto aplicado"
+        "Crea mapa de pares clave-valor"
       ],
       "options_en": [
         "Sort data",
         "Apply function",
         "Returns elements matching",
-        "Create map regardless of the applied context"
+        "Creates key-value pair maps"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "filter() recorre un iterable y devuelve únicamente los elementos para los que la función dada devuelve un valor verdadero en el contexto de la programación orientada a objetos. Aunque también invoca una función sobre cada elemento como map(), la diferencia clave es que filter() descarta los elementos que no cumplen la condición en lugar de transformar todos los elementos.",
+      "explanation_en": "filter() walks an iterable and returns only the elements for which the given function returns a truthy value in the context of object-oriented programming. Although it also calls a function on each element like map(), the key difference is that filter() discards elements that fail the condition instead of transforming every element.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1123,8 +1123,8 @@
         "Variable type"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "lambda es la sintaxis para crear una función anónima de una sola expresión, sin necesidad de asignarle un nombre con def en el contexto de la programación orientada a objetos. Aunque lambda es técnicamente una palabra clave del lenguaje, lo que produce al evaluarse es un objeto función real y utilizable, no solo un marcador de sintaxis.",
+      "explanation_en": "lambda is the syntax for creating an anonymous, single-expression function without giving it a name via def in the context of object-oriented programming. Although lambda is technically a language keyword, evaluating it produces a real, usable function object, not just a syntax marker.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1136,18 +1136,18 @@
       "options_es": [
         "next(gen) obtiene próximo",
         "next devuelve lista",
-        "next imprime independientemente del contexto aplicado",
+        "next imprime en stdout",
         "next termina gen"
       ],
       "options_en": [
         "next(gen) gets next",
         "next returns list",
-        "next prints regardless of the applied context",
+        "next prints to stdout",
         "next ends gen"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "next(gen) reanuda la ejecución del generador hasta el siguiente yield y devuelve ese valor en el contexto de la programación orientada a objetos. next() no termina el generador: solo lo hace, lanzando StopIteration, cuando el cuerpo de la función termina sin encontrar otro yield.",
+      "explanation_en": "next(gen) resumes the generator's execution up to the next yield and returns that value in the context of object-oriented programming. next() does not end the generator: it only does so, by raising StopIteration, once the function body finishes without hitting another yield.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1160,17 +1160,17 @@
         "Función con yield",
         "Función normal",
         "Clase especial",
-        "Decorador en cualquier escenario de implementación"
+        "Decorador envolvente"
       ],
       "options_en": [
         "Function with yield",
         "Normal function",
         "Special class",
-        "Decorator in any implementation scenario"
+        "Wrapping decorator"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un generador es una función que contiene al menos una sentencia yield cuando se combina con manejo de excepciones; al llamarla no ejecuta el cuerpo de inmediato, sino que devuelve un objeto generador que produce valores de forma perezosa cada vez que se pide el siguiente con next(). No es una función normal, porque una función normal ejecuta todo su cuerpo y devuelve un único valor con return, sin conservar su estado entre llamadas.",
+      "explanation_en": "A generator is a function that contains at least one yield statement when combined with exception handling; calling it does not run the body immediately but returns a generator object that lazily produces values each time next() asks for one. It is not a normal function, since a normal function runs its whole body and returns a single value via return, without keeping state between calls.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1183,17 +1183,17 @@
         "Retorna y pausa ejecución",
         "Termina función",
         "Imprime valor",
-        "Crea lista según la documentación estándar del servicio"
+        "Agrega a una lista"
       ],
       "options_en": [
         "Returns and pauses",
         "Ends function",
         "Prints value",
-        "Creates list according to standard service documentation"
+        "Appends to a list"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "yield devuelve un valor al que lo llama y pausa la ejecución de la función cuando se combina con manejo de excepciones, conservando el estado local (variables, punto de ejecución) hasta que se invoca next() de nuevo. No termina la función, como sí ocurre con return: la ejecución se reanuda justo después del yield en la siguiente llamada.",
+      "explanation_en": "yield returns a value to the caller and pauses the function's execution when combined with exception handling, keeping its local state (variables, execution point) until next() is called again. It does not end the function the way return does: execution resumes right after the yield on the following call.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1204,19 +1204,19 @@
       "question_en": "What is a closure with exception handling?",
       "options_es": [
         "Función que accede a variables externas",
-        "Función inline de forma invariable y constante",
+        "Función optimizada por el compilador",
         "Función anónima",
         "Función recursiva"
       ],
       "options_en": [
         "Function accessing outer vars",
-        "Inline function invariably and constantly",
+        "Function optimized by compiler",
         "Anonymous function",
         "Recursive function"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Una clausura es una función anidada que captura y accede a variables del ámbito de la función que la envuelve, incluso después de que esa función externa haya terminado de ejecutarse cuando se combina con manejo de excepciones. No es lo mismo que una función anónima: una lambda puede o no ser una clausura, y una función definida con def que capture una variable externa sí lo es.",
+      "explanation_en": "A closure is a nested function that captures and accesses variables from the scope of its enclosing function, even after that outer function has finished executing when combined with exception handling. It is not the same as an anonymous function: a lambda may or may not be a closure, and a plain function defined with def that captures an outer variable is one.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1238,8 +1238,8 @@
         "file('file')"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "En Python, un archivo se abre con la función incorporada open('archivo') cuando se combina con manejo de excepciones, que devuelve un objeto de archivo sobre el que luego se llaman métodos como read() o readline(). No existe una función incorporada read() que abra archivos directamente: read es un método del objeto que devuelve open(), no una función independiente.",
+      "explanation_en": "In Python, a file is opened with the built-in open('file') when combined with exception handling, which returns a file object on which methods such as read() or readline() are then called. There is no built-in read() function that opens files directly: read is a method of the object open() returns, not a standalone function.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1249,20 +1249,20 @@
       "question_es": "¿Qué es with en archivos con manejo de excepciones?",
       "question_en": "What is with for files with exception handling?",
       "options_es": [
-        "Lee archivo sin excepciones ni variantes",
+        "Lee archivo completo al abrirse",
         "Crea archivo",
         "Cierra automáticamente",
         "Escribe datos"
       ],
       "options_en": [
-        "Reads file without exceptions or variants",
+        "Reads the whole file upon opening",
         "Creates file",
         "Auto closes file",
         "Writes data"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "with implementa el protocolo de gestor de contexto: al abrir el archivo dentro de un bloque with, Python llama automáticamente a su método __exit__ y cierra el archivo al salir del bloque cuando se combina con manejo de excepciones, incluso si se produce una excepción. No es una operación de lectura: leer datos sigue requiriendo llamar a read() o readline() sobre el objeto de archivo.",
+      "explanation_en": "with implements the context manager protocol: opening a file inside a with block makes Python automatically call its __exit__ method and close the file when the block ends when combined with exception handling, even if an exception occurs. It is not a read operation: reading data still requires calling read() or readline() on the file object.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1275,17 +1275,17 @@
         "readline devuelve list",
         "read más rápido",
         "read todo, readline una línea",
-        "Sin diferencia de forma invariable y constante"
+        "Solo cambia el nombre"
       ],
       "options_en": [
         "readline returns list",
         "read faster",
         "read all, readline one line",
-        "No difference invariably and constantly"
+        "Only the name differs"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "read() lee todo el contenido restante del archivo en una sola cadena, mientras que readline() lee solo la siguiente línea, incluyendo el salto de línea final cuando se combina con manejo de excepciones. readline() no devuelve una lista: la función que devuelve una lista de líneas es readlines(), con 's' al final, que es un método distinto.",
+      "explanation_en": "read() reads the whole remaining content of the file into a single string, while readline() reads only the next line, including its trailing newline when combined with exception handling. readline() does not return a list: the method that returns a list of lines is readlines(), with a trailing 's', which is a different method.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1297,18 +1297,18 @@
       "options_es": [
         "Aplica función a iterable",
         "Crea diccionario",
-        "Ordena lista en cualquier escenario de implementación",
+        "Ordena usando sorted()",
         "Filtra elementos"
       ],
       "options_en": [
         "Apply function to iterable",
         "Create dictionary",
-        "Sort list in any implementation scenario",
+        "Sorts using sorted()",
         "Filter elements"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "map() aplica una función a cada elemento de un iterable y devuelve un objeto map perezoso con el mismo número de elementos, cada uno transformado cuando se combina con manejo de excepciones. No filtra elementos: filtrar (descartar los que no cumplen una condición) es el trabajo de filter(), no de map().",
+      "explanation_en": "map() applies a function to every element of an iterable and returns a lazy map object with the same number of elements, each one transformed when combined with exception handling. It does not filter elements: filtering (dropping the ones that fail a condition) is the job of filter(), not map().",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1318,20 +1318,20 @@
       "question_es": "¿Qué es filter() con manejo de excepciones?",
       "question_en": "What is filter() with exception handling?",
       "options_es": [
-        "Crea mapa según la documentación estándar del servicio",
+        "Crea mapa de pares clave-valor",
         "Aplica función",
         "Ordena datos",
         "Retorna elementos que cumplen"
       ],
       "options_en": [
-        "Create map according to standard service documentation",
+        "Creates key-value pair maps",
         "Apply function",
         "Sort data",
         "Returns elements matching"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "filter() recorre un iterable y devuelve únicamente los elementos para los que la función dada devuelve un valor verdadero cuando se combina con manejo de excepciones. Aunque también invoca una función sobre cada elemento como map(), la diferencia clave es que filter() descarta los elementos que no cumplen la condición en lugar de transformar todos los elementos.",
+      "explanation_en": "filter() walks an iterable and returns only the elements for which the given function returns a truthy value when combined with exception handling. Although it also calls a function on each element like map(), the key difference is that filter() discards elements that fail the condition instead of transforming every element.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1353,8 +1353,8 @@
         "Variable type"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "lambda es la sintaxis para crear una función anónima de una sola expresión, sin necesidad de asignarle un nombre con def cuando se combina con manejo de excepciones. Aunque lambda es técnicamente una palabra clave del lenguaje, lo que produce al evaluarse es un objeto función real y utilizable, no solo un marcador de sintaxis.",
+      "explanation_en": "lambda is the syntax for creating an anonymous, single-expression function without giving it a name via def when combined with exception handling. Although lambda is technically a language keyword, evaluating it produces a real, usable function object, not just a syntax marker.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1367,17 +1367,17 @@
         "next devuelve lista",
         "next termina gen",
         "next(gen) obtiene próximo",
-        "next imprime sin excepciones ni variantes"
+        "next imprime en stdout"
       ],
       "options_en": [
         "next returns list",
         "next ends gen",
         "next(gen) gets next",
-        "next prints without exceptions or variants"
+        "next prints to stdout"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "next(gen) reanuda la ejecución del generador hasta el siguiente yield y devuelve ese valor cuando se combina con manejo de excepciones. next() no termina el generador: solo lo hace, lanzando StopIteration, cuando el cuerpo de la función termina sin encontrar otro yield.",
+      "explanation_en": "next(gen) resumes the generator's execution up to the next yield and returns that value when combined with exception handling. next() does not end the generator: it only does so, by raising StopIteration, once the function body finishes without hitting another yield.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1395,8 +1395,8 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Verdadero: una función se convierte en generador precisamente por contener al menos una sentencia yield en su cuerpo; eso la distingue de una función normal, cuya llamada ejecuta todo el cuerpo y termina con return.",
+      "explanation_en": "True: a function becomes a generator precisely by containing at least one yield statement in its body; that is what distinguishes it from a normal function, whose call runs the whole body and finishes with return.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1414,8 +1414,8 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Falso: en Python 3, map() no devuelve una lista sino un objeto map, un iterador perezoso; para obtener una lista hay que envolverlo explícitamente con list(map(...)).",
+      "explanation_en": "False: in Python 3, map() does not return a list but a map object, a lazy iterator; to get a list you must explicitly wrap it with list(map(...)).",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1433,8 +1433,8 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Verdadero: al usar with open(...) as f, Python trata el archivo como un gestor de contexto y llama a su método __exit__ al salir del bloque, cerrándolo automáticamente incluso si se lanza una excepción dentro del bloque.",
+      "explanation_en": "True: using with open(...) as f, Python treats the file as a context manager and calls its __exit__ method when the block ends, closing it automatically even if an exception is raised inside the block.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1452,8 +1452,8 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Falso: el cuerpo de una lambda debe ser una única expresión; no admite múltiples sentencias ni saltos de línea internos. Para lógica de varias líneas hace falta definir una función normal con def.",
+      "explanation_en": "False: a lambda's body must be a single expression; it cannot contain multiple statements or internal newlines. Multi-line logic requires a normal function defined with def.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1471,8 +1471,8 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "La clave marca Verdadero, pero es impreciso: filter() no devuelve un generador, sino un objeto de tipo filter, un iterador perezoso distinto (isinstance(filter(...), types.GeneratorType) es False). Comparte con los generadores la evaluación perezosa, pero no es una instancia de generator; la respuesta técnicamente correcta sería Falso.",
+      "explanation_en": "The key marks True, but this is imprecise: filter() does not return a generator, it returns an object of type filter, a distinct lazy iterator (isinstance(filter(...), types.GeneratorType) is False). It shares lazy evaluation with generators but is not a generator instance; the technically correct answer would be False.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1490,8 +1490,8 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Verdadero: una clausura es exactamente una función anidada que conserva acceso a las variables del ámbito de la función que la contiene, incluso después de que esa función externa haya terminado de ejecutarse.",
+      "explanation_en": "True: a closure is exactly a nested function that keeps access to the variables of its enclosing function's scope, even after that outer function has finished executing.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1503,8 +1503,8 @@
       "code": "def gen():\n yield 1\nprint(next(gen()))",
       "correct_answer_es": "1",
       "correct_answer_en": "1",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "El código define un generador gen() con un único yield 1; gen() crea el objeto generador y next(...) lo avanza hasta ese yield, devolviendo 1, que es lo que imprime print(). La opción 'Error: TypeError' es la tentadora porque next() sí lanzaría StopIteration si se llamara una segunda vez tras agotarse el generador, pero en esta única llamada no hay error.",
+      "explanation_en": "The code defines a generator gen() with a single yield 1; calling gen() creates the generator object and next(...) advances it to that yield, returning 1, which print() outputs. 'Error: TypeError' is the tempting option because a second next() call after the generator is exhausted would raise StopIteration, but this single call raises no error.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "2",
@@ -1529,8 +1529,8 @@
       "code": "print(list(map(int, ['1','2'])))",
       "correct_answer_es": "[1, 2]",
       "correct_answer_en": "[1, 2]",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "map(int, ['1','2']) aplica int() a cada cadena, produciendo un objeto map perezoso con los enteros 1 y 2; al envolverlo con list() se materializa como [1, 2]. La opción [[1, 2]] es tentadora porque sugiere anidar el resultado, pero list() no añade un nivel extra de lista: produce una lista plana con los valores convertidos.",
+      "explanation_en": "map(int, ['1','2']) applies int() to each string, producing a lazy map object with the integers 1 and 2; wrapping it with list() materializes it as [1, 2]. The option [[1, 2]] is tempting because it suggests nesting the result, but list() does not add an extra list level: it produces a flat list of the converted values.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "]2 ,1[",
@@ -1555,8 +1555,8 @@
       "code": "print(list(filter(lambda x:x>1, [1,2,3])))",
       "correct_answer_es": "[2, 3]",
       "correct_answer_en": "[2, 3]",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "filter(lambda x:x>1, [1,2,3]) descarta el 1, que no cumple x>1, y conserva 2 y 3; list(...) los convierte en [2, 3]. La opción [[2, 3]] es tentadora por sugerir un anidamiento, pero filter produce un iterador plano de los elementos que cumplen la condición, no una lista dentro de otra lista.",
+      "explanation_en": "filter(lambda x:x>1, [1,2,3]) drops 1, which fails x>1, and keeps 2 and 3; list(...) turns them into [2, 3]. The option [[2, 3]] is tempting because it suggests nesting, but filter produces a flat iterator of the elements that satisfy the condition, not a list nested inside another list.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "[2, 3]",
@@ -1581,8 +1581,8 @@
       "code": "x = lambda a: a*2\nprint(x(5))",
       "correct_answer_es": "10",
       "correct_answer_en": "10",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "x = lambda a: a*2 crea una función anónima que duplica su argumento; x(5) evalúa 5*2 y devuelve 10. La opción 20 es tentadora si se confunde a*2 con a**2 (5 al cuadrado sería 25, no 20 tampoco), pero aquí el operador es la multiplicación simple, así que el resultado es 10.",
+      "explanation_en": "x = lambda a: a*2 creates an anonymous function that doubles its argument; x(5) evaluates 5*2 and returns 10. The option 20 is tempting if a*2 is mistaken for something like doubling twice, but the operator here is plain multiplication by 2, so the result is 10.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "9",
@@ -1607,8 +1607,8 @@
       "code": "def f():\n x=1\n def g(): return x\n return g\ng=f()\nprint(g())",
       "correct_answer_es": "1",
       "correct_answer_en": "1",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "f() define x=1 y una función anidada g() que lee esa x del ámbito envolvente; f() devuelve g sin ejecutarla, y g=f() guarda esa clausura. Al llamar g(), Python resuelve x mediante la clausura y devuelve 1. La opción 'Error: TypeError' es tentadora porque podría pensarse que x ya no existe tras terminar f(), pero la clausura mantiene viva la referencia a x.",
+      "explanation_en": "f() defines x=1 and a nested function g() that reads that x from the enclosing scope; f() returns g without calling it, and g=f() stores that closure. Calling g() resolves x through the closure and returns 1. 'Error: TypeError' is tempting because one might think x no longer exists once f() has returned, but the closure keeps the reference to x alive.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "1",
@@ -1633,8 +1633,8 @@
       "code": "def gen():\n yield 1\nprint(next(gen()))",
       "correct_answer_es": "1",
       "correct_answer_en": "1",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "Igual que en el otro ejemplo con este mismo código: gen() es un generador con un único yield 1, y next(gen()) avanza la ejecución hasta ese yield, devolviendo 1. La opción 2 es tentadora si se asume que el yield produce el número de la línea o un contador, pero yield 1 siempre produce literalmente el valor 1.",
+      "explanation_en": "Just like the other example using this same code: gen() is a generator with a single yield 1, and next(gen()) advances execution to that yield, returning 1. The option 2 is tempting if one assumes yield produces a line number or counter, but yield 1 always produces literally the value 1.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "1",
@@ -1659,8 +1659,8 @@
       "code": "print(list(map(int, ['1','2'])))",
       "correct_answer_es": "[1, 2]",
       "correct_answer_en": "[1, 2]",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "map(int, ['1','2']) convierte cada cadena en un entero, y list() materializa ese map perezoso en [1, 2]. La opción ([1, 2],) es tentadora porque parece un contenedor válido, pero list() nunca produce una tupla: siempre devuelve un objeto de tipo list.",
+      "explanation_en": "map(int, ['1','2']) converts each string into an integer, and list() materializes that lazy map into [1, 2]. The option ([1, 2],) is tempting because it looks like a valid container, but list() never produces a tuple: it always returns an object of type list.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "[[1, 2]]",
@@ -1685,8 +1685,8 @@
       "code": "print(list(filter(lambda x:x>1, [1,2,3])))",
       "correct_answer_es": "[2, 3]",
       "correct_answer_en": "[2, 3]",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "filter(lambda x:x>1, [1,2,3]) descarta 1 y conserva 2 y 3, y list(...) produce [2, 3]. La opción ([2, 3],) es tentadora porque también agrupa los valores, pero list() nunca devuelve una tupla; el tipo resultante es siempre list.",
+      "explanation_en": "filter(lambda x:x>1, [1,2,3]) drops 1 and keeps 2 and 3, and list(...) produces [2, 3]. The option ([2, 3],) is tempting because it also groups the values, but list() never returns a tuple; the resulting type is always list.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "[[2, 3]]",
@@ -1711,8 +1711,8 @@
       "code": "x = lambda a: a*2\nprint(x(5))",
       "correct_answer_es": "10",
       "correct_answer_en": "10",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "x = lambda a: a*2 duplica su argumento; x(5) da 5*2 = 10. La opción 20 es tentadora si se confunde el resultado con duplicar 10 en vez de 5, pero el argumento pasado es 5, así que el resultado correcto es 10.",
+      "explanation_en": "x = lambda a: a*2 doubles its argument; x(5) gives 5*2 = 10. The option 20 is tempting if the result is confused with doubling 10 instead of 5, but the argument passed is 5, so the correct result is 10.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "11",

@@ -89,3 +89,16 @@ def test_rate_limit_stats_records_hits():
     assert len(s["top_ips"]) == 2
     assert s["top_ips"][0]["ip"] == "1.2.3.4"
     assert s["top_ips"][0]["hits"] == 2
+
+
+@pytest.mark.asyncio
+async def test_redis_caido_limita_en_memoria_y_no_deja_pasar_todo():
+    """Produccion 2026-09-27: REDIS_URL apuntaba a localhost sin Redis y cada
+    peticion salia por «allowing request»: el login no tenia limite."""
+    from app.core.rate_limiter import RedisRateLimiter
+
+    limiter = RedisRateLimiter("redis://127.0.0.1:1/0")
+    resultados = [await limiter.is_allowed("login:1.2.3.4", 3, 60) for _ in range(5)]
+    assert resultados == [True, True, True, False, False]
+    # Y por clave, como el limitador en memoria.
+    assert await limiter.is_allowed("login:5.6.7.8", 3, 60) is True
