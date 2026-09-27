@@ -27,6 +27,12 @@ def test_precio_de_la_certificacion_coincide() -> None:
     assert float(_const("CERTIFICATION_PRICE_USD")) == settings.CERTIFICATION_PRICE_USD
 
 
+def test_cupo_free_coincide() -> None:
+    """Plan Free (39.4, ADR-50a): lo que promete la UI es lo que aplica el backend."""
+    assert int(_const("FREE_DAILY_NEW_QUESTIONS")) == settings.FREE_DAILY_NEW_QUESTIONS
+    assert int(_const("FREE_DAILY_LESSONS")) == settings.FREE_DAILY_LESSONS
+
+
 def test_precios_adr41_unica_fuente() -> None:
     """Every $X.XX in the frontend must match ADR-41 prices (38.1)."""
     from app.core.prices import (

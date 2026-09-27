@@ -2,8 +2,11 @@
  * Tests for src/services/api.ts — HttpOnly cookie auth.
  * Uses vi.stubGlobal('fetch', ...) so no real network calls.
  *
- * Auth state is detected via the `whetzy_logged_in` non-HttpOnly cookie,
- * not via localStorage tokens (those were removed in 22.15).
+ * `isAuthenticated()` reads the `whetzy_logged_in` non-HttpOnly cookie, not
+ * localStorage tokens (removed in 22.15) — but only same-site, since it's
+ * host-only to whichever domain answered the login. `App.tsx` stopped using
+ * it for the initial decision in production, where frontend and backend are
+ * different domains and the cookie is never visible there (30.9).
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -94,6 +97,29 @@ describe('api service — auth.register', () => {
       language: 'es',
     });
     expect(result.access_token).toBe('at2');
+  });
+});
+
+describe('api service — logout', () => {
+  beforeEach(() => { clearLoggedInCookie(); localStorage.clear(); vi.resetModules(); });
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('calls POST /auth/logout with credentials: include', async () => {
+    const mockFetch = makeFetch(200, { message: 'Logged out successfully' });
+    vi.stubGlobal('fetch', mockFetch);
+    const { logout } = await import('../services/api');
+    await logout();
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    const [url, opts] = mockFetch.mock.calls[0];
+    expect(String(url)).toContain('/auth/logout');
+    expect(opts.method).toBe('POST');
+    expect(opts.credentials).toBe('include');
+  });
+
+  it('does not throw when there is no session left to revoke (401)', async () => {
+    vi.stubGlobal('fetch', makeFetch(401, {}, false));
+    const { logout } = await import('../services/api');
+    await expect(logout()).resolves.toBeUndefined();
   });
 });
 

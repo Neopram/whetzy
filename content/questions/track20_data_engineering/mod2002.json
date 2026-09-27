@@ -7,13 +7,13 @@
       "question_es": "¿Cuál es la diferencia entre una CTE (Common Table Expression) y una subconsulta?",
       "question_en": "What is the difference between a CTE and a subquery?",
       "options_es": [
-        "No hay diferencia de manera exclusiva y permanente",
+        "No hay diferencia: no se puede filtrar una CTE con WHERE",
         "CTE es reutilizable en una misma query, subconsulta no",
         "CTEs requieren índices",
         "Las subconsultas son más rápidas"
       ],
       "options_en": [
-        "No difference exclusively and permanently",
+        "No difference: a CTE cannot be filtered with WHERE",
         "CTE is reusable in same query, subquery is not",
         "CTEs require indexes",
         "Subqueries are faster"
@@ -30,16 +30,16 @@
       "question_es": "¿Qué función window permite calcular un ranking sin empates?",
       "question_en": "Which window function calculates ranking without ties?",
       "options_es": [
-        "RANK() como concepto principal",
-        "ROW_NUMBER() como concepto principal",
-        "COUNT() como concepto principal",
-        "DENSE_RANK() como concepto principal"
+        "RANK()",
+        "ROW_NUMBER()",
+        "COUNT()",
+        "DENSE_RANK()"
       ],
       "options_en": [
-        "RANK() as the primary concept",
-        "ROW_NUMBER() as the primary concept",
-        "COUNT() as the primary concept",
-        "DENSE_RANK() as the primary concept"
+        "RANK()",
+        "ROW_NUMBER()",
+        "COUNT()",
+        "DENSE_RANK()"
       ],
       "correct_index": 1,
       "explanation_es": "ROW_NUMBER() asigna un número secuencial único a cada fila, incluso con valores iguales en la columna de ordenamiento.",
@@ -55,13 +55,13 @@
       "options_es": [
         "LEFT es más rápido",
         "No importa el tipo",
-        "Retornan lo mismo en todos los casos posibles",
+        "Retornan lo mismo: ambos tipos de JOIN excluyen las filas sin coincidencia",
         "INNER retorna solo coincidencias, LEFT incluye todas del lado izquierdo"
       ],
       "options_en": [
         "LEFT is faster",
         "Type doesn't matter",
-        "Same return in all possible cases",
+        "Same return: both JOIN types exclude rows without a match",
         "INNER returns only matches, LEFT includes all left side"
       ],
       "correct_index": 3,
@@ -78,13 +78,13 @@
       "options_es": [
         "UNION es obsoleto",
         "UNION elimina duplicados, UNION ALL los mantiene",
-        "Son equivalentes sin considerar otros factores relevantes",
+        "Son equivalentes: ambas eliminan filas repetidas antes de devolver el resultado",
         "UNION ALL es siempre mejor"
       ],
       "options_en": [
         "UNION is obsolete",
         "UNION removes duplicates, UNION ALL keeps them",
-        "They are equivalent without considering other relevant factors",
+        "They are equivalent: both remove repeated rows before returning the result",
         "UNION ALL always better"
       ],
       "correct_index": 1,
@@ -100,13 +100,13 @@
       "question_en": "What is a 'recursive CTE' and what is it for?",
       "options_es": [
         "Una CTE que se llama a sí misma para procesar datos jerárquicos",
-        "No existe independientemente del contexto aplicado",
+        "No existe: PostgreSQL no permite que una CTE se referencie a sí misma",
         "Optimización de índices",
         "Una forma de eliminar datos"
       ],
       "options_en": [
         "A CTE that calls itself to process hierarchical data",
-        "Doesn't exist regardless of the applied context",
+        "Doesn't exist: PostgreSQL blocks a CTE from referencing itself",
         "Index optimization",
         "Way to delete data"
       ],
@@ -122,13 +122,13 @@
       "question_es": "¿Cuál es el propósito de la cláusula GROUP BY en una agregación?",
       "question_en": "What is the purpose of GROUP BY clause in aggregation?",
       "options_es": [
-        "Ordenar filas sin considerar otros factores relevantes",
+        "Ordenar filas: sustituye siempre a ORDER BY, incluso al combinar columnas",
         "Limitar resultados",
         "Agrupar filas por valores comunes antes de aplicar función de agregación",
         "Seleccionar columnas"
       ],
       "options_en": [
-        "Sort rows without considering other relevant factors",
+        "Sort rows: always replaces ORDER BY, even when combining columns",
         "Limit results",
         "Group rows by common values before applying aggregate function",
         "Select columns"
@@ -145,13 +145,13 @@
       "question_es": "¿Cuál es la diferencia entre WHERE y HAVING en una consulta con GROUP BY?",
       "question_en": "What is the difference between WHERE and HAVING in GROUP BY query?",
       "options_es": [
-        "Son sinónimos en todos los casos posibles",
+        "Son sinónimos: ambas filtran solo antes de calcular las agregaciones",
         "WHERE filtra filas antes de agrupar, HAVING filtra grupos después",
         "No hay diferencia",
         "HAVING es obsoleto"
       ],
       "options_en": [
-        "They are synonyms in all possible cases",
+        "They are synonyms: both filter only before aggregates are calculated",
         "WHERE filters rows before grouping, HAVING filters groups after",
         "No difference",
         "HAVING is obsolete"
@@ -168,13 +168,13 @@
       "question_es": "¿Qué es el 'query plan' y cómo se visualiza en PostgreSQL?",
       "question_en": "What is the 'query plan' and how is it visualized in PostgreSQL?",
       "options_es": [
-        "Una copia de seguridad de manera exclusiva y permanente",
+        "Una copia de seguridad: se genera automáticamente en cada consulta ejecutada",
         "La estrategia de ejecución de una consulta, visualizada con EXPLAIN",
         "Un documento de arquitectura",
         "Un diagrama de base de datos"
       ],
       "options_en": [
-        "Backup as the primary concept exclusively and permanently",
+        "A backup: generated automatically every time a query runs",
         "Query execution strategy, visualized with EXPLAIN",
         "Architecture document",
         "Database diagram"
@@ -217,13 +217,13 @@
         "Usar denormalización siempre",
         "Usar EXPLAIN, crear índices en columnas de join, revisar order de JOINs",
         "No se puede optimizar",
-        "Agregar más RAM según la documentación estándar del servicio"
+        "Agregar más RAM: sustituye la necesidad de crear índices en las columnas de join"
       ],
       "options_en": [
         "Always denormalize",
         "Use EXPLAIN, create indexes on join columns, review JOIN order",
         "Cannot be optimized",
-        "Add more RAM according to standard service documentation"
+        "Add more RAM: removes the need to create indexes on join columns"
       ],
       "correct_index": 1,
       "explanation_es": "Índices en columnas de join, EXPLAIN para entender la estrategia y orden apropiado de joins reducen significativamente el tiempo.",
@@ -240,13 +240,13 @@
         "Reemplaza índices",
         "Todos los datos van a memoria",
         "Almacena resultados de una consulta compleja para relectura rápida",
-        "Sin ventaja en todos los casos posibles"
+        "Sin ventaja: se actualiza automáticamente en cada INSERT de las tablas base"
       ],
       "options_en": [
         "Replaces indexes",
         "All data goes to memory",
         "Stores complex query results for fast re-read",
-        "No advantage in all possible cases"
+        "No advantage: it updates automatically on every INSERT to the base tables"
       ],
       "correct_index": 2,
       "explanation_es": "Una vista materializada almacena físicamente los resultados de una consulta, permitiendo lecturas rápidas sin recomputar.",
@@ -263,13 +263,13 @@
         "Se ignora ORDER BY",
         "Toda la tabla se ordena, potencialmente lenta sin índice",
         "Error de sintaxis",
-        "Se asume LIMIT 1 de manera exclusiva y permanente"
+        "Se asume LIMIT 1: PostgreSQL trunca el resultado automáticamente a una fila"
       ],
       "options_en": [
         "ORDER BY ignored",
         "Entire table is sorted, potentially slow without index",
         "Syntax error",
-        "LIMIT 1 is assumed exclusively and permanently"
+        "LIMIT 1 is assumed: PostgreSQL automatically truncates the result to one row"
       ],
       "correct_index": 1,
       "explanation_es": "Sin LIMIT, la BD ordena todas las filas, lo cual es costoso; siempre considerar LIMIT si solo necesitas N primeras filas.",
@@ -285,13 +285,13 @@
       "options_es": [
         "Ordenar resultados",
         "Limitar número de filas",
-        "Filtrar nulos en cualquier escenario de implementación",
+        "Filtrar nulos: descarta las filas donde alguna columna sea NULL",
         "Retornar solo filas únicas, eliminando duplicados"
       ],
       "options_en": [
         "Sort results",
         "Limit row count",
-        "Filter nulls in any implementation scenario",
+        "Filter nulls: discards rows where any column is NULL",
         "Return only unique rows, removing duplicates"
       ],
       "correct_index": 3,
@@ -307,13 +307,13 @@
       "question_en": "What is the difference between LEFT OUTER JOIN and LEFT JOIN?",
       "options_es": [
         "Son sinónimos, OUTER es opcional",
-        "No se puede usar OUTER sin excepciones ni variantes",
+        "No se puede usar OUTER: la sintaxis solo acepta LEFT JOIN a secas",
         "Significativamente diferente",
         "LEFT JOIN es más rápido"
       ],
       "options_en": [
         "They are synonyms, OUTER is optional",
-        "Cannot use OUTER without exceptions or variants",
+        "Cannot use OUTER: the syntax only accepts bare LEFT JOIN",
         "Significantly different",
         "LEFT JOIN is faster"
       ],
@@ -330,13 +330,13 @@
       "question_en": "What is best practice for improving complex query performance?",
       "options_es": [
         "Aumentar RAM infinitamente",
-        "Más workers siempre sin excepciones ni variantes",
+        "Más workers: PostgreSQL reparte automáticamente cualquier consulta entre núcleos",
         "Executar varias veces hasta mejorar",
         "Usar EXPLAIN, crear índices inteligentes, descomponer en pasos"
       ],
       "options_en": [
         "Increase RAM infinitely",
-        "More workers always without exceptions or variants",
+        "More workers: PostgreSQL automatically splits any query across cores",
         "Run multiple times until better",
         "Use EXPLAIN, create smart indexes, break into steps"
       ],
@@ -354,13 +354,13 @@
       "options_es": [
         "Mejor interfaz gráfica",
         "Es la más rápida siempre",
-        "No tiene limitaciones de forma invariable y constante",
+        "No tiene limitaciones: max_connections no existe como parámetro configurable",
         "Extensibilidad con tipos personalizados y funciones"
       ],
       "options_en": [
         "Better GUI",
         "Always fastest",
-        "No limitations invariably and constantly",
+        "No limitations: max_connections isn't a configurable parameter",
         "Extensibility with custom types and functions"
       ],
       "correct_index": 3,
@@ -375,13 +375,13 @@
       "question_es": "¿Qué es el 'tablespace' en PostgreSQL?",
       "question_en": "What is a 'tablespace' in PostgreSQL?",
       "options_es": [
-        "Memoria caché de forma invariable y constante",
+        "Memoria caché: se borra automáticamente al reiniciar el servidor",
         "Una ubicación en disco donde se almacenan los datos de BD",
         "Una tabla especial",
         "Espacio en fila para datos"
       ],
       "options_en": [
-        "Cache memory invariably and constantly",
+        "Cache memory: automatically cleared when the server restarts",
         "Disk location where DB data is stored",
         "Special table",
         "Row space for data"
@@ -398,13 +398,13 @@
       "question_es": "¿Cuál es la diferencia entre una 'database' y una 'schema' en PostgreSQL?",
       "question_en": "What is the difference between a 'database' and a 'schema' in PostgreSQL?",
       "options_es": [
-        "Son lo mismo sin considerar otros factores relevantes",
+        "Son lo mismo: ambos términos se usan indistintamente en el catálogo del sistema",
         "DB es colección de schemas, schema es colección de tablas",
         "No hay relación",
         "Schema es más grande"
       ],
       "options_en": [
-        "They are same without considering other relevant factors",
+        "They are the same: both terms are used interchangeably in the system catalog",
         "DB is collection of schemas, schema is collection of tables",
         "No relationship",
         "Schema is larger"
@@ -424,13 +424,13 @@
         "Dueño de la tabla o superuser",
         "No requiere permisos",
         "Rol especial 'vacuum_user'",
-        "Cualquier usuario sin excepciones ni variantes"
+        "Cualquier usuario: el rol PUBLIC trae privilegio de VACUUM en la instalación"
       ],
       "options_en": [
         "Table owner or superuser",
         "No permissions needed",
         "Special 'vacuum_user' role",
-        "Any user without exceptions or variants"
+        "Any user: the PUBLIC role ships with VACUUM privilege out of the box"
       ],
       "correct_index": 0,
       "explanation_es": "Solo el dueño de la tabla o un superuser pueden ejecutar VACUUM, que libera espacio limpiando dead tuples.",
@@ -445,13 +445,13 @@
       "question_en": "What is the purpose of ANALYZE in PostgreSQL?",
       "options_es": [
         "Recopilar estadísticas para optimización del query planner",
-        "Comprimir la BD de forma invariable y constante",
+        "Comprimir la BD: reduce el tamaño físico de los ficheros de datos en disco",
         "Crear índices automáticamente",
         "Eliminar filas duplicadas"
       ],
       "options_en": [
         "Gather statistics for query planner optimization",
-        "Compress DB invariably and constantly",
+        "Compress the DB: reduces the physical size of the data files on disk",
         "Create indexes automatically",
         "Remove duplicate rows"
       ],
@@ -469,13 +469,13 @@
       "options_es": [
         "Duplicar datos para hacer backups",
         "Duplicación de cambios a servidores secundarios para alta disponibilidad",
-        "Replicar consultas independientemente del contexto aplicado",
+        "Replicar consultas: reenvía cada SELECT a los servidores secundarios para volver a ejecutarlo",
         "Sin utilidad práctica"
       ],
       "options_en": [
         "Duplicate data for backups",
         "Replicate changes to standby servers for high availability",
-        "Replicate queries regardless of the applied context",
+        "Replicate queries: forwards every SELECT to standby servers to re-run it",
         "No practical use"
       ],
       "correct_index": 1,
@@ -491,13 +491,13 @@
       "question_en": "What is the difference between AUTOVACUUM and manual VACUUM?",
       "options_es": [
         "AUTOVACUUM se ejecuta automáticamente, manual es bajo demanda",
-        "No hay diferencia en todos los casos posibles",
+        "No hay diferencia: ambos requieren lanzarse manualmente desde psql",
         "Manual es más eficiente",
         "AUTOVACUUM es lento"
       ],
       "options_en": [
         "AUTOVACUUM runs automatically, manual on demand",
-        "No difference in all possible cases",
+        "No difference: both must be launched manually from psql",
         "Manual more efficient",
         "AUTOVACUUM is slow"
       ],
@@ -514,13 +514,13 @@
       "question_en": "What data type is optimized for storing JSON in PostgreSQL?",
       "options_es": [
         "TEXT únicamente",
-        "No hay soporte según la documentación estándar del servicio",
+        "No hay soporte: JSON debe convertirse antes a XML para poder guardarse",
         "JSON o JSONB (JSONB es más eficiente)",
         "DOCUMENT tipo especial"
       ],
       "options_en": [
         "TEXT only",
-        "No support according to standard service documentation",
+        "No support: JSON must first be converted to XML to be stored",
         "JSON or JSONB (JSONB more efficient)",
         "DOCUMENT special type"
       ],
@@ -538,13 +538,13 @@
       "options_es": [
         "SELECT * FROM pg_stat_activity",
         "LIST CONNECTIONS",
-        "DESCRIBE USERS de forma invariable y constante",
+        "DESCRIBE USERS: comando de psql para listar las sesiones activas",
         "SHOW CONNECTIONS"
       ],
       "options_en": [
         "SELECT * FROM pg_stat_activity",
         "LIST CONNECTIONS",
-        "DESCRIBE USERS invariably and constantly",
+        "DESCRIBE USERS: psql command that lists active sessions",
         "SHOW CONNECTIONS"
       ],
       "correct_index": 0,
@@ -562,13 +562,13 @@
         "CREATE USER 'nombre'@'host'",
         "CREATE ROLE nombre WITH LOGIN PASSWORD 'pass'",
         "No se pueden crear",
-        "INSERT INTO users en todos los casos posibles"
+        "INSERT INTO users: añade una fila a la tabla de roles del sistema"
       ],
       "options_en": [
         "CREATE USER 'name'@'host'",
         "CREATE ROLE name WITH LOGIN PASSWORD 'pass'",
         "Cannot be created",
-        "INSERT INTO users in all possible cases"
+        "INSERT INTO users: adds a row into the system's role table"
       ],
       "correct_index": 1,
       "explanation_es": "CREATE ROLE es el comando para crear usuarios; WITH LOGIN lo hace capaz de conectarse; WITH PASSWORD establece contraseña.",
@@ -583,13 +583,13 @@
       "question_en": "What is a 'trigger' in PostgreSQL?",
       "options_es": [
         "Un botón en la interfaz",
-        "Un tipo de índice en todos los casos posibles",
+        "Un tipo de índice: acelera búsquedas por rango en columnas ordenadas y se reindexa",
         "Una alarma de base de datos",
         "Una función que se ejecuta automáticamente ante INSERT, UPDATE o DELETE"
       ],
       "options_en": [
         "GUI button",
-        "Index type in all possible cases",
+        "Index type: speeds up range searches on sorted columns and gets reindexed",
         "A database alarm",
         "Function auto-executed on INSERT, UPDATE or DELETE"
       ],
@@ -605,16 +605,16 @@
       "question_es": "¿Cuál es la máxima cantidad de columnas que puede tener una tabla en PostgreSQL?",
       "question_en": "What is maximum columns a PostgreSQL table can have?",
       "options_es": [
-        "Ilimitado como concepto principal",
-        "1600 como concepto principal",
-        "256 como concepto principal",
-        "10000 como concepto principal"
+        "Ilimitado",
+        "1600",
+        "256",
+        "10000"
       ],
       "options_en": [
-        "Unlimited as the primary concept",
-        "1600 as the primary concept",
-        "256 as the primary concept",
-        "10000 as the primary concept"
+        "Unlimited",
+        "1600",
+        "256",
+        "10000"
       ],
       "correct_index": 1,
       "explanation_es": "PostgreSQL permite hasta 1600 columnas por tabla (antes era 512); esto es límite práctica del sistema.",
@@ -628,13 +628,13 @@
       "question_es": "¿Qué es 'WAL' (Write-Ahead Logging) en PostgreSQL?",
       "question_en": "What is 'WAL' (Write-Ahead Logging) in PostgreSQL?",
       "options_es": [
-        "Web access layer de forma invariable y constante",
+        "Web access layer: capa que traduce peticiones HTTP a comandos SQL internos",
         "Log de cambios escrito antes de aplicar a datos",
         "Copia automática en nube",
         "Wall (pared) de datos"
       ],
       "options_en": [
-        "Web access layer invariably and constantly",
+        "Web access layer: layer that translates HTTP requests into internal SQL commands",
         "Change log written before applying to data",
         "Automatic cloud copy",
         "Wall of data"
@@ -652,13 +652,13 @@
       "question_en": "How to see table size in PostgreSQL?",
       "options_es": [
         "SELECT COUNT(*)",
-        "DESCRIBE tabla en cualquier escenario de implementación",
+        "DESCRIBE tabla: comando estándar de PostgreSQL para ver el tamaño en disco",
         "SELECT pg_size_pretty(pg_total_relation_size('tabla'))",
         "SIZE tabla FROM information_schema"
       ],
       "options_en": [
         "SELECT COUNT(*)",
-        "DESCRIBE table in any implementation scenario",
+        "DESCRIBE table: standard PostgreSQL command to show size on disk",
         "SELECT pg_size_pretty(pg_total_relation_size('table'))",
         "SIZE table FROM information_schema"
       ],
@@ -677,13 +677,13 @@
         "Copiar archivos de BD directamente",
         "Usar pg_dump para respaldo lógico o PITR para completo",
         "Sin necesidad de respaldar",
-        "Replicación solamente en cualquier escenario de implementación"
+        "Replicación solamente: sustituye a pg_dump como método oficial de respaldo"
       ],
       "options_en": [
         "Copy DB files directly",
         "Use pg_dump for logical or PITR for full",
         "No need for backup",
-        "Replication only in any implementation scenario"
+        "Replication only: officially replaces pg_dump as the backup method"
       ],
       "correct_index": 1,
       "explanation_es": "pg_dump genera respaldo lógico portable; PITR (Point-in-Time Recovery) con WAL permite restaurar a cualquier momento.",
@@ -723,13 +723,13 @@
         "Cuando tiene baja selectividad o muchos NULLs",
         "Cuando está ordenada",
         "Nunca es ineficiente",
-        "Cuando es varchar sin excepciones ni variantes"
+        "Cuando la columna es la clave primaria de la tabla"
       ],
       "options_en": [
         "When it has low selectivity or many NULLs",
         "When it is sorted",
         "Never inefficient",
-        "When it is varchar without exceptions or variants"
+        "When the column is the table's primary key"
       ],
       "correct_index": 0,
       "explanation_es": "Si una columna tiene muchos valores repetidos o NULLs, el índice raramente excluye filas, siendo casi inútil.",
@@ -745,13 +745,13 @@
       "options_es": [
         "Un índice en la nube",
         "Un índice sobre múltiples columnas en orden",
-        "Un índice de tabla de forma invariable y constante",
+        "Un índice sobre la tabla completa, sin columnas",
         "Un índice duplicado"
       ],
       "options_en": [
         "Cloud index",
         "Index over multiple columns in order",
-        "Table index invariably and constantly",
+        "Index over the whole table with no columns",
         "Duplicate index"
       ],
       "correct_index": 1,
@@ -767,13 +767,13 @@
       "question_en": "What is the cost of maintaining an index with frequent INSERTs?",
       "options_es": [
         "Debe actualizarse el índice, ralentizando INSERTs",
-        "Sin costo de forma invariable y constante",
+        "Sin costo, PostgreSQL omite el índice en INSERTs",
         "Solo al final del día",
         "Mejora INSERTs"
       ],
       "options_en": [
         "Index must update, slowing INSERTs",
-        "No cost invariably and constantly",
+        "No cost, PostgreSQL skips it on INSERTs",
         "Only at end of day",
         "Improves INSERTs"
       ],
@@ -786,19 +786,19 @@
       "id": "q200203_005",
       "skill_id": "sk200203",
       "type": "multiple_choice",
-      "question_es": "¿Qué es una 'índice parcial' en PostgreSQL?",
+      "question_es": "¿Qué es un 'índice parcial' en PostgreSQL?",
       "question_en": "What is a 'partial index' in PostgreSQL?",
       "options_es": [
         "Un índice del 50%",
         "Un índice que solo indexa filas que cumplan una condición WHERE",
         "Un índice temporal",
-        "Un índice roto sin excepciones ni variantes"
+        "Un índice roto tras una migración fallida de esquema"
       ],
       "options_en": [
         "50% index",
         "Index that only indexes rows matching WHERE condition",
         "Temporary index",
-        "A broken index without exceptions or variants"
+        "A broken index left over from a failed schema migration"
       ],
       "correct_index": 1,
       "explanation_es": "Un índice parcial reduce espacio indexando solo filas relevantes; útil para columnas con muchos NULLs o con filtros comunes.",
@@ -813,13 +813,13 @@
       "question_en": "How to determine if an index is being used in PostgreSQL?",
       "options_es": [
         "Usar pg_stat_user_indexes y revisar idx_scan",
-        "No se puede saber sin excepciones ni variantes",
+        "No se puede saber sin acceso total de superusuario",
         "Ver tamaño del archivo",
         "Ejecutar queries varias veces"
       ],
       "options_en": [
         "Use pg_stat_user_indexes and check idx_scan",
-        "Cannot know without exceptions or variants",
+        "Cannot know without full superuser database access",
         "Check file size",
         "Run queries multiple times"
       ],
@@ -837,13 +837,13 @@
       "options_es": [
         "Un índice que oculta datos",
         "Índice en el techo",
-        "Índice de reserva sin considerar otros factores relevantes",
+        "Índice de reserva usado solo durante backups nocturnos",
         "Índice que contiene todas las columnas necesarias para responder una query"
       ],
       "options_en": [
         "Index that hides data",
         "Roof index",
-        "Backup index without considering other relevant factors",
+        "Backup index kept only for use during nightly backup and restore jobs",
         "Index containing all columns needed to answer a query"
       ],
       "correct_index": 3,
@@ -858,13 +858,13 @@
       "question_es": "¿Cuál es el impacto de un índice ineficiente en operaciones DELETE?",
       "question_en": "What is the impact of an inefficient index on DELETE operations?",
       "options_es": [
-        "Sin impacto de manera exclusiva y permanente",
+        "Sin impacto porque DELETE ignora los índices existentes",
         "DELETE es lento porque busca filas con índice ineficiente",
         "DELETE es más rápido",
         "No se usan índices en DELETE"
       ],
       "options_en": [
-        "No impact exclusively and permanently",
+        "No impact because DELETE ignores existing indexes",
         "DELETE slow because finds rows with inefficient index",
         "DELETE faster",
         "Indexes not used in DELETE"
@@ -882,13 +882,13 @@
       "question_en": "What is 'index bloat'?",
       "options_es": [
         "Índice con demasiadas filas",
-        "Índice corrupto sin excepciones ni variantes",
+        "Índice corrupto tras un apagado abrupto del servidor",
         "Espacio inútil en índice por actualizaciones frecuentes",
         "Índice muy grande"
       ],
       "options_en": [
         "Index with too many rows",
-        "Corrupt index without exceptions or variants",
+        "Corrupt index after an abrupt server shutdown",
         "Wasted space in index from frequent updates",
         "Very large index"
       ],
@@ -906,13 +906,13 @@
       "options_es": [
         "El índice es para datos históricos",
         "Sin diferencia práctica",
-        "Son lo mismo de manera exclusiva y permanente",
+        "Son términos intercambiables en el estándar SQL-92",
         "UNIQUE constraint usa índice único internamente"
       ],
       "options_en": [
         "Index for historical data",
         "No practical difference",
-        "Same thing exclusively and permanently",
+        "Interchangeable terms per the SQL-92 standard",
         "UNIQUE constraint uses unique index internally"
       ],
       "correct_index": 3,
@@ -928,14 +928,14 @@
       "question_en": "What happens when creating index on two columns with different order?",
       "options_es": [
         "Crea un índice diferente optimizado para ese orden",
-        "No se permite según la documentación estándar del servicio",
-        "Error como concepto principal",
+        "No se permite crear índices con columnas repetidas",
+        "Falla con un error de sintaxis porque no admite paréntesis anidados",
         "Se ignora la diferencia"
       ],
       "options_en": [
         "Creates different index optimized for that order",
-        "Not allowed according to standard service documentation",
-        "Error as the primary concept",
+        "Not allowed to create indexes with repeated columns",
+        "Fails with a syntax error because nested parentheses aren't allowed",
         "Ignores difference"
       ],
       "correct_index": 0,
@@ -950,13 +950,13 @@
       "question_es": "¿Cuándo debe usar un índice HASH vs B-tree en PostgreSQL?",
       "question_en": "When should you use HASH vs B-tree index in PostgreSQL?",
       "options_es": [
-        "No importa sin considerar otros factores relevantes",
+        "No importa, ambos usan el mismo algoritmo interno",
         "HASH siempre",
         "B-tree para rangos/orden, HASH solo para igualdad",
         "HASH es nuevo, mejor"
       ],
       "options_en": [
-        "Doesn't matter without considering other relevant factors",
+        "Doesn't matter, both use the same internal algorithm",
         "HASH always",
         "B-tree for ranges/order, HASH only for equality",
         "HASH is new, better"
@@ -974,13 +974,13 @@
       "question_en": "What is an 'expression index' in PostgreSQL?",
       "options_es": [
         "Un índice con múltiples tablas",
-        "Un índice temporal en cualquier escenario de implementación",
+        "Un índice temporal que se borra al reiniciar el servidor",
         "Índice creado sobre el resultado de una función",
         "Índice de fórmulas matemáticas"
       ],
       "options_en": [
         "Index on multiple tables",
-        "Temporary index in any implementation scenario",
+        "Temporary index dropped on server restart",
         "Index created on function result",
         "Math formula index"
       ],
@@ -997,13 +997,13 @@
       "question_en": "What is performance impact of frequently updating an indexed column?",
       "options_es": [
         "Degradación significativa: índice debe reordenarse constantemente",
-        "Sin impacto según la documentación estándar del servicio",
+        "Sin impacto porque el índice se actualiza solo en background",
         "Solo afecta lecturas",
         "Mejora rendimiento"
       ],
       "options_en": [
         "Significant degradation: index must constantly reorder",
-        "No impact according to standard service documentation",
+        "No impact because the index updates only in the background",
         "Only affects reads",
         "Improves performance"
       ],
@@ -1022,13 +1022,13 @@
         "Esperar a que se recomponga solo",
         "Usar REINDEX para reconstruir el índice",
         "Cambiar a otro tipo",
-        "Aumentar RAM de forma invariable y constante"
+        "Aumentar RAM sin tocar la estructura del índice"
       ],
       "options_en": [
         "Wait for self-repair",
         "Use REINDEX to rebuild index",
         "Change to another type",
-        "Increase RAM invariably and constantly"
+        "Increase RAM without touching the index structure"
       ],
       "correct_index": 1,
       "explanation_es": "REINDEX reconstruye un índice desde cero, eliminando fragmentación y espacio muerto.",
@@ -1043,13 +1043,13 @@
       "question_en": "What is the purpose of ACID transactions in a database?",
       "options_es": [
         "Eliminar duplicados",
-        "Guardar espacio en cualquier escenario de implementación",
+        "Guardar espacio comprimiendo las filas duplicadas",
         "Acelerar consultas",
         "Garantizar integridad y consistencia de datos en operaciones"
       ],
       "options_en": [
         "Remove duplicates",
-        "Save space in any implementation scenario",
+        "Save space by compressing duplicate rows",
         "Accelerate queries",
         "Guarantee data integrity and consistency in operations"
       ],
@@ -1065,16 +1065,16 @@
       "question_es": "¿Qué significa la 'A' en ACID?",
       "question_en": "What does the 'A' in ACID mean?",
       "options_es": [
-        "Actualización como concepto principal",
-        "Acceso como concepto principal",
+        "Actualización mediante UPDATE",
+        "Acceso concurrente con locks",
         "Atomicidad: todo o nada",
-        "Análisis como concepto principal"
+        "Análisis del plan de ejecución"
       ],
       "options_en": [
-        "Update as the primary concept",
-        "Access as the primary concept",
+        "Update performed via UPDATE",
+        "Concurrent access using locks",
         "Atomicity: all or nothing",
-        "Analysis as the primary concept"
+        "Analysis of the execution plan"
       ],
       "correct_index": 2,
       "explanation_es": "Atomicidad: la transacción se ejecuta completamente o no se ejecuta en absoluto; no hay ejecuciones parciales.",
@@ -1088,13 +1088,13 @@
       "question_es": "¿Cuál es el nivel de aislamiento más bajo en transacciones?",
       "question_en": "What is the lowest isolation level in transactions?",
       "options_es": [
-        "SERIALIZABLE como concepto principal",
+        "SERIALIZABLE (nivel más estricto)",
         "READ UNCOMMITTED",
         "READ COMMITTED",
         "REPEATABLE READ"
       ],
       "options_en": [
-        "SERIALIZABLE as the primary concept",
+        "SERIALIZABLE (strictest level)",
         "READ UNCOMMITTED",
         "READ COMMITTED",
         "REPEATABLE READ"
@@ -1111,13 +1111,13 @@
       "question_es": "¿Qué es un 'dirty read'?",
       "question_en": "What is a 'dirty read'?",
       "options_es": [
-        "Leer sin índices sin excepciones ni variantes",
+        "Leer sin usar los índices creados en la tabla",
         "Leer datos no comprometidos de otra transacción",
         "Leer datos borrados",
         "Leer desde archivo sin limpiar"
       ],
       "options_en": [
-        "Read without indexes without exceptions or variants",
+        "Reading without using the indexes created on the table",
         "Read uncommitted data from another transaction",
         "Read deleted data",
         "Read from unclean file"
@@ -1135,13 +1135,13 @@
       "question_en": "What is a 'deadlock' in databases?",
       "options_es": [
         "Dos transacciones esperan mutuamente recursos bloqueados",
-        "Candado roto sin excepciones ni variantes",
+        "Un candado que queda corrupto tras un fallo de disco",
         "Error de conexión",
         "Bloqueo de escritura"
       ],
       "options_en": [
         "Two transactions waiting for each other's locked resources",
-        "Broken lock without exceptions or variants",
+        "A lock that becomes corrupted after a disk failure",
         "Connection error",
         "Write block"
       ],
@@ -1157,13 +1157,13 @@
       "question_es": "¿Cómo resuelve típicamente una base de datos un deadlock?",
       "question_en": "How does a database typically resolve a deadlock?",
       "options_es": [
-        "Congela ambas independientemente del contexto aplicado",
+        "Congela ambas transacciones hasta reinicio manual",
         "Sin resolución",
         "Espera infinitamente",
         "Aborta una transacción automáticamente"
       ],
       "options_en": [
-        "Freezes both regardless of the applied context",
+        "Freezes both transactions until a manual restart",
         "No resolution",
         "Waits infinitely",
         "Automatically aborts one transaction"
@@ -1180,13 +1180,13 @@
       "question_es": "¿Qué es el 'control de concurrencia optimista' vs 'pesimista'?",
       "question_en": "What is 'optimistic' vs 'pessimistic' concurrency control?",
       "options_es": [
-        "Son lo mismo en cualquier escenario de implementación",
+        "Son sinónimos exactos definidos en el estándar SQL-92",
         "Optimista es más lento",
         "Solo existe uno",
         "Optimista asume conflictos raros, pesimista bloquea preventivamente"
       ],
       "options_en": [
-        "Same thing in any implementation scenario",
+        "They are exact synonyms defined in the SQL-92 standard",
         "Optimistic slower",
         "Only one exists",
         "Optimistic assumes conflicts rare, pessimistic locks preventively"
@@ -1205,13 +1205,13 @@
       "options_es": [
         "Sin diferencia",
         "Tabla bloquea tabla completa, fila bloquea una fila",
-        "Son sinónimos de forma invariable y constante",
+        "Son sinónimos exactos según el estándar ANSI SQL",
         "Fila bloquea tabla"
       ],
       "options_en": [
         "No difference",
         "Table locks entire table, row locks single row",
-        "They are synonyms invariably and constantly",
+        "They are exact synonyms per the ANSI SQL standard",
         "Row locks table"
       ],
       "correct_index": 1,
@@ -1227,13 +1227,13 @@
       "question_en": "What is 'phantom read' in transactions?",
       "options_es": [
         "Lectura de caché",
-        "Lectura de NULL independientemente del contexto aplicado",
+        "Leer un valor NULL en una columna con restricción NOT NULL",
         "Lectura de fantasmas",
         "Leer filas nuevas que otra transacción insertó en la misma consulta"
       ],
       "options_en": [
         "Cache read",
-        "Reading NULL regardless of the applied context",
+        "Reading a NULL value in a column with a NOT NULL constraint",
         "Reading ghosts",
         "Reading new rows another transaction inserted in same query"
       ],
@@ -1249,13 +1249,13 @@
       "question_es": "¿Cuál es la diferencia entre ROLLBACK y COMMIT en transacciones?",
       "question_en": "What is the difference between ROLLBACK and COMMIT?",
       "options_es": [
-        "Son lo mismo en cualquier escenario de implementación",
+        "Son alias del mismo comando de finalización de transacción",
         "COMMIT confirma cambios, ROLLBACK descarta cambios",
         "ROLLBACK es más rápido",
         "No hay diferencia"
       ],
       "options_en": [
-        "Same thing in any implementation scenario",
+        "They are aliases of the same transaction-ending command",
         "COMMIT confirms changes, ROLLBACK discards changes",
         "ROLLBACK faster",
         "No difference"
@@ -1274,13 +1274,13 @@
       "options_es": [
         "Máximo nivel: transacciones se comportan como si se ejecutaran una tras otra",
         "Todos serializan datos",
-        "No hay concurrencia sin considerar otros factores relevantes",
+        "No hay concurrencia porque el motor bloquea toda la base de datos",
         "Transacciones en serie lentamente"
       ],
       "options_en": [
         "Highest level: transactions behave as if executed one after another",
         "All serialize data",
-        "No concurrency without considering other relevant factors",
+        "No concurrency because the engine locks the entire database",
         "Transactions slow series"
       ],
       "correct_index": 0,
@@ -1296,15 +1296,15 @@
       "question_en": "What is the purpose of 'savepoints' in transactions?",
       "options_es": [
         "Permitir rollback parcial dentro de una transacción",
-        "Salvar memoria de forma invariable y constante",
+        "Salvar memoria caché entre reinicios del servidor",
         "Guardar en disco",
-        "Guardar automáticamente"
+        "Guardar automáticamente tras cada sentencia"
       ],
       "options_en": [
         "Allow partial rollback within transaction",
-        "Save memory invariably and constantly",
+        "Save cache memory across server restarts",
         "Save to disk",
-        "Auto-save as the primary concept"
+        "Saves automatically after each statement"
       ],
       "correct_index": 0,
       "explanation_es": "Los savepoints permiten hacer ROLLBACK a un punto dentro de la transacción sin abortar todo.",
@@ -1319,13 +1319,13 @@
       "question_en": "What is 'non-repeatable read'?",
       "options_es": [
         "Lectura fallida",
-        "Sin lectura en cualquier escenario de implementación",
+        "No se puede leer si la tabla está bloqueada por otro proceso",
         "No se pueden leer datos",
         "Otra transacción modifica datos entre dos lecturas de la misma query"
       ],
       "options_en": [
         "Read failure",
-        "No read in any implementation scenario",
+        "Cannot read while the table is locked by another process",
         "Cannot read data",
         "Another transaction modifies data between two reads of same query"
       ],
@@ -1342,13 +1342,13 @@
       "question_en": "How does PostgreSQL prevent concurrency anomalies in READ COMMITTED?",
       "options_es": [
         "Row versioning: cada lectura ve snapshot consistente",
-        "Bloquea todo en cualquier escenario de implementación",
+        "Bloquea toda la tabla hasta que termine la transacción",
         "No las previene",
         "No hay solución"
       ],
       "options_en": [
         "Row versioning: each read sees consistent snapshot",
-        "Blocks everything in any implementation scenario",
+        "Locks the entire table until the transaction ends",
         "Doesn't prevent",
         "No solution"
       ],
@@ -1366,13 +1366,13 @@
       "options_es": [
         "Se aborta automáticamente",
         "Escritores esperan, BD puede quedarse sin espacio de versiones",
-        "Sin problema sin excepciones ni variantes",
+        "Sin ningún problema porque PostgreSQL libera memoria sola",
         "No hay bloqueos"
       ],
       "options_en": [
         "Auto aborts",
         "Writers wait, DB can run out of version space",
-        "No problem without exceptions or variants",
+        "No problem at all because PostgreSQL frees memory on its own",
         "No blocks"
       ],
       "correct_index": 1,

@@ -5,6 +5,32 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-09-26 (noche tardía, control total — rama `claude/gallant-tesla-fnzy1g`, PR #34)
+
+**ES**
+
+- **Cupo diario del plan Free, apagado por defecto** (39.4, ADR-50a/51): 30 preguntas nuevas y 5 lecciones al día (UTC); el repaso espaciado, el placement y los exámenes no cuentan. Se enciende con `FREE_DAILY_QUOTA_ENABLED` cuando abra el cobro.
+- **La insignia «Perfeccionista» ya se concede** (39.5): nunca se otorgaba, y en la décima respuesta perfecta llegaba tarde. Prueba de punta a punta con capturas de XP, racha, liga e insignia.
+- **Pruebas e2e**: el registro de prueba no marcaba la casilla de «13 años o más» y dejaba rotos todos los recorridos que crean un usuario.
+- **Inicio de sesión social**: sus pruebas exigen ahora la sesión en cookies HttpOnly y ningún token en la URL.
+- **Lecciones al listón** en JavaScript (14), Ciencia de Datos (21), Azure (22), Google Cloud (23) y PCAP (41), con fuentes oficiales comprobadas.
+- **Guarda de coletillas ampliada** a una tercera familia de relleno en las opciones.
+- **Tracks 18-22 sin coletillas** (39.28): 18, 19, 20, 21 y 22 a cero, con revisión adversaria completa por módulo. Varias claves falsas encontradas y corregidas en su sitio: un comando de Docker que no existe, una pregunta de Gradle que se citaba a sí misma, una desventaja de PCA al revés y dos comandos de Bicep inventados.
+- **El limitador de peticiones ya no falla en abierto** (39.35): si Redis no responde, limita en memoria en vez de dejar pasar todo — el login en producción no tenía límite.
+- **Política de modelos actualizada** (ADR-52): el hilo de una sesión interactiva pasa a Sonnet 5.
+
+**EN**
+
+- **Free plan daily quota, off by default** (39.4, ADR-50a/51): 30 new questions and 5 lessons per UTC day; spaced review, placement and exams do not count. Turned on with `FREE_DAILY_QUOTA_ENABLED` once billing opens.
+- **The "Perfectionist" badge is now awarded** (39.5): it was never granted, and on the tenth perfect answer it arrived late. End-to-end test with screenshots of XP, streak, league and badge.
+- **E2E tests**: the test sign-up did not tick the "13 or older" box, which broke every journey that creates a user.
+- **Social login**: its tests now require the session in HttpOnly cookies and no token in the URL.
+- **Lessons brought up to the bar** in JavaScript (14), Data Science (21), Azure (22), Google Cloud (23) and PCAP (41), with official sources checked.
+- **Filler-ending guard extended** to a third family of padding in answer options.
+- **Tracks 18-22 free of filler endings** (39.28): 18, 19, 20, 21 and 22 at zero, each with a full adversarial review. Several false keys found and fixed in place: a non-existent Docker command, a Gradle question that quoted itself, a PCA disadvantage stated backwards, and two invented Bicep commands.
+- **The rate limiter no longer fails open** (39.35): when Redis is unreachable it now limits in memory instead of letting every request through — production login had no limit.
+- **Model policy updated** (ADR-52): an interactive session's main thread moves to Sonnet 5.
+
 ## [Unreleased] — 2026-09-26 (noche, control total)
 
 **ES**

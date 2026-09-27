@@ -107,9 +107,9 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 
 **Proceso por lote**, sin excepciones:
 
-1. **Escritor** Sonnet por fichero (o 10 lecciones) que escribe solo en el scratchpad, nunca en el repo.
-2. **Revisor** Sonnet distinto que no escribe y devuelve problemas con la corrección.
-3. **Corrector** Sonnet que aplica la revisión y vuelve a validar.
+1. **Escritor** Haiku 4.5 (ADR-52; hasta el 2026-09-26, Sonnet) por fichero (o 10 lecciones) que escribe solo en el scratchpad, nunca en el repo.
+2. **Revisor** Sonnet 5 distinto, que revisa **todas** las piezas, que no escribe y devuelve problemas con la corrección.
+3. **Corrector** Sonnet 5 que aplica la revisión y vuelve a validar.
 4. **Comprobación propia** antes de copiar al repo:
    - `validate_lessons.py` en OK;
    - `check_key_drift.py` y `check_expl_key.py` sin sospechosos sin explicar. Son sospechas, no veredictos: se leen una a una;
@@ -120,13 +120,25 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 
 **Fallos observados, cada uno con su defensa:**
 
-- **Haiku** escribió lecciones con relleno sin sentido y errores técnicos (7 de 10 en el piloto de track28). Para autoría y revisión se usa Sonnet (enmienda a ADR-50).
+- **Haiku** escribió lecciones con relleno sin sentido y errores técnicos (7 de 10 en el piloto de track28). Por eso la enmienda a ADR-50 pasó la autoría a Sonnet; ADR-52 (2026-09-27, dueño) la devuelve a Haiku con revisión completa de Sonnet 5 y un piloto de 10 ítems: más de 3 con `blocker`/`major` para el bloque y lo decide el dueño.
 - **El reescritor movió la clave** a otra ranura (track28, track29, `mod3002` entero) y dijo «todo correcto». Defensa: `check_key_drift.py`. Si una posición del repo rota 0,1,2,3…, `rebalance_positions.py`.
 - **Los agentes inventan URLs** (404 en las lecciones NoSQL de track27) y copian datos personales del contexto (el correo del dueño en `l260101`). Defensas: `check_urls.py` y `test_no_personal_data.py`. Los ejemplos usan `ada@example.com`.
 - **No se toca un fichero que un workflow está leyendo**: un `git stash` a mitad cambió la base de un agente y su salida mezcló dos versiones.
 - **`content_loader` nunca borra preguntas**: se arregla en su sitio sin renombrar ids; un id nuevo deja la vieja viva en producción.
 - **Lecciones SQL**: el test las ejecuta con SQLite, así que no se usa sintaxis solo de PostgreSQL en el ejemplo (o se explica en el texto sin ejecutarla).
 - **`logging` escribe en stderr**: no cuenta como salida del ejemplo; `logging.basicConfig(stream=sys.stdout)` si la salida es parte de la lección.
+
+- **Los revisores también fallan en las dos direcciones** (noche del 26-09): dejaron pasar que un /24 de Google Cloud da 254 IP utilizables (son 252: Google reserva las dos primeras y las dos últimas) y tacharon de «inventada» una frase que está literal en `docs.python.org/3/library/exceptions.html`. Defensa: la lectura propia de al menos dos piezas por lote no es opcional, y cualquier cifra de nube se contrasta con la página oficial.
+- **Opciones de preguntas (39.28): parche, no fichero.** El agente escribe `qpatch/<track>/<módulo>.pN.json` con solo `options_es`/`options_en` de las preguntas que toca; un script lo aplica sobre la copia original y lo comprueba (coletillas, número de opciones, repetidas, clave movida por similitud, correcta más larga). Así no puede cambiar ids, claves ni explicaciones aunque quiera. Las claves falsas que aparezcan se corrigen aparte, a mano y con la fuente abierta, después de aplicar los parches.
+- **El límite de uso de la cuenta mata a los subagentes a mitad** (26-09, 20:20 UTC): los workflows devuelven `null` por agente. Se reanudan con `resumeFromRunId` y los mismos `args`: lo terminado sale de caché y lo cortado se repite desde el principio (sobrescribe sus ficheros a medias). No lances más de 6-7 workflows a la vez.
+- **Coletillas: la lista no está cerrada.** La tercera familia salió minando el banco (colas de 2-6 palabras frecuentes en incorrectas y casi nunca en correctas). Antes de dar un track por limpio, repite esa minería; la guarda solo ve lo que conoce.
+
+## Suite backend: tiempos y entorno (26-09)
+
+- La suite sin `tests/content` tarda ~37 min en este contenedor; ~28 min son de `tests/integration/test_rag_self_retrieval.py::test_index_memory_bounded_and_hits_self_retrieval_bar`, cuadrático en el tamaño del banco (11 000 preguntas × 2 idiomas × 12 000 documentos). No está colgada: `py-spy dump --pid N` lo muestra en `rag.py:190`.
+- En un contenedor nuevo: `SETUPTOOLS_USE_DISTUTILS=stdlib pip install http-ece` antes de `pip install -r requirements.txt`, y `pip install --ignore-installed cryptography` si pip no puede desinstalar la de Debian.
+- El hook exige la ruff de CI (0.16.8). Si el PATH trae otra antes (`/root/.local/bin`), empuja con `PATH=/usr/local/bin:$PATH git push`.
+- Playwright con el Chromium preinstalado de otra versión: un `playwright.sandbox.config.ts` local (sin commitear) que herede de `playwright.config.ts` y ponga `launchOptions.executablePath` a `/opt/pw-browsers/chromium-*/chrome-linux/chrome`.
 
 ## LLM: techo diario y respaldo (39.11, 39.12)
 

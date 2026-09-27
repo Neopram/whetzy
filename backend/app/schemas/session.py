@@ -89,6 +89,8 @@ class QuizAnswerResponse(BaseModel):
     session_accuracy: float
     next_question: QuestionPublic | None = None
     next_selection_reason: SelectionReason | None = None
+    # Cupo Free agotado (39.4): no hay `next_question` hasta mañana UTC.
+    quota_reached: bool = False
 
 
 class QuizEndRequest(BaseModel):

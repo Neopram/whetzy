@@ -51,19 +51,27 @@ qué hacer; el ledger lo sabe.
 - Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA **no** se reutiliza (ADR-47, valor por defecto de H.LIC); CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
 - Social login: si existe cualquier OAuth, **Sign in with Apple es obligatorio** antes de enviar a App Store (4.8, ADR-13)
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`
-- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260926_eu_withdrawal` (42 migraciones)
+- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260927_lesson_completions` (44 migraciones)
 - LLM: `qwen/qwen3.8-27b` en Groq
 - OpenAPI en `/api/v1/openapi.json`; `POST /quiz/start` devuelve el id en `.question.id`
 
 ## Modelos
 
-Hilo principal: el que fije `settings.json` (Sonnet 4.6). **Sesiones autónomas programadas: sin
-Opus ni Fable** (ADR-14, propuesta del dueño 2026-09-18); **una sesión interactiva usa el
-modelo con el que el dueño la arranca** (ADR-47); **en esas sesiones el hilo es Opus 5.5 (effort high) y los subagentes Haiku 4.5 / Sonnet 5** (ADR-14 enmendada por ADR-50). Subagentes: **Haiku por
-defecto** — inventarios, lecturas masivas, diffs doc↔código, verificación adversaria y
-**autoría de contenido por fichero** (siempre con la puerta de calidad de
-`CATALOGO_MAESTRO.md` §7); Sonnet solo cuando la tarea escribe en la lista de ficheros de
-riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2. Dieta de contexto: el ledger se lee por
+**Política del dueño del 2026-09-27 (ADR-52, sustituye la de ADR-50):**
+
+| Papel | Modelo |
+|---|---|
+| Hilo principal de una sesión interactiva | **Sonnet 5** (lo fija el dueño al arrancar) |
+| Autoría masiva de contenido (escritor en `Workflow`) | **Haiku 4.5** (+ Batch API para rellenos cuando exista clave: H.48) |
+| Revisor y corrector de calidad en `Workflow`; workers de la lista de riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2 | **Sonnet 5** |
+| Lecturas, inventarios, diffs | **Haiku 4.5** |
+| Sesiones autónomas programadas | workers **Haiku 4.5** (ADR-14); hilo, el de `settings.json` |
+| Fable (cualquier versión), Opus 4.x | **Nunca**, en ningún papel |
+
+Todo lo que escribe Haiku para el alumno pasa revisión adversaria **completa** de Sonnet 5, la
+puerta de `CATALOGO_MAESTRO.md` §7 y `scripts/content_qa/`. Primer bloque de Haiku: piloto de
+10 ítems; si más de 3 salen con `blocker`/`major`, se para y lo decide el dueño (ADR-52; el
+piloto de track28 del 2026-09-26 dio 7 de 10 malas). Dieta de contexto: el ledger se lee por
 secciones, nunca entero; `STATUS.md` y `archive/` no se leen. Bloques de contenido
 grandes: `Workflow` paralelo, un bloque = un commit verde. Cada `DONE` pasa por el
 verificador adversario (protocolo §7) antes de escribirse.

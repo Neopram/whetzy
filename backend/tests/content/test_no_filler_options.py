@@ -34,35 +34,37 @@ FILLERS = (
     "como concepto principal", "sin excepciones ni variantes",
     "de manera exclusiva y permanente",
     "as the main concept", "without exceptions or variants",
-    "exclusively and permanently",
+    "exclusively and permanently", "as the primary concept",
+    # Tercera familia, medida el 2026-09-26 por la noche (39.28): cola de 2-6 palabras que
+    # aparece en cientos de opciones incorrectas y en 0-2 correctas de todo el banco.
+    "independientemente del contexto aplicado", "según la documentación estándar del servicio",
+    "en cualquier escenario de implementación", "de forma invariable y constante",
+    "sin considerar otros factores relevantes", "en todos los casos posibles",
+    "de forma predeterminada", "como resultado", "en la mayoría de los casos", "en general",
+    "en todos los escenarios",
+    "regardless of the applied context", "according to standard service documentation",
+    "in any implementation scenario", "invariably and constantly",
+    "without considering other relevant factors", "in all possible cases", "as a result",
+    "in most cases", "in general", "in all scenarios",
 )
 
 # Medido el 2026-09-26 tras reescribir track26, 28, 29 y 30 (0) y añadir la segunda familia
-# de coletillas (39.28). Solo baja.
+# de coletillas (39.28); re-medido esa misma noche al añadir la tercera familia: las cifras
+# suben porque la guarda ahora ve más, no porque el banco empeorara. Solo baja.
 BASELINE = {
     "track03_python_advanced": 1,
     "track04_software_engineering": 8,
     "track05_software_architecture": 4,
     "track06_ai_fundamentals": 8,
-    "track07_ai_engineering": 3,
+    "track07_ai_engineering": 5,
     "track08_aws_cloud_practitioner": 1,
     "track12_sql": 3,
-    "track13_cybersecurity": 3,
-    "track14_frontend": 110,
+    "track13_cybersecurity": 4,
+    "track14_frontend": 232,
     "track16_algoritmos": 1,
-    "track18_docker_k8s": 260,
-    "track19_iac_cicd": 203,
-    "track20_data_engineering": 71,
-    "track21_data_science": 304,
-    "track22_azure": 112,
-    "track23_gcp": 218,
-    "track27_nosql": 136,
-    "track41_pcap": 74,
-    "track42_security_plus": 463,
-    "track43_aws_mla": 43,
-    "track44_azure_fundamentals": 34,
-    "track45_azure_ai": 23,
-    "track46_azure_data": 59,
+    "track44_azure_fundamentals": 106,
+    "track45_azure_ai": 97,
+    "track46_azure_data": 135,
 }
 
 

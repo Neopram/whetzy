@@ -4,1381 +4,1381 @@
       "id": "q200301_001",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 1 de Spark?",
-      "question_en": "What is Spark component 1?",
+      "question_es": "Según la guía de programación de RDD de Spark, ¿qué es un RDD?",
+      "question_en": "According to Spark's RDD programming guide, what is an RDD?",
       "options_es": [
-        "Opción C 1",
-        "Opción D 1",
-        "Opción B 1",
-        "Opción A 1"
+        "Un conjunto de particiones que solo puede procesar un nodo a la vez",
+        "Una colección de datos repartida en particiones que se procesan en paralelo entre varios nodos",
+        "Un archivo de configuración que define cuántos ejecutores usa un clúster de Spark",
+        "Una copia local de los datos que se guarda solo en el nodo driver antes de distribuirlos"
       ],
       "options_en": [
-        "Option C 1",
-        "Option D 1",
-        "Option B 1",
-        "Option A 1"
+        "A set of partitions that only a single node can process at a time",
+        "A collection of data spread across partitions that get processed in parallel across several nodes",
+        "A configuration file that defines how many executors a Spark cluster uses",
+        "A local copy of the data kept only on the driver node before it gets distributed"
       ],
-      "correct_index": 2,
-      "explanation_es": "Respuesta para pregunta 1",
-      "explanation_en": "Answer for question 1",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto define el RDD como la abstracción base de Spark: una colección de datos repartida en particiones que se procesan en paralelo entre varios nodos.",
+      "explanation_en": "The text defines an RDD as Spark's base abstraction: a collection of data spread across partitions that get processed in parallel across several nodes.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_002",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 2 de Spark?",
-      "question_en": "What is Spark component 2?",
+      "question_es": "¿Cómo procesa Spark los datos de un RDD, según el texto?",
+      "question_en": "How does Spark process the data in an RDD, according to the text?",
       "options_es": [
-        "Opción C 2",
-        "Opción A 2",
-        "Opción B 2",
-        "Opción D 2"
+        "Los ejecuta todos en el nodo driver antes de repartirlos a los ejecutores",
+        "Los procesa en un único nodo central para garantizar el orden de las operaciones",
+        "Los copia por completo a cada nodo del clúster para evitar la comunicación entre ellos",
+        "Los reparte en particiones que se procesan en paralelo entre varios nodos"
       ],
       "options_en": [
-        "Option C 2",
-        "Option A 2",
-        "Option B 2",
-        "Option D 2"
+        "It runs them all on the driver node before spreading them to the executors",
+        "It processes them on a single central node to guarantee operation order",
+        "It copies them entirely to every node of the cluster to avoid communication between them",
+        "It spreads them across partitions that get processed in parallel across several nodes"
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta para pregunta 2",
-      "explanation_en": "Answer for question 2",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto describe el RDD como una colección de datos repartida en particiones que se procesan en paralelo entre varios nodos, no como un procesamiento centralizado.",
+      "explanation_en": "The text describes an RDD as a collection of data spread across partitions processed in parallel across several nodes, not as centralized processing.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_003",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 3 de Spark?",
-      "question_en": "What is Spark component 3?",
+      "question_es": "Cuando se llama a una transformación como map o filter sobre un RDD, ¿qué hace Spark en ese momento, según el texto?",
+      "question_en": "When a transformation like map or filter is called on an RDD, what does Spark do at that moment, according to the text?",
       "options_es": [
-        "Opción A 3",
-        "Opción B 3",
-        "Opción C 3",
-        "Opción D 3"
+        "Solo anota qué operación hacer, sin ejecutar nada todavía",
+        "Ejecuta la operación de inmediato sobre todas las particiones disponibles",
+        "Guarda el resultado final en el nodo driver para usarlo más tarde",
+        "Divide el RDD en nuevas particiones antes de aplicar la operación"
       ],
       "options_en": [
-        "Option A 3",
-        "Option B 3",
-        "Option C 3",
-        "Option D 3"
+        "It just notes down what operation to do, without running anything yet",
+        "It runs the operation immediately across all available partitions",
+        "It stores the final result on the driver node for later use",
+        "It splits the RDD into new partitions before applying the operation"
       ],
-      "correct_index": 3,
-      "explanation_es": "Respuesta para pregunta 3",
-      "explanation_en": "Answer for question 3",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El texto dice que al llamar a transformaciones como map o filter, Spark solo anota qué operación hacer, sin ejecutar nada todavía: por eso son lazy.",
+      "explanation_en": "The text says that calling transformations like map or filter just makes Spark note down what operation to do, without running anything yet: that is what makes them lazy.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_004",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 4 de Spark?",
-      "question_en": "What is Spark component 4?",
+      "question_es": "¿Por qué el comportamiento lazy de transformaciones como map o filter es útil para Spark, según el texto?",
+      "question_en": "Why is the lazy behavior of transformations like map or filter useful for Spark, according to the text?",
       "options_es": [
-        "Opción D 4",
-        "Opción C 4",
-        "Opción B 4",
-        "Opción A 4"
+        "Porque evita que los datos se repartan en particiones entre los nodos del clúster",
+        "Porque reduce el número de nodos necesarios para almacenar el RDD original",
+        "Porque le permite construir un plan completo y optimizarlo antes de tocar un solo dato",
+        "Porque garantiza que el resultado final siempre quepa en la memoria del driver"
       ],
       "options_en": [
-        "Option D 4",
-        "Option C 4",
-        "Option B 4",
-        "Option A 4"
+        "Because it keeps the data from being spread into partitions across the cluster's nodes",
+        "Because it reduces the number of nodes needed to store the original RDD",
+        "Because it lets Spark build a full plan and optimize it before touching a single record",
+        "Because it guarantees the final result will always fit in the driver's memory"
       ],
-      "correct_index": 3,
-      "explanation_es": "Respuesta para pregunta 4",
-      "explanation_en": "Answer for question 4",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "El texto explica que ser lazy le permite a Spark construir un plan completo y optimizarlo antes de tocar un solo dato.",
+      "explanation_en": "The text explains that being lazy lets Spark build a full plan and optimize it before touching a single record.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_005",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 5 de Spark?",
-      "question_en": "What is Spark component 5?",
+      "question_es": "¿Qué es lo que hace que Spark ejecute de verdad las transformaciones encadenadas sobre un RDD?",
+      "question_en": "What actually makes Spark execute the chained transformations on an RDD?",
       "options_es": [
-        "Opción B 5",
-        "Opción D 5",
-        "Opción C 5",
-        "Opción A 5"
+        "Que se defina el número de particiones al crear el RDD",
+        "Que se llame a una action, como collect() o save()",
+        "Que el clúster alcance un número mínimo de nodos disponibles",
+        "Que se encadenen al menos dos transformaciones seguidas, como map y filter"
       ],
       "options_en": [
-        "Option B 5",
-        "Option D 5",
-        "Option C 5",
-        "Option A 5"
+        "Defining the number of partitions when the RDD is created",
+        "Calling an action, like collect() or save()",
+        "The cluster reaching a minimum number of available nodes",
+        "Chaining at least two transformations in a row, like map and filter"
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta para pregunta 5",
-      "explanation_en": "Answer for question 5",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto dice que solo cuando se llama a una action, como collect() o save(), Spark ejecuta de verdad todas las transformaciones encadenadas, en ese momento.",
+      "explanation_en": "The text says only when an action is called, like collect() or save(), does Spark actually execute all the chained transformations, at that point.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_006",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 6 de Spark?",
-      "question_en": "What is Spark component 6?",
+      "question_es": "Según el texto, ¿qué distingue a una action como collect() de una transformación como map?",
+      "question_en": "According to the text, what distinguishes an action like collect() from a transformation like map?",
       "options_es": [
-        "Opción C 6",
-        "Opción B 6",
-        "Opción D 6",
-        "Opción A 6"
+        "La action solo funciona sobre RDDs que tienen una única partición",
+        "La action reparte los datos en particiones, mientras que la transformación no",
+        "La action se puede encadenar con otras actions, pero una transformación no",
+        "La action dispara la ejecución real de todas las transformaciones encadenadas, mientras que la transformación solo se anota para más tarde"
       ],
       "options_en": [
-        "Option C 6",
-        "Option B 6",
-        "Option D 6",
-        "Option A 6"
+        "An action only works on RDDs that have a single partition",
+        "An action spreads the data into partitions, while a transformation does not",
+        "An action can be chained with other actions, but a transformation cannot",
+        "An action triggers the real execution of all chained transformations, while a transformation is just noted down for later"
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta para pregunta 6",
-      "explanation_en": "Answer for question 6",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto contrasta las transformaciones lazy, que solo se anotan, con las actions, que disparan la ejecución real de todo lo encadenado hasta ese momento.",
+      "explanation_en": "The text contrasts lazy transformations, which are only noted down, with actions, which trigger the real execution of everything chained up to that point.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_007",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 7 de Spark?",
-      "question_en": "What is Spark component 7?",
+      "question_es": "Según el texto, ¿qué determinan las particiones de un RDD?",
+      "question_en": "According to the text, what do an RDD's partitions determine?",
       "options_es": [
-        "Opción B 7",
-        "Opción A 7",
-        "Opción D 7",
-        "Opción C 7"
+        "El paralelismo: más particiones significa más tareas corriendo a la vez",
+        "El lenguaje de programación usado para escribir las transformaciones",
+        "El momento exacto en que se ejecuta una action como collect()",
+        "La cantidad de memoria total disponible en el nodo driver"
       ],
       "options_en": [
-        "Option B 7",
-        "Option A 7",
-        "Option D 7",
-        "Option C 7"
+        "The parallelism: more partitions means more tasks running at once",
+        "The programming language used to write the transformations",
+        "The exact moment an action like collect() gets executed",
+        "The total amount of memory available on the driver node"
       ],
-      "correct_index": 2,
-      "explanation_es": "Respuesta para pregunta 7",
-      "explanation_en": "Answer for question 7",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El texto dice literalmente que las particiones determinan el paralelismo: más particiones significa más tareas corriendo a la vez.",
+      "explanation_en": "The text literally states that partitions determine parallelism: more partitions means more tasks running at once.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_008",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 8 de Spark?",
-      "question_en": "What is Spark component 8?",
+      "question_es": "Si un RDD se divide en más particiones, ¿qué consecuencia directa señala el texto?",
+      "question_en": "If an RDD is split into more partitions, what direct consequence does the text point out?",
       "options_es": [
-        "Opción C 8",
-        "Opción B 8",
-        "Opción D 8",
-        "Opción A 8"
+        "El resultado final deja de caber en la memoria del nodo driver",
+        "Las transformaciones dejan de ser lazy y se ejecutan de inmediato",
+        "Corren más tareas a la vez, aunque también aumenta el overhead de coordinación entre nodos",
+        "Spark deja de poder optimizar el plan de ejecución antes de tocar los datos"
       ],
       "options_en": [
-        "Option C 8",
-        "Option B 8",
-        "Option D 8",
-        "Option A 8"
+        "The final result stops fitting in the driver node's memory",
+        "The transformations stop being lazy and run immediately",
+        "More tasks run at once, though coordination overhead between nodes also increases",
+        "Spark stops being able to optimize the execution plan before touching the data"
       ],
-      "correct_index": 3,
-      "explanation_es": "Respuesta para pregunta 8",
-      "explanation_en": "Answer for question 8",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "El texto indica que más particiones significa más tareas corriendo a la vez, pero también más overhead de coordinación entre nodos.",
+      "explanation_en": "The text states that more partitions means more tasks running at once, but also more coordination overhead between nodes.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_009",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 9 de Spark?",
-      "question_en": "What is Spark component 9?",
+      "question_es": "Según el texto, ¿de qué depende el punto óptimo de número de particiones para un RDD?",
+      "question_en": "According to the text, what does the optimal number of partitions for an RDD depend on?",
       "options_es": [
-        "Opción D 9",
-        "Opción C 9",
-        "Opción B 9",
-        "Opción A 9"
+        "Del tipo de action que se llame al final, como collect() o save()",
+        "Del tamaño de los datos y del clúster disponible",
+        "De si las transformaciones usadas son map, filter o ambas",
+        "De la cantidad de memoria libre en el nodo driver únicamente"
       ],
       "options_en": [
-        "Option D 9",
-        "Option C 9",
-        "Option B 9",
-        "Option A 9"
+        "The type of action called at the end, like collect() or save()",
+        "The size of the data and the available cluster resources",
+        "Whether the transformations used are map, filter or both",
+        "Only the amount of free memory on the driver node"
       ],
-      "correct_index": 2,
-      "explanation_es": "Respuesta para pregunta 9",
-      "explanation_en": "Answer for question 9",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto dice que hay un punto óptimo según el tamaño de los datos y el clúster disponible, por el trade-off entre paralelismo y overhead de coordinación.",
+      "explanation_en": "The text says there is an optimal point depending on data size and available cluster resources, because of the trade-off between parallelism and coordination overhead.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_010",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 10 de Spark?",
-      "question_en": "What is Spark component 10?",
+      "question_es": "¿Por qué no conviene aumentar indefinidamente el número de particiones de un RDD, según el texto?",
+      "question_en": "Why shouldn't the number of partitions of an RDD be increased indefinitely, according to the text?",
       "options_es": [
-        "Opción C 10",
-        "Opción D 10",
-        "Opción A 10",
-        "Opción B 10"
+        "Porque las transformaciones dejarían de aplicarse en paralelo entre los nodos",
+        "Porque el driver dejaría de poder llamar a actions como collect() o save()",
+        "Porque cada partición adicional obliga a repetir el plan de optimización desde cero",
+        "Porque más particiones también significa más overhead de coordinación entre nodos"
       ],
       "options_en": [
-        "Option C 10",
-        "Option D 10",
-        "Option A 10",
-        "Option B 10"
+        "Because the transformations would stop running in parallel across the nodes",
+        "Because the driver would stop being able to call actions like collect() or save()",
+        "Because each extra partition forces the optimization plan to be rebuilt from scratch",
+        "Because more partitions also means more coordination overhead between nodes"
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta para pregunta 10",
-      "explanation_en": "Answer for question 10",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto señala el trade-off: más particiones da más paralelismo pero también más overhead de coordinación entre nodos, así que hay un punto óptimo.",
+      "explanation_en": "The text points out the trade-off: more partitions gives more parallelism but also more coordination overhead between nodes, so there is an optimal point.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_011",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 11 de Spark?",
-      "question_en": "What is Spark component 11?",
+      "question_es": "En el ejemplo del texto donde se encadena un map que duplica cada valor con un filter que descarta los menores o iguales a 5, ¿cuándo se ejecuta ese procesamiento?",
+      "question_en": "In the text's example of chaining a map that doubles each value with a filter that drops values of 5 or less, when does that processing actually run?",
       "options_es": [
-        "Opción A 11",
-        "Opción D 11",
-        "Opción B 11",
-        "Opción C 11"
+        "No se ejecuta nada hasta que se llama a collect()",
+        "Se ejecuta en cuanto se llama al map, antes de aplicar el filter",
+        "Se ejecuta en cuanto se llama al filter, antes de llamar a collect()",
+        "Se ejecuta automáticamente en segundo plano tan pronto se crea el RDD"
       ],
       "options_en": [
-        "Option A 11",
-        "Option D 11",
-        "Option B 11",
-        "Option C 11"
+        "Nothing runs until collect() is called",
+        "It runs as soon as map is called, before the filter is applied",
+        "It runs as soon as filter is called, before collect() is called",
+        "It runs automatically in the background as soon as the RDD is created"
       ],
-      "correct_index": 1,
-      "explanation_es": "Respuesta para pregunta 11",
-      "explanation_en": "Answer for question 11",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El texto dice explícitamente que encadenar el map con el filter no ejecuta nada hasta llamar collect(), porque ambas son transformaciones lazy.",
+      "explanation_en": "The text explicitly says that chaining the map with the filter runs nothing until collect() is called, because both are lazy transformations.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_012",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 12 de Spark?",
-      "question_en": "What is Spark component 12?",
+      "question_es": "En ese mismo ejemplo, ¿qué hace Spark exactamente al llamar a collect()?",
+      "question_en": "In that same example, what does Spark actually do when collect() is called?",
       "options_es": [
-        "Opción C 12",
-        "Opción A 12",
-        "Opción B 12",
-        "Opción D 12"
+        "Vuelve a repartir el RDD en nuevas particiones antes de aplicar el map",
+        "Ejecuta primero el filter sobre todo el RDD y después el map sobre el resultado",
+        "Procesa los datos partición por partición y devuelve el resultado final ya filtrado",
+        "Descarta el resultado del map y solo aplica el filter directamente sobre los datos originales"
       ],
       "options_en": [
-        "Option C 12",
-        "Option A 12",
-        "Option B 12",
-        "Option D 12"
+        "It repartitions the RDD into new partitions before applying the map",
+        "It runs the filter first over the whole RDD and then the map over the result",
+        "It processes the data partition by partition and returns the final, already-filtered result",
+        "It discards the map's result and only applies the filter directly to the original data"
       ],
-      "correct_index": 1,
-      "explanation_es": "Respuesta para pregunta 12",
-      "explanation_en": "Answer for question 12",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "El texto dice que al llamar collect(), Spark procesa los datos partición por partición y devuelve el resultado final ya filtrado.",
+      "explanation_en": "The text says that when collect() is called, Spark processes the data partition by partition and returns the final, already-filtered result.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_013",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 13 de Spark?",
-      "question_en": "What is Spark component 13?",
+      "question_es": "¿Cuál es el error común que señala el texto al llamar a collect() sobre un RDD enorme?",
+      "question_en": "What common mistake does the text point out when calling collect() on a huge RDD?",
       "options_es": [
-        "Opción A 13",
-        "Opción D 13",
-        "Opción C 13",
-        "Opción B 13"
+        "Olvidar definir el número de particiones antes de llamar a la action",
+        "No pensar que collect() trae todos los datos a la memoria del nodo driver",
+        "Llamar a collect() antes de que las transformaciones se hayan anotado como lazy",
+        "Ejecutar collect() sobre un RDD que todavía no tiene ninguna transformación aplicada"
       ],
       "options_en": [
-        "Option A 13",
-        "Option D 13",
-        "Option C 13",
-        "Option B 13"
+        "Forgetting to define the number of partitions before calling the action",
+        "Not thinking that collect() pulls all the data into the driver node's memory",
+        "Calling collect() before the transformations have been noted down as lazy",
+        "Running collect() on an RDD that has no transformation applied yet"
       ],
-      "correct_index": 3,
-      "explanation_es": "Respuesta para pregunta 13",
-      "explanation_en": "Answer for question 13",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto dice que un error común es llamar a collect() sobre un RDD enorme sin pensar que trae todos los datos a la memoria del nodo driver.",
+      "explanation_en": "The text says a common mistake is calling collect() on a huge RDD without thinking it pulls all the data into the driver node's memory.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_014",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 14 de Spark?",
-      "question_en": "What is Spark component 14?",
+      "question_es": "Según el texto, ¿qué ocurre si el resultado de collect() no cabe en la memoria del nodo driver?",
+      "question_en": "According to the text, what happens if the result of collect() doesn't fit in the driver node's memory?",
       "options_es": [
-        "Opción C 14",
-        "Opción B 14",
-        "Opción D 14",
-        "Opción A 14"
+        "El proceso se cae por falta de memoria",
+        "Spark reduce automáticamente el número de particiones para liberar memoria",
+        "Spark convierte la action en una transformación lazy para posponer la ejecución",
+        "El cálculo se reparte de nuevo entre los ejecutores para evitar el driver"
       ],
       "options_en": [
-        "Option C 14",
-        "Option B 14",
-        "Option D 14",
-        "Option A 14"
+        "The process crashes from lack of memory",
+        "Spark automatically reduces the number of partitions to free up memory",
+        "Spark turns the action into a lazy transformation to postpone execution",
+        "The computation gets redistributed among the executors to avoid the driver"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta para pregunta 14",
-      "explanation_en": "Answer for question 14",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "El texto dice directamente que si el resultado no cabe, el proceso se cae por falta de memoria.",
+      "explanation_en": "The text states directly that if the result doesn't fit, the process crashes from lack of memory.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200301_015",
       "skill_id": "sk200301",
       "type": "multiple_choice",
-      "question_es": "¿Cuál es el componente 15 de Spark?",
-      "question_en": "What is Spark component 15?",
+      "question_es": "Según el texto, ¿qué contraste señala sobre el fallo de memoria al llamar collect() en un RDD enorme?",
+      "question_en": "According to the text, what contrast does it point out about the memory crash when calling collect() on a huge RDD?",
       "options_es": [
-        "Opción D 15",
-        "Opción A 15",
-        "Opción C 15",
-        "Opción B 15"
+        "El fallo ocurre porque las transformaciones nunca llegaron a ejecutarse en los ejecutores",
+        "El fallo ocurre porque el RDD no estaba dividido en particiones antes de llamar collect()",
+        "El fallo ocurre porque los ejecutores tampoco tenían memoria suficiente para procesar los datos",
+        "El proceso se cae en el driver por falta de memoria, aunque el cálculo distribuido en los ejecutores hubiera funcionado bien"
       ],
       "options_en": [
-        "Option D 15",
-        "Option A 15",
-        "Option C 15",
-        "Option B 15"
+        "The crash happens because the transformations never actually ran on the executors",
+        "The crash happens because the RDD wasn't split into partitions before calling collect()",
+        "The crash happens because the executors also lacked enough memory to process the data",
+        "The process crashes on the driver from lack of memory, even though the distributed computation across the executors would have worked fine"
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta para pregunta 15",
-      "explanation_en": "Answer for question 15",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto contrasta explícitamente que el proceso se cae por falta de memoria en el driver, aunque el cálculo distribuido en los ejecutores hubiera funcionado bien.",
+      "explanation_en": "The text explicitly contrasts that the process crashes from lack of memory on the driver, even though the distributed computation across the executors would have worked fine.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200302_001",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 1?",
-      "question_en": "How to use Spark SQL 1?",
+      "question_es": "Según el texto, ¿qué diferencia a los DataFrames de los RDDs y por qué le importa al optimizador?",
+      "question_en": "According to the text, what distinguishes DataFrames from RDDs and why does it matter to the optimizer?",
       "options_es": [
-        "Método C 1",
-        "Método B 1",
-        "Método D 1",
-        "Método A 1"
+        "Los DataFrames tienen un schema conocido (nombres y tipos de columna), lo que le da al optimizador información para trabajar; los RDDs no tienen esa información.",
+        "Los DataFrames ejecutan la agregación antes que el filtro, mientras que los RDDs hacen lo contrario.",
+        "Los DataFrames muestran siempre el plan físico con EXPLAIN, mientras que los RDDs no admiten EXPLAIN.",
+        "Los DataFrames aplican predicate pushdown solo si el filtro se escribe antes del GROUP BY, los RDDs nunca lo aplican."
       ],
       "options_en": [
-        "Method C 1",
-        "Method B 1",
-        "Method D 1",
-        "Method A 1"
+        "DataFrames have a known schema (column names and types), which gives the optimizer information to work with; RDDs do not have this.",
+        "DataFrames run the aggregation before the filter, while RDDs do the opposite.",
+        "DataFrames always show the physical plan with EXPLAIN, while RDDs do not support EXPLAIN.",
+        "DataFrames apply predicate pushdown only if the filter is written before the GROUP BY; RDDs never apply it."
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta SQL 1",
-      "explanation_en": "SQL answer 1",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "El texto dice que los DataFrames 'a diferencia de los RDDs tienen un schema conocido (nombres y tipos de columna), lo que le da al optimizador información para trabajar'.",
+      "explanation_en": "The text states that DataFrames 'unlike RDDs have a known schema (column names and types), giving the optimizer information to work with.'",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_002",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 2?",
-      "question_en": "How to use Spark SQL 2?",
+      "question_es": "¿Qué hace el optimizador Catalyst con una consulta SQL antes de ejecutarla?",
+      "question_en": "What does the Catalyst optimizer do with a SQL query before executing it?",
       "options_es": [
-        "Método A 2",
-        "Método B 2",
-        "Método C 2",
-        "Método D 2"
+        "La ejecuta directamente sobre los datos sin generar ningún plan intermedio.",
+        "La convierte en un plan lógico y luego lo reescribe buscando equivalencias más baratas.",
+        "La divide en varias subconsultas independientes que se ejecutan en paralelo sin reordenarse.",
+        "La traduce a RDDs para que pierda el schema y así pueda paralelizarse mejor."
       ],
       "options_en": [
-        "Method A 2",
-        "Method B 2",
-        "Method C 2",
-        "Method D 2"
+        "It runs it directly on the data without producing any intermediate plan.",
+        "It turns it into a logical plan and then rewrites it looking for cheaper equivalents.",
+        "It splits it into independent subqueries that run in parallel without being reordered.",
+        "It translates it into RDDs so it loses its schema and can be parallelized better."
       ],
-      "correct_index": 3,
-      "explanation_es": "Respuesta SQL 2",
-      "explanation_en": "SQL answer 2",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto explica que 'el optimizador Catalyst toma la consulta, la convierte en un plan lógico y luego lo reescribe buscando equivalencias más baratas'.",
+      "explanation_en": "The text explains that 'the Catalyst optimizer takes the query, turns it into a logical plan, and then rewrites it looking for cheaper equivalents.'",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_003",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 3?",
-      "question_en": "How to use Spark SQL 3?",
+      "question_es": "¿En qué consiste el predicate pushdown que aplica Catalyst?",
+      "question_en": "What does the predicate pushdown that Catalyst applies consist of?",
       "options_es": [
-        "Método B 3",
-        "Método C 3",
-        "Método A 3",
-        "Método D 3"
+        "En reescribir la agregación para que se ejecute antes que cualquier filtro.",
+        "En convertir los filtros WHERE en funciones no deterministas para acelerarlos.",
+        "En mover los filtros (WHERE) lo más cerca posible del origen de los datos, para leer menos filas.",
+        "En eliminar del plan lógico los filtros que ya aparecen en el EXPLAIN."
       ],
       "options_en": [
-        "Method B 3",
-        "Method C 3",
-        "Method A 3",
-        "Method D 3"
+        "Rewriting the aggregation so it runs before any filter.",
+        "Turning WHERE filters into non-deterministic functions to speed them up.",
+        "Moving filters (WHERE) as close as possible to the data source, so fewer rows are read.",
+        "Removing from the logical plan any filters that already appear in EXPLAIN."
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta SQL 3",
-      "explanation_en": "SQL answer 3",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "El predicate pushdown 'mueve los filtros (WHERE) lo más cerca posible del origen de los datos, para leer menos filas en vez de leerlas todas y descartar después', según el texto.",
+      "explanation_en": "Predicate pushdown 'moves filters (WHERE) as close to the data source as possible, so fewer rows are read instead of reading them all and discarding some later,' per the text.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_004",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 4?",
-      "question_en": "How to use Spark SQL 4?",
+      "question_es": "¿Qué beneficio concreto busca el predicate pushdown según el texto?",
+      "question_en": "What concrete benefit does predicate pushdown aim for, according to the text?",
       "options_es": [
-        "Método C 4",
-        "Método A 4",
-        "Método B 4",
-        "Método D 4"
+        "Que la agregación se ejecute dos veces para verificar el resultado.",
+        "Que el plan lógico se convierta directamente en RDD sin pasar por Catalyst.",
+        "Que EXPLAIN deje de mostrar el plan físico final.",
+        "Leer menos filas del origen en vez de leerlas todas y descartar algunas después."
       ],
       "options_en": [
-        "Method C 4",
-        "Method A 4",
-        "Method B 4",
-        "Method D 4"
+        "Making the aggregation run twice to check the result.",
+        "Turning the logical plan directly into an RDD without going through Catalyst.",
+        "Making EXPLAIN stop showing the final physical plan.",
+        "Reading fewer rows from the source instead of reading them all and discarding some later."
       ],
-      "correct_index": 2,
-      "explanation_es": "Respuesta SQL 4",
-      "explanation_en": "SQL answer 4",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto indica que el pushdown busca 'leer menos filas... en vez de leerlas todas y descartar después', que es exactamente el beneficio que describe la opción correcta.",
+      "explanation_en": "The text states the pushdown aims to 'read fewer rows... instead of reading them all and discarding some later,' which is exactly the benefit the correct option describes.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_005",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 5?",
-      "question_en": "How to use Spark SQL 5?",
+      "question_es": "En el ejemplo del texto, ¿qué dos formas de escribir la misma consulta se comparan?",
+      "question_en": "In the text's example, which two ways of writing the same query are compared?",
       "options_es": [
-        "Método B 5",
-        "Método D 5",
-        "Método A 5",
-        "Método C 5"
+        "Agrupar por departamento y filtrar por salario mayor a 50000, frente a filtrar por salario primero y agrupar después.",
+        "Filtrar por departamento y agrupar por salario, frente a agrupar por salario y filtrar por departamento.",
+        "Usar EXPLAIN antes del GROUP BY, frente a usarlo después del GROUP BY.",
+        "Escribir el filtro en un RDD, frente a escribirlo en un DataFrame sin schema."
       ],
       "options_en": [
-        "Method B 5",
-        "Method D 5",
-        "Method A 5",
-        "Method C 5"
+        "Grouping by department and filtering for salary above 50000, versus filtering by salary first and then grouping.",
+        "Filtering by department and grouping by salary, versus grouping by salary and filtering by department.",
+        "Using EXPLAIN before the GROUP BY, versus using it after the GROUP BY.",
+        "Writing the filter in an RDD, versus writing it in a DataFrame without a schema."
       ],
-      "correct_index": 3,
-      "explanation_es": "Respuesta SQL 5",
-      "explanation_en": "SQL answer 5",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El ejemplo del texto compara 'agrupar por departamento y luego filtrar por salario mayor a 50000' con 'filtrar primero por salario y luego agrupar'.",
+      "explanation_en": "The text's example compares 'grouping by department and then filtering for salary above 50000' with 'filtering by salary first and then grouping.'",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_006",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 6?",
-      "question_en": "How to use Spark SQL 6?",
+      "question_es": "¿Por qué el segundo orden del ejemplo (filtrar y luego agrupar) es más barato que el primero, aunque procesen las mismas filas de entrada?",
+      "question_en": "Why is the second order in the example (filter first, then group) cheaper than the first, even though they process the same input rows?",
       "options_es": [
-        "Método D 6",
-        "Método B 6",
-        "Método C 6",
-        "Método A 6"
+        "Porque evita que Catalyst genere un plan lógico para la consulta.",
+        "Porque descarta filas antes de la etapa más cara, la agregación, en vez de agruparlas todas primero.",
+        "Porque convierte el DataFrame en un RDD sin schema antes de agrupar.",
+        "Porque usa una función no determinista para acelerar el filtro."
       ],
       "options_en": [
-        "Method D 6",
-        "Method B 6",
-        "Method C 6",
-        "Method A 6"
+        "Because it keeps Catalyst from generating a logical plan for the query.",
+        "Because it discards rows before the most expensive step, the aggregation, instead of grouping them all first.",
+        "Because it turns the DataFrame into an RDD without a schema before grouping.",
+        "Because it uses a non-deterministic function to speed up the filter."
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta SQL 6",
-      "explanation_en": "SQL answer 6",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto dice que el segundo orden 'descarta filas antes de la etapa más cara (la agregación)', aunque ambos órdenes procesen las mismas filas de entrada.",
+      "explanation_en": "The text says the second order 'discards rows before the most expensive step (aggregation),' even though both orders process the same input rows.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_007",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 7?",
-      "question_en": "How to use Spark SQL 7?",
+      "question_es": "¿Qué muestra EXPLAIN sobre una consulta Spark SQL?",
+      "question_en": "What does EXPLAIN show about a Spark SQL query?",
       "options_es": [
-        "Método B 7",
-        "Método C 7",
-        "Método D 7",
-        "Método A 7"
+        "El schema original del DataFrame antes de convertirse en RDD.",
+        "Una lista de funciones no deterministas que el optimizador rechazó.",
+        "El plan final y si el filtro se aplicó antes o después del scan.",
+        "El número exacto de filas leídas por cada etapa de la agregación."
       ],
       "options_en": [
-        "Method B 7",
-        "Method C 7",
-        "Method D 7",
-        "Method A 7"
+        "The DataFrame's original schema before it turns into an RDD.",
+        "A list of non-deterministic functions the optimizer rejected.",
+        "The final plan and whether the filter was applied before or after the scan.",
+        "The exact number of rows read at each stage of the aggregation."
       ],
-      "correct_index": 3,
-      "explanation_es": "Respuesta SQL 7",
-      "explanation_en": "SQL answer 7",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "Según el texto, 'EXPLAIN muestra el plan final y confirma si el filtro se aplicó antes o después del scan'.",
+      "explanation_en": "Per the text, 'EXPLAIN shows the final plan and confirms whether the filter was applied before or after the scan.'",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_008",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 8?",
-      "question_en": "How to use Spark SQL 8?",
+      "question_es": "Si quieres confirmar que Catalyst aplicó el predicate pushdown en una consulta concreta, ¿qué te dice el texto que hagas?",
+      "question_en": "If you want to confirm Catalyst applied predicate pushdown to a given query, what does the text say to do?",
       "options_es": [
-        "Método B 8",
-        "Método C 8",
-        "Método D 8",
-        "Método A 8"
+        "Reescribir la consulta a mano moviendo el filtro antes del GROUP BY.",
+        "Convertir el DataFrame en RDD para inspeccionar el schema manualmente.",
+        "Buscar funciones no deterministas en el código fuente de la consulta.",
+        "Mirar el plan final con EXPLAIN y comprobar si el filtro se aplicó antes o después del scan."
       ],
       "options_en": [
-        "Method B 8",
-        "Method C 8",
-        "Method D 8",
-        "Method A 8"
+        "Rewrite the query by hand, moving the filter before the GROUP BY.",
+        "Turn the DataFrame into an RDD to inspect the schema manually.",
+        "Look for non-deterministic functions in the query's source code.",
+        "Look at the final plan with EXPLAIN and check whether the filter was applied before or after the scan."
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta SQL 8",
-      "explanation_en": "SQL answer 8",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto señala que 'EXPLAIN muestra el plan final y confirma si el filtro se aplicó antes o después del scan', que es la forma que da el texto para comprobarlo.",
+      "explanation_en": "The text notes that 'EXPLAIN shows the final plan and confirms whether the filter was applied before or after the scan,' which is the way the text gives to check this.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_009",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 9?",
-      "question_en": "How to use Spark SQL 9?",
+      "question_es": "¿Cuál es el error común que señala el texto sobre escribir el filtro antes del GROUP BY?",
+      "question_en": "What common mistake does the text point out about writing the filter before the GROUP BY?",
       "options_es": [
-        "Método B 9",
-        "Método A 9",
-        "Método C 9",
-        "Método D 9"
+        "Pensar que es necesario escribirlo así a mano para obtener el beneficio del pushdown, cuando Catalyst ya reordena operaciones equivalentes.",
+        "Pensar que EXPLAIN no funciona si el filtro se escribe después del GROUP BY.",
+        "Pensar que los RDDs necesitan el filtro antes del GROUP BY y los DataFrames no.",
+        "Pensar que el pushdown solo aplica a consultas sin ninguna agregación."
       ],
       "options_en": [
-        "Method B 9",
-        "Method A 9",
-        "Method C 9",
-        "Method D 9"
+        "Thinking it's necessary to write it that way by hand to get the pushdown benefit, when Catalyst already reorders equivalent operations.",
+        "Thinking EXPLAIN stops working if the filter is written after the GROUP BY.",
+        "Thinking RDDs need the filter before the GROUP BY while DataFrames do not.",
+        "Thinking pushdown only applies to queries with no aggregation at all."
       ],
-      "correct_index": 2,
-      "explanation_es": "Respuesta SQL 9",
-      "explanation_en": "SQL answer 9",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El texto llama 'error común' a 'pensar que escribir el filtro a mano antes del GROUP BY... es necesario para obtener este beneficio', cuando 'Catalyst ya reordena operaciones equivalentes'.",
+      "explanation_en": "The text calls it 'a common mistake' to think 'you must write the filter by hand before GROUP BY... to get this benefit,' when 'Catalyst already reorders equivalent operations.'",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_010",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 10?",
-      "question_en": "How to use Spark SQL 10?",
+      "question_es": "Según el texto, ¿Catalyst necesita que el código SQL ya tenga el filtro colocado antes del GROUP BY para aplicar el pushdown?",
+      "question_en": "According to the text, does Catalyst need the SQL code to already place the filter before the GROUP BY in order to apply the pushdown?",
       "options_es": [
-        "Método D 10",
-        "Método A 10",
-        "Método C 10",
-        "Método B 10"
+        "Sí, siempre, porque Catalyst no reordena filtros y agregaciones.",
+        "No, porque Catalyst ya reordena operaciones equivalentes aunque el código fuente las haya escrito al revés.",
+        "Sí, pero solo cuando la consulta usa una función no determinista.",
+        "No, porque el pushdown solo depende del schema del RDD, no del orden del código."
       ],
       "options_en": [
-        "Method D 10",
-        "Method A 10",
-        "Method C 10",
-        "Method B 10"
+        "Yes, always, because Catalyst does not reorder filters and aggregations.",
+        "No, because Catalyst already reorders equivalent operations even if the source code wrote them the other way around.",
+        "Yes, but only when the query uses a non-deterministic function.",
+        "No, because pushdown only depends on the RDD's schema, not on the order of the code."
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta SQL 10",
-      "explanation_en": "SQL answer 10",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto es explícito: 'Catalyst ya reordena operaciones equivalentes, así que el problema real suele ser filtros no equivalentes al original', no la posición del filtro en el código.",
+      "explanation_en": "The text is explicit: 'Catalyst already reorders equivalent operations, so the real problem is usually filters that are not equivalent to the original,' not the filter's position in the code.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_011",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 11?",
-      "question_en": "How to use Spark SQL 11?",
+      "question_es": "¿Qué tipo de filtro menciona el texto como caso en que Catalyst no puede mover la operación con seguridad?",
+      "question_en": "What kind of filter does the text mention as a case where Catalyst cannot safely move the operation?",
       "options_es": [
-        "Método C 11",
-        "Método A 11",
-        "Método B 11",
-        "Método D 11"
+        "Un filtro que compara una columna de tipo entero con otra de tipo texto.",
+        "Un filtro que se aplica después de una agregación por departamento.",
+        "Un filtro que usa funciones no deterministas, porque no es equivalente al original.",
+        "Un filtro escrito en un RDD en vez de en un DataFrame."
       ],
       "options_en": [
-        "Method C 11",
-        "Method A 11",
-        "Method B 11",
-        "Method D 11"
+        "A filter that compares an integer column with a text column.",
+        "A filter applied after a group-by-department aggregation.",
+        "A filter that uses non-deterministic functions, because it is not equivalent to the original.",
+        "A filter written in an RDD instead of a DataFrame."
       ],
-      "correct_index": 1,
-      "explanation_es": "Respuesta SQL 11",
-      "explanation_en": "SQL answer 11",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "El texto menciona como caso problemático 'funciones no deterministas que el optimizador no puede mover con seguridad', por no ser equivalentes al filtro original.",
+      "explanation_en": "The text mentions as the problem case 'non-deterministic functions, which the optimizer cannot safely move,' because they are not equivalent to the original filter.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_012",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 12?",
-      "question_en": "How to use Spark SQL 12?",
+      "question_es": "¿Por qué las funciones no deterministas impiden que Catalyst mueva un filtro con seguridad, según el texto?",
+      "question_en": "Why do non-deterministic functions keep Catalyst from safely moving a filter, according to the text?",
       "options_es": [
-        "Método D 12",
-        "Método C 12",
-        "Método A 12",
-        "Método B 12"
+        "Porque EXPLAIN no puede mostrar planes que contengan funciones no deterministas.",
+        "Porque los RDDs no admiten funciones no deterministas en ningún caso.",
+        "Porque el schema del DataFrame se pierde al usar una función no determinista.",
+        "Porque el filtro resultante ya no es equivalente al original, así que moverlo cambiaría el resultado."
       ],
       "options_en": [
-        "Method D 12",
-        "Method C 12",
-        "Method A 12",
-        "Method B 12"
+        "Because EXPLAIN cannot show plans that contain non-deterministic functions.",
+        "Because RDDs never support non-deterministic functions.",
+        "Because the DataFrame's schema is lost when a non-deterministic function is used.",
+        "Because the resulting filter is no longer equivalent to the original, so moving it would change the result."
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta SQL 12",
-      "explanation_en": "SQL answer 12",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "El texto atribuye el problema a que esos filtros no son 'equivalentes al original', y Catalyst solo reescribe hacia equivalencias más baratas, nunca cambiando el resultado.",
+      "explanation_en": "The text attributes the problem to those filters not being 'equivalent to the original,' and Catalyst only rewrites toward cheaper equivalents, never changing the result.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_013",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 13?",
-      "question_en": "How to use Spark SQL 13?",
+      "question_es": "¿Por qué le importa al optimizador que un DataFrame tenga un schema conocido, según el texto?",
+      "question_en": "Why does it matter to the optimizer that a DataFrame has a known schema, according to the text?",
       "options_es": [
-        "Método D 13",
-        "Método B 13",
-        "Método A 13",
-        "Método C 13"
+        "Porque le da información (nombres y tipos de columna) para trabajar al reescribir el plan.",
+        "Porque sin schema, EXPLAIN no puede ejecutarse nunca sobre esa consulta.",
+        "Porque el schema decide directamente si una función es determinista o no.",
+        "Porque solo los DataFrames con schema pueden convertirse en RDDs."
       ],
       "options_en": [
-        "Method D 13",
-        "Method B 13",
-        "Method A 13",
-        "Method C 13"
+        "Because it gives it information (column names and types) to work with when rewriting the plan.",
+        "Because without a schema, EXPLAIN can never run on that query.",
+        "Because the schema directly decides whether a function is deterministic or not.",
+        "Because only DataFrames with a schema can be turned into RDDs."
       ],
-      "correct_index": 3,
-      "explanation_es": "Respuesta SQL 13",
-      "explanation_en": "SQL answer 13",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El texto dice que el schema conocido 'le da al optimizador información para trabajar', es decir, nombres y tipos de columna que usa al reescribir el plan.",
+      "explanation_en": "The text says the known schema 'gives the optimizer information to work with,' i.e. column names and types it uses when rewriting the plan.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_014",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 14?",
-      "question_en": "How to use Spark SQL 14?",
+      "question_es": "¿Qué resultado concreto tiene la reescritura del plan lógico que hace Catalyst, según el ejemplo del texto?",
+      "question_en": "What concrete result does Catalyst's rewriting of the logical plan have, according to the text's example?",
       "options_es": [
-        "Método D 14",
-        "Método B 14",
-        "Método A 14",
-        "Método C 14"
+        "Que el DataFrame pierde su schema antes de llegar a la agregación.",
+        "Que la consulta se ejecuta con el filtro reordenado antes de la agregación aunque el código fuente la escribiera al revés.",
+        "Que EXPLAIN deja de mostrar el plan lógico y solo muestra el físico.",
+        "Que los RDDs se convierten automáticamente en DataFrames con schema."
       ],
       "options_en": [
-        "Method D 14",
-        "Method B 14",
-        "Method A 14",
-        "Method C 14"
+        "The DataFrame loses its schema before reaching the aggregation.",
+        "The query runs with the filter reordered before the aggregation even though the source code wrote it the other way around.",
+        "EXPLAIN stops showing the logical plan and only shows the physical one.",
+        "RDDs are automatically turned into DataFrames with a schema."
       ],
-      "correct_index": 0,
-      "explanation_es": "Respuesta SQL 14",
-      "explanation_en": "SQL answer 14",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El propio ejemplo del texto muestra que 'Catalyst reescribe automáticamente la consulta para hacerlo así aunque el código fuente la haya escrito al revés'.",
+      "explanation_en": "The text's own example shows that 'Catalyst automatically rewrites the query to do it that way even if the source code wrote it the other way around.'",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200302_015",
       "skill_id": "sk200302",
       "type": "multiple_choice",
-      "question_es": "¿Cómo usar Spark SQL 15?",
-      "question_en": "How to use Spark SQL 15?",
+      "question_es": "Si el código SQL escribe primero el GROUP BY y después el filtro de salario, ¿qué ejecuta realmente Spark según el texto?",
+      "question_en": "If the SQL code writes the GROUP BY first and the salary filter after it, what does Spark actually execute, according to the text?",
       "options_es": [
-        "Método D 15",
-        "Método A 15",
-        "Método C 15",
-        "Método B 15"
+        "Exactamente esa misma orden, porque Catalyst nunca reordena lo que el código fuente escribió.",
+        "Ninguna agregación, porque Catalyst rechaza consultas escritas en ese orden.",
+        "El filtro reordenado antes de la agregación, porque Catalyst reescribe automáticamente la consulta a la forma más barata.",
+        "Un RDD sin schema, porque el orden GROUP BY-filtro fuerza la pérdida del schema."
       ],
       "options_en": [
-        "Method D 15",
-        "Method A 15",
-        "Method C 15",
-        "Method B 15"
+        "Exactly that same order, because Catalyst never reorders what the source code wrote.",
+        "No aggregation at all, because Catalyst rejects queries written in that order.",
+        "The filter reordered before the aggregation, because Catalyst automatically rewrites the query to the cheaper form.",
+        "An RDD without a schema, because the GROUP BY-then-filter order forces the schema to be lost."
       ],
-      "correct_index": 1,
-      "explanation_es": "Respuesta SQL 15",
-      "explanation_en": "SQL answer 15",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "El texto afirma que Catalyst reescribe la consulta al orden más barato (filtro antes de la agregación) 'aunque el código fuente la haya escrito al revés', así que ese es el resultado real.",
+      "explanation_en": "The text states Catalyst rewrites the query to the cheaper order (filter before aggregation) 'even if the source code wrote it the other way around,' so that is the actual result.",
+      "source": "https://spark.apache.org/docs/latest/sql-programming-guide.html"
     },
     {
       "id": "q200303_001",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 1?",
-      "question_en": "Distributed concept 1?",
+      "question_es": "¿Qué es la computación distribuida y por qué importa, según el texto?",
+      "question_en": "What does the text say distributed computing is, and why does it matter?",
       "options_es": [
-        "Concepto A 1",
-        "Concepto C 1",
-        "Concepto B 1",
-        "Concepto D 1"
+        "Divide un conjunto de datos en particiones que varios workers procesan en paralelo en vez de una sola máquina secuencial, lo que permite escalar horizontalmente añadiendo nodos.",
+        "Divide un conjunto de datos en particiones que se procesan una tras otra en la misma máquina, mejorando el uso de la caché entre ejecuciones.",
+        "Concentra los registros con la misma clave en un único worker para simplificar la agregación final antes de escribir los resultados.",
+        "Añade un sufijo artificial a las claves calientes para repartir los registros más frecuentes entre varios nodos disponibles."
       ],
       "options_en": [
-        "Concept A 1",
-        "Concept C 1",
-        "Concept B 1",
-        "Concept D 1"
+        "It splits a dataset into partitions that several workers process in parallel instead of one sequential machine, which enables horizontal scaling by adding nodes.",
+        "It splits a dataset into partitions processed one after another on the same machine, improving cache reuse between runs.",
+        "It concentrates records sharing the same key onto a single worker to simplify the final aggregation before writing results.",
+        "It appends an artificial suffix to hot keys to spread the most frequent records across several available nodes."
       ],
-      "correct_index": 3,
-      "explanation_es": "Explicación distribuida 1",
-      "explanation_en": "Distributed explanation 1",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "Correcto porque el texto define la computación distribuida como dividir el dataset en particiones procesadas en paralelo por varios workers, en vez de una sola máquina secuencial, y explica que esto importa porque permite escalar horizontalmente añadiendo nodos.",
+      "explanation_en": "Correct because the text defines distributed computing as splitting the dataset into partitions processed in parallel by several workers, instead of one sequential machine, and says this matters because it enables horizontal scaling.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_002",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 2?",
-      "question_en": "Distributed concept 2?",
+      "question_es": "Según el texto, ¿bajo qué condición añadir más nodos reduce el tiempo total de un trabajo que tarda demasiado en un solo nodo?",
+      "question_en": "According to the text, under what condition does adding more nodes reduce the total time of a job that is taking too long on one node?",
       "options_es": [
-        "Concepto B 2",
-        "Concepto D 2",
-        "Concepto C 2",
-        "Concepto A 2"
+        "Solo si se aumenta también la memoria caché de cada nodo individual.",
+        "Siempre que las particiones estén repartidas de forma pareja entre los nodos.",
+        "Solo si el número de particiones coincide exactamente con el número de claves distintas.",
+        "Siempre que se aplique salting a todas las claves, no solo a las calientes."
       ],
       "options_en": [
-        "Concept B 2",
-        "Concept D 2",
-        "Concept C 2",
-        "Concept A 2"
+        "Only if the cache memory of each individual node is also increased.",
+        "As long as partitions are spread evenly across the nodes.",
+        "Only if the number of partitions exactly matches the number of distinct keys.",
+        "As long as salting is applied to every key, not just the hot ones."
       ],
-      "correct_index": 3,
-      "explanation_es": "Explicación distribuida 2",
-      "explanation_en": "Distributed explanation 2",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "Correcto porque el texto dice que añadir más nodos reduce el tiempo total del trabajo «siempre que las particiones estén repartidas de forma pareja»; si no lo están, el escalado horizontal no ayuda igual.",
+      "explanation_en": "Correct because the text says adding more nodes cuts the total time \"as long as partitions are spread evenly\"; without that, horizontal scaling does not help the same way.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_003",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 3?",
-      "question_en": "Distributed concept 3?",
+      "question_es": "¿Cómo asigna el mecanismo típico cada registro a una partición, según el texto?",
+      "question_en": "How does the typical mechanism assign each record to a partition, according to the text?",
       "options_es": [
-        "Concepto A 3",
-        "Concepto B 3",
-        "Concepto C 3",
-        "Concepto D 3"
+        "Por orden de llegada al sistema, de modo que los primeros registros van a la primera partición disponible.",
+        "Aleatoriamente en cada ejecución, para evitar que las mismas claves siempre caigan en el mismo worker.",
+        "Según una función de la clave del registro (por ejemplo la suma de los códigos de sus caracteres módulo el número de particiones), de modo que la misma clave siempre cae en el mismo worker.",
+        "Según el tamaño en bytes del registro, agrupando los registros más grandes en las particiones con más memoria disponible."
       ],
       "options_en": [
-        "Concept A 3",
-        "Concept B 3",
-        "Concept C 3",
-        "Concept D 3"
+        "By order of arrival into the system, so the first records go to the first available partition.",
+        "Randomly on each run, to prevent the same keys from always landing on the same worker.",
+        "Based on a function of the record's key (for example, the sum of its character codes modulo the number of partitions), so the same key always lands on the same worker.",
+        "Based on the record's size in bytes, grouping the largest records into the partitions with the most available memory."
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación distribuida 3",
-      "explanation_en": "Distributed explanation 3",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "Correcto porque el texto describe el mecanismo típico como asignar cada registro según una función de su clave, dando como ejemplo la suma de los códigos de sus caracteres módulo el número de particiones.",
+      "explanation_en": "Correct because the text describes the typical mechanism as assigning each record based on a function of its key, giving as an example the sum of its character codes modulo the number of partitions.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_004",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 4?",
-      "question_en": "Distributed concept 4?",
+      "question_es": "¿Qué consecuencia tiene que la partición se calcule a partir de una función de la clave, según el texto?",
+      "question_en": "According to the text, what follows from partitions being computed from a function of the key?",
       "options_es": [
-        "Concepto D 4",
-        "Concepto C 4",
-        "Concepto B 4",
-        "Concepto A 4"
+        "Que cada worker procesa un número fijo de registros, sin importar cuántas claves distintas existan.",
+        "Que las claves se reordenan alfabéticamente antes de repartirse entre los workers.",
+        "Que el número de particiones debe ser igual al número de workers disponibles en el clúster.",
+        "Que los registros que comparten la misma clave siempre caen en el mismo worker."
       ],
       "options_en": [
-        "Concept D 4",
-        "Concept C 4",
-        "Concept B 4",
-        "Concept A 4"
+        "Each worker processes a fixed number of records, regardless of how many distinct keys exist.",
+        "Keys are reordered alphabetically before being spread across workers.",
+        "The number of partitions must equal the number of workers available in the cluster.",
+        "Records sharing the same key always land on the same worker."
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación distribuida 4",
-      "explanation_en": "Distributed explanation 4",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "Correcto porque el texto dice explícitamente que este mecanismo hace que «registros con la misma clave siempre caigan en el mismo worker», lo que además es la raíz del problema de data skew.",
+      "explanation_en": "Correct because the text explicitly says this mechanism means \"records sharing a key always land on the same worker,\" which is also the root of the data skew problem.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_005",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 5?",
-      "question_en": "Distributed concept 5?",
+      "question_es": "¿Qué describe el texto como data skew?",
+      "question_en": "What does the text describe as data skew?",
       "options_es": [
-        "Concepto A 5",
-        "Concepto B 5",
-        "Concepto D 5",
-        "Concepto C 5"
+        "El problema de que pocas claves concentran muchos registros, por lo que esa partición crece mucho más que las demás y su worker se convierte en el cuello de botella.",
+        "El retraso causado porque el número de particiones es mayor que el número de workers disponibles en el clúster.",
+        "La pérdida de registros que ocurre cuando dos claves distintas producen el mismo valor tras aplicar la función de partición.",
+        "El aumento de tiempo de ejecución que provoca calcular la función de partición sobre claves muy largas."
       ],
       "options_en": [
-        "Concept A 5",
-        "Concept B 5",
-        "Concept D 5",
-        "Concept C 5"
+        "The problem where a few keys concentrate most of the records, so that partition grows far larger than the rest and its worker becomes the bottleneck.",
+        "The delay caused by having more partitions than workers available in the cluster.",
+        "The record loss that occurs when two different keys produce the same value after applying the partition function.",
+        "The increase in execution time caused by computing the partition function on very long keys."
       ],
-      "correct_index": 2,
-      "explanation_es": "Explicación distribuida 5",
-      "explanation_en": "Distributed explanation 5",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "Correcto porque el texto define el problema exactamente así: «pocas claves concentran muchos registros: esa partición crece mucho más que las demás y ese worker se convierte en el cuello de botella. Esto se llama data skew».",
+      "explanation_en": "Correct because the text defines the problem exactly this way: \"a few keys concentrate most of the records: that partition grows far larger than the rest, and its worker becomes the bottleneck. This is called data skew.\"",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_006",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 6?",
-      "question_en": "Distributed concept 6?",
+      "question_es": "Según el texto, ¿qué ocurre con los demás workers mientras el worker con la partición sobrecargada sigue procesando?",
+      "question_en": "According to the text, what happens to the other workers while the worker with the overloaded partition keeps processing?",
       "options_es": [
-        "Concepto C 6",
-        "Concepto B 6",
-        "Concepto A 6",
-        "Concepto D 6"
+        "Se reparten automáticamente los registros sobrantes de la partición sobrecargada sin intervención adicional.",
+        "Terminan su trabajo y esperan, porque su partición era mucho más pequeña que la que concentra los registros.",
+        "Aumentan su propio número de particiones para compensar la carga del worker sobrecargado.",
+        "Dejan de participar en el trabajo y sus registros se descartan hasta la siguiente ejecución."
       ],
       "options_en": [
-        "Concept C 6",
-        "Concept B 6",
-        "Concept A 6",
-        "Concept D 6"
+        "The leftover records from the overloaded partition are automatically redistributed with no further intervention.",
+        "They finish their work and sit idle, because their partition was much smaller than the one concentrating the records.",
+        "They increase their own number of partitions to compensate for the overloaded worker.",
+        "They stop participating in the job and their records are discarded until the next run."
       ],
-      "correct_index": 2,
-      "explanation_es": "Explicación distribuida 6",
-      "explanation_en": "Distributed explanation 6",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "Correcto porque el texto dice que el worker con la partición sobrecargada «se convierte en el cuello de botella mientras los otros terminan y esperan».",
+      "explanation_en": "Correct because the text says the worker with the overloaded partition \"becomes the bottleneck while the others finish and sit idle.\"",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_007",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 7?",
-      "question_en": "Distributed concept 7?",
+      "question_es": "¿En qué consiste la técnica de salting descrita en el texto?",
+      "question_en": "What does the salting technique described in the text consist of?",
       "options_es": [
-        "Concepto C 7",
-        "Concepto B 7",
-        "Concepto A 7",
-        "Concepto D 7"
+        "En aumentar el número total de particiones del trabajo sin cambiar cómo se calculan las claves.",
+        "En eliminar del pipeline las claves que generan muy pocos registros antes de particionar.",
+        "En añadir un sufijo artificial a las claves calientes antes de particionar, para dispersar sus registros entre varios workers.",
+        "En ordenar los registros por clave antes de asignarlos a las particiones, para agruparlos de forma más eficiente."
       ],
       "options_en": [
-        "Concept C 7",
-        "Concept B 7",
-        "Concept A 7",
-        "Concept D 7"
+        "Increasing the total number of partitions in the job without changing how keys are computed.",
+        "Removing from the pipeline the keys that generate very few records before partitioning.",
+        "Appending an artificial suffix to hot keys before partitioning, to spread their records across several workers.",
+        "Sorting records by key before assigning them to partitions, to group them more efficiently."
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación distribuida 7",
-      "explanation_en": "Distributed explanation 7",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "Correcto porque el texto define el salting como «añadir un sufijo artificial a las claves calientes antes de particionar, de modo que los registros de esa clave se dispersan entre varios workers».",
+      "explanation_en": "Correct because the text defines salting as \"appending an artificial suffix to hot keys before partitioning, so records for that key spread across several workers.\"",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_008",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 8?",
-      "question_en": "Distributed concept 8?",
+      "question_es": "Tras dispersar con salting los registros de una clave caliente entre varios workers, ¿qué ocurre según el texto?",
+      "question_en": "After salting spreads a hot key's records across several workers, what happens next according to the text?",
       "options_es": [
-        "Concepto C 8",
-        "Concepto D 8",
-        "Concepto A 8",
-        "Concepto B 8"
+        "Cada worker guarda su parte del resultado por separado y nunca se vuelven a juntar.",
+        "El sistema descarta el sufijo artificial antes de procesar los registros, revirtiendo la dispersión.",
+        "Los registros se reasignan de nuevo a un único worker para mantener el orden original de llegada.",
+        "Se combinan en una etapa posterior, ya que se dispersaron solo para repartir la carga de procesamiento."
       ],
       "options_en": [
-        "Concept C 8",
-        "Concept D 8",
-        "Concept A 8",
-        "Concept B 8"
+        "Each worker keeps its part of the result separately and they are never joined again.",
+        "The system discards the artificial suffix before processing the records, reversing the spread.",
+        "The records are reassigned to a single worker again to preserve the original arrival order.",
+        "They get combined in a later stage, since they were only spread out to distribute the processing load."
       ],
-      "correct_index": 0,
-      "explanation_es": "Explicación distribuida 8",
-      "explanation_en": "Distributed explanation 8",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "Correcto porque el texto dice que los registros de la clave caliente «se dispersan entre varios workers y luego se combinan en una etapa posterior».",
+      "explanation_en": "Correct because the text says the hot key's records \"spread across several workers and get combined in a later stage.\"",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_009",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 9?",
-      "question_en": "Distributed concept 9?",
+      "question_es": "¿Cuál es el ejemplo concreto que da el texto para ilustrar el data skew?",
+      "question_en": "What is the concrete example the text gives to illustrate data skew?",
       "options_es": [
-        "Concepto C 9",
-        "Concepto A 9",
-        "Concepto D 9",
-        "Concepto B 9"
+        "Un pipeline que agrupa eventos por usuario, donde una cuenta automatizada genera miles de eventos mientras el resto genera pocos.",
+        "Un pipeline que agrupa transacciones bancarias por sucursal, donde una sucursal central concentra la mayoría de las operaciones.",
+        "Un pipeline que agrupa registros de sensores por región geográfica, donde una región tiene muchos más sensores instalados.",
+        "Un pipeline que agrupa consultas de búsqueda por país, donde un país genera la mayoría del tráfico total."
       ],
       "options_en": [
-        "Concept C 9",
-        "Concept A 9",
-        "Concept D 9",
-        "Concept B 9"
+        "A pipeline grouping events by user, where one automated account generates thousands of events while the rest generate few.",
+        "A pipeline grouping bank transactions by branch, where one central branch concentrates most of the operations.",
+        "A pipeline grouping sensor readings by geographic region, where one region has far more sensors installed.",
+        "A pipeline grouping search queries by country, where one country generates most of the total traffic."
       ],
-      "correct_index": 2,
-      "explanation_es": "Explicación distribuida 9",
-      "explanation_en": "Distributed explanation 9",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "Correcto porque el texto da como ejemplo concreto «un pipeline que agrupa eventos por usuario, donde un usuario automatizado genera miles de eventos y el resto genera pocos»; los demás pipelines no aparecen en la fuente.",
+      "explanation_en": "Correct because the text gives as its concrete example \"a pipeline grouping events by user, where one automated account generates thousands of events while the rest generate few\"; the other pipelines are not in the source.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_010",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 10?",
-      "question_en": "Distributed concept 10?",
+      "question_es": "En el ejemplo del pipeline de eventos por usuario, ¿qué ocurre sin salting, según el texto?",
+      "question_en": "In the user-events pipeline example, what happens without salting, according to the text?",
       "options_es": [
-        "Concepto C 10",
-        "Concepto A 10",
-        "Concepto B 10",
-        "Concepto D 10"
+        "El pipeline falla por completo y no llega a producir resultados.",
+        "El worker de la cuenta automatizada tarda diez veces más que los demás.",
+        "El worker de la cuenta automatizada tarda la mitad de tiempo que los demás, porque procesa registros repetidos.",
+        "Los workers restantes tardan diez veces más que el que procesa la cuenta automatizada."
       ],
       "options_en": [
-        "Concept C 10",
-        "Concept A 10",
-        "Concept B 10",
-        "Concept D 10"
+        "The pipeline fails completely and never produces results.",
+        "The worker handling the automated account takes ten times longer than the others.",
+        "The worker handling the automated account takes half the time of the others, because it processes duplicate records.",
+        "The remaining workers take ten times longer than the one processing the automated account."
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación distribuida 10",
-      "explanation_en": "Distributed explanation 10",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "Correcto porque el texto dice literalmente: «sin salting ese worker tarda diez veces más que los demás».",
+      "explanation_en": "Correct because the text literally says: \"without salting, that one worker takes ten times longer than the others.\"",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_011",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 11?",
-      "question_en": "Distributed concept 11?",
+      "question_es": "¿Cuál es el error común que señala el texto sobre el número de particiones?",
+      "question_en": "What is the common mistake the text points out about the number of partitions?",
       "options_es": [
-        "Concepto C 11",
-        "Concepto B 11",
-        "Concepto A 11",
-        "Concepto D 11"
+        "Elegir un número de particiones que sea múltiplo del número de workers, en vez de un número arbitrario.",
+        "Cambiar el número de particiones en mitad de la ejecución del trabajo, en lugar de fijarlo antes de empezar.",
+        "Fijar el número de particiones sin medir la distribución real de las claves, asumiendo que más particiones siempre ayuda.",
+        "Usar el mismo número de particiones en todos los trabajos del pipeline, sin adaptarlo al tamaño del dataset."
       ],
       "options_en": [
-        "Concept C 11",
-        "Concept B 11",
-        "Concept A 11",
-        "Concept D 11"
+        "Choosing a number of partitions that is a multiple of the number of workers, instead of an arbitrary number.",
+        "Changing the number of partitions mid-run, instead of fixing it before the job starts.",
+        "Fixing the number of partitions without measuring the real key distribution, assuming more partitions always helps.",
+        "Using the same number of partitions across every job in the pipeline, without adapting it to the dataset size."
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación distribuida 11",
-      "explanation_en": "Distributed explanation 11",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "Correcto porque el texto describe el error común como «fijar el número de particiones sin medir la distribución real de las claves, asumiendo que más particiones siempre ayuda».",
+      "explanation_en": "Correct because the text describes the common mistake as \"fixing the number of partitions without measuring the real key distribution, assuming more partitions always help.\"",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_012",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 12?",
-      "question_en": "Distributed concept 12?",
+      "question_es": "Según el texto, ¿por qué añadir más particiones no resuelve el data skew por sí solo?",
+      "question_en": "According to the text, why doesn't adding more partitions fix data skew by itself?",
       "options_es": [
-        "Concepto C 12",
-        "Concepto A 12",
-        "Concepto D 12",
-        "Concepto B 12"
+        "Porque más particiones aumentan el tiempo de cálculo de la función de clave para cada registro.",
+        "Porque el número de particiones no puede superar el número de workers disponibles en el clúster.",
+        "Porque cada partición adicional necesita su propio worker dedicado, lo que encarece el trabajo.",
+        "Porque el problema real es la concentración de registros en pocas claves, no la cantidad de particiones."
       ],
       "options_en": [
-        "Concept C 12",
-        "Concept A 12",
-        "Concept D 12",
-        "Concept B 12"
+        "Because more partitions increase the time it takes to compute the key function for each record.",
+        "Because the number of partitions cannot exceed the number of workers available in the cluster.",
+        "Because each additional partition needs its own dedicated worker, which makes the job more expensive.",
+        "Because the real problem is the concentration of records in a few keys, not the number of partitions."
       ],
-      "correct_index": 0,
-      "explanation_es": "Explicación distribuida 12",
-      "explanation_en": "Distributed explanation 12",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "Correcto porque el texto cierra el error común diciendo que «en realidad el problema es la concentración, no la cantidad» de particiones.",
+      "explanation_en": "Correct because the text closes the common mistake by saying \"the actual issue is concentration, not count\" of partitions.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_013",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 13?",
-      "question_en": "Distributed concept 13?",
+      "question_es": "¿Con qué contrasta el texto la computación distribuida al definirla?",
+      "question_en": "What does the text contrast distributed computing with when defining it?",
       "options_es": [
-        "Concepto C 13",
-        "Concepto A 13",
-        "Concepto B 13",
-        "Concepto D 13"
+        "Con ejecutar el trabajo dos veces en la misma máquina para verificar los resultados.",
+        "Con ejecutar todo secuencialmente en una sola máquina, en vez de repartirlo entre varios workers.",
+        "Con almacenar los datos en una única partición grande para simplificar su lectura posterior.",
+        "Con reducir el número de claves distintas antes de procesar el dataset completo."
       ],
       "options_en": [
-        "Concept C 13",
-        "Concept A 13",
-        "Concept B 13",
-        "Concept D 13"
+        "Running the job twice on the same machine to verify the results.",
+        "Running everything sequentially on one machine instead of splitting it across several workers.",
+        "Storing the data in a single large partition to simplify reading it later.",
+        "Reducing the number of distinct keys before processing the whole dataset."
       ],
-      "correct_index": 3,
-      "explanation_es": "Explicación distribuida 13",
-      "explanation_en": "Distributed explanation 13",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "Correcto porque el texto define la computación distribuida como dividir el dataset en particiones que varios workers procesan en paralelo, «en vez de usar una sola máquina secuencial».",
+      "explanation_en": "Correct because the text defines distributed computing as splitting the dataset into partitions that several workers process in parallel, \"instead of running everything sequentially on one machine.\"",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_014",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 14?",
-      "question_en": "Distributed concept 14?",
+      "question_es": "El texto da un ejemplo concreto de función de clave para asignar particiones. ¿Cuál es?",
+      "question_en": "The text gives a concrete example of a key function for assigning partitions. What is it?",
       "options_es": [
-        "Concepto C 14",
-        "Concepto D 14",
-        "Concepto A 14",
-        "Concepto B 14"
+        "El número de bytes del registro completo, módulo el número de workers disponibles.",
+        "La posición del registro en el archivo de origen, módulo el número de particiones.",
+        "La suma de los códigos de sus caracteres, módulo el número de particiones.",
+        "El valor numérico de la marca de tiempo del registro, módulo el número de claves distintas."
       ],
       "options_en": [
-        "Concept C 14",
-        "Concept D 14",
-        "Concept A 14",
-        "Concept B 14"
+        "The number of bytes in the full record, modulo the number of workers available.",
+        "The record's position in the source file, modulo the number of partitions.",
+        "The sum of its character codes, modulo the number of partitions.",
+        "The numeric value of the record's timestamp, modulo the number of distinct keys."
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación distribuida 14",
-      "explanation_en": "Distributed explanation 14",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "Correcto porque el texto da como ejemplo de función de clave «la suma de los códigos de sus caracteres módulo el número de particiones».",
+      "explanation_en": "Correct because the text gives as its example of a key function \"the sum of its character codes modulo the number of partitions.\"",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200303_015",
       "skill_id": "sk200303",
       "type": "multiple_choice",
-      "question_es": "¿Concepto distribuido 15?",
-      "question_en": "Distributed concept 15?",
+      "question_es": "En el ejemplo del pipeline, ¿qué genera la mayor concentración de eventos para un único usuario?",
+      "question_en": "In the pipeline example, what produces the largest concentration of events for a single user?",
       "options_es": [
-        "Concepto B 15",
-        "Concepto A 15",
-        "Concepto C 15",
-        "Concepto D 15"
+        "Una cuenta automatizada, que genera miles de eventos mientras el resto de usuarios genera pocos.",
+        "Un error de red que duplica los eventos de todos los usuarios por igual.",
+        "Una promoción especial que aumenta temporalmente los eventos de todos los usuarios por igual.",
+        "Un fallo del sistema de particionado que asigna erróneamente eventos de varios usuarios a una misma clave."
       ],
       "options_en": [
-        "Concept B 15",
-        "Concept A 15",
-        "Concept C 15",
-        "Concept D 15"
+        "An automated account, which generates thousands of events while the rest of the users generate few.",
+        "A network error that duplicates every user's events equally.",
+        "A special promotion that temporarily increases every user's events equally.",
+        "A partitioning bug that mistakenly assigns several users' events to the same key."
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación distribuida 15",
-      "explanation_en": "Distributed explanation 15",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "Correcto porque el texto dice que en ese pipeline «un usuario automatizado genera miles de eventos y el resto genera pocos», lo cual es la causa del desequilibrio, no un error del sistema.",
+      "explanation_en": "Correct because the text says that in that pipeline \"one automated account generates thousands of events while the rest generate few,\" which is the cause of the imbalance, not a system fault.",
+      "source": "https://spark.apache.org/docs/latest/rdd-programming-guide.html"
     },
     {
       "id": "q200304_001",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 1?",
-      "question_en": "MapReduce aspect 1?",
+      "question_es": "Según el paradigma MapReduce, ¿qué hace cada worker durante la fase map?",
+      "question_en": "According to the MapReduce paradigm, what does each worker do during the map phase?",
       "options_es": [
-        "Aspecto B 1",
-        "Aspecto C 1",
-        "Aspecto D 1",
-        "Aspecto A 1"
+        "Procesa un fragmento de los datos de forma independiente y emite pares clave-valor",
+        "Espera a que todos los demás workers terminen antes de empezar a procesar su fragmento",
+        "Agrega directamente los pares clave-valor en un único valor final por clave",
+        "Ordena todo el conjunto de datos por clave antes de procesar cualquier fragmento"
       ],
       "options_en": [
-        "Aspect B 1",
-        "Aspect C 1",
-        "Aspect D 1",
-        "Aspect A 1"
+        "It processes a chunk of the data independently and emits key-value pairs",
+        "It waits for every other worker to finish before starting to process its chunk",
+        "It directly aggregates the key-value pairs into a single final value per key",
+        "It sorts the entire dataset by key before processing any chunk"
       ],
-      "correct_index": 3,
-      "explanation_es": "Explicación MapReduce 1",
-      "explanation_en": "MapReduce explanation 1",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El texto dice que en la fase map cada worker procesa un fragmento de los datos de forma independiente y emite pares clave-valor; la agregación final es tarea de la fase reduce, no del map.",
+      "explanation_en": "The text states that in the map phase each worker processes a chunk of the data independently and emits key-value pairs; final aggregation is the reduce phase's job, not the map phase's.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_002",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 2?",
-      "question_en": "MapReduce aspect 2?",
+      "question_es": "En el ejemplo de conteo de palabras que da el texto, ¿qué produce cada línea de texto durante la fase map?",
+      "question_en": "In the word-count example the text gives, what does each line of text produce during the map phase?",
       "options_es": [
-        "Aspecto C 2",
-        "Aspecto B 2",
-        "Aspecto A 2",
-        "Aspecto D 2"
+        "Un único par para toda la línea, con la línea completa como clave",
+        "Un par por cada palabra distinta del texto completo, no por línea",
+        "Un par por cada palabra de la línea, con esa palabra como clave y valor 1",
+        "Un par por cada palabra de la línea, con el número de veces que aparece en todo el documento como valor"
       ],
       "options_en": [
-        "Aspect C 2",
-        "Aspect B 2",
-        "Aspect A 2",
-        "Aspect D 2"
+        "A single pair for the whole line, with the entire line as the key",
+        "One pair per distinct word in the whole text, not per line",
+        "One pair per word in the line, with that word as the key and value 1",
+        "One pair per word in the line, with the word's total count across the whole document as the value"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación MapReduce 2",
-      "explanation_en": "MapReduce explanation 2",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "El texto especifica que al contar palabras cada línea de texto produce un par por cada palabra con valor 1; el conteo total por palabra se calcula después, en la fase reduce.",
+      "explanation_en": "The text specifies that when counting words, each line of text produces one pair per word with value 1; the total count per word is computed afterward, in the reduce phase.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_003",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 3?",
-      "question_en": "MapReduce aspect 3?",
+      "question_es": "¿Qué implica el texto sobre la forma en que los distintos workers procesan sus fragmentos en la fase map?",
+      "question_en": "What does the text imply about how different workers process their chunks during the map phase?",
       "options_es": [
-        "Aspecto B 3",
-        "Aspecto D 3",
-        "Aspecto A 3",
-        "Aspecto C 3"
+        "Un worker central coordina en tiempo real el orden en que los demás procesan sus fragmentos",
+        "Cada worker procesa su fragmento sin que el programador tenga que gestionar la distribución a mano",
+        "Todos los workers deben procesar exactamente el mismo fragmento para verificar resultados",
+        "Cada worker solo puede procesar su fragmento después de que termine la fase shuffle"
       ],
       "options_en": [
-        "Aspect B 3",
-        "Aspect D 3",
-        "Aspect A 3",
-        "Aspect C 3"
+        "A central worker coordinates in real time the order in which the others process their chunks",
+        "Each worker processes its chunk without the programmer having to manage distribution by hand",
+        "All workers must process the exact same chunk to verify results against each other",
+        "Each worker can only process its chunk after the shuffle phase has finished"
       ],
-      "correct_index": 3,
-      "explanation_es": "Explicación MapReduce 3",
-      "explanation_en": "MapReduce explanation 3",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto dice que MapReduce permite paralelizar trabajos sin que el programador gestione la distribución a mano; el procesamiento de fragmentos en map ocurre antes del shuffle, no después.",
+      "explanation_en": "The text states that MapReduce lets work be parallelized without the programmer managing distribution by hand; chunk processing in map happens before shuffle, not after.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_004",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 4?",
-      "question_en": "MapReduce aspect 4?",
+      "question_es": "¿Qué hace exactamente la fase de shuffle según el texto?",
+      "question_en": "What exactly does the shuffle phase do according to the text?",
       "options_es": [
-        "Aspecto D 4",
-        "Aspecto A 4",
-        "Aspecto C 4",
-        "Aspecto B 4"
+        "Ordena alfabéticamente todos los pares clave-valor sin agruparlos",
+        "Elimina las claves duplicadas para quedarse con un solo valor por clave",
+        "Envía todos los pares al mismo worker que los generó originalmente en la fase map",
+        "Agrupa automáticamente todos los valores que comparten la misma clave, sin importar en qué worker se generaron"
       ],
       "options_en": [
-        "Aspect D 4",
-        "Aspect A 4",
-        "Aspect C 4",
-        "Aspect B 4"
+        "It alphabetically sorts every key-value pair without grouping them",
+        "It removes duplicate keys to keep only a single value per key",
+        "It sends every pair back to the same worker that originally produced it in the map phase",
+        "It automatically groups every value that shares the same key, regardless of which worker produced it"
       ],
-      "correct_index": 0,
-      "explanation_es": "Explicación MapReduce 4",
-      "explanation_en": "MapReduce explanation 4",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto define el shuffle como el paso en que el sistema agrupa automáticamente todos los valores que comparten la misma clave, sin importar en qué worker se generaron.",
+      "explanation_en": "The text defines shuffle as the step where the system automatically groups every value that shares the same key, regardless of which worker produced it.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_005",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 5?",
-      "question_en": "MapReduce aspect 5?",
+      "question_es": "Durante el shuffle, ¿de qué worker pueden provenir los valores que terminan agrupados bajo una misma clave?",
+      "question_en": "During shuffle, which worker can the values grouped under the same key come from?",
       "options_es": [
-        "Aspecto B 5",
-        "Aspecto C 5",
-        "Aspecto A 5",
-        "Aspecto D 5"
+        "De cualquier worker, ya que el shuffle agrupa por clave sin importar quién generó cada valor",
+        "Únicamente del worker que procesó el primer fragmento de datos",
+        "Solo de los workers que terminaron su fase map antes que los demás",
+        "Solo del worker asignado específicamente a esa clave desde el inicio del trabajo"
       ],
       "options_en": [
-        "Aspect B 5",
-        "Aspect C 5",
-        "Aspect A 5",
-        "Aspect D 5"
+        "Any worker, since shuffle groups by key regardless of which one produced each value",
+        "Only the worker that processed the first chunk of data",
+        "Only the workers that finished their map phase before the others",
+        "Only the worker specifically assigned to that key from the start of the job"
       ],
-      "correct_index": 2,
-      "explanation_es": "Explicación MapReduce 5",
-      "explanation_en": "MapReduce explanation 5",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El texto aclara que el shuffle agrupa todos los valores que comparten la misma clave sin importar en qué worker se generaron, es decir, pueden venir de cualquier worker.",
+      "explanation_en": "The text clarifies that shuffle groups every value sharing the same key regardless of which worker produced it, meaning they can come from any worker.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_006",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 6?",
-      "question_en": "MapReduce aspect 6?",
+      "question_es": "¿Qué recibe y qué hace la fase reduce según el texto?",
+      "question_en": "What does the reduce phase receive and do according to the text?",
       "options_es": [
-        "Aspecto C 6",
-        "Aspecto B 6",
-        "Aspecto A 6",
-        "Aspecto D 6"
+        "Recibe los fragmentos de datos originales y los divide entre los workers disponibles",
+        "Recibe un único par clave-valor por clave y lo reenvía sin modificarlo",
+        "Recibe cada clave junto con su lista de valores y los agrega, por ejemplo sumándolos",
+        "Recibe los resultados ya agregados de HDFS y los distribuye entre los workers"
       ],
       "options_en": [
-        "Aspect C 6",
-        "Aspect B 6",
-        "Aspect A 6",
-        "Aspect D 6"
+        "It receives the original data chunks and splits them among the available workers",
+        "It receives a single key-value pair per key and forwards it unchanged",
+        "It receives each key together with its list of values and aggregates them, for instance summing them",
+        "It receives already-aggregated results from HDFS and distributes them among workers"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación MapReduce 6",
-      "explanation_en": "MapReduce explanation 6",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "El texto dice que la fase reduce recibe cada clave con su lista de valores y los agrega, por ejemplo sumándolos para obtener el total por palabra.",
+      "explanation_en": "The text states that the reduce phase receives each key together with its list of values and aggregates them, for instance summing them to get the total per word.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_007",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 7?",
-      "question_en": "MapReduce aspect 7?",
+      "question_es": "En el ejemplo de conteo de palabras, ¿qué obtiene la fase reduce al sumar los valores asociados a una clave?",
+      "question_en": "In the word-count example, what does the reduce phase obtain by summing the values tied to a key?",
       "options_es": [
-        "Aspecto A 7",
-        "Aspecto D 7",
-        "Aspecto B 7",
-        "Aspecto C 7"
+        "El fragmento de texto original en el que apareció la palabra por primera vez",
+        "El total de apariciones de esa palabra en todo el conjunto de datos",
+        "La lista de workers que procesaron esa palabra durante la fase map",
+        "El orden alfabético en que la palabra apareció respecto a las demás claves"
       ],
       "options_en": [
-        "Aspect A 7",
-        "Aspect D 7",
-        "Aspect B 7",
-        "Aspect C 7"
+        "The original text chunk where the word first appeared",
+        "The total number of occurrences of that word across the whole dataset",
+        "The list of workers that processed that word during the map phase",
+        "The alphabetical order in which the word appeared relative to other keys"
       ],
-      "correct_index": 3,
-      "explanation_es": "Explicación MapReduce 7",
-      "explanation_en": "MapReduce explanation 7",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto explica que la fase reduce agrega los valores de cada clave sumándolos, por ejemplo, para obtener el total por palabra en el conteo de palabras.",
+      "explanation_en": "The text explains that the reduce phase aggregates each key's values by summing them, for instance to get the total per word in the word-count example.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_008",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 8?",
-      "question_en": "MapReduce aspect 8?",
+      "question_es": "Según el texto, ¿qué es HDFS dentro del ecosistema Hadoop?",
+      "question_en": "According to the text, what is HDFS within the Hadoop ecosystem?",
       "options_es": [
-        "Aspecto A 8",
-        "Aspecto D 8",
-        "Aspecto B 8",
-        "Aspecto C 8"
+        "El componente que asigna los recursos de cómputo entre los trabajos que compiten por el clúster",
+        "El motor que ejecuta las fases map y reduce directamente en memoria",
+        "El paradigma de procesamiento en dos fases que paraleliza los trabajos sobre grandes volúmenes de datos",
+        "El sistema que almacena los datos distribuidos en bloques replicados varias veces"
       ],
       "options_en": [
-        "Aspect A 8",
-        "Aspect D 8",
-        "Aspect B 8",
-        "Aspect C 8"
+        "The component that allocates compute resources among jobs competing for the cluster",
+        "The engine that executes the map and reduce phases directly in memory",
+        "The two-phase processing paradigm that parallelizes work over large datasets",
+        "The system that stores distributed data in blocks replicated several times"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación MapReduce 8",
-      "explanation_en": "MapReduce explanation 8",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto define HDFS como el sistema que almacena los datos distribuidos en bloques replicados varias veces; asignar recursos de cómputo es tarea de YARN, no de HDFS.",
+      "explanation_en": "The text defines HDFS as the system that stores distributed data in blocks replicated several times; allocating compute resources is YARN's job, not HDFS's.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_009",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 9?",
-      "question_en": "MapReduce aspect 9?",
+      "question_es": "¿Por qué HDFS replica los bloques de datos varias veces, típicamente tres copias, según el texto?",
+      "question_en": "Why does HDFS replicate data blocks several times, typically three copies, according to the text?",
       "options_es": [
-        "Aspecto A 9",
-        "Aspecto B 9",
-        "Aspecto D 9",
-        "Aspecto C 9"
+        "Para que un fallo de disco no provoque la pérdida de información",
+        "Para acelerar la fase shuffle al tener los datos ya ordenados por clave",
+        "Para permitir que YARN calcule cuántos recursos asignar a cada trabajo",
+        "Para que Spark pueda ejecutar los trabajos iterativos directamente en memoria"
       ],
       "options_en": [
-        "Aspect A 9",
-        "Aspect B 9",
-        "Aspect D 9",
-        "Aspect C 9"
+        "So that a single disk failure does not lose data",
+        "To speed up the shuffle phase by keeping the data already sorted by key",
+        "To let YARN calculate how many resources to allocate to each job",
+        "So that Spark can run iterative jobs directly in memory"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación MapReduce 9",
-      "explanation_en": "MapReduce explanation 9",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "El texto indica que HDFS replica los bloques varias veces (típicamente tres copias) para que un fallo de disco no pierda información; nada dice que esto acelere el shuffle o ayude a YARN o Spark.",
+      "explanation_en": "The text states that HDFS replicates blocks several times (typically three copies) so that a single disk failure does not lose data; nothing says this speeds up shuffle or helps YARN or Spark.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_010",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 10?",
-      "question_en": "MapReduce aspect 10?",
+      "question_es": "¿Cuál es la función de YARN dentro del ecosistema Hadoop, según el texto?",
+      "question_en": "What is YARN's role within the Hadoop ecosystem, according to the text?",
       "options_es": [
-        "Aspecto C 10",
-        "Aspecto B 10",
-        "Aspecto A 10",
-        "Aspecto D 10"
+        "Almacenar los datos distribuidos en bloques replicados varias veces",
+        "Agrupar automáticamente los valores que comparten la misma clave durante el shuffle",
+        "Asignar los recursos de cómputo entre los distintos trabajos que compiten por el clúster",
+        "Ejecutar en memoria los trabajos iterativos para hacerlos varias veces más rápidos"
       ],
       "options_en": [
-        "Aspect C 10",
-        "Aspect B 10",
-        "Aspect A 10",
-        "Aspect D 10"
+        "Storing distributed data in blocks replicated several times",
+        "Automatically grouping values that share the same key during shuffle",
+        "Allocating compute resources among the different jobs competing for the cluster",
+        "Running iterative jobs in memory to make them several times faster"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación MapReduce 10",
-      "explanation_en": "MapReduce explanation 10",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 2,
+      "explanation_es": "El texto dice que YARN asigna los recursos de cómputo entre los distintos trabajos que compiten por el clúster; almacenar bloques replicados es tarea de HDFS, no de YARN.",
+      "explanation_en": "The text states that YARN allocates compute resources among the different jobs competing for the cluster; storing replicated blocks is HDFS's job, not YARN's.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_011",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 11?",
-      "question_en": "MapReduce aspect 11?",
+      "question_es": "Según el texto, ¿en qué situación interviene YARN dentro del clúster?",
+      "question_en": "According to the text, in which situation does YARN step in within the cluster?",
       "options_es": [
-        "Aspecto D 11",
-        "Aspecto B 11",
-        "Aspecto A 11",
-        "Aspecto C 11"
+        "Cuando una sola fase reduce necesita ordenar sus valores antes de agregarlos",
+        "Cuando varios trabajos compiten por los recursos de cómputo disponibles en el clúster",
+        "Cuando un disco falla y hay que recuperar una de las copias replicadas del bloque",
+        "Cuando Spark necesita decidir qué partes de un trabajo ejecutar en memoria"
       ],
       "options_en": [
-        "Aspect D 11",
-        "Aspect B 11",
-        "Aspect A 11",
-        "Aspect C 11"
+        "When a single reduce phase needs to sort its values before aggregating them",
+        "When several jobs are competing for the compute resources available in the cluster",
+        "When a disk fails and one of the replicated block copies must be recovered",
+        "When Spark needs to decide which parts of a job to run in memory"
       ],
-      "correct_index": 3,
-      "explanation_es": "Explicación MapReduce 11",
-      "explanation_en": "MapReduce explanation 11",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto dice que YARN asigna los recursos de cómputo entre los distintos trabajos que compiten por el clúster, es decir, interviene cuando hay varios trabajos disputándose esos recursos.",
+      "explanation_en": "The text states that YARN allocates compute resources among the different jobs competing for the cluster, meaning it steps in when several jobs are contending for those resources.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_012",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 12?",
-      "question_en": "MapReduce aspect 12?",
+      "question_es": "Según el texto, ¿por qué Spark es varias veces más rápido que Hadoop para trabajos iterativos?",
+      "question_en": "According to the text, why is Spark several times faster than Hadoop for iterative jobs?",
       "options_es": [
-        "Aspecto D 12",
-        "Aspecto A 12",
-        "Aspecto B 12",
-        "Aspecto C 12"
+        "Porque reemplaza el shuffle por un simple ordenamiento de los datos",
+        "Porque elimina por completo la fase reduce y solo ejecuta la fase map",
+        "Porque no necesita replicar los bloques de datos como hace HDFS",
+        "Porque ejecuta mucho más trabajo en memoria en lugar de en disco"
       ],
       "options_en": [
-        "Aspect D 12",
-        "Aspect A 12",
-        "Aspect B 12",
-        "Aspect C 12"
+        "Because it replaces shuffle with a simple sort of the data",
+        "Because it completely removes the reduce phase and only runs the map phase",
+        "Because it does not need to replicate data blocks the way HDFS does",
+        "Because it runs far more work in memory instead of on disk"
       ],
-      "correct_index": 0,
-      "explanation_es": "Explicación MapReduce 12",
-      "explanation_en": "MapReduce explanation 12",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 3,
+      "explanation_es": "El texto explica que Spark ejecuta mucho más en memoria y por eso es varias veces más rápido para trabajos iterativos, aunque hereda los mismos conceptos de particionado y agregación de MapReduce.",
+      "explanation_en": "The text explains that Spark runs far more work in memory, which is why it is several times faster for iterative jobs, even though it inherits the same partitioning and aggregation concepts from MapReduce.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_013",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 13?",
-      "question_en": "MapReduce aspect 13?",
+      "question_es": "¿Qué relación establece el texto entre Spark y los conceptos de MapReduce?",
+      "question_en": "What relationship does the text draw between Spark and MapReduce's concepts?",
       "options_es": [
-        "Aspecto D 13",
-        "Aspecto A 13",
-        "Aspecto C 13",
-        "Aspecto B 13"
+        "Spark hereda los mismos conceptos de particionado y agregación, aunque ejecuta mucho más en memoria",
+        "Spark sustituye por completo el particionado y la agregación por un modelo totalmente distinto",
+        "Spark solo reutiliza la fase shuffle de MapReduce, pero no el map ni el reduce",
+        "Spark solo se usa para trabajos batch simples, igual que la versión original de MapReduce"
       ],
       "options_en": [
-        "Aspect D 13",
-        "Aspect A 13",
-        "Aspect C 13",
-        "Aspect B 13"
+        "Spark inherits the same partitioning and aggregation concepts, although it runs far more work in memory",
+        "Spark completely replaces partitioning and aggregation with an entirely different model",
+        "Spark only reuses MapReduce's shuffle step, but not the map or reduce phases",
+        "Spark is only used for simple batch jobs, just like the original MapReduce version"
       ],
-      "correct_index": 1,
-      "explanation_es": "Explicación MapReduce 13",
-      "explanation_en": "MapReduce explanation 13",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 0,
+      "explanation_es": "El texto dice que motores más modernos como Spark heredan estos mismos conceptos de particionado y agregación, aunque ejecutan mucho más en memoria y por eso son más rápidos para trabajos iterativos.",
+      "explanation_en": "The text states that more modern engines like Spark inherit these same partitioning and aggregation concepts, although they run far more work in memory and are therefore faster for iterative jobs.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_014",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 14?",
-      "question_en": "MapReduce aspect 14?",
+      "question_es": "¿Cuál es el error común que señala el texto sobre considerar obsoleto a MapReduce?",
+      "question_en": "What common mistake does the text point out about considering MapReduce obsolete?",
       "options_es": [
-        "Aspecto D 14",
-        "Aspecto C 14",
-        "Aspecto B 14",
-        "Aspecto A 14"
+        "Creer que MapReduce nunca puede ejecutarse junto a Spark en el mismo clúster",
+        "Creer que MapReduce solo sirve para trabajos que requieren replicación en HDFS",
+        "Asumir que está obsoleto, ignorando que sigue siendo una base conceptual válida para trabajos batch simples y muy grandes",
+        "Creer que MapReduce fue reemplazado por YARN como paradigma de procesamiento"
       ],
       "options_en": [
-        "Aspect D 14",
-        "Aspect C 14",
-        "Aspect B 14",
-        "Aspect A 14"
+        "Believing that MapReduce can never run alongside Spark on the same cluster",
+        "Believing that MapReduce is only useful for jobs that require replication in HDFS",
+        "Assuming it is obsolete, ignoring that it remains a valid conceptual foundation for very large simple batch jobs",
+        "Believing that MapReduce was replaced by YARN as the processing paradigm"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación MapReduce 14",
-      "explanation_en": "MapReduce explanation 14",
-      "source": "https://spark.apache.org/docs/"
+      "explanation_es": "El texto dice que un error común es asumir que MapReduce está obsoleto: para trabajos batch simples y muy grandes sigue siendo una base conceptual válida.",
+      "explanation_en": "The text states that a common mistake is assuming MapReduce is obsolete: for very large simple batch jobs it remains a valid conceptual foundation.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     },
     {
       "id": "q200304_015",
       "skill_id": "sk200304",
       "type": "multiple_choice",
-      "question_es": "¿MapReduce aspecto 15?",
-      "question_en": "MapReduce aspect 15?",
+      "question_es": "¿Qué error señala el texto respecto a confundir el shuffle con un simple ordenamiento?",
+      "question_en": "What mistake does the text point out about confusing shuffle with plain sorting?",
       "options_es": [
-        "Aspecto B 15",
-        "Aspecto D 15",
-        "Aspecto A 15",
-        "Aspecto C 15"
+        "Que el shuffle en realidad no depende de las claves de los pares emitidos en el map",
+        "Que esa confusión ignora que el shuffle también agrupa los valores por clave, no solo los ordena",
+        "Que el shuffle ordena los datos pero nunca los agrupa por clave, al contrario de lo que se suele pensar",
+        "Que confundir shuffle con ordenamiento es correcto porque ambos procesos son idénticos"
       ],
       "options_en": [
-        "Aspect B 15",
-        "Aspect D 15",
-        "Aspect A 15",
-        "Aspect C 15"
+        "That shuffle actually does not depend on the keys of the pairs emitted in the map phase",
+        "That this confusion ignores that shuffle also groups values by key, not just sorts them",
+        "That shuffle sorts the data but never groups it by key, contrary to what is usually assumed",
+        "That confusing shuffle with sorting is correct because both processes are identical"
       ],
-      "correct_index": 3,
-      "explanation_es": "Explicación MapReduce 15",
-      "explanation_en": "MapReduce explanation 15",
-      "source": "https://spark.apache.org/docs/"
+      "correct_index": 1,
+      "explanation_es": "El texto dice explícitamente que confundir shuffle con un simple ordenamiento ignora que también agrupa por clave, que es su función central.",
+      "explanation_en": "The text explicitly states that confusing shuffle with plain sorting ignores that it also groups by key, which is its central function.",
+      "source": "https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html"
     }
   ]
 }

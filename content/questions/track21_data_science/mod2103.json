@@ -9,18 +9,18 @@
       "options_es": [
         "Son exactamente iguales",
         "Múltiple solo para categorías",
-        "Simple es más preciso sin considerar otros factores relevantes",
+        "Simple es más preciso con menos variables predictoras",
         "Simple tiene una variable, múltiple varias"
       ],
       "options_en": [
         "Son exactamente iguales",
         "Múltiple solo para categorías",
-        "Simple es más preciso without considering other relevant factors",
+        "Simple regression is more precise with fewer predictor variables",
         "Simple tiene una variable, múltiple varias"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuál es la diferencia entre regresión lineal simp...",
-      "explanation_en": "Explanation for What is difference between simple and multiple lin...",
+      "explanation_es": "La regresión lineal simple usa una sola variable predictora, mientras que la múltiple incorpora varias variables independientes para explicar la variable objetivo.",
+      "explanation_en": "Simple linear regression relies on a single predictor variable, while multiple regression incorporates several independent variables to explain the target.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -42,8 +42,8 @@
         "Una lista de decisiones IF-THEN"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es un árbol de decisión?...",
-      "explanation_en": "Explanation for What is a decision tree?...",
+      "explanation_es": "Un árbol de decisión divide el espacio de datos de forma recursiva en regiones, y ese proceso de divisiones puede leerse como una secuencia de reglas del tipo si-entonces, por lo que ambas descripciones son válidas.",
+      "explanation_en": "A decision tree recursively partitions the feature space into regions, and that sequence of splits can equally be read as a chain of if-then rules, so both descriptions apply.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -56,17 +56,17 @@
         "Siempre regresión logística",
         "Siempre SVM",
         "SVM para complejidad alta, LR interpretable",
-        "No importa en cualquier escenario de implementación"
+        "No importa, ambos dan resultados equivalentes"
       ],
       "options_en": [
         "Siempre regresión logística",
         "Siempre SVM",
         "SVM para complejidad alta, LR interpretable",
-        "No importa in any implementation scenario"
+        "It doesn't matter, both produce equivalent results"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuándo usar SVM versus regresión logística?...",
-      "explanation_en": "Explanation for When to use SVM versus logistic regression?...",
+      "explanation_es": "SVM tiende a manejar mejor relaciones de alta complejidad gracias al truco del kernel, mientras que la regresión logística ofrece coeficientes fáciles de interpretar.",
+      "explanation_en": "SVM tends to handle highly complex, non-linear relationships better via the kernel trick, while logistic regression gives coefficients that are straightforward to interpret.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -88,8 +88,8 @@
         "Predice por mayoría cercanos"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es k-NN?...",
-      "explanation_en": "Explanation for What is k-NN?...",
+      "explanation_es": "k-NN clasifica un punto según sus k vecinos más cercanos y no construye un modelo durante el entrenamiento, por lo que se le llama un algoritmo de \"aprendizaje perezoso\".",
+      "explanation_en": "k-NN classifies a point based on its k nearest neighbors and builds no model during training, which is why it's called a \"lazy learning\" algorithm.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -99,20 +99,20 @@
       "question_es": "¿Cómo se evita overfitting en árboles?",
       "question_en": "How do you prevent overfitting in trees?",
       "options_es": [
-        "No se puede evitar sin excepciones ni variantes",
+        "No se puede evitar ni limitando la profundidad máxima",
         "Dejar crecer sin límite",
         "Aumentar complejidad siempre",
         "Limitar profundidad, samples mínimos"
       ],
       "options_en": [
-        "No se puede evitar without exceptions or variants",
+        "It cannot be avoided even by limiting maximum depth",
         "Dejar crecer sin límite",
         "Aumentar complejidad siempre",
         "Limitar profundidad, samples mínimos"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo se evita overfitting en árboles?...",
-      "explanation_en": "Explanation for How do you prevent overfitting in trees?...",
+      "explanation_es": "Limitar la profundidad máxima del árbol y exigir un número mínimo de muestras por hoja evita que el modelo memorice ruido específico del conjunto de entrenamiento.",
+      "explanation_en": "Capping the tree's maximum depth and requiring a minimum number of samples per leaf keeps the model from memorizing noise specific to the training set.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -134,8 +134,8 @@
         "Clasificador basado en probabilidad Bayes"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es Naive Bayes?...",
-      "explanation_en": "Explanation for What is Naive Bayes?...",
+      "explanation_es": "Naive Bayes asume que las características son independientes entre sí y clasifica calculando probabilidades mediante el teorema de Bayes, así que ambas afirmaciones lo describen correctamente.",
+      "explanation_en": "Naive Bayes assumes features are independent of each other and classifies by computing probabilities through Bayes' theorem, so both statements describe it correctly.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -146,19 +146,19 @@
       "question_en": "What are k-NN hyperparameters?",
       "options_es": [
         "k (número de vecinos), métrica distancia",
-        "Tasa de aprendizaje según la documentación estándar del servicio",
-        "Regularización como concepto principal",
+        "Tasa de aprendizaje del algoritmo en cada iteración",
+        "Regularización (L1 y L2 para penalizar pesos)",
         "Número de iteraciones"
       ],
       "options_en": [
         "k (número de vecinos), métrica distancia",
-        "Tasa de aprendizaje according to standard service documentation",
-        "Regularización as the primary concept",
+        "Learning rate of the algorithm in each iteration",
+        "Regularization (L1 and L2 to penalize weights)",
         "Número de iteraciones"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cuáles son hiperparámetros de k-NN?...",
-      "explanation_en": "Explanation for What are k-NN hyperparameters?...",
+      "explanation_es": "Los hiperparámetros centrales de k-NN son el número de vecinos k y la métrica de distancia usada para medir cercanía entre puntos.",
+      "explanation_en": "The core hyperparameters of k-NN are the number of neighbors k and the distance metric used to measure closeness between points.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -169,19 +169,19 @@
       "question_en": "How do you normalize regression output?",
       "options_es": [
         "No se normaliza usualmente",
-        "Restar media de y de forma invariable y constante",
+        "Restar media de y normaliza el rango de valores",
         "Multiplicar por constante",
         "Escalar usando StandardScaler"
       ],
       "options_en": [
         "No se normaliza usualmente",
-        "Restar media de y invariably and constantly",
+        "Subtracting mean from y normalizes the value range",
         "Multiplicar por constante",
         "Escalar usando StandardScaler"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo se normaliza salida de regresión?...",
-      "explanation_en": "Explanation for How do you normalize regression output?...",
+      "explanation_es": "Escalar las variables con una herramienta como StandardScaler es la forma habitual de normalizar los datos antes de entrenar un modelo de regresión.",
+      "explanation_en": "Scaling the variables with a tool like StandardScaler is the standard way to normalize the data before fitting a regression model.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -203,8 +203,8 @@
         "Todas las opciones"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es función de costo (loss)?...",
-      "explanation_en": "Explanation for What is cost function (loss)?...",
+      "explanation_es": "La función de costo mide el error entre la predicción y el valor real, toma valores no negativos y es precisamente lo que el entrenamiento busca minimizar, así que las tres afirmaciones son ciertas.",
+      "explanation_en": "The cost function measures the error between prediction and actual value, stays non-negative, and is exactly what training seeks to minimize — all three statements hold.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -226,8 +226,8 @@
         "Elige valores aleatorios"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo funciona gradient descent?...",
-      "explanation_en": "Explanation for How does gradient descent work?...",
+      "explanation_es": "Gradient descent ajusta los parámetros del modelo en la dirección opuesta al gradiente, repitiendo el proceso hasta que el error converge.",
+      "explanation_en": "Gradient descent nudges the model's parameters in the direction opposite the gradient, repeating the process until the error converges.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -239,18 +239,18 @@
       "options_es": [
         "Número de valores únicos",
         "Posición en dataset",
-        "Tamaño del árbol según la documentación estándar del servicio",
+        "Tamaño del árbol medido por profundidad total",
         "Orden de splits relevancia variable"
       ],
       "options_en": [
         "Número de valores únicos",
         "Posición en dataset",
-        "Tamaño del árbol according to standard service documentation",
+        "Tree size measured by depth",
         "Orden de splits relevancia variable"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué son características importantes en árbol?...",
-      "explanation_en": "Explanation for What are feature importances in tree?...",
+      "explanation_es": "La importancia de una característica en un árbol se deriva de cuánto y en qué orden esa variable se usa para dividir los nodos, es decir, de su relevancia en los splits.",
+      "explanation_en": "A feature's importance in a tree comes from how much, and how early, that variable is used to split nodes — its relevance across the splits.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -272,8 +272,8 @@
         "Relación aproximadamente lineal datos"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo usar modelo lineal?...",
-      "explanation_en": "Explanation for When to use linear model?...",
+      "explanation_es": "Un modelo lineal conviene cuando los datos tienen pocas dimensiones, la relación entre variables es aproximadamente lineal y se necesita poder interpretar los coeficientes, así que las tres razones aplican.",
+      "explanation_en": "A linear model makes sense when the data is low-dimensional, the relationship is roughly linear, and interpretability of the coefficients matters — all three reasons apply.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -285,18 +285,18 @@
       "options_es": [
         "Matriz de derivadas parciales",
         "Inversa de matriz covarianza",
-        "Misma que matriz hessiana en todos los casos posibles",
+        "Es equivalente a matriz hessiana en optimización",
         "Solo para redes neuronales"
       ],
       "options_en": [
         "Matriz de derivadas parciales",
         "Inversa de matriz covarianza",
-        "Misma que matriz hessiana in all possible cases",
+        "It is equivalent to the Hessian matrix in optimization",
         "Solo para redes neuronales"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es matriz jacobiana?...",
-      "explanation_en": "Explanation for What is Jacobian matrix?...",
+      "explanation_es": "La matriz jacobiana reúne las derivadas parciales de una función vectorial respecto a cada una de sus variables.",
+      "explanation_en": "The Jacobian matrix collects the partial derivatives of a vector-valued function with respect to each of its variables.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -318,8 +318,8 @@
         "One-vs-Rest o One-vs-One"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo maneja SVM datos multiclase?...",
-      "explanation_en": "Explanation for How does SVM handle multiclass?...",
+      "explanation_es": "Para problemas multiclase, SVM combina varios clasificadores binarios mediante estrategias como One-vs-Rest o One-vs-One.",
+      "explanation_en": "For multiclass problems, SVM combines several binary classifiers using strategies such as One-vs-Rest or One-vs-One.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -332,17 +332,17 @@
         "Número de support vectors",
         "Distancia hiperplano a ejemplos",
         "Error de predicción",
-        "Parámetro C independientemente del contexto aplicado"
+        "Parámetro C que controla penalización de errores"
       ],
       "options_en": [
         "Número de support vectors",
         "Distancia hiperplano a ejemplos",
         "Error de predicción",
-        "Parámetro C regardless of the applied context"
+        "Parameter C that controls penalty for errors"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es margen en SVM?...",
-      "explanation_en": "Explanation for What is margin in SVM?...",
+      "explanation_es": "El margen en SVM es la distancia entre el hiperplano separador y los ejemplos de entrenamiento más cercanos a él.",
+      "explanation_en": "The margin in SVM is the distance between the separating hyperplane and the closest training examples to it.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -353,19 +353,19 @@
       "question_en": "How does k-means work?",
       "options_es": [
         "Itera asignación y actualización centroides",
-        "Ambas 1 y 3 en cualquier escenario de implementación",
+        "Ambas 1 y 3, sin reasignar puntos en cada paso",
         "Ordena puntos por distancia",
         "Elige k puntos aleatorios finales"
       ],
       "options_en": [
         "Itera asignación y actualización centroides",
-        "Ambas 1 y 3 in any implementation scenario",
+        "Both 1 and 3, without reassigning points each step",
         "Ordena puntos por distancia",
         "Elige k puntos aleatorios finales"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo funciona k-means?...",
-      "explanation_en": "Explanation for How does k-means work?...",
+      "explanation_es": "K-means repite dos pasos hasta estabilizarse: asignar cada punto al centroide más cercano y luego recalcular cada centroide como el promedio de los puntos que le fueron asignados.",
+      "explanation_en": "K-means repeats two steps until it stabilizes: assigning each point to its nearest centroid, then recomputing each centroid as the average of its assigned points.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -376,19 +376,19 @@
       "question_en": "What is elbow method?",
       "options_es": [
         "Elegir k=sqrt(n)",
-        "Siempre k=3 en todos los casos posibles",
+        "Siempre k=3 según regla heurística común",
         "No existe método",
         "Gráfica inercia vs k, elegir 'codo'"
       ],
       "options_en": [
         "Elegir k=sqrt(n)",
-        "Siempre k=3 in all possible cases",
+        "Always k=3 by common heuristic rule",
         "No existe método",
         "Gráfica inercia vs k, elegir 'codo'"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuál es el método del codo?...",
-      "explanation_en": "Explanation for What is elbow method?...",
+      "explanation_es": "El método del codo consiste en graficar la inercia frente a distintos valores de k y elegir el punto donde la mejora empieza a aplanarse, el \"codo\" de la curva.",
+      "explanation_en": "The elbow method plots inertia against different k values and picks the point where the improvement flattens out — the \"elbow\" of the curve.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -401,17 +401,17 @@
         "Mide qué bien definidos son clusters",
         "Número de puntos en cluster",
         "Distancia máxima entre clusters",
-        "Apenas usado en todos los casos posibles"
+        "Apenas usado en evaluación moderna de clustering"
       ],
       "options_en": [
         "Mide qué bien definidos son clusters",
         "Número de puntos en cluster",
         "Distancia máxima entre clusters",
-        "Apenas usado in all possible cases"
+        "Barely used in modern clustering evaluation"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es coeficiente de silueta?...",
-      "explanation_en": "Explanation for What is silhouette coefficient?...",
+      "explanation_es": "El coeficiente de silueta mide qué tan bien definidos están los clusters comparando la cercanía de un punto a su propio cluster frente a los demás clusters.",
+      "explanation_en": "The silhouette coefficient measures how well-defined the clusters are by comparing how close a point is to its own cluster versus other clusters.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -424,17 +424,17 @@
         "Similar a k-means",
         "Crea árbol de clusters anidados",
         "Solo para datos pequeños",
-        "Método obsoleto independientemente del contexto aplicado"
+        "Método obsoleto, reemplazado por k-means"
       ],
       "options_en": [
         "Similar a k-means",
         "Crea árbol de clusters anidados",
         "Solo para datos pequeños",
-        "Método obsoleto regardless of the applied context"
+        "Obsolete method, replaced by k-means"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es clustering jerárquico?...",
-      "explanation_en": "Explanation for What is hierarchical clustering?...",
+      "explanation_es": "El clustering jerárquico construye un árbol de clusters anidados, uniendo o dividiendo grupos progresivamente sin necesidad de fijar k de antemano.",
+      "explanation_en": "Hierarchical clustering builds a tree of nested clusters, progressively merging or splitting groups without needing to fix k in advance.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -445,19 +445,19 @@
       "question_en": "When to use DBSCAN?",
       "options_es": [
         "Cuando k es conocido",
-        "Nunca en práctica según la documentación estándar del servicio",
+        "Nunca en práctica debido a requerimientos computacionales",
         "Para datos muy grandes",
         "Clusters forma arbitraria, densidad variable"
       ],
       "options_en": [
         "Cuando k es conocido",
-        "Nunca en práctica according to standard service documentation",
+        "Never in practice due to computational requirements",
         "Para datos muy grandes",
         "Clusters forma arbitraria, densidad variable"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuándo usar DBSCAN?...",
-      "explanation_en": "Explanation for When to use DBSCAN?...",
+      "explanation_es": "DBSCAN conviene cuando los clusters tienen formas irregulares y densidades distintas, algo que k-means, al asumir clusters esféricos, no maneja bien.",
+      "explanation_en": "DBSCAN is useful when clusters have irregular shapes and varying densities, something k-means struggles with since it assumes roughly spherical clusters.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -468,19 +468,19 @@
       "question_en": "What is dimensionality reduction?",
       "options_es": [
         "Agregar más variables",
-        "Remover filas independientemente del contexto aplicado",
+        "Remover filas que contengan valores faltantes",
         "Transformar a dimensiones menores",
         "Cambiar tipos datos"
       ],
       "options_en": [
         "Agregar más variables",
-        "Remover filas regardless of the applied context",
+        "Remove rows containing missing values",
         "Transformar a dimensiones menores",
         "Cambiar tipos datos"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es reducción de dimensionalidad?...",
-      "explanation_en": "Explanation for What is dimensionality reduction?...",
+      "explanation_es": "Reducir la dimensionalidad significa transformar los datos originales a un espacio con menos dimensiones conservando la mayor parte de la información relevante.",
+      "explanation_en": "Dimensionality reduction means transforming the original data into a space with fewer dimensions while keeping most of the relevant information.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -493,17 +493,17 @@
         "Eliminación aleatoria de variables",
         "Encuentra direcciones máxima varianza",
         "Promedio de todas las variables",
-        "Normalización únicamente de manera exclusiva y permanente"
+        "Normaliza los datos únicamente, sin calcular componentes"
       ],
       "options_en": [
         "Eliminación aleatoria de variables",
         "Encuentra direcciones máxima varianza",
         "Promedio de todas las variables",
-        "Normalización únicamente exclusively and permanently"
+        "It only normalizes the data, without computing components"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo funciona PCA?...",
-      "explanation_en": "Explanation for How does PCA work?...",
+      "explanation_es": "PCA encuentra las direcciones en las que los datos varían más y proyecta las variables originales sobre esos ejes de máxima varianza.",
+      "explanation_en": "PCA finds the directions along which the data varies most and projects the original variables onto those axes of maximum variance.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -516,17 +516,17 @@
         "Suficiente para explicar varianza (90%)",
         "Todas las dimensiones",
         "Una dimensión",
-        "Mitad siempre según la documentación estándar del servicio"
+        "Mitad de componentes siempre es regla segura"
       ],
       "options_en": [
         "Suficiente para explicar varianza (90%)",
         "Todas las dimensiones",
         "Una dimensión",
-        "Mitad siempre according to standard service documentation"
+        "Half of components is always a safe rule"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cuánto mantener en PCA?...",
-      "explanation_en": "Explanation for How much to keep in PCA?...",
+      "explanation_es": "Conviene conservar suficientes componentes como para explicar la mayor parte de la varianza total, por ejemplo alrededor del 90%.",
+      "explanation_en": "It's best to keep enough components to explain most of the total variance, for example around 90%.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -537,19 +537,19 @@
       "question_en": "What is t-SNE?",
       "options_es": [
         "Técnica visualización preserva proximidades",
-        "Método antiguo",
-        "Similar a PCA según la documentación estándar del servicio",
+        "Método antiguo, ya en desuso frente a alternativas actuales",
+        "t-SNE es una versión mejorada de PCA",
         "Para clasificación supervisada"
       ],
       "options_en": [
         "Técnica visualización preserva proximidades",
-        "Método antiguo",
-        "Similar a PCA according to standard service documentation",
+        "Old method, already obsolete compared to current alternatives",
+        "t-SNE is an improved version of PCA",
         "Para clasificación supervisada"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es t-SNE?...",
-      "explanation_en": "Explanation for What is t-SNE?...",
+      "explanation_es": "t-SNE es una técnica de visualización que preserva las proximidades locales entre puntos al proyectarlos a dos o tres dimensiones.",
+      "explanation_en": "t-SNE is a visualization technique that preserves local proximities between points when projecting them down to two or three dimensions.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -562,17 +562,17 @@
         "Muchas features, visualización, ruido",
         "Solo si n_samples < n_features",
         "Siempre aplicar",
-        "Nunca aplicar sin considerar otros factores relevantes"
+        "Nunca aplicar reducción en problemas reales"
       ],
       "options_en": [
         "Muchas features, visualización, ruido",
         "Solo si n_samples < n_features",
         "Siempre aplicar",
-        "Nunca aplicar without considering other relevant factors"
+        "Never apply reduction in real problems"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cuándo usar reducción?...",
-      "explanation_en": "Explanation for When to use dimensionality reduction?...",
+      "explanation_es": "La reducción de dimensionalidad es útil cuando hay muchas variables, cuando se quiere visualizar los datos o cuando se busca eliminar ruido irrelevante.",
+      "explanation_en": "Dimensionality reduction is useful when there are many features, when the data needs to be visualized, or when the goal is to strip out irrelevant noise.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -582,20 +582,20 @@
       "question_es": "¿Qué es Análisis de Componentes Independientes?",
       "question_en": "What is Independent Component Analysis?",
       "options_es": [
-        "Método de clustering en cualquier escenario de implementación",
+        "Método de clustering que separa componentes independientes",
         "Para series temporales",
         "Encuentra componentes estadísticamente independientes",
-        "Lo mismo que PCA sin excepciones ni variantes"
+        "Lo mismo que PCA pero con supuesto de independencia"
       ],
       "options_en": [
-        "Método de clustering in any implementation scenario",
+        "Clustering method that separates independent components",
         "Para series temporales",
         "Encuentra componentes estadísticamente independientes",
-        "Lo mismo que PCA without exceptions or variants"
+        "Same as PCA but with independence assumption"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es Análisis de Componentes Independientes?...",
-      "explanation_en": "Explanation for What is Independent Component Analysis?...",
+      "explanation_es": "El análisis de componentes independientes busca componentes que sean estadísticamente independientes entre sí, a diferencia de PCA que solo busca componentes descorrelacionados.",
+      "explanation_en": "Independent Component Analysis looks for components that are statistically independent of one another, unlike PCA, which only seeks uncorrelated components.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -605,20 +605,20 @@
       "question_es": "¿Cómo se interpreta componente PCA?",
       "question_en": "How to interpret PCA component?",
       "options_es": [
-        "Número de outliers en todos los casos posibles",
+        "Número de outliers que cada componente detecta",
         "Combinación lineal de variables originales",
         "Categoría de cluster",
         "Valor numérico único"
       ],
       "options_en": [
-        "Número de outliers in all possible cases",
+        "Number of outliers that each component detects",
         "Combinación lineal de variables originales",
         "Categoría de cluster",
         "Valor numérico único"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo se interpreta componente PCA?...",
-      "explanation_en": "Explanation for How to interpret PCA component?...",
+      "explanation_es": "Cada componente principal es una combinación lineal de las variables originales, con pesos que indican cuánto contribuye cada una.",
+      "explanation_en": "Each principal component is a linear combination of the original variables, with weights indicating how much each one contributes.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -631,17 +631,17 @@
         "No es un modelo",
         "Depende del caso",
         "No supervisado, ignora etiquetas",
-        "Supervisado como concepto principal"
+        "Supervisado porque requiere etiquetar componentes"
       ],
       "options_en": [
         "No es un modelo",
         "Depende del caso",
         "No supervisado, ignora etiquetas",
-        "Supervisado as the primary concept"
+        "Supervised because it requires labeling components"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Es PCA superviso o no supervisado?...",
-      "explanation_en": "Explanation for Is PCA supervised or unsupervised?...",
+      "explanation_es": "PCA es no supervisado porque encuentra las direcciones de mayor varianza usando solo las variables, sin considerar ninguna etiqueta.",
+      "explanation_en": "PCA is unsupervised because it finds the directions of greatest variance using only the features, without looking at any labels.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -653,18 +653,18 @@
       "options_es": [
         "Escalar features igual importancia",
         "Cambiar nombres",
-        "Remover media de forma invariable y constante",
+        "Remover media normaliza la escala de variables",
         "No es necesario"
       ],
       "options_en": [
         "Escalar features igual importancia",
         "Cambiar nombres",
-        "Remover media invariably and constantly",
+        "Removing mean normalizes the variable scale",
         "No es necesario"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es normalización en clustering?...",
-      "explanation_en": "Explanation for What is normalization in clustering?...",
+      "explanation_es": "Normalizar antes de agrupar significa escalar las variables para que ninguna domine la distancia euclídea solo por tener una magnitud mayor.",
+      "explanation_en": "Normalizing before clustering means scaling the variables so none of them dominates the Euclidean distance simply because of its larger magnitude.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -677,17 +677,17 @@
         "Pocos puntos por cluster",
         "Número de clusters grande",
         "Compactos internamente, separados externamente",
-        "Muchos ruido en cualquier escenario de implementación"
+        "Un alto número de puntos de ruido sin asignar"
       ],
       "options_en": [
         "Pocos puntos por cluster",
         "Número de clusters grande",
         "Compactos internamente, separados externamente",
-        "Muchos ruido in any implementation scenario"
+        "A high number of unassigned noise points"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuándo clusters son buena calidad?...",
-      "explanation_en": "Explanation for When are clusters good quality?...",
+      "explanation_es": "Los clusters de buena calidad son compactos por dentro, con los puntos cercanos entre sí, y están bien separados de los demás clusters.",
+      "explanation_en": "Good-quality clusters are internally compact, with points close to each other, and clearly separated from the other clusters.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -699,18 +699,18 @@
       "options_es": [
         "Proporción predicciones positivas correctas",
         "Número de errores totales",
-        "Velocidad de predicción de manera exclusiva y permanente",
+        "Velocidad de predicción medida en milisegundos por muestra",
         "Fracción verdaderos positivos totales"
       ],
       "options_en": [
         "Proporción predicciones positivas correctas",
         "Número de errores totales",
-        "Velocidad de predicción exclusively and permanently",
+        "Prediction speed measured in milliseconds per sample",
         "Fracción verdaderos positivos totales"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es la precisión en clasificación?",
-      "explanation_en": "Explanation for What is precision in classification?",
+      "explanation_es": "La precisión mide qué proporción de las predicciones marcadas como positivas realmente lo eran.",
+      "explanation_en": "Precision measures what proportion of the predictions labeled positive were actually correct.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -723,17 +723,17 @@
         "Todos los positivos predichos",
         "Fracción casos positivos identificados",
         "Precisión máxima posible",
-        "Ambas 1 y 3 de manera exclusiva y permanente"
+        "Ambas 1 y 3, que describen la exactitud global"
       ],
       "options_en": [
         "Todos los positivos predichos",
         "Fracción casos positivos identificados",
         "Precisión máxima posible",
-        "Ambas 1 y 3 exclusively and permanently"
+        "Both 1 and 3, describing overall model accuracy"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es el recall en clasificación?",
-      "explanation_en": "Explanation for What is recall in classification?",
+      "explanation_es": "El recall mide qué fracción de los casos positivos reales el modelo logró identificar.",
+      "explanation_en": "Recall measures what fraction of the actual positive cases the model managed to identify.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -755,8 +755,8 @@
         "Precisión: pocos falsos positivos importan"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuándo priorizar precisión vs recall?",
-      "explanation_en": "Explanation for When to prioritize precision vs recall?",
+      "explanation_es": "La elección depende del caso de uso: el recall importa cuando no se puede permitir perder positivos reales, y la precisión importa cuando los falsos positivos salen caros, así que las tres ideas son correctas juntas.",
+      "explanation_en": "The choice depends on the use case: recall matters when missing real positives isn't acceptable, and precision matters when false positives are costly — all three ideas hold together.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -767,19 +767,19 @@
       "question_en": "What is F1-score?",
       "options_es": [
         "Máximo de precision/recall",
-        "Promedio simple en cualquier escenario de implementación",
+        "Promedio simple de precisión y recall",
         "Suma de métricas",
         "Media armónica precisión-recall"
       ],
       "options_en": [
         "Máximo de precision/recall",
-        "Promedio simple in any implementation scenario",
+        "Simple average of precision and recall",
         "Suma de métricas",
         "Media armónica precisión-recall"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es el F1-score?",
-      "explanation_en": "Explanation for What is F1-score?",
+      "explanation_es": "El F1-score es la media armónica entre precisión y recall, lo que penaliza más que un promedio simple cuando una de las dos es baja.",
+      "explanation_en": "F1-score is the harmonic mean of precision and recall, which penalizes a low value in either one more heavily than a simple average would.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -801,8 +801,8 @@
         "Porcentaje de aciertos"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo se interpreta AUC?",
-      "explanation_en": "Explanation for How to interpret AUC?",
+      "explanation_es": "El AUC se interpreta en una escala donde 0.5 equivale a un clasificador aleatorio y 1 a una separación perfecta entre clases.",
+      "explanation_en": "AUC is read on a scale where 0.5 corresponds to a random classifier and 1 corresponds to perfect separation between classes.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -812,20 +812,20 @@
       "question_es": "¿Qué es el error absoluto medio (MAE)?",
       "question_en": "What is Mean Absolute Error (MAE)?",
       "options_es": [
-        "Varianza de errores independientemente del contexto aplicado",
+        "Varianza de los errores predichos",
         "Promedio valores absolutos de errores",
         "Raíz error cuadrático medio",
         "Error máximo observado"
       ],
       "options_en": [
-        "Varianza de errores regardless of the applied context",
+        "Variance of prediction errors",
         "Promedio valores absolutos de errores",
         "Raíz error cuadrático medio",
         "Error máximo observado"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es el error absoluto medio (MAE)?",
-      "explanation_en": "Explanation for What is Mean Absolute Error (MAE)?",
+      "explanation_es": "El MAE es simplemente el promedio de los valores absolutos de los errores entre predicción y valor real.",
+      "explanation_en": "MAE is simply the average of the absolute values of the errors between predictions and actual values.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -835,20 +835,20 @@
       "question_es": "¿Cuándo usar RMSE?",
       "question_en": "When to use RMSE?",
       "options_es": [
-        "Solo para series sin considerar otros factores relevantes",
+        "Solo aplica cuando hay series temporales",
         "Penaliza errores grandes, sensible outliers",
         "Para clasificación",
         "Cuando hay muchas clases"
       ],
       "options_en": [
-        "Solo para series without considering other relevant factors",
+        "Only applies to time series data",
         "Penaliza errores grandes, sensible outliers",
         "Para clasificación",
         "Cuando hay muchas clases"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo usar RMSE?",
-      "explanation_en": "Explanation for When to use RMSE?",
+      "explanation_es": "RMSE eleva los errores al cuadrado antes de promediarlos, por lo que castiga más los errores grandes y resulta sensible a los outliers.",
+      "explanation_en": "RMSE squares the errors before averaging them, so it punishes large errors more heavily and is sensitive to outliers.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -858,20 +858,20 @@
       "question_es": "¿Qué es R² en regresión?",
       "question_en": "What is R² in regression?",
       "options_es": [
-        "Error absoluto sin excepciones ni variantes",
+        "Error absoluto normalizado",
         "Coeficiente de regresión",
         "Número de variables",
         "Proporción varianza explicada (0-1)"
       ],
       "options_en": [
-        "Error absoluto without exceptions or variants",
+        "Normalized absolute error",
         "Coeficiente de regresión",
         "Número de variables",
         "Proporción varianza explicada (0-1)"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es R² en regresión?",
-      "explanation_en": "Explanation for What is R² in regression?",
+      "explanation_es": "R² indica qué proporción de la varianza de la variable objetivo logra explicar el modelo, con valores entre 0 y 1.",
+      "explanation_en": "R² indicates what proportion of the target variable's variance the model manages to explain, on a scale from 0 to 1.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -881,20 +881,20 @@
       "question_es": "¿Cómo se calcula matriz de confusión?",
       "question_en": "How is confusion matrix calculated?",
       "options_es": [
-        "Cuenta cantidad de datos en cualquier escenario de implementación",
+        "Cuenta cantidad de muestras en el dataset",
         "Mide tiempo de predicción",
         "Compara predicciones vs valores reales",
         "Promedia todas las métricas"
       ],
       "options_en": [
-        "Cuenta cantidad de datos in any implementation scenario",
+        "Counts number of samples in the dataset",
         "Mide tiempo de predicción",
         "Compara predicciones vs valores reales",
         "Promedia todas las métricas"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo se calcula matriz de confusión?",
-      "explanation_en": "Explanation for How is confusion matrix calculated?",
+      "explanation_es": "La matriz de confusión se construye comparando, para cada muestra, la predicción del modelo contra el valor real.",
+      "explanation_en": "The confusion matrix is built by comparing, for each sample, the model's prediction against the actual value.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -916,8 +916,8 @@
         "Fracción negativos correctos"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es especificidad?",
-      "explanation_en": "Explanation for What is specificity?",
+      "explanation_es": "La especificidad es la tasa de verdaderos negativos, es decir, la fracción de negativos reales que el modelo clasificó correctamente, así que ambas descripciones son la misma idea.",
+      "explanation_en": "Specificity is the true negative rate — the fraction of actual negatives the model correctly classified — so both descriptions point to the same thing.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -927,20 +927,20 @@
       "question_es": "¿Cuándo usar macro vs weighted average?",
       "question_en": "When to use macro vs weighted average?",
       "options_es": [
-        "Siempre macro en cualquier escenario de implementación",
+        "Siempre usar macro para máxima precisión",
         "Siempre weighted",
-        "No importa en todos los casos posibles",
+        "No importa el tipo de datos o clases",
         "Macro: clases iguales, weighted: desbalance"
       ],
       "options_en": [
-        "Siempre macro in any implementation scenario",
+        "Always use macro for maximum precision",
         "Siempre weighted",
-        "No importa in all possible cases",
+        "It does not matter for any type of data or classes",
         "Macro: clases iguales, weighted: desbalance"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuándo usar macro vs weighted average?",
-      "explanation_en": "Explanation for When to use macro vs weighted average?",
+      "explanation_es": "El promedio macro trata a todas las clases por igual sin importar su tamaño, mientras que el weighted average pondera según cuántos ejemplos tiene cada clase, lo que lo hace más adecuado con datos desbalanceados.",
+      "explanation_en": "Macro averaging treats every class equally regardless of size, while weighted averaging weights by how many examples each class has, making it more appropriate for imbalanced data.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -953,17 +953,17 @@
         "Solo mayores clases",
         "Para datos continuos",
         "Mantiene distribución clases en splits",
-        "Aleatorio puro en cualquier escenario de implementación"
+        "Completamente aleatorio sin restricciones"
       ],
       "options_en": [
         "Solo mayores clases",
         "Para datos continuos",
         "Mantiene distribución clases en splits",
-        "Aleatorio puro in any implementation scenario"
+        "Completely random without restrictions"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es validación estratificada?",
-      "explanation_en": "Explanation for What is stratified validation?",
+      "explanation_es": "La validación estratificada conserva en cada partición la misma proporción de clases que hay en el conjunto completo.",
+      "explanation_en": "Stratified validation keeps each split's class proportions close to those of the full dataset.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -975,18 +975,18 @@
       "options_es": [
         "Valor único puntual",
         "Intervalo confianza de métrica",
-        "No se reporta en todos los casos posibles",
+        "No se reporta nunca para evitar sesgo",
         "Solo desviación estándar"
       ],
       "options_en": [
         "Valor único puntual",
         "Intervalo confianza de métrica",
-        "No se reporta in all possible cases",
+        "Never reported to avoid bias",
         "Solo desviación estándar"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo se reporta incertidumbre?",
-      "explanation_en": "Explanation for How to report uncertainty?",
+      "explanation_es": "La incertidumbre de una métrica se reporta mejor como un intervalo de confianza, en lugar de un único valor puntual.",
+      "explanation_en": "A metric's uncertainty is best reported as a confidence interval rather than a single point value.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -997,19 +997,19 @@
       "question_en": "What is learning curve?",
       "options_es": [
         "Precisión en el tiempo",
-        "Error vs iteraciones de forma invariable y constante",
+        "Error vs iteraciones del optimizador",
         "Rendimiento vs tamaño entrenamiento",
         "Complejidad algoritmo"
       ],
       "options_en": [
         "Precisión en el tiempo",
-        "Error vs iteraciones invariably and constantly",
+        "Error vs optimizer iterations",
         "Rendimiento vs tamaño entrenamiento",
         "Complejidad algoritmo"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es curva de aprendizaje?",
-      "explanation_en": "Explanation for What is learning curve?",
+      "explanation_es": "La curva de aprendizaje muestra cómo cambia el rendimiento del modelo a medida que crece el tamaño del conjunto de entrenamiento.",
+      "explanation_en": "The learning curve shows how the model's performance changes as the size of the training set grows.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1031,8 +1031,8 @@
         "Según objetivo negocio"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo elegir métrica final?",
-      "explanation_en": "Explanation for How to choose final metric?",
+      "explanation_es": "La métrica final debe elegirse según el objetivo de negocio, porque distintas métricas priorizan distintos tipos de error.",
+      "explanation_en": "The final metric should be chosen based on the business objective, since different metrics prioritize different kinds of error.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1042,20 +1042,20 @@
       "question_es": "¿Qué es validación cruzada k-fold?",
       "question_en": "What is k-fold cross-validation?",
       "options_es": [
-        "Separa k% datos sin excepciones ni variantes",
+        "Separa el k% de datos para test",
         "Mezcla datos k veces",
         "Divide datos en k partes, k modelos",
         "Crea k datasets nuevos"
       ],
       "options_en": [
-        "Separa k% datos without exceptions or variants",
+        "Splits k% of data for testing",
         "Mezcla datos k veces",
         "Divide datos en k partes, k modelos",
         "Crea k datasets nuevos"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es validación cruzada k-fold?",
-      "explanation_en": "Explanation for What is k-fold cross-validation?",
+      "explanation_es": "La validación cruzada k-fold divide los datos en k partes y entrena k modelos, dejando cada vez una partición distinta como prueba.",
+      "explanation_en": "K-fold cross-validation splits the data into k parts and trains k models, each time holding out a different part for testing.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1067,18 +1067,18 @@
       "options_es": [
         "Para conjuntos grandes",
         "Siempre preferible",
-        "Nunca usar sin considerar otros factores relevantes",
+        "Nunca usar: sobreestima el error real",
         "Datos pequeños, máxima precisión"
       ],
       "options_en": [
         "Para conjuntos grandes",
         "Siempre preferible",
-        "Nunca usar without considering other relevant factors",
+        "Never use it: overestimates true error",
         "Datos pequeños, máxima precisión"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuándo usar leave-one-out?",
-      "explanation_en": "Explanation for When to use leave-one-out?",
+      "explanation_es": "Leave-one-out conviene con datasets pequeños porque cada modelo se entrena con casi todos los datos disponibles, maximizando el uso de la información.",
+      "explanation_en": "Leave-one-out is suited to small datasets because each model trains on almost all the available data, maximizing how much information gets used.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1088,20 +1088,20 @@
       "question_es": "¿Qué es validación estratificada en este contexto?",
       "question_en": "What is stratified cross-validation in this context?",
       "options_es": [
-        "Para regresión solo en cualquier escenario de implementación",
+        "Aplicable solo a problemas de regresión",
         "Divide aleatoriamente",
         "Alternativa a k-fold",
         "Mantiene proporción clases cada fold"
       ],
       "options_en": [
-        "Para regresión solo in any implementation scenario",
+        "Applicable only to regression problems",
         "Divide aleatoriamente",
         "Alternativa a k-fold",
         "Mantiene proporción clases cada fold"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es validación estratificada?",
-      "explanation_en": "Explanation for What is stratified cross-validation?",
+      "explanation_es": "La validación estratificada mantiene en cada fold la misma proporción de clases que existe en el conjunto completo.",
+      "explanation_en": "Stratified cross-validation keeps each fold's class proportions close to those of the full dataset.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1114,17 +1114,17 @@
         "Usar defaults siempre",
         "Grid search o random search",
         "Probar todos manualmente",
-        "Adivinar valores en cualquier escenario de implementación"
+        "Elegir valores aleatorios del usuario"
       ],
       "options_en": [
         "Usar defaults siempre",
         "Grid search o random search",
         "Probar todos manualmente",
-        "Adivinar valores in any implementation scenario"
+        "Choose random user-selected values"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo se buscan hiperparámetros?",
-      "explanation_en": "Explanation for How do you search hyperparameters?",
+      "explanation_es": "Los hiperparámetros se buscan típicamente con grid search, que prueba combinaciones fijas, o con random search, que muestrea combinaciones al azar.",
+      "explanation_en": "Hyperparameters are typically searched with grid search, which tries fixed combinations, or random search, which samples combinations at random.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1135,19 +1135,19 @@
       "question_en": "What is grid search?",
       "options_es": [
         "Prueba combinaciones parámetro grilla",
-        "Busca aleatoria en cualquier escenario de implementación",
+        "Búsqueda completamente aleatoria sin estructura",
         "Búsqueda adaptativa",
         "Optimización bayesiana"
       ],
       "options_en": [
         "Prueba combinaciones parámetro grilla",
-        "Busca aleatoria in any implementation scenario",
+        "Completely random search without structure",
         "Búsqueda adaptativa",
         "Optimización bayesiana"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es grid search?",
-      "explanation_en": "Explanation for What is grid search?",
+      "explanation_es": "Grid search prueba de forma sistemática todas las combinaciones de valores definidas en una grilla de hiperparámetros.",
+      "explanation_en": "Grid search systematically tries every combination of values defined across a grid of hyperparameters.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1160,17 +1160,17 @@
         "Solo parámetros numéricos",
         "Espacio alto dimensional o presupuesto bajo",
         "Para pequeños espacios",
-        "Siempre sobre grid según la documentación estándar del servicio"
+        "Siempre preferible a grid search"
       ],
       "options_en": [
         "Solo parámetros numéricos",
         "Espacio alto dimensional o presupuesto bajo",
         "Para pequeños espacios",
-        "Siempre sobre grid according to standard service documentation"
+        "Always preferable to grid search"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo usar random search?",
-      "explanation_en": "Explanation for When to use random search?",
+      "explanation_es": "Random search es preferible cuando el espacio de hiperparámetros es de alta dimensión o cuando hay poco presupuesto de cómputo, porque suele encontrar buenas combinaciones con menos evaluaciones.",
+      "explanation_en": "Random search is preferable when the hyperparameter space is high-dimensional or the compute budget is tight, since it often finds strong combinations with fewer evaluations.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1182,18 +1182,18 @@
       "options_es": [
         "Entrena pasado, prueba futuro",
         "Ignora orden temporal",
-        "Solo para series sin excepciones ni variantes",
+        "Solo sirve para clasificación",
         "Aleatorio en tiempo"
       ],
       "options_en": [
         "Entrena pasado, prueba futuro",
         "Ignora orden temporal",
-        "Solo para series without exceptions or variants",
+        "Only useful for classification",
         "Aleatorio en tiempo"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es validación temporal?",
-      "explanation_en": "Explanation for What is temporal validation?",
+      "explanation_es": "La validación temporal entrena el modelo con datos del pasado y lo evalúa sobre datos futuros, respetando el orden cronológico.",
+      "explanation_en": "Temporal validation trains the model on past data and evaluates it on future data, respecting chronological order.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1203,20 +1203,20 @@
       "question_es": "¿Cómo validar datos desbalanceados?",
       "question_en": "How to validate imbalanced data?",
       "options_es": [
-        "k-fold normal en cualquier escenario de implementación",
+        "Aplicar k-fold normal sin estratificar",
         "Remover clase minoritaria",
         "Estratificado, métricas apropiadas",
         "Ignorar desbalance"
       ],
       "options_en": [
-        "k-fold normal in any implementation scenario",
+        "Apply regular k-fold without stratifying",
         "Remover clase minoritaria",
         "Estratificado, métricas apropiadas",
         "Ignorar desbalance"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo validar datos desbalanceados?",
-      "explanation_en": "Explanation for How to validate imbalanced data?",
+      "explanation_es": "Con datos desbalanceados conviene usar validación cruzada estratificada junto con métricas que no se dejen engañar por la clase mayoritaria, como F1 o AUC en vez de accuracy.",
+      "explanation_en": "With imbalanced data it's best to use stratified cross-validation together with metrics that aren't fooled by the majority class, such as F1 or AUC instead of accuracy.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1238,8 +1238,8 @@
         "Dos fold simples"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es validación anidada?",
-      "explanation_en": "Explanation for What is nested cross-validation?",
+      "explanation_es": "La validación anidada usa un bucle externo para evaluar el modelo y un bucle interno para ajustar sus hiperparámetros, por lo que implica varias rondas de validación.",
+      "explanation_en": "Nested cross-validation uses an outer loop to evaluate the model and an inner loop to tune its hyperparameters, which means it involves multiple rounds of validation.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1252,17 +1252,17 @@
         "k mayor = menos sesgo, más varianza",
         "k sin importancia",
         "k=2 siempre mejor",
-        "k=tamaño datos en todos los casos posibles"
+        "k siempre debe igualar el tamaño total"
       ],
       "options_en": [
         "k mayor = menos sesgo, más varianza",
         "k sin importancia",
         "k=2 siempre mejor",
-        "k=tamaño datos in all possible cases"
+        "k must always equal total dataset size"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo afecta k en k-fold?",
-      "explanation_en": "Explanation for How does k affect k-fold?",
+      "explanation_es": "Un k mayor deja más datos para entrenar en cada fold, lo que reduce el sesgo, pero los folds se parecen más entre sí y eso aumenta la varianza de la estimación.",
+      "explanation_en": "A larger k leaves more data to train on in each fold, which lowers bias, but the folds become more similar to each other, which raises the variance of the estimate.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1273,19 +1273,19 @@
       "question_en": "What is time series cross-validation?",
       "options_es": [
         "Para datos sin orden",
-        "Aleatorio en tiempo sin considerar otros factores relevantes",
+        "Aleatoriza completamente el orden temporal",
         "Lo mismo que normal",
         "Entrena [0:t], prueba [t:t+h]"
       ],
       "options_en": [
         "Para datos sin orden",
-        "Aleatorio en tiempo without considering other relevant factors",
+        "Completely randomizes temporal order",
         "Lo mismo que normal",
         "Entrena [0:t], prueba [t:t+h]"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es validación cruzada temporal?",
-      "explanation_en": "Explanation for What is time series cross-validation?",
+      "explanation_es": "La validación cruzada temporal entrena con los datos hasta el instante t y prueba con los que vienen después, en la ventana [t, t+h], respetando el orden temporal.",
+      "explanation_en": "Time series cross-validation trains on data up to time t and tests on what comes after, in the window [t, t+h], respecting temporal order.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1298,17 +1298,17 @@
         "k=número features",
         "k=número de filas",
         "k=5 o 10 común, depende datos",
-        "Siempre k=3 de manera exclusiva y permanente"
+        "Siempre k=3 como estándar industrial"
       ],
       "options_en": [
         "k=número features",
         "k=número de filas",
         "k=5 o 10 común, depende datos",
-        "Siempre k=3 exclusively and permanently"
+        "Always k=3 as industry standard"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo se elige k?",
-      "explanation_en": "Explanation for How do you choose k?",
+      "explanation_es": "Valores como k=5 o k=10 son los más habituales en la práctica, aunque la elección final depende del tamaño y naturaleza de los datos.",
+      "explanation_en": "Values like k=5 or k=10 are the most common choices in practice, though the final pick depends on the size and nature of the data.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1321,17 +1321,17 @@
         "Normaliza datos",
         "Aleatoriza orden antes splits",
         "Remueve outliers",
-        "No tiene efecto de forma invariable y constante"
+        "No afecta el resultado de validación"
       ],
       "options_en": [
         "Normaliza datos",
         "Aleatoriza orden antes splits",
         "Remueve outliers",
-        "No tiene efecto invariably and constantly"
+        "Does not affect validation results"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es shuffling en validación?",
-      "explanation_en": "Explanation for What is shuffling in validation?",
+      "explanation_es": "El shuffling reordena aleatoriamente las observaciones antes de hacer las particiones, evitando que algún orden original sesgue los folds.",
+      "explanation_en": "Shuffling randomly reorders the observations before creating the splits, preventing any original ordering from biasing the folds.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1343,18 +1343,18 @@
       "options_es": [
         "Solo para tests rápidos",
         "Nunca es suficiente",
-        "Siempre como concepto principal",
+        "Es la mejor práctica para todos los casos",
         "Muestra muy grande, presupuesto bajo"
       ],
       "options_en": [
         "Solo para tests rápidos",
         "Nunca es suficiente",
-        "Siempre as the primary concept",
+        "Is best practice for all cases",
         "Muestra muy grande, presupuesto bajo"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cuándo usar validación simple?",
-      "explanation_en": "Explanation for When to use simple validation?",
+      "explanation_es": "Una validación simple con un solo split train/test es aceptable para pruebas rápidas, pero no sustituye a la validación cruzada cuando se necesita una estimación fiable.",
+      "explanation_en": "A simple single train/test split is fine for quick tests, but it's no substitute for cross-validation when a reliable estimate is needed.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1365,19 +1365,19 @@
       "question_en": "How to report final results?",
       "options_es": [
         "Media y std de folds",
-        "Mejor fold solo sin considerar otros factores relevantes",
+        "Reportar solo el mejor fold para evitar variabilidad",
         "Promedio simple",
         "Sin variabilidad"
       ],
       "options_en": [
         "Media y std de folds",
-        "Mejor fold solo without considering other relevant factors",
+        "Report only best fold to avoid variability",
         "Promedio simple",
         "Sin variabilidad"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo se reporta resultado final?",
-      "explanation_en": "Explanation for How to report final results?",
+      "explanation_es": "El resultado final debe reportarse como la media y la desviación estándar de los desempeños obtenidos en cada fold, no como un único valor.",
+      "explanation_en": "The final result should be reported as the mean and standard deviation of the scores across folds, not as a single value.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     }
   ]

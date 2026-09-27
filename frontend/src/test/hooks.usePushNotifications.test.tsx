@@ -9,7 +9,7 @@
  * the user digging into site settings, so asking when we cannot follow through
  * spends a one-shot resource for nothing.
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 

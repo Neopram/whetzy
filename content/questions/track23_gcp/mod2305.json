@@ -9,13 +9,13 @@
       "options_es": [
         "Base de datos relacional pequeña",
         "Herramienta de análisis local",
-        "Base de datos en tiempo real sin considerar otros factores relevantes",
+        "Base de datos en tiempo real con escritura secuencial lenta",
         "Almacén de datos cloud para análisis de big data"
       ],
       "options_en": [
         "Small relational database",
         "Local analysis tool",
-        "Real-time database without considering other relevant factors",
+        "Real-time database with slow sequential writes",
         "Cloud data warehouse for big data analytics"
       ],
       "correct_index": 3,
@@ -31,15 +31,15 @@
       "question_en": "What is the typical analysis speed in BigQuery?",
       "options_es": [
         "Segundos para terabytes de datos",
-        "Horas como concepto principal",
-        "Minutos como concepto principal",
-        "No se puede analizar según la documentación estándar del servicio"
+        "Horas aplicables solo a peticiones cortas de datos",
+        "Minutos utilizando procesamiento serializado",
+        "No se puede analizar"
       ],
       "options_en": [
         "Seconds for terabytes of data",
-        "Hours as the primary concept",
-        "Minutes as the primary concept",
-        "Cannot analyze according to standard service documentation"
+        "Hours applicable only for short data queries",
+        "Minutes using serialized processing",
+        "Cannot analyze"
       ],
       "correct_index": 0,
       "explanation_es": "BigQuery analiza terabytes de datos en segundos usando paralelización masiva.",
@@ -53,16 +53,16 @@
       "question_es": "¿Cómo se cargan datos en BigQuery?",
       "question_en": "How are data loaded into BigQuery?",
       "options_es": [
-        "Requiere herramienta especial",
+        "Requiere herramienta especial instalando un cliente ODBC en el servidor",
         "Desde Cloud Storage, Cloud SQL, Firestore, APIs",
-        "No se pueden cargar",
-        "Solo manualmente según la documentación estándar del servicio"
+        "No se pueden cargar solo en la consola gráfica de administración",
+        "Solo manualmente"
       ],
       "options_en": [
-        "Requires special tool",
+        "Requires special tool by installing an ODBC client on the server",
         "From Cloud Storage, Cloud SQL, Firestore, APIs",
-        "Cannot be loaded",
-        "Manual only according to standard service documentation"
+        "Cannot be loaded only in the graphical admin console",
+        "Manual only"
       ],
       "correct_index": 1,
       "explanation_es": "BigQuery carga datos desde múltiples fuentes: Cloud Storage (CSV, JSON), Cloud SQL, streaming, APIs.",
@@ -76,16 +76,16 @@
       "question_es": "¿Qué es una tabla en BigQuery?",
       "question_en": "What is a table in BigQuery?",
       "options_es": [
-        "Un contenedor de datos",
+        "Un contenedor de datos sin definición explícita de tipos de datos",
         "Estructura de columnas y filas con esquema",
-        "Un archivo de datos",
-        "Documento NoSQL en todos los casos posibles"
+        "Un archivo de datos almacenado en ficheros JSON sin estructura",
+        "Documento NoSQL"
       ],
       "options_en": [
-        "Data container",
+        "Data container without explicit data type definition",
         "Column and row structure with schema",
-        "A data file",
-        "NoSQL document in all possible cases"
+        "A data file stored in unstructured JSON files",
+        "NoSQL document"
       ],
       "correct_index": 1,
       "explanation_es": "Una tabla en BigQuery tiene columnas (campos tipados) y filas (registros) con esquema definido.",
@@ -99,15 +99,15 @@
       "question_es": "¿Qué es un dataset en BigQuery?",
       "question_en": "What is a dataset in BigQuery?",
       "options_es": [
-        "Una consulta almacenada",
+        "Una consulta almacenada que se ejecuta como una subconsulta precargada",
         "Contenedor que agrupa tablas y vistas",
-        "Una tabla única en cualquier escenario de implementación",
+        "Una tabla única que ocupa un espacio de memoria fijo",
         "Un archivo de datos"
       ],
       "options_en": [
-        "A stored query",
+        "A stored query that executes as a preloaded subquery",
         "Container that groups tables and views",
-        "A single table in any implementation scenario",
+        "A single table that occupies a fixed memory space",
         "A data file"
       ],
       "correct_index": 1,
@@ -123,15 +123,15 @@
       "question_en": "How are queries written in BigQuery?",
       "options_es": [
         "Con SQL estándar (SELECT, WHERE, JOIN, etc.)",
-        "No se pueden escribir",
-        "Con lenguaje propietario",
-        "Solo visualmente según la documentación estándar del servicio"
+        "No se pueden escribir se requiere compilación previa del código",
+        "Con lenguaje propietario con sintaxis personalizada para GCP",
+        "Solo visualmente"
       ],
       "options_en": [
         "With standard SQL (SELECT, WHERE, JOIN, etc.)",
-        "Cannot be written",
-        "Proprietary language",
-        "Visual only according to standard service documentation"
+        "Cannot be written code requires prior compilation",
+        "Proprietary language with custom syntax for GCP",
+        "Visual only"
       ],
       "correct_index": 0,
       "explanation_es": "BigQuery utiliza SQL estándar con extensiones de Google, compatible con la mayoría de herramientas SQL.",
@@ -145,14 +145,14 @@
       "question_es": "¿Cómo se carga datos en streaming en BigQuery?",
       "question_en": "How is streaming data loaded into BigQuery?",
       "options_es": [
-        "Solo en lotes de forma invariable y constante",
-        "No es posible en todos los casos posibles",
+        "solo en descargas de datos en lote desde Cloud Storage",
+        "requiere API externa de terceros para streaming",
         "Requiere herramienta especial",
         "Mediante Dataflow, Pub/Sub o BigQuery Streaming API"
       ],
       "options_en": [
-        "Batch only invariably and constantly",
-        "Not possible in all possible cases",
+        "Batch only from Cloud Storage without streaming capability",
+        "Requires third-party external API for any streaming processing",
         "Requires special tool",
         "Via Dataflow, Pub/Sub, or BigQuery Streaming API"
       ],
@@ -168,16 +168,16 @@
       "question_es": "¿Cómo se optimiza el costo en BigQuery?",
       "question_en": "How is cost optimized in BigQuery?",
       "options_es": [
-        "Solo pagar más en todos los casos posibles",
-        "No se puede optimizar",
+        "Solo pagar más pagando por cada operación de lectura",
+        "No se puede optimizar no hay opciones de optimización técnica",
         "Usando particionamiento, clustering, compression",
-        "Análisis limitados sin considerar otros factores relevantes"
+        "Análisis limitados"
       ],
       "options_en": [
-        "Pay more only in all possible cases",
-        "Cannot be optimized",
+        "Pay more only paying for each read operation",
+        "Cannot be optimized no technical optimization options",
         "Using partitioning, clustering, compression",
-        "Limited analysis without considering other relevant factors"
+        "Limited analysis"
       ],
       "correct_index": 2,
       "explanation_es": "Optimización: particionamiento por fecha, clustering de columnas, compresión, análisis selectivo de columnas.",
@@ -191,14 +191,14 @@
       "question_es": "¿Cómo se exportan datos desde BigQuery?",
       "question_en": "How are data exported from BigQuery?",
       "options_es": [
-        "Requiere API de forma invariable y constante",
-        "Solo descarga manual",
+        "Requiere API mediante descargas síncronas a ficheros locales",
+        "Solo descarga manual limitado a clientes autenticados en la VPC",
         "No se pueden exportar",
         "A Cloud Storage (CSV, JSON, Avro, Parquet)"
       ],
       "options_en": [
-        "Requires API invariably and constantly",
-        "Manual download only",
+        "Requires API via synchronous downloads to local files",
+        "Manual download only limited to clients authenticated in VPC",
         "Cannot be exported",
         "To Cloud Storage (CSV, JSON, Avro, Parquet)"
       ],
@@ -214,14 +214,14 @@
       "question_es": "¿Cuál es el modelo de precios de BigQuery?",
       "question_en": "What is the pricing model for BigQuery?",
       "options_es": [
-        "Gratis como concepto principal",
-        "Solo acceso pago según la documentación estándar del servicio",
+        "Gratis dentro del tier gratuito limitado a 1 GB",
+        "Solo acceso pago requiere contrato empresarial con Google",
         "Por datos escaneados y almacenamiento",
         "Pago mensual fijo"
       ],
       "options_en": [
-        "Free as the primary concept",
-        "Paid access only according to standard service documentation",
+        "Free free tier limited to 1 GB",
+        "Paid access only requires enterprise contract with Google",
         "Per data scanned and storage",
         "Fixed monthly payment"
       ],
@@ -237,16 +237,16 @@
       "question_es": "¿Qué es una vista materializada (Materialized View) en BigQuery?",
       "question_en": "What is a Materialized View in BigQuery?",
       "options_es": [
-        "Un tipo de almacenamiento sin excepciones ni variantes",
+        "Un tipo de almacenamiento un tipo de tabla temporal en BD tradicional",
         "Tabla precalculada que se actualiza automáticamente",
         "Una herramienta de análisis",
-        "No existe independientemente del contexto aplicado"
+        "No existe solo disponible en versiones beta de BigQuery"
       ],
       "options_en": [
-        "A storage type without exceptions or variants",
+        "A storage type a temporary table type in traditional DB",
         "Pre-calculated table that updates automatically",
         "An analytics tool",
-        "Does not exist regardless of the applied context"
+        "Does not exist only available in BigQuery beta versions"
       ],
       "correct_index": 1,
       "explanation_es": "Las vistas materializadas precalculan resultados y se actualizan automáticamente, mejorando velocidad de consultas.",
@@ -260,13 +260,13 @@
       "question_es": "¿Cómo se monitorean consultas en BigQuery?",
       "question_en": "How are queries monitored in BigQuery?",
       "options_es": [
-        "No hay monitoreo sin considerar otros factores relevantes",
+        "No hay monitoreo se registran solo en ficheros locales del servidor",
         "Solo logs manuales",
         "Mediante Cloud Monitoring y BigQuery Admin Console",
         "Únicamente en desarrollo"
       ],
       "options_en": [
-        "No monitoring without considering other relevant factors",
+        "No monitoring logged only in local server files",
         "Manual logs only",
         "Via Cloud Monitoring and BigQuery Admin Console",
         "Development only"
@@ -283,13 +283,13 @@
       "question_es": "¿Cómo se integra BigQuery con herramientas de BI?",
       "question_en": "How does BigQuery integrate with BI tools?",
       "options_es": [
-        "No se integra independientemente del contexto aplicado",
+        "con protocolo ODBC exclusivamente en conexiones remotas",
         "Solo exportar datos",
         "API únicamente",
         "A través de conector BigQuery (Tableau, Looker, etc.)"
       ],
       "options_en": [
-        "Does not integrate regardless of the applied context",
+        "with ODBC protocol exclusively in remote connections",
         "Export data only",
         "API only",
         "Via BigQuery connector (Tableau, Looker, etc.)"
@@ -306,16 +306,16 @@
       "question_es": "¿Qué es BI Engine en BigQuery?",
       "question_en": "What is BI Engine in BigQuery?",
       "options_es": [
-        "Un tipo de almacenamiento en todos los casos posibles",
+        "Un tipo de almacenamiento almacenador de datos sin capacidad de procesamiento",
         "Una herramienta de análisis",
         "Motor de análisis en memoria para acelerar consultas",
-        "No existe independientemente del contexto aplicado"
+        "No existe obsoleto desde 2022 en Google Cloud"
       ],
       "options_en": [
-        "A storage type in all possible cases",
+        "A storage type data storage without processing capability",
         "An analytics tool",
         "In-memory analytics engine to speed up queries",
-        "Does not exist regardless of the applied context"
+        "Does not exist deprecated since 2022 in Google Cloud"
       ],
       "correct_index": 2,
       "explanation_es": "BI Engine cachea datos en memoria para acelerar significativamente consultas de BI.",
@@ -329,16 +329,16 @@
       "question_es": "¿Cómo se usan funciones definidas por el usuario (UDF) en BigQuery?",
       "question_en": "How are user-defined functions (UDF) used in BigQuery?",
       "options_es": [
-        "No se pueden usar según la documentación estándar del servicio",
+        "no pueden usarse según la documentación de Google",
         "Escribir lógica personalizada en SQL o JavaScript",
-        "Requiere herramienta externa",
-        "Solo funciones integradas"
+        "requiere herramienta externa especializada en JavaScript",
+        "solo funciones integradas del motor de base de datos"
       ],
       "options_en": [
-        "Cannot be used according to standard service documentation",
+        "cannot be used according to Google documentation",
         "Write custom logic in SQL or JavaScript",
-        "Requires external tool",
-        "Built-in functions only"
+        "requires external specialized tool in JavaScript",
+        "built-in functions of database engine only"
       ],
       "correct_index": 1,
       "explanation_es": "Las UDFs permiten escribir lógica personalizada en SQL o JavaScript para ampliar funcionalidad de BigQuery.",
@@ -352,15 +352,15 @@
       "question_es": "¿Qué es Apache Beam en Google Cloud Dataflow?",
       "question_en": "What is Apache Beam in Google Cloud Dataflow?",
       "options_es": [
-        "Base de datos de manera exclusiva y permanente",
-        "Un servicio de almacenamiento",
-        "Herramienta de análisis de forma invariable y constante",
+        "Base de datos que almacena datos de forma síncrona y bloqueante",
+        "herramienta de análisis de datos con procesamiento batch",
+        "Herramienta de análisis",
         "Marco de programación para procesamiento de datos distribuido"
       ],
       "options_en": [
-        "Database as the primary concept exclusively and permanently",
-        "Storage service",
-        "Analytics tool invariably and constantly",
+        "Database that stores data synchronously and blocking",
+        "Data analytics tool with batch processing capability",
+        "Analytics tool",
         "Programming framework for distributed data processing"
       ],
       "correct_index": 3,
@@ -375,15 +375,15 @@
       "question_es": "¿Cómo se definen pipelines en Dataflow?",
       "question_en": "How are pipelines defined in Dataflow?",
       "options_es": [
-        "Con SQL sin excepciones ni variantes",
-        "En consola sin excepciones ni variantes",
-        "Visualmente como concepto principal",
+        "Con SQL utilizando sintaxis compatible con T-SQL",
+        "En consola requiere interfaz gráfica sin soporte para código",
+        "Visualmente",
         "En código (Python, Java) usando Apache Beam SDK"
       ],
       "options_en": [
-        "With SQL without exceptions or variants",
-        "In console without exceptions or variants",
-        "Visually as the primary concept",
+        "With SQL using T-SQL compatible syntax",
+        "In console requires GUI with no code support",
+        "Visually",
         "In code (Python, Java) using Apache Beam SDK"
       ],
       "correct_index": 3,
@@ -398,15 +398,15 @@
       "question_es": "¿Cuál es la diferencia entre procesamiento batch y streaming en Dataflow?",
       "question_en": "What is the difference between batch and streaming in Dataflow?",
       "options_es": [
-        "Solo streaming existe",
-        "No hay diferencia en todos los casos posibles",
-        "Solo batch existe sin excepciones ni variantes",
+        "Solo streaming existe solo streaming existe en plataformas distribuidas",
+        "No hay diferencia",
+        "Solo batch existe y nunca se pueden mezclar en un mismo pipeline",
         "Batch procesa datos históricos, streaming en tiempo real"
       ],
       "options_en": [
-        "Only streaming exists",
-        "No difference in all possible cases",
-        "Only batch exists without exceptions or variants",
+        "Only streaming exists only streaming exists in distributed platforms",
+        "No difference",
+        "Only batch exists and can never be mixed in same pipeline",
         "Batch processes historical data, streaming in real-time"
       ],
       "correct_index": 3,
@@ -424,13 +424,13 @@
         "Automáticamente basado en carga de datos",
         "No es posible",
         "Escalado manual obligatorio",
-        "No se escalan según la documentación estándar del servicio"
+        "No se escalan manualmente ajustando el número máximo de workers"
       ],
       "options_en": [
         "Automatically based on data load",
         "Not possible",
         "Manual scaling required",
-        "Do not scale according to standard service documentation"
+        "Do not scale manually adjusting maximum worker count"
       ],
       "correct_index": 0,
       "explanation_es": "Dataflow escala automáticamente el número de workers según el volumen de datos procesados.",
@@ -444,15 +444,15 @@
       "question_es": "¿Qué es una transformación en Dataflow?",
       "question_en": "What is a transformation in Dataflow?",
       "options_es": [
-        "Una consulta de forma invariable y constante",
+        "una consulta SQL ejecutada en el pipeline con límites de tamaño",
         "Un archivo de datos",
-        "Un contenedor independientemente del contexto aplicado",
+        "un contenedor de datos en memoria con caché distribuido",
         "Operación que procesa PCollections (colecciones distribuidas)"
       ],
       "options_en": [
-        "Query as the primary concept invariably and constantly",
+        "SQL query executed in pipeline with data size limitations",
         "Data file",
-        "Container as the primary concept regardless of the applied context",
+        "In-memory data container with distributed caching mechanism",
         "Operation that processes PCollections (distributed collections)"
       ],
       "correct_index": 3,
@@ -467,15 +467,15 @@
       "question_es": "¿Cuál es el modelo de precios de Dataflow?",
       "question_en": "What is the pricing model for Dataflow?",
       "options_es": [
-        "Solo anual en todos los casos posibles",
+        "Solo anual solo por suscripción anual sin opción mensual",
         "Por workers/hora y datos procesados",
-        "Gratis como concepto principal",
+        "Gratis",
         "Pago mensual fijo"
       ],
       "options_en": [
-        "Annual only in all possible cases",
+        "Annual only annual subscription only, no monthly option",
         "Per workers/hour and data processed",
-        "Free as the primary concept",
+        "Free",
         "Fixed monthly payment"
       ],
       "correct_index": 1,
@@ -491,15 +491,15 @@
       "question_en": "How are errors handled in Dataflow?",
       "options_es": [
         "No hay manejo",
-        "Fallo inmediato",
+        "Fallo inmediato los fallos críticos se notifican manualmente",
         "Reintentos automáticos y logging en Cloud Logging",
-        "Se ignoran sin considerar otros factores relevantes"
+        "Se ignoran"
       ],
       "options_en": [
         "No handling",
-        "Immediate failure",
+        "Immediate failure critical failures are manually notified",
         "Automatic retries and logging in Cloud Logging",
-        "Ignored as the primary concept without considering other relevant factors"
+        "Ignored"
       ],
       "correct_index": 2,
       "explanation_es": "Dataflow reintenta automáticamente en caso de fallos transitorios y registra errores.",
@@ -513,13 +513,13 @@
       "question_es": "¿Cómo se monitorean pipelines en Dataflow?",
       "question_en": "How are pipelines monitored in Dataflow?",
       "options_es": [
-        "Solo logs manuales de manera exclusiva y permanente",
+        "Solo logs manuales mediante depósitos de datos con acceso limitado",
         "Mediante Cloud Monitoring y Dataflow console",
         "No hay herramientas",
         "Únicamente en desarrollo"
       ],
       "options_en": [
-        "Manual logs only exclusively and permanently",
+        "Manual logs only via data deposits with limited access",
         "Via Cloud Monitoring and Dataflow console",
         "No tools",
         "Development only"
@@ -537,13 +537,13 @@
       "question_en": "How are pipelines debugged in Dataflow?",
       "options_es": [
         "Requiere herramienta externa",
-        "No se pueden depurar sin excepciones ni variantes",
+        "No se pueden depurar excepto en los nodos raíz del cluster",
         "Solo en desarrollo local",
         "Usando Cloud Debugger y Dataflow Shuffle logs"
       ],
       "options_en": [
         "Requires external tool",
-        "Cannot be debugged without exceptions or variants",
+        "Cannot be debugged except on cluster root nodes",
         "Local development only",
         "Using Cloud Debugger and Dataflow Shuffle logs"
       ],
@@ -559,13 +559,13 @@
       "question_es": "¿Cómo se integra Dataflow con Pub/Sub?",
       "question_en": "How does Dataflow integrate with Pub/Sub?",
       "options_es": [
-        "No se integra según la documentación estándar del servicio",
+        "No se integra requiere ejecutables compilados en Go",
         "Requiere herramienta especial",
         "Solo para batch",
         "Pub/Sub como fuente de streaming para pipelines"
       ],
       "options_en": [
-        "Does not integrate according to standard service documentation",
+        "Does not integrate requires compiled executables in Go",
         "Requires special tool",
         "Batch only",
         "Pub/Sub as streaming source for pipelines"
@@ -583,14 +583,14 @@
       "question_en": "What is windowing in Dataflow?",
       "options_es": [
         "División de datos en ventanas de tiempo para análisis temporal",
-        "No existe sin considerar otros factores relevantes",
-        "Un tipo de almacenamiento según la documentación estándar del servicio",
+        "No existe en plataformas de streaming sin excepciones técnicas",
+        "Un tipo de almacenamiento",
         "Una herramienta de análisis"
       ],
       "options_en": [
         "Division of data into time windows for temporal analysis",
-        "Does not exist without considering other relevant factors",
-        "A storage type according to standard service documentation",
+        "does not exist in streaming platforms without exceptions",
+        "A storage type",
         "An analytics tool"
       ],
       "correct_index": 0,
@@ -605,16 +605,16 @@
       "question_es": "¿Cómo se optimiza el costo en Dataflow?",
       "question_en": "How is cost optimized in Dataflow?",
       "options_es": [
-        "Pagar más en cualquier escenario de implementación",
-        "No hay optimización",
+        "Pagar más aumentando el tiempo de ejecución del job",
+        "No hay optimización sin opciones de reducción del consumo de recursos",
         "Usando workers eficientes, procesamiento por lotes, autoscaling",
-        "No se puede de manera exclusiva y permanente"
+        "No se puede"
       ],
       "options_en": [
-        "Pay more in any implementation scenario",
-        "No optimization",
+        "Pay more by increasing job execution time",
+        "No optimization no options for reducing resource usage",
         "Using efficient workers, batch processing, autoscaling",
-        "Cannot be done exclusively and permanently"
+        "Cannot be done"
       ],
       "correct_index": 2,
       "explanation_es": "Optimización: elegir tipo de worker apropiado, dividir en procesamiento batch, usar autoscaling.",
@@ -629,15 +629,15 @@
       "question_en": "What is the delivery guarantee in Dataflow streaming?",
       "options_es": [
         "At-least-once con deduplicación",
-        "Best-effort como concepto principal",
+        "Best-effort entrega óptima sin duplicados en principios",
         "No hay garantía",
-        "Exactly-once como concepto principal"
+        "Exactly-once exacto con garantía de idempotencia total"
       ],
       "options_en": [
         "At-least-once with deduplication",
-        "Best-effort as the primary concept",
+        "Best-effort optimal delivery without duplicates in principle",
         "No guarantee",
-        "Exactly-once as the primary concept"
+        "Exactly-once exactly-once with total idempotence guarantee"
       ],
       "correct_index": 0,
       "explanation_es": "Dataflow garantiza at-least-once delivery. Debes manejar duplicados en lógica de negocio.",
@@ -651,15 +651,15 @@
       "question_es": "¿Cómo se exportan resultados desde Dataflow?",
       "question_en": "How are results exported from Dataflow?",
       "options_es": [
-        "Requiere herramienta especial",
+        "Requiere herramienta especial utilizando APIs REST para exportación manual",
         "A Cloud Storage, BigQuery, Pub/Sub, Datastore",
-        "No se pueden exportar de manera exclusiva y permanente",
+        "No se pueden exportar",
         "Solo para descarga manual"
       ],
       "options_en": [
-        "Requires special tool",
+        "Requires special tool using REST APIs for manual export",
         "To Cloud Storage, BigQuery, Pub/Sub, Datastore",
-        "Cannot be exported exclusively and permanently",
+        "Cannot be exported",
         "Manual download only"
       ],
       "correct_index": 1,
@@ -674,16 +674,16 @@
       "question_es": "¿Cómo se desarrollan pipelines Dataflow localmente?",
       "question_en": "How are Dataflow pipelines developed locally?",
       "options_es": [
-        "Solo en la nube",
-        "Requiere Dataflow",
+        "Solo en la nube solo en contenedores Docker previamente compilados",
+        "Requiere Dataflow requiere máquina virtual con Apache Spark",
         "Usando Direct Runner del SDK local",
-        "No se puede independientemente del contexto aplicado"
+        "No se puede"
       ],
       "options_en": [
-        "Cloud only",
-        "Requires Dataflow",
+        "Cloud only only in pre-compiled Docker containers",
+        "Requires Dataflow requires VM with Apache Spark",
         "Using Direct Runner from local SDK",
-        "Cannot be done regardless of the applied context"
+        "Cannot be done"
       ],
       "correct_index": 2,
       "explanation_es": "El SDK de Apache Beam proporciona Direct Runner para desarrollo y testing local.",
@@ -697,16 +697,16 @@
       "question_es": "¿Qué es Google Cloud Pub/Sub?",
       "question_en": "What is Google Cloud Pub/Sub?",
       "options_es": [
-        "Herramienta de análisis sin considerar otros factores relevantes",
+        "Herramienta de análisis local",
         "Almacenamiento de archivos",
         "Servicio de mensajería asincrónica publicador-suscriptor",
-        "Base de datos de manera exclusiva y permanente"
+        "Base de datos relacional local"
       ],
       "options_en": [
-        "Analytics tool without considering other relevant factors",
+        "Local analysis tool",
         "File storage",
         "Asynchronous pub-sub messaging service",
-        "Database as the primary concept exclusively and permanently"
+        "Local relational database"
       ],
       "correct_index": 2,
       "explanation_es": "Pub/Sub es un servicio de mensajería distribuida que desacopla publicadores de suscriptores.",
@@ -721,15 +721,15 @@
       "question_en": "What is the basic model of Pub/Sub?",
       "options_es": [
         "Publicador -> Topic -> Suscriptor",
-        "Broadcast como concepto principal",
-        "Request-response como concepto principal",
-        "Punto a punto"
+        "Broadcasting a múltiples canales simultáneamente",
+        "Modelo request-response síncrono",
+        "Comunicación punto a punto directa"
       ],
       "options_en": [
         "Publisher -> Topic -> Subscriber",
-        "Broadcast as the primary concept",
-        "Request-response as the primary concept",
-        "Point to point"
+        "Broadcasting to multiple channels simultaneously",
+        "Synchronous request-response model",
+        "Direct point-to-point communication"
       ],
       "correct_index": 0,
       "explanation_es": "Publicadores envían mensajes a Topics. Suscriptores se suscriben a Topics para recibir mensajes.",
@@ -743,16 +743,16 @@
       "question_es": "¿Qué es un Topic en Pub/Sub?",
       "question_en": "What is a Topic in Pub/Sub?",
       "options_es": [
-        "Un mensaje sin considerar otros factores relevantes",
+        "Un registro de eventos del sistema",
         "Canal de comunicación donde se publican mensajes",
-        "Una base de datos",
-        "Un archivo"
+        "Una base de datos NoSQL",
+        "Un almacén de archivos distribuido"
       ],
       "options_en": [
-        "A message without considering other relevant factors",
+        "A system event log",
         "Communication channel where messages are published",
-        "A database",
-        "A file"
+        "A NoSQL database",
+        "A distributed file store"
       ],
       "correct_index": 1,
       "explanation_es": "Un Topic es un canal nombrado donde publicadores envían mensajes.",
@@ -766,15 +766,15 @@
       "question_es": "¿Qué es una Subscription en Pub/Sub?",
       "question_en": "What is a Subscription in Pub/Sub?",
       "options_es": [
-        "Un archivo",
-        "Un mensaje según la documentación estándar del servicio",
-        "Una consulta",
+        "Un archivo de datos",
+        "Un mensaje individual",
+        "Una consulta GROQ",
         "Conexión que recibe mensajes de un Topic"
       ],
       "options_en": [
         "A file",
-        "A message according to standard service documentation",
-        "A query",
+        "An individual message",
+        "A GROQ query",
         "Connection that receives messages from a Topic"
       ],
       "correct_index": 3,
@@ -789,16 +789,16 @@
       "question_es": "¿Cuáles son los modelos de entrega en Pub/Sub?",
       "question_en": "What are the delivery models in Pub/Sub?",
       "options_es": [
-        "Ninguno como concepto principal",
-        "Solo pull",
+        "Ninguno disponible en Pub/Sub",
+        "Solo modelo pull con confirmación",
         "Pull y Push",
-        "Solo push"
+        "Solo modelo push con buffer"
       ],
       "options_en": [
-        "None as the primary concept",
-        "Pull only",
+        "None available in Pub/Sub",
+        "Pull model only with confirmation",
         "Pull and Push",
-        "Push only"
+        "Push model only with buffer"
       ],
       "correct_index": 2,
       "explanation_es": "Pull: suscriptor solicita mensajes. Push: Pub/Sub envía mensajes a un endpoint.",
@@ -812,14 +812,14 @@
       "question_es": "¿Cuál es la garantía de entrega en Pub/Sub?",
       "question_en": "What is the delivery guarantee in Pub/Sub?",
       "options_es": [
-        "Exactly-once como concepto principal",
-        "Best-effort como concepto principal",
+        "Exactly-once con garantía absoluta",
+        "Best-effort sin garantía de entrega",
         "No hay garantía",
         "At-least-once con reconocimiento"
       ],
       "options_en": [
-        "Exactly-once as the primary concept",
-        "Best-effort as the primary concept",
+        "Exactly-once with absolute guarantee",
+        "Best-effort without delivery guarantee",
         "No guarantee",
         "At-least-once with acknowledgment"
       ],
@@ -836,15 +836,15 @@
       "question_en": "What is the typical latency of Pub/Sub?",
       "options_es": [
         "Centenas de milisegundos",
-        "Segundos como concepto principal",
-        "Horas como concepto principal",
-        "Minutos como concepto principal"
+        "Varios segundos de latencia",
+        "Minutos entre envío y entrega",
+        "Horas de retrazo típico"
       ],
       "options_en": [
         "Hundreds of milliseconds",
-        "Seconds as the primary concept",
-        "Hours as the primary concept",
-        "Minutes as the primary concept"
+        "Several seconds of latency",
+        "Minutes between sending and delivery",
+        "Hours of typical delay"
       ],
       "correct_index": 0,
       "explanation_es": "Pub/Sub entrega mensajes típicamente en centenas de milisegundos.",
@@ -858,16 +858,16 @@
       "question_es": "¿Cómo se manejan los retrasos de suscriptor en Pub/Sub?",
       "question_en": "How are subscriber delays handled in Pub/Sub?",
       "options_es": [
-        "Los mensajes se pierden sin excepciones ni variantes",
-        "No hay manejo de manera exclusiva y permanente",
+        "Los mensajes se descartan inmediatamente",
+        "Se ignoran sin generar alerta alguna",
         "Almacenamiento automático de mensajes no reconocidos",
-        "Requiere compra separada"
+        "Requiere configuración manual de buffer"
       ],
       "options_en": [
-        "Messages are lost without exceptions or variants",
-        "No handling exclusively and permanently",
+        "Messages are discarded immediately",
+        "Ignored without generating any alert",
         "Automatic storage of unacknowledged messages",
-        "Requires separate purchase"
+        "Requires manual buffer configuration"
       ],
       "correct_index": 2,
       "explanation_es": "Pub/Sub almacena mensajes no reconocidos (Ack Deadline) permitiendo retrasos.",
@@ -882,15 +882,15 @@
       "question_en": "How do Topics auto-scale in Pub/Sub?",
       "options_es": [
         "Automáticamente sin configuración",
-        "No se escalan según la documentación estándar del servicio",
-        "Escalado manual obligatorio",
-        "No es posible"
+        "Requiere escalado manual por usuario",
+        "Los Topics no se escalan nunca",
+        "Solo con instancias premium pagadas"
       ],
       "options_en": [
         "Automatically without configuration",
-        "Do not scale according to standard service documentation",
-        "Manual scaling required",
-        "Not possible"
+        "Requires manual scaling by user",
+        "Topics never scale",
+        "Premium paid instances only"
       ],
       "correct_index": 0,
       "explanation_es": "Pub/Sub escala automáticamente sin que necesites configurar nada.",
@@ -904,16 +904,16 @@
       "question_es": "¿Cuál es el modelo de precios de Pub/Sub?",
       "question_en": "What is the pricing model for Pub/Sub?",
       "options_es": [
-        "Solo anual de forma invariable y constante",
-        "Pago mensual fijo",
+        "Solo anual sin opciones mensuales",
+        "Pago mensual fijo por Topic",
         "Por millones de mensajes y almacenamiento",
-        "Gratis como concepto principal"
+        "Gratuito para todos los usuarios"
       ],
       "options_en": [
-        "Annual only invariably and constantly",
-        "Fixed monthly payment",
+        "Annual only without monthly options",
+        "Fixed monthly payment per Topic",
         "Per millions of messages and storage",
-        "Free as the primary concept"
+        "Free for all users"
       ],
       "correct_index": 2,
       "explanation_es": "Pub/Sub cobra por millones de mensajes publicados y almacenamiento de mensajes.",
@@ -927,16 +927,16 @@
       "question_es": "¿Cómo se filtran mensajes en Pub/Sub?",
       "question_en": "How are messages filtered in Pub/Sub?",
       "options_es": [
-        "No se pueden filtrar según la documentación estándar del servicio",
+        "No es posible filtrar en Pub/Sub",
         "Usando filtros de atributos en subscripciones",
-        "Requiere herramienta especial",
-        "Solo en el aplicativo"
+        "Requiere herramienta especial externa",
+        "Solo en la aplicación del cliente"
       ],
       "options_en": [
-        "Cannot be filtered according to standard service documentation",
+        "Filtering is not possible in Pub/Sub",
         "Using attribute filters in subscriptions",
-        "Requires special tool",
-        "Application only"
+        "Requires external special tool",
+        "Application-side only"
       ],
       "correct_index": 1,
       "explanation_es": "Las suscripciones pueden filtrar mensajes basados en atributos (formato CEL).",
@@ -950,15 +950,15 @@
       "question_es": "¿Cómo se integra Pub/Sub con Cloud Functions?",
       "question_en": "How does Pub/Sub integrate with Cloud Functions?",
       "options_es": [
-        "No se integra",
-        "Requiere API independientemente del contexto aplicado",
-        "Solo con SDK sin considerar otros factores relevantes",
+        "Requiere conexión directa con API",
+        "Cloud Functions se dispara automáticamente",
+        "Solo con SDK de forma manual",
         "Cloud Functions puede ser disparada por mensajes Pub/Sub"
       ],
       "options_en": [
-        "Does not integrate",
-        "Requires API regardless of the applied context",
-        "SDK only without considering other relevant factors",
+        "Requires direct API connection",
+        "Cloud Functions triggers automatically",
+        "Manual SDK only",
         "Cloud Functions can be triggered by Pub/Sub messages"
       ],
       "correct_index": 3,
@@ -973,16 +973,16 @@
       "question_es": "¿Qué es el Dead Letter Topic en Pub/Sub?",
       "question_en": "What is the Dead Letter Topic in Pub/Sub?",
       "options_es": [
-        "Una herramienta de análisis",
+        "Una herramienta de análisis visual",
         "Topic para mensajes que no se pueden procesar",
-        "Un tipo de almacenamiento sin considerar otros factores relevantes",
-        "No existe sin excepciones ni variantes"
+        "Un tipo de almacenamiento de datos",
+        "No existe en la arquitectura de Pub/Sub"
       ],
       "options_en": [
-        "An analytics tool",
+        "A visual analytics tool",
         "Topic for messages that cannot be processed",
-        "A storage type without considering other relevant factors",
-        "Does not exist without exceptions or variants"
+        "A data storage type",
+        "Does not exist in Pub/Sub architecture"
       ],
       "correct_index": 1,
       "explanation_es": "Dead Letter Topic almacena mensajes que fallaron después de reintentos.",
@@ -996,16 +996,16 @@
       "question_es": "¿Cómo se monitorean Topics en Pub/Sub?",
       "question_en": "How are Topics monitored in Pub/Sub?",
       "options_es": [
-        "Solo logs manuales",
+        "Solo logs manuales en archivo",
         "Mediante Cloud Monitoring",
-        "No hay monitoreo de forma invariable y constante",
-        "Únicamente en desarrollo"
+        "No hay herramientas de monitoreo disponibles",
+        "Únicamente en fase de desarrollo"
       ],
       "options_en": [
-        "Manual logs only",
+        "Manual file logs only",
         "Via Cloud Monitoring",
-        "No monitoring invariably and constantly",
-        "Development only"
+        "No monitoring tools available",
+        "Development phase only"
       ],
       "correct_index": 1,
       "explanation_es": "Cloud Monitoring proporciona métricas de mensajes, latencia y errores en Pub/Sub.",
@@ -1020,14 +1020,14 @@
       "question_en": "How are messages encrypted in Pub/Sub?",
       "options_es": [
         "Solo manualmente",
-        "No hay opciones según la documentación estándar del servicio",
-        "No se encriptan sin excepciones ni variantes",
+        "No hay opciones de encriptación disponibles",
+        "No se encriptan",
         "Automáticamente con TLS en tránsito y CMEK en reposo"
       ],
       "options_en": [
         "Manual only",
-        "No options according to standard service documentation",
-        "Not encrypted without exceptions or variants",
+        "No encryption options available",
+        "Not encrypted",
         "Automatically with TLS in transit and CMEK at rest"
       ],
       "correct_index": 3,
@@ -1043,15 +1043,15 @@
       "question_en": "What is Google Vertex AI?",
       "options_es": [
         "Plataforma unificada de ML para entrenar e implementar modelos",
-        "Herramienta de análisis de manera exclusiva y permanente",
-        "Base de datos de manera exclusiva y permanente",
-        "Servicio de almacenamiento"
+        "Herramienta de análisis de datos local",
+        "Base de datos relacional en cloud",
+        "Servicio simple de almacenamiento"
       ],
       "options_en": [
         "Unified ML platform for training and deploying models",
-        "Analytics tool exclusively and permanently",
-        "Database as the primary concept exclusively and permanently",
-        "Storage service"
+        "Local data analytics tool",
+        "Relational database in cloud",
+        "Simple storage service"
       ],
       "correct_index": 0,
       "explanation_es": "Vertex AI es la plataforma unificada de Google Cloud para machine learning desde datos hasta predicciones.",
@@ -1065,16 +1065,16 @@
       "question_es": "¿Cuáles son los componentes principales de Vertex AI?",
       "question_en": "What are the main components of Vertex AI?",
       "options_es": [
-        "Solo APIs independientemente del contexto aplicado",
-        "Datos, entrenam iento, despliegue, predicciones",
-        "Solo modelos",
-        "Solo entrenamiento"
+        "Solo APIs REST sin componentes visuales",
+        "Datos, entrenamiento, despliegue, predicciones",
+        "Solo modelos preconstruidos",
+        "Solo entrenamiento automático"
       ],
       "options_en": [
-        "APIs only regardless of the applied context",
+        "REST APIs only without visual components",
         "Data, training, deployment, predictions",
-        "Models only",
-        "Training only"
+        "Pre-built models only",
+        "Automatic training only"
       ],
       "correct_index": 1,
       "explanation_es": "Vertex AI integra: preparación de datos, entrenam iento, despliegue en endpoints y predicciones.",
@@ -1088,14 +1088,14 @@
       "question_es": "¿Cómo se entrenan modelos en Vertex AI?",
       "question_en": "How are models trained in Vertex AI?",
       "options_es": [
-        "Solo con API en cualquier escenario de implementación",
-        "No se pueden entrenar de forma invariable y constante",
+        "Solo con API localmente",
+        "No se pueden entrenar",
         "Requiere herramienta especial",
         "Con AutoML, código personalizado o modelos preconstruidos"
       ],
       "options_en": [
-        "API only in any implementation scenario",
-        "Cannot be trained invariably and constantly",
+        "API locally only",
+        "Cannot be trained",
         "Requires special tool",
         "With AutoML, custom code, or pre-built models"
       ],
@@ -1111,13 +1111,13 @@
       "question_es": "¿Qué es AutoML en Vertex AI?",
       "question_en": "What is AutoML in Vertex AI?",
       "options_es": [
-        "No existe sin considerar otros factores relevantes",
+        "No existe en el sistema",
         "Un tipo de almacenamiento",
         "Una herramienta de análisis",
         "Sistema para entrenar modelos sin código"
       ],
       "options_en": [
-        "Does not exist without considering other relevant factors",
+        "Does not exist in system",
         "A storage type",
         "An analytics tool",
         "System for training models without code"
@@ -1134,16 +1134,16 @@
       "question_es": "¿Cómo se desplieguan modelos en Vertex AI?",
       "question_en": "How are models deployed in Vertex AI?",
       "options_es": [
-        "Requiere herramienta especial",
-        "No se pueden desplegar según la documentación estándar del servicio",
+        "Requiere herramienta especial de terceros",
+        "No se pueden desplegar modelos",
         "En endpoints para predicciones en línea o por lotes",
-        "Solo local sin excepciones ni variantes"
+        "Solo en desarrollo sin opciones de producción"
       ],
       "options_en": [
-        "Requires special tool",
-        "Cannot be deployed according to standard service documentation",
+        "Requires third-party special tool",
+        "Models cannot be deployed",
         "To endpoints for online or batch predictions",
-        "Local only without exceptions or variants"
+        "Development only without production options"
       ],
       "correct_index": 2,
       "explanation_es": "Los modelos se despliegan en endpoints que sirven predicciones en línea o batch.",
@@ -1157,14 +1157,14 @@
       "question_es": "¿Cuál es el modelo de precios de Vertex AI?",
       "question_en": "What is the pricing model for Vertex AI?",
       "options_es": [
-        "Solo anual en cualquier escenario de implementación",
-        "Gratis como concepto principal",
+        "Solo anual sin opciones mensuales",
+        "Gratuito para todos los usuarios",
         "Pago mensual fijo",
         "Por recursos de entrenam iento y predicciones"
       ],
       "options_en": [
-        "Annual only in any implementation scenario",
-        "Free as the primary concept",
+        "Annual only without monthly options",
+        "Free for all users",
         "Fixed monthly payment",
         "Per training and prediction resources"
       ],
@@ -1182,13 +1182,13 @@
       "options_es": [
         "Solo logs manuales",
         "Únicamente en desarrollo",
-        "No hay monitoreo en todos los casos posibles",
+        "No hay monitoreo disponible",
         "Mediante Model Monitoring y Cloud Monitoring"
       ],
       "options_en": [
         "Manual logs only",
         "Development only",
-        "No monitoring in all possible cases",
+        "No monitoring available",
         "Via Model Monitoring and Cloud Monitoring"
       ],
       "correct_index": 3,
@@ -1203,15 +1203,15 @@
       "question_es": "¿Cómo se manejan las predicciones en tiempo real?",
       "question_en": "How are real-time predictions handled?",
       "options_es": [
-        "Solo batch según la documentación estándar del servicio",
-        "No se pueden hacer",
-        "Requiere herramienta especial",
+        "Solo predicciones por lotes sin tiempo real",
+        "No se pueden hacer predicciones",
+        "Requiere herramienta especial externa",
         "Mediante endpoints con latencia baja"
       ],
       "options_en": [
-        "Batch only according to standard service documentation",
-        "Cannot be done",
-        "Requires special tool",
+        "Batch predictions only without real-time",
+        "Predictions cannot be made",
+        "Requires external special tool",
         "Via low-latency endpoints"
       ],
       "correct_index": 3,
@@ -1226,14 +1226,14 @@
       "question_es": "¿Cómo se hacen predicciones por lotes en Vertex AI?",
       "question_en": "How are batch predictions made in Vertex AI?",
       "options_es": [
-        "Solo en línea sin excepciones ni variantes",
-        "No se pueden hacer en todos los casos posibles",
+        "Solo en línea sin soporte batch",
+        "No se pueden hacer predicciones",
         "Requiere herramienta especial",
         "Procesando datos en BigQuery o Cloud Storage"
       ],
       "options_en": [
-        "Online only without exceptions or variants",
-        "Cannot be done in all possible cases",
+        "Online only without batch support",
+        "Predictions cannot be made",
         "Requires special tool",
         "By processing data in BigQuery or Cloud Storage"
       ],
@@ -1249,16 +1249,16 @@
       "question_es": "¿Qué es Vertex AI Workbench?",
       "question_en": "What is Vertex AI Workbench?",
       "options_es": [
-        "Un tipo de almacenamiento según la documentación estándar del servicio",
+        "Un tipo de almacenamiento de datos",
         "Entorno gestionado para desarrollo de ML (Jupyter)",
-        "Una herramienta de análisis",
-        "No existe de forma invariable y constante"
+        "Una herramienta de análisis visual",
+        "No existe en Vertex AI"
       ],
       "options_en": [
-        "A storage type according to standard service documentation",
+        "A data storage type",
         "Managed environment for ML development (Jupyter)",
-        "An analytics tool",
-        "Does not exist invariably and constantly"
+        "A visual analytics tool",
+        "Does not exist in Vertex AI"
       ],
       "correct_index": 1,
       "explanation_es": "Workbench proporciona Jupyter notebooks gestionados para desarrollo y experimentación de ML.",
@@ -1273,14 +1273,14 @@
       "question_en": "How does Vertex AI integrate with BigQuery ML?",
       "options_es": [
         "Requiere herramienta especial",
-        "No se integra sin considerar otros factores relevantes",
-        "Solo separados sin excepciones ni variantes",
+        "No se integra en absoluto",
+        "Solo separados definitivamente",
         "BigQuery ML como parte de Vertex AI para modelos simples"
       ],
       "options_en": [
         "Requires special tool",
-        "Does not integrate without considering other relevant factors",
-        "Separate only without exceptions or variants",
+        "Does not integrate at all",
+        "Completely separate",
         "BigQuery ML as part of Vertex AI for simple models"
       ],
       "correct_index": 3,
@@ -1295,16 +1295,16 @@
       "question_es": "¿Cómo se manejan los modelos generativos en Vertex AI?",
       "question_en": "How are generative models handled in Vertex AI?",
       "options_es": [
-        "No hay generativos",
-        "Requiere entrenam iento",
+        "No hay modelos generativos disponibles",
+        "Requiere entrenamiento extensivo previo",
         "Con APIs de modelos como Gemini, Palm 2",
-        "Solo custodia según la documentación estándar del servicio"
+        "Solo disponibles mediante custodia tercerista"
       ],
       "options_en": [
-        "No generative models",
-        "Requires training",
+        "No generative models available",
+        "Requires extensive prior training",
         "With model APIs like Gemini, Palm 2",
-        "Custody only according to standard service documentation"
+        "Available only through third-party custody"
       ],
       "correct_index": 2,
       "explanation_es": "Vertex AI proporciona APIs para modelos generativos de Google (Gemini, Palm) listos para usar.",
@@ -1318,16 +1318,16 @@
       "question_es": "¿Cómo se valida la precisión de un modelo en Vertex AI?",
       "question_en": "How is model accuracy validated in Vertex AI?",
       "options_es": [
-        "No se puede validar",
-        "No hay métodos en cualquier escenario de implementación",
+        "No se puede validar la precisión",
+        "Solo por inspección visual manual",
         "Mediante métricas de evaluación y dataset de prueba",
-        "Solo por inspección"
+        "No hay métodos disponibles en Vertex AI"
       ],
       "options_en": [
         "Cannot be validated",
-        "No methods in any implementation scenario",
+        "Manual visual inspection only",
         "Via evaluation metrics and test dataset",
-        "Visual inspection only"
+        "No methods available in Vertex AI"
       ],
       "correct_index": 2,
       "explanation_es": "Vertex AI proporciona métricas automáticas (precisión, recall, AUC) tras entrenam iento.",
@@ -1343,13 +1343,13 @@
       "options_es": [
         "No hay solución",
         "Solo manualmente",
-        "No se manejan sin considerar otros factores relevantes",
+        "No se manejan adecuadamente",
         "Automáticamente con técnicas de balanceo"
       ],
       "options_en": [
         "No solution",
         "Manual only",
-        "Not handled without considering other relevant factors",
+        "Not handled properly",
         "Automatically with balancing techniques"
       ],
       "correct_index": 3,
@@ -1365,13 +1365,13 @@
       "question_en": "How are models exported from Vertex AI?",
       "options_es": [
         "Requiere herramienta especial",
-        "Solo en Vertex AI sin excepciones ni variantes",
+        "Solo en Vertex AI permanentemente",
         "No se pueden exportar",
         "A formatos estándar (SavedModel, ONNX)"
       ],
       "options_en": [
         "Requires special tool",
-        "Vertex AI only without exceptions or variants",
+        "Vertex AI only permanently",
         "Cannot be exported",
         "To standard formats (SavedModel, ONNX)"
       ],

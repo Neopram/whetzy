@@ -19,8 +19,8 @@
         "Only availability"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación detallada para ¿qué garantiza el teorema cap?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what does the cap theorem guarantee?. This is an educational response that helps understand the concept.",
+      "explanation_es": "El Teorema CAP (Eric Brewer, 2000) dice que un sistema distribuido no puede garantizar Consistencia, Disponibilidad y Tolerancia a particiones a la vez: ante una partición de red, hay que elegir entre consistencia y disponibilidad. Como máximo dos de las tres.",
+      "explanation_en": "The CAP Theorem (Eric Brewer, 2000) states a distributed system cannot guarantee Consistency, Availability and Partition tolerance all at once: during a network partition, it must choose between consistency and availability. At most two of the three.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -30,20 +30,20 @@
       "question_es": "¿Cuál es una ventaja de sacrificar disponibilidad?",
       "question_en": "What is an advantage of sacrificing availability?",
       "options_es": [
-        "No hay ventajas independientemente del contexto aplicado",
+        "No hay ventajas al sacrificar disponibilidad",
         "Menor costo de hardware",
         "Mejor rendimiento",
         "Consistencia fuerte garantizada"
       ],
       "options_en": [
-        "No advantages regardless of the applied context",
+        "No advantages when sacrificing availability",
         "Lower hardware cost",
         "Better performance",
         "Guaranteed strong consistency"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿cuál es una ventaja de sacrificar disponibilidad?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what is an advantage of sacrificing availability?. This is an educational response that helps understand the concept.",
+      "explanation_es": "Sacrificar disponibilidad (elegir CP) da consistencia fuerte garantizada: todos los nodos ven siempre los mismos datos, al coste de rechazar peticiones durante una partición en vez de responder con datos posiblemente desactualizados.",
+      "explanation_en": "Sacrificing availability (choosing CP) guarantees strong consistency: every node always sees the same data, at the cost of rejecting requests during a partition instead of answering with possibly stale data.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -53,20 +53,20 @@
       "question_es": "¿En qué escenario elegiría un sistema CP?",
       "question_en": "In which scenario would you choose a CP system?",
       "options_es": [
-        "Nunca como concepto principal",
+        "Nunca, porque siempre es mejor priorizar disponibilidad",
         "Un banco que procesa transacciones",
         "Un blog con bajo tráfico",
-        "Una red social de forma invariable y constante"
+        "Una red social con millones de usuarios"
       ],
       "options_en": [
-        "Never as the primary concept",
+        "Never, because availability is always preferable",
         "A bank processing transactions",
         "A blog with low traffic",
-        "A social network invariably and constantly"
+        "A social network with millions of users"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación detallada para ¿en qué escenario elegiría un sistema cp?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for in which scenario would you choose a cp system?. This is an educational response that helps understand the concept.",
+      "explanation_es": "Un sistema CP conviene cuando una respuesta inconsistente es inaceptable, como un banco procesando transacciones: es preferible rechazar una operación a arriesgar un saldo incorrecto.",
+      "explanation_en": "A CP system fits when an inconsistent answer is unacceptable, like a bank processing transactions: it is better to reject an operation than to risk an incorrect balance.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -76,20 +76,20 @@
       "question_es": "¿Qué implica la consistencia eventual?",
       "question_en": "What does eventual consistency imply?",
       "options_es": [
-        "Datos menos importantes de forma invariable y constante",
+        "Datos que no requieren sincronización inmediata",
         "Datos siempre consistentes",
         "Datos nunca consistentes",
         "Datos temporalmente inconsistentes pero convergentes"
       ],
       "options_en": [
-        "Less important data invariably and constantly",
+        "Data that does not require immediate synchronization",
         "Always consistent data",
         "Never consistent data",
         "Temporarily inconsistent but convergent data"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿qué implica la consistencia eventual?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what does eventual consistency imply?. This is an educational response that helps understand the concept.",
+      "explanation_es": "La consistencia eventual permite que las réplicas queden temporalmente desincronizadas tras una escritura, pero garantiza que, sin nuevas escrituras, todas convergen al mismo valor con el tiempo.",
+      "explanation_en": "Eventual consistency allows replicas to be temporarily out of sync after a write, but guarantees that, absent new writes, they all converge to the same value over time.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -100,19 +100,19 @@
       "question_en": "How is partition tolerance implemented?",
       "options_es": [
         "Replicando datos en múltiples nodos",
-        "No se implementa de manera exclusiva y permanente",
+        "Usando solo una réplica de datos en cada nodo",
         "Evitando redes distribuidas",
         "Usando un solo servidor"
       ],
       "options_en": [
         "Replicating data across multiple nodes",
-        "It is not implemented exclusively and permanently",
+        "Using only one data replica on each node",
         "Avoiding distributed networks",
         "Using a single server"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación detallada para ¿cómo se implementa tolerancia a particiones?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for how is partition tolerance implemented?. This is an educational response that helps understand the concept.",
+      "explanation_es": "La tolerancia a particiones se logra replicando los datos en varios nodos: si la red se divide, cada partición sigue teniendo una copia con la que operar, en vez de depender de un único servidor.",
+      "explanation_en": "Partition tolerance is achieved by replicating data across multiple nodes: if the network splits, each partition still has a copy to operate with, instead of depending on a single server.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -123,19 +123,19 @@
       "question_en": "What is the impact of CAP on scalability?",
       "options_es": [
         "Requiere sacrificar propiedades",
-        "Ninguno como concepto principal",
+        "Reduce la complejidad del diseño",
         "Reduce escalabilidad",
         "Mejora escalabilidad"
       ],
       "options_en": [
         "Requires sacrificing properties",
-        "None as the primary concept",
+        "Reduces design complexity",
         "Reduces scalability",
         "Improves scalability"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación detallada para ¿cuál es el impacto del teorema cap en escalabilidad?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what is the impact of cap on scalability?. This is an educational response that helps understand the concept.",
+      "explanation_es": "El Teorema CAP obliga a sacrificar una propiedad (consistencia o disponibilidad) durante una partición: escalar horizontalmente añadiendo nodos multiplica la probabilidad de que ocurra una partición, así que esa decisión de diseño se vuelve inevitable.",
+      "explanation_en": "The CAP Theorem forces a trade-off (consistency or availability) during a partition: scaling horizontally by adding nodes increases the odds that a partition occurs, so that design decision becomes unavoidable.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -157,8 +157,8 @@
         "CP"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿qué sistema típicamente usa mongodb?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what system does mongodb typically use?. This is an educational response that helps understand the concept.",
+      "explanation_es": "MongoDB es un sistema CP por defecto: con un replica set, si el nodo primario queda aislado por una partición, deja de aceptar escrituras hasta que se elige un nuevo primario, priorizando consistencia sobre disponibilidad.",
+      "explanation_en": "MongoDB is a CP system by default: with a replica set, if the primary node gets isolated by a partition, it stops accepting writes until a new primary is elected, prioritizing consistency over availability.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -169,19 +169,19 @@
       "question_en": "What is the problem with AP?",
       "options_es": [
         "No tolera particiones",
-        "Es óptimo sin considerar otros factores relevantes",
+        "Es óptimo solo en redes de baja latencia",
         "No tiene disponibilidad",
         "Sacrifica consistencia inmediata"
       ],
       "options_en": [
         "Does not tolerate partitions",
-        "It is optimal without considering other relevant factors",
+        "It is optimal only in low-latency networks",
         "No availability",
         "Sacrifices immediate consistency"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿cuál es el problema con ap?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what is the problem with ap?. This is an educational response that helps understand the concept.",
+      "explanation_es": "El problema de un sistema AP es que sacrifica consistencia inmediata: durante una partición sigue respondiendo a todas las peticiones, pero distintos nodos pueden devolver valores distintos hasta que converjan.",
+      "explanation_en": "The problem with an AP system is that it sacrifices immediate consistency: during a partition it keeps answering every request, but different nodes may return different values until they converge.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -192,19 +192,19 @@
       "question_en": "Why is Redis AP?",
       "options_es": [
         "Porque prioriza disponibilidad sobre consistencia",
-        "Porque usa SQL sin considerar otros factores relevantes",
+        "Porque usa almacenamiento en disco para cada operación",
         "Porque es lento",
         "Porque rechaza datos"
       ],
       "options_en": [
         "Because it prioritizes availability over consistency",
-        "Because it uses SQL without considering other relevant factors",
+        "Because it uses disk storage for each operation",
         "Because it is slow",
         "Because it rejects data"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación detallada para ¿por qué redis es ap?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for why is redis ap?. This is an educational response that helps understand the concept.",
+      "explanation_es": "Redis prioriza disponibilidad sobre consistencia: en un cluster, ante una partición, los nodos siguen sirviendo lecturas y escrituras aunque la réplica esté momentáneamente desincronizada.",
+      "explanation_en": "Redis prioritizes availability over consistency: in a cluster, during a partition, nodes keep serving reads and writes even though the replica may be momentarily out of sync.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -214,20 +214,20 @@
       "question_es": "¿Qué es un sistema distribuido?",
       "question_en": "What is a distributed system?",
       "options_es": [
-        "Una base de datos sin excepciones ni variantes",
-        "Un servidor único de manera exclusiva y permanente",
-        "Un caché según la documentación estándar del servicio",
+        "Una base de datos que requiere todos los nodos en línea",
+        "Un servidor único en un único data center",
+        "Un caché que almacena datos en memoria volátil",
         "Múltiples computadoras que parecen una sola a través de la red"
       ],
       "options_en": [
-        "A database without exceptions or variants",
-        "A single server exclusively and permanently",
-        "A cache according to standard service documentation",
+        "A database that requires all nodes to be online",
+        "A single server in a single data center",
+        "A cache storing data in volatile memory",
         "Multiple computers appearing as one through the network"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿qué es un sistema distribuido?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what is a distributed system?. This is an educational response that helps understand the concept.",
+      "explanation_es": "Un sistema distribuido es un conjunto de computadoras independientes que se coordinan por red y se presentan al usuario como un único sistema coherente, no como máquinas separadas.",
+      "explanation_en": "A distributed system is a set of independent computers that coordinate over a network and present themselves to the user as a single coherent system, not as separate machines.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -238,19 +238,19 @@
       "question_en": "What does 'Basically Available' mean?",
       "options_es": [
         "Disponible a veces",
-        "Nunca disponible en cualquier escenario de implementación",
+        "Nunca disponible sin replicación de datos",
         "Intenta garantizar disponibilidad aunque degradadamente",
         "Siempre disponible"
       ],
       "options_en": [
         "Available sometimes",
-        "Never available in any implementation scenario",
+        "Never available without data replication",
         "Attempts to guarantee availability though degraded",
         "Always available"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación detallada para ¿qué significa 'basically available'?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what does 'basically available' mean?. This is an educational response that helps understand the concept.",
+      "explanation_es": "'Basically Available' (la B de BASE) no promete disponibilidad total: el sistema intenta garantizar una respuesta, aunque sea degradada o parcial, en vez de fallar por completo.",
+      "explanation_en": "'Basically Available' (the B in BASE) does not promise total availability: the system attempts to guarantee a response, even a degraded or partial one, instead of failing outright.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -260,20 +260,20 @@
       "question_es": "¿Qué es 'Soft State'?",
       "question_en": "What is 'Soft State'?",
       "options_es": [
-        "Estados antiguos según la documentación estándar del servicio",
-        "Estados permanentes según la documentación estándar del servicio",
-        "Sin estados en cualquier escenario de implementación",
+        "Estados que solo existen en caché de memoria",
+        "Estados permanentes almacenados en disco duro",
+        "Sin estados, datos inmutables después de crearse",
         "El estado puede cambiar sin entrada, datos temporalmente inconsistentes"
       ],
       "options_en": [
-        "Old states according to standard service documentation",
-        "Permanent states according to standard service documentation",
-        "No states in any implementation scenario",
+        "States that only exist in memory cache",
+        "Permanent states stored on hard disk",
+        "No states, data immutable after creation",
         "State can change without input, temporarily inconsistent data"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿qué es 'soft state'?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what is 'soft state'?. This is an educational response that helps understand the concept.",
+      "explanation_es": "'Soft State' (la S de BASE) significa que el estado del sistema puede cambiar con el tiempo incluso sin nueva entrada del usuario, porque los datos aún se están propagando entre réplicas y quedan temporalmente inconsistentes.",
+      "explanation_en": "'Soft State' (the S in BASE) means the system's state may change over time even without new user input, because data is still propagating between replicas and remains temporarily inconsistent.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -283,20 +283,20 @@
       "question_es": "¿Qué promete 'Eventually Consistent'?",
       "question_en": "What does 'Eventually Consistent' promise?",
       "options_es": [
-        "Sin garantía sin considerar otros factores relevantes",
+        "Solo garantías cuando todos los nodos están disponibles",
         "Nunca consistente",
         "Convergencia a consistencia después de tiempo",
         "Consistencia inmediata"
       ],
       "options_en": [
-        "No guarantee without considering other relevant factors",
+        "Guarantees only when all nodes are available",
         "Never consistent",
         "Convergence to consistency after time",
         "Immediate consistency"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación detallada para ¿qué promete 'eventually consistent'?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what does 'eventually consistent' promise?. This is an educational response that helps understand the concept.",
+      "explanation_es": "'Eventually Consistent' (la E de BASE) promete que, si no hay nuevas escrituras, todas las réplicas convergen al mismo valor después de un tiempo — no consistencia inmediata.",
+      "explanation_en": "'Eventually Consistent' (the E in BASE) promises that, absent new writes, all replicas converge to the same value after some time — not immediate consistency.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -306,20 +306,20 @@
       "question_es": "¿Cómo se relacionan BASE y ACID?",
       "question_en": "How do BASE and ACID relate?",
       "options_es": [
-        "ACID es mejor de forma invariable y constante",
-        "Son lo mismo en todos los casos posibles",
-        "No se relacionan sin excepciones ni variantes",
+        "ACID es mejor para sistemas distribuidos horizontales",
+        "Son lo mismo en ambos contextos",
+        "No se relacionan entre sí",
         "BASE es alternativa a ACID para sistemas distribuidos"
       ],
       "options_en": [
-        "ACID is better invariably and constantly",
-        "They are the same in all possible cases",
-        "They are unrelated without exceptions or variants",
+        "ACID is better for distributed horizontal systems",
+        "They are the same in both contexts",
+        "They are unrelated to each other",
         "BASE is an alternative to ACID for distributed systems"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿cómo se relacionan base y acid?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for how do base and acid relate?. This is an educational response that helps understand the concept.",
+      "explanation_es": "BASE (Basically Available, Soft state, Eventually consistent) es la alternativa a ACID que adoptan los sistemas distribuidos que priorizan disponibilidad y escalabilidad horizontal sobre consistencia inmediata.",
+      "explanation_en": "BASE (Basically Available, Soft state, Eventually consistent) is the alternative to ACID that distributed systems adopt when they prioritize availability and horizontal scalability over immediate consistency.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -330,19 +330,19 @@
       "question_en": "Why use BASE?",
       "options_es": [
         "Para sistemas distribuidos que priorizan disponibilidad",
-        "Siempre como concepto principal",
-        "Solo para pequeños datos sin considerar otros factores relevantes",
-        "Nunca como concepto principal"
+        "Para garantizar consistencia fuerte en todos los nodos",
+        "Solo para bases de datos monolíticas",
+        "Nunca, ACID es siempre superior"
       ],
       "options_en": [
         "For distributed systems that prioritize availability",
-        "Always as the primary concept",
-        "Only for small data without considering other relevant factors",
-        "Never as the primary concept"
+        "To guarantee strong consistency on all nodes",
+        "Only for monolithic databases",
+        "Never, ACID is always superior"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación detallada para ¿por qué usar base?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for why use base?. This is an educational response that helps understand the concept.",
+      "explanation_es": "BASE se usa en sistemas distribuidos que priorizan disponibilidad: al relajar la consistencia inmediata, el sistema puede seguir respondiendo aunque algunos nodos estén desincronizados o inalcanzables.",
+      "explanation_en": "BASE is used in distributed systems that prioritize availability: by relaxing immediate consistency, the system can keep responding even when some nodes are out of sync or unreachable.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -353,19 +353,19 @@
       "question_en": "What is BASE's trade-off?",
       "options_es": [
         "Sacrifica disponibilidad",
-        "Sacrifica seguridad de forma invariable y constante",
-        "Sin compromiso sin excepciones ni variantes",
+        "Sacrifica escalabilidad horizontal",
+        "Sin compromiso, BASE ofrece todas las ventajas de ACID",
         "Sacrifica consistencia inmediata por disponibilidad"
       ],
       "options_en": [
         "Sacrifices availability",
-        "Sacrifices security invariably and constantly",
-        "No trade-off without exceptions or variants",
+        "Sacrifices horizontal scalability",
+        "No trade-off, BASE offers all ACID advantages",
         "Sacrifices immediate consistency for availability"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿cuál es el compromiso de base?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what is base's trade-off?. This is an educational response that helps understand the concept.",
+      "explanation_es": "El compromiso de BASE es sacrificar consistencia inmediata a cambio de disponibilidad: el sistema responde siempre, aunque los datos que devuelve puedan estar momentáneamente desactualizados.",
+      "explanation_en": "BASE's trade-off is sacrificing immediate consistency for availability: the system always responds, even though the data it returns may be momentarily stale.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -375,20 +375,20 @@
       "question_es": "¿Quién propuso BASE?",
       "question_en": "Who proposed BASE?",
       "options_es": [
-        "Google como concepto principal sin considerar otros factores relevantes",
+        "Google en sus primeros trabajos de escalado distribuido",
         "Amazon y otros investigadores de sistemas distribuidos",
-        "Facebook como concepto principal",
-        "Microsoft como concepto principal"
+        "Facebook en su infraestructura de base de datos",
+        "Microsoft en su plataforma Azure"
       ],
       "options_en": [
-        "Google as the primary concept without considering other relevant factors",
+        "Google in its early distributed scaling work",
         "Amazon and other distributed systems researchers",
-        "Facebook as the primary concept",
-        "Microsoft as the primary concept"
+        "Facebook in its database infrastructure",
+        "Microsoft in its Azure platform"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación detallada para ¿quién propuso base?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for who proposed base?. This is an educational response that helps understand the concept.",
+      "explanation_es": "BASE lo propusieron ingenieros de Amazon (Dan Pritchett, 'BASE: An ACID Alternative', ACM Queue 2008) y otros investigadores de sistemas distribuidos, a partir de la experiencia con sistemas como Dynamo.",
+      "explanation_en": "BASE was proposed by Amazon engineers (Dan Pritchett, 'BASE: An ACID Alternative', ACM Queue 2008) and other distributed-systems researchers, drawing on experience with systems like Dynamo.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -398,20 +398,20 @@
       "question_es": "¿Cuándo convergen datos en BASE?",
       "question_en": "When do data converge in BASE?",
       "options_es": [
-        "Nunca como concepto principal",
-        "Inmediatamente como concepto principal",
+        "Nunca durante particiones de red",
+        "Inmediatamente, sin esperar propagación",
         "Después de detener actualizaciones",
         "No convergen"
       ],
       "options_en": [
-        "Never as the primary concept",
-        "Immediately as the primary concept",
+        "Never during network partitions",
+        "Immediately, without waiting for propagation",
         "After stopping updates",
         "They do not converge"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación detallada para ¿cuándo convergen datos en base?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for when do data converge in base?. This is an educational response that helps understand the concept.",
+      "explanation_es": "En BASE, los datos convergen a un estado consistente después de que las actualizaciones se detienen: mientras siguen llegando escrituras, las réplicas pueden seguir divergiendo momentáneamente.",
+      "explanation_en": "In BASE, data converges to a consistent state after updates stop: while writes keep arriving, replicas may keep diverging momentarily.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -421,20 +421,20 @@
       "question_es": "¿Qué implica desnormalización en BASE?",
       "question_en": "What does denormalization imply in BASE?",
       "options_es": [
-        "Menos datos sin excepciones ni variantes",
+        "Menos datos totales en la base de datos",
         "Duplicación de datos para acceso rápido",
         "Más complejidad",
         "Menos almacenamiento"
       ],
       "options_en": [
-        "Less data without exceptions or variants",
+        "Fewer total data points in the database",
         "Data duplication for fast access",
         "More complexity",
         "Less storage"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación detallada para ¿qué implica desnormalización en base?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for what does denormalization imply in base?. This is an educational response that helps understand the concept.",
+      "explanation_es": "La desnormalización en BASE implica duplicar datos deliberadamente entre documentos o tablas para poder leerlos rápido sin hacer joins, a costa de tener que mantener varias copias sincronizadas.",
+      "explanation_en": "Denormalization in BASE means deliberately duplicating data across documents or tables so it can be read quickly without joins, at the cost of keeping several copies in sync.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -445,19 +445,19 @@
       "question_en": "Is BASE safe for critical data?",
       "options_es": [
         "Solo si hay backup",
-        "Sí en cualquier escenario de implementación",
-        "Depende como concepto principal",
+        "Sí, pero con eventual consistency garantizado",
+        "Depende del modelo de datos y replicación",
         "No, porque sacrifica consistencia"
       ],
       "options_en": [
         "Only if there is backup",
-        "Yes as the primary concept in any implementation scenario",
-        "It depends",
+        "Yes, but with guaranteed eventual consistency",
+        "It depends on the data model and replication",
         "No, because it sacrifices consistency"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación detallada para ¿es base seguro para datos críticos?. Esta es una respuesta educativa que ayuda a entender el concepto.",
-      "explanation_en": "Detailed explanation for is base safe for critical data?. This is an educational response that helps understand the concept.",
+      "explanation_es": "BASE no es seguro para datos críticos que exigen consistencia inmediata (como saldos bancarios), precisamente porque sacrifica esa garantía a cambio de disponibilidad; para eso se usa ACID.",
+      "explanation_en": "BASE is not safe for critical data that demands immediate consistency (like bank balances), precisely because it trades that guarantee away for availability; ACID is used for that instead.",
       "source": "MongoDB Documentation (https://www.mongodb.com/docs/)"
     },
     {
@@ -467,16 +467,16 @@
       "question_es": "¿Cuál es la diferencia principal entre un document store y un key-value store en términos de estructura de datos?",
       "question_en": "What is the main difference between a document store and a key-value store in terms of data structure?",
       "options_es": [
-        "Ambos modelos son idénticos en capacidad de consulta según la documentación estándar del servicio",
-        "El key-value store permite consultas por campos internos del valor almacenado",
+        "Ambos modelos ofrecen búsqueda por campos internos",
+        "El key-value store permite consultas por campos internos del valor almacenado, ya que Redis indexa cada clave anidada en un árbol B+ interno propio.",
         "El document store almacena documentos estructurados con campos consultables, mientras que el key-value store trata el valor como un blob opaco",
-        "El document store solo almacena texto plano sin estructura interna sin excepciones ni variantes"
+        "El document store solo almacena texto plano sin estructura interna"
       ],
       "options_en": [
-        "Both models are identical in query capability according to standard service documentation",
-        "The key-value store allows queries on internal fields of the stored value",
+        "Both models offer search by internal fields",
+        "The key-value store allows queries on internal fields of the stored value, since Redis indexes every nested key in its own internal B+ tree structure.",
         "The document store stores structured documents with queryable fields, while the key-value store treats the value as an opaque blob",
-        "The document store only stores plain text without internal structure without exceptions or variants"
+        "The document store only stores plain text without internal structure"
       ],
       "correct_index": 2,
       "explanation_es": "Los document stores como MongoDB almacenan documentos JSON/BSON con campos que pueden ser indexados y consultados, mientras que los key-value stores tratan cada valor como opaco.",
@@ -492,13 +492,13 @@
       "options_es": [
         "Redis es un key-value store en memoria con soporte para estructuras de datos avanzadas",
         "Neo4j es un key-value store porque cada nodo tiene propiedades",
-        "PostgreSQL con JSONB funciona como key-value store nativo según la documentación estándar del servicio",
+        "PostgreSQL con JSONB funciona como base de datos orientada a documentos",
         "MongoDB es un key-value store porque almacena pares clave-documento"
       ],
       "options_en": [
         "Redis is an in-memory key-value store with support for advanced data structures",
         "Neo4j is a key-value store because each node has properties",
-        "PostgreSQL with JSONB works as a native key-value store according to standard service documentation",
+        "PostgreSQL with JSONB works as a document-oriented database",
         "MongoDB is a key-value store because it stores key-document pairs"
       ],
       "correct_index": 0,
@@ -515,13 +515,13 @@
       "options_es": [
         "Cuando la latencia de lectura debe ser mínima y los datos son simples",
         "Cuando solo se necesita acceso por clave primaria sin filtrado adicional",
-        "Cuando se almacenan datos de sesión o caché temporal independientemente del contexto aplicado",
+        "Cuando se almacenan datos de sesión o caché temporal",
         "Cuando se necesitan consultas complejas sobre los campos internos de los datos almacenados"
       ],
       "options_en": [
         "When read latency must be minimal and data is simple",
         "When only primary key access without additional filtering is needed",
-        "When storing session data or temporary cache regardless of the applied context",
+        "When storing session data or temporary cache",
         "When complex queries on internal fields of stored data are needed"
       ],
       "correct_index": 3,
@@ -555,15 +555,15 @@
       "question_es": "¿Qué formato de almacenamiento utiliza MongoDB internamente para los documentos?",
       "question_en": "What storage format does MongoDB use internally for documents?",
       "options_es": [
-        "XML serializado con compresión gzip según la documentación estándar del servicio",
-        "JSON puro almacenado como texto UTF-8 en disco de manera exclusiva y permanente",
-        "Protocol Buffers de Google para serialización eficiente",
+        "XML serializado con compresión gzip",
+        "JSON puro almacenado como texto UTF-8",
+        "Protocol Buffers de Google, definido en el RFC 7049 como formato binario oficial de MongoDB desde la versión 2.0",
         "BSON (Binary JSON), una representación binaria de documentos JSON con tipos adicionales"
       ],
       "options_en": [
-        "XML serialized with gzip compression according to standard service documentation",
-        "Pure JSON stored as UTF-8 text on disk exclusively and permanently",
-        "Google Protocol Buffers for efficient serialization",
+        "XML serialized with gzip compression",
+        "Pure JSON stored as UTF-8 text",
+        "Google Protocol Buffers, defined in RFC 7049 as MongoDB's official binary format since version 2.0",
         "BSON (Binary JSON), a binary representation of JSON documents with additional types"
       ],
       "correct_index": 3,
@@ -580,13 +580,13 @@
       "options_es": [
         "La simplicidad del modelo permite latencias extremadamente bajas al evitar parsing de estructura interna",
         "Los key-value stores ofrecen consultas más expresivas que los document stores",
-        "Los key-value stores escalan mejor verticalmente que horizontalmente independientemente del contexto aplicado",
+        "Los key-value stores escalan mejor verticalmente que horizontalmente",
         "Los key-value stores tienen mejor soporte para transacciones multi-documento"
       ],
       "options_en": [
         "The simplicity of the model allows extremely low latencies by avoiding internal structure parsing",
         "Key-value stores offer more expressive queries than document stores",
-        "Key-value stores scale better vertically than horizontally regardless of the applied context",
+        "Key-value stores scale better vertically than horizontally",
         "Key-value stores have better support for multi-document transactions"
       ],
       "correct_index": 0,
@@ -627,13 +627,13 @@
         "Es exclusivamente un document store sin soporte para acceso por clave",
         "Combina características de key-value y document store con escalado automático gestionado",
         "Solo funciona como key-value store sin capacidad de consultas secundarias",
-        "Requiere esquema fijo definido antes de insertar datos independientemente del contexto aplicado"
+        "Requiere esquema fijo definido antes de insertar datos"
       ],
       "options_en": [
         "It is exclusively a document store without key-based access support",
         "It combines key-value and document store features with managed automatic scaling",
         "It only works as a key-value store without secondary query capability",
-        "It requires a fixed schema defined before inserting data regardless of the applied context"
+        "It requires a fixed schema defined before inserting data"
       ],
       "correct_index": 1,
       "explanation_es": "DynamoDB de AWS es un servicio serverless que combina acceso key-value con consultas sobre atributos del documento, escalando automáticamente.",
@@ -647,16 +647,16 @@
       "question_es": "¿Cuál es la principal ventaja de una base de datos de grafos sobre un column-family store para modelar relaciones complejas?",
       "question_en": "What is the main advantage of a graph database over a column-family store for modeling complex relationships?",
       "options_es": [
-        "Los column-family stores soportan traversals de grafos nativamente independientemente del contexto aplicado",
+        "Los column-family stores soportan traversals de grafos nativamente",
         "Las bases de datos de grafos almacenan relaciones como ciudadanos de primera clase, permitiendo traversals eficientes sin joins costosos",
-        "Las bases de datos de grafos requieren menos almacenamiento que los column-family stores",
-        "Los column-family stores son superiores para relaciones complejas por su modelo tabular según la documentación estándar del servicio"
+        "Las bases de datos de grafos requieren menos almacenamiento en disco, ya que Neo4j comprime cada nodo con el algoritmo Snappy de Cassandra",
+        "Los column-family stores son superiores para relaciones complejas por su modelo tabular"
       ],
       "options_en": [
-        "Column-family stores support native graph traversals regardless of the applied context",
+        "Column-family stores support native graph traversals",
         "Graph databases store relationships as first-class citizens, enabling efficient traversals without costly joins",
-        "Graph databases require less storage than column-family stores",
-        "Column-family stores are superior for complex relationships due to their tabular model according to standard service documentation"
+        "Graph databases require less storage on disk, since Neo4j compresses each node using Cassandra's Snappy compression algorithm",
+        "Column-family stores are superior for complex relationships due to their tabular model"
       ],
       "correct_index": 1,
       "explanation_es": "Neo4j y otras bases de grafos representan relaciones como aristas almacenadas físicamente, permitiendo recorrer millones de conexiones en milisegundos.",
@@ -673,13 +673,13 @@
         "Traversals de múltiples niveles siguiendo relaciones entre entidades",
         "Consultas ad-hoc que filtran por cualquier columna sin índices predefinidos",
         "Lecturas y escrituras masivas distribuidas donde el patrón de acceso está predefinido por la partition key",
-        "Transacciones ACID que abarcan múltiples particiones del cluster según la documentación estándar del servicio"
+        "Transacciones ACID que abarcan particiones usando 2PC, protocolo que Cassandra activa automáticamente en el nivel QUORUM"
       ],
       "options_en": [
         "Multi-level traversals following relationships between entities",
         "Ad-hoc queries filtering by any column without predefined indexes",
         "Distributed massive reads and writes where the access pattern is predefined by the partition key",
-        "ACID transactions spanning multiple cluster partitions according to standard service documentation"
+        "ACID transactions spanning partitions using 2PC, a protocol Cassandra activates automatically at the QUORUM consistency level"
       ],
       "correct_index": 2,
       "explanation_es": "Cassandra optimiza lecturas por partition key, distribuyendo datos en el cluster. Las consultas deben seguir el modelo de acceso diseñado en la tabla.",
@@ -716,11 +716,11 @@
       "question_es": "¿Es correcto afirmar que los column-family stores como Cassandra están optimizados para escrituras rápidas y distribuidas?",
       "question_en": "Is it correct to say that column-family stores like Cassandra are optimized for fast, distributed writes?",
       "options_es": [
-        "Falso: los column-family stores priorizan la lectura sobre la escritura en todos los escenarios",
+        "Falso: los column-family stores priorizan la lectura sobre la escritura",
         "Verdadero: Cassandra usa un log de escritura append-only y memtables para lograr alta velocidad de escritura distribuida"
       ],
       "options_en": [
-        "False: column-family stores prioritize reads over writes in all scenarios",
+        "False: column-family stores prioritize reads over writes",
         "True: Cassandra uses an append-only write log and memtables to achieve high distributed write speed"
       ],
       "correct_index": 1,
@@ -736,15 +736,15 @@
       "question_en": "What query language does Neo4j use to interact with graph data?",
       "options_es": [
         "Cypher, un lenguaje declarativo diseñado específicamente para consultar y manipular grafos",
-        "SQL estándar con extensiones para relaciones de grafos",
+        "SQL estándar con extensiones GraphQL para relaciones de grafos",
         "GraphQL como lenguaje nativo de consulta de la base de datos",
-        "Gremlin como único lenguaje soportado para traversals independientemente del contexto aplicado"
+        "Gremlin como único lenguaje soportado para traversals distribuidas"
       ],
       "options_en": [
         "Cypher, a declarative language designed specifically for querying and manipulating graphs",
-        "Standard SQL with extensions for graph relationships",
+        "Standard SQL with GraphQL extensions for graph relationships",
         "GraphQL as the native database query language",
-        "Gremlin as the only supported traversal language regardless of the applied context"
+        "Gremlin as the only supported language for distributed traversals"
       ],
       "correct_index": 0,
       "explanation_es": "Cypher usa patrones ASCII-art como (a)-[:KNOWS]->(b) para expresar traversals de grafos de forma intuitiva y declarativa.",
@@ -758,15 +758,15 @@
       "question_es": "¿Qué modelo de datos utilizan los column-family stores para organizar la información?",
       "question_en": "What data model do column-family stores use to organize information?",
       "options_es": [
-        "Nodos y aristas con propiedades arbitrarias en cada elemento en todos los casos posibles",
+        "Nodos y aristas con propiedades arbitrarias en cada elemento del grafo",
         "Filas identificadas por partition key y clustering key, con columnas agrupadas en familias",
-        "Tablas relacionales con esquema fijo y normalización estricta según la documentación estándar del servicio",
+        "Tablas relacionales con esquema fijo y normalización estricta usando claves foráneas",
         "Documentos JSON anidados con esquema flexible y validación opcional"
       ],
       "options_en": [
-        "Nodes and edges with arbitrary properties on each element in all possible cases",
+        "Nodes and edges with arbitrary properties on each graph element",
         "Rows identified by partition key and clustering key, with columns grouped in families",
-        "Relational tables with fixed schema and strict normalization according to standard service documentation",
+        "Relational tables with fixed schema and strict normalization using foreign keys",
         "Nested JSON documents with flexible schema and optional validation"
       ],
       "correct_index": 1,
@@ -782,14 +782,14 @@
       "question_en": "What is an important limitation of graph databases for massive analytical workloads?",
       "options_es": [
         "El rendimiento se degrada con escaneos completos del grafo porque está optimizado para traversals locales, no para agregaciones globales",
-        "Los grafos no soportan índices sobre propiedades de los nodos de forma invariable y constante",
-        "Las bases de datos de grafos no pueden distribuirse en múltiples servidores independientemente del contexto aplicado",
+        "Los grafos no soportan índices sobre propiedades de los nodos en ningún caso",
+        "Las bases de datos de grafos no pueden distribuirse en múltiples servidores, ya que el protocolo Bolt de Neo4j no admite ningún clustering",
         "Las bases de datos de grafos no pueden almacenar propiedades en las aristas"
       ],
       "options_en": [
         "Performance degrades with full graph scans because it is optimized for local traversals, not global aggregations",
-        "Graphs do not support indexes on node properties invariably and constantly",
-        "Graph databases cannot be distributed across multiple servers regardless of the applied context",
+        "Graphs do not support any indexes on node properties",
+        "Graph databases cannot be distributed across multiple servers, since Neo4j's Bolt protocol does not support any form of clustering",
         "Graph databases cannot store properties on edges"
       ],
       "correct_index": 0,
@@ -807,13 +807,13 @@
         "Consistencia eventual con niveles de consistencia configurables por consulta mediante quorum",
         "Consistencia linearizable obligatoria en todas las operaciones del cluster",
         "Consistencia fuerte con bloqueo pesimista en todas las operaciones de escritura",
-        "Consistencia causal estricta sin opción de relajar las garantías de manera exclusiva y permanente"
+        "Consistencia causal estricta sin opción de relajar las garantías"
       ],
       "options_en": [
         "Eventual consistency with configurable consistency levels per query via quorum",
         "Mandatory linearizable consistency on all cluster operations",
         "Strong consistency with pessimistic locking on all write operations",
-        "Strict causal consistency with no option to relax guarantees exclusively and permanently"
+        "Strict causal consistency with no option to relax guarantees"
       ],
       "correct_index": 0,
       "explanation_es": "Cassandra permite ajustar el nivel de consistencia (ONE, QUORUM, ALL) por cada operación, balanceando disponibilidad y consistencia según la necesidad.",
@@ -829,14 +829,14 @@
       "options_es": [
         "Diferentes nodos pueden devolver versiones distintas del mismo dato durante una partición de red",
         "El sistema deja de funcionar hasta que se restaure la conexión entre nodos",
-        "La base de datos deja de aceptar escrituras para mantener la disponibilidad",
-        "Los datos se pierden permanentemente cuando hay una falla de red independientemente del contexto aplicado"
+        "La base de datos deja de aceptar escrituras para mantener la consistencia",
+        "Los datos se pierden permanentemente cuando hay una falla de red"
       ],
       "options_en": [
         "Different nodes may return different versions of the same data during a network partition",
         "The system stops functioning until the connection between nodes is restored",
-        "The database stops accepting writes to maintain availability",
-        "Data is permanently lost when there is a network failure regardless of the applied context"
+        "The database stops accepting writes to maintain consistency",
+        "Data is permanently lost when there is a network failure"
       ],
       "correct_index": 0,
       "explanation_es": "Sistemas AP como Cassandra priorizan disponibilidad: durante una partición, los nodos siguen respondiendo aunque sus datos no estén sincronizados.",
@@ -850,16 +850,16 @@
       "question_es": "¿Cómo se clasifica MongoDB según el teorema CAP en su configuración por defecto?",
       "question_en": "How is MongoDB classified according to the CAP theorem in its default configuration?",
       "options_es": [
-        "CA: prioriza consistencia y disponibilidad sin tolerancia a particiones sin considerar otros factores relevantes",
+        "CA: prioriza consistencia y disponibilidad sin tolerancia a particiones",
         "AP: prioriza disponibilidad y tolerancia a particiones sobre consistencia",
         "CP: prioriza consistencia y tolerancia a particiones, con un primary que acepta escrituras",
-        "No aplica el teorema CAP a bases de datos de documentos sin excepciones ni variantes"
+        "No aplica el teorema CAP a bases de datos de documentos distribuidas"
       ],
       "options_en": [
-        "CA: prioritizes consistency and availability without partition tolerance without considering other relevant factors",
+        "CA: prioritizes consistency and availability without partition tolerance",
         "AP: prioritizes availability and partition tolerance over consistency",
         "CP: prioritizes consistency and partition tolerance, with a primary accepting writes",
-        "The CAP theorem does not apply to document databases without exceptions or variants"
+        "The CAP theorem does not apply to distributed document databases"
       ],
       "correct_index": 2,
       "explanation_es": "MongoDB con replica set es CP por defecto: las escrituras van al primary, y si hay partición, el sistema elige un nuevo primary manteniendo consistencia.",
@@ -873,16 +873,16 @@
       "question_es": "¿Qué significa \"Soft state\" en las propiedades BASE de sistemas NoSQL?",
       "question_en": "What does \"Soft state\" mean in BASE properties of NoSQL systems?",
       "options_es": [
-        "Los datos se almacenan en memoria volátil que se pierde al reiniciar",
+        "Los datos se almacenan en memoria volátil que se pierde al reiniciar, igual que el modo AOF everysec de Redis",
         "El estado del sistema puede cambiar con el tiempo incluso sin nuevas entradas, debido a la propagación eventual de datos",
-        "El sistema no mantiene ningún estado entre operaciones según la documentación estándar del servicio",
-        "El sistema mantiene un estado rígido y predecible en todo momento independientemente del contexto aplicado"
+        "El sistema no mantiene ningún estado entre operaciones consecutivas",
+        "El sistema mantiene un estado rígido y predecible en todo momento"
       ],
       "options_en": [
-        "Data is stored in volatile memory that is lost on restart",
+        "Data is stored in volatile memory lost on restart, the same as Redis's AOF everysec mode",
         "The system state may change over time even without new inputs, due to eventual data propagation",
-        "The system does not maintain any state between operations according to standard service documentation",
-        "The system maintains a rigid and predictable state at all times regardless of the applied context"
+        "The system does not maintain state between consecutive operations",
+        "The system maintains a rigid and predictable state at all times"
       ],
       "correct_index": 1,
       "explanation_es": "Soft state indica que el estado del sistema no es fijo: las réplicas pueden estar temporalmente desincronizadas mientras convergen hacia consistencia.",
@@ -897,13 +897,13 @@
       "question_en": "What is the relationship between BASE and ACID properties in database design?",
       "options_es": [
         "BASE es una versión más estricta de ACID para bases de datos en la nube",
-        "BASE solo aplica a bases de datos relacionales con sharding habilitado en cualquier escenario de implementación",
+        "BASE solo aplica a bases de datos relacionales con sharding habilitado",
         "ACID y BASE son completamente independientes y pueden coexistir en la misma operación",
         "BASE relaja las garantías de ACID para lograr mayor escalabilidad y disponibilidad en sistemas distribuidos"
       ],
       "options_en": [
         "BASE is a stricter version of ACID for cloud databases",
-        "BASE only applies to relational databases with sharding enabled in any implementation scenario",
+        "BASE only applies to relational databases with sharding enabled",
         "ACID and BASE are completely independent and can coexist in the same operation",
         "BASE relaxes ACID guarantees to achieve greater scalability and availability in distributed systems"
       ],
@@ -920,13 +920,13 @@
       "question_en": "What advantage does a document store like MongoDB offer for agile application development?",
       "options_es": [
         "El esquema rígido garantiza que todos los documentos tengan exactamente los mismos campos",
-        "La normalización obligatoria reduce la redundancia de datos automáticamente en todos los casos posibles",
+        "La normalización obligatoria reduce la redundancia de datos automáticamente",
         "La validación automática de tipos impide insertar datos incorrectos sin configuración",
         "El esquema flexible permite evolucionar la estructura de datos sin migraciones de esquema costosas"
       ],
       "options_en": [
         "The rigid schema ensures all documents have exactly the same fields",
-        "Mandatory normalization automatically reduces data redundancy in all possible cases",
+        "Mandatory normalization automatically reduces data redundancy",
         "Automatic type validation prevents inserting incorrect data without configuration",
         "The flexible schema allows evolving data structure without costly schema migrations"
       ],
@@ -942,14 +942,14 @@
       "question_es": "¿Qué estructura de datos de Redis va más allá del modelo key-value simple?",
       "question_en": "What Redis data structure goes beyond the simple key-value model?",
       "options_es": [
-        "Redis solo soporta strings como valores sin estructuras adicionales según la documentación estándar del servicio",
-        "Los hashes de Redis replican el modelo de documentos de MongoDB completamente",
+        "Redis solo soporta strings como valores sin estructuras de datos adicionales",
+        "Los hashes de Redis replican exactamente el modelo de documentos de MongoDB",
         "Los sorted sets permiten almacenar miembros con puntuaciones y consultar rangos ordenados eficientemente",
         "Los streams de Redis funcionan como tablas relacionales con esquema fijo"
       ],
       "options_en": [
-        "Redis only supports strings as values without additional structures according to standard service documentation",
-        "Redis hashes fully replicate the document model of MongoDB",
+        "Redis only supports strings as values without additional data structures",
+        "Redis hashes exactly replicate the document model of MongoDB",
         "Sorted sets allow storing members with scores and querying ordered ranges efficiently",
         "Redis streams work as relational tables with fixed schema"
       ],
@@ -965,16 +965,16 @@
       "question_es": "¿Qué tipo de relaciones puede modelar eficientemente una base de datos de grafos que serían costosas en un column-family store?",
       "question_en": "What type of relationships can a graph database efficiently model that would be costly in a column-family store?",
       "options_es": [
-        "Relaciones uno a uno entre entidades con clave primaria única",
+        "Relaciones uno a uno con clave primaria y FK, que Cassandra indexa mediante claves secundarias compuestas sin coste",
         "Relaciones muchos a muchos con profundidad variable, como redes sociales o árboles genealógicos",
-        "Datos tabulares con columnas fijas y tipos primitivos sin excepciones ni variantes",
-        "Series temporales con millones de registros por segundo según la documentación estándar del servicio"
+        "Datos tabulares con columnas fijas y tipos primitivos predefinidos",
+        "Series temporales con millones de registros por segundo"
       ],
       "options_en": [
-        "One-to-one relationships between entities with unique primary key",
+        "One-to-one relationships with primary key and FK, which Cassandra indexes via composite secondary indexes at no cost",
         "Many-to-many relationships with variable depth, such as social networks or family trees",
-        "Tabular data with fixed columns and primitive types without exceptions or variants",
-        "Time series with millions of records per second according to standard service documentation"
+        "Tabular data with fixed columns and predefined primitive types",
+        "Time series with millions of records per second"
       ],
       "correct_index": 1,
       "explanation_es": "Las bases de grafos modelan relaciones muchos a muchos con traversals eficientes, mientras que en un column-family store esto requeriría tablas intermedias y múltiples lecturas.",
@@ -1009,14 +1009,14 @@
       "options_es": [
         "Crear índices secundarios en todas las columnas para flexibilidad de consulta",
         "Diseñar las tablas según los patrones de consulta esperados, desnormalizando datos cuando sea necesario",
-        "Normalizar los datos al máximo para evitar redundancia entre tablas de manera exclusiva y permanente",
-        "Usar una única tabla grande con todas las columnas posibles del sistema de forma invariable y constante"
+        "Normalizar los datos al máximo para evitar redundancia entre tablas",
+        "Usar una única tabla grande con todas las columnas posibles del sistema"
       ],
       "options_en": [
         "Create secondary indexes on all columns for query flexibility",
         "Design tables according to expected query patterns, denormalizing data when necessary",
-        "Maximize data normalization to avoid redundancy between tables exclusively and permanently",
-        "Use a single large table with all possible system columns invariably and constantly"
+        "Maximize data normalization to avoid redundancy between tables",
+        "Use a single large table with all possible system columns"
       ],
       "correct_index": 1,
       "explanation_es": "En Cassandra, la regla es \"one table per query\": se modela según cómo se consultarán los datos, aceptando duplicación a cambio de lecturas eficientes.",
@@ -1031,15 +1031,15 @@
       "question_en": "What problem do graph databases solve that is inherently difficult in tabular NoSQL models?",
       "options_es": [
         "Consultas de caminos y patrones como \"amigos de amigos\" o \"ruta más corta\" entre entidades",
-        "Compresión de datos columnar para reducir el almacenamiento en disco",
-        "Escrituras de alta velocidad en un cluster distribuido globalmente",
-        "Almacenamiento eficiente de datos sin relaciones entre ellos en cualquier escenario de implementación"
+        "Compresión de datos columnar usando algoritmos de RLE para reducir almacenamiento",
+        "Escrituras de alta velocidad en un cluster distribuido globalmente con eventual consistency",
+        "Almacenamiento eficiente de datos sin relaciones entre ellos"
       ],
       "options_en": [
         "Path and pattern queries like \"friends of friends\" or \"shortest path\" between entities",
-        "Columnar data compression to reduce disk storage",
-        "High-speed writes in a globally distributed cluster",
-        "Efficient storage of data without relationships between them in any implementation scenario"
+        "Columnar data compression using RLE algorithms to reduce storage",
+        "High-speed writes in a globally distributed cluster with eventual consistency",
+        "Efficient storage of data without relationships between them"
       ],
       "correct_index": 0,
       "explanation_es": "Las consultas de grafos como SHORTEST_PATH o MATCH con patrones de relaciones múltiples son nativas en Cypher pero requieren joins recursivos costosos en modelos tabulares.",
@@ -1054,13 +1054,13 @@
       "question_en": "What CAP theorem guarantee does a system sacrifice when choosing to be CP during a network partition?",
       "options_es": [
         "Disponibilidad: el sistema puede rechazar solicitudes para mantener la consistencia entre nodos",
-        "Ninguna: los sistemas CP mantienen las tres garantías durante particiones independientemente del contexto aplicado",
+        "Ninguna: los sistemas CP mantienen las tres garantías durante particiones",
         "Tolerancia a particiones: el sistema deja de funcionar ante cualquier falla de red",
         "Consistencia: los nodos pueden devolver datos desactualizados temporalmente"
       ],
       "options_en": [
         "Availability: the system may reject requests to maintain consistency between nodes",
-        "None: CP systems maintain all three guarantees during partitions regardless of the applied context",
+        "None: CP systems maintain all three guarantees during partitions",
         "Partition tolerance: the system stops functioning on any network failure",
         "Consistency: nodes may return temporarily outdated data"
       ],
@@ -1076,14 +1076,14 @@
       "question_es": "¿Qué significa \"Basically Available\" en el acrónimo BASE?",
       "question_en": "What does \"Basically Available\" mean in the BASE acronym?",
       "options_es": [
-        "El sistema está disponible solo cuando todos los nodos están conectados y sincronizados de forma invariable y constante",
-        "El sistema proporciona alta disponibilidad con consistencia fuerte en todas las operaciones",
+        "El sistema está disponible solo cuando todos los nodos están conectados",
+        "El sistema proporciona consistencia fuerte garantizada en todas las operaciones",
         "El sistema está disponible básicamente durante horario laboral y en mantenimiento fuera de horas",
         "El sistema garantiza disponibilidad parcial: puede responder aunque la respuesta no refleje el estado más reciente"
       ],
       "options_en": [
-        "The system is available only when all nodes are connected and synchronized invariably and constantly",
-        "The system provides high availability with strong consistency on all operations",
+        "The system is available only when all nodes are connected",
+        "The system provides guaranteed strong consistency on all operations",
         "The system is basically available during business hours and under maintenance otherwise",
         "The system guarantees partial availability: it can respond even if the response does not reflect the most recent state"
       ],
@@ -1142,15 +1142,15 @@
       "question_en": "What happens in an AP system like Cassandra when a network partition occurs?",
       "options_es": [
         "Los nodos continúan aceptando lecturas y escrituras independientemente, resolviendo conflictos después con timestamps",
-        "Las escrituras se rechazan pero las lecturas continúan desde cualquier nodo según la documentación estándar del servicio",
-        "Solo el nodo coordinador acepta escrituras mientras los demás quedan en solo lectura",
-        "El cluster completo se detiene hasta que todos los nodos se reconecten en cualquier escenario de implementación"
+        "Las escrituras se rechazan pero las lecturas continúan desde cualquier réplica",
+        "Solo el nodo coordinador acepta escrituras, igual que el modo single-master que Cassandra fuerza desde la versión 3.0",
+        "El cluster completo se detiene hasta que todos los nodos se reconecten"
       ],
       "options_en": [
         "Nodes continue accepting reads and writes independently, resolving conflicts later with timestamps",
-        "Writes are rejected but reads continue from any node according to standard service documentation",
-        "Only the coordinator node accepts writes while others become read-only",
-        "The entire cluster stops until all nodes reconnect in any implementation scenario"
+        "Writes are rejected but reads continue from any replica",
+        "Only the coordinator node accepts writes, as with the single-master mode Cassandra forces since version 3.0",
+        "The entire cluster stops until all nodes reconnect"
       ],
       "correct_index": 0,
       "explanation_es": "Cassandra como sistema AP permite que cada nodo acepte operaciones durante una partición, usando last-write-wins con timestamps para resolver conflictos.",
@@ -1164,15 +1164,15 @@
       "question_es": "¿Cómo se implementa la consistencia eventual en la práctica en sistemas NoSQL?",
       "question_en": "How is eventual consistency implemented in practice in NoSQL systems?",
       "options_es": [
-        "A través de transacciones de dos fases que coordinan todas las réplicas simultáneamente",
-        "Mediante bloqueos distribuidos que garantizan que todas las réplicas se actualizan sincrónicamente",
-        "Usando un nodo central que serializa todas las escrituras antes de distribuirlas en todos los casos posibles",
+        "A través de transacciones de dos fases que coordinan todas las réplicas",
+        "Mediante bloqueos distribuidos que garantizan actualizaciones sincrónicas",
+        "Usando un nodo central que serializa todas las escrituras antes de distribuirlas",
         "Mediante mecanismos como gossip protocol, anti-entropy y read repair que propagan cambios entre réplicas"
       ],
       "options_en": [
-        "Through two-phase transactions that coordinate all replicas simultaneously",
-        "Through distributed locks that ensure all replicas are updated synchronously",
-        "Using a central node that serializes all writes before distributing them in all possible cases",
+        "Through two-phase transactions coordinating all replicas",
+        "Through distributed locks ensuring synchronous updates",
+        "Using a central node that serializes all writes before distributing them",
         "Through mechanisms like gossip protocol, anti-entropy and read repair that propagate changes between replicas"
       ],
       "correct_index": 3,
@@ -1187,13 +1187,13 @@
       "question_es": "¿Qué ventaja práctica ofrece el modelo BASE sobre ACID para aplicaciones web de alto tráfico?",
       "question_en": "What practical advantage does the BASE model offer over ACID for high-traffic web applications?",
       "options_es": [
-        "Garantiza que ninguna transacción se pierda bajo ninguna circunstancia según la documentación estándar del servicio",
+        "Garantiza que ninguna transacción se pierda bajo ninguna circunstancia",
         "Permite escalar horizontalmente agregando nodos sin sacrificar la disponibilidad del servicio",
         "Simplifica el código de la aplicación al eliminar la necesidad de manejar conflictos",
         "Ofrece tiempos de respuesta predecibles con latencia constante en todas las operaciones"
       ],
       "options_en": [
-        "Guarantees no transaction is ever lost under any circumstances according to standard service documentation",
+        "Guarantees no transaction is ever lost under any circumstances",
         "Allows horizontal scaling by adding nodes without sacrificing service availability",
         "Simplifies application code by eliminating the need to handle conflicts",
         "Offers predictable response times with constant latency on all operations"
@@ -1232,13 +1232,13 @@
         "Caché de datos frecuentemente consultados para reducir la carga sobre la base de datos principal",
         "Reemplazo completo de bases de datos relacionales en aplicaciones empresariales",
         "Almacenamiento primario de todos los datos de la aplicación con transacciones ACID",
-        "Almacenamiento de archivos binarios grandes como imágenes y videos de forma invariable y constante"
+        "Almacenamiento de archivos binarios grandes como imágenes y videos"
       ],
       "options_en": [
         "Cache for frequently queried data to reduce load on the primary database",
         "Complete replacement for relational databases in enterprise applications",
         "Primary storage for all application data with ACID transactions",
-        "Storage for large binary files like images and videos invariably and constantly"
+        "Storage for large binary files like images and videos"
       ],
       "correct_index": 0,
       "explanation_es": "Redis se usa predominantemente como caché de lectura, almacenando resultados de consultas frecuentes para reducir la latencia y la carga en la base de datos principal.",
@@ -1253,14 +1253,14 @@
       "question_en": "What capability distinguishes CouchDB as a document store compared to other document stores?",
       "options_es": [
         "La replicación multi-master bidireccional nativa con resolución de conflictos determinista",
-        "El soporte exclusivo para documentos en formato XML en lugar de JSON en todos los casos posibles",
-        "La limitación de un solo nodo sin capacidad de distribución sin excepciones ni variantes",
+        "El soporte exclusivo para documentos en formato XML en lugar de JSON",
+        "La limitación de un solo nodo sin capacidad de replicación",
         "La imposibilidad de crear índices secundarios sobre campos del documento"
       ],
       "options_en": [
         "Native bidirectional multi-master replication with deterministic conflict resolution",
-        "Exclusive support for XML format documents instead of JSON in all possible cases",
-        "The limitation to a single node without distribution capability without exceptions or variants",
+        "Exclusive support for XML format documents instead of JSON",
+        "The limitation to a single node without replication capability",
         "The inability to create secondary indexes on document fields"
       ],
       "correct_index": 0,
@@ -1275,14 +1275,14 @@
       "question_es": "¿Qué tipo de operación analítica es más eficiente en un column-family store que en una base de datos de grafos?",
       "question_en": "What type of analytical operation is more efficient in a column-family store than in a graph database?",
       "options_es": [
-        "Calcular la centralidad de un nodo dentro de un grafo complejo de manera exclusiva y permanente",
-        "Detectar comunidades y clusters dentro de una red de relaciones",
+        "Calcular la centralidad de un nodo dentro de un grafo usando PageRank",
+        "Detectar comunidades y clusters dentro de una red de relaciones personales",
         "Agregaciones sobre millones de registros leyendo solo las columnas necesarias para el cálculo",
         "Encontrar todos los caminos posibles entre dos entidades específicas"
       ],
       "options_en": [
-        "Calculating the centrality of a node within a complex graph exclusively and permanently",
-        "Detecting communities and clusters within a relationship network",
+        "Calculating node centrality within a graph using PageRank",
+        "Detecting communities and clusters within personal relationship networks",
         "Aggregations over millions of records reading only the columns needed for the calculation",
         "Finding all possible paths between two specific entities"
       ],
@@ -1301,13 +1301,13 @@
         "Sistemas de detección de fraude que analizan patrones en redes de transacciones financieras",
         "Sistemas de almacenamiento de logs con escrituras secuenciales de alto volumen",
         "Aplicaciones de comercio electrónico que muestran catálogos de productos sin relaciones",
-        "Sistemas de archivos distribuidos que almacenan objetos binarios grandes de manera exclusiva y permanente"
+        "Sistemas de archivos distribuidos que almacenan objetos binarios grandes"
       ],
       "options_en": [
         "Fraud detection systems that analyze patterns in financial transaction networks",
         "Log storage systems with high-volume sequential writes",
         "E-commerce applications showing product catalogs without relationships",
-        "Distributed file systems storing large binary objects exclusively and permanently"
+        "Distributed file systems storing large binary objects"
       ],
       "correct_index": 0,
       "explanation_es": "La detección de fraude analiza patrones de relaciones entre cuentas, transacciones y comportamientos, que se modelan naturalmente como grafos con traversals eficientes.",

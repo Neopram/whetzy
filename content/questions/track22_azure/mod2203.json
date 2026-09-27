@@ -7,13 +7,13 @@
       "question_es": "¿Cuál es el propósito principal de Azure Blob Storage?",
       "question_en": "What is the main purpose of Azure Blob Storage?",
       "options_es": [
-        "Ejecutar aplicaciones web de manera exclusiva y permanente",
+        "Ejecutar aplicaciones web con recursos dedicados",
         "Almacenar datos no estructurados",
         "Bases de datos relacionales",
         "Ejecutar máquinas virtuales"
       ],
       "options_en": [
-        "Run web applications exclusively and permanently",
+        "Run web applications with dedicated resources",
         "Store unstructured data",
         "Relational databases",
         "Run virtual machines"
@@ -30,15 +30,15 @@
       "question_es": "¿Cuál es la diferencia entre Blob Hot y Cold storage?",
       "question_en": "What is the difference between Blob Hot and Cold storage?",
       "options_es": [
-        "Hot es más frío de forma invariable y constante",
-        "Cold más rápido",
-        "Sin diferencia de precio",
+        "Hot es más frío pero de mayor latencia",
+        "Cold más rápido que Hot",
+        "Sin diferencia de precio entre tiers",
         "Hot acceso frecuente, Cold inactivo"
       ],
       "options_en": [
-        "Hot is colder invariably and constantly",
-        "Cold faster",
-        "No price difference",
+        "Hot is colder but has higher latency",
+        "Cold faster than Hot",
+        "No price difference between tiers",
         "Hot frequent access, Cold inactive"
       ],
       "correct_index": 3,
@@ -53,16 +53,16 @@
       "question_es": "¿Cuál es el nivel Archive en Azure Blob Storage?",
       "question_en": "What is the Archive tier in Azure Blob Storage?",
       "options_es": [
-        "Caché temporal",
-        "Eliminación de datos",
+        "Caché temporal para aplicaciones",
+        "Eliminación de datos automática",
         "Almacenamiento ultra económico",
-        "Backup local independientemente del contexto aplicado"
+        "Backup local sin replicación"
       ],
       "options_en": [
-        "Temporary cache",
-        "Data deletion",
+        "Temporary cache for applications",
+        "Automatic data deletion",
         "Ultra economical storage",
-        "Local backup regardless of the applied context"
+        "Local backup without replication"
       ],
       "correct_index": 2,
       "explanation_es": "Archive es el nivel más económico para datos que se acceden raramente (menos de anual). Latencia alta.",
@@ -76,15 +76,15 @@
       "question_es": "¿Qué es una SAS (Shared Access Signature) en Blob Storage?",
       "question_en": "What is a SAS (Shared Access Signature) in Blob Storage?",
       "options_es": [
-        "Contraseña blob simple",
-        "Certificado SSL sin considerar otros factores relevantes",
-        "API key pública",
+        "Contraseña blob simple compartida",
+        "Certificado SSL autofirmado",
+        "API key pública del almacenamiento",
         "Token acceso granular limitado"
       ],
       "options_en": [
-        "Simple blob password",
-        "SSL certificate without considering other relevant factors",
-        "Public API key",
+        "Simple shared blob password",
+        "Self-signed SSL certificate",
+        "Public storage API key",
         "Granular limited access token"
       ],
       "correct_index": 3,
@@ -99,16 +99,16 @@
       "question_es": "¿Cómo se replican los datos en Blob Storage?",
       "question_en": "How are data replicated in Blob Storage?",
       "options_es": [
-        "Sin replicación automática",
+        "Sin replicación automática disponible",
         "LRS local, GRS global automática",
-        "Manual copiar regiones",
-        "Replicación opcional según la documentación estándar del servicio"
+        "Manual copiar datos entre regiones",
+        "Replicación opcional activable"
       ],
       "options_en": [
-        "No automatic replication",
+        "No automatic replication available",
         "Local LRS, global GRS automatic",
-        "Manual copy regions",
-        "Optional replication according to standard service documentation"
+        "Manual copy data between regions",
+        "Optional replication activation"
       ],
       "correct_index": 1,
       "explanation_es": "LRS replica dentro región. GRS replica a región secundaria. Ambos automáticos según configuración.",
@@ -168,16 +168,16 @@
       "question_es": "¿Qué es un blob de página en Azure?",
       "question_en": "What is a page blob in Azure?",
       "options_es": [
-        "Documento web HTML",
+        "Documento web HTML con formato",
         "Almacenamiento disco virtual",
-        "Log de eventos",
-        "Tabla de datos sin considerar otros factores relevantes"
+        "Log de eventos del sistema",
+        "Tabla de datos relacional"
       ],
       "options_en": [
-        "Web document HTML",
+        "Web document HTML formatted",
         "Virtual disk storage",
-        "Event log",
-        "Data table without considering other relevant factors"
+        "System event log",
+        "Relational data table"
       ],
       "correct_index": 1,
       "explanation_es": "Page blob es para almacenar discos virtuales de máquinas virtuales con acceso aleatorio rápido.",
@@ -191,16 +191,16 @@
       "question_es": "¿Cómo se implementa la encriptación en Blob Storage?",
       "question_en": "How is encryption implemented in Blob Storage?",
       "options_es": [
-        "Encriptación en reposo por defecto",
-        "Sin encriptación según la documentación estándar del servicio",
-        "Cliente debe encriptar",
-        "Encriptación opcional"
+        "Encriptación en reposo automática",
+        "Sin encriptación en el almacenamiento",
+        "Cliente debe encriptar sus datos",
+        "Encriptación opcional activable"
       ],
       "options_en": [
-        "Encryption at rest by default",
-        "No encryption according to standard service documentation",
-        "Client must encrypt",
-        "Optional encryption"
+        "Automatic encryption at rest",
+        "No encryption in storage",
+        "Client must encrypt data",
+        "Optional encryption activation"
       ],
       "correct_index": 0,
       "explanation_es": "Blob Storage encripta automáticamente en reposo usando claves Microsoft o claves cliente.",
@@ -214,16 +214,16 @@
       "question_es": "¿Qué es lifecycle management en Blob Storage?",
       "question_en": "What is lifecycle management in Blob Storage?",
       "options_es": [
-        "Backup manual según la documentación estándar del servicio",
+        "Backup manual configurado cada domingo",
         "Reglas automáticas cambio nivel/eliminación",
-        "Control versión",
-        "Mantener blob permanente"
+        "Control de versión manual por cada usuario",
+        "Mantener el blob permanente para siempre"
       ],
       "options_en": [
-        "Manual backup according to standard service documentation",
+        "Manual backup configured every Sunday",
         "Auto rules change tier/delete",
-        "Version control",
-        "Keep blob permanent"
+        "Manual version control per each user",
+        "Keep the blob permanent always"
       ],
       "correct_index": 1,
       "explanation_es": "Lifecycle management automatiza cambios de nivel (Hot→Cold→Archive) y eliminación basado en edad.",
@@ -237,15 +237,15 @@
       "question_es": "¿Cómo se accede a un blob desde la aplicación?",
       "question_en": "How is a blob accessed from the application?",
       "options_es": [
-        "Conexión FTP en todos los casos posibles",
-        "Base de datos",
-        "Instalación local",
+        "Conexión FTP del servidor",
+        "Base de datos relacional",
+        "Instalación local del servidor",
         "URL o SDK de cliente"
       ],
       "options_en": [
-        "FTP connection in all possible cases",
-        "Database as the primary concept",
-        "Local installation",
+        "FTP connection from server",
+        "Relational database",
+        "Local server installation",
         "URL or client SDK"
       ],
       "correct_index": 3,
@@ -260,16 +260,16 @@
       "question_es": "¿Qué es versionado de blobs en Azure Storage?",
       "question_en": "What is blob versioning in Azure Storage?",
       "options_es": [
-        "Tags de identificación",
-        "Numeración manual independientemente del contexto aplicado",
+        "Tags de identificación del blob",
+        "Numeración manual de archivos",
         "Mantener histórico versiones automático",
-        "Nombre archivo con versión"
+        "Nombre de archivo con número de versión"
       ],
       "options_en": [
-        "Identification tags",
-        "Manual numbering regardless of the applied context",
+        "Blob identification tags",
+        "Manual file numbering",
         "Keep automatic version history",
-        "File name with version"
+        "File name with a version number"
       ],
       "correct_index": 2,
       "explanation_es": "Versionado automático mantiene histórico de cambios permitiendo restaurar versiones anteriores.",
@@ -329,16 +329,16 @@
       "question_es": "¿Cómo se integra Blob Storage con CDN de Azure?",
       "question_en": "How is Blob Storage integrated with Azure CDN?",
       "options_es": [
-        "Protocolo diferente",
+        "Protocolo diferente requerido",
         "Usar Blob como origen CDN",
         "Sin integración posible",
-        "Copiar manual a CDN sin excepciones ni variantes"
+        "Copiar manual archivos a CDN"
       ],
       "options_en": [
-        "Different protocol",
+        "Different protocol required",
         "Use Blob as CDN origin",
         "No integration possible",
-        "Manual copy to CDN without exceptions or variants"
+        "Manual copy files to CDN"
       ],
       "correct_index": 1,
       "explanation_es": "Se puede usar Blob Storage como origen de Azure CDN para caché global y distribución rápida.",
@@ -353,14 +353,14 @@
       "question_en": "What is the data model in Azure SQL Database?",
       "options_es": [
         "Relacional tablas",
-        "Objeto documento",
-        "Grafo datos independientemente del contexto aplicado",
+        "Objeto documento JSON",
+        "Grafo datos con nodos",
         "NoSQL documento"
       ],
       "options_en": [
         "Relational tables",
-        "Document object",
-        "Data graph regardless of the applied context",
+        "JSON document object",
+        "Data graph with nodes",
         "NoSQL document"
       ],
       "correct_index": 0,
@@ -375,16 +375,16 @@
       "question_es": "¿Cuál es la diferencia entre DTU y vCore en Azure SQL?",
       "question_en": "What is the difference between DTU and vCore in Azure SQL?",
       "options_es": [
-        "vCore más caro en cualquier escenario de implementación",
-        "DTU unidad tiempo",
+        "vCore siempre es más caro que DTU",
+        "DTU es unidad de tiempo facturado por uso",
         "DTU empaquetado, vCore configurable",
-        "Sin diferencia"
+        "No hay diferencia funcional entre ambos"
       ],
       "options_en": [
-        "vCore more expensive in any implementation scenario",
-        "DTU time unit",
+        "vCore is always pricier than DTU",
+        "DTU is a billed compute time unit",
         "DTU bundled, vCore configurable",
-        "No difference"
+        "There is no real functional difference"
       ],
       "correct_index": 2,
       "explanation_es": "DTU es paquete fijo (procesador, memoria, disco). vCore permite configurar cada componente.",
@@ -399,15 +399,15 @@
       "question_en": "What is serverless model in Azure SQL Database?",
       "options_es": [
         "Escalado automático compute pausa",
-        "Base datos permanente",
+        "Base datos permanente sin límite",
         "Sin servidor base datos",
-        "No SQL de forma invariable y constante"
+        "Requiere migrar a una base de datos NoSQL"
       ],
       "options_en": [
         "Auto-scaling compute with pause",
-        "Permanent database",
+        "Permanent database no limit",
         "No database server",
-        "No SQL invariably and constantly"
+        "Requires migrating to a NoSQL database"
       ],
       "correct_index": 0,
       "explanation_es": "Serverless escala automáticamente y pausa cuando inactivo. Se paga solo por uso real.",
@@ -444,15 +444,15 @@
       "question_es": "¿Qué es la replicación geográfica en Azure SQL?",
       "question_en": "What is geographic replication in Azure SQL?",
       "options_es": [
-        "DNS distribuido",
-        "Copias manuales regiones",
-        "Backup local independientemente del contexto aplicado",
+        "DNS distribuido en la nube global",
+        "Copias manuales entre regiones",
+        "Backup local del servidor",
         "Réplica automática región secundaria"
       ],
       "options_en": [
-        "Distributed DNS",
-        "Manual copies regions",
-        "Local backup regardless of the applied context",
+        "DNS distributed across the global cloud",
+        "Manual copies between regions",
+        "Local server backup",
         "Automatic replica secondary region"
       ],
       "correct_index": 3,
@@ -468,14 +468,14 @@
       "question_en": "How are data encrypted in Azure SQL Database?",
       "options_es": [
         "Encriptación cliente manual",
-        "No soportado de forma invariable y constante",
-        "Sin encriptación",
+        "No soportado en ningún plan de Azure SQL",
+        "Sin encriptación en almacenamiento",
         "TDE (Transparent Data Encryption)"
       ],
       "options_en": [
         "Manual client encryption",
-        "Not supported invariably and constantly",
-        "No encryption",
+        "Not supported in any Azure SQL plan",
+        "No encryption in storage",
         "TDE (Transparent Data Encryption)"
       ],
       "correct_index": 3,
@@ -492,13 +492,13 @@
       "options_es": [
         "Versión cloud limitada SQL",
         "SQL Server completo en nube",
-        "Alternativa NoSQL de forma invariable y constante",
+        "Alternativa NoSQL documentos",
         "Solo lectura base datos"
       ],
       "options_en": [
         "Limited SQL cloud version",
         "Full SQL Server in cloud",
-        "NoSQL alternative invariably and constantly",
+        "NoSQL document alternative",
         "Read-only database"
       ],
       "correct_index": 1,
@@ -514,15 +514,15 @@
       "question_en": "How does an application connect to Azure SQL Database?",
       "options_es": [
         "Cadena conexión SQLCA/ODBC",
-        "Sin conexión posible",
+        "Sin conexión posible en Azure",
         "API REST únicamente",
-        "Protocolo binario de forma invariable y constante"
+        "Protocolo binario propietario"
       ],
       "options_en": [
         "Connection string SQLCA/ODBC",
-        "No connection possible",
+        "No connection possible in Azure",
         "REST API only",
-        "Binary protocol invariably and constantly"
+        "Proprietary binary protocol"
       ],
       "correct_index": 0,
       "explanation_es": "Se conecta con cadena conexión estándar usando SQLCA, ODBC o drivers nativos.",
@@ -537,15 +537,15 @@
       "question_en": "What is Transact-SQL (T-SQL) in Azure SQL?",
       "options_es": [
         "Lenguaje script básico",
-        "Dialecto obsoleto",
+        "Dialecto obsoleto de SQL",
         "Extensión SQL con funciones",
-        "Protocolo red en todos los casos posibles"
+        "Protocolo red TCP/IP"
       ],
       "options_en": [
         "Basic script language",
-        "Obsolete dialect",
+        "Obsolete SQL dialect",
         "SQL extension with functions",
-        "Network protocol in all possible cases"
+        "Network TCP/IP protocol"
       ],
       "correct_index": 2,
       "explanation_es": "T-SQL es extensión de SQL estándar con procedimientos, triggers, funciones personalizadas.",
@@ -606,15 +606,15 @@
       "question_en": "What is elastic pool in Azure SQL?",
       "options_es": [
         "Conjunto bases datos compartir recursos",
-        "Grupo máquinas virtuales",
-        "Caché distribuida sin excepciones ni variantes",
-        "Almacenamiento flexible"
+        "Grupo de máquinas virtuales no relacionadas",
+        "Caché distribuida en memoria",
+        "Almacenamiento flexible dinámico"
       ],
       "options_en": [
         "Set databases share resources",
-        "Group virtual machines",
-        "Distributed cache without exceptions or variants",
-        "Flexible storage"
+        "Group of unrelated virtual machines",
+        "Distributed in-memory cache",
+        "Dynamic flexible storage"
       ],
       "correct_index": 0,
       "explanation_es": "Elastic pool permite múltiples bases datos compartir recursos (DTU/vCore) de forma eficiente.",
@@ -628,15 +628,15 @@
       "question_es": "¿Cómo se monitorea el rendimiento en Azure SQL?",
       "question_en": "How is performance monitored in Azure SQL?",
       "options_es": [
-        "Log archivos manual",
-        "Herramienta terceros",
-        "Sin herramientas según la documentación estándar del servicio",
+        "Log archivos manual del sistema",
+        "Herramienta terceros externa",
+        "Sin herramientas disponibles",
         "Query Performance Insights"
       ],
       "options_en": [
-        "Manual log files",
-        "Third-party tool",
-        "No tools according to standard service documentation",
+        "Manual system log files",
+        "External third-party tool",
+        "No tools available",
         "Query Performance Insights"
       ],
       "correct_index": 3,
@@ -652,15 +652,15 @@
       "question_en": "What is automatic tuning in Azure SQL?",
       "options_es": [
         "IA optimiza automáticamente índices",
-        "Configuración manual",
-        "Backup automático independientemente del contexto aplicado",
-        "Cambio manual parámetros"
+        "Configuración manual del DBA",
+        "Backup automático diario del servidor",
+        "Cambio manual parámetros servidor"
       ],
       "options_en": [
         "AI auto-optimizes indexes",
-        "Manual configuration",
-        "Automatic backup regardless of the applied context",
-        "Manual parameter change"
+        "Manual DBA configuration",
+        "Daily automatic server backup",
+        "Manual server parameter change"
       ],
       "correct_index": 0,
       "explanation_es": "Ajuste automático usa IA para optimizar índices, estadísticas y ejecución de consultas.",
@@ -698,13 +698,13 @@
       "question_en": "What is the data model in Azure Cosmos DB?",
       "options_es": [
         "Documento JSON solo",
-        "Gráfos únicamente en cualquier escenario de implementación",
+        "Grafos únicamente soportados",
         "NoSQL múltiples modelos",
         "Solo SQL relacional"
       ],
       "options_en": [
         "JSON document only",
-        "Graphs only in any implementation scenario",
+        "Graphs only supported",
         "NoSQL multiple models",
         "SQL relational only"
       ],
@@ -723,13 +723,13 @@
         "Unidad de almacenamiento",
         "Unidad de trabajo consumida",
         "Puerto de red",
-        "Protocolo como concepto principal"
+        "Protocolo de transferencia de datos"
       ],
       "options_en": [
         "Storage unit",
         "Unit of work consumed",
         "Network port",
-        "Protocol as the primary concept"
+        "Data transfer protocol"
       ],
       "correct_index": 1,
       "explanation_es": "RU mide consumo de operaciones (lectura, escritura, CPU, memoria). Se factura por RU usadas.",
@@ -767,13 +767,13 @@
       "question_en": "What is partitioning in Cosmos DB?",
       "options_es": [
         "Replicación geografía",
-        "Backup segmentado independientemente del contexto aplicado",
+        "Backup segmentado con fragmentación",
         "Distribución automática escalado",
         "División manual datos"
       ],
       "options_en": [
         "Geographic replication",
-        "Segmented backup regardless of the applied context",
+        "Segmented backup with fragmentation",
         "Auto distribution scaling",
         "Manual data division"
       ],
@@ -790,13 +790,13 @@
       "question_en": "How is global replication performed in Cosmos DB?",
       "options_es": [
         "Automática multi-región configurada",
-        "No replicación según la documentación estándar del servicio",
+        "No replicación por defecto en servicio",
         "Solo lectura replicada",
         "Manual entre regiones"
       ],
       "options_en": [
         "Auto multi-region configured",
-        "No replication according to standard service documentation",
+        "No replication by default in service",
         "Read-only replica",
         "Manual between regions"
       ],
@@ -813,13 +813,13 @@
       "question_en": "What is the advantage of serverless mode in Cosmos DB?",
       "options_es": [
         "Más almacenamiento",
-        "Menor latencia sin considerar otros factores relevantes",
+        "Menor latencia garantizada mediante SLA dedicado",
         "Replicación automática",
         "Pago por uso sin provisionamiento"
       ],
       "options_en": [
         "More storage",
-        "Lower latency without considering other relevant factors",
+        "Guaranteed lower latency via a dedicated SLA",
         "Auto replication",
         "Pay per usage no provisioning"
       ],
@@ -838,13 +838,13 @@
         "Grupo usuarios",
         "Contenedor documentos",
         "Nivel permisos",
-        "Tipo datos de forma invariable y constante"
+        "Tipo datos con esquema fijo"
       ],
       "options_en": [
         "User group",
         "Document container",
         "Permission level",
-        "Data type invariably and constantly"
+        "Data type with fixed schema"
       ],
       "correct_index": 1,
       "explanation_es": "Colección es contenedor de documentos JSON con esquema flexible. Contiene índices y TTL.",
@@ -859,13 +859,13 @@
       "question_en": "How is encryption implemented in Cosmos DB?",
       "options_es": [
         "Cliente debe encriptar",
-        "No soportado sin considerar otros factores relevantes",
+        "No soportado por plataforma en versión",
         "Sin encriptación",
         "Encriptación reposo y tránsito"
       ],
       "options_en": [
         "Client must encrypt",
-        "Not supported without considering other relevant factors",
+        "Not supported by platform version",
         "No encryption",
         "Encryption rest and transit"
       ],
@@ -881,13 +881,13 @@
       "question_es": "¿Qué es TTL (Time To Live) en Cosmos DB?",
       "question_en": "What is TTL (Time To Live) in Cosmos DB?",
       "options_es": [
-        "Validez índice en cualquier escenario de implementación",
+        "Período máximo de retención en una caché distribuida",
         "Conexión máxima",
         "Duración transacción",
         "Expiración automática documento"
       ],
       "options_en": [
-        "Index validity in any implementation scenario",
+        "Maximum retention period in a distributed cache",
         "Maximum connection",
         "Transaction duration",
         "Auto doc expiration"
@@ -905,13 +905,13 @@
       "question_en": "How are data queried in Cosmos DB SQL API?",
       "options_es": [
         "API REST únicamente",
-        "Lenguaje Python sin considerar otros factores relevantes",
+        "Lenguaje Python compilado directo",
         "SQL sintaxis similar",
         "Protocolo binario"
       ],
       "options_en": [
         "REST API only",
-        "Python language without considering other relevant factors",
+        "Compiled direct Python language",
         "SQL-like syntax",
         "Binary protocol"
       ],
@@ -951,13 +951,13 @@
       "question_en": "What is Change Feed in Cosmos DB?",
       "options_es": [
         "Historial cambios automático",
-        "Backup incremental sin considerar otros factores relevantes",
+        "Copia incremental de base datos",
         "Sincronización manual",
         "Alimentación de datos"
       ],
       "options_en": [
         "Automatic change history",
-        "Incremental backup without considering other relevant factors",
+        "Incremental database copy",
         "Manual sync",
         "Data feed"
       ],
@@ -999,13 +999,13 @@
         "1 KB máximo",
         "10 MB máximo",
         "100 MB máximo",
-        "Ilimitado como concepto principal"
+        "Ilimitado si se activa el modo de compresión"
       ],
       "options_en": [
         "1 KB maximum",
         "10 MB maximum",
         "100 MB maximum",
-        "Unlimited as the primary concept"
+        "Unlimited if compression mode is enabled"
       ],
       "correct_index": 1,
       "explanation_es": "El máximo es 2 MB por documento en Cosmos DB. Es límite técnico de JSON.",
@@ -1021,13 +1021,13 @@
       "options_es": [
         "Solo escalado vertical",
         "Automático por partición clave",
-        "No escala de forma invariable y constante",
+        "No escala con cambios de datos",
         "Manual agregar servidores"
       ],
       "options_en": [
         "Vertical scaling only",
         "Auto by partition key",
-        "No scaling invariably and constantly",
+        "No scaling with data changes",
         "Manual add servers"
       ],
       "correct_index": 1,
@@ -1065,13 +1065,13 @@
       "question_es": "¿Cuál es la diferencia entre Redis Basic, Standard y Premium?",
       "question_en": "What is difference between Redis Basic, Standard, Premium?",
       "options_es": [
-        "Mismo rendimiento según la documentación estándar del servicio",
+        "Rendimiento variable según el tier contratado en el plan",
         "Sin diferencia clara",
         "Premium más barato",
         "Basic sin HA, Standard HA, Premium cluster"
       ],
       "options_en": [
-        "Same performance according to standard service documentation",
+        "Variable performance depending on the contracted plan tier",
         "No clear difference",
         "Premium cheaper",
         "Basic no HA, Standard HA, Premium cluster"
@@ -1136,13 +1136,13 @@
       "options_es": [
         "Cliente Redis con SDK",
         "API REST únicamente",
-        "Conexión FTP según la documentación estándar del servicio",
+        "Conexión FTP para transferencia de datos",
         "Protocolo HTTP"
       ],
       "options_en": [
         "Redis client with SDK",
         "REST API only",
-        "FTP connection according to standard service documentation",
+        "FTP connection for data transfer",
         "HTTP protocol"
       ],
       "correct_index": 0,
@@ -1157,13 +1157,13 @@
       "question_es": "¿Qué es evicción en Redis?",
       "question_en": "What is eviction in Redis?",
       "options_es": [
-        "Compresión datos según la documentación estándar del servicio",
+        "Compresión automática de datos en caché",
         "Transferencia región",
         "Remoción automática cuando lleno",
         "Eliminación manual clave"
       ],
       "options_en": [
-        "Data compression according to standard service documentation",
+        "Auto data compression in cache",
         "Region transfer",
         "Auto removal when full",
         "Manual key deletion"
@@ -1180,13 +1180,13 @@
       "question_es": "¿Cómo se implementa transacciones en Redis?",
       "question_en": "How are transactions implemented in Redis?",
       "options_es": [
-        "Sin soporte independientemente del contexto aplicado",
+        "Sin soporte nativo, requiere lógica externa de bloqueo",
         "Locks manuales",
         "MULTI/EXEC atomic",
         "Requiere cluster"
       ],
       "options_en": [
-        "No support regardless of the applied context",
+        "No native support, requires external locking logic",
         "Manual locks",
         "MULTI/EXEC atomic",
         "Requires cluster"
@@ -1203,14 +1203,14 @@
       "question_es": "¿Qué estructuras de datos soporta Redis?",
       "question_en": "What data structures does Redis support?",
       "options_es": [
-        "JSON solamente sin excepciones ni variantes",
-        "Documentos como concepto principal",
+        "JSON solamente mediante módulo adicional instalado",
+        "Documentos en formato anidado",
         "Strings únicamente",
         "Strings, Hashes, Lists, Sets, Sorted Sets"
       ],
       "options_en": [
-        "JSON only without exceptions or variants",
-        "Documents as the primary concept",
+        "JSON only via an additional installed module",
+        "Documents in nested format",
         "Strings only",
         "Strings, Hashes, Lists, Sets, Sorted Sets"
       ],
@@ -1229,13 +1229,13 @@
         "Firewall solo",
         "Contraseña simple",
         "SSL/TLS encriptación",
-        "Sin seguridad independientemente del contexto aplicado"
+        "Sin seguridad de red configurada"
       ],
       "options_en": [
         "Firewall only",
         "Simple password",
         "SSL/TLS encryption",
-        "No security regardless of the applied context"
+        "No network security configured"
       ],
       "correct_index": 2,
       "explanation_es": "Redis soporta SSL/TLS para encriptación en tránsito. Requiere Premium tier.",
@@ -1250,13 +1250,13 @@
       "question_en": "What is geographic replication in Redis?",
       "options_es": [
         "No disponible",
-        "Copia diaria sin considerar otros factores relevantes",
+        "Copia de backup manual semanal hacia otra región",
         "Manual backup regiones",
         "Réplica automática región secundaria"
       ],
       "options_en": [
         "Not available",
-        "Daily copy without considering other relevant factors",
+        "Manual weekly backup copy to another region",
         "Manual region backup",
         "Auto replica secondary region"
       ],
@@ -1273,15 +1273,15 @@
       "question_en": "How are metrics monitored in Redis?",
       "options_es": [
         "Azure Monitor y métricas",
-        "Sin monitoreo sin excepciones ni variantes",
         "Herramienta terceros",
-        "Log archivo manual"
+        "Log archivo manual",
+        "Monitoreo básico incluido"
       ],
       "options_en": [
         "Azure Monitor and metrics",
-        "No monitoring without exceptions or variants",
         "Third-party tool",
-        "Manual log file"
+        "Manual log file",
+        "Basic monitoring included"
       ],
       "correct_index": 0,
       "explanation_es": "Azure Monitor proporciona métricas de uso CPU, memoria, conexiones, hits/misses.",
@@ -1297,13 +1297,13 @@
       "options_es": [
         "1 minuto máximo",
         "No TTL soportado",
-        "1 hora máximo de manera exclusiva y permanente",
+        "1 hora máximo con renovación automática",
         "Unlimited (entero 64-bit)"
       ],
       "options_en": [
         "1 minute max",
         "No TTL support",
-        "1 hour max exclusively and permanently",
+        "1 hour max with auto renewal",
         "Unlimited (64-bit int)"
       ],
       "correct_index": 3,
@@ -1321,13 +1321,13 @@
         "Escalado vertical",
         "Particionamiento automático datos",
         "Replicación manual",
-        "Grupo máquinas independientemente del contexto aplicado"
+        "Agrupación de máquinas estática"
       ],
       "options_en": [
         "Vertical scaling",
         "Auto data partitioning",
         "Manual replication",
-        "Group machines regardless of the applied context"
+        "Static machine grouping"
       ],
       "correct_index": 1,
       "explanation_es": "Clustering particiona automáticamente datos entre múltiples nodos para escalado.",
@@ -1341,13 +1341,13 @@
       "question_es": "¿Cuál es el uso típico de Redis en aplicaciones web?",
       "question_en": "What is typical Redis usage in web applications?",
       "options_es": [
-        "Servidor web independientemente del contexto aplicado",
+        "Servidor web con procesamiento backend",
         "Almacenamiento archivos",
         "Base datos principal",
         "Cache sesiones y datos frecuentes"
       ],
       "options_en": [
-        "Web server regardless of the applied context",
+        "Web server with backend processing",
         "File storage",
         "Primary database",
         "Cache sessions and frequent data"
@@ -1366,13 +1366,13 @@
       "options_es": [
         "Automático por patrón",
         "Expiración global",
-        "No expira de forma invariable y constante",
+        "No expira hasta limpiar manualmente",
         "TTL individual por clave"
       ],
       "options_en": [
         "Auto by pattern",
         "Global expiration",
-        "No expiration invariably and constantly",
+        "No expiration until manual cleanup",
         "Individual TTL per key"
       ],
       "correct_index": 3,

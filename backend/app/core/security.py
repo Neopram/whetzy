@@ -189,6 +189,23 @@ async def get_current_user(
     return user
 
 
+
+async def get_optional_user(
+    request: Request,
+    token: str | None = Depends(oauth2_scheme),
+    db: AsyncSession = Depends(get_db),
+) -> User | None:
+    """El usuario si la petición trae una sesión válida; None si no.
+
+    Para endpoints públicos que solo cambian algo cuando sabemos quién pide (el
+    cupo Free de lecciones, 39.4). Un token caducado o revocado no convierte una
+    lectura pública en un 401: se trata como anónimo.
+    """
+    try:
+        return await get_current_user(request, token, db)
+    except HTTPException:
+        return None
+
 async def get_current_active_premium_user(
     current_user: User = Depends(get_current_user),
 ) -> User:

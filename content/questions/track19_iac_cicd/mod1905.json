@@ -7,16 +7,16 @@
       "question_es": "¿Qué es una estrategia de despliegue en CI/CD?",
       "question_en": "What is a deployment strategy in CI/CD?",
       "options_es": [
-        "Un archivo de configuración",
-        "Un tipo de test",
+        "Un archivo de configuración que define variables de entorno del pipeline",
+        "Un tipo de test que verifica exclusivamente la sintaxis del código fuente",
         "Un plan para cómo desplegar cambios minimizando riesgo",
-        "Una rama de Git sin considerar otros factores relevantes"
+        "Una rama de Git protegida que bloquea merges directos sin aprobación"
       ],
       "options_en": [
-        "A config file",
-        "A test type",
+        "A config file that defines pipeline environment variables",
+        "A test type that only checks source code syntax",
         "A plan for deploying changes minimizing risk",
-        "A Git branch without considering other relevant factors"
+        "A protected Git branch that blocks direct merges without approval"
       ],
       "correct_index": 2,
       "explanation_es": "Una estrategia de despliegue es un enfoque para desplegar cambios de código a producción de forma segura y controlada.",
@@ -33,13 +33,13 @@
         "Solo Rolling",
         "Solo Big Bang",
         "Big Bang, Blue-Green, Canary, Rolling",
-        "Solo Canary sin excepciones ni variantes"
+        "Solo Canary, pero limitado a un 5% de usuarios fijo"
       ],
       "options_en": [
         "Only Rolling",
         "Only Big Bang",
         "Big Bang, Blue-Green, Canary, Rolling",
-        "Only Canary without exceptions or variants"
+        "Only Canary, but limited to a fixed 5% of users"
       ],
       "correct_index": 2,
       "explanation_es": "Las estrategias comunes incluyen Big Bang (todo a la vez), Blue-Green (dos ambientes), Canary (gradual), y Rolling (actualización gradual).",
@@ -53,15 +53,15 @@
       "question_es": "¿Qué es despliegue 'Big Bang'?",
       "question_en": "What is 'Big Bang' deployment?",
       "options_es": [
-        "Un despliegue controlado",
-        "Desplegar gradualmente de manera exclusiva y permanente",
-        "Probar antes de desplegar",
+        "Un despliegue controlado que reduce el riesgo mediante validación gradual",
+        "Desplegar solo un 10% de las instancias primero y expandir tras validar",
+        "Probar antes de desplegar usando un entorno de staging aislado",
         "Desplegar todos los cambios a producción de una vez"
       ],
       "options_en": [
-        "A controlled deployment",
-        "Deploy gradually exclusively and permanently",
-        "Test before deploying",
+        "A controlled deployment that reduces risk through gradual validation",
+        "Deploy only 10% of the instances first and expand after validating",
+        "Test before deploying using an isolated staging environment",
         "Deploy all changes to production at once"
       ],
       "correct_index": 3,
@@ -76,16 +76,16 @@
       "question_es": "¿Qué es despliegue 'Blue-Green'?",
       "question_en": "What is 'Blue-Green' deployment?",
       "options_es": [
-        "Un tipo de merge de manera exclusiva y permanente",
+        "Un tipo de merge que reescribe el historial de commits",
         "Mantener dos ambientes (Blue/Green) e intercambiar tráfico entre ellos",
-        "Desplegar en dos regiones",
-        "Un ambiente de prueba de forma invariable y constante"
+        "Desplegar en dos regiones distintas para repartir la carga",
+        "Un ambiente de prueba temporal que se destruye automáticamente tras cada ejecución"
       ],
       "options_en": [
-        "A type of merge exclusively and permanently",
+        "A type of merge that rewrites the commit history",
         "Maintain two environments (Blue/Green) and switch traffic between them",
-        "Deploy in two regions",
-        "A test environment invariably and constantly"
+        "Deploy in two different regions to distribute the load",
+        "A temporary test environment that gets destroyed automatically after each run"
       ],
       "correct_index": 1,
       "explanation_es": "Blue-Green mantiene dos ambientes idénticos (Blue=actual, Green=nuevo), intercambia tráfico permitiendo rollback instantáneo.",
@@ -101,13 +101,13 @@
       "options_es": [
         "Solo acelera despliegue",
         "Rollback instantáneo, cero downtime, fácil validación",
-        "Ninguna ventaja independientemente del contexto aplicado",
+        "Ninguna ventaja salvo duplicar el gasto en infraestructura",
         "Solo reduce costos"
       ],
       "options_en": [
         "Only speeds up deployment",
         "Instant rollback, zero downtime, easy validation",
-        "No advantage regardless of the applied context",
+        "No advantage except doubling the infrastructure spend",
         "Only reduces costs"
       ],
       "correct_index": 1,
@@ -122,16 +122,16 @@
       "question_es": "¿Qué es despliegue 'Canary'?",
       "question_en": "What is 'Canary' deployment?",
       "options_es": [
-        "Un despliegue de emergencia",
-        "Probar antes de desplegar de manera exclusiva y permanente",
+        "Un despliegue de emergencia que salta la revisión de código",
+        "Probar en un entorno de staging idéntico a producción",
         "Desplegar a pequeño porcentaje de usuarios para validar antes de expandir",
-        "Un tipo de rollback en cualquier escenario de implementación"
+        "Un tipo de rollback que revierte automáticamente cada hora sin intervención"
       ],
       "options_en": [
-        "An emergency deployment",
-        "Test before deploying exclusively and permanently",
+        "An emergency deployment that skips code review",
+        "Testing in a staging environment identical to production",
         "Deploy to small percentage of users to validate before expanding",
-        "A type of rollback in any implementation scenario"
+        "A type of rollback that automatically reverts every hour without intervention"
       ],
       "correct_index": 2,
       "explanation_es": "Canary desplega a un pequeño porcentaje de usuarios (5-10%) para validar, expandiendo gradualmente si funciona.",
@@ -145,16 +145,16 @@
       "question_es": "¿Cuál es la ventaja de despliegue Canary?",
       "question_en": "What is the advantage of Canary deployment?",
       "options_es": [
-        "Solo reduce costos de manera exclusiva y permanente",
-        "Ninguna como concepto principal",
+        "Solo reduce costos al eliminar el ambiente de staging",
+        "Ninguna, porque satura la base de datos al probarse contra el entorno de staging",
         "Detección rápida de problemas antes de afectar a todos",
-        "Solo en desarrollo según la documentación estándar del servicio"
+        "Solo funciona en entornos con un único servidor"
       ],
       "options_en": [
-        "Only reduces costs exclusively and permanently",
-        "None as the primary concept",
+        "Only reduces costs by eliminating the staging environment",
+        "None, because it overloads the database by testing against the staging environment",
         "Quick problem detection before affecting everyone",
-        "Only in development according to standard service documentation"
+        "Only works in environments with a single server"
       ],
       "correct_index": 2,
       "explanation_es": "Canary detecta problemas rápidamente en usuarios limitados, minimizando impacto antes de expandir.",
@@ -168,16 +168,16 @@
       "question_es": "¿Qué es despliegue 'Rolling'?",
       "question_en": "What is 'Rolling' deployment?",
       "options_es": [
-        "Un despliegue rápido en cualquier escenario de implementación",
+        "Un despliegue que sustituye todas las instancias a la vez",
         "Reemplazar instancias gradualmente mientras se ejecutan las antiguas",
-        "Desplegar en paralelo",
-        "Un tipo de rollback independientemente del contexto aplicado"
+        "Desplegar en paralelo en dos clústeres separados",
+        "Un tipo de rollback que restaura desde la copia de seguridad del día anterior"
       ],
       "options_en": [
-        "A quick deployment in any implementation scenario",
+        "A deployment that replaces all instances at once",
         "Gradually replace instances while old ones run",
-        "Deploy in parallel",
-        "A type of rollback regardless of the applied context"
+        "Deploy in parallel across two separate clusters",
+        "A type of rollback that restores from the previous day's backup"
       ],
       "correct_index": 1,
       "explanation_es": "Rolling reemplaza instancias gradualmente, manteniendo versión anterior ejecutándose mientras se actualizan nuevas.",
@@ -191,16 +191,16 @@
       "question_es": "¿Cuál es la diferencia entre Canary y Rolling?",
       "question_en": "What is the difference between Canary and Rolling?",
       "options_es": [
-        "No hay diferencia sin excepciones ni variantes",
+        "No hay diferencia porque ambas usan exactamente el mismo umbral de errores para abortar el despliegue",
         "Canary prueba con usuarios limitados, Rolling actualiza instancias gradualmente",
-        "Rolling no es gradual",
-        "Canary es más lento independientemente del contexto aplicado"
+        "Rolling no es gradual, sustituye todas las instancias en un solo paso",
+        "Canary siempre requiere reiniciar el clúster completo antes de empezar"
       ],
       "options_en": [
-        "No difference without exceptions or variants",
+        "No difference because both use exactly the same error threshold to abort the deployment",
         "Canary tests with limited users, Rolling gradually updates instances",
-        "Rolling is not gradual",
-        "Canary is slower regardless of the applied context"
+        "Rolling is not gradual, it replaces all instances in a single step",
+        "Canary always requires restarting the entire cluster before starting"
       ],
       "correct_index": 1,
       "explanation_es": "Canary es basado en usuarios (5% usuarios reciben v2), Rolling es basado en instancias (1 instancia a la vez).",
@@ -214,16 +214,16 @@
       "question_es": "¿Qué es un 'rollback' de despliegue?",
       "question_en": "What is a deployment 'rollback'?",
       "options_es": [
-        "Un archivo de configuración",
+        "Un archivo de configuración que guarda versiones anteriores del build",
         "Revertir a la versión anterior si el despliegue falla",
-        "Un tipo de test en cualquier escenario de implementación",
-        "Un reinicio del servidor"
+        "Un tipo de test que se ejecuta después del despliegue en producción",
+        "Un reinicio del servidor sin cambiar la versión desplegada"
       ],
       "options_en": [
-        "A config file",
+        "A config file that stores previous build versions",
         "Revert to previous version if deployment fails",
-        "A test type in any implementation scenario",
-        "A server restart"
+        "A type of test that runs after the deployment to production",
+        "A server restart without changing the deployed version"
       ],
       "correct_index": 1,
       "explanation_es": "Rollback revierte la aplicación a la versión anterior cuando el despliegue nuevo falla o causa problemas.",
@@ -237,16 +237,16 @@
       "question_es": "¿Cómo se implementa Blue-Green en Kubernetes?",
       "question_en": "How do you implement Blue-Green in Kubernetes?",
       "options_es": [
-        "Solo en VMs en cualquier escenario de implementación",
-        "Manualmente como concepto principal",
+        "Solo mediante DaemonSets ejecutados en cada nodo del clúster, sin usar Services",
+        "Manualmente editando el kubeconfig de cada nodo",
         "Usando servicios y selectores para intercambiar tráfico entre deployments",
-        "No es posible independientemente del contexto aplicado"
+        "No es posible sin reiniciar el control plane"
       ],
       "options_en": [
-        "Only in VMs in any implementation scenario",
-        "Manually as the primary concept",
+        "Only via DaemonSets running on every node in the cluster, without using Services",
+        "Manually editing the kubeconfig of each node",
         "Using services and selectors to switch traffic between deployments",
-        "Not possible regardless of the applied context"
+        "Not possible without restarting the control plane"
       ],
       "correct_index": 2,
       "explanation_es": "En Kubernetes, Blue-Green usa Services que seleccionan diferentes Deployments para intercambiar tráfico.",
@@ -260,16 +260,16 @@
       "question_es": "¿Qué factor elegir entre Blue-Green y Canary?",
       "question_en": "What factor to choose between Blue-Green and Canary?",
       "options_es": [
-        "Solo costo sin considerar otros factores relevantes",
-        "No hay diferencia según la documentación estándar del servicio",
+        "Solo el costo del doble de infraestructura necesaria para mantener ambos ambientes",
+        "No hay diferencia porque ambas requieren downtime durante el cambio",
         "Blue-Green para rollback rápido, Canary para validación de usuarios",
-        "Solo disponibilidad"
+        "Solo disponibilidad en regiones con múltiples zonas"
       ],
       "options_en": [
-        "Only cost without considering other relevant factors",
-        "No difference according to standard service documentation",
+        "Only the cost of the doubled infrastructure required to keep both environments",
+        "No difference because both require downtime during the switch",
         "Blue-Green for quick rollback, Canary for user validation",
-        "Only availability"
+        "Only availability in regions with multiple zones"
       ],
       "correct_index": 2,
       "explanation_es": "Usa Blue-Green si necesitas rollback instantáneo, Canary si necesitas validar cambios con usuarios reales.",
@@ -283,16 +283,16 @@
       "question_es": "¿Qué herramientas automatizan Blue-Green?",
       "question_en": "What tools automate Blue-Green?",
       "options_es": [
-        "Solo en CI/CD",
-        "Solo Docker",
+        "Solo en pipelines de CI/CD sin soporte de orquestadores externos",
+        "Solo Docker mediante docker-compose",
         "Kubernetes, AWS CodeDeploy, Spinnaker",
-        "Solo manual de forma invariable y constante"
+        "Solo mediante scripts bash ejecutados a mano en cada servidor"
       ],
       "options_en": [
-        "Only in CI/CD",
-        "Only Docker",
+        "Only in CI/CD pipelines without support from external orchestrators",
+        "Only Docker via docker-compose",
         "Kubernetes, AWS CodeDeploy, Spinnaker",
-        "Only manual invariably and constantly"
+        "Only via bash scripts run by hand on each server"
       ],
       "correct_index": 2,
       "explanation_es": "Herramientas como Kubernetes, AWS CodeDeploy y Spinnaker automatizan despliegues Blue-Green.",
@@ -306,14 +306,14 @@
       "question_es": "¿Cuál es el riesgo de Big Bang deployment?",
       "question_en": "What is the risk of Big Bang deployment?",
       "options_es": [
-        "Ninguno como concepto principal",
-        "No hay riesgo en cualquier escenario de implementación",
+        "Ninguno, ya que valida cada cambio antes de aplicarlo",
+        "No hay riesgo porque siempre se prueba en staging primero",
         "Downtime, fallos afectan a todos, rollback difícil",
         "Solo impacta staging"
       ],
       "options_en": [
-        "None as the primary concept",
-        "No risk in any implementation scenario",
+        "None, since it validates each change before applying it",
+        "No risk because it is always tested in staging first",
         "Downtime, failures affect everyone, difficult rollback",
         "Only impacts staging"
       ],
@@ -329,15 +329,15 @@
       "question_es": "¿Qué es despliegue 'Shadow'?",
       "question_en": "What is 'Shadow' deployment?",
       "options_es": [
-        "Un despliegue oculto",
-        "Un tipo de rollback en cualquier escenario de implementación",
-        "Probar en staging en todos los casos posibles",
+        "Un despliegue oculto que solo ven los administradores del sistema",
+        "Un tipo de rollback que se ejecuta cada noche automáticamente",
+        "Probar en staging con datos sintéticos generados aleatoriamente",
         "Ejecutar nueva versión en paralelo sin afectar usuarios reales"
       ],
       "options_en": [
-        "A hidden deployment",
-        "A type of rollback in any implementation scenario",
-        "Test in staging in all possible cases",
+        "A hidden deployment visible only to system administrators",
+        "A type of rollback that runs automatically every night",
+        "Testing in staging with randomly generated synthetic data",
         "Run new version in parallel without affecting real users"
       ],
       "correct_index": 3,
@@ -353,15 +353,15 @@
       "question_en": "What is 'GitOps'?",
       "options_es": [
         "Una herramienta de deployment",
-        "Un comando de Git sin considerar otros factores relevantes",
+        "Un comando de Git que fusiona ramas automáticamente al detectar un pull request abierto",
         "Una práctica donde Git es fuente de verdad de infraestructura y configuración",
-        "Un tipo de rama independientemente del contexto aplicado"
+        "Un tipo de rama que expira a los treinta días de inactividad"
       ],
       "options_en": [
         "A deployment tool",
-        "A Git command without considering other relevant factors",
+        "A Git command that automatically merges branches when it detects an open pull request",
         "A practice where Git is the source of truth for infrastructure and configuration",
-        "A branch type regardless of the applied context"
+        "A branch type that expires after thirty days of inactivity"
       ],
       "correct_index": 2,
       "explanation_es": "GitOps es una práctica donde el estado deseado de infraestructura se define en Git, automáticamente sincronizado.",
@@ -375,16 +375,16 @@
       "question_es": "¿Cuál es el principio fundamental de GitOps?",
       "question_en": "What is the fundamental principle of GitOps?",
       "options_es": [
-        "Automatización como concepto principal",
+        "Automatizar solo las pruebas unitarias del código",
         "Git como fuente única de verdad para todo (código, infraestructura, config)",
-        "Seguridad como concepto principal de forma invariable y constante",
-        "Rápido deployment en cualquier escenario de implementación"
+        "Cifrar todos los secretos dentro del repositorio Git con la misma clave para todo el equipo",
+        "Desplegar sin pasar por revisión de código"
       ],
       "options_en": [
-        "Automation as the primary concept",
+        "Automating only the unit tests of the code",
         "Git as single source of truth for everything (code, infrastructure, config)",
-        "Security as the primary concept invariably and constantly",
-        "Fast deployment in any implementation scenario"
+        "Encrypting all secrets inside the Git repository using the same key for the whole team",
+        "Deploying without going through code review"
       ],
       "correct_index": 1,
       "explanation_es": "El principio fundamental es que Git contiene el estado deseado de TODO, infraestructura se sincroniza automáticamente.",
@@ -399,15 +399,15 @@
       "question_en": "How does GitOps workflow work?",
       "options_es": [
         "PR → merge → Git hook → sincronizar infraestructura automáticamente",
-        "Deploy manual en cualquier escenario de implementación",
-        "CI/CD únicamente de forma invariable y constante",
-        "Only manual deployment"
+        "Deploy manual ejecutado por un operador vía SSH",
+        "CI/CD que ignora los cambios hechos en Git",
+        "Solo despliegue manual ejecutado sin ningún tipo de automatización ni revisión previa"
       ],
       "options_en": [
         "PR → merge → Git hook → auto sync infrastructure",
-        "Manual deployment in any implementation scenario",
-        "CI/CD only invariably and constantly",
-        "Only manual"
+        "Manual deployment executed by an operator via SSH",
+        "CI/CD that ignores changes made in Git",
+        "Only manual deployment with no automation of any kind and no prior review"
       ],
       "correct_index": 0,
       "explanation_es": "Flujo: Cambios en Git PR → review → merge → webhook dispara sincronización automática en infraestructura.",
@@ -421,16 +421,16 @@
       "question_es": "¿Cuál es la ventaja de GitOps?",
       "question_en": "What is the advantage of GitOps?",
       "options_es": [
-        "Solo automatización en todos los casos posibles",
+        "Solo automatización de los tests de integración en cada pull request",
         "Control completo, auditoría, rollback vía Git, declarativo",
-        "Solo para Kubernetes sin excepciones ni variantes",
-        "Ninguna como concepto principal"
+        "Solo funciona con clústeres de un único nodo",
+        "Ninguna, ya que requiere acceso SSH manual a cada servidor"
       ],
       "options_en": [
-        "Only automation in all possible cases",
+        "Only automation of integration tests on each pull request",
         "Full control, audit, rollback via Git, declarative",
-        "Only for Kubernetes without exceptions or variants",
-        "None as the primary concept"
+        "Only works with single-node clusters",
+        "None, since it requires manual SSH access to each server"
       ],
       "correct_index": 1,
       "explanation_es": "Ventajas: control total, auditoría completa, rollback fácil, estado declarativo, visibilidad en Git.",
@@ -445,15 +445,15 @@
       "question_en": "How do you implement GitOps with Kubernetes?",
       "options_es": [
         "Usando ArgoCD, Flux u otros operadores que sincronizen Git con cluster",
-        "No es compatible independientemente del contexto aplicado",
-        "Con Terraform en cualquier escenario de implementación",
-        "Solo manualmente"
+        "No es compatible sin migrar a máquinas virtuales dedicadas",
+        "Solo aplicando manifiestos YAML con kubectl de forma manual en cada nodo",
+        "Solo manualmente mediante la consola web del proveedor"
       ],
       "options_en": [
         "Using ArgoCD, Flux or other operators to sync Git with cluster",
-        "Not compatible regardless of the applied context",
-        "With Terraform in any implementation scenario",
-        "Only manually"
+        "Not compatible without migrating to dedicated virtual machines",
+        "Only by applying YAML manifests with kubectl manually on every node",
+        "Only manually via the provider's web console"
       ],
       "correct_index": 0,
       "explanation_es": "Kubernetes usa operadores como ArgoCD o Flux que monitorean Git y sincronizan cambios automáticamente.",
@@ -467,16 +467,16 @@
       "question_es": "¿Qué es 'infraestructura declarativa'?",
       "question_en": "What is 'declarative infrastructure'?",
       "options_es": [
-        "Scripting de pasos de forma invariable y constante",
+        "Escribir un script bash con cada paso en orden y sus condiciones",
         "Definir estado deseado, no los pasos para lograrlo",
-        "Automática únicamente",
-        "Infraestructura manual"
+        "Automática únicamente, sin posibilidad de intervención manual",
+        "Infraestructura manual configurada equipo por equipo"
       ],
       "options_en": [
-        "Step scripting invariably and constantly",
+        "Writing a bash script with each step in order and its conditions",
         "Define desired state, not steps to achieve it",
-        "Automatic only",
-        "Manual infrastructure"
+        "Automatic only, with no possibility of manual intervention",
+        "Manual infrastructure configured machine by machine"
       ],
       "correct_index": 1,
       "explanation_es": "Infraestructura declarativa especifica QUÉS estado deseado, no CÓMO lograrlo, el sistema se encarga.",
@@ -491,15 +491,15 @@
       "question_en": "What is the difference between declarative and imperative?",
       "options_es": [
         "Declarativo define QUÉ, imperativo define CÓMO (pasos)",
-        "Imperative es mejor independientemente del contexto aplicado",
-        "Declarative es solo para datos",
-        "No hay en todos los casos posibles"
+        "Imperativo siempre reemplaza al declarativo en producción crítica",
+        "Declarative es solo para datos, nunca para infraestructura",
+        "No hay diferencia porque ambos generan el mismo YAML final"
       ],
       "options_en": [
         "Declarative defines WHAT, imperative defines HOW (steps)",
-        "Imperative is better regardless of the applied context",
-        "Declarative is only for data",
-        "No difference in all possible cases"
+        "Imperative always replaces declarative in critical production",
+        "Declarative is only for data, never for infrastructure",
+        "No difference because both generate the same final YAML"
       ],
       "correct_index": 0,
       "explanation_es": "Declarativo: \"Quiero 3 instancias\"; Imperativo: \"Crea instancia 1, espera, crea instancia 2...\"",
@@ -513,15 +513,15 @@
       "question_es": "¿Cuál es el beneficio de infraestructura declarativa?",
       "question_en": "What is the benefit of declarative infrastructure?",
       "options_es": [
-        "Más control sin considerar otros factores relevantes",
-        "Menos recursos",
-        "Más velocidad sin excepciones ni variantes",
+        "Más control manual sobre cada paso de ejecución del despliegue",
+        "Menos recursos de cómputo consumidos durante el despliegue",
+        "Más velocidad al saltarse la validación de sintaxis del manifiesto",
         "Legibilidad, idempotencia, mantenibilidad, versioning"
       ],
       "options_en": [
-        "More control without considering other relevant factors",
-        "Fewer resources",
-        "Faster as the primary concept without exceptions or variants",
+        "More manual control over each deployment execution step",
+        "Fewer compute resources consumed during the deployment",
+        "Faster by skipping the manifest's syntax validation",
         "Readability, idempotence, maintainability, versioning"
       ],
       "correct_index": 3,
@@ -536,16 +536,16 @@
       "question_es": "¿Qué herramientas soportan infraestructura declarativa?",
       "question_en": "What tools support declarative infrastructure?",
       "options_es": [
-        "Solo manual según la documentación estándar del servicio",
-        "Solo Terraform",
+        "Solo mediante la consola web de cada proveedor cloud",
+        "Solo Terraform, sin soporte de otras herramientas",
         "Terraform, CloudFormation, Pulumi, Ansible",
-        "Solo CloudFormation"
+        "Solo CloudFormation, exclusivo de AWS"
       ],
       "options_en": [
-        "Only manual according to standard service documentation",
-        "Only Terraform",
+        "Only through each cloud provider's web console",
+        "Only Terraform, with no support for other tools",
         "Terraform, CloudFormation, Pulumi, Ansible",
-        "Only CloudFormation"
+        "Only CloudFormation, exclusive to AWS"
       ],
       "correct_index": 2,
       "explanation_es": "Herramientas declarativas incluyen Terraform, AWS CloudFormation, Pulumi, Ansible, Kubernetes YAML.",
@@ -559,15 +559,15 @@
       "question_es": "¿Cómo se versiona infraestructura con GitOps?",
       "question_en": "How do you version infrastructure with GitOps?",
       "options_es": [
-        "No es posible en cualquier escenario de implementación",
-        "No se versiona",
-        "Manualmente como concepto principal",
+        "No es posible sin una base de datos externa dedicada al historial",
+        "No se versiona, cada cambio sobrescribe el anterior",
+        "Manualmente en una hoja de cálculo compartida por el equipo",
         "Mediante Git commits y ramas, cada cambio es un commit"
       ],
       "options_en": [
-        "Not possible in any implementation scenario",
-        "Not versioned",
-        "Manually as the primary concept",
+        "Not possible without an external database dedicated to history",
+        "Not versioned, each change overwrites the previous one",
+        "Manually in a spreadsheet shared by the team",
         "Via Git commits and branches, each change is a commit"
       ],
       "correct_index": 3,
@@ -582,16 +582,16 @@
       "question_es": "¿Qué es 'reconciliación' en GitOps?",
       "question_en": "What is 'reconciliation' in GitOps?",
       "options_es": [
-        "Un merge de ramas",
-        "Un tipo de diff sin considerar otros factores relevantes",
+        "Un merge de ramas que combina dos historiales de commits",
+        "Un tipo de diff que compara solo nombres de archivo, ignorando su contenido",
         "Proceso de sincronizar infraestructura actual con estado deseado en Git",
-        "Un rollback en cualquier escenario de implementación"
+        "Un rollback que borra el historial de commits del repositorio"
       ],
       "options_en": [
-        "A branch merge",
-        "A diff type without considering other relevant factors",
+        "A branch merge that combines two commit histories",
+        "A type of diff that compares only file names, ignoring their content",
         "Process of syncing actual infrastructure with desired Git state",
-        "A rollback in any implementation scenario"
+        "A rollback that deletes the repository's commit history"
       ],
       "correct_index": 2,
       "explanation_es": "Reconciliación es el proceso continuo de verificar que infraestructura real coincida con Git, sincronizando diferencias.",
@@ -606,15 +606,15 @@
       "question_en": "Who are popular GitOps operators?",
       "options_es": [
         "ArgoCD, Flux, Atlantis",
-        "Solo manual independientemente del contexto aplicado",
-        "Solo Jenkins",
-        "Solo Terraform"
+        "Solo mediante cron jobs programados cada noche",
+        "Solo Jenkins configurado como servidor de CI",
+        "Solo Terraform ejecutado desde la línea de comandos"
       ],
       "options_en": [
         "ArgoCD, Flux, Atlantis",
-        "Only manual regardless of the applied context",
-        "Only Jenkins",
-        "Only Terraform"
+        "Only via cron jobs scheduled every night",
+        "Only Jenkins configured as a CI server",
+        "Only Terraform run from the command line"
       ],
       "correct_index": 0,
       "explanation_es": "Operadores populares: ArgoCD (Argo), Flux (CNCF), Atlantis (Terraform), especializados en GitOps.",
@@ -628,16 +628,16 @@
       "question_es": "¿Cuál es el flujo de PR en GitOps?",
       "question_en": "What is the PR flow in GitOps?",
       "options_es": [
-        "Sin PRs de forma invariable y constante",
-        "Manual después en todos los casos posibles",
+        "Sin PRs, aplicando cambios directo a main sin revisión",
+        "Manual tras la aprobación de cada cambio recibida por correo electrónico",
         "Cambios infraestructura → PR → review → merge → auto deploy",
-        "Merge sin review"
+        "Merge sin review de ningún miembro del equipo"
       ],
       "options_en": [
-        "No PRs invariably and constantly",
-        "Manual after in all possible cases",
+        "No PRs, applying changes directly to main without review",
+        "Manual, only after each change's approval is received by email",
         "Infra changes → PR → review → merge → auto deploy",
-        "Merge without review"
+        "Merge without review from any team member"
       ],
       "correct_index": 2,
       "explanation_es": "GitOps usa PRs para cambios: proponer → revisar → mergar automáticamente disparar sincronización.",
@@ -652,15 +652,15 @@
       "question_en": "How do you rollback in GitOps?",
       "options_es": [
         "Mediante revert de Git commit o rollback a commit anterior",
-        "Por SSH independientemente del contexto aplicado",
-        "Manualmente en infraestructura",
-        "No es posible independientemente del contexto aplicado"
+        "Por SSH conectándose directo al servidor de producción",
+        "Manualmente en infraestructura, editando cada recurso a mano",
+        "No es posible sin reconstruir el clúster entero desde cero"
       ],
       "options_en": [
         "Via Git commit revert or rollback to previous commit",
-        "Via SSH regardless of the applied context",
-        "Manually on infrastructure",
-        "Not possible regardless of the applied context"
+        "Via SSH connecting directly to the production server",
+        "Manually on infrastructure, editing each resource by hand",
+        "Not possible without rebuilding the entire cluster from scratch"
       ],
       "correct_index": 0,
       "explanation_es": "Rollback en GitOps es simple: revert del commit en Git o checkout commit anterior, sincronización automática.",
@@ -675,15 +675,15 @@
       "question_en": "What is the benefit of idempotent infrastructure?",
       "options_es": [
         "Ejecutable múltiples veces con mismo resultado, seguro de re-ejecutar",
-        "Reduce tamaño según la documentación estándar del servicio",
-        "Solo para testing independientemente del contexto aplicado",
-        "Ninguno como concepto principal"
+        "Reduce el tamaño del archivo de estado de Terraform tras cada aplicación",
+        "Solo aplica a entornos de solo lectura sin escritura",
+        "Ninguno, ya que cada ejecución cambia el resultado obtenido"
       ],
       "options_en": [
         "Runnable multiple times with same result, safe to re-run",
-        "Reduces size according to standard service documentation",
-        "Only for testing regardless of the applied context",
-        "None as the primary concept"
+        "Reduces the size of the Terraform state file after each apply",
+        "Only applies to read-only environments with no writes",
+        "None, since each run changes the obtained result"
       ],
       "correct_index": 0,
       "explanation_es": "Infraestructura idempotente se puede ejecutar múltiples veces sin efectos secundarios, seguro re-aplicar.",
@@ -697,16 +697,16 @@
       "question_es": "¿Qué es observabilidad en CI/CD?",
       "question_en": "What is observability in CI/CD?",
       "options_es": [
-        "Ver solo logs en cualquier escenario de implementación",
+        "Ver únicamente logs de texto plano, sin métricas ni trazas",
         "Capacidad de entender estado del sistema mediante datos de ejecución",
-        "Monitoreo como concepto principal",
-        "Alertas como concepto principal en todos los casos posibles"
+        "Monitoreo con paneles fijos que solo miden umbrales conocidos",
+        "Alertas automáticas limitadas a umbrales ya predefinidos por el equipo"
       ],
       "options_en": [
-        "Only view logs in any implementation scenario",
+        "Only viewing plain-text logs, without metrics or traces",
         "Ability to understand system state via execution data",
-        "Monitoring as the primary concept",
-        "Alerts as the primary concept in all possible cases"
+        "Monitoring with fixed dashboards that only track known thresholds",
+        "Automated alerts limited to thresholds the team already predefined"
       ],
       "correct_index": 1,
       "explanation_es": "Observabilidad es capacidad de entender qué está pasando en el sistema basado en datos externos (logs, metrics, traces).",
@@ -723,13 +723,13 @@
         "Solo alertas",
         "Solo metrics",
         "Logs, Metrics, Traces (3 pilares)",
-        "Solo logs de forma invariable y constante"
+        "Solo logs, sin métricas ni trazas"
       ],
       "options_en": [
         "Only alerts",
         "Only metrics",
         "Logs, Metrics, Traces (3 pillars)",
-        "Only logs invariably and constantly"
+        "Only logs, without metrics or traces"
       ],
       "correct_index": 2,
       "explanation_es": "Los 3 pilares: Logs (eventos), Metrics (números), Traces (flujos), combinados proporcionan observabilidad completa.",
@@ -743,16 +743,16 @@
       "question_es": "¿Qué son 'logs' en observabilidad?",
       "question_en": "What are 'logs' in observability?",
       "options_es": [
-        "Métricas como concepto principal",
+        "Métricas numéricas agregadas por minuto",
         "Registros de eventos que ocurren en el sistema",
-        "Gráficos como concepto principal",
-        "Alertas como concepto principal en todos los casos posibles"
+        "Gráficos generados a partir de reportes manuales",
+        "Alertas disparadas al cruzar un umbral de CPU"
       ],
       "options_en": [
-        "Metrics as the primary concept",
+        "Numeric metrics aggregated per minute",
         "Records of events occurring in the system",
-        "Graphs as the primary concept",
-        "Alerts as the primary concept in all possible cases"
+        "Graphs generated from manual reports",
+        "Alerts triggered when a CPU threshold is crossed"
       ],
       "correct_index": 1,
       "explanation_es": "Logs son registros de eventos, como errores, warnings, información de ejecución, timestamp y contexto.",
@@ -767,15 +767,15 @@
       "question_en": "What are 'metrics' in observability?",
       "options_es": [
         "Mediciones numéricas (CPU, memoria, latencia, errores)",
-        "Flujos de datos en cualquier escenario de implementación",
+        "Flujos de datos entre microservicios sin agregación numérica",
         "Eventos textuales",
-        "Alertas como concepto principal"
+        "Alertas disparadas al cruzar un umbral fijo"
       ],
       "options_en": [
         "Numeric measurements (CPU, memory, latency, errors)",
-        "Data flows in any implementation scenario",
+        "Data flows between microservices without numeric aggregation",
         "Text events",
-        "Alerts as the primary concept"
+        "Alerts triggered when a fixed threshold is crossed"
       ],
       "correct_index": 0,
       "explanation_es": "Métricas son mediciones numéricas agregadas: CPU%, memoria, latencia, tasa de errores, throughput.",
@@ -789,15 +789,15 @@
       "question_es": "¿Qué son 'traces' en observabilidad?",
       "question_en": "What are 'traces' in observability?",
       "options_es": [
-        "Métricas como concepto principal",
-        "Alertas como concepto principal",
-        "Logs como concepto principal sin considerar otros factores relevantes",
+        "Mediciones numéricas agregadas como CPU o memoria",
+        "Notificaciones al cruzar un umbral configurado",
+        "Registros de texto sin id de solicitud compartido",
         "Seguimiento de solicitud a través de múltiples servicios"
       ],
       "options_en": [
-        "Metrics as the primary concept",
-        "Alerts as the primary concept",
-        "Logs as the primary concept without considering other relevant factors",
+        "Aggregated numeric measurements like CPU or memory",
+        "Notification sent on threshold crossing",
+        "Text logs with no shared request id",
         "Tracking request across multiple services"
       ],
       "correct_index": 3,
@@ -812,15 +812,15 @@
       "question_es": "¿Cuál es la diferencia entre monitoreo y observabilidad?",
       "question_en": "What is the difference between monitoring and observability?",
       "options_es": [
-        "No hay diferencia en cualquier escenario de implementación",
-        "No están relacionados",
-        "Monitoring es mejor sin excepciones ni variantes",
+        "No hay diferencia si el sistema solo tiene un servicio",
+        "Conceptos no relacionados que nunca comparten la misma fuente de datos",
+        "Monitoring detecta fallos conocidos más rápido que cualquier alerta manual configurada",
         "Monitoreo = métricas predefinidas, Observabilidad = entender cualquier estado"
       ],
       "options_en": [
-        "No difference in any implementation scenario",
-        "Unrelated as the primary concept",
-        "Monitoring is better without exceptions or variants",
+        "No difference when the system has only one service",
+        "Unrelated concepts that never share the same data source",
+        "Monitoring detects known failures faster than any manually configured alert",
         "Monitoring = predefined metrics, Observability = understand any state"
       ],
       "correct_index": 3,
@@ -835,15 +835,15 @@
       "question_es": "¿Qué es un 'dashboard' en monitoreo?",
       "question_en": "What is a 'dashboard' in monitoring?",
       "options_es": [
-        "Un log de manera exclusiva y permanente",
+        "Un archivo de log rotado cada 24 horas",
         "Visualización de métricas y datos en tiempo real",
-        "Un tipo de alerta en todos los casos posibles",
+        "Un tipo de alerta que dispara un correo automático",
         "Un archivo de configuración"
       ],
       "options_en": [
-        "A log exclusively and permanently",
+        "A log file rotated every 24 hours",
         "Visualization of metrics and data in real-time",
-        "A type of alert in all possible cases",
+        "A type of alert that triggers an automatic email",
         "A config file"
       ],
       "correct_index": 1,
@@ -860,13 +860,13 @@
       "options_es": [
         "Prometheus, Grafana, Datadog, New Relic",
         "Solo Prometheus",
-        "Solo manual de forma invariable y constante",
+        "Solo revisión manual del servidor cada semana",
         "Solo Grafana"
       ],
       "options_en": [
         "Prometheus, Grafana, Datadog, New Relic",
         "Only Prometheus",
-        "Only manual invariably and constantly",
+        "Only manual server review once a week",
         "Only Grafana"
       ],
       "correct_index": 0,
@@ -882,15 +882,15 @@
       "question_en": "What is an 'alert' in monitoring?",
       "options_es": [
         "Un dashboard",
-        "Una métrica independientemente del contexto aplicado",
+        "Una métrica que se calcula pero nunca se compara con nada",
         "Notificación cuando una métrica cruza umbral",
-        "Un log de manera exclusiva y permanente"
+        "Un registro de eventos guardado sin fecha de expiración"
       ],
       "options_en": [
         "A dashboard",
-        "A metric regardless of the applied context",
+        "A metric that is computed but never compared to anything",
         "Notification when metric crosses threshold",
-        "A log exclusively and permanently"
+        "An event record stored with no expiration date"
       ],
       "correct_index": 2,
       "explanation_es": "Una alerta notifica cuando una métrica cruza un umbral (ej. CPU > 80%), permitiendo respuesta rápida.",
@@ -904,14 +904,14 @@
       "question_es": "¿Qué es 'SLO' y 'SLI'?",
       "question_en": "What are 'SLO' and 'SLI'?",
       "options_es": [
-        "Solo métricas en todos los casos posibles",
-        "Solo Objetivos sin excepciones ni variantes",
+        "Solo métricas, sin ninguna meta numérica que cumplir",
+        "Solo objetivos redactados sin ningún dato que los respalde",
         "Sin diferencia",
         "SLI = indicador medido, SLO = objetivo a alcanzar"
       ],
       "options_en": [
-        "Only metrics in all possible cases",
-        "Only Objectives without exceptions or variants",
+        "Only metrics, with no numeric goal to meet",
+        "Only objectives written with no data backing them",
         "No difference",
         "SLI = measured indicator, SLO = target to achieve"
       ],
@@ -928,14 +928,14 @@
       "question_en": "How do you configure effective alerts?",
       "options_es": [
         "Alertar solo en umbrales relevantes, evitar alertas falsas",
-        "Sin umbrales en cualquier escenario de implementación",
-        "Alerta de todo en todos los casos posibles",
+        "Sin umbrales definidos, disparando por cualquier variación mínima",
+        "Alerta de todo cambio, incluidos los que no afectan al usuario",
         "Alertar en todo"
       ],
       "options_en": [
         "Alert only on relevant thresholds, avoid false alerts",
-        "No thresholds in any implementation scenario",
-        "Alert all in all possible cases",
+        "No defined thresholds, firing on any tiny variation",
+        "Alert on every change, including ones that do not affect users",
         "Alert on everything"
       ],
       "correct_index": 0,
@@ -950,15 +950,15 @@
       "question_es": "¿Cuál es el beneficio de logs estructurados?",
       "question_en": "What is the benefit of structured logs?",
       "options_es": [
-        "Solo para humans sin considerar otros factores relevantes",
-        "Ninguno como concepto principal",
-        "Más espacio en todos los casos posibles",
+        "Solo legibles por personas, sin campos que un parser reconozca",
+        "Ninguno: ocupan el mismo espacio que el texto plano",
+        "Ocupan más espacio en disco que el texto plano equivalente",
         "Fácil de parsear, indexar, buscar, analizar automáticamente"
       ],
       "options_en": [
-        "Only for humans without considering other relevant factors",
-        "None as the primary concept",
-        "More space in all possible cases",
+        "Only readable by people, with no fields a parser recognizes",
+        "None: they take up the same space as plain text",
+        "They take up more disk space than equivalent plain text",
         "Easy to parse, index, search, analyze automatically"
       ],
       "correct_index": 3,
@@ -973,16 +973,16 @@
       "question_es": "¿Qué es 'distributed tracing'?",
       "question_en": "What is 'distributed tracing'?",
       "options_es": [
-        "Tracing local sin excepciones ni variantes",
+        "Tracing local limitado a un único proceso en una máquina",
         "Rastrear solicitud a través de múltiples servicios distribuidos",
         "Un tipo de log",
-        "Una métrica sin excepciones ni variantes"
+        "Una métrica calculada sin referencia a ninguna solicitud"
       ],
       "options_en": [
-        "Local tracing without exceptions or variants",
+        "Local tracing limited to one process, one machine",
         "Track request across distributed services",
         "A log type",
-        "A metric without exceptions or variants"
+        "A metric computed with no reference to any request"
       ],
       "correct_index": 1,
       "explanation_es": "Distributed tracing rastrea una solicitud por múltiples microservicios, mostrando latencia en cada paso.",
@@ -998,14 +998,14 @@
       "options_es": [
         "Lead time, deploy frequency, MTTR, error rate (4 métricas claves)",
         "Deploy frequency",
-        "Solo uptime en cualquier escenario de implementación",
-        "Solo errores independientemente del contexto aplicado"
+        "Solo uptime, ignorando la frecuencia de despliegues",
+        "Solo errores, sin contar el tiempo que tarda en corregirse"
       ],
       "options_en": [
         "Lead time, deploy frequency, MTTR, error rate (4 key metrics)",
         "Deploy frequency",
-        "Only uptime in any implementation scenario",
-        "Only errors regardless of the applied context"
+        "Only uptime, ignoring deployment frequency",
+        "Only errors, without counting how long they take to fix"
       ],
       "correct_index": 0,
       "explanation_es": "4 métricas clave (DORA): Lead time, deploy frequency, MTTR (tiempo recuperación), error rate.",
@@ -1019,15 +1019,15 @@
       "question_es": "¿Qué es 'MTTR' en operaciones?",
       "question_en": "What is 'MTTR' in operations?",
       "options_es": [
-        "Tiempo mínimo según la documentación estándar del servicio",
+        "Tiempo mínimo registrado en el último incidente del mes",
         "Mean Time To Repair: tiempo promedio para recuperarse de un incidente",
-        "Una alerta de manera exclusiva y permanente",
+        "Una alerta que se envía cuando se supera el SLO",
         "Tiempo máximo"
       ],
       "options_en": [
-        "Minimum time according to standard service documentation",
+        "Minimum time recorded in last month's incident",
         "Mean Time To Repair: average time to recover from incident",
-        "An alert exclusively and permanently",
+        "An alert sent when the SLO is exceeded",
         "Maximum time"
       ],
       "correct_index": 1,
@@ -1042,16 +1042,16 @@
       "question_es": "¿Qué es 'seguridad en CI/CD'?",
       "question_en": "What is 'security in CI/CD'?",
       "options_es": [
-        "Usar contraseñas fuertes de forma invariable y constante",
+        "Usar contraseñas fuertes rotadas cada seis meses",
         "Integrar escaneo de seguridad en cada etapa de pipeline",
-        "Firewalls como concepto principal",
-        "Encriptación como concepto principal"
+        "Firewalls que bloquean el tráfico de red externo",
+        "Encriptación de datos en reposo dentro del repositorio de código fuente"
       ],
       "options_en": [
-        "Use strong passwords invariably and constantly",
+        "Using strong passwords rotated every six months",
         "Integrate security scanning in each pipeline stage",
-        "Firewalls as the primary concept",
-        "Encryption as the primary concept"
+        "Firewalls that block external network traffic",
+        "Encrypting data at rest inside the source code repository"
       ],
       "correct_index": 1,
       "explanation_es": "Seguridad en CI/CD integra escaneo de vulnerabilidades, secretos, dependencias en cada etapa.",
@@ -1066,15 +1066,15 @@
       "question_en": "What are security practices in CI/CD?",
       "options_es": [
         "Únicamente testing",
-        "Sin prácticas de manera exclusiva y permanente",
+        "Sin prácticas definidas, solo revisiones ad hoc del equipo",
         "Escaneo SCA, SAST, DAST, secretos, dependencias",
-        "Solo en staging de forma invariable y constante"
+        "Solo en staging, nunca aplicadas contra producción"
       ],
       "options_en": [
         "Only testing",
-        "No practices exclusively and permanently",
+        "No defined practices, only ad hoc team reviews",
         "SCA, SAST, DAST scanning, secrets, dependencies",
-        "Only staging invariably and constantly"
+        "Only in staging, never applied against production"
       ],
       "correct_index": 2,
       "explanation_es": "Prácticas: SAST (análisis código), DAST (análisis runtime), SCA (análisis dependencias), secretos.",
@@ -1089,14 +1089,14 @@
       "question_en": "What is 'SAST'?",
       "options_es": [
         "Testing de rendimiento",
-        "Seguridad de servidor independientemente del contexto aplicado",
-        "Auditoría manual en todos los casos posibles",
+        "Seguridad de servidor configurada únicamente en el firewall perimetral",
+        "Auditoría manual revisada trimestralmente por un humano",
         "Static Application Security Testing: análisis de código fuente"
       ],
       "options_en": [
         "Performance testing",
-        "Server security regardless of the applied context",
-        "Manual audit in all possible cases",
+        "Server security configured only on the perimeter firewall",
+        "Manual audit reviewed quarterly by a human",
         "Static Application Security Testing: source code analysis"
       ],
       "correct_index": 3,
@@ -1112,15 +1112,15 @@
       "question_en": "What is 'DAST'?",
       "options_es": [
         "Análisis de código",
-        "Testing unitario de manera exclusiva y permanente",
+        "Testing unitario que solo valida funciones aisladas",
         "Dynamic Application Security Testing: análisis ejecutando la aplicación",
-        "Manual testing según la documentación estándar del servicio"
+        "Manual testing ejecutado por un tester justo antes de publicar el release"
       ],
       "options_en": [
         "Code analysis",
-        "Unit testing exclusively and permanently",
+        "Unit testing that only validates isolated functions",
         "Dynamic Application Security Testing: analysis by running application",
-        "Manual testing according to standard service documentation"
+        "Manual testing run by a tester right before publishing the release"
       ],
       "correct_index": 2,
       "explanation_es": "DAST analiza aplicación ejecutándola, como un hacker, buscando vulnerabilidades de runtime.",
@@ -1134,15 +1134,15 @@
       "question_es": "¿Qué es 'SCA'?",
       "question_en": "What is 'SCA'?",
       "options_es": [
-        "Auditoría como concepto principal",
-        "Análisis de seguridad de forma invariable y constante",
-        "Escaneo de código en cualquier escenario de implementación",
+        "Auditoría de accesos revisada cada trimestre por seguridad",
+        "Análisis de seguridad que solo revisa permisos de acceso al repositorio",
+        "Escaneo de código fuente propio, sin mirar las dependencias externas",
         "Software Composition Analysis: análisis de dependencias y bibliotecas"
       ],
       "options_en": [
-        "Audit as the primary concept",
-        "Security analysis invariably and constantly",
-        "Code scan in any implementation scenario",
+        "Access audit reviewed every quarter by security",
+        "Security analysis that only reviews repository access permissions",
+        "Source code scan of first-party code that ignores external dependencies",
         "Software Composition Analysis: dependency and library analysis"
       ],
       "correct_index": 3,
@@ -1157,15 +1157,15 @@
       "question_es": "¿Cómo se escanean secretos en CI/CD?",
       "question_en": "How do you scan for secrets in CI/CD?",
       "options_es": [
-        "Manualmente como concepto principal",
-        "No es posible sin considerar otros factores relevantes",
-        "Nunca como concepto principal independientemente del contexto aplicado",
+        "Manualmente, revisando cada commit línea por línea",
+        "No es posible sin acceso directo al servidor de producción",
+        "Nunca, porque los secretos no dejan rastro en el historial",
         "Con herramientas como TruffleHog, GitGuardian en pre-push"
       ],
       "options_en": [
-        "Manually as the primary concept",
-        "Not possible without considering other relevant factors",
-        "Never as the primary concept regardless of the applied context",
+        "Manually, reviewing every commit line by line",
+        "Not possible without direct access to the production server",
+        "Never, because secrets leave no trace in the history",
         "With tools like TruffleHog, GitGuardian in pre-push"
       ],
       "correct_index": 3,
@@ -1181,15 +1181,15 @@
       "question_en": "What is 'compliance'?",
       "options_es": [
         "Adherencia a regulaciones (HIPAA, GDPR, PCI-DSS)",
-        "Documentación como concepto principal",
-        "Testing como concepto principal",
-        "Seguir reglas internas independientemente del contexto aplicado"
+        "Documentación interna sin validación de un auditor externo",
+        "Testing que solo cubre casos funcionales del producto",
+        "Seguir reglas internas sin regulación externa"
       ],
       "options_en": [
         "Adherence to regulations (HIPAA, GDPR, PCI-DSS)",
-        "Documentation as the primary concept",
-        "Testing as the primary concept",
-        "Follow internal rules regardless of the applied context"
+        "Internal documentation with no external auditor validation",
+        "Testing that only covers functional product cases",
+        "Following internal rules with no external regulation"
       ],
       "correct_index": 0,
       "explanation_es": "Conformidad es cumplir regulaciones externas como HIPAA (salud), GDPR (privacidad), PCI-DSS (pagos).",
@@ -1204,15 +1204,15 @@
       "question_en": "How do you audit CI/CD?",
       "options_es": [
         "Loguear cambios, accesos, despliegues, reteniendo historial",
-        "Ocasionalmente como concepto principal",
-        "No se audita de forma invariable y constante",
-        "Nunca como concepto principal de forma invariable y constante"
+        "Ocasionalmente, solo cuando ocurre un incidente grave",
+        "No se audita porque el pipeline borra los registros al terminar",
+        "Nunca, ni siquiera cuando cambia un permiso de despliegue"
       ],
       "options_en": [
         "Log changes, accesses, deployments, retaining history",
-        "Occasionally as the primary concept",
-        "Not audited invariably and constantly",
-        "Never as the primary concept invariably and constantly"
+        "Occasionally, only when a major incident occurs",
+        "Not audited because the pipeline deletes logs when it finishes",
+        "Never, not even when a deployment permission changes"
       ],
       "correct_index": 0,
       "explanation_es": "Auditoría: loguear quién qué cuándo dónde en pipeline, reteniendo historial para cumplimiento.",
@@ -1227,14 +1227,14 @@
       "question_en": "What is 'container scanning'?",
       "options_es": [
         "Escanear imágenes Docker en busca de vulnerabilidades",
-        "Revisión manual sin considerar otros factores relevantes",
-        "Testing como concepto principal",
+        "Revisión manual del Dockerfile sin ejecutar la imagen",
+        "Testing funcional de la aplicación ya desplegada",
         "Análisis de código"
       ],
       "options_en": [
         "Scan Docker images for vulnerabilities",
-        "Manual review without considering other relevant factors",
-        "Testing as the primary concept",
+        "Manual review of the Dockerfile, image not run",
+        "Functional testing of the deployed application",
         "Code analysis"
       ],
       "correct_index": 0,
@@ -1249,13 +1249,13 @@
       "question_es": "¿Cómo se controla acceso en CI/CD?",
       "question_en": "How is access controlled in CI/CD?",
       "options_es": [
-        "Sin control sin considerar otros factores relevantes",
+        "Sin control: cualquiera despliega sin permiso",
         "RBAC, 2FA, auditoría, secretos encriptados",
         "Abierto a todos",
         "Contraseñas solamente"
       ],
       "options_en": [
-        "No control without considering other relevant factors",
+        "No control: anyone can deploy without permission",
         "RBAC, 2FA, audit, encrypted secrets",
         "Open to all",
         "Passwords only"
@@ -1272,14 +1272,14 @@
       "question_es": "¿Qué es 'RBAC'?",
       "question_en": "What is 'RBAC'?",
       "options_es": [
-        "Un secreto en cualquier escenario de implementación",
-        "Una rama en cualquier escenario de implementación",
+        "Un secreto almacenado cifrado en el gestor de variables",
+        "Una rama protegida que exige revisión antes de fusionar",
         "Role-Based Access Control: permisos basados en roles",
         "Un usuario"
       ],
       "options_en": [
-        "A secret in any implementation scenario",
-        "A branch in any implementation scenario",
+        "A secret stored encrypted in the variable manager",
+        "A protected branch that requires review before merging",
         "Role-Based Access Control: permissions based on roles",
         "A user"
       ],
@@ -1295,15 +1295,15 @@
       "question_es": "¿Cómo se protege infraestructura en CI/CD?",
       "question_en": "How is infrastructure protected in CI/CD?",
       "options_es": [
-        "Monitoreo como concepto principal",
+        "Monitoreo de métricas sin bloquear ningún tipo de tráfico",
         "Firewall, VPN, aislamiento de red, encriptación",
-        "Sin protección según la documentación estándar del servicio",
+        "Sin protección: el tráfico entra directo al servidor",
         "Únicamente acceso"
       ],
       "options_en": [
-        "Monitoring as the primary concept",
+        "Metric monitoring that blocks no traffic at all",
         "Firewall, VPN, network isolation, encryption",
-        "No protection according to standard service documentation",
+        "No protection: traffic reaches the server directly",
         "Only access"
       ],
       "correct_index": 1,
@@ -1319,15 +1319,15 @@
       "question_en": "How do you validate artifact integrity?",
       "options_es": [
         "Usando checksums, firmas digitales, notarización",
-        "Manualmente como concepto principal",
-        "Nunca como concepto principal",
-        "No se valida en cualquier escenario de implementación"
+        "Manualmente, comparando el archivo con una copia local",
+        "Nunca, porque el registro se genera solo al desplegar",
+        "No se valida: el artefacto se firma pero nadie lo verifica"
       ],
       "options_en": [
         "Using checksums, digital signatures, notarization",
-        "Manually as the primary concept",
-        "Never as the primary concept",
-        "Not validated in any implementation scenario"
+        "Manually, comparing the file against a local copy",
+        "Never, because the record is only generated on deploy",
+        "Not validated: the artifact is signed but nobody checks it"
       ],
       "correct_index": 0,
       "explanation_es": "Validación: checksums SHA256, firmas digitales, notarización (cosign) verifican no se modificaron.",
@@ -1341,15 +1341,15 @@
       "question_es": "¿Qué es 'cosign'?",
       "question_en": "What is 'cosign'?",
       "options_es": [
-        "Un rol según la documentación estándar del servicio",
+        "Un rol asignado manualmente por el administrador",
         "Una métrica",
-        "Una firma independientemente del contexto aplicado",
+        "Una firma criptográfica generada a mano por el propio desarrollador",
         "Herramienta para firmar y verificar integridad de containers"
       ],
       "options_en": [
-        "A role according to standard service documentation",
+        "A role assigned manually by the administrator",
         "A metric",
-        "A signature regardless of the applied context",
+        "A cryptographic signature the developer generates by hand",
         "Tool to sign and verify container integrity"
       ],
       "correct_index": 3,
@@ -1366,13 +1366,13 @@
       "options_es": [
         "Usar vaults, rotación regular, auditoría",
         "Usar contraseña única",
-        "Sin gestión sin excepciones ni variantes",
+        "Sin gestión: cada dev guarda su copia",
         "Guardar en código"
       ],
       "options_en": [
         "Use vaults, regular rotation, audit",
         "Use single password",
-        "No management without exceptions or variants",
+        "No management: each dev keeps a copy",
         "Store in code"
       ],
       "correct_index": 0,

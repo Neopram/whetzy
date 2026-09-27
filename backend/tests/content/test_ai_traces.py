@@ -50,6 +50,19 @@ def test_the_detector_sees_each_trace(tmp_path: Path) -> None:
         assert counts[kind] >= 1, kind
 
 
+def test_per_question_template_is_a_trace(tmp_path: Path) -> None:
+    """«Explicación para ¿X?» cambia en cada pregunta: el umbral de repetidas no la veía (39.37)."""
+    q = {
+        "id": "q9",
+        "explanation_es": "Explicación para ¿Desventajas PCA?",
+        "explanation_en": "Explanation for Disadvantages of PCA?",
+    }
+    f = tmp_path / "t.json"
+    f.write_text(json.dumps({"questions": [q]}), encoding="utf-8")
+    counts = next(iter(audit.traces([f]).values()), Counter())
+    assert counts["explicacion_plantilla"] == 2
+
+
 def test_a_real_explanation_is_not_a_trace(tmp_path: Path) -> None:
     f = tmp_path / "ok.json"
     f.write_text(

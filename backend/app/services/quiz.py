@@ -39,6 +39,7 @@ from app.schemas.session import (
     QuizStartResponse,
     SelectionReason,
 )
+from app.services import content_quota, lesson_gate
 from app.services.ab_harness import get_cohort
 from app.services.engine import (
     BKTModel,
@@ -151,6 +152,12 @@ async def _is_module_unlocked(db: AsyncSession, user_id: uuid.UUID, module: Modu
     return bool(avg_mastery >= prev_module.min_mastery_to_unlock)
 
 
+# 32.4: modos que exigen haber abierto la lección del skill antes de darle
+# preguntas nuevas de ese skill. "placement" y "exam" quedan fuera a
+# propósito: miden lo que el alumno ya sabe, no lo que acaba de aprender.
+_LESSON_GATED_MODES = frozenset({"study", "review"})
+
+
 async def _candidate_skill_ids(
     db: AsyncSession,
     user: User,
@@ -159,6 +166,10 @@ async def _candidate_skill_ids(
     skill_id: str | None,
 ) -> tuple[list[str], str]:
     if skill_id:
+        if mode in _LESSON_GATED_MODES and not await lesson_gate.viewed_skill_ids(
+            db, user.id, [skill_id]
+        ):
+            return [], "needs_lesson"
         return [skill_id], "skill_pinned"
 
     now = _now()
@@ -192,6 +203,18 @@ async def _candidate_skill_ids(
 
     if not unlocked_skill_ids:
         return [], "no_skills"
+
+    if mode in _LESSON_GATED_MODES:
+        # 32.4: llegar aquí en modo "review" ya significa que no había nada
+        # pendiente y se cayó al estudio de material nuevo, así que se exige
+        # la lección igual que en "study". "placement"/"exam" evalúan lo que
+        # el alumno ya sabe -- exigir la lección primero rompería el propio
+        # propósito del examen de nivel.
+        seen = await lesson_gate.viewed_skill_ids(db, user.id, unlocked_skill_ids)
+        gated = [sid for sid in unlocked_skill_ids if sid in seen]
+        if not gated:
+            return [], "needs_lesson"
+        unlocked_skill_ids = gated
 
     states_result = await db.execute(
         select(UserSkillState.skill_id, UserSkillState.p_known).where(
@@ -340,6 +363,11 @@ async def start_session(
         reason = SelectionReason(pool="forced")
     else:
         candidate_skill_ids, pool = await _candidate_skill_ids(db, user, req.mode, req.track_id, req.skill_id)
+        # 32.4: el frontend necesita distinguir "sin preguntas por lo que sea"
+        # de "faltó abrir la lección" para poder mandar a la lección en vez de
+        # a un error genérico; sin esto `pool` se perdía en cuanto no había
+        # skill_id/question que devolver.
+        reason = SelectionReason(pool=pool)
         skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
         if skill_id:
             question, expected_p = await _select_question(db, user, skill_id)
@@ -604,22 +632,31 @@ async def submit_answer(
     if league_entry is not None:
         league_entry.xp_earned += xp
 
+    # Cupo Free (39.4): con las preguntas nuevas del día gastadas no se sirve otra;
+    # el cliente ve `next_question: null` y cierra la sesión con sus resultados.
+    quota_reached = await content_quota.new_questions_left(db, user, session.mode) == 0
+
     # Pick the next question, avoiding an immediate repeat of the same item.
     # Same scope the session was opened with: passing None here is how
     # «Practicar» on one module drifted to other tracks from question two.
-    candidate_skill_ids, pool = await _candidate_skill_ids(
-        db, user, session.mode, session.track_id, session.skill_id
-    )
-    next_skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
-    next_skill_id = next_skill_id or question.skill_id
-    next_question, next_expected_p = await _select_question(
-        db, user, next_skill_id, exclude_question_ids={question.id}
-    )
+    next_question: Question | None = None
+    next_expected_p: float | None = None
+    strategy = None
+    pool = None
+    if not quota_reached:
+        candidate_skill_ids, pool = await _candidate_skill_ids(
+            db, user, session.mode, session.track_id, session.skill_id
+        )
+        next_skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
+        next_skill_id = next_skill_id or question.skill_id
+        next_question, next_expected_p = await _select_question(
+            db, user, next_skill_id, exclude_question_ids={question.id}
+        )
     next_question_public = await _to_question_public(next_question) if next_question else None
     next_reason: SelectionReason | None = None
     if next_question:
         next_reason = SelectionReason(
-            pool=pool,
+            pool=pool or "",
             skill_strategy=strategy,
             difficulty_target=TARGET_SUCCESS_PROBABILITY,
             expected_p=next_expected_p,
@@ -645,6 +682,7 @@ async def submit_answer(
         session_accuracy=round(session_accuracy, 4),
         next_question=next_question_public,
         next_selection_reason=next_reason,
+        quota_reached=quota_reached,
     )
 
 

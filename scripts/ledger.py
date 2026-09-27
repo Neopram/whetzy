@@ -131,6 +131,11 @@ def _state_of(cell: str) -> str:
     # y `REGRESION` son la misma fila.
     upper = _clean(cell).upper()
     upper = upper.translate(str.maketrans("ÁÉÍÓÚÜÑ", "AEIOUUN"))
+    # Sinónimos que el ledger usa de verdad: `ABIERTA` es el estado de una serie
+    # entera (cita sobre la tabla) y equivale a TODO; `DECIDIDO: no` (39.20/39.21)
+    # es una decisión tomada que cierra la fila, como RESUELTA.
+    upper = re.sub(r"^\W*ABIERTA\b", "TODO", upper)
+    upper = re.sub(r"^\W*DECIDIDO\b", "RESUELTA", upper)
     for state in STATES:
         if re.match(rf"^\W*{state}\b", upper):
             return state

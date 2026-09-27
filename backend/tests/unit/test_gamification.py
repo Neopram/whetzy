@@ -722,3 +722,54 @@ class TestApplyQuizEvent:
         assert by_type["questions_answered"] == 1
         assert by_type["correct_answers"] == 1
         assert by_type["xp_earned"] == 20
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Insignias alcanzables (39.5): cada criterio del seed tiene su estadística
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def test_every_seeded_badge_criterion_is_computed() -> None:
+    """«Perfeccionista» (`perfect_session`) se sembraba sin estadística en
+    `award_badges`: `stat_for.get` devolvía None y la insignia no se concedía
+    nunca, aunque la pantalla de insignias la prometía (auditoría 39.5)."""
+    from app.services.seed import BADGES
+
+    seeded = {b["criteria_type"] for b in BADGES}
+    assert seeded <= service_module.BADGE_CRITERIA_TYPES, seeded - service_module.BADGE_CRITERIA_TYPES
+
+
+class TestPerfectSessionBadge:
+    async def _session(self, db: AsyncSession, user: User, answered: int, correct: int) -> None:
+        from app.models.session import StudySession
+
+        db.add(StudySession(user_id=user.id, mode="study", questions_answered=answered,
+                            correct_count=correct))
+        db.add(_badge("perfect_session", 1, bid="perfectionist"))
+        await db.commit()
+
+    async def test_ten_out_of_ten_awards_it(self, db_session: AsyncSession, user: User):
+        await self._session(db_session, user, 10, 10)
+        assert "perfectionist" in await award_badges(db_session, user)
+
+    async def test_nine_out_of_ten_does_not(self, db_session: AsyncSession, user: User):
+        await self._session(db_session, user, 10, 9)
+        assert await award_badges(db_session, user) == []
+
+    async def test_a_short_perfect_session_does_not(self, db_session: AsyncSession, user: User):
+        await self._session(db_session, user, 5, 5)
+        assert await award_badges(db_session, user) == []
+
+    async def test_counts_the_answer_not_yet_flushed(self, db_session: AsyncSession, user: User):
+        """La app usa `autoflush=False`: en la 10.ª respuesta la sesión en memoria va
+        10/10 y la fila en la base 9/9. Sin flush la insignia llegaba una respuesta
+        tarde, o nunca si la sesión acababa ahí (e2e `gamification.spec.ts`)."""
+        from app.models.session import StudySession
+
+        session = StudySession(user_id=user.id, mode="study", questions_answered=9, correct_count=9)
+        db_session.add(session)
+        db_session.add(_badge("perfect_session", 1, bid="perfectionist"))
+        await db_session.commit()
+        session.questions_answered = 10
+        session.correct_count = 10
+        assert "perfectionist" in await award_badges(db_session, user)

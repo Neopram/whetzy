@@ -192,7 +192,7 @@ export function TracksScreen() {
 }
 
 function MapView({
-  track, lang, startQuiz,
+  track, lang, startQuiz, startLesson,
 }: {
   track: string;
   lang: 'es' | 'en';
@@ -208,9 +208,15 @@ function MapView({
   const modules = cur.data.modules;
 
   const handleSelect = (mod: CurriculumModule) => {
-    if (mod.status !== 'locked') {
-      startQuiz('study', 10, { trackId: track });
+    if (mod.status === 'locked') return;
+    // 32.4: sin ninguna lección vista en el módulo, el backend bloquearía el
+    // quiz igual — mandar directo a la lección en vez de un 200 vacío.
+    if (!mod.skills.some((s) => s.lesson_seen)) {
+      const weakest = [...mod.skills].filter((s) => !s.mastered).sort((a, b) => a.p_known - b.p_known)[0];
+      startLesson(weakest?.skill_id ?? mod.skills[0]?.skill_id ?? '');
+      return;
     }
+    startQuiz('study', 10, { trackId: track });
   };
 
   return <ProgressMap modules={modules} lang={lang} onSelect={handleSelect} />;
@@ -280,6 +286,10 @@ function CurriculumView({
           const isOpen = openModule === m.id;
           const locked = m.status === 'locked';
           const prereq = i > 0 ? modules[i - 1] : null;
+          // 32.4: el backend exige haber visto la lección de al menos un
+          // skill del módulo antes de dejar practicar — evita el botón
+          // "Practicar" muerto en vez de esperar el 200 vacío de /quiz/start.
+          const needsLesson = !locked && !m.skills.some((s) => s.lesson_seen);
           return (
             <div key={m.id} className={styles.moduleWrap}>
               {i > 0 && (
@@ -373,11 +383,16 @@ function CurriculumView({
                         </button>
                         <button
                           className={styles.practiceBtn}
+                          disabled={needsLesson}
+                          title={needsLesson ? t('tracks.needsLessonNote') : undefined}
                           onClick={() => startQuiz('study', 10, { trackId: track })}
                         >
                           {m.status === 'completed' ? t('tracks.reinforce') : t('tracks.practice')}
                         </button>
                       </div>
+                    )}
+                    {needsLesson && (
+                      <p className={styles.lockNote}>📖 {t('tracks.needsLessonNote')}</p>
                     )}
                   </motion.div>
                 )}

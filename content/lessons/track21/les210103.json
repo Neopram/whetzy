@@ -1,6 +1,14 @@
 {
   "id": "les210103",
   "skill_id": "sk210103",
+  "language": "python",
+  "title_es": "Pruebas de Hipótesis Estadísticas",
+  "title_en": "Statistical Hypothesis Testing",
+  "body_es": "Una prueba de hipótesis contrasta dos afirmaciones sobre una población: la hipótesis nula, que se asume cierta por defecto, y la alternativa, que se acepta solo si la evidencia muestral la respalda con suficiente fuerza. El procedimiento calcula un estadístico de prueba a partir de la muestra (por ejemplo, cuántas desviaciones estándar se aleja la media muestral de un valor de referencia) y lo compara con una distribución de referencia para obtener el p-valor: la probabilidad de observar un resultado igual o más extremo si la hipótesis nula fuera cierta. Cuando el p-valor cae por debajo del nivel de significancia elegido, típicamente 0.05, se rechaza la hipótesis nula. La elección de la prueba depende de qué se compara y de los supuestos disponibles: una prueba z sirve cuando se conoce la desviación estándar poblacional, una t cuando se estima a partir de la muestra, y chi-cuadrado o ANOVA cuando se comparan proporciones o varias medias a la vez. Dos errores acompañan siempre a esta decisión: el error tipo I, rechazar una hipótesis nula verdadera, cuya probabilidad máxima es el nivel de significancia; y el error tipo II, no rechazar una hipótesis nula falsa. Un error común en la práctica es interpretar un p-valor alto como prueba de que la hipótesis nula es cierta, cuando en realidad solo indica que la muestra no aportó evidencia suficiente para descartarla.",
+  "body_en": "A hypothesis test weighs two claims about a population: the null hypothesis, assumed true by default, and the alternative, accepted only when sample evidence backs it strongly enough. The procedure computes a test statistic from the sample (for instance, how many standard deviations the sample mean sits away from a reference value) and compares it against a reference distribution to obtain the p-value: the probability of observing a result as extreme or more extreme if the null hypothesis were actually true. Once the p-value drops below the chosen significance level, typically 0.05, the null hypothesis gets rejected. Which test to run depends on what is being compared and which assumptions hold: a z-test fits when the population standard deviation is known, a t-test when it is estimated from the sample, and chi-square or ANOVA when comparing proportions or several means at once. Two errors always shadow this decision: type I error, rejecting a null hypothesis that is actually true, whose maximum probability equals the significance level; and type II error, failing to reject a null hypothesis that is actually false. A frequent mistake in practice is reading a large p-value as proof that the null hypothesis is true, when it really only means the sample failed to supply enough evidence to rule it out.",
+  "example_code": "import math\nfrom statistics import NormalDist, mean\n\nmuestra = [172, 168, 175, 180, 165, 178, 170, 174, 169, 176]\nmu0 = 170\nsigma = 6.5\nn = len(muestra)\n\nxbar = mean(muestra)\nz = (xbar - mu0) / (sigma / math.sqrt(n))\n\nestandar = NormalDist()\np_valor = 2 * (1 - estandar.cdf(abs(z)))\n\nalfa = 0.05\nz_critico = estandar.inv_cdf(1 - alfa / 2)\nrechaza_h0 = abs(z) > z_critico\n\nprint(f\"media muestral: {xbar:.2f}\")\nprint(f\"estadistico z: {z:.4f}\")\nprint(f\"p-valor (bilateral): {p_valor:.4f}\")\nprint(f\"z critico al {alfa}: {z_critico:.4f}\")\nprint(f\"rechaza H0: {rechaza_h0}\")",
+  "example_output": "media muestral: 172.70\nestadistico z: 1.3136\np-valor (bilateral): 0.1890\nz critico al 0.05: 1.9600\nrechaza H0: False",
+  "source": "SciPy Documentation — scipy.stats.ttest_1samp (https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.html)",
   "duration_minutes": 55,
   "objectives_es": [
     "Formular hipótesis estadísticas correctamente",
@@ -13,10 +21,5 @@
     "Select and execute appropriate tests",
     "Interpret p-values and significance",
     "Avoid common hypothesis errors"
-  ],
-  "title_es": "Pruebas de Hipótesis Estadísticas",
-  "title_en": "Statistical Hypothesis Testing",
-  "body_es": "Las pruebas de hipótesis permiten tomar decisiones basadas en datos, evaluando si la evidencia muestral soporta una afirmación sobre la población. Aprenderás a formular hipótesis nula y alternativa, seleccionar el estadístico de prueba apropiado, e interpretar p-valores. Estudiaremos diferentes tipos de pruebas: t, z, chi-cuadrado, ANOVA y no paramétricas. Un aspecto crítico es entender los errores tipo I y II, y cómo el tamaño muestral y nivel de significancia afectan la potencia del test.",
-  "body_en": "Hypothesis tests allow making decisions based on data, evaluating whether sample evidence supports a claim about population. You'll learn to formulate null and alternative hypotheses, select appropriate test statistic, interpret p-values. We'll study different test types: t, z, chi-square, ANOVA and non-parametric. Critical aspect is understanding type I and II errors, and how sample size and significance level affect test power.",
-  "source": "scikit-learn Documentation (https://scikit-learn.org/stable/) / pandas Documentation (https://pandas.pydata.org/docs/) / NumPy Documentation (https://numpy.org/doc/)"
+  ]
 }

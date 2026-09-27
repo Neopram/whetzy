@@ -48,10 +48,12 @@ verificación**. De ahí las cinco reglas de §1.
 
 | Rol | Modelo | Regla |
 |---|---|---|
-| Hilo principal (orquestador) | Sonnet 4.6 (`settings.json`) | Decide, integra, commitea. No lee lo que puede delegar. |
-| Workers por defecto | **Haiku 4.5** | Inventarios, diffs doc↔código, greps, verificación adversaria, autoría de contenido tras la puerta §7 del catálogo, redacción de borradores. |
-| Workers de riesgo | Sonnet 4.6 | Solo si la tarea **escribe** en: `backend/app/core/**`, `backend/app/api/v1/endpoints/auth*.py`, `oauth*`, `billing*`, `entitlements*`, `backend/app/services/engine/**`, `backend/alembic/**`, `backend/app/main.py`, `frontend/src/services/api.ts`, `frontend/src/App.tsx`, cualquier fichero de `legal/`. |
-| Opus / Fable | **Prohibidos** en sesiones autónomas | Si una tarea parece necesitarlos, es `HUMAN-BLOCKED`: describe qué decisión irreversible hay y sigue con otra. |
+| Hilo principal (orquestador) | Sesión programada: el de `settings.json` (Sonnet 4.6); sesión interactiva: **Sonnet 5** (ADR-52) | Decide, integra, commitea. No lee lo que puede delegar. |
+| Workers de lectura | **Haiku 4.5** | Inventarios, diffs doc↔código, greps, verificación adversaria de tareas que no son contenido. |
+| Escritor de contenido (autoría masiva) | **Haiku 4.5** | Lecciones, preguntas, distractores y explicaciones en `Workflow` (ADR-52, 2026-09-27). Nunca llega al repo sin el revisor de la fila siguiente. |
+| Revisor y corrector de contenido | **Sonnet 5** | Revisión adversaria **completa** y corrección de lo que escribe Haiku, tras la puerta §7 del catálogo y `scripts/content_qa/` (ADR-52). |
+| Workers de riesgo | Sonnet 5 (ADR-52) | Solo si la tarea **escribe** en: `backend/app/core/**`, `backend/app/api/v1/endpoints/auth*.py`, `oauth*`, `billing*`, `entitlements*`, `backend/app/services/engine/**`, `backend/alembic/**`, `backend/app/main.py`, `frontend/src/services/api.ts`, `frontend/src/App.tsx`, cualquier fichero de `legal/`. |
+| Opus 4.x / Fable | **Prohibidos** en cualquier sesión (ADR-52) | Si una tarea parece necesitarlos, es `HUMAN-BLOCKED`: describe qué decisión irreversible hay y sigue con otra. |
 
 **Dieta de contexto** (lo que más tokens ahorra, en orden):
 
@@ -63,7 +65,7 @@ verificación**. De ahí las cinco reglas de §1.
 2. `STATUS.md` (62 KB) y `docs/archive/` **no se leen** en sesiones autónomas.
 3. Un worker recibe **rutas exactas y el criterio de aceptación**, nunca «lee el repo».
 4. Un worker devuelve **≤ 300 palabras + la salida de los comandos**, no prosa.
-5. Bloques de contenido: `Workflow` con Haiku por fichero; el orquestador no lee los
+5. Bloques de contenido: `Workflow` por fichero con escritor Haiku 4.5, revisor y corrector Sonnet 5 distintos (ADR-52); el orquestador no lee los
    ficheros producidos, corre las guardias (`pytest tests/content`,
    `check_question_bank.py`, `check_docs.py`) y lee solo los fallos.
 6. Ninguna sesión reescribe un documento entero para cambiar tres líneas: `Edit`,
@@ -207,7 +209,7 @@ Reglas:
 1. Cerrojo (§3) → pre-flight de `ORCHESTRATOR.md` → leer el ledger por secciones (§2).
 2. Elegir la fila `TODO` de menor PRI con dependencias `DONE`. Si es de la Serie 20,
    seguir §4-§5; si no, implementar con test primero.
-3. Worker (Haiku salvo lista de riesgo) con rutas exactas y criterio literal.
+3. Worker (contenido: escritor Haiku 4.5 + revisor Sonnet 5; lista de riesgo: Sonnet 5; solo lectura: Haiku 4.5 — ADR-52) con rutas exactas y criterio literal.
 4. Guardias locales: las del `README.md` §Verificación que apliquen a las rutas tocadas.
 5. Verificador adversario §7.
 6. Fila del ledger + commit de la tarea (`-- <rutas>`), sin push.

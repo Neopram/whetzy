@@ -1112,6 +1112,48 @@ renumeradas **una vez** con un script (comentarios de código y docs; 0 cambios 
   correctas duplicadas, frases cortadas) y sus informes decían lo contrario. Con Sonnet y un
   validador en el scratchpad, sí. El autoinforme de un subagente no es evidencia.
 
+## 2026-09-26 — Conectores de Claude y orden de la cola humana (rama `claude/youthful-allen-i8k7zb`)
+
+**Hecho:** `docs/CONECTORES.md` (19 conectores activos, cuenta medida, clases L/E/H);
+H.33 y H.34 resueltas con el conector de Railway (`[owner] unchanged: admin@whetzy.com`);
+H.41 (Sentry sin proyecto) y H.42 (elegir PostHog o Mixpanel) nuevas. El pre-push estaba
+rojo para toda rama desde el bump a FastAPI 0.141.1 (`018618d`): el test de contrato
+contaba 1 ruta; arreglado en el test (la API de producción servía 141 rutas).
+
+**Orden recomendado de la cola humana para el dueño** (gravedad, luego filas del ledger
+que nombran cada H; ese recuento es una aproximación de cuánto desbloquea):
+
+1. **Producción rota o seguridad:** H.31 (retirar testimonios y «1.2M learners» de la
+   landing) · H.30 (proveedor de correo en Railway) · H.12 (rotar `GROQ_API_KEY`) ·
+   H.13/H.17 (GitHub Actions con límite de gasto a $0) · H.15 (proxy de `vite` apunta a
+   producción) · H.41 (proyecto en Sentry + `SENTRY_DSN`).
+2. **Lo que más desbloquea:** H.23 (17 filas: series 26 y 27) · H.10 (5 filas: cohorte
+   de 30) · H.29 → H.19 → H.20 (8 filas: jurisdicción, rail de pagos, revisión legal) ·
+   H.2 + H.3 + H.14 + H.5 (tiendas: 17.14, 19.2) · H.16 (staging, 30.2 y 31.1).
+3. **Una fila cada una:** H.42, H.35, H.4, H.25, H.26, H.27 · H.22 · H.38, H.39, H.40,
+   H.28, H.24 · H.6, H.7, H.18, H.8, H.9.
+
+Primero el bloque 1; después H.23 y H.29, que juntas desbloquean 20 filas.
+
+### 2026-09-26 (tarde) — Short de 60 s de prueba, generado de punta a punta
+
+- **Pipeline en el repo:** `frontend/scripts/short-capture.cjs` registra un usuario en el
+  stack **local**, responde con la opción correcta leída de la base local y captura a
+  1080×1920; `scripts/video/solve_blank.py` resuelve los huecos ejecutables probando
+  candidatos contra la salida esperada (sin `eval`/`exec`); `scripts/video/build_short.py`
+  monta zoom lento, rótulo, voz Piper y fundidos (H.264, 30 fps). Narración y fuentes por
+  escena: `scripts/video/escenas_es.json`. Voz `es_MX-ald-medium` (repo MIT, dataset
+  Unlicense, leído en el MODEL_CARD). Sin música.
+- **Resultado:** 59,54 s, 1080×1920, AAC; reproducido dos veces solo con los scripts del
+  repo. El binario no se versiona. Las preguntas cambian por sesión: antes de publicar, el
+  dueño elige la toma.
+- **Guion corregido:** el «47 % menos tiempo» y las «500 preguntas únicas» de 24.13 no
+  tenían fuente; fuera en ES y EN.
+- **Hallazgos, a filas:** 34.12 (plural «1 días», `/evidence` solo en inglés) y 37.17
+  (282 «Completa el blank», opciones ES en inglés, ejecutables donde `eval` o la función
+  equivocada dan la salida esperada; sin probar si la app los acepta). `ledger.py check` falla con 57 problemas también en `master` limpio
+  (filas compactadas con estado «ABIERTA»): anterior a esta rama.
+
 ## 2026-09-26 (noche, control total — sesión trusting-franklin)
 
 - Producción caída 09:35–10:48 UTC tras `ec97405` (`KeyError: 'order'` en `content_loader`); arreglada en #28 y verificada con los logs de Railway.
@@ -1136,3 +1178,143 @@ renumeradas **una vez** con un script (comentarios de código y docs; 0 cambios 
 - Los agentes inventan URLs (5 de 20 en 404 en track27) y copian datos personales del contexto.
 - No se toca un fichero que un workflow está leyendo: un `git stash` a mitad corrompió la base de un agente.
 - `content_loader` nunca borra preguntas, así que se arreglan en su sitio, sin renombrar ids.
+
+## 2026-09-26 noche / 2026-09-27 madrugada — PR #34, control total (sesión gallant-tesla-fnzy1g)
+
+Continuación de la sesión anterior con el mismo prompt de control total; el dueño se fue a
+dormir con "no pidas permiso, dale todo allow". PR #34 sigue abierto (borrador) y sube #33.
+
+- **39.4** (`content_quota`) y **39.5** (gamificación) cerradas: cupo Free de 30 preguntas y 5
+  lecciones/día tras `FREE_DAILY_QUOTA_ENABLED`; la insignia «Perfeccionista» nunca se concedía
+  (criterio sin estadística + `autoflush=False`), arreglada con test y capturas e2e. El helper
+  e2e no marcaba la casilla de 13+ años: **todo spec que registraba usuario estaba roto**.
+- **ADR-51**: decisiones de la noche (rama, «pregunta nueva» de la cuota, 429/`quota_reached`,
+  lecciones solo con sesión, parches por pregunta para 39.28, claves falsas corregidas en su
+  sitio, tests ya rotos en `master` arreglados, capturas fuera del repo).
+- **Fusión del dueño**: PR #33 se fusionó a `master` (`3d002c9`) durante la noche; incorporado
+  con un merge limpio. Deploy Railway `2884c831` SUCCESS, `Content loaded ... skipped 0`
+  (10.989 preguntas), `/health` 200, `check-deployed` PASS.
+- **39.28** (coletillas), tercera familia y «as the primary concept»: tracks **18, 19, 20, 21,
+  22** a 0 coletillas, cada uno con su commit; **41, 42, 43** ya estaban en 0 desde la sesión
+  anterior. 23 y 27 en curso. Método: parches por pregunta (solo `options_es`/`options_en`),
+  revisión adversaria completa y corrector, todo verificado con `scripts/content_qa/` antes de
+  copiar. Claves falsas encontradas y corregidas con la fuente oficial abierta: `docker volumes
+  show` (no existe), «Ambos b y c» de Gradle (citaba su propia opción), PCA con «nuevos features
+  interpretables» como desventaja (es al revés), y dos de Bicep (`using` no importa módulos;
+  `bicep validate` no existe).
+- **ADR-52** (dueño, 2026-09-27): nueva política de modelos — hilo interactivo Sonnet 5,
+  autoría masiva Haiku 4.5 (+ Batch API cuando haya clave, H.48), revisor/corrector de
+  `Workflow` y ficheros de riesgo Sonnet 5, sesiones programadas Haiku 4.5, nunca Fable ni
+  Opus 4.x. Sustituye la línea de modelos de ADR-50. Piloto de Haiku como escritor de
+  contenido: tasa de preguntas con problema `blocker`/`major` entre 12 % y 54 % según el
+  módulo (agregado ≈ 20-25 %), con dos bloques atípicos por módulos ya cargados de relleno de
+  generador (la causa de 39.37); todo lo detectado lo corrigió el revisor Sonnet antes de
+  aplicar.
+- **39.35**: el limitador de peticiones fallaba en abierto. `REDIS_URL` cae por defecto en
+  `localhost:6379`, que en Railway no existe, así que cada petición pasaba con «Redis rate
+  limiter error ... allowing request» — el login no tenía límite en producción. Arreglado:
+  si Redis no responde, limita en memoria por instancia.
+- **39.36**: ~322 preguntas con `options_en` escritas en español (el generador solo tradujo la
+  coletilla), sobre todo en track21 (194) y track44-46; guarda nueva con trinquete.
+- **39.37 (P0, sin cerrar)**: 180 preguntas de relleno de generador en producción en track20
+  (`mod2003`-`mod2005`: «¿Cuál es el componente 1 de Spark?», opciones «Opción C 1») y 209 en
+  track21 con explicación «Explicación para ¿…?». Las guardas existentes (`check_question_bank`,
+  `audit_ai_traces`) no las veían; ahora sí, con una lista de ids conocidos que solo puede
+  encoger. Falta reescribirlas en su sitio.
+- Ledger: 12 filas DONE estables de la serie 39 movidas a `docs/archive/LEDGER_HISTORY.md` §M
+  (guarda de tamaño; el archivo llegó al 97 % del límite de 61.440 bytes).
+- **39.28 cerrada del todo**: tracks 23 (GCP) y 27 (NoSQL) a 0 coletillas (`7912cff`,
+  `68df5ab`) — los 10 tracks del alcance en 0. Al quitar las coletillas, la guarda de
+  sesgo de longitud (`question_diversity.py`, techo 40 % sobre el track entero, no por
+  parche) subió a 44-47 % en ambos: se alargó la opción falsa más corta con detalle
+  técnico concreto (GKE/VPC/KMS/BigQuery/Vertex AI en 23; Redis/MongoDB en 27) hasta
+  33 % y 37 %. Dos coletillas residuales se colaron igual («…que MongoDB aplica por
+  defecto», «…como el modo AOF everysec de Redis por defecto») y las cazó el propio
+  `test_no_filler_options.py` al bajar el `BASELINE` a 0.
+- **39.37, primeros 20/409**: `mod2701` (track27) tenía una tercera variante de relleno
+  de generador que `audit_ai_traces.py` no veía todavía («explicación detallada
+  para…», no solo «explicación para…»): 20 preguntas de CAP/BASE/consistencia eventual
+  con explicaciones reescritas de verdad (MongoDB es CP, verificado contra su propia
+  documentación de replica sets). Quedan 389: track20 `mod2003`-`mod2005` (plantilla en
+  enunciado, opciones, clave **y** explicación, no solo la explicación) y track21
+  `mod2102`-`mod2105`.
+- **Pregunta del dueño (read-only) → 30.9 y 32.4**: «¿por qué las lecciones no aparecen
+  antes que las preguntas? ¿por qué el login con usuario de Railway manda a la
+  landing?». Segunda pregunta: bug real, dos causas apiladas — `SameSite=Lax` en
+  cookies cross-site (`whetzy.com` en Cloudflare Pages contra
+  `api-production-9751.up.railway.app` en Railway son dominios distintos; el
+  navegador descarta esos cookies en los `fetch()` de `services/api.ts`) y `App.tsx`
+  decidiendo el estado inicial con un cookie host-only invisible en `whetzy.com`
+  pasara lo que pasara con SameSite. Al diseñar el fix salió un segundo bug: `logout()`
+  del frontend no llamaba nunca a `/auth/logout`. Arreglado (`395e8a1`, verificador
+  adversario CONFIRMADA sin fallo encontrado): `SameSite=None`+`Secure` solo en
+  producción; `App.tsx` siempre pregunta a `/auth/me`; `logout()` revoca la sesión de
+  verdad. Sin verificar contra Railway/Cloudflare en producción, solo local (backend
+  42 tests, mypy --strict limpio, frontend 251/251, build con prerender OK). Primera
+  pregunta: no es un bug, `TracksScreen.tsx` nunca exigió la lección — «Aprender» y
+  «Practicar» son botones independientes; queda como decisión de producto en 32.4,
+  pendiente del dueño.
+
+- **39.37, piloto Haiku parado**: 10 preguntas de track20 `mod2003`/`sk200301` (Spark
+  RDDs), con la lección real como única fuente. v1: `correct_index` siempre 0 en las
+  10/10 — blocker, aunque por un hueco de mi propio encargo, no de Haiku. v2 (mismo
+  encargo + la corrección): el bug estructural desapareció, pero 6/10 resultaron
+  redundantes entre sí (solo dos hechos repetidos tres veces cada uno) y la definición
+  de qué es un RDD nunca se preguntó. Las dos rondas superan el umbral 3/10 de ADR-52
+  por motivos distintos. Parado; nada entró al repo; fila 39.37 documenta el hallazgo
+  y sigue pendiente del dueño.
+- Segundo bug de mypy/oxlint cazado tras el push: `mypy --strict` en rojo son 29
+  errores preexistentes (ninguno en `cookies.py`, verificado archivo por archivo); un
+  `import` sin usar en `hooks.usePushNotifications.test.tsx` sí bloqueaba
+  `oxlint --deny-warnings` (nivel 2), arreglado aunque no era mío.
+
+**Lo aprendido** (además de lo de la sesión anterior):
+- El primer intento de archivar una fila cortó un `` `código` `` a mitad y dejó una comilla
+  invertida sin cerrar: el resto de la fila (estado, criterio) se lo tragó como si siguiera
+  dentro del código. `ledger.py check` lo cazó al momento (fila sin criterio).
+- Un grupo de `Workflow` puede dejar preguntas a medias sin avisar en el resultado (ids
+  pedidos que no llegaron al parche, o un parche que quedó a medio escribir por un error de la
+  API): `qcheck.py --write` sobre el módulo entero, no solo `--only`, es lo que lo saca a la luz.
+- Un agente Haiku, incluso cuando se le pide explícitamente «devuelve solo el JSON, sin
+  resumen», dos veces seguidas devolvió un resumen en texto en vez del array — el JSON
+  real quedó enterrado en un turno anterior de su propia transcripción y hubo que
+  extraerlo a mano del `.output`. Nunca te fíes del resumen de un subagente sobre su
+  propio trabajo: hay que leer el dato crudo.
+
+## 2026-09-27, sesión de continuación — 39.37 con Sonnet, DONE
+
+El dueño autorizó explícitamente seguir 39.37 con Sonnet como autor tras el piloto
+Haiku fallido (dos rondas por encima del umbral 3/10 de ADR-52). Un agente Sonnet por
+skill, lección real (`content/lessons/track20|21/*.json`) como única fuente, instrucción
+explícita de decidir `correct_index` antes de escribir las opciones (el bug estructural
+del piloto Haiku). Cada lote revisado personalmente contra su lección antes de integrar.
+
+- **track20** (`mod2003`-`mod2005`, 180 preguntas: pregunta+opciones+explicación
+  completas): Spark RDDs/SQL/particionado/MapReduce, Data Validation/Lineage/
+  Governance/GDPR, Snowflake/Databricks/dbt/Airflow. `mod2005` disparó la guarda de
+  «correcta más larga» del banco (35/60 = 58%, subía el track completo a 40.3% sobre
+  el techo 40%) — un patrón que no había aparecido en `mod2003`/`mod2004`: los agentes
+  Sonnet tienden a escribir la opción correcta con más detalle técnico que los
+  distractores. Arreglado alargando 5 distractores con una cláusula técnica plausible
+  y falsa, nunca tocando la opción correcta → 38.7%. Fuentes propietarias nuevas
+  (`snowflake-docs`, `databricks-docs`) verificadas por WebFetch en la propia sesión,
+  marca «cita».
+- **track21** (`mod2102`-`mod2105`, 209 explicaciones): pregunta/opciones/
+  `correct_index` ya eran válidos, solo la explicación tenía la plantilla «Explicación
+  para ¿…?». Verificado programáticamente que los 240 preguntas de los 4 ficheros son
+  byte-idénticas al original salvo esas dos claves. Un bug de idioma mezclado en
+  algunas opciones (ya rastreado en 39.36) se dejó intacto a propósito — no se
+  conflacionó con este parche.
+- **Error propio cazado por el verificador**: cité «409/409 hechas» dos veces sin
+  sumar 180+209 (=389) — un número heredado de filas de progreso anteriores que nunca
+  verifiqué aritméticamente. El verificador adversario refutó la 1ª ronda por esa
+  discrepancia; corregido el ledger y reverificado en una 2ª ronda, CONFIRMADA. La
+  lección: un número que se repite de fila en fila sin recalcularlo es una afirmación
+  sin evidencia, aunque se sienta como un hecho ya establecido.
+- `ci_local.sh` (nivel 2, corre al fondo tras cada `git push`) no mata de verdad el
+  proceso `timeout`/`pytest` del push anterior en este contenedor Linux — solo el
+  wrapper bash que lo lanzó — así que cada push sucesivo deja un `pytest tests/`
+  huérfano corriendo en paralelo con el nuevo. Se observaron 5 corriendo a la vez,
+  saturando la CPU y ralentizando mi propio `pytest backend/tests/content` en
+  primer plano. No se tocó el script esta sesión (fuera del alcance pedido); queda
+  para quien revise `ci_local.sh` en detalle.

@@ -69,6 +69,9 @@ class CurriculumSkill(BaseModel):
     p_known: float
     mastered: bool
     attempts: int
+    # 32.4: si el frontend debe dejar practicar este skill sin haber abierto
+    # su lección primero (el backend igual lo exige en /quiz/start).
+    lesson_seen: bool
 
 
 class CurriculumModule(BaseModel):
