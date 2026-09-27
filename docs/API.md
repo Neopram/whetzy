@@ -225,6 +225,7 @@ Admin routes require `X-Admin-Key` header.
 POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session (accepts eu_withdrawal_waiver: bool)
 GET  /billing/subscription → {plan, status, renews_at} 🔒
 POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC)
+POST /billing/revenuecat/webhook → RevenueCat webhook (17.14, mobile IAP, sandbox) — Authorization header secret, 503 until REVENUECAT_WEBHOOK_AUTHORIZATION is set
 ```
 
 ## Session & 2FA endpoints
