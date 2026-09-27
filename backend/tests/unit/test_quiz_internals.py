@@ -15,6 +15,7 @@ from datetime import UTC, datetime, timedelta
 import pytest
 
 from app.models.content import Module, Skill, Track
+from app.models.lesson_completion import LessonCompletion
 from app.models.user import User, UserSkillState
 from app.services.quiz import (
     _calculate_xp,
@@ -73,6 +74,13 @@ async def build_track(
 
 async def set_mastery(db, user_id: uuid.UUID, skill_id: str, p_known: float) -> None:
     db.add(UserSkillState(user_id=user_id, skill_id=skill_id, p_known=p_known))
+    await db.commit()
+
+
+async def mark_lesson_seen(db, user_id: uuid.UUID, *skill_ids: str) -> None:
+    """32.4: el estudio de un skill exige haber visto su lección primero."""
+    for skill_id in skill_ids:
+        db.add(LessonCompletion(user_id=user_id, skill_id=skill_id))
     await db.commit()
 
 
@@ -396,17 +404,49 @@ class TestIsModuleUnlocked:
 class TestCandidateSkillIds:
     @pytest.mark.asyncio
     async def test_explicit_skill_short_circuits(self, db_session, user: User) -> None:
+        await mark_lesson_seen(db_session, user.id, "whatever")
         got, reason = await _candidate_skill_ids(db_session, user, "study", None, "whatever")
         assert got == ["whatever"]
         assert reason == "skill_pinned"
+
+    @pytest.mark.asyncio
+    async def test_explicit_skill_without_lesson_needs_lesson(
+        self, db_session, user: User
+    ) -> None:
+        """32.4: pedir un skill_id de estudio sin haber visto su lección se bloquea."""
+        got, reason = await _candidate_skill_ids(db_session, user, "study", None, "whatever")
+        assert got == []
+        assert reason == "needs_lesson"
 
     @pytest.mark.asyncio
     async def test_study_mode_returns_only_unlocked_skills(
         self, db_session, user: User
     ) -> None:
         await build_track(db_session)
+        await mark_lesson_seen(db_session, user.id, "trkA_m0_s0", "trkA_m0_s1")
         got, reason = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
         assert set(got) == {"trkA_m0_s0", "trkA_m0_s1"}  # module 1 still locked
+        assert reason == "low_mastery"
+
+    @pytest.mark.asyncio
+    async def test_study_mode_without_any_lesson_seen_needs_lesson(
+        self, db_session, user: User
+    ) -> None:
+        """32.4: un módulo desbloqueado pero sin lección abierta no da preguntas."""
+        await build_track(db_session)
+        got, reason = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
+        assert got == []
+        assert reason == "needs_lesson"
+
+    @pytest.mark.asyncio
+    async def test_study_mode_only_offers_skills_with_a_seen_lesson(
+        self, db_session, user: User
+    ) -> None:
+        """32.4: con solo una lección vista, el otro skill del módulo queda fuera."""
+        await build_track(db_session)
+        await mark_lesson_seen(db_session, user.id, "trkA_m0_s0")
+        got, reason = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
+        assert got == ["trkA_m0_s0"]
         assert reason == "low_mastery"
 
     @pytest.mark.asyncio
@@ -419,12 +459,15 @@ class TestCandidateSkillIds:
     async def test_track_filter_excludes_other_tracks(self, db_session, user: User) -> None:
         await build_track(db_session, "trkA")
         await build_track(db_session, "trkB")
+        await mark_lesson_seen(db_session, user.id, "trkB_m0_s0", "trkB_m0_s1")
         got, _ = await _candidate_skill_ids(db_session, user, "study", "trkB", None)
+        assert got  # not vacuously true: real candidates came back
         assert all(sid.startswith("trkB") for sid in got)
 
     @pytest.mark.asyncio
     async def test_mastered_skills_are_dropped(self, db_session, user: User) -> None:
         await build_track(db_session)
+        await mark_lesson_seen(db_session, user.id, "trkA_m0_s0", "trkA_m0_s1")
         await set_mastery(db_session, user.id, "trkA_m0_s0", 0.99)
         got, reason = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
         assert got == ["trkA_m0_s1"]
@@ -434,6 +477,7 @@ class TestCandidateSkillIds:
     async def test_all_mastered_falls_back_to_everything(self, db_session, user: User) -> None:
         """Never hand the selector an empty pool just because the user is good."""
         await build_track(db_session, n_modules=1)
+        await mark_lesson_seen(db_session, user.id, "trkA_m0_s0", "trkA_m0_s1")
         await set_mastery(db_session, user.id, "trkA_m0_s0", 0.99)
         await set_mastery(db_session, user.id, "trkA_m0_s1", 0.99)
         got, reason = await _candidate_skill_ids(db_session, user, "study", "trkA", None)
@@ -461,12 +505,14 @@ class TestCandidateSkillIds:
         self, db_session, user: User
     ) -> None:
         await build_track(db_session)
+        await mark_lesson_seen(db_session, user.id, "trkA_m0_s0", "trkA_m0_s1")
         got, _ = await _candidate_skill_ids(db_session, user, "review", "trkA", None)
         assert set(got) == {"trkA_m0_s0", "trkA_m0_s1"}
 
     @pytest.mark.asyncio
     async def test_review_mode_ignores_future_due_dates(self, db_session, user: User) -> None:
         await build_track(db_session)
+        await mark_lesson_seen(db_session, user.id, "trkA_m0_s0", "trkA_m0_s1")
         db_session.add(
             UserSkillState(
                 user_id=user.id,
@@ -478,6 +524,16 @@ class TestCandidateSkillIds:
         await db_session.commit()
         got, _ = await _candidate_skill_ids(db_session, user, "review", "trkA", None)
         assert set(got) == {"trkA_m0_s0", "trkA_m0_s1"}  # fell through to study
+
+    @pytest.mark.asyncio
+    async def test_review_mode_falls_through_to_needs_lesson(
+        self, db_session, user: User
+    ) -> None:
+        """32.4: sin nada pendiente de repaso, cae a estudio -- y ese también exige lección."""
+        await build_track(db_session)
+        got, reason = await _candidate_skill_ids(db_session, user, "review", "trkA", None)
+        assert got == []
+        assert reason == "needs_lesson"
 
 
 # ── _select_skill ─────────────────────────────────────────────────────────────

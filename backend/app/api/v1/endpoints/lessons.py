@@ -11,7 +11,7 @@ from app.core.security import get_optional_user
 from app.models.content import Lesson, Skill
 from app.models.user import User
 from app.schemas.content import LessonRead
-from app.services import content_quota
+from app.services import content_quota, lesson_gate
 
 router = APIRouter()
 
@@ -30,6 +30,9 @@ async def lessons_for_skill(
     # la lección sigue siendo pública (ADR-50a, decisión anotada en DECISIONS.md).
     if user is not None:
         await content_quota.enforce_and_record_lesson(db, user, skill_id)
+        # 32.4: el rastro de "ya la vio" para el bloqueo del quiz es aparte del
+        # cupo -- se registra siempre que haya sesión, aplique o no el cupo.
+        await lesson_gate.record_lesson_seen(db, user.id, skill_id)
 
     response.headers["Cache-Control"] = "public, max-age=7200, stale-while-revalidate=86400"
     result = await db.execute(

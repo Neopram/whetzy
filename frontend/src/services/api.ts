@@ -375,6 +375,8 @@ export interface CurriculumSkill {
   p_known: number;
   mastered: boolean;
   attempts: number;
+  /** 32.4: si ya abrió la lección de este skill — el backend bloquea el quiz si no. */
+  lesson_seen: boolean;
 }
 
 export interface CurriculumModule {

@@ -23,6 +23,7 @@ from app.schemas.progress import (
     TrackMastery,
 )
 from app.services import dkt as dkt_service
+from app.services import lesson_gate
 from app.services.quiz import count_due_reviews
 
 MASTERY_THRESHOLD = settings.MASTERY_THRESHOLD
@@ -194,6 +195,11 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
             mastery_by_skill[skill_id] = p_known
             attempts_by_skill[skill_id] = attempts
 
+    # 32.4: qué skills de este track ya tienen la lección abierta, para que el
+    # frontend pueda avisar antes de mandar a un "Practicar" que el backend
+    # igual va a bloquear en /quiz/start.
+    seen_skill_ids = await lesson_gate.viewed_skill_ids(db, user.id, all_skill_ids)
+
     def module_avg(module: Module) -> float:
         skills = sorted(module.skills, key=lambda s: s.order)
         if not skills:
@@ -228,6 +234,7 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
                 p_known=round(mastery_by_skill.get(s.id, 0.0), 4),
                 mastered=mastery_by_skill.get(s.id, 0.0) >= MASTERY_THRESHOLD,
                 attempts=attempts_by_skill.get(s.id, 0),
+                lesson_seen=s.id in seen_skill_ids,
             )
             for s in sorted(module.skills, key=lambda s: s.order)
         ]

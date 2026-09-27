@@ -115,7 +115,12 @@ async def enforce_new_questions(db: AsyncSession, user: User, mode: str) -> None
 async def enforce_and_record_lesson(db: AsyncSession, user: User, skill_id: str) -> None:
     """Cuenta la lección de `skill_id` para hoy; 429 si sería la sexta distinta.
 
-    Volver a abrir una lección ya abierta hoy no gasta cupo.
+    Volver a abrir una lección ya abierta hoy no gasta cupo. Solo escribe con
+    el cupo aplicado a este usuario (si el flag está apagado, no toca la
+    tabla) -- eso sigue siendo solo el contador de `FREE_DAILY_LESSONS`. El
+    rastro permanente de «ya vio esta lección» para el bloqueo del quiz (32.4)
+    vive aparte, en `LessonCompletion` (`lesson_gate.record_lesson_seen`,
+    llamado siempre desde el mismo endpoint sin mirar el flag).
     """
     if not applies_to(user):
         return

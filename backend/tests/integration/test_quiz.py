@@ -12,6 +12,8 @@ from __future__ import annotations
 import itertools
 import uuid
 
+from app.models.lesson_completion import LessonCompletion
+
 QUIZ = "/api/v1/quiz"
 
 _ip_counter = itertools.count(100)  # offset from auth tests
@@ -29,10 +31,18 @@ def _h(auth_headers: dict | None = None) -> dict:
     return headers
 
 
+async def _see_lesson(db_session, user, *skill_ids: str) -> None:
+    """32.4: el estudio de un skill exige haber visto su lección primero."""
+    for skill_id in skill_ids:
+        db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
+    await db_session.commit()
+
+
 # ── start ─────────────────────────────────────────────────────────────────────
 
 
-async def test_quiz_start_with_skill_id_returns_question(client, auth_headers, content_seed):
+async def test_quiz_start_with_skill_id_returns_question(client, auth_headers, user, db_session, content_seed):
+    await _see_lesson(db_session, user, content_seed["skill_id"])
     r = await client.post(
         f"{QUIZ}/start",
         json={"skill_id": content_seed["skill_id"], "mode": "study"},
@@ -136,8 +146,13 @@ async def test_quiz_start_no_seed_returns_no_question(client, auth_headers):
 # ── answer ────────────────────────────────────────────────────────────────────
 
 
-async def _start_quiz(client, auth_headers: dict, skill_id: str) -> tuple[str, str]:
-    """Helper: start a session and return (session_id, question_id)."""
+async def _start_quiz(client, auth_headers: dict, skill_id: str, db_session=None, user=None) -> tuple[str, str]:
+    """Helper: start a session and return (session_id, question_id).
+
+    32.4: el estudio de `skill_id` exige haber visto su lección primero.
+    """
+    if db_session is not None and user is not None:
+        await _see_lesson(db_session, user, skill_id)
     r = await client.post(
         f"{QUIZ}/start",
         json={"skill_id": skill_id, "mode": "study"},
@@ -147,8 +162,8 @@ async def _start_quiz(client, auth_headers: dict, skill_id: str) -> tuple[str, s
     return data["session_id"], data["question"]["id"]
 
 
-async def test_quiz_answer_correct_returns_true(client, auth_headers, content_seed):
-    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+async def test_quiz_answer_correct_returns_true(client, auth_headers, user, db_session, content_seed):
+    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
 
     # correct_index for the seed question is 0
     r = await client.post(
@@ -168,8 +183,8 @@ async def test_quiz_answer_correct_returns_true(client, auth_headers, content_se
     assert "explanation_en" in data
 
 
-async def test_quiz_answer_wrong_returns_false(client, auth_headers, content_seed):
-    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+async def test_quiz_answer_wrong_returns_false(client, auth_headers, user, db_session, content_seed):
+    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
 
     # correct_index is 0; send 1 → wrong
     r = await client.post(
@@ -186,8 +201,8 @@ async def test_quiz_answer_wrong_returns_false(client, auth_headers, content_see
     assert r.json()["correct"] is False
 
 
-async def test_quiz_answer_no_auth_returns_401(client, auth_headers, content_seed):
-    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+async def test_quiz_answer_no_auth_returns_401(client, auth_headers, user, db_session, content_seed):
+    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
 
     r = await client.post(
         f"{QUIZ}/answer",
@@ -229,8 +244,8 @@ async def test_quiz_answer_missing_required_fields_returns_422(client, auth_head
 # ── end ───────────────────────────────────────────────────────────────────────
 
 
-async def test_quiz_end_happy_path(client, auth_headers, content_seed):
-    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+async def test_quiz_end_happy_path(client, auth_headers, user, db_session, content_seed):
+    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
 
     await client.post(
         f"{QUIZ}/answer",
@@ -255,8 +270,8 @@ async def test_quiz_end_happy_path(client, auth_headers, content_seed):
     assert data["total_questions"] >= 1
 
 
-async def test_quiz_end_no_auth_returns_401(client, auth_headers, content_seed):
-    session_id, _ = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+async def test_quiz_end_no_auth_returns_401(client, auth_headers, user, db_session, content_seed):
+    session_id, _ = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
 
     r = await client.post(
         f"{QUIZ}/end",
@@ -763,13 +778,14 @@ async def _seed_two_tracks(db_session) -> None:
     await db_session.commit()
 
 
-async def test_next_question_stays_inside_the_session_track(client, auth_headers, db_session):
+async def test_next_question_stays_inside_the_session_track(client, auth_headers, user, db_session):
     """«Practicar» en un track no puede servir el siguiente ítem de otro.
 
     Antes la primera pregunta respetaba `track_id` y la segunda salía de
     cualquier track, porque el alcance no se guardaba en la sesión.
     """
     await _seed_two_tracks(db_session)
+    await _see_lesson(db_session, user, "sk_scope_a")
 
     for _ in range(6):
         r = await client.post(
@@ -797,8 +813,9 @@ async def test_next_question_stays_inside_the_session_track(client, auth_headers
         assert nxt["skill_id"] == "sk_scope_a", nxt
 
 
-async def test_next_question_stays_on_the_session_skill(client, auth_headers, db_session):
+async def test_next_question_stays_on_the_session_skill(client, auth_headers, user, db_session):
     await _seed_two_tracks(db_session)
+    await _see_lesson(db_session, user, "sk_scope_b")
 
     r = await client.post(
         f"{QUIZ}/start",
@@ -823,12 +840,12 @@ async def test_next_question_stays_on_the_session_skill(client, auth_headers, db
 # ── offline queue idempotency (33.2) ────────────────────────────────────────
 
 
-async def test_answer_idempotency_same_event_id_returns_cached(client, auth_headers, content_seed):
+async def test_answer_idempotency_same_event_id_returns_cached(client, auth_headers, user, db_session, content_seed):
     """Submitting the same answer twice with the same event_id must be idempotent.
 
     The second call returns the same verdict without creating a duplicate Response row.
     """
-    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
     event_id = str(uuid.uuid4())
 
     payload = {
@@ -852,9 +869,9 @@ async def test_answer_idempotency_same_event_id_returns_cached(client, auth_head
     assert d1["correct_index"] == d2["correct_index"]
 
 
-async def test_answer_without_event_id_still_works(client, auth_headers, content_seed):
+async def test_answer_without_event_id_still_works(client, auth_headers, user, db_session, content_seed):
     """Old clients that never send event_id must keep working."""
-    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
 
     r = await client.post(
         f"{QUIZ}/answer",

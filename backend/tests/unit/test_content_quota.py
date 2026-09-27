@@ -18,9 +18,17 @@ from sqlalchemy import select
 
 from app.core.config import settings
 from app.models.content import Lesson, Module, Question, Skill, Track
+from app.models.lesson_completion import LessonCompletion
 from app.models.lesson_view import LessonView
 from app.models.session import Response, StudySession
 from app.services import content_quota
+
+
+async def _see(db_session, user_id, *skill_ids: str) -> None:
+    """32.4: el estudio de un skill exige haber visto su lección primero."""
+    for skill_id in skill_ids:
+        db_session.add(LessonCompletion(user_id=user_id, skill_id=skill_id))
+    await db_session.commit()
 
 
 @pytest.fixture
@@ -85,9 +93,10 @@ async def _answer_n(client, headers, n: int) -> dict:
 
 
 @pytest.mark.asyncio
-async def test_flag_off_nothing_changes(client, auth_headers, bank, monkeypatch) -> None:
+async def test_flag_off_nothing_changes(client, auth_headers, user, db_session, bank, monkeypatch) -> None:
     monkeypatch.setattr(settings, "FREE_DAILY_NEW_QUESTIONS", 2)
     assert settings.FREE_DAILY_QUOTA_ENABLED is False
+    await _see(db_session, user.id, "skq1")
     last = await _answer_n(client, auth_headers, 3)
     assert last["next_question"] is not None
     assert last["quota_reached"] is False
@@ -95,7 +104,8 @@ async def test_flag_off_nothing_changes(client, auth_headers, bank, monkeypatch)
 
 
 @pytest.mark.asyncio
-async def test_free_user_stops_after_the_daily_new_questions(client, auth_headers, bank, quota_on) -> None:
+async def test_free_user_stops_after_the_daily_new_questions(client, auth_headers, user, db_session, bank, quota_on) -> None:
+    await _see(db_session, user.id, "skq1")
     last = await _answer_n(client, auth_headers, 2)
     assert last["quota_reached"] is True
     assert last["next_question"] is None
@@ -112,7 +122,8 @@ async def test_free_user_stops_after_the_daily_new_questions(client, auth_header
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("mode", ["review", "placement"])
-async def test_review_and_placement_are_exempt(client, auth_headers, bank, quota_on, mode) -> None:
+async def test_review_and_placement_are_exempt(client, auth_headers, user, db_session, bank, quota_on, mode) -> None:
+    await _see(db_session, user.id, "skq1")
     await _answer_n(client, auth_headers, 2)
     assert (await _start(client, auth_headers)).status_code == 429
     assert (await _start(client, auth_headers, mode=mode)).status_code == 200
@@ -125,7 +136,8 @@ async def test_exam_mode_is_exempt(client, plus_auth_headers, bank, quota_on) ->
 
 
 @pytest.mark.asyncio
-async def test_pro_user_has_no_quota(client, plus_auth_headers, bank, quota_on) -> None:
+async def test_pro_user_has_no_quota(client, plus_auth_headers, plus_user, db_session, bank, quota_on) -> None:
+    await _see(db_session, plus_user.id, "skq1")
     last = await _answer_n(client, plus_auth_headers, 3)
     assert last["quota_reached"] is False
     assert last["next_question"] is not None
@@ -133,7 +145,8 @@ async def test_pro_user_has_no_quota(client, plus_auth_headers, bank, quota_on) 
 
 
 @pytest.mark.asyncio
-async def test_owner_has_no_quota(client, owner, bank, quota_on) -> None:
+async def test_owner_has_no_quota(client, owner, db_session, bank, quota_on) -> None:
+    await _see(db_session, owner.id, "skq1")
     headers = {"Authorization": f"Bearer {owner.token}"}
     last = await _answer_n(client, headers, 3)
     assert last["quota_reached"] is False
