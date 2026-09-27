@@ -15,6 +15,9 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - **Inicio de sesión social**: sus pruebas exigen ahora la sesión en cookies HttpOnly y ningún token en la URL.
 - **Lecciones al listón** en JavaScript (14), Ciencia de Datos (21), Azure (22), Google Cloud (23) y PCAP (41), con fuentes oficiales comprobadas.
 - **Guarda de coletillas ampliada** a una tercera familia de relleno en las opciones.
+- **Tracks 18-22 sin coletillas** (39.28): 18, 19, 20, 21 y 22 a cero, con revisión adversaria completa por módulo. Varias claves falsas encontradas y corregidas en su sitio: un comando de Docker que no existe, una pregunta de Gradle que se citaba a sí misma, una desventaja de PCA al revés y dos comandos de Bicep inventados.
+- **El limitador de peticiones ya no falla en abierto** (39.35): si Redis no responde, limita en memoria en vez de dejar pasar todo — el login en producción no tenía límite.
+- **Política de modelos actualizada** (ADR-52): el hilo de una sesión interactiva pasa a Sonnet 5.
 
 **EN**
 
@@ -24,6 +27,9 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - **Social login**: its tests now require the session in HttpOnly cookies and no token in the URL.
 - **Lessons brought up to the bar** in JavaScript (14), Data Science (21), Azure (22), Google Cloud (23) and PCAP (41), with official sources checked.
 - **Filler-ending guard extended** to a third family of padding in answer options.
+- **Tracks 18-22 free of filler endings** (39.28): 18, 19, 20, 21 and 22 at zero, each with a full adversarial review. Several false keys found and fixed in place: a non-existent Docker command, a Gradle question that quoted itself, a PCA disadvantage stated backwards, and two invented Bicep commands.
+- **The rate limiter no longer fails open** (39.35): when Redis is unreachable it now limits in memory instead of letting every request through — production login had no limit.
+- **Model policy updated** (ADR-52): an interactive session's main thread moves to Sonnet 5.
 
 ## [Unreleased] — 2026-09-26 (noche, control total)
 

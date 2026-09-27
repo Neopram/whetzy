@@ -1136,3 +1136,56 @@ renumeradas **una vez** con un script (comentarios de código y docs; 0 cambios 
 - Los agentes inventan URLs (5 de 20 en 404 en track27) y copian datos personales del contexto.
 - No se toca un fichero que un workflow está leyendo: un `git stash` a mitad corrompió la base de un agente.
 - `content_loader` nunca borra preguntas, así que se arreglan en su sitio, sin renombrar ids.
+
+## 2026-09-26 noche / 2026-09-27 madrugada — PR #34, control total (sesión gallant-tesla-fnzy1g)
+
+Continuación de la sesión anterior con el mismo prompt de control total; el dueño se fue a
+dormir con "no pidas permiso, dale todo allow". PR #34 sigue abierto (borrador) y sube #33.
+
+- **39.4** (`content_quota`) y **39.5** (gamificación) cerradas: cupo Free de 30 preguntas y 5
+  lecciones/día tras `FREE_DAILY_QUOTA_ENABLED`; la insignia «Perfeccionista» nunca se concedía
+  (criterio sin estadística + `autoflush=False`), arreglada con test y capturas e2e. El helper
+  e2e no marcaba la casilla de 13+ años: **todo spec que registraba usuario estaba roto**.
+- **ADR-51**: decisiones de la noche (rama, «pregunta nueva» de la cuota, 429/`quota_reached`,
+  lecciones solo con sesión, parches por pregunta para 39.28, claves falsas corregidas en su
+  sitio, tests ya rotos en `master` arreglados, capturas fuera del repo).
+- **Fusión del dueño**: PR #33 se fusionó a `master` (`3d002c9`) durante la noche; incorporado
+  con un merge limpio. Deploy Railway `2884c831` SUCCESS, `Content loaded ... skipped 0`
+  (10.989 preguntas), `/health` 200, `check-deployed` PASS.
+- **39.28** (coletillas), tercera familia y «as the primary concept»: tracks **18, 19, 20, 21,
+  22** a 0 coletillas, cada uno con su commit; **41, 42, 43** ya estaban en 0 desde la sesión
+  anterior. 23 y 27 en curso. Método: parches por pregunta (solo `options_es`/`options_en`),
+  revisión adversaria completa y corrector, todo verificado con `scripts/content_qa/` antes de
+  copiar. Claves falsas encontradas y corregidas con la fuente oficial abierta: `docker volumes
+  show` (no existe), «Ambos b y c» de Gradle (citaba su propia opción), PCA con «nuevos features
+  interpretables» como desventaja (es al revés), y dos de Bicep (`using` no importa módulos;
+  `bicep validate` no existe).
+- **ADR-52** (dueño, 2026-09-27): nueva política de modelos — hilo interactivo Sonnet 5,
+  autoría masiva Haiku 4.5 (+ Batch API cuando haya clave, H.48), revisor/corrector de
+  `Workflow` y ficheros de riesgo Sonnet 5, sesiones programadas Haiku 4.5, nunca Fable ni
+  Opus 4.x. Sustituye la línea de modelos de ADR-50. Piloto de Haiku como escritor de
+  contenido: tasa de preguntas con problema `blocker`/`major` entre 12 % y 54 % según el
+  módulo (agregado ≈ 20-25 %), con dos bloques atípicos por módulos ya cargados de relleno de
+  generador (la causa de 39.37); todo lo detectado lo corrigió el revisor Sonnet antes de
+  aplicar.
+- **39.35**: el limitador de peticiones fallaba en abierto. `REDIS_URL` cae por defecto en
+  `localhost:6379`, que en Railway no existe, así que cada petición pasaba con «Redis rate
+  limiter error ... allowing request» — el login no tenía límite en producción. Arreglado:
+  si Redis no responde, limita en memoria por instancia.
+- **39.36**: ~322 preguntas con `options_en` escritas en español (el generador solo tradujo la
+  coletilla), sobre todo en track21 (194) y track44-46; guarda nueva con trinquete.
+- **39.37 (P0, sin cerrar)**: 180 preguntas de relleno de generador en producción en track20
+  (`mod2003`-`mod2005`: «¿Cuál es el componente 1 de Spark?», opciones «Opción C 1») y 209 en
+  track21 con explicación «Explicación para ¿…?». Las guardas existentes (`check_question_bank`,
+  `audit_ai_traces`) no las veían; ahora sí, con una lista de ids conocidos que solo puede
+  encoger. Falta reescribirlas en su sitio.
+- Ledger: 12 filas DONE estables de la serie 39 movidas a `docs/archive/LEDGER_HISTORY.md` §M
+  (guarda de tamaño; el archivo llegó al 97 % del límite de 61.440 bytes).
+
+**Lo aprendido** (además de lo de la sesión anterior):
+- El primer intento de archivar una fila cortó un `` `código` `` a mitad y dejó una comilla
+  invertida sin cerrar: el resto de la fila (estado, criterio) se lo tragó como si siguiera
+  dentro del código. `ledger.py check` lo cazó al momento (fila sin criterio).
+- Un grupo de `Workflow` puede dejar preguntas a medias sin avisar en el resultado (ids
+  pedidos que no llegaron al parche, o un parche que quedó a medio escribir por un error de la
+  API): `qcheck.py --write` sobre el módulo entero, no solo `--only`, es lo que lo saca a la luz.
