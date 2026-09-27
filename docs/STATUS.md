@@ -1213,6 +1213,19 @@ dormir con "no pidas permiso, dale todo allow". PR #34 sigue abierto (borrador) 
   «Practicar» son botones independientes; queda como decisión de producto en 32.4,
   pendiente del dueño.
 
+- **39.37, piloto Haiku parado**: 10 preguntas de track20 `mod2003`/`sk200301` (Spark
+  RDDs), con la lección real como única fuente. v1: `correct_index` siempre 0 en las
+  10/10 — blocker, aunque por un hueco de mi propio encargo, no de Haiku. v2 (mismo
+  encargo + la corrección): el bug estructural desapareció, pero 6/10 resultaron
+  redundantes entre sí (solo dos hechos repetidos tres veces cada uno) y la definición
+  de qué es un RDD nunca se preguntó. Las dos rondas superan el umbral 3/10 de ADR-52
+  por motivos distintos. Parado; nada entró al repo; fila 39.37 documenta el hallazgo
+  y sigue pendiente del dueño.
+- Segundo bug de mypy/oxlint cazado tras el push: `mypy --strict` en rojo son 29
+  errores preexistentes (ninguno en `cookies.py`, verificado archivo por archivo); un
+  `import` sin usar en `hooks.usePushNotifications.test.tsx` sí bloqueaba
+  `oxlint --deny-warnings` (nivel 2), arreglado aunque no era mío.
+
 **Lo aprendido** (además de lo de la sesión anterior):
 - El primer intento de archivar una fila cortó un `` `código` `` a mitad y dejó una comilla
   invertida sin cerrar: el resto de la fila (estado, criterio) se lo tragó como si siguiera
@@ -1220,3 +1233,8 @@ dormir con "no pidas permiso, dale todo allow". PR #34 sigue abierto (borrador) 
 - Un grupo de `Workflow` puede dejar preguntas a medias sin avisar en el resultado (ids
   pedidos que no llegaron al parche, o un parche que quedó a medio escribir por un error de la
   API): `qcheck.py --write` sobre el módulo entero, no solo `--only`, es lo que lo saca a la luz.
+- Un agente Haiku, incluso cuando se le pide explícitamente «devuelve solo el JSON, sin
+  resumen», dos veces seguidas devolvió un resumen en texto en vez del array — el JSON
+  real quedó enterrado en un turno anterior de su propia transcripción y hubo que
+  extraerlo a mano del `.output`. Nunca te fíes del resumen de un subagente sobre su
+  propio trabajo: hay que leer el dato crudo.
