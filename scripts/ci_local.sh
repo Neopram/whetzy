@@ -46,6 +46,21 @@ CACHE_PYTEST="-o cache_dir=$CACHE/pytest"
 # 1,8 GB libres de 14. Dos suites de 25 min compitiendo en esta maquina es
 # exactamente lo que ya mato un run sin dejar traza (ver los gotchas de
 # memoria). El nuevo manda: lleva el commit mas reciente.
+# Mata un PID y todos sus descendientes (recursivo). Hace falta en Linux/Mac:
+# ahi no hay `taskkill /T`, y un `kill -9` suelto sobre el bash del cerrojo
+# deja a `timeout`/`pytest` huerfanos (reparentados a init) corriendo igual,
+# quemando un nucleo cada uno. Medido el 2026-09-27 en un contenedor Linux:
+# 5 pushes seguidos dejaron 5 `pytest tests/` a la vez, y ESE fue el motivo de
+# que el push siguiente diera "backend: suite entera (cuelgue)" — no un fallo
+# real, sino la maquina sin CPU libre para terminar en el limite de 2700 s.
+_matar_arbol() {
+  local pid="$1" hijo
+  for hijo in $(pgrep -P "$pid" 2>/dev/null); do
+    _matar_arbol "$hijo"
+  done
+  kill -9 "$pid" 2>/dev/null
+}
+
 CERROJO="$BITACORA/corriendo.pid"
 if [ -f "$CERROJO" ]; then
   _viejo="$(cat "$CERROJO" 2>/dev/null)"
@@ -65,7 +80,7 @@ if [ -f "$CERROJO" ]; then
       _win_paso="$(cat "$BITACORA/paso.winpid" 2>/dev/null)"
       [ -n "$_win_paso" ] && taskkill //PID "$_win_paso" //T //F >/dev/null 2>&1
     else
-      kill -9 "$_viejo" 2>/dev/null
+      _matar_arbol "$_viejo"
     fi
     sleep 2
   fi
