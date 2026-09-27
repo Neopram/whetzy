@@ -90,6 +90,11 @@ class RedisRateLimiter(RateLimiter):
         self._redis = aioredis.from_url(  # type: ignore[no-untyped-call]
             redis_url, decode_responses=True
         )
+        # Si Redis no responde se limita en memoria, no se deja pasar todo:
+        # en produccion REDIS_URL caia en localhost, que no existe, y el login
+        # quedaba sin limite (logs del 2026-09-26/27, «allowing request»).
+        self._fallback = InMemoryRateLimiter()
+        self._fallback_warned = False
         logger.info("Rate limiter: Using Redis backend (%s)", redis_url)
 
     async def is_allowed(self, key: str, limit: int, window_seconds: int = 60) -> bool:
@@ -109,9 +114,10 @@ class RedisRateLimiter(RateLimiter):
 
             return bool(count <= limit)
         except redis.RedisError as e:
-            # If Redis is down, fall back to allowing the request (fail open)
-            logger.warning("Redis rate limiter error: %s; allowing request", e)
-            return True
+            if not self._fallback_warned:
+                logger.warning("Redis rate limiter error: %s; limiting in memory", e)
+                self._fallback_warned = True
+            return await self._fallback.is_allowed(key, limit, window_seconds)
 
 
 def get_rate_limiter(redis_url: str | None = None) -> RateLimiter:

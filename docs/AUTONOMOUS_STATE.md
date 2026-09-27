@@ -478,6 +478,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.32 | **3** | `test_rag_self_retrieval` tarda ~28 min (cuadrático en el banco) | TODO | Muestra fija o índice invertido en el test; la suite backend baja de ~37 min a < 10 sin perder el listón del 95 % |
 | 39.33 | **1** | Claves sospechosas previas: la explicación se parece más a otra opción (`check_expl_key`: 22 en `mod2201`…, 24 en track41) | TODO | Leer cada sospecha con la fuente abierta; corregir en su sitio las falsas (como `q220103001`, 5 → 10 min) |
 | 39.34 | **2** | Texto de UI del cupo Free (ES/EN) antes de encender `FREE_DAILY_QUOTA_ENABLED` | TODO | Quiz y lección muestran el 429 `free_daily_quota` con la hora de reinicio; test de componente |
+| 39.35 | **0** | El limitador de peticiones de producción fallaba en abierto: `REDIS_URL` cae por defecto en `localhost:6379`, que en Railway no existe, y cada petición salía por «allowing request» (logs de `ded9ecc9` y `2884c831`): login sin límite | **DONE** (código) | Si Redis no responde se limita en memoria por instancia; test con Redis inalcanzable (3 pasan, la 4.ª no) y mutación en rojo. Llega a producción cuando el dueño fusione. Opcional para el dueño: Redis real o `REDIS_URL` vacío |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
