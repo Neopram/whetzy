@@ -374,6 +374,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 32.2 | **3** | A/B BKT contra DKT con el framework 24.14 (asignación estable por usuario) | BLOCKED (H.10) | DKT se adopta solo si AUC ≥… |
 | 32.3 | **2** | «¿Por qué esta pregunta?»: el scheduler devuelve sus razones (dominio, repaso… | **DONE** | **DONE** `d92e164` → §I |
+| 32.4 | **2** | **La lección no bloquea el quiz.** Pregunta del dueño 2026-09-27, verificada en `TracksScreen.tsx:363-380`: por módulo hay dos botones independientes, «📖 Aprender» (`startLesson`) y «Practicar/Reforzar» (`startQuiz`), sin ninguna comprobación entre ellos — se puede pulsar «Practicar» sin haber abierto nunca la lección. No es un bug de datos (las lecciones existen, 39.3 las llevó al listón); es que el flujo nunca las exige. Decisión de producto, no solo código: ¿el quiz se bloquea hasta ver la lección (riesgo: fricción/abandono en el primer módulo), se avisa sin bloquear, o se deja como está y se documenta como intencional (aprender explorando, sin orden fijo)? Pendiente del dueño | TODO | Decisión del dueño registrada aquí + (si aplica) implementación con test que falla si el quiz arranca sin `lesson_seen` para ese `skill_id` |
 
 ### 33. Operación medible — SLO, restauración y offline idempotente (del plan del 2026-09-24; ídem)
 
