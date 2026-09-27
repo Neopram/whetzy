@@ -709,8 +709,8 @@
         "Eliminar todas las filas con valores nulos"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué estrategia es más apropiada para manejar valo...",
-      "explanation_en": "Explanation for What strategy is most appropriate for handling mis...",
+      "explanation_es": "Imputar con media o mediana (u otra medida central según el tipo de dato) sustituye los faltantes sin distorsionar la distribución general, algo que duplicar observaciones cercanas o poner ceros a ciegas sí puede hacer. Eliminar todas las filas nulas, en cambio, desperdicia datos históricos válidos en el resto de columnas.",
+      "explanation_en": "Imputing with the mean or median (chosen by data type) fills gaps without warping the overall distribution, unlike duplicating nearby points or defaulting to zero. Dropping every row with a null wastes otherwise valid historical data in the other columns.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -732,8 +732,8 @@
         "Always makes them worse by altering the leaf split thresholds"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo afecta la normalización de datos a modelos b...",
-      "explanation_en": "Explanation for How does data normalization affect tree-based mode...",
+      "explanation_es": "Los modelos basados en árboles dividen el espacio buscando el mejor punto de corte por variable, y ese corte no cambia de posición relativa aunque la escala de los valores cambie; por eso son prácticamente invariantes a la normalización, a diferencia de algoritmos sensibles a magnitud que sí la necesitan.",
+      "explanation_en": "Tree-based models split on the best threshold within each feature, and that threshold's relative position doesn't shift when the scale changes, so normalization barely affects them, unlike magnitude-sensitive algorithms that depend on it.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -755,8 +755,8 @@
         "Un valor extremo en una sola variable"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es un valor atípico multivariado?...",
-      "explanation_en": "Explanation for What is a multivariate outlier?...",
+      "explanation_es": "Un valor atípico multivariado solo se nota al mirar varias variables a la vez: cada valor por separado puede parecer normal, pero la combinación cae fuera de la nube de puntos en el espacio multidimensional, lo que lo distingue del atípico univariado, que es extremo en una sola variable.",
+      "explanation_en": "A multivariate outlier only shows up when several variables are considered together: each value alone can look ordinary, but the combination falls outside the point cloud in multidimensional space, unlike a univariate outlier, which is extreme in just one variable.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -778,8 +778,8 @@
         "Usar df.duplicated() en Pandas"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cuál es el método más efectivo para detectar valo...",
-      "explanation_en": "Explanation for What is most effective method for detecting duplic...",
+      "explanation_es": "Detectar duplicados exactos implica comparar todas las columnas y quedarse con la primera aparición, y `df.duplicated()` en Pandas hace exactamente eso de forma sistemática sobre el DataFrame completo, cosa que la revisión manual o comparar solo una columna no garantizan.",
+      "explanation_en": "Finding exact duplicates means comparing every column and keeping the first occurrence, and Pandas' `df.duplicated()` does exactly that systematically across the whole DataFrame, something manual review or comparing a single column can't guarantee.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -801,8 +801,8 @@
         "Sign change followed by a shift"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué transformación es útil para datos con distrib...",
-      "explanation_en": "Explanation for What transformation is useful for skewed distribut...",
+      "explanation_es": "El logaritmo o la raíz cuadrada comprimen los valores grandes más que los pequeños, acercando una distribución sesgada a una forma más simétrica; restar una constante o multiplicar por 2 solo desplazan o escalan los datos sin corregir la asimetría.",
+      "explanation_en": "The logarithm or square root compress large values more than small ones, pulling a skewed distribution toward a more symmetric shape; subtracting a constant or multiplying by 2 only shift or scale the data without fixing the asymmetry.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -824,8 +824,8 @@
         "Strings sin cambios"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo se maneja la codificación de variables categ...",
-      "explanation_en": "Explanation for How should ordinal categorical variables be encode...",
+      "explanation_es": "Las variables categóricas ordinales tienen un orden natural entre sus categorías, así que codificarlas respetando ese orden conserva la información de secuencia; el one-hot siempre o los valores aleatorios sin relación con la categoría destruyen justamente esa jerarquía.",
+      "explanation_en": "Ordinal categorical variables have a natural ranking among their categories, so encoding them while preserving that order keeps the sequence information intact; always using one-hot or assigning unrelated random values erases that hierarchy.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -847,8 +847,8 @@
         "Posible multicolinealidad y redundancia"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué indica una alta correlación entre característ...",
-      "explanation_en": "Explanation for What indicates high correlation between features?...",
+      "explanation_es": "Una correlación alta entre características señala que llevan casi la misma información, lo que infla la varianza de los coeficientes del modelo: es la señal clásica de multicolinealidad y redundancia, no una garantía de buen modelo ni de datos de mejor calidad.",
+      "explanation_en": "High correlation between features means they carry nearly the same information, which inflates the model's coefficient variance — the classic sign of multicollinearity and redundancy, not a guarantee of a better model or higher-quality data.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -870,8 +870,8 @@
         "Ninguno, la regularización compensa"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cuál es el impacto de no normalizar en regresión ...",
-      "explanation_en": "Explanation for What is impact of not normalizing in regression wi...",
+      "explanation_es": "Cuando no se normaliza, las características con escalas más grandes dominan la función de pérdida y el término de regularización, porque este penaliza los coeficientes sin tener en cuenta que unas variables tienen rangos mucho mayores que otras.",
+      "explanation_en": "Without normalization, features with larger scales dominate the loss and the regularization term, since it penalizes coefficients without accounting for some variables having much wider ranges than others.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -893,8 +893,8 @@
         "No se puede detectar"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo se detecta inconsistencia en tipos de datos?...",
-      "explanation_en": "Explanation for How is data type inconsistency detected?...",
+      "explanation_es": "Revisar los datos visualmente permite notar de un vistazo inconsistencias como números guardados como texto o formatos mezclados dentro de la misma columna, algo que salta a la vista antes incluso de correr una inspección programática.",
+      "explanation_en": "Visually reviewing the data lets you spot inconsistencies at a glance, like numbers stored as text or mixed formats within the same column, something that stands out even before running a programmatic check.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -916,8 +916,8 @@
         "Ordenar categorías alfabéticamente"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es la codificación target mean?...",
-      "explanation_en": "Explanation for What is target mean encoding?...",
+      "explanation_es": "La codificación target mean sustituye cada categoría por el promedio de la variable objetivo para esas filas, convirtiendo así la etiqueta de texto en un número informativo, en lugar de crear dummies, borrar la columna u ordenar alfabéticamente.",
+      "explanation_en": "Target mean encoding replaces each category with the average of the target variable for those rows, turning the text label into an informative number, rather than creating dummies, dropping the column, or sorting alphabetically.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -939,8 +939,8 @@
         "Revisar estadísticas nuevamente"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo se valida que la limpieza fue efectiva?...",
-      "explanation_en": "Explanation for How do you validate that cleaning was effective?...",
+      "explanation_es": "Entrenar un modelo de prueba y volver a revisar las estadísticas son dos formas complementarias de comprobar que la limpieza funcionó: una mide el efecto en el desempeño y la otra confirma que los valores del dataset ya tienen sentido, así que ambas son válidas.",
+      "explanation_en": "Training a test model and reviewing the statistics again are complementary ways to confirm the cleaning worked: one measures the effect on performance and the other checks that the dataset's values now make sense, so both are valid.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -962,8 +962,8 @@
         "Copiar último valor válido hacia adelante"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es el relleno hacia adelante (forward fill)?...",
-      "explanation_en": "Explanation for What is forward fill (ffill)?...",
+      "explanation_es": "El forward fill copia el último valor válido hacia adelante para rellenar los huecos siguientes, en lugar de calcular una media, ajustar una regresión o eliminar el dato y reducir la serie.",
+      "explanation_en": "Forward fill copies the last valid value forward to fill the following gaps, rather than computing a mean, fitting a regression, or deleting the value and shrinking the series.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -985,8 +985,8 @@
         "Cambiar el objetivo"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo se maneja desbalance severo de clases?...",
-      "explanation_en": "Explanation for How do you handle severe class imbalance?...",
+      "explanation_es": "Técnicas como SMOTE, el undersampling de la clase mayoritaria o asignar pesos distintos en el modelo compensan directamente el desbalance de clases; ignorar el problema hace que el accuracy global engañe, porque el modelo puede acertar solo prediciendo siempre la clase mayoritaria.",
+      "explanation_en": "Techniques like SMOTE, undersampling the majority class, or assigning different class weights in the model directly counter class imbalance; ignoring the problem makes overall accuracy misleading, since the model can score well just by always predicting the majority class.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1008,8 +1008,8 @@
         "Compute local density relative to neighbors"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es outlier detection con Isolation Forest?...",
-      "explanation_en": "Explanation for What is outlier detection with Isolation Forest?...",
+      "explanation_es": "Isolation Forest parte los datos al azar de forma repetida hasta aislar cada punto; los valores atípicos quedan aislados con una profundidad de partición distinta a la del resto, a diferencia de un método basado en densidad respecto a los vecinos.",
+      "explanation_en": "Isolation Forest repeatedly splits the data at random until each point is isolated; outliers end up isolated at a distinctly different partition depth than typical points, unlike a method that computes density relative to neighbors.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1031,8 +1031,8 @@
         "Always impute zero without recording which rows changed"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo se preserva información al imputar datos?...",
-      "explanation_en": "Explanation for How is information preserved when imputing data?...",
+      "explanation_es": "Añadir una variable indicadora que marque qué filas fueron imputadas conserva la información de que ese valor no era original, algo que se pierde si solo se usan los valores observados o si se imputa cero sin registrar qué cambió.",
+      "explanation_en": "Adding an indicator variable that flags which rows were imputed preserves the fact that a value wasn't original, information that's lost if only observed values are used or zeros are imputed without recording what changed.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1054,8 +1054,8 @@
         "Raíz cuadrada de valores"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Qué es una característica derivada polinómica?...",
-      "explanation_en": "Explanation for What is polynomial derived feature?...",
+      "explanation_es": "Una característica polinómica se construye elevando una variable a potencias (x², x³, …), lo que ayuda a un modelo lineal a representar relaciones curvas que la variable original no puede capturar por sí sola.",
+      "explanation_en": "A polynomial feature is built by raising a variable to powers (x², x³, …), which helps a linear model represent curved relationships the original variable can't capture on its own.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1077,8 +1077,8 @@
         "Ambas opciones indican problema"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo se detecta multicolinealidad en modelo?...",
-      "explanation_en": "Explanation for How do you detect multicollinearity in model?...",
+      "explanation_es": "Tanto una matriz de correlación con valores por encima de 0.9 como un VIF alto detectan la misma señal desde ángulos distintos: variables que comparten casi la misma información, así que ambas indican el problema de multicolinealidad.",
+      "explanation_en": "Both a correlation matrix showing values above 0.9 and a high VIF flag the same underlying signal from different angles: variables sharing nearly identical information, so both indicate multicollinearity.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1100,8 +1100,8 @@
         "Cociente de variables"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Qué es una característica de interacción?...",
-      "explanation_en": "Explanation for What is an interaction feature?...",
+      "explanation_es": "Una característica de interacción se obtiene multiplicando dos variables, capturando efectos que solo aparecen cuando ambas condiciones se cumplen a la vez, como ocurre con el índice de masa corporal.",
+      "explanation_en": "An interaction feature comes from multiplying two variables together, capturing effects that only show up when both conditions hold at once, like body mass index.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1123,8 +1123,8 @@
         "Siempre normalizar por media"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Cómo se escalan características después de ingeni...",
-      "explanation_en": "Explanation for How do you scale features after engineering?...",
+      "explanation_es": "Tras generar nuevas características, siguen siendo necesarias herramientas de escalado como StandardScaler o MinMaxScaler para que ninguna variable domine por su rango, en vez de recurrir a atajos como dividir entre el máximo.",
+      "explanation_en": "After generating new features, scaling tools like StandardScaler or MinMaxScaler are still needed so no variable dominates purely because of its range, rather than relying on shortcuts like dividing by the maximum.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1146,8 +1146,8 @@
         "Crear año, mes, día, día de semana"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es la extracción de características de fechas...",
-      "explanation_en": "Explanation for What is feature extraction from dates?...",
+      "explanation_es": "Extraer características de una fecha significa descomponerla en variables nuevas como año, mes, día o día de la semana, que un modelo puede usar directamente, en vez de dejarla como texto o descartarla.",
+      "explanation_en": "Extracting features from a date means breaking it into new variables like year, month, day, or day of week that a model can use directly, instead of leaving it as text or dropping it.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1169,8 +1169,8 @@
         "Se mejora el modelo"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cómo se maneja multicolinealidad perfecta?...",
-      "explanation_en": "Explanation for How do you handle perfect multicollinearity?...",
+      "explanation_es": "Cuando la multicolinealidad es perfecta, una variable es combinación exacta de otras y la matriz que hay que invertir en la regresión se vuelve singular, así que no tiene inversa y el cálculo de los coeficientes falla.",
+      "explanation_en": "With perfect multicollinearity, one variable is an exact combination of others, so the matrix that regression needs to invert becomes singular, has no inverse, and the coefficient calculation breaks down.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1192,8 +1192,8 @@
         "Crear columna binaria por categoría"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es one-hot encoding?...",
-      "explanation_en": "Explanation for What is one-hot encoding?...",
+      "explanation_es": "One-hot encoding crea una columna binaria por cada categoría, marcando con 1 la que corresponde a cada fila y 0 el resto, a diferencia de sumar valores o multiplicarlos por -1.",
+      "explanation_en": "One-hot encoding creates a separate binary column for each category, marking a 1 for the category that applies to each row and 0 for the rest, unlike summing values or multiplying them by minus one.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1215,8 +1215,8 @@
         "Solo números continuos"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo es útil crear características de frecuenci...",
-      "explanation_en": "Explanation for When is frequency feature useful?...",
+      "explanation_es": "Las características de frecuencia tienen sentido en datos categóricos donde algunas categorías se repiten mucho: contar cuántas veces aparece cada valor añade una señal útil que no existe en variables numéricas continuas.",
+      "explanation_en": "Frequency features make sense for categorical data where some categories repeat often: counting how many times each value appears adds a useful signal that continuous numeric variables don't have.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1238,8 +1238,8 @@
         "StandardScaler o MinMaxScaler"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Cómo se normalizan características antes de clust...",
-      "explanation_en": "Explanation for How do you normalize features before clustering?...",
+      "explanation_es": "Antes de aplicar clustering, que depende de distancias entre puntos, hay que llevar las características a una escala comparable con StandardScaler o MinMaxScaler; restar solo la media sin dividir por la desviación deja intacta la diferencia de rangos.",
+      "explanation_en": "Before clustering, which relies on distances between points, features need to be brought to a comparable scale with StandardScaler or MinMaxScaler; subtracting only the mean without dividing by the deviation leaves the difference in ranges untouched.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1261,8 +1261,8 @@
         "Mantener características con correlación alta"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es la selección por correlación con target?...",
-      "explanation_en": "Explanation for What is feature selection by correlation?...",
+      "explanation_es": "La selección por correlación con el objetivo consiste en quedarse con las características que muestran una correlación alta con esa variable, porque son las que más información aportan para predecirla; ignorarla y usar siempre todas las variables no aprovecha esa señal.",
+      "explanation_en": "Selection by correlation with the target means keeping the features that show a high correlation with it, since those carry the most information for predicting it; ignoring correlation and always using every variable wastes that signal.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1284,8 +1284,8 @@
         "No se pueden extraer"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo se extraen características de texto?...",
-      "explanation_en": "Explanation for How do extract features from text?...",
+      "explanation_es": "El texto se convierte en características numéricas mediante bolsa de palabras, TF-IDF o embeddings, técnicas que capturan qué palabras aparecen y con qué relevancia, algo que simplemente contar caracteres o líneas no logra.",
+      "explanation_en": "Text gets turned into numeric features via bag of words, TF-IDF, or embeddings, techniques that capture which words appear and how relevant they are, something that simply counting characters or lines can't do.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1307,8 +1307,8 @@
         "Usar experiencia del negocio"
       ],
       "correct_index": 3,
-      "explanation_es": "Explicación para ¿Qué es Domain Knowledge en ingeniería?...",
-      "explanation_en": "Explanation for What is Domain Knowledge in engineering?...",
+      "explanation_es": "Domain Knowledge significa apoyarse en la experiencia del negocio para decidir qué características construir, de modo que reflejen relaciones reales del problema, en vez de copiarlas sin validar o generarlas de forma aleatoria.",
+      "explanation_en": "Domain Knowledge means drawing on business experience to decide which features to build, so they reflect real relationships in the problem, rather than copying them without validation or generating them at random.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1330,8 +1330,8 @@
         "Cuando tiene muchos valores"
       ],
       "correct_index": 1,
-      "explanation_es": "Explicación para ¿Cuándo eliminar una característica?...",
-      "explanation_en": "Explanation for When to remove a feature?...",
+      "explanation_es": "Conviene eliminar una característica cuando tiene correlación alta con otra (redundancia que infla la varianza de los coeficientes), varianza muy baja (aporta poca información) o es irrelevante para el objetivo; mantener todo sin criterio solo añade ruido.",
+      "explanation_en": "A feature is worth removing when it's highly correlated with another (redundancy that inflates coefficient variance), has very low variance (little information), or is irrelevant to the target; keeping everything regardless just adds noise.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1353,8 +1353,8 @@
         "L2 does not exist outside neural networks"
       ],
       "correct_index": 0,
-      "explanation_es": "Explicación para ¿Qué es regularización L1 vs L2?...",
-      "explanation_en": "Explanation for What is L1 vs L2 regularization?...",
+      "explanation_es": "L1 penaliza el valor absoluto de los coeficientes y L2 penaliza su cuadrado; esa diferencia en cómo castigan la magnitud del coeficiente es lo que distingue a ambas formas de regularización, que se usan en muchos modelos y no solo en redes neuronales.",
+      "explanation_en": "L1 penalizes the absolute value of the coefficients while L2 penalizes their square; that difference in how each punishes coefficient magnitude is what sets the two regularization types apart, and both are used well beyond neural networks.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     },
     {
@@ -1376,8 +1376,8 @@
         "Trust intuition without measuring the error"
       ],
       "correct_index": 2,
-      "explanation_es": "Explicación para ¿Cómo se valida calidad de ingeniería?...",
-      "explanation_en": "Explanation for How do you validate engineering quality?...",
+      "explanation_es": "La forma fiable de validar una característica nueva es comparar el desempeño del modelo con y sin ella, midiendo el efecto real en el error, en lugar de fiarse solo del coeficiente o de la intuición.",
+      "explanation_en": "The reliable way to validate a new feature is to compare model performance with and without it, measuring its real effect on the error, rather than trusting just the coefficient or intuition alone.",
       "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
     }
   ]
