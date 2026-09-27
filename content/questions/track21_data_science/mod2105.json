@@ -7,16 +7,16 @@
       "question_es": "¿Qué es ensamble?",
       "question_en": "What is ensemble?",
       "options_es": [
-        "Copia como concepto principal",
-        "Promedios como concepto principal",
+        "Copia datos sin procesamiento",
+        "Promedia todos los modelos",
         "Combina múltiples modelos débiles",
-        "Un modelo fuerte"
+        "Un único modelo fuerte, nunca combinado con otros"
       ],
       "options_en": [
-        "Copia as the primary concept",
-        "Promedios as the primary concept",
+        "Copies data without processing",
+        "Averages all models",
         "Combina múltiples modelos débiles",
-        "Un modelo fuerte"
+        "A single strong model, never combined with others"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Qué es ensamble?",
@@ -30,16 +30,16 @@
       "question_es": "¿Qué es bagging?",
       "question_en": "What is bagging?",
       "options_es": [
-        "Todas filas",
-        "Único modelo",
+        "Todas las filas, sin muestreo aleatorio",
+        "Un único modelo entrenado con todos los datos",
         "Bootstrap aggregating subsets",
-        "Embolsado como concepto principal"
+        "Embolsado de características"
       ],
       "options_en": [
-        "Todas filas",
-        "Único modelo",
+        "All rows, with no random sampling",
+        "A single model trained on the entire dataset",
         "Bootstrap aggregating subsets",
-        "Embolsado as the primary concept"
+        "Bagged features"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Qué es bagging?",
@@ -53,15 +53,15 @@
       "question_es": "¿Cómo funciona bagging?",
       "question_en": "How does bagging work?",
       "options_es": [
-        "Estratificado como concepto principal",
-        "Secuencial como concepto principal",
-        "Sin reemplazo de forma invariable y constante",
+        "Estratificado por nivel, conserva proporciones exactas",
+        "Secuencial por índice, sin componente aleatorio",
+        "Sin reemplazo de las muestras",
         "Muestrea con reemplazo, entrena múltiples"
       ],
       "options_en": [
-        "Estratificado as the primary concept",
-        "Secuencial as the primary concept",
-        "Sin reemplazo invariably and constantly",
+        "Stratified by level, preserving exact proportions",
+        "Sequential by index, with no random component",
+        "Without replacement of samples",
         "Muestrea con reemplazo, entrena múltiples"
       ],
       "correct_index": 3,
@@ -78,13 +78,13 @@
       "options_es": [
         "Bagging árboles decisión",
         "Selva aleatoria",
-        "Un árbol según la documentación estándar del servicio",
+        "Un árbol de profundidad fija",
         "Bosque datos"
       ],
       "options_en": [
         "Bagging árboles decisión",
         "Selva aleatoria",
-        "Un árbol according to standard service documentation",
+        "A single tree with fixed depth",
         "Bosque datos"
       ],
       "correct_index": 0,
@@ -100,15 +100,15 @@
       "question_en": "How many trees in RF?",
       "options_es": [
         "100-1000 típico, prueba",
-        "1 árbol según la documentación estándar del servicio",
-        "Menos mejor",
-        "No importa"
+        "1 árbol por dataset",
+        "Menos árboles: 3-5 bastan siempre para converger",
+        "No importa la cantidad: el accuracy es idéntico con cualquier n"
       ],
       "options_en": [
         "100-1000 típico, prueba",
-        "1 árbol according to standard service documentation",
-        "Menos mejor",
-        "No importa"
+        "1 tree per dataset",
+        "Fewer trees: 3-5 always suffice to converge",
+        "The count does not matter: accuracy is identical for any n"
       ],
       "correct_index": 0,
       "explanation_es": "Explicación para ¿Cuántos árboles en RF?",
@@ -122,15 +122,15 @@
       "question_es": "¿Qué es boosting?",
       "question_en": "What is boosting?",
       "options_es": [
-        "Igual bagging en todos los casos posibles",
-        "Paralelo como concepto principal",
-        "Pausa entrenamiento",
+        "Igual a bagging con pesos fijos",
+        "Paralelo en cada iteración",
+        "Pausa el entrenamiento hasta que el usuario lo reanude",
         "Entrena secuencial corrigiendo errores"
       ],
       "options_en": [
-        "Igual bagging in all possible cases",
-        "Paralelo as the primary concept",
-        "Pausa entrenamiento",
+        "Same as bagging with fixed weights",
+        "Parallel in each iteration",
+        "Pauses training until the user manually resumes it",
         "Entrena secuencial corrigiendo errores"
       ],
       "correct_index": 3,
@@ -146,15 +146,15 @@
       "question_en": "Difference bagging vs boosting?",
       "options_es": [
         "Bagging paralelo aleatorio, boosting secuencial",
-        "Boosting más simple",
-        "Bagging superior sin considerar otros factores relevantes",
-        "Igual como concepto principal"
+        "Boosting es más simple porque omite el cálculo del error",
+        "Bagging superior en datasets grandes",
+        "Igual en varianza y sesgo"
       ],
       "options_en": [
         "Bagging paralelo aleatorio, boosting secuencial",
-        "Boosting más simple",
-        "Bagging superior without considering other relevant factors",
-        "Igual as the primary concept"
+        "Boosting is simpler because it skips computing the error",
+        "Bagging superior in large datasets",
+        "Same variance and bias"
       ],
       "correct_index": 0,
       "explanation_es": "Explicación para ¿Diferencia bagging vs boosting?",
@@ -168,16 +168,16 @@
       "question_es": "¿Qué es AdaBoost?",
       "question_en": "What is AdaBoost?",
       "options_es": [
-        "Moderno como concepto principal",
-        "Promedia como concepto principal",
+        "Es una versión más moderna publicada después de XGBoost",
+        "Promedia con pesos iguales",
         "Ajusta pesos incorrectos progresivamente",
-        "Todos igual sin excepciones ni variantes"
+        "Todos modelos con igual importancia"
       ],
       "options_en": [
-        "Moderno as the primary concept",
-        "Promedia as the primary concept",
+        "It is a newer version published after XGBoost",
+        "Averages with equal weights",
         "Ajusta pesos incorrectos progresivamente",
-        "Todos igual without exceptions or variants"
+        "All models with equal importance"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Qué es AdaBoost?",
@@ -191,15 +191,15 @@
       "question_es": "¿Qué es Gradient Boosting?",
       "question_en": "What is Gradient Boosting?",
       "options_es": [
-        "Avanzado solo",
-        "Sin gradiente según la documentación estándar del servicio",
-        "Boosting simple",
+        "Avanzado y exclusivo de redes neuronales profundas",
+        "Sin componentes de gradiente",
+        "Boosting simple que promedia sin ajustar residuos",
         "Entrena árboles dirección gradiente negativo"
       ],
       "options_en": [
-        "Avanzado solo",
-        "Sin gradiente according to standard service documentation",
-        "Boosting simple",
+        "Advanced and exclusive to deep neural networks",
+        "Without gradient components",
+        "Simple boosting that averages without fitting residuals",
         "Entrena árboles dirección gradiente negativo"
       ],
       "correct_index": 3,
@@ -214,16 +214,16 @@
       "question_es": "¿Cuándo XGBoost supera GB?",
       "question_en": "When XGBoost beats GB?",
       "options_es": [
-        "Nunca como concepto principal",
+        "Nunca supera a GB, ni siquiera en datasets pequeños",
         "Regularización, paralelización, optimizaciones",
-        "Siempre igual sin excepciones ni variantes",
-        "Depende azar de forma invariable y constante"
+        "Siempre es superior sin importar los hiperparámetros",
+        "Depende de inicialización aleatoria"
       ],
       "options_en": [
-        "Nunca as the primary concept",
+        "Never beats GB, not even on small datasets",
         "Regularización, paralelización, optimizaciones",
-        "Siempre igual without exceptions or variants",
-        "Depende azar invariably and constantly"
+        "Always superior regardless of the hyperparameters used",
+        "Depends on random initialization"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Cuándo XGBoost supera GB?",
@@ -237,16 +237,16 @@
       "question_es": "¿Qué es stacking?",
       "question_en": "What is stacking?",
       "options_es": [
-        "Apila datos de forma invariable y constante",
+        "Apila solo datos de entrenamiento",
         "Meta-learner combina predicciones base",
-        "Apilamiento físico",
-        "Múltiples pisos"
+        "Apilamiento físico de servidores para entrenar en paralelo",
+        "Múltiples pisos de una arquitectura de red neuronal"
       ],
       "options_en": [
-        "Apila datos invariably and constantly",
+        "Stacks only training data",
         "Meta-learner combina predicciones base",
-        "Apilamiento físico",
-        "Múltiples pisos"
+        "Physical stacking of servers to train in parallel",
+        "Multiple floors of a neural network architecture"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Qué es stacking?",
@@ -262,13 +262,13 @@
       "options_es": [
         "Datos enteros",
         "Cross-validation normal",
-        "Hold-out solo en todos los casos posibles",
+        "Hold-out solo con 50% datos",
         "Sin validación"
       ],
       "options_en": [
         "Datos enteros",
         "Cross-validation normal",
-        "Hold-out solo in all possible cases",
+        "Hold-out only with 50% data",
         "Sin validación"
       ],
       "correct_index": 1,
@@ -285,13 +285,13 @@
       "options_es": [
         "Complejidad siempre",
         "Siempre ensamble",
-        "Nunca solista en todos los casos posibles",
+        "Nunca usar un solo modelo, ni con datos simples",
         "Modelo simple suficiente"
       ],
       "options_en": [
         "Complejidad siempre",
         "Siempre ensamble",
-        "Nunca solista in all possible cases",
+        "Never use a single model, not even with simple data",
         "Modelo simple suficiente"
       ],
       "correct_index": 3,
@@ -306,16 +306,16 @@
       "question_es": "¿Overfitting en ensambles?",
       "question_en": "Overfitting in ensembles?",
       "options_es": [
-        "Imposible como concepto principal",
+        "Imposible con modelos variados",
         "Posible si modelos bases similar",
-        "Garantizado como concepto principal",
-        "Raro como concepto principal"
+        "Garantizado con correlación alta",
+        "Raro porque el meta-modelo memoriza automáticamente los datos de validación"
       ],
       "options_en": [
-        "Imposible as the primary concept",
+        "Impossible with diverse models",
         "Posible si modelos bases similar",
-        "Garantizado as the primary concept",
-        "Raro as the primary concept"
+        "Guaranteed with high correlation",
+        "Rare because the meta-model automatically memorizes the validation data"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Overfitting en ensambles?",
@@ -329,15 +329,15 @@
       "question_es": "¿Computación ensambles?",
       "question_en": "Computational cost ensembles?",
       "options_es": [
-        "Prohibitivo como concepto principal",
-        "Muy barato",
-        "Sin costo",
+        "Prohibitivo sin hardware especializado tipo GPU dedicada",
+        "Muy barato: cuesta lo mismo que un único árbol",
+        "Sin costo adicional respecto a un modelo base individual",
         "Mayor training pero parallelizable"
       ],
       "options_en": [
-        "Prohibitivo as the primary concept",
-        "Muy barato",
-        "Sin costo",
+        "Prohibitive without specialized dedicated GPU hardware",
+        "Very cheap: it costs the same as a single tree",
+        "No extra cost compared to a single base model",
         "Mayor training pero parallelizable"
       ],
       "correct_index": 3,
@@ -352,16 +352,16 @@
       "question_es": "¿Cuándo reducir dimensionalidad?",
       "question_en": "When to reduce dimensionality?",
       "options_es": [
-        "Siempre como concepto principal",
+        "Siempre con muchas features",
         "Muchas features ruido complejidad",
-        "Nunca como concepto principal",
-        "Raramente como concepto principal"
+        "Nunca es necesario, ni con miles de columnas",
+        "Raramente justificado"
       ],
       "options_en": [
-        "Siempre as the primary concept",
+        "Always with many features",
         "Muchas features ruido complejidad",
-        "Nunca as the primary concept",
-        "Raramente as the primary concept"
+        "Never necessary, not even with thousands of columns",
+        "Rarely justified"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Cuándo reducir dimensionalidad?",
@@ -375,16 +375,16 @@
       "question_es": "¿Ventajas reducción?",
       "question_en": "Advantages of reduction?",
       "options_es": [
-        "Complejidad como concepto principal",
+        "Complejidad aumentada",
         "Menos ruido visualización, más rápido",
-        "Pérdida info sin considerar otros factores relevantes",
-        "Ninguna como concepto principal"
+        "Pérdida de información importante",
+        "Ningún beneficio real más allá de ahorrar espacio en disco"
       ],
       "options_en": [
-        "Complejidad as the primary concept",
+        "Increased complexity",
         "Menos ruido visualización, más rápido",
-        "Pérdida info without considering other relevant factors",
-        "Ninguna as the primary concept"
+        "Loss of important information",
+        "No real benefit beyond saving disk space"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Ventajas reducción?",
@@ -398,16 +398,16 @@
       "question_es": "¿Cómo elige PCA componentes?",
       "question_en": "How does PCA choose components?",
       "options_es": [
-        "Aleatorio como concepto principal",
+        "Aleatorio por componente, sin criterio matemático",
         "Máxima varianza direcciones ortogonales",
-        "Iguales tamaños según la documentación estándar del servicio",
-        "Usuario como concepto principal"
+        "Iguales tamaños de componentes",
+        "Usuario especifica manualmente"
       ],
       "options_en": [
-        "Aleatorio as the primary concept",
+        "Random per component, with no mathematical criterion",
         "Máxima varianza direcciones ortogonales",
-        "Iguales tamaños according to standard service documentation",
-        "Usuario as the primary concept"
+        "Equal component sizes",
+        "User specifies manually"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Cómo elige PCA componentes?",
@@ -421,16 +421,16 @@
       "question_es": "¿Cuántos PC mantener?",
       "question_en": "How many PCs to keep?",
       "options_es": [
-        "Uno solo",
-        "Todos como concepto principal",
+        "Uno solo, siempre basta para cualquier dataset",
+        "Todos los componentes",
         "Explicar 90-95% varianza",
-        "Mitad como concepto principal"
+        "Mitad de componentes"
       ],
       "options_en": [
-        "Uno solo",
-        "Todos as the primary concept",
+        "Just one, always enough for any dataset",
+        "All components",
         "Explicar 90-95% varianza",
-        "Mitad as the primary concept"
+        "Half of components"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Cuántos PC mantener?",
@@ -444,16 +444,16 @@
       "question_es": "¿Qué es scree plot?",
       "question_en": "What is scree plot?",
       "options_es": [
-        "Gráfico tiempo",
-        "Histograma como concepto principal",
+        "Gráfico de tiempo contra número de observaciones",
+        "Histograma de frecuencias",
         "Varianza explicada vs componentes",
-        "Datos brutos"
+        "Datos brutos sin procesamiento estadístico"
       ],
       "options_en": [
-        "Gráfico tiempo",
-        "Histograma as the primary concept",
+        "Time graph against number of observations",
+        "Frequency histogram",
         "Varianza explicada vs componentes",
-        "Datos brutos"
+        "Raw data with no statistical processing"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Qué es scree plot?",
@@ -467,16 +467,16 @@
       "question_es": "¿Ventajas PCA?",
       "question_en": "Advantages of PCA?",
       "options_es": [
-        "Ninguna como concepto principal",
-        "Lento como concepto principal",
+        "Ninguna ventaja frente a un modelo sin reducir",
+        "Lento para calcular",
         "Simple rápido interpretable",
-        "Complejo como concepto principal"
+        "Complejo de implementar"
       ],
       "options_en": [
-        "Ninguna as the primary concept",
-        "Lento as the primary concept",
+        "No advantage compared to a model without reduction",
+        "Slow to compute",
         "Simple rápido interpretable",
-        "Complejo as the primary concept"
+        "Difficult to implement"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Ventajas PCA?",
@@ -487,24 +487,24 @@
       "id": "q210502007",
       "skill_id": "sk210502",
       "type": "multiple_choice",
-      "question_es": "¿Desventajas PCA?",
-      "question_en": "Disadvantages of PCA?",
+      "question_es": "¿Cuál es una desventaja de PCA?",
+      "question_en": "What is a disadvantage of PCA?",
       "options_es": [
-        "Perda info sin excepciones ni variantes",
-        "Ningunas como concepto principal",
-        "Nuevos features combinaciones (interpretable)",
-        "No es verdadero en todos los casos posibles"
+        "Pierde parte de la información y los componentes cuesta interpretarlos",
+        "No tiene desventajas: conserva toda la información original",
+        "Exige etiquetas de clase para poder calcular los componentes principales",
+        "Solo admite variables categóricas, nunca numéricas continuas"
       ],
       "options_en": [
-        "Perda info without exceptions or variants",
-        "Ningunas as the primary concept",
-        "Nuevos features combinaciones (interpretable)",
-        "No es verdadero in all possible cases"
+        "Some information is lost and the components are hard to interpret",
+        "No drawbacks: it keeps all of the original information",
+        "It needs class labels to compute the principal components",
+        "It only accepts categorical variables, never continuous ones"
       ],
-      "correct_index": 2,
-      "explanation_es": "Explicación para ¿Desventajas PCA?",
-      "explanation_en": "Explanation for Disadvantages of PCA?",
-      "source": "scikit-learn Documentation (https://scikit-learn.org/stable/)"
+      "correct_index": 0,
+      "explanation_es": "PCA descompone los datos en componentes ortogonales que explican la máxima varianza. Al quedarse con menos componentes se pierde parte de la información, y cada componente mezcla todas las variables originales, así que cuesta interpretarlo. Es un método no supervisado (no usa etiquetas) y trabaja con variables numéricas.",
+      "explanation_en": "PCA decomposes the data into orthogonal components that explain the maximum variance. Keeping fewer components loses some information, and each component mixes all the original variables, so it is hard to interpret. It is unsupervised (it uses no labels) and works on numeric variables.",
+      "source": "scikit-learn — Decomposing signals in components, PCA (https://scikit-learn.org/stable/modules/decomposition.html)"
     },
     {
       "id": "q210502008",
@@ -513,16 +513,16 @@
       "question_es": "¿Qué es t-SNE en este contexto?",
       "question_en": "What is t-SNE in this context?",
       "options_es": [
-        "Regresión como concepto principal",
+        "Regresión lineal de los datos originales sin transformar",
         "Visualización preserva proximidad local",
-        "Clustering como concepto principal",
-        "Lo mismo PCA sin excepciones ni variantes"
+        "Clustering de observaciones mediante centroides fijos",
+        "Lo mismo que PCA"
       ],
       "options_en": [
-        "Regresión as the primary concept",
+        "Linear regression of the original untransformed data",
         "Visualización preserva proximidad local",
-        "Clustering as the primary concept",
-        "Lo mismo PCA without exceptions or variants"
+        "Clustering of observations using fixed centroids",
+        "Same as PCA"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Qué es t-SNE?",
@@ -536,16 +536,16 @@
       "question_es": "¿Cuándo usar t-SNE?",
       "question_en": "When to use t-SNE?",
       "options_es": [
-        "Producción como concepto principal",
+        "Producción en línea con predicciones en tiempo real",
         "Exploración visual clusters datos",
-        "Siempre como concepto principal",
-        "Nunca como concepto principal"
+        "Siempre para el análisis final antes de publicar el modelo",
+        "Nunca para datos"
       ],
       "options_en": [
-        "Producción as the primary concept",
+        "Online production with real-time predictions",
         "Exploración visual clusters datos",
-        "Siempre as the primary concept",
-        "Nunca as the primary concept"
+        "Always for the final analysis before publishing the model",
+        "Never for data"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Cuándo usar t-SNE?",
@@ -559,13 +559,13 @@
       "question_es": "¿Qué es UMAP?",
       "question_en": "What is UMAP?",
       "options_es": [
-        "Todas como concepto principal",
+        "Todas las anteriores",
         "Mejor visualización",
         "Alternativa t-SNE rápida",
         "Preserva estructura local global"
       ],
       "options_en": [
-        "Todas as the primary concept",
+        "All of the above",
         "Mejor visualización",
         "Alternativa t-SNE rápida",
         "Preserva estructura local global"
@@ -583,15 +583,15 @@
       "question_en": "What is autoencoder?",
       "options_es": [
         "Red neuronal compresión descompresión",
-        "Algoritmo clásico",
-        "Codificador datos en cualquier escenario de implementación",
-        "Máquina como concepto principal"
+        "Algoritmo clásico sin capa neuronal",
+        "Codificador de datos comprimidos",
+        "Máquina de aprendizaje"
       ],
       "options_en": [
         "Red neuronal compresión descompresión",
-        "Algoritmo clásico",
-        "Codificador datos in any implementation scenario",
-        "Máquina as the primary concept"
+        "A classical algorithm with no neural layers",
+        "Compressed-data encoder",
+        "Learning machine"
       ],
       "correct_index": 0,
       "explanation_es": "Explicación para ¿Autoencoder qué es?",
@@ -605,15 +605,15 @@
       "question_es": "¿Feature selection vs extraction?",
       "question_en": "Feature selection vs extraction?",
       "options_es": [
-        "Selection inútil",
-        "Igual como concepto principal",
-        "Extraction mejor de forma invariable y constante",
+        "Selection es inútil frente a cualquier método de extracción",
+        "Igual en resultado, sin diferencia práctica",
+        "Extrae mejor en producción",
         "Selección elige existentes, extrae crea"
       ],
       "options_en": [
-        "Selection inútil",
-        "Igual as the primary concept",
-        "Extraction mejor invariably and constantly",
+        "Selection is useless compared to any extraction method",
+        "Identical in result, with no practical difference",
+        "Extraction better in production",
         "Selección elige existentes, extrae crea"
       ],
       "correct_index": 3,
@@ -628,15 +628,15 @@
       "question_es": "¿Métodos feature selection?",
       "question_en": "Feature selection methods?",
       "options_es": [
-        "Manual como concepto principal",
-        "Ninguno como concepto principal",
-        "Solo correlación en todos los casos posibles",
+        "Manual por experto, imposible de automatizar o repetir",
+        "Ninguno disponible fuera de herramientas comerciales",
+        "Solo correlación numérica",
         "Univariado, árbol importance, RFE"
       ],
       "options_en": [
-        "Manual as the primary concept",
-        "Ninguno as the primary concept",
-        "Solo correlación in all possible cases",
+        "Manual by expert, impossible to automate or repeat",
+        "None available outside of commercial tools",
+        "Only numerical correlation",
         "Univariado, árbol importance, RFE"
       ],
       "correct_index": 3,
@@ -651,16 +651,16 @@
       "question_es": "¿Recursive Feature Elimination?",
       "question_en": "Recursive Feature Elimination?",
       "options_es": [
-        "Teoría como concepto principal",
+        "Teoría de conjuntos aplicada a las columnas del dataset",
         "Elimina features iterativamente",
-        "Azar como concepto principal de forma invariable y constante",
-        "Agrega como concepto principal"
+        "Azar en el orden de las columnas sin criterio",
+        "Agrega features linealmente"
       ],
       "options_en": [
-        "Teoría as the primary concept",
+        "Set theory applied to the dataset's columns",
         "Elimina features iterativamente",
-        "Azar as the primary concept invariably and constantly",
-        "Agrega as the primary concept"
+        "Randomness in column order with no criterion",
+        "Adds features linearly"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Recursive Feature Elimination?",
@@ -675,13 +675,13 @@
       "question_en": "When NOT to reduce?",
       "options_es": [
         "Siempre reducir",
-        "A veces independientemente del contexto aplicado",
+        "Beneficioso solo si el dataset supera el terabyte de tamaño",
         "Nunca reducir",
         "Features ya interpretables y necesarios"
       ],
       "options_en": [
-        "Siempre reducir",
-        "A veces regardless of the applied context",
+        "Always reduce",
+        "Beneficial only if the dataset exceeds one terabyte in size",
         "Nunca reducir",
         "Features ya interpretables y necesarios"
       ],
@@ -699,14 +699,14 @@
       "options_es": [
         "Tendencia estacionalidad residuos",
         "Datos puros",
-        "Fechas como concepto principal",
-        "Predicciones como concepto principal"
+        "Fechas y marcas de tiempo",
+        "Predicciones futuras del modelo entrenado"
       ],
       "options_en": [
         "Tendencia estacionalidad residuos",
         "Datos puros",
-        "Fechas as the primary concept",
-        "Predicciones as the primary concept"
+        "Dates and timestamps",
+        "Future predictions from the trained model"
       ],
       "correct_index": 0,
       "explanation_es": "Explicación para ¿Componentes serie temporal?",
@@ -721,15 +721,15 @@
       "question_en": "What is trend?",
       "options_es": [
         "Cambio promedio largo plazo",
-        "Ciclo como concepto principal",
-        "Fluctuación como concepto principal",
-        "Ruido como concepto principal"
+        "Ciclo repetido a intervalos regulares",
+        "Fluctuación sin patrón recurrente",
+        "Ruido aleatorio de corto plazo"
       ],
       "options_en": [
         "Cambio promedio largo plazo",
-        "Ciclo as the primary concept",
-        "Fluctuación as the primary concept",
-        "Ruido as the primary concept"
+        "Cycle repeated at regular intervals",
+        "Fluctuation with no recurring pattern",
+        "Random short-term noise"
       ],
       "correct_index": 0,
       "explanation_es": "Explicación para ¿Qué es tendencia?",
@@ -744,14 +744,14 @@
       "question_en": "What is seasonality?",
       "options_es": [
         "Patrón repetido período fijo",
-        "Aleatoriedad como concepto principal",
-        "Tendencia como concepto principal",
+        "Aleatoriedad pura sin patrón determinista",
+        "Tendencia lineal creciente o decreciente",
         "Cambio único"
       ],
       "options_en": [
         "Patrón repetido período fijo",
-        "Aleatoriedad as the primary concept",
-        "Tendencia as the primary concept",
+        "Pure randomness without deterministic pattern",
+        "Linear trend increasing or decreasing",
         "Cambio único"
       ],
       "correct_index": 0,
@@ -766,15 +766,15 @@
       "question_es": "¿Cómo descomponer serie?",
       "question_en": "How to decompose time series?",
       "options_es": [
-        "Visualmente como concepto principal",
-        "Manualmente como concepto principal",
-        "Imposible como concepto principal",
+        "Inspeccionar la serie gráficamente sin métodos",
+        "Separación manual en hojas de cálculo",
+        "Imposible sin datos adicionales",
         "seasonal_decompose() Statsmodels"
       ],
       "options_en": [
-        "Visualmente as the primary concept",
-        "Manualmente as the primary concept",
-        "Imposible as the primary concept",
+        "Inspect graphically without methods",
+        "Separation manual in spreadsheets",
+        "Impossible without additional data",
         "seasonal_decompose() Statsmodels"
       ],
       "correct_index": 3,
@@ -789,16 +789,16 @@
       "question_es": "¿Qué es autocorrelación?",
       "question_en": "What is autocorrelation?",
       "options_es": [
-        "Ruido como concepto principal",
-        "Correlación entre variables sin considerar otros factores relevantes",
+        "Ruido aleatorio sin estructura temporal",
+        "Correlación entre dos variables independientes",
         "Correlación serie consigo atrasada",
-        "Tendencia como concepto principal"
+        "Tendencia determinística lineal"
       ],
       "options_en": [
-        "Ruido as the primary concept",
-        "Correlación entre variables without considering other relevant factors",
+        "Random noise without temporal structure",
+        "Correlation between two independent variables",
         "Correlación serie consigo atrasada",
-        "Tendencia as the primary concept"
+        "Linear deterministic trend"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Qué es autocorrelación?",
@@ -812,13 +812,13 @@
       "question_es": "¿Qué es ACF?",
       "question_en": "What is ACF?",
       "options_es": [
-        "Diferenciación como concepto principal",
+        "Diferenciación de la serie temporal",
         "Media móvil",
         "Correlación pura",
         "Función autocorrelación en lags"
       ],
       "options_en": [
-        "Diferenciación as the primary concept",
+        "Differentiation of the time series",
         "Media móvil",
         "Correlación pura",
         "Función autocorrelación en lags"
@@ -838,13 +838,13 @@
         "Aprendizaje no supervisado",
         "Solo clasificación",
         "Autoregressive Integrated Moving Average",
-        "Alternativa PCA de forma invariable y constante"
+        "Alternativa a PCA para reducción dimensional"
       ],
       "options_en": [
         "Aprendizaje no supervisado",
         "Solo clasificación",
         "Autoregressive Integrated Moving Average",
-        "Alternativa PCA invariably and constantly"
+        "Alternative to PCA for dimensional reduction"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Qué es ARIMA?",
@@ -858,13 +858,13 @@
       "question_es": "¿Componentes ARIMA?",
       "question_en": "ARIMA components?",
       "options_es": [
-        "Datos como concepto principal",
+        "Factores de entrada de la serie",
         "AR (p) I (d) MA (q)",
         "Tres iguales",
         "Dos partes"
       ],
       "options_en": [
-        "Datos as the primary concept",
+        "Input factors of the series",
         "AR (p) I (d) MA (q)",
         "Tres iguales",
         "Dos partes"
@@ -882,14 +882,14 @@
       "question_en": "How to choose p d q?",
       "options_es": [
         "ACF PACF pruebas análisis",
-        "Libro como concepto principal",
-        "Azar como concepto principal",
+        "Según recomendación de un libro",
+        "Azar o prueba-error sin análisis",
         "Iguales siempre"
       ],
       "options_en": [
         "ACF PACF pruebas análisis",
-        "Libro as the primary concept",
-        "Azar as the primary concept",
+        "According to book recommendation",
+        "Random or trial-error without analysis",
         "Iguales siempre"
       ],
       "correct_index": 0,
@@ -904,16 +904,16 @@
       "question_es": "¿Qué es SARIMA?",
       "question_en": "What is SARIMA?",
       "options_es": [
-        "Clasificación como concepto principal",
+        "Modelo de clasificación supervisada",
         "ARIMA + Seasonal",
         "Sin estacionalidad",
-        "Regresión como concepto principal"
+        "Modelo de regresión lineal"
       ],
       "options_en": [
-        "Clasificación as the primary concept",
+        "Supervised classification model",
         "ARIMA + Seasonal",
         "Sin estacionalidad",
-        "Regresión as the primary concept"
+        "Linear regression model"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Qué es SARIMA?",
@@ -927,16 +927,16 @@
       "question_es": "¿Cuándo usar exponencial smoothing?",
       "question_en": "When to use exp smoothing?",
       "options_es": [
-        "Nunca como concepto principal",
+        "Nunca, es obsoleto",
         "Solo larga",
         "Series corta, patrón simple",
-        "Siempre como concepto principal"
+        "Siempre, reemplaza todo"
       ],
       "options_en": [
-        "Nunca as the primary concept",
+        "Never, it is obsolete",
         "Solo larga",
         "Series corta, patrón simple",
-        "Siempre as the primary concept"
+        "Always, replaces everything"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Cuándo usar exponencial smoothing?",
@@ -952,13 +952,13 @@
       "options_es": [
         "Entrena [0:t] prueba [t:t+h]",
         "Último 20%",
-        "Aleatorio como concepto principal",
+        "Aleatorio con cross-validation estándar",
         "Sin validación"
       ],
       "options_en": [
         "Entrena [0:t] prueba [t:t+h]",
         "Último 20%",
-        "Aleatorio as the primary concept",
+        "Random with standard cross-validation",
         "Sin validación"
       ],
       "correct_index": 0,
@@ -976,13 +976,13 @@
         "No",
         "Sí ARIMA requiere",
         "A veces",
-        "Desconocido como concepto principal"
+        "Desconocido en estadística"
       ],
       "options_en": [
         "No",
         "Sí ARIMA requiere",
         "A veces",
-        "Desconocido as the primary concept"
+        "Unknown in statistics"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Stationarity importante?",
@@ -998,14 +998,14 @@
       "options_es": [
         "No se puede",
         "ADF test",
-        "Suponer como concepto principal",
-        "Visualmente como concepto principal"
+        "Suponer basado en intuición",
+        "Observar visualmente sin pruebas"
       ],
       "options_en": [
         "No se puede",
         "ADF test",
-        "Suponer as the primary concept",
-        "Visualmente as the primary concept"
+        "Assume based on intuition",
+        "Visually observe without tests"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Cómo verificar stationarity?",
@@ -1020,15 +1020,15 @@
       "question_en": "How to make stationary?",
       "options_es": [
         "Diferenciación log transformación",
-        "No es posible de manera exclusiva y permanente",
-        "Esperar como concepto principal",
-        "Ignorar como concepto principal"
+        "No es posible técnicamente",
+        "Esperar hasta que ocurra naturalmente",
+        "Ignorar y proceder igual"
       ],
       "options_en": [
         "Diferenciación log transformación",
-        "No es posible exclusively and permanently",
-        "Esperar as the primary concept",
-        "Ignorar as the primary concept"
+        "Not technically possible",
+        "Wait until it occurs naturally",
+        "Ignore and proceed anyway"
       ],
       "correct_index": 0,
       "explanation_es": "Explicación para ¿Cómo hacer estacionaria?",
@@ -1043,13 +1043,13 @@
       "question_en": "What is NLP?",
       "options_es": [
         "Red neuronal",
-        "Compilador como concepto principal",
+        "Compilador de lenguajes de programación",
         "Procesamiento lenguaje natural",
         "Análisis estadístico"
       ],
       "options_en": [
         "Red neuronal",
-        "Compilador as the primary concept",
+        "Programming language compiler",
         "Procesamiento lenguaje natural",
         "Análisis estadístico"
       ],
@@ -1065,14 +1065,14 @@
       "question_es": "¿Qué es tokenización?",
       "question_en": "What is tokenization?",
       "options_es": [
-        "Encriptación como concepto principal",
-        "Compresión como concepto principal",
+        "Encriptación de caracteres",
+        "Compresión de datos binarios",
         "Crear palabras",
         "Dividir texto en tokens"
       ],
       "options_en": [
-        "Encriptación as the primary concept",
-        "Compresión as the primary concept",
+        "Character encryption",
+        "Binary data compression",
         "Crear palabras",
         "Dividir texto en tokens"
       ],
@@ -1088,16 +1088,16 @@
       "question_es": "¿Qué son stopwords?",
       "question_en": "What are stopwords?",
       "options_es": [
-        "Caracteres como concepto principal",
+        "Caracteres especiales y símbolos",
         "Palabras comunes sin significado (el, la)",
         "Valores faltantes",
-        "Todas palabras en todos los casos posibles"
+        "Todas las palabras del texto"
       ],
       "options_en": [
-        "Caracteres as the primary concept",
+        "Special characters and symbols",
         "Palabras comunes sin significado (el, la)",
         "Valores faltantes",
-        "Todas palabras in all possible cases"
+        "Absolutely every word that appears anywhere in the text"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Qué son stopwords?",
@@ -1111,16 +1111,16 @@
       "question_es": "¿Cuándo remover stopwords?",
       "question_en": "When to remove stopwords?",
       "options_es": [
-        "Construcción como concepto principal",
-        "Siempre como concepto principal",
+        "Durante la construcción de diccionarios",
+        "Siempre, para reducir el vocabulario a la mitad",
         "Generalmente sí, depende tarea",
-        "Nunca como concepto principal"
+        "Nunca, son necesarios"
       ],
       "options_en": [
-        "Construcción as the primary concept",
-        "Siempre as the primary concept",
+        "During dictionary construction",
+        "Always, to cut the vocabulary size in half",
         "Generalmente sí, depende tarea",
-        "Nunca as the primary concept"
+        "Never, they are necessary"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Cuándo remover stopwords?",
@@ -1135,14 +1135,14 @@
       "question_en": "What is stemming?",
       "options_es": [
         "Plurales solo",
-        "Mayúsculas como concepto principal",
-        "Puntuación como concepto principal",
+        "Conversión a mayúsculas",
+        "Eliminación de puntuación",
         "Reduce palabra a raíz"
       ],
       "options_en": [
         "Plurales solo",
-        "Mayúsculas as the primary concept",
-        "Puntuación as the primary concept",
+        "Conversion to uppercase",
+        "Punctuation removal",
         "Reduce palabra a raíz"
       ],
       "correct_index": 3,
@@ -1157,14 +1157,14 @@
       "question_es": "¿Diferencia stemming lematización?",
       "question_en": "Stemming vs lemmatization?",
       "options_es": [
-        "Stem mejor de forma invariable y constante",
-        "Igual como concepto principal",
+        "Stem es mejor solo si el vocabulario es muy reducido",
+        "Igual efecto",
         "Stem heurístico, lemma lingüístico",
         "Lemma básico"
       ],
       "options_en": [
-        "Stem mejor invariably and constantly",
-        "Igual as the primary concept",
+        "Stem is better only when the vocabulary is very small",
+        "Same effect",
         "Stem heurístico, lemma lingüístico",
         "Lemma básico"
       ],
@@ -1181,13 +1181,13 @@
       "question_en": "What is bag of words?",
       "options_es": [
         "Vector frecuencia palabras",
-        "Diccionario como concepto principal",
+        "Diccionario de palabras ordenado",
         "Matriz densa",
         "Orden conservado"
       ],
       "options_en": [
         "Vector frecuencia palabras",
-        "Diccionario as the primary concept",
+        "Ordered word dictionary",
         "Matriz densa",
         "Orden conservado"
       ],
@@ -1206,13 +1206,13 @@
         "Importancia palabra en documento",
         "Frecuencia pura",
         "Longitud texto",
-        "Raros solo sin excepciones ni variantes"
+        "Solo cuenta palabras raras, ignora la frecuencia"
       ],
       "options_en": [
         "Importancia palabra en documento",
         "Frecuencia pura",
         "Longitud texto",
-        "Raros solo without exceptions or variants"
+        "Only counts rare words, ignoring frequency"
       ],
       "correct_index": 0,
       "explanation_es": "Explicación para ¿Qué es TF-IDF?",
@@ -1226,15 +1226,15 @@
       "question_es": "¿Cuándo usar TF-IDF?",
       "question_en": "When to use TF-IDF?",
       "options_es": [
-        "Siempre como concepto principal",
-        "Embeddings como concepto principal",
-        "Nunca como concepto principal",
+        "Siempre en cada proyecto",
+        "Solo útil para embeddings neuronales modernos",
+        "Nunca obsoleto",
         "Clasificación documento, búsqueda"
       ],
       "options_en": [
-        "Siempre as the primary concept",
-        "Embeddings as the primary concept",
-        "Nunca as the primary concept",
+        "Always in every project",
+        "Only useful for modern neural embeddings",
+        "Never obsolete",
         "Clasificación documento, búsqueda"
       ],
       "correct_index": 3,
@@ -1251,13 +1251,13 @@
       "options_es": [
         "Embedding semántico continuo",
         "Números solamente",
-        "Método viejo sin considerar otros factores relevantes",
+        "Método antiguo sin validación moderna",
         "Bolsa palabras"
       ],
       "options_en": [
         "Embedding semántico continuo",
         "Números solamente",
-        "Método viejo without considering other relevant factors",
+        "Old method without modern validation",
         "Bolsa palabras"
       ],
       "correct_index": 0,
@@ -1272,16 +1272,16 @@
       "question_es": "¿Qué es análisis sentimiento?",
       "question_en": "What is sentiment analysis?",
       "options_es": [
-        "Opinión pura sin excepciones ni variantes",
-        "Emociones todo",
+        "Opinión del usuario pura",
+        "Emociones detectadas mediante reconocimiento facial",
         "Clasificar positivo negativo neutral",
-        "Adjetivos como concepto principal"
+        "Adjetivos únicamente"
       ],
       "options_en": [
-        "Opinión pura without exceptions or variants",
-        "Emociones todo",
+        "Pure user opinion",
+        "Emotions detected through facial recognition",
         "Clasificar positivo negativo neutral",
-        "Adjetivos as the primary concept"
+        "Adjectives only"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Qué es análisis sentimiento?",
@@ -1295,16 +1295,16 @@
       "question_es": "¿Herramientas sentimiento?",
       "question_en": "Sentiment analysis tools?",
       "options_es": [
-        "Imposible como concepto principal",
+        "Imposible automatizar",
         "TextBlob VADER BERT",
         "Solo diccionario",
-        "Manual como concepto principal"
+        "Manual por expertos"
       ],
       "options_en": [
-        "Imposible as the primary concept",
+        "Impossible to automate",
         "TextBlob VADER BERT",
         "Solo diccionario",
-        "Manual as the primary concept"
+        "Manual by experts"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Herramientas sentimiento?",
@@ -1318,16 +1318,16 @@
       "question_es": "¿Qué es NER?",
       "question_en": "What is NER?",
       "options_es": [
-        "Análisis oracional de manera exclusiva y permanente",
+        "Análisis sintáctico de toda la oración completa",
         "Named Entity Recognition personas lugares",
-        "Documentos como concepto principal",
-        "Párrafos como concepto principal"
+        "Clasificación de documentos",
+        "Identificación de párrafos"
       ],
       "options_en": [
-        "Análisis oracional exclusively and permanently",
+        "Syntactic analysis of the entire sentence",
         "Named Entity Recognition personas lugares",
-        "Documentos as the primary concept",
-        "Párrafos as the primary concept"
+        "Document classification",
+        "Paragraph identification"
       ],
       "correct_index": 1,
       "explanation_es": "Explicación para ¿Qué es NER?",
@@ -1341,16 +1341,16 @@
       "question_es": "¿Cuándo usar BERT?",
       "question_en": "When to use BERT?",
       "options_es": [
-        "Lento como concepto principal",
-        "Siempre como concepto principal",
+        "Lento, evitar siempre",
+        "Siempre, incluso para clasificar un solo carácter",
         "Contexto complejo tareas avanzadas",
-        "Nunca como concepto principal en todos los casos posibles"
+        "Nunca, por su enorme costo de memoria"
       ],
       "options_en": [
-        "Lento as the primary concept",
-        "Siempre as the primary concept",
+        "Slow, always avoid",
+        "Always, even to classify a single character",
         "Contexto complejo tareas avanzadas",
-        "Nunca as the primary concept in all possible cases"
+        "Never, due to its huge memory cost"
       ],
       "correct_index": 2,
       "explanation_es": "Explicación para ¿Cuándo usar BERT?",
@@ -1364,15 +1364,15 @@
       "question_es": "¿Desafíos NLP?",
       "question_en": "NLP challenges?",
       "options_es": [
-        "Ninguno como concepto principal",
-        "Facilidades como concepto principal",
-        "Tiempo como concepto principal",
+        "Ninguno",
+        "Facilidades técnicas",
+        "Tiempo de procesamiento únicamente",
         "Ambigüedad contexto idioma datos"
       ],
       "options_en": [
-        "Ninguno as the primary concept",
-        "Facilidades as the primary concept",
-        "Tiempo as the primary concept",
+        "None",
+        "Highly specialized technical facilities required",
+        "Processing time only, never accuracy issues",
         "Ambigüedad contexto idioma datos"
       ],
       "correct_index": 3,
