@@ -9,14 +9,14 @@
       "options_es": [
         "Un contenedor es solo para Linux, una imagen funciona en cualquier sistema operativo",
         "Una imagen es una plantilla estática inmutable, mientras que un contenedor es una instancia en ejecución de esa imagen",
-        "Las imágenes se usan solo en desarrollo y los contenedores en producción de forma invariable y constante",
-        "Una imagen es un contenedor ejecutándose en el sistema sin excepciones ni variantes sin excepciones ni variantes"
+        "Las imágenes se usan solo en desarrollo y los contenedores solo en producción, una separación que impone el registry al rechazar pulls fuera de ese entorno",
+        "Una imagen es un contenedor en ejecución que Docker serializa en el registry cada vez que se detiene"
       ],
       "options_en": [
         "A container is only for Linux, an image works on any operating system",
         "An image is a static immutable template, while a container is a running instance of that image",
-        "Images are used only in development and containers in production invariably and constantly",
-        "An image is a container running on the system without exceptions or variants without exceptions or variants"
+        "Images are used only in development and containers only in production, a split the registry enforces by rejecting pulls outside that environment",
+        "An image is a running container that Docker serializes to the registry every time it stops"
       ],
       "correct_index": 1,
       "explanation_es": "Una imagen Docker es una plantilla inmutable que contiene todo lo necesario para ejecutar una aplicación. Un contenedor es una instancia en ejecución de esa imagen con su propio sistema de archivos y procesos aislados.",
@@ -56,13 +56,13 @@
         "Crear e iniciar un nuevo contenedor basado en una imagen",
         "Pausar todos los contenedores en ejecución",
         "Eliminar un contenedor que ya no se necesita",
-        "Actualizar una imagen Docker existente en todos los casos posibles"
+        "Actualizar una imagen Docker existente sobrescribiendo sus capas en el registry remoto"
       ],
       "options_en": [
         "Create and start a new container based on an image",
         "Pause all running containers",
         "Delete a container that is no longer needed",
-        "Update an existing Docker image in all possible cases"
+        "Update an existing Docker image by overwriting its layers on the remote registry"
       ],
       "correct_index": 0,
       "explanation_es": "El comando 'docker run' crea un nuevo contenedor a partir de una imagen especificada e inmediatamente lo inicia. Permite pasar opciones como puertos, volúmenes y variables de entorno.",
@@ -77,13 +77,13 @@
       "question_en": "What is an ephemeral container in Docker?",
       "options_es": [
         "Un contenedor cuya data se borra automáticamente cuando se detiene",
-        "Un contenedor que no tiene asignado ningún puerto según la documentación estándar del servicio",
+        "Un contenedor que no tiene asignado ningún puerto porque se creó con la flag --network none",
         "Un contenedor que se detiene automáticamente después de 30 segundos",
         "Un contenedor creado con la flag --rm que se elimina automáticamente al detener"
       ],
       "options_en": [
         "A container whose data is automatically deleted when stopped",
-        "A container with no ports assigned according to standard service documentation",
+        "A container with no ports assigned because it was created with the --network none flag",
         "A container that automatically stops after 30 seconds",
         "A container created with the --rm flag that automatically removes itself when stopped"
       ],
@@ -99,15 +99,15 @@
       "question_es": "¿Cuál es la diferencia entre 'docker ps' y 'docker ps -a'?",
       "question_en": "What is the difference between 'docker ps' and 'docker ps -a'?",
       "options_es": [
-        "No hay diferencia, ambos comandos son sinónimos independientemente del contexto aplicado",
+        "No hay diferencia, ambos comandos son alias del mismo binario según la documentación del CLI",
         "'docker ps' muestra solo imágenes, 'docker ps -a' muestra contenedores",
-        "'docker ps' requiere permisos de administrador, 'docker ps -a' no según la documentación estándar del servicio",
+        "'docker ps' requiere permisos de administrador, 'docker ps -a' no, porque usa una API distinta del daemon",
         "'docker ps' muestra contenedores activos, 'docker ps -a' muestra todos incluyendo detenidos"
       ],
       "options_en": [
-        "There is no difference, both commands are synonymous regardless of the applied context",
+        "There is no difference, both commands are aliases of the same binary according to the CLI documentation",
         "'docker ps' shows only images, 'docker ps -a' shows containers",
-        "'docker ps' requires administrator permissions, 'docker ps -a' does not according to standard service documentation",
+        "'docker ps' requires administrator permissions, 'docker ps -a' does not, because it uses a different daemon API",
         "'docker ps' shows active containers, 'docker ps -a' shows all including stopped ones"
       ],
       "correct_index": 3,
@@ -123,13 +123,13 @@
       "question_en": "How do you access the interactive terminal of a running container?",
       "options_es": [
         "Usando 'docker exec -it' para ejecutar una shell interactiva en el contenedor",
-        "Usando 'docker connect' para conectar la terminal independientemente del contexto aplicado",
+        "Usando 'docker connect' para conectar la terminal a través del socket unix del daemon",
         "Usando 'docker shell' para obtener acceso de terminal",
         "Usando 'docker attach' para conectarse al contenedor"
       ],
       "options_en": [
         "Using 'docker exec -it' to run an interactive shell in the container",
-        "Using 'docker connect' to connect the terminal regardless of the applied context",
+        "Using 'docker connect' to connect the terminal through the daemon's unix socket",
         "Using 'docker shell' to get terminal access",
         "Using 'docker attach' to connect to the container"
       ],
@@ -145,16 +145,16 @@
       "question_es": "¿Qué información se proporciona al ejecutar 'docker inspect' en un contenedor?",
       "question_en": "What information is provided when running 'docker inspect' on a container?",
       "options_es": [
-        "Solo el estado actual del contenedor de manera exclusiva y permanente",
+        "Solo el estado actual del contenedor, sin datos de configuración ni red",
         "Información detallada como configuración, redes, volúmenes, variables de entorno y estado",
-        "Solo el nombre y el ID del contenedor sin considerar otros factores relevantes",
-        "Solo los puertos expuestos del contenedor en todos los casos posibles"
+        "Solo el nombre y el ID del contenedor, tal como aparecen en 'docker ps'",
+        "Solo los puertos expuestos del contenedor, tal como se listan en 'docker port', sin datos de red ni volúmenes"
       ],
       "options_en": [
-        "Only the current state of the container exclusively and permanently",
+        "Only the current state of the container, without configuration or network data",
         "Detailed information such as configuration, networks, volumes, environment variables, and state",
-        "Only the container name and ID without considering other relevant factors",
-        "Only the exposed ports of the container in all possible cases"
+        "Only the container name and ID, as they appear in 'docker ps'",
+        "Only the exposed ports of the container, as listed by 'docker port', without network or volume data"
       ],
       "correct_index": 1,
       "explanation_es": "'docker inspect' proporciona información completa y detallada sobre un contenedor en formato JSON, incluyendo su configuración, estado, conexiones de red, volúmenes montados y muchas otras propiedades.",
@@ -170,14 +170,14 @@
       "options_es": [
         "Asignar versiones o identificadores descriptivos a las imágenes",
         "Especificar el sistema operativo de la imagen",
-        "Identificar el autor de la imagen sin excepciones ni variantes",
-        "Controlar los permisos de acceso a la imagen independientemente del contexto aplicado"
+        "Identificar el autor de la imagen, campo que Docker completa automáticamente al hacer push al registro",
+        "Controlar los permisos de acceso a la imagen, restringiendo qué usuarios pueden hacer pull"
       ],
       "options_en": [
         "Assign versions or descriptive identifiers to images",
         "Specify the operating system of the image",
-        "Identify the author of the image without exceptions or variants",
-        "Control access permissions to the image regardless of the applied context"
+        "Identify the author of the image, a field Docker fills in automatically on push to the registry",
+        "Control access permissions to the image, restricting which users can pull it"
       ],
       "correct_index": 0,
       "explanation_es": "Las etiquetas (tags) en Docker permiten identificar diferentes versiones de una imagen. Por ejemplo, 'nginx:latest' identifica la versión más reciente, 'nginx:1.19' identifica una versión específica.",
@@ -191,13 +191,13 @@
       "question_es": "¿Cuándo se ejecuta el comando ENTRYPOINT definido en una imagen Docker?",
       "question_en": "When is the ENTRYPOINT command defined in a Docker image executed?",
       "options_es": [
-        "Se ejecuta cuando se construye la imagen sin excepciones ni variantes",
+        "Se ejecuta cuando se construye la imagen, como parte del paso 'docker build'",
         "Se ejecuta solo si se especifica explícitamente en 'docker run'",
         "Se ejecuta cada vez que se inicia un contenedor desde esa imagen",
         "Se ejecuta cuando se sube la imagen a un registro"
       ],
       "options_en": [
-        "It is executed when the image is built without exceptions or variants",
+        "It is executed when the image is built, as part of the 'docker build' step",
         "It is executed only if explicitly specified in 'docker run'",
         "It is executed each time a container is started from that image",
         "It is executed when the image is pushed to a registry"
@@ -215,13 +215,13 @@
       "question_en": "What happens when you run 'docker stop' on a container?",
       "options_es": [
         "Se pausa el contenedor temporalmente sin terminarlo",
-        "Se elimina el contenedor del sistema completamente en cualquier escenario de implementación",
+        "Se elimina el contenedor del sistema completamente, liberando también sus volúmenes anónimos",
         "Se mata inmediatamente el proceso sin enviar señal alguna",
         "Se envía una señal SIGTERM al proceso principal del contenedor para terminarlo gracefully"
       ],
       "options_en": [
         "The container is temporarily paused without terminating",
-        "The container is completely deleted from the system in any implementation scenario",
+        "The container is completely deleted from the system, also freeing its anonymous volumes",
         "The process is immediately killed without any signal",
         "A SIGTERM signal is sent to the main process of the container for graceful termination"
       ],
@@ -237,16 +237,16 @@
       "question_es": "¿Cuál es la diferencia entre 'docker stop' y 'docker kill'?",
       "question_en": "What is the difference between 'docker stop' and 'docker kill'?",
       "options_es": [
-        "'docker stop' elimina el contenedor, 'docker kill' solo lo detiene según la documentación estándar del servicio",
+        "'docker stop' elimina el contenedor, 'docker kill' solo lo detiene, quedando disponible para reiniciarse",
         "'docker stop' envía SIGTERM (terminación graciosa), 'docker kill' envía SIGKILL (terminación inmediata)",
-        "'docker stop' requiere confirmación, 'docker kill' no de forma invariable y constante",
-        "No hay diferencia, ambos detienen el contenedor en todos los casos posibles"
+        "'docker stop' requiere confirmación interactiva, 'docker kill' se ejecuta sin preguntar nada",
+        "No hay diferencia, ambos comandos envían la misma señal al proceso principal"
       ],
       "options_en": [
-        "'docker stop' deletes the container, 'docker kill' only stops it according to standard service documentation",
+        "'docker stop' deletes the container, 'docker kill' only stops it, leaving it available to restart",
         "'docker stop' sends SIGTERM (graceful termination), 'docker kill' sends SIGKILL (immediate termination)",
-        "'docker stop' requires confirmation, 'docker kill' does not invariably and constantly",
-        "There is no difference, both stop the container in all possible cases"
+        "'docker stop' requires interactive confirmation, 'docker kill' runs without asking anything",
+        "There is no difference, both commands send the same signal to the main process"
       ],
       "correct_index": 1,
       "explanation_es": "'docker stop' permite que la aplicación se cierre gracefully, mientras que 'docker kill' termina el proceso inmediatamente. 'stop' es preferible porque permite limpiar recursos.",
@@ -260,14 +260,14 @@
       "question_es": "¿Qué almacena Docker en el archivo '.dockerignore'?",
       "question_en": "What does Docker store in the '.dockerignore' file?",
       "options_es": [
-        "Información de la versión de Docker en todos los casos posibles",
-        "Credenciales de acceso al registro Docker sin considerar otros factores relevantes",
+        "Información de la versión de Docker instalada y su API compatible",
+        "Credenciales de acceso al registro Docker, guardadas cifradas junto al Dockerfile",
         "Patrones de archivos y directorios a excluir del contexto de construcción",
         "Configuración de seguridad del contenedor"
       ],
       "options_en": [
-        "Docker version information in all possible cases",
-        "Credentials for Docker registry access without considering other relevant factors",
+        "Information about the installed Docker version and its compatible API",
+        "Credentials for Docker registry access, stored encrypted next to the Dockerfile",
         "Patterns of files and directories to exclude from the build context",
         "Container security configuration"
       ],
@@ -283,15 +283,15 @@
       "question_es": "¿Cuál es el significado de 'layer' en el contexto de imágenes Docker?",
       "question_en": "What is the meaning of 'layer' in the context of Docker images?",
       "options_es": [
-        "Un nivel de aislamiento entre contenedores sin excepciones ni variantes",
-        "Una capas de código fuente del contenedor sin excepciones ni variantes",
-        "Una partición del disco duro dedicada a Docker independientemente del contexto aplicado",
+        "Un nivel de aislamiento entre contenedores gestionado por namespaces del kernel",
+        "Una capa de código fuente del contenedor, mantenida solo en memoria RAM y nunca escrita al sistema de archivos del host",
+        "Una partición del disco duro dedicada a Docker, configurada en /etc/docker/daemon.json",
         "Cada instrucción en un Dockerfile crea una capa incremental read-only que se apila para formar la imagen"
       ],
       "options_en": [
-        "A level of isolation between containers without exceptions or variants",
-        "A layer of container source code without exceptions or variants",
-        "A disk partition dedicated to Docker regardless of the applied context",
+        "A level of isolation between containers managed by kernel namespaces",
+        "A layer of container source code, kept only in RAM memory and never written to the host's filesystem",
+        "A disk partition dedicated to Docker, configured in /etc/docker/daemon.json",
         "Each instruction in a Dockerfile creates an incremental read-only layer that stacks to form the image"
       ],
       "correct_index": 3,
@@ -308,13 +308,13 @@
       "options_es": [
         "Usando 'docker inspect --layers <imagen>'",
         "Leyendo directamente el Dockerfile original",
-        "Usando 'docker layers <imagen>' independientemente del contexto aplicado",
+        "Usando 'docker layers <imagen>', un subcomando que muestra el tamaño acumulado",
         "Usando 'docker history <imagen>' para mostrar cada capa y su tamaño"
       ],
       "options_en": [
         "Using 'docker inspect --layers <image>'",
         "Reading directly from the original Dockerfile",
-        "Using 'docker layers <image>' regardless of the applied context",
+        "Using 'docker layers <image>', a subcommand that shows the cumulative size",
         "Using 'docker history <image>' to show each layer and its size"
       ],
       "correct_index": 3,
@@ -329,14 +329,14 @@
       "question_es": "¿Qué es un contenedor privilegiado en Docker?",
       "question_en": "What is a privileged container in Docker?",
       "options_es": [
-        "Un contenedor que tiene acceso a todos los dispositivos del host",
-        "Un contenedor que corre con permisos de usuario raíz independientemente del contexto aplicado",
+        "Un contenedor que solo puede acceder a los dispositivos indicados explícitamente con --device, sin la bandera --privileged",
+        "Un contenedor que corre con permisos de usuario raíz dentro de su propio namespace de usuario",
         "Un contenedor con acceso administrativo a otras imágenes",
         "Un contenedor que recibe todas las capacidades del kernel del host"
       ],
       "options_en": [
-        "A container that has access to all host devices",
-        "A container that runs with root user permissions regardless of the applied context",
+        "A container that can only access devices explicitly listed with --device, without the --privileged flag",
+        "A container that runs with root user permissions inside its own user namespace",
         "A container with administrative access to other images",
         "A container that receives all kernel capabilities of the host"
       ],
@@ -352,14 +352,14 @@
       "question_es": "¿Cuál es la estructura básica de un Dockerfile?",
       "question_en": "What is the basic structure of a Dockerfile?",
       "options_es": [
-        "Es un archivo de configuración JSON para registros Docker sin considerar otros factores relevantes",
-        "Es un archivo YAML con configuración de contenedores en todos los casos posibles",
+        "Es un archivo de configuración JSON para registros Docker, similar a docker-compose.yml",
+        "Es un archivo YAML con configuración de contenedores, análogo a un manifiesto de Kubernetes",
         "Es un script de shell que se ejecuta dentro del contenedor",
         "Es un archivo de texto con instrucciones para construir una imagen Docker paso a paso"
       ],
       "options_en": [
-        "It is a JSON configuration file for Docker registries without considering other relevant factors",
-        "It is a YAML file with container configuration in all possible cases",
+        "It is a JSON configuration file for Docker registries, similar to docker-compose.yml",
+        "It is a YAML file with container configuration, analogous to a Kubernetes manifest",
         "It is a shell script that runs inside the container",
         "It is a text file with instructions to build a Docker image step by step"
       ],
@@ -376,13 +376,13 @@
       "question_en": "What is the purpose of the 'FROM' instruction in a Dockerfile?",
       "options_es": [
         "Definir el comando a ejecutar cuando inicia el contenedor",
-        "Importar paquetes externos al contenedor independientemente del contexto aplicado",
+        "Importar paquetes externos al contenedor descargándolos desde un repositorio APT",
         "Especificar la imagen base sobre la cual se construirá la nueva imagen",
         "Especificar archivos a ignorar en la construcción"
       ],
       "options_en": [
         "Define the command to run when the container starts",
-        "Import external packages into the container regardless of the applied context",
+        "Import external packages into the container by downloading them from an APT repository",
         "Specify the base image on which the new image will be built",
         "Specify files to ignore in the build"
       ],
@@ -399,15 +399,15 @@
       "question_en": "What is the difference between 'RUN' and 'CMD' in a Dockerfile?",
       "options_es": [
         "'RUN' ejecuta comandos durante la construcción, 'CMD' proporciona el comando por defecto al iniciar el contenedor",
-        "'RUN' requiere permisos de root, 'CMD' no en cualquier escenario de implementación",
-        "No hay diferencia, ambos ejecutan comandos independientemente del contexto aplicado",
-        "'RUN' es para comandos de ejecución rápida, 'CMD' para procesos de larga duración independientemente del contexto aplicado"
+        "'RUN' requiere permisos de root, 'CMD' se ejecuta siempre como el usuario definido en USER",
+        "No hay diferencia, ambos ejecutan comandos con el mismo shell interactivo y comparten el mismo historial de capas",
+        "'RUN' es para comandos de ejecución rápida, 'CMD' solo admite procesos que escuchan en segundo plano"
       ],
       "options_en": [
         "'RUN' executes commands during build, 'CMD' provides the default command when starting the container",
-        "'RUN' requires root permissions, 'CMD' does not in any implementation scenario",
-        "There is no difference, both execute commands regardless of the applied context",
-        "'RUN' is for quick execution commands, 'CMD' for long-running processes regardless of the applied context"
+        "'RUN' requires root permissions, 'CMD' always runs as the user defined in USER",
+        "There is no difference, both execute commands using the same interactive shell and share the same layer history",
+        "'RUN' is for quick execution commands, 'CMD' only supports processes that listen in the background"
       ],
       "correct_index": 0,
       "explanation_es": "'RUN' se ejecuta durante la construcción de la imagen y sus cambios se guardan en una capa. 'CMD' define el comando que se ejecuta por defecto cuando se inicia un contenedor.",
@@ -422,13 +422,13 @@
       "question_en": "What is the purpose of 'COPY' in a Dockerfile?",
       "options_es": [
         "Copiar y descomprimir archivos automáticamente",
-        "Crear una copia de la imagen actual independientemente del contexto aplicado",
+        "Crear una copia de la imagen actual etiquetándola con un nuevo tag",
         "Copiar archivos del contexto de construcción al interior de la imagen",
         "Copiar archivos del contenedor al host local"
       ],
       "options_en": [
         "Copy and automatically decompress files",
-        "Create a copy of the current image regardless of the applied context",
+        "Create a copy of the current image, tagging it with a new tag",
         "Copy files from the build context into the image",
         "Copy files from the container to the local host"
       ],
@@ -444,16 +444,16 @@
       "question_es": "¿Cuál es la diferencia entre 'COPY' y 'ADD' en un Dockerfile?",
       "question_en": "What is the difference between 'COPY' and 'ADD' in a Dockerfile?",
       "options_es": [
-        "No hay diferencia, son sinónimos de forma invariable y constante",
+        "No hay diferencia, son alias del mismo parser interno de Docker",
         "'COPY' es simple, 'ADD' tiene funciones adicionales como descomprimir archivos y copiar desde URLs",
-        "'COPY' funciona solo con directorios, 'ADD' solo con archivos sin excepciones ni variantes",
-        "'ADD' no se recomienda usar, 'COPY' es la alternativa moderna de manera exclusiva y permanente"
+        "'COPY' funciona solo con directorios, 'ADD' solo admite archivos comprimidos en formato tar",
+        "'ADD' no se recomienda usar, 'COPY' es la alternativa moderna porque ADD fue eliminado en Docker 20.10"
       ],
       "options_en": [
-        "There is no difference, they are synonymous invariably and constantly",
+        "There is no difference, they are aliases of the same internal Docker parser",
         "'COPY' is simple, 'ADD' has extra features like extracting files and copying from URLs",
-        "'COPY' works only with directories, 'ADD' only with files without exceptions or variants",
-        "'ADD' is not recommended to use, 'COPY' is the modern alternative exclusively and permanently"
+        "'COPY' works only with directories, 'ADD' only accepts compressed tar archives",
+        "'ADD' is not recommended, 'COPY' is the modern alternative because ADD was removed in Docker 20.10"
       ],
       "correct_index": 1,
       "explanation_es": "Aunque parecidas, 'ADD' tiene características adicionales como descomprimir archivos comprimidos y copiar desde URLs. 'COPY' es más transparente y se recomienda usar a menos que necesites las características extras de 'ADD'.",
@@ -467,13 +467,13 @@
       "question_es": "¿Para qué se usa la instrucción 'WORKDIR' en un Dockerfile?",
       "question_en": "What is 'WORKDIR' used for in a Dockerfile?",
       "options_es": [
-        "Definir el usuario que ejecuta los comandos según la documentación estándar del servicio",
+        "Definir el usuario que ejecuta los comandos, sustituyendo a la instrucción USER",
         "Configurar variables de entorno del contenedor",
         "Asignar permisos de archivo en el contenedor",
         "Especificar el directorio de trabajo dentro del contenedor"
       ],
       "options_en": [
-        "Define the user who executes commands according to standard service documentation",
+        "Define the user who executes commands, replacing the USER instruction",
         "Configure environment variables for the container",
         "Set file permissions in the container",
         "Specify the working directory inside the container"
@@ -490,13 +490,13 @@
       "question_es": "¿Cuál es el propósito de 'ENV' en un Dockerfile?",
       "question_en": "What is the purpose of 'ENV' in a Dockerfile?",
       "options_es": [
-        "Especificar archivos a no incluir en la imagen en todos los casos posibles",
+        "Especificar archivos a no incluir en la imagen, función que en realidad cumple .dockerignore",
         "Especificar la versión mínima de Docker requerida",
         "Configurar el entorno de construcción de Docker",
         "Definir variables de entorno que estarán disponibles en el contenedor"
       ],
       "options_en": [
-        "Specify files not to include in the image in all possible cases",
+        "Specify files not to include in the image, a role that .dockerignore actually fulfills",
         "Specify the minimum Docker version required",
         "Configure the Docker build environment",
         "Define environment variables that will be available in the container"
@@ -513,16 +513,16 @@
       "question_es": "¿Qué instrucción Dockerfile se usa para exponer puertos del contenedor?",
       "question_en": "Which Dockerfile instruction is used to expose container ports?",
       "options_es": [
-        "OPEN como concepto principal",
-        "PUBLISH como concepto principal",
-        "EXPOSE como concepto principal",
-        "PORTS como concepto principal"
+        "OPEN",
+        "PUBLISH",
+        "EXPOSE",
+        "PORTS"
       ],
       "options_en": [
-        "OPEN as the primary concept",
-        "PUBLISH as the primary concept",
-        "EXPOSE as the primary concept",
-        "PORTS as the primary concept"
+        "OPEN",
+        "PUBLISH",
+        "EXPOSE",
+        "PORTS"
       ],
       "correct_index": 2,
       "explanation_es": "'EXPOSE' documenta qué puertos el contenedor escucha en tiempo de ejecución. Nota: no publica realmente los puertos; debes usar 'docker run -p' para mapear puertos.",
@@ -536,13 +536,13 @@
       "question_es": "¿Cuál es el propósito de 'HEALTHCHECK' en un Dockerfile?",
       "question_en": "What is the purpose of 'HEALTHCHECK' in a Dockerfile?",
       "options_es": [
-        "Validar la sintaxis del Dockerfile de manera exclusiva y permanente",
+        "Validar la sintaxis del Dockerfile antes de iniciar la construcción de la imagen",
         "Generar reportes de salud del host",
         "Verificar la seguridad de la imagen",
         "Definir un comando para comprobar el estado de salud del contenedor"
       ],
       "options_en": [
-        "Validate Dockerfile syntax exclusively and permanently",
+        "Validate Dockerfile syntax before starting the image build",
         "Generate health reports of the host",
         "Verify the security of the image",
         "Define a command to check the health status of the container"
@@ -559,16 +559,16 @@
       "question_es": "¿Cuál es la diferencia entre un Dockerfile multi-stage y un Dockerfile de una sola etapa?",
       "question_en": "What is the difference between a multi-stage Dockerfile and a single-stage Dockerfile?",
       "options_es": [
-        "Multi-stage es más lento que single-stage en cualquier escenario de implementación",
-        "No hay diferencia en funcionalidad, solo en legibilidad sin excepciones ni variantes",
+        "Multi-stage tarda más en compilarse porque Docker repite cada etapa sin reutilizar caché de capas",
+        "No hay diferencia en funcionalidad, solo cambia el orden de las instrucciones COPY en el Dockerfile",
         "Multi-stage permite usar múltiples 'FROM' para reducir el tamaño final de la imagen",
-        "Multi-stage solo funciona en sistemas Linux de manera exclusiva y permanente"
+        "Multi-stage solo funciona en Linux porque el motor de Windows rechaza más de un 'FROM'"
       ],
       "options_en": [
-        "Multi-stage is slower than single-stage in any implementation scenario",
-        "There is no functional difference, only in readability without exceptions or variants",
+        "Multi-stage takes longer because Docker repeats each stage without reusing layer cache",
+        "There is no functional difference, it only changes the COPY instruction order",
         "Multi-stage allows multiple 'FROM' statements to reduce final image size",
-        "Multi-stage only works on Linux systems exclusively and permanently"
+        "Multi-stage only works on Linux because Windows rejects more than one 'FROM'"
       ],
       "correct_index": 2,
       "explanation_es": "Los Dockerfiles multi-stage permiten usar múltiples etapas de construcción, copiando solo los artefactos necesarios al contenedor final, reduciendo significativamente el tamaño de la imagen.",
@@ -585,13 +585,13 @@
         "docker build -t nombre:tag .",
         "docker make -f Dockerfile",
         "docker create -f Dockerfile",
-        "docker compile Dockerfile sin considerar otros factores relevantes"
+        "docker compile Dockerfile -o imagen"
       ],
       "options_en": [
         "docker build -t nombre:tag .",
         "docker make -f Dockerfile",
         "docker create -f Dockerfile",
-        "docker compile Dockerfile without considering other relevant factors"
+        "docker compile Dockerfile -o image"
       ],
       "correct_index": 0,
       "explanation_es": "'docker build' construye una imagen a partir de un Dockerfile y un contexto de construcción. La opción '-t' asigna un nombre y etiqueta a la imagen.",
@@ -606,13 +606,13 @@
       "question_en": "What is the build context in Docker?",
       "options_es": [
         "El historial de comandos ejecutados durante la construcción",
-        "La configuración global de Docker en el sistema según la documentación estándar del servicio",
+        "La configuración global de Docker en el sistema, almacenada en /etc/docker/daemon.json",
         "El conjunto de archivos y directorios en el disco que Docker accede durante la construcción",
         "El contenedor que ejecuta la construcción de la imagen"
       ],
       "options_en": [
         "The history of commands executed during the build",
-        "The global Docker configuration on the system according to standard service documentation",
+        "The global Docker configuration on the system, stored in /etc/docker/daemon.json",
         "The set of files and directories on disk that Docker accesses during the build",
         "The container that runs the image build"
       ],
@@ -629,15 +629,15 @@
       "question_en": "What is the purpose of 'ARG' in a Dockerfile?",
       "options_es": [
         "Definir variables que pueden ser pasadas en tiempo de construcción con 'docker build --build-arg'",
-        "Definir argumentos persistentes en la imagen final sin considerar otros factores relevantes",
-        "Especificar argumentos que se pasan al comando CMD de manera exclusiva y permanente",
-        "Configurar argumentos de línea de comandos del contenedor sin excepciones ni variantes"
+        "Definir argumentos persistentes en la imagen final, visibles con 'docker inspect' tras el build",
+        "Especificar argumentos que se pasan al comando CMD en tiempo de ejecución del contenedor",
+        "Configurar argumentos de línea de comandos que el contenedor recibe al iniciar con 'docker run'"
       ],
       "options_en": [
         "Define variables that can be passed at build time with 'docker build --build-arg'",
-        "Define persistent arguments in the final image without considering other relevant factors",
-        "Specify arguments passed to the CMD command exclusively and permanently",
-        "Configure command-line arguments of the container without exceptions or variants"
+        "Define persistent arguments in the final image, visible via 'docker inspect' after the build",
+        "Specify arguments passed to the CMD command at container runtime",
+        "Configure command-line arguments the container receives when started with 'docker run'"
       ],
       "correct_index": 0,
       "explanation_es": "'ARG' define variables de construcción que pueden ser pasadas mediante 'docker build --build-arg variable=valor'. No están disponibles en tiempo de ejecución como ENV.",
@@ -697,13 +697,13 @@
       "question_es": "¿Cuál es el propósito principal de Docker Compose?",
       "question_en": "What is the main purpose of Docker Compose?",
       "options_es": [
-        "Gestionar registros de imágenes Docker independientemente del contexto aplicado",
+        "Gestionar registros de imágenes Docker, sustituyendo a 'docker login' y 'docker push'",
         "Compilar imágenes Docker más rápidamente",
         "Monitorear contenedores en tiempo de ejecución",
         "Definir y ejecutar múltiples contenedores Docker como un único servicio"
       ],
       "options_en": [
-        "Manage Docker image registries regardless of the applied context",
+        "Manage Docker image registries, replacing 'docker login' and 'docker push'",
         "Compile Docker images more quickly",
         "Monitor containers at runtime",
         "Define and run multiple Docker containers as a single service"
@@ -720,16 +720,16 @@
       "question_es": "¿Cuál es el nombre del archivo de configuración predeterminado en Docker Compose?",
       "question_en": "What is the name of the default configuration file in Docker Compose?",
       "options_es": [
-        "docker-compose.yaml como concepto principal",
-        "docker.compose como concepto principal",
-        "compose.json como concepto principal sin considerar otros factores relevantes",
-        "docker-config.yml como concepto principal"
+        "docker-compose.yaml",
+        "docker.compose",
+        "un archivo compose.json",
+        "docker-config.yml"
       ],
       "options_en": [
-        "docker-compose.yaml as the primary concept",
-        "docker.compose as the primary concept",
-        "compose.json as the primary concept without considering other relevant factors",
-        "docker-config.yml as the primary concept"
+        "docker-compose.yaml",
+        "docker.compose",
+        "a compose.json file",
+        "docker-config.yml"
       ],
       "correct_index": 0,
       "explanation_es": "El archivo predeterminado es 'docker-compose.yaml' (o 'docker-compose.yml'). Docker Compose busca automáticamente este archivo en el directorio actual.",
@@ -746,13 +746,13 @@
         "Un objeto JSON con la clave 'containers'",
         "Un archivo YAML con versión, servicios, redes y volúmenes",
         "Un script de shell con comandos 'docker run'",
-        "Una lista de imágenes a descargar sin excepciones ni variantes"
+        "Una lista de imágenes a descargar, una por línea, sin sección 'services'"
       ],
       "options_en": [
         "A JSON object with the 'containers' key",
         "A YAML file with version, services, networks, and volumes",
         "A shell script with 'docker run' commands",
-        "A list of images to download without exceptions or variants"
+        "A list of images to download, one per line, without a 'services' section"
       ],
       "correct_index": 1,
       "explanation_es": "Un archivo docker-compose.yaml contiene secciones para versión (versión de la sintaxis), servicios (contenedores a ejecutar), redes, volúmenes y otras configuraciones.",
@@ -792,13 +792,13 @@
         "Detiene y elimina contenedores, redes y volúmenes definidos",
         "Baja el disco de almacenamiento Docker",
         "Pausa todos los servicios temporalmente",
-        "Remueve solo los volúmenes datos sin excepciones ni variantes"
+        "Remueve solo los volúmenes nombrados, dejando contenedores y redes activos"
       ],
       "options_en": [
         "Stops and removes containers, networks, and defined volumes",
         "Brings down Docker storage disk",
         "Pauses all services temporarily",
-        "Removes only data volumes without exceptions or variants"
+        "Removes only named volumes, leaving containers and networks running"
       ],
       "correct_index": 0,
       "explanation_es": "'docker-compose down' detiene y elimina todos los contenedores, redes y volúmenes creados por 'docker-compose up'. Es útil para limpiar el entorno.",
@@ -814,13 +814,13 @@
       "options_es": [
         "Mediante URLs HTTP expuestas públicamente",
         "Mediante el nombre del servicio como hostname automáticamente resuelto",
-        "Mediante configuración manual de DNS en cualquier escenario de implementación",
+        "Mediante configuración manual de DNS que el usuario añade en /etc/hosts",
         "Mediante direcciones IP externas del host"
       ],
       "options_en": [
         "Via publicly exposed HTTP URLs",
         "Via the service name as automatically resolved hostname",
-        "Via manual DNS configuration in any implementation scenario",
+        "Via manual DNS configuration the user adds to /etc/hosts",
         "Via external host IP addresses"
       ],
       "correct_index": 1,
@@ -836,14 +836,14 @@
       "question_en": "What is the 'services' section in a docker-compose.yaml file?",
       "options_es": [
         "La definición de cada contenedor a ejecutar con su configuración",
-        "Una lista de servicios HTTP disponibles públicamente sin excepciones ni variantes",
-        "Los puertos expuestos del host sin excepciones ni variantes",
+        "Una lista de servicios HTTP publicados en un balanceador externo al host",
+        "Los puertos expuestos del host, definidos por separado en el firewall",
         "Los scripts a ejecutar después de iniciar los contenedores"
       ],
       "options_en": [
         "The definition of each container to run with its configuration",
-        "A list of publicly available HTTP services without exceptions or variants",
-        "The exposed ports of the host without exceptions or variants",
+        "A list of HTTP services published on a load balancer outside the host",
+        "The exposed ports of the host, configured separately in the firewall",
         "Scripts to run after containers start"
       ],
       "correct_index": 0,
@@ -858,13 +858,13 @@
       "question_es": "¿Cuál es la sección 'volumes' en docker-compose?",
       "question_en": "What is the 'volumes' section in docker-compose?",
       "options_es": [
-        "Define archivos de registro del contenedor sin considerar otros factores relevantes",
+        "Define archivos de registro del contenedor, gestionados por el driver de logging activo",
         "Lista todos los archivos copiados al contenedor",
         "Define volúmenes nombrados reutilizables y su configuración",
         "Especifica directorios a excluir de la caché"
       ],
       "options_en": [
-        "Defines container log files without considering other relevant factors",
+        "Defines container log files, managed by the active logging driver",
         "Lists all files copied to the container",
         "Defines reusable named volumes and their configuration",
         "Specifies directories to exclude from cache"
@@ -927,13 +927,13 @@
       "question_es": "¿Qué es una red en docker-compose?",
       "question_en": "What is a network in docker-compose?",
       "options_es": [
-        "Una conexión directa a la red del host sin considerar otros factores relevantes",
+        "Una conexión directa a la red del host que expone todos los puertos sin NAT",
         "Una conexión virtual donde los servicios pueden comunicarse entre sí",
         "Una lista de puertos abiertos en el host",
         "Un archivo de configuración de firewall"
       ],
       "options_en": [
-        "A direct connection to the host network without considering other relevant factors",
+        "A direct connection to the host network that exposes every port without NAT",
         "A virtual connection where services can communicate with each other",
         "A list of open ports on the host",
         "A firewall configuration file"
@@ -996,15 +996,15 @@
       "question_es": "¿Cuál es la diferencia entre 'build' e 'image' en docker-compose?",
       "question_en": "What is the difference between 'build' and 'image' in docker-compose?",
       "options_es": [
-        "'image' es más rápido que 'build' sin considerar otros factores relevantes",
-        "No hay diferencia, son sinónimos según la documentación estándar del servicio",
-        "'build' es para desarrollo, 'image' para producción en cualquier escenario de implementación",
+        "'image' es más rápido que 'build' porque Compose lo reconstruye igualmente sin avisar",
+        "No hay diferencia, son sinónimos y Compose los intercambia automáticamente",
+        "'build' es para desarrollo, 'image' obliga a subir la imagen a un registro antes",
         "'build' construye la imagen desde un Dockerfile, 'image' usa una imagen existente"
       ],
       "options_en": [
-        "'image' is faster than 'build' without considering other relevant factors",
-        "There is no difference, they are synonymous according to standard service documentation",
-        "'build' is for development, 'image' for production in any implementation scenario",
+        "'image' is faster than 'build' because Compose still rebuilds it silently anyway",
+        "There is no difference, they are synonymous and Compose swaps them automatically",
+        "'build' is for development, 'image' requires pushing the image to a registry first",
         "'build' constructs the image from a Dockerfile, 'image' uses an existing image"
       ],
       "correct_index": 3,
@@ -1021,13 +1021,13 @@
       "options_es": [
         "Muestra los registros (stdout/stderr) de los servicios",
         "Borra los registros de los servicios",
-        "Comprime los registros antiguos en todos los casos posibles",
+        "Comprime los registros antiguos en un archivo .gz al reiniciar el servicio",
         "Guarda los registros en un archivo específico"
       ],
       "options_en": [
         "Shows the logs (stdout/stderr) of services",
         "Deletes service logs",
-        "Compresses old logs in all possible cases",
+        "Compresses old logs into a .gz file when the service restarts",
         "Saves logs to a specific file"
       ],
       "correct_index": 0,
@@ -1042,14 +1042,14 @@
       "question_es": "¿Qué es un registro Docker (Docker Registry)?",
       "question_en": "What is a Docker Registry?",
       "options_es": [
-        "Una lista de contenedores en ejecución de forma invariable y constante",
-        "Un archivo de configuración local de Docker sin considerar otros factores relevantes",
+        "Una lista de contenedores en ejecución, generada por 'docker ps' en el host local",
+        "Un archivo de configuración local de Docker guardado en ~/.docker/config.json",
         "Un protocolo de comunicación entre contenedores",
         "Un almacén centralizado donde se distribuyen y descargan imágenes Docker"
       ],
       "options_en": [
-        "A list of running containers invariably and constantly",
-        "A local Docker configuration file without considering other relevant factors",
+        "A list of running containers, generated by 'docker ps' on the local host",
+        "A local Docker configuration file stored at ~/.docker/config.json",
         "A communication protocol between containers",
         "A centralized storage where Docker images are distributed and downloaded"
       ],
@@ -1089,14 +1089,14 @@
       "question_en": "How do you specify the registry when working with Docker images?",
       "options_es": [
         "Usando el formato 'registro/usuario/nombre:etiqueta' en comandos como 'docker pull'",
-        "Mediante variables de entorno globales sin excepciones ni variantes",
-        "En el archivo docker-compose.yaml solamente independientemente del contexto aplicado",
+        "Mediante variables de entorno globales que Docker lee al iniciar el daemon",
+        "En el archivo docker-compose.yaml solamente, nunca en la línea de comandos",
         "En el archivo de configuración de Docker daemon"
       ],
       "options_en": [
         "Using the format 'registry/user/name:tag' in commands like 'docker pull'",
-        "Through global environment variables without exceptions or variants",
-        "Only in the docker-compose.yaml file regardless of the applied context",
+        "Through global environment variables Docker reads when the daemon starts",
+        "Only in the docker-compose.yaml file, never on the command line",
         "In the Docker daemon configuration file"
       ],
       "correct_index": 0,
@@ -1114,13 +1114,13 @@
         "Activar el modo administrador en Docker",
         "Conectarse a un contenedor Docker",
         "Iniciar sesión en un registro Docker para pushear imágenes privadas",
-        "Verificar el acceso al host en cualquier escenario de implementación"
+        "Verificar el acceso al host con un ping SSH al daemon remoto"
       ],
       "options_en": [
         "Activate admin mode in Docker",
         "Connect to a Docker container",
         "Log in to a Docker registry to push private images",
-        "Verify access to the host in any implementation scenario"
+        "Verify host access with an SSH ping to the remote daemon"
       ],
       "correct_index": 2,
       "explanation_es": "'docker login' autentica con un registro Docker, típicamente Docker Hub o un registro privado. Permite pushear y pullear imágenes privadas.",
@@ -1159,13 +1159,13 @@
       "options_es": [
         "Una imagen que está respaldada por una garantía oficial",
         "Una imagen que cualquier usuario puede descargar sin autenticación",
-        "Una imagen que solo puedes usar si pagas sin excepciones ni variantes",
+        "Una imagen que solo puedes usar si pagas una licencia mensual a su autor",
         "Una imagen creada por Docker Inc exclusivamente"
       ],
       "options_en": [
         "An image that is backed by an official guarantee",
         "An image that any user can download without authentication",
-        "An image you can only use if you pay without exceptions or variants",
+        "An image you can only use if you pay a monthly license to its author",
         "An image created exclusively by Docker Inc"
       ],
       "correct_index": 1,
@@ -1205,13 +1205,13 @@
       "options_es": [
         "Usando 'docker tag imagen registro/usuario/nombre:etiqueta'",
         "Mediante el daemon de Docker en settings.json",
-        "Usando 'docker rename' en el contenedor según la documentación estándar del servicio",
+        "Usando 'docker rename' en el contenedor, que solo cambia el nombre local",
         "Editando el nombre en el archivo docker-compose.yaml"
       ],
       "options_en": [
         "Using 'docker tag image registry/user/name:tag'",
         "Through the Docker daemon in settings.json",
-        "Using 'docker rename' on the container according to standard service documentation",
+        "Using 'docker rename' on the container, which changes only the local name",
         "Editing the name in the docker-compose.yaml file"
       ],
       "correct_index": 0,
@@ -1226,13 +1226,13 @@
       "question_es": "¿Qué es un registro privado en Docker?",
       "question_en": "What is a private registry in Docker?",
       "options_es": [
-        "Un registro que no tiene conexión a Internet sin considerar otros factores relevantes",
+        "Un registro que no tiene conexión a Internet, aislado dentro de una VPN corporativa",
         "Un registro que solo puede usarse en redes internas",
         "Un registro que se ejecuta en tu máquina local",
         "Un registro que solo ciertos usuarios autorizados pueden acceder"
       ],
       "options_en": [
-        "A registry with no Internet connection without considering other relevant factors",
+        "A registry with no Internet connection, isolated inside a corporate VPN",
         "A registry that can only be used on internal networks",
         "A registry that runs on your local machine",
         "A registry that only authorized users can access"
@@ -1295,16 +1295,16 @@
       "question_es": "¿Cuál es la diferencia entre una imagen 'official' y una 'community' en Docker Hub?",
       "question_en": "What is the difference between an 'official' and a 'community' image on Docker Hub?",
       "options_es": [
-        "No hay diferencia técnica, solo en popularidad independientemente del contexto aplicado",
+        "No hay diferencia técnica, solo cambia el badge que muestra Docker Hub en el listado",
         "Las imágenes 'official' son mantenidas por Docker/proveedores, las 'community' por usuarios",
-        "Las 'official' requieren pago, las 'community' son gratuitas en todos los casos posibles",
-        "Las 'official' no pueden tener vulnerabilidades independientemente del contexto aplicado"
+        "Las 'official' requieren pago mensual, las 'community' son siempre gratuitas",
+        "Las 'official' no pueden tener vulnerabilidades porque Docker las escanea antes de publicarlas"
       ],
       "options_en": [
-        "There is no technical difference, only in popularity regardless of the applied context",
+        "There is no technical difference, only the badge Docker Hub shows in the listing",
         "'Official' images are maintained by Docker/vendors, 'community' by users",
-        "'Official' requires payment, 'community' is free in all possible cases",
-        "'Official' images cannot have vulnerabilities regardless of the applied context"
+        "'Official' requires a monthly fee, 'community' is always free",
+        "'Official' images cannot have vulnerabilities because Docker scans them before publishing"
       ],
       "correct_index": 1,
       "explanation_es": "Las imágenes oficiales son verificadas y mantenidas por Docker o los proveedores del software. Las community son mantenidas por usuarios y pueden variar en calidad y seguridad.",
@@ -1319,14 +1319,14 @@
       "question_en": "What is a 'Docker registry pull-through cache'?",
       "options_es": [
         "Un registro que bloquea descargas de imágenes no autorizadas",
-        "Un filtro que elimina imágenes malware sin excepciones ni variantes",
-        "Un sistema de caché en la nube para imágenes sin excepciones ni variantes",
+        "Un filtro que elimina imágenes con malware detectado por firma antivirus",
+        "Un sistema de caché en la nube que replica imágenes entre varias regiones geográficas",
         "Un cache local que reduce la latencia al descargar imágenes repetidas"
       ],
       "options_en": [
         "A registry that blocks downloads of unauthorized images",
-        "A filter that removes malware images without exceptions or variants",
-        "A cloud-based caching system for images without exceptions or variants",
+        "A filter that removes images flagged by antivirus signature scanning",
+        "A cloud-based caching system that replicates images across several geographic regions",
         "A local cache that reduces latency when downloading repeated images"
       ],
       "correct_index": 3,
@@ -1364,13 +1364,13 @@
       "question_es": "¿Qué sucede cuando ejecutas 'docker pull' en una imagen que ya tienes localmente?",
       "question_en": "What happens when you run 'docker pull' on an image you already have locally?",
       "options_es": [
-        "Se crea una copia con un nombre diferente en todos los casos posibles",
+        "Se crea una copia con un nombre diferente, añadiendo un sufijo de fecha",
         "Se descarga una nueva copia, reemplazando la local",
         "Docker advierte que ya existe y no hace nada",
         "Se verifica si hay actualizaciones y solo descarga las capas nuevas"
       ],
       "options_en": [
-        "A copy is created with a different name in all possible cases",
+        "A copy is created with a different name, adding a date suffix",
         "A new copy is downloaded, replacing the local one",
         "Docker warns that it already exists and does nothing",
         "It checks for updates and only downloads new layers"
