@@ -138,8 +138,14 @@ function mapApiUser(u: UserRead): UserProfile {
   };
 }
 
+/** El id del perfil de muestra antes de hidratar contra `/auth/me` y después
+ *  de `signOut()`. `App.tsx` lo usa para saber que la sesión real terminó,
+ *  en vez de la cookie `whetzy_logged_in` (invisible entre dominios en
+ *  producción — 30.9). */
+export const DEFAULT_USER_ID = 'demo-user';
+
 const defaultUser: UserProfile = {
-  id: 'demo-user',
+  id: DEFAULT_USER_ID,
   username: 'federico',
   displayName: 'Federico G.',
   avatarEmoji: '🧠',
