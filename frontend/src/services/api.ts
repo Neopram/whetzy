@@ -7,19 +7,46 @@
  *  está reiniciando» (502, hay que esperar). `status` es `null` cuando la
  *  petición ni siquiera llegó a salir.
  */
+/** Forma del `detail` del 429 de cupo Free (`content_quota.quota_detail`, 39.4/39.34). */
+export interface QuotaErrorDetail {
+  code: 'free_daily_quota';
+  kind: 'questions' | 'lessons';
+  limit: number;
+  resets_at: string;
+}
+
 export class ApiError extends Error {
   readonly status: number | null;
+  /** El `detail` crudo del backend — string en la mayoría de errores, o un
+   *  objeto estructurado como `QuotaErrorDetail` para el cupo Free. `message`
+   *  siempre queda como una cadena comparable (el `code` cuando `detail` es
+   *  un objeto), así que el patrón `err.message === 'tutor_daily_limit'` que
+   *  ya usa WhyButton.tsx sigue funcionando sin cambios. */
+  readonly detail: unknown;
 
-  constructor(message: string, status: number | null) {
+  constructor(message: string, status: number | null, detail?: unknown) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
+    this.detail = detail;
   }
 
   /** Fallo de red o servidor caído: reintentar tiene sentido. */
   get esTransitorio(): boolean {
     return this.status === null || this.status >= 500;
   }
+}
+
+/** True si este error es el 429 del cupo diario Free (39.4/39.34), con el
+ *  `detail` estructurado (kind, limit, resets_at) ya validado. */
+export function isQuotaError(err: unknown): err is ApiError & { detail: QuotaErrorDetail } {
+  return (
+    err instanceof ApiError &&
+    err.status === 429 &&
+    typeof err.detail === 'object' &&
+    err.detail !== null &&
+    (err.detail as { code?: unknown }).code === 'free_daily_quota'
+  );
 }
 
 const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
@@ -107,8 +134,19 @@ async function request<T>(path: string, options: RequestInit = {}, retry = true)
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    const detail = typeof body.detail === 'string' ? body.detail : `HTTP ${res.status}`;
-    throw new ApiError(detail, res.status);
+    const detail: unknown = body.detail;
+    // `detail` es casi siempre un string (FastAPI HTTPException), pero
+    // content_quota.py (39.4) lo manda como objeto {code, kind, limit,
+    // resets_at} para que la UI pueda construir el mensaje del cupo (39.34).
+    // Antes esta rama descartaba el objeto entero y dejaba `message` como
+    // "HTTP 429" sin ningún dato aprovechable.
+    const message =
+      typeof detail === 'string'
+        ? detail
+        : detail && typeof detail === 'object' && typeof (detail as { code?: unknown }).code === 'string'
+          ? (detail as { code: string }).code
+          : `HTTP ${res.status}`;
+    throw new ApiError(message, res.status, detail);
   }
 
   return res.json();

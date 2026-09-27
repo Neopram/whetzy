@@ -79,6 +79,54 @@ describe('api service — auth.login', () => {
   });
 });
 
+describe('api service — structured detail (ApiError.detail, isQuotaError, 39.34)', () => {
+  beforeEach(() => { clearLoggedInCookie(); localStorage.clear(); vi.resetModules(); });
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('preserves the structured quota detail instead of collapsing it to "HTTP 429"', async () => {
+    const quotaDetail = {
+      code: 'free_daily_quota',
+      kind: 'questions',
+      limit: 30,
+      resets_at: '2026-09-28T00:00:00+00:00',
+    };
+    vi.stubGlobal('fetch', makeFetch(429, { detail: quotaDetail }, false));
+    const { quiz, ApiError, isQuotaError } = await import('../services/api');
+    try {
+      await quiz.start('study');
+      expect.unreachable('should have thrown');
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError);
+      const apiErr = err as InstanceType<typeof ApiError>;
+      // message stays a matchable code, same pattern WhyButton.tsx already uses for tutor_daily_limit
+      expect(apiErr.message).toBe('free_daily_quota');
+      expect(apiErr.detail).toEqual(quotaDetail);
+      expect(isQuotaError(err)).toBe(true);
+      if (isQuotaError(err)) {
+        expect(err.detail.kind).toBe('questions');
+        expect(err.detail.resets_at).toBe('2026-09-28T00:00:00+00:00');
+      }
+    }
+  });
+
+  it('isQuotaError is false for a plain-string 429 detail (e.g. tutor_daily_limit)', async () => {
+    vi.stubGlobal('fetch', makeFetch(429, { detail: 'tutor_daily_limit' }, false));
+    const { quiz, isQuotaError } = await import('../services/api');
+    try {
+      await quiz.start('study');
+      expect.unreachable('should have thrown');
+    } catch (err) {
+      expect(isQuotaError(err)).toBe(false);
+    }
+  });
+
+  it('falls back to "HTTP <status>" when detail is missing entirely', async () => {
+    vi.stubGlobal('fetch', makeFetch(500, {}, false));
+    const { quiz } = await import('../services/api');
+    await expect(quiz.start('study')).rejects.toThrow('HTTP 500');
+  });
+});
+
 describe('api service — auth.register', () => {
   beforeEach(() => { clearLoggedInCookie(); localStorage.clear(); vi.resetModules(); });
   afterEach(() => vi.unstubAllGlobals());

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason } from '../services/api';
+import { quiz as quizApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason } from '../services/api';
 import { enqueue } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
@@ -113,7 +113,19 @@ export function QuizScreen() {
       })
       .catch((e) => {
         if (cancelled) return;
-        setError(e instanceof Error ? e.message : 'Error');
+        // Free-tier daily quota (39.4/39.34): a friendly message with the reset
+        // time, not the generic "HTTP 429" the request() layer used to collapse
+        // this structured detail into.
+        if (isQuotaError(e)) {
+          setError(
+            t('quiz.quotaReachedQuestions', {
+              limit: e.detail.limit,
+              time: new Date(e.detail.resets_at).toLocaleTimeString(),
+            }),
+          );
+        } else {
+          setError(e instanceof Error ? e.message : 'Error');
+        }
         setLoading(false);
       });
     return () => { cancelled = true; };
