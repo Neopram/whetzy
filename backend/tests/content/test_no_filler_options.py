@@ -64,7 +64,6 @@ BASELINE = {
     "track16_algoritmos": 1,
     "track18_docker_k8s": 964,
     "track19_iac_cicd": 761,
-    "track20_data_engineering": 239,
     "track21_data_science": 776,
     "track22_azure": 430,
     "track23_gcp": 773,
