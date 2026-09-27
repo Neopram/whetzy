@@ -1181,6 +1181,37 @@ dormir con "no pidas permiso, dale todo allow". PR #34 sigue abierto (borrador) 
   encoger. Falta reescribirlas en su sitio.
 - Ledger: 12 filas DONE estables de la serie 39 movidas a `docs/archive/LEDGER_HISTORY.md` §M
   (guarda de tamaño; el archivo llegó al 97 % del límite de 61.440 bytes).
+- **39.28 cerrada del todo**: tracks 23 (GCP) y 27 (NoSQL) a 0 coletillas (`7912cff`,
+  `68df5ab`) — los 10 tracks del alcance en 0. Al quitar las coletillas, la guarda de
+  sesgo de longitud (`question_diversity.py`, techo 40 % sobre el track entero, no por
+  parche) subió a 44-47 % en ambos: se alargó la opción falsa más corta con detalle
+  técnico concreto (GKE/VPC/KMS/BigQuery/Vertex AI en 23; Redis/MongoDB en 27) hasta
+  33 % y 37 %. Dos coletillas residuales se colaron igual («…que MongoDB aplica por
+  defecto», «…como el modo AOF everysec de Redis por defecto») y las cazó el propio
+  `test_no_filler_options.py` al bajar el `BASELINE` a 0.
+- **39.37, primeros 20/409**: `mod2701` (track27) tenía una tercera variante de relleno
+  de generador que `audit_ai_traces.py` no veía todavía («explicación detallada
+  para…», no solo «explicación para…»): 20 preguntas de CAP/BASE/consistencia eventual
+  con explicaciones reescritas de verdad (MongoDB es CP, verificado contra su propia
+  documentación de replica sets). Quedan 389: track20 `mod2003`-`mod2005` (plantilla en
+  enunciado, opciones, clave **y** explicación, no solo la explicación) y track21
+  `mod2102`-`mod2105`.
+- **Pregunta del dueño (read-only) → 30.9 y 32.4**: «¿por qué las lecciones no aparecen
+  antes que las preguntas? ¿por qué el login con usuario de Railway manda a la
+  landing?». Segunda pregunta: bug real, dos causas apiladas — `SameSite=Lax` en
+  cookies cross-site (`whetzy.com` en Cloudflare Pages contra
+  `api-production-9751.up.railway.app` en Railway son dominios distintos; el
+  navegador descarta esos cookies en los `fetch()` de `services/api.ts`) y `App.tsx`
+  decidiendo el estado inicial con un cookie host-only invisible en `whetzy.com`
+  pasara lo que pasara con SameSite. Al diseñar el fix salió un segundo bug: `logout()`
+  del frontend no llamaba nunca a `/auth/logout`. Arreglado (`395e8a1`, verificador
+  adversario CONFIRMADA sin fallo encontrado): `SameSite=None`+`Secure` solo en
+  producción; `App.tsx` siempre pregunta a `/auth/me`; `logout()` revoca la sesión de
+  verdad. Sin verificar contra Railway/Cloudflare en producción, solo local (backend
+  42 tests, mypy --strict limpio, frontend 251/251, build con prerender OK). Primera
+  pregunta: no es un bug, `TracksScreen.tsx` nunca exigió la lección — «Aprender» y
+  «Practicar» son botones independientes; queda como decisión de producto en 32.4,
+  pendiente del dueño.
 
 **Lo aprendido** (además de lo de la sesión anterior):
 - El primer intento de archivar una fila cortó un `` `código` `` a mitad y dejó una comilla
