@@ -56,6 +56,9 @@ KNOWN_PLACEHOLDERS = {
     "ejecuta el código paso a paso.",
     "execute the code step by step.",
 }
+# Plantilla que cambia en cada pregunta y por eso no la ve el umbral de repetidas: «Explicación
+# para ¿Desventajas PCA?» (356 preguntas en track20/21, hallado el 2026-09-27, 39.37).
+TEMPLATE_PREFIX = re.compile(r"^(?:explicación para|explanation for)\b")
 TOOL_MARKUP = re.compile(r"</?(?:invoke|parameter|function_calls|antml:[a-z_]+)\b")
 ASSISTANT_VOICE = re.compile(
     r"\b(?:as an ai\b|certainly!|i hope this helps|como modelo de lenguaje|aquí tienes (?:la|el|una|un)\b)",
@@ -104,7 +107,7 @@ def traces(files: list[Path] | None = None) -> dict[str, Counter[str]]:
         for it in items:
             for f in EXPLANATION_FIELDS:
                 v = (it.get(f) or "").strip().lower()
-                if v and (v in KNOWN_PLACEHOLDERS or freq[v] >= REPEAT_LIMIT):
+                if v and (v in KNOWN_PLACEHOLDERS or freq[v] >= REPEAT_LIMIT or TEMPLATE_PREFIX.match(v)):
                     c["explicacion_plantilla"] += 1
             for s in _strings(it):
                 if TOOL_MARKUP.search(s):

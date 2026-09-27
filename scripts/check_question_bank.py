@@ -49,6 +49,28 @@ EXEC_NEEDS_CODE = {"fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
 PLACEHOLDER_STEM = re.compile(r"^\s*(pregunta (de|para|sobre)|question (for|about|on)) sk\d+", re.I)
 PLACEHOLDER_EXPLANATIONS = {"explicacion correcta", "explicación correcta", "correct explanation"}
 PLACEHOLDER_OPTIONS = [list("ABCD"), list("abcd")]
+# Segunda forma, hallada el 2026-09-27 (39.37): opciones «Opción C 1», «Snowflake A 1» y
+# explicaciones «Respuesta para pregunta 1» / «Snowflake answer 6» en track20 mod2003-2005.
+PLACEHOLDER_NUMBERED_OPTION = re.compile(r"^(?:\S+ )?[A-D] \d+$")
+PLACEHOLDER_ANSWER = re.compile(r"^(?:\S+ )?(?:respuesta|answer)\b.{0,25}\b\d+\.?$", re.IGNORECASE)
+# Relleno conocido que sigue en el banco a la espera de reescribirse en su sitio (39.37).
+# Solo puede encoger: un id nuevo de relleno es un fallo, y uno de la lista que ya no es
+# relleno hay que quitarlo (test_sin_relleno.py).
+PLACEHOLDER_KNOWN = Path(__file__).resolve().parent / "placeholder_known.json"
+
+
+def is_placeholder(q: dict) -> bool:
+    """Una pregunta de relleno de generador, no una pregunta (37.14, 39.37)."""
+    opts = [str(o).strip() for o in (q.get("options_es") or [])]
+    expl = [(q.get(f) or "").strip() for f in ("explanation_es", "explanation_en")]
+    return bool(
+        PLACEHOLDER_STEM.match((q.get("question_es") or "").strip())
+        or PLACEHOLDER_STEM.match((q.get("question_en") or "").strip())
+        or opts in PLACEHOLDER_OPTIONS
+        or (len(opts) >= 3 and sum(bool(PLACEHOLDER_NUMBERED_OPTION.match(o)) for o in opts) >= 3)
+        or any(e.lower() in PLACEHOLDER_EXPLANATIONS for e in expl)
+        or any(PLACEHOLDER_ANSWER.match(e) for e in expl)
+    )
 
 # --- El tipo de pregunta es un conjunto cerrado -------------------------
 #
@@ -306,6 +328,8 @@ def main() -> int:
                 f"Barajar las opciones de la misma pregunta no son preguntas nuevas"
             )
 
+    known_placeholders = set(json.loads(PLACEHOLDER_KNOWN.read_text(encoding="utf-8")))
+    known_seen = 0
     for path, q in items:
         qid = q.get("id", "<no id>")
         stem_es = (q.get("question_es") or "").strip()
@@ -318,14 +342,11 @@ def main() -> int:
                 f"{path.name} {qid}: question_es y question_en son identicas - sin traducir"
             )
 
-        placeholder = (
-            PLACEHOLDER_STEM.match(stem_es) or PLACEHOLDER_STEM.match(stem_en)
-            or [str(o).strip() for o in (q.get("options_es") or [])] in PLACEHOLDER_OPTIONS
-            or (q.get("explanation_es") or "").strip().lower() in PLACEHOLDER_EXPLANATIONS
-            or (q.get("explanation_en") or "").strip().lower() in PLACEHOLDER_EXPLANATIONS
-        )
-        if placeholder:
-            problems.append(f"{path.name} {qid}: relleno de generador, no una pregunta ({stem_es[:40]!r})")
+        if is_placeholder(q):
+            if qid in known_placeholders:
+                known_seen += 1
+            else:
+                problems.append(f"{path.name} {qid}: relleno de generador, no una pregunta ({stem_es[:40]!r})")
 
         # Un ejecutable sin codigo no se puede ejecutar: o lleva un bloque ``` en
         # el enunciado (fill_blank_exec, fix_bug) o trae code_es/code_en
@@ -573,6 +594,11 @@ def main() -> int:
     # Warnings are real findings that this tool is the wrong place to fail on:
     # they need authoring work, not a mechanical fix, so blocking CI on them
     # would just teach people to silence the tool.
+    if known_seen:
+        warnings.append(
+            f"{known_seen} preguntas de relleno conocidas siguen en el banco "
+            f"({PLACEHOLDER_KNOWN.name}, 39.37): reescribirlas en su sitio, con los mismos ids"
+        )
     for w in warnings:
         print(f"\n  WARN  {w}")
 
