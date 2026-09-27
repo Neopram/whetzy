@@ -148,15 +148,16 @@ Cada `DONE` pasa antes por el **verificador adversario** de `PROTOCOLO_VERIFICAC
 ## MODELOS
 
 El hilo principal corre en el modelo que fije `settings.json` (Sonnet 4.6). No lo
-cambies desde una sesión. **Opus y Fable están prohibidos en sesiones autónomas**
+cambies desde una sesión. Política vigente del dueño: **ADR-52** (2026-09-27; resumen en
+`CLAUDE.md`, «Modelos»). **Opus y Fable están prohibidos en sesiones autónomas**
 (ADR-14, propuesta del dueño 2026-09-18: cupo semanal y presupuesto incierto; ninguna
 tarea del backlog es arquitectura irreversible). Tú decides el modelo de cada subagente:
 
 | Modelo | Para | Cómo |
 |---|---|---|
-| **Haiku** (solo lectura) | Inventarios, greps masivos, leer 20 archivos, diffs doc↔código, verificación adversaria de tareas que **no** son contenido (`PROTOCOLO_VERIFICACION.md` §7). Nunca escribe contenido que ve el alumno (enmienda a ADR-50, 2026-09-26) | `Agent` + `model: "haiku"` |
-| **Sonnet** | **Autoría, revisión y corrección de contenido** (lecciones, preguntas, distractores, explicaciones, revisión adversaria de contenido), siempre detrás de la puerta de `CATALOGO_MAESTRO.md` §7 y de `scripts/content_qa/`; y como worker si la tarea escribe en la lista de ficheros de riesgo del protocolo §2 (core, auth/oauth, billing, entitlements, engine, alembic, main, api.ts, App.tsx, `legal/`) | `Agent` + `model: "sonnet"`; bloques grandes con `Workflow` |
-| ~~Opus~~ / ~~Fable~~ | — | **No en sesiones programadas.** Si crees que hace falta, es `HUMAN-BLOCKED`. Excepción (ADR-50): en una sesión **arrancada por el dueño**, el hilo principal es Opus 5.5 (effort high); los subagentes siguen siendo Haiku/Sonnet y nunca Fable |
+| **Haiku 4.5** | Inventarios, greps masivos, leer 20 archivos, diffs doc↔código, verificación adversaria de tareas que **no** son contenido (`PROTOCOLO_VERIFICACION.md` §7); y **escritor de autoría masiva** de contenido en `Workflow` (ADR-52), nunca sin un revisor Sonnet 5 detrás | `Agent`/`Workflow` + `model: "haiku"` |
+| **Sonnet 5** | **Revisión adversaria completa y corrección de contenido** (lecciones, preguntas, distractores, explicaciones), siempre detrás de la puerta de `CATALOGO_MAESTRO.md` §7 y de `scripts/content_qa/`; y como worker si la tarea escribe en la lista de ficheros de riesgo del protocolo §2 (core, auth/oauth, billing, entitlements, engine, alembic, main, api.ts, App.tsx, `legal/`) | `Agent` + `model: "sonnet"`; bloques grandes con `Workflow` |
+| ~~Opus 4.x~~ / ~~Fable~~ | — | **Nunca** (ADR-52). Si crees que hace falta, es `HUMAN-BLOCKED`. En una sesión **arrancada por el dueño**, el hilo principal es Sonnet 5 (ADR-52, sustituye «Opus 5.5» de ADR-50) |
 
 **Dieta de contexto (ADR-14):** lee `AUTONOMOUS_STATE.md` **por secciones** (`## 0`,
 `## 1`, la serie abierta de menor PRI, `## 3`, últimas 3 filas de `## 6`), nunca entero;
@@ -305,9 +306,9 @@ Agent({
 })
 ```
 
-- **Máximo 3 workers Sonnet simultáneos** con `Agent`. Autoría de contenido: Sonnet
-  sobre ficheros disjuntos en un `Workflow` de menos de 10 agentes (escritor, revisor
-  distinto y corrector) — y el bloque entero pasa la puerta de calidad
+- **Máximo 3 workers Sonnet simultáneos** con `Agent`. Autoría de contenido: escritor
+  Haiku 4.5, revisor y corrector Sonnet 5 (ADR-52) sobre ficheros disjuntos en un
+  `Workflow` de menos de 10 agentes — y el bloque entero pasa la puerta de calidad
   (`CATALOGO_MAESTRO.md` §7) y `scripts/content_qa/` antes de un solo commit
 - Cada worker toca **solo** los archivos de su tarea; la disjunción la garantiza
   el ledger. Si dudas, no paralelices

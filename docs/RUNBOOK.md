@@ -107,9 +107,9 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 
 **Proceso por lote**, sin excepciones:
 
-1. **Escritor** Sonnet por fichero (o 10 lecciones) que escribe solo en el scratchpad, nunca en el repo.
-2. **Revisor** Sonnet distinto que no escribe y devuelve problemas con la corrección.
-3. **Corrector** Sonnet que aplica la revisión y vuelve a validar.
+1. **Escritor** Haiku 4.5 (ADR-52; hasta el 2026-09-26, Sonnet) por fichero (o 10 lecciones) que escribe solo en el scratchpad, nunca en el repo.
+2. **Revisor** Sonnet 5 distinto, que revisa **todas** las piezas, que no escribe y devuelve problemas con la corrección.
+3. **Corrector** Sonnet 5 que aplica la revisión y vuelve a validar.
 4. **Comprobación propia** antes de copiar al repo:
    - `validate_lessons.py` en OK;
    - `check_key_drift.py` y `check_expl_key.py` sin sospechosos sin explicar. Son sospechas, no veredictos: se leen una a una;
@@ -120,7 +120,7 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 
 **Fallos observados, cada uno con su defensa:**
 
-- **Haiku** escribió lecciones con relleno sin sentido y errores técnicos (7 de 10 en el piloto de track28). Para autoría y revisión se usa Sonnet (enmienda a ADR-50).
+- **Haiku** escribió lecciones con relleno sin sentido y errores técnicos (7 de 10 en el piloto de track28). Por eso la enmienda a ADR-50 pasó la autoría a Sonnet; ADR-52 (2026-09-27, dueño) la devuelve a Haiku con revisión completa de Sonnet 5 y un piloto de 10 ítems: más de 3 con `blocker`/`major` para el bloque y lo decide el dueño.
 - **El reescritor movió la clave** a otra ranura (track28, track29, `mod3002` entero) y dijo «todo correcto». Defensa: `check_key_drift.py`. Si una posición del repo rota 0,1,2,3…, `rebalance_positions.py`.
 - **Los agentes inventan URLs** (404 en las lecciones NoSQL de track27) y copian datos personales del contexto (el correo del dueño en `l260101`). Defensas: `check_urls.py` y `test_no_personal_data.py`. Los ejemplos usan `ada@example.com`.
 - **No se toca un fichero que un workflow está leyendo**: un `git stash` a mitad cambió la base de un agente y su salida mezcló dos versiones.

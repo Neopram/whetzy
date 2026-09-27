@@ -457,9 +457,9 @@ Ninguna autoría en masa entra en `master` sin pasar **las cinco**:
 5. **Sesgo de posición y opciones repetidas**: `check_question_bank.py` PASS
    (Haiku entrega el 100 % en la posición A si no se rebalancea).
 
-Modelo por tarea (enmienda a ADR-50, 2026-09-26): **autoría, revisión y corrección de
-contenido → Sonnet; lecturas e inventarios → Haiku; el hilo principal, el que fije
-`settings.json` o el que arranca el dueño**. Herramientas del lote: `scripts/content_qa/`. Un bloque que no pasa la puerta no
+Modelo por tarea (ADR-52, 2026-09-27): **autoría masiva → Haiku 4.5; revisión adversaria
+completa y corrección → Sonnet 5; lecturas e inventarios → Haiku 4.5; hilo interactivo →
+Sonnet 5; nunca Fable ni Opus 4.x**. Herramientas del lote: `scripts/content_qa/`. Un bloque que no pasa la puerta no
 existe: no se cuenta, no se anota, no se despliega.
 
 ---
@@ -520,8 +520,8 @@ social login web antes que nada — es lo que convierte y lo que las tiendas exi
 **19.7** biblioteca de fuentes libres (alimenta cada bloque de la 18), **19.4** y
 **19.5** cuando haya sesión interactiva para la captura.
 
-Cada bloque de contenido corre como **Workflow paralelo** (autoría Sonnet por
-fichero → revisor y corrector Sonnet → `scripts/content_qa/` → `pytest tests/content` →
+Cada bloque de contenido corre como **Workflow paralelo** (autoría Haiku 4.5 por
+fichero → revisor y corrector Sonnet 5, ADR-52 → `scripts/content_qa/` → `pytest tests/content` →
 `check_question_bank.py` → `check_docs.py` → commit). Un bloque = un commit
 verde. Nunca un track a medias en `master` otra vez.
 

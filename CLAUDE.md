@@ -57,15 +57,21 @@ qué hacer; el ledger lo sabe.
 
 ## Modelos
 
-Hilo principal: el que fije `settings.json` (Sonnet 4.6). **Sesiones autónomas programadas: sin
-Opus ni Fable** (ADR-14, propuesta del dueño 2026-09-18); **una sesión interactiva usa el
-modelo con el que el dueño la arranca** (ADR-47); **en esas sesiones el hilo es Opus 5.5 (effort high) y los subagentes Haiku 4.5 / Sonnet 5** (ADR-14 enmendada por ADR-50). Subagentes
-(enmienda a ADR-50 del 2026-09-26): **Sonnet** para todo lo que escribe o revisa contenido
-que ve el alumno — lecciones, preguntas, distractores, explicaciones y revisión adversaria,
-siempre con la puerta de calidad de `CATALOGO_MAESTRO.md` §7 y `scripts/content_qa/` — y
-para lo que escribe en la lista de ficheros de riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2;
-**Haiku solo** para lecturas, inventarios y diffs que no escriben nada. Nunca Fable; nunca
-Opus como subagente. Dieta de contexto: el ledger se lee por
+**Política del dueño del 2026-09-27 (ADR-52, sustituye la de ADR-50):**
+
+| Papel | Modelo |
+|---|---|
+| Hilo principal de una sesión interactiva | **Sonnet 5** (lo fija el dueño al arrancar) |
+| Autoría masiva de contenido (escritor en `Workflow`) | **Haiku 4.5** (+ Batch API para rellenos cuando exista clave: H.48) |
+| Revisor y corrector de calidad en `Workflow`; workers de la lista de riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2 | **Sonnet 5** |
+| Lecturas, inventarios, diffs | **Haiku 4.5** |
+| Sesiones autónomas programadas | workers **Haiku 4.5** (ADR-14); hilo, el de `settings.json` |
+| Fable (cualquier versión), Opus 4.x | **Nunca**, en ningún papel |
+
+Todo lo que escribe Haiku para el alumno pasa revisión adversaria **completa** de Sonnet 5, la
+puerta de `CATALOGO_MAESTRO.md` §7 y `scripts/content_qa/`. Primer bloque de Haiku: piloto de
+10 ítems; si más de 3 salen con `blocker`/`major`, se para y lo decide el dueño (ADR-52; el
+piloto de track28 del 2026-09-26 dio 7 de 10 malas). Dieta de contexto: el ledger se lee por
 secciones, nunca entero; `STATUS.md` y `archive/` no se leen. Bloques de contenido
 grandes: `Workflow` paralelo, un bloque = un commit verde. Cada `DONE` pasa por el
 verificador adversario (protocolo §7) antes de escribirse.

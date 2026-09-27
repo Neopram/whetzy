@@ -540,6 +540,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.44 | Terminar o quitar Firecrawl, Amplitude, Mailchimp y Lusha (a medio conectar) |
 | H.45 | Conectar redes (X, LinkedIn…) en Metricool/Typefully para que la distribución deje de ser solo borradores |
 | H.46 | ¿Monitor de uptime de Sentry para `/health`? (puede consumir cuota de pago) |
+| H.48 | Clave de API de Anthropic con gasto para un pipeline por **Batch API** de rellenos con Haiku 4.5 (ADR-52); hoy ningún código del repo llama a la API | Dueño |
 | H.47 | ¿Mantener el correo personal del dueño como contacto en la página pública `/evidence` (`EvidenceScreen.tsx:340`)? Por defecto (ADR-47) se deja y se propone un alias tipo `support@whetzy.com` | Dueño |
 
 ## 5. Bitácora de decisiones
