@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20260927_lesson_views` (43 migraciones) |
+| Alembic HEAD | `20260927_lesson_completions` (44 migraciones) |
 | Contenido | **10.989 preguntas** / 35 tracks / 723 skills / **723 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
@@ -375,7 +375,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 32.2 | **3** | A/B BKT contra DKT con el framework 24.14 (asignación estable por usuario) | BLOCKED (H.10) | DKT se adopta solo si AUC ≥… |
 | 32.3 | **2** | «¿Por qué esta pregunta?»: el scheduler devuelve sus razones (dominio, repaso… | **DONE** | **DONE** `d92e164` → §I |
-| 32.4 | **2** | **La lección no bloquea el quiz.** Pregunta del dueño 2026-09-27, verificada en `TracksScreen.tsx:363-380`: por módulo hay dos botones independientes, «📖 Aprender» (`startLesson`) y «Practicar/Reforzar» (`startQuiz`), sin ninguna comprobación entre ellos — se puede pulsar «Practicar» sin haber abierto nunca la lección. No es un bug de datos (las lecciones existen, 39.3 las llevó al listón); es que el flujo nunca las exige. Decisión de producto, no solo código: ¿el quiz se bloquea hasta ver la lección (riesgo: fricción/abandono en el primer módulo), se avisa sin bloquear, o se deja como está y se documenta como intencional (aprender explorando, sin orden fijo)? Pendiente del dueño | TODO | Decisión del dueño registrada aquí + (si aplica) implementación con test que falla si el quiz arranca sin `lesson_seen` para ese `skill_id` |
+| 32.4 | **2** | **La lección bloquea el quiz** (decisión del dueño 2026-09-27, tras el hallazgo de que `TracksScreen.tsx` no lo exigía) | **DONE** | **DONE** `b860e83` (2026-09-27), verificador adversario CONFIRMADA en 2ª ronda (1ª REFUTADA por un conteo de tests falso en el mensaje del commit — 165 dicho, 151 real; corregido, sin fallo de código): `LessonCompletion` (tabla nueva, independiente de `lesson_views`/39.4) + `lesson_gate.py` + filtro en `quiz._candidate_skill_ids` (`study`/fallback de `review`; `placement`/`exam` exentos) + `lesson_seen` en `/progress/curriculum` + `TracksScreen.tsx` deshabilita «Practicar» sin lección vista. 151 tests backend + 253 frontend, mypy/ruff/tsc/oxlint limpios |
 
 ### 33. Operación medible — SLO, restauración y offline idempotente (del plan del 2026-09-24; ídem)
 
