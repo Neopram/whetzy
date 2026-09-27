@@ -396,21 +396,22 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 30. Integridad del despliegue — incidente de login del 2026-09-24 (PRI 0)
 
-> **Estado:** `ABIERTA` — el código está en la rama `claude/trusting-franklin-2wwmmr` (PR https://github.com/Neopram/whetzy/pull/6); nada…
+> **Estado:** `ABIERTA` (parcialmente cerrada 2026-09-27) — PR #6 fusionado 2026-09-24. El fallo de login (30.0, 30.7, 30.8) está
+> **DONE**, reverificado en vivo hoy con `node scripts/check-deployed.mjs` → PASS. Quedan abiertas 30.2, 30.4, 30.5 (deuda de build/CI, no bloquean login).
 > **PRI:** 0. **Origen:** captura del dueño — `POST whetzy.com/auth/login` → **405**, pantalla «Incorrect email or password».
 > **Invariante de la serie:** un deploy del frontend no está hecho hasta que `node scripts/check-deployed.mjs` sale PASS contra…
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 30.0 | **0** | **Login roto en producción.** Medido 2026-09-24: el bundle servido… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
+| 30.0 | **0** | **Login roto en producción.** Medido 2026-09-24: el bundle servido… | **DONE** | **DONE** `b590b81` (2026-09-24), reverificado 2026-09-27 en vivo: `node scripts/check-deployed.mjs` → PASS contra `https://whetzy.com` (bundle habla con la API de Railway, `/api/*` en el frontend da 404) → §I |
 | 30.1 | **0** | **La landing en producción publica testimonios y cifras inventados.** El chunk `LandingScreen-*.js` servido hoy contiene… | **DONE** | **DONE** → §I |
 | 30.2 | **1** | **Se puede publicar sin puerta.** `ba686fc`, `50e73ea`, `46789fa`, `f8719b1`, `2efdfb7` y `8a0dce0` entraron en `master`… | | |
 | 30.3 | **1** | **Guarda de repo para la configuración de Pages.** Un test (en `pytest tests/content` o en el pre-push) que falle si… | **DONE** | **DONE** → §I |
 | 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **PARCIAL** | **PARCIAL** `394c660` → §I |
 | 30.5 | **2** | El script `build` ya no corre `tsc -b` (lo quitó `8a0dce0`,… | **PARCIAL** | **PARCIAL** `8a0dce0` (2026-09-24) → §I |
 | 30.6 | **1** | **La puerta local no puerta en Linux/macOS.** `.githooks/pre-push` está en git como `100644` (sin bit de ejecución): git… | **DONE** | **DONE** → §I |
-| 30.7 | **0** | **El mismo fallo que el login en cinco llamadas más.**… | **PARCIAL** | **PARCIAL** `4c63686` (2026-09-25) → §I |
-| 30.8 | **0** | **Producción arrancaba sin contenido y sin cuenta de dueño… | **PARCIAL** | **PARCIAL** `12ff838` (2026-09-22) → §I |
+| 30.7 | **0** | **El mismo fallo que el login en cinco llamadas más.**… | **DONE** | **DONE** `4c63686` (2026-09-25), reverificado 2026-09-27: bundle en producción sin llamadas al propio dominio del frontend → §I |
+| 30.8 | **0** | **Producción arrancaba sin contenido y sin cuenta de dueño… | **DONE** | **DONE** `12ff838` (2026-09-22) + `c5100e1` (arranque restaurado tras crash de `content_loader`), reverificado 2026-09-27: `GET /health` → 200 `healthy` en `api-production-9751.up.railway.app` → §I |
 
 ### 31. Fuente única de cifras, staging y migraciones con datos (del plan del 2026-09-24, cuyo fichero no está en el repo: estas filas son…
 
