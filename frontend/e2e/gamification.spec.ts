@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { test, expect } from '@playwright/test';
-import { registerUser, uniqueUsername } from './helpers';
+import { registerUser, markLessonSeen, uniqueUsername } from './helpers';
 
 /**
  * Gamificación de punta a punta (39.5): XP, racha, liga e insignia, con capturas.
@@ -60,6 +60,8 @@ test('gamificación: 10/10 deja XP, racha, liga e insignia visibles (39.5)', asy
   await registerUser(page, { username, displayName: 'Ada Lovelace' });
 
   const { skill, key } = pickSkill();
+  // 32.4 gates "study" mode on having viewed this skill's lesson first.
+  await markLessonSeen(page, skill);
   const start = await page.request.post('/api/v1/quiz/start', { data: { skill_id: skill, mode: 'study' } });
   expect(start.ok(), await start.text()).toBeTruthy();
   const body = await start.json();

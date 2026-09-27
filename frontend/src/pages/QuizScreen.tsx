@@ -109,7 +109,12 @@ export function QuizScreen() {
         setSelectionReason(res.selection_reason ?? null);
         questionStart.current = Date.now();
         setLoading(false);
-        if (!res.question) setError(t('quiz.noQuestions'));
+        // `question: null` is a normal (non-error) outcome the `!question`
+        // early return below already renders — it reads selection_reason to
+        // tell "needs_lesson" from any other empty pool. Setting `error`
+        // here used to short-circuit straight past that branch (the `error`
+        // early return comes first), so a fresh account always saw the
+        // generic "no questions" dead end instead of the lesson-gate CTA.
       })
       .catch((e) => {
         if (cancelled) return;
@@ -337,11 +342,34 @@ export function QuizScreen() {
     setScreen('profile');
   }, [setScreen]);
 
+  const handleGoToLesson = useCallback(() => {
+    resetQuiz();
+    setScreen('tracks');
+  }, [resetQuiz, setScreen]);
+
   // ── Early returns ──────────────────────────────────────────────────────
   if (loading) return <QuizLoader />;
   if (error) return <QuizError message={error} onClose={handleClose} />;
   if (summary) return <SessionSummary summary={summary} onClose={handleClose} />;
-  if (!question) return <QuizError message={t('quiz.noQuestions')} onClose={handleClose} />;
+  if (!question) {
+    // 32.4 gates "study"/"review" on having viewed the skill's lesson first
+    // (lesson_gate.py) and already tells the frontend why via
+    // selection_reason.pool — but until now nothing here read it, so a
+    // brand-new user hitting "ESTUDIAR AHORA" on Home (which starts a study
+    // session with no skill pinned) landed on a dead-end "no questions"
+    // screen instead of being pointed at a lesson.
+    if (selectionReason?.pool === 'needs_lesson') {
+      return (
+        <QuizError
+          message={t('quiz.needsLessonMessage')}
+          onClose={handleClose}
+          actionLabel={t('quiz.needsLessonAction')}
+          onAction={handleGoToLesson}
+        />
+      );
+    }
+    return <QuizError message={t('quiz.noQuestions')} onClose={handleClose} />;
+  }
 
   const qText = viewLang === 'es' ? question.question_es : question.question_en;
   const options = (viewLang === 'es' ? question.options_es : question.options_en) ?? [];
@@ -736,14 +764,27 @@ function QuizLoader() {
   );
 }
 
-function QuizError({ message, onClose }: { message: string; onClose: () => void }) {
+function QuizError({
+  message,
+  onClose,
+  actionLabel,
+  onAction,
+}: {
+  message: string;
+  onClose: () => void;
+  actionLabel?: string;
+  onAction?: () => void;
+}) {
   const { t } = useTranslation();
   return (
     <div className={styles.summary}>
       <span style={{ fontSize: '3rem' }}>🤔</span>
       <h1 className={styles.summaryTitle}>{t('quiz.noQuestionsAvail')}</h1>
       <p className={styles.summaryAccuracy}>{message}</p>
-      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: 'var(--le-space-xl)' }}>{t('back')}</button>
+      {actionLabel && onAction && (
+        <button className={styles.btnStudy} onClick={onAction} style={{ marginTop: 'var(--le-space-xl)' }}>{actionLabel}</button>
+      )}
+      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: actionLabel ? 'var(--le-space-sm)' : 'var(--le-space-xl)' }}>{t('back')}</button>
     </div>
   );
 }

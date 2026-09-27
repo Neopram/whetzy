@@ -74,9 +74,14 @@ test.describe('19.1 — OAuth test provider flow', () => {
   });
 
   test('OAuth error param is displayed and cleared', async ({ page }) => {
-    // Navigate with an oauth_error param (simulates backend redirect on error)
+    // Navigate with an oauth_error param (simulates backend redirect on error).
+    // domcontentloaded, not networkidle: on this root path (unlike /auth,
+    // used by the other tests in this file) networkidle never fired and the
+    // test hung to its 60s timeout — root cause not pinned down, but the
+    // assertions below already retry-wait for the error banner itself, so
+    // waiting for the DOM instead of network silence changes nothing they check.
     await page.goto('/?oauth_error=email_required');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // The error should be shown
     await expect(page.locator('[class*="error_"]')).toBeVisible({ timeout: 5_000 });
@@ -90,7 +95,7 @@ test.describe('19.1 — OAuth test provider flow', () => {
 
   test('unknown oauth_error shows raw value', async ({ page }) => {
     await page.goto('/?oauth_error=some_unknown_error');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     const errorText = await page.locator('[class*="error_"]').textContent();
     expect(errorText).toContain('some_unknown_error');
@@ -99,7 +104,7 @@ test.describe('19.1 — OAuth test provider flow', () => {
 
   test('provider_error shows connection error message', async ({ page }) => {
     await page.goto('/?oauth_error=provider_error');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     const errorText = await page.locator('[class*="error_"]').textContent();
     expect(errorText).toContain('proveedor');

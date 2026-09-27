@@ -1276,3 +1276,111 @@ del piloto Haiku). Cada lote revisado personalmente contra su lección antes de 
   saturando la CPU y ralentizando mi propio `pytest backend/tests/content` en
   primer plano. No se tocó el script esta sesión (fuera del alcance pedido); queda
   para quien revise `ci_local.sh` en detalle.
+
+## 2026-09-27, misma sesión de continuación — 39.25 investigado (no cerrado), 34.1 con entorno real
+
+**39.25 (AWS MLA-C01 → MLA-C02), investigación, sin tocar código todavía:** confirmado
+por `git log -p` que `content/curriculum/tracks.json` ya lleva el aviso de retiro en
+`name_es`/`name_en` de track43 desde `3959c14` (sesión anterior, 2026-09-26) — la mitad
+«mientras, el nombre lo avisa» del criterio ya estaba cumplida y el ledger no lo
+reflejaba. La otra mitad («migrado al blueprint MLA-C02 cuando AWS publique la guía»)
+seguía condicionada a que AWS publicara la guía nueva. **Verificado por `WebFetch` en
+vivo (2026-09-27) que ya está publicada**: beta MLA-C02 desde el 2026-09-29 (código
+ME1-C02), última fecha en inglés de MLA-C01 el 2026-09-28 (mañana), guía en
+`docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/`.
+Los 4 dominios nuevos (frente a los 4 de MLA-C01, que `tracks.json` sigue reflejando
+hoy): Data Preparation for ML and AI (28%), ML Model and Foundation Model (FM)
+Development (24%), Deployment and Orchestration of ML and AI Workflows (24%),
+Operating/Monitoring/Securing ML and AI Solutions (24%); examen 85 preguntas/170 min,
+50 puntuables + 15 sin puntuar (MLA-C01 en `tracks.json` hoy: 65 puntuables + 20 sin
+puntuar — otra cifra que migrar). El «qué hay de nuevo» de alto nivel: Bedrock/RAG,
+IA agéntica, foundation models/LLMs, IA responsable transversal. **No cerrado**: migrar
+de verdad exige no solo renombrar los 4 dominios y sus pesos en `certification`/
+`exam_domains`, sino re-etiquetar los 20 `sk4301xx`-`sk4301xx` existentes contra los
+dominios nuevos (el mapeo dominio↔skill de hoy es del blueprint viejo) y, para que el
+simulacro por dominio (18.1/24.7) no muestre dominios vacíos, autoría de banco nuevo
+que cubra el contenido que no existía en MLA-C01 (Bedrock, RAG, IA agéntica) — un
+esfuerzo de autoría del tamaño de 39.37, no un cambio de metadatos de una sesión. No
+se tocó `tracks.json`: escribir solo los nombres/pesos nuevos sin re-etiquetar los
+skills dejaría el simulacro y la readiness por dominio rotos (dominios que no
+encuentran preguntas), peor que dejarlo como está con el aviso en el nombre. Queda
+TODO con esta investigación ya hecha para no repetirla; 39.24 (Microsoft AI-900→AI-901)
+no se investigó todavía en esta sesión.
+
+**34.1 (pantallas restauradas), verificación en un entorno real por primera vez esta
+sesión:** el `PARCIAL` previo solo tenía la guarda estática (`cssModules.contract.test.ts`,
+0 clases sin definir) y un verificador de worktree aislado; nunca se había levantado la
+app de verdad. Este contenedor no tiene Docker corriendo (`dockerd` no está activo) pero
+sí Postgres 16 y Redis instalados sin él: se montó una base `learning_engine` local
+(`alembic upgrade head` limpio hasta `20260927_lesson_completions`, `content_loader`
+→ 35 tracks/10.989 preguntas, `bootstrap_owner`, `seed`), backend real en `:8000` y
+frontend real en `:5173`. `@playwright/test` 1.63 (el que fija el repo) espera
+`chromium_headless_shell-1243`, que este contenedor no trae — solo `chromium-1194`
+(el mencionado en la documentación del entorno) — así que la suite completa no corría
+en absoluto hasta apuntar `launchOptions.executablePath` a ese binario (config local,
+nunca commiteada). Con chromium real: **34 pasan, 9 rojas, 2 skipped** (duel×2,
+gamification 10/10, oauth×3, onboarding×2, quiz «10 preguntas de estudio»). Las 9 se
+diagnosticaron una por una, cada causa distinta de lo que parecía a simple vista:
+
+- **duel×2**: no es 32.4. El registro directo por API del oponente nunca mandaba
+  `age_confirmed` (COPPA, fila 19.11/21.3) — `age_confirmed: bool = False` por defecto en
+  `UserCreate`, así que el registro devolvía 400 antes de llegar a nada del duelo. Bug
+  del propio test, preexistente a esta sesión (el guardián de edad se añadió después de
+  escribir `duel.spec.ts` y nadie volvió a tocar ese fichero). Arreglado: `age_confirmed: true`
+  en los dos payloads.
+- **onboarding×2**: mismo defecto, otro sitio — los dos registros manuales de
+  `onboarding.spec.ts` (no pasan por el helper `registerUser`, que sí marca la casilla)
+  tampoco marcaban «Confirmo que tengo 13 años o más». Arreglado: `.check()` añadido a
+  los dos.
+- **gamification y quiz «10 preguntas de estudio»**: esta sí es 32.4, y sí es una
+  regresión real de esta sesión, no del test. El comentario del propio backend
+  (`quiz.py:366-369`) ya avisaba: «el frontend necesita distinguir sin preguntas de
+  faltó abrir la lección... sin esto pool se perdía en cuanto no había skill_id/question
+  que devolver» — el backend calcula y devuelve `selection_reason.pool: "needs_lesson"`
+  para exactamente este caso, pero nadie terminó de conectarlo. Dos huecos, uno en cada
+  extremo: (1) `QuizScreen.tsx` guardaba `selectionReason` en estado pero nunca lo leía
+  al decidir qué pantalla vacía mostrar — siempre el genérico «Sin preguntas
+  disponibles», sin CTA; (2) peor, el propio `useEffect` que arma la respuesta ponía
+  `error` a ese genérico en cuanto `question` salía `null`, y la rama `if (error)` va
+  ANTES que la rama `if (!question)` en los returns tempranos — así que aunque se
+  arreglara (1), la rama nueva nunca se alcanzaba, tapada por la vieja. Arreglado: (1)
+  `QuizScreen.tsx` ahora distingue `selection_reason.pool === 'needs_lesson'` y muestra
+  un CTA «Ir a las lecciones» (`handleGoToLesson` → `setScreen('tracks')`) en vez del
+  callejón sin salida; (2) se quitó el `setError` redundante del `.then()` — `error` era
+  y debe ser solo para fallos de red de verdad, el `.catch()` ya lo cubre. Claves i18n
+  nuevas ES/EN: `quiz.needsLessonMessage`, `quiz.needsLessonAction`,
+  `quiz.reason.needs_lesson` (esta última ya la pedía un badge existente que también
+  salía sin traducir). Los tests de `gamification.spec.ts`/`quiz.spec.ts` se arreglaron
+  aparte, marcando la lección vista antes de arrancar el quiz (`markLessonSeen`, helper
+  nuevo en `helpers.ts` — `GET /lessons/{skillId}`, el mismo efecto lateral que usa
+  `LessonScreen`), y `registerAndCompleteAQuiz` (compartido por ambos `duel.spec.ts`) lo
+  incorpora también. El de onboarding (título: «landing → first answered question in
+  <60s») se dejó **sin el atajo** a propósito — reescrito para seguir el camino real
+  post-32.4 (Home → «Sin preguntas» con el CTA nuevo → Tracks → expandir el módulo 1
+  (`openModule` empieza en `null`, no hay ninguno abierto por defecto) → «Aprender» →
+  lección → cerrar → Inicio → Estudiar ahora), validando el CTA nuevo de punta a punta
+  en vez de esconder el hueco que el propio test estaba señalando.
+- **oauth×3**: `page.waitForLoadState('networkidle')` sobre `/` (no sobre `/auth`, que sí
+  funcionaba) nunca resolvía — colgaba hasta el timeout de 60 s de la suite. Causa exacta
+  sin fijar; las aserciones de después ya esperan por su cuenta al elemento real, así que
+  se cambió a `domcontentloaded` en los tres sitios que fallaban (no en los que ya
+  pasaban, para no tocar lo que funciona) sin perder cobertura.
+
+Verificación final: full e2e (`playwright.local.config.ts`, 45 specs) **43 pasan, 2
+skipped, 0 rojas**; frontend `vitest run` **263/263**; `tsc -b` y `oxlint` de los
+ficheros tocados, limpios. Backend no se tocó en esta parte — el fix es enteramente
+frontend (`QuizScreen.tsx`, i18n) más los 5 e2e specs.
+
+Al pasear las 13 pantallas con capturas reales sí apareció un bug de estilo genuino que
+ninguna guarda anterior detectaba: `ForgotPasswordPage.tsx` importaba
+`AuthScreen.module.css` pero el `<input>` no llevaba ningún `className` (ni siquiera uno
+roto — directamente ninguno) y el botón «Volver» era estilo inline en vez de
+`styles.forgotLink`, así que salía sin marca, sin tarjeta, con controles nativos del
+navegador — el mismo defecto visual que 34.1 dice haber arreglado, pero en una pantalla
+que la guarda estática no puede ver (comprueba que `styles.x` apunte a una clase que
+existe, no que un elemento lleve `className` siquiera). Arreglado: input con
+`styles.field`/`styles.label`/`styles.input`, cabecera de marca (`styles.brand`) igual
+que `AuthScreen`, «Volver» con `styles.forgotLink`. Test nuevo
+`forgotPasswordPage.styled.test.tsx` (3 casos), mutado contra el `.tsx` original antes
+del arreglo → las 3 en rojo por `className` vacío; restaurado → verde. Suite de
+vitest completa tras el arreglo: **263/263**; `tsc -b` y `oxlint` del fichero, limpios.

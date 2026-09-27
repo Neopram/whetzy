@@ -35,8 +35,12 @@ export function ForgotPasswordPage({ onBack }: Props) {
   if (submitted) {
     return (
       <div className={styles.screen}>
-        <h2>Revisa tu correo</h2>
-        <p>Si {email} tiene una cuenta, te llegará un enlace para restablecer la contraseña.</p>
+        <div className={styles.brand}>
+          <h1 className={styles.brandName}>Revisa tu correo</h1>
+          <p className={styles.tagline}>
+            Si {email} tiene una cuenta, te llegará un enlace para restablecer la contraseña.
+          </p>
+        </div>
         <button className={styles.submit} onClick={onBack}>Volver</button>
       </div>
     );
@@ -44,12 +48,28 @@ export function ForgotPasswordPage({ onBack }: Props) {
 
   return (
     <div className={styles.screen}>
+      <div className={styles.brand}>
+        <h1 className={styles.brandName}>¿Olvidaste tu contraseña?</h1>
+        <p className={styles.tagline}>Te mandamos un enlace para restablecerla.</p>
+      </div>
+
       <form className={styles.form} onSubmit={handleSubmit}>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@correo.com" />
+        <label className={styles.field}>
+          <span className={styles.label}>Correo electrónico</span>
+          <input
+            className={styles.input}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="tu@correo.com"
+            autoComplete="email"
+            inputMode="email"
+          />
+        </label>
         {error && <p className={styles.error}>⚠️ {error}</p>}
         <button className={styles.submit} type="submit" disabled={loading}>{loading ? 'Cargando...' : 'Enviar'}</button>
       </form>
-      <button onClick={onBack} style={{ marginTop: '1rem', background: 'none', border: 'none', color: 'var(--le-brand)', cursor: 'pointer' }}>Volver</button>
+      <button type="button" className={styles.forgotLink} onClick={onBack}>Volver</button>
     </div>
   );
 }
