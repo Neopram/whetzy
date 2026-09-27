@@ -120,6 +120,7 @@ def _set_subscription(user: User, sub: dict[str, Any]) -> None:
     tier_map = _price_map()
     user.stripe_subscription_id = sub["id"]
     user.subscription_status = sub["status"]
+    user.subscription_provider = "stripe"
     user.is_premium = sub["status"] in ("active", "trialing")
 
     # Derive tier from first line item price

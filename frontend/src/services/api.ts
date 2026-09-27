@@ -1251,6 +1251,7 @@ export interface SubscriptionResponse {
   is_premium: boolean;
   subscription_status: string | null;
   subscription_tier: string | null;
+  subscription_provider: string | null; // "stripe" | "revenuecat" | null (17.14)
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
 }

@@ -8,12 +8,13 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from pydantic import BaseModel
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.user import User
-from app.services import stripe_service
+from app.services import revenuecat_service, stripe_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -32,6 +33,7 @@ class SubscriptionResponse(BaseModel):
     is_premium: bool
     subscription_status: str | None
     subscription_tier: str | None
+    subscription_provider: str | None  # "stripe" | "revenuecat" | None (17.14)
     stripe_customer_id: str | None
     stripe_subscription_id: str | None
 
@@ -96,7 +98,6 @@ async def stripe_webhook(
         if not customer_id:
             return {"received": True}
 
-        from sqlalchemy import select
         result = await db.execute(
             select(User).where(User.stripe_customer_id == customer_id)
         )
@@ -111,6 +112,48 @@ async def stripe_webhook(
     return {"received": True}
 
 
+@router.post("/revenuecat/webhook", status_code=status.HTTP_200_OK)
+async def revenuecat_webhook(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    authorization: str | None = Header(None),
+) -> dict[str, Any]:
+    """Receive and process RevenueCat webhook events (17.14 — mobile IAP).
+
+    RevenueCat calls this directly; authentication is the shared-secret
+    Authorization header configured in its dashboard, not a JWT — same
+    pattern as /billing/webhook's Stripe signature, different mechanism.
+    Off (503) until REVENUECAT_WEBHOOK_AUTHORIZATION is set — sandbox/dev
+    only until the owner activates live App Store/Play Store keys (H.2, H.3).
+    """
+    payload = await request.body()
+
+    try:
+        event = revenuecat_service.verify_webhook(payload, authorization)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
+    except ValueError as exc:
+        logger.warning("RevenueCat webhook rejected: %s", exc)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    event_type = event.get("type", "")
+    logger.info("RevenueCat webhook received: %s", event_type)
+
+    user_id = revenuecat_service.resolve_user_id(event)
+    if user_id is None:
+        return {"received": True}
+
+    user = await db.get(User, user_id)
+    if not user:
+        logger.warning("RevenueCat webhook: no user found for app_user_id %s", user_id)
+        return {"received": True}
+
+    revenuecat_service.apply_subscription_event(user, event)
+    await db.commit()
+
+    return {"received": True}
+
+
 @router.get("/subscription", response_model=SubscriptionResponse)
 async def get_subscription(
     user: User = Depends(get_current_user),
@@ -120,6 +163,7 @@ async def get_subscription(
         is_premium=user.is_premium,
         subscription_status=user.subscription_status,
         subscription_tier=user.subscription_tier,
+        subscription_provider=user.subscription_provider,
         stripe_customer_id=user.stripe_customer_id,
         stripe_subscription_id=user.stripe_subscription_id,
     )

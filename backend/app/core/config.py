@@ -232,6 +232,23 @@ class Settings(BaseSettings):
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"
 
+    # --- RevenueCat / in-app purchases (17.14) ------------------------------
+    # Mobile IAP (StoreKit / Google Play Billing) is the only checkout that
+    # works without a company (ADR-47, legal/h21-decision.md) — RevenueCat is
+    # the client SDK + webhook layer over both stores. Empty by default (no
+    # live keys): the mobile client shows no purchase UI and this webhook
+    # rejects every request until REVENUECAT_WEBHOOK_AUTHORIZATION is set.
+    #
+    # Auth: RevenueCat signs each webhook with the Authorization header value
+    # configured in its dashboard (not HMAC by default — verified live against
+    # revenuecat.com/docs/integrations/webhooks, 2026-09-27); the handler does
+    # a constant-time compare against this same value.
+    REVENUECAT_WEBHOOK_AUTHORIZATION: str = ""
+    # RevenueCat "entitlement identifier" (configured in its dashboard, not a
+    # store product id) → Whetzy tier, same shape as STRIPE_PRICE_* → tier.
+    REVENUECAT_ENTITLEMENT_PLUS: str = ""   # "Pro" ($14.99/mes, ADR-41)
+    REVENUECAT_ENTITLEMENT_PRO: str = ""    # "Pro Max" ($19.99/mes, ADR-41)
+
     # --- Paddle (H.29 - Merchant of Record) ----------------------------------
     PADDLE_API_KEY: str = ""                # pad_live_... or pad_sand_...
     PADDLE_WEBHOOK_SECRET: str = ""         # Paddle webhook signing secret

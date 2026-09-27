@@ -107,7 +107,7 @@
 | 17.6 | **2** | **UI de clase mundial, medida** | TODO | → LEDGER_HISTORY.md §E |
 | 17.7 | **4** | **Vídeos explicativos generados desde código** | TODO | → LEDGER_HISTORY.md §E |
 | 17.10 | **3** | **Re-puntuar frente a la competencia con lo anterior hecho** | TODO | → LEDGER_HISTORY.md §E |
-| 17.14 | **1** | **Compras dentro de la app (la antigua 7.6, sin fila desde hace meses; `legal/h21-decision.md:58`)**: RevenueCat +… | | → §I (criterio archivado por 20.10) |
+| 17.14 | **1** | **Compras dentro de la app (la antigua 7.6, sin fila desde hace meses; `legal/h21-decision.md:58`)**: RevenueCat +… | **PARCIAL** | **PARCIAL** (2026-09-27): mitad backend — `POST /billing/revenuecat/webhook` (sandbox, auth por Authorization header verificado en vivo contra la doc de RevenueCat), mismos campos de entitlement que Stripe, `subscription_provider` nuevo. Falta: SDK/UI de compra nativa (Capacitor) — activación real HUMAN-BLOCKED (H.2, H.3) → §I |
 
 **Verdad que condiciona toda la serie:** H.11 cerrado 2026-09-18 (frontend desplegado). Hasta que el dueño cierre **H.SEED** (cargar el…
 
@@ -332,7 +332,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.1 | **1** | **Servicio de créditos** `services/economy/credits.py`: abono con lote y… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json`… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I |
-| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **DONE** | **DONE**: AntiFraudService wired into economy endpoints — `check_email_verified` + `is_disposable_email` guard on promo redeem; full `validate_activation` pipeline on referral activate (email, disposable, self-referral, device/IP, velocity); 77 tests pass → §I |
+| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **DONE** | **DONE**: `AntiFraudService` en promo/referidos (email, disposable, self-referral, device/IP, velocity); 77 tests → §I |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | **DONE**: 3 endpoints — `/economy/credits` con summary (emitted/spent/expired, sink_source_ratio, inflation_alert, by_reason) + rows; `/economy/referrals`; `/economy/k-factor` → §I |
 | 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | **DONE** — `reactivation_check` job handler: consulta `User.last_active < 14d`, genera código 72h vía `PromoCodeService`, envía email ES/EN con plantilla `reactivation` | |
 | 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | **DONE** | **DONE**: WalletScreen con balance card, earn/spend lists, referral code + clipboard, promo redeem form; economy API methods; 22 i18n keys ES/EN; lazy route + profile nav → `66925f8` |
