@@ -1238,3 +1238,41 @@ dormir con "no pidas permiso, dale todo allow". PR #34 sigue abierto (borrador) 
   real quedó enterrado en un turno anterior de su propia transcripción y hubo que
   extraerlo a mano del `.output`. Nunca te fíes del resumen de un subagente sobre su
   propio trabajo: hay que leer el dato crudo.
+
+## 2026-09-27, sesión de continuación — 39.37 con Sonnet, DONE
+
+El dueño autorizó explícitamente seguir 39.37 con Sonnet como autor tras el piloto
+Haiku fallido (dos rondas por encima del umbral 3/10 de ADR-52). Un agente Sonnet por
+skill, lección real (`content/lessons/track20|21/*.json`) como única fuente, instrucción
+explícita de decidir `correct_index` antes de escribir las opciones (el bug estructural
+del piloto Haiku). Cada lote revisado personalmente contra su lección antes de integrar.
+
+- **track20** (`mod2003`-`mod2005`, 180 preguntas: pregunta+opciones+explicación
+  completas): Spark RDDs/SQL/particionado/MapReduce, Data Validation/Lineage/
+  Governance/GDPR, Snowflake/Databricks/dbt/Airflow. `mod2005` disparó la guarda de
+  «correcta más larga» del banco (35/60 = 58%, subía el track completo a 40.3% sobre
+  el techo 40%) — un patrón que no había aparecido en `mod2003`/`mod2004`: los agentes
+  Sonnet tienden a escribir la opción correcta con más detalle técnico que los
+  distractores. Arreglado alargando 5 distractores con una cláusula técnica plausible
+  y falsa, nunca tocando la opción correcta → 38.7%. Fuentes propietarias nuevas
+  (`snowflake-docs`, `databricks-docs`) verificadas por WebFetch en la propia sesión,
+  marca «cita».
+- **track21** (`mod2102`-`mod2105`, 209 explicaciones): pregunta/opciones/
+  `correct_index` ya eran válidos, solo la explicación tenía la plantilla «Explicación
+  para ¿…?». Verificado programáticamente que los 240 preguntas de los 4 ficheros son
+  byte-idénticas al original salvo esas dos claves. Un bug de idioma mezclado en
+  algunas opciones (ya rastreado en 39.36) se dejó intacto a propósito — no se
+  conflacionó con este parche.
+- **Error propio cazado por el verificador**: cité «409/409 hechas» dos veces sin
+  sumar 180+209 (=389) — un número heredado de filas de progreso anteriores que nunca
+  verifiqué aritméticamente. El verificador adversario refutó la 1ª ronda por esa
+  discrepancia; corregido el ledger y reverificado en una 2ª ronda, CONFIRMADA. La
+  lección: un número que se repite de fila en fila sin recalcularlo es una afirmación
+  sin evidencia, aunque se sienta como un hecho ya establecido.
+- `ci_local.sh` (nivel 2, corre al fondo tras cada `git push`) no mata de verdad el
+  proceso `timeout`/`pytest` del push anterior en este contenedor Linux — solo el
+  wrapper bash que lo lanzó — así que cada push sucesivo deja un `pytest tests/`
+  huérfano corriendo en paralelo con el nuevo. Se observaron 5 corriendo a la vez,
+  saturando la CPU y ralentizando mi propio `pytest backend/tests/content` en
+  primer plano. No se tocó el script esta sesión (fuera del alcance pedido); queda
+  para quien revise `ci_local.sh` en detalle.
