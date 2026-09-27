@@ -1033,3 +1033,17 @@ dueño por su nombre.
 > RECOMIENDAS TANTO EL MODELO PRINCIPAL COMO LOS SUBAGENTES». En las sesiones **arrancadas por el
 > dueño**: hilo principal Opus 5.5 (effort high), subagentes Haiku 4.5 y Sonnet 5 solo para
 > escribir en la lista de riesgo. ADR-14 sigue igual para las sesiones programadas.
+
+> **Enmienda a ADR-50 y a CLAUDE.md §Modelos (2026-09-26, tarde; decisión de la sesión con la
+> delegación del dueño).** **Autoría y revisión de contenido: Sonnet, no Haiku.** Haiku queda
+> para lecturas, inventarios y diffs de solo lectura. Evidencia: en el piloto de lecciones de
+> track28 (2026-09-26), 7 de 10 lecciones escritas por Haiku traían frases de relleno sin
+> sentido, errores técnicos (un 302 presentado como redirección permanente) o fuentes que no
+> respaldaban el texto, y un segundo lote no devolvió nada; en la sesión anterior, las tres
+> reescrituras de distractores de track11 hechas por Haiku se rechazaron (relleno, opciones
+> duplicadas, la correcta copiada en otra ranura en 51 preguntas). Sonnet tampoco es fiable
+> solo: el reescritor Sonnet movió claves de ranura en track28 (4), track29 (6) y `mod3002`
+> (52), por eso cada lote pasa por `check_key_drift.py`. Con Sonnet como autor, revisor y corrector,
+> más la verificación propia con `scripts/content_qa/`, las lecciones de 18-20 y 26-30 y las
+> 1.404 explicaciones de 39.29 entraron sin fallos de guarda. Coste mayor por fichero y
+> aceptado: un banco con claves malas es peor que uno más corto.

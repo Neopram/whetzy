@@ -15,6 +15,12 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - **Recuperar contraseña ya no finge**: sin proveedor de correo, la API responde 503 y la pantalla lo dice (H.30).
 - **ADR-50**: aprobación en bloque del dueño (Free, anuncios, precios, analítica PostHog, staging, protección de `master`).
 - **Conectores de Claude** documentados en `docs/CONECTORES.md`.
+- **Track42: claves de verdadero/falso corregidas** (153) y 110 duplicadas reescritas; guarda `test_tf_consistency.py`.
+- **1.404 explicaciones de plantilla sustituidas** por explicaciones reales (track41-46, track23); 0 huellas de generador en el banco vivo.
+- **Distractores reales** en tracks 26, 28, 29 y 30 (sin coletillas de relleno; la correcta ya no es casi siempre la más larga).
+- **Lecciones de 18, 19, 20 y 26-30** al listón (150-300 palabras por idioma, fuente real, código que imprime lo que dice); fallos de `tests/content` 792 → 440.
+- **Guardas nuevas**: coletillas por track, casi-duplicados, huellas de generador, verdadero/falso coherente y datos personales en el contenido.
+- **Herramientas de revisión de contenido** en `scripts/content_qa/`.
 
 **EN**
 
@@ -24,6 +30,12 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - **Password reset stops pretending**: with no email provider, the API answers 503 and the page says so (H.30).
 - **ADR-50**: owner's blanket approval (Free tier, ads, pricing, PostHog analytics, staging, `master` protection).
 - **Claude connectors** documented in `docs/CONECTORES.md`.
+- **Track42 true/false answer keys fixed** (153) and 110 duplicates rewritten; new `test_tf_consistency.py` guard.
+- **1,404 placeholder explanations replaced** with real ones (track41-46, track23); 0 generator traces left in the live bank.
+- **Real distractors** in tracks 26, 28, 29 and 30 (no filler endings; the correct option is no longer usually the longest).
+- **Lessons for tracks 18, 19, 20 and 26-30** meet the bar (150-300 words per language, real source, code prints what it claims); `tests/content` failures 792 → 440.
+- **New guards**: per-track filler endings, near-duplicates, generator traces, consistent true/false keys and personal data in content.
+- **Content review tools** in `scripts/content_qa/`.
 
 ---
 
