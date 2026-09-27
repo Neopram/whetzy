@@ -2082,3 +2082,22 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 | 22.12 | **2** | **Deuda de lint y tipos que dejaron las series 22-23**: 21 errores de… | **DONE** | **DONE** `83c6bf1` (2026-09-19) → §I |
 | 22.14 | **1** | **Arranque en frío de Railway** (`AUDITORIA_EXTERNA_2026-09-19.md:203`): la… | **DONE** | **DONE** (2026-09-19) → §I |
 | 22.15 | **2** | **Fase 3 del modelo de amenazas** (`design/threat-model-stride.md:157-161`): firma… | **DONE** | **DONE** `ef00ff3` → §I |
+
+## §M — Filas DONE retiradas de §2 el 2026-09-27 (guarda de tamaño, sesión gallant-tesla)
+
+> Copiadas tal cual desde `AUTONOMOUS_STATE.md` §2 para dejar sitio a la serie 39. El detalle de cada una queda aquí; no hay seguimiento pendiente.
+
+| ID | PRI | Tarea | Estado | Evidencia |
+|---|---|---|---|---|
+| 39.0 | **0** | **Producción caída 09:35–10:48 UTC tras `ec97405`**: `content_loader` con `KeyError: 'order'` (logs Railway) y lecciones fuera de esquema | **DONE** | #28 (`c5100e1`), `test_loader_schema.py` rojo sobre `ec97405`; deploy `b64e2a9a` SUCCESS |
+| 39.6 | **2** | `audit_ai_traces.py` | DONE | `scripts/audit_ai_traces.py`: informe por fichero (explicación de plantilla, marcado de herramienta, voz de asistente) y trinquete `ai_traces_baseline.json`; `tests/content/test_ai_traces.py`, mutación en rojo (2026-09-26). Encontró 1.404 campos de explicación de plantilla → 39.29 |
+| 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | `scripts/check_originality.py` (Jaccard trigramas ≥ 0.8 + misma respuesta, por track) con trinquete `KNOWN`; `tests/content/test_originality.py`; mutación (pareja nueva) en rojo, restaurado verde (2026-09-26) |
+| 39.11 | **2** | Límite de gasto de Groq por usuario y global | **DONE** | Por usuario ya existía (cupo Pro, ADR-49); global: `LLM_DAILY_CALL_LIMIT`=2000/día UTC por proceso → respuesta con el contexto, no error; `test_llm_guard.py` |
+| 39.12 | **3** | LLM de respaldo (ADR-50f) | **DONE** | `LLM_FALLBACK_*` (vacío = sin respaldo); timeout/5xx/429 → respaldo → contexto; 4xx no se esconde; tests |
+| 39.15 | **1** | Fichero `LICENSE` (ADR-50e) | **DONE** | `LICENSE` (código propietario, contenido CC BY-NC-ND 4.0 como los Términos §3.1, terceros según índice) y README |
+| 39.18 | **1** | vitest: 4 fallos (`StatusPage` `/api/v1` relativo, `common.back`, `useRuntime` bajo jsdom) | DONE | `8489ab6`: `npx vitest run` 31 ficheros, 249/249 (re-ejecutado 2026-09-26 12:07 UTC) |
+| 39.22 | **2** | Backups: `backup_db.sh` + `restore_check.sh` + runbook | **DONE** | Ya existían (`db_backup.sh`, `db_restore*.sh`); estaban sin bit de ejecución; simulacro 2026-09-26 en verde sobre el catálogo completo; `backups/*.dump` ignorado. El backup programado en Railway sigue siendo del dueño |
+| 39.23 | **1** | H.30 honesto: sin proveedor, 503 `email_not_configured` | **DONE** | `bb59562`; mutación → rojo |
+| 39.30 | **1** | Datos personales en el contenido: `l260101` (18.10) enseñaba `git config` con el nombre y el correo del dueño, y un redactor lo repitió | DONE | Lección reescrita con ada@example.com; guarda `test_no_personal_data.py` (buzones de proveedores reales), mutación en rojo con la versión anterior (2026-09-26) |
+| 39.35 | **0** | El limitador de peticiones de producción fallaba en abierto: `REDIS_URL` cae por defecto en `localhost:6379`, que en Railway no existe, y cada petición salía por «allowing request» (logs de `ded9ecc9` y `2884c831`): login sin límite | **DONE** (código) | Si Redis no responde se limita en memoria por instancia; test con Redis inalcanzable (3 pasan, la 4.ª no) y mutación en rojo. Llega a producción cuando el dueño fusione. Opcional para el dueño: Redis real o `REDIS_URL` vacío |
+| 39.38 | **0** | Dos claves falsas de Bicep en track22 (`q220503008`: «using» no importa módulos; `q220503009`: `bicep validate` no existe) | **DONE** | Corregidas con Microsoft Learn (módulos: palabra clave `module`; CLI: `bicep lint`, sin `validate` en la lista real) → §I |
