@@ -62,8 +62,6 @@ BASELINE = {
     "track13_cybersecurity": 4,
     "track14_frontend": 232,
     "track16_algoritmos": 1,
-    "track23_gcp": 773,
-    "track27_nosql": 566,
     "track44_azure_fundamentals": 106,
     "track45_azure_ai": 97,
     "track46_azure_data": 135,
