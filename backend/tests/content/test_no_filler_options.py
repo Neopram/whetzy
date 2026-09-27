@@ -62,8 +62,6 @@ BASELINE = {
     "track13_cybersecurity": 4,
     "track14_frontend": 232,
     "track16_algoritmos": 1,
-    "track18_docker_k8s": 964,
-    "track19_iac_cicd": 761,
     "track21_data_science": 776,
     "track22_azure": 430,
     "track23_gcp": 773,
