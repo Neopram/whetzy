@@ -18,7 +18,7 @@ from sqlalchemy import func, select
 from app.models.push_subscription import PushSubscription
 from app.models.user import User
 from app.services import push_service
-from app.services.push_service import is_configured, send_to_user
+from app.services.push_service import is_configured, localize, send_to_user
 
 
 class _Response:
@@ -49,6 +49,24 @@ async def add_sub(db, user_id: uuid.UUID, endpoint: str) -> PushSubscription:
     await db.commit()
     await db.refresh(sub)
     return sub
+
+
+class TestLocalize:
+    """23.1: push notification copy was hardcoded English regardless of the
+    recipient's `user.language` — no fallback, it just never tried Spanish."""
+
+    def test_spanish_user_gets_spanish(self) -> None:
+        assert localize("es", "Hola", "Hello") == "Hola"
+
+    def test_english_user_gets_english(self) -> None:
+        assert localize("en", "Hola", "Hello") == "Hello"
+
+    def test_unknown_or_missing_language_defaults_to_spanish_not_english(self) -> None:
+        """Same rule as email._render: anything that isn't "en" is Spanish —
+        never a silent English default just because the field is unset."""
+        assert localize(None, "Hola", "Hello") == "Hola"
+        assert localize("fr", "Hola", "Hello") == "Hola"
+        assert localize("", "Hola", "Hello") == "Hola"
 
 
 class TestIsConfigured:

@@ -35,6 +35,16 @@ def is_configured() -> bool:
     return bool(settings.VAPID_PRIVATE_KEY and settings.VAPID_PUBLIC_KEY)
 
 
+def localize(lang: str | None, es: str, en: str) -> str:
+    """Pick the ES or EN copy of a push notification string (23.1).
+
+    Same fallback rule as ``email._render``: anything that isn't literally
+    ``"en"`` gets Spanish, never a silent English default regardless of the
+    recipient's actual language.
+    """
+    return en if lang == "en" else es
+
+
 async def send_to_user(
     db: AsyncSession,
     user_id: object,

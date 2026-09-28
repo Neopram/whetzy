@@ -165,8 +165,12 @@ async def challenge(
         await _push.send_to_user(
             db,
             opponent.id,
-            title="⚔️ You've been challenged!",
-            body=f"{current_user.display_name} challenged you to a duel.",
+            title=_push.localize(opponent.language, "⚔️ ¡Te han retado!", "⚔️ You've been challenged!"),
+            body=_push.localize(
+                opponent.language,
+                f"{current_user.display_name} te retó a un duelo.",
+                f"{current_user.display_name} challenged you to a duel.",
+            ),
             tag="duel-challenge",
         )
     except Exception as exc:  # noqa: BLE001 — push delivery is best-effort, must not fail the challenge

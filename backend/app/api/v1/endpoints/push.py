@@ -159,8 +159,12 @@ async def send_streak_reminders(
         sent = await push_service.send_to_user(
             db,
             candidate.id,
-            title="🔥 Keep your streak alive!",
-            body=f"You have a {candidate.current_streak}-day streak — study something today!",
+            title=push_service.localize(candidate.language, "🔥 ¡No pierdas tu racha!", "🔥 Keep your streak alive!"),
+            body=push_service.localize(
+                candidate.language,
+                f"Llevas {candidate.current_streak} días seguidos — ¡estudia algo hoy!",
+                f"You have a {candidate.current_streak}-day streak — study something today!",
+            ),
             tag="streak-reminder",
         )
         if sent > 0:
