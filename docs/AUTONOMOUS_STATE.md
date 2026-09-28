@@ -173,7 +173,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 20.7 | **1** | CI ciego: `verify_ci_local.ps1` replica `ci.yml` paso a paso | **DOING** | Evidencia sesión bg; falta verificador adversario → §I |
+| 20.7 | **1** | CI ciego: `verify_ci_local.ps1` replica `ci.yml` paso a paso | **DONE** | **DONE** `d4de5d2` (2026-09-28), verificador CONFIRMADA: pin de ruff, ámbito de oxlint y paso `check:i18n` verificados por `grep` en los 3 ficheros; 6/6 pasos backend, 10/10 frontend; stubs SKIP e2e+android 2/2; sin fallo → §I |
 
 ### 21. Legal y fiscal a coste cero — investigación, borradores, gates humanos (abierta 2026-09-18, sesión bf — **H.20 SIGUE ABIERTO** — el…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
