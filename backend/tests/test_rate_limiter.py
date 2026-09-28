@@ -102,3 +102,23 @@ async def test_redis_caido_limita_en_memoria_y_no_deja_pasar_todo():
     assert resultados == [True, True, True, False, False]
     # Y por clave, como el limitador en memoria.
     assert await limiter.is_allowed("login:5.6.7.8", 3, 60) is True
+
+
+@pytest.mark.asyncio
+async def test_redis_event_loop_closed_tambien_limita_en_memoria():
+    """Encontrado corriendo la suite entera (2026-09-28): una conexión de
+    redis-py rota bajo pytest-asyncio no siempre sale como redis.RedisError --
+    "Event loop is closed" es un RuntimeError liso, de asyncio, por debajo de
+    la jerarquía de excepciones de redis-py. El except solo cazaba
+    redis.RedisError, así que este caso se colaba sin caer al limitador en
+    memoria (justo lo que el incidente de producción de más arriba dice que
+    no debe pasar) -- se propagaba como un 500 en vez de degradar."""
+    from unittest.mock import AsyncMock
+
+    from app.core.rate_limiter import RedisRateLimiter
+
+    limiter = RedisRateLimiter("redis://127.0.0.1:1/0")
+    limiter._redis.incr = AsyncMock(side_effect=RuntimeError("Event loop is closed"))
+
+    resultados = [await limiter.is_allowed("login:9.9.9.9", 3, 60) for _ in range(5)]
+    assert resultados == [True, True, True, False, False]
