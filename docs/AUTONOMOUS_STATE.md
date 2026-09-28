@@ -41,6 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
+| 40 | Superar a Brilliant y Kodree donde hoy ganan (`PLAN_EXPERIENCIA.md`) | 0/13 | 0 % | TODO (abierta 2026-09-28); 40.1 y 40.2 primero |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47) | 0/6 | 0 % | TODO (abierta 2026-09-24); 38.2, 38.3, 38.4… |
 | 37 | Catálogo total — todos los tracks de la industria, ≥ 50 cursos por track, corpus abierto (ADR-46) | 0/14 | 0 % | **PRI 1 ABIERTA… |
 | 34 | Una sola interfaz — todas las pantallas al estilo de la landing | 0/12 | 0 % | **Grueso hecho el 2026-09-24 (PR #6):** 276 clases… |
@@ -191,7 +192,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 23. Dos segmentos, un producto — ES y EN sin mezclar (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21)**; ADR-17)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 23.1 | **1** | **Auditoría E2E por idioma**: cada pantalla, email, push, PDF/certificado,… | **DONE** | `c0a5af6` (2026-09-28). Pantallas: `ForgotPasswordPage`/`ResetPasswordPage` sin i18n, `/evidence` entero (34.12) — invisibles a la paridad de claves. Push: racha/duelo en inglés fijo — `push_service.localize()` nuevo. Tutor/PDF/certificado ya correctos → §I |
+| 23.1 | **1** | **Auditoría E2E por idioma**: cada pantalla, email, push, PDF/certificado,… | **DONE** | `c0a5af6`: Forgot/ResetPassword y `/evidence` sin i18n, push racha/duelo fijo en inglés → `push_service.localize()` → §I |
 | 23.2 | **2** | **Landing y SEO por segmento**: `/es` y `/en` con copy nativo (no traducido), `hreflang` (existe), `sitemap` por idioma,… | | → §I (criterio archivado por 20.10) |
 | 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas,… | | → §I (criterio archivado por 20.10) |
 | 23.4 | **3** | **Segmento en el admin**: todas las métricas de 22.1 filtrables por idioma; cohortes ES vs. EN | **DONE** | **DONE**: `segment` param (all/es/en) added to `/metrics/reports` — all 12 admin endpoints now support language segmentation → `66925f8` |
@@ -347,9 +348,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 30.2 | **1** | **Se puede publicar sin puerta.** `ba686fc`, `50e73ea`, `46789fa`, `f8719b1`, `2efdfb7` y `8a0dce0` entraron en `master`… | | → §I (criterio archivado por 20.10) |
-| 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **DONE** | `be07294`, verificador CONFIRMADA: Node 22 tiene `navigator.language` real (Node 20 no); `detectLanguage()` fuerza `es` sin `window`. Mutación en rojo/verde. `check-prerender` solo en `ci.yml` (no corre) → `ci_local.sh` → §I |
+| 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **DONE** | `be07294`, verificador CONFIRMADA: Node 22 tiene `navigator.language` real; `detectLanguage()` fuerza `es` sin `window` → §I |
 | 30.5 | **2** | El script `build` ya no corre `tsc -b` (lo quitó `8a0dce0`,… | **PARCIAL** | **PARCIAL** `8a0dce0` (2026-09-24) → §I |
-| 30.9 | **0** | Login válido devolvía a la landing (cookie cross-site + host-only; `logout()` no llamaba a `/auth/logout`) → STATUS.md | **DONE** | `395e8a1` (2026-09-27), verificador CONFIRMADA: 42 backend + 251 frontend limpios. Navegador real: `master` 0 cookies, esta rama `/auth/me` 200. Safari (ITP) sin probar → §I |
+| 30.9 | **0** | Login válido devolvía a la landing (cookie cross-site + host-only; `logout()` no llamaba a `/auth/logout`) → STATUS.md | **DONE** | `395e8a1`, verificador CONFIRMADA. Safari (ITP) sin probar → §I |
 
 ### 31. Fuente única de cifras, staging y migraciones con datos (del plan del 2026-09-24, cuyo fichero no está en el repo: estas filas son…
 
@@ -448,8 +449,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 38.1 | **2** | **Precios: una sola fuente = ADR-41 (dueño)**: Pro 14,99 $ · Pro Max 19,99 $ ·… | **DONE** | **DONE** `cf2fc58` → §I |
-| 38.2 | **2** | **Oferta de 3 pilotos B2B gratuitos** (ADR-22): documento ES/EN (qué damos, qué pedimos: testimonio y datos de uso, 90… | **DONE** — `content/legal/b2b_pilot_offer_{es,en}.md`: 3 pilotos 90d, 25 asientos Pro Max, a cambio de datos agregados + testimonio + llamada cierre; post-piloto $99/asiento/año mín 10 | |
-| 38.3 | **2** | **Dossier de afiliación** Python Institute y CompTIA (`archive/whetzy_estrategia_definitiva_v3.md:392`): condiciones,… | **DONE** — `content/legal/affiliation_dossier_{es,en}.md`: certs relevantes por proveedor, programa de afiliados, pasos para aplicar, modelo de ingresos estimado, integración técnica y acciones inmediatas | |
+| 38.2 | **2** | Oferta de 3 pilotos B2B gratuitos (ADR-22): documento ES/EN (qué dam… | DONE | → §O |
+| 38.3 | **2** | Dossier de afiliación Python Institute y CompTIA (archive/whetzy_es… | DONE | → §O |
 | 38.5 | **3** | **Página `/evidence` como única prueba social** (19.8, 30.1): cifras del banco y del motor calculadas en build, cero… | **DONE** | **DONE**: EvidenceScreen.tsx + CSS module + ruta registrada en App.tsx → §I |
 | 38.6 | **2** | **Pro Max = tutor IA ilimitado; Pro con cupo diario** (ADR-49). `POST`… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
 | 38.7 | **2** | **Certificación a 39,99 $ de pago único** (ADR-49). Hoy los tracks… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
@@ -461,24 +462,24 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 39.0 | **0** | **Producción caída 09:35–10:48 UTC tras `ec97405`**: `content_loader`… | DONE | → §M |
-| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | DONE | 0 coletillas por grep en 26/28/29/30; correcta más larga 15/11,7/23,7/33 % (≤40 %); `test_no_new_file_is_a_pure_rotation` verde. Revisión de las 1.200: 7+10+16+4 arreglos; el reescritor movió claves en 28/29/`mod3002` (52, reparado). `test_no_filler_options.py` mutado en rojo |
-| 39.2 | **1** | Fuentes inferidas en 146 lecciones normalizadas en #28 | **DONE** | De las 146, 13 duplicadas se borraron en #28; las 133 vivas (18, 19, 21, 23, 27, 44-46) reescritas con la fuente oficial concreta; `check_urls`: 126 URL distintas, todas 200. Verificador Sonnet de 39.3: una fuente parcial (`lesson230101`) → `machine-resource` |
-| 39.3 | **1** | `tests/content` en verde (1.254 fallos en master, 792 tras #28) | **DONE** | 440 (21 y 23 no pasaban, contra lo anotado) → **0**: `70270 passed, 1 skipped, 21 xfailed`. 185 lecciones de 14/21/22/23/41-46, un commit por track, escritor/revisor/corrector Sonnet, lectura propia (3 errores técnicos corregidos: /24 GCP=252, Hyperscale 128TB, NSG). Verificador Sonnet sobre 20 lecciones por hash: CONFIRMADA |
-| 39.4 | **2** | `content_quota` detrás de flag (ADR-50a) | **DONE** | `fecab20`: `FREE_DAILY_QUOTA_ENABLED=false`; 30 preguntas y 5 lecciones/día UTC; repaso/placement/examen exentos; Pro/Pro Max/Creador/dueño/admin sin cupo; 429 propio; migración `20260927_lesson_views`. 15 tests, 4 mutaciones en rojo. Verificador: DUDOSA por huecos, decisiones en ADR-51 b-d. Texto de UI: 39.34 |
-| 39.5 | **2** | Gamification auditada de punta a punta | **DONE** | `9b016a9`: «Perfeccionista» no se concedía nunca; `autoflush=False` llegaba tarde una respuesta; tests rojo→verde. `e2e/gamification.spec.ts` verde con 3 capturas. El helper e2e no marcaba 13+ años: todos los specs con registro rotos. Verificador: «e2e no ejecutado» refutado |
+| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30… | DONE | → §O |
+| 39.2 | **1** | Fuentes inferidas en 146 lecciones normalizadas en #28 | DONE | → §O |
+| 39.3 | **1** | `tests/content` en verde (1.254 fallos en master, 792 tras #28) | DONE | → §O |
+| 39.4 | **2** | `content_quota` detrás de flag (ADR-50a) | DONE | → §O |
+| 39.5 | **2** | Gamification auditada de punta a punta | DONE | → §O |
 | 39.6 | **2** | `audit_ai_traces.py` | DONE | → §M |
 | 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | → §M |
 | 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (track01 ×3, track09 ×5, track41 ×4) | TODO | Cada pareja arreglada se quita de `KNOWN`; el test sigue verde |
-| 39.28 | **0** | Segunda familia de coletillas en tracks 18-23, 27, 41-43 | **DONE** | **Los 10 tracks del alcance en 0** (`7912cff`/`68df5ab`). 23 y 27 necesitaron un segundo pase por la guarda de «correcta más larga» (techo 40 %), arreglado alargando la opción incorrecta más corta. `question_diversity`/`check_question_bank`/`check_source_licenses` PASS; `tests/content` 70.277 passed → 39.37 |
-| 39.29 | **0** | 1.404 explicaciones de plantilla en track41/42/44-46/23 | DONE | `audit_ai_traces.py`: 0 en el banco vivo. Autor+revisión Sonnet por fichero, solo explicaciones. De paso: V/F track42 al azar (153 corregidas), 13 GKE track23 reescritas. Fuentes verificadas: NIST CSF 2.0, Azure Analysis Services (learn.microsoft.com) |
+| 39.28 | **0** | Segunda familia de coletillas («como concepto principal» 982, «sin e… | DONE | → §O |
+| 39.29 | **0** | 1.404 explicaciones de plantilla vistas por el alumno en track41 (59… | DONE | → §O |
 | 39.30 | **1** | Datos personales en el contenido: `l260101` enseñaba el nombre y correo del dueño | DONE | → §M |
-| 39.31 | **2** | `user_meets_tier` no mira `subscription_expires_at` | **DONE** | `749e07f`: `customer.subscription.deleted` limpia `is_premium` pero nunca resetea `subscription_tier` — una cancelación mantenía el tier para siempre. Vencido → «free». Verificador **CONFIRMADA**: mutación en rojo, restaurado verde; 14+72 tests; suite entera 1303 passed |
+| 39.31 | **2** | `user_meets_tier` no mira `subscription_expires_at` | **DONE** | `749e07f`: cancelación no reseteaba `subscription_tier`; vencido → «free». Verificador CONFIRMADA, mutado → §I |
 | 39.32 | **3** | `test_rag_self_retrieval` tarda ~28 min (cuadrático en el banco) | TODO | Muestra fija o índice invertido en el test; la suite backend baja de ~37 min a < 10 sin perder el listón del 95 % |
 | 39.33 | **1** | Claves sospechosas previas: la explicación se parece más a otra opción (`check_expl_key`: 22 en `mod2201`…, 24 en track41) | **PARCIAL** | 41 claves falsas corregidas (3 individuales + 38 de `mod4301`: variantes parafraseadas, `correct_index` reasignado — 0 grupos inconsistentes). Rebalanceo + 4 casi-duplicadas. `check_expl_key` sigue con ~495 de 521: 42 de señal fuerte muestreadas, resto mayormente falso positivo. TODO: resto de tracks sin muestrear |
 | 39.34 | **2** | Texto de UI del cupo Free (ES/EN) antes de encender `FREE_DAILY_QUOTA_ENABLED` | **DONE** | `e754b50`: `api.ts` descartaba el `detail` del 429 → «HTTP 429» genérico; `ApiError.detail`+`isQuotaError()` nuevos, Quiz/Lección muestran límite y hora de reinicio. Verificador CONFIRMADA: 16 tests mutados, tsc/oxlint limpios → STATUS.md |
-| 39.35 | **0** | El limitador de peticiones de producción fallaba en abierto:… | DONE | → §M. **Post-DONE `95cdfbf`, verificador CONFIRMADA**: `except` solo cazaba `redis.RedisError`, dejaba pasar `RuntimeError`/`OSError` sin caer a memoria (mismo fallo de la fila) — visto como 204 tests rotos en la suite entera, resueltos a 0 tras el arreglo |
+| 39.35 | **0** | El limitador de peticiones de producción fallaba en abierto:… | DONE | → §M. Post-DONE `95cdfbf`: `except` no cazaba `RuntimeError`/`OSError` — 204 tests rotos → 0 |
 | 39.36 | **1** | `options_en` escritas en español en track21 (194 preguntas) y track44-46 (46, 33, 49) | **DONE** | 295 preguntas traducidas por Sonnet, solo `options_en`. Verificador **CONFIRMADA**: recuento en vivo = 0; `check_question_bank`/`question_diversity`/`test_en_options_language` PASS; `correct_index` intacto; `tests/content` 70.277 passed |
-| 39.37 | **0** | **Relleno de generador en producción**: 180 preguntas de track20 `mod2003`-`mod2005` y 209 de track21 `mod2102`-`mod2105` con explicación «Explicación para ¿…?» y enunciados telegráficos; una clave falsa ya corregida (`q210502007`, PCA) | **DONE** | 389/389 (180+209; Sonnet, ADR-52 tras piloto Haiku fallido) → detalle en STATUS.md. Verificador 2ª ronda CONFIRMADA (1ª REFUTADA por un «409» mío sin sumar); `tests/content` 70.277 passed |
+| 39.37 | **0** | Relleno de generador en producción: 180 preguntas de track20 mod200… | DONE | → §O |
 | 39.38 | **0** | Dos claves falsas de Bicep en track22 (`q220503008`: «using» no… | DONE | → §M |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
@@ -496,6 +497,26 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.21 | **2** | Sentry en el frontend (ADR-50k) | **DECIDIDO: no** | Solo backend; privacidad y DPA ES/EN actualizados: Sentry activo desde 2026-09-26, UE, sin PII |
 | 39.22 | **2** | Backups: `backup_db.sh` + `restore_check.sh` + runbook | DONE | → §M |
 | 39.23 | **1** | H.30 honesto: sin proveedor, 503 `email_not_configured` | DONE | → §M |
+
+### 40. Superar a Brilliant y Kodree donde hoy ganan (abierta 2026-09-28, a petición del dueño; spec `PLAN_EXPERIENCIA.md`)
+
+> **Estado:** `ABIERTA`. **PRI:** 2. Origen: `COMPETENCIA.md` §A.2b. Nada de esto se anuncia hasta 40.13.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 40.1 | **2** | **Tipo `interactive`**: `{widget, params, target, checker}`; checker en cliente y servidor; alimenta BKT/Elo/FSRS | TODO | esquema en `check_question_bank.py`; test de discrepancia cliente↔servidor en rojo al mutar |
+| 40.2 | **2** | **Piloto 3 widgets** (búsqueda binaria, CIDR, JOIN) × 10 ítems ES/EN | TODO (tras 40.1) | e2e móvil+escritorio, axe 0, ≤ 30 KB gz/widget, LCP < 2,5 s 4G; sin piloto verde no hay 40.3 |
+| 40.3 | **3** | **Biblioteca de 15 widgets** mapeados a dominios de cert (IAM, Git DAG, TCP, CPU…) | TODO (tras 40.2) | contrato `render/serialize/check` testeado por widget; cada uno suma al readiness |
+| 40.4 | **3** | **Widget ↔ código** en los dos sentidos (Pyodide, sql.js, Worker JS) | TODO (tras 40.2) | e2e: editar el widget cambia el código y ejecutar el código anima el widget |
+| 40.5 | **3** | **Tutor que señala**: acciones estructuradas (resaltar línea, marcar nodo) validadas por esquema, con texto accesible | TODO (tras 40.2) | acción fuera de esquema rechazada (test); sin grounding lo dice (línea roja 2) |
+| 40.6 | **3** | **Tutor por voz ES/EN**: TTS `speechSynthesis`; STT por Groq `/audio/transcriptions` (H.49); pulsar para hablar, audio no guardado | TODO (tras 40.5) | WER en ES medido con muestras propias; retención de audio de Groq leída con URL; consentimiento ES/EN; cuenta contra 38.6 y 39.11 |
+| 40.7 | **3** | **Comunidad con contexto**: hilos por pregunta/lección, soluciones tras resolver, salas ES/EN, denuncias + antifraude | TODO (construir; abrir con ≥ 100 activos) | e2e: la solución ajena no se ve antes de resolver; notificación y retirada ES/EN |
+| 40.8 | **4** | **Grupos de estudio por cert + revisión por pares** de proyectos (revisor con Open Badge del track) | TODO (tras 40.7, 37.11) | readiness de grupo sin datos personales (test) |
+| 40.9 | **2** | **Plan anual** junto al mensual; solo esos dos, sin vitalicio ni familiar (dueño, 2026-09-28). Precio anual y reembolso como la competencia directa (`COMPETENCIA.md` §A); responde H.35 (1) | TODO | precio anual con su referente citado; cancelar en 2 toques (línea roja 7) y aviso de renovación (21.4) |
+| 40.10 | **4** | **Ruta Analista de datos ejecutable** (pandas en Pyodide + SQL, datasets abiertos) | TODO | cert confirmada con URL; fuentes ADR-11 |
+| 40.11 | **4** | **TypeScript ejecutable** en el Worker, carga perezosa solo en su track | TODO | licencia del compilador verificada; peso fuera del bundle base |
+| 40.12 | **4** | **Investigar Java en navegador y UX/UI** (runtime, peso, licencias) | TODO | informe con URL; nada entra sin fuentes H.LIC y línea roja 8 |
+| 40.13 | **3** | **Medir la superación**: tabla criterio a criterio frente a Brilliant y Kodree, re-capturada con fecha | TODO (cierra la serie) | cada «mejor que» con evidencia ejecutable o URL; sin ella no sale a la landing (línea roja 9) |
 
 ## 3. Cola HUMAN-BLOCKED
 
@@ -542,6 +563,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.44 | Terminar o quitar Firecrawl, Amplitude, Mailchimp y Lusha (a medio conectar) |
 | H.45 | Conectar redes (X, LinkedIn…) en Metricool/Typefully para que la distribución deje de ser solo borradores |
 | H.46 | ¿Monitor de uptime de Sentry para `/health`? (puede consumir cuota de pago) |
+| H.49 | **DECIDIDA 2026-09-28** — dueño: la voz a texto del tutor (40.6) usa el mismo proveedor que el tutor (Groq, `/audio/transcriptions`) |
 | H.48 | Clave de API de Anthropic con gasto para un pipeline por **Batch API** de rellenos con Haiku 4.5 (ADR-52); hoy ningún código del repo llama a la API | Dueño |
 | H.47 | ¿Mantener el correo personal del dueño como contacto en la página pública `/evidence` (`EvidenceScreen.tsx:340`)? Por defecto (ADR-47) se deja y se propone un alias tipo `support@whetzy.com` | Dueño |
 
