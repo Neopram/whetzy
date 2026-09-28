@@ -46,6 +46,12 @@ def _h(extra: dict | None = None) -> dict:
 # ── event firing ─────────────────────────────────────────────────────────────
 
 
+
+async def _see_lesson(db_session, user, skill_id: str) -> None:
+    """32.4: el estudio de un skill exige haber visto su lección primero."""
+    db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
+    await db_session.commit()
+
 async def test_register_fires_user_registered_event(client, db_session):
     r = await client.post(
         f"{AUTH}/register",

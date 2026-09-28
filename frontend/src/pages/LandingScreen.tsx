@@ -123,6 +123,15 @@ export default function LandingScreen() {
     }
   }, [i18n]);
 
+  const handleLangChange = (newLang: Lang) => {
+    setLang(newLang);
+    i18n.changeLanguage(newLang);
+    document.documentElement.lang = newLang;
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', newLang);
+    window.history.replaceState({}, '', url.toString());
+  };
+
   useEffect(() => {
     document.title = t('landing.metaTitle');
   }, [t, lang]);
@@ -174,9 +183,29 @@ export default function LandingScreen() {
             {showCompare && <a href="#compare" className={styles.navLink}>{t('landing.nav.compare')}</a>}
             <a href="#pricing" className={styles.navLink}>{t('landing.nav.pricing')}</a>
           </div>
-          <a className={styles.headerCta} href={ctaHref}>
-            {hasSession ? t('landing.nav.dashboard') : t('landing.nav.start')}
-          </a>
+          <div className={styles.headerActions}>
+            <div className={styles.langSelector}>
+              <button
+                className={`${styles.langBtn} ${lang === 'es' ? styles.active : ''}`}
+                onClick={() => handleLangChange('es')}
+                title="Español"
+                aria-label="Español"
+              >
+                🇪🇸
+              </button>
+              <button
+                className={`${styles.langBtn} ${lang === 'en' ? styles.active : ''}`}
+                onClick={() => handleLangChange('en')}
+                title="English"
+                aria-label="English"
+              >
+                🇬🇧
+              </button>
+            </div>
+            <a className={styles.headerCta} href={ctaHref}>
+              {hasSession ? t('landing.nav.dashboard') : t('landing.nav.start')}
+            </a>
+          </div>
         </nav>
       </header>
 

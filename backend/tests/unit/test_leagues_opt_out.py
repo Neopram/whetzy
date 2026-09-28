@@ -99,7 +99,7 @@ async def test_answering_while_opted_out_adds_no_league_xp(
     await _seed_league(db_session)
     uid = user.id
     await client.put(f"{URL}/participation", json={"participate": False}, headers=auth_headers)
-    db_session.add(LessonCompletion(user_id=user.id, skill_id=content_seed["skill_id"]))
+    db_session.add(LessonCompletion(user_id=uid, skill_id=content_seed["skill_id"]))  # 32.4
     await db_session.commit()
 
     start = await client.post(

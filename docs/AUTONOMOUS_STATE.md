@@ -332,30 +332,24 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.1 | **1** | **Servicio de créditos** `services/economy/credits.py`: abono con lote y… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json`… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I |
-| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **DONE** | **DONE**: `AntiFraudService` en promo/referidos (email, disposable, self-referral, device/IP, velocity); 77 tests → §I |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | **DONE**: 3 endpoints — `/economy/credits` con summary (emitted/spent/expired, sink_source_ratio, inflation_alert, by_reason) + rows; `/economy/referrals`; `/economy/k-factor` → §I |
 | 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | **DONE** — `reactivation_check` job handler: consulta `User.last_active < 14d`, genera código 72h vía `PromoCodeService`, envía email ES/EN con plantilla `reactivation` | |
 | 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | **DONE** | **DONE**: WalletScreen con balance card, earn/spend lists, referral code + clipboard, promo redeem form; economy API methods; 22 i18n keys ES/EN; lazy route + profile nav → `66925f8` |
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | → §I (criterio archivado por 20.10) |
-| 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET`… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
-| 29.11 | **2** | **Cláusulas legales**: créditos (tres reglas §1), referidos, antifraude, caducidad, clawback — ES y EN nativos → entran… | **DONE** — `content/legal/credits_terms_{es,en}.md`: 11 secciones (naturaleza, 3 reglas, cómo se ganan, caducidad FIFO 90d, referidos, códigos promo, antifraude, clawback, gasto, modificaciones, jurisdicción) | |
 
 
 ### 30. Integridad del despliegue — incidente de login del 2026-09-24 (PRI 0)
 
-> **Estado:** `ABIERTA` — el código está en la rama `claude/trusting-franklin-2wwmmr` (PR https://github.com/Neopram/whetzy/pull/6); nada…
+> **Estado:** `ABIERTA`. 30.0/30.7/30.8 DONE en producción (archivo §N). **30.9 solo en rama (PR #34): hasta que se fusione, un login válido en producción vuelve a la landing.**
 > **PRI:** 0. **Origen:** captura del dueño — `POST whetzy.com/auth/login` → **405**, pantalla «Incorrect email or password».
 > **Invariante de la serie:** un deploy del frontend no está hecho hasta que `node scripts/check-deployed.mjs` sale PASS contra…
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 30.0 | **0** | **Login roto en producción.** Medido 2026-09-24: el bundle servido… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
 | 30.2 | **1** | **Se puede publicar sin puerta.** `ba686fc`, `50e73ea`, `46789fa`, `f8719b1`, `2efdfb7` y `8a0dce0` entraron en `master`… | | → §I (criterio archivado por 20.10) |
 | 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **PARCIAL** | **PARCIAL** `394c660` → §I |
 | 30.5 | **2** | El script `build` ya no corre `tsc -b` (lo quitó `8a0dce0`,… | **PARCIAL** | **PARCIAL** `8a0dce0` (2026-09-24) → §I |
-| 30.7 | **0** | **El mismo fallo que el login en cinco llamadas más.**… | **PARCIAL** | **PARCIAL** `4c63686` (2026-09-25) → §I |
-| 30.8 | **0** | **Producción arrancaba sin contenido y sin cuenta de dueño… | **PARCIAL** | **PARCIAL** `12ff838` (2026-09-22) → §I |
-| 30.9 | **0** | **Login válido devolvía a la landing** (pregunta del dueño 2026-09-27): cookie `SameSite=Lax` descartado cross-site (`whetzy.com`↔Railway) + `App.tsx` leía un cookie host-only invisible en `whetzy.com`; `logout()` tampoco llamaba a `/auth/logout` → detalle en STATUS.md | **DONE** | `395e8a1`, verificador CONFIRMADA: 42 backend + 251 frontend, mypy/ruff/tsc limpios. `SameSite=None`+`Secure` solo en prod; `App.tsx` siempre pregunta `/auth/me`; `logout()` revoca de verdad. Sin verificar en vivo (solo local) |
+| 30.9 | **0** | **Login válido devolvía a la landing** (`SameSite=Lax` cross-site + `App.tsx` leía un cookie host-only invisible en `whetzy.com`; `logout()` no llamaba a `/auth/logout`) → detalle en STATUS.md | **DONE** | **DONE** `395e8a1` (2026-09-27), verificador CONFIRMADA: 42 backend + 251 frontend, mypy/ruff/tsc limpios. Navegador real 2026-09-27 (Chromium, dos sitios): `master` landing/0 cookies, esta rama app/`/auth/me` 200. Safari (ITP) sin probar → §I |
 
 ### 31. Fuente única de cifras, staging y migraciones con datos (del plan del 2026-09-24, cuyo fichero no está en el repo: estas filas son…
 
@@ -396,6 +390,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
+| 34.12 | **2** | **Plural e idioma en la UI** (visto al grabar el short, 2026-09-26): `HomeScreen.tsx:183` pinta «Tu racha: 1 días» (`t('home.days')` sin `count`); `home.decayInDays` («en {{count}} días») no tiene variante `_one`; `/evidence` está en inglés fijo (`EvidenceScreen.tsx` no usa `useTranslation`) | **TODO** | «1 día» y «en 1 día» con test de i18n; `/evidence` en ES y EN nativos, con captura a 390 px en los dos idiomas |
 | 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **PARCIAL** | **PARCIAL** `d7f6711`: e2e real 44/45 verdes; 2 bugs hallados y arreglados → STATUS.md. Capturas antes (`03220e4`, Auth invisible)/después + 9 pantallas más entregadas al dueño y comentadas en el PR (sin subida de imagen vía API); falta insertarlas de verdad en el PR → §I |
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** → §I |
@@ -444,6 +439,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | **DONE** `fbf9baf` (2026-09-25) → §I |
 | 37.15 | **1** | **Fuentes sin indexar:** 3.906 de 6.305 preguntas (62 %) no llevan URL en… | **PARCIAL** | **PARCIAL** (2026-09-25); 2026-09-28: `check_content_sources.py` 58→0 URLs muertas (30 ficheros, MongoDB/K8s/AWS/Redis/MDN/SQLite/Docker/w3schools/sqlshack/tcpdump/cisco/wifi/NIST); `index.json` NIST 800-53 también corregido (guardia de diversidad). Indexado sigue en 62 %, sin tocar → §I |
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | **DONE** `46764ff` (2026-09-26): 8 tracks restantes (02-04, 06, 08, 10, 12, 17) corregidos; todos ≤22 %. Banco PASS, diversidad PASS, content 38062 passed → §I |
+| 37.17 | **1** | **Inglés dentro del español y ejecutables que aceptan atajos** (medido 2026-09-26 con grep y `scripts/video/solve_blank.py`, que prueba candidatos contra la salida esperada): 282 enunciados ES en 9 ficheros empiezan «Completa el blank»; `track11_aws_aif_c01/mod01.json:715` dice «directional»; la pregunta ES de EC2 con 100.000 conexiones TCP tiene las opciones en inglés. Respuestas equivocadas dan la salida esperada (Python local): en `q060104ex010` (varianza) `median_low` y `mode` imprimen `4` igual que `pvariance`; en `q010105ex001` `eval` imprime lo mismo que `int`. Si la corrección solo compara la salida, las acepta; sin probar en la app (el sandbox podría bloquear `eval`) | **TODO** | 0 «blank» en `question_es`; una guarda que falle con palabras EN frecuentes en campos `_es`; datos de los ejecutables que distingan la función pedida (varianza ≠ mediana ≠ moda); `eval`/`exec` rechazados en el sandbox o en la corrección, con test |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 
