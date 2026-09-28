@@ -1384,3 +1384,61 @@ que `AuthScreen`, «Volver» con `styles.forgotLink`. Test nuevo
 `forgotPasswordPage.styled.test.tsx` (3 casos), mutado contra el `.tsx` original antes
 del arreglo → las 3 en rojo por `className` vacío; restaurado → verde. Suite de
 vitest completa tras el arreglo: **263/263**; `tsc -b` y `oxlint` del fichero, limpios.
+
+## 2026-09-28, misma sesión — 17.14 (backend RevenueCat), y un falso "204 tests rotos"
+que resultó ser una regresión real de 39.35
+
+**17.14 (compras dentro de la app), mitad backend:** `POST /billing/revenuecat/webhook`
+mismo patrón que el de Stripe (`billing.py`) pero autenticado con el header
+`Authorization` que configura el dashboard de RevenueCat, no HMAC — verificado en vivo
+con `WebFetch`+`WebSearch` cruzados contra la documentación pública de RevenueCat
+(2026-09-27), no solo memoria de entrenamiento, tras una contradicción entre dos fetches
+seguidos (uno dijo HMAC por defecto, el otro Authorization) que obligó a una tercera
+fuente para desempatar. `app_user_id` de RevenueCat = `user.id` propio, fijado al
+configurar el SDK del cliente — sin tabla de mapeo, a diferencia del `stripe_customer_id`
+de Stripe. Contrato compartido con Stripe: mismos campos de entitlement
+(`subscription_tier/status/expires_at/is_premium`), gateados igual por `user_meets_tier`
+(39.31); columna nueva `subscription_provider` para poder diagnosticar cuál de los dos
+rieles concedió el acceso vigente. Sin envolver esto en una interfaz `PaymentProvider`
+de Python aparte — el contrato compartido son esas columnas, una interfaz encima
+duplicaría eso sin añadir nada y arriesgaría el camino de Stripe en producción sin
+beneficio real (razón completa en el docstring de la migración `20260927_iap_provider`).
+El guardián docs-vs-código (nivel 1) atrapó de verdad un hueco real: migración y
+endpoint nuevos sin actualizar el HEAD de Alembic documentado (CLAUDE.md + invariantes
+del ledger) ni `API.md` — `scripts/check_api_docs.py` señaló la línea exacta que
+faltaba, corregido en un commit aparte.
+
+**El hallazgo importante — un "fallo ambiental" que no lo era:** al levantar la app
+real para verificar 34.1 (ver entrada anterior), y llegar a correr la
+suite backend entera por primera vez desde entonces, aparecieron **204 tests rotos**
+(`RuntimeError: Event loop is closed`), en ficheros completamente ajenos a esta sesión
+(`test_admin.py`, `test_streak_shop.py`, `test_onboarding_profile.py`...). La suite
+había salido limpia 4 veces ese mismo día (12:36, 14:57, 18:18, 20:46) antes de montar
+Postgres+Redis locales sin Docker para el trabajo de 34.1, así que el sospechoso obvio
+era contaminación entre procesos (dos corridas de pytest a la vez contra el mismo
+Redis). Se descartó metódicamente: (1) maté todo proceso pytest/uvicorn compitiendo y
+reproduje igual en solitario; (2) reinicié Redis desde cero (`SHUTDOWN NOSAVE` +
+arranque limpio) y reproduje igual; (3) aislé un solo fichero pequeño
+(`test_admin.py`, 26 tests) y los mismos 13 fallaron siempre, no al azar. Eso apuntaba
+a un bug real, no a una casualidad de contenedor. La causa: `RedisRateLimiter.is_allowed`
+(`app/core/rate_limiter.py`) solo capturaba `redis.RedisError` para caer al limitador en
+memoria — el mismo mecanismo que la fila **39.35** (ya DONE) añadió tras el incidente de
+producción del 2026-09-26/27 donde `REDIS_URL` apuntaba a un Redis inexistente y el
+login se quedó sin límite. Pero "Event loop is closed" es un `RuntimeError` liso, de
+asyncio, por debajo de la jerarquía de excepciones de `redis-py`: se colaba sin capturar
+y tumbaba la petición entera en vez de degradar, que es exactamente lo que 39.35 quiso
+evitar, solo que por una puerta distinta. Arreglo de una línea (`except (redis.RedisError,
+RuntimeError, OSError)`), mutado antes de aplicar (`tests/test_rate_limiter.py` nuevo
+caso, con un mock `side_effect=RuntimeError`: rojo contra el código original, verde tras
+el arreglo). Confirmado que resuelve el síntoma real, no solo el mock: `test_admin.py`
+13/26 → 26/26; suite backend entera (`tests/ --ignore=tests/content`) **204 fallos → 0**,
+**1315 passed, 3 skipped** en 43 min. Verificador adversario (Haiku, protocolo §7)
+**CONFIRMADA**: reprodujo el mutado de forma independiente (checkout del commit padre,
+mismo test en rojo; checkout del commit, verde) y volvió a correr `test_admin.py` (26/26),
+`test_billing.py` (10/10) y `test_revenuecat_webhook.py` (11/11) por su cuenta, dejando
+el repo limpio al terminar.
+
+La lección, otra vez: lo que parece "el entorno se portó mal" merece la misma
+disciplina de causa raíz que cualquier otro fallo — descartar la explicación cómoda
+(contaminación entre procesos) exigió tres pasos de aislamiento antes de encontrar el
+bug real, y el bug real resultó ser una regresión de una fila que ya se creía cerrada.
