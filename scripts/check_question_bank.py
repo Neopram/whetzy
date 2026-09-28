@@ -58,6 +58,13 @@ PLACEHOLDER_ANSWER = re.compile(r"^(?:\S+ )?(?:respuesta|answer)\b.{0,25}\b\d+\.
 # relleno hay que quitarlo (test_sin_relleno.py).
 PLACEHOLDER_KNOWN = Path(__file__).resolve().parent / "placeholder_known.json"
 
+# Ingles filtrado en campos _es (37.17): «Completa el blank» salio 282 veces
+# porque el generador nunca tradujo esa frase de plantilla. Este es solo el
+# literal encontrado - no una lista de palabras EN sueltas, que en un banco
+# tecnico da falsos positivos reales (SQL "IS NULL", nombres de protocolo
+# como "Counter Mode with CBC-MAC", modismos citados como "lift and shift").
+EN_LEAK_ES = re.compile(r"\bel blank\b", re.IGNORECASE)
+
 
 def is_placeholder(q: dict) -> bool:
     """Una pregunta de relleno de generador, no una pregunta (37.14, 39.37)."""
@@ -268,6 +275,14 @@ def main() -> int:
                 fail(path, qid, f"{field} is empty - nothing ships in one language")
         if not (q.get("source") or "").strip():
             fail(path, qid, "no source - red line 2")
+
+        # Antes de los `continue` de mas abajo (open-ended types como
+        # fill_blank_exec no llevan opciones y saltan el resto del bloque) -
+        # justo el tipo donde "Completa el blank" vivio 282 veces sin que
+        # ninguna guarda lo viera (37.17).
+        for field in ("question_es", "explanation_es"):
+            if EN_LEAK_ES.search(q.get(field) or ""):
+                fail(path, qid, f"{field} still says \"el blank\" - ingles sin traducir (37.17)")
 
         opts_es, opts_en = q.get("options_es"), q.get("options_en")
         if opts_es is None and opts_en is None:
