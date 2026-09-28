@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { auth } from '../services/api';
 import styles from './AuthScreen.module.css';
 
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function ResetPasswordPage({ token, onSuccess }: Props) {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,14 +18,14 @@ export function ResetPasswordPage({ token, onSuccess }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    if (password.length < 8) return setError('Mínimo 8 caracteres');
-    if (password !== confirm) return setError('No coinciden');
+    if (password.length < 8) return setError(t('resetPassword.minLength'));
+    if (password !== confirm) return setError(t('resetPassword.mismatch'));
     setLoading(true);
     try {
       await auth.resetPassword(token, password);
       setTimeout(onSuccess, 1000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : t('auth.errGeneric'));
     } finally {
       setLoading(false);
     }
@@ -32,10 +34,30 @@ export function ResetPasswordPage({ token, onSuccess }: Props) {
   return (
     <div className={styles.screen}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nueva contraseña" />
-        <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="Confirmar" />
+        <label className={styles.field}>
+          <span className={styles.label}>{t('resetPassword.newPasswordPlaceholder')}</span>
+          <input
+            className={styles.input}
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={t('resetPassword.newPasswordPlaceholder')}
+            autoComplete="new-password"
+          />
+        </label>
+        <label className={styles.field}>
+          <span className={styles.label}>{t('resetPassword.confirmPlaceholder')}</span>
+          <input
+            className={styles.input}
+            type="password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            placeholder={t('resetPassword.confirmPlaceholder')}
+            autoComplete="new-password"
+          />
+        </label>
         {error && <p className={styles.error}>⚠️ {error}</p>}
-        <button className={styles.submit} type="submit" disabled={loading}>{loading ? 'Cargando...' : 'Cambiar'}</button>
+        <button className={styles.submit} type="submit" disabled={loading}>{loading ? t('auth.loading') : t('resetPassword.submit')}</button>
       </form>
     </div>
   );

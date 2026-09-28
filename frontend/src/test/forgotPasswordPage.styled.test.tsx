@@ -10,6 +10,7 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import i18n from '../i18n';
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
 import { auth } from '../services/api';
 
@@ -20,7 +21,10 @@ vi.mock('../services/api', async (importOriginal) => {
 
 const requestPasswordReset = auth.requestPasswordReset as unknown as ReturnType<typeof vi.fn>;
 
-beforeEach(() => vi.clearAllMocks());
+beforeEach(async () => {
+  vi.clearAllMocks();
+  await i18n.changeLanguage('es');
+});
 afterEach(cleanup);
 
 describe('ForgotPasswordPage — estilo Obsidian (34.1)', () => {
