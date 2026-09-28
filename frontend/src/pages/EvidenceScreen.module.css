@@ -1,38 +1,11 @@
-:root {
-  --ev-bg: #f8f9fa;
-  --ev-surface: #ffffff;
-  --ev-text: #1a1a2e;
-  --ev-muted: #666;
-  --ev-border: #e2e4e8;
-  --ev-brand: #7c3aed;
-  --ev-green: #16a34a;
-  --ev-orange: #d97706;
-  --ev-highlight: #faf5ff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --ev-bg: #0f0f1a;
-    --ev-surface: #1a1a2e;
-    --ev-text: #e8e8f0;
-    --ev-muted: #9999bb;
-    --ev-border: #2a2a3e;
-    --ev-highlight: #1e1830;
-  }
-}
-:root[data-theme='dark'] {
-  --ev-bg: #0f0f1a;
-  --ev-surface: #1a1a2e;
-  --ev-text: #e8e8f0;
-  --ev-muted: #9999bb;
-  --ev-border: #2a2a3e;
-  --ev-highlight: #1e1830;
-}
-
+/* Idioma visual de la app entera (24.1): sin paleta propia — las mismas
+   --le-* de src/styles/design-tokens.css, que ya cambian solas con el tema
+   (data-theme / prefers-color-scheme), así que esta página no necesita
+   duplicar esa lógica con su propio bloque --ev-*. */
 .page {
   min-height: 100dvh;
-  background: var(--ev-bg);
-  color: var(--ev-text);
+  background: var(--le-bg);
+  color: var(--le-text);
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 15px;
   line-height: 1.6;
@@ -40,8 +13,13 @@
 
 /* ── Hero ── */
 .hero {
-  background: linear-gradient(135deg, #4f1d96 0%, #7c3aed 60%, #a78bfa 100%);
-  color: #fff;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--le-purple-dark) 65%, black) 0%,
+    var(--le-purple-dark) 60%,
+    var(--le-purple) 100%
+  );
+  color: white;
   padding: 60px 20px 48px;
 }
 .heroInner {
@@ -76,6 +54,14 @@
   font-size: 0.8rem;
   opacity: 0.7;
 }
+/* .link es --le-purple-dark, casi invisible sobre el propio degradado morado
+   del héroe (bug preexistente, visto al revisar la captura de 24.1: era el
+   mismo morado ya en el --ev-brand literal de antes, no algo que tokenizar
+   haya causado). Blanco subrayado aquí, sin tocar los demás usos de .link. */
+.captureDate .link {
+  color: white;
+  text-decoration: underline;
+}
 
 /* ── Layout ── */
 .main {
@@ -90,11 +76,11 @@
   font-size: 1.35rem;
   font-weight: 800;
   margin: 0 0 10px;
-  color: var(--ev-brand);
+  color: var(--le-purple-dark);
   letter-spacing: -0.01em;
 }
 .lead {
-  color: var(--ev-muted);
+  color: var(--le-text-muted);
   margin: 0 0 20px;
   max-width: 680px;
 }
@@ -106,8 +92,8 @@
   gap: 12px;
 }
 .engineCard {
-  background: var(--ev-surface);
-  border: 1px solid var(--ev-border);
+  background: var(--le-surface);
+  border: 1px solid var(--le-border);
   border-radius: 10px;
   padding: 16px;
 }
@@ -115,13 +101,13 @@
   display: block;
   font-weight: 700;
   font-size: 0.95rem;
-  color: var(--ev-brand);
+  color: var(--le-purple-dark);
   margin-bottom: 6px;
 }
 .engineDesc {
   margin: 0;
   font-size: 0.88rem;
-  color: var(--ev-muted);
+  color: var(--le-text-muted);
   line-height: 1.5;
 }
 
@@ -129,7 +115,7 @@
 .tableWrap {
   overflow-x: auto;
   border-radius: 10px;
-  border: 1px solid var(--ev-border);
+  border: 1px solid var(--le-border);
 }
 .table {
   width: 100%;
@@ -144,27 +130,27 @@
 .table th:last-child,
 .table td:last-child { width: 12%; }
 .table th {
-  background: var(--ev-surface);
+  background: var(--le-surface);
   text-align: left;
   padding: 10px 12px;
   font-weight: 700;
-  border-bottom: 1px solid var(--ev-border);
+  border-bottom: 1px solid var(--le-border);
   white-space: nowrap;
 }
 .table td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--ev-border);
+  border-bottom: 1px solid var(--le-border);
   vertical-align: middle;
 }
 .table tr:last-child td { border-bottom: none; }
-.table tr:hover td { background: var(--ev-highlight); }
-.rowHighlight td { background: var(--ev-highlight) !important; }
+.table tr:hover td { background: var(--le-purple-light); }
+.rowHighlight td { background: var(--le-purple-light) !important; }
 
 .tdScore { min-width: 68px; max-width: 90px; }
 .tdTotal { white-space: nowrap; font-size: 1rem; }
 .tdValue { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-weight: 700; }
-.pct { font-size: 0.75rem; color: var(--ev-muted); margin-left: 2px; }
-.noteCell { margin: 4px 0 0; font-size: 0.78rem; color: var(--ev-muted); }
+.pct { font-size: 0.75rem; color: var(--le-text-muted); margin-left: 2px; }
+.noteCell { margin: 4px 0 0; font-size: 0.78rem; color: var(--le-text-muted); }
 
 /* ── Score bar ── */
 .barWrap {
@@ -183,7 +169,7 @@
 .barLabel {
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--ev-text);
+  color: var(--le-text);
   flex-shrink: 0;
 }
 
@@ -195,13 +181,13 @@
   margin-bottom: 16px;
 }
 .dimChip {
-  background: var(--ev-surface);
-  border: 1px solid var(--ev-border);
+  background: var(--le-surface);
+  border: 1px solid var(--le-border);
   border-radius: 20px;
   padding: 4px 10px;
   font-size: 0.78rem;
 }
-.dimChip strong { color: var(--ev-brand); }
+.dimChip strong { color: var(--le-purple-dark); }
 
 /* ── Benchmark results ── */
 .resultGrid {
@@ -211,18 +197,18 @@
   margin-bottom: 16px;
 }
 .resultCard {
-  background: var(--ev-surface);
-  border: 1px solid var(--ev-border);
+  background: var(--le-surface);
+  border: 1px solid var(--le-border);
   border-radius: 10px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-.resultCardWin { border-color: var(--ev-green); }
+.resultCardWin { border-color: var(--le-green); }
 .resultLabel {
   font-size: 0.78rem;
-  color: var(--ev-muted);
+  color: var(--le-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 700;
@@ -235,37 +221,37 @@
 }
 .resultSub {
   font-size: 0.76rem;
-  color: var(--ev-muted);
+  color: var(--le-text-muted);
 }
 
 /* ── BKT note ── */
 .benchmarkNote {
   margin-top: 16px;
   padding: 14px 16px;
-  background: color-mix(in srgb, var(--ev-brand) 8%, var(--ev-surface));
-  border-left: 3px solid var(--ev-brand);
+  background: color-mix(in srgb, var(--le-purple-dark) 8%, var(--le-surface));
+  border-left: 3px solid var(--le-purple-dark);
   border-radius: 0 8px 8px 0;
   font-size: 0.88rem;
-  color: var(--ev-muted);
+  color: var(--le-text-muted);
 }
-.benchmarkNote strong { color: var(--ev-text); }
+.benchmarkNote strong { color: var(--le-text); }
 
 /* ── Behind list ── */
 .behindList {
   padding-left: 20px;
-  color: var(--ev-muted);
+  color: var(--le-text-muted);
 }
 .behindList li { margin-bottom: 8px; }
-.behindList strong { color: var(--ev-text); }
+.behindList strong { color: var(--le-text); }
 
 /* ── Links ── */
-.link { color: var(--ev-brand); text-decoration: none; }
+.link { color: var(--le-purple-dark); text-decoration: none; }
 .link:hover { text-decoration: underline; }
 
 .inlineCode {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 0.85em;
-  background: var(--ev-border);
+  background: var(--le-border);
   padding: 1px 5px;
   border-radius: 4px;
 }
@@ -273,14 +259,14 @@
 .disclaimer {
   margin-top: 12px;
   font-size: 0.78rem;
-  color: var(--ev-muted);
+  color: var(--le-text-muted);
 }
 
 /* ── Footer ── */
 .footer {
-  border-top: 1px solid var(--ev-border);
+  border-top: 1px solid var(--le-border);
   padding: 20px;
   text-align: center;
   font-size: 0.82rem;
-  color: var(--ev-muted);
+  color: var(--le-text-muted);
 }

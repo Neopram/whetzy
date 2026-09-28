@@ -79,10 +79,10 @@ const DIM_KEYS = ['engine', 'bilingual', 'runtime', 'algorithm', 'catalog', 'ui'
 
 function dimColor(val: number, max: number) {
   const pct = val / max;
-  if (pct >= 0.75) return 'var(--ev-green)';
-  if (pct >= 0.5)  return 'var(--ev-brand)';
-  if (pct >= 0.25) return 'var(--ev-orange)';
-  return 'var(--ev-muted)';
+  if (pct >= 0.75) return 'var(--le-green)';
+  if (pct >= 0.5)  return 'var(--le-purple-dark)';
+  if (pct >= 0.25) return 'var(--le-orange)';
+  return 'var(--le-text-muted)';
 }
 
 export function EvidenceScreen() {
