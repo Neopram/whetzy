@@ -64,3 +64,8 @@ backups/*.dump
 # 24.0: capturas de páginas de la competencia — evidencia de sesión, no
 # contenido de terceros al repo.
 /docs/competencia-screenshots/
+
+# Redis local (sin Docker, `redis-server --daemonize yes` en el contenedor
+# de sesión) vuelca su snapshot en la raíz del repo si el cwd al arrancar
+# era este. Dato de sesión, no del proyecto.
+/dump.rdb
