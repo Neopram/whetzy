@@ -180,7 +180,7 @@ export function HomeScreen() {
         <Card>
           <div className={styles.cardHeader}>
             <h2 className={styles.cardTitle}>
-              {t('home.yourStreak')}: {streak} {t('home.days')}{' '}
+              {t('home.yourStreak')}: {streak} {t('home.days', { count: streak })}{' '}
               <motion.span variants={flickerVariants} animate="animate" style={{ display: 'inline-block' }}>🔥</motion.span>
             </h2>
             <span className={`${styles.badge} ${styles.badgeSuccess}`}>
