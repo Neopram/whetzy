@@ -18,6 +18,16 @@ os.environ.setdefault("SECRET_KEY", "test-secret-key-00000000000000000001")
 os.environ.setdefault("GROQ_API_KEY", "")
 os.environ.setdefault("AUTH_RATE_LIMIT", "200")
 os.environ.setdefault("DEFAULT_RATE_LIMIT", "2000")
+# Generous limits above aren't isolation: Redis persists the hit counter
+# across whole test RUNS (same key, same TTL window), not just across tests
+# within one run. Two full-suite runs within the same ~60s window share a
+# counter and both see 429s that neither earned on its own — found running
+# the suite twice back to back this session. DATABASE_URL gets a fresh
+# in-memory sqlite per run above; REDIS_URL gets the same treatment here:
+# get_rate_limiter("") is falsy, so it returns InMemoryRateLimiter, which
+# starts empty every process. The Redis backend itself is still exercised
+# directly in test_rate_limiter.py, against an explicitly unreachable URL.
+os.environ.setdefault("REDIS_URL", "")
 # ──────────────────────────────────────────────────────────────────────────────
 
 import uuid
