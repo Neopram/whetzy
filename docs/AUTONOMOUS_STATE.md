@@ -396,7 +396,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
-| 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **PARCIAL** | **PARCIAL** `d7f6711` (2026-09-27): e2e real (Postgres+Redis locales, sin Docker) 44/45 verdes (1 flake Pyodide, no reproducible); 2 bugs reales hallados y arreglados (ForgotPasswordPage sin estilo, gate 32.4 tapado) → STATUS.md. Falta: capturas antes/después en el PR → §I |
+| 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **PARCIAL** | **PARCIAL** `d7f6711`: e2e real 44/45 verdes; 2 bugs hallados y arreglados → STATUS.md. Capturas antes (`03220e4`, Auth invisible)/después + 9 pantallas más entregadas al dueño y comentadas en el PR (sin subida de imagen vía API); falta insertarlas de verdad en el PR → §I |
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** → §I |
 | 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
