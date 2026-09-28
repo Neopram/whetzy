@@ -33,6 +33,7 @@ Cuando crea una cuenta o utiliza nuestro Servicio, podemos recopilar:
 
 - **Datos de Cuenta**: Nombre, dirección de correo electrónico, contraseña, foto de perfil, número de teléfono (opcional), fecha de nacimiento (opcional)
 - **Información de Perfil**: Preferencias de aprendizaje, nivel educativo, temas de interés, insignias de logros, historial de estudio
+- **Respuestas del Cuestionario Inicial**: Al configurar su cuenta le preguntamos, de forma opcional, su experiencia previa, su objetivo de aprendizaje y las horas semanales que piensa dedicar — solo para adaptar el contenido que le mostramos, nunca se comparten con terceros
 - **Datos de Comunicación**: Mensajes, tickets de soporte, comentarios y otras comunicaciones con nuestro equipo de soporte
 
 ### 2.2 Información Recopilada Automáticamente

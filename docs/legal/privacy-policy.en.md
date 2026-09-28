@@ -33,6 +33,7 @@ When you create an account or use our Service, we may collect:
 
 - **Account Data**: Name, email address, password, profile picture, phone number (optional), date of birth (optional)
 - **Profile Information**: Learning preferences, educational level, subjects of interest, achievement badges, study history
+- **Onboarding Survey Answers**: When setting up your account we optionally ask about your prior experience, your learning goal, and the weekly hours you plan to study — used only to tailor the content you see, never shared with third parties
 - **Communication Data**: Messages, support tickets, feedback, and other communications with our support team
 
 ### 2.2 Automatically Collected Information
