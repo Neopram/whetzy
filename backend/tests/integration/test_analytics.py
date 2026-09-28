@@ -30,9 +30,9 @@ def _ip() -> str:
     return f"192.0.2.{n % 255 or 255}"
 
 
-async def _see_lesson(db_session, user, *skill_ids: str) -> None:
-    for skill_id in skill_ids:
-        db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
+async def _see_lesson(db_session, user, skill_id: str) -> None:
+    """32.4: el estudio de un skill exige haber visto su lección primero."""
+    db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
     await db_session.commit()
 
 
@@ -45,12 +45,6 @@ def _h(extra: dict | None = None) -> dict:
 
 # ── event firing ─────────────────────────────────────────────────────────────
 
-
-
-async def _see_lesson(db_session, user, skill_id: str) -> None:
-    """32.4: el estudio de un skill exige haber visto su lección primero."""
-    db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
-    await db_session.commit()
 
 async def test_register_fires_user_registered_event(client, db_session):
     r = await client.post(

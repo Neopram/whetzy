@@ -156,7 +156,6 @@ async def test_response_records_updated_version_after_patch(
     from app.core import config as config_module
 
     monkeypatch.setattr(config_module.settings, "CONTENT_ADMIN_KEY", ADMIN_KEY)
-    await _see_lesson(db_session, user, content_seed["skill_id"])
 
     patch = await client.patch(
         f"{CONTENT}/questions/{content_seed['question_id']}",
