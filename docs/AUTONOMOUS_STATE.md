@@ -174,7 +174,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 20.7 | **1** | CI ciego: `verify_ci_local.ps1` replica `ci.yml` paso a paso | **DONE** | **DONE** `d4de5d2` (2026-09-28), verificador CONFIRMADA: pin de ruff, ámbito de oxlint y paso `check:i18n` verificados por `grep` en los 3 ficheros; 6/6 pasos backend, 10/10 frontend; stubs SKIP e2e+android 2/2; sin fallo → §I |
+| 20.7 | **1** | CI ciego: `verify_ci_local.ps1` replica `ci.yml` paso a paso | **DONE** | `d4de5d2`, verificador CONFIRMADA: pin de ruff, oxlint y `check:i18n` verificados por `grep`; 6/6 backend, 10/10 frontend → §I |
 
 ### 21. Legal y fiscal a coste cero — investigación, borradores, gates humanos (abierta 2026-09-18, sesión bf — **H.20 SIGUE ABIERTO** — el…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
@@ -392,7 +392,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **DONE** | `be2e83b` (2026-09-28), verificador CONFIRMADA: (a-d) siguen bien; texto de privacidad de segmento añadido (`d3453d1`); (b) sin test → añadido y mutado, primer verificador REFUTADA solo por eso, cerrado → §I |
 | 34.12 | **2** | Plural e idioma en la UI: `HomeScreen.tsx` sin `count`, `/evidence` en inglés fijo | **DONE** | `772fe5d` (2026-09-28), verificador CONFIRMADA: plurales `_one`/`_other`, `/evidence` traducida (~60 cadenas), `docTitle.evidence` añadido. 8 tests, mutados; capturas entregadas al dueño → §I |
-| 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **PARCIAL** | **PARCIAL** `d7f6711`: e2e real 44/45 verdes; 2 bugs hallados y arreglados → STATUS.md. Capturas antes (`03220e4`, Auth invisible)/después + 9 pantallas más entregadas al dueño y comentadas en el PR (sin subida de imagen vía API); falta insertarlas de verdad en el PR → §I |
+| 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **DONE** | `e58b6b2`, verificador CONFIRMADA: guarda 276→0 en vivo (`cssModules.contract.test.ts`, baseline vacío); e2e `d7f6711` 44/45 (45 `test(` en el commit, no ficheros); 13 capturas insertadas en el PR vía `raw.githubusercontent.com`. Caveat del verificador: antes/después literal solo en Auth (`03220e4`); el resto son "después" con motivo documentado (sin checkout histórico) → §I |
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** (2026-09-28): 0 `var(--x, #hex)` en `src/` (era 1, `--color-cyan` no existía en ningún fichero, caía al respaldo) → `var(--color-primary)` real. Guarda `tokens.noHexFallback` mutada. Falta: modo claro por el dueño → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** (2026-09-28): página interna `/_ui` (14 componentes, todas sus variantes) — solo dev, `import.meta.env.DEV` elimina el bundle entero del build (confirmado leyendo `dist/`, mutado). `check-dev-only.mjs` nuevo en `ci_local.sh`. Capturas entregadas al dueño, no al PR (mismo bloqueo que 34.1). Falta: foco visible y objetivos táctiles ≥ 44px sin auditar → §I |
 | 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** (2026-09-28): 390px sin scroll horizontal en Auth/Onboarding/Home ES+EN (5 e2e, mutado); TTFQ ES 14.7s, EN 12.9s (esta rama, local). `ttfq-prod.spec.ts` NO se corrió contra producción (crearía una cuenta real, fuera del alcance sin el dueño). → §I
@@ -452,8 +452,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 38.2 | **2** | Oferta de 3 pilotos B2B gratuitos (ADR-22): documento ES/EN (qué dam… | DONE | → §O |
 | 38.3 | **2** | Dossier de afiliación Python Institute y CompTIA (archive/whetzy_es… | DONE | → §O |
 | 38.5 | **3** | **Página `/evidence` como única prueba social** (19.8, 30.1): cifras del banco y del motor calculadas en build, cero… | **DONE** | **DONE**: EvidenceScreen.tsx + CSS module + ruta registrada en App.tsx → §I |
-| 38.6 | **2** | **Pro Max = tutor IA ilimitado; Pro con cupo diario** (ADR-49). `POST`… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
-| 38.7 | **2** | **Certificación a 39,99 $ de pago único** (ADR-49). Hoy los tracks… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
+| 38.6 | **2** | **Pro Max = tutor IA ilimitado; Pro con cupo diario** (ADR-49). `POST`… | **DONE** | `843015e` (2026-09-25) → §I |
+| 38.7 | **2** | **Certificación a 39,99 $ de pago único** (ADR-49). Hoy los tracks… | **DONE** | `843015e` (2026-09-25) → §I |
 
 ### 39. Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobación en bloque (ADR-50)
 
