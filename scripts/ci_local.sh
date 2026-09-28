@@ -224,6 +224,16 @@ if [ -d "$ARBOL/frontend/node_modules" ]; then
   # pasaba, pero no corria en ningun sitio automatico -- ni aqui, ni pre-push,
   # ni ci.yml -- hasta que la auditoria de 20.7 encontro el hueco.
   correr "frontend: i18n parity" "$ARBOL/frontend" npm run -s check:i18n
+  # Red line: 30.4 midio "check-prerender PASS" pero el script solo corria en
+  # ci.yml, que nunca se ejecuta por facturacion de GitHub -- igual que el
+  # hueco de "i18n parity" arriba, encontrado por la auditoria de 20.7.
+  # `npm run build` ya llama a scripts/prerender-landing.mjs vía el plugin de
+  # Vite, pero ese script solo comprueba que `data-lcp="hero"` este presente,
+  # no el idioma del texto: un build en Node 21+ puede colar el hero en
+  # ingles (navigator.language del propio Node) sin que `vite build` se
+  # entere. check-prerender.mjs es la unica guarda que lee la copia de verdad.
+  correr "frontend: build (prerender incluido)" "$ARBOL/frontend" npm run -s build
+  correr "frontend: check-prerender" "$ARBOL/frontend" node scripts/check-prerender.mjs
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi
