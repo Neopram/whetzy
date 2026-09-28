@@ -1523,3 +1523,50 @@ del proyecto (Haiku escritor + revisor adversario Sonnet, ADR-52), no ediciones
 sueltas. El hallazgo y la herramienta quedan documentados aquí y en
 `scripts/audit_lesson_quiz_alignment.py` para que la siguiente sesión que abra
 esta cola no tenga que redescubrir el método.
+
+## 2026-09-28, misma sesión — verificador adversario refuta dos afirmaciones de 34.1/34.3, ambas corregidas
+
+El verificador adversario obligatorio (protocolo §7), corrido antes de dar 34.3
+por DONE, encontró dos defectos reales, no cosméticos:
+
+1. **`.langToggle` (QuizScreen.module.css) seguía midiendo ~18px de alto** en
+   Chromium real después de "arreglado" en `62ba218`. El arreglo de esa ronda
+   solo puso `min-width: 44px`; nunca tocó la altura, y el `line-height: normal`
+   del user-agent en un `<button>` dentro de un flex con `align-items: center`
+   no la fuerza a 44px por sí solo. Confirmado por el subagente renderizando el
+   CSS exacto, y reproducido por mí mismo antes de actuar.
+2. **Las capturas de 34.1 y 34.3 no se ven en el PR.** `![alt](https://raw.githubusercontent.com/...)`
+   devuelve 404 (`curl -sI`, verificado con mis propias manos) para un repo
+   privado — GitHub no sirve `raw.githubusercontent.com` sin la sesión
+   autenticada que un `<img>` en un comentario no lleva. Probé dos variantes más
+   (`github.com/.../raw/...` y `.../blob/...?raw=true`) y ambas dieron 404
+   también. No hay ninguna herramienta MCP en esta sesión que suba un adjunto a
+   un comentario de PR (el único mecanismo que GitHub sí soporta es
+   arrastrar-soltar en el editor web). Las capturas existen en el repo
+   (`docs/ui-snapshots/34.1/`, `docs/ui-snapshots/34.3/`) pero solo son
+   enlazables, no incrustables, desde aquí.
+
+Corrección aplicada:
+
+- `.langToggle` ahora tiene `display: inline-flex; align-items: center;
+  justify-content: center; min-height: 44px` además de `min-width: 44px`.
+- El audit de objetivos táctiles, que las rondas anteriores escribían como
+  `e2e/_zzz-touch-targets.spec.ts` y borraban tras correrlo (evidencia no
+  reproducible, señalado explícitamente por el verificador como una violación
+  de "evidencia ejecutable o no pasó"), ahora vive **committeado** en
+  `frontend/e2e/touchTargets.spec.ts`: mide todo `button, a[href], input,
+  select, textarea, [role="button"]` visible a 390px en Auth/Tracks/Lección/Quiz,
+  con dos exenciones documentadas en el propio test (WCAG 2.5.5 "inline" para
+  los términos de `GlossaryText`, y checkbox-dentro-de-`<label>` para la
+  casilla de edad de `AuthScreen`). Dos corridas limpias, 0 objetivos <44px.
+- `docs/AUTONOMOUS_STATE.md`: 34.3 vuelve a **PARCIAL** (el foco visible sigue
+  en pie, verificado; lo táctil ya está arreglado y verificado, pero la
+  captura-en-el-PR no se puede dar por hecha). 34.1 se queda en DONE — su
+  criterio duro (guarda 276→0, e2e 44/45) es independiente de las capturas —
+  pero el texto ya no afirma algo falso sobre ellas.
+
+No se encontró ningún método de incrustar imágenes en un comentario de PR/issue
+de un repo privado de GitHub sin usar el editor web. Queda como límite conocido,
+no como tarea pendiente: los enlaces directos a las capturas en el repo
+(clicables desde el PR, aunque no inline) son la evidencia visual disponible
+mientras eso siga siendo así.
