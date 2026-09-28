@@ -87,18 +87,21 @@ reportados en `COMPETENCIA.md` §A.2b.
    Koji «tracks what you've mastered», pero no dice con qué modelo.
 4. **ES y EN nativos en voz.** Koji solo existe en inglés.
 
-**Decisiones que no toma la sesión (H.49):**
+**Voz, decidida por el dueño el 2026-09-28 (H.49):**
 
-- **Texto a voz.** Por defecto (ADR-47), `speechSynthesis` del navegador: voces
-  locales del sistema, sin coste y sin tercero. Piper (MIT) en servidor queda
-  como alternativa si la calidad ES no basta.
-- **Voz a texto.** La API de voz de Chrome envía el audio a Google, lo que
-  choca con la línea roja 5. Las alternativas son un STT del proveedor LLM
-  actual o Whisper local en WASM, que pesa y choca con la línea roja 8. Decide
-  el dueño.
-- **Condiciones fijas, decida lo que decida:** pulsar para hablar,
-  consentimiento explícito, audio no almacenado (solo la transcripción) y todo
-  documentado en la política de privacidad.
+- **Texto a voz.** `speechSynthesis` del navegador: voces locales del sistema,
+  sin coste y sin tercero. Piper (MIT) en servidor queda como alternativa si la
+  calidad ES no basta.
+- **Voz a texto: el mismo proveedor que el tutor.** Groq expone
+  `https://api.groq.com/openai/v1/audio/transcriptions`, con modelos
+  `whisper-large-v3` y `whisper-large-v3-turbo`, en la misma base URL que
+  `GROQ_BASE_URL` (comprobado en console.groq.com/docs/speech-to-text el
+  2026-09-28). Esa página **no** lista el español ni dice cuánto guarda el
+  audio. Las dos cosas son criterio de 40.6: WER en ES medido con muestras
+  propias y política de retención leída con URL antes de activar nada.
+- **Condiciones fijas:** pulsar para hablar, consentimiento explícito, audio
+  no almacenado por Whetzy (solo la transcripción) y todo documentado en la
+  política de privacidad.
 - **Coste.** La voz cuenta contra el cupo de 38.6 y contra el techo de gasto
   diario de 39.11. El tutor ilimitado de Pro Max (ADR-49) incluye voz solo si
   el techo de gasto lo sostiene. Eso se mide antes de anunciarlo.
@@ -129,7 +132,7 @@ reportado en `COMPETENCIA.md` §A.2b.
   activos.** Es la misma regla que el marketplace (`CATALOGO_MAESTRO.md` §9):
   una comunidad vacía resta.
 
-## 4. Pilar D: planes anual, vitalicio y familiar, con mejor trato (frente a los dos)
+## 4. Pilar D: planes anual, vitalicio y familiar
 
 **Qué tienen.**
 
@@ -138,16 +141,19 @@ reportado en `COMPETENCIA.md` §A.2b.
 - **Kodree:** $98.99/año y $199.99 de por vida. Reembolso solo si
   completaste un módulo y renovaciones no reembolsables.
 
-**Qué hará Whetzy además.** Los precios los fija el dueño (ADR-41), así que
-aquí solo se construye el andamiaje y se propone el trato:
+**Decisión del dueño (2026-09-28).** Whetzy actúa como la competencia directa:
+planes, precios y reembolso se toman de lo que esta practica y está registrado
+con URL y fecha en `COMPETENCIA.md` §A. No hay política propia de reembolso,
+así que la propuesta que había aquí (H.50) queda descartada. Lo que se
+construye:
 
 1. **Modelo de asientos.** Una suscripción con N plazas (familiar o equipo
    pequeño), con entitlements por plaza. Reutiliza lo del piloto B2B (38.2).
-2. **Cancelar en dos toques** (línea roja 7), con aviso de renovación antes de
-   cobrar un anual (ya exigido en la UE, 21.4).
-3. **Propuesta de reembolso (H.50).** 14 días sin condiciones en el primer
-   pago y prorrata del anual si se cancela en el primer mes. Es mejor que las
-   dos políticas medidas y es un argumento de venta. Decide el dueño.
+2. **Cada plan con su referente citado.** Ningún importe ni condición entra
+   sin la fila de §A que lo respalda.
+3. **Cancelar en dos toques** (línea roja 7), con aviso de renovación antes de
+   cobrar un anual (ya exigido en la UE, 21.4). Estas dos cosas no dependen
+   de lo que haga la competencia.
 
 ## 5. Pilar E: rutas que hoy no están en el catálogo
 
@@ -166,8 +172,8 @@ aquí solo se construye el andamiaje y se propone el trato:
 ## 6. Orden y dependencias
 
 1. **Motor y piloto:** 40.1 y 40.2. La puerta es el piloto verde.
-2. **Tutor y planes:** 40.5–40.6 (el tutor que señala necesita widgets) y, en
-   paralelo, 40.9 (planes).
+2. **Tutor y planes:** 40.5 y luego 40.6 (el tutor que señala necesita
+   widgets; la voz va encima) y, en paralelo, 40.9 (planes).
 3. **Escala:** 40.3–40.4 (biblioteca de widgets) y 40.7–40.8 (comunidad,
    cerrada al público).
 4. **Rutas:** 40.10–40.12.

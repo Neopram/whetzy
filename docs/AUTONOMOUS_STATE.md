@@ -509,10 +509,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 40.3 | **3** | **Biblioteca de 15 widgets** mapeados a dominios de cert (IAM, Git DAG, TCP, CPU…) | TODO (tras 40.2) | contrato `render/serialize/check` testeado por widget; cada uno suma al readiness |
 | 40.4 | **3** | **Widget ↔ código** en los dos sentidos (Pyodide, sql.js, Worker JS) | TODO (tras 40.2) | e2e: editar el widget cambia el código y ejecutar el código anima el widget |
 | 40.5 | **3** | **Tutor que señala**: acciones estructuradas (resaltar línea, marcar nodo) validadas por esquema, con texto accesible | TODO (tras 40.2) | acción fuera de esquema rechazada (test); sin grounding lo dice (línea roja 2) |
-| 40.6 | **3** | **Tutor por voz ES/EN**: TTS `speechSynthesis`; STT según H.49; pulsar para hablar, audio no guardado | HUMAN-BLOCKED (H.49) | consentimiento y privacidad ES/EN; cuenta contra 38.6 y el techo de 39.11 |
+| 40.6 | **3** | **Tutor por voz ES/EN**: TTS `speechSynthesis`; STT por Groq `/audio/transcriptions` (H.49); pulsar para hablar, audio no guardado | TODO (tras 40.5) | WER en ES medido con muestras propias; retención de audio de Groq leída con URL; consentimiento ES/EN; cuenta contra 38.6 y 39.11 |
 | 40.7 | **3** | **Comunidad con contexto**: hilos por pregunta/lección, soluciones tras resolver, salas ES/EN, denuncias + antifraude | TODO (construir; abrir con ≥ 100 activos) | e2e: la solución ajena no se ve antes de resolver; notificación y retirada ES/EN |
 | 40.8 | **4** | **Grupos de estudio por cert + revisión por pares** de proyectos (revisor con Open Badge del track) | TODO (tras 40.7, 37.11) | readiness de grupo sin datos personales (test) |
-| 40.9 | **2** | **Planes anual, vitalicio y familiar**: modelo de asientos + entitlements; cancelar en 2 toques | TODO (código) · precio y reembolso = H.50 | tests de entitlements por plaza; aviso de renovación (21.4) |
+| 40.9 | **2** | **Planes anual, vitalicio y familiar** como la competencia directa (dueño, 2026-09-28): planes, precios y reembolso según `COMPETENCIA.md` §A; modelo de asientos + entitlements | TODO | cada plan con su referente citado; tests por plaza; cancelar en 2 toques (línea roja 7) y aviso de renovación (21.4) |
 | 40.10 | **4** | **Ruta Analista de datos ejecutable** (pandas en Pyodide + SQL, datasets abiertos) | TODO | cert confirmada con URL; fuentes ADR-11 |
 | 40.11 | **4** | **TypeScript ejecutable** en el Worker, carga perezosa solo en su track | TODO | licencia del compilador verificada; peso fuera del bundle base |
 | 40.12 | **4** | **Investigar Java en navegador y UX/UI** (runtime, peso, licencias) | TODO | informe con URL; nada entra sin fuentes H.LIC y línea roja 8 |
@@ -563,8 +563,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.44 | Terminar o quitar Firecrawl, Amplitude, Mailchimp y Lusha (a medio conectar) |
 | H.45 | Conectar redes (X, LinkedIn…) en Metricool/Typefully para que la distribución deje de ser solo borradores |
 | H.46 | ¿Monitor de uptime de Sentry para `/health`? (puede consumir cuota de pago) |
-| H.49 | Proveedor de voz a texto del tutor (40.6): el del LLM actual, Whisper local (peso) o ninguno; la API de voz de Chrome envía audio a Google (línea roja 5) |
-| H.50 | Precios de anual, vitalicio y familiar + política de reembolso (40.9; propuesta en `PLAN_EXPERIENCIA.md` §4) |
+| H.49 | **DECIDIDA 2026-09-28** — dueño: la voz a texto del tutor (40.6) usa el mismo proveedor que el tutor (Groq, `/audio/transcriptions`) |
 | H.48 | Clave de API de Anthropic con gasto para un pipeline por **Batch API** de rellenos con Haiku 4.5 (ADR-52); hoy ningún código del repo llama a la API | Dueño |
 | H.47 | ¿Mantener el correo personal del dueño como contacto en la página pública `/evidence` (`EvidenceScreen.tsx:340`)? Por defecto (ADR-47) se deja y se propone un alias tipo `support@whetzy.com` | Dueño |
 
