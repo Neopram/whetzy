@@ -69,6 +69,14 @@ const ProjectScreen = lazy(() =>
 // Public, unauthenticated status page — checked before any auth machinery so
 // it stays reachable even when the backend is down.
 const StatusPage = lazy(() => import('./pages/StatusPage'));
+// Dev-only showcase (34.3). `import.meta.env.DEV` is a compile-time
+// constant Vite/Rollup evaluates during the build, so this whole branch —
+// including the dynamic import below — is dead-code-eliminated out of the
+// production bundle, not just hidden behind a runtime check someone could
+// defeat by typing the URL.
+const UiKitScreen = import.meta.env.DEV
+  ? lazy(() => import('./pages/UiKitScreen'))
+  : null;
 
 // URL-based routing for standalone pages (no React Router needed)
 const STANDALONE_DOC: Record<string, string> = {
@@ -187,6 +195,8 @@ function App() {
   // Public status page: no auth, no store, reachable even if the backend
   // that the rest of the app depends on is the very thing that's down.
   if (path === '/status') return <Screen><StatusPage /></Screen>;
+
+  if (path === '/_ui' && UiKitScreen) return <Screen><UiKitScreen /></Screen>;
 
   if (path.startsWith('/r/')) {
     const code = path.slice(3);

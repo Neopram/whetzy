@@ -234,6 +234,7 @@ if [ -d "$ARBOL/frontend/node_modules" ]; then
   # entere. check-prerender.mjs es la unica guarda que lee la copia de verdad.
   correr "frontend: build (prerender incluido)" "$ARBOL/frontend" npm run -s build
   correr "frontend: check-prerender" "$ARBOL/frontend" node scripts/check-prerender.mjs
+  correr "frontend: check-dev-only" "$ARBOL/frontend" node scripts/check-dev-only.mjs
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi
