@@ -333,8 +333,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.1 | **1** | **Servicio de créditos** `services/economy/credits.py`: abono con lote y… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json`… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I |
-| 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | **DONE**: 3 endpoints — `/economy/credits` con summary (emitted/spent/expired, sink_source_ratio, inflation_alert, by_reason) + rows; `/economy/referrals`; `/economy/k-factor` → §I |
-| 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | **DONE** — `reactivation_check` job handler: consulta `User.last_active < 14d`, genera código 72h vía `PromoCodeService`, envía email ES/EN con plantilla `reactivation` | |
+| 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | 3 endpoints: `/economy/credits`, `/economy/referrals`, `/economy/k-factor` → §I |
+| 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | **DONE** | `reactivation_check` job: 14 días inactivo → código 72h + email ES/EN |
 | 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | **DONE** | WalletScreen: balance, referidos, canje de promos; 22 claves i18n → `66925f8` |
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | → §I (criterio archivado por 20.10) |
 
@@ -390,8 +390,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **DONE** | `be2e83b` (2026-09-28), verificador CONFIRMADA: (a-d) siguen bien; texto de privacidad de segmento añadido (`d3453d1`); (b) sin test → añadido y mutado, primer verificador REFUTADA solo por eso, cerrado → §I |
-| 34.12 | **2** | Plural e idioma en la UI: `HomeScreen.tsx` sin `count`, `/evidence` en inglés fijo | **DONE** | `772fe5d` (2026-09-28), verificador CONFIRMADA: plurales `_one`/`_other`, `/evidence` traducida (~60 cadenas), `docTitle.evidence` añadido. 8 tests, mutados; capturas entregadas al dueño → §I |
+| 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **DONE** | `be2e83b`, verificador CONFIRMADA (2ª ronda; 1ª REFUTADA por (b) sin test) → §I |
+| 34.12 | **2** | Plural e idioma en la UI: `HomeScreen.tsx` sin `count`, `/evidence` en inglés fijo | **DONE** | `772fe5d`, verificador CONFIRMADA: plurales `_one`/`_other`, `/evidence` traducida (~60 cadenas) → §I |
 | 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **DONE** | `e58b6b2`, verificador CONFIRMADA: guarda 276→0 en vivo; e2e `d7f6711` 44/45; 13 capturas insertadas en el PR. Caveat: antes/después literal solo en Auth (`03220e4`), resto "después" con motivo documentado → §I |
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** (2026-09-28): 0 `var(--x, #hex)` en `src/` (era 1, `--color-cyan` no existía en ningún fichero, caía al respaldo) → `var(--color-primary)` real. Guarda `tokens.noHexFallback` mutada. Falta: modo claro por el dueño → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** (2026-09-28): página interna `/_ui` (14 componentes, todas sus variantes) — solo dev, `import.meta.env.DEV` elimina el bundle entero del build (confirmado leyendo `dist/`, mutado). `check-dev-only.mjs` nuevo en `ci_local.sh`. Capturas entregadas al dueño, no al PR (mismo bloqueo que 34.1). Falta: foco visible y objetivos táctiles ≥ 44px sin auditar → §I |
@@ -481,6 +481,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.36 | **1** | `options_en` escritas en español en track21 (194 preguntas) y track44-46 (46, 33, 49) | **DONE** | 295 preguntas, solo `options_en`. Verificador CONFIRMADA: recuento en vivo = 0, `correct_index` intacto, `tests/content` 70.277 passed |
 | 39.37 | **0** | Relleno de generador en producción: 180 preguntas de track20 mod200… | DONE | → §O |
 | 39.38 | **0** | Dos claves falsas de Bicep en track22 (`q220503008`: «using» no… | DONE | → §M |
+| 39.39 | **1** | **Lección/quiz desalineados**: `scripts/audit_lesson_quiz_alignment.py` (nuevo, 2026-09-28, desde 37.1) marca 97 casos en 8 tracks donde el quiz de una skill pregunta por un servicio que su propia lección nunca menciona → STATUS.md | TODO | Por track: leer cada aviso (hay falsos positivos), arreglar los reales vía `Workflow` (Haiku+Sonnet, ADR-52); 0 avisos nuevos tras cada tanda |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |

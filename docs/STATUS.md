@@ -1484,3 +1484,42 @@ La lección, otra vez: lo que parece "el entorno se portó mal" merece la misma
 disciplina de causa raíz que cualquier otro fallo — descartar la explicación cómoda
 (contaminación entre procesos) exigió tres pasos de aislamiento antes de encontrar el
 bug real, y el bug real resultó ser una regresión de una fila que ya se creía cerrada.
+
+## 2026-09-28, misma sesión — 37.1 destapa un patrón de contenido: lección y quiz
+desalineados en toda la biblioteca, no solo en track08
+
+37.1 pedía re-auditar 19 "lecciones cortas" de track08. No eran cortas (1085-1850
+caracteres en `body_es`, comparable a track01: 1209-1575). Pero al contrastarlas en
+vivo contra su propia fuente citada aparecieron 3 defectos reales — uno solo tras
+que un verificador adversario refutara mi primer intento (`l080403`: planes de
+soporte AWS ya retirados, sustituidos por Business Support+/Enterprise
+Support/Unified Operations el 2027-01-01) — y, siguiendo el mismo hilo, hasta
+que encontré el patrón real: la **lección** de una skill y el **banco de preguntas**
+de esa misma skill, escritos por separado, enseñando cosas distintas. `l080102`
+decía "cinco pilares" del Well-Architected Framework sin Sostenibilidad (pilar
+oficial desde 2021) mientras `q080102001`/`002` ya preguntaban por seis. `l080307`
+nunca mencionaba Amazon Bedrock mientras `q080307008`/`009` preguntan
+específicamente por él. `l080203` no cubría AWS IAM Identity Center ni las SCP de
+Organizations que `q080203010`/`017` testean. `l080302` decía "400+" ubicaciones
+de CloudFront cuando la cifra actual de AWS es 750+.
+
+Hasta aquí, arreglos puntuales encontrados leyendo lección por lección. El paso
+que cambió la escala fue escribir `scripts/audit_lesson_quiz_alignment.py`: cruza
+cada pregunta "¿qué es/son X?" del banco contra el cuerpo de la lección de su
+mismo `skill_id`, y marca los servicios con nombre que el quiz pregunta pero la
+lección nunca menciona. Corrido sobre las 723 lecciones del repo (no solo
+track08): **97 instancias marcadas**, repartidas en `track08` (20, de las que 5
+ya se arreglaron a mano y quedan documentadas en el PR), `track10` (19),
+`track23` (14), `track11` (13), `track44` (11), `track22` (9), `track43` (6),
+`track46` (3), `track45` (2). Es un heurístico con falsos positivos (nombres
+solo en una opción incorrecta, servicios bajo otro nombre) — cada fila que marca
+hay que leerla antes de decidir que es un defecto real, que es exactamente lo
+que descartó varios falsos positivos al revisar track08 a mano.
+
+No se intentó arreglar el resto: parchear ~90 instancias más repartidas en 8
+tracks bajo presión de turno es el mismo tipo de trabajo apresurado que
+probablemente generó el patrón — el volumen pide el flujo de autoría en bloque
+del proyecto (Haiku escritor + revisor adversario Sonnet, ADR-52), no ediciones
+sueltas. El hallazgo y la herramienta quedan documentados aquí y en
+`scripts/audit_lesson_quiz_alignment.py` para que la siguiente sesión que abra
+esta cola no tenga que redescubrir el método.
