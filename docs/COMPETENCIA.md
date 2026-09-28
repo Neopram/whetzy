@@ -1,7 +1,7 @@
 # Whetzy — Inteligencia Competitiva Exhaustiva
 
 > **Documento vivo nº 14.** Análisis directo + indirecto. Última actualización:
-> **2026-09-24** (§A, captura en vivo). **§A manda sobre §1–§3**, que son del
+> **2026-09-28** (§A.2b, Brilliant y Kodree; resto de §A del 2026-09-24). **§A manda sobre §1–§3**, que son del
 > 2026-09-18 y contienen cifras que no se comprobaron entonces y hoy no se
 > sostienen (precios de Boot.dev y Platzi, ingresos): léelas como hipótesis.
 
@@ -67,6 +67,63 @@ Si cambias una cifra, re-descarga la página y cambia la fecha.
 
 La última tanda es una **afirmación de ausencia** sobre las páginas que vieron los
 agentes, no sobre los productos por dentro.
+
+### A.2b Captura del 2026-09-28: Brilliant y Kodree
+
+Dos agentes (uno por producto) y re-descarga a mano de las cifras que
+sostienen la comparación. Mismo método que §A: páginas públicas, sin cuenta,
+salida de red en EE. UU. Trustpilot devolvió 403 a la descarga directa: sus
+cifras no están aquí.
+
+**Comprobado a mano (2026-09-28)**
+
+| Competidor | Dato | Evidencia en la página | URL |
+|---|---|---|---|
+| Brilliant | **$27.99/mes** o **$161.88/año**; sustituye a «$20 o $30» de §A.2 | valores `27.99` y `161.88` en el HTML de la suscripción | brilliant.org/subscribe/ |
+| Brilliant | Gratis: 2 lecciones al día | «2 keys per day»; Premium «no keys required» | brilliant.org/help/pricing-and-plans/what-s-the-difference-between-free-and-premium/ |
+| Brilliant | Sin certificados | «does not currently offer completion certificates, course credits, academic degrees, or professional certifications» | brilliant.org/help/using-brilliant/does-brilliant-offer-certificates/ |
+| Brilliant | iOS 4,7★ / 32.677 valoraciones; solo inglés | JSON-LD `"ratingValue":4.7`, `"reviewCount":32677`; «Languages English» | apps.apple.com/us/app/id913335252 |
+| Kodree | **$39.99/mes**, **$98.99/año** ($8.25/mes), **$199.99** de por vida; sin plan gratis | precios en el HTML de la home | kodree.com |
+| Kodree | Reembolso en 14 días solo si se completó un módulo | «within 14 days of the initial purchase… by completing at least one module» | kodree.com/subscription-terms |
+| Kodree | «60+ COURSES»; iOS 4,42★ / 248; solo EN | iTunes Lookup API, `languageCodesISO2A: ["EN"]`, versión del 2026-09-25 | itunes.apple.com/lookup?id=6739421200 |
+| Kodree | Android 4,32★ / 631 | JSON-LD `ratingValue`, `ratingCount` | play.google.com (`com.mateacademyapp.knowely`) |
+| Kodree | Web solo en inglés; `/try-free` enlaza a la marca antigua | `lang="en"`; 9 enlaces a `app.knowely.com` | kodree.com/try-free |
+
+**Reportado por agentes, no reproducido (probable)**
+
+- **Brilliant.**
+  - Tutor IA «Koji» (mayo de 2026): voz de ElevenLabs, dibuja en pantalla y no da la respuesta. No se publica qué modelo usa.
+  - Ligas semanales por XP y rachas.
+  - Plan familiar $45/mes para 6 plazas.
+  - Gratis para profesores y sus clases; `/for-teams` da 404.
+  - Reembolsos «solely as a courtesy»; quejas por renovaciones no esperadas (PissedConsumer 1,8/5).
+  - Programación solo conceptual, en Python.
+- **Kodree.**
+  - Antes se llamaba Knowely (cambio el 2025-07-23); es del equipo de Mate Academy.
+  - Siete rutas de carrera: Data Analyst, Front-End, Full-stack, Python, UX/UI, Project Management y Vibe Coding.
+  - Unos 3 proyectos de portafolio por ruta; editor de código en el navegador; «AI Buddy», sin proveedor declarado.
+  - XP, ligas e insignias.
+  - Certificados que sus términos no presentan como título oficial: «does not award any official documents on education».
+  - Renovaciones no reembolsables.
+  - Entidades en Chipre y Delaware.
+  - Sin oferta B2B encontrada.
+
+**Lo que tienen y Whetzy no, frente a lo que el plan ya cubre** (revisado contra
+`AUTONOMOUS_STATE.md` y `CATALOGO_MAESTRO.md` el 2026-09-28):
+
+| Lo que tienen | ¿En el plan? | Dónde |
+|---|---|---|
+| Apps publicadas en iOS y Android | Sí, pero depende del dueño | serie 17, 19.2, H.2/H.3 |
+| Proyectos de portafolio | Sí | 37.11 (10 por track ejecutable; BLOCKED por 37.6) |
+| Rutas por rol | Parcial | bootcamps 19.4 (3), roadmap por rol 19.8 |
+| Vídeo o animación de conceptos | Sí, pasivo | Manim 14.14, 18.9, 19.10 |
+| Problemas visuales **manipulables** (Brilliant) | **No** | ninguna fila |
+| Tutor por **voz** o que dibuja | **No** | ninguna fila |
+| Comunidad dentro de la app | **No** | solo perfiles externos (26.7) |
+| Plan anual | Pendiente del dueño | H.35 |
+| Plan de por vida o familiar | **No** | ninguna fila |
+| UX/UI, Excel o Power BI | **No** | `CATALOGO_MAESTRO.md` §2.0.1: ux-design «no se proponen todavía» |
+| Java o TypeScript ejecutables | Parcial | 37.8 añade tracks; runtimes solo Python/SQL/JS |
 
 ### A.3 La lógica de negocio del mercado, y dónde encaja Whetzy
 
