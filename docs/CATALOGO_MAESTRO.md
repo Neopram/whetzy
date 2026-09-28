@@ -146,9 +146,19 @@ Los recuentos se reproducen con el comando indicado; no se copian a mano en otro
 | ISC2 | https://www.isc2.org/certifications | 2026-09-25T00:39:21Z | 200 | CISSP, CCSP, CSSLP, CGRC… |
 | Linux Foundation | https://training.linuxfoundation.org/certification-catalog/ | 2026-09-25T00:39:21Z | 200 | KCNA, CKA, CKAD, CKS, CGOA… |
 | CompTIA | https://www.comptia.org/certifications | 2026-09-25T00:39:21Z | 200 | catálogo de certificaciones |
+| Microsoft Learn | https://learn.microsoft.com/en-us/credentials/browse/?credential_types=certification | 2026-09-28T16:11Z | 200 | Playwright (arreglado el TLS del proxy de sandbox esta sesión, sin bypass): 74 certificaciones, 3 páginas paginadas, `innerText` completo |
+| Google Cloud | https://cloud.google.com/learn/certification | 2026-09-28T16:11Z | 200 | Playwright: catálogo completo por nivel (Foundational/Associate/Professional) |
 
-Microsoft Learn y Google Cloud no se pudieron leer enteros (páginas que cargan por JS):
-sus certificaciones siguen en §3, con la fuente de su fila.
+**Microsoft Learn (74 certificaciones, 2026-09-28) y Google Cloud, ya legibles.**
+Ninguna certificación de las dos listas abre una categoría de track que no exista ya:
+Microsoft es sobre todo Azure (AI/cloud/seguridad/datos, ya cubierto por 06-08/10/11/13/
+20-25/41), GitHub (track26), Power BI/Fabric (track20/21) y una franja grande de Dynamics
+365 y Office Specialist (aplicaciones de negocio, fuera del foco actual del catálogo —
+no se propone track). Google Cloud: Cloud Digital Leader/Engineer/Architect/Database
+Engineer/DevOps Engineer/Security Engineer/Network Engineer/ML Engineer/Data
+Practitioner/Workspace Administrator, todas dentro de tracks existentes. `Azure AI
+Fundamentals` sigue en la lista como nombre de certificación aunque el examen debajo
+cambió a AI-901 (39.24) — el nombre de marca no cambia con el código del examen.
 
 **Área → track** (roadmap.sh como índice, contrastado con la encuesta y los catálogos):
 

@@ -347,7 +347,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 30.2 | **1** | **Se puede publicar sin puerta.** `ba686fc`, `50e73ea`, `46789fa`, `f8719b1`, `2efdfb7` y `8a0dce0` entraron en `master`… | | → §I (criterio archivado por 20.10) |
-| 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **DONE** | `be07294` (2026-09-28), verificador CONFIRMADA: prerender colaba el hero en inglés bajo Node 22 (`navigator.language` del propio Node, sin navegador; Node 20 de `.nvmrc` no lo tiene); `detectLanguage()` fuerza `es` sin `window`. Mutación real en rojo/verde. `check-prerender` solo corría en `ci.yml` (nunca se ejecuta) — añadido a `ci_local.sh`; build+check-prerender+suite (279) en vivo → §I |
+| 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **DONE** | `be07294`, verificador CONFIRMADA: Node 22 tiene `navigator.language` real (Node 20 no); `detectLanguage()` fuerza `es` sin `window`. Mutación en rojo/verde. `check-prerender` solo en `ci.yml` (no corre) → `ci_local.sh` → §I |
 | 30.5 | **2** | El script `build` ya no corre `tsc -b` (lo quitó `8a0dce0`,… | **PARCIAL** | **PARCIAL** `8a0dce0` (2026-09-24) → §I |
 | 30.9 | **0** | Login válido devolvía a la landing (cookie cross-site + host-only; `logout()` no llamaba a `/auth/logout`) → STATUS.md | **DONE** | `395e8a1` (2026-09-27), verificador CONFIRMADA: 42 backend + 251 frontend limpios. Navegador real: `master` 0 cookies, esta rama `/auth/me` 200. Safari (ITP) sin probar → §I |
 
@@ -425,7 +425,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-28): Microsoft Learn y Google Cloud, antes JS sin leer, ya capturados (Playwright, TLS del sandbox arreglado esta sesión): 74 certificaciones MS + catálogo GCP completo, `CATALOGO_MAESTRO.md` §2.0.1. Ninguna abre track nuevo. Falta: re-auditar las 19 lecciones cortas de track08 (no verificado esta sesión) → §I |
 | 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
 | 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | → §I (criterio archivado por 20.10) |
