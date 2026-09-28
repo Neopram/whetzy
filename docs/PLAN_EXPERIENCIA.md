@@ -7,7 +7,8 @@
 > **Punto de partida.** `COMPETENCIA.md` §A.2b (captura del 2026-09-28): con todo el
 > backlog cerrado, a Whetzy le seguían faltando cinco cosas que Brilliant o Kodree
 > tienen, y ninguna fila las cubría. Son problemas visuales manipulables, tutor por
-> voz que señala, comunidad dentro de la app, planes anual/vitalicio/familiar, y
+> voz que señala, comunidad dentro de la app, plan anual (vitalicio y familiar
+> descartados por el dueño el 2026-09-28), y
 > rutas de análisis de datos, TypeScript/Java y UX/UI.
 
 ## 0. Qué significa «superar» aquí
@@ -132,7 +133,7 @@ reportado en `COMPETENCIA.md` §A.2b.
   activos.** Es la misma regla que el marketplace (`CATALOGO_MAESTRO.md` §9):
   una comunidad vacía resta.
 
-## 4. Pilar D: planes anual, vitalicio y familiar
+## 4. Pilar D: plan anual (solo mensual y anual)
 
 **Qué tienen.**
 
@@ -140,18 +141,25 @@ reportado en `COMPETENCIA.md` §A.2b.
   Reembolso «solely as a courtesy».
 - **Kodree:** $98.99/año y $199.99 de por vida. Reembolso solo si
   completaste un módulo y renovaciones no reembolsables.
+- **Competencia directa** (`COMPETENCIA.md` §A.1): Codecademy, Boot.dev y
+  Platzi venden mensual y anual. EDteam añade un semestral.
 
-**Decisión del dueño (2026-09-28).** Whetzy actúa como la competencia directa:
-planes, precios y reembolso se toman de lo que esta practica y está registrado
-con URL y fecha en `COMPETENCIA.md` §A. No hay política propia de reembolso,
-así que la propuesta que había aquí (H.50) queda descartada. Lo que se
-construye:
+**Decisiones del dueño (2026-09-28):**
 
-1. **Modelo de asientos.** Una suscripción con N plazas (familiar o equipo
-   pequeño), con entitlements por plaza. Reutiliza lo del piloto B2B (38.2).
-2. **Cada plan con su referente citado.** Ningún importe ni condición entra
-   sin la fila de §A que lo respalda.
-3. **Cancelar en dos toques** (línea roja 7), con aviso de renovación antes de
+- **Solo mensual y anual.** Vitalicio y familiar quedan fuera. Es lo mismo que
+  ofrece la competencia directa medida en §A.1.
+- **Precio anual y reembolso como la competencia directa.** Se toman de lo que
+  esta practica y está registrado con URL y fecha en `COMPETENCIA.md` §A. No
+  hay política propia de reembolso: la propuesta que había aquí (H.50) queda
+  descartada.
+- **Punto pendiente de H.35.** El precio anual era el punto (1) de H.35; esta
+  decisión le da el criterio.
+
+**Lo que se construye:**
+
+1. **Plan anual** junto al mensual en los planes de pago. Ningún importe
+   ni condición entra sin la fila de §A que lo respalda.
+2. **Cancelar en dos toques** (línea roja 7), con aviso de renovación antes de
    cobrar un anual (ya exigido en la UE, 21.4). Estas dos cosas no dependen
    de lo que haga la competencia.
 
@@ -173,7 +181,7 @@ construye:
 
 1. **Motor y piloto:** 40.1 y 40.2. La puerta es el piloto verde.
 2. **Tutor y planes:** 40.5 y luego 40.6 (el tutor que señala necesita
-   widgets; la voz va encima) y, en paralelo, 40.9 (planes).
+   widgets; la voz va encima) y, en paralelo, 40.9 (plan anual).
 3. **Escala:** 40.3–40.4 (biblioteca de widgets) y 40.7–40.8 (comunidad,
    cerrada al público).
 4. **Rutas:** 40.10–40.12.

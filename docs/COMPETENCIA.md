@@ -120,8 +120,8 @@ cifras no están aquí.
 | Problemas visuales **manipulables** (Brilliant) | **No** | ninguna fila |
 | Tutor por **voz** o que dibuja | **No** | ninguna fila |
 | Comunidad dentro de la app | **No** | solo perfiles externos (26.7) |
-| Plan anual | Pendiente del dueño | H.35 |
-| Plan de por vida o familiar | **No** | ninguna fila |
+| Plan anual | Sí (40.9) | como la competencia directa (dueño, 2026-09-28) |
+| Plan de por vida o familiar | **No, a propósito** | el dueño los descartó el 2026-09-28: solo mensual y anual |
 | UX/UI, Excel o Power BI | **No** | `CATALOGO_MAESTRO.md` §2.0.1: ux-design «no se proponen todavía» |
 | Java o TypeScript ejecutables | Parcial | 37.8 añade tracks; runtimes solo Python/SQL/JS |
 
