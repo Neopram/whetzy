@@ -23,6 +23,7 @@ Frontend: React + Capacitor.
 | Plan de distribución masiva ES + EN (canales, cadencia, herramientas $0, KPIs) | **`DISTRIBUCION.md`** |
 | Los 6 segmentos de usuario (Estudiante, Career-switcher, Developer Senior, Profesor, Empresa, Developer Web3/Solana) con personas, flujos y créditos por segmento | **`SEGMENTOS.md`** |
 | Competencia directa e indirecta: precios verificados con URL y fecha, lógica de negocio del mercado y qué se adopta (§A, 2026-09-24) | **`COMPETENCIA.md`** |
+| Plan para superar a Brilliant y Kodree donde hoy ganan: problemas interactivos, tutor por voz, comunidad, planes, rutas nuevas (serie 40) | **`PLAN_EXPERIENCIA.md`** |
 | Spec del marketplace de instructores: revenue share 80/20 (ADR-45), quality gate, moderación | **`MARKETPLACE.md`** |
 | Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
 | Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
@@ -30,7 +31,7 @@ Frontend: React + Capacitor.
 | Qué servicios externos (Railway, Sentry, PostHog, diseño, redes…) puede tocar una sesión de Claude, a qué cuenta apunta cada uno y qué hace sin preguntar | **`CONECTORES.md`** |
 | Qué ve alguien que audita el sistema desde fuera sin fiarse de ningún doc: producción medida en vivo, CI, coste de contexto, y por qué no se usa NotebookLM ni Obsidian (ADR-40) | **`AUDITORIA_EXTERNA_2026-09-19.md`** |
 
-Esos son los **veinte documentos vivos** (más `store/`). `analisis-estrategico/` y
+Esos son los **veintiún documentos vivos** (más `store/`). `analisis-estrategico/` y
 `legal/` (raíz) no mandan sobre el código. Todo lo demás está en
 `archive/` — incluida la estrategia v3 del dueño, superada por el catálogo, y desde el
 2026-09-24 los planes paralelos `EXECUTION_PLAN_25-29`, `ROADMAP_25-29`, `*-PLANNING`,
