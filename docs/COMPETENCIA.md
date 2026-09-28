@@ -1,7 +1,7 @@
 # Whetzy — Inteligencia Competitiva Exhaustiva
 
 > **Documento vivo nº 14.** Análisis directo + indirecto. Última actualización:
-> **2026-09-28** (§A.2b, Brilliant y Kodree; resto de §A del 2026-09-24). **§A manda sobre §1–§3**, que son del
+> **2026-09-28** (§A.2c, capturas de pantalla 24.0; §A.2b, Brilliant y Kodree; resto de §A del 2026-09-24). **§A manda sobre §1–§3**, que son del
 > 2026-09-18 y contienen cifras que no se comprobaron entonces y hoy no se
 > sostienen (precios de Boot.dev y Platzi, ingresos): léelas como hipótesis.
 
@@ -124,6 +124,34 @@ cifras no están aquí.
 | Plan de por vida o familiar | **No** | ninguna fila |
 | UX/UI, Excel o Power BI | **No** | `CATALOGO_MAESTRO.md` §2.0.1: ux-design «no se proponen todavía» |
 | Java o TypeScript ejecutables | Parcial | 37.8 añade tracks; runtimes solo Python/SQL/JS |
+
+### A.2c Capturas de pantalla del 2026-09-28 (24.0, landing + precios)
+
+Primera parte ejecutable de 24.0 sin cuentas de terceros (instrucción explícita del
+dueño de sesión: «sin cuentas externas»). Playwright/Chromium, páginas públicas,
+sin login, sin saltar ningún CAPTCHA/Turnstile — se retrocedió donde apareció uno.
+21 capturas (landing desktop 1440×900, landing mobile 390×844, precios) para 7 de
+los 8 competidores de §1 en `docs/competencia-screenshots/` (gitignoreada, ADR-46;
+entregadas al dueño de sesión directamente, no van al repo).
+
+**Comprobado a mano sobre la captura (2026-09-28):**
+
+| Competidor | Dato nuevo o confirmado | Evidencia |
+|---|---|---|
+| Boot.dev | Confirma §A.1: $33/mes facturado anual, $399/año, toggle "Yearly -44%" | `bootdev-pricing.png` |
+| Codecademy | Confirma §A.1 exacto: Plus $14.99/mes anual ($29.99 mensual), Pro $19.99/mes anual ($39.99 mensual), Basic gratis | `codecademy-pricing.png` |
+| DataCamp | **Nuevo** (§A decía 403/checkpoint el 2026-09-24, no se había reproducido): Basic gratis, Premium $35/mes, Teams $28/usuario/mes | `datacamp-pricing.png` |
+| Educative | Afina el rango «probable» $13–21/mes de §A.2: Standard $12/mes ($139/año, 50% off), Premium $16/mes ($189/año), Premium Plus $21/mes ($239/año) — precios con descuento activo, no de lista | `educative-pricing.png` |
+| Brilliant | **Discrepancia sin resolver entre dos páginas del propio Brilliant el mismo día**: `/premium/` (esta captura) muestra Monthly $30, Annual $20/mes, Family $40/mes/6 plazas; §A.2b (misma fecha, `/subscribe/`) registró $27.99/mes o $161.88/año. No es un error de esta sesión — son dos páginas de precios distintas y no coincide ninguna de las tres cifras con ninguna de las dos. Sin decidir cuál es la vigente | `brilliant-pricing.png` |
+| TryHackMe | Landing y nav de precios cargan bien; el panel de precios en sí no renderizó a tiempo (carga diferida) en el primer intento, y el segundo intento devolvió un «Vercel Security Checkpoint» — no reintentado más, se trata como bloqueo | `tryhackme-pricing.png` (sin cifras) |
+| Platzi | Landing y precios cargan; el panel de precios no quedó dentro del viewport capturado (scroll cayó en testimonios). §A.1 ya tiene Basic $49/mes y Expert $249/año verificados por otra vía — no se repite la re-descarga aquí | `platzi-pricing.png` (sin cifras nuevas) |
+| Exercism | **Bloqueado**: Cloudflare Turnstile con checkbox interactivo («Performing security verification»), no un simple 403. No se intentó resolver el reto — cae fuera de «páginas públicas sin saltar antibots» | sin captura |
+
+**Lo que esto NO cierra en 24.0:** onboarding (pasos 1-5), dashboard autenticado y
+gamificación de los 8 competidores requieren cuenta — excluidos explícitamente esta
+sesión. Sigue faltando `docs/design/decisiones-24.0.md` con la decisión del dueño
+pantalla a pantalla. El criterio completo («8 × ≥5 capturas») tampoco se cumple:
+esta tanda es 3 por competidor (7/8), no 5.
 
 ### A.3 La lógica de negocio del mercado, y dónde encaja Whetzy
 

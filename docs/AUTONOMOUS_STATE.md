@@ -206,7 +206,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | **PARCIAL** (2026-09-28): 21 capturas landing+precios de 7/8 en `COMPETENCIA.md` §A.2c (sin cuentas de terceros). Falta: onboarding/dashboard/gamificación (piden cuenta), Exercism (Turnstile), `decisiones-24.0.md` → §I |
 | 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.2 | **1** | **Landing que vende** (`/es`, `/en`; absorbe 19.8 y 23.2): hero con el… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
@@ -390,7 +390,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
-| 34.12 | **2** | **Plural e idioma en la UI** (visto al grabar el short, 2026-09-26): `HomeScreen.tsx:183` pinta «Tu racha: 1 días» (`t('home.days')` sin `count`); `home.decayInDays` («en {{count}} días») no tiene variante `_one`; `/evidence` está en inglés fijo (`EvidenceScreen.tsx` no usa `useTranslation`) | **DONE** | **DONE** `772fe5d` (2026-09-28), verificador CONFIRMADA: `home.days`/`home.decayInDays` a `_one`/`_other` + `count`; `/evidence` traducida entera (~60 cadenas) con `useTranslation`/`Trans`; hueco extra hallado en vivo: `docTitle.evidence` no existía. 8 tests nuevos, mutados; capturas 390 px ES/EN entregadas al dueño (sin subida vía API, igual que 34.1) → §I |
+| 34.12 | **2** | Plural e idioma en la UI: `HomeScreen.tsx` sin `count`, `/evidence` en inglés fijo | **DONE** | `772fe5d` (2026-09-28), verificador CONFIRMADA: plurales `_one`/`_other`, `/evidence` traducida (~60 cadenas), `docTitle.evidence` añadido. 8 tests, mutados; capturas entregadas al dueño → §I |
 | 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **PARCIAL** | **PARCIAL** `d7f6711`: e2e real 44/45 verdes; 2 bugs hallados y arreglados → STATUS.md. Capturas antes (`03220e4`, Auth invisible)/después + 9 pantallas más entregadas al dueño y comentadas en el PR (sin subida de imagen vía API); falta insertarlas de verdad en el PR → §I |
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** → §I |
