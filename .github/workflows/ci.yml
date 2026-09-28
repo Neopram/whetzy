@@ -126,6 +126,13 @@ jobs:
       - name: No third-party origins in the build (12.7, red line 5)
         run: node scripts/check-no-third-party.mjs
 
+      # Red line 3: fallbackLng: 'es' must never actually trigger. This script
+      # exists (23.5) and passes today, but ran nowhere automated until 20.7's
+      # audit found the gap — neither here nor in .githooks/pre-push nor
+      # scripts/ci_local.sh.
+      - name: i18n parity ES/EN — frontend, emails, legal (23.5, red line 3)
+        run: npm run check:i18n
+
   e2e:
     runs-on: ubuntu-latest
 

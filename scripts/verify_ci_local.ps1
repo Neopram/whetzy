@@ -78,10 +78,16 @@ $env:COVERAGE_FILE  = Join-Path $Scratch ".coverage_whetzy"
 
 $BackendDir = Join-Path $Root "backend"
 
+# ci.yml pins an exact ruff version (`ruff==X`); a different local ruff gives
+# a different lint result silently. Read the pin from ci.yml itself instead
+# of hardcoding it here, so this never drifts the way it already had (20.7).
+$CiYmlText = Get-Content (Join-Path $Root ".github/workflows/ci.yml") -Raw
+$RuffSpec = if ($CiYmlText -match 'ruff==([0-9.]+)') { "ruff==$($Matches[1])" } else { "ruff" }
+
 Step "backend: pip install" {
     Set-Location $BackendDir
     python -m pip install --upgrade pip --quiet
-    python -m pip install -r requirements.txt pip-audit pytest-cov mypy ruff --quiet
+    python -m pip install -r requirements.txt pip-audit pytest-cov mypy $RuffSpec --quiet
 }
 
 Step "backend: pip-audit" {
@@ -142,7 +148,9 @@ Step "frontend: tsc -b" {
 
 Step "frontend: oxlint" {
     Set-Location $FrontendDir
-    npx oxlint src --deny-warnings 2>&1
+    # No 'src' argument, matching ci.yml exactly: oxlint's own scope (from
+    # .oxlintrc.json) decides what gets linted, not this script.
+    npx oxlint --deny-warnings 2>&1
 }
 
 Step "frontend: test:coverage (vitest)" {
@@ -179,6 +187,14 @@ Step "frontend: check:i18n" {
 Log ""
 Log "--- JOB: e2e ---"
 Step "e2e: migrate+seed+playwright" {} -skip:$true -skipReason:"Needs Docker+Postgres (H.13/H.17). CI-LOCAL: mark as untested locally."
+
+# ── ANDROID JOB — SKIP (Capacitor/Gradle/Android SDK unavailable locally) ─────
+# Was entirely absent from this script (20.7's own audit found the gap): a
+# job ci.yml runs on every push had no stub here at all, silently missing
+# from the summary below instead of showing up as an explicit SKIP.
+Log ""
+Log "--- JOB: android ---"
+Step "android: build web + cap sync + assembleDebug" {} -skip:$true -skipReason:"Needs Android SDK/Gradle/JDK 21. CI-LOCAL: mark as untested locally."
 
 # ── SUMMARY ───────────────────────────────────────────────────────────────────
 $Duration = [int]((Get-Date) - $StartTime).TotalSeconds

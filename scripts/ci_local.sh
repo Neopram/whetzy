@@ -220,6 +220,10 @@ if [ -d "$ARBOL/frontend/node_modules" ]; then
     echo "[--] No cuenta como rojo. En CI si corre."
   fi
   correr "frontend: vitest" "$ARBOL/frontend" npm run -s test
+  # Red line 3 (fallbackLng: 'es' nunca se dispara). Existia el script (23.5) y
+  # pasaba, pero no corria en ningun sitio automatico -- ni aqui, ni pre-push,
+  # ni ci.yml -- hasta que la auditoria de 20.7 encontro el hueco.
+  correr "frontend: i18n parity" "$ARBOL/frontend" npm run -s check:i18n
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi
