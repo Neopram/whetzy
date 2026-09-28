@@ -369,7 +369,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 32.2 | **3** | A/B BKT contra DKT con el framework 24.14 (asignación estable por usuario) | BLOCKED (H.10) | DKT se adopta solo si AUC ≥… |
 | 32.3 | **2** | «¿Por qué esta pregunta?»: el scheduler devuelve sus razones (dominio, repaso… | **DONE** | **DONE** `d92e164` → §I |
-| 32.4 | **2** | **La lección bloquea el quiz** (decisión del dueño 2026-09-27, tras el hallazgo de que `TracksScreen.tsx` no lo exigía) | **DONE** | **DONE** `b860e83`, verificador CONFIRMADA en 2ª ronda: `LessonCompletion` + `lesson_gate.py` + filtro en `quiz._candidate_skill_ids`. **Post-DONE `e2f0d45`:** 5 tests ajenos rotos por el gate, arreglados → STATUS.md |
+| 32.4 | **2** | **La lección bloquea el quiz** (decisión del dueño 2026-09-27) | **DONE** | `b860e83`, verificador CONFIRMADA (2ª ronda); post-DONE `e2f0d45` arregló 5 tests rotos por el gate → STATUS.md |
 
 ### 33. Operación medible — SLO, restauración y offline idempotente (del plan del 2026-09-24; ídem)
 
@@ -395,7 +395,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** (2026-09-28): 0 `var(--x, #hex)` en `src/` (era 1, `--color-cyan` no existía en ningún fichero, caía al respaldo) → `var(--color-primary)` real. Guarda `tokens.noHexFallback` mutada. Falta: modo claro por el dueño → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** (2026-09-28): página interna `/_ui` (14 componentes, todas sus variantes) — solo dev, `import.meta.env.DEV` elimina el bundle entero del build (confirmado leyendo `dist/`, mutado). `check-dev-only.mjs` nuevo en `ci_local.sh`. Capturas entregadas al dueño, no al PR (mismo bloqueo que 34.1). Falta: foco visible y objetivos táctiles ≥ 44px sin auditar → §I |
 | 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** (2026-09-28): 390px sin scroll horizontal en Auth/Onboarding/Home ES+EN (5 e2e, mutado); TTFQ ES 14.7s, EN 12.9s (esta rama, local). `ttfq-prod.spec.ts` NO se corrió contra producción (crearía una cuenta real, fuera del alcance sin el dueño). → §I
-| 34.5 | **1** | **Aprendizaje**: Home, Tracks, Lesson y Quiz (con Monaco, WhyButton, GlossaryText, TermCard) | **PARCIAL** — pantallas del… | → §I (criterio archivado por 20.10) |
+| 34.5 | **1** | **Aprendizaje**: Home, Tracks, Lesson y Quiz (con Monaco, WhyButton, GlossaryText, TermCard) | **PARCIAL** | **PARCIAL** (2026-09-28): e2e `quiz.spec.ts`+`pyodide.spec.ts` 2 passed (35.3s). Criterio pedía Lighthouse a11y ≥95 en `/quiz`/`/home`; corrí `accessibility.spec.ts` (axe-core WCAG 2.2 AA) — 6/6 passed incl. home y quiz-feedback autenticados, cero violaciones. Más estricto que un puntaje agregado pero no es el número Lighthouse literal — sigue sin medirse |
 | 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** — pantallas del bloque revisadas… | → §I (criterio archivado por 20.10) |
 | 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | **PARCIAL** → §I |
