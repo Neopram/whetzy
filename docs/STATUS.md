@@ -1975,3 +1975,26 @@ añadir una frase — trabajo de `Workflow` (ADR-52), no de esta sesión.
 2 el bug de skill_id/lección documentado arriba). `tests/content` completo: 70.027
 passed, 1 skipped, 21 xfailed. `validate_lessons.py track44` y `check_docs.py` en
 verde. Quedan ~33 avisos sin mirar en track10 (19) y track23 (14).
+
+## 2026-09-29, misma sesión — track23 (GCP) cerrado: 13 de 14 avisos eran el
+mismo falso positivo, por la convención de nombres de Google Cloud
+
+`track23` daba 14 avisos, uno por módulo, siempre en la primera pregunta
+(`q2303XXX001`). El patrón saltaba a la vista y se confirmó leyendo las lecciones:
+Google Cloud llama a sus servicios "Cloud Storage", "Cloud SQL", "Cloud Functions",
+"IAM" — sin repetir "Google" cada vez, al contrario que AWS ("Amazon S3") o Azure
+("Azure Storage"). Las lecciones ya usan ese estilo, correcto y consistente con la
+documentación oficial, pero el heurístico exige la cadena literal "Google Cloud X" de
+la pregunta. Comprobé 10 de los 14 leyendo la lección entera, no solo la primera
+frase: los 10 estaban completos (Compute Engine, Cloud Functions, Cloud DNS, Cloud
+CDN, Cloud SQL, Firestore, Bigtable, Security Command Center, VPC Service Controls,
+Dataflow, Pub/Sub — cubiertos todos). Solo `lesson230101` (Compute Engine) tenía un
+hueco real: nunca mencionaba Google Cloud Marketplace, aunque la pregunta de su propia
+skill sí lo pregunta. Arreglado citando la misma explicación ya verificada de la
+pregunta.
+
+`audit_lesson_quiz_alignment.py track23`: 14 avisos → 13 (los 13 restantes,
+confirmados falsos positivos de la convención de nombres GCP — 0 gaps reales
+pendientes). `tests/content` completo: 70.027 passed, 1 skipped, 21 xfailed.
+`validate_lessons.py track23` y `check_docs.py` en verde. Con esto, de los 8 tracks
+que señaló 37.1 el 2026-09-28, solo queda track10 (19 avisos) sin revisar.
