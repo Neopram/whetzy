@@ -6,6 +6,12 @@ El 26-09, 5 de 20 URLs escritas por un agente para track27 daban 404. Usa curl c
 User-Agent de navegador porque algunos sitios devuelven 500 a peticiones sin él.
 Un 403 no cuenta como fallo sino como «revisar a mano»: framework.scaledagile.com
 responde 403 a curl y la página existe (leída con WebFetch el 26-09).
+
+El 29-09 (37.15) el propio regex de extracción daba dos falsos «FALLOS»: cortaba
+`.../Cross-validation_(statistics)` en el primer `)` (la URL real sí termina en un
+paréntesis emparejado, la vieja `[^)]` lo prohibía sin más) y dejaba una coma pegada
+en `.../rfc793,` cuando dos citas comparten un mismo campo `source` separadas por
+coma. Las dos URLs en el banco eran correctas (200 en vivo); el bug era del checker.
 """
 
 from __future__ import annotations
@@ -16,7 +22,16 @@ import subprocess
 import sys
 from pathlib import Path
 
-URL = re.compile(r"https?://[^\s)\"]+")
+URL = re.compile(r"https?://[^\s,\"]+")
+
+
+def _clean(url: str) -> str:
+    # Strip a trailing ')' only when it has no matching '(' inside the URL
+    # itself - keeps "...(statistics)" whole, drops the wrapper from a
+    # markdown-style "(https://...)" citation.
+    while url.endswith(")") and url.count("(") < url.count(")"):
+        url = url[:-1]
+    return url
 
 
 def status(url: str) -> str:
@@ -43,12 +58,12 @@ def status(url: str) -> str:
 
 
 def main(argv: list[str]) -> int:
-    urls = set()
+    urls: set[str] = set()
     for path in Path(argv[0]).rglob("*.json"):
         data = json.loads(path.read_text(encoding="utf-8"))
         items = data if isinstance(data, list) else data.get("questions", [data])
         for item in items:
-            urls.update(URL.findall(str(item.get("source", ""))))
+            urls.update(_clean(u) for u in URL.findall(str(item.get("source", ""))))
     bad = manual = 0
     for url in sorted(urls):
         code = status(url)
