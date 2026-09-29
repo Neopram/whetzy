@@ -1715,3 +1715,50 @@ colisión de molde genérico siguen apareciendo, así que `KNOWN` queda vacío. 
 en rojo y verde antes de confiar en ella.
 
 `tests/content`: 70.277 passed. Con esto, 39.40 pasa de PARCIAL a DONE.
+
+## 2026-09-29, misma sesión — 39.42: los 6 "en AWS SageMaker" de track43 eran la punta de un molde de relleno de 45 preguntas
+
+Siguiente en el ledger tras 39.40/39.41: los 6 avisos de track43 en
+`scripts/audit_lesson_quiz_alignment.py` (39.39), todos con la misma forma — una pregunta
+sobre un tema real (AWS Glue, data lake en S3, EMR, validación de datos, partición) con la
+coletilla "en AWS SageMaker" pegada al final sin venir a cuento («¿Para qué se utiliza
+principalmente AWS Glue en AWS SageMaker?»). Confirmé contra el título de cada lección
+(`l430101`-`l430105`) que el tema real SÍ se explica a fondo; el problema era solo la
+coletilla. Quité "en AWS SageMaker"/"in AWS SageMaker" de las 6 preguntas
+(`content/questions/track43_aws_mla/mod4301.json`) y `audit_lesson_quiz_alignment.py
+track43` pasó de 6 avisos a 0.
+
+Pero `check_question_bank.py`/`check_originality.py` (39.40, recién fusionado) destaparon
+algo peor: 5 de las 6 preguntas «arregladas» quedaron **100% idénticas** a una pregunta base
+ya existente en el mismo skill (mismo enunciado, misma respuesta, solo el orden de las
+opciones cambiaba). No era una coincidencia — al mirar el fichero entero por skill quedó
+claro que `mod4301.json` seguía un molde: por cada skill, las preguntas `001-005` eran las
+reales, y `006-010`/`011-015` eran las mismas 5 preguntas repetidas con una coletilla
+pegada («en AWS SageMaker» o «para ingeniería de datos en la nube»). La coletilla no era
+solo un defecto de redacción: bajaba la similitud de trigramas de Jaccard justo por debajo
+del umbral 0.8 de `check_originality.py`, así que el relleno pasaba invisible al guardián
+hasta que yo mismo, al quitar la coletilla de los 6 originales, empujé la similitud a 1.0 y
+disparé la alarma. De 75 preguntas en el fichero, 45 eran este relleno molde (9-10 por
+skill); solo ~30 enseñaban algo distinto.
+
+Arreglo: borré las 45, dejando 6 por skill (5 base + 1 pregunta de verdad distinta que ya
+existía en el bloque de relleno de 4 de los 5 skills — ninguna coincidencia, esas sí
+enseñaban algo nuevo). El quinto skill (`sk430105`, partición de datos) no tenía ninguna
+pregunta de reserva genuina entre su relleno, así que quedaba en 5 tras borrar, por debajo
+del suelo `MIN_PER_SKILL = 6` de `check_question_bank.py`. Escribí una pregunta nueva sobre
+un caso real que ya estaba documentado en `content/lessons/track43/l430105.json` (mayúsculas
+en la clave de partición, p. ej. `userId` en vez de `userid`, rompen el descubrimiento de
+`MSCK REPAIR TABLE` en Athena porque el estilo Hive exige minúsculas) en vez de inventar un
+hecho de AWS sin verificar.
+
+Verificación: `audit_lesson_quiz_alignment.py track43` → 0; `check_originality.py` → 0
+parejas casi-duplicadas en todo el banco; `check_question_bank.py` → PASS; `tests/content`
+→ 70.027 passed (baja de 70.277 porque son 45 preguntas menos). `check_docs.py` falló las 4
+cifras que dependen del total de preguntas (10.989→10.944): `ARCHITECTURE.md`,
+`CATALOGO_MAESTRO.md`, `frontend/src/lib/catalog.ts` y la fila `Contenido` del propio
+ledger, las cuatro actualizadas y verificadas en verde.
+
+Alcance: esto cierra 39.39 solo para track43 (6 de los 96 avisos originales). Los otros 7
+tracks con avisos de `audit_lesson_quiz_alignment.py` no se han mirado — no hay motivo para
+asumir que comparten este mismo patrón de relleno molde, pero tampoco se ha comprobado que
+no lo compartan.

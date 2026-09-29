@@ -113,7 +113,7 @@ These are pure functions in `services/engine/` — no DB I/O, fully unit-tested.
 ## Content
 
 Live numbers come from `python scripts/check_docs.py` (they are also the `Contenido`
-row of `docs/AUTONOMOUS_STATE.md`); as of 2026-09-26: **10,989 questions / 35 tracks /
+row of `docs/AUTONOMOUS_STATE.md`); as of 2026-09-29: **10,944 questions / 35 tracks /
 723 skills / 723 lessons / 1,044 glossary terms**, every question with a canonical
 `source`. Five certification tracks (AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC)
 carry official domains with verified weights (`exam_domain` + `exam_weight_pct`).
