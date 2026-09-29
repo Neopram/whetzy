@@ -76,15 +76,15 @@
       "question_es": "¿Cómo se monta un volumen en un contenedor?",
       "question_en": "How do you mount a volume to a container?",
       "options_es": [
-        "docker run -mount volumen:/ruta/en/contenedor imagen",
+        "docker run --mount volumen:/ruta/en/contenedor imagen",
         "docker run -v volumen:/ruta/en/contenedor imagen (sintaxis heredada, aún soportada)",
-        "Ambas opciones B y C son válidas (pero -v es el corto para --mount)",
+        "Tanto --mount como -v son válidas (-v es el corto de --volume, no de --mount)",
         "docker run -volume volumen:/ruta/en/contenedor imagen"
       ],
       "options_en": [
-        "docker run -mount volume:/path/in/container image",
+        "docker run --mount volume:/path/in/container image",
         "docker run -v volume:/path/in/container image (legacy syntax, still valid)",
-        "Both options B and C are valid (but -v is short for --mount)",
+        "Both --mount and -v are valid (-v is short for --volume, not for --mount)",
         "docker run -volume volume:/path/in/container image"
       ],
       "correct_index": 2,
@@ -329,13 +329,13 @@
       "question_es": "¿Cómo se especifica un driver personalizado al crear un volumen?",
       "question_en": "How do you specify a custom driver when creating a volume?",
       "options_es": [
-        "Ambas opciones A y B son correctas",
+        "Tanto '--driver' como '-d' son correctas",
         "docker volume create --driver nfs mi_volumen",
         "docker volume create -d nfs mi_volumen",
         "docker volume create --type nfs mi_volumen"
       ],
       "options_en": [
-        "Both options A and B are correct",
+        "Both '--driver' and '-d' are correct",
         "docker volume create --driver nfs mi_volumen",
         "docker volume create -d nfs mi_volumen",
         "docker volume create --type nfs mi_volumen"
@@ -559,13 +559,13 @@
       "question_es": "¿Cómo se especifica el mapeo de puertos en 'docker run'?",
       "question_en": "How do you specify port mapping in 'docker run'?",
       "options_es": [
-        "Ambas opciones A y C son correctas",
+        "Tanto '-P' como '-p' son correctas",
         "docker run -P imagen",
         "docker run -p puerto_host:puerto_contenedor imagen",
         "docker run --port puerto_host:puerto_contenedor imagen"
       ],
       "options_en": [
-        "Both options A and C are correct",
+        "Both '-P' and '-p' are correct",
         "docker run -P image",
         "docker run -p host_port:container_port image",
         "docker run --port host_port:container_port image"
@@ -1135,13 +1135,13 @@
       "question_en": "How do you achieve communication between containers in different networks?",
       "options_es": [
         "Conectando el contenedor a múltiples redes",
-        "Las opciones B y C son válidas",
+        "Tanto conectar a múltiples redes como usar overlay networks son válidas",
         "No es posible, cada red está completamente aislada",
         "Usando overlay networks que crean puentes"
       ],
       "options_en": [
         "By connecting the container to multiple networks",
-        "Both options B and C are valid",
+        "Both connecting to multiple networks and using overlay networks are valid",
         "It's not possible, each network is completely isolated",
         "Using overlay networks that create bridges"
       ],
