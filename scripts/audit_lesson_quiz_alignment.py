@@ -95,7 +95,14 @@ def main() -> int:
             for service in set(SERVICE_PATTERN.findall(qtext)):
                 if service.lower() in IGNORE_TERMS:
                     continue
-                if service.lower() not in lesson_text:
+                # A trailing generic word ("Service"/"Servicio") is often
+                # dropped or translated differently in the lesson body even
+                # when the actual product is covered in depth (Azure OpenAI
+                # Service -> lesson says "Azure OpenAI"; Azure Language
+                # Service -> lesson says "Azure AI Language"). Check the core
+                # name too before flagging.
+                core = re.sub(r"\s+(Service|Servicio)$", "", service, flags=re.IGNORECASE)
+                if service.lower() not in lesson_text and core.lower() not in lesson_text:
                     findings.append((lesson["id"], skill_id, q["id"], service))
 
     findings.sort()
