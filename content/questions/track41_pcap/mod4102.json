@@ -1524,53 +1524,53 @@
       "id": "q410102_068",
       "skill_id": "sk410202",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida usando herencia?",
-      "question_en": "What is the output using inheritance?",
-      "code": "print('a,b,c'.split(','))",
-      "correct_answer_es": "['a', 'b', 'c']",
-      "correct_answer_en": "['a', 'b', 'c']",
-      "explanation_es": "'a,b,c'.split(',') divide la cadena en cada coma y devuelve la lista ['a', 'b', 'c']; str.split() siempre produce una lista, nunca una lista anidada ni una tupla. La opción con letras mayúsculas es incorrecta porque split() no transforma el contenido de los elementos, solo separa la cadena.",
-      "explanation_en": "'a,b,c'.split(',') splits the string at each comma and returns the list ['a', 'b', 'c']; str.split() always produces a list, never a nested list or a tuple. The uppercase-letters option is wrong because split() does not transform the content of the elements, it only separates the string.",
+      "question_es": "¿Cuál es la salida usando un método de listas?",
+      "question_en": "What is the output using a list method?",
+      "code": "lst = [1, 2, 3]\nlst.insert(1, 99)\nprint(lst)",
+      "correct_answer_es": "[1, 99, 2, 3]",
+      "correct_answer_en": "[1, 99, 2, 3]",
+      "explanation_es": "`list.insert(i, x)` inserta `x` justo en la posición `i`, desplazando el resto de elementos a la derecha; no sobrescribe nada. `insert(1, 99)` coloca 99 en el índice 1, entre el 1 original y el 2, dando `[1, 99, 2, 3]`.",
+      "explanation_en": "`list.insert(i, x)` inserts `x` right at position `i`, shifting the remaining elements to the right; it never overwrites anything. `insert(1, 99)` places 99 at index 1, between the original 1 and 2, giving `[1, 99, 2, 3]`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "[['a', 'b', 'c']]",
-        "['A', 'B', 'C']",
-        "(['a', 'b', 'c'],)",
-        "['a', 'b', 'c']"
+        "[1, 2, 99, 3]",
+        "[99, 1, 2, 3]",
+        "[1, 99, 2, 3]",
+        "Error: IndexError"
       ],
       "options_en": [
-        "[['a', 'b', 'c']]",
-        "['A', 'B', 'C']",
-        "(['a', 'b', 'c'],)",
-        "['a', 'b', 'c']"
+        "[1, 2, 99, 3]",
+        "[99, 1, 2, 3]",
+        "[1, 99, 2, 3]",
+        "Error: IndexError"
       ],
-      "correct_index": 3
+      "correct_index": 2
     },
     {
       "id": "q410102_069",
       "skill_id": "sk410203",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con polimorfismo?",
-      "question_en": "What is the output with polymorphism?",
-      "code": "lst = [1,2,3]\nprint(lst.pop())",
-      "correct_answer_es": "3",
-      "correct_answer_en": "3",
-      "explanation_es": "lst.pop() sin argumento elimina y devuelve el último elemento de la lista [1, 2, 3], que es 3; tras la llamada la lista queda como [1, 2]. Los demás valores numéricos no corresponden a ningún elemento real de la lista original.",
-      "explanation_en": "lst.pop() with no argument removes and returns the last element of the list [1, 2, 3], which is 3; after the call the list becomes [1, 2]. The other numeric options do not correspond to any actual element of the original list.",
+      "question_es": "¿Cuál es la salida usando try/except?",
+      "question_en": "What is the output using try/except?",
+      "code": "try:\n    int('not a number')\nexcept ValueError:\n    print('caught')",
+      "correct_answer_es": "caught",
+      "correct_answer_en": "caught",
+      "explanation_es": "`int('not a number')` no puede convertir esa cadena a entero y lanza `ValueError`. El bloque `except ValueError` la atrapa exactamente (no hace falta `except Exception` genérico), así que se ejecuta su cuerpo e imprime `caught`; el programa no termina con un traceback.",
+      "explanation_en": "`int('not a number')` can't convert that string to an integer and raises `ValueError`. The `except ValueError` block catches it precisely (no need for a generic `except Exception`), so its body runs and prints `caught`; the program does not crash with a traceback.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "6",
-        "2",
-        "4",
-        "3"
+        "Error: ValueError",
+        "not a number",
+        "caught",
+        "(no imprime nada)"
       ],
       "options_en": [
-        "6",
-        "2",
-        "4",
-        "3"
+        "Error: ValueError",
+        "not a number",
+        "caught",
+        "(prints nothing)"
       ],
-      "correct_index": 3
+      "correct_index": 2
     },
     {
       "id": "q410102_070",
@@ -1628,25 +1628,25 @@
       "id": "q410102_072",
       "skill_id": "sk410202",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida usando paquetes?",
-      "question_en": "What is the output using packages?",
-      "code": "print('TEXTO'.lower())",
-      "correct_answer_es": "texto",
-      "correct_answer_en": "texto",
-      "explanation_es": "El código ejecuta 'TEXTO'.lower(), que devuelve una copia en minúsculas de la cadena original; imprime literalmente texto. Las opciones con corchetes o paréntesis simulan una lista o tupla que .lower() nunca produce (devuelve un str), y 'TEXTO' en mayúsculas sería el resultado de no aplicar .lower() en absoluto.",
-      "explanation_en": "The code runs 'TEXTO'.lower(), which returns a lowercase copy of the original string; it prints texto literally. The bracket/tuple-shaped options mimic a list or tuple that .lower() never produces (it returns a str), and 'TEXTO' in uppercase would be the result of not applying .lower() at all.",
+      "question_es": "¿Cuál es la salida ordenando una lista?",
+      "question_en": "What is the output sorting a list?",
+      "code": "lst = [3, 1, 2]\nlst.sort()\nprint(lst)",
+      "correct_answer_es": "[1, 2, 3]",
+      "correct_answer_en": "[1, 2, 3]",
+      "explanation_es": "`list.sort()` ordena la lista **en el sitio** (modifica `lst` directamente) y devuelve `None`, no una lista nueva; por eso el código imprime `lst` en una línea aparte tras llamarla, y muestra `[1, 2, 3]`. Un error frecuente es escribir `lst = lst.sort()`, que deja `lst` como `None`.",
+      "explanation_en": "`list.sort()` sorts the list **in place** (it mutates `lst` directly) and returns `None`, not a new list; that's why the code prints `lst` on its own line after calling it, showing `[1, 2, 3]`. A common mistake is writing `lst = lst.sort()`, which leaves `lst` as `None`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "texto",
-        "TEXTO",
-        "(texto,)",
-        "[texto]"
+        "[1, 2, 3]",
+        "None",
+        "[3, 1, 2]",
+        "[3, 2, 1]"
       ],
       "options_en": [
-        "texto",
-        "TEXTO",
-        "(texto,)",
-        "[texto]"
+        "[1, 2, 3]",
+        "None",
+        "[3, 1, 2]",
+        "[3, 2, 1]"
       ],
       "correct_index": 0
     },
@@ -1654,53 +1654,53 @@
       "id": "q410102_073",
       "skill_id": "sk410203",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con pip?",
-      "question_en": "What is the output with pip?",
-      "code": "print('a,b,c'.split(','))",
-      "correct_answer_es": "['a', 'b', 'c']",
-      "correct_answer_en": "['a', 'b', 'c']",
-      "explanation_es": "'a,b,c'.split(',') divide la cadena en cada coma y devuelve la lista ['a', 'b', 'c']; str.split() siempre produce una lista, nunca una lista anidada ni una tupla. La opción con letras mayúsculas es incorrecta porque split() no transforma el contenido de los elementos, solo separa la cadena.",
-      "explanation_en": "'a,b,c'.split(',') splits the string at each comma and returns the list ['a', 'b', 'c']; str.split() always produces a list, never a nested list or a tuple. The uppercase-letters option is wrong because split() does not transform the content of the elements, it only separates the string.",
+      "question_es": "¿Cuál es la salida usando try/except/else/finally?",
+      "question_en": "What is the output using try/except/else/finally?",
+      "code": "try:\n    x = 10 / 2\nexcept ZeroDivisionError:\n    result = 'error'\nelse:\n    result = 'ok'\nfinally:\n    result += '+cleanup'\nprint(result)",
+      "correct_answer_es": "ok+cleanup",
+      "correct_answer_en": "ok+cleanup",
+      "explanation_es": "`10 / 2` no lanza excepción, así que el bloque `except` se salta y se ejecuta `else` (`result = 'ok'`), que solo corre cuando el `try` termina sin errores. `finally` corre siempre, pase lo que pase en los bloques anteriores, y le añade `+cleanup`.",
+      "explanation_en": "`10 / 2` raises no exception, so `except` is skipped and `else` runs (`result = 'ok'`), which only executes when `try` finishes without errors. `finally` always runs, no matter what happened in the earlier blocks, and appends `+cleanup`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "(['a', 'b', 'c'],)",
-        "['a', 'b', 'c']",
-        "[['a', 'b', 'c']]",
-        "['A', 'B', 'C']"
+        "error+cleanup",
+        "ok",
+        "ok+cleanup",
+        "Error: ZeroDivisionError"
       ],
       "options_en": [
-        "(['a', 'b', 'c'],)",
-        "['a', 'b', 'c']",
-        "[['a', 'b', 'c']]",
-        "['A', 'B', 'C']"
+        "error+cleanup",
+        "ok",
+        "ok+cleanup",
+        "Error: ZeroDivisionError"
       ],
-      "correct_index": 1
+      "correct_index": 2
     },
     {
       "id": "q410102_074",
       "skill_id": "sk410204",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida en este ejemplo de Python?",
-      "question_en": "What is the output in this Python example?",
-      "code": "lst = [1,2,3]\nprint(lst.pop())",
-      "correct_answer_es": "3",
-      "correct_answer_en": "3",
-      "explanation_es": "lst.pop() sin argumento elimina y devuelve el último elemento de la lista [1, 2, 3], que es 3; tras la llamada la lista queda como [1, 2]. Los demás valores numéricos no corresponden a ningún elemento real de la lista original.",
-      "explanation_en": "lst.pop() with no argument removes and returns the last element of the list [1, 2, 3], which is 3; after the call the list becomes [1, 2]. The other numeric options do not correspond to any actual element of the original list.",
+      "question_es": "¿Cuál es la salida con una excepción personalizada?",
+      "question_en": "What is the output with a custom exception?",
+      "code": "class OutOfStockError(Exception):\n    pass\n\ntry:\n    raise OutOfStockError('out of stock')\nexcept OutOfStockError as e:\n    print(str(e))",
+      "correct_answer_es": "out of stock",
+      "correct_answer_en": "out of stock",
+      "explanation_es": "Una excepción personalizada solo necesita heredar de `Exception` (aquí sin añadir nada propio, `pass`). `raise` la lanza con un mensaje, y `except OutOfStockError as e` la captura por su tipo exacto (funciona igual que capturar `ValueError` o cualquier excepción integrada); `str(e)` da el mensaje que se pasó a `raise`.",
+      "explanation_en": "A custom exception only needs to inherit from `Exception` (here with nothing extra, just `pass`). `raise` throws it with a message, and `except OutOfStockError as e` catches it by its exact type (works the same as catching `ValueError` or any built-in exception); `str(e)` gives the message passed to `raise`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "4",
-        "6",
-        "2",
-        "3"
+        "Error: OutOfStockError",
+        "OutOfStockError('out of stock')",
+        "out of stock",
+        "(no imprime nada)"
       ],
       "options_en": [
-        "4",
-        "6",
-        "2",
-        "3"
+        "Error: OutOfStockError",
+        "OutOfStockError('out of stock')",
+        "out of stock",
+        "(prints nothing)"
       ],
-      "correct_index": 3
+      "correct_index": 2
     },
     {
       "id": "q410102_075",

@@ -1677,3 +1677,41 @@ referencia usaba el JOIN que la pregunta dice enseñar.
 
 `tests/content`: 70.277 passed, incluida la suite entera de `sql_exec` ahora en verde de verdad.
 Quedan 13 de las 16 parejas de 39.40 (todas en track41) sin tocar — documentado, no apresurado.
+
+## 2026-09-29 — 39.40 cerrada: las 13 parejas de track41 reescritas y el checker fusionado
+
+Terminando 39.40 (documentado unas horas antes en esta misma sesión): las 13 parejas de
+track41 que quedaban tenían un patrón distinto al de track12. No eran solo código idéntico
+entre dos preguntas — varias tenían código que **no encajaba con la habilidad de ninguna de
+las dos preguntas del par**. Por ejemplo, dos preguntas etiquetadas `sk410103` («Paquetes y
+subpaquetes») y `sk410104` («Gestión de paquetes con pip») compartían literalmente
+`d = {'x': 1}; print(d.get('x'))` — un ejemplo de diccionario que no tiene nada que ver ni
+con paquetes ni con pip.
+
+Antes de reescribir nada, mapeé los 16 `skill_id` de track41 (mod4101-4104) contra sus
+lecciones (`content/lessons/track41/l4101*.json`...) para saber qué debía enseñar cada
+pregunta de verdad. Encontré que de las 26 preguntas implicadas en las 13 parejas, 17
+necesitaban código nuevo — no solo el lado duplicado, sino a veces las dos, cuando ninguna
+encajaba con su propia skill. Cada una se escribió y se verificó ejecutando el Python real
+antes de guardarla: herencia con `Base`/`Child`, polimorfismo por duck typing (`Cat`/`Cow`
+sin clase común), un método especial `__eq__`, una clausura con `make_multiplier`, procesar
+un fichero simulado con `io.StringIO` (sin acceso real al sistema de ficheros, que el
+entorno de ejecución del alumno no tiene), y dos ejemplos distintos de `pip` (parsear un
+`requirements.txt` y separar nombre/versión de una dependencia).
+
+Un despiste real durante la reescritura: usé la cadena `'sin unidades'` (español) como
+mensaje de una excepción personalizada dentro del campo `code`, que no tiene versión ES/EN
+separada — se cuela igual en `options_en`. Lo cazó una guarda ya existente
+(`test_en_options_language.py`, un trinquete que no deja crecer el número de preguntas con
+español en `options_en`) al correr la suite completa antes de dar el trabajo por bueno.
+Corregido a `'out of stock'`.
+
+Con las 16 parejas (3 de track12 + 13 de track41) reescritas y verificadas, fusioné por fin
+el arreglo del propio `check_originality.py` que llevaba unas horas escrito y probado pero
+sin enviar (`_content_text()`, que compara `code`/`code_es` en vez del molde genérico de
+`question_es`). Con las 16 ya arregladas, correrlo sobre el banco completo da **0 parejas
+casi-duplicadas** — ni siquiera las 3 excepciones que había anotado en `KNOWN` por la
+colisión de molde genérico siguen apareciendo, así que `KNOWN` queda vacío. Guarda mutada
+en rojo y verde antes de confiar en ella.
+
+`tests/content`: 70.277 passed. Con esto, 39.40 pasa de PARCIAL a DONE.

@@ -1550,25 +1550,25 @@
       "id": "q410101_069",
       "skill_id": "sk410103",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida usando módulos estándar?",
-      "question_en": "What is the output using standard modules?",
-      "code": "d = {'x': 1}\nprint(d.get('x'))",
-      "correct_answer_es": "1",
-      "correct_answer_en": "1",
-      "explanation_es": "dict.get('x') devuelve el valor asociado a la clave 'x' cuando existe, sin lanzar KeyError; como d = {'x': 1}, la llamada devuelve el entero 1, que print muestra sin comillas. No hay TypeError posible aquí porque .get() acepta claves ausentes sin fallar.",
-      "explanation_en": "dict.get('x') returns the value associated with key 'x' when it exists, without raising KeyError; since d = {'x': 1}, the call returns the integer 1, which print displays without quotes. There is no possible TypeError here because .get() tolerates missing keys without failing.",
+      "question_es": "¿Cuál es la salida usando paquetes y subpaquetes?",
+      "question_en": "What is the output using packages and subpackages?",
+      "code": "import xml.etree.ElementTree as ET\nprint(ET.__name__)",
+      "correct_answer_es": "xml.etree.ElementTree",
+      "correct_answer_en": "xml.etree.ElementTree",
+      "explanation_es": "`xml.etree.ElementTree` es un subpaquete dentro del paquete `xml`, a su vez dentro de `etree`. El alias `as ET` solo cambia el nombre con el que se referencia en el código; `__name__` siempre da la ruta completa y real del módulo importado, sin importar el alias.",
+      "explanation_en": "`xml.etree.ElementTree` is a subpackage inside the `xml` package, itself inside `etree`. The `as ET` alias only changes the name used to reference it in code; `__name__` always gives the real, full path of the imported module, regardless of the alias.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "2",
-        "Error: TypeError",
-        "0",
-        "1"
+        "ET",
+        "xml.etree",
+        "Error: ImportError",
+        "xml.etree.ElementTree"
       ],
       "options_en": [
-        "2",
-        "Error: TypeError",
-        "0",
-        "1"
+        "ET",
+        "xml.etree",
+        "Error: ImportError",
+        "xml.etree.ElementTree"
       ],
       "correct_index": 3
     },
@@ -1576,25 +1576,25 @@
       "id": "q410101_070",
       "skill_id": "sk410104",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con estructuras de datos?",
-      "question_en": "What is the output with data structures?",
-      "code": "import sys\nprint(type(sys))",
-      "correct_answer_es": "<class 'module'>",
-      "correct_answer_en": "<class 'module'>",
-      "explanation_es": "Tras «import sys», el nombre «sys» referencia un objeto módulo real; type() de cualquier módulo devuelve la clase «module», por lo que print(type(sys)) imprime exactamente «<class 'module'>», con esa capitalización y comillas simples.",
-      "explanation_en": "After «import sys», the name «sys» references an actual module object; type() of any module returns the «module» class, so print(type(sys)) prints exactly «<class 'module'>», with that exact capitalization and single quotes.",
-      "source": "https://docs.python.org/3/",
+      "question_es": "¿Cuál es la salida procesando un fichero requirements.txt?",
+      "question_en": "What is the output when processing a requirements.txt file?",
+      "code": "requirements = \"requests==2.28.0\\nnumpy>=1.20\\nflask\"\npackages = [line.split('==')[0].split('>=')[0].strip() for line in requirements.split('\\n')]\nprint(packages)",
+      "correct_answer_es": "['requests', 'numpy', 'flask']",
+      "correct_answer_en": "['requests', 'numpy', 'flask']",
+      "explanation_es": "Un `requirements.txt` (el fichero que `pip install -r requirements.txt` lee) lista un paquete por línea, opcionalmente con una restricción de versión (`==`, `>=`...). La comprensión de lista se queda solo con el nombre del paquete, descartando la parte de versión, para cada línea.",
+      "explanation_en": "A `requirements.txt` file (what `pip install -r requirements.txt` reads) lists one package per line, optionally with a version constraint (`==`, `>=`...). The list comprehension keeps only the package name, discarding the version part, for every line.",
+      "source": "https://pip.pypa.io/en/stable/reference/requirements-file-format/",
       "options_es": [
-        "<CLASS 'MODULE'>",
-        "[<class 'module'>]",
-        "<class 'module'>",
-        "(<class 'module'>,)"
+        "['requests==2.28.0', 'numpy>=1.20', 'flask']",
+        "requests, numpy, flask",
+        "['requests', 'numpy', 'flask']",
+        "Error: ValueError"
       ],
       "options_en": [
-        "<CLASS 'MODULE'>",
-        "[<class 'module'>]",
-        "<class 'module'>",
-        "(<class 'module'>,)"
+        "['requests==2.28.0', 'numpy>=1.20', 'flask']",
+        "requests, numpy, flask",
+        "['requests', 'numpy', 'flask']",
+        "Error: ValueError"
       ],
       "correct_index": 2
     },
@@ -1654,51 +1654,51 @@
       "id": "q410101_073",
       "skill_id": "sk410103",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida usando generadores?",
-      "question_en": "What is the output using generators?",
-      "code": "x = __import__('sys')\nprint('sys' in dir())",
-      "correct_answer_es": "False",
-      "correct_answer_en": "False",
-      "explanation_es": "Es el mismo patrón que «__import__('sys')»: la función devuelve el módulo pero solo lo asigna a la variable «x», sin crear un nombre «sys» en el espacio de nombres local, así que «'sys' in dir()» vuelve a dar False. Ejecutado y verificado con python3.",
-      "explanation_en": "This is the same pattern as «__import__('sys')»: the function returns the module but only assigns it to the variable «x», without creating a «sys» name in the local namespace, so «'sys' in dir()» again evaluates to False. Run and confirmed with python3.",
+      "question_es": "¿Cuál es la salida importando un subpaquete?",
+      "question_en": "What is the output when importing a subpackage?",
+      "code": "import urllib.request\nprint(urllib.request.__name__)",
+      "correct_answer_es": "urllib.request",
+      "correct_answer_en": "urllib.request",
+      "explanation_es": "`urllib` es un paquete que contiene el subpaquete `request` (junto a `parse`, `error`...). Importar `urllib.request` da acceso al subpaquete completo, y `__name__` siempre imprime su ruta calificada completa, `urllib.request`, no solo la última parte.",
+      "explanation_en": "`urllib` is a package containing the `request` subpackage (alongside `parse`, `error`...). Importing `urllib.request` gives access to the full subpackage, and `__name__` always prints its full qualified path, `urllib.request`, not just the last part.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "None",
-        "True",
-        "False",
-        "Error"
+        "request",
+        "urllib",
+        "Error: ModuleNotFoundError",
+        "urllib.request"
       ],
       "options_en": [
-        "None",
-        "True",
-        "False",
-        "Error"
+        "request",
+        "urllib",
+        "Error: ModuleNotFoundError",
+        "urllib.request"
       ],
-      "correct_index": 2
+      "correct_index": 3
     },
     {
       "id": "q410101_074",
       "skill_id": "sk410104",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con closures?",
-      "question_en": "What is the output with closures?",
-      "code": "d = {'x': 1}\nprint(d.get('x'))",
-      "correct_answer_es": "1",
-      "correct_answer_en": "1",
-      "explanation_es": "Igual que con el otro diccionario de una sola clave, d.get('x') recupera el valor 1 asociado a 'x' sin lanzar excepción, así que la salida es 1, no 0 ni un error de tipo.",
-      "explanation_en": "Just as with the other single-key dictionary, d.get('x') retrieves the value 1 associated with 'x' without raising an exception, so the output is 1, not 0 and not a type error.",
-      "source": "https://docs.python.org/3/",
+      "question_es": "¿Cuál es la salida separando nombre y versión de una dependencia?",
+      "question_en": "What is the output splitting a dependency's name and version?",
+      "code": "spec = \"requests==2.28.0\"\nname, version = spec.split('==')\nprint(name, version)",
+      "correct_answer_es": "requests 2.28.0",
+      "correct_answer_en": "requests 2.28.0",
+      "explanation_es": "`pip` acepta especificar una versión exacta con `==`, como en `pip install requests==2.28.0`. `spec.split('==')` corta la cadena por ese separador y da una lista de dos elementos, que el desempaquetado asigna a `name` y `version`; `print` con dos argumentos los separa con un espacio.",
+      "explanation_en": "`pip` accepts pinning an exact version with `==`, as in `pip install requests==2.28.0`. `spec.split('==')` cuts the string at that separator into a two-element list, which unpacking assigns to `name` and `version`; `print` with two arguments separates them with a space.",
+      "source": "https://pip.pypa.io/en/stable/reference/requirements-file-format/",
       "options_es": [
-        "2",
-        "Error: TypeError",
-        "1",
-        "0"
+        "requests==2.28.0",
+        "['requests', '2.28.0']",
+        "requests 2.28.0",
+        "Error: ValueError"
       ],
       "options_en": [
-        "2",
-        "Error: TypeError",
-        "1",
-        "0"
+        "requests==2.28.0",
+        "['requests', '2.28.0']",
+        "requests 2.28.0",
+        "Error: ValueError"
       ],
       "correct_index": 2
     },
