@@ -2191,3 +2191,37 @@ documentados quedan cerrados; el barrido original de 8 tracks también.
 Queda pendiente, y fuera de este arreglo puntual, la expansión de
 catálogo hacia la meta de ADR-46 (serie 25/37), que es autoría nueva de
 `Workflow`, no una corrección.
+
+## 2026-09-29, misma sesión — 39.33: la alarma "grave" de track13 ya
+estaba resuelta; corregido el ledger para no hacer que otra sesión la
+redescubra
+
+Retomando 39.33 (PRI 1, claves de respuesta sospechosas), la fila decía
+"Grave: sk130104/204/304 (track13) >50% mal — RACI inventado, 'menor
+privilegio' al revés. TODO: resto sin muestrear", dando a entender que
+tres skills completas de track13 seguían con más de la mitad de sus
+preguntas con la clave mal. Antes de tocar nada, leí las 60 preguntas
+reales de esas tres skills (`sk130104` gobernanza, `sk130204` PKI/TLS,
+`sk130304` WiFi) directamente de los ficheros del repo, no del resumen
+del ledger.
+
+Ninguna tenía el defecto descrito. `q130104008` (RACI) marca
+correctamente "Responsable, Aprobador, Consultado e Informado";
+`q130104013` (menor privilegio) marca correctamente "otorgar solo los
+permisos mínimos necesarios". `git log` sobre `mod1301.json` explica por
+qué: el commit `a17a7c8` ("39.33: 26 preguntas de track13 con mas de la
+mitad de una skill con la clave mal"), ya en esta rama desde antes de que
+empezara esta sesión, reescribió exactamente esas 26 preguntas — 8/15 de
+`sk130104`, 9/15 de `sk130204`, 9/15 de `sk130304` — con la evidencia de
+`tests/content` en verde. La fila del ledger nunca se actualizó para
+reflejarlo: seguía describiendo un estado que ya no existía.
+
+Corregida la fila para que cite el commit que ya lo arregló y mi propia
+verificación de esta sesión, en vez de dejar una alarma "grave" sin
+resolver que la siguiente sesión habría gastado tiempo redescubriendo o,
+peor, intentando arreglar un defecto que ya no está. Lo que sigue
+genuinamente abierto en 39.33 no cambia: muestrear el resto de tracks
+hermanos del mismo commit masivo original (solo `q120302mc002` se había
+revisado hasta ahora).
+
+`check_docs.py`: verde. Ledger: 61.430/61.440 bytes.
