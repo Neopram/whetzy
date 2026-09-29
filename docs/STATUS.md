@@ -1998,3 +1998,47 @@ confirmados falsos positivos de la convención de nombres GCP — 0 gaps reales
 pendientes). `tests/content` completo: 70.027 passed, 1 skipped, 21 xfailed.
 `validate_lessons.py track23` y `check_docs.py` en verde. Con esto, de los 8 tracks
 que señaló 37.1 el 2026-09-28, solo queda track10 (19 avisos) sin revisar.
+
+## 2026-09-29, misma sesión — track10 cierra el barrido de los 8 tracks de 37.1;
+destapa dos bugs de contenido genuinos, no de cobertura
+
+`track10` (SAA-C03) daba 19 avisos. 9 eran gaps reales de una frase (IMDS, SAM,
+DataSync, DMS, QuickSight, IAM User vs Role, Terraform, CodePipeline), verificados
+contra `docs.aws.amazon.com` o contra la propia explicación de la pregunta antes de
+escribir nada. Arreglados en `l100101`, `l100102`, `l100202`, `l100203`, `l100205`,
+`l100401`, `l100502`, `l100505`.
+
+Dos de los avisos no eran gaps de cobertura sino preguntas con el nombre del servicio
+mal escrito:
+
+- `q100502mc005` pregunta "¿Qué es **AWS** Terraform?" pero Terraform es de HashiCorp,
+  no de AWS — la propia explicación de la pregunta ya lo sabe y cita "Terraform
+  Documentation — HashiCorp" como fuente. Escribir "AWS Terraform" en la lección
+  habría sido propagar el error en vez de corregirlo, así que añadí el hecho correcto
+  (Terraform, de HashiCorp, alternativa open source multi-nube a CloudFormation) sin
+  la marca falsa. La pregunta sigue sin corregir — cambiar el enunciado de una
+  pregunta no entra en el alcance de este barrido de lecciones.
+- `q100304mc013` pregunta por "AWS Direct Connect Local Connection". Busqué el
+  término en la documentación oficial de Direct Connect y en la web: no existe.
+  Direct Connect solo tiene dos tipos de conexión, Dedicated y Hosted — "Local
+  Connection" no es un servicio real. No se puede arreglar añadiendo contenido a la
+  lección porque no hay ningún hecho verdadero que añadir; queda documentado aquí y
+  en el ledger para que alguien revise si la pregunta debe reescribirse o eliminarse.
+
+El resto de avisos (`AWS EC2 Instance Metadata Service`, `AWS IAM User`, `AWS Direct
+Connect Hosted Connection`, `Amazon Aurora Serverless`, etc.) resultaron falsos
+positivos: mis propias frases nuevas, deliberadamente, no repiten el prefijo
+"AWS"/"Amazon" en cada mención (igual que el resto de cada lección), así que el
+heurístico —que exige la cadena literal completa de la pregunta— los marca aunque el
+contenido esté cubierto.
+
+`audit_lesson_quiz_alignment.py track10`: 19 avisos → 14 (12 falsos positivos de
+marca + 2 los bugs de contenido documentados arriba). `tests/content` completo:
+70.027 passed, 1 skipped, 21 xfailed. `validate_lessons.py track10` y `check_docs.py`
+en verde. Con esto quedan revisados los 8 tracks que señaló 37.1 el 2026-09-28.
+Bugs de contenido sin arreglar (fuera de este barrido, requieren decidir cómo
+reescribir la pregunta, no la lección): `q220302011` (cifra de tamaño máximo de
+Azure SQL sin verificar), `q100502mc005` y `q100304mc013` (nombres de servicio
+incorrectos, arriba), y `l440202`/`l440204` (skill_id de la pregunta sin relación
+con el tema de la lección). Los cuatro quedan anotados en la fila 37.1 del ledger
+para que la siguiente sesión que la retome no tenga que redescubrirlos.
