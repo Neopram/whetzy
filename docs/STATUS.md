@@ -2277,3 +2277,72 @@ revisión pregunta a pregunta (`Workflow`, ADR-52), no un `sed` masivo.
 `check_docs.py`: verde. Ledger: 61.434/61.440 bytes (39.42, ya DONE desde
 antes de esta sesión, archivado a `LEDGER_HISTORY.md` §I para hacer
 sitio).
+
+## 2026-09-29, misma sesión — Workflow para 37.15 y 37.17: primer
+lote real, verificado por mí, con dos correcciones al ledger que traía
+
+Autorización explícita del dueño ("Lanza el Workflow para 37.15 y
+37.17"). Diseño: scope (1 agente, conteo real) → arreglo determinista de
+citas RFC/PEP en todo el banco (1 agente) → 7 lotes en paralelo sobre
+tracks disjuntos (3 para 37.15, 4 para 37.17) → verificación final. 10
+agentes, ninguno commiteó (por instrucción explícita del script) — el
+diff se quedó en el árbol de trabajo para que yo lo revisara.
+
+No me fié del informe de los agentes sin más. Antes de commitear: corrí
+`tests/content` (70.057 passed), `check_question_bank.py` y
+`check_docs.py` por mi cuenta, no solo leí lo que reportaron los
+agentes; confirmé con `curl` en vivo dos de las URLs que dicen haber
+verificado (`rfc-editor.org/rfc/rfc8446` y `peps.python.org/pep-0008/`,
+ambas 200); y reproduje uno de los arreglos de ambigüedad ejecutando
+Python yo mismo (`int(10*0.75)=7` vs `round(10*0.75)=8`, redondeo al par
+más cercano — confirma que la pregunta antes no distinguía las dos
+funciones y ahora sí).
+
+**37.15**: 4.450 → 3.903 preguntas sin fuente indexada (10.949 en total).
+267 citas de RFC/PEP arregladas con URL canónica verificada en vivo antes
+de escribirla (53 PEP, 17 RFC distintos). `peps.python.org` no estaba
+indexado — añadido como `reusar` (CC0/dominio público) tras leer la
+sección Copyright de 7 PEP reales, no por suposición. `rfc-editor.org` ya
+estaba indexado correctamente como `cita` (IETF Trust, no es licencia
+abierta). Otros 7 dominios nuevos indexados por los lotes de track01/04/06
+(Wikipedia CC BY-SA → cita, el libro Deep Learning de Goodfellow/Bengio/
+Courville → cita por «weak DRM» propietario, OWASP Cheat Sheet Series →
+cita por CC BY-SA, OpenAPI Specification → reusar por Apache-2.0 leído en
+la propia página, SQLAlchemy docs → cita por licencia de prosa no
+confirmada). Cada `mark` se decidió leyendo la licencia real, nunca
+asumida — dos casos concretos donde un agente marcó `cita` en vez de
+`reusar` justamente por no poder confirmar la licencia de la prosa
+(SQLAlchemy) o por ser CC BY-SA (Wikipedia, OWASP), respetando ADR-47.
+Quedan 3.903 preguntas sin indexar — la mayoría en pools ya identificados
+por dominio (scikit-learn/NumPy/pandas docs, ya indexados como `reusar`,
+solo faltan URLs por pregunta; Continuous Delivery/DDIA/Clean Code, libros
+propietarios sin URL canónica encontrada) para una siguiente tanda.
+
+**37.17**: el recuento real de preguntas `fill_blank_exec`/`fix_bug` en
+todo el banco es **699**, no los «~2.900» que llevaba escrito el ledger
+desde 2026-09-26 — cifra vieja y equivocada, corregida. De esas 699,
+revisadas a fondo (código ejecutado, razonado sobre implementaciones
+alternativas plausibles) 219 en 4 tracks (track01, 06, 07, 16 — track07 y
+track16 completos, track01 y track06 parciales por presupuesto). 10 bugs
+de ambigüedad real encontrados y arreglados, cada uno verificado
+ejecutando la versión correcta y una versión plausible incorrecta antes y
+después del cambio: `int()` vs `round()` con split 7.5 (antes 12
+elementos daban 9.0 exacto, ahora 10 dan 7.5, y `round` redondea al par);
+unión de conjuntos disjuntos donde la diferencia simétrica coincidía con
+la unión; poda de posición sinusoidal donde `i=0` anulaba el exponente;
+longitud de cadena que no distinguía el contenido; percentil 95 donde el
+índice calculado coincidía con el último elemento; BFS con un grafo donde
+ambas rutas medían lo mismo; y tres más en track06 (varianza con datos que
+empataban `int`/`round`, sigmoide sin ningún valor exactamente en el
+límite 0.5, rama `else` de un ternario nunca alcanzada). Un caso quedó
+señalado sin arreglar porque no es un ajuste de datos sino un rediseño
+estructural: `q060203ex012` — un `except` amplio y uno estrecho producen
+la misma salida con los datos dados, y no se puede diferenciar sin
+convertir la «respuesta correcta» en un traceback, lo que rompería el
+modelo de corrección por coincidencia exacta de stdout.
+
+`git diff --stat`: 65 ficheros, +540/-410. `tests/content` 70.057
+passed, 1 skipped, 21 xfailed (verificado por mí, no solo por el
+verificador del propio Workflow). `check_question_bank.py`,
+`check_docs.py`, `question_diversity.py` en verde. Ledger 37.15/37.17
+corregidos con las cifras reales, no las que traían.

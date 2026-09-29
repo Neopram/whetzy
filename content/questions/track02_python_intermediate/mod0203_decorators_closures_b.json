@@ -248,7 +248,7 @@
       "correct_index": 0,
       "explanation_es": "El decorador se APLICA al definir la función, no al llamarla: `deco(f)` se ejecuta en cuanto el intérprete llega a `def f`, antes que cualquier línea posterior. Por eso `decorando` sale primero, luego `listo` y solo al final `llamando`. Las opciones que ponen `listo` en primer lugar asumen el modelo mental equivocado de que `@deco` es perezoso y se dispara en la llamada. La cuarta invierte las dos últimas líneas y olvida que `f()` está después de `print(\"listo\")`.",
       "explanation_en": "The decorator is APPLIED at definition time, not at call time: `deco(f)` runs the moment the interpreter reaches `def f`, before any later line. So `decorating` comes first, then `ready`, and only at the end `calling`. The options that put `ready` first assume the wrong mental model in which `@deco` is lazy and fires on the call. The fourth swaps the last two lines and forgets that `f()` comes after `print(\"ready\")`.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 35000,
       "tags": [
         "decorators",
@@ -309,7 +309,7 @@
       "correct_index": 0,
       "explanation_es": "Los decoradores apilados se aplican de abajo arriba: primero `base = b(base)` y después `base = a(base)`, es decir `base = a(b(base))`. En la EJECUCIÓN, en cambio, el flujo entra por el más externo, así que `a` añade su paréntesis primero y `b` queda dentro. La opción `b(a(base))` es la que sale de leer los decoradores de arriba abajo, el orden equivocado. Recordar la equivalencia textual `a(b(base))` es la forma más fiable de no dudar.",
       "explanation_en": "Stacked decorators are applied bottom-up: first `base = b(base)`, then `base = a(base)`, i.e. `base = a(b(base))`. At RUN time, though, control enters through the outermost one, so `a` adds its parentheses first and `b` ends up inside. The `b(a(base))` option is what you get from reading the decorators top-down, which is the wrong order. Remembering the textual equivalence `a(b(base))` is the most reliable way not to hesitate.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 45000,
       "tags": [
         "decorators",
@@ -370,7 +370,7 @@
       "correct_index": 0,
       "explanation_es": "PEP 614 eliminó la restricción sintáctica: hoy tras `@` cabe cualquier expresión, y el único requisito real es que el resultado sea invocable con un argumento. La segunda opción describe con precisión la regla ANTERIOR a 3.9 (`dotted_name` con llamada opcional), y por eso es la más tentadora para quien aprendió decoradores antes y recuerda haber tenido que crear una variable auxiliar. La cuarta inventa una obligación de paréntesis que nunca existió.",
       "explanation_en": "PEP 614 removed the syntactic restriction: today any expression may follow `@`, and the only real requirement is that the result be callable with one argument. The second option describes precisely the PRE-3.9 rule (a dotted name with an optional call), which is why it is the tempting one for anyone who learned decorators earlier and remembers having to introduce a helper variable. The fourth invents a parenthesis requirement that never existed.",
-      "source": "PEP 614 — Relaxing Grammar Restrictions On Decorators",
+      "source": "PEP 614 — Relaxing Grammar Restrictions On Decorators — https://peps.python.org/pep-0614/",
       "expected_time_ms": 30000,
       "tags": [
         "decorators",
@@ -480,7 +480,7 @@
       "correct_index": 0,
       "explanation_es": "Falta el par de paréntesis: con `@repeat` (en vez de `@repeat(3)`) la función se pasa como si fuera `n`, así que `repeat(hello)` devuelve `deco` y el nombre `hello` queda ligado a `deco`. El fallo no aparece en la definición sino en la llamada: `hello()` es en realidad `deco()` sin su argumento `func`. La tercera opción es la respuesta más razonada y aun así falsa: nunca se llega a `range(n)`, porque `wrapper` jamás se construye. Este desfase entre dónde está el error y dónde estalla es lo que hace tan difícil de diagnosticar el olvido de los paréntesis.",
       "explanation_en": "The parentheses are missing: with `@repeat` instead of `@repeat(3)`, the function itself is passed as `n`, so `repeat(hello)` returns `deco` and the name `hello` is bound to `deco`. The failure surfaces not at definition but at the call: `hello()` is really `deco()` with its `func` argument missing. The third option is the best-reasoned wrong answer: `range(n)` is never reached, because `wrapper` is never built. That gap between where the mistake is and where it blows up is what makes the missing parentheses so hard to diagnose.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 45000,
       "tags": [
         "decorators",
@@ -511,7 +511,7 @@
       "correct_index": 3,
       "explanation_es": "Los dos primeros niveles se ejecutan al definir `f`: primero `factory(\"A\")` para obtener el decorador, e inmediatamente después `deco(f)` para aplicarlo. Solo el tercer nivel, `wrapper`, espera a la llamada. De ahí el orden `factory A`, `deco A`, `---`, `wrapper A`, `f`. La opción que sitúa `---` entre `factory` y `deco` es la más fina: separa correctamente los niveles pero supone que la aplicación del decorador se retrasa, cuando `factory(\"A\")(f)` ocurre entero en la misma línea `@`. La cuarta invierte factory y deco, que es leer el anidamiento al revés.",
       "explanation_en": "The first two levels run when `f` is defined: `factory(\"A\")` first, to obtain the decorator, then immediately `deco(f)` to apply it. Only the third level, `wrapper`, waits for the call. Hence the order `factory A`, `deco A`, `---`, `wrapper A`, `f`. The option that puts `---` between `factory` and `deco` is the subtlest: it separates the levels correctly but assumes the application is deferred, when `factory(\"A\")(f)` happens in full on the same `@` line. The fourth swaps factory and deco, which is reading the nesting backwards.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 50000,
       "tags": [
         "decorators",
@@ -656,7 +656,7 @@
       "correct_index": 1,
       "explanation_es": "Falso: hacen falta tres. El nivel exterior (`repeat(n)`) recibe los argumentos del decorador y devuelve el decorador de verdad; el intermedio (`deco(func)`) recibe la función y devuelve el envoltorio; el interior (`wrapper`) es el que sustituye a la función y se ejecuta en cada llamada. Contar dos es el error típico de trasladar el esquema del decorador sin argumentos, que sí tiene dos niveles; olvidar el tercero produce el fallo de que la función decorada acaba ligada al decorador en lugar de al envoltorio.",
       "explanation_en": "False: three are needed. The outer level (`repeat(n)`) takes the decorator's arguments and returns the actual decorator; the middle one (`deco(func)`) takes the function and returns the wrapper; the inner one (`wrapper`) is what replaces the function and runs on every call. Counting two is the classic slip of carrying over the argument-less decorator shape, which does have two levels; dropping the third leaves the decorated function bound to the decorator instead of to the wrapper.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 25000,
       "tags": [
         "decorators",
@@ -708,7 +708,7 @@
       "correct_index": 0,
       "explanation_es": "Un decorador de clase puede devolver cualquier objeto: aquí el nombre `A` queda ligado a la función `factory`, no a la clase. `A()` llama a `factory`, que imprime `creando` y construye una instancia de la clase original, así que `type(a).__name__` es `\"A\"`. La primera opción confunde el tipo de la instancia con el nombre al que está ligado el constructor. Este patrón funciona, pero rompe `isinstance(x, A)` y la herencia (`class B(A)` fallaría), que es la razón por la que normalmente conviene devolver la clase.",
       "explanation_en": "A class decorator may return any object: here the name `A` is bound to the `factory` function, not to the class. `A()` calls `factory`, which prints `creating` and builds an instance of the original class, so `type(a).__name__` is `\"A\"`. The first option confuses the instance's type with the name the constructor is bound to. The pattern works, but it breaks `isinstance(x, A)` and subclassing (`class B(A)` would fail), which is why returning the class is usually the right call.",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 40000,
       "tags": [
         "decorators",
@@ -738,7 +738,7 @@
       "correct_index": 1,
       "explanation_es": "El cuerpo de la clase se ejecuta primero, como un bloque de código normal, y solo cuando la clase ya existe se le aplica el decorador: de ahí `cuerpo` antes que `deco A`. La primera opción invierte ese orden, que es el error más común. La segunda supone que heredar de una clase decorada vuelve a disparar el decorador sobre la base, algo que no ocurre: `deco` se ejecuta una vez por cada `@`, ni una más. La cuarta olvida que `B` también está decorada.",
       "explanation_en": "The class body runs first, as an ordinary block of code, and only once the class exists is the decorator applied: hence `body` before `deco A`. The first option flips that order, which is the most common mistake. The second assumes that subclassing a decorated class re-fires the decorator on the base, which does not happen: `deco` runs once per `@`, no more. The fourth forgets that `B` is decorated too.",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 45000,
       "tags": [
         "decorators",
@@ -800,7 +800,7 @@
       "correct_index": 3,
       "explanation_es": "Los decoradores de clase se apilan igual que los de función: de abajo arriba, así que el más cercano al `class` se aplica primero y su resultado alimenta al siguiente. La opción `b(a(C))` es la que sale de leerlos de arriba abajo. La tercera describe un modelo mental frecuente, el de dos transformaciones paralelas sobre la clase original, que llevaría a perder los cambios de `a`; en realidad se encadenan, y por eso importa que cada decorador devuelva algo utilizable por el siguiente.",
       "explanation_en": "Class decorators stack exactly like function decorators: bottom-up, so the one nearest the `class` is applied first and its result feeds the next. The `b(a(C))` option is what reading them top-down gives you. The third describes a common mental model — two parallel transformations of the original class — which would lose `a`'s changes; in reality they are chained, which is why it matters that each decorator returns something the next one can use.",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 35000,
       "tags": [
         "decorators",
@@ -831,7 +831,7 @@
       "correct_index": 2,
       "explanation_es": "Es justo la motivación de PEP 3129: para muchos ajustes de una sola clase, la metaclase es demasiado, porque se hereda y contamina toda la jerarquía (además de provocar conflictos si dos bases tienen metaclases distintas). El decorador actúa una vez, sobre esa clase, y punto. La primera opción invierte los tiempos y además es doblemente falsa: la metaclase participa en la CREACIÓN de la clase y el decorador actúa después, con la clase ya construida. La tercera es tentadora por la fama de la metaclase, pero un decorador también puede añadir, sustituir o envolver atributos. `__init_subclass__` sigue vigente y es la tercera vía, más ligera que la metaclase.",
       "explanation_en": "This is exactly PEP 3129's motivation: for many one-off class tweaks a metaclass is overkill, because it is inherited and contaminates the whole hierarchy (and causes conflicts when two bases have different metaclasses). A decorator acts once, on that class, and stops there. The first option reverses the timing and is doubly wrong: the metaclass takes part in CREATING the class, while the decorator acts afterwards, on the finished class. The third is tempting given the metaclass's reputation, but a decorator can add, replace and wrap attributes just as well. `__init_subclass__` is alive and well, and is the third, lighter option.",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 55000,
       "tags": [
         "decorators",
@@ -862,7 +862,7 @@
       "correct_index": 0,
       "explanation_es": "`@classmethod` decora un MÉTODO dentro del cuerpo de una clase y devuelve un descriptor; el nombre engaña porque menciona la clase, pero no recibe ninguna. Los otros tres reciben una clase y devuelven una clase: `dataclass` genera `__init__`, `__repr__` y `__eq__`; `total_ordering` completa los operadores de comparación; `unique` comprueba que una enumeración no tenga alias. La regla para distinguirlos es sencilla: mira qué recibe el decorador, no dónde aparece la palabra \"class\" en su nombre.",
       "explanation_en": "`@classmethod` decorates a METHOD inside a class body and returns a descriptor; the name misleads because it mentions the class, but it never receives one. The other three take a class and return a class: `dataclass` generates `__init__`, `__repr__` and `__eq__`; `total_ordering` fills in the comparison operators; `unique` checks that an enumeration has no aliases. The rule for telling them apart is simple: look at what the decorator receives, not at where the word \"class\" appears in its name.",
-      "source": "CPython docs 3.13 — Built-in Functions (classmethod) and PEP 3129 — Class Decorators",
+      "source": "CPython docs 3.13 — Built-in Functions (classmethod) and PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 25000,
       "tags": [
         "decorators",
@@ -888,7 +888,7 @@
       "correct_index": 1,
       "explanation_es": "Falso: el decorador se ejecuta una sola vez, donde está escrita la `@`. Lo que engaña es que la subclase HEREDA los atributos que el decorador añadió a la base, así que `hasattr(Sub, \"algo\")` puede dar `True` y parecer que el decorador actuó; pero su código no vuelve a correr, y todo lo que dependa de la subclase concreta (registrarla, leer sus anotaciones, generar un `__init__` a su medida) no ocurre. Por eso hay que repetir la `@` en cada subclase, o recurrir a `__init_subclass__` o a una metaclase, que sí se propagan.",
       "explanation_en": "False: the decorator runs exactly once, where the `@` is written. What misleads is that the subclass INHERITS the attributes the decorator added to the base, so `hasattr(Sub, \"something\")` may be `True` and look like the decorator ran; but its code does not run again, and anything that depends on the concrete subclass (registering it, reading its annotations, generating a tailored `__init__`) never happens. That is why you repeat the `@` on each subclass, or reach for `__init_subclass__` or a metaclass, which do propagate.",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 40000,
       "tags": [
         "decorators",

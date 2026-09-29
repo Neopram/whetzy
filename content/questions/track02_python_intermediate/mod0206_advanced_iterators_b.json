@@ -52,7 +52,7 @@
       "correct_index": 2,
       "explanation_es": "Un generador es su propio iterador: su `__iter__` devuelve `self`, por eso `iter(g) is g` da `True` (y por eso llamar a `iter()` sobre un generador ni lo reinicia ni lo copia). Los argumentos se evalúan de izquierda a derecha, así que `next(g)` consume el primer valor (2) y `list(g)` recoge sólo lo que queda: `[4, 6]`. Quien responde `[2, 4, 6]` supone que `list()` vuelve al principio; quien responde `False` confunde el generador con una lista, cuyo `iter()` sí devuelve un objeto distinto.",
       "explanation_en": "A generator is its own iterator: its `__iter__` returns `self`, which is why `iter(g) is g` is `True` (and why calling `iter()` on a generator neither rewinds nor copies it). Arguments are evaluated left to right, so `next(g)` eats the first value (2) and `list(g)` collects only what is left: `[4, 6]`. Answering `[2, 4, 6]` assumes `list()` starts over; answering `False` confuses a generator with a list, where `iter()` really does hand back a different object.",
-      "source": "PEP 255 — Simple Generators",
+      "source": "PEP 255 — Simple Generators — https://peps.python.org/pep-0255/",
       "expected_time_ms": 40000,
       "tags": [
         "generators",
@@ -82,7 +82,7 @@
       "correct_index": 2,
       "explanation_es": "Si una clase no define `__iter__`, Python recurre al viejo protocolo de secuencia: llama a `__getitem__` con 0, 1, 2... y trata el `IndexError` como la señal de fin de la iteración. Por eso sale `[0, 10, 20]` y la excepción nunca llega al programa. El TypeError sólo aparecería si faltaran los dos, `__iter__` y `__getitem__`; `[10, 20]` supone que los índices empiezan en 1.",
       "explanation_en": "When a class defines no `__iter__`, Python falls back to the old sequence protocol: it calls `__getitem__` with 0, 1, 2... and treats `IndexError` as the end-of-iteration signal. Hence `[0, 10, 20]`, and the exception never reaches your program. A TypeError would only appear if both `__iter__` and `__getitem__` were missing; `[10, 20]` assumes indexing starts at 1.",
-      "source": "PEP 234 — Iterators",
+      "source": "PEP 234 — Iterators — https://peps.python.org/pep-0234/",
       "expected_time_ms": 45000,
       "tags": [
         "iterators",
@@ -172,7 +172,7 @@
       "correct_index": 0,
       "explanation_es": "El protocolo exige que, una vez agotado, el iterador siga lanzando `StopIteration` en cada llamada. No se rebobina: si hace falta recorrer los datos otra vez hay que pedirle un iterador nuevo al iterable. El `None` sólo aparece si se pasa explícitamente como valor por defecto, `next(it, None)`.",
       "explanation_en": "The protocol requires that, once exhausted, an iterator keeps raising `StopIteration` on every call. It does not rewind: if you need a second pass you must ask the iterable for a fresh iterator. `None` only shows up if you explicitly pass it as the default, `next(it, None)`.",
-      "source": "PEP 234 — Iterators",
+      "source": "PEP 234 — Iterators — https://peps.python.org/pep-0234/",
       "expected_time_ms": 20000,
       "tags": [
         "iterators",
@@ -470,7 +470,7 @@
       "correct_index": 2,
       "explanation_es": "Desde PEP 380, un `return valor` dentro de un generador es legal y ese valor viaja en el atributo `value` de la `StopIteration` que se lanza al terminar. No se emite como un elemento más de la iteración: por eso `list(g())` sería `[1]` y quien nunca captura la excepción jamás ve `'fin'`. `None` es lo que valdría `e.value` con un `return` sin argumento o al caer por el final de la función.",
       "explanation_en": "Since PEP 380, `return value` inside a generator is legal, and that value travels in the `value` attribute of the `StopIteration` raised when it finishes. It is not emitted as another item of the iteration: that is why `list(g())` would be `[1]`, and anyone who never catches the exception never sees `'fin'`. `None` is what `e.value` would hold for a bare `return` or for falling off the end of the function.",
-      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator — https://peps.python.org/pep-0380/",
       "expected_time_ms": 40000,
       "tags": [
         "generators",
@@ -500,7 +500,7 @@
       "correct_index": 3,
       "explanation_es": "`yield from` hace dos cosas: reenvía al llamador cada valor del subgenerador (el 1) y, cuando éste se agota, se evalúa como su valor de retorno (el 10), que aquí se asigna a `r` y se emite con un `yield` propio. La opción `[1, None]` es la creencia de que el `return` de un subgenerador se pierde; `[1, 10, 10]` supone que el valor de retorno se emite además automáticamente, cosa que no ocurre.",
       "explanation_en": "`yield from` does two things: it forwards every value from the subgenerator to the caller (the 1) and, once the subgenerator is done, evaluates to its return value (the 10), which is assigned to `r` here and emitted by an explicit `yield`. The `[1, None]` option is the belief that a subgenerator's `return` is lost; `[1, 10, 10]` assumes the return value is also emitted automatically, which it is not.",
-      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator — https://peps.python.org/pep-0380/",
       "expected_time_ms": 45000,
       "tags": [
         "generators",
@@ -530,7 +530,7 @@
       "correct_index": 1,
       "explanation_es": "El `next(c)` inicial sólo ceba la corrutina: la lleva hasta el primer `yield` y la deja suspendida ahí sin haber añadido nada, porque el `yield` todavía no ha producido ningún valor que asignar. Cada `send` la reanuda, el valor enviado se convierte en el resultado de la expresión `yield` y se añade a la lista. `[None, 'a', 'b']` es la idea equivocada de que el cebado guarda un `None`; y saltarse ese `next(c)` no daría `[]`, sino `TypeError: can't send non-None value to a just-started generator`.",
       "explanation_en": "The initial `next(c)` merely primes the coroutine: it runs to the first `yield` and leaves it suspended there, having appended nothing, because the `yield` has not produced a value to assign yet. Each `send` resumes it, the sent value becomes the result of the `yield` expression and is appended. `[None, 'a', 'b']` is the mistaken idea that priming stores a `None`; and skipping that `next(c)` would not give `[]` but `TypeError: can't send non-None value to a just-started generator`.",
-      "source": "PEP 342 — Coroutines via Enhanced Generators",
+      "source": "PEP 342 — Coroutines via Enhanced Generators — https://peps.python.org/pep-0342/",
       "expected_time_ms": 40000,
       "tags": [
         "coroutines",
@@ -560,7 +560,7 @@
       "correct_index": 0,
       "explanation_es": "`close()` inyecta `GeneratorExit` justo donde el generador está suspendido, precisamente para que se ejecuten los `finally` y se liberen los recursos: eso es lo que hace fiable el patrón `try/finally` alrededor de un `yield`. La primera opción describe un cierre bruto que se saltaría esa limpieza. Resistirse a morir con otro `yield` no está permitido: Python lo castiga con `RuntimeError: generator ignored GeneratorExit`.",
       "explanation_en": "`close()` injects `GeneratorExit` exactly where the generator is suspended, precisely so that `finally` blocks run and resources are released: that is what makes the `try/finally`-around-a-`yield` pattern reliable. The first option describes a brute-force close that would skip that cleanup. Refusing to die by yielding again is not allowed: Python punishes it with `RuntimeError: generator ignored GeneratorExit`.",
-      "source": "PEP 342 — Coroutines via Enhanced Generators",
+      "source": "PEP 342 — Coroutines via Enhanced Generators — https://peps.python.org/pep-0342/",
       "expected_time_ms": 40000,
       "tags": [
         "coroutines",
@@ -590,7 +590,7 @@
       "correct_index": 3,
       "explanation_es": "`throw()` es la otra mitad del canal bidireccional que PEP 342 abrió con `send()`: a una corrutina no sólo se le pueden mandar datos, también errores. La excepción aparece en la línea del `yield` donde está detenida, y lo que devuelve `throw()` es el siguiente valor emitido si el generador la maneja y continúa. Si nadie la captura, sube al llamador, y ese caso es el que hace parecer correcta la opción 1. Tampoco es un `close()` con otro nombre: un generador puede sobrevivir a un `throw()`, nunca a un `GeneratorExit` ignorado.",
       "explanation_en": "`throw()` is the other half of the two-way channel PEP 342 opened with `send()`: you can push not just data into a coroutine but errors too. The exception surfaces at the `yield` line where it is paused, and what `throw()` returns is the next value yielded if the generator handles it and carries on. If nobody catches it, it propagates to the caller — the case that makes option 1 look right. Nor is it `close()` under another name: a generator can survive a `throw()`, never an ignored `GeneratorExit`.",
-      "source": "PEP 342 — Coroutines via Enhanced Generators",
+      "source": "PEP 342 — Coroutines via Enhanced Generators — https://peps.python.org/pep-0342/",
       "expected_time_ms": 40000,
       "tags": [
         "coroutines",
@@ -642,7 +642,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero. Esa transparencia es justo la razón de ser de PEP 380: mientras dura la delegación, el subgenerador queda conectado directamente con el llamador, y los valores enviados, las excepciones lanzadas y el `close()` le llegan a él. Un bucle manual `for v in sub(): yield v` sí reenvía los valores, pero se come los `send()` y no propaga bien el cierre; por eso no es un sustituto.",
       "explanation_en": "True. That transparency is the whole point of PEP 380: while the delegation lasts, the subgenerator is wired straight to the caller, and sent values, thrown exceptions and `close()` all reach it. A manual `for v in sub(): yield v` loop does forward the values, but it swallows `send()` and does not propagate closing properly, which is why it is not a substitute.",
-      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator — https://peps.python.org/pep-0380/",
       "expected_time_ms": 30000,
       "tags": [
         "generators",
@@ -661,7 +661,7 @@
       "correct_answer_en": "value",
       "explanation_es": "`StopIteration.value` guarda lo que devolvió el `return` del generador, o `None` si no devolvió nada. Es el mecanismo exacto que usa `yield from` para evaluarse como el valor de retorno del subgenerador, así que entender este atributo es entender la delegación por dentro.",
       "explanation_en": "`StopIteration.value` holds whatever the generator's `return` produced, or `None` if it returned nothing. It is the very mechanism `yield from` uses to evaluate to the subgenerator's return value, so understanding this attribute is understanding delegation from the inside.",
-      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator — https://peps.python.org/pep-0380/",
       "expected_time_ms": 35000,
       "tags": [
         "generators",

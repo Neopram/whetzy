@@ -196,7 +196,7 @@
       "correct_index": 0,
       "explanation_es": "El `@decorador` es azúcar sintáctico: toma la función `f`, la pasa al decorador y reemplaza `f` por lo que este devuelve. Es decir, `f = decorador(f)`. Por eso un decorador es simplemente una función que recibe y devuelve funciones.",
       "explanation_en": "The `@decorator` is syntactic sugar: it takes the function `f`, passes it to the decorator, and rebinds `f` to whatever it returns. That is, `f = decorator(f)`. So a decorator is just a function that takes and returns functions.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 20000,
       "tags": [
         "decorators",
@@ -225,7 +225,7 @@
       "correct_index": 1,
       "explanation_es": "`@shout` reemplaza `greet` por `wrapper`. Al llamar `greet()`, se ejecuta `wrapper`, que llama al `greet` original (`\"hola\"`) y le aplica `.upper()`, devolviendo `\"HOLA\"`.",
       "explanation_en": "`@shout` replaces `greet` with `wrapper`. Calling `greet()` runs `wrapper`, which calls the original `greet` (`\"hola\"`) and applies `.upper()`, returning `\"HOLA\"`.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 35000,
       "tags": [
         "decorators",
@@ -254,7 +254,7 @@
       "correct_index": 2,
       "explanation_es": "El `wrapper` usa `*args, **kwargs` para aceptar cualquier firma. Llama a `add(3, 4)` = `7` y lo multiplica por 2 = `14`. Usar `*args, **kwargs` es la forma correcta de escribir decoradores genéricos.",
       "explanation_en": "The `wrapper` uses `*args, **kwargs` to accept any signature. It calls `add(3, 4)` = `7` and multiplies by 2 = `14`. Using `*args, **kwargs` is the correct way to write generic decorators.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 35000,
       "tags": [
         "decorators",
@@ -368,7 +368,7 @@
       "correct_index": 3,
       "explanation_es": "`@repeat(3)` se evalúa primero: `repeat(3)` debe **devolver** un decorador, que a su vez recibe la función. Por eso hay tres niveles: la fábrica (recibe args) → el decorador (recibe func) → el wrapper (recibe los args de la llamada).",
       "explanation_en": "`@repeat(3)` is evaluated first: `repeat(3)` must **return** a decorator, which in turn receives the function. Hence three levels: the factory (takes args) → the decorator (takes func) → the wrapper (takes call args).",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 22000,
       "tags": [
         "decorators",
@@ -398,7 +398,7 @@
       "correct_index": 1,
       "explanation_es": "`repeat(3)` devuelve `deco`, que envuelve `hi`. El `wrapper` ejecuta la función original 3 veces, imprimiendo `hi` tres veces. Los tres niveles de anidamiento permiten parametrizar el comportamiento del decorador.",
       "explanation_en": "`repeat(3)` returns `deco`, which wraps `hi`. The `wrapper` runs the original function 3 times, printing `hi` three times. The three levels of nesting let you parameterize the decorator's behavior.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 35000,
       "tags": [
         "decorators",
@@ -424,7 +424,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero. La línea `@repeat(3)` se evalúa una sola vez, al definir la función: `repeat(3)` produce el decorador y este envuelve la función. Lo que se ejecuta en cada llamada es el `wrapper`, no la fábrica de decoradores.",
       "explanation_en": "True. The `@repeat(3)` line is evaluated once, when the function is defined: `repeat(3)` produces the decorator, which wraps the function. What runs on each call is the `wrapper`, not the decorator factory.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 25000,
       "tags": [
         "decorators",
@@ -454,7 +454,7 @@
       "correct_index": 1,
       "explanation_es": "`tag(\"b\")` captura `name=\"b\"` y devuelve un decorador que envuelve el resultado de `text()` (`\"hola\"`) entre etiquetas `<b>...</b>`, produciendo `<b>hola</b>`. El argumento del decorador queda disponible por closure en el `wrapper`.",
       "explanation_en": "`tag(\"b\")` captures `name=\"b\"` and returns a decorator that wraps `text()`'s result (`\"hola\"`) in `<b>...</b>` tags, producing `<b>hola</b>`. The decorator argument is available to the `wrapper` via closure.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 40000,
       "tags": [
         "decorators",
@@ -484,7 +484,7 @@
       "correct_index": 3,
       "explanation_es": "`@deco` equivale a `f = deco(f)`. `@deco()` equivale a `f = deco()(f)`: primero invoca `deco()` (una fábrica que devuelve un decorador) y ese resultado envuelve la función. Confundirlos es un error común: usar `@deco()` con un decorador simple suele fallar.",
       "explanation_en": "`@deco` equals `f = deco(f)`. `@deco()` equals `f = deco()(f)`: it first calls `deco()` (a factory returning a decorator), and that result wraps the function. Confusing them is a common mistake: using `@deco()` with a plain decorator usually fails.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 40000,
       "tags": [
         "decorators",
@@ -514,7 +514,7 @@
       "correct_index": 0,
       "explanation_es": "Los decoradores se aplican de abajo hacia arriba: primero `@power(3)` envuelve `ident` (eleva al cubo), luego `@power(2)` envuelve ese resultado (eleva al cuadrado). Con `x=2`: `ident(2)=2`, `2**3=8`, `8**2=64`.",
       "explanation_en": "Decorators apply bottom-up: first `@power(3)` wraps `ident` (cubes), then `@power(2)` wraps that result (squares). With `x=2`: `ident(2)=2`, `2**3=8`, `8**2=64`.",
-      "source": "PEP 318 — Decorators for Functions and Methods",
+      "source": "PEP 318 — Decorators for Functions and Methods — https://peps.python.org/pep-0318/",
       "expected_time_ms": 50000,
       "tags": [
         "decorators",
@@ -545,7 +545,7 @@
       "correct_index": 2,
       "explanation_es": "Un decorador de clase aplica `@deco` justo encima de `class Foo:`, equivalente a `Foo = deco(Foo)`. Puede añadir métodos, registrar la clase, o envolverla. No confundir con `@classmethod`, que decora métodos dentro de una clase.",
       "explanation_en": "A class decorator applies `@deco` right above `class Foo:`, equivalent to `Foo = deco(Foo)`. It can add methods, register the class, or wrap it. Not to be confused with `@classmethod`, which decorates methods inside a class.",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 20000,
       "tags": [
         "decorators",
@@ -574,7 +574,7 @@
       "correct_index": 1,
       "explanation_es": "El decorador de clase `add_greeting` recibe `Person`, le añade un método `greet` y devuelve la clase modificada. Así `Person().greet()` devuelve `\"hi\"`. Es una forma de inyectar comportamiento sin usar herencia.",
       "explanation_en": "The class decorator `add_greeting` receives `Person`, adds a `greet` method, and returns the modified class. So `Person().greet()` returns `\"hi\"`. It's a way to inject behavior without using inheritance.",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 35000,
       "tags": [
         "decorators",
@@ -665,7 +665,7 @@
       "correct_index": 2,
       "explanation_es": "Cada `@register` se ejecuta al definir la clase, añadiendo su nombre al `registry` en orden: primero `A`, luego `B`. El patrón de registro por decorador es habitual en frameworks (plugins, rutas, comandos).",
       "explanation_en": "Each `@register` runs when the class is defined, appending its name to `registry` in order: first `A`, then `B`. The decorator-registration pattern is common in frameworks (plugins, routes, commands).",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 40000,
       "tags": [
         "decorators",
@@ -691,7 +691,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero. Como `@deco` sobre `class Foo` equivale a `Foo = deco(Foo)`, si el decorador olvida el `return cls` (devolviendo `None` implícitamente), `Foo` pasa a ser `None` y usarla luego lanza `TypeError`. Es un error clásico al escribir decoradores.",
       "explanation_en": "True. Since `@deco` on `class Foo` equals `Foo = deco(Foo)`, if the decorator forgets the `return cls` (implicitly returning `None`), `Foo` becomes `None` and using it later raises `TypeError`. This is a classic decorator-writing mistake.",
-      "source": "PEP 3129 — Class Decorators",
+      "source": "PEP 3129 — Class Decorators — https://peps.python.org/pep-3129/",
       "expected_time_ms": 30000,
       "tags": [
         "decorators",

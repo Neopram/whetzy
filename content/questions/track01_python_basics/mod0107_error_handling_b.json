@@ -81,7 +81,7 @@
       "correct_index": 0,
       "explanation_es": "Un `NameError` por una errata quedaría atrapado junto al error que sí esperabas, y el programa seguiría como si nada. Lo recomendable es capturar lo concreto y acotar el `try` a la línea que puede fallar.",
       "explanation_en": "A `NameError` from a typo would be caught alongside the error you actually expected, and the program would carry on as if nothing happened. The recommendation is to catch specifics and keep the `try` around the line that can actually fail.",
-      "source": "CPython docs 3.13 — The Python Tutorial §8.3 / PEP 8 (programming recommendations)",
+      "source": "CPython docs 3.13 — The Python Tutorial §8.3 / PEP 8 (programming recommendations) — https://peps.python.org/pep-0008/",
       "expected_time_ms": 35000,
       "tags": [
         "exceptions",
@@ -183,7 +183,7 @@
       "correct_index": 3,
       "explanation_es": "Esas dos heredan de `BaseException`, no de `Exception`, precisamente para que no las capture quien atrapa errores normales. Con `except:` dentro de un bucle, ni Ctrl+C detiene el programa.",
       "explanation_en": "Those two inherit from `BaseException` rather than `Exception`, precisely so that code catching ordinary errors does not swallow them. With a bare `except:` inside a loop, not even Ctrl+C stops the program.",
-      "source": "CPython docs 3.13 — Built-in Exceptions (BaseException) / PEP 8",
+      "source": "CPython docs 3.13 — Built-in Exceptions (BaseException) / PEP 8 — https://peps.python.org/pep-0008/",
       "expected_time_ms": 40000,
       "tags": [
         "exceptions",
@@ -242,7 +242,7 @@
       "correct_index": 2,
       "explanation_es": "Desde Python 3.3, `IOError` es solo un alias de `OSError`, y `FileNotFoundError` es la subclase concreta. Capturar `OSError` también funciona, pero atrapa además permisos y disco lleno.",
       "explanation_en": "Since Python 3.3, `IOError` is merely an alias of `OSError`, and `FileNotFoundError` is the specific subclass. Catching `OSError` also works, but additionally swallows permissions and disk-full errors.",
-      "source": "CPython docs 3.13 — Built-in Exceptions: OSError / PEP 3151",
+      "source": "CPython docs 3.13 — Built-in Exceptions: OSError / PEP 3151 — https://peps.python.org/pep-3151/",
       "expected_time_ms": 28000,
       "tags": [
         "exceptions",
@@ -546,7 +546,7 @@
       "correct_index": 2,
       "explanation_es": "La traza muestra «The above exception was the direct cause of the following exception», que es lo que permite traducir un error técnico a uno de dominio sin perder el rastro. Con `from None` se oculta la causa a propósito.",
       "explanation_en": "The traceback shows 'The above exception was the direct cause of the following exception', which is what lets you translate a technical error into a domain one without losing the trail. With `from None` the cause is hidden deliberately.",
-      "source": "PEP 3134 — Exception Chaining and Embedded Tracebacks",
+      "source": "PEP 3134 — Exception Chaining and Embedded Tracebacks — https://peps.python.org/pep-3134/",
       "expected_time_ms": 45000,
       "tags": [
         "exceptions",
@@ -618,7 +618,7 @@
       "correct_index": 3,
       "explanation_es": "Devolver `None` obliga a quien llama a comprobarlo, y si lo olvida el error aparece más tarde y más lejos, como un `AttributeError` confuso. La excepción falla en el punto exacto del problema.",
       "explanation_en": "Returning `None` forces the caller to check, and if they forget, the error surfaces later and further away, as a confusing `AttributeError`. An exception fails at the exact point of the problem.",
-      "source": "CPython docs 3.13 — The Python Tutorial §8 / PEP 20 (errors should never pass silently)",
+      "source": "CPython docs 3.13 — The Python Tutorial §8 / PEP 20 (errors should never pass silently) — https://peps.python.org/pep-0020/",
       "expected_time_ms": 40000,
       "tags": [
         "exceptions",

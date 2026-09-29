@@ -53,7 +53,7 @@
       "correct_index": 2,
       "explanation_es": "La compilación free-threaded quita el GIL y protege los objetos con conteo de referencias sesgado (biased reference counting) y bloqueos por objeto; el precio es más trabajo por operación y, en 3.13, menor rendimiento en un solo hilo. No es un JIT (opción de código máquina) ni tiene nada que ver con asyncio, que es concurrencia en un solo hilo. Y el conteo de referencias no desaparece: se vuelve más caro, que es justo lo que la hace polémica.",
       "explanation_en": "The free-threaded build drops the GIL and protects objects with biased reference counting plus per-object locks; the price is more work per operation and, in 3.13, slower single-threaded performance. It is not a JIT (the machine-code option) and has nothing to do with asyncio, which is single-threaded concurrency. Reference counting does not go away either: it gets more expensive, which is exactly why the change is contentious.",
-      "source": "PEP 703 - Making the Global Interpreter Lock Optional in CPython",
+      "source": "PEP 703 - Making the Global Interpreter Lock Optional in CPython — https://peps.python.org/pep-0703/",
       "expected_time_ms": 40000,
       "tags": [
         "cpython",
@@ -375,7 +375,7 @@
       "correct_index": 1,
       "explanation_es": "Falso desde Python 3.4. La PEP 442 cambió la finalización para que el recolector pueda ejecutar `__del__` sobre objetos atrapados en un ciclo y liberarlos después; antes esos objetos iban a `gc.garbage` y ahí se quedaban. Es una de esas reglas que se repiten por inercia porque era cierta en Python 2 y en los primeros Python 3, y lleva a la gente a evitar `__del__` o a llenar el código de `weakref` sin necesidad.",
       "explanation_en": "False since Python 3.4. PEP 442 changed finalisation so the collector can run `__del__` on objects trapped in a cycle and free them afterwards; previously such objects landed in `gc.garbage` and stayed there. It is one of those rules repeated out of inertia because it was true in Python 2 and early Python 3, and it pushes people to avoid `__del__` or sprinkle `weakref` around unnecessarily.",
-      "source": "PEP 442 - Safe object finalization",
+      "source": "PEP 442 - Safe object finalization — https://peps.python.org/pep-0442/",
       "expected_time_ms": 30000,
       "tags": [
         "cpython",
@@ -732,7 +732,7 @@
       "correct_index": 0,
       "explanation_es": "El `.pyc` guarda el objeto código serializado precedido de un número mágico ligado a la versión del intérprete y de una cabecera de validación. Si el fuente cambia o el intérprete es otro, se recompila. No es código máquina: CPython interpreta bytecode, y ahí está la confusión con un JIT como el de PyPy. Tampoco evita ejecutar el módulo: importarlo sigue corriendo su código de nivel superior; lo único que se ahorra es la fase de compilación.",
       "explanation_en": "A `.pyc` stores the marshalled code object preceded by a magic number tied to the interpreter version and a validation header. If the source changes or the interpreter differs, it recompiles. It is not machine code: CPython interprets bytecode, which is where the confusion with a JIT like PyPy's comes from. Nor does it skip running the module: importing still executes its top-level code; the only saving is the compilation step.",
-      "source": "PEP 3147 - PYC Repository Directories / CPython docs 3.13 - importlib",
+      "source": "PEP 3147 - PYC Repository Directories / CPython docs 3.13 - importlib — https://peps.python.org/pep-3147/",
       "expected_time_ms": 40000,
       "tags": [
         "cpython",
@@ -763,7 +763,7 @@
       "correct_index": 0,
       "explanation_es": "La PEP 659 introdujo la especialización \"perezosa\": el intérprete observa qué tipos pasan realmente por una instrucción y la sustituye en caliente por una versión rápida (sumar dos enteros sin pasar por el protocolo numérico completo), con una guarda que revierte a la forma genérica si aparece otro tipo. Sigue siendo interpretación de bytecode, no compilación a código máquina: por eso no es un JIT clásico, aunque se le parezca en el objetivo. Y `dis` no reescribe nada: `adaptive=True` simplemente muestra el bytecode tal como está ahora en memoria.",
       "explanation_en": "PEP 659 introduced lazy specialisation: the interpreter observes which types actually flow through an instruction and hot-swaps it for a fast version (adding two ints without the full numeric protocol), guarded so it reverts to the generic form if another type shows up. It remains bytecode interpretation, not compilation to machine code: that is why it is not a classic JIT, however similar the goal. And `dis` rewrites nothing: `adaptive=True` merely shows the bytecode as it currently stands in memory.",
-      "source": "PEP 659 - Specializing Adaptive Interpreter",
+      "source": "PEP 659 - Specializing Adaptive Interpreter — https://peps.python.org/pep-0659/",
       "expected_time_ms": 50000,
       "tags": [
         "cpython",

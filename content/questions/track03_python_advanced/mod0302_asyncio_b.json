@@ -53,7 +53,7 @@
       "correct_index": 0,
       "explanation_es": "Desde PEP 525, `yield` dentro de `async def` convierte la función en un generador asíncrono; se consume con `async for`, y las comprensiones admiten `async for` desde PEP 530. El resultado es `[0, 1, 2]`. La opción del SyntaxError era cierta en Python 3.5, y mucha gente la recuerda de entonces. La tercera confunde llamar al generador (que sí devuelve un objeto `async_generator`) con iterarlo: el `async for` es precisamente lo que lo consume.",
       "explanation_en": "Since PEP 525, `yield` inside `async def` makes the function an asynchronous generator; it is consumed with `async for`, and comprehensions accept `async for` since PEP 530. The result is `[0, 1, 2]`. The SyntaxError option was true in Python 3.5, and many people remember it from then. The third confuses calling the generator (which does return an `async_generator` object) with iterating it: the `async for` is exactly what consumes it.",
-      "source": "PEP 525 — Asynchronous Generators",
+      "source": "PEP 525 — Asynchronous Generators — https://peps.python.org/pep-0525/",
       "expected_time_ms": 38000,
       "tags": [
         "asyncio",
@@ -83,7 +83,7 @@
       "correct_index": 3,
       "explanation_es": "`await` solo acepta awaitables: objetos con `__await__`, corrutinas o Futures/Tasks. Un `int` no lo es, así que se lanza `TypeError` en tiempo de ejecución. La primera opción tienta porque en otros lenguajes `await` sobre un valor no-promesa lo envuelve automáticamente; Python no hace esa conversión. Y no es SyntaxError: la sintaxis `await <expr>` es válida, el fallo aparece al evaluar el operando, por eso ocurre en ejecución y no al compilar.",
       "explanation_en": "`await` only accepts awaitables: objects with `__await__`, coroutines, or Futures/Tasks. An `int` is none of those, so a `TypeError` is raised at runtime. The first option tempts because in other languages awaiting a non-promise value auto-wraps it; Python performs no such conversion. And it is not a SyntaxError: `await <expr>` is valid syntax, the failure comes from evaluating the operand, which is why it happens at runtime rather than compile time.",
-      "source": "PEP 492 — Coroutines with async and await syntax: Await Expression",
+      "source": "PEP 492 — Coroutines with async and await syntax: Await Expression — https://peps.python.org/pep-0492/",
       "expected_time_ms": 34000,
       "tags": [
         "asyncio",
@@ -114,7 +114,7 @@
       "correct_index": 3,
       "explanation_es": "`async with` sigue exactamente el mismo orden que `with`, solo que espera los métodos: `await __aenter__()`, luego el cuerpo, luego `await __aexit__()`. De ahí entra / cuerpo / sale. La opción del AttributeError recoge la confusión frecuente de que `async with` recurre a `__enter__` si no encuentra su versión asíncrona; no lo hace, busca únicamente `__aenter__`/`__aexit__` (y al revés, un `with` normal sobre esta clase sí fallaría). Las otras dos suponen que `__aenter__`/`__aexit__` se ejecutan agrupados antes o después del bloque.",
       "explanation_en": "`async with` follows exactly the same order as `with`, it just awaits the methods: `await __aenter__()`, then the body, then `await __aexit__()`. Hence enter / body / exit. The AttributeError option captures the common belief that `async with` falls back to `__enter__` when no async version exists; it does not, it looks only for `__aenter__`/`__aexit__` (and conversely a plain `with` on this class would fail). The other two assume `__aenter__`/`__aexit__` run back to back before or after the block.",
-      "source": "PEP 492 — Coroutines with async and await syntax: Asynchronous Context Managers",
+      "source": "PEP 492 — Coroutines with async and await syntax: Asynchronous Context Managers — https://peps.python.org/pep-0492/",
       "expected_time_ms": 40000,
       "tags": [
         "asyncio",
@@ -176,7 +176,7 @@
       "correct_index": 1,
       "explanation_es": "PEP 525 añadió los generadores asíncronos: `async def` con `yield` produce un `async_generator`, que NO es awaitable y por tanto no se usa con `await`, sino con `async for` (o `__anext__`). La primera opción era correcta en 3.5 y sobrevive como recuerdo obsoleto. La cuarta es la trampa importante: un generador clásico se recorre con `for` y no puede contener `await`; el asíncrono sí puede suspenderse entre elementos, que es justo para lo que existe.",
       "explanation_en": "PEP 525 added asynchronous generators: `async def` with `yield` produces an `async_generator`, which is NOT awaitable and therefore is not used with `await` but with `async for` (or `__anext__`). The first option was correct in 3.5 and survives as stale memory. The fourth is the important trap: a classic generator is walked with `for` and cannot contain `await`; the async one can suspend between items, which is exactly why it exists.",
-      "source": "PEP 525 — Asynchronous Generators",
+      "source": "PEP 525 — Asynchronous Generators — https://peps.python.org/pep-0525/",
       "expected_time_ms": 30000,
       "tags": [
         "asyncio",
@@ -206,7 +206,7 @@
       "correct_index": 0,
       "explanation_es": "PEP 492 define el protocolo awaitable: un objeto es awaitable si su tipo implementa `__await__` devolviendo un iterador, que es lo que `await` acciona. `__aiter__`/`__anext__` son el protocolo de iteración asíncrona, para `async for`, y `__aenter__`/`__aexit__` el de `async with`: los tres protocolos son distintos y se confunden con facilidad porque comparten el prefijo `a`. `__next__` es el protocolo síncrono y no interviene en absoluto.",
       "explanation_en": "PEP 492 defines the awaitable protocol: an object is awaitable if its type implements `__await__` returning an iterator, which is what `await` drives. `__aiter__`/`__anext__` are the async iteration protocol, for `async for`, and `__aenter__`/`__aexit__` the `async with` one: the three protocols are distinct and easily confused because they share the `a` prefix. `__next__` is the synchronous protocol and plays no part at all.",
-      "source": "PEP 492 — Coroutines with async and await syntax: Await Expression",
+      "source": "PEP 492 — Coroutines with async and await syntax: Await Expression — https://peps.python.org/pep-0492/",
       "expected_time_ms": 36000,
       "tags": [
         "asyncio",
@@ -253,7 +253,7 @@
       "correct_answer_en": "__aenter__",
       "explanation_es": "El protocolo de gestor de contexto asíncrono de PEP 492 son `__aenter__` y `__aexit__`, versiones awaitable de `__enter__`/`__exit__`. `async with` NO recurre a los métodos síncronos si faltan los asíncronos: si solo defines `__enter__`, obtienes un TypeError indicando que el objeto no soporta el protocolo de contexto asíncrono.",
       "explanation_en": "The asynchronous context manager protocol from PEP 492 is `__aenter__` and `__aexit__`, awaitable versions of `__enter__`/`__exit__`. `async with` does NOT fall back to the synchronous methods when the async ones are missing: defining only `__enter__` gets you a TypeError saying the object does not support the async context manager protocol.",
-      "source": "PEP 492 — Coroutines with async and await syntax: Asynchronous Context Managers",
+      "source": "PEP 492 — Coroutines with async and await syntax: Asynchronous Context Managers — https://peps.python.org/pep-0492/",
       "expected_time_ms": 28000,
       "tags": [
         "asyncio",

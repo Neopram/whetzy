@@ -22,7 +22,7 @@
       "correct_index": 1,
       "explanation_es": "Statelessness significa que el servidor no mantiene estado de sesión del cliente entre peticiones: cada petición es autónoma (por ejemplo, lleva su propio token de autenticación). Esto no impide persistir datos de negocio en una BD; se refiere solo al contexto de la conversación cliente-servidor, y facilita la escalabilidad horizontal.",
       "explanation_en": "Statelessness means the server keeps no client session state between requests: each request is self-contained (e.g. it carries its own auth token). This doesn't prevent persisting business data in a DB; it refers only to the client-server conversation context, and it enables horizontal scalability.",
-      "source": "Fielding, R. — Dissertation Ch.5 (REST) / RFC 9110",
+      "source": "Fielding, R. — Dissertation Ch.5 (REST) / RFC 9110 — https://www.rfc-editor.org/rfc/rfc9110",
       "expected_time_ms": 22000,
       "tags": [
         "rest",
@@ -152,7 +152,7 @@
       "correct_answer_en": "cacheable",
       "explanation_es": "La restricción de cacheabilidad exige que las respuestas indiquen (implícita o explícitamente, con cabeceras como `Cache-Control` o `ETag`) si pueden almacenarse en cache y reutilizarse. Un buen cacheo reduce latencia y carga, pero requiere una invalidación cuidadosa.",
       "explanation_en": "The cacheability constraint requires responses to indicate (implicitly or explicitly, via headers like `Cache-Control` or `ETag`) whether they can be cached and reused. Good caching reduces latency and load but requires careful invalidation.",
-      "source": "RFC 9111 — HTTP Caching / Fielding Ch.5.1.4",
+      "source": "RFC 9111 — HTTP Caching / Fielding Ch.5.1.4 — https://www.rfc-editor.org/rfc/rfc9111",
       "expected_time_ms": 30000,
       "tags": [
         "rest",
@@ -181,7 +181,7 @@
       "correct_index": 1,
       "explanation_es": "404 Not Found indica que el servidor no encontró el recurso solicitado. 200 es éxito, 301 es redirección permanente y 500 es un error interno del servidor. Los 4xx son errores del cliente; los 5xx, del servidor.",
       "explanation_en": "404 Not Found indicates the server did not find the requested resource. 200 is success, 301 is a permanent redirect, and 500 is an internal server error. 4xx are client errors; 5xx are server errors.",
-      "source": "RFC 9110 — HTTP Semantics §15 (Status Codes)",
+      "source": "RFC 9110 — HTTP Semantics §15 (Status Codes) — https://www.rfc-editor.org/rfc/rfc9110",
       "expected_time_ms": 12000,
       "tags": [
         "http",
@@ -206,7 +206,7 @@
       "correct_index": 0,
       "explanation_es": "GET es 'seguro' (no debe tener efectos secundarios que modifiquen recursos) e idempotente (varias peticiones idénticas tienen el mismo efecto que una). Por eso las respuestas GET son cacheables y no deben usarse GET para acciones que modifican datos.",
       "explanation_en": "GET is 'safe' (it must have no side effects modifying resources) and idempotent (multiple identical requests have the same effect as one). That's why GET responses are cacheable and GET must not be used for actions that modify data.",
-      "source": "RFC 9110 — HTTP Semantics §9.2 (Safe/Idempotent)",
+      "source": "RFC 9110 — HTTP Semantics §9.2 (Safe/Idempotent) — https://www.rfc-editor.org/rfc/rfc9110",
       "expected_time_ms": 22000,
       "tags": [
         "http",
@@ -236,7 +236,7 @@
       "correct_index": 3,
       "explanation_es": "PUT sustituye por completo el recurso (envías la representación entera y es idempotente). PATCH aplica cambios parciales (solo los campos a modificar). PATCH puede o no ser idempotente según cómo se defina la operación, mientras que PUT sí lo es por definición.",
       "explanation_en": "PUT fully replaces the resource (you send the entire representation and it is idempotent). PATCH applies partial changes (only the fields to modify). PATCH may or may not be idempotent depending on how the operation is defined, whereas PUT is idempotent by definition.",
-      "source": "RFC 9110 §9.3.4 (PUT) / RFC 5789 (PATCH)",
+      "source": "RFC 9110 §9.3.4 (PUT) / RFC 5789 (PATCH) — https://www.rfc-editor.org/rfc/rfc9110, https://www.rfc-editor.org/rfc/rfc5789",
       "expected_time_ms": 26000,
       "tags": [
         "http",
@@ -266,7 +266,7 @@
       "correct_index": 0,
       "explanation_es": "Un error del cliente (datos inválidos) debe devolver un 4xx: 400 Bad Request es genérico, y 422 Unprocessable Entity es común para fallos de validación semántica (lo usa FastAPI/Pydantic). Devolver 200 con un error en el cuerpo es un anti-patrón: rompe la semántica HTTP y confunde a clientes y proxies. Un 500 implicaría un fallo del servidor, no del cliente.",
       "explanation_en": "A client error (invalid data) should return a 4xx: 400 Bad Request is generic, and 422 Unprocessable Entity is common for semantic validation failures (used by FastAPI/Pydantic). Returning 200 with an error in the body is an anti-pattern: it breaks HTTP semantics and confuses clients and proxies. A 500 would imply a server fault, not a client one.",
-      "source": "RFC 9110 §15.5 (4xx) / FastAPI docs (validation)",
+      "source": "RFC 9110 §15.5 (4xx) / FastAPI docs (validation) — https://www.rfc-editor.org/rfc/rfc9110",
       "expected_time_ms": 28000,
       "tags": [
         "http",
@@ -296,7 +296,7 @@
       "correct_index": 0,
       "explanation_es": "201 Created indica que la petición tuvo éxito y se creó un recurso nuevo; idealmente se acompaña de una cabecera `Location` con la URI del recurso creado. 204 No Content se usa cuando no hay cuerpo que devolver (por ejemplo, tras un DELETE), y 202 Accepted para procesamiento asíncrono aún pendiente.",
       "explanation_en": "201 Created indicates the request succeeded and a new resource was created; ideally it includes a `Location` header with the new resource's URI. 204 No Content is used when there's no body to return (e.g. after a DELETE), and 202 Accepted for asynchronous processing still pending.",
-      "source": "RFC 9110 §15.3.2 (201 Created)",
+      "source": "RFC 9110 §15.3.2 (201 Created) — https://www.rfc-editor.org/rfc/rfc9110",
       "expected_time_ms": 24000,
       "tags": [
         "http",
@@ -318,7 +318,7 @@
       "correct_answer_en": "403",
       "explanation_es": "403 Forbidden significa que el servidor entendió la petición y sabe quién eres, pero te niega el acceso (problema de autorización). Se distingue de 401 Unauthorized, que significa que NO estás autenticado (faltan o son inválidas las credenciales). 401 = quién eres; 403 = qué puedes hacer.",
       "explanation_en": "403 Forbidden means the server understood the request and knows who you are, but denies access (an authorization problem). It differs from 401 Unauthorized, which means you are NOT authenticated (missing or invalid credentials). 401 = who you are; 403 = what you're allowed to do.",
-      "source": "RFC 9110 §15.5.3 (401) / §15.5.4 (403)",
+      "source": "RFC 9110 §15.5.3 (401) / §15.5.4 (403) — https://www.rfc-editor.org/rfc/rfc9110",
       "expected_time_ms": 28000,
       "tags": [
         "http",
@@ -348,7 +348,7 @@
       "correct_index": 1,
       "explanation_es": "`GET /posts/5/comments` expresa la relación jerárquica (los comentarios pertenecen a la publicación) usando sustantivos anidados y el método GET para la lectura. Las opciones con verbos en la URI (`getComments`) son RPC-sobre-HTTP, no REST.",
       "explanation_en": "`GET /posts/5/comments` expresses the hierarchical relationship (comments belong to the post) using nested nouns and the GET method for reading. Options with verbs in the URI (`getComments`) are RPC-over-HTTP, not REST.",
-      "source": "RFC 9110 (métodos) / Microsoft REST API Guidelines",
+      "source": "RFC 9110 (métodos) / Microsoft REST API Guidelines — https://www.rfc-editor.org/rfc/rfc9110",
       "expected_time_ms": 18000,
       "tags": [
         "rest",
@@ -433,7 +433,7 @@
       "correct_index": 2,
       "explanation_es": "`DELETE /users/7` usa el método HTTP que expresa la intención de borrado sobre el recurso identificado por la URI. Usar GET para borrar es peligroso (GET debe ser seguro y podría ser precargado o cacheado, ejecutando el borrado accidentalmente); poner el verbo en la ruta es RPC, no REST.",
       "explanation_en": "`DELETE /users/7` uses the HTTP method that expresses the deletion intent on the resource identified by the URI. Using GET to delete is dangerous (GET must be safe and could be prefetched or cached, triggering the delete accidentally); putting the verb in the path is RPC, not REST.",
-      "source": "RFC 9110 §9.3.5 (DELETE) / §9.2.1 (safe GET)",
+      "source": "RFC 9110 §9.3.5 (DELETE) / §9.2.1 (safe GET) — https://www.rfc-editor.org/rfc/rfc9110",
       "expected_time_ms": 24000,
       "tags": [
         "rest",

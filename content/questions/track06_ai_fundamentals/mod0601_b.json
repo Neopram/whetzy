@@ -22,7 +22,7 @@
       "correct_index": 0,
       "explanation_es": "La identidad es el elemento neutro del producto matricial: `A·I = I·A = A`. Confundirla con la matriz de unos es un error habitual, pero una matriz llena de unos no deja `A` intacta. La matriz de ceros es el neutro de la *suma*, no del producto. Y que el determinante valga 1 no basta: muchas matrices distintas de `I` tienen determinante 1.",
       "explanation_en": "The identity is the neutral element of matrix multiplication: `A·I = I·A = A`. Confusing it with the all-ones matrix is a common slip, but a matrix full of ones does not leave `A` untouched. The all-zeros matrix is the neutral element of *addition*, not multiplication. And having determinant 1 is not enough: many matrices other than `I` have determinant 1.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra: https://www.deeplearningbook.org/contents/linear_algebra.html",
       "expected_time_ms": 18000,
       "tags": [
         "linear-algebra",
@@ -82,7 +82,7 @@
       "correct_index": 0,
       "explanation_es": "Determinante cero significa que la transformación colapsa el espacio en una dimensión menor, así que no puede deshacerse: no hay inversa. Una matriz puede ser singular sin tener ningún elemento nulo (por ejemplo `[[1,2],[2,4]]`). La opción del cálculo 'difícil' describe el mal condicionamiento, un problema distinto: ahí el determinante es pequeño pero no cero. Y el determinante es el *producto* de los valores propios, luego determinante 0 implica que al menos uno de ellos es 0, no que valgan 1.",
       "explanation_en": "A zero determinant means the transformation collapses space into a lower dimension, so it cannot be undone: there is no inverse. A matrix can be singular without any zero entries (e.g. `[[1,2],[2,4]]`). The 'numerically hard' option describes ill-conditioning, a different problem: there the determinant is small but not zero. And the determinant is the *product* of the eigenvalues, so a determinant of 0 implies at least one eigenvalue is 0, not that they all equal 1.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra: https://www.deeplearningbook.org/contents/linear_algebra.html",
       "expected_time_ms": 35000,
       "tags": [
         "linear-algebra",
@@ -191,7 +191,7 @@
       "correct_index": 1,
       "explanation_es": "La regla correcta invierte el orden: `(A·B)^T = B^T · A^T`. La versión falsa resulta tentadora porque en los números `(a·b)` y `(b·a)` son lo mismo, pero el producto matricial no es conmutativo. Además, con `A` de (m×n) y `B` de (n×p), el producto `A^T · B^T` sería (n×m)·(p×n) y ni siquiera tiene formas compatibles salvo casos particulares.",
       "explanation_en": "The correct rule reverses the order: `(A·B)^T = B^T · A^T`. The false version is tempting because with numbers `(a·b)` and `(b·a)` are the same, but matrix multiplication is not commutative. Moreover, with `A` of shape (m×n) and `B` of shape (n×p), the product `A^T · B^T` would be (n×m)·(p×n) and does not even have compatible shapes except in special cases.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra: https://www.deeplearningbook.org/contents/linear_algebra.html",
       "expected_time_ms": 28000,
       "tags": [
         "linear-algebra",
@@ -221,7 +221,7 @@
       "correct_index": 0,
       "explanation_es": "La regla de la potencia da `d/dx x^n = n·x^(n-1)`, luego `3x^2`. Responder `x^2` es bajar el exponente y olvidar el coeficiente; `3x` es bajarlo al coeficiente pero también al exponente; y `x^4/4` es la *integral*, no la derivada, un intercambio frecuente cuando se memorizan ambas reglas juntas.",
       "explanation_en": "The power rule gives `d/dx x^n = n·x^(n-1)`, hence `3x^2`. Answering `x^2` drops the exponent but forgets the coefficient; `3x` applies the drop to the coefficient and to the exponent as well; and `x^4/4` is the *integral*, not the derivative, a frequent swap when both rules are memorised together.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4: Numerical Computation",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4: Numerical Computation: https://www.deeplearningbook.org/contents/numerical.html",
       "expected_time_ms": 18000,
       "tags": [
         "calculus",
@@ -251,7 +251,7 @@
       "correct_index": 1,
       "explanation_es": "Derivada externa por derivada interna: `2(3x+1) · 3 = 18x + 6`. La opción `2(3x+1)` es el error más común: aplicar la regla de la potencia y olvidar multiplicar por la derivada interna (3). `9x^2+6x+1` es la función expandida, no su derivada. Este mismo olvido, repetido capa a capa, es exactamente lo que la retropropagación no puede permitirse.",
       "explanation_en": "Outer derivative times inner derivative: `2(3x+1) · 3 = 18x + 6`. The option `2(3x+1)` is the most common error: applying the power rule and forgetting to multiply by the inner derivative (3). `9x^2+6x+1` is the expanded function, not its derivative. That same omission, repeated layer after layer, is exactly what backpropagation cannot afford.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5: Back-Propagation and Other Differentiation Algorithms",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5: Back-Propagation and Other Differentiation Algorithms: https://www.deeplearningbook.org/contents/mlp.html",
       "expected_time_ms": 28000,
       "tags": [
         "calculus",
@@ -281,7 +281,7 @@
       "correct_index": 0,
       "explanation_es": "La segunda derivada mide la curvatura: positiva significa que la función se curva hacia arriba, así que un punto crítico con curvatura positiva es un mínimo. Positiva se asocia intuitivamente con 'crece', pero ahí la primera derivada es 0: la función no crece, es la *pendiente* la que crece. Un máximo corresponde a segunda derivada negativa.",
       "explanation_en": "The second derivative measures curvature: positive means the function curves upward, so a critical point with positive curvature is a minimum. 'Positive' is intuitively associated with 'increasing', but the first derivative there is 0: the function is not increasing, it is the *slope* that is increasing. A maximum corresponds to a negative second derivative.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3: Gradient-Based Optimization",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3: Gradient-Based Optimization: https://www.deeplearningbook.org/contents/numerical.html",
       "expected_time_ms": 32000,
       "tags": [
         "calculus",
@@ -303,7 +303,7 @@
       "correct_answer_en": "Hessian matrix",
       "explanation_es": "La hessiana es a las funciones de varias variables lo que la segunda derivada es a las de una: sus valores propios dicen en qué direcciones la superficie se curva hacia arriba y en cuáles hacia abajo. Se confunde a menudo con la jacobiana, que reúne las *primeras* derivadas parciales de una función vectorial. En entrenamiento de redes casi nunca se calcula explícitamente: para n parámetros tiene n² entradas.",
       "explanation_en": "The Hessian is to multivariable functions what the second derivative is to single-variable ones: its eigenvalues say in which directions the surface curves upward and in which it curves downward. It is often confused with the Jacobian, which collects the *first* partial derivatives of a vector-valued function. In network training it is almost never computed explicitly: for n parameters it has n² entries.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3.1: Beyond the Gradient: Jacobian and Hessian Matrices",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3.1: Beyond the Gradient: Jacobian and Hessian Matrices: https://www.deeplearningbook.org/contents/numerical.html",
       "expected_time_ms": 32000,
       "tags": [
         "calculus",
@@ -333,7 +333,7 @@
       "correct_index": 2,
       "explanation_es": "Con n parámetros hacen falta n curvaturas positivas simultáneas para tener un mínimo; basta una negativa para que el punto crítico sea de silla, y esa condición es mucho más fácil de cumplir. Los mínimos locales no desaparecen, solo se vuelven raros. La opción del gradiente no nulo invierte el hecho: en un punto de silla el gradiente *es* cero, y por eso el descenso se frena allí. Y una función convexa tiene exactamente un mínimo global, no mínimos locales espurios.",
       "explanation_en": "With n parameters, a minimum requires n simultaneously positive curvatures; a single negative one makes the critical point a saddle, and that condition is far easier to satisfy. Local minima do not disappear, they merely become rare. The non-zero-gradient option inverts the fact: at a saddle point the gradient *is* zero, which is precisely why descent stalls there. And a convex function has exactly one global minimum, not spurious local ones.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.2.3: Plateaus, Saddle Points and Other Flat Regions",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.2.3: Plateaus, Saddle Points and Other Flat Regions: https://www.deeplearningbook.org/contents/optimization.html",
       "expected_time_ms": 50000,
       "tags": [
         "calculus",
@@ -364,7 +364,7 @@
       "correct_index": 1,
       "explanation_es": "El gradiente solo dice que localmente la pérdida apenas cambia: puede ser un mínimo, un máximo, un punto de silla o una meseta (por ejemplo, por saturación de sigmoides). Concluir 'mínimo global' es el salto injustificado: el gradiente es una señal local, no global. Una tasa de aprendizaje alta produce lo contrario, gradientes que oscilan o explotan. Y el sobreajuste se diagnostica comparando pérdida de entrenamiento y de validación, no mirando la norma del gradiente.",
       "explanation_en": "The gradient only says that locally the loss barely changes: it could be a minimum, a maximum, a saddle point or a plateau (from saturated sigmoids, for instance). Concluding 'global minimum' is the unjustified leap: the gradient is a local signal, not a global one. A high learning rate produces the opposite, gradients that oscillate or blow up. And overfitting is diagnosed by comparing training and validation loss, not by looking at the gradient norm.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models: https://www.deeplearningbook.org/contents/optimization.html",
       "expected_time_ms": 35000,
       "tags": [
         "calculus",
@@ -390,7 +390,7 @@
       "correct_index": 1,
       "explanation_es": "Gradiente cero define un *punto crítico*, que puede ser mínimo, máximo o punto de silla. La afirmación suena razonable porque en el entrenamiento se persigue precisamente un gradiente pequeño, pero la condición es necesaria, no suficiente: hace falta mirar la curvatura (la hessiana) para distinguir los tres casos. En redes profundas la mayoría de los puntos críticos con gradiente cero son de silla, no mínimos.",
       "explanation_en": "A zero gradient defines a *critical point*, which may be a minimum, a maximum or a saddle point. The claim sounds reasonable because training does chase a small gradient, but the condition is necessary, not sufficient: distinguishing the three cases requires looking at the curvature (the Hessian). In deep networks most zero-gradient critical points are saddles, not minima.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3: Gradient-Based Optimization",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3: Gradient-Based Optimization: https://www.deeplearningbook.org/contents/numerical.html",
       "expected_time_ms": 30000,
       "tags": [
         "calculus",
@@ -874,7 +874,7 @@
       "correct_index": 2,
       "explanation_es": "El mini-lote cambia precisión del gradiente por frecuencia de actualización y viabilidad en memoria. Quien responde 'gradiente exacto' invierte el compromiso: el gradiente exacto es justamente el del lote completo. Ningún método elimina la tasa de aprendizaje (ni siquiera Adam, que la adapta pero sigue necesitando un valor base). Y no hay garantía de menor pérdida final: el ruido a veces ayuda a escapar de puntos de silla y a veces impide un ajuste fino.",
       "explanation_en": "Mini-batching trades gradient precision for update frequency and memory feasibility. Answering 'exact gradient' inverts the trade-off: the exact gradient is precisely the full-batch one. No method removes the learning rate (not even Adam, which adapts it but still needs a base value). And there is no guarantee of a lower final loss: the noise sometimes helps escape saddle points and sometimes prevents fine convergence.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.1.3: Batch and Minibatch Algorithms",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.1.3: Batch and Minibatch Algorithms: https://www.deeplearningbook.org/contents/optimization.html",
       "expected_time_ms": 35000,
       "tags": [
         "optimization",
@@ -952,7 +952,7 @@
       "correct_index": 1,
       "explanation_es": "El descenso de gradiente solo usa información local, así que puede quedarse en un mínimo local, en una meseta o frenarse cerca de un punto de silla, y más iteraciones no lo sacan de ahí. La garantía de convergencia al óptimo global existe únicamente para funciones convexas. Que en la práctica las redes profundas entrenen bien no contradice esto: se conforman con mínimos locales de calidad suficiente, no con el global demostrado.",
       "explanation_en": "Gradient descent uses only local information, so it can settle in a local minimum, in a plateau, or stall near a saddle point, and more iterations will not pull it out. The guarantee of convergence to the global optimum exists only for convex functions. That deep networks train well in practice does not contradict this: they settle for local minima of sufficient quality, not a proven global one.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.2: Challenges in Neural Network Optimization",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.2: Challenges in Neural Network Optimization: https://www.deeplearningbook.org/contents/optimization.html",
       "expected_time_ms": 32000,
       "tags": [
         "optimization",
@@ -1000,7 +1000,7 @@
       "correct_answer_en": "early stopping",
       "explanation_es": "La parada temprana usa el conjunto de validación como criterio de terminación y devuelve los pesos de la mejor época. Goodfellow la describe como una forma de regularización: limitar el número de pasos restringe efectivamente el espacio de parámetros alcanzable. El error que la hace inútil es medirla sobre el conjunto de test: en ese momento el test deja de ser una estimación honesta del rendimiento porque ya ha guiado una decisión de entrenamiento.",
       "explanation_en": "Early stopping uses the validation set as a termination criterion and returns the weights of the best epoch. Goodfellow describes it as a form of regularisation: limiting the number of steps effectively restricts the reachable parameter space. The mistake that makes it useless is measuring it on the test set: at that moment the test set stops being an honest estimate of performance because it has already driven a training decision.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 7.8: Early Stopping",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 7.8: Early Stopping: https://www.deeplearningbook.org/contents/regularization.html",
       "expected_time_ms": 32000,
       "tags": [
         "optimization",
@@ -1061,7 +1061,7 @@
       "correct_index": 2,
       "explanation_es": "Es la firma clásica del sobreajuste, y el matiz importante es que la optimización está funcionando perfectamente: la pérdida de entrenamiento baja porque el modelo memoriza ruido específico de esa muestra. Diagnosticar infraajuste y entrenar más épocas empeora justo lo que va mal (el infraajuste tendría ambas pérdidas altas y estancadas). Subir la tasa de aprendizaje trata un problema de divergencia, que se vería como pérdida de entrenamiento oscilando o creciendo. Y reinicializar no cambia nada estructural: con la misma capacidad y los mismos datos, el modelo volverá al mismo punto.",
       "explanation_en": "This is the classic signature of overfitting, and the important nuance is that optimisation is working perfectly: the training loss falls because the model is memorising noise specific to that sample. Diagnosing underfitting and training for more epochs worsens exactly what is going wrong (underfitting would show both losses high and flat). Raising the learning rate addresses divergence, which would look like a training loss oscillating or growing. And reinitialising changes nothing structural: with the same capacity and the same data, the model will arrive at the same place.",
-      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 5.2: Capacity, Overfitting and Underfitting",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 5.2: Capacity, Overfitting and Underfitting: https://www.deeplearningbook.org/contents/ml.html",
       "expected_time_ms": 50000,
       "tags": [
         "optimization",

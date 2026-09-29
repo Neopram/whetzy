@@ -22,7 +22,7 @@
       "correct_index": 1,
       "explanation_es": "El timeout de inactividad limita el daño de una sesión abandonada en un equipo compartido; el absoluto acota cuánto vale un identificador robado aunque el atacante lo mantenga vivo con peticiones periódicas. Por eso hacen falta los dos: solo con el de inactividad, un atacante que hace una petición cada 10 minutos conserva la sesión para siempre. La rotación de cookie y las listas de revocación son mecanismos distintos (y la segunda pertenece al mundo de los tokens, no al de las sesiones de servidor).",
       "explanation_en": "The idle timeout limits the damage of a session left open on a shared machine; the absolute timeout bounds how long a stolen identifier is worth anything, even if the attacker keeps it alive with periodic requests. That is why you need both: with only an idle timeout, an attacker polling every 10 minutes keeps the session forever. Cookie rotation and revocation lists are different mechanisms (and the latter belongs to the token world, not server-side sessions).",
-      "source": "OWASP - Session Management Cheat Sheet",
+      "source": "OWASP - Session Management Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -52,7 +52,7 @@
       "correct_index": 2,
       "explanation_es": "`pop` con valor por defecto borra la entrada sin lanzar excepción, y `get` sobre una clave ausente devuelve `None`. La idea de fondo es la que importa: en sesiones el servidor guarda el estado, así que el logout lo destruye ahí y la cookie que el atacante haya copiado deja de servir de inmediato. Esa revocación instantánea es precisamente lo que un JWT autocontenido no te da gratis.",
       "explanation_en": "`pop` with a default removes the entry without raising, and `get` on a missing key returns `None`. The underlying point is what matters: with sessions the server holds the state, so logout destroys it there and any cookie the attacker copied stops working immediately. That instant revocation is exactly what a self-contained JWT does not give you for free.",
-      "source": "OWASP - Session Management Cheat Sheet",
+      "source": "OWASP - Session Management Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
       "expected_time_ms": 35000,
       "tags": [
         "auth",
@@ -78,7 +78,7 @@
       "correct_index": 1,
       "explanation_es": "Falso. HTTPS cifra la URL en tránsito, pero el identificador sigue filtrándose por caminos que el cifrado no toca: queda en el historial del navegador, en los logs de acceso del servidor y de los proxies, en marcadores y en la cabecera `Referer` que se envía a terceros al hacer clic en un enlace externo. La tentación está en creer que el único riesgo es el sniffing de red; el verdadero problema es dónde acaba escrita la URL. Por eso el identificador va en una cookie con `HttpOnly` y `Secure`.",
       "explanation_en": "False. HTTPS encrypts the URL in transit, but the identifier still leaks through channels encryption never touches: browser history, server and proxy access logs, bookmarks, and the `Referer` header sent to third parties when a user clicks an external link. The temptation is to assume network sniffing is the only risk; the real problem is everywhere the URL gets written down. That is why the identifier belongs in a cookie with `HttpOnly` and `Secure`.",
-      "source": "OWASP - Session Management Cheat Sheet",
+      "source": "OWASP - Session Management Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
       "expected_time_ms": 25000,
       "tags": [
         "auth",
@@ -127,7 +127,7 @@
       "correct_answer_en": "fixation",
       "explanation_es": "En la fijación de sesión el atacante no roba un identificador ya autenticado: planta uno de antemano y espera a que la víctima haga login sobre él. La defensa no es reforzar la cookie, sino regenerar el identificador de sesión en el momento exacto en que cambia el nivel de privilegio, es decir, justo tras un login correcto. Es fácil confundirlo con el secuestro de sesión (session hijacking), donde el identificador se roba después del login.",
       "explanation_en": "In session fixation the attacker does not steal an already-authenticated identifier: he plants one beforehand and waits for the victim to log in on top of it. The defence is not a stronger cookie but regenerating the session identifier at the exact moment the privilege level changes, that is, right after a successful login. It is easy to confuse with session hijacking, where the identifier is stolen after login.",
-      "source": "OWASP - Session Management Cheat Sheet",
+      "source": "OWASP - Session Management Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -157,7 +157,7 @@
       "correct_index": 2,
       "explanation_es": "La revocación inmediata es la ventaja real del modelo con estado: el servidor consulta el almacén en cada petición, así que basta con borrar una fila. Un JWT firmado, en cambio, sigue siendo válido hasta su `exp` a menos que montes una lista de revocación, que es justo el estado que el JWT pretendía evitar. Caducar solo también le pasa al JWT y no ayuda hoy; la cookie no puede autoborrarse en un equipo que no controlas; y una sesión no cifra nada por sí misma, solo guarda un identificador opaco.",
       "explanation_en": "Immediate revocation is the genuine advantage of the stateful model: the server consults the store on every request, so deleting one row is enough. A signed JWT, by contrast, stays valid until its `exp` unless you build a revocation list, which is precisely the state the JWT was meant to avoid. Self-expiry happens with JWTs too and does not help today; a cookie cannot erase itself on a machine you do not control; and a session encrypts nothing by itself, it just holds an opaque identifier.",
-      "source": "OWASP - Session Management Cheat Sheet",
+      "source": "OWASP - Session Management Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
       "expected_time_ms": 40000,
       "tags": [
         "auth",
@@ -183,7 +183,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero. `Secure` es exactamente la instrucción que limita el envío de la cookie a canales cifrados. Sin ella, una sola petición a `http://` (una imagen antigua, un redirect mal configurado, un enlace externo) basta para que el identificador viaje en claro y sea capturable en una red hostil. Es frecuente confundir `Secure` con `HttpOnly`: el primero decide por qué canal viaja la cookie, el segundo si JavaScript puede leerla.",
       "explanation_en": "True. `Secure` is precisely the instruction that restricts the cookie to encrypted channels. Without it, a single `http://` request (a legacy image, a misconfigured redirect, an external link) is enough for the identifier to travel in the clear and be captured on a hostile network. `Secure` is often confused with `HttpOnly`: the first decides which channel the cookie travels on, the second whether JavaScript can read it.",
-      "source": "OWASP - Session Management Cheat Sheet",
+      "source": "OWASP - Session Management Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
       "expected_time_ms": 20000,
       "tags": [
         "auth",
@@ -213,7 +213,7 @@
       "correct_index": 0,
       "explanation_es": "El identificador de sesión es, en la práctica, la credencial que sustituye a la contraseña durante toda la sesión, así que debe ser impredecible: OWASP pide al menos 128 bits de entropía procedentes de un generador criptográficamente seguro (en Python, `secrets`, no `random`). Con un patrón determinista, el atacante solo tiene que probar timestamps cercanos. Las otras opciones confunden un problema de higiene o de almacenamiento con el fallo de seguridad real; y sí, filtrar el id de usuario importa, pero lo grave es la predictibilidad.",
       "explanation_en": "The session identifier is effectively the credential that replaces the password for the whole session, so it must be unpredictable: OWASP asks for at least 128 bits of entropy from a cryptographically secure generator (in Python, `secrets`, not `random`). With a deterministic pattern, the attacker only has to try nearby timestamps. The other options mistake a hygiene or storage concern for the real security flaw; and yes, leaking the user id matters, but predictability is the serious part.",
-      "source": "OWASP - Session Management Cheat Sheet",
+      "source": "OWASP - Session Management Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
       "expected_time_ms": 40000,
       "tags": [
         "auth",
@@ -243,7 +243,7 @@
       "correct_index": 0,
       "explanation_es": "La cabecera y el payload de un JWT son JSON codificado en base64url, no cifrado: cualquiera con el token los lee sin clave alguna. La opción del error es la trampa habitual, porque mucha gente asume que 'firmado' implica 'secreto'. La firma no oculta nada; solo permite detectar si alguien modificó el contenido. El tercer distractor confunde decodificar con no hacer nada, y el cuarto muestra el payload, no la cabecera.",
       "explanation_en": "A JWT's header and payload are base64url-encoded JSON, not encrypted: anyone holding the token reads them with no key at all. The error option is the usual trap, because many people assume 'signed' implies 'secret'. The signature hides nothing; it only lets you detect whether someone altered the content. The third distractor confuses decoding with doing nothing, and the fourth shows the payload rather than the header.",
-      "source": "RFC 7519 (JSON Web Token), Section 3",
+      "source": "RFC 7519 (JSON Web Token), Section 3 — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 35000,
       "tags": [
         "auth",
@@ -273,7 +273,7 @@
       "correct_index": 3,
       "explanation_es": "Sin verificar la firma, todo lo demás se lee de un texto que el atacante controla: `exp`, `iss` y hasta `alg` pueden estar falsificados, así que comprobarlos primero no demuestra nada. Esa es la tentación de las opciones 2 y 4: son comprobaciones necesarias, pero posteriores. Fijar el algoritmo esperado en el servidor es parte de la misma verificación, y es lo que impide ataques como `alg: none` o la confusión RS256/HS256. Contar los puntos es solo comprobar el formato.",
       "explanation_en": "Without verifying the signature, everything else is read out of text the attacker controls: `exp`, `iss`, even `alg` can be forged, so checking them first proves nothing. That is the temptation in options 2 and 4: they are necessary checks, but later ones. Pinning the expected algorithm on the server is part of that same verification, and it is what blocks attacks like `alg: none` or RS256/HS256 confusion. Counting dots is merely a format check.",
-      "source": "RFC 7519 (JSON Web Token), Section 7.2",
+      "source": "RFC 7519 (JSON Web Token), Section 7.2 — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 35000,
       "tags": [
         "auth",
@@ -330,7 +330,7 @@
       "correct_index": 1,
       "explanation_es": "Falso. Un JWT firmado es autocontenido: la API decide si lo acepta mirando la firma y el `exp`, sin consultar ninguna base de datos. Si el atacante ya copió el token, seguirá siendo válido hasta que expire, por mucho que el navegador legítimo lo haya borrado. El engaño está en confundir la vista del usuario ('ya no estoy dentro') con el estado del servidor. Las mitigaciones reales son access tokens de vida corta con refresh tokens revocables, o mantener una denylist de identificadores `jti`.",
       "explanation_en": "False. A signed JWT is self-contained: the API decides whether to accept it by checking the signature and `exp`, without consulting any database. If an attacker already copied the token, it stays valid until it expires, no matter that the legitimate browser deleted it. The trap is confusing the user's view ('I am logged out') with the server's state. The real mitigations are short-lived access tokens paired with revocable refresh tokens, or a denylist of `jti` identifiers.",
-      "source": "RFC 7519 (JSON Web Token), Section 4.1.7",
+      "source": "RFC 7519 (JSON Web Token), Section 4.1.7 — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -349,7 +349,7 @@
       "correct_answer_en": "aud",
       "explanation_es": "`aud` (audience) responde a 'para quién es este token'. Si una API no lo comprueba, acepta tokens legítimos emitidos por el mismo proveedor pero destinados a otro servicio, y un cliente puede reutilizar su token de la API A contra la API B. Se confunde a menudo con `iss` (quién lo emitió) y con `sub` (de quién habla el token); los tres hacen falta, pero solo `aud` delimita el destinatario.",
       "explanation_en": "`aud` (audience) answers 'who is this token for'. An API that skips the check accepts legitimate tokens issued by the same provider but meant for another service, letting a client replay its API A token against API B. It is often confused with `iss` (who issued it) and `sub` (who the token is about); all three matter, but only `aud` bounds the recipient.",
-      "source": "RFC 7519 (JSON Web Token), Section 4.1.3",
+      "source": "RFC 7519 (JSON Web Token), Section 4.1.3 — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -379,7 +379,7 @@
       "correct_index": 3,
       "explanation_es": "Si la librería elige el algoritmo leyendo el `alg` del propio token, la clave pública deja de ser pública y pasa a ser un secreto compartido: el atacante la usa como clave HMAC, firma lo que quiera y la verificación cuadra. La defensa es pasar siempre una lista explícita de algoritmos (`algorithms=[\"RS256\"]`). El replay lo frena `exp` y no depende del `alg`; romper RSA por fuerza bruta no es viable; y quitar la firma es el ataque `alg: none`, distinto de este.",
       "explanation_en": "If the library picks the algorithm by reading the token's own `alg`, the public key stops being public and becomes a shared secret: the attacker uses it as the HMAC key, signs whatever he likes, and verification passes. The defence is always passing an explicit algorithm allowlist (`algorithms=[\"RS256\"]`). Replay is stopped by `exp` and does not depend on `alg`; brute-forcing RSA is not feasible; and stripping the signature is the `alg: none` attack, which is a different one.",
-      "source": "RFC 7519 (JSON Web Token), Section 8.1",
+      "source": "RFC 7519 (JSON Web Token), Section 8.1 — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 45000,
       "tags": [
         "auth",
@@ -405,7 +405,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero. JWS aporta integridad y autenticidad del emisor, pero el payload sigue siendo base64url legible; JWE es la variante que cifra el contenido. La conclusión práctica es más simple que elegir JWE: no metas datos sensibles (correos, roles internos, identificadores médicos) en un JWT firmado, porque cualquiera con el token los lee. Mucha gente asume que 'token firmado' equivale a 'token cifrado', y ese malentendido es el origen de filtraciones reales de PII.",
       "explanation_en": "True. JWS gives integrity and issuer authenticity, but the payload remains readable base64url; JWE is the variant that encrypts the content. The practical takeaway is simpler than choosing JWE: do not put sensitive data (emails, internal roles, medical identifiers) in a signed JWT, because anyone holding the token reads it. Many people assume 'signed token' means 'encrypted token', and that misunderstanding is the source of real PII leaks.",
-      "source": "RFC 7519 (JSON Web Token), Section 1",
+      "source": "RFC 7519 (JSON Web Token), Section 1 — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -435,7 +435,7 @@
       "correct_index": 3,
       "explanation_es": "OAuth 2.0 es un marco de autorización delegada: te da un access token que dice 'este portador puede hacer X', no 'este usuario es Ana'. Usar el access token como prueba de identidad es un error clásico, porque está pensado para el servidor de recursos, no para el cliente. OIDC resuelve eso con un `id_token` dirigido al cliente y verificable. Limitar permisos ya lo hace OAuth mediante `scope`, y HTTPS es requisito de OAuth 2.0 desde el principio.",
       "explanation_en": "OAuth 2.0 is a delegated authorization framework: it gives you an access token saying 'this bearer may do X', not 'this user is Ana'. Using the access token as proof of identity is a classic mistake, because it is meant for the resource server, not the client. OIDC solves this with an `id_token` addressed to the client and verifiable by it. Limiting permissions is already OAuth's job via `scope`, and HTTPS has been an OAuth 2.0 requirement from the start.",
-      "source": "RFC 6749 (OAuth 2.0), Section 1",
+      "source": "RFC 6749 (OAuth 2.0), Section 1 — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 35000,
       "tags": [
         "auth",
@@ -461,7 +461,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero. Ese grant contradice la idea central de OAuth: que el cliente nunca vea la contraseña del usuario. Al capturarla, el cliente acumula una credencial que puede almacenar o filtrar, y se pierde la posibilidad de aplicar MFA o detección de riesgo en el servidor de autorización. La RFC 6749 ya lo limitaba a clientes de alta confianza y las guías posteriores lo desaconsejan; la alternativa es Authorization Code con PKCE, incluso en aplicaciones propias.",
       "explanation_en": "True. That grant contradicts OAuth's central idea: the client should never see the user's password. By capturing it, the client accumulates a credential it can store or leak, and you lose the ability to apply MFA or risk detection at the authorization server. RFC 6749 already restricted it to highly trusted clients and later guidance discourages it; the alternative is Authorization Code with PKCE, even for first-party apps.",
-      "source": "RFC 6749 (OAuth 2.0), Section 4.3",
+      "source": "RFC 6749 (OAuth 2.0), Section 4.3 — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -491,7 +491,7 @@
       "correct_index": 2,
       "explanation_es": "`state` es un valor impredecible que el cliente genera, guarda en su sesión y compara al volver. Sin él, un atacante puede hacer que la víctima complete el redirect con un código emitido para la cuenta del atacante, dejando a la víctima conectada a la cuenta equivocada. Los distractores mezclan responsabilidades de otros parámetros: los permisos van en `scope`, el tipo de cliente se registra en el servidor de autorización, y el access token nunca viaja por el redirect en este flujo (solo el código).",
       "explanation_en": "`state` is an unpredictable value the client generates, stores in its session, and compares on return. Without it, an attacker can make the victim complete the redirect with a code issued for the attacker's account, leaving the victim logged into the wrong account. The distractors mix up other parameters' jobs: permissions go in `scope`, the client type is registered at the authorization server, and the access token never travels on the redirect in this flow (only the code does).",
-      "source": "RFC 6749 (OAuth 2.0), Section 10.12",
+      "source": "RFC 6749 (OAuth 2.0), Section 10.12 — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 40000,
       "tags": [
         "auth",
@@ -522,7 +522,7 @@
       "correct_index": 3,
       "explanation_es": "`parse_qs` devuelve listas porque un parámetro puede repetirse, y el `[0]` extrae la cadena, así que se imprime el código sin corchetes. El detalle conceptual importa más que la sintaxis: lo que vuelve por el redirect es un código de autorización de un solo uso y vida corta, no el access token. El cliente lo canjea después en el token endpoint, por canal trasero (back channel), que es justamente lo que evita que el token quede expuesto en la URL, el historial y el `Referer`.",
       "explanation_en": "`parse_qs` returns lists because a parameter can repeat, and `[0]` pulls out the string, so the code prints without brackets. The conceptual detail matters more than the syntax: what comes back on the redirect is a single-use, short-lived authorization code, not the access token. The client exchanges it afterwards at the token endpoint over the back channel, which is precisely what keeps the token out of the URL, the history, and the `Referer` header.",
-      "source": "RFC 6749 (OAuth 2.0), Section 4.1.2",
+      "source": "RFC 6749 (OAuth 2.0), Section 4.1.2 — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 35000,
       "tags": [
         "auth",
@@ -541,7 +541,7 @@
       "correct_answer_en": "client_credentials",
       "explanation_es": "En `client_credentials` no existe resource owner distinto del propio cliente: un servicio se autentica con su client_id y client_secret y recibe un access token para sus propios recursos. Es el único caso en el que no hay pantalla de consentimiento, porque nadie delega nada. Se confunde con `authorization_code` (hay usuario y consentimiento) y con `refresh_token` (que renueva un token ya obtenido); usarlo cuando sí hay un usuario detrás destruye la trazabilidad de quién hizo qué.",
       "explanation_en": "With `client_credentials` there is no resource owner distinct from the client itself: a service authenticates with its client_id and client_secret and receives an access token for its own resources. It is the only case with no consent screen, because nobody is delegating anything. It is confused with `authorization_code` (a user and consent exist) and `refresh_token` (which renews an already-obtained token); using it when a real user is behind the call destroys the audit trail of who did what.",
-      "source": "RFC 6749 (OAuth 2.0), Section 4.4",
+      "source": "RFC 6749 (OAuth 2.0), Section 4.4 — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -571,7 +571,7 @@
       "correct_index": 1,
       "explanation_es": "El Implicit flow nació cuando los navegadores no permitían llamadas cross-origin al token endpoint; entregaba el token directamente en el fragmento para ahorrarse el canje. Ese atajo es justo el problema: el token queda escrito en un sitio muy visible y sin canal trasero que lo proteja. Hoy CORS permite a una SPA canjear el código, y PKCE cubre la falta de secreto. El primer distractor describe lo contrario (el Implicit se inventó precisamente porque no hay secreto), y los otros dos atribuyen limitaciones que no existen.",
       "explanation_en": "The Implicit flow was created when browsers could not make cross-origin calls to the token endpoint; it handed the token straight back in the fragment to skip the exchange. That shortcut is exactly the problem: the token ends up written somewhere very visible, with no back channel protecting it. Today CORS lets a SPA exchange the code, and PKCE covers the missing secret. The first distractor says the opposite (Implicit exists precisely because there is no secret), and the other two invent limitations that do not exist.",
-      "source": "RFC 6749 (OAuth 2.0), Section 4.2",
+      "source": "RFC 6749 (OAuth 2.0), Section 4.2 — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 40000,
       "tags": [
         "auth",
@@ -602,7 +602,7 @@
       "correct_index": 0,
       "explanation_es": "PKCE crea un secreto de un solo uso por transacción: el `code_verifier` se genera al azar, viaja solo en la petición trasera del canje, y por el canal frontal únicamente circula su hash SHA-256 (`code_challenge`, método `S256`). Un atacante que capture el código en el redirect no puede invertir el hash ni adivinar el verifier, así que el código le resulta inútil. PKCE no cifra nada ni impone transporte; y atar el secreto a un identificador del dispositivo sería un valor fijo y adivinable, exactamente lo que se quiere evitar.",
       "explanation_en": "PKCE creates a one-time secret per transaction: the `code_verifier` is generated randomly, travels only on the back-channel redemption request, and the front channel carries just its SHA-256 hash (`code_challenge`, method `S256`). An attacker who captures the code on the redirect cannot invert the hash or guess the verifier, so the code is useless to him. PKCE encrypts nothing and mandates no transport; and tying the secret to a device identifier would make it a fixed, guessable value, exactly what this avoids.",
-      "source": "RFC 7636 (PKCE), Section 1",
+      "source": "RFC 7636 (PKCE), Section 1 — https://www.rfc-editor.org/rfc/rfc7636",
       "expected_time_ms": 45000,
       "tags": [
         "auth",
@@ -629,7 +629,7 @@
       "correct_index": 1,
       "explanation_es": "Falso. El access token va dirigido al servidor de recursos; para el cliente es una cadena opaca que solo debe transportar. El malentendido es comprensible porque muchos proveedores emiten JWT legibles, así que el cliente 'puede' abrirlos, pero apoyarse en su contenido rompe en cuanto el proveedor cambia el formato o lo sustituye por un token opaco. Si el cliente necesita datos del usuario, la vía correcta es el `id_token` de OpenID Connect o el endpoint UserInfo.",
       "explanation_en": "False. The access token is addressed to the resource server; to the client it is an opaque string it should merely carry. The misunderstanding is understandable because many providers issue readable JWTs, so the client 'can' open them, but relying on the content breaks the moment the provider changes format or switches to an opaque token. If the client needs user data, the correct route is OpenID Connect's `id_token` or the UserInfo endpoint.",
-      "source": "RFC 6749 (OAuth 2.0), Section 1.4",
+      "source": "RFC 6749 (OAuth 2.0), Section 1.4 — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -659,7 +659,7 @@
       "correct_index": 2,
       "explanation_es": "La diferencia no es el tamaño ni el formato, sino el modelo de amenaza: el salt es público y por usuario, y su trabajo es impedir tablas precomputadas; el pepper es secreto y global, y su trabajo es que una filtración de solo la base de datos deje al atacante sin la pieza que le falta. La última opción invierte exactamente los dos conceptos, que es el error más común. El número de rondas es el work factor, otra dimensión distinta.",
       "explanation_en": "The difference is not size or format but the threat model: the salt is public and per-user, and its job is to defeat precomputed tables; the pepper is secret and global, and its job is to leave an attacker who dumped only the database missing a piece. The last option swaps the two concepts exactly, which is the most common mistake. The number of rounds is the work factor, a separate dimension.",
-      "source": "OWASP - Password Storage Cheat Sheet",
+      "source": "OWASP - Password Storage Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
       "expected_time_ms": 40000,
       "tags": [
         "auth",
@@ -690,7 +690,7 @@
       "correct_index": 0,
       "explanation_es": "La misma contraseña con salts distintos produce hashes distintos, y con el mismo salt produce siempre el mismo: por eso el salt se guarda junto al hash, no es un secreto. El primer distractor asume que el hash depende solo de la contraseña, que es precisamente la propiedad que el salt destruye para inutilizar las tablas rainbow. Ojo: este código ilustra el salt, no es una forma aceptable de guardar contraseñas, porque SHA-256 es rapidísimo; para eso van Argon2id o bcrypt.",
       "explanation_en": "The same password with different salts produces different hashes, and with the same salt always produces the same one: that is why the salt is stored next to the hash and is not a secret. The first distractor assumes the hash depends only on the password, which is exactly the property the salt destroys in order to make rainbow tables useless. Note: this code illustrates salting, it is not an acceptable way to store passwords, because SHA-256 is extremely fast; Argon2id or bcrypt exist for that.",
-      "source": "OWASP - Password Storage Cheat Sheet",
+      "source": "OWASP - Password Storage Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
       "expected_time_ms": 35000,
       "tags": [
         "auth",
@@ -717,7 +717,7 @@
       "correct_index": 1,
       "explanation_es": "Falso. El salt se almacena en claro junto al hash (bcrypt y Argon2 lo incluyen dentro de la propia cadena resultante), porque hay que recuperarlo para verificar el login. Su función no es ocultar nada, sino hacer que cada contraseña se ataque por separado: invalida tablas precomputadas y evita que dos usuarios con la misma contraseña tengan el mismo hash. El secreto que sí se guarda aparte es el pepper, y confundir ambos es el origen de esta creencia.",
       "explanation_en": "False. The salt is stored in the clear next to the hash (bcrypt and Argon2 embed it inside the resulting string), because you need it back to verify a login. Its job is not to hide anything but to force each password to be attacked separately: it invalidates precomputed tables and stops two users with the same password from sharing a hash. The secret that IS kept elsewhere is the pepper, and confusing the two is where this belief comes from.",
-      "source": "OWASP - Password Storage Cheat Sheet",
+      "source": "OWASP - Password Storage Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
       "expected_time_ms": 25000,
       "tags": [
         "auth",
@@ -747,7 +747,7 @@
       "correct_index": 3,
       "explanation_es": "El truncamiento silencioso a 72 bytes es el detalle que sorprende: no hay error, simplemente se ignora el resto, así que la entropía extra de una passphrase muy larga no cuenta. La opción del error es tentadora porque uno espera que una librería avise, pero muchas implementaciones no lo hacen. Las salidas habituales son aplicar un pre-hash (por ejemplo SHA-256 y luego codificarlo) o elegir Argon2id, que no tiene ese límite. bcrypt tampoco altera mayúsculas ni exige ese tamaño de salt.",
       "explanation_en": "Silent truncation at 72 bytes is the surprising detail: there is no error, the rest is simply ignored, so the extra entropy of a very long passphrase does not count. The error option is tempting because you expect a library to warn you, but many implementations do not. The usual ways out are pre-hashing (for example SHA-256 then encoding it) or choosing Argon2id, which has no such limit. bcrypt also does not change case or require that salt size.",
-      "source": "OWASP - Password Storage Cheat Sheet",
+      "source": "OWASP - Password Storage Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
       "expected_time_ms": 45000,
       "tags": [
         "auth",
@@ -766,7 +766,7 @@
       "correct_answer_en": "rainbow",
       "explanation_es": "Una tabla rainbow cambia cómputo por almacenamiento: alguien hashea millones de contraseñas una sola vez y luego busca por hash. El salt único por usuario rompe esa economía, porque obligaría a construir una tabla distinta por cada salt. Conviene no quedarse ahí: el salt no protege contra un ataque de diccionario dirigido a un solo hash, y por eso hace falta además un algoritmo lento y con coste de memoria como Argon2id.",
       "explanation_en": "A rainbow table trades computation for storage: someone hashes millions of passwords once and then looks up by hash. A unique per-user salt breaks that economy, because it would require a separate table per salt. Do not stop there, though: the salt does not protect against a dictionary attack aimed at a single hash, which is why you also need a slow, memory-hard algorithm such as Argon2id.",
-      "source": "OWASP - Password Storage Cheat Sheet",
+      "source": "OWASP - Password Storage Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
       "expected_time_ms": 25000,
       "tags": [
         "auth",
@@ -796,7 +796,7 @@
       "correct_index": 2,
       "explanation_es": "El rehash perezoso funciona porque en el login sí tienes la contraseña en claro durante un instante: compruebas con el algoritmo antiguo y, si acierta, guardas el hash nuevo. Para los que no entran, se envuelve el hash existente (`argon2(md5(pw))`) para que el volcado deje de ser trivialmente atacable. La primera opción es imposible: MD5 es un hash, no un cifrado, no hay nada que descifrar. La segunda deja indefensos a los usuarios existentes, y el reset masivo es defendible como último recurso pero causa avalancha de soporte y no era la única alternativa.",
       "explanation_en": "Lazy rehashing works because at login you do briefly hold the cleartext password: verify with the old algorithm and, if it matches, store the new hash. For users who never log in, wrap the existing hash (`argon2(md5(pw))`) so the dump stops being trivially attackable. The first option is impossible: MD5 is a hash, not a cipher, there is nothing to decrypt. The second leaves existing users exposed, and a mass reset is defensible as a last resort but causes a support avalanche and was not the only option.",
-      "source": "OWASP - Password Storage Cheat Sheet",
+      "source": "OWASP - Password Storage Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
       "expected_time_ms": 45000,
       "tags": [
         "auth",
@@ -822,7 +822,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero. Argon2d maximiza la resistencia frente a GPU pero su acceso a memoria depende de los datos, lo que lo expone a ataques de canal lateral; Argon2i usa acceso independiente de los datos y resiste mejor esos ataques a costa de eficiencia. Argon2id ejecuta una primera pasada al estilo Argon2i y el resto al estilo Argon2d, quedándose con lo mejor de ambos. La confusión típica es elegir Argon2i 'porque suena al más seguro contra canal lateral' sin ver que el híbrido ya lo cubre.",
       "explanation_en": "True. Argon2d maximises GPU resistance but its memory access depends on the data, exposing it to side-channel attacks; Argon2i uses data-independent access and resists those better at some cost in efficiency. Argon2id runs a first pass in Argon2i style and the rest in Argon2d style, keeping the best of both. The typical confusion is picking Argon2i 'because it sounds safest against side channels' without noticing the hybrid already covers that.",
-      "source": "RFC 9106 (Argon2), Section 4",
+      "source": "RFC 9106 (Argon2), Section 4 — https://www.rfc-editor.org/rfc/rfc9106",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -852,7 +852,7 @@
       "correct_index": 0,
       "explanation_es": "Argon2 se ajusta con m (memoria), t (iteraciones) y p (paralelismo); la RFC 9106 y OWASP dan configuraciones de partida, por ejemplo Argon2id con m=19 MiB, t=2 y p=1. El coste de memoria es la pieza que hace caro el ataque con GPU o ASIC, donde abundan los núcleos pero escasea la RAM por núcleo. El segundo distractor confunde parámetros de formato con parámetros de coste, y la última opción mezcla capacidad del servidor con la dureza del hash, aunque conviene medir la latencia real al subirlos.",
       "explanation_en": "Argon2 is tuned with m (memory), t (iterations) and p (parallelism); RFC 9106 and OWASP give starting configurations, for example Argon2id with m=19 MiB, t=2 and p=1. Memory cost is the piece that makes GPU or ASIC attacks expensive, since those have plenty of cores but little RAM per core. The second distractor confuses format parameters with cost parameters, and the last mixes server capacity with hash hardness, though you should indeed measure real latency as you raise them.",
-      "source": "RFC 9106 (Argon2), Section 4",
+      "source": "RFC 9106 (Argon2), Section 4 — https://www.rfc-editor.org/rfc/rfc9106",
       "expected_time_ms": 35000,
       "tags": [
         "auth",

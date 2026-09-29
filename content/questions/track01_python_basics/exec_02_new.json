@@ -14,7 +14,7 @@
       "correct_answer_en": "Python",
       "explanation_es": "Cualquier expresión que evalúe al string `\"Python\"` sirve: el literal `\"Python\"`, `\"Py\" + \"thon\"`, `str.upper(\"python\").capitalize()`... Python es de tipado dinámico: el nombre `nombre` simplemente se enlaza al objeto que resulte de evaluar la expresión.",
       "explanation_en": "Any expression that evaluates to the string `\"Python\"` works: the literal `\"Python\"`, `\"Py\" + \"thon\"`, etc. Python is dynamically typed: the name `nombre` is simply bound to whatever object the right-hand expression evaluates to.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding) — https://docs.python.org/3/reference/executionmodel.html#naming-and-binding",
       "expected_time_ms": 45000
     },
     {
@@ -252,7 +252,7 @@
       "correct_answer_en": "10\n5",
       "explanation_es": "Dentro de `modifica`, `x = 10` crea una variable *local* llamada `x` que oculta (sombrea) a la global durante la función; por eso se imprime `10`. Al terminar la función, la `x` global de fuera sigue valiendo `5`. Para modificar la global de verdad haría falta la palabra clave `global x`.",
       "explanation_en": "Inside `modifica`, `x = 10` creates a *local* variable named `x` that shadows the global one for the duration of the function — that's why `10` is printed. Once the function returns, the outer global `x` is still `5`. Actually mutating the global would require the `global x` keyword.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding) — https://docs.python.org/3/reference/executionmodel.html#naming-and-binding",
       "expected_time_ms": 60000
     },
     {
@@ -855,15 +855,15 @@
       "skill_id": "sk011203",
       "type": "fill_blank_exec",
       "difficulty_tier": "medium",
-      "question_es": "Completa el hueco para que el programa imprima `3` (redondeando hacia abajo con `math.floor`).\n\n```python\nimport math\nprint(math.___(3.9))\n```",
-      "question_en": "Fill in the blank so the program prints `3`, rounding down with `math.floor`.\n\n```python\nimport math\nprint(math.___(3.9))\n```",
+      "question_es": "Completa el hueco para que el programa imprima `-4` (redondeando hacia abajo con `math.floor`).\n\n```python\nimport math\nprint(math.___(-3.9))\n```",
+      "question_en": "Fill in the blank so the program prints `-4`, rounding down with `math.floor`.\n\n```python\nimport math\nprint(math.___(-3.9))\n```",
       "options_es": null,
       "options_en": null,
       "correct_index": null,
-      "correct_answer_es": "3",
-      "correct_answer_en": "3",
-      "explanation_es": "`math.floor(x)` redondea `x` hacia abajo al entero más cercano (a diferencia de `round()`, que redondea al más próximo). `math.floor(3.9)` es `3`.",
-      "explanation_en": "`math.floor(x)` rounds `x` down to the nearest integer (unlike `round()`, which rounds to the nearest one). `math.floor(3.9)` is `3`.",
+      "correct_answer_es": "-4",
+      "correct_answer_en": "-4",
+      "explanation_es": "`math.floor(x)` redondea `x` hacia abajo, hacia el infinito negativo, nunca hacia cero: `math.floor(-3.9)` es `-4`, no `-3`. Con un número negativo se distingue de `math.trunc()` y `math.ceil()`, que aquí darían `-3`: solo `floor` redondea siempre hacia abajo.",
+      "explanation_en": "`math.floor(x)` rounds `x` down, toward negative infinity, never toward zero: `math.floor(-3.9)` is `-4`, not `-3`. With a negative number this is distinguishable from `math.trunc()` and `math.ceil()`, which would both give `-3` here: only `floor` always rounds toward negative infinity.",
       "source": "CPython docs 3.13 — Numeric and Mathematical Modules: math.floor",
       "expected_time_ms": 60000
     },

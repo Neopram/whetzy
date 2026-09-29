@@ -248,7 +248,7 @@
       "correct_answer_en": "__class__",
       "explanation_es": "El compilador de Python 3 genera automáticamente una variable celda `__class__` dentro de cualquier cuerpo de método que use `super()`, y el `super()` sin argumentos la utiliza. Es equivalente a `super(__class__, self)`. Copiar el método a otra clase sin redefinirlo puede causar sorpresas porque `__class__` sigue apuntando a la clase original.",
       "explanation_en": "The Python 3 compiler automatically generates a `__class__` cell variable inside any method body that uses `super()`, and zero-argument `super()` uses it. It is equivalent to `super(__class__, self)`. Copying the method to another class without redefining it can cause surprises because `__class__` still points to the original class.",
-      "source": "CPython docs 3.13 — super(); PEP 3135",
+      "source": "CPython docs 3.13 — super(); PEP 3135 — https://peps.python.org/pep-3135/",
       "expected_time_ms": 35000,
       "tags": [
         "oop",
@@ -543,7 +543,7 @@
       "correct_index": 0,
       "explanation_es": "El guión bajo simple es únicamente una convención de la comunidad Python que dice 'esto es un detalle de implementación; trata con precaución'. Python no impone ninguna restricción de acceso: el atributo es completamente accesible desde fuera. Importaciones como `from modulo import *` no exportan nombres con `_` inicial por defecto, pero el acceso directo siempre funciona.",
       "explanation_en": "The single underscore is purely a community convention saying 'this is an implementation detail; tread carefully'. Python enforces no access restriction: the attribute is fully accessible from outside. Imports like `from module import *` don't export names starting with `_` by default, but direct access always works.",
-      "source": "PEP 8 — Naming conventions; Fluent Python 2e (Ramalho), ch. 11",
+      "source": "PEP 8 — Naming conventions; Fluent Python 2e (Ramalho), ch. 11 — https://peps.python.org/pep-0008/",
       "expected_time_ms": 15000,
       "tags": [
         "oop",
@@ -601,7 +601,7 @@
       "correct_index": 1,
       "explanation_es": "Falso. El name mangling transforma `__x` en `_NombreClase__x`. El atributo sigue siendo accesible desde fuera usando el nombre transformado (`obj._MiClase__x`). Es un mecanismo de desincentivación, no de seguridad. Sirve principalmente para evitar colisiones de nombres en herencia.",
       "explanation_en": "False. Name mangling transforms `__x` to `_ClassName__x`. The attribute remains accessible from outside using the mangled name (`obj._MyClass__x`). It is a deterrent, not a security mechanism. Its main purpose is to avoid name clashes in inheritance.",
-      "source": "CPython docs 3.13 — Private name mangling; PEP 8",
+      "source": "CPython docs 3.13 — Private name mangling; PEP 8 — https://peps.python.org/pep-0008/",
       "expected_time_ms": 18000,
       "tags": [
         "oop",
@@ -981,7 +981,7 @@
       "correct_answer_en": "__exit__",
       "explanation_es": "El protocolo de gestor de contexto requiere `__enter__` (llamado al entrar al bloque `with`, su valor de retorno se asigna a la variable `as`) y `__exit__` (llamado al salir, recibe información de excepción si la hubo). Si `__exit__` devuelve `True`, las excepciones se suprimen.",
       "explanation_en": "The context manager protocol requires `__enter__` (called on entering the `with` block; its return value is bound to the `as` variable) and `__exit__` (called on exit, receives exception info if one occurred). If `__exit__` returns `True`, exceptions are suppressed.",
-      "source": "CPython docs 3.13 — context manager protocol; PEP 343",
+      "source": "CPython docs 3.13 — context manager protocol; PEP 343 — https://peps.python.org/pep-0343/",
       "expected_time_ms": 18000,
       "tags": [
         "oop",
@@ -1072,7 +1072,7 @@
       "correct_index": 2,
       "explanation_es": "En Python 3.3+, el orden correcto es `@classmethod` (decorador externo) encima de `@abstractmethod` (decorador interno). ABCMeta reconoce esta combinación como un 'abstract classmethod'. El orden inverso funcionó en versiones antiguas pero estaba desaconsejado. Las subclases deben proporcionar una implementación del classmethod para poder instanciarse.",
       "explanation_en": "In Python 3.3+, the correct order is `@classmethod` (outer decorator) above `@abstractmethod` (inner decorator). ABCMeta recognizes this combination as an 'abstract classmethod'. The reverse order worked in older versions but was discouraged. Subclasses must provide an implementation of the classmethod to be instantiable.",
-      "source": "CPython docs 3.13 — abc.abstractmethod; PEP 3119",
+      "source": "CPython docs 3.13 — abc.abstractmethod; PEP 3119 — https://peps.python.org/pep-3119/",
       "expected_time_ms": 30000,
       "tags": [
         "oop",

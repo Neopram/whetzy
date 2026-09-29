@@ -438,9 +438,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | → §I (criterio archivado por 20.10) |
 | 37.13 | **3** | **Scorecard ADR-46** (absorbe 25.13): tracks × cursos × 37.0 verde; re-puntuación de Contenido en el teardown con… | | → §I (criterio archivado por 20.10) |
 | 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | **DONE** `fbf9baf` (2026-09-25) → §I |
-| 37.15 | **1** | **Fuentes sin indexar:** 3.906 de 6.305 preguntas (62 %) no llevan URL en… | **PARCIAL** | Sin indexar 45,1%→40,5% (10.944 preguntas). 2026-09-29: cita rota de `800-175b` (retirado) arreglada, 16 preguntas de `mod1302.json`. `check_urls.py` cortaba URLs con paréntesis o coma (2 falsos «FALLOS», `_clean()` nuevo). Resto del banco: bloqueos de bot, no citas rotas. Quedan 4.452 sin indexar: `Workflow` → §I |
+| 37.15 | **1** | Fuentes sin indexar: 3.906 de 6.305 preguntas… | **PARCIAL** | (2026-09-29, `Workflow` 10 agentes) 4.450→3.903 sin indexar (10.949 preguntas). 267 citas RFC/PEP con URL canónica verificada en vivo; 8 dominios nuevos en `index.json` (peps.python.org reusar/CC0, Wikipedia/Deep Learning book/OWASP cheatsheets cita). `tests/content` 70.057 verde → STATUS.md |
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | `46764ff`: 8 tracks restantes (02-04, 06, 08, 10, 12, 17) corregidos, todos ≤22% → §I |
-| 37.17 | **1** | **Inglés dentro del español y ejecutables que aceptan atajos** (medido 2026-09-26) → §I | **PARCIAL** | (2026-09-28) 282 arreglados (guarda `EN_LEAK_ES` mutada), 2 datasets donde el atajo ya no cuela. Falta: barrido de ~2.900 `fill_blank_exec`, `eval` sin rechazo en sandbox → §I |
+| 37.17 | **1** | Inglés dentro del español y ejecutables con atajo… | **PARCIAL** | (2026-09-29, `Workflow`) recuento real: 699 preguntas exec (no ~2.900, cifra vieja errónea). 219 revisadas a fondo en 4 tracks, 10 bugs de ambigüedad reales arreglados y verificados, 1 estructural sin arreglar (`q060203ex012`). Quedan ~480 sin revisar → STATUS.md |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 
