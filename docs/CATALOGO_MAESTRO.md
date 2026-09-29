@@ -55,8 +55,13 @@ profundidad de producto*, no adquisición.
 
 ## 2. El mapa completo — 28 tracks de aprendizaje (+ 14 de §2.0)
 
-Convención de ids: **tracks de aprendizaje `track12`–`track32`**, **tracks de
-certificación `track40`+** (`is_certification: true`, misma forma que track08–11).
+Convención de ids: **tracks de aprendizaje `track12`–`track39` y `track47`–`track59`**,
+**tracks de certificación `track40`–`track46` y, los nuevos, `track60`–`track99`**
+(`is_certification: true`, misma forma que track08–11). El número de track va con dos
+cifras dentro de los ids de módulo y skill (`mod4601`, `sk460101`): pasar de `track99`
+exige antes un ADR. Un id planificado nunca reutiliza uno de `content/curriculum/tracks.json`
+(renumeración del 2026-09-29: los planificados track41–46 chocaban con las certificaciones
+PCAP, Security+, MLA-C01, AZ-900, AI-900 y DP-900, y pasaron a track51–56).
 Cada track de aprendizaje: **5 módulos × 4 skills = 20 skills · 300 Q · 3 niveles ·
 20 lecciones · ≥ 36 términos · ≥ 15 % ejecutable donde el navegador pueda ejecutar
 (Python, SQL, JS) o exento con razón (ADR-9)**. Ese es el molde que track12 ya cumple.
@@ -124,15 +129,17 @@ razón (ADR-9), como Linux.
 | 33 | Sistemas | C / C++ y sistemas | track37 | `TheAlgorithms/C` y `C-Plus-Plus` MIT, cppreference (CC BY-SA → cita), OSTEP (CC BY-NC → cita) | exento | — |
 | 34 | Web | TypeScript avanzado | track38 | `microsoft/TypeScript` docs Apache-2, `type-challenges` MIT | **JS Worker** (18.3) | — |
 | 35 | DevOps | SRE y observabilidad | track39 | Google SRE books (CC BY-NC → cita), Prometheus/Grafana docs Apache-2, OpenTelemetry docs Apache-2 | exento | — |
-| 36 | IA | MLOps y despliegue de modelos | track41 | `mlflow` Apache-2, Kubeflow docs Apache-2, `madewithml` MIT | Python stdlib | — |
-| 37 | Web3 | Solidity / EVM | track42 | Solidity docs GPL (→ cita), `OpenZeppelin` MIT, `ethereum.org` docs MIT | JS Worker (`ethers` MIT) | — |
-| 38 | Juegos | Desarrollo de videojuegos (Godot, Unity) | track43 | Godot docs CC BY 3.0, `godotengine/godot-demo-projects` MIT | exento | — |
-| 39 | Sistemas | Embebidos e IoT | track44 | MicroPython MIT, Zephyr docs Apache-2, Arduino docs CC BY-SA (→ cita) | Python stdlib (MicroPython-compatible) | — |
-| 40 | Fundamentos | Matemáticas para CS | track45 | OpenStax (CC BY 4.0), `3b1b/manim` MIT (explicadores) | Python stdlib | — |
-| 41 | Soporte | Soporte IT y hardware | track46 | CompTIA A+ / ITF+ objetivos (cita), Wikipedia (CC BY-SA → cita), docs de Microsoft (cita) | exento | A+, ITF+ |
+| 36 | IA | MLOps y despliegue de modelos | track51 | `mlflow` Apache-2, Kubeflow docs Apache-2, `madewithml` MIT | Python stdlib | — |
+| 37 | Web3 | Solidity / EVM | track52 | Solidity docs GPL (→ cita), `OpenZeppelin` MIT, `ethereum.org` docs MIT | JS Worker (`ethers` MIT) | — |
+| 38 | Juegos | Desarrollo de videojuegos (Godot, Unity) | track53 | Godot docs CC BY 3.0, `godotengine/godot-demo-projects` MIT | exento | — |
+| 39 | Sistemas | Embebidos e IoT | track54 | MicroPython MIT, Zephyr docs Apache-2, Arduino docs CC BY-SA (→ cita) | Python stdlib (MicroPython-compatible) | — |
+| 40 | Fundamentos | Matemáticas para CS | track55 | OpenStax (CC BY 4.0), `3b1b/manim` MIT (explicadores) | Python stdlib | — |
+| 41 | Soporte | Soporte IT y hardware | track56 | CompTIA A+ / ITF+ objetivos (cita), Wikipedia (CC BY-SA → cita), docs de Microsoft (cita) | exento | A+, ITF+ |
 | 42 | Sistemas | Administración Windows / PowerShell | track47 | `PowerShell/PowerShell-Docs` CC BY 4.0, `MicrosoftDocs` (CC BY 4.0 en repos públicos) | exento | — |
 
-`track40` ya existe (ISC2 CC, certificación); por eso la numeración salta.
+`track40`–`track46` ya existen (certificaciones ISC2 CC, PCAP, Security+, MLA-C01, AZ-900,
+AI-900 y DP-900); por eso la numeración salta de `track39` a `track47`, y `track48`–`track50`
+quedan para los propuestos de §2.0.1 (PHP, Ruby, R).
 
 ### 2.0.1 Inventario de la industria frente al catálogo (37.1, 2026-09-25)
 
@@ -156,7 +163,7 @@ sus certificaciones siguen en §3, con la fuente de su fila.
 |---|---|
 | python, python-data-analysis | track01–03, track21 |
 | ai-engineer, ai-agents, prompt-engineering, machine-learning, ai-data-scientist, ai-product-builder, claude-code, vibe-coding | track06, track07 |
-| mlops | track41 |
+| mlops | track51 |
 | frontend, html, css, javascript, react, vue, angular, nextjs, design-system, frontend-performance-best-practices | track14 |
 | typescript | track38 |
 | backend, nodejs, django, api-design, graphql, backend-performance-best-practices, full-stack | track28 (+ track14) |
@@ -170,13 +177,13 @@ sus certificaciones siguen en §3, con la fuente de su fila.
 | cyber-security, api-security-best-practices, devsecops, ai-red-teaming | track13, track24, track25 (CSSLP de ISC2 → track13 + track29) |
 | data-analyst, bi-analyst, power-bi · data-engineer | track21 · track20 |
 | sql, postgresql-dba · mongodb, redis, elasticsearch | track12 · track27 |
-| datastructures-and-algorithms, leetcode, computer-science | track16, track45 |
+| datastructures-and-algorithms, leetcode, computer-science | track16, track55 |
 | system-design, software-architect, software-design-architecture | track05 |
 | qa, code-review, code-review-best-practices | track29, track04 |
 | git-github | track26 |
 | network-engineer | track17 |
-| blockchain | track32, track42 |
-| game-developer, server-side-game-developer | track43 |
+| blockchain | track32, track52 |
+| game-developer, server-side-game-developer | track53 |
 | product-manager | track30 (parcial: Agile y producto) |
 | **php, laravel, wordpress** | **SIN TRACK** → propuesto `track48` PHP (Laravel, WordPress) |
 | **ruby, ruby-on-rails** | **SIN TRACK** → propuesto `track49` Ruby (Rails) |
