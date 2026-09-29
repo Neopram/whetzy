@@ -658,23 +658,23 @@
       "skill_id": "sk010604",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "¿Qué imprime el siguiente código?\n\n```python\npi = 3.14159\nprint(f\"{pi:.2f}\")\n```",
-      "question_en": "What does the following code print?\n\n```python\npi = 3.14159\nprint(f\"{pi:.2f}\")\n```",
+      "question_es": "¿Qué imprime el siguiente código?\n\n```python\nx = 1234567\nprint(f\"{x:,}\")\n```",
+      "question_en": "What does the following code print?\n\n```python\nx = 1234567\nprint(f\"{x:,}\")\n```",
       "options_es": [
-        "3.142",
-        "3.14",
-        "3.14159",
-        "3"
+        "1234567",
+        "1,234,567",
+        "1.234.567",
+        "1,234,567.0"
       ],
       "options_en": [
-        "3.142",
-        "3.14",
-        "3.14159",
-        "3"
+        "1234567",
+        "1,234,567",
+        "1.234.567",
+        "1,234,567.0"
       ],
       "correct_index": 1,
-      "explanation_es": "`.2f` fija dos decimales y redondea, sin truncar. Solo afecta a cómo se muestra: el valor de `pi` sigue completo.",
-      "explanation_en": "`.2f` pins two decimals and rounds rather than truncating. It affects display only: the value of `pi` remains complete.",
+      "explanation_es": "`,` como especificador de formato agrupa los millares con comas, al estilo estadounidense (no con puntos, que es lo que usan otros locales). No añade decimales: `x` sigue siendo un entero.",
+      "explanation_en": "`,` as a format specifier groups thousands with commas, US-style (not periods, which other locales use). It doesn't add decimals: `x` remains an integer.",
       "source": "CPython docs 3.13 — Format Specification Mini-Language",
       "expected_time_ms": 25000,
       "tags": [

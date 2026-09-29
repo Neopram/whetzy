@@ -1570,3 +1570,65 @@ de un repo privado de GitHub sin usar el editor web. Queda como límite conocido
 no como tarea pendiente: los enlaces directos a las capturas en el repo
 (clicables desde el PR, aunque no inline) son la evidencia visual disponible
 mientras eso siga siendo así.
+
+## 2026-09-29 — 39.27: 10 de 12 casi-duplicados reescritos, y un bug real en el propio checker
+
+`check_originality.py` (39.7) marcaba 12 parejas de preguntas casi-duplicadas
+como deuda conocida en `KNOWN`. Reescribí 10 con contenido genuinamente
+distinto, verificado en Python real antes de escribirlo:
+
+- **track01** (3): el intercambio de dos variables (`a, b = b, a`) duplicado
+  entre `sk010101` y `sk010602` → el segundo ahora rota tres variables. Una
+  comprensión de listas duplicada entre control de flujo y listas → el de
+  control de flujo ahora usa `continue` en un bucle acumulador. El formato
+  `.2f` duplicado dos veces en la misma skill → el segundo ahora prueba el
+  separador de millares `:,`.
+- **track09** (5): las cinco eran la misma pregunta MC repetida para lista y
+  tupla con el mismo operador (`x[0]`, `len(x)`, `2 in x`, `x[-1]`, y
+  `5==5`/`5<=5` que casualmente evalúan igual). Reescritas para probar algo
+  realmente específico de tuplas: inmutabilidad (`x[0]=5` → `TypeError`),
+  concatenación (`(1,2)+(3,)`), el gotcha de `(1)` no ser tupla sin la coma,
+  `.count()`, y `5<=3` (un caso False, no solo True).
+- **track41** (2 de 4): dos preguntas con exactamente el mismo `code` en el
+  mismo módulo — reescritas con código real distinto (`'ABC' in 'abcde'` en
+  vez de repetir `'abc' in 'abcde'`; `map(len, ...)` en vez de repetir
+  `map(int, ...)`).
+
+Las otras 2 de las 12 nunca fueron duplicados de verdad. `check_originality.py`
+solo compara `question_es`, y para preguntas `code_output` (track41, track09)
+ese campo suele ser un enunciado molde genérico («¿Cuál es la salida usando
+módulos estándar?») que se repite igual para código completamente distinto,
+guardado aparte en un campo `code` que la función de similitud nunca lee.
+`q410101_069` (`dict.get('x')`) y `q410103_067` (`class A: __init__`) no
+tienen nada en común salvo compartir ese molde — comparando el `code` real la
+similitud cae de 1.0 a 0.2, muy por debajo del umbral 0.8.
+
+Escribí y verifiqué el arreglo (`_content_text()` usa `code`/`code_es` cuando
+existen en vez del molde) — y correrlo sobre el banco completo destapó **16
+parejas de duplicados reales nuevas**, invisibles hasta ahora exactamente por
+este punto ciego: 13 en track41 (mismo código, mismo módulo, dos IDs) y 3 en
+track12 (un trío de preguntas SQL con el mismo `code_es`). No los arreglé —
+16 reescrituras cuidadosas de golpe es el mismo tipo de prisa que ya generó
+el patrón de 37.1, y el propio comentario de `KNOWN` en el script es
+explícito: "nunca se añade una nueva" fila solo para tapar un hallazgo.
+Revertí el cambio del checker (queda documentado, no committeado) y anoté
+el hallazgo completo como fila nueva del ledger, 39.40, para una pasada
+dedicada — con el método ya resuelto, no hay que redescubrirlo.
+
+Un efecto colateral real: al arreglar `q410102_075` (cambié su `code` de
+`'abc' in 'abcde'` a `'ABC' in 'abcde'`, con `False` en vez de `True`), el
+checker sin arreglar volvió a marcarlo — esta vez contra una pregunta
+totalmente distinta de otro módulo (`q410101_068`) que por casualidad
+comparte el mismo enunciado molde Y la misma respuesta `False`. No es deuda
+de contenido nueva: es la misma limitación del checker, manifestándose de
+nuevo. Documentado en `KNOWN` con un comentario explícito en vez de revertir
+un arreglo de contenido real para evitar el síntoma.
+
+`tests/content`: 70.277 passed. `check_question_bank.py` marcó de paso una
+regresión real en la guarda de diversidad (`track01: opciones de una palabra
+41.4% empeora, base 41.3%`) — mi primera versión del arreglo de `continue`
+usaba números sueltos como opciones (`"7"`, `"6"`, `"10"`), todas de una sola
+palabra, cuando el original tenía listas entre corchetes (`"[1, 2, 3, 4]"`,
+4 palabras al partir por espacios). Reescrito para que la salida sea una
+lista construida con `.append()`, no un entero — mismo perfil de opciones
+multi-palabra que el original, guarda de nuevo en verde.

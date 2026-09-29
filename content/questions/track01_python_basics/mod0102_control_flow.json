@@ -826,29 +826,29 @@
       "skill_id": "sk010205",
       "type": "code_output",
       "difficulty_tier": "hard",
-      "question_es": "¿Qué imprime el siguiente código?\n```python\nmatrix = [[1, 2], [3, 4]]\nflat = [x for row in matrix for x in row]\nprint(flat)\n```",
-      "question_en": "What does the following code print?\n```python\nmatrix = [[1, 2], [3, 4]]\nflat = [x for row in matrix for x in row]\nprint(flat)\n```",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nresult = []\nfor i in range(5):\n    if i == 3:\n        continue\n    result.append(i)\nprint(result)\n```",
+      "question_en": "What does the following code print?\n```python\nresult = []\nfor i in range(5):\n    if i == 3:\n        continue\n    result.append(i)\nprint(result)\n```",
       "options_es": [
-        "[1, 2, 3, 4]",
-        "[[1, 2], [3, 4]]",
-        "[1, 3, 2, 4]",
+        "[0, 1, 2, 3, 4]",
+        "[0, 1, 2, 4]",
+        "[0, 1, 2]",
         "Error"
       ],
       "options_en": [
-        "[1, 2, 3, 4]",
-        "[[1, 2], [3, 4]]",
-        "[1, 3, 2, 4]",
+        "[0, 1, 2, 3, 4]",
+        "[0, 1, 2, 4]",
+        "[0, 1, 2]",
         "Error"
       ],
-      "correct_index": 0,
-      "explanation_es": "Esta es una comprensión para 'aplanar' una lista de listas: el primer `for row in matrix` recorre cada sublista, y el segundo `for x in row` recorre los elementos de esa sublista. El orden de evaluación es igual al de bucles anidados, produciendo `[1, 2, 3, 4]`.",
-      "explanation_en": "This is a comprehension pattern for 'flattening' a list of lists: the first `for row in matrix` walks through each sublist, and the second `for x in row` walks through that sublist's elements. The evaluation order matches nested loops, producing `[1, 2, 3, 4]`.",
-      "source": "CPython docs 3.13 — Tutorial §5.1.3: List Comprehensions",
-      "expected_time_ms": 30000,
+      "correct_index": 1,
+      "explanation_es": "`continue` salta el resto del cuerpo del bucle para esa iteración y sigue con la siguiente, sin salir del bucle (eso sería `break`). `range(5)` da `0, 1, 2, 3, 4`; cuando `i == 3` el `continue` evita que se ejecute `result.append(i)`, así que la lista final es `[0, 1, 2, 4]`, sin el 3.",
+      "explanation_en": "`continue` skips the rest of the loop body for that iteration and moves to the next one, without exiting the loop (that would be `break`). `range(5)` gives `0, 1, 2, 3, 4`; when `i == 3` the `continue` prevents `result.append(i)` from running, so the final list is `[0, 1, 2, 4]`, without the 3.",
+      "source": "CPython docs 3.13 — Tutorial §4.4: break and continue Statements",
+      "expected_time_ms": 25000,
       "tags": [
-        "comprehensions",
-        "nested",
-        "flatten"
+        "loops",
+        "continue",
+        "control-flow"
       ]
     },
     {

@@ -1656,23 +1656,23 @@
       "type": "code_output",
       "question_es": "¿Cuál es la salida en Python?",
       "question_en": "What is the output in Python?",
-      "code": "print(list(map(int, ['1','2'])))",
-      "correct_answer_es": "[1, 2]",
-      "correct_answer_en": "[1, 2]",
-      "explanation_es": "map(int, ['1','2']) convierte cada cadena en un entero, y list() materializa ese map perezoso en [1, 2]. La opción ([1, 2],) es tentadora porque parece un contenedor válido, pero list() nunca produce una tupla: siempre devuelve un objeto de tipo list.",
-      "explanation_en": "map(int, ['1','2']) converts each string into an integer, and list() materializes that lazy map into [1, 2]. The option ([1, 2],) is tempting because it looks like a valid container, but list() never produces a tuple: it always returns an object of type list.",
+      "code": "print(list(map(len, ['ab', 'abc'])))",
+      "correct_answer_es": "[2, 3]",
+      "correct_answer_en": "[2, 3]",
+      "explanation_es": "map() no está limitado a convertir tipos: acepta cualquier función de un argumento, incluida `len`. Aplica `len` a cada cadena de la lista ('ab' → 2, 'abc' → 3), y `list()` materializa ese map perezoso en [2, 3]. La opción ('ab', 'abc') es tentadora porque son los valores originales, pero map() los transforma, no los conserva.",
+      "explanation_en": "map() isn't limited to type conversions: it accepts any one-argument function, including `len`. It applies `len` to each string in the list ('ab' → 2, 'abc' → 3), and `list()` materializes that lazy map into [2, 3]. The option ('ab', 'abc') is tempting because those are the original values, but map() transforms them, it doesn't keep them.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "[[1, 2]]",
-        "]2 ,1[",
-        "[1, 2]",
-        "([1, 2],)"
+        "[[2, 3]]",
+        "('ab', 'abc')",
+        "[2, 3]",
+        "(2, 3)"
       ],
       "options_en": [
-        "[[1, 2]]",
-        "]2 ,1[",
-        "[1, 2]",
-        "([1, 2],)"
+        "[[2, 3]]",
+        "('ab', 'abc')",
+        "[2, 3]",
+        "(2, 3)"
       ],
       "correct_index": 2
     },

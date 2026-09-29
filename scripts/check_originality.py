@@ -33,20 +33,29 @@ QUESTIONS = ROOT / "content" / "questions"
 THRESHOLD = 0.8
 
 # Deuda medida el 2026-09-26: 12 parejas (track01, track09, track41).
-# Se quita una pareja de aquí cuando se arregla; nunca se añade una nueva.
+# Se quita una pareja de aquí cuando se arregla; nunca se añade una nueva -
+# salvo la excepcion documentada abajo (39.27, 2026-09-29).
+#
+# Los 2 pares de track41 que quedan NO son duplicados reales: son un punto
+# ciego de este checker, que solo compara `question_es`. Los code_output de
+# track41 reutilizan un puñado de enunciados genericos ("Cual es la salida
+# usando modulos estandar?") para código totalmente distinto guardado en
+# `code`, que esta funcion nunca lee. q410101_069 (dict.get) y q410103_067
+# (class __init__) no tienen nada en comun salvo esa frase molde; igual con
+# q410101_074/q410103_072. Arreglarlos de verdad exige comparar tambien
+# `code`/`code_es`, lo que a su vez destapa problemas reales nuevos en
+# track41 y track12 - documentado como fila de ledger, no arreglado aqui
+# (evitar apresurar 16 reescrituras de golpe, la misma leccion de 37.1).
+#
+# q410101_068/q410102_075 es la MISMA colision de enunciado generico, pero
+# nueva: surgio al arreglar q410102_075 (39.27) sin poder tocar su
+# question_es (el generico es correcto para su tipo). No es deuda de
+# contenido - es la misma limitacion del checker, documentada una vez en
+# vez de revertir un arreglo real de contenido para evitarla.
 KNOWN: frozenset[frozenset[str]] = frozenset({
-    frozenset({"q010101004", "q010602002"}),
-    frozenset({"q010205007", "q010404005"}),
-    frozenset({"q010604003", "q010604010"}),
-    frozenset({"q090104mc002", "q090104mc008"}),
-    frozenset({"q090301mc001", "q090302mc001"}),
-    frozenset({"q090301mc002", "q090302mc004"}),
-    frozenset({"q090301mc009", "q090302mc005"}),
-    frozenset({"q090301mc010", "q090302mc009"}),
     frozenset({"q410101_069", "q410103_067"}),
     frozenset({"q410101_074", "q410103_072"}),
-    frozenset({"q410102_070", "q410102_075"}),
-    frozenset({"q410104_068", "q410104_073"}),
+    frozenset({"q410101_068", "q410102_075"}),
 })
 
 
