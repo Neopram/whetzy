@@ -1812,3 +1812,44 @@ Pero 6 sí tenían un problema real, todas en track10 (AWS SAA-C03):
 
 `tests/content` 70.027 passed en las tres rondas de esta sesión de trabajo sobre el banco;
 `check_question_bank.py`, `check_originality.py` (0 parejas) y `check_docs.py` en verde.
+
+## 2026-09-29, misma sesión — 39.33: `check_expl_key` en track13 destapó tres bloques de skill con más de la mitad de las claves mal
+
+Al probar `check_expl_key.py` en tracks de hechos (no de código, para contrastar con el 0/9
+de track01) sobre track13, con margen 0.20 en vez de 0.34 salieron 29 sospechosas solo en
+`mod1301.json`. Las primeras 6 que revisé a mano eran reales, y todas caían en la misma
+skill (`sk130104`, gobernanza). Repasé las 15 preguntas de esa skill una por una contra su
+propia explicación, no solo las que el heurístico marcaba, porque una respuesta incorrecta
+que por azar comparte vocabulario con la explicación no siempre dispara la alarma:
+
+- `q130104008` preguntaba qué significa RACI y **ninguna de las 4 opciones era la
+  correcta** — las cuatro eran expansiones inventadas («Registro de Acceso por
+  Credenciales Institucionalizadas»). Reescribí la opción marcada como correcta para que
+  dijera lo que la propia explicación ya explicaba (Responsable, Aprobador, Consultado,
+  Informado).
+- `q130104013` marcaba como correcto «conceder a los usuarios todos los permisos
+  posibles para mayor comodidad» como definición de "menor privilegio" — literalmente lo
+  contrario del principio que la pregunta dice enseñar.
+- `q130104010`, `q130104011`, `q130104012`, `q130104014`, `q130104015`, `q130104003`:
+  mismo patrón — `correct_index` señalaba una opción absurda o sin relación
+  ("separación de funciones" = "crear departamentos de TI"; una auditoría de seguridad =
+  "un proceso para despedir empleados") mientras la explicación de la propia pregunta
+  describía con detalle la opción correcta, ya presente en la lista, solo que en otra
+  posición. 8 de 15 preguntas de esa skill estaban mal — más de la mitad.
+
+Con un hallazgo así de concentrado, no me fié de que fuera un caso aislado: repasé
+`sk130204` (PKI/TLS, `mod1302.json`) y `sk130304` (WiFi, `mod1303.json`) completas, no solo
+lo que el heurístico marcaba. El mismo patrón exacto: 9 de 15 mal en cada una — un
+certificado X.509 definido como «un archivo de configuración de red», una Autoridad
+Certificadora como «un protocolo de comunicación entre navegadores», WPA3 como «solo
+funciona con dispositivos 5G», un WIDS como «cambiar automáticamente el tipo de cifrado
+WiFi». De paso, `q130204005` tenía el `skill_id` cambiado a `sk130104` por error (debía
+ser `sk130204`) — corregido también.
+
+26 preguntas en total (8+9+9), cada una verificada leyendo su propia explicación antes de
+tocar el `correct_index`, nunca inventando qué debería ser. Para no quedarme con la duda de
+si el patrón seguía en el resto del track, repasé `mod1304.json` (`sk130404`, CSP/CORS) y
+`mod1305.json` (gestión de vulnerabilidades) igual de a fondo: limpios, ningún caso más.
+
+`tests/content` 70.027 passed, `check_question_bank.py`, `check_originality.py` (0 parejas)
+y `check_docs.py` en verde después de las 26 correcciones.
