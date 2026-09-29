@@ -1632,3 +1632,48 @@ palabra, cuando el original tenía listas entre corchetes (`"[1, 2, 3, 4]"`,
 4 palabras al partir por espacios). Reescrito para que la salida sea una
 lista construida con `.append()`, no un entero — mismo perfil de opciones
 multi-palabra que el original, guarda de nuevo en verde.
+
+## 2026-09-29 — 39.40/39.41: arreglando 3 SQL casi-duplicados destapó 19 preguntas que nadie podía aprobar
+
+Arreglando 3 de las 16 parejas de 39.40 (track12, `q120303sql001`/`q120304sql001`/`q120304sql003`)
+salió un bug más gordo de lo que parecía. Las tres preguntas comparten exactamente el mismo dataset
+(usuarios y departamentos con coincidencia perfecta en ambos lados) y solo cambian el JOIN pedido
+(INNER/LEFT/FULL OUTER) — pero con ese dataset **los tres tipos de JOIN dan la misma salida**,
+porque no hay ninguna fila huérfana en ninguna tabla. No es solo un duplicado de contenido: la
+pregunta no puede distinguir si el alumno entendió la diferencia entre los tres JOIN, porque
+cualquiera de los tres pasa la corrección.
+
+Arreglo: añadí una fila sin coincidencia en cada lado (`Frank` con `dept_id=99` que no existe, y
+un departamento `Legal` sin ningún empleado), verificado directamente contra el runtime real del
+alumno — no contra suposiciones. `frontend/public/sql-worker.js` corre sql.js (SQLite en WASM) en
+un Web Worker del navegador; monté un servidor HTTP local y lo ataqué con Playwright igual que a
+cualquier otra parte de la UI, mandándole el SQL exacto y leyendo la salida real.
+
+Ahí salió el hallazgo grande: el test que verifica estas preguntas (`test_sql_exec_questions.py`)
+ejecuta el SQL con `sqlite3` de Python y compara la salida con `correct_answer_es/en` usando
+`str()` de Python — pero el alumno nunca ve eso. Ve lo que imprime `sql-worker.js`, que usa
+`String()` de JavaScript. Los dos difieren en dos casos reales:
+
+- Un `NULL` de SQL: Python `str(None)` da `"None"`, JavaScript `String(null)` da `"null"`.
+- Un número `REAL` con valor entero: Python `str(50000.0)` da `"50000.0"`, JavaScript
+  `String(50000.0)` da `"50000"` (JS no distingue int/float internamente).
+
+El test nunca lo había pillado porque, hasta ahora, ninguna pregunta `sql_exec` tenía un `NULL` en
+su salida esperada. Con las tres preguntas nuevas de esta fila, sí — y el test se puso en rojo,
+correctamente. Pero al arreglar el test para que compare de verdad como lo hace el navegador
+(`_js_str()`, verificado línea por línea contra el worker real con varios casos: enteros,
+decimales, `NULL`, hasta `1e20`), salieron **19 preguntas preexistentes más** con el mismo bug —
+16 con el problema de `X.0` (en track04 y track12) y 3 con el de `None`/`null` — que llevaban
+quién sabe cuánto tiempo en el banco con una `correct_answer` que **ningún alumno con SQL
+correcto podía igualar nunca**, porque el texto guardado nunca coincidía con lo que el navegador
+imprime de verdad.
+
+Las 19 preguntas se corrigieron con la salida real verificada contra el worker (no adivinada,
+no reformateada a mano): 38 campos `correct_answer_es`/`correct_answer_en` en 5 ficheros. De paso,
+`q120304sql003` (la pregunta de FULL OUTER JOIN) tenía además el `fill` de referencia mal en
+`sql_exec_reference_fills.json` — decía `LEFT JOIN`, que es justo lo que hizo que el bug de datos
+original (los tres JOIN dando lo mismo) pasara desapercibido: ni siquiera el propio test de
+referencia usaba el JOIN que la pregunta dice enseñar.
+
+`tests/content`: 70.277 passed, incluida la suite entera de `sql_exec` ahora en verde de verdad.
+Quedan 13 de las 16 parejas de 39.40 (todas en track41) sin tocar — documentado, no apresurado.
