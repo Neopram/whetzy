@@ -143,13 +143,13 @@
     "question_en": "What is the recommended method for encrypting data in S3?",
     "options_es": [
       "SSE-S3 (Server-Side Encryption)",
-      "Ambas A y B son recomendadas",
+      "Tanto SSE-S3 como SSE-KMS son recomendadas",
       "Client-side encryption",
       "SSE-KMS para control clave"
     ],
     "options_en": [
       "SSE-S3 (Server-Side Encryption)",
-      "Both A and B are recommended",
+      "Both SSE-S3 and SSE-KMS are recommended",
       "Client-side encryption",
       "SSE-KMS for key control"
     ],
@@ -504,11 +504,11 @@
       "All of the above",
       "Use EBS-optimized instances"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
-    "explanation_es": "Combinar io2 (IOPS dedicadas), EBS-optimized instances (ancho de banda dedicado), y provisioning adecuado garantiza latencia. gp3 es alternativa más económica.",
-    "explanation_en": "Combining io2 (dedicated IOPS), EBS-optimized instances (dedicated bandwidth), and proper provisioning ensures latency. gp3 is cheaper alternative.",
+    "explanation_es": "io2 Block Express ofrece la latencia más baja y consistente (sub-milisegundo) de los tipos de volumen EBS; la diferencia frente a gp3 es precisamente la consistencia bajo carga, no solo el pico de rendimiento. gp3 es una alternativa más económica pero sin esa garantía. 'Todas las anteriores' es imposible: gp3 e io2 son tipos de volumen alternativos, no se pueden usar los dos a la vez en el mismo volumen.",
+    "explanation_en": "io2 Block Express delivers the lowest and most consistent latency (sub-millisecond) of any EBS volume type; the real differentiator from gp3 is consistency under load, not just peak throughput. gp3 is a cheaper alternative but without that guarantee. 'All of the above' is impossible: gp3 and io2 are alternative volume types, you can't use both at once on the same volume.",
     "source": "AWS EBS Performance — AWS documentation",
     "expected_time_ms": 120000
   },
@@ -747,11 +747,11 @@
       "Use EBS-optimized instances with dedicated bandwidth",
       "Data striping across multiple io2 volumes"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
-    "explanation_es": "Striping en io2 con EBS-optimized instances maximiza IOPS y throughput. Multiple volumes permiten parallelismo. Ancho dedicado asegura performance consistente.",
-    "explanation_en": "Striping on io2 with EBS-optimized instances maximizes IOPS and throughput. Multiple volumes enable parallelism. Dedicated bandwidth ensures consistent performance.",
+    "explanation_es": "El striping de datos entre varios volúmenes io2 es la técnica que aprovecha tener múltiples volúmenes: reparte la E/S en paralelo entre ellos, multiplicando IOPS y throughput. Usar EBS-optimized instances ayuda (ancho de banda dedicado) pero no aprovecha por sí solo tener varios volúmenes. 'Todas las anteriores' es imposible: hacer striping en varios volúmenes contradice directamente usar un único volumen grande.",
+    "explanation_en": "Striping data across multiple io2 volumes is the technique that actually uses having multiple volumes: it spreads I/O in parallel across them, multiplying IOPS and throughput. EBS-optimized instances help (dedicated bandwidth) but don't by themselves take advantage of multiple volumes. 'All of the above' is impossible: striping across multiple volumes directly contradicts using a single large volume.",
     "source": "AWS EBS Performance Best Practices — AWS documentation",
     "expected_time_ms": 120000
   },
@@ -1414,13 +1414,13 @@
       "Provisionar 1M RCU",
       "Todas las anteriores",
       "Usar DAX caché frente a DynamoDB",
-      "Usar particionamiento con hot keys distribuidas"
+      "Usar particionamiento que evite hot keys"
     ],
     "options_en": [
       "Provision 1M RCU",
       "All of the above",
       "Use DAX cache in front of DynamoDB",
-      "Use partitioning with distributed hot keys"
+      "Use partitioning that avoids hot keys"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1530,11 +1530,11 @@
       "Use GSI for alternate queries",
       "Partition Key = UserID"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
-    "explanation_es": "Combinar Partition Key para distribución, Sort Key para ordenamiento temporal, y GSI para queries (followers, feed) es diseño completo.",
-    "explanation_en": "Combining Partition Key for distribution, Sort Key for temporal ordering, and GSI for queries (followers, feed) is complete design.",
+    "explanation_es": "La clave compuesta Partition Key = UserID (distribuye la carga entre usuarios) y Sort Key = Timestamp (ordena cronológicamente y permite consultas por rango dentro de cada usuario) es el diseño estándar de AWS para este patrón de acceso. Una GSI adicional sirve para patrones de consulta secundarios (p. ej. por seguidor), pero no sustituye la clave primaria. 'Todas las anteriores' es imposible: 'Partition Key = UserID' sola, sin Sort Key, es un esquema de clave distinto e incompatible con el compuesto.",
+    "explanation_en": "The composite key Partition Key = UserID (spreads load across users) and Sort Key = Timestamp (chronological ordering and range queries within each user) is AWS's standard design for this access pattern. An additional GSI serves secondary query patterns (e.g. by follower) but doesn't replace the primary key. 'All of the above' is impossible: 'Partition Key = UserID' alone, without a Sort Key, is a different, incompatible key schema from the composite one.",
     "source": "AWS DynamoDB Design Patterns — AWS documentation",
     "expected_time_ms": 120000
   },
