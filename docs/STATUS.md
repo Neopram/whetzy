@@ -2225,3 +2225,55 @@ hermanos del mismo commit masivo original (solo `q120302mc002` se había
 revisado hasta ahora).
 
 `check_docs.py`: verde. Ledger: 61.430/61.440 bytes.
+
+## 2026-09-29, misma sesión — 39.43: cuarta familia de coletillas
+encontrada al muestrear track10, con una advertencia sobre por qué un
+regex simple la sobreestima 15 veces
+
+Mientras revisaba las skills sk100205/sk100505 de track10 para 39.33 (ver
+entrada anterior), encontré un patrón distinto y nuevo: opciones cortas
+("Tipo de almacenamiento", "Herramienta de deployment", "Mejor rendimiento
+general") con una cláusula de gerundio de marketing cloud pegada al final
+sin relación con la pregunta ("...aprovechando la elasticidad automática
+de la nube para manejar picos de demanda", "...con monitoreo continuo a
+través de Amazon CloudWatch y alarmas configuradas"). Es la misma familia
+de defecto que 39.28 (coletillas) y 39.42 (relleno molde), pero con una
+firma de texto distinta que ninguna guarda existente busca — y en un
+track (track10) que quedó fuera del alcance de 39.28 (tracks 18-23, 27,
+41-43).
+
+Antes de tocar nada escribí un regex de detección (coma + gerundio de
+marketing) y lo corrí sobre todo el banco: dio **150 "sospechosas" en 11
+tracks**. Pero al leer una muestra de esos 150, la mayoría eran gerundios
+completamente legítimos y correctos técnicamente — "reduciendo la
+dimensionalidad del espacio de características" (PCA, correcto),
+"manteniendo las demás variables constantes" (control experimental,
+correcto), "garantizando sus invariantes" (programación, correcto). Un
+regex sintáctico no puede distinguir una coletilla contaminante de una
+frase técnica legítima que también usa gerundio + coma; hace falta juicio
+semántico por pregunta, exactamente el mismo tipo de trabajo que exigió
+el hallazgo de RACI/menor-privilegio en 39.33.
+
+No intenté un fix masivo con el regex de detección — habría sido
+exactamente el tipo de "arreglo" que rompe contenido bueno para tapar un
+número, la misma clase de error que **este barrido existe para evitar**.
+Confirmé a mano ~10 casos inequívocos en track10 (el patrón real: un
+fragmento nominal corto de 2-4 palabras seguido de una cláusula de
+gerundio genérica de nube, sin ninguna conexión gramatical ni temática) —
+todos en opciones incorrectas, nunca en la clave marcada como correcta,
+así que no rompe la corrección de ninguna pregunta, solo su calidad
+percibida. Cifras del regex sin depurar (sobreestiman, por lo dicho
+arriba): track10 con diferencia el más afectado (98 de las 150
+coincidencias del regex),
+seguido de track06 (18) y track08/11 combinados (~15); el resto disperso
+en 1-4 por track, probablemente ruido del regex más que contaminación
+real.
+
+Documentado en el ledger como **39.43, TODO, PRI 2** — con la advertencia
+explícita sobre el regex para que la siguiente sesión no repita el mismo
+error de sobreconteo, y la instrucción de que el arreglo real necesita
+revisión pregunta a pregunta (`Workflow`, ADR-52), no un `sed` masivo.
+
+`check_docs.py`: verde. Ledger: 61.434/61.440 bytes (39.42, ya DONE desde
+antes de esta sesión, archivado a `LEDGER_HISTORY.md` §I para hacer
+sitio).
