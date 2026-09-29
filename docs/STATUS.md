@@ -2099,3 +2099,14 @@ sobre el script final (5 avisos de variables sin usar que `ci_local.sh`
 destapó, corregidos). `puppeteer-core`/`lighthouse` instalados con
 `--no-save`, no son dependencias del proyecto — mismo criterio que
 `lighthouse-landing.mjs`. Ledger 34.5 → DONE.
+
+El `ci_local.sh` de este push (`cea525f`) queda en ROJO, pero solo por
+`mypy --strict`: 15 errores en 4 ficheros de `backend/` (`open_badges.py`,
+`job.py`, `push.py`, `admin.py`) — el mismo recuento y las mismas líneas
+que en la corrida anterior, antes de que yo tocara nada. Ninguno de mis
+commits de esta sesión toca `backend/` (comprobado con `git log --stat`),
+así que es deuda preexistente que este `ci_local.sh` ya venía arrastrando,
+no algo que haya introducido. No hay fila en el ledger que la rastree; la
+dejo anotada aquí para que quien retome `backend/` la vea, sin abrir una
+fila nueva yo mismo — no tengo contexto de por qué esos 4 ficheros están
+sin tipar y priorizarlo no me corresponde en esta sesión.
