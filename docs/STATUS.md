@@ -1762,3 +1762,53 @@ Alcance: esto cierra 39.39 solo para track43 (6 de los 96 avisos originales). Lo
 tracks con avisos de `audit_lesson_quiz_alignment.py` no se han mirado — no hay motivo para
 asumir que comparten este mismo patrón de relleno molde, pero tampoco se ha comprobado que
 no lo compartan.
+
+## 2026-09-29, misma sesión — 39.15/37.15/39.33: NIST citado retirado, bug de regex en check_urls.py y 6 "Todas las anteriores" imposibles en track10
+
+Tras cerrar 39.42 (track43), seguí el mismo tipo de verificación en vivo para otras 37.15
+(fuentes) y 39.33 (claves sospechosas), y cada una destapó algo real.
+
+**37.15**: `NIST SP 800-175B` (el documento original, no la Rev. 1) está retirado desde el
+2020-03-31 — confirmado en vivo con WebFetch, la propia página de NIST dice «Withdrawn...
+Superseded by SP 800-175B Rev. 1». 16 preguntas de `track13/mod1302.json` citaban la versión
+retirada; corregidas a la URL de la Rev. 1 (verificada 200 en vivo), la misma que ya usaba
+la lección `l420303` de track42. Al pasar `check_urls.py`/`check_content_sources.py` sobre
+todo el banco buscando más citas rotas, aparecieron 2 falsos «FALLOS» que eran un bug del
+propio checker: el regex de extracción cortaba `.../Cross-validation_(statistics)` en el
+primer paréntesis (la URL real termina en uno emparejado) y dejaba una coma pegada en
+`.../rfc793,` cuando dos citas comparten un mismo campo `source`. Las dos URLs limpias dan
+200 en vivo — el contenido nunca estuvo mal, solo el checker. `_clean()` nuevo en el script,
+verificado con los dos casos reales. El resto de 403/202 que aparecieron (GitHub, CISA, ISO,
+IEEE, Cisco, suricata.io) son bloqueos de bot confirmados con un navegador real (Playwright,
+incluido un "Robot Challenge Screen" auto-etiquetado en suricata.io), no citas rotas.
+
+**39.33**: el banco tiene 62 preguntas cuya respuesta correcta es «Todas las anteriores» o
+«Ambas son correctas» (52 en track10). Las revisé todas a mano — la mayoría son legítimas:
+preguntas de enumeración («qué estrategias de deployment existen») donde listar varias cosas
+compatibles sí es la respuesta correcta, no una combinación forzada de acciones alternativas.
+Pero 6 sí tenían un problema real, todas en track10 (AWS SAA-C03):
+
+- `q100202mc004`: pedía «latencia consistente en EBS» y dos de las cuatro opciones (gp3 con
+  IOPS provisionadas, io2 Block Express) son *tipos de volumen alternativos* — no se puede
+  usar los dos a la vez en el mismo volumen, así que «todas las anteriores» es imposible.
+  Verifiqué en vivo (WebSearch + AWS docs) que io2 Block Express es específicamente el que
+  AWS documenta como el de latencia más consistente frente a gp3 — reasigné `correct_index`
+  a esa opción.
+- `q100202mc013`: «usar un volumen grande» contradice directamente «striping en múltiples
+  volúmenes io2» — literalmente estrategias opuestas. Reasignado a striping, la técnica que
+  de verdad aprovecha tener varios volúmenes (coincide con la propia explicación).
+- `q100204mc012`: «Partition Key = UserID» sola y «Partition Key = UserID, Sort Key =
+  Timestamp» son dos esquemas de clave distintos e incompatibles para la misma tabla
+  DynamoDB — no pueden ser los dos el esquema real a la vez. Reasignado al esquema
+  compuesto, el diseño estándar de AWS para el patrón de acceso descrito.
+- `q100204mc008`: la opción decía «particionamiento CON hot keys distribuidas» — hot keys
+  siempre son un problema a evitar en DynamoDB, nunca una estrategia de escalado, y la propia
+  explicación de la pregunta ya decía «particionamiento SIN hot keys». Corregido el texto de
+  la opción para dejar de contradecir su propia explicación.
+- `q100201mc006` y `q100505mc003`: la opción «Both A and B» ocupaba ella misma la posición B,
+  autorreferencia sin sentido («B es B y A»). Reescrita para nombrar explícitamente lo que
+  combina (SSE-S3 + SSE-KMS; orquestación + coreografía), y en `q100505mc003` moví
+  `correct_index` a la opción ya inequívoca que decía lo mismo sin la autorreferencia.
+
+`tests/content` 70.027 passed en las tres rondas de esta sesión de trabajo sobre el banco;
+`check_question_bank.py`, `check_originality.py` (0 parejas) y `check_docs.py` en verde.
