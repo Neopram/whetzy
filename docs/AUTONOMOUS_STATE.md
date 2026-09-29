@@ -26,7 +26,7 @@
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
 | Alembic HEAD | `20260927_iap_provider` (45 migraciones) |
-| Contenido | **10.944 preguntas** / 35 tracks / 723 skills / **723 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
+| Contenido | **10.949 preguntas** / 35 tracks / 723 skills / **723 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
 
@@ -426,7 +426,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-29): 8 tracks de 37.1 revisados, track08+22+11+23+10 cerrados, 44 parcial (49 defectos, 30 lecciones, `STATUS.md`). `tests/content` 70.027 passed. Quedan 4 bugs de contenido (no de lección) sin arreglar, listados en `STATUS.md` → §I |
+| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-29): 8 tracks revisados, track08+22+11+23+10 cerrados. 4/4 bugs de contenido corregidos. track44 cerrado: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas, 10.944→10.949. Queda 25 (expansión de catálogo) → §I |
 | 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
 | 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | → §I (criterio archivado por 20.10) |

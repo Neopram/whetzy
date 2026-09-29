@@ -2110,3 +2110,84 @@ no algo que haya introducido. No hay fila en el ledger que la rastree; la
 dejo anotada aquí para que quien retome `backend/` la vea, sin abrir una
 fila nueva yo mismo — no tengo contexto de por qué esos 4 ficheros están
 sin tipar y priorizarlo no me corresponde en esta sesión.
+
+## 2026-09-29, misma sesión — 37.1 cerrado del todo: los 4 bugs de
+contenido documentados arriba, más un bug de skill_id no visto hasta ahora
+
+Retomé los 4 bugs que la sesión anterior dejó anotados sin arreglar en la
+fila 37.1: `q220302011`, `q100502mc005`, `q100304mc013` y el par
+`l440202`/`l440204` de track44.
+
+Los tres primeros eran hechos, verificables sin ambigüedad. `q220302011`
+decía que Azure SQL Single Database llega a 2 TB como cifra general —
+`resource-limits-vcore-single-databases` de Microsoft Learn (leída esta
+sesión) muestra 128 TB para los niveles General Purpose/Business Critical;
+2 TB es solo el techo de una configuración serverless concreta. Reescrita
+para distinguir ambas cifras en vez de dar la más pequeña como si fuera la
+general. `q100502mc005` preguntaba «¿Qué es AWS Terraform?» cuando la
+propia explicación de la pregunta ya citaba «Terraform Documentation —
+HashiCorp»: el enunciado contradecía su propia fuente. `q100304mc013`
+preguntaba por «AWS Direct Connect Local Connection», que no existe — la
+guía oficial de Direct Connect (leída esta sesión) solo reconoce
+conexiones Dedicated y Hosted. La reescribí sobre Dedicated Connection, un
+concepto real que ninguna otra pregunta del mismo skill cubría todavía.
+
+El cuarto no era un hecho, era una asignación: en track44 (AZ-900),
+`l440202` se titula «Redes de Azure: VNet, subredes y NSG» pero sus 5
+preguntas trataban de contenedores y bases de datos (Container Instances,
+AKS, Azure SQL Database, SQL vs VM, Cosmos DB); `l440204` se titula
+«Microsoft Entra ID y Acceso Condicional» pero 4 de sus preguntas trataban
+de VNet, subred, NSG y Load Balancer — justo el contenido que le faltaba a
+`l440202`. Un intercambio limpio: las 4 preguntas de red pasan a
+`sk440202` (encajan exactamente con la lección), las 2 de contenedores
+pasan a `sk440201` (que ya habla de contenedores), y las 3 de bases de
+datos no tenían ninguna lección de destino real — track44 nunca tuvo una
+lección de bases de datos — así que las llevé a `sk440203` (Storage) y
+amplié `l440203` con un párrafo sobre Azure SQL Database y Cosmos DB como
+servicios de datos gestionados hermanos de Blob Storage, verificado contra
+`sql-database-paas-overview` y `cosmos-db/introduction` de Microsoft
+Learn, recortando la frase de File Shares para no pasar de las 300
+palabras.
+
+El intercambio dejó `sk440202` en 5 preguntas y `sk440204` en 2 — ambos
+por debajo del piso `MIN_PER_SKILL = 6` de `check_question_bank.py`. No
+hay más preguntas de red o de identidad en el módulo para redistribuir:
+tocaba escribir. Añadí 1 pregunta de red (el comportamiento de
+`DenyAllInbound` en la prioridad 65500, ya verificado en `l440202`) y 4 de
+identidad (tenant, Acceso Condicional por riesgo, Entra ID Governance,
+Entra Domain Services), las cuatro basadas en hechos que `l440204` ya
+citaba y tenía verificados de una sesión anterior — ninguna requirió una
+verificación nueva. De paso amplié `l440202` con una frase sobre Azure
+Load Balancer (capa 4, IP pública cerrada por defecto — un NSG debe
+permitirlo explícitamente), verificada contra `load-balancer-overview` de
+Microsoft Learn, porque `q4401042` seguía marcada por el auditor una vez
+mudada a la lección correcta.
+
+Dos errores propios, encontrados por las propias guardas antes de
+commitear, no por mí releyendo:
+
+- Los IDs que puse a las 5 preguntas nuevas (`q4401045`-`q4401049`)
+  chocaban con IDs ya usados en `mod4403.json` — la numeración `q4401NNN`
+  es global al track, no por módulo, y no lo comprobé antes de escribir.
+  `check_question_bank.py` lo cortó en seco («duplicate id»); renombradas
+  a `q4401062`-`q4401066` tras confirmar con grep que esos números no
+  existían en ningún fichero de `content/`.
+- Las 5 preguntas nuevas subieron el banco de 10.944 a 10.949 preguntas
+  (contado directamente, no de memoria), y `check_docs.py` lo detectó en
+  los 4 sitios que vigila: `AUTONOMOUS_STATE.md` (fila `Contenido`),
+  `ARCHITECTURE.md`, `CATALOGO_MAESTRO.md` y `frontend/src/lib/catalog.ts`.
+  Los cuatro actualizados a 10.949.
+
+`audit_lesson_quiz_alignment.py track44`: `l440202` y `l440204` ya no
+aparecen en la lista de avisos (quedan 3 avisos sueltos en `l440203`,
+`l440301` y `l440305`, sin relación con este arreglo — mismo patrón de
+falso positivo de marca que el resto de tracks, no investigados aquí).
+`check_question_bank.py`: PASS, los 5 skills del módulo ≥ 6 preguntas.
+`tests/content`: 70.057 passed, 1 skipped, 21 xfailed (+30 sobre la
+corrida anterior, coherente con 5 preguntas nuevas). `check_docs.py`:
+todos los checks en verde. `npx tsc --noEmit` en `frontend/`: sin errores
+tras el cambio en `catalog.ts`. Ledger 37.1: los 4 bugs de contenido
+documentados quedan cerrados; el barrido original de 8 tracks también.
+Queda pendiente, y fuera de este arreglo puntual, la expansión de
+catálogo hacia la meta de ADR-46 (serie 25/37), que es autoría nueva de
+`Workflow`, no una corrección.

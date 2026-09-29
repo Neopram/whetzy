@@ -117,7 +117,7 @@
     },
     {
       "id": "q4401030",
-      "skill_id": "sk440202",
+      "skill_id": "sk440201",
       "type": "multiple_choice",
       "question_es": "¿Qué es Container Instances?",
       "question_en": "What is Container Instances?",
@@ -140,7 +140,7 @@
     },
     {
       "id": "q4401031",
-      "skill_id": "sk440202",
+      "skill_id": "sk440201",
       "type": "multiple_choice",
       "question_es": "¿Propósito de AKS?",
       "question_en": "Purpose of AKS?",
@@ -163,7 +163,7 @@
     },
     {
       "id": "q4401032",
-      "skill_id": "sk440202",
+      "skill_id": "sk440203",
       "type": "multiple_choice",
       "question_es": "¿Qué es Azure SQL Database?",
       "question_en": "What is SQL Database?",
@@ -186,7 +186,7 @@
     },
     {
       "id": "q4401033",
-      "skill_id": "sk440202",
+      "skill_id": "sk440203",
       "type": "multiple_choice",
       "question_es": "¿SQL Database vs SQL en VM?",
       "question_en": "SQL Database vs Server on VM?",
@@ -209,7 +209,7 @@
     },
     {
       "id": "q4401034",
-      "skill_id": "sk440202",
+      "skill_id": "sk440203",
       "type": "multiple_choice",
       "question_es": "¿Qué es Azure Cosmos DB?",
       "question_en": "What is Cosmos DB?",
@@ -324,7 +324,7 @@
     },
     {
       "id": "q4401039",
-      "skill_id": "sk440204",
+      "skill_id": "sk440202",
       "type": "multiple_choice",
       "question_es": "¿Qué es Azure Virtual Network?",
       "question_en": "What is Virtual Network?",
@@ -347,7 +347,7 @@
     },
     {
       "id": "q4401040",
-      "skill_id": "sk440204",
+      "skill_id": "sk440202",
       "type": "multiple_choice",
       "question_es": "¿Qué es una subred?",
       "question_en": "What is a subnet?",
@@ -370,7 +370,7 @@
     },
     {
       "id": "q4401041",
-      "skill_id": "sk440204",
+      "skill_id": "sk440202",
       "type": "multiple_choice",
       "question_es": "¿Propósito de NSG?",
       "question_en": "Purpose of NSG?",
@@ -393,7 +393,7 @@
     },
     {
       "id": "q4401042",
-      "skill_id": "sk440204",
+      "skill_id": "sk440202",
       "type": "multiple_choice",
       "question_es": "¿Qué es Azure Load Balancer?",
       "question_en": "What is Load Balancer?",
@@ -413,6 +413,29 @@
       "explanation_es": "Azure Load Balancer distribuye el tráfico de red entrante entre varias instancias de un backend para mejorar disponibilidad y rendimiento. No es una base de datos ni un servicio de contenedores, y tampoco es 'almacenamiento caché', que es una función distinta cubierta por servicios como Azure Cache for Redis.",
       "explanation_en": "Azure Load Balancer distributes incoming network traffic across multiple backend instances to improve availability and performance. It is not a database or a container service, and it is not 'cache storage', a distinct function covered by services like Azure Cache for Redis.",
       "source": "Microsoft Learn: https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/"
+    },
+    {
+      "id": "q4401066",
+      "skill_id": "sk440202",
+      "type": "multiple_choice",
+      "question_es": "En un NSG de Azure, ¿qué ocurre si ningún paquete entrante coincide con ninguna regla explícita?",
+      "question_en": "In an Azure NSG, what happens when an inbound packet matches no explicit rule?",
+      "options_es": [
+        "Se permite por defecto, ya que ninguna regla lo bloqueó",
+        "Se aplica la regla implícita DenyAllInbound en la prioridad 65500",
+        "Azure Firewall lo reenvía automáticamente a otra subred",
+        "El NSG deja de evaluar tráfico hasta que un administrador revise el caso"
+      ],
+      "options_en": [
+        "It is allowed by default since no rule blocked it",
+        "The implicit DenyAllInbound rule at priority 65500 applies",
+        "Azure Firewall automatically forwards it to another subnet",
+        "The NSG stops evaluating traffic until an administrator reviews the case"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Si ninguna regla explícita coincide con el paquete, Azure aplica la regla implícita DenyAllInbound en la prioridad 65500, que deniega todo lo que no fue permitido antes. No se permite por defecto, ni interviene Azure Firewall, ni el NSG deja de evaluar tráfico posterior.",
+      "explanation_en": "When nothing explicit matches the packet, Azure applies the implicit DenyAllInbound rule at priority 65500, blocking whatever wasn't already allowed. It is not allowed by default, Azure Firewall is not involved, and the NSG keeps evaluating later traffic normally.",
+      "source": "Microsoft Learn — Azure network security groups overview (https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview)"
     },
     {
       "id": "q4401043",
@@ -597,6 +620,98 @@
       "explanation_es": "Azure Active Directory e Identity es más apropiado cuando un proyecto empresarial necesita gestionar recursos y servicios en la nube de Azure con alta disponibilidad y cumplimiento normativo, ya que centraliza identidad, autenticación y control de acceso. No se trata de reemplazar al equipo de desarrollo, de tener presupuesto ilimitado, ni de usarlo solo en pruebas: es un servicio central también en producción.",
       "explanation_en": "Azure Active Directory and Identity is most appropriate when an enterprise project needs to manage Azure cloud resources and services with high availability and regulatory compliance, since it centralizes identity, authentication and access control. It is not about replacing the development team, needing an unlimited budget, or testing-only use: it is a core production service.",
       "source": "Microsoft Learn (https://learn.microsoft.com)"
+    },
+    {
+      "id": "q4401062",
+      "skill_id": "sk440204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un inquilino (tenant) en Microsoft Entra ID?",
+      "question_en": "What is a tenant in Microsoft Entra ID?",
+      "options_es": [
+        "Una instancia dedicada de Entra ID para una organización, con su propio dominio inicial",
+        "Un usuario individual con privilegios de administrador global",
+        "Un grupo de recursos de Azure para máquinas virtuales",
+        "Una región geográfica donde se despliega una VNet"
+      ],
+      "options_en": [
+        "A dedicated Entra ID instance for one organization, with its own initial domain",
+        "An individual user with Global Administrator privileges",
+        "An Azure resource group for virtual machines",
+        "A geographic region where a VNet is deployed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un inquilino (tenant) es la instancia dedicada de Microsoft Entra ID de una organización, con un dominio inicial del tipo contoso.onmicrosoft.com sobre el que se crean usuarios, grupos y entidades de servicio. Cualquier suscriptor de Microsoft 365, Azure o Dynamics 365 ya tiene uno activo sin configurarlo aparte; no es un usuario, un grupo de recursos ni una región.",
+      "explanation_en": "A tenant is an organization's dedicated Microsoft Entra ID instance, with an initial domain like contoso.onmicrosoft.com on which users, groups, and service principals are created. Any Microsoft 365, Azure, or Dynamics 365 subscriber already has one active without extra setup; it is not a user, a resource group, or a region.",
+      "source": "Microsoft Learn — What is Microsoft Entra? (https://learn.microsoft.com/en-us/entra/fundamentals/what-is-entra)"
+    },
+    {
+      "id": "q4401063",
+      "skill_id": "sk440204",
+      "type": "multiple_choice",
+      "question_es": "En Acceso Condicional de Microsoft Entra ID, ¿qué ocurre con un inicio de sesión marcado con riesgo alto?",
+      "question_en": "In Microsoft Entra ID Conditional Access, what happens to a sign-in flagged as high risk?",
+      "options_es": [
+        "Se permite sin restricciones porque el usuario ya inició sesión antes",
+        "Se bloquea, incluso si el usuario tiene MFA registrada",
+        "Se registra en un log pero no se toma ninguna acción",
+        "Se exige solo un cambio de contraseña, nunca un bloqueo"
+      ],
+      "options_en": [
+        "It is allowed without restrictions because the user has signed in before",
+        "It is blocked, even for a user who already has MFA registered",
+        "It is only logged, with no action taken",
+        "It only requires a password change, never a block"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Acceso Condicional combina señales como el riesgo calculado por Microsoft Entra ID Protection para decidir si permite el acceso, exige autenticación multifactor (MFA) o bloquea. Un inicio de sesión de riesgo alto se bloquea aunque el usuario tenga MFA registrada; uno de riesgo medio exige MFA en su lugar.",
+      "explanation_en": "Conditional Access combines signals such as the risk score from Microsoft Entra ID Protection to decide whether to allow access, require multifactor authentication (MFA), or block the attempt. A high-risk sign-in gets blocked even for a user who already has MFA registered; a medium-risk one requires MFA instead.",
+      "source": "Microsoft Learn — What is Microsoft Entra? (https://learn.microsoft.com/en-us/entra/fundamentals/what-is-entra)"
+    },
+    {
+      "id": "q4401064",
+      "skill_id": "sk440204",
+      "type": "multiple_choice",
+      "question_es": "¿Qué añade Microsoft Entra ID Governance sobre Entra ID básico?",
+      "question_en": "What does Microsoft Entra ID Governance add on top of basic Entra ID?",
+      "options_es": [
+        "Revisiones de acceso y ciclo de vida automático de cuentas",
+        "Soporte para Kerberos y NTLM en aplicaciones heredadas",
+        "Un segundo dominio inicial gratuito por inquilino",
+        "Enrutamiento global de tráfico HTTP entre regiones"
+      ],
+      "options_en": [
+        "Access reviews and automated account lifecycle management",
+        "Kerberos and NTLM support for legacy applications",
+        "A second free initial domain per tenant",
+        "Global HTTP traffic routing across regions"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Microsoft Entra ID Governance añade revisiones de acceso y ciclo de vida automático de cuentas (altas, cambios de rol, bajas). El soporte Kerberos/NTLM para aplicaciones heredadas lo ofrece Microsoft Entra Domain Services, un producto distinto dentro de la misma familia.",
+      "explanation_en": "Microsoft Entra ID Governance adds access reviews and automated identity lifecycle management (joiners, movers, leavers). Kerberos/NTLM support for legacy applications is provided by Microsoft Entra Domain Services, a separate product in the same family.",
+      "source": "Microsoft Learn — What is Microsoft Entra? (https://learn.microsoft.com/en-us/entra/fundamentals/what-is-entra)"
+    },
+    {
+      "id": "q4401065",
+      "skill_id": "sk440204",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué sirve Microsoft Entra Domain Services?",
+      "question_en": "What is Microsoft Entra Domain Services for?",
+      "options_es": [
+        "Kerberos/NTLM y LDAP gestionados para aplicaciones heredadas sin autenticación moderna",
+        "Revisiones de acceso periódicas para cumplimiento normativo",
+        "Enrutamiento global de tráfico entre backends de una aplicación",
+        "Cifrado de datos en reposo para bases de datos relacionales"
+      ],
+      "options_en": [
+        "Managed Kerberos/NTLM and LDAP for legacy apps without modern authentication",
+        "Periodic access reviews for regulatory compliance",
+        "Global traffic routing across an application's backends",
+        "At-rest encryption for relational databases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Microsoft Entra Domain Services ofrece Kerberos/NTLM y LDAP gestionados para aplicaciones heredadas que no admiten autenticación moderna. Las revisiones de acceso son de Entra ID Governance, no de Domain Services, un producto distinto dentro de la familia Entra.",
+      "explanation_en": "Microsoft Entra Domain Services provides managed Kerberos/NTLM and LDAP for legacy applications that can't speak modern authentication protocols. Access reviews belong to Entra ID Governance, a separate product within the Entra family.",
+      "source": "Microsoft Learn — What is Microsoft Entra? (https://learn.microsoft.com/en-us/entra/fundamentals/what-is-entra)"
     },
     {
       "id": "q440205_013",
