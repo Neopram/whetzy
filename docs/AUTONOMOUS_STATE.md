@@ -426,7 +426,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-29): track08+22 cerrados (22 defectos, 14 lecciones, `STATUS.md`); 43/45/46 sin gaps reales, solo falsos positivos de marca. `tests/content` 70.027 passed. Pendiente: q220302011 (tamaño máx. sin verificar) y ~57 en 10/23/11/44, pide `Workflow` (ADR-52) → §I |
+| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-29): track08+22+11 cerrados (30 defectos, 19 lecciones, `STATUS.md`); 43/45/46 sin gaps reales. `tests/content` 70.027 passed. Pendiente: q220302011 (cifra sin verificar) y ~44 en track10/23/44, pide `Workflow` (ADR-52) → §I |
 | 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
 | 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | → §I (criterio archivado por 20.10) |

@@ -1927,3 +1927,25 @@ seguir, releyendo cada frase nueva después de escribirla en vez de asumir que s
 salvo el `q220302011` documentado arriba). `tests/content` completo: 70.027 passed, 1
 skipped, 21 xfailed. `validate_lessons.py track22` y `check_docs.py` en verde. Quedan
 ~57 avisos en track10 (19), track23 (14), track11 (13) y track44 (11).
+
+## 2026-09-29, misma sesión — track11 cerrado: 8 gaps reales, 5 falsos positivos más
+
+`track11` (IA/ML en AWS) daba 13 avisos. De ellos, 5 ya estaban cubiertos y solo fallaban
+por el mismo patrón de marca visto en track08/22: la pregunta dice "AWS CodeWhisperer" o
+"AWS SageMaker" pero el nombre oficial —y el que usa la lección— es "Amazon CodeWhisperer"
+/ "Amazon SageMaker"; "Ground Truth" también aparecía ya en `l110201` sin el prefijo
+"SageMaker" delante.
+
+Los 8 gaps reales sí eran huecos de contenido genuinos, verificados contra
+`aws.amazon.com/textract/` antes de escribir nada (Textract va más allá del OCR simple y
+se distingue de Rekognition; Lookout for Metrics detecta anomalías en series temporales)
+y, para el resto (rol de Lambda y Step Functions en orquestación de agentes, LoRA en
+SageMaker, few-shot en Bedrock, AWS Config en gobernanza de IA, SageMaker Autopilot),
+contrastando cada frase nueva contra la propia explicación ya existente de su pregunta
+—nunca inventando un dato nuevo sin esa base. Arreglados en `l110203`, `l110301`,
+`l110302`, `l110304` y `l110305`.
+
+`audit_lesson_quiz_alignment.py track11`: 13 avisos → 6, los 6 confirmados falsos
+positivos de marca (0 gaps reales pendientes). `tests/content` completo: 70.027 passed,
+1 skipped, 21 xfailed. `validate_lessons.py track11` y `check_docs.py` en verde. Quedan
+~44 avisos en track10 (19), track23 (14) y track44 (11).
