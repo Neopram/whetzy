@@ -1949,3 +1949,29 @@ contrastando cada frase nueva contra la propia explicación ya existente de su p
 positivos de marca (0 gaps reales pendientes). `tests/content` completo: 70.027 passed,
 1 skipped, 21 xfailed. `validate_lessons.py track11` y `check_docs.py` en verde. Quedan
 ~44 avisos en track10 (19), track23 (14) y track44 (11).
+
+## 2026-09-29, misma sesión — track44 destapa un bug distinto: skill_id de la
+pregunta y tema de la lección sin ninguna relación
+
+`track44` (AZ-900) daba 11 avisos. 6 eran gaps reales de una frase (Azure Policy, App
+Service, File Shares, Azure CDN), arreglados en `l440104`, `l440201`, `l440203` y
+`l440205` tras verificar cada uno contra Microsoft Learn o contra la propia explicación
+de la pregunta. `l440301` y `l440305` ya cubrían "Monitor" y "Management Tools" sin el
+prefijo "Azure" exacto — falsos positivos de marca, igual que en track08/22/11.
+
+Los otros 2 no se pudieron arreglar con una frase, y esta vez no era un problema de
+marca ni de heurístico: `l440202` ("Redes de Azure: VNet, subredes y NSG") tiene
+asignadas por `skill_id` dos preguntas sobre Azure SQL Database y Cosmos DB —bases de
+datos, no redes— y `l440204` ("Microsoft Entra ID y Acceso Condicional") tiene
+asignadas preguntas sobre Virtual Network y Load Balancer —redes, no identidad—. No es
+que la lección omita mencionar el servicio de pasada: el servicio no tiene nada que
+ver con el tema de la lección. Forzar una frase sobre Cosmos DB en una lección de NSG
+habría sido relleno incoherente, el mismo tipo de parche superficial que este barrido
+existe para evitar. Anotado en el ledger (37.1) en vez de parcheado: corregir esto
+significa mover esas preguntas a la lección correcta o escribir contenido nuevo, no
+añadir una frase — trabajo de `Workflow` (ADR-52), no de esta sesión.
+
+`audit_lesson_quiz_alignment.py track44`: 11 avisos → 7 (5 falsos positivos de marca +
+2 el bug de skill_id/lección documentado arriba). `tests/content` completo: 70.027
+passed, 1 skipped, 21 xfailed. `validate_lessons.py track44` y `check_docs.py` en
+verde. Quedan ~33 avisos sin mirar en track10 (19) y track23 (14).
