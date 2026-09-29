@@ -2042,3 +2042,60 @@ Azure SQL sin verificar), `q100502mc005` y `q100304mc013` (nombres de servicio
 incorrectos, arriba), y `l440202`/`l440204` (skill_id de la pregunta sin relación
 con el tema de la lección). Los cuatro quedan anotados en la fila 37.1 del ledger
 para que la siguiente sesión que la retome no tenga que redescubrirlos.
+
+## 2026-09-29, misma sesión — 34.5: el número Lighthouse a11y literal que
+pedía el dueño, con una corrección propia a mitad de camino
+
+34.5 pedía el número de Lighthouse a11y en sí, no solo el recuento de
+violaciones de axe-core que `accessibility.spec.ts` ya daba en verde. El
+problema es que la app es una SPA de una sola página sin rutas por pantalla
+(Home/Tracks/Lesson/Quiz son estado de React en `App.tsx`, no URLs), así que
+un `lighthouse <url>` normal solo puede medir lo que la app enseña por
+defecto — no puede hacer clic hasta Tracks o una lección. La API de
+user-flow de Lighthouse (`startFlow` + `.snapshot()`), pilotada por
+Puppeteer contra la misma página autenticada, sí puede. Monté Postgres y
+Redis nativos (ya instalados en la imagen, sin Docker) y arranqué backend +
+frontend locales para tener algo real contra qué medir — no un mock.
+
+Primer intento: `NO_FCP` (First Contentful Paint nunca llega) en todas las
+corridas, reproducible. Diagnostiqué mal la primera vez: vi un proceso
+`pytest` del nivel 2 de `ci_local.sh` (disparado por mi propio push anterior)
+consumiendo el 97% de las 4 CPUs de esta caja y concluí que era
+contención de recursos — lo escribí así en el commit `3d82502` y en un
+comentario del script. Estaba mal. Cuando `ci_local.sh` terminó (en rojo por
+deuda de `mypy --strict` y `oxlint` preexistente, no mía — verificado con
+`git log --stat` de mis commits de esta sesión, ninguno toca `backend/`) y
+las 4 CPUs quedaron libres, el script **siguió fallando exactamente igual**.
+Aislé la llamada exacta que fallaba en un script mínimo aparte hasta
+confirmar que no era el entorno: con las CPUs libres, mi reproducción
+mínima funcionaba y el script real seguía en `NO_FCP`, así que el problema
+tenía que estar en el código, no en la máquina.
+
+La causa real: usaba `flow.startNavigation()`/`endNavigation()` alrededor
+de los clics a "Rutas" y "Aprender" — ese par es para una navegación de
+verdad del navegador, donde Lighthouse espera un evento de First Contentful
+Paint nuevo. Un clic que solo cambia estado de React dentro del mismo
+documento ya pintado nunca dispara un FCP nuevo, así que `NO_FCP` no era un
+síntoma de la máquina: era el propio Lighthouse haciendo justo lo que se le
+pidió, esperar algo que nunca iba a llegar. El arreglo fue usar
+`flow.snapshot()` a secas para esas dos transiciones (audita el DOM actual
+sin esperar navegación), dejando `flow.navigate()` solo para la carga
+inicial real. Quedó otro fallo más, ya menor: cerrar la lección no vuelve a
+Home sino a Tracks con el módulo aún abierto, así que "ESTUDIAR AHORA" no
+estaba en pantalla — arreglado navegando a "Inicio" explícitamente antes de
+buscar ese botón en vez de asumir a qué pantalla se vuelve.
+
+Corregida la sección del comentario del script que culpaba a la contención
+de CPU (dejando el margen de tiempo extra como margen defensivo razonable,
+no como el arreglo) y corregido aquí, porque afirmé una causa en un commit
+sin haberla verificado del todo — exactamente lo que el protocolo de verdad
+de esta sesión pide señalar en el momento en que se nota, no en silencio.
+
+Resultado verificado, 3 corridas seguidas: **100/100** en las 5 capturas
+(navegación inicial, Home, Tracks, Lesson, Quiz con panel de respuesta) —
+muy por encima del ≥95 pedido, y coherente con los 6/6 sin violaciones que
+ya daba `accessibility.spec.ts` en las mismas pantallas. `oxlint` en verde
+sobre el script final (5 avisos de variables sin usar que `ci_local.sh`
+destapó, corregidos). `puppeteer-core`/`lighthouse` instalados con
+`--no-save`, no son dependencias del proyecto — mismo criterio que
+`lighthouse-landing.mjs`. Ledger 34.5 → DONE.

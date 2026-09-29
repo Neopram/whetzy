@@ -37,13 +37,11 @@
  *   node scripts/lighthouse-app-a11y.mjs
  *   node scripts/lighthouse-app-a11y.mjs http://localhost:5199 http://127.0.0.1:8000
  */
-import { execSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const FRONTEND_URL = process.argv[2] ?? 'http://localhost:5199';
-const BACKEND_URL = process.argv[3] ?? 'http://127.0.0.1:8000';
 const A11Y_BUDGET = 95;
 // A plain 4-option MCQ in track01 — same fixture accessibility.spec.ts uses,
 // so a quiz screen audit does not depend on which question the adaptive
@@ -132,15 +130,15 @@ async function main() {
       localStorage.setItem(`whetzy_onboarded_${uid}`, '1');
     }, userId);
 
-    // maxWaitForFcp/maxWaitForLoad raised well above Lighthouse's defaults
-    // (10s/45s): this machine also runs the project's own background CI
-    // (scripts/ci_local.sh, triggered by a git push) sharing the same 4
-    // cores, and Lighthouse's default FCP timeout is tuned for a machine
-    // that isn't also compiling and running a full test suite at the same
-    // time. NO_FCP under that contention is a real symptom of this box,
-    // not of the app — raising the budget avoids a false failure without
-    // masking a genuinely broken page (the app still has to paint,
-    // eventually, or this times out too).
+    // maxWaitForFcp/maxWaitForLoad raised somewhat above Lighthouse's
+    // defaults (10s/45s) as a margin for a shared/loaded machine — this box
+    // also runs the project's own background CI (scripts/ci_local.sh,
+    // triggered by a git push) sharing the same 4 cores. (An earlier
+    // version of this comment blamed a since-disproven NO_FCP entirely on
+    // that contention; the real cause was flow.startNavigation()/
+    // endNavigation() around the SPA's client-side screen changes below —
+    // see the comment there. This margin is now just defensive headroom,
+    // not a fix for anything.)
     const flow = await startFlow(page, {
       name: 'Whetzy learning screens — accessibility',
       config: {
@@ -158,21 +156,25 @@ async function main() {
     await flow.snapshot({ name: 'Home' });
 
     // -- Tracks ---------------------------------------------------------
-    await flow.startNavigation({ name: 'open Tracks' });
+    // Not flow.startNavigation()/endNavigation(): that pair is for a real
+    // browser navigation (Lighthouse waits for a fresh First Contentful
+    // Paint trace event). Clicking "Rutas" is a client-side React state
+    // change inside the same already-painted SPA document — no new FCP
+    // event will ever fire, so startNavigation() here reliably hit NO_FCP.
+    // flow.snapshot() audits the current DOM without expecting one.
     await clickButtonByText(page, 'Rutas');
     await page.waitForSelector('[class*="moduleHeader_"]', { timeout: 20_000 });
-    await flow.endNavigation();
     await flow.snapshot({ name: 'Tracks' });
 
     // -- Lesson -----------------------------------------------------
     // Expand the first module, then follow its "Aprender" (learn) CTA —
-    // the same path TracksScreen.tsx's `startLesson` button uses.
+    // the same path TracksScreen.tsx's `startLesson` button uses. Same
+    // reasoning as Tracks above: a client-side state change, not a
+    // navigation, so plain snapshot() rather than startNavigation().
     await page.click('[class*="moduleHeader_"]');
     await page.waitForSelector('[class*="learnBtn_"]', { timeout: 10_000 });
-    await flow.startNavigation({ name: 'open Lesson' });
     await page.click('[class*="learnBtn_"]');
     await page.waitForSelector('h1', { timeout: 15_000 });
-    await flow.endNavigation();
     await flow.snapshot({ name: 'Lesson' });
 
     // -- Quiz (answer-feedback panel) --------------------------------
@@ -190,13 +192,16 @@ async function main() {
     });
     const closeBtn = await page.$('[class*="btnClose_"]');
     if (closeBtn) await closeBtn.click();
+    // Closing the lesson returns to wherever it was opened from (Tracks,
+    // with the module still expanded), not necessarily Home — go there
+    // explicitly rather than assume, since "ESTUDIAR AHORA" only lives there.
+    await clickButtonByText(page, 'Inicio');
     await clickButtonByText(page, 'ESTUDIAR AHORA');
     await page.waitForSelector('[class*="questionCard_"]', { timeout: 20_000 });
     await page.click('[class*="options_"] button');
     await page.waitForSelector('[class*="explanation_"]', { timeout: 20_000 });
     await flow.snapshot({ name: 'Quiz (answer feedback)' });
 
-    const steps = flow.getFlowResult ? (await flow.createFlowResult()).steps : flow._flow?.steps;
     const summary = summarizeSteps(await flow.createFlowResult());
 
     const reportHtml = await flow.generateReport();
@@ -225,7 +230,6 @@ async function clickButtonByText(page, text) {
     { timeout: 15_000 },
     text,
   );
-  const [btn] = await page.$$('button');
   const handles = await page.$$('button');
   for (const h of handles) {
     const t = await page.evaluate((el) => el.textContent, h);
