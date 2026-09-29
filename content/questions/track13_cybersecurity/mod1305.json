@@ -923,9 +923,9 @@
     "correct_index": null,
     "correct_answer_es": "True",
     "correct_answer_en": "True",
-    "explanation_es": "sha256 está en hashlib.algorithms_guaranteed (algoritmos garantizados disponibles en todas las plataformas Python), así que __contains__() devuelve True.",
-    "explanation_en": "sha256 is in hashlib.algorithms_guaranteed (algorithms guaranteed available on all Python platforms), so __contains__() returns True.",
-    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
+    "explanation_es": "hashlib.algorithms_guaranteed es un `set` con los nombres de los algoritmos hash que Python garantiza disponibles en cualquier plataforma, sin depender de la biblioteca OpenSSL del sistema. sha256 está entre ellos, así que `'sha256' in hashlib.algorithms_guaranteed` (lo que hace `__contains__()` por debajo) evalúa a True.",
+    "explanation_en": "hashlib.algorithms_guaranteed is a `set` with the names of the hash algorithms Python guarantees are available on every platform, without depending on the system's OpenSSL library. sha256 is among them, so `'sha256' in hashlib.algorithms_guaranteed` (what `__contains__()` does under the hood) evaluates to True.",
+    "source": "https://docs.python.org/3/library/hashlib.html",
     "expected_time_ms": 30000
   },
   {

@@ -21,8 +21,8 @@
     "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
-    "explanation_es": "La inyección SQL es un ataque de seguridad donde un atacante introduce código SQL no autorizado a través de campos de entrada de aplicaciones web, aprovechando la falta de validación de entrada para ejecutar comandos no deseados en la base de datos.",
-    "explanation_en": "SQL injection is a security attack where an attacker introduces unauthorized SQL code through input fields of web applications, exploiting the lack of input validation to execute unintended commands in the database.",
+    "explanation_es": "La inyección SQL ocurre cuando la aplicación concatena texto del usuario directamente en una consulta SQL, sin separar datos de código. Un atacante que escribe `' OR '1'='1` en un campo de login puede convertir una condición como `WHERE user='...' AND pass='...'` en algo siempre verdadero, saltándose la autenticación. La defensa estándar son las consultas parametrizadas (prepared statements), que tratan la entrada siempre como dato y nunca como código SQL.",
+    "explanation_en": "SQL injection happens when an application concatenates user-supplied text directly into a SQL query, without separating data from code. An attacker who types `' OR '1'='1` into a login field can turn a condition like `WHERE user='...' AND pass='...'` into something always true, bypassing authentication. The standard defense is parameterized queries (prepared statements), which always treat input as data and never as SQL code.",
     "source": "https://owasp.org/www-project-top-ten/",
     "expected_time_ms": 20000
   },
@@ -102,8 +102,8 @@
     "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
-    "explanation_es": "XXE es una vulnerabilidad que ocurre cuando un analizador XML no valida adecuadamente las entidades externas, permitiendo a un atacante acceder a archivos locales, ejecutar código o realizar ataques de denegación de servicio.",
-    "explanation_en": "XXE is a vulnerability that occurs when an XML parser does not properly validate external entities, allowing an attacker to access local files, execute code, or perform denial of service attacks.",
+    "explanation_es": "XXE ocurre cuando un analizador XML procesa una entidad externa declarada en el propio documento (por ejemplo `<!ENTITY xxe SYSTEM \"file:///etc/passwd\">`) sin restricciones. Si el parser la resuelve, un atacante puede leer archivos locales del servidor, forzarlo a hacer peticiones a otros sistemas internos (SSRF) o agotar sus recursos. La defensa consiste en deshabilitar la resolución de entidades externas y de DTDs en la configuración del analizador XML.",
+    "explanation_en": "XXE happens when an XML parser processes an externally declared entity from the document itself (for example `<!ENTITY xxe SYSTEM \"file:///etc/passwd\">`) without restriction. If the parser resolves it, an attacker can read local files on the server, force it to make requests to other internal systems (SSRF), or exhaust its resources. The defense is to disable external entity and DTD resolution in the XML parser's configuration.",
     "source": "https://owasp.org/www-project-top-ten/",
     "expected_time_ms": 20000
   },
@@ -1659,9 +1659,9 @@
     "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
-    "explanation_es": "800-63B pide no exigir cambios periódicos arbitrarios, porque llevan a contraseñas previsibles (Verano2026!, Otoño2026!), y sí forzar el cambio cuando hay pruebas de compromiso.",
-    "explanation_en": "800-63B says not to require arbitrary periodic changes, because they lead to predictable passwords (Summer2026!, Autumn2026!), and to force a change when there is evidence of compromise.",
-    "source": "NIST SP 800-30 Rev. 1 — https://csrc.nist.gov/pubs/sp/800/30/r1/final",
+    "explanation_es": "NIST SP 800-63B pide no exigir cambios de contraseña periódicos arbitrarios. En la práctica esas políticas llevan a patrones previsibles como `Verano2026!` seguido de `Otoño2026!`, sin mejorar la seguridad real. La guía pide forzar el cambio solo cuando hay pruebas concretas de que la contraseña se vio comprometida.",
+    "explanation_en": "NIST SP 800-63B says not to require arbitrary periodic password changes. In practice those policies lead to predictable patterns like `Summer2026!` followed by `Autumn2026!`, without actually improving security. The guidance says to force a change only when there is concrete evidence the password was compromised.",
+    "source": "NIST SP 800-63B — https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 30000
   },
   {

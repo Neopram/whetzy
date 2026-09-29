@@ -108,7 +108,7 @@
 | 17.6 | **2** | **UI de clase mundial, medida** | TODO | → LEDGER_HISTORY.md §E |
 | 17.7 | **4** | **Vídeos explicativos generados desde código** | TODO | → LEDGER_HISTORY.md §E |
 | 17.10 | **3** | **Re-puntuar frente a la competencia con lo anterior hecho** | TODO | → LEDGER_HISTORY.md §E |
-| 17.14 | **1** | **Compras dentro de la app (la antigua 7.6, sin fila desde hace meses; `legal/h21-decision.md:58`)**: RevenueCat +… | **PARCIAL** | **PARCIAL** (2026-09-27): mitad backend — `POST /billing/revenuecat/webhook` (sandbox, auth por Authorization header verificado en vivo contra la doc de RevenueCat), mismos campos de entitlement que Stripe, `subscription_provider` nuevo. Falta: SDK/UI de compra nativa (Capacitor) — activación real HUMAN-BLOCKED (H.2, H.3) → §I |
+| 17.14 | **1** | **Compras dentro de la app (la antigua 7.6, sin fila desde hace meses; `legal/h21-decision.md:58`)**: RevenueCat +… | **PARCIAL** | **PARCIAL** (2026-09-27): mitad backend — `POST /billing/revenuecat/webhook` (sandbox, auth verificado en vivo contra doc de RevenueCat), mismo entitlement que Stripe, `subscription_provider` nuevo. Falta: SDK/UI nativa (Capacitor) — HUMAN-BLOCKED (H.2, H.3) → §I |
 
 **Verdad que condiciona toda la serie:** H.11 cerrado 2026-09-18 (frontend desplegado). Hasta que el dueño cierre **H.SEED** (cargar el…
 
@@ -469,7 +469,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.5 | **2** | Gamification auditada de punta a punta | DONE | → §O |
 | 39.6 | **2** | `audit_ai_traces.py` | DONE | → §M |
 | 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | → §M |
-| 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (track01 ×3, track09 ×5, track41 ×4) | **PARCIAL** | (2026-09-29) 10/12 reescritas y verificadas en Python real, quitadas de `KNOWN`: track01 ×3, track09 ×5 (list-vs-tuple → mutabilidad, concatenación, `(1)` no es tupla, `.count()`), track41 ×2. 2 nunca fueron duplicados: ciego del checker (solo `question_es`, ignora `code`) → 39.40. `tests/content` 70.277; guarda mutada en rojo/verde → §I |
+| 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (track01 ×3, track09 ×5, track41 ×4) | **PARCIAL** | (2026-09-29) 10/12 reescritas y verificadas en Python real, quitadas de `KNOWN`. 2 nunca fueron duplicados: ciego del checker (solo `question_es`, ignora `code`) → 39.40. `tests/content` 70.277; guarda mutada rojo/verde → §I |
 | 39.28 | **0** | Segunda familia de coletillas («como concepto principal» 982, «sin e… | DONE | → §O |
 | 39.29 | **0** | 1.404 explicaciones de plantilla vistas por el alumno en track41 (59… | DONE | → §O |
 | 39.30 | **1** | Datos personales en el contenido: `l260101` enseñaba el nombre y correo del dueño | DONE | → §M |
@@ -484,7 +484,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.39 | **1** | **Lección/quiz desalineados**: `scripts/audit_lesson_quiz_alignment.py` (nuevo, 2026-09-28, desde 37.1) marca 97 casos en 8 tracks donde el quiz de una skill pregunta por un servicio que su propia lección nunca menciona → STATUS.md | TODO | Por track: leer cada aviso (hay falsos positivos), arreglar los reales vía `Workflow` (Haiku+Sonnet, ADR-52); 0 avisos nuevos tras cada tanda |
 | 39.40 | **2** | **`check_originality.py` ciego a `code`** (39.27): solo mira `question_es`; en `code_output`/exec ese campo suele ser molde genérico y el código real vive en `code`, sin comparar. Con `code`: 16 parejas reales nuevas (track41 ×13, track12 ×3, sim=1.0) hoy invisibles | TODO | `_content_text()` con `code`/`code_es`; las 16 reescritas antes de fusionar — nunca ampliar `KNOWN` para taparlas |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
-| 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
+| 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | **PARCIAL** | (2026-09-29) track13 4/4 (2-3 frases ES+EN, ejemplo/mitigación real). De paso, 2 `source` copiadas mal (SQL/hashlib citaban NIST 800-30/800-63B, sin relación), arregladas. track15(38)/16(75)/17(13): volumen de `Workflow` (ADR-52) → §I |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
 | 39.11 | **2** | Límite de gasto de Groq por usuario y global | DONE | → §M |
 | 39.12 | **3** | LLM de respaldo (ADR-50f) | DONE | → §M |
