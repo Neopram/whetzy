@@ -207,7 +207,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | **PARCIAL** (2026-09-28): 21 capturas landing+precios de 7/8 en `COMPETENCIA.md` §A.2c (sin cuentas de terceros). Falta: onboarding/dashboard/gamificación (piden cuenta), Exercism (Turnstile), `decisiones-24.0.md` → §I |
+| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | 21 capturas landing+precios de 7/8. Reintento Platzi: firewall nuevo, tratado como bloqueo. Falta: onboarding/dashboard/gamificación (cuenta), Exercism/Platzi (bloqueados), `decisiones-24.0.md` → §I |
 | 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía… | **PARCIAL** | **PARCIAL**: 6/51 `.module.css` con hex literal → 0/51, guarda `tokens.noLiterals` mutada; `docs/design/identidad.md` escrito. Falta: aprobación del dueño → §I |
 | 24.2 | **1** | **Landing que vende** (`/es`, `/en`; absorbe 19.8 y 23.2): hero con el… | **PARCIAL** | Lighthouse (preview): perf 77-89, a11y 94, SEO 69 (artefacto de preview). LCP 3965-4392ms, falla presupuesto 2500ms. Falta: demo 3 preguntas, remedir en prod, copy/A-B del dueño → §I |
 | 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | e2e en inglés (`onboarding.en.spec.ts`), bug propio hallado y arreglado (`getByLabel('Name')` ambigua). Mutado rojo/verde. Falta: abandono por paso en admin (22.1) → §I
