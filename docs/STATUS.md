@@ -1853,3 +1853,41 @@ si el patrón seguía en el resto del track, repasé `mod1304.json` (`sk130404`,
 
 `tests/content` 70.027 passed, `check_question_bank.py`, `check_originality.py` (0 parejas)
 y `check_docs.py` en verde después de las 26 correcciones.
+
+## 2026-09-29 — 37.1 cierra track08: los últimos 20 avisos de
+`audit_lesson_quiz_alignment.py` eran gaps reales, no ruido del heurístico
+
+Retomé la fila 37.1 donde la quedó la sesión anterior: «Falta: 6 lecciones». Corriendo
+`scripts/audit_lesson_quiz_alignment.py track08` de nuevo aparecieron 20 avisos en 19
+lecciones, no 6 — la cola no se había actualizado tras la última pasada. Antes de tocar
+ningún fichero verifiqué cada servicio contra la fuente real (WebFetch a las páginas
+`docs.aws.amazon.com/whitepapers/latest/aws-overview/*` que las propias preguntas ya
+citaban) para no inventar definiciones: Wavelength, Snow Family, Fargate, Compute
+Optimizer, MemoryDB, Cloud Map, Serverless Application Repository, Private 5G,
+Verified Access y Site-to-Site VPN coincidían palabra por palabra con la explicación de
+su pregunta, así que las añadí a la lección correspondiente citando la misma fuente.
+
+16 gaps reales confirmados y arreglados en 9 lecciones (`l080103` Snowball, `l080202`
+CloudWatch vs CloudTrail, `l080204` Network Firewall, `l080301` borde e híbrido,
+`l080303` Fargate + Compute Optimizer, `l080304` MemoryDB, `l080305` Site-to-Site VPN +
+Verified Access (de paso corregí «AWS API Gateway» → «Amazon API Gateway», el nombre
+real del servicio), `l080307` Kendra, `l080308` Cloud Map + SAR + Private 5G, `l080402`
+Price List API, `l080403` Trusted Advisor). Uno de los 20 avisos (`q080103003`, Amazon
+RDS) resultó ser un falso positivo del propio heurístico: «¿Qué **estrategia** es?»
+contiene la subcadena «qué es» sin ser una pregunta de definición — el script no usa
+límites de palabra. Documentado, no arreglado, porque no hay nada que arreglar.
+
+Añadir contenido rompió la guarda de longitud de lección (150-300 palabras) en 6 de las
+9 lecciones — la guarda lo cazó sola, sin que yo la mutara a propósito, justo lo que se
+espera de un test que vigila algo de verdad. Recorté relleno redundante que ya estaba
+en cada lección (frases que repetían la misma idea dos veces) para hacer sitio, nunca
+la explicación nueva de los servicios. Las 11 lecciones tocadas quedaron entre 197 y 300
+palabras por idioma.
+
+`scripts/audit_lesson_quiz_alignment.py track08` pasó de 20 avisos a 1 (el falso
+positivo documentado). `tests/content` completo (no un subconjunto): 70.027 passed, 1
+skipped, 21 xfailed. `scripts/content_qa/validate_lessons.py track08` y `check_docs.py`
+en verde. Quedan ~90 avisos repartidos en track10 (19), track23 (14), track11 (13),
+track44 (11), track22 (9), track43 (6), track46 (3), track45 (2) — mismo volumen que
+señaló la sesión anterior, sigue pidiendo el flujo de autoría en bloque (`Workflow`,
+ADR-52) en vez de ediciones sueltas.

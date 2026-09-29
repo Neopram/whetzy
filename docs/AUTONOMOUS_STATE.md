@@ -426,7 +426,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-28): tabla área→track y guarda `check_docs.py` [5b] verdes. Auditar track08 destapó lección/quiz desalineados (11/19). 5 arregladas: `l080403/102/307/302/203` (detalle en `STATUS.md`/PR). Volumen pide `Workflow` (ADR-52). `tests/lessons` 5.789 passed. Falta: 6 lecciones → §I |
+| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-29): track08 cerrado — 16 defectos más en 9 lecciones (`l080103/202/204/301/303/304/305/307/308/402/403`, detalle en `STATUS.md`); heurístico re-verificado, 1 falso positivo conocido. `tests/content` 70.027 passed. Resto (~90 en 8 tracks) sigue pidiendo `Workflow` (ADR-52) → §I |
 | 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
 | 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | → §I (criterio archivado por 20.10) |
