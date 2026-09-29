@@ -1891,3 +1891,39 @@ en verde. Quedan ~90 avisos repartidos en track10 (19), track23 (14), track11 (1
 track44 (11), track22 (9), track43 (6), track46 (3), track45 (2) — mismo volumen que
 señaló la sesión anterior, sigue pidiendo el flujo de autoría en bloque (`Workflow`,
 ADR-52) en vez de ediciones sueltas.
+
+## 2026-09-29, misma sesión — track22 cerrado; track43/45/46 resultaron ya limpios
+
+Seguí con los tracks pequeños de la lista anterior. `track43` ya daba 0 avisos (limpiado
+sin querer por la poda de duplicados de `mod4301.json` en 39.33/39.39). `track45` (1
+aviso) y `track46` (3 avisos) resultaron falsos positivos: el heurístico exige la cadena
+literal de la pregunta ("Azure Language Service", "Azure VM", "Azure DB PostgreSQL") y la
+lección usa el nombre real del servicio con otra grafía ("Azure AI Language", "Azure
+Virtual Machines", "Azure Database for PostgreSQL") — cubierto de sobra, solo cambia la
+marca. Documentado, no tocado.
+
+`track22` sí tenía 6 gaps reales de 9 avisos, verificados uno por uno contra
+`learn.microsoft.com` antes de escribir nada (Spot VMs: hasta 90 % de ahorro pero
+desalojo con 30 s de aviso, confirmado en la página oficial de precios porque la de
+`spot-vms` no daba la cifra; ExpressRoute: circuito dedicado sin pasar por internet
+público; Azure Firewall: firewall con estado, L3-L7 e inteligencia de amenazas — dejé
+fuera DNAT/SNAT porque la página que leí no lo confirmaba explícitamente y no quise
+citar de memoria; blob versioning; Azure SQL Managed Instance; Microsoft Entra Connect
+Health). Arreglados en `l220101`, `l220201`, `l220301`, `l220302` y `l220401`.
+
+Un aviso quedó **a propósito sin arreglar**: `q220302011` afirma que el tamaño máximo de
+Azure SQL Single Database es 2 TB. La página de límites vCore que consulté muestra 128 TB
+para General Purpose/Hyperscale hoy — 2 TB solo aparece como techo de una configuración
+serverless concreta, no como límite general. No tenía certeza de qué cifra exacta
+corresponde a qué configuración, así que no escribí un número en la lección para no
+propagar un dato que podría estar desactualizado; queda anotado en el ledger (37.1) para
+que quien lo retome verifique la cifra correcta antes de tocar la pregunta o la lección.
+
+Al escribir la primera versión de la frase de ExpressRoute cometí un despiste — escribí
+"AWS ExpressRoute (Azure ExpressRoute)" en una lección de Azure — y lo corregí antes de
+seguir, releyendo cada frase nueva después de escribirla en vez de asumir que salió bien.
+
+`audit_lesson_quiz_alignment.py track22`: 9 avisos → 6 (todos falsos positivos de marca
+salvo el `q220302011` documentado arriba). `tests/content` completo: 70.027 passed, 1
+skipped, 21 xfailed. `validate_lessons.py track22` y `check_docs.py` en verde. Quedan
+~57 avisos en track10 (19), track23 (14), track11 (13) y track44 (11).
