@@ -447,19 +447,19 @@
     "question_en": "Can you use HAVING without GROUP BY?",
     "options_es": [
       "No, siempre necesita GROUP BY",
-      "Sí, funciona igual",
+      "Sí: sin GROUP BY, HAVING trata toda la tabla como un único grupo",
       "Solo en algunos gestores",
       "Depende del contexto"
     ],
     "options_en": [
       "No, always needs GROUP BY",
-      "Yes, works the same",
+      "Yes: without GROUP BY, HAVING treats the whole table as a single group",
       "Only in some databases",
       "Depends on context"
     ],
-    "correct_index": 0,
-    "explanation_es": "HAVING siempre debe ir con GROUP BY porque filtra los resultados de la agregación.",
-    "explanation_en": "HAVING must always go with GROUP BY because it filters aggregation results.",
+    "correct_index": 1,
+    "explanation_es": "HAVING puede usarse sin GROUP BY: la tabla entera se trata como un único grupo implícito. Por ejemplo, `SELECT COUNT(*) FROM t HAVING COUNT(*) > 2` es SQL válido (verificado en SQLite real) y filtra ese grupo único según la condición agregada.",
+    "explanation_en": "HAVING can be used without GROUP BY: the entire table is treated as a single implicit group. For example, `SELECT COUNT(*) FROM t HAVING COUNT(*) > 2` is valid SQL (verified against real SQLite) and filters that single group by the aggregate condition.",
     "source": "SQL HAVING syntax – https://www.w3schools.com/sql/sql_having.asp",
     "expected_time_ms": 30000
   },
