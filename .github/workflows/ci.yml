@@ -73,6 +73,15 @@ jobs:
             --cov-report=term-missing \
             --cov-fail-under=80
 
+      # Tests marked `slow` (pytest.ini): O(corpus) by construction, not a
+      # flaky wall-clock budget — the BM25 self-retrieval one alone takes
+      # >5 min. The step above deselects them via addopts so they don't
+      # dominate every run; own step, own verdict, longer budget (owner's
+      # decision 2026-09-30, >=45 min).
+      - name: Slow tests (own budget)
+        timeout-minutes: 60
+        run: python -m pytest tests/ -m slow --tb=short -q
+
       - name: Upload coverage
         if: always()
         uses: actions/upload-artifact@v7

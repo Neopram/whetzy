@@ -200,6 +200,17 @@ correr() {  # correr <nombre> <dir> <comando...>
 # que parece colgarse en el 96% cuando lo que pasa es que empiezan los de integracion.
 correr "backend: suite entera" "$ARBOL/backend" \
   python -m pytest tests/ --ignore=tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
+# Tests marcados `slow` (pytest.ini): O(corpus) por construccion, no un
+# presupuesto de reloj fragil -- el de BM25 solo el solito tarda >5 min. La
+# suite de arriba los deselecciona (`-m "not benchmark and not slow"` en
+# addopts) para no arrastrar ese tiempo en cada corrida; van aqui, en su
+# propio paso con veredicto propio, con mas margen que el limite general
+# (decision del dueno 2026-09-30, >=45 min).
+LIMITE_S_PREVIO="$LIMITE_S"
+LIMITE_S=3600
+correr "backend: suite lenta (slow)" "$ARBOL/backend" \
+  python -m pytest tests/ -m slow -q -p no:randomly --tb=short $CACHE_PYTEST
+LIMITE_S="$LIMITE_S_PREVIO"
 correr "backend: contenido"    "$ARBOL/backend" \
   python -m pytest tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
 # `python -m mypy` y no `mypy`: el binario del PATH puede ser otro entorno sin
