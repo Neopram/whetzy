@@ -34,7 +34,16 @@ async def lessons_for_skill(
         # cupo -- se registra siempre que haya sesión, aplique o no el cupo.
         await lesson_gate.record_lesson_seen(db, user.id, skill_id)
 
-    response.headers["Cache-Control"] = "public, max-age=7200, stale-while-revalidate=86400"
+    if user is not None:
+        # Con sesión la respuesta tiene efectos (cupo y rastro del bloqueo): si
+        # el navegador la sirviera de su caché, la visita no llegaría aquí y
+        # el quiz seguiría bloqueado (2026-09-30).
+        response.headers["Cache-Control"] = "private, no-store"
+    else:
+        response.headers["Cache-Control"] = "public, max-age=7200, stale-while-revalidate=86400"
+        # La sesión va en cookie (o Bearer): sin esto, una copia anónima cacheada se
+        # reutilizaría ya con sesión y la visita tampoco llegaría aquí.
+        response.headers["Vary"] = "Authorization, Cookie"
     result = await db.execute(
         select(Lesson)
         .where(Lesson.skill_id == skill_id)
