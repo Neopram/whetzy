@@ -222,6 +222,15 @@ class Settings(BaseSettings):
     FREE_DAILY_NEW_QUESTIONS: int = 30
     FREE_DAILY_LESSONS: int = 5
 
+    # Banco de simulacro reservado (37.18, ADR-53 §4): el mecanismo (columna
+    # `pool`, filtros en quiz.py/mock_exam.py) ya existe, pero hoy 0 preguntas
+    # llevan `pool="simulacro"` en ningún track. Encenderlo con el banco vacío
+    # rompería `start_attempt` en las 11 certificaciones con `MockExamError`
+    # ("not enough questions") — apagado hasta que exista contenido reservado
+    # (6x la longitud del examen por certificación), igual que los flags de
+    # arriba esperan a su propia dependencia.
+    MOCK_EXAM_RESERVED_POOL_ENABLED: bool = False
+
     # --- Open Badges 3.0 / Verifiable Credentials (29.10, ADR-37) -----------
     # Ed25519 private key in PEM format. Generate with:
     #   python -c "from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey; from cryptography.hazmat.primitives.serialization import Encoding, PrivateFormat, NoEncryption; k=Ed25519PrivateKey.generate(); print(k.private_bytes(Encoding.PEM, PrivateFormat.PKCS8, NoEncryption()).decode())"

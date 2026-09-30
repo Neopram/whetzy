@@ -173,6 +173,12 @@ class Question(Base):
     # Canonical source citation (CPython docs, a PEP, a named book+edition, etc.).
     # NULL for legacy questions authored before source citations were required.
     source: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # "practica" (default) or "simulacro" (ADR-53 §4: reserved mock-exam bank,
+    # 6x the exam length, never served by quiz._select_question — only by
+    # mock_exam._questions_by_domain). Never confuse with SelectionReason.pool
+    # in quiz.py, an unrelated skill-selection-strategy label ("review",
+    # "new_skill", ...) on the response, not this column on the question.
+    pool: Mapped[str] = mapped_column(String(16), default="practica", nullable=False)
 
     elo_rating: Mapped[float] = mapped_column(Float, default=1500.0, nullable=False)
     discrimination: Mapped[float] = mapped_column(Float, default=1.0, nullable=False)

@@ -29,6 +29,7 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.models.content import Domain, Module, Question, Skill, Track
 from app.models.exam import MockExamAttempt
 from app.models.user import User
@@ -117,23 +118,31 @@ async def _questions_by_domain(db: AsyncSession, track_id: str) -> dict[str, lis
     earn, which is red line 1 in the one place that is meant to predict a real
     exam result. Both languages must carry options or the same exam would be
     answerable in Spanish and not in English (red line 3).
+
+    Behind `MOCK_EXAM_RESERVED_POOL_ENABLED` (37.18, ADR-53 §4), draws only
+    from `pool == "simulacro"` — the bank reserved so a score does not
+    partly measure questions the learner already memorized from practice.
+    Flag off = today's behavior: the same bank practice serves.
     """
+    conditions = [Module.track_id == track_id, Skill.domain_id.is_not(None)]
+    if settings.MOCK_EXAM_RESERVED_POOL_ENABLED:
+        conditions.append(Question.pool == "simulacro")
     rows = (
         await db.execute(
             select(Skill.domain_id, Question.id, Question.options_es, Question.options_en)
             .join(Question, Question.skill_id == Skill.id)
             .join(Module, Skill.module_id == Module.id)
-            .where(Module.track_id == track_id, Skill.domain_id.is_not(None))
+            .where(*conditions)
         )
     ).all()
-    pool: dict[str, list[str]] = {}
+    by_domain: dict[str, list[str]] = {}
     for domain_id, question_id, options_es, options_en in rows:
         # JSON null decodes to None and an authored-but-empty list is just as
         # unanswerable, so both are dropped by the same falsy check.
         if not options_es or not options_en:
             continue
-        pool.setdefault(str(domain_id), []).append(str(question_id))
-    return pool
+        by_domain.setdefault(str(domain_id), []).append(str(question_id))
+    return by_domain
 
 
 async def start_attempt(
@@ -162,7 +171,7 @@ async def start_attempt(
     if not domains:
         raise MockExamError(f"{track_id} has no exam domains")
 
-    pool = await _questions_by_domain(db, track_id)
+    by_domain = await _questions_by_domain(db, track_id)
     allocation = _domain_allocation({d.id: d.weight_pct for d in domains}, track.exam_question_count)
 
     picker = rng or random.Random()
@@ -170,7 +179,7 @@ async def start_attempt(
     short: list[str] = []
     for domain in domains:
         want = allocation[domain.id]
-        available = pool.get(domain.id, [])
+        available = by_domain.get(domain.id, [])
         if len(available) < want:
             short.append(f"{domain.name_en}: {len(available)} available, {want} needed")
         selected.extend(picker.sample(available, min(want, len(available))))

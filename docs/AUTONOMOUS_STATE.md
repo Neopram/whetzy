@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20260927_iap_provider` (45 migraciones) |
+| Alembic HEAD | `20260930_question_pool` (46 migraciones) |
 | Contenido | **10.949 preguntas** / 35 tracks / 723 skills / **723 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
@@ -74,7 +74,7 @@
 ### 11 — Superioridad medible (cerrar las brechas honestas)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 11.6 | 3 | Tiempo hasta primera pregunta **< 60 s contra prod** con 4G simulado | **DONE** — commit 5e306fb, 2026-09-18 | Playwright con… |
+| 11.6 | 3 | Tiempo hasta primera pregunta **< 60 s contra prod** con 4G simulado | **DONE** — `5e306fb` | → §N |
 | 11.8 | 3 | **Prueba de aprendizaje real**: cohorte beta ≥ 30 usuarios | HUMAN-BLOCKED (H.10) | Dashboard 5.5 muestra D1 ≥ 40 % / D7 ≥ 20… |
 | 11.9 | **2** | 11.9 | **PARCIAL** | **PARCIAL** → §I |
 
@@ -197,7 +197,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 23.1 | **1** | **Auditoría E2E por idioma**: cada pantalla, email, push, PDF/certificado,… | **DONE** | `c0a5af6`: Forgot/ResetPassword y `/evidence` sin i18n, push racha/duelo fijo en inglés → `push_service.localize()` → §I |
 | 23.2 | **2** | **Landing y SEO por segmento**: `/es` y `/en` con copy nativo (no traducido), `hreflang` (existe), `sitemap` por idioma,… | | → §I (criterio archivado por 20.10) |
 | 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas,… | | → §I (criterio archivado por 20.10) |
-| 23.4 | **3** | **Segmento en el admin**: todas las métricas de 22.1 filtrables por idioma; cohortes ES vs. EN | **DONE** | `segment` param (all/es/en) en los 12 endpoints admin → `66925f8` |
+| 23.4 | **3** | **Segmento en el admin**: filtrable por idioma | **DONE** | → §N |
 | 23.5 | **1** | **Las dos guardias de i18n daban números falsos y la que cita el protocolo no existía**: `audit_i18n.py` buscaba… | **DONE** | **DONE** `d991fe4` (2026-09-19) → §I |
 
 ### 24. Interfaz que venda al verse — UI/UX + competencia en vivo + vídeo (sesión interactiva; **después** de 20-23; absorbe 17.6 y 19.8;…
@@ -345,7 +345,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 32.2 | **3** | A/B BKT contra DKT con el framework 24.14 (asignación estable por usuario) | BLOCKED (H.10) | DKT se adopta solo si AUC ≥… |
 | 32.3 | **2** | «¿Por qué esta pregunta?»: el scheduler devuelve sus razones (dominio, repaso… | **DONE** | **DONE** `d92e164` → §I |
-| 32.4 | **2** | **La lección bloquea el quiz** (decisión del dueño 2026-09-27) | **DONE** | `b860e83`, verificador CONFIRMADA (2ª ronda); post-DONE `e2f0d45` arregló 5 tests rotos por el gate → STATUS.md |
+| 32.4 | **2** | **La lección bloquea el quiz** (decisión del dueño 2026-09-27) | **DONE** | `b860e83` → §N |
 
 ### 33. Operación medible — SLO, restauración y offline idempotente (del plan del 2026-09-24; ídem)
 
@@ -416,12 +416,13 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.15 | **1** | Fuentes sin indexar: 3.906 de 6.305 preguntas… | **PARCIAL** | (2026-09-29, `Workflow` 10 agentes) 4.450→3.903 sin indexar (10.949 preguntas). 267 citas RFC/PEP con URL canónica verificada en vivo; 8 dominios nuevos en `index.json` (peps.python.org reusar/CC0, Wikipedia/Deep Learning book/OWASP cheatsheets cita). `tests/content` 70.057 verde → STATUS.md |
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | `46764ff` (2026-09-26) → §N |
 | 37.17 | **1** | Inglés dentro del español y ejecutables con atajo… | **PARCIAL** | (2026-09-29, `Workflow`) recuento real: 699 preguntas exec (no ~2.900, cifra vieja errónea). 219 revisadas a fondo en 4 tracks, 10 bugs de ambigüedad reales arreglados y verificados, 1 estructural sin arreglar (`q060203ex012`). Quedan ~480 sin revisar → STATUS.md |
-| 37.18 | **1** | **Banco de simulacro reservado**: `"pool": "simulacro"` en preguntas; `mock_exam.py` solo sortea reservadas y práctica/repaso las excluyen (hoy el simulacro sale del banco de práctica, `mock_exam.py:110-136`) | TODO | test: una reservada nunca sale en práctica ni repaso; un simulacro solo sirve reservadas |
+| 37.18 | **1** | **Banco de simulacro reservado**: `"pool": "simulacro"`; práctica/repaso lo excluyen | **DONE** | `20260930_question_pool` tras `MOCK_EXAM_RESERVED_POOL_ENABLED` (False, banco vacío hoy). 5 tests mutados. Poblar → 37.24 |
 | 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | **DONE** | **DONE** `764b06b` (2026-09-30) → §N |
 | 37.22 | **1** | **ISC2 CC al outline del 2026-09-01**: examen adaptativo (CAT) 100–125 ítems/2h; dominios renombrados, pesos 24/17,3/20/21,3/17,3 (track40 sigue en agosto 2022: 26/10/22/24/18). Confirmado en vivo 2026-09-30 (isc2.org/certifications/cc/cc-certification-exam-outline): D1 igual; D2 **Security Governance** es nuevo, sin equivalente 2022; D3 **IAM Concepts** (antes Access Controls); D4 **Networking+Cloud Security** (antes solo Network Security); D5 **Security Ops+IR** absorbe el BC/DR viejo de D2. No es solo metadatos: `mod4002` (BC/DR, 4 skills) no mapea 1:1; Governance parte de cero. Los 5 módulos ya tienen `domain_id: null` | TODO | `exam_domains` + `domain_id` de los 5 módulos + banco de 353 preguntas reclasificado (governance necesita contenido nuevo); `OFFICIAL_BLOCKS["track40"]` mutado en rojo |
 | 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | TODO | embudo propio (`services/analytics.py`, ADR-50 j) con D30 y CURR; el admin muestra cada métrica con su meta |
 | 37.21 | **3** | **Mapa skill → nodo del temario**, para medir el ideal por cobertura real y no por recuento | TODO (tras 37.6) | cada skill con su nodo; `catalog_coverage.py` da % de nodos cubiertos |
 | 37.23 | **2** | **Alineación lección↔quiz** (heredera de la 37.1 vieja, antes de ADR-53; los commits `22a01a8`…`4f1ab26` dicen «37.1» por ese motivo — ver STATUS.md): `audit_lesson_quiz_alignment.py` sobre 8 tracks señalados el 2026-09-28 | **PARCIAL** | (2026-09-29) 8 tracks revisados, track08+22+11+23+10+44+45+46 cerrados (39.39 DONE). 4/4 bugs de contenido corregidos. track44: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas. Queda la expansión de catálogo hacia ADR-53 (37.6-37.8), no una corrección → STATUS.md |
+| 37.24 | **1** | **Poblar el banco de simulacro reservado** (6× la longitud del examen por certificación, `"pool": "simulacro"`) y encender `MOCK_EXAM_RESERVED_POOL_ENABLED` (mecanismo DONE en 37.18, apagado por defecto) | TODO | 11 certificaciones con reservadas ≥ 6× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/3.120 reservadas a la meta — autoría de contenido (Haiku+Sonnet, piloto de 10), no una tarea de código |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 
@@ -459,7 +460,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.33 | **1** | Claves sospechosas previas: la explicación se parece más a otra opción (`check_expl_key`) | **PARCIAL** | 86 + 26 más (`a17a7c8`, ya en esta rama): sk130104/204/304 (track13) tenían >50% mal — RACI inventado, "menor privilegio" al revés. Verificadas leyendo las 60 preguntas de las 3 skills en vivo esta sesión: ninguna queda mal. Tracks hermanos del mismo commit masivo: solo `q120302mc002` revisado. TODO: resto sin muestrear |
 | 39.34 | **2** | Texto de UI del cupo Free (ES/EN) antes de encender `FREE_DAILY_QUOTA_ENABLED` | **DONE** | `e754b50` → §N |
 | 39.35 | **0** | El limitador de peticiones de producción fallaba en abierto:… | DONE | → §M. Post-DONE `95cdfbf`: `except` no cazaba `RuntimeError`/`OSError` — 204 tests rotos → 0 |
-| 39.36 | **1** | `options_en` escritas en español en track21 (194 preguntas) y track44-46 (46, 33, 49) | **DONE** | 295 preguntas, solo `options_en`. Verificador CONFIRMADA: recuento en vivo = 0, `correct_index` intacto, `tests/content` 70.277 passed |
+| 39.36 | **1** | `options_en` escritas en español en track21 (194 preguntas) y track44-46 (46, 33, 49) | **DONE** | 295 preguntas → §N |
 | 39.37 | **0** | Relleno de generador en producción: 180 preguntas de track20 mod200… | DONE | → §O |
 | 39.38 | **0** | Dos claves falsas de Bicep en track22 (`q220503008`: «using» no… | DONE | → §M |
 | 39.39 | **1** | Lección/quiz desalineados: 90 casos en 7 tracks… | **DONE** | (2026-09-29) → §N |
