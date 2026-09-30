@@ -12,8 +12,8 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 |---|---|---|---|
 | 1.1 | Objectionable Content | ✅ | Educational quiz app; no offensive material; content is AI-generated and QA-reviewed |
 | 1.1.1 | Realistic portrayals of harm | ✅ | No violence, weapons, drug content |
-| 1.2 | User Generated Content | ✅ | No public UGC; questions are admin-curated via content agent |
-| 1.2.1 | UGC moderation | N/A | — |
+| 1.2 | User Generated Content | ⚠️ | Las preguntas son admin-curadas (sin UGC), pero `username`/`display_name` son texto libre elegido por el usuario y **sí** son visibles para otro usuario: `duels.py` los usa para retar por `username` y en la notificación push del reto («X te retó a un duelo»); las ligas también exponen `display_name`. Confirmado en vivo (2026-09-30) que no existe filtro de palabras, ni reportar, ni bloquear usuario — `admin.py` no tiene nada de esto. Fila nueva 41.x (sin código todavía) |
+| 1.2.1 | UGC moderation | ❌ | Sin filtro de perfanidad en `username`/`display_name`, sin endpoint de reportar ni de bloquear. Apple exige al menos uno de: filtrar contenido objetable, mecanismo de reporte, capacidad de bloquear, información de contacto publicada — hoy no hay ninguno |
 | 1.3 | Kids Category | ✅ | App not targeting under-13; not submitted to Kids category; no COPPA obligation |
 | 1.4 | Physical Harm | N/A | No health/medical advice beyond quiz content |
 | 1.4.1 | Medical / Dangerous content | N/A | — |
@@ -35,6 +35,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 | 2.3.7 | Localized metadata | ⚠️ | App is bilingual (ES/EN); App Store listing should have both EN and ES localizations |
 | 2.4 | Hardware Compatibility | ✅ | No hardware peripherals used |
 | 2.4.1 | Location services | N/A | Not used |
+| 2.5.2 | Código ejecutado en la app | ✅ | Whetzy cae en la excepción explícita de Apple para apps educativas que enseñan/prueban código ejecutable, con una condición: «the source code provided by the app [must be] completely viewable and editable by the user». Confirmado en vivo (2026-09-30): el editor es Monaco (`MonacoCodeEditor.tsx`, `QuizScreen.tsx`, `ProjectScreen.tsx`, `PlaygroundScreen.tsx`) — el alumno ve y edita el código real. Pyodide y sql.js van **empaquetados en el bundle** (`frontend/vite.config.ts`: `pyodideSelfHostPlugin` reescribe cualquier URL de CDN y sirve los ficheros desde `/pyodide/`; `useSqlRuntime.ts` sirve sql.js desde `/sql-js/`), no se descargan de un CDN en tiempo de ejecución |
 | 2.5.4 | Push notifications | ✅ | User-initiated via ProfileScreen toggle; not used for advertising |
 
 ---
@@ -62,7 +63,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 | 4.3 | Spam | N/A | — |
 | 4.5.6 | Apple Pay | N/A | Not using Apple Pay currently |
 | 4.7 | HTML5 Games / Bots | ✅ | Not primarily a game; educational app with native shell |
-| 4.8 | Sign in with Apple | ⚠️ | Today email/password only, so 4.8 does not apply **yet**. Serie 19 adds GitHub + Google OAuth (19.1); from that moment 4.8 **requires** Sign in with Apple (19.2, needs H.2 Services ID + `.p8` key). Do not ship 19.1 in the iOS build before 19.2 is live (ADR-13) |
+| 4.8 | Sign in with Apple | ❌ | GitHub + Google OAuth ya están en vivo (`backend/app/api/v1/endpoints/oauth.py`, sin flag; botones en `AuthScreen.tsx`), confirmado el 2026-09-30 — 19.1 está hecho. Con OAuth de terceros ya activo, 4.8 **exige** Sign in with Apple **ahora**, no «desde que exista 19.1». No compilar iOS con este login social sin 19.2 (HUMAN-BLOCKED, H.2: Services ID + clave `.p8`, ADR-13) |
 
 ---
 

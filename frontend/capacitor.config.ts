@@ -29,7 +29,7 @@ const config: CapacitorConfig = {
   ios: {
     contentInset: 'automatic',
     preferredContentMode: 'mobile',
-    scheme: 'Learning Engine',
+    scheme: 'Whetzy',
   },
   android: {
     allowMixedContent: false,

@@ -59,7 +59,7 @@
 | 22 | Blindaje, admin y preparación para un millón | 7/14 | 50 % | 22.1 y 22.6 PARCIAL · 22.2, 22.4, 22.5, 22.7, 22.13 |
 | 21 | Legal y fiscal a coste cero | 1/6 | 17 % | 21.0 DONE · 21.5 PARCIAL (1/4) · 21.6 PARCIAL (2/4) · 21.3, 21.4, 21.8 · **21.1, 21.2 y… |
 | 20 | Verificación masiva código↔docs↔prod | 9/11 | 82 % | 20.7 (**REFUTADA 2026-09-19**: `verify_ci_local.ps1` moría en `pip install`;… |
-| 19 | Catálogo 27 tracks (histórico; plan actual ADR-53) + cert marketplace | 2/10 | 20 % | 19.2–19.10 |
+| 19 | Catálogo 27 tracks (histórico; plan actual ADR-53) + cert marketplace | 2/12 | 17 % | 19.2–19.12 |
 | 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 3/5 | 60 % | 18.5 |
 | 17 | Plataforma + engine + monetización | mayoría DONE | ~95 % | ver archive §B |
 | ≤16 | Fases 1–16 | todas DONE | 100 % | — |
@@ -164,12 +164,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 19. Lo que Educative y las tiendas exigen — social login, bootcamps, proyectos, autoría con fuentes libres (abierta 2026-09-18, sesión…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 19.2 | **1** | **Sign in with Apple** — obligatorio por App Store Review 4.8 en cuanto exista 19.1 | HUMAN-BLOCKED (H.2) | Necesita… |
+| 19.2 | **1** | **Sign in with Apple** — 19.1 (GitHub/Google OAuth) ya está en vivo sin flag (confirmado 2026-09-30: `oauth.py`, botones en `AuthScreen.tsx`), así que 4.8 exige esto **ahora**, no «en cuanto exista 19.1» | HUMAN-BLOCKED (H.2) | Necesita… |
 | 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | → §I (criterio archivado por 20.10) |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
 | 19.8 | **3** | **Landing y SEO de whetzy.com al nivel de Educative** | TODO | → LEDGER_HISTORY.md §E |
 | 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (plan ADR-53) | TODO | → LEDGER_HISTORY.md §E |
 | 19.10 | **4** | **Vídeo: Manim + Remotion (`editor-pro-max`)** — absorbe 18.9 | TODO | → LEDGER_HISTORY.md §E |
+| 19.11 | **1** | **Moderación de UGC mínima (App Store 1.2/1.2.1)**: `username`/`display_name` visibles entre usuarios (`duels.py`, ligas) sin filtro/reportar/bloquear — confirmado 2026-09-30, `admin.py` no tiene nada | TODO | Filtro de palabras al crear/editar cuenta + endpoint reportar/bloquear, aunque mínimo → doc [1.2] a ✅ |
+| 19.12 | **2** | **Borrado de cuenta sin purga real**: `DELETE /auth/me/account` solo desactiva y promete purga a 30 días (GDPR) que no existe — confirmado 2026-09-30. Hard-delete directo rompería 14/42 FK a `users.id` sin `ondelete=CASCADE` | TODO | Migración `deactivated_at` + job `purge_deleted_accounts` (patrón `_schedule_monthly_payouts`) que trate las 14 FK sin cascade; test con cuenta >30 días purgada y <30 días intacta, mutado |
 
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
@@ -368,7 +370,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** (2026-09-28): 0 `var(--x, #hex)` en `src/` (era 1, `--color-cyan` no existía en ningún fichero, caía al respaldo) → `var(--color-primary)` real. Guarda `tokens.noHexFallback` mutada. Falta: modo claro por el dueño → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | Foco visible y objetivos táctiles arreglados y verificados (`touchTargets.spec.ts`, 0 <44px). Detalle → §I |
 | 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** (2026-09-28): 390px sin scroll horizontal en Auth/Onboarding/Home ES+EN (5 e2e, mutado); TTFQ ES 14.7s, EN 12.9s (esta rama, local). `ttfq-prod.spec.ts` NO se corrió contra producción (cuenta real, fuera de alcance sin el dueño) → §I
-| 34.5 | **1** | **Aprendizaje**: Home, Tracks, Lesson y Quiz (con Monaco, WhyButton, GlossaryText, TermCard) | **DONE** | **DONE** (2026-09-29): Lighthouse a11y literal medido con `scripts/lighthouse-app-a11y.mjs` (user-flow API, Home/Tracks/Lesson/Quiz autenticados) — 100/100 en las 5 capturas, 3/3 corridas. `e2e/quiz.spec.ts`+`pyodide.spec.ts` 2 passed |
+| 34.5 | **1** | **Aprendizaje**: Home, Tracks, Lesson y Quiz (con Monaco, WhyButton, GlossaryText, TermCard) | **DONE** | **DONE** (2026-09-29) → §N |
 | 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** — pantallas del bloque revisadas… | (2026-09-29) `ProfileTab`/`CourseTab`: mismo bug de 34.3 fuera de `pages/`, invisible al guard hex-only (`rgba` no hex) — `:focus`→`:focus-visible`+`color-mix` 35%, verificado en Chromium real → §I |
 | 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | **PARCIAL** → §I |
@@ -414,7 +416,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | **DONE** `46764ff` (2026-09-26): 8 tracks restantes (02-04, 06, 08, 10, 12, 17) corregidos; todos ≤22 %. Banco PASS, diversidad PASS, content 38062 passed → §I |
 | 37.17 | **1** | Inglés dentro del español y ejecutables con atajo… | **PARCIAL** | (2026-09-29, `Workflow`) recuento real: 699 preguntas exec (no ~2.900, cifra vieja errónea). 219 revisadas a fondo en 4 tracks, 10 bugs de ambigüedad reales arreglados y verificados, 1 estructural sin arreglar (`q060203ex012`). Quedan ~480 sin revisar → STATUS.md |
 | 37.18 | **1** | **Banco de simulacro reservado**: `"pool": "simulacro"` en preguntas; `mock_exam.py` solo sortea reservadas y práctica/repaso las excluyen (hoy el simulacro sale del banco de práctica, `mock_exam.py:110-136`) | TODO | test: una reservada nunca sale en práctica ni repaso; un simulacro solo sirve reservadas |
-| 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | **DONE** | **DONE** `764b06b` (2026-09-30), verificador §7 CONFIRMADA: `test_certification_blueprints.py` 28 passed; con el `tracks.json` anterior, 5 failed; AIF-C01 65 (50+15)/90, MLA-C01 65 (50+15)/130 con la guía C01, AZ-900 y DP-900 45 min, cada uno con fuente y fecha |
+| 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | **DONE** | **DONE** `764b06b` (2026-09-30) → §N |
 | 37.22 | **1** | **ISC2 CC al outline del 2026-09-01**: examen adaptativo de 100–125 ítems en 2 h; dominios nuevos con pesos 24/17,3/20/21,3/17,3 (track40 sigue con el de 2022: 26/10/22/24/18) | TODO | `exam_domains`, skills y banco reasignados al outline nuevo; `OFFICIAL_BLOCKS["track40"]` en `test_certification_blueprints.py` mutado en rojo; fuente = PDF del outline en isc2.org, leído el 2026-09-30 |
 | 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | TODO | embudo propio (`services/analytics.py`, ADR-50 j) con D30 y CURR; el admin muestra cada métrica con su meta |
 | 37.21 | **3** | **Mapa skill → nodo del temario**, para medir el ideal por cobertura real y no por recuento | TODO (tras 37.6) | cada skill con su nodo; `catalog_coverage.py` da % de nodos cubiertos |
@@ -459,7 +461,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.36 | **1** | `options_en` escritas en español en track21 (194 preguntas) y track44-46 (46, 33, 49) | **DONE** | 295 preguntas, solo `options_en`. Verificador CONFIRMADA: recuento en vivo = 0, `correct_index` intacto, `tests/content` 70.277 passed |
 | 39.37 | **0** | Relleno de generador en producción: 180 preguntas de track20 mod200… | DONE | → §O |
 | 39.38 | **0** | Dos claves falsas de Bicep en track22 (`q220503008`: «using» no… | DONE | → §M |
-| 39.39 | **1** | Lección/quiz desalineados: 90 casos en 7 tracks… | **DONE** | (2026-09-29) Los 7 tracks + track08 revisados a mano (lección y pregunta, no solo el aviso): gaps reales cerrados con una frase verificada (37.1); el resto —track45/46 incluidos, verificado por mí esta sesión— son falsos positivos de marca/abreviatura. 0 huecos reales pendientes → STATUS.md |
+| 39.39 | **1** | Lección/quiz desalineados: 90 casos en 7 tracks… | **DONE** | (2026-09-29) → §N |
 | 39.40 | **2** | **`check_originality.py` ciego a `code`** (39.27): compara solo `question_es`, molde genérico en exec; código real en `code` sin mirarse. 16 parejas reales (track41 ×13, track12 ×3) | **DONE** | (2026-09-29) las 16 reescritas con código genuinamente distinto, verificado (Python real + sql.js real). `_content_text()` fusionado, `KNOWN` vacío. Guarda mutada rojo/verde. `tests/content` 70.277 → §I |
 | 39.41 | **1** | **19 `sql_exec` que un alumno con SQL correcto no podía aprobar** (hallado arreglando 39.40): el test comparaba con `str()` de Python, no el runtime real del alumno (`sql-worker.js`) — `None` vs `null`, `50000.0` vs `50000`. `q120304sql003` también tenía mal el `fill` de referencia | **DONE** | `_js_str()` nuevo, verificado contra el worker real (Playwright); 38 campos corregidos con la salida real. `tests/content` 70.277 → §I |
 | 39.42 | **2** | track43 mod4301: 45 de 75 preguntas eran relleno molde… | **DONE** | → §I |
