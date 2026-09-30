@@ -204,7 +204,7 @@ Misma estrategia, orientada a CTOs y L&D managers globales.
 2. "Why Spanish-language AI education is a $30B opportunity nobody is capturing"
 3. "Building a Knowledge Tracing system with PyTorch from scratch"
 4. "The math behind FSRS: optimal spaced repetition for programming concepts"
-5. "From 0 to 6,000 questions: how we built Whetzy's content bank"
+5. "From 0 to 10,000+ questions: how we built Whetzy's content bank" (cifra del día en `catalog.ts`)
 
 **Cada artículo:** CTA a Whetzy al final, enlace al repo relevante.
 

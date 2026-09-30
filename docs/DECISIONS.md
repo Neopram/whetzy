@@ -424,6 +424,10 @@ regional y el corte gratis/Pro (H.35). ORCHESTRATOR.md decía $9.99; corregido e
 
 ## ADR-25 — Meta de contenido: 100 cursos × 27 tracks (2026-09-18)
 
+> **Sustituida por ADR-53 el 2026-09-30:** la meta del catálogo ya no es un número de cursos
+> sino suelo (50 skills · 800 preguntas por track) e ideal por temario, con tracks por demanda
+> medida. Lo que sigue es histórico.
+>
 > **Enmendada por ADR-46 el 2026-09-24:** la meta es ≥ 50 cursos por track en todos los tracks de la industria (28 + 14 de `CATALOGO_MAESTRO.md` §2.0 y los que 37.1 confirme), sobre corpus abierto, con la guarda de diversidad 37.0 antes de cualquier pregunta nueva.
 
 **Decisión:** La meta de contenido a largo plazo es 100 cursos por track × 27 tracks = 2,700 cursos adaptativos, con glosario máximo por área.
@@ -503,6 +507,11 @@ regional y el corte gratis/Pro (H.35). ORCHESTRATOR.md decía $9.99; corregido e
 ---
 
 ## ADR-32 — Métricas de producto: benchmarks del mercado como norte (2026-09-18)
+
+> **Enmendada por ADR-53 el 2026-09-30:** las metas a 12 meses de abajo siguen como aspiración,
+> pero los benchmarks sin verificar (2,6 % de conversión, «Platzi 70 %», «10-15 % industria»)
+> se sustituyen por los comprobados de ADR-53 §8 (conversión freemium mediana 2,1 %; edX 3,13 %
+> de todos y 46 % de quienes pagan; D30 de educación 2,7–3,2 %), que además fija el suelo mínimo.
 
 **Decisión:** Las 10 métricas clave de producto (Day-1/7/30 retention, completion rate, freemium conversion, LTV, NPS, TTFQ, B2B NDRR, streak promedio) se miden desde el día 1 en el admin sub-app (Serie 22) y se comparan contra benchmarks del mercado del estudio 2025-2026. El objetivo es superar el benchmark en cada métrica dentro de 12 meses.
 
@@ -664,7 +673,8 @@ Earn** resueltos por alumnos. Nace el **segmento 6 — Developer Web3/Solana his
 (`SEGMENTOS.md`). Superteam (capítulos México, Argentina, Brasil) y los programas de
 grants de la Solana Foundation entran en `DISTRIBUCION.md` como canal P2 (26.8, 27.9)
 y como **financiación no dilutiva** (H.28; montos vigentes a verificar por el dueño).
-La meta de ADR-25 pasa a **100 × 28 = 2.800 cursos y ≥ 2.800 términos**.
+La meta de ADR-25 pasa a **100 × 28 = 2.800 cursos y ≥ 2.800 términos**. *(Histórico: esa
+meta la sustituyó ADR-46 y a esta ADR-53; track32 sigue en el plan como nivel C de demanda.)*
 
 **Razón:** «Solana está despertando» es cierto como **mercado de contenido**, no como
 token. No existe un track Solana de calidad en español; el ecosistema tiene una
@@ -856,6 +866,12 @@ queda que el dueño active la protección de rama en GitHub. `ORCHESTRATOR.md`
 
 ## ADR-46 — Catálogo total: todos los tracks de la industria, ≥ 50 cursos por track, sobre un corpus abierto descargado y verificado (ACEPTADA 2026-09-24)
 
+> **Sustituida en su meta por ADR-53 el 2026-09-30:** los puntos 1 (alcance) y 3 (meta de
+> volumen) ya no rigen: manda el suelo de 50 skills · 800 preguntas por track, el ideal por
+> temario y los tracks por demanda medida. Siguen vigentes el corpus abierto fuera del repo
+> (puntos 4–5) y la guarda de diversidad 37.0 (punto 6). El punto 2 («curso = módulo») queda
+> solo como unidad de presentación en la web.
+
 **Aceptada por el dueño** el 2026-09-24. Sustituye la meta de ADR-25 (100 cursos × 27/28
 tracks), que nunca definió qué era un «curso» y cuyo primer intento (serie 25, 2026-09-19)
 no pasó la puerta de calidad: 800 preguntas con 14 enunciados distintos por track.
@@ -1019,7 +1035,7 @@ dueño por su nombre.
 | e | LICENSE | Código propietario («All rights reserved»); contenido educativo original **CC BY-NC-ND 4.0**, porque es lo que ya publican los Términos (§3.1) y un LICENSE no puede contradecirlos; el material de terceros conserva su licencia según `content/sources/index.json`. Hecho: `LICENSE` en la raíz. |
 | f | LLM de respaldo | Proveedor compatible con OpenAI configurable por entorno; vacío = sin respaldo. |
 | g | Emails de re-enganche | 3, 7 y 30 días de inactividad, baja en un clic (CAN-SPAM), flag apagado. |
-| h | Certificaciones siguientes | Las 11 actuales ya incluyen Security+ (track42) y AZ-900/AI-900/DP-900 (track44–46). Siguientes, dentro de 37.10: **CCNA → LPIC-1 → CKA → GCP Associate Cloud Engineer**. |
+| h | Certificaciones siguientes | Las 11 actuales ya incluyen Security+ (track42) y AZ-900/AI-900/DP-900 (track44–46). Siguientes, dentro de 37.10: **CCNA → LPIC-1 → CKA → GCP Associate Cloud Engineer**. *Reordenado por ADR-53 (2026-09-30): primero las que se examinan en español —GCP ACE, LPIC-1, AZ-104—; después CKA (sin español) y CCNA (idioma sin comprobar).* |
 | i | Idiomas | ES y EN. El siguiente, pt-BR, solo con revisión nativa. |
 | j | Analítica de producto (H.42) | **Revisada la misma noche:** la analítica ya es **propia** (`services/analytics.py` → tabla `analytics_events`, embudo registro→primer quiz→D1→D7 en el admin) y la landing promete «sin analítica de terceros» y no hay banner de consentimiento. Por eso **no se instala PostHog ni Mixpanel en el navegador**. Si hace falta un panel externo, PostHog entra solo como destino **desde el backend**, con la política de privacidad actualizada antes (fila H). |
 | k | Errores (H.41) | **Sentry, ejecutado, solo en el backend** (en el navegador sería un origen de terceros con la CSP y la promesa de la landing en contra). Privacidad y DPA actualizados el mismo día. Proyecto `whetzy-backend` (org `whetzy`, región `de.sentry.io`) creado con el conector y `SENTRY_DSN` puesto en Railway. Deploy `f097361c` en `SUCCESS` con el log `Sentry initialised (env=production, traces_sample_rate=0.1)` (11:34 UTC). `send_default_pii=False`. El cambio de variable produjo ~20 s de 502 (11:34:31–11:34:41 UTC). El monitor de uptime de Sentry **no** se creó: puede consumir cuota de pago. |
@@ -1110,3 +1126,127 @@ API con gasto, es decir, una cuenta y un secreto: queda en la cola humana (H.48)
 dueño ponga la clave. Hasta entonces los rellenos van por `Workflow` sin descuento de lote.
 
 **Cifras:** los porcentajes de ahorro son del dueño; la sesión no los ha comprobado.
+
+---
+
+## ADR-53 — Plan del catálogo por cobertura: suelo competitivo, ideal por temario, simulacros reservados y prioridad por demanda (DUEÑO, 2026-09-30; cifras elegidas por la sesión con fuentes; sustituye la meta de volumen de ADR-46)
+
+**Origen.** El 2026-09-29 el dueño preguntó si la meta de ADR-46 (≥ 50 cursos × 42 tracks
+= 8.400 skills · 126.000 preguntas) estaba sobredimensionada frente a la competencia directa, y
+el 2026-09-30 pidió investigar en internet las métricas ideales «sin dejar nada por fuera» y
+rehacer el plan y **todos** los documentos sobre ellas. La sesión investigó con 4 agentes
+(≈ 150 fuentes) y **descargó y leyó ella misma** cada cifra en la que se apoya esta decisión
+(tabla de evidencia abajo; lo que solo leyó un agente se marca). Los números de las metas son
+elección de la sesión sobre esa evidencia; el dueño manda cambiarlos.
+
+**Qué falla en ADR-46.** No el número de preguntas por skill (15, ya cumplido) sino **200
+skills por track**, el doble de cualquier temario de referencia (mediana de 56 roadmaps de
+roadmap.sh ≈ 113 nodos; Python 87), la unidad «curso» (en Whetzy es un módulo de 4 skills; en
+Platzi o Boot.dev es un curso de horas) y una lista fija de 42 tracks sin medida de demanda.
+
+**Decisión:**
+
+1. **Unidad de medida: la skill** (componente de conocimiento). «Curso = módulo» sigue solo
+   como unidad de presentación en la web (`frontend/src/lib/catalog.ts`); no es meta.
+2. **Suelo por track de aprendizaje** (lo que ya compite): **50 skills · 800 preguntas
+   (≥ 16 por skill) · 1 lección por skill · 1 término de glosario por skill · ≥ 15 %
+   ejecutable donde el navegador ejecute** (regla de ADR-9 sin cambios) · guarda 37.0 en verde.
+   Equivale a unas 15–20 h de estudio, la mediana de un curso de Boot.dev (20 h).
+3. **Ideal por track (cobertura):** tantas skills como **nodos del temario de referencia
+   asignados al track** (roadmap.sh, nodos `topic` + `subtopic` del JSON público), nunca menos
+   que el suelo; **20 preguntas por skill** (15 si es de recordar un dato, 25 si es de
+   procedimiento o ejecutable; un generador parametrizado cuenta por sus variantes); 1 lección
+   de 6–10 min por skill. Los denominadores viven en `scripts/metas_adr53.json` (URL y fecha
+   por cifra). Un track sin temario de referencia tiene el suelo como ideal hasta que 37.1 lo
+   fije. Un roadmap compartido se reparte entre tracks sin contarse dos veces.
+4. **Certificaciones:**
+   - *Suelo:* 100 % de los objetivos oficiales con ≥ 1 skill cada uno · ≥ 15 preguntas de
+     práctica por skill · **banco de simulacro reservado de 6 × la longitud del examen**,
+     marcado `"pool": "simulacro"`, que **no** sale en práctica ni repaso · formato del
+     simulacro = el que publica el proveedor (URL y fecha).
+   - *Ideal:* 2 skills por objetivo · 20 preguntas por skill · el mismo banco reservado.
+   - Hoy el simulacro saca sus preguntas del mismo banco que la práctica
+     (`backend/app/services/mock_exam.py:110-136`): la nota mide en parte memoria. Es la
+     primera obra de esta ADR.
+5. **Qué tracks existen: los que tengan demanda medida**, no una lista fija. Nivel por uso
+   en Stack Overflow Developer Survey 2025 (All Respondents): **A ≥ 25 %**, **B 10–25 %**,
+   **C < 10 % o sin medida**. Los tracks ya construidos se quedan. Los nuevos llegan al suelo
+   en orden A → B; los C solo cuando todos los A y B estén en el suelo. Tabla por track en
+   `scripts/metas_adr53.json` (45 filas: los 42 del mapa anterior + PHP, Ruby y R).
+6. **Orden de ejecución** (serie 37 del ledger):
+   - **Fase 0:** banco de simulacro reservado (4), formatos de examen corregidos (AIF-C01,
+     MLA-C01 y los tres de Microsoft) y métricas de producto instrumentadas (8).
+   - **Fase 1:** las 11 certificaciones al suelo.
+   - **Fase 2:** los 24 tracks construidos al suelo (A primero), y track24/25 reconstruidos.
+   - **Fase 3:** tracks nuevos A (Java, C#, TypeScript) y B (móvil, Go, Rust, C/C++, SRE,
+     PowerShell, PHP) al suelo.
+   - **Fase 4:** el ideal, por nivel de demanda; después, los tracks C.
+   - **Certificaciones nuevas:** primero las que se examinan en español (GCP Associate Cloud
+     Engineer, LPIC-1, AZ-104; comprobado el 2026-09-30), después CKA/CKAD (solo inglés, chino
+     y japonés) y CCNA (idioma sin comprobar).
+7. **Se mantiene de ADR-46:** el corpus abierto fuera del repo (§4–5), la guarda de diversidad
+   37.0 antes de cualquier pregunta nueva (§6) y las fuentes de ADR-11. **Se va:** «todos los
+   tracks de la industria», «≥ 50 cursos por track», 200 skills · 3.000 preguntas · 200
+   lecciones · ≥ 400 términos por track, y las ≈ 240 sesiones.
+8. **Métricas de producto con suelo** (el contenido no es el cuello de botella: un catálogo
+   perfecto con la retención media de educación fracasa). Es el **mínimo**, no la aspiración:
+   las metas a 12 meses de ADR-32 (D30 > 10 %, conversión > 4 %, completion > 50 %) siguen
+   por encima; la cohorte beta de H.10 tiene las suyas (D1 ≥ 40 %, D7 ≥ 20 %).
+
+   | Métrica | Suelo | Referencia comprobada |
+   |---|---|---|
+   | D1 | ≥ 15 % | Education D1 13,93 % Android / 14,59 % iOS (AppsFlyer) |
+   | D7 | ≥ 7 % | umbral de cuartil superior de Amplitude (lectura de agente, sin reproducir) |
+   | D30 | ≥ 4 % | Education D30 2,69 % / 3,23 % (AppsFlyer); 2 % (Business of Apps) |
+   | Conversión a pago a D35 | ≥ 2,1 %, meta 3 % | freemium, mediana 2,1 %; Education iOS 3,1 % (RevenueCat 2026) |
+   | Terminan el track entre quienes pagan | 40–55 % | edX: 46 % de los verificados, 3,13 % de todos (2017-18) |
+   | Alumnos de pago con ≥ 30 min/semana | ≥ 25 % (hipótesis) | Khan Academy: 30+ min/semana ↔ ~20 % más ganancia (correlación) |
+   | CURR (vuelven mañana los activos de la semana) | medirla desde el día 1 | Duolingo: 84 % (Q2 2026) |
+   | Calibración del simulacro frente al examen real | publicarla siempre con n | nadie en el mercado publica una auditada |
+
+**Evidencia** (descargada y leída por la sesión el 2026-09-30 salvo donde se indica):
+
+| Qué | Cifra | Fuente |
+|---|---|---|
+| Práctica para dominar una skill | «about seven opportunities per component of knowledge»; mediana 7,24, media 12,27 | Koedinger et al. 2023, PNAS (texto completo en Europe PMC, PMC10068755) |
+| Ítems por skill en un sistema real | «three in a row» para dominar, máximo 10 por sesión, «between 20-100 practice problems» por skill | assistments.org, Skill Builders |
+| Banco para simulacros | «six to eight linear tests»; «about 12 times the length» del examen | Stocking 1994 (ETS RR-94-05); Way 2006 (Pearson) |
+| Retención objetivo del repaso | «The default is 90%» | docs.ankiweb.net (FSRS) |
+| Repasos por ítem al año | ≈ 9–10 a retención 0,90 | simulación de un agente con py-fsrs 6.3.2; **sin reproducir** |
+| Tamaño de un temario | python 87 · sql 113 · backend 155 · cyber-security 301 · docker 57 (56 roadmaps contados) | `https://roadmap.sh/<slug>.json` |
+| Objetivos por examen | CLF-C02 19 · SAA-C03 14 · AIF-C01 14 · MLA-C01 12 · PCEP 13 · PCAP 21 · ISC2 CC 19 · AZ-900 11 · AI-900 11 · AI-901 7 · DP-900 11 | guías oficiales de AWS, Python Institute, ISC2 y Microsoft Learn |
+| Formato AIF-C01 | «65 questions», 90 min, 15 sin puntuar | aws.amazon.com y guía oficial (el repo dice 85 y 120: fila 37.19) |
+| Competencia | Boot.dev 51 cursos · 2.823 lecciones · 1.053 h, mediana 20 h por curso; Pocket Prep ISC2 CC 800 preguntas; Kodree 42 tarjetas de curso, 687 lecciones, 2.559 tareas; Exercism 83 lenguajes, Python 146 ejercicios | boot.dev/courses, pocketprep.com, kodree.com, exercism.org |
+| Demanda | JavaScript 66 % · SQL 58,6 % · Python 57,9 % · Bash 48,7 % · TypeScript 43,6 % · Java 29,4 % · C# 27,8 % · C++ 23,5 % · PowerShell 23,2 % · PHP 18,9 % · Go 16,4 % · Rust 14,8 % · Kotlin 10,8 % · Ruby 6,4 % · R 4,9 %; Docker 71,1 % · AWS 43,3 % · Kubernetes 28,5 % · Azure 26,3 % · GCP 24,6 % · Terraform 17,8 % · Prometheus 11,8 % | survey.stackoverflow.co/2025/technology |
+| Examen en español | GCP ACE, LPIC-1, AZ-104, AIF-C01 sí; CKA/CKAD/CKS no | páginas de Google Cloud, LPI, Microsoft Learn, Linux Foundation, AWS |
+
+**Cifras a fecha** (`python scripts/catalog_coverage.py`, 2026-09-30):
+
+- Tracks del plan 45 · construidos 24 · en el suelo 1 (track01).
+- Suelo: skills 525/2.250 (23,3 %) · preguntas 8.313/36.000 (23,1 %).
+- Ideal: skills 525/4.819 (10,9 %) · preguntas 8.380/96.380 (8,7 %).
+- Certificaciones: práctica al suelo 1.926/2.175 (88,6 %), al ideal 2.309/5.800 (39,8 %);
+  banco reservado 0/3.120 (0 %); Security+ sin objetivos contados y los tres de Microsoft
+  sin longitud de examen publicada.
+- Ritmo: a 518 preguntas verificadas por sesión (único dato medido, sesión 18.4), el suelo
+  pide ≈ 60 sesiones (27.687 preguntas de tracks + 249 de práctica de certificación + 3.120
+  reservadas = 31.056) y el ideal ≈ 183 (88.000 + 3.491 + 3.120 = 94.611). Es un orden de
+  magnitud, no un plan de fechas.
+
+**Límites que la sesión deja escritos:**
+- Koedinger mide matemáticas, ciencias e idiomas, no programación: aplicarlo aquí es una
+  extrapolación.
+- «1 nodo de roadmap ≈ 1 skill» se calibra con un solo dato (Python: 87 nodos, 100 skills en
+  track01–03). 37.1 lo sustituye por el mapa skill → nodo.
+- Ningún estudio fija un «número ideal de tracks»; por eso manda la demanda medida.
+- Glosario de 1 término por skill y lección de 6–10 min son elección de la sesión con
+  evidencia débil (Guo 2014 mide enganche en vídeo, no aprendizaje).
+- La conversión Education y los datos de retención son medianas de terceros, no de Whetzy:
+  se recalibran con la primera cohorte (H.10).
+
+**Consecuencias:** la serie 37 del ledger se reescribe sobre esta ADR y absorbe la serie 25;
+`CATALOGO_MAESTRO.md` cambia de meta y de tabla de competencia; el teardown suma §14; ADR-25 y
+ADR-46 llevan la línea «Sustituida»; la fila h de ADR-50 cambia de orden de certificaciones;
+`scripts/catalog_coverage.py` + `backend/tests/test_cobertura_plan.py` mantienen el plan y el
+catálogo en el mismo mundo; `check_docs.py` impide que un documento vivo vuelva a dar la meta
+de ADR-46 como vigente.

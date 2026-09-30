@@ -24,8 +24,8 @@
 
 ### Descripción corta (≤ 80 chars)
 
-**ES:** Aprende a programar en serio — motor adaptativo, 18 tracks, bilingüe  
-**EN:** Learn to code for real — adaptive engine, 18 tracks, bilingual
+**ES:** Aprende a programar en serio — motor adaptativo, 35 tracks, bilingüe  
+**EN:** Learn to code for real — adaptive engine, 35 tracks, bilingual
 
 ### Descripción larga
 

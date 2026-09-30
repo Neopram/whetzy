@@ -35,7 +35,8 @@ Entre esa fecha y el 18-sep el proyecto avanzó ~10 series. Afirmaciones que hoy
 | «Observabilidad pendiente» | 6.1–6.7 **DONE** (JSON logs, OTEL, Prometheus, Sentry-compatible, rate limiting) |
 | «Accesibilidad WCAG pendiente» | 9.2 **DONE** (axe); 9.7 audit con lector real `HUMAN-BLOCKED` |
 | «Legal básico pendiente» | 9.4 **DONE** pero `legal/*.md` aún dice «Learning Engine» y lista planes que no existen → Serie 20/21 |
-| «1.253 preguntas» | 5.024+ preguntas · 12+ tracks · 301 skills (fila `Contenido` del ledger) |
+| «1.253 preguntas» | 10.989 preguntas · 35 tracks · 723 skills el 2026-09-30 (`python scripts/catalog_coverage.py`) |
+| Metas de catálogo en cursos o por volumen fijo | ADR-53 (2026-09-30): suelo de 50 skills · 800 preguntas por track, ideal por temario, simulacro reservado y tracks por demanda medida |
 | «Marketplace de certificaciones = Fase 10 pendiente» | La «fase 10» ya no existe como plan: 10.1–10.3 **DONE** (schema, 300 Q AWS CP, simulacro). El marketplace es la **serie 28**; no se abre antes de ≥ 100 usuarios activos (ADR-47); plan Creador y 80/20 en ADR-41 |
 
 Lo que **sigue siendo válido**: el marco competitivo (distribución 34 %, techo ≈ 66

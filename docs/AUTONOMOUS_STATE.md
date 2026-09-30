@@ -43,7 +43,7 @@
 |---|---|---|---|---|
 | 40 | Superar a Brilliant y Kodree donde hoy ganan (`PLAN_EXPERIENCIA.md`) | 0/13 | 0 % | TODO (abierta 2026-09-28); 40.1 y 40.2 primero |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47) | 0/6 | 0 % | TODO (abierta 2026-09-24); 38.2, 38.3, 38.4… |
-| 37 | Catálogo total — todos los tracks de la industria, ≥ 50 cursos por track, corpus abierto (ADR-46) | 0/14 | 0 % | **PRI 1 ABIERTA… |
+| 37 | Catálogo por cobertura — suelo, ideal por temario, simulacros reservados, demanda (ADR-53) | 2/19 | 11 % | **PRI 1 ABIERTA 2026-09-30.** Fase 0: 37.18, 37.19, 37.20 |
 | 34 | Una sola interfaz — todas las pantallas al estilo de la landing | 0/12 | 0 % | **Grueso hecho el 2026-09-24 (PR #6):** 276 clases… |
 | 33 | Operación medible — SLO, restauración, offline idempotente | 0/3 | 0 % | TODO (abierta 2026-09-24) |
 | 32 | Motor demostrable — calibración y evidencia | 0/4 | 0 % | TODO · 32.2 BLOCKED (H.10) |
@@ -53,13 +53,13 @@
 | 28 | Marketplace de instructores | 0/10 (8 PARCIAL) | 0 % | **Recalificada 2026-09-24:** las filas 28.0–28.7 decían BLOCKED mientras esta… |
 | 27 | Distribución masiva EN | 0/11 | 0 % | ABIERTA 2026-09-24 (ADR-47): se redacta todo; publicar bajo cuenta nueva = H.23 |
 | 26 | Distribución masiva ES | 2/11 | 18 % | ABIERTA 2026-09-24 (ADR-47); 26.9 blog y 26.10 newsletter nuevas. PARCIAL —… |
-| 25 | Expansión de contenido — subordinada a la serie 37 (ADR-46) | 0/15 | 0 % | **Reabierta 2026-09-24 tras 37.0.** **NO PASA LA PUERTA… |
+| 25 | Expansión de contenido — **absorbida por la serie 37** (ADR-53, 2026-09-30) | — | — | Filas archivadas en LEDGER_HISTORY §M |
 | 24 | Interfaz que venda al verse (UI/UX, competencia en vivo, vídeo) | 6/15 | 40 % | **Recalificada 2026-09-24 (ADR-45):** las 9 filas… |
 | 23 | Dos segmentos, un producto — ES y EN | 1/5 | 20 % | 23.1 PARCIAL · 23.2, 23.3, 23.4 |
 | 22 | Blindaje, admin y preparación para un millón | 7/14 | 50 % | 22.1 y 22.6 PARCIAL · 22.2, 22.4, 22.5, 22.7, 22.13 |
 | 21 | Legal y fiscal a coste cero | 1/6 | 17 % | 21.0 DONE · 21.5 PARCIAL (1/4) · 21.6 PARCIAL (2/4) · 21.3, 21.4, 21.8 · **21.1, 21.2 y… |
 | 20 | Verificación masiva código↔docs↔prod | 9/11 | 82 % | 20.7 (**REFUTADA 2026-09-19**: `verify_ci_local.ps1` moría en `pip install`;… |
-| 19 | Catálogo 27 tracks (histórico; meta actual ADR-46) + cert marketplace | 2/10 | 20 % | 19.2–19.10 |
+| 19 | Catálogo 27 tracks (histórico; plan actual ADR-53) + cert marketplace | 2/10 | 20 % | 19.2–19.10 |
 | 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 3/5 | 60 % | 18.5 |
 | 17 | Plataforma + engine + monetización | mayoría DONE | ~95 % | ver archive §B |
 | ≤16 | Fases 1–16 | todas DONE | 100 % | — |
@@ -168,7 +168,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | → §I (criterio archivado por 20.10) |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
 | 19.8 | **3** | **Landing y SEO de whetzy.com al nivel de Educative** | TODO | → LEDGER_HISTORY.md §E |
-| 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (meta ADR-46) | TODO | → LEDGER_HISTORY.md §E |
+| 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (plan ADR-53) | TODO | → LEDGER_HISTORY.md §E |
 | 19.10 | **4** | **Vídeo: Manim + Remotion (`editor-pro-max`)** — absorbe 18.9 | TODO | → LEDGER_HISTORY.md §E |
 
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
@@ -233,34 +233,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | G-C | 24.7, 24.8 | `CertificationScreen*`, `ProfileScreen*`, `VerifyScreen*` |
 | G-D | 24.9, 24.10, 24.11 | `admin-company/*`, `instructor/*`, `MarketplaceScreen*` |
 | Secuencial | 24.0 → 24.1 → grupos → 24.12 → 24.13 → 24.14 | — |
-
-### 25. Expansión de contenido — subordinada a la serie 37 (ADR-46 sustituye a ADR-25; ADR-38)
-
-> **Estado:** `ABIERTA 2026-09-24` — reabierta por ADR-46/47 (H.22 decidido por defecto: **no** CC BY-SA; OWASP se cita). **Ninguna fila…
-> **Dependencias:** 37.0 DONE; corpus de la área descargado y verificado (37.1–37.3).
-> **PRI:** 2 (detrás de 30 y de 37.0–37.3).
-> **Modelo:** Haiku para generación de contenido (cada bloque = 1 worker, 1 commit verde). Sonnet solo si toca ficheros de riesgo.
-> **Nota:** Esta serie no tiene fecha límite — es la expansión continua del catálogo. Se ejecuta en paralelo con la campaña de distribución…
-
-| ID | PRI | Tarea | Estado | Criterio de aceptación | Deps |
-|---|---|---|---|---|---|
-| 25.0 | **3** | Infraestructura de generación: script `scripts/generate_track_content.py` que toma track_id + nivel + fuentes y produce… | | → §I (criterio archivado por 20.10) | |
-| 25.1 | **3** | Completar tracks 1-3 (Python básico/intermedio/avanzado) a 100 cursos por nivel usando PSF docs + exercism/python +… | | → §I (criterio archivado por 20.10) | |
-| 25.2 | **3** | Completar tracks 6-7 (IA/ML/LLMs) a 100 cursos usando ML-For-Beginners + HF course + fastai + openai/anthropic cookbooks… | | → §I (criterio archivado por 20.10) | |
-| 25.3 | **3** | Completar tracks 4-5 (Ingeniería + Arquitectura) a 100 cursos usando system-design-primer + aosabook +… | | → §I (criterio archivado por 20.10) | |
-| 25.4 | **3** | Completar tracks 12, 20, 21, 27 (SQL + Data Eng + DS + NoSQL) usando PostgreSQL docs + DuckDB + Kaggle Learn +… | | → §I (criterio archivado por 20.10) | |
-| 25.5 | **3** | Completar tracks 13, 24, 25 (Ciberseguridad fundamentos + Pentest + Seguridad cloud) usando NIST + MITRE ATT&CK +… | | → §I (criterio archivado por 20.10) | |
-| 25.6 | **3** | Completar tracks 8-11, 22-23 (AWS + Azure + GCP) usando AWS docs (cita) + Microsoft Learn CC BY + GCP docs CC BY | BLOCKED… | | |
-| 25.7 | **3** | Completar tracks 14, 28 (Frontend JS + Backend FastAPI/Node) usando lydiahallie + Web-Dev-For-Beginners + freeCodeCamp ES… | | → §I (criterio archivado por 20.10) | |
-| 25.8 | **3** | Completar tracks 15, 17, 26 (Linux + Redes + Git) usando exercism/bash + Peterson/Davie CC BY + github/docs | BLOCKED… | | |
-| 25.9 | **3** | Completar tracks 16, 29, 30 (Algoritmos + QA + Agile) usando Erickson CC BY + pytest docs + Scrum Guide cita | BLOCKED… | | |
-| 25.10 | **3** | Completar tracks 18, 19 (Docker/K8s + IaC/CI/CD) usando Kubernetes docs CC BY + Docker docs + actions/* | BLOCKED (37.0)… | | |
-| 25.11 | **3** | Completar track 31 (Móvil) usando swift-book CC BY + android docs + flutter docs | BLOCKED (37.0) | track31 ≥ 900 Q,… | |
-| 25.12 | **3** | Glosario máximo: ≥ 100 términos por track × 28 tracks = 2,800+ términos totales, ES y EN nativos | BLOCKED |… | |
-| 25.14 | **3** | **track32 — Solana / Web3 developer** (ADR-38): 5 módulos × 4 skills, JS con `@solana/web3.js` en el Worker (18.3) +… | | → §I (criterio archivado por 20.10) | |
-| 25.13 | **3** | Scorecard ADR-25: verificar que los 28 tracks pasan §7 quality gate (≥ 15 % exec donde aplica, ≥ 144 términos, BKT… | | → §I (criterio archivado por 20.10) | |
-
-**H.22 — Decisión del dueño:** ¿Aceptar [H.LIC] para OWASP CheatSheets/WSTG/ASVS (CC BY-SA 4.0) en tracks de seguridad? Si sí: contenido…
 
 ### 26. Distribución masiva ES (ADR-23, ADR-27; spec `DISTRIBUCION.md`)
 
@@ -417,30 +389,34 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 35.9 | **2** | **El nivel 2 de la puerta (`ci_local.sh`) corre sobre el árbol… | **PARCIAL** | **PARCIAL** `a021e92` (2026-09-24) → §I |
 
 
-### 37. Catálogo total — todos los tracks de la industria, ≥ 50 cursos por track, sobre un corpus abierto (ADR-46; abierta 2026-09-24)
+### 37. Catálogo por cobertura — suelo, ideal por temario, simulacros reservados y prioridad por demanda (ADR-53, 2026-09-30; antes ADR-46)
 
-> **Estado:** `ABIERTA`. **PRI:** 1 (detrás de la serie 30). **Modelo:** Haiku para descarga, inventario, limpieza y autoría por fichero;…
-> **Orden obligatorio:** 37.0 → 37.1 → 37.2 → 37.3 → bloques. **Nadie escribe una pregunta nueva hasta que 37.0 esté DONE**: el intento del…
-> **Corpus (ADR-46 §4-5):** `corpus/` está en `.gitignore`. Se descarga con `git clone --depth 1`, dumps oficiales y **torrents solo cuando…
-> **Unidad:** curso = módulo = 4 skills · 60 Q · 4 lecciones · ≥ 8 términos · ≥ 15 % ejecutable donde aplique. Un bloque = un PR verde con…
+> **Estado:** `ABIERTA`. **PRI:** 1 (detrás de la serie 30). **Modelo:** ADR-52 (autoría Haiku 4.5, revisión completa Sonnet 5, piloto de 10 ítems).
+> **Orden (ADR-53 §6):** fase 0 = 37.18 → 37.19 → 37.20 · fase 1 = 37.10 · fase 2 = 37.6, 37.7 · fase 3 = 37.8 · fase 4 = 37.21 y el ideal. **La guarda 37.0 sigue antes de cualquier pregunta nueva.**
+> **Corpus (ADR-46 §4-5, vigente):** `corpus/` está en `.gitignore`. Se descarga con `git clone --depth 1`, dumps oficiales y **torrents solo cuando…
+> **Unidad:** la skill. Suelo por track: 50 skills · 800 Q · 1 lección y 1 término por skill. Ideal: skills del temario de referencia (`scripts/metas_adr53.json`), 20 Q por skill. Cifras: `python scripts/catalog_coverage.py`. Un bloque = un PR verde.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 37.1 | **1** | **Temario de referencia por track**: `scripts/metas_adr53.json` con 45 tracks (34 con roadmap contado) y 11 certificaciones con objetivos oficiales, leídos el 2026-09-30 | **PARCIAL** | Falta temario de track22, 23, 39, 47, 54, 55 y 56, objetivos de SY0-701 y longitud de examen de Microsoft; `catalog_coverage.py --check` PASS |
 | 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
-| 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | → §I (criterio archivado por 20.10) |
-| 37.7 | **2** | **Tracks del mapa sin construir** (18-23, 26-27, 29-32) al molde mínimo primero (20 skills · 300 Q) y luego a 50 cursos —… | | → §I (criterio archivado por 20.10) |
-| 37.8 | **2** | **Tracks nuevos de §2.0** (Java/JVM, C#/.NET, Go, Rust, C/C++ y sistemas, TypeScript, SRE/observabilidad, MLOps,… | | → §I (criterio archivado por 20.10) |
-| 37.9 | **2** | **Glosario ≥ 400 términos por track**, ES y EN nativos (absorbe 25.12) | BLOCKED (37.6) | `check_docs.py`: 0 términos sin… |
-| 37.10 | **2** | **Certificaciones: blueprints de las 55 del catálogo §3** con simulacro por dominio, pesos verificados contra la guía… | | → §I (criterio archivado por 20.10) |
+| 37.6 | **2** | **Tracks construidos al suelo**: A primero (02, 03, 12, 14, 15, 18, 22, 26, 27, 28, 30), luego B (19, 23) y C (04–07, 13, 16, 17, 20, 21, 29) | TODO | `catalog_coverage.py`: el track con «suelo sí»; 37.0 y puerta §7 en verde; un track = un PR |
+| 37.7 | **2** | **track24 y track25 reconstruidos al suelo** desde la cuarentena (nivel B) | TODO | ídem, fuera de `_quarantine` y `question_diversity.py` sin línea base |
+| 37.8 | **2** | **Tracks nuevos por demanda** (`CATALOGO_MAESTRO.md` §2.0): A (38, 33, 34) → B (37, 47, 48, 35, 36, 39, 31) → C (49, 50, 53, 54, 32, 52, 51, 55, 56) solo con todos los A y B en el suelo | TODO | ídem por track; `metas_adr53.json` lo pasa a «construido» en el mismo commit |
+| 37.9 | **2** | **Glosario ≥ 1 término por skill**, ES y EN nativos (absorbe 25.12) | TODO | `catalog_coverage.py`: términos ≥ skills en cada track |
+| 37.10 | **1** | **Certificaciones al suelo** (ADR-53 §4): 100 % de objetivos con skill, ≥ 15 Q/skill, banco reservado 6 × examen; primero MLA-C01 y las 3 de Microsoft (6–8 Q/skill); nuevas en español: GCP ACE → LPIC-1 → AZ-104 | TODO (tras 37.18) | `catalog_coverage.py`: práctica y reserva al 100 % por certificación; `test_certification_blueprints.py` |
 | 37.11 | **3** | **Proyectos multi-paso**: 10 por track ejecutable (hoy 0; catálogo §1) | BLOCKED (37.6) | Cada proyecto con tests de… |
 | 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | → §I (criterio archivado por 20.10) |
-| 37.13 | **3** | **Scorecard ADR-46** (absorbe 25.13): tracks × cursos × 37.0 verde; re-puntuación de Contenido en el teardown con… | | → §I (criterio archivado por 20.10) |
+| 37.13 | **3** | **Scorecard ADR-53** (absorbe 25.13): `scripts/catalog_coverage.py` + `scripts/metas_adr53.json` + `backend/tests/test_cobertura_plan.py` | **PARCIAL** | Hecho 2026-09-30 (script, metas, 11 tests con mutación). Falta: cifras en `/evidence` y re-puntuar Contenido en el teardown al cambiar de tramo |
 | 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | **DONE** `fbf9baf` (2026-09-25) → §I |
 | 37.15 | **1** | **Fuentes sin indexar:** 3.906 de 6.305 preguntas (62 %) no llevan URL en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | **DONE** `46764ff` (2026-09-26): 8 tracks restantes (02-04, 06, 08, 10, 12, 17) corregidos; todos ≤22 %. Banco PASS, diversidad PASS, content 38062 passed → §I |
 | 37.17 | **1** | **Inglés dentro del español y ejecutables que aceptan atajos** (medido 2026-09-26 con grep y `scripts/video/solve_blank.py`, que prueba candidatos contra la salida esperada): 282 enunciados ES en 9 ficheros empiezan «Completa el blank»; `track11_aws_aif_c01/mod01.json:715` dice «directional»; la pregunta ES de EC2 con 100.000 conexiones TCP tiene las opciones en inglés. Respuestas equivocadas dan la salida esperada (Python local): en `q060104ex010` (varianza) `median_low` y `mode` imprimen `4` igual que `pvariance`; en `q010105ex001` `eval` imprime lo mismo que `int`. Si la corrección solo compara la salida, las acepta; sin probar en la app (el sandbox podría bloquear `eval`) | **TODO** | 0 «blank» en `question_es`; una guarda que falle con palabras EN frecuentes en campos `_es`; datos de los ejecutables que distingan la función pedida (varianza ≠ mediana ≠ moda); `eval`/`exec` rechazados en el sandbox o en la corrección, con test |
+| 37.18 | **1** | **Banco de simulacro reservado**: `"pool": "simulacro"` en preguntas; `mock_exam.py` solo sortea reservadas y práctica/repaso las excluyen (hoy el simulacro sale del banco de práctica, `mock_exam.py:110-136`) | TODO | test: una reservada nunca sale en práctica ni repaso; un simulacro solo sirve reservadas |
+| 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | TODO | `tracks.json` con URL y fecha; `test_certification_blueprints.py` lo fija, mutado en rojo |
+| 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | TODO | embudo propio (`services/analytics.py`, ADR-50 j) con D30 y CURR; el admin muestra cada métrica con su meta |
+| 37.21 | **3** | **Mapa skill → nodo del temario**, para medir el ideal por cobertura real y no por recuento | TODO (tras 37.6) | cada skill con su nodo; `catalog_coverage.py` da % de nodos cubiertos |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 

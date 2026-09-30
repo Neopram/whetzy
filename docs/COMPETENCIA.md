@@ -1,7 +1,7 @@
 # Whetzy — Inteligencia Competitiva Exhaustiva
 
 > **Documento vivo nº 14.** Análisis directo + indirecto. Última actualización:
-> **2026-09-28** (§A.2b, Brilliant y Kodree; resto de §A del 2026-09-24). **§A manda sobre §1–§3**, que son del
+> **2026-09-30** (§A.2c, catálogos y bancos de certificación; §A.2b del 2026-09-28; resto de §A del 2026-09-24). **§A manda sobre §1–§3**, que son del
 > 2026-09-18 y contienen cifras que no se comprobaron entonces y hoy no se
 > sostienen (precios de Boot.dev y Platzi, ingresos): léelas como hipótesis.
 
@@ -124,6 +124,37 @@ cifras no están aquí.
 | Plan de por vida o familiar | **No, a propósito** | el dueño los descartó el 2026-09-28: solo mensual y anual |
 | UX/UI, Excel o Power BI | **No** | `CATALOGO_MAESTRO.md` §2.0.1: ux-design «no se proponen todavía» |
 | Java o TypeScript ejecutables | Parcial | 37.8 añade tracks; runtimes solo Python/SQL/JS |
+
+### A.2c Captura del 2026-09-30: tamaño de catálogo, bancos de certificación y demanda (alimenta ADR-53)
+
+Cuatro agentes investigaron ≈ 150 fuentes; la sesión **re-descargó y leyó** las cifras que
+sostienen ADR-53. Salida de red en EE. UU.; Udemy, Class Central y DataCamp devolvieron 403
+o antibot a la descarga directa y no se sortearon.
+
+**Comprobado a mano (2026-09-30)**
+
+| Competidor / fuente | Dato | Evidencia | URL |
+|---|---|---|---|
+| Boot.dev | 51 cursos · 2.823 lecciones · 1.053 h; mediana 51 lecciones y 20 h por curso | 51 filas «N lessons» y «N hours» en la página | boot.dev/courses |
+| Kodree | 42 tarjetas de curso (algunas repetidas) · 687 lecciones · 2.559 tareas (3,7 por lección) | pares «N Lessons M Practice tasks» | kodree.com |
+| Pocket Prep | ISC2 CC: 800 preguntas | «800 Study Questions» | pocketprep.com/exams/isc2-cc/ |
+| Exercism | 83 lenguajes; Python 146 ejercicios en 17 conceptos | «Develop fluency in 83 programming languages», «146 coding exercises» | exercism.org |
+| Stack Overflow 2025 | uso por lenguaje, base de datos y cloud (tabla en ADR-53) | «All Respondents JavaScript 66% … Python 57.9% …» | survey.stackoverflow.co/2025/technology |
+| roadmap.sh | nodos por roadmap (56 contados; python 87, backend 155, cyber-security 301) | JSON público, nodos `topic` + `subtopic` | roadmap.sh/<slug>.json |
+| AWS | AIF-C01: 65 preguntas, 90 min (el repo dice 85 y 120); MLA-C01 65 / 130 y MLA-C02 85 / 170 | «Exam format 65 questions» | aws.amazon.com/certification/… |
+| Idiomas de examen | en español: GCP ACE, LPIC-1, AZ-104, AIF-C01; no: CKA/CKAD/CKS | «Languages: English, Japanese, Spanish, Portuguese»; «English, Simplified Chinese, and Japanese» | cloud.google.com, lpi.org, learn.microsoft.com, docs.linuxfoundation.org |
+| Apps de educación | D1 13,93 % / 14,59 % y D30 2,69 % / 3,23 % (Android / iOS); conversión freemium mediana 2,1 %, Education iOS 3,1 % | citas literales | appsflyer.com/glossary/retention-rate/; revenuecat.com/state-of-subscription-apps |
+| Referencias de producto | Duolingo DAU/MAU 39,6 %, suscriptores 9,2 % de MAU, CURR 84 %; edX: completa el 3,13 % de todos y el 46 % de los verificados; Khan Academy 30+ min/semana | citas literales | SEC (10-K y carta Q2 2026 de Duolingo); insidehighered.com; blog.khanacademy.org |
+
+**Reportado por agentes, no reproducido (probable)**
+
+- DataCamp 776 cursos y 32 career tracks; Codecademy 846 resultados de catálogo; Platzi
+  «+2000 cursos, 30 rutas»; EDteam 41 rutas (mediana 5 cursos y 33 h); Brilliant 14 cursos
+  de CS; Mimo 4 rutas + 8 cursos.
+- Bancos de certificación: Udemy (Maarek, Bonso) 6 × 65 = 390 preguntas por examen de AWS;
+  Dion (Security+) 6 × 90 = 540; Tutorials Dojo 7–9 simulacros cronometrados por examen.
+- Tutorials Dojo anuncia «95 to 98% passing rate» basado en «feedback»: marketing sin
+  denominador. Nadie de la muestra publica una tasa de aprobado auditada.
 
 ### A.3 La lógica de negocio del mercado, y dónde encaja Whetzy
 
@@ -312,7 +343,7 @@ Para cada competidor se documenta:
 **Fortalezas reales:**
 - Marca dominante en español tech education — 11 años
 - 1,900+ cursos en español nativo de alta calidad
-- 70% completion rate (vs 10-15% industria) — dato diferenciador clave
+- 70% completion rate (vs 10-15% industria) — dato diferenciador clave *(sin fuente: hipótesis, ver cabecera; la referencia comprobada está en ADR-53 §8)*
 - Comunidad enorme: Discord, Slack, foros propios
 - B2B consolidado: 4,000+ empresas clientes
 - Integración con LinkedIn para certificados

@@ -8,7 +8,7 @@
 
 ## 0. Por qué un marketplace
 
-Whetzy construye contenido con Haiku + fuentes [reusar]. Eso cubre todos los tracks (meta ADR-46: 28 + 14 de §2.0 y los que 37.1 confirme)
+Whetzy construye contenido con Haiku + fuentes [reusar]. Eso cubre todos los tracks del plan (ADR-53: 45 tracks por demanda, cada uno al suelo y después al ideal de su temario)
 del catálogo oficial. Pero hay conocimiento especializado que un instructor humano
 puede aportar mejor que un modelo: casos reales de empresa, nichos muy específicos,
 cursos de herramientas nuevas del mercado.
