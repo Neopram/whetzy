@@ -37,7 +37,7 @@ Cubre el camino completo: desde las primeras líneas de Python hasta arquitectur
 - **Motor adaptativo.** BKT + FSRS deciden qué practicas y cuándo repasas. No adivinamos: lo calculamos.
 - **Código que se ejecuta.** Los ejemplos de Python, SQL y JavaScript corren de verdad en la app, sin servidor externo, sin copiar y pegar.
 - **Bilingüe nativo.** Todo el contenido está escrito en español e inglés por separado — no es una traducción automática.
-- **18 tracks. 401 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
+- **35 tracks. 723 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
 - **Sin anuncios. Sin rastreo.**
 
 **Cómo funciona**
@@ -48,7 +48,7 @@ Cubre el camino completo: desde las primeras líneas de Python hasta arquitectur
 5. Cuando dominas un módulo, desbloqueas el siguiente.
 
 **Certificaciones**
-Prepárate para AWS CLF-C02, SAA-C03, AIF-C01 y PCEP con simulacros cronometrados de 65 preguntas — el mismo formato que el examen real.
+Prepárate para 11 certificaciones (AWS, Python Institute, ISC2, CompTIA Security+ y Microsoft) con simulacros cronometrados repartidos por los dominios oficiales de cada examen.
 
 ### EN
 
@@ -60,7 +60,7 @@ It covers the full path: from your first lines of Python to microservice archite
 - **Adaptive engine.** BKT + FSRS decide what you practice and when you review. We don't guess: we calculate it.
 - **Code that runs.** Python, SQL and JavaScript examples actually execute inside the app — no external server, no copy-paste.
 - **Natively bilingual.** All content is written in Spanish and English separately — not machine-translated.
-- **18 tracks. 401 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
+- **35 tracks. 723 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
 - **No ads. No tracking.**
 
 **How it works**
@@ -71,7 +71,7 @@ It covers the full path: from your first lines of Python to microservice archite
 5. Master a module to unlock the next one.
 
 **Certifications**
-Prepare for AWS CLF-C02, SAA-C03, AIF-C01, and PCEP with timed 65-question mock exams — the same format as the real exam.
+Prepare for 11 certifications (AWS, Python Institute, ISC2, CompTIA Security+ and Microsoft) with timed mock exams weighted by each exam's official domains.
 
 ---
 

@@ -2134,3 +2134,61 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 | 39.29 | **0** | 1.404 explicaciones de plantilla vistas por el alumno en track41 (598), track42 (480), track44-46 (300), track23 `mod2301` (26) | DONE | `audit_ai_traces.py`: 0 en el banco vivo (línea base vacía, 2026-09-26). Autor Sonnet + revisión Sonnet por fichero, solo cambian las explicaciones (comprobado campo a campo). De paso: claves V/F de track42 al azar (153 corregidas, 110 copias reescritas, `test_tf_consistency.py`), 13 preguntas GKE de track23 con opciones recicladas reescritas y q4401012 ambigua reformulada. Afirmaciones verificadas en fuente: NIST CSF 2.0 (nist.gov) y Azure Analysis Services sin modelos multidimensionales (learn.microsoft.com) |
 | 39.37 | **0** | **Relleno de generador en producción**: 180 preguntas de track20 `mod2003`-`mod2005` y 209 de track21 `mod2102`-`mod2105` con explicación «Explicación para ¿…?» y enunciados telegráficos; una clave falsa ya corregida (`q210502007`, PCA) | **DONE** | 389/389 (180+209; Sonnet, ADR-52 tras piloto Haiku fallido). track20: pregunta+opciones+explicación desde lecciones reales (Spark, validación/linaje/gobernanza, Snowflake/Databricks/dbt/Airflow). track21: solo explicación, desde `content/lessons/track21/*.json`; pregunta/opciones/`correct_index` intactos (bug de idioma mezclado en algunas opciones, ya en 39.36, no tocado aquí). **Verificador adversario, 2ª ronda (1ª REFUTADA: yo había citado «409» sin sumar 180+209): CONFIRMADA** — `git show 4711aa8` cambia 200/409→389/389; recontó 180+209=389 por su cuenta; `check_question_bank`/`question_diversity`/`check_source_licenses` PASS; `audit_ai_traces` 0 huellas de plantilla (antes 418); grep de patrones residuales y `placeholder_known.json` limpios; `tests/content` 70.277 passed |
 | 39.42 | **2** | **track43 mod4301: 45 de 75 preguntas eran relleno molde** (hallado arreglando los 6 "en AWS SageMaker" de 39.39): por skill, `006-010`/`011-015` repetían `001-005` con una coletilla pegada ("en AWS SageMaker" / "para ingeniería de datos en la nube") que bajaba la similitud Jaccard justo debajo del umbral de `check_originality.py` (39.40) — invisible al guardián. Al quitar la coletilla de los 6 originales, 5 parejas quedaron 100% idénticas: el molde era duplicado real, no solo desalineado | **DONE** | (2026-09-29) 45 borradas (6/skill, al suelo `MIN_PER_SKILL`); `sk430105` sin pregunta de reserva propia → 1 nueva sobre el error real de mayúsculas en claves de partición Hive (fuente: `l430105` ya en el repo). `check_question_bank.py`, `audit_lesson_quiz_alignment.py track43` (0), `check_originality.py` (0 parejas) y `tests/content` (70.027) en verde. `check_docs.py`: 10.989→10.944 en 4 sitios (`ARCHITECTURE.md`, `CATALOGO_MAESTRO.md`, `catalog.ts`, esta fila) → STATUS.md |
+
+## M. Serie 25 y filas de la serie 37 sustituidas por ADR-53 (2026-09-30)
+
+> Texto tal como estaba en `AUTONOMOUS_STATE.md` el 2026-09-30, antes de ADR-53. Es historia:
+> no manda. El plan vigente es la serie 37 del ledger.
+
+### 25. Expansión de contenido — subordinada a la serie 37 (ADR-46 sustituye a ADR-25; ADR-38)
+
+> **Estado:** `ABIERTA 2026-09-24` — reabierta por ADR-46/47 (H.22 decidido por defecto: **no** CC BY-SA; OWASP se cita). **Ninguna fila…
+> **Dependencias:** 37.0 DONE; corpus de la área descargado y verificado (37.1–37.3).
+> **PRI:** 2 (detrás de 30 y de 37.0–37.3).
+> **Modelo:** Haiku para generación de contenido (cada bloque = 1 worker, 1 commit verde). Sonnet solo si toca ficheros de riesgo.
+> **Nota:** Esta serie no tiene fecha límite — es la expansión continua del catálogo. Se ejecuta en paralelo con la campaña de distribución…
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación | Deps |
+|---|---|---|---|---|---|
+| 25.0 | **3** | Infraestructura de generación: script `scripts/generate_track_content.py` que toma track_id + nivel + fuentes y produce… | | → §I (criterio archivado por 20.10) | |
+| 25.1 | **3** | Completar tracks 1-3 (Python básico/intermedio/avanzado) a 100 cursos por nivel usando PSF docs + exercism/python +… | | → §I (criterio archivado por 20.10) | |
+| 25.2 | **3** | Completar tracks 6-7 (IA/ML/LLMs) a 100 cursos usando ML-For-Beginners + HF course + fastai + openai/anthropic cookbooks… | | → §I (criterio archivado por 20.10) | |
+| 25.3 | **3** | Completar tracks 4-5 (Ingeniería + Arquitectura) a 100 cursos usando system-design-primer + aosabook +… | | → §I (criterio archivado por 20.10) | |
+| 25.4 | **3** | Completar tracks 12, 20, 21, 27 (SQL + Data Eng + DS + NoSQL) usando PostgreSQL docs + DuckDB + Kaggle Learn +… | | → §I (criterio archivado por 20.10) | |
+| 25.5 | **3** | Completar tracks 13, 24, 25 (Ciberseguridad fundamentos + Pentest + Seguridad cloud) usando NIST + MITRE ATT&CK +… | | → §I (criterio archivado por 20.10) | |
+| 25.6 | **3** | Completar tracks 8-11, 22-23 (AWS + Azure + GCP) usando AWS docs (cita) + Microsoft Learn CC BY + GCP docs CC BY | BLOCKED… | | |
+| 25.7 | **3** | Completar tracks 14, 28 (Frontend JS + Backend FastAPI/Node) usando lydiahallie + Web-Dev-For-Beginners + freeCodeCamp ES… | | → §I (criterio archivado por 20.10) | |
+| 25.8 | **3** | Completar tracks 15, 17, 26 (Linux + Redes + Git) usando exercism/bash + Peterson/Davie CC BY + github/docs | BLOCKED… | | |
+| 25.9 | **3** | Completar tracks 16, 29, 30 (Algoritmos + QA + Agile) usando Erickson CC BY + pytest docs + Scrum Guide cita | BLOCKED… | | |
+| 25.10 | **3** | Completar tracks 18, 19 (Docker/K8s + IaC/CI/CD) usando Kubernetes docs CC BY + Docker docs + actions/* | BLOCKED (37.0)… | | |
+| 25.11 | **3** | Completar track 31 (Móvil) usando swift-book CC BY + android docs + flutter docs | BLOCKED (37.0) | track31 ≥ 900 Q,… | |
+| 25.12 | **3** | Glosario máximo: ≥ 100 términos por track × 28 tracks = 2,800+ términos totales, ES y EN nativos | BLOCKED |… | |
+| 25.14 | **3** | **track32 — Solana / Web3 developer** (ADR-38): 5 módulos × 4 skills, JS con `@solana/web3.js` en el Worker (18.3) +… | | → §I (criterio archivado por 20.10) | |
+| 25.13 | **3** | Scorecard ADR-25: verificar que los 28 tracks pasan §7 quality gate (≥ 15 % exec donde aplica, ≥ 144 términos, BKT… | | → §I (criterio archivado por 20.10) | |
+
+**H.22 — Decisión del dueño:** ¿Aceptar [H.LIC] para OWASP CheatSheets/WSTG/ASVS (CC BY-SA 4.0) en tracks de seguridad? Si sí: contenido…
+
+### 37. Catálogo total — todos los tracks de la industria, ≥ 50 cursos por track, sobre un corpus abierto (ADR-46; abierta 2026-09-24)
+
+> **Estado:** `ABIERTA`. **PRI:** 1 (detrás de la serie 30). **Modelo:** Haiku para descarga, inventario, limpieza y autoría por fichero;…
+> **Orden obligatorio:** 37.0 → 37.1 → 37.2 → 37.3 → bloques. **Nadie escribe una pregunta nueva hasta que 37.0 esté DONE**: el intento del…
+> **Corpus (ADR-46 §4-5):** `corpus/` está en `.gitignore`. Se descarga con `git clone --depth 1`, dumps oficiales y **torrents solo cuando…
+> **Unidad:** curso = módulo = 4 skills · 60 Q · 4 lecciones · ≥ 8 términos · ≥ 15 % ejecutable donde aplique. Un bloque = un PR verde con…
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
+| 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | → §I (criterio archivado por 20.10) |
+| 37.7 | **2** | **Tracks del mapa sin construir** (18-23, 26-27, 29-32) al molde mínimo primero (20 skills · 300 Q) y luego a 50 cursos —… | | → §I (criterio archivado por 20.10) |
+| 37.8 | **2** | **Tracks nuevos de §2.0** (Java/JVM, C#/.NET, Go, Rust, C/C++ y sistemas, TypeScript, SRE/observabilidad, MLOps,… | | → §I (criterio archivado por 20.10) |
+| 37.9 | **2** | **Glosario ≥ 400 términos por track**, ES y EN nativos (absorbe 25.12) | BLOCKED (37.6) | `check_docs.py`: 0 términos sin… |
+| 37.10 | **2** | **Certificaciones: blueprints de las 55 del catálogo §3** con simulacro por dominio, pesos verificados contra la guía… | | → §I (criterio archivado por 20.10) |
+| 37.11 | **3** | **Proyectos multi-paso**: 10 por track ejecutable (hoy 0; catálogo §1) | BLOCKED (37.6) | Cada proyecto con tests de… |
+| 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | → §I (criterio archivado por 20.10) |
+| 37.13 | **3** | **Scorecard ADR-46** (absorbe 25.13): tracks × cursos × 37.0 verde; re-puntuación de Contenido en el teardown con… | | → §I (criterio archivado por 20.10) |
+| 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | **DONE** `fbf9baf` (2026-09-25) → §I |
+| 37.15 | **1** | **Fuentes sin indexar:** 3.906 de 6.305 preguntas (62 %) no llevan URL en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | **DONE** `46764ff` (2026-09-26): 8 tracks restantes (02-04, 06, 08, 10, 12, 17) corregidos; todos ≤22 %. Banco PASS, diversidad PASS, content 38062 passed → §I |
+| 37.17 | **1** | **Inglés dentro del español y ejecutables que aceptan atajos** (medido 2026-09-26 con grep y `scripts/video/solve_blank.py`, que prueba candidatos contra la salida esperada): 282 enunciados ES en 9 ficheros empiezan «Completa el blank»; `track11_aws_aif_c01/mod01.json:715` dice «directional»; la pregunta ES de EC2 con 100.000 conexiones TCP tiene las opciones en inglés. Respuestas equivocadas dan la salida esperada (Python local): en `q060104ex010` (varianza) `median_low` y `mode` imprimen `4` igual que `pvariance`; en `q010105ex001` `eval` imprime lo mismo que `int`. Si la corrección solo compara la salida, las acepta; sin probar en la app (el sandbox podría bloquear `eval`) | **TODO** | 0 «blank» en `question_es`; una guarda que falle con palabras EN frecuentes en campos `_es`; datos de los ejecutables que distingan la función pedida (varianza ≠ mediana ≠ moda); `eval`/`exec` rechazados en el sandbox o en la corrección, con test |

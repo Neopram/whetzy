@@ -7,6 +7,7 @@
  *  17.12 y lo que repitio la serie 24.2: no lo hagas, importa de aqui.
  */
 export const CATALOG_TRACKS = 35;
-/** Curso = módulo del molde (ADR-46, 37.2); antes «track × nivel» (49). */
+/** Curso = módulo del molde (ADR-46, 37.2); antes «track × nivel» (49). Solo es unidad de
+ *  presentación: el plan del catálogo mide skills y temario (ADR-53). */
 export const CATALOG_COURSES = 177;
 export const CATALOG_QUESTIONS = 10949;

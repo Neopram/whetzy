@@ -21,6 +21,12 @@
 > **Nota v2.2 (2026-09-26).** Añade el paso 6 de la FASE 0 y una línea roja: los
 > conectores de claude.ai (Railway, Sentry, PostHog…) y lo que la sesión puede hacer con
 > ellos, según `docs/CONECTORES.md`.
+>
+> **Nota v2.3 (2026-09-30).** El plan del catálogo es **ADR-53**, no ADR-46: suelo de 50
+> skills · 800 preguntas por track, ideal por temario, banco de simulacro reservado y tracks
+> por demanda medida. El orden de la serie 37 de la FASE 2 está reescrito sobre él. Las menciones
+> a «≥ 50 cursos por track» de la FASE 1 son historia de aquella auditoría (cerrada el
+> 2026-09-25); no las copies.
 
 ---
 
@@ -58,9 +64,10 @@ cual; ninguna cifra a mano en un doc.
    lectura. Si un conector no responde o su cuenta ya no es la de la tabla, actualiza
    la fila con la fecha; no lo sortees.
 
-══ FASE 1 — AUDITORÍA DE CONCORDANCIA DE LA SESIÓN DEL 2026-09-24 (primer PR) ═══════
+══ FASE 1 — AUDITORÍA DE CONCORDANCIA DE LA SESIÓN DEL 2026-09-24 (CERRADA el 2026-09-25; histórico) ═══
 Esa sesión decidió ADR-45 (rama + PR; master solo lo fusiona el dueño), ADR-46 (todos
-los tracks de la industria, ≥ 50 cursos por track, corpus abierto en corpus/), ADR-47 (valores por defecto de la cola humana; los precios NO: los fijó el dueño en ADR-41) y ADR-48 (un plan = una fila) y actualizó ledger, catálogo, orquestador,
+los tracks de la industria, ≥ 50 cursos por track, corpus abierto en corpus/; su meta de
+volumen la sustituyó ADR-53 el 2026-09-30), ADR-47 (valores por defecto de la cola humana; los precios NO: los fijó el dueño en ADR-41) y ADR-48 (un plan = una fila) y actualizó ledger, catálogo, orquestador,
 arquitectura, ficha iOS, README, teardown §12. Dejó residuos que MIDIÓ con grep y no
 cerró. Tu primer trabajo es dejar TODA la documentación viva (índice de docs/README.md)
 en concordancia con esas cuatro ADR. Regla: las ADR no se reescriben; a ADR-16, ADR-21,
@@ -85,10 +92,11 @@ archive/, STATUS.md, DECISIONS.md y CHANGELOG.md):
      h21-decision.md la frase «sin fila viva en el ledger» ya es falsa.
   e) grep -rn '27 tracks' docs → CATALOGO_MAESTRO.md, MARKETPLACE.md,
      competitive-teardown.md, AUTONOMOUS_STATE.md. Meta actual: 28 + 14 (§2.0) y los
-     que 37.1 confirme (ADR-46). Los recálculos históricos del teardown (§9, §11) se
+     que 37.1 confirme (ADR-46; hoy ADR-53: tracks por demanda). Los recálculos históricos del teardown (§9, §11) se
      dejan con una nota «histórico; meta actual ADR-46», no se reescriben.
   f) grep -rn '2\.700 cursos\|2,700 cursos\|2\.800 cursos' docs → CATALOGO_MAESTRO.md,
-     AUTONOMOUS_STATE.md. Sustituir por «≥ 50 cursos × ≥ 42 tracks (ADR-46)».
+     AUTONOMOUS_STATE.md. Sustituir por «≥ 50 cursos × ≥ 42 tracks (ADR-46)» (histórico;
+     hoy ADR-53: suelo 50 skills · 800 preguntas por track e ideal por temario).
   g) grep -rn 'azul cielo' docs/AUTONOMOUS_STATE.md docs/design/decisiones-24.0.md
      → paleta Obsidian, cian #06B6D4, oscuro por defecto (serie 34, ADR-47).
   h) grep -n 'deploy MANUAL' docs/AUTONOMOUS_STATE.md → fuera del invariante ya
@@ -129,13 +137,14 @@ documentos vivos`. Abre el PR con ese commit y sigue en la misma rama.
 1. Serie 30 (PRI 0): login, landing honesta, correo, cuenta de dueño — producción rota.
 2. Serie 34 PRI 0: guarda .tsx↔.module.css y e2e verde en CI (o en ci_local.sh mientras
    el CI de GitHub siga sin correr, H.13/H.17 — dilo así, no «verde en CI»).
-3. Serie 37 en su orden estricto: 37.0 guarda de diversidad (mutación en rojo antes de
-   fiarte: track24/25 actuales deben ponerla roja, track12 verde) → 37.1 inventario de la
-   industria con URL fechada → 37.2 recuento por módulos → 37.3 pipeline de corpus
-   (fetch / verify_license / clean / index; corpus/ en .gitignore; torrents solo como
-   canal oficial de un corpus legal; LICENSE leído o rechazado) → 37.4 descarga por área
-   → 37.5 generador → bloques (37.6+). NINGUNA pregunta nueva antes de 37.0 DONE. Un
-   bloque = un PR verde con check_question_bank, pytest tests/content, 37.0, check_docs.
+3. Serie 37 en el orden de ADR-53 (37.0, 37.2 y 37.3 ya están DONE): fase 0 = 37.18
+   banco de simulacro reservado → 37.19 formatos de examen del proveedor → 37.20 métricas
+   de producto con meta; fase 1 = 37.10 certificaciones al suelo; fase 2 = 37.6 tracks
+   construidos al suelo (nivel A primero) y 37.7 track24/25; fase 3 = 37.8 tracks nuevos
+   por demanda (A → B → C); fase 4 = 37.21 y el ideal. Corpus: 37.4 descarga por área y
+   37.5 generador (corpus/ en .gitignore; LICENSE leído o rechazado). NINGUNA pregunta
+   nueva sin 37.0 verde. Un bloque = un PR verde con check_question_bank, pytest
+   tests/content, 37.0, `catalog_coverage.py --check` y check_docs.
 4. Después manda `ledger.py next`: 17.14 IAP (sandbox, sin claves), 22.14–22.16, 26/27
    (redactar y construir todo; publicar bajo cuenta nueva = H.23), 28.8, 29.x, 31–33, 36.
 

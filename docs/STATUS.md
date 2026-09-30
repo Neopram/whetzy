@@ -2346,3 +2346,72 @@ passed, 1 skipped, 21 xfailed (verificado por mí, no solo por el
 verificador del propio Workflow). `check_question_bank.py`,
 `check_docs.py`, `question_diversity.py` en verde. Ledger 37.15/37.17
 corregidos con las cifras reales, no las que traían.
+## 2026-09-30 — plan del catálogo por cobertura (ADR-53), rama `claude/eloquent-davinci-47pbpf`
+
+**Pregunta del dueño:** si la meta de ADR-46 (≥ 50 cursos × 42 tracks = 126.000 preguntas)
+era exagerada frente a la competencia directa; después, «investiga en internet cuáles serían
+las métricas perfectas, sin dejar nada fuera», y por último «crea un plan detallado y
+actualiza absolutamente todos los documentos, elimina los planes anteriores y verifica que
+no queda nada viejo».
+
+**Qué se hizo:**
+- **Investigación:** 4 agentes (≈ 150 fuentes). La sesión re-descargó y leyó cada cifra
+  que sostiene la decisión: Koedinger 2023 (≈ 7 oportunidades por skill), ASSISTments
+  (20–100 problemas por skill), Stocking 1994 y Way 2006 (banco de 6–8 exámenes, ≈ 12 ×
+  la longitud), FSRS (retención 0,90), 56 roadmaps de roadmap.sh, objetivos de 11 exámenes
+  oficiales, Stack Overflow 2025, Boot.dev, Kodree, Pocket Prep, Exercism, AppsFlyer,
+  RevenueCat, Duolingo (SEC), edX y Khan Academy.
+- **ADR-53** sustituye la meta de volumen de ADR-46: suelo de 50 skills · 800 preguntas por
+  track, ideal por temario (20 por skill), banco de simulacro reservado de 6 × examen,
+  tracks por demanda medida (A/B/C) y métricas de producto con suelo.
+- **`scripts/catalog_coverage.py` + `scripts/metas_adr53.json`** (denominadores con URL y
+  fecha) y **`backend/tests/test_cobertura_plan.py`** (11 tests; cada regla del validador
+  se rompe a propósito y se pone roja).
+- Ledger: serie 37 reescrita (19 filas; nuevas 37.18 banco reservado, 37.19 formatos de
+  examen, 37.20 métricas de producto, 37.21 mapa skill → nodo); serie 25 absorbida y su
+  texto archivado en `LEDGER_HISTORY.md` §M.
+- Documentos: CATALOGO_MAESTRO (cabecera, §1–§4, §6–§12), DECISIONS (ADR-25, 32, 38, 46 y 50
+  enmendadas), teardown §14, COMPETENCIA §A.2c, CLAUDE.md, README, ORCHESTRATOR,
+  PROMPT_CONTROL_TOTAL, PLAN_EXPERIENCIA, MARKETPLACE, SEGMENTOS, ECONOMIA, DISTRIBUCION,
+  fichas de tienda, guiones, EVALUACION_COMPLETA y `analisis-estrategico/README.md`.
+
+**Cifras (`python scripts/catalog_coverage.py`, 2026-09-30):** 45 tracks en el plan, 24
+construidos, 1 en el suelo (track01). Suelo: skills 525/2.250 (23,3 %), preguntas
+8.313/36.000 (23,1 %). Ideal: skills 525/4.819 (10,9 %), preguntas 8.380/96.380 (8,7 %).
+Certificaciones: práctica al suelo 1.926/2.175 (88,6 %), banco reservado 0/3.120.
+
+**Hallazgos que no se arreglaron aquí (filas abiertas):**
+- El simulacro saca sus preguntas del mismo banco que la práctica
+  (`mock_exam.py:110-136`): 37.18.
+- AIF-C01 figura con 85 preguntas y 120 min; AWS publica 65 y 90. MLA-C01 lleva el formato
+  de MLA-C02: 37.19.
+- Security+ SY0-701 sin objetivos contados y los tres exámenes de Microsoft sin longitud
+  publicada: 37.1.
+
+**Lo que no se verificó:** la simulación de repasos de FSRS (la hizo un agente); los
+catálogos de DataCamp, Codecademy, Platzi, EDteam, Brilliant y Mimo (solo agentes; varios
+con antibot); el idioma del examen CCNA (la página de Cisco no se pudo leer).
+
+## 2026-09-30 (continuación) — 37.19: formato de examen del proveedor, rama `claude/eloquent-davinci-47pbpf`
+
+**Petición del dueño:** «Fix AIF-C01 and MLA-C01 exam format in tracks.json».
+
+**Qué se hizo (`764b06b`, verificador §7 CONFIRMADA):**
+- AIF-C01 (track11): 85 preguntas (65 + 20) y 120 min → **65 (50 + 15) y 90**, como publican
+  aws.amazon.com y la guía oficial (leídos el 2026-09-30).
+- MLA-C01 (track43): llevaba el formato del beta de MLA-C02 (85 / 170) → **65 (50 + 15) y
+  130**; `exam_guide_url` pasa de la página comercial a la guía PDF de C01. C01 sigue en
+  coreano, japonés y chino hasta que salga C02; la migración es la fila 39.25.
+- AZ-900 y DP-900 (track44/46): 85 min → **45** («You will have 45 minutes to complete this
+  assessment», página de examen de Microsoft Learn).
+- `test_certification_blueprints.py` fija esos formatos y la suma puntuadas + sin puntuar =
+  longitud. Mutado: con el `tracks.json` anterior, 5 rojos; con el arreglo a medias, 2 rojos.
+
+**Hallazgo nuevo (fila 37.22, sin tocar):** ISC2 CC cambió de outline el 2026-09-01 (examen
+adaptativo de 100–125 ítems, dominios renombrados y pesos 24/17,3/20/21,3/17,3). track40 sigue
+con el de 2022.
+
+**Lo que no se tocó:** AI-900 conserva 85 min sin fuente (la página del examen retirado no da
+duración; no lo usa nada porque sin número de preguntas no hay simulacro); `min_questions` /
+`max_questions` (40–60) de las tres de Microsoft tampoco tienen fuente y ningún código los lee.
+

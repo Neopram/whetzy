@@ -71,8 +71,9 @@ nivel de evidencia:
    esperando revisión del dueño.
 2. **Catálogo de contenido** (contado directamente, no de la prosa de
    `CATALOGO_MAESTRO.md`, que estaba desactualizada): 35 tracks, 10.944 preguntas, 723
-   skills/lecciones (100% cobertura). Contra la meta de ADR-46 (≥42 tracks × ≥50 cursos,
-   200 skills/3.000 preguntas por track): **≈8,6–8,7%** de profundidad real, **≈83%** si
+   skills/lecciones (100% cobertura). Contra la meta de ADR-46 (**histórica**: sustituida
+   por ADR-53 el 2026-09-30; entonces era ≥42 tracks × ≥50 cursos, 200 skills/3.000
+   preguntas por track): **≈8,6–8,7%** de profundidad real, **≈83%** si
    solo se cuenta "tracks que existen aunque sea vacíos" (métrica engañosa).
 3. **Ledger ("olas"/series)**: 203 filas ejecutables — 81 TODO, 64 DONE, 44
    HUMAN-BLOCKED (cola), 35 PARCIAL, 12 BLOCKED, 6 HUMAN-BLOCKED, 5 RESUELTA. Desglose

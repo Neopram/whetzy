@@ -384,7 +384,7 @@ Propuesta: cursos de **texto interactivo, sin vídeo**, para desarrolladores con
 | Plan Business | Más adelante; sin usuarios es una sala vacía | catálogo §9 |
 | Cloud Labs reales | **No** — coste de servidor y contrario al diferenciador WASM sin servidor | no se construye |
 | AI Mock Interviews | **No ahora** — fuera del nicho (cert prep + Python) y LLM caro | fase ≥ 20 |
-| 2.200+ cursos | **No por volumen** — profundidad > amplitud; el techo del catálogo era 27 tracks / ≈ 80 cursos *(histórico; meta actual ADR-46: ≥ 50 cursos × ≥ 42 tracks)* | catálogo §2 |
+| 2.200+ cursos | **No por volumen** — profundidad > amplitud; el techo del catálogo era 27 tracks / ≈ 80 cursos *(histórico; plan actual ADR-53: suelo 50 skills · 800 preguntas por track, ideal por temario — §14)* | catálogo §2 |
 | Testimoniales FAANG | No inventar ninguno; prueba social solo con cifras de `/evidence` | 19.8 |
 
 ### 11.5 Qué falta para vender en cada canal
@@ -405,10 +405,13 @@ Propuesta: cursos de **texto interactivo, sin vídeo**, para desarrolladores con
 
 ## 13. Recálculo — 2026-09-24: ADR-46 y la corrección de la proyección del catálogo
 
+> **Meta sustituida por ADR-53 el 2026-09-30 (§14).** La escalera de puntos de abajo sigue
+> valiendo; lo que cambia es qué significa «catálogo completo».
+
 Mismos pesos de §7.1. **Sin evidencia nueva de mercado: el marcador sigue en ≈ 44.**
 Lo que cambia es la meta y una corrección.
 
-- **Meta (ADR-46):** todos los tracks de la industria (28 del mapa + 14 de
+- **Meta (ADR-46, histórica; hoy ADR-53, §14):** todos los tracks de la industria (28 del mapa + 14 de
   `CATALOGO_MAESTRO.md` §2.0) con ≥ 50 cursos por track, sobre un corpus abierto
   descargado y verificado. Contenido pasaría de 55 a ≈ 85 cuando esté hecho y
   verificado: **+4,2 puntos** (0,14 × 30). Ni un punto más: el catálogo no toca
@@ -427,6 +430,10 @@ Lo que cambia es la meta y una corrección.
 
 ## 9. Catálogo frente al mercado — 2026-09-16 (sesión au)
 
+> **Histórico.** Los objetivos de la tabla (27 tracks, ≈ 80 cursos, ≈ 55 certificaciones) son los
+> de aquella fecha; el plan vigente es ADR-53 (§14) y la competencia medida está en
+> `CATALOGO_MAESTRO.md` §8 (2026-09-30).
+
 El dueño preguntó si Whetzy puede «abarcar todo el mundo informático». La respuesta
 completa está en **`CATALOGO_MAESTRO.md`**; aquí sólo lo que afecta al marcador.
 
@@ -441,7 +448,7 @@ tracks mueve *Contenido* (peso 0,14) unos puntos como mucho; no toca *Distribuci
 |---|---|---|---|
 | Tracks / cursos | 15 / 43 (11 completos + 2 stubs) | 27 / ≈ 80 | Boot.dev · Sololearn · Mimo *(≈ 15-40 cursos, estimación sin verificar — 18.12)* |
 | Certificaciones | 4 (blueprints corregidos en 18.1) | ≈ 55 | Whizlabs · Tutorials Dojo · KodeKloud |
-| Lecciones | 342/342 skills | 1/skill en 27 tracks *(histórico; meta actual ADR-46)* | Codecademy (texto) |
+| Lecciones | 342/342 skills | 1/skill en 27 tracks *(histórico; plan actual ADR-53, §14)* | Codecademy (texto) |
 | Ejecución en navegador | Python + SQL + **JS Worker (18.3)** | Python + SQL + JS + shell (v86 descartado, ADR-9) | Brilliant (celdas), DataCamp (IDE) |
 | Proyectos | 0 | 10/track ejecutable | Exercism · Boot.dev |
 | Vídeo | 0 | explicadores Manim (piloto 18.9) | nadie de la liga objetivo; Platzi/Udemy son otra liga |
@@ -476,3 +483,29 @@ pendientes de una re-puntuación con producto medido (34.9):
 3. **Hueco en español.** Ninguno de los preparadores de certificación observados
    muestra práctica ni *readiness* en español (informe de agente, §A.2, no
    reproducido).
+
+## 14. Recálculo — 2026-09-30: ADR-53, el catálogo por cobertura
+
+Mismos pesos de §7.1. **El marcador no se mueve: sigue en ≈ 44**, porque no se midió
+producto nuevo. Cambia qué cuenta como «catálogo completo» y entra la primera captura de
+catálogos de la competencia con URL y fecha (`CATALOGO_MAESTRO.md` §8; 4 descargadas y
+leídas por la sesión, el resto por agentes).
+
+- **Meta (ADR-53):** cada track al **suelo** (50 skills · 800 preguntas) y después al
+  **ideal** de su temario (4.819 skills · 96.380 preguntas en 45 tracks); certificaciones
+  con el 100 % de los objetivos y banco de simulacro reservado; tracks nuevos por demanda.
+  Contenido pasa de 55 a ≈ 85 **en el ideal**, igual que antes con ADR-46: **+4,2 puntos**.
+  El suelo solo lleva la dimensión Contenido a ≈ 70, es decir +2,1 puntos al marcador
+  (0,14 × 15); es una estimación de la sesión, sin medir.
+- **Escalera, sin cambios de fondo:** 44 hoy → ≈ 61 (backlog técnico) → ≈ 66 (tiendas +
+  social login + cohorte) → ≈ 70 (catálogo en el ideal de ADR-53).
+- **Lo que la captura cambia en la lectura, no en los puntos:**
+  - en amplitud, Whetzy ya supera a su competencia directa (24 tracks + 11
+    certificaciones frente a las 3 rutas y 51 cursos de Boot.dev);
+  - en profundidad por track está por debajo (20–30 skills frente a 51 lecciones y 20 h
+    del curso mediano de Boot.dev), y eso es lo que corrige el suelo;
+  - sus simulacros no tienen banco reservado (el mercado vende 6 simulacros por examen);
+  - retención y conversión de apps de educación con fuente (ADR-53 §8): D30 del 2,7–3,2 %,
+    conversión freemium del 2,1 %. Nada de eso es de Whetzy: son las referencias a batir.
+- **Lo que sí puede mover más de 4 puntos** sigue siendo §11.6: usuarios (H.10), tiendas
+  y distribución.

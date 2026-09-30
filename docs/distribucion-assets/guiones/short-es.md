@@ -17,7 +17,7 @@ Viral TikTok/YouTube Shorts. Gancho rápido para career-switchers. Target: 18-35
   - **Left:** Competidor genérico (lento, aburrido)
   - **Right:** Whetzy (rápido, preguntas correctas)
 - **Narración:** "Cada pregunta la elige un motor adaptativo, según lo que ya dominas."
-- **Sin cifra de ahorro de tiempo:** el «47 % menos tiempo» y las «500 preguntas únicas» de la v1 no salían de ningún dato (línea roja: ninguna cifra sin fuente). Las cifras que sí valen son las de la landing (18 rutas · 6.305 preguntas, `catalog.ts`)
+- **Sin cifra de ahorro de tiempo:** el «47 % menos tiempo» y las «500 preguntas únicas» de la v1 no salían de ningún dato (línea roja: ninguna cifra sin fuente). Las cifras que sí valen son las de la landing (35 tracks · 10.989 preguntas el 2026-09-30; léelas de `catalog.ts` el día que se grabe)
 - **Visual:** Barrita de progreso llenándose rápidamente, emoji de fuego (racha)
 
 ### CTA (0:45-0:60)
