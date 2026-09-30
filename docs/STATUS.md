@@ -2453,3 +2453,44 @@ confirmado con `py-spy` que progresaba y usaba sqlite en memoria, nunca producci
 de tiendas (Android API 36, versión de Capacitor) — solo detectados, sin tocar código
 todavía. PR #34 actualizado con el detalle completo de este merge.
 
+## 2026-09-30, misma sesión de continuación — Fase 3.1 (compliance de tiendas) y mypy --strict
+
+**Store compliance (`6f0878f`):** Android API 36 (compileSdk/targetSdk 35→36, verificado con
+`./gradlew assembleDebug` real — SDK 36 instalado ad-hoc, BUILD SUCCESSFUL, APK 14,5 MB, no
+solo el valor de config); `@capacitor/cli` 7.6.9→8.5.2 (alineado con core/android/plugins,
+vía npm, verificado con `cap sync`+`tsc -b`+`vitest`+`vite build`); `capacitor.config.ts`
+`ios.scheme` «Learning Engine»→«Whetzy». Dos bugs reales en docs de tienda: `DELETE
+/api/v1/auth/me` no existe (es `/auth/me/account`) y «cascade-deleted» es falso (soft-delete);
+4.8 decía «no aplica todavía» pero GitHub+Google OAuth (19.1) ya está en vivo sin flag
+(confirmado leyendo `oauth.py`+`AuthScreen.tsx`); fila 2.5.2 añadida (Pyodide/sql.js
+confirmados empaquetados, no CDN); fila 1.2 corregida de ✅ falso a ⚠️/❌ (`username`/
+`display_name` visibles entre usuarios en duelos/ligas sin moderación). 2 gaps reales
+documentados como filas nuevas (19.11 moderación de UGC, 19.12 borrado de cuenta sin purga
+real — 14/42 FK a `users.id` sin cascade) en vez de parcheados a medias.
+
+**mypy --strict (`0683867`):** 29→13 errores; los 13 restantes son deuda de librería
+documentada (torch/sentence_transformers/apscheduler/pywebpush/rank_bm25/sklearn, Railway
+free tier las omite a propósito). De los 16 reales: uno era un **bug en producción sin
+ningún test** — `get_economy_scorecard` filtraba por `PromoCodeRedemption.created_at`
+(columna que no existe; la real es `redeemed_at`), así que cada llamada real a
+`GET /admin/economy/scorecard` habría dado `AttributeError` (500). Arreglado; test nuevo
+mutado (revertido a `created_at`, confirmado en rojo con el `AttributeError` exacto,
+restaurado). El resto: 3 closures locales sin anotar en `admin.py` (una nunca se llamaba,
+borrada), `SCORECARD_TARGETS` sin tipo, `d30: float | str` sin anotar, `os.sys.version` →
+`sys.version`, `Result[Any].rowcount` en `push.py` → `cast()` a `CursorResult`, 4
+`type: ignore` ya inertes borrados (uno en `job.py`, tres en `security.py` tras instalar
+`types-python-jose`/`types-passlib`). `ci.yml`: `mypy==2.3.1` fijado (última de PyPI).
+
+**Investigado y verificado, sin ejecutar (demasiado grande para este bloque):** 37.22 (ISC2
+CC) confirmado en vivo contra isc2.org — outline nuevo desde el 2026-09-01, dominios
+renombrados (D2 «Security Governance» es nuevo, sin equivalente 2022), pesos
+24/17,3/20/21,3/17,3, 100-125 ítems adaptativos/2h. No es un cambio de metadatos: el banco
+de 353 preguntas de track40 necesita reclasificarse por dominio nuevo y Governance necesita
+contenido que hoy no existe — se deja documentado en la fila 37.22, no a medias.
+
+**12 + 6 notificaciones de GitHub de este bloque:** los 4 checks de Actions (backend,
+frontend, android, e2e) siguen fallando en 2-4s sin obtener runner en todos los commits de
+este PR y en `master` mismo (`e83bf63`, `ec9e70243`) — confirmado con la API de GitHub, no
+solo memoria de sesión: es H.13 (facturación), no una regresión de este trabajo, y ya está
+explicado en un comentario de este PR. Cloudflare Pages despliega bien en cada push.
+
