@@ -2621,3 +2621,27 @@ tocados — el único error de mypy que queda (`open_badges.py`) es previo a est
 `check_docs.py` y `ledger.py check` verdes. Ledger corregido: 37.18 y 37.20 siguen DONE, con
 la evidencia real, no la incompleta de `edaf63b`.
 
+## 2026-09-30, misma sesión de continuación — segunda corrección: CURR medía un día en curso
+
+El dueño encontró un cuarto fallo real en `4952ea8`, el mismo commit que acababa de corregir
+los tres primeros: `curr()` usaba D+1 = **hoy**, un día todavía sin terminar. Consultado a
+las 09:00 UTC, casi nadie ha "vuelto hoy" simplemente porque hoy lleva 9 horas — la cifra se
+movía según la hora de la consulta, no según el comportamiento real, y un retorno real y ya
+completo (por ejemplo anteayer→ayer) podía leerse como un falso 0 si hoy no tenía datos
+todavía.
+
+**Arreglo:** D = anteayer, D+1 = ayer — los dos, días UTC ya terminados. `curr()` ya no mira
+nunca los datos de hoy. Docstring reescrito para decirlo explícitamente; `PRODUCT_METRIC_TARGETS["curr"]`
+anota "días UTC completos, nunca el día en curso".
+
+**Prueba pedida explícitamente por el dueño**: `now` congelado a las 00:05 UTC (una hora
+donde el fallo antiguo sería más visible) con un retorno plantado dos días atrás (anteayer→ayer,
+completo) — confirmado en rojo contra el código anterior (`assert 0 == 1` en `returned_next_day`,
+restaurando D=ayer/D+1=hoy a mano) antes de restaurar el arreglo y confirmar verde. Las 4
+pruebas de cohorte existentes desplazadas un día (D=yesterday→D=day-before-yesterday) para
+seguir usando `NOW` real sin necesidad de congelar el tiempo.
+
+**Pruebas:** `tests/unit/test_product_metrics.py::TestCurr` (6, incluida la nueva) +
+`test_analytics.py`+`test_analytics_dashboard.py`+`test_billing.py`+`test_revenuecat_webhook.py`
+— 53 passed. `ruff` y `mypy --strict` limpios. `check_docs.py`/`ledger.py check` verdes.
+

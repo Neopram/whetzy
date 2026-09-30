@@ -101,16 +101,18 @@ class TestD30Return:
 class TestCurr:
     """Duolingo's own definition (Q2 FY2026 shareholder letter, quoted in
     curr()'s docstring): a "current user DAU" is active on reference day
-    D=yesterday *and* active on some OTHER day in the 7 days before D — two
-    separate conditions, not just "active sometime in the trailing week"."""
+    D=the day before yesterday *and* active on some OTHER day in the 7 days
+    before D — two separate conditions, not just "active sometime in the
+    trailing week". D+1=yesterday is the return day. Both are complete UTC
+    days; curr() never looks at today's still-in-progress data."""
 
     @pytest.mark.asyncio
     async def test_current_user_dau_who_returns_the_next_day_counts(self, db_session) -> None:
         u = _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
-        _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=5)  # D
-        _make_session(db_session, u.id, started_at=NOW - timedelta(days=4), duration_minutes=5)  # other day in prior 7
-        _make_session(db_session, u.id, started_at=NOW, duration_minutes=5)  # D+1 = today
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=2), duration_minutes=5)  # D
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=5), duration_minutes=5)  # other day in prior 7
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=5)  # D+1 = yesterday
         await db_session.commit()
 
         result = await curr(db_session)
@@ -124,9 +126,9 @@ class TestCurr:
     ) -> None:
         u = _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
-        _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=5)  # D
-        _make_session(db_session, u.id, started_at=NOW - timedelta(days=4), duration_minutes=5)  # other day
-        # No session today.
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=2), duration_minutes=5)  # D
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=5), duration_minutes=5)  # other day
+        # No session yesterday.
         await db_session.commit()
 
         result = await curr(db_session)
@@ -136,12 +138,13 @@ class TestCurr:
 
     @pytest.mark.asyncio
     async def test_active_only_on_day_d_is_not_a_current_user_dau(self, db_session) -> None:
-        """Active on D (yesterday) with no OTHER active day in the prior
-        week — Duolingo's definition requires both, not just a DAU on D."""
+        """Active on D (day before yesterday) with no OTHER active day in
+        the prior week — Duolingo's definition requires both, not just a
+        DAU on D."""
         u = _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=2), duration_minutes=5)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=5)
-        _make_session(db_session, u.id, started_at=NOW, duration_minutes=5)
         await db_session.commit()
 
         result = await curr(db_session)
@@ -152,16 +155,49 @@ class TestCurr:
     async def test_active_this_week_but_not_on_day_d_is_not_a_current_user_dau(
         self, db_session
     ) -> None:
-        """Active earlier in the trailing week but not on D (yesterday)
-        itself — not a DAU on D, so not in the cohort at all."""
+        """Active earlier in the trailing week but not on D (day before
+        yesterday) itself — not a DAU on D, so not in the cohort at all."""
         u = _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
-        _make_session(db_session, u.id, started_at=NOW - timedelta(days=3), duration_minutes=5)
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=4), duration_minutes=5)
         await db_session.commit()
 
         result = await curr(db_session)
         assert result["current_user_daus"] == 0
         assert result["curr"] is None
+
+    @pytest.mark.asyncio
+    async def test_curr_ignores_todays_partial_data_regardless_of_query_hour(
+        self, db_session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Regression: an earlier version used D=yesterday, D+1=today, so
+        querying at 09:00 UTC (today only 9h old) made a real, fully-
+        resolved day-over-day return read as a false 0 — the metric would
+        swing with the hour it happened to be read at. Freezes "now" at
+        00:05 UTC and plants a return that is complete two days earlier
+        (day -2 -> day -1), which the buggy version cannot see at all
+        because it only ever looked at D=yesterday and D+1=today (empty,
+        since today just started)."""
+        frozen_now = datetime(NOW.year, NOW.month, NOW.day, 0, 5, tzinfo=UTC)
+
+        class _FrozenDatetime(datetime):
+            @classmethod
+            def now(cls, tz=None):  # type: ignore[override]
+                return frozen_now if tz is None else frozen_now.astimezone(tz)
+
+        monkeypatch.setattr("app.services.analytics.datetime", _FrozenDatetime)
+
+        u = _make_user(db_session, created_at=frozen_now - timedelta(days=60))
+        db_session.add(u)
+        _make_session(db_session, u.id, started_at=frozen_now - timedelta(days=9), duration_minutes=5)  # other day
+        _make_session(db_session, u.id, started_at=frozen_now - timedelta(days=2), duration_minutes=5)  # D
+        _make_session(db_session, u.id, started_at=frozen_now - timedelta(days=1), duration_minutes=5)  # D+1
+        await db_session.commit()
+
+        result = await curr(db_session)
+        assert result["current_user_daus"] == 1
+        assert result["returned_next_day"] == 1
+        assert result["curr"] == 1.0
 
     @pytest.mark.asyncio
     async def test_no_current_user_daus_returns_none_not_a_fake_zero(self, db_session) -> None:

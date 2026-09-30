@@ -36,7 +36,7 @@ PRODUCT_METRIC_TARGETS: dict[str, str] = {
     "conversion_d35_rate": ">= 0.021 (meta 0.03)",
     "completion_rate_among_payers": "0.40-0.55",
     "weekly_30min_rate_among_payers": ">= 0.25 (hipotesis)",
-    "curr": "medirla desde el dia 1, sin suelo publicado todavia (referencia: Duolingo 84%, Q2 FY2026, misma definicion — ver docstring de curr())",
+    "curr": "medirla desde el dia 1, sin suelo publicado todavia (referencia: Duolingo 84%, Q2 FY2026, misma definicion — ver docstring de curr()); dias UTC completos, nunca el dia en curso",
     "mock_exam_calibration": "publicarla siempre con n, sin suelo (nadie en el mercado publica una auditada)",
 }
 
@@ -236,30 +236,40 @@ async def curr(db: AsyncSession) -> dict[str, object]:
         is one who was also active another time in the previous seven days."
         — CURR reported there: 84%, an all-time high (+~1pp YoY).
 
-    Reference day D = yesterday (the freshest day fully observable, since
-    today's "did they come back tomorrow" cannot exist yet). A "current user
-    DAU" is a user active ON DAY D *and* active on some OTHER day in the 7
-    days before D — two separate conditions, not just "active sometime in
-    the past week": a user who only ever showed up once, on day D itself,
-    does not count, and neither does one who was active in the trailing week
-    but not on D itself. `curr` is the fraction of that cohort also active
-    today (D+1). Comparing this number to Duolingo's 84% is only honest
-    because the cohort definition now matches theirs term for term — an
-    earlier version of this function used a looser "active anytime in the
-    trailing week, then active today" cohort, which is a materially larger
-    and differently-composed group and would not have been a fair
-    comparison.
+    Reference day D = the day before yesterday, D+1 = yesterday — both full,
+    already-elapsed UTC days. Using "today" as D+1 (an earlier version of
+    this function did) makes CURR measure a day that has not finished yet:
+    queried at 09:00 UTC, almost nobody has "returned today" simply because
+    today is 9 hours old, so the number would silently swing with the hour
+    it happens to be read at rather than with actual behavior — a real
+    day-over-day return that already fully happened (D -> D+1, both
+    complete) would read as a false 0 if D+1 were still "today" in progress.
+    This function never looks at today's (partial) data; everything it
+    counts is measured in complete UTC days.
+
+    A "current user DAU" is a user active ON DAY D *and* active on some
+    OTHER day in the 7 days before D — two separate conditions, not just
+    "active sometime in the past week": a user who only ever showed up
+    once, on day D itself, does not count, and neither does one who was
+    active in the trailing week but not on D itself. `curr` is the fraction
+    of that cohort also active on D+1. Comparing this number to Duolingo's
+    84% is only honest because the cohort definition now matches theirs
+    term for term — an earlier version of this function used a looser
+    "active anytime in the trailing week, then active today" cohort, which
+    is a materially larger and differently-composed group and would not
+    have been a fair comparison.
     """
     now = datetime.now(UTC)
     today_start = datetime(now.year, now.month, now.day, tzinfo=UTC)
-    yesterday_start = today_start - timedelta(days=1)
-    window_start = yesterday_start - timedelta(days=7)
+    reference_day_start = today_start - timedelta(days=2)  # D
+    return_day_start = today_start - timedelta(days=1)  # D+1 = yesterday
+    window_start = reference_day_start - timedelta(days=7)
 
     rows = (
         await db.execute(
             select(StudySession.user_id, StudySession.started_at).where(
                 StudySession.started_at >= window_start,
-                StudySession.started_at < today_start + timedelta(days=1),
+                StudySession.started_at < today_start,
             )
         )
     ).all()
@@ -268,14 +278,14 @@ async def curr(db: AsyncSession) -> dict[str, object]:
     for user_id, started_at in rows:
         active_days_by_user[user_id].add(_aware(started_at).date())
 
-    yesterday_date = yesterday_start.date()
-    today_date = today_start.date()
-    prior_week_dates = {(yesterday_start - timedelta(days=d)).date() for d in range(1, 8)}
+    reference_date = reference_day_start.date()
+    return_date = return_day_start.date()
+    prior_week_dates = {(reference_day_start - timedelta(days=d)).date() for d in range(1, 8)}
 
     current_user_daus = {
         user_id
         for user_id, days in active_days_by_user.items()
-        if yesterday_date in days and (days & prior_week_dates)
+        if reference_date in days and (days & prior_week_dates)
     }
 
     if not current_user_daus:
@@ -284,7 +294,7 @@ async def curr(db: AsyncSession) -> dict[str, object]:
     returned_next_day = {
         user_id
         for user_id in current_user_daus
-        if today_date in active_days_by_user.get(user_id, set())
+        if return_date in active_days_by_user.get(user_id, set())
     }
 
     return {
