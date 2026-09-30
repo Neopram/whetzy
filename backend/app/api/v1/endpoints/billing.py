@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.user import User
-from app.services import revenuecat_service, stripe_service
+from app.services import analytics, revenuecat_service, stripe_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -106,7 +106,15 @@ async def stripe_webhook(
             logger.warning("Stripe webhook: no user found for customer %s", customer_id)
             return {"received": True}
 
+        # 37.20 (ADR-53 §8): conversion-to-paid rate needs the moment a user
+        # first becomes premium, and current state alone can't reconstruct
+        # that (a later churn erases it). Comparing before/after here, not
+        # inside apply_subscription_event, catches only the real transition —
+        # a renewal or tier change while already premium must not re-fire it.
+        was_premium = user.is_premium
         stripe_service.apply_subscription_event(user, event)
+        if user.is_premium and not was_premium:
+            await analytics.track(db, "subscription_started", user_id=user.id)
         await db.commit()
 
     return {"received": True}
@@ -148,7 +156,10 @@ async def revenuecat_webhook(
         logger.warning("RevenueCat webhook: no user found for app_user_id %s", user_id)
         return {"received": True}
 
+    was_premium = user.is_premium
     revenuecat_service.apply_subscription_event(user, event)
+    if user.is_premium and not was_premium:
+        await analytics.track(db, "subscription_started", user_id=user.id)
     await db.commit()
 
     return {"received": True}

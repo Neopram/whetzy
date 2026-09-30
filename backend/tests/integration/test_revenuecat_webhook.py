@@ -24,7 +24,10 @@ import json
 import time
 import uuid
 
+from sqlalchemy import select
+
 from app.core.security import create_access_token
+from app.models.analytics import AnalyticsEvent
 from app.models.user import User
 
 BILLING = "/api/v1/billing"
@@ -127,6 +130,17 @@ async def test_initial_purchase_activates_subscription(client, user, db_session,
     assert user.subscription_provider == "revenuecat"
     assert user.subscription_expires_at is not None
 
+    # 37.20: the false->true transition fires subscription_started exactly once.
+    events = (
+        await db_session.execute(
+            select(AnalyticsEvent).where(
+                AnalyticsEvent.user_id == user.id,
+                AnalyticsEvent.event_type == "subscription_started",
+            )
+        )
+    ).scalars().all()
+    assert len(events) == 1
+
 
 async def test_renewal_refreshes_expiry(client, user, db_session, monkeypatch):
     monkeypatch.setattr("app.core.config.settings.REVENUECAT_WEBHOOK_AUTHORIZATION", FAKE_AUTH)
@@ -151,6 +165,17 @@ async def test_renewal_refreshes_expiry(client, user, db_session, monkeypatch):
     await db_session.refresh(user)
     assert user.subscription_tier == "pro"
     assert user.is_premium is True
+
+    # Already premium before the webhook fired — a renewal must not refire.
+    events = (
+        await db_session.execute(
+            select(AnalyticsEvent).where(
+                AnalyticsEvent.user_id == user.id,
+                AnalyticsEvent.event_type == "subscription_started",
+            )
+        )
+    ).scalars().all()
+    assert len(events) == 0
 
 
 async def test_cancellation_does_not_revoke_access_immediately(client, user, db_session, monkeypatch):

@@ -2494,3 +2494,65 @@ este PR y en `master` mismo (`e83bf63`, `ec9e70243`) — confirmado con la API d
 solo memoria de sesión: es H.13 (facturación), no una regresión de este trabajo, y ya está
 explicado en un comentario de este PR. Cloudflare Pages despliega bien en cada push.
 
+## 2026-09-30, misma sesión de continuación — fusión de `e83bf63` (31.4), 37.18 y 37.20
+
+**Fusión de `origin/master` (`5d617d0` + `d502d23`):** trajo la fila 31.4 (el bloqueo de
+lección ignoraba la práctica previa) sin conflictos de git — el único auto-resuelto fue el
+propio ledger. El ledger fusionado quedó en 62.443 bytes, por encima del límite de 61.440;
+archivadas 31.4, 29.7 y 29.8 a `docs/archive/LEDGER_HISTORY.md` §N para volver a caber.
+Verificado con el subconjunto dirigido (70.095 passed) más los 3 ficheros de test traídos
+por la fusión (106 passed): `lessons.py`, `lesson_gate.py`, sus tests.
+
+**37.18 — banco de simulacro reservado (`be18cf9`):** migración `20260930_question_pool`
+añade `questions.pool` (`"practica"`/`"simulacro"`); `_select_question` (quiz.py, el
+selector único de práctica y repaso) excluye `"simulacro"`, `_questions_by_domain`
+(mock_exam.py) exige sólo `"simulacro"` — ambos detrás de `MOCK_EXAM_RESERVED_POOL_ENABLED`
+(`False` por defecto, banco vacío hoy: encenderlo ahora rompería cada simulacro en
+producción). 5 tests nuevos, cada regla mutada en rojo antes de confiar en ella. Poblar el
+banco real queda en 37.24 (autoría de contenido, no código).
+
+**37.20 — métricas de producto con meta (ADR-53 §8):** D30 y CURR nuevas en
+`services/analytics.py`, junto a `conversion_d35` (usa el evento `subscription_started`,
+nuevo, disparado solo en la transición real `is_premium` false→true de los dos webhooks de
+`billing.py` — Stripe y RevenueCat, nunca en una renovación) y
+`weekly_30min_rate_among_payers`. El admin (`GET /analytics/dashboard`) muestra cada métrica
+junto a su meta (`PRODUCT_METRIC_TARGETS`); completion de pago y calibración del simulacro
+no tienen señal hoy (ningún «track completado» en el modelo, ningún enlace con el resultado
+del examen real) y quedan marcadas `not_yet_measurable` con el motivo, no aproximadas con una
+definición que nadie ha firmado — mismo criterio que ya sigue `mock_exam.py` con el score
+predicho.
+
+**Bug real encontrado y arreglado, no solo en código nuevo.** El primer intento de D30 (y de
+`conversion_d35`) fallaba con datos plantados a mano que deberían haber contado. Causa raíz,
+confirmada por tres vías independientes: (1) prints de depuración mostraron que la fecha
+esperada sí estaba en la fila correcta; (2) `.compile(compile_kwargs={"literal_binds": True})`
+sobre la subconsulta `EXISTS` lanzó `CompileError` al intentar renderizar un `timedelta` como
+literal `DATETIME` — SQLAlchemy tipa `DateTime_columna +/- timedelta` como `DATETIME`, no
+como `Interval`, bajo el dialecto de SQLite; (3) un script aislado confirmó que esto **ya
+afectaba al D1 preexistente**, sin tocar por esta sesión: un usuario registrado hace 5 días
+con una sesión al día siguiente — un retorno D1 inequívoco — daba `d1_return: 0`. No es un
+bug de producción (Postgres sí soporta esa aritmética de forma nativa), pero sí un hueco real
+de cobertura: la familia D1/D7 nunca tuvo un test unitario que fijara su aritmética exacta,
+solo una comprobación de forma en integración, así que el fallo llevaba tiempo sin dispararse.
+Arreglado reescribiendo D1/D7/D30 y `conversion_d35` para traer las filas crudas
+(`user_id`, fecha) y comparar la ventana en Python — mismo patrón que ya usaba
+`weekly_30min_rate_among_payers` sin este problema, ahora dialecto-agnóstico por construcción
+en vez de correcto-por-suerte en Postgres. Mutado en rojo (con el propio código del fix
+apagado) y restaurado en verde antes de confiar en él.
+
+**Pruebas:** `tests/unit/test_product_metrics.py` (14, nuevo), `tests/integration/
+test_analytics.py`+`test_analytics_dashboard.py` (14), `tests/integration/test_billing.py`
+(11, 2 nuevos con el evento `subscription_started` verificado y mutado)+
+`test_revenuecat_webhook.py` (11, 1 nuevo) — 50 passed. `mypy --strict` (invocación exacta de
+`ci_local.sh`: `python -m mypy app --strict --ignore-missing-imports`) y `ruff==0.16.8` (la
+que fija CI) limpios en todos los ficheros tocados; el único error de mypy que queda
+(`open_badges.py`) es previo a esta sesión, no tocado. `check_docs.py` y `ledger.py check`
+verdes.
+
+**37.6 y 37.10 sin tocar**, por instrucción explícita del dueño en este bloque.
+
+Checks de GitHub Actions (backend/frontend/android/e2e) siguen en H.13 (facturación) en los
+dos commits de este bloque — mismo patrón de siempre (2-4s, log 404, sin runner), ya
+explicado varias veces en este PR; no hace falta un comentario nuevo por la regla de «ya
+comentado así».
+
