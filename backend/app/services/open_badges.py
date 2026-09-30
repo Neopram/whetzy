@@ -16,7 +16,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 import cryptography.exceptions
-import qrcode  # type: ignore[import-untyped]
+import qrcode
 from cryptography.hazmat.primitives.asymmetric.ed25519 import (
     Ed25519PrivateKey,
     Ed25519PublicKey,
