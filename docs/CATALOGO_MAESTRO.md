@@ -365,10 +365,10 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | AWS | **SAA-C03** | track10 | ✅ — 4 dominios, suma 100 (18.1) | — |
 | AWS | **AIF-C01** | track11 / track07 | ✅ — 5 dominios completos (18.1) | — |
 | AWS | DVA-C02 | track28 | ❌ | P2 |
-| AWS | **MLA-C01** → MLA-C02 | track07 | ✅ track43 — 12 task statements, 165 Q; MLA-C01 deja de ofrecerse en inglés el 2026-09-28 (39.25) y el repo lleva el formato de C02 (37.19) | — |
+| AWS | **MLA-C01** → MLA-C02 | track07 | ✅ track43 — 12 task statements, 165 Q; MLA-C01 deja de ofrecerse en inglés el 2026-09-28 (39.25); formato C01 (65 preguntas, 130 min) fijado en 37.19 | — |
 | AWS | SOA-C02 · DOP-C02 · SAP-C02 | track18/19 | ❌ | P3 |
 | AWS | Security Specialty (SCS-C02) | track25 | ❌ | P2 |
-| ISC2 | **CC** (Certified in Cybersecurity, examen gratuito) | track13 | ✅ **track40** — 353 Q, 5 dominios con pesos verificados, 15 % exec, `correct_index` auditado (18.2 / 18.14) | — |
+| ISC2 | **CC** (Certified in Cybersecurity, examen gratuito) | track13 | ✅ **track40** — 353 Q, 5 dominios con pesos verificados, 15 % exec, `correct_index` auditado (18.2 / 18.14); **outline nuevo desde el 2026-09-01** (examen adaptativo de 100–125 ítems, dominios y pesos distintos): el track sigue con el de 2022 (37.22) | — |
 | ISC2 | SSCP · CCSP · CISSP | track13/25 | ❌ | P3 |
 | CompTIA | **Security+ SY0-701** | track13 | ✅ track42 — 300 Q; V8 (SY0-801, solo inglés) el 2026-11-17 (39.26) | — |
 | CompTIA | Network+ · Linux+ · PenTest+ · CySA+ | track17/15/24 | ❌ | P2 |
@@ -410,7 +410,7 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 | Práctica adaptativa (quiz) | ✅ 10.989 Q · 15,2 por skill | suelo ≥ 16 por skill (800 por track); ideal 20 por skill | `check_question_bank.py` + `catalog_coverage.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
-| Simulacro de certificación en formato real | ✅ 11; formato distinto del publicado en AIF-C01 y MLA-C01 (37.19) | formato del proveedor + **banco reservado 6 × examen** (0/3.120 hoy) | `test_certification_blueprints.py` + 37.18 |
+| Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900 y DP-900 (37.19); ISC2 CC aún con el outline de 2022 (37.22); Microsoft no publica el número de preguntas, así que AZ-900, AI-900 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 6 × examen** (0/3.120 hoy) | `test_certification_blueprints.py` + 37.18 |
 | **Readiness por dominio** | 18.1 | «P(aprobar)» por cert con BKT × peso oficial, calibrado frente al examen real con n publicado | 18.1 + métricas de ADR-53 §8 |
 | Glosario | 1.044 términos | ≥ 1 término por skill (suelo 50 por track) | `check_docs.py` |
 | **Vídeo explicativo** | **0** | 1 animación de 30-90 s por skill donde aporte (algoritmos, redes, arquitectura, SQL) | 18.9 |
@@ -566,8 +566,9 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
 
 1. **Fase 0 (código):** 37.18 banco de simulacro reservado · 37.19 formatos de examen del
    proveedor (AIF-C01, MLA-C01, Microsoft) · 37.20 métricas de producto con meta.
-2. **Fase 1:** 37.10 las 11 certificaciones al suelo (MLA-C01 y Microsoft primero, las más
-   lejos); nuevas en español después (GCP ACE, LPIC-1, AZ-104).
+2. **Fase 1:** 37.22 ISC2 CC al outline de 2026 (dominios y pesos nuevos) y 37.10 las 11
+   certificaciones al suelo (MLA-C01 y Microsoft primero, las más lejos); nuevas en español
+   después (GCP ACE, LPIC-1, AZ-104).
 3. **Fase 2:** 37.6 los 24 tracks construidos al suelo, **A primero** (track02, 03, 12, 14,
    15, 18, 22, 26, 27, 28, 30), luego B (19, 23) y C; 37.7 track24/25 reconstruidos.
 4. **Fase 3:** 37.8 tracks nuevos A (TypeScript, Java, C#) y B (C/C++, PowerShell, PHP, Go,
