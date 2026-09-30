@@ -51,7 +51,7 @@ Landing → Registro (30s) → Diagnóstico 10 preguntas (3 min)
 ### Métricas de éxito para este segmento
 - TTFQ < 120s desde registro
 - Day-7 retention > 15%
-- Free→Pro conversion > 4% (mejor que benchmark 2.6%)
+- Free→Pro conversion > 4% (mediana freemium 2,1 % y Education iOS 3,1 %, RevenueCat 2026; ADR-53 §8)
 - Completion rate track01 > 30%
 
 ---
@@ -74,7 +74,7 @@ Landing → Registro (30s) → Diagnóstico 10 preguntas (3 min)
 ### Propuesta de valor Whetzy
 > "Ruta Python→AI Engineer verificada por el mercado laboral. Certificaciones
 > que los empleadores reconocen. El motor ajusta el ritmo a tus 2 horas diarias.
-> Completion rate > 70% — no eres tú, era el método."
+> Que termines la ruta es el objetivo, y lo medimos — no eres tú, era el método."
 
 ### Plan y precio
 - **Pro Max $19.99/mo** (antes «Premium»; lo que añade sobre Pro lo decide el dueño, H.35 / ADR-41)
@@ -92,7 +92,7 @@ Landing (sección career-switcher) → "¿Cuánto tiempo tienes por día?"
 ```
 
 ### Métricas de éxito
-- Completion rate > 50% (vs 10-15% industria)
+- Completion rate > 50% (edX: 46 % entre quienes pagan, 3,13 % de todos los inscritos; ADR-53 §8)
 - Certificaciones completadas por usuario > 1 en 6 meses
 - Testimonios de empleados conseguidos > 10 en año 1
 

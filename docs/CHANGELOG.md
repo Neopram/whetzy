@@ -5,6 +5,26 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-09-30 (plan del catálogo por cobertura, ADR-53 — rama `claude/eloquent-davinci-47pbpf`)
+
+**ES**
+
+- **Nuevo plan del catálogo** (ADR-53): cada track se mide contra un suelo de 50 skills y 800 preguntas y contra el ideal de su temario de referencia, en lugar de «≥ 50 cursos por track». Las certificaciones se miden por sus objetivos oficiales y por un banco de simulacro reservado.
+- **Informe de cobertura**: `python scripts/catalog_coverage.py` muestra, por track y por certificación, cuánto falta para el suelo y para el ideal; sus denominadores tienen fuente y fecha.
+- **Los tracks planificados ya no reutilizan ids de certificaciones existentes** (MLOps, Solidity, videojuegos, IoT, Matemáticas y Soporte IT pasan a track51–56).
+- **Fichas de tienda al día**: 35 tracks y 723 habilidades; los simulacros se describen por dominios oficiales.
+- **Simulacros con el formato real del examen** (37.19): AWS AI Practitioner (AIF-C01) pasa a 65 preguntas y 90 minutos, y Machine Learning Engineer (MLA-C01) a 65 preguntas y 130 minutos, como los publica AWS. Azure Fundamentals y Azure Data Fundamentals figuran con 45 minutos.
+
+**EN**
+
+- **New catalogue plan** (ADR-53): each track is measured against a floor of 50 skills and 800 questions and against the ideal of its reference syllabus, instead of "≥ 50 courses per track". Certifications are measured by their official objectives and by a reserved mock-exam pool.
+- **Coverage report**: `python scripts/catalog_coverage.py` shows, per track and per certification, how far each is from the floor and from the ideal; its denominators carry a source and a date.
+- **Planned tracks no longer reuse the ids of existing certifications** (MLOps, Solidity, games, IoT, Maths and IT support move to track51–56).
+- **Store listings updated**: 35 tracks and 723 skills; mock exams are described by official domains.
+- **Mock exams in the real exam format** (37.19): AWS AI Practitioner (AIF-C01) moves to 65 questions and 90 minutes, and Machine Learning Engineer (MLA-C01) to 65 questions and 130 minutes, as AWS publishes them. Azure Fundamentals and Azure Data Fundamentals show 45 minutes.
+
+---
+
 ## [Unreleased] — 2026-09-26 (noche tardía, control total — rama `claude/gallant-tesla-fnzy1g`, PR #34)
 
 **ES**

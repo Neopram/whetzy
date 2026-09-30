@@ -45,12 +45,14 @@ ADR-16 queda suspendida). Cancelar en dos toques.
 - **NO** voz. **NO** OCR. Cuando aparezca la tentación, no.
 - Groq + `qwen/qwen3.8-27b` tras la abstracción `LLMProvider`. Cambiar de
   proveedor es config, no refactor.
-- Catálogo: **`docs/CATALOGO_MAESTRO.md`** — **todos los tracks de la industria**
-  (28 del mapa + 14 de §2.0, y los que 35.1 confirme) con **≥ 50 cursos por track** y
-  ~55 certificaciones (ADR-42), sobre un corpus abierto descargado y verificado en
-  `corpus/` (fuera del repo). Las cifras de hoy (tracks, cursos = módulos, preguntas)
+- Catálogo: **`docs/CATALOGO_MAESTRO.md`** — plan de **ADR-53**: cada track de aprendizaje
+  al **suelo** (50 skills · 800 preguntas · 1 lección y 1 término por skill) y después al
+  **ideal** de su temario (20 preguntas por skill); cada certificación con el 100 % de sus
+  objetivos y un **banco de simulacro reservado** (6 × examen); tracks nuevos por **demanda
+  medida** (A → B → C). Cobertura: `python scripts/catalog_coverage.py`. Contenido sobre
+  un corpus abierto descargado y verificado en `corpus/` (fuera del repo, ADR-46). Las cifras de hoy (tracks, cursos = módulos, preguntas)
   viven solo en `frontend/src/lib/catalog.ts`, vigiladas por `check_docs.py` [4]. El
-  catálogo es la única lista; cuando otro doc lo contradiga, manda el catálogo. **La puerta 35.0 va antes que cualquier pregunta nueva.** No hay atajos.
+  catálogo es la única lista; cuando otro doc lo contradiga, manda el catálogo. **La puerta 37.0 va antes que cualquier pregunta nueva.** No hay atajos.
 - Contenido redactado nativo en ES y EN — no traducido. Toda pregunta cita fuente.
 - **Fuentes solo gratuitas y legales** (ADR-11, catálogo §2.1): reutilizar solo
   MIT / Apache / BSD / CC BY / CC0 / PSF / dominio público; CC BY-SA espera H.LIC;
@@ -98,7 +100,7 @@ ADR-16 queda suspendida). Cancelar en dos toques.
 | Métrica | Umbral | Cómo se mide |
 |---|---|---|
 | Tiempo hasta la primera pregunta | < 60 s desde la landing, registro incluido | Playwright cronometrado |
-| Retención D1 / D7 | ≥ 40 % / ≥ 20 % | Eventos de analytics (5.4), no estimación |
+| Retención D1 / D7 | ≥ 40 % / ≥ 20 % en la cohorte beta de 30 invitados (H.10); con tráfico abierto, el suelo es el de ADR-53 §8 (D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %) | Eventos de analytics (5.4), no estimación |
 | Sesiones sin crash | ≥ 99,5 % | Error tracking (6.4) |
 | p95 API | < 500 ms | Métricas (6.3) + load test (8.2) |
 | Bugs P0/P1 abiertos al lanzar | 0 | Ledger |

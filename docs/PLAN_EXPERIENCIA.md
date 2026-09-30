@@ -165,6 +165,12 @@ reportado en `COMPETENCIA.md` §A.2b.
 
 ## 5. Pilar E: rutas que hoy no están en el catálogo
 
+> **Orden por ADR-53 (2026-09-30):** TypeScript (track38) y Java (track33) son nivel A de
+> demanda y entran por 37.8 en cuanto la fase 2 lo permita; el analista de datos no es un
+> track nuevo sino llevar track21 hacia su ideal (roadmap data-analyst, 99 nodos); UX/UI no
+> está en los 45 tracks del plan (sin medida de demanda en la encuesta y una sola fuente de
+> temario) y solo entra si 37.1 le encuentra ambas.
+
 1. **Analista de datos ejecutable.** pandas en Pyodide + SQL en el navegador,
    con datasets de licencia abierta (ADR-11). Kodree enseña Excel/Power BI sin
    ejecutar nada en la lección, según lo publicado. La certificación a mapear

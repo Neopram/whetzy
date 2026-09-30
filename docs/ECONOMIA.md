@@ -27,7 +27,7 @@ cada uno tiene una versión que funciona sin nada de lo anterior:
 | «Que crezca sola» | **Referidos por activación + códigos autogenerados** | ADR-35 | 29.3–29.7 |
 | «Solana para pagos» | **USDC como rail** (Stripe *Pay with Crypto*; payouts a instructores) | ADR-36 | 29.9, 21.2, 28.7 |
 | «Que exista on-chain» | **Credenciales verificables** Open Badges 3.0; cNFT opcional | ADR-37 | 29.10, 24.7 |
-| «Solana está despertando» | **track32 Solana/Web3 en español** + Superteam como canal y financiación no dilutiva | ADR-38 | 25.14, 26.8, 27.9 |
+| «Solana está despertando» | **track32 Solana/Web3 en español** + Superteam como canal y financiación no dilutiva | ADR-38 | 37.8 (nivel C, ADR-53), 26.8, 27.9 |
 
 Todo lo demás que prometía el token —«100 casos de uso», valoración, staking— no
 sobrevive a la evidencia (§12).
@@ -351,7 +351,7 @@ Todo en `/api/v1`, documentado en `API.md` (guardia 20.3) y con tests de autoriz
 | Código de instructor | 28.1 |
 | Payouts USDC | 28.7 + 29.9 |
 | Certificados verificables | 29.10 + 24.7 |
-| track32 Solana/Web3 | 25.14 |
+| track32 Solana/Web3 | 37.8 (nivel C, ADR-53) |
 
 ---
 
@@ -394,7 +394,7 @@ Nunca: token fungible, NFT vendible, «staking» de certificados.
 | «100 casos de uso» | Cinco reales (§0), y todos funcionan mejor sin token |
 | «Valoración» | Los adquirentes edtech (DataCamp, Coursera, Skillsoft, Pearson) tratan un token vivo como pasivo legal |
 | «Coste cero» | Crear el SPL token cuesta céntimos; darle valor cuesta liquidez, opinión legal (MiCA, Chipre/UE), auditoría y KYC |
-| **Daño específico a Whetzy** | Bots farmeando 6.233 preguntas **envenenan BKT/FSRS/DKT**. El único activo diferencial se degrada desde dentro |
+| **Daño específico a Whetzy** | Bots farmeando las 10.989 preguntas del banco (2026-09-30) **envenenan BKT/FSRS/DKT**. El único activo diferencial se degrada desde dentro |
 
 Si el dueño quisiera reabrirlo, la condición mínima es una opinión legal MiCA fechada
 y un plan de liquidez con capital propio — ambos son HUMAN-BLOCKED con € (ADR-15).

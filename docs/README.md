@@ -15,14 +15,14 @@ Frontend: React + Capacitor.
 | Saber qué fuentes se pueden usar (solo gratuitas y legales) y cómo | **`CATALOGO_MAESTRO.md` §2.1** + `DECISIONS.md` ADR-11 |
 | Desplegar (Cloudflare y Railway, ambos automáticos desde `master`), migrar, backup/restore, diagnosticar | `RUNBOOK.md`, `RELEASE.md` |
 | Entender el sistema | `ARCHITECTURE.md`, `API.md`, `DECISIONS.md` |
-| Ver la posición frente a la competencia, con pesos fijos (última: §13 ADR-46; §12 captura en vivo 2026-09-24, sin re-puntuar) | `competitive-teardown.md` |
+| Ver la posición frente a la competencia, con pesos fijos (última: §14 ADR-53; §12 captura en vivo 2026-09-24, sin re-puntuar) | `competitive-teardown.md` |
 | Arrancar una sesión con control total (rama + PR, sin `master`; ADR-45) | **`PROMPT_CONTROL_TOTAL.md`** |
 | Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
 | Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
 | Verificar cualquier afirmación, cerrar una tarea sin errores, correr la verificación masiva (Serie 20), elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
 | Plan de distribución masiva ES + EN (canales, cadencia, herramientas $0, KPIs) | **`DISTRIBUCION.md`** |
 | Los 6 segmentos de usuario (Estudiante, Career-switcher, Developer Senior, Profesor, Empresa, Developer Web3/Solana) con personas, flujos y créditos por segmento | **`SEGMENTOS.md`** |
-| Competencia directa e indirecta: precios verificados con URL y fecha, lógica de negocio del mercado y qué se adopta (§A, 2026-09-24) | **`COMPETENCIA.md`** |
+| Competencia directa e indirecta: precios y catálogos verificados con URL y fecha, lógica de negocio del mercado y qué se adopta (§A, 2026-09-24 a 2026-09-30) | **`COMPETENCIA.md`** |
 | Plan para superar a Brilliant y Kodree donde hoy ganan: problemas interactivos, tutor por voz, comunidad, planes, rutas nuevas (serie 40) | **`PLAN_EXPERIENCIA.md`** |
 | Spec del marketplace de instructores: revenue share 80/20 (ADR-45), quality gate, moderación | **`MARKETPLACE.md`** |
 | Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
@@ -56,6 +56,7 @@ uvicorn app.main:app --reload                 # http://localhost:8000/api/v1/ope
 python scripts/check_question_bank.py         # banco: ids, idiomas, opciones, sesgo, ratio ejecutable
 python scripts/check_docs.py                  # docs y /evidence coinciden con el contenido y Alembic
 python scripts/ledger.py check                # el ledger sigue siendo legible por máquina
+python scripts/catalog_coverage.py            # cobertura del catálogo frente al plan ADR-53 (suelo, ideal, simulacro reservado)
 cd backend && python -m pytest tests/content  # lecciones, ejecutables, sql_exec, tildes, blueprints
 cd backend && python -m pytest -q             # suite completa
 cd frontend && npx tsc -b --force && npx vitest run && npm run build

@@ -15,7 +15,7 @@ Viral TikTok/YouTube Shorts. Quick hook for career-switchers. Target: 18-35, soc
   - **Left:** Generic competitor (slow, boring)
   - **Right:** Whetzy (fast, right questions)
 - **Narration:** "Every question is picked by an adaptive engine, based on what you already know."
-- **No time-saving stat:** v1's "47% less time" and "500 unique questions" had no source (red line: no figure without a source). Use only the landing figures (18 tracks · 6,305 questions, `catalog.ts`)
+- **No time-saving stat:** v1's "47% less time" and "500 unique questions" had no source (red line: no figure without a source). Use only the landing figures (35 tracks · 10,989 questions on 2026-09-30, read them from `catalog.ts` on the day)
 - **Visual:** Progress bar filling fast, fire emoji (streak)
 
 ### CTA (0:45-0:60)
