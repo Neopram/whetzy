@@ -43,7 +43,7 @@
 |---|---|---|---|---|
 | 40 | Superar a Brilliant y Kodree donde hoy ganan (`PLAN_EXPERIENCIA.md`) | 0/13 | 0 % | TODO (abierta 2026-09-28); 40.1 y 40.2 primero |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47) | 0/6 | 0 % | TODO (abierta 2026-09-24); 38.2, 38.3, 38.4… |
-| 37 | Catálogo por cobertura — suelo, ideal por temario, simulacros reservados, demanda (ADR-53) | 2/19 | 11 % | **PRI 1 ABIERTA 2026-09-30.** Fase 0: 37.18, 37.19, 37.20 |
+| 37 | Catálogo por cobertura — suelo, ideal por temario, simulacros reservados, demanda (ADR-53) | 3/20 | 15 % | **PRI 1 ABIERTA 2026-09-30.** Fase 0: 37.18, 37.20 (37.19 DONE) |
 | 34 | Una sola interfaz — todas las pantallas al estilo de la landing | 0/12 | 0 % | **Grueso hecho el 2026-09-24 (PR #6):** 276 clases… |
 | 33 | Operación medible — SLO, restauración, offline idempotente | 0/3 | 0 % | TODO (abierta 2026-09-24) |
 | 32 | Motor demostrable — calibración y evidencia | 0/4 | 0 % | TODO · 32.2 BLOCKED (H.10) |
@@ -392,7 +392,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 37. Catálogo por cobertura — suelo, ideal por temario, simulacros reservados y prioridad por demanda (ADR-53, 2026-09-30; antes ADR-46)
 
 > **Estado:** `ABIERTA`. **PRI:** 1 (detrás de la serie 30). **Modelo:** ADR-52 (autoría Haiku 4.5, revisión completa Sonnet 5, piloto de 10 ítems).
-> **Orden (ADR-53 §6):** fase 0 = 37.18 → 37.19 → 37.20 · fase 1 = 37.10 · fase 2 = 37.6, 37.7 · fase 3 = 37.8 · fase 4 = 37.21 y el ideal. **La guarda 37.0 sigue antes de cualquier pregunta nueva.**
+> **Orden (ADR-53 §6):** fase 0 = 37.18 → 37.19 → 37.20 · fase 1 = 37.22, 37.10 · fase 2 = 37.6, 37.7 · fase 3 = 37.8 · fase 4 = 37.21 y el ideal. **La guarda 37.0 sigue antes de cualquier pregunta nueva.**
 > **Corpus (ADR-46 §4-5, vigente):** `corpus/` está en `.gitignore`. Se descarga con `git clone --depth 1`, dumps oficiales y **torrents solo cuando…
 > **Unidad:** la skill. Suelo por track: 50 skills · 800 Q · 1 lección y 1 término por skill. Ideal: skills del temario de referencia (`scripts/metas_adr53.json`), 20 Q por skill. Cifras: `python scripts/catalog_coverage.py`. Un bloque = un PR verde.
 
@@ -414,7 +414,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | **DONE** `46764ff` (2026-09-26): 8 tracks restantes (02-04, 06, 08, 10, 12, 17) corregidos; todos ≤22 %. Banco PASS, diversidad PASS, content 38062 passed → §I |
 | 37.17 | **1** | **Inglés dentro del español y ejecutables que aceptan atajos** (medido 2026-09-26 con grep y `scripts/video/solve_blank.py`, que prueba candidatos contra la salida esperada): 282 enunciados ES en 9 ficheros empiezan «Completa el blank»; `track11_aws_aif_c01/mod01.json:715` dice «directional»; la pregunta ES de EC2 con 100.000 conexiones TCP tiene las opciones en inglés. Respuestas equivocadas dan la salida esperada (Python local): en `q060104ex010` (varianza) `median_low` y `mode` imprimen `4` igual que `pvariance`; en `q010105ex001` `eval` imprime lo mismo que `int`. Si la corrección solo compara la salida, las acepta; sin probar en la app (el sandbox podría bloquear `eval`) | **TODO** | 0 «blank» en `question_es`; una guarda que falle con palabras EN frecuentes en campos `_es`; datos de los ejecutables que distingan la función pedida (varianza ≠ mediana ≠ moda); `eval`/`exec` rechazados en el sandbox o en la corrección, con test |
 | 37.18 | **1** | **Banco de simulacro reservado**: `"pool": "simulacro"` en preguntas; `mock_exam.py` solo sortea reservadas y práctica/repaso las excluyen (hoy el simulacro sale del banco de práctica, `mock_exam.py:110-136`) | TODO | test: una reservada nunca sale en práctica ni repaso; un simulacro solo sirve reservadas |
-| 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | TODO | `tracks.json` con URL y fecha; `test_certification_blueprints.py` lo fija, mutado en rojo |
+| 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | **DONE** | **DONE** `764b06b` (2026-09-30), verificador §7 CONFIRMADA: `test_certification_blueprints.py` 28 passed; con el `tracks.json` anterior, 5 failed; AIF-C01 65 (50+15)/90, MLA-C01 65 (50+15)/130 con la guía C01, AZ-900 y DP-900 45 min, cada uno con fuente y fecha |
+| 37.22 | **1** | **ISC2 CC al outline del 2026-09-01**: examen adaptativo de 100–125 ítems en 2 h; dominios nuevos con pesos 24/17,3/20/21,3/17,3 (track40 sigue con el de 2022: 26/10/22/24/18) | TODO | `exam_domains`, skills y banco reasignados al outline nuevo; `OFFICIAL_BLOCKS["track40"]` en `test_certification_blueprints.py` mutado en rojo; fuente = PDF del outline en isc2.org, leído el 2026-09-30 |
 | 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | TODO | embudo propio (`services/analytics.py`, ADR-50 j) con D30 y CURR; el admin muestra cada métrica con su meta |
 | 37.21 | **3** | **Mapa skill → nodo del temario**, para medir el ideal por cobertura real y no por recuento | TODO (tras 37.6) | cada skill con su nodo; `catalog_coverage.py` da % de nodos cubiertos |
 

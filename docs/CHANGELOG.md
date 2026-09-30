@@ -13,6 +13,7 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - **Informe de cobertura**: `python scripts/catalog_coverage.py` muestra, por track y por certificación, cuánto falta para el suelo y para el ideal; sus denominadores tienen fuente y fecha.
 - **Los tracks planificados ya no reutilizan ids de certificaciones existentes** (MLOps, Solidity, videojuegos, IoT, Matemáticas y Soporte IT pasan a track51–56).
 - **Fichas de tienda al día**: 35 tracks y 723 habilidades; los simulacros se describen por dominios oficiales.
+- **Simulacros con el formato real del examen** (37.19): AWS AI Practitioner (AIF-C01) pasa a 65 preguntas y 90 minutos, y Machine Learning Engineer (MLA-C01) a 65 preguntas y 130 minutos, como los publica AWS. Azure Fundamentals y Azure Data Fundamentals figuran con 45 minutos.
 
 **EN**
 
@@ -20,6 +21,7 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - **Coverage report**: `python scripts/catalog_coverage.py` shows, per track and per certification, how far each is from the floor and from the ideal; its denominators carry a source and a date.
 - **Planned tracks no longer reuse the ids of existing certifications** (MLOps, Solidity, games, IoT, Maths and IT support move to track51–56).
 - **Store listings updated**: 35 tracks and 723 skills; mock exams are described by official domains.
+- **Mock exams in the real exam format** (37.19): AWS AI Practitioner (AIF-C01) moves to 65 questions and 90 minutes, and Machine Learning Engineer (MLA-C01) to 65 questions and 130 minutes, as AWS publishes them. Azure Fundamentals and Azure Data Fundamentals show 45 minutes.
 
 ---
 
