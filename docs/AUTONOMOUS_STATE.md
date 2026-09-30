@@ -336,8 +336,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 31.2 | **2** | Migración con datos: fixture de base en la revisión anterior, `upgrade head`,… | **DONE** | **DONE** `d3290b8` → §I |
 | 31.3 | **2** | Smoke post-deploy de backend: login con cuenta QA, `POST /quiz/start`, `GET`… | **DONE** | **DONE** `cf2fc58` → §I |
 | 31.4 | **0** | **Migración sin datos dejó sin preguntas a los usuarios con historial** (dueño, 2026-09-30) | **DONE** | `1225a29` (push directo a `master`, excepción ADR-45) → §N |
-| 31.5 | **0** | **Regla del dueño 2026-09-30**: PRs pequeños desde ya (fila del ledger u oleada ≤ 500 líneas netas), veto a analítica/métricas hasta ≥ 100 registrados reales (excluye IP del dueño y sesiones automáticas — verificado hoy en vivo con los logs de Railway: 1 solo `POST /auth/register`), ningún `DONE` sin el verificador de §7 + qué comprobará otra sesión | DOING | mismo texto en `ORCHESTRATOR.md`; cumplido desde esta fila |
+| 31.5 | **0** | **Regla del dueño 2026-09-30**: PRs pequeños, veto a analítica hasta ≥ 100 registrados reales, ningún `DONE` sin verificador de §7 → texto completo §N | DOING | mismo texto en `ORCHESTRATOR.md`; cumplido desde esta fila |
 | 31.6 | **2** | **Tests de analítica sobre Postgres real**, no solo SQLite — D1/D7/CURR (2026-09-30): SQLite oculta diferencias de dialecto que los tests nunca vieron. Espera a que 31.5 libere analítica | TODO | `test_product_metrics.py` también contra Postgres real, en verde |
+| 31.7 | **0** | **Pausa de sesiones autónomas y cierre**, 2026-09-30 → `docs/CIERRE_2026-09-30.md` | **DONE** | `check_docs.py` [11] exige PAUSA+cita, mutado rojo/verde |
 
 ### 32. Motor demostrable — calibración y evidencia de aprendizaje (del plan del 2026-09-24; ídem)
 

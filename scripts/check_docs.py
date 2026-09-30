@@ -388,6 +388,22 @@ check(
     "sin marca de histórico en " + ", ".join(_stale[:10]),
 )
 
+print("\n[11] Pausa de sesiones autónomas (31.7, 2026-09-30)")
+_CIERRE_MD = ROOT / "docs" / "CIERRE_2026-09-30.md"
+if _CIERRE_MD.exists() and "Estado: PAUSA" in _CIERRE_MD.read_text(encoding="utf-8"):
+    for _doc_path, _doc_label in (
+        (CLAUDE_MD, "CLAUDE.md"),
+        (ROOT / "docs" / "ORCHESTRATOR.md", "docs/ORCHESTRATOR.md"),
+    ):
+        _doc_text = _doc_path.read_text(encoding="utf-8") if _doc_path.exists() else ""
+        _has_pausa = "PAUSA" in _doc_text
+        _cites_cierre = "CIERRE_2026-09-30.md" in _doc_text
+        check(
+            f"{_doc_label} avisa de la PAUSA y cita CIERRE_2026-09-30.md",
+            _has_pausa and _cites_cierre,
+            f"PAUSA={_has_pausa} cita={_cites_cierre}",
+        )
+
 print()
 if errors:
     head = f"{len(errors)} check(s) FAILED:"

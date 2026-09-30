@@ -1,8 +1,8 @@
 # Whetzy — instrucciones del proyecto
 
-Este proyecto se opera de forma autónoma. **Si arrancas sin instrucciones
-específicas del usuario, lee `docs/ORCHESTRATOR.md` y ejecútalo.** No preguntes
-qué hacer; el ledger lo sabe.
+**PAUSA desde el 2026-09-30 (decisión del dueño).** Si arrancas sin
+instrucciones explícitas del dueño, NO ejecutes `docs/ORCHESTRATOR.md`: lee
+`docs/CIERRE_2026-09-30.md`, informa del estado y para.
 
 - Fuente de verdad del progreso: `docs/AUTONOMOUS_STATE.md` — **no lo leas entero**
   (~29.500 tokens). `python scripts/ledger.py next` responde «qué toca ahora» en ~114;

@@ -2645,3 +2645,11 @@ seguir usando `NOW` real sin necesidad de congelar el tiempo.
 `test_analytics.py`+`test_analytics_dashboard.py`+`test_billing.py`+`test_revenuecat_webhook.py`
 — 53 passed. `ruff` y `mypy --strict` limpios. `check_docs.py`/`ledger.py check` verdes.
 
+
+## 2026-09-30 — Cierre del PR #34 y pausa de sesiones autónomas
+
+Por decisión del dueño (ver `docs/CIERRE_2026-09-30.md` completo): PR #34 se deja congelado
+y listo para que el dueño lo fusione a mano; ninguna sesión autónoma ejecuta
+`docs/ORCHESTRATOR.md` sin instrucción explícita suya hasta que el dueño levante la pausa.
+`CLAUDE.md` y `docs/ORCHESTRATOR.md` llevan el aviso; `scripts/check_docs.py` lo exige como
+guarda (mutada rojo/verde). Ledger: fila 31.7.
