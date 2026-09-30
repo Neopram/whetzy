@@ -190,6 +190,12 @@ migraciones solo aditivas con `downgrade` probado; **nunca un track a medias** (
 schema equivocado de track12 llegó a producción y `start.sh` se tragó el error del
 loader). La sesión no raciona: trabaja hasta que el límite la detenga (ADR-45 §4).
 
+**Regla del dueño 2026-09-30 (ledger 31.5):** PRs pequeños — una fila del ledger u
+oleada ≤ 500 líneas netas, nunca otro PR de 100+ commits. Veto a trabajo de
+analítica/métricas hasta ≥ 100 registrados reales (excluye IP del dueño y sesiones
+automáticas). Ningún `DONE` se cierra sin pasar el verificador adversario de
+`PROTOCOLO_VERIFICACION.md` §7 y sin decir en una frase qué comprobará otra sesión.
+
 ### Detente y escribe en `HUMAN-BLOCKED`
 Operaciones destructivas sobre la **DB de producción** · `git push origin master` o
 fusionar un PR (ADR-45) · desconectar o cambiar el auto-deploy de Railway · claves
