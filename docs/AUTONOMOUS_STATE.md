@@ -308,8 +308,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json`… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | 3 endpoints: `/economy/credits`, `/economy/referrals`, `/economy/k-factor` → §I |
-| 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | **DONE** | `reactivation_check` job: 14 días inactivo → código 72h + email ES/EN |
-| 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | **DONE** | WalletScreen: balance, referidos, canje de promos; 22 claves i18n → `66925f8` |
+| 29.7 | **3** | **Reactivación automática**: job de 14 días de inactividad | **DONE** | → §N |
+| 29.8 | **3** | **UI**: wallet, referidos, canje de códigos | **DONE** | → §N |
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | → §I (criterio archivado por 20.10) |
 
 
@@ -335,7 +335,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 31.1 | **1** | Staging: un preview de Cloudflare Pages y un servicio de Railway de staging; `master` solo por PR verde | HUMAN-BLOCKED… | |
 | 31.2 | **2** | Migración con datos: fixture de base en la revisión anterior, `upgrade head`,… | **DONE** | **DONE** `d3290b8` → §I |
 | 31.3 | **2** | Smoke post-deploy de backend: login con cuenta QA, `POST /quiz/start`, `GET`… | **DONE** | **DONE** `cf2fc58` → §I |
-| 31.4 | **0** | **Migración sin datos dejó sin preguntas a los usuarios con historial (dueño, 2026-09-30, captura en `whetzy.com`):** `20260927_lesson_completions` nació vacía y el bloqueo de 32.4 devolvía `needs_lesson` a quien ya había practicado; «ESTUDIAR AHORA» acababa en «Sin preguntas disponibles» (`POST /quiz/start` 200 sin pregunta en los logs de Railway). Además `GET /lessons/{skill}` salía `public, max-age=7200` con sesión, y una copia cacheada no registraba la lección vista | **DONE** | **DONE** `1225a29` (2026-09-30, push directo a `master` por orden expresa del dueño, excepción a ADR-45): `lesson_gate.viewed_skill_ids` cuenta también `UserSkillState.attempts > 0` (sin migración: no crea una segunda cabeza de Alembic junto a la de 34.x); lección con sesión → `private, no-store`, anónima → `public` + `Vary: Authorization, Cookie`. 7 tests nuevos, cada regla mutada en rojo. El callejón de un usuario nuevo (sin práctica ni lección) sigue abierto hasta que entre 34.1 |
+| 31.4 | **0** | **Migración sin datos dejó sin preguntas a los usuarios con historial** (dueño, 2026-09-30) | **DONE** | `1225a29` (push directo a `master`, excepción ADR-45) → §N |
 
 ### 32. Motor demostrable — calibración y evidencia de aprendizaje (del plan del 2026-09-24; ídem)
 
