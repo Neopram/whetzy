@@ -28,7 +28,24 @@ BITACORA="$RAIZ/.ci-local"
 mkdir -p "$BITACORA"
 
 if [ "${1:-}" = "--estado" ]; then
-  [ -f "$BITACORA/estado" ] && cat "$BITACORA/estado" || echo "todavia no ha corrido nunca"
+  if [ ! -f "$BITACORA/estado" ]; then
+    echo "todavia no ha corrido nunca"
+    exit 0
+  fi
+  # `estado` se escribe "CORRIENDO" al empezar y solo se sobrescribe con el
+  # veredicto real al terminar normal. Un contenedor pausado/matado a medias
+  # (visto el 2026-09-30: mas de una hora idle entre turnos de la sesion) deja
+  # el cerrojo con un PID muerto y "CORRIENDO" mintiendo para siempre hasta la
+  # proxima corrida que sí termine. `--estado` comprueba el PID antes de fiarse.
+  if grep -q "^CORRIENDO" "$BITACORA/estado" 2>/dev/null; then
+    _pid="$(cat "$BITACORA/corriendo.pid" 2>/dev/null)"
+    if [ -z "$_pid" ] || ! kill -0 "$_pid" 2>/dev/null; then
+      echo "SE INTERRUMPIO SIN TERMINAR (el proceso ya no existe; el cerrojo quedo huerfano)"
+      cat "$BITACORA/estado"
+      exit 0
+    fi
+  fi
+  cat "$BITACORA/estado"
   exit 0
 fi
 
