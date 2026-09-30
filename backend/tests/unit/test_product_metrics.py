@@ -99,35 +99,74 @@ class TestD30Return:
 
 
 class TestCurr:
+    """Duolingo's own definition (Q2 FY2026 shareholder letter, quoted in
+    curr()'s docstring): a "current user DAU" is active on reference day
+    D=yesterday *and* active on some OTHER day in the 7 days before D — two
+    separate conditions, not just "active sometime in the trailing week"."""
+
     @pytest.mark.asyncio
-    async def test_user_active_this_week_and_today_counts_as_returned(self, db_session) -> None:
+    async def test_current_user_dau_who_returns_the_next_day_counts(self, db_session) -> None:
         u = _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
-        _make_session(db_session, u.id, started_at=NOW - timedelta(days=3), duration_minutes=5)
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=5)  # D
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=4), duration_minutes=5)  # other day in prior 7
+        _make_session(db_session, u.id, started_at=NOW, duration_minutes=5)  # D+1 = today
+        await db_session.commit()
+
+        result = await curr(db_session)
+        assert result["current_user_daus"] == 1
+        assert result["returned_next_day"] == 1
+        assert result["curr"] == 1.0
+
+    @pytest.mark.asyncio
+    async def test_current_user_dau_who_does_not_return_does_not_count_as_returned(
+        self, db_session
+    ) -> None:
+        u = _make_user(db_session, created_at=NOW - timedelta(days=60))
+        db_session.add(u)
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=5)  # D
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=4), duration_minutes=5)  # other day
+        # No session today.
+        await db_session.commit()
+
+        result = await curr(db_session)
+        assert result["current_user_daus"] == 1
+        assert result["returned_next_day"] == 0
+        assert result["curr"] == 0.0
+
+    @pytest.mark.asyncio
+    async def test_active_only_on_day_d_is_not_a_current_user_dau(self, db_session) -> None:
+        """Active on D (yesterday) with no OTHER active day in the prior
+        week — Duolingo's definition requires both, not just a DAU on D."""
+        u = _make_user(db_session, created_at=NOW - timedelta(days=60))
+        db_session.add(u)
+        _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=5)
         _make_session(db_session, u.id, started_at=NOW, duration_minutes=5)
         await db_session.commit()
 
         result = await curr(db_session)
-        assert result["weekly_active"] == 1
-        assert result["returned_today"] == 1
-        assert result["curr"] == 1.0
+        assert result["current_user_daus"] == 0
+        assert result["curr"] is None
 
     @pytest.mark.asyncio
-    async def test_user_active_this_week_but_not_today_does_not_count(self, db_session) -> None:
+    async def test_active_this_week_but_not_on_day_d_is_not_a_current_user_dau(
+        self, db_session
+    ) -> None:
+        """Active earlier in the trailing week but not on D (yesterday)
+        itself — not a DAU on D, so not in the cohort at all."""
         u = _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=3), duration_minutes=5)
         await db_session.commit()
 
         result = await curr(db_session)
-        assert result["weekly_active"] == 1
-        assert result["returned_today"] == 0
-        assert result["curr"] == 0.0
+        assert result["current_user_daus"] == 0
+        assert result["curr"] is None
 
     @pytest.mark.asyncio
-    async def test_no_weekly_active_users_returns_none_not_a_fake_zero(self, db_session) -> None:
+    async def test_no_current_user_daus_returns_none_not_a_fake_zero(self, db_session) -> None:
         result = await curr(db_session)
-        assert result["weekly_active"] == 0
+        assert result["current_user_daus"] == 0
         assert result["curr"] is None
 
 

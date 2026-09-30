@@ -16,7 +16,7 @@ from __future__ import annotations
 import uuid
 from collections import defaultdict
 from collections.abc import Sequence
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
 from sqlalchemy import Row, func, select
@@ -36,7 +36,7 @@ PRODUCT_METRIC_TARGETS: dict[str, str] = {
     "conversion_d35_rate": ">= 0.021 (meta 0.03)",
     "completion_rate_among_payers": "0.40-0.55",
     "weekly_30min_rate_among_payers": ">= 0.25 (hipotesis)",
-    "curr": "medirla desde el dia 1, sin suelo publicado todavia",
+    "curr": "medirla desde el dia 1, sin suelo publicado todavia (referencia: Duolingo 84%, Q2 FY2026, misma definicion — ver docstring de curr())",
     "mock_exam_calibration": "publicarla siempre con n, sin suelo (nadie en el mercado publica una auditada)",
 }
 
@@ -69,13 +69,26 @@ def _aware(ts: datetime) -> datetime:
     return ts if ts.tzinfo is not None else ts.replace(tzinfo=UTC)
 
 
-async def _sessions_by_user(db: AsyncSession, user_ids: set[uuid.UUID]) -> dict[uuid.UUID, list[datetime]]:
+async def _sessions_by_user(
+    db: AsyncSession, user_ids: set[uuid.UUID], *, since: datetime, until: datetime
+) -> dict[uuid.UUID, list[datetime]]:
+    """Sessions for `user_ids` within `[since, until]`.
+
+    Bounded, not "all history for these users": a user who registered years
+    ago and has thousands of sessions would otherwise have every one of them
+    fetched just to check a handful of day-N windows. Callers pass the
+    already-known earliest eligible `created_at` and `now` — cheap to widen
+    a little (this can over-include, just never under-include the windows
+    actually checked) rather than recomputing a tight bound per window.
+    """
     if not user_ids:
         return {}
     rows = (
         await db.execute(
             select(StudySession.user_id, StudySession.started_at).where(
-                StudySession.user_id.in_(user_ids)
+                StudySession.user_id.in_(user_ids),
+                StudySession.started_at >= since,
+                StudySession.started_at <= until,
             )
         )
     ).all()
@@ -93,14 +106,21 @@ def _count_returned_in_window(
 ) -> int:
     """Count eligible users with >=1 session inside [created_at+start, created_at+end).
 
-    Done in Python, not SQL: `DateTime_column +/- timedelta` is typed as
-    DATETIME (not Interval) by SQLAlchemy's SQLite-dialect compiler, so the
-    comparison silently matches nothing under SQLite (confirmed via
-    `.compile(compile_kwargs={"literal_binds": True})`, which raises
-    `CompileError` trying to literal-render the timedelta). Postgres has no
-    such gap, but that only means this was untested, not correct-by-luck —
-    fetching raw rows and comparing in Python is dialect-agnostic by
-    construction, so the same code path is now actually exercised by tests.
+    Done in Python, not SQL. This is a test-environment fix, not a production
+    one: Postgres (what Whetzy actually runs) supports `timestamp +/- interval`
+    natively and correctly — D1/D7 never returned a wrong number in
+    production. The bug was that SQLAlchemy's SQLite-dialect compiler types
+    `DateTime_column +/- timedelta` as DATETIME instead of Interval, so under
+    the SQLite-backed test suite the comparison silently matched nothing
+    (confirmed via `.compile(compile_kwargs={"literal_binds": True})`, which
+    raises `CompileError` trying to literal-render the timedelta as that
+    wrong type). Because D1/D7 had no unit test pinning their exact
+    arithmetic — only an integration shape-check that never planted a precise
+    boundary date — this silent SQLite failure went undetected until D30's
+    tests (this file) tried to and failed. Fetching raw rows and comparing in
+    Python is dialect-agnostic by construction, so the same code path is now
+    actually exercised, correctly, under both SQLite (tests) and Postgres
+    (production).
     """
     count = 0
     for user_id, created_at in eligible:
@@ -168,7 +188,11 @@ async def funnel(db: AsyncSession, period_days: int = 30) -> dict[str, object]:
     ).all()
 
     all_eligible_ids = {r[0] for r in d1_eligible} | {r[0] for r in d7_eligible} | {r[0] for r in d30_eligible}
-    sessions_by_user = await _sessions_by_user(db, all_eligible_ids)
+    # d30_eligible_since is always the earliest of the three (it looks back
+    # at least 31 days, d7 at least 8, d1 at least 2), so it bounds every
+    # window's start; `now` bounds every window's end — no session exists
+    # after it anyway.
+    sessions_by_user = await _sessions_by_user(db, all_eligible_ids, since=d30_eligible_since, until=now)
 
     d1_count = _count_returned_in_window(d1_eligible, sessions_by_user, timedelta(hours=12), timedelta(days=2))
     d7_count = _count_returned_in_window(
@@ -202,48 +226,71 @@ async def funnel(db: AsyncSession, period_days: int = 30) -> dict[str, object]:
 
 
 async def curr(db: AsyncSession) -> dict[str, object]:
-    """Of users active at any point in the 7 days ending yesterday (the
-    reference week), what fraction were also active today.
+    """Current User Retention Rate, Duolingo's own definition, quoted verbatim
+    from their Q2 FY2026 shareholder letter (SEC 8-K, filed 2026-08-06):
+    https://www.sec.gov/Archives/edgar/data/0001562088/000162828026053299/q2fy26duolingo6-30x26share.htm
 
-    "Today" is used as the return day (not "tomorrow" from the reference
-    week literally) because that is the freshest day fully observable right
-    now — waiting for tomorrow to compute today's CURR would make the
-    metric always a day stale for no reason. No floor is published for this
-    one yet (ADR-53 §8): "medirla desde el día 1" is the instruction, not a
-    number to compare against.
+        "The main metric we use to evaluate the stickiness of our product is
+        Current User Retention Rate (CURR), which is the proportion of
+        'current user DAUs' who come back the next day. A 'current user DAU'
+        is one who was also active another time in the previous seven days."
+        — CURR reported there: 84%, an all-time high (+~1pp YoY).
+
+    Reference day D = yesterday (the freshest day fully observable, since
+    today's "did they come back tomorrow" cannot exist yet). A "current user
+    DAU" is a user active ON DAY D *and* active on some OTHER day in the 7
+    days before D — two separate conditions, not just "active sometime in
+    the past week": a user who only ever showed up once, on day D itself,
+    does not count, and neither does one who was active in the trailing week
+    but not on D itself. `curr` is the fraction of that cohort also active
+    today (D+1). Comparing this number to Duolingo's 84% is only honest
+    because the cohort definition now matches theirs term for term — an
+    earlier version of this function used a looser "active anytime in the
+    trailing week, then active today" cohort, which is a materially larger
+    and differently-composed group and would not have been a fair
+    comparison.
     """
     now = datetime.now(UTC)
     today_start = datetime(now.year, now.month, now.day, tzinfo=UTC)
-    week_start = today_start - timedelta(days=7)
+    yesterday_start = today_start - timedelta(days=1)
+    window_start = yesterday_start - timedelta(days=7)
 
-    # `.distinct()` as a query modifier, never `func.distinct(col)`: wrapping
-    # the column in the SQL function loses its Python-side Uuid type, and
-    # the driver value comes back as a plain string that a later `.in_()`
-    # bind against the same Uuid column then rejects.
-    weekly_active_q = (
-        select(StudySession.user_id)
-        .where(StudySession.started_at >= week_start, StudySession.started_at < today_start)
-        .distinct()
-    )
-    weekly_active_ids = set((await db.scalars(weekly_active_q)).all())
-
-    if not weekly_active_ids:
-        return {"weekly_active": 0, "returned_today": 0, "curr": None}
-
-    returned_today_q = (
-        select(StudySession.user_id)
-        .where(
-            StudySession.started_at >= today_start,
-            StudySession.user_id.in_(weekly_active_ids),
+    rows = (
+        await db.execute(
+            select(StudySession.user_id, StudySession.started_at).where(
+                StudySession.started_at >= window_start,
+                StudySession.started_at < today_start + timedelta(days=1),
+            )
         )
-        .distinct()
-    )
-    returned_today_ids = set((await db.scalars(returned_today_q)).all())
+    ).all()
+
+    active_days_by_user: dict[uuid.UUID, set[date]] = defaultdict(set)
+    for user_id, started_at in rows:
+        active_days_by_user[user_id].add(_aware(started_at).date())
+
+    yesterday_date = yesterday_start.date()
+    today_date = today_start.date()
+    prior_week_dates = {(yesterday_start - timedelta(days=d)).date() for d in range(1, 8)}
+
+    current_user_daus = {
+        user_id
+        for user_id, days in active_days_by_user.items()
+        if yesterday_date in days and (days & prior_week_dates)
+    }
+
+    if not current_user_daus:
+        return {"current_user_daus": 0, "returned_next_day": 0, "curr": None}
+
+    returned_next_day = {
+        user_id
+        for user_id in current_user_daus
+        if today_date in active_days_by_user.get(user_id, set())
+    }
 
     return {
-        "weekly_active": len(weekly_active_ids),
-        "returned_today": len(returned_today_ids),
-        "curr": round(len(returned_today_ids) / len(weekly_active_ids), 4),
+        "current_user_daus": len(current_user_daus),
+        "returned_next_day": len(returned_next_day),
+        "curr": round(len(returned_next_day) / len(current_user_daus), 4),
     }
 
 
@@ -288,6 +335,11 @@ async def conversion_d35(db: AsyncSession, period_days: int = 90) -> dict[str, o
                 select(AnalyticsEvent.user_id, AnalyticsEvent.created_at).where(
                     AnalyticsEvent.event_type == "subscription_started",
                     AnalyticsEvent.user_id.in_([r[0] for r in eligible_rows]),
+                    # Bounded, not "every subscription_started this user ever
+                    # fired": a conversion can't predate the eligible window
+                    # (nobody converts before registering) or postdate `now`.
+                    AnalyticsEvent.created_at >= eligible_since,
+                    AnalyticsEvent.created_at <= now,
                 )
             )
         ).all()

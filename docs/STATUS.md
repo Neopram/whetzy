@@ -2556,3 +2556,68 @@ dos commits de este bloque — mismo patrón de siempre (2-4s, log 404, sin runn
 explicado varias veces en este PR; no hace falta un comentario nuevo por la regla de «ya
 comentado así».
 
+## 2026-09-30, misma sesión de continuación — corrección del dueño sobre 37.18/37.20
+
+El dueño revisó `edaf63b` y encontró tres fallos reales que mi propia verificación no había
+atrapado.
+
+**37.18 estaba incompleto, no DONE.** La exclusión de `pool == "simulacro"` solo vivía en
+`quiz.py`, y detrás del flag. `duels.py:88` (`_pick_questions`), `services/placement.py:55`
+(`_track_item_pool`) y `services/track_exam.py:158` (`_answerable_questions_by_skill`)
+seguían sirviendo preguntas reservadas sin ningún filtro — un duelo, la prueba de nivelación
+o el examen final de una pista podían filtrar una pregunta que el simulacro de certificación
+necesita guardarse. Corregido: las 4 vías excluyen `pool == "simulacro"` de forma
+**incondicional**, no detrás de `MOCK_EXAM_RESERVED_POOL_ENABLED` — ese flag ahora gobierna
+solo el "solo reservadas" del propio simulacro (`mock_exam.py`, sin cambios), que sí necesita
+banco poblado primero. El test de `quiz.py` que afirmaba "flag off = comportamiento de hoy,
+sin filtrar" quedó falso con el cambio y se reescribió para el invariante correcto
+(parametrizado True/False: el filtro no depende ya del flag). 4 tests nuevos/reescritos,
+cada uno mutado en rojo antes de confiar en él — para `duels.py` la primera versión del test
+era débil (un solo draw de 5-de-6 candidatos tiene ~83% de probabilidad de no tocar la
+reservada); reescrito para que el pool válido quede justo por debajo del umbral de duelo,
+haciendo la aserción determinista (422 si se excluye correctamente, 201 con la reservada
+dentro si no).
+
+**37.20: el mensaje sobre D1/D7 y SQLite era ambiguo.** Mi comentario en el código decía
+"Postgres has no such gap, but that only means this was untested, not correct-by-luck" —
+una cobertura que podía leerse como dejando abierta la duda de si producción también fallaba.
+No fallaba: Postgres soporta `timestamp +/- interval` de forma nativa y correcta; el hueco
+era exclusivamente de los tests contra SQLite, que tipan mal esa aritmética y no lanzan
+excepción. Reescrito el docstring para decirlo sin ambigüedad.
+
+**37.20: `_sessions_by_user` traía el historial entero, sin acotar por fecha.** Para cada
+usuario elegible pedía *todas* sus sesiones de siempre, no solo las relevantes a las
+ventanas D1/D7/D30 — un problema real de escala que habría empeorado con cada mes de
+historial acumulado. Corregido con `since`/`until` (acotado por el `eligible_since` más
+antiguo de las tres ventanas y `now`); el mismo patrón se aplicó a la consulta de eventos
+`subscription_started` de `conversion_d35`, con el mismo hueco. Mutado: acotar el rango a
+algo demasiado estrecho hace caer los tests plantados en el borde de la ventana.
+
+**37.20: CURR no era la métrica de Duolingo, aunque usara su nombre y su cifra.** El dueño
+pidió traer la definición oficial con URL antes de publicar la comparación contra el 84%.
+Carta de accionistas Q2 FY2026 de Duolingo (SEC 8-K, leída en vivo):
+`sec.gov/Archives/edgar/data/0001562088/000162828026053299/q2fy26duolingo6-30x26share.htm`
+— «The main metric we use to evaluate the stickiness of our product is Current User
+Retention Rate (CURR), which is the proportion of 'current user DAUs' who come back the
+next day. A 'current user DAU' is one who was also active another time in the previous
+seven days» — 84%, récord, +~1pp interanual. Mi implementación original medía algo más
+flojo y distinto: "activo en cualquier momento de la semana anterior → también activo hoy".
+La definición real de Duolingo exige dos condiciones sobre un día de referencia D (ayer):
+activo en D **y** activo en otro día distinto dentro de los 7 días previos a D — un usuario
+que solo aparece una vez en toda la semana no cuenta, tampoco uno activo en la semana pero
+no en D mismo. Reescrita `curr()` para igualar la definición término a término (cohorte de
+"current user DAUs" sobre ayer, retorno medido hoy). Las 5 pruebas de `TestCurr` se
+reescribieron para cubrir las dos condiciones del cohorte por separado, cada una mutada en
+rojo. `docs/COMPETENCIA.md` §A actualizado con la cita literal y la URL directa de la SEC
+(antes decía solo «SEC» sin enlace); `docs/DECISIONS.md` (el texto de la propia ADR-53) **no
+se tocó** — las ADR no se reescriben, esa tabla es la foto que el dueño tenía el día de la
+decisión y sigue siendo cierta como historia, aunque mi implementación original de CURR no
+coincidiera con ella.
+
+**Pruebas:** 246 passed en el subconjunto dirigido (placement/duelos/examen de
+pista/quiz-internals/mock-exam/product-metrics/analytics/billing/revenuecat/placement-params),
+más `ruff==0.16.8` y `mypy --strict` (invocación de `ci_local.sh`) limpios en los 10 ficheros
+tocados — el único error de mypy que queda (`open_badges.py`) es previo a esta sesión.
+`check_docs.py` y `ledger.py check` verdes. Ledger corregido: 37.18 y 37.20 siguen DONE, con
+la evidencia real, no la incompleta de `edaf63b`.
+

@@ -224,6 +224,55 @@ async def test_challenge_never_picks_legacy_fill_blank(
     assert picked_ids == set(duel_seed["question_ids"])
 
 
+async def test_challenge_never_picks_a_reserved_mock_exam_question(
+    client: AsyncClient,
+    auth_headers: dict,
+    duel_seed: dict,
+    db_session: AsyncSession,
+) -> None:
+    """37.18/ADR-53 §4: a duel is not the certification mock exam, so a
+    question reserved for it (`pool == "simulacro"`) must never be drawn here
+    — unconditionally, not just when MOCK_EXAM_RESERVED_POOL_ENABLED is on.
+
+    Drops the valid pool to _DUEL_Q_COUNT - 1 and adds one reserved question,
+    so the assertion is deterministic rather than a probabilistic sample: if
+    the reserved question were still eligible, the candidate pool would be
+    exactly _DUEL_Q_COUNT again and the challenge would succeed by drawing
+    all of it (reserved question included); with the exclusion in place,
+    only _DUEL_Q_COUNT - 1 valid questions remain and the endpoint must
+    refuse with 422, the same "not enough MCQ questions" path as elsewhere
+    in this file.
+    """
+    leftover_id = duel_seed["question_ids"][0]
+    await db_session.delete(await db_session.get(Question, leftover_id))
+    reservada = Question(
+        id="duel_q_reservada",
+        skill_id=_SKILL_ID,
+        type="mcq",
+        difficulty_tier="easy",
+        question_es="Reservada para el simulacro",
+        question_en="Reserved for the mock exam",
+        options_es=["A", "B", "C"],
+        options_en=["A", "B", "C"],
+        correct_index=0,
+        explanation_es="n/a",
+        explanation_en="n/a",
+        source="test",
+        elo_rating=1200.0,
+        pool="simulacro",
+    )
+    db_session.add(reservada)
+    await db_session.commit()
+
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 422, resp.text
+    assert "fewer than" in resp.json()["detail"]
+
+
 async def test_challenge_self_fails(
     client: AsyncClient,
     auth_headers: dict,

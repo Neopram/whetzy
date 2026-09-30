@@ -208,6 +208,41 @@ def test_duration_rounds_up_to_whole_five_minutes() -> None:
     assert track_exam_service.duration_minutes_for(50) == 75
 
 
+# ── Reserved mock-exam pool (37.18, ADR-53 §4) ───────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_a_reserved_question_is_never_drawn_for_a_track_final(
+    db_session: AsyncSession, track_seed: dict
+) -> None:
+    """A track final exam is not the certification mock exam, so a question
+    reserved for it (`pool == "simulacro"`) must never be drawn here —
+    unconditionally, not just when MOCK_EXAM_RESERVED_POOL_ENABLED is on.
+    """
+    skill_id = track_seed["skill_ids"][0]
+    reservada = Question(
+        id="q_trk_final_reservada",
+        skill_id=skill_id,
+        type="mcq",
+        difficulty_tier="medium",
+        question_es="Reservada para el simulacro",
+        question_en="Reserved for the mock exam",
+        options_es=["a", "b", "c", "d"],
+        options_en=["a", "b", "c", "d"],
+        correct_index=0,
+        explanation_es="porque si",
+        explanation_en="because",
+        source="test fixture",
+        pool="simulacro",
+    )
+    db_session.add(reservada)
+    await db_session.flush()
+
+    pool = await track_exam_service._answerable_questions_by_skill(db_session, [skill_id])
+
+    assert "q_trk_final_reservada" not in pool[skill_id]
+
+
 # ── Starting a track final ───────────────────────────────────────────────────
 
 

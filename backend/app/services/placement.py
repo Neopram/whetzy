@@ -64,6 +64,11 @@ async def _track_item_pool(db: AsyncSession, track_id: str) -> list[IRTItem]:
         # con que corregir. El contenido esta arreglado, pero la guarda se
         # queda: es una linea contra una clase entera de fallo.
         .where(Question.correct_index.is_not(None))
+        # `pool != "simulacro"`: la colocacion no es el simulacro de
+        # certificacion, asi que una pregunta reservada no puede aparecer
+        # aqui (37.18/ADR-53 §4) — misma exclusion incondicional que
+        # quiz.py/_select_question y duels.py/_pick_questions.
+        .where(Question.pool != "simulacro")
     )
     questions = result.scalars().all()
     return [

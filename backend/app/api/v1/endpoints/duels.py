@@ -84,12 +84,16 @@ async def _pick_questions(db: AsyncSession, skill_id: str) -> list[Question]:
     # correct_index (see quiz.py's _select_question for the same exclusion),
     # so `type.notin_(_EXEC_TYPES)` alone let them through with nothing to
     # click and no way to score the answer. Require a real correct_index too.
+    # `pool != "simulacro"`: a duel is not the certification mock exam, so a
+    # reserved question must never turn up here (37.18/ADR-53 §4) — same
+    # invariant and same unconditional exclusion as quiz.py's _select_question.
     result = await db.execute(
         select(Question)
         .where(
             Question.skill_id == skill_id,
             Question.type.notin_(list(_EXEC_TYPES)),
             Question.correct_index.is_not(None),
+            Question.pool != "simulacro",
         )
         .order_by(Question.elo_rating)
     )

@@ -675,30 +675,21 @@ class TestReservedPoolExcludedFromSelection:
         await db.commit()
 
     @pytest.mark.asyncio
-    async def test_flag_on_never_returns_the_reserved_question(
-        self, db_session, user: User, monkeypatch: pytest.MonkeyPatch
+    @pytest.mark.parametrize("flag", [True, False])
+    async def test_reserved_question_is_never_returned_regardless_of_the_flag(
+        self, db_session, user: User, monkeypatch: pytest.MonkeyPatch, flag: bool
     ) -> None:
-        monkeypatch.setattr(settings, "MOCK_EXAM_RESERVED_POOL_ENABLED", True)
-        await self._seed(db_session, "skPoolOn")
+        """The exclusion is unconditional (37.18 correction): practice and
+        review must never leak a reserved question into duels, placement,
+        the track final exam, or here — whatever MOCK_EXAM_RESERVED_POOL_ENABLED
+        is set to. That flag only gates mock_exam.py's "draw only from the
+        reserved pool" requirement, which is the opposite direction."""
+        monkeypatch.setattr(settings, "MOCK_EXAM_RESERVED_POOL_ENABLED", flag)
+        skill_id = f"skPool{flag}"
+        await self._seed(db_session, skill_id)
         seen: set[str] = set()
         for _ in range(20):
-            question, _ = await _select_question(db_session, user, "skPoolOn")
+            question, _ = await _select_question(db_session, user, skill_id)
             assert question is not None
             seen.add(question.id)
         assert seen == {"q_practica"}
-
-    @pytest.mark.asyncio
-    async def test_flag_off_keeps_todays_behavior_unfiltered(
-        self, db_session, user: User, monkeypatch: pytest.MonkeyPatch
-    ) -> None:
-        monkeypatch.setattr(settings, "MOCK_EXAM_RESERVED_POOL_ENABLED", False)
-        await self._seed(db_session, "skPoolOff")
-        seen: set[str] = set()
-        for _ in range(40):
-            question, _ = await _select_question(db_session, user, "skPoolOff")
-            assert question is not None
-            seen.add(question.id)
-        # Both questions have the same elo_rating (the default), so both are
-        # equally likely candidates — 40 draws makes a false pass astronomically
-        # unlikely without asserting an exact draw order this test doesn't own.
-        assert seen == {"q_practica", "q_simulacro"}
