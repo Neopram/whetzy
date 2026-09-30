@@ -208,6 +208,24 @@ async def test_lessons_stay_public_without_a_session(client, bank, quota_on) -> 
 
 
 @pytest.mark.asyncio
+async def test_a_lesson_with_a_session_is_never_cached(client, auth_headers, bank) -> None:
+    """2026-09-30: servida de la caché del navegador, la visita no llegaría al
+    backend y ni se registraría la lección vista ni se contaría el cupo."""
+    r = await client.get("/api/v1/lessons/skq1", headers=auth_headers)
+    assert r.status_code == 200
+    assert r.headers["cache-control"] == "private, no-store"
+
+
+@pytest.mark.asyncio
+async def test_an_anonymous_lesson_is_cached_but_varies_by_session(client, bank) -> None:
+    r = await client.get("/api/v1/lessons/skq1")
+    assert r.status_code == 200
+    assert r.headers["cache-control"].startswith("public, ")
+    vary = {v.strip().lower() for v in r.headers["vary"].split(",")}
+    assert {"authorization", "cookie"} <= vary
+
+
+@pytest.mark.asyncio
 async def test_a_bad_token_reads_as_anonymous(client, bank, quota_on) -> None:
     r = await client.get("/api/v1/lessons/skq1", headers={"Authorization": "Bearer nope"})
     assert r.status_code == 200

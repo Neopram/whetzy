@@ -63,3 +63,46 @@ async def test_lesson_views_flag_off_does_not_gate(db_session, user) -> None:
     await db_session.commit()
     got = await lesson_gate.viewed_skill_ids(db_session, user.id, ["sk1"])
     assert got == set()
+
+
+# ── Historial previo al bloqueo (2026-09-30) ────────────────────────────────
+# `lesson_completions` nació vacía el 2026-09-27: sin esto, quien ya había
+# practicado un skill quedaba bloqueado en él y "ESTUDIAR AHORA" devolvía
+# "Sin preguntas disponibles".
+
+
+async def _practiced(db_session, user_id, skill_id: str, attempts: int) -> None:
+    from app.models.user import UserSkillState
+
+    db_session.add(UserSkillState(user_id=user_id, skill_id=skill_id, attempts=attempts))
+    await db_session.commit()
+
+
+@pytest.mark.asyncio
+async def test_a_practiced_skill_counts_as_seen(db_session, user) -> None:
+    await _practiced(db_session, user.id, "sk1", attempts=3)
+    got = await lesson_gate.viewed_skill_ids(db_session, user.id, ["sk1", "sk2"])
+    assert got == {"sk1"}
+
+
+@pytest.mark.asyncio
+async def test_a_state_row_without_attempts_does_not_count(db_session, user) -> None:
+    """El selector crea el estado con attempts=0 antes de responder nada."""
+    await _practiced(db_session, user.id, "sk1", attempts=0)
+    got = await lesson_gate.viewed_skill_ids(db_session, user.id, ["sk1"])
+    assert got == set()
+
+
+@pytest.mark.asyncio
+async def test_another_users_practice_does_not_count(db_session, user) -> None:
+    await _practiced(db_session, uuid.uuid4(), "sk1", attempts=5)
+    got = await lesson_gate.viewed_skill_ids(db_session, user.id, ["sk1"])
+    assert got == set()
+
+
+@pytest.mark.asyncio
+async def test_seen_and_practiced_are_merged(db_session, user) -> None:
+    await lesson_gate.record_lesson_seen(db_session, user.id, "sk1")
+    await _practiced(db_session, user.id, "sk2", attempts=1)
+    got = await lesson_gate.viewed_skill_ids(db_session, user.id, ["sk1", "sk2", "sk3"])
+    assert got == {"sk1", "sk2"}
