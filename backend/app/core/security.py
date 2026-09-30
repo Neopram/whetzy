@@ -42,11 +42,11 @@ TokenType = Literal["access", "refresh"]
 # Password hashing
 # --------------------------------------------------------------------------
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)  # type: ignore[no-any-return]
+    return pwd_context.hash(password)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)  # type: ignore[no-any-return]
+    return pwd_context.verify(plain_password, hashed_password)
 
 
 # --------------------------------------------------------------------------
@@ -77,7 +77,7 @@ def _create_token(
         "jvs": jwt_version,
     }
     key, algorithm = _signing_config()
-    return jwt.encode(to_encode, key, algorithm=algorithm)  # type: ignore[no-any-return]
+    return jwt.encode(to_encode, key, algorithm=algorithm)
 
 
 def create_access_token(

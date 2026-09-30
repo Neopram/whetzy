@@ -141,6 +141,29 @@ async def test_admin_economy_credits(client: AsyncClient, owner: User) -> None:
 
 
 @pytest.mark.asyncio
+async def test_admin_economy_scorecard(client: AsyncClient, owner: User) -> None:
+    """Regression: PromoCodeRedemption has `redeemed_at`, not `created_at` — the
+    scorecard's promo_redemption_rate query used the wrong column name and crashed
+    every real call with AttributeError (no test exercised this endpoint before)."""
+    response = await client.get(
+        "/api/v1/admin/economy/scorecard?segment=all&days=30",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "metrics" in data
+    assert "targets" in data
+    keys = {m["key"] for m in data["metrics"]}
+    assert keys == {
+        "referral_registration_pct",
+        "k_factor",
+        "fraud_pct",
+        "sink_source_ratio",
+        "promo_redemption_rate",
+    }
+
+
+@pytest.mark.asyncio
 async def test_admin_economy_referrals(client: AsyncClient, owner: User) -> None:
     response = await client.get(
         "/api/v1/admin/economy/referrals?status=all&limit=50&offset=0",

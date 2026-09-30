@@ -619,7 +619,7 @@ async def get_economy_credits(
 ) -> dict[str, Any]:
     cutoff = datetime.now(UTC) - timedelta(days=days)
 
-    def _segment_filter(q):  # type: ignore[no-untyped-def]
+    def _segment_filter(q: Any) -> Any:
         if segment != "all":
             return q.select_from(CreditLedger).join(User).where(
                 User.language == segment, CreditLedger.created_at >= cutoff,
@@ -758,7 +758,7 @@ async def get_economy_k_factor(
 # ── Economy scorecard (29.12, ECONOMIA.md §7) ─────────────────────────────
 
 
-SCORECARD_TARGETS = {
+SCORECARD_TARGETS: dict[str, dict[str, float]] = {
     "referral_registration_pct": {"m3": 5, "m6": 15, "m12": 25},
     "k_factor": {"m3": 0.1, "m6": 0.3, "m12": 0.5},
     "fraud_pct": {"m3": 2, "m6": 2, "m12": 2},
@@ -777,11 +777,6 @@ async def get_economy_scorecard(
     from app.models.economy import PromoCode, PromoCodeRedemption
 
     cutoff = datetime.now(UTC) - timedelta(days=days)
-
-    def _seg(q, user_col=User.id):  # type: ignore[no-untyped-def]
-        if segment != "all":
-            return q.join(User, User.id == user_col).where(User.language == segment)
-        return q
 
     total_users_q = select(func.count(User.id)).where(User.created_at >= cutoff)
     if segment != "all":
@@ -836,7 +831,7 @@ async def get_economy_scorecard(
 
     total_promos_q = select(func.count(PromoCode.id)).where(PromoCode.created_at >= cutoff)
     redeemed_promos_q = select(func.count(func.distinct(PromoCodeRedemption.promo_code_id))).where(
-        PromoCodeRedemption.created_at >= cutoff,
+        PromoCodeRedemption.redeemed_at >= cutoff,
     )
     total_promos = (await db.execute(total_promos_q)).scalar() or 0
     redeemed_promos = (await db.execute(redeemed_promos_q)).scalar() or 0
@@ -1036,7 +1031,7 @@ async def get_kpi_dashboard(
         if segment != "all":
             retained_q = retained_q.where(User.language == segment)
         retained = (await db.execute(retained_q)).scalar() or 0
-        d30 = round(retained / eligible * 100, 2)
+        d30: float | str = round(retained / eligible * 100, 2)
     else:
         d30 = "sin dato"
 
@@ -1177,7 +1172,7 @@ async def get_metrics_reports(
 ) -> dict[str, Any]:
     cutoff = datetime.now(UTC) - timedelta(days=range_days)
 
-    def _seg(q):  # type: ignore[no-untyped-def]
+    def _seg(q: Any) -> Any:
         if segment != "all":
             return q.select_from(QuestionReport).join(User, QuestionReport.user_id == User.id).where(User.language == segment)
         return q
@@ -1219,6 +1214,7 @@ async def get_deploy_info() -> dict[str, Any]:
     import importlib
     import os
     import pathlib
+    import sys
 
     alembic_head = "unknown"
     versions_dir = pathlib.Path(__file__).resolve().parents[4] / "alembic" / "versions"
@@ -1236,7 +1232,7 @@ async def get_deploy_info() -> dict[str, Any]:
         "app_version": app_version,
         "railway_deployment_id": railway_deployment,
         "app_start_time": start_time,
-        "python_version": os.sys.version,
+        "python_version": sys.version,
     }
 
 

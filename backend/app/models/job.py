@@ -17,7 +17,7 @@ from app.core.db import Base
 
 # Postgres manda (es lo que crea la migracion x5y6z7a8b9c0), pero la suite de
 # tests monta el esquema sobre SQLite desde el metadata y SQLite no compila JSONB.
-JSON_COLUMN = JSONB().with_variant(JSON(), "sqlite")  # type: ignore[no-untyped-call]
+JSON_COLUMN = JSONB().with_variant(JSON(), "sqlite")
 
 
 class Job(Base):
