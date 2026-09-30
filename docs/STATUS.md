@@ -2415,3 +2415,41 @@ con el de 2022.
 duración; no lo usa nada porque sin número de preguntas no hay simulacro); `min_questions` /
 `max_questions` (40–60) de las tres de Microsoft tampoco tienen fuente y ningún código los lee.
 
+## 2026-09-30 — control total: fusión de ADR-53 en `claude/gallant-tesla-fnzy1g` (`763e325`)
+
+**Petición del dueño:** integrar el plan nuevo (ADR-53, fusionado en `master` como #42 mientras
+esta rama seguía abierta) sin perder nada de la rama, y dejar Whetzy lo más cerca posible de
+publicarse en las tiendas con todo lo que no dependa de una persona.
+
+**Qué se hizo:** `git merge origin/master`. 4 ficheros con conflicto real:
+`docs/AUTONOMOUS_STATE.md` (fila 37.1 vieja de esta rama archivada como 37.23, filas
+37.15-37.22 fusionadas en el orden de `master`, §1 recalculado con `ledger.py series 37`:
+3/21, 14%), `docs/COMPETENCIA.md` (§A.2c de esta rama y §A.2d de `master` conviven sin
+chocar), `docs/STATUS.md` y `docs/archive/LEDGER_HISTORY.md` (entradas de ambas ramas en
+orden cronológico, sin reescribir hacia atrás). `detallessesionultima.md` marcado histórico
+en su cita a ADR-46 para no romper el `check_docs.py [10]` nuevo. `CATALOGO_MAESTRO.md`
+regenerado con `catalog_coverage.py` contra el contenido real de esta rama: práctica de
+certificación al suelo 1.886/2.175 (86,7%, no 88,6% de `master`), banco 10.949 preguntas
+(no 10.989), MLA-C01 y Microsoft 6,0-6,3 preguntas por skill (no «8,2»). `DECISIONS.md` no
+se tocó — las ADR no se reescriben.
+
+**Verificación independiente de ADR-53** (Fase 2): 3 cifras de su tabla de evidencia
+comprobadas contra la fuente en vivo, no de memoria — las tres coinciden: AWS AIF-C01
+(65 Q/90 min), Koedinger et al. 2023 PNAS (mediana 7,24/media 12,27 oportunidades por
+componente de conocimiento), Anki FSRS (retención por defecto 90%). Ninguna enmienda
+necesaria.
+
+**Pruebas:** `check_docs.py`, `ledger.py check`, `catalog_coverage.py --check`,
+`check_question_bank.py`, `question_diversity.py` en verde. `pytest tests/content
+tests/test_cobertura_plan.py tests/test_diversidad_banco.py tests/test_contrato_frontend.py`:
+70.095 passed, 1 skipped, 21 xfailed. **Suite backend entera**: 71.394 passed, 4 skipped,
+1 deselected, 21 xfailed, **0 failed** (71.419 tests, 5170s/86 min — el grueso es un solo
+test preexistente, BM25 puro en Python contra las ~11.000 preguntas reales en ES+EN,
+confirmado con `py-spy` que progresaba y usaba sqlite en memoria, nunca producción).
+**Suite frontend entera**: 342 passed (44 ficheros). Pre-push nivel 1 verde en el push.
+
+**Lo que no se hizo todavía:** ningún trabajo de contenido de la Fase 3 de ADR-53
+(certificaciones/tracks al suelo, banco de simulacro reservado) ni los items de compliance
+de tiendas (Android API 36, versión de Capacitor) — solo detectados, sin tocar código
+todavía. PR #34 actualizado con el detalle completo de este merge.
+
