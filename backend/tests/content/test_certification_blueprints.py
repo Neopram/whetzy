@@ -33,6 +33,21 @@ Fixed in ledger 18.1:
 Fixed in ledger 18.13, because 18.1 got the weights right and the contents
 wrong: the domains it declared were module labels, and what sat inside those
 modules was not what the label said. See the block comment further down.
+
+Fixed in ledger 37.19 (2026-09-30), re-read from the vendor that day:
+  * AIF-C01 said 85 questions (65 scored + 20 unscored) and 120 minutes. AWS
+    publishes 65 (50 scored + 15 unscored) and 90: the rehearsal handed the
+    candidate 20 extra questions and 30 extra minutes.
+      https://aws.amazon.com/certification/certified-ai-practitioner/
+  * MLA-C01 carried 85 questions and 170 minutes, which is the MLA-C02 beta.
+    MLA-C01 is 65 (50 + 15) and 130 minutes; its `exam_guide_url` pointed at
+    the marketing page instead of the guide. The move to C02 is ledger 39.25.
+      https://aws.amazon.com/certification/certified-machine-learning-engineer-associate/
+  * AZ-900 and DP-900 said 85 minutes. Microsoft's exam pages say "You will
+    have 45 minutes to complete this assessment". Microsoft does not publish
+    the question count, so neither track has a timed rehearsal yet.
+      https://learn.microsoft.com/en-us/credentials/certifications/exams/az-900/
+      https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-900/
 """
 
 from __future__ import annotations
@@ -101,6 +116,53 @@ def _weights(track: dict[str, Any]) -> list[int]:
         for m in track.get("modules", [])
         if m.get("exam_weight_pct") is not None
     ]
+
+
+# The format each vendor publishes (37.19, read 2026-09-30; URLs in the module
+# docstring). A rehearsal in any other format is not "the real format".
+VENDOR_EXAM_FACTS: dict[str, dict[str, Any]] = {
+    "track11": {
+        "code": "AIF-C01",
+        "exam_question_count": 65,
+        "scored_question_count": 50,
+        "unscored_question_count": 15,
+        "exam_duration_minutes": 90,
+        "passing_scaled_score": 700,
+    },
+    "track43": {
+        "code": "MLA-C01",
+        "exam_question_count": 65,
+        "scored_question_count": 50,
+        "unscored_question_count": 15,
+        "exam_duration_minutes": 130,
+        "passing_scaled_score": 720,
+    },
+    "track44": {"code": "AZ-900", "exam_duration_minutes": 45},
+    "track46": {"code": "DP-900", "exam_duration_minutes": 45},
+}
+
+
+class TestVendorExamFacts:
+    @pytest.mark.parametrize("track_id", sorted(VENDOR_EXAM_FACTS))
+    def test_exam_format_matches_the_vendor_page(self, track_id: str) -> None:
+        cert = _track(track_id)["certification"]
+        facts = VENDOR_EXAM_FACTS[track_id]
+        assert {k: cert.get(k) for k in facts} == facts
+
+    def test_scored_plus_unscored_is_the_exam_length(self) -> None:
+        """Catches a half-applied fix: 85 -> 65 total with the unscored count left at 20."""
+        offenders = [
+            t["id"]
+            for t in _tracks()
+            if (c := t.get("certification") or {}).get("scored_question_count") is not None
+            and c.get("unscored_question_count") is not None
+            and c["scored_question_count"] + c["unscored_question_count"] != c.get("exam_question_count")
+        ]
+        assert offenders == []
+
+    def test_mla_guide_url_is_the_c01_guide_not_the_marketing_page(self) -> None:
+        url = _track("track43")["certification"]["exam_guide_url"]
+        assert url.endswith("AWS-Certified-Machine-Learning-Engineer-Associate_Exam-Guide.pdf")
 
 
 class TestPcepExamFacts:
