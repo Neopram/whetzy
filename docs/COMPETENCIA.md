@@ -1,7 +1,9 @@
 # Whetzy — Inteligencia Competitiva Exhaustiva
 
 > **Documento vivo nº 14.** Análisis directo + indirecto. Última actualización:
-> **2026-09-30** (§A.2c, catálogos y bancos de certificación; §A.2b del 2026-09-28; resto de §A del 2026-09-24). **§A manda sobre §1–§3**, que son del
+> **2026-09-30** (§A.2d, catálogos y bancos de certificación que alimentan ADR-53; §A.2c,
+> capturas de pantalla 24.0 del 2026-09-28; §A.2b, Brilliant y Kodree; resto de §A del
+> 2026-09-24). **§A manda sobre §1–§3**, que son del
 > 2026-09-18 y contienen cifras que no se comprobaron entonces y hoy no se
 > sostienen (precios de Boot.dev y Platzi, ingresos): léelas como hipótesis.
 
@@ -125,7 +127,36 @@ cifras no están aquí.
 | UX/UI, Excel o Power BI | **No** | `CATALOGO_MAESTRO.md` §2.0.1: ux-design «no se proponen todavía» |
 | Java o TypeScript ejecutables | Parcial | 37.8 añade tracks; runtimes solo Python/SQL/JS |
 
-### A.2c Captura del 2026-09-30: tamaño de catálogo, bancos de certificación y demanda (alimenta ADR-53)
+### A.2c Capturas de pantalla del 2026-09-28 (24.0, landing + precios)
+
+Primera parte ejecutable de 24.0 sin cuentas de terceros (instrucción explícita del
+dueño de sesión: «sin cuentas externas»). Playwright/Chromium, páginas públicas,
+sin login, sin saltar ningún CAPTCHA/Turnstile — se retrocedió donde apareció uno.
+21 capturas (landing desktop 1440×900, landing mobile 390×844, precios) para 7 de
+los 8 competidores de §1 en `docs/competencia-screenshots/` (gitignoreada, ADR-46;
+entregadas al dueño de sesión directamente, no van al repo).
+
+**Comprobado a mano sobre la captura (2026-09-28):**
+
+| Competidor | Dato nuevo o confirmado | Evidencia |
+|---|---|---|
+| Boot.dev | Confirma §A.1: $33/mes facturado anual, $399/año, toggle "Yearly -44%" | `bootdev-pricing.png` |
+| Codecademy | Confirma §A.1 exacto: Plus $14.99/mes anual ($29.99 mensual), Pro $19.99/mes anual ($39.99 mensual), Basic gratis | `codecademy-pricing.png` |
+| DataCamp | **Nuevo** (§A decía 403/checkpoint el 2026-09-24, no se había reproducido): Basic gratis, Premium $35/mes, Teams $28/usuario/mes | `datacamp-pricing.png` |
+| Educative | Afina el rango «probable» $13–21/mes de §A.2: Standard $12/mes ($139/año, 50% off), Premium $16/mes ($189/año), Premium Plus $21/mes ($239/año) — precios con descuento activo, no de lista | `educative-pricing.png` |
+| Brilliant | **Discrepancia sin resolver entre dos páginas del propio Brilliant el mismo día**: `/premium/` (esta captura) muestra Monthly $30, Annual $20/mes, Family $40/mes/6 plazas; §A.2b (misma fecha, `/subscribe/`) registró $27.99/mes o $161.88/año. No es un error de esta sesión — son dos páginas de precios distintas y no coincide ninguna de las tres cifras con ninguna de las dos. Sin decidir cuál es la vigente | `brilliant-pricing.png` |
+| TryHackMe | Landing y nav de precios cargan bien; el panel de precios en sí no renderizó a tiempo (carga diferida) en el primer intento, y el segundo intento devolvió un «Vercel Security Checkpoint» — no reintentado más, se trata como bloqueo | `tryhackme-pricing.png` (sin cifras) |
+| Platzi | Landing y precios cargan; el panel de precios no quedó dentro del viewport capturado (scroll cayó en testimonios). §A.1 ya tiene Basic $49/mes y Expert $249/año verificados por otra vía — no se repite la re-descarga aquí | `platzi-pricing.png` (sin cifras nuevas) |
+| Platzi (reintento 2026-09-29) | `/planes/` devolvió «Hay un firewall… espera un momento y vuelve a intentarlo» — un bloqueo nuevo que no estaba el 2026-09-28, no un fallo de scroll. Tratado igual que TryHackMe/Exercism: sin reintentar, sin saltarlo | sin captura |
+| Exercism | **Bloqueado**: Cloudflare Turnstile con checkbox interactivo («Performing security verification»), no un simple 403. No se intentó resolver el reto — cae fuera de «páginas públicas sin saltar antibots» | sin captura |
+
+**Lo que esto NO cierra en 24.0:** onboarding (pasos 1-5), dashboard autenticado y
+gamificación de los 8 competidores requieren cuenta — excluidos explícitamente esta
+sesión. Sigue faltando `docs/design/decisiones-24.0.md` con la decisión del dueño
+pantalla a pantalla. El criterio completo («8 × ≥5 capturas») tampoco se cumple:
+esta tanda es 3 por competidor (7/8), no 5.
+
+### A.2d Captura del 2026-09-30: tamaño de catálogo, bancos de certificación y demanda (alimenta ADR-53)
 
 Cuatro agentes investigaron ≈ 150 fuentes; la sesión **re-descargó y leyó** las cifras que
 sostienen ADR-53. Salida de red en EE. UU.; Udemy, Class Central y DataCamp devolvieron 403
@@ -144,7 +175,7 @@ o antibot a la descarga directa y no se sortearon.
 | AWS | AIF-C01: 65 preguntas, 90 min (el repo dice 85 y 120); MLA-C01 65 / 130 y MLA-C02 85 / 170 | «Exam format 65 questions» | aws.amazon.com/certification/… |
 | Idiomas de examen | en español: GCP ACE, LPIC-1, AZ-104, AIF-C01; no: CKA/CKAD/CKS | «Languages: English, Japanese, Spanish, Portuguese»; «English, Simplified Chinese, and Japanese» | cloud.google.com, lpi.org, learn.microsoft.com, docs.linuxfoundation.org |
 | Apps de educación | D1 13,93 % / 14,59 % y D30 2,69 % / 3,23 % (Android / iOS); conversión freemium mediana 2,1 %, Education iOS 3,1 % | citas literales | appsflyer.com/glossary/retention-rate/; revenuecat.com/state-of-subscription-apps |
-| Referencias de producto | Duolingo DAU/MAU 39,6 %, suscriptores 9,2 % de MAU, CURR 84 %; edX: completa el 3,13 % de todos y el 46 % de los verificados; Khan Academy 30+ min/semana | citas literales | SEC (10-K y carta Q2 2026 de Duolingo); insidehighered.com; blog.khanacademy.org |
+| Referencias de producto | Duolingo DAU/MAU 39,6 %, suscriptores 9,2 % de MAU, CURR 84 % (récord, +~1 pp interanual); edX: completa el 3,13 % de todos y el 46 % de los verificados; Khan Academy 30+ min/semana | «The main metric we use to evaluate the stickiness of our product is Current User Retention Rate (CURR), which is the proportion of 'current user DAUs' who come back the next day. A 'current user DAU' is one who was also active another time in the previous seven days» — «our CURR is at an all-time high of 84%, up by about 1% from last year» | sec.gov/Archives/edgar/data/0001562088/000162828026053299/q2fy26duolingo6-30x26share.htm (carta Q2 FY2026, 8-K, leída en vivo 2026-09-30); insidehighered.com; blog.khanacademy.org |
 
 **Reportado por agentes, no reproducido (probable)**
 

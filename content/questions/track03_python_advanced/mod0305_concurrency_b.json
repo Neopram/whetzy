@@ -200,7 +200,7 @@
       "correct_index": 1,
       "explanation_es": "Falso. El GIL garantiza que solo un hilo ejecute bytecode a la vez, por lo que un trabajo CPU-bound repartido en dos hilos no se acelera; de hecho suele ir algo MÁS lento por el coste de los cambios de contexto y de pasarse el GIL. La afirmación suena creíble porque los hilos sí son reales a nivel de sistema operativo y porque para tareas de I/O el truco funciona de verdad. Para paralelismo de CPU real hay que salir del GIL: `multiprocessing`, extensiones en C que lo liberan, o un build free-threaded según la PEP 703.",
       "explanation_en": "False. The GIL guarantees that only one thread executes bytecode at a time, so CPU-bound work split across two threads gets no speedup; it usually runs slightly SLOWER because of context switching and GIL hand-off costs. The claim sounds credible because the threads really are OS threads, and because for I/O work the trick genuinely does pay off. For real CPU parallelism you must leave the GIL behind: `multiprocessing`, C extensions that release it, or a free-threaded build as described by PEP 703.",
-      "source": "PEP 703 — Making the Global Interpreter Lock Optional in CPython",
+      "source": "PEP 703 — Making the Global Interpreter Lock Optional in CPython — https://peps.python.org/pep-0703/",
       "expected_time_ms": 25000,
       "tags": [
         "concurrency",

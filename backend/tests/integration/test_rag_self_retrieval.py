@@ -118,12 +118,19 @@ async def _load_real_corpus() -> async_sessionmaker[AsyncSession]:
     return factory
 
 
+@pytest.mark.slow
 async def test_index_memory_bounded_and_hits_self_retrieval_bar() -> None:
     """Test memory footprint and self-retrieval quality (deterministic assertions).
 
     This test is part of the 11.1 acceptance criteria: index quality and memory
     bounds. The time budget is separated into a benchmark test below, which can
     be skipped when running on a shared or loaded system.
+
+    Marked `slow` (2026-09-30, owner's decision after this alone took >5 min
+    in isolation): it runs a real BM25 retrieve() per corpus question in both
+    languages — O(corpus) work per assertion, deterministic but expensive, and
+    growing every content session. Deselected from the default suite; run with
+    `python -m pytest -m slow`, or see ci_local.sh / ci.yml for its own step.
     """
     factory = await _load_real_corpus()
 

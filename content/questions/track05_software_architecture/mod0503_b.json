@@ -659,7 +659,7 @@
       "correct_index": 1,
       "explanation_es": "`private` es una instrucción sobre QUIÉN puede almacenar, no sobre confidencialidad en tránsito: eso lo aporta TLS, que es la confusión de la opción 1. Marcar `public` (o simplemente omitir `private`) en una respuesta personalizada es la causa habitual de la fuga más vergonzosa de un CDN: un usuario recibe la página cacheada de otro. La opción 2 describe `no-store`. La 3 inventa una relación entre el ciclo de sesión y el `max-age`, que es un contador de segundos desde que la respuesta se generó y nada más.",
       "explanation_en": "`private` is an instruction about WHO may store, not about confidentiality in transit: that is what TLS provides, which is the confusion in option 1. Marking a personalised response `public` (or simply omitting `private`) is the usual cause of the most embarrassing CDN leak: one user receives another user's cached page. Option 2 describes `no-store`. Option 3 invents a link between the session lifecycle and `max-age`, which is a count of seconds since the response was generated and nothing more.",
-      "source": "RFC 9111 - HTTP Caching, section 5.2 / MDN Web Docs - HTTP caching",
+      "source": "RFC 9111 - HTTP Caching, section 5.2 / MDN Web Docs - HTTP caching — https://www.rfc-editor.org/rfc/rfc9111",
       "expected_time_ms": 38000,
       "tags": [
         "cdn",
@@ -689,7 +689,7 @@
       "correct_index": 3,
       "explanation_es": "La `s` de `s-maxage` es de 'shared': solo la interpretan las caches compartidas (CDN, proxy inverso), y para ellas sustituye a `max-age`. El navegador, cache privada, ignora `s-maxage` y usa `max-age`. Este par es el patrón estándar para descargar el origen sin perder capacidad de reaccionar rápido: el CDN aguanta la carga durante 10 minutos y se puede purgar al instante, mientras el navegador revalida cada minuto. La opción 4 invierte el significado, y la 2 inventa una precedencia por orden de aparición que HTTP no define.",
       "explanation_en": "The `s` in `s-maxage` stands for 'shared': only shared caches (CDN, reverse proxy) honour it, and for them it overrides `max-age`. The browser, a private cache, ignores `s-maxage` and uses `max-age`. This pair is the standard pattern for offloading the origin without losing the ability to react fast: the CDN absorbs load for 10 minutes and can be purged instantly, while the browser revalidates every minute. Option 4 inverts the meaning, and option 2 invents a precedence by order of appearance that HTTP does not define.",
-      "source": "RFC 9111 - HTTP Caching, section 5.2.2 / MDN Web Docs - Cache-Control",
+      "source": "RFC 9111 - HTTP Caching, section 5.2.2 / MDN Web Docs - Cache-Control — https://www.rfc-editor.org/rfc/rfc9111",
       "expected_time_ms": 40000,
       "tags": [
         "cdn",
@@ -715,7 +715,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero: `Vary` amplía la clave de cache más allá de la URL, añadiendo las cabeceras de petición que listan. El riesgo está en el otro extremo: cabeceras muy variables como `User-Agent` o `Cookie` en `Vary` multiplican las variantes y hunden el hit ratio, que es la causa silenciosa de un CDN que reporta MISS casi siempre. La regla práctica es variar por el mínimo imprescindible y normalizar el resto en el edge.",
       "explanation_en": "True: `Vary` widens the cache key beyond the URL by adding the request headers it lists. The risk is at the other extreme: highly variable headers such as `User-Agent` or `Cookie` in `Vary` multiply the variants and sink the hit ratio, which is the silent cause of a CDN that reports MISS nearly always. The practical rule is to vary on the bare minimum and normalise the rest at the edge.",
-      "source": "RFC 9111 - HTTP Caching, section 4.1 / MDN Web Docs - Vary",
+      "source": "RFC 9111 - HTTP Caching, section 4.1 / MDN Web Docs - Vary — https://www.rfc-editor.org/rfc/rfc9111",
       "expected_time_ms": 30000,
       "tags": [
         "cdn",
@@ -764,7 +764,7 @@
       "correct_answer_en": "revalidate",
       "explanation_es": "`stale-while-revalidate` (RFC 5861) elimina la penalización de latencia del primer usuario tras cada caducidad: nadie espera al origen, y el objeto se refresca de fondo. Su hermana `stale-if-error` permite seguir sirviendo contenido caducado cuando el origen falla, que es degradación elegante aplicada al edge. Conviene no confundirla con `must-revalidate`, que es lo contrario: prohíbe servir contenido caducado y obliga a contactar con el origen antes de responder.",
       "explanation_en": "`stale-while-revalidate` (RFC 5861) removes the latency penalty that the first user after each expiry would pay: nobody waits for the origin, and the object is refreshed in the background. Its sibling `stale-if-error` keeps serving expired content when the origin fails, which is graceful degradation applied at the edge. Do not confuse it with `must-revalidate`, which is the opposite: it forbids serving stale content and forces contacting the origin before responding.",
-      "source": "RFC 5861 - HTTP Cache-Control Extensions for Stale Content",
+      "source": "RFC 5861 - HTTP Cache-Control Extensions for Stale Content — https://www.rfc-editor.org/rfc/rfc5861",
       "expected_time_ms": 35000,
       "tags": [
         "cdn",
@@ -794,7 +794,7 @@
       "correct_index": 1,
       "explanation_es": "Caducado no significa inválido: significa que hay que revalidar. El ETag permite confirmar en una respuesta sin cuerpo que la copia local sigue siendo buena, ahorrando el ancho de banda del objeto entero. La opción 1 es el error de fondo, creer que `max-age` vencido obliga a redescargar. La 4 confunde 304 con 204: 204 se usa para peticiones cuya respuesta legítimamente no tiene contenido (un DELETE, por ejemplo), no para validación condicional. La 2 malinterpreta la semántica de la cabecera condicional.",
       "explanation_en": "Expired does not mean invalid: it means revalidate. The ETag lets the server confirm in a bodyless response that the local copy is still good, saving the bandwidth of the whole object. Option 1 is the underlying mistake, believing an elapsed `max-age` forces a re-download. Option 4 confuses 304 with 204: 204 is for requests whose response legitimately has no content (a DELETE, for instance), not for conditional validation. Option 2 misreads the semantics of the conditional header.",
-      "source": "RFC 9111 - HTTP Caching, section 4.3 / MDN Web Docs - ETag and If-None-Match",
+      "source": "RFC 9111 - HTTP Caching, section 4.3 / MDN Web Docs - ETag and If-None-Match — https://www.rfc-editor.org/rfc/rfc9111",
       "expected_time_ms": 42000,
       "tags": [
         "cdn",
@@ -824,7 +824,7 @@
       "correct_index": 0,
       "explanation_es": "La cabecera dice cuánto tiempo es fresca una entrada; el hit ratio depende además de cuántas peticiones comparten la misma clave. Con `?utm_source=...` o una cookie de sesión dentro de la clave, cada visitante crea su propia entrada y el TTL nunca llega a amortizarse. La solución es normalizar la clave: ignorar los parámetros irrelevantes y las cookies en rutas estáticas. La opción 1 invierte la relación (un TTL alto ayuda al hit ratio). La 3 y la 4 son mitos: los CDN cachean HTML si las cabeceras lo permiten, y la distancia al origen solo afecta a la latencia del fallo, no a si se cachea.",
       "explanation_en": "The header says how long an entry is fresh; the hit ratio also depends on how many requests share the same key. With `?utm_source=...` or a session cookie inside the key, each visitor creates their own entry and the TTL never gets amortised. The fix is normalising the key: ignore irrelevant parameters and cookies on static paths. Option 1 inverts the relationship (a long TTL helps the hit ratio). Options 3 and 4 are myths: CDNs cache HTML when the headers allow it, and distance to the origin only affects miss latency, not whether something is cached.",
-      "source": "AWS CloudFront Developer Guide - Cache key and origin requests / RFC 9111 - HTTP Caching",
+      "source": "AWS CloudFront Developer Guide - Cache key and origin requests / RFC 9111 - HTTP Caching — https://www.rfc-editor.org/rfc/rfc9111",
       "expected_time_ms": 55000,
       "tags": [
         "cdn",

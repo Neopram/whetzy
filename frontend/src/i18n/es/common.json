@@ -44,6 +44,23 @@
     "ageLabel": "Confirmo que tengo 13 años o más",
     "errAge": "Debes confirmar que tienes 13 años o más"
   },
+  "forgotPassword": {
+    "title": "¿Olvidaste tu contraseña?",
+    "tagline": "Te mandamos un enlace para restablecerla.",
+    "emailPlaceholder": "tu@correo.com",
+    "submit": "Enviar",
+    "back": "Volver",
+    "emailNotConfigured": "El envío de correos no está disponible ahora mismo, así que no podemos mandarte el enlace. Escríbenos a soporte para recuperar tu cuenta.",
+    "checkEmailTitle": "Revisa tu correo",
+    "checkEmailBody": "Si {{email}} tiene una cuenta, te llegará un enlace para restablecer la contraseña."
+  },
+  "resetPassword": {
+    "minLength": "Mínimo 8 caracteres",
+    "mismatch": "No coinciden",
+    "newPasswordPlaceholder": "Nueva contraseña",
+    "confirmPlaceholder": "Confirmar",
+    "submit": "Cambiar"
+  },
   "onboarding": {
     "headline": "Aprende Python de 0 a AI Engineer",
     "sub": "El motor que se adapta a tu ritmo y te hace avanzar cada día.",
@@ -74,7 +91,8 @@
     "decaySubtitle": "Tu memoria de estas habilidades está bajando. Un repaso corto las fija.",
     "decayNow": "hoy",
     "decayTomorrow": "mañana",
-    "decayInDays": "en {{count}} días",
+    "decayInDays_one": "en {{count}} día",
+    "decayInDays_other": "en {{count}} días",
     "predText1": "Tu track más próximo es",
     "predText2": "— dominas",
     "predText3": "habilidades",
@@ -82,7 +100,8 @@
     "loading": "Cargando…",
     "done": "¡Completada!",
     "yourStreak": "Tu racha",
-    "days": "días",
+    "days_one": "día",
+    "days_other": "días",
     "best": "Mejor",
     "reviewsPending": "repasos pendientes",
     "review": "Repasar",
@@ -91,6 +110,8 @@
     "freeze_other": "{{count}} comodines: si un día no estudias, guardan tu racha.",
     "streakKind": "Cada lunes recuperas uno si no te queda. Y perder la racha no borra lo que ya dominas.",
     "territory": "Tu territorio",
+    "eloLabel": "Elo",
+    "eloHint": "Media del Elo de tus skills practicadas — el mismo Elo que ajusta la dificultad de las preguntas que ves.",
     "freezeShop": {
       "status": "Comodines: {{held}} de {{max}} · saldo: {{balance}} créditos",
       "buy": "Comprar un comodín · {{price}} créditos",
@@ -215,7 +236,11 @@
     "next": "SIGUIENTE",
     "seeResults": "VER RESULTADOS",
     "noQuestions": "No hay preguntas para este modo todavía.",
+    "quotaReachedQuestions": "Ya usaste tus {{limit}} preguntas nuevas gratis de hoy. Vuelven a las {{time}}.",
+    "quotaReachedTitle": "Cupo diario alcanzado",
     "noQuestionsAvail": "Sin preguntas disponibles",
+    "needsLessonMessage": "Primero tienes que ver la lección de una habilidad para practicarla con preguntas.",
+    "needsLessonAction": "Ir a las lecciones",
     "excellent": "¡Excelente!",
     "goodJob": "¡Buen trabajo!",
     "keepGoing": "¡Sigue practicando!",
@@ -283,6 +308,7 @@
       "low_mastery": "Practicar lo débil",
       "all_mastered": "Refuerzo general",
       "no_skills": "Sin skills",
+      "needs_lesson": "Falta ver la lección",
       "difficulty": "Dificultad objetivo: {{val}}",
       "expected": "Prob. acierto: {{val}}%"
     }
@@ -484,7 +510,8 @@
     "deleteAccount": "Eliminar cuenta — Whetzy",
     "privacy": "Privacidad — Whetzy",
     "terms": "Términos — Whetzy",
-    "landing": "Whetzy — Aprende lo que importa"
+    "landing": "Whetzy — Aprende lo que importa",
+    "evidence": "Whetzy — Evidencia"
   },
   "legal": {
     "back": "Volver",
@@ -957,6 +984,7 @@
   },
   "lesson": {
     "errorLoading": "No se pudo cargar la lección.",
+    "quotaReachedLessons": "Ya usaste tus {{limit}} lecciones gratis de hoy. Vuelven a las {{time}}.",
     "loading": "Cargando lección…",
     "noContent": "Todavía no hay lecciones para esta habilidad.",
     "noContentTitle": "Sin contenido disponible",
@@ -1027,5 +1055,89 @@
     "runTests": "Probar",
     "testsPassed": "✅ ¡Todos los tests pasaron!",
     "completed": "¡Proyecto completado!"
+  },
+  "evidence": {
+    "pageTitle": "Whetzy — Evidencia",
+    "heroTitle": "Página de evidencia",
+    "heroSub": "Decimos tener el motor de aprendizaje adaptativo más transparente de la educación en programación. Esta página es la prueba — o la falta de ella. Cada número de aquí es reproducible desde nuestro código abierto.",
+    "capturedLabel": "Capturado",
+    "sourceCode": "código fuente",
+    "s1Title": "01 — Motor de aprendizaje",
+    "s1Lead": "Whetzy corre una pila adaptativa de seis componentes. Cada componente tiene tests unitarios. Nada está atado a un proveedor — la implementación completa vive en",
+    "engineStack": {
+      "bkt": { "name": "BKT", "desc": "Estimación de dominio con HMM. Actualiza P(L) tras cada respuesta. Modelo de 4 parámetros con soporte explícito para «no lo sé»." },
+      "fsrs": { "name": "FSRS", "desc": "Free Spaced Repetition Scheduler (sucesor de SM-17). Calcula el intervalo de repaso óptimo a partir de estabilidad y dificultad." },
+      "elo": { "name": "Elo", "desc": "Calibración de dificultad de preguntas. Ajusta la puntuación de cada pregunta según los resultados de todos los usuarios." },
+      "bandit": { "name": "Bandit (ε-greedy)", "desc": "Selección de preguntas a nivel de sesión. Equilibra exploración (habilidades nuevas) frente a explotación (repasos pendientes)." },
+      "dkt": { "name": "DKT (LSTM)", "desc": "Deep Knowledge Tracing. LSTM entrenada sobre secuencias de respuestas, usada como señal secundaria para P(L) junto al BKT." },
+      "irt": { "name": "IRT (planeado)", "desc": "Item Response Theory. Modelo 2-PL para dificultad/discriminación. Pendiente de datos de calibración de ASSISTments." }
+    },
+    "s2Title": "02 — Parámetros de BKT y calibración",
+    "s2Lead": "Parámetros por defecto de Wilson et al. (2016) y Corbett & Anderson (1995). Los overrides por habilidad están planeados para F23, en cuanto ≥30 usuarios beta den suficientes observaciones por habilidad para ajustar P(L₀) y P(T) vía EM.",
+    "bktParams": {
+      "pl0": { "param": "P(L₀)", "desc": "Probabilidad previa de conocer una habilidad antes de practicarla" },
+      "pt": { "param": "P(T)", "desc": "Probabilidad de aprender tras una oportunidad correcta" },
+      "pg": { "param": "P(G)", "desc": "Probabilidad de acertar por azar sin saber" },
+      "ps": { "param": "P(S)", "desc": "Probabilidad de fallar por descuido a pesar de saber" },
+      "masteryThreshold": { "param": "Umbral de dominio", "desc": "P(L) mínima para desbloquear el siguiente módulo" },
+      "idkPrior": { "param": "Prior de «no lo sé»", "desc": "P(sabe | dice NS) / P(no sabe | dice NS) — evidencia negativa más fuerte que una respuesta fallada" }
+    },
+    "tableParameter": "Parámetro",
+    "tableValue": "Valor",
+    "tableMeaning": "Significado",
+    "assistmentsNoteStrong": "ASSISTments 2009 (no incluido):",
+    "assistmentsNoteText": "la página oficial de distribución devuelve HTTP 200 pero no expone ninguna URL de descarga scriptable, y todos los mirrors de GitHub habitualmente citados que revisamos dieron 404. Registrado como un hueco en",
+    "assistmentsNoteEnd": "en vez de omitirse en silencio o sustituirse por un dataset parecido.",
+    "s3Title": "03 — Benchmark medido: BKT contra DKT",
+    "s3Lead": "Corrido sobre <1>synthetic-5</1> (Piech et al. 2015, <2>Deep Knowledge Tracing</2>) — un dataset fijo, de terceros y citable, para que la afirmación de «motor adaptativo» no la evalúe nuestro propio examen. 4.000 estudiantes, 5 conceptos, 50 respuestas cada uno. Partición temporal por estudiante (3.200 train / 800 test, sin barajar); dentro de cada secuencia, predecir la respuesta <3>t</3> usa solo las respuestas 1…<3>t</3>−1 de ese mismo estudiante.",
+    "bktAucLabel": "BKT — AUC de test",
+    "bktAucSub": "acc 0,7281 · ajuste de grid solo sobre train",
+    "dktAucLabel": "DKT — AUC de test",
+    "dktAucSub": "acc 0,7563 · LSTM h=64, seed 42",
+    "marginLabel": "Margen DKT − BKT",
+    "marginSub": "39.200 predicciones held-out",
+    "readNoteStrong": "Lee esto antes de citar estos números.",
+    "readNoteText": "Las respuestas están indexadas por <1>id de concepto</1> (0–4), no por id de pregunta — la representación que de verdad usa nuestro motor en producción, pero <1>no</1> el montaje del paper. Darle al modelo las etiquetas de concepto reales elimina la dificultad dentro de cada concepto y hace la tarea estrictamente más fácil para <1>ambos</1> modelos, que es por qué los dos puntúan por encima del 0,75 / 0,62 del paper. Estos números nunca deben reportarse como si superasen a Piech et al. Lo que sí se transfiere es el margen, y el nuestro (+0,031) es mucho menor que el del paper (+0,13): un BKT bien ajustado es una base sólida sobre solo 5 conceptos. La única afirmación defendible aquí es estrecha — <1>sobre synthetic-5 a nivel de concepto, nuestro DKT supera a nuestro BKT ajustado por grid en unos 0,03 de AUC.</1> Nada más fuerte.",
+    "s3Disclaimer": "La base BKT usa <1>app/services/engine/bkt.py</1> sin cambios; los parámetros se buscaron por grid solo sobre el split de train (grid grueso, no Baum-Welch completo — el modelo de producción no tiene EM). La metodología completa, los parámetros exactos ajustados y el registro del fallo de ASSISTments viven en <1>docs/ml/kt-benchmark.json</1>. Reproducible con <1>python -m app.ml.benchmark_kt</1>. Generado el 2026-09-13.",
+    "s4Title": "04 — Comparativa con la competencia",
+    "s4Lead": "Puntuado en seis dimensiones ponderadas (total {{max}} pts). Las puntuaciones son nuestro propio juicio a partir de listas públicas de funciones y pruebas de uso directo — no auditadas de forma independiente. Se registran URLs y fechas para que puedas verificarlas tú mismo.",
+    "dims": {
+      "engine": "motor",
+      "bilingual": "bilingüe",
+      "runtime": "ejecución",
+      "algorithm": "algoritmo",
+      "catalog": "catálogo",
+      "ui": "interfaz"
+    },
+    "tablePlatform": "Plataforma",
+    "tableTotal": "Total",
+    "competitors": {
+      "whetzyNow": { "name": "Whetzy (actual)", "notes": "BKT+FSRS+Elo+bandit, «no lo sé», {{tracks}} tracks {{questions}} Q, build obsoleto (H.11)" },
+      "whetzyH11": { "name": "Whetzy (H.11+H.10)", "notes": "Con redespliegue y ≥30 usuarios beta — techo alcanzable esta semana" },
+      "bootdev": { "name": "Boot.dev", "notes": "Solo EN, backend gamificado, Python/Go/JS en el servidor, sin motor BKT" },
+      "sololearn": { "name": "Sololearn", "notes": "Móvil-first, muchos idiomas pero sin adaptación real, ejecución básica" },
+      "mimo": { "name": "Mimo", "notes": "UX bite-size excelente, casi sin adaptación, EN primero" },
+      "exercism": { "name": "Exercism", "notes": "Ejercicios reales con mentores, sin currículo adaptativo, EN primero" },
+      "platzi": { "name": "Platzi", "notes": "ES nativo + EN, enorme catálogo de vídeo, sin motor BKT ni ejecución en navegador" },
+      "kodekloud": { "name": "KodeKloud", "notes": "Labs en navegador reales, cloud/DevOps, EN primero, sin adaptación" },
+      "acloudguru": { "name": "A Cloud Guru", "notes": "Vídeo primero, certificaciones AWS/GCP/Azure, EN primero, labs básicos" },
+      "leetcode": { "name": "LeetCode", "notes": "Algoritmos excelente, ejecución real, sin currículo adaptativo ni bilingüe" },
+      "freecodecamp": { "name": "freeCodeCamp", "notes": "Gratuito, web/algoritmos, sin motor adaptativo" }
+    },
+    "s4Disclaimer": "Puntuaciones a {{date}}. Las plataformas mejoran; nosotros también. Si ves un error, abre un issue o escribe a {{email}}.",
+    "s5Title": "05 — Dónde vamos por detrás",
+    "behind": {
+      "catalogBreadth": { "label": "Amplitud del catálogo:", "text": "{{tracks}} tracks / {{courses}} cursos frente a los 500+ de Platzi. Es nuestra dimensión más débil y no afirmamos un ritmo de entrega que no podemos mostrar." },
+      "videoContent": { "label": "Contenido en vídeo:", "text": "No tenemos ninguno. Usamos ejemplos de código y ejercicios resueltos en su lugar." },
+      "community": { "label": "Comunidad:", "text": "Cero usuarios hoy (H.10). Foros, revisión entre pares y clasificaciones necesitan gente." },
+      "mobileNative": { "label": "Móvil nativo:", "text": "Solo PWA. Todavía sin ficha en App Store / Play Store (H.2/H.3)." },
+      "benchmarkSynthetic": { "label": "El benchmark es sintético, no de alumnos reales:", "text": "synthetic-5 son datos generados. No tenemos AUC sobre un dataset real de aula, ni sobre nuestros propios usuarios." },
+      "assistmentsEdnet": { "label": "ASSISTments / EdNet:", "text": "no integrados — ASSISTments 2009 no tiene descarga scriptable; el registro del fallo está en el JSON del benchmark." },
+      "perSkillCalibration": { "label": "Calibración por habilidad:", "text": "el BKT de producción usa los valores por defecto de la literatura, sin ajuste EM. La búsqueda por grid solo existe dentro del script de benchmark." }
+    },
+    "footer": "Whetzy",
+    "backToApp": "Volver a la app",
+    "engineMit": "motor MIT",
+    "contentPsf": "contenido PSF"
   }
 }

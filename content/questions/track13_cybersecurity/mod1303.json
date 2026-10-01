@@ -617,7 +617,7 @@
     "correct_answer_en": null,
     "explanation_es": "PCAP: formato para almacenar tráfico capturado. Herramienta: tcpdump (Linux), Wireshark (GUI). Uso: análisis forense, reproducción incidente. Cuidado: PCAP puede contener datos sensibles (passwords, datos usuario).",
     "explanation_en": "PCAP: format for storing captured traffic. Tools: tcpdump (Linux), Wireshark (GUI). Use: forensic analysis, incident replay. Caution: PCAP can contain sensitive data (passwords, user data).",
-    "source": "https://www.tcpdump.org/papers/sniffing-faq.html",
+    "source": "https://www.tcpdump.org/manpages/tcpdump.1.html",
     "expected_time_ms": 30000
   },
   {
@@ -644,7 +644,7 @@
     "correct_answer_en": null,
     "explanation_es": "NetFlow/sFlow: exporta estadísticas de conversaciones de red. Ventaja: bajo overhead (no captura payloads). Útil: análisis tráfico, detección anomalías, forensica. Complementa IDS (IDS examina payloads, NetFlow examina flows).",
     "explanation_en": "NetFlow/sFlow: exports network conversation statistics. Advantage: low overhead (no payload capture). Useful: traffic analysis, anomaly detection, forensics. Complements IDS (IDS examines payloads, NetFlow examines flows).",
-    "source": "https://www.cisco.com/c/en/us/support/docs/netflow/",
+    "source": "https://www.cisco.com/site/us/en/products/networking/software/ios-nx-os/ios-netflow/index.html",
     "expected_time_ms": 30000
   },
   {
@@ -752,7 +752,7 @@
     "correct_answer_en": null,
     "explanation_es": "Integración: IDS/IPS genera alertas → SIEM ingesta → correlaciona con firewall blocks, failed logins, endpoint activity. Ejemplo: IDS alerta puerto scaning + SIEM ve failed logins = probable ataque. Requiere: normalización datos, reglas correlación.",
     "explanation_en": "Integration: IDS/IPS generates alerts → SIEM ingests → correlates with firewall blocks, failed logins, endpoint activity. Example: IDS alerts port scanning + SIEM sees failed logins = probable attack. Requires: data normalization, correlation rules.",
-    "source": "NIST SP 800-61 Rev 3 — https://csrc.nist.gov/publications/detail/sp/800-61/rev-3/final",
+    "source": "NIST SP 800-61 Rev 3 — https://csrc.nist.gov/pubs/sp/800/61/r3/final",
     "expected_time_ms": 45000
   },
   {
@@ -1260,12 +1260,12 @@
       "Eliminates the need for passwords",
       "Only works with 5G devices"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WPA3 introduce varias mejoras significativas: 1) SAE (Simultaneous Authentication of Equals) en lugar de PSK: reemplaza el protocolo de intercambio de claves, haciéndolo resistente a ataques de diccionario offline (donde un atacante intenta adivinar la contraseña analizando tráfico capturado); 2) Dragonfly: es el algoritmo específico usado en SAE; 3) Encriptación de datos incluso en redes abiertas (Opportunistic Wireless Encryption); 4) Mayor protección en dispositivos IoT débiles. Estas mejoras hacen que WPA3 sea significativamente más seguro que WPA2.",
     "explanation_en": "WPA3 introduces several significant improvements: 1) SAE (Simultaneous Authentication of Equals) instead of PSK: replaces the key exchange protocol, making it resistant to offline dictionary attacks (where an attacker attempts to guess the password by analyzing captured traffic); 2) Dragonfly: is the specific algorithm used in SAE; 3) Data encryption even on open networks (Opportunistic Wireless Encryption); 4) Greater protection on weak IoT devices. These improvements make WPA3 significantly more secure than WPA2.",
-    "source": "https://www.wi-fi.org/certification/wi-fi-6",
+    "source": "https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-6",
     "expected_time_ms": 25000
   },
   {
@@ -1287,7 +1287,7 @@
       "A protocol to increase WiFi speed",
       "A tool for detecting intrusions"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El protocolo 802.1X es un estándar IEEE que implementa el control de acceso a la red basado en la autenticación individual del usuario. En redes inalámbricas con 802.1X: 1) El usuario intenta conectarse a la red inalámbrica, 2) El punto de acceso (AP) requiere que el usuario se autentique contra un servidor de autenticación (típicamente RADIUS), 3) Solo después de la autenticación exitosa, se otorga acceso a la red. Esto es fundamental para WPA2-Enterprise y WPA3-Enterprise, permitiendo autenticación fuerte basada en credenciales individuales.",
@@ -1314,12 +1314,12 @@
       "Compress transmitted data",
       "Authenticate individual users and authorize their network access based on their credentials"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "RADIUS (Remote Authentication Dial-In User Service) es un protocolo de autenticación, autorización y auditoría (AAA) ampliamente utilizado en redes empresariales. El servidor RADIUS es responsable de: 1) Autenticar usuarios verificando sus credenciales (usuario/contraseña, certificados, OTP, etc.), 2) Autorizar qué recursos pueden acceder según políticas, 3) Registrar (auditar) los intentos de conexión y acceso. En redes inalámbricas, el punto de acceso actúa como cliente RADIUS que envía solicitudes de autenticación al servidor. Esto permite escalabilidad en redes con muchos usuarios.",
     "explanation_en": "RADIUS (Remote Authentication Dial-In User Service) is an authentication, authorization, and accounting (AAA) protocol widely used in enterprise networks. The RADIUS server is responsible for: 1) Authenticating users by verifying their credentials (username/password, certificates, OTP, etc.), 2) Authorizing what resources they can access according to policies, 3) Recording (auditing) connection and access attempts. In wireless networks, the access point acts as a RADIUS client that sends authentication requests to the server. This enables scalability in networks with many users.",
-    "source": "https://tools.ietf.org/html/rfc2865",
+    "source": "https://www.rfc-editor.org/rfc/rfc2865",
     "expected_time_ms": 20000
   },
   {
@@ -1368,7 +1368,7 @@
       "A method to change the router password",
       "A technique to encrypt local passwords"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Un ataque de desautenticación es una técnica de denegación de servicio (DoS) en redes WiFi donde el atacante: 1) Captura tráfico inalámbrico para identificar direcciones MAC de clientes y del punto de acceso, 2) Envía tramas de desautenticación forjadas (spoofed deauth frames) pretendiendo ser del punto de acceso, 3) Los clientes reciben estas tramas y se desconectan de la red, 4) El atacante puede capturar el tráfico de reconexión (handshake) para intentar romper la contraseña, o crear un punto de acceso falso para interceptar la reconexión. Este ataque es relativamente fácil de ejecutar usando herramientas como Aircrack-ng y afecta la disponibilidad de la red.",
@@ -1395,7 +1395,7 @@
       "It requires a RADIUS server",
       "It significantly increases network speed"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El filtrado de dirección MAC (Media Access Control) es una medida de control de acceso que permite solo dispositivos con direcciones MAC específicas conectarse a la red inalámbrica. Sin embargo, su limitación principal es que las direcciones MAC pueden ser falsificadas (spoofed) muy fácilmente: un atacante puede: 1) Monitorear la red para capturar direcciones MAC de dispositivos autorizados, 2) Cambiar su dirección MAC local para que coincida con una autorizada, 3) Conectarse a la red evitando el filtro. Por lo tanto, el filtrado de MAC no debe ser la única medida de seguridad; debe combinarse con cifrado fuerte (WPA2/WPA3) y otros controles.",
@@ -1422,7 +1422,7 @@
       "It only works with enterprise networks",
       "The SSID can be easily discovered by monitoring beacon and association frames"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Ocultar el SSID (Service Set Identifier) de una red inalámbrica es una medida de seguridad por oscuridad que proporciona mínima protección: 1) Aunque el SSID no se transmite en tramas de beacon, aún se transmite en las tramas de asociación y prueba de autenticidad, 2) Un atacante puede fácilmente capturar estas tramas usando herramientas como Wireshark, 3) El SSID también se transmite cuando los clientes legítimos se reconectan, 4) Ocultar el SSID solo evita que usuarios casual vean la red, no a atacantes dedicados. La seguridad real proviene del cifrado fuerte (WPA2/WPA3), no de ocultar el SSID.",
@@ -1476,12 +1476,12 @@
       "LDAP and Kerberos as the only methods",
       "EAP-PSK only, which is the most secure"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "EAP (Protocolo de Autenticación Extensible) es un marco de autenticación utilizado en redes empresariales 802.1X/WPA2-Enterprise. Los tipos comunes incluyen: 1) EAP-TLS: utiliza certificados digitales X.509 para cliente y servidor, proporciona máxima seguridad, recomendado para redes muy sensibles; 2) EAP-TTLS: túnela contraseñas dentro de un canal TLS seguro, más fácil de implementar que EAP-TLS; 3) EAP-PEAP: encapsula credenciales dentro de un túnel TLS protegido, similar a TTLS. Cada tipo tiene ventajas/desventajas en términos de seguridad, implementación y mantenimiento.",
     "explanation_en": "EAP (Extensible Authentication Protocol) is an authentication framework used in enterprise 802.1X/WPA2-Enterprise networks. Common types include: 1) EAP-TLS: uses digital X.509 certificates for both client and server, provides maximum security, recommended for highly sensitive networks; 2) EAP-TTLS: tunnels passwords inside a secure TLS channel, easier to implement than EAP-TLS; 3) EAP-PEAP: encapsulates credentials inside a protected TLS tunnel, similar to TTLS. Each type has advantages/disadvantages in terms of security, implementation, and maintenance.",
-    "source": "https://tools.ietf.org/html/rfc3748",
+    "source": "https://www.rfc-editor.org/rfc/rfc3748",
     "expected_time_ms": 25000
   },
   {
@@ -1503,7 +1503,7 @@
       "Automatically change the type of WiFi encryption",
       "Delete suspicious files from connected devices"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Un Sistema de Detección de Intrusiones Inalámbrico (WIDS) es una solución de seguridad que monitorea continuamente la actividad inalámbrica para detectar: 1) Puntos de acceso rogue (no autorizados), 2) Ataques de desautenticación, 3) Ataques de fuerza bruta, 4) Cambios maliciosos de configuración, 5) Cambios en canales WiFi, 6) Emisión de SSIDs no autorizados, 7) Evil twins, 8) Intentos de roaming malicioso. Cuando WIDS detecta actividad sospechosa, genera alertas que permiten al equipo de seguridad responder. WIDS es especialmente importante en entornos empresariales donde la seguridad inalámbrica es crítica.",
@@ -1530,7 +1530,7 @@
       "Hiding the SSID of all access points",
       "Only changing router password regularly"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Para detectar puntos de acceso rogue efectivamente: 1) Mantener un inventario actualizado de todos los puntos de acceso autorizados (SSID, direcciones MAC, ubicaciones), 2) Usar herramientas de escaneo WiFi (como Ekahau Site Survey, NetSpot) para identificar puntos de acceso desconocidos en el rango, 3) Implementar un WIDS que monitoree continuamente la actividad inalámbrica, 4) Configurar alertas para nuevas redes detectadas, 5) Realizar auditorías de seguridad inalámbrica regulares, 6) Entrenar al personal sobre el riesgo de conectarse a redes desconocidas. Este enfoque multicapa ayuda a identificar intentos de comprometer la red inalámbrica.",
@@ -1611,12 +1611,12 @@
       "WPA2 is faster than WPA3",
       "Both use exactly the same encryption algorithm"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "En cuanto a cifrado de datos: WPA2 utiliza CCMP (Counter Mode with CBC-MAC Protocol) basado en AES como el algoritmo principal de cifrado. WPA3 introduce opciones adicionales: CCMP (compatible con WPA2), pero también introduce GCMP-256 (Galois/Counter Mode con clave de 256 bits) que proporciona mayores niveles de seguridad criptográfica. Además, WPA3 introduce Opportunistic Wireless Encryption (OWE) que cifra el tráfico incluso en redes abiertas sin contraseña. WPA3-192 (para redes empresariales de alto nivel) utiliza cifrado de 192 bits. Estas mejoras hacen que WPA3 sea más robusto contra futuros ataques criptográficos.",
     "explanation_en": "Regarding data encryption: WPA2 uses CCMP (Counter Mode with CBC-MAC Protocol) based on AES as the primary encryption algorithm. WPA3 introduces additional options: CCMP (compatible with WPA2), but also introduces GCMP-256 (Galois/Counter Mode with 256-bit key) which provides higher levels of cryptographic security. Additionally, WPA3 introduces Opportunistic Wireless Encryption (OWE) which encrypts traffic even on open networks without passwords. WPA3-192 (for high-level enterprise networks) uses 192-bit encryption. These improvements make WPA3 more robust against future cryptographic attacks.",
-    "source": "https://www.wi-fi.org/certification/wi-fi-6",
+    "source": "https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-6",
     "expected_time_ms": 25000
   },
   {

@@ -32,27 +32,30 @@ ROOT = Path(__file__).resolve().parent.parent
 QUESTIONS = ROOT / "content" / "questions"
 THRESHOLD = 0.8
 
-# Deuda medida el 2026-09-26: 12 parejas (track01, track09, track41).
-# Se quita una pareja de aquí cuando se arregla; nunca se añade una nueva.
-KNOWN: frozenset[frozenset[str]] = frozenset({
-    frozenset({"q010101004", "q010602002"}),
-    frozenset({"q010205007", "q010404005"}),
-    frozenset({"q010604003", "q010604010"}),
-    frozenset({"q090104mc002", "q090104mc008"}),
-    frozenset({"q090301mc001", "q090302mc001"}),
-    frozenset({"q090301mc002", "q090302mc004"}),
-    frozenset({"q090301mc009", "q090302mc005"}),
-    frozenset({"q090301mc010", "q090302mc009"}),
-    frozenset({"q410101_069", "q410103_067"}),
-    frozenset({"q410101_074", "q410103_072"}),
-    frozenset({"q410102_070", "q410102_075"}),
-    frozenset({"q410104_068", "q410104_073"}),
-})
+# Deuda medida el 2026-09-26 (12 parejas) y ampliada el 2026-09-29 al
+# comparar tambien `code`/`code_es` (39.40/39.41): 16 parejas reales en total
+# (track01 x3, track09 x5, track41 x13, track12 x3), todas reescritas con
+# contenido genuinamente distinto y verificado. KNOWN vacio: nada que anotar.
+# Se quita una pareja de aqui cuando se arregla; nunca se añade una nueva
+# solo para tapar un hallazgo.
+KNOWN: frozenset[frozenset[str]] = frozenset()
 
 
 def _shingles(text: str) -> set[str]:
     words = re.findall(r"\w+", text.lower())
     return {" ".join(words[i : i + 3]) for i in range(max(1, len(words) - 2))}
+
+
+def _content_text(q: dict[str, Any]) -> str:
+    # code_output/exec questions (track09, track41...) often reuse a generic
+    # boilerplate stem in question_es ("Cual es la salida usando modulos
+    # estandar?") and put the actual differentiating snippet in `code`/
+    # `code_es`. Comparing question_es alone both misses real duplicates
+    # (two unrelated stems hide identical code) and flags false ones (two
+    # unrelated snippets share a stem) - found working 39.27/39.40, where a
+    # question_es-only comparison both missed 13 real track41 duplicates and
+    # flagged unrelated questions that happened to share a boilerplate stem.
+    return str(q.get("code") or q.get("code_es") or q.get("question_es", ""))
 
 
 def _answer(q: dict[str, Any]) -> str:
@@ -74,7 +77,7 @@ def pairs(root: Path = QUESTIONS) -> list[tuple[str, str, str, float]]:
         payload = json.loads(f.read_text(encoding="utf-8"))
         items = payload if isinstance(payload, list) else payload.get("questions", [])
         for q in items:
-            by_track[_track(f)].append((q["id"], _shingles(q.get("question_es", "")), _answer(q)))
+            by_track[_track(f)].append((q["id"], _shingles(_content_text(q)), _answer(q)))
     found = []
     for track, qs in sorted(by_track.items()):
         for a, b in itertools.combinations(qs, 2):

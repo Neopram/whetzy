@@ -358,7 +358,7 @@
       "correct_index": 0,
       "explanation_es": "`yield` entrega un valor al consumidor y **pausa** la función, guardando variables locales y el punto de ejecución. En la siguiente iteración se reanuda justo después del `yield`. Esto permite producir secuencias perezosas sin almacenar todo en memoria.",
       "explanation_en": "`yield` hands a value to the consumer and **pauses** the function, saving local variables and the execution point. On the next iteration it resumes right after the `yield`. This lets you produce lazy sequences without holding everything in memory.",
-      "source": "PEP 255 — Simple Generators",
+      "source": "PEP 255 — Simple Generators — https://peps.python.org/pep-0255/",
       "expected_time_ms": 22000,
       "tags": [
         "generators",
@@ -387,7 +387,7 @@
       "correct_index": 2,
       "explanation_es": "`next(g)` arranca el generador hasta el primer `yield 1`, imprimiendo `1`. `g.send(5)` reanuda enviando `5` como valor de la expresión `yield`, así que `x = 5`; luego `yield x + 10` produce `15`. `send` es lo que convierte un generador en una corrutina.",
       "explanation_en": "`next(g)` starts the generator up to the first `yield 1`, printing `1`. `g.send(5)` resumes, sending `5` as the value of the `yield` expression, so `x = 5`; then `yield x + 10` produces `15`. `send` is what turns a generator into a coroutine.",
-      "source": "PEP 342 — Coroutines via Enhanced Generators",
+      "source": "PEP 342 — Coroutines via Enhanced Generators — https://peps.python.org/pep-0342/",
       "expected_time_ms": 45000,
       "tags": [
         "generators",
@@ -418,7 +418,7 @@
       "correct_index": 0,
       "explanation_es": "`.send(valor)` reanuda el generador y hace que `valor` sea lo que devuelve la expresión `yield` en la que estaba pausado. Es el mecanismo que permite la comunicación bidireccional en las corrutinas basadas en generadores. La primera vez debe usarse `next()` o `send(None)`.",
       "explanation_en": "`.send(value)` resumes the generator and makes `value` the result of the `yield` expression it was paused on. It's the mechanism enabling two-way communication in generator-based coroutines. The first time you must use `next()` or `send(None)`.",
-      "source": "PEP 342 — Coroutines via Enhanced Generators",
+      "source": "PEP 342 — Coroutines via Enhanced Generators — https://peps.python.org/pep-0342/",
       "expected_time_ms": 30000,
       "tags": [
         "generators",
@@ -448,7 +448,7 @@
       "correct_index": 3,
       "explanation_es": "`yield from sub()` delega en el subgenerador, produciendo sus valores `1` y `2` como si fueran de `main`; luego `yield 3`. El resultado es `[1, 2, 3]`. `yield from` evita el bucle `for x in sub(): yield x` y además reenvía valores con `send`.",
       "explanation_en": "`yield from sub()` delegates to the subgenerator, yielding its values `1` and `2` as if from `main`; then `yield 3`. The result is `[1, 2, 3]`. `yield from` avoids the `for x in sub(): yield x` loop and also forwards `send` values.",
-      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator — https://peps.python.org/pep-0380/",
       "expected_time_ms": 40000,
       "tags": [
         "generators",
@@ -496,7 +496,7 @@
       "correct_answer_en": "yield from",
       "explanation_es": "`yield from subgen()` (PEP 380) delega por completo en el subgenerador: reenvía sus valores producidos, propaga los `send`/`throw` y captura su valor de retorno. Simplifica la composición de generadores frente a reenviar manualmente con un bucle.",
       "explanation_en": "`yield from subgen()` (PEP 380) fully delegates to the subgenerator: it forwards its produced values, propagates `send`/`throw`, and captures its return value. It simplifies generator composition compared to manually forwarding with a loop.",
-      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator — https://peps.python.org/pep-0380/",
       "expected_time_ms": 30000,
       "tags": [
         "generators",

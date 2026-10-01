@@ -215,8 +215,8 @@
     "options_es": null,
     "options_en": null,
     "correct_index": null,
-    "correct_answer_es": "customer | total\n---------+------\nAna | 150.0\nLuis | 75.0",
-    "correct_answer_en": "customer | total\n---------+------\nAna | 150.0\nLuis | 75.0",
+    "correct_answer_es": "customer | total\n---------+------\nAna | 150\nLuis | 75",
+    "correct_answer_en": "customer | total\n---------+------\nAna | 150\nLuis | 75",
     "explanation_es": "`GROUP BY customer` agrupa las filas que comparten el mismo cliente antes de aplicar `SUM(amount)`, produciendo un total por grupo en vez de un único total global. `ORDER BY customer` ordena el resultado alfabéticamente.",
     "explanation_en": "`GROUP BY customer` groups the rows that share the same customer before applying `SUM(amount)`, producing one total per group instead of a single overall total. `ORDER BY customer` sorts the result alphabetically.",
     "source": "SQLite - GROUP BY: https://www.sqlite.org/lang_select.html#the_group_by_clause",
@@ -365,7 +365,7 @@
     "correct_answer_en": "3",
     "explanation_es": "`str.split(\".\")` divide la cadena por cada punto que encuentra, y un JWT bien formado siempre tiene exactamente dos puntos separando sus tres segmentos. Por eso `len(parts)` es `3`. Si un token trajera un número distinto de partes, sería una señal clara de que no es un JWT válido.",
     "explanation_en": "`str.split(\".\")` breaks the string at every dot it finds, and a well-formed JWT always has exactly two dots separating its three segments. That is why `len(parts)` is `3`. If a token carried a different number of parts, it would be a clear sign it is not a valid JWT.",
-    "source": "RFC 7519 - JSON Web Token (JWT): https://datatracker.ietf.org/doc/html/rfc7519#section-3",
+    "source": "RFC 7519 - JSON Web Token (JWT): https://www.rfc-editor.org/rfc/rfc7519",
     "expected_time_ms": 45000
   },
   {
@@ -382,7 +382,7 @@
     "correct_answer_en": "service-to-service",
     "explanation_es": "El tipo de concesión `client_credentials` se usa cuando la propia aplicación (no un usuario) necesita autenticarse ante otro servicio, por ejemplo un microservicio llamando a otro. `authorization_code` es el flujo típico de aplicaciones web con un usuario detrás, y `refresh_token` sirve para renovar un acceso ya concedido.",
     "explanation_en": "The `client_credentials` grant type is used when the application itself (not a user) needs to authenticate against another service, for example one microservice calling another. `authorization_code` is the typical flow for web applications with a user behind them, and `refresh_token` is used to renew an already-granted access.",
-    "source": "RFC 6749 - OAuth 2.0, Client Credentials Grant: https://datatracker.ietf.org/doc/html/rfc6749#section-4.4",
+    "source": "RFC 6749 - OAuth 2.0, Client Credentials Grant: https://www.rfc-editor.org/rfc/rfc6749",
     "expected_time_ms": 45000
   },
   {
@@ -399,7 +399,7 @@
     "correct_answer_en": "False",
     "explanation_es": "`granted_scopes` solo contiene permisos de lectura (`read:profile`, `read:email`); 'write:profile' no está entre ellos, así que la comprobación de pertenencia da `False`. Un servidor de recursos que reciba este token debe rechazar cualquier petición que requiera escritura, sin importar que el token sea válido y esté sin expirar.",
     "explanation_en": "`granted_scopes` only contains read permissions (`read:profile`, `read:email`); 'write:profile' is not among them, so the membership check gives `False`. A resource server receiving this token must reject any request that requires write access, regardless of the token being valid and unexpired.",
-    "source": "RFC 6749 - OAuth 2.0, Access Token Scope: https://datatracker.ietf.org/doc/html/rfc6749#section-3.3",
+    "source": "RFC 6749 - OAuth 2.0, Access Token Scope: https://www.rfc-editor.org/rfc/rfc6749",
     "expected_time_ms": 60000
   },
   {

@@ -1550,27 +1550,27 @@
       "id": "q410104_069",
       "skill_id": "sk410403",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con métodos especiales?",
-      "question_en": "What is the output with special methods?",
-      "code": "print(list(filter(lambda x:x>1, [1,2,3])))",
-      "correct_answer_es": "[2, 3]",
-      "correct_answer_en": "[2, 3]",
-      "explanation_es": "filter(lambda x:x>1, [1,2,3]) descarta el 1, que no cumple x>1, y conserva 2 y 3; list(...) los convierte en [2, 3]. La opción [[2, 3]] es tentadora por sugerir un anidamiento, pero filter produce un iterador plano de los elementos que cumplen la condición, no una lista dentro de otra lista.",
-      "explanation_en": "filter(lambda x:x>1, [1,2,3]) drops 1, which fails x>1, and keeps 2 and 3; list(...) turns them into [2, 3]. The option [[2, 3]] is tempting because it suggests nesting, but filter produces a flat iterator of the elements that satisfy the condition, not a list nested inside another list.",
+      "question_es": "¿Cuál es la salida procesando un fichero línea a línea?",
+      "question_en": "What is the output processing a file line by line?",
+      "code": "import io\nf = io.StringIO('line1\\nline2\\nline3\\n')\nlines = f.readlines()\nprint(len(lines))",
+      "correct_answer_es": "3",
+      "correct_answer_en": "3",
+      "explanation_es": "`io.StringIO` se comporta como un fichero abierto pero en memoria, lo mismo que devuelve `open(ruta)`: soporta `.readlines()`, `.read()`, iterar línea a línea, etc. `readlines()` devuelve una lista con cada línea (incluido el `\\n` final salvo en la última si no lo lleva); con 3 líneas separadas por `\\n`, `len(lines)` es 3.",
+      "explanation_en": "`io.StringIO` behaves like an open file but in memory, the same object `open(path)` returns: it supports `.readlines()`, `.read()`, iterating line by line, etc. `readlines()` returns a list with each line (including the trailing `\\n` except on the last one if it lacks it); with 3 lines separated by `\\n`, `len(lines)` is 3.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "[2, 3]",
-        "[[2, 3]]",
-        "([2, 3],)",
-        "]3 ,2["
+        "1",
+        "Error: AttributeError",
+        "3",
+        "0"
       ],
       "options_en": [
-        "[2, 3]",
-        "[[2, 3]]",
-        "([2, 3],)",
-        "]3 ,2["
+        "1",
+        "Error: AttributeError",
+        "3",
+        "0"
       ],
-      "correct_index": 0
+      "correct_index": 2
     },
     {
       "id": "q410104_070",
@@ -1628,27 +1628,27 @@
       "id": "q410104_072",
       "skill_id": "sk410402",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida en este ejemplo de Python?",
-      "question_en": "What is the output in this Python example?",
-      "code": "def gen():\n yield 1\nprint(next(gen()))",
-      "correct_answer_es": "1",
-      "correct_answer_en": "1",
-      "explanation_es": "Igual que en el otro ejemplo con este mismo código: gen() es un generador con un único yield 1, y next(gen()) avanza la ejecución hasta ese yield, devolviendo 1. La opción 2 es tentadora si se asume que el yield produce el número de la línea o un contador, pero yield 1 siempre produce literalmente el valor 1.",
-      "explanation_en": "Just like the other example using this same code: gen() is a generator with a single yield 1, and next(gen()) advances execution to that yield, returning 1. The option 2 is tempting if one assumes yield produces a line number or counter, but yield 1 always produces literally the value 1.",
+      "question_es": "¿Cuál es la salida con una clausura (closure)?",
+      "question_en": "What is the output with a closure?",
+      "code": "def make_multiplier(n):\n    def multiply(x):\n        return x * n\n    return multiply\n\ntimes3 = make_multiplier(3)\nprint(times3(7))",
+      "correct_answer_es": "21",
+      "correct_answer_en": "21",
+      "explanation_es": "`multiply` es una clausura: aunque `make_multiplier(3)` ya terminó de ejecutarse, la función interna `multiply` sigue «recordando» el valor de `n` (3) de su entorno de creación. Al llamar `times3(7)`, usa ese `n=3` guardado y devuelve `7 * 3 = 21`.",
+      "explanation_en": "`multiply` is a closure: even though `make_multiplier(3)` has already finished running, the inner function `multiply` still \"remembers\" the value of `n` (3) from its creation environment. Calling `times3(7)` uses that stored `n=3` and returns `7 * 3 = 21`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "1",
-        "2",
-        "0",
-        "Error: TypeError"
+        "10",
+        "Error: NameError",
+        "21",
+        "7"
       ],
       "options_en": [
-        "1",
-        "2",
-        "0",
-        "Error: TypeError"
+        "10",
+        "Error: NameError",
+        "21",
+        "7"
       ],
-      "correct_index": 0
+      "correct_index": 2
     },
     {
       "id": "q410104_073",
@@ -1656,23 +1656,23 @@
       "type": "code_output",
       "question_es": "¿Cuál es la salida en Python?",
       "question_en": "What is the output in Python?",
-      "code": "print(list(map(int, ['1','2'])))",
-      "correct_answer_es": "[1, 2]",
-      "correct_answer_en": "[1, 2]",
-      "explanation_es": "map(int, ['1','2']) convierte cada cadena en un entero, y list() materializa ese map perezoso en [1, 2]. La opción ([1, 2],) es tentadora porque parece un contenedor válido, pero list() nunca produce una tupla: siempre devuelve un objeto de tipo list.",
-      "explanation_en": "map(int, ['1','2']) converts each string into an integer, and list() materializes that lazy map into [1, 2]. The option ([1, 2],) is tempting because it looks like a valid container, but list() never produces a tuple: it always returns an object of type list.",
+      "code": "print(list(map(len, ['ab', 'abc'])))",
+      "correct_answer_es": "[2, 3]",
+      "correct_answer_en": "[2, 3]",
+      "explanation_es": "map() no está limitado a convertir tipos: acepta cualquier función de un argumento, incluida `len`. Aplica `len` a cada cadena de la lista ('ab' → 2, 'abc' → 3), y `list()` materializa ese map perezoso en [2, 3]. La opción ('ab', 'abc') es tentadora porque son los valores originales, pero map() los transforma, no los conserva.",
+      "explanation_en": "map() isn't limited to type conversions: it accepts any one-argument function, including `len`. It applies `len` to each string in the list ('ab' → 2, 'abc' → 3), and `list()` materializes that lazy map into [2, 3]. The option ('ab', 'abc') is tempting because those are the original values, but map() transforms them, it doesn't keep them.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "[[1, 2]]",
-        "]2 ,1[",
-        "[1, 2]",
-        "([1, 2],)"
+        "[[2, 3]]",
+        "('ab', 'abc')",
+        "[2, 3]",
+        "(2, 3)"
       ],
       "options_en": [
-        "[[1, 2]]",
-        "]2 ,1[",
-        "[1, 2]",
-        "([1, 2],)"
+        "[[2, 3]]",
+        "('ab', 'abc')",
+        "[2, 3]",
+        "(2, 3)"
       ],
       "correct_index": 2
     },
@@ -1706,27 +1706,27 @@
       "id": "q410104_075",
       "skill_id": "sk410401",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con estructuras de datos?",
-      "question_en": "What is the output with data structures?",
-      "code": "x = lambda a: a*2\nprint(x(5))",
-      "correct_answer_es": "10",
-      "correct_answer_en": "10",
-      "explanation_es": "x = lambda a: a*2 duplica su argumento; x(5) da 5*2 = 10. La opción 20 es tentadora si se confunde el resultado con duplicar 10 en vez de 5, pero el argumento pasado es 5, así que el resultado correcto es 10.",
-      "explanation_en": "x = lambda a: a*2 doubles its argument; x(5) gives 5*2 = 10. The option 20 is tempting if the result is confused with doubling 10 instead of 5, but the argument passed is 5, so the correct result is 10.",
+      "question_es": "¿Cuál es la salida llamando next() dos veces sobre un generador?",
+      "question_en": "What is the output calling next() twice on a generator?",
+      "code": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\ngen = countdown(3)\nnext(gen)\nprint(next(gen))",
+      "correct_answer_es": "2",
+      "correct_answer_en": "2",
+      "explanation_es": "A diferencia de una función normal, un generador conserva su estado entre llamadas a `next()`. El primer `next(gen)` ejecuta hasta el primer `yield n` (con n=3) y lo descarta (no se imprime); el segundo `next(gen)` retoma justo donde se quedó, resta 1 (n=2) y produce ese valor, que `print` sí muestra: `2`.",
+      "explanation_en": "Unlike a normal function, a generator keeps its state between calls to `next()`. The first `next(gen)` runs to the first `yield n` (with n=3) and discards it (not printed); the second `next(gen)` resumes right where it left off, subtracts 1 (n=2) and yields that value, which `print` does show: `2`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "11",
-        "9",
-        "20",
-        "10"
+        "3",
+        "Error: StopIteration",
+        "2",
+        "1"
       ],
       "options_en": [
-        "11",
-        "9",
-        "20",
-        "10"
+        "3",
+        "Error: StopIteration",
+        "2",
+        "1"
       ],
-      "correct_index": 3
+      "correct_index": 2
     }
   ]
 }

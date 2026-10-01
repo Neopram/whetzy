@@ -14,7 +14,8 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from app.models.content import Module, Skill, Track
+from app.core.config import settings
+from app.models.content import Module, Question, Skill, Track
 from app.models.lesson_completion import LessonCompletion
 from app.models.user import User, UserSkillState
 from app.services.quiz import (
@@ -25,6 +26,7 @@ from app.services.quiz import (
     _grade_from_response,
     _is_module_unlocked,
     _level_from_xp,
+    _select_question,
     _select_skill,
     _update_streak,
     _weighted_choice,
@@ -629,3 +631,65 @@ class TestCurrentCombo:
     @pytest.mark.asyncio
     async def test_no_responses_is_zero(self, db_session) -> None:
         assert await _current_combo(db_session, uuid.uuid4()) == 0
+
+
+# ── 37.18: reserved mock-exam pool never surfaces in practice/review ─────────
+
+
+class TestReservedPoolExcludedFromSelection:
+    """ADR-53 §4: `pool == "simulacro"` is a bank reserved for mock exams —
+    `_select_question` is the one function `start_session` uses for both
+    practice and spaced review, so this is the whole practice/review half of
+    the 37.18 invariant. `test_mock_exam.py` covers the other half (a mock
+    exam only draws from the reserved pool)."""
+
+    @staticmethod
+    async def _seed(db, skill_id: str) -> None:
+        track = Track(id="trkPool", name_es="T", name_en="T", order=1)
+        db.add(track)
+        module = Module(id="modPool", track_id="trkPool", name_es="M", name_en="M", order=0)
+        db.add(module)
+        db.add(Skill(id=skill_id, module_id="modPool", name_es="S", name_en="S", order=0))
+        db.add(
+            Question(
+                id="q_practica",
+                skill_id=skill_id,
+                type="mcq",
+                question_es="p", question_en="p",
+                options_es=["a", "b"], options_en=["a", "b"],
+                correct_index=0,
+                pool="practica",
+            )
+        )
+        db.add(
+            Question(
+                id="q_simulacro",
+                skill_id=skill_id,
+                type="mcq",
+                question_es="s", question_en="s",
+                options_es=["a", "b"], options_en=["a", "b"],
+                correct_index=0,
+                pool="simulacro",
+            )
+        )
+        await db.commit()
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("flag", [True, False])
+    async def test_reserved_question_is_never_returned_regardless_of_the_flag(
+        self, db_session, user: User, monkeypatch: pytest.MonkeyPatch, flag: bool
+    ) -> None:
+        """The exclusion is unconditional (37.18 correction): practice and
+        review must never leak a reserved question into duels, placement,
+        the track final exam, or here — whatever MOCK_EXAM_RESERVED_POOL_ENABLED
+        is set to. That flag only gates mock_exam.py's "draw only from the
+        reserved pool" requirement, which is the opposite direction."""
+        monkeypatch.setattr(settings, "MOCK_EXAM_RESERVED_POOL_ENABLED", flag)
+        skill_id = f"skPool{flag}"
+        await self._seed(db_session, skill_id)
+        seen: set[str] = set()
+        for _ in range(20):
+            question, _ = await _select_question(db_session, user, skill_id)
+            assert question is not None
+            seen.add(question.id)
+        assert seen == {"q_practica"}

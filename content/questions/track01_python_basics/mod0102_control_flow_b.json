@@ -22,7 +22,7 @@
       "correct_index": 1,
       "explanation_es": "El operador ternario de Python se lee en el orden «valor si condición si-no otro»: primero el resultado, luego la condición. Es al revés que en C o JavaScript (`cond ? a : b`), y esa inversión es el tropiezo habitual al llegar de esos lenguajes.",
       "explanation_en": "Python's conditional expression reads as 'value if condition else other': the result comes first, the condition second. It is the reverse of C or JavaScript (`cond ? a : b`), and that inversion is the usual stumble for people arriving from those languages.",
-      "source": "PEP 308 — Conditional Expressions",
+      "source": "PEP 308 — Conditional Expressions — https://peps.python.org/pep-0308/",
       "expected_time_ms": 25000,
       "tags": [
         "conditionals",
@@ -164,7 +164,7 @@
       "correct_index": 1,
       "explanation_es": "La expresión de asignación guarda el valor y lo devuelve a la vez, así que `n` queda disponible dentro del bloque sin calcular `len` dos veces ni añadir una línea previa. Los paréntesis son obligatorios aquí por precedencia.",
       "explanation_en": "The assignment expression stores the value and yields it at the same time, so `n` is available inside the block without computing `len` twice or adding a line beforehand. The parentheses are required here because of precedence.",
-      "source": "PEP 572 — Assignment Expressions",
+      "source": "PEP 572 — Assignment Expressions — https://peps.python.org/pep-0572/",
       "expected_time_ms": 45000,
       "tags": [
         "conditionals",
@@ -514,7 +514,7 @@
       "correct_index": 2,
       "explanation_es": "Se imprime 0 y `i` pasa a 1. En la vuelta siguiente entra en el `if`, suma 2 (i vale 3) y salta con `continue` sin imprimir. La condición ya no se cumple y el bucle termina. En un `while`, un `continue` que se salta el incremento normal es una fuente clásica de bucles infinitos.",
       "explanation_en": "0 is printed and `i` becomes 1. On the next pass it enters the `if`, adds 2 (i is 3) and skips with `continue` without printing. The condition no longer holds and the loop ends. In a `while`, a `continue` that bypasses the normal increment is a classic source of infinite loops.",
-      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue) — https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops",
       "expected_time_ms": 45000,
       "tags": [
         "while",
@@ -532,7 +532,7 @@
       "correct_answer_en": "break",
       "explanation_es": "`break` abandona el bucle más interno de inmediato. Es lo que hace utilizable el patrón `while True`, que sin una salida sería un bucle infinito de verdad.",
       "explanation_en": "`break` leaves the innermost loop immediately. It is what makes the `while True` pattern usable; without an exit it would be a genuine infinite loop.",
-      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue) — https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops",
       "expected_time_ms": 15000,
       "tags": [
         "while",
@@ -591,7 +591,7 @@
       "correct_index": 0,
       "explanation_es": "`break` sale solo del bucle **más interno**, así que el externo sigue girando tres veces. Para salir de ambos hace falta una bandera, un `return` dentro de una función, o refactorizar a una sola pasada.",
       "explanation_en": "`break` exits only the **innermost** loop, so the outer one keeps turning three times. Escaping both needs a flag, a `return` inside a function, or refactoring into a single pass.",
-      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue) — https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops",
       "expected_time_ms": 40000,
       "tags": [
         "break",
@@ -650,7 +650,7 @@
       "correct_index": 0,
       "explanation_es": "`continue` abandona la vuelta actual pero no el bucle: lo que quedaba del cuerpo se salta y la iteración siguiente arranca con normalidad. Confundirlo con «reiniciar» o «repetir» lleva a bucles infinitos en `while`.",
       "explanation_en": "`continue` abandons the current pass but not the loop: the rest of the body is skipped and the next iteration starts as usual. Confusing it with 'restart' or 'repeat' leads to infinite loops in `while`.",
-      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue) — https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops",
       "expected_time_ms": 25000,
       "tags": [
         "continue",
@@ -704,7 +704,7 @@
       "correct_index": 2,
       "explanation_es": "Solo sobreviven al `continue` los múltiplos de 3 entre 0 y 9: 0, 3, 6 y 9, que suman 18. El 45 sería la suma de todos los números si el filtro no existiera.",
       "explanation_en": "Only the multiples of 3 between 0 and 9 survive the `continue`: 0, 3, 6 and 9, which add up to 18. The 45 would be the sum of every number if the filter were not there.",
-      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue) — https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops",
       "expected_time_ms": 35000,
       "tags": [
         "continue",
@@ -722,7 +722,7 @@
       "correct_answer_en": "continue",
       "explanation_es": "`continue` es la forma habitual de descartar casos al principio del cuerpo y evitar un `if` gigante que envuelva todo lo demás, lo que reduce un nivel de indentación.",
       "explanation_en": "`continue` is the usual way to discard cases at the top of the body and avoid a giant `if` wrapping everything else, which removes one level of indentation.",
-      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue) — https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops",
       "expected_time_ms": 18000,
       "tags": [
         "continue",
@@ -810,7 +810,7 @@
       "correct_index": 2,
       "explanation_es": "`break` no devuelve nada: corta el recorrido. La ganancia es no gastar tiempo en el resto de la lista una vez respondida la pregunta, algo que se nota cuando la colección es grande.",
       "explanation_en": "`break` returns nothing: it cuts the scan short. The gain is not spending time on the rest of the list once the question is answered, which shows when the collection is large.",
-      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue) — https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops",
       "expected_time_ms": 28000,
       "tags": [
         "break",
@@ -868,7 +868,7 @@
       "correct_index": 0,
       "explanation_es": "Hay que distinguir dos cosas: el `if` **final** filtra y no admite `else`, mientras que `if/else` **delante del `for`** es el operador ternario que elige el valor. Quien mezcla ambas formas obtiene un `SyntaxError`.",
       "explanation_en": "Two different things are at play: the **trailing** `if` filters and takes no `else`, whereas `if/else` **before the `for`** is the conditional expression choosing the value. Mixing the two forms gives a `SyntaxError`.",
-      "source": "CPython docs 3.13 — The Python Tutorial §5.1.3 / PEP 308",
+      "source": "CPython docs 3.13 — The Python Tutorial §5.1.3 / PEP 308 — https://peps.python.org/pep-0308/",
       "expected_time_ms": 45000,
       "tags": [
         "comprehensions",
@@ -926,7 +926,7 @@
       "correct_index": 1,
       "explanation_es": "El generador no reserva memoria para todos los elementos, lo que importa con datos grandes o infinitos. A cambio solo se puede recorrer una vez: al agotarlo queda vacío, y ahí es donde suele sorprender.",
       "explanation_en": "The generator reserves no memory for all the elements, which matters with large or infinite data. In exchange it can be walked only once: once exhausted it is empty, and that is where it usually surprises people.",
-      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions)",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions) — https://docs.python.org/3/tutorial/classes.html#generator-expressions",
       "expected_time_ms": 45000,
       "tags": [
         "comprehensions",
@@ -999,7 +999,7 @@
       "correct_index": 1,
       "explanation_es": "La comprensión brilla cuando transforma o filtra en una línea que se lee de un vistazo. Con varias condiciones, anidamiento profundo o efectos secundarios, el bucle explícito es más claro — y PEP 8 antepone la legibilidad a la concisión.",
       "explanation_en": "A comprehension shines when it transforms or filters in one line you can take in at a glance. With several conditions, deep nesting or side effects, the explicit loop is clearer — and PEP 8 puts readability before brevity.",
-      "source": "PEP 8 — Style Guide for Python Code / CPython docs 3.13 §5.1.3",
+      "source": "PEP 8 — Style Guide for Python Code / CPython docs 3.13 §5.1.3 — https://peps.python.org/pep-0008/",
       "expected_time_ms": 35000,
       "tags": [
         "comprehensions",

@@ -752,7 +752,7 @@
       "correct_index": 1,
       "explanation_es": "Strong consistency garantiza que tras una escritura exitosa, todas las lecturas subsecuentes ven el nuevo valor. Linearizability es aún más fuerte: garantiza que hay un orden total de operaciones consistente con los relojes físicos. Linearizability implica strong consistency pero no al revés.",
       "explanation_en": "Strong consistency ensures that after successful write, all subsequent reads see new value. Linearizability is even stronger: guarantees total order of operations consistent with wall-clock time. Linearizability implies strong consistency but not vice versa.",
-      "source": "MongoDB Documentation - Consistency Guarantees (https://www.mongodb.com/docs/manual/core/causal-consistency/)"
+      "source": "MongoDB Documentation - Consistency Guarantees (https://www.mongodb.com/docs/manual/core/causal-consistency-read-write-concerns/)"
     },
     {
       "id": "q270503_05",
@@ -775,7 +775,7 @@
       "correct_index": 2,
       "explanation_es": "RYOW es importante para experiencia de usuario. Si un usuario escribe un documento y luego intenta leerlo desde un replica con replicación lag, podría no ver su propio cambio. Esto causa confusión. MongoDB lo resuelve con session causal consistency.",
       "explanation_en": "RYOW is important for user experience. If user writes document then reads from replica with replication lag, might not see their own change. This causes confusion. MongoDB solves this with causal consistency sessions.",
-      "source": "MongoDB Documentation - Causal Consistency (https://www.mongodb.com/docs/manual/core/causal-consistency/)"
+      "source": "MongoDB Documentation - Causal Consistency (https://www.mongodb.com/docs/manual/core/causal-consistency-read-write-concerns/)"
     },
     {
       "id": "q270503_06",
@@ -798,7 +798,7 @@
       "correct_index": 3,
       "explanation_es": "Causal consistency garantiza que si operación A causa operación B, todos verán A antes de B. MongoDB lo implementa usando sesiones y tokens de causalidad ('operationTime'). Cada sesión mantiene un estado lógico del reloj que se incrementa con cada operación.",
       "explanation_en": "Causal consistency guarantees that if operation A causes operation B, all will see A before B. MongoDB implements this using sessions and causality tokens ('operationTime'). Each session maintains logical clock state that increments with each operation.",
-      "source": "MongoDB Documentation - Causal Consistency (https://www.mongodb.com/docs/manual/core/causal-consistency/)"
+      "source": "MongoDB Documentation - Causal Consistency (https://www.mongodb.com/docs/manual/core/causal-consistency-read-write-concerns/)"
     },
     {
       "id": "q270503_07",
@@ -1043,7 +1043,7 @@
       "correct_index": 3,
       "explanation_es": "Embedding (ej: usuario con array de órdenes) es eficiente si el array es pequeño y se accede frecuentemente junto con el documento padre. Referencias (ej: usuario con IDs de órdenes) se usan para relaciones grandes (ej: millones de órdenes por usuario) donde embedding crearía documentos gigantes.",
       "explanation_en": "Embedding (e.g., user with array of orders) is efficient if array is small and accessed frequently with parent. References (e.g., user with order IDs) for large relationships where embedding creates huge documents.",
-      "source": "MongoDB Documentation - Schema Validation (https://www.mongodb.com/docs/manual/core/schema-validation-JSON-schema/)"
+      "source": "MongoDB Documentation - Schema Validation (https://www.mongodb.com/docs/manual/core/schema-validation/specify-json-schema/)"
     },
     {
       "id": "q270504_03",
@@ -1062,7 +1062,7 @@
       "correct_index": 0,
       "explanation_es": "MongoDB usa ObjectId de 12 bytes (96 bits) que son más compactos y contienen información de timestamp y máquina. IDs de 32 caracteres hex son innecesariamente grandes. Si se necesitan UUIDs, MongoDB soporta tipos binary, pero ObjectId es la mejor opción por defecto.",
       "explanation_en": "MongoDB uses 12-byte ObjectIds which are more compact and contain timestamp and machine info. 32-char hex IDs are unnecessarily large. If UUIDs needed, MongoDB supports binary type, but ObjectId best default.",
-      "source": "MongoDB Documentation - ObjectId (https://www.mongodb.com/docs/manual/reference/bson-type/objectid/)"
+      "source": "MongoDB Documentation - ObjectId (https://www.mongodb.com/docs/manual/reference/method/ObjectId/)"
     },
     {
       "id": "q270504_04",
@@ -1085,7 +1085,7 @@
       "correct_index": 3,
       "explanation_es": "El patrón de atributos permite que documentos tengan diferentes campos dinámicamente. Ej: un producto puede tener 'talla' (ropa) u 'otros_datos' como array de key-value pairs. Esto evita campos null y mantiene documentos compactos. Muy útil para datos heterogéneos.",
       "explanation_en": "Attribute pattern allows documents to have different fields dynamically. E.g., product might have 'size' (clothing) or 'attrs' as array of key-value pairs. Avoids null fields and keeps documents compact. Useful for heterogeneous data.",
-      "source": "MongoDB Documentation - Attribute Pattern (https://www.mongodb.com/docs/manual/data-modeling-patterns-and-strategies/)"
+      "source": "MongoDB Documentation - Attribute Pattern (https://www.mongodb.com/docs/manual/data-modeling/design-patterns/)"
     },
     {
       "id": "q270504_05",
@@ -1108,7 +1108,7 @@
       "correct_index": 1,
       "explanation_es": "Una relación many-to-many (ej: estudiantes y cursos) se puede modelar con arrays de referencias: estudiantes con array de courseIds, cursos con array de studentIds. O crear colección separada de inscripciones. La elección depende de los accesos más frecuentes.",
       "explanation_en": "Many-to-many relationship (e.g., students and courses) can be modeled with reference arrays: students with courseIds array, courses with studentIds array. Or separate enrollments collection. Choice depends on most frequent accesses.",
-      "source": "MongoDB Documentation - Many-to-Many (https://www.mongodb.com/docs/manual/data-modeling-examples/)"
+      "source": "MongoDB Documentation - Many-to-Many (https://www.mongodb.com/docs/manual/data-modeling/)"
     },
     {
       "id": "q270504_06",
@@ -1131,7 +1131,7 @@
       "correct_index": 3,
       "explanation_es": "Subset pattern es útil para documentos grandes donde solo algunos datos se acceden frecuentemente. Ej: producto con descripción larga (rara vez accedida) y datos de básicos (siempre accedidos). Se embede lo básico; la descripción va en otra colección.",
       "explanation_en": "Subset pattern useful for large documents where only some data accessed frequently. E.g., product with long description (rarely accessed) and basic data (always accessed). Embed basics; description in another collection.",
-      "source": "MongoDB Documentation - Subset Pattern (https://www.mongodb.com/docs/manual/data-modeling-patterns-and-strategies/)"
+      "source": "MongoDB Documentation - Subset Pattern (https://www.mongodb.com/docs/manual/data-modeling/design-patterns/)"
     },
     {
       "id": "q270504_07",
@@ -1150,7 +1150,7 @@
       "correct_index": 0,
       "explanation_es": "No. Documentos que crecen indefinidamente son problemáticos. Hay límite de 16 MB por documento. Arrays que crecen con cada operación pueden causar problemas de rendimiento y fragmentación. Se debe usar el patrón de array capped o referencias cuando arrays puedan crecer.",
       "explanation_en": "No. Documents growing indefinitely are problematic. There's 16 MB per-document limit. Arrays growing with each operation cause performance and fragmentation issues. Should use capped array pattern or references when arrays can grow.",
-      "source": "MongoDB Documentation - BSON Document Size Limit (https://www.mongodb.com/docs/manual/reference/bson-type-document-comparison/)"
+      "source": "MongoDB Documentation - BSON Document Size Limit (https://www.mongodb.com/docs/manual/reference/limits/#mongodb-limit-BSON-Document-Size)"
     },
     {
       "id": "q270504_08",
@@ -1173,7 +1173,7 @@
       "correct_index": 1,
       "explanation_es": "Computed pattern calcula y almacena valores agregados. Ej: producto con precio base + impuesto calculado y almacenado. O documento de usuario con edad calculada a partir de fecha de nacimiento. Estos valores se actualizan bajo demanda o batch, no en cada lectura.",
       "explanation_en": "Computed pattern calculates and stores aggregate values. E.g., product with base price + calculated tax stored. Or user document with age calculated from birth date. These values updated on demand or batch, not per read.",
-      "source": "MongoDB Documentation - Computed Pattern (https://www.mongodb.com/docs/manual/data-modeling-patterns-and-strategies/)"
+      "source": "MongoDB Documentation - Computed Pattern (https://www.mongodb.com/docs/manual/data-modeling/design-patterns/)"
     },
     {
       "id": "q270504_09",
@@ -1196,7 +1196,7 @@
       "correct_index": 1,
       "explanation_es": "La denormalización deliberada es válida en NoSQL, pero requiere disciplina. Mantener un 'source of truth' (ej: descripción de producto en colección de productos, no en cada pedido). Usar transacciones multi-documento (MongoDB 4.0+) para actualizar todas las copias simultáneamente.",
       "explanation_en": "Deliberate denormalization is valid in NoSQL, but requires discipline. Maintain 'source of truth' (e.g., product description in products collection, not in each order). Use multi-document transactions (MongoDB 4.0+) to update all copies simultaneously.",
-      "source": "MongoDB Documentation - Denormalization (https://www.mongodb.com/docs/manual/data-modeling-examples/)"
+      "source": "MongoDB Documentation - Denormalization (https://www.mongodb.com/docs/manual/data-modeling/)"
     },
     {
       "id": "q270504_10",
@@ -1219,7 +1219,7 @@
       "correct_index": 1,
       "explanation_es": "NoSQL permite esquemas flexibles. Se pueden añadir campos a documentos sin afectar otros. SQL requiere ALTER TABLE que puede ser costoso en tablas grandes. Esta flexibilidad es especialmente valiosa en desarrollo temprano o datos heterogéneos.",
       "explanation_en": "NoSQL allows flexible schemas. Can add fields to documents without affecting others. SQL requires ALTER TABLE which can be expensive on large tables. This flexibility especially valuable in early development or heterogeneous data.",
-      "source": "MongoDB Documentation - Schema Flexibility (https://www.mongodb.com/docs/manual/core/flexible-schemas/)"
+      "source": "MongoDB Documentation - Schema Flexibility (https://www.mongodb.com/docs/manual/data-modeling/)"
     },
     {
       "id": "q270504_11",
@@ -1284,7 +1284,7 @@
       "correct_index": 0,
       "explanation_es": "Se pueden usar varias estrategias: (1) Referencia parental: cada categoría apunta a su padre. (2) Árbol materializado: cada doc tiene array de ancestros. (3) Nested arrays. La elección depende de si se consulta frecuentemente hijos, padres o el árbol completo.",
       "explanation_en": "Multiple strategies possible: (1) Parent reference: each category points to parent. (2) Materialized tree: each doc has ancestor array. (3) Nested arrays. Choice depends on frequent queries of children, parents, or full tree.",
-      "source": "MongoDB Documentation - Hierarchical Data (https://www.mongodb.com/docs/manual/data-modeling-examples/)"
+      "source": "MongoDB Documentation - Hierarchical Data (https://www.mongodb.com/docs/manual/data-modeling/)"
     },
     {
       "id": "q270504_14",

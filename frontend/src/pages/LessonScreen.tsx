@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
-import { lessonsApi, type LessonRead } from '../services/api';
+import { lessonsApi, isQuotaError, type LessonRead } from '../services/api';
 import { LoadingState } from '../components/common/LoadingState';
 import { EmptyState } from '../components/common/EmptyState';
 import { ErrorState } from '../components/common/ErrorState';
@@ -29,7 +29,20 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
     lessonsApi
       .forSkill(skillId)
       .then((data) => setLessons(data))
-      .catch(() => setError(t('lesson.errorLoading', 'No se pudo cargar la lección.')))
+      .catch((e) => {
+        // Free-tier daily quota (39.4/39.34): a friendly message with the
+        // reset time instead of the generic load-error copy.
+        if (isQuotaError(e)) {
+          setError(
+            t('lesson.quotaReachedLessons', {
+              limit: e.detail.limit,
+              time: new Date(e.detail.resets_at).toLocaleTimeString(),
+            }),
+          );
+        } else {
+          setError(t('lesson.errorLoading', 'No se pudo cargar la lección.'));
+        }
+      })
       .finally(() => setLoading(false));
   }, [skillId, t]);
 

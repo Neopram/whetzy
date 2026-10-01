@@ -58,6 +58,13 @@ PLACEHOLDER_ANSWER = re.compile(r"^(?:\S+ )?(?:respuesta|answer)\b.{0,25}\b\d+\.
 # relleno hay que quitarlo (test_sin_relleno.py).
 PLACEHOLDER_KNOWN = Path(__file__).resolve().parent / "placeholder_known.json"
 
+# Ingles filtrado en campos _es (37.17): «Completa el blank» salio 282 veces
+# porque el generador nunca tradujo esa frase de plantilla. Este es solo el
+# literal encontrado - no una lista de palabras EN sueltas, que en un banco
+# tecnico da falsos positivos reales (SQL "IS NULL", nombres de protocolo
+# como "Counter Mode with CBC-MAC", modismos citados como "lift and shift").
+EN_LEAK_ES = re.compile(r"\bel blank\b", re.IGNORECASE)
+
 
 def is_placeholder(q: dict) -> bool:
     """Una pregunta de relleno de generador, no una pregunta (37.14, 39.37)."""
@@ -93,6 +100,7 @@ def is_placeholder(q: dict) -> bool:
 OPTION_TYPES = {"mcq", "multiple_choice", "true_false", "code_output"}
 FREE_TYPES = {"fill_blank", "fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
 KNOWN_TYPES = OPTION_TYPES | FREE_TYPES
+KNOWN_POOLS = {"practica", "simulacro"}
 SKEW_MAX_SHARE = 0.45
 MIN_PER_SKILL = 6
 
@@ -269,6 +277,14 @@ def main() -> int:
         if not (q.get("source") or "").strip():
             fail(path, qid, "no source - red line 2")
 
+        # Antes de los `continue` de mas abajo (open-ended types como
+        # fill_blank_exec no llevan opciones y saltan el resto del bloque) -
+        # justo el tipo donde "Completa el blank" vivio 282 veces sin que
+        # ninguna guarda lo viera (37.17).
+        for field in ("question_es", "explanation_es"):
+            if EN_LEAK_ES.search(q.get(field) or ""):
+                fail(path, qid, f"{field} still says \"el blank\" - ingles sin traducir (37.17)")
+
         opts_es, opts_en = q.get("options_es"), q.get("options_en")
         if opts_es is None and opts_en is None:
             continue  # open-ended types (fill_blank, *_exec) carry no options
@@ -370,7 +386,25 @@ def main() -> int:
                 f"{sorted(KNOWN_TYPES)}. Anadir uno obliga a revisar quien filtra "
                 f"por tipo (placement, quiz, duels, QuizScreen, QuestionPublic)"
             )
-        elif qtype in OPTION_TYPES:
+
+        # 37.18 (ADR-53 §4): "simulacro" separa el banco reservado del de
+        # practica/repaso. Un valor invalido aqui no rompe nada visible —
+        # simplemente content_loader lo carga igual y la pregunta queda
+        # fuera de ambos filtros (quiz._select_question la excluye por no
+        # ser "simulacro", mock_exam._questions_by_domain la excluye por no
+        # ser "simulacro" tampoco) — invisible en vez de ruidoso. Bloque
+        # aparte, nunca `elif` de lo de arriba: un tipo invalido y un pool
+        # invalido son problemas independientes, y encadenarlos con `elif`
+        # taparia la validacion de opciones de mas abajo en cuanto el pool
+        # fuera invalido (bug real, cazado al revisar este mismo diff).
+        pool = q.get("pool", "practica")
+        if pool not in KNOWN_POOLS:
+            problems.append(
+                f"{path.name} {qid}: pool {pool!r} desconocido. Los validos son "
+                f"{sorted(KNOWN_POOLS)}"
+            )
+
+        if qtype in OPTION_TYPES:
             opts_es, opts_en = q.get("options_es"), q.get("options_en")
             ci = q.get("correct_index")
             if not opts_es or not opts_en:

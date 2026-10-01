@@ -22,7 +22,7 @@
       "correct_index": 1,
       "explanation_es": "La sintaxis de type hints (PEP 484) es `param: Tipo` para parámetros y `-> Tipo` para el valor de retorno: `def f(x: int) -> str:`. Es solo una anotación; Python no la comprueba en ejecución, la usan herramientas como mypy.",
       "explanation_en": "The type-hint syntax (PEP 484) is `param: Type` for parameters and `-> Type` for the return value: `def f(x: int) -> str:`. It's only an annotation; Python doesn't check it at runtime, tools like mypy do.",
-      "source": "PEP 484 — Type Hints",
+      "source": "PEP 484 — Type Hints — https://peps.python.org/pep-0484/",
       "expected_time_ms": 22000,
       "tags": [
         "type-hints",
@@ -47,7 +47,7 @@
       "correct_index": 1,
       "explanation_es": "Falso. Las anotaciones son informativas y NO se comprueban en ejecución: puedes pasar un str a un parámetro anotado como int y Python no protestará. Un verificador estático externo como mypy es el que detecta esas incongruencias antes de ejecutar.",
       "explanation_en": "False. Annotations are informational and are NOT checked at runtime: you can pass a str to a parameter annotated as int and Python won't complain. An external static checker like mypy is what catches such mismatches before running.",
-      "source": "PEP 484 — Type Hints: Non-goals",
+      "source": "PEP 484 — Type Hints: Non-goals — https://peps.python.org/pep-0484/",
       "expected_time_ms": 25000,
       "tags": [
         "type-hints",
@@ -77,7 +77,7 @@
       "correct_index": 2,
       "explanation_es": "Desde Python 3.10 (PEP 604) se usa la sintaxis de unión con `|`: `int | None`. Es equivalente al antiguo `Optional[int]` o `Union[int, None]` de `typing`. `or` es un operador booleano, no de tipos, y `int?` no existe en Python.",
       "explanation_en": "Since Python 3.10 (PEP 604) you use the union syntax with `|`: `int | None`. It's equivalent to the older `Optional[int]` or `Union[int, None]` from `typing`. `or` is a boolean operator, not a type one, and `int?` doesn't exist in Python.",
-      "source": "PEP 604 — Allow writing union types as X | Y",
+      "source": "PEP 604 — Allow writing union types as X | Y — https://peps.python.org/pep-0604/",
       "expected_time_ms": 28000,
       "tags": [
         "type-hints",
@@ -107,7 +107,7 @@
       "correct_index": 2,
       "explanation_es": "Desde Python 3.9 (PEP 585) los tipos genéricos incorporados admiten subíndice directamente: `list[int]`, `dict[str, int]`, `tuple[int, ...]`. Ya no hace falta el antiguo `List` de `typing` (aunque sigue funcionando por compatibilidad).",
       "explanation_en": "Since Python 3.9 (PEP 585) built-in generic types support subscription directly: `list[int]`, `dict[str, int]`, `tuple[int, ...]`. The old `List` from `typing` is no longer needed (though it still works for compatibility).",
-      "source": "PEP 585 — Type Hinting Generics In Standard Collections",
+      "source": "PEP 585 — Type Hinting Generics In Standard Collections — https://peps.python.org/pep-0585/",
       "expected_time_ms": 28000,
       "tags": [
         "type-hints",
@@ -137,7 +137,7 @@
       "correct_index": 0,
       "explanation_es": "La anotación `name: str` NO impide pasar `42` (Python la ignora en ejecución). El error real ocurre al ejecutar `\"hi \" + 42`, que lanza `TypeError` porque no se puede concatenar str con int. Un checker estático lo avisaría antes, pero aquí se ejecuta y falla en tiempo de ejecución.",
       "explanation_en": "The annotation `name: str` does NOT prevent passing `42` (Python ignores it at runtime). The actual error occurs when running `\"hi \" + 42`, raising `TypeError` because you can't concatenate str with int. A static checker would warn earlier, but here it runs and fails at runtime.",
-      "source": "PEP 484 — Type Hints: runtime behavior",
+      "source": "PEP 484 — Type Hints: runtime behavior — https://peps.python.org/pep-0484/",
       "expected_time_ms": 40000,
       "tags": [
         "type-hints",
@@ -190,7 +190,7 @@
       "correct_index": 1,
       "explanation_es": "Un `TypeVar` (ej. `T = TypeVar('T')`) representa un tipo genérico. Permite decir 'esta función recibe una lista de T y devuelve un T', de modo que el checker sabe que `first([1,2,3])` devuelve un `int`. Preserva la relación de tipos entre argumentos y retorno.",
       "explanation_en": "A `TypeVar` (e.g. `T = TypeVar('T')`) represents a generic type. It lets you say 'this function takes a list of T and returns a T', so the checker knows `first([1,2,3])` returns an `int`. It preserves the type relationship between arguments and return.",
-      "source": "PEP 484 — Type Hints: Generics",
+      "source": "PEP 484 — Type Hints: Generics — https://peps.python.org/pep-0484/",
       "expected_time_ms": 25000,
       "tags": [
         "type-hints",
@@ -220,7 +220,7 @@
       "correct_index": 1,
       "explanation_es": "Python 3.12 (PEP 695) introdujo la sintaxis de parámetros de tipo entre corchetes: `def first[T](items: list[T]) -> T:`. Declara `T` inline sin necesidad de `TypeVar('T')`. Lo mismo aplica a clases: `class Stack[T]:`.",
       "explanation_en": "Python 3.12 (PEP 695) introduced the bracketed type-parameter syntax: `def first[T](items: list[T]) -> T:`. It declares `T` inline without needing `TypeVar('T')`. The same applies to classes: `class Stack[T]:`.",
-      "source": "PEP 695 — Type Parameter Syntax",
+      "source": "PEP 695 — Type Parameter Syntax — https://peps.python.org/pep-0695/",
       "expected_time_ms": 30000,
       "tags": [
         "type-hints",
@@ -246,7 +246,7 @@
       "correct_index": 0,
       "explanation_es": "Verdadero. Antes de 3.12, una clase genérica se declaraba `class Stack(Generic[T]):` con `T = TypeVar('T')`. Esto permite anotar `Stack[int]` y que el checker rastree el tipo del contenido. La sintaxis nueva `class Stack[T]:` de PEP 695 lo simplifica.",
       "explanation_en": "True. Before 3.12, a generic class was declared `class Stack(Generic[T]):` with `T = TypeVar('T')`. This allows annotating `Stack[int]` and lets the checker track the element type. PEP 695's new `class Stack[T]:` syntax simplifies it.",
-      "source": "PEP 484 — Type Hints: Generic types",
+      "source": "PEP 484 — Type Hints: Generic types — https://peps.python.org/pep-0484/",
       "expected_time_ms": 28000,
       "tags": [
         "type-hints",
@@ -276,7 +276,7 @@
       "correct_index": 3,
       "explanation_es": "Un `bound` limita el TypeVar a un tipo y sus subtipos: `bound=Number` significa 'T debe ser Number o algo que herede de él'. Esto le dice al checker que puede asumir las operaciones de Number sobre valores de tipo T, útil para funciones genéricas restringidas.",
       "explanation_en": "A `bound` limits the TypeVar to a type and its subtypes: `bound=Number` means 'T must be Number or something inheriting from it'. This tells the checker it can assume Number's operations on values of type T, useful for constrained generic functions.",
-      "source": "PEP 484 — Type Hints: TypeVar with bound",
+      "source": "PEP 484 — Type Hints: TypeVar with bound — https://peps.python.org/pep-0484/",
       "expected_time_ms": 35000,
       "tags": [
         "type-hints",
@@ -306,7 +306,7 @@
       "correct_index": 1,
       "explanation_es": "`NoReturn` (y su equivalente `Never` desde 3.11) anota funciones que nunca terminan devolviendo un valor, como una que siempre lanza una excepción. `None` significa que retorna, pero sin valor útil. El checker usa `NoReturn` para razonar sobre código inalcanzable.",
       "explanation_en": "`NoReturn` (and its equivalent `Never` since 3.11) annotates functions that never finish returning a value, such as one that always raises. `None` means it returns, but with no useful value. The checker uses `NoReturn` to reason about unreachable code.",
-      "source": "PEP 484 / typing.NoReturn / typing.Never",
+      "source": "PEP 484 / typing.NoReturn / typing.Never — https://peps.python.org/pep-0484/",
       "expected_time_ms": 35000,
       "tags": [
         "type-hints",
@@ -328,7 +328,7 @@
       "correct_answer_en": "Any",
       "explanation_es": "`Any` (de `typing`) es compatible con cualquier tipo en ambas direcciones, desactivando efectivamente la comprobación para ese valor. Es una vía de escape útil pero peligrosa: abusar de `Any` anula los beneficios del tipado estático. Se prefiere `object` cuando solo necesitas 'cualquier objeto'.",
       "explanation_en": "`Any` (from `typing`) is compatible with any type in both directions, effectively disabling checking for that value. It's a useful but dangerous escape hatch: overusing `Any` negates the benefits of static typing. Prefer `object` when you only need 'any object'.",
-      "source": "PEP 484 — Type Hints: The Any type",
+      "source": "PEP 484 — Type Hints: The Any type — https://peps.python.org/pep-0484/",
       "expected_time_ms": 30000,
       "tags": [
         "type-hints",
@@ -357,7 +357,7 @@
       "correct_index": 3,
       "explanation_es": "Un `Protocol` (PEP 544) define una interfaz estructural: cualquier clase que tenga los métodos/atributos declarados 'encaja', sin necesidad de heredar del Protocol. Es duck typing verificado estáticamente: 'si tiene `.read()`, sirve como lector'.",
       "explanation_en": "A `Protocol` (PEP 544) defines a structural interface: any class that has the declared methods/attributes 'fits', without inheriting from the Protocol. It's statically-checked duck typing: 'if it has `.read()`, it counts as a reader'.",
-      "source": "PEP 544 — Protocols: Structural subtyping",
+      "source": "PEP 544 — Protocols: Structural subtyping — https://peps.python.org/pep-0544/",
       "expected_time_ms": 25000,
       "tags": [
         "type-hints",
@@ -383,7 +383,7 @@
       "correct_index": 1,
       "explanation_es": "Falso. La gracia de los Protocols es el subtipado ESTRUCTURAL: basta con que la clase tenga los métodos/atributos requeridos, sin heredar del Protocol. Esto contrasta con las ABC, que usan subtipado NOMINAL (requieren herencia o registro explícito).",
       "explanation_en": "False. The point of Protocols is STRUCTURAL subtyping: it's enough for the class to have the required methods/attributes, without inheriting from the Protocol. This contrasts with ABCs, which use NOMINAL subtyping (requiring inheritance or explicit registration).",
-      "source": "PEP 544 — Protocols: Structural subtyping",
+      "source": "PEP 544 — Protocols: Structural subtyping — https://peps.python.org/pep-0544/",
       "expected_time_ms": 28000,
       "tags": [
         "type-hints",
@@ -414,7 +414,7 @@
       "correct_index": 0,
       "explanation_es": "La distinción es estructural vs nominal: un Protocol acepta cualquier clase con la 'forma' correcta (métodos correctos), sin herencia; una ABC exige que la clase herede de ella o se registre. Los Protocols encajan mejor con el espíritu duck typing de Python.",
       "explanation_en": "The distinction is structural vs nominal: a Protocol accepts any class with the right 'shape' (correct methods), without inheritance; an ABC requires the class to inherit from it or register. Protocols fit Python's duck-typing spirit better.",
-      "source": "PEP 544 — Protocols vs ABCs",
+      "source": "PEP 544 — Protocols vs ABCs — https://peps.python.org/pep-0544/",
       "expected_time_ms": 32000,
       "tags": [
         "type-hints",
@@ -444,7 +444,7 @@
       "correct_index": 2,
       "explanation_es": "Por defecto los Protocols solo existen para el checker estático. Decorándolos con `@runtime_checkable` puedes usar `isinstance(obj, MiProtocol)`, aunque solo comprueba la PRESENCIA de los métodos (no sus firmas ni tipos). Sin el decorador, `isinstance` lanza `TypeError`.",
       "explanation_en": "By default Protocols exist only for the static checker. Decorating them with `@runtime_checkable` lets you use `isinstance(obj, MyProtocol)`, though it only checks the PRESENCE of methods (not their signatures or types). Without the decorator, `isinstance` raises `TypeError`.",
-      "source": "PEP 544 — Protocols: runtime_checkable",
+      "source": "PEP 544 — Protocols: runtime_checkable — https://peps.python.org/pep-0544/",
       "expected_time_ms": 35000,
       "tags": [
         "type-hints",
@@ -474,7 +474,7 @@
       "correct_index": 2,
       "explanation_es": "Sí. Aunque `Dog` no hereda de `Speaker`, tiene un método `speak(self) -> str` que coincide con lo que el Protocol exige. Por subtipado estructural, `Dog` es compatible con `Speaker` y el checker acepta `describe(Dog())`. No hace falta `@runtime_checkable` para el análisis estático.",
       "explanation_en": "Yes. Even though `Dog` doesn't inherit from `Speaker`, it has a `speak(self) -> str` method matching what the Protocol requires. By structural subtyping, `Dog` is compatible with `Speaker` and the checker accepts `describe(Dog())`. `@runtime_checkable` isn't needed for static analysis.",
-      "source": "PEP 544 — Protocols: Structural subtyping",
+      "source": "PEP 544 — Protocols: Structural subtyping — https://peps.python.org/pep-0544/",
       "expected_time_ms": 45000,
       "tags": [
         "type-hints",
@@ -496,7 +496,7 @@
       "correct_answer_en": "Protocol",
       "explanation_es": "`class Comparable(Protocol):` (importando `Protocol` de `typing`) define un protocolo estructural. Cualquier clase con los métodos declarados encajará sin heredar de `Comparable`. Es la base del tipado estructural (duck typing estático) en Python.",
       "explanation_en": "`class Comparable(Protocol):` (importing `Protocol` from `typing`) defines a structural protocol. Any class with the declared methods will fit without inheriting from `Comparable`. It's the foundation of structural typing (static duck typing) in Python.",
-      "source": "PEP 544 — Protocols",
+      "source": "PEP 544 — Protocols — https://peps.python.org/pep-0544/",
       "expected_time_ms": 30000,
       "tags": [
         "type-hints",

@@ -52,7 +52,7 @@
       "correct_index": 0,
       "explanation_es": "A diferencia de un comentario, el docstring sobrevive en tiempo de ejecución: queda en `funcion.__doc__` y lo usan `help()`, los IDEs y los generadores de documentación. Un `#` encima del `def` se descarta al compilar.",
       "explanation_en": "Unlike a comment, a docstring survives at runtime: it lives in `function.__doc__` and is used by `help()`, IDEs and documentation generators. A `#` above the `def` is discarded at compile time.",
-      "source": "PEP 257 — Docstring Conventions",
+      "source": "PEP 257 — Docstring Conventions — https://peps.python.org/pep-0257/",
       "expected_time_ms": 30000,
       "tags": [
         "functions",
@@ -165,7 +165,7 @@
       "correct_index": 1,
       "explanation_es": "Python no comprueba las anotaciones al ejecutar: son documentación legible por herramientas. Quien valida es un comprobador estático como mypy, o una librería que las lea explícitamente, como Pydantic.",
       "explanation_en": "Python does not check annotations at runtime: they are documentation readable by tools. Validation comes from a static checker such as mypy, or a library that reads them explicitly, such as Pydantic.",
-      "source": "PEP 484 — Type Hints",
+      "source": "PEP 484 — Type Hints — https://peps.python.org/pep-0484/",
       "expected_time_ms": 30000,
       "tags": [
         "functions",
@@ -655,7 +655,7 @@
       "correct_index": 1,
       "explanation_es": "Ordenar un diccionario ordena sus **claves**, no sus valores, así que salen los nombres alfabéticamente. Desde Python 3.7 `kwargs` conserva el orden en que se pasaron, pero `sorted` lo reorganiza igualmente.",
       "explanation_en": "Sorting a dictionary sorts its **keys**, not its values, so the names come out alphabetically. Since Python 3.7 `kwargs` preserves the order they were passed in, but `sorted` reorganises it anyway.",
-      "source": "CPython docs 3.13 — Built-in Functions: sorted() / PEP 468",
+      "source": "CPython docs 3.13 — Built-in Functions: sorted() / PEP 468 — https://peps.python.org/pep-0468/",
       "expected_time_ms": 40000,
       "tags": [
         "kwargs",
@@ -685,7 +685,7 @@
       "correct_index": 2,
       "explanation_es": "`nonlocal` enlaza el nombre a la función envolvente, no al ámbito global. Sin él, `n = 2` crearía una variable local nueva en `interior` y `exterior` seguiría devolviendo 1.",
       "explanation_en": "`nonlocal` binds the name to the enclosing function, not to the global scope. Without it, `n = 2` would create a new local in `inner` and `outer` would still return 1.",
-      "source": "PEP 3104 — Access to Names in Outer Scopes",
+      "source": "PEP 3104 — Access to Names in Outer Scopes — https://peps.python.org/pep-3104/",
       "expected_time_ms": 45000,
       "tags": [
         "scope",
@@ -715,7 +715,7 @@
       "correct_index": 2,
       "explanation_es": "Python decide si un nombre es local al **compilar** la función, no al ejecutarla: como hay una asignación a `x`, `x` es local en todo el cuerpo, incluida la línea anterior. Leerla antes de asignar lanza `UnboundLocalError`.",
       "explanation_en": "Python decides whether a name is local when it **compiles** the function, not while running it: since there is an assignment to `x`, `x` is local throughout the body, including the earlier line. Reading it before assigning raises `UnboundLocalError`.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding) — https://docs.python.org/3/reference/executionmodel.html#naming-and-binding",
       "expected_time_ms": 50000,
       "tags": [
         "scope",
@@ -773,7 +773,7 @@
       "correct_index": 0,
       "explanation_es": "`inc` es un cierre: recuerda la `n` de la función que la creó aunque `hacer_contador` ya terminó. Cada llamada la incrementa, así que la segunda devuelve 2. Dos contadores distintos tendrían cada uno su propia `n`.",
       "explanation_en": "`inc` is a closure: it remembers the `n` from the function that created it, even though `make_counter` has already returned. Each call increments it, so the second returns 2. Two separate counters would each hold their own `n`.",
-      "source": "CPython docs 3.13 — The Python Tutorial §9.2 / PEP 3104",
+      "source": "CPython docs 3.13 — The Python Tutorial §9.2 / PEP 3104 — https://peps.python.org/pep-3104/",
       "expected_time_ms": 50000,
       "tags": [
         "scope",
@@ -798,7 +798,7 @@
       "correct_index": 0,
       "explanation_es": "Los incorporados son el último nivel de LEGB, así que cualquier nombre más cercano los tapa. El error resultante —`'list' object is not callable`— desconcierta porque la línea que falla parece correcta.",
       "explanation_en": "Built-ins are the last level of LEGB, so any closer name hides them. The resulting error — `'list' object is not callable` — is baffling because the failing line looks perfectly fine.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Execution model / PEP 8",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model / PEP 8 — https://peps.python.org/pep-0008/",
       "expected_time_ms": 30000,
       "tags": [
         "scope",
@@ -827,7 +827,7 @@
       "correct_index": 3,
       "explanation_es": "Una función que muta globales puede cambiar el comportamiento de otras sin que se vea en la llamada, y es difícil de testear porque hay que preparar y limpiar ese estado. Recibir y devolver valores mantiene el efecto a la vista.",
       "explanation_en": "A function mutating globals can change other functions' behaviour without it showing at the call site, and it is hard to test because that state must be set up and torn down. Taking and returning values keeps the effect visible.",
-      "source": "CPython docs 3.13 — The Python Language Reference: The global statement / PEP 20",
+      "source": "CPython docs 3.13 — The Python Language Reference: The global statement / PEP 20 — https://peps.python.org/pep-0020/",
       "expected_time_ms": 40000,
       "tags": [
         "scope",
@@ -846,7 +846,7 @@
       "correct_answer_en": "nonlocal",
       "explanation_es": "`nonlocal` sube un nivel en la cadena de funciones anidadas; `global` salta directamente al módulo. Usar `global` donde tocaba `nonlocal` crea una variable de módulo por error.",
       "explanation_en": "`nonlocal` goes up one level in the chain of nested functions; `global` jumps straight to the module. Using `global` where `nonlocal` belonged creates a module-level variable by mistake.",
-      "source": "PEP 3104 — Access to Names in Outer Scopes",
+      "source": "PEP 3104 — Access to Names in Outer Scopes — https://peps.python.org/pep-3104/",
       "expected_time_ms": 22000,
       "tags": [
         "scope",
@@ -958,7 +958,7 @@
       "correct_index": 1,
       "explanation_es": "PEP 8 dice justo lo contrario: si vas a darle nombre, usa `def`. La ventaja es práctica — el `def` guarda el nombre real de la función, que aparece en los trazados de error, mientras que una lambda con nombre se muestra siempre como `<lambda>`.",
       "explanation_en": "PEP 8 says the opposite: if you are going to name it, use `def`. The advantage is practical — `def` records the real function name, which shows up in tracebacks, whereas a named lambda always displays as `<lambda>`.",
-      "source": "PEP 8 — Style Guide for Python Code: Programming Recommendations",
+      "source": "PEP 8 — Style Guide for Python Code: Programming Recommendations — https://peps.python.org/pep-0008/",
       "expected_time_ms": 30000,
       "tags": [
         "lambda",
@@ -1047,7 +1047,7 @@
       "correct_index": 0,
       "explanation_es": "La lambda gana cuando la función es tan pequeña que ponerle nombre la haría más difícil de leer. Para algo que se reutiliza, se testea o necesita recursión, `def` es mejor en todos los aspectos.",
       "explanation_en": "A lambda wins when the function is so small that naming it would make it harder to read. For anything reused, tested or recursive, `def` is better on every count.",
-      "source": "CPython docs 3.13 — The Python Tutorial §4.9.1 / PEP 8",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.9.1 / PEP 8 — https://peps.python.org/pep-0008/",
       "expected_time_ms": 35000,
       "tags": [
         "lambda",

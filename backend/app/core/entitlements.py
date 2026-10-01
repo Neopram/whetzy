@@ -23,6 +23,7 @@ Or call ``user_meets_tier`` directly in endpoint bodies for conditional gating
 from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
+from datetime import UTC, datetime
 
 from fastapi import Depends, HTTPException, status
 
@@ -47,10 +48,24 @@ def user_meets_tier(user: User, minimum: str) -> bool:
 
     Users with ``is_premium=True`` but no explicit ``subscription_tier``
     are treated as "plus" for backwards compatibility.
+
+    A lapsed subscription counts as free (39.31): ``subscription_expires_at``
+    is only ever written by the Stripe webhook (``stripe_service.py``), and
+    the ``customer.subscription.deleted`` handler clears ``is_premium`` but
+    never resets ``subscription_tier`` — so without this check, a canceled
+    or expired paid plan kept full tier access forever through the stale
+    field. ``None`` still means "no expiry" (grandfathered accounts that
+    predate Stripe, or accounts an admin set up by hand).
     """
     effective_tier = user.subscription_tier
     if effective_tier is None and user.is_premium:
         effective_tier = "plus"
+    expires_at = user.subscription_expires_at
+    if expires_at is not None:
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=UTC)
+        if expires_at < datetime.now(UTC):
+            effective_tier = "free"
     return _TIER_RANK.get(effective_tier, 0) >= _TIER_RANK.get(minimum, 0)
 
 

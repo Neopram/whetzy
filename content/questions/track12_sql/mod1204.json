@@ -11,11 +11,11 @@
     "options_es": null,
     "options_en": null,
     "correct_index": null,
-    "correct_answer_es": "name | salary\n-----+-------\nBob | 80000.0\nDiana | 90000.0",
-    "correct_answer_en": "name | salary\n-----+-------\nBob | 80000.0\nDiana | 90000.0",
+    "correct_answer_es": "name | salary\n-----+-------\nBob | 80000\nDiana | 90000",
+    "correct_answer_en": "name | salary\n-----+-------\nBob | 80000\nDiana | 90000",
     "explanation_es": "AVG(salary) calcula el promedio de salarios (71250). La subconsulta devuelve ese valor; el WHERE exterior filtra empleados con salario superior.",
     "explanation_en": "AVG(salary) calculates the average salary (71250). The subquery returns that value; the outer WHERE filters employees earning more.",
-    "source": "SQL Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "source": "SQL Subqueries – https://www.postgresql.org/docs/current/functions-subquery.html",
     "expected_time_ms": 60000
   },
   {
@@ -49,11 +49,11 @@
     "options_es": null,
     "options_en": null,
     "correct_index": null,
-    "correct_answer_es": "name | category | price\n-----+----------+------\nLaptop | Electronics | 1200.0\nDesk | Furniture | 300.0",
-    "correct_answer_en": "name | category | price\n-----+----------+------\nLaptop | Electronics | 1200.0\nDesk | Furniture | 300.0",
+    "correct_answer_es": "name | category | price\n-----+----------+------\nLaptop | Electronics | 1200\nDesk | Furniture | 300",
+    "correct_answer_en": "name | category | price\n-----+----------+------\nLaptop | Electronics | 1200\nDesk | Furniture | 300",
     "explanation_es": "Subconsulta escalar que encuentra el precio máximo por categoría. Max(price) compara cada producto con el máximo de su categoría.",
     "explanation_en": "Scalar subquery finding the maximum price per category. MAX(price) compares each product to its category's max.",
-    "source": "Scalar Subqueries in SQL – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "source": "Scalar Subqueries in SQL – https://www.postgresql.org/docs/current/functions-subquery.html",
     "expected_time_ms": 90000
   },
   {
@@ -78,7 +78,7 @@
     "correct_index": 1,
     "explanation_es": "Una subconsulta escalar devuelve exactamente un valor: una fila y una columna.",
     "explanation_en": "A scalar subquery returns exactly one value: one row and one column.",
-    "source": "SQL Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "source": "SQL Subqueries – https://www.postgresql.org/docs/current/functions-subquery.html",
     "expected_time_ms": 30000
   },
   {
@@ -103,7 +103,7 @@
     "correct_index": 2,
     "explanation_es": "Las subconsultas pueden usarse en múltiples cláusulas: WHERE, HAVING, FROM (como tabla derivada) y SELECT (como columna derivada).",
     "explanation_en": "Subqueries can be used in multiple clauses: WHERE, HAVING, FROM (as derived table), and SELECT (as derived column).",
-    "source": "Subquery Placement – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "source": "Subquery Placement – https://www.postgresql.org/docs/current/functions-subquery.html",
     "expected_time_ms": 30000
   },
   {
@@ -153,7 +153,7 @@
     "correct_index": 0,
     "explanation_es": "Una subconsulta correlacionada hace referencia a columnas de la consulta exterior, evaluándose para cada fila de esa consulta.",
     "explanation_en": "A correlated subquery references columns from the outer query, evaluated for each row of that query.",
-    "source": "Correlated Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "source": "Correlated Subqueries – https://www.postgresql.org/docs/current/functions-subquery.html",
     "expected_time_ms": 45000
   },
   {
@@ -278,7 +278,7 @@
     "correct_index": 2,
     "explanation_es": "Si la subconsulta contiene NULL, NOT IN devuelve NULL para todas las filas, resultando en ninguna fila retornada.",
     "explanation_en": "If the subquery contains NULL, NOT IN returns NULL for all rows, resulting in no rows returned.",
-    "source": "SQL NULL Handling – https://www.w3schools.com/sql/sql_null.asp",
+    "source": "SQL NULL Handling – https://www.w3schools.com/sql/sql_null_values.asp",
     "expected_time_ms": 45000
   },
   {
@@ -303,7 +303,7 @@
     "correct_index": 2,
     "explanation_es": "ANY permite usar operadores de comparación (=, >, <, etc.), mientras que IN solo verifica igualdad.",
     "explanation_en": "ANY allows comparison operators (=, >, <, etc.), while IN only checks equality.",
-    "source": "SQL ANY – https://www.w3schools.com/sql/sql_any.asp",
+    "source": "SQL ANY – https://www.w3schools.com/sql/sql_any_all.asp",
     "expected_time_ms": 45000
   },
   {
@@ -353,7 +353,7 @@
     "correct_index": 0,
     "explanation_es": "Subconsulta en FROM crea una tabla derivada; subconsulta en WHERE filtra basado en una condición.",
     "explanation_en": "Subquery in FROM creates a derived table; subquery in WHERE filters based on a condition.",
-    "source": "SQL Derived Tables – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "source": "SQL Derived Tables – https://www.postgresql.org/docs/current/functions-subquery.html",
     "expected_time_ms": 45000
   },
   {
@@ -460,7 +460,7 @@
     "correct_index": 0,
     "explanation_es": "Una subconsulta correlacionada referencia columnas de la consulta externa, evaluándose para cada fila.",
     "explanation_en": "A correlated subquery references columns from outer query, evaluated for each row.",
-    "source": "SQL Correlated Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "source": "SQL Correlated Subqueries – https://www.postgresql.org/docs/current/functions-subquery.html",
     "expected_time_ms": 30000
   },
   {
@@ -510,7 +510,7 @@
     "correct_index": 0,
     "explanation_es": "Correlacionado significa que la subconsulta hace referencia y depende de la fila actual de la consulta externa.",
     "explanation_en": "Correlated means the subquery references and depends on the current row of the outer query.",
-    "source": "Correlated Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "source": "Correlated Subqueries – https://www.postgresql.org/docs/current/functions-subquery.html",
     "expected_time_ms": 45000
   },
   {
@@ -725,11 +725,11 @@
     "options_es": null,
     "options_en": null,
     "correct_index": null,
-    "correct_answer_es": "name | salary\n-----+-------\nBob | 80000.0\nDiana | 90000.0",
-    "correct_answer_en": "name | salary\n-----+-------\nBob | 80000.0\nDiana | 90000.0",
+    "correct_answer_es": "name | salary\n-----+-------\nBob | 80000\nDiana | 90000",
+    "correct_answer_en": "name | salary\n-----+-------\nBob | 80000\nDiana | 90000",
     "explanation_es": "WITH crea una tabla temporal (CTE). avg_salary contiene el promedio. Luego se usa en la consulta principal.",
     "explanation_en": "WITH creates a temporary table (CTE). avg_salary contains the average. Then used in main query.",
-    "source": "SQL CTE (WITH clause) – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE (WITH clause) – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -744,11 +744,11 @@
     "options_es": null,
     "options_en": null,
     "correct_index": null,
-    "correct_answer_es": "name | price | category\n-----+-------+---------\nLaptop | 1200.0 | Expensive\nMonitor | 300.0 | Expensive",
-    "correct_answer_en": "name | price | category\n-----+-------+---------\nLaptop | 1200.0 | Expensive\nMonitor | 300.0 | Expensive",
+    "correct_answer_es": "name | price | category\n-----+-------+---------\nLaptop | 1200 | Expensive\nMonitor | 300 | Expensive",
+    "correct_answer_en": "name | price | category\n-----+-------+---------\nLaptop | 1200 | Expensive\nMonitor | 300 | Expensive",
     "explanation_es": "WITH define un CTE que categoriza productos. Luego se filtra por categoría 'Expensive'.",
     "explanation_en": "WITH defines a CTE that categorizes products. Then filtered by 'Expensive' category.",
-    "source": "SQL CTE – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -763,11 +763,11 @@
     "options_es": null,
     "options_en": null,
     "correct_index": null,
-    "correct_answer_es": "name | salary | bonus | total\n-----+--------+-------+------\nAlice | 50000.0 | 5000.0 | 55000.0\nBob | 80000.0 | 8000.0 | 88000.0",
-    "correct_answer_en": "name | salary | bonus | total\n-----+--------+-------+------\nAlice | 50000.0 | 5000.0 | 55000.0\nBob | 80000.0 | 8000.0 | 88000.0",
+    "correct_answer_es": "name | salary | bonus | total\n-----+--------+-------+------\nAlice | 50000 | 5000 | 55000\nBob | 80000 | 8000 | 88000",
+    "correct_answer_en": "name | salary | bonus | total\n-----+--------+-------+------\nAlice | 50000 | 5000 | 55000\nBob | 80000 | 8000 | 88000",
     "explanation_es": "Múltiples CTEs pueden definirse con comas. base_salary es usado por bonus_calc, que es usado por la consulta final.",
     "explanation_en": "Multiple CTEs can be defined with commas. base_salary is used by bonus_calc, which is used by final query.",
-    "source": "SQL Multiple CTEs – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Multiple CTEs – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 75000
   },
   {
@@ -792,7 +792,7 @@
     "correct_index": 0,
     "explanation_es": "CTE significa Common Table Expression (Expresión de Tabla Común), una tabla temporal en SQL.",
     "explanation_en": "CTE means Common Table Expression, a temporary table in SQL.",
-    "source": "SQL CTE – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 30000
   },
   {
@@ -817,7 +817,7 @@
     "correct_index": 2,
     "explanation_es": "La palabra clave WITH se usa para definir un CTE.",
     "explanation_en": "The WITH keyword is used to define a CTE.",
-    "source": "SQL CTE Syntax – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE Syntax – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 30000
   },
   {
@@ -842,7 +842,7 @@
     "correct_index": 0,
     "explanation_es": "Un CTE existe solo para la instrucción SELECT que lo sigue inmediatamente.",
     "explanation_en": "A CTE exists only for the SELECT statement that immediately follows it.",
-    "source": "SQL CTE Scope – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE Scope – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -867,7 +867,7 @@
     "correct_index": 0,
     "explanation_es": "Múltiples CTEs se definen separando sus definiciones con comas.",
     "explanation_en": "Multiple CTEs are defined by separating their definitions with commas.",
-    "source": "SQL Multiple CTEs – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Multiple CTEs – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -892,7 +892,7 @@
     "correct_index": 0,
     "explanation_es": "Los CTEs mejoran la legibilidad al separar lógica compleja en partes nombradas.",
     "explanation_en": "CTEs improve readability by separating complex logic into named parts.",
-    "source": "SQL CTE Benefits – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE Benefits – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -917,7 +917,7 @@
     "correct_index": 2,
     "explanation_es": "Un CTE puede hacer referencia a CTEs definidos anteriormente en la misma instrucción WITH.",
     "explanation_en": "A CTE can reference earlier CTEs defined in the same WITH clause.",
-    "source": "SQL CTE References – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE References – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -942,7 +942,7 @@
     "correct_index": 3,
     "explanation_es": "Un CTE es temporal (existe solo durante la instrucción), mientras que una vista es permanente en la base de datos.",
     "explanation_en": "A CTE is temporary (exists only during the statement), while a view is permanent in database.",
-    "source": "CTE vs View – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "CTE vs View – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -967,7 +967,7 @@
     "correct_index": 0,
     "explanation_es": "La sintaxis correcta es: WITH nombre AS (SELECT ...) seguido de la consulta principal que referencia al CTE.",
     "explanation_en": "The correct syntax is: WITH name AS (SELECT ...) followed by main query referencing the CTE.",
-    "source": "SQL CTE Syntax – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE Syntax – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 30000
   },
   {
@@ -992,7 +992,7 @@
     "correct_index": 0,
     "explanation_es": "Un CTE puede referenciarse múltiples veces dentro de la misma instrucción WITH.",
     "explanation_en": "A CTE can be referenced multiple times within the same WITH statement.",
-    "source": "SQL CTE Usage – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE Usage – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -1017,7 +1017,7 @@
     "correct_index": 3,
     "explanation_es": "CTEs son mejores para mejorar legibilidad cuando la lógica es compleja.",
     "explanation_en": "CTEs are better for clarity when logic is complex.",
-    "source": "SQL Best Practices – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Best Practices – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1042,7 +1042,7 @@
     "correct_index": 3,
     "explanation_es": "La mayoría de DBMS modernos optimizan CTEs. El rendimiento depende de la consulta, no del CTE en sí.",
     "explanation_en": "Modern DBMs optimize CTEs. Performance depends on the query, not the CTE itself.",
-    "source": "SQL Performance Tuning – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Performance Tuning – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1067,7 +1067,7 @@
     "correct_index": 2,
     "explanation_es": "AS define la estructura y contenido del CTE, indicando qué SELECT define el CTE.",
     "explanation_en": "AS defines the structure and content of the CTE, indicating what SELECT defines it.",
-    "source": "SQL CTE Syntax – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL CTE Syntax – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -1086,7 +1086,7 @@
     "correct_answer_en": "n\n-\n1\n2\n3\n4\n5",
     "explanation_es": "RECURSIVE permite que el CTE se refiera a sí mismo. Parte base: SELECT 1. Parte recursiva: SELECT n+1 mientras n < 5.",
     "explanation_en": "RECURSIVE allows CTE to reference itself. Base: SELECT 1. Recursive: SELECT n+1 while n < 5.",
-    "source": "SQL Recursive CTE – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive CTE – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1101,11 +1101,11 @@
     "options_es": null,
     "options_en": null,
     "correct_index": null,
-    "correct_answer_es": "id | name | manager_id | level\n---+------+------------+------\n1 | CEO | None | 0\n2 | Manager | 1 | 1\n3 | Dev | 2 | 2",
-    "correct_answer_en": "id | name | manager_id | level\n---+------+------------+------\n1 | CEO | None | 0\n2 | Manager | 1 | 1\n3 | Dev | 2 | 2",
+    "correct_answer_es": "id | name | manager_id | level\n---+------+------------+------\n1 | CEO | null | 0\n2 | Manager | 1 | 1\n3 | Dev | 2 | 2",
+    "correct_answer_en": "id | name | manager_id | level\n---+------+------------+------\n1 | CEO | null | 0\n2 | Manager | 1 | 1\n3 | Dev | 2 | 2",
     "explanation_es": "Parte base: CEO (sin manager). Parte recursiva: JOIN con tabla anterior para encontrar empleados de cada manager.",
     "explanation_en": "Base: CEO (no manager). Recursive: JOIN to find employees under each manager.",
-    "source": "SQL Recursive Hierarchy – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive Hierarchy – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 90000
   },
   {
@@ -1124,7 +1124,7 @@
     "correct_answer_en": "value\n-----\n1\n2\n4\n8\n16\n32",
     "explanation_es": "CTE recursivo que duplica el valor en cada iteración. Comienza con 1, para cuando alcanza o supera 32.",
     "explanation_en": "Recursive CTE doubling value each iteration. Starts at 1, stops when reaching 32.",
-    "source": "SQL Recursive Computations – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive Computations – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 75000
   },
   {
@@ -1149,7 +1149,7 @@
     "correct_index": 0,
     "explanation_es": "La palabra clave WITH RECURSIVE (no solo WITH) habilita los CTEs recursivos.",
     "explanation_en": "The WITH RECURSIVE keyword (not just WITH) enables recursive CTEs.",
-    "source": "SQL Recursive CTE Syntax – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive CTE Syntax – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 30000
   },
   {
@@ -1174,7 +1174,7 @@
     "correct_index": 0,
     "explanation_es": "Un CTE recursivo tiene dos partes: la parte BASE (caso inicial) y la parte RECURSIVA (auto-referencia).",
     "explanation_en": "A recursive CTE has two parts: BASE (initial case) and RECURSIVE (self-reference).",
-    "source": "SQL Recursive CTE – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive CTE – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 30000
   },
   {
@@ -1199,7 +1199,7 @@
     "correct_index": 3,
     "explanation_es": "UNION ALL conecta la parte base con la parte recursiva, permitiendo duplicados.",
     "explanation_en": "UNION ALL connects base part to recursive part, allowing duplicates.",
-    "source": "SQL Recursive CTE Structure – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive CTE Structure – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -1224,7 +1224,7 @@
     "correct_index": 0,
     "explanation_es": "La condición de parada en la cláusula WHERE de la parte recursiva evita bucles infinitos.",
     "explanation_en": "Stop condition in WHERE clause of recursive part prevents infinite loops.",
-    "source": "SQL Recursive CTE Termination – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive CTE Termination – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -1249,7 +1249,7 @@
     "correct_index": 1,
     "explanation_es": "CTEs recursivos son ideales para representar jerarquías (org, árbol de categorías, etc.) y gráficos.",
     "explanation_en": "Recursive CTEs are ideal for representing hierarchies (org, category trees, etc.) and graphs.",
-    "source": "SQL Recursive CTE Use Cases – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive CTE Use Cases – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 45000
   },
   {
@@ -1274,7 +1274,7 @@
     "correct_index": 3,
     "explanation_es": "Profundidad de recursión es cuántas veces se ejecuta la parte recursiva antes de cumplir la condición de parada.",
     "explanation_en": "Recursion depth is how many times recursive part executes before stop condition is met.",
-    "source": "SQL Recursive Depth – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive Depth – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1299,7 +1299,7 @@
     "correct_index": 2,
     "explanation_es": "SQL Server usa MAXRECURSION; otros DBMS usan detección de ciclos o condiciones de parada explícitas.",
     "explanation_en": "SQL Server uses MAXRECURSION; other DBMs use cycle detection or explicit stop conditions.",
-    "source": "SQL Recursion Limits – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursion Limits – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1324,7 +1324,7 @@
     "correct_index": 2,
     "explanation_es": "CTEs recursivos pueden hacer JOINs con otras tablas en tanto que mantengan la estructura correcta.",
     "explanation_en": "Recursive CTEs can JOIN other tables as long as they maintain correct structure.",
-    "source": "SQL Recursive CTE with JOINs – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursive CTE with JOINs – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1349,7 +1349,7 @@
     "correct_index": 1,
     "explanation_es": "Sin condición de parada, el CTE puede entrar en bucle infinito hasta alcanzar el límite de recursión del DBMS.",
     "explanation_en": "Without stop condition, CTE can loop infinitely until DBMS recursion limit is hit.",
-    "source": "SQL Recursion Errors – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursion Errors – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1374,7 +1374,7 @@
     "correct_index": 3,
     "explanation_es": "Optimizar CTEs recursivos implica usar índices y reducir la profundidad innecesaria.",
     "explanation_en": "Optimizing recursive CTEs involves using indexes and reducing unnecessary depth.",
-    "source": "SQL Performance Tuning – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Performance Tuning – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1399,7 +1399,7 @@
     "correct_index": 2,
     "explanation_es": "CTEs recursivos para datos que cambian; tablas materializadas para datos estáticos frecuentes.",
     "explanation_en": "Recursive CTEs for changing data; materialized tables for frequent static data.",
-    "source": "SQL Design Patterns – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Design Patterns – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   },
   {
@@ -1424,7 +1424,7 @@
     "correct_index": 3,
     "explanation_es": "Nivel es la iteración actual en un CTE recursivo; profundidad es el máximo nivel permitido.",
     "explanation_en": "Level is current iteration in recursive CTE; depth is maximum level allowed.",
-    "source": "SQL Recursion Terminology – https://www.w3schools.com/sql/sql_cte.asp",
+    "source": "SQL Recursion Terminology – https://www.postgresql.org/docs/current/queries-with.html",
     "expected_time_ms": 60000
   }
 ]

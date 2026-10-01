@@ -292,14 +292,23 @@ async def _select_question(
 ) -> tuple[Question | None, float | None]:
     # Serve index-graded (mcq/true_false/code_output) and exec-graded
     # (fill_blank_exec/fix_bug) questions; skip legacy fill_blank which has no
-    # correct_index and no correct_answer field.
-    query = select(Question).where(
+    # correct_index and no correct_answer field. Practice and spaced review
+    # both go through this one function, so excluding pool == "simulacro"
+    # here covers both halves of the invariant: a reserved mock-exam question
+    # must never turn up outside a mock exam (37.18/ADR-53 §4). Unconditional,
+    # not behind MOCK_EXAM_RESERVED_POOL_ENABLED — that flag only gates
+    # mock_exam.py's "draw only from the reserved pool" requirement, which
+    # needs content to exist first; excluding reserved questions from
+    # practice is safe from day one and a no-op until 37.24 populates them.
+    conditions = [
         Question.skill_id == skill_id,
         or_(
             Question.correct_index.is_not(None),
             Question.type.in_(list(_EXEC_TYPES)),
         ),
-    )
+        Question.pool != "simulacro",
+    ]
+    query = select(Question).where(*conditions)
     if exclude_question_ids:
         query = query.where(Question.id.not_in(exclude_question_ids))
     result = await db.execute(query)

@@ -62,6 +62,10 @@ class User(Base):
     subscription_status: Mapped[str | None] = mapped_column(String(32), nullable=True)  # active|canceled|past_due|trialing
     subscription_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro|creator (ADR-41)
     subscription_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Which rail last wrote the fields above (17.14): "stripe" | "revenuecat".
+    # RevenueCat reuses this same entitlement contract instead of its own
+    # columns — see the migration's docstring for why.
+    subscription_provider: Mapped[str | None] = mapped_column(String(16), nullable=True)
     eu_withdrawal_waiver_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
 

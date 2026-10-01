@@ -15,9 +15,10 @@ test.describe('duel', () => {
         display_name: 'E2E Opponent',
         password: 'e2e-test-pass-123',
         language: 'es',
+        age_confirmed: true,
       },
     });
-    expect(registerRes.ok()).toBeTruthy();
+    expect(registerRes.ok(), await registerRes.text()).toBeTruthy();
 
     // Challenging requires skill history — complete a study session first.
     await registerAndCompleteAQuiz(page, { username: challengerUsername, displayName: 'E2E Challenger' });
@@ -60,9 +61,10 @@ test.describe('duel', () => {
         display_name: 'E2E Opponent2',
         password: 'e2e-test-pass-123',
         language: 'es',
+        age_confirmed: true,
       },
     });
-    expect(oppReg.ok()).toBeTruthy();
+    expect(oppReg.ok(), await oppReg.text()).toBeTruthy();
 
     // ── Context 1: Challenger ────────────────────────────────────────────────
     const chalContext = await browser.newContext();

@@ -1319,6 +1319,1033 @@ del piloto Haiku). Cada lote revisado personalmente contra su lección antes de 
   primer plano. No se tocó el script esta sesión (fuera del alcance pedido); queda
   para quien revise `ci_local.sh` en detalle.
 
+## 2026-09-27, misma sesión de continuación — 39.25 investigado (no cerrado), 34.1 con entorno real
+
+**39.25 (AWS MLA-C01 → MLA-C02), investigación, sin tocar código todavía:** confirmado
+por `git log -p` que `content/curriculum/tracks.json` ya lleva el aviso de retiro en
+`name_es`/`name_en` de track43 desde `3959c14` (sesión anterior, 2026-09-26) — la mitad
+«mientras, el nombre lo avisa» del criterio ya estaba cumplida y el ledger no lo
+reflejaba. La otra mitad («migrado al blueprint MLA-C02 cuando AWS publique la guía»)
+seguía condicionada a que AWS publicara la guía nueva. **Verificado por `WebFetch` en
+vivo (2026-09-27) que ya está publicada**: beta MLA-C02 desde el 2026-09-29 (código
+ME1-C02), última fecha en inglés de MLA-C01 el 2026-09-28 (mañana), guía en
+`docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/`.
+Los 4 dominios nuevos (frente a los 4 de MLA-C01, que `tracks.json` sigue reflejando
+hoy): Data Preparation for ML and AI (28%), ML Model and Foundation Model (FM)
+Development (24%), Deployment and Orchestration of ML and AI Workflows (24%),
+Operating/Monitoring/Securing ML and AI Solutions (24%); examen 85 preguntas/170 min,
+50 puntuables + 15 sin puntuar (MLA-C01 en `tracks.json` hoy: 65 puntuables + 20 sin
+puntuar — otra cifra que migrar). El «qué hay de nuevo» de alto nivel: Bedrock/RAG,
+IA agéntica, foundation models/LLMs, IA responsable transversal. **No cerrado**: migrar
+de verdad exige no solo renombrar los 4 dominios y sus pesos en `certification`/
+`exam_domains`, sino re-etiquetar los 20 `sk4301xx`-`sk4301xx` existentes contra los
+dominios nuevos (el mapeo dominio↔skill de hoy es del blueprint viejo) y, para que el
+simulacro por dominio (18.1/24.7) no muestre dominios vacíos, autoría de banco nuevo
+que cubra el contenido que no existía en MLA-C01 (Bedrock, RAG, IA agéntica) — un
+esfuerzo de autoría del tamaño de 39.37, no un cambio de metadatos de una sesión. No
+se tocó `tracks.json`: escribir solo los nombres/pesos nuevos sin re-etiquetar los
+skills dejaría el simulacro y la readiness por dominio rotos (dominios que no
+encuentran preguntas), peor que dejarlo como está con el aviso en el nombre. Queda
+TODO con esta investigación ya hecha para no repetirla; 39.24 (Microsoft AI-900→AI-901)
+no se investigó todavía en esta sesión.
+
+**34.1 (pantallas restauradas), verificación en un entorno real por primera vez esta
+sesión:** el `PARCIAL` previo solo tenía la guarda estática (`cssModules.contract.test.ts`,
+0 clases sin definir) y un verificador de worktree aislado; nunca se había levantado la
+app de verdad. Este contenedor no tiene Docker corriendo (`dockerd` no está activo) pero
+sí Postgres 16 y Redis instalados sin él: se montó una base `learning_engine` local
+(`alembic upgrade head` limpio hasta `20260927_lesson_completions`, `content_loader`
+→ 35 tracks/10.989 preguntas, `bootstrap_owner`, `seed`), backend real en `:8000` y
+frontend real en `:5173`. `@playwright/test` 1.63 (el que fija el repo) espera
+`chromium_headless_shell-1243`, que este contenedor no trae — solo `chromium-1194`
+(el mencionado en la documentación del entorno) — así que la suite completa no corría
+en absoluto hasta apuntar `launchOptions.executablePath` a ese binario (config local,
+nunca commiteada). Con chromium real: **34 pasan, 9 rojas, 2 skipped** (duel×2,
+gamification 10/10, oauth×3, onboarding×2, quiz «10 preguntas de estudio»). Las 9 se
+diagnosticaron una por una, cada causa distinta de lo que parecía a simple vista:
+
+- **duel×2**: no es 32.4. El registro directo por API del oponente nunca mandaba
+  `age_confirmed` (COPPA, fila 19.11/21.3) — `age_confirmed: bool = False` por defecto en
+  `UserCreate`, así que el registro devolvía 400 antes de llegar a nada del duelo. Bug
+  del propio test, preexistente a esta sesión (el guardián de edad se añadió después de
+  escribir `duel.spec.ts` y nadie volvió a tocar ese fichero). Arreglado: `age_confirmed: true`
+  en los dos payloads.
+- **onboarding×2**: mismo defecto, otro sitio — los dos registros manuales de
+  `onboarding.spec.ts` (no pasan por el helper `registerUser`, que sí marca la casilla)
+  tampoco marcaban «Confirmo que tengo 13 años o más». Arreglado: `.check()` añadido a
+  los dos.
+- **gamification y quiz «10 preguntas de estudio»**: esta sí es 32.4, y sí es una
+  regresión real de esta sesión, no del test. El comentario del propio backend
+  (`quiz.py:366-369`) ya avisaba: «el frontend necesita distinguir sin preguntas de
+  faltó abrir la lección... sin esto pool se perdía en cuanto no había skill_id/question
+  que devolver» — el backend calcula y devuelve `selection_reason.pool: "needs_lesson"`
+  para exactamente este caso, pero nadie terminó de conectarlo. Dos huecos, uno en cada
+  extremo: (1) `QuizScreen.tsx` guardaba `selectionReason` en estado pero nunca lo leía
+  al decidir qué pantalla vacía mostrar — siempre el genérico «Sin preguntas
+  disponibles», sin CTA; (2) peor, el propio `useEffect` que arma la respuesta ponía
+  `error` a ese genérico en cuanto `question` salía `null`, y la rama `if (error)` va
+  ANTES que la rama `if (!question)` en los returns tempranos — así que aunque se
+  arreglara (1), la rama nueva nunca se alcanzaba, tapada por la vieja. Arreglado: (1)
+  `QuizScreen.tsx` ahora distingue `selection_reason.pool === 'needs_lesson'` y muestra
+  un CTA «Ir a las lecciones» (`handleGoToLesson` → `setScreen('tracks')`) en vez del
+  callejón sin salida; (2) se quitó el `setError` redundante del `.then()` — `error` era
+  y debe ser solo para fallos de red de verdad, el `.catch()` ya lo cubre. Claves i18n
+  nuevas ES/EN: `quiz.needsLessonMessage`, `quiz.needsLessonAction`,
+  `quiz.reason.needs_lesson` (esta última ya la pedía un badge existente que también
+  salía sin traducir). Los tests de `gamification.spec.ts`/`quiz.spec.ts` se arreglaron
+  aparte, marcando la lección vista antes de arrancar el quiz (`markLessonSeen`, helper
+  nuevo en `helpers.ts` — `GET /lessons/{skillId}`, el mismo efecto lateral que usa
+  `LessonScreen`), y `registerAndCompleteAQuiz` (compartido por ambos `duel.spec.ts`) lo
+  incorpora también. El de onboarding (título: «landing → first answered question in
+  <60s») se dejó **sin el atajo** a propósito — reescrito para seguir el camino real
+  post-32.4 (Home → «Sin preguntas» con el CTA nuevo → Tracks → expandir el módulo 1
+  (`openModule` empieza en `null`, no hay ninguno abierto por defecto) → «Aprender» →
+  lección → cerrar → Inicio → Estudiar ahora), validando el CTA nuevo de punta a punta
+  en vez de esconder el hueco que el propio test estaba señalando.
+- **oauth×3**: `page.waitForLoadState('networkidle')` sobre `/` (no sobre `/auth`, que sí
+  funcionaba) nunca resolvía — colgaba hasta el timeout de 60 s de la suite. Causa exacta
+  sin fijar; las aserciones de después ya esperan por su cuenta al elemento real, así que
+  se cambió a `domcontentloaded` en los tres sitios que fallaban (no en los que ya
+  pasaban, para no tocar lo que funciona) sin perder cobertura.
+
+Verificación final: full e2e (`playwright.local.config.ts`, 45 specs) **43 pasan, 2
+skipped, 0 rojas**; frontend `vitest run` **263/263**; `tsc -b` y `oxlint` de los
+ficheros tocados, limpios. Backend no se tocó en esta parte — el fix es enteramente
+frontend (`QuizScreen.tsx`, i18n) más los 5 e2e specs.
+
+Al pasear las 13 pantallas con capturas reales sí apareció un bug de estilo genuino que
+ninguna guarda anterior detectaba: `ForgotPasswordPage.tsx` importaba
+`AuthScreen.module.css` pero el `<input>` no llevaba ningún `className` (ni siquiera uno
+roto — directamente ninguno) y el botón «Volver» era estilo inline en vez de
+`styles.forgotLink`, así que salía sin marca, sin tarjeta, con controles nativos del
+navegador — el mismo defecto visual que 34.1 dice haber arreglado, pero en una pantalla
+que la guarda estática no puede ver (comprueba que `styles.x` apunte a una clase que
+existe, no que un elemento lleve `className` siquiera). Arreglado: input con
+`styles.field`/`styles.label`/`styles.input`, cabecera de marca (`styles.brand`) igual
+que `AuthScreen`, «Volver» con `styles.forgotLink`. Test nuevo
+`forgotPasswordPage.styled.test.tsx` (3 casos), mutado contra el `.tsx` original antes
+del arreglo → las 3 en rojo por `className` vacío; restaurado → verde. Suite de
+vitest completa tras el arreglo: **263/263**; `tsc -b` y `oxlint` del fichero, limpios.
+
+## 2026-09-28, misma sesión — 17.14 (backend RevenueCat), y un falso "204 tests rotos"
+que resultó ser una regresión real de 39.35
+
+**17.14 (compras dentro de la app), mitad backend:** `POST /billing/revenuecat/webhook`
+mismo patrón que el de Stripe (`billing.py`) pero autenticado con el header
+`Authorization` que configura el dashboard de RevenueCat, no HMAC — verificado en vivo
+con `WebFetch`+`WebSearch` cruzados contra la documentación pública de RevenueCat
+(2026-09-27), no solo memoria de entrenamiento, tras una contradicción entre dos fetches
+seguidos (uno dijo HMAC por defecto, el otro Authorization) que obligó a una tercera
+fuente para desempatar. `app_user_id` de RevenueCat = `user.id` propio, fijado al
+configurar el SDK del cliente — sin tabla de mapeo, a diferencia del `stripe_customer_id`
+de Stripe. Contrato compartido con Stripe: mismos campos de entitlement
+(`subscription_tier/status/expires_at/is_premium`), gateados igual por `user_meets_tier`
+(39.31); columna nueva `subscription_provider` para poder diagnosticar cuál de los dos
+rieles concedió el acceso vigente. Sin envolver esto en una interfaz `PaymentProvider`
+de Python aparte — el contrato compartido son esas columnas, una interfaz encima
+duplicaría eso sin añadir nada y arriesgaría el camino de Stripe en producción sin
+beneficio real (razón completa en el docstring de la migración `20260927_iap_provider`).
+El guardián docs-vs-código (nivel 1) atrapó de verdad un hueco real: migración y
+endpoint nuevos sin actualizar el HEAD de Alembic documentado (CLAUDE.md + invariantes
+del ledger) ni `API.md` — `scripts/check_api_docs.py` señaló la línea exacta que
+faltaba, corregido en un commit aparte.
+
+**El hallazgo importante — un "fallo ambiental" que no lo era:** al levantar la app
+real para verificar 34.1 (ver entrada anterior), y llegar a correr la
+suite backend entera por primera vez desde entonces, aparecieron **204 tests rotos**
+(`RuntimeError: Event loop is closed`), en ficheros completamente ajenos a esta sesión
+(`test_admin.py`, `test_streak_shop.py`, `test_onboarding_profile.py`...). La suite
+había salido limpia 4 veces ese mismo día (12:36, 14:57, 18:18, 20:46) antes de montar
+Postgres+Redis locales sin Docker para el trabajo de 34.1, así que el sospechoso obvio
+era contaminación entre procesos (dos corridas de pytest a la vez contra el mismo
+Redis). Se descartó metódicamente: (1) maté todo proceso pytest/uvicorn compitiendo y
+reproduje igual en solitario; (2) reinicié Redis desde cero (`SHUTDOWN NOSAVE` +
+arranque limpio) y reproduje igual; (3) aislé un solo fichero pequeño
+(`test_admin.py`, 26 tests) y los mismos 13 fallaron siempre, no al azar. Eso apuntaba
+a un bug real, no a una casualidad de contenedor. La causa: `RedisRateLimiter.is_allowed`
+(`app/core/rate_limiter.py`) solo capturaba `redis.RedisError` para caer al limitador en
+memoria — el mismo mecanismo que la fila **39.35** (ya DONE) añadió tras el incidente de
+producción del 2026-09-26/27 donde `REDIS_URL` apuntaba a un Redis inexistente y el
+login se quedó sin límite. Pero "Event loop is closed" es un `RuntimeError` liso, de
+asyncio, por debajo de la jerarquía de excepciones de `redis-py`: se colaba sin capturar
+y tumbaba la petición entera en vez de degradar, que es exactamente lo que 39.35 quiso
+evitar, solo que por una puerta distinta. Arreglo de una línea (`except (redis.RedisError,
+RuntimeError, OSError)`), mutado antes de aplicar (`tests/test_rate_limiter.py` nuevo
+caso, con un mock `side_effect=RuntimeError`: rojo contra el código original, verde tras
+el arreglo). Confirmado que resuelve el síntoma real, no solo el mock: `test_admin.py`
+13/26 → 26/26; suite backend entera (`tests/ --ignore=tests/content`) **204 fallos → 0**,
+**1315 passed, 3 skipped** en 43 min. Verificador adversario (Haiku, protocolo §7)
+**CONFIRMADA**: reprodujo el mutado de forma independiente (checkout del commit padre,
+mismo test en rojo; checkout del commit, verde) y volvió a correr `test_admin.py` (26/26),
+`test_billing.py` (10/10) y `test_revenuecat_webhook.py` (11/11) por su cuenta, dejando
+el repo limpio al terminar.
+
+La lección, otra vez: lo que parece "el entorno se portó mal" merece la misma
+disciplina de causa raíz que cualquier otro fallo — descartar la explicación cómoda
+(contaminación entre procesos) exigió tres pasos de aislamiento antes de encontrar el
+bug real, y el bug real resultó ser una regresión de una fila que ya se creía cerrada.
+
+## 2026-09-28, misma sesión — 37.1 destapa un patrón de contenido: lección y quiz
+desalineados en toda la biblioteca, no solo en track08
+
+37.1 pedía re-auditar 19 "lecciones cortas" de track08. No eran cortas (1085-1850
+caracteres en `body_es`, comparable a track01: 1209-1575). Pero al contrastarlas en
+vivo contra su propia fuente citada aparecieron 3 defectos reales — uno solo tras
+que un verificador adversario refutara mi primer intento (`l080403`: planes de
+soporte AWS ya retirados, sustituidos por Business Support+/Enterprise
+Support/Unified Operations el 2027-01-01) — y, siguiendo el mismo hilo, hasta
+que encontré el patrón real: la **lección** de una skill y el **banco de preguntas**
+de esa misma skill, escritos por separado, enseñando cosas distintas. `l080102`
+decía "cinco pilares" del Well-Architected Framework sin Sostenibilidad (pilar
+oficial desde 2021) mientras `q080102001`/`002` ya preguntaban por seis. `l080307`
+nunca mencionaba Amazon Bedrock mientras `q080307008`/`009` preguntan
+específicamente por él. `l080203` no cubría AWS IAM Identity Center ni las SCP de
+Organizations que `q080203010`/`017` testean. `l080302` decía "400+" ubicaciones
+de CloudFront cuando la cifra actual de AWS es 750+.
+
+Hasta aquí, arreglos puntuales encontrados leyendo lección por lección. El paso
+que cambió la escala fue escribir `scripts/audit_lesson_quiz_alignment.py`: cruza
+cada pregunta "¿qué es/son X?" del banco contra el cuerpo de la lección de su
+mismo `skill_id`, y marca los servicios con nombre que el quiz pregunta pero la
+lección nunca menciona. Corrido sobre las 723 lecciones del repo (no solo
+track08): **97 instancias marcadas**, repartidas en `track08` (20, de las que 5
+ya se arreglaron a mano y quedan documentadas en el PR), `track10` (19),
+`track23` (14), `track11` (13), `track44` (11), `track22` (9), `track43` (6),
+`track46` (3), `track45` (2). Es un heurístico con falsos positivos (nombres
+solo en una opción incorrecta, servicios bajo otro nombre) — cada fila que marca
+hay que leerla antes de decidir que es un defecto real, que es exactamente lo
+que descartó varios falsos positivos al revisar track08 a mano.
+
+No se intentó arreglar el resto: parchear ~90 instancias más repartidas en 8
+tracks bajo presión de turno es el mismo tipo de trabajo apresurado que
+probablemente generó el patrón — el volumen pide el flujo de autoría en bloque
+del proyecto (Haiku escritor + revisor adversario Sonnet, ADR-52), no ediciones
+sueltas. El hallazgo y la herramienta quedan documentados aquí y en
+`scripts/audit_lesson_quiz_alignment.py` para que la siguiente sesión que abra
+esta cola no tenga que redescubrir el método.
+
+## 2026-09-28, misma sesión — verificador adversario refuta dos afirmaciones de 34.1/34.3, ambas corregidas
+
+El verificador adversario obligatorio (protocolo §7), corrido antes de dar 34.3
+por DONE, encontró dos defectos reales, no cosméticos:
+
+1. **`.langToggle` (QuizScreen.module.css) seguía midiendo ~18px de alto** en
+   Chromium real después de "arreglado" en `62ba218`. El arreglo de esa ronda
+   solo puso `min-width: 44px`; nunca tocó la altura, y el `line-height: normal`
+   del user-agent en un `<button>` dentro de un flex con `align-items: center`
+   no la fuerza a 44px por sí solo. Confirmado por el subagente renderizando el
+   CSS exacto, y reproducido por mí mismo antes de actuar.
+2. **Las capturas de 34.1 y 34.3 no se ven en el PR.** `![alt](https://raw.githubusercontent.com/...)`
+   devuelve 404 (`curl -sI`, verificado con mis propias manos) para un repo
+   privado — GitHub no sirve `raw.githubusercontent.com` sin la sesión
+   autenticada que un `<img>` en un comentario no lleva. Probé dos variantes más
+   (`github.com/.../raw/...` y `.../blob/...?raw=true`) y ambas dieron 404
+   también. No hay ninguna herramienta MCP en esta sesión que suba un adjunto a
+   un comentario de PR (el único mecanismo que GitHub sí soporta es
+   arrastrar-soltar en el editor web). Las capturas existen en el repo
+   (`docs/ui-snapshots/34.1/`, `docs/ui-snapshots/34.3/`) pero solo son
+   enlazables, no incrustables, desde aquí.
+
+Corrección aplicada:
+
+- `.langToggle` ahora tiene `display: inline-flex; align-items: center;
+  justify-content: center; min-height: 44px` además de `min-width: 44px`.
+- El audit de objetivos táctiles, que las rondas anteriores escribían como
+  `e2e/_zzz-touch-targets.spec.ts` y borraban tras correrlo (evidencia no
+  reproducible, señalado explícitamente por el verificador como una violación
+  de "evidencia ejecutable o no pasó"), ahora vive **committeado** en
+  `frontend/e2e/touchTargets.spec.ts`: mide todo `button, a[href], input,
+  select, textarea, [role="button"]` visible a 390px en Auth/Tracks/Lección/Quiz,
+  con dos exenciones documentadas en el propio test (WCAG 2.5.5 "inline" para
+  los términos de `GlossaryText`, y checkbox-dentro-de-`<label>` para la
+  casilla de edad de `AuthScreen`). Dos corridas limpias, 0 objetivos <44px.
+- `docs/AUTONOMOUS_STATE.md`: 34.3 vuelve a **PARCIAL** (el foco visible sigue
+  en pie, verificado; lo táctil ya está arreglado y verificado, pero la
+  captura-en-el-PR no se puede dar por hecha). 34.1 se queda en DONE — su
+  criterio duro (guarda 276→0, e2e 44/45) es independiente de las capturas —
+  pero el texto ya no afirma algo falso sobre ellas.
+
+No se encontró ningún método de incrustar imágenes en un comentario de PR/issue
+de un repo privado de GitHub sin usar el editor web. Queda como límite conocido,
+no como tarea pendiente: los enlaces directos a las capturas en el repo
+(clicables desde el PR, aunque no inline) son la evidencia visual disponible
+mientras eso siga siendo así.
+
+## 2026-09-29 — 39.27: 10 de 12 casi-duplicados reescritos, y un bug real en el propio checker
+
+`check_originality.py` (39.7) marcaba 12 parejas de preguntas casi-duplicadas
+como deuda conocida en `KNOWN`. Reescribí 10 con contenido genuinamente
+distinto, verificado en Python real antes de escribirlo:
+
+- **track01** (3): el intercambio de dos variables (`a, b = b, a`) duplicado
+  entre `sk010101` y `sk010602` → el segundo ahora rota tres variables. Una
+  comprensión de listas duplicada entre control de flujo y listas → el de
+  control de flujo ahora usa `continue` en un bucle acumulador. El formato
+  `.2f` duplicado dos veces en la misma skill → el segundo ahora prueba el
+  separador de millares `:,`.
+- **track09** (5): las cinco eran la misma pregunta MC repetida para lista y
+  tupla con el mismo operador (`x[0]`, `len(x)`, `2 in x`, `x[-1]`, y
+  `5==5`/`5<=5` que casualmente evalúan igual). Reescritas para probar algo
+  realmente específico de tuplas: inmutabilidad (`x[0]=5` → `TypeError`),
+  concatenación (`(1,2)+(3,)`), el gotcha de `(1)` no ser tupla sin la coma,
+  `.count()`, y `5<=3` (un caso False, no solo True).
+- **track41** (2 de 4): dos preguntas con exactamente el mismo `code` en el
+  mismo módulo — reescritas con código real distinto (`'ABC' in 'abcde'` en
+  vez de repetir `'abc' in 'abcde'`; `map(len, ...)` en vez de repetir
+  `map(int, ...)`).
+
+Las otras 2 de las 12 nunca fueron duplicados de verdad. `check_originality.py`
+solo compara `question_es`, y para preguntas `code_output` (track41, track09)
+ese campo suele ser un enunciado molde genérico («¿Cuál es la salida usando
+módulos estándar?») que se repite igual para código completamente distinto,
+guardado aparte en un campo `code` que la función de similitud nunca lee.
+`q410101_069` (`dict.get('x')`) y `q410103_067` (`class A: __init__`) no
+tienen nada en común salvo compartir ese molde — comparando el `code` real la
+similitud cae de 1.0 a 0.2, muy por debajo del umbral 0.8.
+
+Escribí y verifiqué el arreglo (`_content_text()` usa `code`/`code_es` cuando
+existen en vez del molde) — y correrlo sobre el banco completo destapó **16
+parejas de duplicados reales nuevas**, invisibles hasta ahora exactamente por
+este punto ciego: 13 en track41 (mismo código, mismo módulo, dos IDs) y 3 en
+track12 (un trío de preguntas SQL con el mismo `code_es`). No los arreglé —
+16 reescrituras cuidadosas de golpe es el mismo tipo de prisa que ya generó
+el patrón de 37.1, y el propio comentario de `KNOWN` en el script es
+explícito: "nunca se añade una nueva" fila solo para tapar un hallazgo.
+Revertí el cambio del checker (queda documentado, no committeado) y anoté
+el hallazgo completo como fila nueva del ledger, 39.40, para una pasada
+dedicada — con el método ya resuelto, no hay que redescubrirlo.
+
+Un efecto colateral real: al arreglar `q410102_075` (cambié su `code` de
+`'abc' in 'abcde'` a `'ABC' in 'abcde'`, con `False` en vez de `True`), el
+checker sin arreglar volvió a marcarlo — esta vez contra una pregunta
+totalmente distinta de otro módulo (`q410101_068`) que por casualidad
+comparte el mismo enunciado molde Y la misma respuesta `False`. No es deuda
+de contenido nueva: es la misma limitación del checker, manifestándose de
+nuevo. Documentado en `KNOWN` con un comentario explícito en vez de revertir
+un arreglo de contenido real para evitar el síntoma.
+
+`tests/content`: 70.277 passed. `check_question_bank.py` marcó de paso una
+regresión real en la guarda de diversidad (`track01: opciones de una palabra
+41.4% empeora, base 41.3%`) — mi primera versión del arreglo de `continue`
+usaba números sueltos como opciones (`"7"`, `"6"`, `"10"`), todas de una sola
+palabra, cuando el original tenía listas entre corchetes (`"[1, 2, 3, 4]"`,
+4 palabras al partir por espacios). Reescrito para que la salida sea una
+lista construida con `.append()`, no un entero — mismo perfil de opciones
+multi-palabra que el original, guarda de nuevo en verde.
+
+## 2026-09-29 — 39.40/39.41: arreglando 3 SQL casi-duplicados destapó 19 preguntas que nadie podía aprobar
+
+Arreglando 3 de las 16 parejas de 39.40 (track12, `q120303sql001`/`q120304sql001`/`q120304sql003`)
+salió un bug más gordo de lo que parecía. Las tres preguntas comparten exactamente el mismo dataset
+(usuarios y departamentos con coincidencia perfecta en ambos lados) y solo cambian el JOIN pedido
+(INNER/LEFT/FULL OUTER) — pero con ese dataset **los tres tipos de JOIN dan la misma salida**,
+porque no hay ninguna fila huérfana en ninguna tabla. No es solo un duplicado de contenido: la
+pregunta no puede distinguir si el alumno entendió la diferencia entre los tres JOIN, porque
+cualquiera de los tres pasa la corrección.
+
+Arreglo: añadí una fila sin coincidencia en cada lado (`Frank` con `dept_id=99` que no existe, y
+un departamento `Legal` sin ningún empleado), verificado directamente contra el runtime real del
+alumno — no contra suposiciones. `frontend/public/sql-worker.js` corre sql.js (SQLite en WASM) en
+un Web Worker del navegador; monté un servidor HTTP local y lo ataqué con Playwright igual que a
+cualquier otra parte de la UI, mandándole el SQL exacto y leyendo la salida real.
+
+Ahí salió el hallazgo grande: el test que verifica estas preguntas (`test_sql_exec_questions.py`)
+ejecuta el SQL con `sqlite3` de Python y compara la salida con `correct_answer_es/en` usando
+`str()` de Python — pero el alumno nunca ve eso. Ve lo que imprime `sql-worker.js`, que usa
+`String()` de JavaScript. Los dos difieren en dos casos reales:
+
+- Un `NULL` de SQL: Python `str(None)` da `"None"`, JavaScript `String(null)` da `"null"`.
+- Un número `REAL` con valor entero: Python `str(50000.0)` da `"50000.0"`, JavaScript
+  `String(50000.0)` da `"50000"` (JS no distingue int/float internamente).
+
+El test nunca lo había pillado porque, hasta ahora, ninguna pregunta `sql_exec` tenía un `NULL` en
+su salida esperada. Con las tres preguntas nuevas de esta fila, sí — y el test se puso en rojo,
+correctamente. Pero al arreglar el test para que compare de verdad como lo hace el navegador
+(`_js_str()`, verificado línea por línea contra el worker real con varios casos: enteros,
+decimales, `NULL`, hasta `1e20`), salieron **19 preguntas preexistentes más** con el mismo bug —
+16 con el problema de `X.0` (en track04 y track12) y 3 con el de `None`/`null` — que llevaban
+quién sabe cuánto tiempo en el banco con una `correct_answer` que **ningún alumno con SQL
+correcto podía igualar nunca**, porque el texto guardado nunca coincidía con lo que el navegador
+imprime de verdad.
+
+Las 19 preguntas se corrigieron con la salida real verificada contra el worker (no adivinada,
+no reformateada a mano): 38 campos `correct_answer_es`/`correct_answer_en` en 5 ficheros. De paso,
+`q120304sql003` (la pregunta de FULL OUTER JOIN) tenía además el `fill` de referencia mal en
+`sql_exec_reference_fills.json` — decía `LEFT JOIN`, que es justo lo que hizo que el bug de datos
+original (los tres JOIN dando lo mismo) pasara desapercibido: ni siquiera el propio test de
+referencia usaba el JOIN que la pregunta dice enseñar.
+
+`tests/content`: 70.277 passed, incluida la suite entera de `sql_exec` ahora en verde de verdad.
+Quedan 13 de las 16 parejas de 39.40 (todas en track41) sin tocar — documentado, no apresurado.
+
+## 2026-09-29 — 39.40 cerrada: las 13 parejas de track41 reescritas y el checker fusionado
+
+Terminando 39.40 (documentado unas horas antes en esta misma sesión): las 13 parejas de
+track41 que quedaban tenían un patrón distinto al de track12. No eran solo código idéntico
+entre dos preguntas — varias tenían código que **no encajaba con la habilidad de ninguna de
+las dos preguntas del par**. Por ejemplo, dos preguntas etiquetadas `sk410103` («Paquetes y
+subpaquetes») y `sk410104` («Gestión de paquetes con pip») compartían literalmente
+`d = {'x': 1}; print(d.get('x'))` — un ejemplo de diccionario que no tiene nada que ver ni
+con paquetes ni con pip.
+
+Antes de reescribir nada, mapeé los 16 `skill_id` de track41 (mod4101-4104) contra sus
+lecciones (`content/lessons/track41/l4101*.json`...) para saber qué debía enseñar cada
+pregunta de verdad. Encontré que de las 26 preguntas implicadas en las 13 parejas, 17
+necesitaban código nuevo — no solo el lado duplicado, sino a veces las dos, cuando ninguna
+encajaba con su propia skill. Cada una se escribió y se verificó ejecutando el Python real
+antes de guardarla: herencia con `Base`/`Child`, polimorfismo por duck typing (`Cat`/`Cow`
+sin clase común), un método especial `__eq__`, una clausura con `make_multiplier`, procesar
+un fichero simulado con `io.StringIO` (sin acceso real al sistema de ficheros, que el
+entorno de ejecución del alumno no tiene), y dos ejemplos distintos de `pip` (parsear un
+`requirements.txt` y separar nombre/versión de una dependencia).
+
+Un despiste real durante la reescritura: usé la cadena `'sin unidades'` (español) como
+mensaje de una excepción personalizada dentro del campo `code`, que no tiene versión ES/EN
+separada — se cuela igual en `options_en`. Lo cazó una guarda ya existente
+(`test_en_options_language.py`, un trinquete que no deja crecer el número de preguntas con
+español en `options_en`) al correr la suite completa antes de dar el trabajo por bueno.
+Corregido a `'out of stock'`.
+
+Con las 16 parejas (3 de track12 + 13 de track41) reescritas y verificadas, fusioné por fin
+el arreglo del propio `check_originality.py` que llevaba unas horas escrito y probado pero
+sin enviar (`_content_text()`, que compara `code`/`code_es` en vez del molde genérico de
+`question_es`). Con las 16 ya arregladas, correrlo sobre el banco completo da **0 parejas
+casi-duplicadas** — ni siquiera las 3 excepciones que había anotado en `KNOWN` por la
+colisión de molde genérico siguen apareciendo, así que `KNOWN` queda vacío. Guarda mutada
+en rojo y verde antes de confiar en ella.
+
+`tests/content`: 70.277 passed. Con esto, 39.40 pasa de PARCIAL a DONE.
+
+## 2026-09-29, misma sesión — 39.42: los 6 "en AWS SageMaker" de track43 eran la punta de un molde de relleno de 45 preguntas
+
+Siguiente en el ledger tras 39.40/39.41: los 6 avisos de track43 en
+`scripts/audit_lesson_quiz_alignment.py` (39.39), todos con la misma forma — una pregunta
+sobre un tema real (AWS Glue, data lake en S3, EMR, validación de datos, partición) con la
+coletilla "en AWS SageMaker" pegada al final sin venir a cuento («¿Para qué se utiliza
+principalmente AWS Glue en AWS SageMaker?»). Confirmé contra el título de cada lección
+(`l430101`-`l430105`) que el tema real SÍ se explica a fondo; el problema era solo la
+coletilla. Quité "en AWS SageMaker"/"in AWS SageMaker" de las 6 preguntas
+(`content/questions/track43_aws_mla/mod4301.json`) y `audit_lesson_quiz_alignment.py
+track43` pasó de 6 avisos a 0.
+
+Pero `check_question_bank.py`/`check_originality.py` (39.40, recién fusionado) destaparon
+algo peor: 5 de las 6 preguntas «arregladas» quedaron **100% idénticas** a una pregunta base
+ya existente en el mismo skill (mismo enunciado, misma respuesta, solo el orden de las
+opciones cambiaba). No era una coincidencia — al mirar el fichero entero por skill quedó
+claro que `mod4301.json` seguía un molde: por cada skill, las preguntas `001-005` eran las
+reales, y `006-010`/`011-015` eran las mismas 5 preguntas repetidas con una coletilla
+pegada («en AWS SageMaker» o «para ingeniería de datos en la nube»). La coletilla no era
+solo un defecto de redacción: bajaba la similitud de trigramas de Jaccard justo por debajo
+del umbral 0.8 de `check_originality.py`, así que el relleno pasaba invisible al guardián
+hasta que yo mismo, al quitar la coletilla de los 6 originales, empujé la similitud a 1.0 y
+disparé la alarma. De 75 preguntas en el fichero, 45 eran este relleno molde (9-10 por
+skill); solo ~30 enseñaban algo distinto.
+
+Arreglo: borré las 45, dejando 6 por skill (5 base + 1 pregunta de verdad distinta que ya
+existía en el bloque de relleno de 4 de los 5 skills — ninguna coincidencia, esas sí
+enseñaban algo nuevo). El quinto skill (`sk430105`, partición de datos) no tenía ninguna
+pregunta de reserva genuina entre su relleno, así que quedaba en 5 tras borrar, por debajo
+del suelo `MIN_PER_SKILL = 6` de `check_question_bank.py`. Escribí una pregunta nueva sobre
+un caso real que ya estaba documentado en `content/lessons/track43/l430105.json` (mayúsculas
+en la clave de partición, p. ej. `userId` en vez de `userid`, rompen el descubrimiento de
+`MSCK REPAIR TABLE` en Athena porque el estilo Hive exige minúsculas) en vez de inventar un
+hecho de AWS sin verificar.
+
+Verificación: `audit_lesson_quiz_alignment.py track43` → 0; `check_originality.py` → 0
+parejas casi-duplicadas en todo el banco; `check_question_bank.py` → PASS; `tests/content`
+→ 70.027 passed (baja de 70.277 porque son 45 preguntas menos). `check_docs.py` falló las 4
+cifras que dependen del total de preguntas (10.989→10.944): `ARCHITECTURE.md`,
+`CATALOGO_MAESTRO.md`, `frontend/src/lib/catalog.ts` y la fila `Contenido` del propio
+ledger, las cuatro actualizadas y verificadas en verde.
+
+Alcance: esto cierra 39.39 solo para track43 (6 de los 96 avisos originales). Los otros 7
+tracks con avisos de `audit_lesson_quiz_alignment.py` no se han mirado — no hay motivo para
+asumir que comparten este mismo patrón de relleno molde, pero tampoco se ha comprobado que
+no lo compartan.
+
+## 2026-09-29, misma sesión — 39.15/37.15/39.33: NIST citado retirado, bug de regex en check_urls.py y 6 "Todas las anteriores" imposibles en track10
+
+Tras cerrar 39.42 (track43), seguí el mismo tipo de verificación en vivo para otras 37.15
+(fuentes) y 39.33 (claves sospechosas), y cada una destapó algo real.
+
+**37.15**: `NIST SP 800-175B` (el documento original, no la Rev. 1) está retirado desde el
+2020-03-31 — confirmado en vivo con WebFetch, la propia página de NIST dice «Withdrawn...
+Superseded by SP 800-175B Rev. 1». 16 preguntas de `track13/mod1302.json` citaban la versión
+retirada; corregidas a la URL de la Rev. 1 (verificada 200 en vivo), la misma que ya usaba
+la lección `l420303` de track42. Al pasar `check_urls.py`/`check_content_sources.py` sobre
+todo el banco buscando más citas rotas, aparecieron 2 falsos «FALLOS» que eran un bug del
+propio checker: el regex de extracción cortaba `.../Cross-validation_(statistics)` en el
+primer paréntesis (la URL real termina en uno emparejado) y dejaba una coma pegada en
+`.../rfc793,` cuando dos citas comparten un mismo campo `source`. Las dos URLs limpias dan
+200 en vivo — el contenido nunca estuvo mal, solo el checker. `_clean()` nuevo en el script,
+verificado con los dos casos reales. El resto de 403/202 que aparecieron (GitHub, CISA, ISO,
+IEEE, Cisco, suricata.io) son bloqueos de bot confirmados con un navegador real (Playwright,
+incluido un "Robot Challenge Screen" auto-etiquetado en suricata.io), no citas rotas.
+
+**39.33**: el banco tiene 62 preguntas cuya respuesta correcta es «Todas las anteriores» o
+«Ambas son correctas» (52 en track10). Las revisé todas a mano — la mayoría son legítimas:
+preguntas de enumeración («qué estrategias de deployment existen») donde listar varias cosas
+compatibles sí es la respuesta correcta, no una combinación forzada de acciones alternativas.
+Pero 6 sí tenían un problema real, todas en track10 (AWS SAA-C03):
+
+- `q100202mc004`: pedía «latencia consistente en EBS» y dos de las cuatro opciones (gp3 con
+  IOPS provisionadas, io2 Block Express) son *tipos de volumen alternativos* — no se puede
+  usar los dos a la vez en el mismo volumen, así que «todas las anteriores» es imposible.
+  Verifiqué en vivo (WebSearch + AWS docs) que io2 Block Express es específicamente el que
+  AWS documenta como el de latencia más consistente frente a gp3 — reasigné `correct_index`
+  a esa opción.
+- `q100202mc013`: «usar un volumen grande» contradice directamente «striping en múltiples
+  volúmenes io2» — literalmente estrategias opuestas. Reasignado a striping, la técnica que
+  de verdad aprovecha tener varios volúmenes (coincide con la propia explicación).
+- `q100204mc012`: «Partition Key = UserID» sola y «Partition Key = UserID, Sort Key =
+  Timestamp» son dos esquemas de clave distintos e incompatibles para la misma tabla
+  DynamoDB — no pueden ser los dos el esquema real a la vez. Reasignado al esquema
+  compuesto, el diseño estándar de AWS para el patrón de acceso descrito.
+- `q100204mc008`: la opción decía «particionamiento CON hot keys distribuidas» — hot keys
+  siempre son un problema a evitar en DynamoDB, nunca una estrategia de escalado, y la propia
+  explicación de la pregunta ya decía «particionamiento SIN hot keys». Corregido el texto de
+  la opción para dejar de contradecir su propia explicación.
+- `q100201mc006` y `q100505mc003`: la opción «Both A and B» ocupaba ella misma la posición B,
+  autorreferencia sin sentido («B es B y A»). Reescrita para nombrar explícitamente lo que
+  combina (SSE-S3 + SSE-KMS; orquestación + coreografía), y en `q100505mc003` moví
+  `correct_index` a la opción ya inequívoca que decía lo mismo sin la autorreferencia.
+
+`tests/content` 70.027 passed en las tres rondas de esta sesión de trabajo sobre el banco;
+`check_question_bank.py`, `check_originality.py` (0 parejas) y `check_docs.py` en verde.
+
+## 2026-09-29, misma sesión — 39.33: `check_expl_key` en track13 destapó tres bloques de skill con más de la mitad de las claves mal
+
+Al probar `check_expl_key.py` en tracks de hechos (no de código, para contrastar con el 0/9
+de track01) sobre track13, con margen 0.20 en vez de 0.34 salieron 29 sospechosas solo en
+`mod1301.json`. Las primeras 6 que revisé a mano eran reales, y todas caían en la misma
+skill (`sk130104`, gobernanza). Repasé las 15 preguntas de esa skill una por una contra su
+propia explicación, no solo las que el heurístico marcaba, porque una respuesta incorrecta
+que por azar comparte vocabulario con la explicación no siempre dispara la alarma:
+
+- `q130104008` preguntaba qué significa RACI y **ninguna de las 4 opciones era la
+  correcta** — las cuatro eran expansiones inventadas («Registro de Acceso por
+  Credenciales Institucionalizadas»). Reescribí la opción marcada como correcta para que
+  dijera lo que la propia explicación ya explicaba (Responsable, Aprobador, Consultado,
+  Informado).
+- `q130104013` marcaba como correcto «conceder a los usuarios todos los permisos
+  posibles para mayor comodidad» como definición de "menor privilegio" — literalmente lo
+  contrario del principio que la pregunta dice enseñar.
+- `q130104010`, `q130104011`, `q130104012`, `q130104014`, `q130104015`, `q130104003`:
+  mismo patrón — `correct_index` señalaba una opción absurda o sin relación
+  ("separación de funciones" = "crear departamentos de TI"; una auditoría de seguridad =
+  "un proceso para despedir empleados") mientras la explicación de la propia pregunta
+  describía con detalle la opción correcta, ya presente en la lista, solo que en otra
+  posición. 8 de 15 preguntas de esa skill estaban mal — más de la mitad.
+
+Con un hallazgo así de concentrado, no me fié de que fuera un caso aislado: repasé
+`sk130204` (PKI/TLS, `mod1302.json`) y `sk130304` (WiFi, `mod1303.json`) completas, no solo
+lo que el heurístico marcaba. El mismo patrón exacto: 9 de 15 mal en cada una — un
+certificado X.509 definido como «un archivo de configuración de red», una Autoridad
+Certificadora como «un protocolo de comunicación entre navegadores», WPA3 como «solo
+funciona con dispositivos 5G», un WIDS como «cambiar automáticamente el tipo de cifrado
+WiFi». De paso, `q130204005` tenía el `skill_id` cambiado a `sk130104` por error (debía
+ser `sk130204`) — corregido también.
+
+26 preguntas en total (8+9+9), cada una verificada leyendo su propia explicación antes de
+tocar el `correct_index`, nunca inventando qué debería ser. Para no quedarme con la duda de
+si el patrón seguía en el resto del track, repasé `mod1304.json` (`sk130404`, CSP/CORS) y
+`mod1305.json` (gestión de vulnerabilidades) igual de a fondo: limpios, ningún caso más.
+
+`tests/content` 70.027 passed, `check_question_bank.py`, `check_originality.py` (0 parejas)
+y `check_docs.py` en verde después de las 26 correcciones.
+
+## 2026-09-29 — 37.1 cierra track08: los últimos 20 avisos de
+`audit_lesson_quiz_alignment.py` eran gaps reales, no ruido del heurístico
+
+Retomé la fila 37.1 donde la quedó la sesión anterior: «Falta: 6 lecciones». Corriendo
+`scripts/audit_lesson_quiz_alignment.py track08` de nuevo aparecieron 20 avisos en 19
+lecciones, no 6 — la cola no se había actualizado tras la última pasada. Antes de tocar
+ningún fichero verifiqué cada servicio contra la fuente real (WebFetch a las páginas
+`docs.aws.amazon.com/whitepapers/latest/aws-overview/*` que las propias preguntas ya
+citaban) para no inventar definiciones: Wavelength, Snow Family, Fargate, Compute
+Optimizer, MemoryDB, Cloud Map, Serverless Application Repository, Private 5G,
+Verified Access y Site-to-Site VPN coincidían palabra por palabra con la explicación de
+su pregunta, así que las añadí a la lección correspondiente citando la misma fuente.
+
+16 gaps reales confirmados y arreglados en 9 lecciones (`l080103` Snowball, `l080202`
+CloudWatch vs CloudTrail, `l080204` Network Firewall, `l080301` borde e híbrido,
+`l080303` Fargate + Compute Optimizer, `l080304` MemoryDB, `l080305` Site-to-Site VPN +
+Verified Access (de paso corregí «AWS API Gateway» → «Amazon API Gateway», el nombre
+real del servicio), `l080307` Kendra, `l080308` Cloud Map + SAR + Private 5G, `l080402`
+Price List API, `l080403` Trusted Advisor). Uno de los 20 avisos (`q080103003`, Amazon
+RDS) resultó ser un falso positivo del propio heurístico: «¿Qué **estrategia** es?»
+contiene la subcadena «qué es» sin ser una pregunta de definición — el script no usa
+límites de palabra. Documentado, no arreglado, porque no hay nada que arreglar.
+
+Añadir contenido rompió la guarda de longitud de lección (150-300 palabras) en 6 de las
+9 lecciones — la guarda lo cazó sola, sin que yo la mutara a propósito, justo lo que se
+espera de un test que vigila algo de verdad. Recorté relleno redundante que ya estaba
+en cada lección (frases que repetían la misma idea dos veces) para hacer sitio, nunca
+la explicación nueva de los servicios. Las 11 lecciones tocadas quedaron entre 197 y 300
+palabras por idioma.
+
+`scripts/audit_lesson_quiz_alignment.py track08` pasó de 20 avisos a 1 (el falso
+positivo documentado). `tests/content` completo (no un subconjunto): 70.027 passed, 1
+skipped, 21 xfailed. `scripts/content_qa/validate_lessons.py track08` y `check_docs.py`
+en verde. Quedan ~90 avisos repartidos en track10 (19), track23 (14), track11 (13),
+track44 (11), track22 (9), track43 (6), track46 (3), track45 (2) — mismo volumen que
+señaló la sesión anterior, sigue pidiendo el flujo de autoría en bloque (`Workflow`,
+ADR-52) en vez de ediciones sueltas.
+
+## 2026-09-29, misma sesión — track22 cerrado; track43/45/46 resultaron ya limpios
+
+Seguí con los tracks pequeños de la lista anterior. `track43` ya daba 0 avisos (limpiado
+sin querer por la poda de duplicados de `mod4301.json` en 39.33/39.39). `track45` (1
+aviso) y `track46` (3 avisos) resultaron falsos positivos: el heurístico exige la cadena
+literal de la pregunta ("Azure Language Service", "Azure VM", "Azure DB PostgreSQL") y la
+lección usa el nombre real del servicio con otra grafía ("Azure AI Language", "Azure
+Virtual Machines", "Azure Database for PostgreSQL") — cubierto de sobra, solo cambia la
+marca. Documentado, no tocado.
+
+`track22` sí tenía 6 gaps reales de 9 avisos, verificados uno por uno contra
+`learn.microsoft.com` antes de escribir nada (Spot VMs: hasta 90 % de ahorro pero
+desalojo con 30 s de aviso, confirmado en la página oficial de precios porque la de
+`spot-vms` no daba la cifra; ExpressRoute: circuito dedicado sin pasar por internet
+público; Azure Firewall: firewall con estado, L3-L7 e inteligencia de amenazas — dejé
+fuera DNAT/SNAT porque la página que leí no lo confirmaba explícitamente y no quise
+citar de memoria; blob versioning; Azure SQL Managed Instance; Microsoft Entra Connect
+Health). Arreglados en `l220101`, `l220201`, `l220301`, `l220302` y `l220401`.
+
+Un aviso quedó **a propósito sin arreglar**: `q220302011` afirma que el tamaño máximo de
+Azure SQL Single Database es 2 TB. La página de límites vCore que consulté muestra 128 TB
+para General Purpose/Hyperscale hoy — 2 TB solo aparece como techo de una configuración
+serverless concreta, no como límite general. No tenía certeza de qué cifra exacta
+corresponde a qué configuración, así que no escribí un número en la lección para no
+propagar un dato que podría estar desactualizado; queda anotado en el ledger (37.1) para
+que quien lo retome verifique la cifra correcta antes de tocar la pregunta o la lección.
+
+Al escribir la primera versión de la frase de ExpressRoute cometí un despiste — escribí
+"AWS ExpressRoute (Azure ExpressRoute)" en una lección de Azure — y lo corregí antes de
+seguir, releyendo cada frase nueva después de escribirla en vez de asumir que salió bien.
+
+`audit_lesson_quiz_alignment.py track22`: 9 avisos → 6 (todos falsos positivos de marca
+salvo el `q220302011` documentado arriba). `tests/content` completo: 70.027 passed, 1
+skipped, 21 xfailed. `validate_lessons.py track22` y `check_docs.py` en verde. Quedan
+~57 avisos en track10 (19), track23 (14), track11 (13) y track44 (11).
+
+## 2026-09-29, misma sesión — track11 cerrado: 8 gaps reales, 5 falsos positivos más
+
+`track11` (IA/ML en AWS) daba 13 avisos. De ellos, 5 ya estaban cubiertos y solo fallaban
+por el mismo patrón de marca visto en track08/22: la pregunta dice "AWS CodeWhisperer" o
+"AWS SageMaker" pero el nombre oficial —y el que usa la lección— es "Amazon CodeWhisperer"
+/ "Amazon SageMaker"; "Ground Truth" también aparecía ya en `l110201` sin el prefijo
+"SageMaker" delante.
+
+Los 8 gaps reales sí eran huecos de contenido genuinos, verificados contra
+`aws.amazon.com/textract/` antes de escribir nada (Textract va más allá del OCR simple y
+se distingue de Rekognition; Lookout for Metrics detecta anomalías en series temporales)
+y, para el resto (rol de Lambda y Step Functions en orquestación de agentes, LoRA en
+SageMaker, few-shot en Bedrock, AWS Config en gobernanza de IA, SageMaker Autopilot),
+contrastando cada frase nueva contra la propia explicación ya existente de su pregunta
+—nunca inventando un dato nuevo sin esa base. Arreglados en `l110203`, `l110301`,
+`l110302`, `l110304` y `l110305`.
+
+`audit_lesson_quiz_alignment.py track11`: 13 avisos → 6, los 6 confirmados falsos
+positivos de marca (0 gaps reales pendientes). `tests/content` completo: 70.027 passed,
+1 skipped, 21 xfailed. `validate_lessons.py track11` y `check_docs.py` en verde. Quedan
+~44 avisos en track10 (19), track23 (14) y track44 (11).
+
+## 2026-09-29, misma sesión — track44 destapa un bug distinto: skill_id de la
+pregunta y tema de la lección sin ninguna relación
+
+`track44` (AZ-900) daba 11 avisos. 6 eran gaps reales de una frase (Azure Policy, App
+Service, File Shares, Azure CDN), arreglados en `l440104`, `l440201`, `l440203` y
+`l440205` tras verificar cada uno contra Microsoft Learn o contra la propia explicación
+de la pregunta. `l440301` y `l440305` ya cubrían "Monitor" y "Management Tools" sin el
+prefijo "Azure" exacto — falsos positivos de marca, igual que en track08/22/11.
+
+Los otros 2 no se pudieron arreglar con una frase, y esta vez no era un problema de
+marca ni de heurístico: `l440202` ("Redes de Azure: VNet, subredes y NSG") tiene
+asignadas por `skill_id` dos preguntas sobre Azure SQL Database y Cosmos DB —bases de
+datos, no redes— y `l440204` ("Microsoft Entra ID y Acceso Condicional") tiene
+asignadas preguntas sobre Virtual Network y Load Balancer —redes, no identidad—. No es
+que la lección omita mencionar el servicio de pasada: el servicio no tiene nada que
+ver con el tema de la lección. Forzar una frase sobre Cosmos DB en una lección de NSG
+habría sido relleno incoherente, el mismo tipo de parche superficial que este barrido
+existe para evitar. Anotado en el ledger (37.1) en vez de parcheado: corregir esto
+significa mover esas preguntas a la lección correcta o escribir contenido nuevo, no
+añadir una frase — trabajo de `Workflow` (ADR-52), no de esta sesión.
+
+`audit_lesson_quiz_alignment.py track44`: 11 avisos → 7 (5 falsos positivos de marca +
+2 el bug de skill_id/lección documentado arriba). `tests/content` completo: 70.027
+passed, 1 skipped, 21 xfailed. `validate_lessons.py track44` y `check_docs.py` en
+verde. Quedan ~33 avisos sin mirar en track10 (19) y track23 (14).
+
+## 2026-09-29, misma sesión — track23 (GCP) cerrado: 13 de 14 avisos eran el
+mismo falso positivo, por la convención de nombres de Google Cloud
+
+`track23` daba 14 avisos, uno por módulo, siempre en la primera pregunta
+(`q2303XXX001`). El patrón saltaba a la vista y se confirmó leyendo las lecciones:
+Google Cloud llama a sus servicios "Cloud Storage", "Cloud SQL", "Cloud Functions",
+"IAM" — sin repetir "Google" cada vez, al contrario que AWS ("Amazon S3") o Azure
+("Azure Storage"). Las lecciones ya usan ese estilo, correcto y consistente con la
+documentación oficial, pero el heurístico exige la cadena literal "Google Cloud X" de
+la pregunta. Comprobé 10 de los 14 leyendo la lección entera, no solo la primera
+frase: los 10 estaban completos (Compute Engine, Cloud Functions, Cloud DNS, Cloud
+CDN, Cloud SQL, Firestore, Bigtable, Security Command Center, VPC Service Controls,
+Dataflow, Pub/Sub — cubiertos todos). Solo `lesson230101` (Compute Engine) tenía un
+hueco real: nunca mencionaba Google Cloud Marketplace, aunque la pregunta de su propia
+skill sí lo pregunta. Arreglado citando la misma explicación ya verificada de la
+pregunta.
+
+`audit_lesson_quiz_alignment.py track23`: 14 avisos → 13 (los 13 restantes,
+confirmados falsos positivos de la convención de nombres GCP — 0 gaps reales
+pendientes). `tests/content` completo: 70.027 passed, 1 skipped, 21 xfailed.
+`validate_lessons.py track23` y `check_docs.py` en verde. Con esto, de los 8 tracks
+que señaló 37.1 el 2026-09-28, solo queda track10 (19 avisos) sin revisar.
+
+## 2026-09-29, misma sesión — track10 cierra el barrido de los 8 tracks de 37.1;
+destapa dos bugs de contenido genuinos, no de cobertura
+
+`track10` (SAA-C03) daba 19 avisos. 9 eran gaps reales de una frase (IMDS, SAM,
+DataSync, DMS, QuickSight, IAM User vs Role, Terraform, CodePipeline), verificados
+contra `docs.aws.amazon.com` o contra la propia explicación de la pregunta antes de
+escribir nada. Arreglados en `l100101`, `l100102`, `l100202`, `l100203`, `l100205`,
+`l100401`, `l100502`, `l100505`.
+
+Dos de los avisos no eran gaps de cobertura sino preguntas con el nombre del servicio
+mal escrito:
+
+- `q100502mc005` pregunta "¿Qué es **AWS** Terraform?" pero Terraform es de HashiCorp,
+  no de AWS — la propia explicación de la pregunta ya lo sabe y cita "Terraform
+  Documentation — HashiCorp" como fuente. Escribir "AWS Terraform" en la lección
+  habría sido propagar el error en vez de corregirlo, así que añadí el hecho correcto
+  (Terraform, de HashiCorp, alternativa open source multi-nube a CloudFormation) sin
+  la marca falsa. La pregunta sigue sin corregir — cambiar el enunciado de una
+  pregunta no entra en el alcance de este barrido de lecciones.
+- `q100304mc013` pregunta por "AWS Direct Connect Local Connection". Busqué el
+  término en la documentación oficial de Direct Connect y en la web: no existe.
+  Direct Connect solo tiene dos tipos de conexión, Dedicated y Hosted — "Local
+  Connection" no es un servicio real. No se puede arreglar añadiendo contenido a la
+  lección porque no hay ningún hecho verdadero que añadir; queda documentado aquí y
+  en el ledger para que alguien revise si la pregunta debe reescribirse o eliminarse.
+
+El resto de avisos (`AWS EC2 Instance Metadata Service`, `AWS IAM User`, `AWS Direct
+Connect Hosted Connection`, `Amazon Aurora Serverless`, etc.) resultaron falsos
+positivos: mis propias frases nuevas, deliberadamente, no repiten el prefijo
+"AWS"/"Amazon" en cada mención (igual que el resto de cada lección), así que el
+heurístico —que exige la cadena literal completa de la pregunta— los marca aunque el
+contenido esté cubierto.
+
+`audit_lesson_quiz_alignment.py track10`: 19 avisos → 14 (12 falsos positivos de
+marca + 2 los bugs de contenido documentados arriba). `tests/content` completo:
+70.027 passed, 1 skipped, 21 xfailed. `validate_lessons.py track10` y `check_docs.py`
+en verde. Con esto quedan revisados los 8 tracks que señaló 37.1 el 2026-09-28.
+Bugs de contenido sin arreglar (fuera de este barrido, requieren decidir cómo
+reescribir la pregunta, no la lección): `q220302011` (cifra de tamaño máximo de
+Azure SQL sin verificar), `q100502mc005` y `q100304mc013` (nombres de servicio
+incorrectos, arriba), y `l440202`/`l440204` (skill_id de la pregunta sin relación
+con el tema de la lección). Los cuatro quedan anotados en la fila 37.1 del ledger
+para que la siguiente sesión que la retome no tenga que redescubrirlos.
+
+## 2026-09-29, misma sesión — 34.5: el número Lighthouse a11y literal que
+pedía el dueño, con una corrección propia a mitad de camino
+
+34.5 pedía el número de Lighthouse a11y en sí, no solo el recuento de
+violaciones de axe-core que `accessibility.spec.ts` ya daba en verde. El
+problema es que la app es una SPA de una sola página sin rutas por pantalla
+(Home/Tracks/Lesson/Quiz son estado de React en `App.tsx`, no URLs), así que
+un `lighthouse <url>` normal solo puede medir lo que la app enseña por
+defecto — no puede hacer clic hasta Tracks o una lección. La API de
+user-flow de Lighthouse (`startFlow` + `.snapshot()`), pilotada por
+Puppeteer contra la misma página autenticada, sí puede. Monté Postgres y
+Redis nativos (ya instalados en la imagen, sin Docker) y arranqué backend +
+frontend locales para tener algo real contra qué medir — no un mock.
+
+Primer intento: `NO_FCP` (First Contentful Paint nunca llega) en todas las
+corridas, reproducible. Diagnostiqué mal la primera vez: vi un proceso
+`pytest` del nivel 2 de `ci_local.sh` (disparado por mi propio push anterior)
+consumiendo el 97% de las 4 CPUs de esta caja y concluí que era
+contención de recursos — lo escribí así en el commit `3d82502` y en un
+comentario del script. Estaba mal. Cuando `ci_local.sh` terminó (en rojo por
+deuda de `mypy --strict` y `oxlint` preexistente, no mía — verificado con
+`git log --stat` de mis commits de esta sesión, ninguno toca `backend/`) y
+las 4 CPUs quedaron libres, el script **siguió fallando exactamente igual**.
+Aislé la llamada exacta que fallaba en un script mínimo aparte hasta
+confirmar que no era el entorno: con las CPUs libres, mi reproducción
+mínima funcionaba y el script real seguía en `NO_FCP`, así que el problema
+tenía que estar en el código, no en la máquina.
+
+La causa real: usaba `flow.startNavigation()`/`endNavigation()` alrededor
+de los clics a "Rutas" y "Aprender" — ese par es para una navegación de
+verdad del navegador, donde Lighthouse espera un evento de First Contentful
+Paint nuevo. Un clic que solo cambia estado de React dentro del mismo
+documento ya pintado nunca dispara un FCP nuevo, así que `NO_FCP` no era un
+síntoma de la máquina: era el propio Lighthouse haciendo justo lo que se le
+pidió, esperar algo que nunca iba a llegar. El arreglo fue usar
+`flow.snapshot()` a secas para esas dos transiciones (audita el DOM actual
+sin esperar navegación), dejando `flow.navigate()` solo para la carga
+inicial real. Quedó otro fallo más, ya menor: cerrar la lección no vuelve a
+Home sino a Tracks con el módulo aún abierto, así que "ESTUDIAR AHORA" no
+estaba en pantalla — arreglado navegando a "Inicio" explícitamente antes de
+buscar ese botón en vez de asumir a qué pantalla se vuelve.
+
+Corregida la sección del comentario del script que culpaba a la contención
+de CPU (dejando el margen de tiempo extra como margen defensivo razonable,
+no como el arreglo) y corregido aquí, porque afirmé una causa en un commit
+sin haberla verificado del todo — exactamente lo que el protocolo de verdad
+de esta sesión pide señalar en el momento en que se nota, no en silencio.
+
+Resultado verificado, 3 corridas seguidas: **100/100** en las 5 capturas
+(navegación inicial, Home, Tracks, Lesson, Quiz con panel de respuesta) —
+muy por encima del ≥95 pedido, y coherente con los 6/6 sin violaciones que
+ya daba `accessibility.spec.ts` en las mismas pantallas. `oxlint` en verde
+sobre el script final (5 avisos de variables sin usar que `ci_local.sh`
+destapó, corregidos). `puppeteer-core`/`lighthouse` instalados con
+`--no-save`, no son dependencias del proyecto — mismo criterio que
+`lighthouse-landing.mjs`. Ledger 34.5 → DONE.
+
+El `ci_local.sh` de este push (`cea525f`) queda en ROJO, pero solo por
+`mypy --strict`: 15 errores en 4 ficheros de `backend/` (`open_badges.py`,
+`job.py`, `push.py`, `admin.py`) — el mismo recuento y las mismas líneas
+que en la corrida anterior, antes de que yo tocara nada. Ninguno de mis
+commits de esta sesión toca `backend/` (comprobado con `git log --stat`),
+así que es deuda preexistente que este `ci_local.sh` ya venía arrastrando,
+no algo que haya introducido. No hay fila en el ledger que la rastree; la
+dejo anotada aquí para que quien retome `backend/` la vea, sin abrir una
+fila nueva yo mismo — no tengo contexto de por qué esos 4 ficheros están
+sin tipar y priorizarlo no me corresponde en esta sesión.
+
+## 2026-09-29, misma sesión — 37.1 cerrado del todo: los 4 bugs de
+contenido documentados arriba, más un bug de skill_id no visto hasta ahora
+
+Retomé los 4 bugs que la sesión anterior dejó anotados sin arreglar en la
+fila 37.1: `q220302011`, `q100502mc005`, `q100304mc013` y el par
+`l440202`/`l440204` de track44.
+
+Los tres primeros eran hechos, verificables sin ambigüedad. `q220302011`
+decía que Azure SQL Single Database llega a 2 TB como cifra general —
+`resource-limits-vcore-single-databases` de Microsoft Learn (leída esta
+sesión) muestra 128 TB para los niveles General Purpose/Business Critical;
+2 TB es solo el techo de una configuración serverless concreta. Reescrita
+para distinguir ambas cifras en vez de dar la más pequeña como si fuera la
+general. `q100502mc005` preguntaba «¿Qué es AWS Terraform?» cuando la
+propia explicación de la pregunta ya citaba «Terraform Documentation —
+HashiCorp»: el enunciado contradecía su propia fuente. `q100304mc013`
+preguntaba por «AWS Direct Connect Local Connection», que no existe — la
+guía oficial de Direct Connect (leída esta sesión) solo reconoce
+conexiones Dedicated y Hosted. La reescribí sobre Dedicated Connection, un
+concepto real que ninguna otra pregunta del mismo skill cubría todavía.
+
+El cuarto no era un hecho, era una asignación: en track44 (AZ-900),
+`l440202` se titula «Redes de Azure: VNet, subredes y NSG» pero sus 5
+preguntas trataban de contenedores y bases de datos (Container Instances,
+AKS, Azure SQL Database, SQL vs VM, Cosmos DB); `l440204` se titula
+«Microsoft Entra ID y Acceso Condicional» pero 4 de sus preguntas trataban
+de VNet, subred, NSG y Load Balancer — justo el contenido que le faltaba a
+`l440202`. Un intercambio limpio: las 4 preguntas de red pasan a
+`sk440202` (encajan exactamente con la lección), las 2 de contenedores
+pasan a `sk440201` (que ya habla de contenedores), y las 3 de bases de
+datos no tenían ninguna lección de destino real — track44 nunca tuvo una
+lección de bases de datos — así que las llevé a `sk440203` (Storage) y
+amplié `l440203` con un párrafo sobre Azure SQL Database y Cosmos DB como
+servicios de datos gestionados hermanos de Blob Storage, verificado contra
+`sql-database-paas-overview` y `cosmos-db/introduction` de Microsoft
+Learn, recortando la frase de File Shares para no pasar de las 300
+palabras.
+
+El intercambio dejó `sk440202` en 5 preguntas y `sk440204` en 2 — ambos
+por debajo del piso `MIN_PER_SKILL = 6` de `check_question_bank.py`. No
+hay más preguntas de red o de identidad en el módulo para redistribuir:
+tocaba escribir. Añadí 1 pregunta de red (el comportamiento de
+`DenyAllInbound` en la prioridad 65500, ya verificado en `l440202`) y 4 de
+identidad (tenant, Acceso Condicional por riesgo, Entra ID Governance,
+Entra Domain Services), las cuatro basadas en hechos que `l440204` ya
+citaba y tenía verificados de una sesión anterior — ninguna requirió una
+verificación nueva. De paso amplié `l440202` con una frase sobre Azure
+Load Balancer (capa 4, IP pública cerrada por defecto — un NSG debe
+permitirlo explícitamente), verificada contra `load-balancer-overview` de
+Microsoft Learn, porque `q4401042` seguía marcada por el auditor una vez
+mudada a la lección correcta.
+
+Dos errores propios, encontrados por las propias guardas antes de
+commitear, no por mí releyendo:
+
+- Los IDs que puse a las 5 preguntas nuevas (`q4401045`-`q4401049`)
+  chocaban con IDs ya usados en `mod4403.json` — la numeración `q4401NNN`
+  es global al track, no por módulo, y no lo comprobé antes de escribir.
+  `check_question_bank.py` lo cortó en seco («duplicate id»); renombradas
+  a `q4401062`-`q4401066` tras confirmar con grep que esos números no
+  existían en ningún fichero de `content/`.
+- Las 5 preguntas nuevas subieron el banco de 10.944 a 10.949 preguntas
+  (contado directamente, no de memoria), y `check_docs.py` lo detectó en
+  los 4 sitios que vigila: `AUTONOMOUS_STATE.md` (fila `Contenido`),
+  `ARCHITECTURE.md`, `CATALOGO_MAESTRO.md` y `frontend/src/lib/catalog.ts`.
+  Los cuatro actualizados a 10.949.
+
+`audit_lesson_quiz_alignment.py track44`: `l440202` y `l440204` ya no
+aparecen en la lista de avisos (quedan 3 avisos sueltos en `l440203`,
+`l440301` y `l440305`, sin relación con este arreglo — mismo patrón de
+falso positivo de marca que el resto de tracks, no investigados aquí).
+`check_question_bank.py`: PASS, los 5 skills del módulo ≥ 6 preguntas.
+`tests/content`: 70.057 passed, 1 skipped, 21 xfailed (+30 sobre la
+corrida anterior, coherente con 5 preguntas nuevas). `check_docs.py`:
+todos los checks en verde. `npx tsc --noEmit` en `frontend/`: sin errores
+tras el cambio en `catalog.ts`. Ledger 37.1: los 4 bugs de contenido
+documentados quedan cerrados; el barrido original de 8 tracks también.
+Queda pendiente, y fuera de este arreglo puntual, la expansión de
+catálogo hacia la meta de ADR-46 (serie 25/37), que es autoría nueva de
+`Workflow`, no una corrección.
+
+## 2026-09-29, misma sesión — 39.33: la alarma "grave" de track13 ya
+estaba resuelta; corregido el ledger para no hacer que otra sesión la
+redescubra
+
+Retomando 39.33 (PRI 1, claves de respuesta sospechosas), la fila decía
+"Grave: sk130104/204/304 (track13) >50% mal — RACI inventado, 'menor
+privilegio' al revés. TODO: resto sin muestrear", dando a entender que
+tres skills completas de track13 seguían con más de la mitad de sus
+preguntas con la clave mal. Antes de tocar nada, leí las 60 preguntas
+reales de esas tres skills (`sk130104` gobernanza, `sk130204` PKI/TLS,
+`sk130304` WiFi) directamente de los ficheros del repo, no del resumen
+del ledger.
+
+Ninguna tenía el defecto descrito. `q130104008` (RACI) marca
+correctamente "Responsable, Aprobador, Consultado e Informado";
+`q130104013` (menor privilegio) marca correctamente "otorgar solo los
+permisos mínimos necesarios". `git log` sobre `mod1301.json` explica por
+qué: el commit `a17a7c8` ("39.33: 26 preguntas de track13 con mas de la
+mitad de una skill con la clave mal"), ya en esta rama desde antes de que
+empezara esta sesión, reescribió exactamente esas 26 preguntas — 8/15 de
+`sk130104`, 9/15 de `sk130204`, 9/15 de `sk130304` — con la evidencia de
+`tests/content` en verde. La fila del ledger nunca se actualizó para
+reflejarlo: seguía describiendo un estado que ya no existía.
+
+Corregida la fila para que cite el commit que ya lo arregló y mi propia
+verificación de esta sesión, en vez de dejar una alarma "grave" sin
+resolver que la siguiente sesión habría gastado tiempo redescubriendo o,
+peor, intentando arreglar un defecto que ya no está. Lo que sigue
+genuinamente abierto en 39.33 no cambia: muestrear el resto de tracks
+hermanos del mismo commit masivo original (solo `q120302mc002` se había
+revisado hasta ahora).
+
+`check_docs.py`: verde. Ledger: 61.430/61.440 bytes.
+
+## 2026-09-29, misma sesión — 39.43: cuarta familia de coletillas
+encontrada al muestrear track10, con una advertencia sobre por qué un
+regex simple la sobreestima 15 veces
+
+Mientras revisaba las skills sk100205/sk100505 de track10 para 39.33 (ver
+entrada anterior), encontré un patrón distinto y nuevo: opciones cortas
+("Tipo de almacenamiento", "Herramienta de deployment", "Mejor rendimiento
+general") con una cláusula de gerundio de marketing cloud pegada al final
+sin relación con la pregunta ("...aprovechando la elasticidad automática
+de la nube para manejar picos de demanda", "...con monitoreo continuo a
+través de Amazon CloudWatch y alarmas configuradas"). Es la misma familia
+de defecto que 39.28 (coletillas) y 39.42 (relleno molde), pero con una
+firma de texto distinta que ninguna guarda existente busca — y en un
+track (track10) que quedó fuera del alcance de 39.28 (tracks 18-23, 27,
+41-43).
+
+Antes de tocar nada escribí un regex de detección (coma + gerundio de
+marketing) y lo corrí sobre todo el banco: dio **150 "sospechosas" en 11
+tracks**. Pero al leer una muestra de esos 150, la mayoría eran gerundios
+completamente legítimos y correctos técnicamente — "reduciendo la
+dimensionalidad del espacio de características" (PCA, correcto),
+"manteniendo las demás variables constantes" (control experimental,
+correcto), "garantizando sus invariantes" (programación, correcto). Un
+regex sintáctico no puede distinguir una coletilla contaminante de una
+frase técnica legítima que también usa gerundio + coma; hace falta juicio
+semántico por pregunta, exactamente el mismo tipo de trabajo que exigió
+el hallazgo de RACI/menor-privilegio en 39.33.
+
+No intenté un fix masivo con el regex de detección — habría sido
+exactamente el tipo de "arreglo" que rompe contenido bueno para tapar un
+número, la misma clase de error que **este barrido existe para evitar**.
+Confirmé a mano ~10 casos inequívocos en track10 (el patrón real: un
+fragmento nominal corto de 2-4 palabras seguido de una cláusula de
+gerundio genérica de nube, sin ninguna conexión gramatical ni temática) —
+todos en opciones incorrectas, nunca en la clave marcada como correcta,
+así que no rompe la corrección de ninguna pregunta, solo su calidad
+percibida. Cifras del regex sin depurar (sobreestiman, por lo dicho
+arriba): track10 con diferencia el más afectado (98 de las 150
+coincidencias del regex),
+seguido de track06 (18) y track08/11 combinados (~15); el resto disperso
+en 1-4 por track, probablemente ruido del regex más que contaminación
+real.
+
+Documentado en el ledger como **39.43, TODO, PRI 2** — con la advertencia
+explícita sobre el regex para que la siguiente sesión no repita el mismo
+error de sobreconteo, y la instrucción de que el arreglo real necesita
+revisión pregunta a pregunta (`Workflow`, ADR-52), no un `sed` masivo.
+
+`check_docs.py`: verde. Ledger: 61.434/61.440 bytes (39.42, ya DONE desde
+antes de esta sesión, archivado a `LEDGER_HISTORY.md` §I para hacer
+sitio).
+
+## 2026-09-29, misma sesión — Workflow para 37.15 y 37.17: primer
+lote real, verificado por mí, con dos correcciones al ledger que traía
+
+Autorización explícita del dueño ("Lanza el Workflow para 37.15 y
+37.17"). Diseño: scope (1 agente, conteo real) → arreglo determinista de
+citas RFC/PEP en todo el banco (1 agente) → 7 lotes en paralelo sobre
+tracks disjuntos (3 para 37.15, 4 para 37.17) → verificación final. 10
+agentes, ninguno commiteó (por instrucción explícita del script) — el
+diff se quedó en el árbol de trabajo para que yo lo revisara.
+
+No me fié del informe de los agentes sin más. Antes de commitear: corrí
+`tests/content` (70.057 passed), `check_question_bank.py` y
+`check_docs.py` por mi cuenta, no solo leí lo que reportaron los
+agentes; confirmé con `curl` en vivo dos de las URLs que dicen haber
+verificado (`rfc-editor.org/rfc/rfc8446` y `peps.python.org/pep-0008/`,
+ambas 200); y reproduje uno de los arreglos de ambigüedad ejecutando
+Python yo mismo (`int(10*0.75)=7` vs `round(10*0.75)=8`, redondeo al par
+más cercano — confirma que la pregunta antes no distinguía las dos
+funciones y ahora sí).
+
+**37.15**: 4.450 → 3.903 preguntas sin fuente indexada (10.949 en total).
+267 citas de RFC/PEP arregladas con URL canónica verificada en vivo antes
+de escribirla (53 PEP, 17 RFC distintos). `peps.python.org` no estaba
+indexado — añadido como `reusar` (CC0/dominio público) tras leer la
+sección Copyright de 7 PEP reales, no por suposición. `rfc-editor.org` ya
+estaba indexado correctamente como `cita` (IETF Trust, no es licencia
+abierta). Otros 7 dominios nuevos indexados por los lotes de track01/04/06
+(Wikipedia CC BY-SA → cita, el libro Deep Learning de Goodfellow/Bengio/
+Courville → cita por «weak DRM» propietario, OWASP Cheat Sheet Series →
+cita por CC BY-SA, OpenAPI Specification → reusar por Apache-2.0 leído en
+la propia página, SQLAlchemy docs → cita por licencia de prosa no
+confirmada). Cada `mark` se decidió leyendo la licencia real, nunca
+asumida — dos casos concretos donde un agente marcó `cita` en vez de
+`reusar` justamente por no poder confirmar la licencia de la prosa
+(SQLAlchemy) o por ser CC BY-SA (Wikipedia, OWASP), respetando ADR-47.
+Quedan 3.903 preguntas sin indexar — la mayoría en pools ya identificados
+por dominio (scikit-learn/NumPy/pandas docs, ya indexados como `reusar`,
+solo faltan URLs por pregunta; Continuous Delivery/DDIA/Clean Code, libros
+propietarios sin URL canónica encontrada) para una siguiente tanda.
+
+**37.17**: el recuento real de preguntas `fill_blank_exec`/`fix_bug` en
+todo el banco es **699**, no los «~2.900» que llevaba escrito el ledger
+desde 2026-09-26 — cifra vieja y equivocada, corregida. De esas 699,
+revisadas a fondo (código ejecutado, razonado sobre implementaciones
+alternativas plausibles) 219 en 4 tracks (track01, 06, 07, 16 — track07 y
+track16 completos, track01 y track06 parciales por presupuesto). 10 bugs
+de ambigüedad real encontrados y arreglados, cada uno verificado
+ejecutando la versión correcta y una versión plausible incorrecta antes y
+después del cambio: `int()` vs `round()` con split 7.5 (antes 12
+elementos daban 9.0 exacto, ahora 10 dan 7.5, y `round` redondea al par);
+unión de conjuntos disjuntos donde la diferencia simétrica coincidía con
+la unión; poda de posición sinusoidal donde `i=0` anulaba el exponente;
+longitud de cadena que no distinguía el contenido; percentil 95 donde el
+índice calculado coincidía con el último elemento; BFS con un grafo donde
+ambas rutas medían lo mismo; y tres más en track06 (varianza con datos que
+empataban `int`/`round`, sigmoide sin ningún valor exactamente en el
+límite 0.5, rama `else` de un ternario nunca alcanzada). Un caso quedó
+señalado sin arreglar porque no es un ajuste de datos sino un rediseño
+estructural: `q060203ex012` — un `except` amplio y uno estrecho producen
+la misma salida con los datos dados, y no se puede diferenciar sin
+convertir la «respuesta correcta» en un traceback, lo que rompería el
+modelo de corrección por coincidencia exacta de stdout.
+
+`git diff --stat`: 65 ficheros, +540/-410. `tests/content` 70.057
+passed, 1 skipped, 21 xfailed (verificado por mí, no solo por el
+verificador del propio Workflow). `check_question_bank.py`,
+`check_docs.py`, `question_diversity.py` en verde. Ledger 37.15/37.17
+corregidos con las cifras reales, no las que traían.
 ## 2026-09-30 — plan del catálogo por cobertura (ADR-53), rama `claude/eloquent-davinci-47pbpf`
 
 **Pregunta del dueño:** si la meta de ADR-46 (≥ 50 cursos × 42 tracks = 126.000 preguntas)
@@ -1388,3 +2415,241 @@ con el de 2022.
 duración; no lo usa nada porque sin número de preguntas no hay simulacro); `min_questions` /
 `max_questions` (40–60) de las tres de Microsoft tampoco tienen fuente y ningún código los lee.
 
+## 2026-09-30 — control total: fusión de ADR-53 en `claude/gallant-tesla-fnzy1g` (`763e325`)
+
+**Petición del dueño:** integrar el plan nuevo (ADR-53, fusionado en `master` como #42 mientras
+esta rama seguía abierta) sin perder nada de la rama, y dejar Whetzy lo más cerca posible de
+publicarse en las tiendas con todo lo que no dependa de una persona.
+
+**Qué se hizo:** `git merge origin/master`. 4 ficheros con conflicto real:
+`docs/AUTONOMOUS_STATE.md` (fila 37.1 vieja de esta rama archivada como 37.23, filas
+37.15-37.22 fusionadas en el orden de `master`, §1 recalculado con `ledger.py series 37`:
+3/21, 14%), `docs/COMPETENCIA.md` (§A.2c de esta rama y §A.2d de `master` conviven sin
+chocar), `docs/STATUS.md` y `docs/archive/LEDGER_HISTORY.md` (entradas de ambas ramas en
+orden cronológico, sin reescribir hacia atrás). `detallessesionultima.md` marcado histórico
+en su cita a ADR-46 para no romper el `check_docs.py [10]` nuevo. `CATALOGO_MAESTRO.md`
+regenerado con `catalog_coverage.py` contra el contenido real de esta rama: práctica de
+certificación al suelo 1.886/2.175 (86,7%, no 88,6% de `master`), banco 10.949 preguntas
+(no 10.989), MLA-C01 y Microsoft 6,0-6,3 preguntas por skill (no «8,2»). `DECISIONS.md` no
+se tocó — las ADR no se reescriben.
+
+**Verificación independiente de ADR-53** (Fase 2): 3 cifras de su tabla de evidencia
+comprobadas contra la fuente en vivo, no de memoria — las tres coinciden: AWS AIF-C01
+(65 Q/90 min), Koedinger et al. 2023 PNAS (mediana 7,24/media 12,27 oportunidades por
+componente de conocimiento), Anki FSRS (retención por defecto 90%). Ninguna enmienda
+necesaria.
+
+**Pruebas:** `check_docs.py`, `ledger.py check`, `catalog_coverage.py --check`,
+`check_question_bank.py`, `question_diversity.py` en verde. `pytest tests/content
+tests/test_cobertura_plan.py tests/test_diversidad_banco.py tests/test_contrato_frontend.py`:
+70.095 passed, 1 skipped, 21 xfailed. **Suite backend entera**: 71.394 passed, 4 skipped,
+1 deselected, 21 xfailed, **0 failed** (71.419 tests, 5170s/86 min — el grueso es un solo
+test preexistente, BM25 puro en Python contra las ~11.000 preguntas reales en ES+EN,
+confirmado con `py-spy` que progresaba y usaba sqlite en memoria, nunca producción).
+**Suite frontend entera**: 342 passed (44 ficheros). Pre-push nivel 1 verde en el push.
+
+**Lo que no se hizo todavía:** ningún trabajo de contenido de la Fase 3 de ADR-53
+(certificaciones/tracks al suelo, banco de simulacro reservado) ni los items de compliance
+de tiendas (Android API 36, versión de Capacitor) — solo detectados, sin tocar código
+todavía. PR #34 actualizado con el detalle completo de este merge.
+
+## 2026-09-30, misma sesión de continuación — Fase 3.1 (compliance de tiendas) y mypy --strict
+
+**Store compliance (`6f0878f`):** Android API 36 (compileSdk/targetSdk 35→36, verificado con
+`./gradlew assembleDebug` real — SDK 36 instalado ad-hoc, BUILD SUCCESSFUL, APK 14,5 MB, no
+solo el valor de config); `@capacitor/cli` 7.6.9→8.5.2 (alineado con core/android/plugins,
+vía npm, verificado con `cap sync`+`tsc -b`+`vitest`+`vite build`); `capacitor.config.ts`
+`ios.scheme` «Learning Engine»→«Whetzy». Dos bugs reales en docs de tienda: `DELETE
+/api/v1/auth/me` no existe (es `/auth/me/account`) y «cascade-deleted» es falso (soft-delete);
+4.8 decía «no aplica todavía» pero GitHub+Google OAuth (19.1) ya está en vivo sin flag
+(confirmado leyendo `oauth.py`+`AuthScreen.tsx`); fila 2.5.2 añadida (Pyodide/sql.js
+confirmados empaquetados, no CDN); fila 1.2 corregida de ✅ falso a ⚠️/❌ (`username`/
+`display_name` visibles entre usuarios en duelos/ligas sin moderación). 2 gaps reales
+documentados como filas nuevas (19.11 moderación de UGC, 19.12 borrado de cuenta sin purga
+real — 14/42 FK a `users.id` sin cascade) en vez de parcheados a medias.
+
+**mypy --strict (`0683867`):** 29→13 errores; los 13 restantes son deuda de librería
+documentada (torch/sentence_transformers/apscheduler/pywebpush/rank_bm25/sklearn, Railway
+free tier las omite a propósito). De los 16 reales: uno era un **bug en producción sin
+ningún test** — `get_economy_scorecard` filtraba por `PromoCodeRedemption.created_at`
+(columna que no existe; la real es `redeemed_at`), así que cada llamada real a
+`GET /admin/economy/scorecard` habría dado `AttributeError` (500). Arreglado; test nuevo
+mutado (revertido a `created_at`, confirmado en rojo con el `AttributeError` exacto,
+restaurado). El resto: 3 closures locales sin anotar en `admin.py` (una nunca se llamaba,
+borrada), `SCORECARD_TARGETS` sin tipo, `d30: float | str` sin anotar, `os.sys.version` →
+`sys.version`, `Result[Any].rowcount` en `push.py` → `cast()` a `CursorResult`, 4
+`type: ignore` ya inertes borrados (uno en `job.py`, tres en `security.py` tras instalar
+`types-python-jose`/`types-passlib`). `ci.yml`: `mypy==2.3.1` fijado (última de PyPI).
+
+**Investigado y verificado, sin ejecutar (demasiado grande para este bloque):** 37.22 (ISC2
+CC) confirmado en vivo contra isc2.org — outline nuevo desde el 2026-09-01, dominios
+renombrados (D2 «Security Governance» es nuevo, sin equivalente 2022), pesos
+24/17,3/20/21,3/17,3, 100-125 ítems adaptativos/2h. No es un cambio de metadatos: el banco
+de 353 preguntas de track40 necesita reclasificarse por dominio nuevo y Governance necesita
+contenido que hoy no existe — se deja documentado en la fila 37.22, no a medias.
+
+**12 + 6 notificaciones de GitHub de este bloque:** los 4 checks de Actions (backend,
+frontend, android, e2e) siguen fallando en 2-4s sin obtener runner en todos los commits de
+este PR y en `master` mismo (`e83bf63`, `ec9e70243`) — confirmado con la API de GitHub, no
+solo memoria de sesión: es H.13 (facturación), no una regresión de este trabajo, y ya está
+explicado en un comentario de este PR. Cloudflare Pages despliega bien en cada push.
+
+## 2026-09-30, misma sesión de continuación — fusión de `e83bf63` (31.4), 37.18 y 37.20
+
+**Fusión de `origin/master` (`5d617d0` + `d502d23`):** trajo la fila 31.4 (el bloqueo de
+lección ignoraba la práctica previa) sin conflictos de git — el único auto-resuelto fue el
+propio ledger. El ledger fusionado quedó en 62.443 bytes, por encima del límite de 61.440;
+archivadas 31.4, 29.7 y 29.8 a `docs/archive/LEDGER_HISTORY.md` §N para volver a caber.
+Verificado con el subconjunto dirigido (70.095 passed) más los 3 ficheros de test traídos
+por la fusión (106 passed): `lessons.py`, `lesson_gate.py`, sus tests.
+
+**37.18 — banco de simulacro reservado (`be18cf9`):** migración `20260930_question_pool`
+añade `questions.pool` (`"practica"`/`"simulacro"`); `_select_question` (quiz.py, el
+selector único de práctica y repaso) excluye `"simulacro"`, `_questions_by_domain`
+(mock_exam.py) exige sólo `"simulacro"` — ambos detrás de `MOCK_EXAM_RESERVED_POOL_ENABLED`
+(`False` por defecto, banco vacío hoy: encenderlo ahora rompería cada simulacro en
+producción). 5 tests nuevos, cada regla mutada en rojo antes de confiar en ella. Poblar el
+banco real queda en 37.24 (autoría de contenido, no código).
+
+**37.20 — métricas de producto con meta (ADR-53 §8):** D30 y CURR nuevas en
+`services/analytics.py`, junto a `conversion_d35` (usa el evento `subscription_started`,
+nuevo, disparado solo en la transición real `is_premium` false→true de los dos webhooks de
+`billing.py` — Stripe y RevenueCat, nunca en una renovación) y
+`weekly_30min_rate_among_payers`. El admin (`GET /analytics/dashboard`) muestra cada métrica
+junto a su meta (`PRODUCT_METRIC_TARGETS`); completion de pago y calibración del simulacro
+no tienen señal hoy (ningún «track completado» en el modelo, ningún enlace con el resultado
+del examen real) y quedan marcadas `not_yet_measurable` con el motivo, no aproximadas con una
+definición que nadie ha firmado — mismo criterio que ya sigue `mock_exam.py` con el score
+predicho.
+
+**Bug real encontrado y arreglado, no solo en código nuevo.** El primer intento de D30 (y de
+`conversion_d35`) fallaba con datos plantados a mano que deberían haber contado. Causa raíz,
+confirmada por tres vías independientes: (1) prints de depuración mostraron que la fecha
+esperada sí estaba en la fila correcta; (2) `.compile(compile_kwargs={"literal_binds": True})`
+sobre la subconsulta `EXISTS` lanzó `CompileError` al intentar renderizar un `timedelta` como
+literal `DATETIME` — SQLAlchemy tipa `DateTime_columna +/- timedelta` como `DATETIME`, no
+como `Interval`, bajo el dialecto de SQLite; (3) un script aislado confirmó que esto **ya
+afectaba al D1 preexistente**, sin tocar por esta sesión: un usuario registrado hace 5 días
+con una sesión al día siguiente — un retorno D1 inequívoco — daba `d1_return: 0`. No es un
+bug de producción (Postgres sí soporta esa aritmética de forma nativa), pero sí un hueco real
+de cobertura: la familia D1/D7 nunca tuvo un test unitario que fijara su aritmética exacta,
+solo una comprobación de forma en integración, así que el fallo llevaba tiempo sin dispararse.
+Arreglado reescribiendo D1/D7/D30 y `conversion_d35` para traer las filas crudas
+(`user_id`, fecha) y comparar la ventana en Python — mismo patrón que ya usaba
+`weekly_30min_rate_among_payers` sin este problema, ahora dialecto-agnóstico por construcción
+en vez de correcto-por-suerte en Postgres. Mutado en rojo (con el propio código del fix
+apagado) y restaurado en verde antes de confiar en él.
+
+**Pruebas:** `tests/unit/test_product_metrics.py` (14, nuevo), `tests/integration/
+test_analytics.py`+`test_analytics_dashboard.py` (14), `tests/integration/test_billing.py`
+(11, 2 nuevos con el evento `subscription_started` verificado y mutado)+
+`test_revenuecat_webhook.py` (11, 1 nuevo) — 50 passed. `mypy --strict` (invocación exacta de
+`ci_local.sh`: `python -m mypy app --strict --ignore-missing-imports`) y `ruff==0.16.8` (la
+que fija CI) limpios en todos los ficheros tocados; el único error de mypy que queda
+(`open_badges.py`) es previo a esta sesión, no tocado. `check_docs.py` y `ledger.py check`
+verdes.
+
+**37.6 y 37.10 sin tocar**, por instrucción explícita del dueño en este bloque.
+
+Checks de GitHub Actions (backend/frontend/android/e2e) siguen en H.13 (facturación) en los
+dos commits de este bloque — mismo patrón de siempre (2-4s, log 404, sin runner), ya
+explicado varias veces en este PR; no hace falta un comentario nuevo por la regla de «ya
+comentado así».
+
+## 2026-09-30, misma sesión de continuación — corrección del dueño sobre 37.18/37.20
+
+El dueño revisó `edaf63b` y encontró tres fallos reales que mi propia verificación no había
+atrapado.
+
+**37.18 estaba incompleto, no DONE.** La exclusión de `pool == "simulacro"` solo vivía en
+`quiz.py`, y detrás del flag. `duels.py:88` (`_pick_questions`), `services/placement.py:55`
+(`_track_item_pool`) y `services/track_exam.py:158` (`_answerable_questions_by_skill`)
+seguían sirviendo preguntas reservadas sin ningún filtro — un duelo, la prueba de nivelación
+o el examen final de una pista podían filtrar una pregunta que el simulacro de certificación
+necesita guardarse. Corregido: las 4 vías excluyen `pool == "simulacro"` de forma
+**incondicional**, no detrás de `MOCK_EXAM_RESERVED_POOL_ENABLED` — ese flag ahora gobierna
+solo el "solo reservadas" del propio simulacro (`mock_exam.py`, sin cambios), que sí necesita
+banco poblado primero. El test de `quiz.py` que afirmaba "flag off = comportamiento de hoy,
+sin filtrar" quedó falso con el cambio y se reescribió para el invariante correcto
+(parametrizado True/False: el filtro no depende ya del flag). 4 tests nuevos/reescritos,
+cada uno mutado en rojo antes de confiar en él — para `duels.py` la primera versión del test
+era débil (un solo draw de 5-de-6 candidatos tiene ~83% de probabilidad de no tocar la
+reservada); reescrito para que el pool válido quede justo por debajo del umbral de duelo,
+haciendo la aserción determinista (422 si se excluye correctamente, 201 con la reservada
+dentro si no).
+
+**37.20: el mensaje sobre D1/D7 y SQLite era ambiguo.** Mi comentario en el código decía
+"Postgres has no such gap, but that only means this was untested, not correct-by-luck" —
+una cobertura que podía leerse como dejando abierta la duda de si producción también fallaba.
+No fallaba: Postgres soporta `timestamp +/- interval` de forma nativa y correcta; el hueco
+era exclusivamente de los tests contra SQLite, que tipan mal esa aritmética y no lanzan
+excepción. Reescrito el docstring para decirlo sin ambigüedad.
+
+**37.20: `_sessions_by_user` traía el historial entero, sin acotar por fecha.** Para cada
+usuario elegible pedía *todas* sus sesiones de siempre, no solo las relevantes a las
+ventanas D1/D7/D30 — un problema real de escala que habría empeorado con cada mes de
+historial acumulado. Corregido con `since`/`until` (acotado por el `eligible_since` más
+antiguo de las tres ventanas y `now`); el mismo patrón se aplicó a la consulta de eventos
+`subscription_started` de `conversion_d35`, con el mismo hueco. Mutado: acotar el rango a
+algo demasiado estrecho hace caer los tests plantados en el borde de la ventana.
+
+**37.20: CURR no era la métrica de Duolingo, aunque usara su nombre y su cifra.** El dueño
+pidió traer la definición oficial con URL antes de publicar la comparación contra el 84%.
+Carta de accionistas Q2 FY2026 de Duolingo (SEC 8-K, leída en vivo):
+`sec.gov/Archives/edgar/data/0001562088/000162828026053299/q2fy26duolingo6-30x26share.htm`
+— «The main metric we use to evaluate the stickiness of our product is Current User
+Retention Rate (CURR), which is the proportion of 'current user DAUs' who come back the
+next day. A 'current user DAU' is one who was also active another time in the previous
+seven days» — 84%, récord, +~1pp interanual. Mi implementación original medía algo más
+flojo y distinto: "activo en cualquier momento de la semana anterior → también activo hoy".
+La definición real de Duolingo exige dos condiciones sobre un día de referencia D (ayer):
+activo en D **y** activo en otro día distinto dentro de los 7 días previos a D — un usuario
+que solo aparece una vez en toda la semana no cuenta, tampoco uno activo en la semana pero
+no en D mismo. Reescrita `curr()` para igualar la definición término a término (cohorte de
+"current user DAUs" sobre ayer, retorno medido hoy). Las 5 pruebas de `TestCurr` se
+reescribieron para cubrir las dos condiciones del cohorte por separado, cada una mutada en
+rojo. `docs/COMPETENCIA.md` §A actualizado con la cita literal y la URL directa de la SEC
+(antes decía solo «SEC» sin enlace); `docs/DECISIONS.md` (el texto de la propia ADR-53) **no
+se tocó** — las ADR no se reescriben, esa tabla es la foto que el dueño tenía el día de la
+decisión y sigue siendo cierta como historia, aunque mi implementación original de CURR no
+coincidiera con ella.
+
+**Pruebas:** 246 passed en el subconjunto dirigido (placement/duelos/examen de
+pista/quiz-internals/mock-exam/product-metrics/analytics/billing/revenuecat/placement-params),
+más `ruff==0.16.8` y `mypy --strict` (invocación de `ci_local.sh`) limpios en los 10 ficheros
+tocados — el único error de mypy que queda (`open_badges.py`) es previo a esta sesión.
+`check_docs.py` y `ledger.py check` verdes. Ledger corregido: 37.18 y 37.20 siguen DONE, con
+la evidencia real, no la incompleta de `edaf63b`.
+
+## 2026-09-30, misma sesión de continuación — segunda corrección: CURR medía un día en curso
+
+El dueño encontró un cuarto fallo real en `4952ea8`, el mismo commit que acababa de corregir
+los tres primeros: `curr()` usaba D+1 = **hoy**, un día todavía sin terminar. Consultado a
+las 09:00 UTC, casi nadie ha "vuelto hoy" simplemente porque hoy lleva 9 horas — la cifra se
+movía según la hora de la consulta, no según el comportamiento real, y un retorno real y ya
+completo (por ejemplo anteayer→ayer) podía leerse como un falso 0 si hoy no tenía datos
+todavía.
+
+**Arreglo:** D = anteayer, D+1 = ayer — los dos, días UTC ya terminados. `curr()` ya no mira
+nunca los datos de hoy. Docstring reescrito para decirlo explícitamente; `PRODUCT_METRIC_TARGETS["curr"]`
+anota "días UTC completos, nunca el día en curso".
+
+**Prueba pedida explícitamente por el dueño**: `now` congelado a las 00:05 UTC (una hora
+donde el fallo antiguo sería más visible) con un retorno plantado dos días atrás (anteayer→ayer,
+completo) — confirmado en rojo contra el código anterior (`assert 0 == 1` en `returned_next_day`,
+restaurando D=ayer/D+1=hoy a mano) antes de restaurar el arreglo y confirmar verde. Las 4
+pruebas de cohorte existentes desplazadas un día (D=yesterday→D=day-before-yesterday) para
+seguir usando `NOW` real sin necesidad de congelar el tiempo.
+
+**Pruebas:** `tests/unit/test_product_metrics.py::TestCurr` (6, incluida la nueva) +
+`test_analytics.py`+`test_analytics_dashboard.py`+`test_billing.py`+`test_revenuecat_webhook.py`
+— 53 passed. `ruff` y `mypy --strict` limpios. `check_docs.py`/`ledger.py check` verdes.
+
+
+## 2026-09-30 — Cierre del PR #34 y pausa de sesiones autónomas
+
+Por decisión del dueño (ver `docs/CIERRE_2026-09-30.md` completo): PR #34 se deja congelado
+y listo para que el dueño lo fusione a mano; ninguna sesión autónoma ejecuta
+`docs/ORCHESTRATOR.md` sin instrucción explícita suya hasta que el dueño levante la pausa.
+`CLAUDE.md` y `docs/ORCHESTRATOR.md` llevan el aviso; `scripts/check_docs.py` lo exige como
+guarda (mutada rojo/verde). Ledger: fila 31.7.

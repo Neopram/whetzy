@@ -823,7 +823,7 @@
     "correct_answer_en": "16",
     "explanation_es": "secrets.token_hex(8) genera 8 bytes aleatorios y los convierte a hexadecimal. Cada byte se representa como 2 caracteres hexadecimales, así que 8 bytes = 16 caracteres.",
     "explanation_en": "secrets.token_hex(8) generates 8 random bytes and converts them to hexadecimal. Each byte is represented as 2 hex characters, so 8 bytes = 16 characters.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 20000
   },
   {
@@ -840,7 +840,7 @@
     "correct_answer_en": "16",
     "explanation_es": "secrets.token_bytes(16) genera 16 bytes aleatorios seguros. len() devuelve el número de bytes, que es 16.",
     "explanation_en": "secrets.token_bytes(16) generates 16 secure random bytes. len() returns the number of bytes, which is 16.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 20000
   },
   {
@@ -857,7 +857,7 @@
     "correct_answer_en": "True",
     "explanation_es": "Los mismos datos producen siempre el mismo hash SHA-256. Ambos hashes de 'data' serán idénticos, así que la comparación devuelve True.",
     "explanation_en": "The same data always produces the same SHA-256 hash. Both hashes of 'data' will be identical, so the comparison returns True.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 20000
   },
   {
@@ -874,7 +874,7 @@
     "correct_answer_en": "64",
     "explanation_es": "HMAC-SHA256 produce un hash de 256 bits. En hexadecimal, 256 bits = 64 caracteres hexadecimales (cada carácter hex representa 4 bits).",
     "explanation_en": "HMAC-SHA256 produces a 256-bit hash. In hexadecimal, 256 bits = 64 hex characters (each hex character represents 4 bits).",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 20000
   },
   {
@@ -891,7 +891,7 @@
     "correct_answer_en": "True",
     "explanation_es": "hmac.compare_digest() compara dos valores usando tiempo constante, previniendo timing attacks. Ambas cadenas son idénticas, así que devuelve True.",
     "explanation_en": "hmac.compare_digest() compares two values using constant time, preventing timing attacks. Both strings are identical, so it returns True.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 20000
   },
   {
@@ -908,7 +908,7 @@
     "correct_answer_en": "False",
     "explanation_es": "Las dos cadenas son diferentes, por lo que hmac.compare_digest() devuelve False. Lo importante es que lo hace en tiempo constante, sin revelar cuán diferentes son las cadenas.",
     "explanation_en": "The two strings are different, so hmac.compare_digest() returns False. The important part is that it does so in constant time, without revealing how different the strings are.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 30000
   },
   {
@@ -923,9 +923,9 @@
     "correct_index": null,
     "correct_answer_es": "True",
     "correct_answer_en": "True",
-    "explanation_es": "sha256 está en hashlib.algorithms_guaranteed (algoritmos garantizados disponibles en todas las plataformas Python), así que __contains__() devuelve True.",
-    "explanation_en": "sha256 is in hashlib.algorithms_guaranteed (algorithms guaranteed available on all Python platforms), so __contains__() returns True.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "explanation_es": "hashlib.algorithms_guaranteed es un `set` con los nombres de los algoritmos hash que Python garantiza disponibles en cualquier plataforma, sin depender de la biblioteca OpenSSL del sistema. sha256 está entre ellos, así que `'sha256' in hashlib.algorithms_guaranteed` (lo que hace `__contains__()` por debajo) evalúa a True.",
+    "explanation_en": "hashlib.algorithms_guaranteed is a `set` with the names of the hash algorithms Python guarantees are available on every platform, without depending on the system's OpenSSL library. sha256 is among them, so `'sha256' in hashlib.algorithms_guaranteed` (what `__contains__()` does under the hood) evaluates to True.",
+    "source": "https://docs.python.org/3/library/hashlib.html",
     "expected_time_ms": 30000
   },
   {
@@ -942,7 +942,7 @@
     "correct_answer_en": "True",
     "explanation_es": "El bug es usar == para comparar tokens/hashes, lo que es vulnerable a timing attacks. La solución correcta es usar hmac.compare_digest(). Aunque ambas cadenas son iguales en este caso, la salida sería True de todas formas, pero la forma segura es usar hmac.compare_digest().",
     "explanation_en": "The bug is using == to compare tokens/hashes, which is vulnerable to timing attacks. The correct solution is to use hmac.compare_digest(). Although both strings are equal in this case, the output would be True anyway, but the safe way is to use hmac.compare_digest().",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 30000
   },
   {
@@ -959,7 +959,7 @@
     "correct_answer_en": "str",
     "explanation_es": "secrets.token_urlsafe() devuelve una cadena (str) de caracteres URL-seguros. Es útil para generar tokens que se pueden incluir en URLs sin necesidad de URL encoding.",
     "explanation_en": "secrets.token_urlsafe() returns a string (str) of URL-safe characters. It is useful for generating tokens that can be included in URLs without needing URL encoding.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 30000
   },
   {
@@ -976,7 +976,7 @@
     "correct_answer_en": "64",
     "explanation_es": "SHA-256 produce un hash de 256 bits = 64 caracteres hexadecimales. El hash puede ser actualizado incrementalmente con múltiples llamadas a update().",
     "explanation_en": "SHA-256 produces a 256-bit hash = 64 hex characters. The hash can be updated incrementally with multiple update() calls.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 30000
   },
   {
@@ -993,7 +993,7 @@
     "correct_answer_en": "True",
     "explanation_es": "secrets proporciona generación de números aleatorios criptográficamente seguros, a diferencia de random que es predecible. secrets siempre genera tokens no-vacíos.",
     "explanation_en": "secrets provides cryptographically secure random number generation, unlike random which is predictable. secrets always generates non-empty tokens.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 45000
   },
   {
@@ -1010,7 +1010,7 @@
     "correct_answer_en": "False",
     "explanation_es": "Diferentes claves producen diferentes HMACs incluso para el mismo mensaje. Esto es por diseño de HMAC: la clave debe ser un secreto compartido, y cambiar la clave produce un resultado completamente diferente.",
     "explanation_en": "Different keys produce different HMACs even for the same message. This is by design of HMAC: the key should be a shared secret, and changing the key produces a completely different result.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 45000
   },
   {
@@ -1027,7 +1027,7 @@
     "correct_answer_en": "True",
     "explanation_es": "El bug es usar un salt débil y predecible, y usar SHA-256 directamente en lugar de bcrypt. Sin embargo, el código como está escrito imprime 'True' de todas formas. La solución correcta sería usar secrets.token_hex() para generar un salt aleatorio y usar bcrypt en lugar de SHA-256 + salt.",
     "explanation_en": "The bug is using a weak and predictable salt, and using SHA-256 directly instead of bcrypt. However, the code as written prints 'True' anyway. The correct solution would be to use secrets.token_hex() to generate a random salt and use bcrypt instead of SHA-256 + salt.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 45000
   },
   {
@@ -1044,7 +1044,7 @@
     "correct_answer_en": "True",
     "explanation_es": "Con la misma clave y el mismo mensaje, HMAC siempre produce el mismo resultado. Esto es importante para verificar integridad y autenticidad de mensajes.",
     "explanation_en": "With the same key and the same message, HMAC always produces the same result. This is important for verifying message integrity and authenticity.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 45000
   },
   {
@@ -1061,7 +1061,7 @@
     "correct_answer_en": "True",
     "explanation_es": "secrets.token_hex() genera tokens verdaderamente aleatorios cada vez. Es extremadamente improbable que dos tokens generados con secrets sean idénticos (probabilidad ~ 1 en 2^128), así que token1 != token2 es True.",
     "explanation_en": "secrets.token_hex() generates truly random tokens each time. It is extremely unlikely that two tokens generated with secrets are identical (probability ~ 1 in 2^128), so token1 != token2 is True.",
-    "source": "https://nist.gov/publications/detail/sp/800-63b/final",
+    "source": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
     "expected_time_ms": 45000
   },
   {

@@ -11,11 +11,12 @@ from __future__ import annotations
 
 import logging
 from datetime import UTC, datetime
-from typing import Any
+from typing import Any, cast
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
 from pydantic import BaseModel
 from sqlalchemy import delete, select
+from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -99,11 +100,14 @@ async def unsubscribe(
     user: User = Depends(get_current_user),
 ) -> dict[str, Any]:
     """Remove a push subscription for the current user."""
-    result = await db.execute(
-        delete(PushSubscription).where(
-            PushSubscription.user_id == user.id,
-            PushSubscription.endpoint == body.endpoint,
-        )
+    result = cast(
+        "CursorResult[Any]",
+        await db.execute(
+            delete(PushSubscription).where(
+                PushSubscription.user_id == user.id,
+                PushSubscription.endpoint == body.endpoint,
+            )
+        ),
     )
     await db.commit()
     removed = result.rowcount > 0
@@ -159,8 +163,12 @@ async def send_streak_reminders(
         sent = await push_service.send_to_user(
             db,
             candidate.id,
-            title="🔥 Keep your streak alive!",
-            body=f"You have a {candidate.current_streak}-day streak — study something today!",
+            title=push_service.localize(candidate.language, "🔥 ¡No pierdas tu racha!", "🔥 Keep your streak alive!"),
+            body=push_service.localize(
+                candidate.language,
+                f"Llevas {candidate.current_streak} días seguidos — ¡estudia algo hoy!",
+                f"You have a {candidate.current_streak}-day streak — study something today!",
+            ),
             tag="streak-reminder",
         )
         if sent > 0:

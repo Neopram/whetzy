@@ -24,6 +24,7 @@ from httpx import AsyncClient
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.models.content import Domain, Module, Question, Skill, Track
 from app.models.exam import MockExamAttempt
 from app.services import mock_exam as mock_exam_service
@@ -101,6 +102,78 @@ async def cert_seed(db_session: AsyncSession) -> dict:
             )
     await db_session.flush()
     return {"track_id": track.id, "question_ids": question_ids}
+
+
+@pytest_asyncio.fixture
+async def cert_seed_reserved(db_session: AsyncSession, cert_seed: dict) -> dict:
+    """Marks 8 of `cert_seed`'s 12-per-domain questions "simulacro" — still
+    comfortably more than any single domain's allocation (the largest is
+    d3's 7 in `_EXPECTED_MIX`) and less than the full 12, so a test that
+    forgets to filter draws from outside the reserved set too."""
+    reserved_ids = [qid for qid in cert_seed["question_ids"] if int(qid.rsplit("_", 1)[1]) < 8]
+    await db_session.execute(
+        Question.__table__.update().where(Question.id.in_(reserved_ids)).values(pool="simulacro")
+    )
+    await db_session.commit()
+    return {**cert_seed, "reserved_ids": set(reserved_ids)}
+
+
+# ── 37.18: reserved mock-exam pool (ADR-53 §4) ──────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_reserved_pool_off_by_default_draws_the_full_bank(
+    client: AsyncClient, auth_headers: dict[str, str], cert_seed_reserved: dict
+) -> None:
+    assert settings.MOCK_EXAM_RESERVED_POOL_ENABLED is False
+    res = await client.post(
+        f"{BASE}/mock/start", json={"track_id": cert_seed_reserved["track_id"]}, headers=auth_headers
+    )
+    assert res.status_code == 201, res.text
+    drawn = {q["id"] for q in res.json()["questions"]}
+    # With the flag off, marking half the bank "simulacro" must change nothing:
+    # some drawn questions fall outside the reserved half.
+    assert drawn - cert_seed_reserved["reserved_ids"], (
+        "flag off must still draw from the whole bank, same as before 37.18"
+    )
+
+
+@pytest.mark.asyncio
+async def test_reserved_pool_on_never_draws_outside_it(
+    client: AsyncClient,
+    auth_headers: dict[str, str],
+    cert_seed_reserved: dict,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(settings, "MOCK_EXAM_RESERVED_POOL_ENABLED", True)
+    res = await client.post(
+        f"{BASE}/mock/start", json={"track_id": cert_seed_reserved["track_id"]}, headers=auth_headers
+    )
+    assert res.status_code == 201, res.text
+    drawn = {q["id"] for q in res.json()["questions"]}
+    assert drawn.issubset(cert_seed_reserved["reserved_ids"]), (
+        f"drew outside the reserved pool: {drawn - cert_seed_reserved['reserved_ids']}"
+    )
+
+
+@pytest.mark.asyncio
+async def test_reserved_pool_on_refuses_a_track_with_no_reserved_questions(
+    client: AsyncClient,
+    auth_headers: dict[str, str],
+    cert_seed: dict,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """`cert_seed` (unlike `cert_seed_reserved`) marks nothing "simulacro" —
+    the realistic state of every certification today. Turning the flag on
+    must refuse cleanly (`MockExamError`, tested directly against the
+    service in `test_start_rejects_a_non_certification_track`'s style of
+    fixture), not silently serve a shorter or wrong exam."""
+    monkeypatch.setattr(settings, "MOCK_EXAM_RESERVED_POOL_ENABLED", True)
+    res = await client.post(
+        f"{BASE}/mock/start", json={"track_id": cert_seed["track_id"]}, headers=auth_headers
+    )
+    assert res.status_code == 400, res.text
+    assert "not enough questions" in res.json()["detail"]
 
 
 # ── Question selection ────────────────────────────────────────────────────────

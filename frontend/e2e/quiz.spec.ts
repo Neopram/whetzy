@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { registerUser, answerCurrentQuestion, uniqueUsername } from './helpers';
+import { registerUser, answerCurrentQuestion, markLessonSeen, uniqueUsername } from './helpers';
 
 test.describe('quiz', () => {
   test('completes a 10-question study session end to end', async ({ page }) => {
     const username = uniqueUsername('e2e_quiz_');
     await registerUser(page, { username, displayName: 'E2E Quiz' });
+    // 32.4 gates "study" mode on having viewed the skill's lesson first.
+    await markLessonSeen(page);
 
     await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
     await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });

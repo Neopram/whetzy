@@ -143,6 +143,57 @@ async def test_unsubscribe_unknown_endpoint_returns_false(client, user):
     assert r.json()["unsubscribed"] is False
 
 
+# ── Streak reminder push is in the recipient's own language (23.1) ────────────
+
+
+async def _eligible_streak_user(db_session, *, language: str) -> User:
+    from app.core.security import get_password_hash
+
+    u = User(
+        id=uuid.uuid4(),
+        email=f"streak-{uuid.uuid4().hex[:6]}@whetzy.test",
+        username=f"streak{uuid.uuid4().hex[:6]}",
+        hashed_password=get_password_hash("Passw0rd!"),
+        display_name="Streaker",
+        language=language,
+        current_streak=7,
+        push_streak_enabled=True,
+    )
+    db_session.add(u)
+    await db_session.commit()
+    return u
+
+
+async def test_streak_reminder_is_spanish_for_a_spanish_user(client, db_session, monkeypatch):
+    monkeypatch.setattr("app.core.config.settings.CONTENT_ADMIN_KEY", "test-admin-key")
+    await _eligible_streak_user(db_session, language="es")
+
+    push_mock = AsyncMock(return_value=1)
+    with patch("app.api.v1.endpoints.push.push_service.send_to_user", push_mock):
+        r = await client.post(
+            f"{PUSH}/streak-reminder", headers=_h({"X-Admin-Key": "test-admin-key"})
+        )
+    assert r.status_code == 200, r.text
+    assert r.json()["notified_users"] == 1
+    push_mock.assert_called_once()
+    assert push_mock.call_args.kwargs["title"] == "🔥 ¡No pierdas tu racha!"
+    assert "Llevas 7 días seguidos" in push_mock.call_args.kwargs["body"]
+
+
+async def test_streak_reminder_is_english_for_an_english_user(client, db_session, monkeypatch):
+    monkeypatch.setattr("app.core.config.settings.CONTENT_ADMIN_KEY", "test-admin-key")
+    await _eligible_streak_user(db_session, language="en")
+
+    push_mock = AsyncMock(return_value=1)
+    with patch("app.api.v1.endpoints.push.push_service.send_to_user", push_mock):
+        r = await client.post(
+            f"{PUSH}/streak-reminder", headers=_h({"X-Admin-Key": "test-admin-key"})
+        )
+    assert r.status_code == 200, r.text
+    assert push_mock.call_args.kwargs["title"] == "🔥 Keep your streak alive!"
+    assert "You have a 7-day streak" in push_mock.call_args.kwargs["body"]
+
+
 # ── Duel challenge fires push (mocked) ────────────────────────────────────────
 
 
@@ -177,7 +228,8 @@ async def test_duel_challenge_sends_push_to_opponent(
     # That's expected — we just check push was attempted if challenge succeeded
     if r.status_code == 201:
         push_mock.assert_called_once()
-        call_kwargs = push_mock.call_args
-        assert call_kwargs.args[2] == "⚔️ You've been challenged!"
+        # opponent.language == "es" (23.1): the title must follow the
+        # recipient's language, not always English.
+        assert push_mock.call_args.kwargs["title"] == "⚔️ ¡Te han retado!"
     else:
         assert r.status_code == 422  # not enough questions — acceptable

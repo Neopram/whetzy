@@ -27,6 +27,12 @@ def _ip() -> str:
     return f"203.0.113.{n % 255 or 255}"
 
 
+async def _see_lesson(db_session, user, *skill_ids: str) -> None:
+    for skill_id in skill_ids:
+        db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
+    await db_session.commit()
+
+
 def _h(extra: dict | None = None) -> dict:
     headers = {"X-Forwarded-For": _ip()}
     if extra:

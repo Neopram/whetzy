@@ -30,10 +30,27 @@ from collections import defaultdict
 from pathlib import Path
 
 CONTENT = Path(__file__).resolve().parent.parent / "content" / "questions"
+# Excludes ')' from the match entirely, on purpose: it's the closing paren
+# of a parenthetical or markdown link around the URL far more often than
+# it's part of the URL itself.
 URL_RE = re.compile(r"https?://[^\s)]+")
 TIMEOUT = 20
 # A plain urllib request with no User-Agent is rejected by several docs sites.
 HEADERS = {"User-Agent": "whetzy-content-source-check/1.0 (+https://whetzy.com)"}
+
+
+def _reattach_balanced_paren(url: str, source: str) -> str:
+    """URL_RE stops at ')', so a URL that legitimately contains one (Wikipedia's
+    disambiguation pages: `.../Cross-validation_(statistics)`) gets truncated
+    right before it -- and the truncated, now-wrong URL 404s, a false positive
+    this script itself created. If the very next character in `source` is the
+    ')' that balances an unmatched '(' inside the match, it belongs to the URL:
+    put it back."""
+    if url.count("(") > url.count(")"):
+        idx = source.find(url) + len(url)
+        if idx < len(source) and source[idx] == ")":
+            return url + ")"
+    return url
 
 
 def load_questions(track_filter: str | None) -> list[dict]:
@@ -82,6 +99,7 @@ def main() -> int:
             unverifiable += 1
             continue
         for url in found:
+            url = _reattach_balanced_paren(url, source)
             urls[url.rstrip(".,;")].add(q["id"])
 
     print(f"\n{len(questions)} questions, {len(urls)} distinct URLs to check")

@@ -21,7 +21,10 @@ import json
 import time
 from unittest.mock import MagicMock
 
+from sqlalchemy import select
+
 from app.core.security import create_access_token
+from app.models.analytics import AnalyticsEvent
 from app.models.user import User
 
 BILLING = "/api/v1/billing"
@@ -160,6 +163,61 @@ async def test_webhook_checkout_completed_activates_subscription(
     assert user.stripe_subscription_id == FAKE_SUB_ID
     assert user.subscription_status == "active"
     assert user.subscription_tier == "plus"
+
+    # 37.20: the false->true transition fires subscription_started exactly once.
+    events = (
+        await db_session.execute(
+            select(AnalyticsEvent).where(
+                AnalyticsEvent.user_id == user.id,
+                AnalyticsEvent.event_type == "subscription_started",
+            )
+        )
+    ).scalars().all()
+    assert len(events) == 1
+
+
+async def test_webhook_renewal_of_already_premium_user_does_not_refire_conversion_event(
+    client, user, db_session, monkeypatch
+):
+    user.stripe_customer_id = FAKE_CUSTOMER_ID
+    user.stripe_subscription_id = FAKE_SUB_ID
+    user.is_premium = True
+    user.subscription_status = "active"
+    user.subscription_tier = "plus"
+    await db_session.commit()
+
+    mock_stripe = _make_stripe_mock()
+    monkeypatch.setattr("app.services.stripe_service.stripe", mock_stripe)
+    monkeypatch.setattr("app.core.config.settings.STRIPE_SECRET_KEY", "sk_test_fake")
+    monkeypatch.setattr("app.core.config.settings.STRIPE_WEBHOOK_SECRET", "whsec_test")
+    monkeypatch.setattr("app.core.config.settings.STRIPE_PRICE_PLUS", FAKE_PRICE_PLUS)
+
+    # A renewal: still active, same tier — is_premium stays True throughout.
+    sub = _fake_sub(status="active", price_id=FAKE_PRICE_PLUS)
+    sub["customer"] = FAKE_CUSTOMER_ID
+    event = _fake_stripe_event("customer.subscription.updated", sub)
+    payload = json.dumps(event).encode()
+    mock_stripe.Webhook.construct_event = MagicMock(return_value=event)
+
+    r = await client.post(
+        f"{BILLING}/webhook",
+        content=payload,
+        headers={**_h(), "stripe-signature": "t=1,v1=fake", "Content-Type": "application/json"},
+    )
+    assert r.status_code == 200
+
+    await db_session.refresh(user)
+    assert user.is_premium is True
+
+    events = (
+        await db_session.execute(
+            select(AnalyticsEvent).where(
+                AnalyticsEvent.user_id == user.id,
+                AnalyticsEvent.event_type == "subscription_started",
+            )
+        )
+    ).scalars().all()
+    assert len(events) == 0
 
 
 async def test_webhook_subscription_deleted_cancels(client, user, db_session, monkeypatch):

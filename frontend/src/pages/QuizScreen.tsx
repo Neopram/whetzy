@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason } from '../services/api';
+import { quiz as quizApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason } from '../services/api';
 import { enqueue } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
@@ -109,11 +109,28 @@ export function QuizScreen() {
         setSelectionReason(res.selection_reason ?? null);
         questionStart.current = Date.now();
         setLoading(false);
-        if (!res.question) setError(t('quiz.noQuestions'));
+        // `question: null` is a normal (non-error) outcome the `!question`
+        // early return below already renders — it reads selection_reason to
+        // tell "needs_lesson" from any other empty pool. Setting `error`
+        // here used to short-circuit straight past that branch (the `error`
+        // early return comes first), so a fresh account always saw the
+        // generic "no questions" dead end instead of the lesson-gate CTA.
       })
       .catch((e) => {
         if (cancelled) return;
-        setError(e instanceof Error ? e.message : 'Error');
+        // Free-tier daily quota (39.4/39.34): a friendly message with the reset
+        // time, not the generic "HTTP 429" the request() layer used to collapse
+        // this structured detail into.
+        if (isQuotaError(e)) {
+          setError(
+            t('quiz.quotaReachedQuestions', {
+              limit: e.detail.limit,
+              time: new Date(e.detail.resets_at).toLocaleTimeString(),
+            }),
+          );
+        } else {
+          setError(e instanceof Error ? e.message : 'Error');
+        }
         setLoading(false);
       });
     return () => { cancelled = true; };
@@ -325,11 +342,34 @@ export function QuizScreen() {
     setScreen('profile');
   }, [setScreen]);
 
+  const handleGoToLesson = useCallback(() => {
+    resetQuiz();
+    setScreen('tracks');
+  }, [resetQuiz, setScreen]);
+
   // ── Early returns ──────────────────────────────────────────────────────
   if (loading) return <QuizLoader />;
   if (error) return <QuizError message={error} onClose={handleClose} />;
   if (summary) return <SessionSummary summary={summary} onClose={handleClose} />;
-  if (!question) return <QuizError message={t('quiz.noQuestions')} onClose={handleClose} />;
+  if (!question) {
+    // 32.4 gates "study"/"review" on having viewed the skill's lesson first
+    // (lesson_gate.py) and already tells the frontend why via
+    // selection_reason.pool — but until now nothing here read it, so a
+    // brand-new user hitting "ESTUDIAR AHORA" on Home (which starts a study
+    // session with no skill pinned) landed on a dead-end "no questions"
+    // screen instead of being pointed at a lesson.
+    if (selectionReason?.pool === 'needs_lesson') {
+      return (
+        <QuizError
+          message={t('quiz.needsLessonMessage')}
+          onClose={handleClose}
+          actionLabel={t('quiz.needsLessonAction')}
+          onAction={handleGoToLesson}
+        />
+      );
+    }
+    return <QuizError message={t('quiz.noQuestions')} onClose={handleClose} />;
+  }
 
   const qText = viewLang === 'es' ? question.question_es : question.question_en;
   const options = (viewLang === 'es' ? question.options_es : question.options_en) ?? [];
@@ -724,14 +764,27 @@ function QuizLoader() {
   );
 }
 
-function QuizError({ message, onClose }: { message: string; onClose: () => void }) {
+function QuizError({
+  message,
+  onClose,
+  actionLabel,
+  onAction,
+}: {
+  message: string;
+  onClose: () => void;
+  actionLabel?: string;
+  onAction?: () => void;
+}) {
   const { t } = useTranslation();
   return (
     <div className={styles.summary}>
       <span style={{ fontSize: '3rem' }}>🤔</span>
       <h1 className={styles.summaryTitle}>{t('quiz.noQuestionsAvail')}</h1>
       <p className={styles.summaryAccuracy}>{message}</p>
-      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: 'var(--le-space-xl)' }}>{t('back')}</button>
+      {actionLabel && onAction && (
+        <button className={styles.btnStudy} onClick={onAction} style={{ marginTop: 'var(--le-space-xl)' }}>{actionLabel}</button>
+      )}
+      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: actionLabel ? 'var(--le-space-sm)' : 'var(--le-space-xl)' }}>{t('back')}</button>
     </div>
   );
 }

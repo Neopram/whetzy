@@ -116,6 +116,26 @@ async def test_un_track_sin_preguntas_respondibles_lo_dice(client, auth_headers,
     assert "answered by choosing" in r.json()["detail"]
 
 
+async def test_una_pregunta_reservada_para_simulacro_no_entra_en_el_pool(
+    db_session, track_mixto
+) -> None:
+    """37.18/ADR-53 §4: la colocacion no es el simulacro de certificacion.
+
+    Una pregunta con `pool == "simulacro"` es del banco reservado para el
+    examen de practica de una certificacion — debe quedar fuera de la prueba
+    de nivelacion siempre, no solo detras de `MOCK_EXAM_RESERVED_POOL_ENABLED`
+    (ese flag solo gobierna el "solo reservadas" del propio simulacro).
+    """
+    reservada = _pregunta("q_pool_reservada", "sk_pool", "mcq")
+    reservada.pool = "simulacro"
+    db_session.add(reservada)
+    await db_session.commit()
+
+    items = await _track_item_pool(db_session, track_mixto)
+
+    assert "q_pool_reservada" not in {i.item_id for i in items}
+
+
 async def test_una_true_false_sin_opciones_no_entra_en_el_pool(db_session, track_mixto) -> None:
     """El tipo no basta: hace falta con que corregir.
 

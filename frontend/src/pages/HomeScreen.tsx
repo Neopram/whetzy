@@ -36,6 +36,16 @@ export function HomeScreen() {
   const streak = dash.data?.current_streak ?? user.currentStreak;
   const topTrack = dash.data?.tracks.slice().sort((a, b) => a.average_mastery - b.average_mastery)[0];
 
+  // Elo medio real de las skills con al menos un intento (24.4: lo que aquí
+  // se llamaba "nivel" era XP, no Elo — el motor sí calcula un Elo por
+  // skill, `skills.data[].elo_rating`, y no se mostraba en ningún sitio).
+  // undefined mientras no haya ninguna skill con intentos: mostrar 1500 (el
+  // valor de arranque, sin señal real) sería un dato inventado.
+  const practicedSkills = skills.data?.filter((s) => s.attempts > 0) ?? [];
+  const avgElo = practicedSkills.length > 0
+    ? Math.round(practicedSkills.reduce((sum, s) => sum + s.elo_rating, 0) / practicedSkills.length)
+    : undefined;
+
   return (
     <motion.div
       className={styles.screen}
@@ -180,7 +190,7 @@ export function HomeScreen() {
         <Card>
           <div className={styles.cardHeader}>
             <h2 className={styles.cardTitle}>
-              {t('home.yourStreak')}: {streak} {t('home.days')}{' '}
+              {t('home.yourStreak')}: {streak} {t('home.days', { count: streak })}{' '}
               <motion.span variants={flickerVariants} animate="animate" style={{ display: 'inline-block' }}>🔥</motion.span>
             </h2>
             <span className={`${styles.badge} ${styles.badgeSuccess}`}>
@@ -267,7 +277,14 @@ export function HomeScreen() {
           es de 24.4; el numero, a diferencia de entonces, sale del motor. */}
       {(skills.data?.length ?? 0) > 0 && (
         <motion.section className={styles.territory} variants={listItemVariants}>
-          <h2 className={styles.sectionTitle}>{t('home.territory')}</h2>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.sectionTitle}>{t('home.territory')}</h2>
+            {avgElo !== undefined && (
+              <span className={`${styles.badge} ${styles.badgeSuccess}`} title={t('home.eloHint')}>
+                {t('home.eloLabel')}: {avgElo}
+              </span>
+            )}
+          </div>
           <div className={styles.territoryGrid}>
             {skills.data!
               .slice()

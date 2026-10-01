@@ -5,11 +5,15 @@
 
 | Field | Value | Requirement |
 |---|---|---|
-| `compileSdkVersion` | 35 (Android 15) | — |
-| `targetSdkVersion` | **35** | ≥ 34 required for new apps (Google policy Nov 2024) |
+| `compileSdkVersion` | **36** (Android 16) | — |
+| `targetSdkVersion` | **36** | New apps and updates must target API 36 since **2026-08-31** (Google policy, extension to 2026-11-01 available); antes decía 35, un mes por detrás del plazo |
 | `minSdkVersion` | 23 (Android 6.0) | Covers ~99 % of active devices |
 
-Source: `frontend/android/variables.gradle`. **No change needed.**
+Source: `frontend/android/variables.gradle`. Verificado en vivo el 2026-09-30 contra
+`support.google.com/googleplay/android-developer/answer/11926878`, y verificado con una
+compilación real (`./gradlew assembleDebug`, AGP 8.7.2, SDK 36 instalado ad-hoc para la
+prueba): `BUILD SUCCESSFUL`, APK de 14,5 MB generado. No se pudo probar `bundleRelease`
+(necesita el keystore de firma, H-bloqueado).
 
 ---
 
@@ -22,7 +26,7 @@ Source: `frontend/android/variables.gradle`. **No change needed.**
 **Yes** — all traffic goes to `https://api-production-9751.up.railway.app` (TLS).
 
 ### 2.3 Do you provide a way for users to request that their data is deleted?
-**Yes** — `DELETE /api/v1/auth/me` endpoint; link in ProfileScreen → LegalScreen → `/delete-account`.
+**Yes** — `DELETE /api/v1/auth/me/account` endpoint (bajo `/auth`, no `/me` a secas); link in ProfileScreen → LegalScreen → `/delete-account`.
 
 ---
 

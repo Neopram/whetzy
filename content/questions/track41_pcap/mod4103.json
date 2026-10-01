@@ -1524,27 +1524,27 @@
       "id": "q410103_068",
       "skill_id": "sk410302",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con estructuras de datos?",
-      "question_en": "What is the output with data structures?",
-      "code": "class A:\n  pass\na=A()\nprint(type(a).__name__)",
-      "correct_answer_es": "A",
-      "correct_answer_en": "A",
-      "explanation_es": "A es una clase vacía (pass) y a = A() crea una instancia suya; type(a) es la clase A, y su atributo __name__ es la cadena «A», el nombre con el que se definió la clase (variante 1 de este mismo patrón en el banco).",
-      "explanation_en": "A is an empty class (pass) and a = A() creates an instance of it; type(a) is the class A, and its __name__ attribute is the string “A”, the name the class was defined with (variant 1 of this same pattern in the bank).",
+      "question_es": "¿Cuál es la salida con herencia?",
+      "question_en": "What is the output with inheritance?",
+      "code": "class Base:\n    def greet(self):\n        return 'hi'\n\nclass Child(Base):\n    pass\n\nc = Child()\nprint(c.greet())",
+      "correct_answer_es": "hi",
+      "correct_answer_en": "hi",
+      "explanation_es": "`Child` no define ningún método propio (`pass`), pero hereda de `Base`. Al llamar `c.greet()`, Python busca `greet` primero en `Child` (no está), y luego en `Base`, donde sí lo encuentra: se ejecuta el método heredado y devuelve `'hi'`.",
+      "explanation_en": "`Child` defines no methods of its own (`pass`), but inherits from `Base`. When `c.greet()` is called, Python looks for `greet` on `Child` first (not there), then on `Base`, where it finds it: the inherited method runs and returns `'hi'`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "A",
-        "a",
-        "[A]",
-        "(A,)"
+        "Error: AttributeError",
+        "None",
+        "hi",
+        "Error: TypeError"
       ],
       "options_en": [
-        "A",
-        "a",
-        "[A]",
-        "(A,)"
+        "Error: AttributeError",
+        "None",
+        "hi",
+        "Error: TypeError"
       ],
-      "correct_index": 0
+      "correct_index": 2
     },
     {
       "id": "q410103_069",
@@ -1576,27 +1576,27 @@
       "id": "q410103_070",
       "skill_id": "sk410304",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con manejo de excepciones?",
-      "question_en": "What is the output with exception handling?",
-      "code": "print(hasattr([], 'append'))",
+      "question_es": "¿Cuál es la salida con un método especial?",
+      "question_en": "What is the output with a special method?",
+      "code": "class Box:\n    def __init__(self, size):\n        self.size = size\n    def __eq__(self, other):\n        return self.size == other.size\n\nprint(Box(5) == Box(5))",
       "correct_answer_es": "True",
       "correct_answer_en": "True",
-      "explanation_es": "[] es una lista, y append es un método definido en el tipo list, así que hasattr busca el atributo en la instancia y en su clase y lo encuentra: el resultado es True (variante 1 de este mismo patrón en el banco).",
-      "explanation_en": "[] is a list, and append is a method defined on the list type, so hasattr looks up the attribute on the instance and its class and finds it: the result is True (variant 1 of this same pattern in the bank).",
+      "explanation_es": "Sin `__eq__`, `==` entre dos objetos compararía identidad (serían distintos, como con `is`). Al definir `__eq__`, `Box(5) == Box(5)` llama a ese método especial en vez de la comparación por defecto, y como ambos `size` valen 5, devuelve `True` aunque sean dos instancias distintas en memoria.",
+      "explanation_en": "Without `__eq__`, `==` between two objects would compare identity (they'd be different, as with `is`). Defining `__eq__` makes `Box(5) == Box(5)` call that special method instead of the default comparison, and since both `size` values are 5, it returns `True` even though they're two different instances in memory.",
       "source": "https://docs.python.org/3/",
       "options_es": [
+        "False",
+        "Error: TypeError",
         "True",
-        "Error",
-        "None",
-        "False"
+        "None"
       ],
       "options_en": [
+        "False",
+        "Error: TypeError",
         "True",
-        "Error",
-        "None",
-        "False"
+        "None"
       ],
-      "correct_index": 0
+      "correct_index": 2
     },
     {
       "id": "q410103_071",
@@ -1628,25 +1628,25 @@
       "id": "q410103_072",
       "skill_id": "sk410302",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con closures?",
-      "question_en": "What is the output with closures?",
-      "code": "class A:\n  def __init__(self): self.x=1\na=A()\nprint(a.x)",
-      "correct_answer_es": "1",
-      "correct_answer_en": "1",
-      "explanation_es": "El código ejecuta A().__init__, que asigna self.x = 1 a la instancia; a.x devuelve ese valor, así que print(a.x) imprime «1». No hay error porque __init__ define el atributo antes de que se lea (variante 2 de este mismo patrón en el banco).",
-      "explanation_en": "The code runs A().__init__, which assigns self.x = 1 on the instance; a.x returns that value, so print(a.x) prints “1”. There is no error because __init__ sets the attribute before it is read (variant 2 of this same pattern in the bank).",
+      "question_es": "¿Cuál es la salida sobrescribiendo un método heredado?",
+      "question_en": "What is the output overriding an inherited method?",
+      "code": "class Animal:\n    def speak(self):\n        return '...'\n\nclass Dog(Animal):\n    def speak(self):\n        return 'Woof'\n\nd = Dog()\nprint(d.speak())",
+      "correct_answer_es": "Woof",
+      "correct_answer_en": "Woof",
+      "explanation_es": "`Dog` hereda de `Animal` pero define su propio `speak`, que sobrescribe (override) al de la clase base. Al llamar `d.speak()`, Python usa el método más específico de `Dog`, no el de `Animal`, así que imprime `Woof`, no `...`.",
+      "explanation_en": "`Dog` inherits from `Animal` but defines its own `speak`, which overrides the base class's version. Calling `d.speak()` makes Python use `Dog`'s more specific method, not `Animal`'s, so it prints `Woof`, not `...`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "0",
+        "...",
         "Error: TypeError",
-        "1",
-        "2"
+        "Woof",
+        "None"
       ],
       "options_en": [
-        "0",
+        "...",
         "Error: TypeError",
-        "1",
-        "2"
+        "Woof",
+        "None"
       ],
       "correct_index": 2
     },
@@ -1654,51 +1654,51 @@
       "id": "q410103_073",
       "skill_id": "sk410303",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida en procesamiento de archivos?",
-      "question_en": "What is the output in file processing?",
-      "code": "class A:\n  pass\na=A()\nprint(type(a).__name__)",
-      "correct_answer_es": "A",
-      "correct_answer_en": "A",
-      "explanation_es": "A es una clase vacía (pass) y a = A() crea una instancia suya; type(a) es la clase A, y su atributo __name__ es la cadena «A», el nombre con el que se definió la clase (variante 2 de este mismo patrón en el banco).",
-      "explanation_en": "A is an empty class (pass) and a = A() creates an instance of it; type(a) is the class A, and its __name__ attribute is the string “A”, the name the class was defined with (variant 2 of this same pattern in the bank).",
+      "question_es": "¿Cuál es la salida con polimorfismo?",
+      "question_en": "What is the output with polymorphism?",
+      "code": "class Cat:\n    def speak(self):\n        return 'Meow'\n\nclass Cow:\n    def speak(self):\n        return 'Moo'\n\ndef announce(animal):\n    return animal.speak()\n\nprint(announce(Cow()))",
+      "correct_answer_es": "Moo",
+      "correct_answer_en": "Moo",
+      "explanation_es": "`Cat` y `Cow` no comparten ninguna clase base, pero ambas tienen un método `speak`: es polimorfismo por duck typing, no por herencia. `announce` no comprueba el tipo de `animal`, solo llama a `.speak()`; con una `Cow` como argumento, ejecuta el `speak` de `Cow` e imprime `Moo`.",
+      "explanation_en": "`Cat` and `Cow` share no base class, but both have a `speak` method: this is duck-typing polymorphism, not inheritance-based. `announce` never checks `animal`'s type, it just calls `.speak()`; given a `Cow`, it runs `Cow`'s `speak` and prints `Moo`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "[A]",
-        "A",
-        "a",
-        "(A,)"
+        "Meow",
+        "Error: AttributeError",
+        "Moo",
+        "None"
       ],
       "options_en": [
-        "[A]",
-        "A",
-        "a",
-        "(A,)"
+        "Meow",
+        "Error: AttributeError",
+        "Moo",
+        "None"
       ],
-      "correct_index": 1
+      "correct_index": 2
     },
     {
       "id": "q410103_074",
       "skill_id": "sk410304",
       "type": "code_output",
-      "question_es": "¿Cuál es la salida con funciones lambda?",
-      "question_en": "What is the output with lambda functions?",
-      "code": "print(isinstance(1, int))",
-      "correct_answer_es": "True",
-      "correct_answer_en": "True",
-      "explanation_es": "1 es un literal entero, por lo que isinstance(1, int) evalúa a True; en Python 3 no existe una distinción int/long que pudiera cambiar el resultado, así que no hay ambigüedad posible (variante 2 de este mismo patrón en el banco).",
-      "explanation_en": "1 is an integer literal, so isinstance(1, int) evaluates to True; Python 3 has no separate int/long distinction that could change the result, so there is no ambiguity (variant 2 of this same pattern in the bank).",
+      "question_es": "¿Cuál es la salida con __str__?",
+      "question_en": "What is the output with __str__?",
+      "code": "class Point:\n    def __init__(self, x, y):\n        self.x, self.y = x, y\n    def __str__(self):\n        return f'Point({self.x}, {self.y})'\n\np = Point(1, 2)\nprint(str(p))",
+      "correct_answer_es": "Point(1, 2)",
+      "correct_answer_en": "Point(1, 2)",
+      "explanation_es": "Sin `__str__`, `str(p)` daría algo genérico como `<__main__.Point object at 0x...>`. Al definirlo, `str()` (y también `print(p)` directamente) llama a ese método especial en vez de la representación por defecto, así que imprime exactamente lo que `__str__` devuelve: `Point(1, 2)`.",
+      "explanation_en": "Without `__str__`, `str(p)` would give something generic like `<__main__.Point object at 0x...>`. Defining it makes `str()` (and also `print(p)` directly) call that special method instead of the default representation, so it prints exactly what `__str__` returns: `Point(1, 2)`.",
       "source": "https://docs.python.org/3/",
       "options_es": [
-        "False",
-        "Error",
-        "True",
-        "None"
+        "<__main__.Point object at 0x...>",
+        "{'x': 1, 'y': 2}",
+        "Point(1, 2)",
+        "Error: TypeError"
       ],
       "options_en": [
-        "False",
-        "Error",
-        "True",
-        "None"
+        "<__main__.Point object at 0x...>",
+        "{'x': 1, 'y': 2}",
+        "Point(1, 2)",
+        "Error: TypeError"
       ],
       "correct_index": 2
     },

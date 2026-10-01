@@ -185,6 +185,7 @@ async def _upsert_question(db: AsyncSession, q: dict[str, Any]) -> bool:
     question.explanation_es = q.get("explanation_es", "")
     question.explanation_en = q.get("explanation_en", "")
     question.source = q.get("source")
+    question.pool = q.get("pool", "practica")
     question.expected_time_ms = q.get("expected_time_ms", 15000)
     # Preserve content_version — only set on new rows; admin PATCHes bump it and
     # must not be silently reverted by a redeploy (see DECISIONS.md P.9).

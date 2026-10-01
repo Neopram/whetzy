@@ -1,8 +1,8 @@
 # Whetzy — instrucciones del proyecto
 
-Este proyecto se opera de forma autónoma. **Si arrancas sin instrucciones
-específicas del usuario, lee `docs/ORCHESTRATOR.md` y ejecútalo.** No preguntes
-qué hacer; el ledger lo sabe.
+**PAUSA desde el 2026-09-30 (decisión del dueño).** Si arrancas sin
+instrucciones explícitas del dueño, NO ejecutes `docs/ORCHESTRATOR.md`: lee
+`docs/CIERRE_2026-09-30.md`, informa del estado y para.
 
 - Fuente de verdad del progreso: `docs/AUTONOMOUS_STATE.md` — **no lo leas entero**
   (~29.500 tokens). `python scripts/ledger.py next` responde «qué toca ahora» en ~114;
@@ -54,7 +54,7 @@ qué hacer; el ledger lo sabe.
 - Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA **no** se reutiliza (ADR-47, valor por defecto de H.LIC); CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
 - Social login: si existe cualquier OAuth, **Sign in with Apple es obligatorio** antes de enviar a App Store (4.8, ADR-13)
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`
-- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260927_lesson_completions` (44 migraciones)
+- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260930_question_pool` (46 migraciones)
 - LLM: `qwen/qwen3.8-27b` en Groq
 - OpenAPI en `/api/v1/openapi.json`; `POST /quiz/start` devuelve el id en `.question.id`
 

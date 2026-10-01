@@ -185,7 +185,7 @@
       "correct_index": 2,
       "explanation_es": "Un JWT tiene tres partes codificadas en Base64URL y unidas por puntos: el header (algoritmo y tipo), el payload (los claims/afirmaciones, como `sub` y `exp`) y la firma, que valida que el token no fue alterado. Header y payload NO están cifrados, solo codificados: cualquiera puede leerlos.",
       "explanation_en": "A JWT has three Base64URL-encoded parts joined by dots: the header (algorithm and type), the payload (the claims, like `sub` and `exp`), and the signature, which validates that the token wasn't altered. Header and payload are NOT encrypted, only encoded: anyone can read them.",
-      "source": "RFC 7519 — JSON Web Token (JWT)",
+      "source": "RFC 7519 — JSON Web Token (JWT) — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 20000,
       "tags": [
         "auth",
@@ -210,7 +210,7 @@
       "correct_index": 0,
       "explanation_es": "La firma de un JWT garantiza integridad y autenticidad (que no fue modificado), pero NO confidencialidad: el payload solo está codificado en Base64URL, no cifrado, y cualquiera puede decodificarlo. Por eso nunca se guardan secretos (contraseñas, datos sensibles) en el payload de un JWT firmado.",
       "explanation_en": "A JWT's signature guarantees integrity and authenticity (that it wasn't modified), but NOT confidentiality: the payload is only Base64URL-encoded, not encrypted, and anyone can decode it. That's why you never store secrets (passwords, sensitive data) in a signed JWT's payload.",
-      "source": "RFC 7519 §11 / OWASP JWT Cheat Sheet",
+      "source": "RFC 7519 §11 / OWASP JWT Cheat Sheet — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 24000,
       "tags": [
         "auth",
@@ -240,7 +240,7 @@
       "correct_index": 1,
       "explanation_es": "`exp` (expiration time) es un claim estándar que fija cuándo caduca el token; el servidor rechaza tokens expirados. Limitar la vida del token reduce la ventana de abuso si se filtra. El nombre de usuario suele ir en `sub` (subject) y el algoritmo en el header (`alg`).",
       "explanation_en": "`exp` (expiration time) is a standard claim setting when the token expires; the server rejects expired tokens. Limiting the token's lifetime reduces the abuse window if it leaks. The username usually goes in `sub` (subject) and the algorithm in the header (`alg`).",
-      "source": "RFC 7519 §4.1.4 (exp claim)",
+      "source": "RFC 7519 §4.1.4 (exp claim) — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 22000,
       "tags": [
         "auth",
@@ -297,7 +297,7 @@
       "correct_index": 0,
       "explanation_es": "El patrón access/refresh equilibra seguridad y usabilidad: el access token vive poco (minutos) para limitar el daño si se filtra, mientras el refresh token, guardado de forma más segura, permite renovar el acceso. El refresh token sí puede revocarse en el servidor, mitigando la dificultad de revocar JWTs autocontenidos.",
       "explanation_en": "The access/refresh pattern balances security and usability: the access token lives briefly (minutes) to limit damage if leaked, while the refresh token, stored more securely, allows renewing access. The refresh token can be revoked server-side, mitigating the difficulty of revoking self-contained JWTs.",
-      "source": "OAuth 2.0 (RFC 6749 §1.5) / OWASP JWT Cheat Sheet",
+      "source": "OAuth 2.0 (RFC 6749 §1.5) / OWASP JWT Cheat Sheet — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 28000,
       "tags": [
         "auth",
@@ -319,7 +319,7 @@
       "correct_answer_en": "sub",
       "explanation_es": "`sub` (subject) es el claim registrado que identifica al principal del token, típicamente el id del usuario autenticado. Otros claims estándar incluyen `iss` (issuer/emisor), `aud` (audience/destinatario), `iat` (issued at) y `exp` (expiration). Validar `iss` y `aud` es tan importante como validar la firma.",
       "explanation_en": "`sub` (subject) is the registered claim identifying the token's principal, typically the authenticated user's id. Other standard claims include `iss` (issuer), `aud` (audience), `iat` (issued at), and `exp` (expiration). Validating `iss` and `aud` is as important as validating the signature.",
-      "source": "RFC 7519 §4.1.2 (sub claim)",
+      "source": "RFC 7519 §4.1.2 (sub claim) — https://www.rfc-editor.org/rfc/rfc7519",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -349,7 +349,7 @@
       "correct_index": 3,
       "explanation_es": "OAuth 2.0 es un marco de AUTORIZACIÓN delegada: permite que una app obtenga acceso limitado a recursos del usuario (por ejemplo, 'iniciar sesión con Google' o acceder a tus fotos) mediante tokens, sin que la app vea tu contraseña del proveedor. No es un protocolo de autenticación por sí solo; para identidad se usa OpenID Connect encima.",
       "explanation_en": "OAuth 2.0 is a delegated AUTHORIZATION framework: it lets an app get limited access to a user's resources (e.g. 'sign in with Google' or access your photos) via tokens, without the app seeing your provider password. It's not an authentication protocol by itself; for identity, OpenID Connect is layered on top.",
-      "source": "RFC 6749 — OAuth 2.0 Authorization Framework",
+      "source": "RFC 6749 — OAuth 2.0 Authorization Framework — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 22000,
       "tags": [
         "auth",
@@ -374,7 +374,7 @@
       "correct_index": 0,
       "explanation_es": "Una confusión frecuente es tratar OAuth 2.0 como sistema de login. OAuth 2.0 concede autorización (acceso a recursos), no identidad. OpenID Connect añade una capa de autenticación estandarizada (con el `id_token`, un JWT) sobre OAuth 2.0, y es lo que hace posible el 'inicia sesión con...' de forma segura.",
       "explanation_en": "A frequent confusion is treating OAuth 2.0 as a login system. OAuth 2.0 grants authorization (access to resources), not identity. OpenID Connect adds a standardized authentication layer (with the `id_token`, a JWT) on top of OAuth 2.0, and it's what makes 'sign in with...' possible securely.",
-      "source": "OpenID Connect Core 1.0 / RFC 6749",
+      "source": "OpenID Connect Core 1.0 / RFC 6749 — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 24000,
       "tags": [
         "auth",
@@ -404,7 +404,7 @@
       "correct_index": 2,
       "explanation_es": "El resource owner es normalmente el usuario final, dueño de los datos protegidos, que autoriza el acceso. Los otros roles son: el client (la app que pide acceso), el authorization server (emite tokens tras el consentimiento) y el resource server (aloja y sirve los recursos protegidos).",
       "explanation_en": "The resource owner is normally the end user, owner of the protected data, who authorizes access. The other roles are: the client (the app requesting access), the authorization server (issues tokens after consent), and the resource server (hosts and serves the protected resources).",
-      "source": "RFC 6749 §1.1 (Roles)",
+      "source": "RFC 6749 §1.1 (Roles) — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 24000,
       "tags": [
         "auth",
@@ -434,7 +434,7 @@
       "correct_index": 1,
       "explanation_es": "El Authorization Code flow con PKCE (Proof Key for Code Exchange) es hoy el recomendado para clientes públicos (SPAs, móviles): PKCE añade un 'code verifier/challenge' que impide que un atacante que intercepte el código de autorización lo canjee. El Implicit flow y el de password credentials están desaconsejados en OAuth 2.1 por sus riesgos.",
       "explanation_en": "The Authorization Code flow with PKCE (Proof Key for Code Exchange) is today's recommendation for public clients (SPAs, mobile): PKCE adds a 'code verifier/challenge' that stops an attacker who intercepts the authorization code from exchanging it. The Implicit and password-credentials flows are discouraged in OAuth 2.1 due to their risks.",
-      "source": "RFC 7636 (PKCE) / OAuth 2.1 draft",
+      "source": "RFC 7636 (PKCE) / OAuth 2.1 draft — https://www.rfc-editor.org/rfc/rfc7636",
       "expected_time_ms": 32000,
       "tags": [
         "auth",
@@ -460,7 +460,7 @@
       "correct_index": 0,
       "explanation_es": "Los scopes definen el alcance del acceso concedido (por ejemplo, `read:profile`, `write:posts`). Aplicando el principio de mínimo privilegio, la app solo debe pedir los scopes que necesita, y el usuario ve y consiente esos permisos concretos. Un token con scopes limitados reduce el daño potencial si se ve comprometido.",
       "explanation_en": "Scopes define the extent of the granted access (e.g. `read:profile`, `write:posts`). Applying least privilege, the app should request only the scopes it needs, and the user sees and consents to those specific permissions. A token with limited scopes reduces potential damage if compromised.",
-      "source": "RFC 6749 §3.3 (Access Token Scope)",
+      "source": "RFC 6749 §3.3 (Access Token Scope) — https://www.rfc-editor.org/rfc/rfc6749",
       "expected_time_ms": 26000,
       "tags": [
         "auth",
@@ -482,7 +482,7 @@
       "correct_answer_en": "PKCE",
       "explanation_es": "PKCE (Proof Key for Code Exchange, RFC 7636, pronunciado 'pixy') genera un secreto aleatorio (code verifier) del que se deriva un challenge enviado al inicio del flujo. Al canjear el código, el cliente debe presentar el verifier original, impidiendo que un atacante que robe el código de autorización lo use. Es obligatorio en OAuth 2.1 para clientes públicos.",
       "explanation_en": "PKCE (Proof Key for Code Exchange, RFC 7636, pronounced 'pixy') generates a random secret (code verifier) from which a challenge is derived and sent at the start of the flow. When exchanging the code, the client must present the original verifier, preventing an attacker who steals the authorization code from using it. It's mandatory in OAuth 2.1 for public clients.",
-      "source": "RFC 7636 — Proof Key for Code Exchange",
+      "source": "RFC 7636 — Proof Key for Code Exchange — https://www.rfc-editor.org/rfc/rfc7636",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -598,7 +598,7 @@
       "correct_index": 1,
       "explanation_es": "Argon2 (concretamente Argon2id) ganó la Password Hashing Competition en 2015 y es la recomendación por defecto de OWASP: es resistente a ataques con GPU y ASIC por ser 'memory-hard' (consume mucha memoria configurable). bcrypt sigue siendo aceptable. Base64 no es un hash (solo codificación) y MD5/SHA-1 están rotos para este uso.",
       "explanation_en": "Argon2 (specifically Argon2id) won the Password Hashing Competition in 2015 and is OWASP's default recommendation: it resists GPU and ASIC attacks by being 'memory-hard' (consuming a lot of configurable memory). bcrypt remains acceptable. Base64 is not a hash (just encoding) and MD5/SHA-1 are broken for this use.",
-      "source": "OWASP — Password Storage / RFC 9106 (Argon2)",
+      "source": "OWASP — Password Storage / RFC 9106 (Argon2) — https://www.rfc-editor.org/rfc/rfc9106",
       "expected_time_ms": 30000,
       "tags": [
         "auth",
@@ -646,7 +646,7 @@
       "correct_answer_en": "hard",
       "explanation_es": "Un algoritmo 'memory-hard' obliga a usar mucha memoria (no solo CPU) para calcularse, lo que encarece enormemente los ataques con hardware especializado (GPUs, ASICs), que son fuertes en cómputo pero limitados en memoria por núcleo. Argon2id combina resistencia a ataques de canal lateral y a compromisos tiempo-memoria.",
       "explanation_en": "A 'memory-hard' algorithm forces the use of a lot of memory (not just CPU) to compute, which massively raises the cost of attacks with specialized hardware (GPUs, ASICs), strong in computation but limited in per-core memory. Argon2id combines resistance to side-channel attacks and to time-memory trade-offs.",
-      "source": "RFC 9106 — Argon2 (memory-hardness)",
+      "source": "RFC 9106 — Argon2 (memory-hardness) — https://www.rfc-editor.org/rfc/rfc9106",
       "expected_time_ms": 30000,
       "tags": [
         "auth",

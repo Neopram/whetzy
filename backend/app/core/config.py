@@ -222,6 +222,15 @@ class Settings(BaseSettings):
     FREE_DAILY_NEW_QUESTIONS: int = 30
     FREE_DAILY_LESSONS: int = 5
 
+    # Banco de simulacro reservado (37.18, ADR-53 §4): el mecanismo (columna
+    # `pool`, filtros en quiz.py/mock_exam.py) ya existe, pero hoy 0 preguntas
+    # llevan `pool="simulacro"` en ningún track. Encenderlo con el banco vacío
+    # rompería `start_attempt` en las 11 certificaciones con `MockExamError`
+    # ("not enough questions") — apagado hasta que exista contenido reservado
+    # (6x la longitud del examen por certificación), igual que los flags de
+    # arriba esperan a su propia dependencia.
+    MOCK_EXAM_RESERVED_POOL_ENABLED: bool = False
+
     # --- Open Badges 3.0 / Verifiable Credentials (29.10, ADR-37) -----------
     # Ed25519 private key in PEM format. Generate with:
     #   python -c "from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey; from cryptography.hazmat.primitives.serialization import Encoding, PrivateFormat, NoEncryption; k=Ed25519PrivateKey.generate(); print(k.private_bytes(Encoding.PEM, PrivateFormat.PKCS8, NoEncryption()).decode())"
@@ -231,6 +240,23 @@ class Settings(BaseSettings):
 
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"
+
+    # --- RevenueCat / in-app purchases (17.14) ------------------------------
+    # Mobile IAP (StoreKit / Google Play Billing) is the only checkout that
+    # works without a company (ADR-47, legal/h21-decision.md) — RevenueCat is
+    # the client SDK + webhook layer over both stores. Empty by default (no
+    # live keys): the mobile client shows no purchase UI and this webhook
+    # rejects every request until REVENUECAT_WEBHOOK_AUTHORIZATION is set.
+    #
+    # Auth: RevenueCat signs each webhook with the Authorization header value
+    # configured in its dashboard (not HMAC by default — verified live against
+    # revenuecat.com/docs/integrations/webhooks, 2026-09-27); the handler does
+    # a constant-time compare against this same value.
+    REVENUECAT_WEBHOOK_AUTHORIZATION: str = ""
+    # RevenueCat "entitlement identifier" (configured in its dashboard, not a
+    # store product id) → Whetzy tier, same shape as STRIPE_PRICE_* → tier.
+    REVENUECAT_ENTITLEMENT_PLUS: str = ""   # "Pro" ($14.99/mes, ADR-41)
+    REVENUECAT_ENTITLEMENT_PRO: str = ""    # "Pro Max" ($19.99/mes, ADR-41)
 
     # --- Paddle (H.29 - Merchant of Record) ----------------------------------
     PADDLE_API_KEY: str = ""                # pad_live_... or pad_sand_...

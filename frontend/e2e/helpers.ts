@@ -134,11 +134,28 @@ export async function answerCurrentQuestion(page: Page) {
   await expect(page.locator('[class*="explanation_"]')).toBeVisible({ timeout: 10_000 });
 }
 
+/**
+ * Marks a skill's lesson as seen for whoever is signed in on this page,
+ * without any UI interaction — GET /lessons/{skillId} is what LessonScreen
+ * calls to render a lesson, and lessons.py records the view as a side
+ * effect (lesson_gate.record_lesson_seen). Since 32.4, "study"/"review" quiz
+ * candidates are filtered down to skills whose lesson was opened at least
+ * once (lesson_gate.py) — skip this and a fresh account's "ESTUDIAR AHORA"
+ * has no candidates at all, which is what broke this suite the first time
+ * 32.4 shipped (`sk010101`, track01/mod0101, is the module every new
+ * account starts unlocked).
+ */
+export async function markLessonSeen(page: Page, skillId = 'sk010101'): Promise<void> {
+  const res = await page.request.get(`/api/v1/lessons/${skillId}`);
+  if (!res.ok()) throw new Error(`GET /lessons/${skillId} → ${res.status()}: ${await res.text()}`);
+}
+
 /** Registers a user and completes one 10-question study session so they have
  * skill history — required by the backend before /duels/challenge accepts a
  * challenge ("You haven't studied any skill yet"). */
 export async function registerAndCompleteAQuiz(page: Page, opts: { username: string; displayName: string }) {
   await registerUser(page, opts);
+  await markLessonSeen(page);
   await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
   await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
   for (let i = 0; i < 10; i++) {

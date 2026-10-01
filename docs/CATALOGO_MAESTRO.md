@@ -49,7 +49,7 @@ profundidad de producto*, no adquisición.
 | Tracks | **35** (track01–23 + track26–30 + track40–46) | `python scripts/check_docs.py` |
 | Módulos (unidad de presentación en la web; el plan mide skills, ADR-53) | **177** | ídem |
 | Skills | **723** | ídem |
-| Preguntas | **10.989** | `python scripts/check_question_bank.py` |
+| Preguntas | **10.949** | `python scripts/check_question_bank.py` |
 | Lecciones | 656/643 | `pytest tests/content/test_lessons.py` |
 | Glosario | **1.044** | `check_docs.py` |
 | Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9; track41 PCAP Python exec; certs track42–46 exentos) | `check_question_bank.py` |
@@ -59,7 +59,7 @@ profundidad de producto*, no adquisición.
 | Plan ADR-53: tracks en el suelo | 1 de 45 (track01) | `python scripts/catalog_coverage.py` |
 | Suelo (50 skills · 800 preguntas por track) | skills 525/2.250 (23,3 %) · preguntas 8.313/36.000 (23,1 %) | ídem |
 | Ideal (temario de referencia · 20 preguntas por skill) | skills 525/4.819 (10,9 %) · preguntas 8.380/96.380 (8,7 %) | ídem |
-| Certificaciones al suelo | práctica 1.926/2.175 (88,6 %) · banco de simulacro reservado 0/3.120 (0 %) | ídem |
+| Certificaciones al suelo | práctica 1.886/2.175 (86,7 %) · banco de simulacro reservado 0/3.120 (0 %) | ídem |
 
 ---
 
@@ -181,9 +181,19 @@ Los recuentos se reproducen con el comando indicado; no se copian a mano en otro
 | ISC2 | https://www.isc2.org/certifications | 2026-09-25T00:39:21Z | 200 | CISSP, CCSP, CSSLP, CGRC… |
 | Linux Foundation | https://training.linuxfoundation.org/certification-catalog/ | 2026-09-25T00:39:21Z | 200 | KCNA, CKA, CKAD, CKS, CGOA… |
 | CompTIA | https://www.comptia.org/certifications | 2026-09-25T00:39:21Z | 200 | catálogo de certificaciones |
+| Microsoft Learn | https://learn.microsoft.com/en-us/credentials/browse/?credential_types=certification | 2026-09-28T16:11Z | 200 | Playwright (arreglado el TLS del proxy de sandbox esta sesión, sin bypass): 74 certificaciones, 3 páginas paginadas, `innerText` completo |
+| Google Cloud | https://cloud.google.com/learn/certification | 2026-09-28T16:11Z | 200 | Playwright: catálogo completo por nivel (Foundational/Associate/Professional) |
 
-Microsoft Learn y Google Cloud no se pudieron leer enteros (páginas que cargan por JS):
-sus certificaciones siguen en §3, con la fuente de su fila.
+**Microsoft Learn (74 certificaciones, 2026-09-28) y Google Cloud, ya legibles.**
+Ninguna certificación de las dos listas abre una categoría de track que no exista ya:
+Microsoft es sobre todo Azure (AI/cloud/seguridad/datos, ya cubierto por 06-08/10/11/13/
+20-25/41), GitHub (track26), Power BI/Fabric (track20/21) y una franja grande de Dynamics
+365 y Office Specialist (aplicaciones de negocio, fuera del foco actual del catálogo —
+no se propone track). Google Cloud: Cloud Digital Leader/Engineer/Architect/Database
+Engineer/DevOps Engineer/Security Engineer/Network Engineer/ML Engineer/Data
+Practitioner/Workspace Administrator, todas dentro de tracks existentes. `Azure AI
+Fundamentals` sigue en la lista como nombre de certificación aunque el examen debajo
+cambió a AI-901 (39.24) — el nombre de marca no cambia con el código del examen.
 
 **Área → track** (roadmap.sh como índice, contrastado con la encuesta y los catálogos):
 
@@ -391,8 +401,8 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | The Open Group | TOGAF Foundation | track05 | ❌ | P3 |
 
 **Hoy: 11 construidas.** Suelo por certificación (`catalog_coverage.py`, 2026-09-30):
-práctica 1.926/2.175 (88,6 %) y banco reservado 0/3.120. Por debajo del suelo de práctica:
-MLA-C01 (8,2 preguntas por skill) y las tres de Microsoft (6,0). Sin objetivos contados:
+práctica 1.886/2.175 (86,7 %) y banco reservado 0/3.120. Por debajo del suelo de práctica:
+MLA-C01 (6,0 preguntas por skill) y las tres de Microsoft (AZ-900 6,3; AI-900 y DP-900 6,0). Sin objetivos contados:
 Security+ SY0-701. Sin longitud de examen publicada: AZ-900, AI-900 y DP-900. La lista de
 arriba es el universo candidato, no una meta de «55»: cada nueva entra por el orden de este §3.
 
@@ -407,7 +417,7 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 |---|---|---|---|
 | Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 723/723 skills con lección | 1 lección de 6–10 min por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
 | Ejemplo resuelto + problema de completar (fading) | solo la lección | 1 secuencia por skill | test de estructura |
-| Práctica adaptativa (quiz) | ✅ 10.989 Q · 15,2 por skill | suelo ≥ 16 por skill (800 por track); ideal 20 por skill | `check_question_bank.py` + `catalog_coverage.py` |
+| Práctica adaptativa (quiz) | ✅ 10.949 Q · 15,1 por skill | suelo ≥ 16 por skill (800 por track); ideal 20 por skill | `check_question_bank.py` + `catalog_coverage.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
 | Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900 y DP-900 (37.19); ISC2 CC aún con el outline de 2022 (37.22); Microsoft no publica el número de preguntas, así que AZ-900, AI-900 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 6 × examen** (0/3.120 hoy) | `test_certification_blueprints.py` + 37.18 |
@@ -529,7 +539,7 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
 | Brilliant | 14 cursos de CS, 35 de matemáticas | curso | [A] brilliant.org/topics/coding |
 | Mimo | 4 rutas de carrera + 8 cursos; lecciones de 5 min | ruta | [A] mimo.org |
 | Tutorials Dojo / Udemy (AWS) | 6 simulacros × 65 = 390 preguntas por examen (Maarek, Bonso); TD: 7–9 simulacros cronometrados | pregunta | [A] (Udemy devolvió 403) |
-| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 723 skills · 10.989 preguntas | skill | `catalog_coverage.py` |
+| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 723 skills · 10.949 preguntas | skill | `catalog_coverage.py` |
 
 **Lectura honesta (2026-09-30):**
 - En **amplitud** Whetzy ya supera a su competencia directa: Boot.dev enseña en 3 rutas y

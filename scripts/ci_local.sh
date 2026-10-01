@@ -28,7 +28,24 @@ BITACORA="$RAIZ/.ci-local"
 mkdir -p "$BITACORA"
 
 if [ "${1:-}" = "--estado" ]; then
-  [ -f "$BITACORA/estado" ] && cat "$BITACORA/estado" || echo "todavia no ha corrido nunca"
+  if [ ! -f "$BITACORA/estado" ]; then
+    echo "todavia no ha corrido nunca"
+    exit 0
+  fi
+  # `estado` se escribe "CORRIENDO" al empezar y solo se sobrescribe con el
+  # veredicto real al terminar normal. Un contenedor pausado/matado a medias
+  # (visto el 2026-09-30: mas de una hora idle entre turnos de la sesion) deja
+  # el cerrojo con un PID muerto y "CORRIENDO" mintiendo para siempre hasta la
+  # proxima corrida que sí termine. `--estado` comprueba el PID antes de fiarse.
+  if grep -q "^CORRIENDO" "$BITACORA/estado" 2>/dev/null; then
+    _pid="$(cat "$BITACORA/corriendo.pid" 2>/dev/null)"
+    if [ -z "$_pid" ] || ! kill -0 "$_pid" 2>/dev/null; then
+      echo "SE INTERRUMPIO SIN TERMINAR (el proceso ya no existe; el cerrojo quedo huerfano)"
+      cat "$BITACORA/estado"
+      exit 0
+    fi
+  fi
+  cat "$BITACORA/estado"
   exit 0
 fi
 
@@ -46,6 +63,21 @@ CACHE_PYTEST="-o cache_dir=$CACHE/pytest"
 # 1,8 GB libres de 14. Dos suites de 25 min compitiendo en esta maquina es
 # exactamente lo que ya mato un run sin dejar traza (ver los gotchas de
 # memoria). El nuevo manda: lleva el commit mas reciente.
+# Mata un PID y todos sus descendientes (recursivo). Hace falta en Linux/Mac:
+# ahi no hay `taskkill /T`, y un `kill -9` suelto sobre el bash del cerrojo
+# deja a `timeout`/`pytest` huerfanos (reparentados a init) corriendo igual,
+# quemando un nucleo cada uno. Medido el 2026-09-27 en un contenedor Linux:
+# 5 pushes seguidos dejaron 5 `pytest tests/` a la vez, y ESE fue el motivo de
+# que el push siguiente diera "backend: suite entera (cuelgue)" — no un fallo
+# real, sino la maquina sin CPU libre para terminar en el limite de 2700 s.
+_matar_arbol() {
+  local pid="$1" hijo
+  for hijo in $(pgrep -P "$pid" 2>/dev/null); do
+    _matar_arbol "$hijo"
+  done
+  kill -9 "$pid" 2>/dev/null
+}
+
 CERROJO="$BITACORA/corriendo.pid"
 if [ -f "$CERROJO" ]; then
   _viejo="$(cat "$CERROJO" 2>/dev/null)"
@@ -65,7 +97,7 @@ if [ -f "$CERROJO" ]; then
       _win_paso="$(cat "$BITACORA/paso.winpid" 2>/dev/null)"
       [ -n "$_win_paso" ] && taskkill //PID "$_win_paso" //T //F >/dev/null 2>&1
     else
-      kill -9 "$_viejo" 2>/dev/null
+      _matar_arbol "$_viejo"
     fi
     sleep 2
   fi
@@ -168,6 +200,17 @@ correr() {  # correr <nombre> <dir> <comando...>
 # que parece colgarse en el 96% cuando lo que pasa es que empiezan los de integracion.
 correr "backend: suite entera" "$ARBOL/backend" \
   python -m pytest tests/ --ignore=tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
+# Tests marcados `slow` (pytest.ini): O(corpus) por construccion, no un
+# presupuesto de reloj fragil -- el de BM25 solo el solito tarda >5 min. La
+# suite de arriba los deselecciona (`-m "not benchmark and not slow"` en
+# addopts) para no arrastrar ese tiempo en cada corrida; van aqui, en su
+# propio paso con veredicto propio, con mas margen que el limite general
+# (decision del dueno 2026-09-30, >=45 min).
+LIMITE_S_PREVIO="$LIMITE_S"
+LIMITE_S=3600
+correr "backend: suite lenta (slow)" "$ARBOL/backend" \
+  python -m pytest tests/ -m slow -q -p no:randomly --tb=short $CACHE_PYTEST
+LIMITE_S="$LIMITE_S_PREVIO"
 correr "backend: contenido"    "$ARBOL/backend" \
   python -m pytest tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
 # `python -m mypy` y no `mypy`: el binario del PATH puede ser otro entorno sin
@@ -205,6 +248,21 @@ if [ -d "$ARBOL/frontend/node_modules" ]; then
     echo "[--] No cuenta como rojo. En CI si corre."
   fi
   correr "frontend: vitest" "$ARBOL/frontend" npm run -s test
+  # Red line 3 (fallbackLng: 'es' nunca se dispara). Existia el script (23.5) y
+  # pasaba, pero no corria en ningun sitio automatico -- ni aqui, ni pre-push,
+  # ni ci.yml -- hasta que la auditoria de 20.7 encontro el hueco.
+  correr "frontend: i18n parity" "$ARBOL/frontend" npm run -s check:i18n
+  # Red line: 30.4 midio "check-prerender PASS" pero el script solo corria en
+  # ci.yml, que nunca se ejecuta por facturacion de GitHub -- igual que el
+  # hueco de "i18n parity" arriba, encontrado por la auditoria de 20.7.
+  # `npm run build` ya llama a scripts/prerender-landing.mjs vía el plugin de
+  # Vite, pero ese script solo comprueba que `data-lcp="hero"` este presente,
+  # no el idioma del texto: un build en Node 21+ puede colar el hero en
+  # ingles (navigator.language del propio Node) sin que `vite build` se
+  # entere. check-prerender.mjs es la unica guarda que lee la copia de verdad.
+  correr "frontend: build (prerender incluido)" "$ARBOL/frontend" npm run -s build
+  correr "frontend: check-prerender" "$ARBOL/frontend" node scripts/check-prerender.mjs
+  correr "frontend: check-dev-only" "$ARBOL/frontend" node scripts/check-dev-only.mjs
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi

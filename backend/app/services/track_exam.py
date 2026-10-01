@@ -156,7 +156,12 @@ async def _answerable_questions_by_skill(
     rows = (
         await db.execute(
             select(Question.skill_id, Question.id, Question.options_es, Question.options_en).where(
-                Question.skill_id.in_(skill_ids)
+                Question.skill_id.in_(skill_ids),
+                # `pool != "simulacro"`: the track final exam is not the
+                # certification mock exam, so a reserved question must never
+                # turn up here (37.18/ADR-53 §4) — same unconditional
+                # exclusion as quiz.py/duels.py/placement.py.
+                Question.pool != "simulacro",
             )
         )
     ).all()

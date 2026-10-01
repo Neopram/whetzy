@@ -22,7 +22,7 @@
       "correct_index": 3,
       "explanation_es": "Un identificador no puede empezar con un dígito ('2var'), no puede contener guiones ('my-var', el guion se interpreta como resta) y no puede ser una palabra reservada ('class'). '_my_var' es válido: puede empezar con guion bajo y contener letras, números y guiones bajos.",
       "explanation_en": "An identifier cannot start with a digit ('2var'), cannot contain hyphens ('my-var', the hyphen is parsed as subtraction), and cannot be a reserved keyword ('class'). '_my_var' is valid: it can start with an underscore and contain letters, digits, and underscores.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding) — https://docs.python.org/3/reference/executionmodel.html#naming-and-binding",
       "expected_time_ms": 15000,
       "tags": [
         "variables",
@@ -47,7 +47,7 @@
       "correct_index": 1,
       "explanation_es": "Python es de tipado dinámico: el tipo se infiere en tiempo de ejecución a partir del valor asignado. Simplemente escribes `x = 5` y Python determina que `x` es un `int`, sin necesidad de declarar `int x` como en lenguajes de tipado estático.",
       "explanation_en": "Python is dynamically typed: the type is inferred at runtime from the assigned value. You simply write `x = 5` and Python determines that `x` is an `int`, with no need to declare `int x` as in statically typed languages.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding) — https://docs.python.org/3/reference/executionmodel.html#naming-and-binding",
       "expected_time_ms": 12000,
       "tags": [
         "variables",
@@ -76,7 +76,7 @@
       "correct_index": 1,
       "explanation_es": "`y = x` hace que `y` apunte al mismo objeto entero `5` al que apunta `x` en ese momento. Como los enteros son inmutables, reasignar `x = 10` simplemente hace que `x` apunte a un objeto distinto (`10`); `y` sigue enlazada al `5` original.",
       "explanation_en": "`y = x` makes `y` point to the same integer object `5` that `x` points to at that moment. Since integers are immutable, reassigning `x = 10` just makes `x` point to a different object (`10`); `y` remains bound to the original `5`.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding) — https://docs.python.org/3/reference/executionmodel.html#naming-and-binding",
       "expected_time_ms": 25000,
       "tags": [
         "variables",
@@ -106,7 +106,7 @@
       "correct_index": 0,
       "explanation_es": "`a, b = b, a` es el idioma clásico de Python para intercambiar valores. El lado derecho se evalúa por completo primero, construyendo la tupla `(2, 1)` con los valores originales, y luego se desempaqueta en `a` y `b`, dejando `a=2, b=1`.",
       "explanation_en": "`a, b = b, a` is the classic Python idiom for swapping values. The right-hand side is fully evaluated first, building the tuple `(2, 1)` from the original values, then it is unpacked into `a` and `b`, leaving `a=2, b=1`.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding) — https://docs.python.org/3/reference/executionmodel.html#naming-and-binding",
       "expected_time_ms": 25000,
       "tags": [
         "variables",
@@ -128,7 +128,7 @@
       "correct_answer_en": "is",
       "explanation_es": "Se recomienda usar el operador `is` (identidad) en lugar de `==` para comparar con `None`, porque `None` es un singleton único en memoria y `is` evita depender de un posible `__eq__` sobrecargado en la clase de `x`.",
       "explanation_en": "It is recommended to use the `is` operator (identity) instead of `==` when comparing with `None`, because `None` is a unique singleton in memory and `is` avoids relying on a possibly overridden `__eq__` on `x`'s class.",
-      "source": "PEP 8 — Programming Recommendations (comparisons to None use 'is'/'is not')",
+      "source": "PEP 8 — Programming Recommendations (comparisons to None use 'is'/'is not') — https://peps.python.org/pep-0008/",
       "expected_time_ms": 30000,
       "tags": [
         "variables",
@@ -485,7 +485,7 @@
       "correct_answer_en": ".2f",
       "explanation_es": "El especificador de formato `.2f` indica un número de punto fijo (`f`) con 2 dígitos decimales, redondeando el valor. `f'{pi:.2f}'` con `pi = 3.14159265` produce `'3.14'`.",
       "explanation_en": "The format spec `.2f` indicates fixed-point notation (`f`) with 2 decimal digits, rounding the value. `f'{pi:.2f}'` with `pi = 3.14159265` produces `'3.14'`.",
-      "source": "PEP 498 — Literal String Interpolation; CPython docs 3.13 — Format Specification Mini-Language",
+      "source": "PEP 498 — Literal String Interpolation; CPython docs 3.13 — Format Specification Mini-Language — https://peps.python.org/pep-0498/",
       "expected_time_ms": 35000,
       "tags": [
         "strings",
@@ -599,7 +599,7 @@
       "correct_index": 2,
       "explanation_es": "PEP 8 recomienda `is None` / `is not None` en lugar de `== None`, porque `None` es un singleton único: `is` compara identidad de objeto de forma rápida y no depende de un `__eq__` personalizado que otra clase pudiera sobrecargar.",
       "explanation_en": "PEP 8 recommends `is None` / `is not None` instead of `== None`, because `None` is a unique singleton: `is` compares object identity directly and doesn't depend on a custom `__eq__` that some other class might override.",
-      "source": "PEP 8 — Programming Recommendations (comparisons to None use 'is'/'is not')",
+      "source": "PEP 8 — Programming Recommendations (comparisons to None use 'is'/'is not') — https://peps.python.org/pep-0008/",
       "expected_time_ms": 18000,
       "tags": [
         "booleans",
@@ -629,7 +629,7 @@
       "correct_index": 2,
       "explanation_es": "En Python, `bool` es una subclase de `int`: `True` equivale numéricamente a `1` y `False` a `0`. Por eso `1 == True` da `True`, e incluso `True + True` da `2`.",
       "explanation_en": "In Python, `bool` is a subclass of `int`: `True` is numerically equivalent to `1` and `False` to `0`. That's why `1 == True` gives `True`, and even `True + True` gives `2`.",
-      "source": "PEP 285 — Adding a bool type (bool is a subclass of int)",
+      "source": "PEP 285 — Adding a bool type (bool is a subclass of int) — https://peps.python.org/pep-0285/",
       "expected_time_ms": 28000,
       "tags": [
         "booleans",

@@ -113,7 +113,14 @@ class RedisRateLimiter(RateLimiter):
                 await redis_client.expire(cache_key, window_seconds)
 
             return bool(count <= limit)
-        except redis.RedisError as e:
+        except (redis.RedisError, RuntimeError, OSError) as e:
+            # Not just redis.RedisError (2026-09-26/27 incident, see __init__):
+            # a torn-down connection can also surface as a plain RuntimeError
+            # ("Event loop is closed") or OSError from asyncio/the transport
+            # itself, underneath redis-py's own exception hierarchy. Any of
+            # them means the same thing here -- Redis is unusable right now --
+            # and the whole point of this fallback is to degrade instead of
+            # raise, so it has to catch whatever shape that unusability takes.
             if not self._fallback_warned:
                 logger.warning("Redis rate limiter error: %s; limiting in memory", e)
                 self._fallback_warned = True

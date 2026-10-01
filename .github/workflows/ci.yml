@@ -33,7 +33,7 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pip-audit pytest-cov mypy ruff==0.16.8
+          pip install -r requirements.txt pip-audit pytest-cov mypy==2.3.1 ruff==0.16.8 types-python-jose types-passlib
 
       - name: Dependency audit (pip-audit)
         # Fails the build if any known vulnerability is found.
@@ -72,6 +72,15 @@ jobs:
             --cov=app \
             --cov-report=term-missing \
             --cov-fail-under=80
+
+      # Tests marked `slow` (pytest.ini): O(corpus) by construction, not a
+      # flaky wall-clock budget — the BM25 self-retrieval one alone takes
+      # >5 min. The step above deselects them via addopts so they don't
+      # dominate every run; own step, own verdict, longer budget (owner's
+      # decision 2026-09-30, >=45 min).
+      - name: Slow tests (own budget)
+        timeout-minutes: 60
+        run: python -m pytest tests/ -m slow --tb=short -q
 
       - name: Upload coverage
         if: always()
@@ -125,6 +134,13 @@ jobs:
 
       - name: No third-party origins in the build (12.7, red line 5)
         run: node scripts/check-no-third-party.mjs
+
+      # Red line 3: fallbackLng: 'es' must never actually trigger. This script
+      # exists (23.5) and passes today, but ran nowhere automated until 20.7's
+      # audit found the gap — neither here nor in .githooks/pre-push nor
+      # scripts/ci_local.sh.
+      - name: i18n parity ES/EN — frontend, emails, legal (23.5, red line 3)
+        run: npm run check:i18n
 
   e2e:
     runs-on: ubuntu-latest

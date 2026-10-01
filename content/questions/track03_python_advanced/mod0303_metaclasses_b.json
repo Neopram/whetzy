@@ -114,7 +114,7 @@
       "correct_index": 0,
       "explanation_es": "El cuerpo de la clase se ejecuta INMEDIATAMENTE, como un bloque de código, dentro del mapping que devuelve `__prepare__`; lo que queda en ese mapping se pasa como tercer argumento a la metaclase. Las opciones perezosas («no se ejecuta hasta...») son tentadoras porque los cuerpos de FUNCIÓN sí son perezosos, pero los de clase no. La opción de `object.__new__` confunde crear una CLASE (trabajo de la metaclase) con crear una INSTANCIA (trabajo de `__new__`/`__init__`).",
       "explanation_en": "The class body runs IMMEDIATELY, as a code block, inside the mapping returned by `__prepare__`; whatever is left in that mapping is passed as the third argument to the metaclass. The lazy options (\"not executed until...\") are tempting because FUNCTION bodies are lazy, but class bodies are not. The `object.__new__` option confuses creating a CLASS (the metaclass's job) with creating an INSTANCE (the job of `__new__`/`__init__`).",
-      "source": "PEP 3115 — Metaclasses in Python 3000",
+      "source": "PEP 3115 — Metaclasses in Python 3000 — https://peps.python.org/pep-3115/",
       "expected_time_ms": 45000,
       "tags": [
         "metaclasses",
@@ -159,7 +159,7 @@
       "correct_answer_en": "new_class",
       "explanation_es": "`types.new_class(name, bases, kwds, exec_body)` reproduce exactamente lo que hace la sentencia `class`: calcula la metaclase adecuada a partir de las bases, llama a su `__prepare__`, deja que `exec_body` rellene el namespace y luego invoca a la metaclase. Llamar directamente a `type(name, bases, ns)` es más corto, pero fuerza `type` como metaclase e ignora `__prepare__`, así que se rompe en cuanto alguna base usa una metaclase propia (`ABCMeta`, por ejemplo).",
       "explanation_en": "`types.new_class(name, bases, kwds, exec_body)` reproduces exactly what the `class` statement does: it computes the appropriate metaclass from the bases, calls its `__prepare__`, lets `exec_body` populate the namespace, and then invokes the metaclass. Calling `type(name, bases, ns)` directly is shorter, but it forces `type` as the metaclass and ignores `__prepare__`, so it breaks as soon as a base uses its own metaclass (`ABCMeta`, for instance).",
-      "source": "PEP 3115 — Metaclasses in Python 3000 / CPython docs 3.13 — types.new_class",
+      "source": "PEP 3115 — Metaclasses in Python 3000 / CPython docs 3.13 — types.new_class — https://peps.python.org/pep-3115/",
       "expected_time_ms": 55000,
       "tags": [
         "metaclasses",
@@ -219,7 +219,7 @@
       "correct_index": 2,
       "explanation_es": "Las palabras clave extra de la cabecera (`nombre=\"csv\"`) se pasan a `__init_subclass__`, que se ejecuta AL DEFINIRSE la subclase — por eso `registrado csv` aparece antes que el `print` final. Además es implícitamente un `classmethod`, sin necesidad del decorador. La opción con el orden invertido es la trampa: quien cree que el hook corre al instanciar coloca esa línea después. `None` sería el resultado si las kwargs de la cabecera se perdieran, que es precisamente lo que PEP 487 vino a evitar sin obligar a escribir una metaclase.",
       "explanation_en": "Extra keywords in the class header (`nombre=\"csv\"`) are passed to `__init_subclass__`, which runs WHEN the subclass is defined — that is why `registrado csv` appears before the final `print`. It is also implicitly a `classmethod`, no decorator needed. The reversed-order option is the trap: whoever thinks the hook runs at instantiation time puts that line second. `None` would be the result if header kwargs were dropped, which is precisely what PEP 487 exists to avoid without forcing you to write a metaclass.",
-      "source": "PEP 487 — Simpler customisation of class creation",
+      "source": "PEP 487 — Simpler customisation of class creation — https://peps.python.org/pep-0487/",
       "expected_time_ms": 50000,
       "tags": [
         "metaclasses",
@@ -279,7 +279,7 @@
       "correct_index": 0,
       "explanation_es": "`__prepare__(mcs, name, bases, **kwds)` se llama ANTES de ejecutar el cuerpo y devuelve el mapping donde se irán escribiendo los nombres definidos en él; ahí es donde se pueden interceptar redefiniciones o registrar el orden de declaración. Validar «después» es trabajo de `__new__`/`__init__` de la metaclase, y «preparar la instancia» confunde el nivel: `__prepare__` opera sobre la CLASE, no sobre sus instancias. Desde Python 3.6 el namespace ya es ordenado por defecto, así que ese motivo histórico por sí solo ya no justifica escribirlo.",
       "explanation_en": "`__prepare__(mcs, name, bases, **kwds)` is called BEFORE the body runs and returns the mapping into which the names defined in it are written; that is where you can intercept redefinitions or record declaration order. Validating \"afterwards\" is the job of the metaclass's `__new__`/`__init__`, and \"preparing the instance\" confuses levels: `__prepare__` operates on the CLASS, not on its instances. Since Python 3.6 the namespace is ordered by default, so that historical motivation alone no longer justifies writing one.",
-      "source": "PEP 3115 — Metaclasses in Python 3000",
+      "source": "PEP 3115 — Metaclasses in Python 3000 — https://peps.python.org/pep-3115/",
       "expected_time_ms": 50000,
       "tags": [
         "metaclasses",

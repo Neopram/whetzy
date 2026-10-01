@@ -135,7 +135,7 @@
       "correct_index": 0,
       "explanation_es": "La comprensión existe para expresar «transforma esto en aquello» de un vistazo. Si hay que releerla dos veces para entenderla, ha dejado de cumplir su función; y para efectos secundarios el bucle es directamente lo correcto.",
       "explanation_en": "A comprehension exists to express 'turn this into that' at a glance. If it takes two readings to understand, it has stopped doing its job; and for side effects a loop is simply the right tool.",
-      "source": "PEP 8 — Style Guide for Python Code / CPython docs §5.1.3",
+      "source": "PEP 8 — Style Guide for Python Code / CPython docs §5.1.3 — https://peps.python.org/pep-0008/",
       "expected_time_ms": 38000,
       "tags": [
         "comprehensions",
@@ -182,7 +182,7 @@
       "correct_index": 2,
       "explanation_es": "El operador morsa guarda el doble en `y` dentro del filtro y permite reutilizarlo en la expresión de salida, sin calcularlo dos veces. Solo pasan los que superan 2: 4 y 6.",
       "explanation_en": "The walrus operator stores the double in `y` inside the filter and lets the output expression reuse it, without computing it twice. Only those above 2 get through: 4 and 6.",
-      "source": "PEP 572 — Assignment Expressions",
+      "source": "PEP 572 — Assignment Expressions — https://peps.python.org/pep-0572/",
       "expected_time_ms": 50000,
       "tags": [
         "comprehensions",
@@ -240,7 +240,7 @@
       "correct_index": 1,
       "explanation_es": "Los paréntesis no crean una tupla aquí: producen un generador. Para una tupla habría que escribir `tuple(x * 2 for x in range(3))`.",
       "explanation_en": "The parentheses do not create a tuple here: they produce a generator. For a tuple you would write `tuple(x * 2 for x in range(3))`.",
-      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions)",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions) — https://docs.python.org/3/tutorial/classes.html#generator-expressions",
       "expected_time_ms": 30000,
       "tags": [
         "generators",
@@ -269,7 +269,7 @@
       "correct_index": 1,
       "explanation_es": "Un generador se agota al recorrerlo: la segunda suma no encuentra nada y da 0. Es la diferencia esencial con una lista, que se puede recorrer cuantas veces haga falta.",
       "explanation_en": "A generator is exhausted once walked: the second sum finds nothing and gives 0. That is the essential difference from a list, which can be walked as many times as needed.",
-      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions)",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions) — https://docs.python.org/3/tutorial/classes.html#generator-expressions",
       "expected_time_ms": 45000,
       "tags": [
         "generators",
@@ -299,7 +299,7 @@
       "correct_index": 3,
       "explanation_es": "No guarda todos los elementos en memoria, lo que importa con millones de filas. Si hay que indexar, ordenar o recorrer dos veces, hace falta la lista.",
       "explanation_en": "It keeps no elements in memory, which matters with millions of rows. If you need to index, sort or walk twice, the list is required.",
-      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions)",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions) — https://docs.python.org/3/tutorial/classes.html#generator-expressions",
       "expected_time_ms": 32000,
       "tags": [
         "generators",
@@ -328,7 +328,7 @@
       "correct_index": 2,
       "explanation_es": "0+1+4+9 = 14. Cuando el generador es el único argumento se pueden omitir sus paréntesis, lo que hace la llamada más limpia sin construir ninguna lista intermedia.",
       "explanation_en": "0+1+4+9 = 14. When the generator is the sole argument its parentheses can be omitted, which keeps the call clean and builds no intermediate list.",
-      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions)",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions) — https://docs.python.org/3/tutorial/classes.html#generator-expressions",
       "expected_time_ms": 40000,
       "tags": [
         "generators",
@@ -429,7 +429,7 @@
       "correct_index": 1,
       "explanation_es": "El generador no copia la lista: la recorre cuando se consume, y para entonces ya tiene el 4. Es cómodo, pero también una fuente de sorpresas si los datos cambian entre la definición y el uso.",
       "explanation_en": "The generator does not copy the list: it walks it when consumed, and by then the 4 is already there. That is convenient, but also a source of surprises when the data changes between definition and use.",
-      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions)",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions) — https://docs.python.org/3/tutorial/classes.html#generator-expressions",
       "expected_time_ms": 50000,
       "tags": [
         "generators",
@@ -546,7 +546,7 @@
       "correct_index": 2,
       "explanation_es": "`yield from` delega en otro iterable y entrega sus elementos uno a uno, en vez de la colección entera. Ahorra escribir un bucle y es la base de los generadores que se componen entre sí.",
       "explanation_en": "`yield from` delegates to another iterable and yields its elements one by one, rather than the whole collection. It saves writing a loop and underpins generators that compose with each other.",
-      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator — https://peps.python.org/pep-0380/",
       "expected_time_ms": 42000,
       "tags": [
         "generators",
@@ -571,7 +571,7 @@
       "correct_index": 0,
       "explanation_es": "La presencia de `yield` convierte la función en generadora al compilarla. Un `return` dentro no devuelve el valor a quien llama: termina la iteración, y ese valor viaja en el `StopIteration`.",
       "explanation_en": "The presence of `yield` turns the function into a generator at compile time. A `return` inside does not hand the value to the caller: it ends the iteration, and that value travels in the `StopIteration`.",
-      "source": "CPython docs 3.13 — The Python Language Reference: Yield expressions / PEP 380",
+      "source": "CPython docs 3.13 — The Python Language Reference: Yield expressions / PEP 380 — https://peps.python.org/pep-0380/",
       "expected_time_ms": 35000,
       "tags": [
         "generators",

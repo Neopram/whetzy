@@ -703,10 +703,10 @@
         "Eliminar todas las filas con valores nulos"
       ],
       "options_en": [
-        "Imputar con la media o mediana según tipo de dato",
+        "Impute with the mean or median depending on data type",
         "Duplicate nearby observations without adjusting for trend",
-        "Reemplazar con cero automáticamente",
-        "Eliminar todas las filas con valores nulos"
+        "Automatically replace with zero",
+        "Delete all rows with null values"
       ],
       "correct_index": 0,
       "explanation_es": "Imputar con media o mediana (u otra medida central según el tipo de dato) sustituye los faltantes sin distorsionar la distribución general, algo que duplicar observaciones cercanas o poner ceros a ciegas sí puede hacer. Eliminar todas las filas nulas, en cambio, desperdicia datos históricos válidos en el resto de columnas.",
@@ -726,9 +726,9 @@
         "Los hace peores siempre al alterar los puntos de corte de las hojas"
       ],
       "options_en": [
-        "Solo afecta el tiempo de entrenamiento",
-        "Tiene poco efecto, son invariantes a escala",
-        "Mejora significativamente su rendimiento",
+        "Only affects training time",
+        "Has little effect, they are scale-invariant",
+        "Significantly improves their performance",
         "Always makes them worse by altering the leaf split thresholds"
       ],
       "correct_index": 1,
@@ -749,10 +749,10 @@
         "Un valor extremo en una sola variable"
       ],
       "options_en": [
-        "Un punto extremo en el espacio multidimensional",
+        "An extreme point in multidimensional space",
         "A missing value that the imputer replaces with the mean",
-        "Un valor que se repite muchas veces",
-        "Un valor extremo en una sola variable"
+        "A value that repeats many times",
+        "An extreme value in a single variable"
       ],
       "correct_index": 0,
       "explanation_es": "Un valor atípico multivariado solo se nota al mirar varias variables a la vez: cada valor por separado puede parecer normal, pero la combinación cae fuera de la nube de puntos en el espacio multidimensional, lo que lo distingue del atípico univariado, que es extremo en una sola variable.",
@@ -772,10 +772,10 @@
         "Usar df.duplicated() en Pandas"
       ],
       "options_en": [
-        "Revisar manualmente cada fila",
-        "Ordenar y revisar adyacentes",
-        "Comparar solo la primera columna",
-        "Usar df.duplicated() en Pandas"
+        "Manually review each row",
+        "Sort and check adjacent rows",
+        "Compare only the first column",
+        "Use df.duplicated() in Pandas"
       ],
       "correct_index": 3,
       "explanation_es": "Detectar duplicados exactos implica comparar todas las columnas y quedarse con la primera aparición, y `df.duplicated()` en Pandas hace exactamente eso de forma sistemática sobre el DataFrame completo, cosa que la revisión manual o comparar solo una columna no garantizan.",
@@ -795,9 +795,9 @@
         "Cambio de signo seguido de traslación"
       ],
       "options_en": [
-        "Logaritmo o raíz cuadrada",
-        "Resta de constante",
-        "Multiplicación por 2",
+        "Logarithm or square root",
+        "Subtracting a constant",
+        "Multiplying by 2",
         "Sign change followed by a shift"
       ],
       "correct_index": 0,
@@ -818,10 +818,10 @@
         "Strings sin cambios"
       ],
       "options_en": [
-        "One-hot encoding siempre",
-        "Codificación ordinal respetando orden",
+        "Always use one-hot encoding",
+        "Ordinal encoding that respects order",
         "Random values unrelated to the category",
-        "Strings sin cambios"
+        "Strings left unchanged"
       ],
       "correct_index": 1,
       "explanation_es": "Las variables categóricas ordinales tienen un orden natural entre sus categorías, así que codificarlas respetando ese orden conserva la información de secuencia; el one-hot siempre o los valores aleatorios sin relación con la categoría destruyen justamente esa jerarquía.",
@@ -842,9 +842,9 @@
       ],
       "options_en": [
         "A need for more data to separate the classes",
-        "Modelo perfecto garantizado",
-        "Datos de excelente calidad",
-        "Posible multicolinealidad y redundancia"
+        "A guaranteed perfect model",
+        "Excellent-quality data",
+        "Possible multicollinearity and redundancy"
       ],
       "correct_index": 3,
       "explanation_es": "Una correlación alta entre características señala que llevan casi la misma información, lo que infla la varianza de los coeficientes del modelo: es la señal clásica de multicolinealidad y redundancia, no una garantía de buen modelo ni de datos de mejor calidad.",
@@ -864,10 +864,10 @@
         "Ninguno, la regularización compensa"
       ],
       "options_en": [
-        "Mejora la interpretabilidad",
+        "Improves interpretability",
         "Speeds up training by reducing gradient iterations",
-        "Características con mayor escala dominan",
-        "Ninguno, la regularización compensa"
+        "Features with larger scale dominate",
+        "None, regularization compensates"
       ],
       "correct_index": 2,
       "explanation_es": "Cuando no se normaliza, las características con escalas más grandes dominan la función de pérdida y el término de regularización, porque este penaliza los coeficientes sin tener en cuenta que unas variables tienen rangos mucho mayores que otras.",
@@ -887,10 +887,10 @@
         "No se puede detectar"
       ],
       "options_en": [
-        "Visualmente en Excel",
-        "df.dtypes en Pandas",
-        "Con df.shape()",
-        "No se puede detectar"
+        "Visually in Excel",
+        "df.dtypes in Pandas",
+        "With df.shape()",
+        "It cannot be detected"
       ],
       "correct_index": 0,
       "explanation_es": "Revisar los datos visualmente permite notar de un vistazo inconsistencias como números guardados como texto o formatos mezclados dentro de la misma columna, algo que salta a la vista antes incluso de correr una inspección programática.",
@@ -910,10 +910,10 @@
         "Ordenar categorías alfabéticamente"
       ],
       "options_en": [
-        "Crear dummies para cada categoría",
-        "Sustituir categoría por promedio de target",
+        "Create dummy variables for each category",
+        "Replace the category with the target's average",
         "Remove categorical columns before training the model",
-        "Ordenar categorías alfabéticamente"
+        "Sort categories alphabetically"
       ],
       "correct_index": 1,
       "explanation_es": "La codificación target mean sustituye cada categoría por el promedio de la variable objetivo para esas filas, convirtiendo así la etiqueta de texto en un número informativo, en lugar de crear dummies, borrar la columna u ordenar alfabéticamente.",
@@ -933,10 +933,10 @@
         "Revisar estadísticas nuevamente"
       ],
       "options_en": [
-        "Entrenar modelo de prueba",
-        "Ambas opciones son correctas",
-        "No es necesario validar",
-        "Revisar estadísticas nuevamente"
+        "Train a test model",
+        "Both options are correct",
+        "There's no need to validate",
+        "Review the statistics again"
       ],
       "correct_index": 1,
       "explanation_es": "Entrenar un modelo de prueba y volver a revisar las estadísticas son dos formas complementarias de comprobar que la limpieza funcionó: una mide el efecto en el desempeño y la otra confirma que los valores del dataset ya tienen sentido, así que ambas son válidas.",
@@ -956,10 +956,10 @@
         "Copiar último valor válido hacia adelante"
       ],
       "options_en": [
-        "Usar regresión lineal",
-        "Reemplazar con media",
+        "Use linear regression",
+        "Replace with the mean",
         "Delete the value and shrink the series length",
-        "Copiar último valor válido hacia adelante"
+        "Copy the last valid value forward"
       ],
       "correct_index": 3,
       "explanation_es": "El forward fill copia el último valor válido hacia adelante para rellenar los huecos siguientes, en lugar de calcular una media, ajustar una regresión o eliminar el dato y reducir la serie.",
@@ -980,9 +980,9 @@
       ],
       "options_en": [
         "Ignore the problem and rely on overall accuracy",
-        "SMOTE, undersampling o weights en modelo",
-        "Recolectar más datos iguales",
-        "Cambiar el objetivo"
+        "SMOTE, undersampling, or weights in the model",
+        "Collect more of the same data",
+        "Change the target"
       ],
       "correct_index": 1,
       "explanation_es": "Técnicas como SMOTE, el undersampling de la clase mayoritaria o asignar pesos distintos en el modelo compensan directamente el desbalance de clases; ignorar el problema hace que el accuracy global engañe, porque el modelo puede acertar solo prediciendo siempre la clase mayoritaria.",
@@ -1002,9 +1002,9 @@
         "Calcular densidad local respecto a los vecinos"
       ],
       "options_en": [
-        "Revisar todas las combinaciones",
-        "Aislar puntos inusualmente profundos",
-        "Usar solo estadística descriptiva",
+        "Check every combination",
+        "Isolate unusually deep points",
+        "Use only descriptive statistics",
         "Compute local density relative to neighbors"
       ],
       "correct_index": 1,
@@ -1025,9 +1025,9 @@
         "Imputar siempre cero sin registrar qué filas cambiaron"
       ],
       "options_en": [
-        "Solo usar valores observados",
-        "Crear variable indicadora de imputación",
-        "No se puede preservar",
+        "Only use observed values",
+        "Create an imputation indicator variable",
+        "It cannot be preserved",
         "Always impute zero without recording which rows changed"
       ],
       "correct_index": 1,
@@ -1049,9 +1049,9 @@
       ],
       "options_en": [
         "Inverse value divided by the mean",
-        "Promedio de dos variables",
-        "Potencias de variable (x², x³)",
-        "Raíz cuadrada de valores"
+        "Average of two variables",
+        "Powers of a variable (x², x³)",
+        "Square root of values"
       ],
       "correct_index": 2,
       "explanation_es": "Una característica polinómica se construye elevando una variable a potencias (x², x³, …), lo que ayuda a un modelo lineal a representar relaciones curvas que la variable original no puede capturar por sí sola.",
@@ -1071,10 +1071,10 @@
         "Ambas opciones indican problema"
       ],
       "options_en": [
-        "Matriz de correlación > 0.9",
-        "Alto VIF (Variance Inflation Factor)",
-        "Con el R² bajo",
-        "Ambas opciones indican problema"
+        "Correlation matrix > 0.9",
+        "High VIF (Variance Inflation Factor)",
+        "With a low R²",
+        "Both options indicate a problem"
       ],
       "correct_index": 3,
       "explanation_es": "Tanto una matriz de correlación con valores por encima de 0.9 como un VIF alto detectan la misma señal desde ángulos distintos: variables que comparten casi la misma información, así que ambas indican el problema de multicolinealidad.",
@@ -1094,10 +1094,10 @@
         "Cociente de variables"
       ],
       "options_en": [
-        "Diferencia entre variables",
-        "Producto de dos variables",
-        "Mínimo entre dos",
-        "Cociente de variables"
+        "Difference between variables",
+        "Product of two variables",
+        "Minimum between two",
+        "Ratio of variables"
       ],
       "correct_index": 1,
       "explanation_es": "Una característica de interacción se obtiene multiplicando dos variables, capturando efectos que solo aparecen cuando ambas condiciones se cumplen a la vez, como ocurre con el índice de masa corporal.",
@@ -1117,10 +1117,10 @@
         "Siempre normalizar por media"
       ],
       "options_en": [
-        "StandardScaler o MinMaxScaler",
+        "StandardScaler or MinMaxScaler",
         "No need to scale after feature engineering",
-        "Dividir entre máximo valor",
-        "Siempre normalizar por media"
+        "Divide by the maximum value",
+        "Always normalize by the mean"
       ],
       "correct_index": 0,
       "explanation_es": "Tras generar nuevas características, siguen siendo necesarias herramientas de escalado como StandardScaler o MinMaxScaler para que ninguna variable domine por su rango, en vez de recurrir a atajos como dividir entre el máximo.",
@@ -1140,10 +1140,10 @@
         "Crear año, mes, día, día de semana"
       ],
       "options_en": [
-        "Convertir a string",
+        "Convert to string",
         "Divide by 100 to normalize the date",
-        "Borrar columna de fecha",
-        "Crear año, mes, día, día de semana"
+        "Delete the date column",
+        "Create year, month, day, day of week"
       ],
       "correct_index": 3,
       "explanation_es": "Extraer características de una fecha significa descomponerla en variables nuevas como año, mes, día o día de la semana, que un modelo puede usar directamente, en vez de dejarla como texto o descartarla.",
@@ -1164,9 +1164,9 @@
       ],
       "options_en": [
         "Has no effect on the estimated coefficients",
-        "Matriz singular, inversa imposible",
-        "Regresión sigue funcionando",
-        "Se mejora el modelo"
+        "Singular matrix, no inverse possible",
+        "Regression keeps working",
+        "The model improves"
       ],
       "correct_index": 1,
       "explanation_es": "Cuando la multicolinealidad es perfecta, una variable es combinación exacta de otras y la matriz que hay que invertir en la regresión se vuelve singular, así que no tiene inversa y el cálculo de los coeficientes falla.",
@@ -1187,9 +1187,9 @@
       ],
       "options_en": [
         "Multiply each category's value by minus one",
-        "Sumar todos los valores",
-        "Eliminar caracteres especiales",
-        "Crear columna binaria por categoría"
+        "Add up all the values",
+        "Remove special characters",
+        "Create a binary column per category"
       ],
       "correct_index": 3,
       "explanation_es": "One-hot encoding crea una columna binaria por cada categoría, marcando con 1 la que corresponde a cada fila y 0 el resto, a diferencia de sumar valores o multiplicarlos por -1.",
@@ -1210,9 +1210,9 @@
       ],
       "options_en": [
         "Never useful for continuous numeric variables",
-        "Datos categóricos con repeticiones",
-        "Cuando hay pocas filas",
-        "Solo números continuos"
+        "Categorical data with repeated values",
+        "When there are few rows",
+        "Only continuous numbers"
       ],
       "correct_index": 1,
       "explanation_es": "Las características de frecuencia tienen sentido en datos categóricos donde algunas categorías se repiten mucho: contar cuántas veces aparece cada valor añade una señal útil que no existe en variables numéricas continuas.",
@@ -1232,10 +1232,10 @@
         "StandardScaler o MinMaxScaler"
       ],
       "options_en": [
-        "No es necesario",
-        "Solo para grandes conjuntos",
+        "It's not necessary",
+        "Only for large datasets",
         "Subtract the mean without dividing by the deviation",
-        "StandardScaler o MinMaxScaler"
+        "StandardScaler or MinMaxScaler"
       ],
       "correct_index": 3,
       "explanation_es": "Antes de aplicar clustering, que depende de distancias entre puntos, hay que llevar las características a una escala comparable con StandardScaler o MinMaxScaler; restar solo la media sin dividir por la desviación deja intacta la diferencia de rangos.",
@@ -1255,10 +1255,10 @@
         "Mantener características con correlación alta"
       ],
       "options_en": [
-        "Promediar correlaciones",
+        "Average the correlations",
         "Ignore correlation entirely and always use every variable",
-        "Remover todas correlacionadas",
-        "Mantener características con correlación alta"
+        "Remove all correlated features",
+        "Keep features with high correlation"
       ],
       "correct_index": 3,
       "explanation_es": "La selección por correlación con el objetivo consiste en quedarse con las características que muestran una correlación alta con esa variable, porque son las que más información aportan para predecirla; ignorarla y usar siempre todas las variables no aprovecha esa señal.",
@@ -1279,9 +1279,9 @@
       ],
       "options_en": [
         "Count the number of lines in the text file",
-        "Contar caracteres totales",
-        "Bolsa de palabras, TF-IDF, embeddings",
-        "No se pueden extraer"
+        "Count total characters",
+        "Bag of words, TF-IDF, embeddings",
+        "They cannot be extracted"
       ],
       "correct_index": 2,
       "explanation_es": "El texto se convierte en características numéricas mediante bolsa de palabras, TF-IDF o embeddings, técnicas que capturan qué palabras aparecen y con qué relevancia, algo que simplemente contar caracteres o líneas no logra.",
@@ -1301,10 +1301,10 @@
         "Usar experiencia del negocio"
       ],
       "options_en": [
-        "Evitar conocimiento previo",
+        "Avoid prior knowledge",
         "Copy from the internet without validating the domain",
-        "Usar random features",
-        "Usar experiencia del negocio"
+        "Use random features",
+        "Use business experience"
       ],
       "correct_index": 3,
       "explanation_es": "Domain Knowledge significa apoyarse en la experiencia del negocio para decidir qué características construir, de modo que reflejen relaciones reales del problema, en vez de copiarlas sin validar o generarlas de forma aleatoria.",
@@ -1324,10 +1324,10 @@
         "Cuando tiene muchos valores"
       ],
       "options_en": [
-        "Nunca se debe eliminar",
-        "Correlación alta, varianza baja, irrelevante",
+        "It should never be removed",
+        "High correlation, low variance, irrelevant",
         "Always keep everything even if it duplicates information",
-        "Cuando tiene muchos valores"
+        "When it has many values"
       ],
       "correct_index": 1,
       "explanation_es": "Conviene eliminar una característica cuando tiene correlación alta con otra (redundancia que infla la varianza de los coeficientes), varianza muy baja (aporta poca información) o es irrelevante para el objetivo; mantener todo sin criterio solo añade ruido.",
@@ -1347,9 +1347,9 @@
         "L2 no existe fuera de las redes neuronales"
       ],
       "options_en": [
-        "L1 penaliza valor absoluto, L2 cuadrado",
-        "Igual pero nombres diferentes",
-        "L1 solo para árboles",
+        "L1 penalizes the absolute value, L2 the square",
+        "The same thing with different names",
+        "L1 only for trees",
         "L2 does not exist outside neural networks"
       ],
       "correct_index": 0,
@@ -1370,9 +1370,9 @@
         "Creer en intuición sin medir el error"
       ],
       "options_en": [
-        "No se puede validar",
-        "Revisar solo el coeficiente",
-        "Comparar modelos con/sin feature",
+        "It cannot be validated",
+        "Only review the coefficient",
+        "Compare models with and without the feature",
         "Trust intuition without measuring the error"
       ],
       "correct_index": 2,

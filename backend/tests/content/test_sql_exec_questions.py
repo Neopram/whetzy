@@ -27,6 +27,23 @@ from app.services.content_loader import _content_root
 FILLS_PATH = Path(__file__).parent / "sql_exec_reference_fills.json"
 
 
+def _js_str(value: object) -> str:
+    """Mirrors JS's String(v), what sql-worker.js's row.map(String) actually
+    does in the browser - Python's str(v) diverges on two real cases, both
+    confirmed against the real sql.js worker (39.40, 2026-09-29):
+      - None: Python "None", JS "null".
+      - A REAL column holding a whole number (e.g. 50000.0): Python keeps
+        the trailing ".0" (float repr), JS's Number->String drops it
+        ("50000"). Only whole numbers diverge; 50000.5 formats identically
+        in both.
+    """
+    if value is None:
+        return "null"
+    if isinstance(value, float) and value.is_integer():
+        return str(int(value))
+    return str(value)
+
+
 def _worker_format(results: list[tuple[list[str], list[tuple]]]) -> str:
     """Reproduces sql-worker.js output format."""
     if not results:
@@ -36,7 +53,7 @@ def _worker_format(results: list[tuple[list[str], list[tuple]]]) -> str:
         lines = [" | ".join(cols)]
         lines.append("-+-".join("-" * len(c) for c in cols))
         for row in rows:
-            lines.append(" | ".join(str(v) for v in row))
+            lines.append(" | ".join(_js_str(v) for v in row))
         parts.append("\n".join(lines))
     return "\n\n".join(parts)
 
