@@ -64,8 +64,12 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((res) => {
-          const copia = res.clone();
-          caches.open(CACHE_NAME).then((c) => c.put(OFFLINE_FALLBACK, copia)).catch(() => {});
+          // /checkout trae otras cabeceras (sin COEP, CSP de Paddle): no puede
+          // ser la copia offline del resto de la app.
+          if (url.pathname !== '/checkout') {
+            const copia = res.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(OFFLINE_FALLBACK, copia)).catch(() => {});
+          }
           return res;
         })
         .catch(() => caches.match(OFFLINE_FALLBACK).then((r) => r || Response.error()))

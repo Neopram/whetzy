@@ -10,6 +10,7 @@ import { Toast } from './components/common/Toast';
 import './styles/global.css';
 import { OfflineIndicator } from './components/common/OfflineIndicator';
 import { useGestures } from './hooks/useGestures';
+import { safeNext } from './lib/paddle';
 
 // Every screen is loaded on demand. Statically importing them put the whole
 // app — quiz, Pyodide, Lottie, duels — into the landing page's first bundle,
@@ -36,6 +37,7 @@ const OnboardingScreen = lazy(() =>
   import('./pages/OnboardingScreen')
 );
 const LandingScreen = lazy(() => import('./pages/LandingScreen'));
+const CheckoutScreen = lazy(() => import('./pages/CheckoutScreen'));
 const TrackExamScreen = lazy(() =>
   import('./pages/TrackExamScreen').then((m) => ({ default: m.TrackExamScreen }))
 );
@@ -86,6 +88,7 @@ const STANDALONE_DOC: Record<string, string> = {
   '/delete-account': 'deleteAccount',
   '/privacy': 'privacy',
   '/terms': 'terms',
+  '/refund': 'refund',
   '/landing': 'landing',
   '/evidence': 'evidence',
 };
@@ -117,6 +120,7 @@ function StandalonePage({ path }: { path: string }) {
   if (path === '/delete-account') return <Screen><DeleteAccountScreen /></Screen>;
   if (path === '/privacy') return <Screen><LegalScreen doc="privacy" /></Screen>;
   if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
+  if (path === '/refund') return <Screen><LegalScreen doc="refund" /></Screen>;
   if (path === '/evidence') return <Screen><EvidenceScreen /></Screen>;
   if (path === '/landing') return <Screen><LandingScreen /></Screen>;
 
@@ -166,11 +170,24 @@ function normalizePath(pathname: string): string {
   return pathname;
 }
 
+const NEXT_KEY = 'whetzy_next';
+
 function AuthRoute() {
+  // El login con Google/GitHub vuelve a `/` desde el backend y pierde `?next=`:
+  // se guarda aquí y la app lo recoge al entrar (ver `hydrateFromApi` abajo).
+  const next = safeNext(new URLSearchParams(window.location.search).get('next'));
+  if (next !== '/') {
+    try { sessionStorage.setItem(NEXT_KEY, next); } catch { /* modo privado */ }
+  }
   return (
     <>
       <Screen>
-        <AuthScreen onAuthed={() => { window.location.assign('/'); }} />
+        <AuthScreen
+          onAuthed={() => {
+            try { sessionStorage.removeItem(NEXT_KEY); } catch { /* modo privado */ }
+            window.location.assign(safeNext(new URLSearchParams(window.location.search).get('next')));
+          }}
+        />
       </Screen>
       <Toast />
     </>
@@ -194,6 +211,11 @@ function App() {
       </Screen>
     );
   }
+
+  // Pago con Paddle (H.29): página aparte con sus propias cabeceras
+  // (public/_headers), porque el iframe de Paddle no carga bajo el COEP que el
+  // resto de la app necesita para Pyodide. Pide sesión por su cuenta.
+  if (path === '/checkout') return <Screen><CheckoutScreen /></Screen>;
 
   // Public status page: no auth, no store, reachable even if the backend
   // that the rest of the app depends on is the very thing that's down.
@@ -287,6 +309,15 @@ function App() {
     if (authState !== 'checking') return;
     hydrateFromApi()
       .then(() => {
+        let pending = '/';
+        try {
+          pending = safeNext(sessionStorage.getItem(NEXT_KEY));
+          sessionStorage.removeItem(NEXT_KEY);
+        } catch { /* modo privado */ }
+        if (pending !== '/') {
+          window.location.assign(pending);
+          return;
+        }
         const userId = useAppStore.getState().user.id;
         setShowOnboarding(needsOnboarding(userId));
         setAuthState('authed');

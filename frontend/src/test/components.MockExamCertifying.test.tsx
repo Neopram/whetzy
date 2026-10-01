@@ -54,14 +54,17 @@ describe('MockExamScreen — examen certificador', () => {
   });
   afterEach(() => cleanup());
 
-  it('muestra el pago único y cierra el botón si el cobro no está abierto', async () => {
+  it('sin compra: muestra el pago único, enlaza al checkout y cierra el botón', async () => {
     m.certificationAccess.mockResolvedValue({
       track_id: 'track08', price_usd: 39.99, paywall_enabled: true, purchased: false, can_start: false,
     });
     renderScreen();
     const section = await screen.findByTestId('certifying');
     expect(within(section).getByText(/Pago único de 39,99 \$/)).toBeInTheDocument();
-    expect(within(section).getByText(/El cobro todavía no está abierto/)).toBeInTheDocument();
+    expect(within(section).getByRole('link', { name: /COMPRAR LA CERTIFICACIÓN/ })).toHaveAttribute(
+      'href',
+      '/checkout?plan=certification&track=track08',
+    );
     expect(within(section).getByRole('button', { name: /PRESENTAR EXAMEN CERTIFICADOR/ })).toBeDisabled();
   });
 
