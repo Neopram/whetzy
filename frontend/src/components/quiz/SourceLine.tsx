@@ -25,13 +25,13 @@ export function SourceLine({ source }: Props) {
   const match = TRAILING_URL.exec(source);
 
   if (!match) {
-    return <p className={styles.line}>📚 {t('quiz.source')}: {source}</p>;
+    return <p className={styles.line}>{t('quiz.source')}: {source}</p>;
   }
 
   const [, label, url] = match;
   return (
     <p className={styles.line}>
-      📚 {t('quiz.source')}: {label}{' '}
+      {t('quiz.source')}: {label}{' '}
       <a
         className={styles.link}
         href={url}

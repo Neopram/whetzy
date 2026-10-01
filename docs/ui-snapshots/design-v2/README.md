@@ -1,4 +1,4 @@
-# Capturas — design/v2, pasos 4 y 5 (Rutas y Lección)
+# Capturas — design/v2, pasos 4 a 6 (Rutas, Lección y Quiz)
 
 Evidencia del PR de los pasos 4 y 5 del port (`design/v2/GUIA.md`). Capturas
 frescas del 2026-10-01, tomadas con Playwright (Chromium) contra el stack local
@@ -20,7 +20,14 @@ misma sesión: no hay datos inventados.
 - `05b-leccion-salida-390.png`: último paso, el ejemplo con la salida ya
   pedida y el botón de practicar.
 - `05c-leccion-1280.png`: un paso de texto a 1280 px.
+- `06-quiz-pregunta-390.png`: pregunta con contador en mono, dificultad, motivo
+  de la elección y opciones con su tecla.
+- `06b-quiz-feedback-390.png`: explicación con fuente, «¿Por qué?» como botón
+  secundario y «Siguiente».
+- `06c-quiz-salir-390.png`: confirmación al cerrar con algo ya respondido.
+- `06d-quiz-resumen-390.png`: resumen con precisión, aciertos, racha y XP en
+  mono, la habilidad de la sesión («nueva → 24 %») y la acción recomendada.
 
-axe-core (WCAG 2.2 AA) dio 0 violaciones en Rutas (`e2e/accessibility.spec.ts`)
-y en los pasos de concepto y ejemplo de la lección (comprobación ad hoc de la
-sesión).
+axe-core (WCAG 2.2 AA) dio 0 violaciones en Rutas y en el feedback del Quiz
+(`e2e/accessibility.spec.ts`), y en la lección, la pregunta, la confirmación
+de salida y el resumen del Quiz (comprobaciones ad hoc de la sesión).

@@ -258,6 +258,7 @@ function App() {
   }
 
   const currentScreen = useAppStore((s) => s.currentScreen);
+  const quizRun = useAppStore((s) => s.quizRun);
   const placementTrackId = useAppStore((s) => s.placementTrackId);
   const setScreen = useAppStore((s) => s.setScreen);
   const mockExamTrackId = useAppStore((s) => s.mockExamTrackId);
@@ -400,7 +401,7 @@ function App() {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'home': return <HomeScreen />;
-      case 'quiz': return <QuizScreen />;
+      case 'quiz': return <QuizScreen key={quizRun} />;
       case 'tracks': return <TracksScreen />;
       case 'stats': return <StatsScreen />;
       case 'league': return <LeagueScreen />;

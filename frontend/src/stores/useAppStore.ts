@@ -65,6 +65,9 @@ interface AppState {
   // Quiz
   quiz: QuizState;
   startQuiz: (mode: QuizState['mode'], totalQuestions: number, opts?: { trackId?: string; skillId?: string }) => void;
+  /** Sube con cada startQuiz: la pantalla se monta de nuevo aunque ya estés en
+   *  'quiz' (p. ej. «Otra sesión» desde el resumen), en vez de quedarse en él. */
+  quizRun: number;
   answerQuestion: (correct: boolean, xp: number) => void;
   nextQuestion: () => void;
   resetQuiz: () => void;
@@ -223,8 +226,10 @@ export const useAppStore = create<AppState>()(
         }),
 
       quiz: defaultQuiz,
+      quizRun: 0,
       startQuiz: (mode, totalQuestions, opts) =>
-        set({
+        set((s) => ({
+          quizRun: s.quizRun + 1,
           quiz: {
             ...defaultQuiz,
             mode,
@@ -233,7 +238,7 @@ export const useAppStore = create<AppState>()(
             skillId: opts?.skillId ?? null,
           },
           currentScreen: 'quiz',
-        }),
+        })),
       answerQuestion: (correct, xp) =>
         set((s) => ({
           quiz: {

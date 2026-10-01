@@ -71,7 +71,7 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
         aria-expanded={expanded}
         aria-controls={panelId}
       >
-        <span aria-hidden="true">🧠</span> {t('quiz.why.button')}
+        {t('quiz.why.button')}
       </button>
 
       {expanded && (
@@ -95,7 +95,7 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
 
           {status === 'upsell' && (
             <div className={styles.upsell}>
-              <span className={styles.upsellBadge}>👑 {t('quiz.why.upsellBadge')}</span>
+              <span className={styles.upsellBadge}>{t('quiz.why.upsellBadge')}</span>
               <p className={styles.upsellTitle}>{t('quiz.why.upsellTitle')}</p>
               <p className={styles.upsellBody}>{t('quiz.why.upsellBody')}</p>
               <button type="button" className={styles.upsellCta} onClick={onUpgrade}>
@@ -139,7 +139,7 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
                 className={`${styles.sourceBadge} ${result.grounded ? styles.sourceGrounded : styles.sourceGeneral}`}
               >
                 {result.grounded
-                  ? `📚 ${t('quiz.why.sourceGrounded')}`
+                  ? t('quiz.why.sourceGrounded')
                   : `ℹ ${t('quiz.why.sourceGeneral')}`}
               </span>
             </div>
