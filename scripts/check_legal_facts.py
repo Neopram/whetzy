@@ -10,6 +10,7 @@ Variable de entorno: WHETZY_LEGAL_DIR (default: docs/legal)
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import sys
@@ -71,7 +72,6 @@ PROHIBITED = {
     r"registered[\s\-]+trade[\s\-]*marks?": "marcado falso de marca",
     r"google[\s\-_]*analytics": "rastreador prohibido por linea roja 5",
     r"lemon[\s\-_]*squeezy": "procesador que no existe en el codigo",
-    r"paddle": "procesador que no existe en el codigo",
     r"revenue[\s\-_]*cat": "procesador que no existe en el codigo",
 }
 
@@ -101,6 +101,44 @@ for doc_name in EXPECTED_DOCS:
 
 if prohibited_ok:
     check("Afirmaciones prohibidas", True)
+
+# Procesadores que el código ya integra: la política de privacidad —la de
+# docs/legal y la que se publica en /privacy (claves i18n `legal.privacy*` que
+# pinta LegalScreen.tsx)— tiene que nombrarlos, y si el código deja de tenerlos
+# ya no puede nombrarlos. Paddle estaba en PROHIBITED («no existe en el
+# código») hasta que el #58 (H.29) lo integró: a partir de ahí la regla
+# vieja exigía callar un procesador que cobra.
+PROCESSORS_IN_CODE = {
+    "paddle": ROOT / "backend" / "app" / "services" / "paddle_billing.py",
+}
+I18N_DIR = ROOT / "frontend" / "src" / "i18n"
+
+print()
+print("[1b] Procesadores del código nombrados en la política de privacidad")
+processors_ok = True
+for name, marker in PROCESSORS_IN_CODE.items():
+    in_code = marker.exists()
+    for lang in LANGS:
+        sources: dict[str, str] = {}
+        md = LEGAL_DIR / f"privacy-policy.{lang}.md"
+        if md.exists():
+            sources[md.name] = md.read_text(encoding="utf-8")
+        i18n = I18N_DIR / lang / "common.json"
+        if i18n.exists():
+            legal = json.loads(i18n.read_text(encoding="utf-8")).get("legal", {})
+            sources[f"i18n {lang} legal.privacy*"] = " ".join(
+                v for k, v in legal.items() if k.startswith("privacy")
+            )
+        for label, text in sources.items():
+            named = name in text.lower()
+            if in_code and not named:
+                check(f"{label} no nombra a {name}", False, f"{marker.name} existe en el código")
+                processors_ok = False
+            elif not in_code and named:
+                check(f"{label} nombra a {name}", False, "procesador que no existe en el código")
+                processors_ok = False
+if processors_ok:
+    check("Procesadores del código nombrados en la política de privacidad", True)
 
 print()
 print("[2] Cabecera de borrador/draft")

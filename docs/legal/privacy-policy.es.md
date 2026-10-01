@@ -1,6 +1,6 @@
 ---
 title: "Política de Privacidad"
-last_updated: "2026-09-19"
+last_updated: "2026-10-01"
 effective_date: "2026-10-01"
 language: "es"
 status: "BORRADOR — pendiente de revisión profesional (H.20)"
@@ -54,6 +54,8 @@ Actualmente no utilizamos servicios de análisis de terceros: no hay ninguna her
 
 NO almacenamos directamente información de tarjetas de pago. Procesador de pago: Stripe (hoy solo en modo test, sin cobros reales).
 
+Los pagos en la web los procesa **Paddle** (paddle.com): los datos de pago que introduzcas en su formulario los trata Paddle según su propia política de privacidad. Whetzy solo guarda el identificador de tu suscripción en Paddle y su estado (plan y vigencia).
+
 ---
 
 ## 3. Cómo Utilizamos Su Información
@@ -105,6 +107,7 @@ Ningún tercero anunciante, corredor de datos o red social.
 - Cloudflare — CDN y Pages
 - Groq — inferencia del tutor de IA (modelo qwen/qwen3.8-27b)
 - Stripe — pagos (hoy solo en modo test, sin cobros reales)
+- Paddle — pagos en la web
 - Proveedor de email — SMTP o Resend, según configuración
 - Sentry — registro de errores del servidor, activo desde el 26-09-2026; región UE (de.sentry.io); se envía sin datos personales (`send_default_pii=False`); no se usa en el navegador
 
