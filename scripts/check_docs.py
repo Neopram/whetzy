@@ -404,6 +404,45 @@ if _CIERRE_MD.exists() and "Estado: PAUSA" in _CIERRE_MD.read_text(encoding="utf
             f"PAUSA={_has_pausa} cita={_cites_cierre}",
         )
 
+print("\n[12] Índice de documentos completo y sin enlaces rotos (paso 6, 2026-10-01)")
+# Todo .md de docs/ fuera de archive/ está en docs/README.md o en docs/INVENTARIO_DOCS.md
+# (que lista cada documento con su clase): un doc que nadie indexa acaba diciendo cosas
+# viejas sin que nadie lo vea. Y ningún enlace markdown relativo de un .md fuera de
+# archive/ apunta a un fichero que no existe.
+_DOCS = ROOT / "docs"
+_index_text = (_DOCS / "README.md").read_text(encoding="utf-8") if (_DOCS / "README.md").exists() else ""
+_inv_text = (
+    (_DOCS / "INVENTARIO_DOCS.md").read_text(encoding="utf-8") if (_DOCS / "INVENTARIO_DOCS.md").exists() else ""
+)
+_unindexed = []
+for _md in sorted(_DOCS.rglob("*.md")):
+    _rel = _md.relative_to(_DOCS).as_posix()
+    if _rel.startswith("archive/") or _rel in {"README.md", "INVENTARIO_DOCS.md"}:
+        continue
+    if _rel not in _index_text and f"docs/{_rel}" not in _inv_text:
+        _unindexed.append(f"docs/{_rel}")
+check(
+    "Todo .md de docs/ (fuera de archive/) está en docs/README.md o en docs/INVENTARIO_DOCS.md",
+    not _unindexed,
+    "sin indexar: " + ", ".join(_unindexed[:20]),
+)
+_LINK = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
+_broken_links = []
+for _md in sorted(ROOT.rglob("*.md")):
+    if _SKIP_DIRS & set(_md.relative_to(ROOT).parts):
+        continue
+    for _m in _LINK.finditer(_md.read_text(encoding="utf-8", errors="replace")):
+        _target = _m.group(1).split("#")[0]
+        if not _target or re.match(r"^[a-z][a-z0-9+.-]*:", _target) or _target.startswith("/"):
+            continue
+        if not (_md.parent / _target).exists():
+            _broken_links.append(f"{_md.relative_to(ROOT).as_posix()} → {_m.group(1)}")
+check(
+    "Ningún enlace markdown relativo roto fuera de archive/",
+    not _broken_links,
+    ", ".join(_broken_links[:20]),
+)
+
 print()
 if errors:
     head = f"{len(errors)} check(s) FAILED:"
