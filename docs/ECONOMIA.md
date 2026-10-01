@@ -148,6 +148,11 @@ solo por reembolso, baneo o fraude confirmado (§3.5).
 
 ## 3. Programa de referidos
 
+> **Estado (2026-10-01, ADR-57):** cableado en `services/economy.py`
+> (`referral_program_loop`, cada 6 h). Cómo se leen el diagnóstico, el primer módulo y la
+> racha, y qué falta (dispositivo/IP sin declarar en la política, clawback sin disparador):
+> ADR-57.
+
 ### 3.1 La regla que decide si funciona
 
 **Se paga por activación, nunca por registro.** Un registro cuesta 10 segundos y un
@@ -291,7 +296,7 @@ Así se sabe qué vídeo, qué artículo y qué comunidad convierten, sin tercer
 | `POST /credits/spend` `{sink, ref_id}` | usuario | gasto FIFO; 409 si saldo insuficiente |
 | `POST /codes/redeem` `{code}` | usuario, **solo web** | canje idempotente |
 | `GET /referrals/me` | usuario | código, enlace, activaciones, escalera |
-| `GET /economy/prices` | público | tabla de grifos y sumideros vigente (desde `content/economy/credits.json`) |
+| `GET /economy/prices` | público | grifos y sumideros que el código cablea de verdad (2026-10-01: referidos y comodín de racha); la Cartera la pinta tal cual |
 | `POST /admin/codes/batch` | owner | genera lote (CSV descargable) |
 | `GET /admin/economy/attribution` | owner | canjes → activaciones → pagos por código/canal/campaña |
 | `GET /admin/referrals` | owner | K-factor, % registros vía referido, cola de revisión, fraude |

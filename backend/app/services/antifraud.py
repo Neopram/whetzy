@@ -1,13 +1,14 @@
 """Anti-fraud service for referral and credit system (29.5).
 
-Seven controls from ECONOMIA.md §3.5:
-1. Email must be verified before activation counts
-2. Device+IP hashing — max 1 activation per device/IP per 30 days
-3. Self-referral detection (same normalized email, device, or OAuth)
-4. Disposable email domain blocklist
-5. 7-day delay (handled in credit_matured_referrals, not here)
-6. Velocity cap: >5 activations/week → manual review
-7. Clawback on refund/ban/fraud (handled via CreditsService.grant_credits negative)
+Controls from ECONOMIA.md §3.5 and where each one runs:
+1. Email verified before activation counts — ReferralService.activate_ready_referrals
+2. Device+IP hashing — max 1 per device/IP per 30 days — validate_registration
+3. Self-referral detection (same normalized email or device) — validate_registration
+4. Disposable email domain blocklist — validate_registration
+5. 7-day delay — ReferralService.credit_matured_referrals
+6. Velocity cap: >5 activations/week → manual review — activate_ready_referrals
+7. Clawback on refund/ban/fraud — not wired: there is no ban or fraud-confirmation
+   flow to trigger it (MAPA_PRODUCTO §5.1)
 """
 
 import hashlib
@@ -243,7 +244,7 @@ class AntiFraudService:
         await db.flush()
 
     @staticmethod
-    async def validate_activation(
+    async def validate_registration(
         db: AsyncSession,
         referred_user_id: uuid.UUID,
         referred_email: str,
@@ -251,10 +252,13 @@ class AntiFraudService:
         device_fingerprint: str | None = None,
         ip_address: str | None = None,
     ) -> tuple[bool, str]:
-        """Full validation pipeline. Returns (allowed, reason)."""
-        if not await AntiFraudService.check_email_verified(db, referred_user_id):
-            return False, "email_not_verified"
+        """Controles al registrar el referido (ECONOMIA §3.5). Returns (allowed, reason).
 
+        El email verificado y la velocidad van en la activación, no aquí: el
+        código se registra al terminar el onboarding, antes de que nadie haya
+        abierto el correo de verificación, y exigirlo aquí perdía el referido
+        de todo el que no entraba con OAuth (2026-10-01).
+        """
         if AntiFraudService.is_disposable_email(referred_email):
             return False, "disposable_email"
 
@@ -271,12 +275,6 @@ class AntiFraudService:
             )
         ):
             return False, "device_rate_limited"
-
-        if await AntiFraudService.check_velocity(db, referrer_id):
-            await AntiFraudService.flag_for_review(
-                db, referrer_id, "velocity_exceeded", 0
-            )
-            return False, "velocity_exceeded"
 
         if device_fingerprint and ip_address:
             await AntiFraudService.record_device(

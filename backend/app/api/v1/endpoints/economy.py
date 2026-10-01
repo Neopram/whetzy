@@ -17,7 +17,15 @@ from app.models.economy import ReferralCode
 from app.models.user import User
 from app.services import streak_shop
 from app.services.antifraud import AntiFraudService
-from app.services.economy import CreditsService, PromoCodeService, ReferralService
+from app.services.economy import (
+    REFERRAL_CREDITS,
+    REFERRAL_MILESTONES,
+    REFERRAL_MONTHLY_CAP,
+    REFERRAL_WELCOME_CREDITS,
+    CreditsService,
+    PromoCodeService,
+    ReferralService,
+)
 
 _promo_limiter = InMemoryRateLimiter()
 
@@ -30,7 +38,8 @@ router = APIRouter(tags=["economy"])
 class CreditBalanceResponse(BaseModel):
     balance: int
     currency: str = "credits"
-    expires_in_days: int = 90
+    # Días hasta que caduque el primer lote con saldo (0 = nada que caduque).
+    expires_in_days: int = 0
 
 
 class ReferralCodeResponse(BaseModel):
@@ -81,7 +90,10 @@ async def get_credit_balance(
 ) -> CreditBalanceResponse:
     """Get current credit balance for the user."""
     balance = await CreditsService.get_balance(db, current_user.id)
-    return CreditBalanceResponse(balance=balance)
+    return CreditBalanceResponse(
+        balance=balance,
+        expires_in_days=await CreditsService.days_to_next_expiry(db, current_user.id),
+    )
 
 
 @router.get("/referral/code", response_model=ReferralCodeResponse)
@@ -91,6 +103,9 @@ async def get_referral_code(
 ) -> ReferralCodeResponse:
     """Get or create referral code for user."""
     code = await ReferralService.get_or_create_referral_code(db, current_user.id)
+    # Sin commit el código nuevo se perdía al cerrar la sesión: cada visita a la
+    # Cartera enseñaba uno distinto y ninguno existía (2026-10-01).
+    await db.commit()
     return ReferralCodeResponse(
         code=code,
         share_url=f"https://whetzy.com/r/{code}",
@@ -153,7 +168,14 @@ async def activate_referral(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, object]:
-    """Register referral during onboarding."""
+    """Register referral during onboarding (status ``pending``).
+
+    Activation and payout happen later, in ``referral_program_loop`` (ADR-35):
+    the referred user verifies the email, completes the diagnostic, finishes a
+    module and reaches a 3-day streak; the referrer is paid 7 days after.
+    ``activated`` in the response means «registered», kept for the client
+    contract.
+    """
     if not request.referral_code:
         return {"activated": False, "message": "No referral code provided"}
 
@@ -167,7 +189,7 @@ async def activate_referral(
     device_fp = http_request.headers.get("X-Device-Fingerprint")
     ip_addr = http_request.headers.get("X-Forwarded-For", http_request.client.host if http_request.client else "")
 
-    allowed, reason = await AntiFraudService.validate_activation(
+    allowed, reason = await AntiFraudService.validate_registration(
         db,
         referred_user_id=current_user.id,
         referred_email=current_user.email or "",
@@ -196,19 +218,25 @@ async def activate_referral(
 async def get_credit_prices(response: Response) -> dict[str, object]:
     """Public endpoint: credit value mapping.
 
-    Solo lo que el código hace hoy (2026-10-01). Antes listaba seis formas de
-    ganar y cuatro de gastar; spend_fifo solo lo llama el comodín de racha, y
-    grant_credits solo el código promocional (que va aparte) y
-    ReferralService.credit_matured_referrals, al que nada llama en producción:
-    /referral/activate deja el referido en «pending» y nadie lo activa ni lo
-    abona. La Cartera prometía créditos que nunca llegaban. Cada fuente de
-    ECONOMIA.md §2 vuelve aquí cuando se cablee (el referido, con su escalera
-    ReferralService._CREDIT_LADDER).
+    Solo lo que el código hace (2026-10-01): la Cartera pinta esta lista tal
+    cual. spend_fifo solo lo llama el comodín de racha; grant_credits, el código
+    promocional (va aparte) y el programa de referidos (ADR-35), que cablea
+    referral_program_loop. Las demás fuentes de ECONOMIA.md §2 vuelven aquí
+    cuando alguien las cablee.
     """
     response.headers["Cache-Control"] = "public, max-age=3600, stale-while-revalidate=86400"
     return {
         "credit_value_usd": 0.01,
-        "grifos": [],
+        "grifos": [
+            {
+                "event": "referral_activated",
+                "credits": REFERRAL_CREDITS,
+                "cap": f"{REFERRAL_MONTHLY_CAP}/month",
+                # Hitos acumulados de la escalera: n.º de referidos abonados → premio.
+                "milestones": [{"at": at, "reward": reward} for at, reward in REFERRAL_MILESTONES],
+            },
+            {"event": "referral_welcome", "credits": REFERRAL_WELCOME_CREDITS, "cap": "once"},
+        ],
         "sumideros": [
             {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS},
         ],

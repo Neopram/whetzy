@@ -167,6 +167,9 @@ export interface UserRead {
   last_active: string | null;
   created_at: string;
   is_premium: boolean;
+  /** Plan ganado con referidos (ADR-57), solo mientras está en fecha. */
+  granted_tier?: 'plus' | 'pro' | null;
+  granted_tier_expires_at?: string | null;
   is_admin?: boolean;
 }
 
@@ -667,8 +670,8 @@ export interface PromoRedeemResult {
 
 export interface CreditPrices {
   credit_value_usd: number;
-  /** `ladder`: [n.º de referido desde el que aplica, créditos] (solo referidos). */
-  grifos: { event: string; credits: number; cap: string; ladder?: [number, number][] }[];
+  /** `milestones`: hitos de la escalera de referidos (ADR-35): n.º de abonados → premio. */
+  grifos: { event: string; credits: number; cap: string; milestones?: { at: number; reward: string }[] }[];
   sumideros: { item: string; cost: number }[];
 }
 

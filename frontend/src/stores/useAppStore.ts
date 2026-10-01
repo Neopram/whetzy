@@ -19,7 +19,12 @@ interface UserProfile {
   maxStreak: number;
   streakFreezeAvailable: number;
   lastActive: string;
+  /** Desbloquea funciones: plan de pago o plan ganado con referidos. El
+   *  checkout no lo usa: pregunta a `/auth/me` por el de pago. */
   isPremium: boolean;
+  /** Plan ganado con referidos y hasta cuándo (ADR-57); null si no hay. */
+  grantedTier: 'plus' | 'pro' | null;
+  grantedUntil: string | null;
   is_admin: boolean;
   language: Language;
   league: LeagueTier;
@@ -139,7 +144,9 @@ function mapApiUser(u: UserRead): UserProfile {
     maxStreak: u.max_streak,
     streakFreezeAvailable: u.streak_freeze_available,
     lastActive: u.last_active ?? new Date().toISOString(),
-    isPremium: u.is_premium,
+    isPremium: u.is_premium || Boolean(u.granted_tier),
+    grantedTier: u.granted_tier ?? null,
+    grantedUntil: u.granted_tier_expires_at ?? null,
     is_admin: u.is_admin ?? false,
     language: u.language,
     league: 'bronze',
@@ -166,6 +173,8 @@ const defaultUser: UserProfile = {
   streakFreezeAvailable: 1,
   lastActive: new Date().toISOString(),
   isPremium: false,
+  grantedTier: null,
+  grantedUntil: null,
   is_admin: false,
   language: 'es',
   league: 'gold',

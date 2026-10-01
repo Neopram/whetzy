@@ -79,7 +79,7 @@ export default function WalletScreen() {
   const earn = (prices?.grifos ?? []).filter((g) => i18n.exists(`wallet.earn.${g.event}`));
   const spend = (prices?.sumideros ?? []).filter((s) => i18n.exists(`wallet.spend.${s.item}`));
   // «Invitar amigos» promete créditos: solo se enseña si el backend lista el
-  // referido como fuente (hoy no lo abona nadie, ver /economy/prices).
+  // referido como fuente (ADR-35; /economy/prices solo lista lo cableado).
   const referralPays = earn.some((g) => g.event === 'referral_activated');
 
   return (
@@ -104,9 +104,18 @@ export default function WalletScreen() {
               <li key={g.event} className={styles.row}>
                 <span className={styles.rowBody}>
                   <span className={styles.rowName}>{t(`wallet.earn.${g.event}`)}</span>
-                  {g.ladder && (
+                  {g.event === 'referral_activated' && (
+                    <span className={styles.rowMeta}>{t('wallet.activationRule')}</span>
+                  )}
+                  {g.event === 'referral_welcome' && (
+                    <span className={styles.rowMeta}>{t('wallet.welcomeRule')}</span>
+                  )}
+                  {g.milestones && (
                     <span className={styles.rowMeta}>
-                      {g.ladder.map(([from, amount]) => t('wallet.ladderStep', { from, amount })).join(' · ')}
+                      {g.milestones
+                        .filter((m) => i18n.exists(`wallet.milestone.${m.reward}`))
+                        .map((m) => t(`wallet.milestone.${m.reward}`, { at: m.at }))
+                        .join(' · ')}
                     </span>
                   )}
                 </span>

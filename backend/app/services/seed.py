@@ -63,6 +63,9 @@ BADGES: list[dict[str, Any]] = [
     {"id": "perfectionist", "name_es": "Perfeccionista", "name_en": "Perfectionist", "icon": "🌟",
      "description_es": "Sesión perfecta 10/10", "description_en": "Perfect 10/10 session",
      "criteria_type": "perfect_session", "criteria_value": 1},
+    {"id": "ambassador", "name_es": "Embajador", "name_en": "Ambassador", "icon": "🤝",
+     "description_es": "25 amigos invitados que se activaron", "description_en": "25 invited friends who activated",
+     "criteria_type": "referrals_credited", "criteria_value": 25},
 ]
 
 

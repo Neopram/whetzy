@@ -8,6 +8,7 @@ from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.economy import Referral
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
 from app.models.session import Response, StudySession
 from app.models.user import User, UserBadge, UserSkillState
@@ -265,7 +266,10 @@ async def get_today_missions(db: AsyncSession, user: User) -> list[UserMissionRe
 # Criterios de insignia que `award_badges` sabe calcular. Un criterio del seed que
 # no esté aquí es una insignia imposible; `test_gamification` lo vigila.
 BADGE_CRITERIA_TYPES = frozenset(
-    {"streak", "total_xp", "level", "questions_answered", "skills_mastered", "perfect_session"}
+    {
+        "streak", "total_xp", "level", "questions_answered", "skills_mastered",
+        "perfect_session", "referrals_credited",
+    }
 )
 PERFECT_SESSION_MIN_ANSWERS = 10
 
@@ -314,6 +318,15 @@ async def award_badges(db: AsyncSession, user: User) -> list[str]:
         )
     ).scalar_one() or 0
 
+    # «Embajador» (ADR-35, ECONOMIA §3.3): referidos ya abonados.
+    referrals_credited = (
+        await db.execute(
+            select(func.count(Referral.id)).where(
+                Referral.referrer_id == user.id, Referral.status == "credited"
+            )
+        )
+    ).scalar_one() or 0
+
     stat_for = {
         "streak": user.current_streak,
         "total_xp": user.total_xp,
@@ -321,6 +334,7 @@ async def award_badges(db: AsyncSession, user: User) -> list[str]:
         "questions_answered": int(total_questions),
         "skills_mastered": int(skills_mastered),
         "perfect_session": int(perfect_sessions),
+        "referrals_credited": int(referrals_credited),
     }
 
     newly: list[str] = []

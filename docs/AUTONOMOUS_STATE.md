@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20261001_paddle_subscription_id` (47 migraciones) |
+| Alembic HEAD | `20261001_granted_tier` (48 migraciones) |
 | Contenido | **10.949 preguntas** / 35 tracks / 723 skills / **723 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
@@ -306,7 +306,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.0 | **1** | **Schema**: `credit_ledger`, `promo_codes`, `promo_redemptions`,… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.1 | **1** | **Servicio de créditos** `services/economy/credits.py`: abono con lote y… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json`… | **DONE** | **DONE** (2026-09-25) → §I |
-| 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I |
+| 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I · **2026-10-01 (ADR-57)**: hasta ese día nada activaba ni abonaba (solo los tests llamaban a la activación y al abono), el código de la Cartera no se guardaba (sin commit) y el registro exigía email verificado; cableados el job cada 6 h, las 4 condiciones, el abono a 7 días, la escalera de ECONOMIA §3.3 y el plan ganado (`granted_tier`) |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | 3 endpoints: `/economy/credits`, `/economy/referrals`, `/economy/k-factor` → §I |
 | 29.7 | **3** | **Reactivación automática**: job de 14 días de inactividad | **DONE** | → §N |
 | 29.8 | **3** | **UI**: wallet, referidos, canje de códigos | **DONE** | → §N |

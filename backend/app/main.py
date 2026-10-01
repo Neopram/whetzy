@@ -46,6 +46,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     from app.services import email as email_svc
     from app.services.account_deletion import account_purge_loop
     from app.services.ai import rag
+    from app.services.economy import referral_program_loop
     from app.services.job_worker import job_worker_loop
 
     # Si el correo no sale, que se sepa al arrancar y no cuando alguien pierda
@@ -70,6 +71,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.info("Job worker: background poll loop started")
     asyncio.create_task(account_purge_loop(AsyncSessionLocal))
     logger.info("Account purge: background loop started (19.12, every 6 h)")
+    asyncio.create_task(referral_program_loop(AsyncSessionLocal))
+    logger.info("Referrals: background loop started (ADR-35, every 6 h)")
 
     # Schedule monthly payouts (15th of each month at 00:00 UTC)
     _schedule_monthly_payouts(AsyncSessionLocal)

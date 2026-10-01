@@ -108,6 +108,17 @@ export function ProfileScreen() {
         </Card>
       )}
 
+      {user.grantedTier && user.grantedUntil && (
+        <Card className={styles.proCard}>
+          <p className={styles.proDesc}>
+            {t('profile.grantedPlan', {
+              plan: user.grantedTier === 'pro' ? 'Pro Max' : 'Pro',
+              date: new Date(user.grantedUntil).toLocaleDateString(i18nInst.language, { day: 'numeric', month: 'long', year: 'numeric' }),
+            })}
+          </p>
+        </Card>
+      )}
+
       {user.isPremium && subscription.data?.subscription_provider === 'paddle' && (
         <Card>
           <h2 className={styles.cardTitle}>{t('profile.subscriptionTitle')}</h2>

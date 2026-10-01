@@ -246,11 +246,11 @@ Créditos por lotes FIFO con caducidad; el saldo se deriva sumando el ledger, no
 se guarda en ninguna columna.
 
 ```
-GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[]} — público
-GET  /economy/balance           → {balance, currency, expires_in_days} 🔒
-GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea si no existe
+GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[]} — público; solo lo cableado (referidos con `milestones`, comodín de racha)
+GET  /economy/balance           → {balance, currency, expires_in_days} 🔒 — días hasta que caduque el primer lote con saldo (0 = nada)
+GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea (y lo guarda) si no existe
 POST /economy/promo/redeem      → {credits, balance, message} 🔒 — solo web (X-Platform ios/android → 403); rate limit 5/10 min por usuario
-POST /economy/referral/activate → {activated, referrer_id} 🔒
+POST /economy/referral/activate → {activated, referrer_id} 🔒 — registra el referido (`pending`) y le da 200 créditos; activación y abono, en `referral_program_loop` (ADR-57)
 GET  /economy/streak-freeze     → {price, balance, held, max_held, purchases_this_week, max_per_week, can_buy, blocked_by} 🔒 — comodín de racha (35.3)
 POST /economy/streak-freeze     {request_id: uuid} → mismo cuerpo + {replayed} 🔒 — compra con créditos; 409 `insufficient_credits` · `max_held` · `weekly_limit`; el mismo `request_id` nunca cobra dos veces
 ```

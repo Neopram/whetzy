@@ -38,7 +38,7 @@ beforeEach(async () => {
 });
 afterEach(() => {
   cleanup();
-  useAppStore.getState().updateUser({ isPremium: false });
+  useAppStore.getState().updateUser({ isPremium: false, grantedTier: null, grantedUntil: null });
 });
 
 describe('Perfil — planes y suscripción', () => {
@@ -61,6 +61,16 @@ describe('Perfil — planes y suscripción', () => {
 
     expect(await screen.findByText(/conservas el acceso hasta el final del periodo pagado/)).toBeInTheDocument();
     expect(cancel).toHaveBeenCalledTimes(1);
+  });
+
+  it('con un plan ganado invitando amigos dice cuál y hasta cuándo, sin ofrecer cancelar', async () => {
+    useAppStore.getState().updateUser({ isPremium: true, grantedTier: 'pro', grantedUntil: '2027-04-21T12:00:00Z' });
+    sub.mockResolvedValue({ ...PADDLE_SUB, is_premium: false, subscription_provider: null });
+    render(<ProfileScreen />);
+    expect(screen.getByText('Tienes Pro Max hasta el 21 de abril de 2027: lo ganaste invitando amigos.')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /^Pro · 14,99/ })).toBeNull();
+    await act(async () => {});
+    expect(screen.queryByRole('button', { name: 'Cancelar suscripción' })).toBeNull();
   });
 
   it('con plan de una tienda no ofrece cancelar aquí', async () => {

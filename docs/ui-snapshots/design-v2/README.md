@@ -50,6 +50,10 @@ misma sesión: no hay datos inventados.
   fijos.
 - `08g-landing-preparacion-1280.png`: la sección de preparación con la captura
   nueva.
+- `09-cartera-referido-390.png`: Cartera de un usuario que se registró con el
+  enlace `/r/<código>` de otro e hizo el onboarding real: 200 créditos de
+  bienvenida que caducan a los 30 días, las condiciones de activación, los hitos
+  de la escalera y su propio código para invitar (ADR-57).
 
 axe-core (WCAG 2.2 AA) dio 0 violaciones en Yo y Estadísticas y en la landing
 (tests nuevos de `e2e/accessibility.spec.ts`), y en Rutas y en el feedback del Quiz

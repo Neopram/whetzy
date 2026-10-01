@@ -22,8 +22,8 @@ Se resuelven en `App()` antes de cualquier hook; no necesitan sesión salvo dond
 | `/landing` | `LandingScreen` | Portada pública, ES/EN, hero pre-renderizado | E1: `docs/design/identidad.md`, `competitive-teardown.md` |
 | `/auth`, `/login`, `/register` | `AuthScreen` (modos login / register / forgot → `ForgotPasswordPage`) | Acceso, registro, recuperar contraseña, OAuth GitHub/Google | E1: `docs/design/auth-hardening.md`, `docs/API.md` |
 | `/reset-password?token=` | `ResetPasswordPage` | Nueva contraseña desde el correo | E0: `docs/API.md` (endpoint) |
-| `/delete-account` | `DeleteAccountScreen` | Borrado de cuenta (GDPR, purga a 30 días) | E1: `docs/legal/privacy-policy.*.md`, `RUNBOOK.md` |
-| `/privacy`, `/terms`, `/refund` | `LegalScreen doc=…` | Textos legales publicados (claves i18n `legal.*`) | E1: `docs/legal/*.md` (borradores, H.20) |
+| `/delete-account` | `DeleteAccountScreen` | Borrado de cuenta (GDPR, purga a 30 días) | E1: política publicada (`legal.privacy*`, ADR-55), `RUNBOOK.md` |
+| `/privacy`, `/terms`, `/refund` | `LegalScreen doc=…` | Textos legales publicados (claves i18n `legal.*`) | E1: las propias claves `legal.*` (ADR-55; los borradores, en `docs/archive/legal-borradores/`) |
 | `/evidence` | `EvidenceScreen` | Cifras reales del producto | E0: ledger 38.5 |
 | `/status` | `StatusPage` | Estado público del servicio | E0: ledger 22.7 |
 | `/checkout?plan=&track=` | `CheckoutScreen` | Pago web con Paddle (cabeceras propias, sin COEP) | E1: ledger H.29, `docs/API.md` |
@@ -51,9 +51,9 @@ Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario)
 | `trackexam` | `TrackExamScreen` | «Examen final del curso» | intro, examen, resultado; admite `test_out` de módulo, pero nada en la UI lo lanza (§5.1) | E2: `design/v2/brief-msg2.md` §F |
 | `league` | `LeagueScreen` | pestaña Ranking | pestañas Liga / Duelos (`RankingTabs`) | E1: `docs/API.md` (league) |
 | `duels` | `DuelScreen` | pestaña Ranking → Duelos | lista (nombre de la habilidad, no su id), reto (rival + habilidad practicada o al azar entre las practicadas), jugando, resultado. Un duelo no da XP | E0: ledger 3.1 |
-| `profile` | `ProfileScreen` | pestaña Yo | ajustes, plan y cancelación, tema, idioma, accesos a Stats/Cartera/Instructor/Admin | E1: `design/v2/brief-msg1.md` (nav) |
+| `profile` | `ProfileScreen` | pestaña Yo | ajustes, plan y cancelación, plan ganado con referidos y hasta cuándo (ADR-57), tema, idioma, accesos a Stats/Cartera/Instructor/Admin | E1: `design/v2/brief-msg1.md` (nav) |
 | `stats` | `StatsScreen` | Yo → Estadísticas | resumen y progreso | E0: ledger |
-| `wallet` | `WalletScreen` | Yo → Cartera | saldo, fuentes y gastos que lista `/economy/prices`, canje de códigos; «Invitar amigos» solo si el referido figura como fuente (hoy no, §5.1). Sin lista de movimientos | E1: `docs/ECONOMIA.md` §2–5 |
+| `wallet` | `WalletScreen` | Yo → Cartera | saldo, fuentes y gastos que lista `/economy/prices`, canje de códigos; «Invitar amigos» solo si el referido figura como fuente (desde ADR-57, sí). Sin lista de movimientos | E1: `docs/ECONOMIA.md` §2–5 |
 | `instructor` | `InstructorScreen` | Yo → Instructor | panel del instructor | E1: `docs/MARKETPLACE.md` §4 |
 | `marketplace` | `MarketplaceScreen` | Yo → Marketplace; deslizar a la izquierda en móvil | catálogo con filtros Todos / Aprender / Certificación | E1: `docs/MARKETPLACE.md` |
 | `playground` | `PlaygroundScreen` | Hoy → Herramientas | editor Python / SQL / JS | E0: CHANGELOG (serie 19) |
@@ -84,20 +84,22 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 
 | Qué | Dónde se promete | Estado del código |
 |---|---|---|
-| Banner de cookies (Aceptar / Solo esenciales / Personalizar) | `docs/legal/cookie-policy.en.md` §4.2 (borrador) | no existe |
 | Interruptor «Usar explicaciones de IA» en Ajustes | `docs/legal/ai-notice.en.md` (borrador) | no existe |
 | Etiqueta «AI-powered» en cada respuesta del tutor | `docs/legal/ai-notice.en.md`, `ai-act-dsa-eaa.md` | no existe (el panel se titula «Tutor Whetzy») |
 | Botón «Flag» y revisión humana en 24 h | `docs/legal/ai-notice.en.md` (borrador) | no existe |
-| Correo de aviso 7 días antes de renovar | `legal/terms-of-service.md` (ES l. 99, EN l. 292) | `send_renewal_reminder` existe en `services/email.py` y **nadie la llama** |
-| Panel B2B / equipos | `content/legal/b2b_pilot_offer_*.md`, ledger 24.9 | no existe |
+| Correo de aviso 7 días antes de renovar | términos publicados, `legal.termsP6renewal` (ES/EN) | `send_renewal_reminder` existe en `services/email.py` y **nadie la llama** |
+| Panel B2B / equipos | `docs/legal/b2b_pilot_offer_*.md`, ledger 24.9 | no existe |
 | `/blog`, `/compare`, `/pricing` | ledger 26.9, 27.10; `archive/SPEC_WEB.md` | no existen |
 | Sign in with Apple | ADR-13 (obligatorio antes de App Store) | no existe (bloqueado por H.2) |
 | Comunidad y grupos de estudio | ledger 40.7–40.8 | no existe |
 | Widgets interactivos, tutor por voz | ledger 40.1–40.6 | no existe |
 | Vídeos | ledger 18.9 | no existe |
 | Activar 2FA desde la app | `docs/design/auth-hardening.md` §4 | backend sí (`auth_hardening.py`); **sin pantalla** |
-| Créditos por onboarding, módulo, rachas de 7 y 30 días y bienvenida de referido | `docs/ECONOMIA.md` §2.2 y §3.2 | **ninguna llamada a `grant_credits`** para esos motivos; solo la usan el código promocional y `credit_matured_referrals` |
-| Créditos al referente por referido activado (escalera) | `docs/ECONOMIA.md` §3 | `/economy/referral/activate` solo registra el referido (`pending`); `ReferralService.activate_referral` y `credit_matured_referrals` **solo los llaman los tests**. `/economy/prices` ya no lo anuncia y la Cartera esconde «Invitar amigos» hasta que se cablee (guarda: `test_referral_credit_is_not_wired_while_prices_omit_it`) |
+| Créditos por onboarding, módulo y rachas de 7 y 30 días | `docs/ECONOMIA.md` §2.2 | **ninguna llamada a `grant_credits`** para esos motivos; solo lo llaman el código promocional y el programa de referidos (ADR-57) |
+| Antifraude por dispositivo/IP (1 activación cada 30 días) | `docs/ECONOMIA.md` §3.5 | el código existe (`check_device_rate_limit`), pero el frontend no manda `X-Device-Fingerprint` y la política publicada no declara ese tratamiento: no corre (ADR-57) |
+| Clawback de referidos (reembolso, baneo, fraude confirmado) | `docs/ECONOMIA.md` §3.5 | no hay flujo de baneo ni de «fraude confirmado» que lo dispare; un referido borrado antes del abono queda `rejected` (ADR-57) |
+| Correo de reactivación a los 14 días de inactividad | ledger 29.7 (DONE), ADR-35 | el handler `reactivation_check` existe en `services/job_worker.py`; **nada encola ese job** |
+| Liquidación mensual a instructores el día 15 | `docs/MARKETPLACE.md`, `main.py` (`_schedule_monthly_payouts`) | depende de APScheduler, que no está en `requirements.txt`: el `ImportError` deja el aviso en el log y **nunca se programa** |
 | Gastar créditos en simulacro, informe PDF o curso | `docs/ECONOMIA.md` §2.3 | `spend_fifo` solo lo llama el comodín de racha (`services/streak_shop.py`) |
 | Examen para saltarse un módulo (test-out) | ledger 17.2 | `TrackExamScreen` y el store aceptan `test_out`; **ninguna llamada a `startTrackExam('test_out', …)`** |
 
@@ -109,10 +111,8 @@ ellas se rehace, su especificación se escribe aquí o en un brief antes de toca
 
 ### 5.3 Contradicciones comprobadas
 
-- Reparto del marketplace: **70 %** en `content/legal/instructor_recruitment_kit_en.md:19` y
-  `docs/MARKETPLACE.md:22`; **80 %** en `legal/terms-of-service.md:61` y `MARKETPLACE.md:41`
+- Reparto del marketplace: **70 %** en `docs/legal/instructor_recruitment_kit_en.md:19` y
+  `docs/MARKETPLACE.md:22`; **80 %** en `MARKETPLACE.md:41` y en el borrador archivado
+  `docs/archive/legal-borradores/raiz-terms-of-service.md:61`
   (ADR-41). Manda ADR-41 (80 %); el kit y la línea 22 están desfasados. `docs/API.md:260`
   dice «Reparto 70/30»: también desfasado.
-- Premio al referente: **300 créditos** en `docs/ECONOMIA.md` §3.2–3.3; el código
-  (`ReferralService._CREDIT_LADDER`) da 50 / 100 / 200 / 500 según el n.º de referido. Ninguno
-  de los dos se abona hoy (§5.1).

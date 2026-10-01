@@ -699,7 +699,8 @@ async def get_economy_credits(
 
 @router.get("/economy/referrals", dependencies=[Depends(require_admin)])
 async def get_economy_referrals(
-    status: str = Query(default="all", pattern="^(all|pending|completed)$"),
+    # Estados reales de Referral (ADR-35): pending → activated → credited, o rejected.
+    status: str = Query(default="all", pattern="^(all|pending|activated|credited|rejected)$"),
     segment: str = Query(default="all", pattern="^(all|es|en)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
@@ -744,7 +745,8 @@ async def get_economy_k_factor(
     total_users = await db.execute(query_total)
     total = total_users.scalar() or 0
     
-    query_referrals = select(func.count(Referral.id)).where(Referral.status == "completed")
+    # «completed» no lo escribe nadie: el éxito de un referido es «credited».
+    query_referrals = select(func.count(Referral.id)).where(Referral.status == "credited")
     if segment != "all":
         query_referrals = query_referrals.select_from(Referral).join(User, User.id == Referral.referrer_id).where(User.language == segment)
     
@@ -788,16 +790,15 @@ async def get_economy_scorecard(
         total_users_q = total_users_q.where(User.language == segment)
     total_users = (await db.execute(total_users_q)).scalar() or 0
 
-    referred_q = select(func.count(Referral.id)).where(
-        Referral.status == "completed", Referral.created_at >= cutoff,
-    )
+    # % de registros vía referido: cuenta cada registro con código, esté o no activado.
+    referred_q = select(func.count(Referral.id)).where(Referral.created_at >= cutoff)
     if segment != "all":
         referred_q = referred_q.join(User, User.id == Referral.referred_id).where(User.language == segment)
     referred_count = (await db.execute(referred_q)).scalar() or 0
 
     referral_pct = round((referred_count / total_users * 100) if total_users else 0, 2)
 
-    k_q = select(func.count(Referral.id)).where(Referral.status == "completed")
+    k_q = select(func.count(Referral.id)).where(Referral.status == "credited")
     if segment != "all":
         k_q = k_q.join(User, User.id == Referral.referrer_id).where(User.language == segment)
     k_completed = (await db.execute(k_q)).scalar() or 0
@@ -1040,7 +1041,7 @@ async def get_kpi_dashboard(
     else:
         d30 = "sin dato"
 
-    referral_q = select(func.count(Referral.id)).where(Referral.status == "completed")
+    referral_q = select(func.count(Referral.id)).where(Referral.status == "credited")
     if segment != "all":
         referral_q = (
             referral_q.select_from(Referral)

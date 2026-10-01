@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlalchemy import (
     Boolean,
@@ -70,6 +70,26 @@ class User(Base):
     # cuando el alumno borra su cuenta (19.12).
     paddle_subscription_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True)
     eu_withdrawal_waiver_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Tiempo de plan ganado con la escalera de referidos (ADR-35, ECONOMIA §3.3):
+    # aparte de las columnas de suscripción, que reescriben los webhooks de pago.
+    # `user_meets_tier` se queda con el mayor de los dos mientras esté en fecha.
+    granted_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro
+    granted_tier_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    @property
+    def active_granted_tier(self) -> str | None:
+        """Plan ganado con referidos (ADR-57) si sigue en fecha. Un plan ganado
+        sin fecha de fin cuenta como caducado, nunca como gratis para siempre."""
+        until = self.granted_tier_expires_at
+        if self.granted_tier is None or until is None:
+            return None
+        if until.tzinfo is None:
+            until = until.replace(tzinfo=UTC)
+        return self.granted_tier if until > datetime.now(UTC) else None
+
+    @property
+    def active_granted_until(self) -> datetime | None:
+        return self.granted_tier_expires_at if self.active_granted_tier else None
     role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
 
     # Onboarding (24.3 / 34.11): índice de la opción elegida en cada pregunta

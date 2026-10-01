@@ -1377,3 +1377,52 @@ ejecutar `ORCHESTRATOR.md`.
 `CIERRE_2026-09-30.md` sigue vivo como registro y por sus §2 (scorecard) y §7 (trampas del
 entorno). `check_docs.py` [11] invierte su regla: con la pausa levantada falla si `CLAUDE.md`,
 `ORCHESTRATOR.md` o `docs/README.md` siguen mandando parar.
+
+## ADR-57 — Referidos abiertos ya, sin esperar al «cuándo» de ADR-35 (DUEÑO, 2026-10-01)
+
+**Origen.** ADR-35 abre el programa «después de la Serie 24 y con retención base medida».
+Ninguna de las dos cosas está hecha: la Serie 24 va 1/9 y la retención la mide la cohorte de
+H.10, que está HUMAN-BLOCKED. Mientras tanto, nada activaba ni abonaba un referido:
+`activate_referral` y `credit_matured_referrals` solo los llamaban los tests. Preguntado con
+las cuatro opciones (apagado, completo, solo créditos, eliminar), el dueño eligió **cablearlo
+completo ya**.
+
+**Decisión.** Se cablea el programa de ECONOMIA.md §3 tal cual, salvo el «cuándo»:
+- Activación con las cuatro condiciones del §3.1. El job `referral_program_loop` corre cada 6 h
+  y un solo worker a la vez (advisory lock).
+- Abono 7 días después: 300 créditos por activación, con tope de 10 al mes.
+- Escalera acumulativa: al 3.º, 1 mes de Pro; al 10.º, 6 meses de Pro Max (la certificación
+  sigue HUMAN-BLOCKED, ADR-15); al 25.º, la insignia «Embajador».
+- 200 créditos de bienvenida al referido.
+- Pausa manual (`REFERRALS_PAUSED`) y automática si el fraude supera el 5 % dos semanas
+  seguidas.
+
+**Lecturas de la sesión** (ninguna está en ADR-35 y todas se revierten sin migración):
+1. **«Completar el diagnóstico».** El onboarding solo manda a la prueba de nivel a quien ya
+   programa (`onboarding_experience` ≥ 1). Para esos cuenta la prueba terminada; para quien
+   empieza de cero, el propio onboarding. Exigir la prueba a todos dejaría fuera a cada
+   principiante.
+2. **«Terminar el primer módulo»** usa la regla con la que la app pinta un módulo
+   «completado»: la media de dominio de sus skills alcanza `min_mastery_to_unlock`. No es el
+   «BKT ≥ 0,8 en todas» de ECONOMIA §2.2, que ninguna pantalla usa.
+3. **«Mantiene una racha de 3 días»** se lee como `max_streak` ≥ 3, es decir, la ha
+   alcanzado. El job corre cada 6 h y una racha que se rompe entre dos vueltas no debe borrar
+   el mérito.
+4. **El tiempo de plan ganado va en columnas propias** (`users.granted_tier`,
+   `granted_tier_expires_at`), no en las de suscripción, que reescriben los webhooks de
+   Paddle, Stripe y RevenueCat. `user_meets_tier` toma el mayor de los dos mientras estén en
+   fecha. En `/auth/me`, `is_premium` sigue siendo solo el plan de pago: el checkout lo usa
+   para decir «ya tienes suscripción» y para dar por llegado un pago. El plan ganado sale
+   aparte (`granted_tier`, `granted_tier_expires_at`); el frontend junta los dos para
+   desbloquear, y Yo dice cuál es y hasta cuándo.
+5. **El email verificado se exige al activar, no al registrar el código** (§3.5 ya lo decía
+   así). Exigirlo al registrar perdía el referido de todo el que no entraba con OAuth: el
+   onboarding llama antes de que nadie abra el correo.
+
+**Sin cablear, y por qué:**
+- **Dispositivo/IP (1 activación cada 30 días).** El código existe, pero el frontend no manda
+  `X-Device-Fingerprint` y la política de privacidad publicada (ADR-55) no declara ese
+  tratamiento. Encenderlo exige primero declararlo en `legal.privacy*` ES/EN.
+- **Clawback.** No hay flujo de baneo ni de «fraude confirmado» que lo dispare. Un referido
+  cuya cuenta se borra antes del abono queda `rejected` y no se paga.
+- **El acceso anticipado del hito 25** no existe como programa.

@@ -1,7 +1,8 @@
 /**
  * Cartera (design/v2, bug #7 de la auditoría): cada fila con su texto, nunca
  * el identificador del backend («module done», «wallet.10/month»), y lo que no
- * tenga texto no se pinta. La escalera de referidos sale con sus cifras reales.
+ * tenga texto no se pinta. Los hitos de la escalera de referidos (ADR-35) salen
+ * con su premio, y el de un premio desconocido no se pinta.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
@@ -24,7 +25,11 @@ beforeEach(async () => {
   (economy.prices as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
     credit_value_usd: 0.01,
     grifos: [
-      { event: 'referral_activated', credits: 50, cap: 'ladder', ladder: [[1, 50], [3, 100]] },
+      {
+        event: 'referral_activated', credits: 300, cap: '10/month',
+        milestones: [{ at: 3, reward: 'pro_month' }, { at: 10, reward: 'pro_max_6_months' }, { at: 99, reward: 'mystery_prize' }],
+      },
+      { event: 'referral_welcome', credits: 200, cap: 'once' },
       { event: 'something_new', credits: 10, cap: '10/month' },
     ],
     sumideros: [{ item: 'freeze_streak_1day', cost: 150 }, { item: 'mystery_item', cost: 5 }],
@@ -35,11 +40,15 @@ afterEach(cleanup);
 describe('WalletScreen v2', () => {
   it('pinta textos, no identificadores, y oculta lo que no tiene texto', async () => {
     render(<WalletScreen />);
-    expect(await screen.findByText('Un amigo que invitaste se registra y empieza a estudiar')).toBeInTheDocument();
-    expect(screen.getByText('desde el 1.º: +50 · desde el 3.º: +100')).toBeInTheDocument();
+    expect(await screen.findByText('Un amigo que invitaste se activa')).toBeInTheDocument();
+    expect(screen.getByText('+300')).toBeInTheDocument();
+    expect(screen.getByText(/verificar su email, hacer el diagnóstico, terminar su primer módulo y llegar a 3 días de racha/)).toBeInTheDocument();
+    expect(screen.getByText('al 3.º, 1 mes de Pro · al 10.º, 6 meses de Pro Max')).toBeInTheDocument();
+    expect(screen.getByText('Te registras con el código de un amigo')).toBeInTheDocument();
+    expect(screen.getByText('Caducan a los 30 días si no haces el diagnóstico.')).toBeInTheDocument();
     expect(screen.getByText('Comodín de racha (protege un día sin estudiar)')).toBeInTheDocument();
     expect(screen.getByText('−150')).toBeInTheDocument();
-    for (const raw of [/referral/i, /something/i, /mystery/i, /10\/month/, /wallet\./]) {
+    for (const raw of [/referral/i, /something/i, /mystery/i, /10\/month/, /wallet\./, /99/]) {
       expect(screen.queryByText(raw)).not.toBeInTheDocument();
     }
   });

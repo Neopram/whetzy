@@ -56,17 +56,32 @@ def user_meets_tier(user: User, minimum: str) -> bool:
     or expired paid plan kept full tier access forever through the stale
     field. ``None`` still means "no expiry" (grandfathered accounts that
     predate Stripe, or accounts an admin set up by hand).
+
+    Plan time won through referrals (``granted_tier``) counts too, while in
+    date; the higher of the two wins (``effective_tier``).
     """
-    effective_tier = user.subscription_tier
-    if effective_tier is None and user.is_premium:
-        effective_tier = "plus"
-    expires_at = user.subscription_expires_at
-    if expires_at is not None:
-        if expires_at.tzinfo is None:
-            expires_at = expires_at.replace(tzinfo=UTC)
-        if expires_at < datetime.now(UTC):
-            effective_tier = "free"
-    return _TIER_RANK.get(effective_tier, 0) >= _TIER_RANK.get(minimum, 0)
+    return _TIER_RANK.get(effective_tier(user), 0) >= _TIER_RANK.get(minimum, 0)
+
+
+def _expired(moment: datetime | None) -> bool:
+    if moment is None:
+        return False
+    if moment.tzinfo is None:
+        moment = moment.replace(tzinfo=UTC)
+    return moment < datetime.now(UTC)
+
+
+def effective_tier(user: User) -> str:
+    """The higher of the paid subscription and the referral grant."""
+    paid = user.subscription_tier
+    if paid is None and user.is_premium:
+        paid = "plus"
+    if _expired(user.subscription_expires_at):
+        paid = "free"
+    granted = user.active_granted_tier
+    best = max((paid, granted), key=lambda t: _TIER_RANK.get(t, 0))
+    return best if _TIER_RANK.get(best, 0) > 0 else "free"
+
 
 
 def require_tier(minimum: str) -> Callable[[User], Awaitable[None]]:
