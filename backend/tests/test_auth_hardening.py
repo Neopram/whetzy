@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import hashlib
 import uuid
+from datetime import datetime, timedelta
 
 import pytest
 import pytest_asyncio
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core import security
 from app.core.security import (
     check_lockout,
     create_opaque_refresh_token,
@@ -21,7 +23,7 @@ from app.core.security import (
     revoke_session,
     setup_2fa,
 )
-from app.models.auth import AuditLog, RefreshToken, User2FA, UserSession
+from app.models.auth import AuditLog, LoginAttempt, RefreshToken, User2FA, UserSession
 from app.models.user import User
 
 
@@ -44,10 +46,43 @@ async def test_user(db_session: AsyncSession) -> User:
     return user
 
 
+async def _locked_right_after_last_attempt(
+    email: str, ip: str, db: AsyncSession, monkeypatch: pytest.MonkeyPatch
+) -> bool:
+    """`check_lockout` medido 0,5 s después del último intento, no «ahora».
+
+    Con 5 fallos el bloqueo dura 1 s, y en SQLite `created_at` (server_default
+    `now()`) se guarda truncado al segundo: si entre el 5.º intento y la
+    comprobación cambiaba el segundo, el test fallaba al azar (CI de 80cd3ad,
+    2026-10-01). Postgres guarda microsegundos; esto es solo del banco de tests.
+    """
+    last = (
+        await db.execute(
+            select(func.max(LoginAttempt.created_at)).where(
+                LoginAttempt.email == email, LoginAttempt.ip == ip
+            )
+        )
+    ).scalar_one()
+    if last is None:
+        return await check_lockout(email, ip, db=db)
+    instant = security._as_utc(last) + timedelta(milliseconds=500)
+
+    class _Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):  # type: ignore[override]
+            return instant
+
+    with monkeypatch.context() as m:
+        m.setattr(security, "datetime", _Clock)
+        return await check_lockout(email, ip, db=db)
+
+
 class TestAccountLockout:
     """Test progressive account lockout with exponential backoff."""
 
-    async def test_lockout_exponential_delay(self, db_session: AsyncSession, user: User):
+    async def test_lockout_exponential_delay(
+        self, db_session: AsyncSession, user: User, monkeypatch: pytest.MonkeyPatch
+    ):
         """5 failed attempts -> locked 1s, 6 -> 2s, 7 -> 4s, etc."""
         email = user.email
         ip = "192.168.1.100"
@@ -58,10 +93,12 @@ class TestAccountLockout:
             assert not is_locked
 
         await record_login_attempt(email, ip, success=False, db=db_session)
-        is_locked = await check_lockout(email, ip, db=db_session)
+        is_locked = await _locked_right_after_last_attempt(email, ip, db_session, monkeypatch)
         assert is_locked
 
-    async def test_login_with_lockout_flow(self, db_session: AsyncSession, user: User):
+    async def test_login_with_lockout_flow(
+        self, db_session: AsyncSession, user: User, monkeypatch: pytest.MonkeyPatch
+    ):
         """Full flow: 5 failed attempts -> locked -> wait -> login OK."""
         email = user.email
         ip = "192.168.1.101"
@@ -69,7 +106,7 @@ class TestAccountLockout:
         for _ in range(5):
             await record_login_attempt(email, ip, success=False, db=db_session)
 
-        is_locked = await check_lockout(email, ip, db=db_session)
+        is_locked = await _locked_right_after_last_attempt(email, ip, db_session, monkeypatch)
         assert is_locked
 
         await record_login_attempt(email, ip, success=True, db=db_session)
@@ -77,14 +114,18 @@ class TestAccountLockout:
         is_locked = await check_lockout(email, ip, db=db_session)
         assert not is_locked
 
-    async def test_lockout_per_email_ip_combo(self, db_session: AsyncSession, user: User):
+    async def test_lockout_per_email_ip_combo(
+        self, db_session: AsyncSession, user: User, monkeypatch: pytest.MonkeyPatch
+    ):
         """Lockout is per (email, ip) combo, not global."""
         email = user.email
 
         for _ in range(5):
             await record_login_attempt(email, "192.168.1.50", success=False, db=db_session)
 
-        is_locked_ip1 = await check_lockout(email, "192.168.1.50", db=db_session)
+        is_locked_ip1 = await _locked_right_after_last_attempt(
+            email, "192.168.1.50", db_session, monkeypatch
+        )
         assert is_locked_ip1
 
         is_locked_ip2 = await check_lockout(email, "192.168.1.51", db=db_session)
