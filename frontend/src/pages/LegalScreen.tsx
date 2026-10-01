@@ -52,7 +52,16 @@ function PrivacyContent() {
         <li>{t('legal.privacyL11')}</li>
         <li>{t('legal.privacyL12')}</li>
       </ul>
+      <p>{t('legal.privacyGdprDesc')}</p>
       <p>{t('legal.privacyRights')} <a href="mailto:privacy@whetzy.com">privacy@whetzy.com</a></p>
+
+      <h2>{t('legal.privacyProcessorsH')}</h2>
+      <p>{t('legal.privacyProcessors')}</p>
+      <p>{t('legal.privacyTransfers')}</p>
+
+      <h2>{t('legal.privacyOtherH')}</h2>
+      <p>{t('legal.privacyCookies')}</p>
+      <p>{t('legal.privacyCoppaDesc')}</p>
 
       <h2>{t('legal.privacyH6')}</h2>
       <p>Whetzy · <a href="mailto:privacy@whetzy.com">privacy@whetzy.com</a></p>

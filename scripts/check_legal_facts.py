@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """check_legal_facts.py — 21.0: verifica hechos legales en documentos legales.
 
-Comprueba que los 14 documentos legales (7 ficheros x 2 idiomas) no contienen
-afirmaciones falsas, defectos de codificación o inconsistencias que violarían
-los ADRs o resolverían issues abiertas de revisión.
+Fuente canónica (ADR-55, 2026-10-01): lo que se publica. Privacidad, términos y
+reembolsos son las claves i18n `legal.*` que pinta `LegalScreen.tsx` en
+whetzy.com/privacy, /terms y /refund. Las versiones largas que vivían en
+`docs/legal/` y `legal/` (raíz) eran borradores sin publicar que ya se
+contradecían con lo publicado (Stripe, «14 días de prueba gratis»); están en
+`docs/archive/legal-borradores/` y esta guarda impide que vuelva una segunda copia.
+
+En `docs/legal/` quedan los borradores que la app aún no publica (aviso de IA,
+DPA, avisos de marcas) e instrumentos internos (investigación, decisiones).
 
 Variable de entorno: WHETZY_LEGAL_DIR (default: docs/legal)
 """
@@ -48,18 +54,27 @@ def check(label: str, ok: bool, detail: str = "") -> None:
         errors.append(f"{label}: {detail}" if detail else label)
 
 
-# Ficheros esperados: 7 documentos x 2 idiomas
+# Borradores de cara al usuario que la app todavía no publica: 3 x 2 idiomas.
 EXPECTED_DOCS = [
     "ai-notice",
-    "cookie-policy",
     "dpa",
     "ip-disclaimers",
-    "privacy-policy",
-    "refund-policy",
-    "terms-of-service",
 ]
+# Lo publicado manda: estos documentos no pueden volver a tener copia en
+# docs/legal (ADR-55). Su texto está en las claves i18n `legal.*`.
+PUBLISHED_ELSEWHERE = ["privacy-policy", "terms-of-service", "refund-policy", "cookie-policy"]
 
 LANGS = ["es", "en"]
+I18N_DIR = ROOT / "frontend" / "src" / "i18n"
+
+
+def published_legal(lang: str) -> str:
+    """Texto legal publicado en la app (claves i18n `legal.*`): la fuente canónica."""
+    path = I18N_DIR / lang / "common.json"
+    if not path.exists():
+        return ""
+    legal = json.loads(path.read_text(encoding="utf-8")).get("legal", {})
+    return " ".join(v for v in legal.values() if isinstance(v, str))
 
 # Afirmaciones prohibidas, como expresiones regulares sobre el texto en
 # minusculas. Son regex y no subcadenas porque un verificador adversario colo
@@ -72,7 +87,7 @@ PROHIBITED = {
     r"registered[\s\-]+trade[\s\-]*marks?": "marcado falso de marca",
     r"google[\s\-_]*analytics": "rastreador prohibido por linea roja 5",
     r"lemon[\s\-_]*squeezy": "procesador que no existe en el codigo",
-    r"revenue[\s\-_]*cat": "procesador que no existe en el codigo",
+    r"revenue[\s\-_]*cat": "procesador sin activar (17.14: sin apps en tiendas); nombrarlo al encenderlo",
 }
 
 print()
@@ -99,44 +114,50 @@ for doc_name in EXPECTED_DOCS:
             check(f"{doc_name}.{lang}.md lectura", False, str(e))
             prohibited_ok = False
 
+for lang in LANGS:
+    published = published_legal(lang).lower()
+    for pattern, reason in PROHIBITED.items():
+        hit = re.search(pattern, published)
+        if hit:
+            check(f"texto publicado ({lang}, legal.*) contiene {hit.group(0)!r}", False, reason)
+            prohibited_ok = False
+
 if prohibited_ok:
     check("Afirmaciones prohibidas", True)
 
-# Procesadores que el código ya integra: la política de privacidad —la de
-# docs/legal y la que se publica en /privacy (claves i18n `legal.privacy*` que
-# pinta LegalScreen.tsx)— tiene que nombrarlos, y si el código deja de tenerlos
-# ya no puede nombrarlos. Paddle estaba en PROHIBITED («no existe en el
-# código») hasta que el #58 (H.29) lo integró: a partir de ahí la regla
-# vieja exigía callar un procesador que cobra.
+# Procesadores que el código usa: la política publicada en /privacy (claves
+# i18n `legal.privacy*` que pinta LegalScreen.tsx) tiene que nombrarlos, y si
+# el código deja de usarlos ya no puede nombrarlos. Paddle estaba prohibido
+# («no existe en el código») hasta que el #58 (H.29) lo integró; Groq, Resend
+# y Sentry se añadieron el 2026-10-01 tras verlos activos en el log de
+# producción (Sentry initialised, Email: proveedor resend) y en el código.
+# Cada marca es (fichero, texto que prueba que el proveedor se usa ahí).
 PROCESSORS_IN_CODE = {
-    "paddle": ROOT / "backend" / "app" / "services" / "paddle_billing.py",
+    "paddle": (ROOT / "backend" / "app" / "services" / "paddle_billing.py", "paddle"),
+    "groq": (ROOT / "backend" / "app" / "services" / "ai" / "provider.py", "GroqProvider"),
+    "resend": (ROOT / "backend" / "app" / "services" / "email.py", "resend"),
+    "sentry": (ROOT / "backend" / "app" / "core" / "error_tracking.py", "sentry_sdk"),
 }
-I18N_DIR = ROOT / "frontend" / "src" / "i18n"
 
 print()
-print("[1b] Procesadores del código nombrados en la política de privacidad")
+print("[1b] Procesadores del código nombrados en la política de privacidad publicada")
 processors_ok = True
-for name, marker in PROCESSORS_IN_CODE.items():
-    in_code = marker.exists()
+for name, (marker, needle) in PROCESSORS_IN_CODE.items():
+    in_code = marker.exists() and needle.lower() in marker.read_text(encoding="utf-8").lower()
     for lang in LANGS:
-        sources: dict[str, str] = {}
-        md = LEGAL_DIR / f"privacy-policy.{lang}.md"
-        if md.exists():
-            sources[md.name] = md.read_text(encoding="utf-8")
-        i18n = I18N_DIR / lang / "common.json"
-        if i18n.exists():
-            legal = json.loads(i18n.read_text(encoding="utf-8")).get("legal", {})
-            sources[f"i18n {lang} legal.privacy*"] = " ".join(
-                v for k, v in legal.items() if k.startswith("privacy")
-            )
-        for label, text in sources.items():
-            named = name in text.lower()
-            if in_code and not named:
-                check(f"{label} no nombra a {name}", False, f"{marker.name} existe en el código")
-                processors_ok = False
-            elif not in_code and named:
-                check(f"{label} nombra a {name}", False, "procesador que no existe en el código")
-                processors_ok = False
+        path = I18N_DIR / lang / "common.json"
+        if not path.exists():
+            continue
+        legal = json.loads(path.read_text(encoding="utf-8")).get("legal", {})
+        text = " ".join(v for k, v in legal.items() if k.startswith("privacy") and isinstance(v, str))
+        named = name in text.lower()
+        label = f"i18n {lang} legal.privacy*"
+        if in_code and not named:
+            check(f"{label} no nombra a {name}", False, f"{marker.name} lo usa")
+            processors_ok = False
+        elif not in_code and named:
+            check(f"{label} nombra a {name}", False, "procesador que el código no usa")
+            processors_ok = False
 if processors_ok:
     check("Procesadores del código nombrados en la política de privacidad", True)
 
@@ -242,7 +263,7 @@ if frontmatter_ok:
     check("Idioma del frontmatter", True)
 
 print()
-print("[5] Paridad (14 ficheros: 7 docs x 2 idiomas)")
+print(f"[5] Paridad (borradores sin publicar: {len(EXPECTED_DOCS)} docs x 2 idiomas)")
 expected_files = {f"{doc}.{lang}.md" for doc in EXPECTED_DOCS for lang in LANGS}
 actual_files = {f.name for f in LEGAL_DIR.glob("*.md")}
 
@@ -255,7 +276,18 @@ extra = sorted(actual_files - expected_files)
 for fname in missing:
     check("Paridad", False, f"falta {fname}")
 if not missing:
-    check("Paridad (14 ficheros: 7 docs x 2 idiomas)", True)
+    check("Paridad de los borradores sin publicar", True)
+
+print()
+print("[5b] Una sola fuente: lo publicado (ADR-55)")
+duplicates = sorted(
+    f.name for f in LEGAL_DIR.glob("*.md") if f.name.split(".")[0] in PUBLISHED_ELSEWHERE
+)
+check(
+    "Ninguna copia en docs/legal de privacidad, términos, reembolsos o cookies",
+    not duplicates,
+    "ya se publican desde las claves i18n legal.*: " + ", ".join(duplicates),
+)
 if extra:
     print(f"  --   {len(extra)} fichero(s) adicional(es), no son de cara al usuario: "
           + ", ".join(extra))

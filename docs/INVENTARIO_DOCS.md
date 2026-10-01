@@ -31,27 +31,27 @@ está roto.
 |---|---|---|---|---|
 | `CLAUDE.md` | normativo-vivo | instrucciones del proyecto; check_docs vigila HEAD de Alembic y la pausa | se queda; ruta de AUDITORIA_EXTERNA actualizada | 2026-09-30 |
 | `docs/archive/COMPETITIVE_RESEARCH.md` | obsoleto | investigación de 8 plataformas del 2026-09-23, sin referencias; la sustituye docs/COMPETENCIA.md (URL y fecha) | archivado el 2026-10-01 | 2026-09-23 |
-| `EVALUACION_COMPLETA_WHETZY.md` | histórico | evaluación fechada con notas «Superado»; no manda | archivar tras fusionar #52 (que la toca) | 2026-09-30 |
+| `docs/archive/EVALUACION_COMPLETA_WHETZY.md` | histórico | evaluación fechada con notas «Superado»; no manda | archivado el 2026-10-01 (histórico, sin referencias vivas) | 2026-09-30 |
 | `README.md` | referencia-viva | presentación del repo (raíz) | se queda | 2026-09-26 |
 | `docs/archive/SERIE_28_STATUS.md` | obsoleto | estado de la serie 28 del 2026-09-19; ADR-48 archiva los SERIE*_STATUS y el ledger es el único plan | archivado el 2026-10-01 | 2026-09-23 |
-| `backend/IMPLEMENTATION_GUIDE_22_6.md` | referencia-viva | guía de integración de 22.6 (rate limit, paginación, caché, jobs) | se queda [sin verificar] contra el código | 2026-09-23 |
+| `docs/archive/IMPLEMENTATION_GUIDE_22_6.md` | referencia-viva | guía de integración de 22.6 (rate limit, paginación, caché, jobs) | archivado el 2026-10-01: su lista de 13 tareas sigue sin marcar aunque varias existen (worker de jobs, docs que pedía crear) | 2026-09-23 |
 | `content/_quarantine/README.md` | normativo-vivo | regla de la carpeta en cuarentena (no se carga ni se mide) | se queda | 2026-09-23 |
-| `content/legal/affiliation_dossier_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/affiliation_dossier_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/b2b_pilot_offer_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/b2b_pilot_offer_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/credits_terms_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/credits_terms_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/instructor_recruitment_kit_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/instructor_recruitment_kit_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
+| `docs/legal/affiliation_dossier_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/affiliation_dossier_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/b2b_pilot_offer_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/b2b_pilot_offer_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/credits_terms_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/credits_terms_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/instructor_recruitment_kit_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/instructor_recruitment_kit_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
 | `docs/archive/detallessesionultima.md` | histórico | volcado de la sesión 2026-09-29/30 pedido por el dueño | archivado el 2026-10-01 | 2026-09-30 |
 | `docs/archive/frontend-README-plantilla-vite.md` | obsoleto | plantilla de Vite («React + TypeScript + Vite»): no describe el frontend de Whetzy | archivado el 2026-10-01 | 2026-09-23 |
-| `legal/antifraud-legal-basis.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/dmca-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/dpa-template.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/privacy-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/security-breach-procedure.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/terms-of-service.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
+| `docs/legal/antifraud-legal-basis.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | movido desde `legal/` (raíz) el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/dmca-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | movido desde `legal/` (raíz) el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/archive/legal-borradores/raiz-dpa-template.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | archivado el 2026-10-01: duplicado de `docs/legal/dpa.{es,en}.md` (ADR-55) | 2026-09-26 |
+| `docs/archive/legal-borradores/raiz-privacy-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | archivado el 2026-10-01: duplicado de lo publicado (ADR-55) | 2026-09-26 |
+| `docs/legal/security-breach-procedure.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | movido desde `legal/` (raíz) el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/archive/legal-borradores/raiz-terms-of-service.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | archivado el 2026-10-01: duplicado de lo publicado (ADR-55) | 2026-09-26 |
 | `scripts/content_qa/README.md` | referencia-viva | herramientas de QA de contenido | se queda | 2026-09-26 |
 
 ## `docs/` — vivos
@@ -67,7 +67,7 @@ está roto.
 | `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
-| `docs/CIERRE_2026-09-30.md` | normativo-vivo | estado PAUSA y guía de fusión del #34; check_docs [11] | se queda | 2026-09-30 |
+| `docs/CIERRE_2026-09-30.md` | referencia-viva | registro de la pausa (levantada el 2026-10-01, ADR-56); §2 scorecard y §7 trampas del entorno; check_docs [11] | se queda | 2026-09-30 |
 | `docs/COMPETENCIA.md` | referencia-viva | mercado con URL y fecha | se queda | 2026-09-30 |
 | `docs/CONECTORES.md` | normativo-vivo | qué servicios externos toca una sesión y con qué permiso | se queda | 2026-09-26 |
 | `docs/DECISIONS.md` | normativo-vivo | ADR; solo se añade al final | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
@@ -114,8 +114,8 @@ está roto.
 | `docs/distribucion-assets/guiones/producto-es.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-23 |
 | `docs/distribucion-assets/guiones/short-en.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-30 |
 | `docs/distribucion-assets/guiones/short-es.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-30 |
-| `docs/incidents/postmortem-template.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | se queda [sin verificar] | 2026-09-25 |
-| `docs/incidents/runbook.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | se queda [sin verificar] | 2026-09-23 |
+| `docs/archive/incidents-postmortem-template.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: RUNBOOK.md ya trae su plantilla; esta tenía un ejemplo con 50k usuarios inventados | 2026-09-25 |
+| `docs/archive/incidents-runbook.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: describe Slack, PagerDuty, guardias e Instatus que no existen; RUNBOOK.md § Incident Management es la fuente única | 2026-09-23 |
 | `docs/archive/24-12-implementation.md` | obsoleto | dice «Commit: Pendiente»; 24.12 está DONE (c912713, LEDGER_HISTORY) | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/store/app-store-review-checklist.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/ios/listing.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
@@ -134,20 +134,20 @@ está roto.
 | `docs/legal/ai-act-dsa-eaa.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/ai-notice.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/ai-notice.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/cookie-policy.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/cookie-policy.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
+| `docs/archive/legal-borradores/cookie-policy.en.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
+| `docs/archive/legal-borradores/cookie-policy.es.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
 | `docs/legal/dpa.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-26 |
 | `docs/legal/dpa.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-26 |
 | `docs/legal/h21-decision.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-25 |
 | `docs/legal/ip-disclaimers.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/ip-disclaimers.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/privacy-matrix.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/privacy-policy.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-28 |
-| `docs/legal/privacy-policy.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-28 |
-| `docs/legal/refund-policy.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/refund-policy.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/terms-of-service.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/terms-of-service.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
+| `docs/archive/legal-borradores/privacy-policy.en.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-28 |
+| `docs/archive/legal-borradores/privacy-policy.es.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-28 |
+| `docs/archive/legal-borradores/refund-policy.en.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
+| `docs/archive/legal-borradores/refund-policy.es.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
+| `docs/archive/legal-borradores/terms-of-service.en.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
+| `docs/archive/legal-borradores/terms-of-service.es.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
 | `docs/legal/trademark-search.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 
 ## `docs/archive/`
@@ -198,17 +198,14 @@ Ninguna sesión cambia estos textos. Lo comprobable, comprobado el 2026-10-01:
    (`backend/app/core/config.py:244-265`) y el webhook de RevenueCat responde 503 sin ellas; la política tiene
    que nombrarlos **antes** de encenderlos. Si ya están configurados en producción: [sin verificar] (no se
    leen variables de producción desde una sesión).
-3. `legal/` (raíz) y `docs/legal/` tienen versiones distintas de la política de privacidad y de los términos;
-   el índice de `docs/` dice que `legal/` (raíz) no manda. Cuál publica la app: [sin verificar].
+3. ~~`legal/` (raíz) y `docs/legal/` con versiones distintas~~ — **resuelto por ADR-55 (2026-10-01)**: la app publica las claves i18n `legal.*` (`LegalScreen.tsx`), que son la fuente canónica; los borradores largos de ambas carpetas están en `docs/archive/legal-borradores/`.
 
 ## Hallazgos de la auditoría (no arreglados aquí)
 
 - `tests/integration/test_security_tracks.py` vive en una carpeta `tests/` de la raíz que
   `backend/pytest.ini` (`testpaths = tests`, relativo a `backend/`) no recoge: probablemente no corre nunca
   [Likely]. Era la única razón para conservar `docs/25.0-planning.md` (archivado el 2026-10-01; el test apunta a `docs/archive/`).
-- `docs/README.md` dice «veintiún documentos vivos»; la tabla tiene más filas y el número no lo vigila
-  ninguna guarda. Se rehace con la agrupación por propósito (6.6) cuando estén fusionados #50 y #52, que
-  tocan el mismo índice.
+- ~~`docs/README.md` dice «veintiún documentos vivos»~~ — **resuelto el 2026-10-01**: el índice se agrupa por propósito y ya no da una cifra que nadie vigila.
 - Los documentos marcados [sin verificar] en la tabla (API, ARCHITECTURE, RUNBOOK, RELEASE, specs de las
   series 22 y 24) no se han contrastado frase a frase con el código en esta sesión.
 

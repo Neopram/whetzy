@@ -1,7 +1,7 @@
 """Borrado de cuenta con 30 días de gracia (ledger 19.12).
 
-Lo que prometen los textos legales vigentes (`docs/legal/privacy-policy.*.md` §4,
-`docs/legal/terms-of-service.*.md` §8.3) y la pantalla `/delete-account`:
+Lo que prometen los textos legales publicados (whetzy.com/privacy §4, claves
+i18n `legal.privacyP4`; ADR-55) y la pantalla `/delete-account`:
 
 - Pedir el borrado desactiva la cuenta al momento («eliminación suave»).
 - Durante 30 días es un periodo de gracia: volver a iniciar sesión la recupera.

@@ -12,7 +12,9 @@ Backend (FastAPI)              api-production-9751.up.railway.app
         ├── PostgreSQL (Railway)       primary data store
         ├── BM25 index (in-memory)     RAG retrieval, built at startup from the DB
         ├── Groq API                   LLM for AI tutor (qwen3.8-27b)
-        └── Stripe API                 subscriptions (web checkout + webhooks)
+        ├── Paddle                     web payments (Paddle.js en /checkout + webhook firmado; H.29)
+        ├── Resend                     correo de la cuenta
+        └── Sentry                     errores del servidor (región UE)
 ```
 
 > **RAG note.** ChromaDB + sentence-transformers were removed (they OOM'd on the
@@ -35,7 +37,7 @@ app/
 │   ├── exams.py          # timed certification mock exam + per-domain report
 │   ├── tutor.py          # Groq explanations + BM25 RAG context
 │   ├── content.py        # tracks, author agent, QA agent, duplicates, versioned edits
-│   ├── billing.py        # Stripe checkout, webhook, subscription state
+│   ├── billing.py        # Paddle (config, cancel), RevenueCat webhook, subscription state; Stripe sin uso (H.29)
 │   ├── push.py           # web push: VAPID key, subscribe, preferences, streak reminders
 │   ├── analytics.py      # admin funnel + dashboard (X-Admin-Key)
 │   ├── ml.py             # model version, rollback, A/B cohort stats

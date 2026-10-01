@@ -1,8 +1,8 @@
 # Whetzy — instrucciones del proyecto
 
-**PAUSA desde el 2026-09-30 (decisión del dueño).** Si arrancas sin
-instrucciones explícitas del dueño, NO ejecutes `docs/ORCHESTRATOR.md`: lee
-`docs/CIERRE_2026-09-30.md`, informa del estado y para.
+**Pausa levantada el 2026-10-01 (dueño, ADR-56).** Las sesiones vuelven a trabajar en rama
++ PR (ADR-45); `master` lo sigue fusionando solo el dueño. Trampas del entorno medidas:
+`docs/CIERRE_2026-09-30.md` §7.
 
 - Fuente de verdad del progreso: `docs/AUTONOMOUS_STATE.md` — **no lo leas entero**
   (~29.500 tokens). `python scripts/ledger.py next` responde «qué toca ahora» en ~114;
@@ -17,7 +17,7 @@ instrucciones explícitas del dueño, NO ejecutes `docs/ORCHESTRATOR.md`: lee
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §14 ADR-53; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen la sustituye ADR-53), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica PostHog, Sentry, correo, staging), ADR-53 plan del catálogo por cobertura**)
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen la sustituye ADR-53), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica PostHog, Sentry, correo, staging), ADR-53 plan del catálogo por cobertura, ADR-54 catálogo uniforme 32 × 10, ADR-55 la fuente legal es lo publicado (claves i18n `legal.*`), ADR-56 fin de la pausa**)
 - Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
 - Auditoría externa del 2026-09-19 (histórica, archivada el 2026-10-01: su «el CI no ha corrido nunca» dejó de ser cierto): `docs/archive/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
@@ -35,8 +35,9 @@ instrucciones explícitas del dueño, NO ejecutes `docs/ORCHESTRATOR.md`: lee
   hasta que la guarda 37.0 esté en verde.
 - **Puerta local antes de cada push** (2026-09-20). `git push origin master` despliega a
   producción y hasta esa fecha no había **nada** en medio: cero hooks de git, y el
-  `.github/workflows/ci.yml` —que está bien escrito— **no se ha ejecutado nunca** por
-  facturación de GitHub. Dos niveles:
+  `.github/workflows/ci.yml` depende de la facturación de GitHub Actions: corrió en verde
+  el 2026-10-01 (runs de los #60 y #61) y desde ese mismo día, ~12:52 UTC, ningún job
+  recibe runner (`runner_id: 0`, sin pasos; H.13). La puerta local es la que vale. Dos niveles:
   `.githooks/pre-push` **bloquea** (~20-30 s: ruff, guardas de esquema y contrato, y
   banco de preguntas / `check_docs.py` solo si cambió contenido o docs);
   `scripts/ci_local.sh` corre **al fondo sin bloquear** (suite entera, `tests/content`,
