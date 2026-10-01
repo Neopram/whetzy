@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { lessonsApi, isQuotaError, type LessonRead } from '../services/api';
+import { lessonSteps, parseSource } from '../lib/lessonSteps';
 import { LoadingState } from '../components/common/LoadingState';
 import { EmptyState } from '../components/common/EmptyState';
 import { ErrorState } from '../components/common/ErrorState';
@@ -19,6 +21,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
 
   const [lessons, setLessons] = useState<LessonRead[]>([]);
   const [step, setStep] = useState(0);
+  const [showOutput, setShowOutput] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,6 +49,23 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
       .finally(() => setLoading(false));
   }, [skillId, t]);
 
+  const steps = useMemo(() => lessonSteps(lessons, language), [lessons, language]);
+  const isLast = step === steps.length - 1;
+  const finish = onStartQuiz ?? onExit;
+
+  // ← / → recorren los pasos, como los botones del pie.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLElement && e.target.closest('input, textarea')) return;
+      if (e.key === 'ArrowRight' && step < steps.length - 1) setStep(step + 1);
+      if (e.key === 'ArrowLeft' && step > 0) setStep(step - 1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [step, steps.length]);
+
+  useEffect(() => { setShowOutput(false); }, [step]);
+
   if (loading) {
     return (
       <div className={styles.screen}>
@@ -66,7 +86,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
     );
   }
 
-  if (lessons.length === 0) {
+  if (steps.length === 0) {
     return (
       <div className={styles.screen}>
         <EmptyState
@@ -80,76 +100,101 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
     );
   }
 
-  const lesson = lessons[step];
+  const current = steps[step];
+  const lesson = lessons[current.lesson];
   const title = language === 'en' ? lesson.title_en : lesson.title_es;
-  const body = language === 'en' ? lesson.body_en : lesson.body_es;
-  const isLast = step === lessons.length - 1;
+  const source = parseSource(lesson.source);
 
   return (
     <div className={styles.screen}>
       <header className={styles.header}>
-        <button className={styles.btnClose} onClick={onExit} aria-label={t('lesson.close', 'Cerrar')}>
+        <button type="button" className={styles.btnClose} onClick={onExit} aria-label={t('lesson.close', 'Cerrar')}>
           ✕
         </button>
-        <div className={styles.progress}>
-          {lessons.map((_, i) => (
-            <span
-              key={i}
-              className={`${styles.dot} ${i <= step ? styles.dotActive : ''}`}
-            />
+        <div
+          className={styles.progress}
+          role="progressbar"
+          aria-label={t('lesson.stepOf', { current: step + 1, total: steps.length })}
+          aria-valuenow={step + 1}
+          aria-valuemin={1}
+          aria-valuemax={steps.length}
+        >
+          {steps.map((_, i) => (
+            <span key={i} className={`${styles.seg} ${i <= step ? styles.segDone : ''}`} />
           ))}
         </div>
+        <span className={styles.counter} aria-hidden="true">
+          {step + 1} / {steps.length}
+        </span>
       </header>
 
       <main className={styles.main}>
+        <p className={styles.eyebrow}>
+          {current.kind === 'example' ? t('lesson.example') : t('lesson.concept')}
+        </p>
         <h1 className={styles.title}>{title}</h1>
 
-        <div className={styles.body}>
-          {body.split('\n').filter(Boolean).map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
-
-        {lesson.example_code && (
-          <div className={styles.exampleBlock}>
-            <span className={styles.exampleLabel}>{t('lesson.example', 'Ejemplo')}</span>
-            <pre className={styles.codeBlock}>
-              <code>{lesson.example_code}</code>
-            </pre>
-            {lesson.example_output && (
-              <div className={styles.outputBlock}>
-                <span className={styles.outputLabel}>→</span>
-                <pre className={styles.outputPre}>{lesson.example_output}</pre>
-              </div>
+        <AnimatePresence mode="wait">
+          <motion.section
+            key={step}
+            className={styles.card}
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -12 }}
+            transition={{ duration: 0.16 }}
+            aria-live="polite"
+          >
+            {current.kind === 'text' ? (
+              <p className={styles.body}>{current.text}</p>
+            ) : (
+              <>
+                <pre className={styles.code}><code>{lesson.example_code}</code></pre>
+                {lesson.example_output && (
+                  showOutput ? (
+                    <div className={styles.output}>
+                      <span className={styles.outputLabel}>{t('lesson.output')}</span>
+                      <pre className={styles.outputPre}>{lesson.example_output}</pre>
+                    </div>
+                  ) : (
+                    <div className={styles.predict}>
+                      <p>{t('lesson.predict')}</p>
+                      <button type="button" className={styles.btnGhost} onClick={() => setShowOutput(true)}>
+                        {t('lesson.showOutput')}
+                      </button>
+                    </div>
+                  )
+                )}
+              </>
             )}
-          </div>
-        )}
+          </motion.section>
+        </AnimatePresence>
 
-        <div className={styles.sourceRow}>
-          <span className={styles.sourceIcon}>📖</span>
-          <span className={styles.sourceText}>{lesson.source}</span>
-        </div>
+        <p className={styles.source}>
+          {t('lesson.source')}:{' '}
+          {source.url ? (
+            <a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a>
+          ) : (
+            source.label
+          )}
+        </p>
       </main>
 
       <footer className={styles.footer}>
-        {step > 0 && (
-          <button className={styles.btnSecondary} onClick={() => setStep((s) => s - 1)}>
-            {t('lesson.prev', '← Anterior')}
-          </button>
-        )}
-
+        <button
+          type="button"
+          className={styles.btnGhost}
+          onClick={() => setStep((s) => s - 1)}
+          disabled={step === 0}
+        >
+          ← {t('lesson.prev')}
+        </button>
         {!isLast ? (
-          <button className={styles.btnPrimary} onClick={() => setStep((s) => s + 1)}>
-            {t('lesson.next', 'Siguiente →')}
+          <button type="button" className={styles.btnPrimary} onClick={() => setStep((s) => s + 1)}>
+            {t('lesson.next')} →
           </button>
         ) : (
-          <button
-            className={styles.btnPrimary}
-            onClick={onStartQuiz ?? onExit}
-          >
-            {onStartQuiz
-              ? t('lesson.startPractice', '▶ Practicar ahora')
-              : t('lesson.done', '✓ Listo')}
+          <button type="button" className={styles.btnPrimary} onClick={finish}>
+            {onStartQuiz ? t('lesson.startPractice') : t('lesson.done')}
           </button>
         )}
       </footer>

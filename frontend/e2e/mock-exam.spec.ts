@@ -30,7 +30,9 @@ test.describe('certification mock exam', () => {
     // The track name comes from content/curriculum/tracks.json since Q.14,
     // so match the name the content actually uses rather than a shortened
     // one a hardcoded list happened to have.
-    await page.getByRole('tab', { name: /AWS Certified Cloud Practitioner/ }).click();
+    // Rutas abre la ruta en curso; el catálogo está detrás de «Todas las rutas».
+    await page.getByRole('button', { name: /Todas las rutas/ }).click();
+    await page.getByRole('button', { name: /AWS Certified Cloud Practitioner/ }).click();
 
     const cta = page.getByRole('button', { name: /Simulacro de examen|Mock exam/ });
     await expect(cta).toBeVisible({ timeout: 10_000 });

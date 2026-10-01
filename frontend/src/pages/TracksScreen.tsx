@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
-import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { ProgressMap } from '../components/tracks/ProgressMap';
 import { useApi } from '../hooks/useApi';
@@ -13,400 +12,515 @@ import {
   progress as progressApi,
   glossary as glossaryApi,
   type CurriculumModule,
+  type CurriculumSkill,
   type TrackExamBlueprint,
   type TrackRead,
 } from '../services/api';
 import styles from './TracksScreen.module.css';
 
 type View = 'curriculum' | 'map' | 'glossary';
+type Filter = 'all' | 'learn' | 'cert';
+type StartQuiz = (mode: 'study', total: number, opts?: { trackId?: string; skillId?: string }) => void;
 
 // No hardcoded track list: it is fetched from the API (task Q.14). Keeping a
 // copy here is how the AWS certification track stayed invisible in the app for
 // a whole session while being loaded, stored and served correctly.
 const ICON_FALLBACK = '📘';
 
-function statusMeta(status: CurriculumModule['status']) {
-  switch (status) {
-    case 'completed': return { icon: '✓', color: 'var(--le-green)', bg: 'var(--le-green-light)' };
-    case 'available': return { icon: '▶', color: 'var(--le-brand)', bg: 'var(--le-brand-light)' };
-    default: return { icon: '🔒', color: 'var(--le-text-muted)', bg: 'var(--le-border-light)' };
-  }
+// Habilidad más floja sin dominar: la que abre «Aprender» y la del mapa.
+function weakestSkill(skills: CurriculumSkill[]): string {
+  const weakest = [...skills].filter((s) => !s.mastered).sort((a, b) => a.p_known - b.p_known)[0];
+  return weakest?.skill_id ?? skills[0]?.skill_id ?? '';
 }
+
+const pct = (x: number) => Math.round(x * 100);
 
 export function TracksScreen() {
   const lang = useAppStore((s) => s.user.language);
+  const selectedTrackId = useAppStore((s) => s.selectedTrackId);
+  const openTrack = useAppStore((s) => s.openTrack);
+  const { t } = useTranslation();
+  const [browsing, setBrowsing] = useState(false);
+  const { data: tracks, loading: tracksLoading, error: tracksError } =
+    useApi<TrackRead[]>(() => contentApi.tracks(), []);
+  const trackList = tracks ?? [];
+  // La ruta guardada puede no existir ya (contenido retirado): la primera vale.
+  const selected = trackList.find((tr) => tr.id === selectedTrackId) ?? trackList[0];
+
+  if (!tracksLoading && trackList.length === 0) {
+    return (
+      <div className={styles.screen}>
+        <h1 className={styles.title}>{t('tracks.title')}</h1>
+        <p className={styles.error} role="alert">{tracksError ?? t('tracks.empty')}</p>
+      </div>
+    );
+  }
+
+  if (browsing || !selected) {
+    return (
+      <Catalogue
+        tracks={trackList}
+        loading={tracksLoading}
+        selectedId={selected?.id}
+        lang={lang}
+        onPick={(id) => {
+          openTrack(id);
+          setBrowsing(false);
+          window.scrollTo(0, 0);
+        }}
+      />
+    );
+  }
+
+  return <TrackDetail key={selected.id} track={selected} lang={lang} onBrowse={() => setBrowsing(true)} />;
+}
+
+function Catalogue({
+  tracks, loading, selectedId, lang, onPick,
+}: {
+  tracks: TrackRead[];
+  loading: boolean;
+  selectedId: string | undefined;
+  lang: 'es' | 'en';
+  onPick: (id: string) => void;
+}) {
+  const { t } = useTranslation();
+  const [filter, setFilter] = useState<Filter>('all');
+  const dash = useApi(() => progressApi.dashboard(), []);
+  const masteryById = new Map((dash.data?.tracks ?? []).map((m) => [m.track_id, m.average_mastery]));
+  const counts: Record<Filter, number> = {
+    all: tracks.length,
+    learn: tracks.filter((tr) => !tr.is_certification).length,
+    cert: tracks.filter((tr) => tr.is_certification).length,
+  };
+  const shown = tracks.filter((tr) =>
+    filter === 'all' ? true : filter === 'cert' ? tr.is_certification : !tr.is_certification,
+  );
+
+  return (
+    <div className={styles.screen}>
+      <header className={styles.head}>
+        <h1 className={styles.title}>{t('tracks.title')}</h1>
+        <p className={styles.subtitle}>{t('tracks.subtitle')}</p>
+      </header>
+
+      <div className={styles.filters} role="tablist" aria-label={t('tracks.title')}>
+        {(['all', 'learn', 'cert'] as Filter[]).map((f) => (
+          <button
+            key={f}
+            type="button"
+            role="tab"
+            aria-selected={filter === f}
+            className={`${styles.filter} ${filter === f ? styles.filterActive : ''}`}
+            onClick={() => setFilter(f)}
+          >
+            {t(`tracks.filter_${f}`)} <span className={styles.filterCount}>{counts[f]}</span>
+          </button>
+        ))}
+      </div>
+
+      {loading && <p className={styles.muted}>{t('tracks.loading')}</p>}
+
+      <ul className={styles.catalogue}>
+        {shown.map((tr) => {
+          const name = lang === 'es' ? tr.name_es : tr.name_en;
+          const mastery = masteryById.get(tr.id);
+          return (
+            <li key={tr.id}>
+              <button
+                type="button"
+                className={styles.trackItem}
+                aria-current={tr.id === selectedId ? 'true' : undefined}
+                onClick={() => onPick(tr.id)}
+              >
+                <span className={styles.trackIcon} aria-hidden="true">
+                  {tr.icon || ICON_FALLBACK}
+                  <span className={styles.hue} style={{ background: tr.color }} />
+                </span>
+                <span className={styles.trackBody}>
+                  <span className={styles.trackName}>{name}</span>
+                  <span className={styles.trackMeta}>
+                    {tr.is_certification && tr.exam_question_count && tr.exam_duration_minutes
+                      ? t('tracks.certMeta', {
+                          count: tr.exam_question_count,
+                          minutes: tr.exam_duration_minutes,
+                          provider: tr.cert_provider ?? '',
+                        })
+                      : t('tracks.questions', { count: tr.total_questions })}
+                  </span>
+                  {mastery !== undefined && mastery > 0 && (
+                    <ProgressBar value={pct(mastery)} max={100} label={name} color="var(--le-blue)" height={4} />
+                  )}
+                </span>
+                {mastery !== undefined && mastery > 0 && (
+                  <span className={styles.trackPct}>{pct(mastery)}%</span>
+                )}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' | 'en'; onBrowse: () => void }) {
+  const { t } = useTranslation();
   const startQuiz = useAppStore((s) => s.startQuiz);
   const startLesson = useAppStore((s) => s.startLesson);
   const startMockExam = useAppStore((s) => s.startMockExam);
   const startTrackExam = useAppStore((s) => s.startTrackExam);
   const startReadiness = useAppStore((s) => s.startReadiness);
   const startPlacement = useAppStore((s) => s.startPlacement);
-  const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
-  const { t } = useTranslation();
-  const { data: tracks, loading: tracksLoading, error: tracksError } =
-    useApi<TrackRead[]>(() => contentApi.tracks(), []);
-  const trackList = tracks ?? [];
-  const selected = trackList.find((tr) => tr.id === track);
-  // Refetched per track: the blueprint is derived from that track's skills, so
-  // one cached answer reused across tracks would advertise the wrong exam.
-  const { data: trackExamBlueprint } = useApi<TrackExamBlueprint>(
-    () => examsApi.trackBlueprint(track),
-    [track],
+  const cur = useApi(() => progressApi.curriculum(track.id), [track.id]);
+  // The blueprint is derived from that track's skills, so the figures on the
+  // final-exam card are the ones the exam will actually use (17.2).
+  const { data: blueprint } = useApi<TrackExamBlueprint>(
+    () => examsApi.trackBlueprint(track.id),
+    [track.id],
   );
+
+  const modules = cur.data?.modules ?? [];
+  const completed = modules.filter((m) => m.status === 'completed').length;
+  const skillCount = modules.reduce((n, m) => n + m.skills.length, 0);
+  const mastery = modules.length
+    ? modules.reduce((sum, m) => sum + m.average_mastery, 0) / modules.length
+    : 0;
+  const name = lang === 'es' ? track.name_es : track.name_en;
+  const certReady = track.is_certification && track.exam_question_count && track.exam_duration_minutes;
 
   return (
     <div className={styles.screen}>
-      <h1 className={styles.title}>{t('tracks.title')}</h1>
-      <p className={styles.subtitle}>{t('tracks.subtitle')}</p>
+      <button type="button" className={styles.back} onClick={onBrowse}>
+        ← {t('tracks.allTracks')}
+      </button>
 
-      {/* Track selector */}
-      <div className={styles.trackRow} role="tablist" aria-label={t('tracks.title')}>
-        {trackList.map((tr) => (
-          <motion.button
-            key={tr.id}
-            role="tab"
-            aria-selected={track === tr.id}
-            className={`${styles.trackChip} ${track === tr.id ? styles.trackChipActive : ''}`}
-            onClick={() => setTrack(tr.id)}
-            whileTap={{ scale: 0.93 }}
+      <header className={styles.hero}>
+        <span className={styles.heroIcon} aria-hidden="true">{track.icon || ICON_FALLBACK}</span>
+        <div className={styles.heroBody}>
+          <p className={styles.eyebrow}>
+            {track.is_certification
+              ? `${t('tracks.kind_cert')}${track.cert_provider ? ` · ${track.cert_provider}` : ''}`
+              : t('tracks.kind_learn')}
+          </p>
+          <h1 className={styles.heroName}>{name}</h1>
+          {cur.data && (
+            <p className={styles.heroMeta}>
+              {completed}/{modules.length} {t('tracks.modulesDone')} · {skillCount} {t('tracks.skills')}
+            </p>
+          )}
+        </div>
+        {cur.data && (
+          <p className={styles.heroPct}>
+            <strong>{pct(mastery)}<small>%</small></strong>
+            <span>{t('tracks.mastery')}</span>
+          </p>
+        )}
+      </header>
+      {cur.data && (
+        <ProgressBar
+          value={completed}
+          max={Math.max(1, modules.length)}
+          label={t('a11y.progressModules', { done: completed, total: modules.length })}
+          color="var(--le-green)"
+          height={4}
+        />
+      )}
+
+      {/* La prueba de nivel es por ruta, así que vive en su detalle. */}
+      <button type="button" className={styles.placement} onClick={() => startPlacement(track.id)}>
+        <span className={styles.placementText}>
+          <strong>{t('tracks.placementCta')}</strong>
+          <span>{t('tracks.placementSub')}</span>
+        </span>
+        <span className={styles.placementGo} aria-hidden="true">→</span>
+      </button>
+
+      <div className={styles.exams}>
+        {certReady && (
+          <>
+            <button
+              type="button"
+              className={styles.examCard}
+              onClick={() => startMockExam(track.id, track.exam_question_count ?? 65, track.exam_duration_minutes ?? 90)}
+            >
+              <span className={styles.examTitle}>{t('mockExam.title')}</span>
+              <span className={styles.examMeta}>
+                {t('mockExam.format', { count: track.exam_question_count, minutes: track.exam_duration_minutes })}
+              </span>
+            </button>
+            <button type="button" className={styles.examCard} onClick={() => startReadiness(track.id)}>
+              <span className={styles.examTitle}>{t('readiness.title')}</span>
+              <span className={styles.examMeta}>{t('readiness.ctaSubtitle')}</span>
+            </button>
+          </>
+        )}
+        {/* Examen final: para las rutas que son cursos, no ensayos de la
+            certificación de otro (17.2). */}
+        {!track.is_certification && blueprint && (
+          <button
+            type="button"
+            className={styles.examCard}
+            onClick={() =>
+              startTrackExam('track_final', track.id, {
+                questions: blueprint.questions,
+                durationMinutes: blueprint.duration_minutes,
+                passPct: blueprint.pass_pct,
+              })
+            }
           >
-            <span className={styles.trackChipIcon}>{tr.icon || ICON_FALLBACK}</span>
-            <span>{lang === 'es' ? tr.name_es : tr.name_en}</span>
-          </motion.button>
-        ))}
-        {tracksLoading && trackList.length === 0 && (
-          <span className={styles.trackChip}>{t('loading')}</span>
+            <span className={styles.examTitle}>{t('trackExam.title')}</span>
+            <span className={styles.examMeta}>
+              {t('trackExam.format', {
+                count: blueprint.questions,
+                minutes: blueprint.duration_minutes,
+                pass: blueprint.pass_pct,
+              })}
+            </span>
+          </button>
         )}
       </div>
 
-      {!tracksLoading && trackList.length === 0 && (
-        <p className={styles.tracksError} role="alert">
-          {tracksError ?? t('tracks.empty')}
-        </p>
-      )}
-
-      {/* View toggle — 3 tabs: Curriculum | Map | Glossary */}
-      <div className={styles.viewToggle} role="tablist">
+      <div className={styles.viewToggle} role="tablist" aria-label={name}>
         {(['curriculum', 'map', 'glossary'] as View[]).map((v) => (
           <button
             key={v}
+            type="button"
             role="tab"
             aria-selected={view === v}
             className={`${styles.viewBtn} ${view === v ? styles.viewBtnActive : ''}`}
             onClick={() => setView(v)}
           >
-            {v === 'curriculum' ? t('tracks.curriculum') : v === 'map' ? t('tracks.map') : t('tracks.glossary')}
+            {t(`tracks.${v}`)}
           </button>
         ))}
       </div>
 
-      {/* La prueba de nivel es por ruta, asi que vive junto al selector de
-          rutas. Antes la pantalla existia y no la abria nadie. */}
-      {selected && (
-        <motion.button
-          className={styles.placementCta}
-          onClick={() => startPlacement(selected.id)}
-          whileTap={{ scale: 0.97 }}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <span className={styles.mockExamTitle}>{t('tracks.placementCta')}</span>
-          <span className={styles.mockExamMeta}>{t('tracks.placementSub')}</span>
-        </motion.button>
-      )}
-
-      {selected?.is_certification && selected.exam_question_count && selected.exam_duration_minutes && (
-        <>
-          <motion.button
-            className={styles.mockExamCta}
-            onClick={() => selected && startMockExam(selected.id, selected.exam_question_count ?? 65, selected.exam_duration_minutes ?? 90)}
-            whileTap={{ scale: 0.97 }}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <span className={styles.mockExamTitle}>{t('mockExam.title')}</span>
-            <span className={styles.mockExamMeta}>
-              {t('mockExam.format', {
-                count: selected.exam_question_count,
-                minutes: selected.exam_duration_minutes,
-              })}
-            </span>
-          </motion.button>
-          <motion.button
-            className={styles.readinessCta}
-            onClick={() => selected && startReadiness(selected.id)}
-            whileTap={{ scale: 0.97 }}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-          >
-            <span className={styles.mockExamTitle}>{t('readiness.title')}</span>
-            <span className={styles.mockExamMeta}>{t('readiness.ctaSubtitle')}</span>
-          </motion.button>
-        </>
-      )}
-
-      {/* Final exam, for the tracks that are courses rather than rehearsals of
-          somebody else's certification (17.2). The blueprint is fetched rather
-          than guessed: the figures on this button have to be the ones the exam
-          will actually use, or the learner commits to the wrong thing. */}
-      {selected && !selected.is_certification && trackExamBlueprint && (
-        <motion.button
-          className={styles.mockExamCta}
-          onClick={() =>
-            startTrackExam('track_final', selected.id, {
-              questions: trackExamBlueprint.questions,
-              durationMinutes: trackExamBlueprint.duration_minutes,
-              passPct: trackExamBlueprint.pass_pct,
-            })
-          }
-          whileTap={{ scale: 0.97 }}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <span className={styles.mockExamTitle}>{t('trackExam.title')}</span>
-          <span className={styles.mockExamMeta}>
-            {t('trackExam.format', {
-              count: trackExamBlueprint.questions,
-              minutes: trackExamBlueprint.duration_minutes,
-              pass: trackExamBlueprint.pass_pct,
-            })}
-          </span>
-        </motion.button>
-      )}
-
       <AnimatePresence mode="wait">
-        <motion.div key={`${track}-${view}`} variants={pageVariants} initial="initial" animate="animate" exit="exit">
-          {view === 'curriculum'
-            ? <CurriculumView track={track} lang={lang} startQuiz={startQuiz} startLesson={startLesson} />
-            : view === 'map'
-              ? <MapView track={track} lang={lang} startQuiz={startQuiz} startLesson={startLesson} />
-              : <GlossaryView track={track} lang={lang} />}
+        <motion.div key={view} variants={pageVariants} initial="initial" animate="animate" exit="exit">
+          {view === 'glossary' ? (
+            <GlossaryView track={track.id} lang={lang} />
+          ) : cur.loading ? (
+            <p className={styles.muted}>{t('tracks.loading')}</p>
+          ) : cur.error || !cur.data ? (
+            <p className={styles.muted}>{cur.error ?? t('tracks.loading')}</p>
+          ) : view === 'map' ? (
+            <ProgressMap
+              modules={modules}
+              lang={lang}
+              onSelect={(mod) => {
+                if (mod.status === 'locked') return;
+                // 32.4: sin ninguna lección vista en el módulo, el backend
+                // bloquearía el quiz igual: directo a la lección.
+                if (!mod.skills.some((s) => s.lesson_seen)) startLesson(weakestSkill(mod.skills));
+                else startQuiz('study', 10, { trackId: track.id });
+              }}
+            />
+          ) : (
+            <Curriculum
+              track={track.id}
+              modules={modules}
+              threshold={cur.data.mastery_threshold}
+              lang={lang}
+              startQuiz={startQuiz}
+              startLesson={startLesson}
+            />
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
   );
 }
 
-function MapView({
-  track, lang, startQuiz, startLesson,
+function Curriculum({
+  track, modules, threshold, lang, startQuiz, startLesson,
 }: {
   track: string;
+  modules: CurriculumModule[];
+  threshold: number;
   lang: 'es' | 'en';
-  startQuiz: (mode: 'study', total: number, opts?: { trackId?: string; skillId?: string }) => void;
+  startQuiz: StartQuiz;
   startLesson: (skillId: string) => void;
 }) {
   const { t } = useTranslation();
-  const cur = useApi(() => progressApi.curriculum(track), [track]);
-
-  if (cur.loading) return <p className={styles.muted}>{t('tracks.loading')}</p>;
-  if (cur.error || !cur.data) return <p className={styles.muted}>{cur.error ?? t('tracks.loading')}</p>;
-
-  const modules = cur.data.modules;
-
-  const handleSelect = (mod: CurriculumModule) => {
-    if (mod.status === 'locked') return;
-    // 32.4: sin ninguna lección vista en el módulo, el backend bloquearía el
-    // quiz igual — mandar directo a la lección en vez de un 200 vacío.
-    if (!mod.skills.some((s) => s.lesson_seen)) {
-      const weakest = [...mod.skills].filter((s) => !s.mastered).sort((a, b) => a.p_known - b.p_known)[0];
-      startLesson(weakest?.skill_id ?? mod.skills[0]?.skill_id ?? '');
-      return;
-    }
-    startQuiz('study', 10, { trackId: track });
-  };
-
-  return <ProgressMap modules={modules} lang={lang} onSelect={handleSelect} />;
-}
-
-function CurriculumView({
-  track, lang, startQuiz, startLesson,
-}: {
-  track: string;
-  lang: 'es' | 'en';
-  startQuiz: (mode: 'study', total: number, opts?: { trackId?: string; skillId?: string }) => void;
-  startLesson: (skillId: string) => void;
-}) {
-  const { t } = useTranslation();
-  const cur = useApi(() => progressApi.curriculum(track), [track]);
   const [openModule, setOpenModule] = useState<string | null>(null);
-
-  if (cur.loading) return <p className={styles.muted}>{t('tracks.loading')}</p>;
-  if (cur.error || !cur.data) return <p className={styles.muted}>{cur.error ?? t('tracks.loading')}</p>;
-
-  const modules = cur.data.modules;
-  const threshold = cur.data.mastery_threshold;
-  const completed = modules.filter((m) => m.status === 'completed').length;
-
-  const LEVEL_LABELS: Record<number, { es: string; en: string }> = {
-    1: { es: 'Fundamentos', en: 'Fundamentals' },
-    2: { es: 'Intermedio', en: 'Intermediate' },
-    3: { es: 'Avanzado', en: 'Advanced' },
-  };
-
-  const levels = [1, 2, 3].filter((lvl) => modules.some((m) => m.level === lvl));
+  const levels = [...new Set(modules.map((m) => m.level))].sort((a, b) => a - b);
 
   return (
     <>
-      <Card className={styles.overviewCard}>
-        <div className={styles.overviewText}>
-          <span className={styles.overviewIcon}>{cur.data.icon}</span>
-          <div>
-            <p className={styles.overviewName}>{lang === 'es' ? cur.data.name_es : cur.data.name_en}</p>
-            <p className={styles.overviewMeta}>{completed}/{modules.length} {t('tracks.modulesDone')}</p>
-          </div>
-        </div>
-        <ProgressBar
-          value={completed}
-          max={modules.length}
-          label={t('a11y.progressModules', { done: completed, total: modules.length })}
-          color="var(--le-green)"
-          height={10}
-        />
-      </Card>
-
       {levels.map((lvl) => {
         const lvlMods = modules.filter((m) => m.level === lvl);
-        const lvlLabel = LEVEL_LABELS[lvl] ?? { es: `Nivel ${lvl}`, en: `Level ${lvl}` };
-        const lvlCompleted = lvlMods.filter((m) => m.status === 'completed').length;
         return (
-          <div key={lvl} className={styles.levelSection}>
-            <div className={styles.levelHeader}>
+          <section key={lvl} className={styles.level}>
+            <h2 className={styles.levelHeader}>
               <span className={styles.levelBadge}>{lvl}</span>
-              <span className={styles.levelTitle}>{lang === 'es' ? lvlLabel.es : lvlLabel.en}</span>
-              <span className={styles.levelMeta}>{lvlCompleted}/{lvlMods.length}</span>
-            </div>
-            <div className={styles.spine}>
-        {lvlMods.map((m, _i) => {
-          const i = modules.indexOf(m);
-          const meta = statusMeta(m.status);
-          const isOpen = openModule === m.id;
-          const locked = m.status === 'locked';
-          const prereq = i > 0 ? modules[i - 1] : null;
-          // 32.4: el backend exige haber visto la lección de al menos un
-          // skill del módulo antes de dejar practicar — evita el botón
-          // "Practicar" muerto en vez de esperar el 200 vacío de /quiz/start.
-          const needsLesson = !locked && !m.skills.some((s) => s.lesson_seen);
-          return (
-            <div key={m.id} className={styles.moduleWrap}>
-              {i > 0 && (
-                <div
-                  className={`${styles.connector} ${m.prerequisite_met ? styles.connectorMet : ''}`}
-                  aria-hidden="true"
+              <span className={styles.levelTitle}>
+                {[1, 2, 3].includes(lvl) ? t(`tracks.level_${lvl}`) : t('tracks.levelN', { n: lvl })}
+              </span>
+              <span className={styles.levelMeta}>
+                {lvlMods.filter((m) => m.status === 'completed').length}/{lvlMods.length}
+              </span>
+            </h2>
+            <ol className={styles.spine}>
+              {lvlMods.map((m) => (
+                <ModuleItem
+                  key={m.id}
+                  module={m}
+                  prerequisite={modules.find((p) => p.id === m.prerequisite_id)}
+                  open={openModule === m.id}
+                  onToggle={() => setOpenModule(openModule === m.id ? null : m.id)}
+                  lang={lang}
+                  onLesson={startLesson}
+                  onPractice={() => startQuiz('study', 10, { trackId: track })}
                 />
-              )}
-              <Card className={`${styles.module} ${locked ? styles.moduleLocked : ''}`}>
-                <button
-                  className={styles.moduleHeader}
-                  onClick={() => setOpenModule(isOpen ? null : m.id)}
-                  aria-expanded={isOpen}
-                >
-                  <span className={styles.moduleBadge} style={{ background: meta.bg, color: meta.color }}>
-                    {meta.icon}
-                  </span>
-                  <span className={styles.moduleInfo}>
-                    <span className={styles.moduleName}>{lang === 'es' ? m.name_es : m.name_en}</span>
-                    <span className={styles.moduleSub}>
-                      {locked
-                        ? `${t('tracks.lockedUntil')} ${prereq ? (lang === 'es' ? prereq.name_es : prereq.name_en) : ''} · ${Math.round(m.min_mastery_to_unlock * 100)}%`
-                        : `${m.skills.length} ${t('tracks.skills')} · ${Math.round(m.average_mastery * 100)}% ${t('tracks.mastery')}`}
-                    </span>
-                  </span>
-                  <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
-                </button>
-
-                {!locked && (
-                  <div className={styles.moduleBar}>
-                    <ProgressBar
-                      value={m.average_mastery * 100}
-                      max={100}
-                      label={t('a11y.progressMastery', { name: lang === 'es' ? m.name_es : m.name_en })}
-                      color={m.status === 'completed' ? 'var(--le-green)' : 'var(--le-brand)'}
-                      height={6}
-                    />
-                  </div>
-                )}
-
-                <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    className={styles.skills}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2, ease: 'easeInOut' }}
-                    style={{ overflow: 'hidden' }}
-                  >
-                    {m.description_es && (
-                      <p className={styles.moduleDesc}>{lang === 'es' ? m.description_es : m.description_en}</p>
-                    )}
-                    {m.skills.map((s, si) => {
-                      const needsReview = !s.mastered && s.attempts > 0 && s.p_known < 0.3;
-                      return (
-                      <motion.div
-                        key={s.skill_id}
-                        className={`${styles.skill} ${needsReview ? styles.skillNeedsReview : ''}`}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: si * 0.04, duration: 0.15 }}
-                        onClick={needsReview ? () => startLesson(s.skill_id) : undefined}
-                        role={needsReview ? 'button' : undefined}
-                        tabIndex={needsReview ? 0 : undefined}
-                      >
-                        <span className={styles.skillDot} style={{
-                          background: s.mastered ? 'var(--le-green)' : s.attempts > 0 ? 'var(--le-brand)' : 'var(--le-border)',
-                        }} />
-                        <span className={styles.skillName}>{lang === 'es' ? s.name_es : s.name_en}</span>
-                        {needsReview && <span className={styles.reviewBadge}>📖</span>}
-                        <span className={styles.skillPct} style={{ color: s.mastered ? 'var(--le-green)' : needsReview ? 'var(--le-orange)' : undefined }}>
-                          {s.mastered ? '★' : `${Math.round(s.p_known * 100)}%`}
-                        </span>
-                      </motion.div>
-                      );
-                    })}
-                    {locked ? (
-                      <p className={styles.lockNote}>🔒 {t('tracks.lockNote')}</p>
-                    ) : (
-                      <div className={styles.skillActions}>
-                        <button
-                          className={styles.learnBtn}
-                          onClick={() => {
-                            const weakest = [...m.skills].filter(s => !s.mastered).sort((a, b) => a.p_known - b.p_known)[0];
-                            startLesson(weakest?.skill_id ?? m.skills[0]?.skill_id ?? '');
-                          }}
-                          title={t('tracks.learn')}
-                        >
-                          📖 {t('tracks.learn')}
-                        </button>
-                        <button
-                          className={styles.practiceBtn}
-                          disabled={needsLesson}
-                          title={needsLesson ? t('tracks.needsLessonNote') : undefined}
-                          onClick={() => startQuiz('study', 10, { trackId: track })}
-                        >
-                          {m.status === 'completed' ? t('tracks.reinforce') : t('tracks.practice')}
-                        </button>
-                      </div>
-                    )}
-                    {needsLesson && (
-                      <p className={styles.lockNote}>📖 {t('tracks.needsLessonNote')}</p>
-                    )}
-                  </motion.div>
-                )}
-                </AnimatePresence>
-              </Card>
-            </div>
-          );
-        })}
-            </div>
-          </div>
+              ))}
+            </ol>
+          </section>
         );
       })}
-      <p className={styles.footnote}>{t('tracks.thresholdNote', { n: Math.round(threshold * 100) })}</p>
+      <p className={styles.footnote}>{t('tracks.thresholdNote', { n: pct(threshold) })}</p>
     </>
+  );
+}
+
+function ModuleItem({
+  module: m, prerequisite, open, onToggle, lang, onLesson, onPractice,
+}: {
+  module: CurriculumModule;
+  prerequisite: CurriculumModule | undefined;
+  open: boolean;
+  onToggle: () => void;
+  lang: 'es' | 'en';
+  onLesson: (skillId: string) => void;
+  onPractice: () => void;
+}) {
+  const { t } = useTranslation();
+  const locked = m.status === 'locked';
+  const name = lang === 'es' ? m.name_es : m.name_en;
+  // 32.4: el backend exige haber visto la lección de al menos una habilidad
+  // del módulo antes de dejar practicar: botón desactivado con su motivo, no
+  // un «Practicar» que acaba en el 200 vacío de /quiz/start.
+  const needsLesson = !locked && !m.skills.some((s) => s.lesson_seen);
+  const sub = locked
+    ? prerequisite
+      ? t('tracks.unlockWith', {
+          pct: pct(m.min_mastery_to_unlock),
+          name: lang === 'es' ? prerequisite.name_es : prerequisite.name_en,
+        })
+      : t('tracks.lockNote')
+    : `${m.skills.length} ${t('tracks.skills')} · ${pct(m.average_mastery)}% ${t('tracks.mastery')}`;
+
+  return (
+    <li className={`${styles.module} ${styles[m.status]}`}>
+      <button type="button" className={styles.moduleHeader} onClick={onToggle} aria-expanded={open}>
+        <span className={styles.step} aria-hidden="true">
+          {m.status === 'completed' ? '✓' : locked ? <LockIcon /> : m.order}
+        </span>
+        <span className={styles.moduleInfo}>
+          <span className={styles.moduleName}>{name}</span>
+          <span className={styles.moduleSub}>{sub}</span>
+        </span>
+        <span className={styles.chevron} aria-hidden="true">{open ? '−' : '+'}</span>
+      </button>
+
+      {!locked && (
+        <div className={styles.moduleBar}>
+          <ProgressBar
+            value={pct(m.average_mastery)}
+            max={100}
+            label={t('a11y.progressMastery', { name })}
+            color={m.status === 'completed' ? 'var(--le-green)' : 'var(--le-blue)'}
+            height={4}
+          />
+        </div>
+      )}
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            className={styles.moduleBody}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            {m.description_es && (
+              <p className={styles.moduleDesc}>{lang === 'es' ? m.description_es : m.description_en}</p>
+            )}
+            <ul className={styles.skills}>
+              {m.skills.map((s) => <SkillRow key={s.skill_id} skill={s} lang={lang} locked={locked} onLesson={onLesson} />)}
+            </ul>
+            {!locked && (
+              <div className={styles.actions}>
+                <button type="button" className={styles.learnBtn} onClick={() => onLesson(weakestSkill(m.skills))}>
+                  {t('tracks.learn')}
+                </button>
+                <button
+                  type="button"
+                  className={styles.practiceBtn}
+                  disabled={needsLesson}
+                  title={needsLesson ? t('tracks.needsLessonNote') : undefined}
+                  onClick={onPractice}
+                >
+                  {m.status === 'completed' ? t('tracks.reinforce') : t('tracks.practice')}
+                </button>
+              </div>
+            )}
+            {needsLesson && <p className={styles.note}>{t('tracks.needsLessonNote')}</p>}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </li>
+  );
+}
+
+// Cinco tramos de 20 %: el número exacto va al lado en mono, el medidor solo
+// da la forma de un vistazo.
+function SkillRow({
+  skill: s, lang, locked, onLesson,
+}: {
+  skill: CurriculumSkill;
+  lang: 'es' | 'en';
+  locked: boolean;
+  onLesson: (skillId: string) => void;
+}) {
+  const { t } = useTranslation();
+  const name = lang === 'es' ? s.name_es : s.name_en;
+  const needsReview = !s.mastered && s.attempts > 0 && s.p_known < 0.3;
+  const filled = Math.round(s.p_known * 5);
+  const body = (
+    <>
+      <span className={`${styles.skillMark} ${s.mastered ? styles.skillMastered : ''}`} aria-hidden="true">
+        {s.mastered ? '✓' : ''}
+      </span>
+      <span className={styles.skillName}>{name}</span>
+      {needsReview && <span className={styles.reviewTag}>{t('tracks.needsReview')}</span>}
+      <span className={styles.meter} aria-hidden="true">
+        {[0, 1, 2, 3, 4].map((i) => <span key={i} className={i < filled ? styles.segOn : styles.seg} />)}
+      </span>
+      <span className={styles.skillPct}>{pct(s.p_known)}%</span>
+    </>
+  );
+  return (
+    <li>
+      {locked ? (
+        <div className={styles.skill}>{body}</div>
+      ) : (
+        <button type="button" className={styles.skill} onClick={() => onLesson(s.skill_id)} title={t('tracks.openLesson')}>
+          {body}
+        </button>
+      )}
+    </li>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    </svg>
   );
 }
 
@@ -443,25 +557,23 @@ function GlossaryView({ track, lang }: { track: string; lang: 'es' | 'en' }) {
         aria-label={t('tracks.searchTerms')}
       />
       {terms.length === 0 && <p className={styles.muted}>{t('tracks.noTerms')}</p>}
-      <div className={styles.terms}>
+      <dl className={styles.terms}>
         {terms.map((term) => {
           const primary = lang === 'es' ? term.term_es : term.term_en;
           const secondary = lang === 'es' ? term.term_en : term.term_es;
           const def = lang === 'es' ? term.definition_es : term.definition_en;
           return (
-            <Card key={term.id} className={styles.term}>
-              <div className={styles.termHead}>
+            <div key={term.id} className={styles.term}>
+              <dt className={styles.termHead}>
                 <span className={styles.termName}>{primary}</span>
-                {secondary && secondary !== primary && (
-                  <span className={styles.termAlt}>{secondary}</span>
-                )}
-              </div>
-              <p className={styles.termDef}>{def}</p>
-              {term.source && <span className={styles.termSource}>📖 {term.source}</span>}
-            </Card>
+                {secondary && secondary !== primary && <span className={styles.termAlt}>{secondary}</span>}
+              </dt>
+              <dd className={styles.termDef}>{def}</dd>
+              {term.source && <dd className={styles.termSource}>{t('tracks.source')}: {term.source}</dd>}
+            </div>
           );
         })}
-      </div>
+      </dl>
     </>
   );
 }

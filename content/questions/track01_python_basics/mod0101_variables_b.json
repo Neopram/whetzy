@@ -147,30 +147,30 @@
       "id": "q010101012",
       "skill_id": "sk010101",
       "type": "code_output",
-      "difficulty_tier": "hard",
-      "question_es": "¿Qué imprime el siguiente código?\n\n```python\na = 256\nb = 256\nc = 1000\nd = 1000\nprint(a is b, c is d)\n```",
-      "question_en": "What does the following code print?\n\n```python\na = 256\nb = 256\nc = 1000\nd = 1000\nprint(a is b, c is d)\n```",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n\n```python\na = [1, 2]\nb = [1, 2]\nc = a\nprint(a == b, a is b, c is a)\n```",
+      "question_en": "What does the following code print?\n\n```python\na = [1, 2]\nb = [1, 2]\nc = a\nprint(a == b, a is b, c is a)\n```",
       "options_es": [
-        "True False",
-        "True True",
-        "False False",
-        "False True"
+        "True False True",
+        "True True True",
+        "False False True",
+        "True False False"
       ],
       "options_en": [
-        "True False",
-        "True True",
-        "False False",
-        "False True"
+        "True False True",
+        "True True True",
+        "False False True",
+        "True False False"
       ],
       "correct_index": 0,
-      "explanation_es": "CPython precrea los enteros de −5 a 256, así que `a` y `b` apuntan al mismo objeto. Los 1000 se crean por separado y `is` da `False`. Es un detalle de implementación, no del lenguaje: la lección práctica es comparar valores con `==` y reservar `is` para identidad, sobre todo con `None`.",
-      "explanation_en": "CPython pre-creates the integers from −5 to 256, so `a` and `b` point at the same object. The 1000s are created separately and `is` gives `False`. This is an implementation detail, not a language rule: the practical lesson is to compare values with `==` and keep `is` for identity, above all with `None`.",
+      "explanation_es": "`==` compara valores: las dos listas tienen los mismos elementos, así que `a == b` es `True`. `is` compara identidad: cada `[1, 2]` crea una lista nueva y distinta, así que `a is b` es `False`. `c = a` no copia nada: liga otro nombre al mismo objeto, por eso `c is a` es `True`. Compara valores con `==` y reserva `is` para identidad, sobre todo con `None`.",
+      "explanation_en": "`==` compares values: both lists hold the same elements, so `a == b` is `True`. `is` compares identity: each `[1, 2]` creates a new, distinct list, so `a is b` is `False`. `c = a` copies nothing: it binds another name to the same object, which is why `c is a` is `True`. Compare values with `==` and keep `is` for identity, above all with `None`.",
       "source": "CPython docs 3.13 — The Python Language Reference: Objects, values and types",
       "expected_time_ms": 40000,
       "tags": [
         "variables",
         "identity",
-        "cpython"
+        "aliasing"
       ]
     },
     {

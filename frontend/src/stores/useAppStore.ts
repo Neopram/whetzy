@@ -99,6 +99,11 @@ interface AppState {
   /** Track sobre el que corre la prueba de nivel; el motor CAT es por track. */
   placementTrackId: string | null;
   startPlacement: (trackId: string) => void;
+  /** Ruta abierta en «Rutas». Vive aquí y no en la pantalla: al volver de un
+   *  simulacro o de una lección, la pantalla se monta de nuevo y antes caía
+   *  siempre en track01, aunque vinieras de AWS. */
+  selectedTrackId: string;
+  openTrack: (trackId: string) => void;
 
   // Missions
   missions: Mission[];
@@ -292,6 +297,10 @@ export const useAppStore = create<AppState>()(
       startPlacement: (trackId) =>
         set((s) => ({ placementTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'placement' })),
 
+      selectedTrackId: 'track01',
+      openTrack: (trackId) =>
+        set((s) => ({ selectedTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'tracks' })),
+
       missions: defaultMissions,
       updateMission: (id, progress) =>
         set((s) => ({
@@ -317,6 +326,7 @@ export const useAppStore = create<AppState>()(
         soundEnabled: state.soundEnabled,
         hapticEnabled: state.hapticEnabled,
         missions: state.missions,
+        selectedTrackId: state.selectedTrackId,
       }),
     }
   )

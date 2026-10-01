@@ -291,8 +291,8 @@
       "skill_id": "sk030102",
       "type": "code_output",
       "difficulty_tier": "hard",
-      "question_es": "¿Qué imprime el siguiente código?\n```python\na = 256\nb = 256\nc = 257\nd = 257\nprint(a is b, c is d)\n```",
-      "question_en": "What does the following code print?\n```python\na = 256\nb = 256\nc = 257\nd = 257\nprint(a is b, c is d)\n```",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\na = int(\"256\")\nb = int(\"256\")\nc = int(\"257\")\nd = int(\"257\")\nprint(a is b, c is d)\n```",
+      "question_en": "What does the following code print?\n```python\na = int(\"256\")\nb = int(\"256\")\nc = int(\"257\")\nd = int(\"257\")\nprint(a is b, c is d)\n```",
       "options_es": [
         "False True",
         "True True",
@@ -306,8 +306,8 @@
         "True False"
       ],
       "correct_index": 3,
-      "explanation_es": "CPython precachea los enteros pequeños de -5 a 256, así que `a` y `b` son el MISMO objeto (`a is b` → True). Para `257`, fuera de ese rango, `c` y `d` pueden ser objetos distintos según el contexto (`c is d` → False típicamente). Es un detalle de implementación; nunca compares valores con `is`.",
-      "explanation_en": "CPython caches small integers from -5 to 256, so `a` and `b` are the SAME object (`a is b` → True). For `257`, outside that range, `c` and `d` may be distinct objects depending on context (`c is d` → typically False). It's an implementation detail; never compare values with `is`.",
+      "explanation_es": "CPython guarda un objeto para cada entero de -5 a 256 y `int()` devuelve ese mismo objeto, así que `a is b` es `True`. 257 queda fuera de esa caché: cada `int(\"257\")` crea un objeto nuevo y `c is d` es `False`. Los valores se construyen con `int()` a propósito: si escribes el literal `257` dos veces en el mismo fichero, CPython reutiliza la constante y `c is d` da `True`. Es un detalle de implementación, no del lenguaje: compara valores con `==`.",
+      "explanation_en": "CPython keeps one object for each integer from -5 to 256 and `int()` returns that same object, so `a is b` is `True`. 257 falls outside that cache: each `int(\"257\")` creates a new object and `c is d` is `False`. The values are built with `int()` on purpose: write the literal `257` twice in the same file and CPython reuses the constant, so `c is d` gives `True`. It is an implementation detail, not a language rule: compare values with `==`.",
       "source": "CPython docs 3.13 — Integer object caching (implementation detail)",
       "expected_time_ms": 40000,
       "tags": [
