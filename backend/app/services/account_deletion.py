@@ -36,6 +36,7 @@ from app.core.db import Base
 from app.models.admin import GDPRRequest
 from app.models.auth import LoginAttempt
 from app.models.user import User
+from app.services import paddle_billing
 
 logger = logging.getLogger("whetzy")
 
@@ -118,6 +119,10 @@ async def request_deletion(db: AsyncSession, user: User) -> datetime:
         .values(revoked=True)
     )
     await db.commit()
+    if user.paddle_subscription_id and user.subscription_provider == "paddle":
+        # Sin más cobros durante la gracia: se cancela al final del periodo ya
+        # pagado. Si Paddle no responde, el borrado sigue (queda en el log).
+        await paddle_billing.cancel_subscription(user.paddle_subscription_id)
     return _aware(pending.created_at) + GRACE_PERIOD
 
 
@@ -175,6 +180,7 @@ async def _purge_user(db: AsyncSession, user: User, now: datetime) -> None:
     user.jwt_version += 1
     user.stripe_customer_id = None
     user.stripe_subscription_id = None
+    user.paddle_subscription_id = None
     user.is_premium = False
     user.subscription_status = None
     user.subscription_tier = None

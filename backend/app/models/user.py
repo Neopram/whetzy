@@ -66,6 +66,9 @@ class User(Base):
     # RevenueCat reuses this same entitlement contract instead of its own
     # columns — see the migration's docstring for why.
     subscription_provider: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    # Id de la suscripción en Paddle (`sub_...`): hace falta para cancelarla
+    # cuando el alumno borra su cuenta (19.12).
+    paddle_subscription_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True)
     eu_withdrawal_waiver_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
 

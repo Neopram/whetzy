@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.user import User
-from app.services import analytics, revenuecat_service, stripe_service
+from app.services import analytics, paddle_billing, revenuecat_service, stripe_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -36,6 +36,16 @@ class SubscriptionResponse(BaseModel):
     subscription_provider: str | None  # "stripe" | "revenuecat" | None (17.14)
     stripe_customer_id: str | None
     stripe_subscription_id: str | None
+
+
+@router.get("/paddle/config", status_code=status.HTTP_200_OK)
+async def paddle_config() -> dict[str, Any]:
+    """Lo que necesita la web para abrir el checkout de Paddle.js (H.29).
+
+    Público a propósito: el token de cliente y los ids de precio están hechos
+    para ir en el navegador. `enabled` es False hasta que el dueño los configure.
+    """
+    return paddle_billing.public_config()
 
 
 @router.post("/checkout", response_model=CheckoutResponse, status_code=status.HTTP_200_OK)
