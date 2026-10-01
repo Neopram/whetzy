@@ -164,8 +164,9 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `t0u1v2w3x4y5` (20 migrations, single head — verified 2026-09-18)
-Chain: `<base> → a1b2 → … → r8s9t0u1v2w3 → s9t0u1v2w3x4 → t0u1v2w3x4y5`
+Current Alembic HEAD: `20260930_question_pool` (46 migrations, single head — verified 2026-10-01 with
+`alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; until then this line said
+`t0u1v2w3x4y5`, 20 migrations, from 2026-09-18)
 
 Always recompute — never trust this line:
 
@@ -392,7 +393,7 @@ Only the owner operates Whetzy (single-person team as of 2026-09-26):
 3. **Contain**: if SEV-1, immediately check Railway dashboard for crash/restart; check `/health/ready`
 4. **Diagnose**: check deploy logs, `GET /admin/ops/errors`, `GET /admin/ops/health`
 5. **Fix**: apply the fix, push to branch, merge via PR (ADR-45)
-6. **Verify**: `scripts/smoke_post_deploy.sh` must PASS; `node scripts/check-deployed.mjs` must PASS
+6. **Verify**: `scripts/smoke_post_deploy.sh` must PASS; `cd frontend && node scripts/check-deployed.mjs` must PASS
 7. **Document**: fill in the postmortem template below
 
 ### Postmortem Template
