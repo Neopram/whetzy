@@ -885,3 +885,78 @@ async def test_answer_without_event_id_still_works(client, auth_headers, user, d
     )
     assert r.status_code == 200
     assert r.json()["correct"] is True
+
+
+# ── una sesión no repite preguntas mientras queden otras (paso 1, 2026-10-01) ──
+
+
+async def test_session_does_not_repeat_a_question_while_others_remain(
+    client, auth_headers, user, db_session, monkeypatch
+):
+    """Un alumno nuevo vio la misma pregunta en la 1.ª y la 3.ª de su primera sesión.
+
+    `_select_question` elige al azar entre las 5 más cercanas a su Elo y solo
+    excluía la inmediatamente anterior, así que con una sola skill desbloqueada
+    la sesión daba vueltas sobre las mismas cinco. Con `random.choice` fijo al
+    primer candidato el viejo comportamiento repite de forma determinista.
+    """
+    from app.models.content import Module, Question, Skill, Track
+    from app.services import quiz as quiz_service
+
+    db_session.add_all([
+        Track(id="track_rep", name_es="T", name_en="T", order=91, icon="🧪", color="#000", total_questions=6),
+        Module(id="m_rep", track_id="track_rep", name_es="M", name_en="M", order=1, description_es="", description_en=""),
+        Skill(id="sk_rep", module_id="m_rep", name_es="S", name_en="S", order=1),
+        *[
+            Question(
+                id=f"q_rep_{i}", skill_id="sk_rep", type="mcq", difficulty_tier="easy",
+                question_es=f"P{i}", question_en=f"Q{i}", options_es=["a", "b"], options_en=["a", "b"],
+                correct_index=0, explanation_es="e", explanation_en="e", source="test", elo_rating=1200.0,
+            )
+            for i in range(6)
+        ],
+    ])
+    await db_session.commit()
+    await _see_lesson(db_session, user, "sk_rep")
+    monkeypatch.setattr(quiz_service.random, "choice", lambda seq: seq[0])
+
+    r = await client.post(f"{QUIZ}/start", json={"skill_id": "sk_rep", "mode": "study"}, headers=_h(auth_headers))
+    assert r.status_code == 200, r.text
+    data = r.json()
+    served = [data["question"]["id"]]
+    for i in range(5):
+        r = await client.post(
+            f"{QUIZ}/answer",
+            json={
+                "session_id": data["session_id"],
+                "question_id": served[-1],
+                "selected_index": i % 2,
+                "response_time_ms": 1000,
+            },
+            headers=_h(auth_headers),
+        )
+        assert r.status_code == 200, r.text
+        served.append(r.json()["next_question"]["id"])
+
+    assert len(set(served)) == len(served), f"repetida dentro de la sesión: {served}"
+
+
+async def test_session_reuses_questions_only_when_the_skill_runs_out(client, auth_headers, user, db_session):
+    """Con todas servidas, la sesión sigue (sin repetir la recién respondida) en vez de quedarse sin pregunta."""
+    await _seed_two_tracks(db_session)
+    await _see_lesson(db_session, user, "sk_scope_a")
+
+    r = await client.post(f"{QUIZ}/start", json={"skill_id": "sk_scope_a", "mode": "study"}, headers=_h(auth_headers))
+    data = r.json()
+    current = data["question"]["id"]
+    for _ in range(4):
+        r = await client.post(
+            f"{QUIZ}/answer",
+            json={"session_id": data["session_id"], "question_id": current, "selected_index": 0, "response_time_ms": 1000},
+            headers=_h(auth_headers),
+        )
+        assert r.status_code == 200, r.text
+        nxt = r.json()["next_question"]
+        assert nxt is not None
+        assert nxt["id"] != current
+        current = nxt["id"]

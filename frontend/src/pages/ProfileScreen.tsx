@@ -49,6 +49,15 @@ export function ProfileScreen() {
 
   const allBadges = badges.data ?? [];
 
+  // La dirección la decide el dueño (frontend/.env.production); sin ella no hay botón.
+  const feedbackEmail = import.meta.env.VITE_FEEDBACK_EMAIL as string | undefined;
+  const feedbackHref = feedbackEmail
+    ? `mailto:${feedbackEmail}?${new URLSearchParams({
+        subject: t('profile.feedbackSubject'),
+        body: t('profile.feedbackBody', { username: user.username }),
+      }).toString().replace(/\+/g, '%20')}`
+    : null;
+
   return (
     <div className={styles.screen}>
       <div className={styles.profileHeader}>
@@ -103,6 +112,12 @@ export function ProfileScreen() {
       <Card>
         <h2 className={styles.cardTitle}>{t('profile.explore')}</h2>
         <div className={styles.settings}>
+          {feedbackHref && (
+            <a className={styles.setting} href={feedbackHref}>
+              <span className={styles.settingLabel}>{t('profile.feedback')}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          )}
           <button
             type="button"
             className={styles.setting}
