@@ -175,6 +175,12 @@ async def _purge_user(db: AsyncSession, user: User, now: datetime) -> None:
     user.jwt_version += 1
     user.stripe_customer_id = None
     user.stripe_subscription_id = None
+    user.is_premium = False
+    user.subscription_status = None
+    user.subscription_tier = None
+    user.subscription_expires_at = None
+    user.subscription_provider = None
+    user.eu_withdrawal_waiver_at = None
     user.last_active = None
     user.last_streak_reminder_at = None
     user.push_streak_enabled = False

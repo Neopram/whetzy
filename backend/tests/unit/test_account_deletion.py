@@ -138,6 +138,12 @@ async def test_nothing_is_purged_before_30_days(db_session, user) -> None:
 @pytest.mark.asyncio
 async def test_purge_erases_personal_data_and_keeps_nothing_identifying(db_session, user) -> None:
     original_email = user.email
+    user.is_premium = True
+    user.subscription_status = "active"
+    user.subscription_tier = "pro"
+    user.subscription_provider = "revenuecat"
+    user.subscription_expires_at = datetime.now(UTC) + timedelta(days=20)
+    user.eu_withdrawal_waiver_at = datetime.now(UTC)
     db_session.add_all([
         UserSkillState(user_id=user.id, skill_id="sk1", attempts=3),
         LessonCompletion(user_id=user.id, skill_id="sk1"),
@@ -157,6 +163,9 @@ async def test_purge_erases_personal_data_and_keeps_nothing_identifying(db_sessi
     assert user.display_name == "—"
     assert user.hashed_password is None
     assert user.is_active is False
+    assert user.is_premium is False
+    assert (user.subscription_status, user.subscription_tier, user.subscription_provider) == (None, None, None)
+    assert user.subscription_expires_at is None and user.eu_withdrawal_waiver_at is None
 
     async def count(model, *where) -> int:
         return (await db_session.execute(select(func.count()).select_from(model).where(*where))).scalar_one()
