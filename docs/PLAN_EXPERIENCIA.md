@@ -165,9 +165,10 @@ reportado en `COMPETENCIA.md` §A.2b.
 
 ## 5. Pilar E: rutas que hoy no están en el catálogo
 
-> **Orden por ADR-53 (2026-09-30):** TypeScript (track38) y Java (track33) son nivel A de
-> demanda y entran por 37.8 en cuanto la fase 2 lo permita; el analista de datos no es un
-> track nuevo sino llevar track21 hacia su ideal (roadmap data-analyst, 99 nodos); UX/UI no
+> **Orden por demanda (niveles de ADR-53, plan de ADR-54 desde el 2026-10-01):** TypeScript
+> (track38) y Java (track33) son nivel A de demanda y entran por 37.8 después del piloto; el
+> analista de datos no es un track nuevo sino elegir bien las 32 skills de track21 (roadmap
+> data-analyst como referencia; el «ideal» de ADR-53 quedó sustituido); UX/UI no
 > está en los 45 tracks del plan (sin medida de demanda en la encuesta y una sola fuente de
 > temario) y solo entra si 37.1 le encuentra ambas.
 

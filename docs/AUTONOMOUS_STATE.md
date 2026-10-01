@@ -43,7 +43,7 @@
 |---|---|---|---|---|
 | 40 | Superar a Brilliant y Kodree donde hoy ganan (`PLAN_EXPERIENCIA.md`) | 0/13 | 0 % | TODO (abierta 2026-09-28); 40.1 y 40.2 primero |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47) | 0/6 | 0 % | TODO (abierta 2026-09-24); 38.2, 38.3, 38.4… |
-| 37 | Catálogo por cobertura — suelo, ideal por temario, simulacros reservados, demanda (ADR-53) | 5/22 | 23 % | **PRI 1 ABIERTA 2026-09-30.** 37.14, 37.16, 37.18, 37.19, 37.20 DONE; 37.23 es la vieja 37.1 (alineación lección↔quiz) heredada de la rama |
+| 37 | Catálogo uniforme 32 × 10, simulacros reservados, demanda (ADR-54) | 5/22 | 23 % | **PRI 1 ABIERTA 2026-09-30.** 37.14, 37.16, 37.18, 37.19, 37.20 DONE; 37.23 es la vieja 37.1 (alineación lección↔quiz) heredada de la rama |
 | 34 | Una sola interfaz — todas las pantallas al estilo de la landing | 0/12 | 0 % | **Grueso hecho el 2026-09-24 (PR #6):** 276 clases… |
 | 33 | Operación medible — SLO, restauración, offline idempotente | 0/3 | 0 % | TODO (abierta 2026-09-24) |
 | 32 | Motor demostrable — calibración y evidencia | 0/4 | 0 % | TODO · 32.2 BLOCKED (H.10) |
@@ -395,26 +395,26 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 35.9 | **2** | **El nivel 2 de la puerta (`ci_local.sh`) corre sobre el árbol… | **PARCIAL** | **PARCIAL** `a021e92` (2026-09-24) → §I |
 
 
-### 37. Catálogo por cobertura — suelo, ideal por temario, simulacros reservados y prioridad por demanda (ADR-53, 2026-09-30; antes ADR-46)
+### 37. Catálogo uniforme 32 × 10, simulacros reservados y prioridad por demanda (ADR-54, 2026-10-01; antes ADR-53 y ADR-46)
 
 > **Estado:** `ABIERTA`. **PRI:** 1 (detrás de la serie 30). **Modelo:** ADR-52 (autoría Haiku 4.5, revisión completa Sonnet 5, piloto de 10 ítems).
-> **Orden (ADR-53 §6):** fase 0 = 37.18 → 37.19 → 37.20 · fase 1 = 37.22, 37.10 · fase 2 = 37.6, 37.7 · fase 3 = 37.8 · fase 4 = 37.21 y el ideal. **La guarda 37.0 sigue antes de cualquier pregunta nueva.**
+> **Orden (ADR-54):** nada antes del piloto (31.8); luego lo que usen los pilotos, 37.22, 37.10, 37.6, 37.7 y 37.8. **La guarda 37.0 sigue antes de cualquier pregunta nueva.**
 > **Corpus (ADR-46 §4-5, vigente):** `corpus/` está en `.gitignore`. Se descarga con `git clone --depth 1`, dumps oficiales y **torrents solo cuando…
-> **Unidad:** la skill. Suelo por track: 50 skills · 800 Q · 1 lección y 1 término por skill. Ideal: skills del temario de referencia (`scripts/metas_catalogo.json`), 20 Q por skill. Cifras: `python scripts/catalog_coverage.py`. Un bloque = un PR verde.
+> **Unidad:** la skill. Forma por track: 32 skills · 10 Q (≥ 3 ejecutables) · 1 lección y 1 término por skill (`scripts/metas_catalogo.json`). Suelo e ideal de ADR-53: sustituidos. Cifras: `python scripts/catalog_coverage.py`. Un bloque = un PR verde.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 37.1 | **1** | **Temario de referencia por track**: `scripts/metas_catalogo.json` con 45 tracks (34 con roadmap contado) y 11 certificaciones con objetivos oficiales, leídos el 2026-09-30 | **PARCIAL** | Falta temario de track22, 23, 39, 47, 54, 55 y 56, objetivos de SY0-701 y longitud de examen de Microsoft; `catalog_coverage.py --check` PASS |
+| 37.1 | **1** | **Temario de referencia por track** (ADR-54: solo elige qué 32 skills entran): `scripts/metas_catalogo.json`, 45 tracks y 11 certificaciones, leídos el 2026-09-30 | **PARCIAL** | Falta temario de track22, 23, 39, 47, 54, 55 y 56, objetivos de SY0-701 y longitud de examen de Microsoft; `catalog_coverage.py --check` PASS |
 | 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
-| 37.6 | **2** | **Tracks construidos al suelo**: A primero (02, 03, 12, 14, 15, 18, 22, 26, 27, 28, 30), luego B (19, 23) y C (04–07, 13, 16, 17, 20, 21, 29) | TODO | `catalog_coverage.py`: el track con «suelo sí»; 37.0 y puerta §7 en verde; un track = un PR |
-| 37.7 | **2** | **track24 y track25 reconstruidos al suelo** desde la cuarentena (nivel B) | TODO | ídem, fuera de `_quarantine` y `question_diversity.py` sin línea base |
+| 37.6 | **2** | **Tracks construidos a la forma 32 × 10**: A primero (02, 03, 12, 14, 15, 18, 22, 26, 27, 28, 30), luego B (19, 23) y C | TODO | `catalog_coverage.py`: el track sin pendientes; 37.0 y puerta §7 en verde; un track = un PR |
+| 37.7 | **2** | **track24 y track25 reconstruidos con la forma 32 × 10** desde la cuarentena (nivel B) | TODO | ídem, fuera de `_quarantine` y `question_diversity.py` sin línea base |
 | 37.8 | **2** | **Tracks nuevos por demanda** (`CATALOGO_MAESTRO.md` §2.0): A (38, 33, 34) → B (37, 47, 48, 35, 36, 39, 31) → C (49, 50, 53, 54, 32, 52, 51, 55, 56) solo con todos los A y B en el suelo | TODO | ídem por track; `metas_catalogo.json` lo pasa a «construido» en el mismo commit |
 | 37.9 | **2** | **Glosario ≥ 1 término por skill**, ES y EN nativos (absorbe 25.12) | TODO | `catalog_coverage.py`: términos ≥ skills en cada track |
-| 37.10 | **1** | **Certificaciones al suelo** (ADR-53 §4): 100 % de objetivos con skill, ≥ 15 Q/skill, banco reservado 6 × examen; primero MLA-C01 y las 3 de Microsoft (6–8 Q/skill); nuevas en español: GCP ACE → LPIC-1 → AZ-104 | TODO (tras 37.18) | `catalog_coverage.py`: práctica y reserva al 100 % por certificación; `test_certification_blueprints.py` |
+| 37.10 | **1** | **Certificaciones a la regla de ADR-54**: 100 % de objetivos, práctica ≥ máx(300, 3 × L), reservadas 2 × L; primero MLA-C01 y las 3 de Microsoft; nuevas en español: GCP ACE → LPIC-1 → AZ-104 | TODO | `catalog_coverage.py`: práctica y reserva al 100 % por certificación; `test_certification_blueprints.py` |
 | 37.11 | **3** | **Proyectos multi-paso**: 10 por track ejecutable (hoy 0; catálogo §1) | BLOCKED (37.6) | Cada proyecto con tests de… |
 | 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | → §I (criterio archivado por 20.10) |
-| 37.13 | **3** | **Scorecard ADR-53** (absorbe 25.13): `scripts/catalog_coverage.py` + `scripts/metas_catalogo.json` + `backend/tests/test_cobertura_plan.py` | **PARCIAL** | Hecho 2026-09-30 (script, metas, 11 tests con mutación). Falta: cifras en `/evidence` y re-puntuar Contenido en el teardown al cambiar de tramo |
+| 37.13 | **3** | **Scorecard ADR-54** (absorbe 25.13): `scripts/catalog_coverage.py` + `scripts/metas_catalogo.json` + `backend/tests/test_cobertura_plan.py` | **PARCIAL** | Hecho 2026-10-01 para ADR-54 (script, metas, 21 tests con mutación). Falta: cifras en `/evidence` y re-puntuar Contenido en el teardown al cambiar de tramo |
 | 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | **DONE** `fbf9baf` (2026-09-25) → §I |
 | 37.15 | **1** | Fuentes sin indexar: 3.906 de 6.305 preguntas… | **PARCIAL** | (2026-09-29, `Workflow` 10 agentes) 4.450→3.903 sin indexar (10.949 preguntas). 267 citas RFC/PEP con URL canónica verificada en vivo; 8 dominios nuevos en `index.json` (peps.python.org reusar/CC0, Wikipedia/Deep Learning book/OWASP cheatsheets cita). `tests/content` 70.057 verde → STATUS.md |
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | `46764ff` (2026-09-26) → §N |
@@ -423,9 +423,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | **DONE** | **DONE** `764b06b` (2026-09-30) → §N |
 | 37.22 | **1** | **ISC2 CC al outline del 2026-09-01**: examen adaptativo (CAT) 100–125 ítems/2h; dominios renombrados, pesos 24/17,3/20/21,3/17,3 (track40 sigue en agosto 2022: 26/10/22/24/18). Confirmado en vivo 2026-09-30 (isc2.org/certifications/cc/cc-certification-exam-outline): D1 igual; D2 **Security Governance** es nuevo, sin equivalente 2022; D3 **IAM Concepts** (antes Access Controls); D4 **Networking+Cloud Security** (antes solo Network Security); D5 **Security Ops+IR** absorbe el BC/DR viejo de D2. No es solo metadatos: `mod4002` (BC/DR, 4 skills) no mapea 1:1; Governance parte de cero. Los 5 módulos ya tienen `domain_id: null` | TODO | `exam_domains` + `domain_id` de los 5 módulos + banco de 353 preguntas reclasificado (governance necesita contenido nuevo); `OFFICIAL_BLOCKS["track40"]` mutado en rojo |
 | 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | **DONE** | (2026-09-30) D30/CURR/conversion_d35/30min-pagadores en `analytics.py`; corregido ×2 (CURR a la definición literal de Duolingo, días UTC completos) → §N, STATUS.md |
-| 37.21 | **3** | **Mapa skill → nodo del temario**, para medir el ideal por cobertura real y no por recuento | TODO (tras 37.6) | cada skill con su nodo; `catalog_coverage.py` da % de nodos cubiertos |
+| 37.21 | **3** | **Mapa skill → nodo del temario**, para elegir las 32 skills de cada track (el ideal por temario quedó sustituido, ADR-54) | TODO (tras 37.6) | cada skill con su nodo |
 | 37.23 | **2** | **Alineación lección↔quiz** (heredera de la 37.1 vieja, antes de ADR-53; los commits `22a01a8`…`4f1ab26` dicen «37.1» por ese motivo — ver STATUS.md): `audit_lesson_quiz_alignment.py` sobre 8 tracks señalados el 2026-09-28 | **PARCIAL** | (2026-09-29) 8 tracks revisados, track08+22+11+23+10+44+45+46 cerrados (39.39 DONE). 4/4 bugs de contenido corregidos. track44: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas. Queda la expansión de catálogo hacia ADR-53 (37.6-37.8), no una corrección → STATUS.md |
-| 37.24 | **1** | **Poblar el banco de simulacro reservado** (6× la longitud del examen por certificación, `"pool": "simulacro"`) y encender `MOCK_EXAM_RESERVED_POOL_ENABLED` (mecanismo DONE en 37.18, apagado por defecto) | TODO | 11 certificaciones con reservadas ≥ 6× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/3.120 reservadas a la meta — autoría de contenido (Haiku+Sonnet, piloto de 10), no una tarea de código |
+| 37.24 | **1** | **Poblar el banco de simulacro reservado** (2× la longitud del examen, ADR-54; `"pool": "simulacro"`) y encender `MOCK_EXAM_RESERVED_POOL_ENABLED` (mecanismo DONE en 37.18, apagado por defecto) | TODO | 8 certificaciones con L publicada con reservadas ≥ 2× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/1.040 reservadas a la meta — autoría de contenido (Haiku+Sonnet, piloto de 10), no una tarea de código |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 

@@ -431,7 +431,7 @@ Lo que cambia es la meta y una corrección.
 ## 9. Catálogo frente al mercado — 2026-09-16 (sesión au)
 
 > **Histórico.** Los objetivos de la tabla (27 tracks, ≈ 80 cursos, ≈ 55 certificaciones) son los
-> de aquella fecha; el plan vigente es ADR-53 (§14) y la competencia medida está en
+> de aquella fecha; el plan vigente es ADR-54 (2026-10-01; §14 recoge el de ADR-53, sustituido, sin re-puntuar) y la competencia medida está en
 > `CATALOGO_MAESTRO.md` §8 (2026-09-30).
 
 El dueño preguntó si Whetzy puede «abarcar todo el mundo informático». La respuesta
@@ -490,6 +490,9 @@ Mismos pesos de §7.1. **El marcador no se mueve: sigue en ≈ 44**, porque no s
 producto nuevo. Cambia qué cuenta como «catálogo completo» y entra la primera captura de
 catálogos de la competencia con URL y fecha (`CATALOGO_MAESTRO.md` §8; 4 descargadas y
 leídas por la sesión, el resto por agentes).
+
+> **Sustituida en su meta por ADR-54 (2026-10-01):** forma única 32 skills × 10 preguntas por
+> track. Esta sección (§14) no se re-puntúa: lo que sigue es histórico.
 
 - **Meta (ADR-53):** cada track al **suelo** (50 skills · 800 preguntas) y después al
   **ideal** de su temario (4.819 skills · 96.380 preguntas en 45 tracks); certificaciones
