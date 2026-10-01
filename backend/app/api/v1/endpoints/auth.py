@@ -32,6 +32,7 @@ from app.models.email_verification import EmailVerificationToken
 from app.models.password_reset import PasswordResetToken
 from app.models.user import User
 from app.schemas.user import RefreshRequest, Token, UserCreate, UserRead
+from app.services import account_deletion
 
 router = APIRouter()
 
@@ -177,7 +178,7 @@ async def login(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    if not user.is_active:
+    if not user.is_active and not await account_deletion.restore_if_pending(db, user):
         await log_audit_event(
             user.id,
             "login_failed",
@@ -314,14 +315,18 @@ async def delete_account(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
-    """Soft-delete: deactivates the account. Permanent deletion in 30 days (GDPR)."""
-    current_user.is_active = False
-    await db.commit()
+    """Borrado con 30 días de gracia (19.12): desactiva ya, purga a los 30 días.
+
+    Volver a iniciar sesión dentro de la gracia recupera la cuenta
+    (`account_deletion.restore_if_pending`).
+    """
+    purge_at = await account_deletion.request_deletion(db, current_user)
     return {
         "message": (
-            "Cuenta marcada para eliminación. "
-            "Se borrará permanentemente en 30 días."
-        )
+            "Cuenta desactivada. Se borrará permanentemente en 30 días; "
+            "si vuelves a iniciar sesión antes, se recupera."
+        ),
+        "purge_after": purge_at.isoformat(),
     }
 
 

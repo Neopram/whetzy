@@ -171,7 +171,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (plan ADR-53) | TODO | → LEDGER_HISTORY.md §E |
 | 19.10 | **4** | **Vídeo: Manim + Remotion (`editor-pro-max`)** — absorbe 18.9 | TODO | → LEDGER_HISTORY.md §E |
 | 19.11 | **1** | **Moderación de UGC mínima (App Store 1.2/1.2.1)**: `username`/`display_name` visibles entre usuarios (`duels.py`, ligas) sin filtro/reportar/bloquear — confirmado 2026-09-30, `admin.py` no tiene nada | TODO | Filtro de palabras al crear/editar cuenta + endpoint reportar/bloquear, aunque mínimo → doc [1.2] a ✅ |
-| 19.12 | **2** | **Borrado de cuenta sin purga real**: `DELETE /auth/me/account` solo desactiva y promete purga a 30 días (GDPR) que no existe — confirmado 2026-09-30. Hard-delete directo rompería 14/42 FK a `users.id` sin `ondelete=CASCADE` | TODO | Migración `deactivated_at` + job `purge_deleted_accounts` (patrón `_schedule_monthly_payouts`) que trate las 14 FK sin cascade; test con cuenta >30 días purgada y <30 días intacta, mutado |
+| 19.12 | **2** | **Borrado de cuenta con purga real a los 30 días** (textos legales §4/§8.3) | **DONE** | **DONE** `b2e3159`+`025aa0b` (2026-10-01; verificador 2.ª ronda CONFIRMADA): `services/account_deletion.py` — solicitud en `gdpr_requests`, gracia de 30 días (login, OAuth o panel la cancelan), purga cada 6 h que borra datos personales y de aprendizaje y anonimiza `users` (sin migración). 13 tests, 10 mutaciones en rojo, purga probada en Postgres 16 real |
 
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
@@ -530,7 +530,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.18 | La cadena solo corre con la app Claude abierta y el PC despi… |
 | H.19 | Decidir rail de pagos y entidad (ADR-16) — ahora depende de … |
 | H.20 | Revisión profesional de los textos legales antes de publicar… |
-| H.22 | ¿Aceptar [H.LIC] para OWASP (CheatSheets/WSTG/ASVS, CC BY-SA… |
+| H.22 | RESUELTA 2026-10-01 (dueño): OWASP CC BY-SA no se usa (ADR-47); seguridad con NIST + MITRE |
 | H.23 | Abrir la Serie 26 (distribución ES) cuando 24.14 esté DONE |
 | H.24 | Abrir la Serie 28 (marketplace) cuando 22.1 y 22.3 estén DON… |
 | H.25 | Activar payouts de instructores en producción (28.7) |
