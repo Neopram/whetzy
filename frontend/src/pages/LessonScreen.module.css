@@ -1,239 +1,198 @@
-/* Serie 34.1 (2026-09-24): base restaurada de c089218^, anterior al commit
-   «Obsidian Radiant» que renombró las clases sin tocar el .tsx. Los colores
-   salen de los tokens --le-*, que ya son la paleta Obsidian (design-tokens.css). */
-
-:root {
-  /* Alias a los tokens de la app (Obsidian); antes esta pantalla tenia su
-     propia paleta clara/oscura. */
-  --lesson-bg: var(--le-bg);
-  --lesson-surface: var(--le-surface);
-  --lesson-text: var(--le-text);
-  --lesson-muted: var(--le-text-secondary);
-  --lesson-border: var(--le-border);
-  --lesson-primary: var(--le-brand);
-  --lesson-code-bg: var(--le-code-bg);
-  --lesson-code-text: var(--le-code-text);
-}
+/* Lección (design/v2): pasos cortos con barra segmentada y contador en mono,
+   el ejemplo en su bloque de código y la fuente siempre a la vista. El acento
+   «chispa» solo en el botón de avanzar. */
 
 .screen {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  background: var(--lesson-bg);
-  color: var(--lesson-text);
-  font-family: var(--font-base, system-ui, sans-serif);
+  background: var(--le-bg);
+  color: var(--le-text);
 }
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--lesson-border);
-  background: var(--lesson-surface);
+  gap: var(--le-space-sm);
+  padding: var(--le-space-xs) var(--le-space-md);
+  border-bottom: 1px solid var(--le-border);
+  background: var(--le-bg);
 }
 
 .btnClose {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   min-width: 44px;
   min-height: 44px;
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  color: var(--lesson-muted);
-  padding: 4px 8px;
-  border-radius: 6px;
-  line-height: 1;
+  border-radius: var(--le-radius-sm);
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-md);
 }
 
-.btnClose:hover {
-  background: var(--lesson-border);
-}
+.btnClose:hover { color: var(--le-text); background: var(--le-surface); }
 
-.progress {
-  display: flex;
-  gap: 6px;
+.progress { flex: 1; display: flex; gap: var(--le-space-2xs); }
+
+.seg {
   flex: 1;
-  justify-content: center;
+  height: 4px;
+  border-radius: var(--le-radius-full);
+  background: var(--le-border);
+  transition: background var(--le-transition-base);
 }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--lesson-border);
-  transition: background 0.2s;
-}
+.segDone { background: var(--le-blue); }
 
-.dotActive {
-  background: var(--lesson-primary);
+.counter {
+  flex: none;
+  color: var(--le-text-muted);
+  font-family: var(--le-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--le-fs-xs);
 }
 
 .main {
   flex: 1;
-  padding: 24px 20px;
-  overflow-y: auto;
-  max-width: 680px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
   width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--le-space-xl) var(--le-space-md) var(--le-space-lg);
+}
+
+.eyebrow {
+  color: var(--le-brand-text);
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 16px;
-  color: var(--lesson-text);
+  margin-top: calc(-1 * var(--le-space-sm));
+  font-size: var(--le-fs-2xl);
+  font-weight: var(--le-fw-bold);
+  line-height: 1.15;
+}
+
+.card {
+  display: grid;
+  gap: var(--le-space-md);
+  padding: var(--le-space-lg);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-lg);
+  background: var(--le-surface);
 }
 
 .body {
-  font-size: 1rem;
+  font-size: var(--le-fs-md);
   line-height: 1.7;
-  color: var(--lesson-text);
-  margin-bottom: 24px;
+  color: var(--le-text);
 }
 
-.body p {
-  margin: 0 0 12px;
-}
-
-.exampleBlock {
-  background: var(--lesson-surface);
-  border: 1px solid var(--lesson-border);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-
-.exampleLabel {
-  display: block;
-  padding: 8px 14px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--lesson-primary);
-  border-bottom: 1px solid var(--lesson-border);
-  background: var(--lesson-surface);
-}
-
-.codeBlock {
+.code,
+.outputPre {
   margin: 0;
-  padding: 14px 16px;
-  background: var(--lesson-code-bg);
-  color: var(--lesson-code-text);
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  font-size: 0.875rem;
-  line-height: 1.6;
   overflow-x: auto;
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-sm);
+  line-height: 1.6;
   white-space: pre;
 }
 
-.outputBlock {
+.code {
+  padding: var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  background: var(--le-code-bg);
+  color: var(--le-code-text);
+}
+
+.predict {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 10px 14px;
-  background: var(--lesson-surface);
-  border-top: 1px solid var(--lesson-border);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+  color: var(--le-text-secondary);
+  font-size: var(--le-fs-sm);
+}
+
+.output {
+  display: grid;
+  gap: var(--le-space-2xs);
+  padding: var(--le-space-sm) var(--le-space-md);
+  border-left: 2px solid var(--le-green);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-bg);
 }
 
 .outputLabel {
-  font-size: 0.85rem;
-  color: var(--lesson-primary);
-  font-weight: 700;
-  line-height: 1.6;
-  flex-shrink: 0;
+  color: var(--le-success-text);
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.outputPre {
-  margin: 0;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: var(--lesson-text);
-  white-space: pre-wrap;
-  word-break: break-all;
+.outputPre { color: var(--le-text); }
+
+.source {
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-xs);
+  overflow-wrap: anywhere;
 }
 
-.sourceRow {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 10px 0;
-  border-top: 1px solid var(--lesson-border);
-  margin-top: 8px;
+.source a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--le-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-.sourceIcon {
-  font-size: 0.9rem;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.sourceText {
-  font-size: 0.8rem;
-  color: var(--lesson-muted);
-  line-height: 1.5;
-  word-break: break-word;
-}
+.source a:hover { color: var(--le-text); }
 
 .footer {
+  position: sticky;
+  bottom: 0;
   display: flex;
-  gap: 12px;
-  padding: 16px 20px;
-  border-top: 1px solid var(--lesson-border);
-  background: var(--lesson-surface);
+  gap: var(--le-space-xs);
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--le-space-sm) var(--le-space-md) calc(var(--le-space-sm) + env(safe-area-inset-bottom));
+  background: var(--le-bg);
 }
+
+.btnGhost,
+.btnPrimary {
+  min-height: 48px;
+  padding: 0 var(--le-space-lg);
+  border-radius: var(--le-radius-sm);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+}
+
+.btnGhost {
+  border: 1px solid var(--le-border);
+  color: var(--le-text);
+}
+
+.btnGhost:hover:not(:disabled) { border-color: var(--le-text-muted); }
+
+.btnGhost:disabled { color: var(--le-text-muted); opacity: 0.5; cursor: default; }
 
 .btnPrimary {
   flex: 1;
-  padding: 14px 20px;
-  background: var(--lesson-primary);
+  background: var(--le-brand);
   color: var(--le-text-inverse);
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.15s;
 }
 
-.btnPrimary:hover {
-  opacity: 0.9;
-}
-
-.btnSecondary {
-  padding: 14px 16px;
-  background: none;
-  color: var(--lesson-primary);
-  border: 2px solid var(--lesson-primary);
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.btnSecondary:hover {
-  background: color-mix(in srgb, var(--lesson-primary) 10%, transparent);
-}
-
-.loadingMsg,
-.errorMsg {
-  text-align: center;
-  color: var(--lesson-muted);
-  padding: 48px 20px;
-}
-
-.btnBack {
-  display: block;
-  margin: 12px auto 0;
-  background: none;
-  border: none;
-  color: var(--lesson-primary);
-  cursor: pointer;
-  font-size: 1rem;
-}
+.btnPrimary:hover { background: var(--le-brand-2); }
