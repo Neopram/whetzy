@@ -25,6 +25,9 @@ const PlacementScreen = lazy(() => import('./pages/PlacementScreen').then((m) =>
 const TracksScreen = lazy(() => import('./pages/TracksScreen').then((m) => ({ default: m.TracksScreen })));
 const DuelScreen = lazy(() => import('./pages/DuelScreen').then((m) => ({ default: m.DuelScreen })));
 const AuthScreen = lazy(() => import('./pages/AuthScreen').then((m) => ({ default: m.AuthScreen })));
+const ResetPasswordPage = lazy(() =>
+  import('./pages/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage }))
+);
 const DeleteAccountScreen = lazy(() =>
   import('./pages/DeleteAccountScreen').then((m) => ({ default: m.DeleteAccountScreen }))
 );
@@ -210,6 +213,14 @@ function App() {
   }
 
   if (path === '/auth' || path === '/login' || path === '/register') return <AuthRoute />;
+  if (path === '/reset-password') {
+    const token = new URLSearchParams(window.location.search).get('token') || '';
+    return (
+      <Screen>
+        <ResetPasswordPage token={token} onSuccess={() => { window.location.assign('/login'); }} />
+      </Screen>
+    );
+  }
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
   // Both returns sit above every hook in this component, which is the only
   // arrangement React allows: an early return *between* hooks is what blanked
