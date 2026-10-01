@@ -12,14 +12,17 @@
 > memoria del modelo, no una captura: la tarea **18.12** la sustituye por URL + fecha
 > o la borra. Un número sin comando ni URL es un bug de este doc.
 >
-> Última medición: 2026-09-30 (`python scripts/catalog_coverage.py`). Estado del banco: ver `## 1`.
-> **Plan vigente desde el 2026-09-30 (ADR-53; sustituye la meta de volumen de ADR-46):** cada
-> track de aprendizaje tiene un **suelo** competitivo (50 skills · 800 preguntas · 1 lección y
-> 1 término por skill) y un **ideal** por cobertura (las skills que pide su temario de
-> referencia, 20 preguntas por skill). Cada certificación: el 100 % de sus objetivos oficiales
-> y un **banco de simulacro reservado** de 6 × la longitud del examen, que no sale en práctica.
-> Los tracks nuevos entran por **demanda medida** (Stack Overflow 2025, niveles A/B/C). Los
-> denominadores, con URL y fecha, están en `scripts/metas_catalogo.json`. Ejecución: serie 37 del
+> Última medición: 2026-10-01 (`python scripts/catalog_coverage.py` sobre `80cd3ad`). Estado del banco: ver `## 1`.
+> **Plan vigente desde el 2026-10-01 (ADR-54; sustituye el suelo y el ideal de ADR-53, que a su
+> vez sustituyó la meta de volumen de ADR-46):** cada track de aprendizaje tiene **una sola
+> forma**: 32 skills (8 módulos × 4) · 10 preguntas por skill, ≥ 3 de ellas ejecutables donde el
+> navegador ejecute · 1 lección y 1 término por skill. Nada se borra: lo que pase de esa forma se
+> conserva. Cada certificación: el 100 % de sus objetivos oficiales, práctica ≥ máx(300, 3 × las
+> preguntas del examen) y un **banco de simulacro reservado** de 2 × el examen, que no sale en
+> práctica («pendiente» si el proveedor no publica la longitud). Los tracks nuevos entran por
+> **demanda medida** (Stack Overflow 2025, niveles A/B/C de ADR-53). **Ningún contenido antes
+> del piloto** (`LANZAMIENTO_PILOTO.md`); después, primero los tracks que usen los pilotos. Las
+> metas, con URL y fecha, están en `scripts/metas_catalogo.json`. Ejecución: serie 37 del
 > ledger. Siguen de ADR-46 el corpus abierto fuera del repo y la guarda 37.0 antes de
 > cualquier pregunta nueva.
 > Política de fuentes desde el 2026-09-18 (ADR-11): **solo gratuitas y legales** — ver §2.1.
@@ -44,22 +47,22 @@ profundidad de producto*, no adquisición.
 
 ## 1. Estado del banco hoy (fuente: `check_question_bank.py` + `check_docs.py`)
 
-| Métrica | Valor 2026-09-30 | Comando |
+| Métrica | Valor 2026-10-01 | Comando |
 |---|---|---|
 | Tracks | **35** (track01–23 + track26–30 + track40–46) | `python scripts/check_docs.py` |
-| Módulos (unidad de presentación en la web; el plan mide skills, ADR-53) | **177** | ídem |
+| Módulos (unidad de presentación en la web; el plan mide skills, ADR-54) | **177** | ídem |
 | Skills | **723** | ídem |
 | Preguntas | **10.949** | `python scripts/check_question_bank.py` |
-| Lecciones | 656/643 | `pytest tests/content/test_lessons.py` |
+| Lecciones | **723** (una por skill: las 723 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
 | Glosario | **1.044** | `check_docs.py` |
 | Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9; track41 PCAP Python exec; certs track42–46 exentos) | `check_question_bank.py` |
 | Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900** (retirado por Microsoft el 30-06-2026; sustituto AI-901, fila 39.24), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |
-| Plan ADR-53: tracks en el suelo | 1 de 45 (track01) | `python scripts/catalog_coverage.py` |
-| Suelo (50 skills · 800 preguntas por track) | skills 525/2.250 (23,3 %) · preguntas 8.313/36.000 (23,1 %) | ídem |
-| Ideal (temario de referencia · 20 preguntas por skill) | skills 525/4.819 (10,9 %) · preguntas 8.380/96.380 (8,7 %) | ídem |
-| Certificaciones al suelo | práctica 1.886/2.175 (86,7 %) · banco de simulacro reservado 0/3.120 (0 %) | ídem |
+| Plan ADR-54: tracks construidos ya en la forma 32 × 10 | 0 de 24 | `python scripts/catalog_coverage.py` |
+| Lo que falta en los 24 tracks construidos | +261 skills · +261 lecciones · +266 términos · +2.610 preguntas | ídem |
+| Lo que falta en las 11 certificaciones | +907 de práctica · +1.040 reservadas (AZ-900, AI-900 y DP-900: «pendiente», sin longitud publicada) | ídem |
+| Total y ritmo | 4.557 preguntas ≈ 9 sesiones a 518/sesión (estimación) | ídem |
 
 ---
 
@@ -72,15 +75,16 @@ cifras dentro de los ids de módulo y skill (`mod4601`, `sk460101`): pasar de `t
 exige antes un ADR. Un id planificado nunca reutiliza uno de `content/curriculum/tracks.json`
 (renumeración del 2026-09-29: los planificados track41–46 chocaban con las certificaciones
 PCAP, Security+, MLA-C01, AZ-900, AI-900 y DP-900, y pasaron a track51–56).
-Cada track de aprendizaje (ADR-53):
-- **Suelo:** 50 skills · 800 preguntas (≥ 16 por skill) · 1 lección y 1 término de glosario
-  por skill · ≥ 15 % ejecutable donde el navegador pueda ejecutar (Python, SQL, JS) o exento
-  con razón (ADR-9) · guarda 37.0 en verde. Son unas 15–20 h de estudio.
-- **Ideal:** tantas skills como nodos de su temario de referencia (roadmap.sh), nunca menos
-  que el suelo; 20 preguntas por skill; 1 lección de 6–10 min por skill. Denominador por
-  track en `scripts/metas_catalogo.json`.
-- El molde antiguo de 20 skills · 300 preguntas (track12) queda **por debajo del suelo**: es
-  el punto de partida de 22 de los 24 tracks construidos, no una meta.
+Cada track de aprendizaje (ADR-54):
+- **Forma única:** 32 skills (8 módulos × 4) · 10 preguntas por skill (320 por track), ≥ 3
+  ejecutables por skill donde el navegador pueda ejecutar (Python, SQL, JS) o exento con razón
+  escrita · 1 lección y 1 término de glosario por skill · guarda 37.0 en verde.
+- **Nada se borra:** un track por encima de 32 skills o de 10 preguntas por skill conserva lo
+  que tiene (track01: 52 skills, 867 preguntas).
+- **roadmap.sh** solo sirve para elegir qué 32 skills entran; sus recuentos siguen en
+  `scripts/metas_catalogo.json` como referencia, no como meta.
+- El molde antiguo de 20 skills · 300 preguntas (track12) queda 12 skills por debajo de la
+  forma: es el punto de partida de 13 de los 24 tracks construidos.
 
 Licencias: en la app entra solo contenido propio o MIT / Apache-2 / BSD / CC BY /
 CC0 / PSF / dominio público (NIST, RFC, docs de gobierno de EE. UU.). **CC BY-SA
@@ -92,9 +96,9 @@ compran libros para parafrasearlos y los PDFs pirateados no entran ni como cita.
 camino con cualquier fuente es el mismo: leer → escribir lección/pregunta original en
 ES y EN → citar. Los hechos son libres; la redacción no.
 
-**Meta por track (ADR-53):** el suelo y el ideal de arriba. La meta anterior (ADR-46: 50
-cursos = 200 skills · 3.000 preguntas · 200 lecciones · ≥ 400 términos por track) queda
-sustituida: pedía el doble de skills que cualquier temario de referencia.
+**Meta por track (ADR-54):** la forma de arriba. Las anteriores quedan sustituidas: ADR-53
+(suelo de 50 skills · 800 preguntas e ideal por temario, sustituido el 2026-10-01) y ADR-46 (50
+cursos = 200 skills · 3.000 preguntas · 200 lecciones · ≥ 400 términos por track, histórico).
 
 | # | Área | Track | Id | Estado | Fuentes con licencia | Runtime | Certs asociadas (→ §3) |
 |---|---|---|---|---|---|---|---|
@@ -348,7 +352,7 @@ Reglas de uso, por encima de la tabla:
 
 ---
 
-## 3. Certificaciones — 11 construidas; suelo, banco de simulacro reservado y orden por idioma (ADR-53)
+## 3. Certificaciones — 11 construidas; práctica, banco de simulacro reservado y orden por idioma (ADR-54)
 
 Un track de certificación = módulos que son **los dominios oficiales con su peso
 verificado** (`exam_domain` + `exam_weight_pct`, suma 100 — `_domain_allocation`
@@ -356,12 +360,14 @@ lo valida desde 17.13), simulacro en formato real (nº de ítems, minutos, corte
 publica el proveedor**, con URL y fecha), informe por dominio, y **readiness** (18.1): BKT por
 dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar pesos.
 
-- **Suelo (ADR-53):** 100 % de los objetivos oficiales con ≥ 1 skill cada uno · ≥ 15
-  preguntas de práctica por skill · **banco de simulacro reservado de 6 × la longitud del
-  examen** (`"pool": "simulacro"`), que no sale en práctica ni repaso.
-- **Ideal:** 2 skills por objetivo · 20 preguntas por skill · el mismo banco reservado.
-- **Hoy el simulacro saca sus preguntas del mismo banco que la práctica**
-  (`backend/app/services/mock_exam.py:110-136`): banco reservado 0/3.120. Es la fase 0.
+- **Regla única (ADR-54):** 100 % de los objetivos oficiales cubiertos · práctica
+  ≥ máx(300, 3 × L) · **banco de simulacro reservado de 2 × L** (`"pool": "simulacro"`), que no
+  sale en práctica ni repaso; L = preguntas del examen. Sin L publicada (AZ-900, AI-900,
+  DP-900), las reservadas quedan «pendiente». Sustituye el suelo y el ideal de ADR-53 (15 y
+  20 preguntas por skill, banco de 6 × L).
+- **El banco reservado existe desde 37.18** (`pool` en `questions`, migración
+  `20260930_question_pool`), pero está vacío: 0 reservadas hoy, meta 1.040 para las 8
+  certificaciones con L publicada.
 - **Orden de las nuevas:** primero las que se examinan en español (comprobado el 2026-09-30:
   GCP Associate Cloud Engineer, LPIC-1, AZ-104); CKA/CKAD/CKS solo se examinan en inglés,
   chino y japonés; CCNA, idioma sin comprobar (la página de Cisco no se pudo leer).
@@ -375,14 +381,14 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | AWS | **SAA-C03** | track10 | ✅ — 4 dominios, suma 100 (18.1) | — |
 | AWS | **AIF-C01** | track11 / track07 | ✅ — 5 dominios completos (18.1) | — |
 | AWS | DVA-C02 | track28 | ❌ | P2 |
-| AWS | **MLA-C01** → MLA-C02 | track07 | ✅ track43 — 12 task statements, 165 Q; MLA-C01 deja de ofrecerse en inglés el 2026-09-28 (39.25); formato C01 (65 preguntas, 130 min) fijado en 37.19 | — |
+| AWS | **MLA-C01** → MLA-C02 | track07 | ✅ track43 — 12 task statements, 120 Q (45 de relleno retiradas en 39.42); MLA-C01 deja de ofrecerse en inglés el 2026-09-28 (39.25); formato C01 (65 preguntas, 130 min) fijado en 37.19 | — |
 | AWS | SOA-C02 · DOP-C02 · SAP-C02 | track18/19 | ❌ | P3 |
 | AWS | Security Specialty (SCS-C02) | track25 | ❌ | P2 |
 | ISC2 | **CC** (Certified in Cybersecurity, examen gratuito) | track13 | ✅ **track40** — 353 Q, 5 dominios con pesos verificados, 15 % exec, `correct_index` auditado (18.2 / 18.14); **outline nuevo desde el 2026-09-01** (examen adaptativo de 100–125 ítems, dominios y pesos distintos): el track sigue con el de 2022 (37.22) | — |
 | ISC2 | SSCP · CCSP · CISSP | track13/25 | ❌ | P3 |
 | CompTIA | **Security+ SY0-701** | track13 | ✅ track42 — 300 Q; V8 (SY0-801, solo inglés) el 2026-11-17 (39.26) | — |
 | CompTIA | Network+ · Linux+ · PenTest+ · CySA+ | track17/15/24 | ❌ | P2 |
-| Microsoft | **AZ-900 · AI-900 → AI-901 · DP-900** | track44/45/46 | ✅ 90–96 Q cada una (6 por skill: por debajo del suelo); AI-900 retirado 30-06-2026, migrar a AI-901 (39.24) | — |
+| Microsoft | **AZ-900 · AI-900 → AI-901 · DP-900** | track44/45/46 | ✅ 90–96 Q cada una (faltan ≈ 205 de práctica en cada una para 300); AI-900 retirado 30-06-2026, migrar a AI-901 (39.24) | — |
 | Microsoft | AZ-104 · AZ-204 · AI-102 · DP-100 · DP-203 · AZ-305 | track22/07/21/20 | ❌ | **AZ-104: siguiente** (examen en español) · resto P2 |
 | Google Cloud | Digital Leader · ACE · PCA · PDE · PMLE | track23/20/07 | ❌ | **ACE: siguiente** (examen en español) · resto P2 |
 | CNCF | KCNA · CKA · CKAD · CKS | track18 | ❌ | P2 (sin examen en español; CKA/CKAD son prácticos: solo teoría + escenario) |
@@ -400,10 +406,11 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | JS Institute | JSE-1 | track14 | ❌ | P3 |
 | The Open Group | TOGAF Foundation | track05 | ❌ | P3 |
 
-**Hoy: 11 construidas.** Suelo por certificación (`catalog_coverage.py`, 2026-09-30):
-práctica 1.886/2.175 (86,7 %) y banco reservado 0/3.120. Por debajo del suelo de práctica:
-MLA-C01 (6,0 preguntas por skill) y las tres de Microsoft (AZ-900 6,3; AI-900 y DP-900 6,0). Sin objetivos contados:
-Security+ SY0-701. Sin longitud de examen publicada: AZ-900, AI-900 y DP-900. La lista de
+**Hoy: 11 construidas.** Lo que falta por la regla de ADR-54 (`catalog_coverage.py`,
+2026-10-01): +907 preguntas de práctica (PCEP +33, AIF-C01 +75, MLA-C01 +180, AZ-900 +205,
+AI-900 +210, DP-900 +204) y +1.040 reservadas. Sin objetivos contados: Security+ SY0-701. Sin
+longitud de examen publicada: AZ-900, AI-900 y DP-900. La cobertura de objetivos se mide hoy
+con un proxy (una skill por objetivo): no hay mapa objetivo → skill. La lista de
 arriba es el universo candidato, no una meta de «55»: cada nueva entra por el orden de este §3.
 
 Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2 —
@@ -413,16 +420,16 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 
 ## 4. Las capas que faltan en todos los tracks
 
-| Capa | Hoy (2026-09-30) | Objetivo (ADR-53 salvo donde se dice) | Cómo se verifica |
+| Capa | Hoy (2026-10-01) | Objetivo (ADR-54 salvo donde se dice) | Cómo se verifica |
 |---|---|---|---|
-| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 723/723 skills con lección | 1 lección de 6–10 min por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
+| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 723/723 skills con lección | 1 lección por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
 | Ejemplo resuelto + problema de completar (fading) | solo la lección | 1 secuencia por skill | test de estructura |
-| Práctica adaptativa (quiz) | ✅ 10.949 Q · 15,1 por skill | suelo ≥ 16 por skill (800 por track); ideal 20 por skill | `check_question_bank.py` + `catalog_coverage.py` |
+| Práctica adaptativa (quiz) | ✅ 10.949 Q · 15,1 por skill | 10 por skill, ≥ 3 ejecutables donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
-| Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900 y DP-900 (37.19); ISC2 CC aún con el outline de 2022 (37.22); Microsoft no publica el número de preguntas, así que AZ-900, AI-900 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 6 × examen** (0/3.120 hoy) | `test_certification_blueprints.py` + 37.18 |
+| Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900 y DP-900 (37.19); ISC2 CC aún con el outline de 2022 (37.22); Microsoft no publica el número de preguntas, así que AZ-900, AI-900 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 2 × examen** (0/1.040 hoy) | `test_certification_blueprints.py` + 37.18 |
 | **Readiness por dominio** | 18.1 | «P(aprobar)» por cert con BKT × peso oficial, calibrado frente al examen real con n publicado | 18.1 + métricas de ADR-53 §8 |
-| Glosario | 1.044 términos | ≥ 1 término por skill (suelo 50 por track) | `check_docs.py` |
+| Glosario | 1.044 términos | 1 término por skill (32 por track de la forma) | `check_docs.py` |
 | **Vídeo explicativo** | **0** | 1 animación de 30-90 s por skill donde aporte (algoritmos, redes, arquitectura, SQL) | 18.9 |
 | Runtimes en navegador | Python (Pyodide) ✅ · SQL (sql.js) ✅ · **JS (Worker sandbox) ✅ (18.3)** · shell ❌ | shell = `fill_blank` (v86 descartado por peso, línea roja 8) | `useRuntime` + e2e por runtime |
 | **Social login** | **0** (email-only) | GitHub + Google (web) · **Sign in with Apple (obligatorio, App Store 4.8)** · Google nativo (Android) | 19.1 / 19.2 / 19.3, e2e con proveedor simulado |
@@ -463,23 +470,23 @@ Evaluadas el 2026-09-18 con URL. Ninguna toca el runtime (línea roja 5).
 
 ---
 
-## 6. Cuánto cuesta el plan — aritmética, no fe (ADR-53, 2026-09-30)
+## 6. Cuánto cuesta el plan — aritmética, no fe (ADR-54, 2026-10-01)
 
-Cifras de `python scripts/catalog_coverage.py`. El ritmo es el único medido: **518 preguntas
-verificadas por sesión** (sesión 18.4, `bec734c`). Todo lo demás es división.
+Cifras de `python scripts/catalog_coverage.py` sobre `80cd3ad`. El ritmo es el único medido:
+**518 preguntas verificadas por sesión** (sesión 18.4, `bec734c`). Todo lo demás es división.
 
-| Fase | Qué | Preguntas que faltan | Sesiones (≈ Q / 518) |
-|---|---|---|---|
-| 0 | Banco de simulacro reservado (código), formatos de examen corregidos, métricas de producto | código | 1–2 |
-| 1 | 11 certificaciones al suelo: práctica (249) + banco reservado (3.120; sin contar Microsoft, cuya longitud no se publica) | 3.369 | ≈ 7 |
-| 2 | 24 tracks construidos al suelo (12 de nivel A: 5.363 · 2 de B: 1.000 · 10 de C: 4.524) + track24/25 reconstruidos (1.600) | 12.487 | ≈ 24 |
-| 3 | Tracks nuevos A (Java, C#, TypeScript: 2.400) y B (móvil, Go, Rust, C/C++, SRE, PowerShell, PHP: 5.600) al suelo | 8.000 | ≈ 15 |
-| 3b | Tracks nuevos C al suelo (9 tracks) | 7.200 | ≈ 14 |
-| 4 | Ideal: temario completo en todos los tracks (60.313 por encima del suelo) + práctica ideal de certificación (3.242) | 63.555 | ≈ 123 |
-| **Total** | **suelo (fases 1–3b)** | **31.056** | **≈ 60** |
-| **Total** | **ideal (fases 1–4)** | **94.611** | **≈ 183** |
+| Qué | Preguntas que faltan | Sesiones (≈ Q / 518) |
+|---|---|---|
+| Antes de nada: el piloto (`LANZAMIENTO_PILOTO.md`) | 0 | — |
+| 11 certificaciones: práctica ≥ máx(300, 3 × L) (+907) y banco reservado de 2 × L (+1.040; sin AZ-900, AI-900 y DP-900, cuya longitud no se publica) | 1.947 | ≈ 4 |
+| 24 tracks construidos a la forma 32 × 10: 12 de nivel A (+1.280) · 2 de B (+240) · 10 de C (+1.090) | 2.610 | ≈ 5 |
+| **Total del plan** | **4.557** | **≈ 9** |
+| *Solo cuando la demanda los active (no cuentan en el total):* track24/25 reconstruidos (2 × 320) · nuevos A (3 × 320) · B (7 × 320) · C (9 × 320) | 640 · 960 · 2.240 · 2.880 | ≈ 1 · 2 · 4 · 6 |
 
-- Skills que faltan: 1.725 para el suelo (675 + 100 + 150 + 350 + 450) y 4.294 para el ideal.
+- Además de preguntas: +261 skills, +261 lecciones y +266 términos en los tracks construidos.
+- Ejecutables (≥ 3 por skill): 11 tracks (18-23 y 26-30) salen «sin medir» porque no tienen
+  preguntas ejecutables ni exención escrita en `scripts/metas_catalogo.json`.
+- Sustituye la aritmética de ADR-53 (suelo 31.056 preguntas ≈ 60 sesiones; ideal 94.611 ≈ 183).
 - La autoría la hace Haiku 4.5 con revisión completa de Sonnet 5 (ADR-52). El piloto de
   track28 dio 7 de 10 malas: si se repite, el ritmo real será menor que 518 por sesión.
 - Lo que **no** entra en ningún calendario de agente: H.2, H.3, H.4, H.10, H.14. Sin
@@ -510,7 +517,7 @@ Ninguna autoría en masa entra en `master` sin pasar **las siete**:
    (Haiku entrega el 100 % en la posición A si no se rebalancea).
 6. **Diversidad (37.0)**: `scripts/question_diversity.py` PASS: enunciados distintos,
    opciones de más de una palabra, ejecutables con código, fuente indexada.
-7. **Plan y catálogo en el mismo mundo (ADR-53)**: `python scripts/catalog_coverage.py
+7. **Plan y catálogo en el mismo mundo (ADR-54)**: `python scripts/catalog_coverage.py
    --check` PASS; y ninguna pregunta `"pool": "simulacro"` sale en práctica ni repaso (37.18).
 
 Modelo por tarea (ADR-52, 2026-09-27): **autoría masiva → Haiku 4.5; revisión adversaria
@@ -541,16 +548,17 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
 | Tutorials Dojo / Udemy (AWS) | 6 simulacros × 65 = 390 preguntas por examen (Maarek, Bonso); TD: 7–9 simulacros cronometrados | pregunta | [A] (Udemy devolvió 403) |
 | **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 723 skills · 10.949 preguntas | skill | `catalog_coverage.py` |
 
-**Lectura honesta (2026-09-30):**
+**Lectura honesta (2026-10-01, ADR-54):**
 - En **amplitud** Whetzy ya supera a su competencia directa: Boot.dev enseña en 3 rutas y
   Kodree en unas 7, frente a 24 tracks y 11 certificaciones.
-- En **profundidad por track** está por debajo: 22 de los 24 tracks tienen 20–30 skills,
-  menos que un solo curso mediano de Boot.dev (51 lecciones, 20 h). Por eso el suelo es de
-  50 skills.
-- Frente a los **bancos de certificación**, Whetzy está en el orden de magnitud (225–375
-  preguntas por examen contra 390–800), pero **sin banco de simulacro reservado**.
+- En **profundidad por track** está por debajo: 20 de los 24 tracks tienen 20–30 skills y 3
+  tienen 12 (track15-17); solo track01 pasa de 50. La forma de ADR-54 (32 skills · 320
+  preguntas) **no** iguala las horas de un curso mediano de Boot.dev (51 lecciones, 20 h): es
+  un límite escrito en ADR-54, que compite en práctica adaptativa, ES/EN y ejecución.
+- Frente a los **bancos de certificación**, Whetzy está por debajo (90–375 preguntas de
+  práctica por examen contra 390–800) y **sin banco de simulacro reservado** todavía.
 - «Curso» no es una unidad comparable: el de Platzi o Boot.dev son horas, el módulo de Whetzy
-  son 4 skills. Por eso ADR-53 mide skills y temario, no cursos.
+  son 4 skills. Por eso el plan mide skills, no cursos.
 - La tesis defendible sigue siendo la de §8.4 del teardown: *el mejor en un nicho que los
   grandes ignoran* (ES/EN nativo + motor auditado + ejecución en navegador).
 
@@ -568,22 +576,24 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
   Linux se enseña con `fill_blank` de comandos + salida real ilustrativa (ADR-9).
 - **Vídeo filmado**: no hay cámara ni presentador. Manim o nada.
 - **Certificación propia de Whetzy**: no vale nada todavía (v3, Parte XI).
-- **Los tracks de nivel C de demanda** (§2.0) van después de que todos los A y B estén en el suelo (ADR-53).
+- **Los tracks de nivel C de demanda** (§2.0) van después de los A y B, con la misma forma 32 × 10 (ADR-54).
 
 ---
 
-## 10. Orden de ejecución — serie 37 en `AUTONOMOUS_STATE.md` (ADR-53)
+## 10. Orden de ejecución — serie 37 en `AUTONOMOUS_STATE.md` (ADR-54)
 
-1. **Fase 0 (código):** 37.18 banco de simulacro reservado · 37.19 formatos de examen del
-   proveedor (AIF-C01, MLA-C01, Microsoft) · 37.20 métricas de producto con meta.
-2. **Fase 1:** 37.22 ISC2 CC al outline de 2026 (dominios y pesos nuevos) y 37.10 las 11
-   certificaciones al suelo (MLA-C01 y Microsoft primero, las más lejos); nuevas en español
-   después (GCP ACE, LPIC-1, AZ-104).
-3. **Fase 2:** 37.6 los 24 tracks construidos al suelo, **A primero** (track02, 03, 12, 14,
-   15, 18, 22, 26, 27, 28, 30), luego B (19, 23) y C; 37.7 track24/25 reconstruidos.
-4. **Fase 3:** 37.8 tracks nuevos A (TypeScript, Java, C#) y B (C/C++, PowerShell, PHP, Go,
-   Rust, SRE, móvil) al suelo; después los C.
-5. **Fase 4:** 37.21 mapa skill → nodo de temario y el ideal, por nivel de demanda.
+1. **Antes de cualquier contenido: el piloto** (fila 31.8, `LANZAMIENTO_PILOTO.md`). Lo que
+   rompan o pidan los pilotos va primero.
+2. **Hecho (código):** 37.18 banco de simulacro reservado y 37.19 formatos de examen del
+   proveedor. 37.20 (métricas de producto) está DONE pero vetada en lo nuevo hasta ≥ 100
+   registrados reales (31.5).
+3. **Después del piloto, primero los tracks y certificaciones que usen los pilotos.** Para el
+   resto: 37.22 ISC2 CC al outline de 2026 y 37.10 las 11 certificaciones a la regla de
+   ADR-54 (MLA-C01 y Microsoft primero, las más lejos); 37.6 los 24 tracks construidos a la
+   forma 32 × 10, **A primero**, luego B y C; 37.7 track24/25.
+4. **Tracks nuevos:** 37.8 por demanda (A → B → C), con la misma forma. La fase 4 de ADR-53
+   (el ideal por temario) quedó sustituida; 37.21 se reduce a elegir las 32 skills de cada
+   track con roadmap.sh como referencia.
 
 Cada bloque de contenido corre como **Workflow paralelo** (autoría Haiku 4.5 por
 fichero → revisor y corrector Sonnet 5, ADR-52 → `scripts/content_qa/` → `pytest tests/content` →
@@ -604,7 +614,7 @@ La frase literal del estudio:
 
 Whetzy es exactamente eso. El estudio confirma que el gap existe y que los incumbentes (Platzi, EDteam, Desafío Latam, KeepCoding) están agregando "chatbot/AI-tutor overlays on top of video/cohort content — not genuine adaptive engines."
 
-**Lo que esto significa para el catálogo:** El motor BKT+FSRS+Elo+DKT no es una ventaja técnica abstracta — es la diferenciación que el mercado de $350B no tiene en español. Llevar el catálogo al suelo y al ideal de ADR-53 (antes ADR-46 y «2,700 cursos», ADR-25) convierte esa diferenciación en un producto inalcanzable para los incumbentes en el corto plazo.
+**Lo que esto significa para el catálogo:** El motor BKT+FSRS+Elo+DKT no es una ventaja técnica abstracta — es la diferenciación que el mercado de $350B no tiene en español. Llevar el catálogo a la forma 32 × 10 de ADR-54 (antes el suelo y el ideal de ADR-53, sustituidos, y la meta histórica de ADR-46 y «2,700 cursos», ADR-25) refuerza esa diferenciación; el plan vigente no promete superar a nadie en volumen (límites escritos en ADR-54).
 
 ### 11.2 Benchmarks del mercado (según el estudio; no reproducidos)
 
@@ -660,7 +670,12 @@ El estudio advierte explícitamente:
 
 ---
 
-## 12. Proyección competitiva con el plan de ADR-53 (antes ADR-46 y ADR-25)
+## 12. Proyección competitiva con el plan de ADR-53 (antes ADR-46 y ADR-25) — histórica
+
+> **Sustituida en su meta por ADR-54 (2026-10-01).** Esta proyección se hizo con el ideal de
+> ADR-53 (Contenido 55 → 85). Con la forma 32 × 10 de ADR-54 **no se ha re-puntuado** con el
+> método de `competitive-teardown.md` §7.1: no la cites como meta vigente ni como marcador
+> esperado. Lo que sigue es histórico.
 
 ### 12.1 Score competitivo proyectado
 
@@ -689,7 +704,7 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 |---|---|---|---|---|---|
 | Motor adaptativo | ❌ video/cohort | ✅ Optima (EN/AR) | ❌ lineal | Parcial | **✅ BKT+FSRS+Elo+DKT** |
 | Español nativo | ✅ | ❌ | ❌ | ❌ | **✅ + EN separado** |
-| Cursos/contenido (§8, 2026-09-30) | +2.000 cursos [A] | 776 cursos [A] | 51 cursos [S] | 2.200+ cursos | **45 tracks al suelo (50 skills · 800 Q) y al ideal por temario (4.819 skills · 96.380 Q)** |
+| Cursos/contenido (§8, 2026-09-30) | +2.000 cursos [A] | 776 cursos [A] | 51 cursos [S] | 2.200+ cursos | **(histórico, sustituido por ADR-54) 45 tracks al suelo (50 skills · 800 Q) y al ideal por temario (4.819 skills · 96.380 Q)** |
 | Certificaciones | ❌ | ❌ | ❌ | ❌ | **✅ 11 hoy + las que se examinan en español (§3)** |
 | Ciberseguridad | ❌ | ❌ | ❌ | Parcial | **✅ 3 tracks** |
 | Cloud (AWS/Azure/GCP) | ❌ | ❌ | ❌ | ❌ | **✅ 6 tracks** |

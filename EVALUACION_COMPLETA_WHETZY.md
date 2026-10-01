@@ -886,10 +886,10 @@ Track 01 → 02 → 03 → 06 → 07. Es la vertical más fuerte del producto.
 
 ### DECISIÓN: tracks que se van a crear (priorizados por demanda laboral)
 
-> **Superado el 2026-09-30 por ADR-53.** Casi todos estos tracks ya existen (tracks 14, 18–23,
-> 26–30). El plan vigente —qué tracks, en qué orden y con qué volumen— es ADR-53 y la serie 37
-> del ledger: suelo de 50 skills · 800 preguntas por track, ideal por temario y prioridad por
-> demanda medida (Stack Overflow 2025).
+> **Superado el 2026-09-30 por ADR-53, sustituida a su vez por ADR-54 el 2026-10-01.** Casi
+> todos estos tracks ya existen (tracks 14, 18–23, 26–30). El plan vigente —qué tracks, en qué
+> orden y con qué volumen— es ADR-54 y la serie 37 del ledger: forma única 32 skills × 10
+> preguntas por track y prioridad por demanda medida (Stack Overflow 2025).
 
 **Tier 1 — Imprescindibles (sin estos no compites):**
 
@@ -956,7 +956,8 @@ Track 01 → 02 → 03 → 06 → 07. Es la vertical más fuerte del producto.
 ### DECISIÓN: roadmap de certificaciones
 
 > **Superado el 2026-09-30 por ADR-53.** Hoy hay 11 certificaciones (Security+, AZ-900, PCAP,
-> MLA-C01, AI-900 y DP-900 ya se construyeron). El orden de las nuevas lo fija ADR-53 §6:
+> MLA-C01, AI-900 y DP-900 ya se construyeron). El orden de las nuevas lo fija hoy
+> `CATALOGO_MAESTRO.md` §3 (ADR-54, que mantiene el de ADR-53 §6):
 > primero las que se examinan en español (GCP ACE, LPIC-1, AZ-104, comprobado el
 > 2026-09-30); CKA/CKAD no se examinan en español y el idioma de CCNA está sin comprobar.
 > La columna «¿Hay en español?» de la tabla de arriba habla de preparación, no del examen.
@@ -1353,7 +1354,7 @@ Cada punto se comprobó en el repo o en producción el 2026-09-26. Donde esta ev
 | Ocultar el track 14 (1 lección) | Tiene 24 lecciones y ≥ 300 preguntas | `content/lessons/track14/` |
 | Fase 6: crear Git, Data Science, Docker, CI/CD, NoSQL, Backend, Testing | Existen: tracks 18–23 y 26–30 | `content/curriculum/tracks.json` |
 | Fase 7: griego e IKE | Premisa griega suspendida | ADR-47 |
-| «35–40 tracks cubren el 90 %» como meta | La meta es ADR-53 (2026-09-30; antes ADR-46): 45 tracks por demanda medida, cada uno al suelo (50 skills · 800 preguntas) y al ideal de su temario (96.380 preguntas en total) | ADR-53 |
+| «35–40 tracks cubren el 90 %» como meta | La meta es ADR-54 (2026-10-01; sustituye el suelo y el ideal de ADR-53 y la meta de ADR-46): tracks por demanda medida, cada uno con la forma 32 skills × 10 preguntas | ADR-54 |
 | Navegación, onboarding y placement por construir | `TracksScreen`, `OnboardingScreen` y `PlacementScreen` existen; placement solo del track01 | `frontend/src/pages/`, `content/exams/placement/` |
 | Email marketing por montar | `services/email.py` (Resend/SMTP) existe; falta el proveedor en producción (H.30) y las campañas (39.13) | ADR-50l |
 | Sin rate limiting calibrado | Hay `DEFAULT_RATE_LIMIT` y `AUTH_RATE_LIMIT`; falta el límite de gasto de Groq (39.11) | `backend/app/main.py` |

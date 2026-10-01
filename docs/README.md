@@ -59,7 +59,7 @@ uvicorn app.main:app --reload                 # http://localhost:8000/api/v1/ope
 python scripts/check_question_bank.py         # banco: ids, idiomas, opciones, sesgo, ratio ejecutable
 python scripts/check_docs.py                  # docs y /evidence coinciden con el contenido y Alembic
 python scripts/ledger.py check                # el ledger sigue siendo legible por máquina
-python scripts/catalog_coverage.py            # cobertura del catálogo frente al plan ADR-53 (suelo, ideal, simulacro reservado)
+python scripts/catalog_coverage.py            # lo que falta para el plan ADR-54 (32 × 10 por track, práctica y simulacro de certificación)
 cd backend && python -m pytest tests/content  # lecciones, ejecutables, sql_exec, tildes, blueprints
 cd backend && python -m pytest -q             # suite completa
 cd frontend && npx tsc -b --force && npx vitest run && npm run build
