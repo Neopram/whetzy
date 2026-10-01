@@ -2223,3 +2223,12 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 | ID | PRI | Tarea (texto completo) | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 31.5 | **0** | **Regla del dueño 2026-09-30**: PRs pequeños desde ya (fila del ledger u oleada ≤ 500 líneas netas), veto a analítica/métricas hasta ≥ 100 registrados reales (excluye IP del dueño y sesiones automáticas — verificado hoy en vivo con los logs de Railway: 1 solo `POST /auth/register`), ningún `DONE` sin el verificador de §7 + qué comprobará otra sesión | DOING | mismo texto en `ORCHESTRATOR.md`; cumplido desde esta fila |
+
+## §P — Líneas DONE de la serie 31 retiradas de §2 el 2026-10-01 (guarda de tamaño, fila 31.8)
+
+> Copiadas tal cual para abrir sitio a 31.8. Su texto completo ya estaba en §I.
+
+| ID | PRI | Tarea | Estado | Evidencia |
+|---|---|---|---|---|
+| 31.2 | **2** | Migración con datos: fixture de base en la revisión anterior, `upgrade head`,… | **DONE** | **DONE** `d3290b8` → §I |
+| 31.3 | **2** | Smoke post-deploy de backend: login con cuenta QA, `POST /quiz/start`, `GET`… | **DONE** | **DONE** `cf2fc58` → §I |
