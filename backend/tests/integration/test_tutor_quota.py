@@ -13,6 +13,7 @@ import pytest_asyncio
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.v1.endpoints.tutor import TUTOR_UNAVAILABLE
 from app.core.config import settings
 from app.core.security import create_access_token, get_password_hash
 from app.models.tutor_usage import TutorUsage
@@ -145,3 +146,39 @@ async def test_el_cupo_de_otro_usuario_no_cuenta(
 
 async def test_gratis_sigue_sin_tutor(client, auth_headers, content_seed) -> None:
     assert await _ask(client, auth_headers, content_seed["question_id"]) == 403
+
+
+class _RejectedKey:
+    """Groq answering 401: what production served on 2026-10-01 (clave no válida)."""
+
+    name = "groq"
+
+    async def complete_named(
+        self, system: str, user: str, **_: object
+    ) -> tuple[str, str]:
+        import httpx
+
+        req = httpx.Request("POST", "https://api.groq.com/openai/v1/chat/completions")
+        raise httpx.HTTPStatusError(
+            "401", request=req, response=httpx.Response(401, request=req)
+        )
+
+
+async def test_proveedor_rechazado_da_503_y_no_gasta_cupo(
+    client, db_session, content_seed, fixed_day, monkeypatch
+) -> None:
+    from app.services.ai import tutor as tutor_service
+
+    monkeypatch.setattr(tutor_service, "get_provider", lambda: _RejectedKey())
+    pro = await _user(
+        db_session,
+        is_premium=True,
+        subscription_status="active",
+        subscription_tier="plus",
+    )
+    res = await client.post(
+        URL, json={"question_id": content_seed["question_id"]}, headers=_h(pro)
+    )
+    assert res.status_code == 503
+    assert res.json()["detail"] == TUTOR_UNAVAILABLE
+    assert await tutor_quota.used_on(db_session, pro.id, DAY) == 0
