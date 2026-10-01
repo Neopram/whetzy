@@ -1622,7 +1622,7 @@
   {
     "id": "q130101_fbe001",
     "skill_id": "sk130101",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "La Integridad (I del tríada CIA) garantiza que los datos no han sido modificados. ¿Qué imprime este código?\n\n```python\nimport hashlib\ndata = b'reporte_financiero'\nh1 = hashlib.sha256(data).hexdigest()\nh2 = hashlib.sha256(data).hexdigest()\nprint(h1 == h2)\n```",
     "question_en": "Integrity (the I in the CIA triad) ensures data has not been modified. What does this code print?\n\n```python\nimport hashlib\ndata = b'financial_report'\nh1 = hashlib.sha256(data).hexdigest()\nh2 = hashlib.sha256(data).hexdigest()\nprint(h1 == h2)\n```",
@@ -1639,7 +1639,7 @@
   {
     "id": "q130101_fbe002",
     "skill_id": "sk130101",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "Las comparaciones de tokens de seguridad deben usar tiempo constante para evitar ataques de timing. ¿Qué imprime este código?\n\n```python\nimport hmac\ntoken_almacenado = b'clave_secreta_admin'\ntoken_recibido = b'clave_secreta_admin'\nresultado = hmac.compare_digest(token_almacenado, token_recibido)\nprint(resultado)\n```",
     "question_en": "Security token comparisons must use constant-time operations to prevent timing attacks. What does this code print?\n\n```python\nimport hmac\nstored_token = b'admin_secret_key'\nreceived_token = b'admin_secret_key'\nresult = hmac.compare_digest(stored_token, received_token)\nprint(result)\n```",
@@ -1656,7 +1656,7 @@
   {
     "id": "q130102_fbe001",
     "skill_id": "sk130102",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "La gestión de riesgos utiliza la fórmula: Riesgo = Amenaza × Vulnerabilidad × Valor del Activo. Una infraestructura tiene amenaza=0.8, vulnerabilidad=0.6 y valor=100000 euros. ¿Qué imprime este código?\n\n```python\nthreat_level = 0.8\nvulnerability_level = 0.6\nasset_value = 100000\nrisk_score = threat_level * vulnerability_level * asset_value\nprint(int(risk_score))\n```",
     "question_en": "Risk management uses the formula: Risk = Threat × Vulnerability × Asset Value. An infrastructure has threat=0.8, vulnerability=0.6, and value=100000 euros. What does this code print?\n\n```python\nthreat_level = 0.8\nvulnerability_level = 0.6\nasset_value = 100000\nrisk_score = threat_level * vulnerability_level * asset_value\nprint(int(risk_score))\n```",
@@ -1673,7 +1673,7 @@
   {
     "id": "q130103_fbe001",
     "skill_id": "sk130103",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "La detección de patrones en registros de auditoría es crítica. Se necesita contar cuántos intentos de inyección SQL fueron registrados. ¿Qué imprime este código?\n\n```python\nimport re\nlog_content = \"2026-09-18 10:15 ALERT SQL_INJECTION detected\\n2026-09-18 10:16 ALERT SQL_INJECTION blocked\\n2026-09-18 10:17 INFO sistema ok\"\npatterns_found = re.findall(r'SQL_INJECTION', log_content)\nprint(len(patterns_found))\n```",
     "question_en": "Pattern detection in audit logs is critical. Count how many SQL injection attempts were logged. What does this code print?\n\n```python\nimport re\nlog_content = \"2026-09-18 10:15 ALERT SQL_INJECTION detected\\n2026-09-18 10:16 ALERT SQL_INJECTION blocked\\n2026-09-18 10:17 INFO system ok\"\npatterns_found = re.findall(r'SQL_INJECTION', log_content)\nprint(len(patterns_found))\n```",
@@ -1707,7 +1707,7 @@
   {
     "id": "q130104_fbe001",
     "skill_id": "sk130104",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "El Marco de Ciberseguridad del NIST (CSF) define cinco funciones clave. ¿Qué imprime este código que cuenta las funciones del CSF?\n\n```python\nfunciones_nist_csf = ['Identificar', 'Proteger', 'Detectar', 'Responder', 'Recuperar']\ncontroles_seguridad = len(funciones_nist_csf)\nprint(controles_seguridad)\n```",
     "question_en": "The NIST Cybersecurity Framework (CSF) defines five key functions. What does this code print when counting the CSF functions?\n\n```python\nnist_csf_functions = ['Identify', 'Protect', 'Detect', 'Respond', 'Recover']\nsecurity_controls = len(nist_csf_functions)\nprint(security_controls)\n```",
@@ -2048,10 +2048,10 @@
   {
     "id": "q130101_fx001",
     "skill_id": "sk130101",
-    "type": "fix_bug",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
-    "question_es": "Al comparar un token de sesión recibido con el almacenado, este código usa `==`, que corta en cuanto encuentra el primer byte distinto y filtra información por el tiempo que tarda. Hay que compararlo en tiempo constante. ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport hmac\nguardado = \"a1b2c3d4\"\nrecibido = \"a1b2c3d5\"\nif guardado == recibido:\n    print(\"ACEPTADO\")\nelse:\n    print(\"RECHAZADO\")\n```",
-    "question_en": "When comparing a received session token with the stored one, this code uses `==`, which returns as soon as it finds the first differing byte and leaks information through timing. It must compare in constant time. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport hmac\nguardado = \"a1b2c3d4\"\nrecibido = \"a1b2c3d5\"\nif guardado == recibido:\n    print(\"ACEPTADO\")\nelse:\n    print(\"RECHAZADO\")\n```",
+    "question_es": "Al comparar un token de sesión recibido con el almacenado, este código usa `==`, que corta en cuanto encuentra el primer byte distinto y filtra información por el tiempo que tarda. Hay que compararlo en tiempo constante. ¿Qué imprime una vez corregido? ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport hmac\nguardado = \"a1b2c3d4\"\nrecibido = \"a1b2c3d5\"\nif guardado == recibido:\n    print(\"ACEPTADO\")\nelse:\n    print(\"RECHAZADO\")\n```",
+    "question_en": "When comparing a received session token with the stored one, this code uses `==`, which returns as soon as it finds the first differing byte and leaks information through timing. It must compare in constant time. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport hmac\nguardado = \"a1b2c3d4\"\nrecibido = \"a1b2c3d5\"\nif guardado == recibido:\n    print(\"ACEPTADO\")\nelse:\n    print(\"RECHAZADO\")\n``` What does it print once fixed?",
     "options_es": null,
     "options_en": null,
     "correct_index": null,

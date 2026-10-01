@@ -1622,7 +1622,7 @@
   {
     "id": "q400301_fbe001",
     "skill_id": "sk400301",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "Un sistema de control de acceso físico implementa capas de protección: perímetro, edificio, piso, sala de servidores y rack. ¿Qué imprime este código?\n\n```python\nlayers = ['perimeter', 'building', 'floor', 'server_room', 'rack']\nprint(len(layers))\n```",
     "question_en": "A physical access control system implements protection layers: perimeter, building, floor, server room, and rack. What does this code print?\n\n```python\nlayers = ['perimeter', 'building', 'floor', 'server_room', 'rack']\nprint(len(layers))\n```",
@@ -1639,7 +1639,7 @@
   {
     "id": "q400301_fbe002",
     "skill_id": "sk400301",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "Un sistema mantrap (trampa de aire) es un espacio de seguridad entre dos puertas de acceso que previene el tailgating. ¿Qué imprime este código?\n\n```python\ncheckpoints = 2\nprint(checkpoints)\n```",
     "question_en": "A mantrap (airlock) is a security space between two access doors that prevents tailgating. What does this code print?\n\n```python\ncheckpoints = 2\nprint(checkpoints)\n```",
@@ -1656,7 +1656,7 @@
   {
     "id": "q400302_fbe001",
     "skill_id": "sk400302",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "Los modelos de control de acceso incluyen DAC (Discretionary), MAC (Mandatory), RBAC (Role-based) y ABAC (Attribute-based). ¿Qué imprime este código?\n\n```python\nmodels = ['DAC', 'MAC', 'RBAC', 'ABAC']\nprint(models.index('RBAC'))\n```",
     "question_en": "Access control models include DAC (Discretionary), MAC (Mandatory), RBAC (Role-based), and ABAC (Attribute-based). What does this code print?\n\n```python\nmodels = ['DAC', 'MAC', 'RBAC', 'ABAC']\nprint(models.index('RBAC'))\n```",
@@ -1673,7 +1673,7 @@
   {
     "id": "q400302_fbe002",
     "skill_id": "sk400302",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "En RBAC, cada rol tiene un conjunto de permisos asignados. Los administradores ('admin') tienen más permisos que usuarios comunes. ¿Qué imprime este código?\n\n```python\nroles = {'admin': ['read', 'write', 'delete'], 'user': ['read'], 'auditor': ['read', 'audit']}\nprint(len(roles['admin']))\n```",
     "question_en": "In RBAC, each role has an assigned set of permissions. Administrators ('admin') have more permissions than regular users. What does this code print?\n\n```python\nroles = {'admin': ['read', 'write', 'delete'], 'user': ['read'], 'auditor': ['read', 'audit']}\nprint(len(roles['admin']))\n```",
@@ -1707,7 +1707,7 @@
   {
     "id": "q400303_fbe001",
     "skill_id": "sk400303",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "La autenticación multifactor (MFA) requiere múltiples factores: algo que sabes, algo que tienes, algo que eres. ¿Qué imprime este código?\n\n```python\nfactors = ['something_you_know', 'something_you_have', 'something_you_are']\nprint(len(factors))\n```",
     "question_en": "Multi-factor authentication (MFA) requires multiple factors: something you know, something you have, something you are. What does this code print?\n\n```python\nfactors = ['something_you_know', 'something_you_have', 'something_you_are']\nprint(len(factors))\n```",
@@ -1724,7 +1724,7 @@
   {
     "id": "q400303_fbe002",
     "skill_id": "sk400303",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "Un token de sesión seguro se genera usando secrets.token_hex(), que produce una cadena hexadecimal. Cada byte se representa con 2 caracteres hex. ¿Qué imprime este código?\n\n```python\nimport secrets\nprint(len(secrets.token_hex(16)))\n```",
     "question_en": "A secure session token is generated using secrets.token_hex(), which produces a hexadecimal string. Each byte is represented with 2 hex characters. What does this code print?\n\n```python\nimport secrets\nprint(len(secrets.token_hex(16)))\n```",
@@ -1741,7 +1741,7 @@
   {
     "id": "q400303_fbe003",
     "skill_id": "sk400303",
-    "type": "fix_bug",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "La autenticación de token debe usar hmac.compare_digest() para evitar ataques de timing. El código usa comparación simple (==), que es vulnerable. ¿Qué imprime la versión CORREGIDA?\n\n```python\nimport hmac\n\ndef verify_token(provided_token, stored_token):\n    if provided_token == stored_token:\n        print('Authentication successful')\n    else:\n        print('Authentication failed')\n\nverify_token('session_token_123', 'session_token_123')\n```\n\nLa corrección es usar hmac.compare_digest() que tarda el mismo tiempo independientemente de dónde falle la comparación.",
     "question_en": "Token authentication must use hmac.compare_digest() to prevent timing attacks. The code uses simple comparison (==), which is vulnerable. What does the CORRECTED version print?\n\n```python\nimport hmac\n\ndef verify_token(provided_token, stored_token):\n    if provided_token == stored_token:\n        print('Authentication successful')\n    else:\n        print('Authentication failed')\n\nverify_token('session_token_123', 'session_token_123')\n```\n\nThe fix is to use hmac.compare_digest() which takes the same time regardless of where the comparison fails.",
@@ -1758,7 +1758,7 @@
   {
     "id": "q400304_fbe001",
     "skill_id": "sk400304",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "El principio de least privilege establece que un usuario debe tener solo los permisos necesarios. ¿Cuántos permisos excesivos tiene el usuario? ¿Qué imprime este código?\n\n```python\nall_perms = {'read', 'write', 'execute', 'delete', 'admin'}\nuser_perms = {'read', 'write'}\nexcess = all_perms - user_perms\nprint(len(excess))\n```",
     "question_en": "The principle of least privilege states that a user should have only necessary permissions. How many excessive permissions does the user have? What does this code print?\n\n```python\nall_perms = {'read', 'write', 'execute', 'delete', 'admin'}\nuser_perms = {'read', 'write'}\nexcess = all_perms - user_perms\nprint(len(excess))\n```",
@@ -1775,7 +1775,7 @@
   {
     "id": "q400304_fbe002",
     "skill_id": "sk400304",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "La Separation of Duties (SoD) previene conflictos de interés asignando responsabilidades incompatibles a personas diferentes. ¿Cuántos pares de roles incompatibles están definidos? ¿Qué imprime este código?\n\n```python\npairs = [('CFO', 'accountant'), ('dev', 'QA'), ('sysadmin', 'auditor')]\nprint(len(pairs))\n```",
     "question_en": "Separation of Duties (SoD) prevents conflicts of interest by assigning incompatible responsibilities to different people. How many incompatible role pairs are defined? What does this code print?\n\n```python\npairs = [('CFO', 'accountant'), ('dev', 'QA'), ('sysadmin', 'auditor')]\nprint(len(pairs))\n```",
@@ -1792,7 +1792,7 @@
   {
     "id": "q400304_fbe003",
     "skill_id": "sk400304",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "easy",
     "question_es": "La verificación de privilegios debe comprobar si un usuario tiene un permiso específico. ¿Tiene el usuario permiso 'admin'? ¿Qué imprime este código?\n\n```python\nperms = ['read', 'write']\nprint('admin' in perms)\n```",
     "question_en": "Privilege verification must check if a user has a specific permission. Does the user have 'admin' permission? What does this code print?\n\n```python\nperms = ['read', 'write']\nprint('admin' in perms)\n```",
