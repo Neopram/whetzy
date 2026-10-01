@@ -44,7 +44,7 @@ Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario)
 | `home` | `HomeScreen` | pestaña Hoy | preparación, siguiente paso, repaso FSRS, racha, tus rutas, misiones, territorio, herramientas | E2: `design/v2/brief-msg1.md` |
 | `tracks` | `TracksScreen` | pestaña Rutas, filas de «Tus rutas» | catálogo (filtros Todas / Aprender / Certificaciones) y detalle (vistas Currículo / Mapa / Glosario) | E2: `design/v2/brief-msg2.md` §A–B |
 | `lesson` | `LessonScreen` | «Aprender», una habilidad en Rutas | pasos de texto + paso de ejemplo | E2: `design/v2/brief-msg2.md` §C |
-| `quiz` | `QuizScreen` | pestaña Practicar, «Practicar», repaso | pregunta, ejecución de código, feedback, tutor («¿Por qué?») | E2: `design/v2/brief-msg2.md` §D |
+| `quiz` | `QuizScreen` | pestaña Practicar, «Practicar», repaso | pregunta, ejecución de código, feedback, tutor («¿Por qué?», con etiqueta de IA y «Reportar esta explicación»; se apaga en Ajustes), «Reportar un problema» con la pregunta | E2: `design/v2/brief-msg2.md` §D |
 | `placement` | `PlacementScreen` | «¿Ya sabes algo de esto?» en el detalle de ruta | intro, cargando, test, resultado, error | E0: ledger |
 | `readiness` | `ReadinessScreen` | «Preparación para la certificación» | arco + barras por dominio | E2: `design/v2/brief-msg2.md` §E |
 | `mockexam` | `MockExamScreen` | «Simulacro de examen» | modos simulacro / certificador; fases intro, en curso, corrigiendo, resultado | E2: `design/v2/brief-msg2.md` §F |
@@ -84,9 +84,6 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 
 | Qué | Dónde se promete | Estado del código |
 |---|---|---|
-| Interruptor «Usar explicaciones de IA» en Ajustes | `docs/legal/ai-notice.en.md` (borrador) | no existe |
-| Etiqueta «AI-powered» en cada respuesta del tutor | `docs/legal/ai-notice.en.md`, `ai-act-dsa-eaa.md` | no existe (el panel se titula «Tutor Whetzy») |
-| Botón «Flag» y revisión humana en 24 h | `docs/legal/ai-notice.en.md` (borrador) | no existe |
 | Panel B2B / equipos | `docs/legal/b2b_pilot_offer_*.md`, ledger 24.9 | no existe |
 | `/blog`, `/compare`, `/pricing` | ledger 26.9, 27.10; `archive/SPEC_WEB.md` | no existen |
 | Sign in with Apple | ADR-13 (obligatorio antes de App Store) | no existe (bloqueado por H.2) |

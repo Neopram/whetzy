@@ -55,10 +55,16 @@ beforeEach(async () => {
 });
 afterEach(cleanup);
 
+// El atajo de teclado se engancha en un useEffect, que React ejecuta después de
+// pintar: `findBy*` puede volver justo entre medias y la tecla se pierde. Con
+// carga pasaba 1 de cada ~5 corridas. Una persona no teclea en ese microsegundo.
+const effectsRun = () => act(async () => {});
+
 describe('QuizScreen v2', () => {
   it('responde con la tecla «2», pide confirmación al salir y resume antes → después', async () => {
     render(<QuizScreen />);
     await screen.findByText('¿Cuánto es 1 + 1?');
+    await effectsRun();
 
     fireEvent.keyDown(window, { key: '2' });
     await waitFor(() => expect(answer).toHaveBeenCalledWith('s1', 'q1', 1, expect.any(Number), false));
@@ -81,6 +87,7 @@ describe('QuizScreen v2', () => {
     skills.mockResolvedValueOnce([{ ...skill(0), attempts: 0 }]).mockResolvedValueOnce([skill(0.45)]);
     render(<QuizScreen />);
     await screen.findByText('¿Cuánto es 1 + 1?');
+    await effectsRun();
     fireEvent.keyDown(window, { key: '2' });
     await screen.findByText('Uno más uno es dos.');
     fireEvent.keyDown(window, { key: 'Enter' });
@@ -90,6 +97,7 @@ describe('QuizScreen v2', () => {
   it('las letras también eligen opción (c = tercera)', async () => {
     render(<QuizScreen />);
     await screen.findByText('¿Cuánto es 1 + 1?');
+    await effectsRun();
     fireEvent.keyDown(window, { key: 'c' });
     await waitFor(() => expect(answer).toHaveBeenCalledWith('s1', 'q1', 2, expect.any(Number), false));
   });
@@ -103,6 +111,7 @@ describe('QuizScreen v2', () => {
     });
     render(<QuizScreen />);
     await screen.findByText('¿Cuánto es 1 + 1?');
+    await effectsRun();
     fireEvent.keyDown(window, { key: '2' });
     await screen.findByText('Uno más uno es dos.');
     fireEvent.keyDown(window, { key: 'Enter' });
@@ -122,9 +131,25 @@ describe('QuizScreen v2', () => {
     }
   });
 
+  it('con las explicaciones de IA apagadas en Ajustes no aparece «¿Por qué?», y reportar sí', async () => {
+    useAppStore.setState({ aiExplanations: false });
+    try {
+      render(<QuizScreen />);
+      await screen.findByText('¿Cuánto es 1 + 1?');
+      await effectsRun();
+      fireEvent.keyDown(window, { key: '2' });
+      await screen.findByText('Uno más uno es dos.');
+      expect(screen.queryByRole('button', { name: '¿Por qué?' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Reportar un problema con esta pregunta' })).toBeInTheDocument();
+    } finally {
+      useAppStore.setState({ aiExplanations: true });
+    }
+  });
+
   it('sin nada respondido, cerrar sale sin preguntar', async () => {
     render(<QuizScreen />);
     await screen.findByText('¿Cuánto es 1 + 1?');
+    await effectsRun();
     fireEvent.click(screen.getByRole('button', { name: 'Cerrar' }));
     expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
     expect(useAppStore.getState().currentScreen).toBe('home');
@@ -135,6 +160,7 @@ describe('QuizScreen v2', () => {
     const hydrate = useAppStore.getState().hydrateFromApi;
     render(<QuizScreen />);
     await screen.findByText('¿Cuánto es 1 + 1?');
+    await effectsRun();
     fireEvent.keyDown(window, { key: '2' });
     await screen.findByText('Uno más uno es dos.');
     fireEvent.click(screen.getByRole('button', { name: 'Cerrar' }));

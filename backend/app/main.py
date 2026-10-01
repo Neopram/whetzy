@@ -125,9 +125,17 @@ async def validation_exception_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
     # Never echo the request body — it may contain passwords or PII (ASVS V7.1).
+    # `exc.errors()` sí lo hacía: cada error lleva `input` (el valor enviado, una
+    # contraseña corta incluida) y `ctx`, que con un `ValueError` de un validador
+    # no se serializa y convertía el 422 en un 500 (2026-10-02).
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content={"detail": exc.errors()},
+        content={
+            "detail": [
+                {"type": e.get("type"), "loc": list(e.get("loc", ())), "msg": e.get("msg")}
+                for e in exc.errors()
+            ]
+        },
     )
 
 

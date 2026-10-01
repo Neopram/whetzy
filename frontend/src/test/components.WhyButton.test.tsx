@@ -13,7 +13,7 @@ import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/re
 import '../i18n';
 import i18n from '../i18n';
 import { WhyButton } from '../components/quiz/WhyButton';
-import { ApiError, tutor as tutorApi } from '../services/api';
+import { ApiError, reports, tutor as tutorApi } from '../services/api';
 
 vi.mock('../services/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/api')>();
@@ -48,21 +48,21 @@ describe('WhyButton', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /¿Por qué\?/i }));
 
-    expect(await screen.findByText(/Explicaciones del tutor AI/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Explicaciones del tutor IA/i)).toBeInTheDocument();
     expect(explainMock).not.toHaveBeenCalled();
 
     // Upsell CTA navigates to the upgrade screen — no fake purchase flow.
-    fireEvent.click(screen.getByRole('button', { name: /Ver Whetzy Plus/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Ver Pro$/i }));
     expect(onUpgrade).toHaveBeenCalledTimes(1);
   });
 
   it('free user: closes in one tap via the close button', async () => {
     render(<WhyButton questionId="q1" isPremium={false} onUpgrade={vi.fn()} />);
     fireEvent.click(screen.getByRole('button', { name: /¿Por qué\?/i }));
-    await screen.findByText(/Explicaciones del tutor AI/i);
+    await screen.findByText(/Explicaciones del tutor IA/i);
 
     fireEvent.click(screen.getByRole('button', { name: /Cerrar/i }));
-    await waitFor(() => expect(screen.queryByText(/Explicaciones del tutor AI/i)).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText(/Explicaciones del tutor IA/i)).not.toBeInTheDocument());
     expect(screen.getByRole('button', { name: /¿Por qué\?/i })).toHaveAttribute('aria-expanded', 'false');
   });
 
@@ -80,6 +80,22 @@ describe('WhyButton', () => {
     expect(await screen.findByText(/Porque el bucle recorre cada elemento una vez\./)).toBeInTheDocument();
     expect(screen.getByText(/Basado en el contenido del curso/i)).toBeInTheDocument();
     expect(explainMock).toHaveBeenCalledWith('q1');
+  });
+
+  it('la explicación dice que es de IA antes del texto y se puede reportar con lo que se vio', async () => {
+    explainMock.mockResolvedValue({ explanation: 'Texto del modelo.', provider: 'groq', grounded: true, times_missed: 0 });
+    const report = vi.spyOn(reports, 'question').mockResolvedValue({ id: 'r1', message: 'ok' });
+    render(<WhyButton questionId="q1" isPremium={true} onUpgrade={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /¿Por qué\?/i }));
+
+    const label = await screen.findByText('Generado por IA · puede contener errores');
+    const text = screen.getByText('Texto del modelo.');
+    expect(label.compareDocumentPosition(text) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reportar esta explicación' }));
+    expect(await screen.findByText('Gracias: una persona la revisará.')).toBeInTheDocument();
+    expect(report).toHaveBeenCalledWith('q1', 'ai_explanation', 'Texto del modelo.');
+    report.mockRestore();
   });
 
   it('plus user: honestly labels a non-grounded explanation instead of hiding it', async () => {

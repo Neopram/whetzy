@@ -16,6 +16,8 @@ export function ProfileScreen() {
   const setScreen = useAppStore((s) => s.setScreen);
   const setLanguage = useAppStore((s) => s.setLanguage);
   const updateUser = useAppStore((s) => s.updateUser);
+  const aiExplanations = useAppStore((s) => s.aiExplanations);
+  const toggleAiExplanations = useAppStore((s) => s.toggleAiExplanations);
   const signOut = useAppStore((s) => s.signOut);
   const [theme, setTheme] = useState<Theme>(getStoredTheme());
   const { t, i18n: i18nInst } = useTranslation();
@@ -243,6 +245,19 @@ export function ProfileScreen() {
           <div className={styles.setting}>
             <span className={styles.settingLabel}>{t('profile.darkMode')}</span>
             <button type="button" className={`${styles.toggle} ${theme === 'dark' ? styles.toggleOn : ''}`} onClick={() => setTheme(toggleTheme())} role="switch" aria-checked={theme === 'dark'} aria-label={t('profile.darkMode')}>
+              <span className={styles.track}><span className={styles.toggleThumb} /></span>
+            </button>
+          </div>
+          <div className={styles.setting}>
+            <span className={styles.settingLabel}>{t('profile.aiExplanations')}</span>
+            <button
+              className={`${styles.toggle} ${aiExplanations ? styles.toggleOn : ''}`}
+              type="button"
+              onClick={toggleAiExplanations}
+              role="switch"
+              aria-checked={aiExplanations}
+              aria-label={t('profile.aiExplanations')}
+            >
               <span className={styles.track}><span className={styles.toggleThumb} /></span>
             </button>
           </div>

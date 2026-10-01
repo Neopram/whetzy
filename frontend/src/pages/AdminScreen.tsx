@@ -31,6 +31,7 @@ export function AdminScreen() {
   const [metricsData, setMetricsData] = useState<Metrics>({});
   const [securityData, setSecurityData] = useState<any>({});
   const [contentData, setContentData] = useState<any>({});
+  const [recentReports, setRecentReports] = useState<{ id: string; question_id: string; reason: string; notes: string | null; created_at: string | null }[]>([]);
   const [opsData, setOpsData] = useState<any>({});
   const [gdprData, setGDPRData] = useState<any>({});
   const [revenueData, setRevenueData] = useState<any>({});
@@ -77,10 +78,13 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/content/gaps?language=es`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
-      const data = await res.json();
-      setContentData(data);
+      const [res, rep] = await Promise.all([
+        fetch(`${apiBase}/admin/content/gaps?language=es`, fetchOpts()),
+        fetch(`${apiBase}/admin/reports/recent?limit=50`, fetchOpts()),
+      ]);
+      if (!res.ok || !rep.ok) throw new Error(t('admin.errors.fetchFailed'));
+      setContentData(await res.json());
+      setRecentReports((await rep.json()).reports ?? []);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('admin.errors.generic'));
     } finally {
@@ -238,6 +242,20 @@ export function AdminScreen() {
               <StatCard label={t('admin.metrics.enCount')} value={contentData.en_count} />
               <StatCard label={t('admin.metrics.parity')} value={contentData.parity_percent} />
             </div>
+            <h3>{t('admin.reports.title')}</h3>
+            {recentReports.length === 0 ? (
+              <p>{t('admin.reports.empty')}</p>
+            ) : (
+              <ul className={styles.reportList}>
+                {recentReports.map((r) => (
+                  <li key={r.id} className={styles.reportItem}>
+                    <code>{r.question_id}</code> · {t(`admin.reports.reasons.${r.reason}`, { defaultValue: r.reason })}
+                    {r.created_at && <> · {new Date(r.created_at).toLocaleString()}</>}
+                    {r.notes && <p className={styles.reportNotes}>{r.notes}</p>}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
 

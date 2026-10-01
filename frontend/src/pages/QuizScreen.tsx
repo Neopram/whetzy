@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, useLayoutEffect, useRef, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
@@ -11,6 +11,7 @@ import { WhyButton } from '../components/quiz/WhyButton';
 import { GlossaryText } from '../components/quiz/GlossaryText';
 import { TermCard } from '../components/quiz/TermCard';
 import { SourceLine } from '../components/quiz/SourceLine';
+import { ReportQuestion } from '../components/quiz/ReportQuestion';
 import { useRuntime, runtimeForQuestion } from '../hooks/useRuntime';
 import { useGlossary } from '../hooks/useGlossary';
 import { parseQuestion } from '../lib/question';
@@ -50,6 +51,7 @@ export function QuizScreen() {
   const resetQuiz = useAppStore((s) => s.resetQuiz);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const isPremium = useAppStore((s) => s.user.isPremium);
+  const aiExplanations = useAppStore((s) => s.aiExplanations);
   const { t } = useTranslation();
 
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -361,9 +363,13 @@ export function QuizScreen() {
     else handleClose();
   }, [index, feedback, handleClose]);
 
-  // Teclado: 1–4 o A–D eligen opción; Enter pasa a la siguiente.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
+  // Teclado: 1–4 o A–D eligen opción; Enter pasa a la siguiente. Un solo
+  // listener que llama siempre al manejador del último render (se actualiza en
+  // un layout effect, antes de pintar): re-engancharlo en cada render dejaba un
+  // hueco en el que un Enter justo tras responder veía el estado anterior.
+  const onKeyRef = useRef<(e: KeyboardEvent) => void>(() => {});
+  useLayoutEffect(() => {
+    onKeyRef.current = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.target instanceof HTMLElement && e.target.closest('input, textarea, [contenteditable], .monaco-editor')) return;
       if (!question || summary) return;
@@ -377,9 +383,12 @@ export function QuizScreen() {
       const i = /^[1-9]$/.test(k) ? Number(k) - 1 : /^[a-z]$/.test(k) ? k.charCodeAt(0) - 97 : -1;
       if (i >= 0 && i < n) { e.preventDefault(); void handleAnswer(i); }
     };
+  });
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => onKeyRef.current(e);
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  });
+  }, []);
 
   const handleUpgrade = useCallback(() => {
     setScreen('profile');
@@ -560,7 +569,8 @@ export function QuizScreen() {
       </p>
       {feedback.source && <SourceLine source={feedback.source} />}
 
-      <WhyButton questionId={question.id} isPremium={isPremium} onUpgrade={handleUpgrade} />
+      {aiExplanations && <WhyButton questionId={question.id} isPremium={isPremium} onUpgrade={handleUpgrade} />}
+      <ReportQuestion key={question.id} questionId={question.id} />
 
       <button type="button" className={styles.btnNext} onClick={handleNext}>
         {index + 1 >= TARGET_QUESTIONS || !feedback.next_question ? t('quiz.seeResults') : t('quiz.next')}

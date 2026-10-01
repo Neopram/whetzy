@@ -1170,6 +1170,33 @@ async def get_metrics_engagement(
     }
 
 
+@router.get("/reports/recent", dependencies=[Depends(require_admin)])
+async def get_recent_reports(
+    limit: int = Query(default=50, ge=1, le=200),
+    reason: str | None = Query(default=None),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Los últimos reportes de alumnos, con su nota: la cola que se revisa a mano.
+    Incluye los de explicaciones del tutor IA (`ai_explanation`), que llevan el
+    texto que vio el alumno. Sin esto, los reportes solo existían como recuento."""
+    q = select(QuestionReport).order_by(desc(QuestionReport.created_at)).limit(limit)
+    if reason:
+        q = q.where(QuestionReport.reason == reason)
+    reports = (await db.execute(q)).scalars().all()
+    return {
+        "reports": [
+            {
+                "id": str(r.id),
+                "question_id": r.question_id,
+                "reason": r.reason,
+                "notes": r.notes,
+                "created_at": r.created_at.isoformat() if r.created_at else None,
+            }
+            for r in reports
+        ]
+    }
+
+
 @router.get("/metrics/reports", dependencies=[Depends(require_admin)])
 async def get_metrics_reports(
     range_days: int = Query(default=30, ge=1, le=365),

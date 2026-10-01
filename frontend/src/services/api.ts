@@ -718,6 +718,19 @@ export const economy = {
   },
 };
 
+/** Motivos de reporte (backend: models/question_report.py VALID_REASONS). */
+export type ReportReason = 'wrong_answer' | 'typo' | 'outdated' | 'confusing' | 'other' | 'ai_explanation';
+
+export const reports = {
+  /** Reporta una pregunta defectuosa o una explicación del tutor IA (`ai_explanation`). */
+  async question(questionId: string, reason: ReportReason, notes?: string) {
+    return request<{ id: string; message: string }>('/reports/question', {
+      method: 'POST',
+      body: JSON.stringify({ question_id: questionId, reason, notes: notes?.trim() || undefined }),
+    });
+  },
+};
+
 export const league = {
   async current() {
     return request<LeagueStandingsResponse>('/league/current');

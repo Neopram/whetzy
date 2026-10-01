@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.content import Question
-from app.models.question_report import VALID_REASONS, QuestionReport
+from app.models.question_report import REPORT_NOTES_MAX, VALID_REASONS, QuestionReport
 from app.models.user import User
 
 router = APIRouter()
@@ -31,6 +31,13 @@ class ReportQuestionRequest(BaseModel):
     def reason_must_be_valid(cls, v: str) -> str:
         if v not in VALID_REASONS:
             raise ValueError(f"reason must be one of {sorted(VALID_REASONS)}")
+        return v
+
+    @field_validator("notes")
+    @classmethod
+    def notes_have_a_limit(cls, v: str | None) -> str | None:
+        if v is not None and len(v) > REPORT_NOTES_MAX:
+            raise ValueError(f"notes must be at most {REPORT_NOTES_MAX} characters")
         return v
 
 

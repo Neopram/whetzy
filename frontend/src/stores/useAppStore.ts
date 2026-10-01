@@ -124,6 +124,9 @@ interface AppState {
   setLanguage: (lang: Language) => void;
   soundEnabled: boolean;
   toggleSound: () => void;
+  /** Mostrar el «¿Por qué?» del tutor IA (Ajustes). Solo afecta a este dispositivo. */
+  aiExplanations: boolean;
+  toggleAiExplanations: () => void;
   hapticEnabled: boolean;
   toggleHaptic: () => void;
 }
@@ -333,6 +336,8 @@ export const useAppStore = create<AppState>()(
       setLanguage: (lang) => set({ language: lang }),
       soundEnabled: true,
       toggleSound: () => set((s) => ({ soundEnabled: !s.soundEnabled })),
+      aiExplanations: true,
+      toggleAiExplanations: () => set((s) => ({ aiExplanations: !s.aiExplanations })),
       hapticEnabled: true,
       toggleHaptic: () => set((s) => ({ hapticEnabled: !s.hapticEnabled })),
     }),
@@ -342,6 +347,7 @@ export const useAppStore = create<AppState>()(
         user: state.user,
         language: state.language,
         soundEnabled: state.soundEnabled,
+        aiExplanations: state.aiExplanations,
         hapticEnabled: state.hapticEnabled,
         missions: state.missions,
         selectedTrackId: state.selectedTrackId,
