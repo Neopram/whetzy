@@ -123,10 +123,14 @@ export async function answerCurrentQuestion(page: Page) {
       await blankInput.first().fill('42');
     }
     const runBtn = page.locator('[class*="btnRun_"]');
+    const explanation = page.locator('[class*="explanation_"]');
     await expect(runBtn).toBeVisible({ timeout: 10_000 });
     for (let attempt = 0; attempt < 3; attempt++) {
-      if (await page.locator('[class*="explanation_"]').isVisible().catch(() => false)) break;
-      await expect(runBtn).toBeEnabled({ timeout: 60_000 });
+      // Whichever comes first: a run that already got the answer graded («⏳ Enviando…»
+      // and then no Run button at all), or the button free for the next attempt.
+      // Waiting only for an enabled Run button sat out the 60 s test timeout in CI.
+      await expect(explanation.or(runBtn.and(page.locator(':enabled')))).toBeVisible({ timeout: 60_000 });
+      if (await explanation.isVisible()) break;
       await runBtn.click();
       await page.waitForTimeout(500);
     }
