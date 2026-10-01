@@ -10,6 +10,7 @@ Frontend: React + Capacitor.
 | Quieres… | Lee |
 |---|---|
 | **Proyecto en PAUSA (2026-09-30)**: estado al cierre, guía del dueño para fusionar el PR #34 y volver atrás, y cómo reanudar | **`CIERRE_2026-09-30.md`** (prompt de cierre: `PROMPT_CIERRE_2026-09-30.md`) |
+| **Lanzamiento piloto**: invitación ES/EN, qué pedir, las 5 preguntas del día 4 y cómo contar registros reales sin analítica nueva | **`LANZAMIENTO_PILOTO.md`** |
 | Saber qué construye Whetzy y qué falta (tracks, certs, fuentes, coste) | **`CATALOGO_MAESTRO.md`** |
 | Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad) |
 | Operar una sesión autónoma | `ORCHESTRATOR.md` + `../CLAUDE.md` |

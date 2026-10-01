@@ -463,6 +463,11 @@ async def cancel_gdpr_deletion(
         )
     
     request.status = "cancelled"
+    request.completed_at = datetime.now(UTC)
+    # 19.12: cancelar el borrado devuelve la cuenta, que se desactivó al pedirlo.
+    user = await db.get(User, user_id)
+    if user is not None:
+        user.is_active = True
     await db.commit()
     
     return {"id": str(request.id), "status": "cancelled"}

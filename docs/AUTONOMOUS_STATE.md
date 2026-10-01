@@ -171,7 +171,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (plan ADR-53) | TODO | → LEDGER_HISTORY.md §E |
 | 19.10 | **4** | **Vídeo: Manim + Remotion (`editor-pro-max`)** — absorbe 18.9 | TODO | → LEDGER_HISTORY.md §E |
 | 19.11 | **1** | **Moderación de UGC mínima (App Store 1.2/1.2.1)**: `username`/`display_name` visibles entre usuarios (`duels.py`, ligas) sin filtro/reportar/bloquear — confirmado 2026-09-30, `admin.py` no tiene nada | TODO | Filtro de palabras al crear/editar cuenta + endpoint reportar/bloquear, aunque mínimo → doc [1.2] a ✅ |
-| 19.12 | **2** | **Borrado de cuenta sin purga real**: `DELETE /auth/me/account` solo desactiva y promete purga a 30 días (GDPR) que no existe — confirmado 2026-09-30. Hard-delete directo rompería 14/42 FK a `users.id` sin `ondelete=CASCADE` | TODO | Migración `deactivated_at` + job `purge_deleted_accounts` (patrón `_schedule_monthly_payouts`) que trate las 14 FK sin cascade; test con cuenta >30 días purgada y <30 días intacta, mutado |
+| 19.12 | **2** | **Borrado de cuenta con purga real a los 30 días** (textos legales §4/§8.3) | **DONE** | **DONE** `b2e3159`+`025aa0b` (2026-10-01; verificador 2.ª ronda CONFIRMADA): `services/account_deletion.py` — solicitud en `gdpr_requests`, gracia de 30 días (login, OAuth o panel la cancelan), purga cada 6 h que borra datos personales y de aprendizaje y anonimiza `users` (sin migración). 13 tests, 10 mutaciones en rojo, purga probada en Postgres 16 real |
 
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
@@ -333,12 +333,11 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 31.1 | **0** | Staging: un preview de Cloudflare Pages y un servicio de Railway de staging; `master` solo por PR verde | HUMAN-BLOCKED… | 2026-09-30: #34 fusiona 2 migraciones directo contra producción sin ensayarlas ahí — sin staging, cada fusión repite ese riesgo |
-| 31.2 | **2** | Migración con datos: fixture de base en la revisión anterior, `upgrade head`,… | **DONE** | **DONE** `d3290b8` → §I |
-| 31.3 | **2** | Smoke post-deploy de backend: login con cuenta QA, `POST /quiz/start`, `GET`… | **DONE** | **DONE** `cf2fc58` → §I |
 | 31.4 | **0** | **Migración sin datos dejó sin preguntas a los usuarios con historial** (dueño, 2026-09-30) | **DONE** | `1225a29` (push directo a `master`, excepción ADR-45) → §N |
 | 31.5 | **0** | **Regla del dueño 2026-09-30**: PRs pequeños, veto a analítica hasta ≥ 100 registrados reales, ningún `DONE` sin verificador de §7 → texto completo §N | DOING | mismo texto en `ORCHESTRATOR.md`; cumplido desde esta fila |
 | 31.6 | **2** | **Tests de analítica sobre Postgres real**, no solo SQLite — D1/D7/CURR (2026-09-30): SQLite oculta diferencias de dialecto que los tests nunca vieron. Espera a que 31.5 libere analítica | TODO | `test_product_metrics.py` también contra Postgres real, en verde |
 | 31.7 | **0** | **Pausa de sesiones autónomas y cierre**, 2026-09-30 → `docs/CIERRE_2026-09-30.md` | **DONE** | `check_docs.py` [11] exige PAUSA+cita, mutado rojo/verde |
+| 31.8 | **0** | **Lanzamiento piloto** (prompt del dueño 2026-10-01): kit `docs/LANZAMIENTO_PILOTO.md`; PRs #45-#49 | PARCIAL | kit escrito; invitar, día 4 y recuento = dueño |
 
 ### 32. Motor demostrable — calibración y evidencia de aprendizaje (del plan del 2026-09-24; ídem)
 
@@ -530,7 +529,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.18 | La cadena solo corre con la app Claude abierta y el PC despi… |
 | H.19 | Decidir rail de pagos y entidad (ADR-16) — ahora depende de … |
 | H.20 | Revisión profesional de los textos legales antes de publicar… |
-| H.22 | ¿Aceptar [H.LIC] para OWASP (CheatSheets/WSTG/ASVS, CC BY-SA… |
+| H.22 | RESUELTA 2026-10-01 (dueño): OWASP CC BY-SA no se usa (ADR-47); seguridad con NIST + MITRE |
 | H.23 | Abrir la Serie 26 (distribución ES) cuando 24.14 esté DONE |
 | H.24 | Abrir la Serie 28 (marketplace) cuando 22.1 y 22.3 estén DON… |
 | H.25 | Activar payouts de instructores en producción (28.7) |

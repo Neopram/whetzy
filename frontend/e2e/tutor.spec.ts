@@ -122,6 +122,11 @@ async function mockBackend(page: Page, opts: TutorMockOptions) {
     if (p.endsWith('/missions')) {
       return route.fulfill({ json: [] });
     }
+    // Home lists practised skills and decaying ones (24.4); the catch-all `{}`
+    // below made `skills.data.filter` throw and Home re-mount forever.
+    if (p.endsWith('/progress/skills') || p.endsWith('/progress/decaying')) {
+      return route.fulfill({ json: [] });
+    }
     if (p.endsWith('/badges')) {
       return route.fulfill({ json: [] });
     }
