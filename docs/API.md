@@ -226,6 +226,7 @@ POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session 
 GET  /billing/subscription → {plan, status, renews_at} 🔒
 POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC)
 POST /billing/revenuecat/webhook → RevenueCat webhook (17.14, mobile IAP, sandbox) — Authorization header secret, 503 until REVENUECAT_WEBHOOK_AUTHORIZATION is set
+GET  /billing/paddle/config → {enabled, environment, client_token, prices{plus,pro,certification}} — público: lo que la web necesita para abrir Paddle.js (H.29); enabled=false hasta configurar PADDLE_CLIENT_TOKEN y un precio
 ```
 
 ## Session & 2FA endpoints
@@ -278,7 +279,7 @@ usuario cae siempre del mismo lado aunque se pierda la fila.
 ## Webhook endpoints
 
 ```
-POST /webhooks/paddle → {received} — público, firma HMAC-SHA256 en X-Signature
+POST /webhooks/paddle → {received} — público; Paddle Billing: cabecera Paddle-Signature (ts=..;h1=..), HMAC-SHA256 de "ts:cuerpo" con PADDLE_WEBHOOK_SECRET, 5 s de tolerancia; 401 firma mala, 503 sin secreto, 500 si falla al procesar (Paddle reintenta)
 ```
 
 Sin `PADDLE_API_KEY` configurada **rechaza** con 401. Falla cerrado a propósito:

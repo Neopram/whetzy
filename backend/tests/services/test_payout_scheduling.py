@@ -7,7 +7,6 @@ import hmac
 import json
 import uuid
 from datetime import UTC, datetime, timedelta
-from unittest.mock import patch
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -121,82 +120,61 @@ async def test_payout_job_filters_below_minimum(db_session: AsyncSession) -> Non
     assert payout.status == "pending"
 
 
-@pytest.mark.asyncio
-async def test_webhook_paddle_signature_verification(client) -> None:
-    """Test Paddle webhook signature verification."""
-    payload = {
+# Firma de Paddle Billing (developer.paddle.com/webhooks/signature-verification):
+# `Paddle-Signature: ts=..;h1=..`, HMAC-SHA256 de "ts:cuerpo" con la clave del
+# destino de notificaciones. El formato anterior de estos tests (X-Signature con
+# HMAC del cuerpo y la API key) no es el que manda Paddle.
+_PADDLE_SECRET = "pdl_ntfset_test"
+
+
+def _paddle_headers(body: bytes, secret: str = _PADDLE_SECRET) -> dict[str, str]:
+    import time
+
+    ts = int(time.time())
+    h1 = hmac.new(secret.encode(), f"{ts}:".encode() + body, hashlib.sha256).hexdigest()
+    return {"Paddle-Signature": f"ts={ts};h1={h1}", "Content-Type": "application/json"}
+
+
+def _paddle_body() -> bytes:
+    return json.dumps({
+        "event_id": "evt_test_123",
         "event_type": "subscription.created",
-        "webhook_id": "wh_test_123",
-        "data": {
-            "user_id": str(uuid.uuid4()),
-            "plan_id": "pro_monthly",
-            "subscription_id": "sub_test_123",
-        },
-    }
-    body = json.dumps(payload).encode()
-
-    api_key = "test-api-key-12345"
-    with patch("app.api.v1.endpoints.webhooks.settings") as mock_settings:
-        mock_settings.PADDLE_API_KEY = api_key
-        valid_signature = hmac.new(
-            api_key.encode(),
-            body,
-            hashlib.sha256,
-        ).hexdigest()
-
-        response = await client.post(
-            "/api/v1/webhooks/paddle",
-            content=body,
-            headers={
-                "X-Signature": valid_signature,
-                "Content-Type": "application/json",
-            },
-        )
-
-        assert response.status_code == 200
-        assert response.json()["received"] is True
+        "data": {"id": "sub_test_123", "custom_data": {"user_id": str(uuid.uuid4())}},
+    }).encode()
 
 
 @pytest.mark.asyncio
-async def test_webhook_paddle_invalid_signature(client) -> None:
-    """Test Paddle webhook with invalid signature."""
-    payload = {
-        "event_type": "subscription.created",
-        "webhook_id": "wh_test_123",
-        "data": {
-            "user_id": str(uuid.uuid4()),
-            "plan_id": "pro_monthly",
-            "subscription_id": "sub_test_123",
-        },
-    }
-    body = json.dumps(payload).encode()
+async def test_webhook_paddle_signature_verification(client, monkeypatch) -> None:
+    """Una firma válida de Paddle se acepta."""
+    from app.core.config import settings
 
+    monkeypatch.setattr(settings, "PADDLE_WEBHOOK_SECRET", _PADDLE_SECRET)
+    body = _paddle_body()
+    response = await client.post("/api/v1/webhooks/paddle", content=body, headers=_paddle_headers(body))
+    assert response.status_code == 200
+    assert response.json()["received"] is True
+
+
+@pytest.mark.asyncio
+async def test_webhook_paddle_invalid_signature(client, monkeypatch) -> None:
+    """Una firma hecha con otra clave se rechaza."""
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "PADDLE_WEBHOOK_SECRET", _PADDLE_SECRET)
+    body = _paddle_body()
     response = await client.post(
-        "/api/v1/webhooks/paddle",
-        content=body,
-        headers={
-            "X-Signature": "invalid_signature_12345",
-            "Content-Type": "application/json",
-        },
+        "/api/v1/webhooks/paddle", content=body, headers=_paddle_headers(body, secret="otra")
     )
-
     assert response.status_code == 401
 
 
 @pytest.mark.asyncio
-async def test_webhook_paddle_missing_signature(client) -> None:
-    """Test Paddle webhook without signature header."""
-    payload = {
-        "event_type": "subscription.created",
-        "webhook_id": "wh_test_123",
-        "data": {},
-    }
-    body = json.dumps(payload).encode()
+async def test_webhook_paddle_missing_signature(client, monkeypatch) -> None:
+    """Sin cabecera de firma se rechaza."""
+    from app.core.config import settings
 
+    monkeypatch.setattr(settings, "PADDLE_WEBHOOK_SECRET", _PADDLE_SECRET)
     response = await client.post(
-        "/api/v1/webhooks/paddle",
-        content=body,
-        headers={"Content-Type": "application/json"},
+        "/api/v1/webhooks/paddle", content=_paddle_body(), headers={"Content-Type": "application/json"}
     )
-
     assert response.status_code == 401
