@@ -107,10 +107,10 @@ archive/, STATUS.md, DECISIONS.md y CHANGELOG.md):
      ADR-45 lo permite) o corriges la frase. También :121 «No build is deployed unless
      all checks pass» es falso mientras el CI no corra (H.13/H.17).
   j) docs/capacity.md:33 «~50k users», docs/incidents/postmortem-template.md (ejemplo
-     con 50k usuarios y @alice): hay cero usuarios reales (AUDITORIA_EXTERNA:166).
+     con 50k usuarios y @alice): hay cero usuarios reales (archive/AUDITORIA_EXTERNA_2026-09-19.md:168).
      Marcar como ejemplo o corregir.
   k) docs/ab-framework.md:55 «Started: 2026-09-19»: el ledger dice que 24.14 nunca se
-     importó. docs/design/i18n-audit.md:13 «only English versions exist»: legal/ tiene
+     importó. docs/archive/i18n-audit.md:19 «only English versions exist»: legal/ tiene
      los .es.md. Ambos: marcar como histórico o corregir.
   l) AUTONOMOUS_STATE.md §1, fila «≤16 | Fases 1–16 | todas DONE | 100 %» choca con
      11.8 (HUMAN-BLOCKED, H.10). Corregir la fila.

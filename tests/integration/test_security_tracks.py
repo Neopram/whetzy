@@ -79,6 +79,6 @@ class TestSecurityTracksScaffold:
         assert "track25" in content
 
     def test_planning_exists(self, content_root):
-        """docs/25.0-planning.md should exist."""
-        planning = content_root.parent / "docs" / "25.0-planning.md"
+        """docs/archive/25.0-planning.md should exist (archivado el 2026-10-01)."""
+        planning = content_root.parent / "docs" / "archive" / "25.0-planning.md"
         assert planning.exists(), "Planning doc not found"

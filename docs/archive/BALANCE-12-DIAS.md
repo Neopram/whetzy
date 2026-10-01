@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** balance narrativo del 2026-09-20; el estado vigente está en `docs/AUTONOMOUS_STATE.md` y `docs/CATALOGO_MAESTRO.md`.
+
 # Balance a 12 días — qué se construyó, qué era ficción, y qué sueño queda en pie
 
 > Escrito el 2026-09-20, al final de la sesión que verificó producción en vivo por

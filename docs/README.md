@@ -9,7 +9,7 @@ Frontend: React + Capacitor.
 
 | Quieres… | Lee |
 |---|---|
-| **Proyecto en PAUSA (2026-09-30)**: estado al cierre, guía del dueño para fusionar el PR #34 y volver atrás, y cómo reanudar | **`CIERRE_2026-09-30.md`** (prompt de cierre: `PROMPT_CIERRE_2026-09-30.md`) |
+| **Proyecto en PAUSA (2026-09-30)**: estado al cierre, guía del dueño para fusionar el PR #34 y volver atrás, y cómo reanudar | **`CIERRE_2026-09-30.md`** (su prompt de cierre, ya ejecutado, está en `archive/PROMPT_CIERRE_2026-09-30.md`) |
 | **Lanzamiento piloto**: invitación ES/EN, qué pedir, las 5 preguntas del día 4 y cómo contar registros reales sin analítica nueva | **`LANZAMIENTO_PILOTO.md`** |
 | Saber qué construye Whetzy y qué falta (tracks, certs, fuentes, coste) | **`CATALOGO_MAESTRO.md`** |
 | Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad) |
@@ -29,9 +29,7 @@ Frontend: React + Capacitor.
 | Spec del marketplace de instructores: revenue share 80/20 (ADR-45), quality gate, moderación | **`MARKETPLACE.md`** |
 | Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
 | Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
-| Qué se construyó de verdad en los 12 primeros días, qué estaba marcado `DONE` sin estarlo, qué bloquea (nada de ello código) y qué objetivo es alcanzable | **`BALANCE-12-DIAS.md`** |
 | Qué servicios externos (Railway, Sentry, PostHog, diseño, redes…) puede tocar una sesión de Claude, a qué cuenta apunta cada uno y qué hace sin preguntar | **`CONECTORES.md`** |
-| Qué ve alguien que audita el sistema desde fuera sin fiarse de ningún doc: producción medida en vivo, CI, coste de contexto, y por qué no se usa NotebookLM ni Obsidian (ADR-40) | **`AUDITORIA_EXTERNA_2026-09-19.md`** |
 | Cada `.md` del repo con su clase (normativo · referencia · histórico · obsoleto · legal), qué se hace con él y las contradicciones legales con el código para el dueño | **`INVENTARIO_DOCS.md`** |
 
 Esos son los **veintiún documentos vivos** (más `store/`). `analisis-estrategico/` y

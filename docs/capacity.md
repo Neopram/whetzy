@@ -30,7 +30,7 @@ User → Cloudflare (Cache, Rate Limiting, WAF)
 
 > **Correction 2026-09-25:** this table was titled «Current Baseline (2026-09-19)» and said
 > «~50k users — estimate from sign-ups». Whetzy has **zero real users**
-> (`AUDITORIA_EXTERNA_2026-09-19.md`), and the bank count lives in `CATALOGO_MAESTRO.md` §1
+> (`archive/AUDITORIA_EXTERNA_2026-09-19.md`), and the bank count lives in `CATALOGO_MAESTRO.md` §1
 > (guarded by `check_docs.py`). Read the rows below as a **sizing scenario**, not measurements.
 
 | Metric | Value | Notes |
