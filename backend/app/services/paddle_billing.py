@@ -193,6 +193,20 @@ def apply_subscription_event(user: User, event_type: str, data: dict[str, Any]) 
     return False
 
 
+def record_withdrawal_waiver(user: User, data: dict[str, Any]) -> None:
+    """Guarda cuándo aceptó el alumno la renuncia al desistimiento (art. 16.m).
+
+    La página `/checkout` no abre el pago sin esa casilla y la manda como
+    `custom_data.eu_withdrawal_waiver = "accepted"`. Se guarda la primera vez,
+    igual que hacía el checkout de Stripe.
+    """
+    custom = data.get("custom_data") or {}
+    if not isinstance(custom, dict) or custom.get("eu_withdrawal_waiver") != "accepted":
+        return
+    if user.eu_withdrawal_waiver_at is None:
+        user.eu_withdrawal_waiver_at = datetime.now(UTC)
+
+
 def certification_purchase(data: dict[str, Any]) -> tuple[uuid.UUID, str, str] | None:
     """Si la transacción completada es la certificación, (user_id, track_id, txn_id)."""
     if not settings.PADDLE_PRICE_CERTIFICATION:

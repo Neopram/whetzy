@@ -536,7 +536,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.26 | Abrir la Serie 29 (economía cerrada) cuando 24.6 esté DONE: … |
 | H.27 | cNFT de certificados en Solana (29.10, opcional; ADR-37): wa… |
 | H.28 | Grant / bounty de la Solana Foundation o Superteam para trac… |
-| H.29 | DECIDIDO 2026-10-01 (dueño): Grecia; web = Paddle, tiendas = IAP/Play Billing vía RevenueCat; sin Stripe |
+| H.29 | DECIDIDO 2026-10-01 (dueño): Grecia; web = Paddle, tiendas = IAP/Play Billing vía RevenueCat; sin Stripe. Web: `/checkout` hecho; falta alta Paddle y dominio |
 | H.30 | PRI 0 — correo: **decidido Resend** (ADR-50l). Dueño: cuenta en resend.com + `RESEND_API_KEY` en Railway (RUNBOOK «Correo»). La pantalla ya no miente (`bb59562`) |
 | H.31 | **RESUELTA** (ADR-50m) — landing servida 2026-09-26 sin testimonios ni «1.2M» |
 | H.32 | **2** | H.32 | **RESUELTA** | **RESUELTA** `e40ba75` (2026-09-24) → §I |

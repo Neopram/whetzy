@@ -2,7 +2,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import styles from './LegalScreen.module.css';
 
 interface Props {
-  doc: 'privacy' | 'terms';
+  doc: 'privacy' | 'terms' | 'refund';
 }
 
 export function LegalScreen({ doc }: Props) {
@@ -10,7 +10,7 @@ export function LegalScreen({ doc }: Props) {
   return (
     <div className={styles.page}>
       <button className={styles.back} onClick={() => history.back()}>← {t('legal.back')}</button>
-      {doc === 'privacy' ? <PrivacyContent /> : <TermsContent />}
+      {doc === 'privacy' ? <PrivacyContent /> : doc === 'refund' ? <RefundContent /> : <TermsContent />}
     </div>
   );
 }
@@ -29,6 +29,7 @@ function PrivacyContent() {
         <li>{t('legal.privacyL3')}</li>
         <li>{t('legal.privacyL4')}</li>
         <li>{t('legal.privacyL5')}</li>
+        <li>{t('legal.privacyPayments')}</li>
       </ul>
 
       <h2>{t('legal.privacyH2')}</h2>
@@ -107,6 +108,35 @@ function TermsContent() {
       <p>{t('legal.termsP12')}</p>
 
       <h2>{t('legal.termsH13')}</h2>
+      <p>Whetzy · <a href="mailto:support@whetzy.com">support@whetzy.com</a></p>
+    </article>
+  );
+}
+
+/** Política de reembolsos (H.29): la que exige Paddle para aprobar el dominio.
+ *  El desistimiento repite el de los Términos (§5) para que no diverjan. */
+function RefundContent() {
+  const { t } = useTranslation();
+  return (
+    <article className={styles.article}>
+      <h1>{t('legal.refundTitle')}</h1>
+      <p className={styles.updated}>{t('legal.updated')}</p>
+
+      <h2>{t('legal.refundH1')}</h2>
+      <p>{t('legal.refundP1')}</p>
+
+      <h2>{t('legal.refundH2')}</h2>
+      <p>{t('legal.refundP2')}</p>
+
+      <h2>{t('legal.refundH3')}</h2>
+      <p>{t('legal.termsP5withdrawal')}</p>
+
+      <h2>{t('legal.refundH4')}</h2>
+      <p>{t('legal.refundP4')}</p>
+
+      <h2>{t('legal.refundH5')}</h2>
+      <p>{t('legal.refundP5')}</p>
+
       <p>Whetzy · <a href="mailto:support@whetzy.com">support@whetzy.com</a></p>
     </article>
   );

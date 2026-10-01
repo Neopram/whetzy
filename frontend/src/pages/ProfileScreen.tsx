@@ -5,8 +5,9 @@ import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { useApi } from '../hooks/useApi';
 import { usePushNotifications } from '../hooks/usePushNotifications';
-import { API_BASE_URL, auth, gamification } from '../services/api';
+import { API_BASE_URL, auth, billing, gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
+import { checkoutHref } from '../lib/paddle';
 import styles from './ProfileScreen.module.css';
 
 export function ProfileScreen() {
@@ -20,6 +21,23 @@ export function ProfileScreen() {
   const { t, i18n: i18nInst } = useTranslation();
 
   const badges = useApi(() => gamification.badges(), []);
+  // Solo quien paga por la web (Paddle) cancela aquí; App Store y Google Play
+  // se cancelan desde la tienda.
+  const subscription = useApi(
+    () => (user.isPremium ? billing.subscription() : Promise.resolve(null)),
+    [user.isPremium],
+  );
+  const [cancelState, setCancelState] = useState<'idle' | 'confirm' | 'busy' | 'done' | 'error'>('idle');
+
+  async function handleCancel() {
+    setCancelState('busy');
+    try {
+      await billing.cancelPaddle();
+      setCancelState('done');
+    } catch {
+      setCancelState('error');
+    }
+  }
   const earnedIds = new Set((badges.data ?? []).map((b) => b.badge.id));
   const push = usePushNotifications();
   const [streakPushOn, setStreakPushOn] = useState(true);
@@ -88,7 +106,38 @@ export function ProfileScreen() {
               <p className={styles.proDesc}>{t('profile.proDesc')}</p>
             </div>
           </div>
-          <button className={styles.proBtn} disabled>{t('profile.proSoon')}</button>
+          <div className={styles.proActions}>
+            <a className={styles.proBtn} href={checkoutHref('plus')}>{t('profile.proBuy')}</a>
+            <a className={styles.proBtn} href={checkoutHref('pro')}>{t('profile.proMaxBuy')}</a>
+          </div>
+        </Card>
+      )}
+
+      {user.isPremium && subscription.data?.subscription_provider === 'paddle' && (
+        <Card>
+          <h2 className={styles.cardTitle}>{t('profile.subscriptionTitle')}</h2>
+          {subscription.data.subscription_status === 'canceled' || cancelState === 'done' ? (
+            <p className={styles.muted}>{t('profile.cancelDone')}</p>
+          ) : cancelState === 'confirm' || cancelState === 'busy' ? (
+            <>
+              <p className={styles.muted}>{t('profile.cancelConfirm')}</p>
+              <div className={styles.proActions}>
+                <button type="button" className={styles.dangerBtn} disabled={cancelState === 'busy'} onClick={() => void handleCancel()}>
+                  {t('profile.cancelYes')}
+                </button>
+                <button type="button" className={styles.secondaryBtn} disabled={cancelState === 'busy'} onClick={() => setCancelState('idle')}>
+                  {t('profile.cancelNo')}
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              {cancelState === 'error' && <p className={styles.muted} role="alert">{t('profile.cancelError')}</p>}
+              <button type="button" className={styles.secondaryBtn} onClick={() => setCancelState('confirm')}>
+                {t('profile.cancel')}
+              </button>
+            </>
+          )}
         </Card>
       )}
 

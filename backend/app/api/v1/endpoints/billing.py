@@ -33,7 +33,7 @@ class SubscriptionResponse(BaseModel):
     is_premium: bool
     subscription_status: str | None
     subscription_tier: str | None
-    subscription_provider: str | None  # "stripe" | "revenuecat" | None (17.14)
+    subscription_provider: str | None  # "stripe" | "revenuecat" | "paddle" | None (17.14, H.29)
     stripe_customer_id: str | None
     stripe_subscription_id: str | None
 
@@ -46,6 +46,22 @@ async def paddle_config() -> dict[str, Any]:
     para ir en el navegador. `enabled` es False hasta que el dueño los configure.
     """
     return paddle_billing.public_config()
+
+
+@router.post("/paddle/cancel", status_code=status.HTTP_200_OK)
+async def paddle_cancel(user: User = Depends(get_current_user)) -> dict[str, Any]:
+    """Cancela la suscripción de Paddle al final del periodo pagado (H.29).
+
+    Lo que prometen los Términos: cancelar en cualquier momento y conservar el
+    acceso hasta el final del periodo facturado. Aquí solo se pide a Paddle; el
+    estado lo escribe el webhook (`subscription.updated` con
+    `scheduled_change.action = "cancel"`), igual que si se cancelara desde Paddle.
+    """
+    if user.subscription_provider != "paddle" or not user.paddle_subscription_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no_paddle_subscription")
+    if not await paddle_billing.cancel_subscription(user.paddle_subscription_id):
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="paddle_cancel_failed")
+    return {"cancel_requested": True, "access_until": user.subscription_expires_at}
 
 
 @router.post("/checkout", response_model=CheckoutResponse, status_code=status.HTTP_200_OK)

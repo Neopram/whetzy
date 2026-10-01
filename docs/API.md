@@ -227,6 +227,7 @@ GET  /billing/subscription → {plan, status, renews_at} 🔒
 POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC)
 POST /billing/revenuecat/webhook → RevenueCat webhook (17.14, mobile IAP, sandbox) — Authorization header secret, 503 until REVENUECAT_WEBHOOK_AUTHORIZATION is set
 GET  /billing/paddle/config → {enabled, environment, client_token, prices{plus,pro,certification}} — público: lo que la web necesita para abrir Paddle.js (H.29); enabled=false hasta configurar PADDLE_CLIENT_TOKEN y un precio
+POST /billing/paddle/cancel → {cancel_requested, access_until} 🔒 — cancela la suscripción de Paddle al final del periodo pagado (H.29); 404 si no tiene una, 502 si Paddle no la acepta. El estado lo escribe el webhook
 ```
 
 ## Session & 2FA endpoints

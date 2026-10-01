@@ -7,3 +7,15 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://api-production-9751.up.railway.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+# Pago con Paddle (H.29). Comprobado en Chromium el 2026-10-01 con el checkout
+# real: bajo `Cross-Origin-Embedder-Policy` el iframe de buy.paddle.com no carga,
+# y la CSP general bloquea paddle.js, su CSS y el iframe. Solo esta ruta los
+# permite; el resto del sitio conserva COOP + COEP para Pyodide.
+/checkout
+  ! Cross-Origin-Opener-Policy
+  ! Cross-Origin-Embedder-Policy
+  ! Permissions-Policy
+  ! Content-Security-Policy
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(self "https://buy.paddle.com" "https://sandbox-buy.paddle.com")
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cdn.paddle.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://cdn.paddle.com; img-src 'self' data: blob:; font-src 'self' data:; frame-src https://buy.paddle.com https://sandbox-buy.paddle.com; connect-src 'self' https://api-production-9751.up.railway.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'

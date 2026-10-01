@@ -1251,7 +1251,7 @@ export interface SubscriptionResponse {
   is_premium: boolean;
   subscription_status: string | null;
   subscription_tier: string | null;
-  subscription_provider: string | null; // "stripe" | "revenuecat" | null (17.14)
+  subscription_provider: string | null; // "stripe" | "revenuecat" | "paddle" | null (17.14, H.29)
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
 }
@@ -1263,4 +1263,16 @@ export const billing = {
       body: JSON.stringify({ price_id: priceId, eu_withdrawal_waiver: euWithdrawalWaiver }),
     }),
   subscription: () => request<SubscriptionResponse>('/billing/subscription'),
+  /** Público: token de cliente y precios `pri_` para abrir Paddle.js (H.29). */
+  paddleConfig: () => request<PaddleConfig>('/billing/paddle/config'),
+  /** Cancela al final del periodo pagado; el estado lo actualiza el webhook. */
+  cancelPaddle: () =>
+    request<{ cancel_requested: boolean; access_until: string | null }>('/billing/paddle/cancel', { method: 'POST' }),
 };
+
+export interface PaddleConfig {
+  enabled: boolean;
+  environment: 'sandbox' | 'production';
+  client_token: string | null;
+  prices: { plus: string | null; pro: string | null; certification: string | null };
+}
