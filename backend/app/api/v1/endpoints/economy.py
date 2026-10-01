@@ -194,24 +194,24 @@ async def activate_referral(
 
 @router.get("/prices")
 async def get_credit_prices(response: Response) -> dict[str, object]:
-    """Public endpoint: credit value mapping."""
+    """Public endpoint: credit value mapping.
+
+    Solo lo que el código hace hoy (2026-10-01). Antes listaba seis formas de
+    ganar y cuatro de gastar; spend_fifo solo lo llama el comodín de racha, y
+    grant_credits solo el código promocional (que va aparte) y
+    ReferralService.credit_matured_referrals, al que nada llama en producción:
+    /referral/activate deja el referido en «pending» y nadie lo activa ni lo
+    abona. La Cartera prometía créditos que nunca llegaban. Cada fuente de
+    ECONOMIA.md §2 vuelve aquí cuando se cablee (el referido, con su escalera
+    ReferralService._CREDIT_LADDER).
+    """
     response.headers["Cache-Control"] = "public, max-age=3600, stale-while-revalidate=86400"
     return {
         "credit_value_usd": 0.01,
-        "grifos": [
-            {"event": "onboarding_done", "credits": 50, "cap": "once"},
-            {"event": "module_done", "credits": 100, "cap": "per_module"},
-            {"event": "streak_7", "credits": 70, "cap": "per_week"},
-            {"event": "streak_30", "credits": 300, "cap": "per_month"},
-            {"event": "referral_activated", "credits": 300, "cap": "10/month"},
-            {"event": "referral_welcome", "credits": 200, "cap": "once"},
-        ],
+        "grifos": [],
         "sumideros": [
-            {"item": "mock_exam", "cost": 500},
             {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS},
-            {"item": "domain_report_pdf", "cost": 300},
-            {"item": "marketplace_course", "cost": 1000},
-        ]
+        ],
     }
 
 

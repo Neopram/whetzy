@@ -345,10 +345,14 @@ export function QuizScreen() {
     }
   }, [feedback, sessionId, index, combo, xpEarned, hydrateFromApi]);
 
+  // Salir a mitad: el servidor ya sumó el XP de lo respondido, así que el
+  // usuario se refresca aquí también (antes solo al terminar, y Yo y la barra
+  // superior se quedaban en el XP de antes hasta recargar).
   const handleClose = useCallback(() => {
+    if (index > 0 || feedback) void hydrateFromApi();
     resetQuiz();
     setScreen('home');
-  }, [resetQuiz, setScreen]);
+  }, [index, feedback, hydrateFromApi, resetQuiz, setScreen]);
 
   // Cada respuesta ya está guardada en el servidor; la confirmación solo
   // aparece cuando hay algo respondido, para que salir no parezca perderlo.

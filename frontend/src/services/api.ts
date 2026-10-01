@@ -667,7 +667,8 @@ export interface PromoRedeemResult {
 
 export interface CreditPrices {
   credit_value_usd: number;
-  grifos: { event: string; credits: number; cap: string }[];
+  /** `ladder`: [n.º de referido desde el que aplica, créditos] (solo referidos). */
+  grifos: { event: string; credits: number; cap: string; ladder?: [number, number][] }[];
   sumideros: { item: string; cost: number }[];
 }
 

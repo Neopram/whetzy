@@ -5,7 +5,7 @@
  * (/progress/skills al empezar y al terminar), no con una estimación.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import i18n from '../i18n';
 import { QuizScreen } from '../pages/QuizScreen';
 import { useAppStore } from '../stores/useAppStore';
@@ -128,5 +128,18 @@ describe('QuizScreen v2', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Cerrar' }));
     expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
     expect(useAppStore.getState().currentScreen).toBe('home');
+    expect(useAppStore.getState().hydrateFromApi).not.toHaveBeenCalled();
+  });
+
+  it('salir a mitad refresca el usuario: el XP ya está sumado en el servidor', async () => {
+    const hydrate = useAppStore.getState().hydrateFromApi;
+    render(<QuizScreen />);
+    await screen.findByText('¿Cuánto es 1 + 1?');
+    fireEvent.keyDown(window, { key: '2' });
+    await screen.findByText('Uno más uno es dos.');
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar' }));
+    fireEvent.click(within(screen.getByRole('alertdialog')).getByRole('button', { name: 'Salir' }));
+    expect(useAppStore.getState().currentScreen).toBe('home');
+    expect(hydrate).toHaveBeenCalledTimes(1);
   });
 });

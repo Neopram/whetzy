@@ -9,15 +9,8 @@ import {
 } from '../services/api';
 import styles from './WalletScreen.module.css';
 
-const CAP_LABELS: Record<string, string> = {
-  once: 'once',
-  per_module: 'perModule',
-  per_week: 'perWeek',
-  per_month: 'perMonth',
-};
-
 export default function WalletScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [balance, setBalance] = useState<CreditBalance | null>(null);
   const [prices, setPrices] = useState<CreditPrices | null>(null);
   const [referral, setReferral] = useState<ReferralCodeInfo | null>(null);
@@ -77,92 +70,103 @@ export default function WalletScreen() {
   }
 
   if (loading) {
-    return <div className={styles.screen}><p className={styles.loading}>{t('common.loading')}</p></div>;
+    return <div className={styles.screen}><p className={styles.muted} role="status">{t('common.loading')}</p></div>;
   }
+
+  // Cada fila lleva su texto propio: el identificador del backend («module_done»,
+  // «wallet.10/month»…) salía tal cual en pantalla (bug #7 de la auditoría).
+  // Lo que no tenga traducción no se pinta.
+  const earn = (prices?.grifos ?? []).filter((g) => i18n.exists(`wallet.earn.${g.event}`));
+  const spend = (prices?.sumideros ?? []).filter((s) => i18n.exists(`wallet.spend.${s.item}`));
+  // «Invitar amigos» promete créditos: solo se enseña si el backend lista el
+  // referido como fuente (hoy no lo abona nadie, ver /economy/prices).
+  const referralPays = earn.some((g) => g.event === 'referral_activated');
 
   return (
     <div className={styles.screen}>
-      {/* Balance */}
-      <div className={styles.balanceCard}>
-        <div className={styles.balanceAmount}>{balance?.balance ?? 0}</div>
-        <div className={styles.balanceLabel}>{t('wallet.credits')}</div>
+      <h1 className={styles.title}>{t('wallet.title')}</h1>
+
+      <section className={styles.balanceCard} aria-label={t('wallet.balance')}>
+        <span className={styles.balanceAmount}>{balance?.balance ?? 0}</span>
+        <span className={styles.balanceLabel}>{t('wallet.credits')}</span>
         {balance && balance.expires_in_days > 0 && (
-          <div className={styles.balanceExpiry}>
-            {t('wallet.expiresIn', { days: balance.expires_in_days })}
-          </div>
+          <span className={styles.balanceExpiry}>{t('wallet.expiresIn', { days: balance.expires_in_days })}</span>
         )}
-      </div>
+      </section>
 
-      {balance?.balance === 0 && (
-        <p className={styles.empty}>{t('wallet.noBalance')}</p>
+      {balance?.balance === 0 && <p className={styles.muted}>{t('wallet.noBalance')}</p>}
+
+      {earn.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>{t('wallet.earnCredits')}</h2>
+          <ul className={styles.list}>
+            {earn.map((g) => (
+              <li key={g.event} className={styles.row}>
+                <span className={styles.rowBody}>
+                  <span className={styles.rowName}>{t(`wallet.earn.${g.event}`)}</span>
+                  {g.ladder && (
+                    <span className={styles.rowMeta}>
+                      {g.ladder.map(([from, amount]) => t('wallet.ladderStep', { from, amount })).join(' · ')}
+                    </span>
+                  )}
+                </span>
+                <span className={styles.amount}>+{g.credits}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
-      {/* Earn credits */}
-      {prices && prices.grifos.length > 0 && (
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>{t('wallet.earnCredits')}</h3>
-          {prices.grifos.map((g) => (
-            <div key={g.event} className={styles.creditRow}>
-              <div>
-                <div className={styles.creditEvent}>{g.event.replace(/_/g, ' ')}</div>
-                <div className={styles.creditCap}>{t(`wallet.${CAP_LABELS[g.cap] ?? g.cap}`)}</div>
-              </div>
-              <div className={`${styles.creditAmount} ${styles.earn}`}>+{g.credits}</div>
-            </div>
-          ))}
-        </div>
+      {spend.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>{t('wallet.spendCredits')}</h2>
+          <ul className={styles.list}>
+            {spend.map((s) => (
+              <li key={s.item} className={styles.row}>
+                <span className={styles.rowName}>{t(`wallet.spend.${s.item}`)}</span>
+                <span className={styles.amount}>−{s.cost}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
-      {/* Spend credits */}
-      {prices && prices.sumideros.length > 0 && (
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>{t('wallet.spendCredits')}</h3>
-          {prices.sumideros.map((s) => (
-            <div key={s.item} className={styles.creditRow}>
-              <div className={styles.creditEvent}>{s.item.replace(/_/g, ' ')}</div>
-              <div className={`${styles.creditAmount} ${styles.spend}`}>-{s.cost}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Referral */}
-      {referral && (
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>{t('wallet.referral')}</h3>
-          <div className={styles.referralBox}>
-            <p className={styles.referralDesc}>{t('wallet.referralDesc')}</p>
-            <div className={styles.referralCode}>
-              <span>{referral.code}</span>
-              <button className={styles.copyBtn} onClick={handleCopy} type="button">
-                {copied ? t('wallet.copied') : t('wallet.copyCode')}
-              </button>
-            </div>
+      {referral && referralPays && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>{t('wallet.referral')}</h2>
+          <p className={styles.muted}>{t('wallet.referralDesc')}</p>
+          <div className={styles.referralCode}>
+            <code>{referral.code}</code>
+            <button className={styles.btnSecondary} onClick={handleCopy} type="button">
+              {copied ? t('wallet.copied') : t('wallet.copyCode')}
+            </button>
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Promo */}
-      <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>{t('wallet.promo')}</h3>
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>{t('wallet.promo')}</h2>
         <form className={styles.promoForm} onSubmit={handleRedeem}>
+          <label htmlFor="promo-code" className="visually-hidden">{t('wallet.promoPlaceholder')}</label>
           <input
+            id="promo-code"
             className={styles.promoInput}
             type="text"
             value={promoCode}
             onChange={(e) => setPromoCode(e.target.value)}
             placeholder={t('wallet.promoPlaceholder')}
+            autoComplete="off"
           />
-          <button className={styles.promoBtn} type="submit" disabled={promoLoading || !promoCode.trim()}>
+          <button className={styles.btnSecondary} type="submit" disabled={promoLoading || !promoCode.trim()}>
             {t('wallet.redeem')}
           </button>
         </form>
         {promoMsg && (
-          <p className={`${styles.promoMsg} ${promoMsg.ok ? styles.promoSuccess : styles.promoError}`}>
+          <p className={promoMsg.ok ? styles.promoSuccess : styles.promoError} role="status">
             {promoMsg.text}
           </p>
         )}
-      </div>
+      </section>
     </div>
   );
 }

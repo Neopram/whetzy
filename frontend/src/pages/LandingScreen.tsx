@@ -84,10 +84,12 @@ const stepIcons = [
   ),
 ];
 
-function CellMark({ value, lang, notChecked }: { value: ComparisonCell; lang: Lang; notChecked: string }) {
+// role="img" con «Sí»/«No» de verdad: un aria-label en un <span> sin rol está
+// prohibido (axe aria-prohibited-attr) y «✓» no le dice nada a un lector.
+function CellMark({ value, lang, notChecked, yes, no }: { value: ComparisonCell; lang: Lang; notChecked: string; yes: string; no: string }) {
   if (value === true) {
     return (
-      <span className={styles.cellCheck} aria-label="✓">
+      <span className={styles.cellCheck} role="img" aria-label={yes}>
         <svg className={styles.cellIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <polyline points="20 6 9 17 4 12" />
         </svg>
@@ -96,7 +98,7 @@ function CellMark({ value, lang, notChecked }: { value: ComparisonCell; lang: La
   }
   if (value === false) {
     return (
-      <span className={styles.cellMinus} aria-label="—">
+      <span className={styles.cellMinus} role="img" aria-label={no}>
         <svg className={styles.cellIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
@@ -360,10 +362,10 @@ export default function LandingScreen() {
                 {COMPARISON_ROWS.map((row) => (
                   <tr key={row.label.en} className={styles.tableRow}>
                     <td className={styles.tdLabel}>{row.label[lang]}</td>
-                    <td className={styles.tdWhetzy}><CellMark value={row.whetzy} lang={lang} notChecked={notChecked} /></td>
+                    <td className={styles.tdWhetzy}><CellMark value={row.whetzy} lang={lang} notChecked={notChecked} yes={t('landing.cellYes')} no={t('landing.cellNo')} /></td>
                     {row.others.map((cell, i) => (
                       <td key={COMPARISON_COMPETITORS[i]} className={styles.tdOther}>
-                        <CellMark value={cell} lang={lang} notChecked={notChecked} />
+                        <CellMark value={cell} lang={lang} notChecked={notChecked} yes={t('landing.cellYes')} no={t('landing.cellNo')} />
                       </td>
                     ))}
                   </tr>

@@ -36,8 +36,23 @@ misma sesión: no hay datos inventados.
 - `07d-simulacro-confirmar-390.png`: confirmación al entregar con preguntas en
   blanco.
 - `07e-simulacro-resultado-390.png`: resultado por dominio.
+- `08-yo-390.png`: Yo tras una pregunta respondida y la sesión abandonada: el
+  XP (15) ya coincide con Estadísticas y la barra superior; Pro sin dorado.
+- `08b-estadisticas-390.png`: cifras en mono, solo las rutas empezadas (con el
+  recuento de las que no) y dominio por habilidad en azul.
+- `08c-cartera-390.png`: solo lo que el backend cablea hoy: el comodín de racha
+  y el código promocional; sin «Cómo ganar créditos» ni «Invitar amigos»,
+  porque nada abona créditos por estudiar ni por referido.
+- `08d-duelo-reto-390.png`: reto con rival y habilidad (por defecto, una de las
+  practicadas).
+- `08e-landing-1280.png`, `08f-landing-claro-390.png`: landing en grafito, con
+  el acento solo en la acción principal; el tema claro ya no hereda blancos
+  fijos.
+- `08g-landing-preparacion-1280.png`: la sección de preparación con la captura
+  nueva.
 
-axe-core (WCAG 2.2 AA) dio 0 violaciones en Rutas y en el feedback del Quiz
+axe-core (WCAG 2.2 AA) dio 0 violaciones en Yo y Estadísticas y en la landing
+(tests nuevos de `e2e/accessibility.spec.ts`), y en Rutas y en el feedback del Quiz
 (`e2e/accessibility.spec.ts`), y en la lección, la pregunta, la confirmación
 de salida y el resumen del Quiz, y en Preparación y las cuatro fases del
 simulacro (comprobaciones ad hoc de la sesión).

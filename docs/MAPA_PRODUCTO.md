@@ -50,10 +50,10 @@ Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario)
 | `mockexam` | `MockExamScreen` | «Simulacro de examen» | modos simulacro / certificador; fases intro, en curso, corrigiendo, resultado | E2: `design/v2/brief-msg2.md` §F |
 | `trackexam` | `TrackExamScreen` | «Examen final del curso» | intro, examen, resultado; admite `test_out` de módulo, pero nada en la UI lo lanza (§5.1) | E2: `design/v2/brief-msg2.md` §F |
 | `league` | `LeagueScreen` | pestaña Ranking | pestañas Liga / Duelos (`RankingTabs`) | E1: `docs/API.md` (league) |
-| `duels` | `DuelScreen` | pestaña Ranking → Duelos | lista, reto, jugando, resultado | E0: ledger 3.1 |
+| `duels` | `DuelScreen` | pestaña Ranking → Duelos | lista (nombre de la habilidad, no su id), reto (rival + habilidad practicada o al azar entre las practicadas), jugando, resultado. Un duelo no da XP | E0: ledger 3.1 |
 | `profile` | `ProfileScreen` | pestaña Yo | ajustes, plan y cancelación, tema, idioma, accesos a Stats/Cartera/Instructor/Admin | E1: `design/v2/brief-msg1.md` (nav) |
 | `stats` | `StatsScreen` | Yo → Estadísticas | resumen y progreso | E0: ledger |
-| `wallet` | `WalletScreen` | Yo → Cartera | saldo, movimientos, canje de códigos, referidos | E1: `docs/ECONOMIA.md` §2–5 |
+| `wallet` | `WalletScreen` | Yo → Cartera | saldo, fuentes y gastos que lista `/economy/prices`, canje de códigos; «Invitar amigos» solo si el referido figura como fuente (hoy no, §5.1). Sin lista de movimientos | E1: `docs/ECONOMIA.md` §2–5 |
 | `instructor` | `InstructorScreen` | Yo → Instructor | panel del instructor | E1: `docs/MARKETPLACE.md` §4 |
 | `marketplace` | `MarketplaceScreen` | Yo → Marketplace; deslizar a la izquierda en móvil | catálogo con filtros Todos / Aprender / Certificación | E1: `docs/MARKETPLACE.md` |
 | `playground` | `PlaygroundScreen` | Hoy → Herramientas | editor Python / SQL / JS | E0: CHANGELOG (serie 19) |
@@ -96,6 +96,9 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Widgets interactivos, tutor por voz | ledger 40.1–40.6 | no existe |
 | Vídeos | ledger 18.9 | no existe |
 | Activar 2FA desde la app | `docs/design/auth-hardening.md` §4 | backend sí (`auth_hardening.py`); **sin pantalla** |
+| Créditos por onboarding, módulo, rachas de 7 y 30 días y bienvenida de referido | `docs/ECONOMIA.md` §2.2 y §3.2 | **ninguna llamada a `grant_credits`** para esos motivos; solo la usan el código promocional y `credit_matured_referrals` |
+| Créditos al referente por referido activado (escalera) | `docs/ECONOMIA.md` §3 | `/economy/referral/activate` solo registra el referido (`pending`); `ReferralService.activate_referral` y `credit_matured_referrals` **solo los llaman los tests**. `/economy/prices` ya no lo anuncia y la Cartera esconde «Invitar amigos» hasta que se cablee (guarda: `test_referral_credit_is_not_wired_while_prices_omit_it`) |
+| Gastar créditos en simulacro, informe PDF o curso | `docs/ECONOMIA.md` §2.3 | `spend_fifo` solo lo llama el comodín de racha (`services/streak_shop.py`) |
 | Examen para saltarse un módulo (test-out) | ledger 17.2 | `TrackExamScreen` y el store aceptan `test_out`; **ninguna llamada a `startTrackExam('test_out', …)`** |
 
 ### 5.2 Existe y no tiene especificación (E0 en §1–§2)
@@ -108,4 +111,8 @@ ellas se rehace, su especificación se escribe aquí o en un brief antes de toca
 
 - Reparto del marketplace: **70 %** en `content/legal/instructor_recruitment_kit_en.md:19` y
   `docs/MARKETPLACE.md:22`; **80 %** en `legal/terms-of-service.md:61` y `MARKETPLACE.md:41`
-  (ADR-41). Manda ADR-41 (80 %); el kit y la línea 22 están desfasados.
+  (ADR-41). Manda ADR-41 (80 %); el kit y la línea 22 están desfasados. `docs/API.md:260`
+  dice «Reparto 70/30»: también desfasado.
+- Premio al referente: **300 créditos** en `docs/ECONOMIA.md` §3.2–3.3; el código
+  (`ReferralService._CREDIT_LADDER`) da 50 / 100 / 200 / 500 según el n.º de referido. Ninguno
+  de los dos se abona hoy (§5.1).
