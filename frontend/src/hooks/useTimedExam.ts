@@ -60,7 +60,6 @@ export function useTimedExam<TQuestion extends { id: string }, TSitting extends 
 
   const questions = useMemo(() => sitting?.questions ?? [], [sitting]);
   const current = questions[index];
-  const unanswered = questions.length - Object.keys(answers).length;
 
   const submit = useCallback(async () => {
     if (!sitting || submittingRef.current) return;
@@ -117,8 +116,12 @@ export function useTimedExam<TQuestion extends { id: string }, TSitting extends 
     setAnswers(prev => ({ ...prev, [questionId]: option }));
   }, []);
 
-  const goPrevious = useCallback(() => setIndex(i => Math.max(0, i - 1)), []);
-  const goNext = useCallback(() => setIndex(i => i + 1), []);
+  // Salta a cualquier pregunta (la cuadrícula de ExamSitting), sin salirse de
+  // la primera ni de la última.
+  const goTo = useCallback(
+    (i: number) => setIndex(Math.min(Math.max(0, i), Math.max(0, questions.length - 1))),
+    [questions.length],
+  );
 
   return {
     phase,
@@ -127,7 +130,6 @@ export function useTimedExam<TQuestion extends { id: string }, TSitting extends 
     current,
     index,
     answers,
-    unanswered,
     report,
     expired,
     error,
@@ -135,9 +137,7 @@ export function useTimedExam<TQuestion extends { id: string }, TSitting extends 
     start,
     submit,
     choose,
-    goPrevious,
-    goNext,
-    isLast: index >= questions.length - 1,
+    goTo,
   };
 }
 

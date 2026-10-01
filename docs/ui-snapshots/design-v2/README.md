@@ -1,4 +1,4 @@
-# Capturas — design/v2, pasos 4 a 6 (Rutas, Lección y Quiz)
+# Capturas — design/v2, pasos 4 a 7 (Rutas, Lección, Quiz, Preparación y Exámenes)
 
 Evidencia del PR de los pasos 4 y 5 del port (`design/v2/GUIA.md`). Capturas
 frescas del 2026-10-01, tomadas con Playwright (Chromium) contra el stack local
@@ -27,7 +27,17 @@ misma sesión: no hay datos inventados.
 - `06c-quiz-salir-390.png`: confirmación al cerrar con algo ya respondido.
 - `06d-quiz-resumen-390.png`: resumen con precisión, aciertos, racha y XP en
   mono, la habilidad de la sesión («nueva → 24 %») y la acción recomendada.
+- `07-preparacion-390.png`: preparación de AWS CLF-C02 para un usuario sin
+  práctica: arco con la marca del 75 %, la nota de que el % es el punto de
+  partida del modelo, la mayor palanca y los dominios ordenados por peso.
+- `07b-simulacro-intro-390.png`: intro con formato y reglas.
+- `07c-simulacro-en-curso-390.png`: examen con reloj en mono, una pregunta
+  marcada y la cuadrícula abierta.
+- `07d-simulacro-confirmar-390.png`: confirmación al entregar con preguntas en
+  blanco.
+- `07e-simulacro-resultado-390.png`: resultado por dominio.
 
 axe-core (WCAG 2.2 AA) dio 0 violaciones en Rutas y en el feedback del Quiz
 (`e2e/accessibility.spec.ts`), y en la lección, la pregunta, la confirmación
-de salida y el resumen del Quiz (comprobaciones ad hoc de la sesión).
+de salida y el resumen del Quiz, y en Preparación y las cuatro fases del
+simulacro (comprobaciones ad hoc de la sesión).

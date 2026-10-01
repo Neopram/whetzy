@@ -49,10 +49,10 @@ describe('useTimedExam', () => {
     expect(result.current.phase).toBe('running');
     expect(result.current.questions).toHaveLength(2);
     expect(result.current.current?.id).toBe('q1');
-    expect(result.current.unanswered).toBe(2);
+    expect(result.current.answers).toEqual({});
   });
 
-  it('records answers and counts what is still blank', async () => {
+  it('records answers, one per question', async () => {
     const start = vi.fn().mockResolvedValue(sittingAt(600));
     const { result } = renderHook(() =>
       useTimedExam({ start, submit: vi.fn(), errorMessage: ERROR }),
@@ -63,12 +63,10 @@ describe('useTimedExam', () => {
 
     act(() => result.current.choose('q1', 2));
     expect(result.current.answers).toEqual({ q1: 2 });
-    expect(result.current.unanswered).toBe(1);
 
     // Changing your mind replaces rather than appends.
     act(() => result.current.choose('q1', 0));
     expect(result.current.answers).toEqual({ q1: 0 });
-    expect(result.current.unanswered).toBe(1);
   });
 
   it('submits automatically when the deadline passes, and only once', async () => {
@@ -201,12 +199,13 @@ describe('useTimedExam', () => {
     });
 
     expect(result.current.index).toBe(0);
-    act(() => result.current.goPrevious());
+    act(() => result.current.goTo(-1));
     expect(result.current.index).toBe(0);
 
-    act(() => result.current.goNext());
+    act(() => result.current.goTo(1));
     expect(result.current.index).toBe(1);
-    expect(result.current.isLast).toBe(true);
+    act(() => result.current.goTo(99));
+    expect(result.current.index).toBe(1);
   });
 });
 

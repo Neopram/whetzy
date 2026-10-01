@@ -32,6 +32,8 @@ test.describe('certifying exam', () => {
       await page.getByRole('button', { name: /^Siguiente$/ }).click();
     }
     await page.getByRole('button', { name: /^ENTREGAR$/ }).click();
+    // Quedan preguntas en blanco: la entrega pide confirmación (design/v2, §F).
+    await page.getByRole('alertdialog').getByRole('button', { name: /Entregar igualmente|Submit anyway/ }).click();
 
     await expect(page.getByText('Resultado del examen certificador')).toBeVisible({ timeout: 30_000 });
     await expect(page.getByText(/No aprobado/)).toBeVisible();

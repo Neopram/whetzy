@@ -11,7 +11,7 @@
  * looks like a different product depending on which exam it is would be the
  * kind of inconsistency the design standard exists to prevent.
  */
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -21,7 +21,8 @@ import {
   type TrackExamSubmitResponse,
 } from '../services/api';
 import { CertificateCard } from '../components/certificate/CertificateCard';
-import { formatClock, useTimedExam } from '../hooks/useTimedExam';
+import { ExamSitting } from '../components/exam/ExamSitting';
+import { useTimedExam } from '../hooks/useTimedExam';
 import styles from './MockExamScreen.module.css';
 import own from './TrackExamScreen.module.css';
 
@@ -76,10 +77,6 @@ export function TrackExamScreen({
   });
 
   const current = exam.current;
-  const options = useMemo(
-    () => (current ? ((isSpanish ? current.options_es : current.options_en) ?? []) : []),
-    [current, isSpanish],
-  );
 
   // ── Intro ─────────────────────────────────────────────────────────────────
 
@@ -216,72 +213,20 @@ export function TrackExamScreen({
     );
   }
 
-  const timeUp = exam.secondsLeft !== null && exam.secondsLeft <= 0;
-  // Under five minutes the clock changes colour AND gains a label, so the
-  // warning never depends on colour alone.
-  const urgent = exam.secondsLeft !== null && exam.secondsLeft <= 300;
-
   return (
     <div className={styles.screen}>
-      <div className={styles.examBar}>
-        <span className={styles.counter}>
-          {t('mockExam.question', { current: exam.index + 1, total: exam.questions.length })}
-        </span>
-        <span
-          className={urgent ? styles.clockUrgent : styles.clock}
-          role="timer"
-          aria-live="off"
-          aria-label={t('mockExam.timeLeft')}
-        >
-          {timeUp ? t('mockExam.timeUp') : formatClock(exam.secondsLeft ?? 0)}
-        </span>
-      </div>
-
-      <p className={styles.question}>{isSpanish ? current.question_es : current.question_en}</p>
-
-      <div className={styles.options} role="radiogroup" aria-label={t(`${ns}.title`)}>
-        {options.map((option, optionIndex) => {
-          const selected = exam.answers[current.id] === optionIndex;
-          return (
-            <button
-              key={option}
-              role="radio"
-              aria-checked={selected}
-              className={selected ? styles.optionSelected : styles.option}
-              onClick={() => exam.choose(current.id, optionIndex)}
-            >
-              {option}
-            </button>
-          );
-        })}
-      </div>
-
-      {exam.error && (
-        <p className={styles.error} role="alert">
-          {exam.error}
-        </p>
-      )}
-
-      <div className={styles.nav}>
-        <button className={styles.secondary} onClick={exam.goPrevious} disabled={exam.index === 0}>
-          {t('mockExam.previous')}
-        </button>
-        {!exam.isLast ? (
-          <button className={styles.primary} onClick={exam.goNext}>
-            {t('mockExam.next')}
-          </button>
-        ) : (
-          <button className={styles.primary} onClick={() => void exam.submit()}>
-            {exam.phase === 'grading' ? t('mockExam.finishing') : t('mockExam.finish')}
-          </button>
-        )}
-      </div>
-
-      {exam.unanswered > 0 && (
-        <p className={styles.unanswered}>
-          {t('mockExam.unansweredWarning', { count: exam.unanswered })}
-        </p>
-      )}
+      <ExamSitting
+        title={t(`${ns}.title`)}
+        questions={exam.questions}
+        index={exam.index}
+        onGo={exam.goTo}
+        answers={exam.answers}
+        onChoose={exam.choose}
+        secondsLeft={exam.secondsLeft}
+        grading={exam.phase === 'grading'}
+        error={exam.error}
+        onSubmit={() => void exam.submit()}
+      />
     </div>
   );
 }
