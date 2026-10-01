@@ -1,8 +1,8 @@
 # Whetzy — instrucciones del proyecto
 
-**PAUSA desde el 2026-09-30 (decisión del dueño).** Si arrancas sin
-instrucciones explícitas del dueño, NO ejecutes `docs/ORCHESTRATOR.md`: lee
-`docs/CIERRE_2026-09-30.md`, informa del estado y para.
+**Pausa levantada el 2026-10-01 (dueño, ADR-56).** Las sesiones vuelven a trabajar en rama
++ PR (ADR-45); `master` lo sigue fusionando solo el dueño. Trampas del entorno medidas:
+`docs/CIERRE_2026-09-30.md` §7.
 
 - Fuente de verdad del progreso: `docs/AUTONOMOUS_STATE.md` — **no lo leas entero**
   (~29.500 tokens). `python scripts/ledger.py next` responde «qué toca ahora» en ~114;

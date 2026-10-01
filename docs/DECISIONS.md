@@ -1362,3 +1362,18 @@ todos dejaban `[ENTIDAD LEGAL PENDIENTE]`.
 - confirmar con cada proveedor fuera del EEE la garantía de la transferencia, por ejemplo con
   cláusulas contractuales tipo;
 - la revisión profesional (H.20).
+
+## ADR-56 — Fin de la pausa de sesiones (DUEÑO, 2026-10-01)
+
+**Origen.** El dueño, preguntado en sesión «¿Se acabó la pausa?», respondió «YES». La pausa
+(31.7, `CIERRE_2026-09-30.md`) mandaba a toda sesión sin instrucciones explícitas parar y no
+ejecutar `ORCHESTRATOR.md`.
+
+**Decisión.** La pausa queda levantada. Se mantienen:
+- rama + PR por oleada, y `master` solo lo fusiona el dueño (ADR-45);
+- la política de modelos (ADR-52);
+- la dieta de contexto de `CLAUDE.md`.
+
+`CIERRE_2026-09-30.md` sigue vivo como registro y por sus §2 (scorecard) y §7 (trampas del
+entorno). `check_docs.py` [11] invierte su regla: con la pausa levantada falla si `CLAUDE.md`,
+`ORCHESTRATOR.md` o `docs/README.md` siguen mandando parar.

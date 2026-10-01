@@ -67,7 +67,7 @@ está roto.
 | `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
-| `docs/CIERRE_2026-09-30.md` | normativo-vivo | estado PAUSA y guía de fusión del #34; check_docs [11] | se queda | 2026-09-30 |
+| `docs/CIERRE_2026-09-30.md` | referencia-viva | registro de la pausa (levantada el 2026-10-01, ADR-56); §2 scorecard y §7 trampas del entorno; check_docs [11] | se queda | 2026-09-30 |
 | `docs/COMPETENCIA.md` | referencia-viva | mercado con URL y fecha | se queda | 2026-09-30 |
 | `docs/CONECTORES.md` | normativo-vivo | qué servicios externos toca una sesión y con qué permiso | se queda | 2026-09-26 |
 | `docs/DECISIONS.md` | normativo-vivo | ADR; solo se añade al final | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |

@@ -405,9 +405,25 @@ check(
     f"{len(_stale)} línea(s) sin «sustituid…»/«históric…» cerca: " + ", ".join(_stale[:40]),
 )
 
-print("\n[11] Pausa de sesiones autónomas (31.7, 2026-09-30)")
+print("\n[11] Pausa de sesiones autónomas (31.7, 2026-09-30; levantada el 2026-10-01, ADR-56)")
 _CIERRE_MD = ROOT / "docs" / "CIERRE_2026-09-30.md"
-if _CIERRE_MD.exists() and "Estado: PAUSA" in _CIERRE_MD.read_text(encoding="utf-8"):
+_CIERRE_TEXT = _CIERRE_MD.read_text(encoding="utf-8") if _CIERRE_MD.exists() else ""
+if "Estado: pausa levantada" in _CIERRE_TEXT:
+    # Levantada la pausa, ningún doc que lee una sesión al arrancar puede seguir
+    # mandándola parar: era justo lo que hacía CLAUDE.md con sesiones activas.
+    for _doc_path, _doc_label in (
+        (CLAUDE_MD, "CLAUDE.md"),
+        (ROOT / "docs" / "ORCHESTRATOR.md", "docs/ORCHESTRATOR.md"),
+        (ROOT / "docs" / "README.md", "docs/README.md"),
+    ):
+        _doc_text = _doc_path.read_text(encoding="utf-8") if _doc_path.exists() else ""
+        _stale = [m for m in ("PAUSA desde", "Proyecto en PAUSA", "informa del estado y para") if m in _doc_text]
+        check(
+            f"{_doc_label} ya no manda parar (pausa levantada, ADR-56)",
+            not _stale,
+            "sigue diciendo: " + ", ".join(_stale),
+        )
+elif "Estado: PAUSA" in _CIERRE_TEXT:
     for _doc_path, _doc_label in (
         (CLAUDE_MD, "CLAUDE.md"),
         (ROOT / "docs" / "ORCHESTRATOR.md", "docs/ORCHESTRATOR.md"),
