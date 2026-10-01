@@ -123,6 +123,7 @@ está roto.
 | `docs/support/response-templates-en.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/support/response-templates-es.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/ui-snapshots/34.1/README.md` | histórico | evidencia de capturas de 34.1 | se queda (junto a sus PNG) | 2026-09-28 |
+| `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |
 
 ## `docs/legal/`
 
