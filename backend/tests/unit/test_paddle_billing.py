@@ -16,7 +16,7 @@ from datetime import UTC, datetime, timedelta
 import pytest
 from sqlalchemy import func, select
 
-from app.core.config import settings
+from app.core.config import Settings, settings
 from app.core.entitlements import user_meets_tier
 from app.models.analytics import AnalyticsEvent
 from app.models.content import Track
@@ -103,6 +103,20 @@ def test_one_matching_h1_during_key_rotation_is_enough() -> None:
     good = _sign(body)
     ts, h1 = good.split(";")
     assert paddle_billing.verify_webhook(body, f"{ts};h1=deadbeef;{h1}")
+
+
+def test_whitespace_pasted_around_paddle_values_is_ignored() -> None:
+    """Un espacio o salto de línea pegado en Railway no rompe la firma."""
+    padded = Settings(
+        PADDLE_WEBHOOK_SECRET=f"  {SECRET}\n",
+        PADDLE_API_KEY=" pdl_live_apikey_x\n",
+        PADDLE_PRICE_PLUS=f"{PLUS} ",
+        PADDLE_ENVIRONMENT="production\n",
+    )
+    assert padded.PADDLE_WEBHOOK_SECRET == SECRET
+    assert padded.PADDLE_API_KEY == "pdl_live_apikey_x"
+    assert padded.PADDLE_PRICE_PLUS == PLUS
+    assert padded.PADDLE_ENVIRONMENT == "production"
 
 
 def test_unconfigured_rail_raises_runtime_error(monkeypatch: pytest.MonkeyPatch) -> None:

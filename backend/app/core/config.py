@@ -97,6 +97,22 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in v.split(",") if origin.strip()]
         return v
 
+    @field_validator(
+        "PADDLE_API_KEY",
+        "PADDLE_WEBHOOK_SECRET",
+        "PADDLE_ENVIRONMENT",
+        "PADDLE_CLIENT_TOKEN",
+        "PADDLE_PRICE_PLUS",
+        "PADDLE_PRICE_PRO",
+        "PADDLE_PRICE_CERTIFICATION",
+        mode="before",
+    )
+    @classmethod
+    def _strip_paddle_values(cls, v: Any) -> Any:
+        # Un espacio o salto de línea pegado con el valor en Railway rompe la
+        # firma del webhook (401 «Invalid Paddle-Signature») sin decir por qué.
+        return v.strip() if isinstance(v, str) else v
+
     @property
     def active_cors_origins(self) -> list[str]:
         """Origins actually handed to CORSMiddleware (22.2).
