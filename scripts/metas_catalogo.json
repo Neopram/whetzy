@@ -1,26 +1,36 @@
 {
-  "_que_es": "Denominadores del plan de catálogo ADR-53 (2026-09-30). Los lee scripts/catalog_coverage.py. Cada cifra externa lleva URL y fecha de lectura; las leyó y contó la sesión del 2026-09-30 (no un agente). Un número sin fuente aquí es un bug.",
-  "adr": "ADR-53",
-  "fecha": "2026-09-30",
-  "suelo": {
-    "skills": 50,
-    "preguntas_por_skill": 16,
-    "preguntas": 800,
+  "_que_es": "Metas del catálogo (ADR-54, 2026-10-01; sustituye el suelo y el ideal de ADR-53). Las lee scripts/catalog_coverage.py. Cada cifra externa lleva URL y fecha de lectura. Los recuentos de nodos de roadmap.sh se conservan solo como referencia para elegir QUÉ 32 skills entran en un track: ya no fijan cantidades.",
+  "adr": "ADR-54",
+  "fecha": "2026-10-01",
+  "forma_track": {
+    "skills": 32,
+    "modulos": 8,
+    "skills_por_modulo": 4,
+    "preguntas_por_skill": 10,
+    "ejecutables_min_por_skill": 3,
     "lecciones_por_skill": 1,
     "terminos_por_skill": 1
   },
-  "ideal": {
-    "preguntas_por_skill": 20,
-    "minimo_skills": 50,
-    "lecciones_por_skill": 1,
-    "terminos_por_skill": 1
+  "tipos_ejecutables": {
+    "tipos": [
+      "fill_blank_exec",
+      "fix_bug",
+      "sql_exec",
+      "js_exec",
+      "code_output"
+    ],
+    "razon": "Tipos que el navegador ejecuta (Pyodide, sql.js, worker JS). code_output entra porque la UI ofrece «▶ Ejecutar para verificar» (quiz.runToVerify; «Run to verify» visto en el recorrido del 2026-10-01). fill_blank queda fuera: se corrige comparando texto y no ejecuta nada.",
+    "exencion": "Un track cuyo tema no ejecuta en el navegador (nube, redes, gestión) queda exento con razón escrita en su fila (campo 'ejecucion_exenta'); mientras no la tenga, el script lo reporta como «sin medir»."
   },
   "certificacion": {
-    "suelo_skills_por_objetivo": 1,
-    "ideal_skills_por_objetivo": 2,
-    "suelo_preguntas_por_skill": 15,
-    "ideal_preguntas_por_skill": 20,
-    "formas_de_simulacro_reservadas": 6
+    "practica_min": 300,
+    "practica_factor_examen": 3,
+    "reservadas_factor_examen": 2,
+    "objetivos_cubiertos": "100 %"
+  },
+  "sesion": {
+    "preguntas_por_sesion": 518,
+    "nota": "Ritmo usado en la estimación de ADR-54 (prompt del dueño del 2026-10-01); es una estimación, no una medida."
   },
   "demanda": {
     "fuente": "Stack Overflow Developer Survey 2025, All Respondents (uso en el último año)",
@@ -68,7 +78,8 @@
       "r-programming": 129,
       "mlops": 62,
       "game-developer": 144
-    }
+    },
+    "uso": "solo para elegir qué 32 skills entran (ADR-54 §2); no es meta"
   },
   "tracks": [
     {"id": "track01", "nombre": "Python básico", "estado": "construido", "demanda": {"clave": "Python", "pct": 57.9}, "referencia": [{"roadmap": "python", "parte": 0.3333}]},

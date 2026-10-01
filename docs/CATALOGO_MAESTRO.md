@@ -19,7 +19,7 @@
 > referencia, 20 preguntas por skill). Cada certificación: el 100 % de sus objetivos oficiales
 > y un **banco de simulacro reservado** de 6 × la longitud del examen, que no sale en práctica.
 > Los tracks nuevos entran por **demanda medida** (Stack Overflow 2025, niveles A/B/C). Los
-> denominadores, con URL y fecha, están en `scripts/metas_adr53.json`. Ejecución: serie 37 del
+> denominadores, con URL y fecha, están en `scripts/metas_catalogo.json`. Ejecución: serie 37 del
 > ledger. Siguen de ADR-46 el corpus abierto fuera del repo y la guarda 37.0 antes de
 > cualquier pregunta nueva.
 > Política de fuentes desde el 2026-09-18 (ADR-11): **solo gratuitas y legales** — ver §2.1.
@@ -78,7 +78,7 @@ Cada track de aprendizaje (ADR-53):
   con razón (ADR-9) · guarda 37.0 en verde. Son unas 15–20 h de estudio.
 - **Ideal:** tantas skills como nodos de su temario de referencia (roadmap.sh), nunca menos
   que el suelo; 20 preguntas por skill; 1 lección de 6–10 min por skill. Denominador por
-  track en `scripts/metas_adr53.json`.
+  track en `scripts/metas_catalogo.json`.
 - El molde antiguo de 20 skills · 300 preguntas (track12) queda **por debajo del suelo**: es
   el punto de partida de 22 de los 24 tracks construidos, no una meta.
 
@@ -135,7 +135,7 @@ del plan, solo track01 está en el suelo; la tabla por track sale de
 ### 2.0 Ampliación por demanda medida (ADR-53; antes ADR-46) — 14 tracks, más 3 de §2.0.1
 
 Áreas que el mapa de 28 no cubría. Desde ADR-53 todas están en el plan
-(`scripts/metas_adr53.json`) y **el orden lo decide la demanda medida**: uso en Stack Overflow
+(`scripts/metas_catalogo.json`) y **el orden lo decide la demanda medida**: uso en Stack Overflow
 Developer Survey 2025, All Respondents (leído el 2026-09-30). **A ≥ 25 %** y **B 10–25 %**
 llegan al suelo primero; **C (< 10 % o sin medida)** solo cuando todos los A y B estén en el
 suelo. Licencias de las fuentes: se comprueban en 37.3 leyendo `LICENSE` (nada aquí se da por

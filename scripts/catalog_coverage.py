@@ -1,18 +1,17 @@
-"""Cobertura del catálogo frente al plan ADR-53 (2026-09-30).
+"""Cobertura del catálogo frente al plan ADR-54 (2026-10-01).
 
-Por qué existe: ADR-46 medía el catálogo contra una cifra fija (≥ 50 cursos por
-track = 200 skills · 3.000 preguntas) que ningún temario ni competidor respalda.
-ADR-53 la sustituye por dos metas medibles por track, con los denominadores en
-`scripts/metas_adr53.json` (cada cifra externa con URL y fecha):
+ADR-54 sustituye el suelo (50 skills · 800 preguntas) y el «ideal por temario» de
+ADR-53 por una forma única, con las metas en `scripts/metas_catalogo.json`:
 
-* **Suelo** (competitivo): 50 skills · 800 preguntas (≥ 16 por skill) · 1 lección
-  y 1 término por skill.
-* **Ideal** (cobertura): tantas skills como nodos del temario de referencia
-  asignados al track (roadmap.sh), nunca menos que el suelo; 20 preguntas por skill.
+* **Track de aprendizaje**: 32 skills (8 módulos × 4) · 10 preguntas por skill
+  (320 por track), ≥ 3 de ellas ejecutables donde el navegador ejecute · 1 lección
+  y 1 término por skill. Nada se borra: lo que pase de esa forma se conserva.
+* **Certificación**: 100 % de objetivos oficiales · práctica ≥ máx(300, 3 × L) ·
+  banco reservado de simulacro (`"pool": "simulacro"`) = 2 × L, con L = preguntas
+  del examen. Sin L publicada, las reservadas quedan «pendiente».
 
-Las certificaciones se miden aparte: skills frente a objetivos oficiales,
-práctica por skill y **banco de simulacro reservado** de 6 × la longitud del
-examen (preguntas con `"pool": "simulacro"`, que no salen en práctica ni repaso).
+Solo cuentan para lo pendiente los tracks ya construidos: los nuevos entran por la
+demanda medida (niveles A/B/C de ADR-53), con la misma forma.
 
 Uso::
 
@@ -27,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import sys
 from collections import Counter
@@ -35,7 +35,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT = ROOT / "content"
-METAS = Path(__file__).resolve().parent / "metas_adr53.json"
+METAS = Path(__file__).resolve().parent / "metas_catalogo.json"
 MOCK_POOL = "simulacro"
 
 
@@ -43,53 +43,60 @@ def load_metas(path: Path = METAS) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_catalog(content: Path = CONTENT) -> dict[str, dict[str, Any]]:
-    """Recuento real por track: skills, preguntas, lecciones, términos, reservadas."""
+def load_catalog(content: Path = CONTENT, exec_types: frozenset[str] | None = None) -> dict[str, dict[str, Any]]:
+    """Recuento real por track y por skill: práctica, ejecutables, reservadas, lecciones, términos."""
+    if exec_types is None:
+        exec_types = frozenset(load_metas()["tipos_ejecutables"]["tipos"])
     data = json.loads((content / "curriculum" / "tracks.json").read_text(encoding="utf-8"))
     tracks = next(iter(data.values()))
     out: dict[str, dict[str, Any]] = {}
+    owner: dict[str, str] = {}
     for t in tracks:
         skills = [s["id"] for m in t["modules"] for s in m["skills"]]
+        for sk in skills:
+            owner[sk] = t["id"]
         out[t["id"]] = {
             "nombre": t["name_es"],
             "certificacion": bool(t.get("certification")),
-            "skills": len(skills),
-            "skill_ids": set(skills),
-            "preguntas": 0,
+            "skill_ids": skills,
+            "practica_por_skill": dict.fromkeys(skills, 0),
+            "ejecutables_por_skill": dict.fromkeys(skills, 0),
             "reservadas": 0,
-            "lecciones": 0,
+            "lecciones": set(),
             "terminos": 0,
         }
-    q = Counter()
-    reserved = Counter()
     for qdir in sorted((content / "questions").iterdir()):
         m = re.match(r"(track\d+)", qdir.name)
         if not m or not qdir.is_dir():
             continue
         for f in sorted(qdir.rglob("*.json")):
             doc = json.loads(f.read_text(encoding="utf-8"))
-            items = doc if isinstance(doc, list) else doc.get("questions", [])
-            q[m.group(1)] += len(items)
-            reserved[m.group(1)] += sum(1 for it in items if it.get("pool") == MOCK_POOL)
+            for it in doc if isinstance(doc, list) else doc.get("questions", []):
+                tid = owner.get(it.get("skill_id", ""), m.group(1))
+                row = out.get(tid)
+                if row is None:
+                    continue
+                if it.get("pool") == MOCK_POOL:
+                    row["reservadas"] += 1
+                    continue
+                sk = it.get("skill_id")
+                if sk in row["practica_por_skill"]:
+                    row["practica_por_skill"][sk] += 1
+                    if it.get("type") in exec_types:
+                        row["ejecutables_por_skill"][sk] += 1
     for tid, row in out.items():
-        row["preguntas"] = q[tid]
-        row["reservadas"] = reserved[tid]
         ldir = content / "lessons" / tid
         if ldir.is_dir():
-            covered = set()
             for f in ldir.rglob("*.json"):
                 sk = json.loads(f.read_text(encoding="utf-8")).get("skill_id")
-                if sk in row["skill_ids"]:
-                    covered.add(sk)
-            row["lecciones"] = len(covered)
+                if sk in row["practica_por_skill"]:
+                    row["lecciones"].add(sk)
         gfile = content / "glossary" / f"{tid}.json"
         if gfile.is_file():
             # Misma forma doble que cuenta project_snapshot.py: lista suelta o {"terms": [...]}.
             payload = json.loads(gfile.read_text(encoding="utf-8"))
-            if isinstance(payload, list):
-                row["terminos"] = len(payload)
-            else:
-                row["terminos"] = len(payload.get("terms", payload.get("entries", [])))
+            terms = payload if isinstance(payload, list) else payload.get("terms", payload.get("entries", []))
+            row["terminos"] = len(terms)
     return out
 
 
@@ -106,14 +113,40 @@ def tier(entry: dict[str, Any], metas: dict[str, Any]) -> str:
     return "C"
 
 
-def ideal_skills(entry: dict[str, Any], metas: dict[str, Any]) -> tuple[int, bool]:
-    """(skills ideales, tiene_referencia). Sin referencia, el ideal es el suelo."""
-    floor = metas["ideal"]["minimo_skills"]
-    nodes = metas["roadmap"]["nodos"]
-    if not entry.get("referencia"):
-        return floor, False
-    total = sum(nodes[r["roadmap"]] * r["parte"] for r in entry["referencia"])
-    return max(floor, round(total)), True
+def track_gap(real: dict[str, Any], forma: dict[str, Any], exenta: str | None = None) -> dict[str, Any]:
+    """Lo que le falta a un track para la forma 32 × 10. Nunca negativo: nada se borra."""
+    practica = real["practica_por_skill"]
+    ejecutables = real["ejecutables_por_skill"]
+    n = len(practica)
+    nuevas = max(0, forma["skills"] - n)
+    q_skill = forma["preguntas_por_skill"]
+    sin_leccion = sum(1 for sk in practica if sk not in real["lecciones"])
+    total_skills = max(n, forma["skills"])
+    if exenta:
+        ejec = "exento"
+    elif not any(ejecutables.values()):
+        ejec = "sin medir"
+    else:
+        ok = sum(1 for sk in practica if ejecutables[sk] >= forma["ejecutables_min_por_skill"])
+        ejec = f"{ok}/{n}"
+    return {
+        "skills": n,
+        "skills_pendientes": nuevas,
+        "preguntas_pendientes": sum(max(0, q_skill - q) for q in practica.values()) + nuevas * q_skill,
+        "lecciones_pendientes": sin_leccion + nuevas * forma["lecciones_por_skill"],
+        "terminos_pendientes": max(0, total_skills * forma["terminos_por_skill"] - real["terminos"]),
+        "skills_con_ejecutables": ejec,
+    }
+
+
+def cert_targets(exam_len: int | None, cfg: dict[str, Any]) -> dict[str, Any]:
+    """Práctica ≥ máx(300, 3L); reservadas = 2L, o «pendiente» sin L publicada."""
+    if exam_len is None:
+        return {"practica": cfg["practica_min"], "reservadas": "pendiente"}
+    return {
+        "practica": max(cfg["practica_min"], cfg["practica_factor_examen"] * exam_len),
+        "reservadas": cfg["reservadas_factor_examen"] * exam_len,
+    }
 
 
 def validate(metas: dict[str, Any], catalog: dict[str, dict[str, Any]]) -> list[str]:
@@ -130,6 +163,8 @@ def validate(metas: dict[str, Any], catalog: dict[str, dict[str, Any]]) -> list[
                 problems.append(f"{t['id']}: roadmap '{r['roadmap']}' sin recuento en metas.roadmap.nodos")
         if not t.get("referencia") and not t.get("pendiente"):
             problems.append(f"{t['id']}: sin referencia y sin nota 'pendiente'")
+        if "ejecucion_exenta" in t and not str(t["ejecucion_exenta"]).strip():
+            problems.append(f"{t['id']}: 'ejecucion_exenta' sin razón escrita")
         built = t["estado"] == "construido"
         if built and t["id"] not in catalog:
             problems.append(f"{t['id']}: marcado 'construido' y no está en tracks.json")
@@ -158,138 +193,133 @@ def validate(metas: dict[str, Any], catalog: dict[str, dict[str, Any]]) -> list[
 
 
 def measure(metas: dict[str, Any], catalog: dict[str, dict[str, Any]]) -> dict[str, Any]:
-    s = metas["suelo"]
-    i = metas["ideal"]
+    forma = metas["forma_track"]
     rows = []
     for t in metas["tracks"]:
-        real = catalog.get(t["id"], {"skills": 0, "preguntas": 0, "lecciones": 0, "terminos": 0})
-        isk, has_ref = ideal_skills(t, metas)
-        iq = isk * i["preguntas_por_skill"]
-        rows.append({
-            "id": t["id"],
-            "nombre": t["nombre"],
-            "estado": t["estado"],
-            "nivel": tier(t, metas),
-            "skills": real["skills"],
-            "preguntas": real["preguntas"],
-            "q_por_skill": round(real["preguntas"] / real["skills"], 1) if real["skills"] else 0.0,
-            "lecciones": real["lecciones"],
-            "terminos": real["terminos"],
-            "suelo_ok": real["skills"] >= s["skills"] and real["preguntas"] >= s["preguntas"],
-            "ideal_skills": isk,
-            "ideal_preguntas": iq,
-            "ideal_con_referencia": has_ref,
-            "suelo_skills_pct": min(real["skills"], s["skills"]) / s["skills"],
-            "suelo_preguntas_pct": min(real["preguntas"], s["preguntas"]) / s["preguntas"],
-            "ideal_skills_pct": min(real["skills"], isk) / isk,
-            "ideal_preguntas_pct": min(real["preguntas"], iq) / iq,
-        })
-    n = len(rows)
-    totals = {
-        "tracks_plan": n,
-        "tracks_construidos": sum(1 for r in rows if r["estado"] == "construido"),
-        "tracks_en_suelo": sum(1 for r in rows if r["suelo_ok"]),
-        "suelo_skills": (sum(min(r["skills"], s["skills"]) for r in rows), n * s["skills"]),
-        "suelo_preguntas": (sum(min(r["preguntas"], s["preguntas"]) for r in rows), n * s["preguntas"]),
-        "ideal_skills": (sum(min(r["skills"], r["ideal_skills"]) for r in rows), sum(r["ideal_skills"] for r in rows)),
-        "ideal_preguntas": (sum(min(r["preguntas"], r["ideal_preguntas"]) for r in rows), sum(r["ideal_preguntas"] for r in rows)),
-        "ideal_sin_referencia": [r["id"] for r in rows if not r["ideal_con_referencia"]],
+        built = t["estado"] == "construido"
+        row = {"id": t["id"], "nombre": t["nombre"], "estado": t["estado"], "nivel": tier(t, metas)}
+        if built:
+            real = catalog[t["id"]]
+            row.update(track_gap(real, forma, t.get("ejecucion_exenta")))
+            row["preguntas"] = sum(real["practica_por_skill"].values())
+        rows.append(row)
+    built_rows = [r for r in rows if r["estado"] == "construido"]
+    totals: dict[str, Any] = {
+        "tracks_plan": len(rows),
+        "tracks_construidos": len(built_rows),
+        "tracks_en_forma": sum(
+            1 for r in built_rows
+            if not (r["skills_pendientes"] or r["preguntas_pendientes"] or r["lecciones_pendientes"] or r["terminos_pendientes"])
+        ),
     }
-    c = metas["certificacion"]
+    for k in ("skills_pendientes", "preguntas_pendientes", "lecciones_pendientes", "terminos_pendientes"):
+        totals[k] = sum(r[k] for r in built_rows)
+    totals["ejecutables_sin_medir"] = [r["id"] for r in built_rows if r["skills_con_ejecutables"] == "sin medir"]
+
+    cfg = metas["certificacion"]
     certs = []
     for e in metas["certificaciones"]:
-        real = catalog.get(e["id"], {"skills": 0, "preguntas": 0, "reservadas": 0})
+        real = catalog[e["id"]]
+        practica = sum(real["practica_por_skill"].values())
+        meta = cert_targets(e.get("preguntas_examen"), cfg)
+        reservadas_pend = (
+            max(0, meta["reservadas"] - real["reservadas"]) if isinstance(meta["reservadas"], int) else "pendiente"
+        )
         obj = e.get("objetivos")
-        L = e.get("preguntas_examen")
         certs.append({
             "id": e["id"],
             "codigo": e["codigo"],
             "objetivos": obj,
-            "skills": real["skills"],
-            "preguntas": real["preguntas"],
-            "q_por_skill": round(real["preguntas"] / real["skills"], 1) if real["skills"] else 0.0,
-            "suelo_skills": obj * c["suelo_skills_por_objetivo"] if obj else None,
-            "ideal_skills": obj * c["ideal_skills_por_objetivo"] if obj else None,
-            "preguntas_examen": L,
-            "reservadas_meta": L * c["formas_de_simulacro_reservadas"] if L else None,
-            "reservadas": real.get("reservadas", 0),
+            "skills": len(real["practica_por_skill"]),
+            # Proxy: una skill por objetivo. El mapa objetivo → skill no existe todavía.
+            "objetivos_cubiertos_proxy": (min(len(real["practica_por_skill"]), obj), obj) if obj else None,
+            "preguntas_examen": e.get("preguntas_examen"),
+            "practica": practica,
+            "practica_meta": meta["practica"],
+            "practica_pendiente": max(0, meta["practica"] - practica),
+            "reservadas": real["reservadas"],
+            "reservadas_meta": meta["reservadas"],
+            "reservadas_pendientes": reservadas_pend,
         })
-    known = [x for x in certs if x["suelo_skills"]]
-    totals["cert_practica_suelo"] = (
-        sum(min(x["preguntas"], x["suelo_skills"] * c["suelo_preguntas_por_skill"]) for x in known),
-        sum(x["suelo_skills"] * c["suelo_preguntas_por_skill"] for x in known),
+    totals["cert_practica_pendiente"] = sum(c["practica_pendiente"] for c in certs)
+    totals["cert_reservadas_pendientes"] = sum(
+        c["reservadas_pendientes"] for c in certs if isinstance(c["reservadas_pendientes"], int)
     )
-    totals["cert_practica_ideal"] = (
-        sum(min(x["preguntas"], x["ideal_skills"] * c["ideal_preguntas_por_skill"]) for x in known),
-        sum(x["ideal_skills"] * c["ideal_preguntas_por_skill"] for x in known),
-    )
-    with_len = [x for x in certs if x["reservadas_meta"]]
-    totals["cert_reservadas"] = (
-        sum(min(x["reservadas"], x["reservadas_meta"]) for x in with_len),
-        sum(x["reservadas_meta"] for x in with_len),
-    )
-    totals["cert_sin_objetivos"] = [x["id"] for x in certs if not x["objetivos"]]
-    totals["cert_sin_longitud"] = [x["id"] for x in certs if not x["preguntas_examen"]]
+    totals["cert_sin_longitud"] = [c["id"] for c in certs if c["preguntas_examen"] is None]
+    totals["cert_sin_objetivos"] = [c["id"] for c in certs if not c["objetivos"]]
+    total_q = totals["preguntas_pendientes"] + totals["cert_practica_pendiente"] + totals["cert_reservadas_pendientes"]
+    totals["preguntas_pendientes_total"] = total_q
+    ritmo = metas["sesion"]["preguntas_por_sesion"]
+    totals["sesiones_estimadas"] = math.ceil(total_q / ritmo) if total_q else 0
     return {"tracks": rows, "totales": totals, "certificaciones": certs}
 
 
-def _pct(pair: tuple[int, int]) -> str:
-    a, b = pair
-    return f"{a:,}/{b:,} ({a / b:.1%})".replace(",", ".")
+def _n(v: int) -> str:
+    return f"{v:,}".replace(",", ".")
 
 
-def render(result: dict[str, Any]) -> str:
-    out = ["Tracks de aprendizaje (ADR-53)", ""]
-    out.append(f"{'id':8} {'nivel':5} {'estado':11} {'skills':>6} {'Q':>6} {'Q/sk':>5} {'lecc':>5} {'suelo':>5} {'ideal sk':>8} {'ideal Q':>7}")
+def render(result: dict[str, Any], ritmo: int) -> str:
+    out = ["Tracks de aprendizaje (ADR-54: 32 skills × 10 preguntas, 1 lección y 1 término por skill)", ""]
+    out.append(f"{'id':8} {'nivel':5} {'estado':11} {'skills':>6} {'Q':>6} {'+skills':>7} {'+Q':>5} {'+lecc':>5} {'+térm':>5} {'skills ≥3 ejec':>14}")
     for r in result["tracks"]:
-        ref = "" if r["ideal_con_referencia"] else "*"
+        if r["estado"] != "construido":
+            out.append(f"{r['id']:8} {r['nivel']:5} {r['estado']:11} {'—':>6}")
+            continue
         out.append(
-            f"{r['id']:8} {r['nivel']:5} {r['estado']:11} {r['skills']:6} {r['preguntas']:6} {r['q_por_skill']:5} "
-            f"{r['lecciones']:5} {'sí' if r['suelo_ok'] else 'no':>5} {str(r['ideal_skills']) + ref:>8} {r['ideal_preguntas']:7}"
+            f"{r['id']:8} {r['nivel']:5} {r['estado']:11} {r['skills']:6} {r['preguntas']:6} {r['skills_pendientes']:7} "
+            f"{r['preguntas_pendientes']:5} {r['lecciones_pendientes']:5} {r['terminos_pendientes']:5} {r['skills_con_ejecutables']:>14}"
         )
     t = result["totales"]
     out += [
         "",
-        "* sin temario de referencia todavía: el ideal es el suelo (fila 37.1)",
+        f"Tracks del plan: {t['tracks_plan']} · construidos: {t['tracks_construidos']} · ya en la forma: {t['tracks_en_forma']}",
+        "Pendiente en tracks construidos (los planificados entran por demanda, no cuentan aquí):",
+        (
+            f"  skills {_n(t['skills_pendientes'])} · lecciones {_n(t['lecciones_pendientes'])} · "
+            f"términos {_n(t['terminos_pendientes'])} · preguntas {_n(t['preguntas_pendientes'])}"
+        ),
+        f"  ejecutables sin medir (sin preguntas ejecutables ni exención escrita): {', '.join(t['ejecutables_sin_medir']) or '—'}",
         "",
-        f"Tracks del plan: {t['tracks_plan']} · construidos: {t['tracks_construidos']} · en el suelo: {t['tracks_en_suelo']}",
-        f"Suelo, skills:     {_pct(t['suelo_skills'])}",
-        f"Suelo, preguntas:  {_pct(t['suelo_preguntas'])}",
-        f"Ideal, skills:     {_pct(t['ideal_skills'])}",
-        f"Ideal, preguntas:  {_pct(t['ideal_preguntas'])}",
+        "Certificaciones (práctica ≥ máx(300, 3 × L) · reservadas = 2 × L)",
         "",
-        "Certificaciones",
-        "",
-        f"{'id':8} {'código':11} {'obj':>4} {'skills':>6} {'Q':>5} {'Q/sk':>5} {'suelo sk':>8} {'ideal sk':>8} {'reserva meta':>12} {'reservadas':>10}",
+        f"{'id':8} {'código':11} {'obj':>4} {'skills':>6} {'L':>4} {'práctica':>8} {'meta':>5} {'+práct':>6} {'reserv':>6} {'meta':>9} {'+reserv':>9}",
     ]
     for c in result["certificaciones"]:
         out.append(
-            f"{c['id']:8} {c['codigo']:11} {c['objetivos'] or '—'!s:>4} {c['skills']:6} {c['preguntas']:5} {c['q_por_skill']:5} "
-            f"{c['suelo_skills'] or '—'!s:>8} {c['ideal_skills'] or '—'!s:>8} {c['reservadas_meta'] or '—'!s:>12} {c['reservadas']:10}"
+            f"{c['id']:8} {c['codigo']:11} {c['objetivos'] or '—'!s:>4} {c['skills']:6} {c['preguntas_examen'] or '—'!s:>4} "
+            f"{c['practica']:8} {c['practica_meta']:5} {c['practica_pendiente']:6} {c['reservadas']:6} "
+            f"{c['reservadas_meta']!s:>9} {c['reservadas_pendientes']!s:>9}"
         )
     out += [
         "",
-        f"Práctica, suelo (15 Q × objetivo):  {_pct(t['cert_practica_suelo'])}",
-        f"Práctica, ideal (20 Q × 2 skills/objetivo): {_pct(t['cert_practica_ideal'])}",
-        f"Banco de simulacro reservado (6 × examen): {_pct(t['cert_reservadas'])}",
+        f"Práctica de certificación pendiente: {_n(t['cert_practica_pendiente'])}",
         (
-            f"Sin objetivos contados: {', '.join(t['cert_sin_objetivos']) or '—'} · "
-            f"sin longitud de examen publicada: {', '.join(t['cert_sin_longitud']) or '—'}"
+            f"Reservadas pendientes: {_n(t['cert_reservadas_pendientes'])} "
+            f"(sin contar {', '.join(t['cert_sin_longitud']) or '—'}: examen sin número de preguntas publicado)"
+        ),
+        (
+            f"Objetivos sin contar: {', '.join(t['cert_sin_objetivos']) or '—'} · cobertura de objetivos medida con el proxy "
+            "«una skill por objetivo» (no hay mapa objetivo → skill)"
+        ),
+        "",
+        (
+            f"Total de preguntas pendientes: {_n(t['preguntas_pendientes_total'])} "
+            f"≈ {t['sesiones_estimadas']} sesiones a {ritmo} preguntas/sesión (estimación)"
         ),
     ]
     return "\n".join(out)
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args(argv)
     metas = load_metas()
-    catalog = load_catalog()
+    catalog = load_catalog(exec_types=frozenset(metas["tipos_ejecutables"]["tipos"]))
     problems = validate(metas, catalog)
     if problems:
-        print("[catalog_coverage] FAIL — metas_adr53.json no describe el catálogo real:")
+        print("[catalog_coverage] FAIL — metas_catalogo.json no describe el catálogo real:")
         for p in problems:
             print(f"  - {p}")
         return 1
@@ -298,9 +328,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     result = measure(metas, catalog)
     if args.json:
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print(json.dumps(result, ensure_ascii=False, indent=2, default=sorted))
     else:
-        print(render(result))
+        print(render(result, metas["sesion"]["preguntas_por_sesion"]))
     return 0
 
 

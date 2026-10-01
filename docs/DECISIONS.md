@@ -1131,6 +1131,9 @@ dueño ponga la clave. Hasta entonces los rellenos van por `Workflow` sin descue
 
 ## ADR-53 — Plan del catálogo por cobertura: suelo competitivo, ideal por temario, simulacros reservados y prioridad por demanda (DUEÑO, 2026-09-30; cifras elegidas por la sesión con fuentes; sustituye la meta de volumen de ADR-46)
 
+> **Sustituida en su suelo e ideal por ADR-54 (2026-10-01).** `scripts/metas_adr53.json` se llama
+> desde entonces `scripts/metas_catalogo.json`. Lo que sigue es histórico.
+
 **Origen.** El 2026-09-29 el dueño preguntó si la meta de ADR-46 (≥ 50 cursos × 42 tracks
 = 8.400 skills · 126.000 preguntas) estaba sobredimensionada frente a la competencia directa, y
 el 2026-09-30 pidió investigar en internet las métricas ideales «sin dejar nada por fuera» y
@@ -1250,3 +1253,73 @@ ADR-46 llevan la línea «Sustituida»; la fila h de ADR-50 cambia de orden de c
 `scripts/catalog_coverage.py` + `backend/tests/test_cobertura_plan.py` mantienen el plan y el
 catálogo en el mismo mundo; `check_docs.py` impide que un documento vivo vuelva a dar la meta
 de ADR-46 como vigente.
+
+## ADR-54 — Catálogo uniforme 32 × 10 (2026-10-01, decisión del dueño). Sustituye el suelo y el ideal de ADR-53.
+
+**Origen.** Prompt del dueño del 2026-10-01 («lanzamiento piloto + ADR-54»), que aprueba esta
+decisión tal como se escribe aquí. ADR-53 pedía ≈ 31.056 preguntas solo para su suelo
+(≈ 60 sesiones) y un «ideal por temario» de ≈ 94.611, antes de tener un solo usuario real.
+
+**Decisión:**
+
+1. **Track de aprendizaje, forma única:** 32 skills (8 módulos × 4) · 10 preguntas por skill
+   (= 320 por track), ≥ 3 de ellas ejecutables o interactivas donde el navegador ejecute
+   (Python, SQL, JS; exento con razón escrita en otro caso) · 1 lección por skill · 1 término
+   por skill.
+2. **roadmap.sh deja de fijar cantidades:** solo sirve para elegir QUÉ 32 skills entran. Se
+   elimina el «ideal por temario».
+3. **Nada se borra:** un track por encima de 32 skills o de 10 preguntas por skill conserva
+   lo que tiene.
+4. **Certificación, regla única:** 100 % de objetivos oficiales cubiertos · práctica
+   ≥ máx(300, 3 × preguntas del examen) · banco reservado de simulacro = 2 × preguntas del
+   examen (`pool: "simulacro"`), en vez de 6 ×. Examen sin número de preguntas publicado:
+   reservadas «pendiente», con la nota de por qué; nunca un número inventado.
+5. **Tracks nuevos:** solo por la demanda medida de ADR-53 (niveles A/B/C), con la misma forma.
+6. **Se mantiene de ADR-53:** niveles de demanda, mecanismo del banco reservado (37.18) y
+   suelos de métricas de producto (vetados hasta ≥ 100 registrados reales, 31.5).
+7. **Orden:** ningún contenido antes del piloto (`LANZAMIENTO_PILOTO.md`); después, primero
+   los tracks que usen los pilotos.
+
+**Qué cuenta como ejecutable** (elección de la sesión, escrita en `scripts/metas_catalogo.json`):
+`fill_blank_exec`, `fix_bug`, `sql_exec`, `js_exec` y `code_output` (la UI ofrece «▶ Ejecutar
+para verificar»). `fill_blank` no: se corrige comparando texto. Un track sin preguntas
+ejecutables ni exención escrita sale «sin medir»; hoy son 11 (track18-23 y 26-30).
+
+**Evidencia** (leída por la sesión del 2026-09-30, no releída hoy: **[Likely]**):
+`CATALOGO_MAESTRO.md` §8 — Kodree 687 lecciones / 2.559 tareas; Boot.dev mediana de 51
+lecciones y 20 h por curso; Exercism Python 146 ejercicios; Pocket Prep ISC2 CC 800
+preguntas; Tutorials Dojo / Udemy 390 preguntas por examen AWS (lectura de agente, Udemy
+devolvió 403). Mediana de ≈ 7 oportunidades de práctica por componente de conocimiento
+(Koedinger et al. 2023, PNAS), citada en ADR-53: 10 preguntas por skill la cubren con margen.
+
+**Cifras** (`python scripts/catalog_coverage.py` sobre `master` `80cd3ad`, 2026-10-01; 24
+tracks construidos, 11 certificaciones):
+
+| Qué falta | ADR-54 |
+|---|---|
+| Skills en tracks construidos | +261 |
+| Lecciones | +261 |
+| Términos de glosario | +266 |
+| Preguntas en tracks | +2.610 |
+| Práctica de certificación | +907 |
+| Reservadas de simulacro (sin AZ-900, AI-900 y DP-900: sin longitud publicada) | +1.040 |
+| **Total de preguntas** | **4.557 ≈ 9 sesiones** a 518/sesión (estimación) |
+
+Frente a 31.056 preguntas (≈ 60 sesiones) del suelo de ADR-53. La cifra de referencia del
+prompt (+867 de práctica de certificación, ≈ 4.500 en total) se calculó sobre `e83bf63`,
+antes de fusionar el PR #34: con el mismo script sobre ese commit sale 867 exacto. El #34
+retiró 45 preguntas de relleno de track43 y sumó 5 a AZ-900; neto, +40.
+
+**Límites que se dejan escritos:**
+- No supera a Boot.dev en horas de lección ni a Pocket Prep en volumen de ISC2 CC. Si CC pasa
+  a prioridad, ≈ +250 solo ahí (800 − 353 de práctica − 200 reservadas = 247).
+- Compite en práctica adaptativa, ES/EN nativo y ejecución en el navegador.
+- La cobertura de objetivos de certificación se mide con un proxy (una skill por objetivo):
+  no hay mapa objetivo → skill. Security+ (SY0-701) sigue sin objetivos contados.
+- El ritmo de 518 preguntas por sesión es el único dato medido (sesión 18.4); la estimación
+  de sesiones es un orden de magnitud.
+
+**Consecuencias:** `scripts/metas_adr53.json` → `scripts/metas_catalogo.json`;
+`scripts/catalog_coverage.py` mide la forma 32 × 10 y la regla de certificación;
+`backend/tests/test_cobertura_plan.py` tiene un test por regla, cada uno mutado a rojo. La
+propagación a los documentos vivos y la guarda de `check_docs.py` van en el PR siguiente.
