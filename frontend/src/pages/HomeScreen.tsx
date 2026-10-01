@@ -16,14 +16,17 @@ function greetingKey(): 'home.greetingMorning' | 'home.greetingAfternoon' | 'hom
   return h < 12 ? 'home.greetingMorning' : h < 19 ? 'home.greetingAfternoon' : 'home.greetingEvening';
 }
 
-// Mismo umbral con el que el motor da una habilidad por dominada (territorio,
-// más abajo): una cifra, no dos criterios distintos en la misma pantalla.
-const MASTERED = 0.75;
+// Dos cifras distintas, cada una con su nombre: el objetivo de preparación
+// (la marca del arco y «rutas listas») y el umbral con el que el motor da una
+// habilidad por dominada (MASTERY_THRESHOLD del backend, el ✓ de Rutas).
+const READY = 0.75;
+const MASTERED = 0.95;
 
 export function HomeScreen() {
   const user = useAppStore((s) => s.user);
   const startQuiz = useAppStore((s) => s.startQuiz);
   const setScreen = useAppStore((s) => s.setScreen);
+  const openTrack = useAppStore((s) => s.openTrack);
   const lang = user.language;
   const { t } = useTranslation();
 
@@ -40,7 +43,7 @@ export function HomeScreen() {
   const overallMastery = tracks.length
     ? Math.round((tracks.reduce((sum, tr) => sum + tr.average_mastery, 0) / tracks.length) * 100)
     : 0;
-  const tracksReady = tracks.filter((tr) => tr.average_mastery >= MASTERED).length;
+  const tracksReady = tracks.filter((tr) => tr.average_mastery >= READY).length;
   const shownTracks = tracks.slice(0, 5);
   const reviewsDue = dash.data?.reviews_due ?? 0;
   const streak = dash.data?.current_streak ?? user.currentStreak;
@@ -173,7 +176,7 @@ export function HomeScreen() {
           </div>
           <div className={styles.trackList}>
             {shownTracks.map((tr) => (
-              <button key={tr.track_id} type="button" className={styles.trackRow} onClick={() => setScreen('tracks')}>
+              <button key={tr.track_id} type="button" className={styles.trackRow} onClick={() => openTrack(tr.track_id)}>
                 <span className={styles.trackIcon} aria-hidden="true">{tr.icon}</span>
                 <span className={styles.trackBody}>
                   <span className={styles.trackName}>{lang === 'es' ? tr.name_es : tr.name_en}</span>

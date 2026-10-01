@@ -14,7 +14,9 @@ test.describe('certifying exam', () => {
     await registerUser(page, { username, displayName: 'E2E Cert' });
 
     await page.getByRole('button', { name: 'Rutas' }).click();
-    await page.getByRole('tab', { name: /AWS Certified Cloud Practitioner/ }).click();
+    // Rutas abre la ruta en curso; el catálogo está detrás de «Todas las rutas».
+    await page.getByRole('button', { name: /Todas las rutas/ }).click();
+    await page.getByRole('button', { name: /AWS Certified Cloud Practitioner/ }).click();
     await page.getByRole('button', { name: /Simulacro de examen|Mock exam/ }).click();
 
     const section = page.getByTestId('certifying');
