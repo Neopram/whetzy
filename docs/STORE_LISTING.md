@@ -1,6 +1,6 @@
 # Whetzy — Store Listing (iOS + Android)
 
-> Consolidado de `docs/store/ios/listing.md` y `docs/store/play-store-data-safety.md`.
+> Resumen de las dos tiendas. El detalle vive en `docs/store/ios/listing.md` (notas para Apple, Info.plist, IAP) y `docs/store/play-store-data-safety.md` (formulario Data Safety); si divergen, manda el detalle.
 > Precios: ADR-41/49 (Pro $14,99/mes · Pro Max $19,99/mes · Creador $99,99/mes · Certificación $39,99 pago único).
 > Última actualización: septiembre 2026.
 
@@ -122,7 +122,6 @@ Detalle completo en `docs/store/play-store-data-safety.md`.
 |---|---|---|
 | H.2 (Apple Developer Program) | iOS submission | 17.14, 19.2 |
 | H.3 (Google Play Console) | Android submission | 19.3 |
-| H.4 (Stripe live) | Pagos web | — |
 | 17.14 (RevenueCat IAP) | App Store 3.1.1 | Requiere H.2 |
 | 19.2 (Sign in with Apple) | App Store 4.8 (si hay OAuth) | Requiere H.2 |
 

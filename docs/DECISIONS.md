@@ -1323,3 +1323,57 @@ retiró 45 preguntas de relleno de track43 y sumó 5 a AZ-900; neto, +40.
 `scripts/catalog_coverage.py` mide la forma 32 × 10 y la regla de certificación;
 `backend/tests/test_cobertura_plan.py` tiene un test por regla, cada uno mutado a rojo. La
 propagación a los documentos vivos y la guarda de `check_docs.py` van en el PR siguiente.
+
+## ADR-55 — Fuente legal canónica: lo publicado (2026-10-01; el dueño lo delegó en la sesión: «investiga, asume los roles que debas»)
+
+**Origen.** Había cuatro sitios con textos legales y la web solo usaba uno: las claves i18n
+`legal.*` que pinta `LegalScreen.tsx` (whetzy.com/privacy, /terms, /refund); `docs/legal/`
+(borradores largos ES/EN, «NO debe utilizarse en producción»); `legal/` en la raíz (otra
+versión, bilingüe en un fichero); y `content/legal/` (textos comerciales que ningún código
+carga). Las copias ya divergían: los borradores daban Stripe como procesador cuando el dueño
+lo descartó (H.29), el de reembolsos prometía «14 días de prueba gratis» que no existen y
+todos dejaban `[ENTIDAD LEGAL PENDIENTE]`.
+
+**Decisión.**
+
+1. **Manda lo publicado.** Privacidad, términos y reembolsos son las claves i18n `legal.*`
+   en ES y EN. Es lo que el usuario ve y acepta, y lo que ya vigilaban las guardas
+   (`check_legal_facts.py`, paridad i18n). Cambiar una política es cambiar esas claves.
+2. **Una sola carpeta para lo demás: `docs/legal/`.** Allí quedan los borradores que la app
+   aún no publica (aviso de IA, DPA, marcas), los textos comerciales que venían de
+   `content/legal/` y los instrumentos internos que venían de `legal/`.
+3. **Los borradores largos se archivan** en `docs/archive/legal-borradores/`, como material
+   para la revisión profesional (H.20). No mandan.
+4. **Guardas.** `check_legal_facts.py` [5b] falla si vuelve una copia de privacidad, términos,
+   reembolsos o cookies a `docs/legal/`. [1] aplica las afirmaciones prohibidas también al
+   texto publicado. [1b] exige que la política publicada nombre a cada procesador que el código
+   usa (Paddle, Groq, Resend, Sentry), comprobado por contenido del fichero y no solo por su
+   existencia.
+5. **Lo publicado se completa con lo que exige el art. 13 RGPD y faltaba en pantalla:**
+   - quién trata los datos (Railway, Cloudflare, Groq, Resend, Sentry, Paddle, verificados en
+     el código y en el log de producción del 2026-10-01);
+   - que algunos tratan datos fuera del EEE, y cómo pedir sus garantías;
+   - el derecho a reclamar ante la autoridad de control, cookies y menores. Estas tres claves
+     existían en i18n pero ningún componente las pintaba.
+
+**Pendiente del dueño** (no lo resuelve una sesión):
+- el nombre legal del titular, para identificar al responsable del tratamiento y a la parte
+  de los Términos;
+- confirmar con cada proveedor fuera del EEE la garantía de la transferencia, por ejemplo con
+  cláusulas contractuales tipo;
+- la revisión profesional (H.20).
+
+## ADR-56 — Fin de la pausa de sesiones (DUEÑO, 2026-10-01)
+
+**Origen.** El dueño, preguntado en sesión «¿Se acabó la pausa?», respondió «YES». La pausa
+(31.7, `CIERRE_2026-09-30.md`) mandaba a toda sesión sin instrucciones explícitas parar y no
+ejecutar `ORCHESTRATOR.md`.
+
+**Decisión.** La pausa queda levantada. Se mantienen:
+- rama + PR por oleada, y `master` solo lo fusiona el dueño (ADR-45);
+- la política de modelos (ADR-52);
+- la dieta de contexto de `CLAUDE.md`.
+
+`CIERRE_2026-09-30.md` sigue vivo como registro y por sus §2 (scorecard) y §7 (trampas del
+entorno). `check_docs.py` [11] invierte su regla: con la pausa levantada falla si `CLAUDE.md`,
+`ORCHESTRATOR.md` o `docs/README.md` siguen mandando parar.

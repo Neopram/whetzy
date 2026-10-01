@@ -1,8 +1,8 @@
 # Whetzy — Orquestador autónomo · versión final
 
-> **PAUSA desde el 2026-09-30 (decisión del dueño).** Si arrancas sin
-> instrucciones explícitas del dueño, NO ejecutes este documento: lee
-> `docs/CIERRE_2026-09-30.md`, informa del estado y para.
+> **Pausa levantada el 2026-10-01 (dueño, ADR-56).** Este documento vuelve a aplicar, con
+> rama + PR y `master` solo por el dueño (ADR-45). La pausa del 2026-09-30 y las trampas
+> del entorno quedan en `docs/CIERRE_2026-09-30.md`.
 
 > Idempotente. Cualquier sesión que lo lea sabe dónde está el proyecto leyendo
 > `docs/AUTONOMOUS_STATE.md`, y sabe dónde dejarlo escribiendo ahí mismo.

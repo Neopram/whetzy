@@ -109,7 +109,7 @@ archive/, STATUS.md, DECISIONS.md y CHANGELOG.md):
      .github/dependabot.yml y la fila 22.4 está TODO. O creas el fichero (es config,
      ADR-45 lo permite) o corriges la frase. También :121 «No build is deployed unless
      all checks pass» es falso mientras el CI no corra (H.13/H.17).
-  j) docs/capacity.md:33 «~50k users», docs/incidents/postmortem-template.md (ejemplo
+  j) docs/capacity.md:33 «~50k users», docs/archive/incidents-postmortem-template.md (archivado el 2026-10-01; ejemplo
      con 50k usuarios y @alice): hay cero usuarios reales (archive/AUDITORIA_EXTERNA_2026-09-19.md:168).
      Marcar como ejemplo o corregir.
   k) docs/ab-framework.md:55 «Started: 2026-09-19»: el ledger dice que 24.14 nunca se

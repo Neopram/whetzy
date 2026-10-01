@@ -194,7 +194,7 @@ Enable only if automated abuse is detected (e.g., spike in failed login attempts
    is_valid = response.json().get("success")
    ```
 
-**Deployment**: Turnstile is disabled by default. Activate only if abuse threshold is crossed (see `docs/incidents/runbook.md`).
+**Deployment**: Turnstile is disabled by default. Activate only if abuse threshold is crossed (ver `docs/RUNBOOK.md` § Incident Management).
 
 ## DDoS Protection (Always-On)
 
