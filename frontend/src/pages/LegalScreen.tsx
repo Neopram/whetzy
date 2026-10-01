@@ -29,6 +29,7 @@ function PrivacyContent() {
         <li>{t('legal.privacyL3')}</li>
         <li>{t('legal.privacyL4')}</li>
         <li>{t('legal.privacyL5')}</li>
+        <li>{t('legal.privacyPayments')}</li>
       </ul>
 
       <h2>{t('legal.privacyH2')}</h2>
