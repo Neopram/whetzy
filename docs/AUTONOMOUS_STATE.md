@@ -537,7 +537,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.27 | cNFT de certificados en Solana (29.10, opcional; ADR-37): wa… |
 | H.28 | Grant / bounty de la Solana Foundation o Superteam para trac… |
 | H.29 | ABIERTO 2026-09-19 — Decisión: Grecia + 3 rails de pagos + a… |
-| H.30 | PRI 0 — correo: **decidido Resend** (ADR-50l). Dueño: cuenta en resend.com + `RESEND_API_KEY` en Railway (RUNBOOK «Correo»). La pantalla ya no miente (`bb59562`) |
+| H.30 | **RESUELTA 2026-10-01** — Resend: dominio verificado, `RESEND_API_KEY` en Railway. Confirmado en logs: `email_sent provider=resend` 11:39:17Z. `support@whetzy.com` vía Cloudflare Email Routing |
 | H.31 | **RESUELTA** (ADR-50m) — landing servida 2026-09-26 sin testimonios ni «1.2M» |
 | H.32 | **2** | H.32 | **RESUELTA** | **RESUELTA** `e40ba75` (2026-09-24) → §I |
 | H.33 | **RESUELTA 2026-09-26** — log Railway `b64e2a9a`/`f097361c`: `[owner] unchanged: admin@whetzy.com` (falta solo login `/admin` de 30.8) |
