@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** decía «Commit: Pendiente», pero 24.12 está DONE (`c912713`, `docs/archive/LEDGER_HISTORY.md`).
+
 # 24.12 Mobile Polish — Implementación
 
 **Commit:** Pendiente  
