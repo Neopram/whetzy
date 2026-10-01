@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,6 +18,12 @@ from app.services import tutor_quota
 from app.services.ai import tutor as tutor_service
 
 router = APIRouter()
+logger = logging.getLogger("whetzy.llm")
+
+# 503 con este detalle cuando el proveedor rechaza la llamada y no hay respaldo
+# que lo cubra (GuardedProvider deja pasar los 4xx a propósito, 39.11): el
+# alumno ve «inténtalo de nuevo» y el log dice qué falla, en vez de un 500.
+TUTOR_UNAVAILABLE = "tutor_unavailable"
 
 
 class ExplainRequest(BaseModel):
@@ -54,12 +62,22 @@ async def explain(
                 "X-Tutor-Resets-At": tutor_quota.resets_at(day).isoformat(),
             },
         )
-    result = await tutor_service.explain_question(
-        db,
-        current_user,
-        payload.question_id,
-        conversation_history=payload.conversation_history,
-    )
+    try:
+        result = await tutor_service.explain_question(
+            db,
+            current_user,
+            payload.question_id,
+            conversation_history=payload.conversation_history,
+        )
+    except httpx.HTTPStatusError as exc:
+        logger.error(
+            "llm_provider_rejected status=%s url=%s",
+            exc.response.status_code,
+            exc.request.url,
+        )
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE, detail=TUTOR_UNAVAILABLE
+        ) from exc
     # Solo cuenta lo que se sirvió: un fallo del proveedor no gasta cupo.
     await tutor_quota.record(db, current_user.id, day)
     await db.commit()
