@@ -24,7 +24,7 @@ test.describe('auth', () => {
     await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
     await page.getByRole('button', { name: 'ENTRAR' }).click();
 
-    await expect(page.getByRole('button', { name: 'Inicio' })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
   });
 
   test('invalid login shows an error and does not navigate away', async ({ page }) => {
@@ -52,7 +52,7 @@ test.describe('auth', () => {
     await registerUser(page, { username, displayName: 'E2E Logout' });
 
     // ProfileScreen renders the sign-out button (i18n key `signOut` = "Cerrar sesión").
-    await page.getByRole('button', { name: 'Perfil' }).click();
+    await page.getByRole('button', { name: 'Yo', exact: true }).click();
     await page.getByRole('button', { name: 'Cerrar sesión' }).click();
 
     // Sign-out leaves `/` as the public landing, not the register form.

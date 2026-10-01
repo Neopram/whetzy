@@ -47,7 +47,7 @@ test('onboarding (EN): landing → first answered question in < 60 s', async ({ 
   await expect(closeLesson).toBeVisible({ timeout: 15_000 });
   await closeLesson.click();
 
-  await page.getByRole('button', { name: 'Home' }).click();
+  await page.getByRole('button', { name: 'Today', exact: true }).click();
   await page.getByRole('button', { name: 'STUDY NOW' }).click();
 
   await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });

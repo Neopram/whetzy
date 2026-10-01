@@ -111,7 +111,7 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
     await expect(closeLesson).toBeVisible({ timeout: 15_000 });
     await closeLesson.click();
 
-    await page.getByRole('button', { name: 'Inicio' }).click();
+    await page.getByRole('button', { name: 'Hoy', exact: true }).click();
     await expectNoHorizontalScroll(page, 'Home ES');
     await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
     await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
