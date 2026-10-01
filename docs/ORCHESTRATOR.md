@@ -49,11 +49,12 @@ ADR-16 queda suspendida). Cancelar en dos toques.
 - **NO** voz. **NO** OCR. Cuando aparezca la tentación, no.
 - Groq + `qwen/qwen3.8-27b` tras la abstracción `LLMProvider`. Cambiar de
   proveedor es config, no refactor.
-- Catálogo: **`docs/CATALOGO_MAESTRO.md`** — plan de **ADR-53**: cada track de aprendizaje
-  al **suelo** (50 skills · 800 preguntas · 1 lección y 1 término por skill) y después al
-  **ideal** de su temario (20 preguntas por skill); cada certificación con el 100 % de sus
-  objetivos y un **banco de simulacro reservado** (6 × examen); tracks nuevos por **demanda
-  medida** (A → B → C). Cobertura: `python scripts/catalog_coverage.py`. Contenido sobre
+- Catálogo: **`docs/CATALOGO_MAESTRO.md`** — plan de **ADR-54** (2026-10-01): cada track de
+  aprendizaje con la **forma única 32 × 10** (32 skills, 10 preguntas por skill con ≥ 3
+  ejecutables, 1 lección y 1 término por skill; nada se borra); cada certificación con el
+  100 % de sus objetivos, práctica ≥ máx(300, 3 × examen) y **banco de simulacro reservado**
+  de 2 × examen; tracks nuevos por **demanda medida** (A → B → C); ningún contenido antes del
+  piloto (`LANZAMIENTO_PILOTO.md`). Cobertura: `python scripts/catalog_coverage.py`. Contenido sobre
   un corpus abierto descargado y verificado en `corpus/` (fuera del repo, ADR-46). Las cifras de hoy (tracks, cursos = módulos, preguntas)
   viven solo en `frontend/src/lib/catalog.ts`, vigiladas por `check_docs.py` [4]. El
   catálogo es la única lista; cuando otro doc lo contradiga, manda el catálogo. **La puerta 37.0 va antes que cualquier pregunta nueva.** No hay atajos.
