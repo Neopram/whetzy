@@ -22,9 +22,11 @@
 > conectores de claude.ai (Railway, Sentry, PostHog…) y lo que la sesión puede hacer con
 > ellos, según `docs/CONECTORES.md`.
 >
-> **Nota v2.3 (2026-09-30).** El plan del catálogo es **ADR-53**, no ADR-46: suelo de 50
-> skills · 800 preguntas por track, ideal por temario, banco de simulacro reservado y tracks
-> por demanda medida. El orden de la serie 37 de la FASE 2 está reescrito sobre él. Las menciones
+> **Nota v2.4 (2026-10-01).** El plan del catálogo es **ADR-54**: forma única 32 skills ×
+> 10 preguntas por track, certificaciones con práctica ≥ máx(300, 3 × examen) y simulacro
+> reservado de 2 × examen, tracks por demanda medida y ningún contenido antes del piloto. El
+> suelo y el ideal de ADR-53 (v2.3, 2026-09-30) quedaron sustituidos; la serie 37 de la
+> FASE 2 los cita como historia. Las menciones
 > a «≥ 50 cursos por track» de la FASE 1 son historia de aquella auditoría (cerrada el
 > 2026-09-25); no las copies.
 
@@ -92,11 +94,12 @@ archive/, STATUS.md, DECISIONS.md y CHANGELOG.md):
      h21-decision.md la frase «sin fila viva en el ledger» ya es falsa.
   e) grep -rn '27 tracks' docs → CATALOGO_MAESTRO.md, MARKETPLACE.md,
      competitive-teardown.md, AUTONOMOUS_STATE.md. Meta actual: 28 + 14 (§2.0) y los
-     que 37.1 confirme (ADR-46; hoy ADR-53: tracks por demanda). Los recálculos históricos del teardown (§9, §11) se
+     que 37.1 confirme (ADR-46; hoy ADR-54: tracks por demanda medida). Los recálculos históricos del teardown (§9, §11) se
      dejan con una nota «histórico; meta actual ADR-46», no se reescriben.
   f) grep -rn '2\.700 cursos\|2,700 cursos\|2\.800 cursos' docs → CATALOGO_MAESTRO.md,
      AUTONOMOUS_STATE.md. Sustituir por «≥ 50 cursos × ≥ 42 tracks (ADR-46)» (histórico;
-     hoy ADR-53: suelo 50 skills · 800 preguntas por track e ideal por temario).
+     hoy ADR-54: forma única 32 skills × 10 preguntas por track; el suelo y el ideal de
+     ADR-53 quedaron sustituidos).
   g) grep -rn 'azul cielo' docs/AUTONOMOUS_STATE.md docs/design/decisiones-24.0.md
      → paleta Obsidian, cian #06B6D4, oscuro por defecto (serie 34, ADR-47).
   h) grep -n 'deploy MANUAL' docs/AUTONOMOUS_STATE.md → fuera del invariante ya
@@ -137,11 +140,12 @@ documentos vivos`. Abre el PR con ese commit y sigue en la misma rama.
 1. Serie 30 (PRI 0): login, landing honesta, correo, cuenta de dueño — producción rota.
 2. Serie 34 PRI 0: guarda .tsx↔.module.css y e2e verde en CI (o en ci_local.sh mientras
    el CI de GitHub siga sin correr, H.13/H.17 — dilo así, no «verde en CI»).
-3. Serie 37 en el orden de ADR-53 (37.0, 37.2 y 37.3 ya están DONE): fase 0 = 37.18
-   banco de simulacro reservado → 37.19 formatos de examen del proveedor → 37.20 métricas
-   de producto con meta; fase 1 = 37.10 certificaciones al suelo; fase 2 = 37.6 tracks
-   construidos al suelo (nivel A primero) y 37.7 track24/25; fase 3 = 37.8 tracks nuevos
-   por demanda (A → B → C); fase 4 = 37.21 y el ideal. Corpus: 37.4 descarga por área y
+3. Serie 37 en el orden de ADR-54 (37.0, 37.2, 37.3, 37.18 y 37.19 ya están DONE):
+   ningún contenido antes del piloto (`LANZAMIENTO_PILOTO.md`); después, primero los
+   tracks que usen los pilotos. 37.10 certificaciones a práctica ≥ máx(300, 3 × examen) y
+   reservadas 2 × examen; 37.6 tracks construidos a la forma 32 × 10 (nivel A primero) y
+   37.7 track24/25; 37.8 tracks nuevos por demanda (A → B → C). La fase 4 de ADR-53 (el
+   ideal) quedó sustituida. Corpus: 37.4 descarga por área y
    37.5 generador (corpus/ en .gitignore; LICENSE leído o rechazado). NINGUNA pregunta
    nueva sin 37.0 verde. Un bloque = un PR verde con check_question_bank, pytest
    tests/content, 37.0, `catalog_coverage.py --check` y check_docs.

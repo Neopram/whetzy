@@ -368,18 +368,24 @@ if _credits_path.exists() and _economia_path.exists():
 else:
     check("ECONOMIA.md or credits.json exists", False, "file(s) missing")
 
-print("\n[10] Plan vigente del catálogo = ADR-53 (2026-09-30)")
-# ADR-53 sustituyó la meta de volumen de ADR-46 («≥ 50 cursos por track», 200 skills
-# y 3.000 preguntas por track, 126.000 en total, 42 tracks fijos). Un documento vivo
-# puede nombrar esa meta solo para decir que es historia: la línea, o sus dos vecinas,
-# tienen que llevar una marca de histórico. DECISIONS.md (las ADR no se reescriben),
-# STATUS.md y CHANGELOG.md (registros por fecha) y archive/ (no manda) quedan fuera.
+print("\n[10] Plan vigente del catálogo = ADR-54 (2026-10-01)")
+# ADR-54 sustituyó el suelo y el ideal de ADR-53 (50 skills · 800 preguntas por track,
+# «ideal por temario», banco reservado de 6 × el examen), que a su vez había sustituido
+# la meta de volumen de ADR-46 («≥ 50 cursos por track», 200 skills y 3.000 preguntas
+# por track, 126.000 en total, 42 tracks fijos). Un documento vivo puede nombrar esas
+# cifras solo para decir que son historia: la línea, o sus dos vecinas por cada lado,
+# tienen que decir «sustituid…» o «históric…». Nombrar ADR-53 ya no basta: hasta el
+# 2026-10-01 la marca aceptaba cualquier línea con «ADR-53» y blanqueaba cifras vigentes.
+# DECISIONS.md (las ADR no se reescriben), STATUS.md y CHANGELOG.md (registros por fecha)
+# y archive/ (no manda) quedan fuera.
 _STALE_PLAN = re.compile(
     r"≥\s*50\s*cursos|50\s*cursos\s*(por|/)\s*track|126[.,]000|200\s*skills|"
-    r"3[.,]000\s*(Q\b|preguntas)|2[.,]7\d\d\s*cursos|42\s*tracks|≥\s*400\s*términos|400\s*términos\s*por",
+    r"3[.,]000\s*(Q\b|preguntas)|2[.,]7\d\d\s*cursos|42\s*tracks|≥\s*400\s*términos|400\s*términos\s*por|"
+    r"50\s*skills\s*[·,/y]\s*800|800\s*(Q|preguntas)\s*(por|/)\s*track|ideal\s+por\s+temario|"
+    r"6\s*[×x]\s*(la\s+longitud|el\s+examen|examen|la\s+duración)",
     re.IGNORECASE,
 )
-_HISTORY_MARK = re.compile(r"hist[oó]ri|sustitu|superad|enmendad|antes\s+adr-(25|46)|adr-53", re.IGNORECASE)
+_HISTORY_MARK = re.compile(r"sustitu[ií]d|hist[oó]ric", re.IGNORECASE)
 _SKIP_DIRS = {"node_modules", ".git", "archive", "corpus", "dist", ".ci-local"}
 _SKIP_FILES = {"STATUS.md", "CHANGELOG.md", "DECISIONS.md"}
 _stale: list[str] = []
@@ -394,9 +400,9 @@ for _md in sorted(ROOT.rglob("*.md")):
         if not _HISTORY_MARK.search(_window):
             _stale.append(f"{_md.relative_to(ROOT).as_posix()}:{_i + 1}")
 check(
-    "Ningún doc vivo da la meta de ADR-46 como vigente",
+    "Ningún doc vivo da como vigente el suelo/ideal de ADR-53 ni la meta de ADR-46",
     not _stale,
-    "sin marca de histórico en " + ", ".join(_stale[:10]),
+    f"{len(_stale)} línea(s) sin «sustituid…»/«históric…» cerca: " + ", ".join(_stale[:40]),
 )
 
 print("\n[11] Pausa de sesiones autónomas (31.7, 2026-09-30)")

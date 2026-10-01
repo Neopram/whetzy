@@ -9,9 +9,11 @@ instrucciones explícitas del dueño, NO ejecutes `docs/ORCHESTRATOR.md`: lee
   `show <ID>`, `series <N>`, `blocked`, `inv`, `stats`. Parsea el ledger, no lo duplica:
   la fuente de verdad sigue siendo el markdown (ADR-40)
 - Alcance del producto (tracks, certificaciones, fuentes, volúmenes, puerta de calidad): `docs/CATALOGO_MAESTRO.md`.
-  Plan del catálogo (ADR-53): suelo de 50 skills · 800 preguntas por track, ideal por temario,
-  simulacro reservado, tracks por demanda. Cobertura: `python scripts/catalog_coverage.py`
-  (denominadores con fuente en `scripts/metas_catalogo.json`)
+  Plan del catálogo (ADR-54, 2026-10-01): forma única por track, 32 skills × 10 preguntas
+  (≥ 3 ejecutables) con 1 lección y 1 término por skill; certificaciones con práctica
+  ≥ máx(300, 3 × examen) y simulacro reservado de 2 × examen; tracks nuevos por demanda
+  (niveles de ADR-53); ningún contenido antes del piloto. Cobertura:
+  `python scripts/catalog_coverage.py` (metas en `scripts/metas_catalogo.json`)
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §14 ADR-53; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
