@@ -197,6 +197,28 @@ async def test_webhook_grants_the_plan_and_counts_one_conversion(client, db_sess
 
 
 @pytest.mark.asyncio
+async def test_webhook_records_the_eu_withdrawal_waiver_once(client, db_session, user) -> None:
+    """La casilla del art. 16.m que exige /checkout queda guardada en el alumno."""
+    data = _sub(user.id, custom_data={"user_id": str(user.id), "eu_withdrawal_waiver": "accepted"})
+    body = _event("subscription.created", data)
+    r = await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body)})
+    assert r.status_code == 200, r.text
+    await db_session.refresh(user)
+    first = user.eu_withdrawal_waiver_at
+    assert first is not None
+
+    renewal = _event("subscription.updated", data)
+    await client.post(WEBHOOK, content=renewal, headers={"Paddle-Signature": _sign(renewal)})
+    await db_session.refresh(user)
+    assert user.eu_withdrawal_waiver_at == first  # la primera aceptación, no la última
+
+
+def test_no_waiver_in_custom_data_records_nothing(user) -> None:
+    paddle_billing.record_withdrawal_waiver(user, _sub(user.id))
+    assert user.eu_withdrawal_waiver_at is None
+
+
+@pytest.mark.asyncio
 async def test_webhook_rejects_a_bad_signature(client, user) -> None:
     body = _event("subscription.created", _sub(user.id))
     r = await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body, secret="x")})
@@ -326,3 +348,51 @@ async def test_a_subscription_payment_is_not_a_certification_purchase(client, db
     assert r.status_code == 200
     count = await db_session.execute(select(func.count()).select_from(CertificationPurchase))
     assert count.scalar_one() == 0
+
+
+# ── Cancelar desde la app ─────────────────────────────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_cancel_endpoint_asks_paddle_for_the_users_subscription(
+    client, db_session, user, auth_headers, monkeypatch
+) -> None:
+    calls: list[str] = []
+
+    async def fake_cancel(sub_id: str, *, immediately: bool = False) -> bool:
+        calls.append(f"{sub_id}:{immediately}")
+        return True
+
+    monkeypatch.setattr(paddle_billing, "cancel_subscription", fake_cancel)
+    user.subscription_provider = "paddle"
+    user.paddle_subscription_id = "sub_01mine"
+    await db_session.commit()
+
+    r = await client.post("/api/v1/billing/paddle/cancel", headers=auth_headers)
+    assert r.status_code == 200, r.text
+    assert r.json()["cancel_requested"] is True
+    # Al final del periodo pagado, nunca de inmediato: es lo que dicen los Términos.
+    assert calls == ["sub_01mine:False"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_endpoint_without_paddle_subscription_is_404(client, auth_headers, monkeypatch) -> None:
+    async def boom(*a, **k):
+        raise AssertionError("no debía llamar a Paddle")
+
+    monkeypatch.setattr(paddle_billing, "cancel_subscription", boom)
+    r = await client.post("/api/v1/billing/paddle/cancel", headers=auth_headers)
+    assert r.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_cancel_endpoint_reports_a_paddle_refusal(client, db_session, user, auth_headers, monkeypatch) -> None:
+    async def refuse(*a, **k) -> bool:
+        return False
+
+    monkeypatch.setattr(paddle_billing, "cancel_subscription", refuse)
+    user.subscription_provider = "paddle"
+    user.paddle_subscription_id = "sub_01mine"
+    await db_session.commit()
+    r = await client.post("/api/v1/billing/paddle/cancel", headers=auth_headers)
+    assert r.status_code == 502

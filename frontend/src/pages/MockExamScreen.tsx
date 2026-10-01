@@ -11,6 +11,7 @@ import {
 } from '../services/api';
 import { CertificateCard } from '../components/certificate/CertificateCard';
 import { CERTIFICATION_PRICE_USD } from '../lib/plans';
+import { checkoutHref } from '../lib/paddle';
 import styles from './MockExamScreen.module.css';
 
 type Phase = 'intro' | 'running' | 'grading' | 'result';
@@ -160,7 +161,11 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
             <p className={styles.format}>
               {t('mockExam.certPrice', { price: isSpanish ? String(CERTIFICATION_PRICE_USD).replace('.', ',') : CERTIFICATION_PRICE_USD })}
             </p>
-            {!access.can_start && <p className={styles.note}>{t('mockExam.certPaywallClosed')}</p>}
+            {!access.can_start && (
+              <a className={styles.primary} href={checkoutHref('certification', trackId)}>
+                {t('mockExam.certBuy')}
+              </a>
+            )}
             <button
               className={styles.secondary}
               onClick={() => void start('certifying')}

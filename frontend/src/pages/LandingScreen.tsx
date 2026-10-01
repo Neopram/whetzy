@@ -13,6 +13,7 @@ import {
   type ComparisonCell,
 } from '../lib/comparison';
 import { TUTOR_DAILY_LIMIT_PRO } from '../lib/plans';
+import { checkoutHref } from '../lib/paddle';
 
 /* La landing (30.1, 2026-09-24) solo afirma lo que el producto hace hoy:
    cifras de lib/catalog.ts (vigiladas por scripts/check_docs.py), capturas
@@ -162,6 +163,9 @@ export default function LandingScreen() {
     perks: t(`landing.${k}.perks`, { returnObjects: true, ...counts, tutorLimit: TUTOR_DAILY_LIMIT_PRO }) as string[],
     cta: t(`landing.${k}.cta`),
     featured: k === 'planFree',
+    // Pro y Pro Max van al pago (H.29); /checkout pide sesión si no la hay.
+    // Creador no: el marketplace no se cobra por Paddle (su política lo prohíbe).
+    href: k === 'planPro' ? checkoutHref('plus') : k === 'planProMax' ? checkoutHref('pro') : ctaHref,
   }));
   const showCompare = COMPARISON_ROWS.length > 0;
   const checkedOn = COMPARISON_CHECKED_ON
@@ -395,7 +399,7 @@ export default function LandingScreen() {
                     </li>
                   ))}
                 </ul>
-                <a className={p.featured ? styles.planCtaFeatured : styles.planCta} href={ctaHref}>{p.cta}</a>
+                <a className={p.featured ? styles.planCtaFeatured : styles.planCta} href={p.href}>{p.cta}</a>
               </article>
             ))}
           </div>
@@ -428,7 +432,7 @@ export default function LandingScreen() {
         <div className={styles.footerContainer}>
           <span className={styles.footerBrand}>Whetzy</span>
           <span className={styles.footerCopyright}>
-            {t('landing.footer')} · <a href="/privacy" className={styles.navLink}>{t('landing.privacy')}</a> · <a href="/terms" className={styles.navLink}>{t('landing.terms')}</a>
+            {t('landing.footer')} · <a href="/privacy" className={styles.navLink}>{t('landing.privacy')}</a> · <a href="/terms" className={styles.navLink}>{t('landing.terms')}</a> · <a href="/refund" className={styles.navLink}>{t('landing.refund')}</a>
           </span>
         </div>
       </footer>

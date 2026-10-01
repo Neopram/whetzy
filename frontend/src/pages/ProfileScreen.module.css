@@ -213,7 +213,17 @@
   color: rgba(255,255,255,0.7);
 }
 
+.proActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-sm);
+}
+
 .proBtn {
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
   width: 100%;
   padding: var(--le-space-sm) var(--le-space-lg);
   background: linear-gradient(135deg, var(--le-gold) 0%, var(--le-orange) 100%);
@@ -343,4 +353,33 @@
 
 .toggleOn .toggleThumb {
   transform: translateX(20px);
+}
+
+/* ===== Suscripción web (Paddle, H.29) ===== */
+.secondaryBtn,
+.dangerBtn {
+  width: 100%;
+  padding: var(--le-space-sm) var(--le-space-lg);
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  cursor: pointer;
+}
+
+.secondaryBtn {
+  background: var(--le-surface);
+  color: var(--le-text);
+  border: 1px solid var(--le-border);
+}
+
+.dangerBtn {
+  background: var(--le-danger);
+  color: var(--le-text-inverse);
+  border: none;
+}
+
+.secondaryBtn:disabled,
+.dangerBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

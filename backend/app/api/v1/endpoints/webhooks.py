@@ -107,6 +107,7 @@ async def _apply_subscription(db: AsyncSession, event_type: str, data: dict[str,
         return
     was_premium = user.is_premium
     if paddle_billing.apply_subscription_event(user, event_type, data):
+        paddle_billing.record_withdrawal_waiver(user, data)
         if user.is_premium and not was_premium:
             # Mismo evento que los webhooks de Stripe y RevenueCat (37.20): solo
             # en la transición real gratis → pago, nunca en una renovación.
@@ -119,8 +120,10 @@ async def _apply_transaction(db: AsyncSession, data: dict[str, Any]) -> None:
     if purchase is None:
         return
     user_id, track_id, txn_id = purchase
-    if await db.get(User, user_id) is None:
+    user = await db.get(User, user_id)
+    if user is None:
         logger.warning("Paddle certificación de usuario inexistente %s (txn=%s)", user_id, txn_id)
         return
     await certification_service.grant(db, user_id, track_id, source="paddle", external_ref=txn_id)
+    paddle_billing.record_withdrawal_waiver(user, data)
     await db.commit()
