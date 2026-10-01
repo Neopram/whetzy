@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** entregable de la tarea 32.0 (2026-09-26); el modelo vigente es `backend/app/models/session.py`.
+
 # 32.0 — Inventario de datos por respuesta
 
 ## Tabla: `responses` (modelo `Response`, `backend/app/models/session.py`)

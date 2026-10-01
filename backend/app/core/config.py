@@ -259,10 +259,22 @@ class Settings(BaseSettings):
     REVENUECAT_ENTITLEMENT_PRO: str = ""    # "Pro Max" ($19.99/mes, ADR-41)
 
     # --- Paddle (H.29 - Merchant of Record) ----------------------------------
-    PADDLE_API_KEY: str = ""                # pad_live_... or pad_sand_...
-    PADDLE_WEBHOOK_SECRET: str = ""         # Paddle webhook signing secret
+    PADDLE_API_KEY: str = ""                # pdl_live_apikey_... (live) o la de sandbox
+    PADDLE_WEBHOOK_SECRET: str = ""         # pdl_ntfset_... (Developer tools > Notifications)
     PADDLE_VENDOR_ID: str = ""              # Vendor ID from Paddle dashboard
     PADDLE_TAX_ID: str = ""                 # Tax ID for Grecia (DAC7)
+    # Paddle Billing, pago web (H.29; el dueño descartó Stripe el 2026-10-01).
+    # "sandbox" usa sandbox-api.paddle.com y dinero simulado; "production", el real.
+    PADDLE_ENVIRONMENT: str = "sandbox"
+    # Token de cliente de Paddle.js: es público (va en la web), no es un secreto.
+    PADDLE_CLIENT_TOKEN: str = ""
+    # Ids de precio (`pri_...`) → plan. Pro 14,99 $/mes = "plus", Pro Max
+    # 19,99 $/mes = "pro" (ADR-41), certificación 39,99 $ pago único (ADR-49).
+    PADDLE_PRICE_PLUS: str = ""
+    PADDLE_PRICE_PRO: str = ""
+    PADDLE_PRICE_CERTIFICATION: str = ""
+    # Antigüedad máxima aceptada de un webhook (Paddle recomienda 5 s).
+    PADDLE_WEBHOOK_TOLERANCE_SECONDS: int = 5
     # Instructor payout webhook for Paddle events
     PADDLE_PAYOUT_WEBHOOK_URL: str = "https://api-production-9751.up.railway.app/api/v1/webhooks/paddle"
 

@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** prompt de un solo uso, ejecutado (el PR #34 se fusionó el 2026-10-01); el cierre vigente es `docs/CIERRE_2026-09-30.md`.
+
 # Prompt de cierre para la sesión del PR #34 (2026-09-30)
 
 Uso: el dueño pega el bloque de abajo, tal cual, en la sesión que trabaja en

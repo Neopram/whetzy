@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** foto del 2026-09-19; su «el CI no se ha ejecutado nunca» dejó de ser cierto el 2026-10-01 (H.13 resuelto). Producción y CI de hoy: `docs/CIERRE_2026-09-30.md` y el último informe de sesión.
+
 # Auditoría externa — 2026-09-19 (sesión interactiva, modelo Opus 5)
 
 > **Qué es esto.** El dueño preguntó si montar `notebooklm-mcp` en Docker para

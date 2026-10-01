@@ -1,12 +1,8 @@
-"""Paddle webhook endpoints (28.7: monthly payouts, subscription events)."""
+"""Paddle webhook endpoints: Paddle Billing (pago web, H.29) y pagos a instructores (28.7)."""
 
 from __future__ import annotations
 
-import hashlib
-import hmac
-import json
 import logging
-import uuid
 from datetime import UTC, datetime
 from typing import Any
 
@@ -14,123 +10,14 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import settings
 from app.core.db import get_db
 from app.models.instructor import InstructorPayout
 from app.models.user import User
-from app.services.economy import CreditsService
+from app.services import analytics, paddle_billing
+from app.services import certification as certification_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
-
-# Plan to credits mapping (plan_id -> monthly credits)
-PLAN_CREDITS_MAP = {
-    "pro_monthly": 3000,
-    "plus_monthly": 1500,
-}
-
-
-def verify_paddle_signature(signature: str, body: bytes) -> bool:
-    """Verify Paddle webhook signature using X-Signature header.
-    
-    Paddle uses HMAC-SHA256 of the body with the API key.
-    """
-    if not settings.PADDLE_API_KEY:
-        # Fallaba ABIERTO: sin clave configurada daba por buena cualquier firma.
-        # Este endpoint esta publicado en produccion y concede creditos, asi que
-        # con la clave sin poner —que es como esta hasta que Paddle este de
-        # alta— cualquiera que supiera la URL podia regalarse saldo. Sin clave
-        # no hay nada que verificar, y lo que no se puede verificar se rechaza.
-        logger.error(
-            "PADDLE_API_KEY sin configurar: se rechaza el webhook en vez de "
-            "aceptarlo sin verificar"
-        )
-        return False
-
-    expected_signature = hmac.new(
-        settings.PADDLE_API_KEY.encode(),
-        body,
-        hashlib.sha256,
-    ).hexdigest()
-
-    return hmac.compare_digest(signature, expected_signature)
-
-
-async def handle_subscription_created(
-    event_data: dict[str, Any],
-    db: AsyncSession,
-) -> None:
-    """Handle subscription.created webhook.
-    
-    Grant credits to user based on plan_id.
-    """
-    raw_user_id = event_data.get("user_id")
-    plan_id = event_data.get("plan_id")
-    try:
-        user_id = uuid.UUID(str(raw_user_id)) if raw_user_id else None
-    except ValueError:
-        logger.warning("user_id no es un UUID valido: %r", raw_user_id)
-        return
-    subscription_id = event_data.get("subscription_id")
-
-    if not user_id or not plan_id:
-        logger.warning("Missing user_id or plan_id in subscription.created")
-        return
-
-    # Check user exists
-    user = await db.scalar(select(User).where(User.id == user_id))
-    if not user:
-        logger.warning("User %s not found for subscription %s", user_id, subscription_id)
-        return
-
-    # Get credits for this plan
-    credits = PLAN_CREDITS_MAP.get(plan_id, 0)
-    if not credits:
-        logger.info("No credit mapping for plan %s", plan_id)
-        return
-
-    # El saldo ya no se guarda por fila: `grant_credits` abre un lote con su
-    # clave de idempotencia, asi que si Paddle reintenta el webhook —y reintenta—
-    # el credito no se concede dos veces.
-    await CreditsService.grant_credits(
-        db,
-        user_id=user_id,
-        amount=credits,
-        reason=f"subscription_created:{plan_id}",
-        ref_type="paddle_subscription",
-        ref_id=subscription_id,
-    )
-    await db.commit()
-    logger.info(
-        "Granted %d credits to user %s (plan %s, subscription %s)",
-        credits,
-        user_id,
-        plan_id,
-        subscription_id,
-    )
-
-
-async def handle_subscription_updated(
-    event_data: dict[str, Any],
-    db: AsyncSession,
-) -> None:
-    """Handle subscription.updated webhook.
-    
-    Track plan changes (no action for now, future: handle plan downgrades).
-    """
-    user_id = event_data.get("user_id")
-    old_plan = event_data.get("old_plan_id")
-    new_plan = event_data.get("plan_id")
-    subscription_id = event_data.get("subscription_id")
-
-    logger.info(
-        "Subscription updated for user %s: %s -> %s (subscription %s)",
-        user_id,
-        old_plan,
-        new_plan,
-        subscription_id,
-    )
-
 
 async def handle_payout_completed(
     event_data: dict[str, Any],
@@ -176,63 +63,64 @@ async def handle_payout_completed(
 
 @router.post("/paddle", status_code=status.HTTP_200_OK)
 async def webhook_paddle(request: Request, db: AsyncSession = Depends(get_db)) -> dict[str, bool]:
-    """Paddle webhook receiver.
-    
-    Handles: subscription.created, subscription.updated, payout.completed
-    Verifies X-Signature header and logs audit trail.
+    """Receptor de Paddle Billing (pago web, H.29).
+
+    Firma `Paddle-Signature` verificada en `paddle_billing.verify_webhook`.
+    Si procesar falla se responde 500 para que Paddle reintente: aplicar un
+    evento es idempotente (escribe el estado, no suma), así que un reintento
+    no duplica nada, y tragarse el error dejaba a un alumno que pagó sin plan.
     """
-# Get signature header
-    signature = request.headers.get("X-Signature")
-    if not signature:
-        logger.warning("Missing X-Signature header in Paddle webhook")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing signature",
-        )
-
-    # Read body
     body = await request.body()
-
-    # Verify signature
-    if not verify_paddle_signature(signature, body):
-        logger.warning("Invalid Paddle webhook signature")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid signature",
-        )
-
-    # Parse event
     try:
-        event = json.loads(body)
-    except json.JSONDecodeError:
-        logger.warning("Invalid JSON in Paddle webhook")
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid JSON",
-        )
+        event = paddle_billing.verify_webhook(body, request.headers.get("Paddle-Signature"))
+    except RuntimeError as exc:
+        logger.error("Paddle webhook recibido sin PADDLE_WEBHOOK_SECRET configurado")
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
+    except ValueError as exc:
+        logger.warning("Paddle webhook rechazado: %s", exc)
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid signature") from exc
 
-    event_type = event.get("event_type", "unknown")
-    event_data = event.get("data", {})
-    webhook_id = event.get("webhook_id")
-
-    logger.info("Received Paddle webhook: type=%s id=%s", event_type, webhook_id)
+    event_type = str(event.get("event_type", ""))
+    data: dict[str, Any] = event["data"]
+    logger.info("Paddle webhook: type=%s id=%s", event_type, event.get("event_id"))
 
     try:
-        # Dispatch to handler based on event type
-        if event_type == "subscription.created":
-            await handle_subscription_created(event_data, db)
-        elif event_type == "subscription.updated":
-            await handle_subscription_updated(event_data, db)
+        if event_type.startswith("subscription."):
+            await _apply_subscription(db, event_type, data)
+        elif event_type == "transaction.completed":
+            await _apply_transaction(db, data)
         elif event_type == "payout.completed":
-            await handle_payout_completed(event_data, db)
-        else:
-            logger.debug("Unhandled webhook event type: %s", event_type)
-
-    except Exception:
-        logger.exception("Error processing Paddle webhook %s", webhook_id)
-        # Don't fail the webhook response; return 200 so Paddle doesn't retry
-        # (failed retries would lock up the queue)
-
+            await handle_payout_completed(data, db)
+    except Exception as exc:
+        logger.exception("Error procesando el webhook de Paddle %s", event.get("event_id"))
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="processing error") from exc
     return {"received": True}
 
 
+async def _apply_subscription(db: AsyncSession, event_type: str, data: dict[str, Any]) -> None:
+    user_id = paddle_billing.resolve_user_id(data)
+    user = await db.get(User, user_id) if user_id else None
+    if user is None:
+        # Sin `custom_data.user_id` (o de un usuario que no existe) no hay a
+        # quién dar el plan; reintentar no lo arregla.
+        logger.warning("Paddle %s sin usuario resoluble (sub=%s)", event_type, data.get("id"))
+        return
+    was_premium = user.is_premium
+    if paddle_billing.apply_subscription_event(user, event_type, data):
+        if user.is_premium and not was_premium:
+            # Mismo evento que los webhooks de Stripe y RevenueCat (37.20): solo
+            # en la transición real gratis → pago, nunca en una renovación.
+            await analytics.track(db, "subscription_started", user_id=user.id)
+        await db.commit()
+
+
+async def _apply_transaction(db: AsyncSession, data: dict[str, Any]) -> None:
+    purchase = paddle_billing.certification_purchase(data)
+    if purchase is None:
+        return
+    user_id, track_id, txn_id = purchase
+    if await db.get(User, user_id) is None:
+        logger.warning("Paddle certificación de usuario inexistente %s (txn=%s)", user_id, txn_id)
+        return
+    await certification_service.grant(db, user_id, track_id, source="paddle", external_ref=txn_id)
+    await db.commit()

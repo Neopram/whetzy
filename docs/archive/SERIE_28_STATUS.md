@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** sustituido por la serie 28 de `docs/AUTONOMOUS_STATE.md` (ADR-48: el ledger es el único plan).
+
 # Serie 28 Implementation Status
 
 **Series:** 28.4-28.7 (Payment Logic, Instructor Split, Scheduled Payouts)

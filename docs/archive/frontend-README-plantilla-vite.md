@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** era la plantilla de Vite y no describía el frontend de Whetzy; ver `README.md` (raíz) y `docs/ARCHITECTURE.md`.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
