@@ -1,171 +1,61 @@
-# Legal Documents
+# Documentos legales
 
-This directory contains DRAFT legal documents for the Whetzy learning platform.
+## Qué manda: lo publicado (ADR-55, 2026-10-01)
 
----
+Los textos que un usuario ve y acepta son la **única fuente**:
 
-## WARNING - DRAFT DOCUMENTS
+| Página | Texto | Pinta |
+|---|---|---|
+| whetzy.com/privacy | claves i18n `legal.privacy*` (`frontend/src/i18n/{es,en}/common.json`) | `LegalScreen.tsx` → `PrivacyContent` |
+| whetzy.com/terms | claves `legal.terms*` | `TermsContent` |
+| whetzy.com/refund | claves `legal.refund*` (desistimiento: `legal.termsP5withdrawal`) | `RefundContent` |
 
-These are DRAFT versions for internal review only. NOT reviewed by legal counsel. DO NOT use in production.
+Cambiar una política es cambiar esas claves en los dos idiomas. Las versiones largas
+que vivían aquí y en `legal/` (raíz) eran borradores nunca publicados que ya se
+contradecían con lo publicado (Stripe como procesador, «14 días de prueba gratis»,
+`[ENTIDAD LEGAL PENDIENTE]`): están en `docs/archive/legal-borradores/` como material
+para la revisión profesional (H.20), no como texto vigente. `scripts/check_legal_facts.py`
+impide que vuelva una segunda copia aquí ([5b]) y exige que la política publicada nombre
+a cada procesador que el código usa ([1b]: Paddle, Groq, Resend, Sentry).
 
----
+Pendiente del dueño para que lo publicado esté completo: el **nombre legal del titular**
+(responsable del tratamiento y parte de los Términos) y confirmar con cada proveedor
+fuera del EEE la garantía de su transferencia (H.20).
 
-## Document Index
+## Qué hay en esta carpeta
 
-### 1. Privacy Policy
-Data privacy and protection policy.
-- [privacy-policy.en.md](./privacy-policy.en.md) - English
-- [privacy-policy.es.md](./privacy-policy.es.md) - Spanish
+**Borradores de cara al usuario que la app aún no publica** (llevan BORRADOR/DRAFT; la
+guarda vigila su paridad ES/EN):
 
-Covers: Data collection, use, retention, user rights (GDPR, CCPA), processors, security, cookies, international transfers.
+- `ai-notice.{es,en}.md` — aviso de uso de IA
+- `dpa.{es,en}.md` — acuerdo de tratamiento de datos para clientes B2B
+- `ip-disclaimers.{es,en}.md` — marcas y propiedad intelectual
 
-### 2. Terms of Service
-Usage terms, licensing, payment, and dispute resolution.
-- [terms-of-service.en.md](./terms-of-service.en.md) - English
-- [terms-of-service.es.md](./terms-of-service.es.md) - Spanish
+**Textos comerciales sin publicar** (movidos desde `content/legal/` el 2026-10-01; ningún
+código los carga):
 
-Covers: License (CC BY-NC-ND), acceptable use, account termination, payment (non-refundable), liability disclaimer.
+- `affiliation_dossier_{es,en}.md` — dossier de afiliación (38.3)
+- `b2b_pilot_offer_{es,en}.md` — oferta de piloto B2B (38.2)
+- `credits_terms_{es,en}.md` — condiciones de los créditos (economía, serie 29)
+- `instructor_recruitment_kit_{es,en}.md` — kit de reclutamiento de instructores (28.9)
 
-### 3. Cookie Policy
-Cookie usage, consent, and user control.
-- [cookie-policy.en.md](./cookie-policy.en.md) - English
-- [cookie-policy.es.md](./cookie-policy.es.md) - Spanish
+**Instrumentos internos** (no los ve un usuario):
 
-Covers: Cookie types (essential, analytics), attributes, consent mechanisms, disable instructions, DNT.
+- `antifraud-legal-basis.md`, `dmca-policy.md`, `security-breach-procedure.md` — movidos
+  desde `legal/` (raíz) el 2026-10-01
+- `ai-act-dsa-eaa.md`, `privacy-matrix.md`, `trademark-search.md` — investigación
+- `H29-DECISION-LOG.md`, `h21-decision.md` — historia de decisiones de entidad y pagos
 
-### 4. IP Disclaimers
-Intellectual property rights and copyright.
-- [ip-disclaimers.en.md](./ip-disclaimers.en.md) - English
-- [ip-disclaimers.es.md](./ip-disclaimers.es.md) - Spanish
+## Procesadores verificados (2026-10-01)
 
-Covers: Trademarks, content ownership, CC BY-NC-ND license, DMCA procedures, links, screenshots.
+| Proveedor | Uso | Prueba |
+|---|---|---|
+| Railway | servidores y PostgreSQL | la API vive en `api-production-9751.up.railway.app` |
+| Cloudflare | web (Pages) y correo entrante (Email Routing) | MX de whetzy.com → `route*.mx.cloudflare.net` |
+| Groq | explicaciones del tutor con IA, sin nombre ni correo | `backend/app/services/ai/provider.py` |
+| Resend | correos de la cuenta | log de producción «Email: proveedor resend» |
+| Sentry | errores del servidor, `send_default_pii=False`, región UE | log de producción «Sentry initialised (env=production…)» |
+| Paddle | pagos web (Merchant of Record) | `backend/app/services/paddle_billing.py`, webhook en 200 |
 
-### 5. GDPR Data Processing Addendum (DPA)
-GDPR compliance for EU/UK users.
-- [dpa.en.md](./dpa.en.md) - English
-- [dpa.es.md](./dpa.es.md) - Spanish
-
-Covers: Data controller role, subject rights, sub-processors, security, breach response, retention schedules.
-
----
-
-## Key Information
-
-### Data Collected
-- User Data: Name, email, profile, phone, date of birth (optional)
-- Learning Data: Progress, quiz results, courses, study history
-- Device Data: OS, browser, device fingerprints, user agent
-- Network Data: IP address, ISP, connection type, location (approximate)
-- Analytics: Pages visited, features used, time spent
-- Payment: Transaction history (NOT card details - third-party processors)
-
-### Data Retention
-- Account Data: Active + 30 days soft-delete
-- Learning Data: Duration of account
-- Audit Logs: 90 days
-- Device Fingerprints: 30 days
-- Analytics: 30 days individual, indefinite aggregated
-- Payment Records: 7 years (tax)
-- Support Tickets: 2 years
-
-### Payment Processors
-- Stripe (USA) — **test mode only today; no live charges.** The live account is H.4.
-
-> Paddle, Lemon Squeezy and RevenueCat were listed here by commit `5f7bd7b`.
-> None of them exists in the code (`backend/app/core/config.py` declares Stripe only),
-> and the payment rail is still an open owner decision (H.19, now gated by H.29).
-
-### Data Processors
-- Groq (USA) — tutor inference, model `qwen/qwen3.8-27b`
-- Railway (USA/EU) — hosting and PostgreSQL
-- Cloudflare (USA/EU) — CDN and Pages
-- Email provider — SMTP or Resend, per `EMAIL_PROVIDER`
-- Sentry — server-side error tracking, **active since 2026-09-26** (project `whetzy-backend`, EU region `de.sentry.io`, `send_default_pii=False`, ADR-50k); not used in the browser
-
-> Google Analytics was listed here by commit `5f7bd7b`. It is **not used**: red line 5
-> forbids third-party trackers without explicit consent, and
-> `frontend/scripts/check-no-third-party.mjs` proves none ships in `dist/`.
-
-### User Rights (GDPR)
-- Right to Access
-- Right to Rectification
-- Right to Erasure (right to be forgotten)
-- Right to Restrict Processing
-- Right to Data Portability
-- Right to Object
-- Right to Withdraw Consent
-
-Exercise Rights: Email legal@whetzy.com
-
-### Dispute Resolution
-- Informal: support@whetzy.com (30 days)
-- Formal: legal@whetzy.com
-- Governing Law: [Jurisdiction - To Update]
-
----
-
-## Implementation Checklist
-
-Before production use:
-
-- [ ] Legal review by qualified attorney
-- [ ] Update jurisdictional placeholders
-- [ ] Update company address
-- [ ] Update contact emails and hours
-- [ ] Appoint Data Protection Officer
-- [ ] Verify data collection matches backend code
-- [ ] Verify payment processors list
-- [ ] Update sub-processor list (DPA Section 4)
-- [ ] Add version checksums
-- [ ] Set effective date
-- [ ] Prepare user notification
-- [ ] Set up legal@whetzy.com monitoring
-- [ ] Set up DPIA process
-- [ ] Train staff on data subject rights
-- [ ] Implement cookie consent banner
-- [ ] Set up breach notification procedures
-- [ ] Prepare DMCA takedown process
-
----
-
-## Contacts
-
-Legal & Data Protection: legal@whetzy.com
-Support: support@whetzy.com
-
----
-
-## Document Versions
-
-All documents: Version 1.0.0 (DRAFT) as of 2026-09-19
-All documents marked as DRAFT pending legal review.
-
----
-
-## Compliance Frameworks
-
-- GDPR (EU data protection)
-- CCPA (California privacy)
-- DMCA (Copyright protection)
-- EU Copyright Directive 2019/790
-- Cookie and tracking regulations
-
----
-
-## Next Steps
-
-1. Legal review
-2. Update placeholders
-3. Establish contact infrastructure
-4. User testing of consent/export/deletion flows
-5. Website integration
-6. Staff training
-7. Annual review and updates
-
----
-
-Status: DRAFT for internal review only
-Generated: 2026-09-19
-Distribution: Legal review team only
-
-DO NOT DISTRIBUTE or use in production without authorization.
+RevenueCat (compras en las apps) tiene código pero no está activo: no hay apps en las
+tiendas (17.14). Se nombra en la política el día que se encienda.

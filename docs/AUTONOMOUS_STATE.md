@@ -292,7 +292,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | → §I (criterio archivado por 20.10) |
 | 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | | → §I (criterio archivado por 20.10) |
-| 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | **DONE** | `content/legal/instructor_recruitment_kit_{es,en}.md` → §I |
+| 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | **DONE** | `docs/legal/instructor_recruitment_kit_{es,en}.md` → §I |
 
 ### 29. Economía cerrada y rails — créditos, referidos, códigos, USDC, credenciales verificables (ADR-33…37; spec `docs/ECONOMIA.md`)
 

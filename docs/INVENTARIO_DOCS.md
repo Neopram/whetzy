@@ -36,22 +36,22 @@ está roto.
 | `docs/archive/SERIE_28_STATUS.md` | obsoleto | estado de la serie 28 del 2026-09-19; ADR-48 archiva los SERIE*_STATUS y el ledger es el único plan | archivado el 2026-10-01 | 2026-09-23 |
 | `backend/IMPLEMENTATION_GUIDE_22_6.md` | referencia-viva | guía de integración de 22.6 (rate limit, paginación, caché, jobs) | se queda [sin verificar] contra el código | 2026-09-23 |
 | `content/_quarantine/README.md` | normativo-vivo | regla de la carpeta en cuarentena (no se carga ni se mide) | se queda | 2026-09-23 |
-| `content/legal/affiliation_dossier_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/affiliation_dossier_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/b2b_pilot_offer_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/b2b_pilot_offer_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/credits_terms_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/credits_terms_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/instructor_recruitment_kit_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `content/legal/instructor_recruitment_kit_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
+| `docs/legal/affiliation_dossier_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/affiliation_dossier_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/b2b_pilot_offer_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/b2b_pilot_offer_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/credits_terms_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/credits_terms_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/instructor_recruitment_kit_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/instructor_recruitment_kit_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
 | `docs/archive/detallessesionultima.md` | histórico | volcado de la sesión 2026-09-29/30 pedido por el dueño | archivado el 2026-10-01 | 2026-09-30 |
 | `docs/archive/frontend-README-plantilla-vite.md` | obsoleto | plantilla de Vite («React + TypeScript + Vite»): no describe el frontend de Whetzy | archivado el 2026-10-01 | 2026-09-23 |
-| `legal/antifraud-legal-basis.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/dmca-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/dpa-template.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/privacy-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/security-breach-procedure.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
-| `legal/terms-of-service.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
+| `docs/legal/antifraud-legal-basis.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | movido desde `legal/` (raíz) el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/legal/dmca-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | movido desde `legal/` (raíz) el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/archive/legal-borradores/raiz-dpa-template.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | archivado el 2026-10-01: duplicado de `docs/legal/dpa.{es,en}.md` (ADR-55) | 2026-09-26 |
+| `docs/archive/legal-borradores/raiz-privacy-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | archivado el 2026-10-01: duplicado de lo publicado (ADR-55) | 2026-09-26 |
+| `docs/legal/security-breach-procedure.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | movido desde `legal/` (raíz) el 2026-10-01 (ADR-55) | 2026-09-26 |
+| `docs/archive/legal-borradores/raiz-terms-of-service.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | archivado el 2026-10-01: duplicado de lo publicado (ADR-55) | 2026-09-26 |
 | `scripts/content_qa/README.md` | referencia-viva | herramientas de QA de contenido | se queda | 2026-09-26 |
 
 ## `docs/` — vivos
@@ -133,20 +133,20 @@ está roto.
 | `docs/legal/ai-act-dsa-eaa.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/ai-notice.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/ai-notice.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/cookie-policy.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/cookie-policy.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
+| `docs/archive/legal-borradores/cookie-policy.en.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
+| `docs/archive/legal-borradores/cookie-policy.es.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
 | `docs/legal/dpa.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-26 |
 | `docs/legal/dpa.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-26 |
 | `docs/legal/h21-decision.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-25 |
 | `docs/legal/ip-disclaimers.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/ip-disclaimers.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/privacy-matrix.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/privacy-policy.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-28 |
-| `docs/legal/privacy-policy.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-28 |
-| `docs/legal/refund-policy.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/refund-policy.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/terms-of-service.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
-| `docs/legal/terms-of-service.es.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
+| `docs/archive/legal-borradores/privacy-policy.en.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-28 |
+| `docs/archive/legal-borradores/privacy-policy.es.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-28 |
+| `docs/archive/legal-borradores/refund-policy.en.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
+| `docs/archive/legal-borradores/refund-policy.es.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
+| `docs/archive/legal-borradores/terms-of-service.en.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
+| `docs/archive/legal-borradores/terms-of-service.es.md` | legal | textos legales ES/EN | archivado el 2026-10-01: lo publicado (claves `legal.*`) manda (ADR-55) | 2026-09-23 |
 | `docs/legal/trademark-search.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 
 ## `docs/archive/`
@@ -197,8 +197,7 @@ Ninguna sesión cambia estos textos. Lo comprobable, comprobado el 2026-10-01:
    (`backend/app/core/config.py:244-265`) y el webhook de RevenueCat responde 503 sin ellas; la política tiene
    que nombrarlos **antes** de encenderlos. Si ya están configurados en producción: [sin verificar] (no se
    leen variables de producción desde una sesión).
-3. `legal/` (raíz) y `docs/legal/` tienen versiones distintas de la política de privacidad y de los términos;
-   el índice de `docs/` dice que `legal/` (raíz) no manda. Cuál publica la app: [sin verificar].
+3. ~~`legal/` (raíz) y `docs/legal/` con versiones distintas~~ — **resuelto por ADR-55 (2026-10-01)**: la app publica las claves i18n `legal.*` (`LegalScreen.tsx`), que son la fuente canónica; los borradores largos de ambas carpetas están en `docs/archive/legal-borradores/`.
 
 ## Hallazgos de la auditoría (no arreglados aquí)
 
