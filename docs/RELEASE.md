@@ -55,13 +55,12 @@ npm run check:deployed https://whetzy.pages.dev
 
 `check-deployed.mjs` verifica: HTML del build actual · prerender del hero · sitemap.xml · robots.txt · Pyodide autohospedado · 0 terceros en HTML+CSS servido.
 
-### Cloudflare Headers (ya configurado en `public/_headers`)
-```
-/*
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Embedder-Policy: credentialless
-  Cross-Origin-Resource-Policy: same-site
-```
+### Cloudflare Headers (configurado en `frontend/public/_headers`)
+
+La fuente es el fichero; no se copia aquí. Comprobado el 2026-10-01 con `curl -sI https://whetzy.com/`:
+producción sirve COOP `same-origin`, COEP `credentialless`, `X-Frame-Options`, `Referrer-Policy`,
+HSTS y la CSP del fichero. `Cross-Origin-Resource-Policy` **no** está ni en el fichero ni en
+producción (este bloque la listaba hasta el 2026-10-01).
 
 ---
 
@@ -119,7 +118,10 @@ AAB generado en: `frontend/android/app/build/outputs/bundle/release/app-release.
 Ver `codemagic.yaml` — workflow `android-release` se dispara al crear un tag `v*`.
 
 ### assetlinks.json (deep links)
-Ya configurado en `public/.well-known/assetlinks.json` — verifica con:
+**Sin configurar** (comprobado el 2026-10-01): no hay `frontend/public/.well-known/` en el repo y
+`https://whetzy.com/.well-known/assetlinks.json` devuelve el HTML de la SPA, no JSON. Hasta el
+2026-10-01 esta línea decía «Ya configurado». Hace falta el SHA-256 del keystore de firma (del dueño)
+para crearlo; después, verifica con:
 ```bash
 curl https://whetzy.com/.well-known/assetlinks.json
 # Debe devolver el SHA256 del keystore de firma

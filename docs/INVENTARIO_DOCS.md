@@ -30,10 +30,10 @@ está roto.
 | Documento | Clase | Por qué | Acción | Último commit |
 |---|---|---|---|---|
 | `CLAUDE.md` | normativo-vivo | instrucciones del proyecto; check_docs vigila HEAD de Alembic y la pausa | se queda; ruta de AUDITORIA_EXTERNA actualizada | 2026-09-30 |
-| `COMPETITIVE_RESEARCH.md` | obsoleto | investigación de 8 plataformas del 2026-09-23, sin referencias; la sustituye docs/COMPETENCIA.md (URL y fecha) | archivar | 2026-09-23 |
+| `docs/archive/COMPETITIVE_RESEARCH.md` | obsoleto | investigación de 8 plataformas del 2026-09-23, sin referencias; la sustituye docs/COMPETENCIA.md (URL y fecha) | archivado el 2026-10-01 | 2026-09-23 |
 | `EVALUACION_COMPLETA_WHETZY.md` | histórico | evaluación fechada con notas «Superado»; no manda | archivar tras fusionar #52 (que la toca) | 2026-09-30 |
 | `README.md` | referencia-viva | presentación del repo (raíz) | se queda | 2026-09-26 |
-| `SERIE_28_STATUS.md` | obsoleto | estado de la serie 28 del 2026-09-19; ADR-48 archiva los SERIE*_STATUS y el ledger es el único plan | archivar | 2026-09-23 |
+| `docs/archive/SERIE_28_STATUS.md` | obsoleto | estado de la serie 28 del 2026-09-19; ADR-48 archiva los SERIE*_STATUS y el ledger es el único plan | archivado el 2026-10-01 | 2026-09-23 |
 | `backend/IMPLEMENTATION_GUIDE_22_6.md` | referencia-viva | guía de integración de 22.6 (rate limit, paginación, caché, jobs) | se queda [sin verificar] contra el código | 2026-09-23 |
 | `content/_quarantine/README.md` | normativo-vivo | regla de la carpeta en cuarentena (no se carga ni se mide) | se queda | 2026-09-23 |
 | `content/legal/affiliation_dossier_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
@@ -44,8 +44,8 @@ está roto.
 | `content/legal/credits_terms_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
 | `content/legal/instructor_recruitment_kit_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
 | `content/legal/instructor_recruitment_kit_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | no se toca el texto | 2026-09-26 |
-| `detallessesionultima.md` | histórico | volcado de la sesión 2026-09-29/30 pedido por el dueño | archivar | 2026-09-30 |
-| `frontend/README.md` | obsoleto | plantilla de Vite («React + TypeScript + Vite»): no describe el frontend de Whetzy | archivar | 2026-09-23 |
+| `docs/archive/detallessesionultima.md` | histórico | volcado de la sesión 2026-09-29/30 pedido por el dueño | archivado el 2026-10-01 | 2026-09-30 |
+| `docs/archive/frontend-README-plantilla-vite.md` | obsoleto | plantilla de Vite («React + TypeScript + Vite»): no describe el frontend de Whetzy | archivado el 2026-10-01 | 2026-09-23 |
 | `legal/antifraud-legal-basis.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
 | `legal/dmca-policy.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
 | `legal/dpa-template.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | no se toca el texto | 2026-09-26 |
@@ -58,13 +58,13 @@ está roto.
 
 | Documento | Clase | Por qué | Acción | Último commit |
 |---|---|---|---|---|
-| `docs/25.0-planning.md` | obsoleto | marcado SUPERADO (ADR-48); se conservaba solo por un test de tests/ (raíz) que pytest no recoge | archivar y actualizar la ruta del test | 2026-09-30 |
-| `docs/32_0_response_inventory.md` | histórico | inventario de datos por respuesta de la tarea 32.0 (2026-09-26), sin referencias | archivar | 2026-09-26 |
+| `docs/archive/25.0-planning.md` | obsoleto | marcado SUPERADO (ADR-48); se conservaba solo por un test de tests/ (raíz) que pytest no recoge | archivado el 2026-10-01; ruta del test actualizada | 2026-09-30 |
+| `docs/archive/32_0_response_inventory.md` | histórico | inventario de datos por respuesta de la tarea 32.0 (2026-09-26), sin referencias | archivado el 2026-10-01 | 2026-09-26 |
 | `docs/API.md` | referencia-viva | referencia de la API | se queda [sin verificar] ruta a ruta contra openapi.json | 2026-09-27 |
 | `docs/ARCHITECTURE.md` | referencia-viva | arquitectura del sistema | se queda [sin verificar] frase a frase | 2026-09-29 |
-| `docs/AUDITORIA_EXTERNA_2026-09-19.md` | histórico | foto del 2026-09-19; dice que el CI nunca ha corrido, falso desde el 2026-10-01 (H.13 resuelto) | archivar; CLAUDE.md y README apuntan a archive/ | 2026-09-25 |
+| `docs/archive/AUDITORIA_EXTERNA_2026-09-19.md` | histórico | foto del 2026-09-19; dice que el CI nunca ha corrido, falso desde el 2026-10-01 (H.13 resuelto) | archivado el 2026-10-01; CLAUDE.md y capacity.md apuntan a archive/ | 2026-09-25 |
 | `docs/AUTONOMOUS_STATE.md` | normativo-vivo | ledger, fuente de verdad (ADR-40); ledger.py check | se queda | 2026-09-30 |
-| `docs/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivar | 2026-09-23 |
+| `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
 | `docs/CIERRE_2026-09-30.md` | normativo-vivo | estado PAUSA y guía de fusión del #34; check_docs [11] | se queda | 2026-09-30 |
@@ -78,7 +78,7 @@ está roto.
 | `docs/MARKETPLACE.md` | referencia-viva | spec del marketplace (serie 28) | se queda | 2026-09-30 |
 | `docs/ORCHESTRATOR.md` | normativo-vivo | prompt operativo; check_docs [11] | se queda | 2026-09-30 |
 | `docs/PLAN_EXPERIENCIA.md` | referencia-viva | spec de la serie 40 | se queda | 2026-09-30 |
-| `docs/PROMPT_CIERRE_2026-09-30.md` | histórico | prompt de un solo uso para cerrar el #34, ya ejecutado (#34 fusionado el 2026-10-01) | archivar | 2026-09-30 |
+| `docs/archive/PROMPT_CIERRE_2026-09-30.md` | histórico | prompt de un solo uso para cerrar el #34, ya ejecutado (#34 fusionado el 2026-10-01) | archivado el 2026-10-01 | 2026-09-30 |
 | `docs/PROMPT_CONTROL_TOTAL.md` | normativo-vivo | prompt de arranque con control total | se queda; ruta de i18n-audit actualizada | 2026-09-30 |
 | `docs/PROTOCOLO_VERIFICACION.md` | normativo-vivo | protocolo de verificación | se queda | 2026-09-27 |
 | `docs/README.md` | normativo-vivo | índice de documentos vivos | se queda; filas de los archivados actualizadas | 2026-09-30 |
@@ -102,11 +102,11 @@ está roto.
 | `docs/design/admin-spec.md` | referencia-viva | spec del panel de admin (22.1) | se queda [sin verificar] | 2026-09-23 |
 | `docs/design/auth-hardening.md` | referencia-viva | spec de endurecimiento de auth (22.3, DONE) | se queda [sin verificar] | 2026-09-23 |
 | `docs/design/decisiones-24.0.md` | referencia-viva | decisiones de identidad visual 24.0/24.1 | se queda | 2026-09-25 |
-| `docs/design/i18n-audit.md` | histórico | auditoría i18n del 2026-09-19, marcada «Histórico» por ella misma | archivar | 2026-09-25 |
+| `docs/archive/i18n-audit.md` | histórico | auditoría i18n del 2026-09-19, marcada «Histórico» por ella misma | archivado el 2026-10-01 | 2026-09-25 |
 | `docs/design/identidad.md` | referencia-viva | guía de tokens de diseño (24.1) | se queda | 2026-09-28 |
 | `docs/design/threat-model-stride.md` | referencia-viva | modelo de amenazas STRIDE (2026-09-23) | se queda [sin verificar] | 2026-09-23 |
 | `docs/distribucion-assets/CANAL_ES_CHECKLIST.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-25 |
-| `docs/distribucion-assets/CRITERIOS_ACEPTACION_26.md` | obsoleto | una sola línea («scaffolding ready»): no describe nada | archivar | 2026-09-23 |
+| `docs/archive/CRITERIOS_ACEPTACION_26.md` | obsoleto | una sola línea («scaffolding ready»): no describe nada | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/distribucion-assets/campaign-codes.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-23 |
 | `docs/distribucion-assets/guiones/motor-en.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-23 |
 | `docs/distribucion-assets/guiones/motor-es.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-23 |
@@ -116,7 +116,7 @@ está roto.
 | `docs/distribucion-assets/guiones/short-es.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-30 |
 | `docs/incidents/postmortem-template.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | se queda [sin verificar] | 2026-09-25 |
 | `docs/incidents/runbook.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | se queda [sin verificar] | 2026-09-23 |
-| `docs/mobile-polish/24-12-implementation.md` | obsoleto | dice «Commit: Pendiente»; 24.12 está DONE (c912713, LEDGER_HISTORY) | archivar | 2026-09-23 |
+| `docs/archive/24-12-implementation.md` | obsoleto | dice «Commit: Pendiente»; 24.12 está DONE (c912713, LEDGER_HISTORY) | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/store/app-store-review-checklist.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/ios/listing.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/play-store-data-safety.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
@@ -204,7 +204,7 @@ Ninguna sesión cambia estos textos. Lo comprobable, comprobado el 2026-10-01:
 
 - `tests/integration/test_security_tracks.py` vive en una carpeta `tests/` de la raíz que
   `backend/pytest.ini` (`testpaths = tests`, relativo a `backend/`) no recoge: probablemente no corre nunca
-  [Likely]. Era la única razón para conservar `docs/25.0-planning.md`.
+  [Likely]. Era la única razón para conservar `docs/25.0-planning.md` (archivado el 2026-10-01; el test apunta a `docs/archive/`).
 - `docs/README.md` dice «veintiún documentos vivos»; la tabla tiene más filas y el número no lo vigila
   ninguna guarda. Se rehace con la agrupación por propósito (6.6) cuando estén fusionados #50 y #52, que
   tocan el mismo índice.

@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** registro de la sesión del 2026-09-29/30; el estado vigente está en `docs/AUTONOMOUS_STATE.md`.
+
 # Detalles de la última sesión — Whetzy (2026-09-29 → 2026-09-30)
 
 > Generado a petición explícita del usuario ("dame absolutamente todos los detalles de

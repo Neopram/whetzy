@@ -140,6 +140,17 @@ try:
             doc_migrations == real_migrations,
             f"real={real_migrations} doc={doc_migrations}",
         )
+    # RUNBOOK también da la cifra («Current Alembic HEAD: `x` (N migrations»), y
+    # sin guarda se quedó en `t0u1v2w3x4y5` / 20 desde el 2026-09-18 hasta el
+    # 2026-10-01 con 46 reales.
+    runbook_text = (DOCS_STATE.parent / "RUNBOOK.md").read_text(encoding="utf-8")
+    m = re.search(r"Current Alembic HEAD:\s*`([0-9a-z_]+)`\s*\((\d+)\s*migrations", runbook_text)
+    rb_head, rb_n = (m.group(1), int(m.group(2))) if m else ("not_found", -1)
+    check(
+        f"RUNBOOK Alembic HEAD ({rb_head}, {rb_n} migraciones)",
+        real_head == rb_head and rb_n == real_migrations,
+        f"real={real_head!r}/{real_migrations} RUNBOOK={rb_head!r}/{rb_n}",
+    )
 except Exception as e:  # pragma: no cover - fallo de entorno
     check("Alembic", False, str(e))
 

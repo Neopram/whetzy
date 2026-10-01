@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** sustituido por `docs/COMPETENCIA.md` (mercado con URL y fecha).
+
 # Learning Platform Competitive Research
 
 ## Executive Summary

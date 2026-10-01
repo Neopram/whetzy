@@ -1,3 +1,5 @@
+> **Archivado el 2026-10-01:** auditoría del 2026-09-19 que ya se declaraba histórica; la paridad la vigila `npm run check:i18n`.
+
 # i18n Audit & Parity Report (Serie 23.1)
 
 > **Histórico (2026-09-19).** Desde entonces `docs/legal/` tiene versiones `.es.md` (7 a
