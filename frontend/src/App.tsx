@@ -430,8 +430,8 @@ function App() {
     // `reducedMotion="user"` es lo unico que hace que framer-motion respete
     // prefers-reduced-motion. El bloque de global.css solo apaga animaciones y
     // transiciones CSS; framer escribe transforms en linea desde JS, asi que
-    // sin esto los `repeat: Infinity` de lib/motion.ts (pulso del nodo actual,
-    // parpadeo de la racha) siguen moviendose para quien pidio que no.
+    // sin esto los `repeat: Infinity` de lib/motion.ts (pulso del nodo actual)
+    // siguen moviendose para quien pidio que no.
     <MotionConfig reducedMotion="user">
       <TopBar />
       <main className="app-content">
