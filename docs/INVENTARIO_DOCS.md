@@ -31,10 +31,10 @@ está roto.
 |---|---|---|---|---|
 | `CLAUDE.md` | normativo-vivo | instrucciones del proyecto; check_docs vigila HEAD de Alembic y la pausa | se queda; ruta de AUDITORIA_EXTERNA actualizada | 2026-09-30 |
 | `docs/archive/COMPETITIVE_RESEARCH.md` | obsoleto | investigación de 8 plataformas del 2026-09-23, sin referencias; la sustituye docs/COMPETENCIA.md (URL y fecha) | archivado el 2026-10-01 | 2026-09-23 |
-| `EVALUACION_COMPLETA_WHETZY.md` | histórico | evaluación fechada con notas «Superado»; no manda | archivar tras fusionar #52 (que la toca) | 2026-09-30 |
+| `docs/archive/EVALUACION_COMPLETA_WHETZY.md` | histórico | evaluación fechada con notas «Superado»; no manda | archivado el 2026-10-01 (histórico, sin referencias vivas) | 2026-09-30 |
 | `README.md` | referencia-viva | presentación del repo (raíz) | se queda | 2026-09-26 |
 | `docs/archive/SERIE_28_STATUS.md` | obsoleto | estado de la serie 28 del 2026-09-19; ADR-48 archiva los SERIE*_STATUS y el ledger es el único plan | archivado el 2026-10-01 | 2026-09-23 |
-| `backend/IMPLEMENTATION_GUIDE_22_6.md` | referencia-viva | guía de integración de 22.6 (rate limit, paginación, caché, jobs) | se queda [sin verificar] contra el código | 2026-09-23 |
+| `docs/archive/IMPLEMENTATION_GUIDE_22_6.md` | referencia-viva | guía de integración de 22.6 (rate limit, paginación, caché, jobs) | archivado el 2026-10-01: su lista de 13 tareas sigue sin marcar aunque varias existen (worker de jobs, docs que pedía crear) | 2026-09-23 |
 | `content/_quarantine/README.md` | normativo-vivo | regla de la carpeta en cuarentena (no se carga ni se mide) | se queda | 2026-09-23 |
 | `docs/legal/affiliation_dossier_en.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
 | `docs/legal/affiliation_dossier_es.md` | legal | textos comerciales/contractuales (afiliación, piloto B2B, créditos, instructores) | movido desde `content/legal/` el 2026-10-01 (ADR-55) | 2026-09-26 |
@@ -114,8 +114,8 @@ está roto.
 | `docs/distribucion-assets/guiones/producto-es.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-23 |
 | `docs/distribucion-assets/guiones/short-en.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-30 |
 | `docs/distribucion-assets/guiones/short-es.md` | referencia-viva | material de distribución (guiones, códigos de campaña, checklist del canal ES) | se queda | 2026-09-30 |
-| `docs/incidents/postmortem-template.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | se queda [sin verificar] | 2026-09-25 |
-| `docs/incidents/runbook.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | se queda [sin verificar] | 2026-09-23 |
+| `docs/archive/incidents-postmortem-template.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: RUNBOOK.md ya trae su plantilla; esta tenía un ejemplo con 50k usuarios inventados | 2026-09-25 |
+| `docs/archive/incidents-runbook.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: describe Slack, PagerDuty, guardias e Instatus que no existen; RUNBOOK.md § Incident Management es la fuente única | 2026-09-23 |
 | `docs/archive/24-12-implementation.md` | obsoleto | dice «Commit: Pendiente»; 24.12 está DONE (c912713, LEDGER_HISTORY) | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/store/app-store-review-checklist.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/ios/listing.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
@@ -204,9 +204,7 @@ Ninguna sesión cambia estos textos. Lo comprobable, comprobado el 2026-10-01:
 - `tests/integration/test_security_tracks.py` vive en una carpeta `tests/` de la raíz que
   `backend/pytest.ini` (`testpaths = tests`, relativo a `backend/`) no recoge: probablemente no corre nunca
   [Likely]. Era la única razón para conservar `docs/25.0-planning.md` (archivado el 2026-10-01; el test apunta a `docs/archive/`).
-- `docs/README.md` dice «veintiún documentos vivos»; la tabla tiene más filas y el número no lo vigila
-  ninguna guarda. Se rehace con la agrupación por propósito (6.6) cuando estén fusionados #50 y #52, que
-  tocan el mismo índice.
+- ~~`docs/README.md` dice «veintiún documentos vivos»~~ — **resuelto el 2026-10-01**: el índice se agrupa por propósito y ya no da una cifra que nadie vigila.
 - Los documentos marcados [sin verificar] en la tabla (API, ARCHITECTURE, RUNBOOK, RELEASE, specs de las
   series 22 y 24) no se han contrastado frase a frase con el código en esta sesión.
 

@@ -222,9 +222,9 @@ Admin routes require `X-Admin-Key` header.
 ## Billing endpoints
 
 ```
-POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session (accepts eu_withdrawal_waiver: bool)
-GET  /billing/subscription → {plan, status, renews_at} 🔒
-POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC)
+POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session (accepts eu_withdrawal_waiver: bool). **Sin uso:** el dueño descartó Stripe (H.29); la web paga con Paddle en `/checkout`
+GET  /billing/subscription → {is_premium, subscription_status, subscription_tier, subscription_provider, stripe_customer_id, stripe_subscription_id} 🔒 — subscription_provider: "stripe" | "revenuecat" | "paddle" | null
+POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC). **Sin uso** (H.29)
 POST /billing/revenuecat/webhook → RevenueCat webhook (17.14, mobile IAP, sandbox) — Authorization header secret, 503 until REVENUECAT_WEBHOOK_AUTHORIZATION is set
 GET  /billing/paddle/config → {enabled, environment, client_token, prices{plus,pro,certification}} — público: lo que la web necesita para abrir Paddle.js (H.29); enabled=false hasta configurar PADDLE_CLIENT_TOKEN y un precio
 POST /billing/paddle/cancel → {cancel_requested, access_until} 🔒 — cancela la suscripción de Paddle al final del periodo pagado (H.29); 404 si no tiene una, 502 si Paddle no la acepta. El estado lo escribe el webhook

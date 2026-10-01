@@ -441,7 +441,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 39. Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobación en bloque (ADR-50)
 
-> **Estado:** `ABIERTA`. Viene del prompt de control total v5 y de `EVALUACION_COMPLETA_WHETZY.md`. Lo que exige cuenta o dinero va a §3.
+> **Estado:** `ABIERTA`. Viene del prompt de control total v5 y de `docs/archive/EVALUACION_COMPLETA_WHETZY.md`. Lo que exige cuenta o dinero va a §3.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
@@ -514,10 +514,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.16 | **DECIDIDA** (ADR-50p) — dueño: proteger `master` (PR obligatorio) en GitHub → Branches; staging (31.1) aprobado, alta con coste por el dueño |
 | H.15 | **RESUELTA** (ADR-50n) — proxy a `127.0.0.1:8000` + guarda `pretest:e2e` |
 | H.12 | PRI 0 de seguridad — rotar la `GROQ_API_KEY`. Estuvo commite… |
-| H.13 | PRI 0 — Actions sin runner (facturación). **Decidido** (ADR-50o): dueño pone spending limit $0 en GitHub → Billing. 2026-09-30: `ci_local.sh` (se duerme) es hoy la única puerta real; #34 fusiona con esa evidencia, no la de `ci.yml` |
+| H.13 | PRI 0 — Actions: corrió verde el 2026-10-01 y desde ~12:52 UTC ningún job recibe runner (`runner_id: 0`). Dueño: GitHub → Billing → Actions (ADR-50o). Puerta real: la local |
 | H.2 | Apple Developer Program — y desde 2026-09-18 también bloquea… |
 | H.3 | Google Play Console |
-| H.4 | Stripe cuenta live |
+| H.4 | OBSOLETA 2026-10-01: sin Stripe (H.29) |
 | H.5 | Submisión a stores |
 | H.14 | iOS no se puede generar ni compilar en este PC (Windows, sin… |
 | H.6 | Cadena de sesiones |
@@ -525,9 +525,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.8 | `GROQ_API_KEY` ausente localmente |
 | H.9 | Dispositivo físico o emulador con lector de pantalla real pa… |
 | H.10 | Cohorte beta ≥ 30 usuarios reales (11.8) |
-| H.17 | CI ciego por facturación de GitHub (continuación de H.13, a … |
+| H.17 | Ver H.13 |
 | H.18 | La cadena solo corre con la app Claude abierta y el PC despi… |
-| H.19 | Decidir rail de pagos y entidad (ADR-16) — ahora depende de … |
+| H.19 | RESUELTA por H.29 (2026-10-01) |
 | H.20 | Revisión profesional de los textos legales antes de publicar… |
 | H.22 | RESUELTA 2026-10-01 (dueño): OWASP CC BY-SA no se usa (ADR-47); seguridad con NIST + MITRE |
 | H.23 | Abrir la Serie 26 (distribución ES) cuando 24.14 esté DONE |
@@ -537,7 +537,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.27 | cNFT de certificados en Solana (29.10, opcional; ADR-37): wa… |
 | H.28 | Grant / bounty de la Solana Foundation o Superteam para trac… |
 | H.29 | DECIDIDO 2026-10-01 (dueño): Grecia; web = Paddle, tiendas = IAP/Play Billing vía RevenueCat; sin Stripe. Web: `/checkout` hecho; falta alta Paddle y dominio |
-| H.30 | PRI 0 — correo: **decidido Resend** (ADR-50l). Dueño: cuenta en resend.com + `RESEND_API_KEY` en Railway (RUNBOOK «Correo»). La pantalla ya no miente (`bb59562`) |
+| H.30 | RESUELTA 2026-10-01: Resend en producción (log «Email: proveedor resend») |
 | H.31 | **RESUELTA** (ADR-50m) — landing servida 2026-09-26 sin testimonios ni «1.2M» |
 | H.32 | **2** | H.32 | **RESUELTA** | **RESUELTA** `e40ba75` (2026-09-24) → §I |
 | H.33 | **RESUELTA 2026-09-26** — log Railway `b64e2a9a`/`f097361c`: `[owner] unchanged: admin@whetzy.com` (falta solo login `/admin` de 30.8) |
@@ -548,7 +548,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.40 | Reclutar 5 instructores fundadores (28.9) |
 | H.41 | **RESUELTA 2026-09-26** (aprobación en bloque, ADR-50k) — proyecto Sentry `whetzy-backend` + `SENTRY_DSN` en Railway; deploy `f097361c`: `Sentry initialised (env=production)` |
 | H.42 | **DECIDIDA 2026-09-26** (ADR-50j): analítica = PostHog; Mixpanel no se instrumenta |
-| H.43 | Reconectar Hugging Face en claude.ai (token OAuth caducó 2026-09-26 19:09 UTC) |
+| H.43 | RESUELTA 2026-10-01: Hugging Face conectado |
 | H.44 | Terminar o quitar Firecrawl, Amplitude, Mailchimp y Lusha (a medio conectar) |
 | H.45 | Conectar redes (X, LinkedIn…) en Metricool/Typefully para que la distribución deje de ser solo borradores |
 | H.46 | ¿Monitor de uptime de Sentry para `/health`? (puede consumir cuota de pago) |

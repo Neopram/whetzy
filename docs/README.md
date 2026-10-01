@@ -7,38 +7,56 @@ Frontend: React + Capacitor.
 
 ## Qué leer, según lo que vengas a hacer
 
+**Para empezar**
+
 | Quieres… | Lee |
 |---|---|
-| Cierre del 2026-09-30: por qué se pausó, el scorecard (§2) y las trampas del entorno (§7). **Pausa levantada el 2026-10-01** (ADR-56) | `CIERRE_2026-09-30.md` |
-| **Lanzamiento piloto**: invitación ES/EN, qué pedir, las 5 preguntas del día 4 y cómo contar registros reales sin analítica nueva | **`LANZAMIENTO_PILOTO.md`** |
-| Saber qué construye Whetzy y qué falta (tracks, certs, fuentes, coste) | **`CATALOGO_MAESTRO.md`** |
-| Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad) |
-| Operar una sesión autónoma | `ORCHESTRATOR.md` + `../CLAUDE.md` |
-| Saber qué fuentes se pueden usar (solo gratuitas y legales) y cómo | **`CATALOGO_MAESTRO.md` §2.1** + `DECISIONS.md` ADR-11 |
-| Desplegar (Cloudflare y Railway, ambos automáticos desde `master`), migrar, backup/restore, diagnosticar | `RUNBOOK.md`, `RELEASE.md` |
-| Entender el sistema | `ARCHITECTURE.md`, `API.md`, `DECISIONS.md` |
-| Ver la posición frente a la competencia, con pesos fijos (última: §14 ADR-53; §12 captura en vivo 2026-09-24, sin re-puntuar) | `competitive-teardown.md` |
-| Arrancar una sesión con control total (rama + PR, sin `master`; ADR-45) | **`PROMPT_CONTROL_TOTAL.md`** |
-| Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
-| Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
-| Verificar cualquier afirmación, cerrar una tarea sin errores, correr la verificación masiva (Serie 20), elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
-| Plan de distribución masiva ES + EN (canales, cadencia, herramientas $0, KPIs) | **`DISTRIBUCION.md`** |
-| Los 6 segmentos de usuario (Estudiante, Career-switcher, Developer Senior, Profesor, Empresa, Developer Web3/Solana) con personas, flujos y créditos por segmento | **`SEGMENTOS.md`** |
-| Competencia directa e indirecta: precios y catálogos verificados con URL y fecha, lógica de negocio del mercado y qué se adopta (§A, 2026-09-24 a 2026-09-30) | **`COMPETENCIA.md`** |
-| Plan para superar a Brilliant y Kodree donde hoy ganan: problemas interactivos, tutor por voz, comunidad, planes, rutas nuevas (serie 40) | **`PLAN_EXPERIENCIA.md`** |
-| Spec del marketplace de instructores: revenue share 80/20 (ADR-45), quality gate, moderación | **`MARKETPLACE.md`** |
-| Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
-| Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
-| Qué servicios externos (Railway, Sentry, PostHog, diseño, redes…) puede tocar una sesión de Claude, a qué cuenta apunta cada uno y qué hace sin preguntar | **`CONECTORES.md`** |
-| Cada `.md` del repo con su clase (normativo · referencia · histórico · obsoleto · legal), qué se hace con él y las contradicciones legales con el código para el dueño | **`INVENTARIO_DOCS.md`** |
+| Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad; `python scripts/ledger.py next`) |
+| Operar una sesión (rama + PR, sin `master`; ADR-45) | `ORCHESTRATOR.md`, **`PROMPT_CONTROL_TOTAL.md`** y `../CLAUDE.md` |
+| Verificar una afirmación, cerrar una tarea, elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
+| Decisiones irreversibles (ADR) | `DECISIONS.md` |
+| Por qué se pausó el 2026-09-30, el scorecard (§2) y las trampas del entorno (§7). **Pausa levantada el 2026-10-01** (ADR-56) | `CIERRE_2026-09-30.md` |
 
-Esos son los **veintiún documentos vivos** (más `store/`). `analisis-estrategico/` y
-`legal/` (raíz) no mandan sobre el código. Todo lo demás está en
-`archive/` — incluida la estrategia v3 del dueño, superada por el catálogo, y desde el
-2026-09-24 los planes paralelos `EXECUTION_PLAN_25-29`, `ROADMAP_25-29`, `*-PLANNING`,
-`SERIE*_STATUS/SUMMARY` y `VERIFICATION_CHECKLIST_FINAL` (ADR-48) — y **no
-manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo. Un plan que
-no sea una fila de `AUTONOMOUS_STATE.md` no es un plan.
+**Producto y mercado**
+
+| Quieres… | Lee |
+|---|---|
+| Qué construye Whetzy y qué falta (tracks, certificaciones, fuentes legales, coste) | **`CATALOGO_MAESTRO.md`** (§2.1 fuentes; ADR-11) |
+| Lanzamiento piloto: invitación ES/EN, qué pedir, preguntas del día 4 | **`LANZAMIENTO_PILOTO.md`** |
+| Competencia con precios y catálogos verificados (URL y fecha) | **`COMPETENCIA.md`** |
+| Posición frente a la competencia con pesos fijos | `competitive-teardown.md` |
+| Segmentos de usuario, personas y flujos | **`SEGMENTOS.md`** |
+| Plan para superar a Brilliant y Kodree donde hoy ganan (serie 40) | **`PLAN_EXPERIENCIA.md`** |
+| Marketplace de instructores (80/20, calidad, moderación) | **`MARKETPLACE.md`** |
+| Economía cerrada: créditos, referidos, sin token (ADR-33) | **`ECONOMIA.md`** |
+| Distribución ES + EN (canales, cadencia, KPIs) | **`DISTRIBUCION.md`** y `distribucion-assets/` |
+| Análisis de negocio de la sesión bf — **no normativo** | `analisis-estrategico/` |
+
+**Técnico y operación**
+
+| Quieres… | Lee |
+|---|---|
+| Entender el sistema | `ARCHITECTURE.md`, `API.md` |
+| Desplegar (Cloudflare y Railway, automáticos desde `master`), migrar, backup, incidentes | `RUNBOOK.md`, `RELEASE.md` |
+| Qué servicios externos toca una sesión y qué hace sin preguntar | **`CONECTORES.md`** |
+| Capacidad, Cloudflare, cadena de suministro, A/B, diseño | `capacity.md`, `cloudflare-config.md`, `supply-chain.md`, `ab-framework.md`, `design/` |
+
+**Legal y tiendas**
+
+| Quieres… | Lee |
+|---|---|
+| Textos legales: lo publicado manda (claves i18n `legal.*`; ADR-55), qué hay en `legal/` y procesadores verificados | **`legal/README.md`** |
+| Tiendas (ficha, privacidad, checklist de Apple 4.8 / 3.1.1) | `STORE_LISTING.md` (resumen) y `store/` (detalle) |
+
+**Historia e inventario**
+
+| Quieres… | Lee |
+|---|---|
+| Historia narrativa por sesión (no se reescribe; no hace falta leerla) | `STATUS.md`, `CHANGELOG.md` |
+| Cada `.md` del repo con su clase y qué se hizo con él | **`INVENTARIO_DOCS.md`** |
+
+Todo lo demás está en `archive/` y **no manda**: si algo de `archive/` contradice a un
+documento vivo, gana el vivo. Un plan que no sea una fila de `AUTONOMOUS_STATE.md` no es un plan.
 
 ## Arranque local
 
