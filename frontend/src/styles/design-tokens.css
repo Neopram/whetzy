@@ -5,33 +5,35 @@
      Verde sigue significando solo acierto/éxito. El tema claro anterior vive
      entero en `:root[data-theme="light"]`, al final. Las parejas de
      contraste las vigila test/tokens.contraste.test.ts. */
-  --le-green: #10B981;
-  --le-green-dark: #059669;
-  --le-green-light: #0A2A20;
-  --le-green-bg: #0A2A20;
+  --le-green: #3DD68C;
+  --le-green-dark: #2BB673;
+  --le-green-light: #0E2A1F;
+  --le-green-bg: #0E2A1F;
 
-  --le-blue: #06B6D4;
-  --le-blue-dark: #0891B2;
-  --le-blue-light: #0B2A33;
+  /* Azul = escala de datos neutra (acero → hielo) del sistema v2 (design/v2). */
+  --le-blue: #9CC9FF;
+  --le-blue-dark: #5B7083;
+  --le-blue-light: #16202B;
 
-  /* Marca = cian. --le-brand* para CTAs, hero, logo y acentos; el texto sobre
-     un relleno de marca va en --le-text-inverse (oscuro), como en la landing. */
-  --le-brand: #06B6D4;
-  --le-brand-dark: #0891B2;
-  --le-brand-light: #0B2A33;
-  --le-brand-2: #22D3EE;
-  --le-brand-deep: #0E7490;
+  /* Marca = «chispa» (design/v2/GUIA.md, 2026-10-01): un solo acento cálido,
+     usado con moderación — CTAs, el relleno de preparación y el foco. El texto
+     sobre un relleno de marca va en --le-text-inverse (oscuro). Antes era cian. */
+  --le-brand: #FF7A45;
+  --le-brand-dark: #E5612C;
+  --le-brand-light: #2A1A14;
+  --le-brand-2: #FF986F;
+  --le-brand-deep: #B84A1F;
   /* Brand colour for TEXT, not for fills. --le-brand-dark (#0E8BD4) only
      reaches 3.7:1 on white, so small brand-coloured labels using it failed
      WCAG 2.2 AA 1.4.3 (red line 6). This token is the accessible counterpart:
      5.19:1 on white here, 8.16:1 on the dark surface below. Use --le-brand-dark
      for gradients and fills, --le-brand-text whenever it is a glyph. */
-  --le-brand-text: #22D3EE;
+  --le-brand-text: #FF8A5B;
   /* Same idea for the success colour: --le-green (#58CC02) is 2.09:1 on white,
      so it is a fill, never a glyph. This is 6.51:1 on white, 6.83:1 on the dark
      surface (where plain --le-green is already fine). Red line: green still
      means success and nothing else. */
-  --le-success-text: #34D399;
+  --le-success-text: #3DD68C;
 
   /* ── Colour on a FIXED light tint ──────────────────────────────────────
      --le-green-light / --le-brand-light are the same colour in both themes
@@ -41,48 +43,50 @@
      6.51:1 / 5.86:1 on white and green tint, 5.19:1 / 4.56:1 on white and
      brand tint. --le-success-on-tint doubles as the fill under white text
      (6.51:1), which plain --le-green could not carry either (2.09:1). */
-  --le-success-on-tint: #6EE7B7;
-  --le-brand-on-tint: #67E8F9;
+  --le-success-on-tint: #6FE3AC;
+  --le-brand-on-tint: #FFB08F;
   /* --le-purple on --le-purple-light is 2.15:1 (the XP badge). 5.12:1 here,
      6.04:1 on white. */
-  --le-purple-on-tint: #C4B5FD;
+  --le-purple-on-tint: #C2DEFF;
   /* The difficulty badge paints --le-red / --le-orange / --le-green straight
      onto --le-bg at 3.08:1, 2.04:1 and 1.94:1. These are the readable
      counterparts: 5.36:1 and 5.25:1 on --le-bg (green reuses
      --le-success-on-tint at 6.08:1). --le-danger-text doubles as a fill —
      white on it is 5.74:1, where --le-red-dark managed only 4.30:1. */
-  --le-danger-text: #F87171;
-  --le-warning-text: #FBBF24;
+  --le-danger-text: #FF7A80;
+  --le-warning-text: #F5C04A;
 
-  --le-orange: #F59E0B;
-  --le-orange-dark: #D97706;
-  --le-orange-light: #2E2008;
+  --le-orange: #F5C04A;
+  --le-orange-dark: #D9A12E;
+  --le-orange-light: #2B2310;
 
-  --le-red: #EF4444;
-  --le-red-dark: #DC2626;
-  --le-red-light: #2E0F12;
-  --le-danger: #F87171;
+  --le-red: #F2545B;
+  --le-red-dark: #D43C43;
+  --le-red-light: #2E1215;
+  --le-danger: #F2545B;
 
-  --le-purple: #A78BFA;
-  --le-purple-dark: #8B5CF6;
-  --le-purple-light: #1F1633;
+  /* Sin morado de marca en v2: el antiguo morado (XP, insignias) pasa a la
+     escala de datos fría para no competir con el acento. */
+  --le-purple: #9CC9FF;
+  --le-purple-dark: #6E9BD6;
+  --le-purple-light: #16202B;
 
-  --le-gold: #FBBF24;
-  --le-gold-dark: #D97706;
-  --le-gold-light: #2E2408;
+  --le-gold: #F5C04A;
+  --le-gold-dark: #D9A12E;
+  --le-gold-light: #2B2310;
 
-  --le-teal: #2DD4BF;
-  --le-pink: #F472B6;
+  --le-teal: #7FB8D9;
+  --le-pink: #E38FA8;
 
-  /* Neutral Palette */
-  --le-bg: #06090E;
-  --le-bg-elevated: #0D141F;
-  --le-surface: #0D141F;
-  --le-border: #1E2A3A;
-  --le-border-light: #162030;
+  /* Neutral Palette — grafito (design/v2) */
+  --le-bg: #0D1015;
+  --le-bg-elevated: #1C222B;
+  --le-surface: #151A21;
+  --le-border: #2A313C;
+  --le-border-light: #222831;
 
-  --le-text: #F8FAFC;
-  --le-text-secondary: #94A3B8;   /* 5.8:1 on white, 4.8:1 on #F7F7F7 — WCAG AA ✓ */
+  --le-text: #E8ECF1;
+  --le-text-secondary: #A9B4C2;
   /* Was #AFAFAF with a comment saying "decorative/placeholder only". It was not
      used that way: 39 rules paint real sentences with it — loading and empty
      states, league ranks, module subtitles — at 2.19:1 on white and 2.05:1 on
@@ -90,11 +94,14 @@
      the token now meets AA itself (5.10:1 on white, 4.76:1 on --le-bg) and
      stays visibly lighter than --le-text-secondary. A muted token that cannot
      legally hold text is a trap, not a token. */
-  --le-text-muted: #8391A7;
-  --le-text-inverse: #06090E;
+  --le-text-muted: #93A0B0;
+  --le-text-inverse: #17100D;
 
-  /* Typography */
-  --le-font: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /* Typography (design/v2): Inter para la interfaz, Bricolage Grotesque para
+     títulos y JetBrains Mono para toda cifra, porcentaje, temporizador y
+     código. Las tres autoalojadas en global.css. */
+  --le-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --le-font-display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
   --le-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
 
   --le-fs-xs: 0.6875rem;    /* 11px */
@@ -132,9 +139,10 @@
   /* Shadows */
   --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
   --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.45);
-  --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 25px -5px rgba(6, 182, 212, 0.12);
-  --le-shadow-btn: 0 4px 0 rgba(0, 0, 0, 0.15);
-  --le-shadow-btn-active: 0 2px 0 rgba(0, 0, 0, 0.15);
+  --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.55);
+  /* v2: sin botón «3D» con sombra inferior; la elevación es borde + luz interior. */
+  --le-shadow-btn: none;
+  --le-shadow-btn-active: none;
 
   /* Transitions */
   --le-transition-fast: 150ms ease;
@@ -170,63 +178,67 @@
 
   /* Editor de código: fijo en oscuro pase lo que pase con el tema del sitio
      (igual que Monaco/VS Code), no una superficie --le-* más. */
-  --le-code-bg: #0A0F17;
-  --le-code-text: #CDD6F4;
+  --le-code-bg: #0B0E12;
+  --le-code-text: #D6DEE8;
 
-  /* Tarjeta "Pro" (ProfileScreen): azul-marino fijo con !important a
-     propósito, no sigue el tema del sitio. */
-  --le-pro-card-from: #1A1A2E;
-  --le-pro-card-to: #16213E;
+  /* Tarjeta "Pro" (ProfileScreen): grafito fijo con !important a propósito,
+     no sigue el tema del sitio. Sin grandes manchas de color (design/v2). */
+  --le-pro-card-from: #1C222B;
+  --le-pro-card-to: #151A21;
 }
 
 :root[data-theme="light"] {
-  /* Tema claro anterior (azul cielo), solo si el usuario lo elige en Perfil. */
-  --le-green: #58CC02;
-  --le-green-dark: #46A302;
-  --le-green-light: #D7FFB8;
-  --le-green-bg: #F0FFF0;
-  --le-blue: #1CB0F6;
-  --le-blue-dark: #1899D6;
-  --le-blue-light: #DDF4FF;
-  --le-brand: #1CB0F6;
-  --le-brand-dark: #0E8BD4;
-  --le-brand-light: #DDF4FF;
-  --le-brand-2: #5CD1FF;
-  --le-brand-deep: #0B72B0;
-  --le-brand-text: #0B72B0;
-  --le-success-text: #2F6B00;
-  --le-success-on-tint: #2F6B00;
-  --le-brand-on-tint: #0B72B0;
-  --le-purple-on-tint: #8B2FD6;
-  --le-danger-text: #C81E1E;
-  --le-warning-text: #9A5700;
-  --le-orange: #FF9600;
-  --le-orange-dark: #E08600;
-  --le-orange-light: #FFF3E0;
-  --le-red: #FF4B4B;
-  --le-red-dark: #EA2B2B;
-  --le-red-light: #FFE0E0;
-  --le-danger: #E53935;
-  --le-purple: #CE82FF;
-  --le-purple-dark: #A855F7;
-  --le-purple-light: #F3E8FF;
-  --le-gold: #FFC800;
-  --le-gold-dark: #E0B000;
-  --le-gold-light: #FFF8E1;
-  --le-teal: #0DC5C1;
-  --le-pink: #FF86D0;
-  --le-bg: #F7F7F7;
+  /* Tema claro v2 («papel cálido», design/v2), solo si el usuario lo elige en
+     Perfil. El acento se oscurece para que el blanco encima cumpla AA (6.1:1);
+     todos los textos dan ≥ 4.5:1 sobre --le-bg y --le-surface (medido el
+     2026-10-01). Sustituye a la paleta clara anterior (verde #58CC02, azul
+     #1CB0F6, morado #CE82FF), retirada por coincidir con la de Duolingo. */
+  --le-green: #137649;
+  --le-green-dark: #0F5E3A;
+  --le-green-light: #DDF3E8;
+  --le-green-bg: #EEF8F2;
+  --le-blue: #416E9A;
+  --le-blue-dark: #275E91;
+  --le-blue-light: #E3EDF7;
+  --le-brand: #AA3F16;
+  --le-brand-dark: #8E320E;
+  --le-brand-light: #FBE7DE;
+  --le-brand-2: #C24E22;
+  --le-brand-deep: #8E320E;
+  --le-brand-text: #AA3F16;
+  --le-success-text: #137649;
+  --le-success-on-tint: #0F5E3A;
+  --le-brand-on-tint: #8E320E;
+  --le-purple-on-tint: #275E91;
+  --le-danger-text: #B42332;
+  --le-warning-text: #875A00;
+  --le-orange: #8A5A00;
+  --le-orange-dark: #6E4800;
+  --le-orange-light: #FBF1DC;
+  --le-red: #B42332;
+  --le-red-dark: #94212E;
+  --le-red-light: #FBE3E5;
+  --le-danger: #B42332;
+  --le-purple: #416E9A;
+  --le-purple-dark: #275E91;
+  --le-purple-light: #E3EDF7;
+  --le-gold: #8A5A00;
+  --le-gold-dark: #6E4800;
+  --le-gold-light: #FBF1DC;
+  --le-teal: #2F7F86;
+  --le-pink: #B4436B;
+  --le-bg: #F6F5F2;
   --le-bg-elevated: #FFFFFF;
   --le-surface: #FFFFFF;
-  --le-border: #E5E5E5;
-  --le-border-light: #F0F0F0;
-  --le-text: #3C3C3C;
-  --le-text-secondary: #595959;   /* 5.8:1 on white, 4.8:1 on #F7F7F7 — WCAG AA ✓ */
-  --le-text-muted: #6E6E6E;
+  --le-border: #C9CED1;
+  --le-border-light: #E3E4E1;
+  --le-text: #14171C;
+  --le-text-secondary: #3A444F;
+  --le-text-muted: #4F5B68;
   --le-text-inverse: #FFFFFF;
   --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
   --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.08);
   --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
-  --le-shadow-btn: 0 4px 0 rgba(0, 0, 0, 0.15);
-  --le-shadow-btn-active: 0 2px 0 rgba(0, 0, 0, 0.15);
+  --le-shadow-btn: none;
+  --le-shadow-btn-active: none;
 }
