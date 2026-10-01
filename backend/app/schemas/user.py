@@ -53,6 +53,8 @@ class UserRead(UserBase):
         validation_alias=AliasChoices("active_granted_until", "granted_tier_expires_at"),
     )
     email_verified: bool = False
+    # Correos de ofertas (reactivación): False si el usuario se dio de baja.
+    marketing_emails_opt_out: bool = False
     onboarding_experience: int | None = None
     onboarding_goal: int | None = None
     onboarding_weekly_time: int | None = None

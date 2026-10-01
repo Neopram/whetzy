@@ -29,6 +29,7 @@ type Caso = [nombre: string, llamada: () => Promise<unknown>, metodo: string, ru
 const CASOS: Caso[] = [
   ['auth.updateMe', () => auth.updateMe({ language: 'en' }), 'PATCH', '/auth/me', { language: 'en' }],
   ['auth.oauthProviders', () => auth.oauthProviders(), 'GET', '/auth/oauth/providers'],
+  ['auth.setMarketingEmails', () => auth.setMarketingEmails(false), 'PATCH', '/email/preferences', { marketing: false }],
   ['auth.requestPasswordReset', () => auth.requestPasswordReset('a@b.c'), 'POST', '/auth/forgot-password', { email: 'a@b.c' }],
   ['auth.resetPassword', () => auth.resetPassword('t', 'n'), 'POST', '/auth/reset-password', { token: 't', new_password: 'n' }],
   ['progress.decaying', () => progress.decaying(3, 2), 'GET', '/progress/decaying?within_days=3&limit=2'],

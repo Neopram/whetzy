@@ -25,6 +25,8 @@ interface UserProfile {
   /** Plan ganado con referidos y hasta cuándo (ADR-57); null si no hay. */
   grantedTier: 'plus' | 'pro' | null;
   grantedUntil: string | null;
+  /** Recibir correos de ofertas (la baja se hace desde Ajustes o desde el correo). */
+  marketingEmails: boolean;
   is_admin: boolean;
   language: Language;
   league: LeagueTier;
@@ -147,6 +149,7 @@ function mapApiUser(u: UserRead): UserProfile {
     isPremium: u.is_premium || Boolean(u.granted_tier),
     grantedTier: u.granted_tier ?? null,
     grantedUntil: u.granted_tier_expires_at ?? null,
+    marketingEmails: !u.marketing_emails_opt_out,
     is_admin: u.is_admin ?? false,
     language: u.language,
     league: 'bronze',
@@ -175,6 +178,7 @@ const defaultUser: UserProfile = {
   isPremium: false,
   grantedTier: null,
   grantedUntil: null,
+  marketingEmails: true,
   is_admin: false,
   language: 'es',
   league: 'gold',

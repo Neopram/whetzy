@@ -160,6 +160,9 @@ class Settings(BaseSettings):
     EMAIL_FROM_ADDRESS: str = "noreply@whetzy.com"
     EMAIL_FROM_NAME: str = "Whetzy"
     FRONTEND_BASE_URL: str = "https://whetzy.com"
+    # Base pública de esta API: el enlace de baja de un correo (RFC 8058) tiene
+    # que aceptar un POST, así que apunta aquí y no al frontend.
+    API_PUBLIC_BASE_URL: str = "https://api-production-9751.up.railway.app"
 
     # --- OpenTelemetry -------------------------------------------------------
     OTEL_SERVICE_NAME: str = "whetzy-backend"

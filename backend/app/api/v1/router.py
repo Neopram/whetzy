@@ -14,6 +14,7 @@ from app.api.v1.endpoints import (
     content,
     duels,
     economy,
+    email_prefs,
     exams,
     experiments,
     export,
@@ -40,6 +41,7 @@ api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 api_router.include_router(oauth.router, prefix="/auth/oauth", tags=["auth"])
 api_router.include_router(auth_hardening.router, prefix="/auth", tags=["auth"])
 api_router.include_router(quiz.router, prefix="/quiz", tags=["quiz"])
+api_router.include_router(email_prefs.router, prefix="/email", tags=["email"])
 api_router.include_router(placement.router, prefix="/placement", tags=["placement"])
 api_router.include_router(progress.router, prefix="/progress", tags=["progress"])
 api_router.include_router(glossary.router, prefix="/glossary", tags=["glossary"])

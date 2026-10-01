@@ -55,6 +55,14 @@ class User(Base):
     # Push notification preferences (P.13)
     push_streak_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     last_streak_reminder_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Correos de marketing (hoy, el de reactivación con código): la política
+    # publicada promete que todos se pueden cancelar (`legal.privacyCanSpam`).
+    marketing_emails_opt_out: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=false(), nullable=False
+    )
+    # Fin de periodo para el que ya salió el recordatorio de renovación (los
+    # Términos lo prometen 7 días antes): uno por periodo, no uno por vuelta.
+    renewal_reminder_for: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     # Stripe subscription (7.2)
     stripe_customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True, index=True)

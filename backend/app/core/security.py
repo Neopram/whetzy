@@ -35,7 +35,7 @@ oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_PREFIX}/auth/login", auto_error=False
 )
 
-TokenType = Literal["access", "refresh"]
+TokenType = Literal["access", "refresh", "unsubscribe"]
 
 
 # --------------------------------------------------------------------------
@@ -87,6 +87,13 @@ def create_access_token(
 ) -> str:
     delta = expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return _create_token(subject, "access", delta, jwt_version)
+
+
+def create_unsubscribe_token(subject: str | uuid.UUID) -> str:
+    """Token del enlace «darse de baja» de los correos de marketing. Su tipo
+    no sirve de sesión: `verify_token` exige el tipo esperado. Dura más que
+    cualquier correo que lo lleve."""
+    return _create_token(subject, "unsubscribe", timedelta(days=400))
 
 
 def create_refresh_token(

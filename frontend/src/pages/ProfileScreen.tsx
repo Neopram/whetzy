@@ -29,6 +29,18 @@ export function ProfileScreen() {
   );
   const [cancelState, setCancelState] = useState<'idle' | 'confirm' | 'busy' | 'done' | 'error'>('idle');
 
+  // Se aplica al momento y se deshace si el servidor falla: un interruptor
+  // que miente sobre la baja es peor que uno lento.
+  async function handleMarketingToggle() {
+    const next = !user.marketingEmails;
+    updateUser({ marketingEmails: next });
+    try {
+      await auth.setMarketingEmails(next);
+    } catch {
+      updateUser({ marketingEmails: !next });
+    }
+  }
+
   async function handleCancel() {
     setCancelState('busy');
     try {
@@ -231,6 +243,19 @@ export function ProfileScreen() {
           <div className={styles.setting}>
             <span className={styles.settingLabel}>{t('profile.darkMode')}</span>
             <button type="button" className={`${styles.toggle} ${theme === 'dark' ? styles.toggleOn : ''}`} onClick={() => setTheme(toggleTheme())} role="switch" aria-checked={theme === 'dark'} aria-label={t('profile.darkMode')}>
+              <span className={styles.track}><span className={styles.toggleThumb} /></span>
+            </button>
+          </div>
+          <div className={styles.setting}>
+            <span className={styles.settingLabel}>{t('profile.marketingEmails')}</span>
+            <button
+              className={`${styles.toggle} ${user.marketingEmails ? styles.toggleOn : ''}`}
+              type="button"
+              onClick={() => void handleMarketingToggle()}
+              role="switch"
+              aria-checked={user.marketingEmails}
+              aria-label={t('profile.marketingEmails')}
+            >
               <span className={styles.track}><span className={styles.toggleThumb} /></span>
             </button>
           </div>

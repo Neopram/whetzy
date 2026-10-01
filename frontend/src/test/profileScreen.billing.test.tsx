@@ -82,3 +82,24 @@ describe('Perfil — planes y suscripción', () => {
     expect(screen.queryByRole('button', { name: 'Cancelar suscripción' })).toBeNull();
   });
 });
+
+describe('Perfil — correos con ofertas', () => {
+  it('el interruptor da de baja en el servidor y vuelve atrás si falla', async () => {
+    const { auth } = await import('../services/api');
+    const set = vi.spyOn(auth, 'setMarketingEmails');
+    useAppStore.getState().updateUser({ isPremium: false, marketingEmails: true });
+    render(<ProfileScreen />);
+    const sw = screen.getByRole('switch', { name: 'Correos con ofertas' });
+
+    set.mockResolvedValueOnce({ marketing: false });
+    fireEvent.click(sw);
+    await waitFor(() => expect(set).toHaveBeenCalledWith(false));
+    expect(sw).toHaveAttribute('aria-checked', 'false');
+
+    set.mockRejectedValueOnce(new Error('offline'));
+    fireEvent.click(sw);
+    await waitFor(() => expect(sw).toHaveAttribute('aria-checked', 'false'));
+    expect(set).toHaveBeenLastCalledWith(true);
+    set.mockRestore();
+  });
+});

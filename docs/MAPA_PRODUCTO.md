@@ -87,7 +87,6 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Interruptor «Usar explicaciones de IA» en Ajustes | `docs/legal/ai-notice.en.md` (borrador) | no existe |
 | Etiqueta «AI-powered» en cada respuesta del tutor | `docs/legal/ai-notice.en.md`, `ai-act-dsa-eaa.md` | no existe (el panel se titula «Tutor Whetzy») |
 | Botón «Flag» y revisión humana en 24 h | `docs/legal/ai-notice.en.md` (borrador) | no existe |
-| Correo de aviso 7 días antes de renovar | términos publicados, `legal.termsP6renewal` (ES/EN) | `send_renewal_reminder` existe en `services/email.py` y **nadie la llama** |
 | Panel B2B / equipos | `docs/legal/b2b_pilot_offer_*.md`, ledger 24.9 | no existe |
 | `/blog`, `/compare`, `/pricing` | ledger 26.9, 27.10; `archive/SPEC_WEB.md` | no existen |
 | Sign in with Apple | ADR-13 (obligatorio antes de App Store) | no existe (bloqueado por H.2) |
@@ -98,8 +97,6 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Créditos por onboarding, módulo y rachas de 7 y 30 días | `docs/ECONOMIA.md` §2.2 | **ninguna llamada a `grant_credits`** para esos motivos; solo lo llaman el código promocional y el programa de referidos (ADR-57) |
 | Antifraude por dispositivo/IP (1 activación cada 30 días) | `docs/ECONOMIA.md` §3.5 | el código existe (`check_device_rate_limit`), pero el frontend no manda `X-Device-Fingerprint` y la política publicada no declara ese tratamiento: no corre (ADR-57) |
 | Clawback de referidos (reembolso, baneo, fraude confirmado) | `docs/ECONOMIA.md` §3.5 | no hay flujo de baneo ni de «fraude confirmado» que lo dispare; un referido borrado antes del abono queda `rejected` (ADR-57) |
-| Correo de reactivación a los 14 días de inactividad | ledger 29.7 (DONE), ADR-35 | el handler `reactivation_check` existe en `services/job_worker.py`; **nada encola ese job** |
-| Liquidación mensual a instructores el día 15 | `docs/MARKETPLACE.md`, `main.py` (`_schedule_monthly_payouts`) | depende de APScheduler, que no está en `requirements.txt`: el `ImportError` deja el aviso en el log y **nunca se programa** |
 | Gastar créditos en simulacro, informe PDF o curso | `docs/ECONOMIA.md` §2.3 | `spend_fifo` solo lo llama el comodín de racha (`services/streak_shop.py`) |
 | Examen para saltarse un módulo (test-out) | ledger 17.2 | `TrackExamScreen` y el store aceptan `test_out`; **ninguna llamada a `startTrackExam('test_out', …)`** |
 

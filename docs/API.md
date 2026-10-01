@@ -250,6 +250,9 @@ GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[]} �
 GET  /economy/balance           → {balance, currency, expires_in_days} 🔒 — días hasta que caduque el primer lote con saldo (0 = nada)
 GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea (y lo guarda) si no existe
 POST /economy/promo/redeem      → {credits, balance, message} 🔒 — solo web (X-Platform ios/android → 403); rate limit 5/10 min por usuario
+GET  /email/unsubscribe         → página HTML — público, `?token=`; baja de los correos de ofertas (el enlace del correo)
+POST /email/unsubscribe         → {unsubscribed} — público, `?token=`; «One-Click» de RFC 8058 (Gmail, Yahoo)
+PATCH /email/preferences        {marketing: bool} → {marketing} 🔒 — interruptor de Yo → Ajustes
 POST /economy/referral/activate → {activated, referrer_id} 🔒 — registra el referido (`pending`) y le da 200 créditos; activación y abono, en `referral_program_loop` (ADR-57)
 GET  /economy/streak-freeze     → {price, balance, held, max_held, purchases_this_week, max_per_week, can_buy, blocked_by} 🔒 — comodín de racha (35.3)
 POST /economy/streak-freeze     {request_id: uuid} → mismo cuerpo + {replayed} 🔒 — compra con créditos; 409 `insufficient_credits` · `max_held` · `weekly_limit`; el mismo `request_id` nunca cobra dos veces

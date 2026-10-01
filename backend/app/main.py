@@ -11,7 +11,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.v1.router import api_router
 from app.core.config import settings
@@ -48,6 +48,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     from app.services.ai import rag
     from app.services.economy import referral_program_loop
     from app.services.job_worker import job_worker_loop
+    from app.services.periodic import periodic_jobs_loop
 
     # Si el correo no sale, que se sepa al arrancar y no cuando alguien pierda
     # su cuenta. En produccion es un error, no un aviso (ledger H.30).
@@ -74,59 +75,14 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     asyncio.create_task(referral_program_loop(AsyncSessionLocal))
     logger.info("Referrals: background loop started (ADR-35, every 6 h)")
 
-    # Schedule monthly payouts (15th of each month at 00:00 UTC)
-    _schedule_monthly_payouts(AsyncSessionLocal)
-    logger.info("Monthly payout scheduler: scheduled for 15th of each month")
+    # Recordatorio de renovación, reactivación y liquidación del día 15. Antes la
+    # liquidación iba con APScheduler, que no está instalado: nunca se programó.
+    asyncio.create_task(periodic_jobs_loop(AsyncSessionLocal))
+    logger.info("Periodic jobs: background loop started (every hour)")
 
     yield
     logger.info("Shutting down %s", settings.APP_NAME)
     await close_db()
-
-
-def _schedule_monthly_payouts(
-    db_factory: async_sessionmaker[AsyncSession],
-) -> None:
-    """Schedule monthly payout job using APScheduler.
-    
-    Triggers on the 15th of each month at 00:00 UTC.
-    """
-    try:
-        from apscheduler.schedulers.asyncio import AsyncIOScheduler
-        from apscheduler.triggers.cron import CronTrigger
-
-        async def _run_payout_job() -> None:
-            """Create and queue a run_payouts job."""
-            from uuid import uuid4
-
-            from app.models.job import Job
-
-            async with db_factory() as db:
-                # Create a system job (user_id is a sentinel for scheduled jobs)
-                job = Job(
-                    user_id=uuid4(),
-                    job_type="run_payouts",
-                    status="queued",
-                    payload={},
-                )
-                db.add(job)
-                await db.commit()
-                logger.info("Queued monthly payout job: %d", job.id)
-
-        scheduler = AsyncIOScheduler()
-        # Trigger at 00:00 UTC on the 15th of each month
-        scheduler.add_job(
-            _run_payout_job,
-            trigger=CronTrigger(day=15, hour=0, minute=0, timezone="UTC"),
-            id="monthly_payouts",
-            name="Monthly instructor payouts",
-            replace_existing=True,
-        )
-        scheduler.start()
-        logger.info("APScheduler started with monthly payout trigger")
-    except ImportError:
-        logger.warning("APScheduler not installed; monthly payouts will not be automatically scheduled")
-    except Exception:
-        logger.exception("Failed to configure monthly payout scheduler")
 
 
 app = FastAPI(

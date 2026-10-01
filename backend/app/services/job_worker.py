@@ -8,10 +8,10 @@ from __future__ import annotations
 import asyncio
 import logging
 from collections.abc import Callable
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 
-from sqlalchemy import and_, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.job import Job
@@ -137,154 +137,21 @@ async def handle_dkt_retrain(job: Job, db: AsyncSession) -> dict[str, Any]:
 
 @register_job_handler("reactivation_check")
 async def handle_reactivation_check(job: Job, db: AsyncSession) -> dict[str, Any]:
-    """Find users inactive >= 14 days, generate 72h promo codes, send emails (29.7)."""
-    from datetime import UTC, timedelta
+    """Encolable a mano; lo normal es `periodic_jobs_loop` (services/periodic.py)."""
+    from app.services.periodic import send_reactivation_offers
 
-    from app.models.economy import PromoCode
-    from app.models.user import User
-    from app.services.economy import PromoCodeService
-    from app.services.email import send_reactivation
-
-    now = datetime.now(UTC)
-    cutoff = now - timedelta(days=14)
-
-    # 1. Find inactive users
-    inactive_users = (
-        await db.scalars(
-            select(User).where(
-                User.is_active == True,
-                (User.last_active < cutoff) | (User.last_active.is_(None)),
-            )
-        )
-    ).all()
-
-    # 2. Exclude users who already got a reactivation code in the last 30 days.
-    #    campaign_id stores the target user_id for deduplication.
-    recent_codes = (
-        await db.scalars(
-            select(PromoCode.campaign_id).where(
-                PromoCode.code_type == "reactivation",
-                PromoCode.created_at > now - timedelta(days=30),
-                PromoCode.campaign_id.is_not(None),
-            )
-        )
-    ).all()
-    already_sent = set(recent_codes)
-    inactive_users = [u for u in inactive_users if str(u.id) not in already_sent]
-
-    if not inactive_users:
-        logger.info("reactivation_check: no inactive users found")
-        return {"sent": 0, "skipped": 0}
-
-    sent = 0
-    skipped = 0
-    for user in inactive_users:
-        try:
-            codes = await PromoCodeService.generate_batch(
-                db,
-                code_type="reactivation",
-                credits=5,
-                count=1,
-                max_uses=1,
-                expires_at=now + timedelta(hours=72),
-                campaign_id=str(user.id),
-                created_by="reactivation_job",
-            )
-            await db.commit()
-            send_reactivation(
-                to=user.email,
-                name=user.display_name,
-                code=codes[0].code,
-                lang=user.language or "es",
-            )
-            sent += 1
-        except Exception:
-            logger.exception("reactivation_check: failed for user %s", user.id)
-            skipped += 1
-
-    logger.info("reactivation_check: sent=%d skipped=%d", sent, skipped)
-    return {"sent": sent, "skipped": skipped}
+    sent = await send_reactivation_offers(db)
+    await db.commit()
+    return {"sent": sent}
 
 
 @register_job_handler("run_payouts")
 async def handle_run_payouts(job: Job, db: AsyncSession) -> dict[str, Any]:
-    """Handler for monthly payout processing (28.7).
-    
-    Process pending instructor payouts that meet the €50 minimum threshold.
-    
-    Returns:
-        {
-            "processed_count": int,           # Number of instructors paid
-            "total_paid_cents": int,          # Total payout in cents
-            "instructor_count": int,          # Count of instructors with pending payouts
-            "filtered_out_count": int,        # Count under minimum threshold
-        }
-    """
-    from app.models.instructor import InstructorPayout
+    """Liquidación (28.7), encolable a mano para cualquier día; lo normal es
+    el día 15 desde `periodic_jobs_loop`."""
+    from app.services.periodic import PAYOUT_DAY, process_monthly_payouts
 
-    # Minimum payout threshold in cents: €50 = 5000 cents
-    MIN_PAYOUT_CENTS = 5000
-
-    logger.info("Executing monthly payout job")
-
-    # 1. SELECT pending instructor payouts
-    pending_payouts = (
-        await db.scalars(
-            select(InstructorPayout)
-            .where(
-                and_(
-                    InstructorPayout.status == "pending",
-                    InstructorPayout.earnings_cents > 0,
-                )
-            )
-            .order_by(InstructorPayout.instructor_id)
-        )
-    ).all()
-
-    if not pending_payouts:
-        logger.info("No pending payouts to process")
-        return {
-            "processed_count": 0,
-            "total_paid_cents": 0,
-            "instructor_count": 0,
-            "filtered_out_count": 0,
-        }
-
-    # 2. Filter: >= €50 minimum
-    valid_payouts = [p for p in pending_payouts if p.earnings_cents >= MIN_PAYOUT_CENTS]
-    filtered_out = len(pending_payouts) - len(valid_payouts)
-
-    logger.info(
-        "Processing payouts: %d valid (>= €50), %d filtered out",
-        len(valid_payouts),
-        filtered_out,
-    )
-
-    total_paid_cents = 0
-    instructor_count = len(valid_payouts)
-
-    # 3-4. Process each payout: update status to 'processing'
-    for payout in valid_payouts:
-        payout.status = "processing"
-        total_paid_cents += payout.earnings_cents
-        logger.debug(
-            "Payout for instructor %s: €%.2f",
-            payout.instructor_id,
-            payout.earnings_cents / 100,
-        )
-
-    # Commit all status updates to 'processing'
+    today = datetime.now(UTC)
+    result = await process_monthly_payouts(db, now=today.replace(day=PAYOUT_DAY))
     await db.commit()
-    logger.info(
-        "Processed %d payouts totaling €%.2f",
-        len(valid_payouts),
-        total_paid_cents / 100,
-    )
-
-    # 5. Return statistics
-    return {
-        "processed_count": len(valid_payouts),
-        "total_paid_cents": total_paid_cents,
-        "instructor_count": instructor_count,
-        "filtered_out_count": filtered_out,
-    }
+    return {**result, "instructor_count": result["processed_count"]}

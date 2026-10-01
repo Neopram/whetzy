@@ -170,6 +170,8 @@ export interface UserRead {
   /** Plan ganado con referidos (ADR-57), solo mientras está en fecha. */
   granted_tier?: 'plus' | 'pro' | null;
   granted_tier_expires_at?: string | null;
+  /** true si se dio de baja de los correos de ofertas. */
+  marketing_emails_opt_out?: boolean;
   is_admin?: boolean;
 }
 
@@ -227,6 +229,14 @@ export const auth = {
    *  solo vivía en el estado local y al recargar volvía el del registro. */
   async updateMe(patch: UpdateMePayload) {
     return request<UserRead>('/auth/me', { method: 'PATCH', body: JSON.stringify(patch) });
+  },
+
+  /** Correos de ofertas (hoy, el de reactivación). Los de la cuenta no se apagan. */
+  async setMarketingEmails(marketing: boolean) {
+    return request<{ marketing: boolean }>('/email/preferences', {
+      method: 'PATCH',
+      body: JSON.stringify({ marketing }),
+    });
   },
 
   /** Proveedores OAuth con credenciales en el servidor. Vacío si no hay ninguno. */
