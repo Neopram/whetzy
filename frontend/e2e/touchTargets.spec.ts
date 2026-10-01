@@ -84,7 +84,7 @@ test.describe('34.3: objetivos tactiles >= 44x44px a 390px', () => {
     allFindings.push(...await auditTargets(page, 'Lesson'));
     await closeLesson.click();
 
-    await page.getByRole('button', { name: 'Inicio' }).click();
+    await page.getByRole('button', { name: 'Hoy', exact: true }).click();
     await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
     await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
     allFindings.push(...await auditTargets(page, 'Quiz'));

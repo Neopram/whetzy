@@ -96,19 +96,19 @@ test('gamificación: 10/10 deja XP, racha, liga e insignia visibles (39.5)', asy
 
   // UI: Inicio (XP y racha), Liga y Perfil (insignia), con captura de cada una.
   await page.reload();
-  await page.getByRole('button', { name: 'Inicio' }).click();
+  await page.getByRole('button', { name: 'Hoy', exact: true }).click();
   await expect(page.getByText(/Racha/i).first()).toBeVisible({ timeout: 15_000 });
   // Barra superior: racha 1 y el XP total de la sesión.
   await expect(page.getByText(String(xp), { exact: true }).first()).toBeVisible();
   await page.screenshot({ path: path.join(SHOTS, '1-inicio-xp-racha.png'), fullPage: true });
 
-  await page.getByRole('button', { name: 'Liga' }).click();
+  await page.getByRole('button', { name: 'Ranking', exact: true }).click();
   // El podio muestra el nombre de pila y el XP de la semana.
   await expect(page.getByText(`${xp} XP`).first()).toBeVisible({ timeout: 15_000 });
   await expect(page.getByText('Ada', { exact: true }).first()).toBeVisible();
   await page.screenshot({ path: path.join(SHOTS, '2-liga.png'), fullPage: true });
 
-  await page.getByRole('button', { name: 'Perfil' }).click();
+  await page.getByRole('button', { name: 'Yo', exact: true }).click();
   await expect(page.getByText('Perfeccionista')).toBeVisible({ timeout: 15_000 });
   await page.screenshot({ path: path.join(SHOTS, '3-perfil-insignia.png'), fullPage: true });
 });

@@ -34,6 +34,6 @@ test.describe('quiz', () => {
     await expect(page.getByText(/% de precisión/i)).toBeVisible();
 
     await page.locator('[class*="btnStudy_"]').click();
-    await expect(page.getByRole('button', { name: 'Inicio' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible();
   });
 });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '../components/common/Card';
+import { RankingTabs } from '../components/layout/RankingTabs';
 import { useApi } from '../hooks/useApi';
 import { league as leagueApi, type LeagueStandingsResponse } from '../services/api';
 import styles from './LeagueScreen.module.css';
@@ -32,8 +33,8 @@ export function LeagueScreen() {
     }
   }
 
-  if (loading) return <div className={styles.screen}><p className={styles.loading}>{t('league.loading')}</p></div>;
-  if (error || !data) return <div className={styles.screen}><p className={styles.loading}>{t('league.empty')}</p></div>;
+  if (loading) return <div className={styles.screen}><RankingTabs /><p className={styles.loading}>{t('league.loading')}</p></div>;
+  if (error || !data) return <div className={styles.screen}><RankingTabs /><p className={styles.loading}>{t('league.empty')}</p></div>;
 
   const tier = TIER_META[data.league.tier] ?? { icon: '🏆' };
   // `data.league.name` is a Spanish-only internal label ("Bronce", "Platino"),
@@ -48,6 +49,7 @@ export function LeagueScreen() {
 
   return (
     <div className={styles.screen}>
+      <RankingTabs />
       <div className={styles.leagueHeader}>
         <span className={styles.leagueIcon}>{tier.icon}</span>
         <h1 className={styles.leagueName}>{t('league.league')} {leagueName}</h1>

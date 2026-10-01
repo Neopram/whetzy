@@ -40,7 +40,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
     const username = uniqueUsername('e2e_a11y_league_');
     await registerUser(page, { username, displayName: 'A11y League' });
 
-    await page.getByRole('button', { name: 'Liga' }).click();
+    await page.getByRole('button', { name: 'Ranking', exact: true }).click();
     // A brand-new user has no XP this week, so the league renders its empty
     // state (a <p>, no heading) rather than the podium — which is exactly the
     // screen most first-time users see, and the one worth auditing.

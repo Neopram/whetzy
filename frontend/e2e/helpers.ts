@@ -46,7 +46,7 @@ export async function registerUser(page: Page, opts: { username: string; display
   await suppressOnboarding(page);
 
   // Successful registration lands on the home screen (bottom nav visible).
-  await expect(page.getByRole('button', { name: 'Inicio' })).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
 }
 
 /**
@@ -168,5 +168,5 @@ export async function registerAndCompleteAQuiz(page: Page, opts: { username: str
   }
   await expect(page.locator('[class*="summaryGrade_"]')).toBeVisible({ timeout: 10_000 });
   await page.locator('[class*="btnStudy_"]').click();
-  await expect(page.getByRole('button', { name: 'Inicio' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible();
 }

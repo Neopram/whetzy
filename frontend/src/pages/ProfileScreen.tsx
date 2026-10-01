@@ -170,6 +170,14 @@ export function ProfileScreen() {
           <button
             type="button"
             className={styles.setting}
+            onClick={() => setScreen('stats')}
+          >
+            <span className={styles.settingLabel}>{t('nav.stats')}</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <button
+            type="button"
+            className={styles.setting}
             onClick={() => setScreen('wallet')}
           >
             <span className={styles.settingLabel}>{t('wallet.title')}</span>
@@ -196,7 +204,7 @@ export function ProfileScreen() {
               type="button"
               className={styles.setting}
               onClick={() => setScreen('admin')}
-              style={{ borderColor: 'var(--color-primary)', background: 'rgba(6,182,212,0.1)' }}
+              style={{ borderColor: 'var(--le-brand)', background: 'var(--le-brand-light)' }}
             >
               <span className={styles.settingLabel}>🛡️ Admin Control Panel</span>
               <span aria-hidden="true">→</span>

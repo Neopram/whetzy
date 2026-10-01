@@ -23,7 +23,9 @@ test.describe('duel', () => {
     // Challenging requires skill history — complete a study session first.
     await registerAndCompleteAQuiz(page, { username: challengerUsername, displayName: 'E2E Challenger' });
 
-    await page.getByRole('button', { name: 'Duelos' }).click();
+    await page.getByRole('button', { name: 'Ranking', exact: true }).click();
+
+    await page.getByRole('tab', { name: 'Duelos' }).click();
     await page.getByRole('button', { name: '⚔️ Retar' }).click();
     await page.getByPlaceholder('Nombre de usuario').fill(opponentUsername);
     await page.getByRole('button', { name: 'Retar', exact: true }).click();
@@ -72,7 +74,9 @@ test.describe('duel', () => {
 
     await registerAndCompleteAQuiz(chalPage, { username: chalUsername, displayName: 'E2E Challenger2' });
 
-    await chalPage.getByRole('button', { name: 'Duelos' }).click();
+    await chalPage.getByRole('button', { name: 'Ranking', exact: true }).click();
+
+    await chalPage.getByRole('tab', { name: 'Duelos' }).click();
     await chalPage.getByRole('button', { name: '⚔️ Retar' }).click();
     await chalPage.getByPlaceholder('Nombre de usuario').fill(oppUsername);
     await chalPage.getByRole('button', { name: 'Retar', exact: true }).click();
@@ -114,10 +118,11 @@ test.describe('duel', () => {
     // opponent gets the first-run screen here even though the account already
     // exists — logging in is not enough to skip it.
     await suppressOnboarding(oppPage);
-    await expect(oppPage.getByRole('button', { name: 'Inicio' })).toBeVisible({ timeout: 15_000 });
+    await expect(oppPage.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
 
     // Navigate to duels and play
-    await oppPage.getByRole('button', { name: 'Duelos' }).click();
+    await oppPage.getByRole('button', { name: 'Ranking', exact: true }).click();
+    await oppPage.getByRole('tab', { name: 'Duelos' }).click();
     await expect(oppPage.getByRole('button', { name: 'Jugar' })).toBeVisible({ timeout: 10_000 });
     await oppPage.getByRole('button', { name: 'Jugar' }).click();
     await expect(oppPage.locator('text=/Pregunta 1 de 5/')).toBeVisible({ timeout: 15_000 });

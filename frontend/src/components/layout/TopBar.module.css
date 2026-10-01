@@ -8,8 +8,8 @@
   padding-top: env(safe-area-inset-top, 0px);
   padding-left: calc(var(--le-space-md) + env(safe-area-inset-left, 0px));
   padding-right: calc(var(--le-space-md) + env(safe-area-inset-right, 0px));
-  background: var(--le-surface);
-  border-bottom: 2px solid var(--le-border);
+  background: var(--le-bg);
+  border-bottom: 1px solid var(--le-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,25 +25,44 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  font-family: var(--le-font-display);
   font-size: var(--le-fs-lg);
-  font-weight: var(--le-fw-black);
-  color: var(--le-brand-text);
+  font-weight: var(--le-fw-extrabold);
+  letter-spacing: -0.03em;
+  color: var(--le-text);
+}
+
+.logo svg {
+  color: var(--le-brand);
 }
 
 .right {
   display: flex;
   align-items: center;
-  gap: var(--le-space-md);
+  gap: var(--le-space-xs);
 }
 
+/* Cápsula con borde: cifra en mono + unidad en gris (design/v2, .topStreak). */
 .stat {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-weight: var(--le-fw-bold);
-  font-size: var(--le-fs-base);
+  gap: var(--le-space-2xs);
+  padding: var(--le-space-2xs) var(--le-space-xs);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  font-size: var(--le-fs-xs);
 }
 
-.streak { color: var(--le-text); }
-.gems { color: var(--le-brand-text); }
-.level { color: var(--le-gold-dark); }
+.value {
+  font-family: var(--le-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--le-fw-semibold);
+  color: var(--le-text);
+}
+
+.unit {
+  color: var(--le-text-muted);
+}
+
+.streak svg { color: var(--le-brand); }
+.gems svg { color: var(--le-blue); }

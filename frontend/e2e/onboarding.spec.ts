@@ -45,7 +45,7 @@ test('onboarding: landing → first answered question in < 60 s', async ({ page 
   await closeLesson.click(); // onExit → 'tracks' (App.tsx), lesson already recorded as seen on load
 
   // Back to Home, now unblocked.
-  await page.getByRole('button', { name: 'Inicio' }).click();
+  await page.getByRole('button', { name: 'Hoy', exact: true }).click();
   await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
 
   // First question must appear
@@ -91,7 +91,7 @@ test('onboarding is skipped for returning users', async ({ page }) => {
   await suppressOnboarding(page);
 
   // A returning user lands on the home screen…
-  await expect(page.getByRole('button', { name: 'Inicio' })).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
   // …and onboarding is nowhere on it. Asserted on OnboardingScreen's own
   // test id, not on any button: the old CTA shared an accessible name with
   // the registration button. (An earlier version asserted this with a

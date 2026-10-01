@@ -92,12 +92,3 @@ export const xpBurstVariants: Variants = {
   animate: { opacity: [0, 1, 1, 0], scale: [0.3, 1.4, 1.2, 0.8], y: -40,
     transition: { duration: 0.65, ease: 'easeOut' } },
 };
-
-// ── Streak fire flicker ─────────────────────────────────────────────────────
-export const flickerVariants: Variants = {
-  animate: {
-    rotate: [-4, 4, -3, 3, -2, 2, 0],
-    scale: [1, 1.03, 0.98, 1.02, 1],
-    transition: { duration: 0.6, repeat: Infinity, repeatDelay: 2.4 },
-  },
-};

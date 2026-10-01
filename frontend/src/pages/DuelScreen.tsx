@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { duels as duelsApi, type DuelSummary, type DuelChallengeResponse, type QuestionPublic } from '../services/api';
 import { showToast } from '../components/common/Toast';
+import { RankingTabs } from '../components/layout/RankingTabs';
 
 type View = 'list' | 'challenge-modal' | 'playing' | 'result';
 
@@ -213,6 +214,7 @@ export function DuelScreen() {
   // List view
   return (
     <div style={styles.container}>
+      <RankingTabs />
       <div style={styles.header}>
         <h1 style={styles.title}>{t('duel.title')}</h1>
         <button style={{ ...styles.btnPrimary, flex: '0 0 auto' }} onClick={() => setView('challenge-modal')}>
