@@ -31,6 +31,7 @@ Frontend: React + Capacitor.
 | Qué se construyó de verdad en los 12 primeros días, qué estaba marcado `DONE` sin estarlo, qué bloquea (nada de ello código) y qué objetivo es alcanzable | **`BALANCE-12-DIAS.md`** |
 | Qué servicios externos (Railway, Sentry, PostHog, diseño, redes…) puede tocar una sesión de Claude, a qué cuenta apunta cada uno y qué hace sin preguntar | **`CONECTORES.md`** |
 | Qué ve alguien que audita el sistema desde fuera sin fiarse de ningún doc: producción medida en vivo, CI, coste de contexto, y por qué no se usa NotebookLM ni Obsidian (ADR-40) | **`AUDITORIA_EXTERNA_2026-09-19.md`** |
+| Cada `.md` del repo con su clase (normativo · referencia · histórico · obsoleto · legal), qué se hace con él y las contradicciones legales con el código para el dueño | **`INVENTARIO_DOCS.md`** |
 
 Esos son los **veintiún documentos vivos** (más `store/`). `analisis-estrategico/` y
 `legal/` (raíz) no mandan sobre el código. Todo lo demás está en
