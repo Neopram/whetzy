@@ -35,6 +35,7 @@ export function AuthScreen({ onAuthed }: Props) {
     const oauthErr = getOAuthError();
     if (oauthErr === 'email_required') return 'El proveedor no compartió un correo verificado.';
     if (oauthErr === 'provider_error') return 'Error al comunicarse con el proveedor de identidad.';
+    if (oauthErr === 'account_inactive') return 'Esta cuenta está desactivada.';
     return oauthErr ?? null;
   });
 
