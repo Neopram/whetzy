@@ -2,7 +2,7 @@
 
 Paso 6 del prompt del dueño del 2026-10-01: todos los `.md` del repo fuera de `node_modules`, cada uno
 con su clase y una línea de por qué. Lo generó la sesión leyendo la cabecera de cada fichero, la fecha
-de su último commit y quién lo cita (`git ls-files '*.md'`, 126 ficheros más este). **[sin verificar]**
+de su último commit y quién lo cita (`git ls-files '*.md'`, 127 ficheros más este). **[sin verificar]**
 marca un documento cuyo contenido no se ha contrastado frase a frase con el código: no se da por bueno
 ni se borra.
 
@@ -18,12 +18,12 @@ está roto.
 
 | Clase | Ficheros |
 |---|---|
-| normativo-vivo | 16 |
+| normativo-vivo | 17 |
 | referencia-viva | 37 |
 | histórico | 34 |
 | legal | 34 |
 | obsoleto | 6 |
-| **Total** | **127** |
+| **Total** | **128** |
 
 ## Raíz del repo y otras carpetas
 
@@ -74,6 +74,7 @@ está roto.
 | `docs/DISTRIBUCION.md` | normativo-vivo | plan de distribución («manda» sobre distribución) | se queda | 2026-09-30 |
 | `docs/ECONOMIA.md` | normativo-vivo | economía de créditos («manda»); check_docs [9] la contrasta con credits.json | se queda | 2026-09-30 |
 | `docs/INVENTARIO_DOCS.md` | normativo-vivo | este inventario; check_docs [12] | nuevo | 2026-10-01 |
+| `docs/LANZAMIENTO_PILOTO.md` | normativo-vivo | kit del piloto de 20-50 personas (fila 31.8, #50); llegó a `master` después de la primera versión de este inventario | se queda | 2026-10-01 |
 | `docs/MARKETPLACE.md` | referencia-viva | spec del marketplace (serie 28) | se queda | 2026-09-30 |
 | `docs/ORCHESTRATOR.md` | normativo-vivo | prompt operativo; check_docs [11] | se queda | 2026-09-30 |
 | `docs/PLAN_EXPERIENCIA.md` | referencia-viva | spec de la serie 40 | se queda | 2026-09-30 |
@@ -181,12 +182,16 @@ está roto.
 
 Ninguna sesión cambia estos textos. Lo comprobable, comprobado el 2026-10-01:
 
-1. **Purga de cuenta a 30 días que no existe** (fila 19.12). `docs/legal/privacy-policy.{es,en}.md` §4
-   promete borrar los datos de cuenta 30 días después de la baja, y `terms-of-service.en.md` §8.2-8.3,
-   recuperarla en ese plazo. El código solo pone `is_active = False` (`backend/app/api/v1/endpoints/auth.py:313-325`):
-   no hay columna con la fecha de baja, ninguna consulta de `backend/app` busca cuentas inactivas (no hay
-   job de purga) y el login rechaza la cuenta inactiva (`auth.py:180`), así que tampoco se puede recuperar.
-   [Verified: lectura del código y `grep` de `is_active` en `backend/app`.]
+1. ~~Purga de cuenta a 30 días que no existe~~ — **resuelta en código por el #44 (fila 19.12)**. La primera
+   versión de este inventario se escribió sobre una rama anterior a esa fusión y la daba por abierta; era
+   falso sobre `master`. Hoy `backend/app/services/account_deletion.py` hace lo que prometen
+   `docs/legal/privacy-policy.{es,en}.md` §4 y `terms-of-service.*.md` §8.3: la baja desactiva y abre una
+   solicitud en `gdpr_requests` (`request_deletion`), volver a entrar en 30 días la recupera
+   (`restore_if_pending`, llamada desde el login en `auth.py:181`) y `purge_due` anonimiza y borra al vencer
+   (`GRACE_PERIOD = timedelta(days=30)`), en un bucle de fondo cada 6 h (`main.py:71`). [Verified: lectura del
+   código y log de producción «Account purge: background loop started (19.12, every 6 h)» del 2026-10-01
+   11:00 UTC.] Que una purga real haya corrido en producción: [sin verificar] (una sesión no consulta datos de
+   producción).
 2. **Proveedores que el código trae y la política de privacidad no nombra**: Paddle (pagos, H.29) y
    RevenueCat (compras dentro de la app, 17.14). Hoy sus claves están vacías por defecto
    (`backend/app/core/config.py:244-265`) y el webhook de RevenueCat responde 503 sin ellas; la política tiene

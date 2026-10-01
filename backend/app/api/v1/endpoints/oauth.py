@@ -28,6 +28,7 @@ from app.core.db import get_db
 from app.core.security import create_access_token, create_refresh_token
 from app.models.oauth import OAuthAccount, OAuthState
 from app.models.user import User
+from app.services import account_deletion
 
 router = APIRouter()
 
@@ -185,6 +186,11 @@ async def oauth_callback(
         )
 
     user = await _find_or_create_user(db, email, provider, provider_user_id)
+    if not user.is_active and not await account_deletion.restore_if_pending(db, user):
+        return RedirectResponse(
+            url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=account_inactive",
+            status_code=302,
+        )
 
     from app.core.cookies import set_auth_cookies
 

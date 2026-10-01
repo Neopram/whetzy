@@ -100,7 +100,7 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "22"  # @capacitor/cli 8.5 y vitest exigen Node >= 22
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
@@ -171,7 +171,7 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
@@ -192,6 +192,9 @@ jobs:
         run: |
           python -m alembic upgrade head
           python -m app.services.content_loader
+          # Same order as backend/scripts/start.sh: without the gamification
+          # seed there are no badges, and gamification.spec.ts can never pass.
+          python -m app.services.seed
 
       - name: Install frontend deps (incl. Playwright)
         working-directory: frontend
@@ -232,7 +235,7 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "22"  # @capacitor/cli 8.5 y vitest exigen Node >= 22
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
