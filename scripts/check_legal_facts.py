@@ -263,7 +263,7 @@ if frontmatter_ok:
     check("Idioma del frontmatter", True)
 
 print()
-print("[5] Paridad (borradores sin publicar: %d docs x 2 idiomas)" % len(EXPECTED_DOCS))
+print(f"[5] Paridad (borradores sin publicar: {len(EXPECTED_DOCS)} docs x 2 idiomas)")
 expected_files = {f"{doc}.{lang}.md" for doc in EXPECTED_DOCS for lang in LANGS}
 actual_files = {f.name for f in LEGAL_DIR.glob("*.md")}
 
