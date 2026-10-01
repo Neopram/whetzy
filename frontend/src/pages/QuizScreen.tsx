@@ -361,6 +361,8 @@ export function QuizScreen() {
     if (selectionReason?.pool === 'needs_lesson') {
       return (
         <QuizError
+          icon="📖"
+          title={t('quiz.needsLessonTitle')}
           message={t('quiz.needsLessonMessage')}
           onClose={handleClose}
           actionLabel={t('quiz.needsLessonAction')}
@@ -765,11 +767,15 @@ function QuizLoader() {
 }
 
 function QuizError({
+  icon = '🤔',
+  title,
   message,
   onClose,
   actionLabel,
   onAction,
 }: {
+  icon?: string;
+  title?: string;
   message: string;
   onClose: () => void;
   actionLabel?: string;
@@ -778,8 +784,8 @@ function QuizError({
   const { t } = useTranslation();
   return (
     <div className={styles.summary}>
-      <span style={{ fontSize: '3rem' }}>🤔</span>
-      <h1 className={styles.summaryTitle}>{t('quiz.noQuestionsAvail')}</h1>
+      <span style={{ fontSize: '3rem' }}>{icon}</span>
+      <h1 className={styles.summaryTitle}>{title ?? t('quiz.noQuestionsAvail')}</h1>
       <p className={styles.summaryAccuracy}>{message}</p>
       {actionLabel && onAction && (
         <button className={styles.btnStudy} onClick={onAction} style={{ marginTop: 'var(--le-space-xl)' }}>{actionLabel}</button>

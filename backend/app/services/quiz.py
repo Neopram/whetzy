@@ -645,7 +645,10 @@ async def submit_answer(
     # el cliente ve `next_question: null` y cierra la sesión con sus resultados.
     quota_reached = await content_quota.new_questions_left(db, user, session.mode) == 0
 
-    # Pick the next question, avoiding an immediate repeat of the same item.
+    # Pick the next question, avoiding every item already served in this session
+    # while the skill still has others; only when they are all used up does it
+    # fall back to "not the one just answered". Excluding only the last one let
+    # a new learner, with a single skill unlocked, cycle over the same five.
     # Same scope the session was opened with: passing None here is how
     # «Practicar» on one module drifted to other tracks from question two.
     next_question: Question | None = None
@@ -658,9 +661,18 @@ async def submit_answer(
         )
         next_skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
         next_skill_id = next_skill_id or question.skill_id
+        served = set(
+            (await db.execute(select(Response.question_id).where(Response.session_id == session.id)))
+            .scalars()
+            .all()
+        ) | {question.id}
         next_question, next_expected_p = await _select_question(
-            db, user, next_skill_id, exclude_question_ids={question.id}
+            db, user, next_skill_id, exclude_question_ids=served
         )
+        if next_question is None:
+            next_question, next_expected_p = await _select_question(
+                db, user, next_skill_id, exclude_question_ids={question.id}
+            )
     next_question_public = await _to_question_public(next_question) if next_question else None
     next_reason: SelectionReason | None = None
     if next_question:

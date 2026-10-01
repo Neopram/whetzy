@@ -89,3 +89,20 @@ def test_every_question_reaches_a_skill() -> None:
             if missing or q.get("skill_id") not in skills:
                 broken.append(f"{qfile.name}:{q.get('id')} missing={missing}")
     assert not broken, f"{len(broken)} questions would be skipped or crash: {broken[:10]}"
+
+
+def test_every_track_icon_renders_as_an_icon() -> None:
+    """TracksScreen pinta `icon` tal cual: «container» o «git-branch» salían como texto.
+
+    11 tracks (18-23, 26-30) llevaban el nombre de un icono de una librería que
+    el frontend no usa; el alumno veía «cloud Microsoft Azure» en la lista de
+    rutas. Un emoji o una sigla corta en mayúsculas («JS») sí se ven bien.
+    """
+    import re
+
+    as_text = [
+        f"{t['id']}: {t.get('icon')!r}"
+        for t in _tracks()
+        if not t.get("icon") or re.fullmatch(r"[a-z][a-z0-9-]*", t["icon"])
+    ]
+    assert not as_text, f"icons that would render as a plain word: {as_text}"
