@@ -32,8 +32,11 @@ async def test_login_with_lockout_triggers_429(
     db_session.add(user)
     await db_session.commit()
 
-    # Create 5 failed login attempts to trigger lockout
-    for i in range(5):
+    # 10 intentos fallidos: con 5 el bloqueo dura 1 s (delay = 2 ** (n - 5),
+    # security.check_lockout) y una suite lenta tardaba más de eso entre el
+    # insert y el login, así que el test daba 200 al azar (2026-10-01). Con 10
+    # dura 32 s y el test sigue probando lo mismo: el bloqueo devuelve 429.
+    for i in range(10):
         attempt = LoginAttempt(email=email, ip="127.0.0.1", success=False)
         db_session.add(attempt)
     await db_session.commit()
