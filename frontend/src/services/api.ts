@@ -1257,6 +1257,13 @@ export interface InstructorPayout {
   payout_date: string | null;
 }
 
+export interface InstructorProfile {
+  display_name: string;
+  bio: string | null;
+  avatar_url: string | null;
+  website: string | null;
+}
+
 /** Marketplace de instructores (serie 28).
  *
  *  El reparto es 80/20 (ADR-41) tras la comisión de Paddle y la retención que fija
@@ -1287,6 +1294,17 @@ export const instructor = {
 
   async payouts() {
     return request<InstructorPayout[]>('/instructor/payouts');
+  },
+
+  async profile() {
+    return request<InstructorProfile>('/instructor/profile');
+  },
+
+  async updateProfile(payload: Partial<InstructorProfile>) {
+    return request<InstructorProfile>('/instructor/profile', {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
   },
 };
 
