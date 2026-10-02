@@ -47,6 +47,11 @@ backend/requirements*.txt  Dockerfile
 scripts/ci_local.sh        scripts/ledger.py     scripts/check_docs.py
 ```
 
+**Compartido de solo-añadir:** `docs/INVENTARIO_DOCS.md`. Quien cree un `.md` nuevo bajo `docs/`
+(fuera de `archive/`) añade **una línea** con su clase, porque `check_docs.py` [12] exige que cada
+doc esté en `docs/README.md` o aquí; no edita ni borra líneas ajenas. Dos PRs que añaden líneas
+distintas se fusionan sin conflicto o con uno trivial que resuelve S5.
+
 Las demás sesiones proponen sus cambios a estos ficheros en su PR: el ledger, en la sección
 **«Delta del ledger»** (`ID | estado nuevo | commit | comando ejecutado | salida real`); el resto,
 en **«Fuera de alcance»** con el fichero exacto y el cambio. S5 re-ejecuta cada comando citado
