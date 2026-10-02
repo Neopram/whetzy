@@ -155,6 +155,19 @@ else
   gris  "  --   banco de preguntas (no ha cambiado el contenido)"
 fi
 
+# ~6 s. CPython (tests/content) no ve lo que el navegador no puede ejecutar:
+# el 2026-10-02 habia 24 ejercicios imposibles para el alumno (hilos,
+# asyncio.run, sqlite3, tempfile). Necesita frontend/node_modules (pyodide).
+if toca '^content/questions/|exec_reference_solutions|pyodide-worker|check-exec-pyodide'; then
+  if [ -d frontend/node_modules/pyodide ]; then
+    paso "ejercicios resolubles en Pyodide" bash -c "cd frontend && node scripts/check-exec-pyodide.mjs"
+  else
+    gris  "  --   ejercicios en Pyodide (sin frontend/node_modules; npm ci)"
+  fi
+else
+  gris  "  --   ejercicios en Pyodide (no ha cambiado el contenido ni el worker)"
+fi
+
 if toca '^docs/|^content/|\.md$'; then
   paso "docs vs codigo" python scripts/check_docs.py
 else
