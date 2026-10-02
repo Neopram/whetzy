@@ -1,0 +1,67 @@
+---
+title: "The math behind FSRS: how Whetzy schedules programming reviews"
+slug: "math-behind-fsrs"
+date: "2026-10-02"
+lang: en
+author: "Whetzy"
+summary: "FSRS replaces 'review every N days' with three numbers per skill — stability, difficulty, retrievability — and updates all three after every answer."
+---
+
+Most spaced-repetition tools still run on SM-2, the algorithm Anki shipped with
+in 2006: fixed intervals, one "ease factor" per card, and not much else. Whetzy
+runs **FSRS-6** instead — a 21-parameter model that replaces SM-2's one number
+with three, updated from real data instead of a hand-tuned curve.
+
+## What FSRS actually tracks, per skill
+
+Our implementation (`app/services/engine/fsrs.py`) keeps three numbers per
+`Card`:
+
+- **Stability** — roughly, how many days it'd take for your recall probability
+  to drop to 90%. Higher stability, longer until you need another review.
+- **Difficulty** — how hard this specific skill is for you specifically, not
+  how hard it is in the abstract.
+- **Retrievability** — the model's current estimate of "if tested right now,
+  what's the probability you get it right."
+
+Every review updates all three, not just "was I right." You grade yourself on
+a 4-point scale — Again, Hard, Good, Easy — and the update differs depending
+on which of those four you picked, because "I got it right but it was a
+struggle" and "I got it right instantly" are different evidence about your
+actual stability, even though both are "correct."
+
+## Where the 21 numbers come from
+
+FSRS's weights aren't ours — they're from the open-spaced-repetition project,
+derived from fitting the model against roughly 700 million real Anki review
+logs. That's the actual point of using FSRS over a hand-picked SM-2 ease
+factor: the curve describing how memory decays was fit to how memory actually
+decayed for hundreds of millions of real reviews, not guessed at by one
+algorithm designer in 2006. The published claim behind FSRS (not something
+we've independently re-measured on Whetzy's own review logs) is 20-30% fewer
+reviews than SM-2 for the same retention — fewer repetitions wasted on things
+you already had solid, because stability is tracked per-card instead of
+inferred from one shared ease curve.
+
+## Why this matters for programming, not just flashcards
+
+FSRS was built for flashcards — vocabulary, trivia, anything with a clean
+"did I remember this" signal. Programming skills are messier: "do you remember
+list comprehensions" isn't one fact, it's a cluster of related judgments. What
+we track per skill (not per individual question) is whether you've retained
+the *skill*, with the actual questions drawn from Elo-rated difficulty within
+that skill (see our post on the engine architecture) rather than FSRS trying to
+model each question as its own independent memory.
+
+## The honest caveat
+
+We haven't published Whetzy-specific retention numbers comparing our FSRS
+scheduling against a naive fixed-interval baseline — that would need a proper
+A/B test with enough users to say something real, the same bar we're holding
+the DKT experiment to. The 20-30% figure above is FSRS's own published
+result from Anki data, not a Whetzy result, and we're saying so rather than
+letting the citation blur into a claim about us.
+
+---
+
+*Whetzy (whetzy.com) — bilingual, adaptive Python→AI learning.*
