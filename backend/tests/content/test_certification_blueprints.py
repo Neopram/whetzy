@@ -48,6 +48,21 @@ Fixed in ledger 37.19 (2026-09-30), re-read from the vendor that day:
     the question count, so neither track has a timed rehearsal yet.
       https://learn.microsoft.com/en-us/credentials/certifications/exams/az-900/
       https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-900/
+
+Fixed in ledger 37.22 (2026-10-02), re-read from the vendor that day: ISC2 CC's
+outline carried five domains from August 2022 (Security Principles 26%, a
+combined BC/DR/IR domain at 10%, Access Controls 22%, Network Security 24%,
+Security Operations 18%). ISC2 replaced it on 2026-09-01 with a different five
+domains - weights 24/17.3/20/21.3/17.3 - and the exam itself changed format,
+from a fixed 100-question paper to adaptive (CAT) testing of 100-125 items.
+Governance has no 2022 equivalent (GRC planning, security metrics); BC/DR moved
+into it from the old combined domain, while Incident Response moved the other
+way, into the new Security Operations and Incident Response domain; Access
+Controls became IAM Concepts; Network Security absorbed cloud security
+concepts it never covered before. track40 was never in this file's
+VENDOR_EXAM_FACTS or OFFICIAL_BLOCKS before this fix - nothing pinned its
+blueprint to the vendor at all.
+      https://www.isc2.org/certifications/cc/cc-certification-exam-outline
 """
 
 from __future__ import annotations
@@ -59,8 +74,18 @@ import pytest
 
 from app.services.content_loader import _content_root
 
-# (domain name as the vendor writes it, weight %)
-OFFICIAL_BLOCKS: dict[str, list[tuple[str, int]]] = {
+# (domain name as the vendor writes it, weight %). ISC2 CC's own five weights
+# (24 / 17.3 / 20 / 21.3 / 17.3) add up to 99.9, not 100 - that is the vendor's
+# own rounding, reproduced here rather than corrected, because inventing a
+# sixth decimal to force 100 would no longer be what ISC2 published.
+OFFICIAL_BLOCKS: dict[str, list[tuple[str, float]]] = {
+    "track40": [
+        ("Security Principles", 24),
+        ("Security Governance", 17.3),
+        ("Identity and Access Management (IAM) Concepts", 20),
+        ("Networking and Cloud Security Concepts", 21.3),
+        ("Security Operations and Incident Response", 17.3),
+    ],
     "track09": [
         ("Computer Programming and Python Fundamentals", 18),
         ("Control Flow - Conditional Blocks and Loops", 29),
@@ -207,6 +232,15 @@ class TestBlueprintInvariants:
 
     def test_pcep_matches_the_four_official_blocks(self) -> None:
         assert _weights(_track("track09")) == [w for _n, w in OFFICIAL_BLOCKS["track09"]]
+
+    def test_isc2_cc_matches_the_2026_outline(self) -> None:
+        """37.22, verified live 2026-10-02: ISC2 replaced the August 2022
+        outline on 2026-09-01 with five different domains (Governance is new,
+        Access Controls became IAM, Network Security absorbed Cloud, and BC/DR
+        moved out of the old combined BC/DR/IR domain into Governance while
+        Incident Response moved into Security Operations)."""
+        declared = [(d["name_en"].split(": ", 1)[1], d["weight_pct"]) for d in _track("track40")["exam_domains"]]
+        assert declared == OFFICIAL_BLOCKS["track40"]
 
 
 # ---------------------------------------------------------------------------
