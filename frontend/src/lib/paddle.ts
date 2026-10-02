@@ -15,8 +15,10 @@
 
 export const PADDLE_JS_URL = 'https://cdn.paddle.com/paddle/v2/paddle.js';
 
-/** Lo que vende la web. `plus` = Pro, `pro` = Pro Max (ADR-41). */
-export type PaddlePlan = 'plus' | 'pro' | 'certification';
+/** Lo que vende la web. `plus` = Pro, `pro` = Pro Max (ADR-41). Las variantes
+ *  `_annual` (40.9) solo existen si el backend las sirve en `prices`
+ *  (`ANNUAL_PLAN_ENABLED`); el precio real es del dueño. */
+export type PaddlePlan = 'plus' | 'pro' | 'plus_annual' | 'pro_annual' | 'certification';
 
 /**
  * Solo los campos que se leen. En `checkout.error` el motivo útil viene en
@@ -62,10 +64,11 @@ export interface CheckoutRequest {
 export function parseCheckoutRequest(search: string): CheckoutRequest | null {
   const params = new URLSearchParams(search);
   const plan = params.get('plan');
-  if (plan !== 'plus' && plan !== 'pro' && plan !== 'certification') return null;
+  const valid: PaddlePlan[] = ['plus', 'pro', 'plus_annual', 'pro_annual', 'certification'];
+  if (!valid.includes(plan as PaddlePlan)) return null;
   const trackId = params.get('track')?.trim() || null;
   if (plan === 'certification' && !trackId) return null;
-  return { plan, trackId };
+  return { plan: plan as PaddlePlan, trackId };
 }
 
 /** Enlace a la página de pago de un plan. */

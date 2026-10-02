@@ -162,7 +162,7 @@ export function CheckoutScreen() {
   }, [onEvent]);
 
   const planName =
-    request.current?.plan === 'pro'
+    request.current?.plan === 'pro' || request.current?.plan === 'pro_annual'
       ? t('checkout.planPro')
       : request.current?.plan === 'certification'
         ? t('checkout.planCertification')
