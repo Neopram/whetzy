@@ -12,6 +12,14 @@
 # Uso: bash scripts/ci_local.sh            (corre todo, sobre un worktree de HEAD)
 #      bash scripts/ci_local.sh --sha X    (sobre un worktree del commit X; el hook)
 #      bash scripts/ci_local.sh --estado   (que paso la ultima vez)
+#
+# Sesiones en la nube (o cualquier shell que se cierre al acabar el comando):
+# un `nohup ... &` lanzado desde ahi muere con el shell y deja «CORRIENDO» sin
+# veredicto. Alli se empuja con WHETZY_NIVEL2=gestionado (el hook no lo lanza
+# al fondo) y se corre el nivel 2 como tarea gestionada en primer plano:
+#      bash scripts/ci_local.sh --sha <sha>   # sale 0 si VERDE, 1 si ROJO
+# El log va a la salida estandar Y a .ci-local/ultima.log. El interprete es
+# el `python` del PATH; WHETZY_PYTHON lo cambia (p. ej. el de un venv limpio).
 set -uo pipefail
 
 # Todo el cuerpo va dentro de una funcion A PROPOSITO. bash lee un script a
@@ -27,6 +35,19 @@ cd "$RAIZ" || exit 1
 BITACORA="$RAIZ/.ci-local"
 mkdir -p "$BITACORA"
 
+# ¿Sigue vivo el nivel 2 del cerrojo? `kill -0` solo no basta: tras un
+# reinicio del contenedor el PID lo puede tener otro proceso y «CORRIENDO»
+# seguiria mintiendo. Donde hay /proc se exige ademas que sea este script.
+nivel2_vivo() {
+  local pid
+  pid="$(cat "$BITACORA/corriendo.pid" 2>/dev/null)"
+  [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null || return 1
+  if [ -r "/proc/$pid/cmdline" ]; then
+    tr '\0' ' ' < "/proc/$pid/cmdline" | grep -q "ci_local.sh" || return 1
+  fi
+  return 0
+}
+
 if [ "${1:-}" = "--estado" ]; then
   if [ ! -f "$BITACORA/estado" ]; then
     echo "todavia no ha corrido nunca"
@@ -37,13 +58,10 @@ if [ "${1:-}" = "--estado" ]; then
   # (visto el 2026-09-30: mas de una hora idle entre turnos de la sesion) deja
   # el cerrojo con un PID muerto y "CORRIENDO" mintiendo para siempre hasta la
   # proxima corrida que sí termine. `--estado` comprueba el PID antes de fiarse.
-  if grep -q "^CORRIENDO" "$BITACORA/estado" 2>/dev/null; then
-    _pid="$(cat "$BITACORA/corriendo.pid" 2>/dev/null)"
-    if [ -z "$_pid" ] || ! kill -0 "$_pid" 2>/dev/null; then
-      echo "SE INTERRUMPIO SIN TERMINAR (el proceso ya no existe; el cerrojo quedo huerfano)"
-      cat "$BITACORA/estado"
-      exit 0
-    fi
+  if grep -q "^CORRIENDO" "$BITACORA/estado" 2>/dev/null && ! nivel2_vivo; then
+    echo "SE INTERRUMPIO SIN TERMINAR (el proceso ya no existe; el cerrojo quedo huerfano)"
+    cat "$BITACORA/estado"
+    exit 0
   fi
   cat "$BITACORA/estado"
   exit 0
@@ -57,6 +75,17 @@ fi
 mkdir -p "$CACHE/mypy" "$CACHE/pytest"
 export MYPY_CACHE_DIR="$CACHE/mypy"
 CACHE_PYTEST="-o cache_dir=$CACHE/pytest"
+PY="${WHETZY_PYTHON:-python}"
+
+# El log lo escribe el propio script. Antes lo escribia la redireccion del
+# hook, y una corrida a mano archivaba como suyo el ultima.log de la corrida
+# anterior (otro SHA). WHETZY_CI_LOG_HECHO evita el doble tee si alguien ya
+# redirige aqui.
+if [ -z "${WHETZY_CI_LOG_HECHO:-}" ]; then
+  export WHETZY_CI_LOG_HECHO=1
+  exec > >(tee "$BITACORA/ultima.log") 2>&1
+  TEE_PID=$!
+fi
 
 # Un solo nivel 2 a la vez. El hook decia «se reemplaza» cuando el anterior
 # seguia corriendo y NO lo mataba: el 2026-09-21 hubo tres pytest a la vez y
@@ -142,6 +171,26 @@ trap 'rm -f "$CERROJO" "$BITACORA/paso.winpid"; soltar_arbol' EXIT
 SHA="$(git rev-parse --short "$SHA_COMPLETO")"
 INICIO="$(date '+%Y-%m-%d %H:%M')"
 printf 'CORRIENDO desde %s (%s)\n' "$INICIO" "$SHA" > "$BITACORA/estado"
+# Una señal que se puede atrapar (el shell que se cierra manda HUP; Ctrl-C,
+# INT; un `kill`, TERM) deja el veredicto escrito en vez de «CORRIENDO» para
+# siempre (35.9). Un SIGKILL no se atrapa: ese lo detecta `nivel2_vivo`.
+interrumpido() {
+  printf 'ROJO\n%s · %s · INTERRUMPIDO por %s antes de terminar (sin veredicto)\n' \
+    "$(date '+%Y-%m-%d %H:%M')" "$SHA" "$1" > "$BITACORA/estado"
+  _matar_arbol_hijos
+  exit 1
+}
+_matar_arbol_hijos() {
+  local hijo
+  # El `tee` del log no: matarlo deja a este bash escribiendo en una tuberia
+  # rota, muere por SIGPIPE y no llega a soltar el worktree.
+  for hijo in $(pgrep -P $$ 2>/dev/null); do
+    [ "$hijo" = "${TEE_PID:-}" ] || _matar_arbol "$hijo"
+  done
+}
+trap 'interrumpido HUP' HUP
+trap 'interrumpido INT' INT
+trap 'interrumpido TERM' TERM
 
 FALLOS=()
 # Todo paso que se ANUNCIA tiene que dar un VEREDICTO. El 2026-09-20 el paso
@@ -199,7 +248,7 @@ correr() {  # correr <nombre> <dir> <comando...>
 # pytest con el contenido dentro: es el 95% de la CUENTA y una fraccion del TIEMPO, asi
 # que parece colgarse en el 96% cuando lo que pasa es que empiezan los de integracion.
 correr "backend: suite entera" "$ARBOL/backend" \
-  python -m pytest tests/ --ignore=tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
+  "$PY" -m pytest tests/ --ignore=tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
 # Tests marcados `slow` (pytest.ini): O(corpus) por construccion, no un
 # presupuesto de reloj fragil -- el de BM25 solo el solito tarda >5 min. La
 # suite de arriba los deselecciona (`-m "not benchmark and not slow"` en
@@ -209,18 +258,18 @@ correr "backend: suite entera" "$ARBOL/backend" \
 LIMITE_S_PREVIO="$LIMITE_S"
 LIMITE_S=3600
 correr "backend: suite lenta (slow)" "$ARBOL/backend" \
-  python -m pytest tests/ -m slow -q -p no:randomly --tb=short $CACHE_PYTEST
+  "$PY" -m pytest tests/ -m slow -q -p no:randomly --tb=short $CACHE_PYTEST
 LIMITE_S="$LIMITE_S_PREVIO"
 correr "backend: contenido"    "$ARBOL/backend" \
-  python -m pytest tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
+  "$PY" -m pytest tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
 # `python -m mypy` y no `mypy`: el binario del PATH puede ser otro entorno sin
 # las dependencias del proyecto (2026-09-24: un mypy de uv sin pydantic dio
 # cientos de «Class cannot subclass BaseModel» falsos; con el intérprete del
 # proyecto, 0 errores en 117 ficheros).
 correr "backend: migración con datos" "$ARBOL/backend" \
-  python ../scripts/test_migration_data.py
+  "$PY" ../scripts/test_migration_data.py
 correr "backend: mypy --strict" "$ARBOL/backend" \
-  python -m mypy app --strict --ignore-missing-imports
+  "$PY" -m mypy app --strict --ignore-missing-imports
 
 if command -v bandit >/dev/null 2>&1; then
   correr "backend: bandit (seguridad)" "$ARBOL/backend" \
