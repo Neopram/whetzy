@@ -77,6 +77,11 @@ const ProjectScreen = lazy(() =>
 // Public, unauthenticated status page — checked before any auth machinery so
 // it stays reachable even when the backend is down.
 const StatusPage = lazy(() => import('./pages/StatusPage'));
+// Rutas de marketing reservadas en la fase 0 (docs/SESIONES.md): las rellena
+// la sesion de marketing; hasta entonces sus componentes estan vacios.
+const CareerPage = lazy(() => import('./pages/marketing/CareerPage'));
+const EnterprisePage = lazy(() => import('./pages/marketing/EnterprisePage'));
+const BlogPage = lazy(() => import('./pages/marketing/BlogPage'));
 // Dev-only showcase (34.3). `import.meta.env.DEV` is a compile-time
 // constant Vite/Rollup evaluates during the build, so this whole branch —
 // including the dynamic import below — is dead-code-eliminated out of the
@@ -238,6 +243,13 @@ function App() {
   // Public status page: no auth, no store, reachable even if the backend
   // that the rest of the app depends on is the very thing that's down.
   if (path === '/status') return <Screen><StatusPage /></Screen>;
+
+  // Marketing publico, sin sesion (reservado en la fase 0; docs/SESIONES.md).
+  if (path === '/es/carrera') return <Screen><CareerPage lang="es" /></Screen>;
+  if (path === '/en/career') return <Screen><CareerPage lang="en" /></Screen>;
+  if (path === '/es/empresas') return <Screen><EnterprisePage lang="es" /></Screen>;
+  if (path === '/en/enterprise') return <Screen><EnterprisePage lang="en" /></Screen>;
+  if (path === '/blog') return <Screen><BlogPage /></Screen>;
 
   if (path === '/_ui' && UiKitScreen) return <Screen><UiKitScreen /></Screen>;
 
