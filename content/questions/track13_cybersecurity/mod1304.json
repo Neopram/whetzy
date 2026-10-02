@@ -1991,17 +1991,25 @@
   {
     "id": "q130401_fx009",
     "skill_id": "sk130401",
-    "type": "fix_bug",
+    "type": "mcq",
     "difficulty_tier": "medium",
-    "question_es": "Esta consulta se arma concatenando la entrada del usuario, así que un valor con comillas cambia la condición y devuelve toda la tabla. Debe ir parametrizada. ¿Cuántas filas imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport sqlite3\ncon = sqlite3.connect(\":memory:\")\ncon.execute(\"CREATE TABLE u (nombre TEXT)\")\ncon.executemany(\"INSERT INTO u VALUES (?)\", [(\"ana\",), (\"luis\",)])\nentrada = \"x' OR '1'='1\"\nsql = \"SELECT nombre FROM u WHERE nombre = '\" + entrada + \"'\"\nprint(len(con.execute(sql).fetchall()))\n```",
-    "question_en": "This query is built by concatenating user input, so a value containing quotes rewrites the condition and returns the whole table. It must be parameterized. How many rows does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport sqlite3\ncon = sqlite3.connect(\":memory:\")\ncon.execute(\"CREATE TABLE u (nombre TEXT)\")\ncon.executemany(\"INSERT INTO u VALUES (?)\", [(\"ana\",), (\"luis\",)])\nentrada = \"x' OR '1'='1\"\nsql = \"SELECT nombre FROM u WHERE nombre = '\" + entrada + \"'\"\nprint(len(con.execute(sql).fetchall()))\n```",
-    "options_es": null,
-    "options_en": null,
-    "correct_index": null,
-    "correct_answer_es": "0",
-    "correct_answer_en": "0",
-    "explanation_es": "Con el parámetro, el motor trata la entrada como un valor y busca literalmente un usuario llamado `x' OR '1'='1`, que no existe: cero filas. Concatenando, ese texto pasa a formar parte de la condición, la hace siempre cierta y devuelve las dos. La diferencia no es escapar mejor: es que el dato nunca llega a analizarse como SQL.",
-    "explanation_en": "With the parameter, the engine treats the input as a value and literally looks for a user named `x' OR '1'='1`, which does not exist: zero rows. Concatenated, that text becomes part of the condition, makes it always true and returns both. The difference is not better escaping: the data never gets parsed as SQL at all.",
+    "question_es": "Esta consulta se arma concatenando la entrada del usuario, así que un valor con comillas cambia la condición y devuelve toda la tabla. ¿Qué cambio la corrige?\n\n**Código con el bug:**\n```python\nimport sqlite3\ncon = sqlite3.connect(\":memory:\")\ncon.execute(\"CREATE TABLE u (nombre TEXT)\")\ncon.executemany(\"INSERT INTO u VALUES (?)\", [(\"ana\",), (\"luis\",)])\nentrada = \"x' OR '1'='1\"\nsql = \"SELECT nombre FROM u WHERE nombre = '\" + entrada + \"'\"\nprint(len(con.execute(sql).fetchall()))\n```",
+    "question_en": "This query is built by concatenating user input, so a value containing quotes rewrites the condition and returns the whole table. Which change fixes it?\n\n**Buggy code:**\n```python\nimport sqlite3\ncon = sqlite3.connect(\":memory:\")\ncon.execute(\"CREATE TABLE u (nombre TEXT)\")\ncon.executemany(\"INSERT INTO u VALUES (?)\", [(\"ana\",), (\"luis\",)])\nentrada = \"x' OR '1'='1\"\nsql = \"SELECT nombre FROM u WHERE nombre = '\" + entrada + \"'\"\nprint(len(con.execute(sql).fetchall()))\n```",
+    "options_es": [
+      "Quitar las comillas de `entrada` con `replace` antes de concatenar",
+      "Usar `WHERE nombre = ?` y pasar la entrada como parámetro aparte a `execute`",
+      "Armar la consulta con un f-string en lugar de concatenar con `+`",
+      "Limpiar los espacios de `entrada` con `strip()` antes de concatenar"
+    ],
+    "options_en": [
+      "Strip the quotes out of `entrada` with `replace` before concatenating",
+      "Use `WHERE nombre = ?` and pass the input as a separate parameter to `execute`",
+      "Build the query with an f-string instead of concatenating with `+`",
+      "Trim the whitespace from `entrada` with `strip()` before concatenating"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Con el parámetro, el motor trata la entrada como un valor y busca literalmente un usuario llamado `x' OR '1'='1`, que no existe: cero filas. Concatenando, ese texto pasa a formar parte de la condición, la hace siempre cierta y devuelve las dos. Quitar comillas a mano o cambiar `+` por un f-string sigue metiendo el dato dentro del SQL, y `strip()` no toca las comillas: la diferencia no es escapar mejor, es que el dato nunca llegue a analizarse como SQL.",
+    "explanation_en": "With the parameter, the engine treats the input as a value and literally looks for a user named `x' OR '1'='1`, which does not exist: zero rows. Concatenated, that text becomes part of the condition, makes it always true and returns both. Stripping quotes by hand or swapping `+` for an f-string still puts the data inside the SQL, and `strip()` does not touch quotes: the fix is not better escaping, it is that the data never gets parsed as SQL at all.",
     "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
     "expected_time_ms": 90000
   },

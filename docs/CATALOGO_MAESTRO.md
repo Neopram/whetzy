@@ -55,7 +55,7 @@ profundidad de producto*, no adquisición.
 | Preguntas | **10.949** | `python scripts/check_question_bank.py` |
 | Lecciones | **723** (una por skill: las 723 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
 | Glosario | **1.044** | `check_docs.py` |
-| Ejecutables | **8** tracks ≥ 15 % (01, 02, 03, 04, 06, 07, 09 y 12 — este, 20 %); track13 5,3 %, track14 4,5 %, track40 1,4 %, track16 y track17 0 %; exentos track05, 08, 10, 11 y 15 (ADR-9). El 2026-10-01 se quitaron 216 «ejecutables» que daban correcto sin escribir nada (sin hueco `___` o con el hueco vacío válido) y pasaron a `fill_blank`, que es lo que eran: track16 decía 44,9 % y track17 36,7 % | `check_question_bank.py` |
+| Ejecutables | **7** tracks ≥ 15 % (01, 02, 04, 06, 07, 09 y 12 — este, 20 %); track03 13,4 %, track13 4,8 %, track14 4,5 %, track40 1,4 %, track16 y track17 0 %; exentos track05, 08, 10, 11 y 15 (ADR-9). El 2026-10-01 se quitaron 216 «ejecutables» que daban correcto sin escribir nada (sin hueco `___` o con el hueco vacío válido) y pasaron a `fill_blank`, que es lo que eran: track16 decía 44,9 % y track17 36,7 %. El 2026-10-02, 24 que pasaban en CPython no podían resolverse en el navegador (hilos, `asyncio.run`, `sqlite3`, `tempfile`): 7 se reescribieron para el sandbox, 3 pasaron a `sql_exec` y 14 a `mcq`; `frontend/scripts/check-exec-pyodide.mjs` los corre en Pyodide | `check_question_bank.py`, `check-exec-pyodide.mjs` |
 | Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900** (retirado por Microsoft el 30-06-2026; sustituto AI-901, fila 39.24), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |

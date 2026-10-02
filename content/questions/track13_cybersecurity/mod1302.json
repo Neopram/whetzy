@@ -2035,15 +2035,23 @@
   {
     "id": "q130204_fx006",
     "skill_id": "sk130204",
-    "type": "fix_bug",
+    "type": "mcq",
     "difficulty_tier": "hard",
-    "question_es": "Este derivador de clave usa 1.000 iteraciones de PBKDF2, muy por debajo de lo que recomienda OWASP para SHA-256 (600.000). ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport hashlib\nITER = 1000\nk = hashlib.pbkdf2_hmac(\"sha256\", b\"hunter2\", b\"sal_fija_16bytes\", ITER)\nprint(f\"iteraciones={ITER} bytes={len(k)}\")\n```",
-    "question_en": "This key derivation uses 1,000 PBKDF2 iterations, far below what OWASP recommends for SHA-256 (600,000). What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport hashlib\nITER = 1000\nk = hashlib.pbkdf2_hmac(\"sha256\", b\"hunter2\", b\"sal_fija_16bytes\", ITER)\nprint(f\"iteraciones={ITER} bytes={len(k)}\")\n```",
-    "options_es": null,
-    "options_en": null,
-    "correct_index": null,
-    "correct_answer_es": "iteraciones=600000 bytes=32",
-    "correct_answer_en": "iteraciones=600000 bytes=32",
+    "question_es": "Este derivador de clave usa 1.000 iteraciones de PBKDF2, muy por debajo de lo que recomienda OWASP para SHA-256 (600.000). Si se corrige `ITER` a 600.000, ¿qué imprime?\n\n```python\nimport hashlib\nITER = 1000\nk = hashlib.pbkdf2_hmac(\"sha256\", b\"hunter2\", b\"sal_fija_16bytes\", ITER)\nprint(f\"iteraciones={ITER} bytes={len(k)}\")\n```",
+    "question_en": "This key derivation uses 1,000 PBKDF2 iterations, far below what OWASP recommends for SHA-256 (600,000). If `ITER` is corrected to 600,000, what does it print?\n\n```python\nimport hashlib\nITER = 1000\nk = hashlib.pbkdf2_hmac(\"sha256\", b\"hunter2\", b\"sal_fija_16bytes\", ITER)\nprint(f\"iteraciones={ITER} bytes={len(k)}\")\n```",
+    "options_es": [
+      "`iteraciones=600000 bytes=64`",
+      "`iteraciones=600000 bytes=600000`",
+      "`iteraciones=1000 bytes=32`",
+      "`iteraciones=600000 bytes=32`"
+    ],
+    "options_en": [
+      "`iteraciones=600000 bytes=64`",
+      "`iteraciones=600000 bytes=600000`",
+      "`iteraciones=1000 bytes=32`",
+      "`iteraciones=600000 bytes=32`"
+    ],
+    "correct_index": 3,
     "explanation_es": "El coste de PBKDF2 es lineal en las iteraciones: subir de 1.000 a 600.000 multiplica por 600 lo que le cuesta a un atacante probar cada candidata, y al usuario legítimo le cuesta una vez por inicio de sesión. La longitud de la clave derivada no cambia —son los 32 bytes del digest de SHA-256—; lo que cambia es el precio de adivinarla.",
     "explanation_en": "PBKDF2's cost is linear in the iteration count: going from 1,000 to 600,000 multiplies by 600 what it costs an attacker to try each candidate, while the legitimate user pays it once per login. The derived key length does not change - it is SHA-256's 32-byte digest - what changes is the price of guessing it.",
     "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",

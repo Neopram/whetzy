@@ -20,6 +20,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -120,15 +121,20 @@ def _run_in_cpython(code: str) -> subprocess.CompletedProcess[str]:
     # mismatches instead of reporting them. Linux CI (UTF-8 locale) would never
     # show it.
     env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
-    return subprocess.run(
-        [sys.executable, "-c", code],
-        capture_output=True,
-        encoding="utf-8",
-        errors="strict",
-        env=env,
-        timeout=PER_QUESTION_TIMEOUT_S,
-        check=False,
-    )
+    # Each program runs in its own empty directory: the file exercises write
+    # `notas.txt` to the current directory, as they do in the browser (Pyodide's
+    # in-memory filesystem), and must not leave it in the repository.
+    with tempfile.TemporaryDirectory() as cwd:
+        return subprocess.run(
+            [sys.executable, "-c", code],
+            capture_output=True,
+            encoding="utf-8",
+            errors="strict",
+            env=env,
+            cwd=cwd,
+            timeout=PER_QUESTION_TIMEOUT_S,
+            check=False,
+        )
 
 
 EXEC_QUESTIONS = _load_exec_questions()

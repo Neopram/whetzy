@@ -773,18 +773,13 @@
     "kind": "exec"
   },
   "q010901ex101": {
-    "code": "import tempfile, os\nfd, path = tempfile.mkstemp()\nos.close(fd)\nwith open(path, \"w\") as f:\n    f.write(\"abc\")\nwith open(path) as f:\n    contenido = f.___()\nos.remove(path)\nprint(contenido)",
+    "code": "with open(\"notas.txt\", \"w\") as f:\n    f.write(\"abc\")\nwith open(\"notas.txt\") as f:\n    contenido = f.___()\nprint(contenido)",
     "fill": "read",
     "kind": "exec"
   },
   "q010902ex101": {
-    "code": "import tempfile, os\nfd, path = tempfile.mkstemp()\nos.close(fd)\nwith open(path, \"w\") as f:\n    f.___(\"xyz\")\nwith open(path) as f:\n    print(f.read())\nos.remove(path)",
+    "code": "with open(\"notas.txt\", \"w\") as f:\n    f.___(\"xyz\")\nwith open(\"notas.txt\") as f:\n    print(f.read())",
     "fill": "write",
-    "kind": "exec"
-  },
-  "q010903ex101": {
-    "code": "from pathlib import Path\np = Path(\"archivo.___\")\nprint(p.suffix)",
-    "fill": "txt",
     "kind": "exec"
   },
   "q010904ex101": {
@@ -918,7 +913,7 @@
     "kind": "exec"
   },
   "q010902ex102": {
-    "code": "import tempfile, os\nfd, path = tempfile.mkstemp()\nos.close(fd)\nwith open(path, \"w\") as f:\n    f.write(\"a\")\nwith open(path, \"a\") as f:\n    f.write(___)\nwith open(path) as f:\n    print(f.read())\nos.remove(path)",
+    "code": "with open(\"notas.txt\", \"w\") as f:\n    f.write(\"a\")\nwith open(\"notas.txt\", \"a\") as f:\n    f.write(___)\nwith open(\"notas.txt\") as f:\n    print(f.read())",
     "fill": "\"b\"",
     "kind": "exec"
   },
@@ -1147,11 +1142,6 @@
     "code": "import sys\nsys.setswitchinterval(___)\nprint(sys.getswitchinterval())",
     "fill": "0.005"
   },
-  "q030101ex102": {
-    "kind": "exec",
-    "code": "import threading\n\nresultado = []\n\ndef tarea(n):\n    resultado.append(n * n)\n\nhilos = [threading.Thread(target=tarea, args=(i,)) for i in range(___)]\nfor h in hilos:\n    h.start()\nfor h in hilos:\n    h.join()\nprint(sorted(resultado))",
-    "fill": "4"
-  },
   "q030102ex101": {
     "kind": "exec",
     "code": "import sys\n\na = [1, 2, 3]\nb = a\nc = a\nprint(sys.getrefcount(a) - ___)",
@@ -1174,33 +1164,18 @@
   },
   "q030201ex101": {
     "kind": "exec",
-    "code": "import asyncio\n\nasync def saludar():\n    return \"hola async\"\n\nprint(asyncio.run(___()))",
+    "code": "async def saludar():\n    return \"hola async\"\n\ncorrutina = ___()\ntry:\n    corrutina.send(None)\nexcept StopIteration as fin:\n    print(fin.value)",
     "fill": "saludar"
   },
   "q030201ex102": {
     "kind": "exec",
-    "code": "import asyncio\n\nasync def doblar(n):\n    return n * 2\n\nasync def principal():\n    resultado = await ___(5)\n    return resultado\n\nprint(asyncio.run(principal()))",
+    "code": "async def doblar(n):\n    return n * 2\n\nasync def principal():\n    resultado = await ___(5)\n    return resultado\n\ncorrutina = principal()\ntry:\n    corrutina.send(None)\nexcept StopIteration as fin:\n    print(fin.value)",
     "fill": "doblar"
   },
   "q030202ex101": {
     "kind": "exec",
-    "code": "import asyncio\n\nasync def tarea(nombre):\n    print(f\"inicio {nombre}\")\n    await asyncio.sleep(0)\n    print(f\"fin {nombre}\")\n\nasync def principal():\n    await asyncio.___(tarea(\"A\"), tarea(\"B\"))\n\nasyncio.run(principal())",
-    "fill": "gather"
-  },
-  "q030202ex102": {
-    "kind": "exec",
-    "code": "import asyncio\n\nasync def principal():\n    bucle = asyncio.get_running_loop()\n    return bucle.___()\n\nprint(asyncio.run(principal()))",
-    "fill": "is_running"
-  },
-  "q030203ex101": {
-    "kind": "exec",
-    "code": "import asyncio\n\nasync def contar():\n    return 42\n\nasync def principal():\n    tarea = asyncio.___(contar())\n    resultado = await tarea\n    return resultado\n\nprint(asyncio.run(principal()))",
-    "fill": "create_task"
-  },
-  "q030204ex101": {
-    "kind": "exec",
-    "code": "import asyncio\n\nasync def valor(n):\n    return n * n\n\nasync def principal():\n    resultados = await asyncio.gather(*(valor(n) for n in range(___)))\n    return resultados\n\nprint(asyncio.run(principal()))",
-    "fill": "4"
+    "code": "import asyncio\n\nasync def tarea(nombre):\n    print(f\"inicio {nombre}\")\n    await asyncio.sleep(0)\n    print(f\"fin {nombre}\")\n\ncola = [tarea(\"A\"), tarea(\"B\")]\nwhile cola:\n    corrutina = cola.pop(0)\n    try:\n        corrutina.send(None)\n        cola.___(corrutina)\n    except StopIteration:\n        pass",
+    "fill": "append"
   },
   "q030301ex101": {
     "kind": "exec",
@@ -1262,41 +1237,6 @@
     "code": "def sumar(a: int, b: int) -> int:\n    return a + b\n\n# En tiempo de ejecucion Python no valida las anotaciones (para eso existe mypy)\nprint(sumar(\"3\", ___))",
     "fill": "\"4\""
   },
-  "q030501ex101": {
-    "kind": "exec",
-    "code": "import threading\n\nresultado = []\n\ndef trabajo():\n    resultado.append(___)\n\nt = threading.Thread(target=trabajo)\nt.start()\nt.join()\nprint(resultado)",
-    "fill": "42"
-  },
-  "q030501ex102": {
-    "kind": "exec",
-    "code": "import threading\n\ncontador = 0\nlock = threading.Lock()\n\ndef incrementar():\n    global contador\n    with lock:\n        contador += 1\n\nhilos = [threading.Thread(target=incrementar) for _ in range(___)]\nfor h in hilos:\n    h.start()\nfor h in hilos:\n    h.join()\nprint(contador)",
-    "fill": "100"
-  },
-  "q030502ex101": {
-    "kind": "exec",
-    "code": "from multiprocessing import Queue\n\ncola = Queue()\ncola.put(___)\nprint(cola.get())",
-    "fill": "\"dato\""
-  },
-  "q030502ex102": {
-    "kind": "exec",
-    "code": "from multiprocessing import Value\n\ncontador = Value('i', 0)\ncontador.value = ___\nprint(contador.value)",
-    "fill": "7"
-  },
-  "q030503ex101": {
-    "kind": "exec",
-    "code": "from concurrent.futures import ThreadPoolExecutor\n\ndef cuadrado(n):\n    return n * n\n\nwith ThreadPoolExecutor(max_workers=2) as ejecutor:\n    resultados = list(ejecutor.map(cuadrado, [1, 2, 3, ___]))\nprint(resultados)",
-    "fill": "4"
-  },
-  "q030504ex101": {
-    "kind": "exec",
-    "code": "import threading\n\nsaldo = 100\nlock = threading.Lock()\n\ndef retirar(monto):\n    global saldo\n    with lock:\n        if saldo >= monto:\n            saldo -= monto\n\nhilos = [threading.Thread(target=retirar, args=(10,)) for _ in range(___)]\nfor h in hilos:\n    h.start()\nfor h in hilos:\n    h.join()\nprint(saldo)",
-    "fill": "10"
-  },
-  "q030504ex102": {
-    "kind": "exec",
-    "code": "import threading, queue\n\nresultados = queue.Queue()\n\ndef calcular(n):\n    resultados.put(n * n)\n\nhilos = [threading.Thread(target=calcular, args=(i,)) for i in range(5)]\nfor h in hilos:\n    h.start()\nfor h in hilos:\n    h.join()\n\ntotal = ___\nwhile not resultados.empty():\n    total += resultados.get()\nprint(total)",
-    "fill": "0"
-  },
   "q030601ex101": {
     "kind": "exec",
     "code": "def contar_llamadas(func):\n    def envoltura(*args, **kwargs):\n        envoltura.llamadas += 1\n        return func(*args, **kwargs)\n    envoltura.llamadas = 0\n    return envoltura\n\n@contar_llamadas\ndef calcular(n):\n    return n * 2\n\ncalcular(1)\ncalcular(2)\ncalcular(___)\nprint(calcular.llamadas)",
@@ -1304,7 +1244,7 @@
   },
   "q030601ex102": {
     "kind": "exec",
-    "code": "import cProfile, pstats, io\n\ndef trabajo():\n    return sum(range(1000))\n\nperfilador = cProfile.Profile()\nperfilador.enable()\ntrabajo()\nperfilador.___()\nstats = pstats.Stats(perfilador, stream=io.StringIO())\nprint(stats.total_calls > 0)",
+    "code": "import cProfile\n\ndef trabajo():\n    return sum(range(1000))\n\nperfilador = cProfile.Profile()\nperfilador.enable()\ntrabajo()\nperfilador.___()\nperfilador.create_stats()\nprint(len(perfilador.stats) > 0)",
     "fill": "disable"
   },
   "q030602ex101": {
@@ -1349,18 +1289,6 @@
   },
   "q040303ex001": {
     "fill": "resource_type",
-    "kind": "exec"
-  },
-  "q040401ex001": {
-    "fill": "*",
-    "kind": "exec"
-  },
-  "q040402ex001": {
-    "fill": "amount",
-    "kind": "exec"
-  },
-  "q040403ex001": {
-    "fill": "'ERROR'",
     "kind": "exec"
   },
   "q040501ex001": {
@@ -2307,20 +2235,12 @@
     "fixed": "import hmac, hashlib\nclave = b\"clave_de_verdad\"\ncuerpo = b\"importe=100\"\nfirma = hmac.new(clave, cuerpo, hashlib.sha256).hexdigest()\nesperada = hmac.new(clave, cuerpo, hashlib.sha256).hexdigest()\nprint(\"VALIDA\" if hmac.compare_digest(firma, esperada) else \"INVALIDA\")",
     "kind": "fix_bug"
   },
-  "q130204_fx006": {
-    "fixed": "import hashlib\nITER = 600000\nk = hashlib.pbkdf2_hmac(\"sha256\", b\"hunter2\", b\"sal_fija_16bytes\", ITER)\nprint(f\"iteraciones={ITER} bytes={len(k)}\")",
-    "kind": "fix_bug"
-  },
   "q130301_fx007": {
     "fixed": "host = \"malicioso-ejemplo.com\"\nprint(\"PERMITIDO\" if host == \"ejemplo.com\" or host.endswith(\".ejemplo.com\") else \"BLOQUEADO\")",
     "kind": "fix_bug"
   },
   "q130303_fx008": {
     "fixed": "from urllib.parse import urlparse\nurl = \"https://interno@evil.com/datos\"\nhost = urlparse(url).hostname\nprint(host)",
-    "kind": "fix_bug"
-  },
-  "q130401_fx009": {
-    "fixed": "import sqlite3\ncon = sqlite3.connect(\":memory:\")\ncon.execute(\"CREATE TABLE u (nombre TEXT)\")\ncon.executemany(\"INSERT INTO u VALUES (?)\", [(\"ana\",), (\"luis\",)])\nentrada = \"x' OR '1'='1\"\nsql = \"SELECT nombre FROM u WHERE nombre = ?\"\nprint(len(con.execute(sql, (entrada,)).fetchall()))",
     "kind": "fix_bug"
   },
   "q130403_fx010": {

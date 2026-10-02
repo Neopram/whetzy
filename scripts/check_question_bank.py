@@ -172,7 +172,15 @@ EXEC_EXEMPT_MODULES = {
 EXEC_FLOOR = {
     "track01": 0.15,
     "track02": 0.15,
-    "track03": 0.15,
+    # 2026-10-02: 13 % y no 15 %. 11 de sus 64 «ejecutables» no podian
+    # resolverse en el navegador del alumno (hilos, multiprocessing,
+    # concurrent.futures y asyncio sobre un loop propio: el sandbox de
+    # public/pyodide-worker.js bloquea threading y en Pyodide el loop ya esta en
+    # marcha). Pasaron a mcq con su codigo; el ratio real es 53/397. Mismo caso
+    # que track06 y los de 2026-10-01: el ratio de antes contaba preguntas que
+    # nadie podia acertar. frontend/scripts/check-exec-pyodide.mjs impide que
+    # vuelvan.
+    "track03": 0.13,
     "track04": 0.15,
     # 1,9 % hasta que la sesion ar autoro 68 ejecutables. Sus 8 originales
     # importaban numpy/pandas y no podian correr en el navegador del alumno,
@@ -203,7 +211,10 @@ EXEC_FLOOR = {
     # antes contaba preguntas rotas. Subirlos otra vez es autoría (huecos de
     # verdad), y `tests/content/test_exec_questions.py::TestNoFreeAnswers` impide
     # que vuelvan los gratis.
-    "track13": 0.05,
+    # 2026-10-02: 4 % y no 5 %. Dos fix_bug (PBKDF2 y la inyeccion SQL con
+    # sqlite3) no corrian en el navegador: Pyodide no trae OpenSSL para
+    # pbkdf2_hmac ni sqlite3. Pasaron a mcq; el ratio real es 19/398.
+    "track13": 0.04,
     "track40": 0.01,
     # 16.7 % on first commit (2 js_exec / 12 Q in mod1401 stub). Task 18.3.
     "track14": 0.04,
