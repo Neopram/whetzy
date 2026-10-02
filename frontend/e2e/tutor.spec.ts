@@ -197,10 +197,10 @@ test.describe('Tutor visible — "¿Por qué? / Why?" (GAP-5)', () => {
     await whyBtn.click();
     await expect(whyBtn).toHaveAttribute('aria-expanded', 'true');
 
-    // Honest upsell — plainly says this is a Plus feature, no fake spinner
+    // Honest upsell — plainly says this is a Pro feature (ADR-41 naming), no fake spinner
     // pretending the free user is about to get a real answer.
-    await expect(page.getByText(/Explicaciones del tutor AI/i)).toBeVisible();
-    await expect(page.getByText(/Whetzy Plus/i).first()).toBeVisible();
+    await expect(page.getByText(/Explicaciones del tutor IA/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /^(Ver Pro|See Pro)$/ })).toBeVisible();
     expect(calls.tutorExplain).toBe(0);
 
     await expectNoAxeViolations(page, '[data-testid="why-button"]');
@@ -210,7 +210,7 @@ test.describe('Tutor visible — "¿Por qué? / Why?" (GAP-5)', () => {
     // same "Cerrar" label.
     await page.getByTestId('why-button').getByRole('button', { name: /^Cerrar$/i }).click();
     await expect(whyBtn).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.getByText(/Explicaciones del tutor AI/i)).toHaveCount(0);
+    await expect(page.getByText(/Explicaciones del tutor IA/i)).toHaveCount(0);
   });
 
   test('plus user: gets a grounded explanation in under 3s with a source badge, axe clean', async ({ page }) => {
@@ -259,7 +259,7 @@ test.describe('Tutor visible — "¿Por qué? / Why?" (GAP-5)', () => {
     await whyBtn.click();
 
     await expect(page.getByText(/AI tutor explanations/i)).toBeVisible();
-    await expect(page.getByText(/Whetzy Plus/i).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /^(Ver Pro|See Pro)$/ })).toBeVisible();
 
     await expectNoAxeViolations(page, '[data-testid="why-button"]');
   });

@@ -24,11 +24,13 @@ from app.schemas.exam import (
     MockExamStartResponse,
     MockExamSubmitRequest,
     MockExamSubmitResponse,
+    TestOutBlueprint,
     TrackExamBlueprint,
     TrackExamStartResponse,
     TrackExamSubmitResponse,
 )
 from app.services import certification as certification_service
+from app.services import learning_rewards
 from app.services import mock_exam as mock_exam_service
 from app.services import quiz as quiz_service
 from app.services import track_exam as track_exam_service
@@ -293,6 +295,20 @@ async def start_track_exam(
     return await _start_and_serialise(db, attempt)
 
 
+@router.get("/module/{module_id}/test-out/blueprint", response_model=TestOutBlueprint)
+async def get_test_out_blueprint(
+    module_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> TestOutBlueprint:
+    """Size of a module test-out and whether its questions are there to draw it."""
+    try:
+        blueprint = await track_exam_service.test_out_blueprint(db, module_id)
+    except track_exam_service.TrackExamError as err:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(err)) from err
+    return TestOutBlueprint(**blueprint)
+
+
 @router.post(
     "/module/{module_id}/test-out/start",
     response_model=TrackExamStartResponse,
@@ -372,6 +388,10 @@ async def submit_track_exam(
     attempt.report = report
     attempt.submitted_at = datetime.now(UTC)
     attempt.status = "expired" if expired else "submitted"
+    await db.commit()
+    # Un test-out aprobado sube dominio: puede cerrar el módulo y pagar las
+    # skills saltadas (ECONOMIA §2.2).
+    await learning_rewards.award_learning_credits(db, current_user)
     await db.commit()
 
     return TrackExamSubmitResponse(

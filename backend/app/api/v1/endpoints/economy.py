@@ -15,9 +15,19 @@ from app.core.rate_limiter import InMemoryRateLimiter
 from app.core.security import get_current_user
 from app.models.economy import ReferralCode
 from app.models.user import User
+from app.services import learning_rewards as lr
 from app.services import streak_shop
 from app.services.antifraud import AntiFraudService
-from app.services.economy import CreditsService, PromoCodeService, ReferralService
+from app.services.economy import (
+    REFERRAL_CREDITS,
+    REFERRAL_MILESTONES,
+    REFERRAL_MONTHLY_CAP,
+    REFERRAL_WELCOME_CREDITS,
+    CreditsService,
+    PromoCodeService,
+    ReferralService,
+)
+from app.services.mastery_report import MASTERY_REPORT_PRICE
 
 _promo_limiter = InMemoryRateLimiter()
 
@@ -30,7 +40,8 @@ router = APIRouter(tags=["economy"])
 class CreditBalanceResponse(BaseModel):
     balance: int
     currency: str = "credits"
-    expires_in_days: int = 90
+    # Días hasta que caduque el primer lote con saldo (0 = nada que caduque).
+    expires_in_days: int = 0
 
 
 class ReferralCodeResponse(BaseModel):
@@ -81,7 +92,10 @@ async def get_credit_balance(
 ) -> CreditBalanceResponse:
     """Get current credit balance for the user."""
     balance = await CreditsService.get_balance(db, current_user.id)
-    return CreditBalanceResponse(balance=balance)
+    return CreditBalanceResponse(
+        balance=balance,
+        expires_in_days=await CreditsService.days_to_next_expiry(db, current_user.id),
+    )
 
 
 @router.get("/referral/code", response_model=ReferralCodeResponse)
@@ -91,6 +105,9 @@ async def get_referral_code(
 ) -> ReferralCodeResponse:
     """Get or create referral code for user."""
     code = await ReferralService.get_or_create_referral_code(db, current_user.id)
+    # Sin commit el código nuevo se perdía al cerrar la sesión: cada visita a la
+    # Cartera enseñaba uno distinto y ninguno existía (2026-10-01).
+    await db.commit()
     return ReferralCodeResponse(
         code=code,
         share_url=f"https://whetzy.com/r/{code}",
@@ -153,7 +170,14 @@ async def activate_referral(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, object]:
-    """Register referral during onboarding."""
+    """Register referral during onboarding (status ``pending``).
+
+    Activation and payout happen later, in ``referral_program_loop`` (ADR-35):
+    the referred user verifies the email, completes the diagnostic, finishes a
+    module and reaches a 3-day streak; the referrer is paid 7 days after.
+    ``activated`` in the response means «registered», kept for the client
+    contract.
+    """
     if not request.referral_code:
         return {"activated": False, "message": "No referral code provided"}
 
@@ -167,7 +191,7 @@ async def activate_referral(
     device_fp = http_request.headers.get("X-Device-Fingerprint")
     ip_addr = http_request.headers.get("X-Forwarded-For", http_request.client.host if http_request.client else "")
 
-    allowed, reason = await AntiFraudService.validate_activation(
+    allowed, reason = await AntiFraudService.validate_registration(
         db,
         referred_user_id=current_user.id,
         referred_email=current_user.email or "",
@@ -194,24 +218,38 @@ async def activate_referral(
 
 @router.get("/prices")
 async def get_credit_prices(response: Response) -> dict[str, object]:
-    """Public endpoint: credit value mapping."""
+    """Public endpoint: credit value mapping.
+
+    Solo lo que el código hace: la Cartera pinta esta lista tal cual. Grifos:
+    los de aprendizaje (services/learning_rewards, 2026-10-02) y el programa de
+    referidos (ADR-35); el código promocional va aparte. Proyecto entregado y
+    simulacro aprobado no están: no hay un hecho verificable que pagar
+    (learning_rewards, docstring). Sumideros: lo que llama a spend_fifo.
+    """
     response.headers["Cache-Control"] = "public, max-age=3600, stale-while-revalidate=86400"
     return {
         "credit_value_usd": 0.01,
         "grifos": [
-            {"event": "onboarding_done", "credits": 50, "cap": "once"},
-            {"event": "module_done", "credits": 100, "cap": "per_module"},
-            {"event": "streak_7", "credits": 70, "cap": "per_week"},
-            {"event": "streak_30", "credits": 300, "cap": "per_month"},
-            {"event": "referral_activated", "credits": 300, "cap": "10/month"},
-            {"event": "referral_welcome", "credits": 200, "cap": "once"},
+            {
+                "event": "referral_activated",
+                "credits": REFERRAL_CREDITS,
+                "cap": f"{REFERRAL_MONTHLY_CAP}/month",
+                # Hitos acumulados de la escalera: n.º de referidos abonados → premio.
+                "milestones": [{"at": at, "reward": reward} for at, reward in REFERRAL_MILESTONES],
+            },
+            {"event": "referral_welcome", "credits": REFERRAL_WELCOME_CREDITS, "cap": "once"},
+            {"event": "diagnostic_done", "credits": lr.DIAGNOSTIC_CREDITS, "cap": "once"},
+            {"event": "module_done", "credits": lr.MODULE_CREDITS, "cap": "per_module"},
+            {"event": "skill_skipped", "credits": lr.SKILL_SKIPPED_CREDITS, "cap": f"{lr.SKILL_SKIPPED_MONTHLY_CAP}/month"},
+            {"event": "streak_7", "credits": lr.STREAK_7_CREDITS, "cap": "per_week"},
+            {"event": "streak_30", "credits": lr.STREAK_30_CREDITS, "cap": "per_month"},
         ],
+        # Tope de lo que se gana aprendiendo al mes; los referidos tienen el suyo.
+        "learning_monthly_cap": lr.LEARNING_MONTHLY_CAP,
         "sumideros": [
-            {"item": "mock_exam", "cost": 500},
             {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS},
-            {"item": "domain_report_pdf", "cost": 300},
-            {"item": "marketplace_course", "cost": 1000},
-        ]
+            {"item": "mastery_report", "cost": MASTERY_REPORT_PRICE},
+        ],
     }
 
 

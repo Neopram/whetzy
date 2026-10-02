@@ -19,7 +19,7 @@ El marketplace resuelve dos problemas a la vez:
 
 Boot.dev no tiene marketplace. DataCamp no tiene. Platzi tampoco.
 Udemy tiene marketplace pero sin motor adaptativo y con revenue share de 25-37%.
-**Whetzy ofrece 70% + el mejor motor del mercado.**
+**Whetzy ofrece 80 % (ADR-41) + el mejor motor del mercado.**
 
 ---
 
@@ -164,7 +164,7 @@ Todo contenido de instructor pasa el mismo §7 del CATALOGO_MAESTRO.md:
 
 **Fase 1 (en paralelo con Serie 24):** Reclutar 5 instructores beta invitados.
 Criterios: Python/AI practitioners con audiencia existente (YouTube, LinkedIn, Twitter).
-Oferta: 70% revenue share + badge "Instructor Fundador" + visibilidad prioritaria.
+Oferta: 80 % revenue share (ADR-41) + badge "Instructor Fundador" + visibilidad prioritaria.
 
 **Fase 2 (post Serie 28 DONE):** Apertura pública del formulario de solicitud.
 Objetivo: 20 instructores activos con al menos 1 curso publicado en mes 3.

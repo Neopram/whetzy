@@ -167,7 +167,18 @@ export interface UserRead {
   last_active: string | null;
   created_at: string;
   is_premium: boolean;
+  /** Plan ganado con referidos (ADR-57), solo mientras está en fecha. */
+  granted_tier?: 'plus' | 'pro' | null;
+  granted_tier_expires_at?: string | null;
+  /** true si se dio de baja de los correos de ofertas. */
+  marketing_emails_opt_out?: boolean;
   is_admin?: boolean;
+}
+
+/** Respuesta de `/auth/login` cuando la cuenta tiene 2FA: falta el código. */
+export interface MfaChallenge {
+  mfa_required: true;
+  mfa_token: string;
 }
 
 export interface RegisterPayload {
@@ -213,7 +224,28 @@ export const auth = {
       const body = await res.json().catch(() => ({}));
       throw new Error(typeof body.detail === 'string' ? body.detail : 'Incorrect email or password');
     }
-    return (await res.json()) as { access_token: string; refresh_token: string };
+    // Con 2FA la contraseña sola no abre sesión: llega el reto del segundo paso.
+    return (await res.json()) as { access_token: string; refresh_token: string } | MfaChallenge;
+  },
+
+  /** Segundo paso del login con 2FA. Sin `mfaToken` lo toma de la cookie (OAuth). */
+  async login2fa(code: string, mfaToken?: string) {
+    return request<{ access_token: string; refresh_token: string }>('/auth/2fa/login', {
+      method: 'POST',
+      body: JSON.stringify({ code: code.trim(), mfa_token: mfaToken }),
+    });
+  },
+
+  twoFactor: {
+    status: () => request<{ enabled: boolean; backup_codes_left: number }>('/auth/2fa/status'),
+    setup: () =>
+      request<{ qr_uri: string; qr_svg: string; secret: string; backup_codes: string[] }>('/auth/2fa/setup', {
+        method: 'POST',
+      }),
+    enable: (code: string) =>
+      request<{ message: string }>('/auth/2fa/enable', { method: 'POST', body: JSON.stringify({ totp_code: code.trim() }) }),
+    disable: (code: string) =>
+      request<{ enabled: boolean }>('/auth/2fa/disable', { method: 'POST', body: JSON.stringify({ code: code.trim() }) }),
   },
 
   async me() {
@@ -224,6 +256,14 @@ export const auth = {
    *  solo vivía en el estado local y al recargar volvía el del registro. */
   async updateMe(patch: UpdateMePayload) {
     return request<UserRead>('/auth/me', { method: 'PATCH', body: JSON.stringify(patch) });
+  },
+
+  /** Correos de ofertas (hoy, el de reactivación). Los de la cuenta no se apagan. */
+  async setMarketingEmails(marketing: boolean) {
+    return request<{ marketing: boolean }>('/email/preferences', {
+      method: 'PATCH',
+      body: JSON.stringify({ marketing }),
+    });
   },
 
   /** Proveedores OAuth con credenciales en el servidor. Vacío si no hay ninguno. */
@@ -323,6 +363,8 @@ export interface QuizEndResponse {
   max_combo: number;
   xp_earned: number;
   duration_seconds: number;
+  /** Créditos que dejó la sesión: módulo, racha o diagnóstico (ECONOMIA §2.2). */
+  credits_earned?: number;
 }
 
 export const quiz = {
@@ -667,9 +709,77 @@ export interface PromoRedeemResult {
 
 export interface CreditPrices {
   credit_value_usd: number;
-  grifos: { event: string; credits: number; cap: string }[];
+  /** `milestones`: hitos de la escalera de referidos (ADR-35): n.º de abonados → premio. */
+  grifos: { event: string; credits: number; cap: string; milestones?: { at: number; reward: string }[] }[];
   sumideros: { item: string; cost: number }[];
+  /** Tope mensual de lo que se gana aprendiendo (los referidos tienen el suyo). */
+  learning_monthly_cap?: number;
 }
+
+export interface MasteryReportSnapshot {
+  generated_at: string;
+  display_name: string;
+  username: string;
+  total_questions_answered: number;
+  overall_accuracy: number;
+  max_streak: number;
+  tracks: {
+    track_id: string;
+    name_es: string;
+    name_en: string;
+    icon: string | null;
+    average_mastery: number;
+    skills_mastered: number;
+    total_skills: number;
+    mastered_skills: { name_es: string; name_en: string; p_known: number }[];
+  }[];
+}
+
+export interface MasteryReport {
+  code: string;
+  created_at: string;
+  snapshot: MasteryReportSnapshot;
+}
+
+/** Informe de dominio comprado con créditos (ECONOMIA §2.3). */
+export const masteryReports = {
+  /** `requestId`: uno por intento de compra; reintentar no cobra dos veces. */
+  async buy(requestId: string) {
+    return request<MasteryReport>('/mastery-reports', { method: 'POST', body: JSON.stringify({ request_id: requestId }) });
+  },
+  async mine() {
+    return request<{ reports: { code: string; created_at: string }[] }>('/mastery-reports');
+  },
+  /** Pública: sin sesión. */
+  async get(code: string) {
+    return request<MasteryReport>(`/mastery-reports/${encodeURIComponent(code)}`);
+  },
+};
+
+export type ClawbackReason = 'refund' | 'ban' | 'fraud';
+
+export interface AdminReferral {
+  id: string;
+  referrer_id: string;
+  referred_id: string;
+  status: 'pending' | 'activated' | 'credited' | 'rejected' | 'clawed_back';
+  activated_at: string | null;
+  credited_at: string | null;
+  created_at: string;
+}
+
+/** Admin → Economía: referidos y su clawback (ECONOMIA §3.5). */
+export const adminEconomy = {
+  async referrals(status: AdminReferral['status'] | 'all' = 'all', limit = 100) {
+    return request<{ referrals: AdminReferral[] }>(`/admin/economy/referrals?status=${status}&limit=${limit}`);
+  },
+  async clawback(referralId: string, reason: ClawbackReason) {
+    return request<{ recovered_credits: number; unrecovered_credits: number; milestone_revoked: string | null }>(
+      `/admin/economy/referrals/${referralId}/clawback`,
+      { method: 'POST', body: JSON.stringify({ reason }) },
+    );
+  },
+};
 
 export const economy = {
   async balance() {
@@ -700,6 +810,19 @@ export const economy = {
     return request<{ activated: boolean; message?: string }>('/economy/referral/activate', {
       method: 'POST',
       body: JSON.stringify({ referral_code: referralCode }),
+    });
+  },
+};
+
+/** Motivos de reporte (backend: models/question_report.py VALID_REASONS). */
+export type ReportReason = 'wrong_answer' | 'typo' | 'outdated' | 'confusing' | 'other' | 'ai_explanation';
+
+export const reports = {
+  /** Reporta una pregunta defectuosa o una explicación del tutor IA (`ai_explanation`). */
+  async question(questionId: string, reason: ReportReason, notes?: string) {
+    return request<{ id: string; message: string }>('/reports/question', {
+      method: 'POST',
+      body: JSON.stringify({ question_id: questionId, reason, notes: notes?.trim() || undefined }),
     });
   },
 };
@@ -898,6 +1021,16 @@ export interface TrackExamBlueprint {
   pass_pct: number;
 }
 
+/** Prueba para saltar un módulo; `available` false = faltan preguntas para montarla. */
+export interface TestOutBlueprint {
+  module_id: string;
+  skills: number;
+  questions: number;
+  duration_minutes: number;
+  pass_pct: number;
+  available: boolean;
+}
+
 export interface TrackExamStartResponse {
   attempt_id: string;
   track_id: string;
@@ -994,6 +1127,10 @@ export const exams = {
 
   async startTrackExam(trackId: string) {
     return request<TrackExamStartResponse>(`/exams/track/${trackId}/start`, { method: 'POST' });
+  },
+
+  async testOutBlueprint(moduleId: string) {
+    return request<TestOutBlueprint>(`/exams/module/${moduleId}/test-out/blueprint`);
   },
 
   async startTestOut(moduleId: string) {

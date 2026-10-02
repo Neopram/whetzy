@@ -15,7 +15,11 @@
   font-weight: var(--le-fw-bold);
   z-index: var(--le-z-toast);
   transition: transform var(--le-transition-spring), opacity var(--le-transition-fast), visibility 0s linear var(--le-transition-fast);
-  white-space: nowrap;
+  /* Un mensaje largo se parte en líneas: con nowrap desbordaba a 390 px. */
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--le-space-md));
+  text-align: center;
+  overflow-wrap: anywhere;
   box-shadow: var(--le-shadow-lg);
 }
 

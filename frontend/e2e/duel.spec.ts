@@ -26,7 +26,7 @@ test.describe('duel', () => {
     await page.getByRole('button', { name: 'Ranking', exact: true }).click();
 
     await page.getByRole('tab', { name: 'Duelos' }).click();
-    await page.getByRole('button', { name: '⚔️ Retar' }).click();
+    await page.getByRole('button', { name: 'Retar', exact: true }).click();
     await page.getByPlaceholder('Nombre de usuario').fill(opponentUsername);
     await page.getByRole('button', { name: 'Retar', exact: true }).click();
 
@@ -77,7 +77,7 @@ test.describe('duel', () => {
     await chalPage.getByRole('button', { name: 'Ranking', exact: true }).click();
 
     await chalPage.getByRole('tab', { name: 'Duelos' }).click();
-    await chalPage.getByRole('button', { name: '⚔️ Retar' }).click();
+    await chalPage.getByRole('button', { name: 'Retar', exact: true }).click();
     await chalPage.getByPlaceholder('Nombre de usuario').fill(oppUsername);
     await chalPage.getByRole('button', { name: 'Retar', exact: true }).click();
     await expect(chalPage.locator('text=/Pregunta 1 de 5/')).toBeVisible({ timeout: 15_000 });

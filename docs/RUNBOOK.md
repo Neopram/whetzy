@@ -164,7 +164,7 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `20261001_paddle_subscription_id` (47 migrations, single head — verified 2026-10-01 with
+Current Alembic HEAD: `20261002_mastery_reports` (51 migrations, single head — verified 2026-10-02 with
 `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; until then this line said
 `t0u1v2w3x4y5`, 20 migrations, from 2026-09-18)
 

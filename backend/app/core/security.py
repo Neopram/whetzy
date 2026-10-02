@@ -35,7 +35,7 @@ oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_PREFIX}/auth/login", auto_error=False
 )
 
-TokenType = Literal["access", "refresh"]
+TokenType = Literal["access", "refresh", "unsubscribe", "mfa"]
 
 
 # --------------------------------------------------------------------------
@@ -87,6 +87,20 @@ def create_access_token(
 ) -> str:
     delta = expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return _create_token(subject, "access", delta, jwt_version)
+
+
+def create_unsubscribe_token(subject: str | uuid.UUID) -> str:
+    """Token del enlace «darse de baja» de los correos de marketing. Su tipo
+    no sirve de sesión: `verify_token` exige el tipo esperado. Dura más que
+    cualquier correo que lo lleve."""
+    return _create_token(subject, "unsubscribe", timedelta(days=400))
+
+
+def create_mfa_token(subject: str | uuid.UUID, jwt_version: int = 1) -> str:
+    """Segundo paso del login con 2FA: prueba que la contraseña fue correcta,
+    vale 5 minutos y solo sirve en `POST /auth/2fa/login` junto a un código.
+    No es una sesión: `verify_token` exige el tipo esperado."""
+    return _create_token(subject, "mfa", timedelta(minutes=5), jwt_version)
 
 
 def create_refresh_token(
@@ -498,6 +512,31 @@ async def revoke_session(
 # --------------------------------------------------------------------------
 # Two-Factor Authentication (TOTP)
 # --------------------------------------------------------------------------
+async def user_has_2fa(user_id: uuid.UUID, db: AsyncSession) -> bool:
+    """True si el usuario tiene la verificación en dos pasos activada."""
+    from app.models.auth import User2FA
+
+    result = await db.execute(
+        select(User2FA.enabled).where(User2FA.user_id == user_id)
+    )
+    return bool(result.scalar())
+
+
+async def disable_2fa(user_id: uuid.UUID, code: str, db: AsyncSession) -> bool:
+    """Desactiva la 2FA con un código válido (TOTP o de respaldo)."""
+    from app.models.auth import User2FA
+
+    if not await verify_2fa(user_id, code, db=db):
+        return False
+    result = await db.execute(select(User2FA).where(User2FA.user_id == user_id))
+    u2fa = result.scalar_one_or_none()
+    if u2fa is not None:
+        await db.delete(u2fa)
+        await db.commit()
+    await log_audit_event(user_id, "2fa_disabled")
+    return True
+
+
 async def setup_2fa(user_id: uuid.UUID, db: AsyncSession) -> dict[str, Any]:
     """Generate TOTP secret and backup codes for 2FA setup.
 
@@ -530,14 +569,19 @@ async def setup_2fa(user_id: uuid.UUID, db: AsyncSession) -> dict[str, Any]:
     backup_codes_hash = [hashlib.sha256(code.encode()).hexdigest() for code in backup_codes]
 
     # Check if 2FA already setup
-    result = await db.execute(select(User2FA).where(User2FA.user_id == user_id))
-    existing_2fa = result.scalar_one_or_none()
+    existing_2fa = (
+        await db.execute(select(User2FA).where(User2FA.user_id == user_id))
+    ).scalar_one_or_none()
+    if existing_2fa is not None and existing_2fa.enabled:
+        # Rehacer el alta pondría `enabled=False`: con una sesión robada se
+        # apagaría la 2FA sin código. Para cambiarla, primero se desactiva con uno.
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="2fa_already_enabled")
 
     if existing_2fa:
         # Update existing 2FA (disabled state)
-        existing_2fa.secret_key = secret  # type: ignore[attr-defined]
-        existing_2fa.backup_codes = backup_codes_hash  # type: ignore[attr-defined]
-        existing_2fa.enabled = False  # type: ignore[attr-defined]
+        existing_2fa.secret_key = secret
+        existing_2fa.backup_codes = backup_codes_hash
+        existing_2fa.enabled = False
     else:
         # Create new 2FA record
         u2fa = User2FA(
@@ -552,6 +596,7 @@ async def setup_2fa(user_id: uuid.UUID, db: AsyncSession) -> dict[str, Any]:
 
     return {
         "qr_uri": qr_uri,
+        "secret": secret,
         "backup_codes": backup_codes,
     }
 

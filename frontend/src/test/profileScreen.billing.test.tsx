@@ -38,7 +38,7 @@ beforeEach(async () => {
 });
 afterEach(() => {
   cleanup();
-  useAppStore.getState().updateUser({ isPremium: false });
+  useAppStore.getState().updateUser({ isPremium: false, grantedTier: null, grantedUntil: null });
 });
 
 describe('Perfil — planes y suscripción', () => {
@@ -63,6 +63,16 @@ describe('Perfil — planes y suscripción', () => {
     expect(cancel).toHaveBeenCalledTimes(1);
   });
 
+  it('con un plan ganado invitando amigos dice cuál y hasta cuándo, sin ofrecer cancelar', async () => {
+    useAppStore.getState().updateUser({ isPremium: true, grantedTier: 'pro', grantedUntil: '2027-04-21T12:00:00Z' });
+    sub.mockResolvedValue({ ...PADDLE_SUB, is_premium: false, subscription_provider: null });
+    render(<ProfileScreen />);
+    expect(screen.getByText('Tienes Pro Max hasta el 21 de abril de 2027: lo ganaste invitando amigos.')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /^Pro · 14,99/ })).toBeNull();
+    await act(async () => {});
+    expect(screen.queryByRole('button', { name: 'Cancelar suscripción' })).toBeNull();
+  });
+
   it('con plan de una tienda no ofrece cancelar aquí', async () => {
     useAppStore.getState().updateUser({ isPremium: true });
     sub.mockResolvedValue({ ...PADDLE_SUB, subscription_provider: 'revenuecat' });
@@ -70,5 +80,26 @@ describe('Perfil — planes y suscripción', () => {
     await waitFor(() => expect(sub).toHaveBeenCalled());
     await act(async () => {}); // deja que la respuesta llegue al render
     expect(screen.queryByRole('button', { name: 'Cancelar suscripción' })).toBeNull();
+  });
+});
+
+describe('Perfil — correos con ofertas', () => {
+  it('el interruptor da de baja en el servidor y vuelve atrás si falla', async () => {
+    const { auth } = await import('../services/api');
+    const set = vi.spyOn(auth, 'setMarketingEmails');
+    useAppStore.getState().updateUser({ isPremium: false, marketingEmails: true });
+    render(<ProfileScreen />);
+    const sw = screen.getByRole('switch', { name: 'Correos con ofertas' });
+
+    set.mockResolvedValueOnce({ marketing: false });
+    fireEvent.click(sw);
+    await waitFor(() => expect(set).toHaveBeenCalledWith(false));
+    expect(sw).toHaveAttribute('aria-checked', 'false');
+
+    set.mockRejectedValueOnce(new Error('offline'));
+    fireEvent.click(sw);
+    await waitFor(() => expect(sw).toHaveAttribute('aria-checked', 'false'));
+    expect(set).toHaveBeenLastCalledWith(true);
+    set.mockRestore();
   });
 });

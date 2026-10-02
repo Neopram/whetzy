@@ -36,7 +36,7 @@ export function TermCard({ term, lang, onClose }: Props) {
         </button>
       </div>
       <p className={styles.definition}>{definition}</p>
-      {term.source && <p className={styles.source}>📚 {term.source}</p>}
+      {term.source && <p className={styles.source}>{term.source}</p>}
     </div>
   );
 }

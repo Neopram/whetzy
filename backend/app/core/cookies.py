@@ -99,3 +99,22 @@ def clear_auth_cookies(response: Response) -> None:
     response.delete_cookie(key=ACCESS_COOKIE, **opts)  # type: ignore[arg-type]
     response.delete_cookie(key=REFRESH_COOKIE, **opts)  # type: ignore[arg-type]
     response.delete_cookie(key=LOGGED_IN_COOKIE, **opts)  # type: ignore[arg-type]
+
+
+MFA_COOKIE = "whetzy_mfa"
+
+
+def set_mfa_cookie(response: Response, mfa_token: str) -> None:
+    """Segundo paso del login con 2FA cuando se llega por OAuth: el token va en
+    una cookie HttpOnly de 5 minutos y no en la URL de la redirección."""
+    secure, samesite = _cookie_policy()
+    response.set_cookie(
+        key=MFA_COOKIE, value=mfa_token, max_age=5 * 60, **_cookie_kwargs(secure, samesite),  # type: ignore[arg-type]
+    )
+
+
+def clear_mfa_cookie(response: Response) -> None:
+    opts: dict[str, object] = {"path": "/"}
+    if settings.COOKIE_DOMAIN:
+        opts["domain"] = settings.COOKIE_DOMAIN
+    response.delete_cookie(key=MFA_COOKIE, **opts)  # type: ignore[arg-type]

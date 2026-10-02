@@ -53,16 +53,19 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
   const isLast = step === steps.length - 1;
   const finish = onStartQuiz ?? onExit;
 
-  // ← / → recorren los pasos, como los botones del pie.
+  // ← / → recorren los pasos, como los botones del pie. Con actualización
+  // funcional el listener no depende de `step`: dos flechas seguidas no leen un
+  // paso viejo entre que React pinta y re-engancha el listener.
   useEffect(() => {
+    const last = steps.length - 1;
     const onKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLElement && e.target.closest('input, textarea')) return;
-      if (e.key === 'ArrowRight' && step < steps.length - 1) setStep(step + 1);
-      if (e.key === 'ArrowLeft' && step > 0) setStep(step - 1);
+      if (e.key === 'ArrowRight') setStep((s) => Math.min(s + 1, Math.max(last, 0)));
+      if (e.key === 'ArrowLeft') setStep((s) => Math.max(s - 1, 0));
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [step, steps.length]);
+  }, [steps.length]);
 
   useEffect(() => { setShowOutput(false); }, [step]);
 

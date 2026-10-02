@@ -14,12 +14,14 @@ from app.api.v1.endpoints import (
     content,
     duels,
     economy,
+    email_prefs,
     exams,
     experiments,
     export,
     glossary,
     instructor_marketplace,
     lessons,
+    mastery_reports,
     ml,
     oauth,
     placement,
@@ -40,6 +42,7 @@ api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 api_router.include_router(oauth.router, prefix="/auth/oauth", tags=["auth"])
 api_router.include_router(auth_hardening.router, prefix="/auth", tags=["auth"])
 api_router.include_router(quiz.router, prefix="/quiz", tags=["quiz"])
+api_router.include_router(email_prefs.router, prefix="/email", tags=["email"])
 api_router.include_router(placement.router, prefix="/placement", tags=["placement"])
 api_router.include_router(progress.router, prefix="/progress", tags=["progress"])
 api_router.include_router(glossary.router, prefix="/glossary", tags=["glossary"])
@@ -63,3 +66,4 @@ api_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"]
 api_router.include_router(bootcamp.router, prefix="/bootcamps", tags=["bootcamps"])
 api_router.include_router(project.router, prefix="/projects", tags=["projects"])
 api_router.include_router(privacy.router, prefix="/privacy", tags=["privacy"])
+api_router.include_router(mastery_reports.router, prefix="/mastery-reports", tags=["economy"])

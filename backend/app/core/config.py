@@ -160,6 +160,9 @@ class Settings(BaseSettings):
     EMAIL_FROM_ADDRESS: str = "noreply@whetzy.com"
     EMAIL_FROM_NAME: str = "Whetzy"
     FRONTEND_BASE_URL: str = "https://whetzy.com"
+    # Base pública de esta API: el enlace de baja de un correo (RFC 8058) tiene
+    # que aceptar un POST, así que apunta aquí y no al frontend.
+    API_PUBLIC_BASE_URL: str = "https://api-production-9751.up.railway.app"
 
     # --- OpenTelemetry -------------------------------------------------------
     OTEL_SERVICE_NAME: str = "whetzy-backend"
@@ -222,6 +225,10 @@ class Settings(BaseSettings):
     # abierto (H.19/H.29): exigir un plan que nadie puede comprar cerraría el
     # marketplace. Se enciende en Railway con CREATOR_PLAN_REQUIRED=true.
     CREATOR_PLAN_REQUIRED: bool = False
+    # Programa de referidos (ADR-35, ECONOMIA §3): pausa manual. Además se pausa
+    # solo si el fraude supera el 5 % dos semanas seguidas (§3.5). Pausado, el
+    # job ni activa ni abona; los referidos esperan, no se pierden.
+    REFERRALS_PAUSED: bool = False
     # Pro Max (`pro`) trae el tutor ilimitado; Pro (`plus`) tiene este cupo de
     # explicaciones por día UTC (ADR-49; el dueño confirmó 20 el 2026-09-25).
     # El frontend lo muestra desde `src/lib/plans.ts`, y un test exige que coincidan.

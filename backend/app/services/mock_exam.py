@@ -44,10 +44,10 @@ MIN_QUESTIONS_FOR_DOMAIN_VERDICT = 10
 _SCORING_NOTES: dict[str, tuple[str, str]] = {
     "aws": (
         (
-            "El examen real se puntua en una escala de 100 a 1.000 y se aprueba con 700, "
+            "El examen real se puntúa en una escala de 100 a 1.000 y se aprueba con 700, "
             "calculada por AWS sobre 50 preguntas puntuadas mezcladas con 15 sin puntuar que "
             "no se identifican. Este simulacro te da el porcentaje bruto de aciertos: no lo "
-            "convertimos a esa escala porque no tenemos con que hacerlo, y un numero inventado "
+            "convertimos a esa escala porque no tenemos con qué hacerlo, y un número inventado "
             "que parece oficial es peor que ninguno."
         ),
         (
@@ -60,9 +60,9 @@ _SCORING_NOTES: dict[str, tuple[str, str]] = {
     ),
     "_generic": (
         (
-            "El examen real tiene su propio modelo de puntuacion con un umbral de aprobado "
+            "El examen real tiene su propio modelo de puntuación con un umbral de aprobado "
             "publicado por el proveedor. Este simulacro te da el porcentaje bruto de aciertos: "
-            "no lo convertimos en la escala del proveedor porque no tenemos con que hacerlo."
+            "no lo convertimos en la escala del proveedor porque no tenemos con qué hacerlo."
         ),
         (
             "The real exam has its own scoring model with a passing threshold published by the "
@@ -293,8 +293,8 @@ async def score_attempt(
         "scoring_note_es": note_es,
         "scoring_note_en": note_en,
         "per_domain_caveat_es": (
-            "La guia oficial pide cautela al interpretar el detalle por dominio: los dominios "
-            "pequenos traen pocas preguntas, y ahi una respuesta cambia el porcentaje varios "
+            "La guía oficial pide cautela al interpretar el detalle por dominio: los dominios "
+            "pequeños traen pocas preguntas, y ahí una respuesta cambia el porcentaje varios "
             "puntos. Por eso cada fila lleva sus aciertos sobre el total."
         ),
         "per_domain_caveat_en": (

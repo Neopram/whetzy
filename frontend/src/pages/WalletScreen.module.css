@@ -1,195 +1,156 @@
+/* Cartera (design/v2): saldo en mono, y solo las formas de ganar y gastar
+   créditos que el backend tiene cableadas. Los gastos no van en rojo: gastar
+   no es un error. */
+
 .screen {
   display: flex;
   flex-direction: column;
   gap: var(--le-space-md);
-  padding: var(--le-space-md);
-  padding-bottom: calc(var(--le-nav-height) + var(--le-space-xl));
-  max-width: 600px;
-  margin: 0 auto;
+  padding: var(--le-space-lg) var(--le-space-md) var(--le-space-2xl);
 }
 
-.loading {
-  text-align: center;
-  color: var(--le-text-muted);
+.title {
+  font-size: var(--le-fs-2xl);
   font-weight: var(--le-fw-bold);
-  padding: var(--le-space-xl);
+  line-height: 1.15;
 }
 
-/* ===== Balance Card ===== */
+.muted {
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-sm);
+}
+
 .balanceCard {
-  background: var(--le-surface);
-  border-radius: var(--le-radius-lg);
-  padding: var(--le-space-xl);
-  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: var(--le-space-2xs);
+  padding: var(--le-space-lg);
   border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-lg);
+  background: var(--le-surface);
 }
 
 .balanceAmount {
-  font-size: 2.5rem;
-  font-weight: var(--le-fw-black);
-  color: var(--le-text);
-  line-height: 1.1;
+  font-family: var(--le-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--le-fs-3xl);
+  font-weight: var(--le-fw-semibold);
+  line-height: 1;
 }
 
 .balanceLabel {
-  font-size: var(--le-text-sm);
-  color: var(--le-text-muted);
-  margin-top: var(--le-space-xs);
+  color: var(--le-text-secondary);
+  font-size: var(--le-fs-sm);
 }
 
 .balanceExpiry {
-  font-size: var(--le-text-xs);
   color: var(--le-text-muted);
-  margin-top: var(--le-space-sm);
+  font-size: var(--le-fs-xs);
 }
 
-/* ===== Sections ===== */
-.section {
-  background: var(--le-surface);
-  border-radius: var(--le-radius-lg);
-  padding: var(--le-space-md);
-  border: 1px solid var(--le-border);
-}
+.section { display: grid; gap: var(--le-space-xs); }
 
 .sectionTitle {
-  font-size: var(--le-text-base);
+  font-size: var(--le-fs-md);
   font-weight: var(--le-fw-bold);
-  color: var(--le-text);
-  margin-bottom: var(--le-space-sm);
 }
 
-/* ===== Credit Items ===== */
-.creditRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--le-space-xs) 0;
-}
-
-.creditRow + .creditRow {
+.list {
+  list-style: none;
+  display: grid;
   border-top: 1px solid var(--le-border);
 }
 
-.creditEvent {
-  font-size: var(--le-text-sm);
-  color: var(--le-text);
-}
-
-.creditCap {
-  font-size: var(--le-text-xs);
-  color: var(--le-text-muted);
-}
-
-.creditAmount {
-  font-size: var(--le-text-sm);
-  font-weight: var(--le-fw-bold);
-  white-space: nowrap;
-}
-
-.earn {
-  color: var(--le-success);
-}
-
-.spend {
-  color: var(--le-danger);
-}
-
-/* ===== Referral ===== */
-.referralBox {
+.row {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--le-space-sm);
+  min-height: 52px;
+  padding: var(--le-space-xs) 0;
+  border-bottom: 1px solid var(--le-border);
 }
 
-.referralDesc {
-  font-size: var(--le-text-sm);
+.rowBody { display: grid; gap: 2px; min-width: 0; }
+
+.rowName {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-semibold);
+}
+
+.rowMeta {
   color: var(--le-text-muted);
+  font-size: var(--le-fs-xs);
+}
+
+.amount {
+  flex: none;
+  font-family: var(--le-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-semibold);
 }
 
 .referralCode {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--le-space-sm);
-  background: var(--le-bg);
-  border-radius: var(--le-radius-md);
-  padding: var(--le-space-sm) var(--le-space-md);
-  font-family: var(--le-font-mono);
-  font-size: var(--le-text-base);
-  font-weight: var(--le-fw-bold);
-  color: var(--le-text);
-  letter-spacing: 0.1em;
-}
-
-.copyBtn {
-  margin-left: auto;
-  background: var(--le-primary);
-  color: var(--le-primary-text);
-  border: none;
+  padding: var(--le-space-xs) var(--le-space-xs) var(--le-space-xs) var(--le-space-md);
+  border: 1px solid var(--le-border);
   border-radius: var(--le-radius-sm);
-  padding: var(--le-space-xs) var(--le-space-sm);
-  font-size: var(--le-text-xs);
+  background: var(--le-surface);
+}
+
+.referralCode code {
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-md);
+  letter-spacing: 0.08em;
+  overflow-wrap: anywhere;
+}
+
+.btnSecondary {
+  flex: none;
+  min-height: 44px;
+  padding: 0 var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  color: var(--le-text);
+  font-size: var(--le-fs-sm);
   font-weight: var(--le-fw-bold);
-  cursor: pointer;
 }
 
-.copyBtn:hover {
-  opacity: 0.9;
-}
+.btnSecondary:hover:not(:disabled) { border-color: var(--le-text-muted); }
+.btnSecondary:disabled { color: var(--le-text-muted); cursor: not-allowed; }
 
-/* ===== Promo ===== */
+/* El botón no puede salirse de la tarjeta a 390 px: el campo cede espacio. */
 .promoForm {
-  display: flex;
-  gap: var(--le-space-sm);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--le-space-xs);
 }
 
 .promoInput {
-  flex: 1;
-  background: var(--le-bg);
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 var(--le-space-md);
   border: 1px solid var(--le-border);
-  border-radius: var(--le-radius-md);
-  padding: var(--le-space-sm) var(--le-space-md);
-  font-size: var(--le-text-sm);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-surface);
   color: var(--le-text);
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-sm);
+  text-transform: uppercase;
 }
 
-.promoInput::placeholder {
-  color: var(--le-text-muted);
-}
+.promoInput:focus-visible { outline: none; border-color: var(--le-blue); }
 
-.promoBtn {
-  background: var(--le-primary);
-  color: var(--le-primary-text);
-  border: none;
-  border-radius: var(--le-radius-md);
-  padding: var(--le-space-sm) var(--le-space-md);
-  font-size: var(--le-text-sm);
-  font-weight: var(--le-fw-bold);
-  cursor: pointer;
-  white-space: nowrap;
-}
+.promoSuccess,
+.promoError { font-size: var(--le-fs-sm); }
 
-.promoBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.promoSuccess { color: var(--le-success-text); }
+.promoError { color: var(--le-danger-text); }
 
-.promoMsg {
-  font-size: var(--le-text-xs);
-  margin-top: var(--le-space-xs);
-}
-
-.promoSuccess {
-  color: var(--le-success);
-}
-
-.promoError {
-  color: var(--le-danger);
-}
-
-/* ===== Empty State ===== */
-.empty {
-  text-align: center;
-  color: var(--le-text-muted);
-  font-size: var(--le-text-sm);
-  padding: var(--le-space-lg);
-}
+/* El enlace del informe es un código de 32 caracteres sin espacios: sin esto
+   ensanchaba la sección y la página desbordaba a 390 px. */
+.reportLink { overflow-wrap: anywhere; color: var(--le-brand-text); text-decoration: underline; }

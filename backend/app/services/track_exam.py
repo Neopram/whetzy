@@ -517,5 +517,32 @@ async def track_exam_blueprint(db: AsyncSession, track_id: str) -> dict[str, Any
     }
 
 
+async def test_out_blueprint(db: AsyncSession, module_id: str) -> dict[str, Any]:
+    """What a module's test-out will look like, and whether it can be drawn.
+
+    Same sizing as `start_test_out`. `available` is False when some skill has
+    fewer answerable questions than the test-out asks of it: `_draw` would then
+    refuse to start, so the screen must not offer a button that ends in a 400.
+    """
+    module = await db.get(Module, module_id)
+    if module is None:
+        raise TrackExamError(f"{module_id} does not exist")
+    skill_ids = list(
+        await db.scalars(select(Skill.id).where(Skill.module_id == module_id).order_by(Skill.order))
+    )
+    per_skill = test_out_questions_per_skill(len(skill_ids)) if skill_ids else 0
+    total = per_skill * len(skill_ids)
+    pool = await _answerable_questions_by_skill(db, skill_ids) if skill_ids else {}
+    available = bool(skill_ids) and all(len(pool.get(s, [])) >= per_skill for s in skill_ids)
+    return {
+        "module_id": module_id,
+        "skills": len(skill_ids),
+        "questions": total,
+        "duration_minutes": duration_minutes_for(total),
+        "pass_pct": round(module.min_mastery_to_unlock * 100, 1),
+        "available": available,
+    }
+
+
 def is_expired(attempt: MockExamAttempt, *, now: datetime | None = None) -> bool:
     return (now or datetime.now(UTC)) > _as_utc(attempt.expires_at)

@@ -1,0 +1,229 @@
+/* Duelos (design/v2): lista con el nombre de la habilidad (no su id), reto con
+   selector de habilidad, y la partida con el mismo lenguaje que el Quiz. Antes
+   era un objeto de estilos inline con un #fff suelto. */
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: var(--le-space-md) var(--le-space-md) var(--le-space-2xl);
+}
+
+.centered { align-items: center; justify-content: center; min-height: 60dvh; text-align: center; }
+
+.title {
+  font-size: var(--le-fs-xl);
+  font-weight: var(--le-fw-bold);
+  line-height: 1.2;
+}
+
+.muted,
+.empty {
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-sm);
+}
+
+.empty {
+  padding: var(--le-space-xl) var(--le-space-md);
+  border: 1px dashed var(--le-border);
+  border-radius: var(--le-radius-md);
+  text-align: center;
+}
+
+.listHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+}
+
+.btnPrimary,
+.btnSecondary,
+.btnPlay {
+  min-height: 48px;
+  padding: 0 var(--le-space-lg);
+  border-radius: var(--le-radius-sm);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+}
+
+.btnPrimary { background: var(--le-brand); color: var(--le-text-inverse); }
+.btnPrimary:hover:not(:disabled) { background: var(--le-brand-2); }
+.btnPrimary:disabled { background: var(--le-bg-elevated); color: var(--le-text-muted); cursor: not-allowed; }
+
+.btnSecondary { border: 1px solid var(--le-border); color: var(--le-text); }
+.btnSecondary:hover { border-color: var(--le-text-muted); }
+
+.btnPlay {
+  min-height: 44px;
+  flex: none;
+  border: 1px solid var(--le-brand);
+  color: var(--le-brand-text);
+}
+
+.list { list-style: none; display: grid; gap: var(--le-space-xs); }
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-sm) var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  background: var(--le-surface);
+}
+
+.avatar { flex: none; font-size: 1.5rem; }
+
+.cardBody { flex: 1; display: grid; gap: 2px; min-width: 0; }
+
+.opponent { font-size: var(--le-fs-sm); font-weight: var(--le-fw-semibold); }
+
+.cardMeta {
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-xs);
+  overflow-wrap: anywhere;
+}
+
+.outcome {
+  flex: none;
+  color: var(--le-text-secondary);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-semibold);
+}
+
+.outcome b { font-family: var(--le-font-mono); font-weight: var(--le-fw-semibold); }
+.won { color: var(--le-success-text); }
+
+/* ── Reto ─────────────────────────────────────────────────────────────── */
+
+.panel {
+  display: grid;
+  gap: var(--le-space-md);
+  padding: var(--le-space-lg);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-lg);
+  background: var(--le-surface);
+}
+
+.field {
+  display: grid;
+  gap: var(--le-space-2xs);
+  color: var(--le-text-secondary);
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-semibold);
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-bg);
+  color: var(--le-text);
+  font-size: var(--le-fs-sm);
+}
+
+.input:focus-visible { outline: none; border-color: var(--le-blue); }
+
+.row { display: flex; gap: var(--le-space-xs); }
+.row > * { flex: 1; }
+
+/* ── Partida ──────────────────────────────────────────────────────────── */
+
+.playHead {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+  font-size: var(--le-fs-sm);
+}
+
+.vs { font-weight: var(--le-fw-semibold); }
+
+.counter {
+  color: var(--le-text-muted);
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-xs);
+}
+
+.progress {
+  height: 4px;
+  border-radius: var(--le-radius-full);
+  background: var(--le-border);
+  overflow: hidden;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--le-blue);
+  transition: width var(--le-transition-base);
+}
+
+.questionCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--le-space-sm);
+  padding: var(--le-space-lg);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-lg);
+  background: var(--le-surface);
+}
+
+.questionText {
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-semibold);
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.code {
+  margin: 0;
+  overflow-x: auto;
+  padding: var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  background: var(--le-code-bg);
+  color: var(--le-code-text);
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-sm);
+  line-height: 1.6;
+}
+
+.options { display: grid; gap: var(--le-space-xs); }
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-sm);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--le-space-sm) var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  background: var(--le-surface);
+  color: var(--le-text);
+  font-size: var(--le-fs-sm);
+  text-align: left;
+}
+
+.option:hover:not(:disabled) { border-color: var(--le-text-muted); }
+
+.optionSelected { border-color: var(--le-blue); background: var(--le-blue-light); }
+
+.letter {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  color: var(--le-text-muted);
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-xs);
+}

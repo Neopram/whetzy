@@ -7,6 +7,7 @@ from datetime import datetime
 from enum import Enum
 
 from sqlalchemy import (
+    JSON,
     BigInteger,
     CheckConstraint,
     DateTime,
@@ -213,6 +214,29 @@ class CreditExpenseCap(Base):
     
     last_activation_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+
+
+class MasteryReport(Base):
+    """Informe de dominio comprado con créditos (ECONOMIA §2.3, 300).
+
+    Como un certificado, es una afirmación con fecha: la instantánea se copia en
+    `snapshot` y no se recalcula al leerla, o el enlace que alguien puso en su
+    CV cambiaría solo. `code` (128 bits) es la única llave de la página pública.
+    `request_id` hace idempotente la compra: reintentarla no cobra dos veces.
+    """
+
+    __tablename__ = "mastery_reports"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    code: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    request_id: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    snapshot: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )

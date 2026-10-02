@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { Card } from '../components/common/Card';
+import { TwoFactorSettings } from '../components/profile/TwoFactorSettings';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { useApi } from '../hooks/useApi';
 import { usePushNotifications } from '../hooks/usePushNotifications';
@@ -16,6 +17,8 @@ export function ProfileScreen() {
   const setScreen = useAppStore((s) => s.setScreen);
   const setLanguage = useAppStore((s) => s.setLanguage);
   const updateUser = useAppStore((s) => s.updateUser);
+  const aiExplanations = useAppStore((s) => s.aiExplanations);
+  const toggleAiExplanations = useAppStore((s) => s.toggleAiExplanations);
   const signOut = useAppStore((s) => s.signOut);
   const [theme, setTheme] = useState<Theme>(getStoredTheme());
   const { t, i18n: i18nInst } = useTranslation();
@@ -28,6 +31,18 @@ export function ProfileScreen() {
     [user.isPremium],
   );
   const [cancelState, setCancelState] = useState<'idle' | 'confirm' | 'busy' | 'done' | 'error'>('idle');
+
+  // Se aplica al momento y se deshace si el servidor falla: un interruptor
+  // que miente sobre la baja es peor que uno lento.
+  async function handleMarketingToggle() {
+    const next = !user.marketingEmails;
+    updateUser({ marketingEmails: next });
+    try {
+      await auth.setMarketingEmails(next);
+    } catch {
+      updateUser({ marketingEmails: !next });
+    }
+  }
 
   async function handleCancel() {
     setCancelState('busy');
@@ -85,7 +100,7 @@ export function ProfileScreen() {
         <div className={styles.levelWrap}>
           <span className={styles.levelBadge}>{t('profile.level')} {user.level}</span>
           <div className={styles.xpBar}>
-            <ProgressBar value={user.totalXp % 500} max={500} label={t('a11y.progressXp')} color="var(--le-brand)" height={8} />
+            <ProgressBar value={user.totalXp % 500} max={500} label={t('a11y.progressXp')} color="var(--le-blue)" height={4} />
             <span className={styles.xpText}>{user.totalXp.toLocaleString()} XP · {t('profile.nextLevel')} {500 - (user.totalXp % 500)} XP</span>
           </div>
         </div>
@@ -99,17 +114,23 @@ export function ProfileScreen() {
 
       {!user.isPremium && (
         <Card className={styles.proCard}>
-          <div className={styles.proContent}>
-            <span className={styles.proIcon}>👑</span>
-            <div>
-              <h3 className={styles.proTitle}>Whetzy Pro</h3>
-              <p className={styles.proDesc}>{t('profile.proDesc')}</p>
-            </div>
-          </div>
+          <h2 className={styles.proTitle}>Whetzy Pro</h2>
+          <p className={styles.proDesc}>{t('profile.proDesc')}</p>
           <div className={styles.proActions}>
             <a className={styles.proBtn} href={checkoutHref('plus')}>{t('profile.proBuy')}</a>
-            <a className={styles.proBtn} href={checkoutHref('pro')}>{t('profile.proMaxBuy')}</a>
+            <a className={styles.secondaryBtn} href={checkoutHref('pro')}>{t('profile.proMaxBuy')}</a>
           </div>
+        </Card>
+      )}
+
+      {user.grantedTier && user.grantedUntil && (
+        <Card className={styles.proCard}>
+          <p className={styles.proDesc}>
+            {t('profile.grantedPlan', {
+              plan: user.grantedTier === 'pro' ? 'Pro Max' : 'Pro',
+              date: new Date(user.grantedUntil).toLocaleDateString(i18nInst.language, { day: 'numeric', month: 'long', year: 'numeric' }),
+            })}
+          </p>
         </Card>
       )}
 
@@ -204,9 +225,8 @@ export function ProfileScreen() {
               type="button"
               className={styles.setting}
               onClick={() => setScreen('admin')}
-              style={{ borderColor: 'var(--le-brand)', background: 'var(--le-brand-light)' }}
             >
-              <span className={styles.settingLabel}>🛡️ Admin Control Panel</span>
+              <span className={styles.settingLabel}>{t('profile.goAdmin')}</span>
               <span aria-hidden="true">→</span>
             </button>
           )}
@@ -219,14 +239,40 @@ export function ProfileScreen() {
           <div className={styles.setting}>
             <span className={styles.settingLabel}>{t('profile.langLabel')}</span>
             <div className={styles.langToggle}>
-              <button className={`${styles.langBtn} ${language === 'es' ? styles.langActive : ''}`} onClick={() => handleLangChange('es')}>ES</button>
-              <button className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`} onClick={() => handleLangChange('en')}>EN</button>
+              <button type="button" aria-pressed={language === 'es'} className={`${styles.langBtn} ${language === 'es' ? styles.langActive : ''}`} onClick={() => handleLangChange('es')}>ES</button>
+              <button type="button" aria-pressed={language === 'en'} className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`} onClick={() => handleLangChange('en')}>EN</button>
             </div>
           </div>
           <div className={styles.setting}>
             <span className={styles.settingLabel}>{t('profile.darkMode')}</span>
-            <button className={`${styles.toggle} ${theme === 'dark' ? styles.toggleOn : ''}`} onClick={() => setTheme(toggleTheme())} role="switch" aria-checked={theme === 'dark'}>
-              <span className={styles.toggleThumb} />
+            <button type="button" className={`${styles.toggle} ${theme === 'dark' ? styles.toggleOn : ''}`} onClick={() => setTheme(toggleTheme())} role="switch" aria-checked={theme === 'dark'} aria-label={t('profile.darkMode')}>
+              <span className={styles.track}><span className={styles.toggleThumb} /></span>
+            </button>
+          </div>
+          <div className={styles.setting}>
+            <span className={styles.settingLabel}>{t('profile.aiExplanations')}</span>
+            <button
+              className={`${styles.toggle} ${aiExplanations ? styles.toggleOn : ''}`}
+              type="button"
+              onClick={toggleAiExplanations}
+              role="switch"
+              aria-checked={aiExplanations}
+              aria-label={t('profile.aiExplanations')}
+            >
+              <span className={styles.track}><span className={styles.toggleThumb} /></span>
+            </button>
+          </div>
+          <div className={styles.setting}>
+            <span className={styles.settingLabel}>{t('profile.marketingEmails')}</span>
+            <button
+              className={`${styles.toggle} ${user.marketingEmails ? styles.toggleOn : ''}`}
+              type="button"
+              onClick={() => void handleMarketingToggle()}
+              role="switch"
+              aria-checked={user.marketingEmails}
+              aria-label={t('profile.marketingEmails')}
+            >
+              <span className={styles.track}><span className={styles.toggleThumb} /></span>
             </button>
           </div>
           {push.supported && (
@@ -234,18 +280,21 @@ export function ProfileScreen() {
               <span className={styles.settingLabel}>{t('profile.streakReminders')}</span>
               <button
                 className={`${styles.toggle} ${streakPushOn ? styles.toggleOn : ''}`}
+                type="button"
                 onClick={handleStreakPushToggle}
                 role="switch"
                 aria-checked={streakPushOn}
+                aria-label={t('profile.streakReminders')}
               >
-                <span className={styles.toggleThumb} />
+                <span className={styles.track}><span className={styles.toggleThumb} /></span>
               </button>
             </div>
           )}
+          <TwoFactorSettings />
         </div>
       </Card>
 
-      <button className={styles.signOut} onClick={signOut}>{t('profile.signOut')}</button>
+      <button type="button" className={styles.signOut} onClick={signOut}>{t('profile.signOut')}</button>
 
       <div className={styles.legalLinks}>
         <a href="/privacy" className={styles.legalLink}>{t('profile.privacy')}</a>

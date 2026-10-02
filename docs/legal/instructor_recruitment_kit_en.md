@@ -16,7 +16,7 @@ with an adaptive engine.
 
 | Item | Details |
 |---|---|
-| **Revenue share** | **70%** of each course sale (you 70%, Whetzy 30%) |
+| **Revenue share** | **80%** of each course sale (you 80%, Whetzy 20%; ADR-41) |
 | **"Founding Instructor" badge** | Permanent distinction on your profile and courses |
 | **Priority visibility** | Your courses appear first in the marketplace for the first 6 months |
 | **Adaptive engine** | Your questions integrate with Whetzy's BKT+FSRS engine |
@@ -67,5 +67,5 @@ Everything goes through our **automated quality gate** before manual review.
 ---
 
 *Founding instructors keep their badge and priority visibility as the
-program grows. The 70% rate is fixed for courses published during the
+program grows. The 80% rate is fixed for courses published during the
 founders phase.*

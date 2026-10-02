@@ -120,7 +120,7 @@ class TestDispatch:
         monkeypatch.setattr(settings, "SMTP_USER", "user", raising=False)
         monkeypatch.setattr(settings, "SMTP_PASSWORD", "pass", raising=False)
         monkeypatch.setattr(
-            email_service, "_send_smtp", lambda to, s, h: calls.append((to, s, h))
+            email_service, "_send_smtp", lambda to, s, h, unsubscribe_url=None: calls.append((to, s, h))
         )
         _dispatch("a@b.test", "S", "<p>h</p>")
         assert calls == [("a@b.test", "S", "<p>h</p>")]
@@ -132,7 +132,7 @@ class TestDispatch:
         monkeypatch.setattr(settings, "EMAIL_PROVIDER", "resend", raising=False)
         monkeypatch.setattr(settings, "RESEND_API_KEY", "re_x", raising=False)
         monkeypatch.setattr(
-            email_service, "_send_resend", lambda to, s, h: calls.append((to, s, h))
+            email_service, "_send_resend", lambda to, s, h, unsubscribe_url=None: calls.append((to, s, h))
         )
         _dispatch("a@b.test", "S", "<p>h</p>")
         assert calls == [("a@b.test", "S", "<p>h</p>")]
@@ -157,7 +157,7 @@ class TestDispatch:
         monkeypatch.setattr(settings, "EMAIL_PROVIDER", "smtp", raising=False)
         monkeypatch.setattr(settings, "SMTP_USER", "user", raising=False)
 
-        def boom(to: str, subject: str, html: str) -> None:
+        def boom(to: str, subject: str, html: str, unsubscribe_url: str | None = None) -> None:
             raise smtplib.SMTPException("host unreachable")
 
         monkeypatch.setattr(email_service, "_send_smtp", boom)

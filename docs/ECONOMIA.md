@@ -88,7 +88,18 @@ Valor nominal interno para modelar coste (nunca visible al usuario): **1 crédit
 | Empleado de empresa: módulo asignado completado | 100 → **bolsa de la empresa** | por módulo | Empresa |
 
 **Tope global de ganancia por aprendizaje: 1.500 créditos/mes** (los referidos
-tienen su propio tope). Con el tope, el máximo que un usuario Free puede extraer al
+tienen su propio tope).
+
+**Estado en el código (2026-10-02, `services/learning_rewards.py`).** Se pagan el
+diagnóstico, el módulo (todas sus skills ≥ 0,8), la skill saltada con un test-out
+aprobado a tiempo (≥ 0,8 tras la prueba, tope 500/mes), y las rachas de 7 días
+(una vez por semana ISO mientras dure) y de 30 (una vez al mes). Se abonan al
+cerrar una sesión (`/quiz/end`), al enviar un examen de ruta o test-out y en la
+vuelta horaria de `periodic_jobs_loop`. Lo que no cabe en el tope no se paga a
+medias: un módulo o una skill se pagan el mes siguiente; la racha de un periodo
+pasado no vuelve. **No se pagan** el proyecto (el «tests verdes» lo afirma el
+navegador) ni el simulacro aprobado (el simulacro no tiene nota de corte), ni el
+del empleado de empresa (no hay panel B2B). Con el tope, el máximo que un usuario Free puede extraer al
 mes son tres simulacros: suficiente para retener, insuficiente para vivir de ello.
 
 ### 2.3 Sumideros — en qué se gastan
@@ -97,7 +108,7 @@ mes son tres simulacros: suficiente para retener, insuficiente para vivir de ell
 |---|---|---|
 | Simulacro de certificación (formato real) | 500 | Lo que más quiere el estudiante y no puede pagar |
 | Congelar racha (1 día) | 150 | Duolingo lo vende; aquí se gana |
-| Informe de dominio en PDF | 300 | Compartible con empleadores |
+| Informe de dominio en PDF | 300 | Compartible con empleadores. **En el código (2026-10-02):** instantánea pública en `/report/<código>` (128 bits, como un certificado) con «Guardar como PDF» por la impresión del navegador; sin dependencia de PDF en el servidor |
 | Bootcamp async (1 secuencia) | 3.000 | Solo Career-switcher/Senior lo alcanzan |
 | Curso del marketplace (instructor) | según instructor, mínimo 1.000 | El 80 % del instructor (ADR-41) se liquida al valor nominal (§2.1) desde la bolsa de marketing de Whetzy, nunca del alumno |
 | Seat extra 1 mes (solo empresa, desde la bolsa de empresa) | 2.000 | Retención B2B |
@@ -115,6 +126,13 @@ nada fuera de la app.
 - El saldo **es la suma del ledger**, no una columna. No existe `users.credits`.
 - Aviso 7 días antes de una caducidad ≥ 200 créditos (email ES/EN nativo): es la
   palanca de retención más barata del sistema.
+- **Estado en el código (2026-10-02):** las dos cosas corren en la vuelta horaria
+  de `periodic_jobs_loop` (`services/periodic.py`). El asiento `expire` cierra lo
+  que **quedaba** del lote y hereda su caducidad, como los gastos: el saldo no se
+  mueve al escribirlo (la versión anterior, sin llamar desde ningún sitio, habría
+  restado el importe original para siempre). El aviso va una vez por fecha
+  (`users.credit_expiry_warned_for`), solo a emails verificados y sin baja, con
+  enlace de baja de un clic.
 
 ### 2.5 Ledger — esquema (29.0)
 
@@ -147,6 +165,11 @@ solo por reembolso, baneo o fraude confirmado (§3.5).
 ---
 
 ## 3. Programa de referidos
+
+> **Estado (2026-10-01, ADR-57):** cableado en `services/economy.py`
+> (`referral_program_loop`, cada 6 h). Cómo se leen el diagnóstico, el primer módulo y la
+> racha, y qué falta (dispositivo/IP sin declarar en la política, clawback sin disparador):
+> ADR-57.
 
 ### 3.1 La regla que decide si funciona
 
@@ -195,7 +218,7 @@ Tope: **10 activaciones acreditables por mes**. La escalera es acumulativa y no 
 | Emails desechables | Lista pública de dominios desechables (MIT), actualizada mensualmente |
 | Retardo | 7 días entre activación y abono |
 | Velocidad | > 5 activaciones/semana por referente → cola de revisión manual en admin (29.6) |
-| Clawback | Reembolso, baneo o fraude confirmado del referido → asiento `clawback` y escalera recalculada |
+| Clawback | Reembolso, baneo o fraude confirmado del referido → asiento `clawback` y escalera recalculada. **En el código (2026-10-02):** acción de admin (`POST /admin/economy/referrals/{id}/clawback`); recupera lo que quede de los 300 con un gasto FIFO, **sin saldo negativo** (lo gastado queda a la vista del admin, no como deuda), y si el referente baja de un hito pierde su premio, para no cobrarlo dos veces al volver a él |
 | Transparencia | Todo esto se declara en la política de privacidad (ePrivacy/GDPR, interés legítimo antifraude) → 21.3 |
 
 Objetivo: **fraude < 2 %** de las activaciones. Si supera el 5 % dos semanas seguidas,
@@ -291,7 +314,7 @@ Así se sabe qué vídeo, qué artículo y qué comunidad convierten, sin tercer
 | `POST /credits/spend` `{sink, ref_id}` | usuario | gasto FIFO; 409 si saldo insuficiente |
 | `POST /codes/redeem` `{code}` | usuario, **solo web** | canje idempotente |
 | `GET /referrals/me` | usuario | código, enlace, activaciones, escalera |
-| `GET /economy/prices` | público | tabla de grifos y sumideros vigente (desde `content/economy/credits.json`) |
+| `GET /economy/prices` | público | grifos y sumideros que el código cablea de verdad (2026-10-01: referidos y comodín de racha); la Cartera la pinta tal cual |
 | `POST /admin/codes/batch` | owner | genera lote (CSV descargable) |
 | `GET /admin/economy/attribution` | owner | canjes → activaciones → pagos por código/canal/campaña |
 | `GET /admin/referrals` | owner | K-factor, % registros vía referido, cola de revisión, fraude |
