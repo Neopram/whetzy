@@ -307,7 +307,7 @@ dirección del owner y devuelve 503 **con el motivo** si el proveedor lo rechaza
 
 ## Pendiente de firma del dueño (preparado el 2026-10-02, SIN aplicar)
 
-Borradores de la sesión 1 (fase 0). Nada de esta sección está decidido ni aplicado: lo firma y
+Borradores de S5 (fase 0; numeración del issue #89). Nada de esta sección está decidido ni aplicado: lo firma y
 lo aplica el dueño (ADR-45). Los nombres de menús de GitHub y Cloudflare son de memoria salvo
 donde se cita la documentación; confírmalos en pantalla.
 
@@ -327,7 +327,7 @@ ruleset**:
    2026-10-02). No añadas `backend`/`frontend`/`e2e`/`android` mientras Actions no tenga runner
    (H.13): mueren en 2-3 s y bloquearían todo PR.
 5. Prueba que pide 30.2: desde un clon, `git push origin HEAD:master` con cualquier commit debe
-   ser **rechazado** por la regla. Pega la salida en el PR de la sesión 1 para cerrar 30.2.
+   ser **rechazado** por la regla. Pega la salida en el PR B de S5 para cerrar 30.2.
 
 Efecto: los commits desde la UI web de GitHub a `master` (los seis de 30.2) dejan de ser
 posibles; los bots de Railway y Dependabot siguen abriendo PRs, que pasan por el mismo check.
@@ -387,8 +387,8 @@ Opciones:
 
 ### D. Enmienda a ADR-52 (uso de modelos por papel)
 
-El borrador, con sus opciones y la recomendación, se entregó al dueño en el informe final de la
-sesión 1 del 2026-10-02, no aquí: es una decisión de ADR que solo el dueño firma en
+El borrador, con sus opciones y la recomendación, se entregó al dueño en el informe final de S5
+del 2026-10-02, no aquí: es una decisión de ADR que solo el dueño firma en
 `DECISIONS.md`. Hasta que la firme, rige ADR-52 tal cual.
 
 ## Troubleshoot
