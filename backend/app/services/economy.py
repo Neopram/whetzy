@@ -241,32 +241,69 @@ class CreditsService:
         return remaining == 0
 
     @staticmethod
-    async def expire_old_credits(db: AsyncSession) -> int:
-        """Job: expire credits older than 90 days. Returns count."""
-        expiring = await db.execute(
-            select(CreditLedger).where(
-                and_(
-                    CreditLedger.amount > 0,
-                    CreditLedger.expires_at < datetime.now(UTC),
+    async def lots_with_remaining(
+        db: AsyncSession,
+        *,
+        expires_after: datetime,
+        expires_before: datetime,
+        user_id: uuid.UUID | None = None,
+    ) -> list[tuple[CreditLedger, int]]:
+        """Lotes con saldo que caducan en (expires_after, expires_before], con lo
+        que les queda. Un lote ya cerrado con su asiento `expire` queda a 0."""
+        spent_per_lot = (
+            select(
+                CreditLedger.lot_id.label("lot_id"),
+                func.sum(CreditLedger.amount).label("spent"),
+            )
+            .where(CreditLedger.lot_id.is_not(None))
+            .group_by(CreditLedger.lot_id)
+            .subquery()
+        )
+        query = (
+            select(CreditLedger, CreditLedger.amount + func.coalesce(spent_per_lot.c.spent, 0))
+            .outerjoin(spent_per_lot, spent_per_lot.c.lot_id == CreditLedger.id)
+            .where(
+                CreditLedger.amount > 0,
+                CreditLedger.expires_at > expires_after,
+                CreditLedger.expires_at <= expires_before,
+                CreditLedger.amount + func.coalesce(spent_per_lot.c.spent, 0) > 0,
+            )
+            .order_by(CreditLedger.expires_at.asc())
+        )
+        if user_id is not None:
+            query = query.where(CreditLedger.user_id == user_id)
+        return [(lot, int(remaining)) for lot, remaining in (await db.execute(query)).all()]
+
+    @staticmethod
+    async def expire_old_credits(db: AsyncSession, now: datetime | None = None) -> int:
+        """Cierra cada lote vencido con un asiento `expire` por **lo que le
+        quedaba** (§2.4: nunca se borra nada). Returns lotes cerrados.
+
+        La versión anterior (sin llamar desde ningún sitio hasta el 2026-10-02)
+        escribía `-lot.amount`, el importe original, sin `expires_at`: el lote
+        salía del saldo al vencer y ese negativo se quedaba restando para siempre,
+        y lo ya gastado del lote se cobraba dos veces. Aquí el asiento hereda la
+        caducidad del lote, como los gastos (spend_fifo), así que el saldo no
+        cambia al escribirlo: es contabilidad, no un segundo cobro.
+        """
+        now = now or datetime.now(UTC)
+        lots = await CreditsService.lots_with_remaining(
+            db, expires_after=datetime(1970, 1, 1, tzinfo=UTC), expires_before=now
+        )
+        for lot, remaining in lots:
+            db.add(
+                CreditLedger(
+                    user_id=lot.user_id,
+                    amount=-remaining,
+                    reason=CreditReasonEnum.EXPIRE.value,
+                    ref_type="expire",
+                    lot_id=lot.id,
+                    expires_at=lot.expires_at,
+                    idempotency_key=f"expire:{lot.id}",
                 )
             )
-        )
-        lots = expiring.scalars().all()
-        
-        count = 0
-        for lot in lots:
-            expired = CreditLedger(
-                user_id=lot.user_id,
-                amount=-lot.amount,
-                reason=CreditReasonEnum.EXPIRE.value,
-                lot_id=lot.id,
-                idempotency_key=f"expire:{lot.id}",
-            )
-            db.add(expired)
-            count += 1
-        
         await db.flush()
-        return count
+        return len(lots)
 
 
 class ReferralService:

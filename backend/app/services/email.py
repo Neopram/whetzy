@@ -159,6 +159,30 @@ border-radius:6px;text-decoration:none;">Back to Whetzy</a></p>
 <p style="font-size:12px;color:#888;">Don't want emails like this? <a href="{unsubscribe_url}">Unsubscribe</a> in one click.</p>""",
         },
     },
+    "credit_expiry": {
+        "es": {
+            "subject": "{name}, {credits} créditos de Whetzy caducan el {expiry_date}",
+            "html": """\
+<h2>Hola, {name}!</h2>
+<p>El <strong>{expiry_date}</strong> caducan <strong>{credits} créditos</strong> de tu
+cartera de Whetzy. Los créditos caducan a los 90 días de ganarlos.</p>
+<p>Puedes gastarlos antes en Yo → Cartera.</p>
+<p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Ir a Whetzy</a></p>
+<p style="font-size:12px;color:#888;">¿No quieres más correos como este? <a href="{unsubscribe_url}">Darte de baja</a> con un clic.</p>""",
+        },
+        "en": {
+            "subject": "{name}, {credits} Whetzy credits expire on {expiry_date}",
+            "html": """\
+<h2>Hi, {name}!</h2>
+<p>On <strong>{expiry_date}</strong>, <strong>{credits} credits</strong> in your Whetzy
+wallet expire. Credits expire 90 days after you earn them.</p>
+<p>You can spend them before then in You → Wallet.</p>
+<p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Go to Whetzy</a></p>
+<p style="font-size:12px;color:#888;">Don't want emails like this? <a href="{unsubscribe_url}">Unsubscribe</a> in one click.</p>""",
+        },
+    },
     "renewal_reminder": {
         "es": {
             "subject": "Tu suscripción Whetzy se renueva el {renewal_date}",
@@ -456,6 +480,20 @@ def send_reactivation(
 
     subject, html = _render(
         "reactivation", lang, name=name, code=code, credits=str(credits),
+        base_url=settings.FRONTEND_BASE_URL, unsubscribe_url=unsubscribe_url,
+    )
+    _dispatch(to, subject, html, unsubscribe_url)
+
+
+def send_credit_expiry_warning(
+    to: str, name: str, credits: int, expiry_date: str, unsubscribe_url: str, lang: str = "es"
+) -> None:
+    """Aviso 7 días antes de una caducidad ≥ 200 créditos (ECONOMIA §2.4). Es
+    una palanca de retención, así que va como marketing: con baja de un clic."""
+    from app.core.config import settings
+
+    subject, html = _render(
+        "credit_expiry", lang, name=name, credits=str(credits), expiry_date=expiry_date,
         base_url=settings.FRONTEND_BASE_URL, unsubscribe_url=unsubscribe_url,
     )
     _dispatch(to, subject, html, unsubscribe_url)

@@ -126,6 +126,13 @@ nada fuera de la app.
 - El saldo **es la suma del ledger**, no una columna. No existe `users.credits`.
 - Aviso 7 días antes de una caducidad ≥ 200 créditos (email ES/EN nativo): es la
   palanca de retención más barata del sistema.
+- **Estado en el código (2026-10-02):** las dos cosas corren en la vuelta horaria
+  de `periodic_jobs_loop` (`services/periodic.py`). El asiento `expire` cierra lo
+  que **quedaba** del lote y hereda su caducidad, como los gastos: el saldo no se
+  mueve al escribirlo (la versión anterior, sin llamar desde ningún sitio, habría
+  restado el importe original para siempre). El aviso va una vez por fecha
+  (`users.credit_expiry_warned_for`), solo a emails verificados y sin baja, con
+  enlace de baja de un clic.
 
 ### 2.5 Ledger — esquema (29.0)
 

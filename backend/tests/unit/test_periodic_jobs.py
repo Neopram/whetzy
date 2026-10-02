@@ -18,7 +18,7 @@ from app.core.security import (
     create_unsubscribe_token,
     verify_token,
 )
-from app.models.economy import PromoCode
+from app.models.economy import CreditLedger, PromoCode
 from app.models.instructor import Instructor, InstructorPayout
 from app.models.user import User
 from app.services import email as email_service
@@ -26,6 +26,7 @@ from app.services.periodic import (
     REACTIVATION_CREDITS,
     process_monthly_payouts,
     run_periodic_jobs,
+    send_credit_expiry_warnings,
     send_reactivation_offers,
     send_renewal_reminders,
 )
@@ -53,6 +54,9 @@ def outbox(monkeypatch: pytest.MonkeyPatch) -> list[dict[str, object]]:
     sent: list[dict[str, object]] = []
     monkeypatch.setattr(email_service, "send_renewal_reminder", lambda **kw: sent.append({"kind": "renewal", **kw}))
     monkeypatch.setattr(email_service, "send_reactivation", lambda **kw: sent.append({"kind": "reactivation", **kw}))
+    monkeypatch.setattr(
+        email_service, "send_credit_expiry_warning", lambda **kw: sent.append({"kind": "expiry", **kw})
+    )
     return sent
 
 
@@ -151,6 +155,70 @@ async def test_reactivation_respects_consent_and_activity(
     await db_session.flush()
     assert await send_reactivation_offers(db_session, NOW) == 0
     assert outbox == []
+
+
+# ── Aviso de caducidad de créditos (ECONOMIA §2.4) ────────────────────────
+
+
+async def _lot(db: AsyncSession, user: User, amount: int, expires_at: datetime) -> CreditLedger:
+    lot = CreditLedger(
+        user_id=user.id, amount=amount, reason="promo_code",
+        idempotency_key=f"t:{uuid.uuid4()}", expires_at=expires_at,
+    )
+    db.add(lot)
+    await db.flush()
+    return lot
+
+
+@pytest.mark.asyncio
+async def test_expiry_warning_once_per_date_and_only_from_200(db_session: AsyncSession, outbox: list):
+    u = _user(email_verified=True)
+    db_session.add(u)
+    await db_session.flush()
+    soon = NOW + timedelta(days=5)
+    await _lot(db_session, u, 150, soon)
+    assert await send_credit_expiry_warnings(db_session, NOW) == 0  # 150 < 200
+
+    await _lot(db_session, u, 80, NOW + timedelta(days=6))
+    later = await _lot(db_session, u, 500, NOW + timedelta(days=30))  # fuera de la ventana
+    assert await send_credit_expiry_warnings(db_session, NOW) == 1
+    [mail] = outbox
+    assert (mail["credits"], mail["expiry_date"]) == (230, "25 de octubre de 2026")
+    assert "token=" in str(mail["unsubscribe_url"])
+    assert await send_credit_expiry_warnings(db_session, NOW + timedelta(hours=1)) == 0
+    # Otra fecha, otro aviso.
+    assert await send_credit_expiry_warnings(db_session, later.expires_at - timedelta(days=2)) == 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "override", [{"marketing_emails_opt_out": True}, {"email_verified": False}, {"is_active": False}]
+)
+async def test_expiry_warning_respects_consent(
+    db_session: AsyncSession, outbox: list, override: dict[str, object]
+):
+    fields: dict[str, object] = {"email_verified": True}
+    fields.update(override)
+    u = _user(**fields)
+    db_session.add(u)
+    await db_session.flush()
+    await _lot(db_session, u, 300, NOW + timedelta(days=3))
+    assert await send_credit_expiry_warnings(db_session, NOW) == 0
+    assert outbox == []
+
+
+@pytest.mark.asyncio
+async def test_spent_credits_do_not_count_toward_the_warning(db_session: AsyncSession, outbox: list):
+    u = _user(email_verified=True)
+    db_session.add(u)
+    await db_session.flush()
+    lot = await _lot(db_session, u, 300, NOW + timedelta(days=3))
+    db_session.add(CreditLedger(
+        user_id=u.id, amount=-150, reason="spend_freeze", lot_id=lot.id,
+        idempotency_key=f"t:{uuid.uuid4()}", expires_at=lot.expires_at,
+    ))
+    await db_session.flush()
+    assert await send_credit_expiry_warnings(db_session, NOW) == 0
 
 
 # ── Liquidación del día 15 (28.7) ──────────────────────────────────────────

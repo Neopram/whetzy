@@ -314,12 +314,34 @@ async def test_expire_idempotent(db_session: AsyncSession):
     # the idempotency key "expire:{lot_id}" prevents a duplicate row.
     # The function catches or skips duplicates depending on implementation.
     # We test that re-running doesn't crash and writes at most 0 new entries.
-    try:
-        count2 = await CreditsService.expire_old_credits(db_session)
-    except IntegrityError:
-        await db_session.rollback()
-        count2 = 0
-    assert count2 >= 0
+    # El asiento `expire` deja el lote a 0: la segunda vuelta no encuentra nada.
+    assert await CreditsService.expire_old_credits(db_session) == 0
+
+
+@pytest.mark.asyncio
+async def test_expiring_a_partly_spent_lot_closes_only_what_was_left(db_session: AsyncSession):
+    """La versión anterior escribía `-lot.amount` sin caducidad: cobraba otra
+    vez lo ya gastado y ese negativo restaba del saldo para siempre."""
+    user_id = uuid4()
+    old = await CreditsService.grant_credits(db_session, user_id, 100, "old", expires_in_days=1)
+    await CreditsService.grant_credits(db_session, user_id, 200, "new", expires_in_days=90)
+    await db_session.flush()
+    assert await CreditsService.spend_fifo(db_session, user_id, 30, "spend", ref_id="r1")
+    # Pasa el tiempo: vence el lote y, con él, el gasto que heredó su caducidad.
+    past = datetime.now(UTC) - timedelta(minutes=1)
+    for row in (await db_session.execute(
+        select(CreditLedger).where((CreditLedger.id == old.id) | (CreditLedger.lot_id == old.id))
+    )).scalars():
+        row.expires_at = past
+    await db_session.flush()
+    before = await CreditsService.get_balance(db_session, user_id)
+
+    assert await CreditsService.expire_old_credits(db_session) == 1
+    entry = (await db_session.execute(
+        select(CreditLedger).where(CreditLedger.reason == CreditReasonEnum.EXPIRE.value, CreditLedger.user_id == user_id)
+    )).scalar_one()
+    assert entry.amount == -70
+    assert await CreditsService.get_balance(db_session, user_id) == before == 200
 
 
 @pytest.mark.asyncio

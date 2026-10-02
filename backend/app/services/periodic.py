@@ -46,6 +46,10 @@ REACTIVATION_CREDITS = 200
 REACTIVATION_CODE_HOURS = 72
 REACTIVATION_EVERY_DAYS = 60
 
+# Caducidad de créditos (ECONOMIA §2.4): aviso 7 días antes si caducan ≥ 200.
+CREDIT_EXPIRY_NOTICE_DAYS = 7
+CREDIT_EXPIRY_NOTICE_MIN = 200
+
 # Liquidación a instructores: el día 15 de cada mes (MARKETPLACE.md), mínimo 50 €.
 PAYOUT_DAY = 15
 PAYOUT_MIN_CENTS = 5000
@@ -187,6 +191,60 @@ async def send_reactivation_offers(db: AsyncSession, now: datetime | None = None
     return sent
 
 
+async def expire_credits(db: AsyncSession, now: datetime | None = None) -> int:
+    from app.services.economy import CreditsService
+
+    return await CreditsService.expire_old_credits(db, now)
+
+
+async def send_credit_expiry_warnings(db: AsyncSession, now: datetime | None = None) -> int:
+    """Un correo por fecha de caducidad a quien pierde ≥ 200 créditos en los
+    próximos 7 días (§2.4). Es retención: emails verificados, sin baja, con enlace
+    de baja de un clic. Returns the number sent."""
+    from app.core.security import create_unsubscribe_token
+    from app.services.economy import CreditsService
+    from app.services.email import send_credit_expiry_warning
+
+    now = now or datetime.now(UTC)
+    lots = await CreditsService.lots_with_remaining(
+        db, expires_after=now, expires_before=now + timedelta(days=CREDIT_EXPIRY_NOTICE_DAYS)
+    )
+    per_user: dict[Any, tuple[int, datetime]] = {}
+    for lot, remaining in lots:
+        total, first = per_user.get(lot.user_id, (0, _aware(lot.expires_at)))  # type: ignore[arg-type]
+        per_user[lot.user_id] = (total + remaining, min(first, _aware(lot.expires_at)))  # type: ignore[arg-type]
+    sent = 0
+    for user_id, (credits, first) in per_user.items():
+        if credits < CREDIT_EXPIRY_NOTICE_MIN:
+            continue
+        user = await db.get(User, user_id)
+        if (
+            user is None
+            or not user.is_active
+            or not user.email_verified
+            or user.marketing_emails_opt_out
+        ):
+            continue
+        warned = user.credit_expiry_warned_for
+        if warned is not None and _aware(warned) == first:
+            continue
+        lang = user.language if user.language in ("es", "en") else "es"
+        token = create_unsubscribe_token(user.id)
+        send_credit_expiry_warning(
+            to=user.email,
+            name=user.display_name,
+            credits=credits,
+            expiry_date=_format_date(first, lang),
+            unsubscribe_url=f"{settings.API_PUBLIC_BASE_URL}{settings.API_V1_PREFIX}/email/unsubscribe?token={token}",
+            lang=lang,
+        )
+        user.credit_expiry_warned_for = first
+        sent += 1
+    if sent:
+        await db.flush()
+    return sent
+
+
 async def process_monthly_payouts(db: AsyncSession, now: datetime | None = None) -> dict[str, int]:
     """El día 15 pasa a `processing` las liquidaciones pendientes de ≥ 50 €
     (28.7); el pago lo hace el dueño desde esa lista. Fuera del día 15 no hace
@@ -248,6 +306,8 @@ async def run_periodic_jobs(db: AsyncSession, now: datetime | None = None) -> di
         ("renewal_reminders", send_renewal_reminders),
         ("reactivation_offers", send_reactivation_offers),
         ("payouts", process_monthly_payouts),
+        ("credits_expired", expire_credits),
+        ("credit_expiry_warnings", send_credit_expiry_warnings),
         ("learning_credits", _learning_credits),
     ):
         try:

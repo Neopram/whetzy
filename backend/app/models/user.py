@@ -63,6 +63,8 @@ class User(Base):
     # Fin de periodo para el que ya salió el recordatorio de renovación (los
     # Términos lo prometen 7 días antes): uno por periodo, no uno por vuelta.
     renewal_reminder_for: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Caducidad de créditos de la que ya se avisó (ECONOMIA §2.4): un aviso por fecha.
+    credit_expiry_warned_for: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     # Stripe subscription (7.2)
     stripe_customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True, index=True)
