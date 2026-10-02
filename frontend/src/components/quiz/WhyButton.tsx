@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ApiError, tutor as tutorApi, type ExplainResponse } from '../../services/api';
+import { ApiError, reports, tutor as tutorApi, type ExplainResponse } from '../../services/api';
 import { TUTOR_DAILY_LIMIT_PRO } from '../../lib/plans';
 import styles from './WhyButton.module.css';
 
@@ -27,13 +27,28 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
   const { t } = useTranslation();
   const [status, setStatus] = useState<Status>('idle');
   const [result, setResult] = useState<ExplainResponse | null>(null);
+  const [aiReport, setAiReport] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const panelId = useId();
 
   // A new question means a clean slate — never show a stale explanation.
   useEffect(() => {
     setStatus('idle');
     setResult(null);
+    setAiReport('idle');
   }, [questionId]);
+
+  // Reportar la explicación (AI Act art. 50 y la «revisión humana» de la nota de
+  // IA): el texto se genera al vuelo y no se guarda, así que viaja en la nota.
+  async function reportExplanation() {
+    if (!result) return;
+    setAiReport('sending');
+    try {
+      await reports.question(questionId, 'ai_explanation', result.explanation.slice(0, 3900));
+      setAiReport('sent');
+    } catch {
+      setAiReport('error');
+    }
+  }
 
   const expanded = status !== 'idle';
 
@@ -71,7 +86,7 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
         aria-expanded={expanded}
         aria-controls={panelId}
       >
-        <span aria-hidden="true">🧠</span> {t('quiz.why.button')}
+        {t('quiz.why.button')}
       </button>
 
       {expanded && (
@@ -95,7 +110,7 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
 
           {status === 'upsell' && (
             <div className={styles.upsell}>
-              <span className={styles.upsellBadge}>👑 {t('quiz.why.upsellBadge')}</span>
+              <span className={styles.upsellBadge}>{t('quiz.why.upsellBadge')}</span>
               <p className={styles.upsellTitle}>{t('quiz.why.upsellTitle')}</p>
               <p className={styles.upsellBody}>{t('quiz.why.upsellBody')}</p>
               <button type="button" className={styles.upsellCta} onClick={onUpgrade}>
@@ -134,14 +149,27 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
 
           {status === 'result' && result && (
             <div className={styles.result}>
+              <p className={styles.aiLabel}>{t('quiz.why.aiLabel')}</p>
               <p className={styles.resultText}>{result.explanation || t('quiz.why.empty')}</p>
               <span
                 className={`${styles.sourceBadge} ${result.grounded ? styles.sourceGrounded : styles.sourceGeneral}`}
               >
                 {result.grounded
-                  ? `📚 ${t('quiz.why.sourceGrounded')}`
-                  : `ℹ ${t('quiz.why.sourceGeneral')}`}
+                  ? t('quiz.why.sourceGrounded')
+                  : t('quiz.why.sourceGeneral')}
               </span>
+              {result.explanation && (aiReport === 'sent' ? (
+                <p className={styles.aiReported} role="status">{t('quiz.why.reportedAi')}</p>
+              ) : (
+                <button
+                  type="button"
+                  className={styles.reportAi}
+                  onClick={() => void reportExplanation()}
+                  disabled={aiReport === 'sending'}
+                >
+                  {aiReport === 'error' ? t('quiz.why.reportAiRetry') : t('quiz.why.reportAi')}
+                </button>
+              ))}
             </div>
           )}
         </div>

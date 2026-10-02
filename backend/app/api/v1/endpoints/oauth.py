@@ -192,7 +192,15 @@ async def oauth_callback(
             status_code=302,
         )
 
-    from app.core.cookies import set_auth_cookies
+    from app.core.cookies import set_auth_cookies, set_mfa_cookie
+    from app.core.security import create_mfa_token, user_has_2fa
+
+    if await user_has_2fa(user.id, db):
+        # Con 2FA, OAuth tampoco abre sesión sin el código: el token del segundo
+        # paso va en una cookie HttpOnly (nunca en la URL) y la app pide el código.
+        mfa_redirect = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL}/auth?mfa=1", status_code=302)
+        set_mfa_cookie(mfa_redirect, create_mfa_token(user.id, jwt_version=user.jwt_version))
+        return mfa_redirect
 
     access_token = create_access_token(user.id, jwt_version=user.jwt_version)
     refresh_token = create_refresh_token(user.id, jwt_version=user.jwt_version)

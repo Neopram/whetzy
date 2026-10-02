@@ -3,7 +3,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import AliasChoices, BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserBase(BaseModel):
@@ -41,8 +41,20 @@ class UserRead(UserBase):
     streak_freeze_available: int
     last_active: datetime | None = None
     created_at: datetime
+    # Plan de pago. El checkout decide con él si ya hay suscripción y si el
+    # pago llegó: no incluye el plan ganado con referidos, que va aparte.
     is_premium: bool
+    # Plan ganado con referidos (ADR-57), solo mientras está en fecha.
+    granted_tier: str | None = Field(
+        default=None, validation_alias=AliasChoices("active_granted_tier", "granted_tier")
+    )
+    granted_tier_expires_at: datetime | None = Field(
+        default=None,
+        validation_alias=AliasChoices("active_granted_until", "granted_tier_expires_at"),
+    )
     email_verified: bool = False
+    # Correos de ofertas (reactivación): False si el usuario se dio de baja.
+    marketing_emails_opt_out: bool = False
     onboarding_experience: int | None = None
     onboarding_goal: int | None = None
     onboarding_weekly_time: int | None = None

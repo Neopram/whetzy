@@ -18,6 +18,19 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
     expect(results.violations, formatViolations(results.violations)).toHaveLength(0);
   });
 
+  // La landing es la página pública: la tabla comparativa llevaba aria-label
+  // en <span> sin rol (axe aria-prohibited-attr, 5 nodos, 2026-10-01).
+  test('landing has zero violations', async ({ page }) => {
+    await page.goto('/landing');
+    await expect(page.locator('table').first()).toBeAttached({ timeout: 10_000 });
+
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+
+    expect(results.violations, formatViolations(results.violations)).toHaveLength(0);
+  });
+
   test('home screen has zero violations after login', async ({ page }) => {
     const username = uniqueUsername('e2e_a11y_');
     await registerUser(page, { username, displayName: 'A11y Test' });
@@ -35,6 +48,28 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
   // glyph or under white text, which 16.12 measured at 2.09:1 on white and
   // 1.88:1 on the green tint — under the 4.5:1 floor. None of them was covered
   // by axe before, so those violations were real and simply unmeasured.
+
+  // Yo y Estadísticas no estaban cubiertas: los dos interruptores de ajustes
+  // (modo oscuro, recordatorios) no tenían nombre accesible y nadie lo medía
+  // (axe button-name, visto el 2026-10-01).
+  test('profile and stats screens have zero violations', async ({ page }) => {
+    const username = uniqueUsername('e2e_a11y_profile_');
+    await registerUser(page, { username, displayName: 'A11y Profile' });
+
+    await page.getByRole('button', { name: 'Yo', exact: true }).click();
+    await expect(page.getByRole('switch').first()).toBeVisible({ timeout: 15_000 });
+    const profile = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    expect(profile.violations, formatViolations(profile.violations)).toHaveLength(0);
+
+    await page.getByRole('button', { name: 'Estadísticas' }).click();
+    await expect(page.getByRole('heading', { name: 'Estadísticas' })).toBeVisible({ timeout: 15_000 });
+    const stats = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    expect(stats.violations, formatViolations(stats.violations)).toHaveLength(0);
+  });
 
   test('league screen has zero violations', async ({ page }) => {
     const username = uniqueUsername('e2e_a11y_league_');

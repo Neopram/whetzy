@@ -124,6 +124,17 @@ class TrackExamBlueprint(BaseModel):
     pass_pct: float
 
 
+class TestOutBlueprint(BaseModel):
+    """A module test-out before committing; `available` False = not enough questions."""
+
+    module_id: str
+    skills: int
+    questions: int
+    duration_minutes: int
+    pass_pct: float
+    available: bool
+
+
 class TrackExamStartResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

@@ -37,6 +37,14 @@
     "passwordPlaceholder": "At least 8 characters",
     "langLabel": "Language",
     "registerCta": "START LEARNING",
+    "mfaTitle": "Two-step verification",
+    "mfaBody": "Enter the 6-digit code from your authenticator app, or one of your backup codes.",
+    "mfaCodeLabel": "Code",
+    "mfaCta": "Verify and sign in",
+    "mfaBack": "Back to sign in",
+    "mfaInvalid": "That code isn't valid. Check your phone's clock or use a backup code.",
+    "mfaLocked": "Too many attempts. Wait a little and try again.",
+    "mfaExpired": "More than 5 minutes have passed. Please sign in again.",
     "forgotPassword": "Forgot your password?",
     "loginCta": "LOG IN",
     "loading": "One moment…",
@@ -136,7 +144,7 @@
       "bought_other": "Done: you now have {{count}} freezes.",
       "retry": "That didn't go through. Try again: you won't be charged twice.",
       "blocked": {
-        "insufficient_credits": "It costs {{price}} credits and you have {{balance}}. You earn credits by studying (modules and streaks).",
+        "insufficient_credits": "It costs {{price}} credits and you have {{balance}}. Credits come from a promo code or from inviting friends (You → Wallet).",
         "max_held": "You already hold the maximum ({{max}}). A freeze covers a single day, not weeks.",
         "weekly_limit": "You already bought {{perWeek}} this week. A streak measures consistency: come back on Monday."
       }
@@ -144,7 +152,9 @@
   },
   "league": {
     "loading": "Loading league…",
-    "empty": "Your league activates once you earn XP this week.",
+    "notOpen": "Leagues aren't open yet.",
+    "loadError": "Couldn't load the league.",
+    "retry": "Try again",
     "league": "League",
     "rules": "Top 5 promote · Bottom 5 relegate",
     "you": "you",
@@ -172,6 +182,7 @@
     "mastery": "mastery",
     "lockNote": "Master the previous module to unlock this one.",
     "needsLessonNote": "Open this module's lesson before you practice.",
+    "testOutCta": "Already know this? Test out of this module",
     "practice": "Practice",
     "reinforce": "Reinforce",
     "thresholdNote": "A skill is marked mastered at {{n}}% known-probability (BKT). A module unlocks the next once it clears its mastery threshold.",
@@ -209,12 +220,15 @@
     "title": "Statistics",
     "totalXp": "Total XP",
     "questions": "Questions",
-    "mastery": "Mastery",
     "byTrack": "Mastery by track",
     "bySkill": "Mastery by skill",
     "skillsMastered": "mastered",
     "loading": "Loading…",
-    "noData": "Answer questions to see your progress here."
+    "noData": "Answer questions to see your progress here.",
+    "skillsPractised": "Skills practised",
+    "notStarted_one": "{{count}} track not started: it's in Tracks.",
+    "notStarted_other": "{{count}} tracks not started: they're in Tracks.",
+    "correctOf": "{{correct}} of {{total}} correct"
   },
   "profile": {
     "feedback": "💬 Send feedback",
@@ -258,7 +272,11 @@
     "cancelYes": "Yes, cancel",
     "cancelNo": "No, keep it",
     "cancelDone": "Subscription cancelled: you keep access until the end of the paid period and it will not renew.",
-    "cancelError": "Could not cancel. Please try again or email support@whetzy.com."
+    "cancelError": "Could not cancel. Please try again or email support@whetzy.com.",
+    "aiExplanations": "AI tutor explanations",
+    "marketingEmails": "Offer emails",
+    "grantedPlan": "You have {{plan}} until {{date}}: you earned it by inviting friends.",
+    "goAdmin": "Admin panel"
   },
   "quiz": {
     "close": "Close",
@@ -289,6 +307,8 @@
     "correctLabel": "Correct",
     "maxCombo": "Max Combo",
     "xpEarned": "XP Earned",
+    "creditsEarned_one": "+{{count}} credit for what you achieved",
+    "creditsEarned_other": "+{{count}} credits for what you achieved",
     "continue": "CONTINUE",
     "source": "Source",
     "why": {
@@ -301,13 +321,33 @@
       "retry": "Try again",
       "sourceGrounded": "Based on course content",
       "sourceGeneral": "General knowledge — not verified against the course",
-      "upsellBadge": "Whetzy Plus",
+      "upsellBadge": "Pro",
       "upsellTitle": "AI tutor explanations",
-      "upsellBody": "Personalized, step-by-step explanations for every question are part of Whetzy Plus.",
-      "upsellCta": "See Whetzy Plus",
+      "upsellBody": "Step-by-step explanations for every question are part of Pro.",
+      "upsellCta": "See Pro",
       "limitTitle": "You have used today's explanations",
       "limitBody": "Pro includes {{limit}} tutor explanations a day. The counter resets at midnight (UTC). Pro Max has an unlimited tutor.",
-      "limitCta": "See Pro Max"
+      "limitCta": "See Pro Max",
+      "aiLabel": "AI-generated · may contain mistakes",
+      "reportAi": "Report this explanation",
+      "reportAiRetry": "Could not send. Try again",
+      "reportedAi": "Thanks: a person will review it."
+    },
+    "report": {
+      "button": "Report a problem with this question",
+      "title": "What's wrong with the question?",
+      "reasons": {
+        "wrong_answer": "The correct answer is wrong",
+        "typo": "Typo or unclear wording",
+        "outdated": "It's out of date",
+        "confusing": "It's unclear what it asks",
+        "other": "Something else"
+      },
+      "notesLabel": "Details (optional)",
+      "send": "Send",
+      "cancel": "Cancel",
+      "sent": "Thanks: we'll review it.",
+      "error": "Could not send. Please try again."
     },
     "runCode": "Run code",
     "attemptsLeft": "attempts left",
@@ -352,7 +392,17 @@
       "needs_lesson": "Lesson not viewed yet",
       "difficulty": "Target difficulty: {{val}}",
       "expected": "Expected accuracy: {{val}}%"
-    }
+    },
+    "exitConfirm": "Leave? What you've already answered is saved.",
+    "exitStay": "Keep going",
+    "exitLeave": "Leave",
+    "timeLeft": "{{s}} seconds left",
+    "comboLabel": "Streak of {{n}}",
+    "keysHint": "Shortcuts: 1–4 or A–D to pick, Enter to continue.",
+    "skillsMoved": "Skills in this session",
+    "skillNew": "new",
+    "reviewLesson": "Review the lesson: {{name}}",
+    "anotherSession": "Another 10-question session"
   },
   "duel": {
     "loading": "Loading...",
@@ -365,7 +415,6 @@
     "draw": "Draw",
     "challengeTitle": "New Duel",
     "opponentPlaceholder": "Username",
-    "skillOptional": "Skill ID (optional)",
     "send": "Challenge",
     "cancel": "Cancel",
     "q": "Question",
@@ -378,10 +427,13 @@
     "status_completed": "Completed",
     "completed": "Duel complete!",
     "waitingResult": "Once your opponent finishes, you'll see the result in the list.",
-    "participationXp": "+10 XP for participating",
     "viewMyDuels": "View my duels",
     "challengeSent": "Duel sent to {{username}}!",
-    "joinComingSoon": "Joining an active duel — coming soon"
+    "opponentLabel": "Opponent",
+    "skillLabel": "Skill",
+    "anySkill": "One you have practised",
+    "sending": "Sending…",
+    "vs": "vs {{username}}"
   },
   "placement": {
     "title": "Placement Exam",
@@ -545,7 +597,17 @@
     "certResults": "Certifying exam result",
     "certPassed": "Passed",
     "certFailed": "Not passed. You can retake it without paying again.",
-    "certRetry": "TAKE IT AGAIN"
+    "certRetry": "TAKE IT AGAIN",
+    "flag": "Flag for review",
+    "flagged": "Flagged for review",
+    "keepAnswering": "Keep answering",
+    "submitAnyway": "Submit anyway",
+    "confirmTitle": "Confirm submission",
+    "overview": "Answered {{answered}}/{{total}} · Flagged {{flagged}}",
+    "cellLabel": "Question {{n}}: {{state}}",
+    "state_answered": "answered",
+    "state_flagged": "flagged for review",
+    "state_pending": "unanswered"
   },
   "docTitle": {
     "deleteAccount": "Delete account — Whetzy",
@@ -731,12 +793,20 @@
     "ctaSubtitle": "Your BKT mastery per exam domain",
     "ready": "Ready",
     "notReady": "In progress",
-    "domainsReady": "{{done}} of {{total}} domains ready",
     "threshold": "Readiness threshold: {{pct}}% average mastery",
     "skillsAssessed": "{{assessed}} of {{total}} skills practised",
     "startMock": "Take a mock exam now",
-    "explainer": "The percentage reflects your BKT probability of having mastered each skill. A domain is 'ready' when it exceeds 75%.",
-    "errorLoading": "Could not load your readiness data. Please try again."
+    "explainer": "The percentage is the estimated probability that you have mastered each skill (BKT), weighted by each domain's official share of the exam. A domain is ready at 75%.",
+    "errorLoading": "Could not load your readiness data. Please try again.",
+    "gaugeLabel": "Readiness",
+    "domainsReadyShort": "domains ready",
+    "lever": "Your biggest lever",
+    "leverBody": "{{name}}: worth {{weight}}% of the exam and you're at {{pct}}%.",
+    "practice": "Practise this certification",
+    "practiceHint": "The engine starts with your weakest skills.",
+    "weightOf": "{{n}}% of the exam",
+    "priorNote": "You haven't practised this certification yet: {{pct}}% is the model's starting point, not a measure of you.",
+    "notPractised": "not practised"
   },
   "certificate": {
     "title": "Certificate of completion",
@@ -758,9 +828,43 @@
     "downloadBadge": "Download Open Badge credential"
   },
   "admin": {
+    "referrals": {
+      "title": "Referrals",
+      "hint": "Activated and credited. Clawback for a refund, a ban or confirmed fraud: recovers what is left of the 300 credits (never leaves a negative balance) and takes back the milestone reward if the referrer drops below it.",
+      "empty": "No activated or credited referrals.",
+      "reason": "Reason",
+      "reasons": {
+        "fraud": "Confirmed fraud",
+        "refund": "Refund",
+        "ban": "Ban"
+      },
+      "status": {
+        "activated": "activated",
+        "credited": "credited"
+      },
+      "clawback": "Claw back",
+      "confirm": "Confirm clawback",
+      "cancel": "Cancel",
+      "done": "Done: {{recovered}} credits recovered, {{unrecovered}} already spent.",
+      "milestoneRevoked": "Reward taken back: {{milestone}}.",
+      "error": "The clawback failed.",
+      "loadError": "Could not load referrals."
+    },
     "title": "Admin Panel",
     "subtitle": "Platform analytics & operations",
     "loading": "Loading…",
+    "reports": {
+      "title": "Recent reports",
+      "empty": "No reports yet.",
+      "reasons": {
+        "wrong_answer": "Wrong answer",
+        "typo": "Typo",
+        "outdated": "Out of date",
+        "confusing": "Confusing",
+        "other": "Other",
+        "ai_explanation": "AI explanation"
+      }
+    },
     "tabs": {
       "metrics": "Metrics",
       "security": "Security",
@@ -926,6 +1030,8 @@
     "questions_count_other": "{{count}} questions"
   },
   "landing": {
+    "cellYes": "Yes",
+    "cellNo": "No",
     "metaTitle": "Whetzy — Python, AI and cybersecurity with an adaptive engine",
     "nav": {
       "features": "What it does",
@@ -1089,20 +1195,46 @@
     "earnCredits": "How to earn credits",
     "spendCredits": "What to spend them on",
     "referral": "Invite friends",
-    "referralDesc": "Share your code and earn credits when they sign up",
+    "referralDesc": "Share your code: your friend gets 200 credits on sign-up and you get 300 when they activate.",
     "copyCode": "Copy code",
     "copied": "Copied!",
-    "shareLink": "Share link",
     "promo": "Promo code",
     "promoPlaceholder": "Enter your code",
     "redeem": "Redeem",
     "redeemSuccess": "{{credits}} credits added!",
     "redeemError": "Invalid or expired code",
-    "perModule": "per module",
-    "perWeek": "per week",
-    "perMonth": "per month",
-    "once": "once",
-    "noBalance": "You don't have any credits yet. Start studying to earn them!"
+    "noBalance": "You don't have any credits yet. You earn them by learning, with a promo code or by inviting friends.",
+    "earn": {
+      "referral_activated": "A friend you invited activates",
+      "referral_welcome": "You sign up with a friend's code",
+      "diagnostic_done": "You take the initial diagnostic",
+      "module_done": "You complete a module",
+      "skill_skipped": "You test out of a skill",
+      "streak_7": "You keep a 7-day streak",
+      "streak_30": "You keep a 30-day streak"
+    },
+    "spend": {
+      "freeze_streak_1day": "Streak freeze (covers one day without studying)",
+      "mastery_report": "Mastery report"
+    },
+    "activationRule": "They activate by verifying their email, taking the diagnostic, finishing their first module and reaching a 3-day streak. Paid 7 days later; up to 10 a month.",
+    "welcomeRule": "They expire after 30 days if you don't take the diagnostic.",
+    "reportRule": "A snapshot of your mastery by track, with a public link to share (anyone with the link can see it) and to save as a PDF.",
+    "reportCta": "Generate",
+    "reportReady": "Your report is ready:",
+    "reportError": "It couldn't be generated. Try again: you won't be charged twice.",
+    "earnRule": {
+      "module_done": "With every skill at 80% mastery. Once per module.",
+      "skill_skipped": "When you pass a module test-out, for each skill left at 80%. Up to 500 a month.",
+      "streak_7": "Once a week while it lasts.",
+      "streak_30": "Once a month while it lasts."
+    },
+    "learningCap": "Learning earns you up to {{cap}} credits a month; a module or skill that doesn't fit is paid the following month.",
+    "milestone": {
+      "pro_month": "at #{{at}}, 1 month of Pro",
+      "pro_max_6_months": "at #{{at}}, 6 months of Pro Max",
+      "ambassador_badge": "at #{{at}}, the Ambassador badge"
+    }
   },
   "common": {
     "loading": "Loading…",
@@ -1224,5 +1356,40 @@
     "backToApp": "Back to app",
     "engineMit": "MIT engine",
     "contentPsf": "PSF content"
+  },
+  "report": {
+    "title": "Mastery report",
+    "notFound": "We couldn't find this report. Check the link.",
+    "generatedOn": "Generated on {{date}}",
+    "questions": "Questions answered",
+    "accuracy": "Accuracy",
+    "maxStreak": "Longest streak (days)",
+    "noTracks": "No progress in any track yet.",
+    "trackMeta": "{{mastery}}% average mastery · {{mastered}} of {{total}} skills mastered",
+    "masteredSkills": "Mastered skills",
+    "method": "Mastery is estimated by Whetzy's engine (BKT) from your answers; a skill counts as mastered from 95%. This is a snapshot as of the date shown; it is not a certificate and does not replace any vendor's exam.",
+    "print": "Save as PDF"
+  },
+  "twoFactor": {
+    "title": "Two-step verification",
+    "on": "On",
+    "off": "Off",
+    "backupLeft_one": "You have {{count}} backup code left.",
+    "backupLeft_other": "You have {{count}} backup codes left.",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off",
+    "scan": "Scan this code with your authenticator app (Google Authenticator, 1Password, Authy…).",
+    "qrAlt": "QR code for your authenticator app",
+    "manual": "Can't scan it? Type this key into the app:",
+    "backupIntro": "Keep these backup codes somewhere safe. Each one works once if you lose your phone; we won't show them again.",
+    "backupTitle": "Backup codes",
+    "confirmLabel": "6-digit code from the app",
+    "disableLabel": "Code from the app or a backup code",
+    "confirm": "Confirm and turn on",
+    "cancel": "Cancel",
+    "enabledDone": "Two-step verification is on. We'll ask for a code when you sign in.",
+    "disabledDone": "Two-step verification is off.",
+    "badCode": "That code isn't valid. Try the one the app shows now.",
+    "error": "That didn't work. Please try again."
   }
 }

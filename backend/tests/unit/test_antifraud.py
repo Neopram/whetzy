@@ -29,19 +29,22 @@ def _make_user(email: str = "test@example.com", verified: bool = True) -> User:
 
 
 @pytest.mark.asyncio
-async def test_email_not_verified_blocks(db_session: AsyncSession):
+async def test_registration_does_not_require_verified_email(db_session: AsyncSession):
+    """El código se registra al terminar el onboarding, antes de verificar el
+    email: exigirlo aquí perdía el referido de todo el que no entraba con OAuth.
+    La verificación cuenta en la activación (test_referral_program)."""
     user = _make_user(verified=False)
     db_session.add(user)
     await db_session.flush()
 
-    allowed, reason = await AntiFraudService.validate_activation(
+    allowed, reason = await AntiFraudService.validate_registration(
         db_session,
         referred_user_id=user.id,
         referred_email=user.email,
         referrer_id=uuid4(),
     )
-    assert not allowed
-    assert reason == "email_not_verified"
+    assert allowed
+    assert reason == "ok"
 
 
 @pytest.mark.asyncio
@@ -60,7 +63,7 @@ async def test_disposable_email_blocked(db_session: AsyncSession):
     db_session.add(user)
     await db_session.flush()
 
-    allowed, reason = await AntiFraudService.validate_activation(
+    allowed, reason = await AntiFraudService.validate_registration(
         db_session,
         referred_user_id=user.id,
         referred_email=user.email,
@@ -236,7 +239,7 @@ async def test_full_validation_happy_path(db_session: AsyncSession):
     db_session.add_all([referrer, referred])
     await db_session.flush()
 
-    allowed, reason = await AntiFraudService.validate_activation(
+    allowed, reason = await AntiFraudService.validate_registration(
         db_session,
         referred_user_id=referred.id,
         referred_email=referred.email,
@@ -268,7 +271,7 @@ async def test_farm_simulation_100_same_device(db_session: AsyncSession):
         db_session.add(referred)
         await db_session.flush()
 
-        allowed, _ = await AntiFraudService.validate_activation(
+        allowed, _ = await AntiFraudService.validate_registration(
             db_session,
             referred_user_id=referred.id,
             referred_email=referred.email,

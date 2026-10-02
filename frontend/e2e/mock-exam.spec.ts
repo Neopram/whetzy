@@ -65,6 +65,8 @@ test.describe('certification mock exam', () => {
       await page.getByRole('button', { name: /^(Siguiente|Next)$/ }).click();
     }
     await page.getByRole('button', { name: /^(ENTREGAR|SUBMIT)$/ }).click();
+    // Quedan preguntas en blanco: la entrega pide confirmación (design/v2, §F).
+    await page.getByRole('alertdialog').getByRole('button', { name: /Entregar igualmente|Submit anyway/ }).click();
 
     // The report: a raw percentage, four domains, and no invented scaled score.
     await expect(page.getByText(/Resultado del simulacro|Mock exam result/)).toBeVisible({

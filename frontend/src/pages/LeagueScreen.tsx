@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Card } from '../components/common/Card';
 import { RankingTabs } from '../components/layout/RankingTabs';
 import { useApi } from '../hooks/useApi';
-import { league as leagueApi, type LeagueStandingsResponse } from '../services/api';
+import { ApiError, league as leagueApi, type LeagueStandingsResponse } from '../services/api';
 import styles from './LeagueScreen.module.css';
 
 const TIER_META: Record<string, { icon: string }> = {
@@ -13,7 +13,16 @@ const TIER_META: Record<string, { icon: string }> = {
 
 export function LeagueScreen() {
   const { t, i18n } = useTranslation();
-  const fetched = useApi(() => leagueApi.current(), []);
+  // 404 = el servidor no tiene ligas sembradas: no hay liga, no es un fallo.
+  // Antes cualquier error (red, 500) decía «la liga se activará cuando ganes
+  // XP», que no era verdad en ninguno de los dos casos.
+  const fetched = useApi(
+    () => leagueApi.current().catch((e: unknown) => {
+      if (e instanceof ApiError && e.status === 404) return null;
+      throw e;
+    }),
+    [],
+  );
   // Tras cambiar la participación manda la respuesta del PUT, sin recargar.
   const [override, setOverride] = useState<LeagueStandingsResponse | null>(null);
   const [saving, setSaving] = useState(false);
@@ -34,7 +43,16 @@ export function LeagueScreen() {
   }
 
   if (loading) return <div className={styles.screen}><RankingTabs /><p className={styles.loading}>{t('league.loading')}</p></div>;
-  if (error || !data) return <div className={styles.screen}><RankingTabs /><p className={styles.loading}>{t('league.empty')}</p></div>;
+  if (error) {
+    return (
+      <div className={styles.screen}>
+        <RankingTabs />
+        <p className={styles.loading} role="alert">{t('league.loadError')}</p>
+        <button type="button" className={styles.retry} onClick={fetched.reload}>{t('league.retry')}</button>
+      </div>
+    );
+  }
+  if (!data) return <div className={styles.screen}><RankingTabs /><p className={styles.loading}>{t('league.notOpen')}</p></div>;
 
   const tier = TIER_META[data.league.tier] ?? { icon: '🏆' };
   // `data.league.name` is a Spanish-only internal label ("Bronce", "Platino"),

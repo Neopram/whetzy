@@ -19,7 +19,14 @@ interface UserProfile {
   maxStreak: number;
   streakFreezeAvailable: number;
   lastActive: string;
+  /** Desbloquea funciones: plan de pago o plan ganado con referidos. El
+   *  checkout no lo usa: pregunta a `/auth/me` por el de pago. */
   isPremium: boolean;
+  /** Plan ganado con referidos y hasta cuándo (ADR-57); null si no hay. */
+  grantedTier: 'plus' | 'pro' | null;
+  grantedUntil: string | null;
+  /** Recibir correos de ofertas (la baja se hace desde Ajustes o desde el correo). */
+  marketingEmails: boolean;
   is_admin: boolean;
   language: Language;
   league: LeagueTier;
@@ -65,6 +72,9 @@ interface AppState {
   // Quiz
   quiz: QuizState;
   startQuiz: (mode: QuizState['mode'], totalQuestions: number, opts?: { trackId?: string; skillId?: string }) => void;
+  /** Sube con cada startQuiz: la pantalla se monta de nuevo aunque ya estés en
+   *  'quiz' (p. ej. «Otra sesión» desde el resumen), en vez de quedarse en él. */
+  quizRun: number;
   answerQuestion: (correct: boolean, xp: number) => void;
   nextQuestion: () => void;
   resetQuiz: () => void;
@@ -114,6 +124,9 @@ interface AppState {
   setLanguage: (lang: Language) => void;
   soundEnabled: boolean;
   toggleSound: () => void;
+  /** Mostrar el «¿Por qué?» del tutor IA (Ajustes). Solo afecta a este dispositivo. */
+  aiExplanations: boolean;
+  toggleAiExplanations: () => void;
   hapticEnabled: boolean;
   toggleHaptic: () => void;
 }
@@ -136,7 +149,10 @@ function mapApiUser(u: UserRead): UserProfile {
     maxStreak: u.max_streak,
     streakFreezeAvailable: u.streak_freeze_available,
     lastActive: u.last_active ?? new Date().toISOString(),
-    isPremium: u.is_premium,
+    isPremium: u.is_premium || Boolean(u.granted_tier),
+    grantedTier: u.granted_tier ?? null,
+    grantedUntil: u.granted_tier_expires_at ?? null,
+    marketingEmails: !u.marketing_emails_opt_out,
     is_admin: u.is_admin ?? false,
     language: u.language,
     league: 'bronze',
@@ -163,6 +179,9 @@ const defaultUser: UserProfile = {
   streakFreezeAvailable: 1,
   lastActive: new Date().toISOString(),
   isPremium: false,
+  grantedTier: null,
+  grantedUntil: null,
+  marketingEmails: true,
   is_admin: false,
   language: 'es',
   league: 'gold',
@@ -223,8 +242,10 @@ export const useAppStore = create<AppState>()(
         }),
 
       quiz: defaultQuiz,
+      quizRun: 0,
       startQuiz: (mode, totalQuestions, opts) =>
-        set({
+        set((s) => ({
+          quizRun: s.quizRun + 1,
           quiz: {
             ...defaultQuiz,
             mode,
@@ -233,7 +254,7 @@ export const useAppStore = create<AppState>()(
             skillId: opts?.skillId ?? null,
           },
           currentScreen: 'quiz',
-        }),
+        })),
       answerQuestion: (correct, xp) =>
         set((s) => ({
           quiz: {
@@ -315,6 +336,8 @@ export const useAppStore = create<AppState>()(
       setLanguage: (lang) => set({ language: lang }),
       soundEnabled: true,
       toggleSound: () => set((s) => ({ soundEnabled: !s.soundEnabled })),
+      aiExplanations: true,
+      toggleAiExplanations: () => set((s) => ({ aiExplanations: !s.aiExplanations })),
       hapticEnabled: true,
       toggleHaptic: () => set((s) => ({ hapticEnabled: !s.hapticEnabled })),
     }),
@@ -324,6 +347,7 @@ export const useAppStore = create<AppState>()(
         user: state.user,
         language: state.language,
         soundEnabled: state.soundEnabled,
+        aiExplanations: state.aiExplanations,
         hapticEnabled: state.hapticEnabled,
         missions: state.missions,
         selectedTrackId: state.selectedTrackId,

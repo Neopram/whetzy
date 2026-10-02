@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, useLayoutEffect, useRef, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type AnswerEvidence } from '../services/api';
+import { quiz as quizApi, progress as progressApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
 import { enqueue } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
@@ -11,6 +11,7 @@ import { WhyButton } from '../components/quiz/WhyButton';
 import { GlossaryText } from '../components/quiz/GlossaryText';
 import { TermCard } from '../components/quiz/TermCard';
 import { SourceLine } from '../components/quiz/SourceLine';
+import { ReportQuestion } from '../components/quiz/ReportQuestion';
 import { useRuntime, runtimeForQuestion } from '../hooks/useRuntime';
 import { useGlossary } from '../hooks/useGlossary';
 import { parseQuestion } from '../lib/question';
@@ -50,6 +51,7 @@ export function QuizScreen() {
   const resetQuiz = useAppStore((s) => s.resetQuiz);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const isPremium = useAppStore((s) => s.user.isPremium);
+  const aiExplanations = useAppStore((s) => s.aiExplanations);
   const { t } = useTranslation();
 
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -71,6 +73,11 @@ export function QuizScreen() {
   // ninguna barra.
   const [mastery, setMastery] = useState<number | null>(null);
   const [selectionReason, setSelectionReason] = useState<SelectionReason | null>(null);
+  // Dominio de cada habilidad al empezar, para enseñar al final cuánto se movió
+  // (antes → después). /quiz/end no lo devuelve; se lee de /progress/skills.
+  const [skillsBefore, setSkillsBefore] = useState<Map<string, SkillMasteryDetail> | null>(null);
+  const practiced = useRef<Set<string>>(new Set());
+  const [confirmExit, setConfirmExit] = useState(false);
 
   // Which language this question is *shown* in. Separate from the app language
   // on purpose: peeking at the English wording of one question should not
@@ -100,6 +107,10 @@ export function QuizScreen() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
+    progressApi
+      .skills()
+      .then((list) => { if (!cancelled) setSkillsBefore(new Map(list.map((s) => [s.skill_id, s]))); })
+      .catch(() => { /* sin «antes», el resumen enseña solo el «después» */ });
     quizApi
       .start(mode, trackId ?? undefined, skillId ?? undefined)
       .then((res) => {
@@ -152,12 +163,14 @@ export function QuizScreen() {
 
   // ── MCQ countdown (disabled for exec types) ────────────────────────────
   useEffect(() => {
-    if (feedback || summary || loading || !question || isExecType) return;
+    // Pausado mientras se decide si salir: el tiempo no corre contra una
+    // pregunta que el alumno no está mirando.
+    if (feedback || summary || loading || !question || isExecType || confirmExit) return;
     if (timer <= 0) { void submitAnswer(null); return; }
     const id = setTimeout(() => setTimer((v) => v - 1), 1000);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timer, feedback, summary, loading, question, isExecType]);
+  }, [timer, feedback, summary, loading, question, isExecType, confirmExit]);
 
   // ── Reset timer when question changes ──────────────────────────────────
   useEffect(() => {
@@ -179,6 +192,7 @@ export function QuizScreen() {
         // `selectedIndex` ya no basta para dar por buena una respuesta (2026-10-01).
         const res = await quizApi.answer(sessionId, question.id, selectedIndex, rt, declaredUnknown, undefined, evidence);
         setFeedback(res);
+        practiced.current.add(question.skill_id);
         setMastery((prev) => res.skill_mastery[question.skill_id] ?? prev);
         setCombo(res.combo);
         setXpEarned((x) => x + res.xp_earned);
@@ -196,7 +210,7 @@ export function QuizScreen() {
         if (declaredUnknown) {
           showToast(t('quiz.unknownAck'), 'info');
         } else if (res.correct) {
-          showToast(`+${res.xp_earned} XP${res.combo >= 3 ? ` · combo ${res.combo}🔥` : ''}`, 'success');
+          showToast(`+${res.xp_earned} XP${res.combo >= 3 ? ` · ${t('quiz.comboLabel', { n: res.combo })}` : ''}`, 'success');
         } else {
           showToast(t('quiz.incorrect'), 'error');
         }
@@ -309,9 +323,9 @@ export function QuizScreen() {
     if (!code) return;
     setVerifyLoading(true);
     const result = await runCode(code, 5000);
-    setVerifyOutput(result.timedOut ? '⏱ Timeout' : result.error ? `Error: ${result.error}` : result.output);
+    setVerifyOutput(result.timedOut ? t('quiz.timeout') : result.error ? `Error: ${result.error}` : result.output);
     setVerifyLoading(false);
-  }, [question, verifyLoading, language, runCode]);
+  }, [question, verifyLoading, language, runCode, t]);
 
   // ── Next question ──────────────────────────────────────────────────────
   const handleNext = useCallback(async () => {
@@ -336,10 +350,48 @@ export function QuizScreen() {
     }
   }, [feedback, sessionId, index, combo, xpEarned, hydrateFromApi]);
 
+  // Salir a mitad: el servidor ya sumó el XP de lo respondido, así que el
+  // usuario se refresca aquí también (antes solo al terminar, y Yo y la barra
+  // superior se quedaban en el XP de antes hasta recargar).
   const handleClose = useCallback(() => {
+    if (index > 0 || feedback) void hydrateFromApi();
     resetQuiz();
     setScreen('home');
-  }, [resetQuiz, setScreen]);
+  }, [index, feedback, hydrateFromApi, resetQuiz, setScreen]);
+
+  // Cada respuesta ya está guardada en el servidor; la confirmación solo
+  // aparece cuando hay algo respondido, para que salir no parezca perderlo.
+  const requestClose = useCallback(() => {
+    if (index > 0 || feedback) setConfirmExit(true);
+    else handleClose();
+  }, [index, feedback, handleClose]);
+
+  // Teclado: 1–4 o A–D eligen opción; Enter pasa a la siguiente. Un solo
+  // listener que llama siempre al manejador del último render (se actualiza en
+  // un layout effect, antes de pintar): re-engancharlo en cada render dejaba un
+  // hueco en el que un Enter justo tras responder veía el estado anterior.
+  const onKeyRef = useRef<(e: KeyboardEvent) => void>(() => {});
+  useLayoutEffect(() => {
+    onKeyRef.current = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.target instanceof HTMLElement && e.target.closest('input, textarea, [contenteditable], .monaco-editor')) return;
+      if (!question || summary) return;
+      if (feedback) {
+        if (e.key === 'Enter') { e.preventDefault(); void handleNext(); }
+        return;
+      }
+      if (isExecType || submitting) return;
+      const n = ((viewLang === 'es' ? question.options_es : question.options_en) ?? []).length;
+      const k = e.key.toLowerCase();
+      const i = /^[1-9]$/.test(k) ? Number(k) - 1 : /^[a-z]$/.test(k) ? k.charCodeAt(0) - 97 : -1;
+      if (i >= 0 && i < n) { e.preventDefault(); void handleAnswer(i); }
+    };
+  });
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => onKeyRef.current(e);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   const handleUpgrade = useCallback(() => {
     setScreen('profile');
@@ -353,7 +405,17 @@ export function QuizScreen() {
   // ── Early returns ──────────────────────────────────────────────────────
   if (loading) return <QuizLoader />;
   if (error) return <QuizError message={error} onClose={handleClose} />;
-  if (summary) return <SessionSummary summary={summary} onClose={handleClose} />;
+  if (summary) {
+    return (
+      <SessionSummary
+        summary={summary}
+        before={skillsBefore}
+        practiced={[...practiced.current]}
+        lang={language}
+        onClose={handleClose}
+      />
+    );
+  }
   if (!question) {
     // 32.4 gates "study"/"review" on having viewed the skill's lesson first
     // (lesson_gate.py) and already tells the frontend why via
@@ -364,7 +426,6 @@ export function QuizScreen() {
     if (selectionReason?.pool === 'needs_lesson') {
       return (
         <QuizError
-          icon="📖"
           title={t('quiz.needsLessonTitle')}
           message={t('quiz.needsLessonMessage')}
           onClose={handleClose}
@@ -382,51 +443,61 @@ export function QuizScreen() {
   const answered = feedback !== null;
   const otherLang: 'es' | 'en' = viewLang === 'es' ? 'en' : 'es';
 
-  // The *-text tokens, not the raw hues: this badge is 11px bold text sitting
-  // straight on --le-bg, where --le-red/--le-orange/--le-green measure
-  // 3.08:1 / 2.04:1 / 1.94:1 — all under the 4.5:1 floor (red line 6).
-  const diffColor =
+  // Fichas de dificultad con los tokens *-text: texto pequeño sobre el fondo,
+  // donde los tonos crudos no llegan a 4.5:1 (línea roja 6).
+  const diffClass =
     question.difficulty_tier === 'hard' || question.difficulty_tier === 'expert'
-      ? 'var(--le-danger-text)'
+      ? styles.diffHard
       : question.difficulty_tier === 'medium'
-        ? 'var(--le-warning-text)'
-        : 'var(--le-success-on-tint)';
+        ? styles.diffMedium
+        : styles.diffEasy;
 
   // ── Shared header + stats bar ──────────────────────────────────────────
   const header = (
-    <div className={styles.header}>
-      <button className={styles.closeBtn} onClick={handleClose} aria-label={t('quiz.close')}>
-        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-        </svg>
-      </button>
-      <div className={styles.progressWrap}>
-        <ProgressBar
-          value={index + 1}
-          max={TARGET_QUESTIONS}
-          label={t('a11y.progressQuestion', { n: index + 1, total: TARGET_QUESTIONS })}
-          color="var(--le-brand)"
-          height={10}
-        />
-        <span className={styles.progressLabel}>{index + 1}/{TARGET_QUESTIONS}</span>
+    <>
+      <div className={styles.header}>
+        <button type="button" className={styles.closeBtn} onClick={requestClose} aria-label={t('quiz.close')}>
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+          </svg>
+        </button>
+        <div className={styles.progressWrap}>
+          <ProgressBar
+            value={index + 1}
+            max={TARGET_QUESTIONS}
+            label={t('a11y.progressQuestion', { n: index + 1, total: TARGET_QUESTIONS })}
+            color="var(--le-blue)"
+            height={4}
+          />
+        </div>
+        <span className={styles.progressLabel}>{index + 1} / {TARGET_QUESTIONS}</span>
+        {!isExecType && (
+          <span className={`${styles.timer} ${timer <= 5 ? styles.timerDanger : ''}`} aria-label={t('quiz.timeLeft', { s: timer })}>
+            {timer}s
+          </span>
+        )}
       </div>
-      {!isExecType && (
-        <div className={styles.timerWrap}>
-          <div className={`${styles.timer} ${timer <= 5 ? styles.timerDanger : ''}`}>{timer}</div>
+      {confirmExit && (
+        <div className={styles.exitConfirm} role="alertdialog" aria-label={t('quiz.exitConfirm')}>
+          <p>{t('quiz.exitConfirm')}</p>
+          <div className={styles.exitActions}>
+            <button type="button" className={styles.btnGhost} onClick={() => setConfirmExit(false)} autoFocus>
+              {t('quiz.exitStay')}
+            </button>
+            <button type="button" className={styles.btnLeave} onClick={handleClose}>
+              {t('quiz.exitLeave')}
+            </button>
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 
   const statsBar = (
     <div className={styles.statsBar}>
-      <div className={styles.combo}>
-        {combo > 0 && (<><span className={styles.comboFire}>🔥</span><span className={styles.comboCount}>{combo}</span></>)}
-      </div>
-      <div className={styles.xpBadge}>⚡ {xpEarned} XP</div>
-      <div className={styles.diffBadge} style={{ color: diffColor, borderColor: diffColor }}>
-        {t(`quiz.diff.${question.difficulty_tier}`)}
-      </div>
+      <span className={`${styles.diffBadge} ${diffClass}`}>{t(`quiz.diff.${question.difficulty_tier}`)}</span>
+      {combo > 0 && <span className={styles.combo}>{t('quiz.comboLabel', { n: combo })}</span>}
+      <span className={styles.xpBadge}><b>{xpEarned}</b> XP</span>
     </div>
   );
 
@@ -483,14 +554,14 @@ export function QuizScreen() {
 
   const feedbackPanel = answered && feedback && (
     <motion.div
-      className={styles.explanation}
+      className={`${styles.explanation} ${feedback.correct ? styles.explanationOk : ''}`}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
     >
-      <div className={styles.explanationHeader}>
-        {feedback.correct ? `🎯 ${t('quiz.correct')}` : `💡 ${t('quiz.explanation')}`}
-      </div>
+      <p className={styles.explanationHeader}>
+        {feedback.correct ? t('quiz.correct') : t('quiz.explanation')}
+      </p>
       <p className={styles.explanationText}>
         <GlossaryText
           text={viewLang === 'es' ? feedback.explanation_es : feedback.explanation_en}
@@ -501,9 +572,10 @@ export function QuizScreen() {
       </p>
       {feedback.source && <SourceLine source={feedback.source} />}
 
-      <WhyButton questionId={question.id} isPremium={isPremium} onUpgrade={handleUpgrade} />
+      {aiExplanations && <WhyButton questionId={question.id} isPremium={isPremium} onUpgrade={handleUpgrade} />}
+      <ReportQuestion key={question.id} questionId={question.id} />
 
-      <button className={styles.btnNext} onClick={handleNext}>
+      <button type="button" className={styles.btnNext} onClick={handleNext}>
         {index + 1 >= TARGET_QUESTIONS || !feedback.next_question ? t('quiz.seeResults') : t('quiz.next')}
       </button>
     </motion.div>
@@ -523,13 +595,13 @@ export function QuizScreen() {
       runResult.output.trim() === expected;
 
     const engineLoadingLabel =
-      runtimeType === 'sql' ? `⚙ ${t('quiz.engineLoadingSql')}`
-      : `⚙ ${t('quiz.engineLoading')}`;
+      runtimeType === 'sql' ? t('quiz.engineLoadingSql')
+      : t('quiz.engineLoading');
     const engineLabel =
       runtimeStatus === 'loading'
         ? engineLoadingLabel
         : runtimeStatus === 'error'
-          ? `⚠ ${t('quiz.engineError')}`
+          ? t('quiz.engineError')
           : null;
 
     return (
@@ -557,17 +629,18 @@ export function QuizScreen() {
               />
               {!answered && (
                 <button
+                  type="button"
                   className={styles.btnRun}
                   onClick={() => void handleFillBlankSubmit()}
                   disabled={answered || submitting || !userInput.trim()}
                 >
-                  {submitting ? `⏳ ${t('quiz.submitting', 'Enviando...')}` : `✓ ${t('quiz.submit', 'Confirmar')}`}
+                  {submitting ? t('quiz.submitting', 'Enviando...') : t('quiz.submit', 'Confirmar')}
                 </button>
               )}
               {answered && feedback && (
                 <div className={`${styles.outputBox} ${feedback.correct ? styles.outputCorrect : styles.outputWrong}`}>
                   <span className={styles.outputLabel}>
-                    {feedback.correct ? `✅ ${t('quiz.correct')}` : `❌ ${t('quiz.outputWrong')}`}
+                    {feedback.correct ? t('quiz.correct') : t('quiz.outputWrong')}
                   </span>
                   {!feedback.correct && expected && (
                     <p className={styles.expectedHint}>
@@ -632,12 +705,13 @@ export function QuizScreen() {
 
           {question.type !== 'fill_blank' && !answered && (
             <button
+              type="button"
               className={styles.btnRun}
               onClick={() => void handleRun()}
               disabled={runLoading || answered || pyodideStatus !== 'ready'}
             >
               {runLoading
-                ? `⏳ ${t('quiz.executing')}`
+                ? t('quiz.executing')
                 : engineLabel ?? `▶ ${t('quiz.runCode')}${execAttempts > 0 ? ` (${attemptsLeft} ${t('quiz.attemptsLeft')})` : ''}`}
             </button>
           )}
@@ -646,12 +720,12 @@ export function QuizScreen() {
             <div className={`${styles.outputBox} ${lastCorrect ? styles.outputCorrect : styles.outputWrong}`}>
               <span className={styles.outputLabel}>
                 {lastCorrect
-                  ? `✅ ${t('quiz.outputCorrect')}`
+                  ? t('quiz.outputCorrect')
                   : runResult.timedOut
-                    ? `⏱ ${t('quiz.timeout')}`
+                    ? t('quiz.timeout')
                     : runResult.error
-                      ? `❌ ${t('quiz.outputError')}`
-                      : `❌ ${t('quiz.outputWrong')}`}
+                      ? t('quiz.outputError')
+                      : t('quiz.outputWrong')}
               </span>
               <pre className={styles.outputPre}>
                 {runResult.timedOut
@@ -694,6 +768,7 @@ export function QuizScreen() {
           return (
             <motion.button
               key={i}
+              type="button"
               className={cls}
               onClick={() => handleAnswer(i)}
               disabled={answered || submitting}
@@ -721,24 +796,26 @@ export function QuizScreen() {
           {t('quiz.dontKnow')}
         </button>
       )}
+      {!answered && <p className={styles.keysHint}>{t('quiz.keysHint')}</p>}
 
       {answered && question.type === 'code_output' && code && (
         <div className={styles.verifyArea}>
           {verifyOutput != null ? (
             <div className={styles.outputBox}>
-              <span className={styles.outputLabel}>▶ {t('quiz.actualOutput')}</span>
+              <span className={styles.outputLabel}>{t('quiz.actualOutput')}</span>
               <pre className={styles.outputPre}>{verifyOutput}</pre>
             </div>
           ) : (
             <button
+              type="button"
               className={styles.btnVerify}
               onClick={() => void handleVerify()}
               disabled={verifyLoading || pyodideStatus !== 'ready'}
             >
               {verifyLoading
-                ? `⏳ ${t('quiz.executing')}`
+                ? t('quiz.executing')
                 : pyodideStatus === 'loading'
-                  ? `⚙ ${t('quiz.engineLoading')}`
+                  ? t('quiz.engineLoading')
                   : `▶ ${t('quiz.runToVerify')}`}
             </button>
           )}
@@ -746,11 +823,7 @@ export function QuizScreen() {
       )}
 
       {lottieSrc && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          pointerEvents: 'none', zIndex: 999,
-        }}>
+        <div className={styles.lottie} aria-hidden="true">
           <Player src={lottieSrc} autoplay loop={false} style={{ width: 160, height: 160 }} />
         </div>
       )}
@@ -765,22 +838,20 @@ export function QuizScreen() {
 function QuizLoader() {
   const { t } = useTranslation();
   return (
-    <div className={styles.summary}>
-      <div className={styles.summaryGrade} style={{ borderColor: 'var(--le-brand)', color: 'var(--le-brand)', animation: 'pulse 1.2s ease-in-out infinite' }}>◐</div>
+    <div className={styles.summary} role="status">
+      <span className={styles.loaderDot} aria-hidden="true" />
       <p className={styles.summaryAccuracy}>{t('loading')}</p>
     </div>
   );
 }
 
 function QuizError({
-  icon = '🤔',
   title,
   message,
   onClose,
   actionLabel,
   onAction,
 }: {
-  icon?: string;
   title?: string;
   message: string;
   onClose: () => void;
@@ -790,25 +861,57 @@ function QuizError({
   const { t } = useTranslation();
   return (
     <div className={styles.summary}>
-      <span style={{ fontSize: '3rem' }}>{icon}</span>
       <h1 className={styles.summaryTitle}>{title ?? t('quiz.noQuestionsAvail')}</h1>
       <p className={styles.summaryAccuracy}>{message}</p>
-      {actionLabel && onAction && (
-        <button className={styles.btnStudy} onClick={onAction} style={{ marginTop: 'var(--le-space-xl)' }}>{actionLabel}</button>
-      )}
-      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: actionLabel ? 'var(--le-space-sm)' : 'var(--le-space-xl)' }}>{t('back')}</button>
+      <div className={styles.summaryActions}>
+        {actionLabel && onAction && (
+          <button type="button" className={styles.btnPrimary} onClick={onAction}>{actionLabel}</button>
+        )}
+        <button type="button" className={styles.btnStudy} onClick={onClose}>{t('back')}</button>
+      </div>
     </div>
   );
 }
 
-function SessionSummary({ summary, onClose }: { summary: QuizEndResponse; onClose: () => void }) {
+const pct = (x: number) => Math.round(x * 100);
+
+function SessionSummary({
+  summary, before, practiced, lang, onClose,
+}: {
+  summary: QuizEndResponse;
+  before: Map<string, SkillMasteryDetail> | null;
+  practiced: string[];
+  lang: 'es' | 'en';
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
+  const startLesson = useAppStore((s) => s.startLesson);
+  const startQuiz = useAppStore((s) => s.startQuiz);
+  const [after, setAfter] = useState<SkillMasteryDetail[] | null>(null);
+
+  // El «después» se lee al terminar: es el mismo dato que el «antes», así que
+  // la diferencia es la que el motor registró en esta sesión, no una estimación.
+  useEffect(() => {
+    let cancelled = false;
+    progressApi.skills().then((list) => { if (!cancelled) setAfter(list); }).catch(() => setAfter([]));
+    return () => { cancelled = true; };
+  }, []);
+
   const accuracy = Math.round(summary.accuracy * 100);
   const grade = accuracy >= 90 ? 'S' : accuracy >= 80 ? 'A' : accuracy >= 70 ? 'B' : accuracy >= 60 ? 'C' : 'F';
-  const gradeColor = grade === 'S' ? 'var(--le-gold)' : grade === 'A' ? 'var(--le-green)' : grade === 'B' ? 'var(--le-brand)' : grade === 'C' ? 'var(--le-orange)' : 'var(--le-red)';
+  const moved = (after ?? [])
+    .filter((s) => practiced.includes(s.skill_id))
+    .sort((a, b) => a.p_known - b.p_known);
+  const weakest = moved[0];
+
   return (
-    <div className={styles.summary}>
-      <div className={styles.summaryGrade} style={{ color: gradeColor, borderColor: gradeColor }}>{grade}</div>
+    <motion.div
+      className={styles.summary}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+    >
+      <div className={styles.summaryGrade} data-grade={grade} aria-hidden="true">{grade}</div>
       <h1 className={styles.summaryTitle}>{accuracy >= 80 ? t('quiz.excellent') : accuracy >= 60 ? t('quiz.goodJob') : t('quiz.keepGoing')}</h1>
       <p className={styles.summaryAccuracy}>{accuracy}% {t('quiz.accuracyLabel')}</p>
       <div className={styles.summaryStats}>
@@ -817,15 +920,56 @@ function SessionSummary({ summary, onClose }: { summary: QuizEndResponse; onClos
           <span className={styles.summaryStatLabel}>{t('quiz.correctLabel')}</span>
         </div>
         <div className={styles.summaryStat}>
-          <span className={styles.summaryStatVal}>🔥 {summary.max_combo}</span>
+          <span className={styles.summaryStatVal}>{summary.max_combo}</span>
           <span className={styles.summaryStatLabel}>{t('quiz.maxCombo')}</span>
         </div>
         <div className={styles.summaryStat}>
-          <span className={styles.summaryStatVal}>⚡ {summary.xp_earned}</span>
+          <span className={styles.summaryStatVal}>{summary.xp_earned}</span>
           <span className={styles.summaryStatLabel}>{t('quiz.xpEarned')}</span>
         </div>
       </div>
-      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: 'var(--le-space-xl)' }}>{t('quiz.continue')}</button>
-    </div>
+      {(summary.credits_earned ?? 0) > 0 && (
+        <p className={styles.summaryAccuracy}>{t('quiz.creditsEarned', { count: summary.credits_earned })}</p>
+      )}
+
+      {moved.length > 0 && (
+        <section className={styles.moved} aria-label={t('quiz.skillsMoved')}>
+          <h2 className={styles.movedTitle}>{t('quiz.skillsMoved')}</h2>
+          <ul className={styles.movedList}>
+            {moved.map((s) => {
+              // Sin intentos previos no hay medida «antes»: es nueva, no un 0 %.
+              const prev = before?.get(s.skill_id);
+              const b = prev && prev.attempts > 0 ? prev.p_known : undefined;
+              const name = lang === 'es' ? s.name_es : s.name_en;
+              return (
+                <li key={s.skill_id} className={styles.movedItem}>
+                  <span className={styles.movedName}>{name}</span>
+                  <span className={styles.movedBars} aria-hidden="true">
+                    <span className={styles.movedBefore} style={{ width: `${pct(b ?? 0)}%` }} />
+                    <span className={styles.movedAfter} style={{ width: `${pct(s.p_known)}%` }} />
+                  </span>
+                  <span className={styles.movedPct}>
+                    {b === undefined ? t('quiz.skillNew') : `${pct(b)}%`} → {pct(s.p_known)}%
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
+      <div className={styles.summaryActions}>
+        {weakest && weakest.p_known < 0.4 ? (
+          <button type="button" className={styles.btnPrimary} onClick={() => startLesson(weakest.skill_id)}>
+            {t('quiz.reviewLesson', { name: lang === 'es' ? weakest.name_es : weakest.name_en })}
+          </button>
+        ) : (
+          <button type="button" className={styles.btnPrimary} onClick={() => startQuiz('study', 10)}>
+            {t('quiz.anotherSession')}
+          </button>
+        )}
+        <button type="button" className={styles.btnStudy} onClick={onClose}>{t('quiz.continue')}</button>
+      </div>
+    </motion.div>
   );
 }

@@ -476,6 +476,37 @@ check(
     ", ".join(_broken_links[:20]),
 )
 
+# ---------------------------------------------------------------------------
+# docs/MAPA_PRODUCTO.md nombra todo lo que existe (2026-10-01): hasta entonces
+# ningún documento enumeraba todas las pantallas, y cada una nueva entraba sin
+# que nadie escribiera dónde se especifica.
+# ---------------------------------------------------------------------------
+
+_MAPA = _DOCS / "MAPA_PRODUCTO.md"
+_mapa_text = _MAPA.read_text(encoding="utf-8") if _MAPA.exists() else ""
+_FRONT = ROOT / "frontend" / "src"
+_app_tsx = (_FRONT / "App.tsx").read_text(encoding="utf-8")
+_store_tsx = (_FRONT / "stores" / "useAppStore.ts").read_text(encoding="utf-8")
+
+_pages = sorted(p.stem for p in (_FRONT / "pages").glob("*.tsx"))
+_routes = sorted(
+    set(re.findall(r"path(?: === |\.startsWith\()'(/[^']*)'", _app_tsx))
+    | set(re.findall(r"_PATH = '(/[^']*)'", _app_tsx))
+)
+_screen_union = re.search(r"type Screen = ([^;]+);", _store_tsx)
+_screens = re.findall(r"'([a-z]+)'", _screen_union.group(1)) if _screen_union else []
+
+_missing_map = (
+    [p for p in _pages if p not in _mapa_text]
+    + [r for r in _routes if f"`{r}" not in _mapa_text]
+    + [f"Screen '{s}'" for s in _screens if f"`{s}`" not in _mapa_text]
+)
+check(
+    "docs/MAPA_PRODUCTO.md nombra cada pantalla de frontend/src/pages, cada ruta de App.tsx y cada Screen",
+    bool(_mapa_text) and bool(_pages) and bool(_routes) and bool(_screens) and not _missing_map,
+    "sin mapear: " + ", ".join(_missing_map[:20]) if _missing_map else "no se pudo leer el mapa o el código",
+)
+
 print()
 if errors:
     head = f"{len(errors)} check(s) FAILED:"

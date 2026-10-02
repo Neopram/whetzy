@@ -37,6 +37,14 @@
     "passwordPlaceholder": "Mínimo 8 caracteres",
     "langLabel": "Idioma",
     "registerCta": "EMPEZAR A APRENDER",
+    "mfaTitle": "Verificación en dos pasos",
+    "mfaBody": "Escribe el código de 6 dígitos de tu app de autenticación, o uno de tus códigos de respaldo.",
+    "mfaCodeLabel": "Código",
+    "mfaCta": "Verificar y entrar",
+    "mfaBack": "Volver a iniciar sesión",
+    "mfaInvalid": "El código no es válido. Revisa la hora de tu teléfono o usa un código de respaldo.",
+    "mfaLocked": "Demasiados intentos. Espera un poco y vuelve a probar.",
+    "mfaExpired": "Han pasado más de 5 minutos. Vuelve a iniciar sesión.",
     "forgotPassword": "¿Olvidó su contraseña?",
     "loginCta": "ENTRAR",
     "loading": "Un momento…",
@@ -136,7 +144,7 @@
       "bought_other": "Hecho: ya tienes {{count}} comodines.",
       "retry": "No se pudo completar. Vuelve a intentarlo: no se cobra dos veces.",
       "blocked": {
-        "insufficient_credits": "Cuesta {{price}} créditos y tienes {{balance}}. Los créditos se ganan estudiando (módulos y rachas).",
+        "insufficient_credits": "Cuesta {{price}} créditos y tienes {{balance}}. Los créditos llegan con un código promocional o invitando amigos (en Yo → Cartera).",
         "max_held": "Ya tienes el máximo ({{max}}). Un comodín cubre un día suelto, no semanas.",
         "weekly_limit": "Esta semana ya compraste {{perWeek}}. La racha mide constancia: vuelve el lunes."
       }
@@ -144,7 +152,9 @@
   },
   "league": {
     "loading": "Cargando liga…",
-    "empty": "La liga se activará cuando empieces a ganar XP esta semana.",
+    "notOpen": "Las ligas todavía no están abiertas.",
+    "loadError": "No se pudo cargar la liga.",
+    "retry": "Reintentar",
     "league": "Liga",
     "rules": "Top 5 ascienden · Últimos 5 descienden",
     "you": "tú",
@@ -172,6 +182,7 @@
     "mastery": "dominio",
     "lockNote": "Domina el módulo anterior para desbloquear este.",
     "needsLessonNote": "Abre la lección de este módulo antes de practicar.",
+    "testOutCta": "¿Ya lo sabes? Salta este módulo con una prueba",
     "practice": "Practicar",
     "reinforce": "Reforzar",
     "thresholdNote": "Una habilidad se marca dominada al {{n}}% de probabilidad de conocimiento (BKT). Un módulo desbloquea el siguiente al superar su umbral de dominio.",
@@ -209,12 +220,15 @@
     "title": "Estadísticas",
     "totalXp": "XP Total",
     "questions": "Preguntas",
-    "mastery": "Dominio",
     "byTrack": "Dominio por track",
     "bySkill": "Dominio por habilidad",
     "skillsMastered": "dominadas",
     "loading": "Cargando…",
-    "noData": "Responde preguntas para ver tu progreso aquí."
+    "noData": "Responde preguntas para ver tu progreso aquí.",
+    "skillsPractised": "Habilidades practicadas",
+    "notStarted_one": "{{count}} ruta sin empezar: está en Rutas.",
+    "notStarted_other": "{{count}} rutas sin empezar: están en Rutas.",
+    "correctOf": "{{correct}} de {{total}} correctas"
   },
   "profile": {
     "feedback": "💬 Enviar comentario",
@@ -258,7 +272,11 @@
     "cancelYes": "Sí, cancelar",
     "cancelNo": "No, mantener",
     "cancelDone": "Suscripción cancelada: conservas el acceso hasta el final del periodo pagado y no se renovará.",
-    "cancelError": "No se pudo cancelar. Inténtalo de nuevo o escribe a support@whetzy.com."
+    "cancelError": "No se pudo cancelar. Inténtalo de nuevo o escribe a support@whetzy.com.",
+    "aiExplanations": "Explicaciones del tutor IA",
+    "marketingEmails": "Correos con ofertas",
+    "grantedPlan": "Tienes {{plan}} hasta el {{date}}: lo ganaste invitando amigos.",
+    "goAdmin": "Panel de administración"
   },
   "quiz": {
     "close": "Cerrar",
@@ -289,6 +307,8 @@
     "correctLabel": "Correctas",
     "maxCombo": "Max Combo",
     "xpEarned": "XP Ganados",
+    "creditsEarned_one": "+{{count}} crédito por lo que has logrado",
+    "creditsEarned_other": "+{{count}} créditos por lo que has logrado",
     "continue": "CONTINUAR",
     "source": "Fuente",
     "why": {
@@ -301,13 +321,33 @@
       "retry": "Reintentar",
       "sourceGrounded": "Basado en el contenido del curso",
       "sourceGeneral": "Conocimiento general — no verificado contra el curso",
-      "upsellBadge": "Whetzy Plus",
-      "upsellTitle": "Explicaciones del tutor AI",
-      "upsellBody": "Las explicaciones personalizadas, paso a paso, para cada pregunta son parte de Whetzy Plus.",
-      "upsellCta": "Ver Whetzy Plus",
+      "upsellBadge": "Pro",
+      "upsellTitle": "Explicaciones del tutor IA",
+      "upsellBody": "Las explicaciones paso a paso de cada pregunta son parte de Pro.",
+      "upsellCta": "Ver Pro",
       "limitTitle": "Has usado tus explicaciones de hoy",
       "limitBody": "Pro incluye {{limit}} explicaciones del tutor al día. El contador vuelve a cero a medianoche (UTC). Pro Max tiene el tutor ilimitado.",
-      "limitCta": "Ver Pro Max"
+      "limitCta": "Ver Pro Max",
+      "aiLabel": "Generado por IA · puede contener errores",
+      "reportAi": "Reportar esta explicación",
+      "reportAiRetry": "No se pudo enviar. Reintentar",
+      "reportedAi": "Gracias: una persona la revisará."
+    },
+    "report": {
+      "button": "Reportar un problema con esta pregunta",
+      "title": "¿Qué le pasa a la pregunta?",
+      "reasons": {
+        "wrong_answer": "La respuesta correcta está mal",
+        "typo": "Errata o texto confuso",
+        "outdated": "Está desactualizada",
+        "confusing": "No se entiende qué pide",
+        "other": "Otra cosa"
+      },
+      "notesLabel": "Detalle (opcional)",
+      "send": "Enviar",
+      "cancel": "Cancelar",
+      "sent": "Gracias: lo revisamos.",
+      "error": "No se pudo enviar. Vuelve a intentarlo."
     },
     "runCode": "Ejecutar código",
     "attemptsLeft": "intentos restantes",
@@ -352,7 +392,17 @@
       "needs_lesson": "Falta ver la lección",
       "difficulty": "Dificultad objetivo: {{val}}",
       "expected": "Prob. acierto: {{val}}%"
-    }
+    },
+    "exitConfirm": "¿Salir? Lo que ya has respondido queda guardado.",
+    "exitStay": "Seguir",
+    "exitLeave": "Salir",
+    "timeLeft": "Quedan {{s}} segundos",
+    "comboLabel": "Racha de {{n}}",
+    "keysHint": "Atajos: 1–4 o A–D para elegir, Intro para seguir.",
+    "skillsMoved": "Habilidades de esta sesión",
+    "skillNew": "nueva",
+    "reviewLesson": "Repasar la lección: {{name}}",
+    "anotherSession": "Otra sesión de 10"
   },
   "duel": {
     "loading": "Cargando...",
@@ -365,7 +415,6 @@
     "draw": "Empate",
     "challengeTitle": "Nuevo Duelo",
     "opponentPlaceholder": "Nombre de usuario",
-    "skillOptional": "Skill ID (opcional)",
     "send": "Retar",
     "cancel": "Cancelar",
     "q": "Pregunta",
@@ -378,10 +427,13 @@
     "status_completed": "Completado",
     "completed": "¡Duelo completado!",
     "waitingResult": "Cuando tu oponente termine, verás el resultado en la lista.",
-    "participationXp": "+10 XP por participar",
     "viewMyDuels": "Ver mis duelos",
     "challengeSent": "¡Duelo enviado a {{username}}!",
-    "joinComingSoon": "Funcionalidad de unirte a un duelo activo — próximamente"
+    "opponentLabel": "Oponente",
+    "skillLabel": "Habilidad",
+    "anySkill": "Una de las que has practicado",
+    "sending": "Enviando…",
+    "vs": "contra {{username}}"
   },
   "placement": {
     "title": "Examen de Colocación",
@@ -545,7 +597,17 @@
     "certResults": "Resultado del examen certificador",
     "certPassed": "Aprobado",
     "certFailed": "No aprobado. Puedes volver a presentarlo sin pagar de nuevo.",
-    "certRetry": "VOLVER A PRESENTARLO"
+    "certRetry": "VOLVER A PRESENTARLO",
+    "flag": "Marcar para revisar",
+    "flagged": "Marcada para revisar",
+    "keepAnswering": "Seguir respondiendo",
+    "submitAnyway": "Entregar igualmente",
+    "confirmTitle": "Confirmar la entrega",
+    "overview": "Respondidas {{answered}}/{{total}} · Marcadas {{flagged}}",
+    "cellLabel": "Pregunta {{n}}: {{state}}",
+    "state_answered": "respondida",
+    "state_flagged": "marcada para revisar",
+    "state_pending": "sin responder"
   },
   "docTitle": {
     "deleteAccount": "Eliminar cuenta — Whetzy",
@@ -731,12 +793,20 @@
     "ctaSubtitle": "Tu nivel BKT por dominio del examen",
     "ready": "Listo",
     "notReady": "En progreso",
-    "domainsReady": "{{done}} de {{total}} dominios listos",
     "threshold": "Umbral de preparación: {{pct}}% de dominio medio",
     "skillsAssessed": "{{assessed}} de {{total}} skills practicadas",
     "startMock": "Hacer simulacro ahora",
-    "explainer": "El porcentaje refleja tu probabilidad BKT de dominar cada skill. Un dominio está «listo» cuando supera el 75%.",
-    "errorLoading": "No se pudo cargar tu preparación. Inténtalo de nuevo."
+    "explainer": "El porcentaje es la probabilidad estimada de que domines cada habilidad (BKT), ponderada por el peso oficial de cada dominio. Un dominio está listo al 75 %.",
+    "errorLoading": "No se pudo cargar tu preparación. Inténtalo de nuevo.",
+    "gaugeLabel": "Preparación",
+    "domainsReadyShort": "dominios listos",
+    "lever": "Tu mayor palanca",
+    "leverBody": "{{name}}: vale el {{weight}} % del examen y estás en el {{pct}} %.",
+    "practice": "Practicar esta certificación",
+    "practiceHint": "El motor empieza por tus habilidades más flojas.",
+    "weightOf": "{{n}} % del examen",
+    "priorNote": "Aún no has practicado esta certificación: el {{pct}} % es el punto de partida del modelo, no una medida tuya.",
+    "notPractised": "sin practicar"
   },
   "certificate": {
     "title": "Certificado de finalización",
@@ -758,9 +828,43 @@
     "downloadBadge": "Descargar credencial Open Badge"
   },
   "admin": {
+    "referrals": {
+      "title": "Referidos",
+      "hint": "Activados y abonados. Clawback por reembolso, baneo o fraude confirmado: recupera lo que quede de los 300 créditos (nunca deja saldo negativo) y retira el premio del hito si el referente baja de él.",
+      "empty": "No hay referidos activados ni abonados.",
+      "reason": "Motivo",
+      "reasons": {
+        "fraud": "Fraude confirmado",
+        "refund": "Reembolso",
+        "ban": "Baneo"
+      },
+      "status": {
+        "activated": "activado",
+        "credited": "abonado"
+      },
+      "clawback": "Clawback",
+      "confirm": "Confirmar clawback",
+      "cancel": "Cancelar",
+      "done": "Hecho: {{recovered}} créditos recuperados, {{unrecovered}} ya gastados.",
+      "milestoneRevoked": "Premio retirado: {{milestone}}.",
+      "error": "No se pudo hacer el clawback.",
+      "loadError": "No se pudieron cargar los referidos."
+    },
     "title": "Panel de administración",
     "subtitle": "Analítica y operaciones de la plataforma",
     "loading": "Cargando…",
+    "reports": {
+      "title": "Reportes recientes",
+      "empty": "Ningún reporte todavía.",
+      "reasons": {
+        "wrong_answer": "Respuesta mal",
+        "typo": "Errata",
+        "outdated": "Desactualizada",
+        "confusing": "Confusa",
+        "other": "Otro",
+        "ai_explanation": "Explicación de IA"
+      }
+    },
     "tabs": {
       "metrics": "Métricas",
       "security": "Seguridad",
@@ -926,6 +1030,8 @@
     "questions_count_other": "{{count}} preguntas"
   },
   "landing": {
+    "cellYes": "Sí",
+    "cellNo": "No",
     "metaTitle": "Whetzy — Python, IA y ciberseguridad con un motor adaptativo",
     "nav": {
       "features": "Qué hace",
@@ -1089,20 +1195,46 @@
     "earnCredits": "Cómo ganar créditos",
     "spendCredits": "En qué gastarlos",
     "referral": "Invitar amigos",
-    "referralDesc": "Comparte tu código y gana créditos cuando se registren",
+    "referralDesc": "Comparte tu código: tu amigo recibe 200 créditos al registrarse y tú, 300 cuando se active.",
     "copyCode": "Copiar código",
     "copied": "¡Copiado!",
-    "shareLink": "Compartir enlace",
     "promo": "Código promocional",
     "promoPlaceholder": "Ingresa tu código",
     "redeem": "Canjear",
     "redeemSuccess": "¡{{credits}} créditos añadidos!",
     "redeemError": "Código inválido o expirado",
-    "perModule": "por módulo",
-    "perWeek": "por semana",
-    "perMonth": "por mes",
-    "once": "una vez",
-    "noBalance": "Aún no tienes créditos. ¡Empieza a estudiar para ganarlos!"
+    "noBalance": "Aún no tienes créditos. Se ganan aprendiendo, con un código promocional o invitando amigos.",
+    "earn": {
+      "referral_activated": "Un amigo que invitaste se activa",
+      "referral_welcome": "Te registras con el código de un amigo",
+      "diagnostic_done": "Haces el diagnóstico inicial",
+      "module_done": "Completas un módulo",
+      "skill_skipped": "Te saltas una skill con una prueba",
+      "streak_7": "Mantienes una racha de 7 días",
+      "streak_30": "Mantienes una racha de 30 días"
+    },
+    "spend": {
+      "freeze_streak_1day": "Comodín de racha (protege un día sin estudiar)",
+      "mastery_report": "Informe de dominio"
+    },
+    "activationRule": "Se activa al verificar su email, hacer el diagnóstico, terminar su primer módulo y llegar a 3 días de racha. Se abona 7 días después; máximo 10 al mes.",
+    "welcomeRule": "Caducan a los 30 días si no haces el diagnóstico.",
+    "reportRule": "Una instantánea de tu dominio por ruta, con enlace público para compartir (quien tenga el enlace puede verlo) y para guardar en PDF.",
+    "reportCta": "Generar",
+    "reportReady": "Tu informe está listo:",
+    "reportError": "No se pudo generar. Vuelve a intentarlo: no se cobra dos veces.",
+    "earnRule": {
+      "module_done": "Con todas sus skills al 80 % de dominio. Una vez por módulo.",
+      "skill_skipped": "Al aprobar la prueba para saltar un módulo, por cada skill que quede al 80 %. Hasta 500 al mes.",
+      "streak_7": "Una vez por semana mientras dure.",
+      "streak_30": "Una vez al mes mientras dure."
+    },
+    "learningCap": "Por aprender ganas hasta {{cap}} créditos al mes; lo que no quepa en un módulo o una skill se abona el mes siguiente.",
+    "milestone": {
+      "pro_month": "al {{at}}.º, 1 mes de Pro",
+      "pro_max_6_months": "al {{at}}.º, 6 meses de Pro Max",
+      "ambassador_badge": "al {{at}}.º, la insignia Embajador"
+    }
   },
   "common": {
     "loading": "Cargando…",
@@ -1224,5 +1356,40 @@
     "backToApp": "Volver a la app",
     "engineMit": "motor MIT",
     "contentPsf": "contenido PSF"
+  },
+  "report": {
+    "title": "Informe de dominio",
+    "notFound": "No encontramos este informe. Revisa el enlace.",
+    "generatedOn": "Generado el {{date}}",
+    "questions": "Preguntas respondidas",
+    "accuracy": "Precisión",
+    "maxStreak": "Racha máxima (días)",
+    "noTracks": "Todavía no hay progreso en ninguna ruta.",
+    "trackMeta": "{{mastery}} % de dominio medio · {{mastered}} de {{total}} skills dominadas",
+    "masteredSkills": "Skills dominadas",
+    "method": "El dominio lo estima el motor de Whetzy (BKT) a partir de las respuestas; una skill cuenta como dominada desde el 95 %. Es una instantánea de la fecha indicada; no es un certificado ni sustituye al examen de ningún proveedor.",
+    "print": "Guardar como PDF"
+  },
+  "twoFactor": {
+    "title": "Verificación en dos pasos",
+    "on": "Activada",
+    "off": "Desactivada",
+    "backupLeft_one": "Te queda {{count}} código de respaldo.",
+    "backupLeft_other": "Te quedan {{count}} códigos de respaldo.",
+    "turnOn": "Activar",
+    "turnOff": "Desactivar",
+    "scan": "Escanea este código con tu app de autenticación (Google Authenticator, 1Password, Authy…).",
+    "qrAlt": "Código QR para tu app de autenticación",
+    "manual": "¿No puedes escanear? Escribe esta clave en la app:",
+    "backupIntro": "Guarda estos códigos de respaldo en un sitio seguro. Cada uno sirve una vez si pierdes el móvil; no los volveremos a mostrar.",
+    "backupTitle": "Códigos de respaldo",
+    "confirmLabel": "Código de 6 dígitos de la app",
+    "disableLabel": "Código de la app o de respaldo",
+    "confirm": "Confirmar y activar",
+    "cancel": "Cancelar",
+    "enabledDone": "Verificación en dos pasos activada. Al entrar te pediremos un código.",
+    "disabledDone": "Verificación en dos pasos desactivada.",
+    "badCode": "Ese código no es válido. Prueba con el que muestra ahora la app.",
+    "error": "No se pudo completar. Inténtalo de nuevo."
   }
 }

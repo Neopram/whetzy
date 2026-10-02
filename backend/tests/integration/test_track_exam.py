@@ -460,6 +460,45 @@ async def test_test_out_is_scoped_to_its_module(
 
 
 @pytest.mark.asyncio
+async def test_test_out_blueprint_matches_what_start_draws(
+    client: AsyncClient, auth_headers: dict[str, str], track_seed: dict
+) -> None:
+    """The figures the module card shows before committing are the sitting's (O1.4)."""
+    module_id = track_seed["module_ids"][0]  # m1, 4 skills
+    res = await client.get(f"{BASE}/module/{module_id}/test-out/blueprint", headers=auth_headers)
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body == {
+        "module_id": module_id, "skills": 4, "questions": 8,
+        "duration_minutes": 15, "pass_pct": 70.0, "available": True,
+    }
+    started = await client.post(f"{BASE}/module/{module_id}/test-out/start", headers=auth_headers)
+    assert started.status_code == 201, started.text
+    assert len(started.json()["questions"]) == body["questions"]
+    assert started.json()["pass_pct"] == body["pass_pct"]
+
+
+@pytest.mark.asyncio
+async def test_test_out_blueprint_says_unavailable_when_start_would_refuse(
+    client: AsyncClient, auth_headers: dict[str, str], track_seed: dict, db_session: AsyncSession
+) -> None:
+    """A skill short of questions makes `_draw` refuse: the card must not offer it."""
+    module_id = track_seed["module_ids"][1]  # m2, 3 skills -> 3 per skill (floor 8 -> 9)
+    for question in (await db_session.scalars(select(Question).where(Question.skill_id == "sk_m2_0"))).all():
+        if question.id >= "q_m2_0_02":
+            await db_session.delete(question)
+    await db_session.flush()
+
+    res = await client.get(f"{BASE}/module/{module_id}/test-out/blueprint", headers=auth_headers)
+    assert res.status_code == 200 and res.json()["available"] is False
+    started = await client.post(f"{BASE}/module/{module_id}/test-out/start", headers=auth_headers)
+    assert started.status_code == 400
+
+    missing = await client.get(f"{BASE}/module/nope/test-out/blueprint", headers=auth_headers)
+    assert missing.status_code == 404
+
+
+@pytest.mark.asyncio
 async def test_passing_a_test_out_raises_mastery_by_the_evidence(
     client: AsyncClient, auth_headers: dict[str, str], track_seed: dict,
     db_session: AsyncSession, user: User,

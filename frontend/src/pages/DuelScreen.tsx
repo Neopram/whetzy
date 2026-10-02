@@ -1,9 +1,18 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
-import { duels as duelsApi, type DuelSummary, type DuelChallengeResponse, type QuestionPublic } from '../services/api';
+import { useApi } from '../hooks/useApi';
+import {
+  duels as duelsApi,
+  progress as progressApi,
+  type DuelSummary,
+  type DuelChallengeResponse,
+  type QuestionPublic,
+} from '../services/api';
+import { parseQuestion } from '../lib/question';
 import { showToast } from '../components/common/Toast';
 import { RankingTabs } from '../components/layout/RankingTabs';
+import styles from './DuelScreen.module.css';
 
 type View = 'list' | 'challenge-modal' | 'playing' | 'result';
 
@@ -15,6 +24,14 @@ export function DuelScreen() {
   const [view, setView] = useState<View>('list');
   const [myDuels, setMyDuels] = useState<DuelSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  // Nombres de habilidad: el duelo solo trae `skill_id`, y la lista enseñaba
+  // «sk010102» tal cual (auditoría).
+  const skills = useApi(() => progressApi.skills(), []);
+  const skillName = (id: string) => {
+    const s = skills.data?.find((x) => x.skill_id === id);
+    return s ? (language === 'en' ? s.name_en : s.name_es) : null;
+  };
+  const practised = (skills.data ?? []).filter((s) => s.attempts > 0);
 
   // Challenge modal
   const [opponent, setOpponent] = useState('');
@@ -25,10 +42,11 @@ export function DuelScreen() {
   const [activeDuel, setActiveDuel] = useState<DuelChallengeResponse | null>(null);
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
-  const [_answered, setAnswered] = useState<boolean[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [playingDuelId, setPlayingDuelId] = useState<string | null>(null);
-  const questionStart = useState(() => Date.now())[0];
+  // Se reinicia con cada pregunta: antes se fijaba al montar la pantalla y el
+  // tiempo de respuesta que llega al motor crecía pregunta a pregunta.
+  const questionStart = useRef(Date.now());
 
   const fetchDuels = useCallback(async () => {
     try {
@@ -45,6 +63,15 @@ export function DuelScreen() {
     fetchDuels();
   }, [fetchDuels]);
 
+  const startPlaying = (res: DuelChallengeResponse) => {
+    setActiveDuel(res);
+    setQIndex(0);
+    setSelected(null);
+    setPlayingDuelId(res.duel_id);
+    questionStart.current = Date.now();
+    setView('playing');
+  };
+
   // ── Challenge ─────────────────────────────────────────────────────────────
   const handleChallenge = async () => {
     if (!opponent.trim()) return;
@@ -52,14 +79,9 @@ export function DuelScreen() {
     try {
       const res = await duelsApi.challenge({
         opponent_username: opponent.trim(),
-        skill_id: skillId.trim() || undefined,
+        skill_id: skillId || undefined,
       });
-      setActiveDuel(res);
-      setQIndex(0);
-      setSelected(null);
-      setAnswered([]);
-      setPlayingDuelId(res.duel_id);
-      setView('playing');
+      startPlaying(res);
       showToast(t('duel.challengeSent', { username: res.opponent_username }), 'success');
     } catch (e) {
       showToast(e instanceof Error ? e.message : 'Error', 'error');
@@ -71,13 +93,7 @@ export function DuelScreen() {
   // ── Playing: join existing duel ───────────────────────────────────────────
   const joinDuel = async (duel: DuelSummary) => {
     try {
-      const res = await duelsApi.join(duel.duel_id);
-      setActiveDuel(res);
-      setQIndex(0);
-      setSelected(null);
-      setAnswered([]);
-      setPlayingDuelId(res.duel_id);
-      setView('playing');
+      startPlaying(await duelsApi.join(duel.duel_id));
     } catch (e) {
       showToast(e instanceof Error ? e.message : 'Error', 'error');
     }
@@ -88,7 +104,7 @@ export function DuelScreen() {
     if (!activeDuel || !playingDuelId || submitting || selected !== null) return;
     setSelected(choice);
     setSubmitting(true);
-    const rt = Date.now() - questionStart;
+    const rt = Date.now() - questionStart.current;
     const q = activeDuel.questions[qIndex];
     try {
       await duelsApi.answer(playingDuelId, {
@@ -108,6 +124,7 @@ export function DuelScreen() {
     if (qIndex + 1 < activeDuel.questions.length) {
       setQIndex((i) => i + 1);
       setSelected(null);
+      questionStart.current = Date.now();
     } else {
       setView('result');
       fetchDuels();
@@ -117,79 +134,86 @@ export function DuelScreen() {
   // ── Render ────────────────────────────────────────────────────────────────
   if (view === 'challenge-modal') {
     return (
-      <div style={styles.container}>
-        <div style={styles.modal}>
-          <h2 style={styles.modalTitle}>{t('duel.challengeTitle')}</h2>
-          <input
-            style={styles.input}
-            placeholder={t('duel.opponentPlaceholder')}
-            value={opponent}
-            onChange={(e) => setOpponent(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleChallenge()}
-            autoFocus
-          />
-          <input
-            style={styles.input}
-            placeholder={t('duel.skillOptional')}
-            value={skillId}
-            onChange={(e) => setSkillId(e.target.value)}
-          />
-          <div style={styles.row}>
-            <button style={styles.btnSecondary} onClick={() => setView('list')}>{t('duel.cancel')}</button>
+      <div className={styles.screen}>
+        <section className={styles.panel} aria-labelledby="duel-new">
+          <h1 id="duel-new" className={styles.title}>{t('duel.challengeTitle')}</h1>
+          <label className={styles.field}>
+            <span>{t('duel.opponentLabel')}</span>
+            <input
+              className={styles.input}
+              placeholder={t('duel.opponentPlaceholder')}
+              value={opponent}
+              onChange={(e) => setOpponent(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleChallenge()}
+              autoFocus
+              autoComplete="off"
+            />
+          </label>
+          <label className={styles.field}>
+            <span>{t('duel.skillLabel')}</span>
+            <select className={styles.input} value={skillId} onChange={(e) => setSkillId(e.target.value)}>
+              <option value="">{t('duel.anySkill')}</option>
+              {practised.map((s) => (
+                <option key={s.skill_id} value={s.skill_id}>{language === 'en' ? s.name_en : s.name_es}</option>
+              ))}
+            </select>
+          </label>
+          <div className={styles.row}>
+            <button type="button" className={styles.btnSecondary} onClick={() => setView('list')}>{t('duel.cancel')}</button>
             <button
-              style={{...styles.btnPrimary, opacity: challenging ? 0.6 : 1}}
+              type="button"
+              className={styles.btnPrimary}
               onClick={handleChallenge}
               disabled={challenging || !opponent.trim()}
             >
-              {challenging ? '...' : t('duel.send')}
+              {challenging ? t('duel.sending') : t('duel.send')}
             </button>
           </div>
-        </div>
+        </section>
       </div>
     );
   }
 
   if (view === 'playing' && activeDuel) {
     const q: QuestionPublic = activeDuel.questions[qIndex];
-    const qText = language === 'en' ? q.question_en : q.question_es;
+    const { prose, code } = parseQuestion(language === 'en' ? q.question_en : q.question_es);
     const options = (language === 'en' ? q.options_en : q.options_es) ?? [];
     const isLast = qIndex === activeDuel.questions.length - 1;
 
     return (
-      <div style={styles.container}>
-        <div style={styles.header}>
-          <span style={styles.meta}>⚔️ vs {activeDuel.opponent_username}</span>
-          <span style={styles.meta}>{t('duel.q')} {qIndex + 1} {t('duel.of')} {activeDuel.questions.length}</span>
+      <div className={styles.screen}>
+        <div className={styles.playHead}>
+          <span className={styles.vs}>{t('duel.vs', { username: activeDuel.opponent_username })}</span>
+          <span className={styles.counter}>{t('duel.q')} {qIndex + 1} {t('duel.of')} {activeDuel.questions.length}</span>
+        </div>
+        <div className={styles.progress} aria-hidden="true">
+          <span style={{ width: `${((qIndex + 1) / activeDuel.questions.length) * 100}%` }} />
         </div>
 
-        <div style={styles.progressBar}>
-          <div style={{...styles.progressFill, width: `${((qIndex + 1) / activeDuel.questions.length) * 100}%`}} />
+        <div className={styles.questionCard}>
+          <p className={styles.questionText}>{prose}</p>
+          {code && <pre className={styles.code}><code>{code}</code></pre>}
         </div>
 
-        <div style={styles.questionCard}>
-          <p style={styles.questionText}>{qText}</p>
-        </div>
-
-        <div style={styles.options}>
+        {/* Ningún botón antes de las opciones: la primera opción es el primer
+            botón de la vista (e2e/duel.spec.ts responde así). */}
+        <div className={styles.options}>
           {options.map((opt, i) => (
             <button
               key={i}
-              style={{
-                ...styles.optionBtn,
-                background: selected === i ? 'var(--le-brand)' : 'var(--le-surface)',
-                color: selected === i ? '#fff' : 'var(--le-text)',
-                borderColor: selected === i ? 'var(--le-brand)' : 'var(--le-border)',
-              }}
+              type="button"
+              className={`${styles.option} ${selected === i ? styles.optionSelected : ''}`}
               onClick={() => handleAnswer(i)}
               disabled={selected !== null || submitting}
             >
-              {opt}
+              <span className={styles.letter} aria-hidden="true">{String.fromCharCode(65 + i)}</span>
+              <span>{opt}</span>
             </button>
           ))}
         </div>
 
         {selected !== null && (
-          <button style={styles.btnPrimary} onClick={handleNext}>
+          <button type="button" className={styles.btnPrimary} onClick={handleNext}>
             {isLast ? t('duel.finish') : t('duel.next')}
           </button>
         )}
@@ -199,12 +223,10 @@ export function DuelScreen() {
 
   if (view === 'result') {
     return (
-      <div style={{...styles.container, justifyContent: 'center', textAlign: 'center', gap: 20}}>
-        <div style={{fontSize: 72}}>⚔️</div>
-        <h2 style={{color: 'var(--le-text)', fontSize: 22, fontWeight: 800}}>{t('duel.completed')}</h2>
-        <p style={{color: 'var(--le-text-muted)', fontSize: 14}}>{t('duel.waitingResult')}</p>
-        <p style={{color: 'var(--le-brand)', fontWeight: 700}}>{t('duel.participationXp')}</p>
-        <button style={styles.btnPrimary} onClick={() => { setView('list'); fetchDuels(); }}>
+      <div className={`${styles.screen} ${styles.centered}`}>
+        <h1 className={styles.title}>{t('duel.completed')}</h1>
+        <p className={styles.muted}>{t('duel.waitingResult')}</p>
+        <button type="button" className={styles.btnPrimary} onClick={() => { setView('list'); fetchDuels(); }}>
           {t('duel.viewMyDuels')}
         </button>
       </div>
@@ -213,33 +235,31 @@ export function DuelScreen() {
 
   // List view
   return (
-    <div style={styles.container}>
+    <div className={styles.screen}>
       <RankingTabs />
-      <div style={styles.header}>
-        <h1 style={styles.title}>{t('duel.title')}</h1>
-        <button style={{ ...styles.btnPrimary, flex: '0 0 auto' }} onClick={() => setView('challenge-modal')}>
-          ⚔️ {t('duel.challenge')}
+      <div className={styles.listHead}>
+        <h1 className={styles.title}>{t('duel.title')}</h1>
+        <button type="button" className={styles.btnPrimary} onClick={() => setView('challenge-modal')}>
+          {t('duel.challenge')}
         </button>
       </div>
 
       {loading ? (
-        <div style={{color: 'var(--le-text-muted)', padding: 32, textAlign: 'center'}}>{t('duel.loading')}</div>
+        <p className={styles.muted} role="status">{t('duel.loading')}</p>
       ) : myDuels.length === 0 ? (
-        <div style={styles.empty}>
-          <div style={{fontSize: 48}}>⚔️</div>
-          <p style={{color: 'var(--le-text-muted)', marginTop: 12}}>{t('duel.noDuels')}</p>
-        </div>
+        <p className={styles.empty}>{t('duel.noDuels')}</p>
       ) : (
-        <div style={styles.list}>
+        <ul className={styles.list}>
           {myDuels.map((duel) => (
             <DuelCard
               key={duel.duel_id}
               duel={duel}
+              skill={skillName(duel.skill_id)}
               currentUserId={currentUser.id}
               onPlay={duel.is_your_turn ? () => { void joinDuel(duel); } : undefined}
             />
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );
@@ -247,10 +267,12 @@ export function DuelScreen() {
 
 function DuelCard({
   duel,
+  skill,
   currentUserId,
   onPlay,
 }: {
   duel: DuelSummary;
+  skill: string | null;
   currentUserId: string;
   onPlay?: () => void;
 }) {
@@ -264,186 +286,22 @@ function DuelCard({
     : t('duel.status_completed');
 
   return (
-    <div style={styles.card}>
-      <div style={styles.cardLeft}>
-        <span style={{fontSize: 28}}>{duel.opponent_avatar}</span>
-        <div>
-          <div style={{fontWeight: 700, color: 'var(--le-text)', fontSize: 15}}>
-            {duel.opponent_username}
-          </div>
-          <div style={{fontSize: 12, color: 'var(--le-text-muted)'}}>
-            {duel.skill_id} · {statusLabel}
-          </div>
-        </div>
-      </div>
-      <div style={styles.cardRight}>
-        {duel.status === 'completed' ? (
-          <span style={{
-            fontWeight: 800, fontSize: 13,
-            color: isDraw ? 'var(--le-orange)' : isWinner ? 'var(--le-green)' : 'var(--le-red)',
-          }}>
-            {isDraw ? t('duel.draw') : isWinner ? t('duel.won') : t('duel.lost')}
-            {!isDraw && duel.your_correct !== null && ` (${duel.your_correct}/5)`}
-          </span>
-        ) : duel.is_your_turn ? (
-          <button style={{...styles.btnPrimary, padding: '6px 14px', fontSize: 13}} onClick={onPlay}>
-            {t('duel.play')}
-          </button>
-        ) : (
-          <span style={{color: 'var(--le-text-muted)', fontSize: 12}}>{t('duel.waiting')}</span>
-        )}
-      </div>
-    </div>
+    <li className={styles.card}>
+      <span className={styles.avatar} aria-hidden="true">{duel.opponent_avatar}</span>
+      <span className={styles.cardBody}>
+        <span className={styles.opponent}>{duel.opponent_username}</span>
+        <span className={styles.cardMeta}>{skill ? `${skill} · ` : ''}{statusLabel}</span>
+      </span>
+      {duel.status === 'completed' ? (
+        <span className={`${styles.outcome} ${isWinner ? styles.won : ''}`}>
+          {isDraw ? t('duel.draw') : isWinner ? t('duel.won') : t('duel.lost')}
+          {!isDraw && duel.your_correct !== null && <b> {duel.your_correct}/5</b>}
+        </span>
+      ) : duel.is_your_turn ? (
+        <button type="button" className={styles.btnPlay} onClick={onPlay}>{t('duel.play')}</button>
+      ) : (
+        <span className={styles.cardMeta}>{t('duel.waiting')}</span>
+      )}
+    </li>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100%',
-    padding: '16px 16px 90px',
-    gap: 16,
-    background: 'var(--le-bg)',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 12,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 800,
-    color: 'var(--le-text)',
-    margin: 0,
-  },
-  meta: {
-    fontSize: 13,
-    color: 'var(--le-text-muted)',
-    fontWeight: 600,
-  },
-  progressBar: {
-    height: 6,
-    borderRadius: 3,
-    background: 'var(--le-border)',
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    background: 'var(--le-brand)',
-    borderRadius: 3,
-    transition: 'width 0.3s ease',
-  },
-  questionCard: {
-    background: 'var(--le-surface)',
-    borderRadius: 16,
-    padding: '20px 16px',
-    border: '1.5px solid var(--le-border)',
-  },
-  questionText: {
-    fontSize: 16,
-    fontWeight: 600,
-    color: 'var(--le-text)',
-    lineHeight: 1.5,
-    margin: 0,
-  },
-  options: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 10,
-  },
-  optionBtn: {
-    padding: '14px 16px',
-    borderRadius: 12,
-    border: '1.5px solid',
-    fontSize: 15,
-    fontWeight: 600,
-    textAlign: 'left',
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-  },
-  list: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 10,
-  },
-  card: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    background: 'var(--le-surface)',
-    borderRadius: 14,
-    padding: '14px 16px',
-    border: '1.5px solid var(--le-border)',
-  },
-  cardLeft: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-  },
-  cardRight: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  empty: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 80,
-  },
-  modal: {
-    background: 'var(--le-surface)',
-    borderRadius: 20,
-    padding: '28px 20px',
-    border: '1.5px solid var(--le-border)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 14,
-    marginTop: 40,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 800,
-    color: 'var(--le-text)',
-    margin: 0,
-    textAlign: 'center',
-  },
-  input: {
-    padding: '12px 14px',
-    borderRadius: 10,
-    border: '1.5px solid var(--le-border)',
-    fontSize: 15,
-    background: 'var(--le-bg)',
-    color: 'var(--le-text)',
-    outline: 'none',
-  },
-  row: {
-    display: 'flex',
-    gap: 10,
-  },
-  btnPrimary: {
-    flex: 1,
-    padding: '13px 20px',
-    borderRadius: 12,
-    border: 'none',
-    background: 'var(--le-brand)',
-    color: 'var(--le-text-inverse)',
-    fontSize: 15,
-    fontWeight: 700,
-    cursor: 'pointer',
-    transition: 'opacity 0.15s',
-  },
-  btnSecondary: {
-    flex: 1,
-    padding: '13px 20px',
-    borderRadius: 12,
-    border: '1.5px solid var(--le-border)',
-    background: 'transparent',
-    color: 'var(--le-text)',
-    fontSize: 15,
-    fontWeight: 600,
-    cursor: 'pointer',
-  },
-};

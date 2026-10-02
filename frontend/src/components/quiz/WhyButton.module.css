@@ -4,28 +4,24 @@
 
 .toggleBtn {
   width: 100%;
-  padding: var(--le-space-md);
-  background: var(--le-brand-light);
-  /* Plain --le-text (not a pastel-on-pastel brand color) keeps this well
-     above WCAG AA contrast at this size/weight — the blue border + icon
-     already carry the brand accent. */
+  min-height: 48px;
+  padding: 0 var(--le-space-md);
+  background: transparent;
   color: var(--le-text);
-  border: 2px solid var(--le-brand);
-  border-radius: var(--le-radius-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
   font-size: var(--le-fs-sm);
-  font-weight: var(--le-fw-black);
+  font-weight: var(--le-fw-bold);
   cursor: pointer;
-  transition: transform var(--le-transition-base);
+  transition: border-color var(--le-transition-base);
 }
 
-.toggleBtn:active {
-  transform: scale(0.98);
-}
+.toggleBtn:hover { border-color: var(--le-text-muted); }
 
 .panel {
   position: relative;
   background: var(--le-surface);
-  border: 2px solid var(--le-border);
+  border: 1px solid var(--le-border);
   border-radius: var(--le-radius-md);
   padding: var(--le-space-md);
   margin-top: var(--le-space-sm);
@@ -203,4 +199,29 @@
   color: var(--le-text);
   background: var(--le-bg);
   border-color: var(--le-border);
+}
+
+/* Etiqueta de IA (AI Act art. 50): antes del texto, no en letra pequeña al final. */
+.aiLabel {
+  margin: 0 0 var(--le-space-2xs);
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-semibold);
+  letter-spacing: 0.02em;
+}
+
+.reportAi {
+  min-height: 44px;
+  padding: 0;
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-xs);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.reportAi:hover:not(:disabled) { color: var(--le-text); }
+
+.aiReported {
+  color: var(--le-success-text);
+  font-size: var(--le-fs-xs);
 }

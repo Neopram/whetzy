@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20261001_paddle_subscription_id` (47 migraciones) |
+| Alembic HEAD | `20261002_mastery_reports` (51 migraciones) |
 | Contenido | **10.949 preguntas** / 35 tracks / 723 skills / **723 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
@@ -306,9 +306,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.0 | **1** | **Schema**: `credit_ledger`, `promo_codes`, `promo_redemptions`,… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.1 | **1** | **Servicio de créditos** `services/economy/credits.py`: abono con lote y… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json`… | **DONE** | **DONE** (2026-09-25) → §I |
-| 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I |
+| 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I · 2026-10-01 (ADR-57): nada activaba ni abonaba; cableados job, 4 condiciones, abono a 7 días, escalera §3.3 y `granted_tier` |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | 3 endpoints: `/economy/credits`, `/economy/referrals`, `/economy/k-factor` → §I |
-| 29.7 | **3** | **Reactivación automática**: job de 14 días de inactividad | **DONE** | → §N |
+| 29.7 | **3** | **Reactivación automática**: job de 14 días de inactividad | **DONE** | → §N · 2026-10-02: nada encolaba el job; ahora `periodic_jobs_loop`, 200 créditos/60 días (ECONOMIA §2.2), baja de un clic |
 | 29.8 | **3** | **UI**: wallet, referidos, canje de códigos | **DONE** | → §N |
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | → §I (criterio archivado por 20.10) |
 
@@ -338,7 +338,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 31.6 | **2** | **Tests de analítica sobre Postgres real**, no solo SQLite — D1/D7/CURR (2026-09-30): SQLite oculta diferencias de dialecto que los tests nunca vieron. Espera a que 31.5 libere analítica | TODO | `test_product_metrics.py` también contra Postgres real, en verde |
 | 31.7 | **0** | **Pausa de sesiones autónomas y cierre**, 2026-09-30 → `docs/CIERRE_2026-09-30.md` | **DONE** | `check_docs.py` [11] exige PAUSA+cita, mutado rojo/verde |
 | 31.8 | **0** | **Lanzamiento piloto** (prompt del dueño 2026-10-01): kit `docs/LANZAMIENTO_PILOTO.md`; PRs #45-#49 | PARCIAL | kit escrito; invitar, día 4 y recuento = dueño |
-| 31.9 | **0** | Ejecutables gratis o imposibles: 216 + 13 reparados, el servidor corrige (sin `exec_output`/`answer_text` = mal) | DONE | `TestNoFreeAnswers` rojo con el contenido viejo |
+| 31.9 | **0** | 229 ejecutables gratis o imposibles reparados; corrige el servidor | DONE | `TestNoFreeAnswers` |
 
 ### 32. Motor demostrable — calibración y evidencia de aprendizaje (del plan del 2026-09-24; ídem)
 

@@ -15,7 +15,11 @@ from app.core.db import Base
 if TYPE_CHECKING:
     from app.models.user import User
 
-VALID_REASONS = frozenset({"wrong_answer", "typo", "outdated", "confusing", "other"})
+# `ai_explanation`: la explicación del tutor IA estaba mal (transparencia de IA,
+# AI Act art. 50); la nota lleva el texto que vio el alumno, que no se guarda en
+# otro sitio porque se genera al vuelo.
+VALID_REASONS = frozenset({"wrong_answer", "typo", "outdated", "confusing", "other", "ai_explanation"})
+REPORT_NOTES_MAX = 4000
 
 
 class QuestionReport(Base):

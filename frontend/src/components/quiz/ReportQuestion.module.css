@@ -1,0 +1,81 @@
+/* Reportar un problema con una pregunta: discreto (un enlace) hasta que se usa. */
+
+.link {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0;
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-xs);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:hover { color: var(--le-text); }
+
+.form {
+  display: grid;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  background: var(--le-surface);
+}
+
+.fieldset { display: grid; gap: var(--le-space-2xs); margin: 0; padding: 0; border: 0; }
+
+.legend {
+  margin-bottom: var(--le-space-xs);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-semibold);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-xs);
+  min-height: 44px;
+  font-size: var(--le-fs-sm);
+}
+
+.option input { width: 18px; height: 18px; accent-color: var(--le-brand); }
+
+.notesLabel {
+  display: grid;
+  gap: var(--le-space-2xs);
+  color: var(--le-text-secondary);
+  font-size: var(--le-fs-xs);
+}
+
+.notes {
+  width: 100%;
+  padding: var(--le-space-xs) var(--le-space-sm);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-bg);
+  color: var(--le-text);
+  font: inherit;
+  font-size: var(--le-fs-sm);
+  resize: vertical;
+}
+
+.notes:focus-visible { outline: none; border-color: var(--le-blue); }
+
+.actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--le-space-xs); }
+
+.primary,
+.secondary {
+  min-height: 44px;
+  border-radius: var(--le-radius-sm);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+}
+
+.primary { background: var(--le-brand); color: var(--le-text-inverse); }
+.primary:disabled { background: var(--le-bg-elevated); color: var(--le-text-muted); }
+.secondary { border: 1px solid var(--le-border); color: var(--le-text); }
+
+.thanks,
+.error { font-size: var(--le-fs-sm); }
+
+.thanks { color: var(--le-success-text); }
+.error { color: var(--le-danger-text); }

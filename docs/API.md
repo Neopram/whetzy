@@ -27,7 +27,7 @@ Full interactive spec: `/api/v1/openapi.json` (dev: http://localhost:8000/docs)
 
 ```
 POST  /auth/register              → Token (201)
-POST  /auth/login                 → Token (200, form-urlencoded)
+POST  /auth/login                 → Token | {mfa_required, mfa_token} (200, form-urlencoded) — con 2FA activada no abre sesión: devuelve el reto (5 min) para `/auth/2fa/login`
 POST  /auth/refresh               → Token (200)
 GET   /auth/me                    → UserRead (200) 🔒
 PATCH /auth/me                    → UserRead (200) 🔒  — update profile (language, display_name)
@@ -53,7 +53,7 @@ Sign in with Apple is mandatory before any App Store submission once another OAu
 ```
 POST /quiz/start                  → {session_id, question} 🔒
 POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒 — body: session_id, question_id, response_time_ms y, según el tipo, selected_index (opciones), exec_output (fill_blank_exec, fix_bug, sql_exec, js_exec: la salida que dio el código) o answer_text (fill_blank: lo escrito; se compara recortado y sin mayúsculas). Sin exec_output/answer_text la respuesta es incorrecta: el servidor no cree al cliente
-POST /quiz/end                    → {total, correct, xp_earned} 🔒
+POST /quiz/end                    → {total_questions, correct, accuracy, max_combo, xp_earned, duration_seconds, credits_earned} 🔒 — `credits_earned`: lo que la sesión dejó ganado (módulo, racha, diagnóstico; ECONOMIA §2.2)
 GET  /quiz/review-due             → {questions[], count} 🔒  — FSRS review queue
 ```
 
@@ -105,6 +105,7 @@ GET  /exams/mock/{attempt_id}               → rereads a graded attempt
 
 GET  /exams/track/{track_id}/blueprint      → questions, minutes, pass mark (before committing)
 POST /exams/track/{track_id}/start          → course final exam (17.2)
+GET  /exams/module/{module_id}/test-out/blueprint → {module_id, skills, questions, duration_minutes, pass_pct, available} — available=false si alguna skill no tiene preguntas para montarla (start respondería 400); 404 si el módulo no existe
 POST /exams/module/{module_id}/test-out/start → module test-out (17.2)
 POST /exams/track/{attempt_id}/submit       → per-skill report + verdict + certificate
 
@@ -235,9 +236,12 @@ POST /billing/paddle/cancel → {cancel_requested, access_until} 🔒 — cancel
 ```
 GET  /auth/sessions                      → [{id, device, ip, last_seen}] 🔒
 POST /auth/sessions/{session_id}/revoke  → {revoked} 🔒 — cierra esa sesión
-POST /auth/2fa/setup                     → {secret, qr_uri} 🔒 — TOTP, aún sin activar
-POST /auth/2fa/enable                    → {enabled} 🔒 — confirma con un código válido
+GET  /auth/2fa/status                    → {enabled, backup_codes_left} 🔒
+POST /auth/2fa/setup                     → {secret, qr_uri, qr_svg, backup_codes[10]} 🔒 — TOTP, aún sin activar; 409 `2fa_already_enabled` si ya está activa (rehacer el alta la apagaría sin código)
+POST /auth/2fa/enable                    → {message} 🔒 — confirma con un código válido; 400 si no lo es
+POST /auth/2fa/disable                   → {enabled: false} 🔒 — exige `{code}` (TOTP o de respaldo); 400 si no vale
 POST /auth/2fa/verify                    → {verified} 🔒
+POST /auth/2fa/login                     → Token — segundo paso del login: `{code, mfa_token?}`; sin `mfa_token` lo lee de la cookie HttpOnly `whetzy_mfa` (vuelta de OAuth a `/auth?mfa=1`). 400 código malo, 401 reto caducado, 429 bloqueo por intentos
 ```
 
 ## Economy endpoints
@@ -246,18 +250,24 @@ Créditos por lotes FIFO con caducidad; el saldo se deriva sumando el ledger, no
 se guarda en ninguna columna.
 
 ```
-GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[]} — público
-GET  /economy/balance           → {balance, currency, expires_in_days} 🔒
-GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea si no existe
+GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[], learning_monthly_cap} — público; solo lo cableado (referidos con `milestones`; diagnóstico, módulo, skill saltada, rachas de 7 y 30 días; comodín de racha e informe de dominio)
+GET  /economy/balance           → {balance, currency, expires_in_days} 🔒 — días hasta que caduque el primer lote con saldo (0 = nada)
+GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea (y lo guarda) si no existe
 POST /economy/promo/redeem      → {credits, balance, message} 🔒 — solo web (X-Platform ios/android → 403); rate limit 5/10 min por usuario
-POST /economy/referral/activate → {activated, referrer_id} 🔒
+GET  /email/unsubscribe         → página HTML — público, `?token=`; baja de los correos de ofertas (el enlace del correo)
+POST /email/unsubscribe         → {unsubscribed} — público, `?token=`; «One-Click» de RFC 8058 (Gmail, Yahoo)
+PATCH /email/preferences        {marketing: bool} → {marketing} 🔒 — interruptor de Yo → Ajustes
+POST /economy/referral/activate → {activated, referrer_id} 🔒 — registra el referido (`pending`) y le da 200 créditos; activación y abono, en `referral_program_loop` (ADR-57)
 GET  /economy/streak-freeze     → {price, balance, held, max_held, purchases_this_week, max_per_week, can_buy, blocked_by} 🔒 — comodín de racha (35.3)
 POST /economy/streak-freeze     {request_id: uuid} → mismo cuerpo + {replayed} 🔒 — compra con créditos; 409 `insufficient_credits` · `max_held` · `weekly_limit`; el mismo `request_id` nunca cobra dos veces
+POST /mastery-reports           {request_id: uuid} → 201 {code, created_at, snapshot} 🔒 — informe de dominio (ECONOMIA §2.3): cobra 300 créditos; el mismo `request_id` devuelve el mismo informe sin cobrar; 409 `insufficient_credits`
+GET  /mastery-reports           → {reports: [{code, created_at}]} 🔒 — los míos
+GET  /mastery-reports/{code}    → {code, created_at, snapshot} — PÚBLICO, sin sesión, como un certificado: instantánea con fecha (nombre y usuario públicos, dominio por ruta, skills dominadas, precisión, racha máxima; sin email)
 ```
 
 ## Instructor marketplace endpoints
 
-Reparto 70/30 tras la comisión de Paddle (7,5 %) y la retención del 22 % que fija
+Reparto 80/20 (ADR-41; `payment_service.INSTRUCTOR_SHARE`) tras la comisión de Paddle (7,5 %) y la retención del 22 % que fija
 H.29. El pago se acumula en una fila por instructor y mes, no una por matrícula.
 
 ```
@@ -328,7 +338,9 @@ POST /admin/email/test                   → {sent, provider, to} 🔒 owner —
 ```
 GET  /admin/economy/credits              → credit summary (emitted/spent/expired, sink/source ratio, inflation alert) + ledger rows
 GET  /admin/economy/k-factor             → K-factor statistics
-GET  /admin/economy/referrals            → referral program analytics
+GET  /admin/economy/referrals            → referral program analytics — ?status=all|pending|activated|credited|rejected|clawed_back
+POST /admin/economy/referrals/{referral_id}/clawback → {recovered_credits, unrecovered_credits, milestone_revoked} 🔒 admin — `{reason: refund|ban|fraud}`; recupera lo que quede de los 300 sin saldo negativo y retira el premio del hito si se baja de él (ECONOMIA §3.5); 404 si no existe, 409 si ya estaba cerrado
+GET  /admin/reports/recent               → {reports[]} ?limit&reason — reportes de alumnos con su nota (incluye `ai_explanation`)
 GET  /admin/economy/scorecard            → 5 KPI metrics vs m3/m6/m12 targets (ECONOMIA.md §7) 🔒 admin — ?segment=all|es|en &days=30
 POST /admin/promo/batch ?code_type&credits&count&max_uses&language&campaign_id&expires_days → {count, codes[], csv} — genera lote de códigos promocionales; tipos: onboarding|campaign|reactivation|referral_bonus|instructor; alfabeto seguro sin 0OIL1
 ```

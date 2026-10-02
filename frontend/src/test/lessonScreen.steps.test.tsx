@@ -4,7 +4,7 @@
  * lleva a practicar. La fuente sale en todos los pasos.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import '../i18n';
 import { LessonScreen } from '../pages/LessonScreen';
 import { lessonsApi, type LessonRead } from '../services/api';
@@ -32,6 +32,9 @@ describe('LessonScreen — pasos', () => {
     render(<LessonScreen skillId="sk010101" onExit={() => {}} onStartQuiz={onStartQuiz} />);
 
     const bar = await screen.findByRole('progressbar');
+    // El atajo ← / → se engancha en un useEffect, que corre después de pintar:
+    // sin esperar, con carga la primera flecha se perdía (1 de cada 2 corridas).
+    await act(async () => {});
     const total = Number(bar.getAttribute('aria-valuemax'));
     expect(total).toBeGreaterThanOrEqual(3);
     expect(screen.getByRole('link', { name: 'Python Docs' })).toHaveAttribute('href', 'https://docs.python.org/3/tutorial/');

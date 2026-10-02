@@ -107,6 +107,8 @@ class QuizEndResponse(BaseModel):
     max_combo: int
     xp_earned: int
     duration_seconds: int
+    # Créditos que la sesión dejó ganados (módulo, racha, diagnóstico; §2.2).
+    credits_earned: int = 0
 
 
 class ReviewDueResponse(BaseModel):

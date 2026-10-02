@@ -139,10 +139,10 @@ constancia es lo más difícil, así que te dejamos un código con créditos gra
 para que retomes sin excusas:</p>
 <p style="text-align:center;font-size:24px;font-weight:bold;
 letter-spacing:2px;color:#6366f1;">{code}</p>
-<p>El código expira en <strong>72 horas</strong>. Canjéalo en Ajustes → Canjear código.</p>
+<p>El código vale <strong>{credits} créditos</strong> y expira en <strong>72 horas</strong>. Canjéalo en Yo → Cartera → Código promocional.</p>
 <p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
 border-radius:6px;text-decoration:none;">Volver a Whetzy</a></p>
-<p>Si prefieres no recibir este tipo de correos, ignóralo.</p>""",
+<p style="font-size:12px;color:#888;">¿No quieres más correos como este? <a href="{unsubscribe_url}">Darte de baja</a> con un clic.</p>""",
         },
         "en": {
             "subject": "We miss you at Whetzy, {name} — here's a gift",
@@ -153,10 +153,34 @@ consistency is the hardest part, so here's a free credit code to help you
 get back on track:</p>
 <p style="text-align:center;font-size:24px;font-weight:bold;
 letter-spacing:2px;color:#6366f1;">{code}</p>
-<p>This code expires in <strong>72 hours</strong>. Redeem it in Settings → Redeem code.</p>
+<p>The code is worth <strong>{credits} credits</strong> and expires in <strong>72 hours</strong>. Redeem it in You → Wallet → Promo code.</p>
 <p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
 border-radius:6px;text-decoration:none;">Back to Whetzy</a></p>
-<p>If you'd rather not receive these emails, just ignore this one.</p>""",
+<p style="font-size:12px;color:#888;">Don't want emails like this? <a href="{unsubscribe_url}">Unsubscribe</a> in one click.</p>""",
+        },
+    },
+    "credit_expiry": {
+        "es": {
+            "subject": "{name}, {credits} créditos de Whetzy caducan el {expiry_date}",
+            "html": """\
+<h2>Hola, {name}!</h2>
+<p>El <strong>{expiry_date}</strong> caducan <strong>{credits} créditos</strong> de tu
+cartera de Whetzy. Los créditos caducan a los 90 días de ganarlos.</p>
+<p>Puedes gastarlos antes en Yo → Cartera.</p>
+<p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Ir a Whetzy</a></p>
+<p style="font-size:12px;color:#888;">¿No quieres más correos como este? <a href="{unsubscribe_url}">Darte de baja</a> con un clic.</p>""",
+        },
+        "en": {
+            "subject": "{name}, {credits} Whetzy credits expire on {expiry_date}",
+            "html": """\
+<h2>Hi, {name}!</h2>
+<p>On <strong>{expiry_date}</strong>, <strong>{credits} credits</strong> in your Whetzy
+wallet expire. Credits expire 90 days after you earn them.</p>
+<p>You can spend them before then in You → Wallet.</p>
+<p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Go to Whetzy</a></p>
+<p style="font-size:12px;color:#888;">Don't want emails like this? <a href="{unsubscribe_url}">Unsubscribe</a> in one click.</p>""",
         },
     },
     "renewal_reminder": {
@@ -167,7 +191,8 @@ border-radius:6px;text-decoration:none;">Back to Whetzy</a></p>
 <p>Tu suscripción <strong>{plan_name}</strong> se renovará automáticamente
 el <strong>{renewal_date}</strong> por <strong>{amount}</strong>.</p>
 <p>Si deseas cancelar la renovación automática, puedes hacerlo desde
-Ajustes → Suscripción en la app antes de esa fecha.</p>
+Yo → Cancelar suscripción en la app antes de esa fecha. Conservas el acceso
+hasta el final del periodo pagado.</p>
 <p>Gracias por seguir aprendiendo con <strong>Whetzy</strong>.</p>
 <p style="font-size:12px;color:#888;">Si tienes preguntas sobre tu suscripción,
 contacta a support@whetzy.com</p>""",
@@ -179,7 +204,8 @@ contacta a support@whetzy.com</p>""",
 <p>Your <strong>{plan_name}</strong> subscription will automatically renew
 on <strong>{renewal_date}</strong> for <strong>{amount}</strong>.</p>
 <p>If you wish to cancel automatic renewal, you can do so from
-Settings → Subscription in the app before that date.</p>
+You → Cancel subscription in the app before that date. You keep access
+until the end of the paid period.</p>
 <p>Thank you for continuing to learn with <strong>Whetzy</strong>.</p>
 <p style="font-size:12px;color:#888;">If you have questions about your subscription,
 contact support@whetzy.com</p>""",
@@ -222,15 +248,30 @@ def _render(template_name: str, lang: str, **kwargs: str) -> tuple[str, str]:
 # ── Providers ─────────────────────────────────────────────────────────────────
 
 
-def _send_smtp(to: str, subject: str, html: str) -> None:
+def _unsubscribe_headers(unsubscribe_url: str | None) -> dict[str, str]:
+    """Cabeceras de baja. Solo un correo de marketing lleva enlace https y
+    «One-Click» (RFC 8058, el que piden Gmail y Yahoo); el resto, el mailto de
+    siempre. Antes todos anunciaban One-Click con un mailto, que el RFC no admite."""
+    from app.core.config import settings
+
+    mailto = f"<mailto:{settings.EMAIL_FROM_ADDRESS}?subject=unsubscribe>"
+    if unsubscribe_url is None:
+        return {"List-Unsubscribe": mailto}
+    return {
+        "List-Unsubscribe": f"<{unsubscribe_url}>, {mailto}",
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    }
+
+
+def _send_smtp(to: str, subject: str, html: str, unsubscribe_url: str | None = None) -> None:
     from app.core.config import settings
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM_ADDRESS}>"
     msg["To"] = to
-    msg["List-Unsubscribe"] = f"<mailto:{settings.EMAIL_FROM_ADDRESS}?subject=unsubscribe>"
-    msg["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
+    for name, value in _unsubscribe_headers(unsubscribe_url).items():
+        msg[name] = value
     msg.attach(MIMEText(html, "html", "utf-8"))
 
     context = ssl.create_default_context()
@@ -242,7 +283,7 @@ def _send_smtp(to: str, subject: str, html: str) -> None:
         smtp.sendmail(settings.EMAIL_FROM_ADDRESS, to, msg.as_string())
 
 
-def _send_resend(to: str, subject: str, html: str) -> None:
+def _send_resend(to: str, subject: str, html: str, unsubscribe_url: str | None = None) -> None:
     """Envia por la API de Resend.
 
     Con `urllib` el `if resp.status >= 400` era codigo muerto —`urlopen` ya lanza
@@ -260,10 +301,7 @@ def _send_resend(to: str, subject: str, html: str) -> None:
             "to": [to],
             "subject": subject,
             "html": html,
-            "headers": {
-                "List-Unsubscribe": f"<mailto:{settings.EMAIL_FROM_ADDRESS}?subject=unsubscribe>",
-                "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-            },
+            "headers": _unsubscribe_headers(unsubscribe_url),
         },
         headers={"Authorization": f"Bearer {settings.RESEND_API_KEY}"},
         timeout=10.0,
@@ -336,17 +374,20 @@ def describe_config() -> dict[str, object]:
     }
 
 
-def _send_now(to: str, subject: str, html: str) -> str:
+def _send_now(to: str, subject: str, html: str, unsubscribe_url: str | None = None) -> str:
     """Envia en este hilo y **propaga el fallo**. Devuelve el proveedor usado.
 
     Es la ruta que usa `POST /admin/email/test`: ahi si se quiere la excepcion
     con el motivo, no un log que hay que ir a buscar.
     """
     provider = resolve_provider()
+    # Solo el marketing pasa `unsubscribe_url`: el correo de servicio llama igual
+    # que siempre.
+    extra = {"unsubscribe_url": unsubscribe_url} if unsubscribe_url else {}
     if provider == "resend":
-        _send_resend(to, subject, html)
+        _send_resend(to, subject, html, **extra)
     elif provider == "smtp":
-        _send_smtp(to, subject, html)
+        _send_smtp(to, subject, html, **extra)
     else:
         raise RuntimeError(
             "Sin proveedor de correo: define RESEND_API_KEY, o SMTP_USER y "
@@ -355,7 +396,7 @@ def _send_now(to: str, subject: str, html: str) -> str:
     return provider
 
 
-def _entregar(to: str, subject: str, html: str) -> None:
+def _entregar(to: str, subject: str, html: str, unsubscribe_url: str | None = None) -> None:
     """Un envio, con el fallo registrado de forma que se pueda encontrar."""
     provider = resolve_provider()
     if provider == "log":
@@ -369,14 +410,14 @@ def _entregar(to: str, subject: str, html: str) -> None:
         _send_log(to, subject, html)
         return
     try:
-        _send_now(to, subject, html)
+        _send_now(to, subject, html, unsubscribe_url)
         logger.info("email_sent provider=%s to=%s subject=%r", provider, to, subject)
     except Exception:
         logger.exception("email_failed provider=%s to=%s subject=%r", provider, to, subject)
         _send_log(to, subject, html)
 
 
-def _dispatch(to: str, subject: str, html: str) -> None:
+def _dispatch(to: str, subject: str, html: str, unsubscribe_url: str | None = None) -> None:
     """Despacha sin bloquear al que llama.
 
     `smtplib` y el POST a Resend son bloqueantes, y todos los que llaman aqui son
@@ -386,10 +427,10 @@ def _dispatch(to: str, subject: str, html: str) -> None:
     try:
         loop = asyncio.get_running_loop()
     except RuntimeError:
-        _entregar(to, subject, html)
+        _entregar(to, subject, html, unsubscribe_url)
         return
 
-    tarea = loop.create_task(asyncio.to_thread(_entregar, to, subject, html))
+    tarea = loop.create_task(asyncio.to_thread(_entregar, to, subject, html, unsubscribe_url))
     _en_vuelo.add(tarea)
     tarea.add_done_callback(_en_vuelo.discard)
 
@@ -431,11 +472,31 @@ def send_support_resolved(to: str, name: str, ticket_id: str, resolution: str, l
     _dispatch(to, subject_line, html)
 
 
-def send_reactivation(to: str, name: str, code: str, lang: str = "es") -> None:
+def send_reactivation(
+    to: str, name: str, code: str, credits: int, unsubscribe_url: str, lang: str = "es"
+) -> None:
+    """Marketing: lleva enlace de baja de un clic (cuerpo y cabecera)."""
     from app.core.config import settings
 
-    subject, html = _render("reactivation", lang, name=name, code=code, base_url=settings.FRONTEND_BASE_URL)
-    _dispatch(to, subject, html)
+    subject, html = _render(
+        "reactivation", lang, name=name, code=code, credits=str(credits),
+        base_url=settings.FRONTEND_BASE_URL, unsubscribe_url=unsubscribe_url,
+    )
+    _dispatch(to, subject, html, unsubscribe_url)
+
+
+def send_credit_expiry_warning(
+    to: str, name: str, credits: int, expiry_date: str, unsubscribe_url: str, lang: str = "es"
+) -> None:
+    """Aviso 7 días antes de una caducidad ≥ 200 créditos (ECONOMIA §2.4). Es
+    una palanca de retención, así que va como marketing: con baja de un clic."""
+    from app.core.config import settings
+
+    subject, html = _render(
+        "credit_expiry", lang, name=name, credits=str(credits), expiry_date=expiry_date,
+        base_url=settings.FRONTEND_BASE_URL, unsubscribe_url=unsubscribe_url,
+    )
+    _dispatch(to, subject, html, unsubscribe_url)
 
 
 def send_renewal_reminder(
