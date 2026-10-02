@@ -1435,9 +1435,9 @@ dependen del tipo de suscripción».
 - **Créditos.** Quedan fuera de los sumideros de ECONOMIA §2.3 el simulacro (500) y el curso del
   marketplace (≥ 1.000). Los créditos siguen comprando el comodín de racha y el informe de dominio.
   Hoy el simulacro va en todos los planes publicados, Free incluido (`landing.planFree.perks[4]`).
-- **Cursos del marketplace.** Hoy cada curso tiene precio propio (`price_cents`) y reparto 80/20
-  por venta (ADR-41). Si «solo dependen del tipo de suscripción» significa que los cursos pasan a
-  ir incluidos en un plan, eso cambia ADR-41 y queda pendiente de que el dueño lo confirme.
+- **Cursos del marketplace.** Siguen con precio propio (`price_cents`) y reparto 80/20 por venta
+  (ADR-41): el dueño aclaró el mismo día que la decisión es solo «no con créditos», no que los
+  cursos vayan incluidos en un plan. ADR-41 no cambia.
 - **Privacidad.** El texto de IP y navegador de los inicios de sesión se publica como final
   (`legal.privacyL13`, `privacyL14`, `privacyRetentionSecurity`, `privacyUpdated`), sujeto a la
   revisión legal (H.20). Para que sea verdad, `periodic_jobs_loop` borra a los 90 días
