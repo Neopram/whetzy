@@ -104,8 +104,7 @@ ellas se rehace, su especificación se escribe aquí o en un brief antes de toca
 
 ### 5.3 Contradicciones comprobadas
 
-- Reparto del marketplace: **70 %** en `docs/legal/instructor_recruitment_kit_en.md:19` y
-  `docs/MARKETPLACE.md:22`; **80 %** en `MARKETPLACE.md:41` y en el borrador archivado
-  `docs/archive/legal-borradores/raiz-terms-of-service.md:61`
-  (ADR-41). Manda ADR-41 (80 %); el kit y la línea 22 están desfasados. `docs/API.md:260`
-  dice «Reparto 70/30»: también desfasado.
+- ~~Reparto del marketplace 70 % frente a 80 %~~ — **resuelta el 2026-10-02:** el kit de
+  reclutamiento ES/EN, `MARKETPLACE.md` y `API.md` dicen ya 80/20, como ADR-41 y el código
+  (`payment_service.INSTRUCTOR_SHARE = 0.80`). ADR-29 (70/30) queda como historia, enmendada
+  por ADR-41.

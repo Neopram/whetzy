@@ -11,7 +11,7 @@ import { render, screen, waitFor, cleanup, fireEvent } from '@testing-library/re
 import '../i18n';
 import i18n from '../i18n';
 import { LeagueScreen } from '../pages/LeagueScreen';
-import { league as leagueApi } from '../services/api';
+import { ApiError, league as leagueApi } from '../services/api';
 
 vi.mock('../services/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/api')>();
@@ -131,15 +131,27 @@ describe('LeagueScreen — league name localization', () => {
     }
   });
 
-  it('shows the empty state when the API fails', async () => {
+  it('a failure says so and offers a retry, instead of promising a league', async () => {
     await i18n.changeLanguage('en');
-    currentMock.mockRejectedValue(new Error('offline'));
+    currentMock.mockRejectedValueOnce(new Error('offline'));
+    currentMock.mockResolvedValueOnce(standings('gold', 'Oro'));
 
     render(<LeagueScreen />);
 
-    await waitFor(() => {
-      expect(screen.getByText(i18n.t('league.empty'))).toBeTruthy();
-    });
+    expect(await screen.findByRole('alert')).toHaveTextContent("Couldn't load the league.");
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    await waitFor(() => expect(currentMock).toHaveBeenCalledTimes(2));
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  it('a 404 (no leagues seeded) says leagues are not open, not that it failed', async () => {
+    await i18n.changeLanguage('es');
+    currentMock.mockRejectedValue(new ApiError('No leagues configured yet', 404));
+
+    render(<LeagueScreen />);
+
+    expect(await screen.findByText('Las ligas todavía no están abiertas.')).toBeTruthy();
+    expect(screen.queryByRole('alert')).toBeNull();
   });
 
   it('the league switch opts out in place and says what stays (35.4)', async () => {

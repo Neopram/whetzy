@@ -264,7 +264,7 @@ POST /economy/streak-freeze     {request_id: uuid} → mismo cuerpo + {replayed}
 
 ## Instructor marketplace endpoints
 
-Reparto 70/30 tras la comisión de Paddle (7,5 %) y la retención del 22 % que fija
+Reparto 80/20 (ADR-41; `payment_service.INSTRUCTOR_SHARE`) tras la comisión de Paddle (7,5 %) y la retención del 22 % que fija
 H.29. El pago se acumula en una fila por instructor y mes, no una por matrícula.
 
 ```

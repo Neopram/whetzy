@@ -16,7 +16,7 @@ motor adaptativo.
 
 | Concepto | Detalle |
 |---|---|
-| **Revenue share** | **70 %** de cada venta de tu curso (tú 70 %, Whetzy 30 %) |
+| **Revenue share** | **80 %** de cada venta de tu curso (tú 80 %, Whetzy 20 %; ADR-41) |
 | **Badge "Instructor Fundador"** | Distinción permanente en tu perfil y cursos |
 | **Visibilidad prioritaria** | Tus cursos aparecen primero en el marketplace durante los primeros 6 meses |
 | **Motor adaptativo** | Tus preguntas se integran con el motor BKT+FSRS de Whetzy |
@@ -67,5 +67,5 @@ Todo pasa por nuestra **puerta de calidad automática** antes de revisión manua
 ---
 
 *Los instructores fundadores conservan su badge y visibilidad prioritaria
-aunque el programa crezca. La tasa del 70 % es fija para cursos publicados
+aunque el programa crezca. La tasa del 80 % es fija para cursos publicados
 durante la fase de fundadores.*

@@ -31,8 +31,8 @@ export function Toast() {
       role="status"
       aria-live="polite"
     >
-      {data.type === 'success' && '✅ '}
-      {data.type === 'error' && '❌ '}
+      {/* El icono es decoración: el lector de pantalla leía «marca de cruz». */}
+      {data.type !== 'info' && <span aria-hidden="true">{data.type === 'success' ? '✅ ' : '❌ '}</span>}
       {data.message}
     </div>
   );
