@@ -165,6 +165,27 @@ async def test_challenge_success(
     assert data["opponent_username"] == duel_seed["opponent"].username
 
 
+async def test_challenge_blocked_opponent_rejected(
+    client: AsyncClient,
+    auth_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """19.11: un usuario bloqueado no se puede retar, en ningún sentido."""
+    block = await client.post(
+        "/api/v1/moderation/block",
+        json={"user_id": str(duel_seed["opponent"].id)},
+        headers=auth_headers,
+    )
+    assert block.status_code == 201, block.text
+
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 403
+
+
 async def test_challenge_returns_question_objects(
     client: AsyncClient,
     auth_headers: dict,

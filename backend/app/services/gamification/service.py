@@ -22,6 +22,7 @@ from app.schemas.gamification import (
     UserBadgeWithDetail,
     UserMissionRead,
 )
+from app.services.blocklist import blocked_user_ids
 
 PROMOTION_ZONE_SIZE = 5
 DEMOTION_ZONE_SIZE = 5
@@ -129,20 +130,24 @@ async def get_current_standings(db: AsyncSession, user: User) -> LeagueStandings
         .order_by(LeagueEntry.xp_earned.desc())
     )
     rows = entries_result.all()
+    # 19.11: quien bloqueó a quien no se ve en la liga del otro, aunque el
+    # rango real (abajo) sigue contando a todo el mundo para el ascenso/descenso.
+    hidden = await blocked_user_ids(db, user.id)
 
     standings: list[LeagueStandingEntry] = []
     for idx, (league_entry, member) in enumerate(rows, start=1):
-        standings.append(
-            LeagueStandingEntry(
-                rank=idx,
-                user_id=member.id,
-                username=member.username,
-                display_name=member.display_name,
-                avatar_emoji=member.avatar_emoji,
-                xp_earned=league_entry.xp_earned,
-                is_current_user=member.id == user.id,
+        if member.id not in hidden:
+            standings.append(
+                LeagueStandingEntry(
+                    rank=idx,
+                    user_id=member.id,
+                    username=member.username,
+                    display_name=member.display_name,
+                    avatar_emoji=member.avatar_emoji,
+                    xp_earned=league_entry.xp_earned,
+                    is_current_user=member.id == user.id,
+                )
             )
-        )
         if league_entry.rank != idx:
             league_entry.rank = idx
 

@@ -27,6 +27,7 @@ from app.schemas.duel import (
     DuelResultResponse,
     DuelSummary,
 )
+from app.services.blocklist import is_blocked_pair
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -148,6 +149,8 @@ async def challenge(
     opponent = await _load_user_by_username(db, payload.opponent_username)
     if opponent.id == current_user.id:
         raise HTTPException(status_code=422, detail="You cannot challenge yourself")
+    if await is_blocked_pair(db, current_user.id, opponent.id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This challenge isn't allowed")
 
     skill_id = await _pick_skill(db, current_user, payload.skill_id)
     questions = await _pick_questions(db, skill_id)
