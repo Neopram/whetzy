@@ -19,6 +19,21 @@ updates:
     groups:
       npm-minor-patch:
         update-types: ["minor", "patch"]
+    # Estos majors rompieron master el 2026-10-02 (sin CI que lo parase, H.13):
+    # vite 8 exige @vitejs/plugin-react 6 y vitest 5; coverage-v8 5 exige vitest
+    # 5 exacto; pyodide 314 cambia los ficheros que sirve el plugin de
+    # autoalojamiento (vite.config.ts). Se suben a mano, juntos, en su propio PR.
+    ignore:
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitejs/plugin-react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vitest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitest/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "pyodide"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -92,10 +92,8 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Widgets interactivos, tutor por voz | ledger 40.1–40.6 | no existe |
 | Vídeos | ledger 18.9 | no existe |
 | Créditos por proyecto entregado (200) y por simulacro aprobado (150) | `docs/ECONOMIA.md` §2.2 | **no se pagan**: el paso de proyecto lo da por bueno el navegador (`passed` del cliente) y el simulacro no tiene nota de corte. Los demás grifos de aprendizaje sí (`services/learning_rewards.py`, 2026-10-02) |
-| Antifraude por dispositivo/IP (1 activación cada 30 días) | `docs/ECONOMIA.md` §3.5 | el código existe (`check_device_rate_limit`), pero el frontend no manda `X-Device-Fingerprint` y la política publicada no declara ese tratamiento: no corre (ADR-57) |
-| IP y navegador de los inicios de sesión en la política de privacidad | RGPD art. 13; `legal.privacyL1`–`L5` (ADR-55) | se guardan en claro (`login_attempts`, `user_sessions`, `audit_log`) sin retención por tiempo y la política publicada no los nombra; texto propuesto en `docs/legal/antifraud-legal-basis.md` §«Para publicar», pendiente del dueño |
+| Antifraude por dispositivo/IP (1 activación cada 30 días) | `docs/ECONOMIA.md` §3.5 | el código existe (`check_device_rate_limit`), pero el frontend no manda `X-Device-Fingerprint`: no corre. La huella puede caer en el art. 5(3) de ePrivacy (consentimiento); se enciende cuando lo diga la revisión legal (ADR-58) |
 | Clawback de referidos automático (reembolso, baneo) | `docs/ECONOMIA.md` §3.5 | el clawback existe como acción de admin (Admin → Economía → Referidos, 2026-10-02); **nada lo dispara solo**: no hay flujo de baneo, y un reembolso del referido no está ligado a su activación |
-| Gastar créditos en simulacro o curso del marketplace | `docs/ECONOMIA.md` §2.3 | **decisión del dueño**: el simulacro hoy es gratis e ilimitado para todos (ADR-50: preparación sin pagar aparte), así que cobrarlo en créditos quitaría algo que Free tiene; el curso con créditos saca dinero real de la bolsa de marketing (80 % al instructor). Sí se gastan en el comodín de racha y en el informe de dominio (2026-10-02) |
 
 ### 5.2 Existe y no tiene especificación (E0 en §1–§2)
 

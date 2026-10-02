@@ -54,7 +54,8 @@ test('js_exec — Worker sandbox executes and returns correct output', async ({ 
   await expect(outputPre).toHaveText(new RegExp(EXPECTED_OUTPUT.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 
   const outputLabel = page.locator('[class*="outputLabel_"]').first();
-  await expect(outputLabel).toContainText('✅');
+  // Sin emoji desde el port v2 del Quiz: la etiqueta lo dice con palabras.
+  await expect(outputLabel).toContainText('¡Correcto! Salida esperada');
 
   expect(pageErrors, `Uncaught page errors: ${pageErrors.join('; ')}`).toHaveLength(0);
 });

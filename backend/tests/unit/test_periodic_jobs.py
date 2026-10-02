@@ -362,3 +362,53 @@ def test_reactivation_mail_reaches_the_provider_with_the_unsubscribe_link(
     assert mail["unsubscribe_url"] == "https://api.example/u?token=t"
     assert 'href="https://api.example/u?token=t"' in str(mail["html"])
     assert "200 créditos" in str(mail["html"]) and "Yo → Cartera" in str(mail["html"])
+
+
+# ── Retención de registros de seguridad (política de privacidad) ───────────
+
+
+@pytest.mark.asyncio
+async def test_security_logs_are_kept_90_days_and_fingerprints_30(db_session: AsyncSession):
+    """La política publicada dice 90 días para IP y navegador de los inicios de
+    sesión, la auditoría y las sesiones; 30 para las huellas del antifraude.
+    Hasta el 2026-10-02 solo se borraban con la cuenta."""
+    import hashlib
+
+    from app.models.antifraud import DeviceFingerprint
+    from app.models.auth import AuditLog, LoginAttempt, UserSession
+    from app.services.periodic import purge_security_logs
+
+    u = _user()
+    db_session.add(u)
+    await db_session.flush()
+    old, recent = NOW - timedelta(days=91), NOW - timedelta(days=89)
+    for when in (old, recent):
+        db_session.add(LoginAttempt(email=u.email, ip="203.0.113.7", success=True, created_at=when))
+        db_session.add(AuditLog(user_id=u.id, action="login_success", ip="203.0.113.7", timestamp=when))
+        db_session.add(UserSession(
+            user_id=u.id, fingerprint=hashlib.sha256(str(when).encode()).hexdigest(), ip="203.0.113.7",
+            user_agent="UA", created_at=when, last_activity=when,
+        ))
+    db_session.add(DeviceFingerprint(user_id=u.id, fingerprint_hash="a" * 64, ip_hash="b" * 64, created_at=NOW - timedelta(days=31)))
+    db_session.add(DeviceFingerprint(user_id=u.id, fingerprint_hash="c" * 64, ip_hash="d" * 64, created_at=NOW - timedelta(days=29)))
+    await db_session.flush()
+
+    deleted = await purge_security_logs(db_session, NOW)
+    assert deleted == {"login_attempts": 1, "audit_log": 1, "user_sessions": 1, "device_fingerprints": 1}
+    for model in (LoginAttempt, AuditLog, UserSession, DeviceFingerprint):
+        assert len((await db_session.execute(select(model))).scalars().all()) == 1
+    assert await purge_security_logs(db_session, NOW) == dict.fromkeys(deleted, 0)
+
+
+def test_privacy_policy_states_the_retention_the_code_applies():
+    """Si alguien cambia el plazo en el código y no en la política (o al revés),
+    lo publicado deja de ser verdad."""
+    import json
+    from pathlib import Path
+
+    from app.services.periodic import SECURITY_LOG_RETENTION_DAYS
+
+    root = Path(__file__).resolve().parents[3]
+    for lang in ("es", "en"):
+        legal = json.loads((root / "frontend" / "src" / "i18n" / lang / "common.json").read_text(encoding="utf-8"))["legal"]
+        assert str(SECURITY_LOG_RETENTION_DAYS) in legal["privacyRetentionSecurity"], lang

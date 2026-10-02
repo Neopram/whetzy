@@ -1,5 +1,6 @@
-import type { ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHideOnScroll } from '../../hooks/useHideOnScroll';
 import { useAppStore } from '../../stores/useAppStore';
 import styles from './BottomNav.module.css';
 
@@ -71,6 +72,11 @@ export function BottomNav() {
   const currentScreen = useAppStore((s) => s.currentScreen);
   const setScreen = useAppStore((s) => s.setScreen);
   const startQuiz = useAppStore((s) => s.startQuiz);
+  // Se aparta al bajar por la página y vuelve al subir; con el foco dentro
+  // (teclado) no se esconde nunca.
+  const scrolledAway = useHideOnScroll(currentScreen);
+  const [focused, setFocused] = useState(false);
+  const hidden = scrolledAway && !focused;
 
   const handleClick = (id: typeof NAV_ITEMS[number]['id']) => {
     if (id === 'quiz') {
@@ -81,7 +87,14 @@ export function BottomNav() {
   };
 
   return (
-    <nav className={styles.nav} role="navigation" aria-label="Main navigation">
+    <nav
+      className={`${styles.nav} ${hidden ? styles.hidden : ''}`}
+      role="navigation"
+      aria-label="Main navigation"
+      data-hidden={hidden ? 'true' : undefined}
+      onFocus={() => setFocused(true)}
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocused(false); }}
+    >
       {NAV_ITEMS.map((item) => {
         const label = t(item.labelKey);
         const active = item.group.includes(currentScreen);

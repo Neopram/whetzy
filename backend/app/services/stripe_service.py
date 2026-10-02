@@ -82,10 +82,10 @@ def verify_webhook(payload: bytes, sig_header: str) -> dict[str, Any]:
     if not settings.STRIPE_WEBHOOK_SECRET:
         raise RuntimeError("Stripe webhook secret not configured: set STRIPE_WEBHOOK_SECRET")
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    event = stripe.Webhook.construct_event(  # type: ignore[no-untyped-call]
-        payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
-    )
-    return dict(event)
+    event = stripe.Webhook.construct_event(payload, sig_header, settings.STRIPE_WEBHOOK_SECRET)
+    # Desde stripe 15 sus objetos no son dict: `dict(event)` lanza TypeError.
+    data: dict[str, Any] = event.to_dict()
+    return data
 
 
 def apply_subscription_event(user: User, event: dict[str, Any]) -> None:
@@ -105,7 +105,7 @@ def apply_subscription_event(user: User, event: dict[str, Any]) -> None:
             return
         stripe.api_key = settings.STRIPE_SECRET_KEY
         sub = stripe.Subscription.retrieve(sub_id)
-        _set_subscription(user, sub)
+        _set_subscription(user, sub.to_dict())
 
     elif event_type in ("customer.subscription.updated", "customer.subscription.created"):
         _set_subscription(user, data_object)

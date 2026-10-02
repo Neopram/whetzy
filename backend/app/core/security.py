@@ -12,10 +12,10 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
+import bcrypt
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -26,10 +26,22 @@ from app.schemas.user import TokenPayload
 
 logger = logging.getLogger("whetzy.security")
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# bcrypt directo, sin passlib. passlib 1.7.4 (sin mantenimiento desde 2020) no
+# arranca con bcrypt 5: lee `bcrypt.__about__`, que ya no existe, y su prueba del
+# «wrap bug» hashea 255 bytes, que bcrypt 5 rechaza. El despliegue de `master` del
+# 2026-10-02 (be9bb1a, Dependabot #76) entró en bucle de caídas por eso.
+# Compatible con los hashes que ya hay: passlib usaba el mismo formato ($2b$, 12
+# rondas) y truncaba en silencio a 72 bytes; aquí se trunca igual a propósito.
+_BCRYPT_ROUNDS = 12
+_BCRYPT_MAX_BYTES = 72
+
+
+def _secret(password: str) -> bytes:
+    return password.encode("utf-8")[:_BCRYPT_MAX_BYTES]
+
 
 # Dummy hash for constant-time comparison when no user is found (ASVS V2.2 timing attack).
-_DUMMY_HASH = pwd_context.hash("dummy-password-for-timing-safety")
+_DUMMY_HASH = bcrypt.hashpw(_secret("dummy-password-for-timing-safety"), bcrypt.gensalt(_BCRYPT_ROUNDS)).decode()
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_PREFIX}/auth/login", auto_error=False
@@ -42,11 +54,14 @@ TokenType = Literal["access", "refresh", "unsubscribe", "mfa"]
 # Password hashing
 # --------------------------------------------------------------------------
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(_secret(password), bcrypt.gensalt(_BCRYPT_ROUNDS)).decode()
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        return bcrypt.checkpw(_secret(plain_password), hashed_password.encode("utf-8"))
+    except ValueError:  # hash con otro formato o corrupto: no casa, nunca un 500
+        return False
 
 
 # --------------------------------------------------------------------------

@@ -747,7 +747,7 @@ async def _single_runner(db: AsyncSession) -> bool:
     abonar dos veces la misma fila, pero dos vueltas repartiéndose filas
     podrían contar el mismo hito de la escalera. El lock se suelta al cerrar
     la transacción. En SQLite (tests) no hay workers que coordinar."""
-    if db.bind.dialect.name != "postgresql":
+    if db.get_bind().dialect.name != "postgresql":
         return True
     got = await db.execute(
         select(func.pg_try_advisory_xact_lock(_REFERRAL_LOCK_KEY))

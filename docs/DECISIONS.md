@@ -1426,3 +1426,22 @@ completo ya**.
 - **Clawback.** No hay flujo de baneo ni de «fraude confirmado» que lo dispare. Un referido
   cuya cuenta se borra antes del abono queda `rejected` y no se paga.
 - **El acceso anticipado del hito 25** no existe como programa.
+
+## ADR-58 — Los créditos no compran simulacros ni cursos: el acceso lo da el plan; política de privacidad con IP y navegador (DUEÑO, 2026-10-02)
+
+**Decisión del dueño (2026-10-02):** «el simulacro y los cursos no se pagan con créditos, solo
+dependen del tipo de suscripción».
+
+- **Créditos.** Quedan fuera de los sumideros de ECONOMIA §2.3 el simulacro (500) y el curso del
+  marketplace (≥ 1.000). Los créditos siguen comprando el comodín de racha y el informe de dominio.
+  Hoy el simulacro va en todos los planes publicados, Free incluido (`landing.planFree.perks[4]`).
+- **Cursos del marketplace.** Siguen con precio propio (`price_cents`) y reparto 80/20 por venta
+  (ADR-41): el dueño aclaró el mismo día que la decisión es solo «no con créditos», no que los
+  cursos vayan incluidos en un plan. ADR-41 no cambia.
+- **Privacidad.** El texto de IP y navegador de los inicios de sesión se publica como final
+  (`legal.privacyL13`, `privacyL14`, `privacyRetentionSecurity`, `privacyUpdated`), sujeto a la
+  revisión legal (H.20). Para que sea verdad, `periodic_jobs_loop` borra a los 90 días
+  `login_attempts`, `audit_log` y las sesiones sin actividad, y a los 30 las huellas del antifraude.
+  **El antifraude por huella de dispositivo sigue apagado:** la huella (pantalla, zona horaria,
+  idioma) puede caer en el art. 5(3) de ePrivacy y exigir consentimiento; lo decide la revisión
+  legal antes de encenderlo (`docs/legal/antifraud-legal-basis.md`).

@@ -201,7 +201,7 @@ async def _todays_missions(
         .join(Mission, Mission.id == UserMission.mission_id)
         .where(UserMission.user_id == user.id, UserMission.date == today)
     )
-    return list(result.all())  # type: ignore[arg-type]
+    return list(result.all())
 
 
 async def _ensure_today_missions(db: AsyncSession, user: User) -> list[tuple[UserMission, Mission]]:

@@ -106,11 +106,11 @@ mes son tres simulacros: suficiente para retener, insuficiente para vivir de ell
 
 | Consumible | Precio | Nota |
 |---|---|---|
-| Simulacro de certificación (formato real) | 500 | Lo que más quiere el estudiante y no puede pagar |
+| ~~Simulacro de certificación (formato real)~~ | ~~500~~ | **Descartado (ADR-58, dueño, 2026-10-02):** el acceso lo da el plan, no los créditos. Hoy va en todos los planes |
 | Congelar racha (1 día) | 150 | Duolingo lo vende; aquí se gana |
 | Informe de dominio en PDF | 300 | Compartible con empleadores. **En el código (2026-10-02):** instantánea pública en `/report/<código>` (128 bits, como un certificado) con «Guardar como PDF» por la impresión del navegador; sin dependencia de PDF en el servidor |
 | Bootcamp async (1 secuencia) | 3.000 | Solo Career-switcher/Senior lo alcanzan |
-| Curso del marketplace (instructor) | según instructor, mínimo 1.000 | El 80 % del instructor (ADR-41) se liquida al valor nominal (§2.1) desde la bolsa de marketing de Whetzy, nunca del alumno |
+| ~~Curso del marketplace (instructor)~~ | ~~según instructor, mínimo 1.000~~ | **Descartado (ADR-58):** los cursos no se pagan con créditos |
 | Seat extra 1 mes (solo empresa, desde la bolsa de empresa) | 2.000 | Retención B2B |
 
 **Lo que los créditos NO compran:** meses de Pro/Pro Max (eso es premio de escalera,
