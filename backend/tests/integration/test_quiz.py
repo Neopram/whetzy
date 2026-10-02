@@ -12,6 +12,8 @@ from __future__ import annotations
 import itertools
 import uuid
 
+import pytest
+
 from app.models.lesson_completion import LessonCompletion
 
 QUIZ = "/api/v1/quiz"
@@ -369,6 +371,78 @@ async def test_exec_output_with_whitespace_is_accepted(client, auth_headers, db_
     )
     assert r.status_code == 200
     assert r.json()["correct"] is True
+
+
+async def test_exec_without_output_is_wrong_even_if_the_client_says_correct(client, auth_headers, db_session):
+    """El agujero que había en producción (2026-10-01, q130103_fbe001).
+
+    La web no mandaba exec_output y el servidor creía a `selected_index == 1`:
+    cualquiera marcaba un ejecutable como resuelto desde la API. Sin la salida,
+    la respuesta cuenta como incorrecta.
+    """
+    session_id, question_id = await _start_exec_quiz(client, auth_headers, db_session)
+
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": question_id,
+            "selected_index": 1,
+            "response_time_ms": 1500,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert r.json()["correct"] is False
+
+
+async def _start_fill_blank_quiz(client, auth_headers: dict, db_session) -> tuple[str, str]:
+    """`fill_blank`: el alumno escribe la salida y el servidor la compara."""
+    from app.models.content import Module, Question, Skill, Track
+
+    track = Track(id="track_fb", name_es="T", name_en="T", order=98, icon="x", color="#000", total_questions=1)
+    mod = Module(id="m_fb", track_id="track_fb", name_es="M", name_en="M", order=1, description_es="", description_en="")
+    skill = Skill(id="sk_fb", module_id="m_fb", name_es="S", name_en="S", order=1)
+    question = Question(
+        id="q_fb01",
+        skill_id="sk_fb",
+        type="fill_blank",
+        difficulty_tier="easy",
+        question_es="¿Qué imprime este código?\n```python\nprint('True' if 1 else 'False')\n```",
+        question_en="What does this code print?\n```python\nprint('True' if 1 else 'False')\n```",
+        correct_answer_es="True",
+        correct_answer_en="True",
+        explanation_es="1 es verdadero.",
+        explanation_en="1 is truthy.",
+        source="test",
+        elo_rating=1200.0,
+    )
+    db_session.add_all([track, mod, skill, question])
+    await db_session.commit()
+    r = await client.post(f"{QUIZ}/start", json={"force_question_id": "q_fb01"}, headers=_h(auth_headers))
+    data = r.json()
+    return data["session_id"], data["question"]["id"]
+
+
+@pytest.mark.parametrize(
+    ("payload", "correct"),
+    [
+        ({"answer_text": "  true "}, True),  # misma regla que el cliente: recorta y sin mayúsculas
+        ({"answer_text": "False"}, False),
+        ({"selected_index": 1}, False),  # sin texto no hay nada que corregir
+    ],
+)
+async def test_fill_blank_is_graded_by_the_server_from_the_typed_text(
+    client, auth_headers, db_session, payload, correct
+):
+    session_id, question_id = await _start_fill_blank_quiz(client, auth_headers, db_session)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={"session_id": session_id, "question_id": question_id, "response_time_ms": 900, **payload},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200, r.text
+    assert r.json()["correct"] is correct
 
 
 # ── "I don't know" ────────────────────────────────────────────────────────────

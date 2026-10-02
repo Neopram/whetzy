@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, progress as progressApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail } from '../services/api';
+import { quiz as quizApi, progress as progressApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
 import { enqueue } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
@@ -183,12 +183,14 @@ export function QuizScreen() {
 
   // ── Core answer submission ─────────────────────────────────────────────
   const submitAnswer = useCallback(
-    async (selectedIndex: number | null, declaredUnknown = false) => {
+    async (selectedIndex: number | null, declaredUnknown = false, evidence: AnswerEvidence = {}) => {
       if (!sessionId || !question || feedback || submitting) return;
       setSubmitting(true);
       const rt = Date.now() - questionStart.current;
       try {
-        const res = await quizApi.answer(sessionId, question.id, selectedIndex, rt, declaredUnknown);
+        // El servidor corrige con `evidence` (salida del código o texto escrito);
+        // `selectedIndex` ya no basta para dar por buena una respuesta (2026-10-01).
+        const res = await quizApi.answer(sessionId, question.id, selectedIndex, rt, declaredUnknown, undefined, evidence);
         setFeedback(res);
         practiced.current.add(question.skill_id);
         setMastery((prev) => res.skill_mastery[question.skill_id] ?? prev);
@@ -222,6 +224,7 @@ export function QuizScreen() {
             selectedIndex,
             responseTimeMs: rt,
             timestamp: Date.now(),
+            ...evidence,
           });
           setFeedback({
             correct: false,
@@ -274,7 +277,7 @@ export function QuizScreen() {
       (language === 'es' ? question.correct_answer_es : question.correct_answer_en) ?? ''
     ).trim();
     const isCorrect = userInput.trim().toLowerCase() === expected.toLowerCase();
-    await submitAnswer(isCorrect ? 1 : 0);
+    await submitAnswer(isCorrect ? 1 : 0, false, { answerText: userInput });
   }, [question, feedback, submitting, language, userInput, submitAnswer]);
 
   // ── Exec: run code in Pyodide ──────────────────────────────────────────
@@ -306,7 +309,7 @@ export function QuizScreen() {
     setExecAttempts(newAttempts);
 
     if (isCorrect || newAttempts >= 3) {
-      await submitAnswer(isCorrect ? 1 : 0);
+      await submitAnswer(isCorrect ? 1 : 0, false, { execOutput: result.output });
     }
 
     setRunLoading(false);
@@ -611,6 +614,9 @@ export function QuizScreen() {
         <div className={styles.execArea}>
           {question.type === 'fill_blank' && (
             <>
+              {/* «¿Qué imprime?» con respuesta escrita: el código tiene que verse.
+                  Antes no se pintaba y 11 preguntas pedían adivinar un código oculto. */}
+              {code && <pre className={styles.codeBlock}><code>{code}</code></pre>}
               <input
                 className={styles.blankInput}
                 type="text"

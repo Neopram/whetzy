@@ -52,7 +52,7 @@ Sign in with Apple is mandatory before any App Store submission once another OAu
 
 ```
 POST /quiz/start                  → {session_id, question} 🔒
-POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒
+POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒 — body: session_id, question_id, response_time_ms y, según el tipo, selected_index (opciones), exec_output (fill_blank_exec, fix_bug, sql_exec, js_exec: la salida que dio el código) o answer_text (fill_blank: lo escrito; se compara recortado y sin mayúsculas). Sin exec_output/answer_text la respuesta es incorrecta: el servidor no cree al cliente
 POST /quiz/end                    → {total_questions, correct, accuracy, max_combo, xp_earned, duration_seconds, credits_earned} 🔒 — `credits_earned`: lo que la sesión dejó ganado (módulo, racha, diagnóstico; ECONOMIA §2.2)
 GET  /quiz/review-due             → {questions[], count} 🔒  — FSRS review queue
 ```

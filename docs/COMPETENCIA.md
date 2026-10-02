@@ -648,7 +648,7 @@ la plataforma; no vende exposición a ella.
 | Pago en USDC liquidado en fiat (LATAM) | ✅ tras H.19 | ❌ | ❌ | ❌ | ❌ |
 | Credenciales verificables (Open Badges 3.0) | ✅ S29 | ❌ | ❌ | ❌ | ❌ |
 | Token / cripto propia | ❌ a propósito (ADR-33) | ❌ | ❌ | ❌ | ❌ |
-| Precio base (2026-09-18, **no verificado** salvo Whetzy; ver §A.1) | Pro $14.99 (ADR-41; publicado en la landing, cobro sin abrir) | ~~$49~~ $59/mes · $399/año | $39 | ~~$29~~ $49/mes · $249/año | $20 |
+| Precio base (2026-09-18, **no verificado** salvo Whetzy; ver §A.1) | Pro $14.99 (ADR-41; publicado en la landing; desde 2026-10-01 compra web con Paddle en `/checkout`, pendiente del alta de Paddle) | ~~$49~~ $59/mes · $399/año | $39 | ~~$29~~ $49/mes · $249/año | $20 |
 | Empleabilidad | Alta | Alta | Media | Media | Media |
 
 ---

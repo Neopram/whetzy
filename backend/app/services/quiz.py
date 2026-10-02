@@ -535,17 +535,26 @@ async def submit_answer(
         expected = question.correct_answer_es
         if user.language == "en" and question.correct_answer_en is not None:
             expected = question.correct_answer_en
-        if expected is not None and req.exec_output is not None:
-            correct = req.exec_output.strip() == expected.strip()
+        # The server grades; it never takes the client's word for it. Until
+        # 2026-10-01 the web client sent no exec_output at all, so every one of
+        # these answers fell into a fallback that trusted `selected_index == 1`:
+        # anyone could mark any executable exercise as solved straight from the
+        # API (seen in production: q130103_fbe001 at 20:43:49 UTC). Missing
+        # evidence now counts as a wrong answer.
+        submitted = req.answer_text if question.type == "fill_blank" else req.exec_output
+        if expected is None or submitted is None:
+            logger.warning(
+                "%s question %s answered without %s — graded as wrong",
+                question.type,
+                question.id,
+                "answer_text" if question.type == "fill_blank" else "exec_output",
+            )
+            correct = False
+        elif question.type == "fill_blank":
+            # Same rule the client shows: trimmed, case-insensitive text.
+            correct = submitted.strip().casefold() == expected.strip().casefold()
         else:
-            # Legacy path: exec_output not provided (old client) or expected
-            # answer not stored — trust selected_index as before.
-            if expected is not None and req.exec_output is None:
-                logger.warning(
-                    "exec question %s answered without exec_output — falling back to selected_index",
-                    question.id,
-                )
-            correct = req.selected_index == 1
+            correct = submitted.strip() == expected.strip()
     else:
         correct = req.selected_index is not None and req.selected_index == question.correct_index
     now = _now()

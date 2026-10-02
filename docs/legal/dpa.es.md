@@ -110,7 +110,7 @@ Otro: Email a legal@whetzy.com
 - Railway: hosting y base de datos PostgreSQL (UE)
 - Cloudflare: CDN y Pages
 - Groq: inferencia del tutor de IA (modelo qwen/qwen3.8-27b)
-- Stripe: pagos (hoy solo en modo test, sin cobros reales; la cuenta live está pendiente — H.4)
+- Paddle: pagos web como comerciante registrado (Merchant of Record); Stripe no se usa (H.29)
 - Proveedor de email: SMTP o Resend, según la variable EMAIL_PROVIDER
 - Sentry: registro de errores del servidor, activo desde el 26-09-2026 (región UE, de.sentry.io; `send_default_pii=False`; no se usa en el navegador)
 

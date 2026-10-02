@@ -271,3 +271,118 @@ class TestExecQuestionCorpus:
                 assert q.get("question_en"), f"{q['id']}: missing question_en"
                 assert q.get("correct_answer_es"), f"{q['id']}: missing correct_answer_es"
                 assert q.get("correct_answer_en"), f"{q['id']}: missing correct_answer_en"
+
+
+# ── Que no se pueda acertar sin hacer el ejercicio (2026-10-01) ─────────────────
+#
+# Lo de arriba solo comprueba que la solución buena da la salida publicada. Nunca
+# comprobó lo contrario, y el 2026-10-01 había 216 ejercicios que daban
+# «correcto» pulsando Ejecutar sin escribir nada:
+# - 172 `fill_blank_exec` y 31 `js_exec` sin hueco: el programa entero imprimía
+#   la respuesta;
+# - 5 `except ___:` donde el hueco vacío deja un `except:` válido;
+# - 8 `fix_bug` cuyo código con el bug ya imprimía lo esperado (el bug era de
+#   seguridad, no de salida).
+# Y 13 `js_exec` imposibles: 6 usaban `ANSWER` en vez de `___`.
+# Estos tests fijan que vuelva a ser imposible.
+
+JS_EXEC_TYPE = "js_exec"
+BLANK_TYPES = {"fill_blank_exec", JS_EXEC_TYPE}
+
+
+def _all_questions_of(types: set[str]) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    for qfile in sorted((_content_root() / "questions").rglob("*.json")):
+        payload = json.loads(qfile.read_text(encoding="utf-8"))
+        items = payload if isinstance(payload, list) else payload.get("questions", [])
+        out.extend(q for q in items if q.get("type") in types)
+    return out
+
+
+def _code_for(question: dict[str, Any], lang: str) -> str | None:
+    """Lo mismo que `resolveCode` del frontend: `code_xx` o el bloque del enunciado."""
+    return question.get(f"code_{lang}") or _extract_code_block(question.get(f"question_{lang}") or "")
+
+
+def _run_js(code: str) -> subprocess.CompletedProcess[str] | None:
+    try:
+        return subprocess.run(
+            ["node", "-e", code], capture_output=True, encoding="utf-8",
+            timeout=PER_QUESTION_TIMEOUT_S, check=False,
+        )
+    except FileNotFoundError:
+        return None
+
+
+class TestNoFreeAnswers:
+    def test_every_fill_in_question_has_a_blank(self) -> None:
+        """Sin `___` el frontend ejecuta el programa tal cual: lo escrito no cuenta."""
+        missing = [
+            f"{q['id']} [{lang}]"
+            for q in _all_questions_of(BLANK_TYPES)
+            for lang in ("es", "en")
+            if "___" not in (_code_for(q, lang) or "")
+        ]
+        assert missing == [], f"{len(missing)} ejecutables sin hueco ___: {missing[:20]}"
+
+    def test_no_placeholder_the_frontend_never_replaces(self) -> None:
+        """`ANSWER` (o similares) no lo sustituye nadie: el ejercicio es imposible."""
+        bad = [
+            q["id"]
+            for q in _all_questions_of(BLANK_TYPES | {"fix_bug"})
+            if re.search(r"\bANSWER\b", _code_for(q, "es") or "")
+        ]
+        assert bad == [], f"marcador que el frontend no reemplaza: {bad}"
+
+    def test_an_empty_python_blank_is_never_correct(self) -> None:
+        failures: list[str] = []
+        for q in _all_questions_of({"fill_blank_exec"}):
+            for lang in ("es", "en"):
+                code = _code_for(q, lang)
+                expected = (q.get(f"correct_answer_{lang}") or "").strip()
+                if not code or "___" not in code:
+                    continue  # lo informa test_every_fill_in_question_has_a_blank
+                proc = _run_in_cpython(code.replace("___", "", 1))
+                if proc.returncode == 0 and (proc.stdout or "").strip() == expected:
+                    failures.append(f"{q['id']} [{lang}]")
+        assert failures == [], f"el hueco vacío ya da la respuesta: {failures}"
+
+    def test_an_unfixed_bug_is_never_correct(self) -> None:
+        """En `fix_bug` el editor arranca con el código con el bug: ejecutarlo sin
+        tocar nada no puede imprimir la respuesta."""
+        failures: list[str] = []
+        for q in _all_questions_of({"fix_bug"}):
+            for lang in ("es", "en"):
+                code = _code_for(q, lang)
+                expected = (q.get(f"correct_answer_{lang}") or "").strip()
+                if not code:
+                    continue
+                proc = _run_in_cpython(code)
+                if proc.returncode == 0 and (proc.stdout or "").strip() == expected:
+                    failures.append(f"{q['id']} [{lang}]")
+        assert failures == [], f"el código sin arreglar ya da la respuesta: {failures}"
+
+    def test_an_empty_js_blank_is_never_correct(self) -> None:
+        questions = _all_questions_of({JS_EXEC_TYPE})
+        if _run_js("1") is None:
+            pytest.skip("node no está instalado")
+        failures = []
+        for q in questions:
+            code = _code_for(q, "es")
+            expected = (q.get("correct_answer_es") or "").strip()
+            if not code or "___" not in code:
+                continue
+            proc = _run_js(code.replace("___", "", 1))
+            if proc is not None and proc.returncode == 0 and proc.stdout.strip() == expected:
+                failures.append(q["id"])
+        assert failures == [], f"el hueco vacío ya da la respuesta: {failures}"
+
+    def test_fill_blank_answers_fit_in_one_line(self) -> None:
+        """`fill_blank` se responde en un campo de una línea: una respuesta con
+        saltos de línea no se puede escribir."""
+        multi = [
+            q["id"]
+            for q in _all_questions_of({"fill_blank"})
+            if any("\n" in (q.get(f"correct_answer_{lang}") or "").strip() for lang in ("es", "en"))
+        ]
+        assert multi == [], f"respuestas de varias líneas en fill_blank: {multi}"

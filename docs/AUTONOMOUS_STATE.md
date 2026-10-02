@@ -338,6 +338,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 31.6 | **2** | **Tests de analítica sobre Postgres real**, no solo SQLite — D1/D7/CURR (2026-09-30): SQLite oculta diferencias de dialecto que los tests nunca vieron. Espera a que 31.5 libere analítica | TODO | `test_product_metrics.py` también contra Postgres real, en verde |
 | 31.7 | **0** | **Pausa de sesiones autónomas y cierre**, 2026-09-30 → `docs/CIERRE_2026-09-30.md` | **DONE** | `check_docs.py` [11] exige PAUSA+cita, mutado rojo/verde |
 | 31.8 | **0** | **Lanzamiento piloto** (prompt del dueño 2026-10-01): kit `docs/LANZAMIENTO_PILOTO.md`; PRs #45-#49 | PARCIAL | kit escrito; invitar, día 4 y recuento = dueño |
+| 31.9 | **0** | 229 ejecutables gratis o imposibles reparados; corrige el servidor | DONE | `TestNoFreeAnswers` |
 
 ### 32. Motor demostrable — calibración y evidencia de aprendizaje (del plan del 2026-09-24; ídem)
 

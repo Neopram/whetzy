@@ -121,7 +121,19 @@ row of `docs/AUTONOMOUS_STATE.md`); as of 2026-09-29: **10,949 questions / 35 tr
 carry official domains with verified weights (`exam_domain` + `exam_weight_pct`).
 Executable questions (`fill_blank_exec` / `fix_bug` / `sql_exec` / `js_exec`) have
 their expected output verified in CI by actually running the reference code in
-CPython / sqlite3; every non-exempt track is ≥ 15 % executable (ADR-9). Sources are
+CPython / sqlite3, and since 2026-10-01 also the opposite: an empty blank or the
+unfixed buggy code must **not** print the answer, and every fill-in exercise must
+have a `___` (`tests/content/test_exec_questions.py::TestNoFreeAnswers`). Eight tracks
+are ≥ 15 % executable; the per-track floors live in `scripts/check_question_bank.py`.
+
+**Grading is server-side.** The code runs in the learner's browser (Pyodide, sql.js,
+a JS worker), but `POST /quiz/answer` decides correctness: executable types send the
+`exec_output` the run produced and `fill_blank` sends the typed `answer_text`; the
+server compares them with the stored answer in the learner's language. A request
+without that evidence is graded wrong — until 2026-10-01 the client sent only
+`selected_index: 1` and the server believed it. The output itself still comes from
+the browser, so a forged `exec_output` is possible; running the code server-side
+would close that and is not built. Sources are
 free and legally reusable or cited only (ADR-11; inventory in
 `docs/CATALOGO_MAESTRO.md` §2.1).
 

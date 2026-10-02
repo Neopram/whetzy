@@ -39,10 +39,11 @@ mentimos sobre lo que dominas. Cuando no sabes, te explicamos con fuente.
 ### Modelo de negocio
 Freemium: **Gratis · Pro $14,99 · Pro Max $19,99** al mes, y **Creador $99,99** para publicar
 bootcamps con reparto 80/20 (ADR-45, decisión del dueño del 2026-09-24 posterior a ADR-43,
-cuya fila de precios enmienda). La landing los muestra; el **cobro no está abierto** hasta
-H.19. Anual, tarifa regional y qué añade Pro Max: H.38. Web con Merchant of Record
-(Paddle / Lemon Squeezy, hipótesis ADR-43) o Stripe, tras `PaymentProvider`; nativo con
-RevenueCat (17.14). Entidad y jurisdicción: **sin decidir** (H.29; la premisa griega de
+cuya fila de precios enmienda). La landing los muestra y, desde el 2026-10-01, Pro, Pro Max y la
+certificación se compran en la web con Paddle (Merchant of Record) en `/checkout`; cobrar
+de verdad espera a que Paddle termine el alta de la cuenta y apruebe whetzy.com (H.29).
+Creador no se cobra por Paddle: su política prohíbe los marketplaces. Sin Stripe (H.29).
+Anual, tarifa regional y qué añade Pro Max: H.38. Nativo con RevenueCat (17.14). Entidad y jurisdicción: **sin decidir** (H.29; la premisa griega de
 ADR-16 queda suspendida). Cancelar en dos toques.
 
 ### Decisiones cerradas — no se reabren

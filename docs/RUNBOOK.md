@@ -224,6 +224,14 @@ EMAIL_FROM_ADDRESS=noreply@whetzy.com
 FRONTEND_BASE_URL=https://whetzy.com
 OWNER_EMAIL=<tu email>        # cuenta de dueño (rol owner); ver «Cuenta de dueño»
 OWNER_PASSWORD=<≥ 12 caracteres, solo aquí>
+# Pago web con Paddle (H.29). Ver docs/legal/README.md para lo publicado.
+PADDLE_ENVIRONMENT=production          # o sandbox
+PADDLE_API_KEY=<pdl_live_apikey_…>     # cancelar suscripciones (perfil y borrado de cuenta)
+PADDLE_WEBHOOK_SECRET=<pdl_ntfset_…>   # el del destino https://<api>/api/v1/webhooks/paddle
+PADDLE_CLIENT_TOKEN=<live_…>           # público: lo usa Paddle.js en /checkout
+PADDLE_PRICE_PLUS=<pri_…>              # Pro 14,99 $/mes
+PADDLE_PRICE_PRO=<pri_…>               # Pro Max 19,99 $/mes
+PADDLE_PRICE_CERTIFICATION=<pri_…>     # certificación 39,99 $, pago único
 # EMAIL_PROVIDER=auto        # por defecto; solo para forzar smtp|resend|log
 # SMTP_USER=... SMTP_PASSWORD=...   # alternativa a Resend (hacen falta las dos)
 ```

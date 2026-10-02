@@ -5,6 +5,24 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-01 (pago web, textos legales y ejercicios que ya no se aprueban solos)
+
+**ES**
+
+- **Ejercicios honestos**: 216 ejercicios daban «correcto» pulsando Ejecutar sin escribir nada y 13 no se podían acertar nunca. Los «¿qué imprime?» ahora se responden escribiendo la salida, con el código a la vista; los demás tienen un hueco de verdad.
+- **El servidor corrige**: un ejercicio ejecutable cuenta como correcto solo si la salida del código coincide con la respuesta, y un ejercicio de escribir, solo si el texto coincide. Antes bastaba con que el navegador dijera «correcto».
+- **Comprar Pro, Pro Max y la certificación en la web** (`/checkout`, con Paddle como comerciante registrado), con renuncia expresa al desistimiento antes de pagar y cancelación desde Perfil al final del periodo pagado.
+- **Textos legales**: la política de privacidad dice quién trata tus datos (Railway, Cloudflare, Groq, Resend, Sentry y Paddle), que algunos están fuera del EEE, tu derecho a reclamar ante la autoridad, las cookies y la edad mínima. Nueva página `/refund`. Los Términos dicen Paddle en lugar de Stripe.
+
+**EN**
+
+- **Honest exercises**: 216 exercises returned "correct" when you pressed Run with nothing typed, and 13 could never be answered. "What does it print?" items are now answered by typing the output, with the code in view; the rest have a real blank.
+- **The server grades**: an executable exercise counts as correct only if the code's output matches the answer, and a typed one only if the text matches. Before, the browser saying "correct" was enough.
+- **Buy Pro, Pro Max and the certification on the web** (`/checkout`, with Paddle as Merchant of Record), with an explicit withdrawal waiver before paying and cancellation from Profile at the end of the paid period.
+- **Legal texts**: the privacy policy now says who processes your data (Railway, Cloudflare, Groq, Resend, Sentry and Paddle), that some are outside the EEA, your right to complain to the authority, cookies and the minimum age. New `/refund` page. The Terms say Paddle instead of Stripe.
+
+---
+
 ## [Unreleased] — 2026-09-30 (plan del catálogo por cobertura, ADR-53 — rama `claude/eloquent-davinci-47pbpf`)
 
 **ES**

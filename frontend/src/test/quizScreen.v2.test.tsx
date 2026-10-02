@@ -67,7 +67,7 @@ describe('QuizScreen v2', () => {
     await effectsRun();
 
     fireEvent.keyDown(window, { key: '2' });
-    await waitFor(() => expect(answer).toHaveBeenCalledWith('s1', 'q1', 1, expect.any(Number), false));
+    await waitFor(() => expect(answer).toHaveBeenCalledWith('s1', 'q1', 1, expect.any(Number), false, undefined, {}));
     await screen.findByText('Uno más uno es dos.');
 
     // Ya hay algo respondido: cerrar pregunta antes de salir, y «Seguir» lo cancela.
@@ -123,7 +123,7 @@ describe('QuizScreen v2', () => {
     await screen.findByText('¿Cuánto es 1 + 1?');
     await effectsRun();
     fireEvent.keyDown(window, { key: 'c' });
-    await waitFor(() => expect(answer).toHaveBeenCalledWith('s1', 'q1', 2, expect.any(Number), false));
+    await waitFor(() => expect(answer).toHaveBeenCalledWith('s1', 'q1', 2, expect.any(Number), false, undefined, {}));
   });
 
   it('el contador de 30 s se para mientras se decide si salir', async () => {

@@ -14,6 +14,9 @@ export interface PendingAnswer {
   selectedIndex: number | null;
   responseTimeMs: number;
   timestamp: number;
+  /** Lo que corrige el servidor en ejecutables y `fill_blank` (2026-10-01). */
+  execOutput?: string;
+  answerText?: string;
 }
 
 function openDB(): Promise<IDBDatabase> {

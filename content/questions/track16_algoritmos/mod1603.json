@@ -29,7 +29,7 @@
   {
     "id": "q160301ex001",
     "skill_id": "sk160301",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el resultado de ordenar este array con merge sort?\n\n```python\narr = [3, 1, 4, 1, 5, 9]\narr.sort()  # Uses Timsort internally\nprint(arr)\n```",
     "question_en": "What is the result of sorting this array with merge sort?\n\n```python\narr = [3, 1, 4, 1, 5, 9]\narr.sort()  # Uses Timsort internally\nprint(arr)\n```",
@@ -96,7 +96,7 @@
   {
     "id": "q160301ex002",
     "skill_id": "sk160301",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "hard",
     "question_es": "¿Cuál es el resultado de la partición en quick sort?\n\n```python\narr = [3, 1, 4, 1, 5]\npivote = arr[0]  # 3\nmenores = [x for x in arr[1:] if x < pivote]\niguales = [x for x in arr if x == pivote]\nmayores = [x for x in arr[1:] if x > pivote]\nresult = menores + iguales + mayores\nprint(result)\n```",
     "question_en": "What is the result of the partition in quick sort?\n\n```python\narr = [3, 1, 4, 1, 5]\npivote = arr[0]  # 3\nmenores = [x for x in arr[1:] if x < pivote]\niguales = [x for x in arr if x == pivote]\nmayores = [x for x in arr[1:] if x > pivote]\nresult = menores + iguales + mayores\nprint(result)\n```",
@@ -140,7 +140,7 @@
   {
     "id": "q160301ex003",
     "skill_id": "sk160301",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuántas comparaciones se necesitan para merge sort de un array de 8 elementos?\n\n```python\nimport math\nn = 8\ncomparisons = n * math.log2(n)\nprint(int(comparisons))\n```",
     "question_en": "How many comparisons are needed for merge sort of an array of 8 elements?\n\n```python\nimport math\nn = 8\ncomparisons = n * math.log2(n)\nprint(int(comparisons))\n```",
@@ -180,7 +180,7 @@
   {
     "id": "q160301ex004",
     "skill_id": "sk160301",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el resultado de fusionar dos arrays ordenados?\n\n```python\narr1 = [1, 3, 5]\narr2 = [2, 4, 6]\nmerged = []\ni, j = 0, 0\nwhile i < len(arr1) and j < len(arr2):\n    if arr1[i] < arr2[j]:\n        merged.append(arr1[i])\n        i += 1\n    else:\n        merged.append(arr2[j])\n        j += 1\nmerged.extend(arr1[i:])\nmerged.extend(arr2[j:])\nprint(merged)\n```",
     "question_en": "What is the result of merging two sorted arrays?\n\n```python\narr1 = [1, 3, 5]\narr2 = [2, 4, 6]\nmerged = []\ni, j = 0, 0\nwhile i < len(arr1) and j < len(arr2):\n    if arr1[i] < arr2[j]:\n        merged.append(arr1[i])\n        i += 1\n    else:\n        merged.append(arr2[j])\n        j += 1\nmerged.extend(arr1[i:])\nmerged.extend(arr2[j:])\nprint(merged)\n```",
@@ -224,7 +224,7 @@
   {
     "id": "q160301ex005",
     "skill_id": "sk160301",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuántos niveles de recursión tiene merge sort para n=16?\n\n```python\nimport math\nn = 16\nlevels = math.log2(n)\nprint(int(levels))\n```",
     "question_en": "How many recursion levels does merge sort have for n=16?\n\n```python\nimport math\nn = 16\nlevels = math.log2(n)\nprint(int(levels))\n```",
@@ -264,7 +264,7 @@
   {
     "id": "q160301ex006",
     "skill_id": "sk160301",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el paso de divide en este merge sort?\n\n```python\narr = [5, 2, 8, 1]\nmid = len(arr) // 2\nleft = arr[:mid]\nright = arr[mid:]\nprint(left)\n```",
     "question_en": "What is the divide step in this merge sort?\n\n```python\narr = [5, 2, 8, 1]\nmid = len(arr) // 2\nleft = arr[:mid]\nright = arr[mid:]\nprint(left)\n```",
@@ -308,7 +308,7 @@
   {
     "id": "q160302ex001",
     "skill_id": "sk160302",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el orden de visita en BFS?\n\n```python\nfrom collections import deque\n\n# Grafo: 1 -> 2, 3; 2 -> 4; 3 -> 5\ngraph = {1: [2, 3], 2: [4], 3: [5], 4: [], 5: []}\n\ndef bfs(start):\n    visited = []\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        if node not in visited:\n            visited.append(node)\n            queue.extend(graph[node])\n    return visited\n\nprint(bfs(1))\n```",
     "question_en": "What is the visit order in BFS?\n\n```python\nfrom collections import deque\n\n# Graph: 1 -> 2, 3; 2 -> 4; 3 -> 5\ngraph = {1: [2, 3], 2: [4], 3: [5], 4: [], 5: []}\n\ndef bfs(start):\n    visited = []\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        if node not in visited:\n            visited.append(node)\n            queue.extend(graph[node])\n    return visited\n\nprint(bfs(1))\n```",
@@ -375,7 +375,7 @@
   {
     "id": "q160302ex002",
     "skill_id": "sk160302",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el orden de visita en DFS?\n\n```python\ngraph = {1: [2, 3], 2: [4], 3: [5], 4: [], 5: []}\n\ndef dfs(start, visited=None):\n    if visited is None:\n        visited = []\n    visited.append(start)\n    for neighbor in graph[start]:\n        if neighbor not in visited:\n            dfs(neighbor, visited)\n    return visited\n\nprint(dfs(1))\n```",
     "question_en": "What is the visit order in DFS?\n\n```python\ngraph = {1: [2, 3], 2: [4], 3: [5], 4: [], 5: []}\n\ndef dfs(start, visited=None):\n    if visited is None:\n        visited = []\n    visited.append(start)\n    for neighbor in graph[start]:\n        if neighbor not in visited:\n            dfs(neighbor, visited)\n    return visited\n\nprint(dfs(1))\n```",
@@ -419,7 +419,7 @@
   {
     "id": "q160302ex003",
     "skill_id": "sk160302",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es la complejidad de este DFS?\n\n```python\n# DFS en grafo con V vértices y E aristas\nprint(\"O(V + E)\")\n```",
     "question_en": "What is the complexity of this DFS?\n\n```python\n# DFS in graph with V vertices and E edges\nprint(\"O(V + E)\")\n```",
@@ -459,7 +459,7 @@
   {
     "id": "q160302ex004",
     "skill_id": "sk160302",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "hard",
     "question_es": "¿Cuántos nodos visitará BFS en este grafo?\n\n```python\nfrom collections import deque\n\ngraph = {0: [1, 2], 1: [3], 2: [3], 3: [4], 4: []}\nvisited = set()\nqueue = deque([0])\ncount = 0\n\nwhile queue:\n    node = queue.popleft()\n    if node not in visited:\n        visited.add(node)\n        count += 1\n        queue.extend(graph[node])\n\nprint(count)\n```",
     "question_en": "How many nodes will BFS visit in this graph?\n\n```python\nfrom collections import deque\n\ngraph = {0: [1, 2], 1: [3], 2: [3], 3: [4], 4: []}\nvisited = set()\nqueue = deque([0])\ncount = 0\n\nwhile queue:\n    node = queue.popleft()\n    if node not in visited:\n        visited.add(node)\n        count += 1\n        queue.extend(graph[node])\n\nprint(count)\n```",
@@ -503,7 +503,7 @@
   {
     "id": "q160302ex005",
     "skill_id": "sk160302",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuántas aristas tiene este grafo?\n\n```python\ngraph = {0: [1, 2], 1: [3], 2: [3], 3: []}\nedge_count = sum(len(neighbors) for neighbors in graph.values())\nprint(edge_count)\n```",
     "question_en": "How many edges does this graph have?\n\n```python\ngraph = {0: [1, 2], 1: [3], 2: [3], 3: []}\nedge_count = sum(len(neighbors) for neighbors in graph.values())\nprint(edge_count)\n```",
@@ -543,7 +543,7 @@
   {
     "id": "q160302ex006",
     "skill_id": "sk160302",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el camino más corto de 0 a 4 encontrado por BFS?\n\n```python\nfrom collections import deque\n\ngraph = {0: [1, 2], 1: [4], 2: [3], 3: [5], 5: [4], 4: []}\n\ndef bfs_shortest_path(start, end):\n    queue = deque([(start, [start])])\n    visited = {start}\n    \n    while queue:\n        node, path = queue.popleft()\n        if node == end:\n            return path\n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append((neighbor, path + [neighbor]))\n    return None\n\npath = bfs_shortest_path(0, 4)\nprint(len(path) - 1)  # Número de aristas\n```",
     "question_en": "What is the shortest path from 0 to 4 found by BFS?\n\n```python\nfrom collections import deque\n\ngraph = {0: [1, 2], 1: [4], 2: [3], 3: [5], 5: [4], 4: []}\n\ndef bfs_shortest_path(start, end):\n    queue = deque([(start, [start])])\n    visited = {start}\n    \n    while queue:\n        node, path = queue.popleft()\n        if node == end:\n            return path\n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append((neighbor, path + [neighbor]))\n    return None\n\npath = bfs_shortest_path(0, 4)\nprint(len(path) - 1)  # Number of edges\n```",
@@ -587,7 +587,7 @@
   {
     "id": "q160303ex001",
     "skill_id": "sk160303",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el 5° número de Fibonacci usando DP?\n\n```python\ndef fib(n, memo={}):\n    if n in memo:\n        return memo[n]\n    if n <= 1:\n        return n\n    memo[n] = fib(n-1, memo) + fib(n-2, memo)\n    return memo[n]\n\nprint(fib(5))\n```",
     "question_en": "What is the 5th Fibonacci number using DP?\n\n```python\ndef fib(n, memo={}):\n    if n in memo:\n        return memo[n]\n    if n <= 1:\n        return n\n    memo[n] = fib(n-1, memo) + fib(n-2, memo)\n    return memo[n]\n\nprint(fib(5))\n```",
@@ -654,7 +654,7 @@
   {
     "id": "q160303ex002",
     "skill_id": "sk160303",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es la complejidad sin memoización?\n\n```python\n# Fibonacci recursivo puro sin DP\n# Cada llamada genera 2 nuevas llamadas\n# Árbol de recursión: 2^n nodos\nprint(\"O(2^n)\")\n```",
     "question_en": "What is the complexity without memoization?\n\n```python\n# Pure recursive Fibonacci without DP\n# Each call generates 2 new calls\n# Recursion tree: 2^n nodes\nprint(\"O(2^n)\")\n```",
@@ -698,7 +698,7 @@
   {
     "id": "q160303ex003",
     "skill_id": "sk160303",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "hard",
     "question_es": "¿Cuál es el problema del Knapsack 0/1 con DP?\n\n```python\n# Problema clásico de DP\n# Dados items con peso y valor, maximizar valor con capacidad limitada\n# Cada item se toma o no se toma (0/1)\nprint(\"Knapsack 0/1\")\n```",
     "question_en": "What is the 0/1 Knapsack problem with DP?\n\n```python\n# Classic DP problem\n# Given items with weight and value, maximize value with limited capacity\n# Each item is taken or not taken (0/1)\nprint(\"Knapsack 0/1\")\n```",
@@ -738,7 +738,7 @@
   {
     "id": "q160303ex004",
     "skill_id": "sk160303",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el 10° número de Fibonacci usando tabulation?\n\n```python\ndef fib_tab(n):\n    if n <= 1:\n        return n\n    dp = [0] * (n + 1)\n    dp[1] = 1\n    for i in range(2, n + 1):\n        dp[i] = dp[i-1] + dp[i-2]\n    return dp[n]\n\nprint(fib_tab(10))\n```",
     "question_en": "What is the 10th Fibonacci number using tabulation?\n\n```python\ndef fib_tab(n):\n    if n <= 1:\n        return n\n    dp = [0] * (n + 1)\n    dp[1] = 1\n    for i in range(2, n + 1):\n        dp[i] = dp[i-1] + dp[i-2]\n    return dp[n]\n\nprint(fib_tab(10))\n```",
@@ -782,7 +782,7 @@
   {
     "id": "q160303ex005",
     "skill_id": "sk160303",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el espacio extra necesario para tabulación?\n\n```python\n# Tabulación para Fibonacci(n)\n# Necesita un array de tamaño n+1\nprint(\"O(n)\")\n```",
     "question_en": "What is the extra space needed for tabulation?\n\n```python\n# Tabulation for Fibonacci(n)\n# Needs an array of size n+1\nprint(\"O(n)\")\n```",
@@ -826,7 +826,7 @@
   {
     "id": "q160304ex001",
     "skill_id": "sk160304",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el cambio mínimo usando monedas greedy?\n\n```python\nmonedas = [25, 10, 5, 1]\nmonto = 41\ncount = 0\nfor moneda in monedas:\n    count += monto // moneda\n    monto %= moneda\nprint(count)\n```",
     "question_en": "What is the minimum change using greedy coins?\n\n```python\nmonedas = [25, 10, 5, 1]\nmonto = 41\ncount = 0\nfor moneda in monedas:\n    count += monto // moneda\n    monto %= moneda\nprint(count)\n```",
@@ -893,7 +893,7 @@
   {
     "id": "q160304ex002",
     "skill_id": "sk160304",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuántas actividades se seleccionan con greedy?\n\n```python\n# Actividades: (inicio, fin)\nactividades = [(1, 3), (2, 5), (4, 6), (6, 8), (7, 9)]\nactividades.sort(key=lambda x: x[1])  # Ordenar por fin\nseleccionadas = []\nfin_anterior = 0\n\nfor inicio, fin in actividades:\n    if inicio >= fin_anterior:\n        seleccionadas.append((inicio, fin))\n        fin_anterior = fin\n\nprint(len(seleccionadas))\n```",
     "question_en": "How many activities are selected with greedy?\n\n```python\n# Activities: (start, end)\nactividades = [(1, 3), (2, 5), (4, 6), (6, 8), (7, 9)]\nactividades.sort(key=lambda x: x[1])  # Sort by end\nseleccionadas = []\nfin_anterior = 0\n\nfor inicio, fin in actividades:\n    if inicio >= fin_anterior:\n        seleccionadas.append((inicio, fin))\n        fin_anterior = fin\n\nprint(len(seleccionadas))\n```",
@@ -937,7 +937,7 @@
   {
     "id": "q160304ex003",
     "skill_id": "sk160304",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "hard",
     "question_es": "¿Cuál es la estrategia greedy de Huffman?\n\n```python\n# Huffman construye un árbol combinando los 2 nodos menos frecuentes\n# Es un greedy que produce compresión óptima\nprint(\"Combinar nodos menos frecuentes\")\n```",
     "question_en": "What is Huffman's greedy strategy?\n\n```python\n# Huffman builds a tree by combining the 2 least frequent nodes\n# It's a greedy that produces optimal compression\nprint(\"Combine least frequent nodes\")\n```",
@@ -977,7 +977,7 @@
   {
     "id": "q160304ex004",
     "skill_id": "sk160304",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es el costo mínimo de viaje greedy?\n\n```python\n# Problema Jumping Game: saltar desde 0 a n-1\n# En cada posición i, podemos saltar hasta i distancias\njump_game = [2, 3, 1, 1, 4]\ncurrent = 0\njumps = 0\nwhile current < len(jump_game) - 1:\n    jumps += 1\n    current += jump_game[current]\nprint(jumps)\n```",
     "question_en": "What is the minimum cost of greedy travel?\n\n```python\n# Jumping Game problem: jump from 0 to n-1\n# At position i, we can jump up to i distances\njump_game = [2, 3, 1, 1, 4]\ncurrent = 0\njumps = 0\nwhile current < len(jump_game) - 1:\n    jumps += 1\n    current += jump_game[current]\nprint(jumps)\n```",
@@ -1021,7 +1021,7 @@
   {
     "id": "q160304ex005",
     "skill_id": "sk160304",
-    "type": "fill_blank_exec",
+    "type": "fill_blank",
     "difficulty_tier": "medium",
     "question_es": "¿Cuál es la solución greedy de cambio de monedas?\n\n```python\nmonedas = [50, 25, 10, 5, 1]\nmonto = 87\ncambio = []\nfor moneda in monedas:\n    while monto >= moneda:\n        cambio.append(moneda)\n        monto -= moneda\nprint(len(cambio))\n```",
     "question_en": "What is the greedy coin change solution?\n\n```python\nmonedas = [50, 25, 10, 5, 1]\nmonto = 87\ncambio = []\nfor moneda in monedas:\n    while monto >= moneda:\n        cambio.append(moneda)\n        monto -= moneda\nprint(len(cambio))\n```",
