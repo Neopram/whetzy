@@ -9,6 +9,17 @@
   display: flex;
   z-index: var(--le-z-sticky);
   padding-bottom: env(safe-area-inset-bottom, 0);
+  transition: transform var(--le-transition-base);
+}
+
+/* Al bajar por la página la barra se aparta (useHideOnScroll) y deja ver lo que
+   tapaba; vuelve al subir, arriba del todo, al final o con el foco del teclado. */
+.hidden {
+  transform: translateY(100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav { transition: none; }
 }
 
 .item {
