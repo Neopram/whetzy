@@ -23,19 +23,18 @@ puerta (bcrypt 5, typescript 7, redis 8) y sesiones paralelas editando los mismo
 | S5 | Fundador-ingeniero (fase 0) e integrador (fase 2) | `claude/sleepy-faraday-fhfmd3` | — |
 | S6 | Marketing y crecimiento | `claude/ecstatic-meitner-2x08pf` | `marketing.json` |
 
-**Arranque de S1–S4 y S6:** este fichero está en `origin/master` **y** S5 ha comentado en el #89
-`[S5] FASE 0 FUSIONADA`. Cada sesión trabaja en su rama de la tabla, puesta al día con
-`git merge origin/master`, con un PR por tema.
+**Arranque:** por decisión del dueño (comentario `[COORD] ARRANQUE YA` del #89, 2026-10-02
+21:45 UTC) S1–S4 y S6 trabajan ya sobre `origin/master`. Lo único que esperan al PR A de la
+fase 0 son sus ficheros: S1, `frontend/src/App.tsx`, `frontend/src/i18n.ts`,
+`frontend/src/test/i18n.parity.test.ts` y `producto.json`; S4, `legal.json`; S6,
+`frontend/src/pages/marketing/**` y `marketing.json`. Cada sesión trabaja en su rama de la
+tabla, puesta al día con `git merge origin/master`, con un PR por tema.
 
-## 2. Estado de este mapa — léelo antes de fiarte de §4
+## 2. De dónde sale este mapa
 
-- **S5 (§4.5): exacto**, copiado de su prompt.
-- **S1–S4 y S6: PROPUESTA de S5, sin contrastar.** S5 no tiene los prompts de las otras cinco;
-  los globs salen de la estructura del repo y del rol de cada una en el #89. Que `common.json`
-  sea de S1 es una inferencia: las Reglas de hierro dicen «la sesión 2» con la numeración vieja,
-  en la que la sesión 1 era la de fase 0 (hoy S5) y los ficheros de rol venían en el orden
-  producto, contenido, motor, legal, marketing. **Si el prompt de una sesión dice otra cosa,
-  manda su prompt**: lo anota en su PR y S5 corrige este fichero.
+Los terrenos de §4 son los de cada prompt, copiados del comentario `[COORD] → S5` del #89
+(2026-10-02). Si el prompt de una sesión y este fichero dicen cosas distintas, manda su prompt:
+lo anota en su PR y S5 corrige este fichero.
 
 ## 3. Ficheros compartidos — solo los edita S5
 
@@ -55,49 +54,41 @@ antes de aplicarlo; si no se reproduce, no lo aplica.
 
 ## 4. Terrenos
 
-### 4.1 S1 — full stack (PROPUESTA)
+### 4.1 S1 — full stack
 
 ```
-frontend/src/i18n/{es,en}/common.json      (la ÚNICA sesión que lo edita)
-frontend/src/i18n/{es,en}/producto.json
-frontend/src/pages/*.tsx, frontend/src/pages/*.css   (salvo LegalScreen*, DeleteAccountScreen*)
-frontend/src/components/**, frontend/src/hooks/**, frontend/src/stores/**, frontend/src/styles/**
-frontend/src/services/api.ts, backend/app/api/**, backend/app/schemas/**, backend/app/models/**
-backend/alembic/versions/**                (con la regla de §5)
-docs/MAPA_PRODUCTO.md, docs/PLAN_EXPERIENCIA.md, docs/design/**, docs/API.md
+frontend/src/**  salvo: frontend/src/i18n/{es,en}/{contenido,motor,legal,marketing}.json,
+                        frontend/src/pages/marketing/**, frontend/src/widgets/**
+frontend/src/i18n/{es,en}/common.json      (la ÚNICA sesión que lo edita) y producto.json
+frontend/src/App.tsx                       (tras la fase 0)
+backend/app/api/v1/endpoints/**  salvo los del motor, la newsletter y lo legal; sus tests
+migraciones: con la regla de §5 (19.11, moderación, lleva una)
 ```
 
-### 4.2 S2 — contenido y certificaciones (PROPUESTA)
+### 4.2 S2 — contenido y certificaciones
 
 ```
-content/**                                 (salvo content/economy/**)
-scripts/content_qa/**, scripts/check_question_bank.py, scripts/catalog_coverage.py,
-scripts/metas_catalogo.json, scripts/check_content_sources.py, scripts/check_source_licenses.py
-backend/tests/content/**
-frontend/src/i18n/{es,en}/contenido.json
-docs/CATALOGO_MAESTRO.md
+content/**  salvo content/blog/** y content/legal/**
+backend/tests/content/**   scripts/content_qa/**   scripts/metas_catalogo.json
+docs/CATALOGO_MAESTRO.md   frontend/src/i18n/{es,en}/contenido.json
 ```
 
-### 4.3 S3 — matemático del motor (PROPUESTA)
+### 4.3 S3 — matemático del motor
 
 ```
-backend/app/services/engine/**, backend/app/services/{quiz,placement,progress,mock_exam,track_exam,lesson_gate,mastery_report,dkt}.py
-backend/app/ml/**
-frontend/src/i18n/{es,en}/motor.json
-docs/ml/**
+los módulos del motor (BKT, FSRS, DKT, placement): S3 declara la lista exacta con grep en su
+primer commit; incluye backend/app/services/ai/rag.py y
+backend/tests/integration/test_rag_self_retrieval.py (39.32)
+docs/ml/**   sus tests   frontend/src/i18n/{es,en}/motor.json
 ```
 
-### 4.4 S4 — abogado y cumplimiento (PROPUESTA)
+### 4.4 S4 — abogado y cumplimiento
 
 ```
-docs/legal/**
-frontend/src/pages/LegalScreen*, frontend/src/pages/DeleteAccountScreen*
-frontend/src/i18n/{es,en}/legal.json       (las claves `legal.*` de common.json siguen en common:
-                                            moverlas es cosa de S1, ADR-55)
-scripts/check_legal_facts.py
+docs/legal/**   content/legal/**   frontend/src/i18n/{es,en}/legal.json
 ```
 
-### 4.5 S5 — fundador-ingeniero e integrador (exacto)
+### 4.5 S5 — fundador-ingeniero e integrador
 
 Todos los ficheros compartidos de §3, más:
 
@@ -107,23 +98,21 @@ backend/scripts/start.sh
 frontend/scripts/check-deployed.mjs
 frontend/src/i18n.ts                       (el cargador)
 frontend/src/i18n/{es,en}/{producto,contenido,motor,legal,marketing}.json   (solo crearlos vacíos)
-frontend/src/App.tsx                       (solo para dejar las rutas reservadas)
+frontend/src/App.tsx                       (solo en la fase 0, para las rutas reservadas; después es de S1)
 docs/RUNBOOK.md
 docs/SESIONES.md
 ```
 
-### 4.6 S6 — marketing y crecimiento (PROPUESTA)
+### 4.6 S6 — marketing y crecimiento
 
 ```
-frontend/src/pages/marketing/**            (rutas reservadas: /es/carrera, /en/career,
-                                            /es/empresas, /en/enterprise, /blog)
+content/blog/**   docs/distribucion-assets/**   store/**   frontend/src/pages/marketing/**
 frontend/src/i18n/{es,en}/marketing.json
-docs/DISTRIBUCION.md, docs/distribucion-assets/**, docs/COMPETENCIA.md, docs/competitive-teardown.md
+un endpoint NUEVO de newsletter con su test (si lleva migración, regla de §5)
 ```
 
-**Sin dueño en esta propuesta** (quien lo necesite lo pide con `[S<n>] NECESITO` en el #89):
-el resto de `backend/app/services/**`, `backend/tests/**` fuera de contenido,
-`docs/ARCHITECTURE.md`, `docs/ECONOMIA.md`, `content/economy/**`.
+Lo que no aparece en ninguna lista no tiene dueño: quien lo necesite lo pide con
+`[S<n>] NECESITO` en el #89.
 
 ## 5. Migraciones de Alembic
 
