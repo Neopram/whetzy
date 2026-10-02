@@ -69,6 +69,11 @@ def configure_logging(level: int = logging.INFO) -> None:
     root.handlers.clear()
     root.addHandler(handler)
     root.setLevel(level)
+    # aiosqlite registra en DEBUG cada sentencia con sus parámetros. Con
+    # DEBUG=true (el .env de desarrollo) eso volcaba hashes y datos al log, y en
+    # los tests que cargan el corpus pytest retenía cientos de MB de log por
+    # test: la suite moría por memoria (exit 137) a los ~10 GB (2026-10-02).
+    logging.getLogger("aiosqlite").setLevel(max(level, logging.INFO))
 
 
 # ── Request-ID middleware ─────────────────────────────────────────────────────
