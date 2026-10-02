@@ -36,33 +36,36 @@
 
 ## 1. Estado por fase
 
-> Tabla completa archivada en `docs/archive/LEDGER_HISTORY.md` §F.
-> Ver ## 2 para el estado actual de cada tarea.
+> Generada desde las filas de `## 2` con `python scripts/ledger.py fases --write`; no se edita
+> a mano (`ledger.py check` falla si no cuadra). Series ≤ 16 y 25: `LEDGER_HISTORY.md` §F y §M.
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 40 | Superar a Brilliant y Kodree donde hoy ganan (`PLAN_EXPERIENCIA.md`) | 0/13 | 0 % | TODO (abierta 2026-09-28); 40.1 y 40.2 primero |
-| 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47) | 0/6 | 0 % | TODO (abierta 2026-09-24); 38.2, 38.3, 38.4… |
-| 37 | Catálogo uniforme 32 × 10, simulacros reservados, demanda (ADR-54) | 5/22 | 23 % | **PRI 1 ABIERTA 2026-09-30.** 37.14, 37.16, 37.18, 37.19, 37.20 DONE; 37.23 es la vieja 37.1 (alineación lección↔quiz) heredada de la rama |
-| 34 | Una sola interfaz — todas las pantallas al estilo de la landing | 0/12 | 0 % | **Grueso hecho el 2026-09-24 (PR #6):** 276 clases… |
-| 33 | Operación medible — SLO, restauración, offline idempotente | 0/3 | 0 % | TODO (abierta 2026-09-24) |
-| 32 | Motor demostrable — calibración y evidencia | 0/4 | 0 % | TODO · 32.2 BLOCKED (H.10) |
-| 31 | Fuente única de cifras, staging, migraciones con datos | 0/4 | 0 % | TODO · 31.1 HUMAN-BLOCKED (H.16) |
-| 30 | Integridad del despliegue — incidente de login 2026-09-24 | 0/9 | 0 % | **PRI 0 ABIERTA.** Login roto en prod (bundle con API = el… |
-| 29 | Economía cerrada y rails (créditos, referidos, códigos, USDC, credenciales) — ADR-33…37 | 0/13 (4 PARCIAL) | 0 % | **Recalificada… |
-| 28 | Marketplace de instructores | 0/10 (8 PARCIAL) | 0 % | **Recalificada 2026-09-24:** las filas 28.0–28.7 decían BLOCKED mientras esta… |
-| 27 | Distribución masiva EN | 0/11 | 0 % | ABIERTA 2026-09-24 (ADR-47): se redacta todo; publicar bajo cuenta nueva = H.23 |
-| 26 | Distribución masiva ES | 2/11 | 18 % | ABIERTA 2026-09-24 (ADR-47); 26.9 blog y 26.10 newsletter nuevas. PARCIAL —… |
-| 25 | Expansión de contenido — **absorbida por la serie 37** (ADR-53, 2026-09-30) | — | — | Filas archivadas en LEDGER_HISTORY §M |
-| 24 | Interfaz que venda al verse (UI/UX, competencia en vivo, vídeo) | 6/15 | 40 % | **Recalificada 2026-09-24 (ADR-45):** las 9 filas… |
-| 23 | Dos segmentos, un producto — ES y EN | 1/5 | 20 % | 23.1 PARCIAL · 23.2, 23.3, 23.4 |
-| 22 | Blindaje, admin y preparación para un millón | 7/14 | 50 % | 22.1 y 22.6 PARCIAL · 22.2, 22.4, 22.5, 22.7, 22.13 |
-| 21 | Legal y fiscal a coste cero | 1/6 | 17 % | 21.0 DONE · 21.5 PARCIAL (1/4) · 21.6 PARCIAL (2/4) · 21.3, 21.4, 21.8 · **21.1, 21.2 y… |
-| 20 | Verificación masiva código↔docs↔prod | 9/11 | 82 % | 20.7 (**REFUTADA 2026-09-19**: `verify_ci_local.ps1` moría en `pip install`;… |
-| 19 | Catálogo 27 tracks (histórico; plan actual ADR-53) + cert marketplace | 2/12 | 17 % | 19.2–19.12 |
-| 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 3/5 | 60 % | 18.5 |
-| 17 | Plataforma + engine + monetización | mayoría DONE | ~95 % | ver archive §B |
-| ≤16 | Fases 1–16 | todas DONE | 100 % | — |
+| 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
+| 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 27/41 | 66 % | 39.8, 39.9, 39.10, 39.13, 39.14, 39.24 +6 |
+| 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
+| 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 5/22 | 23 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +11 |
+| 35 | Lo que el mercado enseña: competencia verificada → producto | 3/5 | 60 % | 35.6, 35.9 |
+| 34 | Una sola interfaz: todas las pantallas al lenguaje visual de la landi… | 4/11 | 36 % | 34.2, 34.3, 34.4, 34.6, 34.7, 34.8 +1 |
+| 33 | Operación medible — SLO, restauración y offline idempotente | 1/1 | 100 % | — |
+| 32 | Motor demostrable — calibración y evidencia de aprendizaje | 2/3 | 67 % | 32.2 |
+| 31 | Fuente única de cifras, staging y migraciones con datos | 3/7 | 50 % | 31.1, 31.5, 31.6, 31.8 |
+| 30 | Integridad del despliegue — incidente de login del 2026-09-24 | 2/4 | 50 % | 30.2, 30.5 |
+| 29 | Economía cerrada y rails — créditos, referidos, códigos, USDC, creden… | 7/8 | 88 % | 29.9 |
+| 28 | Marketplace de instructores | 2/9 | 22 % | 28.0, 28.1, 28.3, 28.4, 28.5, 28.7 +1 |
+| 27 | Distribución masiva EN | 0/11 | 0 % | 27.0, 27.1, 27.2, 27.3, 27.4, 27.5 +5 |
+| 26 | Distribución masiva ES | 0/11 | 0 % | 26.0, 26.1, 26.2, 26.3, 26.4, 26.5 +5 |
+| 24 | Interfaz que venda al verse — UI/UX + competencia en vivo + vídeo | 1/9 | 11 % | 24.0, 24.1, 24.2, 24.3, 24.4, 24.6 +2 |
+| 23 | Dos segmentos, un producto — ES y EN sin mezclar | 3/5 | 60 % | 23.2, 23.3 |
+| 22 | Blindaje, admin y preparación para un millón — todo a coste cero | 0/1 | 0 % | 22.5 |
+| 21 | Legal y fiscal a coste cero — investigación, borradores, gates humanos | 0/4 | 0 % | 21.1, 21.2, 21.5, 21.6 |
+| 20 | Verificación masiva código ↔ docs ↔ prod | 1/1 | 100 % | — |
+| 19 | Lo que Educative y las tiendas exigen — social login, bootcamps, proy… | 1/8 | 14 % | 19.2, 19.3, 19.7, 19.8, 19.9, 19.10 +1 |
+| 18 | Techo de código — todo el catálogo, sin racionar | 1/5 | 20 % | 18.9, 18.10, 18.11, 18.12 |
+| 17 | De quiz a escuela + release definitivo | 0/5 | 0 % | 17.5, 17.6, 17.7, 17.10, 17.14 |
+| 16 | CI en rojo | 0/4 | 0 % | 14.10 |
+| 14 | La cuña | 0/5 | 0 % | 14.7, 14.8, 14.9, 14.13, 14.14 |
+| 11 | Superioridad medible | 1/3 | 50 % | 11.8, 11.9 |
 
 ---
 
@@ -523,7 +526,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.14 | iOS no se puede generar ni compilar en este PC (Windows, sin… |
 | H.6 | Cadena de sesiones |
 | H.7 | Rutina remota — única forma de no depender de la app abierta |
-| H.8 | `GROQ_API_KEY` ausente localmente |
+| H.8 | **OBSOLETA 2026-10-02**: bloqueo falso (13.2); P.8 y 10.2, lo único que bloqueaba, están DONE (LEDGER_HISTORY). La rotación de la clave es H.12 |
 | H.9 | Dispositivo físico o emulador con lector de pantalla real pa… |
 | H.10 | Cohorte beta ≥ 30 usuarios reales (11.8) |
 | H.17 | Ver H.13 |
@@ -532,18 +535,18 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.20 | Revisión profesional de los textos legales antes de publicar… |
 | H.22 | RESUELTA 2026-10-01 (dueño): OWASP CC BY-SA no se usa (ADR-47); seguridad con NIST + MITRE |
 | H.23 | Abrir la Serie 26 (distribución ES) cuando 24.14 esté DONE |
-| H.24 | Abrir la Serie 28 (marketplace) cuando 22.1 y 22.3 estén DON… |
+| H.24 | **OBSOLETA 2026-10-02**: la serie 28 ya está abierta en §2 (9 filas) |
 | H.25 | Activar payouts de instructores en producción (28.7) |
-| H.26 | Abrir la Serie 29 (economía cerrada) cuando 24.6 esté DONE: … |
+| H.26 | **OBSOLETA 2026-10-02**: la serie 29 ya está abierta en §2 (8 filas) |
 | H.27 | cNFT de certificados en Solana (29.10, opcional; ADR-37): wa… |
 | H.28 | Grant / bounty de la Solana Foundation o Superteam para trac… |
 | H.29 | DECIDIDO 2026-10-01 (dueño): Grecia; web = Paddle, tiendas = IAP/Play Billing vía RevenueCat; sin Stripe. Web: `/checkout` hecho; falta alta Paddle y dominio |
 | H.30 | RESUELTA 2026-10-01: Resend en producción (log «Email: proveedor resend») |
 | H.31 | **RESUELTA** (ADR-50m) — landing servida 2026-09-26 sin testimonios ni «1.2M» |
-| H.32 | **2** | H.32 | **RESUELTA** | **RESUELTA** `e40ba75` (2026-09-24) → §I |
+| H.32 | **RESUELTA** `e40ba75` (2026-09-24): la API sale solo de `.env.production` y el prerender va en todo `vite build` → §J |
 | H.33 | **RESUELTA 2026-09-26** — log Railway `b64e2a9a`/`f097361c`: `[owner] unchanged: admin@whetzy.com` (falta solo login `/admin` de 30.8) |
 | H.34 | **RESUELTA 2026-09-26** — conector Railway activo; permisos en `CONECTORES.md` |
-| H.35 | **2** | H.35 | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| H.35 | **PARCIAL** (2026-09-25): mensuales fijados (ADR-41, ADR-49); faltan anual, tarifa regional, base del 80 %, cupo de Pro y la cert 39,99 $ → §J |
 | H.38 | Afiliación con Python Institute y CompTIA (38.3) |
 | H.39 | 3 pilotos B2B gratuitos (38.2, ADR-22) |
 | H.40 | Reclutar 5 instructores fundadores (28.9) |
