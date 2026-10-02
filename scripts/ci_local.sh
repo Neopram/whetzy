@@ -12,6 +12,18 @@
 # Uso: bash scripts/ci_local.sh            (corre todo, sobre un worktree de HEAD)
 #      bash scripts/ci_local.sh --sha X    (sobre un worktree del commit X; el hook)
 #      bash scripts/ci_local.sh --estado   (que paso la ultima vez)
+#      bash scripts/ci_local.sh --carril pr96 --sha X   (carril propio, ver abajo)
+#      bash scripts/ci_local.sh --carril pr96 --estado
+#
+# Carriles. Por defecto hay UN nivel 2 por checkout: el cerrojo
+# (.ci-local/corriendo.pid) mata al anterior, porque el nuevo lleva el commit
+# mas reciente y varias suites a la vez dejaron la maquina sin CPU (2026-09-27).
+# Eso es lo que quiere el hook (pushes seguidos de la misma rama), pero no dos
+# PRs distintos de la misma sesion: el 2026-10-02 el nivel 2 del #96 murio con
+# `exit 137` al lanzar el del #99 desde el mismo checkout. `--carril <nombre>`
+# separa cerrojo, bitacora (.ci-local/carril-<nombre>/) y worktree
+# ($CACHE/wt-nivel2-<nombre>): dos carriles corren a la vez; dentro de un carril
+# el nuevo sigue matando al viejo. Sin `--carril`, todo queda como antes.
 #
 # Sesiones en la nube (o cualquier shell que se cierre al acabar el comando):
 # un `nohup ... &` lanzado desde ahi muere con el shell y deja «CORRIENDO» sin
@@ -32,7 +44,24 @@ main() {
 
 RAIZ="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$RAIZ" || exit 1
-BITACORA="$RAIZ/.ci-local"
+
+MODO="correr"
+CARRIL=""
+_sha_pedido="HEAD"
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --estado) MODO="estado"; shift ;;
+    --sha) [ -n "${2:-}" ] && _sha_pedido="$2"; shift 2 || shift ;;
+    --carril)
+      CARRIL="${2:-}"; shift 2 || shift
+      if ! printf '%s' "$CARRIL" | grep -Eq '^[a-z0-9][a-z0-9-]{0,39}$'; then
+        echo "--carril necesita un nombre en [a-z0-9-] (p. ej. pr96), y es '$CARRIL'" >&2; exit 2
+      fi ;;
+    *) echo "argumento desconocido: $1" >&2; exit 2 ;;
+  esac
+done
+
+BITACORA="$RAIZ/.ci-local${CARRIL:+/carril-$CARRIL}"
 mkdir -p "$BITACORA"
 
 # ¿Sigue vivo el nivel 2 del cerrojo? `kill -0` solo no basta: tras un
@@ -48,7 +77,7 @@ nivel2_vivo() {
   return 0
 }
 
-if [ "${1:-}" = "--estado" ]; then
+if [ "$MODO" = "estado" ]; then
   if [ ! -f "$BITACORA/estado" ]; then
     echo "todavia no ha corrido nunca"
     exit 0
@@ -140,11 +169,9 @@ trap 'rm -f "$CERROJO" "$BITACORA/paso.winpid"' EXIT
 # editaba. Ahora corre sobre un worktree del SHA (el empujado, que le pasa el
 # hook con --sha; HEAD si se lanza a mano), fuera del proyecto. node_modules se
 # enlaza desde el árbol principal: reinstalarlo costaría minutos por push.
-_sha_pedido="HEAD"
-[ "${1:-}" = "--sha" ] && [ -n "${2:-}" ] && _sha_pedido="$2"
 SHA_COMPLETO="$(git rev-parse --verify "$_sha_pedido^{commit}" 2>/dev/null)" || {
   echo "ROJO"$'\n'"$(date '+%Y-%m-%d %H:%M') · no existe el commit $_sha_pedido" > "$BITACORA/estado"; exit 1; }
-ARBOL="$CACHE/wt-nivel2"
+ARBOL="$CACHE/wt-nivel2${CARRIL:+-$CARRIL}"
 NM="$ARBOL/frontend/node_modules"
 # El enlace se quita ANTES de borrar el worktree: un borrado recursivo que lo
 # siguiera vaciaría el node_modules del árbol principal. En Windows es una
