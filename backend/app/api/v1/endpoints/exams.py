@@ -24,6 +24,7 @@ from app.schemas.exam import (
     MockExamStartResponse,
     MockExamSubmitRequest,
     MockExamSubmitResponse,
+    TestOutBlueprint,
     TrackExamBlueprint,
     TrackExamStartResponse,
     TrackExamSubmitResponse,
@@ -291,6 +292,20 @@ async def start_track_exam(
     except track_exam_service.TrackExamError as err:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, str(err)) from err
     return await _start_and_serialise(db, attempt)
+
+
+@router.get("/module/{module_id}/test-out/blueprint", response_model=TestOutBlueprint)
+async def get_test_out_blueprint(
+    module_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> TestOutBlueprint:
+    """Size of a module test-out and whether its questions are there to draw it."""
+    try:
+        blueprint = await track_exam_service.test_out_blueprint(db, module_id)
+    except track_exam_service.TrackExamError as err:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(err)) from err
+    return TestOutBlueprint(**blueprint)
 
 
 @router.post(

@@ -105,6 +105,7 @@ GET  /exams/mock/{attempt_id}               → rereads a graded attempt
 
 GET  /exams/track/{track_id}/blueprint      → questions, minutes, pass mark (before committing)
 POST /exams/track/{track_id}/start          → course final exam (17.2)
+GET  /exams/module/{module_id}/test-out/blueprint → {module_id, skills, questions, duration_minutes, pass_pct, available} — available=false si alguna skill no tiene preguntas para montarla (start respondería 400); 404 si el módulo no existe
 POST /exams/module/{module_id}/test-out/start → module test-out (17.2)
 POST /exams/track/{attempt_id}/submit       → per-skill report + verdict + certificate
 

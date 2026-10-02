@@ -13,6 +13,7 @@ import {
   glossary as glossaryApi,
   type CurriculumModule,
   type CurriculumSkill,
+  type TestOutBlueprint,
   type TrackExamBlueprint,
   type TrackRead,
 } from '../services/api';
@@ -468,10 +469,41 @@ function ModuleItem({
               </div>
             )}
             {needsLesson && <p className={styles.note}>{t('tracks.needsLessonNote')}</p>}
+            {m.status === 'available' && <TestOutOffer moduleId={m.id} />}
           </motion.div>
         )}
       </AnimatePresence>
     </li>
+  );
+}
+
+// Saltar un módulo que ya sabes (17.2, O1.4). Solo en módulos disponibles sin
+// completar: aprobar sube el dominio del módulo y eso desbloquea el siguiente.
+// Las cifras y si se puede montar las da el backend con la misma función que
+// sortea la prueba; sin preguntas suficientes no hay botón que acabe en un 400.
+function TestOutOffer({ moduleId }: { moduleId: string }) {
+  const { t } = useTranslation();
+  const startTrackExam = useAppStore((s) => s.startTrackExam);
+  const { data: bp } = useApi<TestOutBlueprint>(() => examsApi.testOutBlueprint(moduleId), [moduleId]);
+  if (!bp?.available) return null;
+  return (
+    <button
+      type="button"
+      className={styles.placement}
+      onClick={() =>
+        startTrackExam('test_out', moduleId, {
+          questions: bp.questions,
+          durationMinutes: bp.duration_minutes,
+          passPct: bp.pass_pct,
+        })
+      }
+    >
+      <span className={styles.placementText}>
+        <strong>{t('tracks.testOutCta')}</strong>
+        <span>{t('testOut.format', { count: bp.questions, minutes: bp.duration_minutes, pass: bp.pass_pct })}</span>
+      </span>
+      <span className={styles.placementGo} aria-hidden="true">→</span>
+    </button>
   );
 }
 

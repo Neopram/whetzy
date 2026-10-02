@@ -952,6 +952,16 @@ export interface TrackExamBlueprint {
   pass_pct: number;
 }
 
+/** Prueba para saltar un módulo; `available` false = faltan preguntas para montarla. */
+export interface TestOutBlueprint {
+  module_id: string;
+  skills: number;
+  questions: number;
+  duration_minutes: number;
+  pass_pct: number;
+  available: boolean;
+}
+
 export interface TrackExamStartResponse {
   attempt_id: string;
   track_id: string;
@@ -1048,6 +1058,10 @@ export const exams = {
 
   async startTrackExam(trackId: string) {
     return request<TrackExamStartResponse>(`/exams/track/${trackId}/start`, { method: 'POST' });
+  },
+
+  async testOutBlueprint(moduleId: string) {
+    return request<TestOutBlueprint>(`/exams/module/${moduleId}/test-out/blueprint`);
   },
 
   async startTestOut(moduleId: string) {

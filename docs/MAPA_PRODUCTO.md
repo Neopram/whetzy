@@ -42,7 +42,7 @@ Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario)
 | `Screen` | Pantalla | Se llega desde | Subvistas | Especificación |
 |---|---|---|---|---|
 | `home` | `HomeScreen` | pestaña Hoy | preparación, siguiente paso, repaso FSRS, racha, tus rutas, misiones, territorio, herramientas | E2: `design/v2/brief-msg1.md` |
-| `tracks` | `TracksScreen` | pestaña Rutas, filas de «Tus rutas» | catálogo (filtros Todas / Aprender / Certificaciones) y detalle (vistas Currículo / Mapa / Glosario) | E2: `design/v2/brief-msg2.md` §A–B |
+| `tracks` | `TracksScreen` | pestaña Rutas, filas de «Tus rutas» | catálogo (filtros Todas / Aprender / Certificaciones) y detalle (vistas Currículo / Mapa / Glosario; en cada módulo disponible, la prueba para saltarlo si el backend puede montarla, O1.4) | E2: `design/v2/brief-msg2.md` §A–B |
 | `lesson` | `LessonScreen` | «Aprender», una habilidad en Rutas | pasos de texto + paso de ejemplo | E2: `design/v2/brief-msg2.md` §C |
 | `quiz` | `QuizScreen` | pestaña Practicar, «Practicar», repaso | pregunta, ejecución de código, feedback, tutor («¿Por qué?», con etiqueta de IA y «Reportar esta explicación»; se apaga en Ajustes), «Reportar un problema» con la pregunta | E2: `design/v2/brief-msg2.md` §D |
 | `placement` | `PlacementScreen` | «¿Ya sabes algo de esto?» en el detalle de ruta | intro, cargando, test, resultado, error | E0: ledger |
@@ -94,7 +94,6 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Antifraude por dispositivo/IP (1 activación cada 30 días) | `docs/ECONOMIA.md` §3.5 | el código existe (`check_device_rate_limit`), pero el frontend no manda `X-Device-Fingerprint` y la política publicada no declara ese tratamiento: no corre (ADR-57) |
 | Clawback de referidos (reembolso, baneo, fraude confirmado) | `docs/ECONOMIA.md` §3.5 | no hay flujo de baneo ni de «fraude confirmado» que lo dispare; un referido borrado antes del abono queda `rejected` (ADR-57) |
 | Gastar créditos en simulacro, informe PDF o curso | `docs/ECONOMIA.md` §2.3 | `spend_fifo` solo lo llama el comodín de racha (`services/streak_shop.py`) |
-| Examen para saltarse un módulo (test-out) | ledger 17.2 | `TrackExamScreen` y el store aceptan `test_out`; **ninguna llamada a `startTrackExam('test_out', …)`** |
 
 ### 5.2 Existe y no tiene especificación (E0 en §1–§2)
 
