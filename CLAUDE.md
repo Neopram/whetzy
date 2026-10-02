@@ -22,7 +22,7 @@
 - Auditoría externa del 2026-09-19 (histórica, archivada el 2026-10-01: su «el CI no ha corrido nunca» dejó de ser cierto): `docs/archive/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
 - Protocolo de verificación (cada `DONE`, cada doc, modelos y tokens): `docs/PROTOCOLO_VERIFICACION.md`
-- Sesiones en paralelo (qué ficheros escribe cada una, compartidos, migraciones, i18n por rol): `docs/SESIONES.md`
+- Sesiones en paralelo S1–S6 (qué ficheros escribe cada una, compartidos, migraciones, i18n por rol; bus: issue #89): `docs/SESIONES.md`
 - Conectores (Railway, Sentry, PostHog, diseño, redes): cuenta, uso y qué se hace sin preguntar en `docs/CONECTORES.md`. Leer y escribir en privado, sí; producción, publicar, datos de personas, secretos o recursos nuevos, no (ADR-45)
 - Documentos vivos: los del índice `docs/README.md`; `docs/archive/` no manda
 

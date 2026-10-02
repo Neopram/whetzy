@@ -78,7 +78,7 @@ const ProjectScreen = lazy(() =>
 // it stays reachable even when the backend is down.
 const StatusPage = lazy(() => import('./pages/StatusPage'));
 // Rutas de marketing reservadas en la fase 0 (docs/SESIONES.md): las rellena
-// la sesion de marketing; hasta entonces sus componentes estan vacios.
+// S6 (marketing); hasta entonces sus componentes estan vacios.
 const CareerPage = lazy(() => import('./pages/marketing/CareerPage'));
 const EnterprisePage = lazy(() => import('./pages/marketing/EnterprisePage'));
 const BlogPage = lazy(() => import('./pages/marketing/BlogPage'));

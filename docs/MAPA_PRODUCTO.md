@@ -26,7 +26,7 @@ Se resuelven en `App()` antes de cualquier hook; no necesitan sesión salvo dond
 | `/privacy`, `/terms`, `/refund` | `LegalScreen doc=…` | Textos legales publicados (claves i18n `legal.*`) | E1: las propias claves `legal.*` (ADR-55; los borradores, en `docs/archive/legal-borradores/`) |
 | `/evidence` | `EvidenceScreen` | Cifras reales del producto | E0: ledger 38.5 |
 | `/status` | `StatusPage` | Estado público del servicio | E0: ledger 22.7 |
-| `/es/carrera`, `/en/career`, `/es/empresas`, `/en/enterprise`, `/blog` | `marketing/CareerPage`, `marketing/EnterprisePage`, `marketing/BlogPage` | **Reservadas y vacías** (fase 0, 2026-10-02): las rellena la sesión de marketing | E0: `docs/SESIONES.md` |
+| `/es/carrera`, `/en/career`, `/es/empresas`, `/en/enterprise`, `/blog` | `marketing/CareerPage`, `marketing/EnterprisePage`, `marketing/BlogPage` | **Reservadas y vacías** (fase 0, 2026-10-02): las rellena S6 (marketing) | E0: `docs/SESIONES.md` |
 | `/checkout?plan=&track=` | `CheckoutScreen` | Pago web con Paddle (cabeceras propias, sin COEP) | E1: ledger H.29, `docs/API.md` |
 | `/admin` | `AdminScreen` (7 pestañas: metrics, security, content, ops, gdpr, revenue, economy) | Panel del dueño (`role=owner`) | E2: `docs/design/admin-spec.md` |
 | `/certificate/<código>`, `/verify/<código>` | `CertificateScreen` | Verificación pública de un certificado | E1: `docs/ECONOMIA.md` §11, ADR-37 |
