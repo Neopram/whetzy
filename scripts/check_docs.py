@@ -476,6 +476,44 @@ check(
     ", ".join(_broken_links[:20]),
 )
 
+print("\n[13] Dependabot no propone ningún major (2026-10-02)")
+# Dos olas de majors el mismo día con el CI sin runner (H.13): bcrypt 5 tumbó la
+# API; typescript 7 dejó a Cloudflare Pages sin publicar; redis 8 tumbó mypy
+# --strict. Una lista por nombre no alcanzó: la regla tiene que ser «*» en pip y
+# en npm, y los paquetes que ya rompieron tienen que estar bajo ese bloque (si
+# un manifiesto cambia de directorio, el bloque deja de cubrirlos sin avisar).
+_DEPENDABOT = ROOT / ".github" / "dependabot.yml"
+_dep_text = _DEPENDABOT.read_text(encoding="utf-8") if _DEPENDABOT.exists() else ""
+_dep_blocks: dict[str, str] = {}
+for _blk in re.split(r"\n\s*-\s*package-ecosystem:\s*", _dep_text)[1:]:
+    _eco = _blk.split("\n", 1)[0].strip().strip("\"'")
+    _dep_blocks[_eco] = _blk
+_MUST_COVER = {
+    "pip": ("backend/requirements.txt", ("redis", "bcrypt")),
+    "npm": ("frontend/package.json", ("typescript", "react-router-dom")),
+}
+for _eco, (_manifest, _pkgs) in _MUST_COVER.items():
+    _blk = _dep_blocks.get(_eco, "")
+    _ignores_major = bool(
+        re.search(
+            r"-\s*dependency-name:\s*[\"']\*[\"']\s*\n\s*update-types:\s*\[[^\]]*version-update:semver-major",
+            _blk,
+        )
+    )
+    _dir = re.search(r"directory:\s*[\"']?(/[^\"'\s]*)", _blk)
+    _dir_path = ROOT / _dir.group(1).lstrip("/") if _dir else None
+    _manifest_path = ROOT / _manifest
+    _in_dir = bool(_dir_path) and _manifest_path.parent.resolve() == _dir_path.resolve()
+    _manifest_text = _manifest_path.read_text(encoding="utf-8") if _manifest_path.exists() else ""
+    _missing = [
+        _p for _p in _pkgs if not re.search(rf"(^|[\s\"']){re.escape(_p)}([=\"'\[<>~ ]|$)", _manifest_text, re.MULTILINE)
+    ]
+    check(
+        f"dependabot {_eco}: ignora semver-major de «*» y cubre {', '.join(_pkgs)} ({_manifest})",
+        _ignores_major and _in_dir and not _missing,
+        f"ignora major de *={_ignores_major} · directorio cubre {_manifest}={_in_dir} · no están en el manifiesto={_missing}",
+    )
+
 # ---------------------------------------------------------------------------
 # docs/MAPA_PRODUCTO.md nombra todo lo que existe (2026-10-01): hasta entonces
 # ningún documento enumeraba todas las pantallas, y cada una nueva entraba sin
