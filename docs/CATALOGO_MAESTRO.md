@@ -55,7 +55,7 @@ profundidad de producto*, no adquisición.
 | Preguntas | **10.949** | `python scripts/check_question_bank.py` |
 | Lecciones | **723** (una por skill: las 723 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
 | Glosario | **1.044** | `check_docs.py` |
-| Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9; track41 PCAP Python exec; certs track42–46 exentos) | `check_question_bank.py` |
+| Ejecutables | **8** tracks ≥ 15 % (01, 02, 03, 04, 06, 07, 09 y 12 — este, 20 %); track13 5,3 %, track14 4,5 %, track40 1,4 %, track16 y track17 0 %; exentos track05, 08, 10, 11 y 15 (ADR-9). El 2026-10-01 se quitaron 216 «ejecutables» que daban correcto sin escribir nada (sin hueco `___` o con el hueco vacío válido) y pasaron a `fill_blank`, que es lo que eran: track16 decía 44,9 % y track17 36,7 % | `check_question_bank.py` |
 | Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900** (retirado por Microsoft el 30-06-2026; sustituto AI-901, fila 39.24), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |
@@ -484,8 +484,9 @@ Cifras de `python scripts/catalog_coverage.py` sobre `80cd3ad`. El ritmo es el �
 | *Solo cuando la demanda los active (no cuentan en el total):* track24/25 reconstruidos (2 × 320) · nuevos A (3 × 320) · B (7 × 320) · C (9 × 320) | 640 · 960 · 2.240 · 2.880 | ≈ 1 · 2 · 4 · 6 |
 
 - Además de preguntas: +261 skills, +261 lecciones y +266 términos en los tracks construidos.
-- Ejecutables (≥ 3 por skill): 11 tracks (18-23 y 26-30) salen «sin medir» porque no tienen
-  preguntas ejecutables ni exención escrita en `scripts/metas_catalogo.json`.
+- Ejecutables (≥ 3 por skill): 13 tracks (16, 17, 18-23 y 26-30) salen «sin medir» porque no
+  tienen preguntas ejecutables ni exención escrita en `scripts/metas_catalogo.json`. track16 y
+  track17 entraron en esa lista el 2026-10-01, al convertir en `fill_blank` sus «ejecutables» sin hueco.
 - Sustituye la aritmética de ADR-53 (suelo 31.056 preguntas ≈ 60 sesiones; ideal 94.611 ≈ 183).
 - La autoría la hace Haiku 4.5 con revisión completa de Sonnet 5 (ADR-52). El piloto de
   track28 dio 7 de 10 malas: si se repite, el ritmo real será menor que 518 por sesión.

@@ -27,7 +27,9 @@ async function fetchVapidKey(): Promise<string | null> {
   }
 }
 
-function urlBase64ToUint8Array(base64String: string): Uint8Array {
+// `<ArrayBuffer>` explícito: desde TypeScript 7 un `Uint8Array` a secas puede ir sobre
+// SharedArrayBuffer y `applicationServerKey` lo rechaza (tsc -b rompía el build, 2026-10-02).
+function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
   const raw = atob(base64);

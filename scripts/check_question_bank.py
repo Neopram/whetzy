@@ -194,14 +194,23 @@ EXEC_FLOOR = {
     # track40 (sesion 2026-09-18). Ambos usan Python stdlib: hashlib/hmac/secrets
     # para criptografia, re para logs/SIEM, ipaddress para redes, html.escape
     # para sanitizacion. Ver tarea 18.2.
-    "track13": 0.15,
-    "track40": 0.15,
+    #
+    # 2026-10-01: los suelos de track13, track40, track14, track16 y track17 bajan
+    # a su ratio REAL. Contaban 216 «ejecutables» que daban correcto pulsando
+    # Ejecutar sin escribir nada (sin hueco ___, o con el hueco vacío ya válido, o
+    # un fix_bug cuyo bug no cambiaba la salida); pasaron a `fill_blank` («escribe
+    # la salida»), que es lo que eran. Mismo caso que track06 arriba: el ratio de
+    # antes contaba preguntas rotas. Subirlos otra vez es autoría (huecos de
+    # verdad), y `tests/content/test_exec_questions.py::TestNoFreeAnswers` impide
+    # que vuelvan los gratis.
+    "track13": 0.05,
+    "track40": 0.01,
     # 16.7 % on first commit (2 js_exec / 12 Q in mod1401 stub). Task 18.3.
-    "track14": 0.15,
-    # track16: Algoritmos - ~30% exec (fill_blank_exec in mod1601-1603). Floor set at first commit.
-    "track16": 0.30,
-    # track17: Redes - mod1703 has exec questions (sockets, urllib). Floor at 15% matches existing ratio.
-    "track17": 0.15,
+    "track14": 0.04,
+    # track16: Algoritmos. Sus 71 «ejecutables» eran todos sin hueco (2026-10-01).
+    "track16": 0.0,
+    # track17: Redes. Sus 22 «ejecutables» eran todos sin hueco (2026-10-01).
+    "track17": 0.0,
 }
 
 

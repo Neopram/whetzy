@@ -367,6 +367,16 @@ export interface QuizEndResponse {
   credits_earned?: number;
 }
 
+/**
+ * Lo que el servidor necesita para corregir sin creer al cliente: la salida que
+ * dio el código en los ejecutables, o el texto escrito en `fill_blank`. Sin ella
+ * el servidor cuenta la respuesta como incorrecta (2026-10-01).
+ */
+export interface AnswerEvidence {
+  execOutput?: string;
+  answerText?: string;
+}
+
 export const quiz = {
   async start(mode: string, trackId?: string, skillId?: string) {
     return request<QuizStartResponse>('/quiz/start', {
@@ -382,6 +392,7 @@ export const quiz = {
     responseTimeMs: number,
     declaredUnknown = false,
     eventId?: string,
+    evidence: AnswerEvidence = {},
   ) {
     return request<QuizAnswerResponse>('/quiz/answer', {
       method: 'POST',
@@ -392,6 +403,8 @@ export const quiz = {
         response_time_ms: responseTimeMs,
         declared_unknown: declaredUnknown,
         ...(eventId ? { event_id: eventId } : {}),
+        ...(evidence.execOutput !== undefined ? { exec_output: evidence.execOutput } : {}),
+        ...(evidence.answerText !== undefined ? { answer_text: evidence.answerText } : {}),
       }),
     });
   },

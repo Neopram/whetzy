@@ -69,7 +69,10 @@ class QuizAnswerRequest(BaseModel):
     # For exec-type questions (fill_blank_exec, fix_bug): the actual stdout
     # produced by the client's Pyodide run.  Server validates against the stored
     # correct_answer to prevent the client from falsifying correctness.
-    exec_output: str | None = None
+    exec_output: str | None = Field(default=None, max_length=20_000)
+    # For `fill_blank`: the text the learner typed. The server compares it with
+    # the stored answer (trimmed, case-insensitive); without it the answer is wrong.
+    answer_text: str | None = Field(default=None, max_length=2_000)
     # Client-generated UUID for offline queue idempotency (33.2).
     event_id: str | None = None
 
