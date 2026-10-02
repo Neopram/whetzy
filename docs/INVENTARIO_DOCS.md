@@ -117,9 +117,16 @@ está roto.
 | `docs/archive/incidents-postmortem-template.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: RUNBOOK.md ya trae su plantilla; esta tenía un ejemplo con 50k usuarios inventados | 2026-09-25 |
 | `docs/archive/incidents-runbook.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: describe Slack, PagerDuty, guardias e Instatus que no existen; RUNBOOK.md § Incident Management es la fuente única | 2026-09-23 |
 | `docs/archive/24-12-implementation.md` | obsoleto | dice «Commit: Pendiente»; 24.12 está DONE (c912713, LEDGER_HISTORY) | archivado el 2026-10-01 | 2026-09-23 |
+| `docs/store/android/listing.md` | referencia-viva | ficha de Google Play (23.3), contraparte de `ios/listing.md` — mismo copy, feature graphic pendiente | se queda | 2026-10-02 |
 | `docs/store/app-store-review-checklist.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/ios/listing.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/play-store-data-safety.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
+| `docs/distribucion-assets/show-hn/en.md` | referencia-viva | kit de Show HN en inglés (27.1) — texto, sin publicar | se queda | 2026-10-02 |
+| `docs/distribucion-assets/show-hn/es.md` | referencia-viva | adaptación en español del mismo kit para foros hispanos (26.6; HN no acepta español) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/product-hunt/kit.md` | referencia-viva | kit de lanzamiento de Product Hunt (27.4) — tagline, checklist, sin la lista de upvoters (personas reales, solo el dueño) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/prs-repos-externos/free-programming-books.md` | referencia-viva | texto de PR a EbookFoundation/free-programming-books (26.2), sin abrirlo — incluye el riesgo de rechazo por su regla "solo gratis" | se queda | 2026-10-02 |
+| `docs/distribucion-assets/prs-repos-externos/coding-interview-university.md` | referencia-viva | texto de PR a jwasham/coding-interview-university (27.3), sin abrirlo; recomienda NO abrir el de system-design-primer (no hay sitio honesto donde insertarlo) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/universidades/email-template.md` | referencia-viva | plantilla de email a universidades LATAM (26.3) ES+EN, sin lista de contactos personales | se queda | 2026-10-02 |
 | `docs/support/response-templates-en.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/support/response-templates-es.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/ui-snapshots/34.1/README.md` | histórico | evidencia de capturas de 34.1 | se queda (junto a sus PNG) | 2026-09-28 |
