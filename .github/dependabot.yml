@@ -8,11 +8,6 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
-    # bcrypt 5 rompe passlib 1.7.4 (todo hash y verify lanzan ValueError): llegó
-    # a producción el 2026-10-02 y tumbó el login. Fuera hasta quitar passlib.
-    ignore:
-      - dependency-name: "bcrypt"
-        update-types: ["version-update:semver-major"]
     groups:
       python-minor-patch:
         update-types: ["minor", "patch"]
@@ -21,21 +16,24 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
-    # 2026-10-02: vite 8 no instala con @vitejs/plugin-react 4 (npm ci falla y
-    # Cloudflare Pages no despliega), @vitest/coverage-v8 5 exige vitest 5, y
-    # pyodide 314 ya no trae pyodide.asm.js (vite.config.ts copia una lista
-    # fija). Cada uno es una migración, no un bump: se hace a mano en su PR.
-    ignore:
-      - dependency-name: "vite"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@vitest/*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "vitest"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "pyodide"
     groups:
       npm-minor-patch:
         update-types: ["minor", "patch"]
+    # Estos majors rompieron master el 2026-10-02 (sin CI que lo parase, H.13):
+    # vite 8 exige @vitejs/plugin-react 6 y vitest 5; coverage-v8 5 exige vitest
+    # 5 exacto; pyodide 314 cambia los ficheros que sirve el plugin de
+    # autoalojamiento (vite.config.ts). Se suben a mano, juntos, en su propio PR.
+    ignore:
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitejs/plugin-react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vitest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitest/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "pyodide"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

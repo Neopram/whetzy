@@ -57,7 +57,8 @@ test('fill_blank_exec — Pyodide executes and returns correct output', async ({
 
   // The label should confirm the answer is correct.
   const outputLabel = page.locator('[class*="outputLabel_"]').first();
-  await expect(outputLabel).toContainText('✅');
+  // Sin emoji desde el port v2 del Quiz: la etiqueta lo dice con palabras.
+  await expect(outputLabel).toContainText('¡Correcto! Salida esperada');
 
   // 0 uncaught page errors during the entire test.
   expect(pageErrors, `Uncaught page errors: ${pageErrors.join('; ')}`).toHaveLength(0);

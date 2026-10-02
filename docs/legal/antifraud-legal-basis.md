@@ -96,7 +96,22 @@ economy:
 
 ---
 
-## Para publicar — propuesta de la sesión (2026-10-02; decide el dueño)
+## Publicado como final (2026-10-02, ADR-58), pendiente de revisión legal (H.20)
+
+El dueño pidió el texto como final. Va en `legal.privacyL13`, `legal.privacyL14`,
+`legal.privacyRetentionSecurity` y `legal.privacyUpdated` (ES/EN), y declara solo lo que el
+código hace hoy: IP y navegador de inicios de sesión y sesiones, y el registro de seguridad,
+borrados a los 90 días por `purge_security_logs` (`services/periodic.py`; un test comprueba
+que el plazo publicado y el del código coinciden).
+
+**Lo que NO se publica todavía:** la huella de dispositivo del antifraude de referidos. Leer
+pantalla, zona horaria e idioma para construir una huella puede caer en el art. 5(3) de la
+Directiva ePrivacy (las Directrices 2/2023 del EDPB incluyen el *fingerprinting*), que pide
+consentimiento salvo que sea estrictamente necesario para el servicio. Que la revisión legal
+diga si basta el interés legítimo o hace falta consentimiento antes de encenderla; mientras
+tanto el frontend no la manda y `device_fingerprints` no se escribe.
+
+### Propuesta original de la sesión (histórica)
 
 **Lo que falta (verificado en el código el 2026-10-02):** la política publicada
 (`legal.privacyL1`–`L5`, la fuente según ADR-55) enumera lo que se recoge y no

@@ -21,6 +21,7 @@ import json
 import time
 from unittest.mock import MagicMock
 
+import stripe
 from sqlalchemy import select
 
 from app.core.security import create_access_token
@@ -148,7 +149,7 @@ async def test_webhook_checkout_completed_activates_subscription(
     sig = _stripe_sig(payload)
 
     # Override construct_event to return our fake event (bypass real HMAC)
-    mock_stripe.Webhook.construct_event = MagicMock(return_value=event)
+    mock_stripe.Webhook.construct_event = MagicMock(return_value=stripe.Event.construct_from(event, "sk_test_fake"))
 
     r = await client.post(
         f"{BILLING}/webhook",
@@ -197,7 +198,7 @@ async def test_webhook_renewal_of_already_premium_user_does_not_refire_conversio
     sub["customer"] = FAKE_CUSTOMER_ID
     event = _fake_stripe_event("customer.subscription.updated", sub)
     payload = json.dumps(event).encode()
-    mock_stripe.Webhook.construct_event = MagicMock(return_value=event)
+    mock_stripe.Webhook.construct_event = MagicMock(return_value=stripe.Event.construct_from(event, "sk_test_fake"))
 
     r = await client.post(
         f"{BILLING}/webhook",
@@ -235,7 +236,7 @@ async def test_webhook_subscription_deleted_cancels(client, user, db_session, mo
     event_obj = {"id": FAKE_SUB_ID, "customer": FAKE_CUSTOMER_ID, "status": "canceled"}
     event = _fake_stripe_event("customer.subscription.deleted", event_obj)
     payload = json.dumps(event).encode()
-    mock_stripe.Webhook.construct_event = MagicMock(return_value=event)
+    mock_stripe.Webhook.construct_event = MagicMock(return_value=stripe.Event.construct_from(event, "sk_test_fake"))
 
     r = await client.post(
         f"{BILLING}/webhook",
@@ -267,7 +268,7 @@ async def test_webhook_unknown_customer_returns_200(client, monkeypatch):
     event_obj = {"id": FAKE_SUB_ID, "customer": "cus_unknown_999", "status": "active"}
     event = _fake_stripe_event("customer.subscription.updated", event_obj)
     payload = json.dumps(event).encode()
-    mock_stripe.Webhook.construct_event = MagicMock(return_value=event)
+    mock_stripe.Webhook.construct_event = MagicMock(return_value=stripe.Event.construct_from(event, "sk_test_fake"))
 
     r = await client.post(
         f"{BILLING}/webhook",
@@ -295,7 +296,7 @@ async def test_webhook_subscription_updated(client, user, db_session, monkeypatc
     sub["customer"] = FAKE_CUSTOMER_ID
     event = _fake_stripe_event("customer.subscription.updated", sub)
     payload = json.dumps(event).encode()
-    mock_stripe.Webhook.construct_event = MagicMock(return_value=event)
+    mock_stripe.Webhook.construct_event = MagicMock(return_value=stripe.Event.construct_from(event, "sk_test_fake"))
 
     r = await client.post(
         f"{BILLING}/webhook",
@@ -344,16 +345,60 @@ def _make_stripe_mock() -> MagicMock:
     mock = MagicMock()
 
     # Customer.create
-    mock.Customer.create.return_value = {"id": FAKE_CUSTOMER_ID}
+    mock.Customer.create.return_value = stripe.Customer.construct_from({"id": FAKE_CUSTOMER_ID}, "sk_test_fake")
 
     # checkout.Session.create
     mock.checkout = MagicMock()
-    mock.checkout.Session.create.return_value = {"url": FAKE_CHECKOUT_URL}
+    mock.checkout.Session.create.return_value = stripe.checkout.Session.construct_from(
+        {"url": FAKE_CHECKOUT_URL}, "sk_test_fake"
+    )
 
     # Subscription.retrieve (used by checkout.session.completed)
-    mock.Subscription.retrieve.return_value = _fake_sub()
+    mock.Subscription.retrieve.return_value = stripe.Subscription.construct_from(_fake_sub(), "sk_test_fake")
 
-    # Webhook.construct_event — default passthrough; tests override per-case
-    mock.Webhook.construct_event = MagicMock(return_value={})
+    # Webhook.construct_event — tests override per-case. Todo lo que devuelve el
+    # mock es un objeto real de stripe, no un dict: desde stripe 15 no lo son.
+    mock.Webhook.construct_event = MagicMock(return_value=stripe.Event.construct_from({}, "sk_test_fake"))
 
     return mock
+
+
+# ── SDK real (stripe 15) ──────────────────────────────────────────────────────
+
+
+async def test_webhook_with_the_real_stripe_sdk_activates_subscription(
+    client, user, db_session, monkeypatch
+):
+    """Sin sustituir el SDK: firma HMAC verificada por `stripe.Webhook` de verdad
+    y la suscripción como `stripe.Subscription`. Desde stripe 15 sus objetos no
+    son `dict` (`dict(event)` y `sub.get` lanzan), y los tests de arriba, que
+    cambian el módulo por diccionarios, no podían verlo (2026-10-02, #75)."""
+    user.stripe_customer_id = FAKE_CUSTOMER_ID
+    await db_session.commit()
+    monkeypatch.setattr("app.core.config.settings.STRIPE_SECRET_KEY", "sk_test_fake")
+    monkeypatch.setattr("app.core.config.settings.STRIPE_WEBHOOK_SECRET", "whsec_test")
+    monkeypatch.setattr("app.core.config.settings.STRIPE_PRICE_PLUS", FAKE_PRICE_PLUS)
+    retrieved = stripe.Subscription.construct_from(_fake_sub(), "sk_test_fake")
+    monkeypatch.setattr(stripe.Subscription, "retrieve", MagicMock(return_value=retrieved))
+
+    event = {
+        "id": "evt_test_real_sdk",
+        "object": "event",
+        **_fake_stripe_event(
+            "checkout.session.completed",
+            {"object": "checkout.session", "subscription": FAKE_SUB_ID, "customer": FAKE_CUSTOMER_ID},
+        ),
+    }
+    payload = json.dumps(event).encode()
+    r = await client.post(
+        f"{BILLING}/webhook",
+        content=payload,
+        headers={**_h(), "stripe-signature": _stripe_sig(payload), "Content-Type": "application/json"},
+    )
+    assert r.status_code == 200, r.text
+
+    await db_session.refresh(user)
+    assert user.is_premium is True
+    assert user.stripe_subscription_id == FAKE_SUB_ID
+    assert user.subscription_tier == "plus"
+    assert user.subscription_expires_at is not None

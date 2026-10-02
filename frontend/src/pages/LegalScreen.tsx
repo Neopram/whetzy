@@ -20,7 +20,7 @@ function PrivacyContent() {
   return (
     <article className={styles.article}>
       <h1>{t('legal.privacyTitle')}</h1>
-      <p className={styles.updated}>{t('legal.updated')}</p>
+      <p className={styles.updated}>{t('legal.privacyUpdated')}</p>
 
       <h2>{t('legal.privacyH1')}</h2>
       <ul>
@@ -29,6 +29,7 @@ function PrivacyContent() {
         <li>{t('legal.privacyL3')}</li>
         <li>{t('legal.privacyL4')}</li>
         <li>{t('legal.privacyL5')}</li>
+        <li>{t('legal.privacyL13')}</li>
         <li>{t('legal.privacyPayments')}</li>
       </ul>
 
@@ -38,6 +39,7 @@ function PrivacyContent() {
         <li>{t('legal.privacyL7')}</li>
         <li>{t('legal.privacyL8')}</li>
         <li>{t('legal.privacyL9')}</li>
+        <li>{t('legal.privacyL14')}</li>
       </ul>
 
       <h2>{t('legal.privacyH3')}</h2>
@@ -45,6 +47,7 @@ function PrivacyContent() {
 
       <h2>{t('legal.privacyH4')}</h2>
       <p><Trans i18nKey="legal.privacyP4" components={{ 1: <strong /> }} /></p>
+      <p>{t('legal.privacyRetentionSecurity')}</p>
 
       <h2>{t('legal.privacyH5')}</h2>
       <ul>

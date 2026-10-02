@@ -99,7 +99,7 @@ async def _sessions_by_user(
 
 
 def _count_returned_in_window(
-    eligible: Sequence[Row[tuple[uuid.UUID, datetime]]],
+    eligible: Sequence[Row[uuid.UUID, datetime]],
     sessions_by_user: dict[uuid.UUID, list[datetime]],
     window_start_offset: timedelta,
     window_end_offset: timedelta,
@@ -354,7 +354,8 @@ async def conversion_d35(db: AsyncSession, period_days: int = 90) -> dict[str, o
             )
         ).all()
         for user_id, created_at in rows:
-            events_by_user[user_id].append(_aware(created_at))
+            if user_id is not None:  # `in_` ya excluye NULL; mypy no lo sabe
+                events_by_user[user_id].append(_aware(created_at))
 
     converted = 0
     for user_id, created_at in eligible_rows:

@@ -74,7 +74,7 @@ async def buy(db: AsyncSession, user: User, request_id: str, now: datetime | Non
     """Cobra 300 créditos y guarda el informe. El mismo `request_id` devuelve el
     informe ya comprado sin cobrar otra vez. Lanza InsufficientCredits."""
     now = now or datetime.now(UTC)
-    if db.bind.dialect.name == "postgresql":
+    if db.get_bind().dialect.name == "postgresql":
         # Serializa las compras de un usuario: dos peticiones con el mismo
         # request_id verían «no existe» a la vez y cobrarían las dos.
         await db.execute(select(User.id).where(User.id == user.id).with_for_update())
