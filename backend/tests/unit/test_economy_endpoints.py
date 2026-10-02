@@ -48,7 +48,8 @@ async def test_prices_lists_only_what_the_code_does(client: AsyncClient) -> None
     ]
     assert data["learning_monthly_cap"] == 1500
     assert data["sumideros"] == [
-        {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS}
+        {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS},
+        {"item": "mastery_report", "cost": 300},
     ]
 
 

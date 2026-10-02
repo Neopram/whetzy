@@ -27,6 +27,7 @@ from app.services.economy import (
     PromoCodeService,
     ReferralService,
 )
+from app.services.mastery_report import MASTERY_REPORT_PRICE
 
 _promo_limiter = InMemoryRateLimiter()
 
@@ -247,6 +248,7 @@ async def get_credit_prices(response: Response) -> dict[str, object]:
         "learning_monthly_cap": lr.LEARNING_MONTHLY_CAP,
         "sumideros": [
             {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS},
+            {"item": "mastery_report", "cost": MASTERY_REPORT_PRICE},
         ],
     }
 

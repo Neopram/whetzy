@@ -716,6 +716,46 @@ export interface CreditPrices {
   learning_monthly_cap?: number;
 }
 
+export interface MasteryReportSnapshot {
+  generated_at: string;
+  display_name: string;
+  username: string;
+  total_questions_answered: number;
+  overall_accuracy: number;
+  max_streak: number;
+  tracks: {
+    track_id: string;
+    name_es: string;
+    name_en: string;
+    icon: string | null;
+    average_mastery: number;
+    skills_mastered: number;
+    total_skills: number;
+    mastered_skills: { name_es: string; name_en: string; p_known: number }[];
+  }[];
+}
+
+export interface MasteryReport {
+  code: string;
+  created_at: string;
+  snapshot: MasteryReportSnapshot;
+}
+
+/** Informe de dominio comprado con créditos (ECONOMIA §2.3). */
+export const masteryReports = {
+  /** `requestId`: uno por intento de compra; reintentar no cobra dos veces. */
+  async buy(requestId: string) {
+    return request<MasteryReport>('/mastery-reports', { method: 'POST', body: JSON.stringify({ request_id: requestId }) });
+  },
+  async mine() {
+    return request<{ reports: { code: string; created_at: string }[] }>('/mastery-reports');
+  },
+  /** Pública: sin sesión. */
+  async get(code: string) {
+    return request<MasteryReport>(`/mastery-reports/${encodeURIComponent(code)}`);
+  },
+};
+
 export type ClawbackReason = 'refund' | 'ban' | 'fraud';
 
 export interface AdminReferral {

@@ -21,6 +21,7 @@ from app.api.v1.endpoints import (
     glossary,
     instructor_marketplace,
     lessons,
+    mastery_reports,
     ml,
     oauth,
     placement,
@@ -65,3 +66,4 @@ api_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"]
 api_router.include_router(bootcamp.router, prefix="/bootcamps", tags=["bootcamps"])
 api_router.include_router(project.router, prefix="/projects", tags=["projects"])
 api_router.include_router(privacy.router, prefix="/privacy", tags=["privacy"])
+api_router.include_router(mastery_reports.router, prefix="/mastery-reports", tags=["economy"])

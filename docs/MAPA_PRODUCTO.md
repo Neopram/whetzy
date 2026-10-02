@@ -29,6 +29,7 @@ Se resuelven en `App()` antes de cualquier hook; no necesitan sesión salvo dond
 | `/checkout?plan=&track=` | `CheckoutScreen` | Pago web con Paddle (cabeceras propias, sin COEP) | E1: ledger H.29, `docs/API.md` |
 | `/admin` | `AdminScreen` (7 pestañas: metrics, security, content, ops, gdpr, revenue, economy) | Panel del dueño (`role=owner`) | E2: `docs/design/admin-spec.md` |
 | `/certificate/<código>`, `/verify/<código>` | `CertificateScreen` | Verificación pública de un certificado | E1: `docs/ECONOMIA.md` §11, ADR-37 |
+| `/report/<código>` | `MasteryReportScreen` | Informe de dominio público comprado con 300 créditos: instantánea con fecha, «Guardar como PDF» por la impresión del navegador | E1: `docs/ECONOMIA.md` §2.3 |
 | `/u/<usuario>` | `PublicProfileScreen` | Perfil público opt-in | E0: `SEGMENTOS.md`, `ECONOMIA.md` |
 | `/r/<código>` | (redirección) | Guarda el código de referido y lleva a `/register` | E1: `docs/ECONOMIA.md` §3 |
 | `/` | la app con sesión (§2) | — | — |
@@ -94,7 +95,7 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Antifraude por dispositivo/IP (1 activación cada 30 días) | `docs/ECONOMIA.md` §3.5 | el código existe (`check_device_rate_limit`), pero el frontend no manda `X-Device-Fingerprint` y la política publicada no declara ese tratamiento: no corre (ADR-57) |
 | IP y navegador de los inicios de sesión en la política de privacidad | RGPD art. 13; `legal.privacyL1`–`L5` (ADR-55) | se guardan en claro (`login_attempts`, `user_sessions`, `audit_log`) sin retención por tiempo y la política publicada no los nombra; texto propuesto en `docs/legal/antifraud-legal-basis.md` §«Para publicar», pendiente del dueño |
 | Clawback de referidos automático (reembolso, baneo) | `docs/ECONOMIA.md` §3.5 | el clawback existe como acción de admin (Admin → Economía → Referidos, 2026-10-02); **nada lo dispara solo**: no hay flujo de baneo, y un reembolso del referido no está ligado a su activación |
-| Gastar créditos en simulacro, informe PDF o curso | `docs/ECONOMIA.md` §2.3 | `spend_fifo` solo lo llama el comodín de racha (`services/streak_shop.py`) |
+| Gastar créditos en simulacro o curso del marketplace | `docs/ECONOMIA.md` §2.3 | **decisión del dueño**: el simulacro hoy es gratis e ilimitado para todos (ADR-50: preparación sin pagar aparte), así que cobrarlo en créditos quitaría algo que Free tiene; el curso con créditos saca dinero real de la bolsa de marketing (80 % al instructor). Sí se gastan en el comodín de racha y en el informe de dominio (2026-10-02) |
 
 ### 5.2 Existe y no tiene especificación (E0 en §1–§2)
 

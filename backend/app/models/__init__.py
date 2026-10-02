@@ -22,6 +22,7 @@ from app.models.duel import Duel
 from app.models.economy import (
     CreditExpenseCap,
     CreditLedger,
+    MasteryReport,
     PromoCode,
     PromoCodeRedemption,
     Referral,
@@ -90,6 +91,7 @@ __all__ = [
     "LessonCompletion",
     "LessonView",
     "LoginAttempt",
+    "MasteryReport",
     "Mission",
     "MockExamAttempt",
     "Module",

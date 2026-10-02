@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import {
   economy,
+  masteryReports,
   type CreditBalance,
   type CreditPrices,
   type ReferralCodeInfo,
@@ -20,6 +21,12 @@ export default function WalletScreen() {
   const [promoCode, setPromoCode] = useState('');
   const [promoLoading, setPromoLoading] = useState(false);
   const [promoMsg, setPromoMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  // Informe de dominio (§2.3): un request_id por intento, para que reintentar
+  // tras un corte no cobre dos veces.
+  const [reportBusy, setReportBusy] = useState(false);
+  const [reportCode, setReportCode] = useState<string | null>(null);
+  const [reportError, setReportError] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -48,6 +55,22 @@ export default function WalletScreen() {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // clipboard API blocked
+    }
+  }
+
+  const [reportRequest, setReportRequest] = useState(() => crypto.randomUUID());
+  async function buyReport() {
+    setReportBusy(true);
+    setReportError(false);
+    try {
+      const report = await masteryReports.buy(reportRequest);
+      setReportCode(report.code);
+      setReportRequest(crypto.randomUUID()); // el siguiente es otra compra
+      await load();
+    } catch {
+      setReportError(true); // el mismo request_id: reintentar no cobra dos veces
+    } finally {
+      setReportBusy(false);
     }
   }
 
@@ -138,11 +161,33 @@ export default function WalletScreen() {
           <ul className={styles.list}>
             {spend.map((s) => (
               <li key={s.item} className={styles.row}>
-                <span className={styles.rowName}>{t(`wallet.spend.${s.item}`)}</span>
+                <span className={styles.rowBody}>
+                  <span className={styles.rowName}>{t(`wallet.spend.${s.item}`)}</span>
+                  {s.item === 'mastery_report' && (
+                    <span className={styles.rowMeta}>{t('wallet.reportRule')}</span>
+                  )}
+                </span>
                 <span className={styles.amount}>−{s.cost}</span>
+                {s.item === 'mastery_report' && (
+                  <button
+                    type="button"
+                    className={styles.btnSecondary}
+                    disabled={reportBusy || (balance?.balance ?? 0) < s.cost}
+                    onClick={() => void buyReport()}
+                  >
+                    {t('wallet.reportCta')}
+                  </button>
+                )}
               </li>
             ))}
           </ul>
+          {reportCode && (
+            <p className={styles.muted} role="status">
+              {t('wallet.reportReady')}{' '}
+              <a className={styles.reportLink} href={`/report/${reportCode}`}>{`${window.location.host}/report/${reportCode}`}</a>
+            </p>
+          )}
+          {reportError && <p className={styles.muted} role="alert">{t('wallet.reportError')}</p>}
         </section>
       )}
 

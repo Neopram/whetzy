@@ -46,6 +46,9 @@ const TrackExamScreen = lazy(() =>
 const CertificateScreen = lazy(() =>
   import('./pages/CertificateScreen').then((m) => ({ default: m.CertificateScreen }))
 );
+const MasteryReportScreen = lazy(() =>
+  import('./pages/MasteryReportScreen').then((m) => ({ default: m.MasteryReportScreen }))
+);
 const PublicProfileScreen = lazy(() =>
   import('./pages/PublicProfileScreen').then((m) => ({ default: m.default }))
 );
@@ -157,6 +160,21 @@ function StandaloneCertificate({ code }: { code: string }) {
   return <Screen><CertificateScreen code={code} /></Screen>;
 }
 
+/** `/report/<code>` — informe de dominio público (ECONOMIA §2.3). Standalone por
+ *  lo mismo que el certificado: lo abre alguien sin cuenta. */
+const REPORT_PATH = '/report/';
+
+function StandaloneReport({ code }: { code: string }) {
+  const userLanguage = useAppStore((s) => s.user.language);
+
+  useEffect(() => {
+    void i18n.changeLanguage(userLanguage);
+    document.documentElement.lang = userLanguage;
+  }, [userLanguage]);
+
+  return <Screen><MasteryReportScreen code={code} /></Screen>;
+}
+
 function needsOnboarding(userId: string): boolean {
   try {
     return !localStorage.getItem(`whetzy_onboarded_${userId}`);
@@ -252,6 +270,9 @@ function App() {
   }
   if (path.startsWith('/verify/')) {
     return <StandaloneCertificate code={path.slice(8)} />;
+  }
+  if (path.startsWith(REPORT_PATH)) {
+    return <StandaloneReport code={path.slice(REPORT_PATH.length)} />;
   }
   if (path.startsWith('/u/')) {
     return <Screen><PublicProfileScreen handle={path.slice(3)} /></Screen>;

@@ -1,0 +1,71 @@
+/* Informe de dominio público (ECONOMIA §2.3). Estrecho, como el certificado, y
+   con hoja de impresión: «Guardar como PDF» es la impresión del navegador. */
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--le-space-xl) var(--le-space-md);
+  color: var(--le-text);
+}
+
+.header { display: grid; gap: var(--le-space-2xs); text-align: center; }
+.brand { color: var(--le-text-muted); font-size: var(--le-fs-sm); font-weight: var(--le-fw-bold); letter-spacing: 0.08em; }
+.title { font-size: var(--le-fs-xl); font-weight: var(--le-fw-black); }
+.who { font-weight: var(--le-fw-semibold); }
+.muted { color: var(--le-text-muted); font-size: var(--le-fs-sm); text-align: center; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--le-space-xs);
+  margin: 0;
+}
+
+.stats > div {
+  padding: var(--le-space-sm);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  text-align: center;
+}
+
+.stats dt { color: var(--le-text-secondary); font-size: var(--le-fs-xs); }
+.stats dd { margin: 0; font-size: var(--le-fs-lg); font-weight: var(--le-fw-bold); font-family: var(--le-font-mono); }
+
+.tracks { list-style: none; display: grid; gap: var(--le-space-sm); margin: 0; padding: 0; }
+
+.track {
+  padding: var(--le-space-sm) var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  break-inside: avoid;
+}
+
+.trackName { font-size: var(--le-fs-md); font-weight: var(--le-fw-bold); }
+.trackMeta { color: var(--le-text-secondary); font-size: var(--le-fs-sm); }
+
+.skills {
+  margin: var(--le-space-xs) 0 0;
+  padding-left: var(--le-space-md);
+  font-size: var(--le-fs-sm);
+  overflow-wrap: anywhere;
+}
+
+.note { color: var(--le-text-muted); font-size: var(--le-fs-xs); line-height: 1.5; }
+
+.print {
+  align-self: center;
+  min-height: 44px;
+  padding: 0 var(--le-space-lg);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  color: var(--le-text);
+  font-weight: var(--le-fw-bold);
+}
+
+@media print {
+  .print { display: none; }
+  .screen { max-width: none; padding: 0; }
+}
