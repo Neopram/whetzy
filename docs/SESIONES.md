@@ -47,10 +47,17 @@ backend/requirements*.txt  Dockerfile
 scripts/ci_local.sh        scripts/ledger.py     scripts/check_docs.py
 ```
 
+**Compartido de solo-añadir:** `docs/INVENTARIO_DOCS.md`. Quien cree un `.md` nuevo bajo `docs/`
+(fuera de `archive/`) añade **una línea** con su clase, porque `check_docs.py` [12] exige que cada
+doc esté en `docs/README.md` o aquí; no edita ni borra líneas ajenas. Dos PRs que añaden líneas
+distintas se fusionan sin conflicto o con uno trivial que resuelve S5.
+
 Las demás sesiones proponen sus cambios a estos ficheros en su PR: el ledger, en la sección
 **«Delta del ledger»** (`ID | estado nuevo | commit | comando ejecutado | salida real`); el resto,
 en **«Fuera de alcance»** con el fichero exacto y el cambio. S5 re-ejecuta cada comando citado
-antes de aplicarlo; si no se reproduce, no lo aplica.
+antes de aplicarlo; si no se reproduce, no lo aplica. Tras tocar filas corre
+`python scripts/ledger.py fases --write`: la tabla de `## 1` se genera desde las filas, y
+`ledger.py check` y `check_docs.py` [14] fallan si no cuadra.
 
 ## 4. Terrenos
 
@@ -143,9 +150,13 @@ Lo que no aparece en ninguna lista no tiene dueño: quien lo necesite lo pide co
 3. Por cada PR abierto de otra sesión: `git merge-tree --write-tree HEAD origin/<su-rama>`.
    Código distinto de 0 o `CONFLICT` en la salida ⇒ no empujes; lista los ficheros y para.
 4. Nivel 1: `git config core.hooksPath .githooks` (config local: repítelo en cada clon).
-5. Nivel 2: `bash scripts/ci_local.sh` como tarea en segundo plano **gestionada** (límite ≥ 60
-   min) y espera su veredicto. Un `nohup` desde un shell que se cierra muere con él y deja
-   «CORRIENDO» sin veredicto.
+5. Nivel 2: en la nube, el hook con `WHETZY_NIVEL2=gestionado` no lo lanza al fondo; córrelo tú
+   como tarea en segundo plano **gestionada** (límite ≥ 60 min) **antes** del push:
+   `bash scripts/ci_local.sh --sha <sha>` sale 0 si VERDE y 1 si ROJO (`WHETZY_PYTHON` elige el
+   intérprete). `bash scripts/ci_local.sh --estado` da el último veredicto y distingue uno que
+   murió sin terminar. Un `nohup` desde un shell que se cierra muere con él y deja «CORRIENDO».
+   Dos niveles 2 a la vez en la misma máquina necesitan `XDG_CACHE_HOME` distintos (comparten
+   el worktree temporal de la caché).
 
 ## 8. PRs
 

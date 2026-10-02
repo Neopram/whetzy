@@ -95,7 +95,7 @@ def _num(text: str) -> int:
 
 
 def _invariant_row(name: str) -> str:
-    m = re.search(rf"^\|\s*{re.escape(name)}\s*\|(.+)$", state_text, re.M)
+    m = re.search(rf"^\|\s*{re.escape(name)}\s*\|(.+)$", state_text, re.MULTILINE)
     return m.group(1) if m else ""
 
 
@@ -513,6 +513,22 @@ for _eco, (_manifest, _pkgs) in _MUST_COVER.items():
         _ignores_major and _in_dir and not _missing,
         f"ignora major de *={_ignores_major} · directorio cubre {_manifest}={_in_dir} · no están en el manifiesto={_missing}",
     )
+
+print("\n[14] Ledger bien formado y `## 1` generada desde las filas (2026-10-02)")
+# `ledger.py check` no corria en ninguna puerta: §1 decia «38 = 0/6» con las seis
+# filas en DONE. Ahora §1 se genera (`ledger.py fases --write`) y esto exige que cuadre.
+try:
+    _ledger_check = subprocess.run(
+        [sys.executable, str(Path(__file__).parent / "ledger.py"), "check"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    _ledger_out = (_ledger_check.stdout + _ledger_check.stderr).strip()
+    check("ledger.py check (filas, criterios, §1 generada)", _ledger_check.returncode == 0, _ledger_out[-600:])
+except Exception as e:
+    check("ledger.py check (filas, criterios, §1 generada)", False, str(e))
 
 # ---------------------------------------------------------------------------
 # docs/MAPA_PRODUCTO.md nombra todo lo que existe (2026-10-01): hasta entonces
