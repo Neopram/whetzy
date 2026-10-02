@@ -131,6 +131,7 @@ está roto.
 | Documento | Clase | Por qué | Acción | Último commit |
 |---|---|---|---|---|
 | `docs/legal/H29-DECISION-LOG.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
+| `docs/legal/h29-grecia-paddle-revenuecat-obligaciones.md` | legal | investigación vigente (21.1/21.2) de lo que exige operar bajo H.29 | se queda, DRAFT para H.20 | 2026-10-02 |
 | `docs/legal/README.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-26 |
 | `docs/legal/ai-act-dsa-eaa.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/ai-notice.en.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
