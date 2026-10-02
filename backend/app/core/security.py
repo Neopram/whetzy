@@ -569,8 +569,9 @@ async def setup_2fa(user_id: uuid.UUID, db: AsyncSession) -> dict[str, Any]:
     backup_codes_hash = [hashlib.sha256(code.encode()).hexdigest() for code in backup_codes]
 
     # Check if 2FA already setup
-    result = await db.execute(select(User2FA).where(User2FA.user_id == user_id))
-    existing_2fa = result.scalar_one_or_none()
+    existing_2fa = (
+        await db.execute(select(User2FA).where(User2FA.user_id == user_id))
+    ).scalar_one_or_none()
     if existing_2fa is not None and existing_2fa.enabled:
         # Rehacer el alta pondría `enabled=False`: con una sesión robada se
         # apagaría la 2FA sin código. Para cambiarla, primero se desactiva con uno.
@@ -578,9 +579,9 @@ async def setup_2fa(user_id: uuid.UUID, db: AsyncSession) -> dict[str, Any]:
 
     if existing_2fa:
         # Update existing 2FA (disabled state)
-        existing_2fa.secret_key = secret  # type: ignore[attr-defined]
-        existing_2fa.backup_codes = backup_codes_hash  # type: ignore[attr-defined]
-        existing_2fa.enabled = False  # type: ignore[attr-defined]
+        existing_2fa.secret_key = secret
+        existing_2fa.backup_codes = backup_codes_hash
+        existing_2fa.enabled = False
     else:
         # Create new 2FA record
         u2fa = User2FA(

@@ -80,7 +80,7 @@ def effective_tier(user: User) -> str:
         paid = "free"
     granted = user.active_granted_tier
     best = max((paid, granted), key=lambda t: _TIER_RANK.get(t, 0))
-    return best if _TIER_RANK.get(best, 0) > 0 else "free"
+    return best if best is not None and _TIER_RANK.get(best, 0) > 0 else "free"
 
 
 
