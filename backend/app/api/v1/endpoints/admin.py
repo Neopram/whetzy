@@ -5,9 +5,10 @@ from __future__ import annotations
 import logging
 import uuid
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pydantic import BaseModel
 from sqlalchemy import desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -699,8 +700,9 @@ async def get_economy_credits(
 
 @router.get("/economy/referrals", dependencies=[Depends(require_admin)])
 async def get_economy_referrals(
-    # Estados reales de Referral (ADR-35): pending → activated → credited, o rejected.
-    status: str = Query(default="all", pattern="^(all|pending|activated|credited|rejected)$"),
+    # Estados reales de Referral (ADR-35): pending → activated → credited, o
+    # rejected; clawed_back tras un clawback (§3.5).
+    status: str = Query(default="all", pattern="^(all|pending|activated|credited|rejected|clawed_back)$"),
     segment: str = Query(default="all", pattern="^(all|es|en)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
@@ -723,6 +725,7 @@ async def get_economy_referrals(
                 "referred_id": str(r.referred_id),
                 "status": r.status,
                 "activated_at": r.activated_at.isoformat() if r.activated_at else None,
+                "credited_at": r.credited_at.isoformat() if r.credited_at else None,
                 "created_at": r.created_at.isoformat(),
             }
             for r in referrals
@@ -731,6 +734,37 @@ async def get_economy_referrals(
         "offset": offset,
         "segment": segment,
     }
+
+
+class ClawbackRequest(BaseModel):
+    reason: Literal["refund", "ban", "fraud"]
+
+
+@router.post("/economy/referrals/{referral_id}/clawback")
+async def clawback_referral(
+    referral_id: uuid.UUID,
+    body: ClawbackRequest,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Reembolso, baneo o fraude confirmado del referido → clawback (ECONOMIA
+    §3.5): recupera lo que quede de los 300 créditos y recalcula la escalera.
+    404 si no existe; 409 si ya estaba cerrado."""
+    from app.core.security import log_audit_event
+    from app.services.economy import ReferralService
+
+    try:
+        result = await ReferralService.clawback(db, referral_id, body.reason)
+    except ValueError as exc:
+        code = status.HTTP_404_NOT_FOUND if str(exc) == "referral_not_found" else status.HTTP_409_CONFLICT
+        raise HTTPException(code, str(exc)) from exc
+    await db.commit()
+    await log_audit_event(
+        admin.id, "referral_clawback",
+        metadata={"referral_id": str(referral_id), "reason": body.reason,
+                 "recovered": result["recovered_credits"], "milestone_revoked": result["milestone_revoked"]},
+    )
+    return result
 
 
 @router.get("/economy/k-factor", dependencies=[Depends(require_admin)])

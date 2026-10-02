@@ -507,3 +507,99 @@ async def test_fraud_over_five_percent_two_weeks_running_pauses_the_program(db_s
     await db_session.delete(old)
     await db_session.flush()
     assert await ReferralService.program_paused(db_session, now) is False
+
+
+# ── Clawback (§3.5) ────────────────────────────────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_clawback_recovers_the_300_and_closes_the_referral(db_session: AsyncSession):
+    referrer = _user()
+    db_session.add(referrer)
+    [referral] = await _activated(db_session, referrer, 1)
+    await ReferralService.credit_matured_referrals(db_session, now=NOW)
+    assert await CreditsService.get_balance(db_session, referrer.id) == REFERRAL_CREDITS
+
+    result = await ReferralService.clawback(db_session, referral.id, "fraud", now=NOW)
+    assert (result["recovered_credits"], result["unrecovered_credits"]) == (300, 0)
+    assert await _status(db_session, referral) == "clawed_back"
+    assert await CreditsService.get_balance(db_session, referrer.id) == 0
+    with pytest.raises(ValueError, match="already_closed"):
+        await ReferralService.clawback(db_session, referral.id, "fraud", now=NOW)
+
+
+@pytest.mark.asyncio
+async def test_clawback_never_leaves_a_negative_balance(db_session: AsyncSession):
+    """Lo ya gastado no se recupera como deuda: se cobraría de premios futuros
+    sin que el usuario lo vea."""
+    referrer = _user()
+    db_session.add(referrer)
+    [referral] = await _activated(db_session, referrer, 1)
+    await ReferralService.credit_matured_referrals(db_session, now=NOW)
+    assert await CreditsService.spend_fifo(db_session, referrer.id, 200, "spend_freeze", ref_id="f")
+
+    result = await ReferralService.clawback(db_session, referral.id, "refund", now=NOW)
+    assert (result["recovered_credits"], result["unrecovered_credits"]) == (100, 200)
+    assert await CreditsService.get_balance(db_session, referrer.id) == 0
+    await CreditsService.grant_credits(db_session, referrer.id, 50, "promo_code", ref_id="later")
+    assert await CreditsService.get_balance(db_session, referrer.id) == 50
+
+
+@pytest.mark.asyncio
+async def test_clawback_recalculates_the_ladder_without_paying_a_milestone_twice(db_session: AsyncSession):
+    referrer = _user()
+    db_session.add(referrer)
+    referrals = await _activated(db_session, referrer, 3)
+    await ReferralService.credit_matured_referrals(db_session, now=NOW)
+    await db_session.refresh(referrer)
+    assert referrer.granted_tier == "plus"
+
+    result = await ReferralService.clawback(db_session, referrals[0].id, "ban", now=NOW)
+    assert result["milestone_revoked"] == "pro_month"
+    await db_session.refresh(referrer)
+    assert referrer.granted_tier is None  # bajó de 3 abonados: el mes de Pro se va
+
+    # Un abono nuevo vuelve a llegar a 3: un mes, no dos.
+    await _activated(db_session, referrer, 1)
+    await ReferralService.credit_matured_referrals(db_session, now=NOW)
+    await db_session.refresh(referrer)
+    until = referrer.granted_tier_expires_at
+    until = until.replace(tzinfo=UTC) if until.tzinfo is None else until
+    assert (referrer.granted_tier, until) == ("plus", NOW + timedelta(days=30))
+
+
+@pytest.mark.asyncio
+async def test_activated_but_not_credited_is_closed_without_touching_credits(db_session: AsyncSession):
+    referrer = _user()
+    db_session.add(referrer)
+    [referral] = await _activated(db_session, referrer, 1, days_ago=2)
+    result = await ReferralService.clawback(db_session, referral.id, "fraud", now=NOW)
+    assert (result["recovered_credits"], result["unrecovered_credits"]) == (0, 0)
+    assert await _status(db_session, referral) == "clawed_back"
+    # Ya no madura: no se abona nunca.
+    assert await ReferralService.credit_matured_referrals(db_session, now=NOW + timedelta(days=30)) == 0
+
+
+@pytest.mark.asyncio
+async def test_admin_clawback_endpoint(client: AsyncClient, db_session: AsyncSession):
+    from app.core.security import create_access_token
+
+    admin, plain, referrer = _user(role="admin"), _user(), _user()
+    db_session.add_all([admin, plain, referrer])
+    [referral] = await _activated(db_session, referrer, 1)
+    await ReferralService.credit_matured_referrals(db_session, now=NOW)
+    await db_session.commit()
+    url = f"/api/v1/admin/economy/referrals/{referral.id}/clawback"
+
+    def auth(u: User) -> dict[str, str]:
+        return {"Authorization": f"Bearer {create_access_token(u.id)}"}
+
+    assert (await client.post(url, json={"reason": "fraud"}, headers=auth(plain))).status_code == 403
+    assert (await client.post(url, json={"reason": "whim"}, headers=auth(admin))).status_code == 422
+    r = await client.post(url, json={"reason": "fraud"}, headers=auth(admin))
+    assert r.status_code == 200 and r.json()["recovered_credits"] == 300
+    assert (await client.post(url, json={"reason": "fraud"}, headers=auth(admin))).status_code == 409
+    missing = f"/api/v1/admin/economy/referrals/{uuid.uuid4()}/clawback"
+    assert (await client.post(missing, json={"reason": "fraud"}, headers=auth(admin))).status_code == 404
+    listed = (await client.get("/api/v1/admin/economy/referrals?status=clawed_back", headers=auth(admin))).json()
+    assert [x["id"] for x in listed["referrals"]] == [str(referral.id)]

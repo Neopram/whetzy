@@ -8,7 +8,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from sqlalchemy import and_, func, select
+from sqlalchemy import and_, delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -585,6 +585,96 @@ class ReferralService:
             from app.services.gamification.service import award_badges
 
             await award_badges(db, referrer)
+        await db.flush()
+        return reward
+
+    # ── Clawback (ECONOMIA §3.5) ─────────────────────────────────────────
+
+    @staticmethod
+    async def clawback(
+        db: AsyncSession, referral_id: uuid.UUID, reason: str, now: datetime | None = None
+    ) -> dict[str, object]:
+        """Deshace un referido por reembolso, baneo o fraude confirmado (§3.5).
+
+        - Abonado: recupera lo que pueda de sus 300 créditos con un gasto FIFO de
+          razón `clawback`, sin dejar el saldo en negativo (una deuda en créditos
+          se cobraría de premios futuros sin que nadie lo vea), y recalcula la
+          escalera: si el referente baja de un hito, pierde su premio. Sin eso,
+          volver a llegar al hito lo pagaría dos veces, porque el abono decide el
+          hito por «abonados + 1».
+        - Activado o pendiente: no hubo abono; solo cambia el estado.
+        Queda `clawed_back` en todos los casos. Lanza ValueError si no existe o
+        ya se deshizo.
+        """
+        now = now or datetime.now(UTC)
+        referral = await db.get(Referral, referral_id, with_for_update=True)
+        if referral is None:
+            raise ValueError("referral_not_found")
+        if referral.status in ("clawed_back", "rejected"):
+            raise ValueError("already_closed")
+
+        recovered = 0
+        revoked: str | None = None
+        was_credited = referral.status == "credited"
+        if was_credited:
+            credited_before = (
+                await db.execute(
+                    select(func.count()).select_from(Referral).where(
+                        Referral.referrer_id == referral.referrer_id,
+                        Referral.status == "credited",
+                    )
+                )
+            ).scalar() or 0
+            balance = await CreditsService.get_balance(db, referral.referrer_id)
+            take = min(REFERRAL_CREDITS, balance)
+            if take > 0 and await CreditsService.spend_fifo(
+                db, referral.referrer_id, take, CreditReasonEnum.CLAWBACK.value,
+                ref_type="clawback", ref_id=str(referral.id),
+            ):
+                recovered = take
+            revoked = await ReferralService._revoke_milestone(
+                db, referral.referrer_id, int(credited_before), now
+            )
+
+        referral.status = "clawed_back"
+        await db.flush()
+        return {
+            "referral_id": str(referral.id),
+            "reason": reason,
+            "recovered_credits": recovered,
+            # Lo ya gastado no se recupera: queda a la vista del admin, no como deuda.
+            "unrecovered_credits": REFERRAL_CREDITS - recovered if was_credited else 0,
+            "milestone_revoked": revoked,
+        }
+
+    @staticmethod
+    async def _revoke_milestone(
+        db: AsyncSession, referrer_id: uuid.UUID, nth: int, now: datetime
+    ) -> str | None:
+        """Inverso de `_apply_milestone`: el premio del hito `nth`, si lo hay."""
+        reward = dict(REFERRAL_MILESTONES).get(nth)
+        if reward is None:
+            return None
+        referrer = await db.get(User, referrer_id)
+        if referrer is None:
+            return None
+        if reward in REFERRAL_PLAN_REWARDS:
+            _, days = REFERRAL_PLAN_REWARDS[reward]
+            until = referrer.granted_tier_expires_at
+            if until is not None:
+                until = until if until.tzinfo else until.replace(tzinfo=UTC)
+                left = until - timedelta(days=days)
+                if left <= now:
+                    referrer.granted_tier = None
+                    referrer.granted_tier_expires_at = None
+                else:
+                    referrer.granted_tier_expires_at = left
+        elif reward == "ambassador_badge":
+            from app.models.user import UserBadge
+
+            await db.execute(
+                delete(UserBadge).where(UserBadge.user_id == referrer_id, UserBadge.badge_id == "ambassador")
+            )
         await db.flush()
         return reward
 

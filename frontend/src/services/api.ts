@@ -716,6 +716,31 @@ export interface CreditPrices {
   learning_monthly_cap?: number;
 }
 
+export type ClawbackReason = 'refund' | 'ban' | 'fraud';
+
+export interface AdminReferral {
+  id: string;
+  referrer_id: string;
+  referred_id: string;
+  status: 'pending' | 'activated' | 'credited' | 'rejected' | 'clawed_back';
+  activated_at: string | null;
+  credited_at: string | null;
+  created_at: string;
+}
+
+/** Admin → Economía: referidos y su clawback (ECONOMIA §3.5). */
+export const adminEconomy = {
+  async referrals(status: AdminReferral['status'] | 'all' = 'all', limit = 100) {
+    return request<{ referrals: AdminReferral[] }>(`/admin/economy/referrals?status=${status}&limit=${limit}`);
+  },
+  async clawback(referralId: string, reason: ClawbackReason) {
+    return request<{ recovered_credits: number; unrecovered_credits: number; milestone_revoked: string | null }>(
+      `/admin/economy/referrals/${referralId}/clawback`,
+      { method: 'POST', body: JSON.stringify({ reason }) },
+    );
+  },
+};
+
 export const economy = {
   async balance() {
     return request<CreditBalance>('/economy/balance');

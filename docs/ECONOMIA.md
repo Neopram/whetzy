@@ -218,7 +218,7 @@ Tope: **10 activaciones acreditables por mes**. La escalera es acumulativa y no 
 | Emails desechables | Lista pública de dominios desechables (MIT), actualizada mensualmente |
 | Retardo | 7 días entre activación y abono |
 | Velocidad | > 5 activaciones/semana por referente → cola de revisión manual en admin (29.6) |
-| Clawback | Reembolso, baneo o fraude confirmado del referido → asiento `clawback` y escalera recalculada |
+| Clawback | Reembolso, baneo o fraude confirmado del referido → asiento `clawback` y escalera recalculada. **En el código (2026-10-02):** acción de admin (`POST /admin/economy/referrals/{id}/clawback`); recupera lo que quede de los 300 con un gasto FIFO, **sin saldo negativo** (lo gastado queda a la vista del admin, no como deuda), y si el referente baja de un hito pierde su premio, para no cobrarlo dos veces al volver a él |
 | Transparencia | Todo esto se declara en la política de privacidad (ePrivacy/GDPR, interés legítimo antifraude) → 21.3 |
 
 Objetivo: **fraude < 2 %** de las activaciones. Si supera el 5 % dos semanas seguidas,

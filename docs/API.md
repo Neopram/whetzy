@@ -335,7 +335,8 @@ POST /admin/email/test                   → {sent, provider, to} 🔒 owner —
 ```
 GET  /admin/economy/credits              → credit summary (emitted/spent/expired, sink/source ratio, inflation alert) + ledger rows
 GET  /admin/economy/k-factor             → K-factor statistics
-GET  /admin/economy/referrals            → referral program analytics
+GET  /admin/economy/referrals            → referral program analytics — ?status=all|pending|activated|credited|rejected|clawed_back
+POST /admin/economy/referrals/{referral_id}/clawback → {recovered_credits, unrecovered_credits, milestone_revoked} 🔒 admin — `{reason: refund|ban|fraud}`; recupera lo que quede de los 300 sin saldo negativo y retira el premio del hito si se baja de él (ECONOMIA §3.5); 404 si no existe, 409 si ya estaba cerrado
 GET  /admin/reports/recent               → {reports[]} ?limit&reason — reportes de alumnos con su nota (incluye `ai_explanation`)
 GET  /admin/economy/scorecard            → 5 KPI metrics vs m3/m6/m12 targets (ECONOMIA.md §7) 🔒 admin — ?segment=all|es|en &days=30
 POST /admin/promo/batch ?code_type&credits&count&max_uses&language&campaign_id&expires_days → {count, codes[], csv} — genera lote de códigos promocionales; tipos: onboarding|campaign|reactivation|referral_bonus|instructor; alfabeto seguro sin 0OIL1

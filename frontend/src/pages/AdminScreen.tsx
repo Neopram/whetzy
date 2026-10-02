@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
+import { ReferralClawback } from '../components/admin/ReferralClawback';
 import styles from './AdminScreen.module.css';
 import { API_BASE_URL } from '../services/api';
 
@@ -295,6 +296,7 @@ export function AdminScreen() {
               <StatCard label={t('admin.metrics.totalUsers')} value={economyData.total_users} />
               <StatCard label={t('admin.metrics.referrals')} value={economyData.successful_referrals} />
             </div>
+            <ReferralClawback />
           </div>
         )}
       </div>
