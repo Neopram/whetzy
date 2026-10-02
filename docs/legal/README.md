@@ -44,6 +44,9 @@ código los carga):
 - `antifraud-legal-basis.md`, `dmca-policy.md`, `security-breach-procedure.md` — movidos
   desde `legal/` (raíz) el 2026-10-01
 - `ai-act-dsa-eaa.md`, `privacy-matrix.md`, `trademark-search.md` — investigación
+- `h29-grecia-paddle-revenuecat-obligaciones.md` — investigación vigente (2026-10-02) de lo
+  que exige operar bajo H.29 (Grecia, Paddle MoR, RevenueCat); `H29-DECISION-LOG.md` queda
+  como historia de la comparación anterior a la decisión, con Stripe (ya descartado)
 - `H29-DECISION-LOG.md`, `h21-decision.md` — historia de decisiones de entidad y pagos
 
 ## Procesadores verificados (2026-10-01)
