@@ -1,6 +1,6 @@
 ﻿import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { auth, type OAuthProvider, type RegisterPayload } from '../services/api';
+import { ApiError, auth, type OAuthProvider, type RegisterPayload } from '../services/api';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
 import styles from './AuthScreen.module.css';
 
@@ -17,6 +17,21 @@ function getOAuthError(): string | null {
 }
 
 type Mode = 'login' | 'register' | 'forgot';
+
+// Vuelta de OAuth con 2FA activada: el backend dejó el token del segundo paso
+// en una cookie HttpOnly y redirige aquí con ?mfa=1 para pedir el código.
+function arrivedForMfa(): boolean {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('mfa') !== '1') return false;
+    params.delete('mfa');
+    const rest = params.toString();
+    window.history.replaceState(null, '', window.location.pathname + (rest ? `?${rest}` : '') + window.location.hash);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 interface Props {
   onAuthed: () => void;
@@ -40,6 +55,32 @@ export function AuthScreen({ onAuthed }: Props) {
   });
 
   const { t, i18n: i18nInst } = useTranslation();
+
+  // Segundo paso del login con 2FA (contraseña correcta, falta el código).
+  const [mfaStep, setMfaStep] = useState<boolean>(arrivedForMfa);
+  const [mfaToken, setMfaToken] = useState<string | undefined>();
+  const [code, setCode] = useState('');
+
+  async function handleMfaSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    if (code.trim().length < 6) return setError(t('auth.mfaInvalid'));
+    setLoading(true);
+    try {
+      await auth.login2fa(code, mfaToken);
+      onAuthed();
+    } catch (err) {
+      const status = err instanceof ApiError ? err.status : null;
+      if (status === 429) setError(t('auth.mfaLocked'));
+      else if (status === 401) {
+        setError(t('auth.mfaExpired'));
+        setMfaStep(false);
+        setMode('login');
+      } else setError(t('auth.mfaInvalid'));
+    } finally {
+      setLoading(false);
+    }
+  }
 
   // Solo se pintan los proveedores que el servidor tiene configurados. Antes
   // salían los dos siempre y en producción respondían 503 al pulsarlos.
@@ -93,7 +134,13 @@ export function AuthScreen({ onAuthed }: Props) {
         };
         await auth.register(payload);
       } else {
-        await auth.login(email.trim(), password);
+        const res = await auth.login(email.trim(), password);
+        if ('mfa_required' in res) {
+          setMfaToken(res.mfa_token);
+          setCode('');
+          setMfaStep(true);
+          return;
+        }
       }
       onAuthed();
     } catch (err) {
@@ -104,6 +151,39 @@ export function AuthScreen({ onAuthed }: Props) {
   }
 
   if (mode === 'forgot') return <ForgotPasswordPage onBack={() => setMode('login')} />;
+  if (mfaStep) {
+    return (
+      <div className={styles.screen}>
+        <form className={styles.form} onSubmit={handleMfaSubmit} aria-labelledby="mfa-title">
+          <h1 id="mfa-title" className={styles.brandName}>{t('auth.mfaTitle')}</h1>
+          <p className={styles.tagline}>{t('auth.mfaBody')}</p>
+          <label className={styles.field}>
+            <span className={styles.label}>{t('auth.mfaCodeLabel')}</span>
+            <input
+              className={styles.input}
+              value={code}
+              onChange={(e) => setCode(e.target.value.replace(/\s+/g, ''))}
+              inputMode="text"
+              autoComplete="one-time-code"
+              maxLength={8}
+              autoFocus
+            />
+          </label>
+          {error && <p className={styles.error} role="alert">{error}</p>}
+          <button className={styles.submit} type="submit" disabled={loading}>
+            {loading ? t('auth.loading') : t('auth.mfaCta')}
+          </button>
+          <button
+            type="button"
+            className={styles.forgotLink}
+            onClick={() => { setMfaStep(false); setMode('login'); setError(null); }}
+          >
+            {t('auth.mfaBack')}
+          </button>
+        </form>
+      </div>
+    );
+  }
   return (
     <div className={styles.screen}>
       <div className={styles.brand}>
@@ -226,7 +306,7 @@ export function AuthScreen({ onAuthed }: Props) {
           </label>
         )}
 
-        {error && <p className={styles.error}>⚠️ {error}</p>}
+        {error && <p className={styles.error} role="alert">⚠️ {error}</p>}
 
         <button className={styles.submit} type="submit" disabled={loading}>
           {loading ? t('auth.loading') : mode === 'register' ? t('auth.registerCta') : t('auth.loginCta')}

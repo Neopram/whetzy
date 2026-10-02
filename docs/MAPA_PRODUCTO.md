@@ -20,7 +20,7 @@ Se resuelven en `App()` antes de cualquier hook; no necesitan sesión salvo dond
 | Ruta | Pantalla | Para qué | Especificación |
 |---|---|---|---|
 | `/landing` | `LandingScreen` | Portada pública, ES/EN, hero pre-renderizado | E1: `docs/design/identidad.md`, `competitive-teardown.md` |
-| `/auth`, `/login`, `/register` | `AuthScreen` (modos login / register / forgot → `ForgotPasswordPage`) | Acceso, registro, recuperar contraseña, OAuth GitHub/Google | E1: `docs/design/auth-hardening.md`, `docs/API.md` |
+| `/auth`, `/login`, `/register` | `AuthScreen` (modos login / register / forgot → `ForgotPasswordPage`) | Acceso, registro, recuperar contraseña, OAuth GitHub/Google, segundo paso con código si la cuenta tiene 2FA (O1.3) | E1: `docs/design/auth-hardening.md`, `docs/API.md` |
 | `/reset-password?token=` | `ResetPasswordPage` | Nueva contraseña desde el correo | E0: `docs/API.md` (endpoint) |
 | `/delete-account` | `DeleteAccountScreen` | Borrado de cuenta (GDPR, purga a 30 días) | E1: política publicada (`legal.privacy*`, ADR-55), `RUNBOOK.md` |
 | `/privacy`, `/terms`, `/refund` | `LegalScreen doc=…` | Textos legales publicados (claves i18n `legal.*`) | E1: las propias claves `legal.*` (ADR-55; los borradores, en `docs/archive/legal-borradores/`) |
@@ -51,7 +51,7 @@ Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario)
 | `trackexam` | `TrackExamScreen` | «Examen final del curso» | intro, examen, resultado; admite `test_out` de módulo, pero nada en la UI lo lanza (§5.1) | E2: `design/v2/brief-msg2.md` §F |
 | `league` | `LeagueScreen` | pestaña Ranking | pestañas Liga / Duelos (`RankingTabs`) | E1: `docs/API.md` (league) |
 | `duels` | `DuelScreen` | pestaña Ranking → Duelos | lista (nombre de la habilidad, no su id), reto (rival + habilidad practicada o al azar entre las practicadas), jugando, resultado. Un duelo no da XP | E0: ledger 3.1 |
-| `profile` | `ProfileScreen` | pestaña Yo | ajustes, plan y cancelación, plan ganado con referidos y hasta cuándo (ADR-57), tema, idioma, accesos a Stats/Cartera/Instructor/Admin | E1: `design/v2/brief-msg1.md` (nav) |
+| `profile` | `ProfileScreen` | pestaña Yo | ajustes (incluida la verificación en dos pasos: alta con QR, desactivar con código), plan y cancelación, plan ganado con referidos y hasta cuándo (ADR-57), tema, idioma, accesos a Stats/Cartera/Instructor/Admin | E1: `design/v2/brief-msg1.md` (nav) |
 | `stats` | `StatsScreen` | Yo → Estadísticas | resumen y progreso | E0: ledger |
 | `wallet` | `WalletScreen` | Yo → Cartera | saldo, fuentes y gastos que lista `/economy/prices`, canje de códigos; «Invitar amigos» solo si el referido figura como fuente (desde ADR-57, sí). Sin lista de movimientos | E1: `docs/ECONOMIA.md` §2–5 |
 | `instructor` | `InstructorScreen` | Yo → Instructor | panel del instructor | E1: `docs/MARKETPLACE.md` §4 |
@@ -90,7 +90,6 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Comunidad y grupos de estudio | ledger 40.7–40.8 | no existe |
 | Widgets interactivos, tutor por voz | ledger 40.1–40.6 | no existe |
 | Vídeos | ledger 18.9 | no existe |
-| Activar 2FA desde la app | `docs/design/auth-hardening.md` §4 | backend sí (`auth_hardening.py`); **sin pantalla** |
 | Créditos por onboarding, módulo y rachas de 7 y 30 días | `docs/ECONOMIA.md` §2.2 | **ninguna llamada a `grant_credits`** para esos motivos; solo lo llaman el código promocional y el programa de referidos (ADR-57) |
 | Antifraude por dispositivo/IP (1 activación cada 30 días) | `docs/ECONOMIA.md` §3.5 | el código existe (`check_device_rate_limit`), pero el frontend no manda `X-Device-Fingerprint` y la política publicada no declara ese tratamiento: no corre (ADR-57) |
 | Clawback de referidos (reembolso, baneo, fraude confirmado) | `docs/ECONOMIA.md` §3.5 | no hay flujo de baneo ni de «fraude confirmado» que lo dispare; un referido borrado antes del abono queda `rejected` (ADR-57) |

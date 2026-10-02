@@ -19,12 +19,14 @@ from app.core.security import (
     _DUMMY_HASH,
     check_lockout,
     create_access_token,
+    create_mfa_token,
     create_refresh_token,
     create_session,
     get_current_user,
     get_password_hash,
     log_audit_event,
     record_login_attempt,
+    user_has_2fa,
     verify_password,
     verify_token,
 )
@@ -121,14 +123,50 @@ async def register(
     return token
 
 
-@router.post("/login", response_model=Token)
+class MfaChallenge(BaseModel):
+    """La contraseña es correcta y la cuenta tiene 2FA: falta el código
+    (`POST /auth/2fa/login`). No hay sesión todavía."""
+
+    mfa_required: bool = True
+    mfa_token: str
+
+
+async def complete_login(
+    user: User, email: str, client_ip: str, user_agent: str, response: Response, db: AsyncSession
+) -> Token:
+    """Lo que cierra un login correcto: intento bueno, sesión, auditoría y
+    cookies. Lo comparten la contraseña sin 2FA y el segundo paso con código."""
+    await record_login_attempt(email, client_ip, True, db)
+    await create_session(user.id, client_ip, user_agent, db)
+    await log_audit_event(
+        user.id,
+        "login_success",
+        ip=client_ip,
+        user_agent=user_agent,
+        result="success",
+        db=db,
+    )
+    token = Token(
+        access_token=create_access_token(user.id, jwt_version=user.jwt_version),
+        refresh_token=create_refresh_token(user.id, jwt_version=user.jwt_version),
+    )
+    set_auth_cookies(response, token.access_token, token.refresh_token)
+    return token
+
+
+@router.post("/login", response_model=Token | MfaChallenge)
 async def login(
     request: Request,
     response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db),
-) -> Token:
-    """Login with email and password. Includes auth hardening with progressive lockout and session tracking."""
+) -> Token | MfaChallenge:
+    """Login with email and password. Includes auth hardening with progressive lockout and session tracking.
+
+    Con 2FA activada no hay sesión todavía: devuelve `MfaChallenge` y el login
+    se completa en `POST /auth/2fa/login` con el código. Antes la 2FA se podía
+    activar y el login la ignoraba.
+    """
     # Extract IP and user-agent from request
     client_ip = request.client.host if request.client else "unknown"
     user_agent = request.headers.get("user-agent", "")
@@ -190,28 +228,16 @@ async def login(
         )
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user")
 
-    # Record successful login attempt
-    await record_login_attempt(email, client_ip, True, db)
+    if await user_has_2fa(user.id, db):
+        # Contraseña correcta, pero sin código no hay sesión. No se registra el
+        # intento como bueno: el bloqueo progresivo sigue contando hasta el código.
+        await log_audit_event(
+            user.id, "login_mfa_required", ip=client_ip, user_agent=user_agent,
+            result="pending", db=db,
+        )
+        return MfaChallenge(mfa_token=create_mfa_token(user.id, jwt_version=user.jwt_version))
 
-    # Create session for this login
-    await create_session(user.id, client_ip, user_agent, db)
-
-    # Log successful login
-    await log_audit_event(
-        user.id,
-        "login_success",
-        ip=client_ip,
-        user_agent=user_agent,
-        result="success",
-        db=db,
-    )
-
-    token = Token(
-        access_token=create_access_token(user.id, jwt_version=user.jwt_version),
-        refresh_token=create_refresh_token(user.id, jwt_version=user.jwt_version),
-    )
-    set_auth_cookies(response, token.access_token, token.refresh_token)
-    return token
+    return await complete_login(user, email, client_ip, user_agent, response, db)
 
 
 @router.post("/refresh", response_model=Token)

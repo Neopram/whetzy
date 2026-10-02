@@ -175,6 +175,12 @@ export interface UserRead {
   is_admin?: boolean;
 }
 
+/** Respuesta de `/auth/login` cuando la cuenta tiene 2FA: falta el código. */
+export interface MfaChallenge {
+  mfa_required: true;
+  mfa_token: string;
+}
+
 export interface RegisterPayload {
   email: string;
   username: string;
@@ -218,7 +224,28 @@ export const auth = {
       const body = await res.json().catch(() => ({}));
       throw new Error(typeof body.detail === 'string' ? body.detail : 'Incorrect email or password');
     }
-    return (await res.json()) as { access_token: string; refresh_token: string };
+    // Con 2FA la contraseña sola no abre sesión: llega el reto del segundo paso.
+    return (await res.json()) as { access_token: string; refresh_token: string } | MfaChallenge;
+  },
+
+  /** Segundo paso del login con 2FA. Sin `mfaToken` lo toma de la cookie (OAuth). */
+  async login2fa(code: string, mfaToken?: string) {
+    return request<{ access_token: string; refresh_token: string }>('/auth/2fa/login', {
+      method: 'POST',
+      body: JSON.stringify({ code: code.trim(), mfa_token: mfaToken }),
+    });
+  },
+
+  twoFactor: {
+    status: () => request<{ enabled: boolean; backup_codes_left: number }>('/auth/2fa/status'),
+    setup: () =>
+      request<{ qr_uri: string; qr_svg: string; secret: string; backup_codes: string[] }>('/auth/2fa/setup', {
+        method: 'POST',
+      }),
+    enable: (code: string) =>
+      request<{ message: string }>('/auth/2fa/enable', { method: 'POST', body: JSON.stringify({ totp_code: code.trim() }) }),
+    disable: (code: string) =>
+      request<{ enabled: boolean }>('/auth/2fa/disable', { method: 'POST', body: JSON.stringify({ code: code.trim() }) }),
   },
 
   async me() {

@@ -27,7 +27,7 @@ Full interactive spec: `/api/v1/openapi.json` (dev: http://localhost:8000/docs)
 
 ```
 POST  /auth/register              → Token (201)
-POST  /auth/login                 → Token (200, form-urlencoded)
+POST  /auth/login                 → Token | {mfa_required, mfa_token} (200, form-urlencoded) — con 2FA activada no abre sesión: devuelve el reto (5 min) para `/auth/2fa/login`
 POST  /auth/refresh               → Token (200)
 GET   /auth/me                    → UserRead (200) 🔒
 PATCH /auth/me                    → UserRead (200) 🔒  — update profile (language, display_name)
@@ -235,9 +235,12 @@ POST /billing/paddle/cancel → {cancel_requested, access_until} 🔒 — cancel
 ```
 GET  /auth/sessions                      → [{id, device, ip, last_seen}] 🔒
 POST /auth/sessions/{session_id}/revoke  → {revoked} 🔒 — cierra esa sesión
-POST /auth/2fa/setup                     → {secret, qr_uri} 🔒 — TOTP, aún sin activar
-POST /auth/2fa/enable                    → {enabled} 🔒 — confirma con un código válido
+GET  /auth/2fa/status                    → {enabled, backup_codes_left} 🔒
+POST /auth/2fa/setup                     → {secret, qr_uri, qr_svg, backup_codes[10]} 🔒 — TOTP, aún sin activar; 409 `2fa_already_enabled` si ya está activa (rehacer el alta la apagaría sin código)
+POST /auth/2fa/enable                    → {message} 🔒 — confirma con un código válido; 400 si no lo es
+POST /auth/2fa/disable                   → {enabled: false} 🔒 — exige `{code}` (TOTP o de respaldo); 400 si no vale
 POST /auth/2fa/verify                    → {verified} 🔒
+POST /auth/2fa/login                     → Token — segundo paso del login: `{code, mfa_token?}`; sin `mfa_token` lo lee de la cookie HttpOnly `whetzy_mfa` (vuelta de OAuth a `/auth?mfa=1`). 400 código malo, 401 reto caducado, 429 bloqueo por intentos
 ```
 
 ## Economy endpoints

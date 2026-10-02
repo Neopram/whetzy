@@ -1,0 +1,90 @@
+/* Verificación en dos pasos, dentro de la tarjeta de Ajustes de Yo. */
+
+.block {
+  display: grid;
+  gap: var(--le-space-xs);
+  padding: var(--le-space-sm) 0;
+  border-bottom: 1px solid var(--le-border-light);
+}
+
+.head { display: flex; align-items: center; justify-content: space-between; gap: var(--le-space-sm); }
+
+.label { font-size: var(--le-fs-sm); font-weight: var(--le-fw-semibold); }
+
+.on,
+.off {
+  padding: 2px var(--le-space-xs);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  font-size: var(--le-fs-xs);
+}
+
+.on { color: var(--le-success-text); }
+.off { color: var(--le-text-muted); }
+
+.hint { color: var(--le-text-secondary); font-size: var(--le-fs-xs); }
+.done { color: var(--le-success-text); font-size: var(--le-fs-sm); }
+.error { color: var(--le-danger-text); font-size: var(--le-fs-sm); }
+
+.action,
+.primary,
+.secondary {
+  min-height: 44px;
+  border-radius: var(--le-radius-sm);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+}
+
+.action,
+.secondary { border: 1px solid var(--le-border); color: var(--le-text); }
+.primary { background: var(--le-brand); color: var(--le-text-inverse); }
+.primary:disabled { background: var(--le-bg-elevated); color: var(--le-text-muted); cursor: not-allowed; }
+
+.panel { display: grid; gap: var(--le-space-sm); }
+
+/* El QR necesita fondo claro para leerse con la cámara, también en tema oscuro. */
+.qr {
+  justify-self: center;
+  padding: var(--le-space-xs);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-qr-bg);
+}
+
+.secret {
+  padding: var(--le-space-xs) var(--le-space-sm);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-sm);
+  letter-spacing: 0.08em;
+  overflow-wrap: anywhere;
+}
+
+.backup {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--le-space-2xs);
+  margin: 0;
+  padding: 0;
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-sm);
+}
+
+.field { display: grid; gap: var(--le-space-2xs); color: var(--le-text-secondary); font-size: var(--le-fs-xs); }
+
+.input {
+  min-height: 44px;
+  padding: 0 var(--le-space-sm);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-bg);
+  color: var(--le-text);
+  font-family: var(--le-font-mono);
+  font-size: var(--le-fs-md);
+  letter-spacing: 0.15em;
+}
+
+.input:focus-visible { outline: none; border-color: var(--le-blue); }
+
+.row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--le-space-xs); }

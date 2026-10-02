@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { Card } from '../components/common/Card';
+import { TwoFactorSettings } from '../components/profile/TwoFactorSettings';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { useApi } from '../hooks/useApi';
 import { usePushNotifications } from '../hooks/usePushNotifications';
@@ -289,6 +290,7 @@ export function ProfileScreen() {
               </button>
             </div>
           )}
+          <TwoFactorSettings />
         </div>
       </Card>
 
