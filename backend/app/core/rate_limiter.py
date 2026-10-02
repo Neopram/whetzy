@@ -87,7 +87,7 @@ class RedisRateLimiter(RateLimiter):
 
         # Cliente asincrono: el sincrono bloquea el event loop dentro de
         # `async def is_allowed`, que es justo lo contrario de lo que busca 22.6.
-        self._redis = aioredis.from_url(  # type: ignore[no-untyped-call]
+        self._redis = aioredis.from_url(
             redis_url, decode_responses=True
         )
         # Si Redis no responde se limita en memoria, no se deja pasar todo:
