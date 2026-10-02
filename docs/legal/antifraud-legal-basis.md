@@ -93,3 +93,33 @@ economy:
   `fraud_review_queue` records.
 - **Objection** (Art. 21): users may object; the consequence is deactivation of
   the referral programme for their account.
+
+---
+
+## Para publicar — propuesta de la sesión (2026-10-02; decide el dueño)
+
+**Lo que falta (verificado en el código el 2026-10-02):** la política publicada
+(`legal.privacyL1`–`L5`, la fuente según ADR-55) enumera lo que se recoge y no
+nombra ni la IP ni el navegador. Pero ya se guardan **en claro** la IP en
+`login_attempts`, `user_sessions` y `audit_log`, y el navegador (user agent) en
+`user_sessions` y `audit_log`, sin retención por tiempo: solo se borran con la
+cuenta. Este borrador dice «nunca se almacena la IP en claro», que vale para
+`device_fingerprints` y no para esas tablas. Y el antifraude por dispositivo
+(§3.5 de ECONOMIA) no puede encenderse sin declararlo.
+
+**Texto propuesto** (una línea nueva en «1. Información que recopilamos» y otra en
+«2. Cómo usamos tus datos»; la base legal ya cubre «interés legítimo… seguridad»):
+
+- ES, recopilamos: «Dirección IP y navegador de cada inicio de sesión, y una huella
+  cifrada del dispositivo y de la IP al activar un referido (nunca en claro)».
+- ES, usos: «Proteger tu cuenta (bloqueo por intentos, sesiones abiertas) y evitar
+  el abuso del programa de referidos».
+- EN, we collect: «IP address and browser of each sign-in, and a hashed fingerprint
+  of the device and IP when a referral is activated (never in plain text)».
+- EN, uses: «Protecting your account (lockout after failed attempts, open sessions)
+  and preventing abuse of the referral programme».
+
+**Retención a decidir:** proponemos 90 días para `login_attempts` y `audit_log`, y
+la vida de la sesión para `user_sessions`; hoy no hay ninguna. Hasta que el dueño
+apruebe el texto, el antifraude por dispositivo/IP sigue apagado (el frontend no
+manda `X-Device-Fingerprint`).
