@@ -363,6 +363,8 @@ export interface QuizEndResponse {
   max_combo: number;
   xp_earned: number;
   duration_seconds: number;
+  /** Créditos que dejó la sesión: módulo, racha o diagnóstico (ECONOMIA §2.2). */
+  credits_earned?: number;
 }
 
 export const quiz = {
@@ -710,6 +712,8 @@ export interface CreditPrices {
   /** `milestones`: hitos de la escalera de referidos (ADR-35): n.º de abonados → premio. */
   grifos: { event: string; credits: number; cap: string; milestones?: { at: number; reward: string }[] }[];
   sumideros: { item: string; cost: number }[];
+  /** Tope mensual de lo que se gana aprendiendo (los referidos tienen el suyo). */
+  learning_monthly_cap?: number;
 }
 
 export const economy = {

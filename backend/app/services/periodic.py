@@ -219,6 +219,12 @@ async def process_monthly_payouts(db: AsyncSession, now: datetime | None = None)
     }
 
 
+async def _learning_credits(db: AsyncSession, now: datetime | None = None) -> int:
+    from app.services.learning_rewards import award_recently_active
+
+    return await award_recently_active(db, now)
+
+
 async def _try_lock(lock_db: AsyncSession) -> bool:
     """Lock de sesión en una conexión aparte, sin commit hasta soltarlo: el
     trabajo hace commit tras cada tarea y un lock de transacción se soltaría en
@@ -242,6 +248,7 @@ async def run_periodic_jobs(db: AsyncSession, now: datetime | None = None) -> di
         ("renewal_reminders", send_renewal_reminders),
         ("reactivation_offers", send_reactivation_offers),
         ("payouts", process_monthly_payouts),
+        ("learning_credits", _learning_credits),
     ):
         try:
             results[name] = await job(db, now)

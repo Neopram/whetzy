@@ -53,7 +53,7 @@ Sign in with Apple is mandatory before any App Store submission once another OAu
 ```
 POST /quiz/start                  → {session_id, question} 🔒
 POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒
-POST /quiz/end                    → {total, correct, xp_earned} 🔒
+POST /quiz/end                    → {total_questions, correct, accuracy, max_combo, xp_earned, duration_seconds, credits_earned} 🔒 — `credits_earned`: lo que la sesión dejó ganado (módulo, racha, diagnóstico; ECONOMIA §2.2)
 GET  /quiz/review-due             → {questions[], count} 🔒  — FSRS review queue
 ```
 
@@ -250,7 +250,7 @@ Créditos por lotes FIFO con caducidad; el saldo se deriva sumando el ledger, no
 se guarda en ninguna columna.
 
 ```
-GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[]} — público; solo lo cableado (referidos con `milestones`, comodín de racha)
+GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[], learning_monthly_cap} — público; solo lo cableado (referidos con `milestones`; diagnóstico, módulo, skill saltada, rachas de 7 y 30 días; comodín de racha)
 GET  /economy/balance           → {balance, currency, expires_in_days} 🔒 — días hasta que caduque el primer lote con saldo (0 = nada)
 GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea (y lo guarda) si no existe
 POST /economy/promo/redeem      → {credits, balance, message} 🔒 — solo web (X-Platform ios/android → 403); rate limit 5/10 min por usuario

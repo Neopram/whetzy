@@ -64,6 +64,26 @@ describe('WalletScreen v2', () => {
     expect(screen.queryByText('Cómo ganar créditos')).not.toBeInTheDocument();
   });
 
+  it('grifos de aprendizaje (ECONOMIA §2.2): cada uno con su regla, y el tope mensual', async () => {
+    (economy.prices as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
+      credit_value_usd: 0.01,
+      grifos: [
+        { event: 'module_done', credits: 100, cap: 'per_module' },
+        { event: 'skill_skipped', credits: 50, cap: '500/month' },
+        { event: 'streak_7', credits: 70, cap: 'per_week' },
+      ],
+      sumideros: [],
+      learning_monthly_cap: 1500,
+    });
+    render(<WalletScreen />);
+    expect(await screen.findByText('Completas un módulo')).toBeInTheDocument();
+    expect(screen.getByText('Con todas sus skills al 80 % de dominio. Una vez por módulo.')).toBeInTheDocument();
+    expect(screen.getByText(/Hasta 500 al mes/)).toBeInTheDocument();
+    expect(screen.getByText('Una vez por semana mientras dure.')).toBeInTheDocument();
+    expect(screen.getByText(/hasta 1500 créditos al mes/)).toBeInTheDocument();
+    expect(screen.queryByText(/per_module|per_week/)).not.toBeInTheDocument();
+  });
+
   it('con el referido listado, el código para compartir sí sale', async () => {
     render(<WalletScreen />);
     expect(await screen.findByText('Invitar amigos')).toBeInTheDocument();

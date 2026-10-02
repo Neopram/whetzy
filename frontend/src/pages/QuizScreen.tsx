@@ -922,6 +922,9 @@ function SessionSummary({
           <span className={styles.summaryStatLabel}>{t('quiz.xpEarned')}</span>
         </div>
       </div>
+      {(summary.credits_earned ?? 0) > 0 && (
+        <p className={styles.summaryAccuracy}>{t('quiz.creditsEarned', { count: summary.credits_earned })}</p>
+      )}
 
       {moved.length > 0 && (
         <section className={styles.moved} aria-label={t('quiz.skillsMoved')}>

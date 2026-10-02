@@ -15,6 +15,7 @@ from app.core.rate_limiter import InMemoryRateLimiter
 from app.core.security import get_current_user
 from app.models.economy import ReferralCode
 from app.models.user import User
+from app.services import learning_rewards as lr
 from app.services import streak_shop
 from app.services.antifraud import AntiFraudService
 from app.services.economy import (
@@ -218,11 +219,11 @@ async def activate_referral(
 async def get_credit_prices(response: Response) -> dict[str, object]:
     """Public endpoint: credit value mapping.
 
-    Solo lo que el código hace (2026-10-01): la Cartera pinta esta lista tal
-    cual. spend_fifo solo lo llama el comodín de racha; grant_credits, el código
-    promocional (va aparte) y el programa de referidos (ADR-35), que cablea
-    referral_program_loop. Las demás fuentes de ECONOMIA.md §2 vuelven aquí
-    cuando alguien las cablee.
+    Solo lo que el código hace: la Cartera pinta esta lista tal cual. Grifos:
+    los de aprendizaje (services/learning_rewards, 2026-10-02) y el programa de
+    referidos (ADR-35); el código promocional va aparte. Proyecto entregado y
+    simulacro aprobado no están: no hay un hecho verificable que pagar
+    (learning_rewards, docstring). Sumideros: lo que llama a spend_fifo.
     """
     response.headers["Cache-Control"] = "public, max-age=3600, stale-while-revalidate=86400"
     return {
@@ -236,7 +237,14 @@ async def get_credit_prices(response: Response) -> dict[str, object]:
                 "milestones": [{"at": at, "reward": reward} for at, reward in REFERRAL_MILESTONES],
             },
             {"event": "referral_welcome", "credits": REFERRAL_WELCOME_CREDITS, "cap": "once"},
+            {"event": "diagnostic_done", "credits": lr.DIAGNOSTIC_CREDITS, "cap": "once"},
+            {"event": "module_done", "credits": lr.MODULE_CREDITS, "cap": "per_module"},
+            {"event": "skill_skipped", "credits": lr.SKILL_SKIPPED_CREDITS, "cap": f"{lr.SKILL_SKIPPED_MONTHLY_CAP}/month"},
+            {"event": "streak_7", "credits": lr.STREAK_7_CREDITS, "cap": "per_week"},
+            {"event": "streak_30", "credits": lr.STREAK_30_CREDITS, "cap": "per_month"},
         ],
+        # Tope de lo que se gana aprendiendo al mes; los referidos tienen el suyo.
+        "learning_monthly_cap": lr.LEARNING_MONTHLY_CAP,
         "sumideros": [
             {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS},
         ],

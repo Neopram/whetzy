@@ -110,6 +110,9 @@ export default function WalletScreen() {
                   {g.event === 'referral_welcome' && (
                     <span className={styles.rowMeta}>{t('wallet.welcomeRule')}</span>
                   )}
+                  {i18n.exists(`wallet.earnRule.${g.event}`) && (
+                    <span className={styles.rowMeta}>{t(`wallet.earnRule.${g.event}`)}</span>
+                  )}
                   {g.milestones && (
                     <span className={styles.rowMeta}>
                       {g.milestones
@@ -123,6 +126,9 @@ export default function WalletScreen() {
               </li>
             ))}
           </ul>
+          {prices?.learning_monthly_cap ? (
+            <p className={styles.muted}>{t('wallet.learningCap', { cap: prices.learning_monthly_cap })}</p>
+          ) : null}
         </section>
       )}
 

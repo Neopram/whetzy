@@ -18,7 +18,7 @@ from app.schemas.session import (
     QuizStartResponse,
     ReviewDueResponse,
 )
-from app.services import content_quota
+from app.services import content_quota, learning_rewards
 from app.services import quiz as quiz_service
 
 router = APIRouter()
@@ -59,7 +59,13 @@ async def end_quiz(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> QuizEndResponse:
-    return await quiz_service.end_session(db, current_user, payload)
+    result = await quiz_service.end_session(db, current_user, payload)
+    # Fin de sesión: el momento en que un módulo, una racha o el diagnóstico
+    # pueden haberse ganado (ECONOMIA §2.2). La vuelta horaria cubre lo que
+    # quede sin `/quiz/end` (una pestaña cerrada).
+    credits = await learning_rewards.award_learning_credits(db, current_user)
+    await db.commit()
+    return result.model_copy(update={"credits_earned": credits})
 
 
 @router.get("/review-due", response_model=ReviewDueResponse)

@@ -82,6 +82,30 @@ describe('QuizScreen v2', () => {
     expect(screen.getByText(/100% de precisión/)).toBeInTheDocument();
   });
 
+  it('el resumen dice los créditos ganados en la sesión, y nada si no hay', async () => {
+    end.mockResolvedValueOnce({ total_questions: 1, correct: 1, accuracy: 1, max_combo: 1, xp_earned: 10, duration_seconds: 5, credits_earned: 170 });
+    render(<QuizScreen />);
+    await screen.findByText('¿Cuánto es 1 + 1?');
+    await effectsRun();
+    fireEvent.keyDown(window, { key: '2' });
+    await screen.findByText('Uno más uno es dos.');
+    fireEvent.keyDown(window, { key: 'Enter' });
+    expect(await screen.findByText('+170 créditos por lo que has logrado')).toBeInTheDocument();
+    cleanup();
+
+    skills.mockResolvedValueOnce([skill(0.2)]).mockResolvedValueOnce([skill(0.45)]);
+    useAppStore.getState().startQuiz('study', 10);
+    render(<QuizScreen />);
+    await screen.findByText('¿Cuánto es 1 + 1?');
+    await effectsRun();
+    fireEvent.keyDown(window, { key: '2' });
+    await screen.findByText('Uno más uno es dos.');
+    fireEvent.keyDown(window, { key: 'Enter' });
+    await screen.findByText(/100% de precisión/);
+    // Ni el texto ni la clave cruda de i18n («quiz.creditsEarned»).
+    expect(screen.queryByText(/cr[eé]dit/i)).toBeNull();
+  });
+
   it('una habilidad sin intentos previos sale como «nueva», no como 0 %', async () => {
     skills.mockReset();
     skills.mockResolvedValueOnce([{ ...skill(0), attempts: 0 }]).mockResolvedValueOnce([skill(0.45)]);

@@ -88,7 +88,18 @@ Valor nominal interno para modelar coste (nunca visible al usuario): **1 crédit
 | Empleado de empresa: módulo asignado completado | 100 → **bolsa de la empresa** | por módulo | Empresa |
 
 **Tope global de ganancia por aprendizaje: 1.500 créditos/mes** (los referidos
-tienen su propio tope). Con el tope, el máximo que un usuario Free puede extraer al
+tienen su propio tope).
+
+**Estado en el código (2026-10-02, `services/learning_rewards.py`).** Se pagan el
+diagnóstico, el módulo (todas sus skills ≥ 0,8), la skill saltada con un test-out
+aprobado a tiempo (≥ 0,8 tras la prueba, tope 500/mes), y las rachas de 7 días
+(una vez por semana ISO mientras dure) y de 30 (una vez al mes). Se abonan al
+cerrar una sesión (`/quiz/end`), al enviar un examen de ruta o test-out y en la
+vuelta horaria de `periodic_jobs_loop`. Lo que no cabe en el tope no se paga a
+medias: un módulo o una skill se pagan el mes siguiente; la racha de un periodo
+pasado no vuelve. **No se pagan** el proyecto (el «tests verdes» lo afirma el
+navegador) ni el simulacro aprobado (el simulacro no tiene nota de corte), ni el
+del empleado de empresa (no hay panel B2B). Con el tope, el máximo que un usuario Free puede extraer al
 mes son tres simulacros: suficiente para retener, insuficiente para vivir de ello.
 
 ### 2.3 Sumideros — en qué se gastan

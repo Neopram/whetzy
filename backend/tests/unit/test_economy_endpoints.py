@@ -21,6 +21,7 @@ async def test_prices_lists_only_what_the_code_does(client: AsyncClient) -> None
     el código. Hasta el 2026-10-01 anunciaba onboarding, módulo, rachas y
     bienvenida (nadie los abonaba) y simulacro, informe y curso (nadie los
     cobraba). Hoy: el programa de referidos (ADR-35) y el comodín de racha."""
+    from app.services import learning_rewards as lr
     from app.services import streak_shop
     from app.services.economy import (
         REFERRAL_CREDITS,
@@ -38,7 +39,14 @@ async def test_prices_lists_only_what_the_code_does(client: AsyncClient) -> None
             "milestones": [{"at": at, "reward": reward} for at, reward in REFERRAL_MILESTONES],
         },
         {"event": "referral_welcome", "credits": REFERRAL_WELCOME_CREDITS, "cap": "once"},
+        # Grifos de aprendizaje (2026-10-02, services/learning_rewards).
+        {"event": "diagnostic_done", "credits": lr.DIAGNOSTIC_CREDITS, "cap": "once"},
+        {"event": "module_done", "credits": lr.MODULE_CREDITS, "cap": "per_module"},
+        {"event": "skill_skipped", "credits": lr.SKILL_SKIPPED_CREDITS, "cap": "500/month"},
+        {"event": "streak_7", "credits": lr.STREAK_7_CREDITS, "cap": "per_week"},
+        {"event": "streak_30", "credits": lr.STREAK_30_CREDITS, "cap": "per_month"},
     ]
+    assert data["learning_monthly_cap"] == 1500
     assert data["sumideros"] == [
         {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS}
     ]

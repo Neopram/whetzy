@@ -30,6 +30,7 @@ from app.schemas.exam import (
     TrackExamSubmitResponse,
 )
 from app.services import certification as certification_service
+from app.services import learning_rewards
 from app.services import mock_exam as mock_exam_service
 from app.services import quiz as quiz_service
 from app.services import track_exam as track_exam_service
@@ -387,6 +388,10 @@ async def submit_track_exam(
     attempt.report = report
     attempt.submitted_at = datetime.now(UTC)
     attempt.status = "expired" if expired else "submitted"
+    await db.commit()
+    # Un test-out aprobado sube dominio: puede cerrar el módulo y pagar las
+    # skills saltadas (ECONOMIA §2.2).
+    await learning_rewards.award_learning_credits(db, current_user)
     await db.commit()
 
     return TrackExamSubmitResponse(

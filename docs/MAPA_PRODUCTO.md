@@ -90,7 +90,7 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Comunidad y grupos de estudio | ledger 40.7–40.8 | no existe |
 | Widgets interactivos, tutor por voz | ledger 40.1–40.6 | no existe |
 | Vídeos | ledger 18.9 | no existe |
-| Créditos por onboarding, módulo y rachas de 7 y 30 días | `docs/ECONOMIA.md` §2.2 | **ninguna llamada a `grant_credits`** para esos motivos; solo lo llaman el código promocional y el programa de referidos (ADR-57) |
+| Créditos por proyecto entregado (200) y por simulacro aprobado (150) | `docs/ECONOMIA.md` §2.2 | **no se pagan**: el paso de proyecto lo da por bueno el navegador (`passed` del cliente) y el simulacro no tiene nota de corte. Los demás grifos de aprendizaje sí (`services/learning_rewards.py`, 2026-10-02) |
 | Antifraude por dispositivo/IP (1 activación cada 30 días) | `docs/ECONOMIA.md` §3.5 | el código existe (`check_device_rate_limit`), pero el frontend no manda `X-Device-Fingerprint` y la política publicada no declara ese tratamiento: no corre (ADR-57) |
 | Clawback de referidos (reembolso, baneo, fraude confirmado) | `docs/ECONOMIA.md` §3.5 | no hay flujo de baneo ni de «fraude confirmado» que lo dispare; un referido borrado antes del abono queda `rejected` (ADR-57) |
 | Gastar créditos en simulacro, informe PDF o curso | `docs/ECONOMIA.md` §2.3 | `spend_fifo` solo lo llama el comodín de racha (`services/streak_shop.py`) |
