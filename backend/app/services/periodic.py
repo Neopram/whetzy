@@ -320,14 +320,14 @@ async def _try_lock(lock_db: AsyncSession) -> bool:
     """Lock de sesión en una conexión aparte, sin commit hasta soltarlo: el
     trabajo hace commit tras cada tarea y un lock de transacción se soltaría en
     el primero. En SQLite (tests) no hay workers que coordinar."""
-    if lock_db.bind.dialect.name != "postgresql":
+    if lock_db.get_bind().dialect.name != "postgresql":
         return True
     got = await lock_db.execute(select(func.pg_try_advisory_lock(_PERIODIC_LOCK_KEY)))
     return bool(got.scalar())
 
 
 async def _unlock(lock_db: AsyncSession) -> None:
-    if lock_db.bind.dialect.name == "postgresql":
+    if lock_db.get_bind().dialect.name == "postgresql":
         await lock_db.execute(select(func.pg_advisory_unlock(_PERIODIC_LOCK_KEY)))
 
 

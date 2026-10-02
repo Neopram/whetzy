@@ -75,7 +75,7 @@ async def _pick_skill(db: AsyncSession, challenger: User, skill_id: str | None) 
             status_code=422,
             detail="You haven't studied any skill yet. Complete at least one quiz before challenging.",
         )
-    return random.choice(skill_ids)  # type: ignore[no-any-return]
+    return random.choice(skill_ids)
 
 
 async def _pick_questions(db: AsyncSession, skill_id: str) -> list[Question]:

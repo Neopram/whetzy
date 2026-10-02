@@ -147,7 +147,7 @@ async def award_learning_credits(
     from app.services.economy import ReferralService
 
     now = now or datetime.now(UTC)
-    if db.bind.dialect.name == "postgresql":
+    if db.get_bind().dialect.name == "postgresql":
         # Dos llamadas a la vez (fin de sesión y vuelta horaria) leerían el mismo
         # «ganado este mes» y podrían pasarse del tope juntas.
         await db.execute(select(User.id).where(User.id == user.id).with_for_update())
