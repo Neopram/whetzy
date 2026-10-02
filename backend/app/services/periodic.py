@@ -50,6 +50,12 @@ REACTIVATION_EVERY_DAYS = 60
 CREDIT_EXPIRY_NOTICE_DAYS = 7
 CREDIT_EXPIRY_NOTICE_MIN = 200
 
+# Retención publicada en la política de privacidad (legal.privacyRetentionSecurity):
+# IP y navegador de inicios de sesión, auditoría y sesiones, 90 días; las huellas
+# del antifraude de referidos, 30 (docs/legal/antifraud-legal-basis.md).
+SECURITY_LOG_RETENTION_DAYS = 90
+DEVICE_FINGERPRINT_RETENTION_DAYS = 30
+
 # Liquidación a instructores: el día 15 de cada mes (MARKETPLACE.md), mínimo 50 €.
 PAYOUT_DAY = 15
 PAYOUT_MIN_CENTS = 5000
@@ -245,6 +251,33 @@ async def send_credit_expiry_warnings(db: AsyncSession, now: datetime | None = N
     return sent
 
 
+async def purge_security_logs(db: AsyncSession, now: datetime | None = None) -> dict[str, int]:
+    """Borra lo que la política de privacidad dice que no se guarda más de 90
+    días (30 las huellas del antifraude). Hasta el 2026-10-02 estas tablas solo
+    se vaciaban al borrar la cuenta: la IP de cada inicio de sesión se quedaba
+    para siempre."""
+    from sqlalchemy import delete
+
+    from app.models.antifraud import DeviceFingerprint
+    from app.models.auth import AuditLog, LoginAttempt, UserSession
+
+    now = now or datetime.now(UTC)
+    cutoff = now - timedelta(days=SECURITY_LOG_RETENTION_DAYS)
+    fp_cutoff = now - timedelta(days=DEVICE_FINGERPRINT_RETENTION_DAYS)
+    deleted = {}
+    for name, stmt in (
+        ("login_attempts", delete(LoginAttempt).where(LoginAttempt.created_at < cutoff)),
+        ("audit_log", delete(AuditLog).where(AuditLog.timestamp < cutoff)),
+        # Una sesión vive como mucho 30 días (REFRESH_TOKEN_EXPIRE_DAYS): con 90
+        # sin actividad ya no hay nada que mostrar ni que cerrar.
+        ("user_sessions", delete(UserSession).where(UserSession.last_activity < cutoff)),
+        ("device_fingerprints", delete(DeviceFingerprint).where(DeviceFingerprint.created_at < fp_cutoff)),
+    ):
+        result = await db.execute(stmt)
+        deleted[name] = int(getattr(result, "rowcount", 0) or 0)
+    return deleted
+
+
 async def process_monthly_payouts(db: AsyncSession, now: datetime | None = None) -> dict[str, int]:
     """El día 15 pasa a `processing` las liquidaciones pendientes de ≥ 50 €
     (28.7); el pago lo hace el dueño desde esa lista. Fuera del día 15 no hace
@@ -308,6 +341,7 @@ async def run_periodic_jobs(db: AsyncSession, now: datetime | None = None) -> di
         ("payouts", process_monthly_payouts),
         ("credits_expired", expire_credits),
         ("credit_expiry_warnings", send_credit_expiry_warnings),
+        ("security_log_retention", purge_security_logs),
         ("learning_credits", _learning_credits),
     ):
         try:
