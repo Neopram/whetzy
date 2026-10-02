@@ -1,6 +1,13 @@
 # Actualizaciones de dependencias (ledger 22.4). Semanal y agrupado para no
 # inundar de PRs; los PRs de Dependabot pasan por las mismas guardas que el resto
 # y solo el dueño fusiona (ADR-45).
+#
+# Ningún major (2026-10-02). Con el CI sin runner (H.13), dos olas de majors
+# llegaron el mismo día: bcrypt 5 tumbó la API, vite 8 / coverage-v8 5 / pyodide
+# 314 rompieron el build y stripe 15 rompió los webhooks; en la segunda, typescript
+# 7 no compila (`tsc -b` falla en usePushNotifications.ts y Cloudflare Pages no
+# publica) y redis 8 deja un `type: ignore` sobrante que tumba mypy --strict.
+# Un major es una migración: se hace a mano, en su PR, con la puerta local verde.
 version: 2
 updates:
   - package-ecosystem: "pip"
@@ -11,6 +18,9 @@ updates:
     groups:
       python-minor-patch:
         update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
@@ -19,21 +29,13 @@ updates:
     groups:
       npm-minor-patch:
         update-types: ["minor", "patch"]
-    # Estos majors rompieron master el 2026-10-02 (sin CI que lo parase, H.13):
-    # vite 8 exige @vitejs/plugin-react 6 y vitest 5; coverage-v8 5 exige vitest
-    # 5 exacto; pyodide 314 cambia los ficheros que sirve el plugin de
-    # autoalojamiento (vite.config.ts). Se suben a mano, juntos, en su propio PR.
     ignore:
-      - dependency-name: "vite"
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-      - dependency-name: "@vitejs/plugin-react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "vitest"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@vitest/*"
-        update-types: ["version-update:semver-major"]
+      # pyodide va en 0.x: cada «minor» cambia la versión de Python de los
+      # ejercicios (0.26 trae 3.12, 0.29 trae 3.13) y la lista de ficheros que
+      # sirve vite.config.ts. Ninguna actualización automática.
       - dependency-name: "pyodide"
-        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

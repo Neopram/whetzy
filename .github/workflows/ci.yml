@@ -135,6 +135,11 @@ jobs:
       - name: No third-party origins in the build (12.7, red line 5)
         run: node scripts/check-no-third-party.mjs
 
+      # Every executable Python exercise must be solvable in the learner's
+      # browser, not only in CPython (2026-10-02: 24 were not).
+      - name: Exercises solvable in Pyodide
+        run: node scripts/check-exec-pyodide.mjs
+
       # Red line 3: fallbackLng: 'es' must never actually trigger. This script
       # exists (23.5) and passes today, but ran nowhere automated until 20.7's
       # audit found the gap — neither here nor in .githooks/pre-push nor

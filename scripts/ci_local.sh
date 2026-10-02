@@ -263,6 +263,10 @@ if [ -d "$ARBOL/frontend/node_modules" ]; then
   correr "frontend: build (prerender incluido)" "$ARBOL/frontend" npm run -s build
   correr "frontend: check-prerender" "$ARBOL/frontend" node scripts/check-prerender.mjs
   correr "frontend: check-dev-only" "$ARBOL/frontend" node scripts/check-dev-only.mjs
+  # 2026-10-02: 24 ejercicios Python pasaban en CPython (tests/content) y no
+  # podian resolverse en el navegador: hilos, asyncio.run, sqlite3, tempfile.
+  # Este los corre en el Pyodide del build, detras del sandbox del worker.
+  correr "frontend: ejercicios resolubles en Pyodide" "$ARBOL/frontend" npm run -s check:exec-pyodide
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi
