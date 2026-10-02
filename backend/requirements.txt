@@ -16,7 +16,10 @@ email-validator==2.3.0
 # Auth
 python-jose[cryptography]==3.5.0
 passlib[bcrypt]==1.7.4
-bcrypt==5.0.0
+# bcrypt 5 rompe passlib 1.7.4: su detect_wrap_bug hashea un secreto de más de
+# 72 bytes y bcrypt 5 lo rechaza, así que fallan todos los hash y verify
+# (login y registro en producción, 2026-10-02). Se queda en 4.0.1 hasta quitar passlib.
+bcrypt==4.0.1
 python-multipart==0.0.32
 pyotp==2.10.0
 

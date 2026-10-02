@@ -8,6 +8,11 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    # bcrypt 5 rompe passlib 1.7.4 (todo hash y verify lanzan ValueError): llegó
+    # a producción el 2026-10-02 y tumbó el login. Fuera hasta quitar passlib.
+    ignore:
+      - dependency-name: "bcrypt"
+        update-types: ["version-update:semver-major"]
     groups:
       python-minor-patch:
         update-types: ["minor", "patch"]
@@ -16,6 +21,18 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    # 2026-10-02: vite 8 no instala con @vitejs/plugin-react 4 (npm ci falla y
+    # Cloudflare Pages no despliega), @vitest/coverage-v8 5 exige vitest 5, y
+    # pyodide 314 ya no trae pyodide.asm.js (vite.config.ts copia una lista
+    # fija). Cada uno es una migración, no un bump: se hace a mano en su PR.
+    ignore:
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitest/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vitest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "pyodide"
     groups:
       npm-minor-patch:
         update-types: ["minor", "patch"]
