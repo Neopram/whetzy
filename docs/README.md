@@ -23,6 +23,7 @@ Frontend: React + Capacitor.
 | Quieres… | Lee |
 |---|---|
 | Qué construye Whetzy y qué falta (tracks, certificaciones, fuentes legales, coste) | **`CATALOGO_MAESTRO.md`** (§2.1 fuentes; ADR-11) |
+| Cómo se escribe el contenido nuevo (método desde la fuente, piloto, orden y organización) | **`PLAN_CONTENIDO.md`** (ADR-59) |
 | Lanzamiento piloto: invitación ES/EN, qué pedir, preguntas del día 4 | **`LANZAMIENTO_PILOTO.md`** |
 | Competencia con precios y catálogos verificados (URL y fecha) | **`COMPETENCIA.md`** |
 | Posición frente a la competencia con pesos fijos | `competitive-teardown.md` |
