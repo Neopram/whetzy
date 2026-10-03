@@ -7,16 +7,26 @@ submitted by this session.
 Source: `docs/DISTRIBUCION.md` §8 ("Hacker News") — same title and timing already
 agreed there; this file expands it into something that's actually ready to paste.
 
-## Title (exactly as spec'd, 80 char HN limit — this is 78)
+## Title
+
+`docs/DISTRIBUCION.md` §8 spec'd "I built an adaptive Python→AI learning
+engine in Spanish because no one else did" — that's 80 characters on its
+own, but HN's 80-char limit applies to the title **as submitted**, and HN
+prepends "Show HN: " (9 chars) to every Show HN post, making the real total
+89. Trimmed to fit under 80 with the prefix (flagged by [S5] in PR #93 review):
 
 ```
-I built an adaptive Python→AI learning engine in Spanish because no one else did
+I built an adaptive Python-to-AI engine in Spanish (nobody else had)
 ```
+
+68 characters + "Show HN: " (9) = 77, under the limit.
 
 ## URL
 
-`https://whetzy.com` (or `https://whetzy.com/en` if the owner wants the English
-landing specifically — HN sends mixed-language traffic, English works for both).
+`https://whetzy.com` — not `whetzy.com/en`: that path doesn't exist
+(`App.tsx` has no route for it). The real landing is `/landing`, English via
+`?lang=en` (`LandingScreen.tsx`); the root domain already resolves to it, so
+plain `whetzy.com` is the right link, no query string needed.
 
 ## First comment (post immediately after submitting — HN rewards the OP explaining the "why")
 
@@ -32,7 +42,7 @@ landing specifically — HN sends mixed-language traffic, English works for both
 > JS) run in-browser via WebAssembly (Pyodide/sql.js) — no server round-trip to
 > execute a snippet.
 >
-> It's free to use (quiz capped per day on the free tier). I'd genuinely like the
+> It's free to use — no daily quiz cap on the free tier today. I'd genuinely like the
 > HN read on where the adaptive-learning space is thin, what you'd want from a
 > "serious" coding platform that a bootcamp or a YouTube series doesn't give you,
 > and where this breaks for you if you try it. Happy to answer anything about the

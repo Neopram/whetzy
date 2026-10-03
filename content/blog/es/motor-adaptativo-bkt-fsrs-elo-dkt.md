@@ -45,10 +45,15 @@ neuronal que predice el dominio a partir de todo tu historial de respuestas,
 no solo una probabilidad por habilidad. Es código real, corre, y está
 conectado al endpoint de quiz — pero solo para quienes caen en la cohorte de
 A/B `"dkt"` (`app/services/quiz.py`: `if get_cohort(user.id) == "dkt":
-predictions = _dkt.predict(history)`). La mayoría de los estudiantes sigue en
-el camino BKT+FSRS+Elo de arriba. No decimos que DKT "mueve Whetzy" — mueve
-un brazo del experimento, y si le gana a la base es justo lo que el A/B está
-ahí para responder. (Un análisis de potencia correcto para esa comparación
+predictions = _dkt.predict(history)`). El reparto es determinista por usuario
+(`hash(user_id) % 1000 < ratio * 1000`) y el valor por defecto
+(`DKT_AB_RATIO` en `app/core/config.py`) es 0,5 — la mitad de la cohorte, no
+una porción chica, asumiendo que producción no sobrescribió ese valor por
+defecto (no comprobamos el valor real en producción, así que citamos el
+default con honestidad en vez de adivinar "la mayoría"). No decimos que DKT
+"mueve Whetzy" — mueve un brazo del experimento, y si le gana a la base es
+justo lo que el A/B está ahí para responder. (Un análisis de potencia
+correcto para esa comparación
 — cuántos usuarios hacen falta antes de que el resultado signifique algo —
 está en nuestro propio backlog como un trabajo aparte, todavía sin empezar.)
 

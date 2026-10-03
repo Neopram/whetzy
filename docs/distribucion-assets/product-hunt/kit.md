@@ -37,7 +37,7 @@ porqué, no solo el qué)
 > Whetzy is bilingual from the ground up — not machine-translated, written
 > natively in both languages — and code examples (Python, SQL, JS) run right in
 > the browser via WebAssembly, so you're never copy-pasting into an external
-> sandbox. Free tier has a daily quiz cap; everything else is open to try.
+> sandbox. No daily quiz cap on the free tier today, no credit card needed.
 >
 > Would love PH's take on what's missing from "serious" coding education, and
 > where this breaks if you push on it. I'll be around all day to answer
@@ -74,3 +74,6 @@ cuentas reales)
 - [ ] Nada de pedir upvotes de forma coordinada en redes el mismo momento del
       lanzamiento (Product Hunt penaliza picos de voto no orgánicos, igual que HN)
 - [ ] Ningún número en los comentarios del día que no esté ya citado en este repo
+- [ ] Antes de publicar: reconfirmar `FREE_DAILY_QUOTA_ENABLED` en producción (hoy
+      `False` por defecto, `backend/app/core/config.py:244` — "no daily cap" en el
+      primer comentario deja de ser cierto si alguien lo activa antes del lanzamiento)

@@ -124,7 +124,13 @@ Generar con Playwright (`npm run screenshots:ios`) o manualmente en simulador.
 **Notas:**
 - La app requiere creación de cuenta para acceder al contenido principal (sistema de progreso adaptativo).
 - El pago (subscripción Plus) usa RevenueCat + StoreKit — no Stripe (cumple App Store Review Guideline 3.1.1).
-- No hay contenido generado por usuarios ni funcionalidad de chat entre usuarios.
+- Sin chat ni comentarios entre usuarios. **Sí hay** contenido generado por
+  usuarios: el plan Creador deja publicar cursos que otros usuarios compran y
+  cursan (`instructor_marketplace.py`, pantallas `InstructorScreen` y
+  `MarketplaceScreen`) — corregido el 2026-10-03 (ver `android/listing.md`,
+  misma nota, tras revisión de [S5] en el PR #93). Apple exige moderación de
+  UGC (guideline 1.2); el filtro/reportar/bloquear de 19.11 cubre perfiles y
+  duelos, no el contenido de los cursos — punto a resolver antes de enviar.
 - Las preguntas de código ejecutan Python/SQL en un sandbox WebAssembly local (Pyodide/sql.js), sin llamadas externas durante la ejecución.
 
 ---

@@ -31,7 +31,7 @@ Construí un motor de aprendizaje adaptativo de Python→IA en español porque n
 > código (Python, SQL, JS) corren en el navegador vía WebAssembly (Pyodide/sql.js)
 > — sin ida y vuelta a un servidor para ejecutar un fragmento.
 >
-> Es gratis (el plan free tiene un cupo diario de preguntas). Me interesa de
+> Es gratis — hoy el plan free no tiene cupo diario de preguntas. Me interesa de
 > verdad qué piensa la comunidad: dónde está flojo el espacio de aprendizaje
 > adaptativo en español, qué le pedirías a una plataforma "en serio" que un
 > bootcamp o una serie de YouTube no te da, y dónde se rompe si la probás.
@@ -56,5 +56,6 @@ se dice.
 
 - [ ] Confirmar en qué subreddit/foro concreto se publica (cada uno tiene sus
       propias reglas de autopromoción — revisar antes, no asumir)
-- [ ] whetzy.com/es carga limpio, alta y onboarding sin errores
+- [ ] whetzy.com (o whetzy.com/landing?lang=es — `/es` no es una ruta real,
+      `App.tsx` no la reconoce) carga limpio, alta y onboarding sin errores
 - [ ] El dueño disponible para responder comentarios las primeras horas

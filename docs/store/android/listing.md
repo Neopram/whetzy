@@ -97,7 +97,14 @@ existe todavía en `docs/store/icons/android/` ni en ningún otro sitio del repo
 - El pago (suscripción) usa RevenueCat + Google Play Billing — no Stripe ni un procesador externo
   dentro de la app (cumple la política de Play de usar el sistema de facturación de Google para
   contenido digital).
-- Sin contenido generado por usuarios ni chat entre usuarios.
+- Sin chat ni comentarios entre usuarios. **Sí hay** contenido generado por
+  usuarios: el plan Creador deja publicar cursos que otros usuarios compran y
+  cursan (`instructor_marketplace.py`, pantallas `InstructorScreen` y
+  `MarketplaceScreen`) — corregido el 2026-10-03 tras revisión de [S5] en el
+  PR #93; la ficha decía "sin UGC", que no es cierto. El filtro de
+  palabras/reportar/bloquear de 19.11 cubre perfiles y duelos, no el
+  contenido de los cursos — si Google pide moderación específica para
+  cursos, es un punto nuevo a resolver antes de enviar, no algo ya cubierto.
 - Las preguntas de código ejecutan Python/SQL en un sandbox WebAssembly local (Pyodide/sql.js),
   sin llamadas externas durante la ejecución — mismo motor que describe `ios/listing.md`.
 

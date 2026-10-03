@@ -24,11 +24,14 @@ Our implementation (`app/services/engine/fsrs.py`) keeps three numbers per
 - **Retrievability** — the model's current estimate of "if tested right now,
   what's the probability you get it right."
 
-Every review updates all three, not just "was I right." You grade yourself on
-a 4-point scale — Again, Hard, Good, Easy — and the update differs depending
-on which of those four you picked, because "I got it right but it was a
-struggle" and "I got it right instantly" are different evidence about your
-actual stability, even though both are "correct."
+Every review updates all three, not just "was I right." The classic FSRS flow
+has the learner self-report a 4-point grade — Again, Hard, Good, Easy. We
+don't ask you to: Whetzy computes the grade for you, from whether you got the
+question right and how fast relative to how long it should take
+(`_grade_from_response` in `app/services/quiz.py`) — "right but it took
+longer than expected" and "right, fast" land as different grades (Hard vs.
+Easy) even though both are "correct," same as the self-reported version, just
+measured instead of asked.
 
 ## Where the 21 numbers come from
 

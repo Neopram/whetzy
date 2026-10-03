@@ -43,12 +43,16 @@ that predicts mastery from your full answer history, not just a per-skill
 probability. It's real code, it runs, and it's wired into the quiz endpoint —
 but only for users assigned to the `"dkt"` A/B cohort
 (`app/services/quiz.py`: `if get_cohort(user.id) == "dkt": predictions =
-_dkt.predict(history)`). Most learners are still on the BKT+FSRS+Elo path
-above. We're not claiming DKT "powers Whetzy" — it powers one experiment
-arm, and whether it beats the baseline is exactly what the A/B test is
-there to answer. (A proper power analysis for that comparison — how many
-users you need before the result means anything — is tracked in our own
-backlog as a separate, not-yet-started piece of work.)
+_dkt.predict(history)`). The split is deterministic per user
+(`hash(user_id) % 1000 < ratio * 1000`) and the default ratio
+(`DKT_AB_RATIO` in `app/core/config.py`) is 0.5 — half the cohort, not a
+small slice, assuming production hasn't overridden that default (we haven't
+checked production's actual value, so we're citing the default honestly
+rather than guessing at "most"). We're not claiming DKT "powers Whetzy" — it
+powers one experiment arm, and whether it beats the baseline is exactly what
+the A/B test is there to answer. (A proper power analysis for that
+comparison — how many users you need before the result means anything — is
+tracked in our own backlog as a separate, not-yet-started piece of work.)
 
 ## Why this split matters more than the model names
 

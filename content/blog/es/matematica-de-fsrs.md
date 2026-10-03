@@ -26,11 +26,14 @@ Nuestra implementación (`app/services/engine/fsrs.py`) guarda tres números por
 - **Recuperabilidad** — la estimación actual del modelo de "si te preguntaran
   ahora mismo, qué probabilidad hay de que aciertes".
 
-Cada repaso actualiza los tres, no solo "acerté o no". Te calificás en una
-escala de 4 — Otra vez, Difícil, Bien, Fácil — y la actualización cambia según
-cuál de las cuatro elegiste, porque "acerté pero me costó" y "acerté al
-instante" son evidencia distinta sobre tu estabilidad real, aunque las dos
-sean "correcto".
+Cada repaso actualiza los tres, no solo "acerté o no". El flujo clásico de
+FSRS pide que el alumno se autocalifique en una escala de 4 — Otra vez,
+Difícil, Bien, Fácil. Nosotros no te lo pedimos: Whetzy calcula la nota por
+vos, a partir de si acertaste y qué tan rápido respecto al tiempo esperado
+(`_grade_from_response` en `app/services/quiz.py`) — "acerté pero tardé más
+de lo esperado" y "acerté rápido" caen en notas distintas (Difícil vs. Fácil)
+aunque las dos sean "correcto", igual que en la versión autocalificada, solo
+que medido en vez de preguntado.
 
 ## De dónde vienen los 21 números
 
