@@ -8,7 +8,7 @@
 
 ## 0. Por qué un marketplace
 
-Whetzy construye contenido con Haiku + fuentes [reusar]. Eso cubre todos los tracks del plan (ADR-54: tracks por demanda medida, cada uno con la forma 32 skills × 10 preguntas)
+Whetzy construye contenido con Sonnet 5 escribiendo desde fuentes [reusar] (ADR-59). Eso cubre todos los tracks del plan (ADR-54: tracks por demanda medida, cada uno con la forma 32 skills × 10 preguntas)
 del catálogo oficial. Pero hay conocimiento especializado que un instructor humano
 puede aportar mejor que un modelo: casos reales de empresa, nichos muy específicos,
 cursos de herramientas nuevas del mercado.

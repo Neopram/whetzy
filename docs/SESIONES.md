@@ -103,6 +103,12 @@ scripts/question_diversity_baseline.json   (la línea base de la guarda de conte
 docs/ARCHITECTURE.md                       (solo sus cifras del banco: excepción de §3)
 ```
 
+**Desde el 2026-10-03 (ADR-59):** la autoría nueva en masa (serie 37, 39.8) la lleva la
+sesión coordinadora con `Workflow`, según `docs/PLAN_CONTENIDO.md`, en ramas
+`claude/youthful-allen-i8k7zb-<trackNN>`. S2 cierra sus PRs en curso y las correcciones
+puntuales del banco, y no abre autoría masiva. Un track tiene un solo dueño a la vez: el que
+tenga PR abierto sobre él.
+
 ### 4.3 S3 — matemático del motor
 
 ```

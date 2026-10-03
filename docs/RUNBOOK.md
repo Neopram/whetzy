@@ -115,7 +115,7 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 
 **Proceso por lote**, sin excepciones:
 
-1. **Escritor** Haiku 4.5 (ADR-52; hasta el 2026-09-26, Sonnet) por fichero (o 10 lecciones) que escribe solo en el scratchpad, nunca en el repo.
+1. **Escritor** Sonnet 5 (ADR-59, 2026-10-03), por fichero (o 10 lecciones), que escribe **desde un fragmento de fuente `reusar`** (`PLAN_CONTENIDO.md` §3) solo en el scratchpad, nunca en el repo.
 2. **Revisor** Sonnet 5 distinto, que revisa **todas** las piezas, que no escribe y devuelve problemas con la corrección.
 3. **Corrector** Sonnet 5 que aplica la revisión y vuelve a validar.
 4. **Comprobación propia** antes de copiar al repo:
@@ -128,7 +128,7 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 
 **Fallos observados, cada uno con su defensa:**
 
-- **Haiku** escribió lecciones con relleno sin sentido y errores técnicos (7 de 10 en el piloto de track28). Por eso la enmienda a ADR-50 pasó la autoría a Sonnet; ADR-52 (2026-09-27, dueño) la devuelve a Haiku con revisión completa de Sonnet 5 y un piloto de 10 ítems: más de 3 con `blocker`/`major` para el bloque y lo decide el dueño.
+- **Haiku** escribió lecciones con relleno sin sentido y errores técnicos (7 de 10 en el piloto de track28). Por eso la enmienda a ADR-50 pasó la autoría a Sonnet; ADR-52 (2026-09-27, dueño) la devolvió a Haiku; el piloto de 39.37 volvió a superar el umbral y ADR-59 (2026-10-03, dueño) la deja en Sonnet 5, escribiendo desde la fuente. Sigue el piloto de 10 ítems: más de 3 con `blocker`/`major` para el bloque y lo decide el dueño.
 - **El reescritor movió la clave** a otra ranura (track28, track29, `mod3002` entero) y dijo «todo correcto». Defensa: `check_key_drift.py`. Si una posición del repo rota 0,1,2,3…, `rebalance_positions.py`.
 - **Los agentes inventan URLs** (404 en las lecciones NoSQL de track27) y copian datos personales del contexto (el correo del dueño en `l260101`). Defensas: `check_urls.py` y `test_no_personal_data.py`. Los ejemplos usan `ada@example.com`.
 - **No se toca un fichero que un workflow está leyendo**: un `git stash` a mitad cambió la base de un agente y su salida mezcló dos versiones.
@@ -387,9 +387,8 @@ Opciones:
 
 ### D. Enmienda a ADR-52 (uso de modelos por papel)
 
-El borrador, con sus opciones y la recomendación, se entregó al dueño en el informe final de S5
-del 2026-10-02, no aquí: es una decisión de ADR que solo el dueño firma en
-`DECISIONS.md`. Hasta que la firme, rige ADR-52 tal cual.
+**Firmada como ADR-59 (2026-10-03):** escribe Sonnet 5 desde la fuente, por `Workflow`, en
+paralelo al piloto con alumnos. El resto de ADR-52 sigue igual.
 
 ## Troubleshoot
 

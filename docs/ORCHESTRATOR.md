@@ -54,8 +54,8 @@ ADR-16 queda suspendida). Cancelar en dos toques.
   aprendizaje con la **forma única 32 × 10** (32 skills, 10 preguntas por skill con ≥ 3
   ejecutables, 1 lección y 1 término por skill; nada se borra); cada certificación con el
   100 % de sus objetivos, práctica ≥ máx(300, 3 × examen) y **banco de simulacro reservado**
-  de 2 × examen; tracks nuevos por **demanda medida** (A → B → C); ningún contenido antes del
-  piloto (`LANZAMIENTO_PILOTO.md`). Cobertura: `python scripts/catalog_coverage.py`. Contenido sobre
+  de 2 × examen; tracks nuevos por **demanda medida** (A → B → C); el contenido corre en paralelo
+  al piloto (ADR-59; método y orden en `PLAN_CONTENIDO.md`). Cobertura: `python scripts/catalog_coverage.py`. Contenido sobre
   un corpus abierto descargado y verificado en `corpus/` (fuera del repo, ADR-46). Las cifras de hoy (tracks, cursos = módulos, preguntas)
   viven solo en `frontend/src/lib/catalog.ts`, vigiladas por `check_docs.py` [4]. El
   catálogo es la única lista; cuando otro doc lo contradiga, manda el catálogo. **La puerta 37.0 va antes que cualquier pregunta nueva.** No hay atajos.
@@ -163,8 +163,8 @@ tarea del backlog es arquitectura irreversible). Tú decides el modelo de cada s
 
 | Modelo | Para | Cómo |
 |---|---|---|
-| **Haiku 4.5** | Inventarios, greps masivos, leer 20 archivos, diffs doc↔código, verificación adversaria de tareas que **no** son contenido (`PROTOCOLO_VERIFICACION.md` §7); y **escritor de autoría masiva** de contenido en `Workflow` (ADR-52), nunca sin un revisor Sonnet 5 detrás | `Agent`/`Workflow` + `model: "haiku"` |
-| **Sonnet 5** | **Revisión adversaria completa y corrección de contenido** (lecciones, preguntas, distractores, explicaciones), siempre detrás de la puerta de `CATALOGO_MAESTRO.md` §7 y de `scripts/content_qa/`; y como worker si la tarea escribe en la lista de ficheros de riesgo del protocolo §2 (core, auth/oauth, billing, entitlements, engine, alembic, main, api.ts, App.tsx, `legal/`) | `Agent` + `model: "sonnet"`; bloques grandes con `Workflow` |
+| **Haiku 4.5** | Inventarios, greps masivos, leer 20 archivos, diffs doc↔código, verificación adversaria de tareas que **no** son contenido (`PROTOCOLO_VERIFICACION.md` §7). Ya no escribe contenido para el alumno (ADR-59) | `Agent`/`Workflow` + `model: "haiku"` |
+| **Sonnet 5** | **Autoría de contenido desde la fuente (ADR-59), revisión adversaria completa y corrección** (lecciones, preguntas, distractores, explicaciones), siempre detrás de la puerta de `CATALOGO_MAESTRO.md` §7 y de `scripts/content_qa/`; y como worker si la tarea escribe en la lista de ficheros de riesgo del protocolo §2 (core, auth/oauth, billing, entitlements, engine, alembic, main, api.ts, App.tsx, `legal/`) | `Agent` + `model: "sonnet"`; bloques grandes con `Workflow` |
 | ~~Opus 4.x~~ / ~~Fable~~ | — | **Nunca** (ADR-52). Si crees que hace falta, es `HUMAN-BLOCKED`. En una sesión **arrancada por el dueño**, el hilo principal es Sonnet 5 (ADR-52, sustituye «Opus 5.5» de ADR-50) |
 
 **Dieta de contexto (ADR-14):** lee `AUTONOMOUS_STATE.md` **por secciones** (`## 0`,
@@ -320,8 +320,8 @@ Agent({
 })
 ```
 
-- **Máximo 3 workers Sonnet simultáneos** con `Agent`. Autoría de contenido: escritor
-  Haiku 4.5, revisor y corrector Sonnet 5 (ADR-52) sobre ficheros disjuntos en un
+- **Máximo 3 workers Sonnet simultáneos** con `Agent`. Autoría de contenido: escritor,
+  revisor y corrector Sonnet 5 (ADR-59, `PLAN_CONTENIDO.md`) sobre ficheros disjuntos en un
   `Workflow` de menos de 10 agentes — y el bloque entero pasa la puerta de calidad
   (`CATALOGO_MAESTRO.md` §7) y `scripts/content_qa/` antes de un solo commit
 - Cada worker toca **solo** los archivos de su tarea; la disjunción la garantiza
