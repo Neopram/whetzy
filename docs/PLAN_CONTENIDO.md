@@ -113,3 +113,4 @@ reutilizan: se citan y se enlazan.
 | Fecha | Qué | Resultado |
 |---|---|---|
 | 2026-10-03 | Plan escrito y decisiones del dueño (ADR-59) | Piloto 37.25 pendiente |
+| 2026-10-03 | **Piloto 37.25:** 10 Q de sk440203 (AZ-900, Azure Storage) desde 4 artículos de `azure-docs` (CC BY 4.0) | Revisión: **0 blocker, 1 major** (distractor defendible, corregido), 17 minor; 0 descartadas; 10/10 citas literales (comprobado con búsqueda en el texto). Puerta §7 PASS. Coste: 21 agentes Sonnet, 1.762.599 tokens de subagente según el Workflow (≈ 176 k por pregunta aceptada, casi todo relectura de artículos de ~3.400 palabras), 212 s de pared. Precio en dólares sin calcular |
