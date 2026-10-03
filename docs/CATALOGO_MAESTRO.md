@@ -50,19 +50,19 @@ profundidad de producto*, no adquisición.
 | Métrica | Valor 2026-10-01 | Comando |
 |---|---|---|
 | Tracks | **35** (track01–23 + track26–30 + track40–46) | `python scripts/check_docs.py` |
-| Módulos (unidad de presentación en la web; el plan mide skills, ADR-54) | **177** | ídem |
-| Skills | **723** | ídem |
-| Preguntas | **10.949** | `python scripts/check_question_bank.py` |
-| Lecciones | **723** (una por skill: las 723 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
+| Módulos (unidad de presentación en la web; el plan mide skills, ADR-54) | **174** | ídem |
+| Skills | **720** | ídem |
+| Preguntas | **10.935** | `python scripts/check_question_bank.py` |
+| Lecciones | **720** (una por skill: las 720 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
 | Glosario | **1.044** | `check_docs.py` |
 | Ejecutables | **7** tracks ≥ 15 % (01, 02, 04, 06, 07, 09 y 12 — este, 20 %); track03 13,4 %, track13 4,8 %, track14 4,5 %, track40 1,4 %, track16 y track17 0 %; exentos track05, 08, 10, 11 y 15 (ADR-9). El 2026-10-01 se quitaron 216 «ejecutables» que daban correcto sin escribir nada (sin hueco `___` o con el hueco vacío válido) y pasaron a `fill_blank`, que es lo que eran: track16 decía 44,9 % y track17 36,7 %. El 2026-10-02, 24 que pasaban en CPython no podían resolverse en el navegador (hilos, `asyncio.run`, `sqlite3`, `tempfile`): 7 se reescribieron para el sandbox, 3 pasaron a `sql_exec` y 14 a `mcq`; `frontend/scripts/check-exec-pyodide.mjs` los corre en Pyodide | `check_question_bank.py`, `check-exec-pyodide.mjs` |
-| Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900** (retirado por Microsoft el 30-06-2026; sustituto AI-901, fila 39.24), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
+| Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-901** (antes AI-900, retirado por Microsoft el 30-06-2026; blueprint migrado 39.24, 2026-10-02), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |
 | Plan ADR-54: tracks construidos ya en la forma 32 × 10 | 0 de 24 | `python scripts/catalog_coverage.py` |
 | Lo que falta en los 24 tracks construidos | +261 skills · +261 lecciones · +266 términos · +2.610 preguntas | ídem |
-| Lo que falta en las 11 certificaciones | +907 de práctica · +1.040 reservadas (AZ-900, AI-900 y DP-900: «pendiente», sin longitud publicada) | ídem |
-| Total y ritmo | 4.557 preguntas ≈ 9 sesiones a 518/sesión (estimación) | ídem |
+| Lo que falta en las 11 certificaciones | +921 de práctica · +1.040 reservadas (AZ-900, AI-901 y DP-900: «pendiente», sin longitud publicada) | ídem |
+| Total y ritmo | 4.571 preguntas ≈ 9 sesiones a 518/sesión (estimación) | ídem |
 
 ---
 
@@ -362,7 +362,7 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 
 - **Regla única (ADR-54):** 100 % de los objetivos oficiales cubiertos · práctica
   ≥ máx(300, 3 × L) · **banco de simulacro reservado de 2 × L** (`"pool": "simulacro"`), que no
-  sale en práctica ni repaso; L = preguntas del examen. Sin L publicada (AZ-900, AI-900,
+  sale en práctica ni repaso; L = preguntas del examen. Sin L publicada (AZ-900, AI-901,
   DP-900), las reservadas quedan «pendiente». Sustituye el suelo y el ideal de ADR-53 (15 y
   20 preguntas por skill, banco de 6 × L).
 - **El banco reservado existe desde 37.18** (`pool` en `questions`, migración
@@ -388,7 +388,7 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | ISC2 | SSCP · CCSP · CISSP | track13/25 | ❌ | P3 |
 | CompTIA | **Security+ SY0-701** | track13 | ✅ track42 — 300 Q; V8 (SY0-801, solo inglés) el 2026-11-17 (39.26) | — |
 | CompTIA | Network+ · Linux+ · PenTest+ · CySA+ | track17/15/24 | ❌ | P2 |
-| Microsoft | **AZ-900 · AI-900 → AI-901 · DP-900** | track44/45/46 | ✅ 90–96 Q cada una (faltan ≈ 205 de práctica en cada una para 300); AI-900 retirado 30-06-2026, migrar a AI-901 (39.24) | — |
+| Microsoft | **AZ-900 · AI-901 · DP-900** | track44/45/46 | ✅ AZ-900 95 Q, AI-901 76 Q, DP-900 96 Q (faltan 205/224/204 de práctica para 300 cada una); AI-901 migrado de AI-900 (39.24, 2026-10-02): 2 dominios, 12 skills, 76 Q, 12 lecciones | — |
 | Microsoft | AZ-104 · AZ-204 · AI-102 · DP-100 · DP-203 · AZ-305 | track22/07/21/20 | ❌ | **AZ-104: siguiente** (examen en español) · resto P2 |
 | Google Cloud | Digital Leader · ACE · PCA · PDE · PMLE | track23/20/07 | ❌ | **ACE: siguiente** (examen en español) · resto P2 |
 | CNCF | KCNA · CKA · CKAD · CKS | track18 | ❌ | P2 (sin examen en español; CKA/CKAD son prácticos: solo teoría + escenario) |
@@ -407,9 +407,9 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | The Open Group | TOGAF Foundation | track05 | ❌ | P3 |
 
 **Hoy: 11 construidas.** Lo que falta por la regla de ADR-54 (`catalog_coverage.py`,
-2026-10-01): +907 preguntas de práctica (PCEP +33, AIF-C01 +75, MLA-C01 +180, AZ-900 +205,
-AI-900 +210, DP-900 +204) y +1.040 reservadas. Sin objetivos contados: Security+ SY0-701. Sin
-longitud de examen publicada: AZ-900, AI-900 y DP-900. La cobertura de objetivos se mide hoy
+2026-10-02): +921 preguntas de práctica (PCEP +33, AIF-C01 +75, MLA-C01 +180, AZ-900 +205,
+AI-901 +224, DP-900 +204) y +1.040 reservadas. Sin objetivos contados: Security+ SY0-701. Sin
+longitud de examen publicada: AZ-900, AI-901 y DP-900. La cobertura de objetivos se mide hoy
 con un proxy (una skill por objetivo): no hay mapa objetivo → skill. La lista de
 arriba es el universo candidato, no una meta de «55»: cada nueva entra por el orden de este §3.
 
@@ -422,12 +422,12 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 
 | Capa | Hoy (2026-10-01) | Objetivo (ADR-54 salvo donde se dice) | Cómo se verifica |
 |---|---|---|---|
-| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 723/723 skills con lección | 1 lección por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
+| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 720/720 skills con lección | 1 lección por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
 | Ejemplo resuelto + problema de completar (fading) | solo la lección | 1 secuencia por skill | test de estructura |
-| Práctica adaptativa (quiz) | ✅ 10.949 Q · 15,1 por skill | 10 por skill, ≥ 3 ejecutables donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
+| Práctica adaptativa (quiz) | ✅ 10.935 Q · 15,2 por skill | 10 por skill, ≥ 3 ejecutables donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
-| Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900 y DP-900 (37.19); ISC2 CC aún con el outline de 2022 (37.22); Microsoft no publica el número de preguntas, así que AZ-900, AI-900 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 2 × examen** (0/1.040 hoy) | `test_certification_blueprints.py` + 37.18 |
+| Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900 y DP-900 (37.19); ISC2 CC aún con el outline de 2022 (37.22); Microsoft no publica el número de preguntas, así que AZ-900, AI-901 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 2 × examen** (0/1.040 hoy) | `test_certification_blueprints.py` + 37.18 |
 | **Readiness por dominio** | 18.1 | «P(aprobar)» por cert con BKT × peso oficial, calibrado frente al examen real con n publicado | 18.1 + métricas de ADR-53 §8 |
 | Glosario | 1.044 términos | 1 término por skill (32 por track de la forma) | `check_docs.py` |
 | **Vídeo explicativo** | **0** | 1 animación de 30-90 s por skill donde aporte (algoritmos, redes, arquitectura, SQL) | 18.9 |
@@ -478,9 +478,9 @@ Cifras de `python scripts/catalog_coverage.py` sobre `80cd3ad`. El ritmo es el �
 | Qué | Preguntas que faltan | Sesiones (≈ Q / 518) |
 |---|---|---|
 | Antes de nada: el piloto (`LANZAMIENTO_PILOTO.md`) | 0 | — |
-| 11 certificaciones: práctica ≥ máx(300, 3 × L) (+907) y banco reservado de 2 × L (+1.040; sin AZ-900, AI-900 y DP-900, cuya longitud no se publica) | 1.947 | ≈ 4 |
+| 11 certificaciones: práctica ≥ máx(300, 3 × L) (+921) y banco reservado de 2 × L (+1.040; sin AZ-900, AI-901 y DP-900, cuya longitud no se publica) | 1.961 | ≈ 4 |
 | 24 tracks construidos a la forma 32 × 10: 12 de nivel A (+1.280) · 2 de B (+240) · 10 de C (+1.090) | 2.610 | ≈ 5 |
-| **Total del plan** | **4.557** | **≈ 9** |
+| **Total del plan** | **4.571** | **≈ 9** |
 | *Solo cuando la demanda los active (no cuentan en el total):* track24/25 reconstruidos (2 × 320) · nuevos A (3 × 320) · B (7 × 320) · C (9 × 320) | 640 · 960 · 2.240 · 2.880 | ≈ 1 · 2 · 4 · 6 |
 
 - Además de preguntas: +261 skills, +261 lecciones y +266 términos en los tracks construidos.
@@ -547,7 +547,7 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
 | Brilliant | 14 cursos de CS, 35 de matemáticas | curso | [A] brilliant.org/topics/coding |
 | Mimo | 4 rutas de carrera + 8 cursos; lecciones de 5 min | ruta | [A] mimo.org |
 | Tutorials Dojo / Udemy (AWS) | 6 simulacros × 65 = 390 preguntas por examen (Maarek, Bonso); TD: 7–9 simulacros cronometrados | pregunta | [A] (Udemy devolvió 403) |
-| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 723 skills · 10.949 preguntas | skill | `catalog_coverage.py` |
+| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 720 skills · 10.935 preguntas | skill | `catalog_coverage.py` |
 
 **Lectura honesta (2026-10-01, ADR-54):**
 - En **amplitud** Whetzy ya supera a su competencia directa: Boot.dev enseña en 3 rutas y
