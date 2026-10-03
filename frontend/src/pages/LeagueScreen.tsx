@@ -121,7 +121,7 @@ export function LeagueScreen() {
               <span className={styles.rowXp}>{p.xp_earned.toLocaleString()} XP</span>
             </div>
             {data.promotion_zone > 0 && p.rank <= data.promotion_zone && <span className={styles.rowPromo}>▲</span>}
-            {data.demotion_zone > 0 && p.rank > data.standings.length - data.demotion_zone && <span className={styles.rowDemote}>▼</span>}
+            {data.demotion_zone > 0 && p.rank > data.total_members - data.demotion_zone && <span className={styles.rowDemote}>▼</span>}
           </div>
         ))}
       </Card>}
