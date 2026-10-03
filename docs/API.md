@@ -86,6 +86,20 @@ POST /duels/{duel_id}/answer         → {answered, completed} 🔒
 GET  /duels/{duel_id}/result         → {status, winner_id, scores} 🔒
 ```
 
+## Moderation endpoints
+
+Reportar es un registro para que el dueño lo revise, sin cola ni acción
+automática. Bloquear es bidireccional: `duels.py` rechaza el reto (403) entre
+cualquiera de las dos direcciones, y las ligas ocultan a cada bloqueado de la
+liga del otro (19.11).
+
+```
+POST   /moderation/report            → {id, reported_id, reason, context, created_at} 🔒 — reason: inappropriate_name|harassment|spam|other
+POST   /moderation/block             → {user_id, username, display_name, blocked_at} 🔒 — idempotente
+DELETE /moderation/block/{user_id}   → 204 🔒
+GET    /moderation/blocked           → [{user_id, username, display_name, blocked_at}] 🔒
+```
+
 ## Tutor endpoint
 
 ```
@@ -271,11 +285,13 @@ Reparto 80/20 (ADR-41; `payment_service.INSTRUCTOR_SHARE`) tras la comisión de 
 H.29. El pago se acumula en una fila por instructor y mes, no una por matrícula.
 
 ```
-POST /instructor/courses                     → {id, …} 🔒 — publicar curso
-GET  /instructor/courses                     → [{…}] 🔒
-POST /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published`, 409 si ya inscrito. Sin pasarela no cobra (Paddle HUMAN-BLOCKED)
-GET  /instructor/analytics                   → {total_earnings_cents, …} 🔒
-GET  /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
+POST  /instructor/courses                     → {id, …} 🔒 — publicar curso
+GET   /instructor/courses                     → [{…}] 🔒
+POST  /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published`, 409 si ya inscrito. Sin pasarela no cobra (Paddle HUMAN-BLOCKED)
+GET   /instructor/analytics                   → {total_earnings_cents, …} 🔒
+GET   /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
+GET   /instructor/profile                     → {display_name, bio, avatar_url, website} 🔒 — se crea el instructor si el usuario aún no lo era (28.8: `ProfileTab` no llamaba a nada)
+PATCH /instructor/profile                     → {display_name, bio, avatar_url, website} 🔒 — todos los campos opcionales, solo se actualiza lo enviado
 ```
 
 ## Experiment endpoints
