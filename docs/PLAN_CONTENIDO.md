@@ -53,6 +53,10 @@ reutilizan: se citan y se enlazan.
    El contenedor de una sesión en la nube es efímero: hay que descargar el corpus en cada
    sesión. Para no repetirlo, el dueño puede añadir el paso al setup script del entorno
    (cola humana).
+   **Corte en fragmentos (local, sin agentes, desde el track44):** un script parte cada
+   artículo por encabezados `##`/`###` en trozos de 40 a 600 palabras, con
+   `{id, repo, file, title, url, heading, text}`. A cada escritor le llega en el prompt solo el
+   paquete de fragmentos de su skill; ningún agente lee artículos enteros.
 2. **Escritor (Sonnet 5):** recibe la skill, el fragmento (texto limpio de
    `corpus/<n>/clean/`) y su URL. Primero decide `correct_index` y solo después escribe las
    opciones. Así no se repite el bug de 39.37. La respuesta correcta tiene que poder deducirse
@@ -63,6 +67,13 @@ reutilizan: se citan y se enlazan.
    no respaldada, distractor correcto, redundancia con otra pregunta, relleno o error técnico.
 4. **Corrector (Sonnet 5):** arregla lo marcado. Lo que no se pueda arreglar se descarta; no se
    rebaja la etiqueta.
+   **Comprobación literal (local):** cada frase del `fragment` que cita la pregunta tiene que
+   aparecer en el fragmento fuente. Un script lo comprueba antes de integrar; el campo
+   `fragment` no entra en el banco.
+   **Variante `cita` (AWS, ADR-59 «Fuentes `cita`»):** el escritor redacta con sus palabras a
+   partir del fragmento, sin copiar frases; el revisor marca `major` cualquier copia de más de
+   8 palabras seguidas; `source` enlaza `docs.aws.amazon.com`. La comprobación literal se
+   invierte: falla si hay copia.
 5. **Puerta de `CATALOGO_MAESTRO.md` §7**, completa y ejecutada:
    - `scripts/content_qa/*` (`check_key_drift`, `check_expl_key`, `check_only_fields` y
      `check_urls`);
