@@ -12,8 +12,16 @@ npx wrangler pages deploy dist --project-name whetzy --branch main
 Then, **always**:
 
 ```bash
-node scripts/check-deployed.mjs   # must print PASS for https://whetzy.com
+git fetch origin
+node scripts/check-deployed.mjs                 # must print PASS for https://whetzy.com vs origin/master
+node scripts/check-deployed.mjs --sha <commit>  # or against an exact commit (a preview: pass its URL too)
 ```
+
+Since 2026-10-02 every build embeds its commit in `<meta name="whetzy-build">` (Cloudflare's
+`CF_PAGES_COMMIT_SHA`; locally `git rev-parse HEAD`, with `-dirty` if the tree has uncommitted
+changes) and the first check compares it with the expected commit: an old deploy that still has
+every other trait of the current build now fails. Any `vite build` also runs `tsc -b` first
+(ledger 30.5), so the dashboard command no longer decides whether types are checked.
 
 A deploy is not done until that passes. On 2026-09-24 the page loaded fine while login was dead: the bundle had `https://whetzy.com` as its API (405 on login) and a Pages Function answered 200 "Autenticado correctamente" to any POST on `/api/*`. Two checks now catch exactly that (ledger 30.0). The API origin lives in `frontend/.env.production` and `vite.config.ts` refuses to build if it is the frontend's own domain or does not end in `/api/v1`.
 
@@ -164,9 +172,9 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `20261002_mastery_reports` (51 migrations, single head — verified 2026-10-02 with
+Current Alembic HEAD: `20261002_user_moderation` (52 migrations, single head — verified 2026-10-03 with
 `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; until then this line said
-`t0u1v2w3x4y5`, 20 migrations, from 2026-09-18)
+`20261002_mastery_reports`, 51 migrations, from 2026-10-02)
 
 Always recompute — never trust this line:
 
@@ -259,6 +267,12 @@ tracks vacíos («Track not found») y `/health` decía 200. Probado en local co
 Postgres 16: base vacía → 18 tracks, 6.305 preguntas y 622 términos en ~10 s;
 `CONTENT_DIR` roto → `exit 1` y gunicorn no arranca.
 
+Gunicorn arranca con `--no-control-socket` (2026-10-02). Desde gunicorn 25.1 abre un socket de
+control en `$HOME/.gunicorn/` y el usuario `app` del Dockerfile (`adduser --system`) tiene
+`HOME=/nonexistent`: cada arranque escribía `Control server error: [Errno 13] Permission denied:
+'/nonexistent'`. Reproducido con gunicorn 26.2.0 y un usuario de sistema igual; con la opción, la
+línea desaparece. Nadie usa `gunicornc` en el contenedor.
+
 ### Correo: la variable que no se puede olvidar (H.30)
 
 Sin proveedor, la verificación de cuenta y el reset de contraseña **se escriben
@@ -290,6 +304,92 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" $API/admin/email/test
 dirección del owner y devuelve 503 **con el motivo** si el proveedor lo rechaza
 (clave inválida, dominio sin verificar). En los logs de arranque:
 `Email: proveedor resend, remitente ...`, o `email_not_configured` si falta.
+
+## Pendiente de firma del dueño (preparado el 2026-10-02, SIN aplicar)
+
+Borradores de S5 (fase 0; numeración del issue #89). Nada de esta sección está decidido ni aplicado: lo firma y
+lo aplica el dueño (ADR-45). Los nombres de menús de GitHub y Cloudflare son de memoria salvo
+donde se cita la documentación; confírmalos en pantalla.
+
+### A. Protección de `master` (ledger 30.2, H.16)
+
+GitHub → repo `Neopram/whetzy` → **Settings → Rules → Rulesets → New ruleset → New branch
+ruleset**:
+
+1. Nombre `master`; **Enforcement status: Active**.
+2. **Bypass list: vacía** (sin excepción para el admin; con un bypass, un commit desde la UI web
+   vuelve a saltarse la puerta, que es exactamente el incidente de 30.2).
+3. **Target branches → Add target → Include default branch**.
+4. Reglas: **Restrict deletions**; **Block force pushes**; **Require a pull request before
+   merging** con *Required approvals = 0* (el dueño es quien fusiona: si exige 1 aprobación y el
+   PR sale de su cuenta, no puede aprobarse a sí mismo); **Require status checks to pass** →
+   añadir **`Cloudflare Pages`** (nombre exacto del check en los PRs #87 y #88, consultado el
+   2026-10-02). No añadas `backend`/`frontend`/`e2e`/`android` mientras Actions no tenga runner
+   (H.13): mueren en 2-3 s y bloquearían todo PR.
+5. Prueba que pide 30.2: desde un clon, `git push origin HEAD:master` con cualquier commit debe
+   ser **rechazado** por la regla. Pega la salida en el PR B de S5 para cerrar 30.2.
+
+Efecto: los commits desde la UI web de GitHub a `master` (los seis de 30.2) dejan de ser
+posibles; los bots de Railway y Dependabot siguen abriendo PRs, que pasan por el mismo check.
+
+### B. Runner propio para Actions (H.13) — propuesta, con su riesgo
+
+Opciones:
+
+| | Qué | Coste | Riesgo |
+|---|---|---|---|
+| 1 | Pagar/ajustar la facturación de Actions (GitHub → Billing) | el del plan | ninguno nuevo |
+| 2 | Runner *self-hosted* en una VM efímera (una por job) | VM | bajo si la VM se destruye tras cada job |
+| 3 | Runner *self-hosted* en el PC del dueño | 0 € | **alto** |
+
+El riesgo de 2 y 3 es el mismo mecanismo: un runner propio ejecuta el código del PR. Un PR de
+Dependabot cambia `package-lock.json` o `requirements.txt`, y `npm ci` / `pip install` ejecutan
+los scripts de instalación del paquete nuevo **en la máquina del runner**: una dependencia
+comprometida (supply chain) correría con los permisos del usuario del runner, con acceso a lo que
+haya en esa máquina (claves, sesiones del navegador, `wrangler login`). El repo es privado
+(consultado el 2026-10-02), lo que excluye PRs de forks de desconocidos, no PRs de bots.
+
+**Recomendación: 1; si no, 2** con `runs-on: [self-hosted, ephemeral]`, sin secretos de
+producción en el runner y con los jobs de PRs de Dependabot fuera del runner propio
+(`if: github.actor != 'dependabot[bot]'`). **Nunca 3.** La puerta local (`.githooks/pre-push` +
+`scripts/ci_local.sh`) sigue siendo la que vale mientras tanto.
+
+### C. Reglas de Cloudflare para 22.5
+
+Hecho que cambia la tarea (comprobado el 2026-10-02 con `curl -D -`): `whetzy.com` responde con
+`server: cloudflare`, pero la API responde desde `api-production-9751.up.railway.app` con
+`server: railway-hikari`, y `frontend/.env.production` apunta ahí. **Ninguna regla WAF de la zona
+`whetzy.com` ve una sola petición a `/auth/*` ni a `/tutor/*`.** Y el plan Free trae **una** regla
+de rate limiting, con periodo y bloqueo de 10 s
+([doc](https://developers.cloudflare.com/waf/rate-limiting-rules/), consultada el 2026-10-02);
+Super Bot Fight Mode es de Pro en adelante
+([doc](https://developers.cloudflare.com/bots/get-started/super-bot-fight-mode/)). Lo que
+`docs/cloudflare-config.md` lista (4 reglas de rate limiting, Super Bot Fight Mode) no cabe en Free.
+
+Opciones:
+
+1. **API detrás de Cloudflare** — dominio propio `api.whetzy.com` en Railway con el DNS en
+   *proxied*; `VITE_API_URL` y CORS pasan a ese origen. Entonces, en Free: **Bot Fight Mode** on;
+   la regla única de rate limiting como
+   `(http.host eq "api.whetzy.com" and starts_with(http.request.uri.path, "/api/v1/auth/") and http.request.method eq "POST")`,
+   característica IP, 5 peticiones / 10 s, acción Block 10 s; cache rule para `GET` públicos
+   (`/api/v1/glossary/*`, `/api/v1/tracks`) solo si el backend devuelve `Cache-Control` público.
+   Efecto extra: la API pasa a ser *same-site* con `whetzy.com`, lo que quita la cookie de
+   terceros que dejó pendiente 30.9 (Safari/ITP). Coste 0 €; cambia CORS, cookies y la variable
+   del bundle: va en su propio PR con `check-deployed` PASS.
+2. **Dejar la API en `railway.app`** y confiar en el limitador del backend (`backend/app/core/
+   rate_limiter.py`, Redis con respaldo en memoria). Coste 0 €, nada que mover; Cloudflare solo
+   protege el estático.
+3. **Plan Pro de Cloudflare** — más reglas y Super Bot Fight Mode; tiene coste mensual y sigue
+   necesitando la opción 1 para ver la API.
+
+**Recomendación: 1.** Es la única con la que 22.5 protege algo, y además cierra lo de Safari de 30.9.
+
+### D. Enmienda a ADR-52 (uso de modelos por papel)
+
+El borrador, con sus opciones y la recomendación, se entregó al dueño en el informe final de S5
+del 2026-10-02, no aquí: es una decisión de ADR que solo el dueño firma en
+`DECISIONS.md`. Hasta que la firme, rige ADR-52 tal cual.
 
 ## Troubleshoot
 
