@@ -30,6 +30,13 @@ def test_real_words_containing_a_blocked_substring_are_not_false_positives(text:
     assert not contains_blocked_word(text)
 
 
+@pytest.mark.parametrize("text", ["Matsushita", "matsushita", "Soy Matsushita"])
+def test_matsushita_is_not_a_false_positive(text: str) -> None:
+    """[COORD]/[S5] (2026-10-03): "matsushita" contiene "shit" — un apellido
+    japonés real no puede dar 422 al registrarse."""
+    assert not contains_blocked_word(text)
+
+
 def test_register_rejects_blocked_username() -> None:
     with pytest.raises(ValidationError):
         UserCreate(
