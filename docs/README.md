@@ -14,6 +14,7 @@ Frontend: React + Capacitor.
 | Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad; `python scripts/ledger.py next`) |
 | Operar una sesión (rama + PR, sin `master`; ADR-45) | `ORCHESTRATOR.md`, **`PROMPT_CONTROL_TOTAL.md`** y `../CLAUDE.md` |
 | Verificar una afirmación, cerrar una tarea, elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
+| Trabajar en paralelo: qué ficheros escribe cada sesión, ficheros compartidos, migraciones, i18n por rol | **`SESIONES.md`** |
 | Decisiones irreversibles (ADR) | `DECISIONS.md` |
 | Por qué se pausó el 2026-09-30, el scorecard (§2) y las trampas del entorno (§7). **Pausa levantada el 2026-10-01** (ADR-56) | `CIERRE_2026-09-30.md` |
 
