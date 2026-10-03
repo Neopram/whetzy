@@ -32,6 +32,23 @@ algunos por debajo del corte.
 inventado — la predicción siempre corresponde al examen que el alumno va a
 hacer de verdad.
 
+## Qué supuesto hace esta simulación (revisión adversaria del `[COORD]`, 17:21 UTC)
+
+`simulate_one()` (`backend/scripts/beta_binomial_calibration.py`) genera
+tanto las respuestas de práctica como el examen a partir del **mismo**
+`theta_true` para un usuario simulado. Eso es correcto para lo que las dos
+comprobaciones de abajo validan — que la matemática beta-binomial (cobertura
+del intervalo, calibración de `p_pass`) es internamente consistente —, pero
+significa que esta simulación **no puede medir, ni mide, ninguna diferencia
+sistemática entre el rendimiento en práctica y el rendimiento en un examen
+real** (nervios, formato distinto, preguntas de práctica más fáciles que las
+de examen, fatiga, etc.): si existiera un sesgo así en la realidad, el
+modelo seguiría viéndose perfectamente calibrado aquí porque la simulación
+asume por construcción que practicar y examinarse miden exactamente la
+misma θ. Ese es precisamente el punto 1 de «Qué falta para activar esto con
+datos reales» más abajo: con datos reales hay que comprobar esta igualdad,
+no asumirla.
+
 ## Por qué dos validaciones, no una
 
 Un único número de precisión agregada puede ocultar un modelo mal calibrado.
@@ -113,7 +130,11 @@ en rojo (`test_p_pass_matches_monte_carlo_simulation`,
    sustituir las simulaciones por pares reales (aciertos/fallos de práctica
    antes del examen, resultado real del examen) y repetir exactamente las
    mismas dos comprobaciones (cobertura del intervalo, curva de calibración +
-   Brier) contra la realidad en vez de contra el simulador.
+   Brier) contra la realidad en vez de contra el simulador. Esto es también
+   la primera vez que se puede comprobar de verdad el supuesto que esta
+   simulación se salta (sección de arriba): si la práctica predice el examen
+   real igual de bien que predice, en la simulación, un examen generado con
+   la misma θ.
 2. **Elegir qué cuenta como "práctica relevante"**: ¿todas las respuestas del
    alumno en el track, o solo las de modo examen/repaso? Esto es una decisión
    de producto, no estadística — no la tomo aquí.
