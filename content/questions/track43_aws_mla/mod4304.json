@@ -689,6 +689,316 @@
       "explanation_es": "Gestión del ciclo de vida ML: la respuesta correcta es la opción que describe con precisión la funcionalidad principal y las mejores prácticas asociadas.",
       "explanation_en": "ML Lifecycle Management: the correct answer is the option that accurately describes the main functionality and associated best practices.",
       "source": "AWS Documentation (https://docs.aws.amazon.com)"
+    },
+    {
+      "id": "q430126001",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "¿Qué tipo de fallo es específico de un sistema con agentes y no aparece en un endpoint de ML clásico?",
+      "question_en": "What kind of failure is specific to an agent-based system and doesn't appear in a classic ML endpoint?",
+      "options_es": [
+        "Un agente que deja de coordinarse con otro agente a mitad de una tarea de varios pasos",
+        "Una latencia de respuesta más alta de lo esperado en una única llamada de inferencia aunque ese valor ya se mida de forma rutinaria en cualquier sistema",
+        "Una tasa de error elevada en las peticiones HTTP que recibe el endpoint desplegado",
+        "Un pico de uso de CPU durante una hora concreta del día en el servidor de inferencia"
+      ],
+      "options_en": [
+        "An agent that stops coordinating with another agent mid multi-step task",
+        "A higher-than-expected response latency on a single inference call even though that value is already routinely measured in any system",
+        "A high error rate on the HTTP requests the deployed endpoint receives",
+        "A CPU usage spike during a specific hour of the day on the inference server"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un fallo de coordinación entre agentes (o una herramienta que no responde, o streaming cortado) es propio de sistemas agénticos; latencia, tasa de error HTTP y picos de CPU son métricas operativas comunes a cualquier endpoint, con o sin agentes.",
+      "explanation_en": "A coordination failure between agents (or a tool that doesn't respond, or cut-off streaming) is specific to agentic systems; latency, HTTP error rate, and CPU spikes are operational metrics common to any endpoint, with or without agents.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430126002",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué sirven las evaluaciones integradas de Amazon Bedrock sobre un modelo fundacional?",
+      "question_en": "What are Amazon Bedrock's built-in evaluations on a foundation model used for?",
+      "options_es": [
+        "Medir el rendimiento del modelo frente a un conjunto de referencia para detectar degradación",
+        "Sustituir por completo cualquier prueba manual que el equipo quisiera hacer antes de desplegar",
+        "Generar automáticamente nuevos datos de entrenamiento a partir de las respuestas del modelo",
+        "Cifrar las respuestas del modelo antes de enviarlas de vuelta a la aplicación cliente"
+      ],
+      "options_en": [
+        "Measuring the model's performance against a reference set to catch degradation",
+        "Completely replacing any manual testing the team might want before deploying",
+        "Automatically generating new training data from the model's own responses",
+        "Encrypting the model's responses before sending them back to the client application"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las evaluaciones de Bedrock comparan el rendimiento actual del modelo contra un conjunto de referencia para detectar degradación antes de que llegue a producción; no sustituyen toda prueba manual, no generan datos de entrenamiento por sí solas, ni cifran respuestas (eso es responsabilidad del transporte/TLS).",
+      "explanation_en": "Bedrock evaluations compare the model's current performance against a reference set to catch degradation before it reaches production; they don't replace all manual testing, don't generate training data on their own, and don't encrypt responses (that's transport/TLS's job).",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430126003",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué una conversación larga con mucho contexto cuesta más que una pregunta corta, usando el mismo modelo?",
+      "question_en": "Why does a long conversation with lots of context cost more than a short question, using the same model?",
+      "options_es": [
+        "Porque la inferencia se factura por token de entrada y de salida, a precios distintos cada uno",
+        "Porque AWS cobra una tarifa fija idéntica por cada llamada, sin importar su longitud que el equipo podría negociar directamente con el proveedor del modelo",
+        "Porque los modelos fundacionales cobran únicamente por el número de usuarios activos",
+        "Porque el coste depende solo de la hora del día en que se realiza la llamada"
+      ],
+      "options_en": [
+        "Because inference is billed per input and output token, each at a different price",
+        "Because AWS charges an identical flat fee for every call, regardless of its length that the team could negotiate directly with the model's provider",
+        "Because foundation models only charge based on the number of active users",
+        "Because cost depends only on the time of day the call is made"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El coste de inferencia se calcula por tokens de entrada y de salida, con precios distintos para cada tipo; más contexto significa más tokens de entrada y, por tanto, más coste, sin que AWS cobre una tarifa fija por llamada ni que el precio dependa de usuarios activos o de la hora del día.",
+      "explanation_en": "Inference cost is calculated per input and output tokens, at different prices for each; more context means more input tokens and therefore more cost, with AWS not charging a flat per-call fee nor pricing depending on active users or time of day.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430126004",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "¿Qué coste adicional aparece con una aplicación RAG que no existía con un modelo de ML clásico?",
+      "question_en": "What extra cost shows up with a RAG application that didn't exist with a classic ML model?",
+      "options_es": [
+        "Computar embeddings de cada documento y almacenar los vectores resultantes en una base vectorial",
+        "El coste del dominio DNS personalizado necesario para publicar cualquier endpoint HTTP que ya existía exactamente igual en cualquier pipeline de ML clásico",
+        "El coste fijo mensual de mantener una cuenta de AWS activa, independientemente del uso",
+        "El coste de licencia del sistema operativo que ejecuta el servidor de inferencia"
+      ],
+      "options_en": [
+        "Computing embeddings for each document and storing the resulting vectors in a vector store",
+        "The cost of the custom DNS domain needed to publish any HTTP endpoint that already existed in exactly the same way in any classic ML pipeline",
+        "The fixed monthly cost of keeping an AWS account active, regardless of usage",
+        "The licensing cost of the operating system running the inference server"
+      ],
+      "correct_index": 0,
+      "explanation_es": "RAG añade el coste de calcular embeddings para cada documento ingerido y de almacenar y consultar esos vectores en la base de datos vectorial; eso es nuevo frente a un pipeline de ML clásico, mientras que dominio DNS, cuenta de AWS o licencia de sistema operativo no son costes específicos de RAG.",
+      "explanation_en": "RAG adds the cost of computing embeddings for every ingested document and storing/querying those vectors in the vector database; that's new compared to a classic ML pipeline, while a DNS domain, AWS account fee, or OS license aren't RAG-specific costs.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430126005",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "Subir el límite de contexto de un prompt de 2.000 a 8.000 tokens, ¿qué efecto directo tiene en el coste de entrada?",
+      "question_en": "Raising a prompt's context limit from 2,000 to 8,000 tokens has what direct effect on input cost?",
+      "options_es": [
+        "Puede cuadruplicar el coste de entrada de cada llamada sin garantizar mejor respuesta",
+        "No tiene ningún efecto porque el coste de entrada siempre es una tarifa fija por llamada",
+        "Reduce el coste de entrada porque un prompt más largo se comprime automáticamente",
+        "Solo afecta al coste de salida, nunca al coste calculado sobre los tokens de entrada"
+      ],
+      "options_en": [
+        "It can quadruple each call's input cost without guaranteeing a better answer",
+        "It has no effect because input cost is always a fixed fee per call",
+        "It reduces input cost because a longer prompt gets automatically compressed",
+        "It only affects output cost, never the cost calculated on input tokens"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Como el coste de entrada es proporcional a los tokens enviados, cuadruplicar el límite de contexto puede cuadruplicar ese coste, sin que la calidad de la respuesta mejore si el contenido extra no aporta información relevante; no es una tarifa fija, no se reduce por compresión automática, y sí afecta directamente al coste de entrada.",
+      "explanation_en": "Since input cost is proportional to tokens sent, quadrupling the context limit can quadruple that cost, without the answer's quality improving if the extra content adds no relevant information; it isn't a flat fee, isn't reduced by automatic compression, and does directly affect input cost.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430126006",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "¿Qué error de optimización de costes es común al operar una aplicación RAG en producción?",
+      "question_en": "What cost-optimization mistake is common when operating a production RAG application?",
+      "options_es": [
+        "Optimizar solo el coste del modelo e ignorar el del almacenamiento vectorial creciente",
+        "Revisar el coste de almacenamiento vectorial cada mes junto con el resto de la factura",
+        "Medir tanto el coste por token de entrada como el de salida en cada llamada",
+        "Comparar el coste de distintos modelos antes de elegir cuál usar en producción"
+      ],
+      "options_en": [
+        "Optimizing only the model's cost while ignoring the growing vector storage cost",
+        "Reviewing vector storage cost every month alongside the rest of the bill",
+        "Measuring both input and output per-token cost on every call",
+        "Comparing the cost of different models before choosing which one to use in production"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El error común es mirar solo el coste de inferencia del modelo e ignorar que el almacenamiento vectorial crece con cada documento nuevo indexado; las otras tres opciones describen buenas prácticas de monitoreo de coste, no errores.",
+      "explanation_en": "The common mistake is looking only at the model's inference cost while ignoring that vector storage grows with every newly indexed document; the other three options describe good cost-monitoring practices, not mistakes.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430126ex007",
+      "skill_id": "sk430126",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Completa el hueco para calcular el coste de una llamada con 1000 tokens de entrada y 500 de salida, a $0.003 y $0.015 por cada 1000 tokens respectivamente.\n\n```python\ntokens_entrada = 1000\ntokens_salida = 500\nprecio_entrada = 0.003\nprecio_salida = 0.015\ncosto = (tokens_entrada/1000)*precio_entrada + (tokens_salida/1000)*___\nprint(round(costo, 4))\n```",
+      "question_en": "Fill in the blank to compute the cost of a call with 1000 input tokens and 500 output tokens, at $0.003 and $0.015 per 1000 tokens respectively.\n\n```python\ninput_tokens = 1000\noutput_tokens = 500\ninput_price = 0.003\noutput_price = 0.015\ncost = (input_tokens/1000)*input_price + (output_tokens/1000)*___\nprint(round(cost, 4))\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "0.0105",
+      "correct_answer_en": "0.0105",
+      "explanation_es": "El coste total suma el término de entrada (1000/1000 * 0.003 = 0.003) y el de salida (500/1000 * 0.015 = 0.0075), completando el hueco con `precio_salida`; el total es 0.0105.",
+      "explanation_en": "Total cost adds the input term (1000/1000 * 0.003 = 0.003) and the output term (500/1000 * 0.015 = 0.0075), filling the blank with `output_price`; the total is 0.0105.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
+      "expected_time_ms": 35000
+    },
+    {
+      "id": "q430127001",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace un guardrail de Amazon Bedrock antes de que una respuesta llegue al usuario final?",
+      "question_en": "What does an Amazon Bedrock guardrail do before a reply reaches the end user?",
+      "options_es": [
+        "Filtra temas prohibidos y bloquea o redacta contenido dañino o sensible",
+        "Traduce automáticamente la respuesta a todos los idiomas que la aplicación admite",
+        "Firma digitalmente la respuesta para certificar que ningún humano la revisó antes",
+        "Comprime la respuesta para reducir el tamaño del payload enviado por la red"
+      ],
+      "options_en": [
+        "It filters denied topics and blocks or redacts harmful or sensitive content",
+        "It automatically translates the reply into every language the application supports",
+        "It digitally signs the reply to certify no human reviewed it beforehand",
+        "It compresses the reply to reduce the payload size sent over the network"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un guardrail filtra temas prohibidos y bloquea o redacta (tacha) contenido dañino o información sensible antes de que el usuario la vea; no traduce, no firma digitalmente como certificación de revisión, ni comprime el payload de red.",
+      "explanation_en": "A guardrail filters denied topics and blocks or redacts harmful content or sensitive information before the user sees it; it doesn't translate, doesn't digitally sign as a review certification, and doesn't compress the network payload.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430127002",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "¿Qué tipo de credencial recomienda usar AWS para acceder a modelos fundacionales en producción?",
+      "question_en": "What kind of credential does AWS recommend for accessing foundation models in production?",
+      "options_es": [
+        "Roles de IAM, con control más fino y políticas de mínimo privilegio",
+        "La contraseña personal de la cuenta raíz (root) de AWS, compartida entre el equipo",
+        "Ninguna credencial, porque los modelos fundacionales son de acceso público sin autenticar",
+        "Un único token compartido entre todos los proyectos de la organización, sin rotación"
+      ],
+      "options_en": [
+        "IAM roles, with finer-grained control and least-privilege policies",
+        "The AWS root account's personal password, shared across the team",
+        "No credential at all, because foundation models are publicly accessible with no auth",
+        "A single token shared across every project in the organization, never rotated"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS recomienda roles de IAM en producción porque permiten controlar con precisión qué modelo, cuenta y región se usan, además de rotación y mínimo privilegio; nunca se recomienda compartir la contraseña de root, acceder sin autenticación, ni usar un token único sin rotar.",
+      "explanation_en": "AWS recommends IAM roles in production because they allow precise control over which model, account, and region are used, plus rotation and least privilege; sharing the root password, accessing with no authentication, or using a single never-rotated token is never recommended.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430127003",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "Un usuario escribe por error su número de la seguridad social en un chat de atención al cliente. ¿Qué capacidad de Guardrails aplica aquí?",
+      "question_en": "A user mistakenly types their social security number into a customer-support chat. Which Guardrails capability applies here?",
+      "options_es": [
+        "Redacción (anonimización) automática de información sensible en la entrada",
+        "Bloqueo total y permanente de la cuenta del usuario que cometió el error",
+        "Generación automática de un ticket de soporte técnico para el equipo de IT",
+        "Cifrado adicional de toda la conversación mediante una clave gestionada por el cliente"
+      ],
+      "options_en": [
+        "Automatic redaction (anonymization) of sensitive information in the input",
+        "Total, permanent blocking of the account belonging to the user who made the mistake",
+        "Automatically generating an IT support ticket for the technical team",
+        "Additional encryption of the whole conversation using a customer-managed key"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Guardrails puede detectar y redactar (tachar) información de identificación personal como un número de la seguridad social, tanto en la entrada como en la salida; no bloquea la cuenta del usuario, no genera tickets de soporte, ni añade cifrado adicional por sí solo.",
+      "explanation_en": "Guardrails can detect and redact personally identifiable information like a social security number, in both input and output; it doesn't block the user's account, doesn't generate support tickets, and doesn't add extra encryption on its own.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430127004",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "¿Qué parte del proceso es aplicar un guardrail a una llamada de inferencia?",
+      "question_en": "What part of the process is applying a guardrail to an inference call?",
+      "options_es": [
+        "Una decisión de configuración: se define la política una vez y se asocia a la llamada",
+        "Un cambio de código obligatorio en cada aplicación que invoque el modelo",
+        "Un proceso manual que una persona debe repetir antes de cada conversación individual",
+        "Una característica disponible solo para modelos entrenados íntegramente por el cliente"
+      ],
+      "options_en": [
+        "A configuration decision: the policy is defined once and attached to the call",
+        "A mandatory code change in every application that invokes the model",
+        "A manual process a person must repeat before every single conversation",
+        "A feature available only for models trained entirely by the customer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Aplicar un guardrail es configuración, no código: se define la política de filtrado una vez y se asocia a cualquier llamada que la necesite, sin cambios de código por aplicación, sin repetirlo a mano por conversación, y funciona también con modelos del catálogo, no solo entrenados por el cliente.",
+      "explanation_en": "Applying a guardrail is configuration, not code: the filtering policy is defined once and attached to any call that needs it, with no per-application code changes, no manual per-conversation repetition, and it works with catalog models too, not only customer-trained ones.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430127005",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué es arriesgado tratar los guardrails como opcionales porque \"el modelo ya es bastante bueno\"?",
+      "question_en": "Why is it risky to treat guardrails as optional because \"the model is already good enough\"?",
+      "options_es": [
+        "Porque una sola respuesta dañina o una fuga de datos puede bastar para perder confianza",
+        "Porque sin guardrails el modelo deja de responder por completo a cualquier pregunta",
+        "Porque AWS factura automáticamente el doble a las cuentas que no activan guardrails",
+        "Porque los guardrails son obligatorios por ley en cualquier país donde opere la empresa"
+      ],
+      "options_en": [
+        "Because a single harmful reply or data leak can be enough to lose a customer's trust",
+        "Because without guardrails the model stops answering any question at all",
+        "Because AWS automatically bills double to accounts that don't enable guardrails",
+        "Because guardrails are legally mandatory in every country where the company operates"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El riesgo real es reputacional y de confianza: basta una sola respuesta dañina o una fuga de datos sensibles para perder la confianza de un cliente, no que el modelo deje de responder, ni una facturación especial de AWS, ni una obligación legal universal.",
+      "explanation_en": "The real risk is reputational and about trust: a single harmful reply or sensitive data leak is enough to lose a customer's trust, not the model ceasing to answer, nor special AWS billing, nor a universal legal mandate.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430127006",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo son más adecuadas las claves de API de Bedrock frente a un rol de IAM?",
+      "question_en": "When are Bedrock API keys more appropriate than an IAM role?",
+      "options_es": [
+        "En prototipos y pruebas rápidas, antes de pasar a un control más fino en producción",
+        "Siempre, porque las claves de API ofrecen más control granular que cualquier rol de IAM",
+        "Nunca, porque AWS eliminó por completo el soporte de claves de API para Bedrock",
+        "Solo cuando el modelo invocado pertenece a un proveedor distinto de Amazon"
+      ],
+      "options_en": [
+        "For prototypes and quick tests, before moving to finer control in production",
+        "Always, because API keys offer more granular control than any IAM role",
+        "Never, because AWS completely removed API key support for Bedrock",
+        "Only when the invoked model belongs to a provider other than Amazon"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las claves de API son más simples para prototipar y probar rápido; los roles de IAM dan el control más fino (modelo, cuenta, región) recomendado en producción. No es que las claves ofrezcan más granularidad, ni que AWS las haya eliminado, ni que dependan de qué proveedor es el modelo.",
+      "explanation_en": "API keys are simpler for quick prototyping and testing; IAM roles give the finer control (model, account, region) recommended for production. It isn't that keys offer more granularity, that AWS removed them, or that it depends on which provider the model belongs to.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430127ex007",
+      "skill_id": "sk430127",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Completa el hueco para que la política de Guardrails anonimice (no bloquee) los números de la seguridad social detectados.\n\n```python\npolitica = {\"tipo\": \"US_SOCIAL_SECURITY_NUMBER\", \"accion\": \"___\"}\nprint(politica[\"accion\"])\n```",
+      "question_en": "Fill in the blank so the Guardrails policy anonymizes (not blocks) detected social security numbers.\n\n```python\npolicy = {\"type\": \"US_SOCIAL_SECURITY_NUMBER\", \"action\": \"___\"}\nprint(policy[\"action\"])\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "ANONYMIZE",
+      "correct_answer_en": "ANONYMIZE",
+      "explanation_es": "`ANONYMIZE` tacha o enmascara la información sensible detectada en vez de bloquear por completo la petición, que es lo que haría una acción de tipo `BLOCK`.",
+      "explanation_en": "`ANONYMIZE` redacts or masks the detected sensitive information instead of blocking the request entirely, which is what a `BLOCK`-type action would do.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
+      "expected_time_ms": 30000
     }
   ]
 }
