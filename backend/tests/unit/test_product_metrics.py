@@ -27,6 +27,20 @@ from app.services.analytics import (
 NOW = datetime.now(UTC)
 
 
+@pytest.fixture(autouse=True)
+def _now_per_test() -> None:
+    """`NOW` se recalcula al empezar cada test, no al importar el modulo.
+
+    `curr()` mide dias UTC completos a partir de la hora de la llamada. Con
+    `NOW` fijado al importar, una suite que arranca antes de las 00:00 UTC y
+    llega a estos tests despues planta las sesiones un dia desplazadas y
+    TestCurr falla (3 tests, nivel 2 del 2026-10-03 00:07 UTC; reproducido
+    poniendo NOW un minuto antes de medianoche).
+    """
+    global NOW
+    NOW = datetime.now(UTC)
+
+
 def _make_user(db, *, created_at: datetime, is_premium: bool = False) -> User:
     u = User(
         id=uuid.uuid4(),
