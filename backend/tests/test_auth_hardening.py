@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
+import time
 import uuid
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 import pytest
 import pytest_asyncio
@@ -79,6 +81,26 @@ async def _locked_right_after_last_attempt(
 
 class TestAccountLockout:
     """Test progressive account lockout with exponential backoff."""
+
+    async def test_attempt_keeps_sub_second_precision(self, db_session: AsyncSession, user: User):
+        """`created_at` no puede perder la fracción de segundo.
+
+        Con `server_default=now()`, SQLite guardaba `HH:MM:SS`: medio segundo
+        después del 5.º fallo el bloqueo de 1 s ya no contaba, y
+        `test_2fa_login::test_wrong_codes_trigger_the_lockout` daba 400 al azar.
+        Se espera a la mitad de un segundo para que el truncado no pueda
+        quedarse a menos de 0,3 s del valor real.
+        """
+        while not 0.3 <= time.time() % 1 <= 0.7:
+            await asyncio.sleep(0.01)
+        before = datetime.now(UTC)
+        await record_login_attempt(user.email, "192.168.1.99", success=False, db=db_session)
+        stored = (
+            await db_session.execute(
+                select(LoginAttempt.created_at).where(LoginAttempt.ip == "192.168.1.99")
+            )
+        ).scalar_one()
+        assert abs((security._as_utc(stored) - before).total_seconds()) < 0.2, stored
 
     async def test_lockout_exponential_delay(
         self, db_session: AsyncSession, user: User, monkeypatch: pytest.MonkeyPatch
