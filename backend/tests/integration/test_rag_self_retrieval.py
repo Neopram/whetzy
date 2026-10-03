@@ -19,6 +19,7 @@ than hitting a prod database, per the task's measurement instructions.
 
 from __future__ import annotations
 
+import random
 import time
 import tracemalloc
 
@@ -40,6 +41,29 @@ from app.services.content_loader import load_content
 _MIN_CORPUS_QUESTIONS = 1253
 _MIN_SELF_RETRIEVAL_PCT = 95.0
 _MAX_BUILD_SECONDS = 2.0
+
+# 39.32: self-retrieval is checked over a fixed-size random sample of the
+# corpus, not every question. Checking all N questions made this test
+# O(N) retrieve() calls x O(N) work each = O(N^2) in the corpus size — it
+# grew from seconds to ~28 minutes as the content bank grew (measured: the
+# real corpus is 10949 questions as of this commit, see
+# docs/ml/rag_scaling_39_32.md). RAGIndex.retrieve() itself was also made
+# sub-quadratic (token postings index + BM25Okapi.get_batch_scores() instead
+# of scoring the whole corpus per call — see RAGIndex.index_documents), but
+# that alone is not enough: this corpus has no stopword filtering, so a
+# query's common words ("the", "is", "de", "es"...) sit in 50-80% of every
+# document, keeping per-call cost close to O(N) regardless. Sampling is what
+# actually bounds the test's cost independent of corpus growth.
+#
+# Sample size: at seed=20261002, n=1500 per language gives a 95%-CI half
+# width of ~1.1 percentage points around the measured ~95% hit rate
+# (Wilson interval for p=0.95, n=1500) — tight enough to catch a real
+# regression (e.g. a drop to 90%) without pinning an exact pass/fail count
+# that content growth would churn. Fixed, not "first N": a stratified-by-row
+# random sample so no track/skill is systematically over- or under-tested
+# run to run.
+_SAMPLE_SIZE = 1500
+_SAMPLE_SEED = 20261002
 # Under a line tracer the build is timing coverage, not the index: the same
 # build measures 0.70s clean and 2.01s under `--cov`, and CI runs the whole
 # suite with coverage. Asserting 2.0s there makes the test flake on an
@@ -127,10 +151,12 @@ async def test_index_memory_bounded_and_hits_self_retrieval_bar() -> None:
     be skipped when running on a shared or loaded system.
 
     Marked `slow` (2026-09-30, owner's decision after this alone took >5 min
-    in isolation): it runs a real BM25 retrieve() per corpus question in both
-    languages — O(corpus) work per assertion, deterministic but expensive, and
-    growing every content session. Deselected from the default suite; run with
-    `python -m pytest -m slow`, or see ci_local.sh / ci.yml for its own step.
+    in isolation; by 39.32 it had grown to ~28 min as the bank reached ~11K
+    questions): it runs a real BM25 retrieve() per *sampled* corpus question
+    in both languages — see `_SAMPLE_SIZE` above for why sampling, not the
+    full bank, is what actually keeps this bounded as content grows.
+    Deselected from the default suite; run with `python -m pytest -m slow`,
+    or see ci_local.sh / ci.yml for its own step.
     """
     factory = await _load_real_corpus()
 
@@ -157,11 +183,16 @@ async def test_index_memory_bounded_and_hits_self_retrieval_bar() -> None:
         ).all()
         skills = {s.id: s for s in (await db.execute(select(Skill))).scalars().all()}
 
+        # Fixed, reproducible sample — see _SAMPLE_SIZE/_SAMPLE_SEED above.
+        # Independent of iteration/DB order: sample() draws by position over
+        # whatever `rows` came back as, but the seed pins *which* positions.
+        sample = random.Random(_SAMPLE_SEED).sample(rows, min(_SAMPLE_SIZE, len(rows)))
+
         for lang in ("es", "en"):
             hits = 0
             hits_with_source = 0
             misses: list[str] = []
-            for q_id, q_es, q_en, skill_id in rows:
+            for q_id, q_es, q_en, skill_id in sample:
                 skill = skills.get(skill_id)
                 skill_name = (skill.name_es if lang == "es" else skill.name_en) if skill else ""
                 q_text = q_es if lang == "es" else q_en
@@ -177,10 +208,11 @@ async def test_index_memory_bounded_and_hits_self_retrieval_bar() -> None:
                 else:
                     misses.append(q_id)
 
-            pct = 100 * hits / len(rows)
+            pct = 100 * hits / len(sample)
             print(
-                f"[{lang}] self-retrieval top-3: {hits}/{len(rows)} = {pct:.2f}% "
-                f"(with source: {hits_with_source}/{hits}); sample misses: {misses[:5]}"
+                f"[{lang}] self-retrieval top-3: {hits}/{len(sample)} = {pct:.2f}% "
+                f"(sample of {len(rows)}; with source: {hits_with_source}/{hits}); "
+                f"sample misses: {misses[:5]}"
             )
             assert pct >= _MIN_SELF_RETRIEVAL_PCT, (
                 f"[{lang}] self-retrieval only {pct:.2f}% (< {_MIN_SELF_RETRIEVAL_PCT}%). "

@@ -102,6 +102,7 @@ class RAGIndex:
         self._docs: list[RetrievedChunk] = []
         self._corpus_tokens: list[list[str]] = []
         self._bm25: BM25Okapi | None = None
+        self._token_to_docs: dict[str, set[int]] = {}
         self._built = False
 
     def index_documents(self, docs: Sequence[RetrievedChunk]) -> None:
@@ -110,10 +111,18 @@ class RAGIndex:
         Split out from `build()` so it can be exercised directly by tests
         (and any future non-DB corpus, e.g. loading straight from the
         content/ JSON files) without needing a database session.
+
+        Also builds a token -> doc-index postings map (39.32): `retrieve()`
+        uses it to find which documents even share a token with the query
+        before scoring, instead of scanning the full corpus on every call.
         """
         self._docs = list(docs)
         self._corpus_tokens = [_tokenize(d.text) for d in self._docs]
         self._bm25 = BM25Okapi(self._corpus_tokens) if self._corpus_tokens else None
+        self._token_to_docs = {}
+        for i, tokens in enumerate(self._corpus_tokens):
+            for token in set(tokens):
+                self._token_to_docs.setdefault(token, set()).add(i)
         self._built = True
 
     async def build(self, db: AsyncSession) -> None:
@@ -170,6 +179,15 @@ class RAGIndex:
         a genuinely-overlapping document score at or below zero in a small
         or highly homogeneous corpus, which a score-sign filter would wrongly
         drop.
+
+        Candidates come from `_token_to_docs` (one postings-list lookup per
+        query term) rather than a per-call scan of every document, and are
+        scored with `BM25Okapi.get_batch_scores()` — the library's own
+        subset-scoring method, same formula as `get_scores()` restricted to
+        `doc_ids` — instead of scoring the whole corpus and discarding most
+        of it (39.32: that per-call full-corpus scan made the self-retrieval
+        test, which calls `retrieve()` once per corpus document, quadratic
+        in corpus size).
         """
         if not self._built or self._bm25 is None or not self._docs:
             return []
@@ -177,19 +195,19 @@ class RAGIndex:
         if not tokens:
             return []
         query_terms = set(tokens)
+        candidate_ids: set[int] = set()
+        for term in query_terms:
+            candidate_ids |= self._token_to_docs.get(term, set())
+        if not candidate_ids:
+            return []
+        candidates = sorted(candidate_ids)
         try:
-            scores = self._bm25.get_scores(tokens)
+            scores = self._bm25.get_batch_scores(tokens, candidates)
         except Exception:
             logger.exception("RAG retrieve failed")
             return []
-        # Filter to actually-overlapping docs *before* ranking: a
-        # non-overlapping doc always scores exactly 0, but epsilon-smoothing
-        # (see docstring above) can push a genuinely-overlapping doc's score
-        # slightly *below* 0 in small/homogeneous corpora — ranking first
-        # would then bury it under non-matches instead of surfacing it.
-        candidates = [i for i in range(len(self._docs)) if query_terms.intersection(self._corpus_tokens[i])]
-        candidates.sort(key=lambda i: scores[i], reverse=True)
-        return [self._docs[i] for i in candidates[:n]]
+        ranked = sorted(zip(candidates, scores), key=lambda pair: pair[1], reverse=True)
+        return [self._docs[i] for i, _ in ranked[:n]]
 
 
 _index: RAGIndex | None = None
