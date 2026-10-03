@@ -1,0 +1,72 @@
+# "Show HN" en español — ledger 26.6
+
+**Nota antes de usar esto:** Hacker News no tiene una sección en español. No hay
+ninguna regla escrita que prohíba publicar en español (revisado el FAQ
+—`https://news.ycombinator.com/newsfaq.html`— y las guidelines
+—`https://news.ycombinator.com/newsguidelines.html`—, ninguna de las dos
+dice nada sobre idioma), pero la comunidad es en inglés de facto: casi todo
+lo publicado y comentado en el front page está en inglés, y un post en
+español ahí tendría poco alcance real. Por eso
+26.6 no es "publica esto en HN en español": es la misma historia (por qué existe
+Whetzy, por qué en español) adaptada para las comunidades donde SÍ tiene sentido
+publicarla en español — Reddit hispano (r/devsarg, r/MexicoDev, r/spain cuando
+proceda), foros de Dev.to en español, Discord/Telegram de programación LATAM
+(`docs/DISTRIBUCION.md` §5.1). Publicar bajo cualquier cuenta es "Solo el dueño"
+(H.45); esto es el kit, no un envío.
+
+## Título corto (para Reddit / foros con límite de título)
+
+```
+Construí un motor de aprendizaje adaptativo de Python→IA, en español
+```
+
+(Se quitó el "porque nadie más lo hizo": solo sabemos lo que no encontramos
+en nuestra propia búsqueda — ver el "no encontré nada" con matiz en el post
+de abajo —, no que no exista nada parecido.)
+
+## Post completo
+
+> Hola. Soy el único desarrollador detrás de **Whetzy** (whetzy.com), una plataforma
+> de aprendizaje adaptativo de Python a IA. La parte del "por qué en español": la
+> educación tech adaptativa de verdad (no solo cursos en video — motor que decide
+> qué repasas y cuándo, como Duolingo pero para programación) casi siempre nace en
+> inglés y trata el español como una traducción después, cuando llega a existir.
+> Hispanohablantes somos ~500 millones y no encontré nada construido nativo en
+> español (no traducido con IA) con un motor adaptativo real debajo.
+>
+> Por dentro: BKT (Bayesian Knowledge Tracing) decide qué estás listo para
+> aprender, FSRS programa los repasos para que no se te olvide, y los ejemplos de
+> código corren en el navegador — Python y SQL vía WebAssembly (Pyodide/sql.js),
+> JS en un Web Worker aislado — sin ida y vuelta a un servidor para ejecutar un
+> fragmento.
+>
+> Es gratis — el límite actual del plan free es 5 lecciones y 30 preguntas
+> nuevas por día; los repasos de repetición espaciada son ilimitados para
+> todos. Me interesa de
+> verdad qué piensa la comunidad: dónde está flojo el espacio de aprendizaje
+> adaptativo en español, qué le pedirías a una plataforma "en serio" que un
+> bootcamp o una serie de YouTube no te da, y dónde se rompe si la probás.
+> Respondo lo que sea sobre el motor, el contenido bilingüe o la economía de
+> construir esto solo.
+
+## Cuándo
+
+Mismo criterio que la versión EN (`show-hn/en.md`): martes o miércoles, evitando
+fin de semana (tráfico bajo en foros técnicos en general). Para Reddit hispano
+específicamente, horario tarde CET / mañana en LATAM suele solapar mejor con
+ambas franjas horarias — supuesto de planificación, no medido.
+
+## Qué no hacer
+
+Igual que la versión EN: nada de pedir upvotes/karma coordinado (viola las reglas
+de Reddit y de la mayoría de foros, y se detecta), nada de cifras inventadas en
+el post ni en las respuestas — si un número no está en este repo con su cita, no
+se dice.
+
+## Checklist antes de publicar
+
+- [ ] Confirmar en qué subreddit/foro concreto se publica (cada uno tiene sus
+      propias reglas de autopromoción — revisar antes, no asumir)
+- [ ] whetzy.com (o whetzy.com/landing?lang=es — `/es` no es una ruta real,
+      `App.tsx` no la reconoce) carga limpio, alta y onboarding sin errores
+- [ ] El dueño disponible para responder comentarios las primeras horas
