@@ -2267,3 +2267,26 @@ Re-ejecutado por S5 el 2026-10-03 sobre `master` `c6d0545` (contiene los ocho PR
 - **39.9** (#104, `687426f`): `q160303005` (track16) tiene `correct_index: 1` («Falso») y la explicación corregida. El #104 no traía «Delta del ledger»: reescribió 11 explicaciones de track15/16/17 y considera falsos positivos las ~113 restantes, sin muestreo independiente. Por eso sigue **PARCIAL**.
 - **14.8 / 14.9 / 14.10 / 32.2** (#97) siguen BLOCKED, como proponía el propio PR: `scripts/beta_binomial_calibration.py` → `RESULT: PASS`; `scripts/irt_parameter_recovery.py` → `RESULT: PASS`; `pytest tests/unit/test_domain_report.py` → `13 passed`; `scripts/power_analysis_bkt_vs_dkt.py` → exit 0 (potencia 0,98 con n = 1000 por brazo para el margen de AUC 0,08). 14.9 necesita la URL pública (`[S3] NECESITO de S1`).
 - **#112** (`1555460`): sin fila; arregla el test intermitente de 2FA.
+
+## §S — Delta del ledger de las fusiones de la tarde del 2026-10-03 (#93, #100, #102, #106, #115; 39.32 por decisión del dueño)
+
+Filas tal como estaban antes del delta:
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 39.32 | **3** | `test_rag_self_retrieval` tarda ~28 min (cuadrático en el banco) | **PARCIAL** | `8934dd2` (#111): 186 s, 95,60 % ES / 95,33 % EN; suite + lento ≈ 12,5 min, no < 10 → §R |
+| 37.22 | **1** | **ISC2 CC al outline del 2026-09-01** (CAT 100–125 ítems; D2 Governance nuevo; `mod4002` BC/DR no mapea 1:1) | TODO | `exam_domains` + `domain_id` de los 5 módulos + banco reclasificado; `OFFICIAL_BLOCKS["track40"]` mutado en rojo → §Q |
+| 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | | → §I (criterio archivado por 20.10) |
+| 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas,… | | → §I (criterio archivado por 20.10) |
+| 26.1 | **4** | 5 artículos en Dev.to / Hashnode ES sobre el motor técnico (BKT, FSRS, gap de mercado) | TODO (redactar/construir;… | → §I (criterio archivado por 20.10) |
+| 26.9 | **3** | **Blog `/blog` ES/EN** (SEO orgánico, `archive/SPEC_WEB.md:152`): Markdown en `content/blog/`, prerender en `vite build`… | | → §I (criterio archivado por 20.10) |
+| 27.2 | **4** | 5 artículos en Dev.to / freeCodeCamp News EN sobre motor técnico | TODO (redactar/construir; publicar = H.23) | 5… |
+| 27.10 | **3** | **Comparativa honesta frente a Coursera/Udemy** (`DECISIONS.md` ADR-24, sin fila hasta hoy): página `/en/compare` y… | | → §I (criterio archivado por 20.10) |
+
+Re-ejecutado por S5 el 2026-10-03 sobre `master` `1be6eed`:
+
+- **39.32 → DONE.** Decisión del dueño transmitida por `[COORD]` en el #89 (20:33 UTC): se aceptan los ~12,8 min medidos (suite backend 572–585 s + `test_rag_self_retrieval` 194–197 s, niveles 2 del #114, §R) y se enmienda el criterio «< 10 min». La fusión de este delta por el dueño la confirma.
+- **37.22 → PARCIAL** (#102, `84fb47c`; el PR proponía DONE). `content/curriculum/tracks.json`: track40 tiene los 5 `exam_domains` del outline del 2026-09-01 (`dom4001`…`dom4005`, pesos 24 / 17,3 / 20 / 21,3 / 17,3) y las 23 skills llevan `exam_domain`. `pytest tests/content/test_certification_blueprints.py -k "isc2 or track40"` → `1 passed`. Falta lo que pide el criterio, «`domain_id` de los 5 módulos»: `mod4001`…`mod4005` siguen con `domain_id: null`. El #102 lo justifica porque el dominio vive en la skill y `mod4002` (BC/DR) no mapea 1:1. Si el dueño acepta ese razonamiento, se cierra.
+- **28.8 → DONE** (#100, `cb40bcd`). `pytest tests/integration/test_instructor_profile.py` → `5 passed` (el PR decía 6; el fichero tiene 5 tests en `master`). `npx vitest run src/test/profileTab.test.tsx` → `3 passed`. `ProfileTab.tsx` llama a `instructor.profile()` (l. 11) e `instructor.updateProfile()` (l. 34). `MarketplaceScreen.tsx` usa `contentApi.tracks()` y `progressApi.dashboard()` (l. 23-24).
+- **23.3, 26.1, 26.9, 27.2 y 27.10 → PARCIAL** (#93, `3497429`), como proponía el PR. Existen `docs/store/android/listing.md`, 4 artículos por idioma en `content/blog/{es,en}/` (3 de los 5 planeados más la comparativa de 27.10), `docs/distribucion-assets/{show-hn,product-hunt,prs-repos-externos,universidades}/`. `frontend/src/pages/marketing/BlogPage.tsx` sigue siendo el marcador vacío de la fase 0 (devuelve `null`): el blog tiene contenido pero no ruta. 26.2, 26.3, 26.6, 27.1 y 27.3 quedan como estaban: el texto está listo y publicarlo es del dueño (H.23).
+- **37.25** ya estaba DONE (lo escribió el propio #115) y **#106** no traía «Delta del ledger» (track01 es el primer track «en forma», contado en 37.6/37.10, que siguen TODO): sin cambio.
