@@ -86,6 +86,20 @@ POST /duels/{duel_id}/answer         → {answered, completed} 🔒
 GET  /duels/{duel_id}/result         → {status, winner_id, scores} 🔒
 ```
 
+## Moderation endpoints
+
+Reportar es un registro para que el dueño lo revise, sin cola ni acción
+automática. Bloquear es bidireccional: `duels.py` rechaza el reto (403) entre
+cualquiera de las dos direcciones, y las ligas ocultan a cada bloqueado de la
+liga del otro (19.11).
+
+```
+POST   /moderation/report            → {id, reported_id, reason, context, created_at} 🔒 — reason: inappropriate_name|harassment|spam|other
+POST   /moderation/block             → {user_id, username, display_name, blocked_at} 🔒 — idempotente
+DELETE /moderation/block/{user_id}   → 204 🔒
+GET    /moderation/blocked           → [{user_id, username, display_name, blocked_at}] 🔒
+```
+
 ## Tutor endpoint
 
 ```

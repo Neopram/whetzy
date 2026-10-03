@@ -41,6 +41,7 @@ from app.models.instructor import (
 from app.models.job import Job
 from app.models.lesson_completion import LessonCompletion
 from app.models.lesson_view import LessonView
+from app.models.moderation import UserBlock, UserReport
 from app.models.newsletter import NewsletterSubscriber
 from app.models.oauth import OAuthAccount, OAuthState
 from app.models.password_reset import PasswordResetToken
@@ -123,7 +124,9 @@ __all__ = [
     "User",
     "User2FA",
     "UserBadge",
+    "UserBlock",
     "UserMission",
+    "UserReport",
     "UserSession",
     "UserSkillState",
 ]

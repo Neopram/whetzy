@@ -172,9 +172,10 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `20261002_newsletter_subscribers` (52 migrations, single head — verified
-2026-10-03 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; until then this
-line said `20261002_mastery_reports`, 51 migrations, from 2026-10-02)
+Current Alembic HEAD: `20261002_newsletter_subscribers` (53 migrations, single head — verified
+2026-10-03 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains after
+`20261002_user_moderation` (#92, merged 2026-10-03); before that this line said
+`20261002_mastery_reports`, 51 migrations, from 2026-10-02)
 
 Always recompute — never trust this line:
 

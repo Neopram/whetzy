@@ -23,6 +23,7 @@ from app.api.v1.endpoints import (
     lessons,
     mastery_reports,
     ml,
+    moderation,
     newsletter,
     oauth,
     placement,
@@ -53,6 +54,7 @@ api_router.include_router(social.router, tags=["social"])
 api_router.include_router(duels.router, prefix="/duels", tags=["duels"])
 api_router.include_router(exams.router, prefix="/exams", tags=["exams"])
 api_router.include_router(reports.router, prefix="/reports", tags=["reports"])
+api_router.include_router(moderation.router, prefix="/moderation", tags=["moderation"])
 api_router.include_router(export.router, prefix="/export", tags=["export"])
 api_router.include_router(ml.router, prefix="/ml", tags=["ml"])
 api_router.include_router(content.router, prefix="/content", tags=["content"])

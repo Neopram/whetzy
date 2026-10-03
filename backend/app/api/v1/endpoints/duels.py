@@ -27,6 +27,7 @@ from app.schemas.duel import (
     DuelResultResponse,
     DuelSummary,
 )
+from app.services.blocklist import blocked_user_ids, is_blocked_pair
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -117,6 +118,11 @@ async def _get_duel_or_404(db: AsyncSession, duel_id: str, user: User) -> Duel:
         raise HTTPException(status_code=404, detail="Duel not found")
     if duel.challenger_id != user.id and duel.opponent_id != user.id:
         raise HTTPException(status_code=403, detail="You are not part of this duel")
+    # Un bloqueo posterior a la creación también cierra los duelos ya
+    # pendientes (19.11): cubre /join, /answer y /result de un solo golpe,
+    # ya que las tres llaman a este helper.
+    if await is_blocked_pair(db, duel.challenger_id, duel.opponent_id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This duel isn't available")
     return duel
 
 
@@ -148,6 +154,8 @@ async def challenge(
     opponent = await _load_user_by_username(db, payload.opponent_username)
     if opponent.id == current_user.id:
         raise HTTPException(status_code=422, detail="You cannot challenge yourself")
+    if await is_blocked_pair(db, current_user.id, opponent.id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This challenge isn't allowed")
 
     skill_id = await _pick_skill(db, current_user, payload.skill_id)
     questions = await _pick_questions(db, skill_id)
@@ -197,6 +205,10 @@ async def my_duels(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> list[DuelSummary]:
+    # Un duelo (pendiente o ya jugado) con alguien bloqueado tras crearse no
+    # sale en la lista — mismo criterio que /join, /answer y /result (19.11).
+    hidden = await blocked_user_ids(db, current_user.id)
+
     result = await db.execute(
         select(Duel)
         .where(
@@ -212,6 +224,8 @@ async def my_duels(
     for duel in duels:
         is_challenger = duel.challenger_id == current_user.id
         other_id = duel.opponent_id if is_challenger else duel.challenger_id
+        if other_id in hidden:
+            continue
 
         other_result = await db.execute(select(User).where(User.id == other_id))
         other_user = other_result.scalar_one_or_none()
