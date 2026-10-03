@@ -1,22 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useApi } from '../../hooks/useApi'
+import { instructor, type InstructorProfile } from '../../services/api'
 import styles from './ProfileTab.module.css'
 
-interface ProfileFormData {
-  display_name: string
-  bio: string
-  avatar_url: string
-  website: string
-}
+const EMPTY: InstructorProfile = { display_name: '', bio: null, avatar_url: null, website: null }
 
 export default function ProfileTab() {
   const { t } = useTranslation()
-  const [formData, setFormData] = useState<ProfileFormData>({
-    display_name: '',
-    bio: '',
-    avatar_url: '',
-    website: '',
-  })
+  const { data, loading: fetching, error: loadError } = useApi(() => instructor.profile(), [])
+  const [formData, setFormData] = useState<InstructorProfile>(EMPTY)
+
+  // 28.8: antes el formulario arrancaba siempre vacío y el envío era un
+  // `console.log` — ni leía ni guardaba nada. `data` llega una vez, al cargar.
+  useEffect(() => {
+    if (data) setFormData(data)
+  }, [data])
 
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -32,21 +31,23 @@ export default function ProfileTab() {
     setMessage('')
 
     try {
-      // TODO: Implement API call POST /instructor/profile
-      console.log('Profile update:', formData)
+      const updated = await instructor.updateProfile(formData)
+      setFormData(updated)
       setMessage(t('instructor.messages.profileUpdated'))
-    } catch (error) {
+    } catch {
       setMessage(t('instructor.messages.error'))
-      console.error('Profile update error:', error)
     } finally {
       setIsLoading(false)
     }
   }
 
+  if (fetching) return <div className={styles.container}>{t('instructor.common.loading')}</div>
+  if (loadError) return <div className={styles.container}>{t('instructor.common.error')}</div>
+
   return (
     <div className={styles.container}>
       <h2>{t('instructor.profile.title')}</h2>
-      
+
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label htmlFor="display_name">{t('instructor.profile.displayName')}</label>
@@ -66,7 +67,7 @@ export default function ProfileTab() {
           <textarea
             id="bio"
             name="bio"
-            value={formData.bio}
+            value={formData.bio ?? ''}
             onChange={handleChange}
             rows={4}
             placeholder={t('instructor.profile.bioPlaceholder')}
@@ -79,7 +80,7 @@ export default function ProfileTab() {
             id="avatar_url"
             name="avatar_url"
             type="url"
-            value={formData.avatar_url}
+            value={formData.avatar_url ?? ''}
             onChange={handleChange}
             placeholder="https://..."
           />
@@ -91,7 +92,7 @@ export default function ProfileTab() {
             id="website"
             name="website"
             type="url"
-            value={formData.website}
+            value={formData.website ?? ''}
             onChange={handleChange}
             placeholder="https://..."
           />
