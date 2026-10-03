@@ -9,7 +9,7 @@ from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -35,6 +35,7 @@ from app.models.password_reset import PasswordResetToken
 from app.models.user import User
 from app.schemas.user import RefreshRequest, Token, UserCreate, UserRead
 from app.services import account_deletion
+from app.services.username_filter import contains_blocked_word
 
 router = APIRouter()
 
@@ -56,6 +57,14 @@ class UpdateProfileRequest(BaseModel):
     onboarding_experience: int | None = Field(default=None, ge=0, le=2)
     onboarding_goal: int | None = Field(default=None, ge=0, le=2)
     onboarding_weekly_time: int | None = Field(default=None, ge=0, le=2)
+
+    @field_validator("display_name")
+    @classmethod
+    def _sin_palabra_bloqueada(cls, value: str | None) -> str | None:
+        # 19.11: filtro mínimo al editar el nombre visible.
+        if value is not None and contains_blocked_word(value):
+            raise ValueError("That name isn't allowed")
+        return value
 
 
 class ChangePasswordRequest(BaseModel):
