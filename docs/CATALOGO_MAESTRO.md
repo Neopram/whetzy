@@ -20,8 +20,8 @@
 > conserva. Cada certificación: el 100 % de sus objetivos oficiales, práctica ≥ máx(300, 3 × las
 > preguntas del examen) y un **banco de simulacro reservado** de 2 × el examen, que no sale en
 > práctica («pendiente» si el proveedor no publica la longitud). Los tracks nuevos entran por
-> **demanda medida** (Stack Overflow 2025, niveles A/B/C de ADR-53). **Ningún contenido antes
-> del piloto** (`LANZAMIENTO_PILOTO.md`); después, primero los tracks que usen los pilotos. Las
+> **demanda medida** (Stack Overflow 2025, niveles A/B/C de ADR-53). El contenido nuevo corre
+> **en paralelo al piloto** (ADR-59, 2026-10-03; método y orden en `PLAN_CONTENIDO.md`). Las
 > metas, con URL y fecha, están en `scripts/metas_catalogo.json`. Ejecución: serie 37 del
 > ledger. Siguen de ADR-46 el corpus abierto fuera del repo y la guarda 37.0 antes de
 > cualquier pregunta nueva.
@@ -477,7 +477,6 @@ Cifras de `python scripts/catalog_coverage.py` sobre `80cd3ad`. El ritmo es el �
 
 | Qué | Preguntas que faltan | Sesiones (≈ Q / 518) |
 |---|---|---|
-| Antes de nada: el piloto (`LANZAMIENTO_PILOTO.md`) | 0 | — |
 | 11 certificaciones: práctica ≥ máx(300, 3 × L) (+921) y banco reservado de 2 × L (+1.040; sin AZ-900, AI-901 y DP-900, cuya longitud no se publica) | 1.961 | ≈ 4 |
 | 24 tracks construidos a la forma 32 × 10: 12 de nivel A (+1.280) · 2 de B (+240) · 10 de C (+1.090) | 2.610 | ≈ 5 |
 | **Total del plan** | **4.571** | **≈ 9** |
@@ -488,8 +487,9 @@ Cifras de `python scripts/catalog_coverage.py` sobre `80cd3ad`. El ritmo es el �
   tienen preguntas ejecutables ni exención escrita en `scripts/metas_catalogo.json`. track16 y
   track17 entraron en esa lista el 2026-10-01, al convertir en `fill_blank` sus «ejecutables» sin hueco.
 - Sustituye la aritmética de ADR-53 (suelo 31.056 preguntas ≈ 60 sesiones; ideal 94.611 ≈ 183).
-- La autoría la hace Haiku 4.5 con revisión completa de Sonnet 5 (ADR-52). El piloto de
-  track28 dio 7 de 10 malas: si se repite, el ritmo real será menor que 518 por sesión.
+- La autoría la hace Sonnet 5 desde la fuente, con revisión completa de Sonnet 5 (ADR-59).
+  Los pilotos de Haiku (track28 y 39.37) superaron el umbral de 3/10; el ritmo real lo mide el
+  piloto de 37.25, no los 518 por sesión de arriba.
 - Lo que **no** entra en ningún calendario de agente: H.2, H.3, H.4, H.10, H.14. Sin
   distribución el marcador competitivo se queda donde esté el contenido (teardown §14).
 - **Restricción de fuentes (ADR-11) y coste:** trabajar solo con fuentes libres no
@@ -521,7 +521,8 @@ Ninguna autoría en masa entra en `master` sin pasar **las siete**:
 7. **Plan y catálogo en el mismo mundo (ADR-54)**: `python scripts/catalog_coverage.py
    --check` PASS; y ninguna pregunta `"pool": "simulacro"` sale en práctica ni repaso (37.18).
 
-Modelo por tarea (ADR-52, 2026-09-27): **autoría masiva → Haiku 4.5; revisión adversaria
+Modelo por tarea (ADR-52, enmendada por ADR-59 el 2026-10-03): **autoría masiva → Sonnet 5,
+escrita desde un fragmento de fuente `reusar` (`docs/PLAN_CONTENIDO.md`); revisión adversaria
 completa y corrección → Sonnet 5; lecturas e inventarios → Haiku 4.5; hilo interactivo →
 Sonnet 5; nunca Fable ni Opus 4.x**. Herramientas del lote: `scripts/content_qa/`. Un bloque que no pasa la puerta no
 existe: no se cuenta, no se anota, no se despliega.
@@ -583,21 +584,21 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
 
 ## 10. Orden de ejecución — serie 37 en `AUTONOMOUS_STATE.md` (ADR-54)
 
-1. **Antes de cualquier contenido: el piloto** (fila 31.8, `LANZAMIENTO_PILOTO.md`). Lo que
-   rompan o pidan los pilotos va primero.
+1. **El contenido corre en paralelo al piloto con alumnos** (31.8; ADR-59 enmienda el punto 7
+   de ADR-54). Lo que rompan o pidan los pilotos se antepone en cuanto aparezca.
 2. **Hecho (código):** 37.18 banco de simulacro reservado y 37.19 formatos de examen del
    proveedor. 37.20 (métricas de producto) está DONE pero vetada en lo nuevo hasta ≥ 100
    registrados reales (31.5).
-3. **Después del piloto, primero los tracks y certificaciones que usen los pilotos.** Para el
-   resto: 37.22 ISC2 CC al outline de 2026 y 37.10 las 11 certificaciones a la regla de
+3. **Primero el piloto de autoría (37.25, `PLAN_CONTENIDO.md`) y los tracks que usen los
+   pilotos.** Para el resto: 37.22 ISC2 CC al outline de 2026 y 37.10 las 11 certificaciones a la regla de
    ADR-54 (MLA-C01 y Microsoft primero, las más lejos); 37.6 los 24 tracks construidos a la
    forma 32 × 10, **A primero**, luego B y C; 37.7 track24/25.
 4. **Tracks nuevos:** 37.8 por demanda (A → B → C), con la misma forma. La fase 4 de ADR-53
    (el ideal por temario) quedó sustituida; 37.21 se reduce a elegir las 32 skills de cada
    track con roadmap.sh como referencia.
 
-Cada bloque de contenido corre como **Workflow paralelo** (autoría Haiku 4.5 por
-fichero → revisor y corrector Sonnet 5, ADR-52 → `scripts/content_qa/` → `pytest tests/content` →
+Cada bloque de contenido corre como **Workflow paralelo** (autoría Sonnet 5 por
+fichero desde la fuente → revisor y corrector Sonnet 5, ADR-59 → `scripts/content_qa/` → `pytest tests/content` →
 `check_question_bank.py` → `question_diversity.py` → `catalog_coverage.py --check` →
 `check_docs.py` → commit). Un bloque = un commit verde. Nunca un track a medias en `master`.
 
