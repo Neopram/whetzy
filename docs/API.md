@@ -285,11 +285,13 @@ Reparto 80/20 (ADR-41; `payment_service.INSTRUCTOR_SHARE`) tras la comisión de 
 H.29. El pago se acumula en una fila por instructor y mes, no una por matrícula.
 
 ```
-POST /instructor/courses                     → {id, …} 🔒 — publicar curso
-GET  /instructor/courses                     → [{…}] 🔒
-POST /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published`, 409 si ya inscrito. Sin pasarela no cobra (Paddle HUMAN-BLOCKED)
-GET  /instructor/analytics                   → {total_earnings_cents, …} 🔒
-GET  /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
+POST  /instructor/courses                     → {id, …} 🔒 — publicar curso
+GET   /instructor/courses                     → [{…}] 🔒
+POST  /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published`, 409 si ya inscrito. Sin pasarela no cobra (Paddle HUMAN-BLOCKED)
+GET   /instructor/analytics                   → {total_earnings_cents, …} 🔒
+GET   /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
+GET   /instructor/profile                     → {display_name, bio, avatar_url, website} 🔒 — se crea el instructor si el usuario aún no lo era (28.8: `ProfileTab` no llamaba a nada)
+PATCH /instructor/profile                     → {display_name, bio, avatar_url, website} 🔒 — todos los campos opcionales, solo se actualiza lo enviado
 ```
 
 ## Experiment endpoints
@@ -418,6 +420,16 @@ GET    /privacy/ccpa-disclosure   → CCPA data-collection disclosure (§1798.10
 GET    /privacy/rights            → Jurisdiction-aware privacy rights summary — public
 ```
 
+## Newsletter endpoints
+
+```
+POST /newsletter/subscribe      {email, language?} → 202 {status} — público; crea sin confirmar y manda el correo; misma respuesta exista ya el email o no, y si está dentro del enfriamiento de reenvío (5 min)
+GET  /newsletter/confirm        → página HTML — público, `?token=&lang=`; solo muestra el botón, no confirma (así lo sigue un escáner de enlaces sin confirmar nada)
+POST /newsletter/confirm        → página HTML — público, `?token=`; confirma — lo dispara el botón de la página de arriba
+GET  /newsletter/unsubscribe    → página HTML — público, `?token=&lang=`; solo muestra el botón, no da de baja
+POST /newsletter/unsubscribe    → página HTML — público, `?token=`; da de baja — el botón, y también «One-Click» de RFC 8058 (Gmail, Yahoo)
+```
+
 ## Health endpoints
 
 ```
@@ -439,9 +451,11 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-137 paths (133 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **146 method+path endpoints** total.
-Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
+157 paths (153 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **166 method+path endpoints** total.
+Verified locally on `claude/ecstatic-meitner-2x08pf` tras `git merge origin/master`:
+`python -c "from app.main import app; spec=app.openapi(); print(len(spec['paths']), sum(len(v) for v in spec['paths'].values()))"`
+→ `157 166`.
 
 
 

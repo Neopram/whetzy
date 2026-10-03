@@ -804,6 +804,236 @@
       "explanation_es": "Regiones y zonas de disponibilidad se integran con el resto del ecosistema mediante APIs estándar, conectores nativos de otros servicios de Azure y servicios de mensajería administrados, permitiendo desplegar recursos redundantes entre zonas de forma coordinada. No dependen de transferencia manual de archivos, correo electrónico o aislamiento total respecto a otros servicios.",
       "explanation_en": "Regions and Availability Zones integrate with the rest of the ecosystem through standard APIs, native connectors from other Azure services, and managed messaging services, enabling coordinated deployment of redundant resources across zones. They do not depend on manual file transfer, email, or total isolation from other services.",
       "source": "Microsoft Learn (https://learn.microsoft.com)"
+    },
+    {
+      "id": "q440203_011",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se procesa una solicitud de escritura en una cuenta de almacenamiento que usa ZRS?",
+      "question_en": "How is a write request handled in a storage account that uses ZRS?",
+      "options_es": [
+        "De forma sincrónica: termina cuando los datos se escriben en las réplicas de las zonas",
+        "De forma asíncrona: termina antes de que los datos lleguen a las demás zonas de disponibilidad",
+        "De forma sincrónica: termina cuando los datos se escriben en una región secundaria",
+        "De forma sincrónica: termina cuando los datos se escriben en un único centro de datos de la región"
+      ],
+      "options_en": [
+        "Synchronously, completing once data is written to the replicas in the zones",
+        "Asynchronously, completing before data reaches the other availability zones",
+        "Synchronously, completing once data is written to a secondary region",
+        "Synchronously, completing once data is written to a single datacenter in the region"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, una escritura en una cuenta con ZRS es sincrónica: se confirma solo cuando los datos están escritos en las réplicas de las zonas de disponibilidad (si una zona no está disponible temporalmente, basta con las zonas disponibles). La opción asíncrona contradice ese comportamiento. La región secundaria pertenece a GRS/GZRS, no a ZRS, que replica en la región principal. Escribir en un único centro de datos describe LRS, no ZRS, que usa varias zonas.",
+      "explanation_en": "According to the source, a write to a ZRS account is synchronous: it returns successfully only after the data is written to the replicas across the availability zones (if a zone is temporarily unavailable, it completes once the available zones have the data). The asynchronous option contradicts this behavior. A secondary region belongs to GRS/GZRS, not ZRS, which replicates within the primary region. Writing to a single datacenter describes LRS, not ZRS, which spans multiple zones.",
+      "source": "Microsoft Learn — Data redundancy (https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_012",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "Una cuenta usa GRS y quieres que las aplicaciones puedan consultar los datos de la región secundaria durante una interrupción de la región principal, sin esperar a una conmutación por error. ¿Qué debes configurar?",
+      "question_en": "Your account uses GRS, and you want applications to be able to query data in the secondary region during a primary-region outage without waiting for a failover. What should you configure?",
+      "options_es": [
+        "Almacenamiento con redundancia geográfica (GRS), que ya permite lecturas desde la secundaria",
+        "Almacenamiento con redundancia geográfica y acceso de lectura (RA-GRS)",
+        "Almacenamiento con redundancia de zona (ZRS) con un punto de conexión secundario",
+        "Iniciar una conmutación por error manual hacia la región secundaria"
+      ],
+      "options_en": [
+        "Geo-redundant storage (GRS), which already lets applications read from the secondary",
+        "Read-access geo-redundant storage (RA-GRS)",
+        "Zone-redundant storage (ZRS) with a secondary endpoint",
+        "A manual failover of the account to the secondary region"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, con GRS o GZRS los datos de la región secundaria no están disponibles para lectura ni escritura salvo que haya una conmutación por error; para leer de la secundaria hay que usar RA-GRS o RA-GZRS, así que GRS por sí solo no basta. ZRS replica únicamente dentro de la región primaria y no ofrece región secundaria, por lo que no sirve. La conmutación por error manual es justo lo que el enunciado quiere evitar, y durante ese proceso los datos tampoco son accesibles.",
+      "explanation_en": "According to the source, with GRS or GZRS the data in the secondary region isn't available for read or write access unless there's a failover; reading from the secondary requires RA-GRS or RA-GZRS, so plain GRS is not enough. ZRS replicates only within the primary region and offers no secondary region, so it doesn't help. A manual failover is exactly what the scenario wants to avoid, and the data is inaccessible while the failover is in progress.",
+      "source": "Microsoft Learn — Data redundancy (https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_013",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "Una cuenta de almacenamiento usa LRS. ¿Cuál de estos eventos podría provocar que se pierdan todas sus réplicas?",
+      "question_en": "A storage account uses LRS. Which of these events could cause all of its replicas to be lost?",
+      "options_es": [
+        "El fallo de una unidad en uno de los servidores del centro de datos",
+        "El fallo de un único servidor dentro del centro de datos",
+        "Un incendio o una inundación que afecte a todo el centro de datos",
+        "El fallo de un rack de servidores dentro del centro de datos"
+      ],
+      "options_en": [
+        "A drive failure on one of the servers in the datacenter",
+        "The failure of a single server in the datacenter",
+        "A fire or flood affecting the whole datacenter",
+        "The failure of a server rack within the datacenter"
+      ],
+      "correct_index": 2,
+      "explanation_es": "LRS mantiene todas las réplicas en un único centro de datos, por lo que protege frente a fallos de unidad, servidor y rack, pero un desastre como un incendio o una inundación en ese centro podría dejar todas las réplicas perdidas o irrecuperables. Las otras tres opciones son justo los fallos de hardware individuales (unidad, servidor, rack) frente a los que la fuente dice que LRS sí protege.",
+      "explanation_en": "LRS keeps all replicas in a single datacenter, so it protects against drive, server, and rack failures, but a disaster such as fire or flooding in that datacenter might leave all replicas lost or unrecoverable. The other three options are exactly the individual hardware failures (drive, server, rack) that the source says LRS does protect against.",
+      "source": "Microsoft Learn — Data redundancy (https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_014",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "Un sitio web de venta de entradas debe generar un recibo en PDF después de cada compra, pero sin hacer esperar al cliente. Los trabajos pendientes se guardan en una lista y un componente independiente los va procesando de forma asíncrona. ¿Qué servicio de datos de Azure Storage está pensado para esa lista?",
+      "question_en": "A ticketing website must generate a PDF receipt after each purchase without making the customer wait. The pending jobs are kept in a list, and a separate component works through them asynchronously. Which Azure Storage data service is designed for that list?",
+      "options_es": [
+        "Azure Blobs, un almacén de objetos para guardar grandes cantidades de datos de texto o binarios",
+        "Azure Tables, un almacén NoSQL de clave y atributo para datos estructurados sin esquema",
+        "Azure Files, recursos compartidos de archivos de red a los que acceden varias máquinas virtuales",
+        "Azure Queues, un almacén de mensajes que se procesan de forma asíncrona"
+      ],
+      "options_en": [
+        "Azure Blobs, an object store for holding massive amounts of text or binary data",
+        "Azure Tables, a NoSQL key and attribute store for schemaless structured data",
+        "Azure Files, network file shares that multiple virtual machines can access",
+        "Azure Queues, a store of messages that are processed asynchronously"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, el servicio Azure Queue sirve para almacenar y recuperar mensajes, y las colas se usan para guardar listas de mensajes que se procesan de forma asíncrona, que es justo la lista de trabajos pendientes del enunciado. Blobs es un almacén de objetos para datos de texto o binarios, Tables es un almacén NoSQL de datos estructurados sin esquema y Files ofrece recursos compartidos de archivos; ninguno está descrito como una lista de trabajos para procesar de forma asíncrona.",
+      "explanation_en": "According to the source, the Azure Queue service stores and retrieves messages, and queues are used to hold lists of messages to process asynchronously, which is exactly the list of pending jobs in the scenario. Blobs is an object store for text or binary data, Tables is a NoSQL store for schemaless structured data, and Files provides network file shares; none of them is described as a list of work to process asynchronously.",
+      "source": "Microsoft Learn — Introduction to Azure Storage - Cloud storage on Azure (https://learn.microsoft.com/en-us/azure/storage/common/storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_015",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué afirmación describe correctamente cómo trata Azure Storage el cifrado de los datos en reposo?",
+      "question_en": "Which statement correctly describes how Azure Storage handles encryption of data at rest?",
+      "options_es": [
+        "Azure Storage solo cifra los datos de forma automática si el cliente ha configurado antes sus propias claves en Azure Key Vault",
+        "Azure Storage cifra automáticamente todos los datos; administrar claves propias con Key Vault es opcional",
+        "El cifrado automático solo cubre los datos de blobs; los de archivos, colas y tablas exigen que el cliente lo active",
+        "Azure Storage cifra los datos automáticamente, pero el cliente debe descifrarlos con sus propias claves antes de leerlos"
+      ],
+      "options_en": [
+        "Azure Storage encrypts data automatically only if the customer has first set up their own keys in Azure Key Vault",
+        "Azure Storage encrypts all data automatically; managing your own keys with Key Vault is optional",
+        "Automatic encryption covers only blob data; files, queues, and tables require the customer to turn it on",
+        "Azure Storage encrypts data automatically, but the customer must decrypt it with their own keys before reading it"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, Azure Storage cifra automáticamente todos los datos antes de guardarlos y los descifra antes de devolverlos, de forma transparente para los usuarios, y los clientes solo pueden elegir además administrar sus propias claves con Key Vault. Por eso es falso que el cifrado dependa de tener claves propias, que se limite a los blobs o que el cliente deba encargarse del descifrado.",
+      "explanation_en": "According to the source, Azure Storage automatically encrypts all data before persisting it and decrypts it before retrieval, transparently to users, and customers merely have the extra option of managing their own keys with Key Vault. So it is false that encryption depends on customer-supplied keys, that it is limited to blobs, or that the customer must handle decryption.",
+      "source": "Microsoft Learn — Introduction to Azure Storage - Cloud storage on Azure (https://learn.microsoft.com/en-us/azure/storage/common/storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_016",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "Un equipo tiene una cuenta de almacenamiento Standard general-purpose v2 y ahora necesita una cuenta premium para blobs en bloques. ¿Qué debe hacer?",
+      "question_en": "A team has a Standard general-purpose v2 storage account and now needs a premium block blob account. What must they do?",
+      "options_es": [
+        "Cambiar el tipo de cuenta en el mismo recurso desde la configuración del portal",
+        "Mover la cuenta a otra suscripción para que adopte el tipo deseado",
+        "Crear una cuenta nueva del tipo deseado y copiar los datos en ella",
+        "Cambiar el nivel de rendimiento de Standard a Premium en la configuración de la cuenta"
+      ],
+      "options_en": [
+        "Change the account type in place from the portal's configuration settings",
+        "Move the account to another subscription so it takes on the desired type",
+        "Create a new account of the desired type and copy the data to it",
+        "Switch the account's performance tier from Standard to Premium in its settings"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, una cuenta de almacenamiento no se puede cambiar a otro tipo una vez creada: hay que crear una cuenta nueva y copiar los datos a ella. Por eso fallan el cambio de tipo en el mismo recurso y el cambio del nivel de rendimiento, que suponen que el tipo se puede modificar después de crear la cuenta. Mover la cuenta a otra suscripción es un traslado del recurso, no un cambio de su tipo. La mejora que describe la fuente, de general-purpose v1 o Blob Storage heredado a general-purpose v2, no cubre el paso de una cuenta Standard general-purpose v2 a una premium.",
+      "explanation_en": "According to the source, a storage account can't be changed to a different type after it's created: you must create a new account and copy the data to it. That rules out changing the type in place and switching the performance tier, because both assume the type can be modified after creation. Moving the account to another subscription relocates the resource but doesn't change its type. The upgrade the source describes, from general-purpose v1 or legacy Blob Storage to general-purpose v2, doesn't cover going from a Standard general-purpose v2 account to a premium one.",
+      "source": "Microsoft Learn — Storage Account Overview (https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_017",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "Un blob está en el nivel de archivo (archive) y una aplicación necesita leerlo. ¿Qué debe ocurrir primero?",
+      "question_en": "A blob is in the archive tier and an application needs to read it. What must happen first?",
+      "options_es": [
+        "Leerlo directamente, ya que los blobs archivados solo tienen mayor latencia",
+        "Convertir la cuenta en una cuenta premium de blobs en bloques",
+        "Cambiar la redundancia de la cuenta a ZRS para que el blob sea legible",
+        "Rehidratarlo a un nivel en línea: hot, cool o cold"
+      ],
+      "options_en": [
+        "Read it directly, since archived blobs only have higher latency",
+        "Convert the storage account to a premium block blob account",
+        "Change the account redundancy to ZRS so the blob becomes readable",
+        "Rehydrate it to an online tier: hot, cool, or cold"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que un blob en el nivel de archivo no se puede leer ni modificar; para leerlo o descargarlo hay que rehidratarlo antes a un nivel en línea (hot, cool o cold). Leerlo directamente no es posible, y ni convertir la cuenta ni cambiar la redundancia hacen legible un blob archivado. De hecho, para cambiar la redundancia de una cuenta con blobs archivados hay que rehidratarlos antes a un nivel en línea (hot, cool o cold).",
+      "explanation_en": "The source states that a blob in the archive tier can't be read or modified; to read or download it you must first rehydrate it to an online tier (hot, cool, or cold). Direct reads aren't possible, and neither converting the account nor changing its redundancy makes an archived blob readable. In fact, to change the redundancy of an account that contains archived blobs, you must first rehydrate them to an online tier (hot, cool, or cold).",
+      "source": "Microsoft Learn — Access tiers for blob data (https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_018",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué regla se aplica al nombre de una cuenta de almacenamiento de Azure?",
+      "question_en": "Which rule applies to the name of an Azure storage account?",
+      "options_es": [
+        "Debe ser único en todo Azure; no se puede repetir",
+        "Debe ser único dentro del grupo de recursos que contiene la cuenta",
+        "Debe ser único dentro de la suscripción en la que se crea la cuenta",
+        "Debe ser único en su región, pero puede repetirse en otras regiones"
+      ],
+      "options_en": [
+        "It must be unique across all of Azure; it can't be repeated",
+        "It must be unique within the resource group that contains the account",
+        "It must be unique within the subscription where the account is created",
+        "It must be unique within its region, but it can repeat in other regions"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente establece que el nombre debe ser único dentro de Azure y que no puede haber dos cuentas con el mismo nombre. Limitar la unicidad al grupo de recursos, a la suscripción o a la región contradice esa regla, que es global.",
+      "explanation_en": "The source says the name must be unique within Azure and that no two storage accounts can have the same name. Limiting uniqueness to the resource group, the subscription, or the region contradicts that rule, which is global.",
+      "source": "Microsoft Learn — Storage Account Overview (https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_019",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "Una organización quiere mover blobs al nivel de archivo. ¿Qué configuración de redundancia de la cuenta se lo impediría?",
+      "question_en": "An organization wants to move blobs to the archive tier. Which account redundancy configuration would prevent it?",
+      "options_es": [
+        "Almacenamiento con redundancia local (LRS)",
+        "Almacenamiento con redundancia de zona (ZRS)",
+        "Almacenamiento con redundancia geográfica (GRS)",
+        "Almacenamiento con redundancia geográfica con acceso de lectura (RA-GRS)"
+      ],
+      "options_en": [
+        "Locally redundant storage (LRS)",
+        "Zone-redundant storage (ZRS)",
+        "Geo-redundant storage (GRS)",
+        "Read-access geo-redundant storage (RA-GRS)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, solo las cuentas configuradas con LRS, GRS o RA-GRS permiten mover blobs al nivel de archivo, y este nivel no es compatible con ZRS, GZRS ni RA-GZRS. Por tanto, ZRS es la configuración que lo impide, mientras que LRS, GRS y RA-GRS sí lo permiten.",
+      "explanation_en": "According to the source, only accounts configured for LRS, GRS, or RA-GRS support moving blobs to the archive tier, and the archive tier isn't supported for ZRS, GZRS, or RA-GZRS. So ZRS is the configuration that blocks it, while LRS, GRS, and RA-GRS allow it.",
+      "source": "Microsoft Learn — Access tiers for blob data (https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q440203_020",
+      "skill_id": "sk440203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué característica tienen las cuentas de almacenamiento de rendimiento premium, como las de blobs en bloques premium o recursos compartidos de archivos premium?",
+      "question_en": "What characteristic do premium performance storage accounts, such as premium block blobs or premium file shares, have?",
+      "options_es": [
+        "Admiten blobs, archivos, colas y tablas en una misma cuenta, igual que las de uso general",
+        "Añaden replicación geográfica automática a una región emparejada sin coste extra",
+        "Guardan los datos en SSD para reducir la latencia y mejorar el rendimiento",
+        "Son un tipo de cuenta heredado que Microsoft ya no recomienda para escenarios nuevos"
+      ],
+      "options_en": [
+        "They support blobs, files, queues, and tables together in a single account, like general-purpose v2",
+        "They add automatic geo-replication to a paired region at no extra cost",
+        "They store data on SSDs to reduce latency and improve throughput",
+        "They are a legacy account type that Microsoft no longer recommends for new scenarios"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, las cuentas de rendimiento premium usan unidades de estado sólido (SSD) para ofrecer baja latencia y alto rendimiento. La tabla de tipos de cuenta lista solo LRS y ZRS como opciones de redundancia para los tipos premium, así que no hay replicación geográfica automática. Además, cada tipo premium se dedica a un único servicio (blobs en bloques, archivos o blobs de páginas) en lugar de los cuatro de una cuenta de uso general v2, y figura entre los tipos que Microsoft recomienda, no entre los heredados.",
+      "explanation_en": "According to the source, premium performance accounts use solid-state drives (SSDs) for low latency and high throughput. The account-types table lists only LRS and ZRS as redundancy options for premium types, so there is no automatic geo-replication. Each premium type is also dedicated to a single service (block blobs, file shares, or page blobs) rather than the four services of a general-purpose v2 account, and it appears among the types Microsoft recommends, not among the legacy ones.",
+      "source": "Microsoft Learn — Storage Account Overview (https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview) — CC BY 4.0"
     }
   ]
 }
