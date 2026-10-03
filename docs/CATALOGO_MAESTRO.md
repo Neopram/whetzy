@@ -51,9 +51,9 @@ profundidad de producto*, no adquisición.
 |---|---|---|
 | Tracks | **35** (track01–23 + track26–30 + track40–46) | `python scripts/check_docs.py` |
 | Módulos (unidad de presentación en la web; el plan mide skills, ADR-54) | **174** | ídem |
-| Skills | **727** | ídem |
-| Preguntas | **10.984** | `python scripts/check_question_bank.py` |
-| Lecciones | **727** (una por skill: las 727 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
+| Skills | **730** | ídem |
+| Preguntas | **11.005** | `python scripts/check_question_bank.py` |
+| Lecciones | **730** (una por skill: las 730 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
 | Glosario | **1.044** | `check_docs.py` |
 | Ejecutables | **7** tracks ≥ 15 % (01, 02, 04, 06, 07, 09 y 12 — este, 20 %); track03 13,4 %, track13 4,8 %, track14 4,5 %, track40 1,4 %, track16 y track17 0 %; exentos track05, 08, 10, 11 y 15 (ADR-9). El 2026-10-01 se quitaron 216 «ejecutables» que daban correcto sin escribir nada (sin hueco `___` o con el hueco vacío válido) y pasaron a `fill_blank`, que es lo que eran: track16 decía 44,9 % y track17 36,7 %. El 2026-10-02, 24 que pasaban en CPython no podían resolverse en el navegador (hilos, `asyncio.run`, `sqlite3`, `tempfile`): 7 se reescribieron para el sandbox, 3 pasaron a `sql_exec` y 14 a `mcq`; `frontend/scripts/check-exec-pyodide.mjs` los corre en Pyodide | `check_question_bank.py`, `check-exec-pyodide.mjs` |
 | Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-901** (antes AI-900, retirado por Microsoft el 30-06-2026; blueprint migrado 39.24, 2026-10-02), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
@@ -384,7 +384,7 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | AWS | **MLA-C01** → MLA-C02 | track07 | ✅ track43 — 12 task statements, 169 Q (45 de relleno retiradas en 39.42; +49 de GenAI/RAG/agentes/Bedrock/IA responsable en 39.25, mismos 4 dominios); MLA-C01 dejó de ofrecerse en inglés el 2026-09-28, MLA-C02 en beta desde el 29-09 (39.25, verificado 2026-10-02); formato C01 (65 preguntas, 130 min) fijado en 37.19 | — |
 | AWS | SOA-C02 · DOP-C02 · SAP-C02 | track18/19 | ❌ | P3 |
 | AWS | Security Specialty (SCS-C02) | track25 | ❌ | P2 |
-| ISC2 | **CC** (Certified in Cybersecurity, examen gratuito) | track13 | ✅ **track40** — 353 Q, 5 dominios con pesos verificados, 15 % exec, `correct_index` auditado (18.2 / 18.14); **outline nuevo desde el 2026-09-01** (examen adaptativo de 100–125 ítems, dominios y pesos distintos): el track sigue con el de 2022 (37.22) | — |
+| ISC2 | **CC** (Certified in Cybersecurity, examen gratuito) | track13 | ✅ **track40** — 374 Q, `correct_index` auditado (18.2/18.14); migrado al **outline de 2026-09-01** en 37.22 (2026-10-02): 5 dominios nuevos (24/17,3/20/21,3/17,3, examen adaptativo de 100–125 ítems), 20 skills reetiquetadas + 3 nuevas (GRC/métricas, nube, monitoreo/pruebas) | — |
 | ISC2 | SSCP · CCSP · CISSP | track13/25 | ❌ | P3 |
 | CompTIA | **Security+ SY0-701** | track13 | ✅ track42 — 300 Q; V8 (SY0-801, solo inglés) el 2026-11-17 (39.26) | — |
 | CompTIA | Network+ · Linux+ · PenTest+ · CySA+ | track17/15/24 | ❌ | P2 |
@@ -422,12 +422,12 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 
 | Capa | Hoy (2026-10-01) | Objetivo (ADR-54 salvo donde se dice) | Cómo se verifica |
 |---|---|---|---|
-| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 720/720 skills con lección | 1 lección por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
+| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 730/730 skills con lección | 1 lección por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
 | Ejemplo resuelto + problema de completar (fading) | solo la lección | 1 secuencia por skill | test de estructura |
-| Práctica adaptativa (quiz) | ✅ 10.935 Q · 15,2 por skill | 10 por skill, ≥ 3 ejecutables donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
+| Práctica adaptativa (quiz) | ✅ 11.005 Q · 15,1 por skill | 10 por skill, ≥ 3 ejecutables donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
-| Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900 y DP-900 (37.19); ISC2 CC aún con el outline de 2022 (37.22); Microsoft no publica el número de preguntas, así que AZ-900, AI-901 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 2 × examen** (0/1.040 hoy) | `test_certification_blueprints.py` + 37.18 |
+| Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900, DP-900 (37.19) e ISC2 CC (37.22, 2026-10-02: outline 2026-09-01); Microsoft no publica el número de preguntas, así que AZ-900, AI-901 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 2 × examen** (0/1.040 hoy) | `test_certification_blueprints.py` + 37.18 |
 | **Readiness por dominio** | 18.1 | «P(aprobar)» por cert con BKT × peso oficial, calibrado frente al examen real con n publicado | 18.1 + métricas de ADR-53 §8 |
 | Glosario | 1.044 términos | 1 término por skill (32 por track de la forma) | `check_docs.py` |
 | **Vídeo explicativo** | **0** | 1 animación de 30-90 s por skill donde aporte (algoritmos, redes, arquitectura, SQL) | 18.9 |
@@ -547,7 +547,7 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
 | Brilliant | 14 cursos de CS, 35 de matemáticas | curso | [A] brilliant.org/topics/coding |
 | Mimo | 4 rutas de carrera + 8 cursos; lecciones de 5 min | ruta | [A] mimo.org |
 | Tutorials Dojo / Udemy (AWS) | 6 simulacros × 65 = 390 preguntas por examen (Maarek, Bonso); TD: 7–9 simulacros cronometrados | pregunta | [A] (Udemy devolvió 403) |
-| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 720 skills · 10.935 preguntas | skill | `catalog_coverage.py` |
+| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 730 skills · 11.005 preguntas | skill | `catalog_coverage.py` |
 
 **Lectura honesta (2026-10-01, ADR-54):**
 - En **amplitud** Whetzy ya supera a su competencia directa: Boot.dev enseña en 3 rutas y
