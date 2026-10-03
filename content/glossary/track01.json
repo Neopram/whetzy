@@ -304,6 +304,118 @@
       "definition_es": "Función built-in que verifica si un objeto es instancia de una clase o tupla de clases: `isinstance(x, int)`. Respeta herencia: si `B` hereda de `A`, entonces `isinstance(b, A)` es verdadero. Preferible a `type(x) == ...`.",
       "definition_en": "Built-in function that checks if an object is an instance of a class or tuple of classes: `isinstance(x, int)`. Respects inheritance: if `B` inherits from `A`, then `isinstance(b, A)` is true. Preferable to `type(x) == ...`.",
       "source": "CPython docs 3.13 — Built-in Functions § isinstance()"
+    },
+    {
+      "id": "gl01_39",
+      "term_es": "Función generadora (yield)",
+      "term_en": "Generator function (yield)",
+      "definition_es": "Función que usa `yield` en lugar de (o además de) `return` y produce un iterador perezoso: cada llamada a `next()` ejecuta el cuerpo hasta el siguiente `yield`, conservando su estado entre llamadas. Evita construir listas completas en memoria para secuencias grandes.",
+      "definition_en": "A function that uses `yield` instead of (or alongside) `return` and produces a lazy iterator: each call to `next()` runs the body up to the next `yield`, keeping its state between calls. Avoids building whole lists in memory for large sequences.",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.2.9 (Generators)"
+    },
+    {
+      "id": "gl01_40",
+      "term_es": "Expresión generadora",
+      "term_en": "Generator expression",
+      "definition_es": "Sintaxis parecida a una comprensión de listas pero entre paréntesis, `(x**2 for x in nums)`, que produce un generador en vez de una lista completa. Se evalúa perezosamente: no calcula ningún valor hasta que se itera.",
+      "definition_en": "Syntax similar to a list comprehension but with parentheses, `(x**2 for x in nums)`, which produces a generator instead of a full list. It is evaluated lazily: no value is computed until it is iterated over.",
+      "source": "CPython docs 3.13 — Expressions: Generator expressions"
+    },
+    {
+      "id": "gl01_41",
+      "term_es": "Iterable e iterador",
+      "term_en": "Iterable and iterator",
+      "definition_es": "Un iterable implementa `__iter__` y puede recorrerse con `for` (listas, strings, dicts...); un iterador es el objeto que `__iter__` devuelve, con un método `__next__` que avanza un elemento a la vez y lanza `StopIteration` al agotarse. Todo iterador es iterable, pero no al revés.",
+      "definition_en": "An iterable implements `__iter__` and can be walked with `for` (lists, strings, dicts...); an iterator is the object `__iter__` returns, with a `__next__` method that advances one element at a time and raises `StopIteration` when exhausted. Every iterator is iterable, but not the other way around.",
+      "source": "CPython docs 3.13 — Glossary: iterable, iterator"
+    },
+    {
+      "id": "gl01_42",
+      "term_es": "Administrador de contexto (with)",
+      "term_en": "Context manager (with)",
+      "definition_es": "Objeto que define `__enter__` y `__exit__`, usado con la sentencia `with` para garantizar que un recurso (archivo, conexión) se libera siempre al salir del bloque, incluso si ocurre una excepción. `open()` devuelve uno.",
+      "definition_en": "An object that defines `__enter__` and `__exit__`, used with the `with` statement to guarantee a resource (file, connection) is always released on leaving the block, even if an exception occurs. `open()` returns one.",
+      "source": "CPython docs 3.13 — Compound statements: The with statement"
+    },
+    {
+      "id": "gl01_43",
+      "term_es": "pathlib",
+      "term_en": "pathlib",
+      "definition_es": "Módulo de la librería estándar que representa rutas de archivo como objetos `Path` en vez de cadenas, con operadores (`/` para unir rutas) y métodos (`.exists()`, `.suffix`, `.read_text()`) portables entre sistemas operativos.",
+      "definition_en": "Standard-library module that represents filesystem paths as `Path` objects instead of strings, with operators (`/` to join paths) and methods (`.exists()`, `.suffix`, `.read_text()`) that are portable across operating systems.",
+      "source": "CPython docs 3.13 — pathlib: Object-oriented filesystem paths"
+    },
+    {
+      "id": "gl01_44",
+      "term_es": "Serialización JSON",
+      "term_en": "JSON serialization",
+      "definition_es": "Proceso de convertir estructuras de Python (dicts, listas, strings, números) a texto en formato JSON con `json.dumps()` (serializar) y de vuelta con `json.loads()` (deserializar), para guardar datos o enviarlos por red.",
+      "definition_en": "The process of converting Python structures (dicts, lists, strings, numbers) to JSON-formatted text with `json.dumps()` (serializing) and back with `json.loads()` (deserializing), used to persist data or send it over a network.",
+      "source": "CPython docs 3.13 — json: JSON encoder and decoder"
+    },
+    {
+      "id": "gl01_45",
+      "term_es": "Clase y objeto",
+      "term_en": "Class and object",
+      "definition_es": "Una clase es la plantilla que define atributos y métodos compartidos (`class Perro:`); un objeto (o instancia) es cada valor concreto creado a partir de ella (`mi_perro = Perro()`). Varias instancias de la misma clase tienen la misma estructura pero datos propios.",
+      "definition_en": "A class is the template that defines shared attributes and methods (`class Dog:`); an object (or instance) is each concrete value created from it (`my_dog = Dog()`). Several instances of the same class share structure but hold their own data.",
+      "source": "CPython docs 3.13 — The Python Tutorial §9 (Classes)"
+    },
+    {
+      "id": "gl01_46",
+      "term_es": "Constructor __init__",
+      "term_en": "__init__ constructor",
+      "definition_es": "Método especial que Python llama automáticamente al crear una instancia, usado para inicializar sus atributos: `def __init__(self, nombre): self.nombre = nombre`. El primer parámetro, `self`, referencia la instancia que se está creando.",
+      "definition_en": "Special method Python calls automatically when an instance is created, used to initialize its attributes: `def __init__(self, name): self.name = name`. The first parameter, `self`, refers to the instance being created.",
+      "source": "CPython docs 3.13 — The Python Tutorial §9.3.3 (Instance Objects)"
+    },
+    {
+      "id": "gl01_47",
+      "term_es": "Herencia básica",
+      "term_en": "Basic inheritance",
+      "definition_es": "Mecanismo por el que una clase (`class Perro(Animal):`) reutiliza y extiende los atributos y métodos de otra. La subclase puede sobreescribir métodos del padre o llamar a ellos con `super()`.",
+      "definition_en": "Mechanism by which a class (`class Dog(Animal):`) reuses and extends another class's attributes and methods. The subclass can override the parent's methods or call them with `super()`.",
+      "source": "CPython docs 3.13 — The Python Tutorial §9.5 (Inheritance)"
+    },
+    {
+      "id": "gl01_48",
+      "term_es": "Atributo de instancia vs. de clase",
+      "term_en": "Instance attribute vs. class attribute",
+      "definition_es": "Un atributo de instancia (asignado con `self.x = ...` en `__init__`) tiene un valor propio por cada objeto; un atributo de clase (definido directamente en el cuerpo de la clase) se comparte entre todas las instancias que no lo sobreescriban.",
+      "definition_en": "An instance attribute (assigned with `self.x = ...` inside `__init__`) has its own value per object; a class attribute (defined directly in the class body) is shared by every instance that does not override it.",
+      "source": "CPython docs 3.13 — The Python Tutorial §9.3.5 (Class and Instance Variables)"
+    },
+    {
+      "id": "gl01_49",
+      "term_es": "Counter y defaultdict",
+      "term_en": "Counter and defaultdict",
+      "definition_es": "Dos tipos del módulo `collections`: `Counter` cuenta ocurrencias de elementos (`Counter(\"abracadabra\")`), y `defaultdict` crea automáticamente un valor por defecto para una clave ausente en vez de lanzar `KeyError`.",
+      "definition_en": "Two types from the `collections` module: `Counter` counts occurrences of elements (`Counter(\"abracadabra\")`), and `defaultdict` automatically creates a default value for a missing key instead of raising `KeyError`.",
+      "source": "CPython docs 3.13 — collections: Counter and defaultdict objects"
+    },
+    {
+      "id": "gl01_50",
+      "term_es": "datetime",
+      "term_en": "datetime",
+      "definition_es": "Módulo de la librería estándar para representar y operar con fechas y horas: `datetime.now()` da el instante actual, y los objetos `datetime` soportan resta (produce un `timedelta`), comparación y formateo con `strftime()`.",
+      "definition_en": "Standard-library module for representing and working with dates and times: `datetime.now()` gives the current instant, and `datetime` objects support subtraction (producing a `timedelta`), comparison, and formatting with `strftime()`.",
+      "source": "CPython docs 3.13 — datetime: Basic date and time types"
+    },
+    {
+      "id": "gl01_51",
+      "term_es": "itertools y functools",
+      "term_en": "itertools and functools",
+      "definition_es": "Dos módulos de la librería estándar para programación funcional: `itertools` ofrece iteradores eficientes (`chain`, `combinations`, `count`); `functools` ofrece herramientas sobre funciones, como `reduce()` y el decorador `lru_cache` para memoizar resultados.",
+      "definition_en": "Two standard-library modules for functional-style programming: `itertools` provides efficient iterators (`chain`, `combinations`, `count`); `functools` provides tools around functions, such as `reduce()` and the `lru_cache` decorator for memoizing results.",
+      "source": "CPython docs 3.13 — itertools / functools: Functional programming modules"
+    },
+    {
+      "id": "gl01_52",
+      "term_es": "Entorno virtual (venv)",
+      "term_en": "Virtual environment (venv)",
+      "definition_es": "Instalación aislada de Python con su propio `sys.path` y sus propios paquetes, creada con `python -m venv .venv`, que evita que las dependencias de un proyecto choquen con las de otro o con el intérprete del sistema. `pip install` instala dentro del entorno activo.",
+      "definition_en": "An isolated Python install with its own `sys.path` and its own packages, created with `python -m venv .venv`, which keeps one project's dependencies from clashing with another's or with the system interpreter. `pip install` installs into the currently active environment.",
+      "source": "CPython docs 3.13 — venv: Creation of virtual environments"
     }
   ]
 }
