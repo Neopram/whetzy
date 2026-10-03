@@ -1,13 +1,71 @@
 ---
 title: "AI Act, DSA, and EAA Compliance Assessment"
-last_updated: "2026-09-19"
+last_updated: "2026-10-02"
 effective_date: "2026-10-01"
 language: "en"
 status: "DRAFT - Requires legal review"
-version: "1.0.0"
+version: "1.1.0"
 ---
 
 # AI Act, DSA, and EAA Compliance Assessment
+
+## Corrections, 2026-10-02 (read before the rest of this document)
+
+The 2026-09-19 version below (Haiku 4.5) cited **no sources** for any claim. Three of its
+conclusions do not hold up against official/primary sources checked today, 2026-10-02:
+
+1. **EAA deadline is 2025-06-28, already passed — not "2030 for SMEs".** The Directive
+   (EU) 2019/882 sets one compliance date, 28 June 2025, for in-scope services. There is no
+   general "2030 for SMEs" deferral. What exists is a **microenterprise exemption**
+   (fewer than 10 employees **and** ≤ €2M annual turnover/balance sheet) from the EAA's
+   *service* obligations — an exemption, not a later deadline — plus a separate five-year
+   transitional provision (until 2030) for services already using products lawfully placed
+   on the market before 2025-06-28, which is not Whetzy's situation (its product is new).
+   Sources (read 2026-10-02): law-firm client alerts citing the Directive —
+   `https://www.hoganlovells.com/en/publications/the-european-accessibility-act-what-should-financial-services-firms-be-focusing-on-as-the-june-2025`,
+   `https://www.twobirds.com/en/insights/2025/ireland/ireland-ccpc-launches-consultation-on-microenterprise-guidelines-on-the-european-accessibility-act`;
+   official text: `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32019L0882`
+   (fetched today as a PDF and returned empty content to the fetch tool — not independently
+   re-verified against the primary text in this session; treat the secondary sources above
+   as **Likely, not Verified**, and confirm against EUR-Lex directly before relying on this).
+   **Open question for the lawyer:** is Whetzy (today, a single-person operation) a
+   "microenterprise" under this definition, and if so does it fall outside EAA service
+   obligations entirely rather than just facing a later deadline?
+2. **AI Act Article 50 applies from 2 August 2026 — a date already reached as of today
+   (2026-10-02).** Source (read 2026-10-02): `https://artificialintelligenceact.eu/transparency-rules-article-50/`
+   (industry tracker, not the official text — Likely, not Verified). More importantly, that
+   same source states **chatbot disclosure (Art. 50(1), "inform users they are interacting
+   with an AI") is a *provider* obligation, not a deployer one** — the original draft below
+   files it under "Deployer Obligations", which may be the wrong legal basis even if the
+   practical action (labelling the tutor as AI) is the same. **Open question for the
+   lawyer:** does Whetzy count as the "provider" of its own tutor-chat feature under Art. 3(3)
+   of Regulation (EU) 2024/1689 (it builds and ships the feature under its own name, even
+   though Groq supplies the underlying model), making Art. 50(1) Whetzy's own direct
+   obligation rather than something inherited as a "deployer"?
+3. **DSA: the "no UGC → likely exempt" conclusion below is probably wrong for Article 16.**
+   Article 16 (notice-and-action for hosting services) and the baseline point-of-contact /
+   terms-of-service transparency duties apply to **every hosting service regardless of
+   size** — the SME carve-outs in the DSA (Art. 19 trusted flaggers, transparency reporting)
+   do not touch Art. 16. Source (read 2026-10-02, secondary synthesis, not the official
+   text — Likely, not Verified): search results citing DSA Art. 16 analysis; official text
+   at `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065`, not
+   independently re-fetched in this session. Whetzy displays user-chosen `username`/
+   `display_name` to other users in duels and leagues (`duels.py`; confirmed in the ledger,
+   row 19.11, 2026-09-30) with **no filter, no report mechanism, and no block mechanism**
+   (`admin.py` has nothing, per the same ledger row). That is plausibly "storage and
+   dissemination to the public of information provided by a recipient of the service" —
+   hosting, under DSA Art. 3(g) — which would mean Art. 16 baseline duties apply **now**,
+   not "deferred until UGC is added" as the draft below says. **This is exactly what ledger
+   19.11 already asks for at the product level** (word filter + report/block endpoint); this
+   document adds the DSA citation as the legal reason, not a new requirement. The
+   user-facing policy text that obligation requires is out of my terrain to implement in
+   code (`duels.py`/`admin.py` are backend, S1's territory) but the **text itself** (what the
+   policy must say) is mine — see the "Fuera de alcance" note in the PR for this document.
+
+None of the above is legal advice; all three are flagged as open questions for H.20
+(professional review), not resolved here.
+
+---
 
 ## Legal Disclaimer
 

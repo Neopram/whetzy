@@ -113,6 +113,20 @@ async def test_register_missing_required_field_returns_422(client):
     assert r.status_code == 422
 
 
+async def test_register_rejects_blocked_word_in_display_name(client):
+    """19.11: filtro de palabras al crear la cuenta (App Store 1.2)."""
+    payload = {
+        "email": "rude@example.com",
+        "username": "rudeuser01",
+        "password": "Str0ng!Pass",
+        "display_name": "Soy una mierda",
+        "language": "es",
+        "age_confirmed": True,
+    }
+    r = await client.post(f"{AUTH}/register", json=payload, headers=_h())
+    assert r.status_code == 422
+
+
 # ── login ─────────────────────────────────────────────────────────────────────
 
 

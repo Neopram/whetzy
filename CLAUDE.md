@@ -17,11 +17,12 @@
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §14 ADR-53; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen la sustituye ADR-53), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica PostHog, Sentry, correo, staging), ADR-53 plan del catálogo por cobertura, ADR-54 catálogo uniforme 32 × 10, ADR-55 la fuente legal es lo publicado (claves i18n `legal.*`), ADR-56 fin de la pausa, ADR-58 los créditos no compran simulacros ni cursos (el plan decide) y privacidad con IP y navegador a 90 días**)
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen, sustituida: hoy manda ADR-54), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica PostHog, Sentry, correo, staging), ADR-53 plan por cobertura (sustituido por ADR-54), ADR-54 catálogo uniforme 32 × 10 (la meta vigente), ADR-55 la fuente legal es lo publicado (claves i18n `legal.*`), ADR-56 fin de la pausa, ADR-58 los créditos no compran simulacros ni cursos (el plan decide) y privacidad con IP y navegador a 90 días**)
 - Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
 - Auditoría externa del 2026-09-19 (histórica, archivada el 2026-10-01: su «el CI no ha corrido nunca» dejó de ser cierto): `docs/archive/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
 - Protocolo de verificación (cada `DONE`, cada doc, modelos y tokens): `docs/PROTOCOLO_VERIFICACION.md`
+- Sesiones en paralelo S1–S6 (qué ficheros escribe cada una, compartidos, migraciones, i18n por rol; bus: issue #89): `docs/SESIONES.md`
 - Conectores (Railway, Sentry, PostHog, diseño, redes): cuenta, uso y qué se hace sin preguntar en `docs/CONECTORES.md`. Leer y escribir en privado, sí; producción, publicar, datos de personas, secretos o recursos nuevos, no (ADR-45)
 - Documentos vivos: los del índice `docs/README.md`; `docs/archive/` no manda
 
@@ -57,7 +58,7 @@
 - Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA **no** se reutiliza (ADR-47, valor por defecto de H.LIC); CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
 - Social login: si existe cualquier OAuth, **Sign in with Apple es obligatorio** antes de enviar a App Store (4.8, ADR-13)
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`
-- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20261002_mastery_reports` (51 migraciones)
+- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20261002_user_moderation` (52 migraciones)
 - LLM: `qwen/qwen3.8-27b` en Groq
 - OpenAPI en `/api/v1/openapi.json`; `POST /quiz/start` devuelve el id en `.question.id`
 
