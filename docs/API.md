@@ -418,6 +418,16 @@ GET    /privacy/ccpa-disclosure   → CCPA data-collection disclosure (§1798.10
 GET    /privacy/rights            → Jurisdiction-aware privacy rights summary — public
 ```
 
+## Newsletter endpoints
+
+```
+POST /newsletter/subscribe      {email, language?} → 202 {status} — público; crea sin confirmar y manda el correo; misma respuesta exista ya el email o no, y si está dentro del enfriamiento de reenvío (5 min)
+GET  /newsletter/confirm        → página HTML — público, `?token=&lang=`; solo muestra el botón, no confirma (así lo sigue un escáner de enlaces sin confirmar nada)
+POST /newsletter/confirm        → página HTML — público, `?token=`; confirma — lo dispara el botón de la página de arriba
+GET  /newsletter/unsubscribe    → página HTML — público, `?token=&lang=`; solo muestra el botón, no da de baja
+POST /newsletter/unsubscribe    → página HTML — público, `?token=`; da de baja — el botón, y también «One-Click» de RFC 8058 (Gmail, Yahoo)
+```
+
 ## Health endpoints
 
 ```
@@ -439,9 +449,11 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-137 paths (133 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **146 method+path endpoints** total.
-Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
+157 paths (153 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **166 method+path endpoints** total.
+Verified locally on `claude/ecstatic-meitner-2x08pf` tras `git merge origin/master`:
+`python -c "from app.main import app; spec=app.openapi(); print(len(spec['paths']), sum(len(v) for v in spec['paths'].values()))"`
+→ `157 166`.
 
 
 
