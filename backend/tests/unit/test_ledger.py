@@ -260,3 +260,45 @@ def test_check_falla_si_una_serie_tiene_cabecera_y_ninguna_fila(tmp_path, mod, c
     mod.cmd_check(sana, argparse.Namespace(json=True))
     problems = json.loads(capsys.readouterr().out)["problems"]
     assert not any(p.startswith("serie ") for p in problems), problems
+
+
+# --- `## 1` generada desde las filas (2026-10-02) -----------------------------
+
+
+def _con_fases(mod, tmp_path, texto: str) -> Path:
+    """El fixture con su `## 1` generada y escrita por el propio `fases --write`."""
+    import argparse
+
+    path = tmp_path / "AUTONOMOUS_STATE.md"
+    seccion = "## 1. Estado por fase\n\n" + mod._PHASE_HEADER + "\n|---|---|---|---|---|\n\n"
+    path.write_text(texto.replace("## 2. Backlog", seccion + "## 2. Backlog", 1), encoding="utf-8")
+    assert mod.cmd_fases(mod.parse(path), argparse.Namespace(write=True, file=path)) == 0
+    return path
+
+
+def test_fases_cuenta_done_y_excluye_human_blocked_del_porcentaje(mod):
+    """Protocolo §5: % = DONE / (todas - HUMAN-BLOCKED). La serie 11 del fixture
+    tiene 7 filas, 2 DONE y 1 HUMAN-BLOCKED: 2/7 y 2/6 = 33 %."""
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as d:
+        ledger = _ledger_from(Path(d), FIVE_COLUMN, mod)
+    fila = [ln for ln in mod.phase_table(ledger).splitlines() if ln.startswith("| 11 |")]
+    assert fila == ["| 11 | Serie de prueba | 2/7 | 33 % | 11.9, 11.10, 11.13, 11.14, 11.15 |"], fila
+
+
+def test_check_falla_si_la_tabla_de_fases_no_cuadra_con_las_filas(tmp_path, mod, capsys):
+    """El 2026-10-02 `## 1` decia «38 = 0/6» con las seis filas en DONE."""
+    import argparse
+    import json
+
+    path = _con_fases(mod, tmp_path, FIVE_COLUMN)
+    capsys.readouterr()  # lo que imprimio `fases --write`
+    mod.cmd_check(mod.parse(path), argparse.Namespace(json=True))
+    assert not any("## 1" in p for p in json.loads(capsys.readouterr().out)["problems"])
+
+    # Una fila cambia de estado y nadie regenera la tabla: rojo.
+    path.write_text(path.read_text(encoding="utf-8").replace("| 11.9 | 2 | Novena | TODO", "| 11.9 | 2 | Novena | DONE"), encoding="utf-8")
+    mod.cmd_check(mod.parse(path), argparse.Namespace(json=True))
+    problems = json.loads(capsys.readouterr().out)["problems"]
+    assert any("fases --write" in p for p in problems), problems
