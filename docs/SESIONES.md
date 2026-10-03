@@ -60,6 +60,15 @@ y solo esas, a partir del banco real, y las lista en «Fuera de alcance». Si do
 las tocan, el segundo hace `git merge origin/master` tras fusionarse el primero, las regenera y
 repite el nivel 2; nunca se edita a mano la cifra de otro PR.
 
+**Excepción: las líneas del HEAD de Alembic** (`[COORD]` del #89, 2026-10-03 00:04). `check_docs.py`
+[1] exige que el HEAD y el número de migraciones cuadren con `backend/alembic/versions/` en tres
+líneas: «HEAD actual» de `CLAUDE.md`, la fila «Alembic HEAD» de `docs/AUTONOMOUS_STATE.md` y
+«Current Alembic HEAD» de `docs/RUNBOOK.md`. **El PR que trae una migración actualiza esas tres
+líneas**, y solo esas, y las lista en «Fuera de alcance»; sin ellas su `check_docs.py` sale con
+5 ✗ y el nivel 1 lo para. Como las migraciones se fusionan de una en una (§5), el siguiente PR con
+migración, tras `git merge origin/master`, apunta su `down_revision` a la cabeza nueva, sube el
+número en uno y repite el nivel 2.
+
 Las demás sesiones proponen sus cambios a estos ficheros en su PR: el ledger, en la sección
 **«Delta del ledger»** (`ID | estado nuevo | commit | comando ejecutado | salida real`); el resto,
 en **«Fuera de alcance»** con el fichero exacto y el cambio. S5 re-ejecuta cada comando citado
