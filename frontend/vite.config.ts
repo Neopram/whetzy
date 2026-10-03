@@ -340,9 +340,55 @@ function prerenderLandingPlugin(): Plugin {
   };
 }
 
+/** El commit del que sale el build, para que `check-deployed.mjs` pueda
+ *  preguntar «¿lo servido es ESTE commit?» en vez de inferirlo de rasgos del
+ *  HTML (canonical, hero) que siguen ahi en un deploy viejo. Cloudflare Pages
+ *  inyecta CF_PAGES_COMMIT_SHA en cada build; fuera de Pages se lee de git y,
+ *  si el arbol tiene cambios sin commitear, se marca `-dirty`: ese build no es
+ *  ningun commit y no debe pasar por uno. */
+function buildCommitSha(): string {
+  if (process.env.CF_PAGES_COMMIT_SHA) return process.env.CF_PAGES_COMMIT_SHA;
+  const head = spawnSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf-8' });
+  if (head.status !== 0 || !head.stdout.trim()) return 'unknown';
+  const dirty = spawnSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf-8' });
+  return `${head.stdout.trim()}${dirty.stdout.trim() ? '-dirty' : ''}`;
+}
+
+function buildCommitMetaPlugin(): Plugin {
+  const sha = buildCommitSha();
+  return {
+    name: 'build-commit-meta',
+    apply: 'build',
+    transformIndexHtml() {
+      return [{ tag: 'meta', attrs: { name: 'whetzy-build', content: sha }, injectTo: 'head' }];
+    },
+  };
+}
+
+/** `tsc -b` dentro de cualquier `vite build` de produccion (30.5). `8a0dce0`
+ *  lo quito del script `build` desde la UI web de GitHub y desde entonces el
+ *  tipado solo lo comprobaba el comando que el panel de Cloudflare tenga
+ *  escrito (`npx tsc -b && npx vite build`), que no esta en el repo y puede
+ *  cambiar sin que nadie lo vea. Aqui no depende de quien llame al build. El
+ *  build SSR hijo del prerender no lo repite. */
+function typecheckPlugin(): Plugin {
+  return {
+    name: 'typecheck-tsc-b',
+    apply: 'build',
+    configResolved(config) {
+      if (config.build.ssr || process.env.WHETZY_PRERENDER_CHILD) return;
+      const tsc = resolve(process.cwd(), 'node_modules', 'typescript', 'bin', 'tsc');
+      const r = spawnSync(process.execPath, [tsc, '-b'], { cwd: process.cwd(), stdio: 'inherit' });
+      if (r.status !== 0) throw new Error('[typecheck] `tsc -b` fallo; el build no es publicable');
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    typecheckPlugin(),
+    buildCommitMetaPlugin(),
     react(),
     cloudflarePrettyUrlsPreviewPlugin(),
     pyodideSelfHostPlugin(),

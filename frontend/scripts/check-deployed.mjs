@@ -14,12 +14,37 @@
  * whoever runs it what is broken for real people.
  *
  * Usage:
- *   node scripts/check-deployed.mjs                      # https://whetzy.com
+ *   node scripts/check-deployed.mjs                      # https://whetzy.com vs origin/master
  *   node scripts/check-deployed.mjs https://whetzy.pages.dev
+ *   node scripts/check-deployed.mjs --sha <commit>       # any git ref or a full SHA
+ *   node scripts/check-deployed.mjs https://<branch>.whetzy.pages.dev --sha HEAD
  *
  * Exits non-zero if any check fails, so it can gate a deploy.
  */
-const BASE = (process.argv[2] ?? 'https://whetzy.com').replace(/\/$/, '');
+import { spawnSync } from 'node:child_process';
+
+const argv = process.argv.slice(2);
+const shaFlag = argv.indexOf('--sha');
+const shaArg = shaFlag >= 0 ? argv[shaFlag + 1] : undefined;
+if (shaFlag >= 0 && !shaArg) {
+  console.error('[deployed] --sha needs a value (a commit, a branch or a full SHA)');
+  process.exit(2);
+}
+const positional = argv.filter((_, i) => shaFlag < 0 || (i !== shaFlag && i !== shaFlag + 1));
+const BASE = (positional[0] ?? 'https://whetzy.com').replace(/\/$/, '');
+
+/** The commit the deploy is supposed to be. A full 40-hex SHA is taken as is
+ *  (no repo needed); anything else is resolved with git. With no --sha it is
+ *  origin/master as this clone last fetched it, because master is what
+ *  production publishes — `git fetch` first or it compares against a stale one. */
+function expectedSha() {
+  const ref = shaArg ?? 'origin/master';
+  if (/^[0-9a-f]{40}$/i.test(ref)) return { sha: ref.toLowerCase(), ref };
+  const r = spawnSync('git', ['rev-parse', '--verify', `${ref}^{commit}`], { encoding: 'utf-8' });
+  if (r.status !== 0) return { sha: null, ref, error: (r.stderr || '').trim() || `git rev-parse ${ref} failed` };
+  return { sha: r.stdout.trim().toLowerCase(), ref };
+}
+const EXPECTED = expectedSha();
 
 const BANNED_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net'];
 
@@ -34,6 +59,22 @@ async function get(path) {
  * is the part that actually helps.
  */
 const CHECKS = [
+  {
+    // The checks below look for traits of the current build (canonical, hero,
+    // API URL). An older deploy that already had those traits passes them all,
+    // which is how a stale frontend could read as current. The commit SHA that
+    // vite.config.ts embeds is the direct answer.
+    name: 'the served build is the expected commit',
+    impact: 'production is serving a different commit than the one you are checking — the deploy has not happened yet, failed, or published something else',
+    async run() {
+      if (!EXPECTED.sha) return { ok: false, detail: `cannot resolve the expected commit ${JSON.stringify(EXPECTED.ref)}: ${EXPECTED.error}` };
+      const { body } = await get('/');
+      const served = body.match(/<meta name="whetzy-build" content="([^"]*)"/)?.[1] ?? null;
+      if (!served) return { ok: false, detail: `no <meta name="whetzy-build"> in the served HTML (expected ${EXPECTED.sha.slice(0, 12)} from ${EXPECTED.ref})` };
+      const ok = served.toLowerCase() === EXPECTED.sha;
+      return { ok, detail: `served ${served.slice(0, 18)} · expected ${EXPECTED.sha.slice(0, 12)} (${EXPECTED.ref})` };
+    },
+  },
   {
     name: 'index.html is the current build',
     impact: 'the deployed HTML predates the SEO work (11.7) — no canonical, so the site is not indexable as intended',
