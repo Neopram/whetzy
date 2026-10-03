@@ -3,7 +3,22 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from pydantic import AliasChoices, BaseModel, ConfigDict, EmailStr, Field
+from pydantic import (
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_validator,
+)
+
+from app.services.username_filter import contains_blocked_word
+
+
+def _reject_blocked_word(value: str) -> str:
+    if contains_blocked_word(value):
+        raise ValueError("That name isn't allowed")
+    return value
 
 
 class UserBase(BaseModel):
@@ -17,6 +32,12 @@ class UserCreate(UserBase):
     password: str = Field(min_length=8, max_length=128)
     age_confirmed: bool = False
 
+    # Solo al escribir (19.11): `UserRead` también hereda de `UserBase` pero
+    # lee de `from_attributes`, y un filtro aquí reventaría leer una cuenta ya
+    # existente si la lista de palabras cambia después de crearla.
+    _validar_username = field_validator("username")(_reject_blocked_word)
+    _validar_display_name = field_validator("display_name")(_reject_blocked_word)
+
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -27,6 +48,13 @@ class UserUpdate(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
     avatar_emoji: str | None = Field(default=None, max_length=16)
     language: str | None = Field(default=None, pattern="^(es|en)$")
+
+    @field_validator("display_name")
+    @classmethod
+    def _sin_palabra_bloqueada(cls, value: str | None) -> str | None:
+        if value is not None:
+            _reject_blocked_word(value)
+        return value
 
 
 class UserRead(UserBase):

@@ -43,3 +43,11 @@ async def test_patch_me_rechaza_valores_fuera_de_rango(client: AsyncClient, fiel
     auth_headers = await _registrar(client)
     r = await client.patch("/api/v1/auth/me", json={field: value}, headers=auth_headers)
     assert r.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_patch_me_rechaza_nombre_con_palabra_bloqueada(client: AsyncClient) -> None:
+    """19.11: el filtro de palabras también se aplica al editar la cuenta, no solo al crearla."""
+    auth_headers = await _registrar(client)
+    r = await client.patch("/api/v1/auth/me", json={"display_name": "Soy un cabron"}, headers=auth_headers)
+    assert r.status_code == 422

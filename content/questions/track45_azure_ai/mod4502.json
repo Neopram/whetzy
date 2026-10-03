@@ -1,418 +1,630 @@
 {
   "questions": [
     {
-      "id": "q4501009",
-      "skill_id": "sk450201",
+      "id": "q450503001",
+      "skill_id": "sk450503",
       "type": "multiple_choice",
-      "question_es": "¿Qué son datos de entrenamiento?",
-      "question_en": "What is training data?",
+      "question_es": "En una solicitud de chat a un modelo generativo, ¿qué papel cumple el mensaje con rol \"system\"?",
+      "question_en": "In a chat request to a generative model, what role does the \"system\" message play?",
       "options_es": [
-        "Datos para enseñar modelo",
-        "Datos producción como resultado",
-        "Copia seguridad",
-        "Solo pruebas"
+        "Fija instrucciones de comportamiento que persisten durante toda la conversación",
+        "Contiene la pregunta concreta del usuario",
+        "Guarda la respuesta anterior del modelo",
+        "Registra el identificador de la implementación (deployment) elegida en el proyecto para esa llamada concreta"
       ],
       "options_en": [
-        "Data used to teach the model",
-        "Production data as a result",
-        "Backup",
-        "Testing only"
+        "Sets behavior instructions that persist for the whole conversation",
+        "Holds the user's specific question",
+        "Stores the model's previous reply",
+        "Records the deployment identifier chosen in the project for that specific call"
       ],
       "correct_index": 0,
-      "explanation_es": "Los datos de entrenamiento son el conjunto de ejemplos etiquetados (o con la señal que se quiere predecir) que se usa para ajustar los parámetros del modelo antes de ponerlo en producción. La opción de 'datos de producción como resultado' invierte la relación: esos son los datos que el modelo procesa después de entrenado, no los que sirven para enseñarle.",
-      "explanation_en": "Training data is the set of labeled examples (or the target signal) used to fit the model's parameters before it is deployed. 'Production data as a result' reverses the relationship: that data is what the trained model processes afterward, not what teaches it.",
-      "source": "Microsoft Learn: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900"
+      "explanation_es": "El mensaje \"system\" se envía una vez y condiciona el tono, el formato o las reglas que el modelo debe seguir en todos los turnos siguientes, mientras que \"user\" lleva la pregunta de cada turno y \"assistant\" guarda las respuestas previas para dar contexto. El identificador de implementación no viaja dentro de los mensajes: se indica aparte, al elegir qué modelo desplegado atiende la solicitud.",
+      "explanation_en": "The \"system\" message is sent once and conditions the tone, format, or rules the model should follow across every following turn, while \"user\" carries each turn's question and \"assistant\" stores prior replies for context. The deployment identifier does not travel inside the messages; it is specified separately when choosing which deployed model serves the request.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
     },
     {
-      "id": "q4501010",
-      "skill_id": "sk450201",
+      "id": "q450503002",
+      "skill_id": "sk450503",
       "type": "multiple_choice",
-      "question_es": "¿Qué es sobreajuste?",
-      "question_en": "What is overfitting?",
+      "question_es": "¿Qué describe mejor el aprendizaje \"few-shot\" al escribir un prompt?",
+      "question_en": "What best describes \"few-shot\" prompting when writing a prompt?",
       "options_es": [
-        "Modelo ajusta demasiado entrenamiento",
-        "Modelo lento en la mayoría de los casos",
-        "Datos incompletos",
-        "Modelo simple"
+        "Reentrenar el modelo con un pequeño conjunto de datos etiquetados propios del equipo, igual que en fine-tuning clásico",
+        "Incluir unos pocos ejemplos de pregunta/respuesta antes de la pregunta real, sin modificar los pesos del modelo",
+        "Limitar la respuesta a pocas palabras mediante un parámetro de longitud máxima",
+        "Reducir el número de turnos permitidos en la conversación"
       ],
       "options_en": [
-        "The model fits the training data too closely",
-        "A model that is slow in most cases",
-        "Incomplete data",
-        "A simple model"
+        "Retraining the model on a small team-owned labeled dataset, the same way classic fine-tuning would",
+        "Including a few example question/answer pairs before the real question, without changing the model's weights",
+        "Limiting the reply to a few words via a max-length parameter",
+        "Reducing the number of turns allowed in the conversation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El few-shot prompting condiciona al modelo mostrándole, dentro del propio prompt, pares de entrada/salida que ilustran el formato o el estilo deseado; el modelo generaliza ese patrón para la pregunta real sin que se actualice ningún peso. Reentrenar con datos etiquetados sería fine-tuning, una técnica distinta y más costosa.",
+      "explanation_en": "Few-shot prompting conditions the model by showing it, inside the prompt itself, input/output pairs that illustrate the desired format or style; the model generalizes that pattern to the real question without any weight being updated. Retraining on labeled data would be fine-tuning, a different and more expensive technique.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450503003",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Antes de poder llamar a un modelo generativo desde un cliente de chat ligero construido con el SDK de Foundry, ¿qué paso es obligatorio?",
+      "question_en": "Before a lightweight chat client built with the Foundry SDK can call a generative model, what step is mandatory?",
+      "options_es": [
+        "Desplegar el modelo en el proyecto de Foundry y obtener el nombre de esa implementación (deployment)",
+        "Entrenar el modelo desde cero con datos propios del equipo antes de poder desplegarlo en el proyecto",
+        "Publicar el modelo como paquete en PyPI",
+        "Convertir el modelo a formato ONNX"
+      ],
+      "options_en": [
+        "Deploy the model in the Foundry project and obtain that deployment's name",
+        "Training the model from scratch on the team's own data before it can be deployed in the project",
+        "Publish the model as a package on PyPI",
+        "Convert the model to ONNX format"
       ],
       "correct_index": 0,
-      "explanation_es": "El sobreajuste ocurre cuando el modelo memoriza el ruido y las particularidades del conjunto de entrenamiento en vez de aprender el patrón general, por lo que rinde muy bien en entrenamiento pero mal con datos nuevos. Decir que el modelo simplemente 'es lento' confunde sobreajuste con un problema de rendimiento computacional, que no tiene relación con la capacidad de generalizar.",
-      "explanation_en": "Overfitting happens when the model memorizes the noise and quirks of the training set instead of the general pattern, so it performs very well on training data but poorly on new data. Saying the model is simply 'slow' confuses overfitting with a computational performance issue, which has nothing to do with generalization ability.",
-      "source": "Microsoft Learn: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900"
+      "explanation_es": "El SDK no habla con el modelo \"en abstracto\": se dirige a una implementación concreta dentro de un proyecto de Foundry, identificada por su nombre de despliegue, que primero hay que crear en el portal o por código. Ni entrenar desde cero ni convertir a ONNX son pasos que un cliente ligero necesite para consumir un modelo del catálogo de Foundry.",
+      "explanation_en": "The SDK does not talk to the model \"in the abstract\": it targets a specific deployment inside a Foundry project, identified by its deployment name, which must first be created in the portal or via code. Neither training from scratch nor converting to ONNX are steps a lightweight client needs to consume a model from the Foundry catalog.",
+      "source": "Microsoft Learn — What is Microsoft Foundry?: https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
     },
     {
-      "id": "q4501011",
-      "skill_id": "sk450201",
+      "id": "q450503004",
+      "skill_id": "sk450503",
       "type": "multiple_choice",
-      "question_es": "¿Qué es validación cruzada?",
-      "question_en": "What is cross-validation?",
+      "question_es": "¿En qué se diferencia un \"prompt agent\" de un \"hosted agent\" en Microsoft Foundry?",
+      "question_en": "How does a \"prompt agent\" differ from a \"hosted agent\" in Microsoft Foundry?",
       "options_es": [
-        "Compresión datos en general",
-        "Técnica evaluar modelo",
-        "Duplicación datos",
-        "Encriptación datos"
+        "El prompt agent se define de forma declarativa (instrucciones y herramientas); el hosted agent además ejecuta código propio dentro de un contenedor gestionado",
+        "El prompt agent solo funciona con modelos de OpenAI desplegados en ese mismo proyecto de Foundry; el hosted agent funciona con cualquier proveedor del catálogo completo",
+        "El hosted agent no puede usar ninguna herramienta externa en ningún caso, mientras que el prompt agent siempre puede usarlas todas",
+        "No hay diferencia real, son dos nombres para el mismo concepto"
       ],
       "options_en": [
-        "Data compression in general",
-        "A technique for evaluating a model",
-        "Data duplication",
-        "Data encryption"
-      ],
-      "correct_index": 1,
-      "explanation_es": "La validación cruzada divide los datos en varios subconjuntos (folds) y entrena/evalúa el modelo repetidas veces intercambiando cuál fold se usa como prueba, dando una estimación más robusta del rendimiento real que una sola partición train/test. No es compresión de datos: no reduce su tamaño, solo reorganiza cómo se usan para evaluar.",
-      "explanation_en": "Cross-validation splits the data into several subsets (folds) and repeatedly trains/evaluates the model while rotating which fold is held out as the test set, giving a more robust estimate of real-world performance than a single train/test split. It is not data compression: it does not shrink the data, it only reorganizes how it is used for evaluation.",
-      "source": "Microsoft Learn: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900"
-    },
-    {
-      "id": "q4501012",
-      "skill_id": "sk450202",
-      "type": "multiple_choice",
-      "question_es": "¿Diferencia regresión y clasificación?",
-      "question_en": "Regression vs classification?",
-      "options_es": [
-        "Ambas clustering en la mayoría de los casos",
-        "Sin diferencia como resultado",
-        "Ambas números en general",
-        "Regresión valores continuos, clasificación categorías"
-      ],
-      "options_en": [
-        "Both are clustering, in most cases",
-        "No difference",
-        "Both produce numbers, in general",
-        "Regression predicts continuous values, classification predicts categories"
-      ],
-      "correct_index": 3,
-      "explanation_es": "La regresión predice una salida numérica continua (por ejemplo, un precio), mientras que la clasificación predice a qué categoría discreta pertenece una observación (por ejemplo, spam o no spam); esa es la diferencia fundamental entre ambas tareas de aprendizaje supervisado. Decir que 'ambas son clustering' es incorrecto porque el clustering es una técnica no supervisada que agrupa datos sin usar etiquetas conocidas.",
-      "explanation_en": "Regression predicts a continuous numeric output (for example, a price), while classification predicts which discrete category an observation belongs to (for example, spam or not spam); that is the core difference between the two supervised learning tasks. Saying 'both are clustering' is wrong because clustering is an unsupervised technique that groups data without using known labels.",
-      "source": "Microsoft Learn: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900"
-    },
-    {
-      "id": "q4501013",
-      "skill_id": "sk450202",
-      "type": "multiple_choice",
-      "question_es": "¿Qué es clustering?",
-      "question_en": "What is clustering?",
-      "options_es": [
-        "Contar grupos de forma predeterminada",
-        "Compactar datos",
-        "Eliminar datos",
-        "Agrupar datos similares"
-      ],
-      "options_en": [
-        "Counting groups by default",
-        "Compacting data",
-        "Deleting data",
-        "Grouping similar data"
-      ],
-      "correct_index": 3,
-      "explanation_es": "El clustering es una técnica de aprendizaje no supervisado que agrupa observaciones similares según sus características, sin etiquetas previas; su objetivo es descubrir estructura en los datos, no contarlos. El número de grupos puede fijarse como parámetro (como en K-Means) o no, según el algoritmo, pero eso no es lo que define la técnica.",
-      "explanation_en": "Clustering is an unsupervised learning technique that groups similar observations by their features, without prior labels; its goal is to discover structure in the data, not to count it. The number of groups may be a fixed parameter (as in K-Means) or not, depending on the algorithm, but that is not what defines the technique.",
-      "source": "Microsoft Learn: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900"
-    },
-    {
-      "id": "q4501014",
-      "skill_id": "sk450202",
-      "type": "multiple_choice",
-      "question_es": "¿Algoritmo clustering común?",
-      "question_en": "Common clustering algorithm?",
-      "options_es": [
-        "Neural Networks",
-        "Linear Regression",
-        "K-Means",
-        "Árboles de decisión"
-      ],
-      "options_en": [
-        "Neural Networks",
-        "Linear Regression",
-        "K-Means",
-        "Decision Trees"
-      ],
-      "correct_index": 2,
-      "explanation_es": "K-Means es uno de los algoritmos de clustering más comunes: asigna cada punto al centroide más cercano y recalcula los centroides de forma iterativa hasta converger. Las redes neuronales y los árboles de decisión, en cambio, son algoritmos que típicamente se usan para tareas supervisadas de clasificación o regresión, no para agrupar datos sin etiquetas.",
-      "explanation_en": "K-Means is one of the most common clustering algorithms: it assigns each point to the nearest centroid and iteratively recomputes the centroids until convergence. Neural networks and decision trees, by contrast, are algorithms typically used for supervised classification or regression tasks, not for grouping unlabeled data.",
-      "source": "Microsoft Learn: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900"
-    },
-    {
-      "id": "q4501015",
-      "skill_id": "sk450203",
-      "type": "multiple_choice",
-      "question_es": "¿Qué es red neuronal artificial?",
-      "question_en": "What is neural network?",
-      "options_es": [
-        "Red computadoras en la mayoría de los casos",
-        "BD",
-        "Servidor web",
-        "Modelo inspirado cerebro"
-      ],
-      "options_en": [
-        "Red computadoras in most cases",
-        "BD",
-        "Servidor web",
-        "Modelo inspirado cerebro"
-      ],
-      "correct_index": 3,
-      "explanation_es": "Una red neuronal artificial es un modelo computacional inspirado en la estructura del cerebro, formado por capas de nodos (neuronas) interconectados que ajustan pesos para aprender patrones a partir de los datos. Llamarla 'red de computadoras' es incorrecto porque ese término describe infraestructura física de comunicación, no un modelo de aprendizaje automático.",
-      "explanation_en": "An artificial neural network is a computational model inspired by the structure of the brain, made of layers of interconnected nodes (neurons) that adjust weights to learn patterns from data. Calling it a 'network of computers' is wrong because that term describes physical communication infrastructure, not a machine learning model.",
-      "source": "Microsoft Learn: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900"
-    },
-    {
-      "id": "q4501016",
-      "skill_id": "sk450203",
-      "type": "multiple_choice",
-      "question_es": "¿Qué son capas en red neuronal?",
-      "question_en": "What are network layers?",
-      "options_es": [
-        "Registros eventos según la especificación",
-        "Almacenamiento datos",
-        "Niveles procesamiento",
-        "Copias seguridad"
-      ],
-      "options_en": [
-        "Event logs, as specified",
-        "Data storage",
-        "Processing levels",
-        "Backups"
-      ],
-      "correct_index": 2,
-      "explanation_es": "Las capas de una red neuronal son niveles sucesivos de procesamiento (entrada, ocultas y salida) donde cada nodo aplica una transformación a las señales que recibe de la capa anterior antes de pasarlas a la siguiente. No son 'registros de eventos': eso describe logs de auditoría, un concepto de monitoreo de sistemas sin relación con la arquitectura de una red neuronal.",
-      "explanation_en": "The layers of a neural network are successive levels of processing (input, hidden, and output) where each node transforms the signals it receives from the previous layer before passing them to the next one. They are not 'event logs': that describes audit logging, a system-monitoring concept unrelated to a neural network's architecture.",
-      "source": "Microsoft Learn: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900"
-    },
-    {
-      "id": "q450201_011",
-      "skill_id": "sk450201",
-      "type": "multiple_choice",
-      "question_es": "¿Qué aspecto de Principios de aprendizaje automático es fundamental para garantizar la seguridad y el cumplimiento?",
-      "question_en": "What aspect of Machine Learning Principles is fundamental for ensuring security and compliance?",
-      "options_es": [
-        "La configuración manual de cada componente sin utilizar plantillas ni automatización",
-        "La capacidad de auditar, monitorear y controlar el acceso a los recursos de forma granular",
-        "El uso exclusivo de contraseñas simples para facilitar el acceso de los usuarios",
-        "La eliminación de todos los registros de actividad para mejorar el rendimiento del sistema"
-      ],
-      "options_en": [
-        "The manual configuration of each component without using templates or automation",
-        "The ability to audit, monitor, and control access to resources in a granular way",
-        "The exclusive use of simple passwords to facilitate user access",
-        "The elimination of all activity logs to improve system performance"
-      ],
-      "correct_index": 1,
-      "explanation_es": "En los principios de aprendizaje automático responsable, la seguridad y el cumplimiento dependen de poder auditar, monitorear y controlar de forma granular quién accede a qué recursos, para poder detectar y limitar usos indebidos. Configurar todo manualmente sin plantillas ni automatización, al contrario, aumenta el riesgo de errores humanos e inconsistencias que debilitan la seguridad.",
-      "explanation_en": "In responsible machine learning principles, security and compliance depend on being able to audit, monitor, and control who accesses which resources at a granular level, so misuse can be detected and limited. Manually configuring everything without templates or automation, on the contrary, increases the risk of human error and inconsistency that weakens security.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
-    },
-    {
-      "id": "q450201_012",
-      "skill_id": "sk450201",
-      "type": "multiple_choice",
-      "question_es": "¿Cuál de las siguientes opciones describe mejor la función principal de Principios de aprendizaje automático?",
-      "question_en": "Which of the following best describes the primary function of Machine Learning Principles?",
-      "options_es": [
-        "Funciona únicamente en entornos locales sin conexión a la nube",
-        "Es un servicio de almacenamiento temporal que no persiste los datos entre sesiones",
-        "Se enfoca exclusivamente en la visualización de datos y métricas de rendimiento",
-        "Proporciona herramientas para la implementación de soluciones de inteligencia artificial de forma automatizada y escalable"
-      ],
-      "options_en": [
-        "Works only in local environments without cloud connectivity",
-        "Is a temporary storage service that does not persist data between sessions",
-        "Focuses exclusively on data visualization and performance metrics",
-        "Provides tools for the implementation of artificial intelligence solutions in an automated and scalable way"
-      ],
-      "correct_index": 3,
-      "explanation_es": "Los principios de aprendizaje automático en Azure buscan proporcionar herramientas que permitan implementar soluciones de IA de forma automatizada y escalable, cubriendo desde el entrenamiento hasta el despliegue en producción. Decir que funciona 'solo en entornos locales sin conexión a la nube' contradice la naturaleza de estos servicios, que están diseñados precisamente para aprovechar la escala y el cómputo de la nube.",
-      "explanation_en": "Azure's machine learning principles aim to provide tools that let teams implement AI solutions in an automated and scalable way, covering everything from training to production deployment. Saying it works 'only in local environments without cloud connectivity' contradicts the nature of these services, which are designed specifically to leverage cloud scale and compute.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
-    },
-    {
-      "id": "q450201_013",
-      "skill_id": "sk450201",
-      "type": "multiple_choice",
-      "question_es": "En el contexto de Principios de aprendizaje automático, ¿cuál de las siguientes afirmaciones es correcta?",
-      "question_en": "In the context of Machine Learning Principles, which of the following statements is correct?",
-      "options_es": [
-        "Esta tecnología ha sido descontinuada y reemplazada por soluciones de código abierto",
-        "Principios de aprendizaje automático permite optimizar recursos y mejorar la eficiencia mediante la automatización",
-        "Su uso está limitado a organizaciones con menos de 50 empleados",
-        "No ofrece integración con otros servicios ni APIs externas"
-      ],
-      "options_en": [
-        "This technology has been discontinued and replaced by open-source solutions",
-        "Machine Learning Principles allows optimizing resources and improving efficiency through automation",
-        "Its use is limited to organizations with fewer than 50 employees",
-        "It does not offer integration with other services or external APIs"
-      ],
-      "correct_index": 1,
-      "explanation_es": "Aplicar bien los principios de aprendizaje automático permite optimizar el uso de recursos (cómputo, tiempo, datos) y mejorar la eficiencia del proceso mediante automatización, por ejemplo con pipelines reproducibles. La opción de que la tecnología 'ha sido descontinuada' es falsa y contradice el hecho de que estos servicios siguen activamente desarrollados y documentados por Microsoft Learn.",
-      "explanation_en": "Applying machine learning principles well makes it possible to optimize the use of resources (compute, time, data) and improve process efficiency through automation, for example with reproducible pipelines. The claim that the technology 'has been discontinued' is false and contradicts the fact that these services are actively developed and documented on Microsoft Learn.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
-    },
-    {
-      "id": "q450202_014",
-      "skill_id": "sk450202",
-      "type": "multiple_choice",
-      "question_es": "¿Qué aspecto de Azure Machine Learning Studio es fundamental para garantizar la seguridad y el cumplimiento?",
-      "question_en": "What aspect of Azure Machine Learning Studio is fundamental for ensuring security and compliance?",
-      "options_es": [
-        "La eliminación de todos los registros de actividad para mejorar el rendimiento del sistema",
-        "El uso exclusivo de contraseñas simples para facilitar el acceso de los usuarios",
-        "La configuración manual de cada componente sin utilizar plantillas ni automatización",
-        "La capacidad de auditar, monitorear y controlar el acceso a los recursos de forma granular"
-      ],
-      "options_en": [
-        "The elimination of all activity logs to improve system performance",
-        "The exclusive use of simple passwords to facilitate user access",
-        "The manual configuration of each component without using templates or automation",
-        "The ability to audit, monitor, and control access to resources in a granular way"
-      ],
-      "correct_index": 3,
-      "explanation_es": "Azure Machine Learning Studio ofrece controles de identidad y acceso (RBAC), registros de actividad y monitoreo que permiten auditar y controlar de forma granular quién hace qué sobre los recursos del área de trabajo, lo cual es la base de la seguridad y el cumplimiento. Usar contraseñas simples es justo lo opuesto a una buena práctica de seguridad, ya que facilita accesos no autorizados.",
-      "explanation_en": "Azure Machine Learning Studio provides identity and access controls (RBAC), activity logs, and monitoring that let teams audit and granularly control who does what with workspace resources, which is the basis of security and compliance. Using simple passwords is the opposite of a good security practice, since it makes unauthorized access easier.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
-    },
-    {
-      "id": "q450202_015",
-      "skill_id": "sk450202",
-      "type": "multiple_choice",
-      "question_es": "¿Cómo se integra Azure Machine Learning Studio con otros componentes del ecosistema?",
-      "question_en": "How does Azure Machine Learning Studio integrate with other components of the ecosystem?",
-      "options_es": [
-        "A través de APIs estándar, conectores nativos y servicios de mensajería administrados",
-        "No se integra con ningún otro servicio y funciona de forma completamente aislada",
-        "Exclusivamente a través de correo electrónico y comunicación verbal entre equipos",
-        "Solo mediante transferencia manual de archivos en formato propietario"
-      ],
-      "options_en": [
-        "Through standard APIs, native connectors, and managed messaging services",
-        "It does not integrate with any other service and operates in complete isolation",
-        "Exclusively through email and verbal communication between teams",
-        "Only through manual file transfer in proprietary format"
+        "A prompt agent is defined declaratively (instructions and tools); a hosted agent additionally runs its own code inside a managed container",
+        "A prompt agent only works with OpenAI models deployed in that very same Foundry project; a hosted agent works with any provider in the whole catalog",
+        "A hosted agent can never use any external tool under any circumstance, while a prompt agent can always use all of them",
+        "There is no real difference, they are two names for the same concept"
       ],
       "correct_index": 0,
-      "explanation_es": "Azure Machine Learning Studio se integra con el resto del ecosistema mediante APIs estándar (REST, SDK), conectores nativos hacia otros servicios de Azure y servicios de mensajería administrados para orquestar flujos de trabajo. Decir que 'no se integra con ningún otro servicio' es incorrecto porque justamente su valor en un entorno empresarial viene de poder conectarse con almacenamiento, cómputo y pipelines de CI/CD existentes.",
-      "explanation_en": "Azure Machine Learning Studio integrates with the rest of the ecosystem through standard APIs (REST, SDK), native connectors to other Azure services, and managed messaging services that orchestrate workflows. Saying it 'does not integrate with any other service' is wrong, since much of its value in an enterprise setting comes from connecting to existing storage, compute, and CI/CD pipelines.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
+      "explanation_es": "Un prompt agent se queda en la capa de instrucciones y herramientas declaradas, sin código propio en ejecución; un hosted agent añade un contenedor gestionado donde corre lógica personalizada, lo que permite orquestar pasos más complejos que un simple prompt no puede expresar. Ambos pueden usar herramientas y ninguno está limitado a un proveedor de modelos concreto.",
+      "explanation_en": "A prompt agent stays at the layer of declared instructions and tools, with no custom code running; a hosted agent adds a managed container where custom logic runs, which allows orchestrating steps too complex for a plain prompt to express. Both can use tools, and neither is limited to one specific model provider.",
+      "source": "Microsoft Learn — What is Microsoft Foundry?: https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
     },
     {
-      "id": "q450202_016",
-      "skill_id": "sk450202",
+      "id": "q450503005",
+      "skill_id": "sk450503",
       "type": "multiple_choice",
-      "question_es": "¿Cuándo es más apropiado utilizar Azure Machine Learning Studio en un proyecto empresarial?",
-      "question_en": "When is it most appropriate to use Azure Machine Learning Studio in an enterprise project?",
+      "question_es": "Al probar una solución de un solo agente en el portal de Foundry antes de integrarla en una app, ¿qué se está verificando principalmente?",
+      "question_en": "When testing a single-agent solution in the Foundry portal before wiring it into an app, what is mainly being verified?",
       "options_es": [
-        "Cuando se busca reemplazar completamente al equipo de desarrollo con automatización",
-        "Únicamente durante la fase de pruebas y no en producción",
-        "Cuando se necesita la implementación de soluciones de inteligencia artificial con alta disponibilidad y cumplimiento normativo",
-        "Solo cuando el presupuesto del proyecto es ilimitado y no hay restricciones de tiempo"
+        "Que el agente elige y usa correctamente sus herramientas configuradas y responde bien a un prompt de prueba, en un chat de prueba aislado",
+        "Que el modelo subyacente tiene, de todos los proveedores disponibles en el catálogo completo de Microsoft Foundry, la menor latencia posible de respuesta",
+        "Que el agente puede desplegarse directamente en producción sin configuración adicional",
+        "Que el coste por token del modelo es inferior al de la versión anterior"
       ],
       "options_en": [
-        "When looking to completely replace the development team with automation",
-        "Only during the testing phase and not in production",
-        "When the implementation of artificial intelligence solutions is needed with high availability and regulatory compliance",
-        "Only when the project budget is unlimited and there are no time constraints"
-      ],
-      "correct_index": 2,
-      "explanation_es": "Azure Machine Learning Studio conviene especialmente cuando el proyecto necesita implementar soluciones de IA con alta disponibilidad y cumplimiento normativo, ya que ofrece SLAs, controles de acceso y auditoría propios de un servicio empresarial en la nube. Limitarlo 'solo a la fase de pruebas y no a producción' es incorrecto porque está diseñado justamente para llevar modelos desde el experimento hasta el despliegue productivo.",
-      "explanation_en": "Azure Machine Learning Studio is especially appropriate when a project needs to implement AI solutions with high availability and regulatory compliance, since it offers SLAs, access controls, and auditing typical of an enterprise cloud service. Limiting it to 'only the testing phase and not production' is wrong because it is designed precisely to take models from experimentation through to production deployment.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
-    },
-    {
-      "id": "q450203_017",
-      "skill_id": "sk450203",
-      "type": "multiple_choice",
-      "question_es": "En el contexto de Automatización del ML con AutoML, ¿cuál de las siguientes afirmaciones es correcta?",
-      "question_en": "In the context of ML Automation with AutoML, which of the following statements is correct?",
-      "options_es": [
-        "Esta tecnología ha sido descontinuada y reemplazada por soluciones de código abierto",
-        "Automatización del ML con AutoML permite optimizar recursos y mejorar la eficiencia mediante la automatización",
-        "Su uso está limitado a organizaciones con menos de 50 empleados",
-        "No ofrece integración con otros servicios ni APIs externas"
-      ],
-      "options_en": [
-        "This technology has been discontinued and replaced by open-source solutions",
-        "ML Automation with AutoML allows optimizing resources and improving efficiency through automation",
-        "Its use is limited to organizations with fewer than 50 employees",
-        "It does not offer integration with other services or external APIs"
-      ],
-      "correct_index": 1,
-      "explanation_es": "AutoML permite optimizar recursos y mejorar la eficiencia del proceso de aprendizaje automático automatizando tareas repetitivas como la selección de algoritmos y el ajuste de hiperparámetros. Afirmar que 'ha sido descontinuado y reemplazado por soluciones de código abierto' es falso: AutoML sigue siendo un servicio activo y central de Azure Machine Learning, documentado en Microsoft Learn.",
-      "explanation_en": "AutoML makes it possible to optimize resources and improve the efficiency of the machine learning process by automating repetitive tasks such as algorithm selection and hyperparameter tuning. The claim that it 'has been discontinued and replaced by open-source solutions' is false: AutoML remains an active, central Azure Machine Learning service, documented on Microsoft Learn.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
-    },
-    {
-      "id": "q450203_018",
-      "skill_id": "sk450203",
-      "type": "multiple_choice",
-      "question_es": "¿Cuándo es más apropiado utilizar Automatización del ML con AutoML en un proyecto empresarial?",
-      "question_en": "When is it most appropriate to use ML Automation with AutoML in an enterprise project?",
-      "options_es": [
-        "Solo cuando el presupuesto del proyecto es ilimitado y no hay restricciones de tiempo",
-        "Únicamente durante la fase de pruebas y no en producción",
-        "Cuando se necesita la implementación de soluciones de inteligencia artificial con alta disponibilidad y cumplimiento normativo",
-        "Cuando se busca reemplazar completamente al equipo de desarrollo con automatización"
-      ],
-      "options_en": [
-        "Only when the project budget is unlimited and there are no time constraints",
-        "Only during the testing phase and not in production",
-        "When the implementation of artificial intelligence solutions is needed with high availability and regulatory compliance",
-        "When looking to completely replace the development team with automation"
-      ],
-      "correct_index": 2,
-      "explanation_es": "AutoML resulta más apropiado cuando un proyecto necesita implementar soluciones de inteligencia artificial con alta disponibilidad y cumplimiento normativo, ya que automatiza la búsqueda de modelos manteniendo la trazabilidad exigida en entornos empresariales. Restringirlo a 'solo durante la fase de pruebas' pasa por alto que su objetivo es acelerar también el paso a producción, no solo la experimentación.",
-      "explanation_en": "AutoML is most appropriate when a project needs to implement artificial intelligence solutions with high availability and regulatory compliance, since it automates model search while keeping the traceability required in enterprise environments. Restricting it to 'only during the testing phase' ignores that its goal is also to speed up the move to production, not just experimentation.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
-    },
-    {
-      "id": "q450203_019",
-      "skill_id": "sk450203",
-      "type": "multiple_choice",
-      "question_es": "Un equipo necesita implementar Automatización del ML con AutoML. ¿Cuál es la ventaja principal de este enfoque?",
-      "question_en": "A team needs to implement ML Automation with AutoML. What is the main advantage of this approach?",
-      "options_es": [
-        "Reduce la complejidad operativa y mejora la eficiencia del proceso",
-        "Requiere migración completa de todos los sistemas existentes antes de iniciar",
-        "Aumenta significativamente los costos de infraestructura sin beneficios claros",
-        "Solo es compatible con un único proveedor de servicios en la nube"
-      ],
-      "options_en": [
-        "Reduces operational complexity and improves process efficiency",
-        "Requires complete migration of all existing systems before starting",
-        "Significantly increases infrastructure costs without clear benefits",
-        "Is only compatible with a single cloud service provider"
+        "That the agent correctly selects and uses its configured tools and responds well to a test prompt, in an isolated test chat",
+        "That the underlying model has, among every provider available in the whole Microsoft Foundry catalog, the lowest possible response latency",
+        "That the agent can deploy straight to production with no further configuration",
+        "That the model's per-token cost is lower than the previous version's"
       ],
       "correct_index": 0,
-      "explanation_es": "La ventaja principal de AutoML es que reduce la complejidad operativa del proceso de aprendizaje automático al automatizar la selección de algoritmos y el ajuste de hiperparámetros, mejorando la eficiencia del equipo. Decir que 'aumenta significativamente los costos sin beneficios claros' contradice su propósito: al automatizar tareas manuales repetitivas, normalmente reduce el tiempo y el esfuerzo dedicados por los científicos de datos.",
-      "explanation_en": "The main advantage of AutoML is that it reduces the operational complexity of the machine learning process by automating algorithm selection and hyperparameter tuning, improving the team's efficiency. Saying it 'significantly increases costs without clear benefits' contradicts its purpose: by automating repetitive manual tasks, it typically reduces the time and effort spent by data scientists.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
+      "explanation_es": "El portal ofrece un chat de prueba para comprobar, antes de escribir ningún cliente, que el agente invoca las herramientas que se le configuraron (búsqueda, funciones, otros agentes) y produce la respuesta esperada frente a entradas de ejemplo. Latencia y coste son criterios de selección de modelo, no lo que esa prueba concreta mide.",
+      "explanation_en": "The portal offers a test chat to confirm, before writing any client, that the agent invokes the tools it was configured with (search, functions, other agents) and produces the expected response for sample inputs. Latency and cost are model-selection criteria, not what this specific test measures.",
+      "source": "Microsoft Learn — What is Microsoft Foundry?: https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
     },
     {
-      "id": "q450203_020",
-      "skill_id": "sk450203",
+      "id": "q450503006",
+      "skill_id": "sk450503",
       "type": "multiple_choice",
-      "question_es": "Un arquitecto de soluciones evalúa Automatización del ML con AutoML para un nuevo proyecto. ¿Qué factor debe considerar primero?",
-      "question_en": "A solutions architect evaluates ML Automation with AutoML for a new project. What factor should be considered first?",
+      "question_es": "Un cliente ligero para un agente de Foundry necesita, como mínimo, saber qué dato para enviarle una petición?",
+      "question_en": "A lightweight client for a Foundry agent needs, at minimum, which piece of information to send it a request?",
       "options_es": [
-        "La cantidad de tutoriales disponibles en plataformas de video populares",
-        "Los requisitos de escalabilidad, rendimiento y costos a largo plazo del proyecto",
-        "El color del logotipo del servicio y su alineación con la marca corporativa",
-        "La opinión personal del CEO sobre la tecnología sin análisis técnico previo"
+        "El identificador del agente (o de su implementación) dentro del proyecto de Foundry",
+        "El código fuente completo del modelo subyacente",
+        "El conjunto de datos de entrenamiento original con el que el proveedor construyó ese modelo subyacente",
+        "La contraseña de administrador del proyecto de Azure"
       ],
       "options_en": [
-        "The number of tutorials available on popular video platforms",
-        "The scalability, performance, and long-term cost requirements of the project",
-        "The color of the service logo and its alignment with the corporate brand",
-        "The CEO's personal opinion about the technology without prior technical analysis"
+        "The agent's (or its deployment's) identifier within the Foundry project",
+        "The full source code of the underlying model",
+        "The original training dataset the provider used to build that underlying model",
+        "The Azure project's administrator password"
       ],
-      "correct_index": 1,
-      "explanation_es": "Antes de adoptar AutoML en un proyecto, un arquitecto de soluciones debe evaluar primero los requisitos de escalabilidad, rendimiento y costos a largo plazo, porque de ahí depende si el enfoque automatizado encaja con las necesidades técnicas y de negocio del proyecto. Basar la decisión en 'la cantidad de tutoriales disponibles en video' no es un criterio técnico y no dice nada sobre si la herramienta cumplirá los requisitos reales del proyecto.",
-      "explanation_en": "Before adopting AutoML in a project, a solutions architect should first evaluate the scalability, performance, and long-term cost requirements, since those determine whether the automated approach fits the project's technical and business needs. Basing the decision on 'the number of tutorials available on video' is not a technical criterion and says nothing about whether the tool will meet the project's actual requirements.",
-      "source": "Microsoft Learn (https://learn.microsoft.com)"
+      "correct_index": 0,
+      "explanation_es": "Igual que con un modelo desplegado, el cliente se dirige a un agente concreto por su identificador dentro del proyecto; eso es lo que el SDK necesita para enrutar la petición, no el código del modelo ni los datos con los que se entrenó, que son internos al proveedor.",
+      "explanation_en": "Just like with a deployed model, the client targets a specific agent by its identifier within the project; that is what the SDK needs to route the request, not the model's code or the data it was trained on, which stay internal to the provider.",
+      "source": "Microsoft Learn — What is Microsoft Foundry?: https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
+    },
+    {
+      "id": "q450503ex007",
+      "skill_id": "sk450503",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Completa el hueco para que el primer mensaje fije instrucciones de comportamiento que persistan durante toda la conversación con el modelo.\n\n```python\nmensajes = [\n    {\"role\": \"___\", \"content\": \"Responde siempre en una sola frase.\"},\n    {\"role\": \"user\", \"content\": \"¿Qué es Microsoft Foundry?\"},\n]\nprint(mensajes[0][\"role\"])\n```",
+      "question_en": "Fill in the blank so the first message sets behavior instructions that persist for the whole conversation with the model.\n\n```python\nmessages = [\n    {\"role\": \"___\", \"content\": \"Always answer in a single sentence.\"},\n    {\"role\": \"user\", \"content\": \"What is Microsoft Foundry?\"},\n]\nprint(messages[0][\"role\"])\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "system",
+      "correct_answer_en": "system",
+      "explanation_es": "El rol `\"system\"` es el que Chat Completions reserva para instrucciones de comportamiento que valen para toda la conversación; `\"user\"` lleva cada pregunta y `\"assistant\"` las respuestas previas del modelo.",
+      "explanation_en": "The `\"system\"` role is the one Chat Completions reserves for behavior instructions that hold for the whole conversation; `\"user\"` carries each question and `\"assistant\"` the model's previous replies.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901",
+      "expected_time_ms": 30000
+    },
+    {
+      "id": "q450601001",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Para construir una app que responda por voz a una pregunta hablada usando Foundry Tools, ¿qué capacidad convierte el audio del usuario en texto?",
+      "question_en": "To build an app that answers a spoken question by voice using Foundry Tools, which capability turns the user's audio into text?",
+      "options_es": [
+        "Voz a texto (speech-to-text) de Azure AI Speech",
+        "Extracción de frases clave de Azure AI Language",
+        "Reconocimiento de entidades (NER)",
+        "Generación de imágenes"
+      ],
+      "options_en": [
+        "Speech-to-text from Azure AI Speech",
+        "Key phrase extraction from Azure AI Language",
+        "Named entity recognition (NER)",
+        "Image generation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La transcripción de audio a texto es exactamente lo que resuelve speech-to-text dentro de Azure AI Speech, uno de los Foundry Tools; frases clave y NER operan sobre texto que ya existe, y la generación de imágenes no tiene relación con audio.",
+      "explanation_en": "Transcribing audio into text is exactly what speech-to-text inside Azure AI Speech solves, one of the Foundry Tools; key phrases and NER operate on text that already exists, and image generation has nothing to do with audio.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450601002",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Un modelo multimodal desplegado en Foundry puede \"responder a un prompt hablado\" directamente. ¿Qué significa eso en la práctica?",
+      "question_en": "A multimodal model deployed in Foundry can \"respond to a spoken prompt\" directly. What does that mean in practice?",
+      "options_es": [
+        "El modelo acepta audio como parte de la entrada y genera una respuesta sin un paso manual previo de transcripción",
+        "El modelo automáticamente convierte cualquier respuesta generada en un archivo con formato PDF antes de entregarla",
+        "El modelo solo acepta texto, pero traduce el audio antes de recibirlo un servicio externo al proyecto",
+        "El modelo necesita que el audio se convierta antes a imagen espectrográfica"
+      ],
+      "options_en": [
+        "The model accepts audio as part of its input and generates a response without a prior manual transcription step",
+        "The model automatically converts any generated reply into a PDF-formatted file before delivering it",
+        "The model only accepts text, but an external service outside the project translates the audio first",
+        "The model needs the audio converted to a spectrogram image first"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un modelo multimodal admite audio (y a veces imagen) directamente en el mismo prompt que el texto, por lo que la app no necesita montar un pipeline separado de voz-a-texto antes de llamarlo; eso es justamente lo que lo distingue de encadenar dos servicios por separado.",
+      "explanation_en": "A multimodal model accepts audio (and sometimes image) directly within the same prompt as text, so the app does not need to build a separate speech-to-text pipeline before calling it; that is exactly what sets it apart from chaining two separate services.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450601003",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una app clasifica tickets de soporte por tema llamando a Azure AI Language. ¿Qué capacidad de análisis de texto encaja con \"detectar el tema principal del texto\"?",
+      "question_en": "An app classifies support tickets by topic by calling Azure AI Language. Which text-analysis capability fits \"detecting the text's main topic\"?",
+      "options_es": [
+        "Extracción de frases clave (key phrase extraction)",
+        "La síntesis de voz (text-to-speech) de Azure AI Speech, que convierte texto en audio hablado",
+        "Traducción automática",
+        "Generación de subtítulos de imagen"
+      ],
+      "options_en": [
+        "Key phrase extraction",
+        "Text-to-speech synthesis from Azure AI Speech, which converts text into spoken audio",
+        "Machine translation",
+        "Image captioning"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La extracción de frases clave devuelve los conceptos centrales de un documento sin necesidad de entrenar un modelo propio, que es precisamente lo que una app necesita para resumir de qué trata un ticket; las otras tres opciones operan sobre voz, idioma o imagen, no sobre el tema de un texto.",
+      "explanation_en": "Key phrase extraction returns a document's central concepts with no custom model training needed, which is exactly what an app needs to summarize what a ticket is about; the other three options operate on speech, language, or images, not on a text's topic.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450601004",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "En la misma app de voz, ¿para qué se usa la síntesis de voz (text-to-speech) de Azure AI Speech?",
+      "question_en": "In that same voice app, what is Azure AI Speech's text-to-speech synthesis used for?",
+      "options_es": [
+        "Convertir en audio hablado la respuesta en texto que generó el modelo",
+        "Detectar automáticamente el idioma que habla el usuario antes de iniciar la transcripción del audio",
+        "Extraer el sentimiento de la pregunta hablada",
+        "Comprimir el archivo de audio original"
+      ],
+      "options_en": [
+        "Converting the model's text reply into spoken audio",
+        "Automatically detecting the language the user speaks before starting the audio transcription",
+        "Extracting sentiment from the spoken question",
+        "Compressing the original audio file"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Text-to-speech cierra el ciclo de una app de voz: toma la respuesta en texto, generada por el modelo o por análisis de texto, y la convierte en audio que el usuario escucha; es el paso complementario a speech-to-text, no una detección de idioma ni un análisis de sentimiento.",
+      "explanation_en": "Text-to-speech closes the loop of a voice app: it takes the text reply, generated by the model or by text analysis, and turns it into audio the user hears; it is the complementary step to speech-to-text, not language detection or sentiment analysis.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450601005",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "¿Qué diferencia a \"extracción de frases clave\" de \"análisis de sentimiento\" al construir una app con Azure AI Language?",
+      "question_en": "What tells \"key phrase extraction\" apart from \"sentiment analysis\" when building an app with Azure AI Language?",
+      "options_es": [
+        "Frases clave devuelve los conceptos del texto; sentimiento devuelve una valoración positiva/negativa/neutra con una puntuación de confianza",
+        "Son el mismo análisis con nombres distintos en ES y EN",
+        "Frases clave solo funciona correctamente con textos escritos en inglés y en un número limitado de otros idiomas; sentimiento funciona en cualquier idioma soportado",
+        "Sentimiento necesita un modelo propio entrenado por el cliente; frases clave no"
+      ],
+      "options_en": [
+        "Key phrases returns the text's concepts; sentiment returns a positive/negative/neutral rating with a confidence score",
+        "They are the same analysis under different names in different languages",
+        "Key phrases only works correctly with text written in English and a limited set of other languages; sentiment works in any supported language",
+        "Sentiment needs a model the customer trains themselves; key phrases does not"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Ambas son funciones preconfiguradas de Azure AI Language, sin entrenamiento propio por parte del cliente, pero resuelven preguntas distintas: una resume de qué habla el texto, la otra puntúa cómo se siente sobre ello (incluida una puntuación de confianza por clase).",
+      "explanation_en": "Both are preconfigured Azure AI Language features that require no customer-trained model, but they answer different questions: one summarizes what the text is about, the other scores how it feels about it (including a per-class confidence score).",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450601006",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "¿Qué necesita el código de una app para poder llamar a Azure AI Speech o Azure AI Language desde el SDK?",
+      "question_en": "What does an app's code need to be able to call Azure AI Speech or Azure AI Language from the SDK?",
+      "options_es": [
+        "El endpoint y la clave (o credencial) del recurso de Foundry Tools que se desplegó",
+        "El peso entrenado del modelo en un archivo local",
+        "Un clúster de GPU propio, aprovisionado y mantenido por el equipo, para ejecutar el servicio localmente",
+        "El código fuente del servicio de Microsoft"
+      ],
+      "options_en": [
+        "The endpoint and key (or credential) of the deployed Foundry Tools resource",
+        "The model's trained weights in a local file",
+        "A GPU cluster of your own, provisioned and maintained by the team, to run the service locally",
+        "Microsoft's source code for the service"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Como todo servicio administrado de Foundry Tools, se consume por API a través de un endpoint y una credencial asociados al recurso que se creó en Azure; nada del modelo ni del hardware que lo ejecuta es responsabilidad del cliente que lo llama.",
+      "explanation_en": "Like every managed Foundry Tools service, it is consumed via API through an endpoint and a credential tied to the resource created in Azure; none of the model or the hardware running it is the calling client's responsibility.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450601ex007",
+      "skill_id": "sk450601",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Completa el hueco para leer la puntuación de confianza del sentimiento \"positive\" en esta respuesta simulada de Azure AI Language.\n\n```python\nrespuesta = {\n    \"sentiment\": \"positive\",\n    \"confidenceScores\": {\"positive\": 0.87, \"neutral\": 0.10, \"negative\": 0.03},\n}\npuntuacion = respuesta[\"confidenceScores\"][\"___\"]\nprint(puntuacion)\n```",
+      "question_en": "Fill in the blank to read the confidence score for the \"positive\" sentiment in this mock Azure AI Language response.\n\n```python\nresponse = {\n    \"sentiment\": \"positive\",\n    \"confidenceScores\": {\"positive\": 0.87, \"neutral\": 0.10, \"negative\": 0.03},\n}\nscore = response[\"confidenceScores\"][\"___\"]\nprint(score)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "0.87",
+      "correct_answer_en": "0.87",
+      "explanation_es": "`confidenceScores` guarda una puntuación por cada clase posible; para leer la de \"positive\" hay que indexar exactamente con esa clave, igual que la respuesta real de la API de sentimiento.",
+      "explanation_en": "`confidenceScores` stores a score for every possible class; reading the \"positive\" one means indexing with exactly that key, just like the real sentiment API response.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901",
+      "expected_time_ms": 30000
+    },
+    {
+      "id": "q450602001",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un modelo multimodal \"interpreta una entrada visual en el prompt\". ¿Qué significa esto?",
+      "question_en": "A multimodal model \"interprets visual input in the prompt\". What does this mean?",
+      "options_es": [
+        "Se envía una imagen junto con texto en la misma petición, y el modelo razona sobre ambas a la vez",
+        "El modelo convierte primero la imagen en un archivo de audio antes de poder razonar sobre su contenido visual",
+        "El modelo solo puede aceptar imágenes en blanco y negro",
+        "La imagen se guarda en una base de datos para su revisión manual posterior"
+      ],
+      "options_en": [
+        "An image is sent together with text in the same request, and the model reasons over both at once",
+        "The model first converts the image into an audio file before it can reason over its visual content",
+        "The model can only accept black-and-white images",
+        "The image is stored in a database for later manual review"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La capacidad multimodal consiste en aceptar imagen y texto en una misma llamada y producir una respuesta que tiene en cuenta ambos, por ejemplo describir una foto o responder una pregunta sobre su contenido; no hay conversión a audio ni una restricción de color.",
+      "explanation_en": "Multimodal capability means accepting image and text in the same call and producing a response that accounts for both, for example describing a photo or answering a question about its content; there is no conversion to audio and no color restriction.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450602002",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Para crear una nueva imagen a partir de una descripción en texto usando Foundry, ¿qué se necesita?",
+      "question_en": "To create a new image from a text description using Foundry, what is needed?",
+      "options_es": [
+        "Desplegar un modelo de generación de imágenes del catálogo de Foundry y enviarle el texto como prompt",
+        "Subir una foto ya existente de un objeto nuevo para que el servicio la clasifique dentro de una de las categorías predefinidas del catálogo",
+        "Entrenar desde cero una red generativa adversaria (GAN) propia",
+        "Convertir primero el texto a voz y luego la voz a imagen"
+      ],
+      "options_en": [
+        "Deploy an image-generation model from the Foundry catalog and send it the text as a prompt",
+        "Uploading an already-existing photo of a new object for the service to classify it into one of the catalog's predefined categories",
+        "Train your own generative adversarial network (GAN) from scratch",
+        "First convert the text to speech, then the speech to an image"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La generación de imágenes es, para quien la consume, la misma mecánica que cualquier otro modelo del catálogo de Foundry: se despliega y se le manda un prompt de texto describiendo la imagen deseada; no implica entrenar nada propio ni pasar por audio.",
+      "explanation_en": "For the consumer, image generation follows the same mechanics as any other model in the Foundry catalog: deploy it and send it a text prompt describing the desired image; it involves training nothing of your own and no detour through audio.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450602003",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una app ligera con capacidades de visión recibe una foto de un recibo y la pregunta \"¿cuánto es el total?\". ¿Qué hace el modelo multimodal desplegado?",
+      "question_en": "A lightweight app with vision capabilities receives a photo of a receipt and the question \"what is the total?\". What does the deployed multimodal model do?",
+      "options_es": [
+        "Lee el contenido visual de la imagen y devuelve una respuesta en texto fundamentada en lo que ve, por ejemplo el importe del total",
+        "Devuelve siempre la imagen original sin ninguna modificación, acompañada únicamente del nombre del archivo y de su tamaño exacto en bytes",
+        "Convierte la foto en un archivo de audio con la lectura del recibo",
+        "Rechaza la petición porque los modelos de texto no aceptan imágenes"
+      ],
+      "options_en": [
+        "It reads the image's visual content and returns a text answer grounded in what it sees, e.g. the total amount",
+        "It always returns the original image completely unmodified, accompanied only by the file name and its exact size in bytes",
+        "It converts the photo into an audio file reading the receipt aloud",
+        "It rejects the request because text models cannot accept images"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Esto es exactamente lo que distingue a un modelo multimodal: combina lo que ve en la imagen con la pregunta en texto para producir una respuesta en texto fundamentada en el contenido visual, como el importe pedido en el recibo.",
+      "explanation_en": "This is exactly what sets a multimodal model apart: it combines what it sees in the image with the text question to produce a text answer grounded in the visual content, such as the amount asked about on the receipt.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450602004",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "¿En qué se diferencia \"interpretar una imagen existente\" de \"generar una imagen nueva\" al implementar con Foundry?",
+      "question_en": "How does \"interpreting an existing image\" differ from \"generating a new image\" when implementing with Foundry?",
+      "options_es": [
+        "Interpretar parte de una imagen de entrada y produce texto; generar parte de un texto de entrada y produce una imagen",
+        "Ambas producen siempre el mismo tipo exacto de salida, una imagen nueva, sin que el cliente pueda elegir texto como resultado en ningún caso",
+        "Interpretar requiere entrenar un modelo propio; generar nunca lo requiere",
+        "No hay diferencia, son sinónimos en la documentación de Foundry"
+      ],
+      "options_en": [
+        "Interpreting starts from an input image and produces text; generating starts from input text and produces an image",
+        "Both always produce the exact same kind of output, a new image, with no way for the client to ever choose text as the result",
+        "Interpreting requires training your own model; generating never does",
+        "There is no difference, they are synonyms in Foundry's documentation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Son direcciones opuestas del mismo eje multimodal: interpretar consume una imagen y devuelve una descripción o respuesta en texto, mientras que generar consume una descripción en texto y devuelve una imagen nueva; ninguna de las dos exige que el cliente entrene su propio modelo.",
+      "explanation_en": "They run in opposite directions along the same multimodal axis: interpreting consumes an image and returns a text description or answer, while generating consumes a text description and returns a new image; neither requires the client to train their own model.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450602005",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una app combina interpretación y generación de imágenes: recibe una foto de una habitación y el texto \"muéstrame esta sala con paredes azules\". ¿Qué patrón de implementación describe mejor este caso?",
+      "question_en": "An app combines image interpretation and generation: it receives a photo of a room and the text \"show me this room with blue walls\". Which implementation pattern best describes this case?",
+      "options_es": [
+        "Edición guiada por imagen: el modelo toma la imagen de entrada más una instrucción de texto y produce una nueva imagen modificada",
+        "Clasificación simple: el modelo se limita a etiquetar la habitación completa como \"cocina\" o \"salón\" sin describir ningún detalle más",
+        "Transcripción: el modelo convierte la imagen a texto describiendo los muebles",
+        "Detección de objetos: el modelo marca con cajas cada mueble de la habitación"
+      ],
+      "options_en": [
+        "Image-guided editing: the model takes the input image plus a text instruction and produces a new, modified image",
+        "Simple classification: the model only labels the whole room as \"kitchen\" or \"living room\" with no further detail described",
+        "Transcription: the model converts the image into text describing the furniture",
+        "Object detection: the model draws boxes around each piece of furniture"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Pedir \"la misma sala, pero con paredes azules\" es edición guiada por imagen: el modelo recibe la imagen original como referencia y una instrucción de texto, y devuelve una imagen nueva que conserva la escena pero aplica el cambio solicitado; no es clasificación, ni transcripción, ni detección de objetos.",
+      "explanation_en": "Asking for \"the same room but with blue walls\" is image-guided editing: the model receives the original image as a reference plus a text instruction, and returns a new image that keeps the scene but applies the requested change; it is not classification, transcription, or object detection.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450602006",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "¿Qué parámetro suele controlar, al desplegar un modelo generativo de imágenes, cuánto se parece cada nueva imagen a una referencia de estilo o entrada dada?",
+      "question_en": "When deploying a generative image model, which kind of parameter typically controls how closely each new image follows a given style reference or input?",
+      "options_es": [
+        "Un parámetro de fuerza/influencia de la imagen o el prompt de referencia sobre el resultado",
+        "El número máximo de tokens permitido en la respuesta de texto que acompaña a la imagen generada",
+        "El tamaño del lote de entrenamiento (batch size)",
+        "La tasa de aprendizaje (learning rate) del modelo"
+      ],
+      "options_en": [
+        "A strength/influence parameter for the reference image or prompt over the result",
+        "The maximum number of tokens allowed in the text reply that accompanies the generated image",
+        "The training batch size",
+        "The model's learning rate"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los parámetros de configuración de un modelo de generación de imágenes incluyen un control de cuánto debe parecerse el resultado a una imagen o prompt de referencia; tokens máximos, batch size y learning rate son parámetros de texto o de entrenamiento, no de este tipo de generación consumida como servicio.",
+      "explanation_en": "An image-generation model's configuration parameters include a control for how closely the result should match a reference image or prompt; max tokens, batch size, and learning rate are text or training parameters, not the kind used for this service as consumed.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450602007",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "¿Qué devuelve un modelo multimodal desplegado al pedirle que describa el contenido de una fotografía?",
+      "question_en": "What does a deployed multimodal model return when asked to describe a photograph's content?",
+      "options_es": [
+        "Una respuesta en texto fundamentada en lo que detecta en la imagen",
+        "Un archivo de imagen idéntico en todos sus bytes al original que se le envió para analizar",
+        "Un vídeo generado a partir de la foto",
+        "Un conjunto de coordenadas GPS donde se tomó la foto"
+      ],
+      "options_en": [
+        "A text answer grounded in what it detects in the image",
+        "An image file byte-for-byte identical to the original one sent to it for analysis",
+        "A video generated from the photo",
+        "A set of GPS coordinates for where the photo was taken"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Pedir una descripción es un caso de interpretación: la salida es texto generado a partir del contenido visual, no una copia de la imagen ni metadatos de localización que el modelo no tiene forma de inferir solo por los píxeles.",
+      "explanation_en": "Asking for a description is an interpretation case: the output is text generated from the visual content, not a copy of the image nor location metadata the model has no way to infer from pixels alone.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450303001",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Content Understanding procesa una factura escaneada. ¿Qué tipo de salida produce?",
+      "question_en": "Content Understanding processes a scanned invoice. What kind of output does it produce?",
+      "options_es": [
+        "Campos estructurados (por ejemplo, fecha, total, proveedor) extraídos en un formato tipo clave-valor",
+        "Solo el texto completo de la factura extraído como una única cadena sin ninguna estructura ni etiquetas de campo asociadas",
+        "Una imagen anonimizada de la factura",
+        "Un resumen en audio de la factura"
+      ],
+      "options_en": [
+        "Structured fields (e.g. date, total, vendor) extracted in a key-value format",
+        "Only the invoice's full text extracted as a single unstructured string with no field labels attached at all",
+        "An anonymized image of the invoice",
+        "An audio summary of the invoice"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Content Understanding va más allá de devolver texto plano: identifica y etiqueta campos concretos del documento (fecha, total, proveedor) para que la app pueda consumirlos directamente como datos estructurados, en vez de tener que buscarlos dentro de un bloque de texto.",
+      "explanation_en": "Content Understanding goes beyond returning plain text: it identifies and labels specific document fields (date, total, vendor) so the app can consume them directly as structured data, instead of having to search for them inside a block of text.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450303002",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "¿En qué se diferencia extraer información de una imagen con Content Understanding de un OCR tradicional?",
+      "question_en": "How does extracting information from an image with Content Understanding differ from traditional OCR?",
+      "options_es": [
+        "Content Understanding puede devolver campos y etiquetas estructuradas con contexto, no solo el texto plano que aparece en la imagen",
+        "El OCR tradicional siempre es más preciso para cualquier idioma",
+        "Content Understanding solo acepta imágenes en blanco y negro de muy baja resolución, nunca a color ni en varios idiomas distintos a la vez",
+        "No hay ninguna diferencia entre ambos"
+      ],
+      "options_en": [
+        "Content Understanding can return structured fields and labels with context, not just the plain text that appears in the image",
+        "Traditional OCR is always more accurate for any language",
+        "Content Understanding only accepts very low-resolution black-and-white images, never color ones or several different languages at once",
+        "There is no difference between the two"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un OCR clásico se limita a transcribir los caracteres que ve; Content Understanding añade una capa de interpretación que etiqueta esos caracteres como campos con significado (por ejemplo, \"fecha de emisión\" en vez de solo una cadena con forma de fecha).",
+      "explanation_en": "Classic OCR is limited to transcribing the characters it sees; Content Understanding adds an interpretation layer that labels those characters as meaningful fields (for example, \"issue date\" instead of just a date-shaped string).",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450303003",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Al extraer información de un archivo de audio o vídeo con Content Understanding, ¿qué tipo de resultado es típico, además de la transcripción?",
+      "question_en": "When extracting information from an audio or video file with Content Understanding, what kind of result is typical beyond the transcript?",
+      "options_es": [
+        "Un resumen estructurado con entidades, momentos clave o metadatos relevantes del contenido",
+        "Una traducción automática obligatoria del contenido a un único idioma fijo, sin posibilidad de elegir otro",
+        "Una copia del archivo original comprimida al 50 %",
+        "Un archivo ejecutable que reproduce el vídeo más rápido"
+      ],
+      "options_en": [
+        "A structured summary with entities, key moments, or relevant content metadata",
+        "A mandatory automatic translation of the content into one single fixed language, with no option to choose another",
+        "A copy of the original file compressed by 50%",
+        "An executable file that plays the video back faster"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Igual que con documentos e imágenes, Content Understanding no se detiene en la transcripción cruda: añade estructura, identificando entidades mencionadas o momentos relevantes dentro del audio o vídeo, útil para que una app indexe o resuma el contenido sin procesarlo a mano.",
+      "explanation_en": "Just as with documents and images, Content Understanding does not stop at the raw transcript: it adds structure, identifying mentioned entities or relevant moments within the audio or video, useful for an app to index or summarize the content without processing it by hand.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450303004",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Para construir una app ligera de extracción de información con Content Understanding, ¿qué se define primero?",
+      "question_en": "To build a lightweight information-extraction app with Content Understanding, what is defined first?",
+      "options_es": [
+        "Un esquema o plantilla de los campos que se quieren extraer de cada documento",
+        "El idioma final en el que se mostrará la interfaz de usuario de la app que consume el resultado",
+        "El número de usuarios concurrentes que usarán la app",
+        "La paleta de colores de la interfaz"
+      ],
+      "options_en": [
+        "A schema or template of the fields to extract from each document",
+        "The final language the consuming app's user interface will be shown in",
+        "The number of concurrent users the app will serve",
+        "The interface's color palette"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Content Understanding necesita saber qué campos buscar (por ejemplo \"fecha\", \"total\", \"proveedor\") antes de analizar el documento; ese esquema es lo que convierte texto o imagen en un resultado estructurado y predecible, independientemente del idioma de la interfaz o del número de usuarios.",
+      "explanation_en": "Content Understanding needs to know which fields to look for (e.g. \"date\", \"total\", \"vendor\") before analyzing the document; that schema is what turns text or image into a structured, predictable result, independent of the interface's language or the number of users.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450303005",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Una app recibe un formulario con un campo \"Importe total: 125,00 €\" y debe guardarlo como dato numérico. ¿Qué papel juega Content Understanding aquí?",
+      "question_en": "An app receives a form with a field \"Total amount: $125.00\" and must store it as a numeric value. What role does Content Understanding play here?",
+      "options_es": [
+        "Localiza y devuelve ese campo etiquetado (por ejemplo, \"total\": 125.00) listo para que la app lo guarde sin parsear texto a mano",
+        "Convierte automáticamente el importe a cualquier otra divisa que la app solicite, todo dentro de esa misma llamada de extracción",
+        "Decide el esquema de base de datos donde se guardará el dato",
+        "Genera una nueva imagen del formulario"
+      ],
+      "options_en": [
+        "It locates and returns that labeled field (e.g. \"total\": 125.00) ready for the app to store without hand-parsing text",
+        "It automatically converts the amount into any other currency the app requests, all within that very same extraction call",
+        "It decides the database schema where the value will be stored",
+        "It generates a new image of the form"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Ese es exactamente el valor de extraer con un esquema: la app recibe el campo ya identificado y tipado, sin tener que buscarlo con expresiones regulares dentro de un texto plano; la conversión de divisa y el diseño de la base de datos son responsabilidad de la app, no del servicio.",
+      "explanation_en": "That is exactly the value of schema-based extraction: the app receives the field already identified and typed, without having to hunt for it with regular expressions inside plain text; currency conversion and database design remain the app's responsibility, not the service's.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450303006",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué distingue a Content Understanding de un servicio de clasificación de imágenes simple como el de Custom Vision?",
+      "question_en": "What sets Content Understanding apart from a simple image-classification service like Custom Vision?",
+      "options_es": [
+        "Content Understanding extrae campos y contexto con significado, no solo una etiqueta de categoría para la imagen completa",
+        "Custom Vision siempre necesita menos datos de entrenamiento que cualquier otro servicio de visión disponible en el catálogo completo",
+        "Content Understanding solo funciona con texto, nunca con imágenes",
+        "No hay ninguna diferencia funcional entre ambos"
+      ],
+      "options_en": [
+        "Content Understanding extracts meaningful fields and context, not just a single category label for the whole image",
+        "Custom Vision always needs less training data than any other vision service available in the whole catalog",
+        "Content Understanding only works with text, never with images",
+        "There is no functional difference between the two"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Clasificar una imagen completa con una etiqueta (\"gato\"/\"perro\") es un problema distinto al de extraer varios campos con significado de su contenido (por ejemplo, los datos de un carnet de identidad); Content Understanding cubre este segundo caso y sí admite imágenes como una de sus entradas.",
+      "explanation_en": "Classifying a whole image with one label (\"cat\"/\"dog\") is a different problem from extracting several meaningful fields from its content (for example, the data on an ID card); Content Understanding covers that second case and does accept images as one of its inputs.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901"
+    },
+    {
+      "id": "q450303ex007",
+      "skill_id": "sk450303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Completa el hueco para leer el campo \"total\" ya extraído de un documento por Content Understanding.\n\n```python\nextraido = {\"fields\": {\"fecha\": \"2026-01-15\", \"total\": 125.00, \"proveedor\": \"Acme\"}}\nimporte = extraido[\"fields\"][\"___\"]\nprint(importe)\n```",
+      "question_en": "Fill in the blank to read the \"total\" field already extracted from a document by Content Understanding.\n\n```python\nextracted = {\"fields\": {\"date\": \"2026-01-15\", \"total\": 125.00, \"vendor\": \"Acme\"}}\namount = extracted[\"fields\"][\"___\"]\nprint(amount)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "125.0",
+      "correct_answer_en": "125.0",
+      "explanation_es": "El resultado de la extracción llega como un diccionario de campos ya tipados; leer el importe es indexar con la clave `\"total\"`, igual que la app haría con la respuesta real del servicio.",
+      "explanation_en": "The extraction result arrives as a dictionary of already-typed fields; reading the amount means indexing with the `\"total\"` key, just like the app would do with the service's real response.",
+      "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901",
+      "expected_time_ms": 30000
     }
   ]
 }
