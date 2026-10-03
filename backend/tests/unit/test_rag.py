@@ -179,6 +179,23 @@ def test_retrieve_carries_source_through_for_grounding() -> None:
     assert results[0].source == "PEP 8"
 
 
+def test_retrieve_unions_candidates_across_all_query_terms() -> None:
+    """Every query term must contribute candidates, not just one of them —
+    a document that shares only a *different* query term than its sibling
+    must still surface (39.32: retrieve() finds candidates via a per-term
+    postings lookup in `_token_to_docs`; dropping any query term from that
+    union would silently lose whichever documents only matched on it, and
+    no other test here would notice)."""
+    idx = _index_from(
+        [
+            RetrievedChunk(doc_id="d1", text="alpha only here", source=None, kind="question"),
+            RetrievedChunk(doc_id="d2", text="gamma only here", source=None, kind="question"),
+        ]
+    )
+    results = idx.retrieve("alpha gamma", n=2)
+    assert {r.doc_id for r in results} == {"d1", "d2"}
+
+
 def test_retrieve_bilingual_query_matches_either_language() -> None:
     """Red line: the index must cover ES and EN — a document built from both
     languages should be retrievable by a query in just one of them."""

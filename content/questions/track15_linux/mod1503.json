@@ -259,8 +259,8 @@
     "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
-    "explanation_es": "Sí, `VAR`, `var`, y `Var` son variables diferentes en bash.",
-    "explanation_en": "Yes, `VAR`, `var`, and `Var` are different variables in bash.",
+    "explanation_es": "Verdadero: bash trata los nombres de variable como cadenas sensibles a mayúsculas, igual que la mayoría de shells POSIX, así que `VAR`, `var` y `Var` ocupan tres espacios de memoria distintos. Por convención, las variables de entorno del sistema (`PATH`, `HOME`) se escriben en mayúsculas para distinguirlas de las variables propias de un script.",
+    "explanation_en": "True: bash treats variable names as case-sensitive strings, like most POSIX shells, so `VAR`, `var`, and `Var` occupy three separate storage slots. By convention, system environment variables (`PATH`, `HOME`) are written in uppercase to tell them apart from a script's own variables.",
     "source": "The Linux Command Line, William E. Shotts — https://linuxcommand.org/tlcl.php",
     "expected_time_ms": 20000
   },
@@ -605,8 +605,8 @@
     "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
-    "explanation_es": "La estructura es: `case $VAR in patron1) comandos;; esac`",
-    "explanation_en": "The structure is: `case $VAR in pattern1) commands;; esac`",
+    "explanation_es": "La sintaxis correcta usa `in` (no `of`, que es de otros lenguajes) y cierra con `esac` (`case` al revés, como bash cierra varios bloques): `case $VAR in patron1) comandos;; patron2) comandos;; esac`. Cada patrón termina con `;;` para indicar dónde acaba ese bloque, de forma similar a un `break` implícito.",
+    "explanation_en": "The correct syntax uses `in` (not `of`, which belongs to other languages) and closes with `esac` (`case` spelled backward, the way bash closes several block keywords): `case $VAR in pattern1) commands;; pattern2) commands;; esac`. Each pattern ends with `;;` to mark where that block stops, acting like an implicit `break`.",
     "source": "The Linux Command Line, William E. Shotts — https://linuxcommand.org/tlcl.php",
     "expected_time_ms": 20000
   },
