@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 import app.services.gamification.service as service_module
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
+from app.models.moderation import UserBlock
 from app.models.user import User, UserBadge
 from app.services.gamification.service import (
     apply_quiz_event,
@@ -330,8 +331,89 @@ class TestGetCurrentStandings:
 
         assert resp is not None
         assert len(resp.standings) == 10
+        assert resp.total_members == 10
         assert resp.promotion_zone > 0
         assert resp.demotion_zone > 0
+
+    async def test_zone_size_survives_a_block_at_the_boundary(
+        self, db_session: AsyncSession, user: User
+    ):
+        """Liga de exactamente 10, uno bloqueado ([COORD]/[S5] 2026-10-03):
+        antes, `zone_size` salía de `len(standings)` (9, sin el bloqueado) y
+        las zonas desaparecían aunque la liga real sí llega al mínimo."""
+        league = _league()
+        db_session.add(league)
+        other = _user2(db_session)
+        db_session.add(other)
+        await db_session.flush()
+        db_session.add(UserBlock(blocker_id=user.id, blocked_id=other.id))
+        await db_session.commit()
+
+        today_week = week_start_of(date.today())
+        extra_entries = [
+            LeagueEntry(user_id=other.id, league_id=league.id, week_start=today_week, xp_earned=5)
+        ]
+        for _ in range(8):
+            extra = _user2(db_session)
+            db_session.add(extra)
+            await db_session.flush()
+            extra_entries.append(
+                LeagueEntry(user_id=extra.id, league_id=league.id, week_start=today_week, xp_earned=5)
+            )
+        db_session.add_all(extra_entries)
+        db_session.add(
+            LeagueEntry(user_id=user.id, league_id=league.id, week_start=today_week, xp_earned=1)
+        )
+        await db_session.commit()
+
+        resp = await get_current_standings(db_session, user)
+
+        assert resp is not None
+        assert resp.total_members == 10
+        assert len(resp.standings) == 9  # el bloqueado no aparece
+        assert resp.promotion_zone > 0
+        assert resp.demotion_zone > 0
+
+    async def test_demotion_threshold_uses_real_total_not_visible_rows(
+        self, db_session: AsyncSession, user: User
+    ):
+        """Liga de 12, uno bloqueado: el umbral de descenso del frontend usa
+        `total_members - demotion_zone`. Con el bug (`len(standings)`, 11 en
+        vez de 12) el umbral bajaba un puesto y marcaba una fila de más."""
+        league = _league()
+        db_session.add(league)
+        other = _user2(db_session)
+        db_session.add(other)
+        await db_session.flush()
+        db_session.add(UserBlock(blocker_id=user.id, blocked_id=other.id))
+        await db_session.commit()
+
+        today_week = week_start_of(date.today())
+        extra_entries = [
+            LeagueEntry(user_id=other.id, league_id=league.id, week_start=today_week, xp_earned=5)
+        ]
+        for _ in range(10):
+            extra = _user2(db_session)
+            db_session.add(extra)
+            await db_session.flush()
+            extra_entries.append(
+                LeagueEntry(user_id=extra.id, league_id=league.id, week_start=today_week, xp_earned=5)
+            )
+        db_session.add_all(extra_entries)
+        db_session.add(
+            LeagueEntry(user_id=user.id, league_id=league.id, week_start=today_week, xp_earned=1)
+        )
+        await db_session.commit()
+
+        resp = await get_current_standings(db_session, user)
+
+        assert resp is not None
+        assert resp.total_members == 12
+        assert len(resp.standings) == 11
+        # Umbral correcto: rank > 12 - 5 = 7 (ranks 8-12). Con el bug habría
+        # sido rank > 11 - 5 = 6 (ranks 7-12, una fila de más).
+        demoted_ranks = {s.rank for s in resp.standings if s.rank > resp.total_members - resp.demotion_zone}
+        assert demoted_ranks == {8, 9, 10, 11, 12}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
