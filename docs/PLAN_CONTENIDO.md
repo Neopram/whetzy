@@ -6,11 +6,11 @@
 
 ## 1. Qué falta y por qué hace falta un método
 
-El 2026-10-03, `catalog_coverage.py` sobre `master` daba **4.571 preguntas pendientes**:
+El 2026-10-03, tras fusionar el #99, `catalog_coverage.py` sobre `master` daba **4.522 preguntas pendientes**:
 
 - 2.610 para llevar los 24 tracks construidos a la forma 32 × 10, con +261 skills, +261 lecciones
   y +266 términos;
-- 921 de práctica de certificación;
+- 872 de práctica de certificación;
 - 1.040 reservadas.
 
 `question_diversity_baseline.json` suma además 3.903 preguntas cuya fuente no está indexada

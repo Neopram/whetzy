@@ -669,6 +669,161 @@
       "explanation_es": "El estilo Hive exige claves de partición en minúsculas; MSCK REPAIR TABLE no registra en el Data Catalog una ruta como userId=123 porque no coincide con el patrón esperado (userid=123), y la partición queda invisible para las consultas hasta corregir la ruta o añadirla manualmente con ALTER TABLE ADD PARTITION.",
       "explanation_en": "Hive-style partitioning requires lowercase partition keys; MSCK REPAIR TABLE won't register a path like userId=123 in the Data Catalog because it doesn't match the expected pattern (userid=123), leaving the partition invisible to queries until the path is fixed or added manually with ALTER TABLE ADD PARTITION.",
       "source": "AWS MLA-C01 Exam Guide (https://aws.amazon.com/certification)"
+    },
+    {
+      "id": "q430121001",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué sirve una base de datos vectorial en una canalización RAG?",
+      "question_en": "What is a vector database used for in a RAG pipeline?",
+      "options_es": [
+        "Almacenar los vectores de embedding de cada fragmento para poder buscar por cercanía semántica",
+        "Reemplazar por completo al modelo fundacional durante la generación de la respuesta en vez de generar directamente la respuesta final",
+        "Guardar copias de seguridad cifradas de los pesos originales del modelo entrenado",
+        "Sustituir a Amazon S3 como almacenamiento principal de todos los documentos fuente"
+      ],
+      "options_en": [
+        "Storing each chunk's embedding vectors so retrieval can search by semantic closeness",
+        "Completely replacing the foundation model during answer generation instead of directly generating the final answer",
+        "Storing encrypted backups of the trained model's original weights",
+        "Replacing Amazon S3 as the primary storage for every source document"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La base de datos vectorial indexa los vectores numéricos que representan cada fragmento, para que una consulta pueda encontrar los fragmentos más parecidos por similitud (normalmente coseno) en vez de por coincidencia exacta de palabras. No sustituye al modelo generador ni almacena los pesos del modelo: eso es responsabilidad de servicios distintos.",
+      "explanation_en": "The vector database indexes the numeric vectors that represent each chunk, so a query can find the most similar chunks by similarity (usually cosine) instead of exact word matching. It does not replace the generating model nor store the model's weights — those are different services' responsibility.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430121002",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace un modelo de embeddings dentro de una canalización RAG?",
+      "question_en": "What does an embedding model do inside a RAG pipeline?",
+      "options_es": [
+        "Transforma texto o imágenes en vectores numéricos que capturan su significado",
+        "Genera la respuesta final en lenguaje natural que recibe la persona usuaria que recibirá la persona usuaria final de la aplicación",
+        "Decide automáticamente qué base de datos vectorial usar en cada consulta",
+        "Comprime los documentos fuente para reducir el coste de almacenamiento en S3"
+      ],
+      "options_en": [
+        "It transforms text or images into numeric vectors that capture their meaning",
+        "It generates the final natural-language answer the end user receives that the application's end user will receive",
+        "It automatically decides which vector database to use for each query",
+        "It compresses the source documents to reduce S3 storage cost"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El modelo de embeddings convierte contenido (texto, imagen) en una representación numérica donde el significado se refleja en la cercanía geométrica entre vectores; la respuesta final la produce el modelo generador, no el de embeddings, que tampoco elige la base de datos ni comprime archivos.",
+      "explanation_en": "The embedding model converts content (text, image) into a numeric representation where meaning is reflected as geometric closeness between vectors; the final answer comes from the generating model, not the embedding model, which also doesn't pick the database or compress files.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430121003",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué se trocea (chunking) un documento largo antes de indexarlo para RAG?",
+      "question_en": "Why is a long document chunked before indexing it for RAG?",
+      "options_es": [
+        "Para que la búsqueda recupere solo la parte relevante en vez del documento entero",
+        "Porque los modelos de embeddings solo aceptan archivos con extensión .txt porque esos modelos solo procesan datos tabulares simples",
+        "Para reducir el coste de licencias del software que gestiona la base de datos",
+        "Porque Amazon S3 impone un límite de tamaño de archivo de 10 KB por objeto"
+      ],
+      "options_en": [
+        "So retrieval returns just the relevant part instead of the whole document",
+        "Because embedding models only accept files with a .txt extension because those models only process simple tabular data",
+        "To reduce the licensing cost of the software managing the database",
+        "Because Amazon S3 enforces a 10 KB file size limit per object"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Trocear en fragmentos manejables permite que la recuperación identifique y devuelva justo el pasaje relevante de un documento largo; no tiene relación con el formato de archivo, licencias de software, ni con límites de tamaño de S3 (que de hecho admite objetos de hasta varios terabytes).",
+      "explanation_en": "Chunking into manageable pieces lets retrieval identify and return just the relevant passage from a long document; it has nothing to do with file format, software licensing, or S3 size limits (which in fact support objects up to several terabytes).",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430121004",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "¿Qué metadatos es útil conservar al trocear un documento para RAG?",
+      "question_en": "What metadata is useful to keep when chunking a document for RAG?",
+      "options_es": [
+        "Fuente, fecha y sección del documento, para poder filtrar o citar la respuesta",
+        "Solo el identificador interno de la base de datos vectorial que lo almacenará para que la aplicación la use en vez de pedírsela al usuario de nuevo",
+        "El nombre del empleado que subió el archivo originalmente al bucket de S3",
+        "La resolución en píxeles de cualquier imagen incluida en el documento"
+      ],
+      "options_en": [
+        "Source, date, and section of the document, to filter or cite the answer later",
+        "Only the internal identifier of the vector database that will store it for the application to use instead of asking the user for it again",
+        "The name of the employee who originally uploaded the file to the S3 bucket",
+        "The pixel resolution of any image included in the document"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Conservar fuente, fecha y sección permite que la aplicación filtre resultados obsoletos o cite de dónde salió la información; el identificador de la base de datos lo asigna el propio almacén, y quién subió el archivo o la resolución de una imagen rara vez aportan valor para la recuperación.",
+      "explanation_en": "Keeping source, date, and section lets the application filter out stale results or cite where information came from; the database identifier is assigned by the store itself, and who uploaded the file or an image's pixel resolution rarely add retrieval value.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430121005",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de estas opciones es una base de datos vectorial que AWS menciona explícitamente para RAG?",
+      "question_en": "Which of these is a vector database AWS explicitly mentions for RAG?",
+      "options_es": [
+        "Amazon RDS con la extensión pgvector habilitada",
+        "Amazon Route 53, para resolver nombres DNS internos",
+        "AWS CloudTrail, para auditar llamadas a la API de la cuenta",
+        "Amazon SNS, para enviar notificaciones a una cola de mensajes"
+      ],
+      "options_en": [
+        "Amazon RDS with the pgvector extension enabled",
+        "Amazon Route 53, for resolving internal DNS names",
+        "AWS CloudTrail, for auditing the account's API calls",
+        "Amazon SNS, for sending notifications to a message queue"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS cita explícitamente OpenSearch Service, Amazon RDS con pgvector y Amazon S3 como opciones de almacén vectorial para IA generativa; Route 53, CloudTrail y SNS resuelven DNS, auditoría y mensajería, sin ninguna capacidad de búsqueda vectorial.",
+      "explanation_en": "AWS explicitly names OpenSearch Service, Amazon RDS with pgvector, and Amazon S3 as vector-store options for generative AI; Route 53, CloudTrail, and SNS handle DNS, auditing, and messaging, with no vector-search capability at all.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430121006",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "Un conjunto de datos de entrenamiento mezcla texto, imágenes y audio. ¿Qué validación de calidad es específica de este escenario multimodal?",
+      "question_en": "A training dataset mixes text, images, and audio. What quality check is specific to this multimodal scenario?",
+      "options_es": [
+        "Optimizar la distribución aplicando métricas de sesgo entre las distintas modalidades",
+        "Convertir todo el audio a texto antes de calcular cualquier métrica de calidad antes de calcular ninguna otra métrica de calidad del conjunto",
+        "Descartar automáticamente cualquier imagen que pese más de un megabyte",
+        "Renombrar todos los archivos con un identificador numérico consecutivo"
+      ],
+      "options_en": [
+        "Optimizing the distribution by applying bias metrics across the different modalities",
+        "Converting all audio to text before computing any quality metric before computing any other quality metric for the set",
+        "Automatically discarding any image larger than one megabyte",
+        "Renaming every file with a sequential numeric identifier"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cuando los datos combinan texto, imagen y audio, hay que medir el sesgo a través de las modalidades, no solo dentro de una, porque un desequilibrio en una sola modalidad (por ejemplo, pocas imágenes de un grupo) puede sesgar el conjunto completo aunque el texto esté balanceado. Convertir audio a texto, descartar por tamaño o renombrar archivos no son controles de calidad de sesgo.",
+      "explanation_en": "When data mixes text, image, and audio, bias must be measured across modalities, not just within one, because an imbalance in a single modality (say, too few images of one group) can skew the whole set even if the text is balanced. Converting audio to text, discarding by file size, or renaming files are not bias quality checks.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430121ex007",
+      "skill_id": "sk430121",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Completa el hueco para calcular la similitud de coseno entre dos vectores de embedding con la librería estándar.\n\n```python\nimport math\nv1 = [1.0, 0.0]\nv2 = [1.0, 1.0]\nproducto = sum(a*b for a, b in zip(v1, v2))\nnorma1 = math.sqrt(sum(a*a for a in v1))\nnorma2 = math.sqrt(sum(b*b for b in v2))\nsimilitud = producto / (norma1 * norma2)\nprint(round(similitud, ___))\n```",
+      "question_en": "Fill in the blank to compute the cosine similarity between two embedding vectors using the standard library.\n\n```python\nimport math\nv1 = [1.0, 0.0]\nv2 = [1.0, 1.0]\ndot = sum(a*b for a, b in zip(v1, v2))\nnorm1 = math.sqrt(sum(a*a for a in v1))\nnorm2 = math.sqrt(sum(b*b for b in v2))\nsimilarity = dot / (norm1 * norm2)\nprint(round(similarity, ___))\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "0.7071",
+      "correct_answer_en": "0.7071",
+      "explanation_es": "`round(similitud, 4)` redondea la similitud de coseno (aquí 1/√2 ≈ 0.7071) a 4 decimales, un nivel de precisión habitual al comparar vectores de embedding.",
+      "explanation_en": "`round(similarity, 4)` rounds the cosine similarity (here 1/√2 ≈ 0.7071) to 4 decimal places, a common precision level when comparing embedding vectors.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
+      "expected_time_ms": 35000
     }
   ]
 }
