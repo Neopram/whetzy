@@ -52,6 +52,14 @@ scripts/ci_local.sh        scripts/ledger.py     scripts/check_docs.py
 doc esté en `docs/README.md` o aquí; no edita ni borra líneas ajenas. Dos PRs que añaden líneas
 distintas se fusionan sin conflicto o con uno trivial que resuelve S5.
 
+**Excepción: las líneas de cifras del banco** (`[COORD] DESBLOQUEO` del #89). `check_docs.py`
+exige que las cifras del banco cuadren en ficheros compartidos: la fila `Contenido` de
+`docs/AUTONOMOUS_STATE.md` ([2]) y las cifras de `frontend/src/lib/catalog.ts` ([4]) y de
+`docs/ARCHITECTURE.md` ([5a]). **El PR de contenido que cambia el banco (S2) regenera esas líneas**,
+y solo esas, a partir del banco real, y las lista en «Fuera de alcance». Si dos PRs de contenido
+las tocan, el segundo hace `git merge origin/master` tras fusionarse el primero, las regenera y
+repite el nivel 2; nunca se edita a mano la cifra de otro PR.
+
 Las demás sesiones proponen sus cambios a estos ficheros en su PR: el ledger, en la sección
 **«Delta del ledger»** (`ID | estado nuevo | commit | comando ejecutado | salida real`); el resto,
 en **«Fuera de alcance»** con el fichero exacto y el cambio. S5 re-ejecuta cada comando citado
@@ -65,10 +73,14 @@ antes de aplicarlo; si no se reproduce, no lo aplica. Tras tocar filas corre
 
 ```
 frontend/src/**  salvo: frontend/src/i18n/{es,en}/{contenido,motor,legal,marketing}.json,
-                        frontend/src/pages/marketing/**, frontend/src/widgets/**
+                        frontend/src/pages/marketing/**
 frontend/src/i18n/{es,en}/common.json      (la ÚNICA sesión que lo edita) y producto.json
 frontend/src/App.tsx                       (tras la fase 0)
+frontend/src/widgets/**                    (ampliado por [COORD] en el #89: 40.1/40.2)
+frontend/.env.production                   (paso 2 del dominio propio de la API, #101)
 backend/app/api/v1/endpoints/**  salvo los del motor, la newsletter y lo legal; sus tests
+backend/app/core/cookies.py                (excepción aceptada por [COORD] para el #101;
+                                            el resto de backend/app/core/** sigue siendo de S5)
 migraciones: con la regla de §5 (19.11, moderación, lleva una)
 ```
 
@@ -78,6 +90,8 @@ migraciones: con la regla de §5 (19.11, moderación, lleva una)
 content/**  salvo content/blog/** y content/legal/**
 backend/tests/content/**   scripts/content_qa/**   scripts/metas_catalogo.json
 docs/CATALOGO_MAESTRO.md   frontend/src/i18n/{es,en}/contenido.json
+scripts/question_diversity_baseline.json   (la línea base de la guarda de contenido)
+docs/ARCHITECTURE.md                       (solo sus cifras del banco: excepción de §3)
 ```
 
 ### 4.3 S3 — matemático del motor
@@ -150,13 +164,17 @@ Lo que no aparece en ninguna lista no tiene dueño: quien lo necesite lo pide co
 3. Por cada PR abierto de otra sesión: `git merge-tree --write-tree HEAD origin/<su-rama>`.
    Código distinto de 0 o `CONFLICT` en la salida ⇒ no empujes; lista los ficheros y para.
 4. Nivel 1: `git config core.hooksPath .githooks` (config local: repítelo en cada clon).
-5. Nivel 2: en la nube, el hook con `WHETZY_NIVEL2=gestionado` no lo lanza al fondo; córrelo tú
-   como tarea en segundo plano **gestionada** (límite ≥ 60 min) **antes** del push:
+5. Nivel 2 (regla 7d enmendada en el #89): se puede empujar tras el nivel 1 **solo con el PR en
+   borrador**. En la nube, el hook con `WHETZY_NIVEL2=gestionado` no lo lanza al fondo; córrelo tú
+   como tarea en segundo plano **gestionada** (límite ≥ 60 min):
    `bash scripts/ci_local.sh --sha <sha>` sale 0 si VERDE y 1 si ROJO (`WHETZY_PYTHON` elige el
-   intérprete). `bash scripts/ci_local.sh --estado` da el último veredicto y distingue uno que
-   murió sin terminar. Un `nohup` desde un shell que se cierra muere con él y deja «CORRIENDO».
-   Dos niveles 2 a la vez en la misma máquina necesitan `XDG_CACHE_HOME` distintos (comparten
-   el worktree temporal de la caché).
+   intérprete). Solo con VERDE: «Listo para revisión» y `[S<n>] LISTO: #<PR> — nivel 2 VERDE (<sha>)`
+   en el #89. `--estado` da el último veredicto y distingue uno que murió sin terminar. Un `nohup`
+   desde un shell que se cierra muere con él y deja «CORRIENDO».
+   **Varios PRs a la vez:** un carril por PR, `bash scripts/ci_local.sh --carril pr96 --sha <sha>`
+   (y `--carril pr96 --estado`). Sin carril, el cerrojo del checkout mata al nivel 2 anterior: eso
+   fue el `exit 137` del #96. Con carriles distintos no se tocan (cerrojo, bitácora y worktree
+   propios). `XDG_CACHE_HOME` distinto solo separa el worktree, no el cerrojo.
 
 ## 8. PRs
 
