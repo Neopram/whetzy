@@ -13,6 +13,8 @@ habilidad (media 7,6-9,4; pico 11).
 
 from __future__ import annotations
 
+import math
+
 import pytest
 
 from app.services.engine.placement import IRTItem, PlacementEngine, PlacementState
@@ -123,3 +125,21 @@ def test_un_modulo_alcanza_el_umbral_en_una_prueba_completa() -> None:
         f"el modulo mas visto junto {max(por_modulo.values())} preguntas y el "
         f"umbral es {motor.skip_min_questions}: sigue sin poder dispararse"
     )
+
+
+def test_fisher_information_no_revienta_con_discriminacion_extrema() -> None:
+    """`select_next_item` muestrea `discriminacion` de una gamma sin tope
+    (Thompson sampling), y la calibracion offline de items (14.10) puede
+    pasar por una `discriminacion` muy alta antes de converger. Las dos rutas
+    acaban en `fisher_information`, que calculaba `math.exp(...)` sin el
+    mismo recorte que ya tiene `probability_correct` dos lineas por encima:
+    con un item lejos de theta y una discriminacion de 500, el exponente
+    pasaba de 700 y `math.exp` tiraba `OverflowError`. Reproducido tal cual
+    calibrando con datos simulados (ver backend/scripts/irt_parameter_recovery.py)."""
+    motor = PlacementEngine(items=[])
+    item_extremo = IRTItem(item_id="extremo", difficulty=3.0, discrimination=500.0, guessing=0.2)
+
+    info = motor.fisher_information(theta=-3.0, item=item_extremo)
+
+    assert math.isfinite(info)
+    assert info >= 0.0
