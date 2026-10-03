@@ -3,6 +3,22 @@ import { initReactI18next } from 'react-i18next';
 
 import en from './i18n/en/common.json';
 import es from './i18n/es/common.json';
+import enContenido from './i18n/en/contenido.json';
+import enLegal from './i18n/en/legal.json';
+import enMarketing from './i18n/en/marketing.json';
+import enMotor from './i18n/en/motor.json';
+import enProducto from './i18n/en/producto.json';
+import esContenido from './i18n/es/contenido.json';
+import esLegal from './i18n/es/legal.json';
+import esMarketing from './i18n/es/marketing.json';
+import esMotor from './i18n/es/motor.json';
+import esProducto from './i18n/es/producto.json';
+
+/** Un namespace por sesion de trabajo en paralelo (docs/SESIONES.md): cada una
+ *  escribe solo su fichero y `common` lo edita una sola. Namespaces separados y
+ *  no un merge en `common`: dos sesiones con la misma clave se pisarian en
+ *  silencio. Se usan con `useTranslation('marketing')` o `t('marketing:clave')`. */
+export const ROLE_NAMESPACES = ['producto', 'contenido', 'motor', 'legal', 'marketing'] as const;
 
 function detectLanguage(): string {
   // No `window` in Node (the landing prerender, scripts/prerender-landing.mjs)
@@ -23,10 +39,24 @@ function detectLanguage(): string {
 
 i18n.use(initReactI18next).init({
   resources: {
-    es: { common: es },
-    en: { common: en },
+    es: {
+      common: es,
+      producto: esProducto,
+      contenido: esContenido,
+      motor: esMotor,
+      legal: esLegal,
+      marketing: esMarketing,
+    },
+    en: {
+      common: en,
+      producto: enProducto,
+      contenido: enContenido,
+      motor: enMotor,
+      legal: enLegal,
+      marketing: enMarketing,
+    },
   },
-  ns: ['common'],
+  ns: ['common', ...ROLE_NAMESPACES],
   defaultNS: 'common',
   lng: detectLanguage(),
   fallbackLng: 'es',
