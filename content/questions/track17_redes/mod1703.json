@@ -874,8 +874,8 @@
       "correct_index": null,
       "correct_answer_es": "192.168.1.0",
       "correct_answer_en": "192.168.1.0",
-      "explanation_es": "network_address retorna la primera dirección de la red.",
-      "explanation_en": "network_address returns the first address of the network.",
+      "explanation_es": "`network_address` devuelve la primera dirección de la red, la que identifica al segmento completo y no se asigna a ningún host (actúa como \"nombre\" de la subred). Para `192.168.1.0/24`, esa dirección es la propia `192.168.1.0`, mientras que la última (`192.168.1.255`) sería la de broadcast.",
+      "explanation_en": "`network_address` returns the network's first address, the one that identifies the whole segment and is never assigned to a host (it acts as the subnet's \"name\"). For `192.168.1.0/24`, that address is `192.168.1.0` itself, while the last one (`192.168.1.255`) would be the broadcast address.",
       "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.network_address",
       "expected_time_ms": 45000,
       "tags": [
@@ -991,8 +991,8 @@
       "correct_index": null,
       "correct_answer_es": "True",
       "correct_answer_en": "True",
-      "explanation_es": "El operador 'in' comprueba si una IP pertenece a una red.",
-      "explanation_en": "The 'in' operator checks if an IP belongs to a network.",
+      "explanation_es": "El objeto `IPv4Network` implementa el protocolo `__contains__` de Python, así que el operador `in` comprueba si una dirección cae dentro del rango de la red comparando sus bits de red, sin calcular a mano el primer y el último host. Como 192.168.1.50 está entre 192.168.1.1 y 192.168.1.254, el resultado es `True`.",
+      "explanation_en": "The `IPv4Network` object implements Python's `__contains__` protocol, so the `in` operator checks whether an address falls inside the network's range by comparing its network bits, without manually computing the first and last host. Since 192.168.1.50 lies between 192.168.1.1 and 192.168.1.254, the result is `True`.",
       "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.__contains__",
       "expected_time_ms": 45000,
       "tags": [

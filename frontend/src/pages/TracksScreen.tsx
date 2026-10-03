@@ -2,10 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
+import { Badge } from '../components/common/Badge';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { ProgressMap } from '../components/tracks/ProgressMap';
 import { useApi } from '../hooks/useApi';
 import { pageVariants } from '../lib/motion';
+import { retiredCertificationFor } from '../lib/retiredCertifications';
 import {
   content as contentApi,
   exams as examsApi,
@@ -139,7 +141,12 @@ function Catalogue({
                   <span className={styles.hue} style={{ background: tr.color }} />
                 </span>
                 <span className={styles.trackBody}>
-                  <span className={styles.trackName}>{name}</span>
+                  <span className={styles.trackName}>
+                    {name}
+                    {retiredCertificationFor(tr.id) && (
+                      <Badge variant="orange" size="sm">{t('tracks.certRetiredBadge')}</Badge>
+                    )}
+                  </span>
                   <span className={styles.trackMeta}>
                     {tr.is_certification && tr.exam_question_count && tr.exam_duration_minutes
                       ? t('tracks.certMeta', {
@@ -190,12 +197,19 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
     : 0;
   const name = lang === 'es' ? track.name_es : track.name_en;
   const certReady = track.is_certification && track.exam_question_count && track.exam_duration_minutes;
+  const retiredCert = retiredCertificationFor(track.id);
 
   return (
     <div className={styles.screen}>
       <button type="button" className={styles.back} onClick={onBrowse}>
         ← {t('tracks.allTracks')}
       </button>
+
+      {retiredCert && (
+        <p className={styles.certRetiredNotice} role="status">
+          {t('tracks.certRetiredNotice', { code: retiredCert.code, replacement: retiredCert.replacement })}
+        </p>
+      )}
 
       <header className={styles.hero}>
         <span className={styles.heroIcon} aria-hidden="true">{track.icon || ICON_FALLBACK}</span>

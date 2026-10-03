@@ -132,6 +132,11 @@ está roto.
 | `docs/ui-snapshots/34.1/README.md` | histórico | evidencia de capturas de 34.1 | se queda (junto a sus PNG) | 2026-09-28 |
 | `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |
 | `docs/MAPA_PRODUCTO.md` | referencia-viva | inventario de rutas, pantallas y subvistas con el documento que especifica cada una y sus huecos; `check_docs.py` exige que nombre todo lo que existe | se queda | 2026-10-01 |
+| `docs/ml/rag_scaling_39_32.md` | referencia-viva | 39.32: por qué `test_rag_self_retrieval` era O(N²) y las cifras reales antes/después del índice invertido + muestra fija en `RAGIndex.retrieve()` | se queda | 2026-10-02 |
+| `docs/ml/beta_binomial_calibration_14_8.md` | referencia-viva | 14.8: validación por simulación (recuperación de parámetros + curva de calibración + Brier score) del predictor beta-binomial de aprobado, con datos simulados mientras H.10 bloquea los reales | se queda | 2026-10-02 |
+| `docs/ml/irt_calibration_14_10.md` | referencia-viva | 14.10: calibración JMLE de dificultad/discriminación de ítems IRT validada por simulación (recuperación de parámetros), el bug de `OverflowError` en `fisher_information` que encontró, y por qué `update_ability` no sirve para recalcular una historia completa | se queda | 2026-10-02 |
+| `docs/ml/ab_bkt_vs_dkt_32_2.md` | referencia-viva | 32.2: diseño del experimento A/B BKT vs DKT (framework 24.14, regla de adopción literal del ledger) y análisis de potencia (D7 y AUC, fórmula cerrada cruzada con Monte Carlo) — preparado, sin activar, bloqueado por H.10 | se queda | 2026-10-02 |
+| `docs/ml/domain_report_14_9.md` | referencia-viva | 14.9: la aritmética del informe de dominio verificable (N de M skills, respuestas/semanas, % a la primera) lista y probada; por qué la URL pública en sí (token + migración + endpoint) queda fuera de mi terreno, con un NECESITO a S1 | se queda | 2026-10-02 |
 
 ## `docs/legal/`
 

@@ -288,7 +288,12 @@ async def record_login_attempt(email: str, ip: str, success: bool, db: AsyncSess
     """Record login attempt; reset lockout on success."""
     from app.models.auth import LoginAttempt
 
-    db.add(LoginAttempt(email=email, ip=ip, success=success))
+    # `created_at` con el reloj de la app, el mismo que usa `check_lockout`. El
+    # `server_default=now()` de SQLite (banco de tests) guarda texto truncado al
+    # segundo: con 5 fallos el bloqueo dura 1 s, y si el 6.º intento caía al
+    # otro lado de un cambio de segundo salía 400 en vez de 429, al azar
+    # (test_2fa_login, nivel 2 del #104, 2026-10-03).
+    db.add(LoginAttempt(email=email, ip=ip, success=success, created_at=datetime.now(UTC)))
     await db.commit()
 
     if success:
