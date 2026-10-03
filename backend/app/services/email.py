@@ -211,6 +211,30 @@ until the end of the paid period.</p>
 contact support@whetzy.com</p>""",
         },
     },
+    "newsletter_confirm": {
+        "es": {
+            "subject": "Confirma tu suscripción al newsletter de Whetzy",
+            "html": """\
+<h2>¡Casi listo!</h2>
+<p>Confirma que quieres recibir el newsletter de <strong>Whetzy</strong> —
+novedades del motor, nuevos tracks y certificaciones— haciendo clic abajo.</p>
+<p><a href="{confirm_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Confirmar suscripción</a></p>
+<p>O copia este enlace en tu navegador:<br>{confirm_url}</p>
+<p>Si no pediste esto, ignora este correo: no se suscribe nadie sin confirmar.</p>""",
+        },
+        "en": {
+            "subject": "Confirm your Whetzy newsletter subscription",
+            "html": """\
+<h2>Almost there!</h2>
+<p>Confirm you want the <strong>Whetzy</strong> newsletter — engine updates,
+new tracks and certifications — by clicking below.</p>
+<p><a href="{confirm_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Confirm subscription</a></p>
+<p>Or copy this link into your browser:<br>{confirm_url}</p>
+<p>If you didn't ask for this, ignore this email: nobody gets subscribed without confirming.</p>""",
+        },
+    },
     "support_resolved": {
         "es": {
             "subject": "Tu ticket de soporte {ticket_id} ha sido resuelto",
@@ -497,6 +521,14 @@ def send_credit_expiry_warning(
         base_url=settings.FRONTEND_BASE_URL, unsubscribe_url=unsubscribe_url,
     )
     _dispatch(to, subject, html, unsubscribe_url)
+
+
+def send_newsletter_confirmation(to: str, token: str, lang: str = "es") -> None:
+    from app.core.config import settings
+
+    confirm_url = f"{settings.API_PUBLIC_BASE_URL}/api/v1/newsletter/confirm?token={token}"
+    subject, html = _render("newsletter_confirm", lang, confirm_url=confirm_url)
+    _dispatch(to, subject, html)
 
 
 def send_renewal_reminder(

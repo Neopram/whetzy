@@ -24,6 +24,7 @@ from app.api.v1.endpoints import (
     mastery_reports,
     ml,
     moderation,
+    newsletter,
     oauth,
     placement,
     privacy,
@@ -69,3 +70,4 @@ api_router.include_router(bootcamp.router, prefix="/bootcamps", tags=["bootcamps
 api_router.include_router(project.router, prefix="/projects", tags=["projects"])
 api_router.include_router(privacy.router, prefix="/privacy", tags=["privacy"])
 api_router.include_router(mastery_reports.router, prefix="/mastery-reports", tags=["economy"])
+api_router.include_router(newsletter.router, prefix="/newsletter", tags=["newsletter"])

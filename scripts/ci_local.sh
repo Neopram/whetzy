@@ -295,6 +295,17 @@ correr "backend: contenido"    "$ARBOL/backend" \
 # proyecto, 0 errores en 117 ficheros).
 correr "backend: migración con datos" "$ARBOL/backend" \
   "$PY" ../scripts/test_migration_data.py
+# Los stubs no están en requirements.txt: los instala `.github/workflows/ci.yml`
+# aparte. Sin ellos mypy da `no-any-return` en app/core/security.py, que es del
+# entorno y no del código (#89, 2026-10-03). Solo se avisa; el paso corre igual.
+FALTAN_STUBS=$("$PY" -c 'import importlib.metadata as m
+for p in ("types-python-jose", "types-passlib"):
+    try: m.version(p)
+    except m.PackageNotFoundError: print(p)' 2>/dev/null | tr '\n' ' ')
+if [ -n "$FALTAN_STUBS" ]; then
+  echo "[!!] faltan ${FALTAN_STUBS}en $PY: si mypy falla en app/core/security.py, es"
+  echo "     el entorno (pip install ${FALTAN_STUBS% }), no el código"
+fi
 correr "backend: mypy --strict" "$ARBOL/backend" \
   "$PY" -m mypy app --strict --ignore-missing-imports
 
