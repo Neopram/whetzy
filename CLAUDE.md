@@ -12,12 +12,13 @@
   Plan del catálogo (ADR-54, 2026-10-01): forma única por track, 32 skills × 10 preguntas
   (≥ 3 ejecutables) con 1 lección y 1 término por skill; certificaciones con práctica
   ≥ máx(300, 3 × examen) y simulacro reservado de 2 × examen; tracks nuevos por demanda
-  (niveles de ADR-53); ningún contenido antes del piloto. Cobertura:
+  (niveles de ADR-53); el contenido corre en paralelo al piloto (ADR-59). Método y orden de
+  producción: `docs/PLAN_CONTENIDO.md`. Cobertura:
   `python scripts/catalog_coverage.py` (metas en `scripts/metas_catalogo.json`)
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §14 ADR-53; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen, sustituida: hoy manda ADR-54), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica PostHog, Sentry, correo, staging), ADR-53 plan por cobertura (sustituido por ADR-54), ADR-54 catálogo uniforme 32 × 10 (la meta vigente), ADR-55 la fuente legal es lo publicado (claves i18n `legal.*`), ADR-56 fin de la pausa, ADR-58 los créditos no compran simulacros ni cursos (el plan decide) y privacidad con IP y navegador a 90 días**)
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen, sustituida: hoy manda ADR-54), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica PostHog, Sentry, correo, staging), ADR-53 plan por cobertura (sustituido por ADR-54), ADR-54 catálogo uniforme 32 × 10 (la meta vigente), ADR-55 la fuente legal es lo publicado (claves i18n `legal.*`), ADR-56 fin de la pausa, ADR-58 los créditos no compran simulacros ni cursos (el plan decide) y privacidad con IP y navegador a 90 días, ADR-59 autoría de contenido: escribe Sonnet 5 desde la fuente, por `Workflow`, en paralelo al piloto**)
 - Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
 - Auditoría externa del 2026-09-19 (histórica, archivada el 2026-10-01: su «el CI no ha corrido nunca» dejó de ser cierto): `docs/archive/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
@@ -64,21 +65,22 @@
 
 ## Modelos
 
-**Política del dueño del 2026-09-27 (ADR-52, sustituye la de ADR-50):**
+**Política del dueño del 2026-09-27 (ADR-52, sustituye la de ADR-50; fila de autoría enmendada por ADR-59 el 2026-10-03):**
 
 | Papel | Modelo |
 |---|---|
 | Hilo principal de una sesión interactiva | **Sonnet 5** (lo fija el dueño al arrancar) |
-| Autoría masiva de contenido (escritor en `Workflow`) | **Haiku 4.5** (+ Batch API para rellenos cuando exista clave: H.48) |
+| Autoría masiva de contenido (escritor en `Workflow`, desde un fragmento de fuente `reusar`) | **Sonnet 5** (ADR-59) |
 | Revisor y corrector de calidad en `Workflow`; workers de la lista de riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2 | **Sonnet 5** |
 | Lecturas, inventarios, diffs | **Haiku 4.5** |
 | Sesiones autónomas programadas | workers **Haiku 4.5** (ADR-14); hilo, el de `settings.json` |
 | Fable (cualquier versión), Opus 4.x | **Nunca**, en ningún papel |
 
-Todo lo que escribe Haiku para el alumno pasa revisión adversaria **completa** de Sonnet 5, la
-puerta de `CATALOGO_MAESTRO.md` §7 y `scripts/content_qa/`. Primer bloque de Haiku: piloto de
-10 ítems; si más de 3 salen con `blocker`/`major`, se para y lo decide el dueño (ADR-52; el
-piloto de track28 del 2026-09-26 dio 7 de 10 malas). Dieta de contexto: el ledger se lee por
+Todo lo que se escribe para el alumno pasa revisión adversaria **completa** de Sonnet 5 contra
+su fragmento de fuente, la puerta de `CATALOGO_MAESTRO.md` §7 y `scripts/content_qa/`
+(`docs/PLAN_CONTENIDO.md`). Primer bloque: piloto de 10 ítems (37.25); si más de 3 salen con
+`blocker`/`major`, se para y lo decide el dueño (ADR-52/59; los pilotos de Haiku de track28 y
+39.37 superaron ese umbral). Dieta de contexto: el ledger se lee por
 secciones, nunca entero; `STATUS.md` y `archive/` no se leen. Bloques de contenido
 grandes: `Workflow` paralelo, un bloque = un commit verde. Cada `DONE` pasa por el
 verificador adversario (protocolo §7) antes de escribirse.

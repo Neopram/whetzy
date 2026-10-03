@@ -24,7 +24,8 @@
 >
 > **Nota v2.4 (2026-10-01).** El plan del catálogo es **ADR-54**: forma única 32 skills ×
 > 10 preguntas por track, certificaciones con práctica ≥ máx(300, 3 × examen) y simulacro
-> reservado de 2 × examen, tracks por demanda medida y ningún contenido antes del piloto. El
+> reservado de 2 × examen y tracks por demanda medida (su «ningún contenido antes del piloto»
+> quedó sustituido por ADR-59, 2026-10-03: el contenido corre en paralelo). El
 > suelo y el ideal de ADR-53 (v2.3, 2026-09-30) quedaron sustituidos; la serie 37 de la
 > FASE 2 los cita como historia. Las menciones
 > a «≥ 50 cursos por track» de la FASE 1 son historia de aquella auditoría (cerrada el
@@ -141,8 +142,8 @@ documentos vivos`. Abre el PR con ese commit y sigue en la misma rama.
 2. Serie 34 PRI 0: guarda .tsx↔.module.css y e2e verde en CI (o en ci_local.sh mientras
    el CI de GitHub siga sin correr, H.13/H.17 — dilo así, no «verde en CI»).
 3. Serie 37 en el orden de ADR-54 (37.0, 37.2, 37.3, 37.18 y 37.19 ya están DONE):
-   ningún contenido antes del piloto (`LANZAMIENTO_PILOTO.md`); después, primero los
-   tracks que usen los pilotos. 37.10 certificaciones a práctica ≥ máx(300, 3 × examen) y
+   el contenido corre en paralelo al piloto (ADR-59, `PLAN_CONTENIDO.md`): primero el
+   piloto de autoría 37.25 y los tracks que usen los pilotos. 37.10 certificaciones a práctica ≥ máx(300, 3 × examen) y
    reservadas 2 × examen; 37.6 tracks construidos a la forma 32 × 10 (nivel A primero) y
    37.7 track24/25; 37.8 tracks nuevos por demanda (A → B → C). La fase 4 de ADR-53 (el
    ideal) quedó sustituida. Corpus: 37.4 descarga por área y
@@ -173,7 +174,7 @@ Fuentes solo gratuitas y legales (ADR-11; CC BY-SA no, ADR-47); nada pirata ni c
 cita. Ningún precio, testimonio, cifra de usuarios o «calibrado con datos reales»
 publicado, salvo los precios de ADR-41 (30.1/H.31/ADR-47). ES y EN nativos, nunca traducción. El motor, los datos y
 la API no se tocan desde una serie de UI. Cachés de herramientas fuera del proyecto.
-Modelos (ADR-52, 2026-09-27): hilo interactivo Sonnet 5; escritor de autoría masiva Haiku 4.5 (Batch API cuando haya clave, H.48);
+Modelos (ADR-52, 2026-09-27; autoría enmendada por ADR-59): hilo interactivo Sonnet 5; escritor de autoría masiva Sonnet 5 desde la fuente (`PLAN_CONTENIDO.md`);
 revisor y corrector en Workflow y ficheros de riesgo (PROTOCOLO §2) Sonnet 5; lecturas Haiku 4.5; nunca Fable ni Opus 4.x. Lo que exige gasto, claves
 live, DNS, DB de producción, tiendas, secretos, cuentas nuevas o reabrir una decisión:
 se prepara, va a HUMAN-BLOCKED con su valor por defecto (ADR-47) y se sigue.

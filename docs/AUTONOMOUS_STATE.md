@@ -26,7 +26,7 @@
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
 | Alembic HEAD | `20261002_newsletter_subscribers` (53 migraciones) |
-| Contenido | **10.984 preguntas** / 35 tracks / 727 skills / **727 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
+| Contenido | **11.005 preguntas** / 35 tracks / 730 skills / **730 lecciones (100 %)** / **1.044 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
 
@@ -44,7 +44,7 @@
 | 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
 | 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 27/41 | 66 % | 39.8, 39.9, 39.10, 39.13, 39.14, 39.24 +6 |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
-| 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 5/22 | 23 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +11 |
+| 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 5/23 | 22 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +12 |
 | 35 | Lo que el mercado enseña: competencia verificada → producto | 4/5 | 80 % | 35.6 |
 | 34 | Una sola interfaz: todas las pantallas al lenguaje visual de la landi… | 4/11 | 36 % | 34.2, 34.3, 34.4, 34.6, 34.7, 34.8 +1 |
 | 33 | Operación medible — SLO, restauración y offline idempotente | 1/1 | 100 % | — |
@@ -243,7 +243,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 > **Estado:** `ABIERTA 2026-09-24` — 24.14 es DONE y H.23 queda decidido por defecto (ADR-47: sí). **La sesión redacta y construye todo;…
 > **Dependencias:** 24.14 DONE. Ningún dato inventado en ningún activo (30.1/H.31).
-> **PRI:** 3. **Modelo:** Haiku para contenido; Sonnet para copy de landing/emails.
+> **PRI:** 3. **Modelo:** Sonnet para contenido (ADR-59) y para copy de landing/emails.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
@@ -263,7 +263,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 > **Estado:** `ABIERTA 2026-09-24` (ADR-47). Misma regla que la 26: se redacta y construye todo; publicar bajo cuenta nueva = H.23.
 > **Dependencias:** ninguna para redactar; 26.0 DONE antes de grabar vídeo EN.
-> **PRI:** 3. **Modelo:** Haiku para contenido; Sonnet para copy.
+> **PRI:** 3. **Modelo:** Sonnet para contenido (ADR-59) y para copy.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
@@ -400,8 +400,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 37. Catálogo uniforme 32 × 10, simulacros reservados y prioridad por demanda (ADR-54, 2026-10-01; antes ADR-53 y ADR-46)
 
-> **Estado:** `ABIERTA`. **PRI:** 1 (detrás de la serie 30). **Modelo:** ADR-52 (autoría Haiku 4.5, revisión completa Sonnet 5, piloto de 10 ítems).
-> **Orden (ADR-54):** nada antes del piloto (31.8); luego lo que usen los pilotos, 37.22, 37.10, 37.6, 37.7 y 37.8. **La guarda 37.0 sigue antes de cualquier pregunta nueva.**
+> **Estado:** `ABIERTA`. **PRI:** 1 (detrás de la serie 30). **Modelo:** ADR-59 (escribe Sonnet 5 desde la fuente, revisión completa Sonnet 5, piloto de 10; `PLAN_CONTENIDO.md`).
+> **Orden (ADR-59):** en paralelo a 31.8; primero 37.25, luego 37.22, 37.10, 37.6, 37.7 y 37.8. **La guarda 37.0 sigue antes de cualquier pregunta nueva.**
 > **Corpus (ADR-46 §4-5, vigente):** `corpus/` está en `.gitignore`. Se descarga con `git clone --depth 1`, dumps oficiales y **torrents solo cuando…
 > **Unidad:** la skill. Forma por track: 32 skills · 10 Q (≥ 3 ejecutables) · 1 lección y 1 término por skill (`scripts/metas_catalogo.json`). Suelo e ideal de ADR-53: sustituidos. Cifras: `python scripts/catalog_coverage.py`. Un bloque = un PR verde.
 
@@ -428,7 +428,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | **DONE** | (2026-09-30) D30/CURR/conversion_d35/30min-pagadores en `analytics.py`; corregido ×2 (CURR a la definición literal de Duolingo, días UTC completos) → §N, STATUS.md |
 | 37.21 | **3** | **Mapa skill → nodo del temario**, para elegir las 32 skills de cada track (el ideal por temario quedó sustituido, ADR-54) | TODO (tras 37.6) | cada skill con su nodo |
 | 37.23 | **2** | **Alineación lección↔quiz** (heredera de la 37.1 vieja, antes de ADR-53; los commits `22a01a8`…`4f1ab26` dicen «37.1» por ese motivo — ver STATUS.md): `audit_lesson_quiz_alignment.py` sobre 8 tracks señalados el 2026-09-28 | **PARCIAL** | (2026-09-29) 8 tracks revisados, track08+22+11+23+10+44+45+46 cerrados (39.39 DONE). 4/4 bugs de contenido corregidos. track44: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas. Queda la expansión de catálogo hacia ADR-53 (37.6-37.8), no una corrección → STATUS.md |
-| 37.24 | **1** | **Poblar el banco de simulacro reservado** (2× la longitud del examen, ADR-54; `"pool": "simulacro"`) y encender `MOCK_EXAM_RESERVED_POOL_ENABLED` (mecanismo DONE en 37.18, apagado por defecto) | TODO | 8 certificaciones con L publicada con reservadas ≥ 2× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/1.040 reservadas a la meta — autoría de contenido (Haiku+Sonnet, piloto de 10), no una tarea de código |
+| 37.24 | **1** | **Poblar el banco de simulacro reservado** (2× la longitud del examen, ADR-54; `"pool": "simulacro"`) y encender `MOCK_EXAM_RESERVED_POOL_ENABLED` (mecanismo DONE en 37.18, apagado por defecto) | TODO | 8 certificaciones con L publicada con reservadas ≥ 2× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/1.040 reservadas a la meta — autoría de contenido (ADR-59), no una tarea de código |
+| 37.25 | **1** | **Piloto de autoría (ADR-59)**: 10 ítems de una skill de track44, escritos por Sonnet desde un fragmento `reusar` | TODO | puerta §7 PASS; ≤ 3/10 `blocker`/`major` tras revisión; coste por ítem aceptado anotado en `PLAN_CONTENIDO.md` §7 |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 
@@ -559,6 +560,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.49 | **DECIDIDA 2026-09-28** — dueño: la voz a texto del tutor (40.6) usa el mismo proveedor que el tutor (Groq, `/audio/transcriptions`) |
 | H.48 | Clave de API de Anthropic con gasto para un pipeline por **Batch API** de rellenos con Haiku 4.5 (ADR-52); hoy ningún código del repo llama a la API | Dueño |
 | H.47 | ¿Mantener el correo personal del dueño como contacto en la página pública `/evidence` (`EvidenceScreen.tsx:340`)? Por defecto (ADR-47) se deja y se propone un alias tipo `support@whetzy.com` | Dueño |
+| H.50 | Descarga del corpus (`scripts/corpus/`) en el setup script del entorno cloud, para que `corpus/` exista en cada sesión de autoría (ADR-59, `PLAN_CONTENIDO.md` §3) | Dueño |
 
 ## 5. Bitácora de decisiones
 
