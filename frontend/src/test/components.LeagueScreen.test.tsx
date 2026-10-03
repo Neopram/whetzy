@@ -44,6 +44,7 @@ function standings(tier: string, name: string) {
     ],
     promotion_zone: 5,
     demotion_zone: 5,
+    total_members: 1,
     participating: true,
   };
 }

@@ -654,6 +654,10 @@ export interface LeagueStandingsResponse {
   standings: LeagueStandingEntry[];
   promotion_zone: number;
   demotion_zone: number;
+  /** Total real de la liga, incluidos los que `standings` oculta por bloqueo
+   *  mutuo (19.11) — el umbral de descenso se compara contra esto, nunca
+   *  contra `standings.length`. */
+  total_members: number;
   /** false = salió de las ligas (35.4): `standings` viene vacío. */
   participating: boolean;
 }

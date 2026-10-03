@@ -153,8 +153,13 @@ async def get_current_standings(db: AsyncSession, user: User) -> LeagueStandings
 
     await db.commit()
 
-    zone_size = PROMOTION_ZONE_SIZE if len(standings) >= MIN_LEAGUE_SIZE_FOR_ZONES else 0
-    demotion_size = DEMOTION_ZONE_SIZE if len(standings) >= MIN_LEAGUE_SIZE_FOR_ZONES else 0
+    # Los tamaños de zona van por el total real (`rows`), no por `standings`
+    # (que oculta a los bloqueados, l. 139): si no, una liga de 10 con 1
+    # bloqueado perdía las zonas por quedarse en 9, y una de 12 con 1
+    # bloqueado corría el umbral de descenso hacia arriba.
+    total_members = len(rows)
+    zone_size = PROMOTION_ZONE_SIZE if total_members >= MIN_LEAGUE_SIZE_FOR_ZONES else 0
+    demotion_size = DEMOTION_ZONE_SIZE if total_members >= MIN_LEAGUE_SIZE_FOR_ZONES else 0
 
     return LeagueStandingsResponse(
         league=LeagueRead.model_validate(league),
@@ -162,6 +167,7 @@ async def get_current_standings(db: AsyncSession, user: User) -> LeagueStandings
         standings=standings,
         promotion_zone=zone_size,
         demotion_zone=demotion_size,
+        total_members=total_members,
     )
 
 

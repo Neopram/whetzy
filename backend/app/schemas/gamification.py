@@ -41,6 +41,11 @@ class LeagueStandingsResponse(BaseModel):
     standings: list[LeagueStandingEntry]
     promotion_zone: int
     demotion_zone: int
+    # Miembros reales de la liga, contando también a los que `standings`
+    # oculta por bloqueo mutuo (19.11): el umbral de descenso se compara
+    # contra esto, no contra `len(standings)` — si no, ocultar a alguien
+    # corre el resto de rangos hacia arriba (`rank` no se recalcula).
+    total_members: int = 0
     # False = el usuario salió de las ligas (35.4): standings vacío.
     participating: bool = True
 
