@@ -2,9 +2,18 @@
 
 Nadie se suscribe de verdad hasta confirmar: `POST /newsletter/subscribe` crea
 la fila con `confirmed=False` y manda un correo con un enlace de un solo uso;
-solo `GET /newsletter/confirm` la marca `confirmed=True`. No hay usuario
-asociado — cualquiera puede suscribirse sin cuenta en Whetzy — así que el
-token vive aquí, no en `password_reset_tokens` ni en `email_verification_tokens`.
+solo confirmar (vía `POST /newsletter/confirm`, tras el botón de la página de
+`GET`) la marca `confirmed=True`. No hay usuario asociado — cualquiera puede
+suscribirse sin cuenta en Whetzy.
+
+El enlace del correo no guarda ningún secreto en esta tabla: es un JWT firmado
+con `create_unsubscribe_token(id)` (`app/core/security.py`), el mismo mecanismo
+que ya usa `email_prefs.py` para el marketing de cuentas con sesión. Stateless
+a propósito — revisión de `[S5]` en el PR #94: un hash guardado no se puede
+reconstruir para el enlace de baja de un envío futuro (todavía no existe el
+envío periódico, pero el token sí tiene que sobrevivirlo), y expiraba nunca.
+Firmado, se puede volver a generar el mismo token para la misma fila siempre
+que haga falta, y expira a los 400 días como cualquier enlace de baja.
 """
 
 from __future__ import annotations
@@ -27,10 +36,11 @@ class NewsletterSubscriber(Base):
     language: Mapped[str] = mapped_column(String(2), nullable=False, default="es")
     confirmed: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
-    # SHA-256 hex del token en claro — el token en claro solo viaja en el correo.
-    # Se conserva tras confirmar para que el mismo enlace sirva de baja (RFC 8058).
-    token_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
     unsubscribed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Último envío de confirmación — cierra la ventana de abuso que señaló [S5]:
+    # sin esto, repetir POST /subscribe sobre un email ajeno manda un correo por
+    # petición, sin límite propio del endpoint.
+    last_sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
