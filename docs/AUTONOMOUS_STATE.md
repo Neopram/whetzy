@@ -45,12 +45,12 @@
 | 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 27/41 | 66 % | 39.8, 39.9, 39.10, 39.13, 39.14, 39.24 +6 |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
 | 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 5/22 | 23 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +11 |
-| 35 | Lo que el mercado enseña: competencia verificada → producto | 3/5 | 60 % | 35.6, 35.9 |
+| 35 | Lo que el mercado enseña: competencia verificada → producto | 4/5 | 80 % | 35.6 |
 | 34 | Una sola interfaz: todas las pantallas al lenguaje visual de la landi… | 4/11 | 36 % | 34.2, 34.3, 34.4, 34.6, 34.7, 34.8 +1 |
 | 33 | Operación medible — SLO, restauración y offline idempotente | 1/1 | 100 % | — |
 | 32 | Motor demostrable — calibración y evidencia de aprendizaje | 2/3 | 67 % | 32.2 |
 | 31 | Fuente única de cifras, staging y migraciones con datos | 3/7 | 50 % | 31.1, 31.5, 31.6, 31.8 |
-| 30 | Integridad del despliegue — incidente de login del 2026-09-24 | 2/4 | 50 % | 30.2, 30.5 |
+| 30 | Integridad del despliegue — incidente de login del 2026-09-24 | 3/4 | 75 % | 30.2 |
 | 29 | Economía cerrada y rails — créditos, referidos, códigos, USDC, creden… | 7/8 | 88 % | 29.9 |
 | 28 | Marketplace de instructores | 2/9 | 22 % | 28.0, 28.1, 28.3, 28.4, 28.5, 28.7 +1 |
 | 27 | Distribución masiva EN | 0/11 | 0 % | 27.0, 27.1, 27.2, 27.3, 27.4, 27.5 +5 |
@@ -324,9 +324,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 30.2 | **1** | **Se puede publicar sin puerta.** `ba686fc`, `50e73ea`, `46789fa`, `f8719b1`, `2efdfb7` y `8a0dce0` entraron en `master`… | | → §I (criterio archivado por 20.10) |
+| 30.2 | **1** | **Se puede publicar sin puerta** (6 commits desde la UI web de GitHub) | **PARCIAL** | puerta del build `5c3ab12` (#90); falta proteger `master` (dueño, RUNBOOK) → §Q |
 | 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **DONE** | `be07294`, verificador CONFIRMADA: Node 22 tiene `navigator.language` real; `detectLanguage()` fuerza `es` sin `window` → §I |
-| 30.5 | **2** | El script `build` ya no corre `tsc -b` (lo quitó `8a0dce0`,… | **PARCIAL** | **PARCIAL** `8a0dce0` (2026-09-24) → §I |
+| 30.5 | **2** | El script `build` ya no corría `tsc -b` (`8a0dce0`) | **DONE** | `5c3ab12` (#90): `vite build` con error de tipos → exit 1; restaurado 0 (2026-10-03, en `01a200c`) → §Q |
 | 30.9 | **0** | Login válido devolvía a la landing (cookie cross-site + host-only; `logout()` no llamaba a `/auth/logout`) → STATUS.md | **DONE** | `395e8a1`, verificador CONFIRMADA. Safari (ITP) sin probar → §I |
 
 ### 31. Fuente única de cifras, staging y migraciones con datos (del plan del 2026-09-24, cuyo fichero no está en el repo: estas filas son…
@@ -395,7 +395,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 35.4 | **2** | **Ligas opt-in visible**: interruptor en la propia pantalla de ligas («totalmente opcional») | **DONE** — 2026-09-24:… | |
 | 35.6 | **2** | **Refresco trimestral de §A.1**: re-descargar las páginas de precios, cambiar cifras y `COMPARISON_CHECKED_ON` | TODO —… | → §I (criterio archivado por 20.10) |
 | 35.8 | **2** | **Cada deploy de Railway deja ~1 min de 502/503.** Medido 2026-09-24: tras los pushes `a6a5a91` y `f2ea9cb`, `/health` dio… | **DONE** | railway.toml healthcheckPath=/health 120s + lifespan shutdown handler con close_db() → §I |
-| 35.9 | **2** | **El nivel 2 de la puerta (`ci_local.sh`) corre sobre el árbol… | **PARCIAL** | **PARCIAL** `a021e92` (2026-09-24) → §I |
+| 35.9 | **2** | El nivel 2 (`ci_local.sh`) corría sobre el árbol y quedaba «CORRIENDO» | **DONE** | `7fe4303` (#90): TERM → `INTERRUMPIDO`; KILL → `--estado` lo detecta (2026-10-03, en `01a200c`) → §Q |
 
 
 ### 37. Catálogo uniforme 32 × 10, simulacros reservados y prioridad por demanda (ADR-54, 2026-10-01; antes ADR-53 y ADR-46)
@@ -424,7 +424,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.17 | **1** | Inglés dentro del español y ejecutables con atajo… | **PARCIAL** | (2026-09-29, `Workflow`) recuento real: 699 preguntas exec (no ~2.900, cifra vieja errónea). 219 revisadas a fondo en 4 tracks, 10 bugs de ambigüedad reales arreglados y verificados, 1 estructural sin arreglar (`q060203ex012`). Quedan ~480 sin revisar → STATUS.md |
 | 37.18 | **1** | **Banco de simulacro reservado**: `"pool": "simulacro"`; ninguna vía fuera del simulacro lo sirve | **DONE** | `20260930_question_pool`, corregido 2026-09-30 (incondicional en las 4 vías) → §N |
 | 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | **DONE** | **DONE** `764b06b` (2026-09-30) → §N |
-| 37.22 | **1** | **ISC2 CC al outline del 2026-09-01**: examen adaptativo (CAT) 100–125 ítems/2h; dominios renombrados, pesos 24/17,3/20/21,3/17,3 (track40 sigue en agosto 2022: 26/10/22/24/18). Confirmado en vivo 2026-09-30 (isc2.org/certifications/cc/cc-certification-exam-outline): D1 igual; D2 **Security Governance** es nuevo, sin equivalente 2022; D3 **IAM Concepts** (antes Access Controls); D4 **Networking+Cloud Security** (antes solo Network Security); D5 **Security Ops+IR** absorbe el BC/DR viejo de D2. No es solo metadatos: `mod4002` (BC/DR, 4 skills) no mapea 1:1; Governance parte de cero. Los 5 módulos ya tienen `domain_id: null` | TODO | `exam_domains` + `domain_id` de los 5 módulos + banco de 353 preguntas reclasificado (governance necesita contenido nuevo); `OFFICIAL_BLOCKS["track40"]` mutado en rojo |
+| 37.22 | **1** | **ISC2 CC al outline del 2026-09-01** (CAT 100–125 ítems; D2 Governance nuevo; `mod4002` BC/DR no mapea 1:1) | TODO | `exam_domains` + `domain_id` de los 5 módulos + banco reclasificado; `OFFICIAL_BLOCKS["track40"]` mutado en rojo → §Q |
 | 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | **DONE** | (2026-09-30) D30/CURR/conversion_d35/30min-pagadores en `analytics.py`; corregido ×2 (CURR a la definición literal de Duolingo, días UTC completos) → §N, STATUS.md |
 | 37.21 | **3** | **Mapa skill → nodo del temario**, para elegir las 32 skills de cada track (el ideal por temario quedó sustituido, ADR-54) | TODO (tras 37.6) | cada skill con su nodo |
 | 37.23 | **2** | **Alineación lección↔quiz** (heredera de la 37.1 vieja, antes de ADR-53; los commits `22a01a8`…`4f1ab26` dicen «37.1» por ese motivo — ver STATUS.md): `audit_lesson_quiz_alignment.py` sobre 8 tracks señalados el 2026-09-28 | **PARCIAL** | (2026-09-29) 8 tracks revisados, track08+22+11+23+10+44+45+46 cerrados (39.39 DONE). 4/4 bugs de contenido corregidos. track44: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas. Queda la expansión de catálogo hacia ADR-53 (37.6-37.8), no una corrección → STATUS.md |
@@ -473,7 +473,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.40 | **2** | `check_originality.py` ciego a `code` (39.27) | **DONE** | (2026-09-29) → §N |
 | 39.41 | **1** | 19 `sql_exec` que un alumno con SQL correcto no podía aprobar | **DONE** | → §N |
 | 39.42 | **2** | track43 mod4301: 45 de 75 preguntas eran relleno molde… | **DONE** | → §I |
-| 39.43 | **2** | **Cuarta familia de coletillas**: opciones cortas con una cláusula de marketing cloud pegada sin relación con la pregunta (ej. "Tipo de almacenamiento, aprovechando la elasticidad automática de la nube…") | **TODO** | Hallada muestreando sk100205/sk100505 de track10 tras 39.33. **No confundir con simple grep**: un regex por coma+gerundio da 150 "sospechosas" en 11 tracks, pero la mayoría son gerundios legítimos (`reduciendo la dimensionalidad`, `manteniendo las demás variables constantes`) — exige juicio semántico por pregunta, igual que 39.33. Confirmadas a mano ~10 en track10 (q100205mc007/013/014, q100505mc013), siempre en distractores, nunca en la clave correcta (no rompe corrección, sí calidad). Concentración real: track10 98, track06 18, track08/11 ~15 combinado, resto disperso. Requiere revisión pregunta a pregunta vía `Workflow` (ADR-52), no regex ciego → STATUS.md |
+| 39.43 | **2** | **Cuarta familia de coletillas**: cláusula de marketing cloud pegada a opciones cortas (track10 98, track06 18…) | **TODO** | Revisión pregunta a pregunta (no regex: ~150 candidatas, la mayoría gerundios legítimos), vía `Workflow` (ADR-52) → §Q |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | **PARCIAL** | (2026-09-29) track13 4/4 (2-3 frases ES+EN, ejemplo/mitigación real). Revisando el track: 4 `source` copiadas mal sin relación con la pregunta (contraseñas→800-30, hashlib→800-63B, hash cripto→800-30, triaje SIEM→800-30); las 14 restantes con «800-30» sí encajan. track15(38)/16(75)/17(13): `Workflow` (ADR-52) → §I |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
