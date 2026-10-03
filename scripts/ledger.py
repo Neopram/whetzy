@@ -28,7 +28,9 @@ Uso:
     python scripts/ledger.py blocked         # la cola HUMAN-BLOCKED
     python scripts/ledger.py inv             # la tabla de invariantes
     python scripts/ledger.py stats           # recuento por estado
-    python scripts/ledger.py check           # el ledger parsea y esta bien formado
+    python scripts/ledger.py check           # el ledger parsea, esta bien formado y §1 cuadra
+    python scripts/ledger.py fases           # la tabla de `## 1` generada desde las filas
+    python scripts/ledger.py fases --write   # ... y escrita en el ledger
     python scripts/ledger.py cost            # cuanto ahorra, reproducible
 
 Cualquier subcomando acepta `--json` para consumo por herramientas.
@@ -182,6 +184,7 @@ class Ledger:
     # (numero, titulo, linea) de cada `### N` visto, rindiera filas o no.
     series_heads: list[tuple[str, str, int]] = field(default_factory=list)
     source_bytes: int = 0
+    source_path: Path | None = None
 
     def by_id(self, task_id: str) -> Task | None:
         for task in self.tasks + self.blocked:
@@ -245,7 +248,7 @@ def _cell(cells: list[str], cols: dict[str, int], key: str, default: str = "") -
 
 def parse(path: Path = LEDGER) -> Ledger:
     text = path.read_text(encoding="utf-8")
-    ledger = Ledger(source_bytes=len(text.encode("utf-8")))
+    ledger = Ledger(source_bytes=len(text.encode("utf-8")), source_path=path)
 
     section = ""
     series = "?"
@@ -426,6 +429,82 @@ def cmd_stats(ledger: Ledger, args) -> int:
     return 0
 
 
+# `## 1. Estado por fase` se escribia a mano y se quedaba atras: el 2026-10-02
+# decia «38 = 0/6» con las seis filas de la serie 38 en DONE, y «29 = 0/13»
+# cuando la serie tiene 8 filas. Protocolo §5: «se recalcula desde las filas,
+# no a ojo». Ahora se genera, y `check` falla si la tabla escrita no es la
+# generada: una fila que cambia de estado obliga a `fases --write`.
+_CLOSED = {"DONE", "RESUELTA", "CORREGIDA"}
+_PHASE_HEADER = "| Serie | Nombre | DONE/Total | % | Abiertas |"
+
+
+def _series_name(title: str) -> str:
+    """El titulo de la serie sin la coletilla entre parentesis ni el enfasis."""
+    name = re.split(r"\s+\(", title, maxsplit=1)[0].strip()
+    name = name.replace("|", "/")
+    return name if len(name) <= 70 else name[:69].rstrip() + "…"
+
+
+def phase_table(ledger: Ledger) -> str:
+    """La tabla de `## 1`, derivada de las filas de `## 2` y nada mas.
+
+    % = DONE / (todas - HUMAN-BLOCKED), la formula del protocolo §5. «Abiertas»
+    lista los ids que no estan cerrados (DONE, RESUELTA, CORREGIDA), los seis
+    primeros por orden natural.
+    """
+    lines = [_PHASE_HEADER, "|---|---|---|---|---|"]
+    seen: set[str] = set()
+    for number, title, _line in sorted(ledger.series_heads, key=lambda h: -int(h[0])):
+        if number in seen:
+            continue
+        seen.add(number)
+        rows = ledger.series(number)
+        if not rows:
+            continue
+        done = sum(1 for t in rows if t.state == "DONE")
+        human = sum(1 for t in rows if t.state == "HUMAN-BLOCKED")
+        denom = len(rows) - human
+        pct = f"{round(100 * done / denom)} %" if denom else "—"
+        open_ids = [t.id for t in rows if t.state not in _CLOSED]
+        shown = ", ".join(open_ids[:6]) + (f" +{len(open_ids) - 6}" if len(open_ids) > 6 else "")
+        lines.append(f"| {number} | {_series_name(title)} | {done}/{len(rows)} | {pct} | {shown or '—'} |")
+    return "\n".join(lines)
+
+
+def _written_phase_table(text: str) -> tuple[int, int] | None:
+    """(inicio, fin) en caracteres de la tabla de `## 1`, o None si no esta."""
+    sec = re.search(r"^## 1\.[^\n]*\n", text, re.MULTILINE)
+    if not sec:
+        return None
+    start = text.find(_PHASE_HEADER, sec.end())
+    nxt = re.search(r"^## \d+\.", text[sec.end():], re.MULTILINE)
+    if start < 0 or (nxt and start > sec.end() + nxt.start()):
+        return None
+    end = start
+    for line in text[start:].splitlines(keepends=True):
+        if not line.startswith("|"):
+            break
+        end += len(line)
+    return start, end
+
+
+def cmd_fases(ledger: Ledger, args) -> int:
+    table = phase_table(ledger)
+    if not getattr(args, "write", False):
+        print(table)
+        return 0
+    text = args.file.read_text(encoding="utf-8")
+    span = _written_phase_table(text)
+    if span is None:
+        print(f"No encuentro la tabla de `## 1` (cabecera {_PHASE_HEADER!r}) en {args.file}")
+        return 1
+    start, end = span
+    new_text = text[:start] + table + "\n" + text[end:]
+    args.file.write_text(new_text, encoding="utf-8", newline="\n")
+    print(f"`## 1` reescrita desde las filas ({table.count(chr(10)) - 1} series).")
+    return 0
+
+
 def cmd_check(ledger: Ledger, args) -> int:
     """Que el ledger siga siendo parseable es en si mismo un invariante.
 
@@ -461,6 +540,21 @@ def cmd_check(ledger: Ledger, args) -> int:
         if task.id in seen:
             problems.append(f"{task.id}: id duplicado (lineas {seen[task.id]} y {task.line})")
         seen[task.id] = task.line
+    text = ledger.source_path.read_text(encoding="utf-8") if ledger.source_path else ""
+    span = _written_phase_table(text)
+    if span is None:
+        problems.append(f"`## 1` no tiene la tabla generada (cabecera {_PHASE_HEADER!r})")
+    else:
+        written = text[span[0]:span[1]].rstrip("\n").splitlines()
+        generated = phase_table(ledger).splitlines()
+        if written != generated:
+            diff = [f"{w!r} != {g!r}" for w, g in zip(written, generated) if w != g][:3]
+            if len(written) != len(generated):
+                diff.append(f"{len(written)} lineas escritas frente a {len(generated)} generadas")
+            problems.append(
+                "`## 1` no cuadra con las filas: corre `python scripts/ledger.py fases --write` ("
+                + "; ".join(diff) + ")"
+            )
 
     if args.json:
         print(json.dumps({"ok": not problems, "problems": problems}, ensure_ascii=False, indent=2))
@@ -516,6 +610,7 @@ COMMANDS = {
     "stats": cmd_stats,
     "check": cmd_check,
     "cost": cmd_cost,
+    "fases": cmd_fases,
 }
 
 
@@ -539,6 +634,9 @@ def main(argv: list[str] | None = None) -> int:
 
     for name in ("blocked", "inv", "stats", "check", "cost"):
         sub.add_parser(name)
+
+    p_fases = sub.add_parser("fases", help="la tabla de `## 1` generada desde las filas")
+    p_fases.add_argument("--write", action="store_true", help="escribirla en el ledger")
 
     args = parser.parse_args(argv)
     if not args.cmd:
