@@ -46,7 +46,16 @@ gris()  { printf '\033[90m%s\033[0m\n' "$*"; }
 # --- Veredicto del nivel 2 del push anterior ---------------------------------
 if [ -f "$BITACORA/estado" ]; then
   ESTADO="$(head -1 "$BITACORA/estado")"
+  # «CORRIENDO» con el proceso muerto no es «sigue corriendo»: es un nivel 2
+  # que murio sin veredicto (35.9). Lo decide `ci_local.sh --estado`.
+  if [ "${ESTADO#CORRIENDO}" != "$ESTADO" ] && \
+     bash "$RAIZ/scripts/ci_local.sh" --estado 2>/dev/null | grep -q "^SE INTERRUMPIO"; then
+    ESTADO="INTERRUMPIDO"
+  fi
   case "$ESTADO" in
+    INTERRUMPIDO) rojo "  El nivel 2 del push anterior MURIO sin veredicto (proceso desaparecido):";
+           sed -n '1,2p' "$BITACORA/estado" | sed 's/^/     /';
+           gris  "     no cuenta como verde; vuelve a lanzarlo: bash scripts/ci_local.sh" ;;
     ROJO*) rojo   "  El nivel 2 del push anterior acabo en ROJO:";
            sed -n '2,8p' "$BITACORA/estado" | sed 's/^/     /';
            gris  "     detalle: .ci-local/ultima.log" ;;
@@ -168,7 +177,7 @@ else
   gris  "  --   ejercicios en Pyodide (no ha cambiado el contenido ni el worker)"
 fi
 
-if toca '^docs/|^content/|\.md$'; then
+if toca '^docs/|^content/|\.md$|^\.github/dependabot|^scripts/(ledger|check_docs)\.py'; then
   paso "docs vs codigo" python scripts/check_docs.py
 else
   gris  "  --   docs vs codigo (no han cambiado docs ni contenido)"
@@ -183,9 +192,15 @@ fi
 
 # --- Nivel 2 al fondo ---------------------------------------------------------
 echo
-if [ -x "$RAIZ/scripts/ci_local.sh" ] || [ -f "$RAIZ/scripts/ci_local.sh" ]; then
+if [ "${WHETZY_NIVEL2:-}" = "gestionado" ]; then
+  # Sesiones en la nube: un `nohup &` desde un shell que se cierra muere con el
+  # y deja «CORRIENDO» sin veredicto. Ahi el nivel 2 lo lanza la sesion como
+  # tarea gestionada en primer plano, y su codigo de salida es el veredicto.
+  gris "  nivel 2 NO lanzado al fondo (WHETZY_NIVEL2=gestionado). Lanzalo como tarea gestionada:"
+  gris "    bash scripts/ci_local.sh${SHA_EMPUJADO:+ --sha $SHA_EMPUJADO}"
+elif [ -x "$RAIZ/scripts/ci_local.sh" ] || [ -f "$RAIZ/scripts/ci_local.sh" ]; then
   printf 'CORRIENDO desde %s\n' "$(date '+%H:%M')" > "$BITACORA/estado"
-  nohup bash "$RAIZ/scripts/ci_local.sh" ${SHA_EMPUJADO:+--sha "$SHA_EMPUJADO"} \
+  WHETZY_CI_LOG_HECHO=1 nohup bash "$RAIZ/scripts/ci_local.sh" ${SHA_EMPUJADO:+--sha "$SHA_EMPUJADO"} \
     > "$BITACORA/ultima.log" 2>&1 < /dev/null &
   disown 2>/dev/null || true
   gris "  nivel 2 (suite entera, mypy, contenido, frontend) corriendo al fondo."

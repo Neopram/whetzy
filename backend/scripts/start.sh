@@ -32,8 +32,15 @@ python -m app.services.seed || echo "[start] seed fallido; se continua (no bloqu
 # platform probes another port is the 502 'Application failed to respond'.
 PORT="${PORT:-8000}"
 echo "[start] Starting Gunicorn on 0.0.0.0:${PORT}..."
+# --no-control-socket: gunicorn 25.1+ abre un socket de control en
+# $XDG_RUNTIME_DIR o, sin el, en $HOME/.gunicorn/gunicorn.ctl. El usuario
+# `app` del Dockerfile es de sistema (`adduser --system`) y su HOME es
+# /nonexistent, asi que cada arranque en Railway escribia «Control server
+# error: [Errno 13] Permission denied: '/nonexistent'». Nadie usa `gunicornc`
+# en el contenedor: se apaga en vez de reubicarlo.
 exec gunicorn app.main:app \
   --workers 2 \
   --worker-class uvicorn.workers.UvicornWorker \
   --bind "0.0.0.0:${PORT}" \
-  --timeout 60
+  --timeout 60 \
+  --no-control-socket
