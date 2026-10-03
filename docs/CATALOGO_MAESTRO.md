@@ -51,9 +51,9 @@ profundidad de producto*, no adquisición.
 |---|---|---|
 | Tracks | **35** (track01–23 + track26–30 + track40–46) | `python scripts/check_docs.py` |
 | Módulos (unidad de presentación en la web; el plan mide skills, ADR-54) | **174** | ídem |
-| Skills | **720** | ídem |
-| Preguntas | **10.935** | `python scripts/check_question_bank.py` |
-| Lecciones | **720** (una por skill: las 720 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
+| Skills | **727** | ídem |
+| Preguntas | **10.984** | `python scripts/check_question_bank.py` |
+| Lecciones | **727** (una por skill: las 727 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
 | Glosario | **1.044** | `check_docs.py` |
 | Ejecutables | **7** tracks ≥ 15 % (01, 02, 04, 06, 07, 09 y 12 — este, 20 %); track03 13,4 %, track13 4,8 %, track14 4,5 %, track40 1,4 %, track16 y track17 0 %; exentos track05, 08, 10, 11 y 15 (ADR-9). El 2026-10-01 se quitaron 216 «ejecutables» que daban correcto sin escribir nada (sin hueco `___` o con el hueco vacío válido) y pasaron a `fill_blank`, que es lo que eran: track16 decía 44,9 % y track17 36,7 %. El 2026-10-02, 24 que pasaban en CPython no podían resolverse en el navegador (hilos, `asyncio.run`, `sqlite3`, `tempfile`): 7 se reescribieron para el sandbox, 3 pasaron a `sql_exec` y 14 a `mcq`; `frontend/scripts/check-exec-pyodide.mjs` los corre en Pyodide | `check_question_bank.py`, `check-exec-pyodide.mjs` |
 | Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-901** (antes AI-900, retirado por Microsoft el 30-06-2026; blueprint migrado 39.24, 2026-10-02), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
@@ -61,8 +61,8 @@ profundidad de producto*, no adquisición.
 | Vídeos | 0 | — |
 | Plan ADR-54: tracks construidos ya en la forma 32 × 10 | 0 de 24 | `python scripts/catalog_coverage.py` |
 | Lo que falta en los 24 tracks construidos | +261 skills · +261 lecciones · +266 términos · +2.610 preguntas | ídem |
-| Lo que falta en las 11 certificaciones | +921 de práctica · +1.040 reservadas (AZ-900, AI-901 y DP-900: «pendiente», sin longitud publicada) | ídem |
-| Total y ritmo | 4.571 preguntas ≈ 9 sesiones a 518/sesión (estimación) | ídem |
+| Lo que falta en las 11 certificaciones | +872 de práctica · +1.040 reservadas (AZ-900, AI-901 y DP-900: «pendiente», sin longitud publicada) | ídem |
+| Total y ritmo | 4.522 preguntas ≈ 9 sesiones a 518/sesión (estimación) | ídem |
 
 ---
 
@@ -381,7 +381,7 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | AWS | **SAA-C03** | track10 | ✅ — 4 dominios, suma 100 (18.1) | — |
 | AWS | **AIF-C01** | track11 / track07 | ✅ — 5 dominios completos (18.1) | — |
 | AWS | DVA-C02 | track28 | ❌ | P2 |
-| AWS | **MLA-C01** → MLA-C02 | track07 | ✅ track43 — 12 task statements, 120 Q (45 de relleno retiradas en 39.42); MLA-C01 deja de ofrecerse en inglés el 2026-09-28 (39.25); formato C01 (65 preguntas, 130 min) fijado en 37.19 | — |
+| AWS | **MLA-C01** → MLA-C02 | track07 | ✅ track43 — 12 task statements, 169 Q (45 de relleno retiradas en 39.42; +49 de GenAI/RAG/agentes/Bedrock/IA responsable en 39.25, mismos 4 dominios); MLA-C01 dejó de ofrecerse en inglés el 2026-09-28, MLA-C02 en beta desde el 29-09 (39.25, verificado 2026-10-02); formato C01 (65 preguntas, 130 min) fijado en 37.19 | — |
 | AWS | SOA-C02 · DOP-C02 · SAP-C02 | track18/19 | ❌ | P3 |
 | AWS | Security Specialty (SCS-C02) | track25 | ❌ | P2 |
 | ISC2 | **CC** (Certified in Cybersecurity, examen gratuito) | track13 | ✅ **track40** — 353 Q, 5 dominios con pesos verificados, 15 % exec, `correct_index` auditado (18.2 / 18.14); **outline nuevo desde el 2026-09-01** (examen adaptativo de 100–125 ítems, dominios y pesos distintos): el track sigue con el de 2022 (37.22) | — |
@@ -407,7 +407,7 @@ dominio × peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar 
 | The Open Group | TOGAF Foundation | track05 | ❌ | P3 |
 
 **Hoy: 11 construidas.** Lo que falta por la regla de ADR-54 (`catalog_coverage.py`,
-2026-10-02): +921 preguntas de práctica (PCEP +33, AIF-C01 +75, MLA-C01 +180, AZ-900 +205,
+2026-10-03): +872 preguntas de práctica (PCEP +33, AIF-C01 +75, MLA-C01 +131, AZ-900 +205,
 AI-901 +224, DP-900 +204) y +1.040 reservadas. Sin objetivos contados: Security+ SY0-701. Sin
 longitud de examen publicada: AZ-900, AI-901 y DP-900. La cobertura de objetivos se mide hoy
 con un proxy (una skill por objetivo): no hay mapa objetivo → skill. La lista de
@@ -478,9 +478,9 @@ Cifras de `python scripts/catalog_coverage.py` sobre `80cd3ad`. El ritmo es el �
 | Qué | Preguntas que faltan | Sesiones (≈ Q / 518) |
 |---|---|---|
 | Antes de nada: el piloto (`LANZAMIENTO_PILOTO.md`) | 0 | — |
-| 11 certificaciones: práctica ≥ máx(300, 3 × L) (+921) y banco reservado de 2 × L (+1.040; sin AZ-900, AI-901 y DP-900, cuya longitud no se publica) | 1.961 | ≈ 4 |
+| 11 certificaciones: práctica ≥ máx(300, 3 × L) (+872) y banco reservado de 2 × L (+1.040; sin AZ-900, AI-901 y DP-900, cuya longitud no se publica) | 1.912 | ≈ 4 |
 | 24 tracks construidos a la forma 32 × 10: 12 de nivel A (+1.280) · 2 de B (+240) · 10 de C (+1.090) | 2.610 | ≈ 5 |
-| **Total del plan** | **4.571** | **≈ 9** |
+| **Total del plan** | **4.522** | **≈ 9** |
 | *Solo cuando la demanda los active (no cuentan en el total):* track24/25 reconstruidos (2 × 320) · nuevos A (3 × 320) · B (7 × 320) · C (9 × 320) | 640 · 960 · 2.240 · 2.880 | ≈ 1 · 2 · 4 · 6 |
 
 - Además de preguntas: +261 skills, +261 lecciones y +266 términos en los tracks construidos.
