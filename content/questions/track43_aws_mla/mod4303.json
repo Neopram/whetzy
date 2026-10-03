@@ -689,6 +689,322 @@
       "explanation_es": "Containerización e integración con ECR: la respuesta correcta es la opción que describe con precisión la funcionalidad principal y las mejores prácticas asociadas.",
       "explanation_en": "Containerization and ECR Integration: the correct answer is the option that accurately describes the main functionality and associated best practices.",
       "source": "AWS Documentation (https://docs.aws.amazon.com)"
+    },
+    {
+      "id": "q430124001",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "¿Qué hace Amazon Bedrock automáticamente al crear una Knowledge Base apuntando a una fuente en S3?",
+      "question_en": "What does Amazon Bedrock automatically do when a Knowledge Base is created pointing at an S3 source?",
+      "options_es": [
+        "Trocea los documentos, genera sus embeddings y mantiene el índice vectorial sincronizado",
+        "Elimina de forma permanente los documentos originales una vez indexados en el vector store",
+        "Convierte automáticamente todos los archivos a formato PDF antes de poder indexarlos",
+        "Factura de forma separada cada documento individual según su tamaño en megabytes"
+      ],
+      "options_en": [
+        "It chunks the documents, generates their embeddings, and keeps the vector index in sync",
+        "It permanently deletes the original documents once they're indexed in the vector store",
+        "It automatically converts every file to PDF format before it can be indexed",
+        "It bills each individual document separately based on its size in megabytes"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una Knowledge Base de Bedrock gestiona todo el pipeline de ingesta: trocear documentos, generar embeddings con el modelo configurado, y mantener el índice sincronizado en la base vectorial elegida. No borra los originales de S3 ni exige convertir formatos a PDF.",
+      "explanation_en": "A Bedrock Knowledge Base manages the whole ingestion pipeline: chunking documents, generating embeddings with the configured model, and keeping the index in sync in the chosen vector store. It does not delete the S3 originals nor require converting formats to PDF.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430124002",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué sirve la llamada `StartIngestionJob` sobre una Knowledge Base ya creada?",
+      "question_en": "What is the `StartIngestionJob` call on an already-created Knowledge Base used for?",
+      "options_es": [
+        "Reingestar la fuente de datos para que el índice refleje documentos nuevos o modificados",
+        "Eliminar por completo la Knowledge Base y todos sus recursos asociados de la cuenta",
+        "Cambiar de forma permanente el modelo de embeddings usado por toda la base vectorial incluso cuando la fuente original de datos nunca llega a cambiar de contenido",
+        "Facturar de inmediato todo el almacenamiento vectorial acumulado hasta ese momento"
+      ],
+      "options_en": [
+        "Re-ingesting the data source so the index reflects new or changed documents",
+        "Completely deleting the Knowledge Base and all its associated resources",
+        "Permanently changing the embedding model used by the whole vector store even when the original data source's content never actually changes",
+        "Immediately billing all the vector storage accumulated up to that point"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`StartIngestionJob` dispara una pasada de ingesta que recoge documentos nuevos o modificados en la fuente y actualiza el índice vectorial; no borra la base, no cambia el modelo de embeddings configurado, ni genera una facturación inmediata por sí sola.",
+      "explanation_en": "`StartIngestionJob` triggers an ingestion pass that picks up new or changed documents in the source and updates the vector index; it doesn't delete the base, doesn't change the configured embedding model, and doesn't by itself trigger immediate billing.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430124003",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "¿Qué permite hacer Amazon Bedrock Custom Model Import?",
+      "question_en": "What does Amazon Bedrock Custom Model Import allow you to do?",
+      "options_es": [
+        "Subir los pesos de un modelo propio (p. ej. en formato Hugging Face) para exponerlo por la API de Bedrock",
+        "Descargar gratis los pesos de cualquier modelo propietario del catálogo oficial de Bedrock sin que el cliente tenga que subir ningún peso propio al servicio",
+        "Importar automáticamente los historiales de chat de otra aplicación de IA generativa",
+        "Convertir cualquier modelo clásico de scikit-learn en un modelo fundacional multimodal"
+      ],
+      "options_en": [
+        "Uploading your own model's weights (e.g. in Hugging Face format) to expose it via Bedrock's API",
+        "Freely downloading the weights of any proprietary model from Bedrock's official catalog without the customer having to upload any weights of their own",
+        "Automatically importing chat histories from another generative AI application",
+        "Converting any classic scikit-learn model into a multimodal foundation model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Custom Model Import deja subir pesos de modelos ya personalizados (arquitecturas como Llama o Mistral, en formato Hugging Face) para servirlos con la misma API de inferencia que el resto del catálogo; no descarga pesos propietarios ajenos, ni importa historiales de chat, ni convierte modelos clásicos de scikit-learn.",
+      "explanation_en": "Custom Model Import lets you upload weights of already-customized models (architectures like Llama or Mistral, in Hugging Face format) to serve them through the same inference API as the rest of the catalog; it doesn't download other providers' proprietary weights, import chat histories, or convert classic scikit-learn models.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430124004",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "¿Qué resuelve Amazon Bedrock Prompt Management para un equipo que usa el mismo prompt en varias aplicaciones?",
+      "question_en": "What does Amazon Bedrock Prompt Management solve for a team reusing the same prompt across several applications?",
+      "options_es": [
+        "Guarda y versiona el prompt con variables, evitando reescribirlo en cada aplicación",
+        "Genera automáticamente un modelo fundacional nuevo y exclusivo para ese prompt concreto",
+        "Traduce el prompt a todos los idiomas admitidos por Amazon Translate sin configuración",
+        "Elimina por completo la necesidad de probar el prompt antes de usarlo en producción"
+      ],
+      "options_en": [
+        "It saves and versions the prompt with variables, avoiding rewriting it in every application",
+        "It automatically generates a brand-new foundation model exclusive to that specific prompt",
+        "It translates the prompt into every language Amazon Translate supports with no setup",
+        "It completely removes the need to test the prompt before using it in production"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Prompt Management centraliza la creación, las variables y las versiones de un prompt reutilizable, de modo que distintas aplicaciones lo referencien sin duplicar texto; no crea modelos nuevos, no traduce automáticamente, y sigue recomendando probar variantes antes de desplegar.",
+      "explanation_en": "Prompt Management centralizes the creation, variables, and versions of a reusable prompt, so different applications can reference it without duplicating text; it doesn't create new models, doesn't auto-translate, and still recommends testing variants before deploying.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430124005",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "¿Qué riesgo corre una aplicación RAG si su Knowledge Base nunca vuelve a ingerir la fuente de datos?",
+      "question_en": "What risk does a RAG application run if its Knowledge Base never re-ingests the data source?",
+      "options_es": [
+        "Las respuestas quedan desactualizadas en cuanto cambia el contenido original",
+        "El modelo fundacional subyacente deja de responder a cualquier tipo de consulta",
+        "La cuenta de AWS pierde automáticamente el acceso al catálogo de modelos",
+        "El coste de almacenamiento vectorial se duplica cada vez que pasa una semana"
+      ],
+      "options_en": [
+        "Answers go stale as soon as the original content changes",
+        "The underlying foundation model stops responding to any kind of query",
+        "The AWS account automatically loses access to the model catalog",
+        "Vector storage cost automatically doubles every time a week passes"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Si la fuente cambia pero nunca se reingesta, el índice vectorial sigue reflejando contenido viejo y las respuestas recuperadas dejan de corresponder a la realidad actual; el modelo en sí sigue funcionando, no hay pérdida de acceso a la cuenta ni duplicación automática de coste por el mero paso del tiempo.",
+      "explanation_en": "If the source changes but is never re-ingested, the vector index keeps reflecting old content and retrieved answers stop matching current reality; the model itself keeps working, there's no account access loss, and storage cost doesn't automatically double just from time passing.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430124006",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "Para una Knowledge Base, ¿qué dos piezas mínimas hay que indicar al crearla además del nombre?",
+      "question_en": "To create a Knowledge Base, what two minimum pieces are needed besides the name?",
+      "options_es": [
+        "Una fuente de datos (p. ej. S3) y una base de datos vectorial ya configurada",
+        "Una tarjeta de crédito válida y una firma digital del administrador de la cuenta",
+        "Un bucket de S3 vacío y el número de teléfono del equipo de soporte de AWS",
+        "Un certificado SSL propio y un dominio personalizado registrado en Route 53"
+      ],
+      "options_en": [
+        "A data source (e.g. S3) and an already-configured vector database",
+        "A valid credit card and a digital signature from the account administrator",
+        "An empty S3 bucket and the phone number of the AWS support team",
+        "A custom SSL certificate and a custom domain registered in Route 53"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Crear una Knowledge Base requiere apuntarla a una fuente de datos y a un almacén vectorial ya aprovisionado (OpenSearch Serverless, Aurora, etc.); no exige tarjeta de crédito ni firma aparte de la facturación normal de AWS, ni certificados SSL o dominios propios.",
+      "explanation_en": "Creating a Knowledge Base requires pointing it at a data source and an already-provisioned vector store (OpenSearch Serverless, Aurora, etc.); it doesn't require a credit card or signature beyond normal AWS billing, nor a custom SSL certificate or domain.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430124007",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "¿Qué arquitecturas de modelo admite hoy Bedrock Custom Model Import, según la documentación de AWS?",
+      "question_en": "Which model architectures does Bedrock Custom Model Import support today, per AWS documentation?",
+      "options_es": [
+        "Arquitecturas como Llama, Mistral y Mixtral, entre otras basadas en transformers",
+        "Únicamente modelos clásicos de regresión lineal entrenados con scikit-learn aunque ninguna de esas arquitecturas aparezca listada en la documentación",
+        "Cualquier red neuronal, sin importar su arquitectura ni su formato de pesos",
+        "Solo modelos propietarios de Amazon, nunca arquitecturas de origen externo"
+      ],
+      "options_en": [
+        "Architectures like Llama, Mistral, and Mixtral, among other transformer-based ones",
+        "Only classic linear-regression models trained with scikit-learn even though none of those architectures appear in the documentation",
+        "Any neural network at all, regardless of architecture or weight format",
+        "Only Amazon's own proprietary models, never externally originated architectures"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La documentación de AWS lista arquitecturas concretas admitidas (Llama, Mistral, Mixtral, Flan, Qwen, entre otras basadas en transformers), no cualquier red neuronal sin restricción; no se limita a regresión lineal ni exclusivamente a modelos propios de Amazon.",
+      "explanation_en": "AWS documentation lists specific supported architectures (Llama, Mistral, Mixtral, Flan, Qwen, among other transformer-based ones), not any neural network without restriction; it isn't limited to linear regression nor exclusively to Amazon's own models.",
+      "source": "AWS Bedrock User Guide — Custom model import (https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-import-model.html)"
+    },
+    {
+      "id": "q430125001",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "¿Qué añade un agente de Amazon Bedrock a un modelo fundacional simple?",
+      "question_en": "What does an Amazon Bedrock agent add to a plain foundation model?",
+      "options_es": [
+        "La capacidad de decidir qué herramienta llamar para resolver una tarea concreta",
+        "Un descuento automático y permanente en el precio por token de cualquier modelo",
+        "La obligación de desplegarse únicamente en la región us-east-1 de AWS",
+        "Un límite estricto de una sola llamada de inferencia por conversación completa"
+      ],
+      "options_en": [
+        "The ability to decide which tool to call to solve a specific task",
+        "An automatic, permanent discount on any model's per-token price",
+        "The obligation to deploy exclusively in the AWS us-east-1 region",
+        "A strict limit of a single inference call per entire conversation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un agente extiende el modelo con lógica de decisión: elige qué acción o herramienta invocar (función, API, consulta) según la tarea, en vez de limitarse a generar texto; no implica descuentos de precio, restricción de región ni un límite de una sola llamada.",
+      "explanation_en": "An agent extends the model with decision logic: it chooses which action or tool to invoke (function, API, query) based on the task, instead of just generating text; it doesn't imply price discounts, a region restriction, or a one-call-per-conversation limit.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430125002",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué es importante que un agente gestione explícitamente su estado durante una tarea de varios pasos?",
+      "question_en": "Why does it matter for an agent to explicitly manage its state during a multi-step task?",
+      "options_es": [
+        "Porque sin él repite llamadas o se contradice entre un turno y el siguiente",
+        "Porque el estado determina directamente el precio por token que cobra AWS",
+        "Porque gestionar el estado es un requisito legal exclusivo de la Unión Europea",
+        "Porque sin estado el agente deja de tener acceso a cualquier modelo del catálogo"
+      ],
+      "options_en": [
+        "Because without it the agent repeats calls or contradicts itself across turns",
+        "Because the state directly determines the per-token price AWS charges",
+        "Because managing state is a legal requirement exclusive to the European Union",
+        "Because without state the agent loses access to any catalog model at all"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El estado guarda qué pasos ya se completaron y qué datos se recuperaron; sin él, un agente puede repetir una llamada ya hecha o dar una respuesta que contradice un turno anterior. El estado no afecta al precio por token, no es un requisito legal regional, ni determina el acceso al catálogo.",
+      "explanation_en": "State tracks which steps already completed and what data was retrieved; without it, an agent can repeat a call it already made or give an answer that contradicts an earlier turn. State doesn't affect per-token pricing, isn't a regional legal requirement, and doesn't determine catalog access.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430125003",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "Un flujo agente necesita recursos de cómputo que escalen según la carga. ¿Qué tipo de recurso menciona el blueprint de MLA-C02 para esto?",
+      "question_en": "An agentic workflow needs compute resources that scale with load. What kind of resource does the MLA-C02 blueprint mention for this?",
+      "options_es": [
+        "Recursos de GPU, con un escalado distinto al de un endpoint de inferencia simple",
+        "Exclusivamente instancias de bajo coste basadas en procesador ARM de un solo núcleo",
+        "Un único servidor físico dedicado, sin ningún tipo de escalado automático",
+        "Recursos de almacenamiento en cinta magnética para archivado a largo plazo"
+      ],
+      "options_en": [
+        "GPU resources, scaled differently from a plain inference endpoint",
+        "Exclusively low-cost single-core ARM-based instances",
+        "A single dedicated physical server, with no automatic scaling at all",
+        "Magnetic tape storage resources for long-term archiving"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El blueprint cita específicamente escalado de recursos de IA para cargas de GPU, distinto del escalado habitual de un endpoint de inferencia simple; no se refiere a instancias ARM de bajo coste, a un servidor único sin escalado, ni a almacenamiento en cinta.",
+      "explanation_en": "The blueprint specifically cites AI-specific resource scaling for GPU workloads, different from the usual scaling of a plain inference endpoint; it doesn't refer to low-cost ARM instances, a single server with no scaling, or tape storage.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430125004",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "¿Qué beneficio aporta una canalización automatizada de despliegue para agentes, con versionado incluido?",
+      "question_en": "What benefit does an automated agent deployment pipeline with versioning provide?",
+      "options_es": [
+        "Permite revertir a una versión anterior si una nueva configuración falla en producción",
+        "Elimina por completo la necesidad de probar el agente antes de publicarlo ni documentar en ningún sitio qué cambió entre una versión y otra",
+        "Garantiza que el agente nunca vuelva a necesitar ninguna actualización futura",
+        "Convierte automáticamente al agente en el modelo fundacional más barato disponible"
+      ],
+      "options_en": [
+        "It allows rolling back to a previous version if a new configuration fails in production",
+        "It completely removes the need to test the agent before publishing it nor document anywhere what changed between one version and another",
+        "It guarantees the agent will never need any future update again",
+        "It automatically turns the agent into the cheapest available foundation model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Versionar cada cambio de configuración de un agente permite volver atrás de forma controlada si algo falla tras un despliegue, igual que con cualquier otro componente de software; no elimina la necesidad de pruebas, no es una garantía de que nunca haga falta otra actualización, ni cambia el modelo subyacente usado.",
+      "explanation_en": "Versioning every configuration change for an agent allows a controlled rollback if something fails after a deployment, just like with any other software component; it doesn't remove the need for testing, isn't a guarantee no further update will ever be needed, and doesn't change the underlying model used.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430125005",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué una tarea compleja se reparte a veces entre varios agentes especializados en lugar de uno solo?",
+      "question_en": "Why is a complex task sometimes split across several specialized agents instead of one?",
+      "options_es": [
+        "Porque cada agente puede enfocarse en una parte de la tarea y comunicarse con los demás",
+        "Porque Amazon Bedrock prohíbe explícitamente que un solo agente tenga más de una acción",
+        "Porque repartir la tarea reduce a cero el coste total de todas las llamadas de inferencia",
+        "Porque un solo agente nunca puede acceder a más de un modelo fundacional del catálogo"
+      ],
+      "options_en": [
+        "Because each agent can focus on part of the task and communicate with the others",
+        "Because Amazon Bedrock explicitly forbids a single agent from having more than one action",
+        "Because splitting the task reduces the total cost of every inference call to zero",
+        "Because a single agent can never access more than one catalog foundation model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Repartir una tarea compleja entre agentes especializados, coordinados por un protocolo de comunicación, permite que cada uno se concentre en su parte; no hay una prohibición de Bedrock sobre múltiples acciones por agente, no se reduce el coste a cero, ni se limita a un único modelo por agente.",
+      "explanation_en": "Splitting a complex task across specialized agents, coordinated through a communication protocol, lets each one focus on its part; there's no Bedrock prohibition on multiple actions per agent, cost isn't reduced to zero, and a single agent isn't limited to one model.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430125006",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "Un agente de soporte consulta el estado de un pedido y luego decide si escalar a un humano. ¿Qué debe conservar en su estado durante todo el turno?",
+      "question_en": "A support agent checks an order's status and then decides whether to escalate to a human. What must it keep in its state throughout the turn?",
+      "options_es": [
+        "Qué pedido concreto está consultando, para no perder ese contexto entre pasos",
+        "El número de tarjeta de crédito completo usado en la compra original del pedido",
+        "La contraseña de la cuenta de AWS del equipo que mantiene el agente de soporte",
+        "El historial completo de todas las compras de cualquier cliente de la tienda"
+      ],
+      "options_en": [
+        "Which specific order it's checking, so that context isn't lost between steps",
+        "The full credit card number used in the order's original purchase",
+        "The AWS account password of the team maintaining the support agent",
+        "The complete purchase history of every customer in the store"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El agente necesita recordar qué pedido concreto está consultando a lo largo de la conversación para no perder contexto entre el paso de consulta y el de decisión; no necesita, ni debería, conservar el número de tarjeta completo, credenciales de AWS, ni el historial de todos los clientes.",
+      "explanation_en": "The agent needs to remember which specific order it's checking throughout the conversation so context isn't lost between the check step and the decision step; it does not need, and should not keep, the full card number, AWS credentials, or every customer's purchase history.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430125ex007",
+      "skill_id": "sk430125",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Completa el hueco para que un agente escale a un humano solo cuando la tarea requiere una herramienta externa.\n\n```python\ndef tipo_de_agente(necesita_herramienta_externa):\n    if necesita_herramienta_externa:\n        return \"hosted_agent\"\n    return \"___\"\n\nprint(tipo_de_agente(False))\n```",
+      "question_en": "Fill in the blank so an agent only escalates when the task needs an external tool.\n\n```python\ndef agent_type(needs_external_tool):\n    if needs_external_tool:\n        return \"hosted_agent\"\n    return \"___\"\n\nprint(agent_type(False))\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "prompt_agent",
+      "correct_answer_en": "prompt_agent",
+      "explanation_es": "Cuando la tarea no necesita una herramienta externa ni código propio en ejecución, un \"prompt agent\" puramente declarativo basta; el \"hosted agent\" se reserva para cuando sí hace falta ejecutar lógica personalizada.",
+      "explanation_en": "When the task doesn't need an external tool or custom code running, a purely declarative \"prompt agent\" is enough; the \"hosted agent\" is reserved for when custom logic actually needs to run.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
+      "expected_time_ms": 30000
     }
   ]
 }

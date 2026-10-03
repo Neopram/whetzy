@@ -69,8 +69,22 @@ class PlacementEngine:
         return item.guessing + (1.0 - item.guessing) / (1.0 + math.exp(exponent))
 
     def fisher_information(self, theta: float, item: IRTItem) -> float:
-        """Fisher information for 2PL (ignoring guessing for selection)."""
-        p = 1.0 / (1.0 + math.exp(-item.discrimination * (theta - item.difficulty)))
+        """Fisher information for 2PL (ignoring guessing for selection).
+
+        Same exponent clamp as `probability_correct` just above — without
+        it, a large discrimination far from theta raises `OverflowError`
+        from `math.exp`. Reachable in production: `select_next_item`'s
+        Thompson sampling draws `discrimination` from an unbounded gamma,
+        and `update_ability`'s Newton-Raphson can itself walk an item's
+        *ability* estimate far from where its responses actually sit before
+        it converges. Found calibrating item parameters offline (14.10) with
+        simulated data sparse enough to produce a transient extreme
+        discrimination estimate — the same shape of input `select_next_item`
+        can hand this method live.
+        """
+        exponent = -item.discrimination * (theta - item.difficulty)
+        exponent = max(-20.0, min(20.0, exponent))
+        p = 1.0 / (1.0 + math.exp(exponent))
         return item.discrimination ** 2 * p * (1.0 - p)
 
     def select_next_item(self, state: PlacementState) -> IRTItem | None:

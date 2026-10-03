@@ -689,6 +689,322 @@
       "explanation_es": "Estrategias de selección de modelos: la respuesta correcta es la opción que describe con precisión la funcionalidad principal y las mejores prácticas asociadas.",
       "explanation_en": "Model Selection Strategies: the correct answer is the option that accurately describes the main functionality and associated best practices.",
       "source": "AWS Documentation (https://docs.aws.amazon.com)"
+    },
+    {
+      "id": "q430122001",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Un equipo necesita responder preguntas sobre una política interna que cambia cada semana. ¿Qué estrategia de personalización encaja mejor?",
+      "question_en": "A team needs to answer questions about an internal policy that changes weekly. Which customization strategy fits best?",
+      "options_es": [
+        "RAG, porque actualizar la base de conocimiento es más rápido y barato que reentrenar",
+        "Fine-tuning semanal del modelo completo con los datos de la política actualizada sin tener en cuenta cómo cambia la información con el tiempo",
+        "Entrenar un modelo nuevo desde cero cada vez que cambie cualquier detalle",
+        "Ignorar los cambios y confiar en que el modelo base ya conoce la política"
+      ],
+      "options_en": [
+        "RAG, because updating the knowledge base is faster and cheaper than retraining",
+        "Weekly fine-tuning of the whole model with the updated policy data without considering how the information changes over time",
+        "Training a brand-new model from scratch every time any detail changes",
+        "Ignoring the changes and trusting the base model already knows the policy"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cuando la información cambia con frecuencia, RAG permite actualizar solo la base de conocimiento (reindexar los documentos) sin tocar los pesos del modelo, mucho más barato y rápido que reentrenar o fine-tunear cada semana; ignorar los cambios garantiza respuestas desactualizadas.",
+      "explanation_en": "When information changes often, RAG lets you update just the knowledge base (re-indexing the documents) without touching the model's weights, far cheaper and faster than retraining or fine-tuning every week; ignoring the changes guarantees stale answers.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430122002",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "¿Qué devuelve la llamada `ListFoundationModels` de Amazon Bedrock?",
+      "question_en": "What does Amazon Bedrock's `ListFoundationModels` call return?",
+      "options_es": [
+        "El catálogo de modelos disponibles junto con sus capacidades (modalidades, proveedor)",
+        "El historial completo de todas las conversaciones de todos los usuarios de la cuenta que el equipo tendría que calcular por separado con otra herramienta",
+        "La factura detallada del mes en curso desglosada por cada modelo invocado",
+        "Las credenciales de IAM necesarias para invocar cualquier modelo del catálogo"
+      ],
+      "options_en": [
+        "The catalog of available models along with their capabilities (modalities, provider)",
+        "The full conversation history of every user in the account that the team would have to calculate separately with another tool",
+        "The current month's detailed bill broken down by each invoked model",
+        "The IAM credentials needed to invoke any model in the catalog"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`ListFoundationModels` es una llamada de descubrimiento: enumera los modelos del catálogo y sus propiedades (proveedor, modalidades admitidas, estado). No expone historiales de conversación, facturación ni credenciales, que son responsabilidad de otros servicios (CloudWatch, Cost Explorer, IAM).",
+      "explanation_en": "`ListFoundationModels` is a discovery call: it enumerates the catalog's models and their properties (provider, supported modalities, status). It does not expose conversation history, billing, or credentials, which are other services' responsibility (CloudWatch, Cost Explorer, IAM).",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430122003",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "¿Qué diferencia principal hay entre fine-tuning y RAG como estrategias de personalización de un modelo?",
+      "question_en": "What's the main difference between fine-tuning and RAG as model customization strategies?",
+      "options_es": [
+        "Fine-tuning ajusta los pesos del modelo con datos propios; RAG añade contexto sin tocarlos",
+        "Fine-tuning y RAG son exactamente el mismo proceso con nombres distintos en inglés aunque la documentación oficial de AWS los describa por separado",
+        "RAG siempre requiere más tiempo de cómputo con GPU que cualquier proceso de fine-tuning",
+        "Fine-tuning solo funciona con modelos de código abierto, nunca con modelos propietarios"
+      ],
+      "options_en": [
+        "Fine-tuning adjusts the model's weights with proprietary data; RAG adds context without touching them",
+        "Fine-tuning and RAG are exactly the same process under two different English names even though AWS's own official documentation describes them separately",
+        "RAG always needs more GPU compute time than any fine-tuning process",
+        "Fine-tuning only works with open-source models, never with proprietary ones"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Fine-tuning reentrena (parcialmente) el modelo para que sus pesos reflejen datos propios; RAG deja los pesos intactos y en su lugar recupera contexto relevante en el momento de la consulta. No son el mismo proceso, RAG no es inherentemente más costoso en GPU, y el fine-tuning se aplica tanto a modelos abiertos como propietarios con soporte para ello.",
+      "explanation_en": "Fine-tuning (partially) retrains the model so its weights reflect proprietary data; RAG leaves the weights untouched and instead retrieves relevant context at query time. They are not the same process, RAG isn't inherently more GPU-costly, and fine-tuning applies to both open and proprietary models that support it.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430122004",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Al comparar modelos fundacionales para un caso de uso, ¿cuál de estos criterios es relevante según el blueprint de MLA-C02?",
+      "question_en": "When comparing foundation models for a use case, which of these criteria is relevant per the MLA-C02 blueprint?",
+      "options_es": [
+        "El equilibrio entre rendimiento del modelo, latencia y coste para la tarea concreta",
+        "El color del logotipo que usa el proveedor del modelo en su página de marketing que casi nunca influye en si la aplicación resuelve bien la tarea",
+        "El número total de empleados que trabajan en la empresa proveedora del modelo",
+        "La antigüedad en años de la empresa que desarrolló el modelo fundacional"
+      ],
+      "options_en": [
+        "The tradeoff between model performance, latency, and cost for the specific task",
+        "The color of the logo the model's provider uses on its marketing page which almost never affects whether the application solves the task well",
+        "The total number of employees working at the model's provider company",
+        "How many years old the company that developed the foundation model is"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El blueprint de MLA-C02 pide explícitamente evaluar las contrapartidas (tradeoffs) entre rendimiento del modelo, latencia y coste de inferencia al elegirlo; aspectos como el logotipo, el tamaño de plantilla o la antigüedad de la empresa no son criterios técnicos del examen.",
+      "explanation_en": "The MLA-C02 blueprint explicitly asks for assessing tradeoffs between model performance, latency, and inference cost when selecting it; things like the logo, headcount, or how old the provider company is are not technical exam criteria.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430122005",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "¿Qué riesgo corre un equipo que elige siempre el modelo más grande disponible en el catálogo, sin medir la tarea?",
+      "question_en": "What risk does a team run by always picking the largest available catalog model without measuring the task?",
+      "options_es": [
+        "Inflar el coste y la latencia sin que la calidad de la respuesta realmente mejore",
+        "Que el modelo deje de estar disponible automáticamente al cabo de 24 horas independientemente de si la tarea realmente lo necesita o no",
+        "Que AWS bloquee la cuenta por superar un límite de tamaño de modelo permitido",
+        "Perder acceso a todos los demás modelos del catálogo de forma permanente"
+      ],
+      "options_en": [
+        "Inflating cost and latency without the answer's quality actually improving",
+        "The model automatically becoming unavailable after 24 hours regardless of whether the task actually needs it or not",
+        "AWS locking the account for exceeding an allowed model-size limit",
+        "Permanently losing access to every other model in the catalog"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un modelo más grande casi siempre cuesta más por token y responde más lento; si la tarea no necesita esa capacidad extra, el equipo paga más y espera más sin ganar calidad. No hay bloqueo de cuenta, caducidad automática ni pérdida de acceso a otros modelos por este motivo.",
+      "explanation_en": "A larger model almost always costs more per token and answers more slowly; if the task doesn't need that extra capability, the team pays more and waits longer with no quality gain. There is no account lock, automatic expiry, or loss of access to other models for this reason.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430122006",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "¿Qué pregunta responde elegir un \"patrón de arquitectura RAG\" como recuperación simple frente a re-ranking?",
+      "question_en": "What question does choosing a \"RAG architecture pattern\" like simple retrieval versus re-ranking answer?",
+      "options_es": [
+        "Cuánta precisión necesita la respuesta frente al coste de hacer llamadas adicionales",
+        "Qué proveedor de nube se usará para alojar la aplicación del usuario final sin que eso dependa del modelo fundacional elegido para la tarea",
+        "Qué lenguaje de programación debe usar el equipo para construir el frontend",
+        "Cuántos empleados del equipo de datos deben revisar manualmente cada respuesta"
+      ],
+      "options_en": [
+        "How much accuracy the answer needs against the cost of making extra calls",
+        "Which cloud provider will host the end-user application without that depending on the foundation model chosen for the task",
+        "Which programming language the team should use to build the frontend",
+        "How many data-team employees must manually review every answer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada patrón de arquitectura RAG (recuperación simple, re-ranking, multi-hop) compensa precisión de la respuesta contra el coste y la latencia de llamadas adicionales; no decide proveedor de nube, lenguaje de frontend ni cuántas personas revisan manualmente.",
+      "explanation_en": "Each RAG architecture pattern (simple retrieval, re-ranking, multi-hop) trades off answer accuracy against the cost and latency of extra calls; it doesn't decide the cloud provider, frontend language, or how many people manually review answers.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430122007",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Un modelo base responde bien a tareas generales con un buen prompt, sin tocar sus pesos. ¿Qué técnica describe esto?",
+      "question_en": "A base model answers general tasks well with a good prompt, without touching its weights. What technique does this describe?",
+      "options_es": [
+        "Ingeniería de prompts, suficiente cuando la tarea no exige adaptación profunda al dominio",
+        "Fine-tuning completo, porque cualquier buen resultado implica reentrenar el modelo incluso cuando el equipo ya obtiene buenos resultados sin hacerlo",
+        "Destilación de modelos, que siempre reduce el tamaño del modelo original",
+        "Entrenamiento continuo (continuous pretraining) sobre datos de dominio específico"
+      ],
+      "options_en": [
+        "Prompt engineering, enough when the task doesn't need deep domain adaptation",
+        "Full fine-tuning, because any good result implies retraining the model even when the team already gets good results without doing it",
+        "Model distillation, which always shrinks the size of the original model",
+        "Continuous pretraining on domain-specific data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cuando un modelo base ya resuelve bien la tarea con una buena estructura de prompt, no hace falta fine-tuning, destilación ni preentrenamiento continuo: esas técnicas tienen sentido cuando el dominio es muy específico o se necesita reducir tamaño/coste, no cuando el prompting ya basta.",
+      "explanation_en": "When a base model already handles the task well with good prompt structure, there's no need for fine-tuning, distillation, or continuous pretraining: those techniques make sense when the domain is very specific or size/cost needs to shrink, not when prompting alone is already enough.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430123001",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "¿Qué mide ROUGE al comparar un resumen generado con uno de referencia humana?",
+      "question_en": "What does ROUGE measure when comparing a generated summary against a human reference?",
+      "options_es": [
+        "La coincidencia de n-gramas entre el texto generado y el texto de referencia",
+        "La latencia en milisegundos que tardó el modelo en generar el resumen completo",
+        "El coste en dólares de la llamada de inferencia que produjo ese resumen",
+        "El número total de parámetros que tiene el modelo que generó el resumen"
+      ],
+      "options_en": [
+        "The n-gram overlap between the generated text and the reference text",
+        "The latency in milliseconds the model took to generate the full summary",
+        "The dollar cost of the inference call that produced that summary",
+        "The total number of parameters the model that generated the summary has"
+      ],
+      "correct_index": 0,
+      "explanation_es": "ROUGE compara cuántos n-gramas (secuencias de palabras) coinciden entre el resumen generado y el de referencia, una métrica de solapamiento textual; no mide latencia, coste de inferencia ni el tamaño del modelo, que son métricas operativas distintas.",
+      "explanation_en": "ROUGE compares how many n-grams (word sequences) match between the generated summary and the reference one, a textual-overlap metric; it does not measure latency, inference cost, or model size, which are separate operational metrics.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430123002",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué BERTScore puede puntuar mejor que ROUGE una respuesta que usa sinónimos distintos a la referencia?",
+      "question_en": "Why might BERTScore rate higher than ROUGE a reply that uses different synonyms than the reference?",
+      "options_es": [
+        "Porque compara embeddings de significado en vez de exigir coincidencia exacta de palabras",
+        "Porque BERTScore ignora por completo el contenido y solo puntúa la longitud del texto y suele descartar cualquier respuesta que no sea casi idéntica",
+        "Porque BERTScore siempre da la puntuación máxima a cualquier respuesta bien formada",
+        "Porque ROUGE solo puede evaluar textos escritos originalmente en idioma inglés"
+      ],
+      "options_en": [
+        "Because it compares meaning embeddings instead of requiring exact word matches",
+        "Because BERTScore completely ignores content and only scores text length and tends to discard any answer that isn't nearly identical",
+        "Because BERTScore always gives the maximum score to any well-formed reply",
+        "Because ROUGE can only evaluate text originally written in English"
+      ],
+      "correct_index": 0,
+      "explanation_es": "BERTScore compara representaciones vectoriales del significado de las palabras, así que detecta que \"rápido\" y \"veloz\" son equivalentes aunque ROUGE, que exige coincidencia literal de n-gramas, los trate como un desacierto. No ignora el contenido ni está limitado al inglés.",
+      "explanation_en": "BERTScore compares vector representations of word meaning, so it recognizes that \"fast\" and \"quick\" are equivalent even though ROUGE, which requires literal n-gram matches, treats them as a miss. It doesn't ignore content and isn't limited to English.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430123003",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "¿Cuándo tiene más sentido usar LLM-as-a-judge en vez de una métrica como ROUGE?",
+      "question_en": "When does LLM-as-a-judge make more sense than a metric like ROUGE?",
+      "options_es": [
+        "Cuando la tarea es abierta o creativa y no existe una única respuesta de referencia posible",
+        "Cuando se necesita la puntuación más barata posible sin usar ningún modelo adicional que el equipo tendría que pagar aparte en cualquier caso",
+        "Cuando la respuesta del modelo siempre se puede comparar palabra por palabra",
+        "Cuando el equipo no tiene acceso a ningún modelo generativo adicional disponible"
+      ],
+      "options_en": [
+        "When the task is open-ended or creative and no single reference answer exists",
+        "When the cheapest possible score is needed without using any extra model that the team would have to pay for separately either way",
+        "When the model's reply can always be compared word for word",
+        "When the team has no access to any additional generative model at all"
+      ],
+      "correct_index": 0,
+      "explanation_es": "LLM-as-a-judge es útil justamente cuando no hay una referencia única contra la que comparar (preguntas abiertas, generación creativa); requiere una llamada adicional a un modelo (no es la opción más barata) y no aplica cuando se puede comparar palabra por palabra con una referencia fija.",
+      "explanation_en": "LLM-as-a-judge is useful exactly when there's no single reference to compare against (open-ended questions, creative generation); it requires an extra model call (not the cheapest option) and doesn't apply when a word-for-word comparison against a fixed reference is possible.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430123004",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "En una aplicación RAG, ¿por qué no basta con evaluar solo la calidad del texto generado?",
+      "question_en": "In a RAG application, why isn't it enough to evaluate just the generated text's quality?",
+      "options_es": [
+        "Porque si el fragmento recuperado no contiene la respuesta, ninguna redacción la arreglará",
+        "Porque el texto generado nunca influye en la satisfacción final de la persona usuaria por mucho que el equipo revise el estilo de la redacción final",
+        "Porque evaluar la generación siempre cuesta más que evaluar la recuperación",
+        "Porque la recuperación de documentos no forma parte del sistema RAG en absoluto"
+      ],
+      "options_en": [
+        "Because if the retrieved chunk doesn't contain the answer, no wording will fix that",
+        "Because the generated text never influences the end user's final satisfaction no matter how much the team polishes the final wording's style",
+        "Because evaluating generation always costs more than evaluating retrieval",
+        "Because document retrieval isn't part of the RAG system at all"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un RAG depende de dos pasos: recuperar el fragmento correcto y redactar una buena respuesta a partir de él; si el primero falla, ningún estilo de redacción puede inventar información que no se recuperó. Por eso hay que medir también la precisión de la recuperación, no solo la prosa final.",
+      "explanation_en": "RAG depends on two steps: retrieving the right chunk and wording a good answer from it; if the first one fails, no writing style can invent information that was never retrieved. That's why retrieval accuracy must be measured too, not just the final prose.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430123005",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "¿Qué papel cumple la revisión humana (human-in-the-loop) junto a las métricas automáticas?",
+      "question_en": "What role does human review (human-in-the-loop) play alongside automated metrics?",
+      "options_es": [
+        "Complementa las métricas automáticas detectando fallos que ellas no capturan",
+        "Reemplaza por completo a las métricas automáticas, que ya no son necesarias",
+        "Solo se aplica quando el modelo fundacional es de código abierto, nunca propietario",
+        "Se limita a revisar la factura mensual de los servicios de IA generativa usados"
+      ],
+      "options_en": [
+        "It complements automated metrics by catching failures they don't capture",
+        "It completely replaces automated metrics, which are no longer needed",
+        "It only applies when the foundation model is open-source, never proprietary",
+        "It's limited to reviewing the monthly bill for the generative AI services used"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Ninguna métrica automática detecta todos los fallos de seguridad o coherencia; muestrear respuestas con revisión humana cubre ese hueco, complementando (no reemplazando) a BLEU, ROUGE, BERTScore o LLM-as-a-judge, sin importar si el modelo es abierto o propietario.",
+      "explanation_en": "No automated metric catches every safety or coherence failure; sampling replies with human review fills that gap, complementing (not replacing) BLEU, ROUGE, BERTScore, or LLM-as-a-judge, regardless of whether the model is open or proprietary.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430123006",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "¿Qué distingue a BLEU de ROUGE según su origen histórico?",
+      "question_en": "What tells BLEU apart from ROUGE based on their historical origin?",
+      "options_es": [
+        "BLEU nació para evaluar traducción automática; ROUGE, para evaluar resúmenes",
+        "BLEU y ROUGE son el mismo algoritmo publicado dos veces con nombres distintos",
+        "BLEU solo puede ejecutarse dentro de Amazon Bedrock, nunca fuera de AWS",
+        "ROUGE necesita obligatoriamente una GPU para poder calcular cualquier puntuación"
+      ],
+      "options_en": [
+        "BLEU was built to evaluate machine translation; ROUGE, to evaluate summarization",
+        "BLEU and ROUGE are the same algorithm published twice under different names",
+        "BLEU can only run inside Amazon Bedrock, never outside of AWS",
+        "ROUGE absolutely requires a GPU to be able to compute any score at all"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Históricamente, BLEU se diseñó para puntuar traducción automática comparando n-gramas con traducciones de referencia, y ROUGE para puntuar resúmenes de la misma forma; ninguno de los dos depende de Bedrock ni de GPU, son cálculos ligeros de coincidencia textual.",
+      "explanation_en": "Historically, BLEU was designed to score machine translation by comparing n-grams against reference translations, and ROUGE to score summaries the same way; neither depends on Bedrock or a GPU — both are lightweight text-overlap computations.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)"
+    },
+    {
+      "id": "q430123ex007",
+      "skill_id": "sk430123",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Completa el hueco para calcular el F1 de solapamiento de palabras entre una respuesta candidata y una de referencia.\n\n```python\nreferencia = {\"bedrock\", \"ofrece\", \"modelos\"}\ncandidata = {\"bedrock\", \"ofrece\", \"agentes\"}\ninterseccion = referencia & candidata\nprecision = len(interseccion) / len(candidata)\nrecall = len(interseccion) / len(referencia)\nf1 = 2 * precision * recall / (precision + ___)\nprint(round(f1, 4))\n```",
+      "question_en": "Fill in the blank to compute the word-overlap F1 between a candidate reply and a reference one.\n\n```python\nreference = {\"bedrock\", \"offers\", \"models\"}\ncandidate = {\"bedrock\", \"offers\", \"agents\"}\noverlap = reference & candidate\nprecision = len(overlap) / len(candidate)\nrecall = len(overlap) / len(reference)\nf1 = 2 * precision * recall / (precision + ___)\nprint(round(f1, 4))\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "0.6667",
+      "correct_answer_en": "0.6667",
+      "explanation_es": "La fórmula de F1 es `2 * precision * recall / (precision + recall)`; con 2 de 3 palabras compartidas, precision=recall=0.6667, y el F1 resultante también es 0.6667.",
+      "explanation_en": "The F1 formula is `2 * precision * recall / (precision + recall)`; with 2 of 3 words shared, precision=recall=0.6667, and the resulting F1 is also 0.6667.",
+      "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
+      "expected_time_ms": 35000
     }
   ]
 }
