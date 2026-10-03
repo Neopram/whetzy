@@ -20,6 +20,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
+# `p_known` is a BKT ESTIMATE (`UserSkillState.p_known`), not a measured fact
+# — unlike the other two numbers in this report (response counts, first-try
+# accuracy), which are direct counts. With the engine's own default BKT
+# params it crosses 0.95 after just 4 consecutive correct answers (verified:
+# see docs/ml/domain_report_14_9.md), which is not enough practice to put a
+# "mastered" claim in front of a recruiter. Each skill in the catalog has
+# exactly 10 questions (ADR-54, `CATALOGO_MAESTRO.md`), so requiring at least
+# one full pass of a skill's own question pool is the natural floor.
+MIN_ATTEMPTS_PER_SKILL = 10
+
 
 @dataclass(frozen=True)
 class MasterySummary:
@@ -32,14 +42,30 @@ class MasterySummary:
         return self.n_mastered / self.m_total if self.m_total else 0.0
 
 
-def compute_mastery_summary(skill_p_known: dict[str, float], threshold: float = 0.95) -> MasterySummary:
+def compute_mastery_summary(
+    skill_p_known: dict[str, float],
+    skill_attempts: dict[str, int],
+    threshold: float = 0.95,
+    min_attempts: int = MIN_ATTEMPTS_PER_SKILL,
+) -> MasterySummary:
     """`N` of `M` skills at or above `threshold` p_known. `M` is every skill
     passed in, including ones never attempted (p_known at their prior) — a
     report that only counts attempted skills would let an untouched module
     quietly not count against the learner, same reasoning as
     `get_certification_readiness` in exams.py (BKT prior 0.1 for untouched
-    skills, not an omission)."""
-    n_mastered = sum(1 for p in skill_p_known.values() if p >= threshold)
+    skills, not an omission).
+
+    A skill only counts toward `n_mastered` once it ALSO has at least
+    `min_attempts` responses (`skill_attempts`, keyed the same as
+    `skill_p_known`; missing/absent means zero) — `threshold` alone would let
+    a short lucky streak cross 0.95 on a handful of answers. `m_total` is
+    unaffected: a high-`p_known`-but-low-practice skill still counts as "not
+    yet mastered", not as missing."""
+    n_mastered = sum(
+        1
+        for skill_id, p in skill_p_known.items()
+        if p >= threshold and skill_attempts.get(skill_id, 0) >= min_attempts
+    )
     return MasterySummary(n_mastered=n_mastered, m_total=len(skill_p_known), threshold=threshold)
 
 
@@ -102,16 +128,17 @@ class DomainReport:
 
 def build_domain_report(
     skill_p_known: dict[str, float],
+    skill_attempts: dict[str, int],
     responses: list[tuple[str, bool, datetime]],
     mastery_threshold: float = 0.95,
+    min_attempts: int = MIN_ATTEMPTS_PER_SKILL,
 ) -> DomainReport:
-    """Combine the three independent measurements into one report. Every
-    number here is either a direct count or a straightforward function of
-    one — nothing here is a model prediction or a probability, so there is
-    no calibration question the way there is for 14.8: a recruiter reading
-    "X respuestas en Y semanas" is reading an exact fact about what
-    happened, not an estimate."""
-    mastery = compute_mastery_summary(skill_p_known, mastery_threshold)
+    """Combine the three independent measurements into one report.
+    `total_responses`/`weeks_active`/`first_try_accuracy_pct` are direct
+    counts — no calibration question there, unlike 14.8. `mastery` is the
+    exception: it is gated on `p_known`, a BKT ESTIMATE, not a fact (see
+    `compute_mastery_summary`)."""
+    mastery = compute_mastery_summary(skill_p_known, skill_attempts, mastery_threshold, min_attempts)
     timestamps = [created_at for _question_id, _correct, created_at in responses]
     return DomainReport(
         mastery=mastery,

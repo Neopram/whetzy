@@ -188,33 +188,50 @@ def test_calibrate_jmle_recovers_a_small_known_bank() -> None:
 def test_calibrate_jmle_leaves_under_exposed_items_untouched() -> None:
     """An item with fewer than MIN_RESPONSES_PER_ITEM responses should keep
     its starting parameters — fitting 2 free parameters to 2 data points is
-    noise, not calibration."""
+    noise, not calibration.
+
+    Uses TWO under-exposed items ("rare1", "rare2"), answered by different
+    (non-overlapping) people, with different starting (a, b). Both items
+    stay untouched through the whole loop and only go through the SAME
+    end-of-loop rescale as everything else (`a' = a*sd`, `b' = (b-mean)/sd`)
+    — so `a1'/a1_start` must equal `a2'/a2_start` (both equal `sd`,
+    regardless of its actual value) and, since both start at the SAME b0,
+    `b1'` must equal `b2'` exactly. A prior version of this test only
+    checked that the rare item's estimate was "far from" a well-covered
+    item's — Regla 11 caught that it wasn't a real guard: mutating
+    MIN_RESPONSES_PER_ITEM to 1 (so these items DO get independently fit to
+    2 noisy data points each) still passed it, because an independent 2-point
+    fit also lands far from the well-covered item, just for the wrong
+    reason. These two exact-equality checks don't have that hole: fitting
+    "rare1" and "rare2" independently to their own (different) 2-person
+    samples breaks both invariants, since nothing then ties their outputs to
+    a shared linear transform of their (different) starting points."""
     scorer = PlacementEngine([])
     well_covered = IRTItem(item_id="common", difficulty=0.0, discrimination=1.0, guessing=DEFAULT_GUESSING)
-    rare = IRTItem(item_id="rare", difficulty=0.0, discrimination=1.0, guessing=DEFAULT_GUESSING)
+    rare1 = IRTItem(item_id="rare1", difficulty=0.0, discrimination=1.0, guessing=DEFAULT_GUESSING)
+    rare2 = IRTItem(item_id="rare2", difficulty=0.0, discrimination=1.0, guessing=DEFAULT_GUESSING)
     rng = random.Random(3)
 
     responses: dict[str, list[tuple[str, bool]]] = {}
     for p in range(50):
         theta = rng.gauss(0.0, 1.0)
         person_responses = [("common", rng.random() < scorer.probability_correct(theta, well_covered))]
-        if p < 2:  # "rare" only ever answered by 2 people
-            person_responses.append(("rare", rng.random() < scorer.probability_correct(theta, rare)))
+        if p < 2:  # "rare1" only ever answered by people 0-1
+            person_responses.append(("rare1", rng.random() < scorer.probability_correct(theta, rare1)))
+        if 10 <= p < 12:  # "rare2" only ever answered by people 10-11 (disjoint from rare1's)
+            person_responses.append(("rare2", rng.random() < scorer.probability_correct(theta, rare2)))
         responses[f"p{p}"] = person_responses
 
+    a1_start, b1_start = 2.5, 1.23
+    a2_start, b2_start = 1.7, 1.23  # same b0 as rare1, different a0
     blind = [
         IRTItem(item_id="common", difficulty=0.3, discrimination=1.0, guessing=DEFAULT_GUESSING),
-        IRTItem(item_id="rare", difficulty=1.23, discrimination=2.5, guessing=DEFAULT_GUESSING),
+        IRTItem(item_id="rare1", difficulty=b1_start, discrimination=a1_start, guessing=DEFAULT_GUESSING),
+        IRTItem(item_id="rare2", difficulty=b2_start, discrimination=a2_start, guessing=DEFAULT_GUESSING),
     ]
     estimated_params, _abilities = calibrate_jmle(blind, responses, n_iterations=3, guessing=DEFAULT_GUESSING)
 
-    # "rare" never had enough responses to fit, so it must come back exactly
-    # as it went in (modulo the end-of-loop rescale, which both items get —
-    # check it moved by the SAME transform as "common", not independently).
-    a_common, _b_common = estimated_params["common"]
-    a_rare, _b_rare = estimated_params["rare"]
-    # rare started at (2.5, 1.23); common started at (1.0, 0.3) and WAS
-    # fit. If rare were independently re-fit it would land near (1.0, 0.0)
-    # like common did (same true parameters) instead of tracking its own
-    # untouched (2.5, 1.23) through the shared rescale.
-    assert a_rare != pytest.approx(a_common, abs=0.3)
+    a1, b1 = estimated_params["rare1"]
+    a2, b2 = estimated_params["rare2"]
+    assert a1 / a1_start == pytest.approx(a2 / a2_start, rel=1e-6)
+    assert b1 == pytest.approx(b2, abs=1e-6)
