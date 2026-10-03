@@ -38,6 +38,9 @@ ALLOWED_WORDS: frozenset[str] = frozenset(
         "disputa", "disputar", "disputado", "disputada", "indisputable",
         "diputado", "diputada", "amputado", "amputada", "amputacion",
         "computador", "computadora", "computacion", "shitake", "putative",
+        # "matsushita" ⊃ "shit" ([COORD]/[S5], 2026-10-03): un apellido real
+        # de una comunidad grande no puede dar 422 al registrarse.
+        "matsushita",
     }
 )
 
