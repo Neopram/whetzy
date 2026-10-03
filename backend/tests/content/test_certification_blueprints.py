@@ -63,6 +63,20 @@ concepts it never covered before. track40 was never in this file's
 VENDOR_EXAM_FACTS or OFFICIAL_BLOCKS before this fix - nothing pinned its
 blueprint to the vendor at all.
       https://www.isc2.org/certifications/cc/cc-certification-exam-outline
+
+Fixed in ledger 39.24 (2026-10-02), re-read from the vendor that day: AI-900
+was retired 2026-06-30 and replaced by AI-901, with a materially different
+blueprint (two domains instead of five, the second one a hands-on
+"implement with Microsoft Foundry" domain AI-900 never had). track45 moved
+from AI-900 to AI-901: code, domains (dom4501 "Identify AI concepts and
+capabilities" 42.5%, dom4502 "Implement AI solutions by using Microsoft
+Foundry" 57.5% - exact midpoints of the vendor's published 40-45%/55-60%
+ranges, which is why they are not whole numbers), and the skills under each.
+Like AZ-900/DP-900, Microsoft does not publish AI-901's question count or
+exam duration, so `exam_question_count`/`exam_duration_minutes` are left
+unset rather than carrying over AI-900's unverified 85-minute figure.
+      https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-901/
+      https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901
 """
 
 from __future__ import annotations
@@ -164,6 +178,7 @@ VENDOR_EXAM_FACTS: dict[str, dict[str, Any]] = {
     },
     "track44": {"code": "AZ-900", "exam_duration_minutes": 45},
     "track46": {"code": "DP-900", "exam_duration_minutes": 45},
+    "track45": {"code": "AI-901", "passing_scaled_score": 700, "scaled_score_max": 1000},
 }
 
 
@@ -214,6 +229,9 @@ class TestBlueprintInvariants:
 
     def test_aif_weights_sum_to_one_hundred(self) -> None:
         assert sum(_weights(_track("track11"))) == 100
+
+    def test_ai901_weights_sum_to_one_hundred(self) -> None:
+        assert sum(_weights(_track("track45"))) == 100
 
     def test_no_track_declares_the_same_exam_domain_twice(self) -> None:
         """A duplicated domain splits one row of the report in two, and the

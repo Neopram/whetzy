@@ -165,6 +165,27 @@ async def test_challenge_success(
     assert data["opponent_username"] == duel_seed["opponent"].username
 
 
+async def test_challenge_blocked_opponent_rejected(
+    client: AsyncClient,
+    auth_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """19.11: un usuario bloqueado no se puede retar, en ningún sentido."""
+    block = await client.post(
+        "/api/v1/moderation/block",
+        json={"user_id": str(duel_seed["opponent"].id)},
+        headers=auth_headers,
+    )
+    assert block.status_code == 201, block.text
+
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 403
+
+
 async def test_challenge_returns_question_objects(
     client: AsyncClient,
     auth_headers: dict,
@@ -337,6 +358,33 @@ async def test_my_duels_after_challenge(
     assert duels[0]["is_your_turn"] is True
 
 
+async def test_my_duels_hides_a_duel_with_a_blocked_user(
+    client: AsyncClient,
+    auth_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """19.11 ([COORD]/[S5] 2026-10-03): un duelo pendiente creado antes de un
+    bloqueo no debe seguir saliendo en /my — antes solo /challenge miraba
+    is_blocked_pair, así que este duelo ya existente seguía visible."""
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert challenge.status_code == 201
+
+    block = await client.post(
+        "/api/v1/moderation/block",
+        json={"user_id": str(duel_seed["opponent"].id)},
+        headers=auth_headers,
+    )
+    assert block.status_code == 201, block.text
+
+    resp = await client.get(f"{BASE}/my", headers=auth_headers)
+    assert resp.status_code == 200
+    assert resp.json() == []
+
+
 # ── POST /{id}/answer ─────────────────────────────────────────────────────────
 
 
@@ -475,6 +523,44 @@ async def test_answer_non_participant_is_forbidden(
     assert resp.status_code in (401, 403)
 
 
+async def test_answer_rejected_after_a_block(
+    client: AsyncClient,
+    auth_headers: dict,
+    opponent_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """19.11: un duelo pendiente bloqueado a medias ya no se puede jugar,
+    ni por el bloqueador ni por el bloqueado."""
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    duel_id = challenge.json()["duel_id"]
+    q_id = challenge.json()["questions"][0]["id"]
+
+    block = await client.post(
+        "/api/v1/moderation/block",
+        json={"user_id": str(duel_seed["opponent"].id)},
+        headers=auth_headers,
+    )
+    assert block.status_code == 201, block.text
+
+    resp = await client.post(
+        f"{BASE}/{duel_id}/answer",
+        json={"question_id": q_id, "selected_index": 0, "response_time_ms": 100},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 403
+
+    resp_opponent = await client.post(
+        f"{BASE}/{duel_id}/answer",
+        json={"question_id": q_id, "selected_index": 0, "response_time_ms": 100},
+        headers=opponent_headers,
+    )
+    assert resp_opponent.status_code == 403
+
+
 # ── GET /{id}/result ──────────────────────────────────────────────────────────
 
 
@@ -500,6 +586,30 @@ async def test_result_invalid_duel_id(
 ) -> None:
     resp = await client.get(f"{BASE}/not-a-uuid/result", headers=auth_headers)
     assert resp.status_code == 404
+
+
+async def test_result_rejected_after_a_block(
+    client: AsyncClient,
+    auth_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """19.11: el bloqueo gana al estado del duelo — 403, no 202."""
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    duel_id = challenge.json()["duel_id"]
+
+    block = await client.post(
+        "/api/v1/moderation/block",
+        json={"user_id": str(duel_seed["opponent"].id)},
+        headers=auth_headers,
+    )
+    assert block.status_code == 201, block.text
+
+    resp = await client.get(f"{BASE}/{duel_id}/result", headers=auth_headers)
+    assert resp.status_code == 403
 
 
 # ── Full flow ─────────────────────────────────────────────────────────────────
@@ -620,6 +730,31 @@ async def test_join_returns_questions(
     assert len(data["questions"]) == _DUEL_Q_COUNT
     join_q_ids = {q["id"] for q in data["questions"]}
     assert join_q_ids == challenge_q_ids
+
+
+async def test_join_rejected_after_a_block(
+    client: AsyncClient,
+    auth_headers: dict,
+    opponent_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """19.11: el bloqueador no puede unirse a un duelo pendiente propio."""
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    duel_id = challenge.json()["duel_id"]
+
+    block = await client.post(
+        "/api/v1/moderation/block",
+        json={"user_id": str(duel_seed["opponent"].id)},
+        headers=auth_headers,
+    )
+    assert block.status_code == 201, block.text
+
+    resp = await client.get(f"{BASE}/{duel_id}/join", headers=opponent_headers)
+    assert resp.status_code == 403
 
 
 async def test_join_after_completion_is_conflict(

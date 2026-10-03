@@ -133,6 +133,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
 
       <main className={styles.main}>
         <p className={styles.eyebrow}>
+          <span aria-hidden="true">{current.kind === 'example' ? '🧪' : '💡'}</span>
           {current.kind === 'example' ? t('lesson.example') : t('lesson.concept')}
         </p>
         <h1 className={styles.title}>{title}</h1>
@@ -155,7 +156,10 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
                 {lesson.example_output && (
                   showOutput ? (
                     <div className={styles.output}>
-                      <span className={styles.outputLabel}>{t('lesson.output')}</span>
+                      <span className={styles.outputLabel}>
+                        <span aria-hidden="true">📤</span>
+                        {t('lesson.output')}
+                      </span>
                       <pre className={styles.outputPre}>{lesson.example_output}</pre>
                     </div>
                   ) : (
@@ -173,12 +177,15 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
         </AnimatePresence>
 
         <p className={styles.source}>
-          {t('lesson.source')}:{' '}
-          {source.url ? (
-            <a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a>
-          ) : (
-            source.label
-          )}
+          <span aria-hidden="true">🔗</span>
+          <span>
+            {t('lesson.source')}:{' '}
+            {source.url ? (
+              <a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a>
+            ) : (
+              source.label
+            )}
+          </span>
         </p>
       </main>
 
