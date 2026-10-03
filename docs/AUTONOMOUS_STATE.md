@@ -44,7 +44,7 @@
 | 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
 | 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 31/41 | 76 % | 39.8, 39.9, 39.10, 39.13, 39.26, 39.27 +2 |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
-| 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 6/23 | 26 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +11 |
+| 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 7/23 | 30 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +10 |
 | 35 | Lo que el mercado enseña: competencia verificada → producto | 4/5 | 80 % | 35.6 |
 | 34 | Una sola interfaz: todas las pantallas al lenguaje visual de la landi… | 4/11 | 36 % | 34.2, 34.3, 34.4, 34.6, 34.7, 34.8 +1 |
 | 33 | Operación medible — SLO, restauración y offline idempotente | 1/1 | 100 % | — |
@@ -424,7 +424,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.17 | **1** | Inglés dentro del español y ejecutables con atajo… | **PARCIAL** | (2026-09-29, `Workflow`) recuento real: 699 preguntas exec (no ~2.900, cifra vieja errónea). 219 revisadas a fondo en 4 tracks, 10 bugs de ambigüedad reales arreglados y verificados, 1 estructural sin arreglar (`q060203ex012`). Quedan ~480 sin revisar → STATUS.md |
 | 37.18 | **1** | **Banco de simulacro reservado**: `"pool": "simulacro"`; ninguna vía fuera del simulacro lo sirve | **DONE** | `20260930_question_pool`, corregido 2026-09-30 (incondicional en las 4 vías) → §N |
 | 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | **DONE** | **DONE** `764b06b` (2026-09-30) → §N |
-| 37.22 | **1** | **ISC2 CC al outline del 2026-09-01** (CAT 100–125 ítems; D2 Governance nuevo; `mod4002` BC/DR no mapea 1:1) | **PARCIAL** | `84fb47c` (#102): 5 `exam_domains` del outline 2026 y 23 skills con dominio, test ISC2 pasa; los 5 módulos siguen con `domain_id: null` → §S |
+| 37.22 | **1** | **ISC2 CC al outline del 2026-09-01** (CAT 100–125 ítems; D2 Governance nuevo; `mod4002` BC/DR no mapea 1:1) | **DONE** | `84fb47c` (#102): 5 `exam_domains` del outline 2026, 23 skills con dominio, test ISC2 pasa; dominio por skill, no por módulo (dueño, 2026-10-03) → §S |
 | 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | **DONE** | (2026-09-30) D30/CURR/conversion_d35/30min-pagadores en `analytics.py`; corregido ×2 (CURR a la definición literal de Duolingo, días UTC completos) → §N, STATUS.md |
 | 37.21 | **3** | **Mapa skill → nodo del temario**, para elegir las 32 skills de cada track (el ideal por temario quedó sustituido, ADR-54) | TODO (tras 37.6) | cada skill con su nodo |
 | 37.23 | **2** | **Alineación lección↔quiz** (heredera de la 37.1 vieja, antes de ADR-53; los commits `22a01a8`…`4f1ab26` dicen «37.1» por ese motivo — ver STATUS.md): `audit_lesson_quiz_alignment.py` sobre 8 tracks señalados el 2026-09-28 | **PARCIAL** | (2026-09-29) 8 tracks revisados, track08+22+11+23+10+44+45+46 cerrados (39.39 DONE). 4/4 bugs de contenido corregidos. track44: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas. Queda la expansión de catálogo hacia ADR-53 (37.6-37.8), no una corrección → STATUS.md |
