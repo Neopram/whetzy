@@ -1,8 +1,12 @@
 # "Show HN" en español — ledger 26.6
 
-**Nota antes de usar esto:** Hacker News no tiene una sección en español ni acepta
-posts en español en "Show HN" — es una comunidad en inglés (lo confirma su propio
-FAQ: https://news.ycombinator.com/newsfaq.html, "the site is in English"). Por eso
+**Nota antes de usar esto:** Hacker News no tiene una sección en español. No hay
+ninguna regla escrita que prohíba publicar en español (revisado el FAQ
+—`https://news.ycombinator.com/newsfaq.html`— y las guidelines
+—`https://news.ycombinator.com/newsguidelines.html`—, ninguna de las dos
+dice nada sobre idioma), pero la comunidad es en inglés de facto: casi todo
+lo publicado y comentado en el front page está en inglés, y un post en
+español ahí tendría poco alcance real. Por eso
 26.6 no es "publica esto en HN en español": es la misma historia (por qué existe
 Whetzy, por qué en español) adaptada para las comunidades donde SÍ tiene sentido
 publicarla en español — Reddit hispano (r/devsarg, r/MexicoDev, r/spain cuando
@@ -13,8 +17,12 @@ proceda), foros de Dev.to en español, Discord/Telegram de programación LATAM
 ## Título corto (para Reddit / foros con límite de título)
 
 ```
-Construí un motor de aprendizaje adaptativo de Python→IA en español porque nadie más lo hizo
+Construí un motor de aprendizaje adaptativo de Python→IA, en español
 ```
+
+(Se quitó el "porque nadie más lo hizo": solo sabemos lo que no encontramos
+en nuestra propia búsqueda — ver el "no encontré nada" con matiz en el post
+de abajo —, no que no exista nada parecido.)
 
 ## Post completo
 
@@ -28,10 +36,13 @@ Construí un motor de aprendizaje adaptativo de Python→IA en español porque n
 >
 > Por dentro: BKT (Bayesian Knowledge Tracing) decide qué estás listo para
 > aprender, FSRS programa los repasos para que no se te olvide, y los ejemplos de
-> código (Python, SQL, JS) corren en el navegador vía WebAssembly (Pyodide/sql.js)
-> — sin ida y vuelta a un servidor para ejecutar un fragmento.
+> código corren en el navegador — Python y SQL vía WebAssembly (Pyodide/sql.js),
+> JS en un Web Worker aislado — sin ida y vuelta a un servidor para ejecutar un
+> fragmento.
 >
-> Es gratis — hoy el plan free no tiene cupo diario de preguntas. Me interesa de
+> Es gratis — el límite actual del plan free es 5 lecciones y 30 preguntas
+> nuevas por día; los repasos de repetición espaciada son ilimitados para
+> todos. Me interesa de
 > verdad qué piensa la comunidad: dónde está flojo el espacio de aprendizaje
 > adaptativo en español, qué le pedirías a una plataforma "en serio" que un
 > bootcamp o una serie de YouTube no te da, y dónde se rompe si la probás.

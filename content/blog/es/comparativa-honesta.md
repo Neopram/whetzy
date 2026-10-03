@@ -53,8 +53,9 @@ lee esa fila dos veces. Platzi y EDteam sí sirven contenido en español, y no
 decimos lo contrario; la diferencia que señalamos es el motor adaptativo (BKT
 decide qué estás listo para aprender, FSRS programa cuándo repasarlo) frente a
 una secuencia de cursos fija, y la ejecución de código en el navegador
-(WebAssembly/Pyodide, sin sandbox externo) frente a IDEs embebidos que llaman
-a un servidor.
+(WebAssembly vía Pyodide/sql.js para Python y SQL, un Web Worker aislado para
+JavaScript — sin sandbox externo en ninguno de los tres) frente a IDEs
+embebidos que llaman a un servidor.
 
 ## Si querés las cifras de Coursera/Udemy
 

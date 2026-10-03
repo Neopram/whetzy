@@ -43,7 +43,8 @@ una frase):
 
 **Cuerpo del PR:**
 > This isn't an interview-algorithm site specifically — it's adaptive Python
-> fundamentals + cloud/AI certification practice (AWS, Microsoft, ISC2). Adding
+> fundamentals + certification practice (AWS and Microsoft cloud/AI certs,
+> ISC2 cybersecurity). Adding
 > it here because a chunk of this repo's audience is shoring up Python basics
 > before the algorithm grind, and the adaptive engine (BKT+FSRS) means it
 > doesn't re-quiz what you already know. Totally fine if this isn't the right

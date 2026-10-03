@@ -13,10 +13,13 @@ agreed there; this file expands it into something that's actually ready to paste
 engine in Spanish because no one else did" — that's 80 characters on its
 own, but HN's 80-char limit applies to the title **as submitted**, and HN
 prepends "Show HN: " (9 chars) to every Show HN post, making the real total
-89. Trimmed to fit under 80 with the prefix (flagged by [S5] in PR #93 review):
+89. Trimmed to fit under 80 with the prefix (flagged by [S5] in PR #93
+review); also dropped the "because no one else did" claim — we only know
+what we didn't find in our own search (see the hedged "as far as I could
+find" phrasing in the body below), not that nothing like this exists:
 
 ```
-I built an adaptive Python-to-AI engine in Spanish (nobody else had)
+I built an adaptive Python-to-AI engine, in Spanish
 ```
 
 68 characters + "Show HN: " (9) = 77, under the limit.
@@ -38,11 +41,12 @@ plain `whetzy.com` is the right link, no query string needed.
 > machine-translated) with a real adaptive engine underneath.
 >
 > Under the hood: BKT (Bayesian Knowledge Tracing) decides what you're ready for,
-> FSRS schedules reviews so you don't forget it, and code examples (Python, SQL,
-> JS) run in-browser via WebAssembly (Pyodide/sql.js) — no server round-trip to
-> execute a snippet.
+> FSRS schedules reviews so you don't forget it, and code examples run in-browser
+> — Python and SQL via WebAssembly (Pyodide/sql.js), JS in a sandboxed Web Worker
+> — no server round-trip to execute a snippet.
 >
-> It's free to use — no daily quiz cap on the free tier today. I'd genuinely like the
+> It's free to use — the free tier's current limit is 5 lessons and 30 new
+> questions a day; spaced-repetition reviews are unlimited for everyone. I'd genuinely like the
 > HN read on where the adaptive-learning space is thin, what you'd want from a
 > "serious" coding platform that a bootcamp or a YouTube series doesn't give you,
 > and where this breaks for you if you try it. Happy to answer anything about the
@@ -77,3 +81,7 @@ result — there is no live HN post yet to measure.
 - [ ] whetzy.com loads clean, no broken onboarding (same CI check that gated 31.8's kit)
 - [ ] Owner has 2–3 hours free right after posting to answer comments — HN's algorithm
       rewards early engagement, and a dead thread looks worse than no thread
+- [ ] Reconfirm the free-tier limit cited above (5 lessons / 30 questions a day)
+      still matches both production's `FREE_DAILY_QUOTA_ENABLED`
+      (`backend/app/core/config.py:244`) and the landing page
+      (`frontend/src/i18n/{es,en}/common.json`) before posting

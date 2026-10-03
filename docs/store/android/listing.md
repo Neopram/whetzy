@@ -16,7 +16,17 @@
 | **Nombre de la app** (30 chars) | Whetzy | Whetzy |
 | **Application ID** | app.whetzy | app.whetzy |
 | **Categoría** | Educación | Education |
-| **Clasificación de contenido** | PEGI 3 / Everyone | PEGI 3 / Everyone |
+| **Clasificación de contenido** | ⚠️ no es "PEGI 3 / Everyone" — ver nota | ⚠️ not "PEGI 3 / Everyone" — see note |
+
+> **Nota sobre la clasificación de contenido (hallazgo de [S4], revisión legal, 2026-10-03):**
+> "PEGI 3 / Everyone" no encaja con el propio producto: el registro exige
+> autocertificación de edad ≥13 (`backend/app/models/user.py`,
+> `backend/app/api/v1/endpoints/auth.py`), y el plan Creador deja a cualquier
+> usuario publicar cursos que otros compran y cursan
+> (`instructor_marketplace.py`) — contenido generado por usuarios sin la
+> moderación de 19.11 (que solo cubre perfiles y duelos). Google pide declarar
+> esto en su propio cuestionario de clasificación de contenido. El valor real
+> sale de ese cuestionario, no de esta tabla.
 
 ---
 
@@ -31,7 +41,7 @@
 
 Mismo texto que `docs/store/ios/listing.md` §"Descripción larga" (ES y EN), con un solo cambio:
 donde la ficha de iOS dice «RevenueCat + StoreKit», la de Android dice «RevenueCat + Google Play
-Billing». El resto — motor adaptativo, código ejecutable, bilingüe nativo, 35 tracks / 723
+Billing». El resto — motor adaptativo, código ejecutable, bilingüe nativo, 35 tracks / 727
 habilidades, certificaciones — es el mismo producto, así que es el mismo texto. Mantenerlo en un
 solo sitio (`ios/listing.md`) y apuntar aquí evita que las dos fichas se desincronicen con el
 tiempo, que es justo lo que pasó con los iconos de los tracks (H.46: 11 rutas mostraban el nombre

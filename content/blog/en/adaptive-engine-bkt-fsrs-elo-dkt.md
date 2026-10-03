@@ -38,21 +38,25 @@ however many exist for that skill — is the right difficulty for you right now.
 
 ## The one that's still an experiment: DKT
 
-**DKT (Deep Knowledge Tracing)** — `app/services/dkt.py` — is a neural model
-that predicts mastery from your full answer history, not just a per-skill
-probability. It's real code, it runs, and it's wired into the quiz endpoint —
-but only for users assigned to the `"dkt"` A/B cohort
-(`app/services/quiz.py`: `if get_cohort(user.id) == "dkt": predictions =
-_dkt.predict(history)`). The split is deterministic per user
-(`hash(user_id) % 1000 < ratio * 1000`) and the default ratio
-(`DKT_AB_RATIO` in `app/core/config.py`) is 0.5 — half the cohort, not a
-small slice, assuming production hasn't overridden that default (we haven't
-checked production's actual value, so we're citing the default honestly
-rather than guessing at "most"). We're not claiming DKT "powers Whetzy" — it
-powers one experiment arm, and whether it beats the baseline is exactly what
-the A/B test is there to answer. (A proper power analysis for that
-comparison — how many users you need before the result means anything — is
-tracked in our own backlog as a separate, not-yet-started piece of work.)
+**DKT (Deep Knowledge Tracing)** — `app/services/dkt.py` — is designed as an
+LSTM model that predicts per-skill mastery from your last 100 answers. It's
+real code and it's wired into the quiz endpoint, gated behind the `"dkt"` A/B
+cohort (`app/services/quiz.py`: `if get_cohort(user.id) == "dkt": predictions
+= _dkt.predict(history)`). But the LSTM path only runs when PyTorch is
+importable, and `backend/requirements.txt` deliberately excludes torch — it's
+too large for our Railway tier. So in production, every "dkt" cohort member
+actually gets `dkt.py`'s fallback: an exponential-weighted moving average
+(`_ALPHA = 0.3`) over each skill's own recent correct/incorrect history, not
+a trained neural network. The A/B split is still real and deterministic per
+user (`hash(user_id) % 1000 < ratio * 1000`), and the default ratio
+(`DKT_AB_RATIO` in `app/core/config.py`) is 0.5 — but what that cohort is
+actually being tested against the baseline with, today, is the EWMA
+heuristic, not the LSTM its own name implies. We're not claiming DKT "powers
+Whetzy" — it powers one experiment arm, running as a simpler model than its
+docstring suggests, and whether it beats the baseline is exactly what the
+A/B test is there to answer. (A proper power analysis for that comparison —
+how many users you need before the result means anything — is tracked in our
+own backlog as a separate, not-yet-started piece of work.)
 
 ## Why this split matters more than the model names
 
@@ -69,9 +73,11 @@ than a simple rule would have.
 ## Code that runs, not just code that's described
 
 Every example above corresponds to a file in the running backend, not a
-diagram. The code examples learners actually execute while studying — Python,
-SQL, JavaScript — run the same way: in-browser, via WebAssembly (Pyodide for
-Python, sql.js for SQL), not shipped off to a server and back.
+diagram. The code examples learners actually execute while studying all run
+in-browser, not shipped off to a server and back — but not all the same way:
+Python runs in Pyodide and SQL in sql.js, both WebAssembly; JavaScript runs
+in a sandboxed Web Worker (a Blob-URL worker with no DOM access), which isn't
+WebAssembly at all.
 
 ---
 

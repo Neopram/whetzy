@@ -9,22 +9,34 @@ summary: "FSRS cambia 'repasa cada N días' por tres números por habilidad — 
 
 La mayoría de las herramientas de repetición espaciada todavía corren sobre
 SM-2, el algoritmo que traía Anki en 2006: intervalos fijos, un solo "factor
-de facilidad" por tarjeta, y poco más. Whetzy usa **FSRS-6** en su lugar — un
-modelo de 21 parámetros que cambia el único número de SM-2 por tres,
-actualizados con datos reales en vez de una curva ajustada a mano.
+de facilidad" por tarjeta, y poco más. Whetzy usa **FSRS** en su lugar — un
+modelo que cambia el único número de SM-2 por tres, actualizados con datos
+reales en vez de una curva ajustada a mano.
+
+Nuestra implementación (`app/services/engine/fsrs.py`) tiene 21 posiciones de
+peso y se llama a sí misma FSRS-6 en su propio docstring, pero las dos
+últimas (w19, w20 — los parámetros que FSRS-6 añadió sobre FSRS-5 para el
+repaso a corto plazo/mismo día) están fijas a `0.0` en nuestros valores por
+defecto. Con esas dos apagadas, lo que corre de verdad son los 19 pesos
+activos de FSRS-5, rellenados hasta 21 posiciones — no el modelo FSRS-6
+completo que dice su propio docstring. Lo corregimos acá en vez de en el
+comentario del código, que todavía necesita el arreglo.
 
 ## Qué sigue FSRS de verdad, por habilidad
 
-Nuestra implementación (`app/services/engine/fsrs.py`) guarda tres números por
-`Card`:
+La clase `Card` guarda dos de los tres números directamente:
 
 - **Estabilidad** — a grandes rasgos, cuántos días tardaría tu probabilidad de
   recordar en caer al 90 %. Más estabilidad, más tiempo hasta que necesites
   otro repaso.
 - **Dificultad** — qué tan difícil es esta habilidad concreta para vos en
   particular, no qué tan difícil es en abstracto.
-- **Recuperabilidad** — la estimación actual del modelo de "si te preguntaran
-  ahora mismo, qué probabilidad hay de que aciertes".
+
+**Recuperabilidad** — la estimación actual del modelo de "si te preguntaran
+ahora mismo, qué probabilidad hay de que aciertes" — *no* es un campo de
+`Card`. Se calcula a partir de la estabilidad y el tiempo transcurrido en el
+momento del repaso, y se escribe en `ReviewLog`, el registro de auditoría de
+cada repaso, no como estado persistente de la tarjeta.
 
 Cada repaso actualiza los tres, no solo "acerté o no". El flujo clásico de
 FSRS pide que el alumno se autocalifique en una escala de 4 — Otra vez,
@@ -35,7 +47,7 @@ de lo esperado" y "acerté rápido" caen en notas distintas (Difícil vs. Fácil
 aunque las dos sean "correcto", igual que en la versión autocalificada, solo
 que medido en vez de preguntado.
 
-## De dónde vienen los 21 números
+## De dónde vienen los pesos
 
 Los pesos de FSRS no son nuestros — vienen del proyecto open-spaced-repetition,
 ajustados contra unos 700 millones de registros reales de repasos en Anki. Ese

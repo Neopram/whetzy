@@ -9,20 +9,30 @@ summary: "FSRS replaces 'review every N days' with three numbers per skill — s
 
 Most spaced-repetition tools still run on SM-2, the algorithm Anki shipped with
 in 2006: fixed intervals, one "ease factor" per card, and not much else. Whetzy
-runs **FSRS-6** instead — a 21-parameter model that replaces SM-2's one number
-with three, updated from real data instead of a hand-tuned curve.
+runs **FSRS** instead — a model that replaces SM-2's one number with three,
+updated from real data instead of a hand-tuned curve.
+
+Our implementation (`app/services/engine/fsrs.py`) carries 21 weight slots
+and labels itself FSRS-6 in its own docstring, but the last two (w19, w20 —
+the parameters FSRS-6 added on top of FSRS-5 for short-term/same-day review
+behavior) are hardcoded to `0.0` in our defaults. With those switched off,
+what's actually running is FSRS-5's 19 active weights, padded to 21 slots —
+not the full FSRS-6 model its own docstring claims. We're correcting that
+here rather than in the code comment, which still needs fixing.
 
 ## What FSRS actually tracks, per skill
 
-Our implementation (`app/services/engine/fsrs.py`) keeps three numbers per
-`Card`:
+The `Card` dataclass holds two of the three numbers directly:
 
 - **Stability** — roughly, how many days it'd take for your recall probability
   to drop to 90%. Higher stability, longer until you need another review.
 - **Difficulty** — how hard this specific skill is for you specifically, not
   how hard it is in the abstract.
-- **Retrievability** — the model's current estimate of "if tested right now,
-  what's the probability you get it right."
+
+**Retrievability** — the model's current estimate of "if tested right now,
+what's the probability you get it right" — is *not* a field on `Card`. It's
+computed from stability and elapsed time at the moment of review and written
+to `ReviewLog`, the per-review audit trail, not persisted as card state.
 
 Every review updates all three, not just "was I right." The classic FSRS flow
 has the learner self-report a 4-point grade — Again, Hard, Good, Easy. We
@@ -33,7 +43,7 @@ longer than expected" and "right, fast" land as different grades (Hard vs.
 Easy) even though both are "correct," same as the self-reported version, just
 measured instead of asked.
 
-## Where the 21 numbers come from
+## Where the weights come from
 
 FSRS's weights aren't ours — they're from the open-spaced-repetition project,
 derived from fitting the model against roughly 700 million real Anki review

@@ -51,8 +51,9 @@ product — if "Spanish-native" matters to you, read that row twice. Platzi and
 EDteam do serve Spanish content, and we're not claiming otherwise; the
 difference we'd point to is the adaptive engine (BKT decides what you're ready
 for, FSRS schedules when you review it) versus a fixed course sequence, and
-in-browser code execution (WebAssembly/Pyodide, no external sandbox) versus
-embedded IDEs that call out to a server.
+in-browser code execution (Pyodide/sql.js WebAssembly for Python and SQL, a
+sandboxed Web Worker for JavaScript — no external sandbox for any of them)
+versus embedded IDEs that call out to a server.
 
 ## If you want the Coursera/Udemy numbers
 

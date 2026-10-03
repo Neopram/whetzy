@@ -35,9 +35,11 @@ porqué, no solo el qué)
 > best.
 >
 > Whetzy is bilingual from the ground up — not machine-translated, written
-> natively in both languages — and code examples (Python, SQL, JS) run right in
-> the browser via WebAssembly, so you're never copy-pasting into an external
-> sandbox. No daily quiz cap on the free tier today, no credit card needed.
+> natively in both languages — and code examples run right in the browser
+> (Python and SQL via WebAssembly, JS in a sandboxed Web Worker), so you're
+> never copy-pasting into an external sandbox. Free tier: 5 lessons and 30
+> new questions a day, spaced-repetition reviews unlimited, no credit card
+> needed.
 >
 > Would love PH's take on what's missing from "serious" coding education, and
 > where this breaks if you push on it. I'll be around all day to answer
@@ -74,6 +76,10 @@ cuentas reales)
 - [ ] Nada de pedir upvotes de forma coordinada en redes el mismo momento del
       lanzamiento (Product Hunt penaliza picos de voto no orgánicos, igual que HN)
 - [ ] Ningún número en los comentarios del día que no esté ya citado en este repo
-- [ ] Antes de publicar: reconfirmar `FREE_DAILY_QUOTA_ENABLED` en producción (hoy
-      `False` por defecto, `backend/app/core/config.py:244` — "no daily cap" en el
-      primer comentario deja de ser cierto si alguien lo activa antes del lanzamiento)
+- [ ] Antes de publicar: reconfirmar que `FREE_DAILY_QUOTA_ENABLED` en producción
+      coincide con lo que ya anuncia la landing ("5 lessons and 30 new questions
+      per day", `frontend/src/i18n/{es,en}/common.json`). El flag por defecto en
+      el código es `False` (`backend/app/core/config.py:244`); si producción lo
+      tiene distinto a lo que la landing dice, el primer comentario de arriba
+      (que ahora cita esa misma cifra) deja de ser cierto hasta que se corrija
+      uno de los dos lados

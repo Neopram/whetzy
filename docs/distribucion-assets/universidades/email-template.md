@@ -14,8 +14,8 @@ son nombres de universidades)
 - Colombia: Uniandes, EAFIT, Javeriana
 - España: UPM, UAB, UC3M, UPV
 
-12 instituciones, no 50 — `DISTRIBUCION.md` §9 dice "target inicial: 50
-universidades" pero solo nombra estas 12. Las 38 restantes no están en el repo
+15 instituciones, no 50 — `DISTRIBUCION.md` §9 dice "target inicial: 50
+universidades" pero solo nombra estas 15. Las 35 restantes no están en el repo
 en ningún sitio que haya encontrado (`grep -rn` por nombres de universidad en
 `docs/`); inventarlas para completar el número sería justo lo que prohíbe la
 línea roja. Si el dueño tiene esa lista en otro sitio, se añade; si no, se
@@ -28,8 +28,9 @@ construye a mano — no la genero yo.
 > Hola {{Nombre}},
 >
 > Soy {{remitente}}, de Whetzy (whetzy.com) — una plataforma adaptativa para
-> aprender Python, bases de datos, IA y certificaciones cloud (AWS, Microsoft,
-> ISC2). El motor decide qué practicar y cuándo repasar según lo que cada
+> aprender Python, bases de datos, IA y certificaciones (cloud de AWS y
+> Microsoft, ciberseguridad de ISC2). El motor decide qué practicar y cuándo
+> repasar según lo que cada
 > estudiante ya domina, en vez de un temario fijo igual para todos.
 >
 > Le escribo porque {{Universidad}} tiene programas de ingeniería/sistemas
@@ -55,8 +56,9 @@ terreno de marketing es bilingüe y la plantilla cuesta lo mismo escribirla ahor
 > Hi {{Name}},
 >
 > I'm {{sender}}, from Whetzy (whetzy.com) — an adaptive platform for learning
-> Python, databases, AI, and cloud certifications (AWS, Microsoft, ISC2). The
-> engine decides what to practice and when to review based on what each student
+> Python, databases, AI, and certifications (AWS and Microsoft cloud, ISC2
+> cybersecurity). The engine decides what to practice and when to review based
+> on what each student
 > already knows, instead of a fixed syllabus for everyone.
 >
 > I'm reaching out because {{University}} has engineering/CS programs where

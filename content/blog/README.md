@@ -52,8 +52,28 @@ dependencias sin que conste en «Fuera de alcance»).
 
 ## Quién escribe qué va aquí
 
-Los 10 artículos de las filas 26.1 (ES) y 27.2 (EN) del ledger van en
-`content/blog/es/` y `content/blog/en/` respectivamente. Cada título ya estaba
-fijado en `docs/DISTRIBUCION.md` §8 (serie EN) antes de que yo escribiera nada
-— no son títulos que haya inventado esta sesión, están citados en cada
+Las filas 26.1 (ES) y 27.2 (EN) del ledger planean 5 artículos por idioma
+(`docs/DISTRIBUCION.md` §8, serie EN) en `content/blog/es/` y
+`content/blog/en/` respectivamente — 10 en total. Esta sesión escribió 8, no
+los 10: 3 de los 5 títulos planeados por idioma (el motor BKT+FSRS+Elo+DKT, la
+matemática de FSRS, "de 0 a N preguntas"), más uno nuevo no planeado
+(comparativa honesta frente a Codecademy/Platzi/EDteam) en cada idioma.
+Quedaron sin escribir, a propósito, los otros dos títulos planeados por
+idioma:
+- **"$30B de oportunidad que nadie captura" / "a $30B opportunity nobody is
+  capturing":** la cifra de mercado no está verificada en este repo (no
+  confundir con el teardown de `docs/competitive-teardown.md`, que no da esa
+  cifra) — publicarla sin verificación rompería la misma línea roja que el
+  resto de esta sesión respeta.
+- **"Construir un sistema de Knowledge Tracing con PyTorch desde cero" /
+  "Building a Knowledge Tracing system with PyTorch from scratch":** sería
+  falso tal como está planeado — `backend/requirements.txt` excluye torch a
+  propósito (no entra en el plan gratuito de Railway), así que en producción
+  `app/services/dkt.py` nunca corre la LSTM, solo su respaldo heurístico
+  (EWMA). Un artículo titulado así describiría código que no corre en
+  producción.
+
+Los títulos de los 3 artículos planeados que sí se escribieron ya estaban
+fijados en `docs/DISTRIBUCION.md` §8 (serie EN) antes de que yo escribiera
+nada — no son títulos que haya inventado esta sesión, están citados en cada
 fichero.

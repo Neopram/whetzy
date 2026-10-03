@@ -1,27 +1,27 @@
 ---
-title: "From 0 to ~10,900 questions: how we built Whetzy's content bank"
+title: "From 0 to ~11,000 questions: how we built Whetzy's content bank"
 slug: "from-0-to-10000-questions"
 date: "2026-10-02"
 lang: en
 author: "Whetzy"
-summary: "How a 35-track, 723-skill question bank gets built without a content team — and how we keep the number honest."
+summary: "How a 35-track, 727-skill question bank gets built without a content team — and how we keep the number honest."
 ---
 
-Title says "~10,900", not the "10,000+" we used to say. Here's why that number
+Title says "~11,000", not the "10,000+" we used to say. Here's why that number
 moved, and why we're telling you how we counted it instead of just stating it.
 
 ## The actual count, right now
 
 ```
-find content/questions -name "*.json" | wc -l   # 274 files
+find content/questions -name "*.json" | wc -l   # 271 files
 ```
 
-Summing every question array across those 274 files gives **10,949** questions,
-spread across **35 tracks** and **723 skills** — and as of today, **723/723
+Summing every question array across those 271 files gives **10,984** questions,
+spread across **35 tracks** and **727 skills** — and as of today, **727/727
 skills (100%) have at least one lesson** written for them (our own test suite
-prints that line every run: `[lessons] 723/723 skills have a lesson`).
+prints that line every run: `[lessons] 727/727 skills have a lesson`).
 
-We're calling the question count "~10,900" and not "10,949" on purpose: it's a
+We're calling the question count "~11,000" and not "10,984" on purpose: it's a
 snapshot from one `find` + `json.load` pass over the content tree, not a
 number our backend serves from an API. It'll be a different number by the time
 you read this — tracks get added, content gets reclassified, some questions
@@ -49,8 +49,12 @@ that catches the filler before it ships:
   bank.
 - **Executable questions get actually executed.** Where a question claims code
   runs a certain way, there's a test that runs that code and checks the claim
-  — the same WebAssembly sandbox (Pyodide/sql.js) the app itself uses, not a
-  human eyeballing the snippet.
+  — not a human eyeballing the snippet. Python questions run in a CPython
+  subprocess, SQL questions against CPython's own `sqlite3` module — both
+  mirroring what the browser does rather than literally running inside it.
+  A small set of Playwright end-to-end tests then confirms the real
+  in-browser sandboxes (Pyodide, sql.js) actually initialize and execute
+  correctly, separately from the per-question gate.
 
 ## What this means if you're building something similar
 
