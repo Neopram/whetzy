@@ -52,7 +52,7 @@
 | 31 | Fuente única de cifras, staging y migraciones con datos | 3/7 | 50 % | 31.1, 31.5, 31.6, 31.8 |
 | 30 | Integridad del despliegue — incidente de login del 2026-09-24 | 3/4 | 75 % | 30.2 |
 | 29 | Economía cerrada y rails — créditos, referidos, códigos, USDC, creden… | 7/8 | 88 % | 29.9 |
-| 28 | Marketplace de instructores | 3/9 | 33 % | 28.0, 28.1, 28.3, 28.4, 28.5, 28.7 |
+| 28 | Marketplace de instructores | 2/9 | 22 % | 28.0, 28.1, 28.3, 28.4, 28.5, 28.7 +1 |
 | 27 | Distribución masiva EN | 0/11 | 0 % | 27.0, 27.1, 27.2, 27.3, 27.4, 27.5 +5 |
 | 26 | Distribución masiva ES | 0/11 | 0 % | 26.0, 26.1, 26.2, 26.3, 26.4, 26.5 +5 |
 | 24 | Interfaz que venda al verse — UI/UX + competencia en vivo + vídeo | 1/9 | 11 % | 24.0, 24.1, 24.2, 24.3, 24.4, 24.6 +2 |
@@ -294,7 +294,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | → §I (criterio archivado por 20.10) |
 | 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | → §I (criterio archivado por 20.10) |
 | 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
-| 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | **DONE** | `cb40bcd` (#100): `ProfileTab` lee y guarda por API; `MarketplaceScreen` ya era real; 5 passed → §S |
+| 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | **PARCIAL** | `cb40bcd` (#100): panel de instructor por API; faltan flag `MARKETPLACE_PUBLIC`, catálogo público y aprobación (criterio en §I) → §S |
 | 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | **DONE** | `docs/legal/instructor_recruitment_kit_{es,en}.md` → §I |
 
 ### 29. Economía cerrada y rails — créditos, referidos, códigos, USDC, credenciales verificables (ADR-33…37; spec `docs/ECONOMIA.md`)
