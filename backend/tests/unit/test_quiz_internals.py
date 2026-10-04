@@ -10,9 +10,11 @@ from __future__ import annotations
 
 import random
 import uuid
+from contextlib import contextmanager
 from datetime import UTC, datetime, timedelta
 
 import pytest
+from sqlalchemy import event
 
 from app.core.config import settings
 from app.models.content import Module, Question, Skill, Track
@@ -84,6 +86,28 @@ async def mark_lesson_seen(db, user_id: uuid.UUID, *skill_ids: str) -> None:
     for skill_id in skill_ids:
         db.add(LessonCompletion(user_id=user_id, skill_id=skill_id))
     await db.commit()
+
+
+@contextmanager
+def count_sql_statements(db_engine):
+    """Counts every statement actually sent to the DB cursor during the
+    `with` block (I.4, 2026-10-04) — the only direct way to prove a query
+    count does NOT grow with the number of modules, rather than inferring
+    it from how long the call takes."""
+    count = 0
+
+    def _tick(*_args, **_kwargs):
+        nonlocal count
+        count += 1
+
+    sync_engine = db_engine.sync_engine
+    event.listen(sync_engine, "before_cursor_execute", _tick)
+    counter = {"n": 0}
+    try:
+        yield counter
+    finally:
+        event.remove(sync_engine, "before_cursor_execute", _tick)
+        counter["n"] = count
 
 
 # ── _ensure_aware ─────────────────────────────────────────────────────────────
@@ -549,6 +573,39 @@ class TestCandidateSkillIds:
         got, reason = await _candidate_skill_ids(db_session, user, "review", "trkA", None)
         assert got == []
         assert reason == "needs_lesson"
+
+    @pytest.mark.asyncio
+    async def test_query_count_does_not_grow_with_the_number_of_modules(
+        self, db_session, db_engine, user: User
+    ) -> None:
+        """I.4, 2026-10-04: `_is_module_unlocked` used to run once PER MODULE,
+        each call its own 1-3 queries (previous module, its skills, the
+        user's p_known) -- up to 3N queries for an N-module track on every
+        /quiz/start and /quiz/answer. A 10-module track must not cost
+        meaningfully more queries than a 2-module one."""
+        async def candidate_query_count(n_modules: int) -> int:
+            track_id = f"trk_n{n_modules}"
+            modules = await build_track(db_session, track_id, n_modules=n_modules, skills_per_module=2)
+            # Mastery on every skill of every module but the last, so every
+            # module but the first actually exercises the full unlock
+            # computation (the path with real queries to batch), not the
+            # "no previous module" shortcut.
+            for module in modules[:-1]:
+                await set_mastery(db_session, user.id, f"{module.id}_s0", 1.0)
+                await set_mastery(db_session, user.id, f"{module.id}_s1", 1.0)
+            await mark_lesson_seen(
+                db_session, user.id, *(f"{m.id}_s{s}" for m in modules for s in range(2))
+            )
+            with count_sql_statements(db_engine) as counter:
+                await _candidate_skill_ids(db_session, user, "study", track_id, None)
+            return counter["n"]
+
+        small = await candidate_query_count(2)
+        large = await candidate_query_count(10)
+        assert large == small, (
+            f"query count grew from {small} (2 modules) to {large} (10 modules) - "
+            "looks like the per-module N+1 is back"
+        )
 
 
 # ── _select_skill ─────────────────────────────────────────────────────────────
