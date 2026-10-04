@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class TrackRead(BaseModel):
@@ -131,6 +131,20 @@ class QuestionPublic(BaseModel):
     code_es: str | None = None
     code_en: str | None = None
     expected_time_ms: int
+
+    @model_validator(mode="after")
+    def _hide_answer_for_server_graded_fill_blank(self) -> QuestionPublic:
+        # S.3 (fuga de respuestas): `correct_answer_es/en` is legitimate here
+        # only for the client-graded exec types, where the client needs the
+        # expected stdout to run locally via Pyodide. Plain "fill_blank" is
+        # graded server-side (quiz.py compares `answer_text` against this same
+        # column) — the model's own `from_attributes` copy pulled it through
+        # unconditionally, handing the exact free-text answer to the client
+        # before they typed anything.
+        if self.type == "fill_blank":
+            self.correct_answer_es = None
+            self.correct_answer_en = None
+        return self
 
 
 class LessonRead(BaseModel):
