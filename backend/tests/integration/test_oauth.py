@@ -156,6 +156,44 @@ async def test_callback_test_provider_idempotent(client):
     assert _session_user(r1) == _session_user(r2)
 
 
+async def test_callback_refuses_to_link_an_unverified_existing_email(client):
+    """El email del proveedor está verificado (GitHub filtra `verified`,
+    Google `email_verified`); el de una cuenta de Whetzy registrada por
+    contraseña, no -- quien se registra nunca tiene por qué haber
+    confirmado que es el dueño real de ese email. Sin este chequeo, quien
+    se registrara antes con el email de otra persona recibía el inicio de
+    sesión real de esa persona en cuanto usara OAuth con el mismo email."""
+    code = "squatted"
+    email = f"oauth-{code}@example.com"
+    register = await client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": email,
+            "username": "squatter1",
+            "password": "Str0ng!Pass",
+            "display_name": "Squatter",
+            "language": "es",
+            "age_confirmed": True,
+        },
+        headers=_h(),
+    )
+    assert register.status_code == 201, register.text
+
+    start = await client.get(f"{OAUTH}/test/start", headers=_h(), follow_redirects=False)
+    qs = dict(p.split("=", 1) for p in start.headers["location"].split("?")[1].split("&"))
+    cb = await client.get(
+        f"{OAUTH}/test/callback",
+        params={"code": code, "state": qs["state"]},
+        headers=_h(),
+        follow_redirects=False,
+    )
+    assert cb.status_code == 302
+    assert "oauth_error=email_unverified" in cb.headers["location"]
+    assert not any(
+        c.startswith(f"{ACCESS_COOKIE}=") for c in cb.headers.get_list("set-cookie")
+    )
+
+
 async def test_oauth_user_cannot_login_with_password(client):
     # Complete OAuth flow to create user
     h = _h()

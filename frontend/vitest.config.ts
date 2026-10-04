@@ -1,8 +1,18 @@
+import { resolve } from 'node:path';
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    // blogContent.ts reads `content/blog/**/*.md` from the repo root via
+    // `import.meta.glob(..., { query: '?raw' })` (26.9, 0.14) — one level
+    // above this project's own root, which Vite's dev-server transform
+    // denies by default ("Denied ID"). `vite build` doesn't enforce this
+    // (verified: a production build reads the same glob fine), only the
+    // dev-server-style pipeline vitest also runs on does.
+    fs: { allow: [resolve(__dirname, '..')] },
+  },
   test: {
     environment: 'jsdom',
     pool: 'threads',
