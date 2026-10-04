@@ -1446,5 +1446,12 @@ export interface PaddleConfig {
   enabled: boolean;
   environment: 'sandbox' | 'production';
   client_token: string | null;
-  prices: { plus: string | null; pro: string | null; certification: string | null };
+  prices: {
+    plus: string | null;
+    pro: string | null;
+    certification: string | null;
+    /** 40.9: solo no-nulo si el dueño encendió `ANNUAL_PLAN_ENABLED`. */
+    plus_annual: string | null;
+    pro_annual: string | null;
+  };
 }

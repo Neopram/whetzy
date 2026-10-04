@@ -105,6 +105,8 @@ class Settings(BaseSettings):
         "PADDLE_PRICE_PLUS",
         "PADDLE_PRICE_PRO",
         "PADDLE_PRICE_CERTIFICATION",
+        "PADDLE_PRICE_PLUS_ANNUAL",
+        "PADDLE_PRICE_PRO_ANNUAL",
         mode="before",
     )
     @classmethod
@@ -296,6 +298,12 @@ class Settings(BaseSettings):
     PADDLE_PRICE_PLUS: str = ""
     PADDLE_PRICE_PRO: str = ""
     PADDLE_PRICE_CERTIFICATION: str = ""
+    # Plan anual (40.9): el precio y el reembolso son del dueño (ADR-41) — aquí
+    # solo la variable que lo enciende y los ids de precio, vacíos hasta que
+    # los dé Paddle. Apagado por defecto, igual que los flags de arriba.
+    ANNUAL_PLAN_ENABLED: bool = False
+    PADDLE_PRICE_PLUS_ANNUAL: str = ""
+    PADDLE_PRICE_PRO_ANNUAL: str = ""
     # Antigüedad máxima aceptada de un webhook (Paddle recomienda 5 s).
     PADDLE_WEBHOOK_TOLERANCE_SECONDS: int = 5
     # Instructor payout webhook for Paddle events

@@ -95,6 +95,12 @@ describe('enlaces y parámetros', () => {
     expect(checkoutHref('certification', 'track08')).toBe('/checkout?plan=certification&track=track08');
   });
 
+  it('acepta el plan anual (40.9), detrás de lo que sirva el backend', () => {
+    expect(parseCheckoutRequest('?plan=plus_annual')).toEqual({ plan: 'plus_annual', trackId: null });
+    expect(parseCheckoutRequest('?plan=pro_annual')).toEqual({ plan: 'pro_annual', trackId: null });
+    expect(checkoutHref('plus_annual')).toBe('/checkout?plan=plus_annual');
+  });
+
   it('next solo devuelve a /checkout: nunca a otra web', () => {
     expect(safeNext('/checkout?plan=plus')).toBe('/checkout?plan=plus');
     for (const evil of ['https://evil.com', '//evil.com', '/\\evil.com', 'javascript:alert(1)', '/profile', null]) {

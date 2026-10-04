@@ -270,7 +270,37 @@ async def test_public_config_is_disabled_until_configured(client, monkeypatch) -
     monkeypatch.setattr(settings, "PADDLE_ENVIRONMENT", "production")
     cfg = (await client.get("/api/v1/billing/paddle/config")).json()
     assert cfg["enabled"] is True and cfg["environment"] == "production"
-    assert cfg["prices"] == {"plus": PLUS, "pro": PRO, "certification": CERT}
+    assert cfg["prices"] == {
+        "plus": PLUS, "pro": PRO, "certification": CERT, "plus_annual": None, "pro_annual": None,
+    }
+
+
+@pytest.mark.asyncio
+async def test_annual_prices_only_appear_behind_their_flag(client, monkeypatch) -> None:
+    """40.9: el precio y el reembolso son del dueño — `ANNUAL_PLAN_ENABLED`
+    apagado (el default) no debe exponer el id aunque ya esté puesto."""
+    monkeypatch.setattr(settings, "PADDLE_PRICE_PLUS_ANNUAL", "pri_plus_annual")
+    monkeypatch.setattr(settings, "PADDLE_PRICE_PRO_ANNUAL", "pri_pro_annual")
+
+    off = (await client.get("/api/v1/billing/paddle/config")).json()
+    assert off["prices"]["plus_annual"] is None and off["prices"]["pro_annual"] is None
+
+    monkeypatch.setattr(settings, "ANNUAL_PLAN_ENABLED", True)
+    on = (await client.get("/api/v1/billing/paddle/config")).json()
+    assert on["prices"]["plus_annual"] == "pri_plus_annual"
+    assert on["prices"]["pro_annual"] == "pri_pro_annual"
+
+
+def test_annual_price_grants_the_same_tier_as_monthly(user, monkeypatch) -> None:
+    """Un `subscription.created` con el precio anual tiene que dar acceso
+    igual que el mensual — el periodo lo lleva Paddle, no esta tabla."""
+    with_annual = _sub(user.id, price="pri_plus_annual")
+    assert not paddle_billing.apply_subscription_event(user, "subscription.created", with_annual)
+    assert user.subscription_tier is None  # el id anual no estaba configurado: sin mapear, no hace nada
+
+    monkeypatch.setattr(settings, "PADDLE_PRICE_PLUS_ANNUAL", "pri_plus_annual")
+    assert paddle_billing.apply_subscription_event(user, "subscription.created", with_annual)
+    assert user.subscription_tier == "plus" and user_meets_tier(user, "plus")
 
 
 # ── Borrar la cuenta cancela la suscripción ───────────────────────────────────

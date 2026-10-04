@@ -132,6 +132,12 @@ def _price_to_tier() -> dict[str, str]:
         m[settings.PADDLE_PRICE_PLUS] = "plus"
     if settings.PADDLE_PRICE_PRO:
         m[settings.PADDLE_PRICE_PRO] = "pro"
+    # 40.9: el id anual da el mismo derecho de acceso que el mensual — el
+    # periodo lo lleva Paddle (`current_billing_period`), no esta tabla.
+    if settings.PADDLE_PRICE_PLUS_ANNUAL:
+        m[settings.PADDLE_PRICE_PLUS_ANNUAL] = "plus"
+    if settings.PADDLE_PRICE_PRO_ANNUAL:
+        m[settings.PADDLE_PRICE_PRO_ANNUAL] = "pro"
     return m
 
 
@@ -252,8 +258,14 @@ async def cancel_subscription(subscription_id: str, *, immediately: bool = False
 
 
 def public_config() -> dict[str, Any]:
-    """Lo que la web necesita para abrir Paddle.js. Nada de esto es secreto."""
+    """Lo que la web necesita para abrir Paddle.js. Nada de esto es secreto.
+
+    Los precios `_annual` (40.9) solo salen con `ANNUAL_PLAN_ENABLED=true` —
+    el precio y el reembolso son decisión del dueño (ADR-41); con el flag
+    apagado el frontend no ofrece la opción aunque el id ya esté puesto.
+    """
     enabled = bool(settings.PADDLE_CLIENT_TOKEN and (settings.PADDLE_PRICE_PLUS or settings.PADDLE_PRICE_PRO))
+    annual = settings.ANNUAL_PLAN_ENABLED
     return {
         "enabled": enabled,
         "environment": "production" if settings.PADDLE_ENVIRONMENT == "production" else "sandbox",
@@ -262,5 +274,7 @@ def public_config() -> dict[str, Any]:
             "plus": settings.PADDLE_PRICE_PLUS or None,
             "pro": settings.PADDLE_PRICE_PRO or None,
             "certification": settings.PADDLE_PRICE_CERTIFICATION or None,
+            "plus_annual": (settings.PADDLE_PRICE_PLUS_ANNUAL or None) if annual else None,
+            "pro_annual": (settings.PADDLE_PRICE_PRO_ANNUAL or None) if annual else None,
         },
     }
