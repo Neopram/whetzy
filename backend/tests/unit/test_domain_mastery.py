@@ -1,4 +1,4 @@
-"""Unit tests for app.services.domain_mastery (C.2, 2026-10-04).
+"""Unit tests for app.services.domain_mastery (C.2/B.11, 2026-10-04).
 
 Pure functions over synthetic skill_id -> p_known maps, same style as
 test_domain_report.py — no DB session needed.
@@ -9,8 +9,11 @@ from __future__ import annotations
 import pytest
 
 from app.services.domain_mastery import (
+    DOMAIN_READY_THRESHOLD,
     compute_domain_mastery,
     compute_weighted_overall_mastery,
+    is_domain_ready,
+    is_ready_for_simulacro,
 )
 
 # ── compute_domain_mastery ───────────────────────────────────────────────────
@@ -92,3 +95,48 @@ def test_overall_is_sin_datos_when_every_domain_is_untouched() -> None:
 
 def test_overall_of_an_empty_domain_list_is_sin_datos() -> None:
     assert compute_weighted_overall_mastery([]) is None
+
+
+# ── is_domain_ready / is_ready_for_simulacro (B.11) ──────────────────────────
+
+
+def test_a_domain_with_no_data_is_never_ready() -> None:
+    untouched = compute_domain_mastery("d1", 50.0, ["a"], {})
+    assert is_domain_ready(untouched) is False
+
+
+def test_a_domain_right_at_the_threshold_is_ready() -> None:
+    at_bar = compute_domain_mastery("d1", 50.0, ["a"], {"a": DOMAIN_READY_THRESHOLD})
+    assert is_domain_ready(at_bar) is True
+    just_under = compute_domain_mastery("d1", 50.0, ["a"], {"a": DOMAIN_READY_THRESHOLD - 0.01})
+    assert is_domain_ready(just_under) is False
+
+
+def test_ready_for_simulacro_requires_every_domain_ready() -> None:
+    all_ready = [
+        compute_domain_mastery("d1", 50.0, ["a"], {"a": 0.9}),
+        compute_domain_mastery("d2", 50.0, ["b"], {"b": 0.8}),
+    ]
+    assert is_ready_for_simulacro(all_ready) is True
+
+    one_weak = [
+        compute_domain_mastery("d1", 50.0, ["a"], {"a": 0.9}),
+        compute_domain_mastery("d2", 50.0, ["b"], {"b": 0.5}),  # below the bar
+    ]
+    assert is_ready_for_simulacro(one_weak) is False, (
+        "one weak domain must hold back the whole track, even with a strong average"
+    )
+
+
+def test_ready_for_simulacro_is_false_when_any_domain_has_no_data() -> None:
+    """The exact B.11 case: a domain the learner hasn't touched must not be
+    waved through just because every OTHER domain looks great."""
+    domains = [
+        compute_domain_mastery("d1", 50.0, ["a"], {"a": 0.95}),
+        compute_domain_mastery("d2", 50.0, ["b"], {}),  # untouched
+    ]
+    assert is_ready_for_simulacro(domains) is False
+
+
+def test_ready_for_simulacro_is_false_for_a_track_with_no_domains() -> None:
+    assert is_ready_for_simulacro([]) is False
