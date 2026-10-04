@@ -773,6 +773,18 @@ async def apply_exam_evidence(
     `min_mastery_to_unlock` on the skills that were actually tested, and not one
     point further. Skills the draw never touched keep the mastery they had.
 
+    This is only ever called for a PASSED test-out (`exams.py:submit_track_exam`
+    skips it entirely on a fail, so a failed attempt never touches mastery at
+    all) - but a passed attempt can still answer an individual question wrong
+    while the OVERALL score clears the pass bar. A wrong answer's ordinary BKT
+    update can lower `p_known` below what it was before the attempt started,
+    which would mean "you proved you know this module" and "this one question
+    made you look like you know less than before" are both true for the same
+    skill at once (S.9, 2026-10-04). So mastery (`p_known`) is floored at its
+    value before this attempt touched it; Elo and FSRS scheduling state still
+    move on the true correctness of the answer, since neither is the "dominio"
+    number the product shows the learner.
+
     No `Response` row is written and no XP is awarded: an exam is an assessment,
     not a study session, and counting it as both would inflate streaks and the
     answered-question totals that the analytics of 5.4 report.
@@ -780,6 +792,7 @@ async def apply_exam_evidence(
     Returns the skill's mastery after the update.
     """
     state = await _get_or_create_skill_state(db, user.id, question.skill_id)
+    mastery_before_this_attempt = state.p_known
 
     user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
     item_entity = EloEntity(rating=question.elo_rating, interactions=30)
@@ -794,7 +807,7 @@ async def apply_exam_evidence(
         correct=state.correct_count,
     )
     bkt.update(bkt_state, correct)
-    state.p_known = bkt_state.p_known
+    state.p_known = max(bkt_state.p_known, mastery_before_this_attempt)
     state.attempts = bkt_state.attempts
     state.correct_count = bkt_state.correct
 
