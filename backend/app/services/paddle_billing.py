@@ -163,9 +163,30 @@ def apply_subscription_event(user: User, event_type: str, data: dict[str, Any]) 
 
     status = str(data.get("status") or "")
     period_end = _parse_ts((data.get("current_billing_period") or {}).get("ends_at"))
+    subscription_id = str(data["id"]) if data.get("id") else None
+
+    is_ending = event_type == "subscription.canceled" or status in ("canceled", "paused")
+    if is_ending and subscription_id is not None and user.paddle_subscription_id not in (
+        None,
+        subscription_id,
+    ):
+        # Cancelar/pausar solo si es la suscripción que el usuario tiene
+        # activa ahora. Un `subscription.canceled` de la suscripción VIEJA
+        # puede llegar después de que el usuario ya haya pasado a una nueva
+        # (entrega de webhooks no garantiza orden) — sin este chequeo, ese
+        # evento tardío tumbaba el plan nuevo que sí está pagado y vigente.
+        logger.info(
+            "paddle_%s ignorado: sub=%s no es la activa (actual=%s) user=%s",
+            event_type or status,
+            subscription_id,
+            user.paddle_subscription_id,
+            user.id,
+        )
+        return False
+
     user.subscription_provider = "paddle"
-    if data.get("id"):
-        user.paddle_subscription_id = str(data["id"])
+    if subscription_id:
+        user.paddle_subscription_id = subscription_id
 
     if event_type == "subscription.canceled" or status == "canceled":
         # La suscripción ya terminó: sin acceso desde ahora.
