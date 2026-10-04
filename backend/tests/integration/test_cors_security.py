@@ -98,7 +98,9 @@ def _origins_for(environment: str) -> list[str]:
     """Build a Settings with the given ENVIRONMENT and return the active origins."""
     from app.core.config import Settings
 
-    return Settings(ENVIRONMENT=environment).active_cors_origins
+    # Una SECRET_KEY de prueba propia: en producción la de desarrollo no
+    # arranca (S.16, test_secret_key_guard.py).
+    return Settings(ENVIRONMENT=environment, SECRET_KEY="k" * 64).active_cors_origins
 
 
 def test_production_drops_loopback_origins() -> None:
