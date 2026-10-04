@@ -119,9 +119,40 @@ async def _get_or_create_skill_state(
         return result.scalar_one()
 
 
+def _module_unlock_decision(
+    module: Module,
+    prev_module: Module | None,
+    prev_skill_ids: list[str],
+    p_known_by_skill: dict[str, float],
+) -> bool:
+    """The pure decision at the heart of `_is_module_unlocked`: a module is
+    unlocked if it is the first in its track, or the previous module's
+    average mastery clears its unlock threshold. Takes the previous module
+    and its skills' p_known as already-fetched data rather than querying
+    for them, so a caller checking many modules can batch those lookups
+    once instead of re-querying per module (I.4, 2026-10-04)."""
+    if module.order <= 0:
+        return True
+    if prev_module is None:
+        return True
+    if not prev_skill_ids:
+        return True
+
+    p_known_values = [p_known_by_skill[sid] for sid in prev_skill_ids if sid in p_known_by_skill]
+    if not p_known_values:
+        return False
+
+    # Skills never attempted count as 0 mastery.
+    padded = p_known_values + [0.0] * (len(prev_skill_ids) - len(p_known_values))
+    avg_mastery = sum(padded) / len(padded)
+    return bool(avg_mastery >= prev_module.min_mastery_to_unlock)
+
+
 async def _is_module_unlocked(db: AsyncSession, user_id: uuid.UUID, module: Module) -> bool:
-    """A module is unlocked if it is the first in its track, or the
-    previous module's average mastery clears its unlock threshold."""
+    """Single-module convenience wrapper over `_module_unlock_decision`,
+    fetching what it needs for just this one module. Checking many modules
+    at once (`_candidate_skill_ids`) does NOT call this in a loop — see the
+    batched fetch there — because every call here is its own 1-3 queries."""
     if module.order <= 0:
         return True
 
@@ -138,19 +169,13 @@ async def _is_module_unlocked(db: AsyncSession, user_id: uuid.UUID, module: Modu
         return True
 
     states_result = await db.execute(
-        select(UserSkillState.p_known).where(
+        select(UserSkillState.skill_id, UserSkillState.p_known).where(
             UserSkillState.user_id == user_id,
             UserSkillState.skill_id.in_(prev_skill_ids),
         )
     )
-    p_known_values = [row[0] for row in states_result.all()]
-    if not p_known_values:
-        return False
-
-    # Skills never attempted count as 0 mastery.
-    padded = p_known_values + [0.0] * (len(prev_skill_ids) - len(p_known_values))
-    avg_mastery = sum(padded) / len(padded)
-    return bool(avg_mastery >= prev_module.min_mastery_to_unlock)
+    p_known_by_skill = {row[0]: row[1] for row in states_result.all()}
+    return _module_unlock_decision(module, prev_module, prev_skill_ids, p_known_by_skill)
 
 
 # 32.4: modos que exigen haber abierto la lección del skill antes de darle
@@ -197,9 +222,45 @@ async def _candidate_skill_ids(
     modules_result = await db.execute(modules_query.order_by(Module.track_id, Module.order))
     modules = modules_result.scalars().all()
 
+    # I.4, 2026-10-04: `_is_module_unlocked` used to run once PER MODULE here,
+    # each call its own 1-3 queries (previous module, its skills, the user's
+    # p_known for them) -- up to 3N queries for an N-module track on every
+    # single /quiz/start and /quiz/answer. The previous module for any module
+    # in `modules` is also IN `modules` (both come from the same track, or
+    # tracks, fetched above) with its skills already eager-loaded
+    # (`selectinload`), so the only thing that genuinely needs a fresh query
+    # is the user's mastery -- batched here into exactly one query for every
+    # skill any module's unlock check could need, however many modules there
+    # are.
+    modules_by_track_order = {(m.track_id, m.order): m for m in modules}
+    prev_module_by_module: dict[str, Module | None] = {}
+    prev_skill_ids_by_module: dict[str, list[str]] = {}
+    needed_skill_ids: set[str] = set()
+    for module in modules:
+        prev = modules_by_track_order.get((module.track_id, module.order - 1))
+        prev_module_by_module[module.id] = prev
+        prev_skill_ids = [s.id for s in prev.skills] if prev else []
+        prev_skill_ids_by_module[module.id] = prev_skill_ids
+        needed_skill_ids.update(prev_skill_ids)
+
+    unlock_p_known_by_skill: dict[str, float] = {}
+    if needed_skill_ids:
+        unlock_states_result = await db.execute(
+            select(UserSkillState.skill_id, UserSkillState.p_known).where(
+                UserSkillState.user_id == user.id,
+                UserSkillState.skill_id.in_(needed_skill_ids),
+            )
+        )
+        unlock_p_known_by_skill = {row[0]: row[1] for row in unlock_states_result.all()}
+
     unlocked_skill_ids: list[str] = []
     for module in modules:
-        if await _is_module_unlocked(db, user.id, module):
+        if _module_unlock_decision(
+            module,
+            prev_module_by_module[module.id],
+            prev_skill_ids_by_module[module.id],
+            unlock_p_known_by_skill,
+        ):
             unlocked_skill_ids.extend(s.id for s in module.skills)
 
     if not unlocked_skill_ids:
