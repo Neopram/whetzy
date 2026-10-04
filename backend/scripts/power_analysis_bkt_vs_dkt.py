@@ -10,9 +10,18 @@ exists instead of just quoting a textbook formula.
 
 Method: Monte Carlo power simulation for both outcome metrics, not a
 closed-form plugged in and trusted — the same "verify, don't assume" each
-other script in this PR follows (the closed-form two-proportion formula is
-computed too, as a cross-check that the simulation and the textbook formula
-agree, not as the answer on its own).
+other script in this PR follows (the closed-form formula is computed too,
+as a cross-check that the simulation and the textbook formula agree, not as
+the answer on its own).
+
+D7's adoption rule is "no empeora D7" — a NON-INFERIORITY question, not "can
+we detect a difference": this script tests that directly (one-sided,
+margin-based), not a plain two-sided two-proportion test (corrected per
+[COORD]'s adversarial review, 2026-10-03 17:21 on issue #89). AUC's own rule
+("AUC >= 0.70 AND DKT > BKT") IS a superiority question, so that section
+stays a two-sided detection test — and reports users/arm (not just
+responses/arm) for a few plausible responses-per-user scenarios, since the
+experiment framework (24.14) assigns and runs per user.
 
 Usage: python scripts/power_analysis_bkt_vs_dkt.py [--seed N]
 """
@@ -41,10 +50,27 @@ BASELINE_AUC = 0.7983
 MEASURED_AUC_MARGIN = 0.0311
 
 # From 11.8's own criterion (docs/archive/LEDGER_HISTORY.md:1317): "D7 >= 20%
-# medidos". The adoption rule (32.2) is "no empeora D7": the question this
-# answers is how many users are needed to DETECT a drop of a given size from
-# that 20% baseline, which is what "no empeora" has to be checked against.
+# medidos". The adoption rule (32.2) is "no empeora D7" -- a NON-INFERIORITY
+# claim, not "detect any difference": corrected per the [COORD] adversarial
+# review (2026-10-03 17:21, #89), which flagged that a plain two-sided
+# detection test answers a different question ("can we tell D7 moved at
+# all?") than the one the adoption rule actually asks ("can we rule out that
+# DKT is meaningfully worse?"). See two_proportion_n_noninferiority_*() below.
 BASELINE_D7 = 0.20
+
+# "No empeora" margins to test non-inferiority against: the same three
+# absolute-drop sizes the original two-sided table used, now read as "the
+# largest drop we're still willing to call 'didn't get worse'", not as "the
+# effect size we're trying to detect".
+D7_NONINFERIORITY_MARGINS = (0.05, 0.08, 0.12)
+
+# A/B tests run per-user (`get_user_variant`, 24.14), but AUC's natural unit
+# here is per-RESPONSE (one scored prediction per answered question), so the
+# script also reports users/arm for a few plausible "responses answered per
+# user during the experiment window" scenarios -- the same translation
+# docs/ml/ab_bkt_vs_dkt_32_2.md's table did by hand, now computed here so the
+# two can't drift apart.
+RESPONSES_PER_USER_SCENARIOS = (10, 30, 50, 100)
 
 
 def _z(p: float) -> float:
@@ -68,21 +94,46 @@ def two_proportion_n_closed_form(p1: float, p2: float, alpha: float = ALPHA, pow
     return math.ceil(numerator / denominator)
 
 
-def simulate_two_proportion_power(n_per_arm: int, p1: float, p2: float, rng: random.Random) -> float:
-    """Empirical power: fraction of simulated trials where a two-proportion
-    z-test on n_per_arm vs n_per_arm rejects H0 at alpha, when the TRUE
-    rates are p1 and p2."""
+def two_proportion_n_noninferiority_closed_form(
+    p_true: float, margin: float, alpha: float = ALPHA, power: float = TARGET_POWER
+) -> int:
+    """Sample size per arm for a ONE-SIDED non-inferiority test on two
+    proportions: H0 is "DKT's true D7 is at least `margin` below BKT's"
+    (DKT meaningfully worse); we want power to REJECT H0 when DKT is in
+    fact truly equivalent (`p_true` for both arms -- the "if it really
+    doesn't make things worse" scenario the adoption rule needs evidence
+    for). One-sided alpha (`z_(1-alpha)`, not `z_(1-alpha/2)`) because
+    non-inferiority only cares about the "got worse" direction -- DKT
+    being BETTER isn't the hypothesis under test here, AUC already covers
+    that comparison. This is why non-inferiority needs fewer samples than
+    the two-sided detection test for the same margin: see
+    tests/unit/test_power_analysis_bkt_vs_dkt.py."""
+    z_alpha = _z(1 - alpha)  # one-sided, not alpha/2
+    z_beta = _z(power)
+    variance_term = 2 * p_true * (1 - p_true)  # both arms at the SAME true rate under H1
+    return math.ceil(((z_alpha + z_beta) ** 2) * variance_term / margin**2)
+
+
+def simulate_noninferiority_power(n_per_arm: int, p_true: float, margin: float, rng: random.Random) -> float:
+    """Empirical power: fraction of simulated trials where a one-sided
+    non-inferiority test correctly concludes "not meaningfully worse",
+    when BOTH arms are simulated at the SAME true rate `p_true` (DKT is, in
+    truth, exactly as good as BKT -- this measures our ability to show
+    that, not to detect a difference that isn't there)."""
+    z_alpha = _z(1 - ALPHA)  # one-sided, matching the closed-form above
     rejections = 0
     for _ in range(N_TRIALS):
-        x1 = sum(1 for _ in range(n_per_arm) if rng.random() < p1)
-        x2 = sum(1 for _ in range(n_per_arm) if rng.random() < p2)
+        x1 = sum(1 for _ in range(n_per_arm) if rng.random() < p_true)
+        x2 = sum(1 for _ in range(n_per_arm) if rng.random() < p_true)
         p1_hat, p2_hat = x1 / n_per_arm, x2 / n_per_arm
-        p_pool = (x1 + x2) / (2 * n_per_arm)
-        se = math.sqrt(p_pool * (1 - p_pool) * (2 / n_per_arm)) if p_pool not in (0.0, 1.0) else 0.0
+        se = math.sqrt(p1_hat * (1 - p1_hat) / n_per_arm + p2_hat * (1 - p2_hat) / n_per_arm)
         if se == 0.0:
             continue
-        z_stat = (p1_hat - p2_hat) / se
-        if abs(z_stat) > _z(1 - ALPHA / 2):
+        # Non-inferiority margin shifts the null boundary: conclude
+        # "not worse by more than margin" when (p2_hat - p1_hat) clears
+        # -margin by enough standard errors, one-sided.
+        z_stat = (p2_hat - p1_hat + margin) / se
+        if z_stat > z_alpha:
             rejections += 1
     return rejections / N_TRIALS
 
@@ -161,19 +212,23 @@ def main() -> None:
     args = parser.parse_args()
     rng = random.Random(args.seed)
 
-    print("=== D7 retention: how many users per arm to detect a drop from the 20% baseline? ===")
-    print(f"(closed-form cross-check vs Monte Carlo simulation, alpha={ALPHA}, target power={TARGET_POWER})\n")
-    for absolute_drop in (0.05, 0.08, 0.12):
-        p2 = BASELINE_D7 - absolute_drop
-        n_closed_form = two_proportion_n_closed_form(BASELINE_D7, p2)
-        print(f"D7 {BASELINE_D7:.0%} -> {p2:.0%} (absolute drop {absolute_drop:.0%}): "
+    print("=== D7 retention: NON-INFERIORITY -- how many users/arm to show DKT didn't make it worse? ===")
+    print(f"(H0: DKT's true D7 is >= `margin` below BKT's; one-sided alpha={ALPHA}, "
+          f"target power={TARGET_POWER}; assumes DKT is truly equivalent, same {BASELINE_D7:.0%} baseline)\n")
+    for margin in D7_NONINFERIORITY_MARGINS:
+        n_closed_form = two_proportion_n_noninferiority_closed_form(BASELINE_D7, margin)
+        print(f"margin {margin:.0%} (\"no empeora\" = DKT's D7 no more than {margin:.0%} below {BASELINE_D7:.0%}): "
               f"closed-form n/arm = {n_closed_form}")
         candidates = sorted({max(10, int(n_closed_form * f)) for f in (0.5, 0.75, 1.0, 1.25)})
-        n_simulated = find_n_for_power(partial(simulate_two_proportion_power, p1=BASELINE_D7, p2=p2, rng=rng), candidates)
+        n_simulated = find_n_for_power(
+            partial(simulate_noninferiority_power, p_true=BASELINE_D7, margin=margin, rng=rng), candidates
+        )
         print(f"  Monte Carlo n/arm hitting {TARGET_POWER:.0%} power among candidates tried: "
               f"{n_simulated if n_simulated else f'> {max(candidates)} (none tried reached it)'}\n")
 
-    print("=== AUC: how many RESPONSES per arm to detect the measured BKT->DKT margin? ===")
+    print("=== AUC: how many RESPONSES (and users) per arm to detect the measured BKT->DKT margin? ===")
+    print("(AUC's own adoption rule, 'AUC >= 0.70 AND DKT > BKT', IS a superiority question, not "
+          "non-inferiority -- this section stays a two-sided/one-sided detection test, unlike D7 above)")
     print(f"(baseline BKT AUC={BASELINE_AUC}, measured margin={MEASURED_AUC_MARGIN} from docs/ml/kt-benchmark.json)\n")
     for margin in (MEASURED_AUC_MARGIN, 0.08):
         auc2 = BASELINE_AUC + margin
@@ -182,8 +237,16 @@ def main() -> None:
         n_simulated = find_n_for_power(
             partial(simulate_auc_power, auc1=BASELINE_AUC, auc2=auc2, rng_seed=args.seed), candidates
         )
-        print(f"  n responses/arm hitting {TARGET_POWER:.0%} power among candidates tried: "
-              f"{n_simulated if n_simulated else f'> {max(candidates)} (none tried reached it)'}\n")
+        if n_simulated:
+            print(f"  n responses/arm hitting {TARGET_POWER:.0%} power among candidates tried: {n_simulated}")
+            print(f"  {'responses/user':>15}  {'users/arm':>10}")
+            for responses_per_user in RESPONSES_PER_USER_SCENARIOS:
+                users_per_arm = math.ceil(n_simulated / responses_per_user)
+                print(f"  {responses_per_user:>15}  {users_per_arm:>10}")
+            print()
+        else:
+            print(f"  n responses/arm hitting {TARGET_POWER:.0%} power among candidates tried: "
+                  f"> {max(candidates)} (none tried reached it)\n")
 
     print("See docs/ml/ab_bkt_vs_dkt_32_2.md for what these numbers mean for how long the "
           "experiment would need to run, and why neither number alone answers 'is the cohort big enough'.")
