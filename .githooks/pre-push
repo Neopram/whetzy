@@ -144,8 +144,11 @@ else
   gris  "  --   gitleaks no instalado (pip install gitleaks o descargar binario)"
 fi
 
+# La matriz de autorización (I.6/J.13) cuesta ~1,5 s: una ruta nueva sin
+# política declarada, o una de admin que un alumno puede pasar, no sale de aquí.
 paso "guardas de esquema y contrato" \
      bash -c "cd backend && python -m pytest \
+        tests/test_authz_matrix.py \
         tests/test_modelos_registrados.py \
         tests/test_indices_modelos.py \
         tests/test_contrato_frontend.py \
