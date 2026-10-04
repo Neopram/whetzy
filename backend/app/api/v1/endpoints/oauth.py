@@ -34,6 +34,21 @@ router = APIRouter()
 
 _STATE_TTL_MINUTES = 10
 
+
+class _UnverifiedEmailConflict(Exception):
+    """Ya hay una cuenta con este email, pero esa cuenta no lo ha verificado.
+
+    El proveedor OAuth ha verificado que quien está iniciando sesión ahora
+    es el dueño real de ese email (GitHub filtra por `verified`, Google por
+    `email_verified`). Pero `email_verified=False` en la cuenta existente
+    de Whetzy no prueba lo mismo: cualquiera pudo registrarse con ese email
+    por contraseña sin confirmarlo nunca. Sin este chequeo, un atacante que
+    se registrara antes con el email de otra persona (típicamente por
+    contraseña, nunca lo verifica) terminaba recibiendo el inicio de sesión
+    real de esa persona en cuanto esta usara "Continuar con Google/GitHub"
+    — la cuenta ya existía, el email coincidía, y se enlazaba sin preguntar.
+    """
+
 # Provider configs — lambdas so we read settings lazily (allows override in tests)
 _PROVIDERS: dict[str, dict[str, Any]] = {
     "github": {
@@ -185,7 +200,13 @@ async def oauth_callback(
             status_code=302,
         )
 
-    user = await _find_or_create_user(db, email, provider, provider_user_id)
+    try:
+        user = await _find_or_create_user(db, email, provider, provider_user_id)
+    except _UnverifiedEmailConflict:
+        return RedirectResponse(
+            url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=email_unverified",
+            status_code=302,
+        )
     if not user.is_active and not await account_deletion.restore_if_pending(db, user):
         return RedirectResponse(
             url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=account_inactive",
@@ -282,9 +303,13 @@ async def _find_or_create_user(
         user_result = await db.execute(select(User).where(User.id == existing_link.user_id))
         return user_result.scalar_one()
 
-    # 2. Existing user with this email → link accounts
+    # 2. Existing user with this email → link accounts, pero solo si esa
+    # cuenta ya tiene el email verificado (ver _UnverifiedEmailConflict).
     user_result = await db.execute(select(User).where(User.email == email))
     user = user_result.scalar_one_or_none()
+
+    if user is not None and not user.email_verified:
+        raise _UnverifiedEmailConflict(email)
 
     if user is None:
         # 3. New user — derive a unique username from the email prefix

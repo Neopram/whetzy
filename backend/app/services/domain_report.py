@@ -20,6 +20,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
+from app.services.engine.domain_thresholds import MASTERY_THRESHOLD
+
 # `p_known` is a BKT ESTIMATE (`UserSkillState.p_known`), not a measured fact
 # — unlike the other two numbers in this report (response counts, first-try
 # accuracy), which are direct counts. With the engine's own default BKT
@@ -45,7 +47,7 @@ class MasterySummary:
 def compute_mastery_summary(
     skill_p_known: dict[str, float],
     skill_attempts: dict[str, int],
-    threshold: float = 0.95,
+    threshold: float = MASTERY_THRESHOLD,
     min_attempts: int = MIN_ATTEMPTS_PER_SKILL,
 ) -> MasterySummary:
     """`N` of `M` skills at or above `threshold` p_known. `M` is every skill
@@ -130,7 +132,7 @@ def build_domain_report(
     skill_p_known: dict[str, float],
     skill_attempts: dict[str, int],
     responses: list[tuple[str, bool, datetime]],
-    mastery_threshold: float = 0.95,
+    mastery_threshold: float = MASTERY_THRESHOLD,
     min_attempts: int = MIN_ATTEMPTS_PER_SKILL,
 ) -> DomainReport:
     """Combine the three independent measurements into one report.

@@ -5,7 +5,7 @@
  * no cambia: esto solo comprueba el marcado nuevo alrededor.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import '../i18n';
 import { LessonScreen } from '../pages/LessonScreen';
 import { lessonsApi, type LessonRead } from '../services/api';
@@ -33,7 +33,7 @@ function decorativeIcons() {
 describe('LessonScreen — icono accesible por sección (39.14)', () => {
   it('el paso de concepto no reescribe el texto y su icono es decorativo', async () => {
     forSkill.mockResolvedValue([LESSON]);
-    render(<LessonScreen skillId="sk010101" onExit={() => {}} />);
+    await act(async () => { render(<LessonScreen skillId="sk010101" onExit={() => {}} />); });
     await screen.findByRole('progressbar');
 
     // El texto de la lección sigue verbatim — no se tocó contenido.
@@ -45,7 +45,11 @@ describe('LessonScreen — icono accesible por sección (39.14)', () => {
 
   it('el paso de ejemplo marca su icono y el de la salida como decorativos', async () => {
     forSkill.mockResolvedValue([LESSON]);
-    render(<LessonScreen skillId="sk010101" onExit={() => {}} />);
+    // Dentro de act: forSkill resuelve en una microtarea y el efecto que
+    // engancha el listener de ← / → con el número real de pasos tiene que haber
+    // corrido antes de pulsar; si no, con carga, las flechas llegan al listener
+    // viejo (sin pasos) y el test falla al azar.
+    await act(async () => { render(<LessonScreen skillId="sk010101" onExit={() => {}} />); });
     const bar = await screen.findByRole('progressbar');
     const total = Number(bar.getAttribute('aria-valuemax'));
     for (let i = 1; i < total; i++) fireEvent.keyDown(window, { key: 'ArrowRight' });
@@ -60,7 +64,7 @@ describe('LessonScreen — icono accesible por sección (39.14)', () => {
 
   it('el icono de la fuente no cambia el nombre accesible del enlace', async () => {
     forSkill.mockResolvedValue([LESSON]);
-    render(<LessonScreen skillId="sk010101" onExit={() => {}} />);
+    await act(async () => { render(<LessonScreen skillId="sk010101" onExit={() => {}} />); });
     await screen.findByRole('progressbar');
 
     expect([...decorativeIcons()].map((n) => n.textContent)).toContain('🔗');

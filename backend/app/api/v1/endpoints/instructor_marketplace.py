@@ -26,6 +26,7 @@ from app.models.instructor import Instructor, InstructorCourse
 from app.models.user import User
 from app.services.instructor_service import (
     AlreadyEnrolled,
+    CannotEnrollInOwnCourse,
     CourseNotPublished,
     InstructorService,
 )
@@ -223,6 +224,8 @@ async def enroll_student(
         )
     except AlreadyEnrolled as exc:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+    except CannotEnrollInOwnCourse as exc:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
     except CourseNotPublished as exc:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
     except ValueError as exc:

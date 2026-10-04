@@ -10,8 +10,16 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Any
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# La clave de desarrollo y el marcador de `.env.example`. Ninguna de las dos
+# puede firmar tokens en producción (S.16).
+_DEV_SECRET_KEY = "insecure-dev-secret-key-change-me-in-production-0123456789"
+_PLACEHOLDER_SECRET_KEYS = frozenset(
+    {_DEV_SECRET_KEY, "change-me-to-a-64-char-random-hex-string"}
+)
+SECRET_KEY_MIN_LENGTH = 32
 
 
 class Settings(BaseSettings):
@@ -53,7 +61,7 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
 
     # --- Auth / JWT --------------------------------------------------------
-    SECRET_KEY: str = "insecure-dev-secret-key-change-me-in-production-0123456789"
+    SECRET_KEY: str = _DEV_SECRET_KEY
     JWT_ALGORITHM: str = "HS256"
     JWT_PRIVATE_KEY: str = ""
     JWT_PUBLIC_KEY: str = ""
@@ -114,6 +122,32 @@ class Settings(BaseSettings):
         # Un espacio o salto de línea pegado con el valor en Railway rompe la
         # firma del webhook (401 «Invalid Paddle-Signature») sin decir por qué.
         return v.strip() if isinstance(v, str) else v
+
+    @model_validator(mode="after")
+    def _production_needs_a_real_secret_key(self) -> Settings:
+        """En producción, el arranque falla con una SECRET_KEY de ejemplo o corta (S.16).
+
+        `verify_token` acepta HS256 con `SECRET_KEY` aunque haya clave RS256
+        (`_verification_keys`, para los tokens de antes de la migración): una
+        clave conocida en producción deja a cualquiera firmar la sesión de
+        cualquier alumno. Como esto corre al construir `Settings`, revienta
+        antes de `alembic`, del cargador y de gunicorn (`start.sh` va con
+        `set -e`): el contenedor nuevo no llega a responder a `/health`.
+        """
+        if self.ENVIRONMENT != "production":
+            return self
+        key = self.SECRET_KEY.strip()
+        if key in _PLACEHOLDER_SECRET_KEYS:
+            raise ValueError(
+                "SECRET_KEY es la de ejemplo: en producción hace falta una clave "
+                "aleatoria propia (python -c 'import secrets; print(secrets.token_hex(32))')"
+            )
+        if len(key) < SECRET_KEY_MIN_LENGTH:
+            raise ValueError(
+                f"SECRET_KEY tiene {len(key)} caracteres: en producción hacen falta "
+                f"al menos {SECRET_KEY_MIN_LENGTH}"
+            )
+        return self
 
     @property
     def active_cors_origins(self) -> list[str]:
@@ -194,6 +228,9 @@ class Settings(BaseSettings):
     VAPID_PRIVATE_KEY: str = ""   # base64url-encoded DER EC private key
     VAPID_PUBLIC_KEY: str = ""    # base64url-encoded uncompressed public key point
     VAPID_EMAIL: str = "mailto:hello@whetzy.com"
+    # Tope de endpoints distintos por usuario en POST /push/subscribe (S.15):
+    # sin él, una cuenta podía acumular endpoints sin límite.
+    PUSH_MAX_SUBSCRIPTIONS_PER_USER: int = 10
 
     # --- Streak reminder (P.13) -----------------------------------------------
     # Max push reminders per user per day (enforced client-side; limit at backend too).

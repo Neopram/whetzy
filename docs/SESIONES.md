@@ -191,6 +191,10 @@ Lo que no aparece en ninguna lista no tiene dueño: quien lo necesite lo pide co
    (y `--carril pr96 --estado`). Sin carril, el cerrojo del checkout mata al nivel 2 anterior: eso
    fue el `exit 137` del #96. Con carriles distintos no se tocan (cerrojo, bitácora y worktree
    propios). `XDG_CACHE_HOME` distinto solo separa el worktree, no el cerrojo.
+6. **Ruta nueva o con otra protección** (I.6/J.13): `cd backend && python -m app.core.authz --write`
+   y el diff de `backend/tests/authz_matrix.json` va en el PR. Sin eso, el nivel 1 para el push
+   (`tests/test_authz_matrix.py`). Una ruta `admin` nueva la prueba sola el test: un alumno con
+   sesión tiene que recibir 401 o 403.
 
 ## 8. PRs
 

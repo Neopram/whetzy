@@ -12,13 +12,30 @@ from app.schemas.progress import (
     CurriculumResponse,
     DashboardResponse,
     DecayingSkill,
+    DomainThresholds,
     PredictionResponse,
     SkillMasteryDetail,
 )
 from app.services import progress as progress_service
 from app.services.churn import ChurnRiskResult, compute_risk
+from app.services.engine.domain_thresholds import (
+    DEFAULT_MODULE_UNLOCK_MASTERY,
+    MASTERY_THRESHOLD,
+)
 
 router = APIRouter()
+
+
+@router.get("/thresholds", response_model=DomainThresholds)
+async def domain_thresholds(
+    _: User = Depends(get_current_user),
+) -> DomainThresholds:
+    """The motor's canonical domain thresholds (C.1) — no DB lookup, these
+    are fixed per deployment, not per user."""
+    return DomainThresholds(
+        mastery_threshold=MASTERY_THRESHOLD,
+        default_module_unlock_mastery=DEFAULT_MODULE_UNLOCK_MASTERY,
+    )
 
 
 @router.get("/dashboard", response_model=DashboardResponse)

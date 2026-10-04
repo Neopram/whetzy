@@ -172,6 +172,31 @@ def test_allocation_always_sums_to_the_total() -> None:
         assert sum(allocation.values()) == total, f"drifted at total={total}"
 
 
+def test_test_out_pass_pct_is_never_zero() -> None:
+    """S.9, 2026-10-04: 15 of 23 modules in the real catalog set
+    `min_mastery_to_unlock=0.0` to mean "no prerequisite to unlock me" - that
+    must not become "0 correct answers skips this module". None of the
+    Module() instances below are persisted; the function under test only
+    reads the attribute."""
+    open_module = Module(
+        id="open", track_id="t", name_es="x", name_en="x", order=1, min_mastery_to_unlock=0.0
+    )
+    assert track_exam_service.test_out_pass_pct(open_module) == track_exam_service.MIN_TEST_OUT_PASS_PCT
+    assert track_exam_service.test_out_pass_pct(open_module) > 0.0
+
+    gated_module = Module(
+        id="gated", track_id="t", name_es="x", name_en="x", order=1, min_mastery_to_unlock=0.7
+    )
+    assert track_exam_service.test_out_pass_pct(gated_module) == 70.0
+
+    # A module gated ABOVE the floor keeps its own, higher bar - the floor
+    # does not drag every module down to 70%, only up to it.
+    strict_module = Module(
+        id="strict", track_id="t", name_es="x", name_en="x", order=1, min_mastery_to_unlock=0.9
+    )
+    assert track_exam_service.test_out_pass_pct(strict_module) == 90.0
+
+
 def test_test_out_asks_enough_per_skill_to_clear_the_unlock_bar() -> None:
     """The per-skill count is read off the BKT curve, not chosen.
 
@@ -571,6 +596,58 @@ async def test_failing_a_test_out_does_not_touch_mastery(
         )
     ).all()
     assert states == [], "a failed test-out must leave the learner exactly as it found them"
+
+
+@pytest.mark.asyncio
+async def test_a_passed_test_out_never_lowers_a_skill_below_where_it_started(
+    client: AsyncClient, auth_headers: dict[str, str], track_seed: dict,
+    db_session: AsyncSession, user: User,
+) -> None:
+    """S.9, 2026-10-04: a test-out can pass overall (6 of 8 correct clears the
+    70% bar) while answering one skill's questions wrong throughout. "You
+    proved you know this module" and "this skill now looks worse than before
+    you sat the exam" cannot both be true for the same skill at once."""
+    module_id = track_seed["module_ids"][0]  # m1, 4 skills x 2 questions = 8
+
+    # sk_m1_0 already has solid, earned mastery from prior practice.
+    prior_state = UserSkillState(user_id=user.id, skill_id="sk_m1_0", p_known=0.9)
+    db_session.add(prior_state)
+    await db_session.commit()
+
+    start = await client.post(f"{BASE}/module/{module_id}/test-out/start", headers=auth_headers)
+    attempt_id = start.json()["attempt_id"]
+    questions = (
+        await db_session.scalars(
+            select(Question).where(Question.id.in_(
+                q["id"] for q in start.json()["questions"]
+            ))
+        )
+    ).all()
+    by_id = {q.id: q for q in questions}
+
+    answers = []
+    for q in start.json()["questions"]:
+        question = by_id[q["id"]]
+        if question.skill_id == "sk_m1_0":
+            chosen = (question.correct_index + 1) % 4  # deliberately wrong
+        else:
+            chosen = question.correct_index
+        answers.append({"question_id": q["id"], "selected_index": chosen})
+
+    res = await client.post(
+        f"{BASE}/track/{attempt_id}/submit", json={"answers": answers}, headers=auth_headers
+    )
+    body = res.json()
+    assert body["report"]["passed"] is True, (
+        "6 of 8 (75%) must clear the 70% bar - if this assertion fails the test "
+        "no longer exercises a PASSED attempt with a wrong skill inside it"
+    )
+
+    await db_session.refresh(prior_state)
+    assert prior_state.p_known >= 0.9, (
+        f"sk_m1_0 was answered wrong throughout a PASSED test-out and dropped "
+        f"to {prior_state.p_known:.3f}, below the 0.9 it had before the attempt"
+    )
 
 
 @pytest.mark.asyncio

@@ -8,6 +8,7 @@ making real HTTP calls to browser push services.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 from typing import Any
@@ -19,6 +20,11 @@ from app.core.config import settings
 from app.models.push_subscription import PushSubscription
 
 logger = logging.getLogger(__name__)
+
+# `webpush()` es una llamada bloqueante (requests) y, sin `timeout`, pywebpush
+# no pone ninguno por su cuenta -- un endpoint que no responde podía colgar
+# la petición indefinidamente. 10 s, igual que el SMTP de `email.py`.
+_WEBPUSH_TIMEOUT_SECONDS = 10.0
 
 try:
     from pywebpush import WebPushException
@@ -74,12 +80,11 @@ async def send_to_user(
     payload = json.dumps(
         {"title": title, "body": body, "tag": tag or "whetzy", **(data or {})}
     )
-    sent = 0
-    gone_ids = []
 
-    for sub in subs:
+    async def _send_one(sub: PushSubscription) -> Exception | None:
         try:
-            webpush(
+            await asyncio.to_thread(
+                webpush,
                 subscription_info={
                     "endpoint": sub.endpoint,
                     "keys": {"p256dh": sub.p256dh, "auth": sub.auth},
@@ -89,15 +94,30 @@ async def send_to_user(
                 vapid_claims={
                     "sub": settings.VAPID_EMAIL,
                 },
+                timeout=_WEBPUSH_TIMEOUT_SECONDS,
             )
-            sent += 1
+            return None
         except Exception as exc:  # noqa: BLE001
-            status_code = getattr(getattr(exc, "response", None), "status_code", None)
-            if status_code == 410:
-                gone_ids.append(sub.id)
-                logger.info("Push subscription %s gone (410); removing", sub.id)
-            else:
-                logger.warning("Push delivery failed for sub %s: %s", sub.id, exc)
+            return exc
+
+    # Cada envío a su propio hilo y los de este usuario en paralelo, no uno
+    # detrás de otro: antes, un endpoint lento bloqueaba el bucle de eventos
+    # (como el SMTP de `email.py` antes de despacharse a un hilo) y además
+    # retrasaba en cadena al resto de dispositivos de este mismo usuario.
+    results = await asyncio.gather(*(_send_one(sub) for sub in subs))
+
+    sent = 0
+    gone_ids = []
+    for sub, exc in zip(subs, results, strict=True):
+        if exc is None:
+            sent += 1
+            continue
+        status_code = getattr(getattr(exc, "response", None), "status_code", None)
+        if status_code == 410:
+            gone_ids.append(sub.id)
+            logger.info("Push subscription %s gone (410); removing", sub.id)
+        else:
+            logger.warning("Push delivery failed for sub %s: %s", sub.id, exc)
 
     for gid in gone_ids:
         sub_obj = await db.get(PushSubscription, gid)

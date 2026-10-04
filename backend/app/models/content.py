@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from sqlalchemy import JSON, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Float, ForeignKey, Integer, String, Text, true
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
@@ -34,6 +34,11 @@ class Track(Base):
     exam_question_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
     exam_duration_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
     passing_score_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    # Un track que sale de `tracks.json` se retira (False), no se borra: el
+    # borrado iba en cascada hasta respuestas, intentos y certificados (S.12).
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, server_default=true(), nullable=False
+    )
 
     modules: Mapped[list[Module]] = relationship(
         back_populates="track", cascade="all, delete-orphan", order_by="Module.order"

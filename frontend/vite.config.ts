@@ -412,6 +412,13 @@ export default defineConfig({
     modulePreload: { polyfill: false },
   },
   server: {
+    // blogContent.ts reads `content/blog/**/*.md` from the repo root via
+    // `import.meta.glob(..., { query: '?raw' })` (26.9, 0.14) — one level
+    // above this project's own root, which the dev server denies by default
+    // ("Denied ID"). `vite build` doesn't enforce this (verified separately),
+    // only the dev server (and vitest, which hits the same check — see
+    // vitest.config.ts) do.
+    fs: { allow: [resolve(__dirname, '..')] },
     // Cross-Origin isolation required by SharedArrayBuffer (pyodide interrupt).
     // COEP credentialless allows CDN resources without opt-in CORP headers.
     headers: {
