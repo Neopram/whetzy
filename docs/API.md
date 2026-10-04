@@ -66,6 +66,7 @@ GET  /progress/curriculum         → module/skill tree with BKT gates (?track_i
 GET  /progress/predictions        → DKT probability per skill (?track_id= filter) 🔒
 GET  /progress/risk               → churn risk score 🔒
 GET  /progress/decaying           → skills whose FSRS stability is decaying 🔒
+GET  /progress/thresholds         → canonical domain thresholds (mastery, module unlock) 🔒
 ```
 
 ## Placement endpoints

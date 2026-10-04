@@ -146,6 +146,7 @@ está roto.
 | `docs/legal/H29-DECISION-LOG.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/h29-grecia-paddle-revenuecat-obligaciones.md` | legal | investigación vigente (21.1/21.2) de lo que exige operar bajo H.29 | se queda, DRAFT para H.20 | 2026-10-02 |
 | `docs/legal/h20-paquete-abogado.md` | legal | índice, preguntas abiertas y riesgos por gravedad para la revisión profesional (H.20) | se queda, DRAFT | 2026-10-02 |
+| `docs/legal/revision-terminos-privacidad-2026-10-04.md` | legal | 7 propuestas (Oleada 0.12/D.8) sobre contradicciones verificadas en Términos/Privacidad/Reembolsos publicados, con 2 opciones cada una | se queda, DRAFT, pendiente de NECESITO (dueño) | 2026-10-04 |
 | `docs/legal/community-guidelines.es.md` | legal | texto mínimo de moderación para App Store 1.2/1.2.1 (ledger 19.11); no registrado en `scripts/check_legal_facts.py` EXPECTED_DOCS (fuera de mi terreno tocar ese script) | se queda, DRAFT sin publicar | 2026-10-02 |
 | `docs/legal/community-guidelines.en.md` | legal | par EN del anterior | se queda, DRAFT sin publicar | 2026-10-02 |
 | `docs/legal/README.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-26 |

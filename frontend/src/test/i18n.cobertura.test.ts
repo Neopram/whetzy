@@ -50,8 +50,30 @@ function aplanar(d: Record<string, unknown>, pre = ''): Record<string, string> {
   return out
 }
 
-const ES = aplanar(JSON.parse(readFileSync(join(SRC, 'i18n/es/common.json'), 'utf8')))
-const EN = aplanar(JSON.parse(readFileSync(join(SRC, 'i18n/en/common.json'), 'utf8')))
+/** `common.json` no es el único recurso: cada sesión tiene su propio fichero
+ *  por rol (`producto`, `contenido`, `motor`, `legal`, `marketing` —
+ *  `src/i18n.ts`, `ROLE_NAMESPACES`), cargado con `useTranslation('<rol>')`.
+ *  Esta guarda no sabe qué `useTranslation()` gobierna cada `t()` — es un
+ *  regex, no un analizador de AST —, así que una clave cuenta como cubierta
+ *  si existe en common.json O en cualquier fichero de rol; eso es lo que
+ *  `ROLE_NAMESPACES` + `i18n.hasResourceBundle` ya garantizan que están
+ *  todos cargados (`i18n.parity.test.ts`, "every role file is registered").
+ *  Hasta el 2026-10-04 esto no se habia notado: ningún `.tsx` real usaba
+ *  todavía una clave de rol con `t()` (BlogPage/CareerPage/EnterprisePage
+ *  son las primeras, 0.14), así que el hueco estaba ahí pero nada lo cruzaba. */
+function cargarRol(lang: 'es' | 'en', archivo: string): Record<string, string> {
+  return aplanar(JSON.parse(readFileSync(join(SRC, `i18n/${lang}/${archivo}.json`), 'utf8')))
+}
+
+const ROLES = ['producto', 'contenido', 'motor', 'legal', 'marketing']
+const ES = {
+  ...aplanar(JSON.parse(readFileSync(join(SRC, 'i18n/es/common.json'), 'utf8'))),
+  ...Object.assign({}, ...ROLES.map((r) => cargarRol('es', r))),
+}
+const EN = {
+  ...aplanar(JSON.parse(readFileSync(join(SRC, 'i18n/en/common.json'), 'utf8'))),
+  ...Object.assign({}, ...ROLES.map((r) => cargarRol('en', r))),
+}
 
 /** i18next v26 pluraliza con `_one` / `_other`, no con `_plural`. */
 const tiene = (mapa: Record<string, string>, k: string) =>

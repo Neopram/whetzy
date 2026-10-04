@@ -341,8 +341,8 @@ class TestSkillDomainMapping:
 
     @pytest.mark.parametrize("track_id", TRACKS_WITH_DECLARED_DOMAINS)
     def test_no_domain_is_empty(self, track_id: str) -> None:
-        """An empty domain scores the BKT prior and reports 10 % readiness in
-        something nobody can study, because it has nothing in it."""
+        """An empty domain reports "sin datos" readiness forever, because
+        there is nothing in it a learner could ever be assessed on."""
         mapped = {s["exam_domain"] for s in _skills(track_id)}
         missing = [d["id"] for d in _declared(track_id) if d["id"] not in mapped]
         assert missing == [], f"{track_id} declares domains with no skills: {missing}"

@@ -169,6 +169,23 @@ def test_paused_subscription_removes_access(user) -> None:
     assert not user_meets_tier(user, "plus")
 
 
+def test_a_stale_cancel_for_an_old_subscription_does_not_touch_the_new_one(user) -> None:
+    """Entrega de webhooks no garantiza orden: el `canceled` de la suscripción
+    vieja puede llegar después de que el usuario ya pagó una nueva."""
+    paddle_billing.apply_subscription_event(user, "subscription.created", _sub(user.id, sub_id="sub_old"))
+    paddle_billing.apply_subscription_event(
+        user, "subscription.created", _sub(user.id, price=PRO, sub_id="sub_new")
+    )
+    assert user.paddle_subscription_id == "sub_new" and user.is_premium is True
+
+    stale = _sub(user.id, sub_id="sub_old", status="canceled", canceled_at=datetime.now(UTC).isoformat())
+    applied = paddle_billing.apply_subscription_event(user, "subscription.canceled", stale)
+
+    assert applied is False
+    assert user.paddle_subscription_id == "sub_new"
+    assert user.is_premium is True and user.subscription_tier == "pro"
+
+
 def test_an_unknown_price_leaves_the_user_alone(user) -> None:
     assert paddle_billing.apply_subscription_event(user, "subscription.created", _sub(user.id, price="pri_otro")) is False
     assert user.subscription_tier is None and user.is_premium is False
@@ -250,6 +267,73 @@ async def test_certification_transaction_records_the_purchase_once(client, db_se
         select(CertificationPurchase).where(CertificationPurchase.user_id == user.id)
     )).scalars().all()
     assert [(p.track_id, p.source, p.external_ref) for p in rows] == [("trkCERT", "paddle", "txn_01cert")]
+
+
+@pytest.mark.asyncio
+async def test_an_approved_refund_revokes_the_certification_purchase(client, db_session, user) -> None:
+    """developer.paddle.com/webhooks/adjustments (verificado 2026-10-04):
+    Paddle manda un reembolso como `adjustment.created`, no como un
+    `transaction.refunded` — antes de esto nada lo escuchaba y el alumno
+    reembolsado conservaba el examen certificador para siempre."""
+    db_session.add(Track(id="trkCERT3", name_es="C", name_en="C", order=92, is_certification=True))
+    await db_session.commit()
+    purchase_data = {
+        "id": "txn_01refund", "status": "completed", "subscription_id": None,
+        "items": [{"price": {"id": CERT}}],
+        "custom_data": {"user_id": str(user.id), "track_id": "trkCERT3"},
+    }
+    body = _event("transaction.completed", purchase_data)
+    r = await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body)})
+    assert r.status_code == 200, r.text
+    rows = (await db_session.execute(
+        select(CertificationPurchase).where(CertificationPurchase.external_ref == "txn_01refund")
+    )).scalars().all()
+    assert len(rows) == 1
+
+    refund = {"action": "refund", "status": "approved", "transaction_id": "txn_01refund"}
+    body = _event("adjustment.created", refund)
+    r = await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body)})
+    assert r.status_code == 200, r.text
+
+    rows = (await db_session.execute(
+        select(CertificationPurchase).where(CertificationPurchase.external_ref == "txn_01refund")
+    )).scalars().all()
+    assert rows == []
+
+
+@pytest.mark.asyncio
+async def test_a_pending_refund_does_not_revoke_anything_yet(client, db_session, user) -> None:
+    db_session.add(Track(id="trkCERT4", name_es="C", name_en="C", order=93, is_certification=True))
+    await db_session.commit()
+    purchase_data = {
+        "id": "txn_01pending", "status": "completed", "subscription_id": None,
+        "items": [{"price": {"id": CERT}}],
+        "custom_data": {"user_id": str(user.id), "track_id": "trkCERT4"},
+    }
+    body = _event("transaction.completed", purchase_data)
+    await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body)})
+
+    pending = {"action": "refund", "status": "pending_approval", "transaction_id": "txn_01pending"}
+    body = _event("adjustment.created", pending)
+    r = await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body)})
+    assert r.status_code == 200
+
+    credit = {"action": "credit", "status": "approved", "transaction_id": "txn_01pending"}
+    body = _event("adjustment.created", credit)
+    r = await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body)})
+    assert r.status_code == 200
+
+    rows = (await db_session.execute(
+        select(CertificationPurchase).where(CertificationPurchase.external_ref == "txn_01pending")
+    )).scalars().all()
+    assert len(rows) == 1
+
+
+@pytest.mark.asyncio
+async def test_a_refund_for_an_unknown_transaction_is_a_no_op(client) -> None:
+    body = _event("adjustment.created", {"action": "refund", "status": "approved", "transaction_id": "txn_ghost"})
+    r = await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body)})
+    assert r.status_code == 200
 
 
 @pytest.mark.asyncio

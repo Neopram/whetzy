@@ -29,6 +29,7 @@ import smtplib
 import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from html import escape as _escape_html
 
 logger = logging.getLogger("whetzy.email")
 
@@ -261,12 +262,22 @@ border-radius:6px;text-decoration:none;">Confirm subscription</a></p>
 
 
 def _render(template_name: str, lang: str, **kwargs: str) -> tuple[str, str]:
-    """Return (subject, html_body) for template + language."""
+    """Return (subject, html_body) for template + language.
+
+    El cuerpo se interpola con cada valor escapado: `name` es el
+    `display_name` que el alumno elige al registrarse (sin filtro de HTML,
+    solo una lista de palabras bloqueadas, `schemas/user.py`), y antes de
+    esto se metía tal cual en la plantilla — `<img src=x onerror=...>` como
+    nombre viajaba sin tocar hasta el cliente de correo que lo renderizara.
+    El asunto no se escapa: es texto plano para la cabecera `Subject`, no
+    HTML, y un alumno que se llama O'Brien no debe ver entidades ahí.
+    """
     lang_key = lang if lang in ("es", "en") else "es"
     tpl = _TEMPLATES[template_name][lang_key]
     subject = tpl["subject"].format(**kwargs)
-    html = tpl["html"].format(**kwargs)
-    return subject, html
+    safe_kwargs = {key: _escape_html(str(value)) for key, value in kwargs.items()}
+    html_body = tpl["html"].format(**safe_kwargs)
+    return subject, html_body
 
 
 # ── Providers ─────────────────────────────────────────────────────────────────

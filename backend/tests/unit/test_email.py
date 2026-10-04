@@ -96,6 +96,22 @@ class TestRender:
             "welcome", "es", name="A", base_url="u"
         )
 
+    def test_a_malicious_display_name_is_escaped_in_the_body(self) -> None:
+        """`display_name` no pasa por ningún filtro de HTML al registrarse
+        (`schemas/user.py`, solo una lista de palabras bloqueadas) — un
+        nombre con una etiqueta no debe llegar intacto al cuerpo HTML."""
+        payload = "<img src=x onerror=alert(1)>"
+        _subject, html = _render("welcome", "es", name=payload, base_url="https://whetzy.com")
+        assert payload not in html
+        assert "&lt;img src=x onerror=alert(1)&gt;" in html
+
+    def test_a_malicious_display_name_is_not_escaped_in_the_subject(self) -> None:
+        """El asunto es texto plano para la cabecera `Subject`, no HTML: un
+        alumno llamado O'Brien no debe ver entidades en su bandeja."""
+        subject, _html = _render("welcome", "es", name="O'Brien", base_url="https://whetzy.com")
+        assert "O'Brien" in subject
+        assert "&#x27;" not in subject
+
 
 # ── dispatch ──────────────────────────────────────────────────────────────────
 
