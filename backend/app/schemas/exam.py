@@ -91,24 +91,33 @@ class CertificationAccess(BaseModel):
 
 
 class DomainReadiness(BaseModel):
-    """BKT-based readiness score for one exam domain."""
+    """BKT-based readiness score for one exam domain.
+
+    `p_known_mean=None` means "sin datos": no skill in this domain has been
+    attempted yet (C.2, 2026-10-04) - distinct from a low but measured
+    score. `ready` is always `False` when there is no data; it is not a
+    second way of saying the same thing as `p_known_mean is None`, since a
+    domain CAN have data and still not clear the ready bar."""
 
     domain_id: str
     name_es: str
     name_en: str
     weight_pct: float
-    p_known_mean: float
+    p_known_mean: float | None
     skills_assessed: int
     skills_total: int
     ready: bool
 
 
 class CertificationReadiness(BaseModel):
-    """Per-domain BKT readiness for a certification track."""
+    """Per-domain BKT readiness for a certification track.
+
+    `overall_p_known=None` means every domain is "sin datos" - the learner
+    has not attempted a single skill in this track yet."""
 
     track_id: str
     domains: list[DomainReadiness]
-    overall_p_known: float
+    overall_p_known: float | None
 
 
 # ── Track final exam and module test-out (17.2) ─────────────────────────────
