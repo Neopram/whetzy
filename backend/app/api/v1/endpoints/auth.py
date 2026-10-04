@@ -49,6 +49,10 @@ class ResetPasswordRequest(BaseModel):
     new_password: str
 
 
+class VerifyEmailRequest(BaseModel):
+    token: str
+
+
 class UpdateProfileRequest(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
     avatar_emoji: str | None = Field(default=None, max_length=16)
@@ -426,10 +430,17 @@ async def change_password(
 
 @router.post("/verify-email", status_code=status.HTTP_200_OK)
 async def verify_email(
-    payload: ResetPasswordRequest,  # reuse {token} field
+    payload: VerifyEmailRequest,
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
-    """Consume an email verification link (single-use, 24h TTL)."""
+    """Consume an email verification link (single-use, 24h TTL).
+
+    0.2: reutilizaba `ResetPasswordRequest` -- que exige `new_password` --
+    y por tanto cualquier cliente que mandara solo `{token}` (lo correcto
+    aquí, no se cambia ninguna contraseña) recibía un 422 sin tocar la
+    lógica de abajo. Nadie lo notó porque no había ni página ni test que
+    llamara a este endpoint de verdad.
+    """
     token_hash = hashlib.sha256(payload.token.encode()).hexdigest()
     result = await db.execute(
         select(EmailVerificationToken).where(EmailVerificationToken.token_hash == token_hash)

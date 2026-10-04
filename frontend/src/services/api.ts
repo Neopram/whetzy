@@ -289,6 +289,20 @@ export const auth = {
       body: JSON.stringify({ token, new_password }),
     });
   },
+
+  async verifyEmail(token: string) {
+    return request<{ message: string }>(`/auth/verify-email`, {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    });
+  },
+
+  async resendVerification(email: string) {
+    return request<{ message: string }>(`/auth/resend-verification`, {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  },
 };
 
 export interface QuestionPublic {
