@@ -272,6 +272,13 @@ class Settings(BaseSettings):
     # explicaciones por día UTC (ADR-49; el dueño confirmó 20 el 2026-09-25).
     # El frontend lo muestra desde `src/lib/plans.ts`, y un test exige que coincidan.
     TUTOR_DAILY_LIMIT_PLUS: int = 20
+    # S.5: `conversation_history` lo manda el cliente y se pega sin filtrar
+    # a los mensajes que ve el LLM (`provider.py`) -- sin tope, una petición
+    # podía llevar cientos de turnos o turnos enormes y disparar el coste
+    # real por llamada muy por encima de lo que el cupo por petición asume
+    # (crítico en Pro Max, que no tiene cupo de peticiones, ADR-49).
+    TUTOR_HISTORY_MAX_TURNS: int = 20
+    TUTOR_HISTORY_MAX_CHARS_PER_TURN: int = 2000
     # Examen certificador: pago único por track de certificación (ADR-49).
     # El flag se queda apagado hasta que abra el cobro (H.19/H.29), por la misma
     # razón que CREATOR_PLAN_REQUIRED: exigir un pago imposible cierra el producto.
