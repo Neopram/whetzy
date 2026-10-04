@@ -79,6 +79,15 @@ SECONDS_PER_QUESTION = 90
 
 DEFAULT_PASS_PCT = 70.0
 
+# A test-out's pass mark is normally the module's own `min_mastery_to_unlock`
+# (see `test_out_pass_pct` below) - but some modules set that to 0.0 to mean
+# "no prerequisite is needed to UNLOCK me", an open module with no gate.
+# Reusing the same number for "how well must you score to SKIP me" turns an
+# open module's test-out into a free pass at 0 correct answers (verified
+# against content/curriculum/tracks.json, 2026-10-04: 15 of 23 modules with
+# an explicit min_mastery_to_unlock are 0.0). A test-out pass bar is never 0.
+MIN_TEST_OUT_PASS_PCT = DEFAULT_PASS_PCT
+
 KIND_TRACK_FINAL = "track_final"
 KIND_TEST_OUT = "test_out"
 KIND_CERTIFYING = "certifying"
@@ -115,6 +124,17 @@ def test_out_questions_per_skill(skill_count: int) -> int:
         return TEST_OUT_QUESTIONS_PER_SKILL
     needed = -(-MIN_TEST_OUT_QUESTIONS // skill_count)  # ceil
     return max(TEST_OUT_QUESTIONS_PER_SKILL, needed)
+
+
+def test_out_pass_pct(module: Module) -> float:
+    """The passing score for a module's test-out, as a percentage.
+
+    The bar to skip a module is normally the bar the module itself sets to
+    count as unlocked (`min_mastery_to_unlock`) - but never below
+    `MIN_TEST_OUT_PASS_PCT`, since a module's "no prerequisite to unlock"
+    (0.0) is not the same claim as "zero correct answers skips this module".
+    """
+    return max(round(module.min_mastery_to_unlock * 100, 1), MIN_TEST_OUT_PASS_PCT)
 
 
 def duration_minutes_for(question_count: int) -> int:
@@ -297,9 +317,7 @@ async def start_test_out(
         module_id=module_id,
         kind=KIND_TEST_OUT,
         question_ids=selected,
-        # The bar to skip a module is the bar the module itself sets to count as
-        # unlocked, expressed as a percentage.
-        pass_pct=round(module.min_mastery_to_unlock * 100, 1),
+        pass_pct=test_out_pass_pct(module),
     )
 
 
@@ -539,7 +557,7 @@ async def test_out_blueprint(db: AsyncSession, module_id: str) -> dict[str, Any]
         "skills": len(skill_ids),
         "questions": total,
         "duration_minutes": duration_minutes_for(total),
-        "pass_pct": round(module.min_mastery_to_unlock * 100, 1),
+        "pass_pct": test_out_pass_pct(module),
         "available": available,
     }
 
