@@ -389,6 +389,7 @@ async def start_session(
                     expected_p=expected_p,
                 )
 
+    session.current_question_id = question_public.id if question_public else None
     reviews_due = await count_due_reviews(db, user)
     await db.commit()
 
@@ -513,6 +514,15 @@ async def submit_answer(
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Session not found")
     if session.ended_at is not None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Session already ended")
+    # S.4: solo se acepta la pregunta que esta sesión acaba de servir, y solo
+    # una vez — en cuanto se responde, `current_question_id` avanza a la
+    # siguiente (o a None), así que repetir el mismo `question_id` ya no
+    # coincide sin necesitar una comprobación aparte de "ya respondida".
+    if session.current_question_id != req.question_id:
+        raise HTTPException(
+            status.HTTP_409_CONFLICT,
+            "question_id is not the one this session served (or it was already answered)",
+        )
 
     question_result = await db.execute(select(Question).where(Question.id == req.question_id))
     question = question_result.scalar_one_or_none()
@@ -694,6 +704,7 @@ async def submit_answer(
 
     session_accuracy = session.correct_count / max(1, session.questions_answered)
 
+    session.current_question_id = next_question.id if next_question else None
     await apply_quiz_event(db, user, correct, xp, combo)
     await db.commit()
 

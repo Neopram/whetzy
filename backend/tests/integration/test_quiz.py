@@ -34,9 +34,24 @@ def _h(auth_headers: dict | None = None) -> dict:
 
 
 async def _see_lesson(db_session, user, *skill_ids: str) -> None:
-    """32.4: el estudio de un skill exige haber visto su lección primero."""
+    """32.4: el estudio de un skill exige haber visto su lección primero.
+
+    Idempotente a propósito: varias llamadas para el mismo (user, skill) —
+    p. ej. `_start` llamado varias veces en el mismo test — no deben chocar
+    con la restricción `unique(user_id, skill_id)`.
+    """
+    from sqlalchemy import select as _select
+
     for skill_id in skill_ids:
-        db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
+        existing = (
+            await db_session.execute(
+                _select(LessonCompletion).where(
+                    LessonCompletion.user_id == user.id, LessonCompletion.skill_id == skill_id
+                )
+            )
+        ).scalar_one_or_none()
+        if existing is None:
+            db_session.add(LessonCompletion(user_id=user.id, skill_id=skill_id))
     await db_session.commit()
 
 
@@ -231,6 +246,87 @@ async def test_quiz_answer_invalid_session_returns_404(client, auth_headers, con
         headers=_h(auth_headers),
     )
     assert r.status_code == 404
+
+
+async def test_quiz_answer_rejects_a_question_never_served_in_this_session(
+    client, auth_headers, user, db_session, content_seed
+):
+    """S.4: antes de esto, cualquier `question_id` que existiera en la base
+    se podía mandar a `/quiz/answer`, aunque esta sesión nunca lo hubiera
+    servido — sin pasar por la selección, el anti-repetición ni el filtro de
+    `pool != "simulacro"`."""
+    from app.models.content import Module, Question, Skill, Track
+
+    session_id, _served_question_id = await _start_quiz(
+        client, auth_headers, content_seed["skill_id"], db_session, user
+    )
+
+    other_track = Track(id="track_other", name_es="T", name_en="T", order=96, icon="x", color="#000", total_questions=1)
+    other_mod = Module(id="m_other", track_id="track_other", name_es="M", name_en="M", order=1, description_es="", description_en="")
+    other_skill = Skill(id="sk_other", module_id="m_other", name_es="S", name_en="S", order=1)
+    other_question = Question(
+        id="q_never_served",
+        skill_id="sk_other",
+        type="mcq",
+        difficulty_tier="easy",
+        question_es="¿Otra pregunta?",
+        question_en="Another question?",
+        options_es=["A", "B"],
+        options_en=["A", "B"],
+        correct_index=0,
+        explanation_es="",
+        explanation_en="",
+        source="test",
+        elo_rating=1200.0,
+    )
+    db_session.add_all([other_track, other_mod, other_skill, other_question])
+    await db_session.commit()
+
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": "q_never_served",
+            "selected_index": 0,
+            "response_time_ms": 500,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 409
+
+
+async def test_quiz_answer_rejects_answering_the_same_question_twice(
+    client, auth_headers, user, db_session, content_seed
+):
+    """S.4: sin esto, el mismo `question_id` se podía mandar una y otra vez
+    en la misma sesión — cada envío sumaba XP y maestría de nuevo."""
+    session_id, question_id = await _start_quiz(
+        client, auth_headers, content_seed["skill_id"], db_session, user
+    )
+
+    first = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": question_id,
+            "selected_index": 0,
+            "response_time_ms": 500,
+        },
+        headers=_h(auth_headers),
+    )
+    assert first.status_code == 200
+
+    second = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": question_id,
+            "selected_index": 0,
+            "response_time_ms": 500,
+        },
+        headers=_h(auth_headers),
+    )
+    assert second.status_code == 409
 
 
 async def test_quiz_answer_missing_required_fields_returns_422(client, auth_headers):
@@ -448,7 +544,11 @@ async def test_fill_blank_is_graded_by_the_server_from_the_typed_text(
 # ── "I don't know" ────────────────────────────────────────────────────────────
 
 
-async def _start(client, auth_headers, content_seed):
+async def _start(client, auth_headers, content_seed, db_session, user):
+    # S.4: /quiz/answer ya exige que la pregunta sea la que esta sesión acaba
+    # de servir — sin haber "visto la lección" (32.4) /quiz/start no serviría
+    # ninguna, y el `question_id` fijo de abajo dejaría de coincidir.
+    await _see_lesson(db_session, user, content_seed["skill_id"])
     r = await client.post(
         f"{QUIZ}/start",
         json={"skill_id": content_seed["skill_id"], "mode": "study"},
@@ -458,8 +558,8 @@ async def _start(client, auth_headers, content_seed):
     return r.json()["session_id"]
 
 
-async def test_declared_unknown_is_not_correct(client, auth_headers, content_seed):
-    session_id = await _start(client, auth_headers, content_seed)
+async def test_declared_unknown_is_not_correct(client, auth_headers, content_seed, db_session, user):
+    session_id = await _start(client, auth_headers, content_seed, db_session, user)
     r = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -474,12 +574,12 @@ async def test_declared_unknown_is_not_correct(client, auth_headers, content_see
     assert r.json()["correct"] is False
 
 
-async def test_declared_unknown_ignores_a_sent_index(client, auth_headers, content_seed):
+async def test_declared_unknown_ignores_a_sent_index(client, auth_headers, content_seed, db_session, user):
     """Even with the right index attached, an admission is an admission.
 
     The client should not be able to claim ignorance and credit at once.
     """
-    session_id = await _start(client, auth_headers, content_seed)
+    session_id = await _start(client, auth_headers, content_seed, db_session, user)
     first = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -492,7 +592,7 @@ async def test_declared_unknown_ignores_a_sent_index(client, auth_headers, conte
     )
     correct_index = first.json()["correct_index"]
 
-    session_id = await _start(client, auth_headers, content_seed)
+    session_id = await _start(client, auth_headers, content_seed, db_session, user)
     r = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -509,7 +609,7 @@ async def test_declared_unknown_ignores_a_sent_index(client, auth_headers, conte
 
 
 async def test_declared_unknown_lowers_mastery_more_than_a_wrong_answer(
-    client, auth_headers, plus_auth_headers, content_seed
+    client, auth_headers, plus_auth_headers, content_seed, db_session, user, plus_user
 ):
     """The whole point of the button: honesty must inform the model better.
 
@@ -517,7 +617,7 @@ async def test_declared_unknown_lowers_mastery_more_than_a_wrong_answer(
     ignorance. The admission has to move p_known further down, because it is
     the observation with no guessing and no slip hidden inside it.
     """
-    wrong_session = await _start(client, auth_headers, content_seed)
+    wrong_session = await _start(client, auth_headers, content_seed, db_session, user)
     r = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -532,7 +632,7 @@ async def test_declared_unknown_lowers_mastery_more_than_a_wrong_answer(
     wrong_index = 0 if correct_index != 0 else 1
 
     # Re-run so the first learner is definitely wrong, not accidentally right.
-    wrong_session = await _start(client, auth_headers, content_seed)
+    wrong_session = await _start(client, auth_headers, content_seed, db_session, user)
     r_wrong = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -546,7 +646,7 @@ async def test_declared_unknown_lowers_mastery_more_than_a_wrong_answer(
     assert r_wrong.json()["correct"] is False
     mastery_after_wrong = r_wrong.json()["skill_mastery"][content_seed["skill_id"]]
 
-    unknown_session = await _start(client, plus_auth_headers, content_seed)
+    unknown_session = await _start(client, plus_auth_headers, content_seed, db_session, plus_user)
     r_unknown = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -563,7 +663,7 @@ async def test_declared_unknown_lowers_mastery_more_than_a_wrong_answer(
 
 
 async def test_declared_unknown_leaves_item_difficulty_alone(
-    client, auth_headers, content_seed, db_session
+    client, auth_headers, content_seed, db_session, user
 ):
     """Nobody attempted the question, so it learned nothing about its own difficulty."""
     from sqlalchemy import select
@@ -576,7 +676,7 @@ async def test_declared_unknown_leaves_item_difficulty_alone(
         )
     ).scalar_one()
 
-    session_id = await _start(client, auth_headers, content_seed)
+    session_id = await _start(client, auth_headers, content_seed, db_session, user)
     r = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -599,9 +699,9 @@ async def test_declared_unknown_leaves_item_difficulty_alone(
     assert after == before
 
 
-async def test_declared_unknown_is_never_punished_on_xp(client, auth_headers, content_seed):
+async def test_declared_unknown_is_never_punished_on_xp(client, auth_headers, content_seed, db_session, user):
     """Honesty must never cost more than being wrong, or nobody presses it."""
-    wrong_session = await _start(client, auth_headers, content_seed)
+    wrong_session = await _start(client, auth_headers, content_seed, db_session, user)
     r = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -615,7 +715,7 @@ async def test_declared_unknown_is_never_punished_on_xp(client, auth_headers, co
     correct_index = r.json()["correct_index"]
     wrong_index = 0 if correct_index != 0 else 1
 
-    wrong_session = await _start(client, auth_headers, content_seed)
+    wrong_session = await _start(client, auth_headers, content_seed, db_session, user)
     xp_wrong = (
         await client.post(
             f"{QUIZ}/answer",
@@ -629,7 +729,7 @@ async def test_declared_unknown_is_never_punished_on_xp(client, auth_headers, co
         )
     ).json()["xp_earned"]
 
-    unknown_session = await _start(client, auth_headers, content_seed)
+    unknown_session = await _start(client, auth_headers, content_seed, db_session, user)
     xp_unknown = (
         await client.post(
             f"{QUIZ}/answer",
@@ -646,9 +746,9 @@ async def test_declared_unknown_is_never_punished_on_xp(client, auth_headers, co
     assert xp_unknown >= xp_wrong
 
 
-async def test_declared_unknown_defaults_to_false(client, auth_headers, content_seed):
+async def test_declared_unknown_defaults_to_false(client, auth_headers, content_seed, db_session, user):
     """Old clients that never send the field must keep working unchanged."""
-    session_id = await _start(client, auth_headers, content_seed)
+    session_id = await _start(client, auth_headers, content_seed, db_session, user)
     r = await client.post(
         f"{QUIZ}/answer",
         json={
@@ -738,7 +838,7 @@ async def test_exec_output_graded_against_the_learners_language(
 
 
 async def test_viewing_a_question_in_the_other_language_cannot_change_grading(
-    client, auth_headers, content_seed
+    client, auth_headers, content_seed, db_session, user
 ):
     """The language switch is a reading aid, never an input to the engine.
 
@@ -748,6 +848,7 @@ async def test_viewing_a_question_in_the_other_language_cannot_change_grading(
     that: the API has no language parameter on /answer at all, and if one is
     ever added, this is where it should hurt.
     """
+    await _see_lesson(db_session, user, content_seed["skill_id"])
     verdicts = set()
     correct_indices = set()
 
