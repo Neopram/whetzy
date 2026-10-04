@@ -1084,6 +1084,10 @@ aprobó en bloque es ADR-50; lo que sigue son valores que eligió la sesión, ca
 
 ## ADR-52 — Política de modelos del dueño (DUEÑO, 2026-09-27; sustituye la línea de modelos de ADR-50 y su enmienda del 2026-09-26)
 
+> **Enmendada por ADR-59 el 2026-10-03:** la autoría de contenido para el alumno la escribe
+> **Sonnet 5**, no Haiku 4.5. Se mantienen el piloto de 10 ítems con su umbral de 3/10 y el
+> resto de la tabla. La fila «Autoría masiva… Haiku 4.5» de abajo es histórica.
+
 **Decisión del dueño (literal, 2026-09-27):**
 
 ```
@@ -1255,6 +1259,10 @@ catálogo en el mismo mundo; `check_docs.py` impide que un documento vivo vuelva
 de ADR-46 como vigente.
 
 ## ADR-54 — Catálogo uniforme 32 × 10 (2026-10-01, decisión del dueño). Sustituye el suelo y el ideal de ADR-53.
+
+> **Punto 7 (orden) enmendado por ADR-59 el 2026-10-03:** el contenido nuevo ya no espera al
+> piloto (31.8) y se produce en paralelo, en el orden de `docs/PLAN_CONTENIDO.md`. Las metas
+> no cambian.
 
 **Origen.** Prompt del dueño del 2026-10-01 («lanzamiento piloto + ADR-54»), que aprueba esta
 decisión tal como se escribe aquí. ADR-53 pedía ≈ 31.056 preguntas solo para su suelo
@@ -1445,3 +1453,42 @@ dependen del tipo de suscripción».
   **El antifraude por huella de dispositivo sigue apagado:** la huella (pantalla, zona horaria,
   idioma) puede caer en el art. 5(3) de ePrivacy y exigir consentimiento; lo decide la revisión
   legal antes de encenderlo (`docs/legal/antifraud-legal-basis.md`).
+
+## ADR-59 — Autoría de contenido: Sonnet 5 escribe desde la fuente, por `Workflow`, en paralelo al piloto (DUEÑO, 2026-10-03; enmienda la fila de autoría de ADR-52 y el punto 7 de ADR-54)
+
+**Origen.** El 2026-10-03 la sesión 2 paró la serie 37 porque el volumen pendiente (≈ 4.557
+preguntas, ADR-54) no se escribe a mano. El dueño respondió en la sesión de coordinación a tres
+preguntas cerradas: «¿Workflow para la autoría masiva?» → **Sí, autorizado**; «¿qué modelo
+escribe?» → **Solo Sonnet**; «¿el contenido puede ir antes de cerrar el piloto con alumnos
+(31.8)?» → **Sí, adelantarlo**.
+
+**Decisión.**
+1. **La autoría masiva de contenido va por `Workflow`**, con el método de
+   `docs/PLAN_CONTENIDO.md`. Ninguna pregunta se escribe de memoria: cada una sale de un
+   fragmento de una fuente marcada `reusar` en `content/sources/index.json` y cita esa URL en
+   `source`.
+2. **Escribe Sonnet 5.** El escritor, el revisor (revisión adversaria completa contra el
+   fragmento) y el corrector son Sonnet 5. Haiku 4.5 sigue solo para lecturas, inventarios y
+   diffs (ADR-52).
+3. **Piloto antes de escalar.** El primer bloque son 10 ítems con revisión completa. Si más de
+   3 de 10 salen con problema `blocker` o `major`, se para y decide el dueño (umbral de ADR-52).
+4. **Orden.** El contenido corre en paralelo al piloto con alumnos (31.8). El orden es 37.10
+   (MLA-C01 y las tres de Microsoft), luego 37.6 (lista A), luego 39.8.
+5. **Un solo motor.** La producción nueva la lleva la sesión coordinadora. La sesión de
+   contenido (S2) cierra sus PRs en curso y no empieza autoría nueva. Un track por rama y por PR,
+   y se fusionan de uno en uno.
+
+**Evidencia.**
+- Piloto Haiku de track28 (2026-09-26): 7 de 10 lecciones con relleno, errores técnicos o
+  fuentes que no casaban (ADR-52, «Riesgo»).
+- Piloto Haiku de 39.37 (track20, `STATUS.md`): en la ronda 1, `correct_index` era siempre 0;
+  en la ronda 2, 6 de 10 eran redundantes. Las dos superan el umbral. Con Sonnet como autor,
+  autorizado por el dueño, 39.37 quedó DONE.
+
+**Consecuencias:**
+- `CLAUDE.md` («Modelos»), `CATALOGO_MAESTRO.md` §6, §7 y §10, `PROTOCOLO_VERIFICACION.md` §2,
+  `ORCHESTRATOR.md`, `RUNBOOK.md` y el ledger (cabecera de la serie 37, fila 37.25) cambian
+  «escritor Haiku» por «escritor Sonnet» y quitan «nada antes del piloto».
+- La enmienda de ADR-52 que `RUNBOOK.md` §D dejaba pendiente de firma queda firmada aquí.
+- Sonnet 5 cuesta más por token que Haiku 4.5. El coste por pregunta aceptada no se conoce: lo
+  mide el piloto antes de escalar, y la cifra se anota en `PLAN_CONTENIDO.md`.

@@ -66,6 +66,7 @@ está roto.
 | `docs/AUTONOMOUS_STATE.md` | normativo-vivo | ledger, fuente de verdad (ADR-40); ledger.py check | se queda | 2026-09-30 |
 | `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
+| `docs/PLAN_CONTENIDO.md` | normativo-vivo | método de autoría desde la fuente, piloto 37.25, orden y organización (ADR-59) | se queda | 2026-10-03 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
 | `docs/CIERRE_2026-09-30.md` | referencia-viva | registro de la pausa (levantada el 2026-10-01, ADR-56); §2 scorecard y §7 trampas del entorno; check_docs [11] | se queda | 2026-09-30 |
 | `docs/COMPETENCIA.md` | referencia-viva | mercado con URL y fecha | se queda | 2026-09-30 |
@@ -117,14 +118,26 @@ está roto.
 | `docs/archive/incidents-postmortem-template.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: RUNBOOK.md ya trae su plantilla; esta tenía un ejemplo con 50k usuarios inventados | 2026-09-25 |
 | `docs/archive/incidents-runbook.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: describe Slack, PagerDuty, guardias e Instatus que no existen; RUNBOOK.md § Incident Management es la fuente única | 2026-09-23 |
 | `docs/archive/24-12-implementation.md` | obsoleto | dice «Commit: Pendiente»; 24.12 está DONE (c912713, LEDGER_HISTORY) | archivado el 2026-10-01 | 2026-09-23 |
+| `docs/store/android/listing.md` | referencia-viva | ficha de Google Play (23.3), contraparte de `ios/listing.md` — mismo copy, feature graphic pendiente | se queda | 2026-10-02 |
 | `docs/store/app-store-review-checklist.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/ios/listing.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/play-store-data-safety.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
+| `docs/distribucion-assets/show-hn/en.md` | referencia-viva | kit de Show HN en inglés (27.1) — texto, sin publicar | se queda | 2026-10-02 |
+| `docs/distribucion-assets/show-hn/es.md` | referencia-viva | adaptación en español del mismo kit para foros hispanos (26.6; HN no acepta español) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/product-hunt/kit.md` | referencia-viva | kit de lanzamiento de Product Hunt (27.4) — tagline, checklist, sin la lista de upvoters (personas reales, solo el dueño) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/prs-repos-externos/free-programming-books.md` | referencia-viva | texto de PR a EbookFoundation/free-programming-books (26.2), sin abrirlo — incluye el riesgo de rechazo por su regla "solo gratis" | se queda | 2026-10-02 |
+| `docs/distribucion-assets/prs-repos-externos/coding-interview-university.md` | referencia-viva | texto de PR a jwasham/coding-interview-university (27.3), sin abrirlo; recomienda NO abrir el de system-design-primer (no hay sitio honesto donde insertarlo) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/universidades/email-template.md` | referencia-viva | plantilla de email a universidades LATAM (26.3) ES+EN, sin lista de contactos personales | se queda | 2026-10-02 |
 | `docs/support/response-templates-en.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/support/response-templates-es.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/ui-snapshots/34.1/README.md` | histórico | evidencia de capturas de 34.1 | se queda (junto a sus PNG) | 2026-09-28 |
 | `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |
 | `docs/MAPA_PRODUCTO.md` | referencia-viva | inventario de rutas, pantallas y subvistas con el documento que especifica cada una y sus huecos; `check_docs.py` exige que nombre todo lo que existe | se queda | 2026-10-01 |
+| `docs/ml/rag_scaling_39_32.md` | referencia-viva | 39.32: por qué `test_rag_self_retrieval` era O(N²) y las cifras reales antes/después del índice invertido + muestra fija en `RAGIndex.retrieve()` | se queda | 2026-10-02 |
+| `docs/ml/beta_binomial_calibration_14_8.md` | referencia-viva | 14.8: validación por simulación (recuperación de parámetros + curva de calibración + Brier score) del predictor beta-binomial de aprobado, con datos simulados mientras H.10 bloquea los reales | se queda | 2026-10-02 |
+| `docs/ml/irt_calibration_14_10.md` | referencia-viva | 14.10: calibración JMLE de dificultad/discriminación de ítems IRT validada por simulación (recuperación de parámetros), el bug de `OverflowError` en `fisher_information` que encontró, y por qué `update_ability` no sirve para recalcular una historia completa | se queda | 2026-10-02 |
+| `docs/ml/ab_bkt_vs_dkt_32_2.md` | referencia-viva | 32.2: diseño del experimento A/B BKT vs DKT (framework 24.14, regla de adopción literal del ledger) y análisis de potencia (D7 y AUC, fórmula cerrada cruzada con Monte Carlo) — preparado, sin activar, bloqueado por H.10 | se queda | 2026-10-02 |
+| `docs/ml/domain_report_14_9.md` | referencia-viva | 14.9: la aritmética del informe de dominio verificable (N de M skills, respuestas/semanas, % a la primera) lista y probada; por qué la URL pública en sí (token + migración + endpoint) queda fuera de mi terreno, con un NECESITO a S1 | se queda | 2026-10-02 |
 
 ## `docs/legal/`
 

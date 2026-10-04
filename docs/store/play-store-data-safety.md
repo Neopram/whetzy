@@ -1,5 +1,6 @@
 # Play Store — Data Safety Declaration & Target API Level
-> Whetzy · app.whetzy · Last updated: 2026-09-08 (task 9.6)
+> Whetzy · app.whetzy · Last updated: 2026-10-03 (§§1-7 payment/Sentry/Groq corrections per [S4]
+> legal review on #93; §1 target API level content from 2026-09-08, task 9.6, unchanged)
 
 ## 1. Target API Level ✅
 
@@ -44,9 +45,13 @@ prueba): `BUILD SUCCESSFUL`, APK de 14,5 MB generado. No se pudo probar `bundleR
 
 | Type | Collected | Shared | Purpose |
 |---|---|---|---|
-| Purchase history | ✅ (subscription tier/status) | ✅ Stripe (payment processor) | Entitlement gating |
+| Purchase history | ✅ (subscription tier/status) | ✅ RevenueCat / Google Play Billing | Entitlement gating |
 
-> Note: Raw card/payment data is handled exclusively by Stripe and never transmitted to Whetzy servers.
+> Note: on Android, purchases go through Google Play Billing via RevenueCat (`android/listing.md`
+> §IAP) — Stripe exists as a web-checkout fallback rail in the backend (`PaymentRail.STRIPE`,
+> not available in every market) but is never used by the Android app itself; raw card/payment
+> data for Android purchases is handled exclusively by Google Play Billing and never transmitted
+> to Whetzy servers.
 
 ### App activity
 
@@ -59,7 +64,7 @@ prueba): `BUILD SUCCESSFUL`, APK de 14,5 MB generado. No se pudo probar `bundleR
 
 | Type | Collected | Shared | Purpose |
 |---|---|---|---|
-| Crash logs | ✅ (optional, via Sentry if `SENTRY_DSN` is set) | ✅ Sentry (only if configured) | Debugging |
+| Crash logs | ✅ (active in production since 2026-09-26) | ✅ Sentry | Debugging |
 | Diagnostics | ❌ | — | — |
 
 ### Device or other IDs
@@ -80,12 +85,15 @@ Calendar events · Health data · Fitness data · Web browsing history · Other 
 
 | Third Party | Data shared | Purpose | Link |
 |---|---|---|---|
-| **Stripe** | Subscription status, billing timestamps | Payment processing | stripe.com/privacy |
-| **Groq** | Question text (no PII) | AI content generation / QA (task 5.1, 5.2) | groq.com/privacy |
-| **Sentry** (optional) | Anonymized crash logs | Error monitoring | sentry.io/privacy |
+| **RevenueCat / Google Play Billing** | Subscription status, billing timestamps | Payment processing | revenuecat.com/privacy |
+| **Groq** | Question text and the user's own question to the AI tutor (no name/email) | AI content generation / QA, and live tutor explanations (`/tutor`, Plus tier and up) | groq.com/privacy |
+| **Sentry** | Anonymized crash logs | Error monitoring | sentry.io/privacy |
 | **VAPID / Browser Push** | Push endpoint URL | Notification routing via user's own browser push service | — |
 
-> Groq receives only the text of questions being generated or reviewed — never any user's identity, answers, or account data.
+> Groq receives the text of questions being generated or reviewed, and — separately — the text
+> of a live tutor question when a Plus-tier-or-above user asks the in-app AI tutor
+> (`app/api/v1/endpoints/tutor.py`, `app/services/ai/tutor.py`) — never any user's name, email,
+> or account data either way.
 
 ---
 
@@ -120,9 +128,9 @@ Calendar events · Health data · Fitness data · Web browsing history · Other 
 | Does the app collect or share user data? | **Yes** |
 | Data types: Personal info → Name | Collected · Not shared · Account management · Required · Handled by user |
 | Data types: Personal info → Email | Collected · Not shared · Account management, App functionality · Required · Handled by user |
-| Data types: Financial info → Purchase history | Collected · Shared with Stripe · Analytics, account management · Required · Handled by Stripe |
+| Data types: Financial info → Purchase history | Collected · Shared with RevenueCat/Google Play Billing · Analytics, account management · Required · Handled by Google Play Billing |
 | Data types: App activity → App interactions | Collected · Not shared · Analytics, app functionality · Required · Not user-accessible directly |
-| Data types: App info → Crash logs | Collected (if Sentry configured) · Shared with Sentry · Analytics · Optional · Handled by Sentry |
+| Data types: App info → Crash logs | Collected · Shared with Sentry · Analytics · Optional · Handled by Sentry |
 | Data types: Device IDs → Other | Push endpoint collected · Not shared · App functionality (notifications) · Optional |
 | Is all data encrypted in transit? | **Yes** |
 | Can users request deletion? | **Yes** |
@@ -131,7 +139,8 @@ Calendar events · Health data · Fitness data · Web browsing history · Other 
 
 ## 8. Action Items Before Submission
 
-- [ ] Confirm Sentry is **disabled** on prod or add Sentry to the third-party list with their DPA
+- [x] Sentry is **active** in production (confirmed `docs/legal/README.md` §"Procesadores verificados", 2026-10-01) — already listed above, no DPA action pending here
 - [ ] If FCM push notifications are added (replacing Web Push), declare `POST_NOTIFICATIONS` permission
 - [ ] Verify Play Console → Store listing → "Privacy policy URL" points to `https://whetzy.com/privacy`
-- [ ] If Groq processes any user input (e.g., future tutor chat sessions), add Groq to data sharing table with appropriate data type (User Content)
+- [x] The AI tutor (`/tutor`, Plus tier+) already sends user question text to Groq in
+      production — listed above as its own row, separate from content generation/QA
