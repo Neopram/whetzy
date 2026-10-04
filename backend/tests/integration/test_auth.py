@@ -231,6 +231,29 @@ async def test_refresh_invalid_token_returns_401(client):
     assert r.status_code == 401
 
 
+async def test_refresh_rejected_after_jwt_version_bump(client, user, db_session):
+    """S.1: un refresh token emitido antes de subir jwt_version (cambio de
+    contraseña, "cerrar sesión en todos los dispositivos", activar 2FA) debe
+    quedar inválido, igual que ya pasa con el access token en /auth/me."""
+    h = _h({"Content-Type": "application/x-www-form-urlencoded"})
+    login_r = await client.post(
+        f"{AUTH}/login",
+        data={"username": user.email, "password": "Passw0rd!"},
+        headers=h,
+    )
+    refresh_token = login_r.json()["refresh_token"]
+
+    user.jwt_version += 1
+    await db_session.commit()
+
+    r = await client.post(
+        f"{AUTH}/refresh",
+        json={"refresh_token": refresh_token},
+        headers=_h(),
+    )
+    assert r.status_code == 401
+
+
 # ── delete account ────────────────────────────────────────────────────────────
 
 
