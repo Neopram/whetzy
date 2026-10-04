@@ -194,6 +194,9 @@ class Settings(BaseSettings):
     VAPID_PRIVATE_KEY: str = ""   # base64url-encoded DER EC private key
     VAPID_PUBLIC_KEY: str = ""    # base64url-encoded uncompressed public key point
     VAPID_EMAIL: str = "mailto:hello@whetzy.com"
+    # Tope de endpoints distintos por usuario en POST /push/subscribe (S.15):
+    # sin él, una cuenta podía acumular endpoints sin límite.
+    PUSH_MAX_SUBSCRIPTIONS_PER_USER: int = 10
 
     # --- Streak reminder (P.13) -----------------------------------------------
     # Max push reminders per user per day (enforced client-side; limit at backend too).
