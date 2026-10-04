@@ -241,6 +241,46 @@ class TestSendToUser:
         assert set(left) == {"https://push.test/flaky", "https://push.test/ok"}
 
     @pytest.mark.asyncio
+    async def test_webpush_is_called_with_an_explicit_timeout(
+        self, db_session, user: User, configured: None, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Sin `timeout`, pywebpush no pone ninguno por su cuenta -- un
+        endpoint colgado podía bloquear la petición indefinidamente."""
+        calls: list[dict[str, Any]] = []
+        monkeypatch.setattr(push_service, "webpush", lambda **kw: calls.append(kw))
+        await add_sub(db_session, user.id, "https://push.test/1")
+        await send_to_user(db_session, user.id, "T", "B")
+        assert calls[0]["timeout"] == push_service._WEBPUSH_TIMEOUT_SECONDS
+
+    @pytest.mark.asyncio
+    async def test_a_hanging_endpoint_does_not_block_the_others(
+        self, db_session, user: User, configured: None, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Cada envío va a su propio hilo, no uno detrás de otro: tres
+        endpoints lentos en paralelo tardan lo que tarda el más lento, no
+        la suma de los tres (lo que pasaría uno detrás de otro)."""
+        import time
+
+        SLOW_SECONDS = 0.3
+
+        def slow(**kw: Any) -> None:
+            time.sleep(SLOW_SECONDS)
+
+        monkeypatch.setattr(push_service, "webpush", slow)
+        for i in range(3):
+            await add_sub(db_session, user.id, f"https://push.test/slow-{i}")
+
+        started = time.monotonic()
+        sent = await send_to_user(db_session, user.id, "T", "B")
+        elapsed = time.monotonic() - started
+
+        assert sent == 3
+        # En paralelo, el total lo marca uno solo (~0.3s); uno detrás de
+        # otro habría tardado ~0.9s (3 × 0.3s). El margen cae claramente
+        # entre los dos para no depender de la carga exacta de la máquina.
+        assert elapsed < SLOW_SECONDS * 2
+
+    @pytest.mark.asyncio
     async def test_another_users_subscriptions_are_untouched(
         self, db_session, user: User, configured: None, monkeypatch: pytest.MonkeyPatch
     ) -> None:
