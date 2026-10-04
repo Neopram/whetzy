@@ -15,6 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.v1.router import api_router
 from app.core.config import settings
+from app.core.csrf import CSRFOriginMiddleware
 from app.core.db import close_db, get_db, init_db
 from app.core.error_tracking import configure_sentry
 from app.core.logging import RequestIDMiddleware, configure_logging
@@ -95,6 +96,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# S.13: con cookie de sesión, solo los orígenes de CORS pueden cambiar estado.
+# Va antes que CORS en el código, así que queda por dentro: el 403 sale con las
+# cabeceras de CORS que correspondan y los preflight no llegan aquí.
+app.add_middleware(CSRFOriginMiddleware, allowed_origins=settings.active_cors_origins)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.active_cors_origins,  # 22.2: sin loopback en produccion
