@@ -10,7 +10,7 @@
  * imprimía un código que la pantalla no enseñaba.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import i18n from '../i18n';
 import { QuizScreen } from '../pages/QuizScreen';
 import { useAppStore } from '../stores/useAppStore';
@@ -69,7 +69,10 @@ describe('QuizScreen — prueba que corrige el servidor', () => {
       question_en: 'What does this code print?\n```python\nprint(len("hola"))\n```',
       correct_answer_es: '4', correct_answer_en: '4',
     });
-    render(<QuizScreen />);
+    // Dentro de act: quiz.start resuelve en una microtarea y el efecto que
+    // limpia la respuesta al cambiar de pregunta tiene que haber corrido antes
+    // de teclear; si no, con carga, pisa lo escrito y el test falla al azar.
+    await act(async () => { render(<QuizScreen />); });
 
     expect(await screen.findByText('print(len("hola"))')).toBeInTheDocument();
     fireEvent.change(screen.getByPlaceholderText(i18n.t('quiz.fillBlankPlaceholder')), { target: { value: '4' } });
@@ -87,7 +90,10 @@ describe('QuizScreen — prueba que corrige el servidor', () => {
       correct_answer_es: '2', correct_answer_en: '2',
     });
     runCode.mockResolvedValue({ output: '2\n', error: null, timedOut: false });
-    render(<QuizScreen />);
+    // Dentro de act: quiz.start resuelve en una microtarea y el efecto que
+    // limpia la respuesta al cambiar de pregunta tiene que haber corrido antes
+    // de teclear; si no, con carga, pisa lo escrito y el test falla al azar.
+    await act(async () => { render(<QuizScreen />); });
 
     const input = await screen.findByPlaceholderText(i18n.t('quiz.fillBlankPlaceholder'));
     fireEvent.change(input, { target: { value: '1' } });
