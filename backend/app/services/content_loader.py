@@ -27,6 +27,7 @@ from app.models.content import (
     Skill,
     Track,
 )
+from app.services.engine.domain_thresholds import DEFAULT_MODULE_UNLOCK_MASTERY
 
 
 def _content_root() -> Path:
@@ -93,7 +94,9 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
         module.order = m.get("order", m_order)
         module.description_es = m.get("description_es", "")
         module.description_en = m.get("description_en", "")
-        module.min_mastery_to_unlock = m.get("min_mastery_to_unlock", 0.7)
+        module.min_mastery_to_unlock = m.get(
+            "min_mastery_to_unlock", DEFAULT_MODULE_UNLOCK_MASTERY
+        )
         module.level = m.get("level", 1)
 
         # One exam domain per module, for certification tracks. The domain id is

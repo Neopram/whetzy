@@ -49,6 +49,7 @@ from app.services.engine import (
     FSRSScheduler,
     SkillState,
 )
+from app.services.engine.domain_thresholds import MASTERY_THRESHOLD
 from app.services.gamification import apply_quiz_event, get_or_create_current_entry
 
 bkt = BKTModel()
@@ -225,7 +226,7 @@ async def _candidate_skill_ids(
     mastery_by_skill = {row[0]: row[1] for row in states_result.all()}
 
     not_mastered = [
-        sid for sid in unlocked_skill_ids if mastery_by_skill.get(sid, 0.0) < 0.95
+        sid for sid in unlocked_skill_ids if mastery_by_skill.get(sid, 0.0) < MASTERY_THRESHOLD
     ]
     if not_mastered:
         return not_mastered, "low_mastery"

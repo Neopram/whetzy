@@ -8,7 +8,6 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.core.config import settings
 from app.models.content import Module, Question, Skill, Track
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
@@ -24,9 +23,8 @@ from app.schemas.progress import (
 )
 from app.services import dkt as dkt_service
 from app.services import lesson_gate
+from app.services.engine.domain_thresholds import MASTERY_THRESHOLD
 from app.services.quiz import count_due_reviews
-
-MASTERY_THRESHOLD = settings.MASTERY_THRESHOLD
 
 
 def _now() -> datetime:
