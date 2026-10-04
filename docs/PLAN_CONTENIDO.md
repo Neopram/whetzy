@@ -19,7 +19,9 @@ El 2026-10-03, tras fusionar el #99, `catalog_coverage.py` sobre `master` daba *
 El 2026-10-04, con el track44 (#119) y el track46 (#137) ya en `master` (`e70313d`), el mismo
 script da **4.118 preguntas pendientes**:
 
-- 468 de práctica de certificación (el AI-901, track45, se lleva 224);
+- 2.610 para llevar los 24 tracks construidos a la forma 32 × 10 (+261 skills, +261 lecciones y
+  +252 términos; el 2026-10-03 eran +266 términos);
+- 468 de práctica de certificación (el AI-901, track45, se lleva 224; el MLA-C01, track43, 131);
 - 1.040 reservadas, sin contar track44, track45 y track46, porque sus exámenes no publican un
   número de preguntas.
 
@@ -118,7 +120,7 @@ reutilizan: se citan y se enlazan.
 
 4. **Lecciones (decisión del dueño, 2026-10-04):** cada lección tendrá dos versiones y el
    alumno elegirá cuál leer: una corta y otra extensa de 15 a 20 minutos. Hoy solo existe la
-   corta: las 730 tienen una mediana de 217 palabras (mínimo 151, máximo 300). No hay nada
+   corta: las 730 tienen una mediana de 217 palabras en ES y 205 en EN (mínimo 151, máximo 300). No hay nada
    escrito todavía. Primero va un piloto de 10 lecciones extensas, con la misma regla de
    parada de §4 y su coste anotado en §7, y solo después el plan maestro les da prioridad.
    El campo nuevo del esquema y su pantalla son de S1.
