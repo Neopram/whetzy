@@ -42,7 +42,11 @@ async def list_tracks(
     certification track (task Q.14). Serving the list removes the possibility
     of the two disagreeing.
     """
-    return list(await db.scalars(select(Track).order_by(Track.order)))
+    # Un track retirado de `tracks.json` sigue en la base de datos con el
+    # historial de sus alumnos (S.12), pero ya no se ofrece.
+    return list(
+        await db.scalars(select(Track).where(Track.is_active.is_(True)).order_by(Track.order))
+    )
 
 
 @router.patch(

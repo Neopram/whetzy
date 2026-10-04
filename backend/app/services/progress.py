@@ -35,7 +35,10 @@ def _now() -> datetime:
 
 async def get_dashboard(db: AsyncSession, user: User) -> DashboardResponse:
     tracks_result = await db.execute(
-        select(Track).options(selectinload(Track.modules).selectinload(Module.skills)).order_by(Track.order)
+        select(Track)
+        .where(Track.is_active.is_(True))  # los retirados no se ofrecen (S.12)
+        .options(selectinload(Track.modules).selectinload(Module.skills))
+        .order_by(Track.order)
     )
     tracks = tracks_result.scalars().all()
 
