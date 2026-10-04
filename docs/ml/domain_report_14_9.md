@@ -24,21 +24,40 @@ Tres números verificables, no una afirmación vaga:
 `build_domain_report`/`DomainReport.headline()` que las junta en el formato
 exacto del ejemplo del ticket. Todas son funciones puras — nada toca la base
 de datos aquí — probadas con datos sintéticos en
-`backend/tests/unit/test_domain_report.py` (13 tests, incluida una mutación
-de Regla 11: invertir "primer intento" por "último intento" tumba 3 de 13
+`backend/tests/unit/test_domain_report.py` (15 tests, incluida una mutación
+de Regla 11: invertir "primer intento" por "último intento" tumba 3 de 15
 tests).
 
-## Por qué esto NO es "validar con datos simulados con parámetros conocidos"
+## Por qué esto NO es "validar con datos simulados con parámetros conocidos" — salvo en un punto
 
 A diferencia de 14.8 (predictor estadístico, con una probabilidad que puede
-estar mal calibrada) y 14.10 (parámetros de ítem que hay que recuperar),
-estos tres números son **hechos exactos**, no estimaciones: contar cuántas
-skills pasan un umbral, contar respuestas, mirar si una respuesta concreta
-fue correcta. No hay "parámetro verdadero" que recuperar — la verificación
-correcta es la que se hizo: que la aritmética no se equivoca en los casos
-límite (banco vacío, sin respuestas, reintentos, orden de entrada), probado
-con unit tests deterministas, no con una simulación de Monte Carlo que no
-aportaría nada aquí.
+estar mal calibrada) y 14.10 (parámetros de ítem que hay que recuperar), dos
+de estos tres números son **hechos exactos**, no estimaciones: contar
+respuestas, y mirar si una respuesta concreta fue correcta. Para esos dos no
+hay "parámetro verdadero" que recuperar — la verificación correcta es la que
+se hizo: que la aritmética no se equivoca en los casos límite (banco vacío,
+sin respuestas, reintentos, orden de entrada), probado con unit tests
+deterministas, no con una simulación de Monte Carlo que no aportaría nada
+aquí.
+
+**El tercer número, N de M skills con `p_known >= 0.95`, es la excepción —
+corrección de la revisión adversaria del `[COORD]` (17:21 UTC): `p_known`
+sale de `UserSkillState.p_known`, una ESTIMACIÓN de BKT, no un hecho medido
+directamente.** Con los parámetros por defecto del motor (`SkillParams` en
+`app/services/engine/bkt.py`), `p_known` cruza 0,95 tras solo **4 aciertos
+seguidos** (verificado: `0.1 → 0.4286 → 0.7838 → 0.9431 → 0.9868`) — una
+racha corta, no necesariamente dominio real de la skill. Por eso
+`compute_mastery_summary`/`build_domain_report` ahora exigen también
+`skill_attempts[skill_id] >= MIN_ATTEMPTS_PER_SKILL` (10, el tamaño de una
+skill completa del catálogo — ADR-54) antes de contar una skill como
+dominada: una skill con `p_known` alto pero menos de 10 respuestas sigue
+contando en `M` (sigue siendo una skill del track) pero no en `N`, hasta que
+tenga práctica suficiente para que el número sea defendible delante de un
+reclutador. Regla 11:
+`tests/unit/test_domain_report.py::test_mastery_summary_excludes_a_lucky_streak_with_too_few_attempts`
+y `test_build_domain_report_does_not_credit_mastery_without_enough_attempts`,
+confirmados rojo quitando el filtro de `skill_attempts` (ambos pasan a
+contar la skill como dominada) y verde al restaurarlo.
 
 ## Qué falta, y por qué no lo hago yo
 
@@ -64,3 +83,11 @@ token. **`[S3] NECESITO de S1`**: si nadie más lo ha tomado, el endpoint
 público + la migración del token, usando `build_domain_report` de este
 módulo para los números — ya no hay matemática pendiente, solo
 infraestructura.
+
+**Fuera de alcance de este PR, visto en la misma revisión del `[COORD]`:**
+`DomainReport.headline()` arma su frase solo en español ("de", "respuestas
+en", "a la primera"), mientras que `CLAUDE.md` pide contenido y UI en ES y
+EN nativos. No lo toco aquí porque los 5 puntos pedidos para este PR eran
+otros y esto es un cambio de forma del texto, no de la aritmética — queda
+anotado para quien conecte el endpoint público (el `NECESITO` de arriba),
+ya que ahí hace falta decidir también en qué idioma sirve el informe.

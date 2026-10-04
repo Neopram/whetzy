@@ -17,8 +17,12 @@ Reproducible: `cd backend && python scripts/power_analysis_bkt_vs_dkt.py`
 Tres condiciones, tres chequeos distintos — no una sola métrica resumen:
 
 1. **AUC ≥ 0,70 Y DKT > BKT**: comparación de dos AUCs independientes (una
-   por cohorte, no la misma gente medida dos veces).
-2. **No empeora D7**: comparación de dos proporciones (retención a 7 días).
+   por cohorte, no la misma gente medida dos veces) — una pregunta de
+   **superioridad**: ¿DKT es mejor?
+2. **No empeora D7**: una pregunta de **no inferioridad**, no de
+   superioridad ni de "detectar cualquier diferencia" — corrección de la
+   revisión adversaria del `[COORD]` (2026-10-03 17:21 en el #89). Ver la
+   sección dedicada más abajo.
 3. **No empeora la latencia p95**: un umbral de ingeniería, no una hipótesis
    estadística — se vigila como gate absoluto (p95 de `/quiz/answer` bajo el
    mismo presupuesto en ambas cohortes), no con un cálculo de potencia. Una
@@ -58,13 +62,15 @@ Las dos métricas (AUC, D7) tienen fórmulas de potencia estándar en los
 libros, pero una fórmula copiada sin comprobar es exactamente el tipo de
 afirmación que esta sesión no hace sin verificarla. El script:
 
-- **D7 (dos proporciones)**: calcula el tamaño de muestra por la fórmula
-  cerrada estándar (Fleiss) **y** lo cruza con una simulación Monte Carlo
-  (2000 repeticiones por celda) de un test z de dos proporciones real. Las
-  dos caen en el mismo orden de magnitud siempre (p. ej. drop del 12pp:
-  fórmula cerrada n=131, simulación confirma 81% de potencia empírica justo
-  en n=131) — la fórmula cerrada queda verificada contra una simulación
-  independiente, no solo citada de un libro.
+- **D7 (dos proporciones, NO INFERIORIDAD)**: calcula el tamaño de muestra
+  por la fórmula cerrada de no inferioridad (un lado, ver sección dedicada
+  más abajo) **y** lo cruza con una simulación Monte Carlo (2000
+  repeticiones por celda) de un test de no inferioridad real, simulando los
+  dos brazos con la MISMA tasa verdadera (DKT realmente equivalente a BKT,
+  el escenario que la regla de adopción necesita poder detectar). Las dos
+  caen en el mismo orden de magnitud siempre — la fórmula cerrada queda
+  verificada contra una simulación independiente, no solo citada de un
+  libro.
 - **AUC (dos AUCs independientes, no pareadas)**: no hay una fórmula cerrada
   tan simple y fiable como la de proporciones para este caso, así que es
   simulación de principio a fin: genera puntuaciones de un modelo binormal
@@ -76,39 +82,62 @@ afirmación que esta sesión no hace sin verificarla. El script:
 
 ## Resultados (semilla `20261002`, α=0,05, potencia objetivo 80%)
 
-### D7: usuarios por brazo para detectar una caída desde el 20% base (criterio 11.8)
+### D7: NO INFERIORIDAD — usuarios por brazo para poder afirmar "no empeora" (criterio 11.8)
 
-| Caída absoluta | n/brazo (fórmula cerrada) | n/brazo (Monte Carlo, confirma) |
-|---|---|---|
-| 20% → 15% (-5 pp) | 906 | 1132 (79% en 906, 88% en 1132 — el umbral real cae entre los dos) |
-| 20% → 12% (-8 pp) | 329 | 411 (80% redondeado en 329, confirmado por encima del 80% en 411) |
-| 20% → 8% (-12 pp) | 131 | 131 (81%) |
+**Corrección de la revisión adversaria del `[COORD]` (2026-10-03 17:21 en el
+#89): "no empeora D7" es una pregunta de no inferioridad (de un lado), no
+"¿podemos detectar que cambió?" (de dos lados).** La diferencia no es solo de
+vocabulario: H0 pasa a ser "DKT es `margen` peor que BKT de verdad" y se
+necesita potencia para RECHAZAR eso cuando DKT es en realidad equivalente —
+no para detectar una caída hipotética de ese tamaño. Esto necesita menos
+usuarios que la pregunta de dos lados para el mismo margen, porque solo
+importa una dirección (que empeore) y asume equivalencia real bajo H1, no
+una tasa peor específica:
 
-(Las dos columnas no tienen por qué coincidir dígito a dígito — son dos
-métodos independientes sobre el mismo problema, no el mismo cálculo repetido;
-que caigan en el mismo orden de magnitud es la confirmación que importa.)
+| Margen de "no empeora" | n/brazo (fórmula cerrada, no inf.) | n/brazo (Monte Carlo, confirma) | n/brazo (de dos lados, para comparar) |
+|---|---|---|---|
+| 5 pp (DKT no más de 5pp peor que 20%) | 792 | 990 | 906 |
+| 8 pp | 310 | 387 | — |
+| 12 pp | 138 | 138 | 329 |
 
-### AUC: respuestas por brazo para detectar el margen BKT→DKT (criterio 11.3)
+(La columna de Monte Carlo a veces sale un escalón por encima de la fórmula
+cerrada por el redondeo de la tabla de candidatos probados —p. ej. a 5pp la
+potencia empírica en n=792 ya mostraba 0,80 redondeado pero por debajo del
+80% exacto, así que el script sigue al siguiente candidato, 990— no porque
+las dos fórmulas discrepen de fondo; que caigan en el mismo orden de
+magnitud es la confirmación que importa, igual que antes.)
+
+Reproducible: `cd backend && python scripts/power_analysis_bkt_vs_dkt.py`
+(la tabla completa, con las tres columnas, es la salida real del script, no
+aritmética copiada a mano).
+
+### AUC: SUPERIORIDAD — respuestas y usuarios por brazo para detectar el margen BKT→DKT (criterio 11.3)
+
+A diferencia de D7, el criterio de AUC («AUC ≥ 0,70 **y** DKT > BKT») sí es
+una pregunta de superioridad — sigue siendo un test de detección, de dos
+lados, sin cambios de planteamiento.
 
 Base real medida: BKT AUC = 0,7983, DKT AUC = 0,8294 (margen 0,0311) —
 `docs/ml/kt-benchmark.json`, no un número inventado para este documento.
 
 | Margen de AUC | Respuestas/brazo para 80% de potencia |
 |---|---|
-| 0,0311 (el margen medido) | entre 3000 (76%) y 6000 (100%) — el umbral real cae en algún punto intermedio |
-| 0,08 (margen mayor, hipotético) | ≤ 1000 (98% ya en 1000) |
+| 0,0311 (el margen medido) | 6000 |
+| 0,08 (margen mayor, hipotético) | 1000 |
 
 **Esto es en respuestas, no en usuarios** — el experimento vive el tiempo que
-tarde en acumularse ese volumen, no un número fijo de personas. Traducción a
-usuarios, según cuántas respuestas registre cada uno durante la ventana del
-experimento:
+tarde en acumularse ese volumen, no un número fijo de personas. El propio
+script traduce a usuarios/brazo, según cuántas respuestas registre cada uno
+durante la ventana del experimento (antes era aritmética hecha a mano en
+este documento; ahora es la salida real del script, para que las dos no
+puedan desincronizarse):
 
-| Respuestas por usuario durante el experimento | Usuarios/brazo para 4000 respuestas (margen medido) |
-|---|---|
-| 10 | 400 |
-| 30 | 134 |
-| 50 | 80 |
-| 100 | 40 |
+| Respuestas por usuario | Usuarios/brazo (margen medido, 6000 respuestas) | Usuarios/brazo (margen 0,08, 1000 respuestas) |
+|---|---|---|
+| 10 | 600 | 100 |
+| 30 | 200 | 34 |
+| 50 | 120 | 20 |
+| 100 | 60 | 10 |
 
 ## La pregunta que esto NO contesta todavía
 

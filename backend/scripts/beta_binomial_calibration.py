@@ -43,6 +43,11 @@ N_CALIBRATION_BUCKETS = 10
 
 
 def simulate_one(rng: random.Random, theta_true: float, n_practice: int):
+    """NOTE: practice and the exam below are both drawn from the SAME
+    `theta_true` — correct for validating the beta-binomial math itself,
+    but it means this simulation cannot detect (and doesn't claim to) any
+    systematic practice-vs-real-exam gap (format, nerves, question
+    difficulty). See docs/ml/beta_binomial_calibration_14_8.md."""
     correct = sum(1 for _ in range(n_practice) if rng.random() < theta_true)
     incorrect = n_practice - correct
     pred = predict_pass_probability(
