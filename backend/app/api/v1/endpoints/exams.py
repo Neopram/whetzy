@@ -34,6 +34,10 @@ from app.services import learning_rewards
 from app.services import mock_exam as mock_exam_service
 from app.services import quiz as quiz_service
 from app.services import track_exam as track_exam_service
+from app.services.domain_mastery import (
+    compute_domain_mastery,
+    compute_weighted_overall_mastery,
+)
 
 router = APIRouter()
 
@@ -203,12 +207,16 @@ async def get_certification_readiness(
 ) -> CertificationReadiness:
     """BKT-based domain readiness for a certification track.
 
-    For each exam domain returns the user's mean p_known (BKT posterior) across
-    all skills in that domain, weighted by exam_weight_pct. A domain is marked
-    'ready' when p_known_mean >= 0.75, i.e. the learner knows three quarters of
-    the content at a satisfying confidence. Skills the user has never touched
-    contribute p_known = 0.1 (the BKT prior at first exposure), so unstarted
-    domains show up as genuinely not ready rather than simply absent.
+    For each exam domain returns the user's mean p_known (BKT posterior)
+    across the skills in that domain the learner has actually attempted,
+    weighted by exam_weight_pct, via `app.services.domain_mastery` (C.2) -
+    the single function also meant to back a domain-mastery breakdown on
+    Hoy, Rutas and Estadísticas. A domain is marked 'ready' when
+    p_known_mean >= 0.75. A domain with zero attempted skills reports
+    `p_known_mean=None` ("sin datos"), not a BKT-prior placeholder: "we
+    have no evidence yet" and "we have evidence and it's bad" are different
+    claims, and conflating them is exactly the kind of confident-looking-
+    but-empty claim a readiness screen can't afford.
     """
     track = await db.get(Track, track_id)
     if track is None or not track.is_certification:
@@ -241,7 +249,6 @@ async def get_certification_readiness(
         )
     ).all()
     p_known_by_skill: dict[str, float] = {uss.skill_id: uss.p_known for uss in known_states}
-    BKT_PRIOR = 0.1  # p_known for a skill the user has never touched
 
     # Group skills by domain.
     skills_by_domain: dict[str, list[Skill]] = {d.id: [] for d in domains}
@@ -250,35 +257,32 @@ async def get_certification_readiness(
             skills_by_domain[skill.domain_id].append(skill)
 
     READY_THRESHOLD = 0.75
-    domain_results: list[DomainReadiness] = []
-    weighted_sum = 0.0
-    total_weight = 0.0
-
-    for domain in domains:
-        skills = skills_by_domain[domain.id]
-        p_values = [p_known_by_skill.get(s.id, BKT_PRIOR) for s in skills]
-        mean_p = sum(p_values) / len(p_values) if p_values else BKT_PRIOR
-        assessed = sum(1 for s in skills if s.id in p_known_by_skill)
-        domain_results.append(
-            DomainReadiness(
-                domain_id=domain.id,
-                name_es=domain.name_es,
-                name_en=domain.name_en,
-                weight_pct=domain.weight_pct,
-                p_known_mean=round(mean_p, 4),
-                skills_assessed=assessed,
-                skills_total=len(skills),
-                ready=mean_p >= READY_THRESHOLD,
-            )
+    masteries = [
+        compute_domain_mastery(
+            domain.id, domain.weight_pct,
+            [s.id for s in skills_by_domain[domain.id]], p_known_by_skill,
         )
-        weighted_sum += mean_p * domain.weight_pct
-        total_weight += domain.weight_pct
+        for domain in domains
+    ]
+    domain_results = [
+        DomainReadiness(
+            domain_id=mastery.domain_id,
+            name_es=domain.name_es,
+            name_en=domain.name_en,
+            weight_pct=mastery.weight_pct,
+            p_known_mean=mastery.p_known_mean,
+            skills_assessed=mastery.skills_assessed,
+            skills_total=mastery.skills_total,
+            ready=mastery.p_known_mean is not None and mastery.p_known_mean >= READY_THRESHOLD,
+        )
+        for domain, mastery in zip(domains, masteries, strict=True)
+    ]
 
-    overall = weighted_sum / total_weight if total_weight else BKT_PRIOR
+    overall = compute_weighted_overall_mastery(masteries)
     return CertificationReadiness(
         track_id=track_id,
         domains=domain_results,
-        overall_p_known=round(overall, 4),
+        overall_p_known=overall,
     )
 
 
