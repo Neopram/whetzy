@@ -22,6 +22,7 @@ from typing import Any
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.models.content import Question, Skill
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
@@ -76,6 +77,36 @@ async def _get_weak_skills(
         .limit(limit)
     )
     return list(result.scalars().all())
+
+
+def _sanitize_history(
+    history: list[dict[str, Any]] | None,
+) -> list[dict[str, str]] | None:
+    """`conversation_history` lo manda el cliente y se pega sin filtrar a los
+    mensajes que ve el LLM (`provider.py` hace `messages.extend(history)`
+    justo después del system prompt real). Sin esto, un turno con
+    `role="system"` viajaba igual que cualquier otro y podía intentar
+    sobreescribir las instrucciones reales (inyección de prompt), y sin
+    tope de turnos ni de caracteres una sola petición podía costar mucho
+    más de lo que el cupo por petición asume -- crítico en Pro Max, que no
+    tiene cupo de peticiones (ADR-49).
+
+    Se queda solo con los últimos `TUTOR_HISTORY_MAX_TURNS` turnos de role
+    "user"/"assistant" con content de texto, recortados a
+    `TUTOR_HISTORY_MAX_CHARS_PER_TURN`; cualquier otra cosa (role distinto,
+    content que no es texto) se descarta en silencio, no se rechaza la
+    petición entera por un turno suelto mal formado.
+    """
+    if not history:
+        return None
+    cleaned: list[dict[str, str]] = []
+    for turn in history[-settings.TUTOR_HISTORY_MAX_TURNS :]:
+        role = turn.get("role")
+        content = turn.get("content")
+        if role not in ("user", "assistant") or not isinstance(content, str):
+            continue
+        cleaned.append({"role": role, "content": content[: settings.TUTOR_HISTORY_MAX_CHARS_PER_TURN]})
+    return cleaned or None
 
 
 async def explain_question(
@@ -152,7 +183,7 @@ async def explain_question(
     # --- Short-term memory: prior conversation turns ---
     # history is a list of {"role": "user"|"assistant", "content": "..."}
     # passed directly to the provider as prior messages.
-    history = conversation_history if conversation_history else None
+    history = _sanitize_history(conversation_history)
 
     provider = get_provider()
     complete_named = getattr(provider, "complete_named", None)
