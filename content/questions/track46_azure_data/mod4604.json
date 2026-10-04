@@ -551,6 +551,1271 @@
       "explanation_es": "La capacidad de auditar, monitorear y controlar el acceso a los recursos de forma granular (mediante Azure AD, listas de control de acceso y registros de diagnóstico) es fundamental para la seguridad y el cumplimiento en Azure Data Lake. Usar 'contraseñas simples', como propone la opción incorrecta, debilita la seguridad en lugar de garantizarla.",
       "explanation_en": "The ability to audit, monitor and control access to resources granularly (via Azure AD, access control lists and diagnostic logs) is fundamental to security and compliance in Azure Data Lake. Using 'simple passwords', as the wrong option suggests, weakens security rather than ensuring it.",
       "source": "Microsoft Learn (https://learn.microsoft.com)"
+    },
+    {
+      "id": "q460401_036",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Una empresa ejecuta consultas impredecibles y con picos sobre sus datos en Azure Synapse. ¿Qué enfoque de Synapse SQL recomienda la documentación para esa carga?",
+      "question_en": "A company runs unplanned, bursty queries against its data in Azure Synapse. Which Synapse SQL approach does the documentation recommend for that workload?",
+      "options_es": [
+        "Usar el punto de conexión SQL sin servidor, siempre disponible",
+        "Reservar capacidad de procesamiento con un grupo de SQL dedicado",
+        "Puntuar los datos con aprendizaje automático mediante PREDICT",
+        "Cargar datos de la nube en tablas SQL con streaming integrado"
+      ],
+      "options_en": [
+        "Use the always-available serverless SQL endpoint",
+        "Reserve processing power by creating a dedicated SQL pool",
+        "Score the data with machine learning through the PREDICT function",
+        "Land cloud data in SQL tables with built-in streaming"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento indica que para cargas no planificadas o con picos se usa el punto de conexión SQL sin servidor, siempre disponible. Los grupos dedicados reservan capacidad de procesamiento para un rendimiento y un costo predecibles, así que no encajan aquí. PREDICT y el streaming integrado son otras capacidades de Synapse SQL, no el enfoque para cargas con picos.",
+      "explanation_en": "The fragment says that for unplanned or bursty workloads you use the always-available, serverless SQL endpoint. Dedicated SQL pools instead reserve processing power for predictable performance and cost, so they do not fit here. The PREDICT function and built-in streaming are other Synapse SQL capabilities, not the approach for bursty workloads.",
+      "source": "Microsoft Learn — What is Azure Synapse Analytics? (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_037",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo ofrece Azure Synapse la integración de datos para crear canalizaciones ETL a gran escala?",
+      "question_en": "How does Azure Synapse provide data integration for building at-scale ETL pipelines?",
+      "options_es": [
+        "Exige una instancia independiente de Azure Data Factory fuera del área de trabajo",
+        "Incluye el mismo motor de integración de datos que Azure Data Factory",
+        "Depende de los flujos de datos de Power BI para mover los datos",
+        "Se basa principalmente en cuadernos de Spark sobre el lago de datos"
+      ],
+      "options_en": [
+        "It requires a separate Azure Data Factory instance outside the workspace",
+        "It includes the same data integration engine as Azure Data Factory",
+        "It depends on Power BI dataflows to move and transform the data",
+        "It relies mainly on Spark notebooks over the data lake"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según el fragmento, Azure Synapse contiene el mismo motor y las mismas experiencias de integración de datos que Azure Data Factory, y permite crear canalizaciones ETL sin salir de Synapse. Por eso no hace falta una instancia aparte. Los cuadernos de Spark aparecen en el fragmento solo como elementos que se orquestan, y Power BI no se menciona.",
+      "explanation_en": "According to the fragment, Azure Synapse contains the same Data Integration engine and experiences as Azure Data Factory, so you can build ETL pipelines without leaving Synapse. That is why no separate instance is needed. Spark notebooks appear in the fragment only as items that get orchestrated, and Power BI is not mentioned.",
+      "source": "Microsoft Learn — What is Azure Synapse Analytics? (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_038",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere que una canalización de Synapse se ejecute cada noche y también cuando llegue un archivo. ¿Qué componente de la canalización lo permite?",
+      "question_en": "A team wants a Synapse pipeline to run every night and also when a file arrives. Which pipeline component makes that possible?",
+      "options_es": [
+        "Un conjunto de datos de integración que apunta a los datos de entrada",
+        "Un flujo de datos que aplica transformaciones sin código",
+        "Un desencadenador que se ejecuta según un horario o ante eventos",
+        "Una actividad que copia datos entre dos servicios"
+      ],
+      "options_en": [
+        "An integration dataset that points to the input data",
+        "A data flow that applies no-code transformations",
+        "A trigger that runs on a schedule or on events",
+        "An activity that copies data between two services"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El fragmento dice que el desencadenador (trigger) ejecuta una canalización, de forma manual o automática: por programación, ventana de saltos (tumbling window) o eventos. El conjunto de datos solo hace referencia a los datos de entrada o salida, el flujo de datos es una actividad de transformación sin código y una actividad define una acción dentro de la canalización, pero ninguno la inicia.",
+      "explanation_en": "The fragment says the trigger executes a pipeline, either manually or automatically: on a schedule, a tumbling window, or events. The integration dataset only references input or output data, a data flow is a no-code transformation activity, and an activity defines an action inside the pipeline, but none of them starts it.",
+      "source": "Microsoft Learn — Terminology - Azure Synapse Analytics (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-terminology) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_039",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ofrece cada área de trabajo de Synapse para consultar datos con un grupo de SQL sin servidor sin aprovisionar nada antes?",
+      "question_en": "What does every Synapse workspace provide so you can query data with a serverless SQL pool without provisioning anything first?",
+      "options_es": [
+        "Un clúster dimensionado para el volumen de consultas previsto",
+        "Un grupo de SQL dedicado con capacidad de procesamiento reservada",
+        "Una infraestructura de nodos configurada antes de la primera consulta",
+        "El punto de conexión predeterminado del área de trabajo"
+      ],
+      "options_en": [
+        "A cluster sized for the expected volume of queries",
+        "A dedicated SQL pool with reserved processing power",
+        "Node infrastructure configured before the first query",
+        "The default endpoint included in the workspace"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según el fragmento, el grupo de SQL sin servidor no tiene infraestructura que configurar ni clústeres que mantener, y cada área de trabajo de Synapse incluye un punto de conexión predeterminado, de modo que se puede consultar en cuanto se crea. Por eso ninguna de las otras opciones, que implican preparar un clúster, un grupo reservado o una infraestructura de nodos de antemano, es un requisito previo.",
+      "explanation_en": "According to the fragment, serverless SQL pool has no infrastructure to set up and no clusters to maintain, and every Synapse workspace includes a default endpoint, so you can query data as soon as the workspace is created. That is why none of the other options, which involve preparing a cluster, a reserved pool, or node infrastructure beforehand, is a prerequisite.",
+      "source": "Microsoft Learn — Serverless SQL pool (https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/on-demand-workspace-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_040",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Una empresa necesita ajustar la capacidad de cómputo de Synapse SQL sin mover sus datos. ¿Qué rasgo de la arquitectura se lo permite?",
+      "question_en": "A company needs to adjust the compute capacity of Synapse SQL without moving its data. Which architectural feature makes this possible?",
+      "options_es": [
+        "El cómputo está separado del almacenamiento y se escala por separado",
+        "Los datos se copian por completo a todos los nodos cada vez que cambia el cómputo",
+        "El almacenamiento reside en la memoria del nodo de control de la arquitectura",
+        "Cada nodo de cómputo conserva su propia copia de los datos en un disco local"
+      ],
+      "options_en": [
+        "Compute is separate from storage and scales independently",
+        "Data is copied in full to every node whenever compute changes",
+        "Storage lives in the memory of the Control node of the system",
+        "Each Compute node keeps its own copy of the data on a local disk"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, en Synapse SQL el cómputo está separado del almacenamiento, lo que permite escalarlo de forma independiente de los datos. Además, los nodos de cómputo guardan los datos en Azure Storage, por lo que se puede aumentar, reducir o pausar el cómputo sin moverlos. Las otras opciones (copia en cada cambio, memoria del nodo de control, discos locales) no aparecen en la fuente y contradicen que los datos residan en Azure Storage.",
+      "explanation_en": "According to the source, in Synapse SQL compute is separate from storage, which lets you scale compute independently of the data. In addition, the Compute nodes store the data in Azure Storage, so compute can be grown, shrunk or paused without moving it. The other options (copying on every change, Control node memory, local disk copies) do not appear in the source and conflict with data living in Azure Storage.",
+      "source": "Microsoft Learn — Synapse SQL architecture (https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/overview-architecture) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_041",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Una empresa define una tabla en un grupo de SQL dedicado y debe decidir cómo se reparten sus datos entre las distribuciones. ¿Cuál de estos patrones de fragmentación (sharding) puede elegir?",
+      "question_en": "A company is defining a table in a dedicated SQL pool and must decide how its data is spread across the distributions. Which of these sharding patterns can it choose?",
+      "options_es": [
+        "Distribución alfabética por nombre de tabla",
+        "Distribución de tipo round robin",
+        "Distribución por clave de cifrado",
+        "Distribución por nivel de acceso del usuario"
+      ],
+      "options_en": [
+        "Alphabetical distribution by table name",
+        "Round robin distribution pattern",
+        "Distribution by encryption key",
+        "Distribution by user access level"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El fragmento indica que, al definir la tabla, se puede elegir el patrón de fragmentación y enumera los admitidos: hash, round robin y replicate. Por eso round robin es válido. La distribución alfabética por nombre de tabla, por clave de cifrado o por nivel de acceso del usuario no figura entre esos patrones.",
+      "explanation_en": "The fragment says you can choose the sharding pattern when you define the table, and it lists the supported ones: hash, round robin, and replicate. That makes round robin valid. Alphabetical distribution by table name, distribution by encryption key, and distribution by user access level are not among those patterns.",
+      "source": "Microsoft Learn — Synapse SQL architecture (https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/overview-architecture) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_042",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "En Synapse SQL, ¿en qué componente se ejecuta el motor de consultas distribuidas que optimiza y coordina las consultas en paralelo?",
+      "question_en": "In Synapse SQL, on which component does the distributed query engine run to optimize and coordinate parallel queries?",
+      "options_es": [
+        "Los nodos de proceso, que ejecutan las consultas divididas",
+        "El servicio DMS, que mueve datos entre los nodos",
+        "El nodo de control, el cerebro de la arquitectura",
+        "Azure Storage, que guarda los datos del usuario"
+      ],
+      "options_en": [
+        "The Compute nodes, which run the smaller queries",
+        "The DMS, which moves data between nodes",
+        "The Control node, the architecture's brain",
+        "Azure Storage, which keeps the user data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según el fragmento, el motor de consultas distribuidas se ejecuta en el nodo de control, que es el cerebro de la arquitectura y el front end que interactúa con las aplicaciones y conexiones. Los nodos de proceso ejecutan las consultas más pequeñas en las que el nodo de control divide la consulta del usuario, pero no la coordinan. El fragmento no atribuye ese papel de coordinación al servicio DMS ni a Azure Storage.",
+      "explanation_en": "According to the fragment, the distributed query engine runs on the Control node, which is the brain of the architecture and the front end that interacts with applications and connections. The Compute nodes run the smaller queries that the Control node splits the user query into, but they do not coordinate them. The fragment does not give that coordinating role to the DMS or to Azure Storage.",
+      "source": "Microsoft Learn — Synapse SQL architecture (https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/overview-architecture) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_043",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "¿Qué función cumple el Data Movement Service (DMS) en un grupo de SQL dedicado?",
+      "question_en": "What role does the Data Movement Service (DMS) play in a dedicated SQL pool?",
+      "options_es": [
+        "Guarda de forma permanente todos los datos del usuario en Azure Storage",
+        "Recibe los comandos T-SQL de las aplicaciones y los optimiza",
+        "Ajusta la escala del grupo cambiando su capacidad de proceso",
+        "Mueve datos entre los nodos de proceso cuando hace falta"
+      ],
+      "options_en": [
+        "It permanently stores all user data in Azure Storage",
+        "It receives T-SQL commands from applications and optimizes them",
+        "It scales the pool by changing its compute capacity",
+        "It moves data between Compute nodes when queries need it"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El fragmento define DMS como la tecnología de transporte de datos del grupo de SQL dedicado que coordina el movimiento de datos entre los nodos de proceso, para que las consultas en paralelo devuelvan resultados correctos. Las otras opciones describen funciones distintas (almacenar datos, recibir y optimizar comandos T-SQL, cambiar la escala), y el fragmento no se las atribuye a DMS, que se limita a transportar datos entre nodos.",
+      "explanation_en": "The fragment defines DMS as the data transport technology in a dedicated SQL pool that coordinates data movement between the Compute nodes so parallel queries return accurate results. The other options describe different functions (storing data, receiving and optimizing T-SQL commands, scaling the pool), and the fragment does not credit any of them to DMS, which is about transporting data between nodes.",
+      "source": "Microsoft Learn — Synapse SQL architecture (https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/overview-architecture) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_044",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Según la visión general de Synapse, ¿para qué tareas se usa Apache Spark, el motor de big data de código abierto?",
+      "question_en": "According to the Synapse overview, what is Apache Spark, the open source big data engine, used for?",
+      "options_es": [
+        "Preparación de datos, ETL y aprendizaje automático",
+        "Procesamiento de transacciones OLTP, copias de seguridad y replicación",
+        "Indexación de registros, búsqueda de texto libre y análisis de series temporales",
+        "Creación de informes, paneles interactivos y visualizaciones de negocio"
+      ],
+      "options_en": [
+        "Data preparation, ETL, and machine learning",
+        "OLTP transaction processing, backups, and replication",
+        "Log indexing, free-text search, and time-series analysis",
+        "Building reports, interactive dashboards, and business visualizations"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento presenta Apache Spark como el motor de big data de código abierto más popular, usado para preparación de datos, ingeniería de datos, ETL y aprendizaje automático, por eso la primera opción es correcta. Las demás opciones (procesamiento de transacciones OLTP, indexación de registros, informes y paneles) no aparecen en el fragmento como usos de Spark.",
+      "explanation_en": "The fragment presents Apache Spark as the most popular open source big data engine, used for data preparation, data engineering, ETL, and machine learning, so the first option is correct. The other options (OLTP transaction processing, log indexing, reports and dashboards) do not appear in the fragment as uses of Spark.",
+      "source": "Microsoft Learn — What is Azure Synapse Analytics? (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_045",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Una empresa necesita consultar de forma interactiva los registros generados por sus propios sistemas, con indexación automática de texto libre. ¿Qué motor de Synapse está optimizado para ello?",
+      "question_en": "A company needs to query the logs generated by its own systems interactively, with automatic indexing of free text. Which Synapse engine is optimized for that?",
+      "options_es": [
+        "Los grupos de SQL dedicados, para almacenes relacionales",
+        "Data Explorer, para análisis de registros",
+        "Las canalizaciones, para orquestar el movimiento de datos",
+        "Los grupos de Apache Spark, para procesamiento por lotes"
+      ],
+      "options_en": [
+        "Dedicated SQL pools, for relational warehouses",
+        "Data Explorer, for log analytics",
+        "Pipelines, for orchestrating data movement",
+        "Apache Spark pools, for batch processing"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El fragmento dice que Azure Synapse Data Explorer ofrece una experiencia de consulta interactiva sobre los registros generados por el sistema, y que su motor está optimizado para el análisis de registros con indexación automática de texto libre y datos semiestructurados. Además, lo presenta como complemento de los motores de SQL y Apache Spark, así que esos no son el motor optimizado para este fin. Las canalizaciones no aparecen en el fragmento con ese propósito.",
+      "explanation_en": "The fragment says Azure Synapse Data Explorer provides an interactive query experience over system-generated logs, and that its runtime is optimized for log analytics with automatic indexing of free-text and semi-structured data. It also presents Data Explorer as a complement to the SQL and Apache Spark engines, so those are not the engine optimized for this purpose. Pipelines do not appear in the fragment with that purpose.",
+      "source": "Microsoft Learn — What is Azure Synapse Analytics? (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_046",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de datos quiere un único lugar en Azure Synapse desde el que usar tanto SQL como Apache Spark para analizar datos. ¿Qué concepto lo ofrece?",
+      "question_en": "A data team wants a single place in Azure Synapse from which to use both SQL and Apache Spark to analyze data. Which concept provides it?",
+      "options_es": [
+        "Un grupo de SQL dedicado que reúne todas las tablas del almacén",
+        "Una canalización que agrupa las actividades de una tarea de datos",
+        "Un área de trabajo que permite analizar con SQL y con Spark",
+        "Una sesión de Spark que gestiona los recursos de un cuaderno"
+      ],
+      "options_en": [
+        "A dedicated SQL pool that holds every table of the warehouse",
+        "A pipeline that groups the activities of one data task",
+        "A workspace that lets you run analytics with SQL and Spark",
+        "A Spark session that handles the resources of one notebook"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según el fragmento, un área de trabajo de Synapse es lo que permite hacer analítica con SQL y Apache Spark. Los recursos para esa analítica se organizan en grupos de SQL y de Spark, de modo que un grupo es solo uno de esos recursos y no el lugar único que cubre ambos motores. La fuente tampoco presenta una canalización ni una sesión de Spark como aquello que permite analizar con SQL y Spark.",
+      "explanation_en": "According to the fragment, a Synapse workspace is what lets you perform analytics with SQL and Apache Spark. The resources for that analytics are organized into SQL and Spark pools, so a pool is just one of those resources and not the single place that covers both engines. The source also does not present a pipeline or a Spark session as what lets you perform analytics with SQL and Spark.",
+      "source": "Microsoft Learn — Terminology - Azure Synapse Analytics (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-terminology) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_047",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Un grupo de SQL sin servidor no tiene almacenamiento local. ¿Qué capacidad de T-SQL no se admite por ese motivo?",
+      "question_en": "Serverless SQL pool has no local storage. Which T-SQL capability is therefore not supported?",
+      "options_es": [
+        "Crear vistas con instrucciones DDL",
+        "Gestionar la seguridad con instrucciones DDL",
+        "Guardar objetos de metadatos en las bases de datos",
+        "Ejecutar instrucciones DML sobre los datos"
+      ],
+      "options_en": [
+        "Creating views with DDL statements",
+        "Managing security with DDL statements",
+        "Storing metadata objects in the databases",
+        "Running DML statements against data"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El fragmento indica que el grupo de SQL sin servidor no tiene almacenamiento local y que por eso no admite T-SQL relacionado con las instrucciones DML. Las demás opciones sí se admiten según la cita: solo se excluyen las instrucciones DDL distintas de las de vistas y seguridad, y en las bases de datos sí se guardan objetos de metadatos.",
+      "explanation_en": "The fragment states that serverless SQL pool has no local storage and therefore does not support T-SQL related to DML statements. The other options are supported according to the quote: only DDL statements other than those related to views and security are excluded, and metadata objects are stored in databases.",
+      "source": "Microsoft Learn — Serverless SQL pool (https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/on-demand-workspace-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_048",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere ofrecer una abstracción relacional sobre datos sin procesar y heterogéneos del lago, sin trasladarlos ni transformarlos. ¿Qué escenario del grupo de SQL sin servidor describe esto?",
+      "question_en": "A company wants a relational abstraction over raw, disparate data in the lake without relocating or transforming it. Which serverless SQL pool scenario describes this?",
+      "options_es": [
+        "Almacén de datos lógico",
+        "Exploración y descubrimiento básicos",
+        "Transformación de datos del lago con T-SQL",
+        "Procesamiento de flujos de eventos en tiempo real"
+      ],
+      "options_en": [
+        "Logical data warehouse",
+        "Basic discovery and exploration",
+        "Data transformation in the lake with T-SQL",
+        "Real-time event stream processing"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento define el escenario de almacén de datos lógico como una abstracción relacional sobre datos sin procesar o dispares, sin reubicarlos ni transformarlos, con una vista siempre actualizada. La exploración y el descubrimiento básicos sirven para razonar sobre datos en varios formatos del lago, y la transformación sirve para prepararlos para BI o cargarlos en un almacén relacional; ninguna ofrece esa abstracción sin transformar. El procesamiento de flujos en tiempo real no figura entre los escenarios que el fragmento enumera.",
+      "explanation_en": "The fragment defines the logical data warehouse scenario as a relational abstraction over raw or disparate data without relocating or transforming it, giving an always up-to-date view. Basic discovery and exploration is for reasoning about data in various formats in the lake, and data transformation is for preparing data for BI or loading it into a relational store; neither provides that abstraction without transforming data. Real-time event stream processing is not among the scenarios the fragment lists.",
+      "source": "Microsoft Learn — Serverless SQL pool (https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/on-demand-workspace-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_049",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Un equipo debe ejecutar en Synapse trabajos por lotes de Spark empaquetados en archivos jar. ¿Qué opción es la más adecuada?",
+      "question_en": "A team must run batch Spark jobs packaged as jar files in Synapse. Which option fits best?",
+      "options_es": [
+        "Cuadernos de Spark para ciencia e ingeniería de datos",
+        "Definiciones de trabajos de Spark en un grupo",
+        "Scripts SQL ejecutados en el grupo de SQL sin servidor",
+        "Bases de datos de Data Explorer alojadas en un grupo"
+      ],
+      "options_en": [
+        "Spark notebooks for data science and engineering",
+        "Spark job definitions in a Spark pool",
+        "SQL scripts run on the serverless SQL pool",
+        "Data Explorer databases hosted on a pool"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según el fragmento, Synapse ofrece dos formas de usar Spark: los cuadernos de Spark, orientados a ciencia e ingeniería de datos, y las definiciones de trabajos de Spark, pensadas para ejecutar trabajos por lotes con archivos jar. Por eso encaja la definición de trabajos. Los cuadernos se asocian a ciencia e ingeniería de datos, no a trabajos por lotes, y los scripts SQL y las bases de datos de Data Explorer no aparecen entre esas dos formas.",
+      "explanation_en": "According to the fragment, Synapse offers two ways to use Spark: Spark notebooks, aimed at data science and engineering, and Spark job definitions, meant for running batch Spark jobs using jar files. That is why job definitions fit. Notebooks are tied to data science and engineering rather than batch jobs, and SQL scripts and Data Explorer databases do not appear among those two ways.",
+      "source": "Microsoft Learn — Terminology - Azure Synapse Analytics (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-terminology) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_050",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué Apache Spark puede acelerar el análisis que consulta repetidamente los mismos datos?",
+      "question_en": "Why can Apache Spark speed up analysis that queries the same data repeatedly?",
+      "options_es": [
+        "Porque guarda cada resultado intermedio en una tabla relacional en disco",
+        "Porque exige estructurar todo el trabajo como operaciones map y reduce",
+        "Porque puede cargar y almacenar en caché los datos en memoria",
+        "Porque lee los datos de disco en cada consulta para mantenerlos al día"
+      ],
+      "options_en": [
+        "Because it saves each intermediate result in a relational table on disk",
+        "Because it requires all work to be structured as map and reduce operations",
+        "Because it can load and cache data into memory",
+        "Because it reads the data from disk on every query to keep it current"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El fragmento explica que un trabajo de Spark puede cargar y almacenar en caché datos en memoria y consultarlos repetidamente, y que la computación en memoria es más rápida que las aplicaciones basadas en disco. Por eso fallan guardar resultados en disco y leer de disco en cada consulta: ambos dependen del disco, justo el enfoque que el fragmento presenta como más lento. También falla la opción de map y reduce, porque el fragmento aclara que no hace falta estructurar todo como operaciones map y reduce.",
+      "explanation_en": "The fragment explains that a Spark job can load and cache data into memory and query it repeatedly, and that in-memory computing is faster than disk-based applications. That is why saving results on disk and reading from disk on every query fail: both rely on disk, exactly the approach the fragment presents as slower. The map and reduce option also fails, because the fragment states there is no need to structure everything as map and reduce operations.",
+      "source": "Microsoft Learn — Apache Spark in Azure Synapse Analytics overview (https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460401_051",
+      "skill_id": "sk460401",
+      "type": "multiple_choice",
+      "question_es": "Una empresa guarda archivos Parquet, CSV y JSON en un lago de datos. ¿Cómo permite Synapse que los equipos de SQL y de Spark compartan esos datos?",
+      "question_en": "A company keeps Parquet, CSV, and JSON files in a data lake. How does Synapse let its SQL and Spark teams share that data?",
+      "options_es": [
+        "Los equipos cargan los archivos en tablas internas del motor SQL",
+        "Un proceso de replicación sincroniza copias para cada motor",
+        "Spark transforma los archivos y los exporta a un almacén para SQL",
+        "Ambos motores consumen tablas definidas sobre los archivos"
+      ],
+      "options_en": [
+        "Teams load the files into internal tables of the SQL engine",
+        "A replication process syncs separate copies for each engine",
+        "Spark transforms the files and exports them to a store for SQL",
+        "Both engines consume tables defined over the files"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según el fragmento, Synapse elimina las barreras tecnológicas tradicionales entre usar SQL y Spark, y las tablas definidas sobre archivos del lago de datos las consumen tanto Spark como SQL. Las otras opciones plantean cargar, replicar o exportar los datos a otro almacén para cada motor, algo que no corresponde con ese enfoque de tablas compartidas sobre el lago.",
+      "explanation_en": "According to the fragment, Synapse removes the traditional technology barriers between using SQL and Spark, and tables defined on files in the data lake are consumed by either Spark or SQL. The other options involve loading, replicating, or exporting the data into a separate store for each engine, which does not match this approach of shared tables over the lake.",
+      "source": "Microsoft Learn — What is Azure Synapse Analytics? (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_038",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué descripción encaja mejor con Azure Data Factory?",
+      "question_en": "Which description best fits Azure Data Factory?",
+      "options_es": [
+        "Un motor de base de datos relacional que almacena registros de negocio transaccionales",
+        "Un servicio administrado en la nube para ETL, ELT e integración de datos",
+        "Una herramienta de informes que crea paneles interactivos para usuarios de negocio",
+        "Un agente de mensajes que transmite eventos de dispositivos a los consumidores en tiempo real"
+      ],
+      "options_en": [
+        "A relational database engine that stores transactional business records",
+        "A managed cloud service for ETL, ELT, and data integration",
+        "A reporting tool that builds interactive dashboards for business users",
+        "A message broker that streams device events to consumers in real time"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, Azure Data Factory es un servicio administrado en la nube creado para proyectos complejos de ETL, ELT e integración de datos. No es un motor de base de datos transaccional, una herramienta de informes ni un agente de mensajes: la fuente no le atribuye ninguna de esas funciones.",
+      "explanation_en": "According to the source, Azure Data Factory is a managed cloud service built for complex ETL, ELT, and data integration projects. It is not a transactional database engine, a reporting tool, or a message broker; the source does not describe it as any of those.",
+      "source": "Microsoft Learn — Introduction to Azure Data Factory (https://learn.microsoft.com/en-us/azure/data-factory/introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_039",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "En Azure Data Factory, un equipo quiere administrar un conjunto de actividades relacionadas como una sola unidad que se implementa y se programa en conjunto. ¿Qué debe crear?",
+      "question_en": "In Azure Data Factory, a team wants to manage a set of related activities as one unit that is deployed and scheduled together. What should they create?",
+      "options_es": [
+        "Un conjunto de datos que identifica los datos de entrada de una actividad",
+        "Una actividad de copia que mueve datos entre dos almacenes",
+        "Una canalización que agrupa las actividades en una unidad lógica",
+        "Una actividad de flujo de datos que transforma los datos"
+      ],
+      "options_en": [
+        "A dataset that identifies the data used as an activity's input",
+        "A copy activity that moves data between two data stores",
+        "A pipeline that groups the activities into one logical unit",
+        "A data flow activity that transforms the data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que la canalización permite administrar las actividades como un conjunto en lugar de una por una, y que se implementa y programa la canalización, no cada actividad por separado. Una actividad de copia o de flujo de datos es una sola actividad que realiza una acción sobre los datos, y un conjunto de datos solo identifica datos dentro de un almacén; ninguno agrupa actividades.",
+      "explanation_en": "The source says the pipeline lets you manage the activities as a set instead of each one individually, and that you deploy and schedule the pipeline rather than the activities independently. A copy activity or a data flow activity is a single activity that performs an action on data, and a dataset only identifies data within a data store; none of them groups activities.",
+      "source": "Microsoft Learn — Pipelines and Activities (https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipelines-activities) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_040",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Un equipo usa Azure Data Factory para leer datos de una cuenta de almacenamiento externa. ¿Qué componente aporta la información de conexión que el servicio necesita para llegar a ese recurso?",
+      "question_en": "A team uses Azure Data Factory to read data from an external storage account. Which component supplies the connection information the service needs to reach that resource?",
+      "options_es": [
+        "Un conjunto de datos que guarda las credenciales usadas por cada destino",
+        "Un desencadenador que conecta la canalización con su origen según una programación",
+        "Una actividad que conserva el punto de conexión de cada origen de datos",
+        "Un servicio vinculado que define cómo llegar a cada recurso externo"
+      ],
+      "options_en": [
+        "A dataset that stores the credentials used by every sink in a pipeline",
+        "A trigger that connects the pipeline to its source on a schedule",
+        "An activity that keeps the endpoint address of every data source it reads",
+        "A linked service that defines how to reach external resources"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente compara los servicios vinculados con cadenas de conexión: definen la información de conexión que el servicio necesita para conectarse a recursos externos. El conjunto de datos solo representa la estructura de los datos dentro de los almacenes vinculados; la conexión la define el servicio vinculado al que hace referencia. Las actividades definen acciones sobre los datos, y la fuente no atribuye la definición de la conexión ni a ellas ni a los desencadenadores.",
+      "explanation_en": "The source compares linked services to connection strings: they define the connection information the service needs to connect to external resources. A dataset only represents the structure of the data within the linked data stores; the connection is defined by the linked service it refers to. Activities define actions to perform on the data, and the source does not assign the definition of the connection to them or to triggers.",
+      "source": "Microsoft Learn — Datasets (https://learn.microsoft.com/en-us/azure/data-factory/concepts-datasets-linked-services) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_041",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué papel cumple el Integration Runtime dentro de una canalización de Data Factory?",
+      "question_en": "What role does the integration runtime play in a Data Factory pipeline?",
+      "options_es": [
+        "Actúa de puente entre las actividades y los servicios vinculados",
+        "Define la acción que se realiza, como copiar datos entre almacenes",
+        "Define el almacén de datos o el servicio de proceso de destino",
+        "Sustituye a los servicios vinculados en el acceso al almacén de datos"
+      ],
+      "options_en": [
+        "It acts as the bridge between activities and linked services",
+        "It defines the action to perform, such as copying data between stores",
+        "It defines the target data store or compute service",
+        "It replaces linked services as the way activities reach the data store"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, una actividad define la acción que se realiza, un servicio vinculado define el almacén de datos o el servicio de proceso de destino, y el Integration Runtime proporciona el puente entre ambos. Por eso las dos opciones que describen la acción o el destino se refieren a la actividad y al servicio vinculado, no al Integration Runtime. Tampoco sustituye a los servicios vinculados: los conecta con las actividades.",
+      "explanation_en": "According to the source, an activity defines the action to be performed, a linked service defines a target data store or a compute service, and the integration runtime provides the bridge between them. So the two options describing the action or the target refer to the activity and the linked service, not to the integration runtime. It does not replace linked services either: it connects them with activities.",
+      "source": "Microsoft Learn — Integration runtime (https://learn.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_042",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un conjunto de datos (dataset) en Azure Data Factory?",
+      "question_en": "What is a dataset in Azure Data Factory?",
+      "options_es": [
+        "Un clúster de Spark administrado para ejecutar transformaciones a escala",
+        "Una vista con nombre de los datos que las actividades usan como entradas y salidas",
+        "Una regla que inicia una ejecución de la canalización al ocurrir un evento",
+        "Un conjunto de cadenas de conexión que usa el servicio para llegar a recursos externos"
+      ],
+      "options_en": [
+        "A Spark cluster managed by the service to run transformations at scale",
+        "A named view that points to the data activities use as inputs and outputs",
+        "A rule that starts a pipeline run whenever an event occurs in storage",
+        "A set of connection strings that the service uses to reach external resources"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, un conjunto de datos es una vista con nombre que apunta o hace referencia a los datos que se usan como entradas y salidas de las actividades. Las cadenas de conexión se parecen a los servicios vinculados, que definen la conexión al origen de datos, no a los conjuntos de datos. Como conocimiento general (no viene en la fuente), un clúster de Spark es un entorno de cómputo y una regla que inicia ejecuciones ante un evento es un desencadenador (trigger); ninguno de los dos es un conjunto de datos.",
+      "explanation_en": "According to the source, a dataset is a named view of data that points or refers to the data used as inputs and outputs of activities. Connection strings resemble linked services, which define the connection to the data source, not datasets. As general knowledge (not stated in the source), a Spark cluster is a compute environment and a rule that starts runs on an event is a trigger; neither is a dataset.",
+      "source": "Microsoft Learn — Datasets (https://learn.microsoft.com/en-us/azure/data-factory/concepts-datasets-linked-services) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_043",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Un ingeniero de datos necesita crear lógica de transformación en Azure Data Factory sin escribir código y de forma visual. ¿Qué debe usar?",
+      "question_en": "A data engineer needs to build data transformation logic in Azure Data Factory visually, without writing code. What should they use?",
+      "options_es": [
+        "Una actividad Custom que ejecuta código escrito a mano en Azure Batch",
+        "Una actividad de cuaderno que ejecuta código de Spark escrito a mano",
+        "Un flujo de datos de asignación que se diseña de forma visual",
+        "Una actividad Stored Procedure que ejecuta un procedimiento escrito a mano"
+      ],
+      "options_en": [
+        "A Custom activity that runs hand-written code on Azure Batch",
+        "A notebook activity that runs hand-written Spark code in a notebook",
+        "A mapping data flow that is designed visually",
+        "A Stored Procedure activity that runs a hand-written procedure"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que los flujos de datos de asignación son transformaciones de datos diseñadas de forma visual y que permiten desarrollar la lógica de transformación sin escribir código. Las otras opciones no cumplen lo que pide el enunciado: la actividad Custom, la de cuaderno y la Stored Procedure ejecutan código o procedimientos que alguien escribe aparte, algo que la fuente no describe como diseño visual.",
+      "explanation_en": "The source says mapping data flows are visually designed data transformations that let data engineers develop transformation logic without writing code. The other options do not meet what the question asks: the Custom, notebook, and Stored Procedure activities run code or procedures that someone writes separately, which the source does not describe as visual design.",
+      "source": "Microsoft Learn — Mapping data flows (https://learn.microsoft.com/en-us/azure/data-factory/concepts-data-flow-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_044",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Un equipo prefiere programar a mano sus transformaciones de datos en lugar de usar flujos de datos visuales. ¿Qué ofrece Azure Data Factory para ello?",
+      "question_en": "A team prefers to write its data transformations by hand instead of using visual data flows. What does Azure Data Factory offer for this?",
+      "options_es": [
+        "Únicamente flujos de datos de asignación, que se ejecutan en Spark",
+        "Actividades de flujo de control que ejecutan la lógica de transformación dentro del propio pipeline",
+        "Desencadenadores que incorporan la lógica de transformación y la ejecutan según una programación fija",
+        "Actividades externas que se ejecutan en servicios como Azure Databricks"
+      ],
+      "options_en": [
+        "Only mapping data flows, which run on Spark",
+        "Control flow activities that run the transformation logic inside the pipeline itself",
+        "Triggers that embed the transformation logic and run it on a fixed schedule",
+        "External activities that run on services such as Azure Databricks"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que, si se prefiere programar las transformaciones a mano, Azure Data Factory admite actividades externas que las ejecutan en servicios de proceso como HDInsight Hadoop, Azure Databricks y Machine Learning. Los flujos de datos de asignación son otra vía, pensada para no tener que programar Spark, así que no son la única opción. La fuente no presenta los desencadenadores ni las actividades de flujo de control como lugar donde alojar esa lógica de transformación.",
+      "explanation_en": "The source says that if you prefer to code transformations by hand, Azure Data Factory supports external activities that run them on compute services such as HDInsight Hadoop, Azure Databricks, and Machine Learning. Mapping data flows are a different route, designed so you don't have to program Spark, so they are not the only option. The source does not present triggers or control flow activities as a place to host that transformation logic.",
+      "source": "Microsoft Learn — Introduction to Azure Data Factory (https://learn.microsoft.com/en-us/azure/data-factory/introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_045",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Una empresa necesita mover datos de una base de datos SQL Server local a Azure Blob Storage. ¿Qué actividad de Data Factory está pensada para ese movimiento de datos?",
+      "question_en": "A company needs to move data from an on-premises SQL Server database to Azure Blob Storage. Which Data Factory activity is designed for this data movement?",
+      "options_es": [
+        "Una actividad Copy, que copia datos de un almacén de origen a uno de destino",
+        "Una actividad Wait, que detiene la canalización durante un tiempo especificado antes de continuar",
+        "Una actividad Filter, que aplica una expresión a una matriz de entrada de valores",
+        "Una actividad Web, que llama a un punto de conexión REST personalizado desde la canalización"
+      ],
+      "options_en": [
+        "A Copy activity, which copies data from a source store to a sink store",
+        "A Wait activity, which pauses the pipeline for a specified time before continuing",
+        "A Filter activity, which applies an expression to an input array of values",
+        "A Web activity, which calls a custom REST endpoint from the pipeline"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que la actividad Copy de Data Factory copia datos de un almacén de datos de origen a uno de destino (sink), que es justo lo que pide el escenario. Las otras tres opciones no describen copiar datos de un origen a un destino: una espera un tiempo, otra filtra una matriz de valores y otra llama a un punto de conexión REST.",
+      "explanation_en": "The source states that the Copy activity in Data Factory copies data from a source data store to a sink data store, which is exactly what the scenario requires. The other three options do not describe copying data from a source to a destination: one waits for a period of time, one filters an array of values, and one calls a REST endpoint.",
+      "source": "Microsoft Learn — Pipelines and Activities (https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipelines-activities) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_046",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Una canalización debe aplicar el mismo conjunto de actividades a todos los registros de una lista de entrada, uno tras otro. ¿Qué actividad de flujo de control encaja?",
+      "question_en": "A pipeline must apply the same set of activities to every record in an input list, one after another. Which control flow activity fits?",
+      "options_es": [
+        "Una actividad If Condition, que se bifurca según un resultado verdadero o falso",
+        "Una actividad ForEach, que recorre una colección",
+        "Una actividad Wait, que detiene la ejecución durante un tiempo especificado",
+        "Una actividad Set Variable, que asigna un valor a una variable existente"
+      ],
+      "options_en": [
+        "An If Condition activity, which branches according to a true or false result",
+        "A ForEach activity, which loops over a collection",
+        "A Wait activity, which pauses the run for a specified amount of time",
+        "A Set Variable activity, which assigns a value to an existing variable"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente describe ForEach como un flujo de control repetitivo que itera sobre una colección y ejecuta las actividades indicadas en un bucle. If Condition solo se bifurca según una condición, Wait espera un tiempo y Set Variable asigna un valor, así que ninguna recorre una colección.",
+      "explanation_en": "The source describes ForEach as a repeating control flow that iterates over a collection and runs the specified activities in a loop. If Condition only branches on a condition, Wait pauses for a time, and Set Variable assigns a value, so none of them iterates over a collection.",
+      "source": "Microsoft Learn — Pipelines and Activities (https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipelines-activities) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_047",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Una canalización llama a un servicio externo y debe esperar a que este responda antes de ejecutar la siguiente actividad. ¿Qué actividad de control encaja?",
+      "question_en": "A pipeline calls an external service and must pause until that service reports back before running the next activity. Which control activity fits?",
+      "options_es": [
+        "Una actividad Lookup, que lee un registro o valor de un origen externo",
+        "Una actividad Get Metadata, que recupera los metadatos de los datos de la canalización",
+        "Una actividad Webhook, que espera una devolución de llamada",
+        "Una actividad Wait, que espera durante un tiempo especificado"
+      ],
+      "options_en": [
+        "A Lookup activity, which reads a record or value from an external source",
+        "A Get Metadata activity, which retrieves the metadata of data in the pipeline",
+        "A Webhook activity, which waits for a callback",
+        "A Wait activity, which waits for a specified amount of time"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Con la actividad Webhook se llama a un punto de conexión y se pasa una URL de devolución de llamada; la ejecución de la canalización espera a que se invoque antes de pasar a la siguiente actividad. Lookup y Get Metadata solo leen información, y Wait se limita a esperar un tiempo especificado, sin depender de la respuesta del servicio.",
+      "explanation_en": "With the Webhook activity you call an endpoint and pass a callback URL, and the pipeline run waits for the callback to be invoked before moving to the next activity. Lookup and Get Metadata only read information, and Wait just waits for a specified amount of time, regardless of any response from the service.",
+      "source": "Microsoft Learn — Pipelines and Activities (https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipelines-activities) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_048",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Una empresa debe copiar datos de un servidor de archivos local a un almacén de datos en la nube con la actividad Copy. ¿Qué Integration Runtime necesita configurar?",
+      "question_en": "A company must copy data from an on-premises file server to a cloud data store using the Copy activity. Which integration runtime does it need to set up?",
+      "options_es": [
+        "El Azure Integration Runtime, porque llega por sí solo a cualquier red privada",
+        "Dos Integration Runtime autohospedados, porque origen y destino necesitan uno cada uno",
+        "Ningún Integration Runtime, porque la actividad Copy se ejecuta sin él",
+        "Un Integration Runtime autohospedado, porque el origen es local"
+      ],
+      "options_en": [
+        "The Azure integration runtime, because it reaches any private network on its own",
+        "Two self-hosted integration runtimes, because the source and sink each need their own",
+        "No integration runtime, because the Copy activity runs without one",
+        "A self-hosted integration runtime, because the source is on-premises"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que, al copiar datos desde o hacia almacenes locales o en una red con control de acceso, hay que configurar un Integration Runtime autohospedado. El Azure IR se menciona para almacenes accesibles públicamente a través de internet. La fuente también señala que no se puede usar más de un IR autohospedado en la misma Copy activity, y que esta se ejecuta sobre un Integration Runtime.",
+      "explanation_en": "The source states that when copying data to and from stores located on-premises or in a network with access control, you need to set up a self-hosted integration runtime. The Azure IR is mentioned for stores that are publicly accessible through the internet. The source also notes that you can't use more than one self-hosted integration runtime within the same Copy activity, and that the Copy activity is executed on an integration runtime.",
+      "source": "Microsoft Learn — Copy activity (https://learn.microsoft.com/en-us/azure/data-factory/copy-activity-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_049",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ventaja ofrece el Azure Integration Runtime en cuanto a la infraestructura?",
+      "question_en": "What benefit does the Azure integration runtime offer when it comes to infrastructure?",
+      "options_es": [
+        "Es un cómputo sin servidor, sin aprovisionar infraestructura ni aplicar revisiones",
+        "Exige instalar y aplicar revisiones al software en un host que se administra por cuenta propia",
+        "Exige reservar por adelantado una capacidad fija para poder escalar el cómputo",
+        "Obliga a aprovisionar y mantener los servidores donde se ejecuta cada actividad"
+      ],
+      "options_en": [
+        "It is serverless compute, so nothing to provision and no software to patch",
+        "It requires you to install and patch the software on a host you manage yourself",
+        "It requires you to reserve fixed capacity up front before the compute can scale",
+        "It obliges you to provision and maintain the servers that run each activity"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente describe el Azure Integration Runtime como un cómputo totalmente administrado y sin servidor, en el que no hay que ocuparse del aprovisionamiento de infraestructura, la instalación de software, las revisiones ni el escalado de capacidad. Por eso fallan las demás opciones: instalar y parchear software en un host propio, reservar capacidad fija por adelantado o aprovisionar y mantener servidores son justo las tareas que la fuente dice que no hay que asumir.",
+      "explanation_en": "The source describes the Azure integration runtime as fully managed, serverless compute, with no need to worry about infrastructure provisioning, software installation, patching, or capacity scaling. That rules out the other options: installing and patching software on your own host, reserving fixed capacity up front, or provisioning and maintaining servers are exactly the tasks the source says you don't have to take on.",
+      "source": "Microsoft Learn — Integration runtime (https://learn.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_050",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "En un proceso ELT, ¿dónde tiene lugar la transformación de los datos?",
+      "question_en": "In an ELT pipeline, where does the data transformation take place?",
+      "options_es": [
+        "En un motor de transformación independiente situado entre origen y destino",
+        "En el almacén de datos de destino, sin motor de transformación aparte",
+        "En el sistema de origen, antes de extraer ningún dato de él",
+        "En un área de ensayo que se descarta antes de cargar los datos"
+      ],
+      "options_en": [
+        "In a dedicated transformation engine placed between source and target",
+        "In the target data store, without a separate transformation engine",
+        "In the source system, before any data is extracted from it",
+        "In a staging area that is discarded before the data is loaded"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, ELT se diferencia de ETL únicamente en dónde ocurre la transformación: en ELT se hace en el almacén de datos de destino, en lugar de usar un motor de transformación independiente. Ese motor aparte es lo que caracteriza a ETL, y la fuente no sitúa la transformación en el sistema de origen ni en un área de ensayo descartada.",
+      "explanation_en": "According to the source, ELT differs from ETL solely in where the transformation takes place: in ELT it occurs in the target data store, instead of using a separate transformation engine. That separate engine is what characterizes ETL, and the source does not place the transformation in the source system or in a discarded staging area.",
+      "source": "Microsoft Learn — Extract, transform, load (ETL) (https://learn.microsoft.com/en-us/azure/architecture/data-guide/relational-data/etl) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_051",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "¿Qué enunciado describe el proceso de extracción, transformación y carga (ETL)?",
+      "question_en": "Which statement describes the extract, transform, load (ETL) process?",
+      "options_es": [
+        "Devuelve los datos ya modelados desde los almacenes analíticos a las aplicaciones operativas",
+        "Transforma los datos dentro del almacén de destino, usando la capacidad de cómputo de este",
+        "Reúne datos de varios orígenes en un único almacén de destino",
+        "Replica datos entre almacenes sin aplicarles reglas de negocio"
+      ],
+      "options_en": [
+        "It sends modeled data from analytical stores back to operational applications",
+        "It transforms data inside the target store, using that store's own processing power",
+        "It gathers data from several sources into one unified store",
+        "It replicates data between stores without applying any business rules"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente define ETL como un proceso de integración de datos que consolida datos de fuentes diversas en un almacén de datos unificado. Añade que, en la fase de transformación, los datos se modifican según reglas de negocio mediante un motor especializado y se cargan después en su destino. Por eso no se trata de devolver datos a aplicaciones operativas, ni de transformarlos dentro del destino, ni de una simple réplica sin reglas de negocio.",
+      "explanation_en": "The source defines ETL as a data integration process that consolidates data from diverse sources into a unified data store. It adds that, in the transformation phase, data is modified according to business rules using a specialized engine and then loaded into its destination. So it is not about sending data back to operational applications, nor about transforming data inside the target, nor about a plain copy that applies no business rules.",
+      "source": "Microsoft Learn — Extract, transform, load (ETL) (https://learn.microsoft.com/en-us/azure/architecture/data-guide/relational-data/etl) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_052",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere enviar los datos ya modelados de su almacén de datos a un CRM para que los equipos comerciales los usen en su trabajo diario. ¿Qué proceso describe esto?",
+      "question_en": "A company wants to send the already modeled data in its data warehouse to a CRM so sales teams can use it in their daily work. Which process describes this?",
+      "options_es": [
+        "ELT, que carga primero los datos sin procesar y los transforma en el destino",
+        "ETL tradicional, que lleva datos de sistemas operativos al análisis",
+        "Compresión de datos, que reduce el ancho de banda al copiar datos",
+        "ETL inverso, que mueve datos transformados a herramientas operativas"
+      ],
+      "options_en": [
+        "ELT, which loads raw data first and transforms it inside the target",
+        "Traditional ETL, which flows data from operational systems to analytics",
+        "Data compression, which reduces bandwidth used while copying data",
+        "Reverse ETL, which moves transformed data into operational tools"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente define el ETL inverso como mover datos transformados y modelados desde sistemas analíticos hacia herramientas y aplicaciones operativas, y lo contrapone al ETL tradicional, que va de los sistemas operativos al análisis. Por eso el ETL tradicional lleva el flujo en sentido contrario. ELT y la compresión de datos no aparecen en la fuente como un proceso que lleve datos analíticos a herramientas operativas.",
+      "explanation_en": "The source defines reverse ETL as moving transformed, modeled data from analytical systems into operational tools and applications, and contrasts it with traditional ETL, which flows data from operational systems to analytics. Traditional ETL therefore runs in the opposite direction. ELT and data compression are not presented in the source as a process that moves analytical data into operational tools.",
+      "source": "Microsoft Learn — Extract, transform, load (ETL) (https://learn.microsoft.com/en-us/azure/architecture/data-guide/relational-data/etl) — CC BY 4.0"
+    },
+    {
+      "id": "q460402_053",
+      "skill_id": "sk460402",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere que cierta tarea de procesamiento de datos se ejecute sola cuando se produzca un suceso concreto. ¿Qué función de Azure Data Factory lo permite?",
+      "question_en": "A company wants a data processing task to run on its own when something specific happens. Which Azure Data Factory feature supports this?",
+      "options_es": [
+        "Desencadenadores de eventos personalizados, que automatizan acciones",
+        "Compresión de datos, que optimiza el uso del ancho de banda al copiar",
+        "Vista previa de datos, que permite validar que la copia fue correcta",
+        "Flujos de datos personalizables, que añaden pasos propios al procesamiento"
+      ],
+      "options_en": [
+        "Custom event triggers, which automate actions",
+        "Data compression, which optimizes bandwidth usage during copying",
+        "Data preview, which lets you validate that the copy was correct",
+        "Customizable data flows, which add custom steps to data processing"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente explica que Azure Data Factory permite automatizar el procesamiento de datos mediante desencadenadores de eventos personalizados, que ejecutan una acción automáticamente cuando ocurre un evento determinado. Las otras opciones describen otras funciones: la compresión ayuda a optimizar el ancho de banda al copiar datos, la vista previa permite comprobar que los datos se copiaron correctamente y los flujos de datos personalizables añaden acciones o pasos propios al procesamiento.",
+      "explanation_en": "The source explains that Azure Data Factory lets you automate data processing using custom event triggers, which automatically execute an action when a certain event occurs. The other options describe different features: compression helps optimize bandwidth usage when copying data, data preview helps ensure the data is copied correctly, and customizable data flows add custom actions or steps to data processing.",
+      "source": "Microsoft Learn — Introduction to Azure Data Factory (https://learn.microsoft.com/en-us/azure/data-factory/introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460403_041",
+      "skill_id": "sk460403",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere integrar Power BI dentro de sus propias aplicaciones. ¿Qué opción debería usar?",
+      "question_en": "A company wants to integrate Power BI within its own applications. Which option should it use?",
+      "options_es": [
+        "Usar el servicio Power BI para publicar informes a la organización",
+        "Usar Azure Synapse Analytics para almacenar los datos",
+        "Usar Power BI Embedded en la aplicación",
+        "Usar Azure Data Factory para orquestar canalizaciones"
+      ],
+      "options_en": [
+        "Use the Power BI service to publish reports to the organization",
+        "Use Azure Synapse Analytics to store the data",
+        "Use Power BI Embedded inside the application",
+        "Use Azure Data Factory to orchestrate pipelines"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, Power BI Embedded sirve para integrar Power BI dentro de las aplicaciones propias. Publicar informes a la organización es otro uso de Power BI, no el de incrustarlo en una aplicación. Las demás opciones son otros servicios de datos y no son la opción que la fuente indica para incrustar Power BI.",
+      "explanation_en": "According to the source, Power BI Embedded is used to integrate Power BI within your own applications. Publishing reports to the organization is a different use of Power BI, not embedding it in an application. The other options are other data services and are not the option the source gives for embedding Power BI.",
+      "source": "Microsoft Learn — Choose a Data Analytics and Reporting Technology in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analysis-visualizations-reporting) — CC BY 4.0"
+    },
+    {
+      "id": "q460403_042",
+      "skill_id": "sk460403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué servicio usa Power BI para autenticar a los usuarios que inician sesión?",
+      "question_en": "Which service does Power BI rely on to authenticate users who sign in?",
+      "options_es": [
+        "Azure Key Vault",
+        "Azure Monitor",
+        "Azure Synapse Analytics",
+        "Microsoft Entra ID"
+      ],
+      "options_en": [
+        "Azure Key Vault",
+        "Azure Monitor",
+        "Azure Synapse Analytics",
+        "Microsoft Entra ID"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que Power BI usa Microsoft Entra ID para autenticar a los usuarios que inician sesión en el servicio de Power BI. Las otras opciones son servicios de Azure con otra función: Azure Key Vault se usa para guardar secretos y claves, Azure Monitor para supervisar recursos y generar alertas, y Azure Synapse Analytics para el análisis de datos. La fuente no los presenta como el mecanismo de autenticación de Power BI.",
+      "explanation_en": "The source states that Power BI uses Microsoft Entra ID to authenticate users who sign in to the Power BI service. The other options are Azure services with a different purpose: Azure Key Vault is used to store secrets and keys, Azure Monitor to monitor resources and raise alerts, and Azure Synapse Analytics for data analytics. The source does not present any of them as Power BI's authentication mechanism.",
+      "source": "Microsoft Learn — Choose a Data Analytics and Reporting Technology in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analysis-visualizations-reporting) — CC BY 4.0"
+    },
+    {
+      "id": "q460403_043",
+      "skill_id": "sk460403",
+      "type": "multiple_choice",
+      "question_es": "Los consultores de un equipo de análisis viajan mucho en avión y quieren seguir diseñando sus visualizaciones e informes durante el vuelo, sin acceso a internet. Según los criterios de selección de la guía de tecnologías de análisis e informes en Azure, ¿qué tipo de opción deben elegir?",
+      "question_en": "The consultants on an analytics team fly a lot and want to keep designing their visualizations and reports during the flight, with no internet access. According to the selection criteria in the Azure data analytics and reporting guide, what kind of option should they choose?",
+      "options_es": [
+        "Una que tenga capacidades sin conexión",
+        "Una que ofrezca capacidades de incrustación",
+        "Una que se conecte a un clúster de big data",
+        "Una que se conecte a cientos de orígenes de datos"
+      ],
+      "options_en": [
+        "One that has offline capabilities",
+        "One that provides embedding capabilities",
+        "One that can connect to a big data cluster",
+        "One that can connect to hundreds of data sources"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La guía indica que, si se quiere diseñar visualizaciones e informes sin conexión, hay que elegir una opción que tenga capacidades sin conexión, que es justo lo que necesitan los consultores en pleno vuelo. La incrustación, el clúster de big data y la conexión a cientos de orígenes de datos aparecen en la lista como criterios distintos, para otras necesidades.",
+      "explanation_en": "The guide says that if you want to design visualizations and reports while offline, you should choose an option that has offline capabilities, which is exactly what the consultants need in mid-flight. Embedding, a big data cluster and connecting to hundreds of data sources appear in the list as separate criteria for other needs.",
+      "source": "Microsoft Learn — Choose a Data Analytics and Reporting Technology in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analysis-visualizations-reporting) — CC BY 4.0"
+    },
+    {
+      "id": "q460403_044",
+      "skill_id": "sk460403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué papel cumplen los cuadernos Jupyter respecto a una herramienta de BI como Power BI?",
+      "question_en": "What role do Jupyter notebooks play relative to a BI tool such as Power BI?",
+      "options_es": [
+        "Sustituyen a la herramienta de BI al publicar paneles para la organización",
+        "Preparan y exploran los datos antes de crear informes más elaborados",
+        "Se ejecutan solo después de que Power BI genere las visualizaciones finales",
+        "Incrustan los informes terminados de Power BI en sitios web y aplicaciones externos"
+      ],
+      "options_en": [
+        "They replace the BI tool for publishing dashboards to the organization",
+        "They explore and prepare data before more elaborate reports are made",
+        "They run only after Power BI has produced the final visualizations",
+        "They embed finished Power BI reports into external websites and applications"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que los cuadernos Jupyter ofrecen un entorno eficaz para analizar, visualizar y procesar los datos antes de crear visualizaciones más avanzadas con una herramienta de BI como Power BI; por tanto, son un paso previo de trabajo con los datos. La fuente solo los describe como paso previo de análisis y procesamiento: no los presenta como sustituto de la herramienta de BI, ni como paso posterior a ella, ni como medio para incrustar informes.",
+      "explanation_en": "The source states that Jupyter notebooks provide an effective environment for analyzing, visualizing, and processing data before you build more advanced visualizations with a BI reporting tool like Power BI, so they are a preparatory step in working with data. The source only describes them as an earlier step for analysis and processing: it does not present them as a replacement for the BI tool, as a step that comes after it, or as a way to embed reports.",
+      "source": "Microsoft Learn — Choose a Data Analytics and Reporting Technology in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analysis-visualizations-reporting) — CC BY 4.0"
+    },
+    {
+      "id": "q460403_045",
+      "skill_id": "sk460403",
+      "type": "multiple_choice",
+      "question_es": "¿Qué puede hacer una organización con Power BI, según la guía de Azure?",
+      "question_en": "According to the Azure guide, what can an organization do with Power BI?",
+      "options_es": [
+        "Permitir que solo el equipo de TI cree paneles personalizados",
+        "Dar a cada usuario un único panel fijo, sin personalización",
+        "Crear informes y difundirlos a toda la organización",
+        "Añadir la gobernanza y la seguridad como una capa externa aparte"
+      ],
+      "options_en": [
+        "Let only the IT team create personalized dashboards",
+        "Give each user one fixed dashboard with no personalization",
+        "Build reports and share them organization-wide",
+        "Add governance and security as a separate external layer"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente afirma que las organizaciones pueden usar Power BI para producir informes y publicarlos en la organización, por lo que la opción correcta es crear informes y difundirlos a toda la organización. Las opciones sobre paneles fallan porque la fuente dice que todos pueden crear paneles personalizados, no solo el equipo de TI ni con un único panel fijo. La opción de la capa externa falla porque la gobernanza y la seguridad vienen integradas, no añadidas aparte.",
+      "explanation_en": "The source states that organizations can use Power BI to produce reports and publish them to the organization, so the correct option is building reports and sharing them organization-wide. The two dashboard options fail because the source says everyone can create personalized dashboards, not only the IT team and not a single fixed one. The external-layer option fails because governance and security are built in rather than added separately.",
+      "source": "Microsoft Learn — Choose a Data Analytics and Reporting Technology in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analysis-visualizations-reporting) — CC BY 4.0"
+    },
+    {
+      "id": "q460403_046",
+      "skill_id": "sk460403",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo se relaciona Azure Synapse Analytics con Power BI según su descripción general?",
+      "question_en": "How does Azure Synapse Analytics relate to Power BI according to its overview?",
+      "options_es": [
+        "Es una función de Power BI Desktop que se ocupa del modelado de informes",
+        "Es un complemento de Power BI para incrustar informes en aplicaciones",
+        "Es un servicio de análisis que obliga a abandonar Power BI para los informes",
+        "Es un servicio de análisis que se conecta de forma estrecha con Power BI"
+      ],
+      "options_en": [
+        "It is a Power BI Desktop feature used for modeling data in reports",
+        "It is a Power BI add-on used to embed reports in applications",
+        "It is an analytics service that requires leaving Power BI for reporting",
+        "It is an analytics service that connects closely with Power BI"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente presenta Azure Synapse como un servicio de análisis empresarial que reúne SQL, Spark, Data Explorer y Pipelines, y que tiene una integración profunda con otros servicios de Azure como Power BI. Por eso es un servicio de análisis que se conecta de forma estrecha con Power BI. No se describe como función de Power BI Desktop ni como complemento, y la fuente no dice que haya que abandonar Power BI.",
+      "explanation_en": "The source presents Azure Synapse as an enterprise analytics service that brings together SQL, Spark, Data Explorer and Pipelines, with deep integration with other Azure services such as Power BI. So it is an analytics service that connects closely with Power BI. It is not described as a Power BI Desktop feature or an add-on, and the source does not say that you must leave Power BI.",
+      "source": "Microsoft Learn — What is Azure Synapse Analytics? (https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) — CC BY 4.0"
+    },
+    {
+      "id": "q460403_047",
+      "skill_id": "sk460403",
+      "type": "multiple_choice",
+      "question_es": "Según la guía de Azure para elegir tecnología de análisis y generación de informes, ¿qué buscan lograr la mayoría de las soluciones de big data con sus informes y visualizaciones?",
+      "question_en": "According to the Azure guide on choosing analytics and reporting technology, what do most big data solutions aim to achieve with their reports and visualizations?",
+      "options_es": [
+        "Obtener conocimiento útil de los datos mediante análisis e informes",
+        "Archivar los datos sin procesar en un lago de datos a largo plazo",
+        "Sustituir los informes y paneles por exportaciones de datos sin procesar",
+        "Procesar transacciones de alto volumen con paneles de control integrados"
+      ],
+      "options_en": [
+        "To gain useful insight from data through analysis and reports",
+        "To archive raw data in a data lake for long-term retention and audit",
+        "To replace reports and dashboards with raw data exports for analysts",
+        "To process high-volume transactions with built-in dashboards"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente dice que el objetivo de la mayoría de las soluciones de big data es proporcionar información sobre los datos mediante análisis e informes, y que esto puede incluir informes preconfigurados, visualizaciones o exploración interactiva de datos. Archivar datos, sustituir los informes por exportaciones o procesar transacciones no se plantean como ese objetivo.",
+      "explanation_en": "The source says the goal of most big data solutions is to provide insights into the data through analysis and reporting, which can include preconfigured reports, visualizations, or interactive data exploration. Archiving data, replacing reports with raw exports, or processing transactions are not presented as that goal.",
+      "source": "Microsoft Learn — Choose a Data Analytics and Reporting Technology in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analysis-visualizations-reporting) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_045",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "Una empresa ya usa una cuenta de Azure Storage y quiere obtener las capacidades de Data Lake Storage en ella. ¿Cómo las desbloquea?",
+      "question_en": "A company already uses an Azure Storage account and wants the Data Lake Storage capabilities on it. How does it unlock them?",
+      "options_es": [
+        "Crear un tipo de cuenta dedicado de Data Lake",
+        "Implementar un servicio Data Lake independiente",
+        "Activar el interruptor de compatibilidad con Hadoop",
+        "Habilitar el espacio de nombres jerárquico"
+      ],
+      "options_en": [
+        "Create a dedicated Data Lake account type",
+        "Deploy a separate Data Lake Storage service",
+        "Turn on the Hadoop compatibility switch",
+        "Enable the hierarchical namespace setting"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, Azure Data Lake Storage no es un servicio ni un tipo de cuenta dedicado, sino un conjunto de capacidades del servicio Blob Storage de la cuenta, que se desbloquean habilitando el espacio de nombres jerárquico. Por eso fallan las opciones que proponen una cuenta o un servicio aparte. El acceso compatible con Hadoop aparece en la fuente como una de las capacidades que se obtienen, no como el mecanismo para desbloquearlas.",
+      "explanation_en": "According to the source, Azure Data Lake Storage isn't a dedicated service or account type but a set of capabilities of the Blob Storage service in the account, unlocked by enabling the hierarchical namespace setting. That rules out the options that propose a separate account or service. Hadoop-compatible access appears in the source as one of the capabilities you get, not as the mechanism for unlocking them.",
+      "source": "Microsoft Learn — Azure Data Lake Storage overview (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_046",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "En Azure Data Lake Storage con espacio de nombres jerárquico, ¿qué ocurre al renombrar o eliminar un directorio?",
+      "question_en": "In Azure Data Lake Storage with a hierarchical namespace, what happens when you rename or delete a directory?",
+      "options_es": [
+        "Es una única operación atómica de metadatos",
+        "Se procesa uno a uno cada objeto con el mismo prefijo",
+        "Primero hay que copiar el directorio a otro contenedor",
+        "Solo se ejecuta cuando se activa una política de ciclo de vida"
+      ],
+      "options_en": [
+        "It is a single atomic metadata operation",
+        "Each object sharing the name prefix is processed one by one",
+        "The directory must first be copied to another container",
+        "It runs only after a lifecycle policy is triggered"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que renombrar o eliminar un directorio se convierte en una única operación atómica de metadatos sobre el directorio. No hace falta enumerar ni procesar todos los objetos que comparten el prefijo, así que procesar uno a uno cada objeto con el mismo prefijo es justo lo que se evita. La fuente tampoco menciona copiar el directorio a otro contenedor ni esperar a una política de ciclo de vida.",
+      "explanation_en": "The source states that renaming or deleting a directory becomes a single atomic metadata operation on the directory. There is no need to enumerate and process all objects sharing the name prefix, so processing each object that shares the prefix one by one is exactly what is avoided. The source also does not mention copying the directory to another container or waiting for a lifecycle policy.",
+      "source": "Microsoft Learn — Azure Data Lake Storage overview (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_047",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de datos vuelca en un data lake archivos JSON, registros e imágenes tal como llegan y los transforma solo cuando un análisis los necesita. ¿Qué enfoque está aplicando?",
+      "question_en": "A data team dumps JSON files, logs, and images into a data lake exactly as they arrive and transforms them only when an analysis needs them. Which approach is this?",
+      "options_es": [
+        "Esquema en escritura: impone la estructura al ingerir los datos",
+        "Esquema en lectura: transforma los datos solo al necesitarlos",
+        "ETL: transforma los datos antes de almacenarlos en el repositorio",
+        "Ingesta de datos: reúne datos de varias fuentes en un repositorio"
+      ],
+      "options_en": [
+        "Schema-on-write: enforces structure as data is ingested",
+        "Schema-on-read: transforms data only when it is needed",
+        "ETL: transforms data before it is stored in the repository",
+        "Data ingestion: gathers data from many sources into one repository"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, un data lake guarda los datos en su estado original sin transformar y aplica la transformación solo cuando se necesitan; ese enfoque se conoce como schema-on-read (esquema en lectura). El esquema en escritura es el contrario: la fuente lo asocia con un almacén de datos, que impone la estructura al ingerir. La ingesta de datos es un caso de uso del data lake, no el nombre de este enfoque. ETL (conocimiento general, no aparece en la fuente) transforma antes de cargar, así que tampoco encaja.",
+      "explanation_en": "According to the source, a data lake stores data in its original, untransformed state and applies transformation only when the data is needed; this approach is known as schema-on-read. Schema-on-write is the opposite: the source ties it to a data warehouse, which enforces structure as it ingests data. Data ingestion is a data lake use case, not the name of this approach. ETL (general knowledge, not covered by the source) transforms before loading, so it does not fit either.",
+      "source": "Microsoft Learn — What Is a Data Lake? (https://learn.microsoft.com/en-us/azure/architecture/data-guide/scenarios/data-lake) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_048",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "En una arquitectura de medallón, ¿qué capa almacena conjuntos de datos agregados y listos para el negocio que se usan en informes y paneles?",
+      "question_en": "In a medallion architecture, which layer stores aggregated, business-ready datasets used for reporting and dashboards?",
+      "options_es": [
+        "Capa sin procesar (bronce)",
+        "Capa depurada (plata)",
+        "Capa curada (oro)",
+        "Capa de ingesta (cobre)"
+      ],
+      "options_en": [
+        "Raw (bronze) layer",
+        "Cleansed (silver) layer",
+        "Curated (gold) layer",
+        "Ingestion (copper) layer"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, la capa curada (oro) almacena conjuntos de datos agregados y listos para el negocio que se usan en informes y paneles. La capa sin procesar (bronce) guarda los datos ingeridos en su formato original y la depurada (plata) contiene datos validados y transformados. La fuente no describe ninguna capa de cobre entre las capas de la arquitectura de medallón.",
+      "explanation_en": "According to the source, the curated (gold) layer stores aggregated, business-ready datasets that teams use for reporting and dashboards. The raw (bronze) layer holds ingested data in its original format and the cleansed (silver) layer holds validated, transformed data. The source does not describe any copper layer among the layers of the medallion architecture.",
+      "source": "Microsoft Learn — What Is a Data Lake? (https://learn.microsoft.com/en-us/azure/architecture/data-guide/scenarios/data-lake) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_049",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué tipo de cargas de trabajo se recomienda usar un data lake?",
+      "question_en": "For which kind of workloads is a data lake recommended?",
+      "options_es": [
+        "Procesamiento transaccional y pedidos en tiempo real",
+        "Informes de nómina fijos y tablas estructuradas",
+        "Búsquedas por clave y datos de referencia pequeños",
+        "Análisis exploratorio y ciencia de datos"
+      ],
+      "options_en": [
+        "Transactional processing and real-time orders",
+        "Fixed-format payroll reports and structured tables",
+        "Key lookups and small reference datasets",
+        "Exploratory analytics and data science"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente recomienda un data lake para análisis exploratorio, ciencia de datos avanzada y cargas de aprendizaje automático. Añade que los data lakes conservan los datos en bruto y admiten esquema en lectura, lo que permite a los equipos experimentar con tipos de datos diversos. Las otras opciones describen cargas transaccionales, informes fijos sobre datos estructurados y búsquedas por clave, y ninguna figura entre las cargas que la fuente recomienda para un data lake.",
+      "explanation_en": "The source recommends a data lake for exploratory analytics, advanced data science, and machine learning workloads. It adds that data lakes retain data in raw form and support schema-on-read, so teams can experiment with diverse data types. The other options describe transactional workloads, fixed-format reports on structured data, and key lookups, and none of them is among the workloads the source recommends a data lake for.",
+      "source": "Microsoft Learn — What Is a Data Lake? (https://learn.microsoft.com/en-us/azure/architecture/data-guide/scenarios/data-lake) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_050",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué controlador, incluido en las distribuciones de Hadoop, permite acceder directamente a los datos de Azure Blob Storage y está optimizado para el análisis de macrodatos?",
+      "question_en": "Which driver, included in Hadoop distributions, lets applications access Azure Blob Storage data directly and is optimized for big data analytics?",
+      "options_es": [
+        "El controlador ABFS",
+        "El controlador ODBC para SQL Server",
+        "El controlador JDBC para Azure SQL",
+        "El controlador NFS para Azure Files"
+      ],
+      "options_en": [
+        "The ABFS driver",
+        "The ODBC driver for SQL Server",
+        "The JDBC driver for Azure SQL",
+        "The NFS driver for Azure Files"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente explica que las distribuciones de Hadoop incluyen el controlador Azure Blob File System (ABFS), que permite a muchas aplicaciones acceder directamente a los datos de Blob Storage y que está optimizado específicamente para el análisis de macrodatos. Ese papel se atribuye únicamente al controlador ABFS. Los controladores ODBC, JDBC y NFS de las otras opciones están pensados para bases de datos relacionales o recursos compartidos de archivos, no para este acceso directo a Blob Storage.",
+      "explanation_en": "The source explains that Hadoop distributions include the Azure Blob File System (ABFS) driver, which lets many applications access Blob Storage data directly and is optimized specifically for big data analytics. The source gives that role only to the ABFS driver. The ODBC, JDBC and NFS drivers in the other options are meant for relational databases or file shares, not for this direct Blob Storage access.",
+      "source": "Microsoft Learn — Azure Data Lake Storage overview (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_051",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "¿Qué capacidades de Blob Storage aprovecha Azure Data Lake Storage para gestionar el coste del almacenamiento de macrodatos?",
+      "question_en": "Which Blob Storage capabilities does Azure Data Lake Storage build on to manage big data storage costs?",
+      "options_es": [
+        "Cifrado en reposo y control de acceso por rol",
+        "Políticas de ciclo de vida y niveles por objeto",
+        "Grupos de cómputo dedicados con nodos reservados",
+        "Copia y transformación previas de los datos"
+      ],
+      "options_en": [
+        "Encryption at rest and role-based access control",
+        "Lifecycle policies and object-level tiering",
+        "Dedicated compute pools with reserved nodes",
+        "Upfront copying and transformation of data"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que Data Lake Storage se apoya en capacidades de Blob Storage como la gestión automatizada de políticas de ciclo de vida y los niveles a escala de objeto para controlar el coste del almacenamiento de macrodatos. El cifrado y el control de acceso son funciones de seguridad, no los mecanismos de coste que cita la fuente. Los grupos de cómputo dedicados y la copia o transformación previa de los datos tampoco son capacidades de Blob Storage para gestionar ese coste.",
+      "explanation_en": "The source says Data Lake Storage builds on Blob Storage capabilities such as automated lifecycle policy management and object-level tiering to manage big data storage costs. Encryption and access control are security features, not the cost mechanisms the source names. Dedicated compute pools and upfront copying or transformation of data are not Blob Storage capabilities for managing that cost.",
+      "source": "Microsoft Learn — Azure Data Lake Storage overview (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_052",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué los motores distribuidos de un data lake, como Apache Spark, pueden superar a las canalizaciones ETL tradicionales con grandes volúmenes?",
+      "question_en": "Why can distributed data lake engines such as Apache Spark outperform traditional ETL pipelines in high-volume workloads?",
+      "options_es": [
+        "Ejecutan las transformaciones en un solo nodo",
+        "Procesan cada registro de forma secuencial en un hilo",
+        "Transforman los datos en muchos nodos a la vez",
+        "Evitan dividir los datos en particiones"
+      ],
+      "options_en": [
+        "They run transformations on a single node",
+        "They process each record sequentially on one thread",
+        "They transform data on many nodes at once",
+        "They avoid splitting data into partitions"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, motores de cómputo distribuido como Apache Spark particionan los datos y ejecutan las transformaciones en muchos nodos al mismo tiempo. Por eso fallan las demás opciones: usar un solo nodo o no dividir los datos en particiones contradice ese reparto, y el procesamiento secuencial o con pocos hilos es lo que la fuente atribuye a los marcos ETL tradicionales, no a Spark.",
+      "explanation_en": "According to the source, distributed compute engines like Apache Spark partition data and run transformations across many nodes at the same time. That is why the other options fail: using a single node or not splitting the data into partitions contradicts this approach, and sequential or limited multithreaded processing is what the source attributes to traditional ETL frameworks, not to Spark.",
+      "source": "Microsoft Learn — What Is a Data Lake? (https://learn.microsoft.com/en-us/azure/architecture/data-guide/scenarios/data-lake) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_053",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "En una canalización ETL tradicional que alimenta un almacén de datos, ¿cuándo se transforman los datos?",
+      "question_en": "In a traditional ETL pipeline that feeds a data warehouse, when is the data transformed?",
+      "options_es": [
+        "Después de cargarlos, dentro del almacén",
+        "Al consultarlos, en el momento de la lectura",
+        "Mientras se cargan, fila a fila",
+        "Antes de cargarlos, en una fase previa"
+      ],
+      "options_en": [
+        "After loading, inside the warehouse",
+        "At query time, when analysts read them",
+        "During loading, as rows are written",
+        "Before loading, in a prior stage"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente explica que en las canalizaciones ETL tradicionales el motor ETL extrae y transforma los datos antes de cargarlos en el almacén. Transformarlos dentro del almacén después de cargarlos es el enfoque ELT, que la fuente contrapone al ETL. Transformarlos mientras se cargan o al consultarlos no coincide con el orden que describe la fuente, donde la transformación va antes de la carga.",
+      "explanation_en": "The source explains that in traditional ETL pipelines the ETL engine extracts and transforms the data before loading it into the warehouse. Transforming inside the warehouse after loading is the ELT approach, which the source contrasts with ETL. Transforming during loading or at query time does not match the order the source describes, where transformation comes before the load.",
+      "source": "Microsoft Learn — What Is a Data Lake? (https://learn.microsoft.com/en-us/azure/architecture/data-guide/scenarios/data-lake) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_054",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "Una empresa de energía recibe eventos de sensores IoT de alta velocidad y necesita guardarlos a gran escala sin fijar un esquema de antemano. ¿Qué enfoque encaja mejor?",
+      "question_en": "An energy company receives high-velocity IoT sensor events and must store them at scale without fixing a schema upfront. Which approach fits best?",
+      "options_es": [
+        "Almacenar los eventos en un lago de datos",
+        "Cargarlos primero en un almacén relacional",
+        "Transformarlos al cargarlos en un almacén de datos",
+        "Conservar los eventos solo en una caché en memoria"
+      ],
+      "options_en": [
+        "Persist the events in a data lake",
+        "Load them into a relational warehouse first",
+        "Transform them on load into a data warehouse",
+        "Keep the events only in an in-memory cache"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente señala que los data lakes son eficaces para streaming de eventos e IoT, donde los datos de alta velocidad deben persistir a escala sin límites de esquema previos. Un almacén de datos organiza los datos en esquemas relacionales (schema-on-write) y los transforma durante el proceso ETL o ELT, según la tabla comparativa de la fuente, lo que va contra la ausencia de esquema previo. Una caché en memoria no es lo que la fuente propone para conservar los datos.",
+      "explanation_en": "The source says data lakes are effective for event streaming and IoT use cases, where high-velocity data must persist at scale without upfront schema limits. According to the source's comparison table, a data warehouse organizes data into relational schemas (schema-on-write) and transforms it during the ETL or ELT process, which conflicts with the no-upfront-schema requirement. An in-memory cache is not what the source proposes for keeping the data.",
+      "source": "Microsoft Learn — What Is a Data Lake? (https://learn.microsoft.com/en-us/azure/architecture/data-guide/scenarios/data-lake) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_055",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "Según Microsoft, ¿qué conjunto de capacidades ofrece Azure Data Lake Storage al combinar lo aportado por Gen1 con Azure Blob Storage?",
+      "question_en": "According to Microsoft, which set of capabilities does Azure Data Lake Storage provide when it combines what Gen1 pioneered with Azure Blob Storage?",
+      "options_es": [
+        "Transacciones ACID, índices secundarios y claves foráneas",
+        "Semántica de sistema de archivos, seguridad por archivo y escala",
+        "Procesamiento de flujos en tiempo real, ventanas temporales y alertas",
+        "Almacenamiento en columnas, cómputo distribuido y consultas SQL masivas"
+      ],
+      "options_en": [
+        "ACID transactions, secondary indexes, and foreign keys",
+        "File system semantics, file-level security, and scale",
+        "Real-time stream processing, windowing, and alerting",
+        "Columnar storage, distributed compute, and massive SQL queries"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente afirma que Data Lake Storage ofrece semántica de sistema de archivos, seguridad a nivel de archivo y escala, al combinar las capacidades de Gen1 con Blob Storage. Las demás opciones enumeran funciones de bases de datos transaccionales, de procesamiento de flujos o de almacenes analíticos que la fuente no atribuye a Data Lake Storage.",
+      "explanation_en": "The source states that Data Lake Storage provides file system semantics, file-level security, and scale by combining the Gen1 capabilities with Blob Storage. The other options list transactional database, stream processing, or analytical warehouse features that the source does not attribute to Data Lake Storage.",
+      "source": "Microsoft Learn — Azure Data Lake Storage overview (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_056",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "En Microsoft Fabric, ¿qué papel cumple OneLake?",
+      "question_en": "In Microsoft Fabric, what role does OneLake play?",
+      "options_es": [
+        "Un motor de modelos semánticos para cargas tabulares",
+        "Un servicio de streaming para telemetría en tiempo real",
+        "Un único lago de datos lógico para la organización",
+        "Una base de datos de documentos para aplicaciones JSON"
+      ],
+      "options_en": [
+        "A semantic-model engine for tabular analytics workloads",
+        "A streaming service for real-time telemetry",
+        "A single logical data lake for the whole organization",
+        "A document database for JSON-based applications"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente describe OneLake como un lago de datos único, unificado y lógico para toda la organización, diseñado para almacenar, gestionar y proteger todos los datos organizativos en un solo lugar. No lo presenta como motor de modelos semánticos, servicio de streaming ni base de datos de documentos.",
+      "explanation_en": "The source describes OneLake as a single, unified, logical data lake for the entire organization, designed to store, manage, and secure all organizational data in one location. It does not present it as a semantic-model engine, a streaming service, or a document database.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_057",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "Una empresa necesita consultar, a partir de un directivo, toda su estructura de mando hacia abajo, sin importar cuántos niveles intermedios haya. ¿Qué modelo de almacén de datos encaja mejor?",
+      "question_en": "A company needs to look up, starting from a given executive, its entire chain of command below them, no matter how many intermediate levels there are. Which data store model fits best?",
+      "options_es": [
+        "Almacén clave-valor",
+        "Almacén de documentos",
+        "Almacén de familias de columnas",
+        "Almacén de grafos"
+      ],
+      "options_en": [
+        "Key-value data store",
+        "Document data store",
+        "Column-family data store",
+        "Graph data store"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente explica que un almacén de grafos guarda objetos y relaciones y puede ejecutar con eficiencia consultas que recorren la red de objetos y de relaciones entre ellos; su ejemplo son los empleados de una base de datos de recursos humanos. Los almacenes clave-valor, de documentos y de familias de columnas se describen para otros patrones de acceso: recuperar por clave, consultar campos no clave o leer una familia de columnas sin escanear todos los datos.",
+      "explanation_en": "The source explains that a graph data store holds objects and relationships and can efficiently run queries that traverse the network of objects and the relationships between them; its example is employees in a human resources database. Key-value, document, and column-family stores are described for other access patterns: retrieval by key, querying non-key fields, or reading a single column family without scanning all the data.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_058",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "En el grupo de SQL sin servidor de Azure Synapse Analytics, ¿qué es una tabla externa?",
+      "question_en": "In the serverless SQL pool of Azure Synapse Analytics, what is an external table?",
+      "options_es": [
+        "Una definición de datos fija sobre archivos de almacenamiento",
+        "Una función que consulta archivos de forma ad hoc",
+        "Una copia de los archivos guardada en el grupo de SQL sin servidor",
+        "Una credencial para acceder a la cuenta de almacenamiento"
+      ],
+      "options_en": [
+        "A fixed data definition over files in storage",
+        "A function that queries files on an ad-hoc basis",
+        "A copy of the files held inside the serverless SQL pool",
+        "A credential used to reach the storage account"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente describe la tabla externa como una estructura de datos predefinida construida sobre un conjunto de archivos externos, es decir, una definición fija de datos sobre archivos. La consulta ad hoc de archivos corresponde a la función OPENROWSET, que es la otra opción de acceso que menciona el artículo, no a la tabla externa. La fuente no habla de copiar los archivos al grupo ni de que la tabla sea una credencial; la autenticación se trata como un aspecto aparte.",
+      "explanation_en": "The source describes an external table as a predefined data structure built on top of a set of external files, that is, a fixed data definition over files. Ad-hoc querying of files corresponds to the OPENROWSET function, the other access option the article mentions, not to the external table. The source does not say the files are copied into the pool or that the table is a credential; authentication is treated as a separate matter.",
+      "source": "Microsoft Learn — Access files on storage in serverless SQL pool (https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/develop-storage-files-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_059",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "En Delta Lake, ¿con qué nombre se conoce comúnmente el comando merge?",
+      "question_en": "In Delta Lake, what is the merge command commonly known as?",
+      "options_es": [
+        "Un rollback de datos a una versión anterior",
+        "Un upsert de datos en una tabla",
+        "Una lectura de datos con esquema al leer",
+        "Una promoción de datos entre capas medallón"
+      ],
+      "options_en": [
+        "A rollback of data to an earlier version",
+        "An upsert of data into a table",
+        "A read of data using schema-on-read",
+        "A promotion of data between medallion layers"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que Delta Lake ofrece API programáticas para actualizar de forma condicional, eliminar y combinar datos en tablas, y que el comando de combinación (merge) se conoce comúnmente como upsert. Las otras opciones nombran conceptos distintos que la fuente no describe como el comando merge.",
+      "explanation_en": "The source states that Delta Lake provides programmatic APIs to conditionally update, delete, and merge data into tables, and that the merge command is commonly referred to as an upsert. The other options name different concepts that the source does not describe as the merge command.",
+      "source": "Microsoft Learn — Overview of how to use Linux Foundation Delta Lake in Apache Spark for Azure Synapse Analytics (https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-delta-lake-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460404_060",
+      "skill_id": "sk460404",
+      "type": "multiple_choice",
+      "question_es": "Un equipo necesita procesamiento masivamente paralelo, de modo que las consultas se distribuyan automáticamente entre varios nodos. ¿Qué característica debe buscar en un almacén analítico?",
+      "question_en": "A team needs massively parallel processing so that queries are automatically distributed across several nodes. What should it look for in an analytical data store?",
+      "options_es": [
+        "Una opción con modelo de base de datos relacional",
+        "Una opción optimizada para una capa de velocidad",
+        "Una opción con escalado horizontal de consultas",
+        "Una opción para series temporales y datos de solo anexado"
+      ],
+      "options_en": [
+        "An option with a relational database model",
+        "An option optimized for a speed serving layer",
+        "An option that supports query scale-out",
+        "An option for time-series and append-only data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, si se necesita procesamiento masivamente paralelo, donde las consultas se distribuyen automáticamente entre varios procesos o nodos, se debe seleccionar una opción que admita el escalado horizontal de consultas (query scale-out). Las otras tres opciones corresponden en la fuente a otros criterios de selección: el modelo relacional, la capa de servicio de velocidad y los datos de series temporales o de solo anexado. Ninguna se presenta como respuesta a la necesidad de distribuir consultas entre varios nodos.",
+      "explanation_en": "According to the source, if you need massively parallel processing, where queries are automatically distributed across several processes or nodes, you should select an option that supports query scale-out. The other three options match different selection criteria in the source: a relational model, a speed serving layer, and time-series or append-only data. None of them is presented as the answer to distributing queries across several nodes.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
     }
   ]
 }

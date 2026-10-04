@@ -551,6 +551,1087 @@
       "explanation_es": "Para la seguridad y el cumplimiento, un buen diseño de esquemas debe permitir auditar, monitorear y controlar el acceso a los recursos de forma granular (a nivel de tabla, columna o fila), lo que facilita trazabilidad y control de permisos. Las demás opciones son contrarias a la seguridad: eliminar registros de auditoría, usar contraseñas simples o configurar todo manualmente sin plantillas aumentan el riesgo en lugar de reducirlo.",
       "explanation_en": "For security and compliance, a good schema design must allow auditing, monitoring, and controlling access to resources in a granular way (at the table, column, or row level), which enables traceability and permission control. The other options work against security: deleting audit logs, using simple passwords, or manually configuring everything without templates increase risk instead of reducing it.",
       "source": "Microsoft Learn (https://learn.microsoft.com)"
+    },
+    {
+      "id": "q460201_013",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "En una tabla de una base de datos relacional, ¿qué representan las filas y las columnas?",
+      "question_en": "In a relational database table, what do the rows and the columns represent?",
+      "options_es": [
+        "Cada fila es un registro único; cada columna, un campo del registro",
+        "Cada fila es un campo del registro; cada columna, un registro único completo",
+        "Cada fila es un índice de la tabla; cada columna, una restricción",
+        "Cada fila es una columna de la clave; cada columna, un tipo de dato"
+      ],
+      "options_en": [
+        "Each row is a unique record; each column is a field in that record",
+        "Each row is a field within the record; each column is a complete unique record",
+        "Each row is an index on the table; each column is a constraint on it",
+        "Each row is a key column of the table; each column is a data type"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, los datos de una tabla se organizan en filas y columnas: cada fila representa un registro único y cada columna un campo de ese registro. La segunda opción invierte los papeles, y las otras dos atribuyen a filas y columnas significados (índices, restricciones, claves o tipos de dato) que la fuente no les da.",
+      "explanation_en": "According to the source, table data is organized in rows and columns: each row represents a unique record and each column a field in that record. The second option swaps the roles, and the other two give rows and columns meanings (indexes, constraints, keys or data types) that the source does not assign to them.",
+      "source": "Microsoft Learn — Tables (https://learn.microsoft.com/en-us/sql/relational-databases/tables/tables) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_014",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "¿Qué función cumple la clave primaria de una tabla relacional?",
+      "question_en": "What role does the primary key of a relational table play?",
+      "options_es": [
+        "Copiar los valores de otra tabla para validar los datos nuevos",
+        "Identificar de forma única cada fila de la tabla",
+        "Limitar los valores de una columna mediante una expresión lógica",
+        "Dividir la tabla en subconjuntos repartidos entre varios grupos de archivos"
+      ],
+      "options_en": [
+        "Copy values from another table to validate new data",
+        "Uniquely identify each row in the table",
+        "Limit column values by using a logical expression",
+        "Divide the table into subsets spread across several filegroups"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente define la clave primaria como la columna o columnas cuyos valores identifican de forma única cada fila de la tabla, y añade que refuerza la integridad de entidad. Como conocimiento general (no lo dice este fragmento): copiar valores de otra tabla es la función de una clave externa, limitar valores con una expresión lógica es propio de una restricción CHECK, y dividir la tabla en subconjuntos corresponde al particionado.",
+      "explanation_en": "The source defines the primary key as the column or columns whose values uniquely identify each row in the table, and adds that it enforces entity integrity. As general knowledge (this fragment does not say it): copying values from another table is the job of a foreign key, limiting values with a logical expression is what a CHECK constraint does, and dividing the table into subsets is partitioning.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_015",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "Una tienda tiene las tablas Pedidos y Clientes y quiere que cada pedido apunte a un cliente existente. ¿Qué elemento establece ese vínculo entre las dos tablas?",
+      "question_en": "A shop has Orders and Customers tables and wants every order to point to an existing customer. Which element establishes that link between the two tables?",
+      "options_es": [
+        "Una restricción CHECK con una expresión lógica sobre Pedidos",
+        "Una vista que combina las dos tablas con un JOIN en cada consulta",
+        "Una clave externa en Pedidos que apunta a Clientes",
+        "Una partición horizontal de la tabla Pedidos por cliente"
+      ],
+      "options_en": [
+        "A CHECK constraint with a logical expression on Orders",
+        "A view that joins the two tables with a JOIN",
+        "A foreign key in Orders that points to Customers",
+        "A horizontal partition of the Orders table by customer"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente explica que una clave externa es una columna (o combinación de columnas) que establece y refuerza un vínculo entre los datos de dos tablas. Una restricción CHECK, una vista con JOIN y una partición horizontal no son lo que la fuente describe como el elemento que crea ese vínculo entre tablas.",
+      "explanation_en": "The source explains that a foreign key is a column (or combination of columns) that establishes and enforces a link between the data in two tables. A CHECK constraint, a view with a JOIN and a horizontal partition are not what the source describes as the element that creates that link between tables.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_016",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "La tabla Pedidos tiene una restricción de clave externa hacia Vendedores. ¿Qué ocurre si se intenta eliminar un vendedor cuyo ID figura en pedidos existentes?",
+      "question_en": "The Orders table has a foreign key constraint to Salespeople. What happens when someone tries to delete a salesperson whose ID is used in existing orders?",
+      "options_es": [
+        "La acción se completa y los pedidos quedan huérfanos sin vínculo",
+        "La acción se completa y los pedidos del vendedor se eliminan también",
+        "La acción se completa y el ID del vendedor pasa a NULL en los pedidos",
+        "La acción falla y el vendedor sigue en la tabla de vendedores"
+      ],
+      "options_en": [
+        "The action completes and the orders are left orphaned without a link",
+        "The action completes and the salesperson's orders are deleted too",
+        "The action completes and the salesperson ID becomes NULL in the orders",
+        "The action fails and the salesperson stays in the table"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, una restricción de clave externa impide que se rompa el vínculo entre las tablas: si se intenta eliminar una fila de la tabla de clave primaria y su valor corresponde a una clave externa de otra tabla, la acción falla. Que los pedidos queden huérfanos es justo la situación que la restricción evita. Borrar los pedidos o poner su ID en NULL tampoco es lo que describe el fragmento.",
+      "explanation_en": "According to the source, a foreign key constraint prevents the link between the tables from being broken: if someone tries to delete a row in the primary key table and its value corresponds to a foreign key in another table, the action fails. Leaving the orders orphaned is exactly the situation the constraint prevents. Deleting the orders or setting their ID to NULL is not what the fragment describes either.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_017",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "Al crear una restricción de clave externa, a diferencia de una clave primaria, ¿qué ocurre con los índices?",
+      "question_en": "When you create a foreign key constraint, unlike a primary key constraint, what happens with indexes?",
+      "options_es": [
+        "Se crea automáticamente un índice sobre las columnas de la clave externa",
+        "Solo se crea un índice si el diseñador lo define manualmente después",
+        "Se crea un índice solo cuando la clave externa abarca más de una columna",
+        "Se crea un índice agrupado que reordena físicamente la tabla hija"
+      ],
+      "options_en": [
+        "An index is created automatically on the foreign key columns",
+        "An index exists only if the designer defines it manually afterward",
+        "An index is created only when the foreign key spans more than one column",
+        "A clustered index is created that physically reorders the child table"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente dice que, a diferencia de las claves primarias, crear una restricción de clave externa no crea automáticamente un índice, y que añadirlo a mano suele ser útil. Por eso el índice solo existe si el diseñador lo define. Las demás opciones afirman que se crea uno de forma automática o bajo una condición que la fuente no menciona.",
+      "explanation_en": "The source says that, unlike primary key constraints, creating a foreign key constraint doesn't automatically create a corresponding index, and that creating one manually is often useful. So an index exists only if the designer defines it. The other options claim one is created automatically or under a condition the source does not mention.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_018",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "La tabla Empleados ya usa el número de empleado como clave primaria, pero la empresa quiere impedir que dos empleados tengan el mismo correo electrónico. ¿Qué restricción es la adecuada?",
+      "question_en": "The Employees table already uses the employee number as its primary key, but the company wants to prevent two employees from sharing the same email address. Which constraint fits?",
+      "options_es": [
+        "Una segunda clave primaria sobre la columna de correo electrónico",
+        "Una restricción CHECK con una expresión lógica sobre el correo",
+        "Una restricción UNIQUE sobre la columna de correo",
+        "Una clave externa hacia otra tabla de correos electrónicos"
+      ],
+      "options_en": [
+        "A second primary key on the email address column",
+        "A CHECK constraint with a logical expression on email",
+        "A UNIQUE constraint on the email column",
+        "A foreign key constraint pointing to another email table"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que, aunque tanto UNIQUE como PRIMARY KEY garantizan unicidad, se debe usar UNIQUE en lugar de PRIMARY KEY cuando se quiere exigir la unicidad de una columna que no es la clave primaria, como el correo en este caso. CHECK y FOREIGN KEY son otros tipos de restricción, y la fuente no los presenta como la forma de exigir unicidad en una columna que no es la clave primaria.",
+      "explanation_en": "The source states that although both UNIQUE and PRIMARY KEY enforce uniqueness, you should use UNIQUE instead of PRIMARY KEY when you want to enforce the uniqueness of a column that isn't the primary key, such as the email here. CHECK and FOREIGN KEY are other kinds of constraint, and the source does not present them as the way to enforce uniqueness on a column that isn't the primary key.",
+      "source": "Microsoft Learn — Unique constraints and check constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_019",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "¿En qué se diferencian las restricciones FOREIGN KEY y CHECK al decidir qué valores son válidos en una columna?",
+      "question_en": "How do FOREIGN KEY and CHECK constraints differ in deciding which values are valid in a column?",
+      "options_es": [
+        "FOREIGN KEY toma valores de otra tabla; CHECK solo rechaza los valores nulos",
+        "Solo CHECK exige que el valor exista en otra tabla, mientras que FOREIGN KEY no valida ningún valor",
+        "Ambas comparan cada valor con una lista fija escrita dentro de la propia columna",
+        "FOREIGN KEY toma los valores válidos de otra tabla; CHECK, de una expresión lógica"
+      ],
+      "options_en": [
+        "FOREIGN KEY gets valid values from another table; CHECK only rejects null values",
+        "Only CHECK requires the value to exist in another table, while FOREIGN KEY validates no values",
+        "Both compare each value against a fixed list written inside the column itself",
+        "FOREIGN KEY gets valid values from another table; CHECK uses a logical expression"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente explica que ambas controlan los valores de una columna, pero FOREIGN KEY obtiene la lista de valores válidos de otra tabla, mientras que CHECK los determina con una expresión lógica. Las otras opciones atribuyen a CHECK una función que la fuente no describe, invierten los papeles o suponen una lista fija en la columna, algo que la fuente no menciona.",
+      "explanation_en": "The source explains that both control the values in a column, but FOREIGN KEY gets the list of valid values from another table while CHECK determines them from a logical expression. The other options give CHECK a role the source does not describe, swap the roles, or assume a fixed list inside the column, which the source never mentions.",
+      "source": "Microsoft Learn — Unique constraints and check constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_020",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "Una empresa tiene una tabla muy grande y quiere acceder a subconjuntos de sus datos y gestionarlos con rapidez sin perder la integridad del conjunto. ¿Qué técnica encaja?",
+      "question_en": "A company has a very large table and wants to access and manage subsets of its data quickly while keeping the integrity of the whole. Which technique fits?",
+      "options_es": [
+        "Dividir la tabla horizontalmente en particiones",
+        "Crear una tabla temporal local por cada usuario conectado",
+        "Añadir una restricción CHECK que limite la cantidad de filas",
+        "Sustituir la clave primaria por una restricción UNIQUE"
+      ],
+      "options_en": [
+        "Horizontally divide the table into partitions",
+        "Create a local temporary table for each connected user",
+        "Add a CHECK constraint that limits the number of rows",
+        "Replace the primary key with a UNIQUE constraint"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que el particionado divide horizontalmente los datos de una tabla en unidades y facilita acceder a subconjuntos o gestionarlos con rapidez, manteniendo la integridad del conjunto. Las tablas temporales locales, las restricciones CHECK y UNIQUE no se describen con ese propósito.",
+      "explanation_en": "The source says partitioning horizontally divides a table's data into units and lets you access or manage subsets quickly while maintaining the integrity of the whole. Local temporary tables, CHECK and UNIQUE constraints are not described as serving that purpose.",
+      "source": "Microsoft Learn — Tables (https://learn.microsoft.com/en-us/sql/relational-databases/tables/tables) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_021",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "Un equipo necesita eliminar todas las filas de una tabla de preparación de datos usando la menor cantidad posible de recursos del sistema y del registro de transacciones. ¿Qué instrucción recomienda la documentación?",
+      "question_en": "A team needs to remove every row from a data staging table while using as few system and transaction log resources as possible. Which statement does the documentation recommend?",
+      "options_es": [
+        "Una instrucción DELETE sin cláusula WHERE sobre la tabla",
+        "Una instrucción TRUNCATE TABLE sobre la tabla",
+        "Una instrucción UPDATE que ponga todas las columnas en NULL",
+        "Una instrucción INSERT INTO ... SELECT desde una tabla vacía"
+      ],
+      "options_en": [
+        "A DELETE statement without a WHERE clause on the table",
+        "A TRUNCATE TABLE statement on the table",
+        "An UPDATE statement that sets every column to NULL",
+        "An INSERT INTO ... SELECT statement from an empty table"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente recomienda TRUNCATE TABLE para eliminar todas las filas de una tabla, y señala que es más rápida que DELETE y usa menos recursos del sistema y del registro de transacciones. DELETE sin WHERE también elimina todas las filas, pero la fuente lo presenta como la alternativa menos eficiente. UPDATE e INSERT ... SELECT no eliminan filas.",
+      "explanation_en": "The source recommends TRUNCATE TABLE to delete all the rows in a table, and notes that it is faster than DELETE and uses fewer system and transaction log resources. DELETE without WHERE also removes every row, but the source presents it as the less efficient alternative. UPDATE and INSERT ... SELECT do not remove rows.",
+      "source": "Microsoft Learn — DELETE (Transact-SQL) (https://learn.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_022",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "Una persona ejecuta una instrucción DELETE sobre la tabla Clientes y olvida incluir la cláusula WHERE. ¿Cuál es el resultado?",
+      "question_en": "Someone runs a DELETE statement on the Customers table and forgets to include the WHERE clause. What is the result?",
+      "options_es": [
+        "Se elimina solo la primera fila de la tabla",
+        "La instrucción falla porque WHERE es obligatoria",
+        "Se eliminan todas las filas de la tabla",
+        "Se eliminan solo las filas con valores nulos en alguna columna"
+      ],
+      "options_en": [
+        "Only the first row of the table is deleted",
+        "The statement fails because WHERE is mandatory",
+        "All rows in the table are deleted",
+        "Only rows with null values in some column are deleted"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente afirma que, si no se proporciona una cláusula WHERE, DELETE elimina todas las filas de la tabla. No elimina solo la primera fila ni solo las filas con nulos, y tampoco falla por la ausencia de WHERE.",
+      "explanation_en": "The source states that if no WHERE clause is supplied, DELETE removes all the rows from the table. It does not delete just the first row or only rows with nulls, and it does not fail because WHERE is missing.",
+      "source": "Microsoft Learn — DELETE (Transact-SQL) (https://learn.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_023",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué sirve asignar restricciones a las columnas y a la tabla en una base de datos relacional?",
+      "question_en": "What is the purpose of assigning constraints to columns and tables in a relational database?",
+      "options_es": [
+        "Para comprimir los datos por filas o por páginas y ahorrar almacenamiento",
+        "Para repartir las filas entre varios grupos de archivos del servidor",
+        "Para convertir la tabla en una tabla temporal visible solo en la sesión",
+        "Para controlar los datos permitidos, como impedir nulos o duplicados"
+      ],
+      "options_en": [
+        "To compress the data by row or by page and save storage space",
+        "To spread the rows across several filegroups on the server",
+        "To turn the table into a temporary table visible only in the session",
+        "To control allowed data, such as disallowing nulls or duplicates"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente explica que se pueden asignar propiedades y restricciones para controlar los datos permitidos, por ejemplo impedir valores nulos, dar un valor predeterminado o exigir unicidad y relaciones entre tablas. La compresión, el reparto en grupos de archivos y las tablas temporales son temas distintos que no corresponden a la función de las restricciones.",
+      "explanation_en": "The source explains that properties and constraints can be assigned to control the data that is allowed, for example disallowing null values, supplying a default value, or enforcing uniqueness and relationships between tables. Compression, filegroup distribution and temporary tables are different topics, not what constraints are for.",
+      "source": "Microsoft Learn — Tables (https://learn.microsoft.com/en-us/sql/relational-databases/tables/tables) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_024",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "Una empresa carga datos en una tabla de preparación y después debe pasar un gran número de filas a la tabla final de forma eficiente. ¿Qué instrucción SQL sirve para ello?",
+      "question_en": "A company loads data into a staging table and then must efficiently move a large number of rows to the final table. Which SQL statement should it use?",
+      "options_es": [
+        "INSERT INTO ... SELECT desde la tabla de preparación",
+        "DELETE sin WHERE sobre la tabla de preparación",
+        "UPDATE sobre la tabla de preparación",
+        "TRUNCATE TABLE sobre la tabla final antes de cada carga"
+      ],
+      "options_en": [
+        "INSERT INTO ... SELECT from the staging table",
+        "DELETE without WHERE on the staging table",
+        "UPDATE on the staging table",
+        "TRUNCATE TABLE on the final table before each load"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, INSERT INTO ... SELECT permite transferir de forma eficiente un gran número de filas de una tabla, como una tabla de preparación, a otra, y puede hacerlo con registro mínimo. Además, DELETE y TRUNCATE TABLE eliminan filas, no las copian, y UPDATE modifica filas existentes sin trasladarlas a otra tabla.",
+      "explanation_en": "According to the source, INSERT INTO ... SELECT lets you efficiently transfer a large number of rows from one table, such as a staging table, to another, and it can do so with minimal logging. In addition, DELETE and TRUNCATE TABLE remove rows rather than copy them, and UPDATE changes existing rows without moving them to another table.",
+      "source": "Microsoft Learn — INSERT (Transact-SQL) (https://learn.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_025",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "Una tabla de inscripciones usa como clave primaria la combinación IdAlumno + IdCurso. ¿Qué regla impone esa clave?",
+      "question_en": "An enrollments table uses the combination StudentId + CourseId as its primary key. What rule does that key impose?",
+      "options_es": [
+        "Los valores no pueden repetirse en cada columna por separado, pero sí la combinación IdAlumno + IdCurso",
+        "Los valores pueden repetirse dentro de una columna, pero no la combinación de IdAlumno + IdCurso",
+        "Los valores pueden repetirse dentro de IdCurso, pero no dentro de IdAlumno ni en la combinación",
+        "Los valores pueden repetirse en la combinación IdAlumno + IdCurso, pero no dentro de una columna"
+      ],
+      "options_en": [
+        "Values cannot repeat within each single column, but the StudentId + CourseId combination can",
+        "Values can repeat within one column, but not in the StudentId + CourseId combination",
+        "Values can repeat within CourseId, but not within StudentId or in the combination",
+        "Values can repeat in the StudentId + CourseId combination, but not within one column"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que, en una clave primaria de varias columnas, los valores pueden repetirse dentro de una columna, pero cada combinación de valores de todas las columnas debe ser única. Es decir, la regla recae sobre la combinación y no sobre cada columna por separado. Las demás opciones invierten esta regla o exigen unicidad a una columna concreta, algo que la fuente no dice.",
+      "explanation_en": "The source states that in a multi-column primary key, values can be duplicated within one column, but each combination of values from all the key columns must be unique. In other words, the rule applies to the combination and not to each column on its own. The other options reverse this rule or demand uniqueness from a specific column, which the source does not say.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_026",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "En SQL Server, ¿qué diferencia hay entre una restricción UNIQUE y una clave primaria respecto al valor NULL?",
+      "question_en": "In SQL Server, what is the difference between a UNIQUE constraint and a primary key regarding the NULL value?",
+      "options_es": [
+        "UNIQUE no admite NULL; la clave primaria admite un NULL por columna",
+        "UNIQUE no admite NULL; la clave primaria tampoco admite NULL",
+        "UNIQUE admite un NULL por columna; la clave primaria no admite NULL",
+        "UNIQUE admite varios NULL por columna; la clave primaria no admite NULL"
+      ],
+      "options_en": [
+        "UNIQUE does not allow NULL; the primary key allows one NULL per column",
+        "UNIQUE does not allow NULL; the primary key does not allow NULL either",
+        "UNIQUE allows one NULL per column; the primary key does not allow NULL",
+        "UNIQUE allows several NULLs per column; the primary key does not allow NULL"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, a diferencia de PRIMARY KEY, una restricción UNIQUE admite el valor NULL, pero solo un valor nulo por columna. Por eso UNIQUE se usa para garantizar la unicidad de una columna que no es la clave primaria. Las otras opciones contradicen la fuente: atribuyen NULL a la clave primaria, niegan que UNIQUE lo admita o permiten varios nulos por columna.",
+      "explanation_en": "According to the source, unlike PRIMARY KEY, a UNIQUE constraint allows the value NULL, but only one null value per column. That is why UNIQUE is used to enforce uniqueness on a column that is not the primary key. The other options contradict the source: they give NULL to the primary key, deny that UNIQUE allows it, or allow several nulls per column.",
+      "source": "Microsoft Learn — Unique constraints and check constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460201_027",
+      "skill_id": "sk460201",
+      "type": "multiple_choice",
+      "question_es": "Una columna entera que admite NULL tiene una restricción CHECK que solo permite el valor 10. ¿Qué ocurre al insertar NULL en esa columna?",
+      "question_en": "A nullable integer column has a CHECK constraint that allows only the value 10. What happens when NULL is inserted into that column?",
+      "options_es": [
+        "La inserción falla con error, porque NULL no es igual a 10",
+        "NULL se convierte en 10, porque es el único valor permitido",
+        "Se rechaza la fila y se revierte la transacción, porque NULL falla",
+        "Se inserta NULL sin error, porque NULL se evalúa como UNKNOWN"
+      ],
+      "options_en": [
+        "The insert fails with an error, because NULL is not equal to 10",
+        "NULL is converted to 10, because that is the only allowed value",
+        "The row is rejected and rolled back, because NULL fails the CHECK rule",
+        "NULL is inserted without error, because NULL evaluates to UNKNOWN"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente explica que CHECK rechaza los valores que se evalúan como FALSE y que los valores nulos se evalúan como UNKNOWN, por lo que su presencia puede anular la restricción. En su ejemplo, insertar NULL en una columna que solo admite el valor 10 se completa sin devolver un error. Las demás opciones suponen un rechazo o una conversión que la fuente no describe.",
+      "explanation_en": "The source explains that CHECK constraints reject values that evaluate to FALSE and that null values evaluate to UNKNOWN, so their presence might override the constraint. In its example, inserting NULL into a column that allows only the value 10 succeeds without returning an error. The other options assume a rejection or a conversion that the source does not describe.",
+      "source": "Microsoft Learn — Unique constraints and check constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_015",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "En Azure SQL Database, ¿qué es un grupo elástico (elastic pool)?",
+      "question_en": "In Azure SQL Database, what is an elastic pool?",
+      "options_es": [
+        "Una copia de seguridad compartida entre varias bases de datos de un servidor",
+        "Una colección de bases de datos individuales con recursos compartidos",
+        "Una única base de datos aislada y totalmente administrada",
+        "Un servidor virtual donde el cliente administra el sistema operativo"
+      ],
+      "options_en": [
+        "A shared backup copy used by several databases on a server",
+        "A collection of single databases that share a set of resources",
+        "One fully managed, isolated database",
+        "A virtual machine on which the customer manages the operating system"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, un grupo elástico es una colección de bases de datos individuales con un conjunto compartido de recursos, como CPU o memoria. La opción de la única base de datos aislada y totalmente administrada describe la base de datos individual, que la fuente presenta como la otra opción de implementación. Una copia de seguridad compartida y una máquina virtual administrada por el cliente no son lo que define a un grupo elástico.",
+      "explanation_en": "According to the source, an elastic pool is a collection of single databases with a shared set of resources, such as CPU or memory. The option of one fully managed, isolated database describes a single database, which the source presents as the other deployment option. A shared backup copy and a customer-managed virtual machine are not what defines an elastic pool.",
+      "source": "Microsoft Learn — What is the Azure SQL Database service? (https://learn.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_016",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación nueva tiene un uso intermitente e impredecible y tolera una breve demora de arranque tras periodos de inactividad. ¿Qué nivel de computación encaja mejor para su base de datos individual?",
+      "question_en": "A new app has intermittent, unpredictable usage and can tolerate a short warm-up delay after idle periods. Which compute tier best fits its single database?",
+      "options_es": [
+        "Computación aprovisionada para una base de datos individual con uso medio alto y sin tolerancia a retrasos",
+        "Computación aprovisionada para varias bases de datos de un grupo elástico con uso medio alto",
+        "Computación sin servidor para una base de datos individual con uso intermitente e impredecible",
+        "Computación sin servidor para una base de datos individual con uso medio alto y sin tolerancia a retrasos"
+      ],
+      "options_en": [
+        "Provisioned compute for a single database with high average usage and no tolerance for delay",
+        "Provisioned compute for several databases in an elastic pool with high average usage",
+        "Serverless compute for a single database with intermittent, unpredictable usage",
+        "Serverless compute for a single database with high average usage and no tolerance for delay"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que la computación sin servidor (serverless) está optimizada en precio y rendimiento para bases de datos individuales con un uso intermitente e impredecible que pueden asumir cierta demora de arranque tras la inactividad. En cambio, la computación aprovisionada se orienta a un uso medio más alto que no admite ninguna demora, ya sea en una base de datos individual o en varias dentro de grupos elásticos. Por eso las demás opciones no encajan con el escenario descrito.",
+      "explanation_en": "The source states that serverless compute is price-performance optimized for single databases with intermittent, unpredictable usage that can afford some warm-up delay after idle periods. In contrast, provisioned compute targets higher average usage that cannot afford any warm-up delay, whether for a single database or for several databases in elastic pools. That is why the other options do not match the described scenario.",
+      "source": "Microsoft Learn — Serverless compute tier (https://learn.microsoft.com/en-us/azure/azure-sql/database/serverless-tier-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_017",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere trasladar sus aplicaciones locales de SQL Server a la nube como servicio PaaS, con compatibilidad casi total con SQL Server y los mínimos cambios posibles en aplicaciones y bases de datos. ¿Qué producto de Azure SQL encaja mejor?",
+      "question_en": "A company wants to lift and shift on-premises SQL Server applications to a PaaS cloud service with near-total SQL Server compatibility and minimal application and database changes. Which Azure SQL product fits best?",
+      "options_es": [
+        "Azure SQL Database, con una sola base de datos aislada y propia",
+        "SQL Server en una máquina virtual de Azure, con sistema operativo propio",
+        "Azure SQL Database, con un grupo elástico de bases de datos compartido",
+        "Azure SQL Managed Instance, con una instancia administrada"
+      ],
+      "options_en": [
+        "Azure SQL Database, with one isolated database of its own",
+        "SQL Server on an Azure virtual machine, with its own operating system",
+        "Azure SQL Database, with an elastic pool of shared databases",
+        "Azure SQL Managed Instance, with a managed instance"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente describe SQL Managed Instance como un servicio PaaS con una compatibilidad cercana al 100 % con el motor de SQL Server. Añade que permite a los clientes actuales de SQL Server trasladar sus aplicaciones locales a la nube con cambios mínimos en aplicaciones y bases de datos, y que ofrece las capacidades de PaaS. Las otras tres opciones no son el producto que la fuente asocia con este traslado, de modo que el enunciado solo se cumple con Managed Instance.",
+      "explanation_en": "The source describes SQL Managed Instance as a PaaS service with near 100% compatibility with the SQL Server Database Engine. It adds that it lets existing SQL Server customers lift and shift their on-premises applications to the cloud with minimal application and database changes, and that it provides PaaS capabilities. The other three options are not the product the source ties to this migration, so the scenario matches only Managed Instance.",
+      "source": "Microsoft Learn — What is Azure SQL Managed Instance? (https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/sql-managed-instance-paas-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_018",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa que Azure SQL Database sea una base de datos multimodelo?",
+      "question_en": "What does it mean that Azure SQL Database is a multi-model database?",
+      "options_es": [
+        "Admite datos relacionales y no relacionales, como JSON o grafos",
+        "Solo admite tablas relacionales, aunque ofrece varios motores distintos",
+        "Ejecuta a la vez varios sistemas operativos dentro del mismo servidor",
+        "Obliga a usar un lenguaje distinto para cada formato de datos almacenado"
+      ],
+      "options_en": [
+        "It stores relational and non-relational data, such as JSON or graphs",
+        "It supports only relational tables, but offers several different engines",
+        "It runs several operating systems at once inside the same server",
+        "It requires a separate language for each stored data format"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente describe Azure SQL Database como una base de datos multimodelo en la que se pueden almacenar y trabajar datos en varios formatos, tanto relacionales como no relacionales (vectores, grafos, JSON, XML, datos espaciales y pares clave-valor). Por eso no se limita a tablas relacionales. Tampoco ejecuta varios sistemas operativos ni obliga a usar un lenguaje por formato: la fuente habla de evitar esa complejidad.",
+      "explanation_en": "The source describes Azure SQL Database as a multi-model database where you can store and work with data in multiple formats, both relational and non-relational (vector, graph, JSON, XML, spatial, and key-value pairs). So it is not limited to relational tables. It also does not run several operating systems or require a language per format: the source speaks of avoiding that complexity.",
+      "source": "Microsoft Learn — What is the Azure SQL Database service? (https://learn.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_019",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "Una empresa usa SQL Managed Instance y necesita integración de datos con SSIS. ¿Qué servicio de Azure aporta SSIS en ese caso, según Microsoft Learn?",
+      "question_en": "A company uses SQL Managed Instance and needs data integration with SSIS. Which Azure service provides SSIS in that case, according to the source?",
+      "options_es": [
+        "Se integra de forma nativa en el motor de Managed Instance",
+        "Forma parte del servicio PaaS Azure Data Factory",
+        "Es un servicio PaaS de Azure independiente, igual que SSAS",
+        "Lo reemplazan siempre los informes paginados de Power BI"
+      ],
+      "options_en": [
+        "It is built natively into the Managed Instance engine",
+        "It is part of the Azure Data Factory PaaS service",
+        "It is a separate Azure PaaS service, just like SSAS",
+        "It is always replaced by Power BI paginated reports"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que Managed Instance no incluye de forma nativa la suite de Business Intelligence y que SSIS forma parte del servicio PaaS Azure Data Factory. Por eso no es una función nativa del motor. Tampoco es un servicio independiente: la fuente presenta así a SSAS, no a SSIS. Los informes paginados de Power BI se mencionan como alternativa para SSRS, no para SSIS.",
+      "explanation_en": "The source states that Managed Instance does not natively include the Business Intelligence suite and that SSIS is part of the Azure Data Factory PaaS service. So it is not a native feature of the engine. It is not a separate service either: the source describes SSAS that way, not SSIS. Power BI paginated reports are mentioned as an alternative for SSRS, not for SSIS.",
+      "source": "Microsoft Learn — What is Azure SQL Managed Instance? (https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/sql-managed-instance-paas-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_020",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué distingue el escalado dinámico del autoescalado en Azure SQL Database?",
+      "question_en": "What distinguishes dynamic scaling from autoscaling in Azure SQL Database?",
+      "options_es": [
+        "El escalado dinámico exige apagar la aplicación; el autoescalado, no",
+        "El autoescalado es siempre manual; el dinámico se ajusta solo según criterios",
+        "El dinámico es manual y sin interrupción; el autoescalado es automático",
+        "Ambos son términos equivalentes para el mismo comportamiento del servicio"
+      ],
+      "options_en": [
+        "Dynamic scaling requires taking the app offline; autoscaling does not",
+        "Autoscaling is always manual; dynamic scaling adjusts itself on criteria",
+        "Dynamic scaling is manual with no downtime; autoscaling is automatic",
+        "Both terms are equivalent names for the same service behavior"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, el autoescalado es cuando un servicio escala automáticamente según criterios, mientras que el escalado dinámico permite escalar manualmente sin tiempo de inactividad. Las opciones que invierten los papeles o que exigen apagar la aplicación contradicen esa definición. La fuente también dice expresamente que ambos conceptos son distintos.",
+      "explanation_en": "According to the source, autoscaling is when a service scales automatically based on criteria, whereas dynamic scaling allows manual scaling without downtime. The options that swap the roles or require taking the app offline contradict that definition. The source also states explicitly that the two concepts are different.",
+      "source": "Microsoft Learn — What is the Azure SQL Database service? (https://learn.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_021",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "Según la fuente, ¿cuál es la pregunta clave al decidir entre PaaS e IaaS para cargas de SQL Server en Azure?",
+      "question_en": "According to the source, what is the key question to ask when choosing between PaaS and IaaS for SQL Server workloads in Azure?",
+      "options_es": [
+        "Si se prefiere un lenguaje de consulta distinto de SQL o el propio SQL",
+        "Si se prefiere almacenar datos relacionales o datos no relacionales",
+        "Si se prefiere una red virtual aislada o un acceso público al servicio",
+        "Si se prefiere administrar la base de datos o delegar esas tareas en Azure"
+      ],
+      "options_en": [
+        "Whether to use a query language other than SQL or stay with SQL itself",
+        "Whether to store relational data or non-relational data in the service",
+        "Whether to host the service in an isolated virtual network or a public one",
+        "Whether to manage the database yourself or delegate that work to Azure"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente plantea como pregunta clave si se quiere administrar la base de datos, aplicar parches y hacer copias de seguridad, o delegar esas operaciones en Azure. El lenguaje de consulta, el tipo de datos relacionales o no relacionales y la red virtual no se presentan en el fragmento como esa pregunta clave entre PaaS e IaaS.",
+      "explanation_en": "The source presents as the key question whether you want to manage your database, apply patches, and take backups, or delegate those operations to Azure. The query language, the relational or non-relational nature of the data, and the virtual network are not presented in the passage as that key question between PaaS and IaaS.",
+      "source": "Microsoft Learn — What Is Azure SQL? (https://learn.microsoft.com/en-us/azure/azure-sql/azure-sql-iaas-vs-paas-what-is-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_022",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "En cuanto a la administración, ¿qué contrapartida implica elegir una opción PaaS de Azure SQL frente a IaaS?",
+      "question_en": "Regarding administration, what trade-off comes with choosing a PaaS option in Azure SQL instead of IaaS?",
+      "options_es": [
+        "Menos tiempo de administración, pero menos tareas y scripts personalizados",
+        "Más tiempo de administración, pero con más tareas y scripts personalizados",
+        "Menos tiempo de administración, pero con acceso total al sistema operativo",
+        "Más tiempo de administración, pero con una menor disponibilidad garantizada"
+      ],
+      "options_en": [
+        "Less administration time, but fewer custom tasks and scripts",
+        "More administration time, but more custom tasks and scripts to run",
+        "Less administration time, but full access to the operating system",
+        "More administration time, but lower guaranteed service availability"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente dice que las opciones PaaS reducen el tiempo necesario para administrar la base de datos, pero limitan el rango de tareas de administración y scripts personalizados que se pueden ejecutar. Por eso las opciones que hablan de más tiempo de administración contradicen la cita. La opción del acceso total al sistema operativo no corresponde a una limitación de tareas y scripts personalizados.",
+      "explanation_en": "The source says PaaS options reduce the amount of time you need to invest to administer the database, but limit the range of custom administration tasks and scripts you can perform or run. That is why the options that mention more administration time contradict the quote. The option about full operating system access does not match a limitation on custom tasks and scripts.",
+      "source": "Microsoft Learn — What Is Azure SQL? (https://learn.microsoft.com/en-us/azure/azure-sql/azure-sql-iaas-vs-paas-what-is-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_023",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "En Azure SQL Database, ¿qué representa una DTU (unidad de transacción de base de datos)?",
+      "question_en": "In Azure SQL Database, what does a DTU (database transaction unit) represent?",
+      "options_es": [
+        "Una medida de solo el rendimiento de la CPU y la memoria",
+        "Una medida combinada de CPU, memoria, lecturas y escrituras",
+        "Una unidad de almacenamiento que se factura aparte del cómputo",
+        "Un núcleo lógico elegido de forma independiente del resto de recursos"
+      ],
+      "options_en": [
+        "A measure of only CPU and memory performance",
+        "A blended measure of CPU, memory, reads, and writes",
+        "A storage unit that is billed separately from compute",
+        "A logical core chosen independently from other resources"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, una DTU es una medida combinada de CPU, memoria, lecturas y escrituras, y el modelo basado en DTU ofrece paquetes preconfigurados de recursos de cómputo con almacenamiento incluido. Por eso no se limita solo a la CPU y la memoria, ni es una unidad de almacenamiento que se facture aparte. Tampoco es un recurso elegido por separado: la fuente la presenta como una medida combinada que agrupa varios recursos.",
+      "explanation_en": "According to the source, a DTU is a blended measure of CPU, memory, reads, and writes, and the DTU-based model offers preconfigured bundles of compute resources with included storage. So it is not limited to CPU and memory alone, and it is not a storage unit billed separately. Nor is it a resource chosen on its own: the source presents it as a blended measure that bundles several resources together.",
+      "source": "Microsoft Learn — Purchasing Models (https://learn.microsoft.com/en-us/azure/azure-sql/database/purchasing-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_024",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere elegir por separado cómputo, memoria y almacenamiento, y trasladar con claridad los requisitos de sus cargas locales a la nube. ¿Qué modelo de compra de Azure SQL Database encaja?",
+      "question_en": "A team wants to choose compute, memory, and storage independently and map its on-premises workload requirements to the cloud. Which Azure SQL Database purchasing model fits?",
+      "options_es": [
+        "Un modelo que oculta el consumo individual de cada recurso",
+        "Un modelo que impide elegir la generación de hardware usada",
+        "Un modelo vCore, con recursos elegidos según la carga",
+        "Un modelo que impone una cantidad fija de memoria para todos"
+      ],
+      "options_en": [
+        "A model that hides the consumption of each individual resource",
+        "A model that prevents choosing the hardware generation used",
+        "A vCore model, with resources chosen based on the workload",
+        "A model that imposes a fixed amount of memory on everyone"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que el modelo de compra basado en vCore permite elegir los recursos de cómputo, memoria y almacenamiento según las necesidades de la carga, y ofrece una forma directa de traducir a la nube los requisitos de las cargas locales. Además aporta transparencia del consumo de cada recurso y la opción de elegir la generación de hardware. Por eso no encajan los modelos que ocultan el consumo, impiden elegir el hardware o fijan la memoria.",
+      "explanation_en": "The source indicates that the vCore-based purchasing model lets you choose compute, memory, and storage resources based on workload needs, and offers a straightforward way to translate on-premises workload requirements to the cloud. It also provides transparency of individual resource consumption and the option to choose the hardware generation. That is why the models that hide consumption, prevent choosing the hardware, or fix the memory do not fit.",
+      "source": "Microsoft Learn — Purchasing Models (https://learn.microsoft.com/en-us/azure/azure-sql/database/purchasing-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_025",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "¿En qué escenario resulta más adecuado un grupo elástico?",
+      "question_en": "In which scenario is an elastic pool best suited?",
+      "options_es": [
+        "Dos bases de datos con carga alta y constante",
+        "Pocas bases de datos con uso alto durante todo el día",
+        "Varias bases de datos con un uso medio-alto que se mantiene constante",
+        "Muchas bases de datos con poco uso medio y picos esporádicos"
+      ],
+      "options_en": [
+        "Two databases with heavy, constant workloads",
+        "A few databases with high usage throughout the day",
+        "Several databases with medium-high usage that stays constant",
+        "Many databases with low average use and infrequent spikes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, los grupos de bases de datos elásticas (elastic pools) son adecuados para muchas bases de datos con un patrón de bajo uso medio y picos poco frecuentes. Las opciones con carga alta o medio-alta y constante describen justo lo contrario: la fuente indica que varias bases de datos con uso medio-alto persistente no deberían colocarse en el mismo grupo elástico.",
+      "explanation_en": "According to the source, elastic pools are well suited for a large number of databases whose utilization pattern is low average use with infrequent spikes. The options with a heavy or medium-high constant load describe the opposite: the source says multiple databases with persistent medium-high utilization shouldn't be placed in the same elastic pool.",
+      "source": "Microsoft Learn — Manage Multiple Databases with Elastic Pools (https://learn.microsoft.com/en-us/azure/azure-sql/database/elastic-pool-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_026",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué algunas instrucciones de T-SQL de nivel de servidor no están disponibles en Azure SQL Database?",
+      "question_en": "Why aren't some server-level T-SQL statements available in Azure SQL Database?",
+      "options_es": [
+        "Porque aísla sus funciones de la base master y del sistema operativo",
+        "Porque sus tipos de datos y operadores básicos funcionan distinto que en SQL Server",
+        "Porque solo admite el lenguaje de consulta propio de un motor no relacional",
+        "Porque exige que el cliente administre el sistema de archivos del servidor"
+      ],
+      "options_en": [
+        "Because it isolates features from the master database and the operating system",
+        "Because its core data types and operators behave differently from those in SQL Server",
+        "Because it supports only the query language of a non-relational engine",
+        "Because it requires customers to manage the server's file system themselves"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente explica que algunas funciones y sintaxis no se admiten porque Azure SQL Database está diseñado para aislar las funciones de las dependencias de la base de datos master y del sistema operativo, por lo que la mayoría de las actividades de nivel de servidor no son apropiadas. La fuente también dice que los componentes básicos de SQL, como los tipos de datos y los operadores, funcionan igual que en SQL Server, y que no están disponibles las instrucciones que configuran el sistema operativo o el sistema de archivos. Por eso las otras tres opciones contradicen lo que describe la fuente.",
+      "explanation_en": "The source explains that some features and syntax are not supported because Azure SQL Database is designed to isolate features from dependencies on the master database and the operating system, so most server-level activities are inappropriate. The source also says that core SQL components, such as data types and operators, work identically to SQL Server, and that statements which configure operating system components or the file system are not available. That is why the other three options contradict what the source describes.",
+      "source": "Microsoft Learn — What Is a Single Database? (https://learn.microsoft.com/en-us/azure/azure-sql/database/single-database-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_027",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es Azure SQL?",
+      "question_en": "What is Azure SQL?",
+      "options_es": [
+        "Un único servicio de base de datos relacional alojado en Azure",
+        "Una familia de productos administrados basados en el motor SQL Server",
+        "Un conjunto de herramientas locales para instalar SQL Server en servidores propios",
+        "Un servicio de análisis que reemplaza al motor de SQL Server por otro"
+      ],
+      "options_en": [
+        "A single relational database service hosted in Azure",
+        "A family of managed products built on the SQL Server engine",
+        "A set of on-premises tools for installing SQL Server on your own servers",
+        "An analytics service that replaces the SQL Server engine with another"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, Azure SQL es una familia de productos administrados, seguros e inteligentes que usan el motor de base de datos SQL Server en la nube de Azure. No es un único servicio, porque la fuente enumera tres productos en la familia. Tampoco es un conjunto de herramientas locales, y no sustituye el motor de SQL Server, sino que se basa en él.",
+      "explanation_en": "According to the source, Azure SQL is a family of managed, secure, and intelligent products that use the SQL Server database engine in the Azure cloud. It is not a single service, because the source lists three products in the family. It is also not a set of on-premises tools, and it does not replace the SQL Server engine; it is built upon it.",
+      "source": "Microsoft Learn — What Is Azure SQL? (https://learn.microsoft.com/en-us/azure/azure-sql/azure-sql-iaas-vs-paas-what-is-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_028",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "Una empresa gestiona muchas bases de datos en un grupo elástico y quiere simplificar sus tareas de administración ejecutando scripts. ¿Qué característica debe usar?",
+      "question_en": "A company manages many databases in an elastic pool and wants to simplify its management tasks by running scripts. Which feature should it use?",
+      "options_es": [
+        "Plantillas de despliegue que crean los recursos del grupo",
+        "Un servidor vinculado que ejecuta los scripts localmente",
+        "Los trabajos elásticos que ejecutan los scripts de gestión",
+        "Una réplica con nombre que descarga las consultas de lectura"
+      ],
+      "options_en": [
+        "Deployment templates that create the pool's resources",
+        "A linked server that runs the scripts locally",
+        "Elastic jobs that run the management scripts",
+        "A named replica that offloads heavy read queries"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que con un grupo se simplifican las tareas de administración al ejecutar scripts en trabajos elásticos, que eliminan gran parte del tedio asociado a un gran número de bases de datos. Las demás opciones no se presentan en la fuente como el mecanismo para ejecutar scripts de administración sobre las bases de datos de un grupo.",
+      "explanation_en": "The source indicates that with a pool, management tasks are simplified by running scripts in elastic jobs, which remove most of the tedium of handling large numbers of databases. The other options are not presented in the source as the mechanism for running management scripts across the databases in a pool.",
+      "source": "Microsoft Learn — Manage Multiple Databases with Elastic Pools (https://learn.microsoft.com/en-us/azure/azure-sql/database/elastic-pool-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_029",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "¿Qué se factura cuando una base de datos serverless de Azure SQL Database está en pausa por inactividad?",
+      "question_en": "What is billed when a serverless database in Azure SQL Database is paused during inactivity?",
+      "options_es": [
+        "El cómputo mínimo configurado y el almacenamiento",
+        "Solo el cómputo usado durante la última hora",
+        "El cómputo y el almacenamiento a tarifa reducida",
+        "Solo el almacenamiento que usa la base de datos"
+      ],
+      "options_en": [
+        "The configured minimum compute plus storage",
+        "Only the compute used during the last hour",
+        "Both compute and storage at a reduced rate",
+        "Only the storage that the database uses"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente dice que el nivel de computación serverless pausa automáticamente las bases de datos durante los periodos de inactividad y que entonces solo se factura el almacenamiento; las reanuda cuando vuelve la actividad. Por eso durante la pausa no se factura cómputo alguno, ni mínimo ni a tarifa reducida. Las demás opciones incluyen algún cómputo en la factura, lo que contradice que solo se facture el almacenamiento.",
+      "explanation_en": "The source says the serverless compute tier automatically pauses databases during inactive periods, when only storage is billed, and resumes them when activity returns. So no compute is billed during the pause, neither a minimum nor a reduced rate. The other options include some compute in the bill, which contradicts the statement that only storage is billed.",
+      "source": "Microsoft Learn — Serverless compute tier (https://learn.microsoft.com/en-us/azure/azure-sql/database/serverless-tier-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460202_030",
+      "skill_id": "sk460202",
+      "type": "multiple_choice",
+      "question_es": "Además de las herramientas integradas de supervisión y alertas, ¿qué puede emitir Azure SQL Database para facilitar la supervisión?",
+      "question_en": "Besides the built-in monitoring and alerting tools, what can Azure SQL Database also emit to make monitoring easier?",
+      "options_es": [
+        "Métricas y registros de recursos de la base de datos",
+        "Solo calificaciones de rendimiento, sin métricas ni registros",
+        "Únicamente alertas, sin métricas ni registros de recursos",
+        "Nada propio: depende solo de herramientas externas de terceros"
+      ],
+      "options_en": [
+        "Metrics and resource logs about the database",
+        "Only performance ratings, with no metrics or resource logs",
+        "Only alerts, with no metrics or resource logs of any kind",
+        "Nothing of its own: it relies only on third-party tools"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que, junto a las herramientas integradas de supervisión y alertas, SQL Database puede emitir métricas y registros de recursos para facilitar la supervisión. Por eso son falsas las opciones que dicen que solo hay calificaciones de rendimiento o alertas, sin métricas ni registros. Tampoco es cierto que dependa solo de herramientas externas, ya que la fuente habla de herramientas integradas.",
+      "explanation_en": "The source indicates that, alongside the built-in monitoring and alerting tools, SQL Database can emit metrics and resource logs for easier monitoring. That is why the options saying there are only performance ratings or only alerts, with no metrics or logs, are wrong. It is also untrue that it relies only on external tools, since the source refers to built-in tools.",
+      "source": "Microsoft Learn — What Is a Single Database? (https://learn.microsoft.com/en-us/azure/azure-sql/database/single-database-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460203_018",
+      "skill_id": "sk460203",
+      "type": "multiple_choice",
+      "question_es": "Un equipo necesita un servicio relacional administrado en Azure que admita extensiones de código abierto y opciones de despliegue flexibles. ¿Qué servicio encaja?",
+      "question_en": "A team needs a managed relational service on Azure that supports open-source extensions and flexible deployment options. Which service fits?",
+      "options_es": [
+        "Azure SQL Managed Instance",
+        "Azure Database for MySQL",
+        "Azure Database for PostgreSQL",
+        "Azure SQL Database (Hyperscale)"
+      ],
+      "options_en": [
+        "Azure SQL Managed Instance",
+        "Azure Database for MySQL",
+        "Azure Database for PostgreSQL",
+        "Azure SQL Database (Hyperscale)"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, Azure Database for PostgreSQL es un servicio PostgreSQL administrado que admite extensiones de código abierto y opciones de despliegue flexibles. La fuente describe SQL Managed Instance como un entorno casi completo de SQL Server, Azure Database for MySQL como una base de datos MySQL administrada para aplicaciones web y cargas de trabajo de código abierto, y SQL Database (Hyperscale) como un nivel SQL muy escalable; ninguno se presenta con extensiones de código abierto.",
+      "explanation_en": "According to the source, Azure Database for PostgreSQL is a managed PostgreSQL service that supports open-source extensions and flexible deployment options. The source describes SQL Managed Instance as a near-complete SQL Server environment, Azure Database for MySQL as a managed MySQL database for web apps and open-source workloads, and SQL Database (Hyperscale) as a highly scalable SQL tier; none of them is presented as supporting open-source extensions.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460203_019",
+      "skill_id": "sk460203",
+      "type": "multiple_choice",
+      "question_es": "¿Qué descripción corresponde a cómo un sistema de gestión de bases de datos relacionales organiza los datos y gestiona las transacciones?",
+      "question_en": "Which description matches how a relational database management system organizes data and handles transactions?",
+      "options_es": [
+        "Documentos con esquema flexible, con transacciones limitadas a una sola clave",
+        "Nodos y aristas, con transacciones limitadas a recorridos del grafo",
+        "Valores ordenados por tiempo, con transacciones limitadas a anexar nuevos datos",
+        "Tablas normalizadas con esquema en escritura, con transacciones ACID"
+      ],
+      "options_en": [
+        "Flexible per-document schemas, with transactions limited to a single key",
+        "Nodes and edges, with transactions limited to graph traversals",
+        "Time-ordered values, with transactions limited to appending new data",
+        "Normalized tables with schema-on-write, with ACID transactions"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que los sistemas de gestión de bases de datos relacionales organizan los datos en tablas normalizadas con esquema en escritura y admiten transacciones ACID y consultas SQL. Los documentos flexibles, los nodos y aristas y los valores ordenados por tiempo describen otros modelos de datos, no el relacional.",
+      "explanation_en": "The source states that relational database management systems organize data into normalized tables by using schema-on-write and support ACID transactions and rich SQL queries. Flexible documents, nodes and edges, and time-ordered values describe other data models, not the relational one.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460203_020",
+      "skill_id": "sk460203",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación guarda sus pedidos en Azure Database for PostgreSQL y ahora también necesita consultar datos de series temporales junto con esos datos transaccionales, sin mover los datos fuera de la base de datos. ¿Qué opción encaja según la fuente?",
+      "question_en": "An application stores its orders in Azure Database for PostgreSQL and now also needs to query time-series data alongside that transactional data, without moving the data out of the database. Which option fits according to the source?",
+      "options_es": [
+        "Usar TimescaleDB en la base de datos PostgreSQL actual",
+        "Aprovisionar un clúster de Azure Data Explorer aparte",
+        "Trasladar los datos a un Eventhouse de Microsoft Fabric",
+        "Copiar los datos a una caché clave-valor independiente"
+      ],
+      "options_en": [
+        "Use TimescaleDB in the current PostgreSQL database",
+        "Provision a separate Azure Data Explorer cluster",
+        "Move the data into an Eventhouse in Microsoft Fabric",
+        "Copy the data into a separate key-value cache"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente dice que Azure Database for PostgreSQL admite TimescaleDB y que conviene elegir esa opción cuando se necesita consultar series temporales junto con los datos transaccionales existentes en la base de datos. Azure Data Explorer (una plataforma PaaS independiente) y Eventhouse en Microsoft Fabric (una experiencia SaaS integrada en Fabric) son servicios aparte para datos de series temporales, así que implicarían sacar los datos de la base de datos. Una caché clave-valor aparte tampoco es la opción que la fuente indica para esta necesidad.",
+      "explanation_en": "The source says Azure Database for PostgreSQL supports TimescaleDB and that you should select this option when you need to query time-series data alongside existing transactional data in the database. Azure Data Explorer (a standalone PaaS platform) and Eventhouse in Microsoft Fabric (a SaaS experience integrated with Fabric) are separate services for time-series data, so they would mean moving the data out of the database. A separate key-value cache is also not the option the source gives for this need.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460203_021",
+      "skill_id": "sk460203",
+      "type": "multiple_choice",
+      "question_es": "En la clasificación de modelos de datos de Azure, ¿qué categoría agrupa Azure Database for PostgreSQL y Azure Database for MySQL?",
+      "question_en": "In Azure's data model classification, which category groups Azure Database for PostgreSQL and Azure Database for MySQL?",
+      "options_es": [
+        "Series temporales (Time series)",
+        "Relacional (OLTP)",
+        "Búsqueda e indexación",
+        "Objeto y archivo (Object and file)"
+      ],
+      "options_en": [
+        "Time series",
+        "Relational (OLTP)",
+        "Search and indexing",
+        "Object and file"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La tabla de la fuente sitúa Azure Database for PostgreSQL y Azure Database for MySQL (junto con Azure SQL Database) en la categoría relacional (OLTP), cuyo propósito principal son las operaciones transaccionales consistentes. Las otras categorías de la tabla tienen propósitos distintos y listan otros servicios de ejemplo.",
+      "explanation_en": "The source table places Azure Database for PostgreSQL and Azure Database for MySQL (along with Azure SQL Database) in the relational (OLTP) category, whose primary purpose is consistent transactional operations. The other categories in the table have different purposes and list different example services.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460203_022",
+      "skill_id": "sk460203",
+      "type": "multiple_choice",
+      "question_es": "Según la fuente, ¿qué aspectos del comportamiento relacional suelen relajar las bases de datos no relacionales (NoSQL) para ganar escalabilidad o agilidad?",
+      "question_en": "According to the source, which aspects of relational behavior do nonrelational (NoSQL) databases typically relax to gain scalability or agility?",
+      "options_es": [
+        "El escalado horizontal y la agilidad del desarrollo",
+        "Los patrones de acceso y de agregación específicos",
+        "Los esquemas rígidos y el alcance transaccional",
+        "El rendimiento de las lecturas y el volumen de datos"
+      ],
+      "options_en": [
+        "Horizontal scaling and agility of development",
+        "Specific access patterns and data aggregation",
+        "Rigid schemas and the scope of transactions",
+        "Read performance and the volume of stored data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que las bases de datos no relacionales suelen relajar algunos aspectos del comportamiento relacional, como la rigidez del esquema y el alcance de las transacciones, a cambio de escalabilidad o agilidad. El escalado horizontal y los patrones de acceso o de agregación específicos son aquello para lo que se optimizan, no lo que relajan, y la fuente no menciona el rendimiento de las lecturas ni el volumen de datos entre los aspectos relajados.",
+      "explanation_en": "The source states that nonrelational databases typically relax some aspects of relational behavior, such as schema rigidity and transaction scope, for scalability or agility. Horizontal scale and specific access or aggregation patterns are what they optimize for, not what they relax, and the source does not list read performance or data volume among the relaxed aspects.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460203_023",
+      "skill_id": "sk460203",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere alojar una aplicación web ligera: un sitio de comercio electrónico basado en WordPress. Según la fuente, ¿qué servicio relacional de Azure encaja mejor?",
+      "question_en": "A company wants to host a lightweight web app: a WordPress-based e-commerce site. According to the source, which Azure relational service fits best?",
+      "options_es": [
+        "Azure SQL Managed Instance",
+        "Azure SQL Database (Hyperscale)",
+        "Azure Database for PostgreSQL",
+        "Azure Database for MySQL"
+      ],
+      "options_en": [
+        "Azure SQL Managed Instance",
+        "Azure SQL Database (Hyperscale)",
+        "Azure Database for PostgreSQL",
+        "Azure Database for MySQL"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la tabla de la fuente, Azure Database for MySQL es el servicio indicado para aplicaciones web ligeras y su caso de uso de ejemplo es alojar un sitio de comercio electrónico basado en WordPress. SQL Managed Instance se orienta a aplicaciones empresariales heredadas y migraciones lift-and-shift, SQL Database (Hyperscale) a la distribución global y Azure Database for PostgreSQL a cargas de trabajo de código abierto y analítica.",
+      "explanation_en": "According to the source table, Azure Database for MySQL is the service listed for lightweight web apps, and its example use case is hosting a WordPress-based e-commerce site. SQL Managed Instance is aimed at legacy enterprise apps and lift-and-shift migrations, SQL Database (Hyperscale) at global distribution, and Azure Database for PostgreSQL at open-source and analytics workloads.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_022",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "Un comercio diseña la base de datos de su aplicación de registro de pedidos (OLTP). ¿Qué logra la normalización de los datos en este diseño?",
+      "question_en": "A retailer designs the database for its order-entry application (OLTP). What does normalizing the data accomplish in this design?",
+      "options_es": [
+        "Fusiona los datos relacionados en una sola tabla ancha para que cada lectura sea más rápida",
+        "Guarda el historial en cubos multidimensionales para que los analistas lo segmenten",
+        "Duplica datos entre tablas para evitar uniones en cada consulta",
+        "Reduce la redundancia al separar los datos en partes más pequeñas"
+      ],
+      "options_en": [
+        "It merges related data into one wide table so that every read is faster",
+        "It stores the history in cubes so that analysts can slice and dice it",
+        "It duplicates data across tables so that queries can avoid joins",
+        "It reduces redundancy by splitting the data up into smaller pieces"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, un sistema OLTP logra procesar y almacenar transacciones de forma eficiente en parte mediante la normalización, que divide los datos en fragmentos más pequeños y menos redundantes. Fusionar los datos en una tabla ancha o duplicarlos va en sentido contrario a reducir la redundancia, y guardar el historial en cubos no es un efecto de la normalización.",
+      "explanation_en": "According to the source, an OLTP system partly achieves efficient processing and storage of transactions through normalization, which breaks the data up into smaller, less redundant chunks. Merging data into a wide table or duplicating it works against reducing redundancy, and storing history in cubes is not an effect of normalization.",
+      "source": "Microsoft Learn — Online Transaction Processing (OLTP) (https://learn.microsoft.com/en-us/azure/architecture/data-guide/relational-data/online-transaction-processing) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_023",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "Un analista ejecuta informes sobre datos muy normalizados de un sistema transaccional (OLTP) y comprueba que las consultas resultan complejas. ¿Cuál es el motivo principal?",
+      "question_en": "An analyst runs reports against highly normalized data from a transactional (OLTP) system and finds the queries complicated. What is the main reason?",
+      "options_es": [
+        "La mayoría de las consultas deben recombinar los datos con uniones",
+        "La base guarda cada registro en una sola tabla ancha desnormalizada",
+        "Las tablas carecen de claves para relacionarlas entre sí",
+        "El esquema solo se aplica al leer los datos, no al escribirlos"
+      ],
+      "options_en": [
+        "Most queries must recombine the split data by using joins",
+        "The database keeps each record in a single wide denormalized table",
+        "The tables lack any keys that would allow them to be related",
+        "The schema is enforced only when the data is read, not written"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente explica que, con datos muy normalizados, las consultas de análisis tienden a ser complejas porque la mayoría necesita desnormalizar los datos mediante uniones (joins). Una tabla ancha desnormalizada simplificaría las consultas, y la falta de claves o el esquema en lectura no son la causa que describe el fragmento.",
+      "explanation_en": "The source explains that with highly normalized data, analytical queries tend to be complex because most of them need to denormalize the data by using joins. A single wide denormalized table would make queries simpler, and missing keys or schema-on-read are not the cause the fragment describes.",
+      "source": "Microsoft Learn — Online Transaction Processing (OLTP) (https://learn.microsoft.com/en-us/azure/architecture/data-guide/relational-data/online-transaction-processing) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_024",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "Una empresa construye un modelo analítico (OLAP) para informes a gran escala. ¿Qué diseño de esquema suelen usar los sistemas OLAP en lugar de la normalización tradicional?",
+      "question_en": "A company builds an analytical (OLAP) data model for large-scale reporting. Which schema design do OLAP systems typically use instead of traditional normalization?",
+      "options_es": [
+        "Un esquema muy normalizado con una columna por atributo",
+        "Un esquema en estrella o copo de nieve por dimensiones",
+        "Un esquema en lectura sin estructura impuesta al escribir",
+        "Un esquema plano de clave-valor sin relaciones entre tablas"
+      ],
+      "options_en": [
+        "A highly normalized schema with one column per attribute",
+        "A star or snowflake schema with data grouped by dimension",
+        "A schema-on-read design with no structure enforced on write",
+        "A flat key-value layout with no relationships between tables"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que los modelos de datos OLAP tienden a ser multidimensionales y que es difícil o imposible mapearlos directamente a modelos entidad-relación u orientados a objetos, en los que cada atributo corresponde a una columna. Por eso, en lugar de la normalización tradicional, los sistemas OLAP suelen usar un esquema en estrella o de copo de nieve, como dice el fragmento de forma directa.",
+      "explanation_en": "The source states that OLAP data models tend to be multidimensional and that it is difficult or impossible to map them directly to entity-relationship or object-oriented models, where each attribute corresponds to one column. That is why, instead of traditional normalization, OLAP systems typically use a star or snowflake schema, as the fragment says directly.",
+      "source": "Microsoft Learn — Online Analytical Processing (https://learn.microsoft.com/en-us/azure/architecture/data-guide/relational-data/online-analytical-processing) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_025",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "Un diseñador quiere que una columna de una tabla rechace valores nulos o reciba un valor por defecto cuando no se especifique ninguno. ¿Qué característica del diseño de la tabla lo consigue?",
+      "question_en": "A designer wants a column in a table to reject null values or to receive a default value when none is specified. Which table-design feature achieves this?",
+      "options_es": [
+        "Particionar la tabla horizontalmente en varios grupos de archivos",
+        "Comprimir las filas para que quepan más en cada página",
+        "Definir restricciones que impidan nulos o fijen un valor por defecto",
+        "Mover la columna a una tabla temporal global visible para todos los usuarios"
+      ],
+      "options_en": [
+        "Partition the table horizontally across several filegroups",
+        "Compress the rows so that more of them fit on each page",
+        "Define column constraints that block nulls or supply a default",
+        "Place the column in a global temporary table shared by all users"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, se pueden asignar propiedades a la tabla y a cada columna para controlar los datos permitidos, por ejemplo con restricciones en una columna que no admitan valores nulos o que aporten un valor predeterminado cuando no se especifica ninguno. Comprimir las filas solo permite almacenar más filas por página y no controla qué valores acepta una columna; particionar o usar tablas temporales globales tampoco sirve para ese fin.",
+      "explanation_en": "According to the source, you can assign properties to the table and to each column to control the data that is allowed, for example constraints on a column that disallow null values or provide a default value when none is specified. Compressing rows only lets more rows be stored on a page and does not control which values a column accepts; partitioning or using global temporary tables does not serve that purpose either.",
+      "source": "Microsoft Learn — Tables (https://learn.microsoft.com/en-us/sql/relational-databases/tables/tables) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_026",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "En un esquema relacional, ¿para qué sirve una clave externa entre dos tablas?",
+      "question_en": "In a relational schema, what is the purpose of a foreign key between two tables?",
+      "options_es": [
+        "Garantizar que cada fila de su propia tabla tenga un valor único",
+        "Combinar los datos de ambas tablas en una sola tabla unificada",
+        "Acelerar las consultas creando una copia de los datos en cada tabla",
+        "Imponer una relación entre dos tablas y limitar los valores de una"
+      ],
+      "options_en": [
+        "To guarantee that every row in its own table has a unique value",
+        "To merge the data from both tables into one combined table",
+        "To speed up queries by creating a copy of the data in each table",
+        "To tie two tables together and restrict the values one can hold"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente define la clave externa como una columna o combinación de columnas que establece y hace cumplir un vínculo entre los datos de dos tablas, de modo que controla los datos que se pueden almacenar en la tabla de la clave externa. La clave externa no garantiza unicidad en su propia tabla, sino que vincula dos tablas, y tampoco las fusiona ni copia sus datos.",
+      "explanation_en": "The source defines a foreign key as a column or combination of columns used to establish and enforce a link between the data in two tables, so that it controls the data that can be stored in the foreign key table. A foreign key does not guarantee uniqueness within its own table; it links two tables, and it does not merge them or copy their data.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_027",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "Una base de datos de ventas tiene una tabla de vendedores y una de pedidos cuya columna SalesPersonID es una clave externa. Con la restricción aplicando la integridad referencial, ¿qué ocurre al intentar eliminar un vendedor cuyo identificador usan pedidos existentes?",
+      "question_en": "A sales database has a salesperson table and an orders table whose SalesPersonID column is a foreign key. With the constraint enforcing referential integrity, what happens when someone tries to delete a salesperson whose ID is used by existing orders?",
+      "options_es": [
+        "La eliminación se rechaza porque el identificador sigue referenciado",
+        "La eliminación se acepta porque los pedidos ya no dependen del vendedor",
+        "La eliminación se acepta porque la restricción borra antes los pedidos asociados",
+        "La eliminación se acepta porque el sistema asigna otro vendedor a los pedidos"
+      ],
+      "options_en": [
+        "The delete is rejected because the ID is still referenced",
+        "The delete is accepted because the orders no longer depend on the salesperson",
+        "The delete is accepted because the constraint first removes the related orders",
+        "The delete is accepted because the system reassigns the orders to another salesperson"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, la restricción de clave externa hace cumplir la integridad referencial: si se intenta eliminar una fila de la tabla de clave principal, la acción falla cuando ese valor corresponde a un valor de la restricción de clave externa de otra tabla. Así se evita que los pedidos queden huérfanos sin vínculo con los datos del vendedor. Las otras opciones describen una eliminación que sí se acepta, algo que la fuente descarta en este caso.",
+      "explanation_en": "According to the source, the foreign key constraint enforces referential integrity: if an attempt is made to delete a row in the primary key table, the action fails when that value corresponds to a value in the foreign key constraint of another table. This prevents the orders from being orphaned without a link to the salesperson data. The other options describe a delete that is accepted, which the source rules out in this case.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_028",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "Un administrador quiere saber por qué suele resultar útil crear a mano un índice sobre las columnas de una clave externa. Según la fuente, ¿cuál es uno de los motivos?",
+      "question_en": "A DBA wants to know why it is often useful to manually create an index on the columns of a foreign key. According to the source, what is one of the reasons?",
+      "options_es": [
+        "Porque sin ese índice no se pueden combinar los datos de las dos tablas",
+        "Porque esas columnas se usan a menudo como criterio de unión en consultas",
+        "Porque sin ese índice la clave principal deja de garantizar valores únicos",
+        "Porque ese índice guarda una copia de la tabla principal en la tabla externa"
+      ],
+      "options_en": [
+        "Because the data of the two tables cannot be combined without that index",
+        "Because those columns are frequently used as join criteria in queries",
+        "Because without that index the primary key stops guaranteeing unique values",
+        "Because that index stores a copy of the primary table in the foreign key table"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que las columnas de una clave externa se usan con frecuencia como criterio de unión cuando se combinan los datos de tablas relacionadas en una consulta, y por eso suele ser útil indexarlas a mano. Crear ese índice no es obligatorio: los datos de dos tablas relacionadas pueden combinarse aunque no exista. Tampoco la clave principal depende de él ni el índice copia datos entre tablas.",
+      "explanation_en": "The source states that foreign key columns are frequently used as join criteria when data from related tables is combined in a query, which is why indexing them manually is often useful. Creating that index is not required: data from two related tables can be combined even without it. The primary key does not depend on it either, and the index does not copy data between tables.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_029",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "Una tabla Pedidos referencia a Clientes mediante una clave externa. Al eliminar un cliente, el negocio quiere conservar los pedidos y dejar vacía su referencia al cliente, sin importar los valores predeterminados de la columna. Si las columnas de la clave externa admiten nulos, ¿qué acción referencial en cascada encaja?",
+      "question_en": "An Orders table references Customers through a foreign key. When a customer row is deleted, the business wants to keep the orders and clear their customer reference, regardless of any column defaults. If the foreign key columns are nullable, which cascading referential action fits?",
+      "options_es": [
+        "NO ACTION, que genera un error y revierte la eliminación",
+        "CASCADE, que elimina las filas coincidentes de Pedidos",
+        "SET NULL, que establece en NULL los valores de la clave externa",
+        "SET DEFAULT, que asigna a la clave externa sus valores predeterminados"
+      ],
+      "options_en": [
+        "NO ACTION, which raises an error and rolls back the delete",
+        "CASCADE, which deletes the matching rows in Orders",
+        "SET NULL, which sets the foreign key values to NULL",
+        "SET DEFAULT, which sets the foreign key values to column defaults"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, con SET NULL todos los valores que componen la clave externa pasan a NULL cuando se actualiza o elimina la fila correspondiente de la tabla padre, y para ello las columnas de la clave externa deben admitir nulos. Eso deja los pedidos conservados con la referencia vacía. Las otras opciones nombran acciones distintas, que no se definen como poner la clave externa en NULL.",
+      "explanation_en": "According to the source, with SET NULL all the values that make up the foreign key are set to NULL when the corresponding row in the parent table is updated or deleted, and for this the foreign key columns must be nullable. That leaves the orders in place with the reference cleared. The other options name different actions, which are not defined as setting the foreign key to NULL.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_030",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo organizan los datos los sistemas de administración de bases de datos relacionales y cuándo se aplica su esquema?",
+      "question_en": "How do relational database management systems organize data, and when is their schema applied?",
+      "options_es": [
+        "En tablas normalizadas, con el esquema aplicado al leer",
+        "En tablas desnormalizadas, con el esquema aplicado al escribir",
+        "En tablas desnormalizadas, con el esquema aplicado al leer",
+        "En tablas normalizadas, con el esquema aplicado al escribir"
+      ],
+      "options_en": [
+        "In normalized tables, with the schema applied at read time",
+        "In denormalized tables, with the schema applied at write time",
+        "In denormalized tables, with the schema applied at read time",
+        "In normalized tables, with the schema applied at write time"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente afirma que estos sistemas organizan los datos en tablas normalizadas usando esquema en escritura (schema-on-write), y que además hacen cumplir la integridad y admiten transacciones ACID. Por eso fallan tanto las opciones con tablas desnormalizadas como las que aplican el esquema al leer (schema-on-read).",
+      "explanation_en": "The source states that these systems organize data into normalized tables by using schema-on-write, and that they also enforce integrity and support ACID transactions. That rules out both the options with denormalized tables and those that apply the schema at read time (schema-on-read).",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460204_031",
+      "skill_id": "sk460204",
+      "type": "multiple_choice",
+      "question_es": "Una tabla ProductVendor usa ProductID y VendorID juntos como clave principal compuesta. ¿Qué enunciado describe cómo funciona la unicidad?",
+      "question_en": "A ProductVendor table uses ProductID and VendorID together as a composite primary key. Which statement describes how uniqueness works?",
+      "options_es": [
+        "Un valor puede repetirse en una columna, pero no la combinación",
+        "Cada columna debe tener valores únicos con independencia de la otra",
+        "Solo se comprueba la unicidad de ProductID; VendorID admite cualquier valor",
+        "No se exige unicidad porque ninguna columna es la clave por sí sola"
+      ],
+      "options_en": [
+        "A value may repeat in one column, but no combination may repeat",
+        "Each column must hold unique values independently of the other column",
+        "Only ProductID is checked for uniqueness, while VendorID may hold any values",
+        "Uniqueness is not enforced because no single column is the key on its own"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que, si la clave principal abarca más de una columna, los valores pueden duplicarse dentro de una columna, pero cada combinación de valores de todas las columnas de la clave debe ser única. Por eso no se exige unicidad individual por columna, no se ignora ninguna columna de la clave y la unicidad sí se aplica.",
+      "explanation_en": "The source indicates that when a primary key spans more than one column, values can be duplicated within one column, but each combination of values from all the key columns must be unique. So per-column uniqueness is not required, no key column is ignored, and uniqueness is indeed enforced.",
+      "source": "Microsoft Learn — Primary and foreign key constraints (https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints) — CC BY 4.0"
     }
   ]
 }
