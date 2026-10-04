@@ -445,6 +445,41 @@ async def test_fill_blank_is_graded_by_the_server_from_the_typed_text(
     assert r.json()["correct"] is correct
 
 
+async def test_fill_blank_question_does_not_leak_the_answer(client, auth_headers, db_session):
+    """S.3 (fuga de respuestas): `fill_blank` se corrige en el servidor
+    (ver arriba) — el cliente nunca necesita el texto correcto por delante.
+    `QuestionPublic` lo copiaba igual desde la fila, porque `fill_blank` cae
+    dentro de `_EXEC_TYPES` en quiz.py junto con los tipos que SÍ necesitan la
+    salida esperada en el cliente (Pyodide)."""
+    from app.models.content import Module, Question, Skill, Track
+
+    track = Track(id="track_fb2", name_es="T", name_en="T", order=97, icon="x", color="#000", total_questions=1)
+    mod = Module(id="m_fb2", track_id="track_fb2", name_es="M", name_en="M", order=1, description_es="", description_en="")
+    skill = Skill(id="sk_fb2", module_id="m_fb2", name_es="S", name_en="S", order=1)
+    question = Question(
+        id="q_fb02",
+        skill_id="sk_fb2",
+        type="fill_blank",
+        difficulty_tier="easy",
+        question_es="¿Cuánto es 2+2?",
+        question_en="What is 2+2?",
+        correct_answer_es="4",
+        correct_answer_en="4",
+        explanation_es="Suma básica.",
+        explanation_en="Basic sum.",
+        source="test",
+        elo_rating=1200.0,
+    )
+    db_session.add_all([track, mod, skill, question])
+    await db_session.commit()
+
+    r = await client.post(f"{QUIZ}/start", json={"force_question_id": "q_fb02"}, headers=_h(auth_headers))
+    assert r.status_code == 200, r.text
+    q = r.json()["question"]
+    assert q["correct_answer_es"] is None
+    assert q["correct_answer_en"] is None
+
+
 # ── "I don't know" ────────────────────────────────────────────────────────────
 
 
