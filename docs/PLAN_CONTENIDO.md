@@ -53,6 +53,10 @@ reutilizan: se citan y se enlazan.
    El contenedor de una sesión en la nube es efímero: hay que descargar el corpus en cada
    sesión. Para no repetirlo, el dueño puede añadir el paso al setup script del entorno
    (cola humana).
+   **Corte en fragmentos (local, sin agentes, desde el track44):** un script parte cada
+   artículo por encabezados `##`/`###` en trozos de 40 a 600 palabras, con
+   `{id, repo, file, title, url, heading, text}`. A cada escritor le llega en el prompt solo el
+   paquete de fragmentos de su skill; ningún agente lee artículos enteros.
 2. **Escritor (Sonnet 5):** recibe la skill, el fragmento (texto limpio de
    `corpus/<n>/clean/`) y su URL. Primero decide `correct_index` y solo después escribe las
    opciones. Así no se repite el bug de 39.37. La respuesta correcta tiene que poder deducirse
@@ -63,6 +67,13 @@ reutilizan: se citan y se enlazan.
    no respaldada, distractor correcto, redundancia con otra pregunta, relleno o error técnico.
 4. **Corrector (Sonnet 5):** arregla lo marcado. Lo que no se pueda arreglar se descarta; no se
    rebaja la etiqueta.
+   **Comprobación literal (local):** cada frase del `fragment` que cita la pregunta tiene que
+   aparecer en el fragmento fuente. Un script lo comprueba antes de integrar; el campo
+   `fragment` no entra en el banco.
+   **Variante `cita` (AWS, ADR-59 «Fuentes `cita`»):** el escritor redacta con sus palabras a
+   partir del fragmento, sin copiar frases; el revisor marca `major` cualquier copia de más de
+   8 palabras seguidas; `source` enlaza `docs.aws.amazon.com`. La comprobación literal se
+   invierte: falla si hay copia.
 5. **Puerta de `CATALOGO_MAESTRO.md` §7**, completa y ejecutada:
    - `scripts/content_qa/*` (`check_key_drift`, `check_expl_key`, `check_only_fields` y
      `check_urls`);
@@ -114,3 +125,4 @@ reutilizan: se citan y se enlazan.
 |---|---|---|
 | 2026-10-03 | Plan escrito y decisiones del dueño (ADR-59) | Piloto 37.25 pendiente |
 | 2026-10-03 | **Piloto 37.25:** 10 Q de sk440203 (AZ-900, Azure Storage) desde 4 artículos de `azure-docs` (CC BY 4.0) | Revisión: **0 blocker, 1 major** (distractor defendible, corregido), 17 minor; 0 descartadas; 10/10 citas literales (comprobado con búsqueda en el texto). Puerta §7 PASS. Coste: 21 agentes Sonnet, 1.762.599 tokens de subagente según el Workflow (≈ 176 k por pregunta aceptada, casi todo relectura de artículos de ~3.400 palabras), 212 s de pared. Precio en dólares sin calcular |
+| 2026-10-04 | **Producción 37.10, track44 (AZ-900):** 190 Q en 10 skills (sk440201–sk440305), desde fragmentos de 7 repos de Microsoft Learn (CC BY 4.0; `entra-docs`, MIT) | Integradas 190, 0 descartadas; posiciones 48/47/47/48. Revisión del pase que entra: **1 blocker y 17 major en 17 preguntas** (8,9 %, bajo el umbral del 30 %), 433 minor; todas corregidas; releídas a mano contra su fragmento las 7 marcadas como no literales o no respaldadas y 5 al azar. Comprobación literal: 190/190 (el script cazó una mutación a propósito). Puerta §7 PASS. **Coste: 58.358.792 tokens de subagente, ≈ 307 k por pregunta**, porque fueron **dos pases**: el primero (29,1 M) se quedó sin 18 correctores por el límite de sesión, y al reanudarlo la caché solo sirvió a los 19 escritores; revisores y correctores corrieron otra vez (29,2 M). Un pase completo habría costado ≈ 153 k por pregunta, frente a 176 k del piloto: los fragmentos casi no abaratan. Pendiente: averiguar por qué la reanudación no reutilizó a los revisores antes del próximo track |
