@@ -8,6 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.v1.endpoints.admin import require_admin
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.ml.registry import registry
@@ -25,9 +26,12 @@ async def get_ml_version(
     return registry.current_info()
 
 
-@router.get("/ab-stats", summary="A/B experiment: BKT vs DKT skill-selection cohort stats")
+@router.get(
+    "/ab-stats",
+    summary="A/B experiment: BKT vs DKT skill-selection cohort stats",
+    dependencies=[Depends(require_admin)],
+)
 async def get_ab_stats(
-    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Per-cohort user counts and quiz performance metrics.
@@ -75,10 +79,13 @@ async def get_ab_stats(
     return result
 
 
-@router.post("/rollback", summary="Roll back to a previous DKT checkpoint")
+@router.post(
+    "/rollback",
+    summary="Roll back to a previous DKT checkpoint",
+    dependencies=[Depends(require_admin)],
+)
 async def rollback_model(
     version: int,
-    _: User = Depends(get_current_user),
 ) -> dict[str, Any]:
     """Load a specific DKT checkpoint version (replaces the active model)."""
     available = registry.list_versions()
