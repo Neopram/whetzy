@@ -26,7 +26,7 @@ from sqlalchemy.orm import selectinload
 
 import app.services.dkt as _dkt
 from app.core.config import settings
-from app.models.content import Module, Question, Skill
+from app.models.content import Module, Question, Skill, Track
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
 from app.schemas.content import QuestionPublic
@@ -307,8 +307,17 @@ async def _select_question(
             Question.type.in_(list(_EXEC_TYPES)),
         ),
         Question.pool != "simulacro",
+        # Ni practica ni repaso sirven preguntas de un track retirado de
+        # `tracks.json`: siguen en la base de datos por el historial (S.12).
+        Track.is_active.is_(True),
     ]
-    query = select(Question).where(*conditions)
+    query = (
+        select(Question)
+        .join(Skill, Skill.id == Question.skill_id)
+        .join(Module, Module.id == Skill.module_id)
+        .join(Track, Track.id == Module.track_id)
+        .where(*conditions)
+    )
     if exclude_question_ids:
         query = query.where(Question.id.not_in(exclude_question_ids))
     result = await db.execute(query)
