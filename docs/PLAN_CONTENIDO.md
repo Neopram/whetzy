@@ -16,6 +16,16 @@ El 2026-10-03, tras fusionar el #99, `catalog_coverage.py` sobre `master` daba *
 `question_diversity_baseline.json` suma además 3.903 preguntas cuya fuente no está indexada
 (fila 39.8).
 
+El 2026-10-04, con el track44 (#119) y el track46 (#137) ya en `master` (`e70313d`), el mismo
+script da **4.118 preguntas pendientes**:
+
+- 468 de práctica de certificación (el AI-901, track45, se lleva 224);
+- 1.040 reservadas, sin contar track44, track45 y track46, porque sus exámenes no publican un
+  número de preguntas.
+
+Su «≈ 8 sesiones» sale de una tasa supuesta de 518 preguntas por sesión, que nadie ha medido. Lo
+medido está en §7 (≈ 164 k tokens por pregunta en el track46).
+
 Ese volumen no se escribe a mano en una sesión. Escribirlo «de memoria» con un modelo ya falló
 dos veces, las dos con Haiku 4.5:
 
@@ -105,6 +115,13 @@ reutilizan: se citan y se enlazan.
    skill nueva lleva su lección y su término.
 3. **39.8:** indexar la fuente de las preguntas que no la tienen, o dejar la lista exacta de las
    que no se pueden indexar.
+
+4. **Lecciones (decisión del dueño, 2026-10-04):** cada lección tendrá dos versiones y el
+   alumno elegirá cuál leer: una corta y otra extensa de 15 a 20 minutos. Hoy solo existe la
+   corta: las 730 tienen una mediana de 217 palabras (mínimo 151, máximo 300). No hay nada
+   escrito todavía. Primero va un piloto de 10 lecciones extensas, con la misma regla de
+   parada de §4 y su coste anotado en §7, y solo después el plan maestro les da prioridad.
+   El campo nuevo del esquema y su pantalla son de S1.
 
 ## 6. Organización
 
