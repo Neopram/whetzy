@@ -200,9 +200,9 @@ marcado **(D)** es una decisión del dueño, y no se implementa sin ella. Los ID
 ### Oleada A: seguridad y dinero (S1; `backend/app/core/**` es de S5)
 
 **A.1 · 41.4 (prop.) · `/quiz/answer` solo acepta la pregunta servida, y una sola vez.** PR #127.
-- `git merge origin/master` y `down_revision = "20261004_tracks_is_active"` ya hechos — la migración
-  es la 55, con las tres líneas del HEAD actualizadas (2026-10-05). Pendiente: nivel 2 y quitar el
-  borrador.
+- Hecho: `down_revision = "20261004_tracks_is_active"` (migración 55), las tres líneas del HEAD al
+  día, `git merge origin/master` repetido tras cada ronda de revisión del dueño (el PR se queda
+  atrás cada vez que fusiona algo nuevo mientras este sigue abierto). Fusión pendiente del dueño.
 - Test: responder dos veces la misma pregunta → 409; responder una pregunta que no se sirvió → 409.
 
 **A.2 · 41.5 (prop.) · El tutor no ayuda en un examen ni con preguntas reservadas, y no cobra cupo si no respondió la IA.**
