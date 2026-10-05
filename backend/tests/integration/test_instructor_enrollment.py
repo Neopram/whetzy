@@ -119,3 +119,38 @@ async def test_enroll_unpublished_course_fails(client, db_session, auth_headers)
 async def test_enroll_unknown_course_is_404(client, auth_headers):
     response = await client.post(ENROLL.format(uuid.uuid4()), headers=auth_headers)
     assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_instructor_cannot_enroll_in_their_own_course(client, db_session, auth_headers, user):
+    """Sin pasarela, inscribirse no cobra pero sí genera un InstructorPayout
+    real — sin este chequeo, el propio instructor podía "venderse" su curso."""
+    instructor = Instructor(id=uuid.uuid4(), user_id=user.id, display_name=user.display_name)
+    db_session.add(instructor)
+    course = InstructorCourse(
+        id=uuid.uuid4(),
+        instructor_id=instructor.id,
+        title="My Own Course",
+        price_cents=10000,
+        status="published",
+    )
+    db_session.add(course)
+    await db_session.commit()
+
+    response = await client.post(ENROLL.format(course.id), headers=auth_headers)
+
+    assert response.status_code == 403
+    assert "own course" in response.json()["detail"].lower()
+
+    enrollment = await db_session.scalar(
+        select(InstructorEnrollment).where(
+            InstructorEnrollment.course_id == course.id,
+            InstructorEnrollment.user_id == user.id,
+        )
+    )
+    assert enrollment is None
+
+    payout = await db_session.scalar(
+        select(InstructorPayout).where(InstructorPayout.instructor_id == instructor.id)
+    )
+    assert payout is None

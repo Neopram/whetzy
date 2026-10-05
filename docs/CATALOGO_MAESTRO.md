@@ -52,7 +52,7 @@ profundidad de producto*, no adquisición.
 | Tracks | **35** (track01–23 + track26–30 + track40–46) | `python scripts/check_docs.py` |
 | Módulos (unidad de presentación en la web; el plan mide skills, ADR-54) | **174** | ídem |
 | Skills | **730** | ídem |
-| Preguntas | **11.208** | `python scripts/check_question_bank.py` |
+| Preguntas | **11.416** | `python scripts/check_question_bank.py` |
 | Lecciones | **730** (una por skill: las 730 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
 | Glosario | **1.058** | `check_docs.py` |
 | Ejecutables | **7** tracks ≥ 15 % (01, 02, 04, 06, 07, 09 y 12 — este, 20 %); track03 13,4 %, track13 4,8 %, track14 4,5 %, track40 1,4 %, track16 y track17 0 %; exentos track05, 08, 10, 11 y 15 (ADR-9). El 2026-10-01 se quitaron 216 «ejecutables» que daban correcto sin escribir nada (sin hueco `___` o con el hueco vacío válido) y pasaron a `fill_blank`, que es lo que eran: track16 decía 44,9 % y track17 36,7 %. El 2026-10-02, 24 que pasaban en CPython no podían resolverse en el navegador (hilos, `asyncio.run`, `sqlite3`, `tempfile`): 7 se reescribieron para el sandbox, 3 pasaron a `sql_exec` y 14 a `mcq`; `frontend/scripts/check-exec-pyodide.mjs` los corre en Pyodide | `check_question_bank.py`, `check-exec-pyodide.mjs` |
@@ -129,7 +129,7 @@ cursos = 200 skills · 3.000 preguntas · 200 lecciones · ≥ 400 términos por
 | 25 | Ingeniería | QA y testing | track29 | ✅ (18.10: 300 Q, 5 módulos, 20 lecciones) | pytest docs MIT, ISTQB syllabus (cita), Playwright docs Apache-2 | Python (`unittest`, `assert`) | ISTQB CTFL |
 | 26 | Ingeniería | Agile y producto | track30 | ✅ (18.10: 300 Q, 5 módulos, 20 lecciones) | Scrum Guide (CC BY-SA → cita), Agile Manifesto (cita) | exento | PSM I |
 | 27 | Móvil | Móvil (Android/Kotlin · iOS/Swift · Flutter/RN) | track31 | ❌ (nivel B de demanda, Kotlin 10,8 %; sin runtime en navegador) — 37.8 | Android docs Apache-2, Flutter docs BSD, Apple docs (cita) | exento | — |
-| 28 | Web3 | Solana / Web3 developer (ADR-38) | track32 | ❌ (nivel C de demanda, sin medida; 37.8) | `solana-labs/solana` y `solana-program-library` Apache-2, `solana-developers` cookbook/docs MIT, `@solana/web3.js` MIT, Anchor Apache-2 — confirmar `LICENSE` en 37.3 antes de reutilizar texto | **JS (`@solana/web3.js` en el Worker de 18.3)** + Python stdlib (hash, base58, serialización); Rust/Anchor = escenario + decisión (exento ADR-9) | — (sin cert oficial; evidencia = bounties Superteam Earn resueltos) |
+| 28 | Web3 | Solana / Web3 developer (ADR-38) | track32 | ❌ (nivel C de demanda, sin medida; 37.8) | `solana-labs/solana` y `solana-program-library` Apache-2, docs de Solana (`solana-foundation/solana-com`) **GPL-3.0 → solo cita** (leído el 2026-10-04; el cookbook no tiene `LICENSE` legible), `solana-developers/program-examples` MIT, `@solana/web3.js` MIT, Anchor Apache-2 — confirmar `LICENSE` en 37.3 antes de reutilizar texto | **JS (`@solana/web3.js` en el Worker de 18.3)** + Python stdlib (hash, base58, serialización); Rust/Anchor = escenario + decisión (exento ADR-9) | — (sin cert oficial; evidencia = bounties Superteam Earn resueltos) |
 
 **Cobertura hoy (2026-09-30, `catalog_coverage.py`):** 24 de las 28 filas están construidas
 (faltan track24 y track25, en cuarentena; track31, móvil; track32, Solana). De los 45 tracks
@@ -162,7 +162,7 @@ con razón (ADR-9), como Linux.
 | 34 | Web | TypeScript avanzado | track38 | `microsoft/TypeScript` docs Apache-2, `type-challenges` MIT | **JS Worker** (18.3) | — |
 | 35 | DevOps | SRE y observabilidad | track39 | Google SRE books (CC BY-NC → cita), Prometheus/Grafana docs Apache-2, OpenTelemetry docs Apache-2 | exento | — |
 | 36 | IA | MLOps y despliegue de modelos | track51 | `mlflow` Apache-2, Kubeflow docs Apache-2, `madewithml` MIT | Python stdlib | — |
-| 37 | Web3 | Solidity / EVM | track52 | Solidity docs GPL (→ cita), `OpenZeppelin` MIT, `ethereum.org` docs MIT | JS Worker (`ethers` MIT) | — |
+| 37 | Web3 | Solidity / EVM | track52 | Solidity docs GPL (→ cita), `OpenZeppelin` MIT, `ethereum.org`: código MIT (`LICENSE` de `ethereum-org-website`, leído el 2026-10-04); la licencia del texto se confirma en 37.3 antes de reutilizarlo | JS Worker (`ethers` MIT) | — |
 | 38 | Juegos | Desarrollo de videojuegos (Godot, Unity) | track53 | Godot docs CC BY 3.0, `godotengine/godot-demo-projects` MIT | exento | — |
 | 39 | Sistemas | Embebidos e IoT | track54 | MicroPython MIT, Zephyr docs Apache-2, Arduino docs CC BY-SA (→ cita) | Python stdlib (MicroPython-compatible) | — |
 | 40 | Fundamentos | Matemáticas para CS | track55 | OpenStax (CC BY 4.0), `3b1b/manim` MIT (explicadores) | Python stdlib | — |
@@ -424,7 +424,7 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 |---|---|---|---|
 | Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 730/730 skills con lección | 1 lección por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
 | Ejemplo resuelto + problema de completar (fading) | solo la lección | 1 secuencia por skill | test de estructura |
-| Práctica adaptativa (quiz) | ✅ 11.208 Q · 15,4 por skill | 10 por skill, ≥ 3 ejecutables donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
+| Práctica adaptativa (quiz) | ✅ 11.416 Q · 15,6 por skill | 10 por skill, ≥ 3 ejecutables donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
 | Simulacro de certificación en formato real | ✅ 11; formato del proveedor fijado por test en AIF-C01, MLA-C01, AZ-900, DP-900 (37.19) e ISC2 CC (37.22, 2026-10-02: outline 2026-09-01); Microsoft no publica el número de preguntas, así que AZ-900, AI-901 y DP-900 no tienen simulacro cronometrado | formato del proveedor + **banco reservado 2 × examen** (0/1.040 hoy) | `test_certification_blueprints.py` + 37.18 |
@@ -548,7 +548,7 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
 | Brilliant | 14 cursos de CS, 35 de matemáticas | curso | [A] brilliant.org/topics/coding |
 | Mimo | 4 rutas de carrera + 8 cursos; lecciones de 5 min | ruta | [A] mimo.org |
 | Tutorials Dojo / Udemy (AWS) | 6 simulacros × 65 = 390 preguntas por examen (Maarek, Bonso); TD: 7–9 simulacros cronometrados | pregunta | [A] (Udemy devolvió 403) |
-| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 730 skills · 11.208 preguntas | skill | `catalog_coverage.py` |
+| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 730 skills · 11.416 preguntas | skill | `catalog_coverage.py` |
 
 **Lectura honesta (2026-10-01, ADR-54):**
 - En **amplitud** Whetzy ya supera a su competencia directa: Boot.dev enseña en 3 rutas y

@@ -14,6 +14,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from .domain_thresholds import MASTERY_THRESHOLD
+
 
 @dataclass
 class SkillParams:
@@ -110,7 +112,7 @@ class BKTModel:
 
         return state
 
-    def is_mastered(self, state: SkillState, threshold: float = 0.95) -> bool:
+    def is_mastered(self, state: SkillState, threshold: float = MASTERY_THRESHOLD) -> bool:
         return state.p_known >= threshold
 
     def predict_correct(self, state: SkillState) -> float:
@@ -123,7 +125,7 @@ class BKTModel:
         return SkillState(skill_id=skill_id, p_known=params.p_l0)
 
     def batch_mastery(
-        self, states: list[SkillState], threshold: float = 0.95,
+        self, states: list[SkillState], threshold: float = MASTERY_THRESHOLD,
     ) -> dict[str, bool]:
         return {s.skill_id: self.is_mastered(s, threshold) for s in states}
 

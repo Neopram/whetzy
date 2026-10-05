@@ -1,4 +1,10 @@
-"""Integration tests for GET /ml/ab-stats (task 4.6)."""
+"""Integration tests for GET /ml/ab-stats (task 4.6).
+
+Admin-only since S.2 (2026-10-04): this endpoint discloses aggregate data
+about every user's BKT/DKT cohort, performance and session counts, which is
+not something a plain learner should be able to read about the whole user
+base. `owner` (role="owner") is the fixture `require_admin` accepts, same
+pattern as backend/tests/integration/test_admin*.py."""
 
 from __future__ import annotations
 
@@ -6,9 +12,14 @@ from datetime import UTC, datetime
 
 import pytest
 
+from app.core.security import create_access_token
 from app.models.session import StudySession
 
 ML = "/api/v1/ml"
+
+
+def _h(user) -> dict[str, str]:
+    return {"Authorization": f"Bearer {create_access_token(user.id)}"}
 
 
 # ── Tests ──────────────────────────────────────────────────────────────────────
@@ -20,8 +31,16 @@ async def test_ab_stats_requires_auth(client) -> None:
 
 
 @pytest.mark.asyncio
-async def test_ab_stats_returns_both_cohorts(client, auth_headers) -> None:
+async def test_ab_stats_rejects_a_non_admin_user(client, auth_headers) -> None:
+    """A plain authenticated learner must NOT see aggregate stats about
+    every user's A/B cohort."""
     resp = await client.get(f"{ML}/ab-stats", headers=auth_headers)
+    assert resp.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_ab_stats_returns_both_cohorts(client, owner) -> None:
+    resp = await client.get(f"{ML}/ab-stats", headers=_h(owner))
     assert resp.status_code == 200
     data = resp.json()
     assert "bkt" in data
@@ -29,8 +48,8 @@ async def test_ab_stats_returns_both_cohorts(client, auth_headers) -> None:
 
 
 @pytest.mark.asyncio
-async def test_ab_stats_shape(client, auth_headers) -> None:
-    resp = await client.get(f"{ML}/ab-stats", headers=auth_headers)
+async def test_ab_stats_shape(client, owner) -> None:
+    resp = await client.get(f"{ML}/ab-stats", headers=_h(owner))
     assert resp.status_code == 200
     data = resp.json()
     for cohort in ("bkt", "dkt"):
@@ -45,9 +64,9 @@ async def test_ab_stats_shape(client, auth_headers) -> None:
 
 
 @pytest.mark.asyncio
-async def test_ab_stats_accuracy_none_when_no_questions(client, auth_headers) -> None:
+async def test_ab_stats_accuracy_none_when_no_questions(client, owner) -> None:
     # Fresh DB: no ended sessions → accuracy must be None for both cohorts
-    resp = await client.get(f"{ML}/ab-stats", headers=auth_headers)
+    resp = await client.get(f"{ML}/ab-stats", headers=_h(owner))
     assert resp.status_code == 200
     data = resp.json()
     total_questions = data["bkt"]["questions_answered"] + data["dkt"]["questions_answered"]
@@ -58,22 +77,22 @@ async def test_ab_stats_accuracy_none_when_no_questions(client, auth_headers) ->
 
 @pytest.mark.asyncio
 async def test_ab_stats_counts_one_registered_user(
-    client, auth_headers, user
+    client, owner, user
 ) -> None:
-    # The `user` fixture already created one user; totals["bkt"]["users"] +
-    # totals["dkt"]["users"] must equal 1 (only that user in this test DB).
-    resp = await client.get(f"{ML}/ab-stats", headers=auth_headers)
+    # The `user` fixture already created one non-admin user; `owner` is a
+    # second, distinct user, so totals must equal 2.
+    resp = await client.get(f"{ML}/ab-stats", headers=_h(owner))
     assert resp.status_code == 200
     data = resp.json()
     total_users = data["bkt"]["users"] + data["dkt"]["users"]
-    assert total_users == 1
+    assert total_users == 2
 
 
 @pytest.mark.asyncio
 async def test_ab_stats_counts_ended_sessions(
-    client, auth_headers, user, db_session
+    client, owner, user, db_session
 ) -> None:
-    # Add one ended session for the test user
+    # Add one ended session for the (non-admin) test user
     sess = StudySession(
         user_id=user.id,
         mode="study",
@@ -84,7 +103,7 @@ async def test_ab_stats_counts_ended_sessions(
     db_session.add(sess)
     await db_session.commit()
 
-    resp = await client.get(f"{ML}/ab-stats", headers=auth_headers)
+    resp = await client.get(f"{ML}/ab-stats", headers=_h(owner))
     assert resp.status_code == 200
     data = resp.json()
     total_sessions = data["bkt"]["sessions"] + data["dkt"]["sessions"]

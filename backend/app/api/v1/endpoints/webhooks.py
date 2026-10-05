@@ -89,6 +89,8 @@ async def webhook_paddle(request: Request, db: AsyncSession = Depends(get_db)) -
             await _apply_subscription(db, event_type, data)
         elif event_type == "transaction.completed":
             await _apply_transaction(db, data)
+        elif event_type in ("adjustment.created", "adjustment.updated"):
+            await _apply_refund(db, data)
         elif event_type == "payout.completed":
             await handle_payout_completed(data, db)
     except Exception as exc:
@@ -127,3 +129,29 @@ async def _apply_transaction(db: AsyncSession, data: dict[str, Any]) -> None:
     await certification_service.grant(db, user_id, track_id, source="paddle", external_ref=txn_id)
     paddle_billing.record_withdrawal_waiver(user, data)
     await db.commit()
+
+
+async def _apply_refund(db: AsyncSession, data: dict[str, Any]) -> None:
+    """`adjustment.created`/`adjustment.updated`: retira lo que ese cargo dio.
+
+    Paddle Billing manda los reembolsos como `adjustment`, no como un
+    `transaction.refunded` (developer.paddle.com/webhooks/adjustments,
+    verificado 2026-10-04): `action` distingue reembolso de crédito o
+    contracargo, y `status` si Paddle ya lo aprobó. Antes de esto nada
+    escuchaba estos eventos: un alumno reembolsado conservaba el derecho al
+    examen certificador para siempre.
+
+    Solo `action == "refund"` con `status == "approved"`; un crédito, un
+    contracargo o un reembolso todavía pendiente/rechazado no tocan nada
+    (cada uno necesitaría su propia regla, que no es la que pide esta tarea).
+    """
+    if data.get("action") != "refund" or data.get("status") != "approved":
+        return
+    txn_id = data.get("transaction_id")
+    if not txn_id:
+        logger.warning("Paddle adjustment.refund sin transaction_id")
+        return
+    revoked = await certification_service.revoke_purchase_by_external_ref(db, str(txn_id))
+    if revoked:
+        await db.commit()
+        logger.info("Certificación revocada por reembolso Paddle txn=%s", txn_id)

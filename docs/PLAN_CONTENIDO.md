@@ -16,6 +16,18 @@ El 2026-10-03, tras fusionar el #99, `catalog_coverage.py` sobre `master` daba *
 `question_diversity_baseline.json` suma además 3.903 preguntas cuya fuente no está indexada
 (fila 39.8).
 
+El 2026-10-04, con el track44 (#119) y el track46 (#137) ya en `master` (`e70313d`), el mismo
+script da **4.118 preguntas pendientes**:
+
+- 2.610 para llevar los 24 tracks construidos a la forma 32 × 10 (+261 skills, +261 lecciones y
+  +252 términos; el 2026-10-03 eran +266 términos);
+- 468 de práctica de certificación (el AI-901, track45, se lleva 224; el MLA-C01, track43, 131);
+- 1.040 reservadas, sin contar track44, track45 y track46, porque sus exámenes no publican un
+  número de preguntas.
+
+Su «≈ 8 sesiones» sale de una tasa supuesta de 518 preguntas por sesión, que nadie ha medido. Lo
+medido está en §7 (≈ 164 k tokens por pregunta en el track46).
+
 Ese volumen no se escribe a mano en una sesión. Escribirlo «de memoria» con un modelo ya falló
 dos veces, las dos con Haiku 4.5:
 
@@ -106,6 +118,13 @@ reutilizan: se citan y se enlazan.
 3. **39.8:** indexar la fuente de las preguntas que no la tienen, o dejar la lista exacta de las
    que no se pueden indexar.
 
+4. **Lecciones (decisión del dueño, 2026-10-04):** cada lección tendrá dos versiones y el
+   alumno elegirá cuál leer: una corta y otra extensa de 15 a 20 minutos. Hoy solo existe la
+   corta: las 730 tienen una mediana de 217 palabras en ES y 205 en EN (mínimo 151, máximo 300). No hay nada
+   escrito todavía. Primero va un piloto de 10 lecciones extensas, con la misma regla de
+   parada de §4 y su coste anotado en §7, y solo después el plan maestro les da prioridad.
+   El campo nuevo del esquema y su pantalla son de S1.
+
 ## 6. Organización
 
 - **Rama y PR por track:** `claude/youthful-allen-i8k7zb-<trackNN>`, con unas 100 preguntas o
@@ -126,3 +145,4 @@ reutilizan: se citan y se enlazan.
 | 2026-10-03 | Plan escrito y decisiones del dueño (ADR-59) | Piloto 37.25 pendiente |
 | 2026-10-03 | **Piloto 37.25:** 10 Q de sk440203 (AZ-900, Azure Storage) desde 4 artículos de `azure-docs` (CC BY 4.0) | Revisión: **0 blocker, 1 major** (distractor defendible, corregido), 17 minor; 0 descartadas; 10/10 citas literales (comprobado con búsqueda en el texto). Puerta §7 PASS. Coste: 21 agentes Sonnet, 1.762.599 tokens de subagente según el Workflow (≈ 176 k por pregunta aceptada, casi todo relectura de artículos de ~3.400 palabras), 212 s de pared. Precio en dólares sin calcular |
 | 2026-10-04 | **Producción 37.10, track44 (AZ-900):** 190 Q en 10 skills (sk440201–sk440305), desde fragmentos de 7 repos de Microsoft Learn (CC BY 4.0; `entra-docs`, MIT) | Integradas 190, 0 descartadas; posiciones 48/47/47/48. Revisión del pase que entra: **1 blocker y 17 major en 17 preguntas** (8,9 %, bajo el umbral del 30 %), 433 minor; todas corregidas; releídas a mano contra su fragmento las 7 marcadas como no literales o no respaldadas y 5 al azar. Comprobación literal: 190/190 (el script cazó una mutación a propósito). Puerta §7 PASS. **Coste: 58.358.792 tokens de subagente, ≈ 307 k por pregunta**, porque fueron **dos pases**: el primero (29,1 M) se quedó sin 18 correctores por el límite de sesión, y al reanudarlo la caché solo sirvió a los 19 escritores; revisores y correctores corrieron otra vez (29,2 M). Un pase completo habría costado ≈ 153 k por pregunta, frente a 176 k del piloto: los fragmentos casi no abaratan. Pendiente: averiguar por qué la reanudación no reutilizó a los revisores antes del próximo track |
+| 2026-10-04 | **Producción 37.10, track46 (DP-900):** 208 Q en 16 skills (6–16 por skill según la fuente disponible), desde fragmentos elegidos a mano de `azure-docs` (Storage, Synapse, Data Factory, Stream Analytics), `sql-docs` (Azure SQL y tablas) y `architecture-center` (guía de datos), los tres CC BY 4.0 leído en su `LICENSE`. `azure-databases-docs` (Cosmos DB, MySQL, PostgreSQL) y `powerbi-docs` piden credenciales al clonar: no se usan, por no poder leer su licencia | 211 escritas → 208 integradas (fuera: 1 duplicada entre skills, 1 con un anuncio que caduca y 1 duplicada exacta que cazó `test_originality`). Revisión: **0 blocker y 12 major (5,8 %)**, todos corregidos; 409 minor. Cita literal 208/208 (con una mutación en rojo). `check_expl_key`: 10 sospechosas leídas; las 7 nuevas están bien y las 3 malas son de las 96 previas de plantilla (deuda aparte). La guarda de relleno cazó 2 opciones con «by default», reescritas. Puerta §7 PASS; track46 en 304/300. **Coste: 34.117.408 tokens de subagente, ≈ 164 k por pregunta** (lote A partido por el límite de uso y revisado con un workflow solo de revisión que lee las preguntas de fichero, sin reanudar). Que cada revisor lea solo su fragmento **no** abarata: el coste fijo es el contexto con el que arranca cada subagente, no el texto de la fuente |

@@ -67,6 +67,7 @@ está roto.
 | `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
 | `docs/PLAN_CONTENIDO.md` | normativo-vivo | método de autoría desde la fuente, piloto 37.25, orden y organización (ADR-59) | se queda | 2026-10-03 |
+| `docs/PLAN_MAESTRO.md` | normativo-vivo | norte del producto: tesis, flujos por actor, arquitectura, oleadas A–H con criterio de salida, cola del dueño (aprobado 2026-10-04) | se queda | 2026-10-04 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
 | `docs/CIERRE_2026-09-30.md` | referencia-viva | registro de la pausa (levantada el 2026-10-01, ADR-56); §2 scorecard y §7 trampas del entorno; check_docs [11] | se queda | 2026-09-30 |
 | `docs/COMPETENCIA.md` | referencia-viva | mercado con URL y fecha | se queda | 2026-09-30 |
@@ -146,6 +147,7 @@ está roto.
 | `docs/legal/H29-DECISION-LOG.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/h29-grecia-paddle-revenuecat-obligaciones.md` | legal | investigación vigente (21.1/21.2) de lo que exige operar bajo H.29 | se queda, DRAFT para H.20 | 2026-10-02 |
 | `docs/legal/h20-paquete-abogado.md` | legal | índice, preguntas abiertas y riesgos por gravedad para la revisión profesional (H.20) | se queda, DRAFT | 2026-10-02 |
+| `docs/legal/revision-terminos-privacidad-2026-10-04.md` | legal | 7 propuestas (Oleada 0.12/D.8) sobre contradicciones verificadas en Términos/Privacidad/Reembolsos publicados, con 2 opciones cada una | se queda, DRAFT, pendiente de NECESITO (dueño) | 2026-10-04 |
 | `docs/legal/community-guidelines.es.md` | legal | texto mínimo de moderación para App Store 1.2/1.2.1 (ledger 19.11); no registrado en `scripts/check_legal_facts.py` EXPECTED_DOCS (fuera de mi terreno tocar ese script) | se queda, DRAFT sin publicar | 2026-10-02 |
 | `docs/legal/community-guidelines.en.md` | legal | par EN del anterior | se queda, DRAFT sin publicar | 2026-10-02 |
 | `docs/legal/README.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-26 |

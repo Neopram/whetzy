@@ -69,10 +69,12 @@ async def _seed_cert_track(db: AsyncSession) -> tuple[str, str, str, str]:
     return sk_a.id, sk_b.id, DOMAIN_A_ID, DOMAIN_B_ID
 
 
-async def test_readiness_returns_bkt_prior_for_untouched_skills(
+async def test_readiness_reports_sin_datos_for_untouched_domains(
     client: AsyncClient, db_session: AsyncSession, user: User, auth_headers: dict
 ) -> None:
-    """A user who has never practised gets p_known_mean = BKT prior (0.1) per domain."""
+    """C.2, 2026-10-04: a user who has never practised gets p_known_mean=None
+    ("sin datos") per domain, not the old BKT-prior placeholder (0.1) -
+    "no evidence yet" and "evidence and it's bad" are different claims."""
     await _seed_cert_track(db_session)
     r = await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
     assert r.status_code == 200
@@ -80,10 +82,11 @@ async def test_readiness_returns_bkt_prior_for_untouched_skills(
     assert body["track_id"] == CERT_TRACK_ID
     assert len(body["domains"]) == 2
     for d in body["domains"]:
-        assert d["p_known_mean"] == pytest.approx(0.1)
+        assert d["p_known_mean"] is None
         assert d["ready"] is False
         assert d["skills_assessed"] == 0
         assert d["skills_total"] == 1
+    assert body["overall_p_known"] is None, "every domain is sin datos, so the overall is too"
 
 
 async def test_readiness_reflects_practised_skill(
@@ -123,15 +126,17 @@ async def test_readiness_404_for_missing_track(
     assert r.status_code == 404
 
 
-async def test_readiness_overall_is_weight_average(
+async def test_readiness_overall_excludes_untouched_domains(
     client: AsyncClient, db_session: AsyncSession, user: User, auth_headers: dict
 ) -> None:
-    """overall_p_known = weighted mean: 0.9×60 + 0.1×40 / 100 = 0.58."""
+    """C.2: Domain B is untouched (sin datos), so it must not pull the
+    overall average toward 0.1 just for existing - it is left out of both
+    the numerator and the denominator, leaving overall_p_known = Domain A's
+    own 0.9, not the old weighted blend (0.9×60% + 0.1×40% = 0.58)."""
     sk_a_id, _sk_b_id, _, _ = await _seed_cert_track(db_session)
     db_session.add(UserSkillState(user_id=user.id, skill_id=sk_a_id, p_known=0.9))
     await db_session.commit()
 
     r = await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
     body = r.json()
-    # Domain A: 0.9 × 60% + Domain B: 0.1 × 40% = 54 + 4 = 58 / 100 = 0.58
-    assert body["overall_p_known"] == pytest.approx(0.58, abs=0.001)
+    assert body["overall_p_known"] == pytest.approx(0.9)
