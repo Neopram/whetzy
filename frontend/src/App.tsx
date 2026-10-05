@@ -11,6 +11,7 @@ import './styles/global.css';
 import { OfflineIndicator } from './components/common/OfflineIndicator';
 import { useGestures } from './hooks/useGestures';
 import { safeNext } from './lib/paddle';
+import { IMMERSIVE_SCREENS, navigationTargetForSwipe } from './lib/immersiveScreens';
 
 // Every screen is loaded on demand. Statically importing them put the whole
 // app — quiz, Pyodide, Lottie, duels — into the landing page's first bundle,
@@ -324,9 +325,21 @@ function App() {
   const prevScreenRef = useRef(currentScreen);
   useEffect(() => { prevScreenRef.current = currentScreen; }, [currentScreen]);
 
+  // En una pantalla inmersiva (examen, duelo, lección…) un swipe de sobra
+  // saltaba a casa sin avisar — ni siquiera QuizScreen se salvaba: su propio
+  // diálogo de «¿seguro que quieres salir?» (requestClose/confirmExit) solo
+  // protegía el botón ✕; un gesto llegaba directo a setScreen('home') por
+  // detrás (0.9). navigationTargetForSwipe devuelve null en esas pantallas —
+  // el gesto simplemente no navega, igual que ya no se ve la barra inferior.
   useGestures({
-    onSwipeRight: () => { if (currentScreen !== 'home') setScreen('home'); },
-    onSwipeLeft: () => { if (currentScreen !== 'marketplace') setScreen('marketplace'); },
+    onSwipeRight: () => {
+      const target = navigationTargetForSwipe('right', currentScreen);
+      if (target) setScreen(target);
+    },
+    onSwipeLeft: () => {
+      const target = navigationTargetForSwipe('left', currentScreen);
+      if (target) setScreen(target);
+    },
   });
 
   // Siempre se pregunta al servidor: la cookie `whetzy_logged_in` es
@@ -519,12 +532,6 @@ function App() {
     </MotionConfig>
   );
 }
-
-/** Screens that hide the bottom nav: one task, one way out, no wandering off
- *  mid-exam. It is a set rather than a chain of `!==` so adding a screen is one
- *  entry instead of one more clause nobody remembers to extend — 'trackexam'
- *  was the fifth, and the chain was already four deep. */
-const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson', 'readiness', 'playground', 'projects']);
 
 const SCREEN_ORDER: Record<string, number> = {
   home: 0, tracks: 1, stats: 2, league: 3, profile: 4, marketplace: 14,
