@@ -95,6 +95,7 @@ está roto.
 | `docs/competitive-teardown.md` | referencia-viva | marcador competitivo con pesos fijos; §14 histórico desde #52 | se queda | 2026-09-30 |
 | `docs/restore_log.md` | referencia-viva | registro del simulacro de restauración; lo escribe scripts/db_restore_test.sh | se queda | 2026-09-26 |
 | `docs/supply-chain.md` | referencia-viva | seguridad de la cadena de suministro (22.4) | se queda [sin verificar] | 2026-09-26 |
+| `docs/ESTADO_AUTOMATICO.md` | referencia-viva | informe de estado automático (`scripts/estado.py`), dónde programarlo y foto de las sesiones del 2026-10-05 | se queda | 2026-10-05 |
 
 ## `docs/` — subcarpetas
 
