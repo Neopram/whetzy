@@ -20,7 +20,7 @@
 
 | Qué | Estado comprobado | Hasta que exista |
 |---|---|---|
-| **ADR-60**: decisiones del dueño del 2026-10-04 (perfil público opt-in, la cuña, Web3 y reorganización como propuesta, lecciones corta/extensa, login Google + Apple, orden) | **No existe**: `docs/DECISIONS.md` termina en ADR-59 [V] | Las decisiones valen (las tomó el dueño en la sesión coordinadora), pero el número puede cambiar al aplicarse |
+| **ADR-60**: decisiones del dueño del 2026-10-04 (perfil público opt-in, la cuña, lecciones corta/extensa, login Google + Apple, orden) y del 2026-10-05 (D-a … D-f, §6) | **No existe**: `docs/DECISIONS.md` termina en ADR-59 [V] | Las decisiones valen (las tomó el dueño en la sesión coordinadora), pero el número puede cambiar al aplicarse |
 | **Series 41** (Oleada S), **42** (Oleada 0 y flujo de estudio) y **43** (partes B–J fusionadas) | **0 filas en el ledger**: `ledger.py series 41|42|43` no devuelve nada [V] | Los IDs de este plan son **propuestos** («(prop.)»); el número real es el que les dé S5 |
 | **Migración 56** (perfil público opt-in) | No existe; la 55 (#127) tampoco está fusionada [V] | Orden fijado: 55 = #127, 56 = opt-in |
 
@@ -396,7 +396,7 @@ pero el cobro es Paddle (H.29). No se construye nada nuevo sobre Stripe.
   2.610 + 468 + 1.040 (ver `PLAN_CONTENIDO.md` §1).
 - **Orden de `PLAN_CONTENIDO.md` §5.1 y de la fila 37.10:** **MLA-C01** (faltan 131) y **AI-901**
   (faltan 224), las dos certificaciones de la cuña que siguen pendientes.
-- **Web3 y la reorganización de los tracks:** propuesta pendiente de las decisiones D-a a D-f (§6).
+- **Web3 y la reorganización de los tracks:** decididas el 2026-10-05 (§6.1 y §6.2). Web3 va detrás de las certificaciones de la cuña.
 
 ---
 
@@ -415,7 +415,7 @@ pero el cobro es Paddle (H.29). No se construye nada nuevo sobre Stripe.
 | 9 | Payouts (H.25) e instructores (H.40) | Oleada G |
 | 10 | Pilotos B2B (H.39) y página `/empresas` | Oleada H |
 | 11 | Facturación de GitHub Actions (H.13) | CI en la nube |
-| — | Decisiones pendientes: **B.4** (prior de BKT, S3); **C.3 del plan UI/UX** (XP único o separado, y renombrar `Module.level`; S3 recomienda separado y renombrar); **41.10** (CORS para la app nativa); **D-a … D-f** (propuesta de los 4 puntos) | — |
+| — | Decisiones pendientes: **B.4** (prior de BKT, S3); **C.3 del plan UI/UX** (XP único o separado, y renombrar `Module.level`; S3 recomienda separado y renombrar); **41.10** (CORS para la app nativa). D-a … D-f ya están decididas (§6) | — |
 
 **H.12 (clave de Groq).** Decisión del dueño del 2026-10-04: **la clave se mantiene sin rotar y él
 asume el riesgo**, y las ramas `railway/*` no se borran.
@@ -425,15 +425,122 @@ asume el riesgo**, y las ramas `railway/*` no se borran.
 
 ---
 
-## 6. Después de este plan: los 4 puntos nuevos
+## 6. Los 4 puntos nuevos: decisiones del dueño (2026-10-05) y cómo se construyen
 
-La propuesta detallada se entregó al dueño el 2026-10-04 y espera sus decisiones D-a a D-f:
-1. reorganización de los tracks con metadatos (área, nivel, prerrequisitos y rutas), sin renombrar IDs;
-2. Web3 como especialización de habilidades, en 3 tracks;
-3. login con Google y Apple, con PKCE, y una excepción CSRF solo para el callback `form_post` de Apple;
-4. acceso con una hoja desplegable en la que el email va primero.
+El dueño respondió D-a … D-f el 2026-10-05, en la sesión coordinadora, tras recibir la propuesta
+detallada. Pasan a ADR-60 (prop.) como sus puntos 7 a 12; el texto va en el «Delta del ledger» del PR.
+**El orden manda:** nada de esto empieza antes de las oleadas A y B, salvo lo que se indique.
 
-Nada se ejecuta hasta que lleguen esas decisiones. Lo aprobado se escribirá aquí y en filas del ledger.
+| # | Decisión | Elegido | Consecuencia |
+|---|---|---|---|
+| D-a | Cómo reorganizar los 35 tracks | **Metadatos, sin tocar ningún ID** | No hace falta mapa de progreso ni migración de datos |
+| D-b | Web3 | **3 tracks de habilidades**, no preparación de examen (no hay certificación Web3 de peso [P]) | Área Web3 con: Fundamentos de blockchain → Solidity/EVM (`track52`) → Solana (`track32`) |
+| D-c | Solidity en el navegador | **Ejecución real desde el inicio** | El dueño aprueba **MPL-2.0 solo para la EVM en el navegador** (`@ethereumjs/vm`, usada sin modificar): excepción H.LIC a la lista de ADR-11. `solc-js` es MIT [V] |
+| D-d | «Envíame un código» | **Sí**, como alternativa a la contraseña | Código de un solo uso por correo (Resend), con límite de envíos por dirección |
+| D-e | Acceso | **Email primero, en una hoja desplegable**, con la enumeración mitigada | Respuesta genérica y límite de intentos |
+| D-f | Google One Tap | **No**: ADR-13 sigue igual (redirección, sin SDK de terceros) | — |
+
+### 6.1 Rutas y áreas (D-a). Va con la oleada B
+
+1. **`content/curriculum/tracks.json`:** cada track gana `area` (enumerado de 10: Fundamentos,
+   Ingeniería, IA, Datos, Seguridad, Web, Cloud, DevOps, Móvil, Web3), `level`
+   (`fundamentos | intermedio | avanzado`), `prerequisites` (ids de track; recomiendan, no bloquean)
+   y `area_order`.
+   - Hoy un track solo tiene `id, name_es, name_en, order, icon, color, modules` [V].
+   - Un test de contenido exige los cuatro campos y valores válidos, y se muta.
+2. **Modelo `Track`:** columnas `area`, `level` y `area_order` (**migración**, en la cola).
+   - `backend/app/services/content_loader.py` las copia.
+   - `TrackRead` las expone.
+3. **`content/curriculum/paths.json`** (nuevo): las «rutas profesionales» como secuencias de tracks
+   existentes, con su test de que cada id existe. Primeras rutas, propuesta [O]:
+
+   | Ruta | Secuencia |
+   |---|---|
+   | Cloud AWS | Python básico → Linux → Redes → CLF-C02 → SAA-C03 |
+   | Cloud Azure | Linux → Redes → AZ-900 → Azure |
+   | Datos | SQL → Python básico → DP-900 → Ingeniería de datos → Ciencia de datos |
+   | IA | Python básico → intermedio → Fundamentos IA → AIF-C01 / AI-901 → Ingeniería IA → MLA-C01 |
+   | Seguridad | Linux → Redes → Ciberseguridad → ISC2 CC → Security+ |
+   | Python certificado | Python básico → PCEP → intermedio → PCAP → avanzado |
+   | Desarrollo web | JS Frontend → Backend → Git → QA → Docker/K8s |
+   | Web3 | Fundamentos de blockchain → Solidity/EVM → Solana |
+
+4. **`frontend/src/pages/TracksScreen.tsx`:** hoy filtra `all | learn | cert` (`:25`) [V]. Pasa a mostrar
+   secciones desplegables por área, con «solo certificaciones» como filtro encima.
+5. **Onboarding (B.2):** ofrece una **ruta**, y `User.focus_path_id` sustituye a `focus_track_id` en la
+   misma migración. El examen de nivel es del primer track de la ruta que no esté dominado.
+
+### 6.2 Web3 (D-b, D-c). Contenido detrás de la cuña
+
+**Fuentes reutilizables** (licencia leída del `LICENSE` en bruto el 2026-10-04 [V]):
+- `ethereum/EIPs` (CC0);
+- `OpenZeppelin/openzeppelin-contracts` (MIT);
+- `solana-foundation/anchor` (Apache-2.0);
+- `bitcoin-dot-org/developer.bitcoin.org` (MIT);
+- `solana-developers/program-examples` (MIT);
+- `ethereum/solc-js` (MIT);
+- `solana-labs/solana-web3.js` y `anza-xyz/kit` (MIT);
+- `ethers-io/ethers.js` (MIT).
+
+**Solo se citan:** la documentación de Solidity y la de Solana (`solana-com`), que son GPL-3.0 [V].
+La licencia del texto de ethereum.org está por confirmar.
+
+**Tracks:**
+1. **Fundamentos de blockchain** (id nuevo, el siguiente libre).
+   - Temas: hashes, firmas, árboles de Merkle, UTXO frente a cuentas, consenso y gas.
+   - Ejecutables en Pyodide con `hashlib`, sin dependencias nuevas.
+2. **Solidity / EVM (`track52`)**, con ejecución real:
+   - `solc-js` y `@ethereumjs/vm` en un Worker propio, **cargado de forma perezosa solo en este track**.
+     `soljson` pesa unos 9,2 MB sin comprimir [P], y no entra en el bundle base;
+   - tipo de pregunta ejecutable nuevo, con su solución de referencia en `exec_reference_solutions.json`
+     (o el fichero equivalente) y su test;
+   - un módulo de seguridad de contratos: reentrada, control de acceso, ERC-20 y ERC-721.
+3. **Solana (`track32`)**:
+   - JS con `@solana/web3.js` o `kit` en el Worker existente;
+   - Rust y Anchor quedan como «escenario», como dice `CATALOGO_MAESTRO.md`.
+
+**Antes del primer track:** corregir la fila de Web3 de `CATALOGO_MAESTRO.md`. Ya se hizo en la
+enmienda del 2026-10-04.
+
+Cada track pasa el piloto de 10 de ADR-59. **No se anuncia** en la web ni en el pitch hasta que exista.
+
+### 6.3 Acceso: email primero, código, Google y Apple (D-d, D-e, D-f)
+
+**Orden:**
+1. **Base (41.14 prop., oleada A):** PKCE S256, `nonce`, `state` en cookie HttpOnly, y un registro de
+   proveedores en `backend/app/api/v1/endpoints/oauth.py`.
+2. **Hoja de acceso** (frontend, S1), sustituye a `frontend/src/pages/AuthScreen.tsx` (363 líneas) [V]:
+   - un solo «Entrar» que en móvil abre una hoja inferior y en escritorio un diálogo, accesible según
+     el patrón de diálogo modal del W3C (foco dentro, Esc, el foco vuelve al botón, `aria-labelledby`);
+   - **los pasos se despliegan dentro de la hoja:**
+     1. email → «Continuar»;
+     2. si la cuenta existe, contraseña o «envíame un código»;
+     3. si no existe, crear la cuenta en el mismo panel;
+     4. el 2FA en el mismo panel;
+     5. los errores `oauth_error=…` también, y al terminar vuelve a `?next=`.
+   - Debajo: Apple · Google · GitHub con la misma prominencia.
+   - **Mitigación de la enumeración:** misma respuesta y mismo tiempo exista o no la cuenta, más un
+     límite de intentos por IP y por email.
+3. **Código por correo (backend):**
+   - endpoints «pedir código» y «verificar código»;
+   - código de un solo uso, guardado con hash y con caducidad corta;
+   - límite de envíos por dirección y de intentos de verificación (tabla nueva → **migración**, en la
+     cola);
+   - plantilla en ES y EN, escapada como el resto de `email.py` (#140).
+4. **Apple** (cuando exista H.2):
+   - variables `APPLE_SERVICES_ID`, `APPLE_TEAM_ID`, `APPLE_KEY_ID` y `APPLE_PRIVATE_KEY`, que pone el
+     dueño en Railway;
+   - `client_secret` ES256 de vida corta con `python-jose`, que ya está en `requirements.txt` [V];
+   - `POST /auth/oauth/apple/callback` (`form_post`) **exento en `backend/app/core/csrf.py` solo para
+     esa ruta** (S5). Hoy `csrf.py` no tiene excepciones y bloquearía el POST de Apple [V];
+   - verificación del `id_token`, identificación por `sub`, y el nombre solo la primera vez;
+   - el dueño registra en Apple el dominio remitente de Resend para el correo de relevo.
+5. **Móvil:** navegador del sistema más redirección HTTPS reclamada (RFC 8252). Cualquier plugin nativo
+   MPL-2.0 necesita **otra** aprobación H.LIC: la de D-c solo cubre la EVM.
+
+### 6.4 Lecciones corta y extensa
+
+Ya está en la oleada C. El dueño la aprobó el 2026-10-04.
 
 ---
 

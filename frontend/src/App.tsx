@@ -3,7 +3,7 @@ import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
 import { useAppStore, DEFAULT_USER_ID } from './stores/useAppStore';
-import { ApiError, logout } from './services/api';
+import { ApiError, logout, setOnSessionExpired } from './services/api';
 import { TopBar } from './components/layout/TopBar';
 import { BottomNav } from './components/layout/BottomNav';
 import { Toast } from './components/common/Toast';
@@ -11,6 +11,7 @@ import './styles/global.css';
 import { OfflineIndicator } from './components/common/OfflineIndicator';
 import { useGestures } from './hooks/useGestures';
 import { safeNext } from './lib/paddle';
+import { IMMERSIVE_SCREENS, navigationTargetForSwipe } from './lib/immersiveScreens';
 
 // Every screen is loaded on demand. Statically importing them put the whole
 // app — quiz, Pyodide, Lottie, duels — into the landing page's first bundle,
@@ -308,6 +309,7 @@ function App() {
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const userLanguage = useAppStore((s) => s.user.language);
   const userId = useAppStore((s) => s.user.id);
+  const signOut = useAppStore((s) => s.signOut);
 
   useEffect(() => {
     void i18n.changeLanguage(userLanguage);
@@ -324,9 +326,21 @@ function App() {
   const prevScreenRef = useRef(currentScreen);
   useEffect(() => { prevScreenRef.current = currentScreen; }, [currentScreen]);
 
+  // En una pantalla inmersiva (examen, duelo, lección…) un swipe de sobra
+  // saltaba a casa sin avisar — ni siquiera QuizScreen se salvaba: su propio
+  // diálogo de «¿seguro que quieres salir?» (requestClose/confirmExit) solo
+  // protegía el botón ✕; un gesto llegaba directo a setScreen('home') por
+  // detrás (0.9). navigationTargetForSwipe devuelve null en esas pantallas —
+  // el gesto simplemente no navega, igual que ya no se ve la barra inferior.
   useGestures({
-    onSwipeRight: () => { if (currentScreen !== 'home') setScreen('home'); },
-    onSwipeLeft: () => { if (currentScreen !== 'marketplace') setScreen('marketplace'); },
+    onSwipeRight: () => {
+      const target = navigationTargetForSwipe('right', currentScreen);
+      if (target) setScreen(target);
+    },
+    onSwipeLeft: () => {
+      const target = navigationTargetForSwipe('left', currentScreen);
+      if (target) setScreen(target);
+    },
   });
 
   // Siempre se pregunta al servidor: la cookie `whetzy_logged_in` es
@@ -372,6 +386,20 @@ function App() {
         setAuthState('unauthed');
       });
   }, [authState, hydrateFromApi]);
+
+  // 0.13: lo anterior solo reacciona al 401 del chequeo inicial. Un 401
+  // definitivo en cualquier otra llamada — Home recargando datos, una
+  // respuesta de quiz, lo que sea, en cualquier pantalla — antes se quedaba
+  // en el error genérico de ese componente, sin ninguna salida de vuelta al
+  // login: el servidor ya había cerrado la sesión pero la app seguía
+  // actuando como si siguiera abierta. api.ts avisa aquí con el mismo
+  // `signOut()` que ya usa el botón de Perfil — el efecto de abajo recoge el
+  // cambio de usuario y manda a la pantalla de login, sin duplicar esa
+  // lógica.
+  useEffect(() => {
+    setOnSessionExpired(signOut);
+    return () => setOnSessionExpired(null);
+  }, [signOut]);
 
   // `signOut` (useAppStore) clears the stored tokens and resets the store, but
   // it has no way to reach this component's local `authState`, so without this
@@ -519,12 +547,6 @@ function App() {
     </MotionConfig>
   );
 }
-
-/** Screens that hide the bottom nav: one task, one way out, no wandering off
- *  mid-exam. It is a set rather than a chain of `!==` so adding a screen is one
- *  entry instead of one more clause nobody remembers to extend — 'trackexam'
- *  was the fifth, and the chain was already four deep. */
-const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson', 'readiness', 'playground', 'projects']);
 
 const SCREEN_ORDER: Record<string, number> = {
   home: 0, tracks: 1, stats: 2, league: 3, profile: 4, marketplace: 14,
