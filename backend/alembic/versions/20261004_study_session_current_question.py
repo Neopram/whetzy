@@ -15,8 +15,13 @@ a master, así que las sesiones activas en ese minuto son pocas y no pierden
 nada (su siguiente `/quiz/answer` seguiría el camino normal en cuanto el
 código nuevo esté activo).
 
+Rebasada tras abrir el PR: esta migración se escribió sobre
+`20261002_newsletter_subscribers` (migración 54), pero S.12
+(`tracks_is_active`) se fusionó primero reclamando ese mismo número — esta
+pasa a depender de esa, 55 en la cadena real.
+
 Revision ID: 20261004_study_session_current_question
-Revises: 20261002_newsletter_subscribers
+Revises: 20261004_tracks_is_active
 """
 from __future__ import annotations
 
@@ -25,7 +30,7 @@ import sqlalchemy as sa
 from alembic import op
 
 revision = "20261004_study_session_current_question"
-down_revision = "20261002_newsletter_subscribers"
+down_revision = "20261004_tracks_is_active"
 branch_labels = None
 depends_on = None
 
