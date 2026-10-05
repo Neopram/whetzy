@@ -10,6 +10,12 @@
  * Paso de verdad: el arreglo que devolvio el backend a la aplicacion estuvo
  * desplegado y el navegador seguia cargando el bundle roto.
  *
+ * `whetzy-v1` nunca cambiaba porque era una constante a mano: `whetzy-v2-...`
+ * tampoco cambiaba solo porque alguien se acordara de subir la fecha cada vez
+ * -- la fecha de abajo es el propio valor que esta describiendo el bug,
+ * sustituida en el build (vite.config.ts, swVersionPlugin) por el commit real
+ * (0.15), asi que ya no depende de que nadie se acuerde.
+ *
  * Reglas ahora:
  *   - la navegacion (el documento HTML) va **network-first**. Es el unico
  *     fichero que no lleva hash en el nombre, asi que es el unico que puede
@@ -20,7 +26,7 @@
  *   - la API nunca se cachea de forma que pueda devolver datos de otro dia.
  */
 
-const VERSION = 'v2-2026-09-19';
+const VERSION = '__WHETZY_BUILD_SHA__';
 const CACHE_NAME = `whetzy-${VERSION}`;
 const OFFLINE_FALLBACK = '/index.html';
 
