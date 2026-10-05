@@ -54,6 +54,26 @@ describe('useGestures', () => {
     swipe([200, 100], [100, 100]);
     expect(cbs.onSwipeLeft).not.toHaveBeenCalled();
   });
+
+  it('survives a re-render with a brand-new callbacks object mid-gesture (0.8)', () => {
+    // App.tsx calls useGestures({ onSwipeRight: () => ..., onSwipeLeft: () => ... })
+    // -- a fresh object literal every render, not a stable `cbs` like above.
+    // If the effect re-subscribed on that identity, a re-render between
+    // touchstart and touchend would drop the in-flight gesture.
+    const firstRender = { onSwipeLeft: vi.fn(), onSwipeRight: vi.fn() };
+    const { rerender } = renderHook(({ cb }) => useGestures(cb), {
+      initialProps: { cb: firstRender },
+    });
+
+    touch('touchstart', 200, 100);
+    const afterRerender = { onSwipeLeft: vi.fn(), onSwipeRight: vi.fn() };
+    rerender({ cb: afterRerender });
+    touch('touchend', 100, 100);
+
+    expect(afterRerender.onSwipeLeft).toHaveBeenCalledTimes(1);
+    expect(afterRerender.onSwipeRight).not.toHaveBeenCalled();
+    expect(firstRender.onSwipeLeft).not.toHaveBeenCalled();
+  });
 });
 
 describe('useIsMobile', () => {
