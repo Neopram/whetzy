@@ -8,12 +8,15 @@ columna guarda la pregunta pendiente; `/quiz/answer` la exige y la mueve a
 la siguiente tras cada respuesta, así que un `question_id` ya respondido
 deja de coincidir sin otra columna para "una vez".
 
-Nullable y sin backfill a propósito: una sesión en curso en el momento del
-despliegue simplemente no tiene pregunta pendiente que comprobar hasta la
-siguiente que reciba — ADR-45 ya avisa de ~1 min de 502/503 en cada deploy
-a master, así que las sesiones activas en ese minuto son pocas y no pierden
-nada (su siguiente `/quiz/answer` seguiría el camino normal en cuanto el
-código nuevo esté activo).
+Nullable y sin backfill a propósito, pero no gratis: una sesión en curso en
+el momento del despliegue tiene `current_question_id = NULL`, y
+`quiz.py:592` compara `session.current_question_id != req.question_id` sin
+tratar NULL aparte — `None` nunca coincide con un `question_id` real, así
+que esa sesión recibe un 409 en su siguiente `/quiz/answer` (no "el camino
+normal"). Es aceptable: el alumno pierde la respuesta a esa una pregunta en
+vuelo y puede reintentar, y ADR-45 ya avisa de ~1 min de 502/503 en cada
+deploy a master, así que las sesiones activas justo en ese minuto son
+pocas.
 
 Rebasada tras abrir el PR: esta migración se escribió sobre
 `20261002_newsletter_subscribers` (migración 54), pero S.12
