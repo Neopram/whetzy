@@ -94,7 +94,16 @@ export function isAuthenticated(): boolean {
  *  volvía. Best-effort: si ya no hay sesión que revocar, el 401 se ignora. */
 export async function logout(): Promise<void> {
   try {
-    await request('/auth/logout', { method: 'POST' });
+    // 0.13 (revisión del dueño): `retry=true` (el valor por defecto) hacía que
+    // un 401 aquí mismo disparase tryRefresh() y, al fallar también, volviera
+    // a llamar a onSessionExpired() -- que es signOut() en App.tsx, que llama
+    // otra vez a logout() sin esperar. Bucle infinito: una sesión caducada de
+    // verdad golpeaba /auth/logout y /auth/refresh sin parar mientras la
+    // pestaña siguiera abierta. `retry=false` corta la cadena en el origen:
+    // esta llamada nunca necesita reintentar un refresh (si la sesión ya no
+    // vale, cerrarla "falla" en el sentido de que el servidor ya la dio por
+    // cerrada, que es exactamente lo que se quería).
+    await request('/auth/logout', { method: 'POST' }, false);
   } catch {
     /* la sesión ya no era válida, o no hay red: no hay nada más que hacer aquí */
   }
@@ -102,6 +111,20 @@ export async function logout(): Promise<void> {
 
 function getHeaders(): HeadersInit {
   return { 'Content-Type': 'application/json' };
+}
+
+/** 0.13: App.tsx se suscribe aquí una vez, al montar, para enterarse de un
+ *  401 definitivo (sesión caducada de verdad, no un fallo de red) pase donde
+ *  pase — antes solo el chequeo inicial (`hydrateFromApi` en App.tsx)
+ *  reaccionaba a un 401; cualquier otra llamada a mitad de sesión (una
+ *  respuesta de quiz, Home recargando sus datos…) dejaba al usuario viendo
+ *  un error genérico de ese componente, sin ninguna salida de vuelta al
+ *  login — la sesión seguía "cerrada" en el servidor pero la app actuaba
+ *  como si siguiera abierta. */
+let onSessionExpired: (() => void) | null = null;
+
+export function setOnSessionExpired(cb: (() => void) | null): void {
+  onSessionExpired = cb;
 }
 
 async function tryRefresh(): Promise<boolean> {
@@ -119,16 +142,30 @@ async function tryRefresh(): Promise<boolean> {
 }
 
 async function request<T>(path: string, options: RequestInit = {}, retry = true): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers: { ...getHeaders(), ...options.headers },
-    credentials: 'include',
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      ...options,
+      headers: { ...getHeaders(), ...options.headers },
+      credentials: 'include',
+    });
+  } catch {
+    // `fetch` rechaza sin respuesta cuando no hay red (sin wifi, DNS caído…),
+    // no cuando el servidor responde con un error — eso es la rama de abajo.
+    // Dejar escapar ese TypeError en bruto significaba que todo `err
+    // instanceof ApiError` del resto de la app (incluido el de App.tsx que
+    // decide si perder la red debe cerrar la sesión) daba `false`, así que
+    // `esTransitorio` — que existe justo para distinguir "no hay red" de "la
+    // sesión ya no vale" — nunca se llegaba a mirar: un wifi que se cae un
+    // segundo se trataba como un 401 de verdad y tiraba la sesión (0.13).
+    throw new ApiError('Network error', null);
+  }
 
   if (res.status === 401 && retry && path !== '/auth/refresh') {
     if (await tryRefresh()) {
       return request<T>(path, options, false);
     }
+    onSessionExpired?.();
     throw new ApiError('Unauthorized', 401);
   }
 

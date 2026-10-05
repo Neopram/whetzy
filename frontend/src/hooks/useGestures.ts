@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface GestureCallbacks {
   onSwipeLeft?: () => void;
@@ -11,6 +11,17 @@ const SWIPE_THRESHOLD = 50;
 const SWIPE_TIME_THRESHOLD = 300;
 
 export function useGestures(callbacks: GestureCallbacks) {
+  // App.tsx pasa un objeto `{ onSwipeLeft: () => ..., ... }` literal, nuevo en
+  // cada render. Si el efecto dependiera de esa referencia (como antes),
+  // cualquier re-render de App entre el touchstart y el touchend quita los
+  // listeners viejos y pone unos nuevos con touchStartX/Y/Time reiniciados a
+  // 0 -- el touchend siguiente calcula el swipe contra ese cero, no contra el
+  // dedo real. El ref evita que la identidad de `callbacks` dispare un
+  // re-registro: los listeners se montan una vez y leen siempre la última
+  // versión de `callbacks` cuando disparan.
+  const callbacksRef = useRef(callbacks);
+  callbacksRef.current = callbacks;
+
   useEffect(() => {
     let touchStartX = 0;
     let touchStartY = 0;
@@ -31,6 +42,7 @@ export function useGestures(callbacks: GestureCallbacks) {
 
       const diffX = touchStartX - touchEndX;
       const diffY = touchStartY - touchEndY;
+      const callbacks = callbacksRef.current;
 
       if (Math.abs(diffX) > Math.abs(diffY)) {
         if (diffX > SWIPE_THRESHOLD) {
@@ -54,5 +66,5 @@ export function useGestures(callbacks: GestureCallbacks) {
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [callbacks]);
+  }, []);
 }

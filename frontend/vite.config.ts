@@ -1,9 +1,10 @@
 import { spawnSync } from 'node:child_process'
-import { createReadStream, existsSync, readFileSync } from 'node:fs'
+import { createReadStream, existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, extname, resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
+import { injectBuildVersion } from './scripts/swVersion.js'
 
 /**
  * Makes `vite preview` resolve pretty URLs (`/landing` -> `dist/landing/index.html`)
@@ -365,6 +366,29 @@ function buildCommitMetaPlugin(): Plugin {
   };
 }
 
+/** `public/sw.js` lleva su VERSION como el placeholder `__WHETZY_BUILD_SHA__`
+ *  (swVersion.mjs) -- lo sustituye aqui por el mismo commit que ya usa el
+ *  meta `whetzy-build`, asi que un deploy nuevo siempre trae un CACHE_NAME
+ *  nuevo sin que nadie tenga que acordarse de subir una fecha a mano (0.15). */
+function swVersionPlugin(): Plugin {
+  let isSsr = false;
+  const sha = buildCommitSha();
+  return {
+    name: 'sw-version',
+    apply: 'build',
+    configResolved(config) {
+      isSsr = Boolean(config.build.ssr);
+    },
+    closeBundle() {
+      if (isSsr || process.env.WHETZY_PRERENDER_CHILD) return;
+      const swPath = resolve(process.cwd(), 'dist', 'sw.js');
+      if (!existsSync(swPath)) return;
+      const source = readFileSync(swPath, 'utf-8');
+      writeFileSync(swPath, injectBuildVersion(source, sha));
+    },
+  };
+}
+
 /** `tsc -b` dentro de cualquier `vite build` de produccion (30.5). `8a0dce0`
  *  lo quito del script `build` desde la UI web de GitHub y desde entonces el
  *  tipado solo lo comprobaba el comando que el panel de Cloudflare tenga
@@ -389,6 +413,7 @@ export default defineConfig({
   plugins: [
     typecheckPlugin(),
     buildCommitMetaPlugin(),
+    swVersionPlugin(),
     react(),
     cloudflarePrettyUrlsPreviewPlugin(),
     pyodideSelfHostPlugin(),

@@ -67,6 +67,7 @@ está roto.
 | `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
 | `docs/PLAN_CONTENIDO.md` | normativo-vivo | método de autoría desde la fuente, piloto 37.25, orden y organización (ADR-59) | se queda | 2026-10-03 |
+| `docs/PLAN_MAESTRO.md` | normativo-vivo | norte del producto: tesis, flujos por actor, arquitectura, oleadas A–H con criterio de salida, cola del dueño (aprobado 2026-10-04) | se queda | 2026-10-04 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
 | `docs/CIERRE_2026-09-30.md` | referencia-viva | registro de la pausa (levantada el 2026-10-01, ADR-56); §2 scorecard y §7 trampas del entorno; check_docs [11] | se queda | 2026-09-30 |
 | `docs/COMPETENCIA.md` | referencia-viva | mercado con URL y fecha | se queda | 2026-09-30 |
