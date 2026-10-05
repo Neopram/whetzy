@@ -94,7 +94,16 @@ export function isAuthenticated(): boolean {
  *  volvía. Best-effort: si ya no hay sesión que revocar, el 401 se ignora. */
 export async function logout(): Promise<void> {
   try {
-    await request('/auth/logout', { method: 'POST' });
+    // 0.13 (revisión del dueño): `retry=true` (el valor por defecto) hacía que
+    // un 401 aquí mismo disparase tryRefresh() y, al fallar también, volviera
+    // a llamar a onSessionExpired() -- que es signOut() en App.tsx, que llama
+    // otra vez a logout() sin esperar. Bucle infinito: una sesión caducada de
+    // verdad golpeaba /auth/logout y /auth/refresh sin parar mientras la
+    // pestaña siguiera abierta. `retry=false` corta la cadena en el origen:
+    // esta llamada nunca necesita reintentar un refresh (si la sesión ya no
+    // vale, cerrarla "falla" en el sentido de que el servidor ya la dio por
+    // cerrada, que es exactamente lo que se quería).
+    await request('/auth/logout', { method: 'POST' }, false);
   } catch {
     /* la sesión ya no era válida, o no hay red: no hay nada más que hacer aquí */
   }

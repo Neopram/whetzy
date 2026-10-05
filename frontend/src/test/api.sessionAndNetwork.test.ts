@@ -13,7 +13,7 @@
  *    mitad de sesión no tenía ninguna salida de vuelta al login.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ApiError, auth, setOnSessionExpired } from '../services/api';
+import { ApiError, auth, logout, setOnSessionExpired } from '../services/api';
 
 describe('services/api — red caída no es lo mismo que sesión caducada (0.13)', () => {
   const fetchMock = vi.fn();
@@ -78,5 +78,35 @@ describe('services/api — red caída no es lo mismo que sesión caducada (0.13)
 
     await auth.me();
     expect(onExpired).not.toHaveBeenCalled();
+  });
+
+  it('logout() disparado desde onSessionExpired no entra en bucle infinito con la sesión realmente caducada', async () => {
+    // Reproduce la cadena que encontró el dueño (revisión de #153): un 401
+    // definitivo llama a onSessionExpired -> signOut() -> logout() sin
+    // esperar. Si logout() reintenta el refresh como cualquier otra llamada,
+    // su propio 401 vuelve a llamar a onSessionExpired, que vuelve a llamar
+    // a logout(), sin fin -- dos peticiones a la API por vuelta mientras la
+    // pestaña siga abierta. El tope de abajo convierte ese bucle en un fallo
+    // rápido del test en vez de colgarlo (igual que hizo el dueño: "sin
+    // tope, el worker de vitest murió").
+    const onExpired = vi.fn(() => {
+      void logout();
+    });
+    setOnSessionExpired(onExpired);
+
+    let calls = 0;
+    const CAP = 20;
+    fetchMock.mockImplementation(async () => {
+      calls += 1;
+      if (calls > CAP) throw new Error(`bucle infinito: más de ${CAP} peticiones`);
+      return new Response('{}', { status: 401 });
+    });
+
+    await expect(auth.me()).rejects.toMatchObject({ status: 401 });
+    // Deja que el logout() disparado sin esperar desde onSessionExpired
+    // termine su propia cadena de promesas.
+    await new Promise((resolve) => setTimeout(resolve, 20));
+
+    expect(calls).toBeLessThan(10);
   });
 });
