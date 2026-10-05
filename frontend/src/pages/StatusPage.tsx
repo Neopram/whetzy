@@ -11,46 +11,39 @@ const HEALTH_URL = `${API_BASE_URL.replace(/\/api\/v1\/?$/, '')}/health/ready`;
 
 const POLL_INTERVAL_MS = 30_000;
 
-type ComponentStatus = 'up' | 'down' | 'unknown';
-type OverallStatus = 'operational' | 'degraded' | 'down' | 'checking';
+export type ComponentStatus = 'up' | 'down' | 'unknown';
+export type OverallStatus = 'operational' | 'degraded' | 'down' | 'checking';
 
-interface HealthState {
+export interface HealthState {
   overall: OverallStatus;
   api: ComponentStatus;
   db: ComponentStatus;
   lastChecked: Date | null;
 }
 
-/** Best-effort read of a DB flag out of whatever shape `/health/ready`
- *  returns. Kept loose on purpose: the page must not break if the backend
- *  renames a field, it just falls back to "unknown". */
-function readDbStatus(body: unknown): ComponentStatus {
-  if (!body || typeof body !== 'object') return 'unknown';
-  const record = body as Record<string, unknown>;
-  const candidate = record.database ?? record.db ?? record.checks;
-  if (typeof candidate === 'string') {
-    return /ok|up|ready|healthy/i.test(candidate) ? 'up' : 'down';
-  }
-  if (candidate && typeof candidate === 'object') {
-    const nested = candidate as Record<string, unknown>;
-    const dbField = nested.database ?? nested.db;
-    if (typeof dbField === 'string') return /ok|up|ready|healthy/i.test(dbField) ? 'up' : 'down';
-    if (typeof dbField === 'boolean') return dbField ? 'up' : 'down';
-  }
-  return 'unknown';
-}
-
-async function checkHealth(): Promise<HealthState> {
+/** `/health/ready` (backend/app/main.py) solo devuelve `{"status": "ready"}`
+ *  en éxito y un 503 con `{"detail": "Database not ready"}` en fallo — nunca
+ *  un campo `database`/`db`/`checks` que leer del cuerpo. La versión anterior
+ *  de esta página buscaba exactamente eso, así que `db` se quedaba en
+ *  `'unknown'` para siempre (el candidato que buscaba nunca existía) y el
+ *  estado `'degraded'` era código muerto: ninguna respuesta real lo
+ *  alcanzaba. Una base de datos caída se veía indistinguible de la API
+ *  entera caída (0.16).
+ *
+ *  La única comprobación que hace `/health/ready` es un `SELECT 1`: su único
+ *  modo de fallo es la base de datos. Así que el propio código HTTP ya dice
+ *  todo lo que hay que saber — un 503 significa que el proceso respondió
+ *  (la API está viva) pero la base de datos no, exactamente "degraded"; que
+ *  `fetch` ni siquiera consiga una respuesta sí significa que no hay nada
+ *  vivo al otro lado. */
+export async function checkHealth(): Promise<HealthState> {
   const now = new Date();
   try {
     const res = await fetch(HEALTH_URL, { credentials: 'omit' });
-    if (!res.ok) {
-      return { overall: 'down', api: 'down', db: 'unknown', lastChecked: now };
+    if (res.ok) {
+      return { overall: 'operational', api: 'up', db: 'up', lastChecked: now };
     }
-    const body: unknown = await res.json().catch(() => null);
-    const db = readDbStatus(body);
-    const overall: OverallStatus = db === 'down' ? 'degraded' : 'operational';
-    return { overall, api: 'up', db, lastChecked: now };
+    return { overall: 'degraded', api: 'up', db: 'down', lastChecked: now };
   } catch {
     return { overall: 'down', api: 'down', db: 'unknown', lastChecked: now };
   }
