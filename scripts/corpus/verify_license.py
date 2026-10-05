@@ -47,7 +47,10 @@ ACCEPT = [
     (re.compile(r"Apache License,?\s+Version 2\.0", re.IGNORECASE), "Apache-2.0"),
     (re.compile(r"Permission is hereby granted, free of charge", re.IGNORECASE), "MIT"),
     (re.compile(r"Redistribution and use in source and binary forms", re.IGNORECASE), "BSD"),
-    (re.compile(r"CC0|Creative Commons Zero", re.IGNORECASE), "CC0-1.0"),
+    # Por su título («CC0 1.0 Universal»), no por la palabra suelta: el texto de CC BY 4.0
+    # menciona «the CC0 Public Domain Dedication» y se clasificaba como CC0, que no
+    # obliga a atribuir (los corpus de Microsoft Learn, 2026-10-05).
+    (re.compile(r"\bCC0[- ]1\.0\b|Creative Commons Zero", re.IGNORECASE), "CC0-1.0"),
     (re.compile(r"This is free and unencumbered software released into the public domain", re.IGNORECASE), "Unlicense"),
     (re.compile(r"Creative Commons Attribution \d\.\d|\bCC[- ]BY[- ]\d\.\d", re.IGNORECASE), "CC-BY"),
     (re.compile(r"Project Gutenberg(?:\u2122)? License.*public domain in the United\s+States", re.IGNORECASE | re.DOTALL), "PD-US (Project Gutenberg)"),
