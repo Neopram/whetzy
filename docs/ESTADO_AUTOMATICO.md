@@ -71,7 +71,7 @@ pwsh scripts/estado.ps1 -Quitar                 # borra esa tarea
 | Railway | Último despliegue de `api` = `master` | `FAILED` o `CRASHED` | API pública de Railway: `deployments(input:{projectId, environmentId, serviceId}, first: 1)` con la cabecera `Project-Access-Token`; el commit sale de `meta.commitHash` [V: documentación de Railway y conector, 2026-10-05] |
 | Repo | Cifras del ledger y preguntas pendientes | — | `ledger.py stats`, `catalog_coverage.py` |
 | Repo | `VITE_FEEDBACK_EMAIL`, carpeta iOS | — (avisos) | Ficheros de `origin/master` |
-| Repo | `sync.ps1` | Restaura con `pg_restore --clean` sobre una URL de Railway (§6) | Fichero |
+| Repo | `sync.ps1` | Vuelve a aparecer y restaura con `pg_restore --clean` sobre una URL de Railway (§6) | Fichero |
 
 En GitHub, los checks de **GitHub Actions se cuentan aparte**. Sin runner (H.13), fallan en todos
 los PR y su rojo no dice nada del PR.
@@ -152,19 +152,25 @@ no necesariamente la factura.
 **Total registrado: unos 1.490 $** [V: suma de `cost_usd`]. Fuera de Whetzy hay 5 sesiones antiguas
 de otro repo (PSM) y personales, que no cuentan aquí.
 
-## 6. Riesgo encontrado: `sync.ps1`
+## 6. Riesgo encontrado: `sync.ps1` (borrado el 2026-10-05)
 
-`sync.ps1`, en la raíz del repo, hace dos cosas:
+**Borrado del repo el 2026-10-05, por orden del dueño, en este mismo PR.** El check de §3 se
+queda como guarda: si el fichero vuelve con ese `pg_restore`, el informe da alerta.
+
+`sync.ps1`, en la raíz del repo, hacía dos cosas:
 1. una copia de la base local de Docker (`learning-engine-db-1`);
 2. **`pg_restore --clean --if-exists` sobre la `DATABASE_URL` de Railway que se le pegue** [V: leído
    entero].
 
-Con la URL de producción, **sustituye los datos reales por los de desarrollo**. Siempre termina con
-«PROCESO COMPLETADO AL 100% CON ÉXITO», aunque falle. Entró el 2026-09-24 dentro del commit
+Con la URL de producción, **sustituía los datos reales por los de desarrollo**. Siempre terminaba con
+«PROCESO COMPLETADO AL 100% CON ÉXITO», aunque fallara. Entró el 2026-09-24 dentro del commit
 `36a5532`, que era de la racha.
 
-**No ejecutarlo.** El script de estado lo marca como alerta mientras exista. Borrarlo o protegerlo es
-decisión del dueño, porque puede ser una herramienta suya.
+**Si alguien conserva una copia local** (por ejemplo, en el clon de OneDrive del dueño, que no se
+actualiza solo), sigue siendo peligrosa: el borrado del repo no la toca. Si hiciera falta restaurar
+una base, el procedimiento documentado es el de `docs/RUNBOOK.md` («DB backup / restore»):
+`scripts/db_restore.sh` restaura en una base **nueva y vacía**, y después se apunta `DATABASE_URL`
+a ella. Nunca sobrescribe la base en uso.
 
 ## 7. Mantenimiento
 
