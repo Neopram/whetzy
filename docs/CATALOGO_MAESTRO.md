@@ -15,8 +15,8 @@
 > Última medición: 2026-10-09 (`python scripts/catalog_coverage.py` sobre `8f54083`). Estado del banco: ver `## 1`.
 > **Plan vigente desde el 2026-10-01 (ADR-54; sustituye el suelo y el ideal de ADR-53, que a su
 > vez sustituyó la meta de volumen de ADR-46):** cada track de aprendizaje tiene **una sola
-> forma**: 32 skills (8 módulos × 4) · 10 preguntas por skill, ≥ 3 de ellas ejecutables donde el
-> navegador ejecute · 1 lección y 1 término por skill. Nada se borra: lo que pase de esa forma se
+> forma**: 32 skills (8 módulos × 4) · 10 preguntas por skill, ≥ 3 de ellas **con código** (ejecutables o
+> `code_output`; ver «Ejecutable» y «con código» abajo) donde el navegador ejecute · 1 lección y 1 término por skill. Nada se borra: lo que pase de esa forma se
 > conserva. Cada certificación: el 100 % de sus objetivos oficiales, práctica ≥ máx(300, 3 × las
 > preguntas del examen) y un **banco de simulacro reservado** de 2 × el examen, que no sale en
 > práctica («pendiente» si el proveedor no publica la longitud). Los tracks nuevos entran por
@@ -77,8 +77,12 @@ exige antes un ADR. Un id planificado nunca reutiliza uno de `content/curriculum
 PCAP, Security+, MLA-C01, AZ-900, AI-900 y DP-900, y pasaron a track51–56).
 Cada track de aprendizaje (ADR-54):
 - **Forma única:** 32 skills (8 módulos × 4) · 10 preguntas por skill (320 por track), ≥ 3
-  ejecutables por skill donde el navegador pueda ejecutar (Python, SQL, JS) o exento con razón
-  escrita · 1 lección y 1 término de glosario por skill · guarda 37.0 en verde.
+  **con código** por skill donde el navegador pueda ejecutar (Python, SQL, JS) o exento con razón
+  escrita. **«Ejecutable» y «con código» no son lo mismo (44.50):** «ejecutable» es la definición
+  estricta de 17.3 (`fill_blank_exec`, `fix_bug`, `sql_exec`, `js_exec`; `EXEC_TYPES` de
+  `scripts/check_question_bank.py`, meta del 15 %): 612 el 2026-10-09. «Con código» es la de esta
+  forma: esos cuatro más `code_output` (`tipos_ejecutables` de `scripts/metas_catalogo.json`):
+  1.377 el mismo día · 1 lección y 1 término de glosario por skill · guarda 37.0 en verde.
 - **Nada se borra:** un track por encima de 32 skills o de 10 preguntas por skill conserva lo
   que tiene (track01: 52 skills, 870 preguntas).
 - **roadmap.sh** solo sirve para elegir qué 32 skills entran; sus recuentos siguen en
@@ -426,7 +430,7 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 |---|---|---|---|
 | Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 730/730 skills con lección | 1 lección por skill en todos los tracks del plan | `test_lessons.py` (ratchet `MIN_LESSONS`) + `catalog_coverage.py` |
 | Ejemplo resuelto + problema de completar (fading) | solo la lección | 1 secuencia por skill | test de estructura |
-| Práctica adaptativa (quiz) | ✅ 11.416 Q · 15,6 por skill | 10 por skill, ≥ 3 ejecutables donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
+| Práctica adaptativa (quiz) | ✅ 11.416 Q · 15,6 por skill | 10 por skill, ≥ 3 con código donde el navegador ejecute (320 por track de 32 skills) | `check_question_bank.py` + `catalog_coverage.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
 | Simulacro de certificación en formato real | ✅ 8 (las 11 menos AZ-900, AI-901 y DP-900: sin `exam_question_count`, `mock_exam.py` rechaza el sorteo); formato fijado por test en AIF-C01 y MLA-C01 (37.19) e ISC2 CC (37.22, outline 2026-09-01); en AZ-900 y DP-900 el test solo fija la duración (45 min). Decisión del 2026-10-09 (ADR-61 §4 prop., 44.42): simulacro con «formato Whetzy» declarado y examen certificador no a la venta hasta tener cifra oficial | formato del proveedor + **banco reservado 2 × examen** (0/1.040 hoy) | `test_certification_blueprints.py` + 37.18 |
@@ -485,8 +489,8 @@ Cifras de `python scripts/catalog_coverage.py` sobre `8f54083` (2026-10-09). El 
 | *Solo cuando la demanda los active (no cuentan en el total):* track24/25 reconstruidos (2 × 320) · nuevos A (3 × 320) · B (7 × 320) · C (9 × 320) | 640 · 960 · 2.240 · 2.880 | ≈ 1 · 2 · 4 · 6 |
 
 - Además de preguntas: +261 skills, +261 lecciones y +252 términos en los tracks construidos.
-- Ejecutables (≥ 3 por skill): 13 tracks (16, 17, 18-23 y 26-30) salen «sin medir» porque no
-  tienen preguntas ejecutables ni exención escrita en `scripts/metas_catalogo.json`. track16 y
+- Con código (≥ 3 por skill): 13 tracks (16, 17, 18-23 y 26-30) salen «sin medir» porque no
+  tienen preguntas con código ni exención escrita en `scripts/metas_catalogo.json`. track16 y
   track17 entraron en esa lista el 2026-10-01, al convertir en `fill_blank` sus «ejecutables» sin hueco.
 - Sustituye la aritmética de ADR-53 (suelo 31.056 preguntas ≈ 60 sesiones; ideal 94.611 ≈ 183).
 - La autoría la hace Sonnet 5 desde la fuente, con revisión completa de Sonnet 5 (ADR-59).
