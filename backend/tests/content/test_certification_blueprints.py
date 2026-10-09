@@ -398,3 +398,33 @@ class TestDomainPoolsCanFillTheExam:
             if pool[d] < allocation[d]
         ]
         assert short == [], short
+
+
+# 37.24 (2026-10-09): SY0-701 (track42) declaraba sus cinco dominios y ninguna de sus 20
+# skills decía a cuál pertenecía. El loader deja entonces `domain_id = None` en todas,
+# `mock_exam._questions_by_domain` filtra `Skill.domain_id IS NOT NULL` y el simulacro
+# no tenía ni una pregunta que sortear. Ningún test lo vio porque las comprobaciones de
+# arriba solo miran `TRACKS_WITH_DECLARED_DOMAINS` (track10, track11), una lista escrita a
+# mano. Estas dos recorren todos los tracks que declaran `exam_domains`, sin lista.
+ALL_TRACKS_WITH_DECLARED_DOMAINS = tuple(t["id"] for t in _tracks() if t.get("exam_domains"))
+
+
+class TestEveryDeclaredBlueprintIsWired:
+    def test_the_list_is_not_empty(self) -> None:
+        assert {"track10", "track11", "track42"} <= set(ALL_TRACKS_WITH_DECLARED_DOMAINS)
+
+    @pytest.mark.parametrize("track_id", ALL_TRACKS_WITH_DECLARED_DOMAINS)
+    def test_every_skill_is_mapped_or_excluded_on_purpose(self, track_id: str) -> None:
+        TestSkillDomainMapping().test_every_skill_is_mapped_or_excluded_on_purpose(track_id)
+
+    @pytest.mark.parametrize("track_id", ALL_TRACKS_WITH_DECLARED_DOMAINS)
+    def test_no_domain_is_empty(self, track_id: str) -> None:
+        TestSkillDomainMapping().test_no_domain_is_empty(track_id)
+
+    @pytest.mark.parametrize(
+        "track_id",
+        [t for t in ALL_TRACKS_WITH_DECLARED_DOMAINS
+         if _track(t)["certification"].get("exam_question_count")],
+    )
+    def test_every_domain_has_enough_answerable_questions(self, track_id: str) -> None:
+        TestDomainPoolsCanFillTheExam().test_every_domain_has_enough_answerable_questions(track_id)
