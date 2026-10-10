@@ -96,7 +96,6 @@ async def _pick_questions(db: AsyncSession, skill_id: str) -> list[Question]:
             Question.correct_index.is_not(None),
             Question.pool != "simulacro",
         )
-        .order_by(Question.elo_rating)
     )
     questions = result.scalars().all()
     if len(questions) < _DUEL_QUESTIONS:
