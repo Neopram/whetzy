@@ -29,6 +29,7 @@ from app.services.instructor_service import (
     CannotEnrollInOwnCourse,
     CourseNotPublished,
     InstructorService,
+    PaymentRequired,
 )
 
 logger = logging.getLogger(__name__)
@@ -228,6 +229,8 @@ async def enroll_student(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
     except CourseNotPublished as exc:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
+    except PaymentRequired as exc:
+        raise HTTPException(status_code=status.HTTP_402_PAYMENT_REQUIRED, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
     return EnrollmentResponse(**result)

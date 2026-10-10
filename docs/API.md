@@ -300,7 +300,7 @@ H.29. El pago se acumula en una fila por instructor y mes, no una por matrícula
 ```
 POST  /instructor/courses                     → {id, …} 🔒 — publicar curso
 GET   /instructor/courses                     → [{…}] 🔒
-POST  /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published`, 409 si ya inscrito. Sin pasarela no cobra (Paddle HUMAN-BLOCKED)
+POST  /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published` o es tu propio curso, 409 si ya inscrito, **402 siempre que `price_cents > 0`** (41.6): no existe ningún producto Paddle de curso (Paddle HUMAN-BLOCKED), así que no hay manera de confirmar el cobro — antes de esto se inscribía gratis y aun así creaba un `InstructorPayout` real
 GET   /instructor/analytics                   → {total_earnings_cents, …} 🔒
 GET   /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
 GET   /instructor/profile                     → {display_name, bio, avatar_url, website} 🔒 — se crea el instructor si el usuario aún no lo era (28.8: `ProfileTab` no llamaba a nada)
