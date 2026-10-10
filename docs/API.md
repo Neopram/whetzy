@@ -32,7 +32,7 @@ POST  /auth/refresh               → Token (200)
 GET   /auth/me                    → UserRead (200) 🔒
 PATCH /auth/me                    → UserRead (200) 🔒  — update profile (language, display_name)
 DELETE /auth/me/account           → {message} (200) 🔒
-POST  /auth/logout                 → {message} (200) 🔒
+POST  /auth/logout                 → {message} (200) 🔒  — sube `jwt_version` (41.18): cualquier access/refresh emitido antes queda inválido, igual que ya hace el cambio de contraseña
 PATCH /auth/me/password           → {message} (200) 🔒  — body {current_password, new_password}
 
 POST /auth/forgot-password        → {message} (200) — no enumeration
