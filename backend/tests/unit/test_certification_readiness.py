@@ -140,3 +140,41 @@ async def test_readiness_overall_excludes_untouched_domains(
     r = await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
     body = r.json()
     assert body["overall_p_known"] == pytest.approx(0.9)
+
+
+async def test_ready_for_simulacro_requires_every_domain_ready(
+    client: AsyncClient, db_session: AsyncSession, user: User, auth_headers: dict
+) -> None:
+    """B.11: Domain A is well above the bar but Domain B is untouched -
+    the track as a whole must not be marked ready for the simulacro."""
+    sk_a_id, _sk_b_id, _, _ = await _seed_cert_track(db_session)
+    db_session.add(UserSkillState(user_id=user.id, skill_id=sk_a_id, p_known=0.95))
+    await db_session.commit()
+
+    r = await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
+    body = r.json()
+    assert body["ready_for_simulacro"] is False
+
+
+async def test_ready_for_simulacro_true_when_both_domains_clear_the_bar(
+    client: AsyncClient, db_session: AsyncSession, user: User, auth_headers: dict
+) -> None:
+    sk_a_id, sk_b_id, _, _ = await _seed_cert_track(db_session)
+    db_session.add_all([
+        UserSkillState(user_id=user.id, skill_id=sk_a_id, p_known=0.95),
+        UserSkillState(user_id=user.id, skill_id=sk_b_id, p_known=0.80),
+    ])
+    await db_session.commit()
+
+    r = await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
+    body = r.json()
+    assert body["ready_for_simulacro"] is True
+    assert all(d["ready"] for d in body["domains"])
+
+
+async def test_ready_for_simulacro_false_with_no_data_at_all(
+    client: AsyncClient, db_session: AsyncSession, auth_headers: dict
+) -> None:
+    await _seed_cert_track(db_session)
+    r = await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
+    assert r.json()["ready_for_simulacro"] is False
