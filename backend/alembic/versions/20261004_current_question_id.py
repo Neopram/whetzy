@@ -23,7 +23,7 @@ Rebasada tras abrir el PR: esta migración se escribió sobre
 (`tracks_is_active`) se fusionó primero reclamando ese mismo número — esta
 pasa a depender de esa, 55 en la cadena real.
 
-Revision ID: 20261004_study_session_current_question
+Revision ID: 20261004_current_question_id
 Revises: 20261004_tracks_is_active
 """
 from __future__ import annotations
@@ -32,7 +32,7 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "20261004_study_session_current_question"
+revision = "20261004_current_question_id"
 down_revision = "20261004_tracks_is_active"
 branch_labels = None
 depends_on = None
