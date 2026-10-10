@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "id": "q090205_r001",
+      "skill_id": "sk090205",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué imprime este código?\n\n```python\nclass A(Exception): pass\nclass B(A): pass\n\ntry:\n    raise A()\nexcept B:\n    print(\"B\")\nexcept A:\n    print(\"A\")\n```",
+      "question_en": "What does this code print?\n\n```python\nclass A(Exception): pass\nclass B(A): pass\n\ntry:\n    raise A()\nexcept B:\n    print(\"B\")\nexcept A:\n    print(\"A\")\n```",
+      "options_es": [
+        "Imprime B, porque B está primero y except elige la primera cláusula sin comprobar tipos.",
+        "Imprime A, porque except B no atrapa instancias de la clase base A.",
+        "Imprime B y luego A, porque ambas cláusulas se ejecutan en orden.",
+        "No imprime nada; la excepción A queda sin manejar y el programa termina con error."
+      ],
+      "options_en": [
+        "It prints B, because B is listed first and except picks the first clause without checking types.",
+        "It prints A, because except B does not catch instances of the base class A.",
+        "It prints B and then A, because both clauses run in order.",
+        "It prints nothing; A stays unhandled and the program ends with an error."
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una cláusula except atrapa instancias de la clase nombrada o de sus subclases, pero no al revés. Como se lanza A, que es la clase base de B, except B no coincide y se pasa a except A, que sí coincide y se ejecuta. Además, como mucho se ejecuta un manejador, así que no salen ambos mensajes.",
+      "explanation_en": "An except clause catches instances of the named class or of its subclasses, but not the other way around. Since A, the base class of B, is raised, except B does not match and Python moves on to except A, which does match and runs. Also, at most one handler runs, so both messages cannot appear.",
+      "source": "Python documentation — 8. Errors and Exceptions (https://docs.python.org/3/tutorial/errors.html) — PSF-2.0"
+    }
+  ]
+}
