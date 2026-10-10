@@ -1506,3 +1506,34 @@ export interface PaddleConfig {
     pro_annual: string | null;
   };
 }
+
+export interface PublicCertificate {
+  code: string;
+  track_name_es: string;
+  track_name_en: string;
+  issued_at: string;
+}
+
+export interface PublicProject {
+  slug: string;
+  name_es: string;
+  name_en: string;
+  completed_at: string;
+}
+
+export interface PublicProfile {
+  username: string;
+  display_name: string;
+  avatar_emoji: string;
+  joined_at: string;
+  current_streak: number;
+  mastery_avg: number;
+  skills_mastered: number;
+  certificates: PublicCertificate[];
+  projects_completed: PublicProject[];
+}
+
+export const profiles = {
+  /** Público (0.3): cualquier `username` existente y activo, sin autenticación. */
+  get: (username: string) => request<PublicProfile>(`/profiles/${encodeURIComponent(username)}`),
+};
