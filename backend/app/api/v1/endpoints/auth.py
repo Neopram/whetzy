@@ -59,7 +59,7 @@ class UpdateProfileRequest(BaseModel):
     language: str | None = Field(default=None, pattern="^(es|en)$")
     # Respuestas del onboarding (índice de opción, 0-2). 34.11.
     onboarding_experience: int | None = Field(default=None, ge=0, le=2)
-    onboarding_goal: int | None = Field(default=None, ge=0, le=2)
+    onboarding_goal: int | None = Field(default=None, ge=0, le=3)
     onboarding_weekly_time: int | None = Field(default=None, ge=0, le=2)
 
     @field_validator("display_name")
