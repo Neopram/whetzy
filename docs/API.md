@@ -104,7 +104,7 @@ GET    /moderation/blocked           → [{user_id, username, display_name, bloc
 ## Tutor endpoint
 
 ```
-POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒 — Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS`/day UTC; Pro Max unlimited (38.6)
+POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒 — Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS` explanations OR `TUTOR_DAILY_TOKEN_LIMIT_PLUS` tokens/day UTC (41.17, engineering backstop, never applies to the ADR-49-unlimited tiers); Pro Max unlimited (38.6). Quota is reserved atomically before calling the LLM, settled to the real token count after
   Body: {question_id, conversation_history?: [...]}
 ```
 

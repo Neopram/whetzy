@@ -155,7 +155,7 @@ class _RejectedKey:
 
     async def complete_named(
         self, system: str, user: str, **_: object
-    ) -> tuple[str, str]:
+    ) -> tuple[str, str, int]:
         import httpx
 
         req = httpx.Request("POST", "https://api.groq.com/openai/v1/chat/completions")
@@ -182,3 +182,60 @@ async def test_proveedor_rechazado_da_503_y_no_gasta_cupo(
     assert res.status_code == 503
     assert res.json()["detail"] == TUTOR_UNAVAILABLE
     assert await tutor_quota.used_on(db_session, pro.id, DAY) == 0
+
+
+class _ReportsRealTokens:
+    """41.17: GuardedProvider con un primary que sí reporta tokens, como Groq."""
+
+    name = "groq"
+
+    async def complete_named(self, system: str, user: str, **_: object) -> tuple[str, str, int]:
+        return "respuesta", self.name, 777
+
+
+async def test_cupo_por_tokens_usa_el_valor_real_que_devuelve_el_proveedor(
+    client, db_session, content_seed, fixed_day, monkeypatch
+) -> None:
+    """41.17: la reserva peor-caso se corrige al gasto real una vez responde
+    el proveedor -- sin esto, cada llamada se quedaba contando el presupuesto
+    reservado entero, nunca lo que de verdad costó."""
+    from app.services.ai import tutor as tutor_service
+
+    monkeypatch.setattr(tutor_service, "get_provider", lambda: _ReportsRealTokens())
+    pro = await _user(
+        db_session,
+        is_premium=True,
+        subscription_status="active",
+        subscription_tier="plus",
+    )
+    res = await client.post(
+        URL, json={"question_id": content_seed["question_id"]}, headers=_h(pro)
+    )
+    assert res.status_code == 200, res.text
+
+    row = await db_session.get(TutorUsage, (pro.id, DAY))
+    assert row is not None
+    assert row.explanations == 1
+    assert row.tokens_used == 777
+
+
+async def test_cupo_por_tokens_no_bloquea_a_pro_max(
+    client, db_session, content_seed, fixed_day
+) -> None:
+    """ADR-49: Pro Max es ilimitado -- el cupo por tokens (cinturón de
+    seguridad de ingeniería) no puede imponer un tope que ADR-49 ya negó."""
+    pro_max = await _user(
+        db_session,
+        is_premium=True,
+        subscription_status="active",
+        subscription_tier="pro",
+    )
+    db_session.add(
+        TutorUsage(user_id=pro_max.id, day=DAY, explanations=500, tokens_used=10_000_000)
+    )
+    await db_session.commit()
+
+    res = await client.post(
+        URL, json={"question_id": content_seed["question_id"]}, headers=_h(pro_max)
+    )
+    assert res.status_code == 200, res.text

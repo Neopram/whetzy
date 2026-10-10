@@ -172,10 +172,12 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `20261004_current_question_id` (55 migrations, single head —
-verified 2026-10-05 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains
-after `20261004_tracks_is_active` (#127, rebased — it was written against
-`20261002_newsletter_subscribers` but #124/S.12 merged that slot first); before that this line said
+Current Alembic HEAD: `20261010_tutor_tokens` (56 migrations, single head —
+verified 2026-10-10 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains
+after `20261004_current_question_id` (#127, renamed from
+`20261004_study_session_current_question` by the #165 hotfix — the original
+39-char id overflowed `alembic_version`'s `varchar(32)` and crashed
+production; 55 migrations, from 2026-10-10); before that this line said
 `20261004_tracks_is_active`, 54 migrations, from 2026-10-04)
 
 Always recompute — never trust this line:

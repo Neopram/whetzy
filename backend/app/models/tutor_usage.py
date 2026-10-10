@@ -25,3 +25,11 @@ class TutorUsage(Base):
     explanations: Mapped[int] = mapped_column(
         Integer, default=0, server_default="0", nullable=False
     )
+    # 41.17: cupo por tokens, aparte del conteo de explicaciones -- una
+    # conversación larga (conversation_history) cuesta mucho más que una
+    # corta aunque las dos cuenten como "una explicación". Se cuenta en
+    # todos los planes, igual que explanations, incluido Pro Max (ilimitado
+    # en explicaciones por ADR-49, pero su coste real también hay que verlo).
+    tokens_used: Mapped[int] = mapped_column(
+        Integer, default=0, server_default="0", nullable=False
+    )
