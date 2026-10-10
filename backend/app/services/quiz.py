@@ -119,6 +119,57 @@ async def _get_or_create_skill_state(
         return result.scalar_one()
 
 
+async def apply_answer_to_skill_state(
+    db: AsyncSession,
+    user_id: uuid.UUID,
+    question: Question,
+    correct: bool,
+    response_time_ms: int,
+    now: datetime | None = None,
+) -> None:
+    """Apply BKT/Elo/FSRS updates for a single answered question.
+
+    Used by duel answers which share the same model logic as quiz answers but
+    have no StudySession and cannot create a Response row (session_id NOT NULL).
+    Callers are responsible for committing the transaction.
+    """
+    now = now or _now()
+    state = await _get_or_create_skill_state(db, user_id, question.skill_id)
+
+    user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
+    item_entity = EloEntity(rating=question.elo_rating, interactions=30)
+    user_entity, item_entity, _expected_p = elo.update(user_entity, item_entity, correct)
+    state.elo_rating = user_entity.rating
+    question.elo_rating = item_entity.rating
+
+    bkt_state = SkillState(
+        skill_id=question.skill_id,
+        p_known=state.p_known,
+        attempts=state.attempts,
+        correct=state.correct_count,
+    )
+    bkt.update(bkt_state, correct)
+    state.p_known = bkt_state.p_known
+    state.attempts = bkt_state.attempts
+    state.correct_count = bkt_state.correct
+
+    grade = _grade_from_response(correct, response_time_ms, question.expected_time_ms or response_time_ms)
+    card = Card(
+        stability=state.fsrs_stability,
+        difficulty=state.fsrs_difficulty,
+        reps=max(0, bkt_state.attempts - 1),
+        due=_ensure_aware(state.fsrs_due),
+        last_review=_ensure_aware(state.updated_at),
+        state="new" if bkt_state.attempts <= 1 else "review",
+    )
+    card, _log = fsrs.review(card, grade, now)
+    state.fsrs_stability = card.stability
+    state.fsrs_difficulty = card.difficulty
+    state.fsrs_due = card.due
+
+    await db.flush()
+
+
 def _module_unlock_decision(
     module: Module,
     prev_module: Module | None,
