@@ -332,7 +332,7 @@ async def answer_duel(
         correct = question.correct_index is not None and payload.selected_index == question.correct_index
 
     await apply_answer_to_skill_state(
-        db, current_user.id, question, correct, payload.response_time_ms, now
+        db, current_user.id, question, correct, payload.response_time_ms
     )
 
     my_answers.append({
