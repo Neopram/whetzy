@@ -112,6 +112,70 @@ async def test_subscribe_requires_auth(client):
     assert r.status_code == 401
 
 
+# ── Validación del endpoint (S.15) ───────────────────────────────────────────
+# `send_to_user` hace un POST desde el servidor al endpoint registrado: sin
+# validarlo, cualquiera podía meter una IP interna o de la nube como
+# "suscripción" y provocar que el propio backend le hiciera la petición SSRF.
+
+
+async def test_subscribe_rejects_a_private_ip_endpoint(client, user):
+    r = await client.post(
+        f"{PUSH}/subscribe",
+        json=_sub_body("https://169.254.169.254/latest/meta-data/"),
+        headers=_h(_auth(user)),
+    )
+    assert r.status_code == 400
+
+
+async def test_subscribe_rejects_a_plain_http_endpoint(client, user):
+    r = await client.post(
+        f"{PUSH}/subscribe",
+        json=_sub_body("http://fcm.googleapis.com/fcm/send/not-https"),
+        headers=_h(_auth(user)),
+    )
+    assert r.status_code == 400
+
+
+async def test_subscribe_accepts_a_real_push_service_endpoint(client, user, db_session):
+    r = await client.post(f"{PUSH}/subscribe", json=_sub_body(), headers=_h(_auth(user)))
+    assert r.status_code == 201, r.text
+
+
+# ── Tope de suscripciones por usuario (S.15) ─────────────────────────────────
+
+
+async def test_subscribe_enforces_a_per_user_cap(client, user, monkeypatch):
+    monkeypatch.setattr("app.core.config.settings.PUSH_MAX_SUBSCRIPTIONS_PER_USER", 2)
+    for i in range(2):
+        r = await client.post(
+            f"{PUSH}/subscribe",
+            json=_sub_body(f"https://fcm.googleapis.com/fcm/send/tok-{i}"),
+            headers=_h(_auth(user)),
+        )
+        assert r.status_code == 201, r.text
+
+    over = await client.post(
+        f"{PUSH}/subscribe",
+        json=_sub_body("https://fcm.googleapis.com/fcm/send/tok-over"),
+        headers=_h(_auth(user)),
+    )
+    assert over.status_code == 429
+
+
+async def test_subscribe_cap_does_not_block_updating_an_existing_endpoint(client, user, monkeypatch):
+    """Renovar las keys de un endpoint ya registrado no es una suscripción
+    nueva — el tope no debe impedir el upsert normal del mismo endpoint."""
+    monkeypatch.setattr("app.core.config.settings.PUSH_MAX_SUBSCRIPTIONS_PER_USER", 1)
+    await client.post(f"{PUSH}/subscribe", json=_sub_body(), headers=_h(_auth(user)))
+
+    r = await client.post(
+        f"{PUSH}/subscribe",
+        json={"endpoint": FAKE_ENDPOINT, "keys": {"p256dh": "BNewKey", "auth": FAKE_AUTH}},
+        headers=_h(_auth(user)),
+    )
+    assert r.status_code == 201, r.text
+
+
 async def test_unsubscribe_removes_subscription(client, user, db_session):
     await client.post(f"{PUSH}/subscribe", json=_sub_body(), headers=_h(_auth(user)))
 

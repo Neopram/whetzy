@@ -30,6 +30,12 @@ export function ProfileScreen() {
     () => (user.isPremium ? billing.subscription() : Promise.resolve(null)),
     [user.isPremium],
   );
+  // 40.9: el plan anual solo se ofrece si el dueño encendió `ANNUAL_PLAN_ENABLED`
+  // y puso el id de precio — `prices.plus_annual`/`pro_annual` vienen null si no.
+  const paddleCfg = useApi(
+    () => (user.isPremium ? Promise.resolve(null) : billing.paddleConfig()),
+    [user.isPremium],
+  );
   const [cancelState, setCancelState] = useState<'idle' | 'confirm' | 'busy' | 'done' | 'error'>('idle');
 
   // Se aplica al momento y se deshace si el servidor falla: un interruptor
@@ -120,6 +126,14 @@ export function ProfileScreen() {
             <a className={styles.proBtn} href={checkoutHref('plus')}>{t('profile.proBuy')}</a>
             <a className={styles.secondaryBtn} href={checkoutHref('pro')}>{t('profile.proMaxBuy')}</a>
           </div>
+          {paddleCfg.data?.prices.plus_annual && (
+            <div className={styles.proActions}>
+              <a className={styles.proBtn} href={checkoutHref('plus_annual')}>{t('profile.proBuyAnnual')}</a>
+              {paddleCfg.data.prices.pro_annual && (
+                <a className={styles.secondaryBtn} href={checkoutHref('pro_annual')}>{t('profile.proMaxBuyAnnual')}</a>
+              )}
+            </div>
+          )}
         </Card>
       )}
 

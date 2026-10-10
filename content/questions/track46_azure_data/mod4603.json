@@ -551,6 +551,1156 @@
       "explanation_es": "La función principal de las APIs de Azure Cosmos DB es proporcionar herramientas para el almacenamiento, procesamiento y análisis de datos de forma automatizada y escalable, adaptándose a distintos modelos de datos según la API elegida. La opción de que es 'un servicio de almacenamiento temporal que no persiste los datos entre sesiones' es incorrecta porque Cosmos DB es precisamente una base de datos persistente y duradera, no una caché volátil.",
       "explanation_en": "The primary function of Azure Cosmos DB's APIs is to provide tools for storing, processing, and analyzing data in an automated and scalable way, adapting to different data models depending on the chosen API. The option that it is 'a temporary storage service that does not persist data between sessions' is wrong because Cosmos DB is precisely a persistent, durable database, not a volatile cache.",
       "source": "Microsoft Learn (https://learn.microsoft.com)"
+    },
+    {
+      "id": "q460301_024",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Al diseñar una solución de datos, ¿qué significa adoptar la «persistencia políglota» (polyglot persistence)?",
+      "question_en": "When designing a data solution, what does it mean to adopt polyglot persistence?",
+      "options_es": [
+        "Seleccionar varios modelos de almacenamiento según las necesidades",
+        "Replicar una misma base relacional en varios idiomas y regiones geográficas",
+        "Guardar todos los datos en un único almacén con un esquema universal fijo",
+        "Traducir automáticamente las consultas SQL a otros lenguajes de consulta"
+      ],
+      "options_en": [
+        "Selecting multiple storage models to fit different needs",
+        "Replicating one relational database across several languages and regions",
+        "Keeping all data in a single store that uses one universal fixed schema",
+        "Automatically translating SQL queries into other query languages"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, la persistencia políglota consiste en seleccionar varios modelos de almacenamiento, porque un único almacén rara vez satisface todos los patrones de acceso. Las otras opciones hablan de idiomas, de un único esquema universal o de traducción de consultas, nada de lo cual define el término.",
+      "explanation_en": "According to the source, polyglot persistence means selecting multiple storage models, because a single data store rarely satisfies all access patterns efficiently. The other options talk about languages, one universal schema or query translation, none of which defines the term.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_025",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Una empresa espera crecer mucho: quiere ampliar la capacidad repartiendo la carga entre más nodos y poder cambiar con frecuencia la estructura de sus datos. ¿Qué tipo de almacén de datos está optimizado para eso?",
+      "question_en": "A company expects heavy growth: it wants to add capacity by spreading the load across more nodes and to change the structure of its data often. Which type of data store is optimized for that?",
+      "options_es": [
+        "Un almacén relacional con esquema rígido",
+        "Un almacén no relacional (NoSQL)",
+        "Un almacén de objetos para binarios grandes",
+        "Un almacén orientado a búsqueda de texto completo"
+      ],
+      "options_en": [
+        "A relational store with a rigid schema",
+        "A nonrelational (NoSQL) store",
+        "An object store for large binary files",
+        "A store built for full-text search"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que las bases de datos no relacionales, también llamadas NoSQL, se optimizan para esquemas flexibles, escalado horizontal y patrones de acceso o agregación específicos. Eso encaja con repartir la carga entre más nodos y cambiar la estructura de los datos. La fuente señala además que relajan aspectos de lo relacional, como la rigidez del esquema, así que un almacén relacional de esquema rígido no es la opción optimizada para este caso. Los almacenes de objetos para binarios y los orientados a búsqueda de texto completo no aparecen en la fuente asociados con esas optimizaciones.",
+      "explanation_en": "The source states that nonrelational databases, also called NoSQL databases, optimize for flexible schemas, horizontal scale, and specific access or aggregation patterns. That fits spreading load across more nodes and changing the data structure often. The source also notes that they relax aspects of relational behavior such as schema rigidity, so a relational store with a rigid schema is not the one optimized for this case. Object stores for binary files and full-text search stores are not associated with these optimizations in the source.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_026",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ventaja ofrece Azure Cosmos DB al ser «agnóstico al esquema» (schema-agnostic)?",
+      "question_en": "What benefit does Azure Cosmos DB offer by being schema-agnostic?",
+      "options_es": [
+        "Obliga a definir el esquema y cada índice antes de insertar el primer dato",
+        "Limita los datos a un único modelo, el de documentos",
+        "Indexa automáticamente los datos sin gestionar esquema ni índices",
+        "Requiere que un administrador cree a mano cada índice secundario"
+      ],
+      "options_en": [
+        "It forces you to define the schema and every index before inserting data",
+        "It restricts data to a single model, the document model",
+        "It indexes all data automatically without schema or index management",
+        "It requires an administrator to create every secondary index by hand"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, Azure Cosmos DB es agnóstico al esquema e indexa automáticamente todos los datos sin que haya que ocuparse de la gestión de esquema e índices. Dos opciones describen justo lo contrario (definir todo de antemano, crear índices a mano) y otra afirma un único modelo de datos, cuando la fuente indica que es multimodelo y admite documento, clave-valor, grafo y familia de columnas.",
+      "explanation_en": "According to the source, Azure Cosmos DB is schema-agnostic and automatically indexes all the data without requiring you to deal with schema and index management. Two options describe the opposite (defining everything up front, creating indexes by hand), and another claims a single data model, while the source says it is multi-model and natively supports document, key-value, graph, and column-family data.",
+      "source": "Microsoft Learn — Choose a data storage technology (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/data-storage) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_027",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué ofrece Azure Cosmos DB varios modelos de coherencia (consistency) bien definidos?",
+      "question_en": "Why does Azure Cosmos DB offer multiple well-defined consistency models?",
+      "options_es": [
+        "Para garantizar siempre la coherencia más estricta en todas las lecturas",
+        "Para convertir automáticamente los datos relacionales en documentos",
+        "Para limitar la distribución de los datos a una sola región",
+        "Para ajustar con precisión el rendimiento"
+      ],
+      "options_en": [
+        "To always guarantee the strictest consistency on every read",
+        "To convert relational data into documents automatically",
+        "To restrict the distribution of data to a single region",
+        "To fine-tune performance"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que Azure Cosmos DB ofrece varios modelos de coherencia bien definidos para ajustar con precisión el rendimiento. Disponer de varios modelos es incompatible con imponer siempre la coherencia más estricta en todas las lecturas. Además, el fragmento describe una base de datos multimodelo y distribuida globalmente, así que limitarla a una sola región tampoco es el objetivo, y convertir datos relacionales no aparece como finalidad de estos modelos.",
+      "explanation_en": "The source states that Azure Cosmos DB provides multiple well-defined consistency models to fine-tune performance. Having several models is incompatible with always imposing the strictest consistency on every read. The excerpt also describes a multi-model, globally distributed database, so restricting it to a single region is not the purpose, and converting relational data is not presented as a goal of these models.",
+      "source": "Microsoft Learn — Choose a data storage technology (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/data-storage) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_028",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación recupera siempre los datos mediante una clave concreta y nunca consulta otras propiedades del elemento. ¿Qué modelo NoSQL encaja mejor?",
+      "question_en": "An application always retrieves data by a specific key and never queries other item properties. Which NoSQL model fits best?",
+      "options_es": [
+        "Un almacén clave-valor",
+        "Un almacén de grafos",
+        "Un almacén de documentos",
+        "Un almacén de series temporales"
+      ],
+      "options_en": [
+        "A key-value store",
+        "A graph store",
+        "A document store",
+        "A time-series store"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los almacenes clave-valor guardan un único objeto serializado por cada valor de clave y gestionan grandes volúmenes cuando la recuperación se basa en una clave concreta, sin necesidad de consultar otras propiedades. Los almacenes de documentos destacan cuando hay que consultar campos que no son la clave, los de grafos sirven para recorrer relaciones entre objetos y los de series temporales son colecciones de solo anexado.",
+      "explanation_en": "Key-value stores hold a single serialized object for each key value and can manage large volumes of data when retrieval is based on a specific key, without the need to query other item properties. Document stores are better suited when you must query non-key fields, graph stores are for traversing relationships between objects, and time-series stores are append-only collections.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_029",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Una tienda en línea debe buscar pedidos por ID de producto, ID de cliente o nombre del cliente, no solo por la clave. ¿Qué tipo de almacén se ajusta mejor?",
+      "question_en": "An online store must look up orders by product ID, customer ID, or customer name, not just by the key. Which type of store fits best?",
+      "options_es": [
+        "Un almacén clave-valor que solo recupera por clave",
+        "Un almacén de documentos con campos consultables",
+        "Un almacén de series temporales de solo anexión",
+        "Un almacén de grafos que recorre relaciones entre objetos"
+      ],
+      "options_en": [
+        "A key-value store that retrieves only by key",
+        "A document store with queryable fields",
+        "An append-only time-series store",
+        "A graph store that traverses relationships between objects"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, los almacenes de documentos pueden consultar campos que no son la clave y definir índices secundarios, por lo que encajan cuando el criterio es más complejo que la clave del documento, como ID de producto, ID de cliente o nombre del cliente. El almacén clave-valor se usa cuando la recuperación se basa en una clave concreta, sin consultar otras propiedades. El de series temporales es una colección de solo anexión orientada a telemetría y series temporales, y el de grafos sirve para consultas que recorren las relaciones entre objetos.",
+      "explanation_en": "According to the source, document data stores can query non-key fields and define secondary indexes, so they fit when the criteria are more complex than the document key, such as product ID, customer ID, or customer name. A key-value store is used when retrieval is based on a specific key, without querying other properties. A time-series store is an append-only collection aimed at telemetry and time-series data, and a graph store is meant for queries that traverse the relationships between objects.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_030",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué caracteriza a un almacén de datos de familias de columnas (column-family)?",
+      "question_en": "What characterizes a column-family data store?",
+      "options_es": [
+        "Guarda cada documento con campos con nombre y permite crear índices secundarios",
+        "Guarda objetos y las relaciones entre ellos para recorrer una red de conexiones",
+        "Guarda cada columna por separado en disco, sobre una estructura clave-valor",
+        "Guarda datos que solo se añaden, indexados por una marca de tiempo"
+      ],
+      "options_en": [
+        "It stores each document with named fields and supports secondary indexes",
+        "It stores objects and the relationships between them to traverse a network",
+        "It stores each column separately on disk, within a key-value structure",
+        "It stores append-only data indexed by a timestamp"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente define los almacenes de familias de columnas como almacenes clave-valor que guardan cada columna por separado en disco; un almacén de columnas anchas guarda familias de columnas, no solo columnas sueltas. Las otras opciones describen otros modelos: los almacenes de documentos consultan campos que no son la clave y definen índices secundarios, los de grafos guardan información como objetos y relaciones, y las bases de series temporales son colecciones de solo anexado.",
+      "explanation_en": "The source defines column-family data stores as key-value data stores that keep each column separately on disk; a wide column store stores column families, not only single columns. The other options describe different models: document stores can query non-key fields and define secondary indexes, graph stores hold information as objects and relationships, and time-series databases are append-only collections.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_031",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de RR. HH. quiere encontrar a todos los empleados que dependen directa o indirectamente de una directora. ¿Qué modelo NoSQL encaja mejor?",
+      "question_en": "An HR team wants to find every employee who reports directly or indirectly to a given director. Which NoSQL model fits best?",
+      "options_es": [
+        "Un almacén clave-valor",
+        "Un almacén de documentos",
+        "Un almacén de familias de columnas",
+        "Un almacén de grafos"
+      ],
+      "options_en": [
+        "A key-value store",
+        "A document store",
+        "A column-family store",
+        "A graph store"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un almacén de grafos guarda la información como objetos y relaciones, y puede ejecutar con eficiencia consultas que recorren la red de objetos y las relaciones entre ellos; la fuente lo ilustra con empleados en una base de datos de RR. HH. y consultas como encontrar a quienes trabajan directa o indirectamente para alguien. Los otros modelos se describen de otra forma: clave-valor recupera por una clave concreta sin consultar otras propiedades, documentos consulta campos que no son la clave y familias de columnas lee una familia de columnas sin escanear todos los datos. Ninguno se describe como recorrido de relaciones.",
+      "explanation_en": "A graph data store holds information as objects and relationships and can efficiently run queries that traverse the network of objects and the relationships between them; the source illustrates it with employees in an HR database and queries such as finding all employees who directly or indirectly work for someone. The other models are described differently: key-value stores retrieve by a specific key without querying other properties, document stores query non-key fields, and column-family stores read a single column family without scanning all the data. None of them is described as traversing relationships.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_032",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "En Azure Cosmos DB, ¿qué es un contenedor HTAP?",
+      "question_en": "In Azure Cosmos DB, what is an HTAP container?",
+      "options_es": [
+        "Un contenedor con Synapse Link habilitado y con almacén transaccional y analítico",
+        "Un contenedor sin Synapse Link habilitado que solo tiene almacén transaccional y ninguno analítico",
+        "Un contenedor con Synapse Link habilitado que solo tiene almacén analítico y ninguno transaccional",
+        "Un contenedor sin Synapse Link habilitado que tiene almacén transaccional y almacén analítico a la vez"
+      ],
+      "options_en": [
+        "A container with Synapse Link enabled and both transactional and analytical stores",
+        "A container with Synapse Link not enabled that has only a transactional store and no analytical store",
+        "A container with Synapse Link enabled that has only an analytical store and no transactional store",
+        "A container with Synapse Link not enabled that has both a transactional store and an analytical store"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente define el contenedor HTAP como el que tiene Synapse Link habilitado y, por eso, dispone de almacén transaccional y de almacén analítico a la vez. Las demás opciones cambian si Synapse Link está habilitado o eliminan uno de los dos almacenes, así que no encajan con esa definición.",
+      "explanation_en": "The source defines an HTAP container as one with Synapse Link enabled, so it has both a transactional store and an analytical store. The other options either change whether Synapse Link is enabled or remove one of the two stores, so none of them fits that definition.",
+      "source": "Microsoft Learn — Azure Synapse Link for Azure Cosmos DB supported features (https://learn.microsoft.com/en-us/azure/synapse-analytics/synapse-link/concept-synapse-link-cosmos-db-support) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_033",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Según la tabla de clasificación de modelos de datos, una empresa necesita una carga de trabajo con esquema flexible o centrada en relaciones entre datos. ¿Qué servicio figura como ejemplo de la categoría que encaja con ese propósito?",
+      "question_en": "According to the data model classification table, a company needs a workload with a flexible schema or one centered on relationships between data. Which service is listed as an example of the category that fits that purpose?",
+      "options_es": [
+        "Azure SQL Database",
+        "Azure Cosmos DB APIs",
+        "Azure AI Search",
+        "Azure Analysis Services"
+      ],
+      "options_en": [
+        "Azure SQL Database",
+        "Azure Cosmos DB APIs",
+        "Azure AI Search",
+        "Azure Analysis Services"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En la tabla, el propósito «esquema flexible o cargas centradas en relaciones» corresponde a la categoría no relacional (documento, clave-valor, familia de columnas y grafo), cuyo primer ejemplo son las API de Azure Cosmos DB. Azure SQL Database figura como ejemplo relacional (OLTP), Azure AI Search aparece en las categorías de búsqueda e indexación y de vectores, y Azure Analysis Services se lista en la categoría de analítica (OLAP).",
+      "explanation_en": "In the table, the purpose \"flexible schema or relationship-centric workloads\" belongs to the nonrelational category (document, key-value, column-family and graph), whose first example is the Azure Cosmos DB APIs. Azure SQL Database is listed as a relational (OLTP) example, Azure AI Search appears under the search and indexing and the vector categories, and Azure Analysis Services is listed under the analytics (OLAP) category.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_034",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Un equipo escribe datos en un contenedor de Azure Cosmos DB desde Apache Spark. ¿Cómo se procesa esa escritura?",
+      "question_en": "A team writes data into an Azure Cosmos DB container from Apache Spark. How is that write processed?",
+      "options_es": [
+        "Se escribe en el almacén analítico y no afecta al rendimiento transaccional",
+        "Se escribe en el almacén transaccional sin consumir Request Units",
+        "Se escribe en el almacén transaccional y consume Request Units",
+        "Se escribe en el almacén analítico y consume Request Units"
+      ],
+      "options_en": [
+        "It is written to the analytical store and does not affect transactional performance",
+        "It is written to the transactional store without consuming Request Units",
+        "It is written to the transactional store and consumes Request Units",
+        "It is written to the analytical store and consumes Request Units"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, una escritura desde Spark en un contenedor de Azure Cosmos DB pasa por el almacén transaccional y afecta a su rendimiento transaccional al consumir Request Units. Las demás opciones no encajan con esto: ninguna combina a la vez el almacén transaccional y el consumo de Request Units.",
+      "explanation_en": "According to the source, a write from Spark into an Azure Cosmos DB container goes through the transactional store and affects its transactional performance by consuming Request Units. The other options do not fit this: none combines the transactional store with Request Unit consumption.",
+      "source": "Microsoft Learn — Azure Synapse Link for Azure Cosmos DB supported features (https://learn.microsoft.com/en-us/azure/synapse-analytics/synapse-link/concept-synapse-link-cosmos-db-support) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_035",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué permite hacer la creación de reflejo (Mirroring) en Microsoft Fabric con los datos de Azure Cosmos DB?",
+      "question_en": "What does Mirroring to Microsoft Fabric let you do with data from Azure Cosmos DB?",
+      "options_es": [
+        "Convertir los datos de Cosmos DB en tablas relacionales con esquema rígido",
+        "Ejecutar consultas transaccionales con menor latencia dentro de Cosmos DB",
+        "Migrar los datos una sola vez y eliminar después el origen de datos",
+        "Replicar los datos de forma continua en OneLake de Fabric"
+      ],
+      "options_en": [
+        "Convert Cosmos DB data into relational tables with a rigid schema",
+        "Run transactional queries with lower latency inside Cosmos DB",
+        "Migrate the data one time only and then delete the original source",
+        "Continuously replicate the data into OneLake in Fabric"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente dice que con Mirroring a Microsoft Fabric se puede replicar de forma continua el patrimonio de datos existente, incluidos los de Cosmos DB, directamente en OneLake en Fabric. Por eso la réplica continua es la correcta. La fuente no menciona convertir los datos a tablas relacionales, mejorar la latencia transaccional de Cosmos DB ni una migración única que elimine el origen.",
+      "explanation_en": "The source says that with Mirroring to Microsoft Fabric you can continuously replicate your existing data estate, including data from Cosmos DB, directly into OneLake in Fabric. That is why continuous replication is the correct answer. The source does not mention converting the data into relational tables, improving transactional latency in Cosmos DB, or a one-time migration that removes the source.",
+      "source": "Microsoft Learn — Azure Synapse Link for Azure Cosmos DB supported features (https://learn.microsoft.com/en-us/azure/synapse-analytics/synapse-link/concept-synapse-link-cosmos-db-support) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_036",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué sistema organiza los datos en tablas normalizadas con esquema en escritura (schema-on-write) y aplica transacciones ACID?",
+      "question_en": "Which kind of system organizes data into normalized tables with schema-on-write and enforces ACID transactions?",
+      "options_es": [
+        "Una base de datos relacional con tablas y filas",
+        "Una base de datos de documentos con esquema flexible",
+        "Una base de datos clave-valor distribuida sin esquema",
+        "Una base de datos de grafos con nodos y aristas"
+      ],
+      "options_en": [
+        "A relational database with tables and rows",
+        "A document database with a flexible schema",
+        "A distributed key-value database with no schema",
+        "A graph database with nodes and edges"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que los sistemas de gestión de bases de datos relacionales organizan los datos en tablas normalizadas con esquema en escritura, hacen cumplir la integridad y admiten transacciones ACID y consultas SQL ricas. Las demás opciones (documentos, clave-valor y grafos) son otros modelos de datos, y ninguno es el que la fuente asocia con tablas normalizadas, esquema en escritura y transacciones ACID.",
+      "explanation_en": "The source states that relational database management systems organize data into normalized tables using schema-on-write, enforce integrity, and support ACID transactions and rich SQL queries. The other options (document, key-value, and graph) are different data models, and none of them is the one the source associates with normalized tables, schema-on-write, and ACID transactions.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_037",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Un analista quiere usar sintaxis SQL, pero el almacén de datos es no relacional. Según la guía para elegir un almacén de datos analítico, ¿qué es cierto?",
+      "question_en": "An analyst wants to use SQL syntax, but the data store is nonrelational. According to the guidance for choosing an analytical data store, what is true?",
+      "options_es": [
+        "SQL solo se puede usar tras convertir el almacén a un modelo relacional",
+        "Algunos almacenes no relacionales admiten sintaxis SQL",
+        "Los almacenes no relacionales requieren siempre un lenguaje de consulta propio",
+        "Hay que copiar los datos a una base relacional para poder consultarlos"
+      ],
+      "options_en": [
+        "SQL can be used only after converting the store to a relational model",
+        "Some nonrelational stores support SQL syntax for querying",
+        "Nonrelational stores always require their own query language",
+        "Data must be copied to a relational database before it can be queried"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La guía indica que algunos almacenes no relacionales admiten sintaxis SQL para consultar, y que se pueden usar herramientas como los puntos de conexión de análisis SQL para consultar almacenes no relacionales como OneLake. Por eso fallan las demás opciones: no hace falta convertir el almacén a relacional, ni copiar los datos a una base relacional, ni usar siempre un lenguaje propio.",
+      "explanation_en": "The guidance says some nonrelational stores support SQL syntax for querying, and that tools like SQL analytics endpoints can query nonrelational data stores such as OneLake. That is why the other options fail: the store does not have to be converted to a relational model, the data does not have to be copied to a relational database, and a proprietary query language is not always required.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_038",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa que un servicio de datos sea «multimodelo» (multimodel)?",
+      "question_en": "What does it mean for a data service to be multimodel?",
+      "options_es": [
+        "Que el servicio guarda copias de los datos en varias regiones",
+        "Que el servicio atiende a varios clientes a la vez",
+        "Que el servicio ofrece varios modelos de datos",
+        "Que el servicio entrena varios modelos de aprendizaje automático"
+      ],
+      "options_en": [
+        "It stores copies of the data in several regions",
+        "It serves several customers at the same time",
+        "It provides several data models in one service",
+        "It trains several machine learning models"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, un único servicio puede ofrecer varios modelos de datos, y eso es lo que se conoce como multimodelo. Las otras opciones describen cosas distintas: replicar datos en varias regiones, atender a varios clientes o entrenar modelos de aprendizaje automático; la fuente no define «multimodelo» así, sino como varios modelos de datos en un mismo servicio. Además, la fuente aconseja elegir el modelo que mejor encaje en lugar de combinar modelos de forma que se complique la operación.",
+      "explanation_en": "According to the source, a single service might provide multiple data models, which is known as multimodel. The other options describe different things: replicating data across regions, serving several customers, or training machine learning models. The source does not define multimodel that way; it means several models in one service. The source also advises choosing the best-fit model instead of combining models in a way that complicates operations.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460301_039",
+      "skill_id": "sk460301",
+      "type": "multiple_choice",
+      "question_es": "Una empresa recibe de forma continua enormes volúmenes de telemetría de sus dispositivos y necesita almacenarla y analizarla. ¿Qué modelo de almacén es la opción óptima?",
+      "question_en": "A company continuously receives vast volumes of telemetry from its devices and needs to store and analyze it. Which store model is the optimal choice?",
+      "options_es": [
+        "Un almacén de grafos que recorre las relaciones entre objetos",
+        "Un almacén de documentos que consulta campos no clave",
+        "Un almacén clave-valor que recupera un objeto por su clave",
+        "Un almacén de series temporales que solo añade objetos"
+      ],
+      "options_en": [
+        "A graph store that traverses relationships between objects",
+        "A document store that queries non-key fields",
+        "A key-value store that retrieves one object by its key",
+        "A time-series store that only appends objects"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, las bases de datos de telemetría y series temporales son una colección de objetos de solo adición, y las bases de datos de telemetría indexan los datos de forma eficiente; por eso son la opción óptima para almacenar y analizar grandes cantidades de estos datos. Los almacenes de grafos se describen para recorrer relaciones entre objetos, los de documentos para consultar campos que no son la clave y los clave-valor para recuperar un objeto a partir de su clave.",
+      "explanation_en": "According to the source, telemetry and time-series databases are an append-only collection of objects, and telemetry databases index data efficiently; that is why they are the optimal choice for storing and analyzing vast quantities of such data. Graph stores are described for traversing relationships between objects, document stores for querying non-key fields, and key-value stores for retrieving an object by its key.",
+      "source": "Microsoft Learn — Choose an Analytical Data Store in Azure (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/analytical-data-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_027",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo describe la documentación de Azure Storage el servicio Azure Blobs?",
+      "question_en": "How does the Azure Storage documentation describe the Azure Blobs service?",
+      "options_es": [
+        "Un almacén de mensajes para la comunicación fiable entre los componentes de una aplicación",
+        "Un almacén de objetos de escala masiva para texto y datos binarios",
+        "Un almacén NoSQL para guardar datos estructurados sin esquema",
+        "Un almacén de volúmenes a nivel de bloque para máquinas virtuales de Azure"
+      ],
+      "options_en": [
+        "A message store for reliable communication between application components",
+        "An object store that scales massively for text and binary data",
+        "A NoSQL store for structured data with no fixed schema",
+        "A block-level volume store for Azure virtual machines"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente define Azure Blobs como un almacén de objetos de escala masiva para datos de texto y binarios. Las demás opciones describen otros servicios de la misma lista: Azure Queues (mensajería), Azure Tables (NoSQL sin esquema) y los discos administrados (volúmenes a nivel de bloque).",
+      "explanation_en": "The source defines Azure Blobs as a massively scalable object store for text and binary data. The other options describe different services from the same list: Azure Queues (messaging), Azure Tables (schemaless NoSQL) and managed disks (block-level volumes).",
+      "source": "Microsoft Learn — Introduction to Azure Storage - Cloud storage on Azure (https://learn.microsoft.com/en-us/azure/storage/common/storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_028",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "Una empresa necesita guardar conjuntos de datos flexibles, como libretas de direcciones e información de dispositivos, para su aplicación web. ¿Qué servicio de Azure Storage encaja mejor?",
+      "question_en": "A company needs to store flexible datasets, such as address books and device information, for its web application. Which Azure Storage service fits best?",
+      "options_es": [
+        "Azure Queue Storage, para intercambiar mensajes entre componentes de una aplicación",
+        "Azure Files, para compartir archivos mediante el protocolo SMB",
+        "Azure Table Storage, para guardar datos flexibles de aplicaciones",
+        "Azure managed disks, para conectar volúmenes a máquinas virtuales"
+      ],
+      "options_en": [
+        "Azure Queue Storage, to exchange messages between application components",
+        "Azure Files, to share files over the SMB protocol",
+        "Azure Table Storage, to store flexible application datasets",
+        "Azure managed disks, to attach volumes to virtual machines"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que Table storage se puede usar para guardar conjuntos de datos flexibles, como datos de usuario de aplicaciones web, libretas de direcciones e información de dispositivos, que es justo el escenario descrito. Las otras opciones corresponden a otras necesidades (mensajería entre componentes, recursos compartidos de archivos y volúmenes de disco), no al almacenamiento de este tipo de datos.",
+      "explanation_en": "The source says Table storage can be used to store flexible datasets such as user data for web applications, address books and device information, which is exactly the scenario described. The other options address different needs (messaging between components, file shares and disk volumes), not storing this kind of data.",
+      "source": "Microsoft Learn — Introduction to Table storage - Object storage in Azure (https://learn.microsoft.com/en-us/azure/storage/tables/table-storage-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_029",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué tipo de blob es ideal para escenarios como el registro (logging) de datos de máquinas virtuales?",
+      "question_en": "Which blob type is ideal for scenarios such as logging data from virtual machines?",
+      "options_es": [
+        "Blobs de páginas, diseñados para servir como discos de máquinas virtuales",
+        "Blobs de bloques, diseñados para almacenar texto y datos binarios",
+        "Blobs de archivo, diseñados para datos a los que casi nunca se accede",
+        "Blobs de anexión, diseñados para operaciones de anexado"
+      ],
+      "options_en": [
+        "Page blobs, designed to serve as disks for virtual machines",
+        "Block blobs, designed to store text and binary data",
+        "Archive blobs, designed for data that is rarely accessed",
+        "Append blobs, designed for append operations"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, los blobs de anexión (append blobs) están optimizados para operaciones de anexado y son ideales para escenarios como el registro de datos de máquinas virtuales. Los blobs de páginas sirven como discos, los de bloques almacenan texto y datos binarios, y los blobs de archivo no figuran entre los tres tipos de blob que admite Azure Storage.",
+      "explanation_en": "According to the source, append blobs are optimized for append operations and are ideal for scenarios such as logging data from virtual machines. Page blobs serve as disks, block blobs store text and binary data, and archive is not one of the three blob types Azure Storage supports.",
+      "source": "Microsoft Learn — Introduction to Blob (object) Storage (https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_030",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "Un equipo necesita guardar archivos de disco duro virtual (VHD) para usarlos como discos de máquinas virtuales de Azure. ¿Qué opción de almacenamiento corresponde?",
+      "question_en": "A team needs to store virtual hard drive (VHD) files to use as disks for Azure virtual machines. Which storage option fits?",
+      "options_es": [
+        "Blobs de páginas, pensados para archivos de acceso aleatorio",
+        "Blobs de anexión, optimizados para operaciones de anexado",
+        "Blobs de bloques, formados por bloques que se administran por separado",
+        "Entidades de tabla, pensadas para datos estructurados sin esquema"
+      ],
+      "options_en": [
+        "Page blobs, designed for files with random access",
+        "Append blobs, optimized for append operations",
+        "Block blobs, made up of blocks managed individually",
+        "Table entities, built for schemaless structured data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que los blobs de páginas almacenan archivos VHD y sirven como discos para máquinas virtuales de Azure. Los blobs de anexión se optimizan para operaciones de anexado y los de bloques se componen de bloques que se administran por separado; la fuente no les asigna ese uso. Las entidades de tabla no figuran entre los tres tipos de blob que describe la fuente.",
+      "explanation_en": "The source states that page blobs store VHD files and serve as disks for Azure virtual machines. Append blobs are optimized for append operations and block blobs are made of blocks that can be managed individually; the source gives neither of them that role. Table entities are not among the three blob types the source describes.",
+      "source": "Microsoft Learn — Introduction to Blob (object) Storage (https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_031",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "En Blob Storage, ¿qué función cumple un contenedor?",
+      "question_en": "In Blob Storage, what role does a container play?",
+      "options_es": [
+        "Fija el nivel de acceso predeterminado de todos los blobs de la cuenta",
+        "Agrupa blobs de forma lógica, como una carpeta",
+        "Guarda las entidades de una tabla junto con sus claves",
+        "Identifica de forma única la cuenta en Azure"
+      ],
+      "options_en": [
+        "It sets the default access tier for every blob in the account",
+        "It groups blobs logically, like a folder",
+        "It stores the entities of a table together with their keys",
+        "It uniquely identifies the account in Azure"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, un contenedor organiza un conjunto de blobs, de forma similar a un directorio en un sistema de archivos; eso equivale a agrupar blobs como una carpeta. Las otras opciones describen otros conceptos que el fragmento no atribuye al contenedor. Por conocimiento general de Azure: la identificación única de la cuenta corresponde a la cuenta de almacenamiento, el nivel de acceso predeterminado es un ajuste de la cuenta y las entidades con claves pertenecen a Table storage.",
+      "explanation_en": "According to the source, a container organizes a set of blobs, similar to a directory in a file system, which amounts to grouping blobs like a folder. The other options describe different concepts that the fragment does not attribute to a container. From general Azure knowledge: the unique identity of the account belongs to the storage account, the default access tier is an account-level setting, and entities with keys belong to Table storage.",
+      "source": "Microsoft Learn — Introduction to Blob (object) Storage (https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_032",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué proporciona una cuenta de almacenamiento de Azure como base de la dirección de los datos que se guardan en ella?",
+      "question_en": "What does an Azure storage account provide as the basis for the address of the data stored in it?",
+      "options_es": [
+        "Un motor de consultas SQL para analizar los datos guardados",
+        "Un nivel de rendimiento Standard fijo para todos los objetos",
+        "Un espacio de nombres único en Azure para los datos que almacena",
+        "Un cifrado que reemplaza el nombre de la cuenta en la dirección base"
+      ],
+      "options_en": [
+        "A SQL query engine for analyzing the stored data",
+        "A fixed Standard performance tier for every object",
+        "A unique namespace in Azure for the data that you store",
+        "Encryption that replaces the account name in the base address"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, una cuenta de almacenamiento proporciona un espacio de nombres único en Azure para los datos, y cada objeto tiene una dirección que incluye el nombre de la cuenta. Las otras opciones describen cosas que la fuente no atribuye a la cuenta: el nombre de la cuenta forma parte de la dirección, no se sustituye, y la tabla de la fuente muestra tipos de cuenta con niveles Standard y Premium, no un único nivel fijo.",
+      "explanation_en": "According to the source, a storage account provides a unique namespace in Azure for your data, and every object has an address that includes the account name. The other options describe things the source does not attribute to the account: the account name is part of the address rather than being replaced, and the source's table shows account types with Standard and Premium tiers, not a single fixed tier.",
+      "source": "Microsoft Learn — Introduction to Blob (object) Storage (https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_033",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué ofrece Azure Storage distintos niveles de acceso para los datos de blobs?",
+      "question_en": "Why does Azure Storage offer different access tiers for blob data?",
+      "options_es": [
+        "Para cifrar los datos de los blobs de forma distinta según su tamaño",
+        "Para mejorar el rendimiento de red de los blobs según su ubicación",
+        "Para elegir la configuración de redundancia de cada blob individual",
+        "Para reducir el coste según la frecuencia de acceso a los datos"
+      ],
+      "options_en": [
+        "To encrypt blob data differently depending on its size",
+        "To improve blob network performance based on location",
+        "To choose the redundancy configuration of each individual blob",
+        "To lower costs according to how often data is accessed"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que, para gestionar los costes del almacenamiento, conviene organizar los datos según la frecuencia con la que se accede a ellos, y que los niveles de acceso sirven para guardar los blobs de la forma más rentable según su uso. Las otras opciones atribuyen a los niveles funciones (cifrado según el tamaño, rendimiento de red según la ubicación, redundancia por blob) que la fuente no menciona; el único propósito que indica es optimizar el coste según el uso.",
+      "explanation_en": "The source says that, to manage storage costs, it helps to organize data based on how frequently it is accessed, and that access tiers let you store blob data in the most cost-effective manner based on how it is used. The other options give the tiers roles (encryption by size, network performance by location, per-blob redundancy) that the source does not mention; the only purpose it states is optimizing cost according to usage.",
+      "source": "Microsoft Learn — Access tiers for blob data (https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_034",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "Una empresa guarda datos de cumplimiento normativo en el nivel de archivo y ahora necesita leer uno de esos blobs. ¿Qué debe hacer primero?",
+      "question_en": "A company keeps compliance data in the archive tier and now needs to read one of those blobs. What must it do first?",
+      "options_es": [
+        "Rehidratar el blob a un nivel en línea antes de leerlo",
+        "Leer el blob directamente, ya que el nivel de archivo ofrece acceso inmediato",
+        "Convertir el blob en un blob de páginas para poder leerlo",
+        "Cambiar el nivel de acceso predeterminado de la cuenta a archivo"
+      ],
+      "options_en": [
+        "Rehydrate the blob to an online tier before reading it",
+        "Read the blob directly, since archived data is available immediately",
+        "Convert the blob into a page blob so that it can be read",
+        "Change the account's default access tier to archive"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, un blob en el nivel de archivo no se puede leer ni modificar, y para leerlo o descargarlo hay que rehidratarlo primero a un nivel en línea. Por eso la lectura directa no es posible. Las otras opciones no aparecen en la fuente como vía para leer un blob archivado, que solo indica rehidratarlo.",
+      "explanation_en": "According to the source, a blob in the archive tier can't be read or modified, and to read or download it you must first rehydrate it to an online tier. Direct reading is therefore not possible. The other options do not appear in the source as a way to read an archived blob, which only points to rehydration.",
+      "source": "Microsoft Learn — Access tiers for blob data (https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_035",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "Una empresa de comercio minorista lee y escribe datos de sus productos durante todo el día desde su aplicación. ¿Qué nivel de acceso encaja mejor?",
+      "question_en": "A retail company has product data that its application reads and writes all day long. Which access tier fits best?",
+      "options_es": [
+        "Nivel de archivo, porque es un nivel en línea de acceso inmediato",
+        "Nivel frecuente, porque los datos están en uso activo",
+        "Nivel frío, porque admite solo la lectura de los datos",
+        "Nivel esporádico, porque se destina a datos que cambian a diario"
+      ],
+      "options_en": [
+        "Archive tier, because it is an online tier with immediate access",
+        "Hot tier, because the data is in active use",
+        "Cold tier, because it supports only reading the data",
+        "Cool tier, because it is meant for data that changes daily"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que el nivel frecuente (hot) es la mejor opción para datos en uso activo, como los que esta aplicación lee y escribe todo el día. Los niveles esporádico y frío son para datos a los que se accede con menos frecuencia, y siguen disponibles para lectura y escritura, así que no son de solo lectura ni están pensados para datos que cambian a diario. Los niveles en línea con acceso inmediato que menciona la fuente son frecuente, esporádico y frío, no el de archivo.",
+      "explanation_en": "The source states that the hot tier is the best choice for data in active use, like the data this application reads and writes all day. The cool and cold tiers are for data accessed less frequently, and they remain available for reading and writing, so they are neither read-only nor meant for data that changes daily. The online tiers with immediate access that the source names are hot, cool and cold, not archive.",
+      "source": "Microsoft Learn — Access tiers for blob data (https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_036",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "Se sube un blob nuevo a una cuenta de uso general v2 cuyo nivel de acceso predeterminado nunca se cambió, y no se indica ningún nivel. ¿En qué nivel se crea el blob?",
+      "question_en": "A new blob is uploaded to a general-purpose v2 account whose default access tier setting was never changed, and no tier is specified. In which tier is the blob created?",
+      "options_es": [
+        "En el nivel de archivo, para minimizar el costo de almacenamiento",
+        "En el nivel esporádico, hasta que una regla de ciclo de vida lo cambie",
+        "En el nivel frecuente, el predeterminado de las cuentas nuevas",
+        "En ningún nivel, hasta que un administrador le asigne uno"
+      ],
+      "options_en": [
+        "In the archive tier, to minimize storage cost",
+        "In the cool tier, until a lifecycle management rule changes it",
+        "In the hot tier, the default for new accounts",
+        "In no tier, until an administrator assigns one"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que el nivel de acceso predeterminado de una cuenta de uso general v2 nueva es el nivel frecuente, así que el blob lo hereda cuando no se indica otro. Según el texto fuente, el nivel de archivo no se admite como nivel predeterminado de una cuenta, y los blobs sin nivel asignado infieren el de la cuenta en lugar de quedar sin nivel.",
+      "explanation_en": "The source says the default access tier of a new general-purpose v2 account is the hot tier, so the blob inherits it when no other tier is given. According to the source text, the archive tier is not supported as an account's default tier, and blobs without an assigned tier infer the account's setting rather than having no tier.",
+      "source": "Microsoft Learn — Access tiers for blob data (https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_037",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "¿Qué característica puede pasar blobs automáticamente a un nivel de acceso deseado, o hacerlos expirar, cuando se cumplen las condiciones que define el cliente?",
+      "question_en": "Which feature can automatically transition blobs to a desired access tier, or expire them, when conditions that the customer specifies are met?",
+      "options_es": [
+        "El nivel de acceso predeterminado de la cuenta",
+        "El servicio Azure Import/Export con discos propios",
+        "La herramienta AzCopy para Windows y Linux",
+        "La directiva de ciclo de vida de la cuenta"
+      ],
+      "options_en": [
+        "The default access tier of the storage account",
+        "The Azure Import/Export service with your own drives",
+        "The AzCopy command-line tool for Windows and Linux",
+        "The lifecycle management policy of the account"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, la administración del ciclo de vida de Blob Storage ofrece una directiva basada en reglas que transfiere los datos al nivel de acceso deseado cuando se cumplen las condiciones indicadas, y también permite hacer expirar datos al final de su vida. Como conocimiento general de Azure, el nivel predeterminado de la cuenta es un valor único que no evalúa condiciones, y Import/Export y AzCopy sirven para trasladar datos, no para cambiar su nivel según reglas.",
+      "explanation_en": "According to the source, Blob storage lifecycle management offers a rule-based policy that transitions data to the desired access tier when specified conditions are met, and can also expire data at the end of its life. As general Azure knowledge, the account's default access tier is a single setting that does not evaluate conditions, and Import/Export and AzCopy are used to move data, not to change its tier based on rules.",
+      "source": "Microsoft Learn — Access tiers for blob data (https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_038",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "Una empresa debe mover un conjunto de datos local muy grande a Blob Storage y su conexión hace poco realista subirlo por la red. ¿Qué servicio le permite copiar los datos en dispositivos solicitados a Microsoft y devolverlos por envío?",
+      "question_en": "A company must move a very large on-premises dataset to Blob Storage, and its network makes uploading over the wire unrealistic. Which service lets it copy the data to devices requested from Microsoft and ship them back?",
+      "options_es": [
+        "Azure Data Box, un servicio basado en dispositivos físicos",
+        "BlobFuse, un controlador de sistema de archivos virtual para Azure Blob Storage",
+        "AzCopy, una herramienta de línea de comandos para Windows y Linux",
+        "Biblioteca Data Movement, una biblioteca de .NET para mover datos"
+      ],
+      "options_en": [
+        "Azure Data Box, a service based on physical devices",
+        "BlobFuse, a virtual file system driver for Azure Blob Storage",
+        "AzCopy, a command-line tool for Windows and Linux",
+        "Azure Storage Data Movement library, a .NET library for moving data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente describe Azure Data Box como el servicio para transferir datos locales a Blob Storage cuando los conjuntos de datos son grandes o las limitaciones de red hacen poco realista subirlos. Se solicitan dispositivos a Microsoft, se copian los datos en ellos y se devuelven a Microsoft para cargarlos en Blob Storage. BlobFuse, AzCopy y la biblioteca Data Movement se describen como software (un controlador, una herramienta de línea de comandos y una biblioteca de .NET), no como dispositivos físicos.",
+      "explanation_en": "The source describes Azure Data Box as the service for transferring on-premises data to Blob Storage when large datasets or network constraints make uploading unrealistic. You request devices from Microsoft, copy your data to them, and ship them back to Microsoft to be uploaded into Blob Storage. BlobFuse, AzCopy and the Data Movement library are described as software (a driver, a command-line tool and a .NET library), not as physical devices.",
+      "source": "Microsoft Learn — Introduction to Blob (object) Storage (https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_039",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "Un administrador quiere una herramienta de línea de comandos para mover datos entre contenedores o entre cuentas de almacenamiento de Blob Storage. ¿Qué opción encaja?",
+      "question_en": "An administrator wants a command-line tool to move data between containers or between storage accounts in Blob Storage. Which option fits?",
+      "options_es": [
+        "Azure Data Box, dispositivos físicos enviados a Microsoft",
+        "AzCopy, una utilidad sencilla para Windows y Linux",
+        "BlobFuse, un controlador de sistema de archivos virtual",
+        "Azure Data Factory, una opción de copia con identidades administradas"
+      ],
+      "options_en": [
+        "Azure Data Box, physical devices shipped to Microsoft",
+        "AzCopy, an easy-to-use utility for Windows and Linux",
+        "BlobFuse, a virtual file system driver",
+        "Azure Data Factory, a copy option using managed identities"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente describe AzCopy como una herramienta de línea de comandos fácil de usar para Windows y Linux que copia datos hacia y desde Blob Storage, entre contenedores o entre cuentas de almacenamiento. Data Box consiste en copiar los datos a dispositivos que se devuelven a Microsoft, BlobFuse es un controlador de sistema de archivos virtual y Data Factory se presenta como una opción que admite copiar datos con clave de cuenta, firma de acceso compartido, entidad de servicio o identidades administradas, no como una herramienta de línea de comandos.",
+      "explanation_en": "The source describes AzCopy as an easy-to-use command-line tool for Windows and Linux that copies data to and from Blob Storage, across containers, or across storage accounts. Data Box means copying data to devices that are shipped back to Microsoft, BlobFuse is a virtual file system driver, and Data Factory is presented as an option that supports copying data using an account key, a shared access signature, a service principal, or managed identities, not as a command-line tool.",
+      "source": "Microsoft Learn — Introduction to Blob (object) Storage (https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_040",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué tipo de datos está optimizado Azure Blob Storage?",
+      "question_en": "What kind of data is Azure Blob Storage optimized for?",
+      "options_es": [
+        "Tablas relacionales con claves externas y un esquema fijo",
+        "Entidades de clave y atributo estructuradas con diseño sin esquema",
+        "Datos no estructurados, de texto o binarios, a gran escala",
+        "Mensajes que se intercambian entre componentes de una aplicación"
+      ],
+      "options_en": [
+        "Relational tables with foreign keys enforced by a fixed schema",
+        "Structured key/attribute entities stored with a schemaless design",
+        "Large volumes of unstructured data like documents and media",
+        "Messages that are exchanged between application components"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que Blob Storage está optimizado para almacenar grandes cantidades de datos no estructurados, como texto o datos binarios, y lo describe como almacenamiento de objetos. Las otras opciones describen otros modelos de datos: por conocimiento general de DP-900, las tablas relacionales corresponden a bases de datos SQL, las entidades de clave y atributo sin esquema a Table storage y los mensajes entre componentes a Azure Queues.",
+      "explanation_en": "The source says Blob Storage is optimized for storing massive amounts of unstructured data, such as text or binary data, and describes it as object storage. The other options describe different data models: from general DP-900 knowledge, relational tables belong to SQL databases, schemaless key/attribute entities to Table storage, and messages between components to Azure Queues.",
+      "source": "Microsoft Learn — Introduction to Azure Storage - Cloud storage on Azure (https://learn.microsoft.com/en-us/azure/storage/common/storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_041",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "Un equipo pequeño no quiere dedicar tiempo a parchear ni reparar los servidores que sostienen su almacenamiento en la nube. ¿Qué ventaja de Azure Storage responde a esa necesidad?",
+      "question_en": "A small team does not want to spend time patching or repairing the servers that sit behind its cloud storage. Which Azure Storage benefit addresses this need?",
+      "options_es": [
+        "Escalable: está diseñado para ser masivamente escalable",
+        "Seguro: el servicio cifra todos los datos escritos en una cuenta",
+        "Accesible: se puede acceder a los datos mediante HTTP o HTTPS",
+        "Administrado: Azure mantiene y actualiza la infraestructura"
+      ],
+      "options_en": [
+        "Scalable: designed to be massively scalable",
+        "Secure: the service encrypts all data written to an account",
+        "Accessible: data can be reached over HTTP or HTTPS",
+        "Managed: Azure maintains and updates the infrastructure"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que, en la ventaja Administrado, Azure se encarga del mantenimiento del hardware, las actualizaciones y los problemas críticos, justo lo que el equipo quiere evitar. Seguro se refiere al cifrado de los datos y al control de acceso, Escalable a las necesidades de almacenamiento y rendimiento de las aplicaciones, y Accesible al acceso desde cualquier lugar mediante HTTP o HTTPS; ninguna libera al cliente de estas tareas.",
+      "explanation_en": "The source states that under the Managed benefit, Azure handles hardware maintenance, updates, and critical issues, which is exactly what the team wants to avoid. Secure refers to encrypting data and controlling access, Scalable to meeting the storage and performance needs of applications, and Accessible to reaching data from anywhere over HTTP or HTTPS; none of them frees the customer from these tasks.",
+      "source": "Microsoft Learn — Introduction to Azure Storage - Cloud storage on Azure (https://learn.microsoft.com/en-us/azure/storage/common/storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460302_042",
+      "skill_id": "sk460302",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo pueden las aplicaciones acceder a los objetos de datos de Azure Storage desde cualquier lugar del mundo?",
+      "question_en": "How can applications access Azure Storage data objects from anywhere in the world?",
+      "options_es": [
+        "Mediante HTTP o HTTPS a través de una API REST",
+        "Mediante una conexión de red privada exclusiva con el centro de datos",
+        "Mediante máquinas virtuales de Azure ubicadas en la misma región",
+        "Mediante el Azure Portal, sin bibliotecas de cliente ni scripts"
+      ],
+      "options_en": [
+        "Over HTTP or HTTPS through a REST API",
+        "Through a dedicated private network connection to the datacenter",
+        "Through Azure virtual machines located in the same region",
+        "Through the Azure portal, with no client libraries or scripts"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, los objetos de datos de Azure Storage son accesibles desde cualquier lugar del mundo mediante HTTP o HTTPS a través de una API REST. Las demás opciones fallan: una conexión privada con el centro de datos o unas máquinas virtuales concretas no encajan con un acceso desde cualquier lugar del mundo. La fuente también menciona bibliotecas de cliente, Azure PowerShell y Azure CLI, además del portal, así que el portal no es la única vía.",
+      "explanation_en": "According to the source, Azure Storage data objects can be accessed from anywhere in the world over HTTP or HTTPS via a REST API. The other options fail: a private connection to the datacenter or specific virtual machines would not fit access from anywhere in the world. The source also mentions client libraries, Azure PowerShell and Azure CLI in addition to the portal, so the portal is not the only way in.",
+      "source": "Microsoft Learn — Introduction to Azure Storage - Cloud storage on Azure (https://learn.microsoft.com/en-us/azure/storage/common/storage-introduction) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_030",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación guarda perfiles de usuario con listas anidadas, y los atributos varían de un registro a otro. El esquema debe poder evolucionar poco a poco. ¿Qué modelo de datos encaja mejor?",
+      "question_en": "An application stores user profiles that contain nested lists, and attributes vary from one record to the next. The schema must be able to evolve gradually. Which data model fits best?",
+      "options_es": [
+        "Un almacén de grafos para relaciones entre entidades",
+        "Un almacén de clave-valor para búsquedas por clave",
+        "Un almacén de documentos para datos anidados",
+        "Un almacén columnar para analítica por columnas"
+      ],
+      "options_en": [
+        "A graph store for relationships between entities",
+        "A key-value store for lookups by key",
+        "A document store for nested data",
+        "A columnar store for column-based analytics"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, los almacenes de documentos guardan documentos semiestructurados cuyos datos pueden ser valores simples o elementos complejos como listas y colecciones hijas, y la flexibilidad de esquema por documento permite una evolución gradual. Eso describe el escenario. Por conocimiento general de DP-900 (no de la fuente), los almacenes de grafos se centran en relaciones, los de clave-valor en búsquedas por clave y los columnares en analítica por columnas, que no es lo que pide el escenario.",
+      "explanation_en": "According to the source, document data stores hold semi-structured documents whose data can be simple values or complex elements such as lists and child collections, and per-document schema flexibility enables gradual evolution. That matches the scenario. From general DP-900 knowledge (not from the source), graph stores focus on relationships, key-value stores on lookups by key and columnar stores on column-based analytics, none of which is what the scenario asks for.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_031",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "En un almacén clave-valor, ¿qué debe hacer una aplicación para modificar un valor, ya sea parcial o totalmente?",
+      "question_en": "In a key-value store, what must an application do to modify a value, whether partially or completely?",
+      "options_es": [
+        "Actualizar solo el campo cambiado mediante un lenguaje de consulta rico",
+        "Recorrer las aristas que enlazan el valor con otros nodos",
+        "Combinar el valor con otras tablas mediante una unión relacional",
+        "Reescribir el valor completo con los datos nuevos"
+      ],
+      "options_en": [
+        "Update only the changed field by using a rich query language",
+        "Traverse the edges that link the value to other nodes",
+        "Join the value to other tables with a relational join",
+        "Rewrite the entire value with the new data"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, para modificar un valor de forma parcial o total la aplicación debe sobrescribir los datos existentes de todo el valor, es decir, reescribirlo completo. Las otras opciones describen capacidades (consulta rica, uniones, aristas) que la fuente no atribuye a un almacén clave-valor, del que dice que la mayoría solo admite consultas, inserciones y borrados simples.",
+      "explanation_en": "According to the source, to modify a value partially or completely, the application must overwrite the existing data for the entire value, which means rewriting it in full. The other options describe capabilities (a rich query language, joins, edges) that the source does not attribute to a key-value store, noting that most of them only support simple query, insert, and delete operations.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_032",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "Un equipo necesita modelar y consultar relaciones complejas entre sus datos con estructuras de grafo, sin salir de su base de datos relacional. ¿Qué debería usar?",
+      "question_en": "A team needs to model and query complex relationships in its data by using graph structures, without leaving its relational database. What should it use?",
+      "options_es": [
+        "Las extensiones de grafos de SQL Server",
+        "Un almacén de documentos aparte de la base relacional",
+        "Una base de datos de series temporales independiente",
+        "Una tabla de pares clave-valor en un contenedor"
+      ],
+      "options_en": [
+        "The SQL Server graph extensions",
+        "A document store separate from the relational database",
+        "A standalone time-series database",
+        "A key-value table in a storage container"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, para almacenar datos de grafo se usan las extensiones de grafos de SQL Server, que permiten modelar y consultar relaciones complejas con estructuras de grafo directamente dentro de una base de datos relacional. Las otras opciones sacan los datos de la base relacional o los guardan en un modelo que no es de grafo, así que no cumplen lo que pide el equipo.",
+      "explanation_en": "According to the source, graph data is stored by using the SQL Server graph extensions, which enable modeling and querying complex relationships with graph structures directly within a relational database. The other options move the data out of the relational database or keep it in a non-graph model, so they do not meet what the team needs.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_033",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo organiza sus datos una base de datos de familia de columnas (también llamada de columna ancha)?",
+      "question_en": "How does a column-family (also called wide-column) database organize its data?",
+      "options_es": [
+        "Guarda datos densos en filas con columnas fijas, definidas antes de escribir",
+        "Guarda datos dispersos en filas, con columnas dinámicas agrupadas en familias",
+        "Guarda cada valor bajo una clave única y solo admite operaciones simples sobre ella",
+        "Guarda la información como nodos y aristas, en lugar de filas con columnas"
+      ],
+      "options_en": [
+        "Stores dense data in rows with fixed columns defined before data is written",
+        "Stores sparse data in rows, with dynamic columns grouped into column families",
+        "Stores each value under a unique key and supports only simple operations on it",
+        "Stores information as nodes and edges instead of rows with columns"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, una base de datos de familia de columnas guarda datos dispersos en filas y organiza columnas dinámicas en familias de columnas para favorecer el acceso conjunto. Las otras opciones describen otros modelos; en general, las columnas fijas definidas de antemano caracterizan al modelo relacional, la clave única con operaciones simples al clave-valor y los nodos y aristas al grafo.",
+      "explanation_en": "According to the source, a column-family database stores sparse data in rows and organizes dynamic columns into column families to support co-access. The other options describe different models; in general, fixed columns defined up front characterize the relational model, a unique key with simple operations characterizes key-value stores, and nodes and edges characterize graph databases.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_035",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación necesita un almacén de datos gestionado en memoria, con baja latencia y alto rendimiento. ¿Qué servicio de Azure encaja con esa descripción según la fuente?",
+      "question_en": "An application needs a managed in-memory data store with low latency and high throughput. Which Azure service matches that description in the source?",
+      "options_es": [
+        "Azure Managed Instance for Apache Cassandra",
+        "Apache HBase on Azure HDInsight",
+        "Azure Data Explorer",
+        "Azure Managed Redis"
+      ],
+      "options_en": [
+        "Azure Managed Instance for Apache Cassandra",
+        "Apache HBase on Azure HDInsight",
+        "Azure Data Explorer",
+        "Azure Managed Redis"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, Azure Managed Redis es un almacén de datos gestionado en memoria que ofrece baja latencia y alto rendimiento, y aparece en la sección sobre servicios para almacenes clave-valor. La fuente no describe los otros tres servicios como almacenes en memoria. Por conocimiento general ajeno a la fuente, Cassandra y HBase son bases de datos de familia de columnas y Azure Data Explorer es un motor de análisis de telemetría y series temporales.",
+      "explanation_en": "According to the source, Azure Managed Redis is a managed in-memory data store that provides low latency and high throughput, and it appears in the section on services for key-value data stores. The source does not describe the other three services as in-memory stores. From general knowledge outside the source, Cassandra and HBase are column-family databases and Azure Data Explorer is an analytics engine for telemetry and time-series data.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_036",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué suelen relajar las bases de datos NoSQL respecto a las relacionales para ganar escalabilidad o agilidad?",
+      "question_en": "What do NoSQL databases typically relax compared with relational ones in order to gain scalability or agility?",
+      "options_es": [
+        "La rigidez del esquema y el alcance transaccional",
+        "La flexibilidad del esquema y la escala horizontal",
+        "Los patrones de acceso y de agregación específicos",
+        "La escalabilidad y la agilidad de las aplicaciones"
+      ],
+      "options_en": [
+        "Schema rigidity and transaction scope",
+        "Schema flexibility and horizontal scale",
+        "Specific access and aggregation patterns",
+        "Scalability and agility for applications"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, las bases NoSQL suelen relajar aspectos del comportamiento relacional, como la rigidez del esquema y el alcance de las transacciones. La flexibilidad del esquema, la escala horizontal y los patrones de acceso o de agregación específicos son lo que estas bases optimizan, no lo que relajan. La escalabilidad y la agilidad son lo que se obtiene a cambio de relajar esos aspectos, no lo que se relaja.",
+      "explanation_en": "According to the source, NoSQL databases typically relax some aspects of relational behavior, such as schema rigidity and transaction scope. Schema flexibility, horizontal scale, and specific access or aggregation patterns are what these databases optimize for, not what they relax. Scalability and agility are what they gain in exchange for relaxing those aspects, not what is relaxed.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_037",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "Frente a los almacenes NoSQL, ¿qué caracteriza a los sistemas de gestión de bases de datos relacionales?",
+      "question_en": "Compared with NoSQL stores, which statement characterizes relational database management systems?",
+      "options_es": [
+        "Aceptan datos sin esquema definido de antemano y relajan las garantías transaccionales",
+        "Fijan la estructura de las tablas antes de guardar y admiten transacciones ACID",
+        "Asocian cada valor a una clave única y descartan las consultas SQL complejas por diseño",
+        "Guardan los datos como nodos y aristas y sacrifican la integridad por la flexibilidad"
+      ],
+      "options_en": [
+        "Accept data with no schema defined in advance and relax transactional guarantees",
+        "Fix table structure before data is stored and support ACID transactions",
+        "Associate each value with a unique key and rule out complex SQL queries by design",
+        "Store data as nodes and edges and sacrifice integrity for flexibility"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, los sistemas relacionales organizan los datos en tablas normalizadas con esquema al escribir, es decir, la estructura se fija antes de guardar, y admiten transacciones ACID y consultas SQL ricas. Las otras opciones describen rasgos propios de otros modelos (sin esquema, clave-valor, grafos) y contradicen lo que la fuente atribuye al modelo relacional: integridad, ACID y SQL rico.",
+      "explanation_en": "According to the source, relational systems organize data into normalized tables using schema-on-write, meaning the structure is fixed before data is stored, and they support ACID transactions and rich SQL queries. The other options describe traits of other models (schemaless, key-value, graph) and contradict what the source attributes to the relational model: integrity, ACID, and rich SQL.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_038",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere llevar a Azure una aplicación que usa controladores de MongoDB y necesita compatibilidad con el protocolo de MongoDB. ¿Qué servicio encaja según la fuente?",
+      "question_en": "A team wants to move an application that uses MongoDB drivers to Azure and needs MongoDB wire protocol compatibility. Which service fits, according to the source?",
+      "options_es": [
+        "Azure Cosmos DB for NoSQL",
+        "Azure Cosmos DB in Fabric",
+        "Azure DocumentDB",
+        "Azure Data Explorer"
+      ],
+      "options_en": [
+        "Azure Cosmos DB for NoSQL",
+        "Azure Cosmos DB in Fabric",
+        "Azure DocumentDB",
+        "Azure Data Explorer"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, Azure DocumentDB es una base de datos distribuida globalmente con compatibilidad con el protocolo de MongoDB y escalado automático, y su caso de uso son las aplicaciones que usan controladores de MongoDB. Azure Cosmos DB for NoSQL se describe por su lenguaje de consulta tipo SQL y su feed de cambios, y Azure Cosmos DB in Fabric por la analítica en tiempo real mediante Fabric; ninguno menciona compatibilidad con MongoDB. Azure Data Explorer no figura entre los servicios de almacenes de documentos de la fuente.",
+      "explanation_en": "According to the source, Azure DocumentDB is a globally distributed database with MongoDB wire protocol compatibility and autoscaling, and it is best for apps that use MongoDB drivers. Azure Cosmos DB for NoSQL is described by its SQL-like query language and change feed, and Azure Cosmos DB in Fabric by real-time analytics through Fabric; neither mentions MongoDB compatibility. Azure Data Explorer is not among the document data store services listed in the source.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_039",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "Una empresa necesita un almacén de datos de series temporales con una experiencia de software como servicio (SaaS) integrada con OneLake y con otras cargas de trabajo del mismo ecosistema. ¿Qué servicio elige según la fuente?",
+      "question_en": "A company needs a time-series data store with a software as a service (SaaS) experience integrated with OneLake and other workloads in the same ecosystem. Which service does the source point to?",
+      "options_es": [
+        "Azure Data Explorer",
+        "Una base de datos transaccional con capacidades limitadas de series temporales",
+        "Azure Database for PostgreSQL con TimescaleDB",
+        "Eventhouse en Microsoft Fabric"
+      ],
+      "options_en": [
+        "Azure Data Explorer",
+        "A transactional database with limited time-series capabilities",
+        "Azure Database for PostgreSQL with TimescaleDB",
+        "Eventhouse in Microsoft Fabric"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que Eventhouse en Microsoft Fabric es la opción si se quiere una experiencia SaaS integrada con el ecosistema de Fabric, incluidos OneLake y otras cargas de Fabric. Azure Data Explorer se elige para una solución PaaS independiente con control granular de la configuración, la red y el escalado. Las bases de datos transaccionales con capacidades limitadas de series temporales, como PostgreSQL con TimescaleDB, se eligen para consultar series temporales junto a los datos transaccionales existentes.",
+      "explanation_en": "The source says Eventhouse in Microsoft Fabric is the choice if you want a SaaS experience integrated with the Fabric ecosystem, including OneLake and other Fabric workloads. Azure Data Explorer is chosen for a standalone PaaS solution with granular control over cluster configuration, networking, and scaling. Transactional databases with limited time-series capabilities, such as PostgreSQL with TimescaleDB, are selected to query time-series data alongside existing transactional data.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_040",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué describe mejor a Apache HBase?",
+      "question_en": "Which description best fits Apache HBase?",
+      "options_es": [
+        "Una base NoSQL sobre Hadoop que no impone un esquema fijo",
+        "Una base relacional gestionada que usa el motor de SQL Server",
+        "Una caché en memoria que asocia cada valor con una clave única",
+        "Un almacén de grafos que modela relaciones con nodos y aristas"
+      ],
+      "options_en": [
+        "A NoSQL database built on Hadoop with no fixed schema",
+        "A managed relational database that uses the SQL Server engine",
+        "An in-memory cache that associates each value with a unique key",
+        "A graph store that models relationships with nodes and edges"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, Apache HBase es una base de datos NoSQL de código abierto, construida sobre Hadoop, que ofrece acceso aleatorio y consistencia fuerte en una base sin esquema organizada por familias de columnas. Por eso no es una base relacional de SQL Server, ni una caché de clave-valor, ni un almacén de grafos.",
+      "explanation_en": "According to the source, Apache HBase is an open-source NoSQL database built on Hadoop that provides random access and strong consistency in a schemaless database organized by column families. That is why it is not a SQL Server relational database, a key-value cache, or a graph store.",
+      "source": "Microsoft Learn — Choose a data storage technology (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/data-storage) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_041",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "Una empresa necesita guardar datos no estructurados o semiestructurados en una base de datos sin esquema. Según la guía de selección de almacenamiento, ¿qué opciones debería elegir?",
+      "question_en": "A company needs to store unstructured or semi-structured data in a schemaless database. According to the storage selection guide, which options should it choose?",
+      "options_es": [
+        "Las opciones relacionales, con tablas normalizadas y esquema fijo",
+        "Las opciones no relacionales o las orientadas a análisis",
+        "Las opciones de almacenamiento de archivos, sin base de datos",
+        "Las opciones de caché en memoria, con claves únicas"
+      ],
+      "options_en": [
+        "The relational options, with normalized tables and a fixed schema",
+        "The nonrelational options or the analytics-oriented ones",
+        "The file storage options, with no database involved",
+        "The in-memory cache options, with unique keys"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La guía indica que, para guardar datos no estructurados o semiestructurados en una base de datos sin esquema, se elija una de las opciones no relacionales o de análisis. El fragmento no señala las opciones relacionales, las de almacenamiento de archivos ni las de caché para esta necesidad. Como contraste de conocimiento general (no de la fuente), las tablas normalizadas con esquema fijo son propias del modelo relacional, justo lo opuesto a una base sin esquema.",
+      "explanation_en": "The guide says that, to store unstructured or semi-structured data in a schemaless database, you should select one of the nonrelational or analytics options. The fragment does not point to the relational, file storage, or cache options for this need. As a general-knowledge contrast (not from the source), normalized tables with a fixed schema belong to the relational model, the opposite of a schemaless database.",
+      "source": "Microsoft Learn — Choose a data storage technology (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/data-storage) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_042",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué significa «persistencia políglota» en los sistemas de producción?",
+      "question_en": "What does \"polyglot persistence\" mean in production systems?",
+      "options_es": [
+        "Usar un único almacén de datos relacional para todos los patrones de acceso",
+        "Guardar el mismo dato en varios idiomas dentro de una misma base de datos",
+        "Seleccionar varios modelos de almacenamiento según las necesidades",
+        "Replicar un almacén entre varias regiones para reducir la latencia"
+      ],
+      "options_en": [
+        "Using a single relational data store for every access pattern",
+        "Storing the same data in several languages within one database",
+        "Selecting multiple storage models for different needs",
+        "Replicating one store across several regions to reduce latency"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente explica que un único almacén de datos rara vez satisface todos los patrones de acceso de forma eficiente, por lo que la mayoría de los sistemas de producción adoptan la persistencia políglota, es decir, seleccionan varios modelos de almacenamiento. No se trata de usar un solo almacén, de idiomas ni de replicación entre regiones.",
+      "explanation_en": "The source explains that a single data store rarely satisfies all access patterns efficiently, so most production systems adopt polyglot persistence, meaning they select multiple storage models. It is not about using one store, human languages, or cross-region replication.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460303_043",
+      "skill_id": "sk460303",
+      "type": "multiple_choice",
+      "question_es": "Una empresa va a usar un servicio de Azure que admite varios modelos de datos (multimodelo). ¿Qué criterio conviene aplicar al elegir?",
+      "question_en": "A company will use an Azure service that supports several data models (multimodel). What approach fits best when choosing?",
+      "options_es": [
+        "Combinar todos los modelos disponibles para cubrir cualquier patrón de acceso",
+        "Adoptar siempre el servicio multimodelo aunque no encaje con la carga",
+        "Evitar los servicios multimodelo y usar solo una base relacional",
+        "Escoger el modelo más adecuado y mantener la operación simple"
+      ],
+      "options_en": [
+        "Combine every available model to cover any access pattern",
+        "Always adopt the multimodel service even if it does not fit the workload",
+        "Avoid multimodel services and use only a relational database",
+        "Pick the most suitable model and keep operations simple"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que un mismo servicio puede ofrecer varios modelos (multimodelo) y recomienda elegir el modelo que mejor se ajuste, en lugar de combinar modelos de una forma que complique las operaciones. Por eso no se trata de combinarlo todo, de imponer un servicio multimodelo ni de descartarlos.",
+      "explanation_en": "The source says a single service might provide several models (multimodel) and recommends choosing the best-fit model instead of combining models in a way that complicates operations. So the goal is not to combine everything, to force a multimodel service, or to rule such services out.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460304_034",
+      "skill_id": "sk460304",
+      "type": "multiple_choice",
+      "question_es": "Una empresa tiene una aplicación que accede a sus datos mediante el protocolo de conexión de MongoDB y quiere trasladarla a Azure sin cambiar la forma en que accede a ellos. ¿Qué servicio encaja mejor?",
+      "question_en": "A company has an application that accesses its data through the MongoDB wire protocol and wants to move it to Azure without changing how it accesses that data. Which service fits best?",
+      "options_es": [
+        "Azure Cosmos DB for NoSQL",
+        "Azure Cosmos DB in Fabric",
+        "Azure Database for PostgreSQL",
+        "Azure DocumentDB"
+      ],
+      "options_en": [
+        "Azure Cosmos DB for NoSQL",
+        "Azure Cosmos DB in Fabric",
+        "Azure Database for PostgreSQL",
+        "Azure DocumentDB"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, Azure DocumentDB es una base de datos distribuida globalmente con compatibilidad con el protocolo de conexión de MongoDB, por lo que encaja con una aplicación que ya accede a sus datos con ese protocolo. Azure Cosmos DB for NoSQL se describe para modelos de documentos JSON con consultas tipo SQL, y Azure Cosmos DB in Fabric para analítica en tiempo real sobre datos NoSQL. La fuente tampoco presenta Azure Database for PostgreSQL como compatible con MongoDB.",
+      "explanation_en": "According to the source, Azure DocumentDB is a globally distributed database with MongoDB wire protocol compatibility, so it fits an application that already accesses its data through that protocol. Azure Cosmos DB for NoSQL is described for custom JSON document models with SQL-like querying, and Azure Cosmos DB in Fabric for real-time analytics over NoSQL data. The source also does not present Azure Database for PostgreSQL as MongoDB-compatible.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460304_035",
+      "skill_id": "sk460304",
+      "type": "multiple_choice",
+      "question_es": "¿Con qué modelo de datos se clasifica Azure Cosmos DB for Table en la guía de modelos de datos de Azure?",
+      "question_en": "Which data model does the Azure data models guide use to classify Azure Cosmos DB for Table?",
+      "options_es": [
+        "Un almacén de datos clave-valor",
+        "Un almacén de datos de documentos",
+        "Un almacén de datos de grafos",
+        "Un almacén de datos relacional"
+      ],
+      "options_en": [
+        "A key-value data store",
+        "A document data store",
+        "A graph data store",
+        "A relational data store"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente describe Azure Cosmos DB for Table como un almacén clave-valor. El modelo de documentos aparece en el mismo texto, pero asociado a Azure Cosmos DB for NoSQL, no a Table. La fuente no vincula este servicio con grafos ni con un modelo relacional.",
+      "explanation_en": "The source describes Azure Cosmos DB for Table as a key-value store. The document model appears in the same text, but it is tied to Azure Cosmos DB for NoSQL, not to Table. The source does not link this service to a graph or a relational model.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460304_036",
+      "skill_id": "sk460304",
+      "type": "multiple_choice",
+      "question_es": "Al clasificar los almacenes de datos de Azure, ¿en qué categoría aparecen las API de Azure Cosmos DB como ejemplo?",
+      "question_en": "When classifying Azure data stores, under which category do the Azure Cosmos DB APIs appear as an example?",
+      "options_es": [
+        "Relacionales, para operaciones transaccionales consistentes",
+        "No relacionales, para esquemas flexibles o relaciones",
+        "De series temporales, para métricas con marca de tiempo",
+        "De objetos y archivos, para datos binarios grandes"
+      ],
+      "options_en": [
+        "Relational, for consistent transactional operations",
+        "Nonrelational, for flexible-schema workloads",
+        "Time series, for high-ingest timestamped metrics",
+        "Object and file, for large binary storage"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La tabla de clasificación sitúa a las API de Azure Cosmos DB en la categoría no relacional (documento, clave-valor, familia de columnas y grafo), pensada para esquemas flexibles o cargas centradas en relaciones. Los ejemplos de las categorías relacional, series temporales y objeto/archivo son otros servicios.",
+      "explanation_en": "The classification table places the Azure Cosmos DB APIs in the nonrelational category (document, key-value, column-family, and graph), meant for flexible schemas or relationship-centric workloads. The relational, time-series, and object/file categories list different services as examples.",
+      "source": "Microsoft Learn — Understand Data Models (https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/understand-data-store-models) — CC BY 4.0"
+    },
+    {
+      "id": "q460304_037",
+      "skill_id": "sk460304",
+      "type": "multiple_choice",
+      "question_es": "En Azure Cosmos DB, ¿qué característica tiene un contenedor con Azure Synapse Link habilitado (contenedor HTAP)?",
+      "question_en": "In Azure Cosmos DB, what characterizes a container that has Azure Synapse Link enabled (an HTAP container)?",
+      "options_es": [
+        "Tiene solo almacén transaccional",
+        "Tiene un almacén analítico que sustituye al transaccional",
+        "Tiene almacén transaccional y almacén analítico",
+        "Tiene dos almacenes transaccionales replicados entre regiones"
+      ],
+      "options_en": [
+        "It has a transactional store only",
+        "It has an analytical store that replaces the transactional one",
+        "It has a transactional store and an analytical store",
+        "It has two transactional stores replicated across regions"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, un contenedor HTAP es el que tiene Synapse Link habilitado y cuenta con almacén transaccional y almacén analítico. El contenedor sin Synapse Link (OLTP) es el que tiene solo almacén transaccional, lo que descarta la primera opción. La fuente no menciona un almacén analítico que sustituya al transaccional ni dos almacenes transaccionales replicados.",
+      "explanation_en": "According to the source, an HTAP container is one with Synapse Link enabled and it has both a transactional store and an analytical store. The container without Synapse Link (OLTP) is the one with only a transactional store, which rules out the first option. The source mentions no analytical store that replaces the transactional one and no container with two replicated transactional stores.",
+      "source": "Microsoft Learn — Azure Synapse Link for Azure Cosmos DB supported features (https://learn.microsoft.com/en-us/azure/synapse-analytics/synapse-link/concept-synapse-link-cosmos-db-support) — CC BY 4.0"
+    },
+    {
+      "id": "q460304_038",
+      "skill_id": "sk460304",
+      "type": "multiple_choice",
+      "question_es": "Un equipo escribe datos desde un grupo de Apache Spark de Synapse en un contenedor de Azure Cosmos DB. ¿Qué ocurre con esa escritura en Azure Cosmos DB?",
+      "question_en": "A team writes data from a Synapse Apache Spark pool into an Azure Cosmos DB container. What happens with that write in Azure Cosmos DB?",
+      "options_es": [
+        "Se escribe en el almacén analítico sin afectar a las cargas transaccionales",
+        "Se rechaza, porque los grupos de Spark solo pueden leer datos de Cosmos DB",
+        "Se pone en cola hasta que el contenedor pase a ser un contenedor HTAP",
+        "Se escribe en el almacén transaccional y afecta a su rendimiento"
+      ],
+      "options_en": [
+        "It is written to the analytical store, with no effect on transactional workloads",
+        "It is rejected, because Spark pools can only read Cosmos DB data",
+        "It waits in a queue until the container becomes an HTAP container",
+        "It is written to the transactional store and affects its performance"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que la escritura desde Spark pasa por el almacén transaccional de Azure Cosmos DB y repercute en su rendimiento transaccional. No va al almacén analítico, y la tabla de funciones admitidas indica que el grupo de Spark sí puede escribir. Tampoco se menciona ninguna espera en cola: la fuente señala que, incluso sin Synapse Link, se puede leer y escribir en el almacén transaccional.",
+      "explanation_en": "The source states that a write from Spark goes through the transactional store of Azure Cosmos DB and impacts its transactional performance. It does not go to the analytical store, and the supported-features table shows that the Spark pool can write. The source also mentions no waiting in a queue: it notes that, even without Synapse Link, you can read and write to the transactional store.",
+      "source": "Microsoft Learn — Azure Synapse Link for Azure Cosmos DB supported features (https://learn.microsoft.com/en-us/azure/synapse-analytics/synapse-link/concept-synapse-link-cosmos-db-support) — CC BY 4.0"
     }
   ]
 }

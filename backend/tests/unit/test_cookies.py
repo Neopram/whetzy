@@ -67,3 +67,21 @@ def test_cookie_domain_still_applied_when_set(monkeypatch):
 
     secure, samesite = _cookie_policy()
     assert _cookie_kwargs(secure, samesite)["domain"] == ".whetzy.com"
+
+
+def test_cookies_go_back_to_lax_once_the_api_shares_the_frontend_domain(monkeypatch):
+    """Login en Safari (orden S1 punto 5): su ITP bloquea la cookie de
+    terceros aunque sea `SameSite=None` + `Secure`. El arreglo real es que la
+    API responda bajo el mismo dominio registrable que el frontend
+    (`api.whetzy.com` apuntado en Railway — la parte del dueño); en cuanto
+    `COOKIE_DOMAIN` lo refleja, el backend deja de tratarlo como cross-site
+    y la cookie vuelve a `SameSite=Lax`, que Safari sí respeta entre
+    subdominios del mismo sitio. Sin `COOKIE_DOMAIN` (hoy en producción),
+    nada cambia — lo cubre `test_cookies_are_samesite_none_in_production`."""
+    monkeypatch.setattr(settings, "ENVIRONMENT", "production")
+    monkeypatch.setattr(settings, "COOKIE_DOMAIN", ".whetzy.com")
+    from app.core.cookies import _cookie_policy
+
+    secure, samesite = _cookie_policy()
+    assert samesite == "lax"
+    assert secure is True  # COOKIE_SECURE sigue por defecto en True

@@ -9,13 +9,15 @@ POST /push/streak-reminder    — fire reminder to at-risk users (admin key)
 
 from __future__ import annotations
 
+import ipaddress
 import logging
 from datetime import UTC, datetime
 from typing import Any, cast
+from urllib.parse import urlparse
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
 from pydantic import BaseModel
-from sqlalchemy import delete, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -45,6 +47,41 @@ class PushSubscribeRequest(BaseModel):
     keys: SubscriptionKeys
 
 
+def _is_valid_push_endpoint(endpoint: str) -> bool:
+    """`endpoint` lo manda el navegador, pero nadie comprobaba que fuera uno.
+
+    `send_to_user` hace un POST desde el servidor a este mismo endpoint
+    (`push_service.py`): sin validarlo, una cuenta podía registrar
+    `http://169.254.169.254/...` (metadata de la nube) o cualquier IP
+    interna como "endpoint" y, en el siguiente recordatorio de racha, el
+    propio backend hacía la petición SSRF por ella.
+
+    `https` obligatorio y, cuando el host es un literal IP (nunca lo es en
+    un endpoint real de FCM/Mozilla/etc, que siempre dan un nombre), se
+    rechaza si es privado, loopback, link-local o reservado. Un hostname
+    normal no se resuelve aquí (eso abriría DNS rebinding sin arreglarlo
+    del todo igual) — el filtro corta el ataque directo con una IP literal.
+    """
+    try:
+        parsed = urlparse(endpoint)
+    except ValueError:
+        return False
+    if parsed.scheme != "https" or not parsed.hostname:
+        return False
+    try:
+        ip = ipaddress.ip_address(parsed.hostname)
+    except ValueError:
+        return True  # un hostname real, no un literal IP
+    return not (
+        ip.is_private
+        or ip.is_loopback
+        or ip.is_link_local
+        or ip.is_reserved
+        or ip.is_multicast
+        or ip.is_unspecified
+    )
+
+
 class PushUnsubscribeRequest(BaseModel):
     endpoint: str
 
@@ -68,6 +105,9 @@ async def subscribe(
     user: User = Depends(get_current_user),
 ) -> dict[str, Any]:
     """Register a browser push subscription for the current user."""
+    if not _is_valid_push_endpoint(body.endpoint):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid push endpoint")
+
     existing = (
         await db.scalars(
             select(PushSubscription).where(
@@ -81,6 +121,14 @@ async def subscribe(
         existing.p256dh = body.keys.p256dh
         existing.auth = body.keys.auth
     else:
+        count = await db.scalar(
+            select(func.count(PushSubscription.id)).where(PushSubscription.user_id == user.id)
+        )
+        if (count or 0) >= settings.PUSH_MAX_SUBSCRIPTIONS_PER_USER:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Too many push subscriptions for this user",
+            )
         db.add(
             PushSubscription(
                 user_id=user.id,

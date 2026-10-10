@@ -22,6 +22,7 @@ puerta (bcrypt 5, typescript 7, redis 8) y sesiones paralelas editando los mismo
 | S4 | Abogado y cumplimiento | `claude/vibrant-carson-iult4i` | `legal.json` |
 | S5 | Fundador-ingeniero (fase 0) e integrador (fase 2) | `claude/sleepy-faraday-fhfmd3` | — |
 | S6 | Marketing y crecimiento | `claude/ecstatic-meitner-2x08pf` | `marketing.json` |
+| COORD | Coordinación y autoría masiva de contenido (ADR-59) | `claude/youthful-allen-i8k7zb` y `-<trackNN>` | — (terreno en §4.2) |
 
 **Arranque:** por decisión del dueño (comentario `[COORD] ARRANQUE YA` del #89, 2026-10-02
 21:45 UTC) S1–S4 y S6 trabajan ya sobre `origin/master`. Lo único que esperan al PR A de la
@@ -55,7 +56,7 @@ distintas se fusionan sin conflicto o con uno trivial que resuelve S5.
 **Excepción: las líneas de cifras del banco** (`[COORD] DESBLOQUEO` del #89). `check_docs.py`
 exige que las cifras del banco cuadren en ficheros compartidos: la fila `Contenido` de
 `docs/AUTONOMOUS_STATE.md` ([2]) y las cifras de `frontend/src/lib/catalog.ts` ([4]) y de
-`docs/ARCHITECTURE.md` ([5a]). **El PR de contenido que cambia el banco (S2) regenera esas líneas**,
+`docs/ARCHITECTURE.md` ([5a]). **El PR de contenido que cambia el banco (S2, o la sesión coordinadora desde ADR-59) regenera esas líneas**,
 y solo esas, a partir del banco real, y las lista en «Fuera de alcance». Si dos PRs de contenido
 las tocan, el segundo hace `git merge origin/master` tras fusionarse el primero, las regenera y
 repite el nivel 2; nunca se edita a mano la cifra de otro PR.
@@ -190,6 +191,10 @@ Lo que no aparece en ninguna lista no tiene dueño: quien lo necesite lo pide co
    (y `--carril pr96 --estado`). Sin carril, el cerrojo del checkout mata al nivel 2 anterior: eso
    fue el `exit 137` del #96. Con carriles distintos no se tocan (cerrojo, bitácora y worktree
    propios). `XDG_CACHE_HOME` distinto solo separa el worktree, no el cerrojo.
+6. **Ruta nueva o con otra protección** (I.6/J.13): `cd backend && python -m app.core.authz --write`
+   y el diff de `backend/tests/authz_matrix.json` va en el PR. Sin eso, el nivel 1 para el push
+   (`tests/test_authz_matrix.py`). Una ruta `admin` nueva la prueba sola el test: un alumno con
+   sesión tiene que recibir 401 o 403.
 
 ## 8. PRs
 

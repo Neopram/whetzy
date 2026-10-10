@@ -35,11 +35,24 @@ SameSite = Literal["lax", "none"]
 
 
 def _cross_site() -> bool:
-    """Frontend and backend are on different registrable domains only in
-    production today (ADR-45 previews aside, which don't set auth cookies).
+    """Frontend and backend are on different registrable domains in
+    production *as long as the API answers at a Railway/`*.pages.dev` host*.
     `SameSite=None` requires `Secure`; browsers reject it otherwise, so it is
-    never applied over plain HTTP local dev."""
-    return settings.ENVIRONMENT == "production"
+    never applied over plain HTTP local dev.
+
+    Safari login (17.6/orden S1 punto 5): Safari's ITP blocks third-party
+    cookies more aggressively than Chrome/Firefox even with `SameSite=None` —
+    that is the real fix the owner needs, not this function. Once the API is
+    reachable under the frontend's own registrable domain (an `api.<domain>`
+    DNS record pointed at Railway — the owner's part) *and* `COOKIE_DOMAIN`
+    is set to the shared parent (e.g. `.whetzy.com`), the two origins are
+    first-party to each other again: the cookie can go back to `SameSite=Lax`
+    and Safari stops treating it as third-party. `COOKIE_DOMAIN` already
+    existed for `_cookie_kwargs`; this only teaches `_cross_site` to notice it
+    was set. Nothing changes in production until that env var is set, which
+    is the owner's half of this fix.
+    """
+    return settings.ENVIRONMENT == "production" and not settings.COOKIE_DOMAIN
 
 
 def _cookie_policy() -> tuple[bool, SameSite]:

@@ -15,12 +15,18 @@ vi.mock('../services/api', async (importOriginal) => {
   return {
     ...actual,
     gamification: { ...actual.gamification, badges: vi.fn().mockResolvedValue([]) },
-    billing: { ...actual.billing, subscription: vi.fn(), cancelPaddle: vi.fn() },
+    billing: { ...actual.billing, subscription: vi.fn(), cancelPaddle: vi.fn(), paddleConfig: vi.fn() },
   };
 });
 
 const sub = billing.subscription as unknown as ReturnType<typeof vi.fn>;
 const cancel = billing.cancelPaddle as unknown as ReturnType<typeof vi.fn>;
+const paddleConfig = billing.paddleConfig as unknown as ReturnType<typeof vi.fn>;
+
+const NO_ANNUAL = {
+  enabled: true, environment: 'production', client_token: 'live_x',
+  prices: { plus: 'pri_plus', pro: 'pri_pro', certification: 'pri_cert', plus_annual: null, pro_annual: null },
+};
 
 const PADDLE_SUB = {
   is_premium: true,
@@ -35,6 +41,8 @@ beforeEach(async () => {
   await i18n.changeLanguage('es');
   sub.mockReset();
   cancel.mockReset();
+  paddleConfig.mockReset();
+  paddleConfig.mockResolvedValue(NO_ANNUAL);
 });
 afterEach(() => {
   cleanup();
@@ -47,6 +55,39 @@ describe('Perfil — planes y suscripción', () => {
     render(<ProfileScreen />);
     expect(screen.getByRole('link', { name: /^Pro · 14,99/ })).toHaveAttribute('href', '/checkout?plan=plus');
     expect(screen.getByRole('link', { name: /^Pro Max · 19,99/ })).toHaveAttribute('href', '/checkout?plan=pro');
+  });
+
+  it('plan anual apagado (ANNUAL_PLAN_ENABLED=false): no se ofrece', async () => {
+    useAppStore.getState().updateUser({ isPremium: false });
+    render(<ProfileScreen />);
+    await waitFor(() => expect(paddleConfig).toHaveBeenCalled());
+    expect(screen.queryByText(/plan anual/i)).toBeNull();
+  });
+
+  it('plan anual encendido: aparece junto a los mensuales, con su propio enlace', async () => {
+    paddleConfig.mockResolvedValue({
+      ...NO_ANNUAL,
+      prices: { ...NO_ANNUAL.prices, plus_annual: 'pri_plus_annual', pro_annual: 'pri_pro_annual' },
+    });
+    useAppStore.getState().updateUser({ isPremium: false });
+    render(<ProfileScreen />);
+    expect(await screen.findByRole('link', { name: /^Pro · plan anual/ })).toHaveAttribute(
+      'href', '/checkout?plan=plus_annual',
+    );
+    expect(screen.getByRole('link', { name: /^Pro Max · plan anual/ })).toHaveAttribute(
+      'href', '/checkout?plan=pro_annual',
+    );
+  });
+
+  it('plan anual encendido solo para Pro: Pro Max anual no aparece sin su propio id', async () => {
+    paddleConfig.mockResolvedValue({
+      ...NO_ANNUAL,
+      prices: { ...NO_ANNUAL.prices, plus_annual: 'pri_plus_annual', pro_annual: null },
+    });
+    useAppStore.getState().updateUser({ isPremium: false });
+    render(<ProfileScreen />);
+    await screen.findByRole('link', { name: /^Pro · plan anual/ });
+    expect(screen.queryByRole('link', { name: /^Pro Max · plan anual/ })).toBeNull();
   });
 
   it('con plan de Paddle: cancelar pide confirmación y llama a Paddle una vez', async () => {

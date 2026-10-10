@@ -1493,6 +1493,16 @@ escribe?» → **Solo Sonnet**; «¿el contenido puede ir antes de cerrar el pil
 - Sonnet 5 cuesta más por token que Haiku 4.5. El coste por pregunta aceptada no se conoce: lo
   mide el piloto antes de escalar, y la cifra se anota en `PLAN_CONTENIDO.md`.
 
+**Fuentes `cita` (dueño, 2026-10-03, misma sesión).** Para las certificaciones de AWS (track43
+MLA-C01 y track11 AIF-C01), cuya documentación no es reutilizable (`CATALOGO_MAESTRO.md` §2.1:
+«docs propietarias … se citan, nunca se copian»), el dueño eligió **redactar original con cita**:
+el escritor recibe el fragmento de la doc oficial como base de hechos, escribe con sus palabras
+sin copiar frases, y `source` enlaza la URL de `docs.aws.amazon.com`. El revisor añade un
+criterio: copiar más de 8 palabras seguidas del fragmento es `major`. El fragmento se guarda solo
+como evidencia de la revisión y nunca entra en el banco. Es el camino que §2.1 ya fija para
+cualquier fuente («Los hechos son libres; la redacción no»); esta línea lo vuelve explícito para
+la producción por `Workflow`.
+
 ## ADR-60 — Decisiones de producto del 2026-10-10: Knowledge/Retention/Readiness, principio rector y Career Path (DUEÑO)
 
 **Origen.** Cuatro documentos de visión de producto revisados en la sesión del 2026-10-10.

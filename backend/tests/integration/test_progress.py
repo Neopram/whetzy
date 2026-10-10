@@ -40,6 +40,38 @@ async def test_dashboard_401(client):
     assert resp.status_code == 401
 
 
+# ── /thresholds (C.1, 2026-10-04) ───────────────────────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_thresholds_ok(client, auth_headers):
+    """Served so a frontend screen can read these instead of hardcoding its
+    own copy (HomeScreen.tsx/EvidenceScreen.tsx each do today)."""
+    resp = await client.get(f"{BASE}/thresholds", headers=auth_headers)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data == {
+        "mastery_threshold": pytest.approx(0.95),
+        "default_module_unlock_mastery": pytest.approx(0.7),
+    }
+
+
+@pytest.mark.asyncio
+async def test_thresholds_matches_the_canonical_constant(client, auth_headers):
+    """Nothing here can drift from app.services.engine.domain_thresholds -
+    the endpoint reads that module directly, not its own copy."""
+    from app.services.engine.domain_thresholds import MASTERY_THRESHOLD
+
+    resp = await client.get(f"{BASE}/thresholds", headers=auth_headers)
+    assert resp.json()["mastery_threshold"] == MASTERY_THRESHOLD
+
+
+@pytest.mark.asyncio
+async def test_thresholds_401(client):
+    resp = await client.get(f"{BASE}/thresholds")
+    assert resp.status_code == 401
+
+
 # ── /skills ────────────────────────────────────────────────────────────────────
 
 

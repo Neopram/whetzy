@@ -11,7 +11,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import Select, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.job import Job
@@ -45,28 +45,48 @@ async def execute_job(job: Job, db: AsyncSession) -> dict[str, Any]:
         raise
 
 
-async def process_pending_jobs(db: AsyncSession, max_jobs: int = 10) -> int:
-    """Poll for pending jobs and process them. Return count processed."""
-    # Fetch up to max_jobs pending jobs
-    jobs = (
-        await db.scalars(
-            select(Job)
-            .where(Job.status == "queued")
-            .order_by(Job.created_at)
-            .limit(max_jobs)
-        )
-    ).all()
+def claim_query(max_jobs: int) -> Select[Job]:
+    """Los `max_jobs` trabajos en cola más antiguos, bloqueados para este worker.
 
+    `FOR UPDATE SKIP LOCKED`: con `--workers 2` en `start.sh` hay dos bucles
+    `job_worker_loop`, uno por proceso, y sin bloqueo los dos leían la misma
+    cola y ejecutaban cada trabajo dos veces (`run_payouts` es una liquidación
+    a instructores). Con `SKIP LOCKED` el segundo salta las filas que el
+    primero ya tiene y no espera. SQLite no tiene `FOR UPDATE` y lo omite.
+    """
+    return (
+        select(Job)
+        .where(Job.status == "queued")
+        .order_by(Job.created_at, Job.id)
+        .limit(max_jobs)
+        .with_for_update(skip_locked=True)
+    )
+
+
+async def claim_pending_jobs(db: AsyncSession, max_jobs: int = 10) -> list[Job]:
+    """Reclama un lote: lo marca `running` en la misma transacción que lo bloquea.
+
+    Marcarlos de uno en uno (como antes) soltaba el bloqueo de todo el lote en
+    el primer `commit`, y el resto volvía a quedar a la vista de otro worker.
+    """
+    jobs = list((await db.scalars(claim_query(max_jobs))).all())
+    now = datetime.utcnow()
+    for job in jobs:
+        job.status = "running"
+        job.started_at = now
+    await db.commit()
+    return jobs
+
+
+async def process_pending_jobs(db: AsyncSession, max_jobs: int = 10) -> int:
+    """Reclama trabajos en cola y los ejecuta. Devuelve cuántos procesó."""
+    jobs = await claim_pending_jobs(db, max_jobs)
     if not jobs:
         return 0
 
     count = 0
     for job in jobs:
         try:
-            job.status = "running"
-            job.started_at = datetime.utcnow()
-            await db.commit()
-
             result = await execute_job(job, db)
 
             job.status = "done"

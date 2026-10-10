@@ -34,6 +34,16 @@ class AlreadyEnrolled(ValueError):
     """El alumno ya está inscrito; sin esto la unique constraint daba un 500."""
 
 
+class CannotEnrollInOwnCourse(ValueError):
+    """El instructor del curso intentó inscribirse en el suyo propio.
+
+    Sin pasarela todavía, inscribirse no cobra nada (ver enroll_student_in_course)
+    pero sí genera un InstructorPayout real — dinero que el dueño le debería al
+    instructor por una venta que nunca existió. Sin este chequeo, un instructor
+    de mala fe podía "venderse" su propio curso tantas veces como cursos creara.
+    """
+
+
 class InstructorService:
     """Service for instructor marketplace operations."""
 
@@ -109,6 +119,14 @@ class InstructorService:
             raise CourseNotFound(f"Course {course_id} not found")
         if course.status != "published":
             raise CourseNotPublished(f"Course {course_id} is {course.status}, not published")
+
+        instructor_user_id = await db.scalar(
+            select(Instructor.user_id).where(Instructor.id == course.instructor_id)
+        )
+        if instructor_user_id == user_id:
+            raise CannotEnrollInOwnCourse(
+                f"User {user_id} cannot enroll in their own course {course_id}"
+            )
 
         already = await db.scalar(
             select(InstructorEnrollment.id).where(

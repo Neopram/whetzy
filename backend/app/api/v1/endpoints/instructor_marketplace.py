@@ -26,6 +26,7 @@ from app.models.instructor import Instructor, InstructorCourse
 from app.models.user import User
 from app.services.instructor_service import (
     AlreadyEnrolled,
+    CannotEnrollInOwnCourse,
     CourseNotPublished,
     InstructorService,
 )
@@ -83,6 +84,21 @@ class AnalyticsResponse(BaseModel):
     active_courses: int
     total_students: int
     avg_completion_percent: float
+
+
+class ProfileResponse(BaseModel):
+    """Perfil público del instructor (28.8)."""
+    display_name: str
+    bio: str | None
+    avatar_url: str | None
+    website: str | None
+
+
+class ProfileUpdateRequest(BaseModel):
+    display_name: str | None = Field(default=None, min_length=1, max_length=100)
+    bio: str | None = Field(default=None, max_length=2000)
+    avatar_url: str | None = Field(default=None, max_length=512)
+    website: str | None = Field(default=None, max_length=512)
 
 
 class PayoutResponse(BaseModel):
@@ -208,6 +224,8 @@ async def enroll_student(
         )
     except AlreadyEnrolled as exc:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+    except CannotEnrollInOwnCourse as exc:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
     except CourseNotPublished as exc:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
     except ValueError as exc:
@@ -235,3 +253,42 @@ async def get_payout_history(
     instructor = await _current_instructor(db, user)
     rows = await InstructorService.get_payout_history(db, str(instructor.id))
     return [PayoutResponse(**r) for r in rows]
+
+
+def _profile_payload(instructor: Instructor) -> ProfileResponse:
+    return ProfileResponse(
+        display_name=instructor.display_name,
+        bio=instructor.bio,
+        avatar_url=instructor.avatar_url,
+        website=instructor.website,
+    )
+
+
+@router.get("/profile", response_model=ProfileResponse)
+async def get_profile(
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> ProfileResponse:
+    """Perfil de instructor del usuario autenticado (28.8: ProfileTab no llamaba a nada)."""
+    instructor = await _current_instructor(db, user)
+    return _profile_payload(instructor)
+
+
+@router.patch("/profile", response_model=ProfileResponse)
+async def update_profile(
+    body: ProfileUpdateRequest,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> ProfileResponse:
+    instructor = await _current_instructor(db, user)
+    if body.display_name is not None:
+        instructor.display_name = body.display_name
+    if body.bio is not None:
+        instructor.bio = body.bio
+    if body.avatar_url is not None:
+        instructor.avatar_url = body.avatar_url
+    if body.website is not None:
+        instructor.website = body.website
+    await db.commit()
+    await db.refresh(instructor)
+    return _profile_payload(instructor)

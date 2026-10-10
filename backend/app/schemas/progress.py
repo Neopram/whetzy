@@ -109,3 +109,14 @@ class PredictionResponse(BaseModel):
     estimated_xp_needed: int
     estimated_days_to_completion: float | None = None
     confidence: str  # low | medium | high
+
+
+class DomainThresholds(BaseModel):
+    """The motor's canonical domain thresholds (C.1, 2026-10-04) — served so
+    a frontend screen reads these instead of hardcoding its own copy, the way
+    `HomeScreen.tsx` (`MASTERED = 0.95`) and `EvidenceScreen.tsx`
+    (`masteryThreshold: '0.95'`) each do today. See
+    app.services.engine.domain_thresholds for why one copy matters."""
+
+    mastery_threshold: float
+    default_module_unlock_mastery: float

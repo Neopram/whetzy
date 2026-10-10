@@ -298,6 +298,21 @@ async def refresh(
             db=db,
         )
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
+    # S.1: un refresh token emitido antes de un cambio de contraseña, "cerrar
+    # sesión en todos los dispositivos" o activar 2FA (todos suben jwt_version)
+    # seguía siendo válido aquí y volvía a dar acceso — el mismo chequeo que ya
+    # hace /2fa/login con el mfa_token, que a este endpoint le faltaba.
+    if token_data.jvs != user.jwt_version:
+        await log_audit_event(
+            user.id,
+            "refresh_failed",
+            ip=client_ip,
+            user_agent=user_agent,
+            result="failed",
+            error_message="Refresh token revoked (jwt_version mismatch)",
+            db=db,
+        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
 
     # Log token refresh
     await log_audit_event(

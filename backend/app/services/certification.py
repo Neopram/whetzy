@@ -20,6 +20,7 @@ import uuid
 from typing import Any
 
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -93,7 +94,13 @@ async def grant(
     price_usd: float | None = None,
     external_ref: str | None = None,
 ) -> CertificationPurchase:
-    """Registra la compra. Idempotente: comprar dos veces no crea dos derechos."""
+    """Registra la compra. Idempotente: comprar dos veces no crea dos derechos.
+
+    Un reintento de Paddle del mismo webhook de compra puede llegar mientras
+    el primero todavía no ha hecho commit — el `SELECT` de arriba no lo ve
+    todavía, así que el `INSERT` necesita su propia red de seguridad contra
+    la unique constraint (user_id, track_id), no solo el check previo.
+    """
     await _certification_track(db, track_id)
     existing = await purchase_for(db, user_id, track_id)
     if existing is not None:
@@ -106,9 +113,42 @@ async def grant(
         source=source,
         external_ref=external_ref,
     )
-    db.add(purchase)
-    await db.flush()
+    try:
+        async with db.begin_nested():
+            db.add(purchase)
+            await db.flush()
+    except IntegrityError:
+        existing = await purchase_for(db, user_id, track_id)
+        if existing is not None:
+            return existing
+        raise
     return purchase
+
+
+async def revoke_purchase_by_external_ref(db: AsyncSession, external_ref: str) -> bool:
+    """Retira el derecho de examen que ese cargo de Paddle concedió (reembolso).
+
+    Por `external_ref` (el id de la transacción), no por (user_id, track_id):
+    así un reembolso solo toca la compra que de verdad pagó esa transacción,
+    nunca una compra posterior y distinta del mismo usuario/track. Sin fila
+    de "revocado" en `certification_purchases` (sería otra migración; la 54
+    ya está en curso, una a la vez) se borra: sin ella, `purchase_for` ya
+    vuelve a dar None, que es justo lo que pasaba antes de pagar.
+    Idempotente: si no hay ninguna compra con ese external_ref (ya revocada,
+    o un reembolso repetido), no hace nada y devuelve False.
+    """
+    existing = (
+        await db.scalars(
+            select(CertificationPurchase).where(
+                CertificationPurchase.external_ref == external_ref
+            )
+        )
+    ).first()
+    if existing is None:
+        return False
+    await db.delete(existing)
+    await db.flush()
+    return True
 
 
 async def start(

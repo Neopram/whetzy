@@ -67,6 +67,7 @@ está roto.
 | `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
 | `docs/PLAN_CONTENIDO.md` | normativo-vivo | método de autoría desde la fuente, piloto 37.25, orden y organización (ADR-59) | se queda | 2026-10-03 |
+| `docs/PLAN_MAESTRO.md` | normativo-vivo | norte del producto: tesis, flujos por actor, arquitectura, oleadas A–H con criterio de salida, cola del dueño (aprobado 2026-10-04) | se queda | 2026-10-04 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
 | `docs/CIERRE_2026-09-30.md` | referencia-viva | registro de la pausa (levantada el 2026-10-01, ADR-56); §2 scorecard y §7 trampas del entorno; check_docs [11] | se queda | 2026-09-30 |
 | `docs/COMPETENCIA.md` | referencia-viva | mercado con URL y fecha | se queda | 2026-09-30 |
@@ -118,9 +119,16 @@ está roto.
 | `docs/archive/incidents-postmortem-template.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: RUNBOOK.md ya trae su plantilla; esta tenía un ejemplo con 50k usuarios inventados | 2026-09-25 |
 | `docs/archive/incidents-runbook.md` | referencia-viva | respuesta a incidentes (22.7) y plantilla de post-mortem | archivado el 2026-10-01: describe Slack, PagerDuty, guardias e Instatus que no existen; RUNBOOK.md § Incident Management es la fuente única | 2026-09-23 |
 | `docs/archive/24-12-implementation.md` | obsoleto | dice «Commit: Pendiente»; 24.12 está DONE (c912713, LEDGER_HISTORY) | archivado el 2026-10-01 | 2026-09-23 |
+| `docs/store/android/listing.md` | referencia-viva | ficha de Google Play (23.3), contraparte de `ios/listing.md` — mismo copy, feature graphic pendiente | se queda | 2026-10-02 |
 | `docs/store/app-store-review-checklist.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/ios/listing.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
 | `docs/store/play-store-data-safety.md` | referencia-viva | fichas y checklists de tiendas | se queda | 2026-09-30 |
+| `docs/distribucion-assets/show-hn/en.md` | referencia-viva | kit de Show HN en inglés (27.1) — texto, sin publicar | se queda | 2026-10-02 |
+| `docs/distribucion-assets/show-hn/es.md` | referencia-viva | adaptación en español del mismo kit para foros hispanos (26.6; HN no acepta español) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/product-hunt/kit.md` | referencia-viva | kit de lanzamiento de Product Hunt (27.4) — tagline, checklist, sin la lista de upvoters (personas reales, solo el dueño) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/prs-repos-externos/free-programming-books.md` | referencia-viva | texto de PR a EbookFoundation/free-programming-books (26.2), sin abrirlo — incluye el riesgo de rechazo por su regla "solo gratis" | se queda | 2026-10-02 |
+| `docs/distribucion-assets/prs-repos-externos/coding-interview-university.md` | referencia-viva | texto de PR a jwasham/coding-interview-university (27.3), sin abrirlo; recomienda NO abrir el de system-design-primer (no hay sitio honesto donde insertarlo) | se queda | 2026-10-02 |
+| `docs/distribucion-assets/universidades/email-template.md` | referencia-viva | plantilla de email a universidades LATAM (26.3) ES+EN, sin lista de contactos personales | se queda | 2026-10-02 |
 | `docs/support/response-templates-en.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/support/response-templates-es.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/ui-snapshots/34.1/README.md` | histórico | evidencia de capturas de 34.1 | se queda (junto a sus PNG) | 2026-09-28 |
@@ -139,6 +147,7 @@ está roto.
 | `docs/legal/H29-DECISION-LOG.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-23 |
 | `docs/legal/h29-grecia-paddle-revenuecat-obligaciones.md` | legal | investigación vigente (21.1/21.2) de lo que exige operar bajo H.29 | se queda, DRAFT para H.20 | 2026-10-02 |
 | `docs/legal/h20-paquete-abogado.md` | legal | índice, preguntas abiertas y riesgos por gravedad para la revisión profesional (H.20) | se queda, DRAFT | 2026-10-02 |
+| `docs/legal/revision-terminos-privacidad-2026-10-04.md` | legal | 7 propuestas (Oleada 0.12/D.8) sobre contradicciones verificadas en Términos/Privacidad/Reembolsos publicados, con 2 opciones cada una | se queda, DRAFT, pendiente de NECESITO (dueño) | 2026-10-04 |
 | `docs/legal/community-guidelines.es.md` | legal | texto mínimo de moderación para App Store 1.2/1.2.1 (ledger 19.11); no registrado en `scripts/check_legal_facts.py` EXPECTED_DOCS (fuera de mi terreno tocar ese script) | se queda, DRAFT sin publicar | 2026-10-02 |
 | `docs/legal/community-guidelines.en.md` | legal | par EN del anterior | se queda, DRAFT sin publicar | 2026-10-02 |
 | `docs/legal/README.md` | legal | textos legales ES/EN | no se toca el texto; contradicciones abajo | 2026-09-26 |
