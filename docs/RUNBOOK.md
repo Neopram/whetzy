@@ -172,7 +172,7 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `20261004_study_session_current_question` (55 migrations, single head —
+Current Alembic HEAD: `20261004_current_question_id` (55 migrations, single head —
 verified 2026-10-05 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains
 after `20261004_tracks_is_active` (#127, rebased — it was written against
 `20261002_newsletter_subscribers` but #124/S.12 merged that slot first); before that this line said
