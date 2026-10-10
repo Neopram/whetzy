@@ -1492,3 +1492,70 @@ escribe?» → **Solo Sonnet**; «¿el contenido puede ir antes de cerrar el pil
 - La enmienda de ADR-52 que `RUNBOOK.md` §D dejaba pendiente de firma queda firmada aquí.
 - Sonnet 5 cuesta más por token que Haiku 4.5. El coste por pregunta aceptada no se conoce: lo
   mide el piloto antes de escalar, y la cifra se anota en `PLAN_CONTENIDO.md`.
+
+## ADR-60 — Decisiones de producto del 2026-10-10: Knowledge/Retention/Readiness, principio rector y Career Path (DUEÑO)
+
+**Origen.** Cuatro documentos de visión de producto revisados en la sesión del 2026-10-10.
+El dueño confirmó que los hallazgos técnicos de la auditoría (Olas 0–3) ya están suficientemente
+cubiertos y que no hacen falta más auditorías; lo que falta son tres decisiones de producto que
+impidan desviaciones en las olas en curso.
+
+---
+
+### UX-DEC-01 — Knowledge, Retention y Readiness son conceptos distintos; ninguno es un porcentaje hasta que el modelo esté calibrado
+
+**Definiciones canónicas:**
+- **Knowledge** — evidencia de que el usuario puede responder correctamente un conocimiento o
+  habilidad (fuente: BKT `p_known`, Elo, respuestas correctas recientes).
+- **Retention** — evidencia de que puede recuperarlo después de un intervalo de tiempo (fuente:
+  FSRS `stability`, tasa de acierto en repaso diferido).
+- **Readiness** — evidencia disponible respecto a un objetivo concreto, por ejemplo una
+  certificación (fuente: cobertura de skills + `p_known` promedio ponderado por peso del examen).
+
+**Regla de presentación:** mientras los modelos no estén calibrados, la interfaz presenta estados
+cualitativos con su evidencia:
+- *Fuerte* (evidencia sólida y reciente)
+- *En desarrollo* (evidencia parcial o antigua)
+- *Evidencia insuficiente* (< 7 respuestas en el módulo o sin repaso diferido)
+
+No se muestran porcentajes hasta que un estudio de calibración externo valide que los números del
+modelo corresponden a rendimiento real (Ola 5, serie D7).
+
+**Qué prohíbe:** mostrar `Knowledge: 84 %` o `Readiness: 72 %` antes de esa calibración.
+
+---
+
+### PRODUCT-PRINCIPLE-01 — El algoritmo navega al usuario hacia su siguiente acción relevante
+
+Whetzy es un sistema adaptativo, no un dashboard. La pregunta principal de la interfaz es
+**«¿Qué deberías hacer ahora?»**, no **«¿Cuánto llevas?»**.
+
+**Principio:**
+> Whetzy prioriza la siguiente acción relevante sobre la exposición de métricas. Toda
+> recomendación importante debe poder explicar brevemente por qué aparece. La fuerza de la
+> recomendación debe ser proporcional a la evidencia disponible.
+
+**Criterio de aceptación transversal:** cualquier pantalla o componente que muestre progreso o
+sugiera una acción debe poder responder «¿por qué me recomendas esto?» con una frase basada en
+evidencia observable (número de respuestas, aciertos, intervalo transcurrido). Una pantalla que
+solo muestre un porcentaje sin esa explicación no cumple el principio.
+
+**Qué no prohíbe:** mostrar métricas como información secundaria o confirmatoria, siempre que no
+sean el elemento principal de navegación.
+
+---
+
+### ROADMAP-01 — Career Path queda fuera del alcance de las olas actuales
+
+**Definición del concepto futuro:**
+Career Path es una capa de navegación profesional: rol de destino → conjunto de competencias →
+certificaciones → tecnologías → proyectos → evidencia acumulada. Es sustancialmente más complejo
+que un filtro del catálogo.
+
+**Decisión:** Career Path no forma parte de las Olas 0–4. No debe introducir dependencias en C1,
+C2 ni en ninguna tarea en curso. El catálogo de certificaciones (ADR-54) y el trabajo de
+onboarding (C1) no deben diseñarse como si Career Path fuera a encajar directamente: cuando llegue,
+será un producto propio que puede reutilizar las piezas, no una extensión del flujo actual.
+
+**Criterio de entrada al roadmap:** al menos dos certificaciones con banco completo y pool de
+simulacro activo, y un mínimo de 100 alumnos con datos reales de uso (condición de Ola 5).
