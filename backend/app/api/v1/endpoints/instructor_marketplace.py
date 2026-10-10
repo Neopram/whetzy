@@ -212,6 +212,14 @@ async def enroll_student(
     inscripcion y el reparto pero no cobra: no exponer en la UI como compra
     hasta que el webhook de Paddle sea quien lo llame.
     """
+    # B1: block direct enrollment until the payment gateway is live.
+    # Set INSTRUCTOR_MARKETPLACE_ENABLED=True in Railway once Paddle drives
+    # enrollment via its webhook instead of direct API calls.
+    if not settings.INSTRUCTOR_MARKETPLACE_ENABLED:
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail="Instructor marketplace is not enabled on this deployment",
+        )
     # La columna es UUID; con el id como texto SQLAlchemy revienta antes de
     # llegar a la consulta, y eso convertia cualquier inscripcion en un 500.
     try:
