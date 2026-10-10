@@ -113,11 +113,15 @@ class CertificationReadiness(BaseModel):
     """Per-domain BKT readiness for a certification track.
 
     `overall_p_known=None` means every domain is "sin datos" - the learner
-    has not attempted a single skill in this track yet."""
+    has not attempted a single skill in this track yet. `ready_for_simulacro`
+    (B.11, 2026-10-04) is true only when EVERY domain is individually ready
+    (see `DomainReadiness.ready`) - the explicit "take the mock exam now?"
+    answer, not left for each screen to derive from the per-domain list."""
 
     track_id: str
     domains: list[DomainReadiness]
     overall_p_known: float | None
+    ready_for_simulacro: bool
 
 
 # ── Track final exam and module test-out (17.2) ─────────────────────────────

@@ -153,6 +153,18 @@ GET  /glossary/{track_id}  → [{term_es, term_en, definition_es, definition_en}
 
 `track_id` is a string like `"track01"`. Unauthenticated.
 
+## Public profile endpoint
+
+```
+GET  /profiles/{username}  → {username, display_name, avatar_emoji, joined_at, current_streak, mastery_avg, skills_mastered, certificates: [{code, track_name_es, track_name_en, issued_at}], projects_completed: [{slug, name_es, name_en, completed_at}]}  PUBLIC, no auth
+```
+
+404 for an unknown or inactive `username` (0.3) — no privacy opt-out column yet
+(same shape as `GET /exams/certificates/{code}`, unauthenticated by the same
+logic: a public identifier is enough). `mastery_avg`/`skills_mastered` come
+from `UserSkillState`/`MASTERY_THRESHOLD`; `certificates` excludes revoked;
+`projects_completed` only lists `ProjectSubmission.completed=true`.
+
 ## Bootcamp endpoints
 
 ```
