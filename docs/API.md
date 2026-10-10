@@ -41,8 +41,8 @@ POST /auth/verify-email           → {message} (200) — body {token}
 POST /auth/resend-verification    → {message} (200)
 
 GET  /auth/oauth/providers            → {providers: ["github"|"google"]} solo los configurados (200)
-GET  /auth/oauth/{provider}/start     → 302 redirect to provider
-GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend
+GET  /auth/oauth/{provider}/start     → 302 redirect to provider — PKCE (S256) + cookie HttpOnly con el `state` (41.14)
+GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend — 400 si la cookie del `state` no coincide con el de la query (41.14)
 ```
 
 OAuth providers: `github`, `google`.

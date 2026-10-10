@@ -16,6 +16,7 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.cookies import OAUTH_STATE_COOKIE
 from app.core.security import create_access_token, get_password_hash
 from app.models.user import User
 
@@ -133,8 +134,13 @@ async def test_oauth_with_2fa_asks_for_the_code_without_a_token_in_the_url(
     if start.status_code == 404:
         pytest.skip("proveedor OAuth de pruebas no disponible en este entorno")
     state = start.headers["location"].split("state=")[1].split("&")[0]
+    # 41.14: la cookie del state es Secure y el cliente de test habla http,
+    # así que no se reenvía sola -- se manda a mano, como ya hace este
+    # fichero con whetzy_mfa más abajo.
     first = await client.get(
-        f"/api/v1/auth/oauth/test/callback?code=tfa&state={state}", follow_redirects=False
+        f"/api/v1/auth/oauth/test/callback?code=tfa&state={state}",
+        headers={"Cookie": f"{OAUTH_STATE_COOKIE}={state}"},
+        follow_redirects=False,
     )
     assert first.status_code == 302 and "whetzy_access" in first.cookies
 
@@ -147,7 +153,9 @@ async def test_oauth_with_2fa_asks_for_the_code_without_a_token_in_the_url(
     start = await client.get("/api/v1/auth/oauth/test/start", follow_redirects=False)
     state = start.headers["location"].split("state=")[1].split("&")[0]
     second = await client.get(
-        f"/api/v1/auth/oauth/test/callback?code=tfa&state={state}", follow_redirects=False
+        f"/api/v1/auth/oauth/test/callback?code=tfa&state={state}",
+        headers={"Cookie": f"{OAUTH_STATE_COOKIE}={state}"},
+        follow_redirects=False,
     )
     assert second.status_code == 302
     assert second.headers["location"].endswith("/auth?mfa=1")

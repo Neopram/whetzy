@@ -11,6 +11,8 @@ Flow:
 """
 from __future__ import annotations
 
+import base64
+import hashlib
 import re
 import secrets
 import urllib.parse
@@ -18,12 +20,17 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
+from app.core.cookies import (
+    OAUTH_STATE_COOKIE,
+    clear_oauth_state_cookie,
+    set_oauth_state_cookie,
+)
 from app.core.db import get_db
 from app.core.security import create_access_token, create_refresh_token
 from app.models.oauth import OAuthAccount, OAuthState
@@ -33,6 +40,15 @@ from app.services import account_deletion
 router = APIRouter()
 
 _STATE_TTL_MINUTES = 10
+
+
+def _pkce_pair() -> tuple[str, str]:
+    """RFC 7636: `code_verifier` de 43-128 caracteres y su `code_challenge`
+    S256 derivado. `token_urlsafe(64)` da ~86 caracteres, dentro del rango."""
+    verifier = secrets.token_urlsafe(64)
+    digest = hashlib.sha256(verifier.encode("ascii")).digest()
+    challenge = base64.urlsafe_b64encode(digest).decode("ascii").rstrip("=")
+    return verifier, challenge
 
 
 class _UnverifiedEmailConflict(Exception):
@@ -120,10 +136,12 @@ async def oauth_start(
         )
 
     state = secrets.token_urlsafe(32)
+    code_verifier, code_challenge = _pkce_pair()
     db.add(
         OAuthState(
             state=state,
             provider=provider,
+            code_verifier=code_verifier,
             expires_at=datetime.now(UTC) + timedelta(minutes=_STATE_TTL_MINUTES),
         )
     )
@@ -132,23 +150,29 @@ async def oauth_start(
     if provider == "test":
         # Test provider: skip real redirect, go straight to our own callback
         callback = _callback_uri("test")
-        return RedirectResponse(
+        redirect = RedirectResponse(
             url=f"{callback}?code=test-code&state={state}",
             status_code=302,
         )
+        set_oauth_state_cookie(redirect, state, _STATE_TTL_MINUTES * 60)
+        return redirect
 
     params: dict[str, str] = {
         "client_id": cfg["client_id"](),
         "redirect_uri": _callback_uri(provider),
         "scope": cfg["scope"],
         "state": state,
+        "code_challenge": code_challenge,
+        "code_challenge_method": "S256",
     }
     if provider == "google":
         params["response_type"] = "code"
         params["access_type"] = "offline"
 
     auth_url = cfg["auth_url"] + "?" + urllib.parse.urlencode(params)
-    return RedirectResponse(url=auth_url, status_code=302)
+    redirect = RedirectResponse(url=auth_url, status_code=302)
+    set_oauth_state_cookie(redirect, state, _STATE_TTL_MINUTES * 60)
+    return redirect
 
 
 # --------------------------------------------------------------------------
@@ -157,12 +181,21 @@ async def oauth_start(
 
 @router.get("/{provider}/callback")
 async def oauth_callback(
+    request: Request,
     provider: str,
     code: str = Query(...),
     state: str = Query(...),
     db: AsyncSession = Depends(get_db),
 ) -> RedirectResponse:
     _get_provider(provider)  # validates name
+
+    # 41.14: el `state` también tiene que venir en la cookie HttpOnly que puso
+    # /start — sin esto, un `state` válido y sin consumir se aceptaba desde
+    # cualquier navegador, no solo el que inició este login (CSRF de login:
+    # el atacante completa su propio flujo OAuth y engaña a la víctima para
+    # que visite ese callback con sesión abierta).
+    if request.cookies.get(OAUTH_STATE_COOKIE) != state:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid OAuth state")
 
     # Validate and consume state nonce (CSRF protection)
     result = await db.execute(select(OAuthState).where(OAuthState.state == state))
@@ -176,6 +209,7 @@ async def oauth_callback(
         await db.commit()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="OAuth state expired")
 
+    code_verifier = oauth_state.code_verifier
     await db.delete(oauth_state)
     await db.commit()
 
@@ -185,33 +219,41 @@ async def oauth_callback(
         provider_user_id = f"test-{code}"
     else:
         async with httpx.AsyncClient(timeout=10) as client:
-            token_data = await _exchange_code(client, provider, code)
+            token_data = await _exchange_code(client, provider, code, code_verifier)
             provider_token = token_data.get("access_token")
             if not provider_token:
-                return RedirectResponse(
+                error_redirect = RedirectResponse(
                     url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=provider_error",
                     status_code=302,
                 )
+                clear_oauth_state_cookie(error_redirect)
+                return error_redirect
             email, provider_user_id = await _get_user_info(client, provider, provider_token)
 
     if not email:
-        return RedirectResponse(
+        error_redirect = RedirectResponse(
             url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=email_required",
             status_code=302,
         )
+        clear_oauth_state_cookie(error_redirect)
+        return error_redirect
 
     try:
         user = await _find_or_create_user(db, email, provider, provider_user_id)
     except _UnverifiedEmailConflict:
-        return RedirectResponse(
+        error_redirect = RedirectResponse(
             url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=email_unverified",
             status_code=302,
         )
+        clear_oauth_state_cookie(error_redirect)
+        return error_redirect
     if not user.is_active and not await account_deletion.restore_if_pending(db, user):
-        return RedirectResponse(
+        error_redirect = RedirectResponse(
             url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=account_inactive",
             status_code=302,
         )
+        clear_oauth_state_cookie(error_redirect)
+        return error_redirect
 
     from app.core.cookies import set_auth_cookies, set_mfa_cookie
     from app.core.security import create_mfa_token, user_has_2fa
@@ -221,6 +263,7 @@ async def oauth_callback(
         # paso va en una cookie HttpOnly (nunca en la URL) y la app pide el código.
         mfa_redirect = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL}/auth?mfa=1", status_code=302)
         set_mfa_cookie(mfa_redirect, create_mfa_token(user.id, jwt_version=user.jwt_version))
+        clear_oauth_state_cookie(mfa_redirect)
         return mfa_redirect
 
     access_token = create_access_token(user.id, jwt_version=user.jwt_version)
@@ -228,6 +271,7 @@ async def oauth_callback(
 
     redirect = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL}/", status_code=302)
     set_auth_cookies(redirect, access_token, refresh_token)
+    clear_oauth_state_cookie(redirect)
     return redirect
 
 
@@ -239,6 +283,7 @@ async def _exchange_code(
     client: httpx.AsyncClient,
     provider: str,
     code: str,
+    code_verifier: str | None,
 ) -> dict[str, Any]:
     cfg = _PROVIDERS[provider]
     data: dict[str, str] = {
@@ -249,6 +294,12 @@ async def _exchange_code(
     }
     if provider == "google":
         data["grant_type"] = "authorization_code"
+    # PKCE (41.14): el code_verifier generado en /start. None solo si la fila
+    # de oauth_states quedó sin él (una en vuelo en el momento del deploy que
+    # añadió la columna) — el proveedor no lo exige si /start no mandó
+    # code_challenge, así que el intercambio sigue sin romperse.
+    if code_verifier:
+        data["code_verifier"] = code_verifier
     resp = await client.post(cfg["token_url"], data=data, headers={"Accept": "application/json"})
     resp.raise_for_status()
     return resp.json()  # type: ignore[no-any-return]
