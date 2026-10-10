@@ -28,6 +28,7 @@ from app.schemas.duel import (
     DuelSummary,
 )
 from app.services.blocklist import blocked_user_ids, is_blocked_pair
+from app.services.quiz import apply_answer_to_skill_state
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -329,6 +330,10 @@ async def answer_duel(
         correct = payload.selected_index == 1
     else:
         correct = question.correct_index is not None and payload.selected_index == question.correct_index
+
+    await apply_answer_to_skill_state(
+        db, current_user.id, question, correct, payload.response_time_ms, now
+    )
 
     my_answers.append({
         "question_id": payload.question_id,
