@@ -16,9 +16,13 @@ below prove the real behaviour instead of a hardcoded flag.
 
 from __future__ import annotations
 
+import uuid
+from datetime import UTC, datetime, timedelta
+
 import pytest_asyncio
 from httpx import AsyncClient
 
+from app.models.exam import MockExamAttempt
 from app.services.ai import rag as rag_service
 
 BASE = "/api/v1/tutor"
@@ -251,3 +255,134 @@ async def test_explain_response_schema(
     assert isinstance(data["provider"], str)
     assert isinstance(data["grounded"], bool)
     assert isinstance(data["times_missed"], int)
+
+
+# ── 41.5: examen en curso y banco reservado ────────────────────────────────────
+
+
+async def test_explain_rejects_a_question_from_the_reserved_pool(
+    client: AsyncClient,
+    db_session,
+    plus_auth_headers: dict,
+    content_seed: dict,
+) -> None:
+    """Explicar una pregunta de `pool == "simulacro"` le daría al alumno la
+    respuesta antes de que un simulacro la usara para medir algo."""
+    from sqlalchemy import select
+
+    from app.models.content import Question
+
+    question = (
+        await db_session.execute(
+            select(Question).where(Question.id == content_seed["question_id"])
+        )
+    ).scalar_one()
+    question.pool = "simulacro"
+    await db_session.commit()
+
+    resp = await client.post(
+        f"{BASE}/explain",
+        json={"question_id": content_seed["question_id"]},
+        headers=plus_auth_headers,
+    )
+    assert resp.status_code == 403
+    assert resp.json()["detail"] == "question_reserved"
+
+
+async def test_explain_rejects_a_question_from_an_exam_in_progress(
+    client: AsyncClient,
+    db_session,
+    plus_user,
+    plus_auth_headers: dict,
+    content_seed: dict,
+) -> None:
+    """Una pregunta en `pool == "practica"` (37.18 apagado: los simulacros
+    hoy sortean del mismo banco) que forma parte de un intento de examen sin
+    terminar tampoco debe pasar por el tutor mientras cuenta para la nota."""
+    attempt = MockExamAttempt(
+        id=uuid.uuid4(),
+        user_id=plus_user.id,
+        track_id=content_seed["track_id"],
+        kind="certification",
+        question_ids=[content_seed["question_id"]],
+        duration_minutes=90,
+        expires_at=datetime.now(UTC) + timedelta(minutes=90),
+    )
+    db_session.add(attempt)
+    await db_session.commit()
+
+    resp = await client.post(
+        f"{BASE}/explain",
+        json={"question_id": content_seed["question_id"]},
+        headers=plus_auth_headers,
+    )
+    assert resp.status_code == 403
+    assert resp.json()["detail"] == "exam_in_progress"
+
+
+async def test_explain_allows_a_question_from_a_finished_exam(
+    client: AsyncClient,
+    db_session,
+    plus_user,
+    plus_auth_headers: dict,
+    content_seed: dict,
+) -> None:
+    """Un intento ya entregado (`submitted_at` puesto) no es "en curso": el
+    alumno puede repasar esa pregunta con el tutor después."""
+    attempt = MockExamAttempt(
+        id=uuid.uuid4(),
+        user_id=plus_user.id,
+        track_id=content_seed["track_id"],
+        kind="certification",
+        question_ids=[content_seed["question_id"]],
+        duration_minutes=90,
+        expires_at=datetime.now(UTC) + timedelta(minutes=90),
+        submitted_at=datetime.now(UTC),
+    )
+    db_session.add(attempt)
+    await db_session.commit()
+
+    resp = await client.post(
+        f"{BASE}/explain",
+        json={"question_id": content_seed["question_id"]},
+        headers=plus_auth_headers,
+    )
+    assert resp.status_code == 200, resp.text
+
+
+async def test_explain_does_not_spend_quota_when_a_configured_provider_falls_back(
+    client: AsyncClient,
+    db_session,
+    plus_user,
+    plus_auth_headers: dict,
+    content_seed: dict,
+    monkeypatch,
+) -> None:
+    """41.5: un GuardedProvider configurado (hay API key) que agota su cupo
+    diario o falla la cadena entera cae en el NullProvider por dentro y
+    responde 200 -- pero no fue una explicación real, así que no debe gastar
+    el cupo del alumno. Distinto del NullProvider a secas (sin API key, el
+    caso de todos los demás tests de este fichero), que sí lo gasta."""
+    from app.services.ai import tutor as tutor_service
+    from app.services.ai.provider import NullProvider
+
+    class _FallsBackToNull:
+        name = "groq"
+
+        async def complete_named(self, system: str, user: str, **_: object) -> tuple[str, str]:
+            return "respuesta degradada", NullProvider.name
+
+    monkeypatch.setattr(tutor_service, "get_provider", lambda: _FallsBackToNull())
+
+    resp = await client.post(
+        f"{BASE}/explain",
+        json={"question_id": content_seed["question_id"]},
+        headers=plus_auth_headers,
+    )
+    assert resp.status_code == 200, resp.text
+    assert resp.json()["provider"] == NullProvider.name
+
+    from app.services import tutor_quota
+
+    used = await tutor_quota.used_on(db_session, plus_user.id, tutor_quota.today_utc())
+    assert used == 0

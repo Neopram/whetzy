@@ -104,7 +104,7 @@ GET    /moderation/blocked           → [{user_id, username, display_name, bloc
 ## Tutor endpoint
 
 ```
-POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒 — Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS`/day UTC; Pro Max unlimited (38.6)
+POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒 — Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS`/day UTC; Pro Max unlimited (38.6). 403 `question_reserved` for a `pool == "simulacro"` question, 403 `exam_in_progress` for one in an unsubmitted `MockExamAttempt` of the caller's (41.5). No cupo cuando un `GuardedProvider` configurado cae en el `NullProvider` por dentro (presupuesto agotado o la cadena entera falla) — sí cuando `get_provider()` ya es `NullProvider` a secas (sin API key)
   Body: {question_id, conversation_history?: [...]}
 ```
 
