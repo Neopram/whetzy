@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "id": "q430121_r001",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo que usa chunking semántico quiere que, al decidir dónde cortar, cada oración se evalúe junto con más texto de su entorno, aceptando algo más de ruido. ¿Qué ajuste debe aplicar?",
+      "question_en": "A team using semantic chunking wants each sentence to be evaluated together with more of its surrounding text when deciding where to split, accepting some extra noise. Which adjustment should it make?",
+      "options_es": [
+        "Reducir el máximo de tokens por fragmento",
+        "Aumentar el tamaño del búfer de oraciones",
+        "Reducir el umbral de percentil del punto de corte",
+        "Aumentar el porcentaje de solapamiento entre fragmentos"
+      ],
+      "options_en": [
+        "Lower the maximum number of tokens in each chunk",
+        "Increase the sentence buffer size",
+        "Lower the breakpoint percentile threshold for sentence splits",
+        "Raise the overlap percentage between consecutive chunks"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El tamaño del búfer define cuántas oraciones vecinas se combinan al crear el embedding de cada oración, de modo que aumentarlo captura más contexto a costa de posible ruido, mientras que reducirlo puede perder contexto pero afina los cortes. El máximo de tokens y el umbral de percentil controlan el tamaño y el número de fragmentos, no cuánto entorno se examina.",
+      "explanation_en": "Buffer size sets how many neighboring sentences are combined when each sentence is embedded, so increasing it captures more context at the risk of noise, while decreasing it may miss context but makes splits more precise. Maximum tokens and the percentile threshold govern chunk size and count, not how much surrounding text is examined.",
+      "source": "AWS — How content chunking works for knowledge bases (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)"
+    }
+  ]
+}

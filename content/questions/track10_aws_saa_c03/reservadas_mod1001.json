@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "id": "q100104_r001",
+      "skill_id": "sk100104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un grupo de Auto Scaling de producción reparte sus instancias en varias zonas de disponibilidad y está funcionando en su tamaño máximo configurado. Una zona que había tenido falta de capacidad se recupera y el grupo queda desequilibrado. ¿Cómo evita el servicio que el reequilibrio degrade la disponibilidad aunque el grupo ya esté en su máximo?",
+      "question_en": "A production Auto Scaling group spreads its instances across several Availability Zones and is running at its configured maximum size. A zone that previously lacked capacity recovers, and the group is now unbalanced. How does the service keep rebalancing from degrading availability even though the group is already at its maximum?",
+      "options_es": [
+        "Termina primero las instancias de las zonas con más carga y luego lanza las sustitutas en la zona recuperada, sin pasar del máximo",
+        "Espera a que un evento de reducción deje el grupo por debajo de su tamaño máximo antes de empezar a reequilibrar",
+        "Amplía de forma permanente el tamaño máximo cada vez que una zona se recupera, porque si no el reequilibrio no puede comenzar",
+        "Lanza primero las nuevas y deja que el grupo supere brevemente su máximo hasta terminar las antiguas"
+      ],
+      "options_en": [
+        "It terminates instances in the crowded zones first, then launches replacements in the recovered zone so the group never passes its maximum",
+        "It waits for a scale-in event to bring the group below its maximum size before it starts to rebalance",
+        "It permanently raises the maximum size every time a zone recovers, because rebalancing cannot begin otherwise",
+        "It launches new instances first and lets the group briefly pass its maximum until older ones are terminated"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Al reequilibrar, el servicio lanza las instancias nuevas antes de terminar las antiguas para no perder rendimiento ni disponibilidad. Como estar en el máximo podría frenar o detener ese proceso, el sistema permite que el grupo supere su máximo de forma temporal mientras dura el reequilibrio. Terminar primero reduciría la capacidad, esperar a una reducción o subir el máximo de forma permanente no es lo que describe la fuente.",
+      "explanation_en": "When rebalancing, the service launches new instances before terminating the older ones so performance and availability are not compromised. Because sitting at the maximum could slow or halt that process, the system lets the group go over its maximum temporarily while rebalancing runs. Terminating first would cut capacity, and neither waiting for a scale-in nor permanently raising the maximum is what the source describes.",
+      "source": "AWS — Auto Scaling benefits for application architecture (https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-benefits.html)"
+    }
+  ]
+}
