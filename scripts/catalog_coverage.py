@@ -4,8 +4,10 @@ ADR-54 sustituye el suelo (50 skills · 800 preguntas) y el «ideal por temario�
 ADR-53 por una forma única, con las metas en `scripts/metas_catalogo.json`:
 
 * **Track de aprendizaje**: 32 skills (8 módulos × 4) · 10 preguntas por skill
-  (320 por track), ≥ 3 de ellas ejecutables donde el navegador ejecute · 1 lección
-  y 1 término por skill. Nada se borra: lo que pase de esa forma se conserva.
+  (320 por track), ≥ 3 de ellas «con código» donde el navegador ejecute · 1 lección
+  y 1 término por skill. «Con código» son los `tipos_ejecutables` de las metas, que
+  incluyen `code_output`; no es el «ejecutable» estricto de 17.3
+  (`check_question_bank.EXEC_TYPES`, sin `code_output`). Ver 44.50. Nada se borra: lo que pase de esa forma se conserva.
 * **Certificación**: 100 % de objetivos oficiales · práctica ≥ máx(300, 3 × L) ·
   banco reservado de simulacro (`"pool": "simulacro"`) = 2 × L, con L = preguntas
   del examen. Sin L publicada, las reservadas quedan «pendiente».
@@ -260,7 +262,7 @@ def _n(v: int) -> str:
 
 def render(result: dict[str, Any], ritmo: int) -> str:
     out = ["Tracks de aprendizaje (ADR-54: 32 skills × 10 preguntas, 1 lección y 1 término por skill)", ""]
-    out.append(f"{'id':8} {'nivel':5} {'estado':11} {'skills':>6} {'Q':>6} {'+skills':>7} {'+Q':>5} {'+lecc':>5} {'+térm':>5} {'skills ≥3 ejec':>14}")
+    out.append(f"{'id':8} {'nivel':5} {'estado':11} {'skills':>6} {'Q':>6} {'+skills':>7} {'+Q':>5} {'+lecc':>5} {'+térm':>5} {'skills ≥3 cód':>14}")
     for r in result["tracks"]:
         if r["estado"] != "construido":
             out.append(f"{r['id']:8} {r['nivel']:5} {r['estado']:11} {'—':>6}")
@@ -278,7 +280,7 @@ def render(result: dict[str, Any], ritmo: int) -> str:
             f"  skills {_n(t['skills_pendientes'])} · lecciones {_n(t['lecciones_pendientes'])} · "
             f"términos {_n(t['terminos_pendientes'])} · preguntas {_n(t['preguntas_pendientes'])}"
         ),
-        f"  ejecutables sin medir (sin preguntas ejecutables ni exención escrita): {', '.join(t['ejecutables_sin_medir']) or '—'}",
+        f"  con código sin medir (sin preguntas con código ni exención escrita): {', '.join(t['ejecutables_sin_medir']) or '—'}",
         "",
         "Certificaciones (práctica ≥ máx(300, 3 × L) · reservadas = 2 × L)",
         "",
