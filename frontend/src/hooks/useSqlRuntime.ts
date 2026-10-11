@@ -44,7 +44,13 @@ export function useSqlRuntime(disabled = false) {
         }
       }
     };
-    w.onerror = () => setStatus('error');
+    w.onerror = () => {
+      setStatus('error');
+      // Sin esto la ejecución en curso no resolvía nunca y la pregunta quedaba colgada.
+      const p = pendingRef.current;
+      pendingRef.current = null;
+      p?.resolve({ output: '', error: 'SQL engine crashed', timedOut: false });
+    };
   }, []);
 
   useEffect(() => {
@@ -68,7 +74,7 @@ export function useSqlRuntime(disabled = false) {
   }, [disabled, attachWorker]);
 
   const runCode = useCallback(
-    (code: string): Promise<RunResult> => {
+    (code: string, timeoutMs = 5000): Promise<RunResult> => {
       if (disabled || !workerRef.current) {
         return Promise.resolve({ output: '', error: 'SQL engine not active', timedOut: false });
       }
@@ -80,11 +86,29 @@ export function useSqlRuntime(disabled = false) {
       const id = Math.random().toString(36).slice(2);
 
       return new Promise<RunResult>((resolve) => {
-        pendingRef.current = { id, resolve };
+        // sql.js no se puede interrumpir: un CTE recursivo sin LIMIT ocupaba el
+        // worker para siempre. Al agotar el tiempo se mata y se arranca otro.
+        const timer = setTimeout(() => {
+          if (pendingRef.current?.id !== id) return;
+          pendingRef.current = null;
+          workerRef.current?.terminate();
+          setStatus('loading');
+          const fresh = makeWorker();
+          workerRef.current = fresh;
+          attachWorker(fresh);
+          resolve({ output: '', error: null, timedOut: true });
+        }, timeoutMs);
+        pendingRef.current = {
+          id,
+          resolve: (r) => {
+            clearTimeout(timer);
+            resolve(r);
+          },
+        };
         workerRef.current!.postMessage({ type: 'run', id, code });
       });
     },
-    [disabled, status]
+    [disabled, status, attachWorker]
   );
 
   return { status, runCode };

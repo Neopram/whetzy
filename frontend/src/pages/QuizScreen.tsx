@@ -90,7 +90,7 @@ export function QuizScreen() {
   // Exec-type state
   const [userInput, setUserInput] = useState('');
   const [runResult, setRunResult] = useState<{ output: string; error: string | null; timedOut: boolean } | null>(null);
-  const [execAttempts, setExecAttempts] = useState(0);
+  const [runInput, setRunInput] = useState<string | null>(null);
   const [runLoading, setRunLoading] = useState(false);
   const [verifyOutput, setVerifyOutput] = useState<string | null>(null);
   const [verifyLoading, setVerifyLoading] = useState(false);
@@ -152,7 +152,7 @@ export function QuizScreen() {
     if (!question) return;
     setUserInput('');
     setRunResult(null);
-    setExecAttempts(0);
+    setRunInput(null);
     setVerifyOutput(null);
     if (question.type === 'fix_bug') {
       const qText = language === 'es' ? question.question_es : question.question_en;
@@ -297,23 +297,16 @@ export function QuizScreen() {
     setRunLoading(true);
     const result = await runCode(codeToRun, 5000);
     setRunResult(result);
-
-    const expected = (
-      (language === 'es' ? question.correct_answer_es : question.correct_answer_en) ?? ''
-    ).trim();
-
-    const isCorrect =
-      !result.error && !result.timedOut && result.output.trim() === expected;
-
-    const newAttempts = execAttempts + 1;
-    setExecAttempts(newAttempts);
-
-    if (isCorrect || newAttempts >= 3) {
-      await submitAnswer(isCorrect ? 1 : 0, false, { execOutput: result.output });
-    }
-
+    setRunInput(userInput);
     setRunLoading(false);
-  }, [question, runLoading, feedback, language, userInput, runCode, execAttempts, submitAnswer]);
+  }, [question, runLoading, feedback, language, userInput, runCode]);
+
+  // El cliente no conoce la salida esperada (B2): no juzga. Envía la salida de la
+  // última ejecución y el veredicto lo da el servidor.
+  const handleSubmitExec = useCallback(async () => {
+    if (!question || !runResult || feedback || submitting) return;
+    await submitAnswer(0, false, { execOutput: runResult.output });
+  }, [question, runResult, feedback, submitting, submitAnswer]);
 
   // ── code_output: verify with Pyodide after answering ──────────────────
   const handleVerify = useCallback(async () => {
@@ -587,12 +580,9 @@ export function QuizScreen() {
       (language === 'es' ? question.correct_answer_es : question.correct_answer_en) ?? ''
     ).trim();
 
-    const attemptsLeft = 3 - execAttempts;
-    const lastCorrect =
-      runResult &&
-      !runResult.error &&
-      !runResult.timedOut &&
-      runResult.output.trim() === expected;
+    // Tras la respuesta, el color lo pone el veredicto del servidor; antes, nada.
+    const outputTone = feedback ? (feedback.correct ? styles.outputCorrect : styles.outputWrong) : '';
+    const staleRun = runResult !== null && runInput !== userInput;
 
     const engineLoadingLabel =
       runtimeType === 'sql' ? t('quiz.engineLoadingSql')
@@ -710,22 +700,20 @@ export function QuizScreen() {
               onClick={() => void handleRun()}
               disabled={runLoading || answered || pyodideStatus !== 'ready'}
             >
-              {runLoading
-                ? t('quiz.executing')
-                : engineLabel ?? `▶ ${t('quiz.runCode')}${execAttempts > 0 ? ` (${attemptsLeft} ${t('quiz.attemptsLeft')})` : ''}`}
+              {runLoading ? t('quiz.executing') : engineLabel ?? `▶ ${t('quiz.runCode')}`}
             </button>
           )}
 
           {runResult && (
-            <div className={`${styles.outputBox} ${lastCorrect ? styles.outputCorrect : styles.outputWrong}`}>
+            <div className={`${styles.outputBox} ${outputTone}`}>
               <span className={styles.outputLabel}>
-                {lastCorrect
-                  ? t('quiz.outputCorrect')
+                {feedback
+                  ? feedback.correct ? t('quiz.correct') : t('quiz.outputWrong')
                   : runResult.timedOut
                     ? t('quiz.timeout')
                     : runResult.error
                       ? t('quiz.outputError')
-                      : t('quiz.outputWrong')}
+                      : t('quiz.output')}
               </span>
               <pre className={styles.outputPre}>
                 {runResult.timedOut
@@ -734,12 +722,32 @@ export function QuizScreen() {
                     ? runResult.error
                     : runResult.output || t('quiz.noOutput')}
               </pre>
-              {!lastCorrect && !runResult.timedOut && !runResult.error && expected && (
-                <p className={styles.expectedHint}>
-                  {t('quiz.expected')}: <code>{expected}</code>
-                </p>
-              )}
             </div>
+          )}
+
+          {question.type !== 'fill_blank' && !answered && runResult && (
+            <>
+              {staleRun && <p className={styles.keysHint}>{t('quiz.rerunNeeded')}</p>}
+              <button
+                type="button"
+                className={styles.btnRun}
+                onClick={() => void handleSubmitExec()}
+                disabled={submitting || runLoading || staleRun}
+              >
+                {submitting ? t('quiz.submitting', 'Enviando...') : t('quiz.submit')}
+              </button>
+            </>
+          )}
+
+          {question.type !== 'fill_blank' && !answered && (
+            <button
+              type="button"
+              className={styles.unknownBtn}
+              onClick={handleUnknown}
+              disabled={submitting}
+            >
+              {t('quiz.dontKnow')}
+            </button>
           )}
         </div>
 
