@@ -59,10 +59,12 @@ const CERT_TRACKS: CertTrack[] = [
   { id: 'track45', es: 'Azure AI Fundamentals (AI-901)', en: 'Azure AI Fundamentals (AI-901)' },
 ]
 
-// goal=3 (certification) uses the cert the user picked; all other goals
-// start from Python Básico as the general-purpose placement track.
+// goal 0 (learn fundamentals) → Python Basics (track01)
+// goal 1 (get a job) / goal 2 (advance career) → Software Engineering (track04)
+// goal 3 (certification) → the cert the user picked, or track01 as fallback
 export function _placementTrack(goal: number, certTrackId: string | null): string {
   if (goal === 3 && certTrackId) return certTrackId
+  if (goal === 1 || goal === 2) return 'track04'
   return 'track01'
 }
 
