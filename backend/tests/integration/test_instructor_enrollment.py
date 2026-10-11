@@ -57,18 +57,20 @@ async def _course(db_session, *, price_cents: int, status: str = "published") ->
 
 
 @pytest.mark.asyncio
-async def test_enroll_in_published_course_creates_payout(client, db_session, auth_headers, user):
+async def test_enroll_in_a_paid_course_without_a_confirmed_purchase_is_blocked(
+    client, db_session, auth_headers, user
+):
+    """41.6: antes de esto, inscribirse en un curso de pago no cobraba nada y
+    aun así sumaba `price_cents` a `revenue_cents` y creaba un `InstructorPayout`
+    real — dinero que se le debería al instructor por una venta que nunca
+    existió. No hay ningún producto Paddle de curso todavía (`webhooks.py` solo
+    liga `transaction.completed` a certificaciones), así que no hay manera de
+    confirmar el cobro: toca bloquear, no fabricar la fila."""
     course = await _course(db_session, price_cents=10000)
 
     response = await client.post(ENROLL.format(course.id), headers=auth_headers)
 
-    assert response.status_code == 201, response.text
-    data = response.json()
-    assert data["instructor_id"] == str(course.instructor_id)
-    assert data["gross_cents"] == 10000
-    # 10000 - 7.5 % Paddle = 9250; 80 % = 7400; - 22 % retencion = 5772 (H.29, ADR-41)
-    assert data["instructor_net_cents"] == 5772
-    assert data["status"] == "pending"
+    assert response.status_code == 402, response.text
 
     enrollment = await db_session.scalar(
         select(InstructorEnrollment).where(
@@ -76,29 +78,29 @@ async def test_enroll_in_published_course_creates_payout(client, db_session, aut
             InstructorEnrollment.user_id == user.id,
         )
     )
-    assert enrollment is not None
-    assert enrollment.progress_percent == 0
+    assert enrollment is None
 
     payout = await db_session.scalar(
-        select(InstructorPayout).where(InstructorPayout.id == uuid.UUID(data["payout_id"]))
+        select(InstructorPayout).where(InstructorPayout.instructor_id == course.instructor_id)
     )
-    assert payout is not None
-    assert payout.instructor_id == course.instructor_id
-    assert payout.status == "pending"
-    assert payout.earnings_cents == 5772
+    assert payout is None
+
+    course_after = await db_session.get(InstructorCourse, course.id)
+    assert course_after.revenue_cents == 0
 
 
 @pytest.mark.asyncio
 async def test_enroll_ignores_a_price_sent_by_the_client(client, db_session, auth_headers):
-    """El agujero original: el cliente decía cuánto había pagado."""
+    """El agujero original: el cliente decía cuánto había pagado. Hoy ningún
+    curso de pago se puede comprar sin una pasarela (41.6), así que una
+    petición con un precio inventado también cae en el mismo 402."""
     course = await _course(db_session, price_cents=10000)
 
     response = await client.post(
         ENROLL.format(course.id), json={"gross_payment_cents": 1}, headers=auth_headers
     )
 
-    assert response.status_code == 201, response.text
-    assert response.json()["gross_cents"] == 10000
+    assert response.status_code == 402, response.text
 
 
 @pytest.mark.asyncio
