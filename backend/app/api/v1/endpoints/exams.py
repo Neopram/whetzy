@@ -37,6 +37,8 @@ from app.services import track_exam as track_exam_service
 from app.services.domain_mastery import (
     compute_domain_mastery,
     compute_weighted_overall_mastery,
+    is_domain_ready,
+    is_ready_for_simulacro,
 )
 
 router = APIRouter()
@@ -212,11 +214,17 @@ async def get_certification_readiness(
     weighted by exam_weight_pct, via `app.services.domain_mastery` (C.2) -
     the single function also meant to back a domain-mastery breakdown on
     Hoy, Rutas and Estadísticas. A domain is marked 'ready' when
-    p_known_mean >= 0.75. A domain with zero attempted skills reports
-    `p_known_mean=None` ("sin datos"), not a BKT-prior placeholder: "we
-    have no evidence yet" and "we have evidence and it's bad" are different
-    claims, and conflating them is exactly the kind of confident-looking-
-    but-empty claim a readiness screen can't afford.
+    p_known_mean >= DOMAIN_READY_THRESHOLD. A domain with zero attempted
+    skills reports `p_known_mean=None` ("sin datos"), not a BKT-prior
+    placeholder: "we have no evidence yet" and "we have evidence and it's
+    bad" are different claims, and conflating them is exactly the kind of
+    confident-looking-but-empty claim a readiness screen can't afford.
+
+    `ready_for_simulacro` (B.11) is the single yes/no a "take the mock exam
+    now?" screen needs: every domain ready, none still sin datos. One
+    domain short of the bar holds back the whole track - the point is to
+    say "not quite yet, here's what's missing" via the per-domain list
+    above, not to let a strong domain average paper over a weak one.
     """
     track = await db.get(Track, track_id)
     if track is None or not track.is_certification:
@@ -256,7 +264,6 @@ async def get_certification_readiness(
         if skill.domain_id in skills_by_domain:
             skills_by_domain[skill.domain_id].append(skill)
 
-    READY_THRESHOLD = 0.75
     masteries = [
         compute_domain_mastery(
             domain.id, domain.weight_pct,
@@ -273,16 +280,16 @@ async def get_certification_readiness(
             p_known_mean=mastery.p_known_mean,
             skills_assessed=mastery.skills_assessed,
             skills_total=mastery.skills_total,
-            ready=mastery.p_known_mean is not None and mastery.p_known_mean >= READY_THRESHOLD,
+            ready=is_domain_ready(mastery),
         )
         for domain, mastery in zip(domains, masteries, strict=True)
     ]
 
-    overall = compute_weighted_overall_mastery(masteries)
     return CertificationReadiness(
         track_id=track_id,
         domains=domain_results,
-        overall_p_known=overall,
+        overall_p_known=compute_weighted_overall_mastery(masteries),
+        ready_for_simulacro=is_ready_for_simulacro(masteries),
     )
 
 

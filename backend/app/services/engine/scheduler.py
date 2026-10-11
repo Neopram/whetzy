@@ -6,6 +6,10 @@ Layered by data maturity:
   Mature (100+ interactions)   → Full ensemble + per-user FSRS optimization
 
 Question selection targets P(correct) ≈ 0.75 (Zone of Proximal Development).
+
+NOTE: AdaptiveScheduler is NOT connected to any API endpoint.
+quiz.py calls BKT/Elo/FSRS directly. This module is fully unit-tested and
+reserved for the future main-loop wiring (Ola 2+).
 """
 
 from __future__ import annotations

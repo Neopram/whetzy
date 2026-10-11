@@ -28,6 +28,7 @@ from app.api.v1.endpoints import (
     oauth,
     placement,
     privacy,
+    profiles,
     progress,
     project,
     push,
@@ -69,5 +70,6 @@ api_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"]
 api_router.include_router(bootcamp.router, prefix="/bootcamps", tags=["bootcamps"])
 api_router.include_router(project.router, prefix="/projects", tags=["projects"])
 api_router.include_router(privacy.router, prefix="/privacy", tags=["privacy"])
+api_router.include_router(profiles.router, prefix="/profiles", tags=["profiles"])
 api_router.include_router(mastery_reports.router, prefix="/mastery-reports", tags=["economy"])
 api_router.include_router(newsletter.router, prefix="/newsletter", tags=["newsletter"])

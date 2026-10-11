@@ -37,6 +37,14 @@ class StudySession(Base):
     track_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     skill_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
 
+    # La pregunta que /quiz/start o el `next_question` de /quiz/answer acaban
+    # de servir — la única que /quiz/answer debe aceptar ahora (S.4, 2026-10-04).
+    # None cuando no queda ninguna por responder (cupo agotado, sin más en el
+    # alcance). Se actualiza a la siguiente tras cada respuesta, así que un
+    # `question_id` ya respondido deja de coincidir sin una columna aparte
+    # para "una vez": sirve para las dos partes del mismo hueco.
+    current_question_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+
     responses: Mapped[list[Response]] = relationship(
         back_populates="session", cascade="all, delete-orphan", order_by="Response.created_at"
     )

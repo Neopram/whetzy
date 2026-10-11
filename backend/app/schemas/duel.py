@@ -52,6 +52,7 @@ class DuelResultResponse(BaseModel):
     winner_id: str | None
     is_draw: bool
     created_at: datetime
+    weak_skill_id: str | None = None
 
 
 class DuelSummary(BaseModel):
