@@ -28,6 +28,7 @@ from app.schemas.duel import (
     DuelSummary,
 )
 from app.services.blocklist import blocked_user_ids, is_blocked_pair
+from app.services.quiz import apply_answer_to_skill_state
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -96,7 +97,6 @@ async def _pick_questions(db: AsyncSession, skill_id: str) -> list[Question]:
             Question.correct_index.is_not(None),
             Question.pool != "simulacro",
         )
-        .order_by(Question.elo_rating)
     )
     questions = result.scalars().all()
     if len(questions) < _DUEL_QUESTIONS:
@@ -331,6 +331,10 @@ async def answer_duel(
     else:
         correct = question.correct_index is not None and payload.selected_index == question.correct_index
 
+    await apply_answer_to_skill_state(
+        db, current_user.id, question, correct, payload.response_time_ms
+    )
+
     my_answers.append({
         "question_id": payload.question_id,
         "selected_index": payload.selected_index,
@@ -395,6 +399,10 @@ async def duel_result(
     o_result = await db.execute(select(User).where(User.id == duel.opponent_id))
     opponent = o_result.scalar_one()
 
+    # Suggest practice on the duel skill when the requester didn't win (E2).
+    current_won = duel.winner_id == current_user.id
+    weak_skill_id = None if current_won else duel.skill_id
+
     return DuelResultResponse(
         duel_id=str(duel.id),
         status=duel.status,
@@ -418,4 +426,5 @@ async def duel_result(
         winner_id=str(duel.winner_id) if duel.winner_id else None,
         is_draw=duel.winner_id is None,
         created_at=duel.created_at,
+        weak_skill_id=weak_skill_id,
     )

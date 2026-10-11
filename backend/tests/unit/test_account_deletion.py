@@ -13,6 +13,7 @@ from datetime import UTC, datetime, timedelta
 import pytest
 from sqlalchemy import func, select
 
+from app.core.cookies import OAUTH_STATE_COOKIE
 from app.models.admin import GDPRRequest
 from app.models.analytics import AnalyticsEvent
 from app.models.auth import LoginAttempt, RefreshToken
@@ -241,10 +242,12 @@ OAUTH = "/api/v1/auth/oauth"
 async def _oauth_login(client):
     start = await client.get(f"{OAUTH}/test/start", headers=_h(), follow_redirects=False)
     state = dict(p.split("=") for p in start.headers["location"].split("?")[1].split("&"))["state"]
+    # 41.14: la cookie del state es Secure y el cliente de test habla http,
+    # así que no se reenvía sola -- se manda a mano.
     return await client.get(
         f"{OAUTH}/test/callback",
         params={"code": "test-code", "state": state},
-        headers=_h(),
+        headers={**_h(), "Cookie": f"{OAUTH_STATE_COOKIE}={state}"},
         follow_redirects=False,
     )
 
@@ -276,4 +279,8 @@ async def test_oauth_login_after_grace_is_refused(client, db_session) -> None:
 
     r = await _oauth_login(client)
     assert "oauth_error=account_inactive" in r.headers["location"]
-    assert "set-cookie" not in {k.lower() for k in r.headers}
+    # 41.14 añadió un Set-Cookie legítimo aquí (borra la cookie del state,
+    # ya consumido): lo que de verdad importa es que ninguna cookie de
+    # sesión se cuela en un login refusado.
+    cookies_set = {c.split("=", 1)[0] for c in r.headers.get_list("set-cookie")}
+    assert cookies_set.isdisjoint({"whetzy_access", "whetzy_refresh", "whetzy_logged_in"})

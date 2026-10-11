@@ -106,12 +106,22 @@ class QuestionPatch(BaseModel):
     difficulty_tier: str | None = None
 
 
+# All types graded by the server comparing submitted output against the stored
+# expected value — sending that value to the client in advance lets anyone skip
+# execution and forge a correct answer from the network response (B2).
+_SERVER_GRADED_TYPES: frozenset[str] = frozenset(
+    {"fill_blank", "fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
+)
+
+
 class QuestionPublic(BaseModel):
     """Question payload sent to the client before it is answered.
 
-    Deliberately omits `correct_index` and the explanations.
-    For exec types (fill_blank_exec, fix_bug) `correct_answer_es/en` carries
-    the expected stdout so the client can grade locally via Pyodide.
+    Deliberately omits `correct_index`, the explanations, and — for all
+    server-graded exec types — the expected output (`correct_answer_es/en`).
+    The client still runs code locally via Pyodide for UX, but the server
+    always grades by comparing the submitted output against its own stored
+    value; never trusting the client's verdict.
     For sql_exec, `code_es`/`code_en` carry the full SQL script with `___`
     as the student's blank (fill_blank_exec embeds its code in question prose).
     """
@@ -133,15 +143,10 @@ class QuestionPublic(BaseModel):
     expected_time_ms: int
 
     @model_validator(mode="after")
-    def _hide_answer_for_server_graded_fill_blank(self) -> QuestionPublic:
-        # S.3 (fuga de respuestas): `correct_answer_es/en` is legitimate here
-        # only for the client-graded exec types, where the client needs the
-        # expected stdout to run locally via Pyodide. Plain "fill_blank" is
-        # graded server-side (quiz.py compares `answer_text` against this same
-        # column) — the model's own `from_attributes` copy pulled it through
-        # unconditionally, handing the exact free-text answer to the client
-        # before they typed anything.
-        if self.type == "fill_blank":
+    def _hide_expected_output(self) -> QuestionPublic:
+        # B2: never send the expected output to the client; the server keeps it
+        # to grade the submitted exec_output / answer_text on its own.
+        if self.type in _SERVER_GRADED_TYPES:
             self.correct_answer_es = None
             self.correct_answer_en = None
         return self
