@@ -347,6 +347,16 @@ async def logout(
     client_ip = request.client.host if request.client else "unknown"
     user_agent = request.headers.get("user-agent", "")
 
+    # 41.18: antes de esto, logout solo borraba cookies y registraba el
+    # evento — el refresh que ya tuviera el navegador (o cualquier otro
+    # cliente con el mismo refresh) seguía dando tokens nuevos hasta sus 30
+    # días. Mismo mecanismo que ya usan el cambio de contraseña y su reset
+    # (ASVS V3.3): subir `jwt_version` invalida de golpe todo lo emitido
+    # antes, access y refresh, porque los dos llevan `jvs` y tanto
+    # `get_current_user` como `/auth/refresh` lo comparan contra la columna.
+    current_user.jwt_version = current_user.jwt_version + 1
+    await db.commit()
+
     await log_audit_event(
         current_user.id,
         "logout",
