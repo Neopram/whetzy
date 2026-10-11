@@ -960,6 +960,7 @@ export interface DuelResultResponse {
   winner_id: string | null;
   is_draw: boolean;
   created_at: string;
+  weak_skill_id: string | null;
 }
 
 export interface DuelSummary {

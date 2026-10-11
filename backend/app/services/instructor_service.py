@@ -44,6 +44,21 @@ class CannotEnrollInOwnCourse(ValueError):
     """
 
 
+class PaymentRequired(ValueError):
+    """Un curso de pago sin ninguna pasarela que confirme el cobro (41.6).
+
+    `webhooks.py` solo liga `transaction.completed` a certificaciones
+    (`paddle_billing.certification_purchase`); no hay ningún producto Paddle
+    de curso de instructor, así que no existe manera de confirmar que este
+    alumno pagó. Antes de esto, inscribirse en cualquier curso de pago sumaba
+    `price_cents` a `revenue_cents` y creaba un `InstructorPayout` real sin
+    ningún cobro de por medio — el dueño le debería al instructor dinero por
+    una venta que nunca existió (los payouts siguen apagados en prod, H.25,
+    pero la fila ya quedaba mal desde que se crea). Un curso gratuito
+    (`price_cents == 0`) no pasa por aquí: no hay nada que cobrar.
+    """
+
+
 class InstructorService:
     """Service for instructor marketplace operations."""
 
@@ -136,6 +151,12 @@ class InstructorService:
         )
         if already is not None:
             raise AlreadyEnrolled(f"User {user_id} is already enrolled in course {course_id}")
+
+        if course.price_cents > 0:
+            raise PaymentRequired(
+                f"Course {course_id} costs {course.price_cents} cents; "
+                "no payment confirmation exists yet"
+            )
 
         gross_payment_cents = int(course.price_cents)
 

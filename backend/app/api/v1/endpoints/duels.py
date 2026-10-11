@@ -399,6 +399,10 @@ async def duel_result(
     o_result = await db.execute(select(User).where(User.id == duel.opponent_id))
     opponent = o_result.scalar_one()
 
+    # Suggest practice on the duel skill when the requester didn't win (E2).
+    current_won = duel.winner_id == current_user.id
+    weak_skill_id = None if current_won else duel.skill_id
+
     return DuelResultResponse(
         duel_id=str(duel.id),
         status=duel.status,
@@ -422,4 +426,5 @@ async def duel_result(
         winner_id=str(duel.winner_id) if duel.winner_id else None,
         is_draw=duel.winner_id is None,
         created_at=duel.created_at,
+        weak_skill_id=weak_skill_id,
     )

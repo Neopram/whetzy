@@ -7,6 +7,7 @@ import {
   progress as progressApi,
   type DuelSummary,
   type DuelChallengeResponse,
+  type DuelResultResponse,
   type QuestionPublic,
 } from '../services/api';
 import { parseQuestion } from '../lib/question';
@@ -44,6 +45,7 @@ export function DuelScreen() {
   const [selected, setSelected] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [playingDuelId, setPlayingDuelId] = useState<string | null>(null);
+  const [duelResult, setDuelResult] = useState<DuelResultResponse | null>(null);
   // Se reinicia con cada pregunta: antes se fijaba al montar la pantalla y el
   // tiempo de respuesta que llega al motor crecía pregunta a pregunta.
   const questionStart = useRef(Date.now());
@@ -126,8 +128,13 @@ export function DuelScreen() {
       setSelected(null);
       questionStart.current = Date.now();
     } else {
+      setDuelResult(null);
       setView('result');
       fetchDuels();
+      // Try to fetch the result immediately; 202 means opponent hasn't finished.
+      if (playingDuelId) {
+        duelsApi.result(playingDuelId).then(setDuelResult).catch(() => { /* 202 or network */ });
+      }
     }
   };
 
@@ -222,10 +229,28 @@ export function DuelScreen() {
   }
 
   if (view === 'result') {
+    const weakSkillName = duelResult?.weak_skill_id ? skillName(duelResult.weak_skill_id) : null;
     return (
       <div className={`${styles.screen} ${styles.centered}`}>
         <h1 className={styles.title}>{t('duel.completed')}</h1>
-        <p className={styles.muted}>{t('duel.waitingResult')}</p>
+        {duelResult ? (
+          <>
+            <p className={styles.resultOutcome}>
+              {duelResult.is_draw
+                ? t('duel.draw')
+                : duelResult.winner_id === currentUser.id
+                  ? t('duel.won')
+                  : t('duel.lost')}
+            </p>
+            {duelResult.weak_skill_id && (
+              <p className={styles.practiceHint}>
+                {t('duel.practiceHint', { skill: weakSkillName ?? duelResult.weak_skill_id })}
+              </p>
+            )}
+          </>
+        ) : (
+          <p className={styles.muted}>{t('duel.waitingResult')}</p>
+        )}
         <button type="button" className={styles.btnPrimary} onClick={() => { setView('list'); fetchDuels(); }}>
           {t('duel.viewMyDuels')}
         </button>

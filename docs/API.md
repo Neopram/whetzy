@@ -32,7 +32,7 @@ POST  /auth/refresh               → Token (200)
 GET   /auth/me                    → UserRead (200) 🔒
 PATCH /auth/me                    → UserRead (200) 🔒  — update profile (language, display_name)
 DELETE /auth/me/account           → {message} (200) 🔒
-POST  /auth/logout                 → {message} (200) 🔒
+POST  /auth/logout                 → {message} (200) 🔒  — sube `jwt_version` (41.18): cualquier access/refresh emitido antes queda inválido, igual que ya hace el cambio de contraseña
 PATCH /auth/me/password           → {message} (200) 🔒  — body {current_password, new_password}
 
 POST /auth/forgot-password        → {message} (200) — no enumeration
@@ -41,8 +41,8 @@ POST /auth/verify-email           → {message} (200) — body {token}
 POST /auth/resend-verification    → {message} (200)
 
 GET  /auth/oauth/providers            → {providers: ["github"|"google"]} solo los configurados (200)
-GET  /auth/oauth/{provider}/start     → 302 redirect to provider
-GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend
+GET  /auth/oauth/{provider}/start     → 302 redirect to provider — PKCE (S256) + cookie HttpOnly con el `state` (41.14)
+GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend — 400 si la cookie del `state` no coincide con el de la query (41.14)
 ```
 
 OAuth providers: `github`, `google`.
@@ -104,7 +104,7 @@ GET    /moderation/blocked           → [{user_id, username, display_name, bloc
 ## Tutor endpoint
 
 ```
-POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒 — Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS` explanations OR `TUTOR_DAILY_TOKEN_LIMIT_PLUS` tokens/day UTC (41.17, engineering backstop, never applies to the ADR-49-unlimited tiers); Pro Max unlimited (38.6). Quota is reserved atomically before calling the LLM, settled to the real token count after
+POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒 — Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS` explanations OR `TUTOR_DAILY_TOKEN_LIMIT_PLUS` tokens/day UTC (41.17, engineering backstop, never applies to the ADR-49-unlimited tiers); Pro Max unlimited (38.6). Quota reserved atomically before LLM call, settled to real token count after. 403 `question_reserved` for a `pool == "simulacro"` question, 403 `exam_in_progress` for one in an unsubmitted `MockExamAttempt` of the caller's (41.5). No cupo cuando un `GuardedProvider` configurado cae en el `NullProvider` por dentro (presupuesto agotado o la cadena entera falla) — sí cuando `get_provider()` ya es `NullProvider` a secas (sin API key)
   Body: {question_id, conversation_history?: [...]}
 ```
 
@@ -300,7 +300,7 @@ H.29. El pago se acumula en una fila por instructor y mes, no una por matrícula
 ```
 POST  /instructor/courses                     → {id, …} 🔒 — publicar curso
 GET   /instructor/courses                     → [{…}] 🔒
-POST  /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published`, 409 si ya inscrito. Sin pasarela no cobra (Paddle HUMAN-BLOCKED)
+POST  /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published` o es tu propio curso, 409 si ya inscrito, **402 siempre que `price_cents > 0`** (41.6): no existe ningún producto Paddle de curso (Paddle HUMAN-BLOCKED), así que no hay manera de confirmar el cobro — antes de esto se inscribía gratis y aun así creaba un `InstructorPayout` real
 GET   /instructor/analytics                   → {total_earnings_cents, …} 🔒
 GET   /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
 GET   /instructor/profile                     → {display_name, bio, avatar_url, website} 🔒 — se crea el instructor si el usuario aún no lo era (28.8: `ProfileTab` no llamaba a nada)
