@@ -21,11 +21,23 @@ that absence.
 Used by `get_certification_readiness` today; the same function is meant to
 back a domain-level mastery breakdown on Hoy, Rutas and Estadísticas too
 (frontend wiring is S1's — see the NECESITO in the C.2 PR for the contract).
+
+B.11 (2026-10-04) adds the other half of "sin datos": an EXPLICIT, named
+threshold for "ready to sit the simulacro" (`DOMAIN_READY_THRESHOLD`,
+previously a bare `0.75` local to the endpoint function) and `is_domain_ready`,
+so "ready" always means the same thing everywhere it's checked — including
+a domain with no data, which is never ready, not simply unmarked.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+
+# The bar a domain's mean p_known must clear to count as "ready for the
+# simulacro" (B.11). Named and exported rather than a bare literal inside
+# the endpoint, so every reader of a "ready" flag can find out what it
+# actually means without reading the endpoint's source.
+DOMAIN_READY_THRESHOLD = 0.75
 
 
 @dataclass(frozen=True)
@@ -78,3 +90,18 @@ def compute_weighted_overall_mastery(domains: list[DomainMastery]) -> float | No
     if total_weight == 0:
         return None
     return round(weighted_sum / total_weight, 4)
+
+
+def is_domain_ready(mastery: DomainMastery, threshold: float = DOMAIN_READY_THRESHOLD) -> bool:
+    """A domain with no data is never ready — "sin datos" and "ready" are
+    mutually exclusive by construction, not by a caller remembering to
+    check both."""
+    return mastery.p_known_mean is not None and mastery.p_known_mean >= threshold
+
+
+def is_ready_for_simulacro(domains: list[DomainMastery], threshold: float = DOMAIN_READY_THRESHOLD) -> bool:
+    """Ready for the simulacro means every domain in the track clears the
+    bar — one domain still "sin datos" or below threshold is enough to
+    hold the whole track back. A track with no domains at all is never
+    "ready" (there is nothing to be ready about)."""
+    return bool(domains) and all(is_domain_ready(d, threshold) for d in domains)

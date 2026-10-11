@@ -30,6 +30,9 @@ const AuthScreen = lazy(() => import('./pages/AuthScreen').then((m) => ({ defaul
 const ResetPasswordPage = lazy(() =>
   import('./pages/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage }))
 );
+const VerifyEmailPage = lazy(() =>
+  import('./pages/VerifyEmailPage').then((m) => ({ default: m.VerifyEmailPage }))
+);
 const DeleteAccountScreen = lazy(() =>
   import('./pages/DeleteAccountScreen').then((m) => ({ default: m.DeleteAccountScreen }))
 );
@@ -271,6 +274,14 @@ function App() {
     return (
       <Screen>
         <ResetPasswordPage token={token} onSuccess={() => { window.location.assign('/login'); }} />
+      </Screen>
+    );
+  }
+  if (path === '/verify-email') {
+    const token = new URLSearchParams(window.location.search).get('token') || '';
+    return (
+      <Screen>
+        <VerifyEmailPage token={token} />
       </Screen>
     );
   }

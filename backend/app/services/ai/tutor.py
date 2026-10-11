@@ -27,7 +27,7 @@ from app.models.content import Question, Skill
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
 from app.services.ai import rag as rag_service
-from app.services.ai.provider import get_provider
+from app.services.ai.provider import NullProvider, get_provider
 
 _SYSTEM = {
     "es": (
@@ -119,7 +119,13 @@ async def explain_question(
         await db.execute(select(Question).where(Question.id == question_id))
     ).scalar_one_or_none()
     if question is None:
-        return {"explanation": "", "provider": "none", "grounded": False, "times_missed": 0}
+        return {
+            "degraded_fallback": False,
+            "explanation": "",
+            "provider": "none",
+            "grounded": False,
+            "times_missed": 0,
+        }
 
     skill = (
         await db.execute(select(Skill).where(Skill.id == question.skill_id))
@@ -195,7 +201,16 @@ async def explain_question(
         explanation = await provider.complete(system_prompt, user_prompt, max_tokens=500, history=history)
         provider_name = provider.name
 
+    # 41.5: un `GuardedProvider` configurado (hay API key) que agota el cupo
+    # diario o falla la cadena entera cae en el `NullProvider` por dentro —
+    # `complete_named` no es None aquí, así que se distingue de cuando
+    # `get_provider()` ya devuelve un `NullProvider` a secas (sin API key:
+    # degradado por diseño, no por un fallo puntual) y cobra igual. Solo el
+    # primer caso es "no hubo explicación real" y no debe gastar cupo.
+    degraded_fallback = complete_named is not None and provider_name == NullProvider.name
+
     return {
+        "degraded_fallback": degraded_fallback,
         "explanation": explanation,
         "provider": provider_name,
         "grounded": grounded,

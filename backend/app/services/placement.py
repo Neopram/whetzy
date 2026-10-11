@@ -19,7 +19,7 @@ from sqlalchemy.orm import selectinload
 
 from app.models.content import Module, Question, Skill, Track
 from app.models.session import Response, StudySession
-from app.models.user import User
+from app.models.user import User, UserSkillState
 from app.schemas.content import QuestionPublic
 from app.schemas.placement import (
     ModuleSkipRecommendation,
@@ -186,6 +186,56 @@ async def start_placement(db: AsyncSession, user: User, track_id: str) -> Placem
     )
 
 
+_P_KNOWN_CAP = 0.94  # C2: tope < 0.95 so mastered skills stay in practice
+
+
+async def _seed_skill_states(
+    db: AsyncSession,
+    user_id: uuid.UUID,
+    skill_estimates: dict[str, dict[str, int]],
+) -> None:
+    """Upsert UserSkillState.p_known from placement accuracy for each tested skill (C2).
+
+    Skills that scored 0/0 (never shown) are not touched: their prior stays 0.1.
+    p_known is capped at _P_KNOWN_CAP (< 0.95) so every skill remains in the
+    practice queue — a placement score of 100 % must not retire the skill.
+    """
+    if not skill_estimates:
+        return
+    skill_ids = list(skill_estimates.keys())
+    existing_rows = (
+        await db.scalars(
+            select(UserSkillState).where(
+                UserSkillState.user_id == user_id,
+                UserSkillState.skill_id.in_(skill_ids),
+            )
+        )
+    ).all()
+    existing: dict[str, UserSkillState] = {row.skill_id: row for row in existing_rows}
+
+    for skill_id, counts in skill_estimates.items():
+        total = counts.get("total", 0)
+        correct = counts.get("correct", 0)
+        if total == 0:
+            continue
+        new_p = min(correct / total, _P_KNOWN_CAP)
+        if skill_id in existing:
+            row = existing[skill_id]
+            row.p_known = new_p
+            row.attempts += total
+            row.correct_count += correct
+        else:
+            db.add(
+                UserSkillState(
+                    user_id=user_id,
+                    skill_id=skill_id,
+                    p_known=new_p,
+                    attempts=total,
+                    correct_count=correct,
+                )
+            )
+
+
 async def answer_placement(
     db: AsyncSession,
     user: User,
@@ -245,6 +295,7 @@ async def answer_placement(
     session.correct_count = sum(1 for _, c in state.responses if c)
     if finished and session.ended_at is None:
         session.ended_at = _now()
+        await _seed_skill_states(db, user.id, state.skill_estimates)
 
     await db.commit()
 

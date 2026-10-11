@@ -49,13 +49,17 @@ class ResetPasswordRequest(BaseModel):
     new_password: str
 
 
+class VerifyEmailRequest(BaseModel):
+    token: str
+
+
 class UpdateProfileRequest(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
     avatar_emoji: str | None = Field(default=None, max_length=16)
     language: str | None = Field(default=None, pattern="^(es|en)$")
     # Respuestas del onboarding (índice de opción, 0-2). 34.11.
     onboarding_experience: int | None = Field(default=None, ge=0, le=2)
-    onboarding_goal: int | None = Field(default=None, ge=0, le=2)
+    onboarding_goal: int | None = Field(default=None, ge=0, le=3)
     onboarding_weekly_time: int | None = Field(default=None, ge=0, le=2)
 
     @field_validator("display_name")
@@ -343,6 +347,16 @@ async def logout(
     client_ip = request.client.host if request.client else "unknown"
     user_agent = request.headers.get("user-agent", "")
 
+    # 41.18: antes de esto, logout solo borraba cookies y registraba el
+    # evento — el refresh que ya tuviera el navegador (o cualquier otro
+    # cliente con el mismo refresh) seguía dando tokens nuevos hasta sus 30
+    # días. Mismo mecanismo que ya usan el cambio de contraseña y su reset
+    # (ASVS V3.3): subir `jwt_version` invalida de golpe todo lo emitido
+    # antes, access y refresh, porque los dos llevan `jvs` y tanto
+    # `get_current_user` como `/auth/refresh` lo comparan contra la columna.
+    current_user.jwt_version = current_user.jwt_version + 1
+    await db.commit()
+
     await log_audit_event(
         current_user.id,
         "logout",
@@ -426,10 +440,17 @@ async def change_password(
 
 @router.post("/verify-email", status_code=status.HTTP_200_OK)
 async def verify_email(
-    payload: ResetPasswordRequest,  # reuse {token} field
+    payload: VerifyEmailRequest,
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
-    """Consume an email verification link (single-use, 24h TTL)."""
+    """Consume an email verification link (single-use, 24h TTL).
+
+    0.2: reutilizaba `ResetPasswordRequest` -- que exige `new_password` --
+    y por tanto cualquier cliente que mandara solo `{token}` (lo correcto
+    aquí, no se cambia ninguna contraseña) recibía un 422 sin tocar la
+    lógica de abajo. Nadie lo notó porque no había ni página ni test que
+    llamara a este endpoint de verdad.
+    """
     token_hash = hashlib.sha256(payload.token.encode()).hexdigest()
     result = await db.execute(
         select(EmailVerificationToken).where(EmailVerificationToken.token_hash == token_hash)

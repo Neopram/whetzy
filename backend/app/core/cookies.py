@@ -131,3 +131,27 @@ def clear_mfa_cookie(response: Response) -> None:
     if settings.COOKIE_DOMAIN:
         opts["domain"] = settings.COOKIE_DOMAIN
     response.delete_cookie(key=MFA_COOKIE, **opts)  # type: ignore[arg-type]
+
+
+OAUTH_STATE_COOKIE = "whetzy_oauth_state"
+
+
+def set_oauth_state_cookie(response: Response, state: str, max_age_seconds: int) -> None:
+    """41.14: el `state` de OAuth solo vivía en la base de datos — un `state`
+    válido y sin consumir se aceptaba desde cualquier navegador, no solo el
+    que lo pidió. Esta cookie HttpOnly lleva el mismo valor; `/callback` la
+    compara contra el `state` de la query antes de aceptarlo."""
+    secure, samesite = _cookie_policy()
+    response.set_cookie(
+        key=OAUTH_STATE_COOKIE,
+        value=state,
+        max_age=max_age_seconds,
+        **_cookie_kwargs(secure, samesite),  # type: ignore[arg-type]
+    )
+
+
+def clear_oauth_state_cookie(response: Response) -> None:
+    opts: dict[str, object] = {"path": "/"}
+    if settings.COOKIE_DOMAIN:
+        opts["domain"] = settings.COOKIE_DOMAIN
+    response.delete_cookie(key=OAUTH_STATE_COOKIE, **opts)  # type: ignore[arg-type]
