@@ -1,7 +1,8 @@
 # Whetzy — Inteligencia Competitiva Exhaustiva
 
 > **Documento vivo nº 14.** Análisis directo + indirecto. Última actualización:
-> **2026-09-30** (§A.2d, catálogos y bancos de certificación que alimentan ADR-53; §A.2c,
+> **2026-10-09** (44.60: la fila Whetzy de §3, §A.3 y §A.4 contrastadas con el código de
+> `8f54083`); antes, **2026-09-30** (§A.2d, catálogos y bancos de certificación que alimentan ADR-53; §A.2c,
 > capturas de pantalla 24.0 del 2026-09-28; §A.2b, Brilliant y Kodree; resto de §A del
 > 2026-09-24). **§A manda sobre §1–§3**, que son del
 > 2026-09-18 y contienen cifras que no se comprobaron entonces y hoy no se
@@ -29,8 +30,9 @@ reportó un agente**.
 | Platzi | Basic **$49/mes**; Expert **$249/año** (se anuncia como $21/mes, 4 cuotas de $63); hay cursos gratis | `"planPrice":"249"`, `"priceMonth":"49"`, FAQ «¿Hay cursos gratis…?» | platzi.com/precios/ |
 | EDteam | Premium **$30** mensual, **$180** semestral, **$240** anual (tachado $360, «el mes te sale a $20»); plan gratuito de **9 cursos** con certificado | `"premiumPricing":{"monthly":{"price":30…},"annual":{"price":240,"basePrice":360}}` | ed.team/premium |
 
-Estas cifras son las que muestra la comparativa de la landing
-(`frontend/src/lib/comparison.ts`, fecha `COMPARISON_CHECKED_ON`). Un test
+Estas cifras, salvo las de Boot.dev, son las que muestra la comparativa de la landing
+(`frontend/src/lib/comparison.ts`, fecha `COMPARISON_CHECKED_ON`; compara con
+Codecademy, Platzi y EDteam). Un test
 (`src/test/comparison.contract.test.ts`) exige fecha y una celda por competidor.
 Si cambias una cifra, re-descarga la página y cambia la fecha.
 
@@ -172,7 +174,7 @@ o antibot a la descarga directa y no se sortearon.
 | Exercism | 83 lenguajes; Python 146 ejercicios en 17 conceptos | «Develop fluency in 83 programming languages», «146 coding exercises» | exercism.org |
 | Stack Overflow 2025 | uso por lenguaje, base de datos y cloud (tabla en ADR-53) | «All Respondents JavaScript 66% … Python 57.9% …» | survey.stackoverflow.co/2025/technology |
 | roadmap.sh | nodos por roadmap (56 contados; python 87, backend 155, cyber-security 301) | JSON público, nodos `topic` + `subtopic` | roadmap.sh/<slug>.json |
-| AWS | AIF-C01: 65 preguntas, 90 min (el repo dice 85 y 120); MLA-C01 65 / 130 y MLA-C02 85 / 170 | «Exam format 65 questions» | aws.amazon.com/certification/… |
+| AWS | AIF-C01: 65 preguntas, 90 min (el repo ya lo recoge: track11 en `content/curriculum/tracks.json`); MLA-C01 65 / 130 y MLA-C02 85 / 170 | «Exam format 65 questions» | aws.amazon.com/certification/… |
 | Idiomas de examen | en español: GCP ACE, LPIC-1, AZ-104, AIF-C01; no: CKA/CKAD/CKS | «Languages: English, Japanese, Spanish, Portuguese»; «English, Simplified Chinese, and Japanese» | cloud.google.com, lpi.org, learn.microsoft.com, docs.linuxfoundation.org |
 | Apps de educación | D1 13,93 % / 14,59 % y D30 2,69 % / 3,23 % (Android / iOS); conversión freemium mediana 2,1 %, Education iOS 3,1 % | citas literales | appsflyer.com/glossary/retention-rate/; revenuecat.com/state-of-subscription-apps |
 | Referencias de producto | Duolingo DAU/MAU 39,6 %, suscriptores 9,2 % de MAU, CURR 84 % (récord, +~1 pp interanual); edX: completa el 3,13 % de todos y el 46 % de los verificados; Khan Academy 30+ min/semana | «The main metric we use to evaluate the stickiness of our product is Current User Retention Rate (CURR), which is the proportion of 'current user DAUs' who come back the next day. A 'current user DAU' is one who was also active another time in the previous seven days» — «our CURR is at an all-time high of 84%, up by about 1% from last year» | sec.gov/Archives/edgar/data/0001562088/000162828026053299/q2fy26duolingo6-30x26share.htm (carta Q2 FY2026, 8-K, leída en vivo 2026-09-30); insidehighered.com; blog.khanacademy.org |
@@ -254,8 +256,9 @@ a lo que cobran al mes pagando el año. Falta, y es decisión del dueño (H.35):
 - Pro Max, 19,99 $;
 - Creador, 99,99 $ (80/20 por venta).
 
-Son los que muestran la landing y la comparativa. Siguen pendientes (H.35) el anual, la
-tarifa regional y qué añade Pro Max.
+Son los que muestran la landing y la comparativa. Siguen pendientes (H.35) el anual y la
+tarifa regional. Lo que añade Pro Max ya no está pendiente: tutor IA ilimitado (ADR-49,
+2026-09-25).
 
 ### A.4 Lo que se adopta, y lo que no
 
@@ -265,7 +268,7 @@ tarifa regional y qué añade Pro Max.
 | Diagnóstico visible de «salta lo que ya sabes» | Educative | Adoptar: el *placement* ya existe; hacerlo visible en cada track | 35.2 |
 | Racha amable: comodines gratis y «perder la racha no borra lo aprendido» | Duolingo (freeze), contra Mimo (reparación de pago) | Adoptar | 35.3 |
 | Corazones o vidas | Sololearn, Duolingo | **No**: el error alimenta al motor, no se cobra | — |
-| Ligas | Duolingo, Sololearn | Solo *opt-in* visible | 35.4 |
+| Ligas | Duolingo, Sololearn | Se participa por defecto, con salida visible en la propia pantalla de ligas (`User.leagues_opt_out`, por defecto `false`) | 35.4 |
 | Tarifa regional, anual en cuotas | Boot.dev, DataCamp, EDteam, Platzi | Propuesta al dueño | H.35 |
 | *Readiness* por dominio ponderado por el exam guide, en ES | hueco reportado (A.2) | Producto estrella de las rutas cloud y seguridad | 35.5 |
 | Open Badges 3.0 con verificación pública | hueco reportado (A.2) | Ya en ECONOMIA.md (S29); priorizar tras 35.5 | — |
@@ -614,7 +617,7 @@ Posicionar activamente: "¿Terminaste CS50? Este es tu siguiente paso."
 | **Coinbase Earn / Binance Learn & Earn** | Pagan en cripto por ver lecciones | Funcionan | Porque **un exchange paga con dinero real como marketing** y capta clientes de trading. Whetzy no es un exchange |
 
 **Daño específico que solo Whetzy sufriría:** si responder preguntas paga, bots y
-farmers responden las 6.233 preguntas con scripts y **envenenan BKT/FSRS/DKT**. El único
+farmers responden las 11.416 preguntas del banco (2026-10-09) con scripts y **envenenan BKT/FSRS/DKT**. El único
 activo diferencial se degrada desde dentro. Ver `ECONOMIA.md` §12.
 
 ### 2.7 Ecosistema educativo de Solana: Solana Foundation, Superteam, docs oficiales (ADR-38)
@@ -642,13 +645,13 @@ la plataforma; no vende exposición a ella.
 | Ciberseguridad | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Cloud certs | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Gamificación | ✅ S24 | ✅✅ | ❌ | ❌ | ❌ |
-| B2B ready | ✅ S22 | ❌ | ✅✅ | ✅ | ✅ |
-| Marketplace | ✅ S28 | ❌ | ❌ | ❌ | ❌ |
+| B2B ready | ❌ (2026-10-09: sin organizaciones, equipos ni asientos en `backend/app`) | ❌ | ✅✅ | ✅ | ✅ |
+| Marketplace | ⚠️ parcial (2026-10-09: el creador publica y ve sus cursos; no hay catálogo para el comprador y `POST /instructor/courses/{id}/enroll` inscribe y anota el reparto sin cobrar) | ❌ | ❌ | ❌ | ❌ |
 | Créditos cerrados + referidos por activación | ✅ S29 | gemas (sin datos de referidos) | XP (sin datos) | sin datos | ❌ |
-| Pago en USDC liquidado en fiat (LATAM) | ✅ tras H.19 | ❌ | ❌ | ❌ | ❌ |
+| Pago en USDC liquidado en fiat (LATAM) | ❌ (sin código; ADR-36 dependía de Stripe *Pay with Crypto* y H.29 eligió Paddle, sin Stripe) | ❌ | ❌ | ❌ | ❌ |
 | Credenciales verificables (Open Badges 3.0) | ✅ S29 | ❌ | ❌ | ❌ | ❌ |
 | Token / cripto propia | ❌ a propósito (ADR-33) | ❌ | ❌ | ❌ | ❌ |
-| Precio base (2026-09-18, **no verificado** salvo Whetzy; ver §A.1) | Pro $14.99 (ADR-41; publicado en la landing; desde 2026-10-01 compra web con Paddle en `/checkout`, pendiente del alta de Paddle) | ~~$49~~ $59/mes · $399/año | $39 | ~~$29~~ $49/mes · $249/año | $20 |
+| Precio base (Whetzy: ADR-41; los demás: §A.1, y §A.2c para DataCamp y Educative) | Pro $14.99 (ADR-41; publicado en la landing; desde 2026-10-01 compra web con Paddle en `/checkout`, pendiente del alta de Paddle) | ~~$49~~ $59/mes · $399/año | ~~$39~~ Premium $35/mes (captura 2026-09-28) | ~~$29~~ $49/mes · $249/año | ~~$20~~ $12–21/mes, con descuento activo (captura 2026-09-28) |
 | Empleabilidad | Alta | Alta | Media | Media | Media |
 
 ---

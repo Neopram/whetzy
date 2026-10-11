@@ -1,6 +1,20 @@
 # Whetzy — Competitive Teardown
 *Prepared 2026-09-08 · Autonomous session ah*
 
+> **§1–§5 son una foto del 2026-09-08 y no se reescriben** (las secciones con fecha que
+> siguen son el registro; la última puntuación es §14). Contrastado con el código el
+> 2026-10-09 (44.60, sobre `8f54083`), ya no vale de §1–§5:
+> - **Pago web:** no es Stripe. H.29 (2026-10-01) eligió Paddle en web y RevenueCat en
+>   tiendas, sin Stripe; `/checkout` existe y falta el alta de Paddle.
+> - **Planes:** Free, Pro, Pro Max y Creador (ADR-41, ADR-49), no «Free + Plus/Pro».
+> - **GAP-2, landing:** existe en `/landing` (`frontend/src/App.tsx`).
+> - **GAP-5, tutor:** el botón «¿Por qué?» está en línea en `QuizScreen`
+>   (`components/quiz/WhyButton.tsx`), visible por defecto y con interruptor en el perfil.
+> - **GAP-4, certificaciones:** 11 tracks con certificación en
+>   `content/curriculum/tracks.json` (CLF-C02, PCEP-30-02, SAA-C03, AIF-C01, CC,
+>   PCAP-31-03, SY0-701, MLA-C01, AZ-900, AI-901, DP-900); la serie 10 que cita §3 no
+>   tiene filas en el backlog del ledger (`python scripts/ledger.py series 10`).
+
 ## Scope
 
 Head-to-head analysis of Whetzy against the three platforms most likely to appear in a user's mental shortlist: **Duolingo**, **Brilliant**, and **DataCamp**.  
