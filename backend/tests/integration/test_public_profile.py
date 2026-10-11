@@ -19,6 +19,13 @@ from app.models.user import User, UserSkillState
 BASE = "/api/v1/profiles"
 
 
+@pytest.fixture(autouse=True)
+def _perfiles_publicos_encendidos(monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "PUBLIC_PROFILES_ENABLED", True)
+
+
 async def _user(db: AsyncSession, **kw: object) -> User:
     tag = uuid.uuid4().hex[:8]
     u = User(
@@ -39,6 +46,17 @@ async def _user(db: AsyncSession, **kw: object) -> User:
 @pytest.mark.asyncio
 async def test_unknown_username_is_404(client) -> None:
     res = await client.get(f"{BASE}/no-such-user-anywhere")
+    assert res.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_flag_off_hides_an_existing_profile(client, db_session, monkeypatch) -> None:
+    """Sin opt-in no se publica nada: el flag apagado da 404 aunque el alumno exista."""
+    from app.core.config import settings
+
+    user = await _user(db_session)
+    monkeypatch.setattr(settings, "PUBLIC_PROFILES_ENABLED", False)
+    res = await client.get(f"{BASE}/{user.username}")
     assert res.status_code == 404
 
 

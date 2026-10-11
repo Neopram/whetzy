@@ -66,6 +66,16 @@ def _public_key_multibase(pub: Ed25519PublicKey) -> str:
     return "z" + result[::-1].decode()
 
 
+_DISCLAIMER_EN = (
+    "Issued by Whetzy. Not an official certification and not affiliated with or "
+    "endorsed by the exam vendor; it does not replace the vendor's official exam."
+)
+_DISCLAIMER_ES = (
+    "Emitido por Whetzy. No es una certificación oficial ni está afiliado al "
+    "proveedor del examen ni avalado por él; no sustituye a su examen oficial."
+)
+
+
 def build_credential(
     *,
     code: str,
@@ -82,7 +92,10 @@ def build_credential(
     """Build an Open Badges 3.0 / VC JSON-LD document for a certificate."""
     credential_id = f"{_VERIFY_BASE}/{code}"
 
-    achievement_type = "Certification" if is_certification else "Completion"
+    # Nunca «Certification»: el badge viaja a LinkedIn sin el texto de la UI, y
+    # «Whetzy Certification: AWS Certified …» se lee como la credencial del vendor.
+    achievement_type = "Assessment" if is_certification else "Completion"
+    title = "Exam preparation" if is_certification else "Track completion"
 
     credential: dict[str, Any] = {
         "@context": _OB3_CONTEXT,
@@ -95,7 +108,7 @@ def build_credential(
             "url": settings.FRONTEND_BASE_URL,
         },
         "validFrom": issued_at.astimezone(UTC).isoformat(),
-        "name": f"Whetzy {achievement_type}: {track_name_en}",
+        "name": f"Whetzy {title}: {track_name_en}",
         "credentialSubject": {
             "type": ["AchievementSubject"],
             "achievement": {
@@ -103,8 +116,14 @@ def build_credential(
                 "type": ["Achievement"],
                 "name": {"en": track_name_en, "es": track_name_es},
                 "description": {
-                    "en": f"Passed the {track_name_en} track on Whetzy with {score_pct:.0f}% ({questions} questions)",
-                    "es": f"Aprobó el track {track_name_es} en Whetzy con {score_pct:.0f}% ({questions} preguntas)",
+                    "en": (
+                        f"Passed the {track_name_en} track on Whetzy with {score_pct:.0f}% "
+                        f"({questions} questions). {_DISCLAIMER_EN}"
+                    ),
+                    "es": (
+                        f"Aprobó el track {track_name_es} en Whetzy con {score_pct:.0f}% "
+                        f"({questions} preguntas). {_DISCLAIMER_ES}"
+                    ),
                 },
                 "criteria": {
                     "narrative": f"Score at least 70% on the track final exam ({questions} questions)"

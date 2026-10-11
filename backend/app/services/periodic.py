@@ -275,6 +275,22 @@ async def purge_security_logs(db: AsyncSession, now: datetime | None = None) -> 
     ):
         result = await db.execute(stmt)
         deleted[name] = int(getattr(result, "rowcount", 0) or 0)
+    # El clic de campaña cuenta para siempre; el navegador y la página de origen
+    # que lo acompañan, no: sobrevivían incluso al borrado de la cuenta.
+    from sqlalchemy import update
+
+    from app.models.campaign import CampaignClick
+
+    result = await db.execute(
+        update(CampaignClick)
+        .where(
+            CampaignClick.created_at < cutoff,
+            (CampaignClick.user_agent.is_not(None)) | (CampaignClick.referrer.is_not(None)),
+        )
+        .values(user_agent=None, referrer=None)
+        .execution_options(synchronize_session="fetch")
+    )
+    deleted["campaign_clicks_browser"] = int(getattr(result, "rowcount", 0) or 0)
     return deleted
 
 

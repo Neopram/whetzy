@@ -8,6 +8,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import i18n from '../i18n';
+import { CATALOG_QUESTIONS, CATALOG_TRACKS } from '../lib/catalog';
 import { EvidenceScreen } from '../pages/EvidenceScreen';
 
 afterEach(cleanup);
@@ -40,6 +41,8 @@ describe('EvidenceScreen — ES y EN nativos (34.12)', () => {
     // CATALOG_TRACKS/CATALOG_QUESTIONS (lib/catalog.ts) interpolated into
     // evidence.competitors.whetzyNow.notes — a stale hardcode would still
     // say "8 tracks 3419 Q" (the old bug this test guards against).
-    expect(screen.getByText(/35 tracks 11416 Q/)).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(`${CATALOG_TRACKS} tracks ${CATALOG_QUESTIONS} Q`)),
+    ).toBeInTheDocument();
   });
 });

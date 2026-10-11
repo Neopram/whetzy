@@ -8,6 +8,7 @@ Lo que se fija aquí es lo que prometen los textos legales vigentes y la pantall
 from __future__ import annotations
 
 import itertools
+import uuid
 from datetime import UTC, datetime, timedelta
 
 import pytest
@@ -284,3 +285,61 @@ async def test_oauth_login_after_grace_is_refused(client, db_session) -> None:
     # sesión se cuela en un login refusado.
     cookies_set = {c.split("=", 1)[0] for c in r.headers.get_list("set-cookie")}
     assert cookies_set.isdisjoint({"whetzy_access", "whetzy_refresh", "whetzy_logged_in"})
+
+
+def test_every_table_pointing_at_users_is_classified() -> None:
+    """Una tabla nueva con clave a `users` que nadie clasifica se queda con los
+    datos de una cuenta borrada: el 2026-10-11 eran mastery_reports,
+    user_blocks, user_reports e instructors."""
+    import app.models  # noqa: F401
+    from app.core.db import Base
+
+    classified = (
+        set(account_deletion._OWNED_TABLES)
+        | set(account_deletion._DETACHED_TABLES)
+        | set(account_deletion._KEPT_TABLES)
+        | account_deletion._HANDLED_IN_PURGE
+    )
+    pointing = {
+        t.name
+        for t in Base.metadata.sorted_tables
+        if t.name != "users"
+        and any(f.column.table.name == "users" for c in t.columns for f in c.foreign_keys)
+    }
+    assert pointing - classified == set(), sorted(pointing - classified)
+
+
+@pytest.mark.asyncio
+async def test_purge_removes_reports_blocks_and_instructor_profile(db_session, user) -> None:
+    from app.models.economy import MasteryReport
+    from app.models.instructor import Instructor
+    from app.models.moderation import UserBlock, UserReport
+
+    other = User(
+        id=uuid.uuid4(), email=f"other-{uuid.uuid4().hex[:6]}@whetzy.test",
+        username=f"other{uuid.uuid4().hex[:6]}", hashed_password="x", language="es", display_name="Otro",
+    )
+    db_session.add(other)
+    await db_session.flush()
+    db_session.add_all([
+        MasteryReport(user_id=user.id, code="mr-del-1", request_id="req-del-1", snapshot={}),
+        UserBlock(blocker_id=user.id, blocked_id=other.id),
+        UserBlock(blocker_id=other.id, blocked_id=user.id),
+        UserReport(reporter_id=user.id, reported_id=other.id, reason="spam", context="duel"),
+        UserReport(reporter_id=other.id, reported_id=user.id, reason="spam", context="duel"),
+        Instructor(user_id=user.id, display_name="Ana Real", bio="Mi bio", website="https://ana.example"),
+    ])
+    await db_session.commit()
+    await account_deletion.request_deletion(db_session, user)
+    await _age_request(db_session, user.id, days=31)
+    assert await account_deletion.purge_due(db_session) == 1
+
+    async def count(model, *where) -> int:
+        return (await db_session.execute(select(func.count()).select_from(model).where(*where))).scalar_one()
+
+    assert await count(MasteryReport, MasteryReport.user_id == user.id) == 0
+    assert await count(UserBlock) == 0
+    assert await count(UserReport, UserReport.reporter_id == user.id) == 0
+    assert await count(UserReport, UserReport.reported_id == user.id) == 1
+    inst = (await db_session.execute(select(Instructor).where(Instructor.user_id == user.id))).scalar_one()
+    assert (inst.display_name, inst.bio, inst.website) == ("—", None, None)

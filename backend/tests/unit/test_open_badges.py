@@ -62,9 +62,15 @@ def test_build_credential_certification():
     from app.services.open_badges import build_credential
 
     cred = build_credential(**{**CERT_KWARGS, "is_certification": True})
-    assert "Certification" in cred["name"]
+    # El nombre del badge no puede leerse como la certificación del vendor.
+    assert "Certification" not in cred["name"]
+    assert cred["name"] == "Whetzy Exam preparation: Python Fundamentals"
     achievement = cred["credentialSubject"]["achievement"]
-    assert achievement["achievementType"] == "Certification"
+    assert achievement["achievementType"] == "Assessment"
+    for lang in ("en", "es"):
+        assert "Whetzy" in achievement["description"][lang]
+    assert "Not an official certification" in achievement["description"]["en"]
+    assert "No es una certificación oficial" in achievement["description"]["es"]
 
 
 @pytest.mark.usefixtures("_ob_key")
