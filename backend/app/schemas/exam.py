@@ -84,6 +84,8 @@ class CertificationAccess(BaseModel):
     price_usd: float
     paywall_enabled: bool
     purchased: bool
+    # False hasta que exista el banco reservado de simulacro (no se vende ni se presenta).
+    available: bool
     can_start: bool
 
 

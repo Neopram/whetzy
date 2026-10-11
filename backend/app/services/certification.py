@@ -49,6 +49,20 @@ class PaymentRequired(Exception):
     """El paywall está encendido y el usuario no ha comprado este track."""
 
 
+NOT_AVAILABLE = "certification_not_available"
+
+
+class NotAvailable(Exception):
+    """Todavía no hay banco reservado: el examen saldría del banco de práctica."""
+
+
+def _certification_available() -> bool:
+    """Con el banco reservado apagado el examen sortea del mismo banco que la
+    práctica, así que el certificado mediría en parte preguntas memorizadas
+    (auditoría 2026-10-11, N6). Se abre cuando se abre el banco reservado."""
+    return settings.MOCK_EXAM_RESERVED_POOL_ENABLED
+
+
 async def _certification_track(db: AsyncSession, track_id: str) -> Track:
     track = await db.get(Track, track_id)
     if track is None or not track.is_certification:
@@ -76,12 +90,15 @@ def _staff(user: User) -> bool:
 async def access(db: AsyncSession, user: User, track_id: str) -> dict[str, Any]:
     await _certification_track(db, track_id)
     purchased = await purchase_for(db, user.id, track_id) is not None
+    available = _certification_available()
+    paid_or_free = purchased or not settings.CERTIFICATION_PAYWALL
     return {
         "track_id": track_id,
         "price_usd": settings.CERTIFICATION_PRICE_USD,
         "paywall_enabled": settings.CERTIFICATION_PAYWALL,
         "purchased": purchased,
-        "can_start": purchased or _staff(user) or not settings.CERTIFICATION_PAYWALL,
+        "available": available,
+        "can_start": _staff(user) or (available and paid_or_free),
     }
 
 
@@ -159,7 +176,10 @@ async def start(
     rng: random.Random | None = None,
 ) -> MockExamAttempt:
     track = await _certification_track(db, track_id)
-    if not (await access(db, user, track_id))["can_start"]:
+    state = await access(db, user, track_id)
+    if not state["can_start"]:
+        if not state["available"]:
+            raise NotAvailable(track_id)
         raise PaymentRequired(track_id)
     return await mock_exam.start_attempt(
         db,

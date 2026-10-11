@@ -56,7 +56,7 @@ describe('MockExamScreen — examen certificador', () => {
 
   it('sin compra: muestra el pago único, enlaza al checkout y cierra el botón', async () => {
     m.certificationAccess.mockResolvedValue({
-      track_id: 'track08', price_usd: 39.99, paywall_enabled: true, purchased: false, can_start: false,
+      track_id: 'track08', price_usd: 39.99, paywall_enabled: true, purchased: false, available: true, can_start: false,
     });
     renderScreen();
     const section = await screen.findByTestId('certifying');
@@ -68,9 +68,20 @@ describe('MockExamScreen — examen certificador', () => {
     expect(within(section).getByRole('button', { name: /PRESENTAR EXAMEN CERTIFICADOR/ })).toBeDisabled();
   });
 
+  it('sin banco reservado: explica por qué, no vende y no deja presentarlo', async () => {
+    m.certificationAccess.mockResolvedValue({
+      track_id: 'track08', price_usd: 39.99, paywall_enabled: true, purchased: false, available: false, can_start: false,
+    });
+    renderScreen();
+    const section = await screen.findByTestId('certifying');
+    expect(within(section).getByRole('note')).toHaveTextContent(/banco de preguntas reservado/);
+    expect(within(section).queryByRole('link', { name: /COMPRAR LA CERTIFICACIÓN/ })).toBeNull();
+    expect(within(section).getByRole('button', { name: /PRESENTAR EXAMEN CERTIFICADOR/ })).toBeDisabled();
+  });
+
   it('aprobado: veredicto, aviso de que no es el examen oficial y certificado de preparación', async () => {
     m.certificationAccess.mockResolvedValue({
-      track_id: 'track08', price_usd: 39.99, paywall_enabled: false, purchased: false, can_start: true,
+      track_id: 'track08', price_usd: 39.99, paywall_enabled: false, purchased: false, available: true, can_start: true,
     });
     m.startCertifying.mockResolvedValue(started);
     m.submitMock.mockResolvedValue({
@@ -107,7 +118,7 @@ describe('MockExamScreen — examen certificador', () => {
 
   it('402 al empezar: explica que falta el pago y vuelve a la portada', async () => {
     m.certificationAccess.mockResolvedValue({
-      track_id: 'track08', price_usd: 39.99, paywall_enabled: true, purchased: false, can_start: true,
+      track_id: 'track08', price_usd: 39.99, paywall_enabled: true, purchased: false, available: true, can_start: true,
     });
     m.startCertifying.mockRejectedValue(new ApiError('certification_purchase_required', 402));
     renderScreen();

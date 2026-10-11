@@ -31,6 +31,12 @@ cert_seed = test_mock_exam.cert_seed
 track_seed = test_track_exam.track_seed
 
 
+@pytest.fixture(autouse=True)
+def _banco_reservado_listo(monkeypatch):
+    """Estos tests miden el pago y el certificado; la disponibilidad tiene los suyos."""
+    monkeypatch.setattr(certification, "_certification_available", lambda: True)
+
+
 @pytest.fixture
 def paywall(monkeypatch):
     monkeypatch.setattr(settings, "CERTIFICATION_PAYWALL", True)
@@ -98,9 +104,36 @@ async def test_con_el_flag_apagado_cualquiera_se_presenta(
         "price_usd": 39.99,
         "paywall_enabled": False,
         "purchased": False,
+        "available": True,
         "can_start": True,
     }
     assert (await _start(client, _h(free), cert_seed["track_id"])).status_code == 201
+
+
+@pytest.mark.asyncio
+async def test_sin_banco_reservado_no_se_presenta_ni_se_vende(
+    client, db_session, cert_seed, monkeypatch
+) -> None:
+    """Sin banco reservado el examen saldría de las preguntas ya practicadas:
+    ni se presenta ni se ofrece comprarlo. El staff sí, para probarlo."""
+    monkeypatch.setattr(certification, "_certification_available", lambda: False)
+    free = await _user(db_session)
+    access = (
+        await client.get(
+            f"{BASE}/certification/{cert_seed['track_id']}/access", headers=_h(free)
+        )
+    ).json()
+    assert (access["available"], access["can_start"]) == (False, False)
+    res = await _start(client, _h(free), cert_seed["track_id"])
+    assert res.status_code == 409
+    assert res.json()["detail"] == certification.NOT_AVAILABLE
+    db_session.add(CertificationPurchase(
+        id=uuid.uuid4(), user_id=free.id, track_id=cert_seed["track_id"], price_usd=39.99, source="test",
+    ))
+    await db_session.commit()
+    assert (await _start(client, _h(free), cert_seed["track_id"])).status_code == 409
+    owner = await _user(db_session, role="owner")
+    assert (await _start(client, _h(owner), cert_seed["track_id"])).status_code == 201
 
 
 # ── Paywall encendido ────────────────────────────────────────────────────────
