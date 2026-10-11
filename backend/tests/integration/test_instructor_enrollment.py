@@ -11,6 +11,7 @@ import uuid
 import pytest
 from sqlalchemy import select
 
+from app.core.config import settings
 from app.core.security import get_password_hash
 from app.models.instructor import (
     Instructor,
@@ -21,6 +22,13 @@ from app.models.instructor import (
 from app.models.user import User
 
 ENROLL = "/api/v1/instructor/courses/{}/enroll"
+
+
+# B1: enable the marketplace gate for all tests in this file — they test the
+# enrollment logic, not the payment-gateway guard (which has its own test).
+@pytest.fixture(autouse=True)
+def _enable_marketplace(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(settings, "INSTRUCTOR_MARKETPLACE_ENABLED", True)
 
 
 async def _course(db_session, *, price_cents: int, status: str = "published") -> InstructorCourse:
