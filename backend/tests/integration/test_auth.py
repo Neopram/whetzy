@@ -254,6 +254,34 @@ async def test_refresh_rejected_after_jwt_version_bump(client, user, db_session)
     assert r.status_code == 401
 
 
+async def test_refresh_rejected_after_logout(client, user, db_session):
+    """41.18: logout solo borraba cookies y registraba el evento — un refresh
+    capturado antes de cerrar sesión seguía dando tokens nuevos hasta sus 30
+    días. Ahora logout sube `jwt_version`, el mismo mecanismo que ya usan el
+    cambio de contraseña y su reset."""
+    h = _h({"Content-Type": "application/x-www-form-urlencoded"})
+    login_r = await client.post(
+        f"{AUTH}/login",
+        data={"username": user.email, "password": "Passw0rd!"},
+        headers=h,
+    )
+    tokens = login_r.json()
+    refresh_token = tokens["refresh_token"]
+
+    logout_r = await client.post(
+        f"{AUTH}/logout",
+        headers=_h({"Authorization": f"Bearer {tokens['access_token']}"}),
+    )
+    assert logout_r.status_code == 200
+
+    r = await client.post(
+        f"{AUTH}/refresh",
+        json={"refresh_token": refresh_token},
+        headers=_h(),
+    )
+    assert r.status_code == 401
+
+
 # ── delete account ────────────────────────────────────────────────────────────
 
 

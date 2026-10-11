@@ -1,0 +1,580 @@
+{
+  "questions": [
+    {
+      "id": "q110103_r004",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Cuál de las siguientes afirmaciones describe correctamente los modelos fundacionales que se ofrecen mediante Amazon SageMaker JumpStart?",
+      "question_en": "Which statement correctly describes the foundation models offered through Amazon SageMaker JumpStart?",
+      "options_es": [
+        "Reúne únicamente modelos de acceso público; los propietarios de terceros quedan fuera del servicio",
+        "Ofrece modelos propietarios de proveedores externos, pero no mantiene ningún modelo de acceso público",
+        "Mantiene modelos públicos y propietarios, aunque estos últimos los desarrolla solo Amazon",
+        "Mantiene modelos públicos y añade propietarios de proveedores externos"
+      ],
+      "options_en": [
+        "It gathers only publicly available models; third-party proprietary models are kept out of the service",
+        "It offers proprietary models from outside providers but maintains no publicly available model",
+        "It maintains public and proprietary models, though the proprietary ones are developed solely by Amazon",
+        "It maintains public models and adds proprietary ones from outside providers"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según el fragmento, JumpStart se encarga de modelos fundacionales de acceso público para que los equipos los usen, adapten e integren en sus flujos de aprendizaje automático, y además incorpora modelos propietarios de proveedores externos. Por eso fallan las opciones que excluyen una de las dos categorías o que atribuyen los modelos propietarios únicamente a Amazon.",
+      "explanation_en": "The fragment says JumpStart curates and keeps up open-access foundation models that teams can use, tailor, and plug into their ML workflows, and that it also lists proprietary models supplied by outside vendors. The options that drop one of those two categories, or credit the proprietary models solely to Amazon, therefore contradict the source.",
+      "source": "AWS — Amazon SageMaker JumpStart Foundation Models (https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models.html)"
+    },
+    {
+      "id": "q110103_r001",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo está desarrollando un asistente de atención al cliente y quiere comparar varios modelos fundacionales de distintos proveedores, sin reescribir en cada prueba la integración de su aplicación. ¿Qué característica de Amazon Bedrock lo facilita?",
+      "question_en": "A team is building a customer support assistant and wants to compare several foundation models from different providers, without rewriting the application's integration for each trial. Which Amazon Bedrock characteristic makes this easier?",
+      "options_es": [
+        "Una API única, independiente del modelo, con cambios mínimos de código",
+        "Un formato de petición propio por proveedor, con una integración separada por modelo",
+        "Un reentrenamiento obligatorio de cada modelo con datos de la empresa antes de usarlo",
+        "Una versión fija de cada modelo, ligada a la primera aplicación que la utilice"
+      ],
+      "options_en": [
+        "A single API that is independent of the model, needing minimal code changes",
+        "A separate request format per provider, with its own integration for every model",
+        "A mandatory retraining of each model on company data before it can be used",
+        "A fixed version of each model, tied to the first application that uses it"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según el fragmento, Amazon Bedrock ofrece un acceso por API único e independiente del modelo, de modo que se pueden probar distintos modelos fundacionales con cambios mínimos de código. Las demás opciones plantean integraciones separadas por proveedor, reentrenamientos obligatorios o versiones fijas: el fragmento no atribuye nada de eso a Bedrock y contradice la flexibilidad que describe.",
+      "explanation_en": "According to the fragment, Amazon Bedrock offers model-independent access through one API, so different foundation models can be tried with minimal code changes. The other options propose per-provider integrations, mandatory retraining, or fixed versions. The fragment attributes none of these to Bedrock, and they conflict with the flexibility it describes.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110104_r001",
+      "skill_id": "sk110104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa tiene un modelo en producción en un endpoint de Amazon SageMaker AI y quiere recibir alertas si sus resultados empiezan a favorecer cada vez más a unos grupos de clientes frente a otros. ¿Qué tipo de monitoreo de Model Monitor encaja?",
+      "question_en": "A company runs a model in production on an Amazon SageMaker AI endpoint and wants to be alerted if its outputs increasingly favor some customer groups over others. Which Model Monitor monitoring type fits?",
+      "options_es": [
+        "Calidad de datos, para detectar deriva en las entradas",
+        "Calidad del modelo, para seguir métricas como la exactitud",
+        "Deriva de sesgo, para vigilar el sesgo de las predicciones",
+        "Deriva de atribución de características, para seguir la contribución de cada variable"
+      ],
+      "options_en": [
+        "Data quality, to detect drift in the inputs",
+        "Model quality, to track metrics such as accuracy",
+        "Bias drift, to watch for bias in the predictions",
+        "Feature attribution drift, to follow the contribution of each input feature"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El escenario describe predicciones que favorecen a ciertos grupos, y el monitoreo de deriva de sesgo existe para vigilar el sesgo de las predicciones de un modelo en producción. La calidad de datos se centra en la deriva de los datos, la calidad del modelo en métricas como la exactitud y la atribución de características en la deriva de la contribución de cada variable, no en el trato a los grupos.",
+      "explanation_en": "The scenario describes outputs that favor certain groups, and bias drift monitoring exists to watch for bias in the predictions of a production model. Data quality focuses on drift in the data, model quality on metrics such as accuracy, and feature attribution drift on how feature contributions change, not on how groups are treated.",
+      "source": "AWS — Data and model quality monitoring with Amazon SageMaker Model Monitor (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html)"
+    },
+    {
+      "id": "q110105_r002",
+      "skill_id": "sk110105",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo entrena un modelo de regresión para estimar la edad de quienes compran una vivienda. Para comprobar que aporta más valor que un enfoque trivial, ¿con qué referencia debe comparar su error?",
+      "question_en": "A team trains a regression model to estimate the age of house buyers. To check that it adds more value than a trivial approach, which reference should they compare its error against?",
+      "options_es": [
+        "Un modelo constante que siempre predice el promedio del objetivo",
+        "Un modelo constante que siempre predice el valor más frecuente del objetivo",
+        "Un modelo constante que siempre predice cero para cualquier registro",
+        "Un modelo constante que siempre predice el menor valor visto en el entrenamiento"
+      ],
+      "options_en": [
+        "A constant model that always predicts the average of the target",
+        "A constant model that always predicts the most frequent target value",
+        "A constant model that always predicts zero for every record",
+        "A constant model that always predicts the smallest value seen in training"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La comparación útil es contra un modelo ingenuo que da la misma respuesta para todos los registros: el promedio del objetivo en los datos de entrenamiento. Si el modelo real no mejora el error de esa referencia, no demuestra aportar valor. El valor más frecuente, el cero y el mínimo observado también son respuestas constantes, pero no son la referencia que describe la fuente.",
+      "explanation_en": "The useful comparison is against a naive model that gives the same answer for every record: the average of the target in the training data. If the real model does not improve on the error of that reference, it has not shown it adds value. The most frequent value, zero and the observed minimum are also constant answers, but they are not the reference the source describes.",
+      "source": "AWS — Regression Model Insights (https://docs.aws.amazon.com/machine-learning/latest/dg/regression-model-insights.html)"
+    },
+    {
+      "id": "q110105_r004",
+      "skill_id": "sk110105",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo mantiene un modelo de clasificación y otro de regresión, y debe decidir cómo medir la exactitud predictiva de cada uno. ¿Qué enfoque es el adecuado?",
+      "question_en": "A team maintains one classification model and one regression model and must decide how to measure each one's predictive accuracy. Which approach is appropriate?",
+      "options_es": [
+        "Aplicar una misma métrica a todos los modelos para que los resultados sean comparables entre ellos",
+        "Escoger la métrica que dé el valor más alto al calcularse sobre los datos usados para entrenar",
+        "Ajustar la métrica a lo que predice el modelo, sea una categoría o un valor numérico",
+        "Fijar la métrica según el número de registros del conjunto de datos, sin mirar qué se predice"
+      ],
+      "options_en": [
+        "Apply the same metric to every model so that results remain comparable across all of them",
+        "Choose whichever metric gives the highest value when computed on the data used for training",
+        "Fit the metric to what the model predicts, whether a category or a numeric value",
+        "Set the metric by the number of records in the dataset, without looking at what is predicted"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Hay varias métricas de exactitud predictiva y la adecuada depende de la tarea de ML, de modo que un modelo que predice categorías y otro que predice valores numéricos necesitan métricas distintas. Una métrica única para todos, elegida por su resultado sobre los datos de entrenamiento o por el tamaño del conjunto, no tiene en cuenta ese criterio.",
+      "explanation_en": "Several predictive-accuracy metrics exist, and the right one depends on the ML task, so a model predicting categories and one predicting numeric values call for different metrics. A single metric for all models, one picked for its result on training data, or one chosen by dataset size ignores that criterion.",
+      "source": "AWS — Evaluating Model Accuracy (https://docs.aws.amazon.com/machine-learning/latest/dg/evaluating-model-accuracy.html)"
+    },
+    {
+      "id": "q110102_r004",
+      "skill_id": "sk110102",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una aseguradora revisa fotos de siniestros y necesita encontrar cada vehículo que aparece en la escena y asignarle una clase con su nivel de confianza. ¿Qué algoritmo integrado de SageMaker AI encaja mejor?",
+      "question_en": "An insurer reviews photos of accident claims and needs to find every vehicle in the scene and assign each one a class with its confidence level. Which built-in SageMaker AI algorithm fits best?",
+      "options_es": [
+        "Object Detection, que identifica cada instancia de un objeto y la clasifica con una puntuación",
+        "Image Classification, que asigna etiquetas a la imagen completa sin identificar instancias individuales",
+        "K-Means, que reúne observaciones parecidas en grupos sin necesitar etiquetas ni ejemplos previos",
+        "Sequence-to-Sequence, que convierte una secuencia de tokens de entrada en otra secuencia distinta"
+      ],
+      "options_en": [
+        "Object Detection, which finds each object instance and classifies it with a confidence score",
+        "Image Classification, which assigns labels to the whole image without finding individual instances",
+        "K-Means, which groups similar observations together without needing labels or prior examples",
+        "Sequence-to-Sequence, which converts an input sequence of tokens into a different output sequence"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Object Detection es un algoritmo supervisado que recibe imágenes, identifica todas las instancias de objetos de la escena y categoriza cada una con una puntuación de confianza, usando una única red neuronal profunda. La clasificación de imágenes etiqueta la imagen como un todo, K-Means agrupa datos sin etiquetas y Sequence-to-Sequence transforma secuencias de tokens, así que ninguna resuelve este caso.",
+      "explanation_en": "Object Detection is a supervised algorithm that takes images, identifies every instance of an object in the scene, and categorizes each with a confidence score, using a single deep neural network. Image classification labels the image as a whole, K-Means groups data without labels, and Sequence-to-Sequence transforms token sequences, so none of them solves this case.",
+      "source": "AWS — Object Detection (https://docs.aws.amazon.com/sagemaker/latest/dg/object-detection.html)"
+    },
+    {
+      "id": "q110103_r003",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere entrenar modelos de aprendizaje profundo de gran tamaño en AWS y busca un acelerador de hardware que AWS haya diseñado específicamente para ese entrenamiento. ¿Qué opción corresponde?",
+      "question_en": "A company wants to train large deep learning models on AWS and is looking for a hardware accelerator that AWS designed specifically for that training. Which option matches?",
+      "options_es": [
+        "AWS Inferentia, orientado a ejecutar inferencia de aprendizaje profundo con alto rendimiento y bajo coste",
+        "Amazon Nova, modelos de Amazon que reciben una instrucción de texto y generan texto o imágenes",
+        "AWS Trainium, un acelerador de AWS pensado para entrenar aprendizaje profundo",
+        "Amazon Titan, modelos fundacionales de Amazon para respaldar diversos casos de uso"
+      ],
+      "options_en": [
+        "AWS Inferentia, designed to run deep learning inference at high performance and the lowest cost",
+        "Amazon Nova, Amazon models that take a text prompt and return text or image output",
+        "AWS Trainium, an AWS accelerator built for training deep learning models",
+        "Amazon Titan, foundation models from Amazon that support various use cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El fragmento presenta AWS Trainium como un acelerador diseñado por AWS para entrenar modelos de aprendizaje profundo muy grandes. El mismo texto orienta AWS Inferentia a la inferencia, mientras que Amazon Nova y Amazon Titan aparecen como modelos, no como hardware.",
+      "explanation_en": "The fragment presents AWS Trainium as an AWS-designed accelerator for training very large deep learning models. The same text aims AWS Inferentia at inference, while Amazon Nova and Amazon Titan appear as models rather than hardware.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110104_r004",
+      "skill_id": "sk110104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En Amazon SageMaker Model Registry, ¿qué es un grupo de modelos (Model Group)?",
+      "question_en": "In Amazon SageMaker Model Registry, what is a Model Group?",
+      "options_es": [
+        "Una categoría superior que agrupa varias colecciones para organizarlas por equipo",
+        "Un contenedor que sigue los modelos entrenados para un mismo problema",
+        "Un endpoint que atiende varios modelos distintos detrás de una misma dirección",
+        "Un paso de pipeline que entrena un modelo nuevo por cada versión registrada"
+      ],
+      "options_en": [
+        "A higher-level category that bundles several Collections together by team",
+        "A container that tracks the models trained to solve one problem",
+        "An endpoint that serves several different models behind one address",
+        "A pipeline step that trains a new model for every registered version"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un Model Group agrupa los modelos que se entrenan para resolver un problema concreto; cada modelo registrado se incorpora como una nueva versión dentro de ese grupo. Las Collections son la capa superior que organiza Model Groups, no al revés, por lo que la opción 0 invierte la jerarquía. Un Model Group tampoco es un endpoint de inferencia ni un paso de entrenamiento en un pipeline.",
+      "explanation_en": "A Model Group keeps track of the models trained to address a specific problem, and each registered model is added to it as a new version. Collections sit above Model Groups — they group Model Groups together, not the other way around, so option A reverses the hierarchy. A Model Group is neither an inference endpoint nor a training step in a pipeline.",
+      "source": "AWS — Model Registration Deployment with Model Registry (https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry.html)"
+    },
+    {
+      "id": "q110101_r002",
+      "skill_id": "sk110101",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere un asistente que atienda llamadas y chats web, y que entienda lo que pide cada cliente. ¿Qué describe mejor lo que aporta Amazon Lex en ese caso?",
+      "question_en": "A company wants an assistant that handles phone calls and web chats and understands what each customer is asking for. Which statement best describes what Amazon Lex contributes here?",
+      "options_es": [
+        "Se limita al chat de texto, así que la parte de voz exige contratar otro servicio distinto.",
+        "Analiza imágenes y videos para encontrar objetos, escenas y personas, no conversaciones con usuarios.",
+        "Transcribe la voz, pero deja a otras herramientas la tarea de averiguar qué quiere la persona usuaria.",
+        "Convierte voz en texto y reconoce la intención, en bots de voz y de texto."
+      ],
+      "options_en": [
+        "It handles text chat only, so voice interfaces call for a different service.",
+        "It analyzes images and videos to find objects, scenes, and people rather than conversations.",
+        "It transcribes speech, but leaves working out what the user wants to other tools.",
+        "It converts speech to text and recognizes intent, for both voice and text bots."
+      ],
+      "correct_index": 3,
+      "explanation_es": "Amazon Lex sirve para crear interfaces conversacionales tanto de voz como de texto. Une el reconocimiento automático del habla, que pasa la voz a texto, con la comprensión del lenguaje natural, que identifica la intención. Por eso cubre llamadas y chats, no se centra en imágenes y no deja la intención en manos de otras herramientas.",
+      "explanation_en": "Amazon Lex is used to build conversational interfaces for both voice and text. It joins automatic speech recognition, which turns speech into text, with natural language understanding, which identifies the intent. That is why it covers calls and chats, does not focus on images, and does not hand intent recognition off to other tools.",
+      "source": "AWS — AWS Machine Learning category iconMachine Learning (ML) and Artificial Intelligence (AI) (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/machine-learning.html)"
+    },
+    {
+      "id": "q110102_r003",
+      "skill_id": "sk110102",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué tipo de arquitectura de aprendizaje profundo utiliza el algoritmo seq2seq de SageMaker AI para tareas como la traducción automática o la síntesis de texto?",
+      "question_en": "What type of deep learning architecture does the SageMaker AI seq2seq algorithm employ for tasks such as machine translation or text summarization?",
+      "options_es": [
+        "Una red neuronal feedforward totalmente conectada que procesa cada token de forma independiente, sin modelar dependencias entre posiciones de la secuencia",
+        "Un modelo basado exclusivamente en capas de autoatención, sin ningún componente recurrente ni convolucional",
+        "Un algoritmo de agrupamiento no supervisado que identifica patrones repetitivos dentro de los datos de secuencia",
+        "Redes neuronales recurrentes y convolucionales con mecanismos de atención, organizadas como arquitecturas de codificador y decodificador"
+      ],
+      "options_en": [
+        "A fully connected feedforward network that processes each token independently, without capturing positional dependencies across the sequence",
+        "A model relying exclusively on self-attention layers, with no recurrent or convolutional components",
+        "An unsupervised clustering algorithm that identifies recurring patterns within sequence data",
+        "Recurrent and convolutional neural networks with attention mechanisms, organized as encoder-decoder architectures"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La documentación especifica que el seq2seq de SageMaker AI combina RNNs y CNNs con atención en una arquitectura de codificador-decodificador, lo que le permite transformar una secuencia de entrada en una secuencia de salida. Las redes feedforward no modelan dependencias secuenciales; un modelo de autoatención pura no es la arquitectura descrita en el fragmento; y el agrupamiento no supervisado pertenece a un paradigma distinto que no genera secuencias.",
+      "explanation_en": "The documentation states that SageMaker AI seq2seq combines RNNs and CNNs with attention in an encoder-decoder architecture, enabling it to map an input sequence to an output sequence. Feedforward networks do not capture sequential dependencies; a pure self-attention model is not the architecture the fragment describes; and unsupervised clustering belongs to a different paradigm that does not produce sequences.",
+      "source": "AWS — Sequence-to-Sequence Algorithm (https://docs.aws.amazon.com/sagemaker/latest/dg/seq-2-seq.html)"
+    },
+    {
+      "id": "q110105_r001",
+      "skill_id": "sk110105",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo construye un clasificador binario y todavía no ha decidido qué punto de corte usará para convertir las puntuaciones en etiquetas. ¿Por qué aun así puede usar el AUC para valorar la exactitud predictiva del modelo?",
+      "question_en": "A team is building a binary classifier and has not yet decided which cut-off to use for turning scores into labels. Why can they still use AUC to gauge the model's predictive accuracy?",
+      "options_es": [
+        "Porque se calcula con un punto de corte predeterminado que la plataforma ajusta sola para cada modelo",
+        "Porque solo cuenta la proporción de etiquetas correctas en los datos de entrenamiento, así que no hay umbral",
+        "Porque mide la distancia media entre cada número predicho y la respuesta numérica real",
+        "Porque compara si los positivos puntúan más alto que los negativos, con cualquier corte"
+      ],
+      "options_en": [
+        "Because it is calculated at a default cut-off that the platform tunes automatically for every model",
+        "Because it only counts the share of correct labels on the training data, so no threshold is involved",
+        "Because it measures the average distance between each predicted number and the actual numeric answer",
+        "Because it checks whether positives score higher than negatives, at any cut-off"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El AUC mide si el modelo asigna puntuaciones más altas a los ejemplos positivos que a los negativos, y no depende del punto de corte, por lo que da una idea de la exactitud sin elegir un umbral. Las otras opciones describen un corte fijado por la plataforma, un recuento de aciertos sobre datos de entrenamiento o una distancia numérica propia de la regresión, y ninguna corresponde al AUC.",
+      "explanation_en": "AUC measures whether the model gives higher scores to positive examples than to negative ones, and it does not depend on the cut-off, so it gives a sense of accuracy without picking a threshold. The other options describe a platform-chosen cut-off, a count of correct labels on training data, or a numeric distance typical of regression, and none of those is how AUC works.",
+      "source": "AWS — Binary Model Insights (https://docs.aws.amazon.com/machine-learning/latest/dg/binary-model-insights.html)"
+    },
+    {
+      "id": "q110103_r002",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Al comparar modelos fundacionales candidatos según su tamaño, es decir, su número de parámetros, ¿qué compromiso conviene valorar?",
+      "question_en": "When comparing candidate foundation models by size, meaning their number of parameters, which trade-off should you weigh?",
+      "options_es": [
+        "Más parámetros reducen el cómputo necesario para operar el modelo, porque cada parámetro adicional simplifica la inferencia",
+        "Más parámetros suelen dar más capacidad y rendimiento, pero exigen más cómputo para operar",
+        "Menos parámetros garantizan siempre mejor rendimiento, porque los parámetros adicionales solo añaden ruido a las respuestas",
+        "El número de parámetros no influye en la capacidad del modelo; solo cambia el formato de sus respuestas"
+      ],
+      "options_en": [
+        "More parameters reduce the compute needed to run the model, since each extra parameter makes inference simpler",
+        "More parameters usually bring more capacity and performance, but need more compute to run",
+        "Fewer parameters always guarantee better performance, since extra parameters only add noise to the responses",
+        "Parameter count has no bearing on a model's capacity; it only changes the format of its responses"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, la cantidad de parámetros refleja lo complejo que es un modelo: los más grandes aprenden matices más finos y en general rinden mejor, pero cuestan más de entrenar y exigen más cómputo al usarlos. Por eso fallan la opción que dice que más parámetros abaratan la operación, la que asegura que menos parámetros siempre ganan y la que niega que el tamaño afecte a la capacidad.",
+      "explanation_en": "According to the source, a model's parameter count signals how complex it is: larger models can learn subtler patterns and usually perform better, but they are costlier to train and need more compute to run. That is why the options claiming that more parameters cut compute, that fewer parameters always win, or that size does not affect capacity contradict it.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110103_r005",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo debe elegir entre varios modelos fundacionales de texto de JumpStart y quiere contrastar su calidad y sus métricas de responsabilidad antes de decidir. ¿Qué capacidad de SageMaker encaja con esta necesidad?",
+      "question_en": "A team must choose among several text foundation models from JumpStart and wants to compare their quality and responsibility metrics before deciding. Which SageMaker capability fits this need?",
+      "options_es": [
+        "Amazon SageMaker Clarify, con trabajos que evalúan y comparan modelos",
+        "Amazon SageMaker Canvas, que permite generar predicciones de ML sin programar",
+        "Amazon SageMaker Studio, un entorno web con varios IDE para el trabajo de ML",
+        "Amazon SageMaker JumpStart, que aporta los modelos fundacionales de texto candidatos"
+      ],
+      "options_en": [
+        "Amazon SageMaker Clarify, through jobs that evaluate and compare models",
+        "Amazon SageMaker Canvas, which produces ML predictions without any coding",
+        "Amazon SageMaker Studio, a browser-based environment with several IDEs for ML work",
+        "Amazon SageMaker JumpStart, which supplies the candidate text foundation models"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según el fragmento, SageMaker Clarify ayuda a decidir qué modelo fundacional usar mediante trabajos de evaluación, que miden y contrastan la calidad y la responsabilidad de modelos de texto de JumpStart. Canvas se presenta como una forma de obtener predicciones sin escribir código y Studio como un entorno web con varios IDE. JumpStart es de donde proceden los modelos evaluados, no la herramienta que los compara.",
+      "explanation_en": "According to the fragment, SageMaker Clarify handles the choice of foundation model through evaluation jobs that measure and contrast quality and responsibility for text models from JumpStart. Canvas is presented as a way to get predictions without writing code, and Studio as a web environment with several IDEs. JumpStart is where the evaluated models come from, not the tool that compares them.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110105_r003",
+      "skill_id": "sk110105",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo quiere estimar qué tan bien acertará su modelo de ML con datos nuevos. ¿Qué enfoque de evaluación es el adecuado?",
+      "question_en": "A team wants to estimate how well its ML model will perform on new data. Which evaluation approach is appropriate?",
+      "options_es": [
+        "Calcular la métrica con los mismos registros usados para entrenar, porque ya tienen etiqueta",
+        "Comparar sus predicciones con etiquetas reales de registros apartados antes de entrenar",
+        "Enviar registros futuros sin etiqueta y comprobar que las predicciones parezcan razonables",
+        "Evaluar con datos de otro esquema que omiten la columna objetivo para evitar fuga de datos"
+      ],
+      "options_en": [
+        "Compute the metric on the same records used for training, since they are already labeled",
+        "Compare its predictions with true labels of records set aside before training",
+        "Send future records that have no labels and check that the predictions look reasonable",
+        "Evaluate on data with a different schema that omits the target column to avoid leakage"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Para saber cómo se comportará el modelo con datos futuros hay que medirlo con registros que se apartaron del entrenamiento, que conservan su valor real del objetivo y tienen el mismo esquema, de modo que las predicciones se puedan contrastar con la realidad. Evaluar con los datos de entrenamiento premia que el modelo los memorice en lugar de generalizar. Los datos futuros no tienen objetivo conocido, y un esquema distinto o sin la columna objetivo impide la comparación.",
+      "explanation_en": "To judge how the model will behave on future data, it must be scored on records that were kept out of training, still carry their true target values, and share the training schema, so predictions can be checked against reality. Scoring on the training records favors a model that memorizes them instead of generalizing. Future records have no known target, and a different schema or a missing target column makes the comparison impossible.",
+      "source": "AWS — Evaluating ML Models (https://docs.aws.amazon.com/machine-learning/latest/dg/evaluating_models.html)"
+    },
+    {
+      "id": "q110102_r001",
+      "skill_id": "sk110102",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo de ciencia de datos trabaja con datos tabulares y quiere un algoritmo integrado de SageMaker AI que aplique aprendizaje profundo con mecanismos de autoatención. ¿Cuál debería elegir?",
+      "question_en": "A data science team works with tabular data and wants a built-in SageMaker AI algorithm that applies deep learning with self-attention mechanisms. Which one should it choose?",
+      "options_es": [
+        "XGBoost, que reúne las estimaciones de muchos modelos sencillos con árboles potenciados por gradiente",
+        "TabTransformer, que es una arquitectura profunda para datos tabulares con autoatención",
+        "Linear Learner, que ajusta un modelo lineal para predecir valores o separar clases",
+        "K-Nearest Neighbors, que asigna valores a partir de los puntos etiquetados más cercanos"
+      ],
+      "options_en": [
+        "XGBoost, which combines estimates from many simple models using gradient-boosted trees",
+        "TabTransformer, a deep architecture for tabular data built on self-attention",
+        "Linear Learner, which fits a straight-line model for predicting values or separating classes",
+        "K-Nearest Neighbors, which assigns values using the closest labeled data points"
+      ],
+      "correct_index": 1,
+      "explanation_es": "TabTransformer es la opción que encaja porque es una arquitectura profunda para datos tabulares construida sobre Transformers con autoatención. XGBoost se basa en árboles potenciados por gradiente, Linear Learner aprende una función lineal y k-NN se apoya en los puntos etiquetados más cercanos; ninguno de ellos es una arquitectura profunda con autoatención.",
+      "explanation_en": "TabTransformer fits because it is a deep architecture for tabular data built on Transformers that use self-attention. XGBoost relies on gradient-boosted trees, Linear Learner learns a linear function, and k-NN depends on the nearest labeled points; none of these is a deep architecture based on self-attention.",
+      "source": "AWS — Built-in algorithms and pretrained models in Amazon SageMaker (https://docs.aws.amazon.com/sagemaker/latest/dg/algos.html)"
+    },
+    {
+      "id": "q110103_r006",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere ofrecer a su personal asistentes de IA generativa para ganar productividad, y su equipo no quiere seleccionar ni gestionar un modelo fundacional. ¿Qué opción encaja?",
+      "question_en": "A company wants to give its staff generative AI assistants to boost productivity, and its team does not want to select or manage a foundation model. Which option fits?",
+      "options_es": [
+        "Entrenar un modelo propio en SageMaker AI y administrar todo su ciclo de vida",
+        "Usar Amazon Q Business o Q Developer, sin necesidad de escoger un modelo",
+        "Seleccionar un modelo en Amazon Bedrock y comparar candidatos con evaluación de modelos",
+        "Desplegar un modelo público desde SageMaker JumpStart y ajustarlo con LoRA"
+      ],
+      "options_en": [
+        "Train a custom model in SageMaker AI and manage its whole ML lifecycle",
+        "Use Amazon Q Business or Q Developer, with no model to choose",
+        "Pick a model in Amazon Bedrock and compare candidates with model evaluation",
+        "Deploy a public model from SageMaker JumpStart and customize it with LoRA"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Amazon Q Business y Amazon Q Developer son aplicaciones de la capa más alta de la oferta de IA generativa de Amazon: se apoyan en modelos internamente, pero el usuario no tiene que escoger ninguno. Las otras tres opciones giran en torno a elegir, comparar, entrenar o desplegar un modelo, justo lo que el equipo quiere evitar.",
+      "explanation_en": "Amazon Q Business and Q Developer are applications built on the uppermost layer of Amazon's generative AI offerings. They rely on foundation models internally, yet the user is never asked to pick one. The other options all revolve around selecting, comparing, training or deploying a model, which is what this team wants to avoid.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110103_r009",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una aplicación de chat creada sobre Amazon Bedrock debe responder preguntas que dependen de datos en vivo guardados en un sistema de la empresa, como el nivel actual de existencias. ¿Qué capacidad de Bedrock permite al modelo llegar a esos datos para elaborar su respuesta?",
+      "question_en": "A chat application built on Amazon Bedrock must answer questions that depend on live data held in a company system, such as current stock levels. Which Bedrock capability lets the model reach that data to build its answer?",
+      "options_es": [
+        "Uso de herramientas (function calling), para consultar el sistema de la empresa",
+        "Prompt management, para guardar un prompt reutilizable con variables y aplicarlo en distintos flujos de trabajo",
+        "La Converse API, para mantener una conversación de varios turnos con un tono y un rol definidos",
+        "Las contextual grounding checks, para filtrar respuestas alucinadas en cargas de trabajo con RAG"
+      ],
+      "options_en": [
+        "Tool use (function calling), so the model can query the company system",
+        "Prompt management, to store a reusable prompt with variables for different workflows",
+        "The Converse API, to keep a multi-turn conversation going with a defined tone and role",
+        "Contextual grounding checks, to filter out hallucinated answers in RAG workloads"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El uso de herramientas (function calling) permite que el modelo se apoye en una herramienta externa para elaborar su respuesta; con datos en vivo, esa herramienta consulta el sistema y devuelve el dato. Prompt management solo guarda prompts reutilizables, la Converse API se ocupa de la conversación y las comprobaciones de fundamentación detectan alucinaciones, pero ninguna da acceso al sistema de datos.",
+      "explanation_en": "Tool use (function calling) lets the model lean on an external tool when building its answer; for live data, that tool queries the system and returns the value. Prompt management only stores reusable prompts, the Converse API handles the conversation, and grounding checks detect hallucinations, but none of them gives access to the data system.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110104_r002",
+      "skill_id": "sk110104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En Amazon SageMaker Model Monitor, ¿con qué se comparan las predicciones en tiempo real o por lotes del modelo y cuándo se reporta una violación?",
+      "question_en": "In Amazon SageMaker Model Monitor, what are the model's real-time or batch predictions compared against, and when is a violation reported?",
+      "options_es": [
+        "Contra la última versión del registro de modelos; marca una violación cada vez que se publica una versión nueva",
+        "Contra etiquetas aportadas por revisores humanos; marca una violación cuando un revisor discrepa",
+        "Contra las predicciones de la hora anterior; marca una violación ante cualquier cambio de valor",
+        "Contra restricciones sugeridas por una línea base; marca una violación si los valores quedan fuera de ellas"
+      ],
+      "options_en": [
+        "Against the latest version in the model registry; it flags a violation whenever a new version is released",
+        "Against labels from human reviewers; it flags a violation whenever a reviewer disagrees",
+        "Against the previous hour's predictions; it flags a violation whenever any value changes",
+        "Against constraints suggested by a baseline; it flags a violation when values fall outside them"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La línea base calcula métricas y sugiere restricciones para ellas; las predicciones se comparan con esas restricciones y se reportan como violaciones cuando quedan fuera de los valores permitidos. Las otras opciones inventan referentes (registro de modelos, revisores humanos, la hora anterior) que no forman parte de este mecanismo.",
+      "explanation_en": "Model Monitor derives a set of constraints from a training-data baseline; incoming predictions are evaluated against those constraints and flagged as violations when they fall outside the permitted range. The other options invent reference points (the model registry, human reviewers, the previous hour) that are not part of this mechanism.",
+      "source": "AWS — Data and model quality monitoring with Amazon SageMaker Model Monitor (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html)"
+    },
+    {
+      "id": "q110103_r007",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa revisa la oferta de IA de AWS. ¿Cómo se describe correctamente Amazon Nova?",
+      "question_en": "A company is reviewing the AWS AI portfolio. Which statement correctly describes Amazon Nova?",
+      "options_es": [
+        "Un servicio administrado para construir, entrenar y desplegar modelos de ML propios",
+        "Un entorno unificado para orquestar y supervisar flujos de trabajo de datos e IA",
+        "Una familia de modelos fundacionales que se ofrece mediante Amazon Bedrock",
+        "Un catálogo de plantillas y cuadernos de ejemplo para escenarios de ML habituales"
+      ],
+      "options_en": [
+        "A managed service for building, training and deploying your own ML models",
+        "A unified environment for orchestrating and monitoring data and AI workflows",
+        "A family of foundation models that you access through Amazon Bedrock",
+        "A catalog of templates and sample notebooks for typical ML scenarios"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Amazon Nova es una nueva generación de modelos fundacionales y se consume a través de Amazon Bedrock. Las otras opciones describen otro tipo de oferta: una plataforma para crear y entrenar modelos propios, un entorno de trabajo integrado o un conjunto de plantillas y cuadernos. Ninguna de ellas es un modelo fundacional listo para usar.",
+      "explanation_en": "Amazon Nova is a new generation of foundation models, and you consume it through Amazon Bedrock. The other options describe different kinds of offerings: a platform for building and training your own models, an integrated workspace, or a set of templates and notebooks. None of them is a ready-to-use foundation model.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110103_r010",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo quiere usar modelos fundacionales de distintos proveedores sin gestionar infraestructura propia. ¿Qué descripción corresponde a Amazon Bedrock?",
+      "question_en": "A team wants to use foundation models from different providers without managing its own infrastructure. Which description fits Amazon Bedrock?",
+      "options_es": [
+        "Una plataforma para entrenar modelos propios desde cero en clústeres que el cliente configura y administra por su cuenta",
+        "Un servicio administrado con modelos fundacionales de varios proveedores accesibles por una API unificada",
+        "Un catálogo cerrado de modelos de Amazon que solo funciona con servidores de inferencia propios de cada cliente",
+        "Una herramienta de desarrollo para diseñar y programar flujos de transformación de datos corporativos"
+      ],
+      "options_en": [
+        "A platform for training custom models from scratch on clusters the customer configures and manages",
+        "A managed service offering foundation models from several providers through one unified API",
+        "A closed catalog of Amazon-only models that can be used only with customer-run inference servers",
+        "A development tool for designing and coding corporate data transformation workflows"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Amazon Bedrock se presenta como un servicio totalmente administrado que pone modelos fundacionales de Amazon y de terceros al alcance mediante una API unificada, sin que el cliente opere la infraestructura. Por eso no es una plataforma para entrenar desde cero con clústeres propios, ni un catálogo limitado a Amazon que exija servidores de inferencia del cliente, ni una herramienta para flujos de datos.",
+      "explanation_en": "Amazon Bedrock is described as a fully managed service that makes foundation models from Amazon and third parties available through a unified API, so the customer does not operate the infrastructure. That rules out a platform for training from scratch on customer clusters, an Amazon-only catalog requiring customer inference servers, and a data workflow tool.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110102_r002",
+      "skill_id": "sk110102",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo quiere asignar varias etiquetas de categoría a imágenes de productos y dispone de pocos ejemplos etiquetados. ¿Qué afirmación sobre el algoritmo integrado de clasificación de imágenes de Amazon SageMaker AI justifica su elección para este escenario?",
+      "question_en": "A team wants to assign multiple category labels to product images and has few labeled examples available. Which statement about the Amazon SageMaker AI built-in image classification algorithm justifies choosing it for this scenario?",
+      "options_es": [
+        "Detecta objetos en la imagen, delimita su posición con cuadros delimitadores y clasifica cada instancia encontrada por separado.",
+        "Es un algoritmo no supervisado que agrupa imágenes similares sin requerir ningún ejemplo etiquetado de entrenamiento.",
+        "Es supervisado, usa una red convolucional y admite varias etiquetas por imagen y transferencia de aprendizaje.",
+        "Clasifica cada píxel individualmente para ofrecer una segmentación detallada a nivel de píxel en lugar de etiquetar la imagen entera."
+      ],
+      "options_en": [
+        "It detects objects in an image and uses bounding boxes to indicate the position and class of each instance found, rather than assigning global labels.",
+        "It is an unsupervised algorithm that groups similar images together without requiring any labeled training examples at all.",
+        "It is supervised, uses a convolutional network, supports multiple labels per image, and allows transfer learning when few training images exist.",
+        "It classifies each pixel of the image individually into a category, providing detailed pixel-level segmentation instead of labeling the whole image."
+      ],
+      "correct_index": 2,
+      "explanation_es": "El fragmento describe el algoritmo como supervisado, con salida de una o más etiquetas y con transferencia de aprendizaje disponible cuando los datos de entrenamiento escasean, características que encajan con el escenario. La opción A corresponde a detección de objetos con cuadros delimitadores, que es un algoritmo distinto. La opción B es incorrecta porque el algoritmo es supervisado y requiere ejemplos etiquetados. La opción D corresponde a segmentación semántica, que opera a nivel de píxel.",
+      "explanation_en": "The fragment describes the algorithm as supervised, outputting one or more labels per image and supporting transfer learning when training data is scarce — the three characteristics that match the scenario. Option A describes object detection with bounding boxes, which is a different algorithm. Option B is wrong because the algorithm is supervised and requires labeled examples. Option D describes semantic segmentation, which operates at the pixel level.",
+      "source": "AWS — Image Classification (https://docs.aws.amazon.com/sagemaker/latest/dg/image-classification.html)"
+    },
+    {
+      "id": "q110104_r003",
+      "skill_id": "sk110104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo de científicos de datos sin experiencia previa en SageMaker AI necesita poner en marcha un modelo preentrenado de código abierto sin enfrentarse a configuraciones complejas. ¿Qué camino recomienda la documentación para este perfil?",
+      "question_en": "A team of data scientists with no prior SageMaker AI experience needs to get a pre-trained open source model running without tackling complex configurations. Which path does the documentation recommend for this profile?",
+      "options_es": [
+        "Usar JumpStart en Studio para desplegar un modelo desde un catálogo de modelos preentrenados",
+        "Aprovechar la clase ModelBuilder del SDK de Python para ajustar cada parámetro del despliegue",
+        "Automatizar el aprovisionamiento con plantillas de CloudFormation y herramientas de CI/CD",
+        "Construir un contenedor personalizado y administrar el endpoint con scripts de Boto3"
+      ],
+      "options_en": [
+        "Use JumpStart in Studio to deploy a model from a pre-trained model catalog",
+        "Use the ModelBuilder class from the Python SDK to tune every deployment parameter",
+        "Automate provisioning with CloudFormation templates and CI/CD tooling",
+        "Build a custom container and manage the endpoint with Boto3 scripts"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento establece que JumpStart, disponible desde la interfaz de Studio, está pensado para principiantes o quienes recién comienzan con SageMaker AI, y permite desplegar modelos preentrenados sin configuraciones complejas. ModelBuilder, en cambio, está orientado a profesionales experimentados que necesitan control detallado sobre configuraciones propias. CloudFormation junto con IaC y CI/CD apunta a usuarios avanzados que gestionan modelos a escala en producción. Administrar un contenedor personalizado con scripts de Boto3 también exige ese nivel de experiencia en infraestructura que el equipo del escenario aún no posee.",
+      "explanation_en": "The fragment states that JumpStart, accessed through the Studio interface, is designed for beginners or teams new to SageMaker AI, allowing pre-trained models to be deployed without complex configurations. ModelBuilder, by contrast, is aimed at experienced ML practitioners who need fine-grained control over their own model deployments. CloudFormation with IaC and CI/CD tools targets advanced users managing models at scale in production. Managing a custom container with Boto3 scripts also demands that same level of infrastructure expertise, which a team new to SageMaker AI does not yet have.",
+      "source": "AWS — Deploy models for inference (https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)"
+    },
+    {
+      "id": "q110101_r001",
+      "skill_id": "sk110101",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué afirmación describe mejor la IA generativa y su lugar entre los enfoques de IA?",
+      "question_en": "Which statement best describes generative AI and where it sits among AI approaches?",
+      "options_es": [
+        "Es un tipo de IA de clasificación cuyo propósito es reconocer patrones para etiquetar cosas que ya existen.",
+        "Es un tipo de IA de aprendizaje profundo que crea contenido nuevo con modelos preentrenados enormes.",
+        "Es un tipo de IA predictiva que pronostica tendencias futuras a partir de patrones estadísticos de datos históricos.",
+        "Es un tipo de IA basada en reglas que busca respuestas almacenadas, así que no produce nada que no se haya guardado antes."
+      ],
+      "options_en": [
+        "It is a kind of classification AI whose purpose is to recognize patterns in order to label things that already exist.",
+        "It is a kind of deep learning AI that creates new content, such as text or images, using large pretrained models.",
+        "It is a kind of predictive AI that forecasts future trends from statistical patterns found in historical data.",
+        "It is a kind of rule-based AI that looks up stored answers, so it cannot produce anything that was not already saved."
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente sitúa la IA generativa dentro del aprendizaje profundo y señala que puede producir material nuevo, como conversaciones, imágenes o música, apoyándose en modelos fundacionales entrenados de antemano con enormes volúmenes de datos. La IA de clasificación identifica algo y la predictiva anticipa tendencias, así que son categorías distintas. Un sistema que solo recupera respuestas guardadas contradice que pueda crear contenido nuevo.",
+      "explanation_en": "The source places generative AI inside deep learning and says it can produce new material, such as conversations, images or music, by relying on foundation models trained beforehand on huge volumes of data. Classification AI identifies something and predictive AI anticipates trends, so those are separate categories. A system that only retrieves saved answers contradicts the idea that it can create new content.",
+      "source": "AWS — Choosing an AWS machine learning service (https://docs.aws.amazon.com/decision-guides/latest/machine-learning-on-aws-how-to-choose/guide.html)"
+    },
+    {
+      "id": "q110103_r008",
+      "skill_id": "sk110103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo quiere experimentar con prompts mientras crea aplicaciones sencillas de IA generativa. ¿Qué describe mejor a PartyRock?",
+      "question_en": "A team wants to experiment with prompts while building simple generative AI applications. Which best describes PartyRock?",
+      "options_es": [
+        "Un servicio de Bedrock que entrena modelos fundacionales desde cero con los datos privados de la empresa",
+        "Un catálogo de Bedrock con modelos públicos que obliga a desplegar endpoints propios antes de probarlos",
+        "Una herramienta de Bedrock que puntúa los modelos fundacionales según su exactitud y su toxicidad",
+        "Un playground de Bedrock para crear apps de IA generativa y practicar con prompts"
+      ],
+      "options_en": [
+        "A Bedrock service that trains foundation models from scratch on a company's private data",
+        "A Bedrock catalog of public models that must be deployed to your own endpoints before testing",
+        "A Bedrock tool that scores foundation models on their accuracy and their toxicity",
+        "A Bedrock playground for building generative AI apps and practicing with prompts"
+      ],
+      "correct_index": 3,
+      "explanation_es": "PartyRock es un playground de Amazon Bedrock pensado para crear apps de IA generativa y practicar de forma directa con la ingeniería de prompts. Las otras opciones le atribuyen funciones que la fuente no le da: entrenar modelos desde cero, exigir endpoints propios o evaluar modelos.",
+      "explanation_en": "PartyRock is an Amazon Bedrock playground meant for building generative AI apps and getting hands-on practice with prompt engineering. The other options give it roles the source does not describe: training models from scratch, requiring your own endpoints, or evaluating models.",
+      "source": "AWS — Choosing a generative AI service (https://docs.aws.amazon.com/decision-guides/latest/generative-ai-on-aws-how-to-choose/guide.html)"
+    }
+  ]
+}

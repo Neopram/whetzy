@@ -77,6 +77,14 @@
     "confirmPlaceholder": "Confirmar",
     "submit": "Cambiar"
   },
+  "verifyEmail": {
+    "success": "Email verificado. Ya tienes acceso completo.",
+    "continue": "Ir a iniciar sesión",
+    "invalidOrExpired": "Este enlace de verificación no es válido o ha caducado.",
+    "emailPlaceholder": "Tu email",
+    "resend": "Enviar de nuevo",
+    "resendSent": "Si esa cuenta existe y no está verificada, te hemos enviado un nuevo enlace."
+  },
   "onboarding": {
     "headline": "Aprende Python de 0 a AI Engineer",
     "sub": "El motor que se adapta a tu ritmo y te hace avanzar cada día.",
@@ -258,6 +266,7 @@
     "goCatalog": "Catálogo de cursos",
     "goInstructor": "Panel de instructor",
     "private": "Este perfil es privado",
+    "notFound": "No existe ningún perfil con ese nombre de usuario",
     "joined": "Se unió el",
     "elo": "Elo",
     "mastery": "Dominio",
@@ -437,7 +446,8 @@
     "skillLabel": "Habilidad",
     "anySkill": "Una de las que has practicado",
     "sending": "Enviando…",
-    "vs": "contra {{username}}"
+    "vs": "contra {{username}}",
+    "practiceHint": "Practica «{{skill}}» para mejorar en este duelo."
   },
   "placement": {
     "title": "Examen de Colocación",
@@ -1293,9 +1303,9 @@
       "bkt": { "name": "BKT", "desc": "Estimación de dominio con HMM. Actualiza P(L) tras cada respuesta. Modelo de 4 parámetros con soporte explícito para «no lo sé»." },
       "fsrs": { "name": "FSRS", "desc": "Free Spaced Repetition Scheduler (sucesor de SM-17). Calcula el intervalo de repaso óptimo a partir de estabilidad y dificultad." },
       "elo": { "name": "Elo", "desc": "Calibración de dificultad de preguntas. Ajusta la puntuación de cada pregunta según los resultados de todos los usuarios." },
-      "bandit": { "name": "Bandit (ε-greedy)", "desc": "Selección de preguntas a nivel de sesión. Equilibra exploración (habilidades nuevas) frente a explotación (repasos pendientes)." },
-      "dkt": { "name": "DKT (LSTM)", "desc": "Deep Knowledge Tracing. LSTM entrenada sobre secuencias de respuestas, usada como señal secundaria para P(L) junto al BKT." },
-      "irt": { "name": "IRT (planeado)", "desc": "Item Response Theory. Modelo 2-PL para dificultad/discriminación. Pendiente de datos de calibración de ASSISTments." }
+      "bandit": { "name": "Bandit (Thompson Sampling)", "desc": "Selección de ítems en la prueba de nivel adaptativa (BanditCAT). Activo en /placement. No está conectado al bucle principal del cuestionario — la selección de preguntas allí la gestiona directamente Elo." },
+      "dkt": { "name": "DKT (LSTM)", "desc": "Deep Knowledge Tracing. LSTM entrenada sobre secuencias de respuestas; selecciona la siguiente habilidad en un experimento A/B activo. No es una señal de P(L) — BKT sigue siendo la única estimación de dominio." },
+      "irt": { "name": "IRT (2-PL)", "desc": "Item Response Theory. Modelo 2-PL activo en la prueba de nivel adaptativa (/placement). Estima la habilidad inicial (θ) y selecciona ítems por dificultad discriminante." }
     },
     "s2Title": "02 — Parámetros de BKT y calibración",
     "s2Lead": "Parámetros por defecto de Wilson et al. (2016) y Corbett & Anderson (1995). Los overrides por habilidad están planeados para F23, en cuanto ≥30 usuarios beta den suficientes observaciones por habilidad para ajustar P(L₀) y P(T) vía EM.",
@@ -1337,7 +1347,7 @@
     "tablePlatform": "Plataforma",
     "tableTotal": "Total",
     "competitors": {
-      "whetzyNow": { "name": "Whetzy (actual)", "notes": "BKT+FSRS+Elo+bandit, «no lo sé», {{tracks}} tracks {{questions}} Q, build obsoleto (H.11)" },
+      "whetzyNow": { "name": "Whetzy (actual)", "notes": "BKT+FSRS+Elo+DKT(A/B)+IRT(placement), «no lo sé», {{tracks}} tracks {{questions}} Q" },
       "whetzyH11": { "name": "Whetzy (H.11+H.10)", "notes": "Con redespliegue y ≥30 usuarios beta — techo alcanzable esta semana" },
       "bootdev": { "name": "Boot.dev", "notes": "Solo EN, backend gamificado, Python/Go/JS en el servidor, sin motor BKT" },
       "sololearn": { "name": "Sololearn", "notes": "Móvil-first, muchos idiomas pero sin adaptación real, ejecución básica" },

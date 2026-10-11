@@ -3,7 +3,7 @@ import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
 import { useAppStore, DEFAULT_USER_ID } from './stores/useAppStore';
-import { ApiError, logout } from './services/api';
+import { ApiError, logout, setOnSessionExpired } from './services/api';
 import { TopBar } from './components/layout/TopBar';
 import { BottomNav } from './components/layout/BottomNav';
 import { Toast } from './components/common/Toast';
@@ -29,6 +29,9 @@ const DuelScreen = lazy(() => import('./pages/DuelScreen').then((m) => ({ defaul
 const AuthScreen = lazy(() => import('./pages/AuthScreen').then((m) => ({ default: m.AuthScreen })));
 const ResetPasswordPage = lazy(() =>
   import('./pages/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage }))
+);
+const VerifyEmailPage = lazy(() =>
+  import('./pages/VerifyEmailPage').then((m) => ({ default: m.VerifyEmailPage }))
 );
 const DeleteAccountScreen = lazy(() =>
   import('./pages/DeleteAccountScreen').then((m) => ({ default: m.DeleteAccountScreen }))
@@ -274,6 +277,14 @@ function App() {
       </Screen>
     );
   }
+  if (path === '/verify-email') {
+    const token = new URLSearchParams(window.location.search).get('token') || '';
+    return (
+      <Screen>
+        <VerifyEmailPage token={token} />
+      </Screen>
+    );
+  }
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
   // Both returns sit above every hook in this component, which is the only
   // arrangement React allows: an early return *between* hooks is what blanked
@@ -309,6 +320,7 @@ function App() {
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const userLanguage = useAppStore((s) => s.user.language);
   const userId = useAppStore((s) => s.user.id);
+  const signOut = useAppStore((s) => s.signOut);
 
   useEffect(() => {
     void i18n.changeLanguage(userLanguage);
@@ -385,6 +397,20 @@ function App() {
         setAuthState('unauthed');
       });
   }, [authState, hydrateFromApi]);
+
+  // 0.13: lo anterior solo reacciona al 401 del chequeo inicial. Un 401
+  // definitivo en cualquier otra llamada — Home recargando datos, una
+  // respuesta de quiz, lo que sea, en cualquier pantalla — antes se quedaba
+  // en el error genérico de ese componente, sin ninguna salida de vuelta al
+  // login: el servidor ya había cerrado la sesión pero la app seguía
+  // actuando como si siguiera abierta. api.ts avisa aquí con el mismo
+  // `signOut()` que ya usa el botón de Perfil — el efecto de abajo recoge el
+  // cambio de usuario y manda a la pantalla de login, sin duplicar esa
+  // lógica.
+  useEffect(() => {
+    setOnSessionExpired(signOut);
+    return () => setOnSessionExpired(null);
+  }, [signOut]);
 
   // `signOut` (useAppStore) clears the stored tokens and resets the store, but
   // it has no way to reach this component's local `authState`, so without this

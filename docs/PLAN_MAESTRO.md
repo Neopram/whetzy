@@ -50,8 +50,8 @@ enmienda (SESIONES §3). S5 lo aplica después de volver a ejecutar los comandos
 3. **Migraciones de una en una** (SESIONES §5). El PR que trae una migración actualiza las tres líneas
    del HEAD: «HEAD actual» de `CLAUDE.md`, la fila «Alembic HEAD» del ledger y «Current Alembic HEAD»
    de `docs/RUNBOOK.md`. Antes de abrirlo, se avisa en el #89.
-   - **Hoy: 54 = `20261004_tracks_is_active`** [V].
-   - Orden fijado: **55 = #127** (S.4) y **56 = perfil público opt-in** (#144 rehecho).
+   - **Hoy: 55 = `20261004_study_session_current_question`** (#127, S.4) [V].
+   - Orden fijado: **56 = perfil público opt-in** (#144 rehecho).
    - Las demás van detrás, en el orden en que se fusionen.
 4. **Nunca `create_all`, y nunca borrar ni renombrar tracks o skills sin un mapa de progreso.** Desde la
    54, `content_loader` retira un track con `is_active=false` en vez de borrarlo
@@ -199,11 +199,10 @@ marcado **(D)** es una decisión del dueño, y no se implementa sin ella. Los ID
 
 ### Oleada A: seguridad y dinero (S1; `backend/app/core/**` es de S5)
 
-**A.1 · 41.4 (prop.) · `/quiz/answer` solo acepta la pregunta servida, y una sola vez.** PR #127, en borrador.
-- La migración `20261004_study_session_current_question` tiene hoy `down_revision =
-  "20261002_newsletter_subscribers"` [V]. **Tiene que ser `"20261004_tracks_is_active"`** y pasar a
-  ser la 55, con las tres líneas del HEAD.
-- Pasos: `git merge origin/master`, `down_revision`, nivel 2 y quitar el borrador.
+**A.1 · 41.4 (prop.) · `/quiz/answer` solo acepta la pregunta servida, y una sola vez.** PR #127.
+- Hecho: `down_revision = "20261004_tracks_is_active"` (migración 55), las tres líneas del HEAD al
+  día, `git merge origin/master` repetido tras cada ronda de revisión del dueño (el PR se queda
+  atrás cada vez que fusiona algo nuevo mientras este sigue abierto). Fusión pendiente del dueño.
 - Test: responder dos veces la misma pregunta → 409; responder una pregunta que no se sirvió → 409.
 
 **A.2 · 41.5 (prop.) · El tutor no ayuda en un examen ni con preguntas reservadas, y no cobra cupo si no respondió la IA.**

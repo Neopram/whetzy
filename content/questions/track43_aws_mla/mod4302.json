@@ -1005,6 +1005,972 @@
       "explanation_en": "The F1 formula is `2 * precision * recall / (precision + recall)`; with 2 of 3 words shared, precision=recall=0.6667, and the resulting F1 is also 0.6667.",
       "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
       "expected_time_ms": 35000
+    },
+    {
+      "id": "q430106_007",
+      "skill_id": "sk430106",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML sirve recomendaciones en tiempo real y necesita leer los valores más recientes de cada característica con latencia de milisegundos. ¿Qué almacenamiento de SageMaker Feature Store encaja mejor?",
+      "question_en": "An ML team serves real-time recommendations and must read the newest value of each feature with millisecond-level latency. Which SageMaker Feature Store storage option fits best?",
+      "options_es": [
+        "El almacén en línea del grupo de características",
+        "El almacén sin conexión del grupo de características",
+        "Una consulta de Athena sobre el almacén sin conexión del grupo",
+        "Un trabajo por lotes que lee los datos de características desde S3"
+      ],
+      "options_en": [
+        "The online store of the feature group",
+        "The offline store of the feature group",
+        "An Athena query over the offline store of the group",
+        "A batch job that reads the feature data from S3"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El almacén en línea conserva solo los registros más recientes y está pensado para predicciones en tiempo real, con lecturas rápidas y mucha capacidad de escritura. El almacén sin conexión guarda todo el historial y se orienta a exploración, entrenamiento y predicciones por lotes, así que no es el lugar para servir el último valor con latencia de milisegundos. Consultar ese historial o procesar lotes desde S3 tampoco equivale a una lectura directa y rápida del valor vigente.",
+      "explanation_en": "The online store holds just the newest records and is designed for real-time predictions that need fast reads and heavy write throughput. The offline store accumulates the whole history and is aimed at exploration, training, and batch predictions, so it is not where you serve the latest value at millisecond latency. Querying that history or running batch jobs over S3 data is likewise not a direct, fast read of the current value.",
+      "source": "AWS — Create, store, and share features with Feature Store (https://docs.aws.amazon.com/sagemaker/latest/dg/feature-store.html)"
+    },
+    {
+      "id": "q430106_008",
+      "skill_id": "sk430106",
+      "type": "multiple_choice",
+      "question_es": "Un equipo prepara en Data Wrangler una columna con miles de nombres de ciudades tecleados a mano, con erratas y variantes. Necesita una codificación de pocas dimensiones que resista el ruido. ¿Qué transformación debería elegir?",
+      "question_en": "A team is preparing a Data Wrangler column holding thousands of hand-typed city names, full of typos and variants. They need a compact encoding that tolerates noise. Which transform should they choose?",
+      "options_es": [
+        "Codificación por similitud",
+        "Codificación one-hot descartando la última categoría",
+        "Codificación ordinal que lanza error ante valores desconocidos",
+        "Una fórmula personalizada basada en una expresión de Spark SQL"
+      ],
+      "options_en": [
+        "Similarity encoding",
+        "One-hot encoding with the last category dropped",
+        "Ordinal encoding that raises an error on unseen values",
+        "A custom formula built from a Spark SQL expression"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La codificación por similitud genera incrustaciones en las que cadenas parecidas reciben vectores parecidos, con pocas dimensiones, escalable a muchas categorías y resistente al ruido; la fuente la presenta como más versátil que one-hot. Como conocimiento general, one-hot crea una columna por categoría, así que con miles de ciudades deja de ser compacta. La ordinal solo asigna enteros y la fórmula personalizada deriva una columna de una expresión SQL; ninguna está pensada para variantes ruidosas de texto.",
+      "explanation_en": "Similarity encoding builds embeddings where similar strings get similar vectors, with few dimensions, good scaling to many categories, and resistance to noise; the source calls it more versatile than one-hot. As general knowledge, one-hot creates one column per category, so with thousands of cities it stops being compact. Ordinal encoding merely maps categories to integers and a custom formula derives a column from a SQL expression, so neither is meant for noisy text variants.",
+      "source": "AWS — Transform Data (https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler-transform.html)"
+    },
+    {
+      "id": "q430106_009",
+      "skill_id": "sk430106",
+      "type": "multiple_choice",
+      "question_es": "Una ingeniera de ML limpia en Data Wrangler una serie temporal de lecturas de sensores y aplica relleno hacia delante (forward fill) para imputar los datos faltantes. ¿Qué valores faltantes no podrá imputar este método?",
+      "question_en": "An ML engineer is cleaning a sensor-reading time series in Data Wrangler and applies a forward fill to impute missing data. Which missing values can this method not impute?",
+      "options_es": [
+        "Los que quedan entre dos lecturas válidas",
+        "Los que aparecen al final de la serie",
+        "Los que están dentro de una celda con la serie",
+        "Los que aparecen al principio de la serie"
+      ],
+      "options_en": [
+        "Those sitting between two valid readings",
+        "Those at the end of the series",
+        "Those inside a cell holding the whole series",
+        "Those at the very start of the series"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La documentación indica que el relleno hacia delante no puede imputar un faltante situado al comienzo de la serie. Los ejemplos del texto sugieren el motivo: este método reutiliza el valor anterior, y al inicio no hay ninguno. Esos ejemplos muestran además que se rellenan los huecos intermedios y los finales, y que la imputación funciona dentro de una celda, así que las otras opciones fallan.",
+      "explanation_en": "The documentation states that a forward fill cannot impute a missing value sitting at the start of the series. The source examples hint at the reason: the method reuses the previous value, and at the beginning there is none. Those examples also show middle and trailing gaps being filled, and imputation working inside a cell, so the other options are wrong.",
+      "source": "AWS — Transform Data (https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler-transform.html)"
+    },
+    {
+      "id": "q430106_010",
+      "skill_id": "sk430106",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de seguridad revisa cómo los científicos de datos nombran y etiquetan los grupos de características en SageMaker Feature Store. ¿Qué práctica debe exigir?",
+      "question_en": "A security team is reviewing how data scientists name and tag feature groups in SageMaker Feature Store. Which practice should it require?",
+      "options_es": [
+        "Guardar en las etiquetas el correo personal y el nombre completo del autor",
+        "Mantener nombres, descripción y etiquetas libres de datos personales y confidenciales",
+        "Incluir en el nombre del grupo el nombre completo del cliente cuyo comportamiento describe",
+        "Describir en los metadatos qué personas concretas aparecen en los datos de origen"
+      ],
+      "options_en": [
+        "Store the author's personal email and full name in the tags",
+        "Keep names, description, and tags free of personal or confidential data",
+        "Put the full name of the customer being modeled into the feature group name",
+        "List in the metadata which specific people appear in the source data"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La documentación advierte de que el nombre del grupo y sus metadatos, como la descripción o las etiquetas, no deben contener información personal identificable ni confidencial. Las otras tres opciones colocan en el nombre, las etiquetas o los metadatos datos que identifican a personas concretas, justo lo que se debe evitar.",
+      "explanation_en": "The documentation warns that a feature group's name and its metadata, such as the description or tags, must not hold personally identifiable or confidential information. The other three options put data that identifies specific people into the name, the tags, or the metadata, which is exactly what must be avoided.",
+      "source": "AWS — Create, store, and share features with Feature Store (https://docs.aws.amazon.com/sagemaker/latest/dg/feature-store.html)"
+    },
+    {
+      "id": "q430106_011",
+      "skill_id": "sk430106",
+      "type": "multiple_choice",
+      "question_es": "Un equipo entrena un clasificador binario de fraude y solo una pequeña parte de las filas son fraudes. En la operación Balance data de Data Wrangler quieren equilibrar las clases sin perder información de la clase mayoritaria ni inflar el conjunto con copias idénticas. ¿Qué operador deberían elegir?",
+      "question_en": "A team is training a binary fraud classifier, and only a small share of the rows are fraud. In the Balance data operation of Data Wrangler they want to even out the classes without losing any majority-class information or padding the dataset with identical copies. Which operator should they pick?",
+      "options_es": [
+        "Sobremuestreo aleatorio, que repite al azar filas de fraude ya existentes",
+        "SMOTE, que interpola filas nuevas entre fraudes vecinos",
+        "Submuestreo aleatorio, que borra al azar filas de la clase mayoritaria",
+        "PCA, que reduce el número de columnas de características"
+      ],
+      "options_en": [
+        "Random oversampling, which repeats existing fraud rows at random",
+        "SMOTE, which interpolates new rows among fraud neighbors",
+        "Random undersampling, which deletes majority-class rows at random",
+        "PCA, which reduces the number of feature columns"
+      ],
+      "correct_index": 1,
+      "explanation_es": "SMOTE parte de ejemplos reales de la clase poco representada y genera registros sintéticos nuevos por interpolación, así que no elimina datos ni clona filas. El sobremuestreo aleatorio solo reproduce filas que ya existen, y el submuestreo aleatorio descarta filas de la clase abundante. PCA no es uno de los operadores de equilibrado de Data Wrangler; es una técnica general de reducción de columnas que no corrige el desequilibrio.",
+      "explanation_en": "SMOTE starts from real examples of the scarce class and produces brand-new synthetic records by interpolation, so it neither throws data away nor clones rows. Random oversampling merely reproduces rows that are already there, and random undersampling discards rows from the abundant class. PCA is not one of the balancing operators in Data Wrangler; it is a general column-reduction technique that does not fix class imbalance.",
+      "source": "AWS — Transform Data (https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler-transform.html)"
+    },
+    {
+      "id": "q430106_012",
+      "skill_id": "sk430106",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML tiene un conjunto de datos con cientos de columnas de características y quiere entrenar con una representación más compacta que conserve buena parte de la variación. ¿Qué transformación de Data Wrangler corresponde?",
+      "question_en": "An ML team has a dataset with hundreds of feature columns and wants to train on a more compact representation that keeps much of the variation in the data. Which Data Wrangler transform fits?",
+      "options_es": [
+        "Aplicar una fórmula personalizada que combine las columnas con una expresión de Spark SQL",
+        "Vectorizar las columnas de texto con TF-IDF para obtener vectores dispersos",
+        "Reducir la dimensionalidad con PCA para obtener componentes principales",
+        "Concatenar el conjunto con otro y añadir una columna con el origen de cada fila"
+      ],
+      "options_en": [
+        "Define a custom formula that combines columns using a Spark SQL expression",
+        "Vectorize text columns into sparse TF-IDF vectors",
+        "Reduce dimensionality with PCA to get principal components",
+        "Concatenate the dataset with another and add a source column"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La reducción de dimensionalidad con PCA sustituye las características originales por un conjunto nuevo de componentes, ordenados según la variación que explican, y permite entrenar con datos más pequeños. Las otras tres opciones (fórmula con Spark SQL, vectorización de texto y concatenación) sirven a otros fines y no resumen la variación en un número menor de componentes.",
+      "explanation_en": "Dimensionality reduction with PCA swaps the original features for a new set of components, ordered by how much variation each one explains, so you can train on smaller data. The other three options (a Spark SQL formula, text vectorization and concatenation) serve different purposes and do not condense the variation into fewer components.",
+      "source": "AWS — Transform Data (https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler-transform.html)"
+    },
+    {
+      "id": "q430107_013",
+      "skill_id": "sk430107",
+      "type": "multiple_choice",
+      "question_es": "Un equipo lanza un trabajo con entrenamiento Spot administrado, pero durante todo el tiempo de espera configurado no aparece capacidad Spot. ¿Qué ocurre con el trabajo?",
+      "question_en": "A team starts a training job with managed Spot training enabled, but no Spot capacity becomes available during the entire configured wait time. What happens to the job?",
+      "options_es": [
+        "Cambia automáticamente a instancias bajo demanda para terminar el entrenamiento",
+        "Sigue esperando capacidad Spot sin ningún límite hasta que aparezca",
+        "Queda en pausa y solo se reanuda cuando el equipo aumenta el tiempo de ejecución máximo",
+        "Se detiene al agotarse el tiempo de espera, sin pasar a bajo demanda"
+      ],
+      "options_en": [
+        "It switches to on-demand instances automatically to finish training",
+        "It keeps waiting for Spot capacity with no limit until some appears",
+        "It pauses and resumes only after the team raises the maximum runtime",
+        "It stops when the wait time runs out, without moving to on-demand"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El entrenamiento Spot administrado se ejecuta solo sobre capacidad Spot y no recurre a instancias bajo demanda, así que la primera opción falla. Tampoco espera sin límite: al cumplirse el tiempo máximo de espera configurado, el trabajo termina. Por eso la opción de quedar en pausa hasta que alguien amplíe el tiempo de ejecución es incompatible con ese comportamiento.",
+      "explanation_en": "Managed Spot training runs only on Spot capacity and never falls back to on-demand instances, so the first option fails. It does not wait without limit either: once the configured maximum wait time is reached, the job ends. That makes the option of staying paused until someone extends the runtime incompatible with this behavior.",
+      "source": "AWS — Managed Spot Training in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/model-managed-spot-training.html)"
+    },
+    {
+      "id": "q430107_014",
+      "skill_id": "sk430107",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML elige Amazon SageMaker Canvas para crear un modelo desde una interfaz sin código. ¿Qué limitación debe esperar?",
+      "question_en": "An ML team picks Amazon SageMaker Canvas to build a model through its no-code interface. Which limitation should it expect?",
+      "options_es": [
+        "Poca flexibilidad para personalizar el modelo resultante",
+        "La obligación de empaquetar su propia imagen de contenedor Docker",
+        "La necesidad de configurar a mano la estrategia de paralelismo de datos",
+        "Acceso únicamente mediante la API de entrenamiento de bajo nivel"
+      ],
+      "options_en": [
+        "Little room to customize the resulting model",
+        "Having to package its own Docker container image",
+        "Having to hand-configure the data parallelism strategy",
+        "Access only through the low-level training API"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La contrapartida de Canvas que señala la fuente es que ofrece muy poco margen para adaptar el modelo a medida. Empaquetar un contenedor propio o decidir la estrategia de paralelismo exige enfoques basados en código con más control, y no son requisitos de Canvas. Tampoco se menciona la API de bajo nivel como su vía de acceso.",
+      "explanation_en": "The trade-off the source points out for Canvas is very little room to tailor the model. Packaging your own container or deciding the parallelism strategy calls for code-based approaches with more control, and neither is a Canvas requirement. The low-level API is not described as the way to reach Canvas either.",
+      "source": "AWS — Train a Model with Amazon SageMaker (https://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works-training.html)"
+    },
+    {
+      "id": "q430107_015",
+      "skill_id": "sk430107",
+      "type": "multiple_choice",
+      "question_es": "Una empresa va a preentrenar un modelo fundacional muy grande y necesita en SageMaker un clúster de cómputo a gran escala que siga operativo aunque falle algún componente. ¿Qué capacidad encaja mejor?",
+      "question_en": "A company will pre-train a very large foundation model and needs a large-scale compute cluster in SageMaker that keeps running even when a component fails. Which capability fits best?",
+      "options_es": [
+        "SageMaker Canvas con interfaz sin código",
+        "El ajuste automático de hiperparámetros de SageMaker",
+        "Los clústeres persistentes de SageMaker HyperPod",
+        "Los centros de modelos privados de SageMaker JumpStart"
+      ],
+      "options_en": [
+        "SageMaker Canvas and its no-code interface",
+        "SageMaker automatic hyperparameter tuning",
+        "SageMaker HyperPod persistent clusters",
+        "SageMaker JumpStart private model hubs"
+      ],
+      "correct_index": 2,
+      "explanation_es": "HyperPod ofrece clústeres persistentes y resilientes para cargas de ML de enorme tamaño, como desarrollar modelos fundacionales, y evita montar y mantener a mano la infraestructura de cómputo. El ajuste de hiperparámetros lanza muchos trabajos de entrenamiento para hallar los mejores valores, y los centros privados de JumpStart restringen el acceso a modelos aprobados. Canvas no es la capacidad pensada para levantar clústeres de este tamaño.",
+      "explanation_en": "HyperPod provides persistent, resilient clusters for very large ML workloads such as developing foundation models, sparing the team from building and maintaining the compute infrastructure by hand. Hyperparameter tuning launches many training jobs to find the best values, and JumpStart private hubs limit access to approved models. Canvas is not the capability meant for standing up clusters of this size.",
+      "source": "AWS — Train a Model with Amazon SageMaker (https://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works-training.html)"
+    },
+    {
+      "id": "q430107_016",
+      "skill_id": "sk430107",
+      "type": "multiple_choice",
+      "question_es": "Un modelo tiene tantas capas ocultas y pesos que no cabe en la memoria de una sola instancia de entrenamiento. ¿Qué estrategia de entrenamiento distribuido resuelve el problema?",
+      "question_en": "A model has so many hidden layers and weights that it cannot fit into the memory of a single training instance. Which distributed training strategy addresses this?",
+      "options_es": [
+        "Repartir el modelo entre varias GPU del clúster",
+        "Replicar el modelo completo en cada GPU con lotes distintos",
+        "Aumentar el número de épocas sobre la misma instancia",
+        "Optimizar la comunicación entre nodos para acelerar el entrenamiento"
+      ],
+      "options_en": [
+        "Split the model across several GPUs in the cluster",
+        "Copy the whole model to every GPU and give each one different batches",
+        "Run more epochs over the data on the same instance",
+        "Optimize communication between nodes to speed up training"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En el paralelismo de modelo, cada GPU conserva solo una parte del modelo, así que un modelo demasiado grande para una instancia puede entrenarse. El paralelismo de datos, en cambio, pone una réplica completa del modelo en cada GPU. Más épocas solo repiten el recorrido de los datos, y optimizar la comunicación entre nodos mejora la velocidad, pero ninguna de las dos cosas permite que el modelo quepa en una instancia.",
+      "explanation_en": "With model parallelism each GPU holds only a subset of the model, so a model too large for one instance can still be trained. Data parallelism, by contrast, places a full replica of the model on each GPU. More epochs only repeat passes over the data, and optimizing communication between nodes improves speed, but neither makes the model fit on a single instance.",
+      "source": "AWS — Distributed training in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/distributed-training.html)"
+    },
+    {
+      "id": "q430107_017",
+      "skill_id": "sk430107",
+      "type": "multiple_choice",
+      "question_es": "Un equipo entrena con instancias Spot administradas y teme perder horas de progreso si hay una interrupción. ¿Qué configuración reduce ese trabajo perdido?",
+      "question_en": "A team trains on managed Spot instances and fears losing hours of progress if an interruption happens. Which configuration reduces that lost work?",
+      "options_es": [
+        "Guardar los datos de entrenamiento solo en el disco local de la instancia",
+        "Activar puntos de control para reanudar desde S3 tras el reinicio",
+        "Reducir la tasa de aprendizaje para converger antes de cualquier interrupción",
+        "Cambiar a paralelismo de datos para que las réplicas se reconstruyan solas"
+      ],
+      "options_en": [
+        "Store the training data only on the instance's local disk",
+        "Enable checkpoints so a restart resumes from S3",
+        "Lower the learning rate so training converges before any interruption",
+        "Switch to data parallelism so replicas rebuild themselves"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Con puntos de control, SageMaker copia el progreso a S3 y lo restaura al reiniciar el trabajo, que continúa desde el último punto guardado en lugar de empezar de cero. Guardar datos solo en disco local, cambiar la tasa de aprendizaje o el tipo de paralelismo no conserva el progreso tras una interrupción.",
+      "explanation_en": "With checkpoints, SageMaker copies progress to S3 and restores it when the job restarts, so training continues from the last saved point instead of starting over. Keeping data on local disk, changing the learning rate or switching parallelism does not preserve progress after an interruption.",
+      "source": "AWS — Managed Spot Training in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/model-managed-spot-training.html)"
+    },
+    {
+      "id": "q430107_018",
+      "skill_id": "sk430107",
+      "type": "multiple_choice",
+      "question_es": "Un equipo entrena una red neuronal en SageMaker con paralelismo de datos y, al sumar instancias al clúster, el tiempo de entrenamiento apenas mejora. ¿Cuál es la causa más probable?",
+      "question_en": "A team trains a neural network on SageMaker using data parallelism, and adding more instances to the cluster barely improves training time. What is the most likely cause?",
+      "options_es": [
+        "Cada trabajador tiene que volver a cargar todo el conjunto de datos en cada iteración",
+        "El intercambio de gradientes entre trabajadores pesa más al crecer el clúster",
+        "El modelo se parte en más fragmentos y cada GPU espera a que termine la anterior",
+        "Los pesos de cada réplica dejan de actualizarse tras la primera época"
+      ],
+      "options_en": [
+        "Each worker has to reload the entire dataset on every single iteration",
+        "Exchanging gradients among workers costs more as the cluster grows",
+        "The model is split into more pieces, so each GPU waits for the previous one",
+        "Each replica's weights stop being updated after the first epoch"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En el paralelismo de datos, cada paso exige que todos los nodos intercambien sus gradientes para obtener un promedio común, y ese coste de coordinación aumenta con el tamaño del clúster. Por eso, a partir de cierto punto, más trabajadores dan rendimientos decrecientes y la implementación puede empeorar el tiempo total. Las otras opciones no corresponden a este mecanismo: aquí se reparten los registros de cada lote, el modelo cabe en cada dispositivo y los pesos se actualizan con el gradiente promediado.",
+      "explanation_en": "In data parallelism, every step requires all nodes to exchange their gradients to obtain a shared average, and that coordination cost rises with cluster size. That is why, beyond some point, extra workers give diminishing returns, and a poor implementation can worsen total training time. The other options do not match this mechanism: the records of each batch are simply split across workers, the model fits on each device, and weights are updated with the averaged gradient.",
+      "source": "AWS — Distributed training in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/distributed-training.html)"
+    },
+    {
+      "id": "q430108_019",
+      "skill_id": "sk430108",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML define en el ajuste automático de SageMaker únicamente valores categóricos para sus hiperparámetros y quiere que se pruebe cada combinación distinta posible. ¿Qué estrategia de ajuste debería elegir?",
+      "question_en": "A machine learning team gives SageMaker automatic model tuning only categorical values for its hyperparameters and wants every distinct combination to be tried. Which tuning strategy should it choose?",
+      "options_es": [
+        "Búsqueda aleatoria, que elige combinaciones al azar en cada trabajo",
+        "Optimización bayesiana, que usa regresión sobre resultados previos",
+        "Búsqueda en cuadrícula, que agota los conjuntos de valores",
+        "Hyperband, que reasigna épocas a las configuraciones más prometedoras"
+      ],
+      "options_en": [
+        "Random search, which picks arbitrary combinations for each job",
+        "Bayesian optimization, which applies regression to earlier results",
+        "Grid search, which exhausts the defined value sets",
+        "Hyperband, which reallocates epochs to promising configurations"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La búsqueda en cuadrícula solo admite parámetros categóricos y genera los trabajos a partir de las combinaciones distintas que resultan de ellos, así que encaja con el escenario. La búsqueda aleatoria, la optimización bayesiana y Hyperband eligen o reparten los valores con otros criterios (azar, regresión sobre resultados previos, reasignación de épocas) y no se describen como un recorrido de todas las combinaciones categóricas.",
+      "explanation_en": "Grid search supports only categorical parameters and creates its training jobs from the distinct combinations those values produce, so it matches this scenario. Random search, Bayesian optimization and Hyperband choose or allocate values by other criteria (chance, regression over earlier results, epoch reallocation) and are not described as walking through every categorical combination.",
+      "source": "AWS — Understand the hyperparameter tuning strategies available in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/automatic-model-tuning-how-it-works.html)"
+    },
+    {
+      "id": "q430108_020",
+      "skill_id": "sk430108",
+      "type": "multiple_choice",
+      "question_es": "Una ingeniera de ML usa búsqueda aleatoria en el ajuste automático de modelos de SageMaker y quiere lanzar tantos trabajos de entrenamiento en paralelo como el servicio permita. ¿Por qué hacerlo no empeora el rendimiento del ajuste?",
+      "question_en": "An ML engineer uses random search in SageMaker automatic model tuning and wants to launch as many training jobs in parallel as the service allows. Why does this not reduce tuning performance?",
+      "options_es": [
+        "Porque cada trabajo entrena con una muestra reducida del conjunto de datos",
+        "Porque los valores elegidos no se basan en resultados de trabajos previos",
+        "Porque los trabajos con peor desempeño se detienen antes de terminar",
+        "Porque cada trabajo parte del mejor modelo obtenido hasta ese momento"
+      ],
+      "options_en": [
+        "Because every job trains on a reduced sample of the dataset",
+        "Because values chosen aren't based on earlier job results",
+        "Because weaker jobs are halted before they finish training",
+        "Because each job starts from the best model found so far"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En la búsqueda aleatoria, los valores de cada trabajo se escogen sin tener en cuenta los resultados de los anteriores, por lo que ejecutarlos en paralelo no pierde información útil. Las otras opciones describen mecanismos (muestreo del dataset, detención temprana, arranque desde el mejor modelo) que la fuente no asocia con esta estrategia.",
+      "explanation_en": "With random search, the values for each job are picked without using the results of earlier jobs, so running them in parallel does not discard any useful information. The other options describe mechanisms (dataset sampling, early stopping, starting from the best model) that the source does not associate with this strategy.",
+      "source": "AWS — Understand the hyperparameter tuning strategies available in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/automatic-model-tuning-how-it-works.html)"
+    },
+    {
+      "id": "q430108_021",
+      "skill_id": "sk430108",
+      "type": "multiple_choice",
+      "question_es": "En el ajuste automático de modelos de SageMaker con optimización bayesiana, ¿cómo decide el servicio qué valores de hiperparámetros probar a continuación?",
+      "question_en": "When SageMaker automatic model tuning uses Bayesian optimization, how does it decide which hyperparameter values to try next?",
+      "options_es": [
+        "Sortea combinaciones de forma independiente en cada prueba",
+        "Recorre una cuadrícula fija de valores en orden predefinido",
+        "Repite los valores del mejor trabajo sin explorar otros nuevos",
+        "Aprovecha lo observado en los entrenamientos anteriores"
+      ],
+      "options_en": [
+        "It draws combinations independently for each new trial",
+        "It steps through a fixed grid of values in a set order",
+        "It repeats the best job's values without exploring any others",
+        "It draws on what earlier training jobs have revealed"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El ajuste de SageMaker implementa la optimización bayesiana y, para elegir los hiperparámetros del siguiente entrenamiento, tiene en cuenta todo lo aprendido hasta el momento. Así a veces se acerca a la mejor combinación previa y otras veces explora zonas lejanas. Sortear combinaciones sin relación entre sí es búsqueda aleatoria, recorrer una cuadrícula es búsqueda en cuadrícula, y repetir siempre al mejor trabajo ignora la exploración que la fuente describe.",
+      "explanation_en": "SageMaker tuning implements Bayesian optimization, and to pick the hyperparameters for the next training job it takes into account all that has been learned so far. It sometimes stays near the best earlier combination and sometimes explores distant regions. Drawing unrelated combinations describes random search, stepping through a grid describes grid search, and always repeating the best job would skip the exploration the source describes.",
+      "source": "AWS — Understand the hyperparameter tuning strategies available in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/automatic-model-tuning-how-it-works.html)"
+    },
+    {
+      "id": "q430108_022",
+      "skill_id": "sk430108",
+      "type": "multiple_choice",
+      "question_es": "Un equipo ajusta una red neuronal de clasificación de imágenes que publica su precisión tras cada época. Quiere que SageMaker detenga automáticamente las configuraciones de bajo rendimiento y reasigne épocas a las más prometedoras. ¿Qué estrategia encaja mejor?",
+      "question_en": "A team tunes an image classification neural network that reports accuracy after every epoch. It wants SageMaker to automatically stop weak configurations and move epochs to promising ones. Which strategy fits best?",
+      "options_es": [
+        "Ajuste con Hyperband",
+        "Ajuste con búsqueda en cuadrícula",
+        "Ajuste con búsqueda aleatoria",
+        "Ajuste con optimización bayesiana"
+      ],
+      "options_en": [
+        "Tuning with Hyperband",
+        "Tuning with grid search",
+        "Tuning with random search",
+        "Tuning with Bayesian optimization"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Hyperband evalúa cada entrenamiento con sus métricas parciales y finales, traslada épocas hacia las configuraciones que avanzan bien y corta las que se quedan atrás, algo que encaja con una red que informa su precisión en cada época. La fuente no atribuye ese reparto dinámico ni esa parada automática a la búsqueda en cuadrícula, la aleatoria ni la bayesiana.",
+      "explanation_en": "Hyperband judges each training job by its partial and final metrics, shifts epochs toward the configurations that are progressing and halts the ones falling behind, which suits a network that reports accuracy every epoch. The source does not credit grid, random or Bayesian search with that dynamic reallocation or automatic stopping.",
+      "source": "AWS — Understand the hyperparameter tuning strategies available in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/automatic-model-tuning-how-it-works.html)"
+    },
+    {
+      "id": "q430108_023",
+      "skill_id": "sk430108",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML quiere obtener la mejor versión de un modelo ajustando sus hiperparámetros con el ajuste automático de modelos (AMT) de SageMaker. ¿Qué hace AMT para lograrlo?",
+      "question_en": "A team wants SageMaker automatic model tuning (AMT) to find the best version of a model. What does AMT do to achieve this?",
+      "options_es": [
+        "Lanza muchos entrenamientos con los rangos que se definen",
+        "Elige por su cuenta el algoritmo e ignora los rangos definidos",
+        "Entrena un solo modelo y ajusta sus pesos a mano",
+        "Reescribe el conjunto de datos para eliminar registros dudosos"
+      ],
+      "options_en": [
+        "It launches many training jobs using the ranges you define",
+        "It selects the algorithm itself and ignores the defined ranges",
+        "It trains one model and tweaks its weights manually",
+        "It rewrites the dataset to remove questionable records"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AMT, también conocido como ajuste de hiperparámetros, lanza numerosos entrenamientos con el algoritmo y los rangos que indica el equipo, y se queda con los valores que dan el mejor modelo según una métrica elegida. No decide el algoritmo por sí mismo ni se limita a un único entrenamiento. Tampoco reescribe el conjunto de datos: lo emplea como entrada para entrenar.",
+      "explanation_en": "AMT, also known as hyperparameter tuning, launches numerous training jobs with the algorithm and ranges the team provides, then keeps the values that yield the best model on a chosen metric. It does not pick the algorithm on its own or settle for a single training run. Nor does it rewrite the dataset: it uses the data as input for training.",
+      "source": "AWS — Automatic model tuning with SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/automatic-model-tuning.html)"
+    },
+    {
+      "id": "q430108_024",
+      "skill_id": "sk430108",
+      "type": "multiple_choice",
+      "question_es": "Un equipo define rangos de hiperparámetros que contienen la combinación óptima, pero el trabajo de ajuste de SageMaker termina sin hallarla. ¿Qué explicación es coherente con cómo funciona el ajuste?",
+      "question_en": "A team sets hyperparameter ranges that contain the optimal combination, yet the SageMaker tuning job ends without finding it. Which explanation is consistent with how tuning works?",
+      "options_es": [
+        "El servicio suele probar valores ajenos a los rangos indicados",
+        "Su búsqueda estocástica puede no converger en el óptimo",
+        "Los rangos pueden ignorarse si no hay criterios de finalización",
+        "El ajuste suele detenerse tras el primer entrenamiento completado"
+      ],
+      "options_en": [
+        "Tuning usually evaluates values outside the given ranges",
+        "Its stochastic search may not settle on the optimum",
+        "Ranges can be ignored unless completion criteria are set",
+        "Tuning typically stops after the first finished training job"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Como la búsqueda del ajuste es estocástica, puede quedarse sin dar con la mejor configuración aunque esta se encuentre dentro de los rangos elegidos. La fuente indica que el ajuste se concentra en combinaciones prometedoras dentro de los rangos que se especifican, de modo que probar valores fuera de ellos o ignorarlos no encaja; tampoco menciona que se detenga tras el primer entrenamiento.",
+      "explanation_en": "Because the tuning search is stochastic, it can miss the single best configuration even when that configuration sits inside the chosen ranges. The source says tuning concentrates on promising combinations within the ranges you specify, so evaluating outside them or ignoring them does not fit, and it never mentions stopping after the first training job.",
+      "source": "AWS — Understand the hyperparameter tuning strategies available in Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/automatic-model-tuning-how-it-works.html)"
+    },
+    {
+      "id": "q430109_025",
+      "skill_id": "sk430109",
+      "type": "multiple_choice",
+      "question_es": "Un equipo termina de entrenar un modelo y quiere una estimación fiable de cómo se comportará con datos futuros. ¿Qué enfoque de evaluación es el adecuado?",
+      "question_en": "A team finishes training a model and wants a trustworthy estimate of how it will behave on future data. Which evaluation approach is appropriate?",
+      "options_es": [
+        "Calcular la métrica con el mismo conjunto usado para entrenar, porque son los datos que el modelo mejor conoce.",
+        "Revisar solo la curva de pérdida del entrenamiento y suponer que la precisión futura será igual.",
+        "Apartar una muestra etiquetada antes de entrenar y comparar las predicciones del modelo con el valor real.",
+        "Reentrenar el modelo una y otra vez con los datos de evaluación hasta que la métrica deje de mejorar."
+      ],
+      "options_en": [
+        "Compute the metric on the same dataset used for training, since that is the data the model already knows best.",
+        "Check only the training loss curve and assume that future accuracy will match it.",
+        "Set aside a labeled sample before training and compare the model's predictions with the true values.",
+        "Retrain the model repeatedly on the evaluation data until the metric stops improving."
+      ],
+      "correct_index": 2,
+      "explanation_es": "Para estimar el comportamiento con datos futuros se reserva una muestra con el valor real del objetivo y se contrasta con ella lo que predice el modelo. Probar con los mismos datos del entrenamiento no sirve, porque favorece a los modelos que los memorizan en vez de generalizar. Las otras dos opciones tampoco comparan predicciones con valores reales de datos apartados: la pérdida de entrenamiento no lo hace y reentrenar con los datos de evaluación borra esa separación.",
+      "explanation_en": "To estimate behavior on future data, you set aside a sample with the true target value and compare the model's predictions against it. Testing on the training data is not useful because it favors models that memorize that data rather than generalize. The other two options do not compare predictions with true values on set-aside data either: training loss does not, and retraining on the evaluation data erases that separation.",
+      "source": "AWS — Evaluating ML Models (https://docs.aws.amazon.com/machine-learning/latest/dg/evaluating_models.html)"
+    },
+    {
+      "id": "q430109_026",
+      "skill_id": "sk430109",
+      "type": "multiple_choice",
+      "question_es": "Tras ajustar hiperparámetros con un conjunto de evaluación, un ingeniero de ML teme que el modelo elegido esté sobreajustado a él. ¿Qué puede hacer para comprobarlo?",
+      "question_en": "After tuning hyperparameters against an evaluation set, an ML engineer worries that the chosen model is overfitted to it. What can the engineer do to check this?",
+      "options_es": [
+        "Reservar datos independientes que no intervinieron en el ajuste y evaluar con ellos el modelo elegido.",
+        "Incorporar los datos de evaluación al entrenamiento y volver a medir con esos mismos registros, ya incluidos.",
+        "Seguir ajustando hasta lograr el mejor desempeño posible con los datos de evaluación.",
+        "Confiar en la puntuación del conjunto de evaluación, porque ya guio la elección de la configuración."
+      ],
+      "options_en": [
+        "Hold out separate data that played no part in the tuning and evaluate the chosen model on it.",
+        "Merge the evaluation data into the training data and measure again on those same records afterward.",
+        "Keep tuning until performance on the evaluation data is as high as it can possibly get.",
+        "Rely on the evaluation set score, since it already guided the choice of settings."
+      ],
+      "correct_index": 0,
+      "explanation_es": "Reservar datos adicionales permite hacer una segunda evaluación con registros que no intervinieron en la elección de la configuración; si el modelo cumple las expectativas con ellos, no está sobreajustado. Mezclar la evaluación con el entrenamiento o seguir optimizando sobre ella solo refuerza el riesgo, y fiarse de la puntuación que ya guio la selección no aporta información independiente.",
+      "explanation_en": "Reserving additional data lets you run a second evaluation on records that played no part in choosing the settings; if the model meets expectations on them, it is not overfitting. Merging the evaluation data into training or continuing to optimize against it only reinforces the risk, and trusting the score that already guided the selection gives no independent information.",
+      "source": "AWS — Evaluating ML Models (https://docs.aws.amazon.com/machine-learning/latest/dg/evaluating_models.html)"
+    },
+    {
+      "id": "q430109_027",
+      "skill_id": "sk430109",
+      "type": "multiple_choice",
+      "question_es": "Un equipo entrena un clasificador de regresión logística para una tarea binaria y quiere una sola cifra que resuma el desempeño en cualquier umbral de decisión posible. ¿Qué métrica de Autopilot encaja?",
+      "question_en": "A team trains a logistic regression classifier for a binary task and wants a single number that summarizes performance at every possible decision threshold. Which Autopilot metric fits?",
+      "options_es": [
+        "Accuracy, que da la proporción de elementos bien clasificados sobre el total",
+        "BalancedAccuracy, que normaliza verdaderos positivos y negativos por el tamaño de cada clase",
+        "F1, que une precisión y exhaustividad mediante un promedio armónico",
+        "AUC, que mide el área bajo la curva ROC a lo largo de todos los cortes"
+      ],
+      "options_en": [
+        "Accuracy, which gives the share of items classified correctly out of all items",
+        "BalancedAccuracy, which normalizes true positives and negatives by each class size",
+        "F1, which merges precision and recall through a harmonic average",
+        "AUC, which measures the area under the ROC curve over all cutoffs"
+      ],
+      "correct_index": 3,
+      "explanation_es": "AUC se calcula a partir de la curva ROC, que traza la tasa de verdaderos positivos frente a la de falsos positivos al variar el corte, así que condensa en una sola cifra el comportamiento de un clasificador binario en todos los cortes posibles. Accuracy es una proporción de aciertos, BalancedAccuracy normaliza por el tamaño de cada clase en datos desbalanceados y F1 combina precisión y exhaustividad; ninguna se describe como un resumen a lo largo de los umbrales.",
+      "explanation_en": "AUC is derived from the ROC curve, which plots the true positive rate against the false positive rate as the cutoff varies, so it condenses a binary classifier's behavior over every possible cutoff into one value. Accuracy is a ratio of correct classifications, BalancedAccuracy normalizes by class size for imbalanced data, and F1 combines precision and recall; none of them is described as a summary across thresholds.",
+      "source": "AWS — Metrics and validation (https://docs.aws.amazon.com/sagemaker/latest/dg/autopilot-metrics-validation.html)"
+    },
+    {
+      "id": "q430109_028",
+      "skill_id": "sk430109",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de un hospital crea un clasificador binario para señalar a pacientes que podrían tener una enfermedad grave, y el error más costoso es pasar por alto un caso real. ¿Qué métrica debería priorizar?",
+      "question_en": "A hospital team builds a binary classifier to flag patients who may have a serious disease, and missing a real case is the costly mistake. Which metric should the team prioritize?",
+      "options_es": [
+        "Recall (exhaustividad), para detectar la mayor cantidad posible de casos positivos reales",
+        "Precisión, para garantizar que todo paciente señalado por el modelo tenga realmente la enfermedad",
+        "PrecisionMacro, para promediar la precisión calculada en cada clase de un problema multiclase",
+        "R2, para cuantificar cuánta varianza explica el modelo"
+      ],
+      "options_en": [
+        "Recall, to catch as many of the actual positive cases as possible",
+        "Precision, to make sure that every patient the model flags truly has the disease",
+        "PrecisionMacro, to average the precision computed for each class in a multiclass problem",
+        "R2, to quantify how much variance the model explains"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Recall mide qué tan bien el modelo encuentra todos los verdaderos positivos, por lo que es la métrica clave cuando no se puede dejar escapar un caso real, como en la detección de una enfermedad. La precisión conviene más cuando el error caro es una falsa alarma, PrecisionMacro sirve para promediar la precisión entre varias clases en problemas multiclase, y R2 es una métrica de regresión que no indica cuántos positivos reales se capturan.",
+      "explanation_en": "Recall measures how well the model finds all of the true positives, which makes it the key metric when a real case cannot be allowed to slip through, as in disease detection. Precision is the better fit when a false alarm is the expensive error, PrecisionMacro averages precision across several classes in multiclass problems, and R2 is a regression metric that does not show how many actual positives are captured.",
+      "source": "AWS — Metrics and validation (https://docs.aws.amazon.com/sagemaker/latest/dg/autopilot-metrics-validation.html)"
+    },
+    {
+      "id": "q430109_029",
+      "skill_id": "sk430109",
+      "type": "multiple_choice",
+      "question_es": "Un equipo ejecuta Autopilot con un conjunto de datos que tiene pocas instancias de entrenamiento. ¿Qué beneficio principal aporta la validación cruzada k-fold que usa?",
+      "question_en": "A team runs Autopilot on a dataset that has few training instances. What is the main benefit of the k-fold cross-validation it uses?",
+      "options_es": [
+        "Garantiza que el entrenamiento termine más rápido que con una sola división de los datos.",
+        "Reduce el riesgo de sobreajuste y de sesgo al seleccionar el modelo.",
+        "Elimina la necesidad de usar una métrica de validación en la tabla de clasificación.",
+        "Sustituye la optimización de hiperparámetros por valores predeterminados fijos."
+      ],
+      "options_en": [
+        "It guarantees faster training than a single split of the data would.",
+        "It lowers the risk of overfitting and bias when selecting the model.",
+        "It removes the need for any validation metric on the model leaderboard.",
+        "It replaces hyperparameter optimization with fixed default values."
+      ],
+      "correct_index": 1,
+      "explanation_es": "Con pocas instancias de entrenamiento, la validación cruzada resulta clave porque disminuye el sobreajuste y el sesgo en la elección del modelo: se entrena y se valida sobre distintas particiones de los datos (k pliegues). No acelera el proceso, ya que se entrenan varios modelos y por tanto suele tardar más. Tampoco suprime la métrica de validación, que aparece como métrica objetivo en la tabla de clasificación, ni reemplaza la optimización de hiperparámetros, pues Autopilot la aplica dentro de ese modo.",
+      "explanation_en": "With few training instances, cross-validation is valuable because it curbs overfitting and bias when choosing a model: training and validation happen across different splits (k folds) of the data. It does not speed things up, since several models get trained, which tends to take longer. It also does not eliminate the validation metric, which appears as the objective metric on the leaderboard, nor does it replace hyperparameter optimization, because Autopilot applies it inside that mode.",
+      "source": "AWS — Metrics and validation (https://docs.aws.amazon.com/sagemaker/latest/dg/autopilot-metrics-validation.html)"
+    },
+    {
+      "id": "q430109_030",
+      "skill_id": "sk430109",
+      "type": "multiple_choice",
+      "question_es": "Un modelo de regresión suele acertar con poco margen, pero en unos pocos casos su predicción falla por mucho. ¿Qué métrica de Autopilot ayuda a detectar esos fallos de gran magnitud?",
+      "question_en": "A regression model usually lands close to the true value, but in a handful of cases its prediction misses by a wide margin. Which Autopilot metric helps flag those big misses?",
+      "options_es": [
+        "Accuracy (exactitud), la proporción de elementos clasificados correctamente sobre el total",
+        "RMSE, la raíz del error cuadrático medio, aplicada a regresión",
+        "AUC, que resume el desempeño en todos los umbrales de clasificación",
+        "Recall, que indica cuántos positivos reales se encontraron"
+      ],
+      "options_en": [
+        "Accuracy, the ratio of correctly classified items to all classified items",
+        "RMSE, the root of the mean squared error, used for regression",
+        "AUC, which summarizes performance across all classification thresholds",
+        "Recall, which reports how many actual positives were found"
+      ],
+      "correct_index": 1,
+      "explanation_es": "RMSE mide el error de predicción de un modelo de regresión y, como las diferencias se elevan al cuadrado antes de promediar, las desviaciones grandes pesan mucho en el resultado; por eso sirve para detectar esos casos extremos. Accuracy, AUC y Recall, según el conocimiento general de ML, se aplican a clasificación y no a valores numéricos continuos.",
+      "explanation_en": "RMSE gauges the prediction error of a regression model, and because differences are squared before averaging, big deviations weigh heavily in the result, which makes it handy for spotting those extreme cases. Accuracy, AUC and Recall, as general ML knowledge, belong to classification and do not apply to continuous numeric targets.",
+      "source": "AWS — Metrics and validation (https://docs.aws.amazon.com/sagemaker/latest/dg/autopilot-metrics-validation.html)"
+    },
+    {
+      "id": "q430110_031",
+      "skill_id": "sk430110",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML tiene un conjunto de datos tabular y quiere que SageMaker pruebe varios algoritmos y los compare con validación cruzada para quedarse con el mejor candidato. ¿Qué capacidad encaja?",
+      "question_en": "An ML team has a tabular dataset and wants SageMaker to try several algorithms and compare them using cross-validation to pick the best candidate. Which capability fits?",
+      "options_es": [
+        "Autopilot de SageMaker, que automatiza el AutoML",
+        "JumpStart de SageMaker, que ofrece modelos preentrenados",
+        "Random Cut Forest, que puntúa anomalías en los datos",
+        "K-Means, que agrupa las filas en clústeres"
+      ],
+      "options_en": [
+        "SageMaker Autopilot, which automates model building",
+        "SageMaker JumpStart, which supplies pretrained models",
+        "Random Cut Forest, which scores anomalies in the data",
+        "K-Means, which groups the rows into clusters"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Autopilot automatiza la selección del modelo: prueba distintos algoritmos y mide su calidad predictiva mediante validación cruzada con métricas objetivo definidas. Las otras opciones no comparan candidatos de ese modo: JumpStart parte de modelos ya entrenados, Random Cut Forest se usa para detectar anomalías y K-Means para formar grupos.",
+      "explanation_en": "Autopilot automates model selection: it tries different algorithms and scores their predictive quality through cross-validation against defined objective metrics. The other options do not compare candidates that way: JumpStart starts from models that are already trained, Random Cut Forest is meant for spotting anomalies and K-Means for forming groups.",
+      "source": "AWS — SageMaker Autopilot (https://docs.aws.amazon.com/sagemaker/latest/dg/autopilot-automate-model-development.html)"
+    },
+    {
+      "id": "q430110_032",
+      "skill_id": "sk430110",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ingeniería de ML recibe lecturas de sensores IoT y necesita detectar valores anómalos que se apartan del comportamiento normal, sin datos etiquetados. ¿Qué algoritmo integrado de SageMaker debería elegir?",
+      "question_en": "An ML engineering team ingests IoT sensor readings and needs to detect abnormal values that stray from normal behavior, without labeled data. Which built-in SageMaker algorithm should it choose?",
+      "options_es": [
+        "K-Means, para formar grupos de lecturas similares",
+        "Random Cut Forest, para señalar puntos atípicos",
+        "PCA, para reducir el número de variables",
+        "IP Insights, para aprender patrones de uso de direcciones IPv4"
+      ],
+      "options_en": [
+        "K-Means, to form groups of similar readings",
+        "Random Cut Forest, to spot outliers",
+        "PCA, to cut down the number of features",
+        "IP Insights, to learn IPv4 address usage patterns"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Random Cut Forest está pensado para encontrar puntos de datos anómalos que se desvían del patrón general, lo que encaja con lecturas de sensores sin etiquetar. K-Means busca agrupaciones de elementos parecidos, PCA reduce la dimensionalidad y IP Insights modela cómo se usan las direcciones IPv4 con entidades como cuentas de usuario, así que ninguno está orientado a señalar valores atípicos en sensores.",
+      "explanation_en": "Random Cut Forest targets anomalous observations that break from the overall pattern of the data, which fits unlabeled sensor readings. K-Means finds groupings of similar items, PCA reduces dimensionality, and IP Insights models how IPv4 addresses relate to entities such as user accounts, so none of them is aimed at spotting outlying sensor values.",
+      "source": "AWS — Built-in algorithms and pretrained models in Amazon SageMaker (https://docs.aws.amazon.com/sagemaker/latest/dg/algos.html)"
+    },
+    {
+      "id": "q430110_033",
+      "skill_id": "sk430110",
+      "type": "multiple_choice",
+      "question_es": "Un minorista quiere predecir las ventas futuras de un producto a partir de su historial de ventas tratado como serie temporal. ¿Qué algoritmo integrado de SageMaker está pensado para ese pronóstico?",
+      "question_en": "A retailer wants to predict future sales of a product from its historical sales data, treated as a time series. Which built-in SageMaker algorithm is designed for this forecasting?",
+      "options_es": [
+        "DeepAR, que usa redes recurrentes",
+        "Latent Dirichlet Allocation, para descubrir temas en textos",
+        "IP Insights, para aprender patrones de direcciones IPv4",
+        "Semantic Segmentation, para etiquetar cada píxel"
+      ],
+      "options_en": [
+        "DeepAR, which uses recurrent networks",
+        "Latent Dirichlet Allocation, to uncover topics in text",
+        "IP Insights, to learn IPv4 address usage patterns",
+        "Semantic Segmentation, to label each pixel"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, DeepAR es un algoritmo supervisado que pronostica series temporales de un solo valor mediante redes neuronales recurrentes, justo lo que necesita el historial de ventas. Las otras tres opciones son algoritmos conocidos de SageMaker, pero por conocimiento general (no por este pasaje) se sabe que sirven a otras tareas: temas en textos, uso de direcciones IPv4 y etiquetado de píxeles en imágenes.",
+      "explanation_en": "Per the source, DeepAR is a supervised algorithm that forecasts single-valued time series using recurrent neural networks, which is exactly what a sales history calls for. The other three options are well-known SageMaker algorithms, but from general knowledge (not from this passage) they target other tasks: topics in text, IPv4 address usage, and pixel labeling in images.",
+      "source": "AWS — Built-in algorithms and pretrained models in Amazon SageMaker (https://docs.aws.amazon.com/sagemaker/latest/dg/algos.html)"
+    },
+    {
+      "id": "q430110_034",
+      "skill_id": "sk430110",
+      "type": "multiple_choice",
+      "question_es": "Un equipo prefiere partir de modelos preentrenados de código abierto, ajustarlos con sus propios datos antes de desplegarlos y usar plantillas de solución ya preparadas, en lugar de entrenar desde cero. ¿Qué ofrece SageMaker para ello?",
+      "question_en": "A team prefers to start from pretrained open-source models, tune them on its own data before deploying, and use ready-made solution templates instead of training from scratch. What does SageMaker offer for this?",
+      "options_es": [
+        "Feature Store, un repositorio central de características reutilizables",
+        "Model Monitor, un control de la deriva de los modelos en producción",
+        "Ground Truth, un servicio de etiquetado de datos de entrenamiento",
+        "JumpStart, un catálogo de modelos preentrenados y plantillas"
+      ],
+      "options_en": [
+        "Feature Store, a central repository of reusable features",
+        "Model Monitor, a check for drift in models running in production",
+        "Ground Truth, a labeling service for building training datasets",
+        "JumpStart, a catalog of pretrained models and templates"
+      ],
+      "correct_index": 3,
+      "explanation_es": "JumpStart reúne modelos preentrenados de código abierto que se pueden entrenar y ajustar antes del despliegue, además de plantillas de solución para casos de uso habituales. Las otras tres opciones cubren otras tareas del ciclo de ML (almacenar características, vigilar la deriva y etiquetar datos) y no son un punto de partida con modelos preentrenados y plantillas.",
+      "explanation_en": "JumpStart gathers pretrained open-source models that can be trained further and tuned before deployment, plus solution templates for common use cases. The other three options serve different ML lifecycle tasks (storing features, watching for drift, and labeling data) and are not a starting point built on pretrained models and templates.",
+      "source": "AWS — SageMaker JumpStart pretrained models (https://docs.aws.amazon.com/sagemaker/latest/dg/studio-jumpstart.html)"
+    },
+    {
+      "id": "q430110_035",
+      "skill_id": "sk430110",
+      "type": "multiple_choice",
+      "question_es": "Un banco usa AutoML de SageMaker en un problema de clasificación y su equipo de riesgo necesita ver cuánto pesa cada variable en las predicciones del modelo. ¿Qué salida de Autopilot le sirve?",
+      "question_en": "A bank uses SageMaker AutoML on a classification problem, and its risk team needs to see how much each feature weighs in the model's predictions. Which Autopilot output helps?",
+      "options_es": [
+        "El informe de rendimiento del modelo con su matriz de confusión",
+        "Las curvas ROC y de precisión-exhaustividad del mejor candidato",
+        "El informe de explicabilidad que genera Autopilot",
+        "El resumen de métricas de evaluación del modelo ganador"
+      ],
+      "options_en": [
+        "The model performance report with its confusion matrix",
+        "The ROC and precision-recall curves for the best candidate",
+        "The explainability report that Autopilot generates",
+        "The evaluation metrics summary for the winning model"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Autopilot genera de forma automática informes que muestran la importancia de cada variable, y por eso sirven a equipos de riesgo y cumplimiento. El informe de rendimiento, con su matriz de confusión, sus curvas y sus métricas de evaluación, describe qué tan bien predice el modelo, no qué variables influyen en esas predicciones.",
+      "explanation_en": "Autopilot automatically generates reports that show the importance of each feature, which is why risk and compliance teams can use them. The performance report, with its confusion matrix, curves and evaluation metrics, describes how well the model predicts, not which features drive those predictions.",
+      "source": "AWS — SageMaker Autopilot (https://docs.aws.amazon.com/sagemaker/latest/dg/autopilot-automate-model-development.html)"
+    },
+    {
+      "id": "q430110_036",
+      "skill_id": "sk430110",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML quiere organizar miles de documentos en temas que no conoce de antemano y no dispone de ejemplos con respuestas. ¿Qué algoritmo integrado de SageMaker encaja mejor?",
+      "question_en": "An ML team wants to organize thousands of documents into topics it does not know in advance, and it has no examples with answers. Which built-in SageMaker algorithm fits best?",
+      "options_es": [
+        "Sequence-to-Sequence, pensado para traducción automática neuronal",
+        "Latent Dirichlet Allocation, orientado a descubrir temas",
+        "Text Classification - TensorFlow, con modelos preentrenados",
+        "BlazingText, para embeddings Word2vec y clasificación de texto"
+      ],
+      "options_en": [
+        "Sequence-to-Sequence, built for neural machine translation",
+        "Latent Dirichlet Allocation, aimed at discovering topics",
+        "Text Classification - TensorFlow, using pretrained models",
+        "BlazingText, for Word2vec embeddings and text classification"
+      ],
+      "correct_index": 1,
+      "explanation_es": "LDA está pensado para determinar los temas de una colección de documentos y es no supervisado, por lo que durante el entrenamiento no requiere datos de ejemplo con respuestas. Sequence-to-Sequence y Text Classification - TensorFlow son algoritmos supervisados, para traducción y clasificación respectivamente, y BlazingText se centra en Word2vec y clasificación de texto, no en descubrir temas.",
+      "explanation_en": "LDA is meant for determining topics across a collection of documents and is unsupervised, so training does not require data samples with answers. Sequence-to-Sequence and Text Classification - TensorFlow are supervised, handling translation and classification, while BlazingText targets Word2vec and text classification rather than topic discovery.",
+      "source": "AWS — Built-in algorithms and pretrained models in Amazon SageMaker (https://docs.aws.amazon.com/sagemaker/latest/dg/algos.html)"
+    },
+    {
+      "id": "q430122_001",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML construye un asistente de extracción de datos con un modelo de Amazon Bedrock y necesita que, ante el mismo prompt, las respuestas sean lo más predecibles y repetibles posible. ¿Qué ajuste de inferencia ayuda más?",
+      "question_en": "An ML team builds a data-extraction assistant on an Amazon Bedrock model and needs responses to be as predictable and repeatable as possible for the same prompt. Which inference setting helps most?",
+      "options_es": [
+        "Reducir la temperatura para que el modelo elija tokens más probables",
+        "Aumentar la temperatura para aplanar la distribución de probabilidad de tokens",
+        "Aumentar el valor de Top K para ampliar el conjunto de candidatos",
+        "Quitar las secuencias de parada para que el modelo genere sin cortes"
+      ],
+      "options_en": [
+        "Lower the temperature so the model picks more likely tokens",
+        "Raise the temperature to flatten the token probability distribution",
+        "Increase the Top K value to widen the pool of candidates",
+        "Remove stop sequences so the model generates without cutting off"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con una temperatura baja la distribución de probabilidad se vuelve más empinada y el modelo tiende a escoger los tokens más probables, lo que da salidas más deterministas. Subirla aplana la distribución y aumenta la aleatoriedad, y ampliar Top K deja entrar candidatos menos probables. Quitar las secuencias de parada solo cambia dónde termina la generación, no su variabilidad.",
+      "explanation_en": "A low temperature steepens the probability distribution so the model tends to choose the most likely tokens, giving more deterministic output. Raising it flattens the distribution and adds randomness, and widening Top K lets less likely candidates in. Removing stop sequences only changes where generation ends, not how variable it is.",
+      "source": "AWS — Influence response generation with inference parameters (https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html)"
+    },
+    {
+      "id": "q430122_002",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere comparar rápidamente modelos candidatos haciendo que un segundo LLM asigne una nota a cada respuesta y la justifique. ¿Qué tipo de trabajo de evaluación de Amazon Bedrock encaja?",
+      "question_en": "A team wants to compare candidate models quickly by having a second LLM assign each response a score and justify it. Which Amazon Bedrock evaluation job type fits?",
+      "options_es": [
+        "Un trabajo de evaluación con un equipo de revisores humanos",
+        "Un trabajo de evaluación con un modelo juez",
+        "Un trabajo de evaluación programática con un conjunto de datos propio",
+        "Un trabajo de evaluación de RAG sobre una base de conocimiento"
+      ],
+      "options_en": [
+        "An evaluation job with a team of human reviewers",
+        "An evaluation job with a judge model",
+        "A programmatic evaluation job with a custom prompt dataset",
+        "A RAG evaluation job aimed at a knowledge base"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El trabajo con modelo juez es el que recurre a un segundo LLM para puntuar cada respuesta del modelo evaluado y razonar la nota. La modalidad con revisores humanos, en cambio, se apoya en personas (empleados o expertos del sector). La evaluación programática parte de un conjunto de prompts propio o integrado, y la evaluación de RAG mide el desempeño de una base de conocimiento, no la comparación entre modelos.",
+      "explanation_en": "The judge-model job is the one that relies on a second LLM to grade each response from the model under test and give the reasoning behind the grade. The human-reviewer mode, by contrast, depends on people such as employees or industry experts. The programmatic job starts from a custom or built-in prompt dataset, and RAG evaluation measures how a knowledge base performs rather than comparing models.",
+      "source": "AWS — Evaluate the performance of Amazon Bedrock resources (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html)"
+    },
+    {
+      "id": "q430122_003",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación genera texto con un modelo de Amazon Bedrock y debe cortar la generación en cuanto aparezca un marcador de texto concreto en la salida. ¿Qué parámetro de inferencia sirve para esto?",
+      "question_en": "An application generates text with an Amazon Bedrock model and must cut generation off as soon as a specific text marker appears in the output. Which inference parameter serves this purpose?",
+      "options_es": [
+        "Un valor bajo de temperatura",
+        "Un valor alto de Top P",
+        "Una penalización por tokens repetidos",
+        "Una secuencia de parada propia"
+      ],
+      "options_en": [
+        "A low temperature value",
+        "A high Top P value",
+        "A penalty for repeated tokens",
+        "A stop sequence you define"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una secuencia de parada permite definir la cadena de caracteres que, al aparecer en la salida, hace que el modelo termine de generar. Una penalización solo desincentiva ciertos resultados, como los tokens repetidos, pero no detiene la generación. La temperatura y Top P tampoco sirven para cortar en un marcador de texto concreto.",
+      "explanation_en": "A stop sequence lets you define the character string that, once it shows up in the output, makes the model end generation. A penalty only discourages certain outputs, such as repeated tokens, and does not halt generation. Temperature and Top P are likewise not the way to cut off at a specific text marker.",
+      "source": "AWS — Influence response generation with inference parameters (https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html)"
+    },
+    {
+      "id": "q430122_004",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Un equipo cambia de un modelo fundacional a otro en Amazon Bedrock y quiere aplicar la misma configuración de parámetros de inferencia. ¿Qué debe tener presente?",
+      "question_en": "A team switches from one foundation model to another in Amazon Bedrock and wants to apply the same inference parameter configuration. What should it keep in mind?",
+      "options_es": [
+        "Los rangos son los mismos para todos los modelos de un mismo proveedor",
+        "Los valores por defecto y los rangos cambian según el modelo",
+        "Los rangos dependen únicamente del tamaño del prompt enviado",
+        "Solo se pueden ajustar parámetros en modelos personalizados"
+      ],
+      "options_en": [
+        "Ranges are the same for every model from a given provider",
+        "Defaults and supported ranges differ by model",
+        "Ranges depend only on the size of the prompt that is sent",
+        "Parameters can only be adjusted on customized models"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, los valores por defecto y los rangos de los parámetros de inferencia dependen del modelo, así que al cambiar de modelo conviene revisarlos en lugar de copiar la configuración. Por eso la opción del mismo proveedor y la del tamaño del prompt no encajan: la fuente vincula esos valores con el modelo. Además, la fuente habla de ajustar los parámetros al ejecutar inferencia, sin condicionarlo a un modelo personalizado.",
+      "explanation_en": "According to the source, the defaults and ranges of inference parameters depend on the model, so after switching models they should be reviewed instead of copied over. That is why the same-provider option and the prompt-size option do not fit: the source ties these values to the model. The source also describes adjusting parameters when running inference, without making that depend on a customized model.",
+      "source": "AWS — Influence response generation with inference parameters (https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html)"
+    },
+    {
+      "id": "q430122_005",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Un equipo configura un trabajo de evaluación programático de modelos en Amazon Bedrock. ¿Qué conjunto de prompts puede utilizar?",
+      "question_en": "A team sets up a programmatic model evaluation job in Amazon Bedrock. Which prompt dataset can it use?",
+      "options_es": [
+        "Un conjunto integrado, sin poder aportar uno propio",
+        "Un conjunto propio, sin poder usar uno integrado",
+        "Un conjunto propio o uno integrado",
+        "Un conjunto redactado por el modelo juez"
+      ],
+      "options_en": [
+        "A built-in dataset only, with no option to bring your own",
+        "A custom dataset only, with no option to use a built-in one",
+        "Either a custom dataset or a built-in one",
+        "A dataset written by a judge model"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En un trabajo de evaluación programático el equipo puede subir un conjunto de prompts ajustado a su caso de uso o recurrir a uno integrado, así que ambas vías son válidas. Las dos opciones que dejan una sola vía la excluyen sin motivo. El modelo juez corresponde a otro tipo de trabajo de evaluación y no es la fuente de prompts de este.",
+      "explanation_en": "In a programmatic evaluation job the team can supply a prompt dataset shaped to its use case or rely on a built-in one, so both routes are valid. The two options that leave only one route rule out the other for no reason. The judge model belongs to a different kind of evaluation job and is not the prompt source for this one.",
+      "source": "AWS — Evaluate the performance of Amazon Bedrock resources (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html)"
+    },
+    {
+      "id": "q430122_006",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "question_es": "Un equipo prepara una evaluación RAG basada en LLM de su base de conocimiento de Amazon Bedrock. Además de las consultas de usuario, ¿qué debe incluir el conjunto de datos?",
+      "question_en": "A team prepares an LLM-based RAG evaluation of its Amazon Bedrock knowledge base. Besides the user queries, what must the dataset include?",
+      "options_es": [
+        "Textos y respuestas esperados como referencia",
+        "Las métricas calculadas de una evaluación anterior",
+        "Los pesos del modelo fundacional que genera las respuestas",
+        "Las claves de cifrado del bucket donde se guarda el informe"
+      ],
+      "options_en": [
+        "Expected passages and answers as a reference",
+        "The computed metrics from a previous evaluation",
+        "The weights of the foundation model that writes answers",
+        "The encryption keys for the bucket that stores the report"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El conjunto de datos necesita una verdad de referencia, es decir, qué textos debería recuperar la base de conocimiento y qué respuestas se esperan, para que la evaluación compruebe si el sistema se alinea con lo esperado. Las métricas previas, los pesos del modelo y las claves de cifrado no cumplen ese papel de referencia.",
+      "explanation_en": "The dataset needs ground truth, meaning which passages the knowledge base should retrieve and which answers are expected, so the evaluation can check whether the system matches expectations. Earlier metrics, model weights and encryption keys do not serve as that reference.",
+      "source": "AWS — Evaluate the performance of Amazon Bedrock resources (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html)"
+    },
+    {
+      "id": "q430123_001",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML quiere comprobar con rapidez cómo responde un modelo de Bedrock ante una tarea concreta, usando sus propios prompts o un conjunto ya incluido, sin revisores humanos ni un segundo LLM que puntúe. ¿Qué tipo de trabajo de evaluación encaja?",
+      "question_en": "An ML team wants to quickly check how a Bedrock model handles a specific task, using either its own prompts or a ready-made dataset, with no human raters and no second LLM scoring the output. Which evaluation job type fits?",
+      "options_es": [
+        "Un trabajo de evaluación programática del modelo",
+        "Un trabajo de evaluación con personas revisoras del equipo",
+        "Un trabajo de evaluación de RAG sobre una base de conocimiento",
+        "Un trabajo de evaluación con un modelo juez que explica cada nota"
+      ],
+      "options_en": [
+        "A programmatic evaluation job for the model",
+        "A model evaluation job staffed by human workers",
+        "A RAG evaluation job against a knowledge base",
+        "A model evaluation job that uses a judge model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los trabajos programáticos sirven para medir de forma ágil la capacidad de un modelo en una tarea, con un dataset de prompts propio o uno integrado. Los de trabajadores humanos añaden valoraciones de personas, los de modelo juez recurren a un segundo LLM para puntuar y los de RAG se centran en bases de conocimiento, así que ninguno encaja con el escenario.",
+      "explanation_en": "Programmatic jobs are the fast way to measure a model's ability on a task, using either a custom prompt dataset or a built-in one. Human-worker jobs add people's ratings, judge-model jobs rely on a second LLM to score, and RAG evaluations target knowledge bases, so none of those matches the scenario.",
+      "source": "AWS — Evaluate the performance of Amazon Bedrock resources (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html)"
+    },
+    {
+      "id": "q430123_002",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "El modelo de un equipo se ejecuta fuera de Amazon Bedrock, pero quieren que un modelo juez de Bedrock puntúe sus respuestas. ¿Cómo deben plantear el trabajo de evaluación?",
+      "question_en": "A team's model runs outside Amazon Bedrock, yet they want a Bedrock judge model to score its answers. How should they set up the evaluation job?",
+      "options_es": [
+        "Registrar el endpoint externo como modelo generador desde la consola de Bedrock",
+        "Reentrenar el modelo dentro de Bedrock antes de evaluarlo",
+        "Adjuntar al conjunto de prompts las respuestas que el modelo ya produjo",
+        "Cambiar a evaluación humana, pues un modelo externo no admite juez LLM"
+      ],
+      "options_en": [
+        "Register the external endpoint as the generator model in the Bedrock console",
+        "Retrain the model inside Bedrock before evaluating it",
+        "Attach the responses the model already produced to the prompt dataset",
+        "Switch to human evaluation, since an external model can't have an LLM judge"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Para un modelo ajeno a Bedrock, la vía prevista es aportar en el conjunto de datos las respuestas que ya generó; así Bedrock se salta la invocación del generador y puntúa directamente esos datos con el modelo juez. Registrar un endpoint como generador, reentrenar el modelo en Bedrock o recurrir a evaluadores humanos no son necesarios para lograrlo.",
+      "explanation_en": "For a model outside Bedrock, the intended route is to supply the responses it already generated in the dataset; Bedrock then skips invoking a generator and has the judge model score that data directly. Registering an endpoint as the generator, retraining the model in Bedrock, or turning to human reviewers is not needed to achieve this.",
+      "source": "AWS — Evaluate model performance using another LLM as a judge (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation-judge.html)"
+    },
+    {
+      "id": "q430123_003",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "Un equipo mantiene una base de conocimiento de Bedrock y solo quiere medir si recupera los pasajes adecuados, sin valorar el texto que redacta un modelo generador. ¿Qué tipo de trabajo de evaluación de RAG debe configurar?",
+      "question_en": "A team maintains a Bedrock knowledge base and only wants to measure whether it fetches the right passages, without judging text written by a generator model. Which type of RAG evaluation job should they set up?",
+      "options_es": [
+        "Un trabajo de recuperar y generar con la base de conocimiento y un modelo generador de respuestas",
+        "Un trabajo solo de recuperación sobre la base de conocimiento",
+        "Un trabajo de recuperar y generar con datos de inferencia propios de una fuente externa",
+        "Un trabajo de recuperar y generar cuyo informe también cubre los resúmenes del generador"
+      ],
+      "options_en": [
+        "A retrieve-and-generate job using the knowledge base plus a response generator model",
+        "A retrieve-only job run against the knowledge base",
+        "A retrieve-and-generate job fed with inference data from an external RAG source",
+        "A retrieve-and-generate job whose report also covers the summaries the generator writes"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente describe solo dos tipos de trabajo de evaluación de RAG. En el de solo recuperación, el informe parte únicamente de los datos que devuelve la fuente RAG, que es justo lo que el equipo quiere medir. En cualquier variante de recuperar y generar, ya sea con la base de conocimiento o con datos de inferencia externos, el informe incorpora además los resúmenes del modelo generador, así que las otras tres opciones valoran texto generado.",
+      "explanation_en": "The source describes just two kinds of RAG evaluation job. In the retrieve-only kind, the report rests solely on the data that the RAG source returns, which is exactly what the team wants to measure. Every retrieve-and-generate variant, whether it uses the knowledge base or external inference data, also folds in the summaries produced by the generator model, so the other three options all assess generated text.",
+      "source": "AWS — Evaluate the performance of RAG sources using Amazon Bedrock evaluations (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation-kb.html)"
+    },
+    {
+      "id": "q430123_004",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere evaluar un modelo con trabajos automáticos de Bedrock, tanto en resumen de textos como en preguntas y respuestas. ¿Cómo debe organizar la evaluación?",
+      "question_en": "A team wants to evaluate a model with Bedrock automatic jobs on both text summarization and question answering. How should they organize the evaluation?",
+      "options_es": [
+        "Lanzar un trabajo independiente por cada tipo de tarea que se quiera evaluar",
+        "Marcar los dos tipos de tarea en un solo trabajo y comparar después sus resultados",
+        "Cambiar el tipo de tarea a mitad de ejecución dentro de un único trabajo de evaluación",
+        "Combinar ambos tipos de tarea en un único trabajo con sus conjuntos de datos integrados"
+      ],
+      "options_en": [
+        "Launch an independent job for each task type they want to evaluate",
+        "Tick both task types in a single job and compare the results afterwards",
+        "Change the task type midway through the run of a single evaluation job",
+        "Combine both task types in one job using the built-in datasets for each"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un trabajo de evaluación de modelo en Bedrock solo admite un tipo de tarea, así que el resumen de textos y las preguntas y respuestas necesitan trabajos separados. Las otras tres opciones intentan cubrir dos tipos dentro de un mismo trabajo, ya sea marcándolos a la vez, cambiando de uno a otro durante la ejecución o combinándolos, y eso incumple la regla de un tipo por trabajo.",
+      "explanation_en": "A Bedrock model evaluation job accepts only one task type, so text summarization and question answering each need their own job. The other three options try to cover two types inside a single job, whether by selecting both at once, switching mid-run, or combining them, and that breaks the one-type-per-job rule.",
+      "source": "AWS — Model evaluation task types in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-tasks.html)"
+    },
+    {
+      "id": "q430123_005",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "Un equipo prepara una evaluación de RAG basada en LLM para su base de conocimiento de Bedrock. Además de las consultas de los usuarios, ¿qué debe incluir el conjunto de datos?",
+      "question_en": "A team is preparing an LLM-based RAG evaluation for its Bedrock knowledge base. Besides the user queries, what must the dataset include?",
+      "options_es": [
+        "Los embeddings vectoriales de cada documento indexado",
+        "Los pasajes que deberían recuperarse y sus respuestas ideales",
+        "Las notas de revisores humanos para cada respuesta",
+        "Una copia del modelo generador ajustado con los datos del equipo"
+      ],
+      "options_en": [
+        "Vector embeddings of every document in the index",
+        "Reference passages to retrieve, plus ideal answers",
+        "Scores from human reviewers for every answer",
+        "A copy of the generator model fine-tuned on the team's data"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El conjunto de datos necesita una referencia (ground truth) con los pasajes que la base de conocimiento debería recuperar y las respuestas esperadas, de modo que la evaluación pueda comprobar si se comporta como se espera. Los embeddings, las notas de revisores humanos o un modelo ajustado no se piden como parte de ese conjunto.",
+      "explanation_en": "The dataset needs a ground-truth reference listing the passages the knowledge base should retrieve and the answers it should give, so the evaluation can check whether it behaves as expected. Embeddings, human reviewer scores, or a fine-tuned model are not asked for as part of that dataset.",
+      "source": "AWS — Evaluate the performance of Amazon Bedrock resources (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html)"
+    },
+    {
+      "id": "q430123_006",
+      "skill_id": "sk430123",
+      "type": "multiple_choice",
+      "question_es": "Un equipo evalúa un modelo con un modelo juez en Bedrock, pero las métricas integradas no cubren un requisito propio de su negocio. ¿Qué puede hacer?",
+      "question_en": "A team is evaluating a model with a Bedrock judge model, but the built-in metrics don't cover a requirement specific to its business. What can it do?",
+      "options_es": [
+        "Cambiar a un trabajo programático con un conjunto de datos integrado",
+        "Aplicar la métrica integrada más parecida y asumir que basta",
+        "Esperar a que Bedrock añada esa métrica al catálogo integrado",
+        "Definir métricas personalizadas que reflejen su caso de negocio"
+      ],
+      "options_en": [
+        "Switch to a programmatic job on a built-in dataset",
+        "Apply the closest built-in metric and assume it is enough",
+        "Wait for Bedrock to add that metric to the built-in list",
+        "Define custom metrics that reflect its own business case"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Además de las métricas integradas, cada una con su propio prompt para el modelo evaluador, Bedrock permite crear métricas personalizadas adaptadas al caso de uso. Cambiar de tipo de trabajo, conformarse con una métrica aproximada o esperar una novedad no resuelve el requisito del equipo.",
+      "explanation_en": "Beyond the built-in metrics, each backed by its own prompt for the evaluator model, Bedrock lets you create custom metrics tailored to your use case. Changing job type, settling for an approximate metric, or waiting for a new one doesn't address the team's requirement.",
+      "source": "AWS — Evaluate model performance using another LLM as a judge (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation-judge.html)"
     }
   ]
 }

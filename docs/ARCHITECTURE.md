@@ -89,9 +89,10 @@ For each quiz question:
 1. **BKT** — estimates P(known) per skill from answer history
 2. **Elo** — selects questions at the right difficulty band
 3. **FSRS** — schedules future reviews (spaced repetition)
-4. **Thompson Bandit** — balances new content vs. review
 
 These are pure functions in `services/engine/` — no DB I/O, fully unit-tested.
+`AdaptiveScheduler` (+ Thompson Bandit new-vs-review) exists in `services/engine/scheduler.py`
+but is not wired to the API yet; quiz.py calls BKT/Elo/FSRS directly.
 
 ## Data model (key tables)
 
@@ -115,7 +116,7 @@ These are pure functions in `services/engine/` — no DB I/O, fully unit-tested.
 ## Content
 
 Live numbers come from `python scripts/check_docs.py` (they are also the `Contenido`
-row of `docs/AUTONOMOUS_STATE.md`); as of 2026-10-03: **11,416 questions / 35 tracks /
+row of `docs/AUTONOMOUS_STATE.md`); as of 2026-10-11: **11,964 questions / 35 tracks /
 730 skills / 730 lessons / 1,058 glossary terms**, every question with a canonical
 `source`. Five certification tracks (AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC)
 carry official domains with verified weights (`exam_domain` + `exam_weight_pct`).
