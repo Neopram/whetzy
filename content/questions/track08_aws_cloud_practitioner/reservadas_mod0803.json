@@ -1,0 +1,340 @@
+{
+  "questions": [
+    {
+      "id": "q080306_r002",
+      "skill_id": "sk080306",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Por qué se recomiendan S3 Standard-IA y S3 One Zone-IA para datos que se leen con poca frecuencia?",
+      "question_en": "Why are S3 Standard-IA and S3 One Zone-IA recommended for data that is read infrequently?",
+      "options_es": [
+        "Su acceso tarda de minutos a horas, por lo que no sirven para lecturas frecuentes",
+        "Guardan los objetos en una sola zona, así que cada lectura resulta más lenta",
+        "Cobran una tarifa por recuperar objetos, lo que penaliza las lecturas habituales",
+        "Borran automáticamente los objetos que no se leen durante un periodo"
+      ],
+      "options_en": [
+        "Access takes minutes to hours, so they do not suit frequent reads",
+        "They keep objects in a single zone, so every read is slower",
+        "They charge a retrieval fee, which makes regular reads costlier",
+        "They automatically delete objects that go unread for a while"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Ambas clases ofrecen acceso en milisegundos, pero S3 cobra una tarifa de recuperación por sus objetos, así que conviene usarlas con datos que se leen poco. No tardan minutos u horas, Standard-IA no usa una sola zona y la fuente no menciona un borrado automático por falta de lectura.",
+      "explanation_en": "Both classes offer millisecond access, but S3 charges a retrieval fee for their objects, so they fit data that is rarely read. Access does not take minutes to hours, Standard-IA is not limited to one zone, and the source does not mention automatic deletion of unread objects.",
+      "source": "AWS — Understanding and managing Amazon S3 storage classes (https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)"
+    },
+    {
+      "id": "q080303_r001",
+      "skill_id": "sk080303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa debe mantener sus aplicaciones en contenedores sobre servidores que ella misma administra, pero quiere gestionarlas con Amazon ECS. ¿Qué opción encaja mejor?",
+      "question_en": "A company must keep its containerized applications on servers that it manages itself, but it wants to run them with Amazon ECS. Which option fits best?",
+      "options_es": [
+        "AWS Batch",
+        "AWS Lambda",
+        "Amazon ECS Anywhere",
+        "Amazon Elastic Container Registry (Amazon ECR)"
+      ],
+      "options_en": [
+        "AWS Batch",
+        "AWS Lambda",
+        "Amazon ECS Anywhere",
+        "Amazon Elastic Container Registry (Amazon ECR)"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Amazon ECS Anywhere es la opción descrita para ejecutar contenedores en infraestructura administrada por el cliente, justo lo que necesita la empresa. AWS Batch se orienta al procesamiento por lotes, AWS Lambda ejecuta código sin pensar en servidores y Amazon ECR sirve para almacenar, administrar y desplegar imágenes de contenedores, así que ninguno cubre el requisito de usar servidores propios.",
+      "explanation_en": "Amazon ECS Anywhere is the option described for running containers on customer-managed infrastructure, which is exactly what the company needs. AWS Batch is aimed at batch processing, AWS Lambda runs code without servers to think about, and Amazon ECR stores, manages and deploys container images, so none of them meets the requirement of using the company's own servers.",
+      "source": "AWS — AWS Compute Services category iconCompute (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)"
+    },
+    {
+      "id": "q080308_r003",
+      "skill_id": "sk080308",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere que AWS analice sus cargas de trabajo y le sugiera qué recursos de cómputo se ajustan mejor a ellas, con el fin de gastar menos y rendir más. ¿Qué servicio debería usar?",
+      "question_en": "A company wants AWS to analyze its workloads and suggest which compute resources suit them best, so it can spend less and perform better. Which service should it use?",
+      "options_es": [
+        "Amazon EC2 Auto Scaling",
+        "AWS Compute Optimizer",
+        "EC2 Image Builder",
+        "AWS Batch"
+      ],
+      "options_en": [
+        "Amazon EC2 Auto Scaling",
+        "AWS Compute Optimizer",
+        "EC2 Image Builder",
+        "AWS Batch"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS Compute Optimizer figura en la categoría de gestión de costos y capacidad porque recomienda recursos de cómputo adecuados para cada carga con el fin de reducir costos y mejorar el rendimiento. EC2 Auto Scaling añade o quita capacidad según la demanda, EC2 Image Builder crea y mantiene imágenes y AWS Batch ofrece procesamiento por lotes totalmente administrado; ninguno ofrece recomendaciones de ese tipo.",
+      "explanation_en": "AWS Compute Optimizer is listed under cost and capacity management because it recommends suitable compute resources for each workload to cut costs and improve performance. EC2 Auto Scaling adds or removes capacity as demand changes, EC2 Image Builder builds and maintains images, and AWS Batch provides fully managed batch processing; none of them offers recommendations of this kind.",
+      "source": "AWS — AWS Compute Services category iconCompute (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)"
+    },
+    {
+      "id": "q080303_r002",
+      "skill_id": "sk080303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Cómo puede iniciarse el código que se despliega en AWS Lambda?",
+      "question_en": "How can code deployed in AWS Lambda be started?",
+      "options_es": [
+        "Un administrador debe lanzarla a mano desde la consola cada vez",
+        "Solo puede ejecutarse con un horario configurado en servidores propios",
+        "La activan otros servicios de AWS o la invoca una app web o móvil",
+        "El equipo debe mantener una flota de servidores recibiendo cada solicitud"
+      ],
+      "options_en": [
+        "An administrator has to launch it by hand from the console each time",
+        "It can only run on a schedule set up on servers the team operates",
+        "Other AWS services trigger it, or a web or mobile app calls it",
+        "The team has to keep a server fleet running to receive each request"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Lambda puede configurarse para ejecutarse automáticamente desde otros servicios de AWS, o invocarse directamente desde cualquier aplicación web o móvil. No requiere lanzamiento manual, no se limita a horarios y no necesita servidores que el equipo aprovisione o administre, porque Lambda se encarga de todo lo necesario para ejecutar y escalar el código.",
+      "explanation_en": "Lambda can be set up to run automatically from other AWS services, or it can be called directly from any web or mobile app. It needs no manual launch, is not limited to schedules, and does not require servers that the team provisions or manages, because Lambda handles everything needed to run and scale the code.",
+      "source": "AWS — AWS Compute Services category iconCompute (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)"
+    },
+    {
+      "id": "q080305_r001",
+      "skill_id": "sk080305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Los empleados que trabajan desde casa necesitan llegar a recursos en AWS y en las oficinas de la empresa desde sus portátiles, mediante una aplicación VPN instalada en cada dispositivo. ¿Qué servicio de AWS está pensado para esto?",
+      "question_en": "Employees working from home need to reach resources in AWS and in the company's offices from their laptops, using a VPN application installed on each device. Which AWS service is designed for this?",
+      "options_es": [
+        "AWS Site-to-Site VPN",
+        "AWS Direct Connect",
+        "Amazon Route 53",
+        "AWS Client VPN"
+      ],
+      "options_en": [
+        "AWS Site-to-Site VPN",
+        "AWS Direct Connect",
+        "Amazon Route 53",
+        "AWS Client VPN"
+      ],
+      "correct_index": 3,
+      "explanation_es": "AWS Client VPN conecta a los usuarios con recursos de AWS o locales mediante un cliente de software VPN, que es el acceso remoto descrito. Site-to-Site VPN crea túneles cifrados entre redes, no entre dispositivos de usuario; Direct Connect es una conexión dedicada y Route 53 es un servicio DNS, por lo que ninguno usa una aplicación VPN en cada portátil.",
+      "explanation_en": "AWS Client VPN connects users to AWS or on-premises resources through a VPN software client, which is the remote access described. Site-to-Site VPN creates encrypted tunnels between networks rather than user devices; Direct Connect is a dedicated connection and Route 53 is a DNS service, so neither relies on a VPN application on each laptop.",
+      "source": "AWS — AWS Networking and Content Delivery category iconNetworking and content delivery (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/networking-services.html)"
+    },
+    {
+      "id": "q080308_r001",
+      "skill_id": "sk080308",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa guarda datos en sus propias instalaciones en un bucket creado con Amazon S3 on Outposts. ¿Qué afirmación sobre las clases de almacenamiento es correcta?",
+      "question_en": "A company keeps data on premises in a bucket created with Amazon S3 on Outposts. Which statement about storage classes is correct?",
+      "options_es": [
+        "Cualquier clase de almacenamiento regional de S3 se puede aplicar a los objetos de un bucket de Outposts.",
+        "La clase S3 Outposts se puede aplicar a objetos de un bucket situado en una región de AWS.",
+        "La clase S3 Outposts es la clase predeterminada de todo bucket nuevo creado en una región de AWS.",
+        "La clase S3 Outposts solo se aplica a objetos de buckets en Outposts."
+      ],
+      "options_en": [
+        "Any regional S3 storage class can be applied to objects in an Outposts bucket.",
+        "The S3 Outposts class can be applied to objects in a bucket located in an AWS Region.",
+        "The S3 Outposts class is the default for every new bucket created in an AWS Region.",
+        "The S3 Outposts class applies only to objects in Outposts buckets."
+      ],
+      "correct_index": 3,
+      "explanation_es": "La clase S3 Outposts existe únicamente para objetos almacenados en buckets de Outposts, y usarla con un bucket regional produce un error. Lo mismo ocurre al revés: las demás clases de S3 tampoco funcionan con objetos de buckets de Outposts. Por eso fallan las opciones que mezclan ambos tipos de bucket o que la presentan como clase predeterminada regional.",
+      "explanation_en": "The S3 Outposts class exists only for objects stored in Outposts buckets, and trying it with a regional bucket produces an error. The reverse also holds: other S3 classes fail with objects in Outposts buckets. That rules out every option that mixes the two bucket types or presents the class as a regional default.",
+      "source": "AWS — Understanding and managing Amazon S3 storage classes (https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)"
+    },
+    {
+      "id": "q080302_r001",
+      "skill_id": "sk080302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa entrega su aplicación web con Amazon CloudFront y quiere reforzarla con protección frente a ataques de denegación de servicio distribuido. ¿Con qué servicio de AWS se integra CloudFront para mitigarlos?",
+      "question_en": "A company delivers its web application through Amazon CloudFront and wants added protection against distributed denial-of-service attacks. Which AWS service does CloudFront integrate with to mitigate them?",
+      "options_es": [
+        "Amazon S3",
+        "AWS Shield",
+        "Elastic Load Balancing",
+        "AWS Lambda@Edge"
+      ],
+      "options_en": [
+        "Amazon S3",
+        "AWS Shield",
+        "Elastic Load Balancing",
+        "AWS Lambda@Edge"
+      ],
+      "correct_index": 1,
+      "explanation_es": "CloudFront funciona junto con AWS Shield para mitigar los ataques DDoS. Amazon S3 y Elastic Load Balancing se mencionan como posibles orígenes de la aplicación, no como protección DDoS, y Lambda@Edge sirve para ejecutar código personalizado más cerca de los usuarios.",
+      "explanation_en": "CloudFront works together with AWS Shield to mitigate DDoS attacks. Amazon S3 and Elastic Load Balancing are named as possible origins for the application rather than as DDoS protection, and Lambda@Edge is used to run custom code closer to users.",
+      "source": "AWS — AWS Networking and Content Delivery category iconNetworking and content delivery (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/networking-services.html)"
+    },
+    {
+      "id": "q080304_r002",
+      "skill_id": "sk080304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Según la visión general de AWS, ¿qué papel cumplen los servicios de bases de datos de AWS para las empresas?",
+      "question_en": "According to the AWS overview, what role do AWS database services play for businesses?",
+      "options_es": [
+        "Se limitan a archivar copias de seguridad de servidores que siguen en las instalaciones del cliente",
+        "Sirven de base segura y fiable para aplicaciones de datos e IA generativa",
+        "Eliminan la necesidad de tener aplicaciones, porque almacenan por sí mismas toda la lógica de negocio",
+        "Están pensados solo para cargas pequeñas y no respaldan aplicaciones críticas"
+      ],
+      "options_en": [
+        "They only archive backup copies of servers that remain at the customer's own site",
+        "They give data-driven apps and generative AI a secure, dependable base",
+        "They remove any need for applications by holding all business logic themselves",
+        "They suit only small workloads and cannot back business-critical applications"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS presenta sus bases de datos como una base de alto rendimiento, segura y fiable para aplicaciones basadas en datos y soluciones de IA generativa. Las demás opciones los reducen a copias de seguridad, a sustituir aplicaciones o a cargas pequeñas, algo que la fuente no dice.",
+      "explanation_en": "AWS presents its databases as a high-performance, secure, and reliable foundation for data-driven applications and generative AI solutions. The other options reduce them to backup storage, a replacement for applications, or small workloads only, none of which the source says.",
+      "source": "AWS — AWS Database category iconDatabases (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/database.html)"
+    },
+    {
+      "id": "q080305_r002",
+      "skill_id": "sk080305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo de seguridad ejecuta una flota de appliances de cortafuegos de un proveedor externo y quiere repartir el tráfico entre ellos, con escalado automático y sin que los appliances alteren el origen ni el destino del tráfico. ¿Qué tipo de Elastic Load Balancing encaja?",
+      "question_en": "A security team runs a fleet of firewall appliances from an outside vendor and wants traffic spread across them, with automatic scaling and without the appliances changing the traffic's source or destination. Which type of Elastic Load Balancing fits?",
+      "options_es": [
+        "Gateway Load Balancer",
+        "Application Load Balancer",
+        "Network Load Balancer",
+        "Classic Load Balancer"
+      ],
+      "options_en": [
+        "Gateway Load Balancer",
+        "Application Load Balancer",
+        "Network Load Balancer",
+        "Classic Load Balancer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Gateway Load Balancer sirve para desplegar, escalar y ejecutar appliances de red de terceros, con balanceo y escalado automático, y es transparente para el origen y el destino del tráfico. Application Load Balancer enruta tráfico HTTP y HTTPS por contenido de la petición, Network Load Balancer trata tráfico TCP que exige un rendimiento extremo y Classic Load Balancer está pensado para aplicaciones creadas en la red EC2-Classic.",
+      "explanation_en": "Gateway Load Balancer is meant for deploying, scaling, and running third-party network appliances, with load balancing and auto scaling, and it is transparent to the traffic's source and destination. Application Load Balancer routes HTTP and HTTPS traffic based on request content, Network Load Balancer handles TCP traffic where extreme performance is needed, and Classic Load Balancer is intended for applications built in the EC2-Classic network.",
+      "source": "AWS — AWS Networking and Content Delivery category iconNetworking and content delivery (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/networking-services.html)"
+    },
+    {
+      "id": "q080306_r001",
+      "skill_id": "sk080306",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué hay que hacer antes de poder leer un objeto almacenado en S3 Glacier Flexible Retrieval?",
+      "question_en": "What must happen before an application can read an object stored in S3 Glacier Flexible Retrieval?",
+      "options_es": [
+        "Copiarlo a otro bucket, porque las clases de archivo bloquean las lecturas locales",
+        "Restaurarlo, porque los objetos archivados no se pueden leer directamente",
+        "Esperar a que S3 Intelligent-Tiering lo mueva a la capa de acceso frecuente",
+        "Activar el versionado del bucket para habilitar su lectura en tiempo real"
+      ],
+      "options_en": [
+        "Copy it to another bucket, because archive classes block local reads",
+        "Restore it, because archived objects cannot be read directly",
+        "Wait for S3 Intelligent-Tiering to move it to the frequent access tier",
+        "Turn on bucket versioning so it can be read in real time"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los objetos de S3 Glacier Flexible Retrieval están archivados, y la fuente indica que primero hay que restaurarlos para poder acceder a ellos. Copiarlos a otro bucket, activar el versionado o esperar a que otra clase los mueva no es el paso que describe la fuente para habilitar la lectura.",
+      "explanation_en": "Objects in S3 Glacier Flexible Retrieval are archived, and the source states they must be restored before they can be accessed. Copying them to another bucket, enabling versioning, or waiting for another class to move them is not the step the source describes for making them readable.",
+      "source": "AWS — Understanding and managing Amazon S3 storage classes (https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)"
+    },
+    {
+      "id": "q080308_r002",
+      "skill_id": "sk080308",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un juego en línea necesita balancear tráfico TCP con exigencias de rendimiento muy altas y picos de carga repentinos e impredecibles. ¿Qué tipo de balanceador de carga de Elastic Load Balancing encaja mejor?",
+      "question_en": "An online game needs to balance TCP traffic with very demanding performance requirements and sudden, unpredictable load spikes. Which Elastic Load Balancing type fits best?",
+      "options_es": [
+        "Network Load Balancer",
+        "Application Load Balancer",
+        "Gateway Load Balancer",
+        "Classic Load Balancer"
+      ],
+      "options_en": [
+        "Network Load Balancer",
+        "Application Load Balancer",
+        "Gateway Load Balancer",
+        "Classic Load Balancer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Network Load Balancer trabaja a nivel de conexión (capa cuatro), está pensado para tráfico TCP que exige un rendimiento extremo y está optimizado para patrones de tráfico repentinos y volátiles. Application Load Balancer opera por solicitud HTTP/HTTPS, Gateway Load Balancer sirve para desplegar aparatos de red de terceros y Classic Load Balancer ofrece un balanceo básico pensado para aplicaciones de la red EC2-Classic.",
+      "explanation_en": "Network Load Balancer works at the connection level (Layer four), targets TCP traffic that needs extreme performance, and is optimized for sudden and volatile traffic patterns. Application Load Balancer operates per HTTP/HTTPS request, Gateway Load Balancer is for deploying third-party network appliances, and Classic Load Balancer offers basic balancing intended for applications built on the EC2-Classic network.",
+      "source": "AWS — AWS Networking and Content Delivery category iconNetworking and content delivery (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/networking-services.html)"
+    },
+    {
+      "id": "q080304_r003",
+      "skill_id": "sk080304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere dejar de encargarse de las tareas repetitivas de administración de su base de datos para centrarse en sus aplicaciones. ¿Cuál de estas tareas automatiza Amazon RDS?",
+      "question_en": "A company wants to stop handling repetitive database administration chores so it can focus on its applications. Which of these tasks does Amazon RDS automate?",
+      "options_es": [
+        "Escribir las consultas SQL que necesita la aplicación",
+        "Diseñar las pantallas con las que interactúan los usuarios",
+        "Aplicar parches al software de la base de datos",
+        "Redactar la lógica de negocio que procesa los pedidos"
+      ],
+      "options_en": [
+        "Writing the SQL queries the application needs",
+        "Designing the screens that users interact with",
+        "Applying patches to the database software",
+        "Coding the business logic that processes orders"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Amazon RDS automatiza tareas de administración que consumen tiempo, entre ellas el parcheo, además del aprovisionamiento de hardware, la configuración y las copias de seguridad. Escribir consultas, diseñar pantallas o programar la lógica de negocio son trabajo de la aplicación, en lo que RDS permite concentrarse.",
+      "explanation_en": "Amazon RDS automates time-consuming administration work, including patching, along with hardware provisioning, setup, and backups. Writing queries, designing screens, or coding business logic is application work, which RDS lets you concentrate on.",
+      "source": "AWS — AWS Database category iconDatabases (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/database.html)"
+    },
+    {
+      "id": "q080302_r002",
+      "skill_id": "sk080302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Los usuarios de una empresa escriben una dirección web fácil de recordar, pero los equipos necesitan la dirección IP numérica para conectarse. ¿Qué servicio de AWS realiza esa conversión?",
+      "question_en": "A company's users type an easy-to-remember web address, but computers need the numeric IP address to connect. Which AWS service performs that conversion?",
+      "options_es": [
+        "AWS Global Accelerator",
+        "Amazon CloudFront",
+        "Amazon Route 53",
+        "AWS Direct Connect"
+      ],
+      "options_en": [
+        "AWS Global Accelerator",
+        "Amazon CloudFront",
+        "Amazon Route 53",
+        "AWS Direct Connect"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Amazon Route 53 es el servicio de DNS de AWS: traduce nombres legibles en las direcciones IP numéricas que usan los equipos. Global Accelerator mejora el camino de red hacia la aplicación, CloudFront entrega contenido desde ubicaciones de borde y Direct Connect ofrece una conexión de red dedicada.",
+      "explanation_en": "Amazon Route 53 is the AWS DNS service: it translates readable names into the numeric IP addresses computers use. Global Accelerator improves the network path to the application, CloudFront delivers content from edge locations, and Direct Connect provides a dedicated network connection.",
+      "source": "AWS — AWS Networking and Content Delivery category iconNetworking and content delivery (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/networking-services.html)"
+    },
+    {
+      "id": "q080304_r001",
+      "skill_id": "sk080304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo de operaciones dedica mucho tiempo a configurar clústeres y replicación de forma manual en sus bases de datos MySQL. ¿Qué ventaja de Amazon Aurora aborda directamente esa carga?",
+      "question_en": "An operations team spends a lot of time setting up clusters and replication by hand for its MySQL databases. Which advantage of Amazon Aurora addresses that burden directly?",
+      "options_es": [
+        "Automatiza el clustering y la replicación de la base de datos",
+        "Requiere ampliar el almacenamiento a mano cuando la base crece",
+        "Obliga a reescribir el código creado para MySQL y PostgreSQL",
+        "Funciona como un servicio separado, sin relación con Amazon RDS"
+      ],
+      "options_en": [
+        "It automates database clustering and replication",
+        "It requires you to expand storage by hand as the data grows",
+        "It forces you to rewrite code that was built for MySQL or PostgreSQL",
+        "It runs as a separate service with no connection to Amazon RDS"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Aurora automatiza y estandariza el clustering y la replicación, que suelen ser de las partes más difíciles de configurar y administrar. Las otras opciones son falsas: su almacenamiento crece solo, funciona con el código y las herramientas de MySQL y PostgreSQL, y forma parte de Amazon RDS.",
+      "explanation_en": "Aurora automates and standardizes clustering and replication, which are usually among the hardest parts to configure and administer. The other options are wrong: its storage grows on its own, it works with the code and tools used for MySQL and PostgreSQL, and it is part of Amazon RDS.",
+      "source": "AWS — What is Amazon Aurora? (https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html)"
+    }
+  ]
+}

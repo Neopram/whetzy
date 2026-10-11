@@ -1,0 +1,892 @@
+{
+  "questions": [
+    {
+      "id": "q110301_r006",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere que su agente de Amazon Bedrock pueda realizar acciones para el usuario, como consultar el estado de un pedido, mediante operaciones de API. ¿Qué componente del agente se configura para ello?",
+      "question_en": "A company wants its Amazon Bedrock agent to perform actions for the user, such as checking an order's status, through API operations. Which agent component is configured for this?",
+      "options_es": [
+        "Una base de conocimiento asociada, que guarda las operaciones permitidas como documentos indexados.",
+        "Las plantillas de prompt, que enumeran las API que el agente puede invocar por sí mismo.",
+        "Las instrucciones del agente, donde se describe en lenguaje natural cada API que puede llamar.",
+        "Un grupo de acciones, con un esquema que describe las operaciones y sus parámetros."
+      ],
+      "options_en": [
+        "An associated knowledge base, which stores the permitted operations as indexed documents.",
+        "The prompt templates, which list the APIs that the agent can invoke by itself.",
+        "The agent's instructions, where each API it may call is described in natural language.",
+        "An action group, with a schema describing the operations and their parameters."
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los grupos de acciones son donde se definen las acciones que el agente realiza para el usuario, mediante un esquema que describe las operaciones de API y los parámetros que debe obtener. Las bases de conocimiento aportan contexto para generar respuestas, no definen acciones. Las plantillas de prompt sirven para construir los prompts del modelo, y las instrucciones describen para qué está diseñado el agente, pero ninguna sustituye al esquema de acciones.",
+      "explanation_en": "Action groups are where you define the actions the agent carries out for the user, using a schema that lays out the API operations and the parameters the agent must obtain. Knowledge bases supply extra context for generating responses and do not define actions. Prompt templates are the foundation for building the prompts sent to the model, and instructions state the agent's purpose, but neither takes the place of the action schema.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q110302_r004",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere ajustar un modelo en Amazon Bedrock para un asistente de atención al cliente que debe mantener el hilo de la conversación entre varios intercambios. ¿Qué tipo de muestras de entrenamiento refleja mejor ese objetivo?",
+      "question_en": "A company wants to fine-tune a model in Amazon Bedrock for a customer support assistant that must keep track of the conversation across several exchanges. Which kind of training samples best reflects that goal?",
+      "options_es": [
+        "Muestras de un solo turno, en las que cada respuesta depende únicamente de la última entrada",
+        "Muestras de una instrucción con salida esperada, pensadas para resumir o traducir",
+        "Muestras de varios turnos, con diálogos donde se conserva el contexto previo",
+        "Muestras con imágenes, en las que el asistente debe responder siempre con otra imagen"
+      ],
+      "options_en": [
+        "Single-turn samples, where each reply depends only on the latest user input",
+        "Single-instruction samples with an expected output, built for summarizing or translating",
+        "Multi-turn samples, with longer dialogues that keep the earlier context",
+        "Image samples, where the assistant must always answer with another image"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las muestras de varios turnos recogen diálogos largos en los que el modelo responde teniendo en cuenta lo dicho antes, algo típico de la atención al cliente. Las de un solo turno tratan cada intercambio de forma aislada, y las de una instrucción con salida esperada sirven para tareas puntuales, no para seguir un hilo. Las muestras con imágenes no tienen relación con el contexto conversacional que plantea el caso.",
+      "explanation_en": "Multi-turn samples contain longer dialogues in which the model answers while taking into account what was said earlier, which is typical of customer support. Single-turn samples treat each exchange in isolation, and single-instruction samples with an expected output suit one-off tasks rather than following a thread. Image samples have no bearing on the conversational context the scenario calls for.",
+      "source": "AWS — Prepare data for fine-tuning your models (https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-prepare.html)"
+    },
+    {
+      "id": "q110305_r011",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo usa la caché de prompts para abaratar solicitudes repetidas. Cada solicitud lleva definiciones de herramientas e instrucciones de sistema que casi nunca cambian, más mensajes de conversación que varían en cada turno. ¿Cómo debe ordenar el contenido para lograr la mejor tasa de aciertos de caché?",
+      "question_en": "A team uses prompt caching to lower the cost of repeated requests. Each request carries tool definitions and system instructions that rarely change, plus conversation messages that change every turn. How should the team order the content to get the best cache hit rate?",
+      "options_es": [
+        "Colocar los mensajes variables al inicio y las herramientas e instrucciones estables al final, con el punto de caché al comienzo.",
+        "Mezclar contenido estable y variable sin un orden fijo, porque la caché detecta por sí sola las partes que se repiten.",
+        "Poner primero el contenido estable y después el variable, con los puntos de caché situados tras la parte estable.",
+        "Reescribir las definiciones de herramientas en cada solicitud para que la caché se mantenga al día con lo más reciente."
+      ],
+      "options_en": [
+        "Place the variable messages first and the stable tools and instructions last, with the cache checkpoint at the very start.",
+        "Mix stable and variable content in any order, because the cache automatically detects which parts are repeated.",
+        "Put the stable content first and the variable content after it, with cache checkpoints placed after the stable part.",
+        "Rewrite the tool definitions on every request so the cache stays current with the most recent content."
+      ],
+      "correct_index": 2,
+      "explanation_es": "Como cada sección depende de las anteriores, un cambio en lo que va antes deja sin validez lo que viene después. Por eso conviene situar al principio lo que casi nunca varía y dejar al final lo que cambia en cada turno, con los puntos de caché tras la parte estable. Poner lo variable primero, reescribir las herramientas cada vez o mezclar el orden provocaría fallos de caché constantes.",
+      "explanation_en": "Each section builds on the ones before it, so an edit early in the sequence breaks everything that follows. That is why the parts that rarely change belong at the front and the parts that change every turn at the back, with checkpoints after the stable part. Putting variable content first, rewriting the tools each time, or mixing the order would cause constant cache misses.",
+      "source": "AWS — Prompt caching for faster model inference (https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)"
+    },
+    {
+      "id": "q110302_r007",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una tienda en línea quiere ajustar en Amazon Bedrock un modelo que clasifique fotos de sus productos y encuentre artículos visualmente parecidos. ¿Qué categoría de modelos encaja?",
+      "question_en": "An online retailer wants to fine-tune a model in Amazon Bedrock that classifies its product photos and finds visually similar items. Which model category fits?",
+      "options_es": [
+        "Modelos de texto a texto, que generan texto a partir de texto",
+        "Modelos de imagen a embeddings, que convierten imágenes en vectores",
+        "Modelos de texto a imagen, que crean imágenes a partir de una descripción",
+        "Modelos de texto e imagen a texto, que generan texto con ambas entradas"
+      ],
+      "options_en": [
+        "Text-to-text models, which generate text from text",
+        "Image-to-embeddings models, which turn images into vectors",
+        "Text-to-image models, which create images from a written description",
+        "Text-and-image-to-text models, which generate text from both inputs"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los modelos de imagen a embeddings admiten ajuste fino para clasificar y recuperar, y a partir de las imágenes de entrada producen representaciones numéricas con las que comparar similitud. Los de texto a imagen producen imágenes, y los de texto e imagen a texto producen texto, así que ninguno devuelve esas representaciones. La opción de texto a texto parte de texto y no trabaja con fotos de producto.",
+      "explanation_en": "Image-to-embeddings models can be fine-tuned for classifying and retrieving, and from input images they produce numeric representations that can be compared for similarity. Text-to-image models output images, and text-and-image-to-text models output text, so neither returns those representations. The text-to-text option starts from text and does not work on product photos.",
+      "source": "AWS — Prepare data for fine-tuning your models (https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-prepare.html)"
+    },
+    {
+      "id": "q110301_r001",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo diseña un flujo RAG de nivel productivo y necesita un componente que revise la consulta del usuario, el contexto recuperado y la respuesta del modelo para reducir alucinaciones y sesgos. ¿Cuál cumple ese papel?",
+      "question_en": "A team is designing a production-level RAG workflow and needs a component that reviews the user's query, the retrieved context, and the model's answer to reduce hallucinations and bias. Which one fills that role?",
+      "options_es": [
+        "El recuperador, que ordena las respuestas según los requisitos del negocio",
+        "El orquestador, que programa y gestiona todo el flujo de principio a fin",
+        "Las barreras de protección, que examinan consultas, contexto y respuestas",
+        "Los conectores, que enlazan las fuentes de datos corporativas con la base vectorial"
+      ],
+      "options_en": [
+        "The retriever, which ranks retrieved responses according to business requirements",
+        "The orchestrator, which schedules and manages the whole workflow from start to finish",
+        "The guardrails, which check queries, context, and responses",
+        "The connectors, which link enterprise data sources to the vector database"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las barreras de protección (guardrails) están pensadas para comprobar que la consulta, el prompt, el contexto recuperado y la respuesta del LLM sean precisos, responsables y estén libres de alucinaciones y sesgos. El recuperador solo obtiene y ordena contexto, el orquestador programa y gestiona el flujo, y los conectores únicamente enlazan las fuentes de datos con la base vectorial.",
+      "explanation_en": "Guardrails are meant to confirm that the query, the prompt, the retrieved context, and the LLM response are accurate, responsible, and free of hallucinations and bias. The retriever only fetches and ranks context, the orchestrator schedules and manages the workflow, and the connectors merely link data sources to the vector database.",
+      "source": "AWS — Understanding Retrieval Augmented Generation (https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/what-is-rag.html)"
+    },
+    {
+      "id": "q110302_r009",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué describe mejor la lista de modelos fundacionales que Amazon Bedrock permite personalizar mediante ajuste fino?",
+      "question_en": "Which option best describes the list of foundation models that Amazon Bedrock lets you customize through fine-tuning?",
+      "options_es": [
+        "Solo modelos de texto, sin modelos de imágenes ni de embeddings",
+        "Solo modelos de Amazon, sin modelos de otros proveedores",
+        "Solo modelos que generan imágenes, sin modelos de texto",
+        "Modelos de varios proveedores y de distintos tipos"
+      ],
+      "options_en": [
+        "Only text models, with no image or embeddings models",
+        "Only Amazon models, with none from other providers",
+        "Only image-generating models, with no text models",
+        "Models from multiple providers and of several types"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La lista de modelos ajustables incluye modelos de Amazon y de Anthropic, y entre ellos hay modelos de generación de imágenes (Nova Canvas, Titan Image Generator) y de embeddings (Titan Multimodal Embeddings), además de modelos de texto. Por eso no se limita a un proveedor ni a un tipo de modelo, lo que descarta las otras tres opciones.",
+      "explanation_en": "The list of tunable models includes models from both Amazon and Anthropic, and among them are image-generation models (Nova Canvas, Titan Image Generator) and embeddings models (Titan Multimodal Embeddings), alongside text models. So it is not confined to one provider or one model type, which rules out the other three options.",
+      "source": "AWS — Customize a model with fine-tuning in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/custom-model-fine-tuning.html)"
+    },
+    {
+      "id": "q110305_r006",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo usa el almacenamiento en caché implícito de prompts en Amazon Bedrock para acelerar la inferencia y reenvía un prompt idéntico, pero a veces no obtiene acierto de caché. ¿Qué explica esto?",
+      "question_en": "A team uses Implicit Prompt Caching in Amazon Bedrock to speed up inference and resends an identical prompt, yet sometimes gets no cache hit. What explains this?",
+      "options_es": [
+        "Faltan los puntos de control de caché que esta modalidad exige en cada solicitud",
+        "Es de mejor esfuerzo: un prompt idéntico no asegura un acierto de caché",
+        "Solo se guarda la parte dinámica del final del prompt, así que un prefijo idéntico nunca coincide",
+        "El contenido estático debe ir al final del prompt, y el equipo lo colocó al principio"
+      ],
+      "options_en": [
+        "The cache checkpoints that this type requires are missing from each request",
+        "It works on a best-effort basis, so an identical prompt may still miss",
+        "Only the dynamic tail of the prompt is stored, so an identical prefix never matches",
+        "Static content must go at the end of the prompt, and the team placed it at the start"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El almacenamiento implícito intenta reutilizar de forma automática los prefijos elegibles, pero lo hace con el mejor esfuerzo posible, de modo que enviar el mismo prompt no asegura un acierto y la tasa de aciertos puede variar. Esta modalidad no pide puntos de control en la solicitud, y la pauta es poner el contenido estático al principio y el dinámico al final, no al revés.",
+      "explanation_en": "Implicit caching automatically tries to reuse eligible prefixes, but only as a best-effort feature, so sending the same prompt again does not ensure a hit and hit rates can vary. This type needs no checkpoints in the request, and the guidance is to place static content first and dynamic content last, not the other way around.",
+      "source": "AWS — Prompt caching for faster model inference (https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)"
+    },
+    {
+      "id": "q110301_r008",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo de datos va a crear un asistente que conteste con los documentos internos de su empresa mediante RAG en AWS. ¿Qué debería hacer antes de fijar la arquitectura?",
+      "question_en": "A data team is going to build an assistant that answers using its company's internal documents through RAG on AWS. What should it do before settling on an architecture?",
+      "options_es": [
+        "Adoptar la arquitectura que más usan otras empresas del sector, ya que la popularidad garantiza que encaje con su entorno.",
+        "Valorar los pros y contras de cada arquitectura RAG y quedarse con la que mejor encaje en su entorno AWS.",
+        "Escoger la arquitectura con menos componentes, sin considerar qué compensaciones implica frente a otras alternativas.",
+        "Implantar primero una arquitectura cualquiera y analizar sus ventajas y desventajas solo cuando ya esté en producción."
+      ],
+      "options_en": [
+        "Adopt the architecture most companies in its industry use, since popularity ensures it fits their environment.",
+        "Weigh the pros and cons of each RAG architecture and keep the one that best suits its AWS environment.",
+        "Choose the architecture with the fewest components, without considering the trade-offs against other alternatives.",
+        "Deploy any architecture first and analyze its advantages and drawbacks only once it is already in production."
+      ],
+      "correct_index": 1,
+      "explanation_es": "Existen varias arquitecturas RAG y cada una tiene sus propias ventajas y desventajas, así que la decisión razonable es compararlas y elegir la que se ajuste al entorno AWS del equipo. Seguir a la mayoría, quedarse con la más simple o analizar las compensaciones después de desplegar invierte ese orden: la elección debe apoyarse en la comparación previa, no sustituirla.",
+      "explanation_en": "Several RAG architectures exist and each carries its own strengths and weaknesses, so the sound move is to compare them and pick the one that suits the team's AWS environment. Following the crowd, keeping the simplest design, or studying the trade-offs after deployment reverses that order: the choice should rest on a prior comparison, not replace it.",
+      "source": "AWS — Retrieval Augmented Generation options and architectures on AWS (https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/introduction.html)"
+    },
+    {
+      "id": "q110301_r002",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En el proceso típico de RAG, ¿qué actividad se realiza una sola vez, como preparación inicial, en lugar de repetirse con cada pregunta del usuario?",
+      "question_en": "In the typical RAG process, which activity is carried out only once, as up-front preparation, instead of being repeated for every user question?",
+      "options_es": [
+        "Ejecutar una búsqueda por similitud en la base vectorial para hallar datos afines a la pregunta",
+        "Añadir el contexto recuperado al prompt que contiene la pregunta del usuario",
+        "Hacer que el LLM redacte una respuesta con la consulta y el contexto añadido",
+        "Generar embeddings de los documentos internos y cargarlos en un almacén vectorial"
+      ],
+      "options_en": [
+        "Running a similarity search over the vector database to find data matching the question",
+        "Adding the retrieved context to the prompt that carries the user's question",
+        "Having the LLM write an answer from the query plus the added context",
+        "Creating embeddings of the internal documents and loading them into a vector store"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Crear los embeddings de los documentos internos y cargarlos en la base vectorial es el primer paso del proceso, y se hace una única vez como preparación. La búsqueda por similitud, la incorporación del contexto al prompt y la generación de la respuesta forman los otros tres pasos, que se repiten cada vez que llega una consulta.",
+      "explanation_en": "Creating embeddings for the internal documents and loading them into the vector database is the first step of the process, and it happens a single time as preparation. The similarity search, the addition of context to the prompt, and the generation of the answer make up the other three steps, which recur whenever a query comes in.",
+      "source": "AWS — Understanding Retrieval Augmented Generation (https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/what-is-rag.html)"
+    },
+    {
+      "id": "q110301_r013",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En el flujo básico de RAG descrito en la guía de AWS, una persona envía una consulta en lenguaje natural. ¿Qué hace el orquestador a continuación, antes de que el LLM genere la respuesta?",
+      "question_en": "In the basic RAG flow described in the AWS guidance, a person submits a natural-language query. What does the orchestrator do next, before the LLM generates the answer?",
+      "options_es": [
+        "Reentrena el LLM con los documentos internos antes de cada consulta",
+        "Redacta la respuesta final por sí mismo y evita enviar nada al LLM",
+        "Busca contenido similar en la base vectorial y lo añade al prompt",
+        "Recalcula los embeddings de todos los documentos con cada pregunta nueva"
+      ],
+      "options_en": [
+        "Retrains the LLM on the company's internal documents before every query",
+        "Writes the final answer itself instead of passing anything to the LLM",
+        "Finds similar content in the vector store and adds it to the prompt",
+        "Recomputes the embeddings for every document each time a question arrives"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Tras recibir la consulta, el orquestador consulta la base vectorial por similitud y añade lo recuperado como contexto al prompt, que luego envía al LLM. El LLM no se reentrena en cada consulta: solo usa ese contexto adicional para responder. Los embeddings de los documentos se crean una sola vez al ingerirlos, no con cada pregunta, y la respuesta final la genera el LLM, no el orquestador.",
+      "explanation_en": "Once the query arrives, the orchestrator runs a similarity lookup in the vector store and appends what it finds to the prompt as context, then passes everything to the LLM. The LLM is not retrained per query; it simply uses that extra context to answer. Document embeddings are created once during ingestion rather than per question, and the LLM, not the orchestrator, writes the final answer.",
+      "source": "AWS — Understanding Retrieval Augmented Generation (https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/what-is-rag.html)"
+    },
+    {
+      "id": "q110305_r010",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo lanza un trabajo de destilación de modelos en Amazon Bedrock y deja que el servicio aplique sus propias técnicas de síntesis de datos para mejorar las respuestas del modelo profesor. ¿Cómo afecta esa decisión a la factura de la cuenta?",
+      "question_en": "A team launches a model distillation job in Amazon Bedrock and lets the service apply its own data synthesis techniques to improve the teacher model's responses. How does that choice affect the account's bill?",
+      "options_es": [
+        "No hay ningún cargo adicional, porque la síntesis de datos viene incluida dentro del flujo de destilación.",
+        "Se generan cargos adicionales por las inferencias al modelo profesor, a su tarifa bajo demanda.",
+        "Se genera un cargo adicional por el entrenamiento extra del modelo estudiante con el conjunto ampliado.",
+        "Se genera un cargo adicional por almacenar los pares sintéticos de prompt y respuesta que se producen."
+      ],
+      "options_en": [
+        "There is no extra charge, because data synthesis comes bundled within the distillation workflow.",
+        "Extra charges arise for inference calls to the teacher model, at its on-demand rates.",
+        "An extra charge arises for additional training of the student model on the enlarged dataset.",
+        "An extra charge arises for storing the synthetic prompt-response pairs that get produced."
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cuando el servicio aplica su propia síntesis de datos, consulta más veces al modelo profesor, y la documentación atribuye el coste añadido a esas inferencias del profesor, cobradas a su tarifa bajo demanda. La síntesis, por tanto, no es gratuita. Además, la descripción no sitúa ese sobrecoste en el entrenamiento del modelo estudiante ni en el almacenamiento de los pares generados.",
+      "explanation_en": "When the service applies its own data synthesis, it queries the teacher model more, and the documentation ties the added cost to those teacher-model inferences, priced at on-demand rates. The synthesis is therefore not free. Nor does the description place that extra cost on student-model training or on storing the generated pairs.",
+      "source": "AWS — Customize a model with distillation in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/model-distillation.html)"
+    },
+    {
+      "id": "q110305_r001",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un agente en Amazon Bedrock, con un modelo compatible con ambos modos de caché de prompts, reenvía en cada llamada las mismas instrucciones de sistema, definiciones de herramientas y archivos de referencia; solo cambia la última entrada del usuario. ¿Qué enfoque permite al desarrollador elegir qué partes del prompt se cachean?",
+      "question_en": "An agent on Amazon Bedrock, using a model that supports both prompt caching modes, resends the same system instructions, tool definitions and reference files on every call; only the newest user input changes. Which approach lets the developer choose which parts of the prompt get cached?",
+      "options_es": [
+        "Caché explícita, marcando dónde termina el prefijo reutilizable",
+        "Caché implícita, donde el propio servicio coloca el punto de corte",
+        "Reducir la ventana de contexto para descartar lo repetido",
+        "Omitir las instrucciones repetidas y enviar solo la última entrada"
+      ],
+      "options_en": [
+        "Explicit caching, marking where the reusable prefix ends",
+        "Implicit caching, where the service places the breakpoint itself",
+        "Shrinking the context window so repeated content is dropped",
+        "Omitting the repeated instructions and sending only the newest input"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con la caché explícita el desarrollador señala el final del prefijo reutilizable mediante puntos de corte, así decide qué porciones son elegibles; la fuente la recomienda para agentes con contenido repetido. En la implícita el servicio coloca un punto de corte automático en el último mensaje, de modo que el desarrollador no elige. Reducir la ventana de contexto u omitir las instrucciones no son enfoques de caché y quitarían información que el modelo necesita en cada llamada.",
+      "explanation_en": "With explicit caching the developer marks the end of the reusable prefix using breakpoints, which decides what is eligible; the source recommends it for agents with repeated content. In implicit caching the service places an automatic breakpoint on the latest message, so the developer does not choose. Shrinking the context window or omitting the instructions are not caching approaches and would remove information the model needs on every call.",
+      "source": "AWS — Prompt caching for faster model inference (https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)"
+    },
+    {
+      "id": "q110301_r010",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Durante la orquestación de un agente de Amazon Bedrock, el agente invoca una acción y obtiene su resultado como observación. ¿Qué ocurre a continuación?",
+      "question_en": "During the orchestration of an Amazon Bedrock agent, the agent invokes an action and obtains its result as an observation. What happens next?",
+      "options_es": [
+        "El agente descarta el resultado y devuelve al usuario la primera respuesta que generó el modelo.",
+        "El resultado se guarda en un índice vectorial y el agente termina la sesión sin más pasos.",
+        "El agente reinicia la conversación y borra el historial para evitar que el resultado influya.",
+        "El agente amplía el prompt base con el resultado y decide si repite la orquestación."
+      ],
+      "options_en": [
+        "The agent discards the result and returns the first answer that the model produced.",
+        "The result is saved in a vector index and the agent ends the session with no further steps.",
+        "The agent restarts the conversation and wipes the history so that the result has no influence.",
+        "The agent adds the result to the base prompt and decides whether to iterate again."
+      ],
+      "correct_index": 3,
+      "explanation_es": "La observación obtenida al invocar la acción sirve para ampliar el prompt base, que el modelo vuelve a interpretar; después es el agente quien determina si debe repetir la orquestación. El ciclo continúa hasta que se responde al usuario o se le piden más datos. Las otras opciones descartan el resultado, lo desvían a un índice o borran el historial, y nada de eso se describe.",
+      "explanation_en": "The observation obtained from invoking the action is used to extend the base prompt, which the model interprets again; the agent itself then determines whether to repeat the orchestration. The loop goes on until the user gets a response or is asked for more information. The other options discard the result, divert it to an index, or wipe the history, and none of that is described.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q110305_r002",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una aplicación de chat permite subir un documento extenso y hacer muchas preguntas sobre él, y el modelo tarda en procesar el documento completo con cada consulta. ¿Qué capacidad de Amazon Bedrock reduce la latencia y el coste de los tokens de entrada en este caso?",
+      "question_en": "A chat application lets users upload a long document and ask many questions about it, and the model spends time processing the whole document with every query. Which Amazon Bedrock capability cuts the latency and the input token costs in this case?",
+      "options_es": [
+        "Enviar cada pregunta como un trabajo por lotes que entrega las respuestas en un bucket de S3 al terminar",
+        "Activar el almacenamiento en caché de prompts para reutilizar el documento ya procesado en cada consulta",
+        "Ajustar finamente un modelo más pequeño con los documentos subidos para que responda con mayor rapidez",
+        "Reservar capacidad con rendimiento aprovisionado para atender más peticiones por minuto de forma continua"
+      ],
+      "options_en": [
+        "Send each question as a batch job that delivers its answers to an S3 bucket when finished",
+        "Turn on prompt caching so later queries reuse the document that was already processed",
+        "Fine-tune a smaller model on the uploaded documents so that it answers faster",
+        "Reserve capacity with provisioned throughput to handle more requests per minute continuously"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El almacenamiento en caché de prompts está pensado para contextos largos que se reutilizan en varias consultas: el documento se guarda en caché y las consultas siguientes no necesitan reprocesarlo, con lo que bajan la latencia y el coste de entrada. Las otras opciones no están pensadas para reutilizar un contexto ya procesado entre consultas, que es justo lo que pide el escenario.",
+      "explanation_en": "Prompt caching is meant for long contexts that are reused across several queries: the document is cached and later queries do not need to reprocess it, which lowers latency and input cost. The other options are not meant for reusing an already-processed context across queries, which is exactly what the scenario calls for.",
+      "source": "AWS — Prompt caching for faster model inference (https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)"
+    },
+    {
+      "id": "q110302_r003",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo va a ajustar en Amazon Bedrock un modelo que genera imágenes a partir de texto (o uno que convierte imágenes en embeddings) y quiere reservar parte de sus datos para validar. ¿Qué debe tener en cuenta al preparar los datos?",
+      "question_en": "A team plans to fine-tune a model in Amazon Bedrock that either generates images from text or turns images into embeddings, and it wants to keep some of its data aside for validation. What should it keep in mind when preparing the data?",
+      "options_es": [
+        "Debe aportar siempre un conjunto de validación, porque sin él el trabajo de ajuste no puede iniciarse",
+        "Solo puede preparar datos de entrenamiento, porque no se admiten datos de validación",
+        "Puede aportar un conjunto de validación opcional en un archivo aparte, como con los modelos de texto",
+        "La plataforma reserva automáticamente una parte del entrenamiento para validar, sin intervención del equipo"
+      ],
+      "options_en": [
+        "It must always provide validation data, because the job cannot start without it",
+        "It can only prepare training data, because validation data is not accepted",
+        "It can provide optional validation data in a separate file, as with text models",
+        "The service automatically holds out part of the training data for validation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Para estos modelos de imagen solo se prepara un conjunto de entrenamiento, porque los datos de validación no se admiten. Por eso no puede exigirse un archivo de validación (primera opción) ni ofrecerse como opcional (tercera). La cuarta tampoco encaja: si la validación no es compatible con estos modelos, el flujo de preparación consiste únicamente en aportar datos de entrenamiento.",
+      "explanation_en": "For these image-based models the team prepares only a training dataset, because validation data is not supported. A validation file therefore cannot be required (first option) or offered as optional (third option). The fourth option does not fit either: if validation is unsupported for these models, preparation consists solely of supplying training data.",
+      "source": "AWS — Prepare data for fine-tuning your models (https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-prepare.html)"
+    },
+    {
+      "id": "q110302_r008",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa va a ajustar en Amazon Bedrock un modelo de texto a texto para que convierta cada nota de un cliente en una etiqueta de categoría estandarizada. Cada nota se procesa por separado. ¿Qué tipo de caso de uso debe guiar cómo se da formato a los datos de entrenamiento?",
+      "question_en": "A company will fine-tune a text-to-text model in Amazon Bedrock so that it turns each customer note into a standardized category label. Every note is processed on its own. Which type of use case should guide how the training data is formatted?",
+      "options_es": [
+        "Conversacional, porque el modelo debe mantener el historial de un diálogo entre turnos",
+        "Multimodal, porque cada muestra debe ir acompañada de un archivo de imagen",
+        "No conversacional, porque cada entrada debe producir una única salida",
+        "Independiente del caso de uso, porque el formato de datos no cambia según la tarea"
+      ],
+      "options_en": [
+        "Conversational, since the model must keep track of a dialogue history across turns",
+        "Multimodal, since each sample must come with an image file",
+        "Non-conversational, since each input is expected to produce one result",
+        "Use-case independent, since the data layout does not change with the task"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Al ajustar modelos de texto a texto, el formato de los datos depende del caso de uso, que puede ser conversacional o no conversacional. Aquí cada nota genera una sola etiqueta, sin intercambio de turnos, por lo que es no conversacional. No es conversacional porque no hay diálogo que recordar, no es multimodal porque el modelo trabaja solo con texto, y el formato sí varía según el caso de uso.",
+      "explanation_en": "When fine-tuning text-to-text models, the data format depends on the use case, which is either conversational or non-conversational. Here each note produces just one label, with no exchange of turns, so the case is non-conversational. It is not conversational because there is no dialogue to remember, not multimodal because the model works with text only, and the format does vary with the use case.",
+      "source": "AWS — Prepare data for fine-tuning your models (https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-prepare.html)"
+    },
+    {
+      "id": "q110301_r011",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo observa que su agente de Amazon Bedrock dio una respuesta inesperada y quiere revisar, paso a paso, qué indicaciones recibió el modelo fundacional, qué devolvió, qué respondieron las API llamadas y qué bases de conocimiento se consultaron. ¿Qué debería hacer?",
+      "question_en": "A team notices that its Amazon Bedrock agent gave an unexpected answer. They want to review, step by step, which prompts the foundation model received, what it returned, how the called APIs responded, and which knowledge bases were queried. What should they do?",
+      "options_es": [
+        "Revisar la traza del agente para seguir su razonamiento paso a paso",
+        "Habilitar el paso de preprocesamiento, que revisa cada entrada del usuario antes de la orquestación",
+        "Leer el historial de conversación conservado entre solicitudes, que se usa para mejorar la precisión del agente",
+        "Esperar a que el bucle de orquestación termine y analizar únicamente la respuesta final entregada al usuario"
+      ],
+      "options_en": [
+        "Review the agent's trace to follow its reasoning step by step",
+        "Enable the preprocessing step, which checks each user input before orchestration begins",
+        "Read the conversation history kept across requests, which is used to improve the agent's accuracy",
+        "Wait for the orchestration loop to finish and analyze only the final response delivered to the user"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La traza del agente reúne, en cada paso, el prompt enviado al modelo fundacional, lo que este devuelve, las respuestas de las API y las consultas a bases de conocimiento, y sirve para entender el razonamiento del agente. El preprocesamiento sirve para validar la entrada del usuario, no para registrar los pasos internos. El historial de conversación se usa para enriquecer el prompt de orquestación y mejorar la precisión, y la respuesta final no muestra lo ocurrido en cada paso del bucle.",
+      "explanation_en": "The agent's trace gathers, at each step, the prompt sent to the foundation model, what the model returns, the API responses, and the knowledge base queries, and it is meant for understanding the agent's reasoning. Preprocessing is there to validate the user's input, not to record internal steps. Conversation history enriches the orchestration prompt to improve accuracy, and the final response alone does not reveal what happened at each step of the loop.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q110302_r005",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una aseguradora usa Amazon Bedrock y necesita que un modelo fundacional clasifique mejor las reclamaciones de sus clientes, una tarea muy particular de su negocio. ¿Qué enfoque modifica el propio modelo para adaptarlo a esa tarea?",
+      "question_en": "An insurance company uses Amazon Bedrock and needs a foundation model to classify its customers' claims more accurately, a very particular task for its business. Which approach modifies the model itself to adapt it to that task?",
+      "options_es": [
+        "Reescribir las instrucciones enviadas con cada consulta al modelo",
+        "Construir un modelo nuevo desde cero con un corpus enorme",
+        "Comprimir el modelo para que responda con menor latencia",
+        "Ajuste fino del modelo fundacional para esa tarea"
+      ],
+      "options_en": [
+        "Rewriting the instructions sent along with each query",
+        "Building a brand-new model from scratch on a huge corpus",
+        "Compressing the model so it responds with lower latency",
+        "Fine-tuning the foundation model for that task"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la documentación de Bedrock, el ajuste fino toma un modelo fundacional y lo entrena para que rinda mejor en tareas concretas, como clasificar reclamaciones. Reescribir instrucciones solo cambia la entrada, no el modelo. Crear un modelo desde cero no es adaptar uno existente, y comprimirlo busca rapidez, no mejorar la tarea.",
+      "explanation_en": "Per the Bedrock documentation, fine-tuning takes a foundation model and trains it to do better on particular tasks, such as classifying claims. Rewriting instructions only changes the input, not the model. Building from scratch is not adapting an existing model, and compressing it targets speed rather than task quality.",
+      "source": "AWS — Customize a model with fine-tuning in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/custom-model-fine-tuning.html)"
+    },
+    {
+      "id": "q110302_r012",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo audita un asistente de atención al cliente con una evaluación de Amazon Bedrock que usa un LLM como juez. Quiere detectar las respuestas en las que el asistente se niega a ayudar. ¿Qué métrica integrada debe elegir?",
+      "question_en": "A team is auditing a customer-support assistant with an Amazon Bedrock evaluation that uses an LLM as a judge. They want to find the replies where the assistant refuses to help. Which built-in metric should they choose?",
+      "options_es": [
+        "Completitud (Completeness), que valora si la respuesta cubre cada pregunta planteada en el prompt",
+        "Seguimiento de instrucciones, que valora si la respuesta cumple las indicaciones del prompt",
+        "Rechazo (Refusal), que detecta si el modelo se niega a atender la petición",
+        "Nocividad (Harmfulness), que valora si la respuesta contiene contenido dañino"
+      ],
+      "options_en": [
+        "Completeness, which checks whether the reply covers every question in the prompt",
+        "Following instructions, which checks whether the reply keeps to the prompt's directions",
+        "Refusal, which flags replies where the model declines to help with the request",
+        "Harmfulness, which checks whether the reply contains harmful content"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La métrica de rechazo sirve para identificar las respuestas en las que el modelo declina atender la petición o la rechaza explicando sus motivos, que es justo lo que el equipo quiere medir. La completitud y el seguimiento de instrucciones valoran cuánto cubre y respeta la respuesta lo que pedía el prompt. La nocividad solo comprueba si hay contenido dañino, no si el modelo se negó.",
+      "explanation_en": "The refusal metric is the one that identifies replies where the model declines to handle the request or turns it down while giving reasons, which is exactly what the team wants to measure. Completeness and following instructions judge how much of the prompt the reply covers and respects. Harmfulness only checks whether harmful content is present, not whether the model refused.",
+      "source": "AWS — Use metrics to understand model performance (https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-metrics.html)"
+    },
+    {
+      "id": "q110302_r002",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo usa un trabajo de evaluación de Amazon Bedrock con un LLM como juez para revisar un asistente. Le preocupa que el asistente se apoye en información que no estaba en el material suministrado dentro del prompt. ¿Qué métrica integrada encaja mejor con esa preocupación?",
+      "question_en": "A team runs an Amazon Bedrock evaluation job with an LLM as a judge to review an assistant. It is worried that the assistant relies on information that was not in the material supplied within the prompt. Which built-in metric best fits that concern?",
+      "options_es": [
+        "Fidelidad (Faithfulness): comprueba si la respuesta se limita al contexto recibido",
+        "Relevancia (Relevance): comprueba si la respuesta guarda relación con lo que pide el prompt",
+        "Estereotipos (Stereotyping): comprueba si la respuesta contiene estereotipos de cualquier tipo",
+        "Estilo y tono profesionales (Professional style and tone): comprueba si el formato y el tono son adecuados para un entorno laboral"
+      ],
+      "options_en": [
+        "Faithfulness: checks whether the answer stays within the context it received",
+        "Relevance: checks whether the answer relates to what the prompt asks for",
+        "Stereotyping: checks whether the answer contains stereotypes of any kind",
+        "Professional style and tone: checks whether the formatting and tone suit a workplace setting"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fidelidad detecta contenido de la respuesta que no tiene respaldo en el prompt, así que sirve para localizar datos que el asistente aporta por su cuenta. La relevancia valora si la respuesta atiende lo solicitado, no si se apoya en datos ajenos al material. Estereotipos y estilo y tono profesionales examinan otros aspectos de la respuesta.",
+      "explanation_en": "Faithfulness flags answer content that has no support in the prompt, so it is the right tool for spotting facts the assistant brings in on its own. Relevance judges whether the answer addresses the request, not whether it leans on facts outside the supplied material. Stereotyping and professional style and tone examine other aspects of the response.",
+      "source": "AWS — Use metrics to understand model performance (https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-metrics.html)"
+    },
+    {
+      "id": "q110302_r010",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo ajusta en Amazon Bedrock un modelo con imágenes guardadas en Amazon S3, pero el servicio no puede acceder a ellas. ¿Qué debe configurar?",
+      "question_en": "A team fine-tunes a model in Amazon Bedrock using images stored in Amazon S3, but the service cannot access them. What should they configure?",
+      "options_es": [
+        "Añadir al rol de servicio de personalización una política IAM sobre las carpetas de S3 usadas",
+        "Hacer públicas las imágenes del bucket de S3 para que Bedrock pueda leerlas sin necesitar ninguna política",
+        "Asignar la política IAM al usuario que lanza el trabajo en lugar de asignarla al rol de servicio",
+        "Dar acceso solo al bucket y colocar las rutas del conjunto de datos en cualquier carpeta de S3"
+      ],
+      "options_en": [
+        "Add an IAM policy to the customization service role that covers the S3 folders in use",
+        "Make the images in the S3 bucket public so Bedrock can read them without needing any policy",
+        "Attach the IAM policy to the user who starts the job rather than to the service role itself",
+        "Grant access to the bucket only, and keep the dataset paths in whichever S3 folder is convenient"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Bedrock accede a las imágenes mediante el rol de servicio de personalización de modelos, así que ese rol necesita una política IAM que cubra las carpetas de S3 donde están los archivos. Además, las rutas del conjunto de entrenamiento deben estar dentro de las carpetas que la política indica, no en cualquier carpeta del bucket. Hacer públicas las imágenes o asignar la política a un usuario no es lo indicado.",
+      "explanation_en": "Bedrock reaches the images through the model customization service role, so that role needs an IAM policy covering the S3 folders that hold the files. The paths used in the training dataset must also sit inside the folders the policy names, not in just any folder of the bucket. Making the images public or attaching the policy to a user is not the approach described.",
+      "source": "AWS — Prepare data for fine-tuning your models (https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-prepare.html)"
+    },
+    {
+      "id": "q110305_r009",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo quiere reducir el costo de enviar una y otra vez el mismo contexto extenso a un modelo, y activa la caché de prompts en el playground de chat de la consola de Amazon Bedrock. ¿Cómo se establecen los puntos de control de la caché a medida que avanza la conversación?",
+      "question_en": "A team wants to cut the cost of repeatedly sending the same long context to a model, so it turns on prompt caching in the Amazon Bedrock console chat playground. How do cache checkpoints get set up as the conversation goes on?",
+      "options_es": [
+        "Bedrock crea el primero solo, cuando la conversación suma los tokens mínimos del modelo.",
+        "Solo existen cuando la persona los define con un parámetro explícito en cada solicitud enviada al modelo.",
+        "Se generan únicamente después de guardar el prompt en Prompt Management y publicar una versión del mismo.",
+        "Bedrock crea uno con cada mensaje, aunque la conversación todavía no llegue al mínimo de tokens del modelo."
+      ],
+      "options_en": [
+        "Bedrock creates the first one itself once the chat adds up to the model's minimum tokens.",
+        "They exist only when the user sets one through an explicit parameter on every request sent to the model.",
+        "They are generated only after the prompt is saved in Prompt Management and a version of it is published.",
+        "Bedrock creates one with every message, even if the chat is still below the model's minimum token count."
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con la opción activada en el playground, Bedrock crea por su cuenta el primer punto de control en cuanto la entrada y las respuestas acumuladas alcanzan el mínimo de tokens, que cambia según el modelo; después puede añadir más. El fragmento no presenta como requisito ni un parámetro explícito en cada solicitud ni guardar el prompt en Prompt Management. Tampoco se crea un punto por mensaje sin atender ese mínimo.",
+      "explanation_en": "With the option on in the playground, Bedrock creates the first checkpoint on its own as soon as the accumulated input and responses reach the token minimum, which differs by model; it can then add more. The source presents neither an explicit parameter on every request nor saving the prompt in Prompt Management as a requirement. Nor is a checkpoint created for every message without regard to that minimum.",
+      "source": "AWS — Prompt caching for faster model inference (https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)"
+    },
+    {
+      "id": "q110301_r004",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa usa un mismo modelo generativo preentrenado para redactar correos, resumir informes y responder consultas internas. ¿Qué característica justifica que se le llame modelo fundacional?",
+      "question_en": "A company uses the same pretrained generative model to draft emails, summarize reports, and answer internal questions. Which characteristic justifies calling it a foundation model?",
+      "options_es": [
+        "Se reentrena desde cero con datos etiquetados de cada tarea que se le asigna",
+        "Su entrenamiento amplio permite a un solo modelo abordar tareas variadas",
+        "Se entrena únicamente con los documentos internos de la propia empresa",
+        "Requiere un modelo especializado e independiente para cada tipo de contenido"
+      ],
+      "options_en": [
+        "It is retrained from scratch on labeled data for each task it is given",
+        "Its broad training lets one model handle a variety of different tasks",
+        "It is trained solely on the company's own internal documents",
+        "It requires a separate specialized model for each type of content"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un modelo fundacional se entrena con grandes volúmenes de datos de temas y tareas muy distintos, y por eso un único modelo sirve para múltiples usos, incluso algunos para los que no se entrenó de forma explícita. Las otras opciones describen lo contrario: entrenar o especializar un modelo por cada tarea, o limitarlo a datos propios de la empresa, no es lo que da nombre a estos modelos.",
+      "explanation_en": "A foundation model is trained on large volumes of data spanning very different subjects and tasks, so a single model can serve many uses, even some it was not explicitly trained for. The other options describe the opposite: building or specializing a model per task, or limiting it to a company's own data, is not what gives these models their name.",
+      "source": "AWS — Retrieval Augmented Generation options and architectures on AWS (https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/introduction.html)"
+    },
+    {
+      "id": "q110305_r003",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo mantiene una carga estable y de alto volumen sobre un modelo en Amazon Bedrock con rendimiento aprovisionado y quiere abaratar el precio por hora. ¿Qué decisión de compra lo consigue?",
+      "question_en": "A team runs a steady, high-volume workload on a model in Amazon Bedrock with Provisioned Throughput and wants a lower hourly price. Which purchasing decision achieves that?",
+      "options_es": [
+        "Elegir la modalidad sin compromiso, porque cuanto menor es el plazo, mayor es el descuento",
+        "Renovar un plazo corto con frecuencia, porque los compromisos breves se descuentan más",
+        "Firmar un compromiso de mayor duración, que reduce el precio por hora",
+        "Pactar un plazo intermedio, porque el máximo descuento aparece a mitad de la escala"
+      ],
+      "options_en": [
+        "Choose the no-commitment option, since a shorter term earns a bigger discount",
+        "Renew a short term frequently, since brief commitments are discounted more",
+        "Sign a longer-duration commitment, which lowers the hourly price",
+        "Agree to a mid-length term, since the biggest discount sits in the middle of the range"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, el descuento sobre el precio por hora crece a medida que se alarga el plazo comprometido, así que una carga estable se abarata comprometiéndose por más tiempo. Las otras opciones invierten o distorsionan esa relación: ni la ausencia de compromiso, ni los plazos breves, ni uno intermedio dan el mayor descuento.",
+      "explanation_en": "According to the source, the discount on the hourly price grows as the committed term gets longer, so a steady workload gets cheaper by committing for more time. The other options invert or distort that relationship: neither no commitment, nor short terms, nor a mid-length one yields the biggest discount.",
+      "source": "AWS — Increase model invocation capacity with Provisioned Throughput in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html)"
+    },
+    {
+      "id": "q110301_r007",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo ya ha definido las instrucciones, los grupos de acciones y las bases de conocimiento de un agente de Amazon Bedrock. ¿Qué hace el paso de preparar el agente?",
+      "question_en": "A team has already defined the instructions, action groups, and knowledge bases of an Amazon Bedrock agent. What does the step of preparing the agent do?",
+      "options_es": [
+        "Empaqueta los componentes del agente, con su configuración de seguridad, para poder probarlo.",
+        "Reentrena el modelo base con las instrucciones del agente para que memorice sus acciones.",
+        "Elimina las plantillas de prompt predeterminadas para que el agente solo use las instrucciones.",
+        "Publica el agente en producción de forma automática y lo expone a todos los usuarios finales."
+      ],
+      "options_en": [
+        "It packages the components, with their security settings, so the agent can be tested.",
+        "It retrains the base model on the agent's instructions so that it memorizes its actions.",
+        "It removes the default prompt templates so that the agent uses only its instructions.",
+        "It publishes the agent to production automatically and exposes it to every end user."
+      ],
+      "correct_index": 0,
+      "explanation_es": "Preparar el agente reúne en un solo paquete todo lo que lo compone, incluida la configuración de seguridad, y lo deja listo para probarse mientras se ejecuta. La fuente no habla de reentrenar el modelo ni de quitar plantillas de prompt. Tampoco describe una publicación automática a producción: la finalidad de este paso es poder probar el agente.",
+      "explanation_en": "Preparing the agent bundles everything that makes it up, security configuration included, and leaves it ready to be tested while running. The source says nothing about retraining the model or removing prompt templates. It also does not describe any automatic move to production: the point of this step is to make the agent testable.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q110301_r005",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una aplicación usa una base de conocimiento de Amazon Bedrock y un usuario envía una pregunta. ¿Qué ocurre en tiempo de consulta antes de que el modelo genere la respuesta?",
+      "question_en": "An application uses an Amazon Bedrock knowledge base and a user submits a question. What happens at query time before the model generates the answer?",
+      "options_es": [
+        "El modelo genera primero una respuesta sin contexto adicional y después la contrasta con los documentos originales almacenados.",
+        "Se reentrena el modelo con los documentos de la empresa y luego se responde usando únicamente sus pesos actualizados.",
+        "La pregunta se convierte en vector, se buscan fragmentos parecidos en el índice y se añaden como contexto al prompt del modelo.",
+        "El texto de la pregunta se compara literalmente con los documentos y se devuelve la primera coincidencia sin usar el modelo."
+      ],
+      "options_en": [
+        "The model first writes an answer with no added context, then checks that answer against the original stored documents.",
+        "The model is retrained on the company's documents, and the answer then relies solely on its newly updated weights.",
+        "The question is turned into a vector, similar chunks are found in the index, and they are added as context to the prompt.",
+        "The question text is compared character by character with the documents, and the first match is returned without using the model."
+      ],
+      "correct_index": 2,
+      "explanation_es": "En ejecución, un modelo de embeddings convierte la consulta en vector, se buscan en el índice los fragmentos semánticamente parecidos y el prompt se enriquece con ese contexto antes de enviarse al modelo. La primera opción invierte el orden, porque el contexto se añade antes de generar. La segunda describe un reentrenamiento que el fragmento no menciona. La cuarta omite el modelo y la comparación semántica por vectores.",
+      "explanation_en": "At runtime, an embedding model turns the query into a vector, the index is searched for semantically similar chunks, and the prompt is augmented with that context before it goes to the model. The first option reverses the order, since the context is added before generation. The second describes retraining, which the fragment does not mention. The fourth skips both the model and the semantic vector comparison.",
+      "source": "AWS — How Amazon Bedrock knowledge bases work (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-it-works.html)"
+    },
+    {
+      "id": "q110305_r008",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un asistente conversacional envía en cada llamada las mismas instrucciones y los mismos documentos de política, junto con el mensaje propio de cada cliente. ¿Qué disposición del prompt ofrece más probabilidades de que las llamadas repetidas reutilicen contenido en caché?",
+      "question_en": "A chatbot sends the same instructions and policy documents with every call, along with each customer's own message. Which prompt layout gives repeated calls the best chance of reusing cached content?",
+      "options_es": [
+        "Comenzar con el mensaje del cliente y añadir después las instrucciones fijas y los documentos de política, porque lo más reciente debe ir primero.",
+        "Intercalar el mensaje del cliente entre las instrucciones fijas y los documentos de política para que cada sección quede junto a su contexto.",
+        "Unir todo en un único bloque cuyo orden cambie de una llamada a otra, ya que el modelo trata igual cualquier disposición.",
+        "Empezar con las instrucciones fijas y los documentos, y añadir el mensaje del cliente como parte final."
+      ],
+      "options_en": [
+        "Start with the customer's message, then add the fixed instructions and policy documents after it, since the newest text should lead.",
+        "Place the customer's message between the fixed instructions and the policy documents so each section sits next to its context.",
+        "Merge everything into one block whose order changes from call to call, since the model treats any arrangement the same.",
+        "Begin with the fixed instructions and documents, and append the customer's message as the last part."
+      ],
+      "correct_index": 3,
+      "explanation_es": "La guía de la fuente sobre gestión de caché indica que el contenido estático va al comienzo del prompt, que lo variable específico del usuario va al final y que conviene mantener solicitudes con prefijos idénticos. Por eso las instrucciones y los documentos fijos deben abrir el prompt y el mensaje del cliente cerrarlo. Colocar el mensaje antes o en medio, o variar el orden, hace que el inicio difiera entre llamadas y deja sin prefijo común que reutilizar.",
+      "explanation_en": "The source's cache-management guidance says static content goes at the beginning of the prompt, variable user-specific input goes at the end, and requests should keep identical prefixes. So the fixed instructions and documents should open the prompt and the customer's message should close it. Putting the message first or in the middle, or changing the order between calls, makes the start differ from call to call, leaving no shared prefix to reuse.",
+      "source": "AWS — Prompt caching for faster model inference (https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)"
+    },
+    {
+      "id": "q110302_r006",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo ha reunido registros de ejemplo para personalizar un modelo en Amazon Bedrock, pero no dispone de datos de validación apartados. ¿Puede lanzar el trabajo de personalización?",
+      "question_en": "A team has gathered example records to customize a model in Amazon Bedrock, but has no held-out validation data. Can it launch the customization job?",
+      "options_es": [
+        "Sí, siempre que dispongan de un conjunto de entrenamiento",
+        "No, el trabajo exige tener también un conjunto de validación",
+        "Sí, con solo un conjunto de validación y sin datos de entrenamiento",
+        "Sí, siempre que entreguen los registros en un único archivo CSV"
+      ],
+      "options_en": [
+        "Yes, as long as a training dataset is ready",
+        "No, the job also requires a validation dataset to be present",
+        "Yes, a validation dataset alone is enough, with no training data",
+        "Yes, provided the records are supplied as a single CSV file"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Lo mínimo que hay que preparar antes de iniciar el trabajo es el conjunto de entrenamiento, así que la falta de validación no lo impide. Por eso falla exigir validación como requisito, y tampoco sirve tener solo validación sin entrenamiento. La opción del CSV falla porque los datos se preparan como archivos .jsonl, no como CSV.",
+      "explanation_en": "The least a team must prepare before starting the job is the training dataset, so missing validation data does not block it. That rules out treating validation data as a requirement, and having validation data without training data is not enough either. The CSV option fails because the data is prepared as .jsonl files, not CSV.",
+      "source": "AWS — Prepare data for fine-tuning your models (https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-prepare.html)"
+    },
+    {
+      "id": "q110302_r011",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo no dispone de pares de entrada y salida etiquetados, pero puede definir funciones que evalúen la calidad de una respuesta, y quiere que el modelo aprenda de forma iterativa a partir de esas puntuaciones. ¿Qué método de personalización de Amazon Bedrock encaja?",
+      "question_en": "A team has no labeled input-output pairs, but it can define functions that judge how good a response is, and it wants the model to learn iteratively from those scores. Which Amazon Bedrock customization method fits?",
+      "options_es": [
+        "Ajuste fino supervisado, que aprende de ejemplos con la salida esperada",
+        "Ajuste fino por refuerzo, que aprende de las puntuaciones",
+        "Destilación, que aprende de las respuestas de un modelo maestro más grande",
+        "Ingeniería de prompts, que mejora el resultado reformulando las instrucciones sin entrenar"
+      ],
+      "options_en": [
+        "Supervised fine-tuning, which learns from examples that include the expected output",
+        "Reinforcement fine-tuning, which learns from the scores those functions return",
+        "Distillation, which learns from the responses of a larger teacher model",
+        "Prompt engineering, which rewords the instructions without any training"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El ajuste fino por refuerzo sustituye los pares etiquetados por funciones de recompensa que valoran cada respuesta, y el modelo mejora de forma iterativa con esas puntuaciones. El supervisado necesita ejemplos con la salida esperada. La destilación parte de las respuestas de un modelo maestro, no de recompensas. La ingeniería de prompts no entrena el modelo, y aquí se busca que aprenda.",
+      "explanation_en": "Reinforcement fine-tuning swaps labeled pairs for reward functions that score each response, and the model improves iteratively from those scores. Supervised fine-tuning needs examples with the expected output. Distillation starts from a teacher model's responses, not from rewards. Prompt engineering involves no training, yet the team wants the model to learn.",
+      "source": "AWS — Customize your model to improve its performance for your use case (https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html)"
+    },
+    {
+      "id": "q110302_r001",
+      "skill_id": "sk110302",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa tiene un modelo grande que le da la precisión que necesita, pero resulta lento y costoso de operar. Quiere que un modelo más pequeño imite sus resultados en su caso de uso dentro de Amazon Bedrock. ¿Qué método de personalización encaja mejor?",
+      "question_en": "A company has a large model that delivers the accuracy it needs, but it is slow and expensive to run. It wants a smaller model to match those results for its use case in Amazon Bedrock. Which customization method fits best?",
+      "options_es": [
+        "Ajuste fino por refuerzo, con funciones de recompensa que puntúan cada respuesta",
+        "Ajuste fino supervisado, con un conjunto de datos etiquetado de entradas y salidas",
+        "Ingeniería de prompts, para que el modelo grande genere respuestas más cortas",
+        "Destilación, que transfiere el conocimiento del modelo grande al pequeño"
+      ],
+      "options_en": [
+        "Reinforcement fine-tuning, using reward functions that score each response",
+        "Supervised fine-tuning, using a labeled dataset of example inputs and their outputs",
+        "Prompt engineering, so the large model writes shorter answers",
+        "Distillation, which passes knowledge from the large model to the small one"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La destilación usa un modelo grande como maestro para generar respuestas con las que se ajusta un modelo más pequeño, rápido y económico, que es justo lo que se busca. El ajuste fino supervisado entrena con ejemplos etiquetados y el de refuerzo con puntuaciones de funciones de recompensa; ninguno describe un modelo maestro y otro alumno. Cambiar los prompts no produce un modelo más pequeño.",
+      "explanation_en": "Distillation uses a larger model as the teacher to generate responses that are then used to fine-tune a smaller, faster, cheaper student model, which is exactly the goal. Supervised fine-tuning trains on labeled examples and reinforcement fine-tuning relies on scores from reward functions; neither describes a teacher and a student. Changing prompts does not produce a smaller model.",
+      "source": "AWS — Customize your model to improve its performance for your use case (https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html)"
+    },
+    {
+      "id": "q110305_r012",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere reducir el coste de inferencia en un caso de uso concreto creando un modelo más pequeño mediante destilación en Amazon Bedrock, y ya dispone de respuestas que su modelo grande generó en producción. ¿Cómo puede aprovecharlas como datos de entrenamiento?",
+      "question_en": "A company wants to lower inference cost for a specific use case by creating a smaller model through distillation in Amazon Bedrock, and it already has responses its large model produced in production. How can it use them as training data?",
+      "options_es": [
+        "Entregando los archivos de configuración del modelo grande para que Bedrock copie sus parámetros al modelo pequeño.",
+        "Volviendo a ajustar el modelo grande con sus propias respuestas anteriores para que las transmita al modelo pequeño.",
+        "Sustituyéndolas por respuestas de un conjunto de datos público que AWS elige según el caso de uso del cliente.",
+        "Habilitando el registro de invocaciones y usando las respuestas guardadas en S3."
+      ],
+      "options_en": [
+        "Handing over the large model's configuration files so Bedrock can copy its parameters into the smaller model.",
+        "Fine-tuning the large model again on its own earlier answers so it can pass them down to the smaller one.",
+        "Swapping them for responses from a public dataset that AWS picks to match the customer's use case.",
+        "Enabling invocation logging and using the responses stored in S3."
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con el registro de invocaciones habilitado, las respuestas que el modelo profesor ya produjo quedan almacenadas en S3 y se reutilizan como datos de entrenamiento para ajustar el modelo estudiante. Copiar parámetros, volver a ajustar el modelo grande o sustituir las respuestas por un conjunto público no son mecanismos que la fuente describa para aprovechar respuestas existentes.",
+      "explanation_en": "With invocation logging enabled, the responses the teacher model already produced are stored in S3 and are reused as training data to fine-tune the student model. Copying parameters, fine-tuning the large model again, or swapping in a public dataset are not mechanisms the source describes for making use of existing responses.",
+      "source": "AWS — Customize a model with distillation in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/model-distillation.html)"
+    },
+    {
+      "id": "q110305_r007",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo activó el almacenamiento en caché de prompts en un modelo compatible de Amazon Bedrock y quiere confirmar que sus solicitudes realmente se benefician de él. ¿Qué debe hacer?",
+      "question_en": "A team enabled prompt caching on a supported Amazon Bedrock model and wants to confirm that its requests are really benefiting from it. What should it do?",
+      "options_es": [
+        "Confirmar en la documentación que el modelo admite la función, porque eso asegura un acierto en cada solicitud.",
+        "Enviar las solicitudes por la API de inferencia por lotes, donde la caché se aplica de forma garantizada.",
+        "Revisar en cada respuesta los campos de uso de caché, que indican tokens leídos o escritos en ella.",
+        "Definir tantos puntos de control de caché como permita el modelo, para que toda solicitud elegible acierte."
+      ],
+      "options_en": [
+        "Confirm in the documentation that the model supports the feature, since that ensures a cache hit on every request.",
+        "Send the requests through the batch inference API, where caching is applied on a guaranteed basis.",
+        "Inspect the cache usage details in each response, showing tokens read or written.",
+        "Define as many cache checkpoints as the model allows, so that every eligible request gets a hit."
+      ],
+      "correct_index": 2,
+      "explanation_es": "Que un modelo admita la caché de prompts no garantiza un acierto en ninguna solicitud concreta, así que la comprobación se hace con los campos de uso de caché que acompañan a cada respuesta, donde se ve qué tokens se leyeron o se escribieron. Tampoco asegura el acierto añadir puntos de control: una solicitud elegible puede no acertar. Y la inferencia por lotes no es una opción, porque la caché no se admite con esa API.",
+      "explanation_en": "A model supporting prompt caching does not guarantee a hit on any particular request, so you verify through the cache usage fields returned with each response, which show which tokens were read or written. Adding checkpoints does not secure a hit either, since an eligible request may still miss. Batch inference is not an answer, because caching is not supported with that API.",
+      "source": "AWS — Prompt caching for faster model inference (https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)"
+    },
+    {
+      "id": "q110301_r009",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo trabaja con Amazon Bedrock Agents y debe repartir tareas entre los dos grandes conjuntos de operaciones de API del servicio: preparar un agente nuevo con sus recursos y, después, atender las peticiones reales de los usuarios. ¿Cómo se reparten esas tareas?",
+      "question_en": "A team works with Amazon Bedrock Agents and must split tasks between the service's two main sets of API operations: preparing a new agent with its resources and, afterward, serving real user requests. How are the tasks divided?",
+      "options_es": [
+        "Construcción crea el agente y responde a las peticiones; ejecución solo observa su actividad en producción.",
+        "Ejecución define el agente y sus recursos; construcción lo invoca cuando llega una petición.",
+        "Construcción define el agente y sus recursos; ejecución lo invoca con cada petición.",
+        "Construcción define el agente y además lo invoca; ejecución se limita a gestionar sus recursos relacionados."
+      ],
+      "options_en": [
+        "Build-time creates the agent and answers requests; runtime only observes its activity in production.",
+        "Runtime defines the agent and its resources; build-time invokes it whenever a request arrives.",
+        "Build-time defines the agent and its resources; runtime invokes it for each request.",
+        "Build-time defines the agent and also invokes it; runtime just manages its related resources."
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según el fragmento, las operaciones de construcción sirven para crear, configurar y gestionar el agente y sus recursos, mientras que las de ejecución lo invocan con la entrada del usuario e inician la orquestación. Las demás opciones invierten o mezclan esos papeles, o atribuyen a la ejecución funciones (observar, gestionar recursos) que el fragmento no le asigna.",
+      "explanation_en": "According to the fragment, build-time operations are for creating, configuring, and managing the agent and its resources, while runtime operations invoke it with the user's input and start orchestration. The other options swap or blend those roles, or give runtime duties (observing, managing resources) that the fragment does not assign to it.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q110305_r005",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo quiere procesar de forma eficiente un gran volumen de prompts con la inferencia por lotes de Amazon Bedrock. ¿Cuál de estas cargas de trabajo no podría soportar esa modalidad?",
+      "question_en": "A team wants to efficiently work through a large volume of prompts using Amazon Bedrock batch inference. Which of these workloads could that mode not support?",
+      "options_es": [
+        "Un flujo donde el modelo llama a funciones externas en cada registro",
+        "Un trabajo nocturno que resume miles de documentos y deja los resultados en S3",
+        "Una clasificación masiva de reseñas antiguas cuyas respuestas no se necesitan al instante",
+        "La generación en segundo plano de descripciones para un catálogo grande de productos"
+      ],
+      "options_en": [
+        "A pipeline where the model calls external functions for each record",
+        "A nightly job that summarizes thousands of documents and leaves results in S3",
+        "Bulk classification of old reviews whose answers aren't needed right away",
+        "Background generation of descriptions for a large product catalog"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La inferencia por lotes no admite la llamada a funciones o herramientas, y cada registro del archivo de entrada se procesa por separado, sin intercambios de ida y vuelta con el modelo. Por eso un flujo que necesita invocar funciones externas no encaja. Las otras tres cargas son grandes volúmenes de solicitudes sin urgencia, con respuestas asíncronas que se recuperan después desde S3, justo el uso que cubre esta modalidad.",
+      "explanation_en": "Batch inference does not support function or tool calling, and each record in the input file is processed separately, with no back-and-forth exchanges with the model. That is why a pipeline that needs to invoke external functions does not fit. The other three workloads are large volumes of non-urgent requests whose answers arrive asynchronously and are retrieved later from S3, which is exactly what this mode covers.",
+      "source": "AWS — Process multiple prompts with batch inference (https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference.html)"
+    },
+    {
+      "id": "q110301_r012",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa lanza un asistente basado en RAG y necesita decidir con precisión qué usuarios pueden acceder a la aplicación. ¿Qué enfoque es el habitual en AWS?",
+      "question_en": "A company is launching a RAG-based assistant and must decide precisely which users can access the application. Which approach is typical on AWS?",
+      "options_es": [
+        "Configurar barreras de protección para que el modelo rechace las peticiones de usuarios no autorizados",
+        "Definir políticas, roles y permisos de IAM para la aplicación",
+        "Ajustar el recuperador para que clasifique peor los resultados de usuarios no autorizados",
+        "Añadir conectores que den a cada usuario una copia distinta de la base vectorial"
+      ],
+      "options_en": [
+        "Configure guardrails so the model refuses prompts from unauthorized users",
+        "Define IAM policies, roles, and permissions for the application",
+        "Tune the retriever so it ranks results from unauthorized users lower",
+        "Add connectors that give each user a separate copy of the vector database"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Decidir quién puede usar la aplicación es un asunto de identidad y acceso, y en AWS se resuelve normalmente definiendo políticas, roles y permisos con IAM. Según la descripción de los componentes, las barreras de protección atienden la precisión y la responsabilidad de las respuestas, el recuperador ordena el contexto y los conectores enlazan fuentes de datos, así que ninguno controla quién entra.",
+      "explanation_en": "Deciding who may use the application is an identity and access concern, and on AWS that is usually handled by defining IAM policies, roles, and permissions. Based on the component descriptions, guardrails address response accuracy and responsibility, the retriever ranks context, and connectors link data sources, so none of them controls who gets in.",
+      "source": "AWS — Understanding Retrieval Augmented Generation (https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/what-is-rag.html)"
+    },
+    {
+      "id": "q110305_r004",
+      "skill_id": "sk110305",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un desarrollador activa el almacenamiento en caché de prompts en Amazon Bedrock y observa que el recuento de tokens de entrada de la respuesta es mucho menor que el tamaño real del prompt enviado. ¿Cómo debe interpretarlo?",
+      "question_en": "A developer enables prompt caching in Amazon Bedrock and notices that the input token count in the response is far below the size of the prompt actually sent. How should this be read?",
+      "options_es": [
+        "El modelo recortó el prompt; el recuento refleja solo la parte que llegó a procesar",
+        "Refleja únicamente lo leído de la caché; los tokens nuevos no se informan en ningún campo",
+        "Es un fallo de medición; ese campo debería mostrar siempre el total enviado",
+        "Cuenta solo lo no cacheado; el total suma lo leído y lo escrito en caché"
+      ],
+      "options_en": [
+        "The model cut the prompt short; the count reflects only the part it got to process",
+        "It reflects only what was read from the cache; new tokens are reported in no field",
+        "It is a metering bug; that field should always show the full input total sent",
+        "It counts only uncached tokens; the total adds cache reads and cache writes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con el caché activado, el campo de tokens de entrada incluye únicamente los tokens que no se leyeron ni se escribieron en la caché. Para conocer el total enviado hay que sumarle los tokens leídos de la caché y los escritos en ella. No hubo recorte ni error, y los tokens escritos sí aparecen en su propio campo.",
+      "explanation_en": "With caching turned on, the input token field covers only the tokens that were neither read from nor written to the cache. To get the total sent, you add the cache-read and cache-write counts to it. Nothing was cut and nothing is broken, and written tokens do show up in their own field.",
+      "source": "AWS — Prompt caching for faster model inference (https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)"
+    },
+    {
+      "id": "q110301_r003",
+      "skill_id": "sk110301",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere que su asistente basado en Amazon Bedrock use datos privados. ¿Qué ventaja de costos aporta añadir una base de conocimiento?",
+      "question_en": "A company wants its Amazon Bedrock-based assistant to use private data. What cost-effectiveness benefit does adding a knowledge base provide?",
+      "options_es": [
+        "Evita tener que reentrenar el modelo de forma continua",
+        "Sustituye el modelo fundacional por uno menor entrenado solo con documentos de la empresa",
+        "Exige ajustar el modelo fundacional cada vez que se añaden documentos nuevos",
+        "Permite prescindir de embeddings porque compara los documentos como texto sin procesar"
+      ],
+      "options_en": [
+        "It removes the need to retrain the model continually",
+        "It swaps the foundation model for a smaller one trained only on company documents",
+        "It requires fine-tuning the foundation model each time new documents are added",
+        "It lets the application skip embeddings because documents are compared as raw text"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con una base de conocimiento, el asistente aprovecha los datos privados mediante recuperación de información, de modo que no hace falta reentrenar el modelo de forma continua, y ahí está el ahorro. Sustituir el modelo por uno menor o ajustarlo con cada documento nuevo supondría más entrenamiento, justo lo que este enfoque evita. Prescindir de embeddings también es incorrecto: los fragmentos de texto se convierten en embeddings para medir similitud semántica.",
+      "explanation_en": "With a knowledge base, the assistant uses private data through retrieval, so the model does not have to be retrained continually, and that is where the savings come from. Swapping in a smaller model or fine-tuning it for every new document would mean more training, the very thing this approach avoids. Skipping embeddings is also wrong: text chunks are converted into embeddings to measure semantic similarity.",
+      "source": "AWS — How Amazon Bedrock knowledge bases work (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-it-works.html)"
+    }
+  ]
+}

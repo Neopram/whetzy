@@ -1,0 +1,196 @@
+{
+  "questions": [
+    {
+      "id": "q110303_r003",
+      "skill_id": "sk110303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un científico de datos quiere que un único trabajo de procesamiento de SageMaker compruebe si hay sesgo y, además, explique las predicciones mediante atribuciones de características. ¿Qué enfoque cubre ambas tareas?",
+      "question_en": "A data scientist wants one SageMaker processing job that both checks for bias and explains predictions through feature attributions. Which approach covers both tasks?",
+      "options_es": [
+        "Un trabajo de Bedrock Guardrails que filtre las entradas y las respuestas del modelo",
+        "Una tarjeta de modelo exportada a PDF con la calificación de riesgo",
+        "Un trabajo de procesamiento de SageMaker Clarify que combine ambas tareas",
+        "Un par de trabajos aislados, uno para el sesgo y otro solo para las explicaciones"
+      ],
+      "options_en": [
+        "A Bedrock Guardrails job that filters the model's inputs and responses",
+        "A model card exported to PDF with the model's risk rating",
+        "A SageMaker Clarify processing job that combines both tasks",
+        "Two isolated jobs, one for bias and another only for explanations"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El cuaderno de ejemplo de Clarify crea un trabajo de procesamiento que detecta sesgo y explica las predicciones con atribuciones de características, es decir, reúne ambas tareas. Guardrails filtra contenido de entradas y respuestas, y una tarjeta de modelo solo documenta información. Separar el trabajo en dos piezas aisladas no es lo que muestra la documentación.",
+      "explanation_en": "The Clarify sample notebook creates a processing job that detects bias and explains predictions with feature attributions, so it brings both tasks together. Guardrails filters input and response content, and a model card only documents information. Splitting the work into two isolated pieces is not what the documentation shows.",
+      "source": "AWS — Pre-training Data Bias (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-data-bias.html)"
+    },
+    {
+      "id": "q110303_r008",
+      "skill_id": "sk110303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo ya ejecuta sus análisis de datos con Spark y con un contenedor propio. Según la documentación de SageMaker Clarify, ¿cómo puede ejecutar allí la detección de sesgo y las explicaciones?",
+      "question_en": "A team already runs its data analysis on Spark with a custom container. According to the SageMaker Clarify documentation, how can it run bias detection and explanations there?",
+      "options_es": [
+        "Clarify solo corre en contenedores integrados y no admite trabajos de procesamiento con Spark",
+        "Clarify requiere mover antes los datos a otro servicio de AWS para cualquier análisis",
+        "Clarify permite usar un contenedor propio y ejecutar trabajos de procesamiento con Spark",
+        "Clarify exige Spark para el sesgo y un contenedor integrado para las explicaciones"
+      ],
+      "options_en": [
+        "Clarify runs only in built-in containers and cannot run processing jobs on Spark",
+        "Clarify requires first moving the data into another AWS service for any analysis",
+        "Clarify supports a custom container and processing jobs that run on Spark",
+        "Clarify needs Spark for bias checks and a built-in container for explanations"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los ejemplos de procesamiento de Clarify incluyen traer un contenedor propio y ejecutar los trabajos con Spark, así que el equipo puede aprovechar su entorno actual. Las demás opciones inventan restricciones que la documentación no menciona: contenedores exclusivamente integrados, traslado previo de datos a otro servicio o un reparto rígido entre Spark y contenedor integrado.",
+      "explanation_en": "Clarify's processing examples include bringing your own container and running the jobs on Spark, so the team can reuse its existing setup. The other options invent restrictions the documentation does not mention: built-in containers only, a mandatory move of the data to another service, or a rigid split between Spark and a built-in container.",
+      "source": "AWS — Model Explainability (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-explainability.html)"
+    },
+    {
+      "id": "q110303_r004",
+      "skill_id": "sk110303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una aplicación de atención al cliente basada en IA generativa debe impedir que se mencionen nombres de empresas competidoras en las conversaciones. ¿Qué salvaguarda de Amazon Bedrock Guardrails permite definir esos términos concretos para bloquearlos?",
+      "question_en": "A generative AI customer-support application must stop conversations from mentioning rival companies by name. Which Amazon Bedrock Guardrails safeguard lets you define those specific terms so they are blocked?",
+      "options_es": [
+        "Filtros de palabras con términos o frases personalizados",
+        "Comprobaciones de fundamentación contextual sobre las fuentes recuperadas y la pregunta del usuario",
+        "Comprobaciones de razonamiento automatizado que validan las respuestas con reglas lógicas",
+        "Filtros de información confidencial que enmascaran datos personales en las respuestas"
+      ],
+      "options_en": [
+        "Word filters configured with custom words or phrases",
+        "Contextual grounding checks applied to retrieved sources and the user's question",
+        "Automated Reasoning checks that validate answers against logical rules",
+        "Sensitive information filters that mask personally identifiable data in responses"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los filtros de palabras permiten definir palabras o frases propias que se bloquean en la interacción, y la documentación menciona expresamente los nombres de competidores como ejemplo. Las comprobaciones de fundamentación detectan respuestas no respaldadas por la fuente, el razonamiento automatizado valida respuestas contra reglas lógicas y los filtros de información confidencial bloquean o enmascaran datos como los personales; ninguno sirve para vetar términos arbitrarios.",
+      "explanation_en": "Word filters let you define your own words or phrases to block in the interaction, and the documentation explicitly cites competitor names as an example. Contextual grounding checks flag responses not supported by the source, Automated Reasoning checks validate answers against logical rules, and sensitive information filters block or mask data such as personal details; none of them is meant for vetoing arbitrary terms.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+    },
+    {
+      "id": "q110303_r007",
+      "skill_id": "sk110303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Después de crear una tarjeta de modelo en Amazon SageMaker Model Cards, un analista corrige las observaciones de evaluación sin tocar el estado de aprobación. ¿Qué ocurre con la tarjeta?",
+      "question_en": "After creating a model card in Amazon SageMaker Model Cards, an analyst corrects the evaluation observations without touching the approval status. What happens to the card?",
+      "options_es": [
+        "La tarjeta existente se sobrescribe y se pierde el contenido anterior sin dejar rastro del cambio",
+        "Se crea una versión nueva de la tarjeta que deja un registro inmutable de los cambios",
+        "El cambio se rechaza hasta que la tarjeta se exporte a PDF y se vuelva a crear desde cero",
+        "Solo se crea una versión nueva cuando el cambio afecta al estado de aprobación de la tarjeta"
+      ],
+      "options_en": [
+        "The existing card is overwritten and the earlier content is lost with no trace of the change",
+        "A new version of the card is created, leaving an immutable record of the changes",
+        "The change is rejected until the card is exported to PDF and recreated from scratch",
+        "A new version is created only when the change affects the approval status of the card"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cualquier edición distinta de la actualización del estado de aprobación genera una versión nueva de la tarjeta, de modo que queda un registro inmutable de los cambios del modelo. Por eso no se sobrescribe sin rastro. Exportar a PDF es una opción para compartir la tarjeta, no un requisito para editarla. Y la regla es la contraria a la última opción: el cambio de aprobación es justo la excepción que no crea versión.",
+      "explanation_en": "Any edit other than an approval status update produces a new version of the model card, so an immutable record of the model's changes is preserved. That rules out silent overwriting. Exporting to PDF is a way to share a card, not a precondition for editing it. The last option has the rule backwards: the approval status update is precisely the exception that does not create a version.",
+      "source": "AWS — Amazon SageMaker Model Cards (https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html)"
+    },
+    {
+      "id": "q110303_r006",
+      "skill_id": "sk110303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En la terminología de SageMaker Clarify, ¿qué afirmación distingue correctamente una métrica de sesgo de un informe de sesgo?",
+      "question_en": "In SageMaker Clarify terminology, which statement correctly distinguishes a bias metric from a bias report?",
+      "options_es": [
+        "La métrica devuelve números que señalan un posible sesgo; el informe reúne métricas de un conjunto de datos, o de datos más modelo",
+        "La métrica es la etiqueta que el modelo predice para cada muestra de los datos; el informe es el conjunto completo de muestras de entrenamiento",
+        "La métrica es la columna respecto a la cual se mide el sesgo; el informe es la lista de todos los valores que toma esa columna en el conjunto",
+        "La métrica marca cada muestra como resultado positivo o negativo para su grupo; el informe es la probabilidad que predice el modelo por muestra"
+      ],
+      "options_en": [
+        "A metric returns numbers signaling potential bias; a report gathers metrics for a dataset, or for a dataset plus a model",
+        "A metric is the label the model predicts for each sample in the data; a report is the full set of samples used to train the model",
+        "A metric is the column against which bias is measured; a report is the list of all the values that column takes in the dataset",
+        "A metric marks each sample as a positive or negative result for its group; a report is the probability the model predicts per sample"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una métrica de sesgo es una función que devuelve valores numéricos sobre el nivel de sesgo potencial, y un informe es una colección de esas métricas para un conjunto de datos o para datos y modelo combinados. Las otras opciones mezclan términos distintos del vocabulario de Clarify: etiqueta predicha, conjunto de muestras, faceta, valores de etiqueta y probabilidad predicha.",
+      "explanation_en": "A bias metric is a function that returns numerical values for the level of potential bias, and a report is a collection of those metrics for a dataset or for a dataset combined with a model. The other options mix in other terms from the Clarify vocabulary: predicted label, set of samples, facet, label values and predicted probability.",
+      "source": "AWS — Pre-training Data Bias (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-data-bias.html)"
+    },
+    {
+      "id": "q110303_r002",
+      "skill_id": "sk110303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una tienda en línea usa un modelo de visión por computadora que clasifica fotos de productos y quiere entender cómo llega a cada clasificación. ¿Qué herramienta de AWS le da esa visibilidad?",
+      "question_en": "An online store uses a computer vision model that classifies product photos and wants to understand how it reaches each classification. Which AWS tool gives it that visibility?",
+      "options_es": [
+        "Los filtros de contenido de Amazon Bedrock Guardrails, para revisar las imágenes de entrada",
+        "SageMaker Clarify, para obtener explicaciones de cómo clasifica el modelo",
+        "Las tarjetas de modelo de SageMaker, para asignar la calificación de riesgo del clasificador",
+        "Las métricas de sesgo previas al entrenamiento de Clarify, para medir las salidas del modelo"
+      ],
+      "options_en": [
+        "Amazon Bedrock Guardrails content filters, to screen the incoming images",
+        "SageMaker Clarify, to explain how the model classifies each image",
+        "SageMaker model cards, to assign a risk rating to the classifier",
+        "Clarify pre-training bias metrics, to measure the model's outputs"
+      ],
+      "correct_index": 1,
+      "explanation_es": "SageMaker Clarify ofrece explicabilidad para modelos de visión por computadora, incluida la clasificación de imágenes, y por eso permite entender cómo el modelo llega a sus resultados. Los filtros de Guardrails revisan contenido dañino, no explican un clasificador. Las tarjetas de modelo documentan uso y riesgo, y las métricas previas al entrenamiento miden sesgo en los datos sin mirar las salidas del modelo.",
+      "explanation_en": "SageMaker Clarify provides explainability for computer vision models, including image classification, so it shows how the model reaches its results. Guardrails filters harmful content and does not explain a classifier. Model cards document use and risk, and pre-training metrics measure bias in the data without looking at any model output.",
+      "source": "AWS — Model Explainability (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-explainability.html)"
+    },
+    {
+      "id": "q110303_r005",
+      "skill_id": "sk110303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En IA explicable, al preguntar por qué ocurrió un evento X en lugar de otro evento Y esperado, ¿qué suele representar la línea base (baseline)?",
+      "question_en": "In explainable AI, when asking why an event X occurred instead of an expected alternative Y, what does the baseline typically represent?",
+      "options_es": [
+        "El valor atípico más extremo del conjunto de datos, elegido para maximizar el contraste con el ejemplo explicado",
+        "La etiqueta que el modelo predijo para el ejemplo que se está explicando, usada como referencia",
+        "El ejemplo de entrenamiento con menor error, elegido para representar el comportamiento ideal del modelo",
+        "Un ejemplo de referencia neutro o típico con el que se compara la predicción explicada"
+      ],
+      "options_en": [
+        "The most extreme outlier in the dataset, chosen to maximize contrast with the explained example",
+        "The label the model predicted for the example currently being explained, used as a reference",
+        "The training example with the lowest error, chosen to represent ideal model behavior",
+        "A neutral or typical reference example that the explained prediction is compared against"
+      ],
+      "correct_index": 3,
+      "explanation_es": "X es el ejemplo que se explica e Y la línea base, que normalmente se elige como un ejemplo poco informativo o promedio del conjunto de datos, de modo que la explicación contrasta X con esa referencia. Un atípico extremo, la propia predicción del ejemplo o el mejor caso de entrenamiento no cumplen ese papel de referencia neutra.",
+      "explanation_en": "X is the example being explained and Y is the baseline, which is normally chosen as an uninformative or average example from the dataset, so the explanation contrasts X with that reference. An extreme outlier, the example's own prediction or the best training case do not play that neutral reference role.",
+      "source": "AWS — Model Explainability (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-explainability.html)"
+    },
+    {
+      "id": "q110303_r001",
+      "skill_id": "sk110303",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En un conjunto de datos de crédito, un equipo quiere comprobar si el modelo trata de forma distinta a los solicitantes según su franja de edad. En la terminología de SageMaker Clarify, ¿qué papel cumple la columna de edad?",
+      "question_en": "In a credit dataset, a team wants to check whether the model treats applicants differently depending on their age bracket. In SageMaker Clarify terminology, what role does the age column play?",
+      "options_es": [
+        "Es la etiqueta observada, es decir, el resultado que el modelo aprende a predecir en el entrenamiento",
+        "Es la etiqueta predicha, es decir, el resultado que el modelo asigna a cada muestra",
+        "Es la columna categórica que forma subgrupos solo para calcular una métrica concreta",
+        "Es la columna con los atributos respecto a los cuales se mide el sesgo"
+      ],
+      "options_en": [
+        "It is the observed label, meaning the outcome the model is trained to learn to predict",
+        "It is the predicted label, meaning the outcome the model assigns to each sample",
+        "It is the categorical column that forms subgroups only for one specific metric",
+        "It is the column holding the attributes against which bias is measured"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La columna de edad es la faceta: la característica que contiene los atributos respecto a los cuales se mide el sesgo, y sus valores son los que el sesgo podría favorecer o perjudicar. La etiqueta observada y la predicha son resultados, no el atributo analizado, y la variable de grupo es una columna distinta que solo se usa para una métrica concreta.",
+      "explanation_en": "The age column is the facet: the feature holding the attributes against which bias is measured, and its values are the ones bias might favor or disfavor. The observed and predicted labels are outcomes rather than the attribute under analysis, and the group variable is a different column used only for one particular metric.",
+      "source": "AWS — Pre-training Data Bias (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-data-bias.html)"
+    }
+  ]
+}

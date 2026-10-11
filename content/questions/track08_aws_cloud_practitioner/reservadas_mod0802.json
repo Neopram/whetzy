@@ -1,0 +1,268 @@
+{
+  "questions": [
+    {
+      "id": "q080202_r002",
+      "skill_id": "sk080202",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "AWS Audit Manager necesita evidencia sobre la actividad de los usuarios en una cuenta. ¿De qué servicio recoge datos de registro para convertirlos en esa evidencia?",
+      "question_en": "AWS Audit Manager needs evidence about what users did in an account. Which service does it collect log data from to turn into that evidence?",
+      "options_es": [
+        "AWS CloudTrail, cuyos registros se transforman en evidencia de actividad de usuarios",
+        "AWS License Manager, cuyo uso de licencias de software se agrega en un marco de auditoría",
+        "AWS Config, cuyas instantáneas reflejan cómo están configurados los recursos de la cuenta",
+        "AWS Control Tower, cuyas reglas de AWS Config basadas en guardrails forman un marco propio"
+      ],
+      "options_en": [
+        "AWS CloudTrail, whose logs are turned into evidence of user activity",
+        "AWS License Manager, whose software license usage is aggregated into a framework",
+        "AWS Config, whose snapshots show how the account's resources are configured",
+        "AWS Control Tower, whose guardrail-based Config rules make up its own framework"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Audit Manager recoge directamente datos de registro de AWS CloudTrail, que supervisa las llamadas a recursos hechas desde la consola, la CLI y otros servicios, y los convierte en evidencia de actividad de usuarios. License Manager aporta información de licencias, Config instantáneas de configuración y Control Tower un marco de guardrails, no la actividad de usuarios.",
+      "explanation_en": "Audit Manager collects log data directly from AWS CloudTrail, which monitors calls to resources made from the console, the CLI and other services, and converts it into user activity evidence. License Manager contributes license information, Config contributes configuration snapshots and Control Tower contributes a guardrails framework, not user activity.",
+      "source": "AWS — What is AWS Audit Manager? (https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html)"
+    },
+    {
+      "id": "q080202_r004",
+      "skill_id": "sk080202",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa presenta ante su auditor un informe de AWS Artifact sobre la infraestructura de AWS. ¿Qué debe tener presente sobre la documentación de su propio cumplimiento?",
+      "question_en": "A company submits an AWS Artifact report about AWS infrastructure to its auditor. What should it keep in mind about the documents showing its own compliance?",
+      "options_es": [
+        "Debe prepararla u obtenerla por su cuenta, pues es responsabilidad del cliente",
+        "AWS la genera automáticamente para cada cliente a partir de los informes de AWS Artifact",
+        "Los informes de AWS Artifact bastan por sí solos para acreditar el cumplimiento de la empresa",
+        "Corresponde a los organismos de acreditación elaborarla a petición de la empresa"
+      ],
+      "options_en": [
+        "The company itself is responsible for preparing or getting them",
+        "AWS automatically produces them for each customer from the AWS Artifact reports",
+        "The AWS Artifact reports are enough on their own to prove the company's compliance",
+        "Accreditation bodies are expected to produce them when the company requests it"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS Artifact ofrece documentos de seguridad y cumplimiento de AWS, que sirven para demostrar el cumplimiento de la infraestructura que la empresa usa. Pero la documentación que acredita el cumplimiento de la propia empresa es responsabilidad del cliente, que debe elaborarla u obtenerla. Por eso fallan las opciones que la atribuyen a AWS, a los organismos de acreditación o a los propios informes de Artifact.",
+      "explanation_en": "AWS Artifact provides AWS security and compliance documents, which help demonstrate the compliance of the infrastructure the company uses. The documentation proving the company's own compliance, however, is the customer's responsibility to prepare or obtain. That is why the options assigning it to AWS, to accreditation bodies, or to the Artifact reports alone fail.",
+      "source": "AWS — What is AWS Artifact? (https://docs.aws.amazon.com/artifact/latest/ug/what-is-aws-artifact.html)"
+    },
+    {
+      "id": "q080202_r003",
+      "skill_id": "sk080202",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa acaba de habilitar AWS Security Hub CSPM en su cuenta. ¿Qué ocurre con los hallazgos de seguridad que ya se habían generado antes de ese momento?",
+      "question_en": "A company has just enabled AWS Security Hub CSPM in its account. What happens to security findings that were already generated before that moment?",
+      "options_es": [
+        "Se importan de forma automática desde el historial de la cuenta y se consolidan con los hallazgos nuevos",
+        "No se detectan de forma retroactiva; solo se consolidan los generados después",
+        "Se envían a AWS Artifact para conservarlos como documentos de cumplimiento de la cuenta",
+        "Se corrigen automáticamente antes de que el servicio empiece a analizar la cuenta"
+      ],
+      "options_en": [
+        "They are imported from the account's history and consolidated with the new ones",
+        "They are not detected retroactively; only later findings are consolidated",
+        "They are sent to AWS Artifact to be kept as compliance documents",
+        "They are fixed automatically before the service starts analyzing the account"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Security Hub CSPM solo detecta y consolida los hallazgos generados después de habilitarlo y no recupera de forma retroactiva los anteriores. Por eso no importa el historial, no los envía a AWS Artifact ni los corrige antes de empezar.",
+      "explanation_en": "Security Hub CSPM only detects and consolidates findings generated after it is enabled, and it does not go back to pick up earlier ones. That is why it does not import the history, send findings to AWS Artifact or fix them before it starts.",
+      "source": "AWS — Introduction to AWS Security Hub CSPM (https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html)"
+    },
+    {
+      "id": "q080203_r001",
+      "skill_id": "sk080203",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué política asociada a un rol de IAM define qué entidades principales pueden asumir ese rol?",
+      "question_en": "Which policy attached to an IAM role defines which principals are allowed to assume that role?",
+      "options_es": [
+        "La política basada en identidad, que concede permisos al propio rol.",
+        "El límite de permisos, que fija el máximo de permisos que el rol puede recibir.",
+        "La política de punto de conexión de VPC, que controla qué principales usan un punto de conexión.",
+        "La política de confianza del rol, que indica quién puede asumirlo."
+      ],
+      "options_en": [
+        "The identity-based policy, which grants permissions to the role itself.",
+        "The permissions boundary, which caps the maximum permissions the role can receive.",
+        "The VPC endpoint policy, which controls which principals can use an endpoint.",
+        "The role trust policy, which names the principals allowed to assume it."
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un rol necesita una política de confianza además de una política basada en identidad, y la de confianza es la que establece qué cuentas, usuarios, roles y usuarios federados pueden asumirlo. El límite de permisos solo fija el máximo que una política basada en identidad puede conceder. La política de punto de conexión de VPC se asocia a un punto de conexión, no define quién asume un rol.",
+      "explanation_en": "A role needs a trust policy in addition to an identity-based policy, and the trust policy is the one that sets which accounts, users, roles and federated users can assume it. A permissions boundary only sets the maximum an identity-based policy can grant. A VPC endpoint policy attaches to an endpoint and does not decide who assumes a role.",
+      "source": "AWS — Policies and permissions in AWS Identity and Access Management (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)"
+    },
+    {
+      "id": "q080204_r002",
+      "skill_id": "sk080204",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Varios eventos de una cuenta parecen inofensivos por separado, pero juntos, en cierto orden, indican actividad sospechosa. ¿Qué capacidad de Amazon GuardDuty los reconoce como un ataque en varias etapas?",
+      "question_en": "Several events in an account look harmless on their own, but together, in a certain order, they point to suspicious activity. Which Amazon GuardDuty capability recognizes them as a multi-stage attack?",
+      "options_es": [
+        "Extended Threat Detection, que enlaza eventos aislados en una secuencia de ataque",
+        "Custom Detection Rules, que vigilan una única técnica evaluando campos de eventos de CloudTrail",
+        "Investigation, que resume con IA los hallazgos que GuardDuty ya había generado",
+        "Foundational threat detection, que ingiere los registros de CloudTrail, de flujo de VPC y de DNS"
+      ],
+      "options_en": [
+        "Extended Threat Detection, which links isolated events into an attack sequence",
+        "Custom Detection Rules, which watch for one single technique by evaluating CloudTrail event fields",
+        "Investigation, which uses AI to summarize findings that GuardDuty had already generated",
+        "Foundational threat detection, which ingests CloudTrail, VPC flow, and DNS logs automatically"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Extended Threat Detection está pensada para ataques en varias etapas: eventos que por sí solos no parecen una amenaza clara se identifican como una secuencia de ataque cuando aparecen en un orden sospechoso. Custom Detection Rules detecta una técnica concreta por regla, Investigation analiza con IA hallazgos que ya existen y la detección fundamental se ocupa de ingerir los orígenes de datos básicos.",
+      "explanation_en": "Extended Threat Detection is built for multi-stage attacks: events that do not look like a clear threat individually are identified as an attack sequence when they occur in a suspicious order. Custom Detection Rules each target one specific technique, Investigation uses AI to analyze findings that already exist, and foundational detection is about ingesting the basic data sources.",
+      "source": "AWS — What is Amazon GuardDuty? (https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)"
+    },
+    {
+      "id": "q080202_r001",
+      "skill_id": "sk080202",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Durante la investigación de un incidente, un equipo necesita saber qué reglas de puertos tenía abiertas un grupo de seguridad de EC2 en una fecha pasada. ¿Qué servicio le da esa vista histórica?",
+      "question_en": "While investigating an incident, a team needs to know which port rules an EC2 security group had open on a past date. Which service gives them that historical view?",
+      "options_es": [
+        "AWS Artifact, que entrega informes de cumplimiento de AWS bajo demanda a los auditores",
+        "AWS Config, que conserva el historial de configuración de los recursos",
+        "AWS Security Hub CSPM, que ejecuta comprobaciones sobre controles de seguridad",
+        "Amazon CloudWatch, que muestra métricas y alarmas sobre el rendimiento de los recursos"
+      ],
+      "options_en": [
+        "AWS Artifact, which delivers AWS compliance reports on demand to auditors",
+        "AWS Config, which keeps the configuration history of resources",
+        "AWS Security Hub CSPM, which runs checks against security controls",
+        "Amazon CloudWatch, which shows performance metrics and alarms for resources"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS Config permite consultar cómo estaba configurado un recurso en un momento concreto, incluidas las reglas de puertos de un grupo de seguridad de EC2. Las otras opciones cubren necesidades distintas: documentos de cumplimiento de AWS, comprobaciones de controles de seguridad y métricas de rendimiento, pero no el historial de configuración de los recursos.",
+      "explanation_en": "AWS Config lets you look at how a resource was configured at a specific point in time, including the port rules of an EC2 security group. The other options address different needs: AWS compliance documents, security control checks and performance metrics, none of which is a configuration history of your resources.",
+      "source": "AWS — What Is AWS Config? (https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html)"
+    },
+    {
+      "id": "q080204_r004",
+      "skill_id": "sk080204",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo define una nueva regla en AWS WAF y teme bloquear a usuarios legítimos. ¿Cómo puede comprobar el efecto de la regla antes de aplicarla?",
+      "question_en": "A team defines a new AWS WAF rule and worries it may block legitimate users. How can it check the rule's effect before enforcing it?",
+      "options_es": [
+        "Configurarla para bloquear las solicitudes coincidentes y revisar después qué usuarios legítimos resultaron afectados",
+        "Configurarla para exigir una verificación CAPTCHA a todas las solicitudes, coincidan o no con el criterio",
+        "Configurarla para permitir todo el tráfico excepto el que coincida y comprobar si los atacantes se detienen",
+        "Configurarla con la acción Count para registrar las solicitudes coincidentes sin cambiar su tratamiento"
+      ],
+      "options_en": [
+        "Set it to block matching requests, then check afterward which legitimate users were affected",
+        "Set it to require a CAPTCHA check on every request, whether or not it matches the criteria",
+        "Set it to allow all traffic except what matches, then watch whether attackers are stopped",
+        "Set it to Count so matching requests are tracked without changing how they are handled"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La acción Count permite seguir las solicitudes que cumplen un criterio sin alterar cómo se tratan, y sirve para probar reglas nuevas antes de pasarlas a permitir o bloquear. Bloquear de inmediato ya aplica la regla y puede afectar a usuarios reales, el CAPTCHA es un control contra bots que no sirve para probar, y permitir todo salvo lo coincidente también es aplicar la regla.",
+      "explanation_en": "The Count action lets you track requests that meet a criterion without altering how they are handled, which makes it suited to testing new rules before switching them to allow or block. Blocking right away already enforces the rule and can hit real users, CAPTCHA is a bot control rather than a testing tool, and allowing everything except matches is also enforcement.",
+      "source": "AWS — What are AWS WAF, AWS Shield Advanced, AWS Shield network security director and AWS Firewall Manager? (https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html)"
+    },
+    {
+      "id": "q080201_r001",
+      "skill_id": "sk080201",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa construye su red con Amazon VPC y quiere saber quién protege el propio servicio VPC. ¿Qué afirmación es correcta?",
+      "question_en": "A company builds its network with Amazon VPC and wants to know who protects the VPC service itself. Which statement is correct?",
+      "options_es": [
+        "AWS lo protege con la seguridad de su red global, al ser VPC un servicio administrado",
+        "La empresa debe instalar su propio software de seguridad de red para proteger el servicio VPC en sí mismo",
+        "El servicio queda sin protección salvo que la empresa contrate un plan de soporte superior",
+        "La empresa es responsable de proteger la infraestructura global sobre la que se ejecuta el servicio VPC"
+      ],
+      "options_en": [
+        "AWS protects it with its global network security, because VPC is a managed service",
+        "The company must install its own network security software to protect the VPC service itself",
+        "The service is left unprotected unless the company buys a higher support plan",
+        "The company is responsible for protecting the global infrastructure on which the VPC service runs"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento indica que Amazon VPC, por ser un servicio administrado, está protegido por la seguridad de la red global de AWS. Por eso la empresa no tiene que instalar software propio para proteger el servicio ni asumir la protección de la infraestructura global. Tampoco hay en el fragmento ninguna condición de contratar un plan de soporte para que el servicio esté protegido.",
+      "explanation_en": "The fragment states that Amazon VPC, as a managed service, is protected by AWS global network security. That is why the company does not need to install its own software to protect the service or take on protecting the global infrastructure. Nothing in the fragment makes the service's protection depend on buying a support plan.",
+      "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080201_r002",
+      "skill_id": "sk080201",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una instancia está en una subred de una VPC y su tráfico se filtra con un grupo de seguridad y con una ACL de red. ¿Sobre qué actúan las reglas de cada uno?",
+      "question_en": "An instance sits in a subnet of a VPC, and its traffic is filtered by both a security group and a network ACL. What does each one's rules govern?",
+      "options_es": [
+        "El grupo de seguridad rige el tráfico hacia la subred; la ACL de red, el tráfico hacia la instancia",
+        "El grupo de seguridad rige el tráfico hacia la instancia; la ACL de red, el tráfico hacia la subred",
+        "Ambos rigen solo el tráfico hacia la instancia, y la ACL de red se aplica además a cada usuario de IAM",
+        "Ambos rigen el tráfico de toda la VPC a la vez, sin distinguir entre instancias y subredes"
+      ],
+      "options_en": [
+        "The security group governs traffic to the subnet; the network ACL governs traffic to the instance",
+        "The security group governs traffic to the instance; the network ACL governs traffic to the subnet",
+        "Both govern traffic only to the instance, and the network ACL additionally applies to each IAM user",
+        "Both govern traffic to the entire VPC at once, without distinguishing instances from subnets"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según el fragmento, las reglas de la ACL de red asociada a la subred controlan qué tráfico llega a la subred, mientras que las del grupo de seguridad asociado a una instancia controlan qué tráfico llega a esa instancia. La primera opción invierte los niveles. Las otras dos añaden alcances (usuarios de IAM, la VPC entera) que el fragmento no atribuye a ninguno de los dos mecanismos.",
+      "explanation_en": "According to the fragment, the rules of the network ACL associated with a subnet control which traffic reaches the subnet, while the rules of the security group associated with an instance control which traffic reaches that instance. The first option swaps the two levels. The other two add scopes (IAM users, the whole VPC) that the fragment does not give to either mechanism.",
+      "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204_r003",
+      "skill_id": "sk080204",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué plan de protección de Amazon GuardDuty está pensado para identificar el robo o la destrucción de datos en los buckets de Amazon S3?",
+      "question_en": "Which Amazon GuardDuty protection plan is meant to identify the theft or destruction of data in Amazon S3 buckets?",
+      "options_es": [
+        "EKS Protection, que analiza los registros de auditoría de Kubernetes de los clústeres de Amazon EKS",
+        "Malware Protection for EC2, que escanea los volúmenes de EBS asociados a las instancias de EC2",
+        "S3 Protection, que identifica riesgos de exfiltración y destrucción de datos en los buckets de S3",
+        "Runtime Monitoring, que analiza eventos del sistema operativo en cargas de trabajo de EKS, EC2 y ECS"
+      ],
+      "options_en": [
+        "EKS Protection, which analyzes Kubernetes audit logs from Amazon EKS clusters",
+        "Malware Protection for EC2, which scans the EBS volumes attached to EC2 instances",
+        "S3 Protection, which flags data exfiltration and destruction risks in S3 buckets",
+        "Runtime Monitoring, which analyzes operating system events on EKS, EC2, and ECS workloads"
+      ],
+      "correct_index": 2,
+      "explanation_es": "S3 Protection es el plan que identifica riesgos como la exfiltración y los intentos de destrucción de datos en los buckets de S3. EKS Protection se centra en los registros de auditoría de Kubernetes, Malware Protection for EC2 escanea volúmenes de EBS y Runtime Monitoring observa eventos del sistema operativo, así que ninguno está orientado a los datos de S3.",
+      "explanation_en": "S3 Protection is the plan that flags risks like data exfiltration and attempts to destroy data in S3 buckets. EKS Protection focuses on Kubernetes audit logs, Malware Protection for EC2 scans EBS volumes, and Runtime Monitoring watches operating system events, so none of them is aimed at S3 data.",
+      "source": "AWS — What is Amazon GuardDuty? (https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)"
+    },
+    {
+      "id": "q080204_r001",
+      "skill_id": "sk080204",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere conectar su red local con sus VPC mediante conexiones privadas. ¿Qué opción recomienda AWS para lograrlo?",
+      "question_en": "A company wants to connect its on-premises network to its VPCs using private connections. Which option does AWS recommend for this?",
+      "options_es": [
+        "Un host bastión o una puerta de enlace NAT, que dan a las instancias de subredes privadas acceso a internet",
+        "AWS Network Firewall, que protege las subredes de la VPC frente a amenazas comunes de red",
+        "VPC Flow Logs, que monitorean el tráfico que llega a las instancias",
+        "AWS Virtual Private Network o Direct Connect, que unen de forma privada las redes remotas con la VPC"
+      ],
+      "options_en": [
+        "A bastion host or a NAT gateway, which give instances in private subnets access to the internet",
+        "AWS Network Firewall, which protects VPC subnets from common network threats",
+        "VPC Flow Logs, which monitor the traffic that reaches the instances",
+        "AWS Virtual Private Network or Direct Connect, which privately join remote networks to the VPC"
+      ],
+      "correct_index": 3,
+      "explanation_es": "AWS recomienda AWS Virtual Private Network o Direct Connect para establecer conexiones privadas entre las redes remotas y las VPC. El host bastión y la puerta de enlace NAT sirven para que las instancias de subredes privadas salgan a internet, Network Firewall protege las subredes de amenazas de red y VPC Flow Logs solo monitorea el tráfico; ninguno crea un enlace privado con una red remota.",
+      "explanation_en": "AWS recommends AWS Virtual Private Network or Direct Connect to set up private connections between remote networks and VPCs. A bastion host or NAT gateway gives instances in private subnets a path to the internet, Network Firewall protects subnets from network threats, and VPC Flow Logs only monitors traffic; none of them builds a private link to a remote network.",
+      "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    }
+  ]
+}

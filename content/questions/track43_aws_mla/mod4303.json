@@ -1005,6 +1005,972 @@
       "explanation_en": "When the task doesn't need an external tool or custom code running, a purely declarative \"prompt agent\" is enough; the \"hosted agent\" is reserved for when custom logic actually needs to run.",
       "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
       "expected_time_ms": 30000
+    },
+    {
+      "id": "q430111_037",
+      "skill_id": "sk430111",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML tiene un modelo que recibe ráfagas de tráfico separadas por largos periodos sin solicitudes, y la aplicación acepta cierta demora cuando el cómputo se pone en marcha. ¿Qué opción de inferencia de SageMaker AI encaja mejor sin gestionar infraestructura?",
+      "question_en": "An ML team has a model that receives short bursts of traffic separated by long quiet periods, and the application can accept a delay while compute spins up. Which SageMaker AI inference option fits best without managing any infrastructure?",
+      "options_es": [
+        "Un endpoint en tiempo real con instancias siempre activas dimensionadas para el pico",
+        "Un endpoint sin servidor que aprovisiona cómputo bajo demanda",
+        "Un trabajo de transformación por lotes lanzado con cada solicitud",
+        "Un endpoint multimodelo dedicado que permanece encendido todo el día"
+      ],
+      "options_en": [
+        "A real-time endpoint on always-on instances sized for peak load",
+        "A serverless endpoint that provisions compute on demand",
+        "A batch transform job launched for every single request",
+        "A dedicated multi-model endpoint that stays running around the clock"
+      ],
+      "correct_index": 1,
+      "explanation_es": "SageMaker Serverless Inference es la opción descrita para cargas con pausas entre ráfagas de tráfico y que pueden asumir arranques en frío. Además, el servicio pone en marcha el cómputo y lo escala por sí mismo, así que el equipo no elige tipos de instancia ni define políticas de escalado. Las alternativas basadas en instancias siempre encendidas o dimensionadas para el pico apuntan justo a lo contrario: administrar capacidad en lugar de delegarla.",
+      "explanation_en": "SageMaker Serverless Inference is the option described for workloads that sit quiet between bursts of traffic and can live with cold starts. The service also brings up compute and scales it by itself, so the team picks no instance types and defines no scaling policies. The alternatives built on always-on or peak-sized instances point the opposite way: they mean managing capacity instead of handing it off.",
+      "source": "AWS — Deploy models with Amazon SageMaker Serverless Inference (https://docs.aws.amazon.com/sagemaker/latest/dg/serverless-endpoints.html)"
+    },
+    {
+      "id": "q430111_038",
+      "skill_id": "sk430111",
+      "type": "multiple_choice",
+      "question_es": "Un equipo envía solicitudes a un endpoint de inferencia asíncrona de SageMaker AI. Cuando una solicitud termina de procesarse, ¿dónde queda su resultado?",
+      "question_en": "A team sends requests to a SageMaker AI asynchronous inference endpoint. Once a request finishes processing, where does its result end up?",
+      "options_es": [
+        "En el cuerpo de la misma llamada HTTP que envió la solicitud, sin almacenamiento intermedio",
+        "En el Model Registry, junto a la versión del modelo que atendió la solicitud",
+        "En un flujo de registros de CloudWatch que el cliente debe consultar después",
+        "En una ubicación de Amazon S3, con aviso opcional mediante SNS"
+      ],
+      "options_en": [
+        "In the body of the very HTTP call that submitted the request",
+        "In the Model Registry, next to the version of the model that served it",
+        "In a CloudWatch log stream that the client has to query afterward",
+        "In an Amazon S3 location, with optional notification through SNS"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En la inferencia asíncrona, SageMaker AI pone la solicitud en cola y, al terminar, deposita el resultado en una ubicación de Amazon S3; opcionalmente se pueden recibir avisos de éxito o error por SNS. Por eso no se devuelve en la misma llamada, y ni el Model Registry ni los registros de CloudWatch son el destino del resultado.",
+      "explanation_en": "With asynchronous inference, SageMaker AI queues the request and, once done, places the result in an Amazon S3 location; success or error notifications through SNS are optional. The result is therefore not returned in the submitting call, and neither the Model Registry nor CloudWatch logs are where results go.",
+      "source": "AWS — Asynchronous inference (https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html)"
+    },
+    {
+      "id": "q430111_039",
+      "skill_id": "sk430111",
+      "type": "multiple_choice",
+      "question_es": "Un equipo necesita obtener predicciones de todos los registros de un conjunto de datos grande almacenado en Amazon S3, procesándolos de una sola vez y sin necesidad de un endpoint persistente. ¿Qué opción de SageMaker AI encaja mejor?",
+      "question_en": "A team needs predictions for every record in a large dataset stored in Amazon S3, processed all at once, with no need for a persistent endpoint. Which SageMaker AI option fits best?",
+      "options_es": [
+        "Un endpoint en tiempo real con escalado automático configurado",
+        "Un endpoint sin servidor con concurrencia aprovisionada",
+        "Un trabajo de transformación por lotes sobre los datos de S3",
+        "Un endpoint asíncrono que encola cada registro"
+      ],
+      "options_en": [
+        "A real-time endpoint with automatic scaling enabled",
+        "A serverless endpoint with Provisioned Concurrency",
+        "A batch transform job over the S3 data",
+        "An asynchronous endpoint that queues each record"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La transformación por lotes está pensada para obtener inferencias de un conjunto de datos grande sin requerir un endpoint persistente, que es justo el escenario descrito. Las otras opciones son variantes de endpoint orientadas a atender solicitudes bajo demanda, no a procesar de una vez todo un conjunto almacenado en S3.",
+      "explanation_en": "Batch transform is designed to produce inferences for a large dataset without requiring a persistent endpoint, which is exactly the scenario described. The other options are endpoint variants geared toward serving requests on demand, not toward processing an entire dataset stored in S3 in one go.",
+      "source": "AWS — Batch transform for inference with Amazon SageMaker AI (https://docs.aws.amazon.com/sagemaker/latest/dg/batch-transform.html)"
+    },
+    {
+      "id": "q430111_040",
+      "skill_id": "sk430111",
+      "type": "multiple_choice",
+      "question_es": "Una página de pago debe mostrar la predicción de un modelo en el mismo clic del usuario, atendiendo una solicitud tras otra. ¿Qué opción de inferencia de SageMaker AI encaja mejor?",
+      "question_en": "A checkout page has to show a model prediction within the same user click, handling one request after another. Which SageMaker AI inference option fits best?",
+      "options_es": [
+        "Un endpoint de inferencia en tiempo real",
+        "Un trabajo de transformación por lotes que puntúa un conjunto de datos completo almacenado en Amazon S3",
+        "Un endpoint asíncrono que encola las solicitudes para procesarlas más tarde",
+        "Un trabajo nocturno que puntúa de una sola vez todos los registros acumulados"
+      ],
+      "options_en": [
+        "A real-time inference endpoint",
+        "A batch transform job that scores a whole dataset stored in Amazon S3",
+        "An asynchronous endpoint that queues requests to be processed later",
+        "A nightly job that scores all accumulated records in a single pass"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un endpoint en tiempo real mantiene el modelo desplegado y responde a cada solicitud de inmediato, que es el caso de uso que la documentación asigna a esta modalidad: cargas interactivas con baja latencia. Las otras tres opciones aplazan o agrupan el resultado (cola, conjunto completo, pasada nocturna), así que no entregan la predicción dentro del mismo clic.",
+      "explanation_en": "A real-time endpoint keeps the model deployed and answers each request right away, which is the use case the documentation assigns to this option: interactive workloads with low latency. The other three options postpone or group the output (a queue, a full dataset, a nightly pass), so none of them returns the prediction within the same click.",
+      "source": "AWS — Real-time inference (https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints.html)"
+    },
+    {
+      "id": "q430111_041",
+      "skill_id": "sk430111",
+      "type": "multiple_choice",
+      "question_es": "Un endpoint sin servidor de SageMaker AI responde con retraso cuando llega tráfico después de un rato inactivo. ¿Qué configuración reduce ese retraso manteniendo el endpoint preparado?",
+      "question_en": "A SageMaker AI serverless endpoint answers slowly when traffic arrives after a quiet spell. Which configuration reduces that delay by keeping the endpoint ready?",
+      "options_es": [
+        "Asociar aceleración con GPU al endpoint",
+        "Asignar concurrencia aprovisionada al endpoint",
+        "Alojar varios modelos detrás de un endpoint multimodelo",
+        "Repartir el tráfico entre varias variantes de producción"
+      ],
+      "options_en": [
+        "Attaching GPU acceleration to the endpoint",
+        "Allocating Provisioned Concurrency for the endpoint",
+        "Hosting several models behind one Multi-Model Endpoint",
+        "Splitting traffic across multiple production variants"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El retraso descrito es un arranque en frío. La concurrencia aprovisionada lo evita porque la capacidad reservada permanece inicializada y atiende las peticiones de inmediato. Las GPU, los endpoints multimodelo y las variantes de producción múltiples no son compatibles con la inferencia sin servidor, así que esas opciones no resuelven el problema.",
+      "explanation_en": "The delay described is a cold start. Allocating Provisioned Concurrency avoids it, because the capacity you reserve stays initialized and answers requests right away. Serverless Inference does not support GPUs, Multi-Model Endpoints or multiple production variants, so those options cannot address the problem.",
+      "source": "AWS — Deploy models with Amazon SageMaker Serverless Inference (https://docs.aws.amazon.com/sagemaker/latest/dg/serverless-endpoints.html)"
+    },
+    {
+      "id": "q430111_042",
+      "skill_id": "sk430111",
+      "type": "multiple_choice",
+      "question_es": "Una analista que se inicia en SageMaker AI quiere desplegar un modelo preentrenado mediante una interfaz gráfica, sin tener que lidiar con configuraciones complejas. ¿Qué opción le conviene más?",
+      "question_en": "An analyst who is new to SageMaker AI wants to deploy a pre-trained model through a graphical interface, without dealing with complicated settings. Which option fits best?",
+      "options_es": [
+        "Usar SageMaker JumpStart desde la interfaz de Studio",
+        "Usar la clase ModelBuilder del SDK de Python de SageMaker",
+        "Usar CloudFormation con infraestructura como código",
+        "Usar Boto3 junto con herramientas de CI/CD y automatización"
+      ],
+      "options_en": [
+        "Use SageMaker JumpStart through the Studio interface",
+        "Write ModelBuilder code with the SageMaker Python SDK",
+        "Provision the endpoint with CloudFormation and infrastructure as code",
+        "Automate deployment with Boto3 and CI/CD tooling"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, JumpStart a través de Studio es la vía de bajo código o sin código para quien empieza y quiere desplegar modelos preentrenados sin configuraciones complejas. ModelBuilder está pensado para profesionales con experiencia que necesitan control fino sobre el despliegue. Boto3 con CloudFormation y herramientas de CI/CD corresponde a usuarios avanzados que administran modelos a gran escala en producción.",
+      "explanation_en": "Per the source, JumpStart in Studio is the low-code or no-code route for newcomers who want to deploy pre-trained models without complex configuration. ModelBuilder is meant for experienced practitioners who need fine-grained control over the deployment. Boto3 with CloudFormation and CI/CD tools is the path for advanced users managing models at scale in production.",
+      "source": "AWS — Deploy models for inference (https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)"
+    },
+    {
+      "id": "q430112_043",
+      "skill_id": "sk430112",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML aloja un modelo en un endpoint de SageMaker AI cuyo tráfico sube y baja durante el día. Quieren que se añada capacidad cuando crezca la carga y se retire cuando baje, sin intervención manual. ¿Qué capacidad deben configurar?",
+      "question_en": "An ML team hosts a model on a SageMaker AI endpoint whose traffic rises and falls through the day. They want capacity added when load grows and removed when it drops, with no manual intervention. Which capability should they configure?",
+      "options_es": [
+        "Alojamiento multimodelo, para que varios modelos compartan una misma flota de instancias",
+        "Escalado automático, para que el número de instancias siga a la carga",
+        "Una flota fija más grande, para que siempre haya capacidad para el pico diario",
+        "Un cambio de instancias programado a mano, para que un operador ajuste la flota en horas fijas"
+      ],
+      "options_en": [
+        "Multi-model endpoint hosting, so that several models share one fleet of instances",
+        "Auto scaling, so the instance count follows the workload",
+        "A larger fixed fleet, so that capacity always covers the daily peak",
+        "A manually scheduled instance change, so an operator resizes the fleet at set hours"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El escalado automático de SageMaker AI ajusta el número de instancias de un modelo alojado según la carga: pone más instancias en servicio cuando esta sube y retira las que sobran cuando baja, de modo que no se paga por instancias sin uso. El alojamiento multimodelo sirve para consolidar muchos modelos, no para adaptar la capacidad al tráfico. Una flota fija dimensionada para el pico mantiene instancias ociosas, y un ajuste programado a mano exige que alguien intervenga, justo lo que el equipo quiere evitar.",
+      "explanation_en": "SageMaker AI auto scaling adjusts the number of instances behind a hosted model according to the workload: it brings more instances into service when load rises and removes surplus ones when it falls, so you do not pay for unused instances. Multi-model hosting is meant to consolidate many models, not to match capacity to traffic. A fixed fleet sized for the peak keeps idle instances running, and a manually scheduled change requires someone to step in, which is exactly what the team wants to avoid.",
+      "source": "AWS — Automatic scaling of Amazon SageMaker AI models (https://docs.aws.amazon.com/sagemaker/latest/dg/endpoint-auto-scaling.html)"
+    },
+    {
+      "id": "q430112_044",
+      "skill_id": "sk430112",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo obtiene un endpoint multimodelo de SageMaker AI un modelo desde Amazon S3 hacia el contenedor de inferencia?",
+      "question_en": "How does a SageMaker AI multi-model endpoint get a model from Amazon S3 into the serving container?",
+      "options_es": [
+        "Copia todos los modelos a la memoria del contenedor en cuanto se crea el endpoint",
+        "Descarga y cachea el modelo bajo demanda, cuando alguien lo invoca",
+        "Exige volver a desplegar el endpoint cada vez que se añade un modelo al bucket",
+        "Lee cada predicción directamente de S3 y nunca guarda el modelo en la instancia"
+      ],
+      "options_en": [
+        "It copies every model into the container memory as soon as the endpoint is created",
+        "It loads and caches the model on demand, when it is invoked",
+        "It requires redeploying the endpoint each time a model is added to the bucket",
+        "It reads each prediction directly from S3 and never stores the model on the instance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En un endpoint multimodelo, SageMaker AI no baja todos los modelos al crear el endpoint: los carga y los guarda en caché cuando se invocan. Si un modelo ya está cargado en el contenedor, la invocación es más rápida porque no hace falta descargarlo de nuevo. Tampoco hace falta actualizar el endpoint para añadir un modelo: basta con subirlo al bucket e invocarlo. El modelo sí se descarga a la instancia, así que no se lee en cada predicción desde S3.",
+      "explanation_en": "On a multi-model endpoint, SageMaker AI does not pull every model down when the endpoint is created: it loads and caches a model when it is invoked. If a model is already loaded in the container, invocation is faster because it does not need to be downloaded again. Adding a model does not require updating the endpoint either: you upload it to the bucket and invoke it. The model is downloaded to the instance, so it is not read from S3 on every prediction.",
+      "source": "AWS — Multi-model endpoints (https://docs.aws.amazon.com/sagemaker/latest/dg/multi-model-endpoints.html)"
+    },
+    {
+      "id": "q430112_045",
+      "skill_id": "sk430112",
+      "type": "multiple_choice",
+      "question_es": "Un equipo planea consolidar muchos modelos en un único endpoint multimodelo de SageMaker AI. ¿Qué grupo de modelos aprovecharía mejor la memoria compartida entre ellos?",
+      "question_en": "A team plans to consolidate many models onto a single SageMaker AI multi-model endpoint. Which group of models would make the best use of the memory shared among them?",
+      "options_es": [
+        "Modelos cuyos tamaños en memoria son muy dispares entre sí",
+        "Un conjunto donde un modelo recibe muchas más transacciones por segundo que el resto",
+        "Modelos con requisitos de latencia mucho más exigentes que los demás",
+        "Modelos de tamaño y latencia de invocación parecidos"
+      ],
+      "options_en": [
+        "Models whose memory footprints differ greatly from one another",
+        "A set in which one model handles far more requests per second than the rest",
+        "Models with latency requirements far stricter than the others",
+        "Models of comparable size and invocation latency"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los endpoints multimodelo reparten la memoria en el tiempo entre los modelos, y el resultado es mejor cuando estos se parecen en tamaño y en latencia de invocación, porque así las instancias se aprovechan bien con todos. Un grupo con tamaños muy dispares no cumple esa condición. Un modelo con un TPS mucho mayor, o con requisitos de latencia más estrictos, conviene alojarlo en un endpoint dedicado en lugar de mezclarlo con los demás.",
+      "explanation_en": "Multi-model endpoints time-share memory among the models, and the arrangement pays off most when the models are alike in size and invocation latency, since the instances can then be used efficiently across all of them. A group with widely varying sizes does not meet that condition. A model with much higher TPS or tighter latency requirements belongs on a dedicated endpoint rather than being mixed in with the rest.",
+      "source": "AWS — Multi-model endpoints (https://docs.aws.amazon.com/sagemaker/latest/dg/multi-model-endpoints.html)"
+    },
+    {
+      "id": "q430112_046",
+      "skill_id": "sk430112",
+      "type": "multiple_choice",
+      "question_es": "Un equipo SaaS aloja cientos de modelos por cliente basados en el mismo framework de ML; un puñado recibe tráfico constante y casi todos los demás se consultan muy de vez en cuando. Elige un endpoint multimodelo. ¿Qué debe asumir su aplicación?",
+      "question_en": "A SaaS team hosts hundreds of per-customer models built on the same ML framework; a handful get constant traffic and nearly all the others are queried only now and then. They choose a multi-model endpoint. What must their application accept?",
+      "options_es": [
+        "Un redespliegue completo del endpoint cada vez que se suma un cliente nuevo",
+        "Un contenedor de servicio propio para cada modelo de cliente",
+        "Demoras ocasionales por arranque en frío en modelos de uso esporádico",
+        "La imposibilidad de aplicar escalado automático al endpoint"
+      ],
+      "options_en": [
+        "A full endpoint redeployment every time a new customer is onboarded",
+        "A dedicated serving container for each customer model",
+        "Occasional cold-start delays when calling seldom-used models",
+        "The inability to apply auto scaling to the endpoint"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un endpoint multimodelo reúne muchos modelos del mismo framework en un contenedor compartido y sirve bien una mezcla de modelos muy y poco consultados. La contrapartida es que los modelos de uso esporádico pueden tardar más en responder por el arranque en frío, y la aplicación tiene que asumirlo. La opción del redespliegue falla porque SageMaker AI se encarga de cargar los modelos en memoria y reduce esa carga de despliegue; la del contenedor propio falla porque el contenedor es compartido; y la del escalado automático falla porque figura entre las funciones compatibles.",
+      "explanation_en": "A multi-model endpoint brings many models of the same framework onto a shared serving container and handles a mix of heavily and lightly queried models well. The trade-off is that sporadically used models can respond more slowly because of cold starts, and the application has to accept that. The redeployment option fails because SageMaker AI handles loading models into memory and lowers that deployment burden; the dedicated container option fails because the container is shared; and the auto scaling option fails because it is among the supported features.",
+      "source": "AWS — Multi-model endpoints (https://docs.aws.amazon.com/sagemaker/latest/dg/multi-model-endpoints.html)"
+    },
+    {
+      "id": "q430112_047",
+      "skill_id": "sk430112",
+      "type": "multiple_choice",
+      "question_es": "En un endpoint multimodelo de SageMaker AI, la memoria de una instancia está casi llena cuando llega una solicitud para un modelo que no está cargado. ¿Qué ocurre con los modelos sin uso que ya están en ese contenedor?",
+      "question_en": "On a SageMaker AI multi-model endpoint, an instance's memory is nearly full when a request arrives for a model that is not loaded. What happens to the unused models already in that container?",
+      "options_es": [
+        "Se retiran de memoria, siguen en disco y se recargan sin bajarlos de S3",
+        "Se rechaza la solicitud entrante hasta que un administrador libere la memoria de la instancia a mano",
+        "Se borran del bucket de S3 para hacer sitio al nuevo",
+        "Se apaga la instancia y todo el endpoint pasa a otra instancia más grande"
+      ],
+      "options_en": [
+        "They are unloaded, stay on disk and reload without another S3 download",
+        "The incoming request is rejected until an administrator frees the instance memory manually",
+        "They are deleted from the S3 bucket to make room for the new one",
+        "The instance shuts down and the whole endpoint moves to a bigger instance"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con la memoria de la instancia muy ocupada, SageMaker AI libera espacio descargando de memoria los modelos que nadie usa. Esos modelos se conservan en el almacenamiento de la instancia, así que pueden volver a la memoria más tarde sin otra descarga desde S3. Las demás opciones (rechazar la solicitud, borrar objetos del bucket o cambiar de instancia) describen comportamientos que el fragmento no menciona.",
+      "explanation_en": "When an instance's memory is heavily used, SageMaker AI frees room by unloading the models nobody is using. Those models are kept on the instance's disk, so they can return to memory later without another S3 download. The other options (rejecting the request, deleting S3 objects, or switching instances) describe behaviors the source does not mention.",
+      "source": "AWS — Multi-model endpoints (https://docs.aws.amazon.com/sagemaker/latest/dg/multi-model-endpoints.html)"
+    },
+    {
+      "id": "q430112_048",
+      "skill_id": "sk430112",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere alojar varios modelos de deep learning ResNet-50 en instancias con GPU detrás de un endpoint multimodelo. En el cuaderno de ejemplo de AWS para ese escenario con GPU, ¿qué contenedor se emplea para servir los modelos?",
+      "question_en": "A team wants to host several ResNet-50 deep learning models on GPU-backed instances behind one multi-model endpoint. In the AWS sample notebook for that GPU scenario, which container is used to serve the models?",
+      "options_es": [
+        "El contenedor NVIDIA Triton Inference",
+        "El contenedor del algoritmo XGBoost integrado",
+        "El contenedor del algoritmo integrado de clasificación de imágenes",
+        "El contenedor de procesamiento de SageMaker Clarify"
+      ],
+      "options_en": [
+        "The NVIDIA Triton Inference container",
+        "The built-in XGBoost algorithm container",
+        "The built-in image classification algorithm container",
+        "The SageMaker Clarify processing container"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El ejemplo de endpoint multimodelo con GPU sirve los modelos ResNet-50 mediante un contenedor de NVIDIA Triton Inference. El cuaderno de XGBoost aparece entre los ejemplos con instancias de CPU, y ni el contenedor del algoritmo integrado de clasificación de imágenes ni el de procesamiento de Clarify son los que ese ejemplo con GPU emplea para servir modelos.",
+      "explanation_en": "The GPU-backed multi-model endpoint sample serves ResNet-50 deep learning models through NVIDIA Triton Inference Server's container. The XGBoost notebook is listed among the CPU-backed examples, and neither a built-in image classification container nor a Clarify processing container is what that GPU sample relies on for serving.",
+      "source": "AWS — Multi-model endpoints (https://docs.aws.amazon.com/sagemaker/latest/dg/multi-model-endpoints.html)"
+    },
+    {
+      "id": "q430113_049",
+      "skill_id": "sk430113",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML tiene modelos creados en varios frameworks y debe ejecutar inferencia en procesadores de distintos fabricantes, sin ajustar a mano cada destino. ¿Qué capacidad de SageMaker AI encaja mejor?",
+      "question_en": "An ML team has models built in several frameworks and must run inference on processors from different vendors without hand-tuning each target. Which SageMaker AI capability fits best?",
+      "options_es": [
+        "SageMaker Neo, que optimiza cada modelo para su plataforma de destino",
+        "Inference Recommender, que elige el tipo de instancia mediante pruebas de carga",
+        "Model Monitor, que detecta desviaciones en los datos de entrada de un endpoint en producción",
+        "Decodificación especulativa, que combina un modelo borrador con un modelo objetivo mayor"
+      ],
+      "options_en": [
+        "SageMaker Neo, which optimizes each model for its target platform",
+        "Inference Recommender, which selects an instance type by running load tests",
+        "Model Monitor, which detects drift in the input data of a production endpoint",
+        "Speculative decoding, which pairs a draft model with a larger target model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "SageMaker Neo optimiza de forma automática modelos de frameworks como PyTorch, TensorFlow u ONNX para inferencia en procesadores de muchos fabricantes, de modo que no hace falta ajustar a mano cada plataforma. Inference Recommender ayuda a elegir instancia y configuración, Model Monitor vigila la calidad de los datos en producción y la decodificación especulativa acelera la generación de los LLM; ninguna optimiza el modelo para distintos procesadores.",
+      "explanation_en": "SageMaker Neo automatically optimizes models from frameworks such as PyTorch, TensorFlow, and ONNX for inference on processors from many vendors, so there is no need to tune each platform by hand. Inference Recommender helps pick an instance and configuration, Model Monitor watches data quality in production, and speculative decoding speeds up LLM generation; none of them optimizes a model for different processors.",
+      "source": "AWS — Model performance optimization with SageMaker Neo (https://docs.aws.amazon.com/sagemaker/latest/dg/neo.html)"
+    },
+    {
+      "id": "q430113_050",
+      "skill_id": "sk430113",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere acortar el tiempo hasta llevar modelos de ML a producción y encontrar una configuración de endpoint con buen rendimiento al menor coste. ¿Qué hace SageMaker Inference Recommender por él?",
+      "question_en": "A team wants to shorten the time it takes to get ML models into production and find an endpoint setup with strong performance for the lowest cost. What does SageMaker Inference Recommender do for it?",
+      "options_es": [
+        "Cuantiza los pesos del modelo a un tipo de dato de menor precisión para necesitar menos hardware",
+        "Prueba el modelo con tráfico simulado en varias instancias y sugiere la mejor configuración",
+        "Reparte el modelo en fragmentos para que cada uno resida en una GPU independiente",
+        "Compila el modelo por adelantado para hardware acelerado como AWS Inferentia"
+      ],
+      "options_en": [
+        "It quantizes the model weights to a lower-precision data type so the model needs less hardware",
+        "It load-tests the model with simulated traffic on several instances and picks the best setup",
+        "It divides the model into portions so that each one lives on a separate GPU",
+        "It compiles the model ahead of time for accelerated hardware such as AWS Inferentia"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Inference Recommender somete el modelo a tráfico simulado en distintas instancias de ML y recomienda la instancia y la configuración con mejor relación entre rendimiento y coste, lo que acorta el camino a producción en un endpoint en tiempo real o sin servidor. Las otras opciones son técnicas de optimización o de distribución del modelo (cuantización, reparto entre GPU, compilación), no una herramienta que compara configuraciones de endpoint.",
+      "explanation_en": "Inference Recommender benchmarks the model under simulated traffic on different ML instances and points to the instance and setup with the best price-performance, which speeds up the path to a real-time or serverless endpoint. The other options are model optimization or distribution techniques (quantization, splitting across GPUs, compilation), not a tool that compares endpoint configurations.",
+      "source": "AWS — Amazon SageMaker Inference Recommender (https://docs.aws.amazon.com/sagemaker/latest/dg/inference-recommender.html)"
+    },
+    {
+      "id": "q430113_051",
+      "skill_id": "sk430113",
+      "type": "multiple_choice",
+      "question_es": "SageMaker AI divide por adelantado un LLM entre varias GPU y guarda sus pesos en bloques del mismo tamaño que la instancia puede cargar a la vez. ¿Qué técnica de optimización es esta?",
+      "question_en": "SageMaker AI pre-splits a large LLM across GPUs and writes its weights as equally sized pieces that the instance can load in parallel. Which optimization technique is this?",
+      "options_es": [
+        "Carga rápida de modelos",
+        "Decodificación especulativa",
+        "Cuantización de pesos a pocos bits",
+        "Compilación anticipada"
+      ],
+      "options_en": [
+        "Fast model loading",
+        "Speculative decoding",
+        "Low-bit weight quantization",
+        "Ahead-of-time compilation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La carga rápida de modelos prepara el LLM para que llegue antes a la instancia: lo fragmenta con antelación en porciones aptas para GPU distintas y guarda los pesos en bloques iguales que se cargan de forma concurrente. La decodificación especulativa, en cambio, acelera la respuesta con un modelo borrador cuyos tokens verifica el modelo objetivo, y la cuantización o la compilación anticipada no describen ese reparto previo entre GPU ni esa carga en paralelo.",
+      "explanation_en": "Fast model loading prepares the LLM so it reaches the instance sooner: it is sharded in advance into portions that can sit on separate GPUs, and its weights are stored in equal chunks that load concurrently. Speculative decoding instead speeds up the response with a draft model whose tokens the target model verifies, and neither quantization nor ahead-of-time compilation describes this upfront split across GPUs or this parallel loading.",
+      "source": "AWS — Inference optimization for Amazon SageMaker AI models (https://docs.aws.amazon.com/sagemaker/latest/dg/model-optimize.html)"
+    },
+    {
+      "id": "q430113_052",
+      "skill_id": "sk430113",
+      "type": "multiple_choice",
+      "question_es": "Un equipo convierte los pesos y las activaciones de un LLM a un formato numérico de menor precisión para ejecutarlo en GPU más económicas y fáciles de conseguir. ¿Qué compensación debe evaluar?",
+      "question_en": "A team converts an LLM's weights and activations to a lower-precision numeric format so it can run on cheaper, more readily available GPUs. What trade-off should the team evaluate?",
+      "options_es": [
+        "El modelo cuantizado gana exactitud porque la menor precisión elimina ruido en los pesos",
+        "El modelo cuantizado conserva idéntica exactitud porque solo cambia el tamaño del archivo",
+        "El modelo cuantizado podría perder algo de exactitud respecto al modelo original",
+        "El modelo cuantizado exige hardware más potente porque cada valor ocupa más bits"
+      ],
+      "options_en": [
+        "The quantized model gains accuracy because the lower precision filters out noise in the weights",
+        "The quantized model keeps identical accuracy because only the stored file size changes",
+        "The quantized model may lose some accuracy compared with the original model",
+        "The quantized model needs more powerful hardware because each value uses extra bits"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La cuantización reduce los requisitos de hardware al usar un tipo de dato menos preciso para pesos y activaciones, y por eso permite alojar el modelo en GPU más baratas y disponibles. A cambio, el modelo cuantizado puede ser menos exacto que el original. Las otras opciones contradicen esto: no se garantiza ganar ni conservar exactitud, y los requisitos de hardware bajan en lugar de subir.",
+      "explanation_en": "Quantization stores weights and activations in a lower-precision data type, which cuts hardware demands and allows cheaper, more available GPUs. The cost is a possible drop in accuracy versus the unquantized model. The other options conflict with this: accuracy is not promised to improve or stay the same, and hardware needs fall rather than rise.",
+      "source": "AWS — Inference optimization for Amazon SageMaker AI models (https://docs.aws.amazon.com/sagemaker/latest/dg/model-optimize.html)"
+    },
+    {
+      "id": "q430113_053",
+      "skill_id": "sk430113",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere controlar por sí mismo cómo se acelera la inferencia de un modelo generativo en SageMaker AI, así que opta por la optimización manual en lugar de las recomendaciones de inferencia. ¿Qué le corresponde al equipo?",
+      "question_en": "A team wants hands-on control over how a generative AI model's inference is sped up on SageMaker AI, so it picks manual optimization over inference recommendations. What falls to the team?",
+      "options_es": [
+        "Lanzar el proceso y nada más, porque SageMaker AI selecciona las técnicas y valida los resultados",
+        "Seleccionar las técnicas, ejecutar las optimizaciones y valorar los resultados",
+        "Seleccionar una técnica, mientras SageMaker AI ejecuta las optimizaciones y valora los resultados",
+        "Aportar un modelo borrador, porque solo se admite la decodificación especulativa"
+      ],
+      "options_en": [
+        "Kicking off the process and nothing else, since SageMaker AI selects the techniques and validates the results",
+        "Selecting the techniques, executing the optimizations, and assessing the results",
+        "Selecting one technique, while SageMaker AI executes the optimizations and assesses the results",
+        "Supplying a draft model, since only speculative decoding is supported"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En la optimización manual el equipo decide qué técnicas individuales aplicar (por ejemplo cuantización, decodificación especulativa o compilación), ejecuta las optimizaciones y analiza los resultados por su cuenta. Las opciones que traspasan a SageMaker AI la selección, la ejecución o la valoración describen más bien el enfoque automático de las recomendaciones de inferencia. Limitarla a la decodificación especulativa tampoco es correcto, ya que esa es solo una de las técnicas disponibles.",
+      "explanation_en": "With manual optimization the team decides which individual techniques to apply (for example quantization, speculative decoding, or compilation), executes the optimizations, and assesses the results on its own. Options that hand the selection, the execution, or the assessment to SageMaker AI describe the automatic approach of inference recommendations instead. Restricting it to speculative decoding is also wrong, since that is only one of the available techniques.",
+      "source": "AWS — Inference optimization for Amazon SageMaker AI models (https://docs.aws.amazon.com/sagemaker/latest/dg/model-optimize.html)"
+    },
+    {
+      "id": "q430113_054",
+      "skill_id": "sk430113",
+      "type": "multiple_choice",
+      "question_es": "En SageMaker Neo, la API de compilación lee un modelo exportado desde uno de varios frameworks. ¿Qué hace con las operaciones del modelo al comenzar el proceso?",
+      "question_en": "In SageMaker Neo, the compilation API reads a model exported from one of several frameworks. What does it do with the model's operations at the start of the process?",
+      "options_es": [
+        "Genera código binario directamente desde el grafo de cada framework, sin paso intermedio",
+        "Reescribe el modelo en el framework nativo de cada dispositivo de destino y lo reentrena",
+        "Perfila cada capa en el dispositivo de destino y elimina las que se ejecutan con lentitud",
+        "Traduce las operaciones propias de cada framework a una forma intermedia común y neutral"
+      ],
+      "options_en": [
+        "It emits binary code straight from each framework's own graph, with no intermediate step",
+        "It rewrites the model in the native framework of each target device and retrains it",
+        "It profiles every layer on the target device and removes the ones that run slowly",
+        "It maps each framework's own operations onto a neutral, shared intermediate form"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Neo tiene un compilador y un entorno de ejecución. Lo primero que hace la API de compilación es llevar las operaciones específicas de cada framework a una forma intermedia que no depende de ninguno; las optimizaciones y la generación del código binario vienen después, a partir de esa forma. Por eso falla la opción que genera binario directamente desde el grafo original, y las otras describen pasos (reescritura, reentrenamiento, perfilado de capas) que no forman parte del flujo descrito.",
+      "explanation_en": "Neo has a compiler and a runtime. The first thing the compilation API does is map each framework's own operators onto a common form that is independent of any framework; optimization and binary code generation come afterward, starting from that form. That rules out emitting binary straight from the original graph, and the other options describe steps (rewriting, retraining, layer profiling) that are not part of the described flow.",
+      "source": "AWS — Model performance optimization with SageMaker Neo (https://docs.aws.amazon.com/sagemaker/latest/dg/neo.html)"
+    },
+    {
+      "id": "q430114_055",
+      "skill_id": "sk430114",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML quiere comparar dos modelos candidatos con tráfico real detrás de un mismo endpoint de SageMaker AI y quedarse con el que mejor responda. ¿Qué capacidad debe usar?",
+      "question_en": "An ML team wants to compare two candidate models on live traffic behind a single SageMaker AI endpoint and keep the better performer. Which capability should it use?",
+      "options_es": [
+        "Un conjunto de variantes de producción que se reparten el tráfico",
+        "Un trabajo de ajuste automático que enruta solicitudes entre modelos",
+        "Un reentrenamiento con datos recientes que sustituye al modelo vigente",
+        "Una política de escalado automático que añade instancias según la carga"
+      ],
+      "options_en": [
+        "A set of production variants that share the endpoint traffic",
+        "An automatic model tuning job that routes requests between models",
+        "A retraining job on recent data that replaces the current model",
+        "An auto scaling policy that adds instances as request load grows"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las variantes de producción sirven para comparar modelos, instancias o contenedores en un mismo endpoint y elegir al candidato con mejor desempeño. El ajuste automático y el reentrenamiento aparecen en la fuente como maneras de mejorar un modelo, no como el mecanismo para contrastar candidatos. El escalado automático gestiona la capacidad, no compara modelos.",
+      "explanation_en": "Production variants are what let you compare models, instances or containers on one endpoint and choose the candidate that performs best. The source lists automatic tuning and retraining as ways to improve a model, not as the mechanism for comparing candidates. Auto scaling manages capacity and does not compare models.",
+      "source": "AWS — Testing models with production variants (https://docs.aws.amazon.com/sagemaker/latest/dg/model-ab-testing.html)"
+    },
+    {
+      "id": "q430114_056",
+      "skill_id": "sk430114",
+      "type": "multiple_choice",
+      "question_es": "Un endpoint de SageMaker AI tiene dos variantes de producción con pesos de tráfico iguales. Un cliente envía una solicitud indicando explícitamente una de ellas como destino. ¿Qué ocurre con esa solicitud?",
+      "question_en": "A SageMaker AI endpoint has two production variants with equal traffic weights. A client sends a request that explicitly names one variant as its target. What happens to that request?",
+      "options_es": [
+        "Se rechaza porque ya existe un reparto de tráfico configurado",
+        "Se sortea entre ambas variantes según los pesos definidos",
+        "Se atiende en la variante indicada sin aplicar el reparto",
+        "Se copia a ambas variantes para comparar sus respuestas"
+      ],
+      "options_en": [
+        "It is rejected because a traffic split is already configured",
+        "It is routed randomly between the variants by weight",
+        "It is served by the named variant instead of the split",
+        "It is copied to both variants to compare their responses"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Si la solicitud especifica la variante de destino, SageMaker AI la dirige a esa variante y esa elección pesa más que el reparto aleatorio configurado. Por eso no se rechaza por tener ya pesos definidos ni se sortea entre las variantes. Tampoco se copia a ambas: la documentación solo describe que la procesa la variante indicada.",
+      "explanation_en": "If the request specifies a target variant, SageMaker AI sends it to that variant, and that choice outweighs the configured random split. So the request is not rejected for already having weights, and it is not drawn between variants. It is not copied to both either: the documentation only describes the named variant processing it.",
+      "source": "AWS — Testing models with production variants (https://docs.aws.amazon.com/sagemaker/latest/dg/model-ab-testing.html)"
+    },
+    {
+      "id": "q430114_057",
+      "skill_id": "sk430114",
+      "type": "multiple_choice",
+      "question_es": "Un equipo planea actualizar el contenedor de servicio de un endpoint y quiere medir latencia y errores con solicitudes reales sin que los usuarios reciban respuestas del cambio. ¿Qué enfoque encaja?",
+      "question_en": "A team plans to upgrade the serving container of an endpoint and wants to measure latency and error rate with real requests without users receiving any responses from the change. Which approach fits?",
+      "options_es": [
+        "Una prueba en sombra que reciba copia de las solicitudes",
+        "Una prueba A/B que envíe a la nueva variante una parte del tráfico y devuelva sus respuestas",
+        "Un despliegue lineal que traslade el tráfico a la flota nueva en varios pasos",
+        "Un cambio completo e inmediato de todo el tráfico a la flota nueva, con alarmas de monitoreo"
+      ],
+      "options_en": [
+        "A shadow test that receives a copy of the requests",
+        "An A/B test that sends part of the traffic to the new variant and returns its responses",
+        "A linear deployment that moves traffic to the new fleet in several steps",
+        "An immediate switch of all traffic to the new fleet, with monitoring alarms"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En una prueba en sombra, SageMaker AI despliega la variante nueva y le enruta una copia de las solicitudes, pero a la aplicación solo se le devuelven las respuestas de la variante de producción. Así se evalúa el cambio con tráfico real sin afectar a los usuarios. Las otras opciones, en cambio, exponen a los usuarios a las respuestas de la versión nueva.",
+      "explanation_en": "In a shadow test, SageMaker AI deploys the new variant and routes a copy of the requests to it, while only the production variant's responses go back to the calling application. This evaluates the change on real traffic without affecting users. The other options, by contrast, expose users to the new version's responses.",
+      "source": "AWS — Shadow tests (https://docs.aws.amazon.com/sagemaker/latest/dg/shadow-tests.html)"
+    },
+    {
+      "id": "q430114_058",
+      "skill_id": "sk430114",
+      "type": "multiple_choice",
+      "question_es": "Un equipo despliega un modelo nuevo con las barreras de despliegue de SageMaker AI, usando blue/green con traslado de tráfico tipo canary. ¿Cómo se comporta este modo?",
+      "question_en": "A team updates a model using SageMaker AI deployment guardrails with a blue/green deployment and canary traffic shifting. How does this mode behave?",
+      "options_es": [
+        "Traslada todo el tráfico de golpe a la flota nueva y retira de inmediato la antigua",
+        "Traslada una porción pequeña, la monitorea y después mueve el resto",
+        "Reparte el tráfico en n pasos espaciados de forma lineal",
+        "Mantiene el tráfico en la flota antigua y solo envía a la nueva una copia de las solicitudes"
+      ],
+      "options_en": [
+        "It moves all traffic to the new fleet at once and retires the old one immediately",
+        "It moves a small share of traffic, monitors it, then moves the rest",
+        "It spreads traffic across n evenly spaced steps",
+        "It keeps traffic on the old fleet and sends the new one only a copy of the requests"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En el modo canary, una porción pequeña del tráfico va a la flota verde y se observa durante un periodo de espera; si el canary tiene éxito, se traslada el resto y se termina la flota azul. Trasladar todo de golpe es el modo all at once, y repartir en n pasos espaciados es el modo lineal. Enviar solo copias de las solicitudes no traslada tráfico real a la flota nueva, así que no es un modo de traslado de tráfico de blue/green.",
+      "explanation_en": "In canary mode, a small portion of traffic goes to the green fleet and is observed during a baking period. If the canary succeeds, the rest of the traffic is shifted and the blue fleet is terminated. Moving everything at once is the all-at-once mode, and spreading traffic over n evenly spaced steps is the linear mode. Sending only copies of requests does not move real traffic to the new fleet, so it is not a blue/green traffic shifting mode.",
+      "source": "AWS — Deployment guardrails for updating models in production (https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails.html)"
+    },
+    {
+      "id": "q430114_059",
+      "skill_id": "sk430114",
+      "type": "multiple_choice",
+      "question_es": "Tras una prueba A/B con dos variantes de producción en un mismo endpoint, la segunda rinde mejor. El equipo quiere que reciba más tráfico sin reemplazar el endpoint que ya está en producción. ¿Qué debe hacer?",
+      "question_en": "After an A/B test with two production variants on the same endpoint, the second one performs better. The team wants it to receive more traffic without replacing the endpoint that is already in production. What should it do?",
+      "options_es": [
+        "Eliminar la variante antigua y recrear por completo el endpoint con una única variante",
+        "Reentrenar la primera variante con los datos de entrenamiento de la segunda",
+        "Crear un endpoint nuevo con solo la segunda variante y retirar el actual",
+        "Cambiar los pesos asignados a cada variante en el endpoint activo"
+      ],
+      "options_en": [
+        "Delete the old variant and rebuild the endpoint with a single variant",
+        "Retrain the first variant using the training data of the second one",
+        "Create a new endpoint with only the second variant and retire the current one",
+        "Change the weights assigned to each variant on the running endpoint"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una vez que las métricas muestran que la segunda variante es mejor, basta con actualizar los pesos de cada variante para redistribuir el tráfico sin tocar el endpoint, y se puede llegar hasta enviarle todo el tráfico. Recrear el endpoint, sustituirlo por otro nuevo o reentrenar la primera variante son pasos innecesarios para ese objetivo.",
+      "explanation_en": "Once the metrics show the second variant is better, updating each variant's weight redistributes traffic without touching the endpoint, and the weights can be pushed until it receives all the traffic. Rebuilding the endpoint, swapping it for a new one or retraining the first variant are unnecessary steps for that goal.",
+      "source": "AWS — Testing models with production variants (https://docs.aws.amazon.com/sagemaker/latest/dg/model-ab-testing.html)"
+    },
+    {
+      "id": "q430114_060",
+      "skill_id": "sk430114",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ofrecen las barreras de despliegue de SageMaker AI al sustituir un modelo en producción?",
+      "question_en": "What do SageMaker AI deployment guardrails offer when you replace a production model?",
+      "options_es": [
+        "Un corte total e inmediato hacia el modelo nuevo, sin etapas intermedias",
+        "Traslado gradual del tráfico al modelo nuevo",
+        "Reentrenamiento automático del modelo cada vez que baja su calidad",
+        "Evaluación sin conexión con datos históricos y sin tráfico real"
+      ],
+      "options_en": [
+        "An immediate full cutover to the new model with no intermediate stages",
+        "Gradual shifting of traffic to the new model",
+        "Automatic retraining of a model whenever its quality drops",
+        "Offline evaluation on historical data with no live traffic"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las barreras de despliegue permiten sustituir el modelo de producción moviendo el tráfico hacia la versión nueva por etapas, con modos como canary o lineal que dan un control fino del proceso. Por eso no se reducen a un corte único y brusco, ni son un mecanismo de reentrenamiento ni una evaluación sin tráfico real: gobiernan el cambio de un endpoint que ya está sirviendo modelos en producción.",
+      "explanation_en": "Deployment guardrails let a team replace the production model by moving traffic to the new version in stages, using modes such as canary or linear that give fine control over the rollout. That rules out a single abrupt cutover, a retraining mechanism, and an evaluation with no live traffic, since guardrails govern the update of an endpoint already serving a production model.",
+      "source": "AWS — Deployment guardrails for updating models in production (https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails.html)"
+    },
+    {
+      "id": "q430115_061",
+      "skill_id": "sk430115",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML publica imágenes de inferencia en Amazon ECR y quiere que cada imagen nueva se revise automáticamente en busca de vulnerabilidades de software en cuanto se sube. ¿Qué debe hacer?",
+      "question_en": "An ML team publishes inference images to Amazon ECR and wants every new image checked automatically for software vulnerabilities as soon as it is uploaded. What should they do?",
+      "options_es": [
+        "Activar el análisis al subir en la configuración del repositorio",
+        "Definir una regla de ciclo de vida que borre las imágenes sin escanear",
+        "Habilitar la replicación entre regiones para cada imagen nueva",
+        "Configurar una regla de pull through cache hacia el registro de origen"
+      ],
+      "options_en": [
+        "Enable scanning on push in the repository configuration",
+        "Define a lifecycle rule that deletes images that were never scanned",
+        "Turn on cross-Region replication for every new image",
+        "Set up a pull through cache rule that points to the upstream registry"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El análisis de imágenes de ECR identifica vulnerabilidades de software y puede configurarse por repositorio para que cada imagen nueva se analice al subirla. Las reglas de ciclo de vida limpian imágenes sin uso, la replicación copia imágenes entre regiones o cuentas y el pull through cache sincroniza con un registro de origen; ninguna de ellas tiene ese propósito.",
+      "explanation_en": "ECR image scanning identifies software vulnerabilities and can be configured per repository so that each new image is scanned when it is pushed. Lifecycle rules clean up unused images, replication copies images across Regions or accounts, and pull through cache syncs with an upstream registry; none of them serves this purpose.",
+      "source": "AWS — What is Amazon Elastic Container Registry? (https://docs.aws.amazon.com/AmazonECR/latest/userguide/what-is-ecr.html)"
+    },
+    {
+      "id": "q430115_062",
+      "skill_id": "sk430115",
+      "type": "multiple_choice",
+      "question_es": "Un equipo entrena un modelo con un framework a medida para el que SageMaker AI no tiene imagen preconstruida. ¿Qué enfoque de contenedor corresponde?",
+      "question_en": "A team trains a model with a custom framework for which SageMaker AI has no pre-built image. Which container approach fits?",
+      "options_es": [
+        "Usar la imagen preconstruida de TensorFlow sin cambios",
+        "Construir un contenedor propio que incluya el framework",
+        "Usar el contenedor de un algoritmo integrado de SageMaker AI",
+        "Extender la imagen preconstruida de PyTorch con las dependencias"
+      ],
+      "options_en": [
+        "Use the pre-built TensorFlow image unchanged",
+        "Build a custom container that includes the framework",
+        "Use the container of a SageMaker AI built-in algorithm",
+        "Extend the pre-built PyTorch image with the dependencies"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cuando el framework necesario no cuenta con imagen preconstruida, lo que corresponde es construir un contenedor propio. Las imágenes preconstruidas, ya sea la de TensorFlow, la de un algoritmo integrado o una de PyTorch ampliada, parten de frameworks que SageMaker AI ya incluye, así que no cubren un framework distinto.",
+      "explanation_en": "When the required framework has no pre-built image, the right choice is to build a custom container. The TensorFlow image, a built-in algorithm image, or an extended PyTorch image all start from frameworks SageMaker AI already ships, so none of them covers a different framework.",
+      "source": "AWS — Docker containers for training and deploying models (https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers.html)"
+    },
+    {
+      "id": "q430115_063",
+      "skill_id": "sk430115",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML guarda imágenes de entrenamiento en repositorios privados de Amazon ECR y necesita que solo ciertos usuarios e instancias EC2 puedan acceder a ellos. ¿Qué mecanismo ofrece ECR para esto?",
+      "question_en": "An ML team stores training images in private Amazon ECR repositories and needs only certain users and EC2 instances to be able to access them. What mechanism does ECR offer for this?",
+      "options_es": [
+        "Una lista de control de acceso configurada en cada imagen individual",
+        "Permisos basados en recursos de IAM en el repositorio",
+        "Claves de cifrado compartidas entre todos los usuarios de la cuenta",
+        "Grupos de seguridad de VPC asociados a cada repositorio"
+      ],
+      "options_en": [
+        "An access control list set on each individual image",
+        "IAM resource-based permissions on the repository",
+        "Encryption keys shared among every user in the account",
+        "VPC security groups attached to each repository"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ECR permite asociar permisos de IAM directamente a un repositorio privado, y con ellos se decide qué usuarios o instancias EC2 pueden llegar a sus imágenes. Una ACL por imagen, unas claves de cifrado compartidas o unos grupos de seguridad de VPC no son el mecanismo que la documentación de ECR describe para este control de acceso.",
+      "explanation_en": "ECR lets you attach IAM permissions straight to a private repository, and those permissions decide which users or EC2 instances can reach its images. Per-image ACLs, shared encryption keys and VPC security groups are not the access-control mechanism the ECR documentation describes.",
+      "source": "AWS — What is Amazon Elastic Container Registry? (https://docs.aws.amazon.com/AmazonECR/latest/userguide/what-is-ecr.html)"
+    },
+    {
+      "id": "q430115_064",
+      "skill_id": "sk430115",
+      "type": "multiple_choice",
+      "question_es": "Un ingeniero de ML quiere entrenar un algoritmo integrado de SageMaker AI sin encargarse de ningún detalle de Docker. ¿Qué afirmación es correcta?",
+      "question_en": "An ML engineer wants to train a SageMaker AI built-in algorithm without managing any Docker setup. Which statement is correct?",
+      "options_es": [
+        "Debe construir su propia imagen y subirla a ECR antes de poder entrenar",
+        "Solo puede hacerlo extendiendo un contenedor de PyTorch",
+        "Puede entrenarlo desde la consola o el SDK sin tocar contenedores",
+        "Debe escribir un Dockerfile para el algoritmo antes de entrenarlo"
+      ],
+      "options_en": [
+        "They must build their own image and push it to ECR before training",
+        "They can only do it by extending a PyTorch container",
+        "They can train it from the console or SDK with no container work",
+        "They must write a Dockerfile for the algorithm before training it"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los algoritmos integrados vienen listos para usarse: se elige uno y se lanza el entrenamiento desde la consola, la CLI, un notebook o el SDK de Python, sin trabajo con Docker. Crear o extender imágenes queda para quien necesita paquetes propios, así que las otras opciones añaden pasos que este escenario no exige.",
+      "explanation_en": "Built-in algorithms are ready to use: you pick one and launch training from the console, the CLI, a notebook or the Python SDK, with no Docker work. Building or extending images only matters when you need custom packages, so the other options add steps this scenario does not require.",
+      "source": "AWS — Docker containers for training and deploying models (https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers.html)"
+    },
+    {
+      "id": "q430115_065",
+      "skill_id": "sk430115",
+      "type": "multiple_choice",
+      "question_es": "Una empresa ya tiene una imagen Docker con su propio algoritmo y quiere ejecutarla en SageMaker AI. ¿Qué debe hacer?",
+      "question_en": "A company already has a Docker image with its own algorithm and wants to run it on SageMaker AI. What must it do?",
+      "options_es": [
+        "Registrarla como algoritmo integrado desde la consola de SageMaker AI",
+        "Reemplazar su código por el de una imagen preconstruida de scikit-learn",
+        "Subirla a ECR y dejar que SageMaker AI la adapte automáticamente",
+        "Modificarla para habilitar el toolkit de entrenamiento o inferencia"
+      ],
+      "options_en": [
+        "Register it as a built-in algorithm from the SageMaker AI console",
+        "Replace its code with a pre-built scikit-learn image",
+        "Push it to ECR and let SageMaker AI adapt it automatically",
+        "Modify it to enable the training or inference toolkit"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Para adaptar una imagen existente a SageMaker AI hay que modificar el contenedor Docker y habilitar el toolkit de entrenamiento o el de inferencia. La consola no convierte una imagen propia en algoritmo integrado, reemplazar el código por otra imagen descarta el algoritmo y la adaptación no ocurre sola.",
+      "explanation_en": "To adapt an existing image to SageMaker AI, the Docker container must be modified to enable the training or inference toolkit. The console does not turn a custom image into a built-in algorithm, swapping in another image discards the algorithm, and the adaptation does not happen on its own.",
+      "source": "AWS — Docker containers for training and deploying models (https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers.html)"
+    },
+    {
+      "id": "q430115_066",
+      "skill_id": "sk430115",
+      "type": "multiple_choice",
+      "question_es": "Al probar en modo local, el contenedor Docker de un equipo se queda sin espacio en /tmp por módulos de código grandes. ¿Cómo se evita?",
+      "question_en": "While testing in local mode, a team's Docker container runs out of space in /tmp because of large code modules. How can they avoid this?",
+      "options_es": [
+        "Indicar al SDK una ubicación temporal propia para el modo local",
+        "Cambiar a un algoritmo integrado que use una imagen de menor tamaño",
+        "Reiniciar el demonio de Docker antes de cada ejecución local",
+        "Mover la imagen a un repositorio privado de Amazon ECR"
+      ],
+      "options_en": [
+        "Give local mode its own temp location through the SDK",
+        "Switch to a built-in algorithm that uses a smaller image file",
+        "Restart the Docker daemon before every local run",
+        "Move the image into a private Amazon ECR repository"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En modo local, el código se guarda en las particiones raíz y /tmp del contenedor, que se saturan con facilidad si los módulos son voluminosos; el SDK de Python de SageMaker AI permite apuntar el directorio raíz del modo local a otra ubicación temporal. Reiniciar Docker es la solución a otro error distinto (haber perdido el demonio). Cambiar de algoritmo o mover la imagen a ECR no guardan relación con el espacio de esas particiones en modo local.",
+      "explanation_en": "In local mode the code is stored on the container's root and /tmp partitions, which fill up quickly when modules are bulky; the SageMaker AI Python SDK lets you redirect the local mode root to a different temporary location. Restarting Docker is the remedy for a different error, a lost daemon. Switching algorithms or moving the image to ECR has no bearing on the space of those partitions in local mode.",
+      "source": "AWS — Docker containers for training and deploying models (https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers.html)"
+    },
+    {
+      "id": "q430124_001",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML quiere elegir su propio almacén vectorial y controlar por completo el parseo y el indexado de los documentos en una aplicación RAG sobre Bedrock. ¿Qué opción encaja?",
+      "question_en": "An ML team wants to choose its own vector store and fully control parsing and indexing for a RAG application on Bedrock. Which option fits?",
+      "options_es": [
+        "Una base de conocimiento gestionada por el cliente, con canalización RAG propia",
+        "Una base de conocimiento gestionada por Bedrock, que se encarga de la ingesta, el indexado y el almacenamiento",
+        "Una base de conocimiento gestionada por Bedrock, con el almacén vectorial a cargo del equipo",
+        "Una base de conocimiento gestionada por Bedrock, con el parseo multimodal configurado a mano por el equipo"
+      ],
+      "options_en": [
+        "A customer-managed knowledge base with the team's own RAG pipeline",
+        "A Bedrock-managed knowledge base that takes care of ingestion, indexing, and storage",
+        "A Bedrock-managed knowledge base with the vector store left to the team",
+        "A Bedrock-managed knowledge base with multimodal parsing set up by hand by the team"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La variante gestionada por el cliente permite montar la propia canalización RAG, elegir el almacén vectorial y decidir cómo se ingesta, parsea e indexa. En la variante gestionada por Bedrock el servicio se encarga de la infraestructura de ingesta, indexado y almacenamiento, de modo que el equipo no tiene ese control total. Por eso fallan las demás: dejar el almacén vectorial o el parseo multimodal en manos del equipo es justo lo que define la variante propia, no la gestionada por Bedrock.",
+      "explanation_en": "The customer-managed variant lets the team build its own RAG pipeline, pick the vector store, and decide how data is ingested, parsed, and indexed. With the Bedrock-managed variant the service runs the ingestion, indexing, and storage infrastructure, so the team does not get that full control. The other options fail for that reason: leaving the vector store or multimodal parsing to the team is what defines the customer-managed variant, not the Bedrock-managed one.",
+      "source": "AWS — Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases (https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html)"
+    },
+    {
+      "id": "q430124_002",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "Un equipo valora usar embeddings binarios en lugar de float32 para reducir el almacenamiento. ¿Qué compensación debe esperar?",
+      "question_en": "A team is considering binary embeddings instead of float32 to cut vector storage. What trade-off should they expect?",
+      "options_es": [
+        "Los vectores binarios ocupan más por dimensión, pero captan el texto con mayor precisión",
+        "Los vectores binarios ocupan menos por dimensión, pero representan el texto con menos precisión",
+        "Los vectores binarios son idénticos a los float32 en tamaño y precisión; solo cambia el formato de escritura",
+        "Los vectores binarios solo sirven para imágenes y no pueden representar fragmentos de texto"
+      ],
+      "options_en": [
+        "Binary vectors need more storage per dimension but capture text more precisely",
+        "Binary vectors take less storage per dimension but represent text less precisely",
+        "Binary vectors match float32 vectors in size and precision; only the notation differs",
+        "Binary vectors work only for images and cannot represent text chunks"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un vector binario usa solo 1 bit por dimensión frente a los 32 de float32, así que es más barato de almacenar, pero a cambio describe el texto con menos exactitud. Por eso la primera opción invierte la compensación y la tercera la niega. La última es falsa: estos vectores representan fragmentos de texto, no solo imágenes.",
+      "explanation_en": "A binary vector uses just 1 bit per dimension versus 32 for float32, so it is cheaper to store, but it describes the text less exactly. That is why the first option reverses the trade-off and the third denies it. The last option is false: these vectors represent text chunks, not just images.",
+      "source": "AWS — How Amazon Bedrock knowledge bases work (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-it-works.html)"
+    },
+    {
+      "id": "q430124_003",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "En tiempo de consulta, en un flujo RAG con base de conocimiento, ¿qué componente convierte la pregunta del usuario en un vector antes de buscar en el índice?",
+      "question_en": "At query time in a RAG flow with a knowledge base, which component converts the user's question into a vector before the index is searched?",
+      "options_es": [
+        "Un modelo de embeddings que traduce la pregunta a una representación numérica",
+        "El modelo que genera la respuesta final, que actúa antes de cualquier recuperación",
+        "Un analizador de documentos que divide la pregunta y la guarda en el índice",
+        "El propio índice vectorial, que guarda cada consulta recibida en texto plano"
+      ],
+      "options_en": [
+        "An embedding model that turns the question into a numeric representation",
+        "The text-generation model that writes the final answer, before any retrieval",
+        "A document parser that splits the question into chunks and stores them in the index",
+        "The vector index itself, which keeps a plain-text copy of each incoming query"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Primero un modelo de embeddings vectoriza la consulta; después se busca en el índice comparando los vectores de los documentos con el de la consulta. El modelo generador interviene al final, cuando el prompt ya se ha enriquecido con los fragmentos recuperados. El índice solo se consulta, y como es el modelo de embeddings quien convierte la pregunta, un analizador de documentos no cumple esa función.",
+      "explanation_en": "An embedding model vectorizes the query first; the index is then searched by comparing document vectors with the query vector. The generation model comes in last, once the prompt has been enriched with the retrieved chunks. The index is only queried, and since the embedding model is the one that converts the question, a document parser does not fill that role.",
+      "source": "AWS — How Amazon Bedrock knowledge bases work (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-it-works.html)"
+    },
+    {
+      "id": "q430124_004",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "Una empresa guarda su conocimiento en SharePoint y Confluence y necesita que la recuperación filtre los resultados según los permisos de cada documento para cada usuario. ¿Qué opción de Bedrock lo ofrece?",
+      "question_en": "A company keeps its knowledge in SharePoint and Confluence and needs retrieval results filtered by each user's document-level permissions. Which Bedrock option provides this?",
+      "options_es": [
+        "Una barrera de protección (guardrail) que bloquea temas restringidos en la respuesta",
+        "Un modelo de reranking que ordena los pasajes por su fecha de edición",
+        "Un modelo ajustado y entrenado por separado con los documentos de cada departamento",
+        "Una base de conocimiento gestionada con conectores y filtrado por ACL"
+      ],
+      "options_en": [
+        "A guardrail that blocks restricted topics in the generated answer",
+        "A reranking model that sorts passages by how recently they were edited",
+        "A fine-tuned model trained separately on each department's documents",
+        "A managed knowledge base with connectors and ACL-based filtering"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La base de conocimiento gestionada ofrece conectores para SharePoint y Confluence, además de filtrado por permisos de documento mediante listas de control de acceso en el momento de la recuperación. Una guardrail actúa sobre el contenido de la respuesta, no sobre qué documentos puede ver cada usuario. Un reranking solo reordena resultados, y entrenar un modelo por departamento no filtra nada en la recuperación.",
+      "explanation_en": "The managed knowledge base offers connectors for SharePoint and Confluence, plus document-level permission filtering through access control lists at retrieval time. A guardrail acts on the content of the answer, not on which documents each user may see. Reranking only reorders results, and training a model per department filters nothing at retrieval.",
+      "source": "AWS — Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases (https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html)"
+    },
+    {
+      "id": "q430124_005",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "Un equipo ya tiene su propio código de orquestación que arma los prompts y solo quiere que la base de conocimiento aporte los pasajes relevantes. ¿Qué capacidad lo cubre?",
+      "question_en": "A team already has its own orchestration code that builds prompts, and it only wants the knowledge base to supply relevant passages. Which capability covers this?",
+      "options_es": [
+        "Reentrenar el modelo fundacional con los pasajes que encuentra la base de conocimiento",
+        "Desactivar la recuperación para que el modelo responda solo con su conocimiento general",
+        "Devolver los pasajes relevantes e insertarlos en el prompt propio del equipo",
+        "Copiar todo el origen de datos en un único prompt antes de cada solicitud"
+      ],
+      "options_en": [
+        "Retraining the foundation model on the passages the knowledge base finds",
+        "Switching retrieval off so the model answers from its general knowledge alone",
+        "Returning the relevant passages for insertion into the team's own prompt",
+        "Copying the entire data source into a single prompt before every request"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una base de conocimiento puede devolver el contenido pertinente de los datos del equipo, y este puede colocarlo dentro de sus propios prompts, que es justo lo que se pide. Reentrenar el modelo o apagar la recuperación no aportan ningún pasaje al prompt. Copiar todo el origen de datos en un solo prompt tampoco selecciona lo relevante, solo lo vuelca entero.",
+      "explanation_en": "A knowledge base can hand back the pertinent content from the team's data and let the team drop it into its own prompts, which is exactly the need described. Retraining the model or turning retrieval off puts no passages into the prompt. Pasting the whole data source into one prompt does not pick out what matters, it just dumps everything in.",
+      "source": "AWS — Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases (https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html)"
+    },
+    {
+      "id": "q430124_006",
+      "skill_id": "sk430124",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué una base de conocimiento convierte cada fragmento de texto en un vector de números?",
+      "question_en": "Why does a knowledge base convert each text chunk into a vector of numbers?",
+      "options_es": [
+        "Para reducir cada fragmento hasta que quepa en la ventana de contexto del modelo",
+        "Para poder comparar los textos entre sí de forma matemática",
+        "Para cifrar cada fragmento de modo que solo la base de conocimiento lo lea",
+        "Para traducir cada fragmento al idioma que usa la consulta del usuario"
+      ],
+      "options_en": [
+        "To shrink each chunk until it fits inside the model's context window",
+        "To make the chunks mathematically comparable with one another",
+        "To encrypt each chunk so only the knowledge base can read its content",
+        "To translate each chunk into the language used by the user's query"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Al representar cada fragmento como una serie de números, los textos pasan a ser comparables de forma matemática, y esa es la razón de generar los vectores. No se trata de comprimir para la ventana de contexto, ni de cifrar, ni de traducir: el fragmento se transforma en números solo para poder compararlo con otros textos.",
+      "explanation_en": "Representing each chunk as a series of numbers makes the texts comparable in a mathematical way, and that is the reason the vectors are generated. It is not about compressing for the context window, encrypting, or translating: the chunk is turned into numbers only so it can be compared with other texts.",
+      "source": "AWS — How Amazon Bedrock knowledge bases work (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-it-works.html)"
+    },
+    {
+      "id": "q430125_001",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "Un agente de Bedrock recibe texto libre de los usuarios. ¿Qué paso del flujo del agente prepara y filtra ese texto antes de que el agente decida qué hacer con él?",
+      "question_en": "A Bedrock agent receives free-form text from users. Which step of the agent's flow prepares and screens that text before the agent works out what to do with it?",
+      "options_es": [
+        "Posprocesamiento, que da formato a la respuesta final para el usuario",
+        "Generación de respuesta con base de conocimiento, que resume el contexto recuperado",
+        "Orquestación, que predice la siguiente acción y repite el ciclo con observaciones",
+        "Preprocesamiento, que interpreta y revisa lo que escribe el usuario"
+      ],
+      "options_en": [
+        "Post-processing, which formats the final reply for the end user",
+        "Knowledge base response generation, which summarizes retrieved context for the agent",
+        "Orchestration, which predicts the next action and loops over observations",
+        "Pre-processing, which interprets and checks what the user typed"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El preprocesamiento es el primer paso de la ejecución del agente: interpreta y clasifica lo que escribió el usuario y también sirve para comprobar esa entrada. La orquestación elige acciones y repite el ciclo con observaciones, la generación con base de conocimiento condensa los datos recuperados dentro de ese ciclo, y el posprocesamiento solo da formato a la respuesta que se devuelve.",
+      "explanation_en": "Pre-processing is the first step of the agent's run: it interprets and classifies what the user typed, and it can also be used to check that text. Orchestration chooses actions and loops on observations, knowledge base response generation condenses retrieved data inside that loop, and post-processing only formats the reply sent back.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q430125_002",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "Un cliente continúa una conversación con un agente de Bedrock a lo largo de varias solicitudes dentro de la misma sesión. ¿Qué ocurre con los intercambios anteriores?",
+      "question_en": "A customer keeps chatting with a Bedrock agent over several requests within the same session. What happens to the earlier exchanges?",
+      "options_es": [
+        "Se descartan al terminar cada solicitud, así que el agente vuelve a empezar solo con el prompt base",
+        "Se conservan y se añaden como contexto al prompt de orquestación",
+        "Se copian a la base de conocimiento para que cualquier otro usuario pueda recuperarlas después",
+        "Se envían a la función Lambda del grupo de acciones, que debe guardarlas por su cuenta"
+      ],
+      "options_en": [
+        "They are discarded after each request, so the agent starts over with only the base prompt",
+        "They are retained and added as context to the orchestration prompt",
+        "They are copied into the knowledge base so any other user can retrieve them later",
+        "They are sent to the action group Lambda function, which has to save them on its own"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Dentro de una misma sesión, los turnos anteriores se retienen y se reintroducen en el prompt que guía el razonamiento del agente, de modo que las respuestas posteriores salen mejor informadas. La primera opción falla porque el historial no se elimina tras cada solicitud; las otras dos describen mecanismos (compartirlo en una base de conocimiento o delegarlo al grupo de acciones) que la fuente no menciona.",
+      "explanation_en": "Within one session, earlier turns are retained and fed back into the prompt that drives the agent's reasoning, so later answers are better informed. The first option fails because the history is not wiped after each request; the other two describe mechanisms, sharing it through a knowledge base or delegating it to the action group, that the source never mentions.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q430125_003",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere que su agente de Bedrock llame a una API de la empresa para registrar pedidos. ¿Qué componente del agente define las operaciones de API que este puede invocar?",
+      "question_en": "A team wants its Bedrock agent to call a company API to place orders. Which agent component defines the API operations the agent is allowed to invoke?",
+      "options_es": [
+        "Un grupo de acciones, formado por un esquema OpenAPI y una función Lambda",
+        "Una base de conocimiento que guarda los documentos privados que el agente consulta",
+        "Una plantilla de prompt que controla los pasos de preprocesamiento y posprocesamiento",
+        "Un modelo fundacional elegido al crear el agente para redactar sus respuestas"
+      ],
+      "options_en": [
+        "An action group, built from a Lambda function plus an OpenAPI schema",
+        "A knowledge base that stores the private documents the agent can query",
+        "A prompt template that controls the pre-processing and post-processing steps",
+        "A foundation model chosen at creation time to write the agent's replies"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El grupo de acciones es el componente que determina qué operaciones de API puede llamar el agente y cómo debe tratar las solicitudes y las respuestas; se construye con un esquema OpenAPI y una función Lambda. Las otras tres opciones corresponden a otros elementos del agente (conocimiento, prompts, modelo) y ninguna es el componente que define las operaciones de API invocables.",
+      "explanation_en": "The action group is the component that determines which API operations the agent may call and how it should treat requests and responses; it is built from a Lambda function plus an OpenAPI schema. The other three options describe different parts of an agent (knowledge, prompts, model), and none of them is the component that defines the callable API operations.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q430125_004",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "Al depurar un agente, un ingeniero quiere inspeccionar cada prompt que recibió el modelo fundacional durante el proceso, junto con las respuestas de API y las consultas a la base de conocimiento. ¿Qué capacidad del agente debe usar para ver estos datos?",
+      "question_en": "While debugging an agent, an engineer wants to inspect every prompt the foundation model received along the way, together with the API responses and knowledge base queries. Which agent capability should they use to see this?",
+      "options_es": [
+        "Usar la traza del agente, que detalla cada paso",
+        "Habilitar el posprocesamiento, que registra cada prompt en la respuesta final",
+        "Asociar otra base de conocimiento que replique el almacén de prompts del agente",
+        "Quitar las instrucciones para que el agente use el prompt base predeterminado"
+      ],
+      "options_en": [
+        "Use the agent's trace, which details each step",
+        "Enable post-processing, which records every prompt in the final reply",
+        "Attach another knowledge base that mirrors the agent's prompt store",
+        "Remove the instructions so the agent uses the default base prompt"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La traza es el registro paso a paso que reúne lo que se le pidió al modelo, lo que devolvió y las APIs y bases de conocimiento que se consultaron; además, sirve para entender el razonamiento del agente. Ninguna de las otras opciones se presenta en la fuente como un medio para obtener esos datos, así que la traza es la única que encaja con lo que busca el ingeniero.",
+      "explanation_en": "The trace is the step-by-step record of what the model was asked, what it returned, and which APIs and knowledge bases were consulted, and it helps explain the agent's reasoning. None of the other options is presented in the source as a way to get this data, so the trace is the only one that matches what the engineer needs.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q430125_005",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de seguros quiere que su agente de Bedrock apoye sus respuestas en los documentos privados de la empresa y no solo en lo que ya sabe el modelo, sin escribir código de integración propio. ¿Qué debe asociar al agente?",
+      "question_en": "An insurance team wants its Bedrock agent to ground its answers in the company's private documents rather than only what the model already knows, without writing custom integration code. What should they attach to the agent?",
+      "options_es": [
+        "Más grupos de acciones, cada uno con su propio esquema OpenAPI",
+        "Una base de conocimiento que el agente consulta para ampliar contexto",
+        "Una plantilla de prompt personalizada que desactiva el paso de orquestación",
+        "Un alias que apunta a una versión anterior del agente"
+      ],
+      "options_en": [
+        "More action groups, each with its own OpenAPI schema",
+        "A knowledge base the agent can query for extra context",
+        "A custom prompt template that turns off the orchestration step",
+        "An alias pointing to an earlier version of the agent"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Al asociar una base de conocimiento, el agente la consulta para obtener contexto adicional que enriquece sus respuestas y los pasos de la orquestación, así que es la pieza que aporta los documentos propios. Los demás elementos no cambian el origen del contexto: los grupos de acciones definen operaciones que el agente ejecuta, las plantillas de prompt ajustan su comportamiento en cada paso y un alias solo selecciona una versión del agente.",
+      "explanation_en": "When a knowledge base is associated, the agent queries it for additional context that enriches its answers and the orchestration steps, so it is the component that brings in the company's own documents. The other choices do not change where context comes from: action groups define operations the agent performs, prompt templates adjust its behavior at each step, and an alias merely selects an agent version.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
+    },
+    {
+      "id": "q430125_006",
+      "skill_id": "sk430125",
+      "type": "multiple_choice",
+      "question_es": "En el ciclo de orquestación de un agente de Bedrock, ¿qué hace el agente con el resultado que obtiene tras invocar una acción o resumir datos de una base de conocimiento?",
+      "question_en": "In a Bedrock agent's orchestration loop, what does the agent do with the result it gets after calling an action or summarizing knowledge base data?",
+      "options_es": [
+        "Lo devuelve directamente al usuario y siempre cierra la sesión",
+        "Lo guarda como un nuevo grupo de acciones para solicitudes futuras",
+        "Lo suma al prompt base y el modelo lo interpreta de nuevo",
+        "Lo usa para reentrenar el modelo fundacional con ese resultado"
+      ],
+      "options_en": [
+        "It returns it straight to the user and always closes the session",
+        "It saves it as a new action group for use in later requests",
+        "It adds it to the base prompt for the model to reinterpret",
+        "It uses it to fine-tune the foundation model with that result"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El resultado se llama observación: el agente la usa para enriquecer el prompt base, que el modelo fundacional vuelve a interpretar, y así decide si debe repetir el ciclo. No se convierte en un grupo de acciones ni se emplea para reentrenar el modelo, y no siempre termina en una respuesta final inmediata.",
+      "explanation_en": "The result is called an observation: the agent uses it to enrich the base prompt, which the foundation model then interprets again, and that is how it decides whether to repeat the loop. It does not become an action group or serve to retrain the model, and it does not always end in an immediate final reply.",
+      "source": "AWS — How Amazon Bedrock Agents works (https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html)"
     }
   ]
 }

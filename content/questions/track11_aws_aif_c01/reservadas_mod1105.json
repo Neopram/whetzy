@@ -1,0 +1,100 @@
+{
+  "questions": [
+    {
+      "id": "q110304_r001",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa guarda en Amazon S3 grandes volúmenes de documentos y quiere descubrir cuáles contienen información sensible antes de usarlos en aplicaciones de IA generativa. ¿Qué servicio de seguridad administrado ayuda con esa tarea?",
+      "question_en": "A company stores large volumes of documents in Amazon S3 and wants to find out which ones contain sensitive information before using them in generative AI applications. Which managed security service helps with that task?",
+      "options_es": [
+        "AWS CloudTrail, que registra la actividad de las API y de los usuarios",
+        "AWS IAM Identity Center, que centraliza el acceso de los usuarios",
+        "Amazon Macie, que ayuda a descubrir datos sensibles en S3",
+        "SSL/TLS, que protege la comunicación con los recursos de AWS"
+      ],
+      "options_en": [
+        "AWS CloudTrail, which records API calls and user activity",
+        "AWS IAM Identity Center, which centralizes user access",
+        "Amazon Macie, which helps find sensitive data in S3",
+        "SSL/TLS, which secures communication with AWS resources"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Amazon Macie es un servicio de seguridad administrado pensado para descubrir y proteger datos sensibles que residen en S3, justo lo que necesita la empresa. CloudTrail sirve para registrar la actividad, IAM Identity Center para gestionar el acceso de los usuarios y SSL/TLS para proteger la comunicación; ninguno examina el contenido de los documentos almacenados.",
+      "explanation_en": "Amazon Macie is a managed security service built to discover and protect sensitive data kept in S3, which is exactly what the company needs. CloudTrail is for activity logging, IAM Identity Center for managing user access, and SSL/TLS for securing communication; none of them examines the contents of stored documents.",
+      "source": "AWS — Data protection (https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html)"
+    },
+    {
+      "id": "q110304_r003",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa despliega un asistente de atención al cliente basado en RAG y quiere detectar las respuestas que incorporan datos ausentes de los documentos recuperados o que no atienden lo que preguntó el usuario. ¿Qué salvaguarda de Amazon Bedrock Guardrails es la adecuada?",
+      "question_en": "A company deploys a RAG-based customer support assistant and wants to catch answers that add details missing from the retrieved documents or that fail to address what the user asked. Which Amazon Bedrock Guardrails safeguard fits?",
+      "options_es": [
+        "Los filtros de palabras, que bloquean una lista personalizada de términos en las consultas y en las respuestas del modelo",
+        "Las comprobaciones de fundamentación contextual, que contrastan la respuesta con la fuente y la pregunta",
+        "Los filtros de información confidencial, que enmascaran datos personales como direcciones en consultas y respuestas",
+        "Los temas denegados, que bloquean áreas temáticas completas que la aplicación nunca debería tratar con sus usuarios"
+      ],
+      "options_en": [
+        "Word filters, which block a custom list of words or phrases in prompts and in model responses",
+        "Contextual grounding checks, which compare responses with the retrieved source and the question",
+        "Sensitive information filters, which mask personal data such as addresses in prompts and responses",
+        "Denied topics, which block entire subject areas that the application should never discuss with its users"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las comprobaciones de fundamentación contextual detectan alucinaciones, es decir, respuestas que no se apoyan en la fuente (inexactas o con información nueva) o que resultan irrelevantes para la consulta, algo típico en aplicaciones RAG. Las otras opciones sirven para otros fines: bloquear términos, enmascarar datos personales o evitar temas, no para verificar que la respuesta se apoye en la fuente recuperada.",
+      "explanation_en": "Contextual grounding checks detect hallucinations, meaning responses that are not supported by the source (inaccurate or adding new information) or that are irrelevant to the query, which is typical in RAG applications. The other options serve different purposes: blocking terms, masking personal data or avoiding topics, not verifying that a response is supported by the retrieved source.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+    },
+    {
+      "id": "q110304_r002",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "El asistente de IA generativa de un banco debe rechazar cualquier conversación sobre un tema concreto, con independencia de las palabras exactas que use la persona, tanto en la consulta como en la respuesta del modelo. ¿Qué salvaguarda de Amazon Bedrock Guardrails encaja mejor?",
+      "question_en": "A bank's generative AI assistant must refuse any conversation about one specific subject, regardless of the exact words the person uses, both in the query and in the model's response. Which Amazon Bedrock Guardrails safeguard fits best?",
+      "options_es": [
+        "Filtros de contenido, que detectan categorías predefinidas como el odio o la violencia",
+        "Filtros de información confidencial, que enmascaran datos personales",
+        "Filtros de palabras, que bloquean palabras o frases exactas definidas por el cliente",
+        "Temas denegados, que bloquean los temas indeseados que el cliente define"
+      ],
+      "options_en": [
+        "Content filters, which detect predefined categories such as hate or violence",
+        "Sensitive information filters, which mask personal data",
+        "Word filters, which block exact words or phrases the customer defines",
+        "Denied topics, which block unwanted subjects the customer defines"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los temas denegados permiten definir temas que no se desean en la aplicación y bloquearlos cuando aparecen en consultas o respuestas. Los filtros de contenido trabajan con categorías predefinidas, los de información confidencial con datos sensibles y los de palabras con coincidencias de términos exactos, así que ninguno cubre un tema definido por la empresa.",
+      "explanation_en": "Denied topics let you define subjects that are unwanted in the application and block them when they show up in queries or responses. Content filters work on predefined categories, sensitive information filters on sensitive data, and word filters on exact term matches, so none of them covers a subject the company defines itself.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+    },
+    {
+      "id": "q110304_r004",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un centro de atención al cliente usa IA generativa para resumir transcripciones de llamadas y necesita que los datos personales identificables de los clientes no aparezcan en el resultado. ¿Qué configuración de Amazon Bedrock Guardrails resuelve esa necesidad?",
+      "question_en": "A customer call center uses generative AI to summarize call transcripts and needs customers' personally identifiable data to stay out of the output. Which Amazon Bedrock Guardrails configuration addresses that need?",
+      "options_es": [
+        "Filtros de información confidencial, que enmascaran los datos personales",
+        "Filtros de contenido, que detectan categorías predefinidas como el odio o la violencia",
+        "Temas denegados, que bloquean los temas indeseados que el cliente define",
+        "Filtros de palabras, que bloquean palabras o frases exactas definidas por el cliente"
+      ],
+      "options_en": [
+        "Sensitive information filters, which mask personal data",
+        "Content filters, which detect predefined categories such as hate or violence",
+        "Denied topics, which block unwanted subjects the customer defines",
+        "Word filters, which block exact words or phrases the customer defines"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los filtros de información confidencial pueden bloquear o enmascarar datos sensibles, como la información personal identificable, en las entradas del usuario y en las respuestas del modelo. Los filtros de contenido, los temas denegados y los filtros de palabras se orientan a contenido dañino, temas indeseados o términos concretos, no a proteger datos personales.",
+      "explanation_en": "Sensitive information filters can block or mask sensitive data, such as personally identifiable information, in user inputs and model responses. Content filters, denied topics and word filters target harmful content, unwanted subjects or specific terms, not the protection of personal data.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+    }
+  ]
+}

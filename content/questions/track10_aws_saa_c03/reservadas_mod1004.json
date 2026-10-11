@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "id": "q100403_r001",
+      "skill_id": "sk100403",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un servicio de la empresa cifra los datos por defecto con una clave propiedad de AWS, pero el área de cumplimiento exige poder auditar cada uso de la clave de cifrado. ¿Qué debe hacer el arquitecto?",
+      "question_en": "A company's service encrypts data by default with an AWS owned key, but compliance requires being able to audit every use of the encryption key. What should the architect do?",
+      "options_es": [
+        "Dejar la configuración por defecto, porque el uso de las claves propiedad de AWS aparece en los registros de CloudTrail del cliente",
+        "Pasar el servicio a una clave administrada por el cliente, porque las claves propiedad de AWS no permiten auditar su uso",
+        "Editar la política de la clave propiedad de AWS, porque así se activa el registro de cada operación de cifrado",
+        "Eliminar la clave propiedad de AWS, porque el servicio generará otra clave que sí se pueda auditar"
+      ],
+      "options_en": [
+        "Keep the default setup, because use of AWS owned keys appears in the customer's own CloudTrail records",
+        "Move the service to a customer managed key, because AWS owned keys do not allow auditing their use",
+        "Edit the AWS owned key's policy, because that switches on logging of every encryption operation",
+        "Delete the AWS owned key, because the service will then generate another one that can be audited"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las claves propiedad de AWS priorizan la comodidad: el cliente no puede cambiar sus políticas, auditar su actividad ni eliminarlas. Cuando lo importante es el control, la fuente recomienda usar claves administradas por el cliente. Por eso fallan las opciones que suponen auditar, editar o borrar una clave propiedad de AWS.",
+      "explanation_en": "AWS owned keys favor convenience: the customer cannot change their policies, audit their activity or delete them. When control is what matters, the source points to customer managed keys. That is why the options that assume you can audit, edit or delete an AWS owned key all fail.",
+      "source": "AWS — AWS KMS keys (https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)"
+    }
+  ]
+}

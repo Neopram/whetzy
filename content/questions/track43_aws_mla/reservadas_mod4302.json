@@ -1,0 +1,52 @@
+{
+  "questions": [
+    {
+      "id": "q430122_r001",
+      "skill_id": "sk430122",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa de tecnología legal quiere que sus propios abogados califiquen las respuestas de varios modelos candidatos en Amazon Bedrock según sus preferencias, en lugar de apoyarse solo en puntuaciones calculadas. ¿Qué enfoque de evaluación encaja?",
+      "question_en": "A legal-tech company wants its own attorneys to rate the responses of several candidate models in Amazon Bedrock against their preferences, rather than relying only on computed scores. Which evaluation approach fits?",
+      "options_es": [
+        "Un trabajo de evaluación programática que use un conjunto de prompts integrado",
+        "Un trabajo de evaluación en el que un segundo LLM actúe como juez",
+        "Un trabajo de evaluación de RAG que compare los textos recuperados con la verdad de referencia",
+        "Un trabajo de evaluación de modelos que use personas evaluadoras"
+      ],
+      "options_en": [
+        "A programmatic evaluation job that runs on a built-in prompt dataset",
+        "An evaluation job in which a second LLM acts as the judge",
+        "A RAG evaluation job that compares retrieved texts against ground truth",
+        "A model evaluation job that uses human workers"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los trabajos de evaluación de modelos con personas evaluadoras incorporan criterio humano, y esas personas pueden ser empleados de la empresa o expertos del sector, como los abogados del caso. La evaluación programática y la de un LLM juez producen puntuaciones calculadas automáticamente, y la evaluación de RAG mide una base de conocimiento, no la valoración de respuestas de un modelo por parte de especialistas.",
+      "explanation_en": "Model evaluation jobs that use human workers bring human judgment into the process, and those workers can be company employees or industry experts, such as the attorneys in this case. Programmatic and judge-model evaluations produce automatically computed scores, and a RAG evaluation measures a knowledge base rather than specialists rating a model's responses.",
+      "source": "AWS — Evaluate the performance of Amazon Bedrock resources (https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html)"
+    },
+    {
+      "id": "q430106_r001",
+      "skill_id": "sk430106",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo guarda las lecturas de cada dispositivo como una matriz, y las longitudes varían entre dispositivos. Quieren aplanar cada matriz en una columna por valor para un algoritmo de ML. ¿Qué condición previa debe cumplirse en Data Wrangler?",
+      "question_en": "A team stores each device's readings as an array, and the lengths differ between devices. They want to flatten each array into one column per value for an ML algorithm. What precondition must be met in Data Wrangler?",
+      "options_es": [
+        "Dejar longitudes distintas, ya que el conjunto crea columnas nuevas según cada fila",
+        "Igualar la longitud de las series, porque las columnas del conjunto son fijas",
+        "Remuestrear todo a un intervalo diario, porque aplanar solo admite esa frecuencia",
+        "Validar las marcas de tiempo primero, porque aplanar falla si una columna es de tipo cadena"
+      ],
+      "options_en": [
+        "Leave the lengths unequal, since the dataset adds new columns as each row needs them",
+        "Make all series the same length, since the dataset's column count is fixed",
+        "Resample everything to a daily interval, because flattening only accepts that frequency",
+        "Validate the timestamps first, because flattening fails when a column is stored as a string"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Aplanar convierte cada valor de la serie en su propia columna, y el número de columnas de un conjunto de datos no puede cambiar. Por eso las series deben estandarizarse a la misma longitud antes de aplanarlas. Las otras opciones inventan requisitos de frecuencia o de tipo, o suponen que el conjunto puede añadir columnas por fila, lo cual contradice la fuente.",
+      "explanation_en": "Flattening turns every value of the series into its own column, and the number of columns in a dataset cannot change. That is why the series have to be standardized to one length before flattening. The other options invent frequency or type requirements, or assume the dataset can grow columns per row, which contradicts the source.",
+      "source": "AWS — Transform Data (https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler-transform.html)"
+    }
+  ]
+}
