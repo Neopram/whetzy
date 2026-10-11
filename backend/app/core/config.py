@@ -352,6 +352,10 @@ class Settings(BaseSettings):
     PADDLE_WEBHOOK_TOLERANCE_SECONDS: int = 5
     # Instructor payout webhook for Paddle events
     PADDLE_PAYOUT_WEBHOOK_URL: str = "https://api-production-9751.up.railway.app/api/v1/webhooks/paddle"
+    # Gate for the instructor marketplace enroll endpoint (B1).
+    # Off by default until Paddle is live; set True in staging/prod once the
+    # payment webhook drives enrollment instead of direct API calls.
+    INSTRUCTOR_MARKETPLACE_ENABLED: bool = False
 
     # --- A/B experiments -----------------------------------------------------
     # Fraction of users assigned to the DKT skill-selection cohort (0.0–1.0).

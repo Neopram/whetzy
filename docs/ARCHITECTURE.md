@@ -89,9 +89,10 @@ For each quiz question:
 1. **BKT** — estimates P(known) per skill from answer history
 2. **Elo** — selects questions at the right difficulty band
 3. **FSRS** — schedules future reviews (spaced repetition)
-4. **Thompson Bandit** — balances new content vs. review
 
 These are pure functions in `services/engine/` — no DB I/O, fully unit-tested.
+`AdaptiveScheduler` (+ Thompson Bandit new-vs-review) exists in `services/engine/scheduler.py`
+but is not wired to the API yet; quiz.py calls BKT/Elo/FSRS directly.
 
 ## Data model (key tables)
 

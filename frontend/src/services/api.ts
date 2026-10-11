@@ -326,6 +326,20 @@ export const auth = {
       body: JSON.stringify({ token, new_password }),
     });
   },
+
+  async verifyEmail(token: string) {
+    return request<{ message: string }>(`/auth/verify-email`, {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    });
+  },
+
+  async resendVerification(email: string) {
+    return request<{ message: string }>(`/auth/resend-verification`, {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  },
 };
 
 export interface QuestionPublic {
@@ -946,6 +960,7 @@ export interface DuelResultResponse {
   winner_id: string | null;
   is_draw: boolean;
   created_at: string;
+  weak_skill_id: string | null;
 }
 
 export interface DuelSummary {
@@ -1492,3 +1507,34 @@ export interface PaddleConfig {
     pro_annual: string | null;
   };
 }
+
+export interface PublicCertificate {
+  code: string;
+  track_name_es: string;
+  track_name_en: string;
+  issued_at: string;
+}
+
+export interface PublicProject {
+  slug: string;
+  name_es: string;
+  name_en: string;
+  completed_at: string;
+}
+
+export interface PublicProfile {
+  username: string;
+  display_name: string;
+  avatar_emoji: string;
+  joined_at: string;
+  current_streak: number;
+  mastery_avg: number;
+  skills_mastered: number;
+  certificates: PublicCertificate[];
+  projects_completed: PublicProject[];
+}
+
+export const profiles = {
+  /** Público (0.3): cualquier `username` existente y activo, sin autenticación. */
+  get: (username: string) => request<PublicProfile>(`/profiles/${encodeURIComponent(username)}`),
+};

@@ -37,6 +37,9 @@ describe('EvidenceScreen — ES y EN nativos (34.12)', () => {
 
   it('ES: interpolates the live catalog numbers into the competitor note, not a stale hardcode', () => {
     render(<EvidenceScreen />);
-    expect(screen.getByText(/build obsoleto \(H\.11\)/)).toBeInTheDocument();
+    // CATALOG_TRACKS/CATALOG_QUESTIONS (lib/catalog.ts) interpolated into
+    // evidence.competitors.whetzyNow.notes — a stale hardcode would still
+    // say "8 tracks 3419 Q" (the old bug this test guards against).
+    expect(screen.getByText(/35 tracks 11416 Q/)).toBeInTheDocument();
   });
 });
