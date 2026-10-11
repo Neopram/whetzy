@@ -160,7 +160,9 @@ async def apply_answer_to_skill_state(
         reps=max(0, bkt_state.attempts - 1),
         due=_ensure_aware(state.fsrs_due),
         last_review=_ensure_aware(state.updated_at),
-        state="new" if bkt_state.attempts <= 1 else "review",
+        # Sin estabilidad FSRS no hay repaso previo que actualizar: la prueba de
+        # nivel suma `attempts` sin tocar FSRS, y `pow(0, -w)` tumbaba la respuesta.
+        state="new" if bkt_state.attempts <= 1 or state.fsrs_stability <= 0 else "review",
     )
     card, _log = fsrs.review(card, grade, now)
     state.fsrs_stability = card.stability
@@ -731,7 +733,9 @@ async def submit_answer(
         reps=max(0, bkt_state.attempts - 1),
         due=_ensure_aware(state.fsrs_due),
         last_review=_ensure_aware(state.updated_at),
-        state="new" if bkt_state.attempts <= 1 else "review",
+        # Sin estabilidad FSRS no hay repaso previo que actualizar: la prueba de
+        # nivel suma `attempts` sin tocar FSRS, y `pow(0, -w)` tumbaba la respuesta.
+        state="new" if bkt_state.attempts <= 1 or state.fsrs_stability <= 0 else "review",
     )
     card, _log = fsrs.review(card, grade, now)
     state.fsrs_stability = card.stability
@@ -942,7 +946,9 @@ async def apply_exam_evidence(
         reps=max(0, bkt_state.attempts - 1),
         due=_ensure_aware(state.fsrs_due),
         last_review=_ensure_aware(state.updated_at),
-        state="new" if bkt_state.attempts <= 1 else "review",
+        # Sin estabilidad FSRS no hay repaso previo que actualizar: la prueba de
+        # nivel suma `attempts` sin tocar FSRS, y `pow(0, -w)` tumbaba la respuesta.
+        state="new" if bkt_state.attempts <= 1 or state.fsrs_stability <= 0 else "review",
     )
     card, _log = fsrs.review(card, grade, _now())
     state.fsrs_stability = card.stability

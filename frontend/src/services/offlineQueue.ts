@@ -33,6 +33,13 @@ function openDB(): Promise<IDBDatabase> {
   });
 }
 
+/** Id del evento offline, que viaja como `event_id` (columna de 64). Antes era
+ *  `${sessionId}_${questionId}_${Date.now()}`: 65 caracteres con ids de pregunta
+ *  de 14, y esas respuestas se perdían al reenviarse. */
+export function offlineEventId(): string {
+  return crypto.randomUUID();
+}
+
 export async function enqueue(answer: PendingAnswer): Promise<void> {
   try {
     const db = await openDB();
