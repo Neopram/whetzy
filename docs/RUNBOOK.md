@@ -173,8 +173,11 @@ alembic downgrade -1
 ```
 
 Current Alembic HEAD: `20261010_tutor_tokens` (57 migrations, single head —
-verified 2026-10-10 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains
-after `20261004_current_question_id` (#127, renamed from
+verified 2026-10-11 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains
+after `20261010_oauth_pkce` (#170 — the #173 merge that added `tutor_tokens`
+left TWO heads, since both migrations were rebased from the same parent in
+separate branches and #173 merged without rebasing onto #170; hotfixed here,
+same pattern as #165); before that, after `20261004_current_question_id` (#127, renamed from
 `20261004_study_session_current_question` by the #165 hotfix — the original
 39-char id overflowed `alembic_version`'s `varchar(32)` and crashed
 production; 55 migrations, from 2026-10-10); before that this line said
