@@ -187,9 +187,9 @@ async def test_explain_strips_an_injected_system_role_from_conversation_history(
     class _CapturingProvider:
         name = "capturing"
 
-        async def complete_named(self, system: str, user: str, **kwargs: object) -> tuple[str, str]:
+        async def complete_named(self, system: str, user: str, **kwargs: object) -> tuple[str, str, int]:
             captured["history"] = kwargs.get("history")
-            return "ok", self.name
+            return "ok", self.name, 0
 
     monkeypatch.setattr(tutor_service, "get_provider", lambda: _CapturingProvider())
 
@@ -255,6 +255,39 @@ async def test_explain_response_schema(
     assert isinstance(data["provider"], str)
     assert isinstance(data["grounded"], bool)
     assert isinstance(data["times_missed"], int)
+
+
+async def test_explain_question_commits_before_calling_the_llm(
+    db_session, user, content_seed, monkeypatch
+) -> None:
+    """41.17: para este punto, explain_question ya hizo todas sus lecturas
+    (question, skill, historial) -- mantener la sesión de BD abierta
+    durante la llamada de red al LLM (varios segundos) retiene su conexión
+    del pool sin usarla para nada. commit() tiene que cerrar esa
+    transacción de lectura ANTES de la llamada, no después."""
+    from app.services.ai import tutor as tutor_service
+
+    order: list[str] = []
+    real_commit = db_session.commit
+
+    async def tracking_commit() -> None:
+        order.append("commit")
+        await real_commit()
+
+    monkeypatch.setattr(db_session, "commit", tracking_commit)
+
+    class _Tracking:
+        name = "fallback"
+
+        async def complete(self, *a: object, **kw: object) -> str:
+            order.append("llm_call")
+            return "ok"
+
+    monkeypatch.setattr(tutor_service, "get_provider", lambda: _Tracking())
+
+    await tutor_service.explain_question(db_session, user, content_seed["question_id"])
+
+    assert order == ["commit", "llm_call"]
 
 
 # ── 41.5: examen en curso y banco reservado ────────────────────────────────────

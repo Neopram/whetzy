@@ -47,6 +47,18 @@ class NullProvider:
             "💡 " + _extract_grounding(user)
         ).strip()
 
+    async def complete_with_tokens(
+        self,
+        system: str,
+        user: str,
+        *,
+        max_tokens: int = 600,
+        history: list[dict[str, Any]] | None = None,
+    ) -> tuple[str, int]:
+        """41.17: nunca llama a un LLM real, así que su coste es 0."""
+        text = await self.complete(system, user, max_tokens=max_tokens, history=history)
+        return text, 0
+
 
 class GroqProvider:
     """Groq's OpenAI-compatible chat completions (Llama 3.x)."""
@@ -66,6 +78,22 @@ class GroqProvider:
         max_tokens: int = 600,
         history: list[dict[str, Any]] | None = None,
     ) -> str:
+        text, _ = await self.complete_with_tokens(
+            system, user, max_tokens=max_tokens, history=history
+        )
+        return text
+
+    async def complete_with_tokens(
+        self,
+        system: str,
+        user: str,
+        *,
+        max_tokens: int = 600,
+        history: list[dict[str, Any]] | None = None,
+    ) -> tuple[str, int]:
+        """41.17: `usage.total_tokens` del propio Groq -- nada se estimaba
+        antes, así que el cupo por tokens no tenía ninguna cifra real que
+        comprobar."""
         import httpx
 
         messages: list[dict[str, Any]] = [{"role": "system", "content": system}]
@@ -86,7 +114,9 @@ class GroqProvider:
             )
             resp.raise_for_status()
             data = resp.json()
-            return data["choices"][0]["message"]["content"].strip()  # type: ignore[no-any-return]
+            text = data["choices"][0]["message"]["content"].strip()
+            tokens = int(data.get("usage", {}).get("total_tokens", 0))
+            return text, tokens
 
 
 def _extract_grounding(user_prompt: str) -> str:
@@ -138,18 +168,27 @@ class GuardedProvider:
         *,
         max_tokens: int = 600,
         history: list[dict[str, Any]] | None = None,
-    ) -> tuple[str, str]:
+    ) -> tuple[str, str, int]:
         import httpx
 
         if not self._take_budget():
             logger.warning("llm_daily_budget_exhausted limit=%s", self._daily_limit)
-            text = await NullProvider().complete(system, user, max_tokens=max_tokens, history=history)
-            return text, NullProvider.name
+            text, tokens = await NullProvider().complete_with_tokens(
+                system, user, max_tokens=max_tokens, history=history
+            )
+            return text, NullProvider.name, tokens
         chain = [self._primary] + ([self._fallback] if self._fallback else [])
         for provider in chain:
+            complete_with_tokens = getattr(provider, "complete_with_tokens", None)
             try:
-                text = await provider.complete(system, user, max_tokens=max_tokens, history=history)
-                return text, provider.name
+                if complete_with_tokens is not None:
+                    text, tokens = await complete_with_tokens(
+                        system, user, max_tokens=max_tokens, history=history
+                    )
+                else:
+                    text = await provider.complete(system, user, max_tokens=max_tokens, history=history)
+                    tokens = 0
+                return text, provider.name, tokens
             except (httpx.TimeoutException, httpx.TransportError) as exc:
                 logger.warning("llm_provider_unavailable provider=%s error=%s", provider.name, exc)
             except httpx.HTTPStatusError as exc:
@@ -158,8 +197,10 @@ class GuardedProvider:
                 logger.warning(
                     "llm_provider_error provider=%s status=%s", provider.name, exc.response.status_code
                 )
-        text = await NullProvider().complete(system, user, max_tokens=max_tokens, history=history)
-        return text, NullProvider.name
+        text, tokens = await NullProvider().complete_with_tokens(
+            system, user, max_tokens=max_tokens, history=history
+        )
+        return text, NullProvider.name, tokens
 
     async def complete(
         self,
@@ -169,7 +210,7 @@ class GuardedProvider:
         max_tokens: int = 600,
         history: list[dict[str, Any]] | None = None,
     ) -> str:
-        text, _ = await self.complete_named(system, user, max_tokens=max_tokens, history=history)
+        text, _, _ = await self.complete_named(system, user, max_tokens=max_tokens, history=history)
         return text
 
 

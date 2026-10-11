@@ -80,21 +80,39 @@ async def explain(
         if any(payload.question_id in ids for ids in active_attempts):
             raise HTTPException(status.HTTP_403_FORBIDDEN, detail=EXAM_IN_PROGRESS)
 
-    # Pro tiene cupo diario; Pro Max, ilimitado (38.6, ADR-49).
+    # Pro tiene cupo diario de explicaciones; Pro Max, ilimitado (38.6,
+    # ADR-49). El cupo por tokens (41.17) nunca bloquea a quien ADR-49 ya
+    # declaró sin tope -- daily_token_limit devuelve None para esa misma
+    # población.
     day = tutor_quota.today_utc()
-    limit = tutor_quota.daily_limit(current_user)
-    if (
-        limit is not None
-        and await tutor_quota.used_on(db, current_user.id, day) >= limit
-    ):
+    explanation_limit = tutor_quota.daily_limit(current_user)
+    token_limit = tutor_quota.daily_token_limit(current_user)
+    token_estimate = tutor_quota.TOKEN_RESERVE_ESTIMATE
+
+    # 41.17: comprobar el cupo y reservarlo son el mismo UPDATE condicional
+    # -- antes eran dos pasos separados por la latencia del LLM, y en esa
+    # ventana dos peticiones a la vez podían ver las dos "cupo libre" (con
+    # el límite en 20, Plus podía recibir 21). Si la reserva falla, ni
+    # siquiera se llama al proveedor.
+    reserved = await tutor_quota.reserve(
+        db,
+        current_user.id,
+        day,
+        explanation_limit=explanation_limit,
+        token_limit=token_limit,
+        token_estimate=token_estimate,
+    )
+    await db.commit()
+    if not reserved:
         raise HTTPException(
             status.HTTP_429_TOO_MANY_REQUESTS,
             detail=tutor_quota.LIMIT_REACHED,
             headers={
-                "X-Tutor-Daily-Limit": str(limit),
+                "X-Tutor-Daily-Limit": str(explanation_limit),
                 "X-Tutor-Resets-At": tutor_quota.resets_at(day).isoformat(),
             },
         )
+
     try:
         result = await tutor_service.explain_question(
             db,
@@ -103,6 +121,10 @@ async def explain(
             conversation_history=payload.conversation_history,
         )
     except httpx.HTTPStatusError as exc:
+        # Solo cuenta lo que de verdad se sirvió: un fallo del proveedor no
+        # gasta cupo -- con la reserva atómica, eso ya significa devolverla.
+        await tutor_quota.release(db, current_user.id, day, token_estimate=token_estimate)
+        await db.commit()
         logger.error(
             "llm_provider_rejected status=%s url=%s",
             exc.response.status_code,
@@ -115,7 +137,12 @@ async def explain(
     # tampoco lo hace el NullProvider al que cae un GuardedProvider
     # configurado cuando agota su cupo diario o falla la cadena entera
     # (41.5) — eso no es una explicación real, aunque responda 200.
+    actual_tokens = result.pop("tokens_used", 0)
     if not result.pop("degraded_fallback", False):
-        await tutor_quota.record(db, current_user.id, day)
+        await tutor_quota.settle(
+            db, current_user.id, day, token_estimate=token_estimate, actual_tokens=actual_tokens
+        )
+    else:
+        await tutor_quota.release(db, current_user.id, day, token_estimate=token_estimate)
     await db.commit()
     return ExplainResponse(**result)
