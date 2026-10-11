@@ -19,6 +19,10 @@ class OAuthState(Base):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     state: Mapped[str] = mapped_column(String(128), unique=True, nullable=False)
     provider: Mapped[str] = mapped_column(String(32), nullable=False)
+    # PKCE (RFC 7636, 41.14): generado en /start, mandado en el intercambio
+    # del código por el token en /callback. Nullable: una fila en vuelo en el
+    # momento del despliegue (vida máxima 10 min) nunca lo tuvo.
+    code_verifier: Mapped[str | None] = mapped_column(String(128), nullable=True)
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
