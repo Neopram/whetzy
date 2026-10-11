@@ -625,6 +625,1846 @@
       "explanation_en": "The extraction result arrives as a dictionary of already-typed fields; reading the amount means indexing with the `\"total\"` key, just like the app would do with the service's real response.",
       "source": "Microsoft Learn — AI-901 Study Guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901",
       "expected_time_ms": 30000
+    },
+    {
+      "id": "q450303_001",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué es un analizador (analyzer) en Azure Content Understanding?",
+      "question_en": "What is an analyzer in Azure Content Understanding?",
+      "options_es": [
+        "Un modelo fijo que solo convierte el habla de los archivos de audio en texto escrito",
+        "Una configuración reutilizable que define qué contenido se procesa y qué se extrae",
+        "Un esquema de campos fijo y cerrado que ningún usuario puede modificar ni ampliar",
+        "Un modelo de lenguaje que solo genera respuestas de chat a las preguntas del usuario"
+      ],
+      "options_en": [
+        "A fixed model that can only convert the speech in audio files into written text output",
+        "A reusable configuration that defines what content to process and what to extract",
+        "A fixed field schema that is closed and cannot be modified or extended by users",
+        "A language model that only generates chat replies to the questions users type in"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, un analizador es una unidad de procesamiento configurable que define cómo se analiza el contenido y qué información se extrae, y reúne todo ello en una configuración reutilizable. No es un modelo limitado al audio: define qué tipo de contenido se procesa (documentos, imágenes, audio o vídeo). Tampoco es un esquema cerrado, porque se pueden crear analizadores personalizados, ni un modelo que solo conversa, ya que su función es extraer información estructurada.",
+      "explanation_en": "According to the source, an analyzer is a configurable processing unit that defines how content is analyzed and what information is extracted, combined into a single reusable configuration. It is not limited to audio: it defines what type of content is processed (documents, images, audio, or video). It is not a closed schema either, since you can create custom analyzers, nor a chat-only model, because its job is to extract structured information.",
+      "source": "Microsoft Learn — Azure Content Understanding in Foundry Tools - What is an analyzer? Configuration and reference (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_002",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Un campo debe contener un resumen breve de un contrato largo, algo que requiere inferencia y no copiar texto. ¿Qué método de extracción encaja mejor?",
+      "question_en": "A field must hold a short summary of a long contract, something that requires inference rather than copying text. Which extraction method fits best?",
+      "options_es": [
+        "Extract, para copiar el valor exactamente como aparece en el contenido",
+        "Classify, para elegir el valor de una lista fija de categorías",
+        "Segment, para dividir el archivo en fragmentos antes de cualquier análisis",
+        "Generate, para inferir o resumir el valor a partir del contenido"
+      ],
+      "options_en": [
+        "Extract, to copy the value exactly as it appears in the content",
+        "Classify, to pick the value from a fixed list of categories",
+        "Segment, to split the file into chunks before any analysis",
+        "Generate, to infer or summarize the value from the content"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente asigna el método generate a los valores que requieren inferencia o resumen, como un resumen. Extract sirve para valores que aparecen directamente en el contenido y classify para elegir entre opciones predefinidas. Segment no es uno de los tres métodos de campo que cita la fuente (extract, generate y classify).",
+      "explanation_en": "The source assigns the generate method to values that require inference or summarization, such as a summary. Extract is for values that appear directly in the content and classify is for choosing among predefined options. Segment is not one of the three field methods the source lists (extract, generate and classify).",
+      "source": "Microsoft Learn — Best practices for using Content Understanding (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/best-practices) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_003",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "En Content Understanding, ¿qué hace el método extract al obtener los campos?",
+      "question_en": "In Content Understanding, what does the extract method do when producing fields?",
+      "options_es": [
+        "Copia valores tal como aparecen en el contenido de entrada",
+        "Elige un valor de un conjunto de categorías predefinido",
+        "Genera valores libremente a partir de los datos de entrada",
+        "Divide el contenido en secciones lógicas para procesarlo por partes"
+      ],
+      "options_en": [
+        "It copies values as they appear in the input content",
+        "It picks a value from a predefined set of categories",
+        "It generates values freely from the input data",
+        "It splits the content into logical sections for processing"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, extract obtiene directamente los valores tal como aparecen en el contenido de entrada, por ejemplo fechas de recibos. Elegir entre categorías predefinidas es classify y generar valores libremente a partir de los datos es generate. Dividir el contenido en secciones lógicas corresponde a la segmentación, otro componente distinto de la extracción de campos.",
+      "explanation_en": "According to the source, extract directly pulls values as they appear in the input content, such as dates from receipts. Choosing from predefined categories is classify, and producing values freely from the input data is generate. Splitting content into logical sections is segmentation, a separate component from field extraction.",
+      "source": "Microsoft Learn — What is Azure Content Understanding in Foundry Tools? (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_004",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere enviar a una persona solo los valores extraídos que ofrezcan dudas. ¿Qué característica ayuda a decidirlo?",
+      "question_en": "A team wants only the uncertain extracted values to be sent to a person for checking. Which feature helps decide that?",
+      "options_es": [
+        "Las descripciones de figuras, generadas para cada gráfico del archivo",
+        "El número de categorías, definidas en el clasificador del analizador",
+        "El analizador base, elegido como padre del analizador personalizado",
+        "Las puntuaciones de confianza, con umbrales por criticidad"
+      ],
+      "options_en": [
+        "Figure descriptions, generated for each chart in the file",
+        "The number of categories, defined in the analyzer's classifier",
+        "The base analyzer, selected as the parent of the custom analyzer",
+        "Confidence scores, with thresholds set by field criticality"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, las puntuaciones de confianza ayudan a determinar cuándo hace falta revisión humana, y los umbrales se fijan según la criticidad del campo. Las otras opciones describen otras características del analizador y no indican cuándo un valor es dudoso.",
+      "explanation_en": "According to the source, confidence scores help determine when human review is needed, and thresholds are set based on field criticality. The other options describe other analyzer features and do not indicate when a value is doubtful.",
+      "source": "Microsoft Learn — Best practices for using Content Understanding (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/best-practices) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_005",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué permite hacer el grounding a quien revisa un valor de campo extraído?",
+      "question_en": "What does grounding allow a reviewer to do with an extracted field value?",
+      "options_es": [
+        "Traducir los valores extraídos al idioma de quien los revisa",
+        "Bloquear contenido dañino antes de que llegue al modelo",
+        "Rastrear el valor hasta su origen en el contenido fuente",
+        "Dividir un archivo largo en documentos separados por tipo"
+      ],
+      "options_en": [
+        "Translate the extracted values into the reviewer's own language",
+        "Block harmful content before it reaches the model deployment",
+        "Trace the value back to its origin in the source content",
+        "Split a long file into separate documents by their type"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente explica que el grounding identifica las regiones del contenido de las que salió cada valor y que permite verificar los valores rastreándolos hasta su origen en el contenido fuente. Las otras opciones describen capacidades distintas (traducción, filtrado de contenido, segmentación), no el grounding.",
+      "explanation_en": "The source explains that grounding identifies the regions of the content where each value came from and lets users verify the values by tracing them back to their origin in the source content. The other options describe different capabilities (translation, content filtering, segmentation), not grounding.",
+      "source": "Microsoft Learn — What is Azure Content Understanding in Foundry Tools? (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_006",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Un único archivo escaneado contiene un formulario de solicitud de préstamo, una nómina y un extracto bancario. ¿Qué capacidad se ocupa de este archivo?",
+      "question_en": "A single scanned file holds a loan application form, a pay slip and a bank statement. Which capability handles this file?",
+      "options_es": [
+        "OCR básico que devuelve solo el texto sin formato de todo el archivo",
+        "Un resumen de un párrafo de todo el archivo como un único elemento",
+        "Clasificar y segmentar el archivo en sus tipos de documento",
+        "Aplicar un único analizador de facturas a cada página del archivo"
+      ],
+      "options_en": [
+        "Basic OCR that returns only the raw text of the whole file",
+        "A one-paragraph summary of the entire file as a single item",
+        "Classifying and segmenting the file into its document types",
+        "Applying a single invoice analyzer to every page of the file"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente describe «classify and segment» para un archivo con varios tipos de documentos concatenados, y pone como ejemplo un paquete con solicitud de préstamo, nómina y extracto bancario. Las otras opciones no clasifican ni segmentan el archivo por tipo de documento, que es lo que describe esta capacidad.",
+      "explanation_en": "The source describes classify and segment for a file with several document types concatenated, giving a loan package with an application form, pay slip and bank statement as an example. The other options do not classify or segment the file by document type, which is what this capability does.",
+      "source": "Microsoft Learn — Azure Content Understanding in Foundry Tools Classifier Overview (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/classifier) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_007",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "En Content Understanding, un clasificador se define con varias categorías de documentos pero sin la categoría comodín `other`. ¿Qué ocurre con un archivo que no encaja en ninguna?",
+      "question_en": "In Content Understanding, a classifier is defined with several document categories but without the catch-all `other` category. What happens to a file that matches none of them?",
+      "options_es": [
+        "Se rechaza con un error y no se devuelve ningún resultado",
+        "Se fuerza a entrar en una de las categorías definidas",
+        "Se omite en silencio y no aparece en la respuesta",
+        "Se crea automáticamente una categoría nueva para ese archivo"
+      ],
+      "options_en": [
+        "It is rejected with an error and no result is returned",
+        "It is forced into one of the defined categories",
+        "It is silently skipped and left out of the response",
+        "A new category is created automatically for that file"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, si no se incluye la categoría `other`, todos los archivos se clasifican en una de las categorías definidas. Por eso no hay error, ni se omite el archivo, ni se crea una categoría nueva: cada archivo acaba asignado a una categoría ya definida. Conviene añadir `other` si se quiere que el contenido sin coincidencia quede aparte.",
+      "explanation_en": "According to the source, if the `other` category isn't included, all files are classified into one of the defined categories. So there is no error, no file is skipped, and no new category is created, because every file ends up assigned to a category you already defined. That is why you add `other` when unmatched content should stay unmatched.",
+      "source": "Microsoft Learn — Azure Content Understanding in Foundry Tools Classifier Overview (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/classifier) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_008",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere ingerir documentos para que un modelo generativo responda con información recuperada de ellos. ¿Qué categoría de analizadores prediseñados de Content Understanding está pensada para eso?",
+      "question_en": "A team wants to ingest documents so that a generative model can answer using information retrieved from them. Which category of Content Understanding prebuilt analyzers is designed for this?",
+      "options_es": [
+        "Los analizadores RAG, optimizados para escenarios de búsqueda",
+        "Los analizadores base, pensados como padres para crear analizadores personalizados",
+        "Los analizadores de utilidad, que descubren esquemas y pares clave-valor",
+        "Los analizadores de dominio, preconfigurados para facturas y formularios fiscales"
+      ],
+      "options_en": [
+        "RAG analyzers, optimized for retrieval and search scenarios",
+        "Base analyzers, meant to serve as parents when building custom analyzers",
+        "Utility analyzers, which discover schemas and key-value pairs",
+        "Domain-specific analyzers, preconfigured for invoices and tax forms"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que los analizadores RAG están optimizados para generación aumentada por recuperación, con análisis semántico y extracción a markdown para ingesta de documentos y búsqueda. Los analizadores base se usan como padres al crear analizadores personalizados, los de dominio cubren categorías como facturas y formularios fiscales, y los de utilidad generan esquemas y extraen pares clave-valor.",
+      "explanation_en": "The source says RAG analyzers are optimized for retrieval-augmented generation, with semantic analysis and markdown extraction for document ingestion and search. Base analyzers are used as parents when building custom analyzers, domain-specific ones cover categories such as invoices and tax forms, and utility analyzers generate schemas and extract key-value pairs.",
+      "source": "Microsoft Learn — Azure Content Understanding in Foundry Tools prebuilt analyzers (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/prebuilt-analyzers) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_009",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere extraer campos de recibos y documentos de identidad sin tener que definir su propio esquema de campos. ¿Qué tipo de analizador encaja?",
+      "question_en": "A company wants to extract fields from receipts and ID documents without building its own field schema. Which kind of analyzer fits?",
+      "options_es": [
+        "Uno base, que sirve de bloque de construcción",
+        "Uno RAG, optimizado para escenarios de búsqueda y recuperación",
+        "Uno personalizado, que hay que crear extendiendo un analizador base",
+        "Uno de dominio, preconfigurado para estos tipos"
+      ],
+      "options_en": [
+        "A base analyzer, which serves as a building block",
+        "A RAG analyzer, optimized for search and retrieval scenarios",
+        "A custom analyzer that you must create by extending a base analyzer",
+        "A domain-specific analyzer, preconfigured for these types"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los analizadores de dominio vienen preconfigurados para tipos de documento e industrias concretos, como recibos y documentos de identidad, así que no hace falta definir un esquema propio. Los base son bloques de construcción, los RAG se optimizan para búsqueda y recuperación, y los personalizados los crea el usuario extendiendo uno base con sus propios campos.",
+      "explanation_en": "Domain-specific analyzers come preconfigured for specific document types and industries, such as receipts and ID documents, so no custom field schema is needed. Base analyzers are building blocks, RAG analyzers are optimized for search and retrieval, and custom analyzers are created by the user by extending a base analyzer with their own fields.",
+      "source": "Microsoft Learn — Azure Content Understanding in Foundry Tools - What is an analyzer? Configuration and reference (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_010",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué ofrece Azure Document Intelligence dentro de las capacidades de Azure Content Understanding?",
+      "question_en": "What does Azure Document Intelligence provide as part of Azure Content Understanding capabilities?",
+      "options_es": [
+        "Extracción determinista y de alta precisión de documentos estructurados",
+        "Analizadores basados en LLM para contenido complejo y multimodal",
+        "Reconocimiento de voz para transcribir llamadas y reuniones en tiempo real",
+        "Traducción automática de texto entre un idioma y otro dentro de documentos"
+      ],
+      "options_en": [
+        "Deterministic, high-accuracy extraction from structured documents",
+        "LLM-powered analyzers for complex, unstructured, multimodal content",
+        "Speech recognition that transcribes calls and meetings in real time",
+        "Machine translation of text from one language into another"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente dice que, dentro de las capacidades de Azure Content Understanding, Document Intelligence proporciona extracción determinista, fiable y de alta precisión de documentos estructurados. Los analizadores basados en LLM para contenido complejo, no estructurado y multimodal los ofrece Content Understanding, no Document Intelligence. La fuente no le atribuye reconocimiento de voz ni traducción de texto, así que esas opciones no describen lo que ofrece.",
+      "explanation_en": "The source says that, as part of Azure Content Understanding capabilities, Document Intelligence provides high-accuracy, reliable, deterministic extraction from structured documents. The LLM-powered analyzers for complex, unstructured, and multimodal content are offered by Content Understanding, not Document Intelligence. The source does not credit it with speech recognition or text translation, so those options do not describe what it provides.",
+      "source": "Microsoft Learn — What Is Azure Document Intelligence in Foundry Tools? (https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_011",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Un guardrail del despliegue del modelo restringe la generación de campos al analizar un documento. ¿Qué ocurre con el contenido fuente extraído y con el análisis?",
+      "question_en": "A guardrail on the model deployment restricts field generation when a document is analyzed. What happens to the extracted source content and to the analysis?",
+      "options_es": [
+        "El análisis termina con advertencias aunque falten valores",
+        "Se descarta todo el contenido extraído, incluidos texto y párrafos",
+        "Los campos restringidos se rellenan igualmente con valores inventados",
+        "El análisis siempre falla y no devuelve ningún resultado"
+      ],
+      "options_en": [
+        "Analysis succeeds with warnings even if some values are missing",
+        "All extracted content, including text and paragraphs, is discarded",
+        "Restricted fields are still filled in with made-up values",
+        "Analysis always fails and returns no results at all"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que los guardrails pueden restringir la generación de campos conservando el contenido fuente extraído, por lo que el análisis puede tener éxito con advertencias aunque no se devuelvan algunos valores. Por eso falla descartar todo el contenido, y también afirmar que se inventan valores para los campos restringidos o que el análisis siempre falla.",
+      "explanation_en": "The source says guardrails can restrict field generation while preserving extracted source content, so analysis can succeed with warnings even when some field values aren't returned. That rules out discarding all content, filling restricted fields with made-up values, or claiming that analysis always fails.",
+      "source": "Microsoft Learn — What is Azure Content Understanding in Foundry Tools? (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_012",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Al extraer información con Azure Content Understanding, ¿cómo está diseñado el servicio para protegerse frente al procesamiento de contenido dañino?",
+      "question_en": "When extracting information with Azure Content Understanding, how is the service designed to guard against processing harmful content?",
+      "options_es": [
+        "Delega el filtrado en cada usuario con su propia lista de palabras",
+        "Aplica solo una moderación humana posterior al análisis",
+        "Usa un filtro propio de Content Understanding, separado de Foundry",
+        "Reutiliza los guardrails de Foundry de los despliegues de modelos"
+      ],
+      "options_en": [
+        "By letting each user filter content with their own word list",
+        "By relying only on human moderation after the analysis",
+        "By using its own filter that is kept separate from Foundry",
+        "By reusing the Foundry guardrails from model deployments"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente indica que Content Understanding hereda los guardrails de Microsoft Foundry aplicados a los despliegues de modelos de Foundry, por lo que un filtro separado de Foundry no encaja. Las otras opciones describen mecanismos que la fuente no menciona.",
+      "explanation_en": "The source says Content Understanding inherits the guardrails in Microsoft Foundry applied to Foundry model deployments, so a filter kept separate from Foundry does not fit. The other options describe mechanisms the source does not mention.",
+      "source": "Microsoft Learn — What is Azure Content Understanding in Foundry Tools? (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_013",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Una empresa recibe facturas, contratos y recibos mezclados. ¿Cómo puede mejorar su flujo de trabajo la clasificación de Content Understanding?",
+      "question_en": "A company receives mixed invoices, contracts and receipts. How can Content Understanding's classification improve its workflow?",
+      "options_es": [
+        "Elimina la necesidad de cualquier analizador porque devuelve directamente los valores finales de los campos",
+        "Categoriza los documentos primero y enruta cada uno a su analizador",
+        "Aplica un único analizador a todos los documentos sin separarlos por tipo",
+        "Fusiona todos los documentos en uno solo antes de analizarlos"
+      ],
+      "options_en": [
+        "It removes the need for any analyzer because it returns the final field values directly",
+        "It categorizes documents first, then routes each to its analyzer",
+        "It applies one single analyzer to all documents without separating them by type",
+        "It merges all documents into one before analyzing them"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, la clasificación de Content Understanding permite categorizar los documentos primero y enrutarlos después al analizador asociado para la extracción. Por eso no elimina los analizadores, ni usa uno solo para todo, ni fusiona los documentos antes de analizarlos.",
+      "explanation_en": "According to the source, Content Understanding's classification lets you categorize documents first and then route them to the associated analyzer for extraction. So it does not remove analyzers, use a single one for everything, or merge documents before analysis.",
+      "source": "Microsoft Learn — What is Azure Content Understanding in Foundry Tools? (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_014",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué describe mejor a los analizadores prediseñados (prebuilt) de Content Understanding?",
+      "question_en": "What best describes the prebuilt analyzers in Content Understanding?",
+      "options_es": [
+        "Modelos que hay que entrenar con datos etiquetados antes del primer uso",
+        "Herramientas ya preparadas para escenarios habituales de contenido",
+        "Plantillas que solo sirven para un único formato de documento",
+        "Archivos donde se guarda la salida de análisis anteriores"
+      ],
+      "options_en": [
+        "Models that must be trained with labeled data before first use",
+        "Tools already set up for common content scenarios",
+        "Templates that only work for one single document format",
+        "Archives that store the output of earlier analysis runs"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente describe los analizadores prediseñados como herramientas listas para usar que agilizan tareas comunes de procesamiento de contenido. Por eso no son modelos que haya que entrenar primero ni archivos de resultados. Tampoco son plantillas de un solo formato: la fuente dice que se adaptan a los matices de cada tipo de contenido.",
+      "explanation_en": "The source describes prebuilt analyzers as ready-to-use tools that streamline common content processing tasks. That is why they are not models you must train first or archives of past results. They are not single-format templates either: the source says they adapt to the nuances of each content type.",
+      "source": "Microsoft Learn — Azure Content Understanding in Foundry Tools prebuilt analyzers (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/prebuilt-analyzers) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_015",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Una persona desarrolladora crea un analizador personalizado para archivos de audio. ¿Para qué se usa principalmente un analizador base en ese caso?",
+      "question_en": "A developer is building a custom analyzer for audio files. What is a base analyzer mainly used for in this case?",
+      "options_es": [
+        "Como padre del que heredar al crear analizadores personalizados",
+        "Como analizador terminado y ajustado para extraer campos de formularios fiscales",
+        "Como lugar donde guardar los ejemplos etiquetados usados en el entrenamiento",
+        "Como barrera de seguridad que bloquea contenido dañino durante el análisis"
+      ],
+      "options_en": [
+        "As a parent to inherit from for custom analyzers",
+        "As a finished analyzer tuned to extract fields from tax forms",
+        "As a place to store the labeled examples used for training",
+        "As a guardrail that blocks harmful content during analysis"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente indica que los analizadores base se usan principalmente como padres de los que heredar al crear analizadores personalizados, y ofrece uno por tipo de contenido (por ejemplo, prebuilt-audio para audio). No son analizadores terminados para formularios fiscales, ni un almacén de ejemplos etiquetados, ni una barrera de seguridad: la fuente no les atribuye ninguna de esas funciones.",
+      "explanation_en": "The source says base analyzers are used primarily as a parent to inherit from when creating custom analyzers, and it offers one per content type (for example, prebuilt-audio for audio). They are not finished analyzers for tax forms, a store for labeled examples, or a guardrail: the source gives them none of those roles.",
+      "source": "Microsoft Learn — Azure Content Understanding in Foundry Tools prebuilt analyzers (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/prebuilt-analyzers) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_016",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "¿Qué descripción de campo sigue la buena práctica de usar lenguaje afirmativo?",
+      "question_en": "Which field description follows the best practice of using affirmative language?",
+      "options_es": [
+        "«Este campo no es la fecha de factura ni la de vencimiento»",
+        "«Un campo que no contiene la fecha de pago ni el importe»",
+        "«La fecha de entrega de los bienes, en la sección de entrega»",
+        "«Una fecha que no aparece en el encabezado ni en el pie de página»"
+      ],
+      "options_en": [
+        "\"This field isn't the invoice date and isn't the due date\"",
+        "\"A field that doesn't hold the payment date or the amount\"",
+        "\"The date goods were delivered, in the delivery section\"",
+        "\"A date that doesn't appear in the header or in the footer\""
+      ],
+      "correct_index": 2,
+      "explanation_es": "La buena práctica es describir lo que el campo es en lugar de lo que no es, porque las descripciones positivas son más claras y eficaces. Solo la opción correcta dice qué es el campo (la fecha de entrega) y dónde encontrarlo; las otras tres lo definen por lo que no es o por lo que no contiene.",
+      "explanation_en": "The best practice is to describe what the field is rather than what it isn't, since positive descriptions are clearer and more effective. Only the correct option says what the field is (the delivery date) and where to find it; the other three define it by what it isn't or what it doesn't hold.",
+      "source": "Microsoft Learn — Best practices for using Content Understanding (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/best-practices) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_017",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Una persona desarrolladora usa Content Understanding en Foundry para obtener salida estructurada de archivos no estructurados. ¿Cómo evita redactar prompts complejos?",
+      "question_en": "A developer uses Content Understanding in Foundry to get structured output from unstructured files. How do they avoid writing complex prompts?",
+      "options_es": [
+        "Entrenar desde cero un modelo de lenguaje nuevo con los archivos de la empresa",
+        "Describir en un esquema los campos que se quieren obtener",
+        "Ajustar un modelo de visión con ejemplos etiquetados de cada archivo",
+        "Escribir un prompt largo por archivo y procesar la respuesta a mano"
+      ],
+      "options_en": [
+        "Train a brand-new language model from scratch on the company files",
+        "Describe the fields to obtain in a schema",
+        "Fine-tune a vision model on labeled examples of each file",
+        "Write a long prompt for each file and parse the reply by hand"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, en Content Understanding se define un esquema para extraer, clasificar o generar valores de campo sin ingeniería de prompts compleja. Entrenar o ajustar un modelo, o escribir un prompt largo por archivo, supone justo el trabajo que el esquema evita.",
+      "explanation_en": "According to the source, in Content Understanding you define a schema to extract, classify, or generate field values with no complex prompt engineering. Training or fine-tuning a model, or writing a long prompt for each file, is exactly the work the schema avoids.",
+      "source": "Microsoft Learn — What is Azure Content Understanding in Foundry Tools? (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_018",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Las puntuaciones de confianza de una extracción zero-shot son más bajas de lo esperado. ¿Qué recomienda la guía?",
+      "question_en": "Confidence scores on a zero-shot extraction are lower than expected. What does the guidance recommend?",
+      "options_es": [
+        "Reducir el número de campos del esquema",
+        "Eliminar por completo las descripciones de campo del esquema",
+        "Añadir documentos similares como ejemplos de entrenamiento",
+        "Cambiar a otro tipo de analizador de contenido"
+      ],
+      "options_en": [
+        "Reduce the number of fields in the schema",
+        "Remove the field descriptions from the schema altogether",
+        "Add similar documents as training examples",
+        "Switch to a different type of content analyzer"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La guía recomienda añadir a la base de conocimiento documentos similares como ejemplos de entrenamiento cuando la precisión o la confianza son menores de lo esperado en una extracción zero-shot. Las otras opciones (reducir campos, quitar descripciones o cambiar de analizador) no son lo que la guía propone para este caso.",
+      "explanation_en": "The guidance recommends adding similar documents to the knowledge base as training examples when accuracy or confidence is lower than expected with zero-shot extraction. The other options (reducing fields, removing descriptions or switching analyzer type) are not what the guidance proposes for this case.",
+      "source": "Microsoft Learn — Best practices for using Content Understanding (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/best-practices) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_019",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Al analizar con Content Understanding unas grabaciones de un call center que solo tienen inglés y español, ¿qué configuración de idiomas conviene?",
+      "question_en": "When you use Content Understanding to analyze call center recordings that contain only English and Spanish, which language setup is best?",
+      "options_es": [
+        "Detectar el idioma automáticamente entre todos los disponibles",
+        "Configurar el inglés, el español y otros idiomas posibles por si acaso",
+        "Limitar la configuración a esos dos idiomas",
+        "Configurar los diez idiomas más hablados del mundo"
+      ],
+      "options_en": [
+        "Autodetect the language from every available option",
+        "Configure English, Spanish, and a few other possible languages just in case",
+        "Limit the configuration to just those two languages",
+        "Configure the ten most widely spoken languages in the world"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que se deben especificar solo los idiomas esperados, porque incluir demasiados aumenta los errores de transcripción al obligar al sistema a adivinar el idioma. Su ejemplo con inglés y español es configurar solo esos dos, en lugar de usar la autodetección entre todos los idiomas. Las otras opciones añaden idiomas que no aparecen en las grabaciones o recurren a la autodetección general, justo lo que la fuente desaconseja.",
+      "explanation_en": "The source says to specify only the languages you expect, because including too many increases transcription errors as the system must guess which language is spoken. Its example for English and Spanish content is to configure only those two rather than autodetect from all available languages. The other options add languages that are not in the recordings or rely on broad autodetection, which is what the source advises against.",
+      "source": "Microsoft Learn — Best practices for using Content Understanding (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/best-practices) — CC BY 4.0"
+    },
+    {
+      "id": "q450303_020",
+      "skill_id": "sk450303",
+      "type": "multiple_choice",
+      "question_es": "Un equipo ya usa Azure AI Search para una solución RAG sobre documentos complejos. ¿Cómo puede ayudar Content Understanding?",
+      "question_en": "A team already uses Azure AI Search for a RAG solution over complex documents. How can Content Understanding help?",
+      "options_es": [
+        "Sustituyendo a Azure AI Search como motor de recuperación",
+        "Generando las respuestas sin necesidad de un índice",
+        "Extrayendo solo texto plano, sin estructura ni figuras",
+        "Preparando los documentos antes de indexarlos"
+      ],
+      "options_en": [
+        "By replacing Azure AI Search as the retrieval engine",
+        "By generating answers without needing an index",
+        "By extracting only plain text, with no structure or figures",
+        "By preparing the documents before they are indexed"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La fuente recomienda usar Content Understanding para enriquecer los documentos antes de indexarlos cuando ya se usa Azure AI Search para RAG, conservando estructura, tablas y figuras. Las otras opciones contradicen lo que describe la fuente: Content Understanding se integra con Azure AI Search, no lo sustituye ni elimina el índice, y extrae también la estructura y el contenido visual, no solo texto plano.",
+      "explanation_en": "The source recommends using Content Understanding to enrich documents before indexing when Azure AI Search is already used for RAG, preserving structure, tables and figures. The other options contradict what the source describes: Content Understanding integrates with Azure AI Search rather than replacing it or removing the index, and it extracts structure and visual content, not just plain text.",
+      "source": "Microsoft Learn — Best practices for using Content Understanding (https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/best-practices) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_001",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué describe mejor la generación aumentada por recuperación (RAG) en Microsoft Foundry?",
+      "question_en": "Which option best describes retrieval augmented generation (RAG) in Microsoft Foundry?",
+      "options_es": [
+        "Un patrón que combina la búsqueda con un modelo de lenguaje para que las respuestas se basen en tus datos",
+        "Una técnica que reentrena desde cero un modelo de lenguaje con tus documentos privados antes de cada respuesta",
+        "Un método que guarda cada prompt del usuario de forma permanente para reutilizarlo como conjunto de entrenamiento",
+        "Un patrón que envía cada pregunta directamente al modelo de lenguaje sin usar ningún dato externo"
+      ],
+      "options_en": [
+        "A pattern that combines search with a large language model so answers are grounded in your data",
+        "A technique that retrains a language model from scratch on your private documents before each answer",
+        "A method that stores every user prompt permanently so the model can reuse them as its training set",
+        "A pattern that sends every question straight to the model without using any external data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento define RAG como un patrón que combina búsqueda con modelos de lenguaje para que las respuestas estén fundamentadas en tus datos. No consiste en reentrenar el modelo ni en guardar prompts como conjunto de entrenamiento, y tampoco en enviar las preguntas al modelo sin datos externos, que es justo lo contrario de fundamentar la respuesta en tus datos.",
+      "explanation_en": "The fragment defines RAG as a pattern that combines search with large language models so responses are grounded in your data. It is not about retraining the model or storing prompts as a training set, and it is not about sending questions to the model with no external data, which is the opposite of grounding the response in your data.",
+      "source": "Microsoft Learn — Retrieval augmented generation (RAG) and indexes in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_002",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere que el modelo responda siempre con un tono y un formato fijos en una tarea concreta, sin enseñarle conocimiento nuevo. ¿Qué enfoque indica la guía de Foundry?",
+      "question_en": "A team wants the model to always answer in a fixed tone and format for a specific task, without teaching it fresh knowledge. Which approach does Foundry guidance point to?",
+      "options_es": [
+        "Usar RAG, porque fundamenta las respuestas en datos privados o que cambian con frecuencia",
+        "Usar ajuste fino, porque adapta cómo responde el modelo, no lo que sabe",
+        "Usar el SDK de Foundry, porque da control total para crear una app RAG completa",
+        "Usar herramientas de agente, porque dan al agente la recuperación como herramienta"
+      ],
+      "options_en": [
+        "Use RAG, because it grounds answers in private or frequently changing data",
+        "Use fine-tuning, because it adapts how the model responds, not what it knows",
+        "Use the Foundry SDK, because it gives complete control to build a full RAG app",
+        "Use agent tools, because they give an agent retrieval as one of its tools"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según el fragmento, el ajuste fino se usa para cambiar el comportamiento, el estilo o el rendimiento en una tarea, no para añadir conocimiento nuevo, que es justo lo que pide el equipo. RAG sirve para respuestas fundamentadas en datos privados o que cambian con frecuencia. Las herramientas de agente se usan cuando un agente necesita la recuperación como herramienta, y el SDK de Foundry, para construir una app RAG completa con control total.",
+      "explanation_en": "Per the fragment, fine-tuning is used to change model behavior, style, or task performance rather than add fresh knowledge, which is exactly what the team wants. RAG is for answers grounded in private or frequently changing data. Agent tools are for when an agent needs retrieval as a tool, and the Foundry SDK is for building a full RAG app with complete control.",
+      "source": "Microsoft Learn — Retrieval augmented generation (RAG) and indexes in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_003",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "En el flujo de tres pasos de RAG, ¿qué ocurre en el paso de aumentar (augment)?",
+      "question_en": "In the three-step RAG flow, what happens during the augment step?",
+      "options_es": [
+        "El modelo se reentrena con los documentos recuperados para recordarlos de forma permanente",
+        "La aplicación consulta un índice o almacén de datos para hallar contenido relevante",
+        "El modelo genera la respuesta final y añade citas a la respuesta",
+        "La aplicación une la consulta del usuario con los datos recuperados en un solo prompt"
+      ],
+      "options_en": [
+        "The model is retrained on the retrieved documents so it permanently remembers them",
+        "The app queries an index or data store to find relevant content",
+        "The model produces the final answer and attaches citations to the response",
+        "The app merges the user's query with the retrieved data into a single prompt"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En el paso Augment, la aplicación junta la pregunta del usuario y el contenido recuperado (datos de fundamentación) en un prompt. Consultar el índice o almacén de datos corresponde a Retrieve, y generar la respuesta con citas corresponde a Generate; el fragmento no menciona reentrenar el modelo.",
+      "explanation_en": "In the Augment step, the app merges the user's question and the retrieved content (grounding data) into a prompt. Querying the index or data store belongs to Retrieve, and producing the answer with citations belongs to Generate; the fragment does not mention retraining the model.",
+      "source": "Microsoft Learn — Retrieval augmented generation (RAG) and indexes in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_004",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Un asistente recibe preguntas complejas sobre los datos de la empresa y debe ir más allá del RAG tradicional de una sola consulta. ¿Qué enfoque de recuperación debería adoptar?",
+      "question_en": "An assistant receives complex questions about company data and needs to go beyond traditional single-query RAG. Which retrieval approach should it adopt?",
+      "options_es": [
+        "Lanzar la pregunta completa como una única consulta, sin dividirla en partes más pequeñas",
+        "Usar un modelo que divida la pregunta en subconsultas enfocadas y las ejecute en paralelo",
+        "Lanzar subconsultas enfocadas una tras otra, esperando el resultado de cada una antes de seguir",
+        "Responder solo con el conocimiento del modelo, sin recuperar datos de ninguna fuente externa"
+      ],
+      "options_en": [
+        "Send each full question as a single query, without splitting it into smaller parts",
+        "Use a model to break the question into focused subqueries and run them in parallel",
+        "Run focused subqueries one after another, waiting for each result before starting the next",
+        "Answer only from the model's own knowledge, without retrieving data from any external source"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La recuperación agéntica es la evolución del RAG tradicional: un modelo descompone la entrada compleja en subconsultas enfocadas, las ejecuta en paralelo y devuelve datos de fundamentación estructurados. Enviar una única consulta es justo el patrón tradicional. Ejecutar las subconsultas en serie contradice el paralelismo que describe la fuente, y responder sin recuperar datos deja de ser una forma de RAG.",
+      "explanation_en": "Agentic retrieval is the evolution of traditional RAG: a model breaks the complex input into focused subqueries, runs them in parallel, and returns structured grounding data. Sending a single query is exactly the traditional pattern. Running the subqueries one after another contradicts the parallel execution the source describes, and answering without retrieving data is no longer RAG at all.",
+      "source": "Microsoft Learn — Retrieval augmented generation (RAG) and indexes in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_005",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "En una solución RAG, ¿qué son los embeddings (incrustaciones)?",
+      "question_en": "In a RAG solution, what are embeddings?",
+      "options_es": [
+        "Representaciones numéricas del contenido para la similitud vectorial",
+        "Instrucciones que guían al modelo sobre cómo usar el contenido recuperado",
+        "Estructuras de datos optimizadas para recuperar información de varias formas",
+        "Contenido recuperado que se da al modelo para reducir las conjeturas"
+      ],
+      "options_en": [
+        "Numeric representations of content for vector similarity search",
+        "Instructions that guide how the model uses the retrieved content",
+        "Data structures optimized for retrieving information from your data",
+        "Retrieved content given to the model so it guesses less"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento define los embeddings como representaciones numéricas del contenido usadas en la búsqueda vectorial por similitud. Las instrucciones sobre cómo usar el contenido recuperado corresponden al mensaje del sistema y los prompts; la estructura optimizada para la recuperación es el índice, y el contenido que se da al modelo para reducir conjeturas son los datos de fundamentación (grounding data).",
+      "explanation_en": "The fragment defines embeddings as numeric representations of content used for vector similarity search. Instructions on how the model uses retrieved content correspond to the system message and prompts; the data structure optimized for retrieval is the index, and the content given to the model to reduce guessing is the grounding data.",
+      "source": "Microsoft Learn — Retrieval augmented generation (RAG) and indexes in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_006",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere que su índice de RAG recupere pasajes tanto por coincidencia de palabras clave como por similitud vectorial. ¿Qué modo de recuperación encaja?",
+      "question_en": "A team wants its RAG index to retrieve passages by both keyword matches and vector similarity. Which retrieval mode fits?",
+      "options_es": [
+        "Búsqueda híbrida, que une ambos enfoques en una consulta",
+        "Búsqueda por palabras clave, que solo compara términos exactos",
+        "Búsqueda vectorial, que solo compara vectores de significado",
+        "Búsqueda semántica, que solo reordena resultados ya recuperados"
+      ],
+      "options_en": [
+        "Hybrid search, which merges both approaches in one query",
+        "Keyword search, which only matches exact terms in the text",
+        "Vector search, which only compares meaning-based embeddings",
+        "Semantic search, which only re-ranks already retrieved results"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento define la búsqueda híbrida como palabras clave más vectores, a veces con clasificación semántica. Las búsquedas por palabras clave, vectorial y semántica aparecen como modos separados, y ninguna de ellas es por sí sola la combinación de palabras clave y vectores que pide el escenario.",
+      "explanation_en": "The fragment defines hybrid search as keyword plus vector, sometimes with semantic ranking. Keyword, vector and semantic search are listed as separate modes, and none of them on its own is the keyword-plus-vector combination the scenario asks for.",
+      "source": "Microsoft Learn — Retrieval augmented generation (RAG) and indexes in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_007",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Aunque una aplicación RAG fundamente al modelo en tus datos, ¿qué limitación sigue existiendo?",
+      "question_en": "Even when a RAG app grounds the model in your data, which limitation still applies?",
+      "options_es": [
+        "El anclaje reduce la necesidad de evaluar la recuperación, porque el modelo ya conoce los datos",
+        "Los pasajes recuperados irrelevantes o incompletos aún pueden provocar respuestas inexactas",
+        "Las respuestas fundamentadas suelen omitir las citas que remiten al contenido de origen",
+        "El anclaje exige reentrenar el modelo con los documentos antes de poder usarlos"
+      ],
+      "options_en": [
+        "Grounding reduces the need to evaluate retrieval, because the model already knows the data",
+        "Irrelevant or incomplete retrieved passages can still lead to inaccurate answers",
+        "Grounded responses tend to omit citations that point back to the source content",
+        "Grounding requires retraining the model on the documents before it can use them"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El fragmento advierte que, si la recuperación devuelve pasajes irrelevantes o incompletos, el modelo puede producir respuestas incompletas o inexactas pese al anclaje. Por eso la calidad de la recuperación sigue importando y conviene evaluarla; el fragmento no dice que el anclaje evite ese riesgo ni que afecte a las citas. Además, el anclaje se apoya en recuperar pasajes del índice en el momento de la consulta, sin que el modelo deba reentrenarse con esos documentos.",
+      "explanation_en": "The fragment warns that if retrieval returns irrelevant or incomplete passages, the model can still produce incomplete or inaccurate answers despite grounding. That is why retrieval quality still matters and should be evaluated; the fragment does not say grounding removes that risk or affects citations. Grounding also relies on retrieving passages from the index at query time, so the model does not need to be retrained on those documents.",
+      "source": "Microsoft Learn — Retrieval augmented generation (RAG) and indexes in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_008",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación RAG recupera pasajes de documentos. ¿Cómo debe tratar ese contenido para reducir el riesgo de inyección de prompts?",
+      "question_en": "A RAG app retrieves passages from documents. How should it treat that content to reduce the risk of prompt injection?",
+      "options_es": [
+        "Como instrucciones de confianza, que el modelo obedece por encima del mensaje del sistema y de la lógica de la app",
+        "Como hechos verificados, que el mensaje del sistema y la lógica de la app pueden usar sin comprobarlos",
+        "Como contenido no confiable, que se gestiona con el mensaje del sistema y la lógica de la app",
+        "Como datos privados, que el mensaje del sistema y la lógica de la app deben borrar del índice tras responder"
+      ],
+      "options_en": [
+        "As trusted instructions, which the model follows over the system message and the app logic",
+        "As verified facts, which the system message and the app logic can use without checking",
+        "As untrusted content, handled through the system message and the app logic",
+        "As private data, which the system message and the app logic must delete from the index"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El fragmento recomienda tratar el contenido recuperado como entrada no confiable, y que el mensaje del sistema y la lógica de la aplicación reduzcan el riesgo de inyección de prompts procedente de documentos y pasajes recuperados. Las opciones que lo tratan como instrucciones de confianza o como hechos que no hace falta comprobar van en dirección contraria, y el fragmento no propone borrar esos datos del índice: su medida es tratarlos como no confiables.",
+      "explanation_en": "The fragment recommends treating retrieved content as untrusted input, with the system message and application logic reducing the risk of prompt injection from documents and retrieved passages. Treating it as trusted instructions or as facts that need no checking goes against that advice, and the fragment does not suggest deleting the data from the index: its measure is to treat it as untrusted.",
+      "source": "Microsoft Learn — Retrieval augmented generation (RAG) and indexes in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_009",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "En Foundry Agent Service, ¿qué componente de ejecución conserva el historial de turnos anteriores para responder una pregunta de seguimiento en contexto?",
+      "question_en": "In Foundry Agent Service, which runtime component keeps the history of earlier turns so a follow-up question can be answered in context?",
+      "options_es": [
+        "La conversación, que conserva el historial entre turnos",
+        "El agente, que guarda automáticamente en el servidor las preguntas anteriores de cada usuario",
+        "La respuesta, que retiene todos los turnos anteriores dentro de una sola salida",
+        "El modelo, que recuerda los turnos previos sin recibirlos como entrada"
+      ],
+      "options_en": [
+        "The conversation, which keeps history across turns",
+        "The agent, which automatically stores each user's earlier questions on the server",
+        "The response, which holds all earlier turns inside a single output",
+        "The model, which remembers prior turns without receiving them as input"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento explica que la conversación persiste el historial entre turnos, por lo que es el componente que permite responder un seguimiento en contexto. El agente solo aporta modelo, instrucciones y herramientas (opción B), y la persistencia del historial se atribuye a la conversación, no al modelo (opción D). La respuesta es la salida que produce el agente al procesar una entrada, no el contenedor del historial (opción C).",
+      "explanation_en": "The fragment explains that the conversation persists history across turns, so it is the component that lets a follow-up be answered in context. The agent only supplies a model, instructions, and tools (option B), and the fragment attributes history persistence to the conversation, not to the model (option D). A response is the output the agent produces when it processes input, not the container of the history (option C).",
+      "source": "Microsoft Learn — Build with runtime components in Foundry Agent Service (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_010",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Un centro de atención al cliente quiere un asistente administrado que hable con las personas que llaman por teléfono, sin implementar por su cuenta el servicio de orquestación de voz. ¿Qué opción encaja?",
+      "question_en": "A customer support center wants a managed assistant that talks with people who phone in, without implementing the voice orchestration service itself. Which option fits?",
+      "options_es": [
+        "Un agente de prompt, que recibe solicitudes de texto individuales",
+        "Un agente de prompt de voz, que atiende conversaciones habladas en tiempo real",
+        "Un servicio de orquestación de voz personalizado, que la empresa construye y opera por su cuenta",
+        "Una implementación de modelo independiente, sin ciclo de vida administrado ni gestión de voz"
+      ],
+      "options_en": [
+        "A prompt agent, which takes individual text requests",
+        "A voice-based prompt agent, which handles spoken conversations in real time",
+        "A custom voice orchestration service, which the company builds and operates itself",
+        "A standalone model deployment, with no managed agent lifecycle or voice handling"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, los agentes de prompt de voz son agentes administrados para conversaciones habladas en tiempo real, y Foundry Agent Service gestiona el ciclo de vida y se apoya en Voice Live para la voz. Un agente de prompt de texto se contrapone a ellos porque trabaja con solicitudes de texto individuales. Construir el servicio de voz uno mismo es justo lo que este tipo de agente evita, y una implementación de modelo sin agente administrado no ofrece ese manejo de voz.",
+      "explanation_en": "According to the source, voice-based prompt agents are managed agents for real-time, spoken conversations, and Foundry Agent Service manages the lifecycle and relies on Voice Live for the speech handling. A text prompt agent is the contrast, since it works with individual text requests. Building the voice service yourself is exactly what this agent type avoids, and a bare model deployment gives no managed agent or voice handling.",
+      "source": "Microsoft Learn — What is Microsoft Foundry Agent Service? (https://learn.microsoft.com/en-us/azure/foundry/agents/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_011",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "En Foundry Agent Service, ¿para qué sirve un toolbox?",
+      "question_en": "In Foundry Agent Service, what is a toolbox for?",
+      "options_es": [
+        "Almacena el historial de la conversación para responder los turnos posteriores en contexto",
+        "Aloja la imagen de contenedor de un agente basado en código y la escala automáticamente",
+        "Evalúa la calidad de las respuestas de un agente y genera un informe para cada versión guardada",
+        "Agrupa herramientas en una sola unidad reutilizable que los agentes pueden consumir"
+      ],
+      "options_en": [
+        "It stores the conversation history so later turns can be answered in context",
+        "It hosts the container image of a code-based agent and scales it automatically",
+        "It evaluates the quality of an agent's answers and generates a report for every saved version",
+        "It groups tools into a single reusable unit that agents can consume"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un toolbox agrupa herramientas en una unidad reutilizable que Foundry expone tras un único punto de conexión compatible con MCP, de modo que cualquier agente puede usarla. Las otras opciones describen funciones que el fragmento no atribuye a un toolbox.",
+      "explanation_en": "A toolbox groups tools into a reusable unit that Foundry exposes behind one MCP-compatible endpoint that any agent can consume. The other options describe functions the fragment does not attribute to a toolbox.",
+      "source": "Microsoft Learn — What is Microsoft Foundry Agent Service? (https://learn.microsoft.com/en-us/azure/foundry/agents/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_012",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué adjuntar herramientas a un agente en Foundry Agent Service?",
+      "question_en": "Why attach tools to an agent in Foundry Agent Service?",
+      "options_es": [
+        "Para ajustar el modelo con tus propios datos y mejorar su precisión",
+        "Para que el agente consulte datos, use API y se enlace con servicios externos",
+        "Para reducir la latencia y el coste de tokens en cada conversación del agente",
+        "Para que el agente se ejecute como un contenedor que tú construyes y mantienes con tu propio código"
+      ],
+      "options_en": [
+        "To fine-tune the model on your own data so that it becomes more accurate",
+        "To let the agent look up information, use APIs, and link to external services",
+        "To reduce latency and token costs in every conversation the agent handles",
+        "To make the agent run as a container that you build and maintain with your own code"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, las herramientas amplían lo que puede hacer el agente: recuperar información, llamar a API y conectarse con servicios externos. Las otras opciones describen funciones que el fragmento no atribuye a las herramientas: ajustar el modelo con datos propios, reducir latencia y coste de tokens, o ejecutar el agente como contenedor propio.",
+      "explanation_en": "According to the source, tools extend what the agent can do: retrieving information, calling APIs, and connecting to external services. The other options describe functions the passage does not attribute to tools: fine-tuning the model on your own data, reducing latency and token costs, or running the agent as your own container.",
+      "source": "Microsoft Learn — Tool best practices for Microsoft Foundry Agent Service (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/tool-best-practice) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_013",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Una herramienta de un agente necesita una credencial para conectarse a un sistema externo. ¿Qué recomienda la guía de Foundry para manejar ese secreto?",
+      "question_en": "An agent tool needs a credential to connect to an external system. What does Foundry guidance recommend for handling that secret?",
+      "options_es": [
+        "Pegar la clave en las instrucciones del agente para que el modelo se la pase a la herramienta",
+        "Incrustar la clave directamente en el código de la aplicación para que el agente la lea al iniciar",
+        "Escribir la clave en un archivo de configuración compartido con todas las personas del proyecto",
+        "Guardarla en un almacén de secretos administrado y referenciarla mediante una conexión"
+      ],
+      "options_en": [
+        "Paste the key into the agent instructions so the model can pass it to the tool",
+        "Embed the key directly in the application code so the agent reads it at startup",
+        "Write the key into a configuration file that is shared with every teammate on the project",
+        "Keep it in a managed secret store and reference it through a connection"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La guía indica guardar los secretos en un almacén administrado y referenciarlos mediante conexiones, en lugar de codificarlos en el código, en archivos de configuración o en los prompts. Las otras tres opciones hacen precisamente lo que el fragmento desaconseja.",
+      "explanation_en": "The guidance says to store secrets in a managed secret store and reference them through connections instead of hardcoding them in code, configuration files, or prompts. The other three options do exactly what the fragment advises against.",
+      "source": "Microsoft Learn — Agent development lifecycle in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/development-lifecycle) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_014",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Un equipo guardó una versión de un agente basado en prompt y ahora quiere cambiar sus instrucciones. ¿Qué debe hacer?",
+      "question_en": "A team saved a version of a prompt-based agent and now wants to change its instructions. What must it do?",
+      "options_es": [
+        "Editar esa versión directamente, porque las versiones guardadas pueden sobrescribirse libremente",
+        "Duplicar el agente en otro proyecto y editarlo allí, porque las versiones guardadas solo se modifican en copias",
+        "Guardar los cambios como una versión nueva, porque las versiones guardadas son inmutables",
+        "Dejar el cambio sin guardar, porque el playground lo aplica a la versión guardada automáticamente"
+      ],
+      "options_en": [
+        "Edit that version in place, because saved versions can be overwritten freely",
+        "Duplicate the agent in another project and edit it there, because saved versions can only be changed in copies",
+        "Save the changes as a new version, because saved versions are immutable",
+        "Leave the change unsaved, because the playground applies edits to the saved version automatically"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, cada versión guardada de un agente es inmutable, así que cualquier modificación exige guardar y crear una versión nueva. Esto protege la integridad de las versiones y evita sobrescrituras accidentales, por lo que no se puede editar la versión guardada. Duplicar el agente en otro proyecto no es el camino que describe la fuente, y los cambios sin guardar se pierden si se sale del portal de Foundry.",
+      "explanation_en": "According to the source, each saved agent version is immutable, so any modification requires saving and creating a new version. This protects version integrity and prevents accidental overwrites, so the saved version cannot be edited in place. Duplicating the agent in another project is not the path the source describes, and unsaved changes are lost if you leave the Foundry portal.",
+      "source": "Microsoft Learn — Agent development lifecycle in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/development-lifecycle) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_015",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "¿Qué obtienes al publicar una versión de un agente como aplicación de agente en Foundry?",
+      "question_en": "What do you get when you publish an agent version as an agent application in Foundry?",
+      "options_es": [
+        "Una dirección fija que puedes abrir, compartir y usar desde otras apps",
+        "Un punto de conexión que solo permite probar el agente dentro del portal de Foundry",
+        "Un agente nuevo que debes crear desde cero sin reutilizar la versión elegida",
+        "Un agente privado que no se puede compartir con otras personas"
+      ],
+      "options_en": [
+        "A fixed address you can open, share, and use from other apps",
+        "An endpoint that only lets you test the agent inside the Foundry portal",
+        "A new agent you must build from scratch instead of reusing the version",
+        "A private agent that cannot be shared with other people"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según el fragmento, al publicar la versión como aplicación de agente obtienes un punto de conexión estable, es decir, una dirección fija que puedes abrir y probar en el navegador, compartir con otras personas o integrar en tus aplicaciones. Las otras opciones describen resultados que la fuente no respalda: limitar las pruebas al portal, partir de un agente nuevo o impedir que se comparta no encajan con un punto de conexión que se publica a partir de la versión creada y que se puede compartir e integrar.",
+      "explanation_en": "According to the fragment, publishing the version as an agent application gives you a stable endpoint, in other words a fixed address you can open and test in the browser, share with others, or embed in your applications. The other options describe outcomes the source does not support: limiting testing to the portal, starting from a new agent, or preventing sharing does not fit an endpoint published from the version you created that can be shared and embedded.",
+      "source": "Microsoft Learn — Agent development lifecycle in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/development-lifecycle) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_016",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "¿Cómo puede una persona desarrolladora comprobar si un agente llamó realmente a una herramienta y ver sus entradas y salidas?",
+      "question_en": "How can a developer check whether an agent actually called a tool and see its inputs and outputs?",
+      "options_es": [
+        "Revisando las instrucciones del agente para ver qué herramientas permite",
+        "Consultando el historial de despliegues del agente en el proyecto",
+        "Revisando las trazas, con las llamadas a herramientas y sus datos",
+        "Releyendo la respuesta final para deducir si se usó alguna herramienta"
+      ],
+      "options_en": [
+        "By reviewing the agent instructions to see which tools it permits",
+        "By checking the agent's deployment history in the project",
+        "By reviewing traces for tool calls and their inputs and outputs",
+        "By rereading the final response to infer whether a tool was used"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El fragmento responde a la pregunta de cómo validar si se llamó a una herramienta: hay que revisar las trazas, que permiten confirmar la llamada e inspeccionar sus entradas y salidas. Las otras opciones no sirven para esto, porque el fragmento solo indica revisar las trazas.",
+      "explanation_en": "The fragment answers how to validate whether a tool was called: review traces, which let you confirm the call and inspect its inputs and outputs. The other options do not work for this, because the fragment points only to reviewing traces.",
+      "source": "Microsoft Learn — Tool best practices for Microsoft Foundry Agent Service (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/tool-best-practice) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_017",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "¿Por qué conviene ejecutar evaluaciones antes de publicar un agente y después de cualquier cambio relevante?",
+      "question_en": "Why run evaluations before publishing an agent and after any meaningful change?",
+      "options_es": [
+        "Para volver a entrenar el modelo base con las respuestas que da el agente",
+        "Para sustituir las pruebas de seguridad del contenido del agente",
+        "Para generar de forma automática la documentación de cada versión",
+        "Para comprobar que un cambio no empeora la calidad ya lograda"
+      ],
+      "options_en": [
+        "To retrain the base model on the responses the agent gives",
+        "To replace the content safety testing for the agent",
+        "To automatically generate documentation for each agent version",
+        "To confirm a change does not lower quality"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según el fragmento, las evaluaciones se ejecutan antes de publicar y tras cualquier cambio relevante para detectar regresiones y medir la calidad de forma consistente entre versiones; es decir, para comprobar que un cambio no empeora la calidad. Reentrenar el modelo, sustituir pruebas de seguridad o generar documentación son funciones que el fragmento no atribuye a las evaluaciones.",
+      "explanation_en": "According to the fragment, evaluations run before publishing and after any meaningful change to catch regressions and measure quality consistently across versions, which means confirming that a change does not lower quality. Retraining the model, replacing safety testing, or generating documentation are not purposes the fragment gives for evaluations.",
+      "source": "Microsoft Learn — Agent development lifecycle in Microsoft Foundry (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/development-lifecycle) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_018",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Un desarrollador llama directamente a la Responses API desde el código de su aplicación y define allí las instrucciones, las herramientas y el modelo. ¿Cómo se describe mejor ese agente?",
+      "question_en": "A developer calls the Responses API directly from application code and defines the instructions, tools, and model there. How is this agent best described?",
+      "options_es": [
+        "Un agente hospedado que Foundry compila desde una imagen de contenedor y conserva como recurso administrado",
+        "Un agente de prompt guardado como recurso versionado en el portal de Foundry",
+        "Un agente efímero definido en el código de la app y no como recurso de Foundry",
+        "Un agente de flujo de trabajo definido como recurso y orquestado desde el portal de Foundry"
+      ],
+      "options_en": [
+        "A hosted agent that Foundry builds from a container image and keeps as a managed resource",
+        "A prompt agent stored as a versioned resource in the Foundry portal",
+        "An ephemeral agent defined in the app code rather than as a Foundry resource",
+        "A workflow agent defined as a resource and orchestrated from the Foundry portal"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, al llamar a la Responses API desde tu propio código construyes un agente efímero: su definición (instrucciones, herramientas y modelo) vive en tu aplicación y no es un recurso persistente en Foundry; por eso no hay nada que crear, actualizar ni eliminar allí. Las opciones que describen un agente guardado, compilado u orquestado como recurso en Foundry contradicen eso.",
+      "explanation_en": "According to the source, when you call the Responses API from your own code you build an ephemeral agent: its definition (instructions, tools, and model) lives in your application code rather than as a persisted resource in Foundry, so there is nothing to create, update, or delete there. The options that describe an agent stored, built, or orchestrated as a resource in Foundry contradict that.",
+      "source": "Microsoft Learn — What is Microsoft Foundry Agent Service? (https://learn.microsoft.com/en-us/azure/foundry/agents/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_019",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "En Foundry Agent Service, ¿cuál es el papel de un almacén vectorial (vector store) en la búsqueda de archivos?",
+      "question_en": "In Foundry Agent Service, what is the role of a vector store in file search?",
+      "options_es": [
+        "Registra el orden de los mensajes de una conversación para que los turnos posteriores reutilicen ese contexto",
+        "Comprueba cada salida de herramienta contra un esquema esperado antes de que el agente actúe",
+        "Indexa tus archivos para que la búsqueda de archivos los consulte y aporte conocimiento al modelo",
+        "Evalúa las versiones del agente e informa de las regresiones encontradas entre versiones guardadas"
+      ],
+      "options_en": [
+        "It records the order of messages in a conversation so later turns can reuse that context",
+        "It checks every tool output against an expected schema before the agent acts on it",
+        "It indexes your files so file search can query them and add knowledge for the model",
+        "It evaluates agent versions and reports regressions found between saved versions"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un vector store da a la herramienta de búsqueda de archivos la capacidad de buscar en tus archivos, y añadir un archivo aporta al modelo conocimiento más allá de su entrenamiento. Las otras opciones describen funciones que el fragmento no atribuye al almacén vectorial.",
+      "explanation_en": "A vector store gives the file search tool the ability to search your files, and adding a file provides the model with knowledge beyond its training data. The other options describe functions the source does not attribute to a vector store.",
+      "source": "Microsoft Learn — Vector stores for file search in Foundry Agent Service (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/vector-stores) — CC BY 4.0"
+    },
+    {
+      "id": "q450503_020",
+      "skill_id": "sk450503",
+      "type": "multiple_choice",
+      "question_es": "Un agente de soporte debe adaptar sus respuestas a cada persona usuaria que vuelve, aprovechando lo ocurrido en conversaciones anteriores y separadas. ¿Qué capacidad encaja?",
+      "question_en": "A support agent should tailor its answers to each returning user by drawing on what happened in earlier, separate conversations. Which capability fits?",
+      "options_es": [
+        "Un toolbox, que agrupa búsqueda web, búsqueda de archivos y herramientas personalizadas tras un único punto de conexión administrado",
+        "Un almacén vectorial que contiene archivos para la herramienta de búsqueda de archivos",
+        "Streaming, que devuelve resultados parciales a medida que se generan",
+        "Un almacén de memoria que el agente usa para retener información entre sesiones"
+      ],
+      "options_en": [
+        "A toolbox, which groups web search, file search, and custom tools behind a single managed endpoint",
+        "A vector store that holds files for the file search tool",
+        "Streaming, which returns partial results as they are generated",
+        "A memory store that the agent uses to retain information across sessions"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, la memoria permite a los agentes retener información entre sesiones para personalizar respuestas y recordar preferencias; sin memoria, cada conversación empieza de cero. Las otras opciones son capacidades distintas (agrupar herramientas, ofrecer archivos a la búsqueda o cambiar cómo se recibe la respuesta) y ninguna es el mecanismo que la fuente describe para conservar información entre sesiones.",
+      "explanation_en": "According to the source, memory lets agents retain information across sessions so they can personalize responses and recall user preferences; without memory, each conversation starts from scratch. The other options are different capabilities (grouping tools, serving files to search, or changing how a response is received), and none of them is the mechanism the source describes for keeping information across sessions.",
+      "source": "Microsoft Learn — Build with runtime components in Foundry Agent Service (https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_001",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Un estudio de medios necesita subtítulos para un gran volumen de archivos de audio ya grabados y no requiere resultados inmediatos. ¿Qué modalidad de voz a texto encaja mejor?",
+      "question_en": "A media studio needs subtitles for a large volume of audio files that are already recorded, and it doesn't need instant results. Which speech to text mode fits best?",
+      "options_es": [
+        "Transcripción por lotes, con proceso asincrónico de archivos almacenados",
+        "Transcripción en tiempo real, para audio en vivo con resultados al instante",
+        "Transcripción rápida, para obtener el texto de una sola grabación al momento",
+        "Reconocimiento con micrófono, para frases cortas habladas en directo ahora"
+      ],
+      "options_en": [
+        "Batch transcription, with asynchronous processing of stored audio files",
+        "Real-time transcription, for live audio with results delivered instantly",
+        "Fast transcription, for getting the text of a single recording right away",
+        "Microphone recognition, for short phrases spoken live in the moment"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente explica que la transcripción por lotes está diseñada para transcribir grandes cantidades de audio almacenado en archivos, que procesa el audio de forma asincrónica y que sirve para obtener subtítulos de grandes volúmenes de archivos de audio. Eso encaja con un archivo grabado que no necesita resultados inmediatos. Las otras opciones apuntan a audio en vivo o a una sola grabación, lo contrario del gran volumen de archivos almacenados que describe el escenario.",
+      "explanation_en": "The source explains that batch transcription is designed for transcribing large amounts of audio stored in files, that it processes audio asynchronously, and that it suits captions or subtitles for large volumes of audio files. That matches a recorded archive that doesn't need instant results. The other options target live audio or a single recording, the opposite of the large volume of stored files the scenario describes.",
+      "source": "Microsoft Learn — Speech to Text Overview - Speech Service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_002",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Un servicio de mensajería quiere transcribir buzones de voz ya grabados y recibir el resultado en la misma llamada, sin esperar un procesamiento asincrónico. ¿Qué opción de voz a texto encaja?",
+      "question_en": "A messaging service wants to transcribe recorded voicemails and get the result back in the same call, without waiting on asynchronous processing. Which speech to text option fits?",
+      "options_es": [
+        "Transcripción por lotes, que está orientada a grandes volúmenes de archivos y los procesa de forma asincrónica",
+        "Transcripción rápida, que devuelve la transcripción de inmediato en la misma solicitud",
+        "Transcripción en tiempo real, que convierte el audio en directo mientras la gente habla",
+        "Traducción de voz, que convierte el audio hablado a otro idioma de destino"
+      ],
+      "options_en": [
+        "Batch transcription, which processes large sets of audio files asynchronously",
+        "Fast transcription, which returns the text right away in the same request",
+        "Real-time transcription, which converts live audio as people are speaking",
+        "Speech translation, which renders spoken audio into another language"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, la API de transcripción rápida transcribe archivos de audio y devuelve los resultados de forma sincrónica, más rápido que el audio en tiempo real, y la fuente incluye los buzones de voz entre sus casos de uso. Por contraste: la transcripción por lotes es la opción asincrónica, que no encaja con un resultado en la misma llamada; la transcripción en tiempo real está pensada para audio en directo, no para grabaciones; y la traducción de voz cambia de idioma en lugar de limitarse a transcribir.",
+      "explanation_en": "According to the source, the fast transcription API transcribes audio files and returns results synchronously, faster than real-time audio, and the source lists voicemail among its use cases. By contrast: batch transcription is the asynchronous option, which does not fit a result in the same call; real-time transcription is meant for live audio rather than recordings; and speech translation changes the language instead of just transcribing.",
+      "source": "Microsoft Learn — Speech to Text Overview - Speech Service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_003",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Los audios de un hospital tienen mucho ruido ambiental y jerga médica especializada, y el modelo base de voz a texto no basta. ¿Qué indica la documentación que se puede hacer?",
+      "question_en": "A hospital's recordings contain heavy ambient noise and specialized medical jargon, and the base speech to text model falls short. What does the documentation say you can do?",
+      "options_es": [
+        "Entrenar un modelo de custom speech con datos acústicos, de lenguaje y de pronunciación, para ganar precisión",
+        "Cambiar a la transcripción por lotes, porque el procesamiento asincrónico elimina el ruido ambiental de las grabaciones",
+        "Activar la diarización para que el servicio separe el ruido de los hablantes de la grabación",
+        "Usar texto a voz con una voz estándar para que el sistema lea en voz alta los términos médicos"
+      ],
+      "options_en": [
+        "Train a custom speech model with acoustic, language, and pronunciation data for accuracy",
+        "Switch to batch transcription, because asynchronous processing removes ambient noise",
+        "Turn on diarization so the service separates the noise from the speakers in the recording",
+        "Use text to speech with a standard voice so the system reads the medical terms aloud"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, el modelo base puede no ser suficiente si el audio contiene ruido ambiental o jerga específica de un sector; en esos casos se pueden crear y entrenar modelos de custom speech con datos acústicos, de lenguaje y de pronunciación. La transcripción por lotes se describe solo como una forma de procesar grandes volúmenes de audio de manera asincrónica, y la fuente no menciona la diarización ni la síntesis de voz como respuesta a este problema.",
+      "explanation_en": "The source says the base model might not be sufficient if the audio contains ambient noise or industry-specific jargon; in those cases you can create and train custom speech models with acoustic, language, and pronunciation data. Batch transcription is described only as a way to process large volumes of audio asynchronously, and the source does not mention diarization or speech synthesis as a response to this problem.",
+      "source": "Microsoft Learn — What Is Azure Speech? (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_004",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una app de voz a texto escribe mal los nombres de productos y otras palabras poco comunes. ¿Qué función ayuda a sesgar el reconocimiento hacia el vocabulario esperado?",
+      "question_en": "A speech to text app keeps misspelling product names and other uncommon words. Which feature helps bias recognition toward the vocabulary you expect?",
+      "options_es": [
+        "Diarización, que distingue y separa a los distintos hablantes de una grabación de audio",
+        "Listas de frases, que guían al modelo para reconocer términos esperados en el audio",
+        "Detección de idioma, que identifica automáticamente la lengua que se habla en la entrada",
+        "Evaluación de pronunciación, que da opinión sobre la precisión y la fluidez del habla"
+      ],
+      "options_en": [
+        "Diarization, which distinguishes and separates different speakers in an audio recording",
+        "Phrase lists, which guide the model to recognize terms you expect in the audio",
+        "Language detection, which automatically identifies the language being spoken in the input",
+        "Pronunciation assessment, which gives feedback on the accuracy and fluency of speech"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, la función de listas de frases permite dar al modelo de reconocimiento de voz una lista de palabras o frases concretas que probablemente se pronuncien, lo que mejora la precisión con terminología de dominio, nombres propios o palabras poco comunes. Las otras opciones son capacidades distintas (separar hablantes, detectar el idioma, evaluar la pronunciación) y ninguna sirve para indicar al modelo el vocabulario esperado.",
+      "explanation_en": "According to the source, the phrase lists feature lets you give the speech recognition model a list of specific words or phrases likely to be spoken, which improves accuracy for domain-specific terminology, proper nouns, or uncommon words. The other options are different capabilities (separating speakers, detecting the language, assessing pronunciation), and none is meant for telling the model which vocabulary to expect.",
+      "source": "Microsoft Learn — Speech to Text Overview - Speech Service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_005",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Un equipo transcribe grabaciones de reuniones y necesita etiquetar qué persona habla en cada tramo. ¿Qué función de voz a texto sirve para eso?",
+      "question_en": "A team transcribes recorded meetings and needs to label who is speaking in each stretch. Which speech to text feature does that?",
+      "options_es": [
+        "Diarización, útil para grabaciones con varias voces",
+        "Listas de frases, útiles para reforzar el vocabulario de un dominio",
+        "Detección de idioma, útil para audio en un idioma desconocido",
+        "Puntuación automática, útil para añadir signos al texto transcrito"
+      ],
+      "options_en": [
+        "Diarization, useful for recordings with several voices",
+        "Phrase lists, useful for strengthening a domain's vocabulary",
+        "Language detection, useful for audio in an unknown language",
+        "Automatic punctuation, useful for adding marks to the transcript"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuente define la diarización como el proceso de distinguir y separar a distintos hablantes en una grabación, y la señala como útil para transcribir conversaciones y reuniones. Eso es justo etiquetar quién habla en cada tramo. Las otras opciones no se describen como separación de hablantes.",
+      "explanation_en": "The source defines diarization as the process of distinguishing and separating different speakers in an audio recording, and points to it as useful for transcribing conversations and meetings. That is exactly labeling who is speaking in each stretch. The other options are not described as separating speakers.",
+      "source": "Microsoft Learn — Speech to Text Overview - Speech Service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_006",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una plataforma recibe grabaciones multilingües y no sabe de antemano en qué idioma habla cada persona. ¿Qué función de voz a texto resuelve esto?",
+      "question_en": "A platform receives multilingual recordings and can't know ahead of time which language each person speaks. Which speech to text feature solves this?",
+      "options_es": [
+        "Listas de frases, que aportan palabras probables para mejorar el reconocimiento de términos",
+        "Diarización, que separa a los distintos hablantes presentes en una grabación de audio",
+        "Detección de idioma, que identifica automáticamente la lengua hablada en el audio",
+        "Custom speech, que adapta el modelo a un vocabulario o a unas condiciones de audio concretas"
+      ],
+      "options_en": [
+        "Phrase lists, which supply likely words to improve recognition of terms",
+        "Diarization, which separates the different speakers present in an audio recording",
+        "Language detection, which automatically identifies the spoken language",
+        "Custom speech, which adapts the model to specific vocabulary or audio conditions"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, la detección de idioma permite que el modelo de reconocimiento averigüe por sí solo qué lengua suena en el audio, algo útil cuando se desconoce de antemano o el contenido es multilingüe. Como contexto general (no del fragmento), las listas de frases y custom speech sirven para ajustar vocabulario o condiciones de audio, y la diarización distingue hablantes, así que ninguna resuelve el problema del idioma.",
+      "explanation_en": "According to the source, language detection lets the recognition model work out on its own which language is being spoken in the audio, which helps when that language is unknown in advance or the content is multilingual. As general context (not from the fragment), phrase lists and custom speech tune vocabulary or audio conditions, and diarization tells speakers apart, so none of them addresses the language problem.",
+      "source": "Microsoft Learn — Speech to Text Overview - Speech Service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_007",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "¿Para qué sirve el lenguaje de marcado de síntesis de voz (SSML) en Azure Speech?",
+      "question_en": "What is Speech Synthesis Markup Language (SSML) used for in Azure Speech?",
+      "options_es": [
+        "Entrenar modelos de custom speech con audio y transcripciones propias de un dominio",
+        "Etiquetar qué hablante dice cada frase en la transcripción de una grabación",
+        "Dar formato a la respuesta que devuelve Azure Language tras analizar un texto",
+        "Personalizar la voz sintetizada: tono, pausas y velocidad"
+      ],
+      "options_en": [
+        "Training custom speech models with audio and transcripts from a specific domain",
+        "Labeling which speaker says each sentence in the transcript of a recording",
+        "Formatting the response that Azure Language returns after analyzing a text",
+        "Customizing synthesized speech: pitch, pauses, and speaking rate"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, SSML es un lenguaje de marcado basado en XML que sirve para personalizar la salida de texto a voz: permite ajustar el tono, añadir pausas, mejorar la pronunciación, cambiar la velocidad o el volumen y asignar varias voces a un documento. Las otras opciones describen tareas de reconocimiento de voz o de análisis de texto, no de personalizar la salida de texto a voz.",
+      "explanation_en": "According to the source, SSML is an XML-based markup language used to customize text to speech output: it lets you adjust pitch, add pauses, improve pronunciation, change speaking rate or volume, and attribute multiple voices to a single document. The other options describe speech recognition or text analysis tasks, not customizing text to speech output.",
+      "source": "Microsoft Learn — Text to speech overview - Speech service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_008",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere una voz sintética exclusiva de su marca. ¿Qué opción de Azure Speech encaja?",
+      "question_en": "A company wants a synthetic voice that is unique to its brand. Which Azure Speech option fits?",
+      "options_es": [
+        "Voces estándar, que son voces neuronales de alta calidad listas para usar sin crear nada",
+        "Custom speech, que mejora la precisión del reconocimiento para un vocabulario concreto",
+        "Traducción de voz, que genera audio traducido en el idioma de destino que se indique",
+        "Voz personalizada, que incluye el ajuste fino de voz profesional y la voz personal"
+      ],
+      "options_en": [
+        "Standard voices, which are high-quality neural voices ready to use without creating anything",
+        "Custom speech, which improves recognition accuracy for a particular vocabulary",
+        "Speech translation, which produces translated audio in the target language you specify",
+        "Custom voice, which includes professional voice fine-tuning and personal voice"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, además de las voces estándar se pueden crear voces personalizadas únicas para el producto o la marca, y la voz personalizada es un término general que incluye el ajuste fino de voz profesional y la voz personal. Las otras opciones no son la que permite crear una voz propia de la marca.",
+      "explanation_en": "According to the source, in addition to standard voices you can create custom voices that are unique to your product or brand, and custom voice is an umbrella term that includes professional voice fine-tuning and personal voice. The other options are not the one for creating a voice of your own for the brand.",
+      "source": "Microsoft Learn — Text to speech overview - Speech service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_009",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "En Azure Speech, ¿qué permiten generar los eventos de visema del Speech SDK?",
+      "question_en": "In Azure Speech, what do viseme events in the Speech SDK let you generate?",
+      "options_es": [
+        "Subtítulos del audio de una reunión o llamada",
+        "Puntuaciones de precisión y fluidez para la pronunciación de un alumno",
+        "Cambios de tono y pausas en la voz sintetizada de una aplicación",
+        "Datos de animación facial para animar rostros a partir del habla"
+      ],
+      "options_en": [
+        "Captions for the audio of a meeting or call",
+        "Accuracy and fluency scores for a learner's pronunciation",
+        "Pitch changes and pauses in an application's synthesized voice",
+        "Facial animation data to animate faces from speech"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los visemas son las poses clave del habla observada (posición de labios, mandíbula y lengua), y con sus eventos en el Speech SDK se generan datos de animación facial. Ajustar el tono y las pausas se hace con SSML, no con visemas; los otros dos resultados no son lo que generan los eventos de visema.",
+      "explanation_en": "Visemes are the key poses in observed speech (position of the lips, jaw, and tongue), and using viseme events in the Speech SDK you can generate facial animation data. Adjusting pitch and pauses is done with SSML, not with visemes; the other two outputs are not what viseme events generate.",
+      "source": "Microsoft Learn — Text to speech overview - Speech service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_010",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una app de viajes escucha a un turista que habla en un idioma y debe mostrar en pantalla, leer en voz alta o hacer ambas cosas con lo que dice, pero en otro idioma y en tiempo real. ¿Qué capacidad de Azure Speech debe usar?",
+      "question_en": "A travel app listens to a tourist speaking in one language and must show on screen, read aloud, or do both with what they say, but in another language and in real time. Which Azure Speech capability should it use?",
+      "options_es": [
+        "Transcripción por lotes, con procesamiento asincrónico de grandes volúmenes de audio grabado",
+        "Detección de idioma, con identificación de la lengua que se habla en un fragmento de audio",
+        "Evaluación de pronunciación, con valoración de la precisión y la fluidez del habla de una persona",
+        "API estándar de traducción de voz, con salida de texto, audio o ambos"
+      ],
+      "options_en": [
+        "Batch transcription, for asynchronous processing of large volumes of recorded audio",
+        "Language detection, for identifying the language spoken in a piece of audio",
+        "Pronunciation assessment, for rating the accuracy and fluency of a person's speech",
+        "The standard speech translation API, with text output, audio output, or both"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, la traducción de voz usa una API estándar para traducir en tiempo real con salida de texto, de audio o ambas. Eso encaja con una app que escucha en un idioma y debe mostrar o leer en voz alta lo dicho en otro. Las otras tres opciones son capacidades de voz con otro propósito (transcribir en bloque, identificar la lengua o valorar la pronunciación) y no se presentan como la API de traducción.",
+      "explanation_en": "According to the source, speech translation uses one standard API for real-time translation with text output, audio output, or both. That fits an app that listens in one language and must show or read aloud what was said in another. The other three options are speech capabilities with a different purpose (bulk transcription, identifying the language, or assessing pronunciation) and are not presented as the translation API.",
+      "source": "Microsoft Learn — Speech translation overview - Speech service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-translation) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_011",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "En una reunión de negocios los participantes cambian de idioma sin avisar y nadie quiere configurar el idioma de entrada. ¿Qué función de traducción de voz en tiempo real encaja?",
+      "question_en": "In a business meeting, participants switch languages without warning and nobody wants to configure the input language. Which real-time speech translation feature fits?",
+      "options_es": [
+        "Live Interpreter, que identifica de forma continua el idioma hablado y traduce de voz a voz",
+        "La API estándar de traducción de voz, que parte de un idioma de origen que se especifica de antemano",
+        "La transcripción por lotes, que procesa archivos grabados de forma asincrónica y no en vivo",
+        "La traducción de documentos, que traduce archivos conservando su estructura y su formato original"
+      ],
+      "options_en": [
+        "Live Interpreter, which identifies the spoken language and translates speech to speech",
+        "The standard speech translation API, which starts from a source language specified up front",
+        "Batch transcription, which processes recorded files asynchronously rather than live",
+        "Document translation, which translates files while preserving their original structure and format"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento presenta Live Interpreter como la opción de la traducción de voz en tiempo real que identifica de forma continua el idioma hablado sin que haya que fijar un idioma de entrada, y que ofrece traducción de voz a voz con baja latencia. Eso es justo lo que pide el escenario. Las otras opciones fallan por conocimiento general de esos servicios: la API estándar se configura con un idioma de origen, la transcripción por lotes trabaja con grabaciones y no en vivo, y la traducción de documentos opera sobre archivos, no sobre voz en directo.",
+      "explanation_en": "The fragment presents Live Interpreter as the real-time speech translation option that continuously identifies the spoken language without requiring you to set an input language, and that delivers low-latency speech-to-speech translation. That is exactly what the scenario asks for. The other options fail based on general knowledge of those services: the standard API is configured with a source language, batch transcription works on recordings rather than live audio, and document translation operates on files, not live speech.",
+      "source": "Microsoft Learn — Speech translation overview - Speech service (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-translation) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_012",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de estas afirmaciones describe correctamente Azure Translator en Foundry Tools?",
+      "question_en": "Which statement correctly describes Azure Translator in Foundry Tools?",
+      "options_es": [
+        "Es un servicio que reconoce el habla y la transcribe a texto en tiempo real o por lotes",
+        "Es un servicio de lenguaje natural que detecta entidades y opiniones dentro de un texto",
+        "Es un servicio de síntesis que crea voces humanas únicas para la marca de una empresa",
+        "Es un servicio que convierte texto de un idioma a otro mediante modelos neuronales"
+      ],
+      "options_en": [
+        "It is a service that recognizes speech and transcribes it to text in real time or in batches",
+        "It is a natural language service that detects entities and opinions within a text",
+        "It is a synthesis service that creates humanlike voices unique to a company's brand",
+        "It is a service that converts text between languages using neural models"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, Azure Translator en Foundry Tools es un servicio de traducción automática neuronal en la nube, de la familia Foundry Tools, pensado para crear soluciones multilingües. Por eso describe la traducción de texto entre idiomas. Las otras opciones describen capacidades distintas (reconocimiento de voz, análisis de texto y síntesis de voz), que no son traducción.",
+      "explanation_en": "According to the source, Azure Translator in Foundry Tools is a cloud-based neural machine translation service in the Foundry Tools family, meant for building multi-language solutions. That is why it converts text between languages. The other options describe different capabilities (speech recognition, text analysis and speech synthesis), none of which is translation.",
+      "source": "Microsoft Learn — What is Azure Translator in Foundry Tools? (https://learn.microsoft.com/en-us/azure/ai-services/translator/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_013",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una plataforma de soporte debe localizar nombres, direcciones y números de identificación en los chats de sus clientes antes de compartirlos. ¿Qué capacidad de Azure Language encaja?",
+      "question_en": "A support platform must find names, addresses and ID numbers in its customers' chats before sharing them. Which Azure Language capability fits?",
+      "options_es": [
+        "Extracción de frases clave, que obtiene los temas principales y las frases importantes del texto",
+        "Resumen, que condensa la información de un texto o de una conversación en menos líneas",
+        "Detección de PII, que marca datos personales como nombres y direcciones en un texto",
+        "Detección de idioma, que determina en qué idioma se escribió un texto concreto de entrada"
+      ],
+      "options_en": [
+        "Key phrase extraction, which pulls the main topics and important phrases from text",
+        "Summarization, which condenses the information in a text or conversation into fewer lines",
+        "PII detection, which flags personal data such as names and addresses in text",
+        "Language detection, which determines the language a given input text was written in"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, la detección de información de identificación personal (PII) identifica entidades en textos y conversaciones (chats o transcripciones) asociadas a individuos, como los nombres, las direcciones y los identificadores del escenario. Las otras capacidades sirven para otros fines: la extracción de frases clave obtiene temas, el resumen condensa contenido y la detección de idioma solo determina la lengua del texto.",
+      "explanation_en": "According to the source, personally identifiable information (PII) detection identifies entities in text and conversations (chat or transcripts) that are associated with individuals, such as the names, addresses and identifiers in the scenario. The other capabilities serve different purposes: key phrase extraction pulls out topics, summarization condenses content, and language detection only determines the language of the text.",
+      "source": "Microsoft Learn — What is Azure Language in Foundry Tools (https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_014",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "En el resumen de texto de Azure Language, ¿en qué se distingue el resumen abstractivo del extractivo?",
+      "question_en": "In Azure Language text summarization, how does abstractive summarization differ from extractive summarization?",
+      "options_es": [
+        "Selecciona las frases clave del documento y conserva su posición original",
+        "Genera frases nuevas y concisas que no se copian del documento original",
+        "Divide una reunión larga en capítulos con marcas de tiempo para cada tema",
+        "Resume los problemas de los clientes y la resolución en llamadas de soporte"
+      ],
+      "options_en": [
+        "It selects key sentences from the document and preserves their original positions",
+        "It generates new, concise sentences that aren't directly copied from the document",
+        "It splits a long meeting into timestamped chapters for each topic",
+        "It summarizes customer issues and their resolution in support calls"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El resumen abstractivo genera un resumen produciendo frases nuevas, concisas y coherentes que no se copian directamente del documento original. Seleccionar frases clave conservando su posición es el resumen extractivo, y los capítulos con marcas de tiempo y el resumen de incidencias de clientes corresponden al resumen de conversaciones y de centros de llamadas.",
+      "explanation_en": "Abstractive summarization generates a summary by producing new, concise, and coherent sentences or phrases that aren't directly copied from the original document. Selecting key sentences while preserving their positions is extractive summarization, and timestamped chapters and customer-issue summaries belong to conversation and call center summarization.",
+      "source": "Microsoft Learn — What is Azure Language in Foundry Tools (https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_015",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Un bot de reservas debe averiguar si un mensaje pide cancelar o reprogramar una cita y recoger la fecha mencionada. ¿Qué capacidad de Azure Language encaja?",
+      "question_en": "A booking bot must work out whether a message asks to cancel or reschedule, and pick up the date mentioned. Which Azure Language capability fits?",
+      "options_es": [
+        "Análisis de opiniones, que determina si el texto expresa una valoración positiva o negativa",
+        "Comprensión del lenguaje conversacional, que interpreta la petición y sus datos",
+        "Vinculación de entidades, que desambigua entidades y devuelve enlaces a Wikipedia",
+        "Resumen, que condensa en un texto breve el contenido de textos o conversaciones largas"
+      ],
+      "options_en": [
+        "Sentiment analysis, which determines whether the text expresses a positive or negative view",
+        "Conversational language understanding, which interprets the request and its key details",
+        "Entity linking, which disambiguates entities and returns links to Wikipedia",
+        "Summarization, which condenses long texts or conversations into a short text"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la tabla de la fuente, la comprensión del lenguaje conversacional sirve para predecir la intención de las entradas del usuario (cancelar o reprogramar) y extraer información de ellas (la fecha); además es personalizable. El análisis de opiniones determina el sentimiento, la vinculación de entidades desambigua y enlaza con Wikipedia, y el resumen condensa textos o conversaciones largas; ninguna de esas filas cubre la intención.",
+      "explanation_en": "According to the source table, conversational language understanding is the capability for predicting the intention of user inputs (cancel or reschedule) and extracting information from them (the date); it is also customizable. Sentiment analysis determines sentiment, entity linking disambiguates entities and links to Wikipedia, and summarization condenses long texts or conversations; none of those rows covers intent.",
+      "source": "Microsoft Learn — What is Azure Language in Foundry Tools (https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_016",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere un bot de preguntas frecuentes que encuentre la respuesta más adecuada a lo que escriben los usuarios. ¿Qué capacidad de Azure Language encaja?",
+      "question_en": "A company wants an FAQ bot that finds the most suitable answer to what users type. Which Azure Language capability fits?",
+      "options_es": [
+        "Orquestación de flujos de trabajo, que conecta aplicaciones de lenguaje conversacional y respuestas",
+        "Texto de salud, que extrae información médica de documentos clínicos sin crear un modelo",
+        "Respuesta a preguntas, que devuelve la respuesta adecuada a cada consulta del usuario",
+        "Detección de PII, que localiza y oculta información sensible en textos y conversaciones"
+      ],
+      "options_en": [
+        "Orchestration workflow, which connects conversational language understanding and question answering apps",
+        "Text analytics for health, which extracts medical information from clinical documents without a model",
+        "Question answering, which returns the best-fitting reply to each question a user asks",
+        "PII detection, which finds and redacts sensitive information in texts and conversations"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La respuesta a preguntas es una función personalizada que identifica la respuesta más adecuada a las entradas del usuario y se usa en bots y aplicaciones conversacionales, que es justo el caso del bot de preguntas frecuentes. Las otras opciones sirven para conectar aplicaciones, extraer datos médicos u ocultar información sensible, no para elegir la respuesta a una consulta.",
+      "explanation_en": "Question answering is a custom feature that identifies the most suitable answer for user inputs and is typically used in chat bots and conversational apps, which is exactly the FAQ bot case. The other options connect apps, extract medical data or redact sensitive information, none of which is about picking the answer to a user's question.",
+      "source": "Microsoft Learn — What is Azure Language in Foundry Tools (https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_017",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación debe desambiguar las entidades que aparecen en un texto y obtener enlaces a Wikipedia. ¿Qué capacidad de Azure Language le corresponde?",
+      "question_en": "An application must disambiguate the entities that appear in a text and get links to Wikipedia. Which Azure Language capability fits?",
+      "options_es": [
+        "Clasificación de texto personalizada, que asigna documentos a una o varias categorías",
+        "Extracción de frases clave, que obtiene los temas principales y las frases importantes",
+        "Vinculación de entidades, que resuelve a qué entidad concreta alude cada mención",
+        "Detección de idioma, que determina la lengua en la que se escribió un texto concreto"
+      ],
+      "options_en": [
+        "Custom text classification, which assigns documents to one or more categories",
+        "Key phrase extraction, which pulls out the main topics and important phrases",
+        "Entity linking, which works out which specific entity each mention refers to",
+        "Language detection, which determines the language a given text was written in"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En la tabla de decisión de la fuente, la necesidad de desambiguar entidades y obtener enlaces a Wikipedia se asocia a la vinculación de entidades. La clasificación de texto personalizada sirve para clasificar documentos en categorías, la extracción de frases clave para obtener temas y frases importantes, y la detección de idioma para saber en qué lengua está escrito un texto.",
+      "explanation_en": "In the source's decision table, the need to disambiguate entities and get links to Wikipedia is matched to entity linking. Custom text classification is for classifying documents into categories, key phrase extraction is for pulling out main topics and important phrases, and language detection is for finding out which language a text was written in.",
+      "source": "Microsoft Learn — What is Azure Language in Foundry Tools (https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_018",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Al crear agentes de IA, ¿qué aporta el servidor MCP de Azure Language?",
+      "question_en": "When building AI agents, what does the Azure Language MCP server provide?",
+      "options_es": [
+        "Un conjunto de plantillas para entrenar modelos de lenguaje propios",
+        "Una herramienta sin código para crear proyectos y referenciarlos desde aplicaciones",
+        "Un puente estandarizado que conecta agentes de IA con Azure Language",
+        "Un catálogo de modelos de lenguaje listos para desplegar en Foundry"
+      ],
+      "options_en": [
+        "A set of templates for training your own language models",
+        "A no-code tool for creating projects and referencing them from applications",
+        "A standardized bridge that connects AI agents to Azure Language",
+        "A catalog of language models ready to deploy in Foundry"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, el servidor MCP (Model Context Protocol) crea un puente estandarizado que conecta agentes de IA directamente con los servicios de Azure Language mediante protocolos estándar del sector. Las otras opciones describen cosas distintas: plantillas de entrenamiento, una herramienta de proyectos sin código o un catálogo de modelos, y ninguna es un puente para agentes.",
+      "explanation_en": "According to the source, the MCP (Model Context Protocol) server creates a standardized bridge that connects AI agents directly to Azure Language services through industry-standard protocols. The other options describe different things: training templates, a no-code project tool, or a model catalog. None of them is a bridge for agents.",
+      "source": "Microsoft Learn — What is Azure Language in Foundry Tools (https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_019",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "Una app de aprendizaje de idiomas debe valorar cómo de bien hablan los alumnos y darles comentarios al instante para que practiquen. ¿Qué función de Azure Speech usa?",
+      "question_en": "A language-learning app must assess how well learners speak and give them feedback right away so they can practice. Which Azure Speech feature does it use?",
+      "options_es": [
+        "Evaluación de pronunciación, que valora la precisión y la fluidez del audio hablado",
+        "Traducción de voz, que pasa el audio de entrada a otro idioma de destino en tiempo real",
+        "Transcripción rápida, que devuelve de forma sincrónica el texto de un archivo de audio",
+        "Avatar de texto a voz, que crea un vídeo de una persona hablando con voz natural"
+      ],
+      "options_en": [
+        "Pronunciation assessment, which evaluates the accuracy and fluency of spoken audio",
+        "Speech translation, which turns input audio into another target language in real time",
+        "Fast transcription, which synchronously returns the text of an audio file",
+        "Text-to-speech avatar, which creates a video of a person speaking in a natural voice"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La evaluación de pronunciación valora la pronunciación y da retroalimentación sobre la precisión y la fluidez del audio hablado, de modo que quienes aprenden un idioma pueden practicar y mejorar. La traducción de voz, la transcripción rápida y el avatar de texto a voz no evalúan cómo habla la persona.",
+      "explanation_en": "Pronunciation assessment evaluates speech pronunciation and gives feedback on the accuracy and fluency of spoken audio, so language learners can practice and improve. Speech translation, fast transcription, and the text-to-speech avatar don't evaluate how the person speaks.",
+      "source": "Microsoft Learn — What Is Azure Speech? (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450601_020",
+      "skill_id": "sk450601",
+      "type": "multiple_choice",
+      "question_es": "¿Qué produce la función de avatar de texto a voz de Azure Speech?",
+      "question_en": "What does the text-to-speech avatar feature in Azure Speech produce?",
+      "options_es": [
+        "Una transcripción con etiquetas de hablante para cada persona de una grabación de audio",
+        "Un vídeo digital de una persona fotorrealista que habla con una voz natural",
+        "Una voz personalizada entrenada a partir de un puñado de archivos de audio y transcripciones",
+        "Una traducción en tiempo real del audio de entrada a otro idioma de destino indicado"
+      ],
+      "options_en": [
+        "A transcript with speaker labels for each person in an audio recording",
+        "A digital video of a photorealistic human speaking in a natural voice",
+        "A custom voice trained from a handful of audio files and their transcriptions",
+        "A real-time translation of the input audio into another specified target language"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según el fragmento, el avatar de texto a voz convierte texto en un vídeo digital de una persona fotorrealista que habla con una voz de sonido natural, y el vídeo puede sintetizarse de forma asincrónica o en tiempo real. Las otras opciones describen resultados distintos (una transcripción con hablantes, una voz personalizada, una traducción) y ninguna es lo que el fragmento dice que produce el avatar.",
+      "explanation_en": "According to the passage, text-to-speech avatar converts text into a digital video of a photorealistic human speaking with a natural-sounding voice, and the video can be synthesized asynchronously or in real time. The other options describe different outputs (a speaker-labeled transcript, a custom voice, a translation), and none of them is what the passage says the avatar produces.",
+      "source": "Microsoft Learn — What Is Azure Speech? (https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_001",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "¿Qué devuelve la detección de objetos de Image Analysis que va más allá de una simple lista de etiquetas?",
+      "question_en": "What does object detection in Image Analysis return that goes beyond a simple list of tags?",
+      "options_es": [
+        "Una frase que describe toda la escena",
+        "El texto que aparece sobre cada objeto de la imagen",
+        "Una puntuación de confianza para la categoría global de la imagen",
+        "Las coordenadas del cuadro delimitador de cada objeto"
+      ],
+      "options_en": [
+        "A caption sentence describing the whole scene",
+        "The text found on each object in the image",
+        "A confidence score for the image's overall category",
+        "The bounding box coordinates of each object found"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, la detección de objetos es parecida al etiquetado, pero la API devuelve las coordenadas del cuadro delimitador de cada objeto encontrado. Una frase que describe la escena, el texto de los objetos o una puntuación de categoría global no son lo que la fuente describe para esta función.",
+      "explanation_en": "According to the source, object detection is similar to tagging, but the API returns the bounding box coordinates for each object found. A caption sentence, text on the objects, or an overall category score is not what the source describes for this function.",
+      "source": "Microsoft Learn — Object detection using Image Analysis 4.0 (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/concept-object-detection-40) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_002",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación de fotos necesita una descripción de una frase para cada región distinta de una imagen y la ubicación de cada región. ¿Qué función de captioning de Azure Vision en Foundry encaja?",
+      "question_en": "A photo app needs a one-sentence description for each distinct region of a picture, plus the location of each region. Which Azure Vision captioning feature in Foundry fits?",
+      "options_es": [
+        "Caption, que describe cada región con su propio cuadro",
+        "Dense Captions, que describe regiones y las localiza",
+        "Etiquetado, que lista cada región con una frase resumen",
+        "Recorte inteligente, que devuelve una descripción de cada zona"
+      ],
+      "options_en": [
+        "Caption, which describes every region with its own box",
+        "Dense Captions, which describes regions and locates them",
+        "Tagging, which lists each region with a one-sentence summary",
+        "Smart crop, which returns a description of each cropped area"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Dense Captions genera descripciones de una frase de varias regiones de la imagen, además de la imagen completa, y devuelve las coordenadas del cuadro delimitador de cada región. Caption solo genera una descripción de una frase de todo el contenido de la imagen, sin regiones ni cuadros. Ni el etiquetado ni el recorte inteligente sirven para esto, porque no están pensados para generar una descripción de una frase por región.",
+      "explanation_en": "Dense Captions generates one-sentence descriptions of several regions of the image in addition to the whole image, and returns the bounding box coordinates of each region. Caption only generates a one-sentence description of all the image contents, with no regions or boxes. Neither tagging nor smart crop fits, because they are not designed to produce a one-sentence description per region.",
+      "source": "Microsoft Learn — Image captions - Image Analysis 4.0 (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/concept-describe-images-40) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_003",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un banco digitaliza contratos en papel con anotaciones hechas a mano y necesita el contenido como texto que se pueda editar. ¿Qué capacidad de Azure Vision encaja con esa necesidad?",
+      "question_en": "A bank digitizes paper contracts with handwritten annotations and needs the content as editable text. Which Azure Vision capability fits that need?",
+      "options_es": [
+        "Read OCR, que extrae texto impreso y manuscrito",
+        "Detección de objetos, que devuelve un cuadro por cada palabra escrita",
+        "Subtítulos de imagen, que resumen la página en una frase",
+        "Recorte inteligente, que ajusta la página a su zona de interés"
+      ],
+      "options_en": [
+        "Read OCR, which extracts printed and handwritten text",
+        "Object detection, which returns a box around each written word",
+        "Image captions, which summarize the page in one sentence",
+        "Smart crop, which trims the page to its area of interest"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, el motor OCR Read extrae texto impreso y manuscrito, incluidos idiomas y estilos de escritura mezclados, que es justo lo que pide el banco. Las otras opciones describen análisis de imagen (cuadros por objeto, resúmenes de la página, recortes) y ninguna consiste en extraer el texto del documento.",
+      "explanation_en": "According to the source, the Read OCR engine extracts printed and handwritten text, including mixed languages and writing styles, which is exactly what the bank needs. The other options describe image analysis (boxes around objects, page summaries, crops), and none of them consists of extracting the text from the document.",
+      "source": "Microsoft Learn — OCR - Optical Character Recognition (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview-ocr) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_004",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál es el principal beneficio práctico de aplicar OCR a facturas y formularios escaneados?",
+      "question_en": "What is the main practical benefit of applying OCR to scanned invoices and forms?",
+      "options_es": [
+        "Traduce cada factura al idioma de quien la lee",
+        "Reduce la necesidad de teclear los datos a mano",
+        "Revisa cada factura en busca de contenido adulto o inseguro",
+        "Crea diseños de factura nuevos a partir de un texto"
+      ],
+      "options_en": [
+        "It translates each invoice into the reader's language",
+        "It reduces the need to type the data in by hand",
+        "It checks each invoice for adult or unsafe content",
+        "It creates new invoice layouts from a text prompt"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente indica que el OCR extrae el texto de imágenes y documentos como formularios y facturas, y que esta capacidad elimina o reduce de forma significativa la entrada manual de datos. Traducir, moderar contenido o generar diseños no se describen como función del OCR.",
+      "explanation_en": "The source says OCR extracts text from images and documents such as forms and invoices, and that this capability eliminates or significantly reduces manual data entry. Translating, moderating content or generating layouts is not described as an OCR function.",
+      "source": "Microsoft Learn — OCR - Optical Character Recognition (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview-ocr) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_005",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un modelo con visión responde con una descripción genérica a «¿Qué hay en esta imagen?» ante la foto de un coche dañado, pero una aseguradora necesita detalles útiles para un siniestro. ¿Qué técnica de prompt ayuda más?",
+      "question_en": "A vision-enabled model gives a generic description when asked \"What is in this image?\" about a photo of a damaged car, but an insurer needs details useful for a claim. Which prompt technique helps most?",
+      "options_es": [
+        "Acortar el prompt al máximo para que haya menos que interpretar",
+        "Subir la resolución de la imagen sin cambiar el prompt",
+        "Pedir una descripción genérica de todo lo que hay en la escena",
+        "Asignar al modelo una tarea concreta en el prompt"
+      ],
+      "options_en": [
+        "Make the prompt as short as possible so there is less to interpret",
+        "Increase the image resolution without changing the prompt",
+        "Ask for a generic description of everything in the scene",
+        "Give the model a specific task to do in the prompt"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, dar al modelo una tarea específica que seguir es una forma de afinar la respuesta. Acortar el prompt, pedir otra descripción genérica o subir la resolución sin cambiar el prompt no le asignan ninguna tarea concreta, así que no orientan la respuesta hacia lo que necesita la aseguradora.",
+      "explanation_en": "According to the source, giving the model a specific task to follow is one way to sharpen the response. Shortening the prompt, asking for another generic description, or raising the image resolution without changing the prompt does not assign any concrete task, so none of them steers the answer toward what the insurer needs.",
+      "source": "Microsoft Learn — Image prompt engineering techniques (https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/gpt-4-v-prompt-engineering) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_006",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "¿Cuál de estos resultados podría devolver la función de etiquetado pero no la de detección de objetos, por no poder localizarse con un cuadro delimitador?",
+      "question_en": "Which of these results could the tagging function return but the object detection function could not, because it cannot be localized with a bounding box?",
+      "options_es": [
+        "Las coordenadas en píxeles de un perro en la foto",
+        "La posición de una persona de pie en primer plano",
+        "Un cuadro alrededor de cada computadora portátil de un escritorio",
+        "Un término contextual como interior para la escena"
+      ],
+      "options_en": [
+        "The pixel coordinates of a dog in the photo",
+        "The position of a person standing in the foreground",
+        "A box around each laptop on an office desk",
+        "A contextual term such as indoor for the scene"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, la función de detección de objetos solo encuentra objetos y seres vivos, mientras que la función de etiquetado también puede incluir términos contextuales como «interior», que no se pueden localizar con cuadros delimitadores. Un perro o una persona son seres vivos que la detección devuelve con sus coordenadas, y una computadora portátil es igualmente un objeto que admite un cuadro delimitador. Por eso solo el término contextual es exclusivo del etiquetado.",
+      "explanation_en": "According to the source, the object detection function only finds objects and living things, while the tag function can also include contextual terms like indoor, which can't be localized with bounding boxes. A dog or a person is a living thing that detection returns with coordinates, and a laptop is likewise an object that can be given a bounding box. That is why only the contextual term is exclusive to tagging.",
+      "source": "Microsoft Learn — Object detection using Image Analysis 4.0 (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/concept-object-detection-40) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_007",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una empresa de fotos de archivo quiere que los clientes encuentren imágenes emparejando consultas de texto con las imágenes por cercanía semántica, sin etiquetas ni otros metadatos. ¿Qué enfoque ofrece Image Analysis?",
+      "question_en": "A stock-photo company wants customers to find pictures by matching text queries to images by semantic closeness, without tags or other metadata. Which approach does Image Analysis offer?",
+      "options_es": [
+        "Subtítulos densos, que describen regiones dentro de una imagen",
+        "Embeddings multimodales, que vinculan texto e imágenes",
+        "Recorte inteligente, que reordena las imágenes por proporción",
+        "Detección de rostros, que asocia cada foto con un nombre"
+      ],
+      "options_en": [
+        "Dense captions, which describe regions inside one image",
+        "Multimodal embeddings, which link text and images",
+        "Smart crop, which reorders images by their aspect ratio",
+        "Face detection, which links each photo to a person's name"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, las APIs de embeddings multimodales convierten imágenes y consultas de texto en vectores y emparejan las imágenes con el texto según su cercanía semántica. Así se busca en un conjunto de imágenes con texto, sin etiquetas ni otros metadatos. Los subtítulos densos, el recorte inteligente y la detección de rostros analizan o editan imágenes individuales y no emparejan consultas de texto con imágenes por cercanía semántica.",
+      "explanation_en": "According to the source, the multimodal embeddings APIs convert images and text queries to vectors and match images to the text based on semantic closeness. This lets you search a set of images with text, without image tags or other metadata. Dense captions, smart crop and face detection analyze or edit individual images and do not match text queries to images by semantic closeness.",
+      "source": "Microsoft Learn — What is Image Analysis? (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview-image-analysis) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_008",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un sitio de noticias debe generar miniaturas de varias formas a partir de una foto sin perder al sujeto principal. ¿Qué devuelve a la aplicación la capacidad de recorte inteligente al analizar la imagen?",
+      "question_en": "A news site must produce thumbnails of several shapes from one photo while keeping the main subject in view. What does the smart crop capability return to the application when it analyzes the image?",
+      "options_es": [
+        "Una miniatura ya recortada y guardada en cada proporción pedida",
+        "Una lista de etiquetas con la mejor forma para la foto",
+        "Las coordenadas de la zona de interés para una proporción",
+        "Una lista de objetos detectados con su nivel de confianza"
+      ],
+      "options_en": [
+        "A finished thumbnail file already saved in each requested shape",
+        "A list of tags describing the best shape for the photo",
+        "Coordinates of the area of interest for a given aspect ratio",
+        "A list of detected objects with confidence scores"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El recorte inteligente analiza el contenido de la imagen y devuelve las coordenadas de la zona de interés que encaja con una proporción indicada; después es la aplicación que llama la que modifica la imagen original como desee. Por eso no es una miniatura ya guardada. Una lista de etiquetas describe el contenido sin dar coordenadas de recorte, y una lista de objetos con confianza corresponde a la detección de objetos, no a la zona de interés para una proporción.",
+      "explanation_en": "Smart crop analyzes the contents of the image and returns the coordinates of the area of interest that matches a specified aspect ratio, and the calling application then modifies the original image as desired. That is why the answer is not a finished thumbnail file. A list of tags describes content without crop coordinates, and a list of detected objects with confidence scores belongs to object detection, not to the area of interest for an aspect ratio.",
+      "source": "Microsoft Learn — What is Image Analysis? (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview-image-analysis) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_009",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un equipo usa la detección de rostros de Azure Vision, pero ahora necesita identificación facial y detección de pose. ¿Qué servicio ofrece ese análisis más detallado?",
+      "question_en": "A team uses Azure Vision face detection but now needs facial identification and pose detection. Which service gives that more detailed analysis?",
+      "options_es": [
+        "Dense Captions, que describe cada rostro en una frase",
+        "El motor Read OCR, que lee el nombre de una credencial",
+        "La API Face dedicada, que se centra en los rostros",
+        "Recorte inteligente, que centra el encuadre en cada rostro"
+      ],
+      "options_en": [
+        "Dense Captions, which describes each face in a sentence",
+        "The Read OCR engine, which scans the name on a badge",
+        "The dedicated Face API, which focuses on faces",
+        "Smart crop, which centers the frame on each face"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que, además de la detección de rostros de Azure Vision, se puede usar la API Face dedicada, que ofrece un análisis más detallado, como la identificación facial y la detección de pose. Las otras opciones son capacidades distintas de Image Analysis: descripciones de objetos, lectura de texto o recorte del área de interés.",
+      "explanation_en": "The source states that, besides Azure Vision face detection, you can use the dedicated Face API, which provides more detailed analysis, such as facial identification and pose detection. The other options are different Image Analysis capabilities: object captions, text reading or cropping to the area of interest.",
+      "source": "Microsoft Learn — What is Image Analysis? (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview-image-analysis) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_010",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un usuario escribe en una aplicación de generación de imágenes un prompt que el servicio reconoce como contenido dañino. ¿Qué hace el servicio?",
+      "question_en": "A user types a prompt into an image-generation app that the service recognizes as harmful content. What does the service do?",
+      "options_es": [
+        "Genera una imagen alternativa más segura",
+        "Genera la imagen y la marca para revisión humana",
+        "Genera la imagen con las zonas dañinas difuminadas",
+        "Rechaza la solicitud y no devuelve imagen"
+      ],
+      "options_en": [
+        "It generates a safer alternative image",
+        "It generates the image and flags it for human review",
+        "It generates the image with harmful areas blurred",
+        "It blocks the request and returns no image"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las API de imágenes incluyen un filtro de moderación de contenido: si el servicio reconoce el prompt como contenido dañino, no genera ninguna imagen, de modo que la solicitud queda sin resultado. La fuente no describe imágenes alternativas, revisión humana ni zonas difuminadas, así que esas opciones no son lo que hace el servicio.",
+      "explanation_en": "The image APIs include a content moderation filter: if the service recognizes the prompt as harmful content, it doesn't generate an image, so the request ends with no result. The source describes no alternative images, human review or blurred areas, so those options are not what the service does.",
+      "source": "Microsoft Learn — How to Use Image Generation Models from OpenAI (https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_011",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un usuario sube una foto y pide con texto que se cambie una parte, en lugar de crear una imagen desde cero. ¿Qué capacidad aplica?",
+      "question_en": "A user uploads a photo and asks, in text, for part of it to be changed instead of creating a picture from nothing. Which capability applies?",
+      "options_es": [
+        "Edición de imágenes, que modifica una imagen con un prompt",
+        "Generación de imágenes, que crea una imagen nueva con un prompt",
+        "Subtítulos de imagen, que describen una foto en una frase",
+        "Detección de objetos, que localiza los objetos de una foto"
+      ],
+      "options_en": [
+        "Image editing, which modifies an image from a prompt",
+        "Image generation, which creates a new image from a prompt",
+        "Image captioning, which describes a photo in a sentence",
+        "Object detection, which locates objects in a photo"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, la edición de imágenes permite modificar imágenes existentes a partir de los prompts de texto que se indican, que es justo lo que pide el usuario con su foto. Generar una imagen crea una nueva desde cero, y los subtítulos y la detección de objetos describen o localizan contenido, pero no son edición de imágenes a partir de un prompt.",
+      "explanation_en": "According to the source, image editing lets you modify existing images based on the text prompts you provide, which is exactly what the user wants to do with their photo. Image generation creates a new picture from scratch, and captioning and object detection describe or locate content, but they are not image editing from a prompt.",
+      "source": "Microsoft Learn — How to Use Image Generation Models from OpenAI (https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_012",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una empresa necesita extraer texto de documentos escaneados y digitales. ¿Qué opción recomienda la fuente?",
+      "question_en": "A company needs to extract text from scanned and digital documents. Which option does the source recommend?",
+      "options_es": [
+        "OCR de análisis de imagen general, para fotos con texto",
+        "Dense Captions, que resumen cada página en una frase",
+        "Document Intelligence Read OCR, optimizado para documentos",
+        "Embeddings multimodales, que convierten páginas en vectores"
+      ],
+      "options_en": [
+        "General image-analysis OCR, for photos that contain text",
+        "Dense Captions, which summarize each page as a sentence",
+        "Document Intelligence Read OCR, optimized for documents",
+        "Multimodal embeddings, which turn each page into vectors"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La fuente indica que, para extraer texto de documentos escaneados y digitales, se usa Document Intelligence Read OCR, que incluye una versión de Read optimizada para documentos como motor de OCR. Las demás opciones no aparecen en ese fragmento como recomendación para este caso.",
+      "explanation_en": "The source says that to extract text from scanned and digital documents, you use Document Intelligence Read OCR, which includes a document-optimized version of Read as its OCR engine. The other options do not appear in that passage as a recommendation for this case.",
+      "source": "Microsoft Learn — OCR - Optical Character Recognition (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview-ocr) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_013",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un minorista quiere que un modelo con visión genere descripciones coherentes y acordes con su marca a partir de fotos de sus productos. ¿Qué práctica de prompt ayuda más?",
+      "question_en": "A retailer wants a vision-enabled model to generate consistent, on-brand product descriptions from photos. What prompt practice helps most?",
+      "options_es": [
+        "Usar un prompt genérico como «¿Qué hay en esta imagen?»",
+        "Incluir en el prompt el contexto del catálogo y el tono",
+        "Escribir un prompt largo con muchas instrucciones sin relación",
+        "Pedir una descripción muy larga sin importar el catálogo"
+      ],
+      "options_en": [
+        "Use a generic prompt such as \"What is in this image?\"",
+        "Give the catalog context and the tone in the prompt",
+        "Write a long prompt with many unrelated instructions",
+        "Ask for a very long description regardless of catalog"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Según la fuente, el contexto ayuda a mejorar la respuesta del modelo: si se trabaja en descripciones de imágenes para un catálogo de productos, el prompt debe reflejarlo de forma clara y concisa. Las otras opciones no aportan ese contexto del catálogo, por lo que no aprovechan esta práctica.",
+      "explanation_en": "According to the source, context helps improve the model's feedback: when working on image descriptions for a product catalog, the prompt should reflect that in a clear and concise way. The other options add no catalog context, so they do not apply this practice.",
+      "source": "Microsoft Learn — Image prompt engineering techniques (https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/gpt-4-v-prompt-engineering) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_014",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un modelo con visión responde «Lo siento, no puedo proporcionar esa información» a un prompt breve sobre la foto de una mesa con comida. ¿Qué enfoque ayuda a obtener una respuesta útil?",
+      "question_en": "A vision-enabled model replies \"Sorry, I can't provide that information\" to a short prompt about a photo of a dinner table. Which approach helps produce a useful answer?",
+      "options_es": [
+        "Desactivar los filtros de contenido del recurso",
+        "Ampliar el modelo a más parámetros",
+        "Reformular el prompt y volver a preguntar",
+        "Cambiar a un modelo de generación de imágenes"
+      ],
+      "options_en": [
+        "Turn off the content filters on the resource",
+        "Scale the model up to more parameters",
+        "Rephrase the prompt and ask again",
+        "Switch to an image-generation model instead"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Ante una negativa del modelo, la fuente indica que se puede ajustar la entrada para generar una respuesta más adecuada, y su ejemplo continúa con un nuevo prompt. Reformular el prompt y volver a preguntar encaja con eso. Desactivar filtros, ampliar el modelo o cambiar a otro tipo de modelo no son acciones que describa.",
+      "explanation_en": "When a model refuses, the source says you can tweak the input to generate a more appropriate response, and its example moves forward with a new prompt. Rephrasing the prompt and asking again fits that. Turning off filters, scaling up the model or switching model type are not actions it describes.",
+      "source": "Microsoft Learn — Image prompt engineering techniques (https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/gpt-4-v-prompt-engineering) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_015",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una organización con requisitos estrictos de seguridad y gobernanza de datos quiere ejecutar OCR en su propio entorno local. ¿Qué puede usar?",
+      "question_en": "An organization with strict security and data governance requirements wants to run OCR in its own local environment. What can it use?",
+      "options_es": [
+        "El contenedor Docker de Read, desplegado en local",
+        "Solo la API en la nube, porque OCR no corre en local",
+        "El contenedor Docker de Face, desplegado en local",
+        "Un modelo de generación de imágenes, desplegado en local"
+      ],
+      "options_en": [
+        "The Read Docker container, deployed on-premises",
+        "Only the cloud API, since OCR can't run locally",
+        "The Face Docker container, deployed on-premises",
+        "An image generation model, deployed on-premises"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, el contenedor Docker de Read permite desplegar las capacidades de OCR en un entorno local, y los contenedores son muy adecuados para requisitos específicos de seguridad y gobernanza de datos. La opción 2 se contradice con eso, porque existe un contenedor de Read para uso en local. Las opciones 3 y 4 corresponden a otras capacidades (análisis facial y generación de imágenes), no a OCR.",
+      "explanation_en": "According to the source, the Read Docker container lets you deploy OCR capabilities in your own local environment, and containers are great for specific security and data governance requirements. Option 2 contradicts this, since a Read container exists for on-premises use. Options 3 and 4 are other capabilities (face analysis and image generation), not OCR.",
+      "source": "Microsoft Learn — OCR - Optical Character Recognition (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview-ocr) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_016",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación debe leer la descripción que el modelo da de cada foto y pasarla a otro programa. ¿Qué práctica de prompt lo facilita?",
+      "question_en": "An application must read the model's description of each photo and feed it into another program. Which prompt practice makes that easier?",
+      "options_es": [
+        "Pedir una respuesta lo más larga posible",
+        "Indicar con claridad el formato, como JSON",
+        "Ocultar la tarea para que el modelo elija el formato",
+        "No incluir ejemplos ni contexto en el prompt"
+      ],
+      "options_en": [
+        "Ask for as long an answer as possible",
+        "Clearly state the output format, such as JSON",
+        "Hide the task so the model chooses a format freely",
+        "Include no examples and no context in the prompt"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente recomienda definir el formato de salida, por ejemplo markdown, JSON o HTML, de modo que la respuesta tenga una estructura predecible que otro programa pueda leer. Las otras opciones no definen ningún formato: pedir solo longitud o esconder la tarea deja la forma de la respuesta al azar, y la propia fuente aconseja añadir ejemplos y contexto, no quitarlos.",
+      "explanation_en": "The source recommends defining the output format, such as markdown, JSON or HTML, so the response has a predictable structure another program can read. The other options define no format: requesting length alone or hiding the task leaves the shape of the answer to chance, and the source itself advises adding examples and context rather than removing them.",
+      "source": "Microsoft Learn — Image prompt engineering techniques (https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/gpt-4-v-prompt-engineering) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_017",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un desarrollador quiere mostrar a un modelo con visión qué tipo de respuesta espera. ¿Qué práctica de las guías de prompts ayuda?",
+      "question_en": "A developer wants to show a vision-enabled model what kind of answer is expected. Which practice from the prompt guidelines helps?",
+      "options_es": [
+        "Eliminar cualquier descripción del tipo de respuesta",
+        "Pedir al modelo que adivine qué respuesta se espera",
+        "Dividir la petición en muchas preguntas sin relación",
+        "Incluir en el prompt ejemplos de respuestas"
+      ],
+      "options_en": [
+        "Remove any description of the response type",
+        "Ask the model to guess what kind of answer is wanted",
+        "Split the request into many unrelated questions",
+        "Include sample answers in the prompt"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La guía recomienda añadir ejemplos que representen el tipo de respuestas que se buscan, es decir, incluir respuestas de muestra en el prompt. Quitar la descripción del tipo de respuesta o pedir al modelo que adivine lo esperado va en sentido contrario a mostrarle lo que se busca. La guía sí propone dividir una petición compleja en subobjetivos manejables, pero no en muchas preguntas sin relación.",
+      "explanation_en": "The guideline recommends adding examples that represent the type of responses you're looking for, which means including sample answers in the prompt. Removing the description of the response type or asking the model to guess what is wanted does the opposite of showing it what you are after. The guide does suggest breaking a complex request into manageable sub-goals, but not into many unrelated questions.",
+      "source": "Microsoft Learn — Image prompt engineering techniques (https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/gpt-4-v-prompt-engineering) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_018",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación global muestra subtítulos de fotos de usuarios y quiere evitar términos de género como «hombre» o «mujer» en los resultados. ¿Qué puede hacer el desarrollador?",
+      "question_en": "A global app shows captions of user photos and wants to avoid gender terms like man or woman in the results. What can the developer do?",
+      "options_es": [
+        "Usar Dense Captions, que generan descripciones por región",
+        "Aplicar OCR para extraer el texto de la imagen",
+        "Pedir subtítulos neutros en género, que usan «persona»",
+        "Usar etiquetas (tags) en lugar de subtítulos"
+      ],
+      "options_en": [
+        "Use Dense Captions, which generate region-level descriptions",
+        "Apply OCR to extract the text from the image",
+        "Request gender-neutral captions, which use \"person\"",
+        "Use tags instead of captions"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Por defecto los subtítulos contienen términos de género, pero se puede optar por sustituirlos por «persona» y recibir subtítulos neutros en género. La fuente solo describe esa opción; no presenta Dense Captions, el OCR ni las etiquetas como alternativa para evitar los términos de género, así que no responden a lo que pide la aplicación.",
+      "explanation_en": "By default captions contain gender terms, but you can choose to replace them with \"person\" and receive gender-neutral captions. The source describes only that option; it does not present Dense Captions, OCR or tags as an alternative for avoiding gender terms, so they do not meet what the app needs.",
+      "source": "Microsoft Learn — Image captions - Image Analysis 4.0 (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/concept-describe-images-40) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_019",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Una aplicación de diseño quiere que el usuario vea vistas previas intermedias de una imagen mientras el modelo todavía la está creando. ¿Qué enfoque encaja?",
+      "question_en": "A design app wants users to see intermediate previews of an image while the model is still creating it. Which approach fits?",
+      "options_es": [
+        "Activar el streaming de imágenes parciales",
+        "Devolver solo la imagen final cuando termine",
+        "Mostrar un indicador de carga sin imágenes parciales",
+        "Bajar la resolución de la imagen final"
+      ],
+      "options_en": [
+        "Enable streaming to get partial images",
+        "Return only the final image when done",
+        "Show a generic spinner with no partial images",
+        "Lower the resolution of the final image"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la fuente, el streaming entrega imágenes intermedias antes del resultado definitivo, lo que da al usuario una respuesta visual más rápida y permite ver cómo avanza la generación. Esperar a la imagen final, mostrar solo un indicador de carga o bajar la resolución no entregan ninguna vista previa intermedia.",
+      "explanation_en": "Per the source, streaming delivers intermediate images ahead of the finished result, so users get quicker visual feedback and can follow how the generation is progressing. Waiting for the final image, showing only a loading spinner, or lowering the resolution does not deliver any intermediate preview.",
+      "source": "Microsoft Learn — How to Use Image Generation Models from OpenAI (https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e) — CC BY 4.0"
+    },
+    {
+      "id": "q450602_020",
+      "skill_id": "sk450602",
+      "type": "multiple_choice",
+      "question_es": "Un minorista aplica detección de objetos a la foto de una estantería con muchos tipos de refrescos y no logra saber la marca de cada botella. ¿Qué puede usar para obtener la información de marca?",
+      "question_en": "A retailer runs object detection on a photo of a shelf with many soda types and can't tell the brand of each bottle. What can it use to get brand information?",
+      "options_es": [
+        "Usar la función de detección de marcas",
+        "Usar la función de subtítulo para toda la estantería",
+        "Usar el recorte inteligente para acercarse a cada botella",
+        "Usar la detección de personas junto a cada botella"
+      ],
+      "options_en": [
+        "Use the Brand detection feature",
+        "Use the Caption feature for the whole shelf",
+        "Use smart crop to zoom in on each bottle",
+        "Use people detection around each bottle"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La detección de objetos no diferencia los objetos por marca o nombre de producto, pero la información de marca de una imagen se obtiene con la función de detección de marcas. El fragmento solo señala la detección de marcas para obtener la marca, así que subtítulos, recorte inteligente y detección de personas no son la opción que indica.",
+      "explanation_en": "Object detection does not differentiate objects by brand or product name, but you can get brand information from an image by using the Brand detection feature. The passage points only to Brand detection for brand information, so captions, smart crop and people detection are not the option it names.",
+      "source": "Microsoft Learn — Object detection using Image Analysis 4.0 (https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/concept-object-detection-40) — CC BY 4.0"
     }
   ]
 }

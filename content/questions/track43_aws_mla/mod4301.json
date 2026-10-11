@@ -824,6 +824,834 @@
       "explanation_en": "`round(similarity, 4)` rounds the cosine similarity (here 1/√2 ≈ 0.7071) to 4 decimal places, a common precision level when comparing embedding vectors.",
       "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
       "expected_time_ms": 35000
+    },
+    {
+      "id": "q430101_001",
+      "skill_id": "sk430101",
+      "type": "multiple_choice",
+      "question_es": "Un crawler de AWS Glue tiene tres clasificadores personalizados en su lista, y los datos cumplen las reglas del primero y también las del tercero. ¿Cuál determina el esquema de la tabla?",
+      "question_en": "An AWS Glue crawler has three custom classifiers in its list, and the data satisfies the rules of both the first and the third. Which classifier determines the table's schema?",
+      "options_es": [
+        "El tercero, porque los clasificadores posteriores sobrescriben el esquema de los anteriores",
+        "El primero de la lista, porque los demás se omiten",
+        "Uno integrado, porque los integrados siempre se ejecutan antes que los personalizados",
+        "El que infiera el mayor número de columnas, porque ofrece un esquema más completo"
+      ],
+      "options_en": [
+        "The third one, because later classifiers overwrite the schema chosen by earlier ones",
+        "The first one in the list, because the rest are skipped",
+        "A built-in one, because built-in classifiers always run before custom ones",
+        "Whichever one infers the largest number of columns, because it gives a fuller schema"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los clasificadores personalizados se evalúan en el orden que definió el equipo, y el primero que reconoce la estructura de los datos fija el esquema; los siguientes de la lista se omiten. Por eso no gana el tercero ni el que detecte más columnas. Los clasificadores integrados solo se prueban si ningún personalizado reconoce los datos.",
+      "explanation_en": "Custom classifiers are evaluated in the order the team defined, and the first one that recognizes the structure of the data sets the schema; the rest of the list is skipped. That rules out the third classifier and any column-count criterion. Built-in classifiers are only tried when no custom classifier recognizes the data.",
+      "source": "AWS — Using crawlers to populate the Data Catalog (https://docs.aws.amazon.com/glue/latest/dg/add-crawler.html)"
+    },
+    {
+      "id": "q430101_002",
+      "skill_id": "sk430101",
+      "type": "multiple_choice",
+      "question_es": "Según la documentación de AWS Glue, ¿cómo se registra en el Data Catalog un origen de streaming que va a consumir un trabajo ETL?",
+      "question_en": "According to the AWS Glue documentation, how is a streaming source that an ETL job will consume registered in the Data Catalog?",
+      "options_es": [
+        "Programando un disparador que genere la tabla cuando llegue el primer evento",
+        "Dejando que el script de Spark cree la definición mientras extrae los datos",
+        "Cargando una copia de los eventos en la tabla del catálogo para describirlos",
+        "Definiendo la tabla a mano e indicando las propiedades del flujo"
+      ],
+      "options_en": [
+        "By scheduling a trigger that creates the table when the first event arrives",
+        "By letting the Spark script create the definition while it extracts the data",
+        "By loading a copy of the events into the catalog table to describe them",
+        "By defining the table manually and supplying the stream's properties"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La documentación distingue dos casos: en los almacenes de datos un crawler rellena el catálogo, pero en los orígenes de streaming la tabla se define a mano con las propiedades del flujo. Los disparadores solo inician ejecuciones de trabajos, el script de Spark se ocupa de extraer, transformar y cargar datos, y las tablas del catálogo guardan metadatos, no datos.",
+      "explanation_en": "The documentation separates two cases: for data stores a crawler populates the catalog, but for streaming sources the table is defined by hand together with the stream's properties. Triggers only start job runs, the Spark script handles extracting, transforming and loading data, and catalog tables hold metadata rather than data.",
+      "source": "AWS — AWS Glue concepts (https://docs.aws.amazon.com/glue/latest/dg/components-key-concepts.html)"
+    },
+    {
+      "id": "q430101_003",
+      "skill_id": "sk430101",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere que Amazon Athena reconozca y consulte correctamente las tablas que crea un crawler sobre una estructura de carpetas de S3 con datos de varios esquemas distintos. ¿Cómo debe configurar el crawler?",
+      "question_en": "A team wants Amazon Athena to correctly recognize and query the tables that a crawler builds over an S3 folder structure containing data with several distinct schemas. How should the crawler be configured?",
+      "options_es": [
+        "Definiendo una ruta de inclusión independiente por cada esquema distinto",
+        "Programándolo para que se ejecute con más frecuencia que ahora",
+        "Usando una única ruta de inclusión en la raíz del bucket para todo",
+        "Reuniendo todos los objetos bajo un mismo prefijo para que Athena los lea juntos"
+      ],
+      "options_en": [
+        "By defining its own include path for every distinct schema",
+        "By scheduling the crawler to run more often than it does now",
+        "By using a single include path at the bucket root for everything",
+        "By gathering all the objects under one prefix so Athena reads them together"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Athena asocia cada prefijo de S3, con todos sus objetos, a una tabla, y no separa objetos de esquemas distintos que comparten prefijo. Por eso el crawler necesita una ruta de inclusión propia para cada esquema. Ejecutarlo más a menudo, usar una sola ruta en la raíz del bucket o juntar todo bajo un prefijo no cumplen ese requisito de separar los esquemas.",
+      "explanation_en": "Athena maps each S3 prefix, with all of its objects, to one table, and it does not separate objects with different schemas that share a prefix. That is why the crawler needs its own include path for each schema. Running it more often, using one path at the bucket root, or putting everything under one prefix does not meet that need to keep the schemas apart.",
+      "source": "AWS — Using crawlers to populate the Data Catalog (https://docs.aws.amazon.com/glue/latest/dg/add-crawler.html)"
+    },
+    {
+      "id": "q430101_004",
+      "skill_id": "sk430101",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de plataforma de datos necesita definir quién puede ver cada base de datos y cada tabla del AWS Glue Data Catalog, con un nivel de detalle fino. ¿Qué servicio relacionado encaja?",
+      "question_en": "A data platform team needs to define who can see each database and table in the AWS Glue Data Catalog, down to a fine level of detail. Which related service fits?",
+      "options_es": [
+        "AWS Glue DataBrew, una herramienta visual para limpiar y normalizar datos sin código",
+        "AWS Lake Formation, un servicio que gestiona el acceso a recursos del catálogo",
+        "AWS Glue Studio, una interfaz gráfica para crear y vigilar trabajos de integración",
+        "Amazon Athena, un servicio para consultar los datos ya catalogados"
+      ],
+      "options_en": [
+        "AWS Glue DataBrew, a visual tool for cleaning and normalizing data without code",
+        "AWS Lake Formation, a service that manages access to catalog resources",
+        "AWS Glue Studio, a graphical interface for building and monitoring integration jobs",
+        "Amazon Athena, a service for querying data that is already cataloged"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El fragmento presenta AWS Lake Formation como el servicio que controla el acceso, con detalle fino, a los recursos del Data Catalog, que es justo lo que pide el equipo. DataBrew aparece en la fuente como una herramienta de preparación visual de datos. Glue Studio sirve para crear y vigilar trabajos, y Athena para consultar datos ya catalogados; ninguno gestiona permisos sobre el catálogo.",
+      "explanation_en": "The fragment presents AWS Lake Formation as the service that controls access, at a fine level of detail, to Data Catalog resources, which is exactly what the team needs. DataBrew appears in the source as a visual data preparation tool. Glue Studio is for building and monitoring jobs, and Athena is for querying cataloged data; neither manages permissions over the catalog.",
+      "source": "AWS — What is AWS Glue? (https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)"
+    },
+    {
+      "id": "q430101_005",
+      "skill_id": "sk430101",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML limpia datos de clientes en los que una misma persona aparece varias veces con pequeñas variaciones en sus campos, y nadie en el equipo tiene experiencia en ML. ¿Qué capacidad de AWS Glue les ayuda a eliminar esas repeticiones?",
+      "question_en": "An ML team is cleaning customer data in which the same person shows up several times with small variations in their fields, and nobody on the team has ML expertise. Which AWS Glue capability helps them remove those repeats?",
+      "options_es": [
+        "La detección de datos sensibles, que identifica y procesa información privada en los pipelines",
+        "Las sesiones interactivas, que permiten explorar y preparar los datos de forma interactiva",
+        "FindMatches, ML integrado que localiza entradas equivalentes aunque difieran",
+        "Los job run insights, que ayudan a monitorizar los trabajos que ya se ejecutan"
+      ],
+      "options_en": [
+        "Sensitive data detection, which identifies and processes private information in pipelines",
+        "Interactive sessions, which let users explore and prepare data interactively",
+        "FindMatches, built-in ML that locates equivalent entries even when they differ",
+        "Job run insights, which help monitor the jobs that are already running"
+      ],
+      "correct_index": 2,
+      "explanation_es": "FindMatches es la función de AWS Glue con aprendizaje automático integrado que deduplica registros que se parecen sin coincidir exactamente, y no exige ser experto en ML. La detección de datos sensibles trata información privada, las sesiones interactivas sirven para explorar y preparar datos, y los job run insights para monitorizar ejecuciones.",
+      "explanation_en": "FindMatches is the AWS Glue feature with built-in machine learning that deduplicates records resembling each other without matching exactly, and it does not require ML expertise. Sensitive data detection deals with private information, interactive sessions are for exploring and preparing data, and job run insights are for monitoring runs.",
+      "source": "AWS — What is AWS Glue? (https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)"
+    },
+    {
+      "id": "q430101_006",
+      "skill_id": "sk430101",
+      "type": "multiple_choice",
+      "question_es": "Un ingeniero define en el AWS Glue Data Catalog una tabla sobre archivos almacenados en Amazon S3. ¿Qué contiene realmente esa definición de tabla?",
+      "question_en": "An engineer defines a table in the AWS Glue Data Catalog over files stored in Amazon S3. What does that table definition actually contain?",
+      "options_es": [
+        "Solo metadatos (esquema y particiones); los archivos siguen en S3",
+        "Una copia de los archivos; los trabajos leen esa copia y no S3",
+        "Los registros comprimidos; el catálogo los guarda en su propio almacenamiento",
+        "Una instantánea de los datos; se renueva cada vez que un disparador inicia un trabajo"
+      ],
+      "options_en": [
+        "Only metadata (schema and partitions); the files stay in S3",
+        "A copy of the files; jobs read that copy instead of S3",
+        "The compressed records; the catalog keeps them in its own storage",
+        "A snapshot of the data; it is refreshed whenever a trigger starts a job"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una tabla del Data Catalog guarda metadatos: nombres de columnas, tipos de datos e información de particiones. Los registros en sí permanecen en su almacén de origen, aquí S3. Por eso el catálogo no contiene copias, registros trasladados ni instantáneas de los datos.",
+      "explanation_en": "A Data Catalog table holds metadata: column names, data types and partition information. The records themselves stay in the store they came from, here S3. That is why the catalog contains no copies, relocated records or snapshots of the data.",
+      "source": "AWS — AWS Glue concepts (https://docs.aws.amazon.com/glue/latest/dg/components-key-concepts.html)"
+    },
+    {
+      "id": "q430102_001",
+      "skill_id": "sk430102",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML comparte un data lake en S3 con tablas que incluyen datos personales. ¿Qué capacidad permite que un científico de datos vea solo ciertas columnas y filas de esas tablas?",
+      "question_en": "An ML team shares an S3 data lake whose tables contain personal data. Which capability lets a data scientist see only certain columns and rows of those tables?",
+      "options_es": [
+        "Los filtros de datos de Lake Formation",
+        "Los registros de auditoría de CloudTrail",
+        "El bloqueo de objetos de S3 (Object Lock)",
+        "Las políticas de acceso a nivel de bucket"
+      ],
+      "options_en": [
+        "Lake Formation data filters",
+        "CloudTrail audit log records",
+        "S3 Object Lock retention settings",
+        "Bucket-level access policies"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Lake Formation ofrece filtros de datos que combinan restricciones de columnas y filas, y sirven para proteger información sensible como los datos personales. Los registros de CloudTrail solo documentan quién accedió a qué dato, pero no limitan lo que se ve. Object Lock protege objetos frente a borrados o sobrescrituras, y las políticas de bucket actúan sobre el bucket completo, no sobre columnas ni filas.",
+      "explanation_en": "Lake Formation offers data filters that combine column and row restrictions, and they are meant for protecting sensitive information such as personal data. CloudTrail records only document who accessed which data and do not limit what is visible. Object Lock guards objects against deletion or overwrites, and bucket-level policies work on the whole bucket rather than on individual columns or rows.",
+      "source": "AWS — What is AWS Lake Formation? (https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html)"
+    },
+    {
+      "id": "q430102_002",
+      "skill_id": "sk430102",
+      "type": "multiple_choice",
+      "question_es": "Los conjuntos de características de un data lake en S3 se consultan de forma impredecible: algunos se usan mucho unas semanas y luego casi nada. El equipo quiere optimizar costes sin gestionar reglas a mano ni pagar recuperación. ¿Qué clase de almacenamiento conviene?",
+      "question_en": "Feature datasets in an S3 data lake are queried unpredictably: some are hot for a few weeks and then barely touched. The team wants lower costs without hand-managing rules or paying retrieval fees. Which storage class fits?",
+      "options_es": [
+        "La clase S3 Glacier Deep Archive",
+        "La clase S3 One Zone-IA",
+        "La clase S3 Intelligent-Tiering",
+        "La clase S3 Express One Zone"
+      ],
+      "options_en": [
+        "The S3 Glacier Deep Archive class",
+        "The S3 One Zone-IA class",
+        "The S3 Intelligent-Tiering class",
+        "The S3 Express One Zone class"
+      ],
+      "correct_index": 2,
+      "explanation_es": "S3 Intelligent-Tiering vigila el acceso a cada objeto y lo coloca por sí sola en el nivel más económico cuando el patrón cambia, sin tarifas de recuperación ni gestión manual. La fuente la presenta como la clase pensada para datos con acceso desconocido o variable, y como la única que logra ese ahorro automático por objeto. Por eso las otras tres opciones no resuelven a la vez los dos requisitos del equipo.",
+      "explanation_en": "S3 Intelligent-Tiering watches how each object is accessed and shifts it to the cheapest tier on its own as the pattern changes, with no retrieval fees and no manual rule upkeep. The source describes it as the class built for unknown or variable access, and as the only one that achieves this automatic per-object saving. That is why the other three options do not meet both of the team's requirements at once.",
+      "source": "AWS — Understanding and managing Amazon S3 storage classes (https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)"
+    },
+    {
+      "id": "q430102_003",
+      "skill_id": "sk430102",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML guarda en S3 datos derivados de acceso poco frecuente que puede regenerar a partir de los datos originales. Si se leen, hace falta acceso en milisegundos. Entre las clases para objetos de acceso poco frecuente, ¿cuál recomienda la documentación para este caso?",
+      "question_en": "An ML team stores infrequently accessed derived data in S3 that it can regenerate from the raw data. When it is read, millisecond access is needed. Among the classes for infrequently accessed objects, which one does the documentation recommend for this case?",
+      "options_es": [
+        "La clase S3 One Zone-IA",
+        "La clase S3 Standard-IA",
+        "La clase S3 Glacier Deep Archive",
+        "La clase S3 Express One Zone"
+      ],
+      "options_en": [
+        "The S3 One Zone-IA class",
+        "The S3 Standard-IA class",
+        "The S3 Glacier Deep Archive class",
+        "The S3 Express One Zone class"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La guía de clases de S3 recomienda One Zone-IA para datos que el equipo puede regenerar si una zona de disponibilidad falla. Standard-IA se recomienda, en cambio, para la copia principal o única que no se puede recrear, así que aquí sobra esa protección. Como conocimiento general del servicio, Glacier Deep Archive es una clase de archivado y Express One Zone se orienta a cargas sensibles a la latencia, por lo que ninguna encaja con datos derivados poco leídos.",
+      "explanation_en": "The S3 storage class guide recommends One Zone-IA for data the team can regenerate if an Availability Zone fails. Standard-IA is instead recommended for the primary or only copy that cannot be recreated, so that extra protection is not needed here. As general service knowledge, Glacier Deep Archive is an archival class and Express One Zone targets latency-sensitive workloads, so neither fits rarely read derived data.",
+      "source": "AWS — Understanding and managing Amazon S3 storage classes (https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)"
+    },
+    {
+      "id": "q430102_004",
+      "skill_id": "sk430102",
+      "type": "multiple_choice",
+      "question_es": "Llegan archivos nuevos a un bucket de S3 y el equipo de ML quiere inferir sus esquemas y dejar las tablas registradas en un catálogo donde se puedan buscar. ¿Qué debe usar?",
+      "question_en": "New files land in an S3 bucket, and the ML team wants their schemas inferred and the tables stored in a catalog where they can be searched. What should it use?",
+      "options_es": [
+        "Los informes de S3 Inventory",
+        "Los crawlers de AWS Glue",
+        "Las funciones de S3 Object Lambda",
+        "El ajuste S3 Object Ownership"
+      ],
+      "options_en": [
+        "S3 Inventory reports",
+        "AWS Glue crawlers",
+        "S3 Object Lambda functions",
+        "S3 Object Ownership settings"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un crawler de AWS Glue explora los archivos nuevos en S3, deduce su estructura y registra las tablas en el Data Catalog, donde se pueden consultar y buscar. Inventory sirve para auditar objetos y sus metadatos, Object Lambda transforma datos al devolverlos a una aplicación y Object Ownership controla la propiedad de los objetos y las ACL.",
+      "explanation_en": "A Glue crawler scans the new files in S3, works out their structure, and registers the tables in the Data Catalog so they can be searched. Inventory is for auditing objects and their metadata, Object Lambda transforms data as it is returned to an application, and Object Ownership controls object ownership and ACLs.",
+      "source": "AWS — What is AWS Lake Formation? (https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html)"
+    },
+    {
+      "id": "q430102_005",
+      "skill_id": "sk430102",
+      "type": "multiple_choice",
+      "question_es": "Un pipeline de ingeniería de datos sobrescribe un archivo de características en S3 y, justo después de recibir la confirmación, un trabajo de entrenamiento lo lee. ¿Qué datos obtiene el trabajo?",
+      "question_en": "A data engineering pipeline overwrites a feature file in S3, and right after receiving the success response a training job reads it. What data does the job get?",
+      "options_es": [
+        "Los datos antiguos hasta que se propague el cambio",
+        "Un error que obliga a reintentar pasados unos minutos",
+        "Datos antiguos o nuevos, según el nodo que responda",
+        "Los datos nuevos, sin esperar a ninguna propagación"
+      ],
+      "options_en": [
+        "The old data until the change propagates",
+        "An error that forces a retry after a few minutes",
+        "Old or new data, depending on which node answers",
+        "The new data, with no wait for propagation"
+      ],
+      "correct_index": 3,
+      "explanation_es": "S3 ofrece consistencia fuerte de lectura tras escritura, también cuando una petición PUT sobrescribe un objeto existente. Por eso la lectura posterior ya devuelve los datos nuevos. No hay ventana en la que se sirvan datos antiguos ni hace falta reintentar.",
+      "explanation_en": "S3 offers strong read-after-write consistency, including when a PUT request overwrites an existing object. That is why the later read already returns the new data. There is no window in which stale data is served, and no retry is needed.",
+      "source": "AWS — What is Amazon S3? (https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)"
+    },
+    {
+      "id": "q430102_006",
+      "skill_id": "sk430102",
+      "type": "multiple_choice",
+      "question_es": "Un equipo construye un flujo RAG y necesita guardar en S3 las representaciones numéricas de sus documentos, agrupadas en índices con una métrica de distancia configurable, para recuperar las más próximas a una consulta. ¿Qué tipo de bucket está diseñado para este caso?",
+      "question_en": "A team is building a RAG pipeline and needs to keep numeric representations of its documents in S3, grouped into indexes with a configurable distance metric, so it can retrieve the ones closest to a query. Which bucket type is designed for this?",
+      "options_es": [
+        "Buckets de tablas",
+        "Buckets de vectores",
+        "Buckets de directorio",
+        "Buckets de uso general"
+      ],
+      "options_en": [
+        "Table buckets",
+        "Vector buckets",
+        "Directory buckets",
+        "General purpose buckets"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los buckets de vectores son el tipo de S3 creado para guardar y consultar vectores, y los organizan en índices vectoriales con dimensiones y métrica de distancia configurables, lo que encaja con recuperar los documentos más cercanos a una consulta. Los buckets de tablas están pensados para datos tabulares en formato Apache Iceberg, no para vectores. Los buckets de directorio y los de uso general no son el tipo diseñado para almacenar y consultar vectores.",
+      "explanation_en": "Vector buckets are the S3 type created to store and query vectors, and they organize them into vector indexes with configurable dimensions and distance metrics, which fits retrieving the documents nearest to a query. Table buckets are meant for tabular data in Apache Iceberg format, not for vectors. Directory buckets and general purpose buckets are not the type designed to store and query vectors.",
+      "source": "AWS — What is Amazon S3? (https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)"
+    },
+    {
+      "id": "q430103_001",
+      "skill_id": "sk430103",
+      "type": "multiple_choice",
+      "question_es": "Un equipo ejecuta un trabajo nocturno sobre un conjunto de datos fijo y quiere que el clúster de EMR termine por sí mismo en cuanto acabe el procesamiento. ¿Cómo debe entregarle el trabajo al clúster?",
+      "question_en": "A team runs a nightly job on a fixed dataset and wants the EMR cluster to end on its own as soon as processing is done. How should they hand the job to the cluster?",
+      "options_es": [
+        "Crear un clúster de larga duración y enviarle los pasos cada noche desde la consola, la API o la CLI",
+        "Definir el trabajo como pasos al crear el clúster, de modo que se ejecute y luego termine",
+        "Abrir una sesión SSH en el nodo principal cada noche y lanzar el trabajo de forma interactiva",
+        "Conectarse por SSH al nodo principal y ejecutar un script que envíe las consultas a las aplicaciones instaladas"
+      ],
+      "options_en": [
+        "Create a long-running cluster and submit steps to it each night through the console, API, or CLI",
+        "Define the job as steps when creating the cluster, so it runs and then ends",
+        "Open an SSH session to the primary node each night and run the job interactively",
+        "Connect over SSH to the primary node and run a script that submits queries through the installed applications"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuente asocia el patrón de definir todo el trabajo como pasos al crear el clúster con volúmenes de datos fijos: el clúster procesa y termina al completarse el trabajo. Las otras tres modalidades (clúster de larga duración al que se envían pasos después, SSH interactivo o SSH con script) son formas distintas de entregar trabajo y no son las que la fuente vincula con un clúster que termina solo al acabar.",
+      "explanation_en": "The source ties the pattern of defining the whole job as steps at cluster creation to a fixed amount of data: the cluster processes it and then terminates. The other three approaches (a long-running cluster that receives steps later, interactive SSH, or scripted SSH) are different ways of delivering work, and the source does not link them to a cluster that ends by itself once processing completes.",
+      "source": "AWS — Understanding how to create and work with Amazon EMR clusters (https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html)"
+    },
+    {
+      "id": "q430103_002",
+      "skill_id": "sk430103",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere más capacidad de procesamiento en un clúster de EMR, pero no quiere que los nodos nuevos almacenen datos en HDFS. ¿Qué tipo de nodo encaja?",
+      "question_en": "A team wants more processing capacity in an EMR cluster, but does not want the new nodes to store data in HDFS. Which node type fits?",
+      "options_es": [
+        "Nodos principales, porque guardan los datos de HDFS de todo el clúster",
+        "Nodos de arranque, porque ejecutan las acciones de arranque del clúster",
+        "Nodos de tarea, porque solo ejecutan tareas y no guardan datos en HDFS",
+        "Nodos centrales, porque ejecutan tareas y además almacenan datos en HDFS"
+      ],
+      "options_en": [
+        "Primary nodes, because they hold the HDFS data for the whole cluster",
+        "Bootstrap nodes, because they run the cluster's bootstrap actions",
+        "Task nodes, because they only run tasks and keep no HDFS data",
+        "Core nodes, because they run tasks and also store HDFS data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los nodos de tarea ejecutan tareas sin almacenar datos en HDFS, así que añaden cómputo sin añadir almacenamiento, y además son opcionales. Los nodos centrales sí guardan datos en HDFS, por lo que incumplen el requisito. Los nodos principales coordinan el clúster y no se usan para añadir capacidad de procesamiento, y los nodos de arranque no son uno de los tres tipos de nodo de EMR (principal, central y de tarea).",
+      "explanation_en": "Task nodes run tasks without storing data in HDFS, so they add compute without adding storage, and they are optional. Core nodes do store HDFS data, which breaks the requirement. Primary nodes coordinate the cluster and are not used to add processing capacity, and bootstrap nodes are not one of the three EMR node types (primary, core and task).",
+      "source": "AWS — Understanding how to create and work with Amazon EMR clusters (https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html)"
+    },
+    {
+      "id": "q430103_003",
+      "skill_id": "sk430103",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere que cada tipo de nodo de su clúster de EMR combine varios tipos de instancia, con capacidades objetivo para On-Demand y Spot. ¿Qué configuración debe elegir y qué debe saber de esa decisión?",
+      "question_en": "A team wants each node type in its EMR cluster to combine several instance types, each node type with its own capacity goals split between On-Demand and Spot. Which configuration should it pick, and what should it know about that choice?",
+      "options_es": [
+        "Grupos de instancias uniformes, y luego se pueden convertir en flotas con el clúster en marcha",
+        "Grupos de instancias uniformes, porque cada grupo puede combinar varios tipos de instancia",
+        "Flotas de instancias, y el equipo puede pasar a grupos en cualquier momento con el clúster activo",
+        "Flotas de instancias, aunque la elección es permanente una vez creado el clúster"
+      ],
+      "options_en": [
+        "Uniform instance groups, which can later be converted to fleets while the cluster is running",
+        "Uniform instance groups, because each group may combine several instance types",
+        "Instance fleets, and the team can move to groups at any time while the cluster is active",
+        "Instance fleets, although the choice is permanent once the cluster has been created"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las flotas de instancias permiten mezclar tipos de instancia por cada tipo de nodo y fijar capacidades objetivo para On-Demand y Spot. Esa elección entre flotas y grupos no se puede cambiar tras crear el clúster. Los grupos uniformes solo contienen instancias de un mismo tipo, así que no cumplen el requisito, y ninguna de las dos opciones admite conversión posterior.",
+      "explanation_en": "Instance fleets let each node type mix instance types and set target capacities for On-Demand and Spot. The choice between fleets and groups cannot be changed after the cluster is created. Uniform groups hold instances of a single type, so they miss the requirement, and neither option can be converted afterwards.",
+      "source": "AWS — Understanding how to create and work with Amazon EMR clusters (https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html)"
+    },
+    {
+      "id": "q430103_004",
+      "skill_id": "sk430103",
+      "type": "multiple_choice",
+      "question_es": "Según el comportamiento predeterminado de EMR para una secuencia de pasos, si el tercero de cinco falla, ¿qué ocurre con los pasos que faltan por ejecutar?",
+      "question_en": "According to EMR's default behavior for a sequence of steps, if the third of five steps fails, what happens to the steps still waiting to run?",
+      "options_es": [
+        "Quedan en estado CANCELLED y no se ejecutan",
+        "Continúan ejecutándose en orden como si nada hubiera pasado",
+        "El clúster se termina de inmediato y los pasos se descartan",
+        "Se marcan como COMPLETED sin llegar a ejecutarse"
+      ],
+      "options_en": [
+        "They are marked CANCELLED and never run",
+        "They carry on in order as if nothing had failed",
+        "The cluster ends at once and the steps are discarded",
+        "They are marked COMPLETED without ever running"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Por defecto, cuando un paso termina en FAILED, los que le siguen en la secuencia pasan a CANCELLED y no llegan a ejecutarse. Seguir adelante pese al fallo o terminar el clúster al instante son opciones que se eligen de forma explícita, no el comportamiento predeterminado. Marcarlos como COMPLETED tampoco encaja: un paso que no se ejecuta no puede figurar como completado.",
+      "explanation_en": "By default, once a step ends in FAILED, the steps that follow it in the sequence switch to CANCELLED and never get to run. Pressing on despite the failure or shutting the cluster down right away are options that must be chosen explicitly, not the default behavior. Marking them COMPLETED does not fit either, since a step that never runs cannot be recorded as completed.",
+      "source": "AWS — Understanding how to create and work with Amazon EMR clusters (https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html)"
+    },
+    {
+      "id": "q430103_005",
+      "skill_id": "sk430103",
+      "type": "multiple_choice",
+      "question_es": "Un clúster de EMR con un trabajo largo podría fallar a mitad de camino, y el equipo quiere poder sacar datos del clúster antes de que desaparezcan. ¿Qué debe habilitar?",
+      "question_en": "An EMR cluster running a long job may fail partway, and the team wants the option to pull data off the cluster before it goes away. What should they enable?",
+      "options_es": [
+        "Terminación automática al acabar el último paso",
+        "Protección contra la terminación del clúster",
+        "Una acción de arranque personalizada al iniciar",
+        "Un clúster de un solo nodo con solo el nodo principal"
+      ],
+      "options_en": [
+        "Auto-termination after the last step finishes",
+        "Termination protection on the cluster",
+        "A custom bootstrap action that runs at startup",
+        "A single-node layout with only the primary node"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Si algo falla durante el ciclo de vida, EMR cierra el clúster y borra lo que haya almacenado en él, salvo que se haya activado la protección contra la terminación. Con ella activa, el equipo puede rescatar los datos y después desactivarla para cerrar el clúster. Las otras opciones no tratan ese caso: la terminación automática se asocia con el final de los pasos y las acciones de arranque sirven para personalizar las instancias, no para protegerse de un fallo.",
+      "explanation_en": "When something fails during the cluster lifecycle, EMR shuts the cluster down and wipes whatever was stored on it, unless termination protection was turned on. With it enabled, the team can recover the data first and only then disable the protection and shut the cluster down. The other choices do not address this case: auto-termination is tied to the end of the steps, and bootstrap actions customize instances rather than guard against failures.",
+      "source": "AWS — Understanding how to create and work with Amazon EMR clusters (https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html)"
+    },
+    {
+      "id": "q430103_006",
+      "skill_id": "sk430103",
+      "type": "multiple_choice",
+      "question_es": "Un clúster de EMR completa todos sus pasos con éxito, pero se configuró para seguir activo después del último paso en lugar de autoterminarse. ¿En qué estado queda y qué necesita?",
+      "question_en": "An EMR cluster finishes all of its steps successfully but was set to stay up after its last step instead of auto-terminating. What state does it enter, and what does it need?",
+      "options_es": [
+        "WAITING, y alguien debe apagarlo de forma manual",
+        "TERMINATING y después TERMINATED, sin intervención del equipo",
+        "TERMINATED_WITH_ERRORS, porque ya no quedan pasos por ejecutar",
+        "BOOTSTRAPPING, para instalar software del siguiente trabajo"
+      ],
+      "options_en": [
+        "WAITING, and someone must shut it down manually",
+        "TERMINATING, then TERMINATED, with no action from the team",
+        "TERMINATED_WITH_ERRORS, because no further steps remain to be run",
+        "BOOTSTRAPPING, so that it can install software for the next job"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Tras completar los pasos con éxito, el clúster pasa a WAITING y, como no está configurado para autoterminarse, hay que apagarlo manualmente cuando ya no se necesite. Un clúster con autoterminación, en cambio, recorre TERMINATING y TERMINATED sin que nadie intervenga. TERMINATED_WITH_ERRORS corresponde a un fallo, no a un final correcto, y BOOTSTRAPPING es una fase previa al estado RUNNING.",
+      "explanation_en": "After the steps succeed, the cluster enters WAITING, and because it is not set to auto-terminate, it must be shut down manually when no longer needed. An auto-terminating cluster, by contrast, moves through TERMINATING and TERMINATED with no one acting. TERMINATED_WITH_ERRORS reflects a failure, not a clean finish, and BOOTSTRAPPING is a phase that comes before RUNNING.",
+      "source": "AWS — Understanding how to create and work with Amazon EMR clusters (https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html)"
+    },
+    {
+      "id": "q430104_001",
+      "skill_id": "sk430104",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de analistas de negocio quiere depurar y estandarizar conjuntos de datos desde una interfaz gráfica, sin programar y sin aprovisionar ni gestionar clústeres. ¿Qué servicio encaja mejor?",
+      "question_en": "A group of business analysts wants to tidy and standardize datasets through a graphical interface, with no coding and no clusters to provision or manage. Which service fits best?",
+      "options_es": [
+        "AWS Glue DataBrew con recetas guardadas",
+        "Amazon EMR con trabajos de Spark sobre un clúster",
+        "AWS Lambda con funciones de limpieza personalizadas",
+        "Amazon Athena con consultas SQL de limpieza"
+      ],
+      "options_en": [
+        "AWS Glue DataBrew using saved recipes",
+        "Amazon EMR running Spark jobs on a cluster",
+        "AWS Lambda running custom cleaning functions",
+        "Amazon Athena running SQL cleaning queries"
+      ],
+      "correct_index": 0,
+      "explanation_es": "DataBrew permite depurar y estandarizar datos mediante pasos de transformación sin escribir código y, al ser un servicio sin servidor, no obliga a crear ni administrar clústeres. EMR exige un clúster, y tanto las funciones de Lambda como las consultas SQL de Athena implican programar la limpieza uno mismo.",
+      "explanation_en": "DataBrew lets you tidy and standardize datasets through point-and-click steps with no code, and because it is serverless there are no clusters to create or run. EMR needs a cluster, while Lambda functions and Athena SQL queries mean writing the cleaning logic yourself.",
+      "source": "AWS — What is AWS Glue DataBrew? (https://docs.aws.amazon.com/databrew/latest/dg/what-is.html)"
+    },
+    {
+      "id": "q430104_002",
+      "skill_id": "sk430104",
+      "type": "multiple_choice",
+      "question_es": "Un ingeniero de ML debe escribir reglas de calidad de datos para AWS Glue Data Quality. ¿Qué lenguaje se utiliza para definirlas?",
+      "question_en": "An ML engineer must author data quality rules for AWS Glue Data Quality. Which language is used to define them?",
+      "options_es": [
+        "DQDL, un lenguaje específico de dominio",
+        "ASL, un lenguaje JSON para máquinas de estado",
+        "HiveQL, un dialecto SQL sobre el catálogo de datos",
+        "pandas, una biblioteca de Python para cuadernos"
+      ],
+      "options_en": [
+        "DQDL, a domain-specific language",
+        "ASL, a JSON-based state machine language",
+        "HiveQL, a SQL dialect over the data catalog",
+        "pandas, a Python library for notebook analysis"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS Glue Data Quality trabaja con DQDL, un lenguaje específico de dominio pensado para expresar reglas de calidad de datos. Amazon States Language describe flujos de trabajo de Step Functions, HiveQL sirve para consultar datos con sintaxis SQL y pandas es una biblioteca de Python para analizar datos en un cuaderno. Ninguno de los tres es el lenguaje con el que este servicio define sus reglas.",
+      "explanation_en": "AWS Glue Data Quality works with DQDL, a domain-specific language made for expressing data quality rules. Amazon States Language describes Step Functions workflows, HiveQL is for querying data with SQL-style syntax, and pandas is a Python library for analyzing data in a notebook. None of the three is the language this service uses to define its rules.",
+      "source": "AWS — AWS Glue Data Quality (https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html)"
+    },
+    {
+      "id": "q430104_003",
+      "skill_id": "sk430104",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere detectar y descartar los datos defectuosos antes de que lleguen al lago de datos. ¿Qué enfoque de AWS Glue Data Quality encaja?",
+      "question_en": "A team wants to catch and discard faulty data before it reaches the data lake. Which AWS Glue Data Quality approach fits?",
+      "options_es": [
+        "Evaluar las tablas ya registradas en el Data Catalog desde la consola",
+        "Vigilar de forma continua el lago de datos con reglas definidas por analistas",
+        "Incluir las comprobaciones de calidad en el trabajo ETL de Glue",
+        "Validar las vistas de Athena del catálogo una vez cargados los datos"
+      ],
+      "options_en": [
+        "Evaluate tables already registered in the Data Catalog from the console",
+        "Continuously monitor the data lake with rules defined by business analysts",
+        "Build the quality checks into the Glue ETL job itself",
+        "Validate Athena views in the catalog after the data has been loaded"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, la calidad de datos en los trabajos ETL de Glue es proactiva: sirve para detectar y filtrar datos defectuosos antes de cargarlos en el lago. Las otras tres opciones corresponden a la calidad sobre el Data Catalog, que opera sobre datos ya catalogados y sirve para la gobernanza continua, así que actúan cuando los datos ya están en el lago.",
+      "explanation_en": "According to the source, data quality in Glue ETL jobs is proactive: it is meant to spot and filter faulty data before it is loaded into the lake. The other three options belong to data quality on the Data Catalog, which works on data that is already cataloged and supports ongoing governance, so they act once the data is already in the lake.",
+      "source": "AWS — AWS Glue Data Quality (https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html)"
+    },
+    {
+      "id": "q430104_004",
+      "skill_id": "sk430104",
+      "type": "multiple_choice",
+      "question_es": "Tras evaluar un ruleset en AWS Glue Data Quality, ¿qué representa la puntuación de calidad de datos (data quality score)?",
+      "question_en": "After a ruleset is evaluated in AWS Glue Data Quality, what does the data quality score represent?",
+      "options_es": [
+        "El porcentaje de filas del conjunto sin valores nulos",
+        "El porcentaje de reglas del ruleset que se cumplen",
+        "La exactitud del modelo de ML que detecta anomalías",
+        "El número de columnas perfiladas durante la evaluación"
+      ],
+      "options_en": [
+        "The percentage of rows that contain no null values",
+        "The percentage of rules in the ruleset that pass",
+        "The accuracy of the ML model that detects anomalies",
+        "The number of columns profiled during the evaluation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La puntuación es el porcentaje de reglas del ruleset que resultan verdaderas al evaluarlo. El porcentaje de filas sin nulos, la exactitud de un modelo de anomalías o el número de columnas perfiladas no es lo que define esa puntuación.",
+      "explanation_en": "The score is the share of rules in the ruleset that come out true when it is evaluated. A percentage of null-free rows, the accuracy of an anomaly model, or a count of profiled columns is not what defines the score.",
+      "source": "AWS — AWS Glue Data Quality (https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html)"
+    },
+    {
+      "id": "q430104_005",
+      "skill_id": "sk430104",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML trabaja en un flujo de Data Wrangler y necesita que la herramienta examine por su cuenta el conjunto de datos y señale valores anómalos antes de entrenar. ¿Qué función debe usar?",
+      "question_en": "An ML team is building a Data Wrangler flow and needs the tool to examine the dataset on its own and flag unusual values before training. Which feature should it use?",
+      "options_es": [
+        "Las transformaciones de incrustación de texto y de fecha/hora",
+        "La función Data Insights and Quality Report",
+        "La exportación del flujo a SageMaker Feature Store",
+        "Los gráficos de dispersión e histogramas integrados"
+      ],
+      "options_en": [
+        "The text and date/time embedding transforms in the flow",
+        "The Data Insights and Quality Report feature",
+        "The export of the flow to SageMaker Feature Store",
+        "The built-in scatter plots and histograms"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Data Insights and Quality Report es la función de Data Wrangler que revisa los datos de forma automática y detecta anomalías. Las transformaciones de incrustación sirven para crear características, la exportación a Feature Store solo guarda los datos en un almacén centralizado y los gráficos de dispersión e histogramas son herramientas de análisis manual, no una comprobación automática.",
+      "explanation_en": "Data Insights and Quality Report is the Data Wrangler feature that inspects the data on its own and detects anomalies. Embedding transforms are used to build features, exporting to Feature Store only saves the data in a central store, and scatter plots and histograms are manual analysis tools rather than an automatic check.",
+      "source": "AWS — Prepare ML Data with Amazon SageMaker Data Wrangler (https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler.html)"
+    },
+    {
+      "id": "q430104_006",
+      "skill_id": "sk430104",
+      "type": "multiple_choice",
+      "question_es": "Un equipo aún no tiene reglas de calidad y quiere que AWS Glue Data Quality analice sus datos y genere un primer conjunto. ¿Qué debería hacer?",
+      "question_en": "A team has no quality rules yet and wants AWS Glue Data Quality to analyze its data and generate a first set. What should it do?",
+      "options_es": [
+        "Escribir a mano cada regla en DQDL antes de evaluar nada",
+        "Entrenar un clasificador propio en SageMaker con los datos",
+        "Activar los bookmarks de Glue para que generen las reglas",
+        "Usar la opción Recommend rules para un primer ruleset"
+      ],
+      "options_en": [
+        "Hand-write every rule in DQDL before evaluating anything",
+        "Train a custom classifier in SageMaker on the data",
+        "Turn on Glue job bookmarks so they generate the rules",
+        "Use the Recommend rules option for a first ruleset"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Glue Data Quality puede examinar el conjunto de datos y proponer por sí solo reglas iniciales; para ello se elige Recommend rules al crear reglas de calidad. Redactar todo a mano es posible, pero no aprovecha ese análisis automático que pide el escenario. Un clasificador de SageMaker no forma parte de esta capacidad, y los bookmarks de Glue no generan reglas.",
+      "explanation_en": "Glue Data Quality can inspect the dataset and propose a starter ruleset on its own; you choose Recommend rules when creating quality rules. Writing everything manually is possible, but it skips the automatic analysis the scenario asks for. A SageMaker classifier is not part of this capability, and Glue job bookmarks do not produce rules.",
+      "source": "AWS — AWS Glue Data Quality (https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html)"
+    },
+    {
+      "id": "q430105_001",
+      "skill_id": "sk430105",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML guarda registros en S3 con rutas como 2015/01/01/, sin pares clave=valor, y quiere consultarlos por fecha en Athena. ¿Cómo debe registrar las particiones?",
+      "question_en": "An ML team keeps logs in S3 under paths like 2015/01/01/ with no key=value pairs and wants to query them by date in Athena. How should the partitions be registered?",
+      "options_es": [
+        "Ejecutar MSCK REPAIR TABLE para que Athena descubra las carpetas",
+        "Convertir los datos a Parquet para que Athena infiera las particiones",
+        "Crear la tabla sin PARTITIONED BY y filtrar por la ruta con LIKE",
+        "Añadir cada partición a mano con ALTER TABLE ADD PARTITION"
+      ],
+      "options_en": [
+        "Run MSCK REPAIR TABLE so Athena discovers the folders on its own",
+        "Convert the data to Parquet so Athena infers the partitions",
+        "Create the table without PARTITIONED BY and filter on the path with LIKE",
+        "Add each partition manually with ALTER TABLE ADD PARTITION"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Cuando las rutas no usan el formato clave=valor de Hive, MSCK REPAIR TABLE no sirve y cada partición se añade manualmente con ALTER TABLE ADD PARTITION. Convertir el formato de almacenamiento no cambia la forma de registrar particiones, y prescindir de PARTITIONED BY elimina precisamente la poda por partición.",
+      "explanation_en": "When paths do not follow Hive's key=value layout, MSCK REPAIR TABLE does not apply and each partition is added by hand with ALTER TABLE ADD PARTITION. Changing the storage format does not change how partitions are registered, and dropping PARTITIONED BY gives up partition-based pruning altogether.",
+      "source": "AWS — Partition your data (https://docs.aws.amazon.com/athena/latest/ug/partitions.html)"
+    },
+    {
+      "id": "q430105_002",
+      "skill_id": "sk430105",
+      "type": "multiple_choice",
+      "question_es": "Una tabla de Athena tiene una enorme cantidad de particiones con una estructura conocida de antemano, y el equipo quiere dejar de gestionar las particiones por su cuenta. ¿Qué capacidad conviene usar?",
+      "question_en": "An Athena table has a very large number of partitions whose structure is known in advance, and the team wants to stop managing partitions itself. Which capability fits?",
+      "options_es": [
+        "Activar la proyección de particiones, con valores derivados de propiedades de la tabla",
+        "Programar un rastreador de AWS Glue que registre las particiones nuevas en el Data Catalog",
+        "Ejecutar MSCK REPAIR TABLE a mano después de cada carga de datos nueva",
+        "Convertir los datos a ORC para que Athena omita lo que no necesita leer"
+      ],
+      "options_en": [
+        "Enable partition projection, with values derived from table properties",
+        "Schedule an AWS Glue crawler that registers new partitions in the Data Catalog",
+        "Run MSCK REPAIR TABLE by hand after every new data load",
+        "Convert the data to ORC so Athena skips what it does not need to read"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con la proyección de particiones, Athena deduce los valores y las ubicaciones de cada partición a partir de reglas declaradas en la propia tabla, así que no hace falta registrarlas ni consultarlas en un almacén de metadatos. Eso quita la gestión manual y, además, puede acelerar las consultas. El rastreador de Glue y MSCK REPAIR TABLE siguen dependiendo de registrar particiones en el catálogo, y ORC cambia el formato de los datos sin resolver esa gestión.",
+      "explanation_en": "With partition projection, Athena derives each partition's values and locations from rules declared on the table itself, so partitions never need to be registered or looked up in a metadata store. That removes the manual upkeep and can also speed up queries. A Glue crawler and MSCK REPAIR TABLE both still depend on registering partitions in the catalog, and ORC changes the data format without solving that management problem.",
+      "source": "AWS — Partition your data (https://docs.aws.amazon.com/athena/latest/ug/partitions.html)"
+    },
+    {
+      "id": "q430105_003",
+      "skill_id": "sk430105",
+      "type": "multiple_choice",
+      "question_es": "Para optimizar el layout de datos en Athena, una tabla se almacena como Parquet y una consulta pide valores concretos de una columna. ¿Qué mecanismo le permite leer solo los bloques necesarios?",
+      "question_en": "To optimize the data layout for Athena, a table is stored as Parquet and a query requests specific column values. Which mechanism lets it read only the blocks it needs?",
+      "options_es": [
+        "Compara estadísticas de cada bloque para decidir si puede omitirlo",
+        "Descomprime todos los bloques y filtra después los valores en memoria",
+        "Consulta el índice de particiones del catálogo para ubicar los bloques",
+        "Ordena las filas por clave de partición antes de ejecutar la consulta"
+      ],
+      "options_en": [
+        "It compares per-block statistics to decide whether to skip each block",
+        "It decompresses every block and then filters the values in memory",
+        "It consults the catalog's partition index to locate the needed blocks",
+        "It sorts the rows by partition key before the query is executed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En Parquet y ORC, el predicate pushdown permite a Athena apoyarse en estadísticas de cada bloque, como los valores máximo y mínimo, para decidir si lo lee o lo descarta. Las demás opciones no son lo que describe la fuente: no se descomprime todo para filtrar después, ni se localizan los bloques mediante un índice de particiones, ni se reordenan las filas por clave de partición antes de consultar.",
+      "explanation_en": "In Parquet and ORC, predicate pushdown lets Athena rely on statistics kept for each block, such as maximum and minimum values, to decide whether to read it or pass over it. The other options are not what the source describes: it does not decompress everything to filter afterwards, locate blocks through a partition index, or re-sort rows by partition key before querying.",
+      "source": "AWS — Use columnar storage formats (https://docs.aws.amazon.com/athena/latest/ug/columnar-storage.html)"
+    },
+    {
+      "id": "q430105_004",
+      "skill_id": "sk430105",
+      "type": "multiple_choice",
+      "question_es": "Un trabajo de AWS Glue lee una tabla del Data Catalog particionada por año y mes, pero solo necesita un mes concreto. ¿Qué técnica evita listar y leer todos los archivos del conjunto?",
+      "question_en": "An AWS Glue job reads a Data Catalog table partitioned by year and month but needs only one month. What avoids listing and reading every file in the dataset?",
+      "options_es": [
+        "Cargar el conjunto completo en un DynamicFrame y filtrar al final del script",
+        "Aplicar un predicado pushdown sobre los metadatos de partición del catálogo",
+        "Cambiar el nombre de las columnas de partición desde la consola de AWS Glue",
+        "Ejecutar un rastreador nuevo sobre todo el bucket antes de cada lectura"
+      ],
+      "options_en": [
+        "Loading the whole dataset into a DynamicFrame and filtering at the end",
+        "Using a pushdown predicate on the catalog's partition metadata",
+        "Renaming the partition columns from the AWS Glue console",
+        "Running a new crawler over the whole bucket before every read"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un predicado pushdown filtra directamente sobre los metadatos de partición del Data Catalog, de modo que solo se listan y leen los archivos de las particiones que cumplen la condición. Leer todo y filtrar después es justo lo que se quiere evitar, y renombrar columnas o relanzar un rastreador no reduce los datos leídos.",
+      "explanation_en": "A pushdown predicate lets Glue prune partitions using the catalog's metadata, so only the files in matching partitions are listed and read. Reading everything and filtering afterwards is exactly what it avoids, and renaming columns or rerunning a crawler does not reduce the data read.",
+      "source": "AWS — Managing partitions for ETL output in AWS Glue (https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-partitions.html)"
+    },
+    {
+      "id": "q430105_005",
+      "skill_id": "sk430105",
+      "type": "multiple_choice",
+      "question_es": "Una tabla del Data Catalog tiene tantas particiones que listarlas añade tiempo incluso usando un predicado push_down_predicate. ¿Qué enfoque acelera el filtrado de particiones?",
+      "question_en": "A Data Catalog table has so many partitions that listing them adds time even with a push_down_predicate. Which approach speeds up the partition filtering?",
+      "options_es": [
+        "Mover todos los archivos a una única carpeta sin particionar en Amazon S3",
+        "Podar particiones en el servidor con los índices de partición del catálogo",
+        "Sustituir el predicado por un filtro sobre el DynamicFrame tras la lectura",
+        "Añadir más niveles de carpetas a la salida para generar todavía más particiones"
+      ],
+      "options_en": [
+        "Moving every file into one unpartitioned folder in Amazon S3",
+        "Pruning partitions on the server side with catalog partition indexes",
+        "Replacing the predicate with a DynamicFrame filter applied after reading",
+        "Adding more folder levels to the output to produce even more partitions"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La opción catalogPartitionPredicate hace la poda en el servidor apoyándose en los índices de partición del Data Catalog, y por eso acelera el filtrado cuando la tabla tiene una enorme cantidad de particiones. Las demás opciones no usan esos índices: quitar el particionado, filtrar después de leer o añadir más niveles de carpetas no aprovechan la poda del lado del servidor.",
+      "explanation_en": "The catalogPartitionPredicate option prunes on the server side by relying on the Data Catalog's partition indexes, which is why it speeds up filtering when a table holds a huge number of partitions. The other choices do not use those indexes: removing partitioning, filtering after the read, or adding more folder levels does not take advantage of server-side pruning.",
+      "source": "AWS — Managing partitions for ETL output in AWS Glue (https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-partitions.html)"
+    },
+    {
+      "id": "q430105_006",
+      "skill_id": "sk430105",
+      "type": "multiple_choice",
+      "question_es": "Un rastreador de AWS Glue cataloga datos de S3 organizados en rutas como 2018/01/23/, sin pares clave=valor. ¿Qué nombres recibirán las columnas de partición?",
+      "question_en": "A Glue crawler catalogs S3 data laid out as 2018/01/23/ with no key=value pairs. What names do the partition columns get?",
+      "options_es": [
+        "year, month y day, deducidos por el rastreador a partir de las carpetas de fecha",
+        "Los nombres de las columnas del primer archivo de datos encontrado en esa ruta",
+        "Nombres genéricos como partition_0 y partition_1",
+        "Ninguno, porque el rastreador rechaza las rutas que no tienen pares clave=valor"
+      ],
+      "options_en": [
+        "year, month and day, inferred by the crawler from the date-based folders",
+        "The column names found in the first data file under that path",
+        "Default names such as partition_0 and partition_1",
+        "None, because the crawler rejects paths that lack key=value pairs"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, el rastreador solo aprovecha el nombre de la clave cuando la ruta sigue el estilo Hive (clave=valor); en caso contrario asigna nombres por defecto como partition_0 y partition_1. Por eso, con carpetas de fecha sin claves, la fuente no respalda ni year, month y day deducidos, ni nombres tomados de los datos, ni un rechazo de la ruta.",
+      "explanation_en": "According to the source, the crawler uses the key name only when the path follows the Hive style (key=val); otherwise it assigns default names such as partition_0 and partition_1. So for date folders without keys, the source supports neither inferred year, month and day, nor names taken from the data, nor a rejection of the path.",
+      "source": "AWS — Managing partitions for ETL output in AWS Glue (https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-partitions.html)"
+    },
+    {
+      "id": "q430121_001",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere fragmentos pequeños para que la coincidencia de embeddings sea precisa, pero también que el modelo reciba un contexto más amplio al responder. ¿Qué estrategia de fragmentación de Amazon Bedrock Knowledge Bases encaja?",
+      "question_en": "A team wants small chunks so embedding matches stay precise, but it also wants the model to receive wider surrounding context when answering. Which chunking strategy in Amazon Bedrock Knowledge Bases fits?",
+      "options_es": [
+        "Fragmentación jerárquica con fragmentos padre e hijo",
+        "Fragmentación de tamaño fijo sin solapamiento entre fragmentos consecutivos",
+        "Fragmentación semántica con búfer mínimo de oraciones vecinas",
+        "Fragmentación predeterminada con fragmentos de tamaño más amplio"
+      ],
+      "options_en": [
+        "Hierarchical chunking with parent and child chunks",
+        "Fixed-size chunking with no overlap between consecutive chunks",
+        "Semantic chunking with a minimal buffer of neighboring sentences",
+        "Default chunking with chunks of a noticeably larger size"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fragmentación jerárquica organiza el contenido en fragmentos hijo y padre: la búsqueda se apoya en los hijos, pequeños y precisos, y al recuperar los sustituye por sus padres, más amplios, para dar más contexto al modelo. Ninguna de las otras opciones combina precisión de búsqueda con contexto ampliado: solo ajustan el tamaño, el solapamiento o el límite de los fragmentos.",
+      "explanation_en": "Hierarchical chunking organizes content into child and parent chunks: matching relies on the small, precise children, and at retrieval time they are swapped for their broader parents to give the model more context. None of the other options pairs precise matching with widened context; they only adjust chunk size, overlap or boundaries.",
+      "source": "AWS — How content chunking works for knowledge bases (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)"
+    },
+    {
+      "id": "q430121_002",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "Un equipo decide no fragmentar sus documentos al crear la base de conocimiento, pero más adelante quiere que las citas indiquen la página de origen. ¿Qué consecuencia tiene esa decisión?",
+      "question_en": "A team chooses not to chunk its documents when creating a knowledge base, but later wants citations to point to the source page. What is the consequence of that choice?",
+      "options_es": [
+        "Los documentos ya no pueden convertirse en embeddings en ningún caso",
+        "Los documentos con más de una página se rechazan durante la ingesta",
+        "Las citas no pueden mostrar la página ni filtrar por ella",
+        "La recuperación pasa sola a fragmentación jerárquica en tiempo de consulta"
+      ],
+      "options_en": [
+        "The documents can no longer be converted into embeddings at all",
+        "Documents with more than one page are rejected during ingestion",
+        "Citations cannot show page numbers or filter by page",
+        "Retrieval silently falls back to hierarchical chunking at query time"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, al optar por no fragmentar se pierde la posibilidad de ver el número de página en las citas y de filtrar con el atributo de metadatos de página. Las demás opciones describen efectos que el fragmento no menciona: impedir los embeddings, rechazar documentos de varias páginas o cambiar de estrategia al consultar.",
+      "explanation_en": "According to the source, opting for no chunking means the page number cannot be seen in citations and the page metadata attribute cannot be used for filtering. The other options describe effects the passage never mentions: blocking embeddings, rejecting multi-page documents, or switching strategy at query time.",
+      "source": "AWS — How content chunking works for knowledge bases (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)"
+    },
+    {
+      "id": "q430121_003",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "Un equipo ingiere grabaciones de vídeo en una base de conocimiento de Bedrock y usa el analizador Bedrock Data Automation. ¿Cómo se fragmenta ese contenido?",
+      "question_en": "A team ingests video recordings into a Bedrock knowledge base and uses the Bedrock Data Automation parser. How is that content chunked?",
+      "options_es": [
+        "El modelo de embeddings define la duración y se omiten las estrategias de texto",
+        "Se convierte primero a texto y luego se aplica fragmentación de texto",
+        "Cada grabación se conserva como un único fragmento",
+        "Los fotogramas se fragmentan como imágenes en lugar de usar estrategias de texto"
+      ],
+      "options_en": [
+        "Chunk length is set by the embedding model, bypassing the text strategies",
+        "It is turned into text first, then text chunking is applied",
+        "Each recording is kept as a single chunk",
+        "Frames are chunked like images instead of using text strategies"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Con el analizador BDA, el contenido audiovisual se transforma antes en texto (transcripciones y resúmenes de escenas) y sobre ese texto se aplican las estrategias de fragmentación habituales. Fragmentar a nivel del modelo de embeddings es el comportamiento de los embeddings multimodales de Nova, no el del analizador BDA. Tampoco se conserva la grabación como un bloque único ni se trata por fotogramas como imágenes: el paso previo es la conversión a texto.",
+      "explanation_en": "With the BDA parser, audio and video are first transformed into text (transcripts and scene summaries), and the usual text chunking strategies then run on that text. Chunking at the embedding model level is how Nova multimodal embeddings behave, not the BDA parser. Keeping the recording as one block or treating frames as images does not match this flow, since conversion to text comes first.",
+      "source": "AWS — How content chunking works for knowledge bases (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)"
+    },
+    {
+      "id": "q430121_004",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "Un equipo ya usa Amazon OpenSearch Service y quiere buscar elementos parecidos con la función k-NN. ¿Cómo determina k-NN cuáles son los vecinos más cercanos de un punto?",
+      "question_en": "A team already runs Amazon OpenSearch Service and wants to find similar items with the k-NN feature. How does k-NN decide which points are the nearest neighbors of a given point?",
+      "options_es": [
+        "Comparando las palabras clave exactas que el documento comparte con la consulta",
+        "Ordenando los documentos por la fecha en que se indexaron por última vez",
+        "Contando cuántos campos coinciden exactamente con la consulta",
+        "Calculando la distancia euclídea o la similitud del coseno"
+      ],
+      "options_en": [
+        "By comparing the exact keywords each document shares with the query",
+        "By ranking documents on the date they were last indexed",
+        "By counting how many fields match the query exactly",
+        "By computing Euclidean distance or cosine similarity"
+      ],
+      "correct_index": 3,
+      "explanation_es": "k-NN trata los datos como puntos en un espacio vectorial y busca los más próximos midiendo la distancia euclídea o la similitud del coseno. No se basa en coincidencia de palabras clave, en la fecha de indexación ni en el número de campos idénticos.",
+      "explanation_en": "k-NN treats the data as points in a vector space and finds the closest ones using Euclidean distance or cosine similarity. It does not rely on keyword overlap, indexing date or the number of identical fields.",
+      "source": "AWS — k-Nearest Neighbor (k-NN) search in Amazon OpenSearch Service (https://docs.aws.amazon.com/opensearch-service/latest/developerguide/knn.html)"
+    },
+    {
+      "id": "q430121_005",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "Un equipo que usa fragmentación semántica quiere obtener menos fragmentos, y en promedio más grandes. ¿Qué ajuste le conviene?",
+      "question_en": "A team using semantic chunking wants fewer chunks that are larger on average. Which adjustment helps?",
+      "options_es": [
+        "Bajar el umbral de percentil de corte para que las oraciones se separen con más facilidad",
+        "Subir el umbral de percentil de corte para que las oraciones deban diferir más",
+        "Reducir el máximo de tokens para que cada fragmento sea compacto",
+        "Aumentar el búfer de oraciones para que cada fragmento abarque más contexto"
+      ],
+      "options_en": [
+        "Lower the breakpoint percentile threshold so sentences split more easily",
+        "Raise the breakpoint percentile threshold so sentences must differ more",
+        "Lower the maximum tokens value so each chunk stays compact",
+        "Enlarge the sentence buffer so each chunk covers more context"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Con un umbral de percentil más alto, las oraciones deben diferir más entre sí para quedar en fragmentos distintos, así que resultan menos fragmentos y de mayor tamaño promedio. Bajar el umbral hace justo lo contrario. El máximo de tokens solo fija un tope por fragmento, y el búfer define cuántas oraciones vecinas se combinan al generar los embeddings; ninguno de los dos es el ajuste que la fuente asocia con tener menos fragmentos.",
+      "explanation_en": "With a higher percentile threshold, sentences must differ more from one another to end up in separate chunks, so you get fewer chunks with a larger average size. Lowering the threshold does the opposite. The maximum tokens value only caps chunk size, and the buffer sets how many neighboring sentences are combined when embeddings are created; neither is the adjustment the source ties to producing fewer chunks.",
+      "source": "AWS — How content chunking works for knowledge bases (https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)"
+    },
+    {
+      "id": "q430121_006",
+      "skill_id": "sk430121",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere elegir su propio almacén vectorial, como Aurora u OpenSearch Serverless, y controlar por completo el análisis y la indexación de su canalización RAG. ¿Qué opción de Bedrock encaja?",
+      "question_en": "A team wants to pick its own vector store, such as Aurora or OpenSearch Serverless, and fully control parsing and indexing in its RAG pipeline. Which Bedrock option fits?",
+      "options_es": [
+        "Una base de conocimiento administrada por el cliente",
+        "Una base de conocimiento administrada, donde Bedrock se encarga de toda la infraestructura",
+        "Ajustar un modelo con los documentos de la empresa en lugar de recuperarlos",
+        "Una plantilla de prompt que incrusta los documentos en cada solicitud"
+      ],
+      "options_en": [
+        "A customer-managed knowledge base",
+        "A managed knowledge base, where Bedrock handles all the infrastructure",
+        "Fine-tuning a model on company documents instead of retrieving them",
+        "A prompt template that embeds the documents in every request"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En la base de conocimiento administrada por el cliente, el equipo monta y opera su propia canalización de recuperación: elige la base vectorial y decide cómo se ingieren, analizan e indexan los documentos. En la variante administrada es Bedrock quien gestiona la infraestructura de ingesta, indexación y almacenamiento, de modo que el equipo no elige el almacén. El ajuste fino y la plantilla de prompt tampoco plantean elegir un almacén vectorial propio.",
+      "explanation_en": "With a customer-managed knowledge base, the team assembles and operates its own retrieval pipeline: it chooses the vector database and decides how documents are ingested, parsed and indexed. In the managed variant, Bedrock runs the ingestion, indexing and storage infrastructure, so the team does not choose the store. Fine-tuning and a prompt template do not involve picking a vector store of your own either.",
+      "source": "AWS — Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases (https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html)"
     }
   ]
 }

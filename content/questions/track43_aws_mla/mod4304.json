@@ -999,6 +999,972 @@
       "explanation_en": "`ANONYMIZE` redacts or masks the detected sensitive information instead of blocking the request entirely, which is what a `BLOCK`-type action would do.",
       "source": "AWS — Comparison of MLA-C01 and MLA-C02 (https://docs.aws.amazon.com/aws-certification/latest/machine-learning-engineer-associate-02/mla-02-comparison.html)",
       "expected_time_ms": 30000
+    },
+    {
+      "id": "q430116_067",
+      "skill_id": "sk430116",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML nota que las solicitudes que recibe su endpoint en producción tienen una distribución estadística distinta a la de los datos de entrenamiento. ¿Qué riesgo implica y cómo lo aborda SageMaker Model Monitor?",
+      "question_en": "An ML team notices that the requests reaching its production endpoint have a different statistical distribution from the training data. What risk does this imply, and how does SageMaker Model Monitor address it?",
+      "options_es": [
+        "El artefacto del modelo en S3 se corrompe y Model Monitor lo restaura automáticamente desde la versión previa",
+        "El modelo empieza a perder exactitud y Model Monitor usa reglas para detectar la deriva y avisar",
+        "El endpoint deja de responder por completo y Model Monitor reinicia las instancias para recuperar el servicio",
+        "El modelo gana exactitud al adaptarse y Model Monitor lo reentrena automáticamente con los datos nuevos"
+      ],
+      "options_en": [
+        "The model artifact in S3 becomes corrupted, and Model Monitor automatically restores the earlier model version",
+        "The model starts losing accuracy, and Model Monitor applies rules to detect the drift and send alerts",
+        "The endpoint stops responding entirely, and Model Monitor restarts the underlying instances to recover service",
+        "The model gains accuracy by adapting, and Model Monitor retrains it automatically on the new data"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cuando los datos de producción se alejan de la naturaleza de los datos base con los que se entrenó el modelo, este pierde exactitud en sus predicciones. Model Monitor aplica reglas para detectar esa deriva de datos y genera alertas, de modo que el equipo pueda actuar. Las otras opciones describen corrupción de artefactos, caídas del endpoint o mejoras automáticas que la fuente no atribuye al monitoreo.",
+      "explanation_en": "When production data drifts away from the baseline data the model was trained on, the model loses accuracy in its predictions. Model Monitor applies rules to detect that data drift and raises alerts so the team can act. The other options describe artifact corruption, endpoint outages, or automatic improvements that the source does not attribute to monitoring.",
+      "source": "AWS — Data quality (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor-data-quality.html)"
+    },
+    {
+      "id": "q430116_068",
+      "skill_id": "sk430116",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML quiere saber si las predicciones de su modelo en producción siguen siendo correctas, comparándolas con los resultados reales que ya conoce. ¿Qué tipo de monitoreo de Model Monitor debe configurar?",
+      "question_en": "An ML team wants to confirm that its production model's predictions remain correct by comparing them with known real outcomes. Which Model Monitor monitoring type should it configure?",
+      "options_es": [
+        "Calidad del modelo, que une predicciones capturadas con etiquetas reales almacenadas en S3",
+        "Calidad de datos, que contrasta las estadísticas de las entradas con las de un conjunto de referencia",
+        "Deriva de sesgo, que vigila el sesgo presente en las predicciones que genera el modelo",
+        "Deriva de atribución de características, que sigue los cambios en la atribución de cada característica"
+      ],
+      "options_en": [
+        "Model quality, which merges captured predictions with actual labels stored in Amazon S3",
+        "Data quality, which compares the statistics of incoming inputs against those of a reference dataset",
+        "Bias drift, which watches for bias present in the predictions the model generates",
+        "Feature attribution drift, which tracks changes in how much each feature contributes to predictions"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El monitoreo de calidad del modelo evalúa el rendimiento del modelo uniendo las predicciones capturadas en inferencia con las etiquetas reales (Ground Truth) que se guardan en Amazon S3, y luego las compara. Calidad de datos, deriva de sesgo y deriva de atribución de características son otros tipos de monitoreo de Model Monitor que no se centran en contrastar las predicciones con los resultados reales conocidos.",
+      "explanation_en": "Model quality monitoring evaluates a model's performance by merging the predictions captured during inference with the actual Ground Truth labels kept in Amazon S3, then comparing the two. Data quality, bias drift, and feature attribution drift are other Model Monitor monitoring types, and none of them is centered on checking predictions against known real outcomes.",
+      "source": "AWS — Model quality (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor-model-quality.html)"
+    },
+    {
+      "id": "q430116_069",
+      "skill_id": "sk430116",
+      "type": "multiple_choice",
+      "question_es": "Un equipo despliega un clasificador de imágenes que recibe fotos y devuelve una etiqueta. Al activar SageMaker Model Monitor, ¿qué debe esperar el equipo?",
+      "question_en": "A team deploys an image classifier that receives photos and returns a label. After enabling SageMaker Model Monitor, what should the team expect?",
+      "options_es": [
+        "Calculará métricas y estadísticas tanto de las imágenes de entrada como de la etiqueta de salida",
+        "Calculará métricas y estadísticas solo de la etiqueta de salida, no de las imágenes",
+        "Rechazará el modelo, porque Model Monitor solo acepta modelos de entrada tabular",
+        "Calculará métricas solo de las imágenes de entrada, y la etiqueta de salida quedará sin analizar"
+      ],
+      "options_en": [
+        "It will compute metrics and statistics for both the input images and the output label",
+        "It will compute metrics and statistics for the output label only, not the images",
+        "It will reject the model, because Model Monitor accepts only tabular-input models",
+        "It will compute metrics only for the input images, leaving the output label unanalyzed"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Model Monitor trabaja con datos tabulares, así que un modelo de imágenes sí puede monitorearse, pero solo a través de su salida: se obtienen métricas y estadísticas de la etiqueta predicha, no de las fotos. Fallan las opciones que prometen cobertura de las imágenes o que rechazan el modelo, y también la que invierte lo admitido al limitarse a la entrada.",
+      "explanation_en": "Model Monitor works with tabular data, so an image model can still be monitored, but only through its output: you get metrics and statistics for the predicted label rather than for the pictures. The options claiming image coverage or rejecting the model are wrong, and so is the one limited to the input, which reverses what is supported.",
+      "source": "AWS — Data and model quality monitoring with Amazon SageMaker Model Monitor (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html)"
+    },
+    {
+      "id": "q430116_070",
+      "skill_id": "sk430116",
+      "type": "multiple_choice",
+      "question_es": "Al configurar SageMaker Model Monitor, un ingeniero crea una línea base. ¿De dónde parte esa línea base y qué cumple dentro del proceso?",
+      "question_en": "While setting up SageMaker Model Monitor, an engineer creates a baseline. What does the baseline start from, and what role does it play in the process?",
+      "options_es": [
+        "Parte del conjunto de entrenamiento y propone restricciones frente a las que se detectan violaciones",
+        "Parte del tráfico más reciente del endpoint y fija restricciones que se actualizan solas con cada nueva solicitud",
+        "Parte de un modelo más simple entrenado aparte y define el umbral de latencia que debe cumplir cada solicitud",
+        "Parte de las alertas de CloudWatch ya emitidas y decide qué instancias del endpoint deben reiniciarse tras una desviación"
+      ],
+      "options_en": [
+        "It starts from the training dataset and proposes constraints against which violations are flagged",
+        "It starts from the latest endpoint traffic and sets constraints that update themselves with every new request",
+        "It starts from a simpler model trained separately and defines the latency threshold every endpoint request must meet",
+        "It starts from CloudWatch alerts already issued and decides which endpoint instances to restart after a deviation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La línea base se crea a partir del conjunto de datos con el que se entrenó el modelo, calcula métricas y sugiere restricciones. Las predicciones en tiempo real o por lotes se comparan con esas restricciones y se reportan como violaciones si quedan fuera de los valores permitidos. Las demás opciones inventan orígenes y funciones que no corresponden a la línea base.",
+      "explanation_en": "The baseline is built from the dataset used to train the model, computes metrics, and suggests constraints. Real-time or batch predictions are compared with those constraints and reported as violations when they fall outside the allowed values. The other options invent starting points and functions that do not belong to a baseline.",
+      "source": "AWS — Data and model quality monitoring with Amazon SageMaker Model Monitor (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html)"
+    },
+    {
+      "id": "q430116_071",
+      "skill_id": "sk430116",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML quiere que Model Monitor tenga disponibles las entradas y salidas de inferencia de un endpoint en tiempo real para analizarlas después. ¿Qué paso lo permite y dónde terminan los datos?",
+      "question_en": "An ML team wants Model Monitor to have the inference inputs and outputs of a real-time endpoint available for later analysis. Which step enables this, and where does the data end up?",
+      "options_es": [
+        "Ejecutar un trabajo de transformación por lotes; los datos se guardan en un volumen de Amazon EFS adjunto",
+        "Crear un trabajo de línea base; los datos se escriben directamente en el registro de modelos",
+        "Habilitar la captura de datos del endpoint; entradas y salidas se almacenan en Amazon S3",
+        "Definir un programa de monitoreo; los datos se envían de forma directa a CloudWatch Logs"
+      ],
+      "options_en": [
+        "Run a batch transform job; the data is kept on an Amazon EFS volume attached to the endpoint",
+        "Create a baseline job; the data is written directly to the model registry",
+        "Enable data capture on the endpoint; inputs and outputs are stored in Amazon S3",
+        "Define a monitoring schedule; the data is sent straight to Amazon CloudWatch Logs"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Habilitar la captura de datos es el paso que registra las entradas y salidas de inferencia del endpoint en tiempo real (o de un trabajo por lotes) y las guarda en Amazon S3. Por la secuencia de pasos, la línea base analiza un conjunto de datos que se le proporciona y el programa define y programa los trabajos de monitoreo; ninguno es el paso que guarda el tráfico del endpoint. Tampoco se indica EFS ni el registro de modelos como destino de esos datos.",
+      "explanation_en": "Enabling data capture is the step that records the inference inputs and outputs of the real-time endpoint (or of a batch job) and keeps them in Amazon S3. From the sequence of steps, the baseline analyzes a dataset you provide, and the schedule defines and schedules the monitoring jobs; neither is the step that stores the endpoint's traffic. EFS and the model registry are not named as a destination for that data either.",
+      "source": "AWS — Data quality (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor-data-quality.html)"
+    },
+    {
+      "id": "q430116_072",
+      "skill_id": "sk430116",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de seguridad lanza SageMaker Studio dentro de una Amazon VPC personalizada y necesita que Model Monitor funcione correctamente. ¿Qué debe crear?",
+      "question_en": "A security team launches SageMaker Studio inside a custom Amazon VPC and needs Model Monitor to work correctly. What must it create?",
+      "options_es": [
+        "Una conexión de emparejamiento con una VPC de AWS Lambda para que Model Monitor ejecute sus análisis",
+        "Un enlace de Direct Connect hacia un centro de datos local para guardar allí los informes de monitoreo",
+        "Una regla de AWS WAF para que el tráfico de Model Monitor salga a Internet público",
+        "Un conjunto de puntos de conexión de VPC para que Model Monitor alcance Amazon S3 y CloudWatch"
+      ],
+      "options_en": [
+        "A peering connection to an AWS Lambda VPC so that Model Monitor can run its analyses",
+        "A Direct Connect link to an on-premises data center for storing the monitoring reports",
+        "An AWS WAF rule so that Model Monitor traffic can reach the public internet",
+        "A set of VPC endpoints so that Model Monitor can reach Amazon S3 and CloudWatch"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Cuando Studio se despliega en una VPC personalizada, hay que crear puntos de conexión de VPC para que Model Monitor pueda alcanzar Amazon S3 y CloudWatch. Un emparejamiento con una VPC de Lambda, un enlace Direct Connect o una regla de WAF no proporcionan esa conectividad hacia los servicios que Model Monitor necesita.",
+      "explanation_en": "When Studio is deployed in a custom VPC, VPC endpoints have to be created so that Model Monitor is able to reach Amazon S3 and CloudWatch. A peering connection to a Lambda VPC, a Direct Connect link, or a WAF rule does not provide that connectivity to the services Model Monitor depends on.",
+      "source": "AWS — Data and model quality monitoring with Amazon SageMaker Model Monitor (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html)"
+    },
+    {
+      "id": "q430117_073",
+      "skill_id": "sk430117",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML observa que los datos que llegan a su endpoint en producción se alejan estadísticamente de los datos con los que se entrenó el modelo, y teme una pérdida de precisión. ¿Qué capacidad aplica reglas para detectar ese data drift y avisar?",
+      "question_en": "An ML team notices that the data reaching its production endpoint is moving statistically away from the data the model was trained on, and it worries about accuracy loss. Which capability applies rules to detect that data drift and send alerts?",
+      "options_es": [
+        "Un trabajo de SageMaker Ground Truth que reetiqueta cada cierto tiempo las predicciones del endpoint",
+        "El monitoreo de calidad de datos de SageMaker Model Monitor",
+        "Un informe de sesgo previo al entrenamiento de SageMaker Clarify sobre el conjunto de entrenamiento",
+        "Las métricas de latencia de invocación del endpoint en Amazon CloudWatch"
+      ],
+      "options_en": [
+        "A SageMaker Ground Truth job that periodically relabels the endpoint's predictions",
+        "SageMaker Model Monitor data quality monitoring",
+        "A SageMaker Clarify pre-training bias report on the training set",
+        "Endpoint invocation latency metrics in Amazon CloudWatch"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El monitoreo de calidad de datos de Model Monitor usa reglas para detectar el drift de los datos en producción respecto a los de entrenamiento y avisa cuando ocurre. Ground Truth sirve para etiquetar, no para vigilar la distribución de los datos. Un informe de sesgo previo al entrenamiento no observa el tráfico en producción, y la latencia de invocación no describe cómo cambian los datos de entrada.",
+      "explanation_en": "Model Monitor's data quality monitoring uses rules to detect drift between production data and the training baseline and alerts when it happens. Ground Truth is for labeling, not for watching data distributions. A pre-training bias report does not observe production traffic, and invocation latency says nothing about how the input data is changing.",
+      "source": "AWS — Data quality (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor-data-quality.html)"
+    },
+    {
+      "id": "q430117_074",
+      "skill_id": "sk430117",
+      "type": "multiple_choice",
+      "question_es": "Los datos en vivo de un modelo desplegado cambiaron de distribución, y un ingeniero de ML quiere monitorear de forma periódica si la importancia relativa de las variables de entrada se desvía de la observada en entrenamiento. ¿Qué debe usar?",
+      "question_en": "The live data of a deployed model has shifted in distribution, and an ML engineer wants to regularly check whether the relative importance of the input variables is departing from what was seen in training. What should they use?",
+      "options_es": [
+        "El monitoreo de atribución de características de SageMaker Clarify",
+        "Un análisis de explicabilidad de SageMaker Clarify lanzado a mano de vez en cuando sobre los datos de entrenamiento",
+        "SageMaker Debugger para seguir los gradientes mientras el modelo se entrena",
+        "La compilación con SageMaker Neo para reducir la latencia de inferencia"
+      ],
+      "options_en": [
+        "SageMaker Clarify feature attribution monitoring",
+        "A SageMaker Clarify explainability analysis launched by hand now and then on the training data",
+        "SageMaker Debugger to track gradients while the model trains",
+        "SageMaker Neo compilation to reduce inference latency"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un cambio en la distribución de los datos en vivo puede provocar un cambio correspondiente en los valores de atribución de las características, y el monitoreo de atribución de Clarify sirve para vigilar ese desvío de forma periódica. Un análisis manual y esporádico sobre los datos de entrenamiento no es monitoreo continuo de los datos en vivo. Debugger (gradientes en el entrenamiento) y Neo (latencia de inferencia) no son herramientas de monitoreo de atribución de características.",
+      "explanation_en": "A change in how live data is distributed can cause a matching shift in feature attribution values, and Clarify attribution monitoring is the capability meant to watch for that shift on a recurring schedule. A manual, occasional analysis on the training data is not ongoing monitoring of live data. Debugger (training gradients) and Neo (inference latency) are not feature attribution monitoring tools.",
+      "source": "AWS — Feature attribution drift for models in production (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-monitor-feature-attribution-drift.html)"
+    },
+    {
+      "id": "q430117_075",
+      "skill_id": "sk430117",
+      "type": "multiple_choice",
+      "question_es": "Al configurar el monitoreo de calidad de datos con Model Monitor, un equipo ejecuta un trabajo de línea base sobre un conjunto de datos de entrada que aporta. ¿Qué obtiene de ese trabajo?",
+      "question_en": "While setting up data quality monitoring with Model Monitor, a team runs a baseline job on an input dataset it supplies. What does that job give them?",
+      "options_es": [
+        "Un modelo de reemplazo reentrenado con los datos más recientes del endpoint",
+        "Unas reglas de esquema y estadísticas de resumen para cada característica",
+        "Una lista de las predicciones erróneas del modelo frente a las etiquetas reales",
+        "Un conjunto de datos sintético que reequilibra las clases"
+      ],
+      "options_en": [
+        "A replacement model retrained on the newest endpoint data",
+        "A set of expected schema rules and summary statistics per feature",
+        "A list of the model's wrong predictions compared against ground-truth labels",
+        "A synthetic dataset that rebalances the classes"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El trabajo de línea base analiza el conjunto de datos aportado y deriva reglas de esquema y estadísticas de cada característica, apoyándose en la biblioteca Deequ. Ese resultado sirve de referencia para detectar deriva en los datos que recibe el modelo. No reentrena ningún modelo, no compara predicciones con etiquetas ni genera datos sintéticos.",
+      "explanation_en": "The baseline job examines the dataset the team provides and derives expected schema rules plus summary statistics for every feature, relying on the Deequ library. That output serves as the reference for spotting drift in the data the model receives. It does not retrain a model, compare predictions with labels, or generate synthetic data.",
+      "source": "AWS — Data quality (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor-data-quality.html)"
+    },
+    {
+      "id": "q430117_076",
+      "skill_id": "sk430117",
+      "type": "multiple_choice",
+      "question_es": "Un ingeniero de ML quiere usar Model Monitor junto con SageMaker Clarify para vigilar, a lo largo del tiempo, el sesgo de un endpoint en tiempo real. ¿Qué pasos básicos debe seguir?",
+      "question_en": "An ML engineer wants to use Model Monitor together with SageMaker Clarify to track the bias of a real-time endpoint over time. Which basic steps should they follow?",
+      "options_es": [
+        "Comparar a mano la precisión semanal del modelo, anotarla en una hoja de cálculo y avisar por correo",
+        "Reentrenar el modelo cada noche, medir la latencia y reemplazar el endpoint si esta empeora",
+        "Cifrar los datos de entrada, anonimizar las características y archivarlos todos en un bucket",
+        "Capturar datos de inferencia, crear una línea base e inspeccionar los resultados"
+      ],
+      "options_en": [
+        "Manually compare weekly accuracy figures, log them in a spreadsheet, and send an email alert",
+        "Retrain the model every night, measure latency, and replace the endpoint if it gets worse",
+        "Encrypt the incoming data, anonymize the features, and archive everything in a bucket",
+        "Capture inference data, create a baseline, and inspect the results"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Según la fuente, el cuaderno de Clarify enseña a recoger datos de inferencia de un endpoint en tiempo real, crear una línea base con la que comparar el sesgo y examinar los resultados. Las demás opciones describen comparaciones manuales de precisión, reentrenamiento por latencia o protección de datos, que no forman ese flujo de vigilancia con línea base.",
+      "explanation_en": "According to the source, the Clarify notebook teaches how to collect inference data from a real-time endpoint, set up a baseline to compare bias against, and examine the results. The other options describe manual accuracy checks, latency-driven retraining, or data protection, none of which is that baseline-driven monitoring flow.",
+      "source": "AWS — Feature attribution drift for models in production (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-monitor-feature-attribution-drift.html)"
+    },
+    {
+      "id": "q430117_077",
+      "skill_id": "sk430117",
+      "type": "multiple_choice",
+      "question_es": "Un monitoreo de deriva de atribución de características reporta un valor NDCG de 1 al comparar los datos de entrenamiento con los datos en vivo. ¿Qué significa ese resultado?",
+      "question_en": "A feature attribution drift monitor reports an NDCG value of 1 when comparing training data with live data. What does that result mean?",
+      "options_es": [
+        "Todas las características perdieron por completo su peso de atribución en producción",
+        "El modelo ya no puede explicarse con valores de atribución",
+        "El ranking de características en vivo coincide con el del entrenamiento",
+        "El sesgo del modelo alcanzó el máximo posible con los datos en vivo"
+      ],
+      "options_en": [
+        "Every feature lost all of its attribution weight in production",
+        "The model can no longer be explained using attribution values",
+        "The live feature ranking matches the training ranking",
+        "The model's bias reached its maximum possible level on live data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un NDCG de 1 es el mejor valor posible e indica que el ranking de atribución de características en los datos en vivo es igual al de los datos de entrenamiento, es decir, no hay deriva de atribución. Los valores menores reflejan que el ranking cambió. No indica pérdida total de atribución, imposibilidad de explicar el modelo ni un sesgo máximo.",
+      "explanation_en": "An NDCG of 1 is the best possible value and means the feature attribution ranking on live data is the same as on training data, so there is no attribution drift. Lower values reflect a changed ranking. It does not signal total loss of attribution, an unexplainable model or maximum bias.",
+      "source": "AWS — Feature attribution drift for models in production (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-monitor-feature-attribution-drift.html)"
+    },
+    {
+      "id": "q430117_078",
+      "skill_id": "sk430117",
+      "type": "multiple_choice",
+      "question_es": "Un equipo despliega un clasificador de imágenes que recibe imágenes y devuelve una etiqueta, y quiere vigilarlo con Model Monitor. ¿Qué podrá obtener?",
+      "question_en": "A team deploys an image classifier that takes images and returns a label, and it wants to watch it with Model Monitor. What will it be able to get?",
+      "options_es": [
+        "Solo métricas sobre la etiqueta de salida del modelo",
+        "Solo estadísticas sobre los píxeles de las imágenes de entrada",
+        "Métricas sobre las imágenes de entrada y también sobre las etiquetas de salida",
+        "Ninguna métrica, pues el servicio no admite modelos de visión"
+      ],
+      "options_en": [
+        "Only metrics on the label the model outputs",
+        "Only statistics on the pixels of the input images",
+        "Metrics on both the input images and the output labels",
+        "No metrics, since the service rejects vision models"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Model Monitor calcula métricas y estadísticas solo sobre datos tabulares. Un modelo de clasificación de imágenes sí puede monitorearse, pero solo se calculan métricas de la salida (la etiqueta), no de la entrada (las imágenes). Por eso fallan las opciones que prometen estadísticas de imagen o rechazan por completo estos modelos.",
+      "explanation_en": "Model Monitor computes metrics and statistics only on tabular data. An image classification model can still be monitored, but metrics are calculated for the output (the label), not for the input (the images). That rules out the options promising image statistics or rejecting such models altogether.",
+      "source": "AWS — Data quality (https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor-data-quality.html)"
+    },
+    {
+      "id": "q430118_079",
+      "skill_id": "sk430118",
+      "type": "multiple_choice",
+      "question_es": "Antes de gastar cómputo en un entrenamiento, un equipo de ML quiere saber si el conjunto de datos que recopiló representa de forma desigual a ciertos grupos demográficos. ¿Qué enfoque de SageMaker Clarify encaja?",
+      "question_en": "Before spending compute on training, an ML team wants to find out whether its collected dataset under-represents certain demographic groups. Which SageMaker Clarify approach fits?",
+      "options_es": [
+        "Métricas de sesgo posteriores al entrenamiento, calculadas con las etiquetas que predice el modelo",
+        "Monitoreo de sesgo frente a una línea base sobre el tráfico de un endpoint desplegado",
+        "Informes de atribución de características sobre las predicciones de un modelo desplegado",
+        "Métricas de sesgo previas al entrenamiento, calculadas sobre el propio conjunto de datos"
+      ],
+      "options_en": [
+        "Post-training bias metrics computed from the labels a trained model predicts",
+        "Bias monitoring against a baseline on the traffic of a deployed endpoint",
+        "Feature attribution reports on the predictions of a deployed model",
+        "Pre-training bias metrics computed on the raw dataset itself"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las métricas previas al entrenamiento están pensadas para detectar sesgo en los datos crudos antes de entrenar, así que permiten revisar la representación de los grupos sin disponer de ningún modelo. Las posteriores al entrenamiento necesitan un modelo que ya produzca predicciones, el monitoreo frente a una línea base ocurre una vez desplegado el modelo en un endpoint, y la atribución de características explica predicciones, algo que aquí aún no existe.",
+      "explanation_en": "Pre-training metrics are meant to detect bias in the raw data before any training, so they let the team inspect group representation with no model at all. Post-training metrics need a model that already makes predictions, baseline monitoring happens after a model is deployed to an endpoint, and feature attribution explains predictions, which do not exist yet in this scenario.",
+      "source": "AWS — Pre-training Data Bias (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-data-bias.html)"
+    },
+    {
+      "id": "q430118_080",
+      "skill_id": "sk430118",
+      "type": "multiple_choice",
+      "question_es": "Un ingeniero de ML quiere recibir una notificación cuando el sesgo de un modelo desplegado supere un umbral definido, además de consultar informes en SageMaker Studio. ¿Qué debe usar?",
+      "question_en": "An ML engineer wants a notification when the bias of a deployed model goes past a defined threshold, and also wants to review reports in SageMaker Studio. What should be used?",
+      "options_es": [
+        "Un informe de sesgo previo al entrenamiento de SageMaker Clarify, generado una sola vez antes de entrenar el modelo",
+        "El historial de eventos de AWS CloudTrail, revisado a mano por cada llamada al endpoint",
+        "El monitoreo de sesgo de SageMaker Clarify, con alertas en Amazon CloudWatch",
+        "Análisis de Amazon Macie sobre el bucket de S3 con los datos de entrenamiento"
+      ],
+      "options_en": [
+        "A pre-training bias report from SageMaker Clarify, generated once before the model is trained",
+        "AWS CloudTrail event history, reviewed manually for each call to the endpoint",
+        "SageMaker Clarify bias monitoring, with alerts set up in Amazon CloudWatch",
+        "Amazon Macie scans of the S3 bucket that holds the training data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El monitoreo de sesgo de SageMaker Clarify vigila las predicciones de forma periódica, ofrece informes y gráficos en SageMaker Studio y permite configurar alertas en CloudWatch cuando se detecta sesgo por encima de un umbral. Un informe previo al entrenamiento es puntual y no observa el modelo desplegado, CloudTrail registra llamadas a la API sin evaluar sesgo y Macie busca datos sensibles en S3, no sesgo del modelo.",
+      "explanation_en": "SageMaker Clarify bias monitoring checks predictions on a regular basis, provides reports and graphs in SageMaker Studio, and lets you configure CloudWatch alerts when bias exceeds a threshold. A pre-training report is a one-time snapshot that does not watch the deployed model, CloudTrail records API calls without evaluating bias, and Macie looks for sensitive data in S3 rather than model bias.",
+      "source": "AWS — Bias drift for models in production (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-monitor-bias-drift.html)"
+    },
+    {
+      "id": "q430118_081",
+      "skill_id": "sk430118",
+      "type": "multiple_choice",
+      "question_es": "En la terminología de sesgo y equidad de SageMaker Clarify, ¿qué es una faceta (facet)?",
+      "question_en": "In SageMaker Clarify terminology for bias and fairness, what is a facet?",
+      "options_es": [
+        "La columna cuyos atributos sirven de referencia para medir el sesgo",
+        "La columna que contiene el valor objetivo que el modelo aprende a predecir",
+        "Una columna categórica que solo se emplea para agrupar datos en la métrica CDD",
+        "Un puntaje numérico que cuantifica cuánto sesgo potencial presenta un conjunto de datos"
+      ],
+      "options_en": [
+        "The column whose attributes bias is measured against",
+        "The column holding the target value that the model is trained to predict",
+        "A categorical column needed only to split the data into subgroups for the CDD metric",
+        "A numeric score that quantifies how much potential bias a dataset shows"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La faceta es la columna o característica cuyos atributos se usan para medir el sesgo, por ejemplo para comparar grupos. La columna con el valor objetivo es la etiqueta, la columna categórica que solo agrupa datos para la métrica CDD es la variable de grupo, y el puntaje que cuantifica el sesgo potencial es una métrica de sesgo.",
+      "explanation_en": "A facet is the column or feature whose attributes are used to measure bias, for instance to compare groups. The column with the target value is the label, the categorical column that only splits data for the CDD metric is the group variable, and the score quantifying potential bias is a bias metric.",
+      "source": "AWS — Pre-training Data Bias (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-data-bias.html)"
+    },
+    {
+      "id": "q430118_082",
+      "skill_id": "sk430118",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere saber si los resultados injustos de un modelo de clasificación vienen de los datos o del algoritmo. ¿Qué información considera el análisis de sesgo posterior al entrenamiento?",
+      "question_en": "A team wants to know whether the unfair outcomes of a classification model come from the data or from the algorithm. What information does post-training bias analysis take into account?",
+      "options_es": [
+        "Solo las columnas de características sin procesar, sin etiquetas ni predicciones",
+        "Los datos con sus etiquetas, junto con las predicciones del modelo",
+        "Solo las predicciones, sin ninguno de los datos de entrenamiento",
+        "Solo las métricas de latencia y rendimiento del endpoint en inferencia"
+      ],
+      "options_en": [
+        "Only the raw feature columns, with no labels or predictions involved",
+        "The data with its labels, plus the model's predictions",
+        "Only the predictions, without any of the training data",
+        "Only the latency and throughput metrics of the endpoint at inference"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El análisis posterior al entrenamiento considera los datos, incluidas las etiquetas, y las predicciones del modelo, y compara por grupos las etiquetas predichas o las predicciones frente a los valores observados. Así puede revelar sesgo originado en los datos o en el algoritmo. Las otras opciones dejan fuera las etiquetas, las predicciones o los datos, o se apoyan en métricas operativas que no son la base de este análisis.",
+      "explanation_en": "Post-training analysis looks at the data, labels included, together with the model's predictions, and compares predicted labels or predictions against observed values across groups. That lets it reveal bias coming from either the data or the algorithm. The other options leave out labels, predictions, or the data itself, or rely on operational metrics that this analysis does not use.",
+      "source": "AWS — Post-training Data and Model Bias (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-post-training-bias.html)"
+    },
+    {
+      "id": "q430118_083",
+      "skill_id": "sk430118",
+      "type": "multiple_choice",
+      "question_es": "En el monitoreo de deriva de sesgo de SageMaker Clarify se define un rango permitido para una métrica y Clarify construye un intervalo de confianza con la última ventana de datos. ¿Cuándo emite una alerta de sesgo?",
+      "question_en": "In SageMaker Clarify bias drift monitoring, a team defines an allowed range for a metric and Clarify builds a confidence interval from the latest data window. When does it raise a bias alert?",
+      "options_es": [
+        "Cuando el intervalo de confianza se solapa con el rango permitido, aunque sea parcialmente",
+        "Cuando el intervalo y el rango permitido no se solapan",
+        "Siempre que la métrica de la ventana difiera en algo del valor de entrenamiento",
+        "Siempre que la ventana tenga menos registros que el conjunto de entrenamiento"
+      ],
+      "options_en": [
+        "When the confidence interval overlaps the allowed range even partially",
+        "When the interval and the allowed range do not overlap",
+        "Whenever the metric on the window differs at all from the training value",
+        "Whenever the window holds fewer records than the training dataset"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Clarify alerta cuando el intervalo de confianza y el rango permitido son disjuntos, porque entonces hay confianza de que el valor real de la métrica queda fuera del rango. Si se solapan, se considera probable que la métrica siga dentro de lo permitido. Una diferencia cualquiera con el valor de entrenamiento o el tamaño de la ventana no son el criterio de alerta.",
+      "explanation_en": "Clarify alerts when the confidence interval and the allowed range are disjoint, since that gives confidence that the true metric value lies outside the range. If they overlap, the metric is considered likely to remain within what is allowed. Any difference from the training value, or the size of the window, is not the alert criterion.",
+      "source": "AWS — Bias drift for models in production (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-monitor-bias-drift.html)"
+    },
+    {
+      "id": "q430118_084",
+      "skill_id": "sk430118",
+      "type": "multiple_choice",
+      "question_es": "Un modelo que predice precios de viviendas se entrenó con ciertas tasas hipotecarias, pero tras el despliegue las tasas reales cambian de forma notable. ¿Qué riesgo ilustra este caso?",
+      "question_en": "A model that predicts home prices was trained with certain mortgage rates, but after deployment the real-world rates change noticeably. Which risk does this case illustrate?",
+      "options_es": [
+        "Los datos reales se alejan de los de entrenamiento y sesgan las salidas",
+        "El conjunto de entrenamiento era demasiado pequeño para generalizar bien",
+        "Las características se escalaron de forma distinta en producción",
+        "El endpoint está saturado y degrada las predicciones de todos los usuarios por igual"
+      ],
+      "options_en": [
+        "Live data drifted from the training data and skews the outputs",
+        "The training set was too small to generalize well",
+        "Features were scaled differently in production than in training",
+        "The endpoint is overloaded and degrades predictions for all users equally"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cuando los datos que ve el modelo en producción se alejan de los de entrenamiento, como ocurre con tasas hipotecarias distintas, el sesgo puede aparecer o agravarse en las salidas, y por eso conviene detectarlo y vigilarlo. Las otras opciones atribuyen el problema al tamaño del conjunto de entrenamiento, al escalado de las características o a la saturación del endpoint, algo que el escenario no describe.",
+      "explanation_en": "When the data a model sees in production moves away from the training data, as with different mortgage rates, bias can appear or get worse in the outputs, which is why it should be detected and watched. The other options blame the size of the training set, the feature scaling or endpoint overload, none of which the scenario describes.",
+      "source": "AWS — Bias drift for models in production (https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-monitor-bias-drift.html)"
+    },
+    {
+      "id": "q430119_085",
+      "skill_id": "sk430119",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML aloja una aplicación síncrona cuyo tráfico llega en ráfagas irregulares, con largos periodos sin solicitudes, y que tolera cierta variación en la latencia de respuesta. ¿Qué opción de inferencia de SageMaker AI evita mejor pagar por capacidad ociosa?",
+      "question_en": "A machine learning team hosts a synchronous application whose traffic arrives in irregular bursts, with long quiet periods, and which can tolerate some variation in response latency. Which SageMaker AI inference option best avoids paying for idle capacity?",
+      "options_es": [
+        "Inferencia en tiempo real con instancias siempre activas dimensionadas para el pico",
+        "Inferencia por lotes mantenida activa tras un punto de conexión persistente",
+        "Inferencia sin servidor, que escala sola y cobra solo el tiempo de uso",
+        "Inferencia asíncrona, que encola las solicitudes y devuelve el resultado más tarde"
+      ],
+      "options_en": [
+        "Real-time inference on always-on instances sized for the traffic peak",
+        "Batch inference kept running behind a persistent endpoint",
+        "Serverless inference, which scales itself and bills only for use",
+        "Asynchronous inference, which queues requests and returns the result later"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La inferencia sin servidor se ajusta sola a la demanda y se paga únicamente mientras se atiende cada solicitud, lo que encaja con tráfico irregular y tolerancia a variaciones de latencia. La inferencia en tiempo real está pensada para tráfico predecible y siempre disponible, y se paga por las instancias que permanecen disponibles. La inferencia por lotes es para procesos sin conexión que no necesitan un punto de conexión persistente, y la asíncrona está orientada a cargas asíncronas insensibles a la latencia, no a una aplicación síncrona.",
+      "explanation_en": "Serverless inference adjusts to demand on its own and charges only while each request is being served, which suits irregular traffic and tolerance for latency variation. Real-time inference is meant for predictable, always-available traffic, and you pay for the instances that stay available. Batch inference is meant for offline jobs that need no persistent endpoint, and asynchronous inference targets asynchronous, latency-insensitive workloads rather than a synchronous application.",
+      "source": "AWS — Inference cost optimization best practices (https://docs.aws.amazon.com/sagemaker/latest/dg/inference-cost-optimization.html)"
+    },
+    {
+      "id": "q430119_086",
+      "skill_id": "sk430119",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML debe elegir en qué instancia desplegar un modelo y quiere datos objetivos que muestren cuál ofrece mejor valor antes de comprometerse. ¿Qué capacidad de SageMaker AI le sirve?",
+      "question_en": "An ML team must pick the instance to deploy a model on and wants objective data showing which one gives the best value before committing. Which SageMaker AI capability fits?",
+      "options_es": [
+        "Inference Recommender, que contrasta instancias candidatas para tu modelo",
+        "SageMaker Neo, que optimiza el modelo de forma automática para rendir más",
+        "Escalado automático, que ajusta el número de instancias según la carga",
+        "Puntos de enlace multimodelo, que alojan varios modelos en una instancia"
+      ],
+      "options_en": [
+        "Inference Recommender, which contrasts candidate instances for your model",
+        "SageMaker Neo, which automatically optimizes the model to run more efficiently",
+        "Autoscaling, which adjusts the number of instances to match the workload",
+        "Multi-model endpoints, which host several models on a single instance"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Inference Recommender sirve para contrastar instancias candidatas y observar el desempeño del modelo y el gasto de cada una, de modo que se elija la de mejor relación. Neo mejora el propio modelo, el escalado automático ajusta cuántas instancias hay según la demanda y los puntos de enlace multimodelo comparten una instancia entre varios modelos; ninguno ayuda a decidir qué instancia usar.",
+      "explanation_en": "Inference Recommender is used to contrast candidate instances and observe how the model performs and what it costs on each, so the team can choose the one with the best value. Neo improves the model itself, autoscaling changes how many instances run as demand moves, and multi-model endpoints let several models share one instance; none of them helps decide which instance to use.",
+      "source": "AWS — Inference cost optimization best practices (https://docs.aws.amazon.com/sagemaker/latest/dg/inference-cost-optimization.html)"
+    },
+    {
+      "id": "q430119_087",
+      "skill_id": "sk430119",
+      "type": "multiple_choice",
+      "question_es": "Un equipo opera muchos puntos de enlace de SageMaker AI y las métricas de utilización de CloudWatch muestran que cada instancia subyacente se usa muy poco. ¿Qué estrategia reduce el costo y mantiene disponibles todos los modelos?",
+      "question_en": "A team runs many SageMaker AI endpoints, and CloudWatch utilization metrics show each underlying instance is barely used. Which approach lowers cost while keeping all the models available?",
+      "options_es": [
+        "Aumentar el tamaño de cada instancia para tener más margen en los picos",
+        "Consolidar los modelos en un punto de enlace multimodelo compartido",
+        "Crear un punto de enlace extra por modelo como réplica de respaldo",
+        "Desactivar el escalado automático y fijar la capacidad en el máximo"
+      ],
+      "options_en": [
+        "Enlarge every instance so there is more headroom for traffic peaks",
+        "Consolidate the models into a shared multi-model endpoint",
+        "Add one extra endpoint per model as a backup replica",
+        "Turn off autoscaling and pin capacity at the maximum"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cuando varios puntos de enlace desaprovechan sus instancias, los puntos de enlace multimodelo (o multicontenedor) permiten alojar varios modelos en uno solo y compartir la instancia, lo que mejora el retorno de la inversión. Usar instancias más grandes suma costos, añadir más puntos de enlace suma costos sin aprovechar mejor las instancias, y fijar la capacidad en el máximo deja capacidad ociosa cuando el tráfico baja.",
+      "explanation_en": "When several endpoints leave their instances underused, multi-model (or multi-container) endpoints let you host several models behind a single endpoint and share the instance, improving return on investment. Larger instances raise costs, extra endpoints add costs without making better use of the instances, and pinning capacity at the maximum leaves idle capacity whenever traffic drops.",
+      "source": "AWS — Inference cost optimization best practices (https://docs.aws.amazon.com/sagemaker/latest/dg/inference-cost-optimization.html)"
+    },
+    {
+      "id": "q430119_088",
+      "skill_id": "sk430119",
+      "type": "multiple_choice",
+      "question_es": "Una empresa financiera debe señalar qué modelos de ML tienen mayor riesgo antes de llevarlos a producción. ¿Qué elemento de SageMaker Model Cards sirve para eso?",
+      "question_en": "A financial firm must flag which ML models carry higher risk before they go to production. Which SageMaker Model Cards element supports that?",
+      "options_es": [
+        "El esquema JSON de la tarjeta, con la estructura de su contenido",
+        "El campo de riesgo, con valores desconocido, bajo, medio o alto",
+        "El estado de aprobación, con el avance de la revisión de la tarjeta",
+        "Los detalles de evaluación, con los resultados de las pruebas del modelo"
+      ],
+      "options_en": [
+        "The model card JSON schema, with the structure of its content",
+        "The risk field, with values unknown, low, medium or high",
+        "The approval status, with the progress of the card's sign-off",
+        "The evaluation details, with the results of the model's testing"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las tarjetas de modelo incluyen un campo para clasificar el riesgo de cada modelo como desconocido, bajo, medio o alto, lo que permite señalar los modelos más delicados antes de desplegarlos. Según la fuente, solo ese campo de riesgo cumple la función de clasificar el riesgo; el esquema JSON, el estado de aprobación y los detalles de evaluación no se describen con ese fin.",
+      "explanation_en": "Model cards include a field that classifies each model's risk as unknown, low, medium or high, so teams can flag the more sensitive models before deploying them. According to the source, only that risk field is described as the risk classifier; the JSON schema, the approval status and the evaluation details are not described for that purpose.",
+      "source": "AWS — Amazon SageMaker Model Cards (https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html)"
+    },
+    {
+      "id": "q430119_089",
+      "skill_id": "sk430119",
+      "type": "multiple_choice",
+      "question_es": "Un administrador de ML quiere crear, desde la consola de SageMaker AI, roles de IAM de mínimo privilegio para perfiles como científicos de datos e ingenieros de MLOps, con permisos predefinidos. ¿Qué herramienta usa?",
+      "question_en": "An ML administrator wants least-privilege IAM roles for personas such as data scientists and MLOps engineers, with predefined permissions, created from the SageMaker AI console. Which tool does this?",
+      "options_es": [
+        "Model Cards, con campos de uso previsto y riesgo",
+        "Inference Recommender, que compara instancias por rendimiento y costo",
+        "SageMaker Neo, que optimiza modelos de forma automática",
+        "Role Manager, que ofrece configuraciones listas por tipo de usuario"
+      ],
+      "options_en": [
+        "Model Cards, with fields for intended use and risk",
+        "Inference Recommender, which compares instances by performance and cost",
+        "SageMaker Neo, which optimizes models automatically",
+        "Role Manager, which supplies ready-made access setups per user type"
+      ],
+      "correct_index": 3,
+      "explanation_es": "SageMaker Role Manager está pensado para que un administrador cree y mantenga roles de IAM ajustados a cada tipo de usuario, con permisos ya definidos para tareas habituales de ML, todo desde la consola. Model Cards sirve para documentar modelos, Inference Recommender para comparar instancias y Neo para optimizar modelos, así que ninguna resuelve la gestión de acceso.",
+      "explanation_en": "SageMaker Role Manager lets an administrator create and maintain IAM roles tailored to each kind of user, with permissions already defined for everyday ML tasks, all from the console. Model Cards is for documenting models, Inference Recommender for comparing instances, and Neo for optimizing models, so none of them handles access management.",
+      "source": "AWS — Amazon SageMaker Role Manager (https://docs.aws.amazon.com/sagemaker/latest/dg/role-manager.html)"
+    },
+    {
+      "id": "q430119_090",
+      "skill_id": "sk430119",
+      "type": "multiple_choice",
+      "question_es": "Un auditor necesita un historial inalterable de cambios para una tarjeta de modelo de SageMaker. ¿Qué ocurre cuando alguien edita el contenido de la tarjeta, salvo su estado de aprobación?",
+      "question_en": "An auditor needs an immutable change history for a SageMaker model card. What happens when someone edits the card's content, other than its approval status?",
+      "options_es": [
+        "Se genera una versión adicional de la tarjeta",
+        "La tarjeta se sobrescribe y solo se conserva la última edición",
+        "La tarjeta se bloquea y rechaza cualquier cambio posterior de contenido",
+        "Se crea una copia de la tarjeta en otra cuenta para conservar el original"
+      ],
+      "options_en": [
+        "An additional version of the card is created",
+        "The card is overwritten and only the latest edit is kept",
+        "The card is locked and rejects any further content changes",
+        "A copy of the card is made in another account to preserve the original"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada edición de una tarjeta de modelo, salvo la actualización del estado de aprobación, produce una versión adicional, de modo que queda un registro inmutable de los cambios que sirve para auditoría. Sobrescribir la tarjeta perdería las ediciones previas, y ni el bloqueo de contenido ni la copia a otra cuenta son lo que ocurre al editar según la fuente.",
+      "explanation_en": "Every edit to a model card, except an approval status update, produces an additional version, leaving an immutable record of changes that supports auditing. Overwriting the card would lose earlier edits, and neither locking the content nor copying the card to another account is what happens on an edit according to the source.",
+      "source": "AWS — Amazon SageMaker Model Cards (https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html)"
+    },
+    {
+      "id": "q430120_091",
+      "skill_id": "sk430120",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML entrena muchas iteraciones de un modelo para el mismo problema y quiere que cada modelo registrado aparezca como una nueva versión dentro de una única agrupación en SageMaker Model Registry. ¿Qué construcción debe crear?",
+      "question_en": "An ML team trains many iterations of a model for the same problem and wants each registered model to show up as a new version inside a single grouping in SageMaker Model Registry. Which construct should they create?",
+      "options_es": [
+        "Un Model Group que reúne cada versión registrada",
+        "Una Collection que guarda directamente las versiones de un único modelo",
+        "Una Endpoint Configuration que enlaza cada ejecución con su despliegue",
+        "Una Model Card que almacena los pesos de cada ejecución de entrenamiento"
+      ],
+      "options_en": [
+        "A Model Group that collects every registered version",
+        "A Model Registry Collection that stores the versions of a single model directly",
+        "An Endpoint Configuration that links each training run to its deployment",
+        "A Model Card that stores the weights for each training run"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Model Group es la agrupación pensada para seguir los modelos entrenados contra un mismo problema: cada vez que se registra uno, Model Registry lo añade como una versión nueva. Las Collections se sitúan un nivel por encima, porque organizan Model Groups en categorías en lugar de guardar versiones. Una Endpoint Configuration describe cómo se despliega un modelo, no cómo se versionan los registrados, y una Model Card aporta información que se consulta junto a los modelos registrados, pero no es el contenedor de sus versiones.",
+      "explanation_en": "A Model Group is the grouping meant to track the models trained for one problem: every time one is registered, Model Registry adds it as a new version. Collections sit one level higher, since they organize Model Groups into categories instead of holding versions. An Endpoint Configuration describes how a model gets deployed, not how registered models are versioned, and a Model Card supplies information you can view alongside registered models, but it is not the container for their versions.",
+      "source": "AWS — Model Registration Deployment with Model Registry (https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry.html)"
+    },
+    {
+      "id": "q430120_092",
+      "skill_id": "sk430120",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere automatizar sus flujos de ML con SageMaker Pipelines sin administrar la infraestructura que los orquesta. ¿Qué ventaja del servicio responde a esa necesidad?",
+      "question_en": "A team wants to automate its ML workflows with SageMaker Pipelines without managing the infrastructure that orchestrates them. Which advantage of the service addresses that need?",
+      "options_es": [
+        "SageMaker AI mantiene un clúster dedicado de orquestación siempre encendido",
+        "SageMaker AI ajusta el cómputo de orquestación según la demanda",
+        "SageMaker AI exige que el equipo elija el tamaño del clúster de orquestación",
+        "SageMaker AI requiere que el equipo aplique parches a los servidores de orquestación"
+      ],
+      "options_en": [
+        "SageMaker AI keeps a dedicated orchestration cluster running at all times",
+        "SageMaker AI adjusts orchestration compute automatically with demand",
+        "SageMaker AI requires the team to size the orchestration cluster in advance",
+        "SageMaker AI requires the team to patch the orchestration servers itself"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Pipelines ofrece una infraestructura de orquestación sin servidor que se ajusta sola a la carga de trabajo: SageMaker AI la aprovisiona, la escala y la apaga, y el equipo no tiene que administrarla. Mantener un clúster siempre encendido, dimensionarlo de antemano o parchear servidores a mano supondría justo la gestión de infraestructura que el equipo quiere evitar, y contradice el escalado y apagado automáticos del servicio.",
+      "explanation_en": "Pipelines provides serverless orchestration infrastructure that adapts by itself to the workload: SageMaker AI provisions, scales and shuts it down, so the team does not have to administer it. An always-on cluster, sizing it up front or patching servers manually would bring back the infrastructure management the team wants to avoid, and would contradict the service's automatic scaling and shutdown.",
+      "source": "AWS — Pipelines (https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines.html)"
+    },
+    {
+      "id": "q430120_093",
+      "skill_id": "sk430120",
+      "type": "multiple_choice",
+      "question_es": "En un pipeline de SageMaker AI, un equipo quiere que la ejecución se detenga sola cuando el error del modelo evaluado supere un límite aceptable, para que ese modelo nunca llegue a registrarse. ¿Qué paso cumple esa función?",
+      "question_en": "In a SageMaker AI pipeline, a team wants the run to halt on its own when the evaluated model's error goes above an acceptable limit, so that model never gets registered. Which step provides that gate?",
+      "options_es": [
+        "Un paso Transform que genera predicciones sobre un conjunto de datos",
+        "Un paso Training que añade hiperparámetros antes de reentrenar",
+        "Un paso Processing que vuelve a normalizar los datos numéricos",
+        "Un paso Condition que comprueba la métrica de error"
+      ],
+      "options_en": [
+        "A Transform step that generates predictions on a dataset",
+        "A Training step that adds hyperparameters before retraining",
+        "A Processing step that normalizes the numeric data again",
+        "A Condition step that checks the error metric"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un paso Condition revisa el resultado de la evaluación, por ejemplo el error cuadrático medio frente a un umbral, y si el modelo no cumple el criterio la ejecución del pipeline se interrumpe antes de seguir con el registro. Transform solo genera predicciones, Training configura hiperparámetros y entrena, y Processing ejecuta scripts de preparación o evaluación, pero ninguno actúa como compuerta de decisión.",
+      "explanation_en": "A Condition step inspects the evaluation result, for example the mean-square error against a threshold, and if the model fails the criterion the pipeline run is interrupted before registration happens. Transform only produces predictions, Training configures hyperparameters and trains, and Processing runs preparation or evaluation scripts, but none of them acts as a decision gate.",
+      "source": "AWS — Pipelines overview (https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines-overview.html)"
+    },
+    {
+      "id": "q430120_094",
+      "skill_id": "sk430120",
+      "type": "multiple_choice",
+      "question_es": "Una cuenta de AWS dedicada al entrenamiento debe registrar modelos en un Model Group que pertenece a otra cuenta central de gestión de modelos. ¿Qué es necesario configurar?",
+      "question_en": "An AWS account dedicated to training must register models into a Model Group owned by a separate, central model-management account. What needs to be set up?",
+      "options_es": [
+        "Una réplica programada de los artefactos del modelo en la cuenta central",
+        "Una política de recursos de IAM entre cuentas aplicada al Model Group",
+        "Un rol de ejecución de SageMaker compartido entre las dos cuentas",
+        "Un programa de Model Monitor activado en ambas cuentas"
+      ],
+      "options_en": [
+        "A scheduled replication of the model artifacts into the central account",
+        "A cross-account IAM resource policy applied to the Model Group",
+        "A SageMaker execution role shared between both accounts",
+        "A Model Monitor schedule enabled in both accounts"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Para registrar versiones en un Model Group que creó otra cuenta, hay que aplicar al grupo una política de recursos de IAM entre cuentas que habilite a la cuenta de entrenamiento. Replicar artefactos o compartir un rol de ejecución no sustituye esa política sobre el recurso, y Model Monitor es una herramienta de monitorización que no resuelve el acceso entre cuentas.",
+      "explanation_en": "To register versions into a Model Group that another account created, you apply a resource-based IAM policy spanning accounts to the group, enabling the training account. Replicating artifacts or sharing an execution role does not replace that policy on the resource, and Model Monitor is a monitoring tool that does not solve cross-account access.",
+      "source": "AWS — Register a Model Version (https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry-version.html)"
+    },
+    {
+      "id": "q430120_095",
+      "skill_id": "sk430120",
+      "type": "multiple_choice",
+      "question_es": "Un equipo diseña un flujo de construcción de modelos en SageMaker AI y quiere registrar una versión del modelo en Model Registry desde el pipeline. ¿Qué paso debe añadir?",
+      "question_en": "A team designs a model-building workflow in SageMaker AI and wants to register a model version in Model Registry from the pipeline. Which step should they add?",
+      "options_es": [
+        "Un paso RegisterModel que registra la versión del modelo",
+        "Un paso CreateModel que prepara el modelo para la transformación por lotes",
+        "Un paso Transform que genera predicciones sobre un conjunto de datos de entrada",
+        "Un paso Condition que evalúa una métrica y bifurca la ejecución del pipeline"
+      ],
+      "options_en": [
+        "A RegisterModel step that registers the model version",
+        "A CreateModel step that prepares the model for batch transform",
+        "A Transform step that generates predictions on an input dataset",
+        "A Condition step that evaluates a metric and branches the pipeline run"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Según la documentación, para dejar una versión de modelo en el registro desde un pipeline de construcción de modelos se crea un paso RegisterModel. Los pasos CreateModel, Transform y Condition no son el mecanismo de registro que señala la fuente: cada uno cumple otra función dentro del pipeline.",
+      "explanation_en": "According to the documentation, adding a model version to the registry from a model-building pipeline is done by creating a RegisterModel step. The CreateModel, Transform and Condition steps are not the registration mechanism the source points to, since each serves a different purpose within the pipeline.",
+      "source": "AWS — Register a Model Version (https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry-version.html)"
+    },
+    {
+      "id": "q430120_096",
+      "skill_id": "sk430120",
+      "type": "multiple_choice",
+      "question_es": "Un ingeniero de ML va a crear una versión de modelo en SageMaker Model Registry. ¿Qué elementos debe incluir como mínimo?",
+      "question_en": "An ML engineer is about to create a model version in SageMaker Model Registry. What must that version contain at a minimum?",
+      "options_es": [
+        "Los datos de entrenamiento crudos, con el contenido completo del Feature Store",
+        "Un endpoint en tiempo real desplegado, con su política de autoescalado",
+        "Los artefactos del modelo entrenado, con el código de inferencia opcional",
+        "Una línea base de Model Monitor, con un informe de sesgo por versión"
+      ],
+      "options_en": [
+        "The raw training dataset, with the whole Feature Store contents",
+        "A deployed real-time endpoint, with its autoscaling policy",
+        "The trained model artifacts, with optional inference code",
+        "A Model Monitor baseline, with a bias report for each version"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Lo que toda versión de modelo debe incluir son los artefactos del modelo, es decir, el resultado del entrenamiento; el código de inferencia puede acompañarlos, pero no es imprescindible. Los otros elementos (datos de entrenamiento, endpoint desplegado, línea base de monitorización) no forman parte de lo que exige la versión, que solo requiere los artefactos del modelo.",
+      "explanation_en": "What every model version must include is the model artifacts, meaning the output of training; inference code can accompany them but is not essential. The other elements (training data, a deployed endpoint, a monitoring baseline) are not part of what the version requires, which only demands the model artifacts.",
+      "source": "AWS — Register a Model Version (https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry-version.html)"
+    },
+    {
+      "id": "q430126_001",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de ML quiere auditar las entradas y salidas de sus llamadas a Bedrock. ¿Qué describe correctamente el estado inicial del registro de invocaciones de modelos?",
+      "question_en": "An ML team wants to audit the inputs and outputs of its Amazon Bedrock calls. Which statement correctly describes the starting state of model invocation logging?",
+      "options_es": [
+        "Está activo por defecto y escribe directamente en AWS CloudTrail",
+        "Está apagado hasta que lo habilitas y eliges un destino",
+        "Está activo por defecto, pero solo conserva los registros de un día",
+        "Solo funciona con modelos que has personalizado tú mismo"
+      ],
+      "options_en": [
+        "It is on by default and writes straight to AWS CloudTrail",
+        "It is off until you enable it and choose a destination",
+        "It is on by default but only keeps logs for the current day",
+        "It only works for models that you have customized yourself"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El registro de invocaciones viene desactivado y, una vez habilitado, los registros se conservan hasta que se elimina la configuración. Por eso no está activo de forma automática ni descarta los datos al cabo de un día. Tampoco se limita a modelos personalizados, y no se describe como una escritura directa a CloudTrail.",
+      "explanation_en": "Invocation logging starts disabled, and once you turn it on the logs are kept until the logging configuration is deleted. So it is not automatically on, and it does not discard data after a day. It is also not restricted to customized models, and it is not described as writing directly to CloudTrail.",
+      "source": "AWS — Monitor model invocation using CloudWatch Logs and Amazon S3 (https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html)"
+    },
+    {
+      "id": "q430126_002",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "Un equipo registra las invocaciones de un modelo de Bedrock que devuelve imágenes binarias. ¿Qué destino de registro admite esas salidas?",
+      "question_en": "A team logs invocations of a Bedrock model that returns binary images. Which logging destination supports those outputs?",
+      "options_es": [
+        "Un bucket de Amazon S3",
+        "Un grupo de logs de CloudWatch Logs por sí solo",
+        "Un bus de eventos de Amazon EventBridge",
+        "Una tabla del catálogo de AWS Glue"
+      ],
+      "options_en": [
+        "An Amazon S3 bucket",
+        "A CloudWatch Logs log group on its own",
+        "An Amazon EventBridge event bus",
+        "An AWS Glue Data Catalog table"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Para datos grandes o salidas de imagen binarias, el único destino admitido es Amazon S3. Un grupo de CloudWatch Logs por sí solo sirve para registros y datos pequeños, pero no para esas salidas. EventBridge y el catálogo de Glue no se mencionan como destinos de registro de invocaciones.",
+      "explanation_en": "For large data or binary image outputs, Amazon S3 is the only supported destination. A CloudWatch Logs log group on its own handles the logs and small data, but not those outputs. EventBridge and the Glue Data Catalog are not listed as invocation logging destinations.",
+      "source": "AWS — Monitor model invocation using CloudWatch Logs and Amazon S3 (https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html)"
+    },
+    {
+      "id": "q430126_003",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "Un gateway interno invoca Amazon Bedrock para muchos usuarios distintos, pero la factura solo muestra el rol del gateway. ¿Cómo se consiguen dólares por usuario en las herramientas de facturación?",
+      "question_en": "An internal gateway invokes Amazon Bedrock for many different users, yet the invoice only lists the gateway's role. How can the team see per-user dollars in its billing tools?",
+      "options_es": [
+        "Hacer que el gateway asuma su rol de Bedrock para cada usuario, con etiquetas de sesión",
+        "Enviar el usuario solo como metadatos de cada solicitud y leer los dólares en Cost Explorer",
+        "Hacer que el gateway añada una etiqueta de asignación de costos con el usuario a la solicitud al modelo",
+        "Mantener un único rol del gateway y repartir la factura entre usuarios a fin de mes"
+      ],
+      "options_en": [
+        "Have the gateway assume its Bedrock role for each user, using session tags",
+        "Pass the user only as request metadata and read the dollars in Cost Explorer",
+        "Have the gateway add a cost allocation tag with the user ID to the model request",
+        "Keep one shared gateway role and split the bill among users at month end"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Bedrock toma el rol del gateway como la identidad de quien llama, así que para obtener dólares por usuario el gateway debe asumir su rol de forma separada por usuario o tenant, con un nombre de sesión o etiquetas de sesión propios. Los metadatos de la solicitud sirven para el detalle por prompt, no para los dólares en la facturación. Una etiqueta de asignación de costos añadida a la solicitud no es el mecanismo que describe la fuente, y un único rol compartido deja la atribución sin resolver.",
+      "explanation_en": "Bedrock treats the gateway's role as the identity of the caller, so per-user dollars require the gateway to assume its role separately for each user or tenant, with a per-user session name or session tags. Metadata on the request serves per-prompt detail, not the dollars in billing tools. A cost allocation tag added to the request is not the mechanism the source describes, and a single shared role leaves attribution unsolved.",
+      "source": "AWS — Track usage and costs in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/cost-management.html)"
+    },
+    {
+      "id": "q430126_004",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "Un equipo personalizó un modelo en Amazon Bedrock y quiere ejecutar inferencia con él. ¿Qué capacidad de inferencia debe contratar antes de poder utilizarlo?",
+      "question_en": "A team customized a model in Amazon Bedrock and wants to run inference with it. Which inference capacity must it set up before it can use the model?",
+      "options_es": [
+        "Solo la invocación bajo demanda, como con un modelo base",
+        "Un clúster de entrenamiento de SageMaker siempre activo",
+        "Un bucket de S3 dedicado para guardar los pesos del modelo",
+        "Provisioned Throughput para el modelo personalizado"
+      ],
+      "options_en": [
+        "Plain on-demand invocation, as with any base model",
+        "A SageMaker training cluster kept running for inference",
+        "A dedicated S3 bucket to hold the model's weights",
+        "Provisioned Throughput for the customized model"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La documentación de Bedrock exige contratar Provisioned Throughput para emplear un modelo personalizado; esa opción reserva un nivel de capacidad de procesamiento a tarifa fija. Por tanto, no basta con la invocación bajo demanda. Un clúster de entrenamiento de SageMaker y un bucket de S3 dedicado no figuran como requisito para usar el modelo personalizado.",
+      "explanation_en": "Bedrock's documentation makes Provisioned Throughput a prerequisite for working with a customized model; it reserves a level of processing capacity at a fixed rate. Plain on-demand invocation therefore falls short. A SageMaker training cluster and a dedicated S3 bucket are not listed as requirements for running the customized model.",
+      "source": "AWS — Increase model invocation capacity with Provisioned Throughput in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html)"
+    },
+    {
+      "id": "q430126_005",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de FinOps quiere atribuir el consumo de tokens a cada principal de IAM usando los registros de invocación de Bedrock, sin que los desarrolladores añadan metadatos. ¿Qué campo de la entrada de registro, poblado por el propio servicio, identifica a quien hizo la llamada?",
+      "question_en": "A FinOps team wants to attribute token usage to each IAM principal using Bedrock invocation logs, without asking developers to add any metadata. Which log entry field, populated by the service itself, identifies the caller?",
+      "options_es": [
+        "Agrupar por requestMetadata, que aporta el llamador en cada solicitud",
+        "Agrupar por modelId, que indica quién hizo la llamada",
+        "Agrupar por identity.arn, que registra al principal que llama",
+        "Agrupar por operation, que identifica a la persona llamadora"
+      ],
+      "options_en": [
+        "Group on requestMetadata, which the caller supplies with every request",
+        "Group on modelId, which tells you who made the call",
+        "Group on identity.arn, which records the calling principal",
+        "Group on operation, which identifies the person calling"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El campo identity.arn guarda el principal de IAM o STS que hizo la solicitud y lo rellena el propio servicio, así que permite agrupar sin pedir metadatos a nadie. requestMetadata lo aporta el llamador y solo aparece si este lo envía. modelId indica el modelo usado y operation la operación de API invocada, no quién llamó.",
+      "explanation_en": "The identity.arn field holds the IAM or STS principal that made the request and is filled in by the service itself, so it supports grouping without asking anyone for metadata. requestMetadata is supplied by the caller and only appears if sent. modelId names the model used and operation names the API operation invoked, not who called.",
+      "source": "AWS — Monitor model invocation using CloudWatch Logs and Amazon S3 (https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html)"
+    },
+    {
+      "id": "q430126_006",
+      "skill_id": "sk430126",
+      "type": "multiple_choice",
+      "question_es": "Un equipo necesita saber cuántos tokens consumió cada solicitud individual, un nivel de detalle que Cost Explorer no ofrece. ¿Qué enfoque lo permite?",
+      "question_en": "A team needs to know how many tokens each individual request consumed, a level of detail that Cost Explorer does not provide. Which approach makes that possible?",
+      "options_es": [
+        "Un perfil de inferencia de aplicación con etiquetas de recurso",
+        "Los registros de invocación del modelo",
+        "La atribución por principal de IAM vista en el informe CUR 2.0",
+        "Un informe CUR 2.0 filtrado por etiqueta de recurso"
+      ],
+      "options_en": [
+        "An application inference profile with resource tags",
+        "Model invocation logs",
+        "IAM principal attribution viewed in the CUR 2.0 report",
+        "A CUR 2.0 report filtered by resource tag"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los métodos nativos, como los perfiles de inferencia de aplicación o la atribución por principal de IAM, entregan dólares agregados por tipo de uso y día, sin una fila por solicitud. Los registros de invocación del modelo guardan cada llamada como un registro propio con sus conteos de tokens, por eso sí dan el detalle por solicitud. Un informe CUR 2.0 tampoco baja al nivel de solicitud.",
+      "explanation_en": "Native methods such as application inference profiles or IAM principal attribution deliver dollars aggregated by usage type and day, with no per-request row. Model invocation logs keep each call as its own record with its token counts, which is why they provide request-level detail. A CUR 2.0 report does not reach request-level detail either.",
+      "source": "AWS — Track usage and costs in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/cost-management.html)"
+    },
+    {
+      "id": "q430127_001",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "Un equipo opera una aplicación RAG en Amazon Bedrock y quiere detectar respuestas que añaden datos ausentes en los documentos recuperados o que no atienden lo que preguntó la persona usuaria. ¿Qué capacidad de Guardrails es la adecuada?",
+      "question_en": "A team runs a RAG application on Amazon Bedrock and wants to catch answers that add facts missing from the retrieved documents or ignore what the user asked. Which Guardrails capability fits?",
+      "options_es": [
+        "Comprobaciones de contextual grounding",
+        "Filtros de palabras con una lista personalizada",
+        "Filtros de información sensible con expresiones regulares",
+        "Temas denegados definidos para la aplicación"
+      ],
+      "options_en": [
+        "Contextual grounding checks on model responses",
+        "Word filters with a custom list of blocked terms",
+        "Sensitive information filters with regex entities",
+        "Denied topics defined for the application"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las comprobaciones de contextual grounding detectan alucinaciones: respuestas que no se apoyan en la fuente o que no son relevantes para la consulta, justo el caso de una aplicación RAG. Los filtros de palabras bloquean términos concretos, los de información sensible tratan datos personales y los temas denegados vetan asuntos; ninguno compara la respuesta con la fuente recuperada.",
+      "explanation_en": "Contextual grounding checks detect hallucinations, meaning answers that are not supported by the source or are irrelevant to the query, which is exactly the RAG situation described. Word filters block specific terms, sensitive information filters deal with personal data, and denied topics veto subjects; none of them compares the answer with the retrieved source.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+    },
+    {
+      "id": "q430127_002",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "Un comercio en línea exige que su asistente solo recomiende artículos con existencias, según reglas lógicas que el propio equipo redacta. ¿Qué función de Bedrock Guardrails valida que las respuestas cumplan esas reglas?",
+      "question_en": "An online retailer requires its assistant to recommend only items that are in stock, following logical rules the team writes itself. Which Bedrock Guardrails feature validates that responses follow those rules?",
+      "options_es": [
+        "Filtros de contenido con intensidad alta en cada categoría",
+        "Comprobaciones de Automated Reasoning",
+        "Filtros de palabras con cada frase incumplidora",
+        "Detección de ataques de prompt en las entradas"
+      ],
+      "options_en": [
+        "Content filters with strong settings for every harm category",
+        "Automated Reasoning checks on model outputs",
+        "Word filters listing every non-compliant phrase",
+        "Prompt attack detection on incoming user prompts"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las comprobaciones de Automated Reasoning evalúan si las respuestas del modelo respetan reglas y políticas lógicas que el equipo define. Los filtros de contenido buscan categorías de daño predefinidas, los de palabras coinciden con términos fijos y la detección de ataques de prompt vigila las entradas del usuario; ninguno verifica reglas de negocio.",
+      "explanation_en": "Automated Reasoning checks evaluate whether model responses comply with logical rules and policies the team defines. Content filters look for predefined harm categories, word filters match fixed terms, and prompt attack detection watches user inputs; none of them verifies business rules.",
+      "source": "AWS — Create your guardrail (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html)"
+    },
+    {
+      "id": "q430127_003",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "Una empresa quiere que su chatbot público nunca mencione marcas competidoras concretas y que además bloquee groserías de una lista ya preparada. ¿Qué filtro de Guardrails se encarga de esto?",
+      "question_en": "A company wants its public chatbot to never mention specific competitor brands and also to block profanity from a ready-made list. Which Guardrails filter handles this?",
+      "options_es": [
+        "Comprobaciones de contextual grounding en cada respuesta",
+        "Comprobaciones de Automated Reasoning con políticas lógicas",
+        "Filtros de palabras con términos personalizados bloqueados",
+        "Filtros de contenido ajustados a la categoría de insultos"
+      ],
+      "options_en": [
+        "Contextual grounding checks on every response",
+        "Automated Reasoning checks with logical policies",
+        "Word filters with custom blocked terms",
+        "Content filters tuned to the Insults category"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los filtros de palabras permiten bloquear términos propios de la empresa, como los nombres de competidores, y además incluyen una opción preparada para las groserías. Los filtros de contenido solo trabajan con un conjunto de categorías predefinidas (odio, insultos, contenido sexual, violencia, conducta inapropiada y ataque de prompt), así que no sirven para vetar marcas concretas. Las comprobaciones de contextual grounding y de Automated Reasoning no son filtros de palabras, por lo que tampoco bloquean términos elegidos por la empresa.",
+      "explanation_en": "Word filters let a company block its own chosen terms, such as competitor names, and they also include a prepared option for profanity. Content filters only cover a fixed list of predefined categories, such as hate, insults, violence, sexual content, misconduct or prompt attacks, so they cannot veto specific brands. Contextual grounding and Automated Reasoning checks are not word filters, so they do not block terms the company picks.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+    },
+    {
+      "id": "q430127_004",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "Un equipo de cumplimiento activó el registro de invocaciones de modelos de Amazon Bedrock mientras usa un guardrail. ¿Qué debe esperar sobre el contenido que el guardrail bloqueó?",
+      "question_en": "A compliance team enabled Amazon Bedrock model invocation logging while using a guardrail. What should they expect regarding the content the guardrail blocked?",
+      "options_es": [
+        "Se almacena como texto sin formato en los registros",
+        "Se cifra automáticamente y queda oculto en los registros",
+        "Se sustituye por un hash antes de registrarse",
+        "Se excluye de los registros porque fue bloqueado"
+      ],
+      "options_en": [
+        "It is stored as plain text in the logs",
+        "It is automatically encrypted and hidden in the logs",
+        "It is replaced with a hash before being logged",
+        "It is excluded from the logs because it was blocked"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El contenido bloqueado por las políticas del guardrail aparece como texto sin formato en los registros de invocación si están habilitados; quien no quiera eso puede desactivar el registro. Las otras opciones describen un cifrado, un hash o una exclusión que la fuente no menciona.",
+      "explanation_en": "Content blocked by the guardrail's policies shows up as plain text in the invocation logs when they are enabled, and a team that does not want that can turn the logging off. The other options describe encryption, hashing, or exclusion, none of which the source mentions.",
+      "source": "AWS — Create your guardrail (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html)"
+    },
+    {
+      "id": "q430127_005",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "Los usuarios de un asistente basado en Bedrock intentan frases pensadas para que ignore sus instrucciones y esquive la moderación. ¿Qué capacidad de Guardrails apunta a este problema?",
+      "question_en": "Users of a Bedrock-powered assistant try phrasing meant to make it ignore its instructions and slip past moderation. Which Guardrails capability targets this problem?",
+      "options_es": [
+        "Filtros de información sensible con patrones regex",
+        "Comprobaciones de fundamentación sobre pasajes recuperados",
+        "Temas denegados que describen los asuntos prohibidos",
+        "Categoría Prompt Attack de los filtros de contenido"
+      ],
+      "options_en": [
+        "Sensitive information filters with custom regex",
+        "Contextual grounding checks on retrieved passages",
+        "Denied topics describing the forbidden subjects",
+        "Prompt Attack category within content filters"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Prompt Attack es una categoría dentro de los filtros de contenido que ayuda a detectar jailbreaks, inyecciones de prompt y fugas de prompt. Los filtros de información sensible se ocupan de datos personales, las comprobaciones de fundamentación buscan alucinaciones y los temas denegados bloquean asuntos indeseados en la aplicación.",
+      "explanation_en": "Prompt Attack is a category inside content filters that helps detect jailbreaks, prompt injections, and prompt leakage. Sensitive information filters deal with personal data, grounding checks look for hallucinations, and denied topics block subjects the application should avoid.",
+      "source": "AWS — Create your guardrail (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html)"
+    },
+    {
+      "id": "q430127_006",
+      "skill_id": "sk430127",
+      "type": "multiple_choice",
+      "question_es": "Un equipo quiere pasar un texto por los filtros de un guardrail para evaluarlo, sin llamar a ningún modelo fundacional. ¿Qué opción ofrece Bedrock Guardrails para esto?",
+      "question_en": "A team wants to run a piece of text through a guardrail's filters to evaluate it, without calling any foundation model. Which option does Bedrock Guardrails offer for this?",
+      "options_es": [
+        "Ajustar un modelo para integrar los filtros en él",
+        "Llamar directamente a la API ApplyGuardrail",
+        "Enviar el texto a un endpoint de SageMaker para filtrarlo",
+        "Crear una nueva versión del guardrail por cada texto"
+      ],
+      "options_en": [
+        "Fine-tune a model so the filters are built in",
+        "Call the ApplyGuardrail API directly",
+        "Send the text to a SageMaker endpoint for filtering",
+        "Create a new guardrail version for each piece of text"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La API ApplyGuardrail permite enviar texto directamente a los filtros de un guardrail sin ninguna llamada a un modelo, además de la vía habitual de asociar el guardrail a una solicitud de inferencia. Ajustar un modelo, usar un endpoint de SageMaker o crear muchas versiones no son mecanismos para evaluar texto suelto.",
+      "explanation_en": "ApplyGuardrail lets you send text straight to a guardrail's filters with no model call at all, alongside the usual route of attaching the guardrail to an inference request. Fine-tuning, a SageMaker endpoint, or creating many versions are not mechanisms for evaluating standalone text.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
     }
   ]
 }
