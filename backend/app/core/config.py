@@ -279,6 +279,15 @@ class Settings(BaseSettings):
     # (crítico en Pro Max, que no tiene cupo de peticiones, ADR-49).
     TUTOR_HISTORY_MAX_TURNS: int = 20
     TUTOR_HISTORY_MAX_CHARS_PER_TURN: int = 2000
+    # 41.17: cinturón de seguridad por tokens, no una cifra de negocio (nunca
+    # bloquea a quien ADR-49 ya declaró ilimitado -- ver tutor_quota.
+    # daily_token_limit). Con TUTOR_HISTORY_MAX_TURNS × _MAX_CHARS_PER_TURN
+    # el peor caso de una sola llamada son ~12.000 tokens
+    # (tutor_quota.TOKEN_RESERVE_ESTIMATE); 20 llamadas al tope de Plus darían
+    # un techo teórico de 240.000. Este número va por debajo, para que de
+    # verdad frene varias conversaciones enormes seguidas en vez de limitarse
+    # a repetir lo que ya hace TUTOR_DAILY_LIMIT_PLUS.
+    TUTOR_DAILY_TOKEN_LIMIT_PLUS: int = 150_000
     # Examen certificador: pago único por track de certificación (ADR-49).
     # El flag se queda apagado hasta que abra el cobro (H.19/H.29), por la misma
     # razón que CREATOR_PLAN_REQUIRED: exigir un pago imposible cierra el producto.

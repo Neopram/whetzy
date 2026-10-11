@@ -34,25 +34,32 @@ def _status(code: int) -> httpx.HTTPStatusError:
     return httpx.HTTPStatusError("boom", request=req, response=httpx.Response(code, request=req))
 
 
-def _run(p: GuardedProvider) -> tuple[str, str]:
+def _run(p: GuardedProvider) -> tuple[str, str, int]:
     return asyncio.run(p.complete_named("sys", "Pregunta\n\nCONTEXTO: la explicación"))
 
 
 def test_primary_answers_when_healthy() -> None:
-    assert _run(GuardedProvider(_Fake("groq"), None, 10)) == ("groq-answer", "groq")
+    # 41.17: _Fake solo implementa complete() (sin complete_with_tokens),
+    # así que GuardedProvider no tiene de dónde sacar un recuento real -- 0.
+    assert _run(GuardedProvider(_Fake("groq"), None, 10)) == ("groq-answer", "groq", 0)
 
 
 @pytest.mark.parametrize("err", [httpx.ConnectTimeout("t"), _status(503), _status(429)])
 def test_fallback_llm_takes_over_on_outage(err: Exception) -> None:
     fb = _Fake("fallback-llm")
-    assert _run(GuardedProvider(_Fake("groq", fail=err), fb, 10)) == ("fallback-llm-answer", "fallback-llm")
+    assert _run(GuardedProvider(_Fake("groq", fail=err), fb, 10)) == (
+        "fallback-llm-answer",
+        "fallback-llm",
+        0,
+    )
     assert fb.calls == 1
 
 
 def test_without_fallback_the_grounded_context_is_returned() -> None:
-    text, name = _run(GuardedProvider(_Fake("groq", fail=_status(500)), None, 10))
+    text, name, tokens = _run(GuardedProvider(_Fake("groq", fail=_status(500)), None, 10))
     assert name == NullProvider.name
     assert "la explicación" in text
+    assert tokens == 0
 
 
 def test_client_errors_are_not_hidden() -> None:
@@ -75,3 +82,20 @@ def test_zero_means_no_ceiling() -> None:
     for _ in range(5):
         _run(p)
     assert primary.calls == 5
+
+
+class _FakeWithTokens(_Fake):
+    """41.17: un proveedor que sí reporta `usage.total_tokens`, como Groq."""
+
+    def __init__(self, name: str, tokens: int, **kw: Any) -> None:
+        super().__init__(name, **kw)
+        self.tokens = tokens
+
+    async def complete_with_tokens(self, system: str, user: str, **_: Any) -> tuple[str, int]:
+        text = await self.complete(system, user)
+        return text, self.tokens
+
+
+def test_real_token_usage_is_reported_when_the_provider_has_it() -> None:
+    text, name, tokens = _run(GuardedProvider(_FakeWithTokens("groq", 345), None, 10))
+    assert (text, name, tokens) == ("groq-answer", "groq", 345)

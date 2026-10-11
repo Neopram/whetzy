@@ -125,6 +125,7 @@ async def explain_question(
             "provider": "none",
             "grounded": False,
             "times_missed": 0,
+            "tokens_used": 0,
         }
 
     skill = (
@@ -193,13 +194,23 @@ async def explain_question(
 
     provider = get_provider()
     complete_named = getattr(provider, "complete_named", None)
+
+    # 41.17: hasta aquí todo ha sido lectura (question, skill, historial,
+    # RAG en memoria); la llamada al LLM que sigue puede tardar varios
+    # segundos (red, el proveedor), y mantener la sesión de BD abierta
+    # durante ese tiempo retiene su conexión del pool sin usarla para nada.
+    # `commit()` cierra la transacción de lectura y la devuelve al pool;
+    # la sesión sigue siendo válida para lo que el endpoint haga después.
+    await db.commit()
+
     if complete_named is not None:
-        explanation, provider_name = await complete_named(
+        explanation, provider_name, tokens_used = await complete_named(
             system_prompt, user_prompt, max_tokens=500, history=history
         )
     else:
         explanation = await provider.complete(system_prompt, user_prompt, max_tokens=500, history=history)
         provider_name = provider.name
+        tokens_used = 0
 
     # 41.5: un `GuardedProvider` configurado (hay API key) que agota el cupo
     # diario o falla la cadena entera cae en el `NullProvider` por dentro —
@@ -215,4 +226,5 @@ async def explain_question(
         "provider": provider_name,
         "grounded": grounded,
         "times_missed": missed,
+        "tokens_used": tokens_used,
     }
