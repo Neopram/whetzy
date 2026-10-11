@@ -162,6 +162,19 @@ paso "guardas de esquema y contrato" \
         tests/unit/test_placement_params.py \
         -q ${PYTEST_CACHE_OPT[*]} --no-header"
 
+# Dos ramas con una head válida cada una suman dos heads al fusionarse, y git
+# no ve conflicto porque son ficheros distintos (caída del 2026-10-11). Una rama
+# que toca migraciones tiene que llevar dentro el master actual.
+if toca '^backend/alembic/versions/'; then
+  git fetch -q origin master 2>/dev/null || gris "  (sin red: comparo con el origin/master local)"
+  paso "migraciones sobre el master actual" bash -c "
+    if git merge-base --is-ancestor origin/master '${SHA_EMPUJADO:-HEAD}'; then exit 0; fi
+    echo 'la rama toca backend/alembic/versions/ y no contiene origin/master:'
+    echo '  git merge origin/master  y vuelve a empujar'; exit 1"
+else
+  gris  "  --   migraciones sobre el master actual (no se tocan migraciones)"
+fi
+
 if toca '^content/|^backend/app/models/content|questions'; then
   paso "banco de preguntas" python scripts/check_question_bank.py
 else

@@ -15,6 +15,12 @@ if [ -z "${DATABASE_URL:-}" ]; then
     echo "[start] DATABASE_URL no esta definida; abortando" >&2
     exit 1
 fi
+# Sin ENVIRONMENT, config.py cae en «development» y se salta la guarda de
+# SECRET_KEY: los JWT se firmarian con la clave de desarrollo, que es publica.
+if [ -z "${ENVIRONMENT:-}" ]; then
+    echo "[start] ENVIRONMENT no esta definida; abortando" >&2
+    exit 1
+fi
 
 echo "[start] alembic upgrade head..."
 alembic upgrade head
