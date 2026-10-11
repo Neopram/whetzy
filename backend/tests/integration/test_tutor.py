@@ -402,8 +402,8 @@ async def test_explain_does_not_spend_quota_when_a_configured_provider_falls_bac
     class _FallsBackToNull:
         name = "groq"
 
-        async def complete_named(self, system: str, user: str, **_: object) -> tuple[str, str]:
-            return "respuesta degradada", NullProvider.name
+        async def complete_named(self, system: str, user: str, **_: object) -> tuple[str, str, int]:
+            return "respuesta degradada", NullProvider.name, 0
 
     monkeypatch.setattr(tutor_service, "get_provider", lambda: _FallsBackToNull())
 
