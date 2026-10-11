@@ -69,8 +69,8 @@ def test_build_credential_certification():
     assert achievement["achievementType"] == "Assessment"
     for lang in ("en", "es"):
         assert "Whetzy" in achievement["description"][lang]
-    assert "Not an official certification" in achievement["description"]["en"]
-    assert "No es una certificación oficial" in achievement["description"]["es"]
+    assert "not issued by the exam vendor" in achievement["description"]["en"]
+    assert "No la emite el proveedor" in achievement["description"]["es"]
 
 
 @pytest.mark.usefixtures("_ob_key")

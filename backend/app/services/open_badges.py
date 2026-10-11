@@ -67,12 +67,13 @@ def _public_key_multibase(pub: Ed25519PublicKey) -> str:
 
 
 _DISCLAIMER_EN = (
-    "Issued by Whetzy. Not an official certification and not affiliated with or "
-    "endorsed by the exam vendor; it does not replace the vendor's official exam."
+    "Exam-preparation credential issued by Whetzy. It is not issued by the exam "
+    "vendor, nor affiliated with or endorsed by it, and it does not replace the "
+    "vendor's own exam."
 )
 _DISCLAIMER_ES = (
-    "Emitido por Whetzy. No es una certificación oficial ni está afiliado al "
-    "proveedor del examen ni avalado por él; no sustituye a su examen oficial."
+    "Credencial de preparación emitida por Whetzy. No la emite el proveedor del "
+    "examen, ni está afiliada a él ni avalada por él, y no sustituye a su examen."
 )
 
 
