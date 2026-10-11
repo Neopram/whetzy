@@ -18,8 +18,14 @@ ID corto a propósito (19 caracteres): `20261004_study_session_current_question`
 (39 caracteres, del #127) desbordó el `varchar(32)` de `alembic_version` y
 tumbó producción el 2026-10-10 (#165, hotfix).
 
+Cuelga de `20261010_oauth_pkce`, no de `20261004_current_question_id`: las dos
+se escribieron en ramas paralelas sobre el mismo padre y, fusionadas, dejaron
+dos heads; `alembic upgrade head` abortó en cada arranque y tumbó producción
+el 2026-10-11 desde las 02:41 UTC. Como abortaba antes de aplicar nada, esta
+revisión no llegó a ninguna base y reencadenarla es seguro.
+
 Revision ID: 20261010_tutor_tokens
-Revises: 20261004_current_question_id
+Revises: 20261010_oauth_pkce
 """
 from __future__ import annotations
 
@@ -28,7 +34,7 @@ import sqlalchemy as sa
 from alembic import op
 
 revision = "20261010_tutor_tokens"
-down_revision = "20261004_current_question_id"
+down_revision = "20261010_oauth_pkce"
 branch_labels = None
 depends_on = None
 
