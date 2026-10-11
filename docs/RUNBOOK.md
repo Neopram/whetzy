@@ -172,7 +172,7 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `20261010_tutor_tokens` (56 migrations, single head —
+Current Alembic HEAD: `20261010_tutor_tokens` (57 migrations, single head —
 verified 2026-10-10 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains
 after `20261004_current_question_id` (#127, renamed from
 `20261004_study_session_current_question` by the #165 hotfix — the original
