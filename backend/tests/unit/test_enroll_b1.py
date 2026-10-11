@@ -21,7 +21,7 @@ from app.models.user import User
 ENROLL = "/api/v1/instructor/courses/{}/enroll"
 
 
-async def _published_course(db_session: AsyncSession) -> InstructorCourse:
+async def _published_course(db_session: AsyncSession, price_cents: int = 9900) -> InstructorCourse:
     tag = uuid.uuid4().hex[:8]
     owner = User(
         id=uuid.uuid4(),
@@ -37,8 +37,8 @@ async def _published_course(db_session: AsyncSession) -> InstructorCourse:
     course = InstructorCourse(
         id=uuid.uuid4(),
         instructor_id=instructor.id,
-        title="Paid Course",
-        price_cents=9900,
+        title="Paid Course" if price_cents else "Free Course",
+        price_cents=price_cents,
         status="published",
     )
     db_session.add(course)
@@ -60,11 +60,22 @@ async def test_direct_enroll_returns_501_without_payment_gateway(
 
 
 @pytest.mark.asyncio
-async def test_enroll_enabled_via_flag_returns_201(
+async def test_enroll_enabled_via_flag_returns_201_for_a_free_course(
     client: AsyncClient, db_session: AsyncSession, auth_headers: dict, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """With the flag enabled the endpoint works (regression guard for the logic)."""
     monkeypatch.setattr(settings, "INSTRUCTOR_MARKETPLACE_ENABLED", True)
-    course = await _published_course(db_session)
+    course = await _published_course(db_session, price_cents=0)
     response = await client.post(ENROLL.format(course.id), headers=auth_headers)
     assert response.status_code == 201, response.text
+
+
+@pytest.mark.asyncio
+async def test_enroll_enabled_via_flag_still_needs_payment_for_a_paid_course(
+    client: AsyncClient, db_session: AsyncSession, auth_headers: dict, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Encender el marketplace no abre los cursos de pago sin cobro (41.6, #166)."""
+    monkeypatch.setattr(settings, "INSTRUCTOR_MARKETPLACE_ENABLED", True)
+    course = await _published_course(db_session)
+    response = await client.post(ENROLL.format(course.id), headers=auth_headers)
+    assert response.status_code == 402, response.text
