@@ -18,8 +18,16 @@ ID corto a propósito (19 caracteres): `20261004_study_session_current_question`
 (39 caracteres, del #127) desbordó el `varchar(32)` de `alembic_version` y
 tumbó producción el 2026-10-10 (#165, hotfix).
 
+Cuelga de `20261010_oauth_pkce`, no de `20261004_current_question_id`: nació
+colgando de esa, igual que `oauth_pkce`, y al fusionar las dos en `master` hubo
+dos heads y `alembic upgrade head` tumbó producción el 2026-10-11. En
+producción nunca llegó a aplicarse (los deploys murieron al resolver `head`,
+antes de cualquier DDL), así que re-colgarla es seguro allí. Una base local
+que sí la aplicó sin `oauth_pkce`: borrar `tutor_usage.tokens_used`,
+`alembic stamp 20261004_current_question_id` y `alembic upgrade head`.
+
 Revision ID: 20261010_tutor_tokens
-Revises: 20261004_current_question_id
+Revises: 20261010_oauth_pkce
 """
 from __future__ import annotations
 
@@ -28,7 +36,7 @@ import sqlalchemy as sa
 from alembic import op
 
 revision = "20261010_tutor_tokens"
-down_revision = "20261004_current_question_id"
+down_revision = "20261010_oauth_pkce"
 branch_labels = None
 depends_on = None
 
