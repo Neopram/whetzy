@@ -65,7 +65,11 @@ def _alembic_head() -> str:
             timeout=60,
         )
         heads = re.findall(r"^([0-9a-z_]{6,})\s*\(head\)", result.stdout, re.M)
-        return heads[-1] if heads else "unknown"
+        # Dos heads no son «la última»: el 2026-10-11 tumbaron producción y esta
+        # función devolvía una de ellas, así que check_docs daba verde.
+        if len(heads) > 1:
+            return "multiple:" + ",".join(sorted(heads))
+        return heads[0] if heads else "unknown"
     except Exception:
         return "unknown"
 

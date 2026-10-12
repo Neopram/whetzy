@@ -75,6 +75,14 @@ class TestQueCuentaComoSensible:
             codigos = await _pedir(_app(auth_limit=2), ruta, 4, ip="198.51.100.3")
             assert 429 in codigos, (ruta, codigos)
 
+    async def test_el_codigo_2fa_cuenta(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """Un TOTP de 6 cifras con el presupuesto general (120/min) se adivina antes."""
+        monkeypatch.setattr(settings, "TRUST_PROXY_HEADERS", True)
+        codigos = await _pedir(
+            _app(auth_limit=2, default_limit=50), "/api/v1/auth/2fa/verify", 4, ip="198.51.100.4"
+        )
+        assert 429 in codigos, codigos
+
     async def test_las_sondas_de_salud_estan_exentas(self) -> None:
         """`/health` era coincidencia exacta: `/health/ready` si contaba."""
         for ruta in ("/health", "/health/ready", "/health/live"):

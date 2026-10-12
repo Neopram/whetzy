@@ -68,6 +68,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         "/api/v1/auth/resend-verification",
         "/api/v1/auth/verify-email",
         "/api/v1/auth/oauth",
+        "/api/v1/auth/2fa",
     )
 
     def __init__(
