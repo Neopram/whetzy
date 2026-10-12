@@ -82,12 +82,13 @@ describe('QuizScreen — prueba que corrige el servidor', () => {
     expect(answer.mock.calls[0][6]).toEqual({ answerText: '4' });
   });
 
-  it('un ejecutable manda la salida que dio el código', async () => {
+  it('un ejecutable: ejecutar no juzga ni envía; confirmar manda la salida', async () => {
+    // El servidor ya no manda la salida esperada (B2): llega null, como en producción.
     serve({
       id: 'q_ex', type: 'fill_blank_exec',
       question_es: 'Completa:\n```python\nx = ___\nprint(x + 1)\n```',
       question_en: 'Complete:\n```python\nx = ___\nprint(x + 1)\n```',
-      correct_answer_es: '2', correct_answer_en: '2',
+      correct_answer_es: null, correct_answer_en: null,
     });
     runCode.mockResolvedValue({ output: '2\n', error: null, timedOut: false });
     // Dentro de act: quiz.start resuelve en una microtarea y el efecto que
@@ -99,8 +100,52 @@ describe('QuizScreen — prueba que corrige el servidor', () => {
     fireEvent.change(input, { target: { value: '1' } });
     fireEvent.keyDown(input, { key: 'Enter' });
 
+    await waitFor(() => expect(runCode).toHaveBeenCalledWith('x = 1\nprint(x + 1)', 5000));
+    // Antes, con la salida esperada a null, la pantalla decía «Salida incorrecta» a un
+    // código correcto y solo enviaba al tercer intento.
+    expect(await screen.findByText(i18n.t('quiz.output'))).toBeInTheDocument();
+    expect(screen.queryByText(i18n.t('quiz.outputWrong'))).toBeNull();
+    expect(answer).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('quiz.submit') }));
     await waitFor(() => expect(answer).toHaveBeenCalledTimes(1));
-    expect(runCode).toHaveBeenCalledWith('x = 1\nprint(x + 1)', 5000);
     expect(answer.mock.calls[0][6]).toEqual({ execOutput: '2\n' });
+  });
+
+  it('un ejecutable sin salida no se da por bueno ni se envía solo', async () => {
+    serve({
+      id: 'q_ex2', type: 'fill_blank_exec',
+      question_es: 'Completa:\n```python\nx = ___\n```',
+      question_en: 'Complete:\n```python\nx = ___\n```',
+      correct_answer_es: null, correct_answer_en: null,
+    });
+    runCode.mockResolvedValue({ output: '', error: null, timedOut: false });
+    await act(async () => { render(<QuizScreen />); });
+    const input = await screen.findByPlaceholderText(i18n.t('quiz.fillBlankPlaceholder'));
+    fireEvent.change(input, { target: { value: '1' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+    await waitFor(() => expect(runCode).toHaveBeenCalled());
+    expect(await screen.findByText(i18n.t('quiz.noOutput'))).toBeInTheDocument();
+    expect(answer).not.toHaveBeenCalled();
+  });
+
+  it('cambiar el código tras ejecutar obliga a ejecutar otra vez; hay «no lo sé»', async () => {
+    serve({
+      id: 'q_ex3', type: 'fill_blank_exec',
+      question_es: 'Completa:\n```python\nx = ___\nprint(x)\n```',
+      question_en: 'Complete:\n```python\nx = ___\nprint(x)\n```',
+      correct_answer_es: null, correct_answer_en: null,
+    });
+    runCode.mockResolvedValue({ output: '1\n', error: null, timedOut: false });
+    await act(async () => { render(<QuizScreen />); });
+    expect(screen.getByRole('button', { name: i18n.t('quiz.dontKnow') })).toBeInTheDocument();
+    const input = await screen.findByPlaceholderText(i18n.t('quiz.fillBlankPlaceholder'));
+    fireEvent.change(input, { target: { value: '1' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+    const confirmar = await screen.findByRole('button', { name: i18n.t('quiz.submit') });
+    expect(confirmar).toBeEnabled();
+    fireEvent.change(input, { target: { value: '2' } });
+    expect(confirmar).toBeDisabled();
+    expect(screen.getByText(i18n.t('quiz.rerunNeeded'))).toBeInTheDocument();
   });
 });

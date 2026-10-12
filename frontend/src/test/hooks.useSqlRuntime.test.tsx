@@ -221,3 +221,36 @@ describe('useSqlRuntime — runCode', () => {
     expect(res).toEqual({ output: '', error: 'SQL engine not active', timedOut: false });
   });
 });
+
+describe('useSqlRuntime — tiempo agotado y caída', () => {
+  it('una consulta que no termina se corta, devuelve timedOut y arranca otro worker', async () => {
+    vi.useFakeTimers();
+    try {
+      const { result } = renderHook(() => useSqlRuntime(false));
+      act(() => { MockWorker.instances[0].emit({ type: 'ready' }); });
+      let res: unknown;
+      await act(async () => {
+        const p = result.current.runCode('WITH RECURSIVE r(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM r) SELECT * FROM r', 5000);
+        vi.advanceTimersByTime(5000);
+        res = await p;
+      });
+      expect(res).toEqual({ output: '', error: null, timedOut: true });
+      expect(MockWorker.instances[0].terminate).toHaveBeenCalled();
+      expect(MockWorker.instances).toHaveLength(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('si el worker cae a mitad de una ejecución, la promesa resuelve con error', async () => {
+    const { result } = renderHook(() => useSqlRuntime(false));
+    act(() => { MockWorker.instances[0].emit({ type: 'ready' }); });
+    let res: unknown;
+    await act(async () => {
+      const p = result.current.runCode('SELECT 1');
+      MockWorker.instances[0].onerror?.();
+      res = await p;
+    });
+    expect(res).toEqual({ output: '', error: 'SQL engine crashed', timedOut: false });
+  });
+});
