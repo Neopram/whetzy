@@ -111,7 +111,7 @@ export function EvidenceScreen() {
           <h1 className={styles.heroTitle}>{t('evidence.heroTitle')}</h1>
           <p className={styles.heroSub}>{t('evidence.heroSub')}</p>
           <p className={styles.captureDate}>
-            {t('evidence.capturedLabel')}: {CAPTURE_DATE} · <a href="https://github.com" className={styles.link}>{t('evidence.sourceCode')}</a>
+            {t('evidence.capturedLabel')}: {CAPTURE_DATE}
           </p>
         </div>
       </header>
