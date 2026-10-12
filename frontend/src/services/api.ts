@@ -1249,6 +1249,9 @@ export interface DomainReadiness {
   skills_assessed: number;
   skills_total: number;
   ready: boolean;
+  /** ADR-60 / D-17: la evidencia observable detrás del estado del dominio. */
+  answers?: number;
+  correct?: number;
 }
 
 export interface CertificationReadiness {

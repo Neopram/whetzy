@@ -178,3 +178,21 @@ async def test_ready_for_simulacro_false_with_no_data_at_all(
     await _seed_cert_track(db_session)
     r = await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
     assert r.json()["ready_for_simulacro"] is False
+
+
+async def test_readiness_reports_the_observable_evidence_per_domain(
+    client: AsyncClient, db_session: AsyncSession, user: User, auth_headers: dict
+) -> None:
+    """ADR-60 / D-17: cada dominio trae sus respuestas y aciertos, la evidencia
+    con la que la interfaz explica su estado en lugar de un porcentaje."""
+    sk_a_id, _sk_b_id, dom_a_id, dom_b_id = await _seed_cert_track(db_session)
+    db_session.add(
+        UserSkillState(user_id=user.id, skill_id=sk_a_id, p_known=0.6, attempts=9, correct_count=6)
+    )
+    await db_session.commit()
+
+    r = await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
+    assert r.status_code == 200
+    by_id = {d["domain_id"]: d for d in r.json()["domains"]}
+    assert (by_id[dom_a_id]["answers"], by_id[dom_a_id]["correct"]) == (9, 6)
+    assert (by_id[dom_b_id]["answers"], by_id[dom_b_id]["correct"]) == (0, 0)

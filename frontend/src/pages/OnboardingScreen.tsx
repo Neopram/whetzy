@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppStore } from '../stores/useAppStore'
 import { auth, economy, progress as progressApi } from '../services/api'
 import { readAttribution } from '../lib/attribution'
+import { retiredCertificationFor } from '../lib/retiredCertifications'
 import '../styles/onboarding.css'
 
 interface SegmentQuestion {
@@ -187,6 +188,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
                 onClick={() => setCertTrackId(ct.id)}
               >
                 {ct[lang]}
+                {retiredCertificationFor(ct.id) && ` · ${t('tracks.certRetiredBadge')}`}
               </button>
             ))}
           </div>

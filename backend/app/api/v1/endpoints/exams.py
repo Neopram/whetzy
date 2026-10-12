@@ -257,6 +257,7 @@ async def get_certification_readiness(
         )
     ).all()
     p_known_by_skill: dict[str, float] = {uss.skill_id: uss.p_known for uss in known_states}
+    state_by_skill = {uss.skill_id: uss for uss in known_states}
 
     # Group skills by domain.
     skills_by_domain: dict[str, list[Skill]] = {d.id: [] for d in domains}
@@ -281,6 +282,16 @@ async def get_certification_readiness(
             skills_assessed=mastery.skills_assessed,
             skills_total=mastery.skills_total,
             ready=is_domain_ready(mastery),
+            answers=sum(
+                state_by_skill[s.id].attempts
+                for s in skills_by_domain[domain.id]
+                if s.id in state_by_skill
+            ),
+            correct=sum(
+                state_by_skill[s.id].correct_count
+                for s in skills_by_domain[domain.id]
+                if s.id in state_by_skill
+            ),
         )
         for domain, mastery in zip(domains, masteries, strict=True)
     ]
