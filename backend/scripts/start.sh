@@ -22,17 +22,16 @@ if [ -z "${ENVIRONMENT:-}" ]; then
     exit 1
 fi
 
-echo "[start] alembic upgrade head..."
-alembic upgrade head
-
-echo "[start] cargando contenido (content_loader)..."
-python -m app.services.content_loader
-
-echo "[start] cuenta de dueno (OWNER_EMAIL / OWNER_PASSWORD)..."
-python -m app.services.bootstrap_owner
-
-echo "[start] seed de gamificacion..."
-python -m app.services.seed || echo "[start] seed fallido; se continua (no bloquea el arranque)" >&2
+# D-4: con el pre-deploy de Railway activado (`bash scripts/boot_tasks.sh`) y
+# BOOT_TASKS_IN_PREDEPLOY=1, las tareas ya corrieron antes del cambio de
+# version y aqui solo se comprueba el esquema. Si aun asi no esta en la cabeza
+# (variable puesta sin el pre-deploy), se corren aqui: nunca se arranca un
+# servidor sobre un esquema viejo.
+if [ "${BOOT_TASKS_IN_PREDEPLOY:-}" = "1" ] && alembic current 2>/dev/null | grep -q "(head)"; then
+    echo "[start] tareas de arranque hechas en el pre-deploy; esquema en la cabeza"
+else
+    bash "$(dirname "$0")/boot_tasks.sh"
+fi
 
 # Railway (and most PaaS) proxy to $PORT. Listening on 8000 while the
 # platform probes another port is the 502 'Application failed to respond'.
