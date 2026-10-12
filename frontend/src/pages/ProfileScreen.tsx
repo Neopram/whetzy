@@ -36,6 +36,24 @@ export function ProfileScreen() {
     () => (user.isPremium ? Promise.resolve(null) : billing.paddleConfig()),
     [user.isPremium],
   );
+  const [exportState, setExportState] = useState<'idle' | 'busy' | 'error'>('idle');
+  const exportData = async () => {
+    setExportState('busy');
+    try {
+      const data = await auth.exportData();
+      const url = URL.createObjectURL(
+        new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }),
+      );
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `whetzy-${user.username}-datos.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      setExportState('idle');
+    } catch {
+      setExportState('error');
+    }
+  };
   const [cancelState, setCancelState] = useState<'idle' | 'confirm' | 'busy' | 'done' | 'error'>('idle');
 
   // Se aplica al momento y se deshace si el servidor falla: un interruptor
@@ -315,8 +333,18 @@ export function ProfileScreen() {
         <span className={styles.legalSep}>·</span>
         <a href="/terms" className={styles.legalLink}>{t('profile.terms')}</a>
         <span className={styles.legalSep}>·</span>
+        <button
+          type="button"
+          className={styles.legalLink}
+          onClick={exportData}
+          disabled={exportState === 'busy'}
+        >
+          {exportState === 'busy' ? t('profile.exporting') : t('profile.exportData')}
+        </button>
+        <span className={styles.legalSep}>·</span>
         <a href="/delete-account" className={styles.deleteLink}>{t('profile.deleteAccount')}</a>
       </div>
+      {exportState === 'error' && <p role="alert" className={styles.exportError}>{t('profile.exportError')}</p>}
     </div>
   );
 }

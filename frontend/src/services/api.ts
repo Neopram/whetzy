@@ -289,6 +289,11 @@ export const auth = {
     return request<UserRead>('/auth/me');
   },
 
+  /** Portabilidad (RGPD art. 20): todo lo del alumno en un JSON. */
+  async exportData() {
+    return request<Record<string, unknown>>('/export/data');
+  },
+
   /** Guarda en el servidor lo editable del perfil. Sin esto el idioma elegido
    *  solo vivía en el estado local y al recargar volvía el del registro. */
   async updateMe(patch: UpdateMePayload) {

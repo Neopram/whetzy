@@ -365,6 +365,10 @@ class Settings(BaseSettings):
     # Off by default until Paddle is live; set True in staging/prod once the
     # payment webhook drives enrollment instead of direct API calls.
     INSTRUCTOR_MARKETPLACE_ENABLED: bool = False
+    # Perfil público por username (0.3). Apagado hasta que exista el opt-in y lo
+    # recojan la política de privacidad: hoy publicaría dominio, racha y
+    # certificados de cualquier alumno sin login ni consentimiento.
+    PUBLIC_PROFILES_ENABLED: bool = False
 
     # --- A/B experiments -----------------------------------------------------
     # Fraction of users assigned to the DKT skill-selection cohort (0.0–1.0).

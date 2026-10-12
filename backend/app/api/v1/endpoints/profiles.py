@@ -15,6 +15,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.db import get_db
 from app.models.content import Track
 from app.models.exam import Certificate
@@ -36,6 +37,8 @@ async def get_public_profile(
     response: Response,
     db: AsyncSession = Depends(get_db),
 ) -> PublicProfileRead:
+    if not settings.PUBLIC_PROFILES_ENABLED:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found")
     user = (
         await db.scalars(select(User).where(User.username == username, User.is_active.is_(True)))
     ).first()

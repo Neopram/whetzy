@@ -391,12 +391,26 @@ async def test_security_logs_are_kept_90_days_and_fingerprints_30(db_session: As
         ))
     db_session.add(DeviceFingerprint(user_id=u.id, fingerprint_hash="a" * 64, ip_hash="b" * 64, created_at=NOW - timedelta(days=31)))
     db_session.add(DeviceFingerprint(user_id=u.id, fingerprint_hash="c" * 64, ip_hash="d" * 64, created_at=NOW - timedelta(days=29)))
+    from app.models.campaign import Campaign, CampaignClick
+
+    camp = Campaign(code="ret90", name="Retención")
+    db_session.add(camp)
+    await db_session.flush()
+    for when in (old, recent):
+        db_session.add(CampaignClick(campaign_id=camp.id, user_agent="UA", referrer="https://ref", created_at=when))
     await db_session.flush()
 
     deleted = await purge_security_logs(db_session, NOW)
-    assert deleted == {"login_attempts": 1, "audit_log": 1, "user_sessions": 1, "device_fingerprints": 1}
+    assert deleted == {
+        "login_attempts": 1, "audit_log": 1, "user_sessions": 1, "device_fingerprints": 1,
+        "campaign_clicks_browser": 1,
+    }
     for model in (LoginAttempt, AuditLog, UserSession, DeviceFingerprint):
         assert len((await db_session.execute(select(model))).scalars().all()) == 1
+    clicks = (await db_session.execute(select(CampaignClick).order_by(CampaignClick.created_at))).scalars().all()
+    assert len(clicks) == 2, "el clic se conserva; solo se borra el navegador"
+    assert (clicks[0].user_agent, clicks[0].referrer) == (None, None)
+    assert (clicks[1].user_agent, clicks[1].referrer) == ("UA", "https://ref")
     assert await purge_security_logs(db_session, NOW) == dict.fromkeys(deleted, 0)
 
 

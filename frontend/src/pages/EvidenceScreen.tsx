@@ -266,7 +266,7 @@ export function EvidenceScreen() {
       </main>
 
       <footer className={styles.footer}>
-        <p>{t('evidence.footer')} · <a href="/" className={styles.link}>{t('evidence.backToApp')}</a> · {t('evidence.engineMit')} · {t('evidence.contentPsf')}</p>
+        <p>{t('evidence.footer')} · <a href="/" className={styles.link}>{t('evidence.backToApp')}</a> · {t('evidence.engineLicense')} · {t('evidence.contentPsf')}</p>
       </footer>
     </div>
   );

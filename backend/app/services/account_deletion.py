@@ -70,10 +70,32 @@ _OWNED_TABLES: tuple[str, ...] = (
     "email_verification_tokens",
     "password_reset_tokens",
     "device_fingerprints",
+    "mastery_reports",
 )
 
 # Trazas que se conservan pero dejan de apuntar a la persona.
 _DETACHED_TABLES: tuple[str, ...] = ("analytics_events", "audit_log", "campaign_clicks")
+
+# Se conservan a propósito: con la fila de `users` anonimizada ya no señalan a
+# nadie, y su existencia es obligación contable o es también de otra persona.
+# `test_every_table_pointing_at_users_is_classified` exige que toda tabla con
+# clave a `users` esté en una de estas listas o en `_purge_user`.
+_KEPT_TABLES: dict[str, str] = {
+    "certification_purchases": "registro de pago",
+    "credit_ledger": "registro económico",
+    "credit_expense_caps": "registro económico",
+    "paddle_subscriptions": "registro de pago",
+    "stripe_customers": "registro de pago",
+    "promo_code_redemptions": "registro económico",
+    "referral_codes": "registro económico",
+    "referrals": "registro económico de dos personas",
+    "fraud_review_queue": "antifraude",
+    "duels": "también es del otro alumno",
+    "gdpr_requests": "prueba de que la solicitud se cumplió",
+}
+_HANDLED_IN_PURGE: frozenset[str] = frozenset(
+    {"responses", "study_sessions", "user_blocks", "user_reports", "instructors"}
+)
 
 
 def _now() -> datetime:
@@ -169,6 +191,22 @@ async def _purge_user(db: AsyncSession, user: User, now: datetime) -> None:
         table = tables[name]
         await db.execute(update(table).where(table.c.user_id == uid).values(user_id=None))
     await db.execute(delete(LoginAttempt).where(LoginAttempt.email == user.email))
+    blocks = tables["user_blocks"]
+    await db.execute(
+        delete(blocks).where((blocks.c.blocker_id == uid) | (blocks.c.blocked_id == uid))
+    )
+    # Lo que el alumno denunció lo escribió él; lo denunciado sobre él es de
+    # moderación y sin la persona ya no identifica a nadie.
+    reports = tables["user_reports"]
+    await db.execute(delete(reports).where(reports.c.reporter_id == uid))
+    # La ficha de instructor la referencian cursos y liquidaciones: se queda la
+    # fila y se borra lo que describe a la persona.
+    instructors = tables["instructors"]
+    await db.execute(
+        update(instructors)
+        .where(instructors.c.user_id == uid)
+        .values(display_name="—", bio=None, avatar_url=None, website=None)
+    )
 
     user.email = f"deleted-{uid.hex}@deleted.invalid"
     user.username = f"deleted_{uid.hex[:16]}"
