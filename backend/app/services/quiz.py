@@ -137,10 +137,11 @@ async def apply_answer_to_skill_state(
     state = await _get_or_create_skill_state(db, user_id, question.skill_id)
 
     user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
-    item_entity = EloEntity(rating=question.elo_rating, interactions=30)
+    item_entity = EloEntity(rating=question.elo_rating, interactions=question.elo_updates)
     user_entity, item_entity, _expected_p = elo.update(user_entity, item_entity, correct)
     state.elo_rating = user_entity.rating
     question.elo_rating = item_entity.rating
+    question.elo_updates += 1
 
     bkt_state = SkillState(
         skill_id=question.skill_id,
@@ -700,11 +701,12 @@ async def submit_answer(
 
     # --- Elo: two-sided update between user's per-skill ability and item difficulty ---
     user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
-    item_entity = EloEntity(rating=question.elo_rating, interactions=30)
+    item_entity = EloEntity(rating=question.elo_rating, interactions=question.elo_updates)
     user_entity, item_entity, expected_p = elo.update(user_entity, item_entity, correct)
     state.elo_rating = user_entity.rating
     if not declared_unknown:
         question.elo_rating = item_entity.rating
+        question.elo_updates += 1
     # On "I don't know" the learner's rating still falls — they could not answer,
     # and the selector should ease off. The item's rating is left alone: nobody
     # attempted it, so the interaction says nothing about how hard it is.
@@ -923,10 +925,11 @@ async def apply_exam_evidence(
     mastery_before_this_attempt = state.p_known
 
     user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
-    item_entity = EloEntity(rating=question.elo_rating, interactions=30)
+    item_entity = EloEntity(rating=question.elo_rating, interactions=question.elo_updates)
     user_entity, item_entity, _expected = elo.update(user_entity, item_entity, correct)
     state.elo_rating = user_entity.rating
     question.elo_rating = item_entity.rating
+    question.elo_updates += 1
 
     bkt_state = SkillState(
         skill_id=question.skill_id,

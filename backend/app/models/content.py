@@ -186,6 +186,14 @@ class Question(Base):
     pool: Mapped[str] = mapped_column(String(16), default="practica", nullable=False)
 
     elo_rating: Mapped[float] = mapped_column(Float, default=1500.0, nullable=False)
+    # Veces que una respuesta real movió `elo_rating` (quiz, duelo o examen).
+    # Mientras sea 0 el rating es solo el prior editorial y el loader puede
+    # sembrarlo; en cuanto vale > 0 ninguna sincronización de contenido lo toca
+    # (regla «inmutabilidad del aprendizaje» del dueño, 2026-10-12). También es
+    # el contador de interacciones del ítem para la K decreciente de `elo.py`.
+    elo_updates: Mapped[int] = mapped_column(
+        Integer, default=0, server_default="0", nullable=False
+    )
     discrimination: Mapped[float] = mapped_column(Float, default=1.0, nullable=False)
     guessing: Mapped[float] = mapped_column(Float, default=0.2, nullable=False)
     expected_time_ms: Mapped[int] = mapped_column(Integer, default=15000, nullable=False)
