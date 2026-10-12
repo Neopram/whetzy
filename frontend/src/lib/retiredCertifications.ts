@@ -10,7 +10,8 @@ export interface RetiredCertification {
 
 export const RETIRED_CERTIFICATIONS: Record<string, RetiredCertification> = {
   track43: { code: 'MLA-C01', replacement: 'MLA-C02' },
-  track45: { code: 'AI-900', replacement: 'AI-901' },
+  // track45 ya no: su contenido es AI-901 (el examen nuevo), así que el aviso
+  // «examen retirado» que mostraba sobre él era falso (2026-10-12).
 };
 
 export function retiredCertificationFor(trackId: string): RetiredCertification | undefined {

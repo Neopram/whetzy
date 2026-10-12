@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { Card } from '../components/common/Card';
-import { ReadinessGauge } from '../components/common/ReadinessGauge';
 import { StreakFreezeShop } from '../components/home/StreakFreezeShop';
 import { useApi } from '../hooks/useApi';
 import { progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
 import { listVariants, listItemVariants } from '../lib/motion';
+import { bandForSkill, overallBand, MIN_EVIDENCE_ANSWERS, type EvidenceBand } from '../lib/evidenceBand';
 import styles from './HomeScreen.module.css';
 
 // Saludo entero por clave: «Buenos» + «noches» salía «Buenos noches».
@@ -16,11 +16,13 @@ function greetingKey(): 'home.greetingMorning' | 'home.greetingAfternoon' | 'hom
   return h < 12 ? 'home.greetingMorning' : h < 19 ? 'home.greetingAfternoon' : 'home.greetingEvening';
 }
 
-// Dos cifras distintas, cada una con su nombre: el objetivo de preparación
-// (la marca del arco y «rutas listas») y el umbral con el que el motor da una
-// habilidad por dominada (MASTERY_THRESHOLD del backend, el ✓ de Rutas).
-const READY = 0.75;
-const MASTERED = 0.95;
+// ADR-60 / D-16: Hoy no enseña porcentajes del modelo mientras no esté
+// calibrado; enseña un estado con la evidencia que lo sostiene.
+const BAND_CLASS: Record<EvidenceBand, string> = {
+  strong: 'dominated',
+  developing: 'partial',
+  insufficient: 'frontier',
+};
 
 export function HomeScreen() {
   const user = useAppStore((s) => s.user);
@@ -40,10 +42,6 @@ export function HomeScreen() {
   const tracks = (dash.data?.tracks ?? [])
     .filter((tr) => tr.average_mastery > 0 || tr.skills_mastered > 0)
     .sort((a, b) => b.average_mastery - a.average_mastery);
-  const overallMastery = tracks.length
-    ? Math.round((tracks.reduce((sum, tr) => sum + tr.average_mastery, 0) / tracks.length) * 100)
-    : 0;
-  const tracksReady = tracks.filter((tr) => tr.average_mastery >= READY).length;
   const shownTracks = tracks.slice(0, 5);
   const reviewsDue = dash.data?.reviews_due ?? 0;
   const streak = dash.data?.current_streak ?? user.currentStreak;
@@ -51,6 +49,11 @@ export function HomeScreen() {
   // Elo medio real de las skills con al menos un intento (24.4). undefined
   // mientras no haya ninguna: mostrar 1500 (el arranque) sería inventarlo.
   const practicedSkills = skills.data?.filter((s) => s.attempts > 0) ?? [];
+  const skillBands = practicedSkills.map(bandForSkill);
+  const band = overallBand(skillBands);
+  const bandCount = (b: EvidenceBand) => skillBands.filter((x) => x === b).length;
+  const answers = practicedSkills.reduce((sum, s) => sum + s.attempts, 0);
+  const correct = practicedSkills.reduce((sum, s) => sum + s.correct_count, 0);
   const avgElo = practicedSkills.length > 0
     ? Math.round(practicedSkills.reduce((sum, s) => sum + s.elo_rating, 0) / practicedSkills.length)
     : undefined;
@@ -64,18 +67,24 @@ export function HomeScreen() {
 
       {/* Preparación + siguiente paso: lo único que hay que hacer, arriba. */}
       <div className={styles.topGrid}>
-        <motion.section className={styles.readiness} variants={listItemVariants} aria-label={t('home.masteryLabel')}>
-          <ReadinessGauge
-            value={overallMastery}
-            label={t('home.masteryLabel')}
-            ariaLabel={`${t('home.masteryLabel')}: ${overallMastery} %`}
-          >
-            <p className={styles.gaugeMeta}>
-              <span className={styles.readyDot} aria-hidden="true" />
-              <strong>{tracksReady} / {tracks.length}</strong> {t('home.tracksReady')}
-            </p>
-          </ReadinessGauge>
-          <p className={styles.threshold}>{t('home.thresholdNote')}</p>
+        <motion.section className={styles.readiness} variants={listItemVariants} aria-label={t('home.bandTitle')}>
+          <p className={styles.bandLabel}>{t('home.bandTitle')}</p>
+          <p className={`${styles.bandName} ${styles[BAND_CLASS[band]]}`} data-testid="home-band">
+            {t(`bands.${band}`)}
+          </p>
+          <p className={styles.gaugeMeta}>
+            <span className={styles.readyDot} aria-hidden="true" />
+            {t('bands.evidence', { answers, correct })}
+          </p>
+          <p className={styles.threshold}>
+            {band === 'insufficient'
+              ? t('bands.why.insufficient', { n: MIN_EVIDENCE_ANSWERS })
+              : t('home.bandCounts', {
+                strong: bandCount('strong'),
+                developing: bandCount('developing'),
+                insufficient: bandCount('insufficient'),
+              })}
+          </p>
         </motion.section>
 
         <motion.section className={styles.next} variants={listItemVariants} aria-label={t('home.nextStep')}>
@@ -181,15 +190,14 @@ export function HomeScreen() {
                 <span className={styles.trackBody}>
                   <span className={styles.trackName}>{lang === 'es' ? tr.name_es : tr.name_en}</span>
                   <ProgressBar
-                    value={Math.round(tr.average_mastery * 100)}
-                    max={100}
+                    value={tr.skills_mastered}
+                    max={Math.max(tr.total_skills, 1)}
                     label={lang === 'es' ? tr.name_es : tr.name_en}
                     color="var(--le-blue)"
                     height={6}
                   />
                   <span className={styles.trackNumbers}>
                     <span>{tr.skills_mastered}/{tr.total_skills} {t('home.skillsMastered')}</span>
-                    <b>{Math.round(tr.average_mastery * 100)}%</b>
                   </span>
                 </span>
               </button>
@@ -249,14 +257,19 @@ export function HomeScreen() {
               .sort((a: SkillMasteryDetail, b: SkillMasteryDetail) => b.p_known - a.p_known)
               .slice(0, 8)
               .map((s: SkillMasteryDetail) => {
-                const pct = Math.round(s.p_known * 100);
-                const estado = s.p_known >= MASTERED ? 'dominated' : s.p_known >= 0.4 ? 'partial' : 'frontier';
+                const skillBand = bandForSkill(s);
                 const name = lang === 'es' ? s.name_es : s.name_en;
+                const evidence = t('bands.evidence', { answers: s.attempts, correct: s.correct_count });
                 return (
-                  <div key={s.skill_id} className={`${styles.node} ${styles[estado]}`} role="group" aria-label={`${name}: ${pct}%`}>
+                  <div
+                    key={s.skill_id}
+                    className={`${styles.node} ${styles[BAND_CLASS[skillBand]]}`}
+                    role="group"
+                    aria-label={`${name}: ${t(`bands.${skillBand}`)} (${evidence})`}
+                  >
                     <span className={styles.nodeName}>{name}</span>
-                    <span className={styles.nodeMastery}>{pct}%</span>
-                    <span className={styles.nodeBar} style={{ width: `${pct}%` }} aria-hidden="true" />
+                    <span className={styles.nodeMastery}>{t(`bands.${skillBand}`)}</span>
+                    <span className={styles.nodeEvidence}>{evidence}</span>
                   </div>
                 );
               })}

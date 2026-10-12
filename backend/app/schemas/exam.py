@@ -109,6 +109,11 @@ class DomainReadiness(BaseModel):
     skills_assessed: int
     skills_total: int
     ready: bool
+    # ADR-60 / D-17: la evidencia observable detrás del estado. La interfaz
+    # dice «Fuerte / En desarrollo / Evidencia insuficiente» con estas cifras,
+    # no con `p_known_mean`, hasta que el modelo esté calibrado.
+    answers: int = 0
+    correct: int = 0
 
 
 class CertificationReadiness(BaseModel):

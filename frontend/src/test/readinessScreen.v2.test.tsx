@@ -52,20 +52,48 @@ describe('ReadinessScreen v2', () => {
   it('ordena por peso y elige como palanca el dominio con más peso × lo que falta', async () => {
     render(<ReadinessScreen trackId="track09" onExit={() => {}} />);
     const lever = await screen.findByRole('region', { name: 'Tu mayor palanca' });
-    expect(within(lever).getByText(/Medio a cero: vale el 20 % del examen y estás en el 0 %/)).toBeInTheDocument();
+    expect(within(lever).getByText(/Medio a cero: vale el 20 % del examen y su estado es «Evidencia insuficiente»/)).toBeInTheDocument();
 
     const names = screen.getAllByRole('listitem').map((li) => li.querySelector('span')?.textContent);
     expect(names).toEqual(['Pesado casi listo', 'Medio y listo', 'Medio a cero', 'Ligero a cero']);
   });
 
-  it('sin nada practicado dice que el % es el punto de partida, no una medida', async () => {
+  it('ADR-60: sin nada practicado dice «Evidencia insuficiente», nunca un % del modelo', async () => {
     readiness.mockResolvedValue({
       track_id: 'track09', overall_p_known: 0.1,
       domains: [{ ...dom('d1', 'Uno', 60, 0.1), skills_assessed: 0 }, { ...dom('d2', 'Dos', 40, 0.1), skills_assessed: 0 }],
     });
     render(<ReadinessScreen trackId="track09" onExit={() => {}} />);
-    expect(await screen.findByText(/el 10 % es el punto de partida del modelo/)).toBeInTheDocument();
+    expect(await screen.findByTestId('readiness-band')).toHaveTextContent('Evidencia insuficiente');
     expect(screen.getAllByText('sin practicar')).toHaveLength(2);
+    expect(document.body.textContent).not.toMatch(/10 ?%/);
+  });
+
+  it('ADR-60: con evidencia en todos los dominios y todos listos dice «Fuerte», con sus cifras', async () => {
+    readiness.mockResolvedValue({
+      track_id: 'track09', overall_p_known: 0.84,
+      domains: [
+        { ...dom('d1', 'Uno', 60, 0.84, true), answers: 12, correct: 10 },
+        { ...dom('d2', 'Dos', 40, 0.84, true), answers: 8, correct: 7 },
+      ],
+    });
+    render(<ReadinessScreen trackId="track09" onExit={() => {}} />);
+    expect(await screen.findByTestId('readiness-band')).toHaveTextContent('Fuerte');
+    expect(screen.getByText(/20 respuestas · 17 aciertos/)).toBeInTheDocument();
+    // «Knowledge 84 %» es justo lo que ADR-60 prohíbe.
+    expect(document.body.textContent).not.toMatch(/84 ?%/);
+  });
+
+  it('ADR-60: un dominio con menos de 7 respuestas basta para pedir más evidencia', async () => {
+    readiness.mockResolvedValue({
+      track_id: 'track09', overall_p_known: 0.9,
+      domains: [
+        { ...dom('d1', 'Uno', 60, 0.9, true), answers: 30, correct: 28 },
+        { ...dom('d2', 'Dos', 40, 0.9, true), answers: 6, correct: 6 },
+      ],
+    });
+    render(<ReadinessScreen trackId="track09" onExit={() => {}} />);
+    expect(await screen.findByTestId('readiness-band')).toHaveTextContent('Evidencia insuficiente');
   });
 
   it('el simulacro usa el formato de la ruta, no 65 / 90', async () => {

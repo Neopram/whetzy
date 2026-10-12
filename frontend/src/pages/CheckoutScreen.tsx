@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { ApiError, auth, billing, exams, type UserRead } from '../services/api';
 import { loadPaddle, parseCheckoutRequest, type PaddleEvent } from '../lib/paddle';
+import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
 import styles from './CheckoutScreen.module.css';
 
 /**
@@ -171,6 +172,7 @@ export function CheckoutScreen() {
   return (
     <main className={styles.page}>
       <h1 className={styles.title}>{t('checkout.title', { plan: planName })}</h1>
+      {request.current?.plan === 'certification' && <RetiredCertNotice trackId={request.current.trackId} />}
 
       {phase === 'loading' && <p className={styles.body}>{t('checkout.loading')}</p>}
       {phase === 'consent' && (
