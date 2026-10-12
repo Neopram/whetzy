@@ -22,6 +22,7 @@ from app.services.analytics import (
     conversion_d35,
     curr,
     funnel,
+    unseen_first_attempt_accuracy,
     weekly_30min_rate_among_payers,
 )
 
@@ -408,3 +409,69 @@ class TestCohortDenominators:
         assert result["d1_rate"] == 0.5
         assert (result["d1_return_activated"], result["d1_cohort_activated"]) == (1, 1)
         assert result["d1_rate_activated"] == 1.0
+
+
+# ── H4 (dueño, 2026-10-12): instrumento (B), primer intento en no vistas ──────
+
+
+async def _bank(db, n: int) -> list[str]:
+    db.add(Track(id="tH4", name_es="t", name_en="t", order=1))
+    db.add(Module(id="mH4", track_id="tH4", name_es="m", name_en="m", order=1))
+    db.add(Skill(id="sH4", module_id="mH4", name_es="s", name_en="s", order=1))
+    ids = [f"qH4_{i:03d}" for i in range(n)]
+    for qid in ids:
+        db.add(Question(id=qid, skill_id="sH4", question_es="?", question_en="?", correct_index=0))
+    await db.flush()
+    return ids
+
+
+def _attempt(db, user_id, qid: str, correct: bool, at: datetime, *, mode: str = "study",
+             unknown: bool = False) -> None:
+    sid = uuid.uuid4()
+    db.add(StudySession(id=sid, user_id=user_id, started_at=at, ended_at=at, mode=mode))
+    db.add(Response(id=uuid.uuid4(), session_id=sid, question_id=qid, correct=correct, grade=4,
+                    response_time_ms=1000, created_at=at, declared_unknown=unknown))
+
+
+class TestH4UnseenFirstAttempt:
+    @pytest.mark.asyncio
+    async def test_compares_the_first_and_last_first_attempts(self, db_session) -> None:
+        qs = await _bank(db_session, 20)
+        u = _make_user(db_session, created_at=NOW - timedelta(days=20))
+        await db_session.flush()
+        for i, qid in enumerate(qs):
+            # 3/10 al principio, 8/10 al final.
+            ok = (i < 10 and i < 3) or (i >= 10 and i < 18)
+            _attempt(db_session, u.id, qid, ok, NOW - timedelta(days=19) + timedelta(hours=i))
+        await db_session.commit()
+        r = await unseen_first_attempt_accuracy(db_session, window=10)
+        assert (r["users_measured"], r["users_improved"]) == (1, 1)
+        assert (r["early_correct"], r["late_correct"], r["attempts_per_end"]) == (3, 8, 10)
+
+    @pytest.mark.asyncio
+    async def test_repeats_placement_and_unknown_do_not_count(self, db_session) -> None:
+        qs = await _bank(db_session, 20)
+        u = _make_user(db_session, created_at=NOW - timedelta(days=20))
+        await db_session.flush()
+        t0 = NOW - timedelta(days=19)
+        for i, qid in enumerate(qs):
+            _attempt(db_session, u.id, qid, False, t0 + timedelta(hours=i))
+        # Repetir una pregunta ya vista (y acertarla) no es «no vista».
+        _attempt(db_session, u.id, qs[-1], True, t0 + timedelta(days=5))
+        # Ni la prueba de nivel ni el «no lo sé» son intentos de práctica.
+        _attempt(db_session, u.id, qs[0], True, t0 - timedelta(hours=1), mode="placement")
+        await db_session.commit()
+        r = await unseen_first_attempt_accuracy(db_session, window=10)
+        assert (r["early_correct"], r["late_correct"]) == (0, 0)
+
+    @pytest.mark.asyncio
+    async def test_too_few_first_attempts_is_not_measured(self, db_session) -> None:
+        qs = await _bank(db_session, 19)
+        u = _make_user(db_session, created_at=NOW - timedelta(days=20))
+        await db_session.flush()
+        for i, qid in enumerate(qs):
+            _attempt(db_session, u.id, qid, True, NOW - timedelta(days=19) + timedelta(hours=i))
+        await db_session.commit()
+        r = await unseen_first_attempt_accuracy(db_session, window=10)
+        assert r["users_measured"] == 0
+        assert r["early_rate"] is None

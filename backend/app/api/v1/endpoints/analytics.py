@@ -14,6 +14,7 @@ from app.services.analytics import (
     engagement,
     funnel,
     skill_mastery_stats,
+    unseen_first_attempt_accuracy,
     weekly_30min_rate_among_payers,
 )
 
@@ -66,6 +67,7 @@ async def get_dashboard(
     curr_data = await curr(db)
     conversion_data = await conversion_d35(db)
     weekly_30min_data = await weekly_30min_rate_among_payers(db)
+    h4_data = await unseen_first_attempt_accuracy(db)
 
     return {
         "funnel": funnel_data,
@@ -76,12 +78,21 @@ async def get_dashboard(
             "d1_count": funnel_data["d1_return"],
             "d7_count": funnel_data["d7_return"],
             "d30_count": funnel_data["d30_return"],
+            # D-31: cada tasa con su cohorte, para leerla en personas («4 de 30»).
+            "d1_cohort": funnel_data["d1_cohort"],
+            "d7_cohort": funnel_data["d7_cohort"],
+            "d30_cohort": funnel_data["d30_cohort"],
+            "d1_rate_activated": funnel_data["d1_rate_activated"],
+            "d7_rate_activated": funnel_data["d7_rate_activated"],
+            "d30_rate_activated": funnel_data["d30_rate_activated"],
         },
         "engagement": engagement_data,
         "skill_mastery": mastery_data,
         "curr": curr_data,
         "conversion_d35": conversion_data,
         "weekly_30min_among_payers": weekly_30min_data,
+        # H4: acierto al primer intento en preguntas no vistas, principio vs final.
+        "learning_unseen_first_attempt": h4_data,
         "not_yet_measurable": {
             "completion_rate_among_payers": "sin señal de «track completado» en el modelo hoy",
             "mock_exam_calibration": "sin conexión con el resultado del examen real",

@@ -23,6 +23,7 @@ from sqlalchemy import Row, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import AnalyticsEvent
+from app.models.content import Question
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
 
@@ -524,4 +525,66 @@ async def skill_mastery_stats(db: AsyncSession) -> dict[str, object]:
         "top_5": [_fmt(r) for r in ranked[:5]],
         "bottom_5": [_fmt(r) for r in ranked[-5:][::-1]],
         "total_skills": len(rows),
+    }
+
+
+# ---------------------------------------------------------------------------
+# H4 — ¿mejora el aprendizaje? (dueño, 2026-10-12)
+# ---------------------------------------------------------------------------
+
+# Primeros intentos que hacen falta en cada extremo para comparar.
+H4_WINDOW = 10
+
+
+async def unseen_first_attempt_accuracy(db: AsyncSession, window: int = H4_WINDOW) -> dict[str, object]:
+    """Instrumento (B) de H4: acierto al PRIMER intento en preguntas no vistas.
+
+    `p_known` no sirve para medir mejora: sube por construcción al acertar.
+    Esto mira solo la primera vez que cada alumno ve cada pregunta del banco
+    de práctica (fuera la prueba de nivel y el «no lo sé»), así que ningún
+    ítem cuenta dos veces, y compara sus primeros `window` primeros intentos
+    con los últimos `window`. Solo entran alumnos con al menos 2 × `window`.
+
+    Límite conocido, y por eso no es un veredicto: el motor sube la dificultad
+    al acertar, así que un acierto igual al final ya es mejor que al principio;
+    el número infravalora la mejora, no la exagera. El instrumento (A), el
+    simulacro reservado al principio y al final, no depende de esto.
+    """
+    rows = (
+        await db.execute(
+            select(StudySession.user_id, Response.question_id, Response.correct, Response.created_at)
+            .join(Response, Response.session_id == StudySession.id)
+            .join(Question, Question.id == Response.question_id)
+            .where(
+                StudySession.mode != "placement",
+                Response.declared_unknown.is_(False),
+                Question.pool == "practica",
+            )
+            .order_by(Response.created_at)
+        )
+    ).all()
+    first: dict[uuid.UUID, dict[str, bool]] = defaultdict(dict)
+    for user_id, question_id, correct, _ in rows:
+        first[user_id].setdefault(question_id, bool(correct))
+
+    measured = early_ok = late_ok = improved = 0
+    for answers in first.values():
+        seq = list(answers.values())  # orden de inserción = orden temporal
+        if len(seq) < 2 * window:
+            continue
+        measured += 1
+        e, l_ = sum(seq[:window]), sum(seq[-window:])
+        early_ok += e
+        late_ok += l_
+        improved += l_ > e
+    total = measured * window
+    return {
+        "window": window,
+        "users_measured": measured,
+        "users_improved": improved,
+        "early_correct": early_ok,
+        "late_correct": late_ok,
+        "attempts_per_end": total,
+        "early_rate": round(early_ok / total, 4) if total else None,
+        "late_rate": round(late_ok / total, 4) if total else None,
     }
