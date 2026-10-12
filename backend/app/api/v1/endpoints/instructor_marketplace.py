@@ -1,11 +1,15 @@
 """Instructor marketplace endpoints: courses, enrollments, analytics (Serie 28).
 
 Endpoints:
-- POST   /instructor/courses              Create course
-- GET    /instructor/courses              List courses
-- POST   /instructor/courses/{id}/enroll  Enroll student (triggers payout calc)
-- GET    /instructor/analytics            Earnings dashboard
-- GET    /instructor/payouts              Payout history
+- POST   /instructor/courses                     Create course
+- GET    /instructor/courses                     List own courses
+- POST   /instructor/courses/{id}/enroll         Enroll student (triggers payout calc)
+- GET    /instructor/marketplace/courses         Public catalog, published only (28.8)
+- GET    /instructor/analytics                   Earnings dashboard
+- GET    /instructor/payouts                     Payout history
+
+Aprobación de cursos (draft -> published/rejected/archived): ya existe en
+`admin.py` (`PATCH /admin/instructor/courses/{id}/status`), no se repite aquí.
 """
 
 from __future__ import annotations
@@ -63,6 +67,16 @@ class CourseResponse(BaseModel):
     revenue_cents: int
     status: str
     created_at: str
+
+
+class PublicCourseResponse(BaseModel):
+    """Entrada del catálogo público (28.8): sin vídeo/materiales ni ingresos."""
+    id: str
+    instructor_display_name: str
+    title: str
+    description: str | None
+    price_cents: int
+    enrolled_count: int
 
 
 class EnrollmentResponse(BaseModel):
@@ -191,6 +205,28 @@ async def list_courses(
         .offset(offset)
     )
     return [_course_payload(c) for c in courses]
+
+
+@router.get("/marketplace/courses", response_model=list[PublicCourseResponse])
+async def list_public_courses(
+    limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
+    db: AsyncSession = Depends(get_db),
+) -> list[PublicCourseResponse]:
+    """Catálogo público (28.8): cursos `published`, sin cuenta ni cabecera.
+
+    Detrás de `MARKETPLACE_PUBLIC` (apagado por defecto: hoy nada llega a
+    `published`, ver `approve_course`). Independiente de
+    `INSTRUCTOR_MARKETPLACE_ENABLED`: un curso puede verse en el catálogo
+    antes de que la inscripción/pago esté activa.
+    """
+    if not settings.MARKETPLACE_PUBLIC:
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail="Public marketplace catalog is not enabled on this deployment",
+        )
+    rows = await InstructorService.list_public_courses(db, limit=limit, offset=offset)
+    return [PublicCourseResponse(**row) for row in rows]
 
 
 @router.post(

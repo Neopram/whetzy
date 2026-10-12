@@ -305,6 +305,7 @@ GET   /instructor/analytics                   → {total_earnings_cents, …} �
 GET   /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
 GET   /instructor/profile                     → {display_name, bio, avatar_url, website} 🔒 — se crea el instructor si el usuario aún no lo era (28.8: `ProfileTab` no llamaba a nada)
 PATCH /instructor/profile                     → {display_name, bio, avatar_url, website} 🔒 — todos los campos opcionales, solo se actualiza lo enviado
+GET   /instructor/marketplace/courses         → [{id, instructor_display_name, title, …}] — sin cuenta; solo cursos `published`, detrás de `MARKETPLACE_PUBLIC` (apagado por defecto); 501 si está apagado (28.8). Aprobar un curso (`draft` → `published`) sigue siendo `PATCH /admin/instructor/courses/{course_id}/status` (28.6), no se repite aquí
 ```
 
 ## Experiment endpoints
