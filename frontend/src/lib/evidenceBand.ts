@@ -25,7 +25,7 @@ export function bandForDomain(d: { answers?: number; ready: boolean }): Evidence
 /** Varias piezas a la vez: «Fuerte» solo si todas lo son; sin evidencia en
  *  ninguna, insuficiente; cualquier mezcla, en desarrollo. */
 export function overallBand(bands: EvidenceBand[]): EvidenceBand {
-  if (bands.length === 0 || bands.every((b) => b === 'insufficient')) return 'insufficient';
+  if (bands.every((b) => b === 'insufficient')) return 'insufficient';
   if (bands.every((b) => b === 'strong')) return 'strong';
   return 'developing';
 }
