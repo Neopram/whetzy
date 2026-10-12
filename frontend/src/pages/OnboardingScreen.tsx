@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '../stores/useAppStore'
-import { auth, economy } from '../services/api'
+import { auth, economy, progress as progressApi } from '../services/api'
+import { readAttribution } from '../lib/attribution'
 import '../styles/onboarding.css'
 
 interface SegmentQuestion {
@@ -73,6 +74,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const setUserLanguage = useAppStore((s) => s.setLanguage)
   const updateUser = useAppStore((s) => s.updateUser)
   const startPlacement = useAppStore((s) => s.startPlacement)
+  const startLesson = useAppStore((s) => s.startLesson)
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Record<number, number>>({})
   const [certTrackId, setCertTrackId] = useState<string | null>(null)
@@ -99,12 +101,18 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
     setUserLanguage(selectedLang)
     updateUser({ language: selectedLang })
     void i18n.changeLanguage(selectedLang)
+    // D-20: la ruta elegida se guarda en el servidor y es la de este dispositivo.
+    const targetTrack = _placementTrack(answers[1] ?? 0, certTrackId)
+    useAppStore.setState({ selectedTrackId: targetTrack })
     void auth
       .updateMe({
         language: selectedLang,
         onboarding_experience: answers[0],
         onboarding_goal: answers[1],
         onboarding_weekly_time: answers[2],
+        target_track_id: targetTrack,
+        // D-23: se lee antes de que el referido de abajo borre `whetzy_ref`.
+        signup_attribution: readAttribution(),
       })
       .catch(() => { /* sin red: el onboarding no debe bloquear la entrada */ })
     try {
@@ -116,7 +124,14 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
     } catch { /* private mode: no localStorage */ }
     onDone()
     if ((answers[0] ?? 0) >= 1) {
-      startPlacement(_placementTrack(answers[1] ?? 0, certTrackId))
+      startPlacement(targetTrack)
+    } else {
+      // D-20 (B.2/B.3 del plan): quien empieza de cero va directo a la primera
+      // lección de su ruta, no a un panel vacío. Sin red, se queda en Hoy.
+      void progressApi
+        .skills(targetTrack)
+        .then((skills) => { if (skills[0]) startLesson(skills[0].skill_id) })
+        .catch(() => { /* sin red: el panel ya ofrece estudiar */ })
     }
   }
 

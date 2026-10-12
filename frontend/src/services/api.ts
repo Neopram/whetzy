@@ -1,3 +1,4 @@
+import type { SignupAttribution } from '../lib/attribution';
 // Same-origin by default: in dev, Vite proxies /api → backend (see vite.config.ts);
 // in production set VITE_API_URL to the deployed backend origin + /api/v1.
 /** Error de API que conserva el código HTTP.
@@ -210,6 +211,8 @@ export interface UserRead {
   /** true si se dio de baja de los correos de ofertas. */
   marketing_emails_opt_out?: boolean;
   is_admin?: boolean;
+  /** D-20: la ruta elegida en el onboarding. */
+  target_track_id?: string | null;
 }
 
 /** Respuesta de `/auth/login` cuando la cuenta tiene 2FA: falta el código. */
@@ -235,6 +238,10 @@ export interface UpdateMePayload {
   onboarding_experience?: number;
   onboarding_goal?: number;
   onboarding_weekly_time?: number;
+  /** D-20: la ruta elegida, guardada en el servidor. */
+  target_track_id?: string;
+  /** D-23: origen del alta; el servidor solo guarda el primero. */
+  signup_attribution?: SignupAttribution;
 }
 
 export type OAuthProvider = 'github' | 'google';
