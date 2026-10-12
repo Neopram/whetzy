@@ -1271,6 +1271,8 @@ export interface CertificationAccess {
   price_usd: number;
   paywall_enabled: boolean;
   purchased: boolean;
+  /** False hasta que exista el banco reservado: ni se presenta ni se vende. */
+  available: boolean;
   can_start: boolean;
 }
 

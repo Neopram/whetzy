@@ -541,6 +541,8 @@ async def start_certifying_exam(
     """Starts the certifying exam; submit it to `POST /exams/mock/{attempt_id}/submit`."""
     try:
         attempt = await certification_service.start(db, current_user, track_id)
+    except certification_service.NotAvailable as err:
+        raise HTTPException(status.HTTP_409_CONFLICT, certification_service.NOT_AVAILABLE) from err
     except certification_service.PaymentRequired as err:
         raise HTTPException(status.HTTP_402_PAYMENT_REQUIRED, certification_service.PURCHASE_REQUIRED) from err
     except mock_exam_service.MockExamError as err:

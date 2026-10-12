@@ -44,7 +44,7 @@ vi.mock('../services/api', async (importOriginal) => {
 const me = auth.me as unknown as ReturnType<typeof vi.fn>;
 const config = billing.paddleConfig as unknown as ReturnType<typeof vi.fn>;
 const certAccess = exams.certificationAccess as unknown as ReturnType<typeof vi.fn>;
-const NOT_BOUGHT = { track_id: 'track08', price_usd: 39.99, paywall_enabled: true, purchased: false, can_start: false };
+const NOT_BOUGHT = { track_id: 'track08', price_usd: 39.99, paywall_enabled: true, purchased: false, available: true, can_start: false };
 
 const USER = {
   id: '11111111-1111-1111-1111-111111111111',

@@ -150,7 +150,10 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
             <p className={styles.format}>
               {t('mockExam.certPrice', { price: isSpanish ? String(CERTIFICATION_PRICE_USD).replace('.', ',') : CERTIFICATION_PRICE_USD })}
             </p>
-            {!access.can_start && (
+            {!access.available && (
+              <p className={styles.intro} role="note">{t('mockExam.certUnavailable')}</p>
+            )}
+            {access.available && !access.can_start && (
               <a className={styles.primary} href={checkoutHref('certification', trackId)}>
                 {t('mockExam.certBuy')}
               </a>
