@@ -15,7 +15,8 @@ import pytest
 
 from app.core.security import get_password_hash
 from app.models.analytics import AnalyticsEvent
-from app.models.session import StudySession
+from app.models.content import Module, Question, Skill, Track
+from app.models.session import Response, StudySession
 from app.models.user import User
 from app.services.analytics import (
     conversion_d35,
@@ -81,7 +82,10 @@ class TestD30Return:
 
         result = await funnel(db_session, period_days=90)
         assert result["d30_return"] == 1
-        assert result["d30_rate"] == 1.0 / result["registrations"]
+        # D-31: la tasa divide entre su cohorte (altas con la ventana cerrada),
+        # no entre todas las altas del periodo.
+        assert result["d30_cohort"] == 1
+        assert result["d30_rate"] == 1.0
 
     @pytest.mark.asyncio
     async def test_does_not_count_a_user_who_never_returned(self, db_session) -> None:
@@ -327,3 +331,80 @@ class TestWeekly30MinAmongPayers:
 
         result = await weekly_30min_rate_among_payers(db_session)
         assert result["at_or_above_30min"] == 0
+
+
+# ── D-31 (dueño, 2026-10-12): denominadores honestos ─────────────────────────
+
+
+def _answer(db, user_id: uuid.UUID, question_id: str, at: datetime) -> None:
+    session_id = uuid.uuid4()
+    db.add(StudySession(id=session_id, user_id=user_id, started_at=at, ended_at=at))
+    db.add(
+        Response(
+            id=uuid.uuid4(), session_id=session_id, question_id=question_id,
+            correct=True, grade=4, response_time_ms=1000,
+        )
+    )
+
+
+async def _question(db) -> str:
+    db.add(Track(id="tPM", name_es="t", name_en="t", order=1))
+    db.add(Module(id="mPM", track_id="tPM", name_es="m", name_en="m", order=1))
+    db.add(Skill(id="sPM", module_id="mPM", name_es="s", name_en="s", order=1))
+    db.add(Question(id="qPM", skill_id="sPM", question_es="?", question_en="?", correct_index=0))
+    await db.flush()
+    return "qPM"
+
+
+class TestCohortDenominators:
+    @pytest.mark.asyncio
+    async def test_someone_whose_d1_window_is_still_open_is_not_in_the_cohort(
+        self, db_session
+    ) -> None:
+        """Alta hace 30 h: su ventana de D1 llega a las 48 h. Contarla como «no
+        volvió» hundía el D1 de cualquier beta recién abierta."""
+        _make_user(db_session, created_at=NOW - timedelta(hours=30))
+        await db_session.commit()
+        result = await funnel(db_session, period_days=30)
+        assert result["d1_cohort"] == 0
+        assert result["d1_rate"] == 0.0
+
+    @pytest.mark.asyncio
+    async def test_d1_rate_is_returned_over_the_closed_cohort(self, db_session) -> None:
+        registered = NOW - timedelta(days=5)
+        came_back = _make_user(db_session, created_at=registered)
+        _make_user(db_session, created_at=registered)
+        # Ruido que antes entraba en el denominador: altas de hoy.
+        _make_user(db_session, created_at=NOW - timedelta(hours=1))
+        _make_user(db_session, created_at=NOW - timedelta(hours=2))
+        _make_session(db_session, came_back.id, started_at=registered + timedelta(days=1), duration_minutes=5)
+        await db_session.commit()
+        result = await funnel(db_session, period_days=30)
+        assert (result["d1_return"], result["d1_cohort"]) == (1, 2)
+        assert result["d1_rate"] == 0.5
+
+    @pytest.mark.asyncio
+    async def test_the_d30_cohort_is_full_size_with_the_default_period(self, db_session) -> None:
+        """Con el periodo por defecto (30) la cohorte de D30 son las altas de los
+        30 días anteriores a hace 31: nunca vacía por construcción."""
+        registered = NOW - timedelta(days=45)
+        u = _make_user(db_session, created_at=registered)
+        _make_session(db_session, u.id, started_at=registered + timedelta(days=30), duration_minutes=5)
+        await db_session.commit()
+        result = await funnel(db_session, period_days=30)
+        assert (result["d30_return"], result["d30_cohort"], result["d30_rate"]) == (1, 1, 1.0)
+
+    @pytest.mark.asyncio
+    async def test_activated_rate_ignores_signups_who_never_answered(self, db_session) -> None:
+        qid = await _question(db_session)
+        registered = NOW - timedelta(days=5)
+        tried = _make_user(db_session, created_at=registered)
+        _make_user(db_session, created_at=registered)  # se registró y no hizo nada
+        await db_session.flush()
+        _answer(db_session, tried.id, qid, registered + timedelta(minutes=5))
+        _make_session(db_session, tried.id, started_at=registered + timedelta(days=1), duration_minutes=5)
+        await db_session.commit()
+        result = await funnel(db_session, period_days=30)
+        assert result["d1_rate"] == 0.5
+        assert (result["d1_return_activated"], result["d1_cohort_activated"]) == (1, 1)
+        assert result["d1_rate_activated"] == 1.0
