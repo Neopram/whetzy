@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
 import { quiz as quizApi, progress as progressApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
-import { enqueue } from '../services/offlineQueue';
+import { enqueue, offlineEventId } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { WhyButton } from '../components/quiz/WhyButton';
@@ -218,7 +218,7 @@ export function QuizScreen() {
         const isNetworkError = !navigator.onLine || (e instanceof TypeError);
         if (isNetworkError && sessionId && question) {
           await enqueue({
-            id: `${sessionId}_${question.id}_${Date.now()}`,
+            id: offlineEventId(),
             sessionId,
             questionId: question.id,
             selectedIndex,

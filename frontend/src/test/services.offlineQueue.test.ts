@@ -43,3 +43,13 @@ describe('offlineQueue — IDB unavailable fallback', () => {
     expect(await pendingCount()).toBe(0);
   });
 });
+
+describe('offlineEventId', () => {
+  it('cabe en responses.event_id (64) y no se repite', async () => {
+    const { offlineEventId } = await import('../services/offlineQueue');
+    const a = offlineEventId();
+    const b = offlineEventId();
+    expect(a.length).toBeLessThanOrEqual(64);
+    expect(a).not.toBe(b);
+  });
+});

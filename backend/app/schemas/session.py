@@ -74,7 +74,8 @@ class QuizAnswerRequest(BaseModel):
     # the stored answer (trimmed, case-insensitive); without it the answer is wrong.
     answer_text: str | None = Field(default=None, max_length=2_000)
     # Client-generated UUID for offline queue idempotency (33.2).
-    event_id: str | None = None
+    # La columna es String(64): más largo debe ser 422, no un 500 de la base.
+    event_id: str | None = Field(default=None, max_length=64)
 
 
 class QuizAnswerResponse(BaseModel):
