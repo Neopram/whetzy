@@ -7,11 +7,13 @@ from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from sqlalchemy import select
+from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
 from app.models.instructor import InstructorPayout
+from app.models.paddle_event import PaddleEvent
 from app.models.user import User
 from app.services import analytics, paddle_billing
 from app.services import certification as certification_service
@@ -66,9 +68,13 @@ async def webhook_paddle(request: Request, db: AsyncSession = Depends(get_db)) -
     """Receptor de Paddle Billing (pago web, H.29).
 
     Firma `Paddle-Signature` verificada en `paddle_billing.verify_webhook`.
-    Si procesar falla se responde 500 para que Paddle reintente: aplicar un
-    evento es idempotente (escribe el estado, no suma), así que un reintento
-    no duplica nada, y tragarse el error dejaba a un alumno que pagó sin plan.
+    Si procesar falla se responde 500 para que Paddle reintente: tragarse el
+    error dejaba a un alumno que pagó sin plan.
+
+    D-10 (2026-10-12): cada evento aplicado deja una fila en `paddle_events`,
+    en la misma transacción que su efecto. Un `event_id` repetido no se vuelve
+    a aplicar, y un `subscription.*` más viejo que el último aplicado a esa
+    suscripción se descarta (Paddle no garantiza el orden de entrega).
     """
     body = await request.body()
     try:
@@ -82,7 +88,40 @@ async def webhook_paddle(request: Request, db: AsyncSession = Depends(get_db)) -
 
     event_type = str(event.get("event_type", ""))
     data: dict[str, Any] = event["data"]
-    logger.info("Paddle webhook: type=%s id=%s", event_type, event.get("event_id"))
+    event_id = str(event.get("event_id") or "")
+    occurred_at = paddle_billing.parse_ts(event.get("occurred_at"))
+    entity_id = str(data["id"]) if data.get("id") else None
+    logger.info("Paddle webhook: type=%s id=%s", event_type, event_id)
+
+    if event_id:
+        if await db.get(PaddleEvent, event_id) is not None:
+            logger.info("Paddle webhook %s ya aplicado: se ignora el duplicado", event_id)
+            return {"received": True}
+        stale = event_type.startswith("subscription.") and await _is_stale(
+            db, entity_id, occurred_at
+        )
+        db.add(
+            PaddleEvent(
+                event_id=event_id,
+                event_type=event_type,
+                entity_id=entity_id,
+                occurred_at=occurred_at,
+            )
+        )
+        try:
+            await db.flush()
+        except IntegrityError:
+            # Otra entrega del mismo evento ganó la carrera y ya lo aplicó.
+            await db.rollback()
+            logger.info("Paddle webhook %s aplicado en paralelo: duplicado", event_id)
+            return {"received": True}
+        if stale:
+            logger.info(
+                "Paddle %s %s más viejo que el último aplicado a %s: se descarta",
+                event_type, event_id, entity_id,
+            )
+            await db.commit()
+            return {"received": True}
 
     try:
         if event_type.startswith("subscription."):
@@ -94,9 +133,30 @@ async def webhook_paddle(request: Request, db: AsyncSession = Depends(get_db)) -
         elif event_type == "payout.completed":
             await handle_payout_completed(data, db)
     except Exception as exc:
-        logger.exception("Error procesando el webhook de Paddle %s", event.get("event_id"))
+        logger.exception("Error procesando el webhook de Paddle %s", event_id)
+        await db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="processing error") from exc
+    # Los manejadores hacen commit cuando cambian algo; si no cambiaron nada,
+    # este commit deja igualmente registrado que el evento ya se aplicó.
+    await db.commit()
     return {"received": True}
+
+
+async def _is_stale(db: AsyncSession, entity_id: str | None, occurred_at: datetime | None) -> bool:
+    """¿Hay ya aplicado un `subscription.*` de esta suscripción posterior a este?"""
+    if entity_id is None or occurred_at is None:
+        return False
+    latest = await db.scalar(
+        select(func.max(PaddleEvent.occurred_at)).where(
+            PaddleEvent.entity_id == entity_id,
+            PaddleEvent.event_type.like("subscription.%"),
+        )
+    )
+    if latest is None:
+        return False
+    if latest.tzinfo is None:  # SQLite (tests) devuelve fechas sin zona
+        latest = latest.replace(tzinfo=UTC)
+    return occurred_at < latest
 
 
 async def _apply_subscription(db: AsyncSession, event_type: str, data: dict[str, Any]) -> None:
@@ -144,6 +204,11 @@ async def _apply_refund(db: AsyncSession, data: dict[str, Any]) -> None:
     Solo `action == "refund"` con `status == "approved"`; un crédito, un
     contracargo o un reembolso todavía pendiente/rechazado no tocan nada
     (cada uno necesitaría su propia regla, que no es la que pide esta tarea).
+
+    D-10 (2026-10-12): el reembolso **completo** (`type == "full"`) de un cobro
+    de suscripción retira el plan en el acto. Antes solo se miraban las
+    compras de certificación y el plan seguía activo con el dinero devuelto.
+    Uno parcial no lo retira: devuelve parte de un periodo que sigue pagado.
     """
     if data.get("action") != "refund" or data.get("status") != "approved":
         return
@@ -155,3 +220,12 @@ async def _apply_refund(db: AsyncSession, data: dict[str, Any]) -> None:
     if revoked:
         await db.commit()
         logger.info("Certificación revocada por reembolso Paddle txn=%s", txn_id)
+
+    subscription_id = data.get("subscription_id")
+    if subscription_id and data.get("type") == "full":
+        user = await db.scalar(
+            select(User).where(User.paddle_subscription_id == str(subscription_id))
+        )
+        if user is not None and paddle_billing.revoke_refunded_subscription(user):
+            await db.commit()
+            logger.info("Plan retirado por reembolso Paddle sub=%s txn=%s", subscription_id, txn_id)

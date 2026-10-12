@@ -44,6 +44,7 @@ from app.models.lesson_view import LessonView
 from app.models.moderation import UserBlock, UserReport
 from app.models.newsletter import NewsletterSubscriber
 from app.models.oauth import OAuthAccount, OAuthState
+from app.models.paddle_event import PaddleEvent
 from app.models.password_reset import PasswordResetToken
 from app.models.payment import (
     InstructorPayoutMethod,
@@ -100,6 +101,7 @@ __all__ = [
     "NewsletterSubscriber",
     "OAuthAccount",
     "OAuthState",
+    "PaddleEvent",
     "PaddleSubscription",
     "PasswordResetToken",
     "PaymentRailConfig",
