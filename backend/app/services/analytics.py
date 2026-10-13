@@ -23,7 +23,8 @@ from sqlalchemy import Row, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import AnalyticsEvent
-from app.models.session import StudySession
+from app.models.content import Question
+from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
 
 # ADR-53 §8: the floor, not the aspiration — ADR-32's 12-month targets
@@ -154,70 +155,75 @@ async def funnel(db: AsyncSession, period_days: int = 30) -> dict[str, object]:
         )
     ) or 0
 
-    # D1 return: users who registered ≥2 days ago and had a session on day 1
-    d1_eligible_since = now - timedelta(days=max(period_days, 2))
-    d1_eligible = (
-        await db.execute(
-            select(User.id, User.created_at).where(
-                User.created_at.between(d1_eligible_since, now - timedelta(days=1))
+    # Retención D1/D7/D30 (D-31 del dueño, 2026-10-12). Cada tasa divide entre
+    # su propia cohorte: las altas de `period_days` días cuya ventana ya cerró
+    # entera. Antes las tres dividían entre las altas del periodo, así que
+    # contaban en el denominador a gente que aún no había podido volver (D1 con
+    # altas de hace 30 h, cuya ventana llega a 48 h) y la cohorte de D30 miraba
+    # 31 días atrás, fuera de ese mismo periodo. La ventana de «día N» es
+    # [alta + N·24 h − 12 h, alta + (N+1)·24 h), en UTC y relativa a la hora del
+    # alta, no al día natural.
+    windows = {
+        "d1": (timedelta(hours=12), timedelta(days=2)),
+        "d7": (timedelta(days=6, hours=12), timedelta(days=8)),
+        "d30": (timedelta(days=29, hours=12), timedelta(days=31)),
+    }
+    cohorts: dict[str, Sequence[Row[uuid.UUID, datetime]]] = {}
+    for name, (_, window_end) in windows.items():
+        cohort_until = now - window_end
+        cohorts[name] = (
+            await db.execute(
+                select(User.id, User.created_at).where(
+                    User.created_at >= cohort_until - timedelta(days=period_days),
+                    User.created_at < cohort_until,
+                )
             )
-        )
-    ).all()
+        ).all()
 
-    # D7 return: users who registered ≥8 days ago and had a session on day 7
-    d7_eligible_since = now - timedelta(days=max(period_days, 8))
-    d7_eligible = (
-        await db.execute(
-            select(User.id, User.created_at).where(
-                User.created_at.between(d7_eligible_since, now - timedelta(days=7))
-            )
-        )
-    ).all()
-
-    # D30 return (ADR-53 §8 floor: >= 4%): users who registered >= 31 days
-    # ago and had a session on day 30. Same +/- half-day window as D1/D7 so
-    # a session fired a few hours either side of the exact 30x24h mark still
-    # counts as "day 30" rather than falling through the gap between windows.
-    d30_eligible_since = now - timedelta(days=max(period_days, 31))
-    d30_eligible = (
-        await db.execute(
-            select(User.id, User.created_at).where(
-                User.created_at.between(d30_eligible_since, now - timedelta(days=30))
-            )
-        )
-    ).all()
-
-    all_eligible_ids = {r[0] for r in d1_eligible} | {r[0] for r in d7_eligible} | {r[0] for r in d30_eligible}
-    # d30_eligible_since is always the earliest of the three (it looks back
-    # at least 31 days, d7 at least 8, d1 at least 2), so it bounds every
-    # window's start; `now` bounds every window's end — no session exists
-    # after it anyway.
-    sessions_by_user = await _sessions_by_user(db, all_eligible_ids, since=d30_eligible_since, until=now)
-
-    d1_count = _count_returned_in_window(d1_eligible, sessions_by_user, timedelta(hours=12), timedelta(days=2))
-    d7_count = _count_returned_in_window(
-        d7_eligible, sessions_by_user, timedelta(days=6, hours=12), timedelta(days=8)
-    )
-    d30_count = _count_returned_in_window(
-        d30_eligible, sessions_by_user, timedelta(days=29, hours=12), timedelta(days=31)
-    )
+    all_ids = {r[0] for rows in cohorts.values() for r in rows}
+    earliest = now - windows["d30"][1] - timedelta(days=period_days)
+    sessions_by_user = await _sessions_by_user(db, all_ids, since=earliest, until=now)
+    # «Activado»: respondió al menos una pregunta (cualquier modo, prueba de
+    # nivel incluida). Es el denominador que dice si el producto retiene a
+    # quien lo probó, sin mezclarlo con quien se registró y no hizo nada.
+    activated = await _users_with_an_answer(db, all_ids)
 
     def _rate(num: int, denom: int) -> float:
         return round(num / denom, 4) if denom else 0.0
 
-    return {
+    result: dict[str, object] = {
         "period_days": period_days,
         "registrations": reg_count,
         "first_quiz": fq_count,
-        "d1_return": d1_count,
-        "d7_return": d7_count,
-        "d30_return": d30_count,
         "first_quiz_rate": _rate(fq_count, reg_count),
-        "d1_rate": _rate(d1_count, reg_count),
-        "d7_rate": _rate(d7_count, reg_count),
-        "d30_rate": _rate(d30_count, reg_count),
-        "targets": PRODUCT_METRIC_TARGETS,
     }
+    for name, (window_start, window_end) in windows.items():
+        cohort = cohorts[name]
+        cohort_activated = [r for r in cohort if r[0] in activated]
+        returned = _count_returned_in_window(cohort, sessions_by_user, window_start, window_end)
+        returned_activated = _count_returned_in_window(
+            cohort_activated, sessions_by_user, window_start, window_end
+        )
+        result[f"{name}_return"] = returned
+        result[f"{name}_cohort"] = len(cohort)
+        result[f"{name}_rate"] = _rate(returned, len(cohort))
+        result[f"{name}_return_activated"] = returned_activated
+        result[f"{name}_cohort_activated"] = len(cohort_activated)
+        result[f"{name}_rate_activated"] = _rate(returned_activated, len(cohort_activated))
+    result["targets"] = PRODUCT_METRIC_TARGETS
+    return result
+
+
+async def _users_with_an_answer(db: AsyncSession, user_ids: set[uuid.UUID]) -> set[uuid.UUID]:
+    if not user_ids:
+        return set()
+    rows = await db.scalars(
+        select(StudySession.user_id)
+        .join(Response, Response.session_id == StudySession.id)
+        .where(StudySession.user_id.in_(user_ids))
+        .distinct()
+    )
+    return set(rows.all())
 
 
 # ---------------------------------------------------------------------------
@@ -519,4 +525,66 @@ async def skill_mastery_stats(db: AsyncSession) -> dict[str, object]:
         "top_5": [_fmt(r) for r in ranked[:5]],
         "bottom_5": [_fmt(r) for r in ranked[-5:][::-1]],
         "total_skills": len(rows),
+    }
+
+
+# ---------------------------------------------------------------------------
+# H4 — ¿mejora el aprendizaje? (dueño, 2026-10-12)
+# ---------------------------------------------------------------------------
+
+# Primeros intentos que hacen falta en cada extremo para comparar.
+H4_WINDOW = 10
+
+
+async def unseen_first_attempt_accuracy(db: AsyncSession, window: int = H4_WINDOW) -> dict[str, object]:
+    """Instrumento (B) de H4: acierto al PRIMER intento en preguntas no vistas.
+
+    `p_known` no sirve para medir mejora: sube por construcción al acertar.
+    Esto mira solo la primera vez que cada alumno ve cada pregunta del banco
+    de práctica (fuera la prueba de nivel y el «no lo sé»), así que ningún
+    ítem cuenta dos veces, y compara sus primeros `window` primeros intentos
+    con los últimos `window`. Solo entran alumnos con al menos 2 × `window`.
+
+    Límite conocido, y por eso no es un veredicto: el motor sube la dificultad
+    al acertar, así que un acierto igual al final ya es mejor que al principio;
+    el número infravalora la mejora, no la exagera. El instrumento (A), el
+    simulacro reservado al principio y al final, no depende de esto.
+    """
+    rows = (
+        await db.execute(
+            select(StudySession.user_id, Response.question_id, Response.correct, Response.created_at)
+            .join(Response, Response.session_id == StudySession.id)
+            .join(Question, Question.id == Response.question_id)
+            .where(
+                StudySession.mode != "placement",
+                Response.declared_unknown.is_(False),
+                Question.pool == "practica",
+            )
+            .order_by(Response.created_at)
+        )
+    ).all()
+    first: dict[uuid.UUID, dict[str, bool]] = defaultdict(dict)
+    for user_id, question_id, correct, _ in rows:
+        first[user_id].setdefault(question_id, bool(correct))
+
+    measured = early_ok = late_ok = improved = 0
+    for answers in first.values():
+        seq = list(answers.values())  # orden de inserción = orden temporal
+        if len(seq) < 2 * window:
+            continue
+        measured += 1
+        e, l_ = sum(seq[:window]), sum(seq[-window:])
+        early_ok += e
+        late_ok += l_
+        improved += l_ > e
+    total = measured * window
+    return {
+        "window": window,
+        "users_measured": measured,
+        "users_improved": improved,
+        "early_correct": early_ok,
+        "late_correct": late_ok,
+        "attempts_per_end": total,
+        "early_rate": round(early_ok / total, 4) if total else None,
+        "late_rate": round(late_ok / total, 4) if total else None,
     }
