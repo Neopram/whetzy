@@ -326,10 +326,10 @@ async def answer_duel(
     if question is None:
         raise HTTPException(status_code=404, detail="Question not found")
 
-    if question.type in _EXEC_TYPES:
-        correct = payload.selected_index == 1
-    else:
-        correct = question.correct_index is not None and payload.selected_index == question.correct_index
+    # Duels only serve items with a correct_index (`_pick_questions`). An item
+    # without one can never be right here: the old `selected_index == 1` branch
+    # for exec types let the client decide.
+    correct = question.correct_index is not None and payload.selected_index == question.correct_index
 
     await apply_answer_to_skill_state(
         db, current_user.id, question, correct, payload.response_time_ms
