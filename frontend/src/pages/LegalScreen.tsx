@@ -77,7 +77,7 @@ function TermsContent() {
   return (
     <article className={styles.article}>
       <h1>{t('legal.termsTitle')}</h1>
-      <p className={styles.updated}>{t('legal.updated')}</p>
+      <p className={styles.updated}>{t('legal.termsUpdated')}</p>
 
       <h2>{t('legal.termsH1')}</h2>
       <p>{t('legal.termsP1')}</p>
