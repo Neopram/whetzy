@@ -30,11 +30,12 @@ from app.core.security import (
     verify_password,
     verify_token,
 )
+from app.models.content import Track
 from app.models.email_verification import EmailVerificationToken
 from app.models.password_reset import PasswordResetToken
 from app.models.user import User
 from app.schemas.user import RefreshRequest, Token, UserCreate, UserRead
-from app.services import account_deletion
+from app.services import account_deletion, attribution
 from app.services.username_filter import contains_blocked_word
 
 router = APIRouter()
@@ -53,6 +54,15 @@ class VerifyEmailRequest(BaseModel):
     token: str
 
 
+class SignupAttribution(BaseModel):
+    """Lo que el navegador vio al llegar (D-23). Se clasifica en el servidor."""
+
+    utm_source: str | None = Field(default=None, max_length=64)
+    utm_medium: str | None = Field(default=None, max_length=64)
+    utm_campaign: str | None = Field(default=None, max_length=64)
+    referred: bool = False
+
+
 class UpdateProfileRequest(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
     avatar_emoji: str | None = Field(default=None, max_length=16)
@@ -61,6 +71,10 @@ class UpdateProfileRequest(BaseModel):
     onboarding_experience: int | None = Field(default=None, ge=0, le=2)
     onboarding_goal: int | None = Field(default=None, ge=0, le=3)
     onboarding_weekly_time: int | None = Field(default=None, ge=0, le=2)
+    # D-20: la ruta elegida en el onboarding, guardada en el servidor.
+    target_track_id: str | None = Field(default=None, max_length=20)
+    # D-23: origen del alta; solo cuenta la primera vez que llega.
+    signup_attribution: SignupAttribution | None = None
 
     @field_validator("display_name")
     @classmethod
@@ -411,6 +425,18 @@ async def update_profile(
         value = getattr(payload, field)
         if value is not None:
             setattr(current_user, field, value)
+    if payload.target_track_id is not None:
+        if await db.get(Track, payload.target_track_id) is None:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Unknown track")
+        current_user.target_track_id = payload.target_track_id
+    if payload.signup_attribution is not None and current_user.signup_source is None:
+        a = payload.signup_attribution
+        current_user.signup_source, current_user.signup_campaign = attribution.classify(
+            utm_source=a.utm_source,
+            utm_medium=a.utm_medium,
+            utm_campaign=a.utm_campaign,
+            referred=a.referred,
+        )
     await db.commit()
     await db.refresh(current_user)
     return current_user

@@ -221,7 +221,10 @@ export const useAppStore = create<AppState>()(
         set((s) => ({ user: { ...s.user, ...updates } })),
       hydrateFromApi: async () => {
         const apiUser = await auth.me();
-        set({ user: mapApiUser(apiUser) });
+        // D-20: la ruta elegida vive en el servidor; el localStorage solo la recuerda.
+        set(apiUser.target_track_id
+          ? { user: mapApiUser(apiUser), selectedTrackId: apiUser.target_track_id }
+          : { user: mapApiUser(apiUser) });
       },
       signOut: () => {
         apiLogout();

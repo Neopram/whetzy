@@ -108,6 +108,17 @@ class User(Base):
     onboarding_experience: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     onboarding_goal: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     onboarding_weekly_time: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    # D-20 (dueño, 2026-10-12): la ruta que eligió en el onboarding, en el
+    # servidor. Antes solo vivía en el localStorage del dispositivo.
+    target_track_id: Mapped[str | None] = mapped_column(
+        String(20), ForeignKey("tracks.id", ondelete="SET NULL"), nullable=True
+    )
+    # D-23: de dónde vino el alta (utm / referral / paid / direct), primer
+    # contacto y una sola vez: se fija la primera vez y no se reescribe.
+    # `signup_campaign` guarda el utm_campaign (o utm_source) tal cual, sin
+    # terceros ni nada que identifique a la persona.
+    signup_source: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    signup_campaign: Mapped[str | None] = mapped_column(String(64), nullable=True)
     # Ligas opcionales (35.4): fuera de la clasificación, sin sumar XP de liga
     # y sin aparecer en la de nadie. El XP y el nivel propios siguen igual.
     leagues_opt_out: Mapped[bool] = mapped_column(

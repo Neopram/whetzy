@@ -232,6 +232,9 @@ async def _purge_user(db: AsyncSession, user: User, now: datetime) -> None:
     user.onboarding_experience = None
     user.onboarding_goal = None
     user.onboarding_weekly_time = None
+    user.target_track_id = None
+    user.signup_source = None
+    user.signup_campaign = None
     user.total_xp = 0
     user.level = 1
     user.current_streak = 0
