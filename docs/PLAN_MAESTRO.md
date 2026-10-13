@@ -18,8 +18,15 @@
 
 ## Estado de lo que este plan cita y todavía no existe en `master`
 
+Comprobado sobre `master` = `4d8b533` el 2026-10-12.
+
 | Qué | Estado comprobado | Hasta que exista |
 |---|---|---|
+| **Número de ADR de las decisiones del 2026-10-04/05** (perfil público opt-in, la cuña, lecciones corta/extensa, login Google + Apple, orden; D-a … D-f, §6) | **Choca con el ADR-60 real**: `docs/DECISIONS.md` ya tiene un ADR-60 distinto (Knowledge/Retention/Readiness, 2026-10-10) [V]. Este plan las llamaba «ADR-60» | Las decisiones valen; el número lo asigna S5 (propuesto en el PR de esta enmienda) |
+| **Series 41**, **42** y **43** | IDs **propuestos** («(prop.)»); el número real es el que les dé S5 | — |
+| **Migraciones de la beta** | 58 `paddle_events`, 59 `question_elo_updates` y 60 `user_beta_fields` en PR, encadenadas; `master` está en la 57 (`20261010_tutor_tokens`) [V] | Se fusionan de una en una (SESIONES §5) |
+
+---|---|---|
 | **ADR-60**: decisiones del dueño del 2026-10-04 (perfil público opt-in, la cuña, lecciones corta/extensa, login Google + Apple, orden) y del 2026-10-05 (D-a … D-f, §6) | **No existe**: `docs/DECISIONS.md` termina en ADR-59 [V] | Las decisiones valen (las tomó el dueño en la sesión coordinadora), pero el número puede cambiar al aplicarse |
 | **Series 41** (Oleada S), **42** (Oleada 0 y flujo de estudio) y **43** (partes B–J fusionadas) | **0 filas en el ledger**: `ledger.py series 41|42|43` no devuelve nada [V] | Los IDs de este plan son **propuestos** («(prop.)»); el número real es el que les dé S5 |
 | **Migración 56** (perfil público opt-in) | No existe; la 55 (#127) tampoco está fusionada [V] | Orden fijado: 55 = #127, 56 = opt-in |
@@ -124,18 +131,20 @@ destino desde el backend, con la privacidad actualizada antes (ADR-50j) [V].
 
 ### 2.1 Alumno
 
+Comprobado sobre `master` = `4d8b533` el 2026-10-12. Las filas que dependen de un PR abierto lo dicen.
+
 | Paso | Hoy | Hueco | Fila |
 |---|---|---|---|
-| Alta y verificación | En prod, `POST /api/v1/auth/verify-email` usa `ResetPasswordRequest`, que exige `new_password`: da **422** con `{token}` [V] | #145 lo arregla, pero tiene `check_docs` en rojo: le faltan `VerifyEmailPage` y `/verify-email` en `docs/MAPA_PRODUCTO.md` [V] | 42.1 (prop.) |
-| Login social | Solo GitHub y Google (`backend/app/api/v1/endpoints/oauth.py`); el `state` se crea en `:122` y se valida en `:168-180`, se guarda en la BD (`backend/app/models/oauth.py:14`, `OAuthState`) sin cookie y **sin PKCE** [V]; **sin Apple** [V] | PKCE, `state` atado a una cookie, Apple (ADR-13) | 41.14 (prop.) |
-| Onboarding | 3 preguntas (`frontend/src/pages/OnboardingScreen.tsx:14-45`). `onboarding_goal` (`backend/app/models/user.py:109`) se guarda y se expone, pero **ninguna lógica lo usa** [V]. **Si el alumno no se declara principiante, el examen de nivel es siempre `track01`**; un principiante no hace examen de nivel (`OnboardingScreen.tsx:93`) [V] | Objetivo → especialidad → examen de nivel de esa especialidad | 42.3 (prop.) |
-| Especialidad activa | No hay campo en `User`. `selectedTrackId` vale `'track01'` por defecto (`frontend/src/stores/useAppStore.ts:321`) y **solo se guarda en el `localStorage` del dispositivo** (`:353`, `persist`) [V] | Guardarla en el servidor (migración) | 42.3 (prop.) |
-| Estudiar | «Estudiar» llama a `startQuiz('study', 10)` (`frontend/src/pages/HomeScreen.tsx:87`). La lección es puerta real: `_LESSON_GATED_MODES = {"study","review"}` (`backend/app/services/quiz.py:184`) y `needs_lesson` (`:195-198`, `:275-278`) [V]. Si falta la lección, se ve un `QuizError` con botón a la lección (`frontend/src/pages/QuizScreen.tsx:426-436`) [V] | La lección no aparece como paso 1: se llega a ella por una pantalla de error | 42.4 (prop.) |
-| Lección | Una por skill (`backend/tests/content/test_lessons.py:196`), **150–300 palabras** por idioma (`:36-37`) [V]. Mediana: **217 palabras en ES y 205 en EN** [V] | Versión extensa a elegir | 42.5 (prop.), oleada C |
-| Panel | Igual para todos. La única marca de «primera vez» es `whetzy_onboarded_<id>` en `localStorage` (`frontend/src/App.tsx:185`, `:393`) [V] | Panel por segmento y pistas de primera vez | 42.6, 42.7 (prop.) |
-| Simulacro | En todos los planes (ADR-58). `MOCK_EXAM_RESERVED_POOL_ENABLED=False` [def] (`config.py:301`) y **0 preguntas con `pool: "simulacro"` en el banco** [P, verificador] | Umbral «listo» (#133) | 43.10 (prop.) |
-| Certificación | 39,99 $ pago único (ADR-49). En prod, `GET /api/v1/billing/paddle/config` devuelve **`enabled: true`, `environment: "production"` y un precio `certification` configurado** [V]. `CERTIFICATION_PAYWALL=False` es [def] (`config.py:285`): su valor real está sin leer | Confirmar si se cobra hoy (§5, n.º 3) | Oleada E |
-| Perfil público | `frontend/src/pages/PublicProfileScreen.tsx` muestra datos **inventados** («Carlos Pérez») [V] | #144 rehecho como opt-in | 42.2 (prop.) |
+| Alta y verificación | `POST /api/v1/auth/verify-email` usa `VerifyEmailRequest` (`backend/app/api/v1/endpoints/auth.py:443`) y la página está en `docs/MAPA_PRODUCTO.md` (`VerifyEmailPage`) [V] | — | 42.1 (prop.), hecho |
+| Login social | GitHub y Google con **PKCE** (`oauth.py:45`, `:139`) y `state` atado a una cookie (`set_oauth_state_cookie`, `:157`) [V]; **sin Apple** [V] | Apple antes de la App Store (ADR-13) | 41.14 (prop.) |
+| Onboarding | 3 preguntas más la certificación si el objetivo es certificarse. `_placementTrack` usa el objetivo: certificación → su track, trabajo/carrera → `track04`, fundamentos → `track01` (`OnboardingScreen.tsx:65`) [V] | Guardar la ruta elegida en el servidor y llevar al principiante a su primera lección: **en PR** (D-20, migración 60) | 42.3 (prop.) |
+| Especialidad activa | `selectedTrackId` solo vive en el `localStorage` del dispositivo (`useAppStore.ts`, `persist`) [V] | `users.target_track_id`: **en PR** (D-20, migración 60) | 42.3 (prop.) |
+| Estudiar | «Estudiar» llama a `startQuiz('study', 10)` (`HomeScreen.tsx:87`); la lección es puerta real (`_LESSON_GATED_MODES`, `quiz.py:237`) [V] | Al principiante, la lección como paso 1: **en PR** (D-20) | 42.4 (prop.) |
+| Lección | Una por skill, 150–300 palabras por idioma (`backend/tests/content/test_lessons.py`) [V] | Versión extensa a elegir | 42.5 (prop.), oleada C |
+| Panel | Igual para todos; la marca de «primera vez» es `whetzy_onboarded_<id>` en `localStorage` (`App.tsx:189`, `:432`) [V]. Muestra porcentajes del modelo, que ADR-60 prohíbe hasta calibrar | Bandas con evidencia: **en PR** (D-16/D-17) | 42.6, 42.7 (prop.) |
+| Simulacro | En todos los planes (ADR-58). Hay **146** preguntas con `pool: "simulacro"` en el banco [V]; `MOCK_EXAM_RESERVED_POOL_ENABLED=False` por defecto (`config.py:310`) [V] | 37.24: completar las reservadas (meta ADR-54) | 43.10 (prop.) |
+| Certificación | 39,99 $ pago único (ADR-49); Paddle cobra en producción (`/billing/paddle/config`: `enabled: true`, `environment: production`) [V]. El examen certificador solo se ofrece con el banco reservado encendido (`_certification_available`, `certification.py:59`, #180) [V]. `CERTIFICATION_PAYWALL=False` por defecto (`config.py:294`); su valor en Railway lo lee el dueño | Webhooks con deduplicación y orden: **en PR** (D-10, migración 58) | Oleada E |
+| Perfil público | Apagado por defecto: `PUBLIC_PROFILES_ENABLED=False` (`config.py:371`) y `profiles.py:40` devuelve 404 [V]; el valor en Railway lo lee el dueño (D-14) | Opt-in antes de encenderlo | 42.2 (prop.) |
 
 ### 2.2 Creador
 
