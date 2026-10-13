@@ -50,9 +50,7 @@ app/
 │   │   ├── bkt.py        # Bayesian Knowledge Tracing
 │   │   ├── elo.py        # Elo rating for difficulty matching
 │   │   ├── fsrs.py       # FSRS spaced repetition scheduler
-│   │   ├── bandit.py     # Thompson Sampling multi-armed bandit
-│   │   ├── placement.py  # placement ability estimation
-│   │   └── scheduler.py  # review scheduling on top of FSRS
+│   │   └── placement.py  # placement ability estimation
 │   ├── gamification/     # XP, streaks, leagues, badges, missions
 │   ├── ai/               # provider.py (swappable LLM) · rag.py (BM25) · tutor.py
 │   ├── content/          # content package
@@ -91,8 +89,8 @@ For each quiz question:
 3. **FSRS** — schedules future reviews (spaced repetition)
 
 These are pure functions in `services/engine/` — no DB I/O, fully unit-tested.
-`AdaptiveScheduler` (+ Thompson Bandit new-vs-review) exists in `services/engine/scheduler.py`
-but is not wired to the API yet; quiz.py calls BKT/Elo/FSRS directly.
+quiz.py calls BKT/Elo/FSRS directly. The unwired `AdaptiveScheduler` and Thompson bandit
+were removed on 2026-10-13: nothing in the API used them.
 
 ## Data model (key tables)
 

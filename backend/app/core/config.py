@@ -301,12 +301,12 @@ class Settings(BaseSettings):
     FREE_DAILY_LESSONS: int = 5
 
     # Banco de simulacro reservado (37.18, ADR-53 §4): el mecanismo (columna
-    # `pool`, filtros en quiz.py/mock_exam.py) ya existe, pero hoy 0 preguntas
-    # llevan `pool="simulacro"` en ningún track. Encenderlo con el banco vacío
-    # rompería `start_attempt` en las 11 certificaciones con `MockExamError`
-    # ("not enough questions") — apagado hasta que exista contenido reservado
-    # (6x la longitud del examen por certificación), igual que los flags de
-    # arriba esperan a su propia dependencia.
+    # `pool`, filtros en quiz.py/mock_exam.py) ya existe. El banco va por 146
+    # preguntas `pool="simulacro"` (2026-10-13, 37.24) y la meta es 2 × la
+    # longitud del examen por certificación (ADR-54): encenderlo antes dejaría
+    # simulacros cortos o `MockExamError` ("not enough questions") — apagado
+    # hasta que cada certificación llegue, igual que los flags de arriba
+    # esperan a su propia dependencia.
     MOCK_EXAM_RESERVED_POOL_ENABLED: bool = False
 
     # --- Open Badges 3.0 / Verifiable Credentials (29.10, ADR-37) -----------
