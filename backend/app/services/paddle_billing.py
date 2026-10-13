@@ -141,7 +141,7 @@ def _price_to_tier() -> dict[str, str]:
     return m
 
 
-def _parse_ts(value: Any) -> datetime | None:
+def parse_ts(value: Any) -> datetime | None:
     if not value:
         return None
     try:
@@ -149,6 +149,19 @@ def _parse_ts(value: Any) -> datetime | None:
     except ValueError:
         return None
     return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
+
+
+def revoke_refunded_subscription(user: User) -> bool:
+    """Retira el plan de un usuario cuyo cobro de suscripción se reembolsó entero (D-10).
+
+    Devuelve False si ya no tenía plan (un reembolso repetido no cambia nada).
+    """
+    if not user.is_premium and user.subscription_status == "canceled":
+        return False
+    user.is_premium = False
+    user.subscription_status = "canceled"
+    user.subscription_expires_at = datetime.now(UTC)
+    return True
 
 
 def apply_subscription_event(user: User, event_type: str, data: dict[str, Any]) -> bool:
@@ -162,7 +175,7 @@ def apply_subscription_event(user: User, event_type: str, data: dict[str, Any]) 
         return False
 
     status = str(data.get("status") or "")
-    period_end = _parse_ts((data.get("current_billing_period") or {}).get("ends_at"))
+    period_end = parse_ts((data.get("current_billing_period") or {}).get("ends_at"))
     subscription_id = str(data["id"]) if data.get("id") else None
 
     is_ending = event_type == "subscription.canceled" or status in ("canceled", "paused")
@@ -192,7 +205,7 @@ def apply_subscription_event(user: User, event_type: str, data: dict[str, Any]) 
         # La suscripción ya terminó: sin acceso desde ahora.
         user.subscription_status = "canceled"
         user.is_premium = False
-        user.subscription_expires_at = _parse_ts(data.get("canceled_at")) or datetime.now(UTC)
+        user.subscription_expires_at = parse_ts(data.get("canceled_at")) or datetime.now(UTC)
         return True
 
     if status == "paused":

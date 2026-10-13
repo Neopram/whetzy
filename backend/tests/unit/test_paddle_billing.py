@@ -11,6 +11,7 @@ import hashlib
 import hmac
 import json
 import time
+import uuid
 from datetime import UTC, datetime, timedelta
 
 import pytest
@@ -21,6 +22,7 @@ from app.core.entitlements import user_meets_tier
 from app.models.analytics import AnalyticsEvent
 from app.models.content import Track
 from app.models.exam import CertificationPurchase
+from app.models.paddle_event import PaddleEvent
 from app.services import account_deletion, paddle_billing
 
 SECRET = "pdl_ntfset_test_secret"
@@ -58,10 +60,16 @@ def _sub(user_id, *, price=PLUS, status="active", sub_id="sub_01test", **extra) 
     return data
 
 
-def _event(event_type: str, data: dict) -> bytes:
+def _event(
+    event_type: str, data: dict, *, event_id: str | None = None, occurred_at: datetime | None = None
+) -> bytes:
+    # Paddle da a cada evento un `event_id` único; desde D-10 el receptor
+    # deduplica por él, así que reutilizar uno fijo haría pasar los eventos
+    # siguientes por duplicados.
     return json.dumps({
-        "event_id": "evt_01test", "event_type": event_type,
-        "occurred_at": datetime.now(UTC).isoformat(), "notification_id": "ntf_01test",
+        "event_id": event_id or f"evt_{uuid.uuid4().hex}", "event_type": event_type,
+        "occurred_at": (occurred_at or datetime.now(UTC)).isoformat(),
+        "notification_id": "ntf_01test",
         "data": data,
     }).encode()
 
@@ -510,3 +518,185 @@ async def test_cancel_endpoint_reports_a_paddle_refusal(client, db_session, user
     await db_session.commit()
     r = await client.post("/api/v1/billing/paddle/cancel", headers=auth_headers)
     assert r.status_code == 502
+
+
+# ── D-10 (dueño, 2026-10-12): entrega al menos una vez, sin orden ─────────────
+
+
+async def _post(client, body: bytes):
+    return await client.post(WEBHOOK, content=body, headers={"Paddle-Signature": _sign(body)})
+
+
+@pytest.mark.asyncio
+async def test_a_redelivered_event_is_applied_only_once(client, db_session, user) -> None:
+    """El mismo `event_id` dos veces: la segunda no vuelve a aplicar nada."""
+    created = _event("subscription.created", _sub(user.id), event_id="evt_dup")
+    assert (await _post(client, created)).status_code == 200
+    # Entre las dos entregas el alumno cancela (otro evento, posterior).
+    cancel = _event(
+        "subscription.canceled",
+        _sub(user.id, status="canceled", canceled_at=datetime.now(UTC).isoformat()),
+    )
+    assert (await _post(client, cancel)).status_code == 200
+    # Paddle reintenta el `created` original: no puede devolver el plan.
+    assert (await _post(client, created)).status_code == 200
+
+    await db_session.refresh(user)
+    assert user.is_premium is False
+    assert (await db_session.scalar(select(func.count()).select_from(PaddleEvent))) == 2
+
+
+@pytest.mark.asyncio
+async def test_an_older_update_after_the_cancel_does_not_restore_the_plan(
+    client, db_session, user
+) -> None:
+    """Paddle no garantiza el orden: un `subscription.updated` (active) que se
+    generó antes del `canceled` de la MISMA suscripción y llega después no
+    devuelve el plan."""
+    now = datetime.now(UTC)
+    created = _event("subscription.created", _sub(user.id), occurred_at=now - timedelta(minutes=10))
+    cancel = _event(
+        "subscription.canceled",
+        _sub(user.id, status="canceled", canceled_at=now.isoformat()),
+        occurred_at=now,
+    )
+    late_update = _event(
+        "subscription.updated", _sub(user.id), occurred_at=now - timedelta(minutes=5)
+    )
+    for body in (created, cancel, late_update):
+        assert (await _post(client, body)).status_code == 200
+
+    await db_session.refresh(user)
+    assert user.is_premium is False
+    assert user.subscription_status == "canceled"
+
+
+@pytest.mark.asyncio
+async def test_a_newer_update_still_applies(client, db_session, user) -> None:
+    """La guarda de orden no congela la suscripción: un evento posterior sí cuenta."""
+    now = datetime.now(UTC)
+    cancel = _event(
+        "subscription.canceled",
+        _sub(user.id, status="canceled", canceled_at=now.isoformat()),
+        occurred_at=now - timedelta(minutes=5),
+    )
+    reactivated = _event("subscription.updated", _sub(user.id), occurred_at=now)
+    for body in (cancel, reactivated):
+        assert (await _post(client, body)).status_code == 200
+    await db_session.refresh(user)
+    assert user.is_premium is True
+
+
+@pytest.mark.asyncio
+async def test_a_duplicate_certification_purchase_event_grants_once(
+    client, db_session, user
+) -> None:
+    db_session.add(Track(id="trkDUP", name_es="C", name_en="C", order=95, is_certification=True))
+    await db_session.commit()
+    data = {
+        "id": "txn_01dup", "status": "completed", "subscription_id": None,
+        "items": [{"price": {"id": CERT}}],
+        "custom_data": {"user_id": str(user.id), "track_id": "trkDUP"},
+    }
+    body = _event("transaction.completed", data, event_id="evt_txn_dup")
+    for _ in range(2):
+        assert (await _post(client, body)).status_code == 200
+    rows = (await db_session.execute(
+        select(CertificationPurchase).where(CertificationPurchase.external_ref == "txn_01dup")
+    )).scalars().all()
+    assert len(rows) == 1
+
+
+@pytest.mark.asyncio
+async def test_a_full_refund_of_a_subscription_charge_removes_the_plan(
+    client, db_session, user
+) -> None:
+    """Reembolso completo de un cobro de suscripción: el plan cae en el acto
+    (antes solo se miraban las compras de certificación)."""
+    assert (await _post(client, _event("subscription.created", _sub(user.id)))).status_code == 200
+    await db_session.refresh(user)
+    assert user.is_premium is True
+
+    refund = {
+        "action": "refund", "type": "full", "status": "approved",
+        "transaction_id": "txn_01subcharge", "subscription_id": "sub_01test",
+    }
+    assert (await _post(client, _event("adjustment.created", refund))).status_code == 200
+    await db_session.refresh(user)
+    assert user.is_premium is False
+    assert user.subscription_status == "canceled"
+
+
+@pytest.mark.asyncio
+async def test_a_partial_refund_of_a_subscription_keeps_the_plan(client, db_session, user) -> None:
+    assert (await _post(client, _event("subscription.created", _sub(user.id)))).status_code == 200
+    refund = {
+        "action": "refund", "type": "partial", "status": "approved",
+        "transaction_id": "txn_01subcharge", "subscription_id": "sub_01test",
+    }
+    assert (await _post(client, _event("adjustment.created", refund))).status_code == 200
+    await db_session.refresh(user)
+    assert user.is_premium is True
+
+
+@pytest.mark.asyncio
+async def test_a_refund_of_someone_elses_subscription_touches_nobody(
+    client, db_session, user
+) -> None:
+    assert (await _post(client, _event("subscription.created", _sub(user.id)))).status_code == 200
+    refund = {
+        "action": "refund", "type": "full", "status": "approved",
+        "transaction_id": "txn_01other", "subscription_id": "sub_01someone_else",
+    }
+    assert (await _post(client, _event("adjustment.created", refund))).status_code == 200
+    await db_session.refresh(user)
+    assert user.is_premium is True
+
+
+@pytest.mark.asyncio
+async def test_a_failed_event_is_not_recorded_so_paddle_can_retry(
+    client, db_session, user, monkeypatch
+) -> None:
+    """Si aplicar el evento falla, no queda fila: el reintento lo vuelve a aplicar."""
+    calls = {"n": 0}
+    real = paddle_billing.apply_subscription_event
+
+    def flaky(*args, **kwargs):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise RuntimeError("boom")
+        return real(*args, **kwargs)
+
+    monkeypatch.setattr(paddle_billing, "apply_subscription_event", flaky)
+    body = _event("subscription.created", _sub(user.id), event_id="evt_retry")
+    assert (await _post(client, body)).status_code == 500
+    assert (await db_session.get(PaddleEvent, "evt_retry")) is None
+    assert (await _post(client, body)).status_code == 200
+    await db_session.refresh(user)
+    assert user.is_premium is True
+
+
+@pytest.mark.asyncio
+async def test_a_redelivered_purchase_after_its_refund_does_not_grant_again(
+    client, db_session, user
+) -> None:
+    """Sin deduplicación, este es el caso que cuesta dinero: compra, reembolso y
+    Paddle reentrega la compra. No hay guarda de orden para transacciones, así
+    que solo el `event_id` impide devolver el examen a quien ya cobró el reembolso."""
+    db_session.add(Track(id="trkREDO", name_es="C", name_en="C", order=96, is_certification=True))
+    await db_session.commit()
+    data = {
+        "id": "txn_01redo", "status": "completed", "subscription_id": None,
+        "items": [{"price": {"id": CERT}}],
+        "custom_data": {"user_id": str(user.id), "track_id": "trkREDO"},
+    }
+    purchase = _event("transaction.completed", data, event_id="evt_purchase_redo")
+    assert (await _post(client, purchase)).status_code == 200
+    refund = {"action": "refund", "type": "full", "status": "approved", "transaction_id": "txn_01redo"}
+    assert (await _post(client, _event("adjustment.created", refund))).status_code == 200
+    assert (await _post(client, purchase)).status_code == 200
+
+    rows = (await db_session.execute(
+        select(CertificationPurchase).where(CertificationPurchase.external_ref == "txn_01redo")
+    )).scalars().all()
+    assert rows == []
