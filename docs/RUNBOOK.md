@@ -82,6 +82,21 @@ matches `check_question_bank.py` output (currently 6233), not a hardcoded
 number. Any non-zero `skipped` count means a question references a skill_id
 that does not exist in `curriculum/tracks.json`.
 
+### Pre-deploy de Railway (D-4, preparado el 2026-10-12, lo activa el dueño)
+
+Las tareas de arranque (alembic, `content_loader`, `bootstrap_owner`, seed) viven en
+`backend/scripts/boot_tasks.sh`. Hoy las sigue llamando `start.sh`. Para que una migración rota
+pare el deploy **antes** de apagar la versión anterior, en Railway → servicio `api`:
+
+1. **Settings → Deploy → Pre-deploy command**: `bash scripts/boot_tasks.sh`.
+2. **Variables**: `BOOT_TASKS_IN_PREDEPLOY=1`.
+
+Con las dos, `start.sh` solo comprueba que el esquema está en la cabeza y arranca gunicorn. Si la
+variable está puesta y el pre-deploy no, `start.sh` lo detecta (esquema fuera de la cabeza) y corre
+las tareas él mismo: nunca arranca sobre un esquema viejo. Desde que se active, cada migración
+tiene que ser compatible con la versión anterior del código (solo añadir; quitar en un deploy
+posterior), porque corre mientras esa versión sigue sirviendo.
+
 ## Prueba de arranque y de build web (obligatorias antes de push, desde 2026-09-26)
 
 **Por qué.** El 2026-09-26 `ec97405` llegó a `master` con contenido que el loader no sabía leer. `start.sh` corre con `set -e`, el contenedor murió antes de gunicorn y la API dio 502 de 09:35 a 10:48 UTC (logs de Railway, deploy `620edcd3`: `KeyError: 'order'` en bucle). Los recuentos de `check_docs` estaban en verde: contar no es cargar. El mismo día, el build de Cloudflare Pages falló en Node 20.19 (`navigator is not defined`) mientras en local, con Node 22, pasaba.
