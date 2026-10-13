@@ -199,6 +199,8 @@ async def _seed_skill_states(
     Skills that scored 0/0 (never shown) are not touched: their prior stays 0.1.
     p_known is capped at _P_KNOWN_CAP (< 0.95) so every skill remains in the
     practice queue — a placement score of 100 % must not retire the skill.
+    A skill with history keeps the higher of its own p_known and the placement's
+    (D-18): placement adds evidence, it never erases mastery already earned.
     """
     if not skill_estimates:
         return
@@ -221,7 +223,11 @@ async def _seed_skill_states(
         new_p = min(correct / total, _P_KNOWN_CAP)
         if skill_id in existing:
             row = existing[skill_id]
-            row.p_known = new_p
+            # D-18 (dueño, 2026-10-12): la prueba de nivel aporta evidencia
+            # inicial y nunca rebaja una skill con historial. Sobrescribir
+            # borraba en tres preguntas el dominio ganado en semanas de práctica.
+            # Una fila sin intentos todavía es solo el prior: ahí manda la prueba.
+            row.p_known = max(row.p_known, new_p) if row.attempts > 0 else new_p
             row.attempts += total
             row.correct_count += correct
         else:
