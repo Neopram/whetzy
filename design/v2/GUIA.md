@@ -20,6 +20,9 @@ mismo sistema.
 - **Promesa:** «Afila lo que sabes. Llega listo al examen.»
 - **Personalidad:** precisa, tranquila, honesta, técnica. Sin mascota, sin confeti, sin
   urgencias falsas (§A.4).
+- **Color (sustituido el 2026-10-13):** la app adopta los colores del logo nuevo, decisión
+  del dueño: azul noche `#0A0E1A` con el cian `#00BFFF` de acento (`design/brand/README.md`).
+  Lo que sigue es el registro de la decisión anterior.
 - **Color:** grafito con un único acento «chispa» `#FF7A45`, usado con moderación.
   **Prohibidos** `#58CC02`, `#1CB0F6`, `#1899D6` y `#CE82FF`, que hoy se usan como colores
   de track y como `theme-color`. Coinciden con la paleta de Duolingo; esto viene de memoria,

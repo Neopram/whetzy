@@ -19,18 +19,28 @@ import { describe, expect, it } from 'vitest'
 // `__dirname` no existe en el modulo ESM que compila `tsc -b`.
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 
-function tokens(): Record<string, string> {
-  const css = readFileSync(join(RAIZ, 'src/styles/design-tokens.css'), 'utf8')
-  // Solo el primer bloque `:root { … }`: desde la serie 34 es el tema oscuro
-  // Obsidian, el que ve un usuario por defecto. El claro vive aparte, en
-  // `:root[data-theme="light"]`, y solo si el usuario lo elige.
-  const inicio = css.indexOf(':root {')
-  const bloque = css.slice(inicio, css.indexOf('\n}\n', inicio))
+function bloque(css: string, selector: string): Record<string, string> {
+  const inicio = css.indexOf(`${selector} {`)
+  if (inicio < 0) throw new Error(`no está el bloque ${selector}`)
+  const cuerpo = css.slice(inicio, css.indexOf('\n}\n', inicio))
   const mapa: Record<string, string> = {}
-  for (const m of bloque.matchAll(/(--le-[\w-]+):\s*(#[0-9A-Fa-f]{3,8})\s*;/g)) {
+  for (const m of cuerpo.matchAll(/(--le-[\w-]+):\s*(#[0-9A-Fa-f]{3,8})\s*;/g)) {
     mapa[m[1]] = m[2]
   }
   return mapa
+}
+
+function tokens(): Record<string, string> {
+  // Solo el primer bloque `:root { … }`: desde la serie 34 es el tema oscuro
+  // Obsidian, el que ve un usuario por defecto. El claro vive aparte, en
+  // `:root[data-theme="light"]`, y solo si el usuario lo elige.
+  return bloque(readFileSync(join(RAIZ, 'src/styles/design-tokens.css'), 'utf8'), ':root')
+}
+
+/** El tema claro redefine solo parte de los tokens: lo que no toca hereda del oscuro. */
+function tokensClaro(): Record<string, string> {
+  const css = readFileSync(join(RAIZ, 'src/styles/design-tokens.css'), 'utf8')
+  return { ...bloque(css, ':root'), ...bloque(css, ':root[data-theme="light"]') }
 }
 
 function luminancia(hex: string): number {
@@ -120,7 +130,8 @@ describe('rellenos que llevan texto encima', () => {
   const t = tokens()
   // Como en la landing: sobre cian, verde, rojo o morado el texto es oscuro
   // (--le-text-inverse). El blanco sobre el cian se queda en 2,4:1.
-  const RELLENOS = ['--le-brand', '--le-green', '--le-green-dark', '--le-danger', '--le-red', '--le-orange', '--le-purple', '--le-gold']
+  // brand-2 y brand-dark son el hover y el degradado de los botones de marca.
+  const RELLENOS = ['--le-brand', '--le-brand-2', '--le-brand-dark', '--le-green', '--le-green-dark', '--le-danger', '--le-red', '--le-orange', '--le-purple', '--le-gold']
 
   it.each(RELLENOS)('--le-text-inverse sobre %s cumple AA', (fondo) => {
     expect(ratio(t['--le-text-inverse'], t[fondo])).toBeGreaterThanOrEqual(4.5)
@@ -128,5 +139,30 @@ describe('rellenos que llevan texto encima', () => {
 
   it('el blanco NO sirve sobre el cian de marca: por eso ningún botón lo usa', () => {
     expect(ratio('#FFFFFF', t['--le-brand'])).toBeLessThan(4.5)
+  })
+})
+
+describe('tema claro (Perfil → tema claro)', () => {
+  // Hasta el cambio a los colores del logo (2026-10-13) el claro solo se medía
+  // a mano: un acento claro nuevo podía dejar el texto de marca a 3:1 sin que
+  // nada saltara.
+  const t = tokensClaro()
+  const TEXTOS = ['--le-text', '--le-text-secondary', '--le-text-muted', '--le-danger-text', '--le-success-text', '--le-warning-text', '--le-brand-text']
+  const FONDOS = ['--le-bg', '--le-surface']
+
+  it.each(TEXTOS.flatMap((x) => FONDOS.map((f) => [x, f])))('%s sobre %s cumple AA', (texto, fondo) => {
+    expect(ratio(t[texto], t[fondo])).toBeGreaterThanOrEqual(4.5)
+  })
+
+  // En claro --le-text-inverse es blanco: los rellenos tienen que oscurecerse.
+  it.each(['--le-brand', '--le-brand-2', '--le-brand-dark', '--le-green', '--le-danger', '--le-purple'])('--le-text-inverse sobre %s cumple AA', (fondo) => {
+    expect(ratio(t['--le-text-inverse'], t[fondo])).toBeGreaterThanOrEqual(4.5)
+  })
+
+  it.each([
+    ['--le-brand-on-tint', '--le-brand-light'],
+    ['--le-purple-on-tint', '--le-purple-light'],
+  ])('%s sobre %s cumple AA', (texto, fondo) => {
+    expect(ratio(t[texto], t[fondo])).toBeGreaterThanOrEqual(4.5)
   })
 })

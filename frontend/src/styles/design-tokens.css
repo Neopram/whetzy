@@ -13,22 +13,25 @@
   /* Azul = escala de datos neutra (acero → hielo) del sistema v2 (design/v2). */
   --le-blue: #9CC9FF;
   --le-blue-dark: #5B7083;
-  --le-blue-light: #16202B;
+  --le-blue-light: #142238;
 
-  /* Marca = «chispa» (design/v2/GUIA.md, 2026-10-01): un solo acento cálido,
-     usado con moderación — CTAs, el relleno de preparación y el foco. El texto
-     sobre un relleno de marca va en --le-text-inverse (oscuro). Antes era cian. */
-  --le-brand: #FF7A45;
-  --le-brand-dark: #E5612C;
-  --le-brand-light: #2A1A14;
-  --le-brand-2: #FF986F;
-  --le-brand-deep: #B84A1F;
+  /* Marca = los colores del logo (decisión del dueño, 2026-10-13; sustituye a
+     la «chispa» #FF7A45 de design/v2/GUIA.md): cian #00BFFF como acento
+     principal — CTAs, el relleno de preparación y el foco —, con el violeta y
+     el magenta del degradado del logo como secundarios. El texto sobre un
+     relleno de marca va en --le-text-inverse (oscuro): el blanco sobre el cian
+     se queda en 2.12:1. */
+  --le-brand: #00BFFF;
+  --le-brand-dark: #009FD9;
+  --le-brand-light: #0A2A40;
+  --le-brand-2: #4DD2FF;
+  --le-brand-deep: #00759E;
   /* Brand colour for TEXT, not for fills. --le-brand-dark (#0E8BD4) only
      reaches 3.7:1 on white, so small brand-coloured labels using it failed
      WCAG 2.2 AA 1.4.3 (red line 6). This token is the accessible counterpart:
      5.19:1 on white here, 8.16:1 on the dark surface below. Use --le-brand-dark
      for gradients and fills, --le-brand-text whenever it is a glyph. */
-  --le-brand-text: #FF8A5B;
+  --le-brand-text: #33CCFF;
   /* Same idea for the success colour: --le-green (#58CC02) is 2.09:1 on white,
      so it is a fill, never a glyph. This is 6.51:1 on white, 6.83:1 on the dark
      surface (where plain --le-green is already fine). Red line: green still
@@ -44,10 +47,9 @@
      brand tint. --le-success-on-tint doubles as the fill under white text
      (6.51:1), which plain --le-green could not carry either (2.09:1). */
   --le-success-on-tint: #6FE3AC;
-  --le-brand-on-tint: #FFB08F;
-  /* --le-purple on --le-purple-light is 2.15:1 (the XP badge). 5.12:1 here,
-     6.04:1 on white. */
-  --le-purple-on-tint: #C2DEFF;
+  --le-brand-on-tint: #8FE1FF;
+  /* --le-purple on --le-purple-light is 2.15:1 (the XP badge). 9.96:1 here. */
+  --le-purple-on-tint: #C9C2FF;
   /* The difficulty badge paints --le-red / --le-orange / --le-green straight
      onto --le-bg at 3.08:1, 2.04:1 and 1.94:1. These are the readable
      counterparts: 5.36:1 and 5.25:1 on --le-bg (green reuses
@@ -65,28 +67,28 @@
   --le-red-light: #2E1215;
   --le-danger: #F2545B;
 
-  /* Sin morado de marca en v2: el antiguo morado (XP, insignias) pasa a la
-     escala de datos fría para no competir con el acento. */
-  --le-purple: #9CC9FF;
-  --le-purple-dark: #6E9BD6;
-  --le-purple-light: #16202B;
+  /* Violeta y magenta del degradado del logo (#7B68EE → #FF1493), aclarados
+     para que el texto oscuro encima cumpla AA (XP, insignias). */
+  --le-purple: #9D8CFF;
+  --le-purple-dark: #7B68EE;
+  --le-purple-light: #1C1A3F;
 
   --le-gold: #F5C04A;
   --le-gold-dark: #D9A12E;
   --le-gold-light: #2B2310;
 
   --le-teal: #7FB8D9;
-  --le-pink: #E38FA8;
+  --le-pink: #FF6EB4;
 
-  /* Neutral Palette — grafito (design/v2) */
-  --le-bg: #0D1015;
-  --le-bg-elevated: #1C222B;
-  --le-surface: #151A21;
+  /* Neutral Palette — azul noche del fondo del logo (#0A0E1A) */
+  --le-bg: #0A0E1A;
+  --le-bg-elevated: #172038;
+  --le-surface: #0F1626;
   /* El QR de la 2FA va sobre blanco en los dos temas: las cámaras leen mal un
      código invertido. No se redefine en el tema claro. */
   --le-qr-bg: #FFFFFF;
-  --le-border: #2A313C;
-  --le-border-light: #222831;
+  --le-border: #233050;
+  --le-border-light: #1A243B;
 
   --le-text: #E8ECF1;
   --le-text-secondary: #A9B4C2;
@@ -98,7 +100,7 @@
      stays visibly lighter than --le-text-secondary. A muted token that cannot
      legally hold text is a trap, not a token. */
   --le-text-muted: #93A0B0;
-  --le-text-inverse: #17100D;
+  --le-text-inverse: #0A0E1A;
 
   /* Typography (design/v2): Inter para la interfaz, Bricolage Grotesque para
      títulos y JetBrains Mono para toda cifra, porcentaje, temporizador y
@@ -181,21 +183,27 @@
 
   /* Editor de código: fijo en oscuro pase lo que pase con el tema del sitio
      (igual que Monaco/VS Code), no una superficie --le-* más. */
-  --le-code-bg: #0B0E12;
+  /* Fondo del icono de app (design/brand/whetzy-app-icon.svg): fijo, como el
+     icono en la pantalla del móvil, para que la baldosa del logo sea la misma
+     en los dos temas. */
+  --le-icon-bg: #0D1525;
+
+  --le-code-bg: #070B14;
   --le-code-text: #D6DEE8;
 
-  /* Tarjeta "Pro" (ProfileScreen): grafito fijo con !important a propósito,
-     no sigue el tema del sitio. Sin grandes manchas de color (design/v2). */
-  --le-pro-card-from: #1C222B;
-  --le-pro-card-to: #151A21;
+  /* Tarjeta "Pro" (ProfileScreen): azul noche fijo con !important a propósito,
+     no sigue el tema del sitio. Un velo violeta del logo, sin grandes manchas. */
+  --le-pro-card-from: #172038;
+  --le-pro-card-to: #1C1A3F;
 }
 
 :root[data-theme="light"] {
-  /* Tema claro v2 («papel cálido», design/v2), solo si el usuario lo elige en
-     Perfil. El acento se oscurece para que el blanco encima cumpla AA (6.1:1);
-     todos los textos dan ≥ 4.5:1 sobre --le-bg y --le-surface (medido el
-     2026-10-01). Sustituye a la paleta clara anterior (verde #58CC02, azul
-     #1CB0F6, morado #CE82FF), retirada por coincidir con la de Duolingo. */
+  /* Tema claro, solo si el usuario lo elige en Perfil: papel frío con el texto
+     #1A1A2E del logo sobre blanco. El cian se oscurece a #0072B5 para que el
+     blanco encima cumpla AA (5.15:1); todos los textos dan ≥ 4.5:1 sobre
+     --le-bg y --le-surface (2026-10-13, test/tokens.contraste.test.ts). La
+     paleta clara de antes de v2 (verde #58CC02, azul #1CB0F6, morado #CE82FF)
+     sigue retirada por coincidir con la de Duolingo. */
   --le-green: #137649;
   --le-green-dark: #0F5E3A;
   --le-green-light: #DDF3E8;
@@ -203,16 +211,16 @@
   --le-blue: #416E9A;
   --le-blue-dark: #275E91;
   --le-blue-light: #E3EDF7;
-  --le-brand: #AA3F16;
-  --le-brand-dark: #8E320E;
-  --le-brand-light: #FBE7DE;
-  --le-brand-2: #C24E22;
-  --le-brand-deep: #8E320E;
-  --le-brand-text: #AA3F16;
+  --le-brand: #0072B5;
+  --le-brand-dark: #005A8F;
+  --le-brand-light: #E0F3FF;
+  --le-brand-2: #0078BD;
+  --le-brand-deep: #005A8F;
+  --le-brand-text: #0072B5;
   --le-success-text: #137649;
   --le-success-on-tint: #0F5E3A;
-  --le-brand-on-tint: #8E320E;
-  --le-purple-on-tint: #275E91;
+  --le-brand-on-tint: #005A8F;
+  --le-purple-on-tint: #4634B8;
   --le-danger-text: #B42332;
   --le-warning-text: #875A00;
   --le-orange: #8A5A00;
@@ -222,22 +230,22 @@
   --le-red-dark: #94212E;
   --le-red-light: #FBE3E5;
   --le-danger: #B42332;
-  --le-purple: #416E9A;
-  --le-purple-dark: #275E91;
-  --le-purple-light: #E3EDF7;
+  --le-purple: #5B48D9;
+  --le-purple-dark: #4634B8;
+  --le-purple-light: #ECE9FF;
   --le-gold: #8A5A00;
   --le-gold-dark: #6E4800;
   --le-gold-light: #FBF1DC;
   --le-teal: #2F7F86;
-  --le-pink: #B4436B;
-  --le-bg: #F6F5F2;
+  --le-pink: #C2127A;
+  --le-bg: #F5F7FB;
   --le-bg-elevated: #FFFFFF;
   --le-surface: #FFFFFF;
-  --le-border: #C9CED1;
-  --le-border-light: #E3E4E1;
-  --le-text: #14171C;
-  --le-text-secondary: #3A444F;
-  --le-text-muted: #4F5B68;
+  --le-border: #CBD3E1;
+  --le-border-light: #E2E7F0;
+  --le-text: #1A1A2E;
+  --le-text-secondary: #3A4256;
+  --le-text-muted: #4F5872;
   --le-text-inverse: #FFFFFF;
   --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
   --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.08);
