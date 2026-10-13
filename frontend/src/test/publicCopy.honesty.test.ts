@@ -58,3 +58,14 @@ describe.each(Object.entries(BUNDLES))('copy público honesto (%s)', (_lang, bun
     expect(bundle.landing.pricingNote).not.toMatch(/abre pronto|opens soon/i);
   });
 });
+
+describe.each(Object.entries(BUNDLES))('términos honestos (%s)', (_lang, bundle) => {
+  it('D-7: los términos no venden un plan Creador que no existe', () => {
+    expect(bundle.legal.termsP3plans).not.toMatch(/Creador|Creator/);
+  });
+
+  it('el tutor envía datos a Groq: los términos no dicen lo contrario', () => {
+    expect(bundle.legal.termsP9).not.toMatch(/No se envían datos personales|No personal data is sent/i);
+    expect(bundle.legal.termsP9).toMatch(/Groq/);
+  });
+});
