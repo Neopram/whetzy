@@ -156,7 +156,7 @@ export default function LandingScreen() {
     title: t(`landing.${k}.title`),
     body: t(`landing.${k}.body`),
   }));
-  const plans = (['planFree', 'planPro', 'planProMax', 'planCreator'] as const).map((k) => ({
+  const plans = (['planFree', 'planPro', 'planProMax'] as const).map((k) => ({
     key: k,
     name: t(`landing.${k}.name`),
     price: t(`landing.${k}.price`),
@@ -166,7 +166,7 @@ export default function LandingScreen() {
     cta: t(`landing.${k}.cta`),
     featured: k === 'planFree',
     // Pro y Pro Max van al pago (H.29); /checkout pide sesión si no la hay.
-    // Creador no: el marketplace no se cobra por Paddle (su política lo prohíbe).
+    // Creador no se muestra: el marketplace está congelado (D-25) y su plan, oculto (D-7).
     href: k === 'planPro' ? checkoutHref('plus') : k === 'planProMax' ? checkoutHref('pro') : ctaHref,
   }));
   const showCompare = COMPARISON_ROWS.length > 0;
@@ -382,7 +382,7 @@ export default function LandingScreen() {
             <h2 className={styles.sectionHeading}>{t('landing.pricingTitle')}</h2>
             <p className={styles.sectionSubheading}>{t('landing.pricingNote')}</p>
           </div>
-          <div className={`${styles.plansGrid} ${styles.plansGridFour}`}>
+          <div className={`${styles.plansGrid}`}>
             {plans.map((p) => (
               <article key={p.key} className={p.featured ? styles.planCardFeatured : styles.planCard}>
                 <h3 className={styles.planName}>{p.name}</h3>
