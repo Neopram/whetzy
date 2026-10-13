@@ -165,6 +165,24 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
             await db.delete(domain)
 
 
+# Prior editorial por nivel (regla del Elo del dueño, 2026-10-12): ±150 sobre 1500 es
+# acertar ~70 % / ~30 % frente a un alumno medio (escala 400 de `elo.py`). Solo
+# inicializa; la calibración la hacen las respuestas.
+ELO_TIER_PRIOR: dict[str, float] = {
+    "easy": 1350.0,
+    "medium": 1500.0,
+    "hard": 1650.0,
+    "expert": 1800.0,
+}
+
+
+def seed_elo(q: dict[str, Any]) -> float:
+    """Elo inicial de una pregunta: su `difficulty` IRT si la trae, si no su nivel."""
+    if "difficulty" in q:  # IRT difficulty (-3..3)
+        return 1500.0 + float(q["difficulty"]) * 120.0
+    return ELO_TIER_PRIOR.get(q.get("difficulty_tier") or "medium", 1500.0)
+
+
 async def _upsert_question(db: AsyncSession, q: dict[str, Any]) -> bool:
     """Returns True if the question was ingested, False if skipped (unknown skill)."""
     skill = await db.get(Skill, q["skill_id"])
@@ -196,8 +214,11 @@ async def _upsert_question(db: AsyncSession, q: dict[str, Any]) -> bool:
     # must not be silently reverted by a redeploy (see DECISIONS.md P.9).
     if question.content_version is None or question.content_version == 0:
         question.content_version = 1
-    if "difficulty" in q:  # IRT difficulty (-3..3) -> seed Elo rating
-        question.elo_rating = 1500.0 + float(q["difficulty"]) * 120.0
+    if not question.elo_updates:
+        # Solo se siembra un rating que todavía no ha aprendido nada. Este
+        # loader corre en cada arranque (start.sh): sin la guarda, cada deploy
+        # devolvería al prior el Elo calibrado por respuestas reales.
+        question.elo_rating = seed_elo(q)
     if "discrimination" in q:
         question.discrimination = float(q["discrimination"])
     if "guessing" in q:

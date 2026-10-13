@@ -734,6 +734,54 @@ async def test_declared_unknown_leaves_item_difficulty_alone(
     assert after == before
 
 
+async def test_a_real_answer_counts_as_item_evidence_and_unknown_does_not(
+    client, auth_headers, content_seed, db_session, user
+):
+    """`questions.elo_updates` (regla del Elo del 2026-10-12) cuenta las respuestas que
+    movieron el rating; es lo que impide al loader re-sembrar una pregunta calibrada."""
+    from sqlalchemy import select
+
+    from app.models.content import Question
+
+    async def _updates() -> int:
+        # Consulta de columna: va siempre a la BD (sin expire_all, que caducaría
+        # también `user` y rompería el `_start` siguiente).
+        return (
+            await db_session.execute(
+                select(Question.elo_updates).where(Question.id == content_seed["question_id"])
+            )
+        ).scalar_one()
+
+    start = await _updates()
+    session_id = await _start(client, auth_headers, content_seed, db_session, user)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": content_seed["question_id"],
+            "declared_unknown": True,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert await _updates() == start
+
+    session_id = await _start(client, auth_headers, content_seed, db_session, user)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": content_seed["question_id"],
+            "selected_index": 0,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert await _updates() == start + 1
+
+
 async def test_declared_unknown_is_never_punished_on_xp(client, auth_headers, content_seed, db_session, user):
     """Honesty must never cost more than being wrong, or nobody presses it."""
     wrong_session = await _start(client, auth_headers, content_seed, db_session, user)
