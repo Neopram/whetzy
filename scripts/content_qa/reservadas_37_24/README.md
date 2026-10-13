@@ -77,3 +77,19 @@ sesión hay que cambiarla. `frag/` **no** está en el repo: se regenera con `fra
 **Coste estimado de lo que falta**: unos 880 agentes Sonnet (265 + 188 + 373 + 54 escritores y sus
 revisiones). Una reanudación duró ~88 min antes de chocar con el límite. Recomendación: un grupo cada
 vez y empezar por el punto 1.
+
+## 2026-10-13: primera reanudación (corrector + re-revisión)
+
+`wf37_24_corregir.js`: un corrector Sonnet por pregunta con defectos y, encima de su versión, un
+revisor adversario Sonnet nuevo. Entra al banco solo si la re-revisión deja como mucho defectos
+`minor` y pasa la puerta de `integ3724.py`.
+
+- Piloto de 10 de AIF-C01 (9 de ellas con defecto grave de partida): 7 limpias o menores, 1 grave,
+  2 descartadas. Umbral de parada (> 3 graves de 10) no alcanzado.
+- Bloque 1 (14 AIF-C01 + 83 CLF-C02): 67 limpias o menores, 25 graves, 5 descartadas.
+- Reintegración completa: **219 reservadas** (AIF-C01 116/130, CLF-C02 96/130, MLA-C01 3,
+  PCEP-30-02 2, SAA-C03 2). `post3724.py` quita las mismas 2 de antes (los ids son estables por
+  skill y slot; comprobado contra las guardas de `tests/content`).
+- Las graves que quedan van a una segunda ronda junto con MLA-C01.
+
+El flag sigue apagado: ninguna certificación llega aún a 2 × su examen.

@@ -114,7 +114,7 @@ were removed on 2026-10-13: nothing in the API used them.
 ## Content
 
 Live numbers come from `python scripts/check_docs.py` (they are also the `Contenido`
-row of `docs/AUTONOMOUS_STATE.md`); as of 2026-10-11: **11,964 questions / 35 tracks /
+row of `docs/AUTONOMOUS_STATE.md`); as of 2026-10-13: **12,037 questions / 35 tracks /
 730 skills / 730 lessons / 1,058 glossary terms**, every question with a canonical
 `source`. Five certification tracks (AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC)
 carry official domains with verified weights (`exam_domain` + `exam_weight_pct`).
