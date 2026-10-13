@@ -30,8 +30,7 @@ const BRAND = join(ROOT, 'design', 'brand');
 const RES = join(ROOT, 'frontend', 'android', 'app', 'src', 'main', 'res');
 const STORE = join(ROOT, 'docs', 'store', 'icons');
 
-/** Fondo del icono (el del app icon del logo) y fondo de la app (--le-bg). */
-const ICON_BG = '#0D1525';
+/** Fondo de la app (--le-bg). El del icono (#0D1525) va dentro de whetzy-app-icon.svg. */
 const APP_BG = '#0A0E1A';
 
 const dataUrl = (file, type) =>
