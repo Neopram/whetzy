@@ -142,6 +142,16 @@ describe('rellenos que llevan texto encima', () => {
   })
 })
 
+describe('la llama de la racha (TopBar, --le-gold) se distingue de la barra', () => {
+  // Un icono no es texto: WCAG 1.4.11 pide 3:1 contra lo que tiene al lado.
+  it.each([
+    ['oscuro', tokens()],
+    ['claro', tokensClaro()],
+  ])('tema %s', (_tema, t) => {
+    expect(ratio(t['--le-gold'], t['--le-bg'])).toBeGreaterThanOrEqual(3)
+  })
+})
+
 describe('tema claro (Perfil → tema claro)', () => {
   // Hasta el cambio a los colores del logo (2026-10-13) el claro solo se medía
   // a mano: un acento claro nuevo podía dejar el texto de marca a 3:1 sin que
