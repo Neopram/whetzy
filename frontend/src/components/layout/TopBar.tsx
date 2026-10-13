@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSpring, useMotionValue, useTransform, motion } from 'framer-motion';
 import { useAppStore } from '../../stores/useAppStore';
 import { useOfflineSync } from '../../hooks/useOfflineSync';
+import { BrandMark } from '../common/BrandMark';
 import styles from './TopBar.module.css';
 
 function useCountUp(value: number) {
@@ -26,20 +27,14 @@ export function TopBar() {
     <header className={styles.topbar}>
       <div className={styles.left}>
         <div className={styles.logo}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="26" height="26">
-            <path d="M12 12.5 12 4M12 12.5 5.5 19M12 12.5 18.5 19M12 4 5.5 19M5.5 19 18.5 19M18.5 19 12 4" opacity="0.55" />
-            <circle cx="12" cy="12.5" r="2.6" fill="currentColor" stroke="none" />
-            <circle cx="12" cy="4" r="1.9" fill="currentColor" stroke="none" />
-            <circle cx="5.5" cy="19" r="1.9" fill="currentColor" stroke="none" />
-            <circle cx="18.5" cy="19" r="1.9" fill="currentColor" stroke="none" />
-          </svg>
-          <span>Whetzy</span>
+          <BrandMark height={24} />
+          <span>Whet<span className={styles.logoAccent}>zy</span></span>
         </div>
       </div>
       <div className={styles.right}>
         {!isOnline && (
           <div style={{
-            fontSize: 11, fontWeight: 700, color: '#fff',
+            fontSize: 11, fontWeight: 700, color: 'var(--le-text-inverse)',
             background: isSyncing ? 'var(--le-brand)' : 'var(--le-orange)',
             borderRadius: 8, padding: '3px 8px', lineHeight: 1.4,
           }}>

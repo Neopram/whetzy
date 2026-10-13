@@ -15,6 +15,7 @@ const CAPTURE_DATE = '2026-09-15';
 // nadie se entere. Si cambias uno a mano sin que el contenido lo respalde,
 // CI se pone en rojo — que es la idea.
 import { CATALOG_COURSES, CATALOG_QUESTIONS, CATALOG_TRACKS } from '../lib/catalog';
+import { BrandMark } from '../components/common/BrandMark';
 
 // Competitor dimensions and weights (fixed — §7.1 of the master plan)
 const WEIGHTS = {
@@ -99,13 +100,7 @@ export function EvidenceScreen() {
       <header className={styles.hero}>
         <div className={styles.heroInner}>
           <div className={styles.heroLogo}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" width="36" height="36">
-              <path d="M12 12.5 12 4M12 12.5 5.5 19M12 12.5 18.5 19M12 4 5.5 19M5.5 19 18.5 19M18.5 19 12 4" opacity="0.5" />
-              <circle cx="12" cy="12.5" r="2.8" fill="currentColor" stroke="none" />
-              <circle cx="12" cy="4" r="2" fill="currentColor" stroke="none" />
-              <circle cx="5.5" cy="19" r="2" fill="currentColor" stroke="none" />
-              <circle cx="18.5" cy="19" r="2" fill="currentColor" stroke="none" />
-            </svg>
+            <BrandMark height={32} />
             <span className={styles.heroLogoName}>Whetzy</span>
           </div>
           <h1 className={styles.heroTitle}>{t('evidence.heroTitle')}</h1>

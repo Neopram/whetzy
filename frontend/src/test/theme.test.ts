@@ -49,7 +49,7 @@ describe('theme — oscuro por defecto (0.6)', () => {
     applyTheme('dark');
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     expect(document.querySelector('meta[name="theme-color"]')?.getAttribute('content')).toBe(
-      '#0D1015'
+      '#0A0E1A'
     );
     expect(localStorage.getItem('whetzy_theme')).toBe('dark');
   });
@@ -58,7 +58,7 @@ describe('theme — oscuro por defecto (0.6)', () => {
     applyTheme('light');
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     expect(document.querySelector('meta[name="theme-color"]')?.getAttribute('content')).toBe(
-      '#F6F5F2'
+      '#F5F7FB'
     );
   });
 
