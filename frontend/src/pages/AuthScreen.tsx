@@ -2,6 +2,7 @@
 import { useTranslation } from 'react-i18next';
 import { ApiError, auth, type OAuthProvider, type RegisterPayload } from '../services/api';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
+import { BrandMark } from '../components/common/BrandMark';
 import styles from './AuthScreen.module.css';
 
 // Surface any oauth_error the backend placed in the URL (e.g. email_required).
@@ -188,15 +189,9 @@ export function AuthScreen({ onAuthed }: Props) {
     <div className={styles.screen}>
       <div className={styles.brand}>
         <div className={styles.logo}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="40" height="40">
-            <path d="M12 12.5 12 4M12 12.5 5.5 19M12 12.5 18.5 19M12 4 5.5 19M5.5 19 18.5 19M18.5 19 12 4" opacity="0.55" />
-            <circle cx="12" cy="12.5" r="2.6" fill="currentColor" stroke="none" />
-            <circle cx="12" cy="4" r="1.9" fill="currentColor" stroke="none" />
-            <circle cx="5.5" cy="19" r="1.9" fill="currentColor" stroke="none" />
-            <circle cx="18.5" cy="19" r="1.9" fill="currentColor" stroke="none" />
-          </svg>
+          <BrandMark height={40} />
         </div>
-        <h1 className={styles.brandName}>Whetzy</h1>
+        <h1 className={styles.brandName}>Whet<span className={styles.brandAccent}>zy</span></h1>
         <p className={styles.tagline}>{t('auth.tagline')}</p>
       </div>
 

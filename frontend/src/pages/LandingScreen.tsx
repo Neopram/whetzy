@@ -14,6 +14,7 @@ import {
 } from '../lib/comparison';
 import { TUTOR_DAILY_LIMIT_PRO } from '../lib/plans';
 import { checkoutHref } from '../lib/paddle';
+import { BrandMark } from '../components/common/BrandMark';
 
 /* La landing (30.1, 2026-09-24) solo afirma lo que el producto hace hoy:
    cifras de lib/catalog.ts (vigiladas por scripts/check_docs.py), capturas
@@ -180,7 +181,7 @@ export default function LandingScreen() {
       <header className={styles.header}>
         <nav className={styles.navContainer}>
           <div className={styles.brandGroup}>
-            <span className={styles.logoBadge}>W</span>
+            <span className={styles.logoBadge}><BrandMark height={22} /></span>
             <span className={styles.brandTitle}>Whetzy</span>
           </div>
           <div className={styles.navMenu}>

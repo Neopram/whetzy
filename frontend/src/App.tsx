@@ -7,6 +7,7 @@ import { ApiError, logout, setOnSessionExpired } from './services/api';
 import { TopBar } from './components/layout/TopBar';
 import { BottomNav } from './components/layout/BottomNav';
 import { Toast } from './components/common/Toast';
+import { BrandMark } from './components/common/BrandMark';
 import './styles/global.css';
 import { OfflineIndicator } from './components/common/OfflineIndicator';
 import { useGestures } from './hooks/useGestures';
@@ -583,11 +584,10 @@ function BootSplash() {
     }}>
       <div style={{
         width: 64, height: 64, borderRadius: 20,
-        background: 'linear-gradient(135deg, var(--le-brand-2), var(--le-brand-dark))',
+        background: 'var(--le-icon-bg)', border: '1px solid var(--le-border)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color: '#fff', fontWeight: 900, fontSize: 28,
         animation: 'pulse 1.2s ease-in-out infinite',
-      }}>N</div>
+      }}><BrandMark height={34} /></div>
       <span style={{ color: 'var(--le-text-muted)', fontWeight: 700, fontSize: 13 }}>Whetzy</span>
     </div>
   );
