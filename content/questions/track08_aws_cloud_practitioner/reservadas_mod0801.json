@@ -1,6 +1,30 @@
 {
   "questions": [
     {
+      "id": "q080102_r007",
+      "skill_id": "sk080102",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué abarca la guía de AWS dedicada al pilar de excelencia operativa del Well-Architected Framework?",
+      "question_en": "What does the AWS guidance paper dedicated to the operational excellence pillar of the Well-Architected Framework cover?",
+      "options_es": [
+        "Diseñar, entregar y mantener la carga de trabajo",
+        "Negociar contratos y consolidar facturas entre unidades de negocio",
+        "Certificar la seguridad física de los centros de datos que alojan la carga",
+        "Cifrar y clasificar los datos que maneja la carga en todas las capas"
+      ],
+      "options_en": [
+        "Designing, delivering and maintaining the workload",
+        "Negotiating contracts and consolidating invoices across business units",
+        "Certifying the physical security of the data centers hosting the workload",
+        "Encrypting and classifying the data the workload handles at every layer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El documento del pilar de excelencia operativa orienta sobre cómo aplicar buenas prácticas al construir, entregar y sostener las cargas de trabajo en AWS. Las otras opciones tratan de contratos y facturación, seguridad física de instalaciones o protección de datos, y el fragmento no las presenta como el objeto de esta guía.",
+      "explanation_en": "The operational excellence pillar paper explains how to apply best practices when building, shipping and keeping AWS workloads running. The other options deal with contracts and invoicing, physical facility security, or data protection, and the fragment does not present any of them as the subject of this guide.",
+      "source": "AWS — Operational Excellence Pillar (https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html)"
+    },
+    {
       "id": "q080102_r003",
       "skill_id": "sk080102",
       "type": "multiple_choice",
@@ -23,6 +47,30 @@
       "explanation_es": "El fragmento señala que la dificultad surge cuando la función de operaciones se percibe como aislada de los equipos de desarrollo y de negocio a los que sirve. El fragmento no identifica ninguna otra situación como obstáculo para la excelencia operativa, de modo que las demás opciones carecen de respaldo en el texto citado.",
       "explanation_en": "The fragment states that the challenge arises when the operations function is seen as isolated from the development and business teams it serves. The fragment identifies no other situation as a barrier to operational excellence, so the remaining options are not supported as obstacles by the cited text.",
       "source": "AWS — Operational Excellence Pillar (https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html)"
+    },
+    {
+      "id": "q080103_r006",
+      "skill_id": "sk080103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En el contexto de AWS CAF, ¿a qué se refiere el término «preparación para la nube» (cloud readiness)?",
+      "question_en": "In the context of the AWS CAF, what does the term cloud readiness refer to?",
+      "options_es": [
+        "La proporción de aplicaciones de la organización que ya funcionan en AWS",
+        "Un certificado formal de AWS que acredita que la organización superó una auditoría de cumplimiento",
+        "El tiempo que necesita el equipo de migración para terminar de mover todos sus servidores",
+        "La capacidad de la organización para usar bien la nube y transformarse digitalmente"
+      ],
+      "options_en": [
+        "The share of an organization's applications that already run on AWS",
+        "A formal AWS certificate showing that an organization passed a compliance audit",
+        "The amount of time the migration team needs to finish moving all of its servers",
+        "An organization's ability to use the cloud effectively to transform digitally"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La preparación para la nube es la capacidad de una organización para aprovechar eficazmente la nube en su transformación digital, y se apoya en un conjunto de capacidades organizacionales fundamentales. No es un porcentaje de aplicaciones migradas, ni un certificado, ni una medida de tiempo de migración.",
+      "explanation_en": "Cloud readiness is an organization's ability to use the cloud effectively for its digital transformation, and it rests on a set of foundational organizational capabilities. It is not a percentage of migrated applications, a certificate, or a measure of migration time.",
+      "source": "AWS — Introduction (https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/introduction.html)"
     },
     {
       "id": "q080101_r002",
@@ -101,23 +149,23 @@
       "skill_id": "sk080103",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "Por motivos de cumplimiento, una empresa debe conservar en sus instalaciones las tablas con diagnósticos de pacientes y migrar el resto de su base de datos a la nube. ¿Qué enfoque describe la guía para esta situación?",
-      "question_en": "For compliance reasons, a company must keep the tables holding patient diagnoses on premises while moving the rest of its database to the cloud. What approach does the guidance describe for this situation?",
+      "question_es": "Una empresa planea hacer rehost de sus cargas y mejorarlas después. ¿Qué respalda esa secuencia?",
+      "question_en": "A company plans to rehost its workloads first and improve them afterwards. What supports that sequence?",
       "options_es": [
-        "Rehost de toda la base de datos sin cambios y restringir el acceso en la nube después",
-        "Repurchase de un producto SaaS de bases de datos que también aloje en la nube las tablas sensibles",
-        "Refactor de la base de datos para separar las tablas que se migran de las que se quedan",
-        "Retire de las tablas sensibles y migración del resto exactamente como están"
+        "Es más fácil optimizar una aplicación que ya corre en la nube",
+        "El rehost aplica optimizaciones de la nube de forma automática, sin trabajo posterior",
+        "El rehost solo es posible con servidores que ya son máquinas virtuales locales",
+        "El rehost exige reescribir la aplicación antes de poder moverla"
       ],
       "options_en": [
-        "Rehost the whole database unchanged and apply access restrictions in the cloud afterwards",
-        "Repurchase a SaaS database product that holds the sensitive tables in the cloud as well",
-        "Refactor the database to separate the tables that move from those that stay",
-        "Retire the sensitive tables and move the remaining ones exactly as they are"
+        "Optimizing is easier once an application already runs in the cloud",
+        "Rehosting applies cloud optimizations automatically, so no later work is needed",
+        "Rehosting is only possible for servers that are already virtual machines on-premises",
+        "Rehosting requires the application to be rewritten before it can be moved"
       ],
-      "correct_index": 2,
-      "explanation_es": "Para separar las tablas que se migran de las que deben quedarse locales hace falta rediseñar la base de datos, es decir, aplicar refactor. Rehost movería todo sin separar nada, repurchase llevaría las tablas sensibles a otro producto en la nube y retire sirve para dar de baja aplicaciones, no para dividir una base de datos.",
-      "explanation_en": "Separating the tables that migrate from those that must stay on premises requires redesigning the database, which is refactoring. Rehost would move everything without separating anything, repurchase would put the sensitive tables into another cloud product, and retire is for decommissioning applications, not for splitting a database.",
+      "correct_index": 0,
+      "explanation_es": "Una vez que la aplicación ya está en la nube, resulta más fácil integrarla con servicios de AWS y administrarla, por lo que optimizarla o rediseñarla después es más sencillo. Las otras opciones fallan: el rehost no implementa optimizaciones por sí mismo, admite máquinas físicas, virtuales o de otra nube, y mueve la aplicación sin cambiarla.",
+      "explanation_en": "Once the application is already running in the cloud, it is easier to integrate with AWS services and manage, so optimizing or re-architecting it later is simpler. The other options fail: rehost does not implement optimizations by itself, it supports physical, virtual or other-cloud machines, and it moves the application without changing it.",
       "source": "AWS — About the migration strategies (https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html)"
     },
     {
@@ -169,51 +217,75 @@
       "source": "AWS — Six advantages of cloud computing (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html)"
     },
     {
+      "id": "q080103_r007",
+      "skill_id": "sk080103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa decide dar de baja una aplicación como parte de su migración a AWS. ¿Qué implica esa decisión para los servidores que la alojan?",
+      "question_en": "A company decides to retire an application as part of its migration to AWS. What does that decision mean for the servers hosting it?",
+      "options_es": [
+        "Dejan de ser necesarios y se pueden apagar",
+        "Se trasladan a otra VPC sin cambios",
+        "Se sustituyen por el producto SaaS del proveedor",
+        "Se mantienen en el entorno de origen para migrarlos después"
+      ],
+      "options_en": [
+        "They are no longer needed and can be switched off",
+        "They are moved to another VPC with no changes",
+        "They are replaced by the vendor's SaaS product",
+        "They stay in the source environment to be migrated later"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Dar de baja o archivar una aplicación (estrategia retire) significa que la pila de servidores que la sostiene ya no hace falta y se puede apagar. Las demás opciones describen trasladar, reemplazar o conservar la aplicación, es decir, otras formas de tratarla que no consisten en retirarla.",
+      "explanation_en": "Retiring or archiving an application (the retire strategy) means the server stack behind it is no longer needed and can be turned off. The other options describe moving, replacing or keeping the application, which are different treatments from retiring it.",
+      "source": "AWS — About the migration strategies (https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html)"
+    },
+    {
       "id": "q080103_r004",
       "skill_id": "sk080103",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "En el contexto de AWS CAF, ¿a qué se refiere el término «preparación para la nube» (cloud readiness)?",
-      "question_en": "In the context of the AWS CAF, what does the term cloud readiness refer to?",
+      "question_es": "¿Por qué se considera relocate la estrategia más rápida para poner una carga a funcionar en la nube?",
+      "question_en": "Why is relocate considered the fastest of the strategies for getting a workload running in AWS?",
       "options_es": [
-        "La proporción de aplicaciones de la organización que ya funcionan en AWS",
-        "Un certificado formal de AWS que acredita que la organización superó una auditoría de cumplimiento",
-        "El tiempo que necesita el equipo de migración para terminar de mover todos sus servidores",
-        "La capacidad de la organización para usar bien la nube y transformarse digitalmente"
+        "Porque sustituye la aplicación por un producto SaaS de un proveedor",
+        "Porque no altera la arquitectura general de la aplicación",
+        "Porque la aplicación se deja fuera de servicio durante todo el traslado, evitando sincronizaciones",
+        "Porque convierte la aplicación a un diseño sin servidor durante el traslado"
       ],
       "options_en": [
-        "The share of an organization's applications that already run on AWS",
-        "A formal AWS certificate showing that an organization passed a compliance audit",
-        "The amount of time the migration team needs to finish moving all of its servers",
-        "An organization's ability to use the cloud effectively to transform digitally"
+        "Because it swaps the application for a vendor-provided SaaS product",
+        "Because it does not alter the application's overall architecture",
+        "Because the application is taken offline for the whole transfer, avoiding any synchronization",
+        "Because it converts the application to a serverless design during the move"
       ],
-      "correct_index": 3,
-      "explanation_es": "La preparación para la nube es la capacidad de una organización para aprovechar eficazmente la nube en su transformación digital, y se apoya en un conjunto de capacidades organizacionales fundamentales. No es un porcentaje de aplicaciones migradas, ni un certificado, ni una medida de tiempo de migración.",
-      "explanation_en": "Cloud readiness is an organization's ability to use the cloud effectively for its digital transformation, and it rests on a set of foundational organizational capabilities. It is not a percentage of migrated applications, a certificate, or a measure of migration time.",
-      "source": "AWS — Introduction (https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/introduction.html)"
+      "correct_index": 1,
+      "explanation_es": "Relocate es la vía más rápida porque no afecta la arquitectura general de la aplicación. Reemplazarla por un SaaS corresponde a repurchase, y convertirla a sin servidor implicaría cambios que relocate no hace. Además, durante el traslado la aplicación sigue atendiendo a los usuarios.",
+      "explanation_en": "Relocate is the quickest because it leaves the application's overall architecture unaffected. Replacing it with a SaaS product is repurchase, and converting it to serverless would involve changes that relocate does not make. Also, the application keeps serving users during the transfer.",
+      "source": "AWS — About the migration strategies (https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html)"
     },
     {
       "id": "q080103_r005",
       "skill_id": "sk080103",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "En una migración a gran escala, ¿qué conjunto de estrategias es el habitual según la guía de AWS?",
-      "question_en": "Which set of strategies is typically used in large-scale migrations, according to AWS guidance?",
+      "question_es": "Por motivos de cumplimiento, una empresa debe conservar en sus instalaciones las tablas con diagnósticos de pacientes y migrar el resto de su base de datos a la nube. ¿Qué enfoque describe la guía para esta situación?",
+      "question_en": "For compliance reasons, a company must keep the tables holding patient diagnoses on premises while moving the rest of its database to the cloud. What approach does the guidance describe for this situation?",
       "options_es": [
-        "Refactor, rehost, relocate y retire",
-        "Rehost, replatform, relocate y retire",
-        "Refactor, replatform, retain y repurchase",
-        "Refactor, rehost, replatform y relocate"
+        "Rehost de toda la base de datos sin cambios y restringir el acceso en la nube después",
+        "Repurchase de un producto SaaS de bases de datos que también aloje en la nube las tablas sensibles",
+        "Refactor de la base de datos para separar las tablas que se migran de las que se quedan",
+        "Retire de las tablas sensibles y migración del resto exactamente como están"
       ],
       "options_en": [
-        "Refactor, rehost, relocate and retire",
-        "Rehost, replatform, relocate and retire",
-        "Refactor, replatform, retain and repurchase",
-        "Refactor, rehost, replatform and relocate"
+        "Rehost the whole database unchanged and apply access restrictions in the cloud afterwards",
+        "Repurchase a SaaS database product that holds the sensitive tables in the cloud as well",
+        "Refactor the database to separate the tables that move from those that stay",
+        "Retire the sensitive tables and move the remaining ones exactly as they are"
       ],
-      "correct_index": 1,
-      "explanation_es": "Para migraciones grandes se suelen usar rehost, replatform, relocate y retire. Todas las demás combinaciones incluyen refactor, que AWS desaconseja a esa escala porque obliga a modernizar la aplicación durante la migración y resulta difícil de gestionar con muchas aplicaciones.",
-      "explanation_en": "Large migrations typically rely on rehost, replatform, relocate and retire. Every other combination includes refactor, which AWS advises against at that scale because it means modernizing the application mid-migration and is hard to manage across many applications.",
+      "correct_index": 2,
+      "explanation_es": "Para separar las tablas que se migran de las que deben quedarse locales hace falta rediseñar la base de datos, es decir, aplicar refactor. Rehost movería todo sin separar nada, repurchase llevaría las tablas sensibles a otro producto en la nube y retire sirve para dar de baja aplicaciones, no para dividir una base de datos.",
+      "explanation_en": "Separating the tables that migrate from those that must stay on premises requires redesigning the database, which is refactoring. Rehost would move everything without separating anything, repurchase would put the sensitive tables into another cloud product, and retire is for decommissioning applications, not for splitting a database.",
       "source": "AWS — About the migration strategies (https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html)"
     },
     {
@@ -241,28 +313,124 @@
       "source": "AWS — Cost Optimization Pillar (https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html)"
     },
     {
+      "id": "q080104_r001",
+      "skill_id": "sk080104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Por qué un proveedor como AWS puede ofrecer precios de pago por uso más bajos que los que lograría una empresa por su cuenta?",
+      "question_en": "Why can a provider like AWS offer lower pay-as-you-go prices than a single company could achieve on its own?",
+      "options_es": [
+        "Porque asigna a cada cliente hardware dedicado que se amortiza con mayor rapidez",
+        "Porque obliga a todos los clientes a firmar compromisos de uso de varios años",
+        "Porque recorta el soporte y traslada al cliente el mantenimiento de la infraestructura",
+        "Porque agrega el uso de muchísimos clientes y logra mayores economías de escala"
+      ],
+      "options_en": [
+        "Because each customer gets dedicated hardware that pays for itself faster",
+        "Because every customer is required to sign multi-year usage commitments",
+        "Because it cuts back on support and shifts infrastructure upkeep to customers",
+        "Because pooled usage from many customers yields greater economies of scale"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El uso de una enorme cantidad de clientes se combina en la nube, y eso le da al proveedor mayores economías de escala que se traducen en precios de pago por uso más bajos. El fragmento no menciona hardware dedicado, compromisos obligatorios ni recortes de soporte; solo señala la agregación del uso como el mecanismo.",
+      "explanation_en": "Usage from a very large number of customers is combined in the cloud, which gives the provider greater economies of scale and results in lower pay-as-you-go prices. The fragment does not mention dedicated hardware, mandatory commitments, or reduced support; it identifies only usage aggregation as the mechanism.",
+      "source": "AWS — Six advantages of cloud computing (https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html)"
+    },
+    {
+      "id": "q080104_r003",
+      "skill_id": "sk080104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo de finanzas quiere anticipar el gasto futuro en la nube. ¿Qué tipo de solución de gestión de costos de AWS contribuye específicamente a esa planificación?",
+      "question_en": "A finance team wants to anticipate future cloud spending. Which kind of AWS cost management solution specifically supports that planning?",
+      "options_es": [
+        "Facturación consolidada y permisos de acceso, que refuerzan el control",
+        "Servicios que registran y clasifican la información de costos y uso",
+        "Presupuestos y previsiones, que permiten planificar el gasto",
+        "Optimizaciones de recursos y de precios que reducen aún más el costo"
+      ],
+      "options_en": [
+        "Consolidated billing and access permissions, which strengthen control",
+        "Services that record and categorize cost and usage information",
+        "Budgets and forecasts, which enable spend planning",
+        "Resource and pricing optimizations that lower cost even further"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Según la fuente, los presupuestos y las previsiones son lo que permite planificar mejor. La facturación consolidada y los permisos de acceso refuerzan el control, los servicios de registro y seguimiento organizan los datos de costos y uso, y las optimizaciones de recursos y precios reducen aún más el costo, pero ninguno de ellos es la herramienta de planificación.",
+      "explanation_en": "According to the source, budgets and forecasts are what enable better planning. Consolidated billing and access permissions strengthen control, tracking services organize cost and usage data, and resource and pricing optimizations lower cost further, but none of those is the planning tool.",
+      "source": "AWS — Key principles (https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/key-principles.html)"
+    },
+    {
+      "id": "q080103_r008",
+      "skill_id": "sk080103",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En una migración a gran escala, ¿qué conjunto de estrategias es el habitual según la guía de AWS?",
+      "question_en": "Which set of strategies is typically used in large-scale migrations, according to AWS guidance?",
+      "options_es": [
+        "Refactor, rehost, relocate y retire",
+        "Rehost, replatform, relocate y retire",
+        "Refactor, replatform, retain y repurchase",
+        "Refactor, rehost, replatform y relocate"
+      ],
+      "options_en": [
+        "Refactor, rehost, relocate and retire",
+        "Rehost, replatform, relocate and retire",
+        "Refactor, replatform, retain and repurchase",
+        "Refactor, rehost, replatform and relocate"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Para migraciones grandes se suelen usar rehost, replatform, relocate y retire. Todas las demás combinaciones incluyen refactor, que AWS desaconseja a esa escala porque obliga a modernizar la aplicación durante la migración y resulta difícil de gestionar con muchas aplicaciones.",
+      "explanation_en": "Large migrations typically rely on rehost, replatform, relocate and retire. Every other combination includes refactor, which AWS advises against at that scale because it means modernizing the application mid-migration and is hard to manage across many applications.",
+      "source": "AWS — About the migration strategies (https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html)"
+    },
+    {
+      "id": "q080104_r002",
+      "skill_id": "sk080104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa prevé un consumo de cómputo estable y acepta comprometer un gasto constante por hora durante un plazo definido a cambio de precios menores. ¿Qué modelo de precios encaja con ese acuerdo?",
+      "question_en": "A company expects steady compute usage and is willing to commit to a consistent hourly spend over a defined term in return for lower prices. Which pricing model fits that arrangement?",
+      "options_es": [
+        "Instancias bajo demanda: se paga por hora o segundo sin ningún compromiso",
+        "Savings Plans: tarifas menores por comprometer un uso constante",
+        "Instancias Spot: capacidad sobrante de EC2 con tarifa descontada",
+        "Reservas: mayor descuento por pagar la capacidad por adelantado"
+      ],
+      "options_en": [
+        "On-Demand Instances: pay by the hour or second with no commitment",
+        "Savings Plans: lower rates for committing to steady usage",
+        "Spot Instances: discounted rates on spare EC2 capacity",
+        "Reservations: a larger discount for paying for capacity in advance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Savings Plans abarata las tarifas cuando la empresa se obliga a un nivel regular de uso, expresado en dólares por hora, durante uno o tres años. Las instancias bajo demanda no piden ningún compromiso, Spot se apoya en capacidad sobrante sin compromiso inicial y las reservas dan descuento por pagar la capacidad por adelantado, no por fijar un gasto horario.",
+      "explanation_en": "With Savings Plans, the customer pledges a steady level of usage, expressed in dollars per hour, for one or three years, and the rates drop accordingly. On-Demand Instances require no pledge at all, Spot works from spare capacity with no upfront commitment, and Reservations earn their discount by paying for capacity ahead of time rather than by fixing an hourly spend.",
+      "source": "AWS — Key principles (https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/key-principles.html)"
+    },
+    {
       "id": "q080103_r001",
       "skill_id": "sk080103",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "Un equipo quiere reducir costos pasando a un servicio totalmente administrado, ejecutando sus máquinas virtuales como contenedores y evitando gastos de licencias. ¿Qué estrategia de migración encaja con ese plan?",
-      "question_en": "A team wants to lower costs by moving to a fully managed service, running its virtual machines as containers, and avoiding licensing fees. Which migration strategy fits that plan?",
+      "question_es": "Una empresa quiere tener la certeza de que el dinero que destina a la nube acelera sus metas de transformación digital y sus resultados de negocio. ¿Qué perspectiva de AWS CAF apunta a eso?",
+      "question_en": "A company wants assurance that the money it puts into the cloud speeds up its digital transformation goals and its business results. Which AWS CAF perspective is aimed at that?",
       "options_es": [
-        "Rehost, que mueve los servidores sin ningún cambio",
-        "Retain, que mantiene la aplicación en su entorno actual",
-        "Relocate, que traslada instancias a otra VPC o cuenta",
-        "Replatform, que añade algo de optimización al migrar"
+        "Perspectiva de Operaciones",
+        "Perspectiva de Seguridad",
+        "Perspectiva de Negocio",
+        "Perspectiva de Plataforma"
       ],
       "options_en": [
-        "Rehost, which moves servers with no changes at all",
-        "Retain, which keeps the application where it runs today",
-        "Relocate, which moves instances to another VPC or account",
-        "Replatform, which adds some optimization during the move"
+        "Operations perspective",
+        "Security perspective",
+        "Business perspective",
+        "Platform perspective"
       ],
-      "correct_index": 3,
-      "explanation_es": "Replatform introduce cierto nivel de optimización durante la migración y se asocia con pasar a servicios administrados o sin servidor, mover máquinas virtuales a contenedores y evitar costos de licencias. Rehost no cambia nada, Retain deja la aplicación donde está y Relocate solo traslada instancias a otra VPC, región o cuenta.",
-      "explanation_en": "Replatform adds some level of optimization during the migration and is tied to moving to managed or serverless services, shifting virtual machines to containers, and avoiding licensing costs. Rehost changes nothing, Retain leaves the application where it is, and Relocate only moves instances to a different VPC, Region or account.",
-      "source": "AWS — About the migration strategies (https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html)"
+      "correct_index": 2,
+      "explanation_es": "La perspectiva de Negocio se centra en que lo invertido en la nube impulse la estrategia de transformación de la empresa y sus resultados. Las demás miran otro terreno: Operaciones, que los servicios cumplan lo que el negocio necesita; Seguridad, proteger los datos y las cargas de trabajo; y Plataforma, construir la base técnica en la nube y modernizar lo existente.",
+      "explanation_en": "The Business perspective is the one that ties cloud spending to the company's transformation strategy and its results. The others look elsewhere: Operations makes sure services meet what the business requires, Security protects data and workloads, and Platform builds the technical foundation in the cloud and modernizes what already exists.",
+      "source": "AWS — Foundational capabilities (https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/foundational-capabilities.html)"
     },
     {
       "id": "q080101_r003",
@@ -337,6 +505,30 @@
       "source": "AWS — Cost Optimization Pillar (https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html)"
     },
     {
+      "id": "q080104_r004",
+      "skill_id": "sk080104",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "El equipo de finanzas de una empresa quiere entender de qué depende, en la mayoría de los casos, la factura de AWS. ¿Qué conjunto describe los tres factores fundamentales de costo?",
+      "question_en": "A company's finance team wants to understand what the AWS bill mostly depends on. Which set describes the three fundamental cost drivers?",
+      "options_es": [
+        "Cómputo, almacenamiento y datos entrantes",
+        "Cómputo, almacenamiento y transferencia de datos hacia el exterior",
+        "Cómputo, número de usuarios de la cuenta y tráfico entre servicios de una misma región",
+        "Almacenamiento, licencias de software de terceros y cantidad de servicios activados"
+      ],
+      "options_en": [
+        "Compute, storage, and inbound data",
+        "Compute, storage, and data transfer out of AWS",
+        "Compute, number of account users, and traffic between services in the same Region",
+        "Storage, third-party software licenses, and number of services enabled"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS identifica tres factores fundamentales de costo: el cómputo, el almacenamiento y la transferencia de datos saliente. La transferencia entrante normalmente no se cobra, así que no es un factor principal, y el tráfico entre servicios de una misma región tampoco suele tener cargo. El número de usuarios, las licencias de terceros o la cantidad de servicios activados no figuran entre esos tres factores.",
+      "explanation_en": "AWS identifies three fundamental cost drivers: compute, storage, and outbound data transfer. Inbound transfer is normally not charged, so it is not a main driver, and traffic between services in the same Region usually carries no charge either. The number of users, third-party licenses, or how many services are enabled are not among those three drivers.",
+      "source": "AWS — Key principles (https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/key-principles.html)"
+    },
+    {
       "id": "q080102_r004",
       "skill_id": "sk080102",
       "type": "multiple_choice",
@@ -389,23 +581,23 @@
       "skill_id": "sk080103",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "¿Por qué se considera relocate la estrategia más rápida para poner una carga a funcionar en la nube?",
-      "question_en": "Why is relocate considered the fastest of the strategies for getting a workload running in AWS?",
+      "question_es": "Un equipo quiere reducir costos pasando a un servicio totalmente administrado, ejecutando sus máquinas virtuales como contenedores y evitando gastos de licencias. ¿Qué estrategia de migración encaja con ese plan?",
+      "question_en": "A team wants to lower costs by moving to a fully managed service, running its virtual machines as containers, and avoiding licensing fees. Which migration strategy fits that plan?",
       "options_es": [
-        "Porque sustituye la aplicación por un producto SaaS de un proveedor",
-        "Porque no altera la arquitectura general de la aplicación",
-        "Porque la aplicación se deja fuera de servicio durante todo el traslado, evitando sincronizaciones",
-        "Porque convierte la aplicación a un diseño sin servidor durante el traslado"
+        "Rehost, que mueve los servidores sin ningún cambio",
+        "Retain, que mantiene la aplicación en su entorno actual",
+        "Relocate, que traslada instancias a otra VPC o cuenta",
+        "Replatform, que añade algo de optimización al migrar"
       ],
       "options_en": [
-        "Because it swaps the application for a vendor-provided SaaS product",
-        "Because it does not alter the application's overall architecture",
-        "Because the application is taken offline for the whole transfer, avoiding any synchronization",
-        "Because it converts the application to a serverless design during the move"
+        "Rehost, which moves servers with no changes at all",
+        "Retain, which keeps the application where it runs today",
+        "Relocate, which moves instances to another VPC or account",
+        "Replatform, which adds some optimization during the move"
       ],
-      "correct_index": 1,
-      "explanation_es": "Relocate es la vía más rápida porque no afecta la arquitectura general de la aplicación. Reemplazarla por un SaaS corresponde a repurchase, y convertirla a sin servidor implicaría cambios que relocate no hace. Además, durante el traslado la aplicación sigue atendiendo a los usuarios.",
-      "explanation_en": "Relocate is the quickest because it leaves the application's overall architecture unaffected. Replacing it with a SaaS product is repurchase, and converting it to serverless would involve changes that relocate does not make. Also, the application keeps serving users during the transfer.",
+      "correct_index": 3,
+      "explanation_es": "Replatform introduce cierto nivel de optimización durante la migración y se asocia con pasar a servicios administrados o sin servidor, mover máquinas virtuales a contenedores y evitar costos de licencias. Rehost no cambia nada, Retain deja la aplicación donde está y Relocate solo traslada instancias a otra VPC, región o cuenta.",
+      "explanation_en": "Replatform adds some level of optimization during the migration and is tied to moving to managed or serverless services, shifting virtual machines to containers, and avoiding licensing costs. Rehost changes nothing, Retain leaves the application where it is, and Relocate only moves instances to a different VPC, Region or account.",
       "source": "AWS — About the migration strategies (https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html)"
     }
   ]

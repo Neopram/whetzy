@@ -25,28 +25,244 @@
       "source": "AWS — Data protection (https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html)"
     },
     {
+      "id": "q110304_r012",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo de seguridad quiere comprobar si un texto infringe las salvaguardas configuradas en una guardrail, sin llamar a ningún modelo fundacional. ¿Qué opción permite hacerlo?",
+      "question_en": "A security team wants to check whether a piece of text violates the safeguards configured in a guardrail, without calling any foundation model. Which option works?",
+      "options_es": [
+        "Enviar primero el texto a un modelo fundacional, porque las guardrails solo evalúan las respuestas que un modelo ha generado",
+        "Publicar una versión nueva de la guardrail por cada texto, porque son las versiones las que activan la evaluación del contenido",
+        "Invocar la API ApplyGuardrail, que evalúa el texto con la guardrail sin necesidad de ningún modelo",
+        "Usar únicamente la ventana de pruebas de la consola, ya que las guardrails no pueden invocarse desde el código de una aplicación"
+      ],
+      "options_en": [
+        "Send the text through a foundation model first, because guardrails only evaluate completions that a model has generated",
+        "Publish a new guardrail version for every text, because versions are what trigger the evaluation of content",
+        "Call the ApplyGuardrail API, which checks the text against the guardrail with no foundation model involved",
+        "Use only the console test window, since guardrails cannot be invoked from application code at all"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La API ApplyGuardrail permite que una guardrail analice un texto por sí sola, sin ninguna llamada a un modelo, de modo que sirve para comprobaciones independientes. Por eso pasar antes el texto por un modelo no puede ser un requisito. Tampoco hace falta publicar una versión por cada texto: la versión es solo un dato que se indica al usar la guardrail junto con la invocación de modelos. Y la ventana de pruebas es una ayuda para experimentar, no la única vía, ya que la guardrail se invoca por API.",
+      "explanation_en": "The ApplyGuardrail API lets a guardrail assess text on its own, with no model call involved, so it fits standalone checks. That means sending the text through a model first cannot be a prerequisite. Nor is a new version needed per text: the version is simply a value you specify when using a guardrail alongside model invocation. The console test window is an aid for experimenting, not the only route, since the guardrail can be called through an API.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+    },
+    {
+      "id": "q110304_r007",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una analista intenta usar una función de Amazon Bedrock y recibe un error de acceso. Según la guía de IAM para Bedrock, ¿qué debería hacer como usuaria del servicio?",
+      "question_en": "An analyst tries to use an Amazon Bedrock feature and gets an access error. According to the IAM guidance for Bedrock, what should she do as a service user?",
+      "options_es": [
+        "Pedir a su administrador los permisos que le faltan",
+        "Determinar quién accede al servicio y enviar solicitudes de permisos",
+        "Escribir las políticas de IAM que gestionan el acceso",
+        "Revisar por su cuenta ejemplos de políticas basadas en identidad"
+      ],
+      "options_en": [
+        "Ask her administrator for the permissions she lacks",
+        "Decide who gets access and submit permission requests",
+        "Write the IAM policies that manage access",
+        "Study identity-based policy examples on her own"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La guía asigna a cada rol una tarea: quien solo usa el servicio y no logra acceder a una función debe solicitar los permisos a su administrador. Decidir el acceso y enviar solicitudes corresponde al administrador del servicio, y escribir políticas corresponde al administrador de IAM, así que ninguna de esas es la acción de una usuaria del servicio.",
+      "explanation_en": "The guidance gives each role its own task: someone who only uses the service and cannot reach a feature should request the permissions from their administrator. Deciding access and submitting requests belongs to the service administrator, and writing policies belongs to the IAM administrator, so neither is what a service user does.",
+      "source": "AWS — Identity and access management for Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)"
+    },
+    {
       "id": "q110304_r003",
       "skill_id": "sk110304",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "Una empresa despliega un asistente de atención al cliente basado en RAG y quiere detectar las respuestas que incorporan datos ausentes de los documentos recuperados o que no atienden lo que preguntó el usuario. ¿Qué salvaguarda de Amazon Bedrock Guardrails es la adecuada?",
-      "question_en": "A company deploys a RAG-based customer support assistant and wants to catch answers that add details missing from the retrieved documents or that fail to address what the user asked. Which Amazon Bedrock Guardrails safeguard fits?",
+      "question_es": "Una persona de cumplimiento necesita evidencia independiente de que la seguridad de la infraestructura de AWS es eficaz. Según la documentación de Amazon Bedrock, ¿cómo se comprueba esa eficacia?",
+      "question_en": "A compliance officer needs independent evidence that the security of the AWS infrastructure is effective. According to the Amazon Bedrock documentation, how is that effectiveness checked?",
       "options_es": [
-        "Los filtros de palabras, que bloquean una lista personalizada de términos en las consultas y en las respuestas del modelo",
-        "Las comprobaciones de fundamentación contextual, que contrastan la respuesta con la fuente y la pregunta",
-        "Los filtros de información confidencial, que enmascaran datos personales como direcciones en consultas y respuestas",
-        "Los temas denegados, que bloquean áreas temáticas completas que la aplicación nunca debería tratar con sus usuarios"
+        "Auditores externos la verifican periódicamente en los programas de cumplimiento",
+        "Los proveedores de modelos revisan la infraestructura de AWS y emiten el certificado",
+        "El equipo de Bedrock publica una autoevaluación interna sin pruebas externas",
+        "Cada cliente prueba la seguridad de la infraestructura de AWS antes de usar el servicio"
       ],
       "options_en": [
-        "Word filters, which block a custom list of words or phrases in prompts and in model responses",
-        "Contextual grounding checks, which compare responses with the retrieved source and the question",
-        "Sensitive information filters, which mask personal data such as addresses in prompts and responses",
-        "Denied topics, which block entire subject areas that the application should never discuss with its users"
+        "External auditors test and verify it regularly under the AWS compliance programs",
+        "Model providers review the AWS infrastructure and issue the certificate",
+        "The Bedrock team publishes an internal self-assessment with no outside testing",
+        "Each customer tests the security of the AWS infrastructure before using the service"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La documentación explica que AWS recurre a auditores independientes de terceros, que examinan y validan de forma recurrente sus controles de seguridad dentro de sus programas de cumplimiento. Las demás opciones atribuyen esa comprobación a los proveedores de modelos, a una autoevaluación interna o a cada cliente, algo que la fuente no describe.",
+      "explanation_en": "The documentation explains that AWS relies on outside auditors who regularly validate its security controls through established compliance programs. The other options assign that role to model providers, an internal self-assessment, or each individual customer, none of which the fragment describes.",
+      "source": "AWS — Security, Guardrails, and Observability in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security.html)"
+    },
+    {
+      "id": "q110304_r015",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa empieza a incorporar funciones de Amazon Bedrock y necesita que alguien elabore las políticas de IAM que definen quién puede acceder a ellas. Según los perfiles que distingue la guía de IAM de Bedrock, ¿quién debe encargarse de esa tarea?",
+      "question_en": "A company is starting to adopt Amazon Bedrock capabilities and needs someone to create the IAM policies that define who can access them. Based on the profiles that the Bedrock IAM guidance distinguishes, who should take on this task?",
+      "options_es": [
+        "El usuario del servicio, que pide permisos cuando le falta acceso",
+        "El administrador de IAM, que escribe las políticas de acceso",
+        "El administrador del servicio, que decide qué acceso necesitan los usuarios y tramita solicitudes de permisos",
+        "El administrador de facturación, que revisa los cargos y las facturas de la cuenta"
+      ],
+      "options_en": [
+        "The service user, who asks for permissions when access is missing",
+        "The IAM administrator, who writes the access policies",
+        "The service administrator, who decides what access users need and files permission requests",
+        "The billing administrator, who reviews account charges and invoices"
       ],
       "correct_index": 1,
-      "explanation_es": "Las comprobaciones de fundamentación contextual detectan alucinaciones, es decir, respuestas que no se apoyan en la fuente (inexactas o con información nueva) o que resultan irrelevantes para la consulta, algo típico en aplicaciones RAG. Las otras opciones sirven para otros fines: bloquear términos, enmascarar datos personales o evitar temas, no para verificar que la respuesta se apoye en la fuente recuperada.",
-      "explanation_en": "Contextual grounding checks detect hallucinations, meaning responses that are not supported by the source (inaccurate or adding new information) or that are irrelevant to the query, which is typical in RAG applications. The other options serve different purposes: blocking terms, masking personal data or avoiding topics, not verifying that a response is supported by the retrieved source.",
-      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+      "explanation_es": "La guía asigna al administrador de IAM la redacción de las políticas que gestionan el acceso. El administrador del servicio determina el acceso de los usuarios y envía solicitudes de permisos, pero no escribe las políticas, y el usuario del servicio solo pide permisos cuando no puede acceder. El administrador de facturación no es un perfil de la guía y su trabajo es financiero, no de acceso.",
+      "explanation_en": "The guidance gives the IAM administrator the job of writing the policies that manage access. The service administrator determines user access and submits permission requests but does not write the policies, and the service user only asks for permissions when access fails. The billing administrator is not a profile in the guidance and handles financial work, not access.",
+      "source": "AWS — Identity and access management for Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)"
+    },
+    {
+      "id": "q110304_r005",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una organización quiere fijar un techo de permisos que se aplique a todas las cuentas de una unidad organizativa, con independencia de lo que concedan las políticas de IAM de cada cuenta. ¿Qué tipo de política encaja?",
+      "question_en": "An organization wants to set a permissions ceiling that applies to all accounts in an organizational unit, regardless of what the IAM policies in each account grant. Which policy type fits?",
+      "options_es": [
+        "Políticas de sesión pasadas como parámetro cuando se asume un rol para una sesión temporal",
+        "Políticas en línea basadas en identidad, incrustadas directamente en un único usuario de IAM de una cuenta",
+        "Políticas de control de servicios, aplicadas a la organización o a una unidad organizativa",
+        "Políticas basadas en recursos, adjuntas a un bucket de Amazon S3 que contiene los datos de la aplicación"
+      ],
+      "options_en": [
+        "Session policies passed as a parameter when a role is assumed for a temporary session",
+        "Inline identity-based policies embedded directly into a single IAM user in one account",
+        "Service control policies applied to the organization or to an organizational unit",
+        "Resource-based policies attached to an Amazon S3 bucket that holds the application data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las políticas de control de servicios (SCP) marcan el límite máximo de lo que se puede conceder a las cuentas de una organización o de una unidad organizativa, así que funcionan como techo para todas ellas. Las políticas de sesión afectan a una sesión temporal concreta, las políticas en línea viven dentro de una sola identidad y las basadas en recursos se adjuntan a un único recurso; ninguna limita a toda la unidad organizativa.",
+      "explanation_en": "Service control policies (SCPs) cap what the accounts in an organization or OU can be granted, so they work as a ceiling over every account in scope. Session policies cover one temporary session, inline policies sit in one identity, and resource-based policies attach to a single resource, so none of them caps a whole OU.",
+      "source": "AWS — Identity and access management for Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)"
+    },
+    {
+      "id": "q110304_r014",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Desde la perspectiva de un administrador que trabaja con Amazon Bedrock, ¿para qué sirve AWS Identity and Access Management (IAM)?",
+      "question_en": "From the perspective of an administrator working with Amazon Bedrock, what is AWS Identity and Access Management (IAM) used for?",
+      "options_es": [
+        "Definir quién puede acceder a los recursos de AWS y con qué permisos",
+        "Cifrar los datos de entrenamiento guardados en los servicios de AWS con claves propias del administrador",
+        "Detectar y filtrar contenido dañino en los prompts y en las respuestas de los modelos fundacionales",
+        "Registrar cada llamada a la API de Bedrock para que pueda auditarse más adelante"
+      ],
+      "options_en": [
+        "To define who may access AWS resources and what they are permitted to do",
+        "To encrypt training data kept in AWS services using keys the administrator owns",
+        "To detect and filter harmful content in prompts and responses of foundation models",
+        "To log every Bedrock API call so that it can be audited later"
+      ],
+      "correct_index": 0,
+      "explanation_es": "IAM es el servicio con el que un administrador gestiona de forma segura quién llega a los recursos de AWS, incluidos los de Amazon Bedrock. Cifrar datos, filtrar contenido dañino y registrar llamadas a la API corresponden a otras capacidades, no al propósito de IAM que indica la fuente.",
+      "explanation_en": "IAM is how an administrator manages, safely and centrally, which identities may reach AWS resources, including Amazon Bedrock ones. Encryption, harmful-content filtering and API-call logging are handled by other capabilities, not by IAM, according to the source.",
+      "source": "AWS — Identity and access management for Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)"
+    },
+    {
+      "id": "q110304_r011",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa construye una aplicación sobre Amazon Bedrock con datos de clientes. Dentro del modelo de responsabilidad compartida, ¿qué aspecto le corresponde a la empresa y no a AWS?",
+      "question_en": "A company builds an application on Amazon Bedrock using customer data. Within the shared responsibility model, which aspect falls to the company rather than to AWS?",
+      "options_es": [
+        "Proteger la infraestructura que ejecuta los servicios de IA",
+        "Valorar la sensibilidad de sus datos y las leyes aplicables",
+        "Ofrecer servicios que puedan usarse de manera segura",
+        "Hacer que auditores externos comprueben los controles de AWS"
+      ],
+      "options_en": [
+        "Protecting the infrastructure that runs the AI services",
+        "Assessing how sensitive its data is and which laws apply",
+        "Offering services that can be used securely",
+        "Having outside auditors verify the controls AWS has in place"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En la seguridad en la nube, lo que toca al cliente depende del servicio que use e incluye lo delicados que son sus datos, sus propios requisitos y las normas legales aplicables. Proteger la infraestructura, ofrecer servicios que se puedan usar de forma segura y someterse a auditorías externas de sus controles son tareas de AWS en la seguridad de la nube.",
+      "explanation_en": "Under security in the cloud, what the customer owns depends on the service chosen and covers how sensitive its data is, its own business needs, and the legal rules that apply to it. Securing the infrastructure, offering services that can be used safely, and having outside auditors test its controls are AWS tasks under security of the cloud.",
+      "source": "AWS — Security, Guardrails, and Observability in Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security.html)"
+    },
+    {
+      "id": "q110304_r006",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empleada ya inició sesión en AWS, pero recibe un error de acceso denegado al intentar usar un recurso de Amazon Bedrock. En términos de IAM, ¿qué ocurrió?",
+      "question_en": "An employee is already signed in to AWS, but she gets an access denied error when she tries to use an Amazon Bedrock resource. In IAM terms, what happened?",
+      "options_es": [
+        "La autenticación falló y la autorización tuvo éxito, porque iniciar sesión es el paso que concede los permisos",
+        "Fallaron la autenticación y la autorización, porque una solicitud denegada implica que la identidad nunca se verificó",
+        "La autorización tuvo éxito y la autenticación falló, porque los permisos se evalúan antes de que alguien inicie sesión",
+        "La autenticación tuvo éxito y la autorización falló, porque la identidad carece de permisos para ese recurso"
+      ],
+      "options_en": [
+        "Authentication failed and authorization succeeded, because signing in is the step that grants permissions",
+        "Both authentication and authorization failed, because a denied request means the identity was never verified",
+        "Authorization succeeded and authentication failed, because permissions are evaluated before anyone signs in",
+        "Authentication succeeded and authorization failed, because the identity lacks permissions for that resource"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En IAM, la autenticación es el paso de iniciar sesión y la autorización es el de contar con permisos sobre los recursos de Amazon Bedrock. Como la empleada ya había iniciado sesión, la autenticación funcionó; el acceso denegado indica que la identidad no tiene permisos, es decir, que falló la autorización. Las otras opciones invierten los pasos o suponen que ambos fallaron, lo que no encaja con una sesión ya iniciada.",
+      "explanation_en": "In IAM, authentication is the sign-in step, while authorization is about holding permissions over Amazon Bedrock resources. Since the employee was already signed in, authentication worked; the denied access shows that the identity lacks permissions, so authorization is what failed. The other options swap the two steps or assume both failed, which contradicts an existing sign-in.",
+      "source": "AWS — Identity and access management for Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)"
+    },
+    {
+      "id": "q110304_r008",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Al crear una cuenta de AWS se obtiene una identidad de inicio de sesión con acceso completo a todos los servicios y recursos, el usuario raíz. ¿Qué práctica recomienda la documentación para este usuario?",
+      "question_en": "Creating an AWS account gives you a sign-in identity with complete access to every service and resource, the root user. What practice does the documentation recommend for it?",
+      "options_es": [
+        "Usarlo a diario porque tiene los permisos más amplios",
+        "Limitarlo a las tareas que exigen sus credenciales",
+        "Compartir sus credenciales con los administradores que necesiten más privilegios",
+        "Usarlo solo para las cargas de trabajo de IA generativa"
+      ],
+      "options_en": [
+        "Use it daily because it has the broadest permissions",
+        "Limit it to tasks that need its credentials",
+        "Share its credentials with administrators who need more privileges",
+        "Use it only for generative AI workloads"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La documentación desaconseja con firmeza emplear al usuario raíz en el trabajo cotidiano, justamente porque su acceso es total, y lo deja para las tareas que requieren sus credenciales. Usarlo a diario o compartir sus credenciales va en contra de esa pauta, y la fuente no lo asocia con cargas de trabajo de IA generativa.",
+      "explanation_en": "The documentation strongly discourages using the root user for day-to-day work, precisely because its access is unrestricted, and keeps it for the tasks that call for its credentials. Using it daily or sharing its credentials goes against that guidance, and the source does not tie it to generative AI workloads.",
+      "source": "AWS — Identity and access management for Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)"
+    },
+    {
+      "id": "q110304_r013",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo asegura el acceso a los recursos de una aplicación que usa Amazon Bedrock y quiere distinguir entre políticas basadas en identidad y políticas basadas en recursos. ¿Qué describe correctamente una política basada en recursos?",
+      "question_en": "A team is securing access to the resources behind an application that uses Amazon Bedrock and wants to tell identity-based policies apart from resource-based ones. Which statement correctly describes a resource-based policy?",
+      "options_es": [
+        "Se asocia a un usuario, grupo o rol para definir qué acciones puede realizar esa identidad",
+        "Es una política administrada independiente que se reutiliza en varias identidades a la vez",
+        "Se define en AWS Organizations para fijar el máximo de permisos de una unidad organizativa",
+        "Se asocia al propio recurso, como ocurre con una política de bucket de S3"
+      ],
+      "options_en": [
+        "It is attached to a user, group or role to define which actions that identity can perform",
+        "It is a standalone managed policy that gets reused across several identities at once",
+        "It is defined in AWS Organizations to set the maximum permissions for an organizational unit",
+        "It is attached to the resource itself, as happens with an S3 bucket policy"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Una política basada en recursos es un documento JSON que se adjunta directamente al recurso, y las políticas de bucket de S3 son un ejemplo. Las otras opciones describen cosas distintas: la primera es una política basada en identidad, la segunda se parece a una política administrada de identidad y la tercera corresponde a las políticas de control de servicio de Organizations.",
+      "explanation_en": "A resource-based policy is a JSON document attached directly to the resource, and S3 bucket policies are one example. The other options describe different things: the first is an identity-based policy, the second resembles a managed identity policy, and the third matches service control policies in Organizations.",
+      "source": "AWS — Identity and access management for Amazon Bedrock (https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html)"
     },
     {
       "id": "q110304_r002",
@@ -73,7 +289,31 @@
       "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
     },
     {
-      "id": "q110304_r004",
+      "id": "q110304_r009",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa del sector salud duda en usar Amazon Bedrock porque teme que el proveedor de un modelo fundacional pueda ver los prompts de sus clientes. ¿Qué afirmación describe correctamente cómo aborda Bedrock esa preocupación?",
+      "question_en": "A healthcare company hesitates to use Amazon Bedrock because it worries that a foundation model's provider could see its customers' prompts. Which statement correctly describes how Bedrock addresses that concern?",
+      "options_es": [
+        "El proveedor recibe una copia de cada prompt para revisar la calidad de su modelo",
+        "El proveedor consulta los prompts solo cuando el cliente abre una solicitud de soporte",
+        "El proveedor aloja el modelo en su propia cuenta y atiende desde ahí las solicitudes del cliente",
+        "El proveedor no puede acceder a las cuentas donde Bedrock ejecuta el modelo"
+      ],
+      "options_en": [
+        "The provider receives a copy of each prompt to review its model's quality",
+        "The provider reaches prompts only when the customer opens a support case",
+        "The provider hosts the model in its own account and serves customer requests from there",
+        "The provider has no access to the accounts where Bedrock runs the model"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Bedrock despliega una copia del software del modelo en cuentas dedicadas a cada proveedor que administra el equipo del servicio, y el proveedor no tiene acceso a ellas. Por eso no puede observar el uso que hacen los clientes. Las otras opciones describen accesos del proveedor o un alojamiento en su propia cuenta, algo que la documentación no respalda.",
+      "explanation_en": "Bedrock deploys a copy of the model software into dedicated accounts per provider that the service team administers, and the provider cannot access them. That keeps the provider from observing how customers use the model. The other options describe provider access or hosting in the provider's own account, which the documentation does not support.",
+      "source": "AWS — Data protection (https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html)"
+    },
+    {
+      "id": "q110304_r010",
       "skill_id": "sk110304",
       "type": "multiple_choice",
       "pool": "simulacro",
@@ -94,6 +334,30 @@
       "correct_index": 0,
       "explanation_es": "Los filtros de información confidencial pueden bloquear o enmascarar datos sensibles, como la información personal identificable, en las entradas del usuario y en las respuestas del modelo. Los filtros de contenido, los temas denegados y los filtros de palabras se orientan a contenido dañino, temas indeseados o términos concretos, no a proteger datos personales.",
       "explanation_en": "Sensitive information filters can block or mask sensitive data, such as personally identifiable information, in user inputs and model responses. Content filters, denied topics and word filters target harmful content, unwanted subjects or specific terms, not the protection of personal data.",
+      "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
+    },
+    {
+      "id": "q110304_r004",
+      "skill_id": "sk110304",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa despliega un asistente de atención al cliente basado en RAG y quiere detectar las respuestas que incorporan datos ausentes de los documentos recuperados o que no atienden lo que preguntó el usuario. ¿Qué salvaguarda de Amazon Bedrock Guardrails es la adecuada?",
+      "question_en": "A company deploys a RAG-based customer support assistant and wants to catch answers that add details missing from the retrieved documents or that fail to address what the user asked. Which Amazon Bedrock Guardrails safeguard fits?",
+      "options_es": [
+        "Los filtros de palabras, que bloquean una lista personalizada de términos en las consultas y en las respuestas del modelo",
+        "Las comprobaciones de fundamentación contextual, que contrastan la respuesta con la fuente y la pregunta",
+        "Los filtros de información confidencial, que enmascaran datos personales como direcciones en consultas y respuestas",
+        "Los temas denegados, que bloquean áreas temáticas completas que la aplicación nunca debería tratar con sus usuarios"
+      ],
+      "options_en": [
+        "Word filters, which block a custom list of words or phrases in prompts and in model responses",
+        "Contextual grounding checks, which compare responses with the retrieved source and the question",
+        "Sensitive information filters, which mask personal data such as addresses in prompts and responses",
+        "Denied topics, which block entire subject areas that the application should never discuss with its users"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las comprobaciones de fundamentación contextual detectan alucinaciones, es decir, respuestas que no se apoyan en la fuente (inexactas o con información nueva) o que resultan irrelevantes para la consulta, algo típico en aplicaciones RAG. Las otras opciones sirven para otros fines: bloquear términos, enmascarar datos personales o evitar temas, no para verificar que la respuesta se apoye en la fuente recuperada.",
+      "explanation_en": "Contextual grounding checks detect hallucinations, meaning responses that are not supported by the source (inaccurate or adding new information) or that are irrelevant to the query, which is typical in RAG applications. The other options serve different purposes: blocking terms, masking personal data or avoiding topics, not verifying that a response is supported by the retrieved source.",
       "source": "AWS — Detect and filter harmful content by using Amazon Bedrock Guardrails (https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)"
     }
   ]

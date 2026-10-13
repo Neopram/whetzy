@@ -1,0 +1,268 @@
+{
+  "questions": [
+    {
+      "id": "q080401_r002",
+      "skill_id": "sk080401",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo compra Reserved Instances con la opción de pago No Upfront. ¿Cómo se le factura?",
+      "question_en": "A team buys Reserved Instances using the No Upfront payment option. How are they billed?",
+      "options_es": [
+        "Solo se cobran las horas en que una instancia compatible está en ejecución",
+        "El costo completo del plazo se paga al inicio y luego no se cobra más",
+        "Se paga una parte al inicio y las horas restantes se facturan con descuento",
+        "Cada hora del plazo se factura con descuento, se use o no"
+      ],
+      "options_en": [
+        "Charges apply only for hours when a matching instance is actually running",
+        "The whole cost of the term is paid at the start, with nothing billed later",
+        "A portion is paid at the start and the remaining hours are billed at a discount",
+        "Each hour of the term is billed at a discount, used or not"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con No Upfront no se exige pago inicial: se factura una tarifa horaria con descuento durante todo el plazo, se esté usando o no la Reserved Instance. Cobrar solo las horas en ejecución contradice ese cobro continuo. Pagar todo al inicio corresponde a All Upfront y pagar una parte al inicio a Partial Upfront, y ambas contradicen que aquí no se requiere pago inicial.",
+      "explanation_en": "With No Upfront, no initial payment is required, and a discounted hourly rate is billed throughout the term whether or not the Reserved Instance is actually in use. Charging only for running hours contradicts that continuous billing. Paying everything at the start is All Upfront and paying a portion at the start is Partial Upfront, and both conflict with the fact that no upfront payment is required here.",
+      "source": "AWS — Reserved Instances for Amazon EC2 overview (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html)"
+    },
+    {
+      "id": "q080402_r001",
+      "skill_id": "sk080402",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "El área de compras de una gran empresa exige que la facturación de AWS siga sus propios procesos internos de adquisición. ¿Qué función de Billing and Cost Management sirve para eso?",
+      "question_en": "The procurement department of a large company requires AWS billing to follow its own internal purchasing rules. Which Billing and Cost Management feature is meant for that?",
+      "options_es": [
+        "Categorías de costos que asignan el gasto a equipos o aplicaciones",
+        "Órdenes de compra que se ajustan a procesos de adquisición",
+        "Exportaciones personalizadas de datos de facturación y costos",
+        "Datos de asignación dividida para recursos compartidos de ECS"
+      ],
+      "options_en": [
+        "Cost categories that map spend to teams or applications",
+        "Purchase orders that fit procurement processes",
+        "Custom data exports built from billing and cost datasets",
+        "Split cost allocation data for shared ECS resources"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las órdenes de compra permiten crear y administrar pedidos de compra para que la facturación se ajuste a los procesos de adquisición de la organización. Las categorías de costos asignan el gasto a equipos o aplicaciones, las exportaciones generan conjuntos de datos personalizados y los datos de asignación dividida detallan recursos compartidos de ECS; ninguna de ellas atiende un proceso de compras.",
+      "explanation_en": "Purchase orders let you create and manage purchase orders so that billing fits the organization's procurement processes. Cost categories map spend to teams or applications, data exports produce custom datasets, and split cost allocation data adds detail for shared ECS resources; none of them addresses a purchasing process.",
+      "source": "AWS — Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080401_r003",
+      "skill_id": "sk080401",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa tiene un Compute Savings Plan y además ejecuta cargas en Spot Instances. ¿Cómo se relaciona el plan con ese uso de Spot?",
+      "question_en": "A company holds a Compute Savings Plan and also runs some workloads on Spot Instances. How does the plan relate to that Spot usage?",
+      "options_es": [
+        "El plan no cubre el uso de Spot, así que no aporta ahorro adicional",
+        "El uso de Spot se factura a la tarifa con descuento del plan, no al precio Spot",
+        "El gasto en Spot cuenta para el compromiso por hora y gana otro descuento",
+        "El uso de Spot se convierte antes a precio On-Demand para que el plan aplique"
+      ],
+      "options_en": [
+        "The plan does not cover Spot usage, so no extra savings result",
+        "Spot usage is billed at the plan's discounted rate instead of the Spot price",
+        "Spot spend counts toward the hourly commitment and earns an additional discount",
+        "Spot usage is first converted to On-Demand pricing so the plan can then apply"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las Spot Instances quedan fuera de los Savings Plans: el plan no suma ahorro sobre el que ya se logra con Spot, y el gasto en Spot tampoco se descuenta del compromiso del Compute Savings Plan. Las otras opciones suponen que el plan sí se aplica al uso de Spot, ya sea sustituyendo el precio Spot, sumando al compromiso o actuando tras una conversión, y la fuente lo descarta.",
+      "explanation_en": "A Compute Savings Plan brings no extra benefit on Spot Instance charges: Spot usage stays at the Spot price, and that spend does not count toward the plan's commitment. The three wrong options all assume some form of plan coverage, whether replacing the Spot price, adding to the commitment, or applying after a notional conversion, but the source makes clear the plan does not cover Spot usage in any of these ways.",
+      "source": "AWS — Spot Instances (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)"
+    },
+    {
+      "id": "q080402_r003",
+      "skill_id": "sk080402",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa tiene varias organizaciones de AWS independientes y quiere administrar y pagar la facturación de todas desde una sola cuenta, sin que cada organización renuncie a gestionar su propia seguridad. ¿Qué capacidad encaja mejor?",
+      "question_en": "A company runs several separate AWS organizations and wants one account to manage and pay all their bills, while each organization keeps handling its own security. Which capability fits best?",
+      "options_es": [
+        "Categorías de costos con reglas de división de cargos",
+        "Facturación consolidada dentro de una sola organización",
+        "Etiquetas de asignación de costos en recursos compartidos",
+        "Transferencia de facturación a una cuenta externa"
+      ],
+      "options_en": [
+        "Cost categories with split charge rules",
+        "Consolidated billing inside a single organization",
+        "Cost allocation tags on shared resources",
+        "Billing transfer to an external account"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La transferencia de facturación permite que una cuenta externa gestione y pague la factura consolidada de varias organizaciones desde un único punto, mientras cada una conserva el control de su seguridad. La facturación consolidada, en cambio, agrupa las cuentas de miembro de una misma organización bajo su cuenta de administración. Las categorías de costos y las etiquetas no son el mecanismo que la fuente describe para centralizar el pago de varias organizaciones.",
+      "explanation_en": "Billing transfer lets an external account manage and pay the consolidated bill of several organizations from one place, while each keeps control of its own security. Consolidated billing, by contrast, groups the member accounts of a single organization under its management account. Cost categories and tags are not the mechanism the source describes for centralizing payment across several organizations.",
+      "source": "AWS — Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080403_r001",
+      "skill_id": "sk080403",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una tienda en línea prepara el lanzamiento más importante del año y quiere que AWS le ayude a gestionar ese evento con un acompañamiento especializado. ¿Qué elemento del soporte de AWS responde a esa necesidad?",
+      "question_en": "An online retailer is preparing its biggest launch of the year and wants AWS to help it manage that event with specialized guidance. Which AWS Support item fits that need?",
+      "options_es": [
+        "Los foros de soporte, abiertos a cualquier cliente de AWS",
+        "La Support API, que automatiza la gestión de casos de soporte",
+        "AWS Countdown, para gestionar eventos de negocio críticos",
+        "Las comprobaciones de estado de servicio incluidas en Basic"
+      ],
+      "options_en": [
+        "Support forums, open to any AWS customer",
+        "The Support API, which automates support case management",
+        "AWS Countdown, for managing critical business events",
+        "Service health checks that come with Basic Support"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS Countdown es la gestión de eventos con apoyo especializado que ofrece Enterprise Support para momentos críticos del negocio, como un gran lanzamiento. Los foros y las comprobaciones de estado son funciones de Basic Support que cualquier cliente tiene, pero no sirven para acompañar un evento concreto. La Support API sirve para automatizar casos y operaciones de Trusted Advisor, no para gestionar eventos.",
+      "explanation_en": "AWS Countdown is the event management with specialized support that Enterprise Support provides for critical business moments, such as a major launch. The forums and service health checks are Basic Support features every customer has, but they do not accompany a specific event. The Support API is for automating cases and Trusted Advisor operations, not for managing events.",
+      "source": "AWS — AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403_r003",
+      "skill_id": "sk080403",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un cliente que solo tiene el plan Basic quiere consultar el estado de los servicios y recursos que afectan a sus aplicaciones. ¿Qué afirmación sobre AWS Health Dashboard es correcta?",
+      "question_en": "A customer with only the Basic plan wants to check the status of the services and resources affecting their applications. Which statement about the AWS Health Dashboard is correct?",
+      "options_es": [
+        "Queda reservado a clientes con un plan de soporte Business o Enterprise",
+        "Hay que programar una integración propia con código antes de ver el primer evento",
+        "Se usa de inmediato con un usuario autenticado, sin configurar nada",
+        "Solo muestra información cuando se activa antes Amazon EventBridge"
+      ],
+      "options_en": [
+        "It is reserved for customers on a Business or Enterprise support plan",
+        "A custom integration must be built and coded before the first event appears",
+        "It is ready for authenticated users, with no code or setup needed",
+        "It only shows information after Amazon EventBridge is enabled first"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El panel está disponible para todos los clientes, así que el plan Basic basta para usarlo. No necesita configuración previa y cualquier usuario autenticado de AWS puede abrirlo. Por eso fallan las opciones que exigen un plan superior, desarrollar una integración o activar antes otro servicio.",
+      "explanation_en": "The dashboard is open to all customers, so the Basic plan is enough to use it. It needs no prior setup, and any authenticated AWS user can open it. That rules out the options requiring a higher plan, building an integration, or enabling another service first.",
+      "source": "AWS — What is AWS Health? (https://docs.aws.amazon.com/health/latest/ug/what-is-aws-health.html)"
+    },
+    {
+      "id": "q080402_r002",
+      "skill_id": "sk080402",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un socio que revende servicios de AWS quiere mostrar a cada cliente o unidad de negocio una versión alternativa y personalizada de sus datos de facturación mensual. ¿Qué servicio lo permite?",
+      "question_en": "A partner that resells AWS services wants to show each customer or business unit an alternative, customized version of its monthly billing data. Which service makes that possible?",
+      "options_es": [
+        "AWS Cost Anomaly Detection",
+        "AWS Budgets",
+        "AWS Billing Conductor",
+        "AWS Cost Explorer"
+      ],
+      "options_en": [
+        "AWS Cost Anomaly Detection",
+        "AWS Budgets",
+        "AWS Billing Conductor",
+        "AWS Cost Explorer"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS Billing Conductor es un servicio de facturación personalizada para los flujos de showback y chargeback de socios que revenden AWS, y permite preparar una segunda versión de los datos mensuales con las tarifas que el socio decida mostrar. Las otras tres opciones están pensadas para detectar anomalías, controlar presupuestos y analizar costos, no para generar esa segunda versión de la facturación.",
+      "explanation_en": "AWS Billing Conductor is a custom billing service for the showback and chargeback workflows of partners who resell AWS, and it lets them prepare a second version of the monthly data using the rates they choose to show. The other three options are meant for spotting anomalies, controlling budgets and analyzing costs, not for producing that second version of the bill.",
+      "source": "AWS — Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402_r004",
+      "skill_id": "sk080402",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa adquirió Savings Plans y quiere que se le avise cuando no esté aprovechando por completo esos compromisos de compra. ¿Qué tipo de presupuesto de AWS Budgets debe crear?",
+      "question_en": "A company purchased Savings Plans and wants to be notified when it is not fully making use of those purchased commitments. Which AWS Budgets type should it create?",
+      "options_es": [
+        "Presupuesto de utilización de Savings Plans",
+        "Presupuesto de cobertura de Savings Plans",
+        "Presupuesto de costos con un monto mensual fijo",
+        "Presupuesto de uso para un servicio específico"
+      ],
+      "options_en": [
+        "Savings Plans utilization budget",
+        "Savings Plans coverage budget",
+        "Cost budget with a fixed monthly amount",
+        "Usage budget for a specific service"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El presupuesto de utilización de Savings Plans envía un aviso cuando el aprovechamiento cae bajo el umbral definido, lo que permite detectar planes sin usar o infrautilizados. El de cobertura mide qué porcentaje del uso elegible queda amparado por los planes, un indicador distinto; los presupuestos de costos y de uso vigilan el gasto o el consumo de servicios, no el aprovechamiento de un compromiso.",
+      "explanation_en": "A Savings Plans utilization budget sends a notification when how much of the plans you actually use drops under the threshold you set, helping you spot unused or under-utilized plans. A coverage budget tracks what share of eligible usage the plans cover, which is a different measure. Cost and usage budgets watch spending or service consumption, not how well a commitment is being used.",
+      "source": "AWS — Managing your costs with AWS Budgets (https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)"
+    },
+    {
+      "id": "q080401_r001",
+      "skill_id": "sk080401",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una startup lanzará durante unas semanas una aplicación piloto con tráfico impredecible que no puede sufrir interrupciones. ¿Qué opción de compra de EC2 es la más adecuada?",
+      "question_en": "A startup will run a pilot application for a few weeks. Its traffic is unpredictable and the app must not be interrupted. Which EC2 purchasing option is the best fit?",
+      "options_es": [
+        "Spot Instances, porque cuestan menos para cualquier tipo de carga",
+        "Reserved Instances, porque un plazo de varios años baja la tarifa por hora",
+        "On-Demand Instances, porque no exigen compromiso a largo plazo",
+        "Savings Plans, porque un gasto horario constante comprometido da descuentos"
+      ],
+      "options_en": [
+        "Spot Instances, since they cost less for any kind of workload",
+        "Reserved Instances, since a multi-year term lowers the hourly rate",
+        "On-Demand Instances, since they need no long-term commitment",
+        "Savings Plans, since a steady hourly spend commitment earns discounts"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La documentación aconseja On-Demand Instances cuando la carga es temporal, de demanda irregular y no tolera cortes, además de no pedir ningún compromiso previo. Spot Instances, Reserved Instances y Savings Plans se mencionan como alternativas para ahorrar frente a On-Demand, pero el ahorro no es lo prioritario en un piloto breve, impredecible y sin margen para interrupciones.",
+      "explanation_en": "The documentation points to On-Demand Instances when a workload is temporary, has uneven demand, and cannot tolerate being stopped, and it asks for no upfront commitment. Spot Instances, Reserved Instances, and Savings Plans are mentioned as ways to save compared with On-Demand, but savings are not the priority for a brief, unpredictable pilot with no room for interruption.",
+      "source": "AWS — Purchasing On-Demand Instances for Amazon EC2 (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html)"
+    },
+    {
+      "id": "q080403_r002",
+      "skill_id": "sk080403",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué limitación tiene el plan Basic de AWS Support respecto a las comprobaciones de la categoría de seguridad de Trusted Advisor?",
+      "question_en": "What limitation does the AWS Support Basic plan have for the Trusted Advisor checks in the Security category?",
+      "options_es": [
+        "Se actualizan solas y de forma continua, igual que en los planes de pago",
+        "Se actualizan solo si el cliente las refresca manualmente",
+        "Se actualizan cuando un ingeniero de soporte las refresca tras una solicitud por chat",
+        "Se actualizan cuando el Technical Account Manager revisa la cuenta"
+      ],
+      "options_en": [
+        "They are updated automatically and continuously, as on the paid plans",
+        "They are updated only when the customer refreshes them manually",
+        "They are updated when a support engineer refreshes them after a chat request",
+        "They are updated when the Technical Account Manager reviews the account"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En el plan Basic no existe la actualización automática de las comprobaciones, de modo que las de seguridad solo se ponen al día cuando el cliente las refresca a mano en la consola de Trusted Advisor. Por eso falla la opción de la actualización continua. Las opciones que atribuyen el refresco a un ingeniero de soporte o a un TAM no tienen respaldo en el fragmento, que indica que es el cliente quien debe hacerlo.",
+      "explanation_en": "The Basic plan has no automatic updating of checks, so the Security checks are only brought up to date when the customer refreshes them by hand in the Trusted Advisor console. That rules out the continuous-update option. The options giving the refresh to a support engineer or a TAM have no backing in the fragment, which says the customer must do it.",
+      "source": "AWS — AWS Trusted Advisor (https://docs.aws.amazon.com/awssupport/latest/user/trusted-advisor.html)"
+    },
+    {
+      "id": "q080402_r005",
+      "skill_id": "sk080402",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un analista de finanzas quiere formular en lenguaje natural la pregunta de por qué subió la factura y que los filtros y agrupaciones del informe se ajusten solos a esa consulta. ¿Qué opción se lo permite?",
+      "question_en": "A finance analyst wants to ask, in natural language, why the bill went up, and have the report filters and groupings adjust on their own to that question. Which option allows this?",
+      "options_es": [
+        "Crear un presupuesto que envíe alertas al superar un umbral",
+        "Preguntar a Amazon Q Developer dentro de Cost Explorer",
+        "Consultar en bloque la API de Price List de AWS",
+        "Usar el sitio público de la calculadora de precios"
+      ],
+      "options_en": [
+        "Creating a budget that sends alerts when a threshold is crossed",
+        "Asking Amazon Q Developer inside Cost Explorer",
+        "Querying the AWS Price List API in bulk",
+        "Using the public Pricing calculator website"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cost Explorer integra Amazon Q Developer: el usuario escribe su pregunta sobre los costos y, mientras recibe la explicación, la herramienta actualiza gráficos, tablas, filtros, agrupaciones y fechas para reflejar el análisis. Las otras tres opciones no ofrecen ese análisis conversacional sobre los costos existentes.",
+      "explanation_en": "Cost Explorer integrates Amazon Q Developer: the user types a question about their costs and, while the explanation comes back, the tool updates its charts, tables, filters, groupings and dates to match the analysis. The other three options do not offer that conversational analysis of existing costs.",
+      "source": "AWS — Analyzing your costs and usage with AWS Cost Explorer (https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html)"
+    }
+  ]
+}

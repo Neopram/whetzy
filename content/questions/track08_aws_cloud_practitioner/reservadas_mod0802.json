@@ -1,7 +1,199 @@
 {
   "questions": [
     {
+      "id": "q080203_r005",
+      "skill_id": "sk080203",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un servicio de AWS crea automáticamente un rol vinculado al servicio en tu cuenta. ¿Qué puede hacer un administrador de IAM con los permisos de ese rol?",
+      "question_en": "An AWS service automatically creates a service-linked role in your account. What can an IAM administrator do with that role's permissions?",
+      "options_es": [
+        "Ver sus permisos, pero no editarlos.",
+        "Asignarle una contraseña y claves de acceso para que el servicio pueda iniciar sesión con él.",
+        "Eliminarlo a mano de inmediato, porque el servicio no lo necesita en la cuenta.",
+        "Editar sus permisos libremente, porque el rol es propiedad de la cuenta y no del servicio."
+      ],
+      "options_en": [
+        "View its permissions, but not edit them.",
+        "Give it a password and access keys so that the service can sign in with it.",
+        "Delete it manually at once, since the service does not need it in the account.",
+        "Edit its permissions freely, because the role is owned by the account rather than the service."
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un rol vinculado al servicio pertenece al servicio, así que el administrador de IAM puede ver sus permisos pero no modificarlos. Los roles no tienen contraseña ni claves de acceso estándar de larga duración, sino credenciales temporales al asumirlos. Tampoco conviene borrarlo a mano, porque el servicio lo creó para actuar en tu nombre.",
+      "explanation_en": "A service-linked role is owned by the service, so an IAM administrator can view its permissions but cannot change them. Roles do not carry a standard password or long-term access keys; they provide temporary credentials when assumed. Deleting it by hand is also not advised, because the service created it to act on your behalf.",
+      "source": "AWS — IAM roles (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)"
+    },
+    {
+      "id": "q080201_r003",
+      "skill_id": "sk080201",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En el modelo de responsabilidad compartida, la red de la VPC la configura y la vigila el cliente. ¿Qué característica debería usar para supervisar el tráfico que llega a sus instancias EC2?",
+      "question_en": "Under the shared responsibility model, the customer configures and oversees the network of its VPC. Which feature should it use to supervise the traffic reaching its EC2 instances?",
+      "options_es": [
+        "Una ACL de red asociada a la subred",
+        "Un host bastión para dar acceso a internet a instancias privadas",
+        "Una puerta de enlace NAT para la salida a internet",
+        "VPC Flow Logs habilitados en la VPC"
+      ],
+      "options_en": [
+        "A network ACL attached to the subnet",
+        "A bastion host to give private instances internet access",
+        "A NAT gateway for outbound internet access",
+        "VPC Flow Logs enabled on the VPC"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La guía señala VPC Flow Logs como la opción para supervisar el tráfico que alcanza las instancias, y esa vigilancia de la red de la VPC le toca al cliente. Una ACL de red aporta un control general sobre la subred, y tanto el host bastión como la puerta de enlace NAT sirven para el acceso a internet desde subredes privadas; ninguno supervisa el tráfico.",
+      "explanation_en": "The guidance points to VPC Flow Logs for supervising traffic that arrives at instances, and overseeing the VPC network is the customer's side of the model. A network ACL gives coarse control over a subnet, while a bastion host and a NAT gateway provide internet access from private subnets; none of them supervises traffic.",
+      "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080203_r004",
+      "skill_id": "sk080203",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa usa roles de IAM con credenciales temporales casi en todo, pero conserva un usuario de IAM y el usuario raíz. ¿Qué recomienda AWS para esas dos identidades?",
+      "question_en": "A company uses IAM roles with temporary credentials for almost everything, but it still keeps one IAM user and the root user. What does AWS recommend for those two identities?",
+      "options_es": [
+        "Confiar en una contraseña larga en lugar de MFA",
+        "Eximirlas de MFA porque el resto usa roles",
+        "Exigir MFA en ambas identidades",
+        "Usar claves de acceso de larga duración"
+      ],
+      "options_en": [
+        "Rely on a long password instead of MFA",
+        "Exempt them from MFA because roles cover the rest",
+        "Require MFA on both identities",
+        "Use long-term access keys for both"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS prefiere roles con credenciales temporales, pero cuando hace falta un usuario de IAM o el usuario raíz recomienda exigir MFA para mayor seguridad. Que el resto de la cuenta use roles no justifica eximirlos, y la fuente no propone sustituir la MFA por una contraseña larga ni por claves de acceso.",
+      "explanation_en": "AWS prefers roles with temporary credentials, but where an IAM user or the root user is needed it recommends requiring MFA for extra security. The rest of the account using roles is no reason to exempt them, and the source does not suggest replacing MFA with a long password or access keys.",
+      "source": "AWS — Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080201_r007",
+      "skill_id": "sk080201",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué enunciado describe correctamente quién gestiona el sistema operativo y la plataforma que hay debajo de Amazon S3?",
+      "question_en": "Which statement correctly describes who runs the operating system and platform beneath Amazon S3?",
+      "options_es": [
+        "AWS los gestiona; el cliente solo usa los endpoints del servicio",
+        "Los clientes los gestionan y deben aplicarles parches como en una instancia EC2",
+        "Los clientes los gestionan, pero AWS les entrega los parches desde la consola",
+        "Un proveedor externo independiente los gestiona bajo contrato con cada cliente"
+      ],
+      "options_en": [
+        "AWS runs them; customers only reach the service through its endpoints",
+        "Customers run them and must patch them as they would on an EC2 instance",
+        "Customers run them, but AWS delivers the patches through the console",
+        "A separate third-party vendor runs them under contract with each customer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Amazon S3 es un servicio abstracto: AWS opera la capa de infraestructura, el sistema operativo y las plataformas, y el cliente accede a los endpoints para guardar y recuperar datos. Gestionar y parchear el sistema operativo es lo que le toca al cliente en una instancia EC2, no aquí. La fuente tampoco menciona a ningún proveedor externo en este reparto.",
+      "explanation_en": "S3 is an abstracted service, so AWS handles everything underneath it: the infrastructure, the OS, and the platform layers. Customers interact with it only through its endpoints to put data in and get it back. Patching a guest OS is the customer's job on EC2, but not on S3. The source also names no third-party vendor in this split of duties.",
+      "source": "AWS — Shared responsibility (https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html)"
+    },
+    {
+      "id": "q080203_r007",
+      "skill_id": "sk080203",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué ocurre con una política en línea (inline) de IAM cuando se elimina la identidad a la que está asociada?",
+      "question_en": "What happens to an IAM inline policy when the identity it belongs to is deleted?",
+      "options_es": [
+        "Permanece en la cuenta y puede asociarse a otros usuarios y grupos.",
+        "Se convierte en una política administrada por el cliente que la cuenta conserva.",
+        "Se elimina junto con la identidad.",
+        "Pasa a la cuenta de administración de AWS Organizations para su custodia."
+      ],
+      "options_en": [
+        "It stays in the account and can be attached to other users and groups.",
+        "It turns into a customer managed policy that the account keeps.",
+        "It is removed along with that identity.",
+        "It moves to the AWS Organizations management account for safekeeping."
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una política en línea está ligada a una sola identidad, con una relación de uno a uno, así que se borra cuando esa identidad se elimina. Por eso no puede quedarse en la cuenta para asociarse a otras identidades ni transformarse en otro tipo de política. Tampoco hay ninguna custodia por parte de la cuenta de administración de AWS Organizations: la fuente no describe ese mecanismo.",
+      "explanation_en": "An inline policy is tied to a single identity in a one-to-one link, so it is erased when that identity is removed. That is why it cannot linger in the account to be attached to other identities, nor turn into another kind of policy. There is also no custody by an AWS Organizations management account: the source describes no such mechanism.",
+      "source": "AWS — Policies and permissions in AWS Identity and Access Management (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)"
+    },
+    {
+      "id": "q080201_r006",
+      "skill_id": "sk080201",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En el modelo de responsabilidad compartida, ¿qué puede exigirle a un cliente un control como la protección de servicios y comunicaciones o la seguridad por zonas?",
+      "question_en": "In the shared responsibility model, what might a control such as Service and Communications Protection or Zone Security require of a customer?",
+      "options_es": [
+        "Vigilar físicamente los centros de datos de AWS donde se ejecutan los servicios que usa",
+        "Aplicar parches al sistema operativo del host y a la capa de virtualización bajo sus instancias",
+        "Reponer el hardware de red averiado dentro de las instalaciones de AWS que alojan sus cargas",
+        "Encaminar sus datos hacia zonas separadas según el entorno de seguridad"
+      ],
+      "options_en": [
+        "Keep watch over the physical datacenters where AWS runs the services the customer uses",
+        "Apply security patches to the host operating system and virtualization layer under its instances",
+        "Replace failed network hardware inside the AWS facilities that host its workloads",
+        "Route its data into separate zones based on the security environment"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El fragmento cita la protección de servicios y comunicaciones o seguridad por zonas como un control que puede obligar al cliente a encaminar o dividir en zonas sus datos según entornos de seguridad específicos. Vigilar centros de datos, parchear el host o reponer hardware de red son tareas de la infraestructura que el fragmento no atribuye al cliente en este control.",
+      "explanation_en": "The fragment names Service and Communications Protection or Zone Security as a control that might require the customer to route or zone its data according to particular security environments. Guarding datacenters, patching the host or replacing network hardware are infrastructure tasks that the fragment does not assign to the customer for this control.",
+      "source": "AWS — Shared responsibility (https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html)"
+    },
+    {
+      "id": "q080204_r006",
+      "skill_id": "sk080204",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "En el modelo de capas de seguridad de una VPC, el tráfico procedente de una puerta de enlace de internet debe llegar a una subred cuya ACL de red decidirá qué se permite entrar. ¿Qué elemento lo dirige hacia la subred adecuada?",
+      "question_en": "In a VPC's layered security model, traffic coming from an internet gateway must reach a subnet whose network ACL will decide what is allowed in. What directs that traffic to the right subnet?",
+      "options_es": [
+        "Las rutas de la tabla de enrutamiento",
+        "Las reglas del grupo de seguridad de cada instancia",
+        "Las políticas de IAM asociadas a las instancias",
+        "Los registros de VPC Flow Logs de la subred"
+      ],
+      "options_en": [
+        "The routes in the routing table",
+        "The rules of each instance's security group",
+        "The IAM policies attached to the instances",
+        "The VPC Flow Logs records of the subnet"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En el modelo de capas, el tráfico que llega desde una puerta de enlace de internet se encamina a la subred mediante las rutas de la tabla de enrutamiento. Solo después, la ACL de red de esa subred decide qué tráfico puede entrar. Las reglas del grupo de seguridad actúan en la capa de la instancia, no en el encaminamiento hacia la subred, así que no son la respuesta. Las otras dos opciones no son elementos de esas capas de seguridad de red.",
+      "explanation_en": "In the layered model, traffic arriving from an internet gateway is steered to the subnet by the routes in the routing table. Only afterwards does the subnet's network ACL decide which traffic may enter. A security group's rules apply at the instance layer, not to routing toward the subnet, so it is not the answer. The other two options are not elements of those network security layers.",
+      "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
       "id": "q080202_r002",
+      "skill_id": "sk080202",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo de seguridad quiere que ciertos hallazgos activen una respuesta por sí solos en lugar de revisarlos uno a uno a mano. ¿Qué ofrece AWS Security Hub CSPM para lograrlo?",
+      "question_en": "A security team wants certain findings to kick off a response on their own instead of being reviewed one by one by hand. What does AWS Security Hub CSPM offer to achieve this?",
+      "options_es": [
+        "Una función que descarga de AWS Artifact los informes de cumplimiento cada vez que falla un control de seguridad",
+        "Un modo de mantenimiento que apaga los recursos afectados sin necesidad de definir reglas ni integraciones",
+        "Un conjunto de reglas de automatización e integración con Amazon EventBridge para actuar ante hallazgos",
+        "Un asistente que redacta de nuevo las políticas de IAM de la cuenta tras cada análisis de seguridad"
+      ],
+      "options_en": [
+        "A feature that pulls compliance reports from AWS Artifact each time a security control fails",
+        "A maintenance mode that shuts down affected resources without defining any rules or integrations",
+        "A set of automation rules and an Amazon EventBridge integration to react to particular findings",
+        "An assistant that rewrites the account's IAM policies after every security analysis"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Security Hub CSPM ofrece reglas de automatización, por ejemplo para actualizar hallazgos críticos cuando falla una comprobación, e integración con Amazon EventBridge para activar respuestas automáticas ante hallazgos específicos. Las demás opciones describen capacidades que la fuente no atribuye al servicio.",
+      "explanation_en": "Security Hub CSPM provides automation rules, for example to update critical findings when a check fails, and an integration with Amazon EventBridge to launch automatic responses to specific findings. The other options describe capabilities that the source does not attribute to the service.",
+      "source": "AWS — Introduction to AWS Security Hub CSPM (https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html)"
+    },
+    {
+      "id": "q080202_r004",
       "skill_id": "sk080202",
       "type": "multiple_choice",
       "pool": "simulacro",
@@ -25,76 +217,124 @@
       "source": "AWS — What is AWS Audit Manager? (https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html)"
     },
     {
-      "id": "q080202_r004",
-      "skill_id": "sk080202",
+      "id": "q080203_r002",
+      "skill_id": "sk080203",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "Una empresa presenta ante su auditor un informe de AWS Artifact sobre la infraestructura de AWS. ¿Qué debe tener presente sobre la documentación de su propio cumplimiento?",
-      "question_en": "A company submits an AWS Artifact report about AWS infrastructure to its auditor. What should it keep in mind about the documents showing its own compliance?",
+      "question_es": "Un servicio de AWS crea un rol vinculado al servicio en tu cuenta. ¿Qué puede hacer un administrador de IAM con los permisos de ese rol?",
+      "question_en": "An AWS service creates a service-linked role in your account. What can an IAM administrator do with that role's permissions?",
       "options_es": [
-        "Debe prepararla u obtenerla por su cuenta, pues es responsabilidad del cliente",
-        "AWS la genera automáticamente para cada cliente a partir de los informes de AWS Artifact",
-        "Los informes de AWS Artifact bastan por sí solos para acreditar el cumplimiento de la empresa",
-        "Corresponde a los organismos de acreditación elaborarla a petición de la empresa"
+        "Consultarlos, pero no modificarlos, porque el rol pertenece al servicio",
+        "Modificarlos libremente, porque el rol está en la cuenta del administrador",
+        "Modificarlos solo después de eliminar todos los recursos que usan el rol",
+        "Ni consultarlos ni modificarlos; solo el servicio puede verlos"
       ],
       "options_en": [
-        "The company itself is responsible for preparing or getting them",
-        "AWS automatically produces them for each customer from the AWS Artifact reports",
-        "The AWS Artifact reports are enough on their own to prove the company's compliance",
-        "Accreditation bodies are expected to produce them when the company requests it"
+        "View them, but not change them, because the service owns the role",
+        "Change them freely, since the role sits in the administrator's own account",
+        "Change them only after deleting every resource that uses the role",
+        "Neither view nor change them; only the service can see them"
       ],
       "correct_index": 0,
-      "explanation_es": "AWS Artifact ofrece documentos de seguridad y cumplimiento de AWS, que sirven para demostrar el cumplimiento de la infraestructura que la empresa usa. Pero la documentación que acredita el cumplimiento de la propia empresa es responsabilidad del cliente, que debe elaborarla u obtenerla. Por eso fallan las opciones que la atribuyen a AWS, a los organismos de acreditación o a los propios informes de Artifact.",
-      "explanation_en": "AWS Artifact provides AWS security and compliance documents, which help demonstrate the compliance of the infrastructure the company uses. The documentation proving the company's own compliance, however, is the customer's responsibility to prepare or obtain. That is why the options assigning it to AWS, to accreditation bodies, or to the Artifact reports alone fail.",
-      "source": "AWS — What is AWS Artifact? (https://docs.aws.amazon.com/artifact/latest/ug/what-is-aws-artifact.html)"
+      "explanation_es": "Aunque el rol vive en tu cuenta, el servicio que lo creó conserva su propiedad; por eso un administrador de IAM puede inspeccionar sus permisos, pero no alterarlos. Las demás opciones fallan: el rol es visible para el administrador, y la fuente solo exige eliminar antes los recursos relacionados cuando se quiere borrar el rol, no para editar sus permisos.",
+      "explanation_en": "A service-linked role lives in your account, but the service that created it retains ownership, which is why an IAM administrator can inspect its permissions yet cannot alter them. The other options fail: the role is visible to the administrator, and the source requires removing related resources first only when deleting the role, not for editing its permissions.",
+      "source": "AWS — IAM roles (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)"
     },
     {
       "id": "q080202_r003",
       "skill_id": "sk080202",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "Una empresa acaba de habilitar AWS Security Hub CSPM en su cuenta. ¿Qué ocurre con los hallazgos de seguridad que ya se habían generado antes de ese momento?",
-      "question_en": "A company has just enabled AWS Security Hub CSPM in its account. What happens to security findings that were already generated before that moment?",
+      "question_es": "En AWS Audit Manager, ¿qué aporta un marco (framework) prediseñado a quien prepara una auditoría de cumplimiento?",
+      "question_en": "In AWS Audit Manager, what does a prebuilt framework give someone who is preparing a compliance audit?",
       "options_es": [
-        "Se importan de forma automática desde el historial de la cuenta y se consolidan con los hallazgos nuevos",
-        "No se detectan de forma retroactiva; solo se consolidan los generados después",
-        "Se envían a AWS Artifact para conservarlos como documentos de cumplimiento de la cuenta",
-        "Se corrigen automáticamente antes de que el servicio empiece a analizar la cuenta"
+        "Una copia de los certificados de AWS que se puede entregar directamente a los reguladores",
+        "Un conjunto de reglas que bloquea cualquier cambio que incumpla el estándar elegido",
+        "Un informe final que declara oficialmente a la empresa conforme con la norma sin revisar ninguna evidencia",
+        "Un conjunto de controles ordenados por los requisitos de la norma, con pruebas asociadas"
       ],
       "options_en": [
-        "They are imported from the account's history and consolidated with the new ones",
-        "They are not detected retroactively; only later findings are consolidated",
-        "They are sent to AWS Artifact to be kept as compliance documents",
-        "They are fixed automatically before the service starts analyzing the account"
+        "A copy of AWS's own certificates that can be handed straight to regulators",
+        "A set of rules that blocks any change that would break the chosen standard",
+        "A final report that officially declares the company compliant without reviewing any evidence",
+        "A set of controls organized by the standard's requirements, plus ways to test them"
       ],
-      "correct_index": 1,
-      "explanation_es": "Security Hub CSPM solo detecta y consolida los hallazgos generados después de habilitarlo y no recupera de forma retroactiva los anteriores. Por eso no importa el historial, no los envía a AWS Artifact ni los corrige antes de empezar.",
-      "explanation_en": "Security Hub CSPM only detects and consolidates findings generated after it is enabled, and it does not go back to pick up earlier ones. That is why it does not import the history, send findings to AWS Artifact or fix them before it starts.",
-      "source": "AWS — Introduction to AWS Security Hub CSPM (https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html)"
+      "correct_index": 3,
+      "explanation_es": "Los marcos prediseñados de Audit Manager incluyen controles con sus descripciones y procedimientos de prueba, organizados según lo que exige cada estándar o regulación. Sirven para estructurar y automatizar las evaluaciones; no son certificados de AWS, no impiden cambios ni declaran el cumplimiento por sí solos.",
+      "explanation_en": "Audit Manager's prebuilt frameworks bundle controls, each with a description and testing steps, organized around what a given standard or regulation requires. They help structure and automate assessments; they are not AWS certificates, they do not stop changes, and they do not declare compliance by themselves.",
+      "source": "AWS — What is AWS Audit Manager? (https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html)"
     },
     {
       "id": "q080203_r001",
       "skill_id": "sk080203",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "¿Qué política asociada a un rol de IAM define qué entidades principales pueden asumir ese rol?",
-      "question_en": "Which policy attached to an IAM role defines which principals are allowed to assume that role?",
+      "question_es": "Un equipo quiere verificar que las políticas que redacta son seguras y funcionales antes de usarlas. ¿Qué buena práctica de IAM cubre esa necesidad?",
+      "question_en": "A team wants to verify that the policies it writes are secure and functional before putting them to use. Which IAM best practice addresses this need?",
       "options_es": [
-        "La política basada en identidad, que concede permisos al propio rol.",
-        "El límite de permisos, que fija el máximo de permisos que el rol puede recibir.",
-        "La política de punto de conexión de VPC, que controla qué principales usan un punto de conexión.",
-        "La política de confianza del rol, que indica quién puede asumirlo."
+        "Exigir a los usuarios humanos iniciar sesión mediante federación con un proveedor de identidad",
+        "Aplicar autenticación multifactor a todos los usuarios de IAM y al usuario raíz",
+        "Delegar la gestión de permisos dentro de la cuenta con límites de permisos",
+        "Validar las políticas con IAM Access Analyzer"
       ],
       "options_en": [
-        "The identity-based policy, which grants permissions to the role itself.",
-        "The permissions boundary, which caps the maximum permissions the role can receive.",
-        "The VPC endpoint policy, which controls which principals can use an endpoint.",
-        "The role trust policy, which names the principals allowed to assume it."
+        "Require human users to sign in through federation with an identity provider",
+        "Apply multi-factor authentication to every IAM user and the root user",
+        "Delegate permissions management within the account by using permissions boundaries",
+        "Validate the policies with IAM Access Analyzer"
       ],
       "correct_index": 3,
-      "explanation_es": "Un rol necesita una política de confianza además de una política basada en identidad, y la de confianza es la que establece qué cuentas, usuarios, roles y usuarios federados pueden asumirlo. El límite de permisos solo fija el máximo que una política basada en identidad puede conceder. La política de punto de conexión de VPC se asocia a un punto de conexión, no define quién asume un rol.",
-      "explanation_en": "A role needs a trust policy in addition to an identity-based policy, and the trust policy is the one that sets which accounts, users, roles and federated users can assume it. A permissions boundary only sets the maximum an identity-based policy can grant. A VPC endpoint policy attaches to an endpoint and does not decide who assumes a role.",
-      "source": "AWS — Policies and permissions in AWS Identity and Access Management (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)"
+      "explanation_es": "La lista de buenas prácticas de IAM incluye usar IAM Access Analyzer para validar las políticas y comprobar que los permisos son seguros y funcionales. La federación, la autenticación multifactor y los límites de permisos son otras prácticas de la lista, pero ninguna se dedica a revisar la calidad de las políticas redactadas.",
+      "explanation_en": "The IAM best practices list includes using IAM Access Analyzer to validate policies so their permissions are secure and functional. Federation, multi-factor authentication and permissions boundaries are other practices on the list, but none of them is about checking the quality of the policies you have written.",
+      "source": "AWS — Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080201_r004",
+      "skill_id": "sk080201",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa construye su red con Amazon VPC y quiere saber quién protege el propio servicio VPC. ¿Qué afirmación es correcta?",
+      "question_en": "A company builds its network with Amazon VPC and wants to know who protects the VPC service itself. Which statement is correct?",
+      "options_es": [
+        "AWS lo protege con la seguridad de su red global, al ser VPC un servicio administrado",
+        "La empresa debe instalar su propio software de seguridad de red para proteger el servicio VPC en sí mismo",
+        "El servicio queda sin protección salvo que la empresa contrate un plan de soporte superior",
+        "La empresa es responsable de proteger la infraestructura global sobre la que se ejecuta el servicio VPC"
+      ],
+      "options_en": [
+        "AWS protects it with its global network security, because VPC is a managed service",
+        "The company must install its own network security software to protect the VPC service itself",
+        "The service is left unprotected unless the company buys a higher support plan",
+        "The company is responsible for protecting the global infrastructure on which the VPC service runs"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El fragmento indica que Amazon VPC, por ser un servicio administrado, está protegido por la seguridad de la red global de AWS. Por eso la empresa no tiene que instalar software propio para proteger el servicio ni asumir la protección de la infraestructura global. Tampoco hay en el fragmento ninguna condición de contratar un plan de soporte para que el servicio esté protegido.",
+      "explanation_en": "The fragment states that Amazon VPC, as a managed service, is protected by AWS global network security. That is why the company does not need to install its own software to protect the service or take on protecting the global infrastructure. Nothing in the fragment makes the service's protection depend on buying a support plan.",
+      "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204_r007",
+      "skill_id": "sk080204",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "AWS WAF y AWS Shield Advanced pueden usarse junto con AWS Firewall Manager. ¿Qué función cumple AWS Firewall Manager dentro de esa combinación?",
+      "question_en": "AWS WAF and AWS Shield Advanced can be used together with AWS Firewall Manager. What role does AWS Firewall Manager play in that combination?",
+      "options_es": [
+        "Supervisa las solicitudes web enviadas a una aplicación y controla quién accede a su contenido, filtrándolas según reglas",
+        "Protege los recursos de AWS frente a ataques de denegación de servicio distribuido en varias capas de la red y de la aplicación",
+        "Gestiona esas protecciones de forma central entre todas las cuentas y recursos, incluso los que se añaden más adelante",
+        "Cifra automáticamente el tráfico entre las aplicaciones protegidas y sus usuarios finales mediante certificados"
+      ],
+      "options_en": [
+        "It watches the web requests sent to an application and controls who can reach its content, filtering them by rules",
+        "It protects AWS resources against distributed denial of service attacks across several layers of the network and application",
+        "It manages those protections centrally across all of your accounts and resources, including ones that get added later",
+        "It automatically encrypts the traffic between the protected applications and their end users using certificates"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS Firewall Manager se encarga de administrar protecciones como AWS WAF y Shield Advanced en todas las cuentas y recursos, también cuando se añaden recursos nuevos. Supervisar solicitudes web es la tarea de AWS WAF y la defensa frente a ataques DDoS corresponde a Shield Advanced. La fuente no atribuye a Firewall Manager ninguna función de cifrado del tráfico.",
+      "explanation_en": "AWS Firewall Manager administers protections such as AWS WAF and Shield Advanced across all accounts and resources, including those added later. Monitoring web requests is the job of AWS WAF, and defending against DDoS attacks belongs to Shield Advanced. The source does not give Firewall Manager any traffic-encryption role.",
+      "source": "AWS — What are AWS WAF, AWS Shield Advanced, AWS Shield network security director and AWS Firewall Manager? (https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html)"
     },
     {
       "id": "q080204_r002",
@@ -121,6 +361,78 @@
       "source": "AWS — What is Amazon GuardDuty? (https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)"
     },
     {
+      "id": "q080203_r003",
+      "skill_id": "sk080203",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un usuario inicia sesión en AWS con sus credenciales. ¿Cómo autentica IAM a esa identidad?",
+      "question_en": "A user signs in to AWS with their credentials. How does IAM authenticate that identity?",
+      "options_es": [
+        "Evaluando el inicio de sesión contra las políticas del servicio que se va a abrir",
+        "Haciendo coincidir las credenciales con una entidad principal en la que confía la cuenta",
+        "Aceptando solo el correo y la contraseña del usuario raíz, pues otras identidades no inician sesión",
+        "Asignando al usuario a un grupo que conserva las credenciales de inicio de sesión"
+      ],
+      "options_en": [
+        "By evaluating the sign-in against the policies of the service about to be opened",
+        "By matching the credentials to a principal that the AWS account trusts",
+        "By accepting only the root user's email and password, since other identities cannot sign in",
+        "By assigning the user to a group that holds the sign-in credentials"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La autenticación consiste en cotejar las credenciales de inicio de sesión con una entidad principal (usuario de IAM, entidad federada, rol o aplicación) de confianza para la cuenta. Evaluar políticas corresponde al paso posterior de autorización. El usuario raíz no es la única identidad: IAM permite crear otras. Asignar un grupo mezcla la gestión de permisos con la autenticación, que según el fragmento es solo cotejar credenciales con una entidad principal de confianza.",
+      "explanation_en": "Authentication means checking the sign-in credentials against a principal (an IAM user, federated principal, role or application) that the account trusts. Evaluating policies belongs to the later authorization step. The root user is not the only identity, since IAM lets you set up others. Assigning a group mixes up permission management with authentication, which the fragment describes purely as matching credentials to a trusted principal.",
+      "source": "AWS — What is IAM? (https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)"
+    },
+    {
+      "id": "q080202_r005",
+      "skill_id": "sk080202",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa acaba de habilitar AWS Security Hub CSPM en su cuenta. ¿Qué ocurre con los hallazgos de seguridad que ya se habían generado antes de ese momento?",
+      "question_en": "A company has just enabled AWS Security Hub CSPM in its account. What happens to security findings that were already generated before that moment?",
+      "options_es": [
+        "Se importan de forma automática desde el historial de la cuenta y se consolidan con los hallazgos nuevos",
+        "No se detectan de forma retroactiva; solo se consolidan los generados después",
+        "Se envían a AWS Artifact para conservarlos como documentos de cumplimiento de la cuenta",
+        "Se corrigen automáticamente antes de que el servicio empiece a analizar la cuenta"
+      ],
+      "options_en": [
+        "They are imported from the account's history and consolidated with the new ones",
+        "They are not detected retroactively; only later findings are consolidated",
+        "They are sent to AWS Artifact to be kept as compliance documents",
+        "They are fixed automatically before the service starts analyzing the account"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Security Hub CSPM solo detecta y consolida los hallazgos generados después de habilitarlo y no recupera de forma retroactiva los anteriores. Por eso no importa el historial, no los envía a AWS Artifact ni los corrige antes de empezar.",
+      "explanation_en": "Security Hub CSPM only detects and consolidates findings generated after it is enabled, and it does not go back to pick up earlier ones. That is why it does not import the history, send findings to AWS Artifact or fix them before it starts.",
+      "source": "AWS — Introduction to AWS Security Hub CSPM (https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html)"
+    },
+    {
+      "id": "q080202_r006",
+      "skill_id": "sk080202",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa presenta ante su auditor un informe de AWS Artifact sobre la infraestructura de AWS. ¿Qué debe tener presente sobre la documentación de su propio cumplimiento?",
+      "question_en": "A company submits an AWS Artifact report about AWS infrastructure to its auditor. What should it keep in mind about the documents showing its own compliance?",
+      "options_es": [
+        "Debe prepararla u obtenerla por su cuenta, pues es responsabilidad del cliente",
+        "AWS la genera automáticamente para cada cliente a partir de los informes de AWS Artifact",
+        "Los informes de AWS Artifact bastan por sí solos para acreditar el cumplimiento de la empresa",
+        "Corresponde a los organismos de acreditación elaborarla a petición de la empresa"
+      ],
+      "options_en": [
+        "The company itself is responsible for preparing or getting them",
+        "AWS automatically produces them for each customer from the AWS Artifact reports",
+        "The AWS Artifact reports are enough on their own to prove the company's compliance",
+        "Accreditation bodies are expected to produce them when the company requests it"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS Artifact ofrece documentos de seguridad y cumplimiento de AWS, que sirven para demostrar el cumplimiento de la infraestructura que la empresa usa. Pero la documentación que acredita el cumplimiento de la propia empresa es responsabilidad del cliente, que debe elaborarla u obtenerla. Por eso fallan las opciones que la atribuyen a AWS, a los organismos de acreditación o a los propios informes de Artifact.",
+      "explanation_en": "AWS Artifact provides AWS security and compliance documents, which help demonstrate the compliance of the infrastructure the company uses. The documentation proving the company's own compliance, however, is the customer's responsibility to prepare or obtain. That is why the options assigning it to AWS, to accreditation bodies, or to the Artifact reports alone fail.",
+      "source": "AWS — What is AWS Artifact? (https://docs.aws.amazon.com/artifact/latest/ug/what-is-aws-artifact.html)"
+    },
+    {
       "id": "q080202_r001",
       "skill_id": "sk080202",
       "type": "multiple_choice",
@@ -145,55 +457,127 @@
       "source": "AWS — What Is AWS Config? (https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html)"
     },
     {
+      "id": "q080204_r008",
+      "skill_id": "sk080204",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa quiere entender qué protege a Amazon VPC, por ser un servicio gestionado, antes de que el cliente configure ningún control propio. ¿Qué protección recibe el servicio de base?",
+      "question_en": "A company wants to understand what protects Amazon VPC, as a managed service, before the customer configures any controls of its own. Which baseline protection does the service receive?",
+      "options_es": [
+        "Los grupos de seguridad que AWS configura por el cliente en cada subred",
+        "Un antivirus que el cliente instala en cada subred de su VPC",
+        "Un firewall de hardware dedicado que cada cliente debe adquirir",
+        "La seguridad de la red global de AWS"
+      ],
+      "options_en": [
+        "Security groups that AWS configures for each customer in every subnet",
+        "Antivirus software that the customer installs in each VPC subnet",
+        "A dedicated hardware firewall that each customer must purchase",
+        "The security of the AWS global network"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Al ser un servicio gestionado, Amazon VPC cuenta con la protección de seguridad de la red global de AWS como base. Los grupos de seguridad, el antivirus en subredes o un firewall de hardware propio no se describen como esa protección de base, y dependen de lo que el cliente decida configurar.",
+      "explanation_en": "Because it is a managed service, Amazon VPC is covered by the security of the AWS global network as its baseline. Security groups, antivirus in subnets, or a dedicated hardware firewall are not described as that baseline, and they depend on what the customer chooses to configure.",
+      "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080203_r006",
+      "skill_id": "sk080203",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una política de IAM permite a un usuario realizar una acción desde la consola de administración. ¿Qué ocurre cuando ese mismo usuario intenta la misma acción con la AWS CLI o con la API?",
+      "question_en": "An IAM policy allows a user to perform an action from the management console. What happens when that same user attempts the same action with the AWS CLI or the API?",
+      "options_es": [
+        "Se exige una política aparte, escrita solo para la línea de comandos.",
+        "Se aplica el mismo permiso con cualquier método de acceso.",
+        "Se deniega salvo que antes se creen claves de acceso del usuario raíz.",
+        "Se permite únicamente si antes se activa MFA en la consola."
+      ],
+      "options_en": [
+        "It is subject to a separate policy written only for command-line access.",
+        "It is governed by the same permission, whatever the access method.",
+        "It is denied unless root user access keys are created first.",
+        "It is allowed only if MFA is turned on for the console first."
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las políticas de IAM definen el permiso para una acción con independencia de cómo se realice la operación: consola, CLI o API. Por eso no hace falta una política específica para la línea de comandos. Las otras opciones inventan requisitos (claves del usuario raíz, MFA previo en la consola) que la fuente no menciona.",
+      "explanation_en": "IAM policies define the permission for an action independently of how the operation is carried out: console, CLI or API. A separate command-line policy is therefore unnecessary. The other options invent requirements, such as root user keys or prior console MFA, that the source does not describe.",
+      "source": "AWS — Policies and permissions in AWS Identity and Access Management (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)"
+    },
+    {
+      "id": "q080202_r007",
+      "skill_id": "sk080202",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Una empresa usa AWS Audit Manager para preparar una auditoría. ¿Qué afirmación sobre lo que hace el servicio es correcta?",
+      "question_en": "A company uses AWS Audit Manager to prepare for an audit. Which statement about what the service does is correct?",
+      "options_es": [
+        "Evalúa por sí mismo el cumplimiento de la empresa y puede sustituir a un asesor legal",
+        "Solo recopila evidencia de servicios de AWS y no permite incorporar la de entornos propios",
+        "Ayuda a reunir evidencia, pero no evalúa por sí mismo el cumplimiento de la empresa",
+        "Garantiza que la evidencia reunida cubra toda la información que cualquier auditoría exija"
+      ],
+      "options_en": [
+        "It assesses the company's compliance on its own and can replace legal or compliance advisors",
+        "It only collects evidence from AWS services and cannot take in evidence from other environments",
+        "It helps gather evidence but does not itself assess whether the company is compliant",
+        "It guarantees the gathered evidence covers all the information any audit could require"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Audit Manager ayuda a recopilar evidencia relevante para verificar el cumplimiento, pero no evalúa el cumplimiento en sí, y esa evidencia puede no incluir todo lo que una auditoría necesita. Tampoco sustituye a asesores legales ni a expertos en cumplimiento. Además, permite subir y gestionar evidencia de entornos locales o multinube, así que la opción que lo niega es falsa.",
+      "explanation_en": "Audit Manager helps collect evidence that bears on verifying compliance, but it does not assess compliance itself, and the evidence it gathers may leave gaps for what an audit needs. It cannot replace legal advisors or compliance professionals. It also accepts evidence uploaded from on-premises or multicloud setups, so the option denying that is false.",
+      "source": "AWS — What is AWS Audit Manager? (https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html)"
+    },
+    {
       "id": "q080204_r004",
       "skill_id": "sk080204",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "Un equipo define una nueva regla en AWS WAF y teme bloquear a usuarios legítimos. ¿Cómo puede comprobar el efecto de la regla antes de aplicarla?",
-      "question_en": "A team defines a new AWS WAF rule and worries it may block legitimate users. How can it check the rule's effect before enforcing it?",
+      "question_es": "¿Qué plan de protección de Amazon GuardDuty está pensado para identificar el robo o la destrucción de datos en los buckets de Amazon S3?",
+      "question_en": "Which Amazon GuardDuty protection plan is meant to identify the theft or destruction of data in Amazon S3 buckets?",
       "options_es": [
-        "Configurarla para bloquear las solicitudes coincidentes y revisar después qué usuarios legítimos resultaron afectados",
-        "Configurarla para exigir una verificación CAPTCHA a todas las solicitudes, coincidan o no con el criterio",
-        "Configurarla para permitir todo el tráfico excepto el que coincida y comprobar si los atacantes se detienen",
-        "Configurarla con la acción Count para registrar las solicitudes coincidentes sin cambiar su tratamiento"
+        "EKS Protection, que analiza los registros de auditoría de Kubernetes de los clústeres de Amazon EKS",
+        "Malware Protection for EC2, que escanea los volúmenes de EBS asociados a las instancias de EC2",
+        "S3 Protection, que identifica riesgos de exfiltración y destrucción de datos en los buckets de S3",
+        "Runtime Monitoring, que analiza eventos del sistema operativo en cargas de trabajo de EKS, EC2 y ECS"
       ],
       "options_en": [
-        "Set it to block matching requests, then check afterward which legitimate users were affected",
-        "Set it to require a CAPTCHA check on every request, whether or not it matches the criteria",
-        "Set it to allow all traffic except what matches, then watch whether attackers are stopped",
-        "Set it to Count so matching requests are tracked without changing how they are handled"
+        "EKS Protection, which analyzes Kubernetes audit logs from Amazon EKS clusters",
+        "Malware Protection for EC2, which scans the EBS volumes attached to EC2 instances",
+        "S3 Protection, which flags data exfiltration and destruction risks in S3 buckets",
+        "Runtime Monitoring, which analyzes operating system events on EKS, EC2, and ECS workloads"
       ],
-      "correct_index": 3,
-      "explanation_es": "La acción Count permite seguir las solicitudes que cumplen un criterio sin alterar cómo se tratan, y sirve para probar reglas nuevas antes de pasarlas a permitir o bloquear. Bloquear de inmediato ya aplica la regla y puede afectar a usuarios reales, el CAPTCHA es un control contra bots que no sirve para probar, y permitir todo salvo lo coincidente también es aplicar la regla.",
-      "explanation_en": "The Count action lets you track requests that meet a criterion without altering how they are handled, which makes it suited to testing new rules before switching them to allow or block. Blocking right away already enforces the rule and can hit real users, CAPTCHA is a bot control rather than a testing tool, and allowing everything except matches is also enforcement.",
-      "source": "AWS — What are AWS WAF, AWS Shield Advanced, AWS Shield network security director and AWS Firewall Manager? (https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html)"
+      "correct_index": 2,
+      "explanation_es": "S3 Protection es el plan que identifica riesgos como la exfiltración y los intentos de destrucción de datos en los buckets de S3. EKS Protection se centra en los registros de auditoría de Kubernetes, Malware Protection for EC2 escanea volúmenes de EBS y Runtime Monitoring observa eventos del sistema operativo, así que ninguno está orientado a los datos de S3.",
+      "explanation_en": "S3 Protection is the plan that flags risks like data exfiltration and attempts to destroy data in S3 buckets. EKS Protection focuses on Kubernetes audit logs, Malware Protection for EC2 scans EBS volumes, and Runtime Monitoring watches operating system events, so none of them is aimed at S3 data.",
+      "source": "AWS — What is Amazon GuardDuty? (https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)"
     },
     {
       "id": "q080201_r001",
       "skill_id": "sk080201",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "Una empresa construye su red con Amazon VPC y quiere saber quién protege el propio servicio VPC. ¿Qué afirmación es correcta?",
-      "question_en": "A company builds its network with Amazon VPC and wants to know who protects the VPC service itself. Which statement is correct?",
+      "question_es": "Una empresa almacena archivos en Amazon S3, un servicio abstraído. ¿Cómo trabaja la empresa con ese servicio?",
+      "question_en": "A company stores files in Amazon S3, an abstracted service. How does the company work with that service?",
       "options_es": [
-        "AWS lo protege con la seguridad de su red global, al ser VPC un servicio administrado",
-        "La empresa debe instalar su propio software de seguridad de red para proteger el servicio VPC en sí mismo",
-        "El servicio queda sin protección salvo que la empresa contrate un plan de soporte superior",
-        "La empresa es responsable de proteger la infraestructura global sobre la que se ejecuta el servicio VPC"
+        "Usa los puntos de acceso del servicio para guardar y recuperar datos",
+        "Entra al sistema operativo invitado para instalar parches de seguridad",
+        "Configura un grupo de seguridad como firewall en cada servidor",
+        "Instala y mantiene utilidades de aplicación sobre las instancias del servicio"
       ],
       "options_en": [
-        "AWS protects it with its global network security, because VPC is a managed service",
-        "The company must install its own network security software to protect the VPC service itself",
-        "The service is left unprotected unless the company buys a higher support plan",
-        "The company is responsible for protecting the global infrastructure on which the VPC service runs"
+        "Uses the service endpoints to store and retrieve data",
+        "Logs in to the guest operating system to apply security patches",
+        "Configures a security group firewall on every server",
+        "Installs and maintains utility software on the service's instances"
       ],
       "correct_index": 0,
-      "explanation_es": "El fragmento indica que Amazon VPC, por ser un servicio administrado, está protegido por la seguridad de la red global de AWS. Por eso la empresa no tiene que instalar software propio para proteger el servicio ni asumir la protección de la infraestructura global. Tampoco hay en el fragmento ninguna condición de contratar un plan de soporte para que el servicio esté protegido.",
-      "explanation_en": "The fragment states that Amazon VPC, as a managed service, is protected by AWS global network security. That is why the company does not need to install its own software to protect the service or take on protecting the global infrastructure. Nothing in the fragment makes the service's protection depend on buying a support plan.",
-      "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+      "explanation_es": "En un servicio abstraído como S3, AWS se encarga de las capas que hay debajo, así que el cliente solo se conecta a los puntos de acceso para guardar y recuperar sus datos. Parchear el sistema operativo invitado, definir grupos de seguridad por servidor e instalar utilidades son tareas propias de servicios como EC2, donde el cliente administra instancias.",
+      "explanation_en": "With an abstracted service such as S3, AWS handles the layers underneath, so the customer simply connects to the endpoints to put data in and get it back. Patching a guest operating system, setting security groups per server, and installing utilities are tasks tied to services like EC2, where the customer manages instances.",
+      "source": "AWS — Shared responsibility (https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html)"
     },
     {
-      "id": "q080201_r002",
+      "id": "q080201_r005",
       "skill_id": "sk080201",
       "type": "multiple_choice",
       "pool": "simulacro",
@@ -217,27 +601,75 @@
       "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
     },
     {
+      "id": "q080204_r005",
+      "skill_id": "sk080204",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Un equipo define una nueva regla en AWS WAF y teme bloquear a usuarios legítimos. ¿Cómo puede comprobar el efecto de la regla antes de aplicarla?",
+      "question_en": "A team defines a new AWS WAF rule and worries it may block legitimate users. How can it check the rule's effect before enforcing it?",
+      "options_es": [
+        "Configurarla para bloquear las solicitudes coincidentes y revisar después qué usuarios legítimos resultaron afectados",
+        "Configurarla para exigir una verificación CAPTCHA a todas las solicitudes, coincidan o no con el criterio",
+        "Configurarla para permitir todo el tráfico excepto el que coincida y comprobar si los atacantes se detienen",
+        "Configurarla con la acción Count para registrar las solicitudes coincidentes sin cambiar su tratamiento"
+      ],
+      "options_en": [
+        "Set it to block matching requests, then check afterward which legitimate users were affected",
+        "Set it to require a CAPTCHA check on every request, whether or not it matches the criteria",
+        "Set it to allow all traffic except what matches, then watch whether attackers are stopped",
+        "Set it to Count so matching requests are tracked without changing how they are handled"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La acción Count permite seguir las solicitudes que cumplen un criterio sin alterar cómo se tratan, y sirve para probar reglas nuevas antes de pasarlas a permitir o bloquear. Bloquear de inmediato ya aplica la regla y puede afectar a usuarios reales, el CAPTCHA es un control contra bots que no sirve para probar, y permitir todo salvo lo coincidente también es aplicar la regla.",
+      "explanation_en": "The Count action lets you track requests that meet a criterion without altering how they are handled, which makes it suited to testing new rules before switching them to allow or block. Blocking right away already enforces the rule and can hit real users, CAPTCHA is a bot control rather than a testing tool, and allowing everything except matches is also enforcement.",
+      "source": "AWS — What are AWS WAF, AWS Shield Advanced, AWS Shield network security director and AWS Firewall Manager? (https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html)"
+    },
+    {
+      "id": "q080201_r002",
+      "skill_id": "sk080201",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "Respecto a la gestión de la configuración, ¿qué reparto de tareas sigue el modelo de responsabilidad compartida?",
+      "question_en": "Regarding configuration management, which division of work follows the shared responsibility model?",
+      "options_es": [
+        "Los clientes configuran los dispositivos de infraestructura de AWS, mientras que AWS configura los sistemas operativos invitados, las bases de datos y las aplicaciones que ellos ejecutan",
+        "AWS configura todos los componentes, incluidas las bases de datos y aplicaciones del cliente, por lo que este no tiene tareas de configuración",
+        "AWS configura sus propios dispositivos de infraestructura; los clientes configuran sus sistemas operativos invitados, bases de datos y aplicaciones propias",
+        "Los clientes configuran todo, incluidos los dispositivos de infraestructura de AWS, porque la configuración nunca se comparte entre las partes"
+      ],
+      "options_en": [
+        "Customers configure AWS infrastructure devices, while AWS configures the guest operating systems, databases, and applications they run",
+        "AWS configures all components, including customers' databases and applications, so customers have no configuration duties at all",
+        "AWS configures its own infrastructure devices; customers configure their guest operating systems, databases, and applications",
+        "Customers configure everything, including AWS infrastructure devices, because configuration is never shared between the parties"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La gestión de la configuración es un control compartido: AWS se ocupa de la configuración de sus propios dispositivos de infraestructura, y el cliente configura sus sistemas operativos invitados, bases de datos y aplicaciones. Las opciones que invierten el reparto o lo asignan por completo a una sola parte contradicen esa división.",
+      "explanation_en": "Configuration management is a shared control: AWS is in charge of setting up its own infrastructure devices, while customers bear responsibility for their guest operating systems, databases, and applications. The options that swap the roles or give the whole task to one party contradict that division.",
+      "source": "AWS — Shared responsibility (https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html)"
+    },
+    {
       "id": "q080204_r003",
       "skill_id": "sk080204",
       "type": "multiple_choice",
       "pool": "simulacro",
-      "question_es": "¿Qué plan de protección de Amazon GuardDuty está pensado para identificar el robo o la destrucción de datos en los buckets de Amazon S3?",
-      "question_en": "Which Amazon GuardDuty protection plan is meant to identify the theft or destruction of data in Amazon S3 buckets?",
+      "question_es": "Un equipo quiere usar Malware Protection for S3 sin activar el resto del servicio Amazon GuardDuty. ¿Qué afirmación es correcta?",
+      "question_en": "A team wants to use Malware Protection for S3 without turning on the rest of the Amazon GuardDuty service. Which statement is correct?",
       "options_es": [
-        "EKS Protection, que analiza los registros de auditoría de Kubernetes de los clústeres de Amazon EKS",
-        "Malware Protection for EC2, que escanea los volúmenes de EBS asociados a las instancias de EC2",
-        "S3 Protection, que identifica riesgos de exfiltración y destrucción de datos en los buckets de S3",
-        "Runtime Monitoring, que analiza eventos del sistema operativo en cargas de trabajo de EKS, EC2 y ECS"
+        "No es posible: todos los planes de protección, incluido este, exigen activar antes el servicio GuardDuty",
+        "Es posible: este plan puede usarse por separado, mientras que los demás sí exigen activar GuardDuty",
+        "Es posible solo si antes se activa el plan Runtime Monitoring en las cuentas de la organización",
+        "Es posible solo si la cuenta se administra con AWS Organizations y no con el método de invitación"
       ],
       "options_en": [
-        "EKS Protection, which analyzes Kubernetes audit logs from Amazon EKS clusters",
-        "Malware Protection for EC2, which scans the EBS volumes attached to EC2 instances",
-        "S3 Protection, which flags data exfiltration and destruction risks in S3 buckets",
-        "Runtime Monitoring, which analyzes operating system events on EKS, EC2, and ECS workloads"
+        "It is not possible: every protection plan, including this one, requires GuardDuty to be enabled first",
+        "It is possible: this plan runs separately, while every other plan needs GuardDuty enabled",
+        "It is possible only if the Runtime Monitoring plan is first turned on for the organization's accounts",
+        "It is possible only if the account is managed through AWS Organizations rather than the invitation method"
       ],
-      "correct_index": 2,
-      "explanation_es": "S3 Protection es el plan que identifica riesgos como la exfiltración y los intentos de destrucción de datos en los buckets de S3. EKS Protection se centra en los registros de auditoría de Kubernetes, Malware Protection for EC2 escanea volúmenes de EBS y Runtime Monitoring observa eventos del sistema operativo, así que ninguno está orientado a los datos de S3.",
-      "explanation_en": "S3 Protection is the plan that flags risks like data exfiltration and attempts to destroy data in S3 buckets. EKS Protection focuses on Kubernetes audit logs, Malware Protection for EC2 scans EBS volumes, and Runtime Monitoring watches operating system events, so none of them is aimed at S3 data.",
+      "correct_index": 1,
+      "explanation_es": "Malware Protection for S3 se puede usar de forma independiente, sin habilitar el servicio GuardDuty; en cambio, los demás planes de protección sí requieren que GuardDuty esté activado. Por eso no es cierto que todos los planes lo exijan, y ni Runtime Monitoring ni el método de administración de varias cuentas son requisitos para esta excepción.",
+      "explanation_en": "Malware Protection for S3 can be used independently, without enabling the GuardDuty service; every other protection plan, however, requires GuardDuty to be enabled. So it is not true that all plans require it, and neither Runtime Monitoring nor the multi-account management method is a prerequisite for this exception.",
       "source": "AWS — What is Amazon GuardDuty? (https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)"
     },
     {
@@ -263,6 +695,30 @@
       "explanation_es": "AWS recomienda AWS Virtual Private Network o Direct Connect para establecer conexiones privadas entre las redes remotas y las VPC. El host bastión y la puerta de enlace NAT sirven para que las instancias de subredes privadas salgan a internet, Network Firewall protege las subredes de amenazas de red y VPC Flow Logs solo monitorea el tráfico; ninguno crea un enlace privado con una red remota.",
       "explanation_en": "AWS recommends AWS Virtual Private Network or Direct Connect to set up private connections between remote networks and VPCs. A bastion host or NAT gateway gives instances in private subnets a path to the internet, Network Firewall protects subnets from network threats, and VPC Flow Logs only monitors traffic; none of them builds a private link to a remote network.",
       "source": "AWS — Infrastructure security in Amazon VPC (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080203_r008",
+      "skill_id": "sk080203",
+      "type": "multiple_choice",
+      "pool": "simulacro",
+      "question_es": "¿Qué política asociada a un rol de IAM define qué entidades principales pueden asumir ese rol?",
+      "question_en": "Which policy attached to an IAM role defines which principals are allowed to assume that role?",
+      "options_es": [
+        "La política basada en identidad, que concede permisos al propio rol.",
+        "El límite de permisos, que fija el máximo de permisos que el rol puede recibir.",
+        "La política de punto de conexión de VPC, que controla qué principales usan un punto de conexión.",
+        "La política de confianza del rol, que indica quién puede asumirlo."
+      ],
+      "options_en": [
+        "The identity-based policy, which grants permissions to the role itself.",
+        "The permissions boundary, which caps the maximum permissions the role can receive.",
+        "The VPC endpoint policy, which controls which principals can use an endpoint.",
+        "The role trust policy, which names the principals allowed to assume it."
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un rol necesita una política de confianza además de una política basada en identidad, y la de confianza es la que establece qué cuentas, usuarios, roles y usuarios federados pueden asumirlo. El límite de permisos solo fija el máximo que una política basada en identidad puede conceder. La política de punto de conexión de VPC se asocia a un punto de conexión, no define quién asume un rol.",
+      "explanation_en": "A role needs a trust policy in addition to an identity-based policy, and the trust policy is the one that sets which accounts, users, roles and federated users can assume it. A permissions boundary only sets the maximum an identity-based policy can grant. A VPC endpoint policy attaches to an endpoint and does not decide who assumes a role.",
+      "source": "AWS — Policies and permissions in AWS Identity and Access Management (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)"
     }
   ]
 }

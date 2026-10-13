@@ -52,7 +52,7 @@ profundidad de producto*, no adquisición.
 | Tracks | **35** (track01–23 + track26–30 + track40–46) | `python scripts/check_docs.py` |
 | Módulos (unidad de presentación en la web; el plan mide skills, ADR-54) | **174** | ídem |
 | Skills | **730** | ídem |
-| Preguntas | **11.964** | `python scripts/check_question_bank.py` |
+| Preguntas | **12.037** | `python scripts/check_question_bank.py` |
 | Lecciones | **730** (una por skill: las 730 skills tienen lección) | `python scripts/catalog_coverage.py --json` |
 | Glosario | **1.058** | `check_docs.py` |
 | Ejecutables (las que se ejecutan de verdad: `fill_blank_exec`, `fix_bug`, `sql_exec`, `js_exec`; ADR-61 §23 prop.) | **7** tracks ≥ 15 % (01, 02, 04, 06, 07, 09 y 12 — este, 20 %); track03 13,4 %, track13 4,8 %, track14 4,5 %, track45 3,9 %, track43 3,0 %, track40 2,1 %; 0 % en track16–23, track26–30, track41, track42, track44 y track46; exentos track05, 08, 10, 11 y 15 (ADR-9). El 2026-10-01 se quitaron 216 «ejecutables» que daban correcto sin escribir nada (sin hueco `___` o con el hueco vacío válido) y pasaron a `fill_blank`, que es lo que eran: track16 decía 44,9 % y track17 36,7 %. El 2026-10-02, 24 que pasaban en CPython no podían resolverse en el navegador (hilos, `asyncio.run`, `sqlite3`, `tempfile`): 7 se reescribieron para el sandbox, 3 pasaron a `sql_exec` y 14 a `mcq`; `frontend/scripts/check-exec-pyodide.mjs` los corre en Pyodide | `check_question_bank.py`, `check-exec-pyodide.mjs` |
@@ -554,7 +554,7 @@ agente y no reproducido (probable); el resto de cifras antiguas se retiraron.
 | Brilliant | 14 cursos de CS, 35 de matemáticas | curso | [A] brilliant.org/topics/coding |
 | Mimo | 4 rutas de carrera + 8 cursos; lecciones de 5 min | ruta | [A] mimo.org |
 | Tutorials Dojo / Udemy (AWS) | 6 simulacros × 65 = 390 preguntas por examen (Maarek, Bonso); TD: 7–9 simulacros cronometrados | pregunta | [A] (Udemy devolvió 403) |
-| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 730 skills · 11.964 preguntas | skill | `catalog_coverage.py` |
+| **Whetzy** | 24 tracks de aprendizaje + 11 certificaciones · 730 skills · 12.037 preguntas | skill | `catalog_coverage.py` |
 
 **Lectura honesta (2026-10-01, ADR-54):**
 - En **amplitud** Whetzy ya supera a su competencia directa: Boot.dev enseña en 3 rutas y
