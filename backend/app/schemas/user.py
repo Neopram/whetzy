@@ -86,6 +86,7 @@ class UserRead(UserBase):
     onboarding_experience: int | None = None
     onboarding_goal: int | None = None
     onboarding_weekly_time: int | None = None
+    target_track_id: str | None = None
 
 
 class Token(BaseModel):

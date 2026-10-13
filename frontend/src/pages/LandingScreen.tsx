@@ -243,7 +243,7 @@ export default function LandingScreen() {
                 <span className={styles.dotPink} />
                 <span className={styles.dotWhite} />
                 <span className={styles.dotMuted} />
-                <span className={styles.codeFilename}>scheduler.py</span>
+                <span className={styles.codeFilename}>quiz.py</span>
               </div>
               <pre className={styles.codeContent}>
                 <span className={styles.codeComment}>{t('landing.codeComment')}</span>
