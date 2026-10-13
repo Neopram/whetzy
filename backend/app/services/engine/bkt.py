@@ -51,19 +51,27 @@ class BKTModel:
         return self.skill_params.get(skill_id, self.default_params)
 
     def update(
-        self, state: SkillState, correct: bool,
+        self, state: SkillState, correct: bool, p_guess: float | None = None,
     ) -> SkillState:
+        """Forward step after one answer.
+
+        `p_guess` overrides P(G) for this observation: a true/false item is
+        guessed half the time and a four-option one a quarter, so one global
+        0.25 over-credits lucky true/false answers (D3). `None` keeps the
+        skill's own P(G).
+        """
         params = self.get_params(state.skill_id)
+        p_g = params.p_g if p_guess is None else p_guess
         p_l = state.p_known
 
         if correct:
             p_correct_given_known = 1.0 - params.p_s
-            p_correct_given_unknown = params.p_g
+            p_correct_given_unknown = p_g
             numerator = p_l * p_correct_given_known
             denominator = numerator + (1.0 - p_l) * p_correct_given_unknown
         else:
             p_wrong_given_known = params.p_s
-            p_wrong_given_unknown = 1.0 - params.p_g
+            p_wrong_given_unknown = 1.0 - p_g
             numerator = p_l * p_wrong_given_known
             denominator = numerator + (1.0 - p_l) * p_wrong_given_unknown
 

@@ -65,6 +65,20 @@ CANDIDATE_POOL_SIZE = 5
 _EXEC_TYPES = frozenset({"fill_blank_exec", "fix_bug", "fill_blank", "sql_exec", "js_exec"})
 
 
+def guess_rate(question: Question) -> float | None:
+    """P(G) for this item, from its format alone (D3, no calibration data yet).
+
+    true_false is a coin toss (0.5); an item with options is 1/n. Free-answer
+    types return None and keep BKT's default: there is no option to land on
+    by luck, and lowering their P(G) without data would be a guess too.
+    """
+    if question.type == "true_false":
+        return 0.5
+    if question.correct_index is not None and question.options_es and len(question.options_es) >= 2:
+        return 1.0 / len(question.options_es)
+    return None
+
+
 def _now() -> datetime:
     return datetime.now(UTC)
 
@@ -149,7 +163,7 @@ async def apply_answer_to_skill_state(
         attempts=state.attempts,
         correct=state.correct_count,
     )
-    bkt.update(bkt_state, correct)
+    bkt.update(bkt_state, correct, p_guess=guess_rate(question))
     state.p_known = bkt_state.p_known
     state.attempts = bkt_state.attempts
     state.correct_count = bkt_state.correct
@@ -376,7 +390,14 @@ async def _select_skill(
             .select_from(Response)
             .join(Question, Response.question_id == Question.id)
             .join(StudySession, Response.session_id == StudySession.id)
-            .where(StudySession.user_id == user.id)
+            .where(
+                StudySession.user_id == user.id,
+                # Same evidence as the BKT arm (C3): placement answers seed
+                # UserSkillState once (`_seed_skill_states`) and never go
+                # through `bkt.update`, so the DKT arm must not read them either
+                # or the A/B compares two different histories.
+                StudySession.mode != "placement",
+            )
             .order_by(Response.created_at.desc())
             .limit(100)
         )
@@ -722,7 +743,7 @@ async def submit_answer(
         bkt.update_unknown(bkt_state)
         state.unknown_count += 1
     else:
-        bkt.update(bkt_state, correct)
+        bkt.update(bkt_state, correct, p_guess=guess_rate(question))
     state.p_known = bkt_state.p_known
     state.attempts = bkt_state.attempts
     state.correct_count = bkt_state.correct
@@ -937,7 +958,7 @@ async def apply_exam_evidence(
         attempts=state.attempts,
         correct=state.correct_count,
     )
-    bkt.update(bkt_state, correct)
+    bkt.update(bkt_state, correct, p_guess=guess_rate(question))
     state.p_known = max(bkt_state.p_known, mastery_before_this_attempt)
     state.attempts = bkt_state.attempts
     state.correct_count = bkt_state.correct
