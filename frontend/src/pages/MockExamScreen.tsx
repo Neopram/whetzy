@@ -13,6 +13,7 @@ import { CertificateCard } from '../components/certificate/CertificateCard';
 import { ExamSitting } from '../components/exam/ExamSitting';
 import { CERTIFICATION_PRICE_USD } from '../lib/plans';
 import { checkoutHref } from '../lib/paddle';
+import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
 import styles from './MockExamScreen.module.css';
 
 type Phase = 'intro' | 'running' | 'grading' | 'result';
@@ -133,6 +134,7 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
     return (
       <div className={styles.screen}>
         <h1 className={styles.title}>{t('mockExam.title')}</h1>
+        <RetiredCertNotice trackId={trackId} />
         <p className={styles.intro}>{t('mockExam.intro')}</p>
         <p className={styles.format}>
           {t('mockExam.format', { count: questionCount, minutes: durationMinutes })}

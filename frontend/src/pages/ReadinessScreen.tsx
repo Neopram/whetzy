@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
-import { ReadinessGauge } from '../components/common/ReadinessGauge';
+import { bandForDomain, examBand, MIN_EVIDENCE_ANSWERS } from '../lib/evidenceBand';
 import { content as contentApi, exams, type CertificationReadiness, type DomainReadiness, type TrackRead } from '../services/api';
+import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
 import styles from './ReadinessScreen.module.css';
 
 interface Props {
@@ -12,17 +13,15 @@ interface Props {
 }
 
 // El mismo umbral que usa el backend para marcar un dominio «listo»
-// (exams.py, READY_THRESHOLD) y el que dibuja la marca del arco.
+// (exams.py, READY_THRESHOLD). Solo ordena la palanca: no se enseña (ADR-60).
 const READY_THRESHOLD = 0.75;
-
-const pct = (x: number) => Math.round(x * 100);
 
 /** El dominio que más acerca al aprobado: peso × lo que le falta hasta el
  *  umbral. Un dominio pesado a medias gana a uno ligero a cero. */
 function biggestLever(domains: DomainReadiness[]): DomainReadiness | undefined {
   return [...domains]
     .filter((d) => !d.ready)
-    .sort((a, b) => b.weight_pct * (READY_THRESHOLD - b.p_known_mean) - a.weight_pct * (READY_THRESHOLD - a.p_known_mean))[0];
+    .sort((a, b) => b.weight_pct * (READY_THRESHOLD - (b.p_known_mean ?? 0)) - a.weight_pct * (READY_THRESHOLD - (a.p_known_mean ?? 0)))[0];
 }
 
 export function ReadinessScreen({ trackId, onExit }: Props) {
@@ -66,14 +65,14 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
     );
   }
 
-  const overall = pct(data.overall_p_known);
+  // ADR-60 / D-16: estado con su evidencia, no porcentaje del modelo.
+  const band = examBand(data.domains.map(bandForDomain));
+  const answers = data.domains.reduce((sum, d) => sum + (d.answers ?? 0), 0);
+  const correct = data.domains.reduce((sum, d) => sum + (d.correct ?? 0), 0);
   const domainsReady = data.domains.filter((d) => d.ready).length;
   const domains = [...data.domains].sort((a, b) => b.weight_pct - a.weight_pct);
   const lever = biggestLever(data.domains);
   const name = (d: DomainReadiness) => (lang === 'en' ? d.name_en : d.name_es);
-  // Sin ninguna habilidad practicada el porcentaje es el punto de partida del
-  // modelo (el «prior» de BKT), no una medida del alumno: se dice así.
-  const measured = data.domains.some((d) => d.skills_assessed > 0);
 
   return (
     <div className={styles.screen}>
@@ -85,26 +84,29 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
         </div>
       </header>
 
+      <RetiredCertNotice trackId={trackId} />
+
       <section className={styles.hero} aria-label={t('readiness.title')}>
-        <ReadinessGauge
-          value={overall}
-          label={t('readiness.gaugeLabel')}
-          ariaLabel={`${t('readiness.gaugeLabel')}: ${overall} %`}
-          threshold={pct(READY_THRESHOLD)}
-        >
-          <p className={styles.gaugeMeta}>
-            <strong>{domainsReady} / {data.domains.length}</strong> {t('readiness.domainsReadyShort')}
-          </p>
-        </ReadinessGauge>
-        <p className={styles.threshold}>{t('readiness.threshold', { pct: pct(READY_THRESHOLD) })}</p>
-        {!measured && <p className={styles.prior}>{t('readiness.priorNote', { pct: overall })}</p>}
+        <p className={styles.eyebrow}>{t('readiness.gaugeLabel')}</p>
+        <p className={`${styles.bandName} ${band === 'strong' ? styles.bandStrong : ''}`} data-testid="readiness-band">
+          {t(`bands.${band}`)}
+        </p>
+        <p className={styles.gaugeMeta}>
+          {t('bands.evidence', { answers, correct })} ·{' '}
+          <strong>{domainsReady} / {data.domains.length}</strong> {t('readiness.domainsReadyShort')}
+        </p>
+        <p className={styles.threshold}>
+          {band === 'insufficient'
+            ? t('readiness.whyInsufficient', { n: MIN_EVIDENCE_ANSWERS })
+            : t(`bands.why.${band}`)}
+        </p>
       </section>
 
       {lever && (
         <section className={styles.lever} aria-label={t('readiness.lever')}>
           <p className={styles.leverLabel}>{t('readiness.lever')}</p>
           <p className={styles.leverBody}>
-            {t('readiness.leverBody', { name: name(lever), weight: lever.weight_pct, pct: pct(lever.p_known_mean) })}
+            {t('readiness.leverBody', { name: name(lever), weight: lever.weight_pct, band: t(`bands.${bandForDomain(lever)}`) })}
           </p>
           <button type="button" className={styles.btnPrimary} onClick={() => startQuiz('study', 10, { trackId })}>
             {t('readiness.practice')}
@@ -118,25 +120,14 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
           <li key={d.domain_id} className={styles.domain}>
             <div className={styles.domainTop}>
               <span className={styles.domainName}>{name(d)}</span>
-              <span className={`${styles.badge} ${d.ready ? styles.badgeReady : ''}`}>
-                {d.ready ? t('readiness.ready') : t('readiness.notReady')}
+              <span className={`${styles.badge} ${bandForDomain(d) === 'strong' ? styles.badgeReady : ''}`}>
+                {t(`bands.${bandForDomain(d)}`)}
               </span>
-            </div>
-            <div
-              className={styles.barTrack}
-              role="progressbar"
-              aria-label={name(d)}
-              aria-valuenow={pct(d.p_known_mean)}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            >
-              <span className={`${styles.barFill} ${d.ready ? styles.barReady : ''}`} style={{ width: `${pct(d.p_known_mean)}%` }} />
-              <span className={styles.barMark} aria-hidden="true" />
             </div>
             <p className={styles.domainMeta}>
               <span>{t('readiness.weightOf', { n: d.weight_pct })}</span>
               <span>{t('readiness.skillsAssessed', { assessed: d.skills_assessed, total: d.skills_total })}</span>
-              <b>{d.skills_assessed > 0 ? `${pct(d.p_known_mean)}%` : t('readiness.notPractised')}</b>
+              <b>{(d.answers ?? 0) > 0 ? t('bands.evidence', { answers: d.answers, correct: d.correct }) : t('readiness.notPractised')}</b>
             </p>
           </li>
         ))}

@@ -1,7 +1,8 @@
 /**
  * Aviso de certificaciones retiradas por su proveedor (39.24/39.25, solo
  * interfaz): insignia en el catálogo y aviso en el detalle para track43
- * (MLA-C01) y track45 (AI-900), nada para una ruta normal.
+ * (MLA-C01), nada para una ruta normal. track45 ya no: su contenido es el
+ * AI-901 vigente, y el aviso «examen retirado» sobre él era falso (2026-10-12).
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
@@ -75,8 +76,7 @@ describe('TracksScreen — aviso de certificación retirada (39.24/39.25, UI)', 
     expect(notice).toHaveTextContent('MLA-C02');
   });
 
-  it('en inglés, el aviso cita AI-900/AI-901 para track45', async () => {
-    await i18n.changeLanguage('en');
+  it('track45 (ya AI-901) no avisa de ningún examen retirado', async () => {
     tracks.mockResolvedValue([{
       id: 'track45', name_es: 'Azure AI', name_en: 'Azure AI', order: 45, icon: '🤖', color: '#0078D4',
       total_questions: 300, is_certification: true, cert_provider: 'Microsoft',
@@ -84,8 +84,17 @@ describe('TracksScreen — aviso de certificación retirada (39.24/39.25, UI)', 
     }]);
     useAppStore.setState({ selectedTrackId: 'track45' });
     render(<TracksScreen />);
+    await screen.findAllByText('Azure AI');
+    expect(screen.queryByRole('status')).toBeNull();
+  });
+
+  it('en inglés, el aviso cita MLA-C01/MLA-C02 para track43', async () => {
+    await i18n.changeLanguage('en');
+    useAppStore.setState({ selectedTrackId: 'track43' });
+    render(<TracksScreen />);
     const notice = await screen.findByRole('status');
-    expect(notice).toHaveTextContent('AI-900');
-    expect(notice).toHaveTextContent('AI-901');
+    expect(notice).toHaveTextContent('MLA-C01');
+    expect(notice).toHaveTextContent('MLA-C02');
+    expect(notice).toHaveTextContent(/replace|retired/i);
   });
 });
