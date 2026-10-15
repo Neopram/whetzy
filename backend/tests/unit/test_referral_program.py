@@ -584,7 +584,7 @@ async def test_activated_but_not_credited_is_closed_without_touching_credits(db_
 async def test_admin_clawback_endpoint(client: AsyncClient, db_session: AsyncSession):
     from app.core.security import create_access_token
 
-    admin, plain, referrer = _user(role="admin"), _user(), _user()
+    admin, plain, referrer = _user(role="owner"), _user(), _user()
     db_session.add_all([admin, plain, referrer])
     [referral] = await _activated(db_session, referrer, 1)
     await ReferralService.credit_matured_referrals(db_session, now=NOW)

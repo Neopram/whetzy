@@ -30,7 +30,10 @@ router = APIRouter()
 
 
 def require_admin(user: User = Depends(get_current_user)) -> User:
-    if user.role not in ("owner", "admin"):
+    """El panel de administración es solo del dueño (decisión del 2026-10-15,
+    34.7/30.8). El rol `admin` ya no abre nada: si algún día hay staff, se le
+    abre ruta a ruta, no con este guardia."""
+    if user.role != "owner":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin access required",
