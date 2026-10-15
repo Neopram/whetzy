@@ -45,7 +45,7 @@ beforeEach(async () => {
   decaying.mockReturnValue(new Promise(() => {}));
   missions.mockReturnValue(new Promise(() => {}));
 });
-afterEach(cleanup);
+afterEach(() => { cleanup(); vi.unstubAllEnvs(); });
 
 describe('Hoy — estados con evidencia, sin % del modelo (ADR-60)', () => {
   it('con poca evidencia dice «Evidencia insuficiente» y cuántas respuestas hay', async () => {
@@ -70,5 +70,61 @@ describe('Hoy — estados con evidencia, sin % del modelo (ADR-60)', () => {
     await screen.findByText('Python');
     await screen.findAllByText(/respuestas · /);
     expect(document.body.textContent).not.toMatch(/84 ?%|42 ?%/);
+  });
+});
+
+describe('Hoy — pasada del 2026-10-15 (PR 1b)', () => {
+  it('con 40 respuestas repartidas no dice «menos de 7 respuestas»: lo que falta es por skill', async () => {
+    skills.mockResolvedValue(
+      Array.from({ length: 8 }, (_, i) => skill({ skill_id: `s${i}`, attempts: 5, correct_count: 1 })),
+    );
+    render(<HomeScreen />);
+    expect(await screen.findByTestId('home-band')).toHaveTextContent('Evidencia insuficiente');
+    expect(screen.getByText(/40 respuestas · 8 aciertos/)).toBeInTheDocument();
+    expect(screen.getByText(/Ninguna habilidad tiene aún 7 respuestas/)).toBeInTheDocument();
+    expect(screen.queryByText(/Menos de 7 respuestas/)).toBeNull();
+  });
+
+  it('fuera de desarrollo no enseña el Elo crudo del modelo', async () => {
+    vi.stubEnv('DEV', false);
+    skills.mockResolvedValue([skill({ skill_id: 'a', elo_rating: 1600, attempts: 5 })]);
+    render(<HomeScreen />);
+    await screen.findByText('Bucles');
+    expect(screen.queryByText(/Elo/)).toBeNull();
+  });
+
+  it('sin repasos vencidos pero con skills que se olvidan hoy, no dice «Vuelve mañana»', async () => {
+    decaying.mockResolvedValue([
+      { skill_id: 'a', name_es: 'Bucles', name_en: 'Loops', days_until_due: 0 },
+    ]);
+    skills.mockResolvedValue([]);
+    render(<HomeScreen />);
+    expect(await screen.findByText('Nada vencido en tu calendario de repaso.')).toBeInTheDocument();
+    expect(screen.queryByText(/Vuelve mañana/)).toBeNull();
+  });
+
+  it('sin misiones de hoy no pinta una tarjeta «0/0»', async () => {
+    missions.mockResolvedValue([]);
+    skills.mockResolvedValue([]);
+    render(<HomeScreen />);
+    await screen.findByText('Python');
+    expect(screen.queryByText(i18n.t('home.missions'))).toBeNull();
+  });
+
+  it('una ruta sin skills dominadas no lleva barra vacía; Proyectos dice «Paso a paso»', async () => {
+    dashboard.mockResolvedValue({
+      level: 1, total_xp: 0, current_streak: 0, max_streak: 0, streak_freeze_available: 0,
+      last_active: null, reviews_due: 0, total_sessions: 3,
+      tracks: [{
+        track_id: 'track01', name_es: 'Python', name_en: 'Python', icon: '🐍', color: '#000',
+        average_mastery: 0.2, skills_mastered: 0, total_skills: 10,
+      }],
+    });
+    skills.mockResolvedValue([]);
+    render(<HomeScreen />);
+    await screen.findByText('Python');
+    expect(screen.queryByRole('progressbar', { name: 'Python' })).toBeNull();
+    expect(screen.getByText('Paso a paso')).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/-by-/);
   });
 });

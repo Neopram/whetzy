@@ -6,6 +6,11 @@
  * al menos un intento; una skill sin intentos se queda en el 1500 de
  * arranque, sin señal real, así que no cuenta — mostrarla sería un dato
  * inventado, justo lo que el criterio de 24.4 prohíbe.
+ *
+ * 2026-10-15 (plan de pantallas, PR 1b, ADR-60): el Elo es un número crudo
+ * del modelo y solo se pinta con `import.meta.env.DEV`. Vitest corre en
+ * desarrollo, así que estos casos siguen vigilando el cálculo; que no salga
+ * en producción lo vigila homeScreen.bands.test.tsx.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';

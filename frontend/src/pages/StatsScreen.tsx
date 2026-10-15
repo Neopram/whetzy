@@ -95,7 +95,9 @@ export function StatsScreen() {
                   <BandChip band={bandForSkill(s)} />
                 </span>
                 <span className={styles.rowMeta}>
-                  {t('stats.correctOf', { correct: s.correct_count, total: s.attempts })} · Elo {Math.round(s.elo_rating)}
+                  {t('stats.correctOf', { correct: s.correct_count, total: s.attempts })}
+                  {/* ADR-60: el Elo de la skill, solo para depurar. */}
+                  {import.meta.env.DEV && ` · Elo ${Math.round(s.elo_rating)}`}
                 </span>
               </li>
             );
