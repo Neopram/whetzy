@@ -12,10 +12,14 @@
 
 /* ============ NAV ============ */
 .header {
-  position: absolute;
-  inset-inline: 0;
+  /* Fija al hacer scroll, con desenfoque (2026-10-15). */
+  position: sticky;
   top: 0;
   z-index: 20;
+  background: color-mix(in srgb, var(--le-bg) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--le-border);
 }
 .navContainer {
   max-width: 72rem;
@@ -77,10 +81,10 @@
 /* ============ HERO ============ */
 .heroSection {
   position: relative; overflow: hidden;
-  padding: 7rem 1.25rem 5rem;
+  padding: 4rem 1.25rem 5rem;
   background: var(--le-bg);
 }
-@media (min-width: 640px) { .heroSection { padding-top: 8rem; padding-bottom: 7rem; } }
+@media (min-width: 640px) { .heroSection { padding-top: 5.5rem; padding-bottom: 6rem; } }
 .heroContainer {
   max-width: 72rem; margin: 0 auto;
   display: grid; gap: 3rem;
@@ -97,7 +101,21 @@
   font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
   color: var(--le-text-secondary);
 }
-.badgeSvg { width: 0.875rem; height: 0.875rem; }
+.badgeDot { width: 0.4rem; height: 0.4rem; border-radius: 9999px; background: var(--le-brand); }
+@media (prefers-reduced-motion: no-preference) {
+  .badgeDot { animation: badgePulse 2s ease-in-out infinite; }
+}
+@keyframes badgePulse { 50% { opacity: 0.35; } }
+
+/* Cifras del hero: de lib/catalog.ts y del selector (75 %). */
+.heroStats {
+  margin: 2.5rem 0 0; padding-top: 1.5rem;
+  border-top: 1px solid var(--le-border);
+  display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem;
+}
+.heroStats div { display: flex; flex-direction: column-reverse; }
+.heroStats dt { font-size: 0.8125rem; color: var(--le-text-muted); }
+.heroStats dd { margin: 0; font-family: var(--le-font-mono); font-size: 1.75rem; font-weight: 700; color: var(--le-text); }
 .heroHeading {
   margin: 1.5rem 0 0;
   font-family: var(--le-font-display);
@@ -134,46 +152,41 @@
   text-decoration: none;
 }
 
-/* Code snippet */
-.codeSnippet {
-  margin-top: 2.5rem; max-width: 28rem;
-  border-radius: 1rem;
-  border: 1px solid var(--le-border);
-  background: var(--le-code-bg);
-  padding: 1rem;
-  font-family: var(--le-font-mono);
-  font-size: 13px; line-height: 1.625;
-}
-.codeSnippetHeader { display: flex; align-items: center; gap: 0.375rem; margin-bottom: 0.75rem; }
-.dotPink { width: 0.625rem; height: 0.625rem; border-radius: 9999px; background: var(--color-pink); }
-.dotWhite { width: 0.625rem; height: 0.625rem; border-radius: 9999px; background: var(--le-text-muted); }
-.dotMuted { width: 0.625rem; height: 0.625rem; border-radius: 9999px; background: var(--le-border); }
-.codeFilename {
-  margin-left: 0.5rem;
-  font-family: var(--le-font-mono);
-  font-size: 11px; font-weight: 700; color: var(--le-text-muted);
-}
-.codeContent { margin: 0; white-space: pre-wrap; color: var(--le-code-text); }
-.codeComment { color: var(--le-text-muted); }
-.codeAccent { color: var(--color-pink); }
-.codeString { color: var(--color-code-green); }
 
-/* La captura del hero, quieta: el flotado infinito era decoración. */
+/* Maqueta de la app en HTML (components/landing): quieta, sin flotado. */
 .heroVisual { display: grid; justify-items: center; }
-.videoCaption {
-  margin: 0; padding: 0.75rem;
-  font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--le-text-muted);
+
+/* Franja beta: en lugar de testimonios, que no hay todavía (H.10). */
+.betaStrip { border-block: 1px solid var(--le-border); background: var(--le-surface); padding: 1.5rem 1.25rem; }
+.betaInner {
+  max-width: 72rem; margin: 0 auto;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;
 }
+.betaText { margin: 0; max-width: 46rem; font-size: 0.9375rem; line-height: 1.6; color: var(--le-text-secondary); }
+.betaText strong { color: var(--le-text); }
 
 
 /* ============ SECTIONS ============ */
-.featuresSection, .compareSection, .testimonialsSection, .finalCtaSection {
+.featuresSection, .compareSection, .testimonialsSection, .faqSection, .finalCtaSection {
   max-width: 72rem; margin: 0 auto; padding: 5rem 1.25rem;
 }
 @media (min-width: 640px) {
-  .featuresSection, .compareSection, .testimonialsSection, .finalCtaSection { padding: 6rem 1.25rem; }
+  .featuresSection, .compareSection, .testimonialsSection, .faqSection, .finalCtaSection { padding: 6rem 1.25rem; }
 }
+
+/* FAQ con <details>: funciona sin JS y queda en el HTML pre-renderizado. */
+.faqList { max-width: 48rem; border-top: 1px solid var(--le-border); }
+.faqItem { border-bottom: 1px solid var(--le-border); }
+.faqQuestion {
+  cursor: pointer; list-style: none;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: 1.25rem 0; font-size: 1.0625rem; font-weight: 700; color: var(--le-text);
+}
+.faqQuestion::-webkit-details-marker { display: none; }
+.faqQuestion::after { content: '+'; font-size: 1.5rem; font-weight: 400; color: var(--le-text-muted); transition: transform var(--transition-fast, 150ms); }
+.faqItem[open] .faqQuestion::after { transform: rotate(45deg); }
+.faqQuestion:hover { color: var(--color-primary); }
+.faqAnswer { margin: 0 0 1.25rem; max-width: 42rem; line-height: 1.7; color: var(--le-text-secondary); }
 .sectionHeader { margin-bottom: 2.5rem; }
 .sectionHeading {
   margin: 0; max-width: 42rem;
@@ -336,16 +349,24 @@
 }
 .finalCtaBtn:hover { transform: translateY(-2px); }
 
-/* Footer */
-.footer { border-top: 1px solid var(--border-color); padding: 2.5rem 1.25rem; }
-.footerContainer {
+/* Footer en columnas: solo enlaces que existen (sin redes ni blog). */
+.footer { border-top: 1px solid var(--border-color); padding: 3.5rem 1.25rem 2rem; }
+.footerGrid {
   max-width: 72rem; margin: 0 auto;
-  display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.75rem;
+  display: grid; gap: 2rem;
   font-size: 0.875rem; color: var(--text-secondary);
 }
-@media (min-width: 640px) { .footerContainer { flex-direction: row; } }
+@media (min-width: 768px) { .footerGrid { grid-template-columns: 2fr 1fr 1fr; } }
+.footerBrandCol { display: grid; gap: 1rem; align-content: start; }
 .footerBrand { font-weight: 800; color: var(--text-primary); }
-.footerCopyright { text-align: center; }
+.footerTagline { margin: 0; max-width: 22rem; line-height: 1.6; }
+.footerCol { display: grid; gap: 0.625rem; align-content: start; }
+.footerColTitle { margin: 0 0 0.25rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-primary); }
+.footerCopyright {
+  max-width: 72rem; margin: 2.5rem auto 0; padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.8125rem; color: var(--text-secondary);
+}
 
 /* Las CTA son <a> (34.x): mismo aspecto que cuando eran <button>. */
 .headerCta, .primaryBtn, .planCta, .planCtaFeatured, .finalCtaBtn {
@@ -357,28 +378,12 @@
   box-sizing: border-box;
 }
 
-/* Hero: captura real de la app (30.1). Retrato de móvil, no vídeo. */
-.shotCard {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-}
-.shotImage {
-  display: block;
-  width: min(100%, 320px);
-  height: auto;
-  border-radius: 1.75rem;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--le-shadow-lg);
-}
 /* «Próximamente» + nota no caben en una línea a 390 px. */
 .priceRow { flex-wrap: wrap; row-gap: 0.25rem; }
 
 /* Cuatro planes (ADR-45): 1 columna en móvil, 2 en tableta, 4 en escritorio. */
 
-/* Preparación por dominio (37.5): texto + captura real. */
+/* Preparación por dominio (37.5): texto + maqueta de bandas (ADR-60). */
 .readinessSection { padding: 4rem 1rem; }
 .readinessGrid {
   display: grid;

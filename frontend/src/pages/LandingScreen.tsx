@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './LandingScreen.module.css';
-import heroShotEs from '../assets/hero-quiz-es.jpg';
-import heroShotEn from '../assets/hero-quiz-en.jpg';
-import readinessShotEs from '../assets/readiness-es.jpg';
-import readinessShotEn from '../assets/readiness-en.jpg';
 import { CATALOG_QUESTIONS, CATALOG_TRACKS } from '../lib/catalog';
 import {
   COMPARISON_CHECKED_ON,
@@ -15,14 +11,19 @@ import {
 import { TUTOR_DAILY_LIMIT_PRO } from '../lib/plans';
 import { checkoutHref } from '../lib/paddle';
 import { BrandMark } from '../components/common/BrandMark';
+import { HeroQuizMock } from '../components/landing/HeroQuizMock';
+import { ReadinessBandsMock } from '../components/landing/ReadinessBandsMock';
 
 /* La landing (30.1, 2026-09-24) solo afirma lo que el producto hace hoy:
-   cifras de lib/catalog.ts (vigiladas por scripts/check_docs.py), capturas
-   reales de la app y una comparativa con fuente y fecha. La versión anterior
+   cifras de lib/catalog.ts (vigiladas por scripts/check_docs.py), maquetas de
+   la app rotuladas como ejemplo (2026-10-15) y una comparativa con fuente y
+   fecha. La versión anterior
    traía testimonios con nombre, «1.2M learners», «240+ tracks», precios sin
    aprobar y copia de otro producto (idiomas). Toda la copia vive en i18n. */
 
 type Lang = 'es' | 'en';
+
+const FAQ_KEYS = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'] as const;
 
 /** ?lang=en|es manda; si no, el idioma del navegador. En el pre-render (sin
  *  window) sale español, que es lo que se sirve como HTML estático. */
@@ -189,6 +190,7 @@ export default function LandingScreen() {
             <a href="#how" className={styles.navLink}>{t('landing.nav.how')}</a>
             {showCompare && <a href="#compare" className={styles.navLink}>{t('landing.nav.compare')}</a>}
             <a href="#pricing" className={styles.navLink}>{t('landing.nav.pricing')}</a>
+            <a href="#faq" className={styles.navLink}>{t('landing.footerCols.faq')}</a>
           </div>
           <div className={styles.headerActions}>
             <div className={styles.langSelector}>
@@ -220,9 +222,7 @@ export default function LandingScreen() {
         <div className={styles.heroContainer}>
           <div className={styles.heroContent}>
             <span className={styles.streakBadge}>
-              <svg className={styles.badgeSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-              </svg>
+              <span className={styles.badgeDot} aria-hidden="true" />
               {t('landing.badge', counts)}
             </span>
 
@@ -239,34 +239,26 @@ export default function LandingScreen() {
               <a href="#how" className={styles.secondaryBtn}>{t('landing.heroSecondary')}</a>
             </div>
 
-            <div className={styles.codeSnippet} aria-hidden="true">
-              <div className={styles.codeSnippetHeader}>
-                <span className={styles.dotPink} />
-                <span className={styles.dotWhite} />
-                <span className={styles.dotMuted} />
-                <span className={styles.codeFilename}>quiz.py</span>
-              </div>
-              <pre className={styles.codeContent}>
-                <span className={styles.codeComment}>{t('landing.codeComment')}</span>
-                {'\n'}p_known[<span className={styles.codeString}>"for_loops"</span>] <span className={styles.codeAccent}>=</span> 0.62 → 0.71
-                {'\n'}next_q <span className={styles.codeAccent}>=</span> pick(target_p_correct<span className={styles.codeAccent}>=</span>0.75)
-                {'\n'}review <span className={styles.codeAccent}>=</span> fsrs.due(<span className={styles.codeString}>"strings"</span>)
-              </pre>
-            </div>
+            {/* Cifras de lib/catalog.ts y el objetivo de acierto del selector
+                (TARGET_SUCCESS_PROBABILITY = 0.75 en backend/app/services/quiz.py). */}
+            <dl className={styles.heroStats}>
+              <div><dt>{t('landing.stats.questions')}</dt><dd>{counts.questions}</dd></div>
+              <div><dt>{t('landing.stats.tracks')}</dt><dd>{counts.tracks}</dd></div>
+              <div><dt>{t('landing.stats.target')}</dt><dd>75 %</dd></div>
+            </dl>
           </div>
 
           <div className={styles.heroVisual}>
-            <figure className={styles.shotCard}>
-              <img
-                src={lang === 'en' ? heroShotEn : heroShotEs}
-                alt={t('landing.heroShotAlt')}
-                className={styles.shotImage}
-                width={780}
-                height={1688}
-              />
-              <figcaption className={styles.videoCaption}>{t('landing.heroShotCaption')}</figcaption>
-            </figure>
+            <HeroQuizMock />
           </div>
+        </div>
+      </section>
+
+      {/* Sin testimonios hasta que haya alumnos reales que los den (H.10). */}
+      <section className={styles.betaStrip}>
+        <div className={styles.betaInner}>
+          <p className={styles.betaText}><strong>{t('landing.beta.title')}</strong> {t('landing.beta.body')}</p>
+          <a className={styles.secondaryBtn} href={ctaHref}>{t('landing.beta.cta')}</a>
         </div>
       </section>
 
@@ -307,8 +299,8 @@ export default function LandingScreen() {
         </div>
       </section>
 
-      {/* 35.5: la preparación por dominio, con una captura real (cuenta nueva,
-          CLF-C02). Es lo que ningún preparador observado da en español
+      {/* 35.5: la preparación por dominio, con las bandas de ADR-60 (maqueta
+          rotulada como ejemplo, sin porcentaje global). Es lo que ningún preparador observado da en español
           (COMPETENCIA.md §A.2). */}
       <section id="readiness" className={styles.readinessSection}>
         <div className={styles.readinessGrid}>
@@ -327,18 +319,7 @@ export default function LandingScreen() {
               ))}
             </ul>
           </div>
-          <figure className={styles.shotCard}>
-            <img
-              src={lang === 'en' ? readinessShotEn : readinessShotEs}
-              alt={t('landing.readiness.alt')}
-              className={styles.shotImage}
-              width={780}
-              height={1688}
-              loading="lazy"
-              decoding="async"
-            />
-            <figcaption className={styles.videoCaption}>{t('landing.readiness.caption')}</figcaption>
-          </figure>
+          <ReadinessBandsMock />
         </div>
       </section>
 
@@ -414,11 +395,27 @@ export default function LandingScreen() {
           <h2 className={styles.sectionHeading}>{t('landing.proofTitle')}</h2>
         </div>
         <div className={styles.testimonialsGrid}>
-          {(['proof1', 'proof2'] as const).map((k) => (
+          {(['proof1', 'proof2', 'proof3', 'proof4'] as const).map((k) => (
             <article key={k} className={styles.testimonialCard}>
               <h3 className={styles.cardTitle}>{t(`landing.${k}.title`)}</h3>
               <p className={styles.cardBody}>{t(`landing.${k}.body`)}</p>
             </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="faq" className={styles.faqSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionHeading}>{t('landing.faqTitle')}</h2>
+        </div>
+        {/* <details>: abre y cierra sin JS y su texto ya está en el HTML
+            pre-renderizado, que es lo que leen los buscadores. */}
+        <div className={styles.faqList}>
+          {FAQ_KEYS.map((k) => (
+            <details key={k} className={styles.faqItem}>
+              <summary className={styles.faqQuestion}>{t(`landing.faq.${k}.q`)}</summary>
+              <p className={styles.faqAnswer}>{t(`landing.faq.${k}.a`)}</p>
+            </details>
           ))}
         </div>
       </section>
@@ -432,12 +429,29 @@ export default function LandingScreen() {
       </section>
 
       <footer className={styles.footer}>
-        <div className={styles.footerContainer}>
-          <span className={styles.footerBrand}>Whetzy</span>
-          <span className={styles.footerCopyright}>
-            {t('landing.footer')} · <a href="/privacy" className={styles.navLink}>{t('landing.privacy')}</a> · <a href="/terms" className={styles.navLink}>{t('landing.terms')}</a> · <a href="/refund" className={styles.navLink}>{t('landing.refund')}</a>
-          </span>
+        <div className={styles.footerGrid}>
+          <div className={styles.footerBrandCol}>
+            <span className={styles.brandGroup}>
+              <span className={styles.logoBadge}><BrandMark height={20} /></span>
+              <span className={styles.footerBrand}>Whetzy</span>
+            </span>
+            <p className={styles.footerTagline}>{t('landing.footerCols.tagline')}</p>
+          </div>
+          <nav className={styles.footerCol} aria-label={t('landing.footerCols.product')}>
+            <h3 className={styles.footerColTitle}>{t('landing.footerCols.product')}</h3>
+            <a href="#features" className={styles.navLink}>{t('landing.nav.features')}</a>
+            <a href="#how" className={styles.navLink}>{t('landing.nav.how')}</a>
+            <a href="#pricing" className={styles.navLink}>{t('landing.nav.pricing')}</a>
+            <a href="#faq" className={styles.navLink}>{t('landing.footerCols.faq')}</a>
+          </nav>
+          <nav className={styles.footerCol} aria-label={t('landing.footerCols.legal')}>
+            <h3 className={styles.footerColTitle}>{t('landing.footerCols.legal')}</h3>
+            <a href="/privacy" className={styles.navLink}>{t('landing.privacy')}</a>
+            <a href="/terms" className={styles.navLink}>{t('landing.terms')}</a>
+            <a href="/refund" className={styles.navLink}>{t('landing.refund')}</a>
+          </nav>
         </div>
+        <p className={styles.footerCopyright}>{t('landing.footer')}</p>
       </footer>
     </div>
   );
