@@ -360,6 +360,7 @@ async def test_public_config_is_disabled_until_configured(client, monkeypatch) -
     assert r.status_code == 200 and r.json()["enabled"] is False
     monkeypatch.setattr(settings, "PADDLE_CLIENT_TOKEN", "live_abc")
     monkeypatch.setattr(settings, "PADDLE_ENVIRONMENT", "production")
+    monkeypatch.setattr(settings, "CERTIFICATION_PAYWALL", True)
     cfg = (await client.get("/api/v1/billing/paddle/config")).json()
     assert cfg["enabled"] is True and cfg["environment"] == "production"
     assert cfg["prices"] == {
@@ -381,6 +382,21 @@ async def test_annual_prices_only_appear_behind_their_flag(client, monkeypatch) 
     on = (await client.get("/api/v1/billing/paddle/config")).json()
     assert on["prices"]["plus_annual"] == "pri_plus_annual"
     assert on["prices"]["pro_annual"] == "pri_pro_annual"
+
+
+@pytest.mark.asyncio
+async def test_certification_price_only_appears_behind_the_paywall(client, monkeypatch) -> None:
+    """Auditoría de pantallas, 2026-10-15: con `CERTIFICATION_PAYWALL` apagado
+    el examen certificador es gratis, así que `/checkout?plan=certification`
+    no puede cobrarlo aunque el id de Paddle ya esté puesto. Sin precio, la
+    pantalla de pago dice «no disponible» (CheckoutScreen)."""
+    monkeypatch.setattr(settings, "CERTIFICATION_PAYWALL", False)
+    off = (await client.get("/api/v1/billing/paddle/config")).json()
+    assert off["prices"]["certification"] is None
+
+    monkeypatch.setattr(settings, "CERTIFICATION_PAYWALL", True)
+    on = (await client.get("/api/v1/billing/paddle/config")).json()
+    assert on["prices"]["certification"] == CERT
 
 
 def test_annual_price_grants_the_same_tier_as_monthly(user, monkeypatch) -> None:

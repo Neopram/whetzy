@@ -112,23 +112,18 @@
 }
 
 /* ── Tables ── */
-.tableWrap {
-  overflow-x: auto;
-  border-radius: 10px;
-  border: 1px solid var(--le-border);
-}
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.88rem;
   table-layout: fixed;
 }
+/* Solo queda la tabla de parámetros de BKT (parámetro · valor · significado):
+   las anchuras de la antigua tabla de competidores apretaban el significado. */
 .table th:first-child,
-.table td:first-child { width: 28%; }
-.table th:not(:first-child):not(:last-child),
-.table td:not(:first-child):not(:last-child) { width: 10%; }
-.table th:last-child,
-.table td:last-child { width: 12%; }
+.table td:first-child { width: 30%; }
+.table th:nth-child(2),
+.table td:nth-child(2) { width: 5.5rem; }
 .table th {
   background: var(--le-surface);
   text-align: left;
@@ -144,50 +139,8 @@
 }
 .table tr:last-child td { border-bottom: none; }
 .table tr:hover td { background: var(--le-purple-light); }
-.rowHighlight td { background: var(--le-purple-light) !important; }
 
-.tdScore { min-width: 68px; max-width: 90px; }
-.tdTotal { white-space: nowrap; font-size: 1rem; }
 .tdValue { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-weight: 700; }
-.pct { font-size: 0.75rem; color: var(--le-text-muted); margin-left: 2px; }
-.noteCell { margin: 4px 0 0; font-size: 0.78rem; color: var(--le-text-muted); }
-
-/* ── Score bar ── */
-.barWrap {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 20px;
-  min-width: 50px;
-}
-.barFill {
-  height: 8px;
-  border-radius: 4px;
-  min-width: 3px;
-  transition: width 0.3s ease;
-}
-.barLabel {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--le-text);
-  flex-shrink: 0;
-}
-
-/* ── Dimension legend ── */
-.dimLegend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.dimChip {
-  background: var(--le-surface);
-  border: 1px solid var(--le-border);
-  border-radius: 20px;
-  padding: 4px 10px;
-  font-size: 0.78rem;
-}
-.dimChip strong { color: var(--le-purple-dark); }
 
 /* ── Benchmark results ── */
 .resultGrid {
