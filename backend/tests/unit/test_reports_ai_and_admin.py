@@ -31,7 +31,7 @@ async def _user(db: AsyncSession, role: str = "user") -> User:
 async def test_ai_explanation_report_keeps_what_the_learner_saw(
     client: AsyncClient, db_session: AsyncSession, content_seed: dict
 ):
-    learner, admin = await _user(db_session), await _user(db_session, "admin")
+    learner, admin = await _user(db_session), await _user(db_session, "owner")
     r = await client.post(
         "/api/v1/reports/question",
         json={"question_id": content_seed["question_id"], "reason": "ai_explanation",
