@@ -69,3 +69,30 @@ describe.each(Object.entries(BUNDLES))('términos honestos (%s)', (_lang, bundle
     expect(bundle.legal.termsP9).toMatch(/Groq/);
   });
 });
+
+/** Maqueta del dueño del 2026-10-15: el diseño entró, estas promesas no. */
+describe.each(Object.entries(BUNDLES))('landing sin promesas inventadas (%s)', (_lang, bundle) => {
+  const landing = strings(bundle.landing).join('\n');
+
+  it('sin testimonios ni estrellas mientras no haya alumnos reales (H.10)', () => {
+    expect(landing).not.toMatch(/★|testimoni/i);
+    expect(Object.keys(bundle.landing).join(' ')).not.toMatch(/testimonial/i);
+  });
+
+  it('sin logos de empresas como aval', () => {
+    expect(landing).not.toMatch(/trusted by|conf[íi]an en/i);
+  });
+
+  it('sin precio de certificación mientras el examen certificador esté cerrado', () => {
+    expect(landing).not.toMatch(/39[.,]99/);
+  });
+
+  it('ADR-60: sin porcentaje de preparación ni probabilidad de aprobar', () => {
+    expect(landing).not.toMatch(/probabilidad de aprobar|probability of passing|\d+\s?%\s*(listo|ready)/i);
+    expect(landing).not.toMatch(/porcentaje por área|percentage per area/i);
+  });
+});
+
+it('D-13: la landing no enlaza a GitHub', () => {
+  expect(LANDING_SRC).not.toContain('github.com');
+});

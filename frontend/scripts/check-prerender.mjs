@@ -39,6 +39,14 @@ const REQUIRED = [
     why: 'the real hero copy — a rendered-but-empty shell would pass a class-name check while painting nothing',
   },
   {
+    needle: '¿Cuesta algo empezar?',
+    why: 'the FAQ (2026-10-15) — its answers are <details>, so they must be in the static HTML that search engines read, not added by JS',
+  },
+  {
+    needle: 'Evidencia insuficiente',
+    why: 'the per-domain readiness bands (ADR-60) — the landing promises bands, not a percentage, and the static HTML must show them',
+  },
+  {
     needle: 'LandingScreen',
     why: "the route-level stylesheet link — without it the hero paints at the browser's default size and repaints larger once the JS applies the real CSS, and Chrome reports that second, bigger paint as the LCP",
   },
@@ -67,4 +75,4 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-console.log(`[prerender] PASS — hero, copy and route stylesheet all present\n`);
+console.log(`[prerender] PASS — hero, copy, FAQ, bands and route stylesheet all present\n`);
