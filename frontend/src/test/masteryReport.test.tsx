@@ -53,8 +53,10 @@ describe('MasteryReportScreen', () => {
     render(<MasteryReportScreen code="abc123" />);
     expect(await screen.findByText('Ana · @ana')).toBeInTheDocument();
     expect(screen.getByText('81 %')).toBeInTheDocument();
-    expect(screen.getByText('62 % de dominio medio · 3 de 10 skills dominadas')).toBeInTheDocument();
-    expect(screen.getByText('Bucles · 97 %')).toBeInTheDocument();
+    // ADR-60: la ruta en skills dominadas y la skill por su nombre, sin el % del modelo.
+    expect(screen.getByText('3 de 10 habilidades dominadas')).toBeInTheDocument();
+    expect(screen.getByText('Bucles')).toBeInTheDocument();
+    expect(screen.queryByText(/62 %|97 %/)).toBeNull();
     expect(screen.getByRole('button', { name: 'Guardar como PDF' })).toBeInTheDocument();
     expect(get).toHaveBeenCalledWith('abc123');
   });

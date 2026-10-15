@@ -196,14 +196,20 @@
   line-height: 1;
 }
 
+/* ADR-60: la banda de la ruta, en palabras y con el color de su banda. */
 .heroPct strong {
-  font-family: var(--le-font-mono);
-  font-variant-numeric: tabular-nums;
-  font-size: var(--le-fs-2xl);
+  font-size: var(--le-fs-lg);
   font-weight: var(--le-fw-semibold);
+  color: var(--le-text-muted);
 }
+.heroPct strong[data-band='strong'] { color: var(--le-success-text); }
+.heroPct strong[data-band='developing'] { color: var(--le-warning-text); }
 
-.heroPct small { font-size: var(--le-fs-md); }
+/* La banda es una palabra, no un «42 %»: en móvil baja bajo el título. */
+@media (max-width: 30rem) {
+  .hero { grid-template-columns: 3.5rem minmax(0, 1fr); }
+  .heroPct { grid-column: 1 / -1; justify-items: start; }
+}
 
 .heroPct span {
   margin-top: var(--le-space-2xs);
@@ -411,6 +417,7 @@
 
 .skill {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--le-space-xs);
   width: 100%;
@@ -439,8 +446,11 @@ button.skill:hover .skillName { color: var(--le-brand-text); }
   color: var(--le-text-inverse);
 }
 
+/* Si el chip de banda no cabe junto al nombre, baja de línea pegado a la derecha. */
+.skill > [data-band] { margin-left: auto; }
+
 .skillName {
-  flex: 1;
+  flex: 1 1 9rem;
   min-width: 0;
   font-size: var(--le-fs-sm);
   overflow-wrap: anywhere;
@@ -451,28 +461,6 @@ button.skill:hover .skillName { color: var(--le-brand-text); }
   color: var(--le-warning-text);
   font-size: var(--le-fs-xs);
   font-weight: var(--le-fw-semibold);
-}
-
-.meter { flex: none; display: flex; gap: 2px; }
-
-.seg,
-.segOn {
-  width: 6px;
-  height: 10px;
-  border-radius: 1px;
-  background: var(--le-border);
-}
-
-.segOn { background: var(--le-blue); }
-
-.skillPct {
-  flex: none;
-  width: 2.75rem;
-  text-align: right;
-  font-family: var(--le-font-mono);
-  font-variant-numeric: tabular-nums;
-  font-size: var(--le-fs-xs);
-  color: var(--le-text-secondary);
 }
 
 .actions { display: flex; gap: var(--le-space-xs); }

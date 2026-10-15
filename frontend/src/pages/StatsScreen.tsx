@@ -1,15 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { ProgressBar } from '../components/common/ProgressBar';
+import { BandChip } from '../components/common/BandChip';
+import { bandForSkill } from '../lib/evidenceBand';
 import { useApi } from '../hooks/useApi';
 import { progress as progressApi } from '../services/api';
 import styles from './StatsScreen.module.css';
 
-const pct = (x: number) => Math.round(x * 100);
-
-// Escala de datos (acero → hielo) y verde solo para lo que el motor da por
-// dominado: un número bajo no es un error, así que nunca va en rojo.
-const barColor = (mastered: boolean) => (mastered ? 'var(--le-green)' : 'var(--le-blue)');
+// ADR-60: ni la ruta ni la skill se enseñan como % del modelo mientras no
+// esté calibrado. La ruta, por skills dominadas (un hecho); la skill, por banda.
 
 export function StatsScreen() {
   const user = useAppStore((s) => s.user);
@@ -60,15 +59,17 @@ export function StatsScreen() {
                 <button type="button" className={styles.row} onClick={() => openTrack(tr.track_id)}>
                   <span className={styles.rowHead}>
                     <span className={styles.rowName}>{tr.icon} {name}</span>
-                    <span className={styles.rowPct}>{pct(tr.average_mastery)}%</span>
                   </span>
-                  <ProgressBar
-                    value={pct(tr.average_mastery)}
-                    max={100}
-                    label={t('a11y.progressMastery', { name })}
-                    color="var(--le-blue)"
-                    height={4}
-                  />
+                  {/* Sin ninguna dominada, una barra vacía no dice nada: basta el recuento. */}
+                  {tr.skills_mastered > 0 && (
+                    <ProgressBar
+                      value={tr.skills_mastered}
+                      max={Math.max(tr.total_skills, 1)}
+                      label={t('a11y.progressMastered', { name })}
+                      color="var(--le-blue)"
+                      height={4}
+                    />
+                  )}
                   <span className={styles.rowMeta}>{tr.skills_mastered}/{tr.total_skills} {t('stats.skillsMastered')}</span>
                 </button>
               </li>
@@ -91,15 +92,8 @@ export function StatsScreen() {
               <li key={s.skill_id} className={styles.item}>
                 <span className={styles.rowHead}>
                   <span className={styles.rowName}>{name}</span>
-                  <span className={`${styles.rowPct} ${s.mastered ? styles.pctMastered : ''}`}>{pct(s.p_known)}%</span>
+                  <BandChip band={bandForSkill(s)} />
                 </span>
-                <ProgressBar
-                  value={pct(s.p_known)}
-                  max={100}
-                  label={t('a11y.progressMastery', { name })}
-                  color={barColor(s.mastered)}
-                  height={4}
-                />
                 <span className={styles.rowMeta}>
                   {t('stats.correctOf', { correct: s.correct_count, total: s.attempts })} · Elo {Math.round(s.elo_rating)}
                 </span>

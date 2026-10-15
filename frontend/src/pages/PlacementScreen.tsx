@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
-import { ProgressBar } from '../components/common/ProgressBar';
 import {
   placement as placementApi,
   type PlacementResult,
@@ -27,6 +26,16 @@ import styles from './PlacementScreen.module.css';
 /** El motor devuelve theta en logits (~-3..3); la barra necesita 0..1. */
 function thetaAPorcentaje(theta: number): number {
   return Math.round(Math.max(0, Math.min(1, (theta + 3) / 6)) * 100);
+}
+
+/** ADR-60: el resultado se dice en palabras, no como «nivel 63 %». Cinco
+ *  tramos de un logit sobre la escala de theta (~-3..3). */
+export function nivelDeTheta(theta: number): 'advanced' | 'upperIntermediate' | 'intermediate' | 'basic' | 'beginner' {
+  if (theta >= 1.5) return 'advanced';
+  if (theta >= 0.5) return 'upperIntermediate';
+  if (theta >= -0.5) return 'intermediate';
+  if (theta >= -1.5) return 'basic';
+  return 'beginner';
 }
 
 interface Props {
@@ -175,25 +184,15 @@ export function PlacementScreen({ trackId }: Props) {
       <div className={styles.result}>
         <span className={styles.resultIcon}>{pct >= 70 ? '🏆' : pct >= 50 ? '💪' : '📚'}</span>
         <h1 className={styles.resultTitle}>
-          {t('placement.abilityResult', { pct: thetaAPorcentaje(resultado.ability_estimate) })}
+          {t('placement.abilityResult', { level: t(`placement.levels.${nivelDeTheta(resultado.ability_estimate)}`) })}
         </h1>
         <p className={styles.resultPct}>
           {t('placement.pctAccuracy', { pct, correct: resultado.correct, total: resultado.total_questions })}
         </p>
-        <div className={styles.resultBar}>
-          <ProgressBar
-            value={thetaAPorcentaje(resultado.ability_estimate)}
-            max={100}
-            label={t('a11y.progressScore', { pct: thetaAPorcentaje(resultado.ability_estimate) })}
-            color="var(--le-green)"
-            height={16}
-            showLabel
-          />
-        </div>
 
         {pocoFiable && (
           <p className={styles.resultDesc}>
-            {t('placement.lowReliability', { pct: Math.round(resultado.reliability * 100) })}
+            {t('placement.lowReliability')}
           </p>
         )}
 

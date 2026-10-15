@@ -4,10 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { Badge } from '../components/common/Badge';
 import { ProgressBar } from '../components/common/ProgressBar';
+import { BandChip } from '../components/common/BandChip';
 import { ProgressMap } from '../components/tracks/ProgressMap';
 import { useApi } from '../hooks/useApi';
 import { pageVariants } from '../lib/motion';
 import { retiredCertificationFor } from '../lib/retiredCertifications';
+import { bandForSkill, overallBand } from '../lib/evidenceBand';
 import {
   content as contentApi,
   exams as examsApi,
@@ -90,7 +92,8 @@ function Catalogue({
   const { t } = useTranslation();
   const [filter, setFilter] = useState<Filter>('all');
   const dash = useApi(() => progressApi.dashboard(), []);
-  const masteryById = new Map((dash.data?.tracks ?? []).map((m) => [m.track_id, m.average_mastery]));
+  // ADR-60: la ruta se resume en skills dominadas, no en un % del modelo.
+  const masteredById = new Map((dash.data?.tracks ?? []).map((m) => [m.track_id, { mastered: m.skills_mastered, total: m.total_skills }]));
   const counts: Record<Filter, number> = {
     all: tracks.length,
     learn: tracks.filter((tr) => !tr.is_certification).length,
@@ -127,7 +130,7 @@ function Catalogue({
       <ul className={styles.catalogue}>
         {shown.map((tr) => {
           const name = lang === 'es' ? tr.name_es : tr.name_en;
-          const mastery = masteryById.get(tr.id);
+          const prog = masteredById.get(tr.id);
           return (
             <li key={tr.id}>
               <button
@@ -156,12 +159,12 @@ function Catalogue({
                         })
                       : t('tracks.questions', { count: tr.total_questions })}
                   </span>
-                  {mastery !== undefined && mastery > 0 && (
-                    <ProgressBar value={pct(mastery)} max={100} label={name} color="var(--le-blue)" height={4} />
+                  {prog !== undefined && prog.mastered > 0 && (
+                    <ProgressBar value={prog.mastered} max={Math.max(prog.total, 1)} label={name} color="var(--le-blue)" height={4} />
                   )}
                 </span>
-                {mastery !== undefined && mastery > 0 && (
-                  <span className={styles.trackPct}>{pct(mastery)}%</span>
+                {prog !== undefined && prog.mastered > 0 && (
+                  <span className={styles.trackPct}>{prog.mastered}/{prog.total}</span>
                 )}
               </button>
             </li>
@@ -192,9 +195,8 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
   const modules = cur.data?.modules ?? [];
   const completed = modules.filter((m) => m.status === 'completed').length;
   const skillCount = modules.reduce((n, m) => n + m.skills.length, 0);
-  const mastery = modules.length
-    ? modules.reduce((sum, m) => sum + m.average_mastery, 0) / modules.length
-    : 0;
+  const practised = modules.flatMap((m) => m.skills).filter((s) => s.attempts > 0);
+  const trackBand = overallBand(practised.map(bandForSkill));
   const name = lang === 'es' ? track.name_es : track.name_en;
   const certReady = track.is_certification && track.exam_question_count && track.exam_duration_minutes;
   const retiredCert = retiredCertificationFor(track.id);
@@ -228,7 +230,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
         </div>
         {cur.data && (
           <p className={styles.heroPct}>
-            <strong>{pct(mastery)}<small>%</small></strong>
+            <strong data-band={trackBand}>{t(`bands.${trackBand}`)}</strong>
             <span>{t('tracks.mastery')}</span>
           </p>
         )}
@@ -417,14 +419,14 @@ function ModuleItem({
   // del módulo antes de dejar practicar: botón desactivado con su motivo, no
   // un «Practicar» que acaba en el 200 vacío de /quiz/start.
   const needsLesson = !locked && !m.skills.some((s) => s.lesson_seen);
+  const masteredCount = m.skills.filter((s) => s.mastered).length;
   const sub = locked
     ? prerequisite
       ? t('tracks.unlockWith', {
-          pct: pct(m.min_mastery_to_unlock),
           name: lang === 'es' ? prerequisite.name_es : prerequisite.name_en,
         })
       : t('tracks.lockNote')
-    : `${m.skills.length} ${t('tracks.skills')} · ${pct(m.average_mastery)}% ${t('tracks.mastery')}`;
+    : t('tracks.moduleMastered', { mastered: masteredCount, total: m.skills.length });
 
   return (
     <li className={`${styles.module} ${styles[m.status]}`}>
@@ -442,9 +444,9 @@ function ModuleItem({
       {!locked && (
         <div className={styles.moduleBar}>
           <ProgressBar
-            value={pct(m.average_mastery)}
-            max={100}
-            label={t('a11y.progressMastery', { name })}
+            value={masteredCount}
+            max={Math.max(m.skills.length, 1)}
+            label={t('a11y.progressMastered', { name })}
             color={m.status === 'completed' ? 'var(--le-green)' : 'var(--le-blue)'}
             height={4}
           />
@@ -521,8 +523,7 @@ function TestOutOffer({ moduleId }: { moduleId: string }) {
   );
 }
 
-// Cinco tramos de 20 %: el número exacto va al lado en mono, el medidor solo
-// da la forma de un vistazo.
+// ADR-60: la skill practicada lleva su banda; sin intentos no hay nada que decir.
 function SkillRow({
   skill: s, lang, locked, onLesson,
 }: {
@@ -534,7 +535,6 @@ function SkillRow({
   const { t } = useTranslation();
   const name = lang === 'es' ? s.name_es : s.name_en;
   const needsReview = !s.mastered && s.attempts > 0 && s.p_known < 0.3;
-  const filled = Math.round(s.p_known * 5);
   const body = (
     <>
       <span className={`${styles.skillMark} ${s.mastered ? styles.skillMastered : ''}`} aria-hidden="true">
@@ -542,10 +542,7 @@ function SkillRow({
       </span>
       <span className={styles.skillName}>{name}</span>
       {needsReview && <span className={styles.reviewTag}>{t('tracks.needsReview')}</span>}
-      <span className={styles.meter} aria-hidden="true">
-        {[0, 1, 2, 3, 4].map((i) => <span key={i} className={i < filled ? styles.segOn : styles.seg} />)}
-      </span>
-      <span className={styles.skillPct}>{pct(s.p_known)}%</span>
+      {s.attempts > 0 && <BandChip band={bandForSkill(s)} />}
     </>
   );
   return (

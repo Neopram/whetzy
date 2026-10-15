@@ -104,8 +104,9 @@ export function MarketplaceScreen() {
         <ul className="mkt-grid">
           {visibles.map((tr) => {
             const m = masteryPorTrack.get(tr.id);
-            const pct = m ? Math.round(m.mastery * 100) : 0;
-            const empezado = (m?.total ?? 0) > 0 && pct > 0;
+            // ADR-60: progreso por skills dominadas, no por un % del modelo.
+            const empezado = (m?.total ?? 0) > 0 && (m?.mastered ?? 0) > 0;
+            const pct = m && m.total > 0 ? Math.round((m.mastered / m.total) * 100) : 0;
             return (
               <li key={tr.id} className="mkt-card" style={{ ['--mkt-accent' as string]: tr.color }}>
                 <div className="mkt-card-top">
@@ -138,7 +139,6 @@ export function MarketplaceScreen() {
                     </div>
                     <span className="mkt-progress-label">
                       {t('marketplace.mastery_meta', {
-                        pct,
                         mastered: m!.mastered,
                         total: m!.total,
                       })}
