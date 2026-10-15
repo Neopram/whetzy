@@ -88,7 +88,7 @@ export function ProgressMap({ modules, lang, onSelect }: ProgressMapProps) {
           const isCurrent = !locked && !completed && i === unlockedCount - 1;
           const fill = statusColor(mod.status, mastery);
           const bg = statusBg(mod.status, mastery);
-          const masteryPct = Math.round(mastery * 100);
+          const mastered = (mod.skills ?? []).filter((sk) => sk.mastered).length;
           const label = lang === 'es' ? mod.name_es : mod.name_en;
           const shortLabel = label.length > 12 ? label.slice(0, 11) + '…' : label;
           const circleLen = 2 * Math.PI * (NODE_R - 4);
@@ -101,7 +101,7 @@ export function ProgressMap({ modules, lang, onSelect }: ProgressMapProps) {
               className={styles.nodeGroup}
               onClick={() => !locked && onSelect(mod)}
               onKeyDown={(e) => !locked && handleKey(e, mod)}
-              aria-label={`${label} — ${masteryPct}% ${t('tracks.mastery')}`}
+              aria-label={`${label} — ${t('tracks.moduleMastered', { mastered, total: mod.skills?.length ?? 0 })}`}
               aria-disabled={locked}
             >
               {isCurrent && (
@@ -154,10 +154,10 @@ export function ProgressMap({ modules, lang, onSelect }: ProgressMapProps) {
                   {String(i + 1)}
                 </text>
               )}
-              {!locked && masteryPct > 0 && (
+              {!locked && mastered > 0 && (
                 <g transform={`translate(${cx + NODE_R - 6}, ${cy - NODE_R + 6})`}>
                   <circle r={9} fill={fill} />
-                  <text className={styles.masteryBadge} fill="#fff">{masteryPct}</text>
+                  <text className={styles.masteryBadge} fill="#fff">{mastered}</text>
                 </g>
               )}
               <text

@@ -7,6 +7,8 @@ import { quiz as quizApi, progress as progressApi, isQuotaError, type GlossaryTe
 import { enqueue, offlineEventId } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
+import { BandChip } from '../components/common/BandChip';
+import { bandForSkill } from '../lib/evidenceBand';
 import { WhyButton } from '../components/quiz/WhyButton';
 import { GlossaryText } from '../components/quiz/GlossaryText';
 import { TermCard } from '../components/quiz/TermCard';
@@ -494,7 +496,9 @@ export function QuizScreen() {
     </div>
   );
 
-  const masteryBar = mastery === null ? null : (
+  // ADR-60: el p_known de la skill no se enseña al alumno mientras el modelo
+  // no esté calibrado; en desarrollo sigue a la vista para depurar el motor.
+  const masteryBar = mastery === null || !import.meta.env.DEV ? null : (
     <div
       className={styles.masteryBar}
       role="progressbar"
@@ -519,7 +523,7 @@ export function QuizScreen() {
           {selectionReason && (
             <span className={styles.selectionReason}>
               {' · '}{t(`quiz.reason.${selectionReason.pool}`)}
-              {selectionReason.expected_p != null && (
+              {import.meta.env.DEV && selectionReason.expected_p != null && (
                 <> · {t('quiz.reason.expected', { val: Math.round(selectionReason.expected_p * 100) })}</>
               )}
             </span>
@@ -881,7 +885,6 @@ function QuizError({
   );
 }
 
-const pct = (x: number) => Math.round(x * 100);
 
 function SessionSummary({
   summary, before, practiced, lang, onClose,
@@ -947,17 +950,15 @@ function SessionSummary({
             {moved.map((s) => {
               // Sin intentos previos no hay medida «antes»: es nueva, no un 0 %.
               const prev = before?.get(s.skill_id);
-              const b = prev && prev.attempts > 0 ? prev.p_known : undefined;
+              const bBand = prev && prev.attempts > 0 ? bandForSkill(prev) : undefined;
               const name = lang === 'es' ? s.name_es : s.name_en;
               return (
                 <li key={s.skill_id} className={styles.movedItem}>
                   <span className={styles.movedName}>{name}</span>
-                  <span className={styles.movedBars} aria-hidden="true">
-                    <span className={styles.movedBefore} style={{ width: `${pct(b ?? 0)}%` }} />
-                    <span className={styles.movedAfter} style={{ width: `${pct(s.p_known)}%` }} />
-                  </span>
                   <span className={styles.movedPct}>
-                    {b === undefined ? t('quiz.skillNew') : `${pct(b)}%`} → {pct(s.p_known)}%
+                    {bBand === undefined ? t('quiz.skillNew') : <BandChip band={bBand} />}
+                    {' → '}
+                    <BandChip band={bandForSkill(s)} />
                   </span>
                 </li>
               );

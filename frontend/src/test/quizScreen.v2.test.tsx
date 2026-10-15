@@ -78,7 +78,10 @@ describe('QuizScreen v2', () => {
 
     fireEvent.keyDown(window, { key: 'Enter' });
     expect(await screen.findByText('Habilidades de esta sesión')).toBeInTheDocument();
-    expect(await screen.findByText('20% → 45%')).toBeInTheDocument();
+    // ADR-60: antes → después en bandas, no «20% → 45%».
+    const moved = await screen.findByRole('region', { name: i18n.t('quiz.skillsMoved') });
+    expect([...moved.querySelectorAll('[data-band]')].map((e) => e.getAttribute('data-band'))).toEqual(['insufficient', 'insufficient']);
+    expect(moved.textContent).not.toMatch(/%/);
     expect(screen.getByText(/100% de precisión/)).toBeInTheDocument();
   });
 
@@ -115,7 +118,9 @@ describe('QuizScreen v2', () => {
     fireEvent.keyDown(window, { key: '2' });
     await screen.findByText('Uno más uno es dos.');
     fireEvent.keyDown(window, { key: 'Enter' });
-    expect(await screen.findByText('nueva → 45%')).toBeInTheDocument();
+    const moved = await screen.findByRole('region', { name: i18n.t('quiz.skillsMoved') });
+    expect(moved.textContent).toMatch(/nueva →/);
+    expect(moved.textContent).not.toMatch(/%/);
   });
 
   it('las letras también eligen opción (c = tercera)', async () => {

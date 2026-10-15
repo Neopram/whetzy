@@ -74,12 +74,12 @@ export function MasteryReportScreen({ code }: { code: string }) {
                 {es ? tr.name_es : tr.name_en}
               </h2>
               <p className={styles.trackMeta}>
-                {t('report.trackMeta', { mastery: pct(tr.average_mastery), mastered: tr.skills_mastered, total: tr.total_skills })}
+                {t('report.trackMeta', { mastered: tr.skills_mastered, total: tr.total_skills })}
               </p>
               {tr.mastered_skills.length > 0 && (
                 <ul className={styles.skills} aria-label={t('report.masteredSkills')}>
                   {tr.mastered_skills.map((sk) => (
-                    <li key={sk.name_en}>{es ? sk.name_es : sk.name_en} · {pct(sk.p_known)} %</li>
+                    <li key={sk.name_en}>{es ? sk.name_es : sk.name_en}</li>
                   ))}
                 </ul>
               )}

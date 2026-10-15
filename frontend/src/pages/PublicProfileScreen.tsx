@@ -61,10 +61,6 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
 
       <div className="profile-stats">
         <div className="stat-card">
-          <span className="stat-value">{profile.mastery_avg}%</span>
-          <span className="stat-label">{t('profile.mastery', 'Dominio')}</span>
-        </div>
-        <div className="stat-card">
           <span className="stat-value">{profile.skills_mastered}</span>
           <span className="stat-label">{t('profile.skills', 'Habilidades')}</span>
         </div>

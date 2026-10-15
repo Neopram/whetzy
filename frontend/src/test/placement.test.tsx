@@ -126,10 +126,11 @@ describe('prueba de nivel', () => {
     await screen.findByText(/Enunciado en español q1/)
     await userEvent.click(screen.getByRole('button', { name: /uno/ }))
 
-    // theta 1.8 -> (1.8+3)/6 = 80 %. La ultima respuesta fue FALLO: si la
-    // pantalla siguiera restando por su cuenta, este numero no saldria.
-    // El titulo, no la barra: las dos lo muestran y `findByText` encontraba dos.
-    expect(await screen.findByRole('heading', { name: /80/ })).toBeTruthy()
+    // theta 1.8 -> «Advanced» (>= 1.5). La ultima respuesta fue FALLO: si la
+    // pantalla siguiera restando por su cuenta, no llegaria a ese tramo.
+    // ADR-60: en palabras, sin el 80 % que daba la escala.
+    expect(await screen.findByRole('heading', { name: /Advanced|Avanzado/ })).toBeTruthy()
+    expect(screen.queryByRole('heading', { name: /%/ })).toBeNull()
     expect(result).toHaveBeenCalledWith('s1')
   })
 
@@ -185,7 +186,8 @@ describe('prueba de nivel', () => {
     await screen.findByText(/Enunciado en español q1/)
     await userEvent.click(screen.getByRole('button', { name: /uno/ }))
 
-    expect(await screen.findByText(/41/)).toBeTruthy()
+    expect(await screen.findByText(/unreliable|poco fiable/)).toBeTruthy()
+    expect(screen.queryByText(/41/)).toBeNull()
   })
 
   it('pregunta en el idioma del usuario', async () => {
