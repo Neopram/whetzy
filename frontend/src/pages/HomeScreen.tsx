@@ -78,7 +78,9 @@ export function HomeScreen() {
           </p>
           <p className={styles.threshold}>
             {band === 'insufficient'
-              ? t('bands.why.insufficient', { n: MIN_EVIDENCE_ANSWERS })
+              // Aquí se suman las respuestas de todas las skills: «menos de 7
+              // respuestas» contradecía un total de 40. Lo que falta es por skill.
+              ? t('bands.why.insufficientPerSkill', { n: MIN_EVIDENCE_ANSWERS })
               : t('home.bandCounts', {
                 strong: bandCount('strong'),
                 developing: bandCount('developing'),
@@ -116,7 +118,10 @@ export function HomeScreen() {
                 </button>
               </>
             ) : (
-              <p className={styles.muted}>{t('home.reviewCalm')}</p>
+              // «Vuelve mañana» no casa con una lista de skills que se olvidan hoy.
+              <p className={styles.muted}>
+                {decaying.data && decaying.data.length > 0 ? t('home.reviewCalmDecaying') : t('home.reviewCalm')}
+              </p>
             )}
             {decaying.data && decaying.data.length > 0 && (
               <div className={styles.decay}>
@@ -189,13 +194,16 @@ export function HomeScreen() {
                 <span className={styles.trackIcon} aria-hidden="true">{tr.icon}</span>
                 <span className={styles.trackBody}>
                   <span className={styles.trackName}>{lang === 'es' ? tr.name_es : tr.name_en}</span>
-                  <ProgressBar
-                    value={tr.skills_mastered}
-                    max={Math.max(tr.total_skills, 1)}
-                    label={lang === 'es' ? tr.name_es : tr.name_en}
-                    color="var(--le-blue)"
-                    height={6}
-                  />
+                  {/* Sin ninguna dominada, una barra vacía no dice nada: basta el recuento. */}
+                  {tr.skills_mastered > 0 && (
+                    <ProgressBar
+                      value={tr.skills_mastered}
+                      max={Math.max(tr.total_skills, 1)}
+                      label={lang === 'es' ? tr.name_es : tr.name_en}
+                      color="var(--le-blue)"
+                      height={6}
+                    />
+                  )}
                   <span className={styles.trackNumbers}>
                     <span>{tr.skills_mastered}/{tr.total_skills} {t('home.skillsMastered')}</span>
                   </span>
@@ -206,46 +214,50 @@ export function HomeScreen() {
         </motion.section>
       )}
 
-      <motion.div variants={listItemVariants}>
-        <Card className={styles.panel}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>{t('home.missions')}</h2>
-            {missions.data && (
-              <span className={styles.badge}>
-                {missions.data.filter((m) => m.completed).length}/{missions.data.length}
-              </span>
-            )}
-          </div>
-          {missions.loading && <p className={styles.muted}>{t('home.loading')}</p>}
-          {missions.data?.map((m) => {
-            const name = lang === 'es' ? m.mission.name_es : m.mission.name_en;
-            return (
-              <div key={m.mission.id} className={styles.mission}>
-                <div className={styles.missionInfo}>
-                  <p className={styles.missionTitle}>{name}</p>
-                  <ProgressBar
-                    value={m.progress}
-                    max={m.mission.target_value}
-                    label={t('a11y.progressMission', { name })}
-                    color={m.completed ? 'var(--le-green)' : 'var(--le-blue)'}
-                    height={6}
-                  />
-                </div>
-                <span className={m.completed ? styles.missionDone : styles.missionXp}>
-                  {m.completed ? t('home.done') : `+${m.mission.xp_reward} XP`}
+      {/* Sin misiones de hoy no hay nada que enseñar: una tarjeta «0/0» vacía, no. */}
+      {missions.data?.length !== 0 && (
+        <motion.div variants={listItemVariants}>
+          <Card className={styles.panel}>
+            <div className={styles.cardHeader}>
+              <h2 className={styles.cardTitle}>{t('home.missions')}</h2>
+              {missions.data && (
+                <span className={styles.badge}>
+                  {missions.data.filter((m) => m.completed).length}/{missions.data.length}
                 </span>
-              </div>
-            );
-          })}
-        </Card>
-      </motion.div>
+              )}
+            </div>
+            {missions.loading && <p className={styles.muted}>{t('home.loading')}</p>}
+            {missions.data?.map((m) => {
+              const name = lang === 'es' ? m.mission.name_es : m.mission.name_en;
+              return (
+                <div key={m.mission.id} className={styles.mission}>
+                  <div className={styles.missionInfo}>
+                    <p className={styles.missionTitle}>{name}</p>
+                    <ProgressBar
+                      value={m.progress}
+                      max={m.mission.target_value}
+                      label={t('a11y.progressMission', { name })}
+                      color={m.completed ? 'var(--le-green)' : 'var(--le-blue)'}
+                      height={6}
+                    />
+                  </div>
+                  <span className={m.completed ? styles.missionDone : styles.missionXp}>
+                    {m.completed ? t('home.done') : `+${m.mission.xp_reward} XP`}
+                  </span>
+                </div>
+              );
+            })}
+          </Card>
+        </motion.div>
+      )}
 
       {/* Territorio: cada skill practicada con su dominio real (BKT, 24.4). */}
       {(skills.data?.length ?? 0) > 0 && (
         <motion.section className={styles.section} variants={listItemVariants}>
           <div className={styles.cardHeader}>
             <h2 className={styles.sectionTitle}>{t('home.territory')}</h2>
-            {avgElo !== undefined && (
+            {/* ADR-60: el Elo es un número crudo del modelo; solo para depurar. */}
+            {import.meta.env.DEV && avgElo !== undefined && (
               <span className={styles.badge} title={t('home.eloHint')}>
                 {t('home.eloLabel')}: {avgElo}
               </span>
@@ -288,7 +300,7 @@ export function HomeScreen() {
           <button type="button" className={styles.tool} onClick={() => setScreen('projects')}>
             <span aria-hidden="true">🏗️</span>
             <span className={styles.toolName}>{t('project.title')}</span>
-            <span className={styles.toolMeta}>{t('project.step')}-by-{t('project.step').toLowerCase()}</span>
+            <span className={styles.toolMeta}>{t('home.projectsMeta')}</span>
           </button>
         </div>
       </motion.section>
