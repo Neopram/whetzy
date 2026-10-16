@@ -18,7 +18,7 @@
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §14 ADR-53; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen, sustituida: hoy manda ADR-54), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica PostHog, Sentry, correo, staging), ADR-53 plan por cobertura (sustituido por ADR-54), ADR-54 catálogo uniforme 32 × 10 (la meta vigente), ADR-55 la fuente legal es lo publicado (claves i18n `legal.*`), ADR-56 fin de la pausa, ADR-58 los créditos no compran simulacros ni cursos (el plan decide) y privacidad con IP y navegador a 90 días, ADR-59 autoría de contenido: escribe Sonnet 5 desde la fuente, por `Workflow`, en paralelo al piloto**)
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen, sustituida: hoy manda ADR-54), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica propia, Sentry, correo, staging), ADR-53 plan por cobertura (sustituido por ADR-54), ADR-54 catálogo uniforme 32 × 10 (la meta vigente), ADR-55 la fuente legal es lo publicado (claves i18n `legal.*`), ADR-56 fin de la pausa, ADR-58 los créditos no compran simulacros ni cursos (el plan decide) y privacidad con IP y navegador a 90 días, ADR-59 autoría de contenido: escribe Sonnet 5 desde la fuente, por `Workflow`, en paralelo al piloto**)
 - Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
 - Antes de cualquier código en la próxima sesión: `docs/PROMPT_SINCRONIZACION_DOCS.md`
   (Oleada 0 de `docs/PLAN_ULTRACODE.md`); contenido nuevo en espera (ADR-62 propuesto)
@@ -53,7 +53,7 @@
   Controlled Folder Access, que bloquea en silencio `.mypy_cache` y `.pytest_cache`:
   mypy tardaba ~2 min *siempre* porque nunca llegaba a existir una caché caliente
   (1m58 dentro contra 1m09 fuera). `MYPY_CACHE_DIR` y `-o cache_dir=` apuntan a
-  `%LOCALAPPDATA%/whetzy-cache`, que es lo que hacen el hook y `ci_local.sh`. Por lo
+  `%LOCALAPPDATA%/whetzy-cache` (fuera de Windows, `${XDG_CACHE_HOME:-$HOME/.cache}/whetzy`), que es lo que hacen el hook y `ci_local.sh`. Por lo
   mismo, **escribir ficheros del proyecto desde Python falla con «Bad file
   descriptor»**: escribe al scratchpad y luego `cp`
 - Backend prod: `https://api-production-9751.up.railway.app` — **deploy AUTOMÁTICO desde `master`** (verificado 2026-09-16, ledger H.16): cada commit que llega a `master` (una fusión del dueño, ADR-45) despliega backend, migraciones y `content_loader`, con ~1 min de 502/503 durante el cambio (medido 2026-09-24, fila 35.8). Antes de cada push de rama: `pytest tests/content` y `check_question_bank.py` verdes

@@ -51,7 +51,7 @@ Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario)
 | `placement` | `PlacementScreen` | «¿Ya sabes algo de esto?» en el detalle de ruta | intro, cargando, test, resultado, error | E0: ledger |
 | `readiness` | `ReadinessScreen` | «Preparación para la certificación» | arco + barras por dominio | E2: `design/v2/brief-msg2.md` §E |
 | `mockexam` | `MockExamScreen` | «Simulacro de examen» | modos simulacro / certificador; fases intro, en curso, corrigiendo, resultado | E2: `design/v2/brief-msg2.md` §F |
-| `trackexam` | `TrackExamScreen` | «Examen final del curso» | intro, examen, resultado; admite `test_out` de módulo, pero nada en la UI lo lanza (§5.1) | E2: `design/v2/brief-msg2.md` §F |
+| `trackexam` | `TrackExamScreen` | «Examen final del curso» | intro, examen, resultado; admite `test_out` de módulo, que lanza el detalle de ruta en Rutas | E2: `design/v2/brief-msg2.md` §F |
 | `league` | `LeagueScreen` | pestaña Ranking | pestañas Liga / Duelos (`RankingTabs`) | E1: `docs/API.md` (league) |
 | `duels` | `DuelScreen` | pestaña Ranking → Duelos | lista (nombre de la habilidad, no su id), reto (rival + habilidad practicada o al azar entre las practicadas), jugando, resultado. Un duelo no da XP | E0: ledger 3.1 |
 | `profile` | `ProfileScreen` | pestaña Yo | ajustes (incluida la verificación en dos pasos: alta con QR, desactivar con código), plan y cancelación, plan ganado con referidos y hasta cuándo (ADR-57), tema, idioma, accesos a Stats/Cartera/Instructor/Admin | E1: `design/v2/brief-msg1.md` (nav) |
@@ -64,11 +64,11 @@ Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario)
 | `admin` | `AdminScreen` | Yo → Admin (solo owner) | las 7 pestañas de `/admin` | E2: `docs/design/admin-spec.md` |
 
 Total: **14 rutas URL en producción** (más `/_ui` en desarrollo y la redirección `/r/`),
-**18 pantallas** del tipo `Screen` más el onboarding, **31 ficheros** en `frontend/src/pages/`.
+**18 pantallas** del tipo `Screen` más el onboarding, **33 ficheros** en `frontend/src/pages/`.
 
 ## 3. API
 
-149 operaciones en `backend/app/api` (148 vivas en el OpenAPI local del 2026-10-01 + `POST
+174 operaciones en el OpenAPI local (`app.openapi()`, 2026-10-16; 148 el 2026-10-01 + `POST
 /billing/paddle/cancel`, que llegó con el #64). `docs/API.md` documenta todas salvo `GET /`
 (la raíz). Comprobación: comparar `/api/v1/openapi.json` con los `MÉTODO /ruta` de API.md.
 

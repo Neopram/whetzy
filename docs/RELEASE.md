@@ -21,7 +21,7 @@
 ### Build y deploy
 ```bash
 cd frontend
-npm run build          # NO usar `vite build` directamente — scripts pre/post-build corren con npm
+npm run build          # = `vite build` (el prerender va dentro; `package.json` no tiene scripts pre/post-build)
 ```
 
 **Corrección 2026-09-24:** el proyecto de Cloudflare Pages (`whetzy`) **sí está conectado
@@ -41,19 +41,19 @@ Sin `--branch main` el deploy va a *Preview* y `whetzy.com` no cambia. Verificad
 ### Checks antes de publicar
 ```bash
 npm run build 2>&1 | grep -E "error|warning"   # 0 errores
-node scripts/check-bundle.mjs                   # bundle < 300 KB gz
+node scripts/check-bundle.mjs                   # chunk inicial ≤ 300 KB gz, total inicial ≤ 350 KB gz
 node scripts/check-no-third-party.mjs           # 0 terceros en dist/
 ```
 
 ### Verificar que el deploy está activo (tras cada `wrangler pages deploy`)
 ```bash
 cd frontend
-npm run check:deployed                          # 6/6 checks PASS
+npm run check:deployed                          # 9/9 checks PASS (salida del 2026-10-16 sobre 0de27ad)
 # Para probar en staging:
 npm run check:deployed https://whetzy.pages.dev
 ```
 
-`check-deployed.mjs` verifica: HTML del build actual · prerender del hero · sitemap.xml · robots.txt · Pyodide autohospedado · 0 terceros en HTML+CSS servido.
+`check-deployed.mjs` verifica: commit esperado · HTML del build actual · prerender del hero · bundle con API viva · `/api/*` del dominio da 404 · sitemap.xml · robots.txt · Pyodide autohospedado · 0 terceros en HTML+CSS servido.
 
 ### Cloudflare Headers (configurado en `frontend/public/_headers`)
 
@@ -156,7 +156,7 @@ npx cap open ios    # abre Xcode
 ### Pre-submission checklist
 - [ ] `PrivacyInfo.xcprivacy` en el bundle (ya preparado en `docs/store/`)
 - [ ] `Info.plist`: NSCameraUsageDescription, NSPhotoLibraryUsageDescription (si aplica)
-- [ ] Iconos iOS 1024px (generados en `frontend/ios/App/App/Assets.xcassets/AppIcon.appiconset/`)
+- [ ] Iconos iOS 1024px (se generarán en `frontend/ios/App/App/Assets.xcassets/AppIcon.appiconset/`; `frontend/ios/` aún no existe)
 - [ ] Screenshots 6.5" (iPhone 15 Pro Max) y 12.9" (iPad Pro) — H.9
 - [ ] RevenueCat 17.14 IAP configurado antes de submit (B1 — App Store Review blocker)
 - [ ] TestFlight: mínimo 1 semana de beta antes de production
@@ -172,12 +172,12 @@ npx cap open ios    # abre Xcode
 | `check-no-third-party.mjs` PASS | ✅ | n/a | n/a |
 | `alembic upgrade head` en prod | ✅ | ✅ | ✅ |
 | Content loader ejecutado (H.SEED) | ✅ | ✅ | ✅ |
-| Playwright e2e PASS | ✅ | n/a | n/a |
+| Playwright e2e PASS | 54/56 (#220) | n/a | n/a |
 | Backend health check | ✅ | ✅ | ✅ |
-| Signing keystore disponible | n/a | ✅ | ✅ |
+| Signing keystore disponible | n/a | pendiente (H.3) | pendiente (H.2) |
 | Store listing completo | n/a | ✅ (H.3) | ✅ (H.2) |
-| Screenshots en listing | n/a | ✅ (H.9) | ✅ (H.9) |
-| RevenueCat IAP | n/a | ✅ (H.5) | ✅ (H.5) |
+| Screenshots en listing | n/a | pendiente (H.9) | pendiente (H.9) |
+| RevenueCat IAP | n/a | parcial: solo backend (17.14, H.5) | parcial: solo backend (17.14, H.5) |
 
 ---
 

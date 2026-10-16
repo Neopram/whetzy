@@ -150,7 +150,7 @@ reportado en `COMPETENCIA.md` §A.2b.
   ofrece la competencia directa medida en §A.1.
 - **Precio anual y reembolso como la competencia directa.** Se toman de lo que
   esta practica y está registrado con URL y fecha en `COMPETENCIA.md` §A. No
-  hay política propia de reembolso: la propuesta que había aquí (H.50) queda
+  hay política propia de reembolso: la propuesta que había aquí (antigua H.50; hoy H.50 es otra fila) queda
   descartada.
 - **Punto pendiente de H.35.** El precio anual era el punto (1) de H.35; esta
   decisión le da el criterio.
