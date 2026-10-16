@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { profiles, type PublicProfile } from '../services/api'
-import '../styles/publicProfile.css'
+import styles from './PublicProfileScreen.module.css';
 
 export default function PublicProfileScreen({ handle }: { handle: string }) {
   const { i18n, t } = useTranslation()
@@ -33,55 +33,55 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
   }, [handle])
 
   if (loading) {
-    return <div className="public-profile-loading">{t('common.loading', 'Cargando...')}</div>
+    return <div className={styles.publicProfileLoading}>{t('common.loading', 'Cargando...')}</div>
   }
 
   if (!profile) {
     return (
-      <div className="public-profile-private">
+      <div className={styles.publicProfilePrivate}>
         {t('profile.notFound', 'No existe ningún perfil con ese nombre de usuario')}
       </div>
     )
   }
 
   return (
-    <div className="public-profile">
-      <div className="profile-header">
-        <div className="profile-avatar">
-          <div className="avatar-placeholder">{profile.avatar_emoji}</div>
+    <div className={styles.publicProfile}>
+      <div className={styles.profileHeader}>
+        <div className={styles.profileAvatar}>
+          <div className={styles.avatarPlaceholder}>{profile.avatar_emoji}</div>
         </div>
-        <div className="profile-info">
+        <div className={styles.profileInfo}>
           <h1>{profile.display_name}</h1>
-          <p className="handle">@{profile.username}</p>
-          <p className="joined">
+          <p className={styles.handle}>@{profile.username}</p>
+          <p className={styles.joined}>
             {t('profile.joined', 'Se unió el')} {new Date(profile.joined_at).toLocaleDateString()}
           </p>
         </div>
       </div>
 
-      <div className="profile-stats">
-        <div className="stat-card">
-          <span className="stat-value">{profile.skills_mastered}</span>
-          <span className="stat-label">{t('profile.skills', 'Habilidades')}</span>
+      <div className={styles.profileStats}>
+        <div className={styles.statCard}>
+          <span className={styles.statValue}>{profile.skills_mastered}</span>
+          <span className={styles.statLabel}>{t('profile.skills', 'Habilidades')}</span>
         </div>
-        <div className="stat-card">
-          <span className="stat-value">{profile.current_streak}<span aria-hidden="true">🔥</span></span>
-          <span className="stat-label">{t('profile.streak', 'Racha')}</span>
+        <div className={styles.statCard}>
+          <span className={styles.statValue}>{profile.current_streak}<span aria-hidden="true">🔥</span></span>
+          <span className={styles.statLabel}>{t('profile.streak', 'Racha')}</span>
         </div>
       </div>
 
-      <section className="certificates-section">
+      <section className={styles.certificatesSection}>
         <h2>{t('profile.certs', 'Certificaciones')}</h2>
         {profile.certificates.length === 0 ? (
-          <p className="empty">{t('profile.no_certs', 'Todavía sin certificaciones')}</p>
+          <p className={styles.empty}>{t('profile.no_certs', 'Todavía sin certificaciones')}</p>
         ) : (
-          <div className="certs-list">
+          <div className={styles.certsList}>
             {profile.certificates.map((cert) => (
-              <div key={cert.code} className="cert-badge">
-                <span className="cert-icon" aria-hidden="true">🏆</span>
-                <div className="cert-info">
-                  <p className="cert-name">{lang === 'es' ? cert.track_name_es : cert.track_name_en}</p>
-                  <p className="cert-date">{new Date(cert.issued_at).toLocaleDateString()}</p>
+              <div key={cert.code} className={styles.certBadge}>
+                <span className={styles.certIcon} aria-hidden="true">🏆</span>
+                <div className={styles.certInfo}>
+                  <p className={styles.certName}>{lang === 'es' ? cert.track_name_es : cert.track_name_en}</p>
+                  <p className={styles.certDate}>{new Date(cert.issued_at).toLocaleDateString()}</p>
                 </div>
               </div>
             ))}
@@ -89,16 +89,16 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
         )}
       </section>
 
-      <section className="projects-section">
+      <section className={styles.projectsSection}>
         <h2>{t('profile.projects', 'Proyectos completados')}</h2>
         {profile.projects_completed.length === 0 ? (
-          <p className="empty">{t('profile.no_projects', 'Todavía sin proyectos')}</p>
+          <p className={styles.empty}>{t('profile.no_projects', 'Todavía sin proyectos')}</p>
         ) : (
-          <div className="projects-grid">
+          <div className={styles.projectsGrid}>
             {profile.projects_completed.map((proj) => (
               // Sin enlace: `/project/<slug>` no es una ruta de la app y llevaba a
               // un 404 (auditoría de pantallas, 2026-10-16).
-              <div key={proj.slug} className="project-card">
+              <div key={proj.slug} className={styles.projectCard}>
                 <h3>{lang === 'es' ? proj.name_es : proj.name_en}</h3>
               </div>
             ))}

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { content as contentApi, progress as progressApi, type TrackRead } from '../services/api';
-import '../styles/marketplace.css';
+import styles from './MarketplaceScreen.module.css';
 
 /**
  * Catálogo de lo que se puede estudiar.
@@ -53,19 +53,19 @@ export function MarketplaceScreen() {
   }, [tracks.data, tipo, query]);
 
   if (tracks.loading) {
-    return <p className="mkt-state">{t('marketplace.loading')}</p>;
+    return <p className={styles.mktState}>{t('marketplace.loading')}</p>;
   }
   if (tracks.error) {
-    return <p className="mkt-state mkt-state--error">{t('marketplace.error')}</p>;
+    return <p className={`${styles.mktState} ${styles.mktStateError}`}>{t('marketplace.error')}</p>;
   }
 
   const totalPreguntas = (tracks.data ?? []).reduce((s, tr) => s + tr.total_questions, 0);
 
   return (
-    <div className="mkt">
-      <header className="mkt-head">
-        <h1 className="mkt-title">{t('marketplace.title')}</h1>
-        <p className="mkt-sub">
+    <div className={styles.mkt}>
+      <header className={styles.mktHead}>
+        <h1 className={styles.mktTitle}>{t('marketplace.title')}</h1>
+        <p className={styles.mktSub}>
           {t('marketplace.summary', {
             tracks: tracks.data?.length ?? 0,
             questions: totalPreguntas.toLocaleString(lang === 'es' ? 'es-ES' : 'en-US'),
@@ -73,23 +73,23 @@ export function MarketplaceScreen() {
         </p>
       </header>
 
-      <div className="mkt-filters">
+      <div className={styles.mktFilters}>
         <input
-          className="mkt-search"
+          className={styles.mktSearch}
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('marketplace.search_placeholder')}
           aria-label={t('marketplace.search_placeholder')}
         />
-        <div className="mkt-tabs" role="tablist" aria-label={t('marketplace.category')}>
+        <div className={styles.mktTabs} role="tablist" aria-label={t('marketplace.category')}>
           {(['all', 'learning', 'certification'] as const).map((k) => (
             <button
               key={k}
               type="button"
               role="tab"
               aria-selected={tipo === k}
-              className={`mkt-tab ${tipo === k ? 'is-active' : ''}`}
+              className={`${styles.mktTab} ${tipo === k ? styles.isActive : ''}`}
               onClick={() => setTipo(k)}
             >
               {t(`marketplace.filter_${k}`)}
@@ -99,26 +99,26 @@ export function MarketplaceScreen() {
       </div>
 
       {visibles.length === 0 ? (
-        <p className="mkt-state">{t('marketplace.no_courses')}</p>
+        <p className={styles.mktState}>{t('marketplace.no_courses')}</p>
       ) : (
-        <ul className="mkt-grid">
+        <ul className={styles.mktGrid}>
           {visibles.map((tr) => {
             const m = masteryPorTrack.get(tr.id);
             // ADR-60: progreso por skills dominadas, no por un % del modelo.
             const empezado = (m?.total ?? 0) > 0 && (m?.mastered ?? 0) > 0;
             const pct = m && m.total > 0 ? Math.round((m.mastered / m.total) * 100) : 0;
             return (
-              <li key={tr.id} className="mkt-card" style={{ ['--mkt-accent' as string]: tr.color }}>
-                <div className="mkt-card-top">
-                  <span className="mkt-icon" aria-hidden="true">{tr.icon}</span>
+              <li key={tr.id} className={styles.mktCard} style={{ ['--mkt-accent' as string]: tr.color }}>
+                <div className={styles.mktCardTop}>
+                  <span className={styles.mktIcon} aria-hidden="true">{tr.icon}</span>
                   {tr.is_certification && (
-                    <span className="mkt-badge">{tr.cert_provider ?? t('marketplace.certification')}</span>
+                    <span className={styles.mktBadge}>{tr.cert_provider ?? t('marketplace.certification')}</span>
                   )}
                 </div>
 
-                <h2 className="mkt-card-title">{lang === 'es' ? tr.name_es : tr.name_en}</h2>
+                <h2 className={styles.mktCardTitle}>{lang === 'es' ? tr.name_es : tr.name_en}</h2>
 
-                <p className="mkt-card-meta">
+                <p className={styles.mktCardMeta}>
                   {t('marketplace.questions_count', {
                     count: tr.total_questions,
                   })}
@@ -133,11 +133,11 @@ export function MarketplaceScreen() {
                 {/* El progreso solo aparece si de verdad hay progreso. Una barra
                     al 0 % en todo el catálogo es ruido, no información. */}
                 {empezado && (
-                  <div className="mkt-progress">
-                    <div className="mkt-progress-track">
-                      <div className="mkt-progress-fill" style={{ width: `${pct}%` }} />
+                  <div className={styles.mktProgress}>
+                    <div className={styles.mktProgressTrack}>
+                      <div className={styles.mktProgressFill} style={{ width: `${pct}%` }} />
                     </div>
-                    <span className="mkt-progress-label">
+                    <span className={styles.mktProgressLabel}>
                       {t('marketplace.mastery_meta', {
                         mastered: m!.mastered,
                         total: m!.total,
@@ -146,17 +146,17 @@ export function MarketplaceScreen() {
                   </div>
                 )}
 
-                <div className="mkt-card-actions">
+                <div className={styles.mktCardActions}>
                   <button
                     type="button"
-                    className="mkt-btn mkt-btn--primary"
+                    className={`${styles.mktBtn} ${styles.mktBtnPrimary}`}
                     onClick={() => startQuiz('study', 10, { trackId: tr.id })}
                   >
                     {empezado ? t('marketplace.continue') : t('marketplace.start')}
                   </button>
                   <button
                     type="button"
-                    className="mkt-btn"
+                    className={styles.mktBtn}
                     onClick={() => setScreen('tracks')}
                   >
                     {t('marketplace.see_syllabus')}
