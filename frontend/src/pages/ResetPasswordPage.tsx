@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../services/api';
+import { Button } from '../components/common/Button';
 import styles from './AuthScreen.module.css';
 
 interface Props {
@@ -57,7 +58,7 @@ export function ResetPasswordPage({ token, onSuccess }: Props) {
           />
         </label>
         {error && <p className={styles.error}>⚠️ {error}</p>}
-        <button className={styles.submit} type="submit" disabled={loading}>{loading ? t('auth.loading') : t('resetPassword.submit')}</button>
+        <Button type="submit" size="lg" full disabled={loading} className={styles.submit}>{loading ? t('auth.loading') : t('resetPassword.submit')}</Button>
       </form>
     </div>
   );
