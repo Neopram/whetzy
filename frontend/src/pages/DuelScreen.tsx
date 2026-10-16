@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
+import { Button } from '../components/common/Button';
 import {
   duels as duelsApi,
   progress as progressApi,
@@ -166,15 +167,14 @@ export function DuelScreen() {
             </select>
           </label>
           <div className={styles.row}>
-            <button type="button" className={styles.btnSecondary} onClick={() => setView('list')}>{t('duel.cancel')}</button>
-            <button
+            <Button type="button" variant="ghost" onClick={() => setView('list')}>{t('duel.cancel')}</Button>
+            <Button
               type="button"
-              className={styles.btnPrimary}
               onClick={handleChallenge}
               disabled={challenging || !opponent.trim()}
             >
               {challenging ? t('duel.sending') : t('duel.send')}
-            </button>
+            </Button>
           </div>
         </section>
       </div>
@@ -220,9 +220,9 @@ export function DuelScreen() {
         </div>
 
         {selected !== null && (
-          <button type="button" className={styles.btnPrimary} onClick={handleNext}>
+          <Button type="button" onClick={handleNext}>
             {isLast ? t('duel.finish') : t('duel.next')}
-          </button>
+          </Button>
         )}
       </div>
     );
@@ -251,9 +251,9 @@ export function DuelScreen() {
         ) : (
           <p className={styles.muted}>{t('duel.waitingResult')}</p>
         )}
-        <button type="button" className={styles.btnPrimary} onClick={() => { setView('list'); fetchDuels(); }}>
+        <Button type="button" onClick={() => { setView('list'); fetchDuels(); }}>
           {t('duel.viewMyDuels')}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -264,9 +264,9 @@ export function DuelScreen() {
       <RankingTabs />
       <div className={styles.listHead}>
         <h1 className={styles.title}>{t('duel.title')}</h1>
-        <button type="button" className={styles.btnPrimary} onClick={() => setView('challenge-modal')}>
+        <Button type="button" onClick={() => setView('challenge-modal')}>
           {t('duel.challenge')}
-        </button>
+        </Button>
       </div>
 
       {loading ? (
@@ -323,7 +323,7 @@ function DuelCard({
           {!isDraw && duel.your_correct !== null && <b> {duel.your_correct}/5</b>}
         </span>
       ) : duel.is_your_turn ? (
-        <button type="button" className={styles.btnPlay} onClick={onPlay}>{t('duel.play')}</button>
+        <Button type="button" variant="secondary" size="sm" onClick={onPlay}>{t('duel.play')}</Button>
       ) : (
         <span className={styles.cardMeta}>{t('duel.waiting')}</span>
       )}

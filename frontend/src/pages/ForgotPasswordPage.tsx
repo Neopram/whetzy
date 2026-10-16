@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../services/api';
+import { Button } from '../components/common/Button';
 import styles from './AuthScreen.module.css';
 
 interface Props {
@@ -37,7 +38,7 @@ export function ForgotPasswordPage({ onBack }: Props) {
           <h1 className={styles.brandName}>{t('forgotPassword.checkEmailTitle')}</h1>
           <p className={styles.tagline}>{t('forgotPassword.checkEmailBody', { email })}</p>
         </div>
-        <button className={styles.submit} onClick={onBack}>{t('forgotPassword.back')}</button>
+        <Button type="button" size="lg" full onClick={onBack} className={styles.submit}>{t('forgotPassword.back')}</Button>
       </div>
     );
   }
@@ -63,7 +64,7 @@ export function ForgotPasswordPage({ onBack }: Props) {
           />
         </label>
         {error && <p className={styles.error}>⚠️ {error}</p>}
-        <button className={styles.submit} type="submit" disabled={loading}>{loading ? t('auth.loading') : t('forgotPassword.submit')}</button>
+        <Button type="submit" size="lg" full disabled={loading} className={styles.submit}>{loading ? t('auth.loading') : t('forgotPassword.submit')}</Button>
       </form>
       <button type="button" className={styles.forgotLink} onClick={onBack}>{t('forgotPassword.back')}</button>
     </div>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../services/api';
+import { Button } from '../components/common/Button';
+import btn from '../components/common/Button.module.css';
 import styles from './AuthScreen.module.css';
 
 interface Props {
@@ -52,7 +54,8 @@ export function VerifyEmailPage({ token }: Props) {
     return (
       <div className={styles.screen}>
         <p>{t('verifyEmail.success')}</p>
-        <a className={styles.submit} href="/login">
+        {/* Un enlace con el aspecto del Button común: navegar es un <a>, no un <button>. */}
+        <a className={`${btn.btn} ${btn.primary} ${btn.lg} ${btn.full} ${styles.submit}`} href="/login">
           {t('verifyEmail.continue')}
         </a>
       </div>
@@ -77,9 +80,9 @@ export function VerifyEmailPage({ token }: Props) {
               autoComplete="email"
             />
           </label>
-          <button className={styles.submit} type="submit" disabled={resendState === 'sending'}>
+          <Button type="submit" size="lg" full disabled={resendState === 'sending'} className={styles.submit}>
             {resendState === 'sending' ? t('auth.loading') : t('verifyEmail.resend')}
-          </button>
+          </Button>
         </form>
       )}
     </div>

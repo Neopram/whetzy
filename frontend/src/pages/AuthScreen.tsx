@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ApiError, auth, type OAuthProvider, type RegisterPayload } from '../services/api';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
 import { BrandMark } from '../components/common/BrandMark';
+import { Button } from '../components/common/Button';
 import styles from './AuthScreen.module.css';
 
 // Surface any oauth_error the backend placed in the URL (e.g. email_required).
@@ -171,9 +172,9 @@ export function AuthScreen({ onAuthed }: Props) {
             />
           </label>
           {error && <p className={styles.error} role="alert">{error}</p>}
-          <button className={styles.submit} type="submit" disabled={loading}>
+          <Button type="submit" size="lg" full disabled={loading} className={styles.submit}>
             {loading ? t('auth.loading') : t('auth.mfaCta')}
-          </button>
+          </Button>
           <button
             type="button"
             className={styles.forgotLink}
@@ -303,9 +304,9 @@ export function AuthScreen({ onAuthed }: Props) {
 
         {error && <p className={styles.error} role="alert">⚠️ {error}</p>}
 
-        <button className={styles.submit} type="submit" disabled={loading}>
+        <Button type="submit" size="lg" full disabled={loading} className={styles.submit}>
           {loading ? t('auth.loading') : mode === 'register' ? t('auth.registerCta') : t('auth.loginCta')}
-        </button>
+        </Button>
       </form>
 
       {providers.length > 0 && (<>
