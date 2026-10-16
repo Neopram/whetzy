@@ -22,7 +22,7 @@ find" phrasing in the body below), not that nothing like this exists:
 I built an adaptive Python-to-AI engine, in Spanish
 ```
 
-68 characters + "Show HN: " (9) = 77, under the limit.
+51 characters + "Show HN: " (9) = 60, under the limit.
 
 ## URL
 
@@ -83,5 +83,5 @@ result — there is no live HN post yet to measure.
       rewards early engagement, and a dead thread looks worse than no thread
 - [ ] Reconfirm the free-tier limit cited above (5 lessons / 30 questions a day)
       still matches both production's `FREE_DAILY_QUOTA_ENABLED`
-      (`backend/app/core/config.py:244`) and the landing page
+      (`backend/app/core/config.py:299`) and the landing page
       (`frontend/src/i18n/{es,en}/common.json`) before posting

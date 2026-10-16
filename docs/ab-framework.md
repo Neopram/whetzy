@@ -6,6 +6,8 @@ Whetzy uses a deterministic, user-stable A/B testing framework for experiments. 
 
 ## How It Works
 
+> Status: only the model, MD5 assignment, `GET /api/v1/experiments/flags` and the `useExperimentFlags`/`useVariant` hooks exist. There is no admin endpoint or UI for experiments, no χ² stats and no `conclusion` field: everything below that mentions the admin panel is planned design, not built.
+
 ### 1. Backend: Deterministic Assignment
 
 When a user first enters an active experiment:

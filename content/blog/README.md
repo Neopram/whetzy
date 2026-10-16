@@ -1,13 +1,13 @@
 # Blog de Whetzy — convención de contenido (ledger 26.9)
 
 Esta carpeta es el contenido del blog (`/blog` ES/EN, SEO orgánico —
-`docs/AUTONOMOUS_STATE.md:256`). **Solo el contenido.** La ruta `/blog` en sí,
+fila 26.9 de `docs/AUTONOMOUS_STATE.md`). **Solo el contenido.** La ruta `/blog` en sí,
 el prerender en `vite build` y el parser que lee estos ficheros van en
 `frontend/src/pages/marketing/**`, que esta sesión no toca todavía: esas rutas
 quedan reservadas hasta que el PR A de fase 0 (S5) fusione `App.tsx` — ver el
 comentario `[COORD] ARRANQUE YA` del issue #89. Esto no es un bloqueo falso:
 sin esas rutas registradas, cualquier componente de blog que yo escriba no
-tendría dónde montarse.
+tendría dónde montarse. (Sustituido: la ruta `/blog` ya está en `frontend/src/App.tsx:263` y el parser en `frontend/src/pages/marketing/blogContent.ts`.)
 
 ## Estructura
 
