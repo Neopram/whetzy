@@ -110,8 +110,8 @@ reutilizan: se citan y se enlazan.
 
 ## 5. Orden de producción (si el piloto pasa)
 
-1. **37.10, certificaciones:** track44 (AZ-900) y track46 (DP-900) están hechos (§7); siguen
-   AI-901 (track45, +224) y MLA-C01 (track43, +131). Después, el resto de la
+1. **37.10, certificaciones:** track44 (AZ-900), track46 (DP-900), track43 (MLA-C01) y
+   track45 (AI-901) están hechos (§7; los dos últimos en `b499f68`). Sigue el resto de la
    regla de ADR-54.
 2. **37.6, tracks construidos a la forma 32 × 10:** primero los de nivel A, luego B y C. Cada
    skill nueva lleva su lección y su término.
