@@ -33,7 +33,7 @@ test.describe('quiz', () => {
     // Ported: the summary must show the accuracy percentage, not just the grade letter.
     await expect(page.getByText(/% de precisión/i)).toBeVisible();
 
-    await page.locator('[class*="btnStudy_"]').click();
+    await page.getByRole('button', { name: 'CONTINUAR' }).click();
     await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible();
   });
 });
