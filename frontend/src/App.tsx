@@ -12,6 +12,7 @@ import './styles/global.css';
 import { OfflineIndicator } from './components/common/OfflineIndicator';
 import { useGestures } from './hooks/useGestures';
 import { safeNext } from './lib/paddle';
+import { useRedirectIfSignedIn } from './lib/authRedirect';
 import { IMMERSIVE_SCREENS, navigationTargetForSwipe } from './lib/immersiveScreens';
 
 // Every screen is loaded on demand. Statically importing them put the whole
@@ -207,13 +208,17 @@ function AuthRoute() {
   if (next !== '/') {
     try { sessionStorage.setItem(NEXT_KEY, next); } catch { /* modo privado */ }
   }
+  // Con la sesión abierta no hay nada que hacer aquí: a la app, sin dejar
+  // el formulario en el historial (2026-10-16).
+  useRedirectIfSignedIn(next);
   return (
     <>
       <Screen>
         <AuthScreen
           onAuthed={() => {
             try { sessionStorage.removeItem(NEXT_KEY); } catch { /* modo privado */ }
-            window.location.assign(safeNext(new URLSearchParams(window.location.search).get('next')));
+            // `replace`: con `assign`, «atrás» desde el panel volvía al formulario.
+            window.location.replace(safeNext(new URLSearchParams(window.location.search).get('next')));
           }}
         />
       </Screen>
@@ -265,7 +270,9 @@ function App() {
       const lang = navigator.language?.startsWith('es') ? 'es' : 'en';
       i18n.changeLanguage(lang);
     }
-    window.location.assign('/register');
+    // `replace`: con `assign`, «atrás» volvía a /r/… y esta misma línea lo
+    // mandaba otra vez a /register; quien llegaba por invitación no podía salir.
+    window.location.replace('/register');
     return null;
   }
 
@@ -274,7 +281,7 @@ function App() {
     const token = new URLSearchParams(window.location.search).get('token') || '';
     return (
       <Screen>
-        <ResetPasswordPage token={token} onSuccess={() => { window.location.assign('/login'); }} />
+        <ResetPasswordPage token={token} onSuccess={() => { window.location.replace('/login'); }} />
       </Screen>
     );
   }
@@ -375,7 +382,7 @@ function App() {
           sessionStorage.removeItem(NEXT_KEY);
         } catch { /* modo privado */ }
         if (pending !== '/') {
-          window.location.assign(pending);
+          window.location.replace(pending);
           return;
         }
         const userId = useAppStore.getState().user.id;

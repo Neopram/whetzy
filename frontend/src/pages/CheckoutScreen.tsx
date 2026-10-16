@@ -98,7 +98,7 @@ export function CheckoutScreen() {
       } catch (err) {
         if (err instanceof ApiError && err.status === 401) {
           const back = window.location.pathname + window.location.search;
-          window.location.assign(`/auth?next=${encodeURIComponent(back)}`);
+          window.location.replace(`/auth?next=${encodeURIComponent(back)}`);
           return;
         }
         if (!cancelled) setPhase('error');

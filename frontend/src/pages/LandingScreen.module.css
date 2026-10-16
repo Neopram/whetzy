@@ -77,6 +77,29 @@
   transition: transform var(--transition-fast, 150ms);
 }
 .headerCta:hover { transform: translateY(-2px); }
+.loginLink {
+  flex-shrink: 0; white-space: nowrap;
+  font-size: 0.875rem; font-weight: 700; color: var(--text-secondary);
+  text-decoration: none; padding: 0.5rem 0.25rem;
+  transition: color var(--transition-fast, 150ms);
+}
+.loginLink:hover { color: var(--color-primary); }
+/* Cabecera estrecha (2026-10-16): a 360 px el selector de idioma ya tapaba
+   «Whetzy» antes de añadir «Entrar». El contenedor del logo se encogía a 8 px
+   (min-width: 0) y el logo se salía por encima. En móvil queda el logo solo,
+   el bloque del logo no se encoge, y botones y huecos se compactan. */
+@media (max-width: 479px) {
+  .brandGroup { flex-shrink: 0; }
+  .brandTitle { display: none; }
+  .navContainer { gap: 0.5rem; }
+  .headerActions { gap: 0.5rem; }
+  .langBtn { width: 1.75rem; height: 1.75rem; }
+  .loginLink { padding-inline: 0; }
+  .headerCta { padding: 0.5rem 0.75rem; font-size: 0.8125rem; }
+}
+@media (max-width: 379px) {
+  .navContainer { padding-inline: 0.75rem; }
+}
 
 /* ============ HERO ============ */
 .heroSection {

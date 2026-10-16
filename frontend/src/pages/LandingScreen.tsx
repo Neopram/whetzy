@@ -211,6 +211,11 @@ export default function LandingScreen() {
                 🇬🇧
               </button>
             </div>
+            {/* La puerta de quien ya tiene cuenta (2026-10-16): todas las demás
+                llamadas a la acción abren el registro. */}
+            {!hasSession && (
+              <a className={styles.loginLink} href="/login">{t('landing.nav.login')}</a>
+            )}
             <a className={styles.headerCta} href={ctaHref}>
               {hasSession ? t('landing.nav.dashboard') : t('landing.nav.start')}
             </a>
