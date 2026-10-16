@@ -113,7 +113,7 @@
 | 17.6 | **2** | **UI de clase mundial, medida** | TODO | → LEDGER_HISTORY.md §E |
 | 17.7 | **4** | **Vídeos explicativos generados desde código** | TODO | → LEDGER_HISTORY.md §E |
 | 17.10 | **3** | **Re-puntuar frente a la competencia con lo anterior hecho** | TODO | → LEDGER_HISTORY.md §E |
-| 17.14 | **1** | Compras dentro de la app (la antigua 7.6, sin fila desde hace mese… | **PARCIAL** | **PARCIAL** (2026-09-27): mitad backend — `POST /billing/revenuecat/webhook` (sandbox, auth verificado en vivo contra doc de RevenueCat), mismo entitlement que Stripe, `subscription_provider` nuevo. Falta: SDK/UI nativa (Capacitor) — HUMAN-BLOCKED (H.2, H.3) → §I |
+| 17.14 | **1** | Compras dentro de la app (la antigua 7.6, sin fila desde hace mese… | **PARCIAL** | backend hecho (`POST /billing/revenuecat/webhook`, 2026-09-27); falta SDK/UI nativa (H.2, H.3) → §T |
 
 **Verdad que condiciona toda la serie:** H.11 cerrado 2026-09-18 (frontend desplegado). Hasta que el dueño cierre **H.SEED** (cargar el…
 
@@ -163,7 +163,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE** | `bec734c` (2026-09-18) → §I |
 | 18.9 | **4** | **Vídeo explicativo — piloto que decide** | TODO | → LEDGER_HISTORY.md §E |
 | 18.10 | **4** | **Resto del catálogo: tracks 24-26, 28-31 y certs P2-P3** | **PARCIAL** | 26/28/29/30 en `1d76762`+`6e2778a` (1.200 Q, 80 lecciones); faltan 24, 25, 31 y relleno a 300 → §E |
-| 18.11 | **2** | **Store-ready sin cuenta** | **PARCIAL** | `docs/STORE_LISTING.md` consolidado (iOS + Android), precios IAP actualizados a ADR-41/49, checklist actualizado (A3 age gate DONE por 19.11). Cuenta delete: endpoint + pantalla DONE. Privacy/Terms: DONE. Falta: screenshots con Playwright (necesita backend local), `codemagic.yaml` iOS build (H.14 macOS runner). |
+| 18.11 | **2** | **Store-ready sin cuenta** | **PARCIAL** | listing, borrado de cuenta y textos hechos; faltan capturas y build iOS (H.14) → §T |
 | 18.12 | **3** | **Re-puntuación con URLs fechadas** | TODO | → LEDGER_HISTORY.md §E |
 
 ### 19. Lo que Educative y las tiendas exigen — social login, bootcamps, proyectos, autoría con fuentes libres (abierta 2026-09-18, sesión…
@@ -214,7 +214,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | 21 capturas landing+precios de 7/8. Reintento Platzi: firewall nuevo, tratado como bloqueo. Falta: onboarding/dashboard/gamificación (cuenta), Exercism/Platzi (bloqueados), `decisiones-24.0.md` → §I |
+| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | 7/8 capturadas; faltan las vistas con cuenta y Exercism/Platzi (bloqueados) → §T |
 | 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía… | **PARCIAL** | 2026-10-16: colores del logo aprobados por el dueño el 2026-10-13 y aplicados (#197) → §T |
 | 24.2 | **1** | **Landing que vende** (`/es`, `/en`; absorbe 19.8 y 23.2): hero con el… | **PARCIAL** | Lighthouse (preview): perf 77-89, a11y 94. LCP 3965-4392ms, falla presupuesto 2500ms. Falta: demo 3 preguntas, remedir en prod, copy/A-B del dueño → §I |
 | 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | 2026-10-16: el alta lleva a la primera lección (D-20, #188; e2e en #220). Falta abandono por paso en admin (22.1) → §T |
@@ -421,16 +421,16 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.12 | **3** | Monitoreo trimestral de competencia (`CATALOGO_MAESTRO.md` §11.4 a… |  | → §I (criterio archivado por 20.10) |
 | 37.13 | **3** | Scorecard ADR-54 (absorbe 25.13): `scripts/catalog_coverage.py` +… | **PARCIAL** | Hecho 2026-10-01 para ADR-54 (script, metas, 21 tests con mutación). Falta: cifras en `/evidence` y re-puntuar Contenido en el teardown al cambiar de tramo |
 | 37.14 | **1** | track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | `fbf9baf` → §T |
-| 37.15 | **1** | Fuentes sin indexar: 3.906 de 6.305 preguntas… | **PARCIAL** | (2026-09-29, `Workflow` 10 agentes) 4.450→3.903 sin indexar (10.949 preguntas). 267 citas RFC/PEP con URL canónica verificada en vivo; 8 dominios nuevos en `index.json` (peps.python.org reusar/CC0, Wikipedia/Deep Learning book/OWASP cheatsheets cita). `tests/content` 70.057 verde → STATUS.md |
+| 37.15 | **1** | Fuentes sin indexar: 3.906 de 6.305 preguntas… | **PARCIAL** | 3.903 sin indexar de 10.949 (2026-09-29, `Workflow`) → §T |
 | 37.16 | **1** | La correcta es la opción más larga. Medido 2026-09-25 sobre… | **DONE** | `46764ff` → §T |
-| 37.17 | **1** | Inglés dentro del español y ejecutables con atajo… | **PARCIAL** | (2026-09-29, `Workflow`) recuento real: 699 preguntas exec (no ~2.900, cifra vieja errónea). 219 revisadas a fondo en 4 tracks, 10 bugs de ambigüedad reales arreglados y verificados, 1 estructural sin arreglar (`q060203ex012`). Quedan ~480 sin revisar → STATUS.md |
+| 37.17 | **1** | Inglés dentro del español y ejecutables con atajo… | **PARCIAL** | 219 de 699 exec revisadas (2026-09-29); quedan ~480 y `q060203ex012` → §T |
 | 37.18 | **1** | Banco de simulacro reservado: `"pool": "simulacro"`; ningu… | **DONE** | → §T |
 | 37.19 | **1** | Formato de examen del proveedor: AIF-C01 65 Q / 90 min (re… | **DONE** | `764b06b` → §T |
 | 37.22 | **1** | ISC2 CC al outline del 2026-09-01 (CAT 100–125 ítems; D2 G… | **DONE** | `84fb47c` → §T |
 | 37.20 | **1** | Métricas de producto con meta (ADR-53 §8): D1 ≥ 15 %, D7 ≥… | **DONE** | → §T |
 | 37.21 | **3** | Mapa skill → nodo del temario, para elegir las 32 skills de cada t… | TODO (tras 37.6) | cada skill con su nodo |
-| 37.23 | **2** | Alineación lección↔quiz (heredera de la 37.1 vieja, antes de ADR-5… | **PARCIAL** | (2026-09-29) 8 tracks revisados, track08+22+11+23+10+44+45+46 cerrados (39.39 DONE). 4/4 bugs de contenido corregidos. track44: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas. Queda la expansión de catálogo hacia ADR-53 (37.6-37.8), no una corrección → STATUS.md |
-| 37.24 | **1** | Poblar el banco de simulacro reservado (2× la longitud del examen… | PARCIAL — 219/1.040 integradas (2026-10-13: +73 corregidas por Sonnet y re-revisadas; AIF-C01 116/130, CLF-C02 96/130) y 986 escritas; flag sigue en `False`; estado, pendientes y cómo retomar en `scripts/content_qa/reservadas_37_24/README.md` | 8 certificaciones con L publicada con reservadas ≥ 2× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/1.040 reservadas a la meta — autoría de contenido (ADR-59), no una tarea de código |
+| 37.23 | **2** | Alineación lección↔quiz (heredera de la 37.1 vieja, antes de ADR-5… | **PARCIAL** | 8 tracks cerrados (2026-09-29); queda la expansión hacia ADR-54 (37.6-37.8) → §T |
+| 37.24 | **1** | Poblar el banco de simulacro reservado (2× la longitud del examen… | PARCIAL — 219/1.040 (2026-10-13); flag en `False`; cómo retomar en `scripts/content_qa/reservadas_37_24/README.md` | reservadas ≥ 2 × `exam_question_count` en las 8 con L publicada y flag en `True` → §T |
 | 37.25 | **1** | Piloto de autoría (ADR-59): 10 ítems de una skill de track… | **DONE** | → §T |
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
@@ -460,13 +460,13 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.5 | **2** | Gamification auditada de punta a punta | DONE | → §O |
 | 39.6 | **2** | `audit_ai_traces.py` | DONE | → §M |
 | 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | → §M |
-| 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (tra… | **PARCIAL** | (2026-09-29) 10/12 reescritas y verificadas en Python real, quitadas de `KNOWN`. 2 nunca fueron duplicados: ciego del checker (solo `question_es`, ignora `code`) → 39.40. `tests/content` 70.277; guarda mutada rojo/verde → §I |
+| 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (tra… | **PARCIAL** | 10/12 reescritas (2026-09-29); las 2 restantes son el ciego de 39.40 → §T |
 | 39.28 | **0** | Segunda familia de coletillas («como concepto principal» 9… | **DONE** | → §T |
 | 39.29 | **0** | 1.404 explicaciones de plantilla vistas por el alumno en track41 (59… | DONE | → §O |
 | 39.30 | **1** | Datos personales en el contenido: `l260101` enseñaba el no… | **DONE** | → §T |
 | 39.31 | **2** | `user_meets_tier` no mira `subscription_expires_at` | **DONE** | `749e07f` → §T |
 | 39.32 | **3** | `test_rag_self_retrieval` tarda ~28 min (cuadrático en el… | **DONE** | `8934dd2` → §T |
-| 39.33 | **1** | Claves sospechosas previas: la explicación se parece más a otra op… | **PARCIAL** | 86 + 26 más (`a17a7c8`, ya en esta rama): sk130104/204/304 (track13) tenían >50% mal — RACI inventado, "menor privilegio" al revés. Verificadas leyendo las 60 preguntas de las 3 skills en vivo esta sesión: ninguna queda mal. Tracks hermanos del mismo commit masivo: solo `q120302mc002` revisado. TODO: resto sin muestrear |
+| 39.33 | **1** | Claves sospechosas previas: la explicación se parece más a otra op… | **PARCIAL** | track13 sk130104/204/304 corregidas (`a17a7c8`); falta muestrear el resto del commit masivo → §T |
 | 39.34 | **2** | Texto de UI del cupo Free (ES/EN) antes de encender… | **DONE** | `e754b50` → §T |
 | 39.35 | **0** | El limitador de peticiones de producción fallaba en abiert… | **DONE** | `95cdfbf` → §T |
 | 39.36 | **1** | `options_en` escritas en español en track21 (194 preguntas… | **DONE** | → §T |
