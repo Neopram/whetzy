@@ -23,6 +23,8 @@ import {
 import { CertificateCard } from '../components/certificate/CertificateCard';
 import { ExamSitting } from '../components/exam/ExamSitting';
 import { useTimedExam } from '../hooks/useTimedExam';
+import { showToast } from '../components/common/Toast';
+import { useBackGuard } from '../lib/screenHistory';
 import styles from './MockExamScreen.module.css';
 import own from './TrackExamScreen.module.css';
 
@@ -77,6 +79,13 @@ export function TrackExamScreen({
   });
 
   const current = exam.current;
+
+  // Con el examen en marcha «atrás» no sale (el reloj sigue en el servidor);
+  // antes de empezar y con el resultado, sí.
+  useBackGuard(() => {
+    if (exam.phase === 'running' || exam.phase === 'grading') showToast(t('mockExam.backBlocked'), 'info');
+    else onExit?.();
+  });
 
   // ── Intro ─────────────────────────────────────────────────────────────────
 
