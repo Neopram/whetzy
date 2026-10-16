@@ -20,8 +20,8 @@ Introduce Whetzy as an adaptive learning platform in 2 minutes. Target: career-s
 - **Narration:** "Whetzy uses adaptive learning powered by Bayesian Knowledge Tracing. Every question calibrates to *your* exact level."
 - **Transition:** Animation of correct answer, mastery bar rises
 
-- **Visual:** Credit wallet, achievement unlocked, live duel
-- **Narration:** "Real gamification: streaks, live duels against other learners, daily missions. Learning feels like a game that matters."
+- **Visual:** Credit wallet, achievement unlocked, duel against another learner
+- **Narration:** "Real gamification: streaks, turn-based duels against other learners, daily missions. Learning feels like a game that matters."
 
 - **Visual:** Verifiable certificate, QR code, LinkedIn share
 - **Narration:** "Master a track, get a certificate verified by Whetzy. Prove to employers you didn't just watch videos."

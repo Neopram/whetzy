@@ -23,8 +23,8 @@
 ### Qué es Whetzy
 El motor que te aprende mientras aprendes. Una plataforma adaptativa que lleva a
 una persona desde Python básico hasta AI Engineer, en español e inglés nativos,
-con un motor real (FSRS · Elo · BKT · bandit · DKT) que decide qué pregunta toca
-y cuándo, y un tutor que explica citando fuentes. Luego, la misma máquina
+con un motor real (FSRS · Elo · BKT · DKT) que elige la skill por dominio y la pregunta
+por Elo, y cuándo repasar (Thompson solo en la prueba de nivel), y un tutor que explica citando fuentes. Luego, la misma máquina
 aplicada a certificaciones profesionales.
 
 ### Para quién
@@ -68,9 +68,10 @@ ADR-16 queda suspendida). Cancelar en dos toques.
   cuanto exista otro OAuth → Google nativo en Android. Ninguna submission sin 19.1 + 19.2 + 17.14.
 - Herramientas externas (`claude-webkit`, `banana-claude`, `editor-pro-max`) solo
   fuera de la app; `notebooklm-mcp` no se instala (ADR-12).
-- Molde por track (catálogo §2): **20 skills · 300 Q · 3 niveles · 20 lecciones ·
-  ≥ 36 términos · ≥ 15 % ejecutable** donde el navegador ejecute (Python, SQL, JS)
-  o exento con razón (ADR-9). Un track por debajo del molde no existe.
+- Forma por track (ADR-54, catálogo §2): **32 skills × 10 Q, con ≥ 3 ejecutables por skill**
+  donde el navegador ejecute (Python, SQL, JS) o exento con razón (ADR-9), y **1 lección y
+  1 término por skill**. El molde de 20 skills · 300 Q está sustituido. Un track por debajo de la
+  forma cuenta como construido, no como hecho (`scripts/catalog_coverage.py`).
 - Marca: paleta **Obsidian** (serie 34, ADR-47): oscuro por defecto, cian `#06B6D4`
   primario, el verde **solo** para éxito, claro solo en `[data-theme="light"]`;
   logo de triángulo neural.

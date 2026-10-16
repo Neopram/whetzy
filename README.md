@@ -4,8 +4,8 @@
 
 Bilingual (ES/EN, natively authored) school of computing: Python, software
 engineering, AI/ML, SQL, cybersecurity, cloud certifications. A layered adaptive
-engine (BKT + FSRS + Elo + Thompson-sampling bandit, DKT with fallback) selects the
-next question that maximizes learning, gated by mastery-verified prerequisites. Code
+engine (BKT + FSRS + Elo, DKT with fallback; Thompson sampling only in the placement
+test) picks the skill by mastery and the question by Elo, gated by mastery-verified prerequisites. Code
 runs in the browser (Python via Pyodide, SQL via sql.js, JavaScript in a Worker
 sandbox) — no execution server.
 

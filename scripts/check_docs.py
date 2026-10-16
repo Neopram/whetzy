@@ -599,7 +599,8 @@ _adr_heads = set(re.findall(r"^## ADR-(\d+)\b", _DECISIONS_TEXT, re.M))
 _adr_ghost = []
 for _md in _LIVE:
     for _i, _ln in enumerate(_md.read_text(encoding="utf-8", errors="replace").splitlines()):
-        for _n in re.findall(r"\bADR-(\d+)\b", _ln):
+        # «ADR-43 (hoy ADR-47)»: número viejo de antes de la renumeración del 2026-09-25, marcado.
+        for _n in re.findall(r"\bADR-(\d+)\b(?!\s*\(hoy ADR-)", _ln):
             if _n not in _adr_heads:
                 _adr_ghost.append(f"{_md.relative_to(ROOT).as_posix()}:{_i + 1} ADR-{_n}")
 check(
@@ -609,7 +610,11 @@ check(
 )
 
 print("\n[16] Molde de track vigente = ADR-54 (32 × 10), no el viejo 20 skills · 300 Q")
-_old_mould = _stale_lines(re.compile(r"20\s*skills\s*[·,/y×x]\s*300|300\s*Q\s*(por|/)\s*track", re.I), _LIVE)
+_old_mould = _stale_lines(
+    re.compile(r"20\s*skills\s*[·,/y×x]\s*300|300\s*Q\s*(por|/)\s*track", re.I),
+    _LIVE,
+    re.compile(r"sustitu[ií]d|hist[oó]ric|antigu", re.I),
+)
 check("Ningún doc vivo da como vigente «20 skills · 300 Q»", not _old_mould, ", ".join(_old_mould[:20]))
 
 print("\n[17] Precio de la certificación = CERT_EXAM_USD (pago único, ADR-49)")

@@ -13,8 +13,8 @@
 >
 > **Nota v2.1 (2026-09-25, al integrar esta rama con `master`).** Otra sesión del mismo
 > día trabajó en `master` en paralelo y el dueño le dio **precios definitivos después** de
-> ADR-43: quedan en **ADR-45** (Pro $14,99 · Pro Max $19,99 · Creador $99,99; reparto 80/20),
-> que enmienda la fila «Precios» de ADR-43. Por eso: (1) el grep a) de `14\.99` ya **no** es
+> ADR-43 (hoy ADR-47): quedan en **ADR-45** (hoy ADR-41; Pro $14,99 · Pro Max $19,99 · Creador $99,99; reparto 80/20),
+> que enmienda la fila «Precios» de ADR-43 (hoy ADR-47). Por eso: (1) el grep a) de `14\.99` ya **no** es
 > un residuo, y la línea roja «ningún precio publicado» cede ante ADR-45: la landing los
 > muestra con «el cobro abre pronto»; lo que sigue prohibido es **cobrar** antes de H.19 y
 > publicar testimonios o cifras de usuarios. (2) La serie de esa sesión, «competencia →
