@@ -1,5 +1,9 @@
 # Prompt de arranque — control total de la sesión (v2, ADR-45; 2026-09-24)
 
+> **Nota v2.5 (2026-10-16).** Plan ultracode del dueño (`PLAN_ULTRACODE.md`): antes de la FASE 0,
+> el paso 0 ejecuta `PROMPT_SINCRONIZACION_DOCS.md` si sigue fuera de `archive/`. Contenido nuevo
+> en espera (ADR-62 propuesto).
+
 > Copiar el bloque entero como primer mensaje de una sesión nueva de Claude Code sobre
 > `Neopram/whetzy`. Vale para sesiones interactivas y para la rutina remota (H.7). No
 > hace falta pegar nada más: el repo contiene el resto. La v1 (misma fecha) no exigía la
@@ -41,6 +45,8 @@ asistente: evidencia ejecutable o no pasó; «aplicado pero no verificado» se e
 cual; ninguna cifra a mano en un doc.
 
 ══ FASE 0 — SITUARTE (10 minutos, sin escribir nada) ═══════════════════════════════
+0. Si `docs/PROMPT_SINCRONIZACION_DOCS.md` existe fuera de `archive/`, ejecútalo entero antes
+   de esta FASE 0 (Oleada 0 de `docs/PLAN_ULTRACODE.md`).
 1. git fetch origin && git log --oneline -5 origin/master
    La sesión del 2026-09-24 dejó sus cambios en la rama `claude/clever-edison-4bzr2v`
    (commits `bed6bdd`, `6a63081`, `115a695` y el merge con `master` del 2026-09-25 que renumeró ADR-41…44 → 45…48 y series 35/36 → 37/38 porque `master` ya tenía su propia serie 35 —competencia → producto— y su ADR-41 —precios del dueño—). Comprueba si el dueño ya la fusionó:

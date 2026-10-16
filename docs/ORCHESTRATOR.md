@@ -246,6 +246,11 @@ Precedente: sesiones `as`/`at` en el mismo árbol (2026-09-16). Un corte por lí
 uso no necesita nada más: cada tarea cierra con su commit y ningún worker escribe
 fuera de sus rutas.
 
+### 0c. Documentación antes que código (plan ultracode, 2026-10-16)
+Si `docs/PROMPT_SINCRONIZACION_DOCS.md` existe fuera de `archive/`, ejecútalo entero antes
+de cualquier código (Oleada 0 de `docs/PLAN_ULTRACODE.md`, serie 41 del ledger); contenido
+nuevo en espera (ADR-62 propuesto).
+
 ### 1-6. Estado del sistema
 ```powershell
 # 1. Repo limpio. Si hay cambios huérfanos de una sesión cortada: revisa, commitea o descarta, anótalo.
@@ -491,6 +496,7 @@ Continuidad → pre-flight → mirada de dueño → `python scripts/ledger.py ne
 loop sin cierre voluntario en la rama de la sesión, PR abierto desde el primer commit →
 cuando no quede nada ejecutable, informar como dueño: ¿se puede lanzar?
 Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md` (ADR-45).
+Si `docs/PROMPT_SINCRONIZACION_DOCS.md` existe fuera de `archive/`, va antes de todo (0c).
 Escéptico con el ledger, honesto con la evidencia, tacaño con Opus, fiel a las
 líneas rojas.
 ```

@@ -82,6 +82,8 @@ está roto.
 | `docs/PLAN_EXPERIENCIA.md` | referencia-viva | spec de la serie 40 | se queda | 2026-09-30 |
 | `docs/archive/PROMPT_CIERRE_2026-09-30.md` | histórico | prompt de un solo uso para cerrar el #34, ya ejecutado (#34 fusionado el 2026-10-01) | archivado el 2026-10-01 | 2026-09-30 |
 | `docs/PROMPT_CONTROL_TOTAL.md` | normativo-vivo | prompt de arranque con control total | se queda; ruta de i18n-audit actualizada | 2026-09-30 |
+| `docs/PLAN_ULTRACODE.md` | normativo-vivo | plan del dueño del 2026-10-16: Oleada 0 (documentación) y oleadas 1-9 de código, sin contenido; series 41 y 42 | se queda; las oleadas ya hechas en `master` las marca su §0 | 2026-10-16 |
+| `docs/PROMPT_SINCRONIZACION_DOCS.md` | normativo-vivo | prompt de un solo uso de la Oleada 0 (serie 41): poner toda la documentación al día con el código y las sesiones | se archiva en `docs/archive/` al ejecutarse | 2026-10-16 |
 | `docs/PROTOCOLO_VERIFICACION.md` | normativo-vivo | protocolo de verificación | se queda | 2026-09-27 |
 | `docs/README.md` | normativo-vivo | índice de documentos vivos | se queda; filas de los archivados actualizadas | 2026-09-30 |
 | `docs/RELEASE.md` | normativo-vivo | guía de release | se queda [sin verificar] paso a paso | 2026-09-25 |

@@ -41,6 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
+| 41 | Documentación al día con el código | 0/1 | 0 % | 41.1 |
 | 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
 | 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 31/41 | 76 % | 39.8, 39.9, 39.10, 39.13, 39.26, 39.27 +2 |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
@@ -511,6 +512,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 40.11 | **4** | **TypeScript ejecutable** en el Worker, carga perezosa solo en su track | TODO | licencia del compilador verificada; peso fuera del bundle base |
 | 40.12 | **4** | **Investigar Java en navegador y UX/UI** (runtime, peso, licencias) | TODO | informe con URL; nada entra sin fuentes H.LIC y línea roja 8 |
 | 40.13 | **3** | **Medir la superación**: tabla criterio a criterio frente a Brilliant y Kodree, re-capturada con fecha | TODO (cierra la serie) | cada «mejor que» con evidencia ejecutable o URL; sin ella no sale a la landing (línea roja 9) |
+
+### 41. Documentación al día con el código (Oleada 0 del plan ultracode; dueño 2026-10-16; `PLAN_ULTRACODE.md`)
+
+> **Estado:** `ABIERTA`. **PRI:** 0. Antes de la serie 42. Sin contenido (ADR-62 prop.). Filas 41.2-41.6 y serie 42: `PLAN_ULTRACODE.md` §6.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 41.1 | **0** | Liberar ≥ 6 KB del ledger (evidencias de DONE → `LEDGER_HISTORY.md` §T) | TODO | [8] con margen ≥ 6 KB; `ledger.py check` OK |
 
 ## 3. Cola HUMAN-BLOCKED
 
