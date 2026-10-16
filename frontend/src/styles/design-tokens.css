@@ -145,6 +145,8 @@
   --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
   --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.45);
   --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.55);
+  /* Hacia arriba: la hoja inferior (Sheet) proyecta sobre lo que tapa. */
+  --le-shadow-up: 0 -8px 32px rgba(0, 0, 0, 0.55);
   /* v2: sin botón «3D» con sombra inferior; la elevación es borde + luz interior. */
   --le-shadow-btn: none;
   --le-shadow-btn-active: none;
@@ -195,6 +197,12 @@
      no sigue el tema del sitio. Un velo violeta del logo, sin grandes manchas. */
   --le-pro-card-from: #172038;
   --le-pro-card-to: #1C1A3F;
+
+  /* Velo tras un modal u hoja inferior: oscurece lo de detrás en los dos
+     temas por igual (es una sombra, no una superficie). */
+  --le-overlay: rgba(0, 0, 0, 0.5);
+  /* Brillo sobre un relleno de color (barra de progreso): luz, no tema. */
+  --le-sheen: rgba(255, 255, 255, 0.3);
 }
 
 :root[data-theme="light"] {
@@ -250,6 +258,7 @@
   --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
   --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.08);
   --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --le-shadow-up: 0 -8px 32px rgba(0, 0, 0, 0.10);
   --le-shadow-btn: none;
   --le-shadow-btn-active: none;
 }
