@@ -87,6 +87,10 @@ class UserRead(UserBase):
     onboarding_goal: int | None = None
     onboarding_weekly_time: int | None = None
     target_track_id: str | None = None
+    # Qué enlaces ve en Perfil (auditoría de pantallas, 2026-10-16): «Instructor»
+    # solo para creadores y «Admin» solo para el dueño. Calculados del modelo.
+    can_create_courses: bool = False
+    is_owner: bool = False
 
 
 class Token(BaseModel):

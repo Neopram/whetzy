@@ -53,6 +53,16 @@ describe('PublicProfileScreen — real o 404 (0.3)', () => {
     expect(getMock).toHaveBeenCalledWith('ada');
   });
 
+  it('a completed project is a card, not a link to the non-existent /project route', async () => {
+    await i18n.changeLanguage('es');
+    getMock.mockResolvedValueOnce(PROFILE);
+    render(<PublicProfileScreen handle="ada" />);
+
+    const title = await screen.findByText('API REST con FastAPI');
+    expect(title.closest('a')).toBeNull();
+    expect(document.querySelector('a[href^="/project/"]')).toBeNull();
+  });
+
   it('shows a not-found message for an unknown handle, not fabricated data', async () => {
     await i18n.changeLanguage('es');
     getMock.mockRejectedValueOnce(new ApiError('Profile not found', 404));

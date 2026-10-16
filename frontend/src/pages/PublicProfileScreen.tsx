@@ -65,7 +65,7 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
           <span className="stat-label">{t('profile.skills', 'Habilidades')}</span>
         </div>
         <div className="stat-card">
-          <span className="stat-value">{profile.current_streak}🔥</span>
+          <span className="stat-value">{profile.current_streak}<span aria-hidden="true">🔥</span></span>
           <span className="stat-label">{t('profile.streak', 'Racha')}</span>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
           <div className="certs-list">
             {profile.certificates.map((cert) => (
               <div key={cert.code} className="cert-badge">
-                <span className="cert-icon">🏆</span>
+                <span className="cert-icon" aria-hidden="true">🏆</span>
                 <div className="cert-info">
                   <p className="cert-name">{lang === 'es' ? cert.track_name_es : cert.track_name_en}</p>
                   <p className="cert-date">{new Date(cert.issued_at).toLocaleDateString()}</p>
@@ -96,10 +96,11 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
         ) : (
           <div className="projects-grid">
             {profile.projects_completed.map((proj) => (
-              <a key={proj.slug} href={`/project/${proj.slug}`} className="project-card">
+              // Sin enlace: `/project/<slug>` no es una ruta de la app y llevaba a
+              // un 404 (auditoría de pantallas, 2026-10-16).
+              <div key={proj.slug} className="project-card">
                 <h3>{lang === 'es' ? proj.name_es : proj.name_en}</h3>
-                <span className="arrow">→</span>
-              </a>
+              </div>
             ))}
           </div>
         )}

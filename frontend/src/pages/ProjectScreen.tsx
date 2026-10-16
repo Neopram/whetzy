@@ -45,7 +45,7 @@ function ProjectList({ onSelect }: { onSelect: (slug: string) => void }) {
   return (
     <div className={styles.listScreen}>
       <div className={styles.header} style={{ border: 'none', padding: 0 }}>
-        <button className={styles.backBtn} onClick={() => setScreen('home')}>←</button>
+        <button className={styles.backBtn} onClick={() => setScreen('home')} aria-label={t('common.back')}><span aria-hidden="true">←</span></button>
         <h1 className={styles.title}>{t('project.title')}</h1>
       </div>
 
@@ -168,7 +168,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
     return (
       <div className={styles.screen}>
         <div className={styles.header}>
-          <button className={styles.backBtn} onClick={onBack}>←</button>
+          <button className={styles.backBtn} onClick={onBack} aria-label={t('common.back')}><span aria-hidden="true">←</span></button>
           <span className={styles.title}>{t('home.loading')}</span>
         </div>
       </div>
@@ -179,7 +179,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
     return (
       <div className={styles.screen}>
         <div className={styles.header}>
-          <button className={styles.backBtn} onClick={onBack}>←</button>
+          <button className={styles.backBtn} onClick={onBack} aria-label={t('common.back')}><span aria-hidden="true">←</span></button>
           <span className={styles.title}>{t('project.notFound')}</span>
         </div>
       </div>
@@ -191,7 +191,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
   return (
     <div className={styles.screen}>
       <div className={styles.header}>
-        <button className={styles.backBtn} onClick={onBack}>←</button>
+        <button className={styles.backBtn} onClick={onBack} aria-label={t('common.back')}><span aria-hidden="true">←</span></button>
         <span className={styles.title}>
           {lang === 'es' ? project.data.name_es : project.data.name_en}
         </span>
