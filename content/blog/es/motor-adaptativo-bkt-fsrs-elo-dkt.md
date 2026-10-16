@@ -59,7 +59,7 @@ del experimento, corriendo como un modelo más simple de lo que su docstring
 sugiere, y si le gana a la base es justo lo que el A/B está ahí para
 responder. (Un análisis de potencia correcto para esa comparación — cuántos
 usuarios hacen falta antes de que el resultado signifique algo — está en
-nuestro propio backlog como un trabajo aparte, todavía sin empezar.)
+nuestro propio ledger (32.2): el diseño y la potencia están hechos, sin activar, a la espera de usuarios reales.)
 
 ## Por qué esta separación importa más que los nombres de los modelos
 

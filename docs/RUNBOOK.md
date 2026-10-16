@@ -70,7 +70,7 @@ in the Railway dashboard.
    curl -s https://api-production-9751.up.railway.app/api/v1/openapi.json | head -c 200
    ```
    `/health` must return `{"status":"healthy"}` and the OpenAPI document must
-   list **71** paths.
+   list **164** paths.
 5. In the deploy logs, confirm `start.sh` got through all four stages:
    `alembic upgrade head` → `content loaded` → `gamification seeded` →
    `launching gunicorn`. Content load should report **0 skipped** questions;
@@ -78,7 +78,7 @@ in the Railway dashboard.
    unknown skill_id — check the deploy log for the traceback.
 
 **Note on question count:** the bank grows over time. Verify the loaded count
-matches `check_question_bank.py` output (currently 6233), not a hardcoded
+matches `check_question_bank.py` output (currently 12037), not a hardcoded
 number. Any non-zero `skipped` count means a question references a skill_id
 that does not exist in `curriculum/tracks.json`.
 
@@ -228,7 +228,7 @@ python -m pytest tests/ --tb=short
 COVERAGE_FILE=/tmp/.coverage_whetzy python -m pytest tests/ --tb=short
 ```
 
-No external services needed. 739+ tests against SQLite in-memory (Alembic migrations are Postgres-only; tests use `Base.metadata.create_all` on SQLite).
+No external services needed. 1966+ tests against SQLite in-memory (Alembic migrations are Postgres-only; tests use `Base.metadata.create_all` on SQLite).
 
 ## Load question bank (dev)
 

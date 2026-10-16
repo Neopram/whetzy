@@ -144,7 +144,7 @@ entrada nueva en STATUS.md. Un solo commit: `docs(concordancia): ADR-45…48 en 
 documentos vivos`. Abre el PR con ese commit y sigue en la misma rama.
 
 ══ FASE 2 — TRABAJO, POR PRI DEL LEDGER (no lo reordenes salvo bloqueo real) ══════
-1. Serie 30 (PRI 0): login, landing honesta, correo, cuenta de dueño — producción rota.
+1. Serie 30: su PRI 0 (30.9) ya está DONE; queda 30.2 (PARCIAL, PRI 1).
 2. Serie 34 PRI 0: guarda .tsx↔.module.css y e2e verde en CI (o en ci_local.sh mientras
    el CI de GitHub siga sin correr, H.13/H.17 — dilo así, no «verde en CI»).
 3. Serie 37 en el orden de ADR-54 (37.0, 37.2, 37.3, 37.18 y 37.19 ya están DONE):
@@ -156,7 +156,7 @@ documentos vivos`. Abre el PR con ese commit y sigue en la misma rama.
    37.5 generador (corpus/ en .gitignore; LICENSE leído o rechazado). NINGUNA pregunta
    nueva sin 37.0 verde. Un bloque = un PR verde con check_question_bank, pytest
    tests/content, 37.0, `catalog_coverage.py --check` y check_docs.
-4. Después manda `ledger.py next`: 17.14 IAP (sandbox, sin claves), 22.14–22.16, 26/27
+4. Después manda `ledger.py next`: 17.14 IAP (sandbox, sin claves), 26/27
    (redactar y construir todo; publicar bajo cuenta nueva = H.23), 28.8, 29.x, 31–33, 36.
 
 ══ REGLAS DE CADA COMMIT ═════════════════════════════════════════════════════════════
