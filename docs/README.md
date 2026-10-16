@@ -17,6 +17,8 @@ Frontend: React + Capacitor.
 | Verificar una afirmación, cerrar una tarea, elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
 | Trabajar en paralelo: qué ficheros escribe cada sesión, ficheros compartidos, migraciones, i18n por rol | **`SESIONES.md`** |
 | Decisiones irreversibles (ADR) | `DECISIONS.md` |
+| Plan maestro de la beta: las decisiones D-xx del dueño y su estado | `PLAN_MAESTRO.md` |
+| Informe de estado generado (`scripts/estado.py`) | `ESTADO_AUTOMATICO.md` |
 | Por qué se pausó el 2026-09-30, el scorecard (§2) y las trampas del entorno (§7). **Pausa levantada el 2026-10-01** (ADR-56) | `CIERRE_2026-09-30.md` |
 
 **Producto y mercado**
@@ -40,6 +42,9 @@ Frontend: React + Capacitor.
 | Quieres… | Lee |
 |---|---|
 | Entender el sistema | `ARCHITECTURE.md`, `API.md` |
+| Cada pantalla, ruta y `Screen` del frontend, y dónde se especifica (`check_docs.py` [14]) | `MAPA_PRODUCTO.md` |
+| Experimentos y calibraciones del motor (BKT/DKT, IRT, beta-binomial, RAG) | `ml/` |
+| Simulacro de restauración de la base de datos (lo escribe `scripts/db_restore_test.sh`) | `restore_log.md` |
 | Desplegar (Cloudflare y Railway, automáticos desde `master`), migrar, backup, incidentes | `RUNBOOK.md`, `RELEASE.md` |
 | Qué servicios externos toca una sesión y qué hace sin preguntar | **`CONECTORES.md`** |
 | Capacidad, Cloudflare, cadena de suministro, A/B, diseño | `capacity.md`, `cloudflare-config.md`, `supply-chain.md`, `ab-framework.md`, `design/` |
@@ -50,6 +55,7 @@ Frontend: React + Capacitor.
 |---|---|
 | Textos legales: lo publicado manda (claves i18n `legal.*`; ADR-55), qué hay en `legal/` y procesadores verificados | **`legal/README.md`** |
 | Tiendas (ficha, privacidad, checklist de Apple 4.8 / 3.1.1) | `STORE_LISTING.md` (resumen) y `store/` (detalle) |
+| Respuestas de soporte ES/EN | `support/` |
 
 **Historia e inventario**
 

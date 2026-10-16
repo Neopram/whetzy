@@ -669,11 +669,11 @@ check(
 )
 
 print("\n[22] INVENTARIO_DOCS.md: el resumen cuadra con sus filas y todo .md vivo tiene fila")
-_inv_rows = re.findall(r"^\| `([^`]+)` \| ([a-zA-Zé\-]+) \|", _inv_text, re.M)
+_inv_rows = re.findall(r"^\| `([^`]+)` \| ([a-záéíóú\-]+) \|", _inv_text, re.M)
 _inv_counts: dict[str, int] = {}
 for _path, _cls in _inv_rows:
     _inv_counts[_cls] = _inv_counts.get(_cls, 0) + 1
-_summary = dict(re.findall(r"^\| ([a-zé\-]+) \| (\d+) \|", _inv_text, re.M))
+_summary = dict(re.findall(r"^\| ([a-záéíóú\-]+) \| (\d+) \|", _inv_text, re.M))
 _mismatch = [f"{c}: resumen {_summary.get(c)} ≠ filas {n}" for c, n in sorted(_inv_counts.items()) if str(n) != _summary.get(c)]
 _total = re.search(r"^\| \*\*Total\*\* \| \*\*(\d+)\*\* \|", _inv_text, re.M)
 if not _total or int(_total.group(1)) != len(_inv_rows):
