@@ -2,7 +2,7 @@
 
 > **Documento vivo nº 16.** Manda sobre cualquier mención de créditos, recompensas,
 > referidos, códigos promocionales, pagos en stablecoin, certificados verificables
-> o «token» en otros documentos. Última actualización: 2026-09-18 (sesión bh).
+> o «token» en otros documentos. Última actualización: 2026-10-02.
 > ADRs que lo sostienen: **ADR-33** (no hay token), **ADR-34** (créditos),
 > **ADR-35** (referidos y códigos), **ADR-36** (USDC como rail), **ADR-37**
 > (credenciales verificables), **ADR-38** (track32 Solana/Web3). Implementa la
@@ -52,8 +52,8 @@ Consecuencias operativas:
   campo de canje** (Apple 3.1.1: «license keys, QR codes» como mecanismo propio de
   desbloqueo). Las recompensas de la escalera (§3.3) se aplican **en el servidor**
   como *entitlements*; la app solo refleja el estado (Apple 3.1.3(b), multiplataforma).
-- **Los créditos compran consumibles que Whetzy no vende por IAP** (simulacros,
-  congelar racha, bootcamps async). Nunca compran suscripción por goteo (§2.3).
+- **Los créditos compran consumibles que Whetzy no vende por IAP** (congelar
+  racha, bootcamps async). Nunca compran suscripción por goteo (§2.3).
 - **Caducan** a los 90 días sin uso (§2.4). Un saldo eterno es un pasivo contable y no retiene.
 - Cláusulas literales para ToS/privacidad: tarea **29.11** → entran en **21.7**.
 - Nada de esto requiere abogado antes de existir: es la misma figura que usan
@@ -100,7 +100,7 @@ medias: un módulo o una skill se pagan el mes siguiente; la racha de un periodo
 pasado no vuelve. **No se pagan** el proyecto (el «tests verdes» lo afirma el
 navegador) ni el simulacro aprobado (el simulacro no tiene nota de corte), ni el
 del empleado de empresa (no hay panel B2B). Con el tope, el máximo que un usuario Free puede extraer al
-mes son tres simulacros: suficiente para retener, insuficiente para vivir de ello.
+mes son 1.500 créditos (antes, tres simulacros; sumidero descartado por ADR-58): suficiente para retener, insuficiente para vivir de ello.
 
 ### 2.3 Sumideros — en qué se gastan
 
@@ -141,11 +141,11 @@ credit_ledger (
   id              bigserial primary key,
   user_id         uuid not null references users(id),
   amount          integer not null,             -- con signo; nunca 0
-  reason          text not null,                -- enum: module_done, streak_7, streak_30, project,
-                                                --  skip_confirmed, mock_passed, referral_activated,
+  reason          text not null,                -- enum: module_done, streak_7, streak_30, project_delivered, onboarding_bonus,
+                                                --  skill_skipped, mock_passed, referral_activated,
                                                 --  referral_welcome, promo_code, reactivation,
                                                 --  spend_mock, spend_freeze, spend_report,
-                                                --  spend_bootcamp, spend_marketplace, expire,
+                                                --  spend_bootcamp, spend_marketplace, spend_company_seat, expire,
                                                 --  clawback, admin_adjust
   ref_type        text,                         -- module | referral | promo_code | purchase | lot
   ref_id          text,
@@ -251,7 +251,7 @@ el programa se pausa solo (flag) y avisa al dueño.
 promo_codes (
   id            bigserial primary key,
   code          text not null unique,
-  kind          text not null,        -- campaign | batch | instructor | reactivation
+  kind          text not null,        -- code_type: onboarding | campaign | reactivation | referral_bonus | instructor
   credits       integer not null default 0,
   discount_pct  smallint,             -- solo instructor
   instructor_id uuid, course_id uuid, -- solo instructor
@@ -309,16 +309,16 @@ Así se sabe qué vídeo, qué artículo y qué comunidad convierten, sin tercer
 
 | Método y ruta | Quién | Qué |
 |---|---|---|
-| `GET /credits/balance` | usuario | saldo y próximos vencimientos |
-| `GET /credits/ledger?cursor=` | usuario | asientos paginados (22.6) |
-| `POST /credits/spend` `{sink, ref_id}` | usuario | gasto FIFO; 409 si saldo insuficiente |
-| `POST /codes/redeem` `{code}` | usuario, **solo web** | canje idempotente |
-| `GET /referrals/me` | usuario | código, enlace, activaciones, escalera |
+| `GET /economy/balance` | usuario | saldo y próximos vencimientos |
+| `GET /economy/streak-freeze` y `POST /economy/streak-freeze` | usuario | cotiza y compra el comodín de racha (gasto FIFO) |
+| `POST /mastery-reports` | usuario | informe de dominio (gasto FIFO); `GET /mastery-reports/{code}` público |
+| `POST /economy/promo/redeem` `{code}` | usuario, **solo web** | canje idempotente |
+| `GET /economy/referral/code` y `POST /economy/referral/activate` | usuario | código, enlace y activación |
 | `GET /economy/prices` | público | grifos y sumideros que el código cablea de verdad (2026-10-01: referidos y comodín de racha); la Cartera la pinta tal cual |
-| `POST /admin/codes/batch` | owner | genera lote (CSV descargable) |
+| `POST /admin/promo/batch` | owner | genera lote (CSV descargable) |
 | `GET /admin/economy/attribution` | owner | canjes → activaciones → pagos por código/canal/campaña |
-| `GET /admin/referrals` | owner | K-factor, % registros vía referido, cola de revisión, fraude |
-| `POST /admin/referrals/{id}/review` | owner | aprobar / rechazar / clawback |
+| `GET /admin/economy/referrals` y `GET /admin/economy/k-factor` | owner | K-factor, % registros vía referido, cola de revisión, fraude |
+| `POST /admin/economy/referrals/{id}/clawback` | owner | clawback |
 
 Todo en `/api/v1`, documentado en `API.md` (guardia 20.3) y con tests de autorización.
 
@@ -353,7 +353,7 @@ Todo en `/api/v1`, documentado en `API.md` (guardia 20.3) y con tests de autoriz
 
 | Segmento | Grifo principal | Sumidero principal | Referido | Código típico |
 |---|---|---|---|---|
-| Estudiante | racha, módulos | simulacros, congelar racha | escalera hasta 1 mes Pro | campaña YouTube/TikTok ES |
+| Estudiante | racha, módulos | congelar racha | escalera hasta 1 mes Pro | campaña YouTube/TikTok ES |
 | Career-switcher | proyectos, simulacros | informe PDF, bootcamp | certificación a los 10 | campaña LinkedIn, universidades |
 | Developer Senior | skip confirmado por BKT | bootcamp async | refiere colegas → bootcamp | campaña Dev.to/HN |
 | Profesor / Instructor | no gana créditos | — | su código de instructor | `PROF-…` |

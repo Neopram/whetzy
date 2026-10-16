@@ -36,7 +36,7 @@ User → Cloudflare (Cache, Rate Limiting, WAF)
 | Metric | Value | Notes |
 |--------|-------|-------|
 | Users | ~50k (scenario) | Hypothetical load for sizing; real users today: 0 |
-| Questions in bank | ~5,000 | See `docs/CATALOGO_MAESTRO.md` |
+| Questions in bank | ~12,000 | See `docs/CATALOGO_MAESTRO.md` |
 | Quiz attempts per user/year | ~100 | 2–3 per week |
 | Database size | ~500MB | Users + questions + progress + analytics |
 | Concurrent connections | ~50 (avg), ~200 (spike) | Pool size: 10, max overflow: 20 |
@@ -72,7 +72,7 @@ Total ~6GB after 1 year (manageable on Railway Postgres Starter)
 | 100k–500k | 5GB–20GB | Add read replica ($7/mo) + query optimization + caching |
 | 500k+ | 20GB+ | PostgreSQL Pro tier + sharding (out of scope for free tier) |
 
-**Current status** (Sep 2026): ~50k users, 500MB DB → can add 50k more users before hitting Railway limit.
+**Current status** (Oct 2026): 0 real users; the ~50k figure is the sizing scenario above, not a measurement.
 
 ---
 
@@ -80,7 +80,7 @@ Total ~6GB after 1 year (manageable on Railway Postgres Starter)
 
 ### Uvicorn Worker Configuration
 
-Backend runs Uvicorn with the following defaults (see `backend/app/main.py`):
+Backend runs Gunicorn with `uvicorn.workers.UvicornWorker` (see `backend/scripts/start.sh`):
 
 ```python
 # Number of worker processes (set via UVICORN_WORKERS env var)
@@ -202,7 +202,7 @@ async def list_glossary(
 ```
 
 **Why**:
-- Prevents loading all 5k questions into memory on a single request
+- Prevents loading all 12k questions into memory on a single request
 - Reduces bandwidth: Users only fetch what they see
 - Improves frontend responsiveness: Lazy-load as user scrolls
 
@@ -212,7 +212,7 @@ async def list_glossary(
 
 ### HTTP Cache Headers
 
-Backend sends `Cache-Control` headers (see `backend/app/core/cache.py`):
+Backend sends `Cache-Control` headers (set per endpoint, e.g. `backend/app/api/v1/endpoints/glossary.py:28`):
 
 ```python
 # GET /api/v1/glossary (static reference data)
@@ -263,7 +263,7 @@ async def purge_cloudflare(url_pattern: str):
 
 ### Architecture
 
-Add a `jobs` table to the database for asynchronous work (email, exports, etc.):
+The `jobs` table already exists (`backend/app/models/job.py`) and `job_worker_loop` runs from the lifespan (`backend/app/main.py:72`). Shape for reference:
 
 ```sql
 CREATE TABLE jobs (

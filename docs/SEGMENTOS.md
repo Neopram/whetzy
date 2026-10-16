@@ -2,7 +2,7 @@
 
 > **Documento vivo nº 13.** Define los 6 segmentos con sus personas, pain points,
 > propuesta de valor, flujo en la app, métricas de éxito y **créditos/referidos por
-> segmento** (`ECONOMIA.md`). Última actualización: 2026-09-18 (sesión bh; ADR-28, ADR-38).
+> segmento** (`ECONOMIA.md`). Última actualización: 2026-09-30 (ADR-28, ADR-38).
 
 ---
 
@@ -41,7 +41,7 @@ distribución (Series 26-27) deben hablarle a cada segmento en su idioma.
 
 ### Flujo en la app
 ```
-Landing → Registro (30s) → Diagnóstico 10 preguntas (3 min)
+Landing → Registro (30s) → Prueba de nivel adaptativa (20-50 preguntas)
 → Nivel detectado + track recomendado mostrado visualmente
 → Primera lección (texto + glosario) → Primera sesión adaptativa (5 preguntas)
 → "Completaste tu primer módulo" + racha iniciada
@@ -77,8 +77,8 @@ Landing → Registro (30s) → Diagnóstico 10 preguntas (3 min)
 > Que termines la ruta es el objetivo, y lo medimos — no eres tú, era el método."
 
 ### Plan y precio
-- **Pro Max $19.99/mo** (antes «Premium»; lo que añade sobre Pro lo decide el dueño, H.35 / ADR-41)
-- **Certificaciones $49/año:** PCEP, AWS CLF, ISC2 CC como primeras credenciales
+- **Pro Max $19.99/mo** (antes «Premium»; añade el tutor IA ilimitado sobre Pro, ADR-49)
+- **Certificaciones $39,99 de pago único por certificación (ADR-49):** PCEP, AWS CLF, ISC2 CC como primeras credenciales
 - **Gancho de conversión:** Ver la "ruta de empleabilidad" completa → solo en Pro Max (propuesta, pendiente de H.35)
 
 ### Flujo en la app
@@ -123,7 +123,7 @@ Landing (sección career-switcher) → "¿Cuánto tiempo tienes por día?"
 
 ### Flujo en la app
 ```
-Landing (sección "Ya sé programar") → Assessment express 15 preguntas
+Landing (sección "Ya sé programar") → Prueba de nivel adaptativa (20-50 preguntas)
 → "Dominas Python nivel 3/4 — te llevamos directo al track de IA"
 → Skip automático confirmado por BKT → Track 06/07 desde módulo avanzado
 → Proyectos: RAG en 3 días, agente con tool use, fine-tuning
@@ -252,7 +252,7 @@ Demo personalizada (30 min, Calendly) → Contrato piloto gratuito
 > El motor salta lo que ya sabes de JS o Python."
 
 ### Plan y precio
-- **Free tier:** módulo 1 de track32 + glosario Solana
+- **Free tier:** hoy todo el contenido es gratis (ADR-41); track32 está «planificado» y aún no existe
 - **Pro $14.99/mo:** tutor con IA (ADR-41). *Propuesta del 2026-09-18, no aplicada: track32 completo + proyectos tras Pro.*
 - **Gancho de conversión:** el proyecto final es un bounty real de Superteam Earn
 
@@ -285,7 +285,7 @@ que aprende una plataforma; los créditos y referidos son los mismos que para lo
 | Segmento | Plan | Precio | LTV estimado (hipótesis) | % usuarios esperado (hipótesis) |
 |---|---|---|---|---|
 | Estudiante | Free → Pro | $0 → $14.99/mo | $90-180/yr | 60% del total |
-| Career Switcher | Pro Max + Certs | $19.99/mo + $49 | $290/yr | 20% |
+| Career Switcher | Pro Max + Certs | $19.99/mo + $39.99 por certificación (pago único, ADR-49) | $290/yr | 20% |
 | Developer Senior | Pro + Bootcamp | $14.99/mo + $99 | $280/yr | 10% |
 | Profesor | Creador | $99.99/mo + 20 % por venta para Whetzy, tras la comisión del procesador (ADR-41) | N/A | 5% |
 | Empresa | B2B seats | $99/asiento/año, mínimo 10 (hipótesis ADR-47, sin publicar) | $990/empresa | 5% |
@@ -315,12 +315,12 @@ Los créditos no tienen valor monetario, no se transfieren y no se compran
 
 | Segmento | Grifo principal | Sumidero principal | Escalera de referidos | Código típico de entrada |
 |---|---|---|---|---|
-| Estudiante | Racha 7/30 días, módulos completados | Simulacro de certificación (500), congelar racha (150) | 3 activados → 1 mes Pro | `YT-ES-nn`, `TT-ES-nn` (YouTube/TikTok) |
+| Estudiante | Racha 7/30 días, módulos completados | Congelar racha (150) | 3 activados → 1 mes Pro | `YT-ES-nn`, `TT-ES-nn` (YouTube/TikTok) |
 | Career-switcher | Proyectos (200), simulacros aprobados (150) | Informe de dominio PDF (300), bootcamp async (3.000) | 10 activados → certificación oficial (H-BLOCKED por importe; mientras, 6 meses Pro Max) | `LI-ES-nn`, `UNI-<sigla>-<lote>` |
 | Developer Senior | Skip confirmado por BKT (50/skill, máx. 500/mes) | Bootcamp async (3.000) | Refiere colegas; pocos, de alto valor | `DEV-<slug>`, `HN-EN` |
 | Profesor / Instructor | **No gana créditos** — gana visibilidad (ranking por completion rate de sus alumnos) | — | Su código `PROF-<nombre>-<pct>` da descuento a sus alumnos y atribuye sus ventas | `PROF-…` |
 | Empresa | Módulos asignados completados → **bolsa de la empresa** | Seats extra 1 mes (2.000) | — | Lote de un solo uso `EMP-<sigla>-XXXX-XX` para empleados |
-| Web3 / Solana | Módulos de track32 | Simulacros, proyectos | Escalera estándar | `ST-MX`, `ST-AR`, `ST-BR`, `ST-EN` (eventos Superteam) |
+| Web3 / Solana | Módulos de track32 | Informe de dominio PDF (300) | Escalera estándar | `ST-MX`, `ST-AR`, `ST-BR`, `ST-EN` (eventos Superteam) |
 
 **Regla de idioma:** un código lleva idioma; el referido aterriza en `/es` o `/en`
 según el referente (ADR-17). **Canje solo en web** (Apple 3.1.1); las apps muestran
