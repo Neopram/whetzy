@@ -20,8 +20,9 @@
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §14 ADR-53; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
 - Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 corpus abierto fuera del repo y guarda 37.0 (su meta de volumen, sustituida: hoy manda ADR-54), ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único, ADR-50 aprobación en bloque del 2026-09-26 (Free, analítica propia, Sentry, correo, staging), ADR-53 plan por cobertura (sustituido por ADR-54), ADR-54 catálogo uniforme 32 × 10 (la meta vigente), ADR-55 la fuente legal es lo publicado (claves i18n `legal.*`), ADR-56 fin de la pausa, ADR-58 los créditos no compran simulacros ni cursos (el plan decide) y privacidad con IP y navegador a 90 días, ADR-59 autoría de contenido: escribe Sonnet 5 desde la fuente, por `Workflow`, en paralelo al piloto**)
 - Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
-- Antes de cualquier código en la próxima sesión: `docs/PROMPT_SINCRONIZACION_DOCS.md`
-  (Oleada 0 de `docs/PLAN_ULTRACODE.md`); contenido nuevo en espera (ADR-62 propuesto)
+- Oleada 0 (documentación al día con el código) ejecutada el 2026-10-16: prompt archivado en
+  `docs/archive/PROMPT_SINCRONIZACION_DOCS.md`. Lo siguiente es la serie 42 de `docs/PLAN_ULTRACODE.md`;
+  contenido nuevo en espera (ADR-62 propuesto)
 - Auditoría externa del 2026-09-19 (histórica, archivada el 2026-10-01: su «el CI no ha corrido nunca» dejó de ser cierto): `docs/archive/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
 - Protocolo de verificación (cada `DONE`, cada doc, modelos y tokens): `docs/PROTOCOLO_VERIFICACION.md`

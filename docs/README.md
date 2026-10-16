@@ -13,7 +13,7 @@ Frontend: React + Capacitor.
 |---|---|
 | Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad; `python scripts/ledger.py next`) |
 | Operar una sesión (rama + PR, sin `master`; ADR-45) | `ORCHESTRATOR.md`, **`PROMPT_CONTROL_TOTAL.md`** y `../CLAUDE.md` |
-| Poner la documentación al día con el código antes de tocar código (Oleada 0, serie 41; plan sin contenido del 2026-10-16) | **`PROMPT_SINCRONIZACION_DOCS.md`** y `PLAN_ULTRACODE.md` |
+| Plan ultracode del 2026-10-16: oleadas de código sin contenido (serie 42); la Oleada 0 de documentación ya se ejecutó (prompt en `archive/`) | **`PLAN_ULTRACODE.md`** |
 | Verificar una afirmación, cerrar una tarea, elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
 | Trabajar en paralelo: qué ficheros escribe cada sesión, ficheros compartidos, migraciones, i18n por rol | **`SESIONES.md`** |
 | Decisiones irreversibles (ADR) | `DECISIONS.md` |

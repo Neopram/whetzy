@@ -5,6 +5,58 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-16 (Sincronización total de la documentación)
+
+**ES**
+
+- **La documentación dice lo que hace el código.** Se contrastaron 1.532 afirmaciones de 115 documentos vivos. Las
+  correcciones van en sitio, cada una revisada por un segundo agente:
+  - créditos que ya no compran simulacros ni cursos (ADR-58);
+  - el motor no lo decide un «bandit»: la skill sale del dominio y la pregunta del Elo;
+  - forma de track 32 × 10 (ADR-54);
+  - duelos por turnos, no en vivo;
+  - cifras del catálogo, rutas de la API y límites de tasa al día.
+- **Nueve guardas nuevas en `check_docs.py` ([15]-[23]):**
+  - ADR citadas que no existen;
+  - el molde viejo de track;
+  - el precio de la certificación;
+  - el «bandit»;
+  - créditos;
+  - duelos;
+  - STATUS y CHANGELOG al día;
+  - inventario completo;
+  - evidencia de cada DONE.
+- **Decisiones:** ADR-61 (decisiones del dueño del 2026-10-09, transcritas del #89) y ADR-62/63 como propuestas.
+  119 preguntas para el dueño (H.58).
+- **Sin cambios de producto ni de contenido.**
+
+---
+
+**EN**
+
+- **The docs now say what the code does.** 1,532 claims from 115 live documents were checked. Corrections are in
+  place, each reviewed by a second agent:
+  - credits no longer buy mock exams or courses (ADR-58);
+  - no "bandit" picks the question: the skill comes from mastery and the question from Elo;
+  - 32 × 10 track shape (ADR-54);
+  - turn-based, not live, duels;
+  - current catalog figures, API routes and rate limits.
+- **Nine new guards in `check_docs.py` ([15]-[23]):**
+  - cited ADRs that don't exist;
+  - the old track mould;
+  - the certification price;
+  - the "bandit";
+  - credits;
+  - duels;
+  - STATUS and CHANGELOG up to date;
+  - a complete inventory;
+  - evidence for every DONE.
+- **Decisions:** ADR-61 (owner decisions of 2026-10-09, transcribed from #89) and ADR-62/63 as proposals. 119
+  questions for the owner (H.58).
+- **No product or content changes.**
+
+---
+
 ## [Unreleased] — 2026-10-01 (pago web, textos legales y ejercicios que ya no se aprueban solos)
 
 **ES**
