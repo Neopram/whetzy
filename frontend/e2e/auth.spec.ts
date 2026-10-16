@@ -13,9 +13,11 @@ test.describe('auth', () => {
     const username = uniqueUsername('e2e_login_');
     await registerUser(page, { username, displayName: 'E2E Login' });
 
-    // Log out by clearing session storage and reloading (no logout button in TopBar
-    // for this flow — simulate a fresh session the way the app itself detects it).
-    await page.evaluate(() => localStorage.removeItem('whetzy_access_token'));
+    // Fresh session: the session lives in httpOnly cookies, not in
+    // localStorage, and since #215 /auth with a live session goes straight to
+    // the app. Only the cookies go: localStorage keeps the
+    // `whetzy_onboarded_<uid>` flag a returning user has.
+    await page.context().clearCookies();
     await page.goto('/auth');
     await expect(page.getByRole('button', { name: 'Iniciar sesión' })).toBeVisible();
 

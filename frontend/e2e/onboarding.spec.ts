@@ -26,23 +26,13 @@ test('onboarding: landing → first answered question in < 60 s', async ({ page 
   }
   await onboarding.getByRole('button', { name: /Español/ }).click();
 
-  // Home → the primary CTA starts a study session. Since 32.4, a brand-new
-  // account with zero lessons viewed has no quiz candidates yet (lesson_gate.py):
-  // this hits the "needs_lesson" empty state (QuizScreen.tsx) instead of a
-  // question, with a CTA to the lessons. That is the real first-run path now,
-  // so this test follows it rather than shortcut past it via the API.
-  await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
-  await page.getByRole('button', { name: 'Ir a las lecciones' }).click();
-
-  // Tracks → the first module starts collapsed (openModule state defaults to
-  // null in TracksScreen.tsx), so its header has to be expanded before its
-  // own "Aprender" button — which opens the first skill's lesson and is what
-  // actually clears the gate (lessons.py records the view) — exists at all.
-  await page.locator('[aria-expanded="false"]').first().click();
-  await page.getByRole('button', { name: /Aprender/ }).first().click();
+  // D-20: quien empieza de cero va directo a la primera lección de su ruta
+  // (OnboardingScreen.handleLanguageSelect); abrirla ya registra la vista y
+  // levanta la puerta de lecciones (32.4). Antes el spec pasaba por «ESTUDIAR
+  // AHORA» → «Ir a las lecciones» → «Aprender», un camino que ya no existe.
   const closeLesson = page.getByRole('button', { name: 'Cerrar' });
   await expect(closeLesson).toBeVisible({ timeout: 15_000 });
-  await closeLesson.click(); // onExit → 'tracks' (App.tsx), lesson already recorded as seen on load
+  await closeLesson.click(); // onExit → 'tracks' (App.tsx)
 
   // Back to Home, now unblocked.
   await page.getByRole('button', { name: 'Hoy', exact: true }).click();

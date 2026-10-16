@@ -56,9 +56,11 @@ test('fill_blank_exec — Pyodide executes and returns correct output', async ({
   await expect(outputPre).toHaveText(new RegExp(EXPECTED_OUTPUT));
 
   // The label should confirm the answer is correct.
+  // Ejecutar ya no entrega: muestra la salida y pide «Confirmar» (la
+  // etiqueta dice «Salida» hasta entonces). Al confirmar se corrige.
+  await page.getByRole('button', { name: /^(Confirmar|Confirm)$/ }).click();
   const outputLabel = page.locator('[class*="outputLabel_"]').first();
-  // Sin emoji desde el port v2 del Quiz: la etiqueta lo dice con palabras.
-  await expect(outputLabel).toContainText('¡Correcto! Salida esperada');
+  await expect(outputLabel).toContainText('¡Correcto!', { timeout: 15_000 });
 
   // 0 uncaught page errors during the entire test.
   expect(pageErrors, `Uncaught page errors: ${pageErrors.join('; ')}`).toHaveLength(0);

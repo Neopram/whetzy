@@ -38,11 +38,8 @@ test('onboarding (EN): landing → first answered question in < 60 s', async ({ 
   }
   await onboarding.getByRole('button', { name: /English/ }).click();
 
-  await page.getByRole('button', { name: 'STUDY NOW' }).click();
-  await page.getByRole('button', { name: 'Go to lessons' }).click();
-
-  await page.locator('[aria-expanded="false"]').first().click();
-  await page.getByRole('button', { name: /Learn/ }).first().click();
+  // D-20: a beginner lands straight in the first lesson of their track;
+  // opening it records the view and lifts the lesson gate (32.4).
   const closeLesson = page.getByRole('button', { name: 'Close' });
   await expect(closeLesson).toBeVisible({ timeout: 15_000 });
   await closeLesson.click();

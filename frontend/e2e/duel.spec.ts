@@ -92,9 +92,14 @@ test.describe('duel', () => {
     await expect(chalPage.locator('text=¡Duelo completado!')).toBeVisible({ timeout: 10_000 });
 
     // Resolve duel_id via the API using challenger's token
+    // `request` keeps the session cookie from the opponent's registration, and a
+    // POST with a session cookie must carry an allowed Origin (CSRF, S.13):
+    // without it the login came back 403 and `myDuels` was an error object.
     const chalLoginRes = await request.post(`${baseURL}/api/v1/auth/login`, {
       form: { username: `${chalUsername}@example.com`, password: 'e2e-test-pass-123' },
+      headers: { Origin: new URL(baseURL!).origin },
     });
+    expect(chalLoginRes.ok(), await chalLoginRes.text()).toBeTruthy();
     const chalToken = (await chalLoginRes.json()).access_token;
     const myDuelsRes = await request.get(`${baseURL}/api/v1/duels/my`, {
       headers: { Authorization: `Bearer ${chalToken}` },
@@ -139,7 +144,9 @@ test.describe('duel', () => {
     // ── Verify via API that both sides resolved ──────────────────────────────
     const oppLoginRes = await request.post(`${baseURL}/api/v1/auth/login`, {
       form: { username: oppEmail, password: 'e2e-test-pass-123' },
+      headers: { Origin: new URL(baseURL!).origin },
     });
+    expect(oppLoginRes.ok(), await oppLoginRes.text()).toBeTruthy();
     const oppToken = (await oppLoginRes.json()).access_token;
     const resultRes = await request.get(`${baseURL}/api/v1/duels/${duelId}/result`, {
       headers: { Authorization: `Bearer ${oppToken}` },

@@ -39,6 +39,18 @@ export default defineConfig({
         // registered user back on the landing — the intermittent reds of
         // 2026-09-24 (a different 1-3 tests failing on every full run).
         DEFAULT_RATE_LIMIT: '5000',
+        // The suite's frontend runs on :5199, which is not in the default
+        // origin list (only :3000 and :5173). The CSRF middleware rejected
+        // every POST carrying a session cookie from it (`POST /quiz/start`,
+        // a second login…): 18 of 52 specs went red on a default run
+        // (2026-10-16). Replaces the list, so it keeps :5173 too. JSON, not
+        // comma-separated: pydantic-settings decodes a list[str] env var as
+        // JSON before the field validator ever sees it, and the backend
+        // refused to start with the comma form.
+        BACKEND_CORS_ORIGINS: JSON.stringify([
+          'http://localhost:5199', 'http://127.0.0.1:5199',
+          'http://localhost:5173', 'http://127.0.0.1:5173',
+        ]),
       },
     },
     {
