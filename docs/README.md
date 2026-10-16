@@ -19,7 +19,7 @@ Frontend: React + Capacitor.
 | Decisiones irreversibles (ADR) | `DECISIONS.md` |
 | Plan maestro de la beta: las decisiones D-xx del dueño y su estado | `PLAN_MAESTRO.md` |
 | Informe de estado generado (`scripts/estado.py`) | `ESTADO_AUTOMATICO.md` |
-| Por qué se pausó el 2026-09-30, el scorecard (§2) y las trampas del entorno (§7). **Pausa levantada el 2026-10-01** (ADR-56) | `CIERRE_2026-09-30.md` |
+| Por qué se pausó el 2026-09-30, las decisiones del dueño (§2) y las trampas del entorno (§7). **Pausa levantada el 2026-10-01** (ADR-56) | `CIERRE_2026-09-30.md` |
 
 **Producto y mercado**
 
@@ -72,7 +72,7 @@ documento vivo, gana el vivo. Un plan que no sea una fila de `AUTONOMOUS_STATE.m
 ```bash
 docker compose up -d                          # Postgres en :5433
 cd backend && pip install -r requirements.txt
-cp .env.example .env
+cp ../.env.example .env
 python -m alembic upgrade head
 python -m app.services.content_loader         # carga tracks, preguntas, glosario y lecciones
 uvicorn app.main:app --reload                 # http://localhost:8000/api/v1/openapi.json

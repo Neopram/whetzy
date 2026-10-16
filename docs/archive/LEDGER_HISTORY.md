@@ -2353,3 +2353,19 @@ tenía), con un puntero «→ §T» aquí.
 | 39.14 | **3** | Plantilla de lección con formato (ADR-50d) | **DONE** | `4e8d941` (#98): `lessonScreen.icons.test.tsx` 3 passed (2026-10-03, en `c6d0545`) |
 | 39.25 | **1** | **MLA-C01 retirado: ampliar track43 sin reestructurar** | **DONE** | `a6fe453` (#99): +7 skills `sk430121`–`127`, los 4 dominios intactos (2026-10-03, en `c6d0545`) → §R |
 | 39.24 | **1** | **AI-900 retirado: track45 a AI-901** | **DONE** | `7522e23` (#96): track45 = AI-901 con 2 dominios; contenido 70341 passed (2026-10-03, en `c6d0545`) → §R |
+
+### §T (2) — Filas actualizadas el 2026-10-16 con las fusiones #187-#223 (Oleada 0), tal como estaban
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía… | **PARCIAL** | 6/51 `.module.css` con hex literal → 0/51, guarda mutada; `docs/design/identidad.md` escrito. Falta: aprobación del dueño → §I |
+| 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | e2e en inglés (`onboarding.en.spec.ts`), bug propio hallado y arreglado (`getByLabel('Name')` ambigua). Mutado rojo/verde. Falta: abandono por paso en admin (22.1) → §I
+| 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como… | **PARCIAL** | Elo real visible (el nivel mostrado era XP); sin intentos no se muestra nada (evita el 1500 inventado). 4 tests, mutado. Falta: fuente por número, vista por segmento → §I |
+| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** (2026-09-28): 0 `var(--x, #hex)` en `src/` (era 1, `--color-cyan` no existía en ningún fichero, caía al respaldo) → `var(--color-primary)` real. Guarda `tokens.noHexFallback` mutada. Falta: modo claro por el dueño → §I |
+| 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | Foco visible y objetivos táctiles arreglados y verificados (`touchTargets.spec.ts`, 0 <44px). Detalle → §I |
+| 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** (2026-09-28): 390px sin scroll horizontal en Auth/Onboarding/Home ES+EN (5 e2e, mutado); TTFQ ES 14.7s, EN 12.9s (esta rama, local). `ttfq-prod.spec.ts` NO se corrió contra producción (cuenta real, fuera de alcance sin el dueño) → §I
+| 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
+| 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** — pantallas del bloque revisadas… | (2026-09-29) `ProfileTab`/`CourseTab`: mismo bug de 34.3 fuera de `pages/`, invisible al guard hex-only (`rgba` no hex) — `:focus`→`:focus-visible`+`color-mix` 35%, verificado en Chromium real → §I |
+| 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | **PARCIAL** → §I |
+| 37.10 | **1** | **Certificaciones a la regla de ADR-54**: 100 % de objetivos, práctica ≥ máx(300, 3 × L), reservadas 2 × L; primero MLA-C01 y las 3 de Microsoft; nuevas en español: GCP ACE → LPIC-1 → AZ-104 | TODO | `catalog_coverage.py`: práctica y reserva al 100 % por certificación; `test_certification_blueprints.py` |

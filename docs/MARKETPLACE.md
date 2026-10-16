@@ -148,7 +148,7 @@ Todo contenido de instructor pasa el mismo §7 del CATALOGO_MAESTRO.md:
 
 | Tarea | Descripción |
 |---|---|
-| 28.0 | Schema DB: tablas `instructor_profiles`, `marketplace_courses`, `course_purchases`, `instructor_payouts` |
+| 28.0 | Schema DB: tablas `instructors`, `instructor_courses`, `instructor_enrollments`, `instructor_payouts` |
 | 28.1 | API endpoints: CRUD cursos instructor, upload contenido, métricas; código de instructor (29.4) |
 | 28.2 | Quality gate pipeline: `scripts/instructor_quality_gate.py` integrado en upload |
 | 28.3 | Panel de instructor: React pages con rol-guard `instructor` |

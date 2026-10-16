@@ -215,13 +215,13 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | 21 capturas landing+precios de 7/8. Reintento Platzi: firewall nuevo, tratado como bloqueo. Falta: onboarding/dashboard/gamificación (cuenta), Exercism/Platzi (bloqueados), `decisiones-24.0.md` → §I |
-| 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía… | **PARCIAL** | 6/51 `.module.css` con hex literal → 0/51, guarda mutada; `docs/design/identidad.md` escrito. Falta: aprobación del dueño → §I |
+| 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía… | **PARCIAL** | 2026-10-16: colores del logo aprobados por el dueño el 2026-10-13 y aplicados (#197) → §T |
 | 24.2 | **1** | **Landing que vende** (`/es`, `/en`; absorbe 19.8 y 23.2): hero con el… | **PARCIAL** | Lighthouse (preview): perf 77-89, a11y 94. LCP 3965-4392ms, falla presupuesto 2500ms. Falta: demo 3 preguntas, remedir en prod, copy/A-B del dueño → §I |
-| 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | e2e en inglés (`onboarding.en.spec.ts`), bug propio hallado y arreglado (`getByLabel('Name')` ambigua). Mutado rojo/verde. Falta: abandono por paso en admin (22.1) → §I
-| 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como… | **PARCIAL** | Elo real visible (el nivel mostrado era XP); sin intentos no se muestra nada (evita el 1500 inventado). 4 tests, mutado. Falta: fuente por número, vista por segmento → §I |
+| 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | 2026-10-16: el alta lleva a la primera lección (D-20, #188; e2e en #220). Falta abandono por paso en admin (22.1) → §T |
+| 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como… | **PARCIAL** | 2026-10-16: bandas con evidencia en Hoy y Preparación (#189); el Elo solo en DEV (#205, ADR-60) sustituye a «Elo visible». Falta fuente por número → §T |
 | 24.6 | **2** | **Gamificación original + wallet de créditos**: racha con identidad… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.7 | **2** | Panel de certificación: readiness por dominio (18.1), simu… | **DONE** | → §T |
-| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | **PARCIAL** | 2026-10-16: sin enlace a `/project` (#207) y CSS en módulo (#223); sigue tras `PUBLIC_PROFILES_ENABLED=False` → §T |
 | 24.9 | **2** | **Panel B2B** (`SEGMENTOS.md` segmento 5): progreso por empleado, tiempo, certificaciones, comparativa anónima, import… | | → §I (criterio archivado por 20.10) |
 
 #### Dependencias
@@ -376,13 +376,13 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 34.11 | **1** | Hallazgos de comportamiento vistos al rediseñar (no son es… | **DONE** | `be2e83b` → §T |
 | 34.12 | **2** | Plural e idioma en la UI: `HomeScreen.tsx` sin `count`… | **DONE** | `772fe5d` → §T |
 | 34.1 | **0** | Devolver el estilo a las 13 pantallas rotas: por fichero,… | **DONE** | `e58b6b2` → §T |
-| 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** (2026-09-28): 0 `var(--x, #hex)` en `src/` (era 1, `--color-cyan` no existía en ningún fichero, caía al respaldo) → `var(--color-primary)` real. Guarda `tokens.noHexFallback` mutada. Falta: modo claro por el dueño → §I |
-| 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | Foco visible y objetivos táctiles arreglados y verificados (`touchTargets.spec.ts`, 0 <44px). Detalle → §I |
-| 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** (2026-09-28): 390px sin scroll horizontal en Auth/Onboarding/Home ES+EN (5 e2e, mutado); TTFQ ES 14.7s, EN 12.9s (esta rama, local). `ttfq-prod.spec.ts` NO se corrió contra producción (cuenta real, fuera de alcance sin el dueño) → §I
+| 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | 2026-10-16: tokens de los dos temas con los colores del logo (#197) y sin `rgba` en `.module.css` (#222, guarda `tokens.noRgba`) → §T |
+| 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | 2026-10-16: `Button` común en Auth, Duelo, Perfil y Quiz (#214, #216); botones de icono con nombre (#207) → §T |
+| 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | 2026-10-16: Auth y olvido/reset con `Button` (#214, #216); «atrás» y `replace` en la entrada (#215). Falta `ttfq-prod.spec.ts` contra producción (dueño) → §T |
 | 34.5 | **1** | Aprendizaje: Home, Tracks, Lesson y Quiz (con Monaco, WhyB… | **DONE** | → §T |
-| 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
-| 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** — pantallas del bloque revisadas… | (2026-09-29) `ProfileTab`/`CourseTab`: mismo bug de 34.3 fuera de `pages/`, invisible al guard hex-only (`rgba` no hex) — `:focus`→`:focus-visible`+`color-mix` 35%, verificado en Chromium real → §I |
-| 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | **PARCIAL** → §I |
+| 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | 2026-10-16: Stats con bandas (#204), Perfil por rol (#207), Duelo y Quiz con `Button` (#214, #216) → §T |
+| 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** | 2026-10-16: Admin solo dueño (#202), Evidence sin notas a terceros (#206), Borrar cuenta con tokens (#209), Marketplace en módulo (#223). Falta revisar Instructor → §T |
+| 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | 2026-10-16: E2E 54/56 en local (#220) y selectores por nombre con guarda (#217). Faltan capturas aprobadas (D-28) y axe por ruta → §T |
 | 34.9 | **2** | **Verificación y re-puntuación**: verificador adversario (protocolo §7) de 34.0–34.8 y fila nueva en el teardown… | | → §I (criterio archivado por 20.10) |
 
 ### 35. Lo que el mercado enseña: competencia verificada → producto (abierta 2026-09-24, a petición del dueño)
@@ -416,7 +416,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 37.7 | **2** | **track24 y track25 reconstruidos con la forma 32 × 10** desde la cuarentena (nivel B) | TODO | ídem, fuera de `_quarantine` y `question_diversity.py` sin línea base |
 | 37.8 | **2** | **Tracks nuevos por demanda** (`CATALOGO_MAESTRO.md` §2.0): A (38, 33, 34) → B (37, 47, 48, 35, 36, 39, 31) → C (49, 50, 53, 54, 32, 52, 51, 55, 56) solo con todos los A y B en el suelo | TODO | ídem por track; `metas_catalogo.json` lo pasa a «construido» en el mismo commit |
 | 37.9 | **2** | **Glosario ≥ 1 término por skill**, ES y EN nativos (absorbe 25.12) | TODO | `catalog_coverage.py`: términos ≥ skills en cada track |
-| 37.10 | **1** | **Certificaciones a la regla de ADR-54**: 100 % de objetivos, práctica ≥ máx(300, 3 × L), reservadas 2 × L; primero MLA-C01 y las 3 de Microsoft; nuevas en español: GCP ACE → LPIC-1 → AZ-104 | TODO | `catalog_coverage.py`: práctica y reserva al 100 % por certificación; `test_certification_blueprints.py` |
+| 37.10 | **1** | **Certificaciones a la regla de ADR-54**: 100 % de objetivos, práctica ≥ máx(300, 3 × L), reservadas 2 × L; primero MLA-C01 y las 3 de Microsoft; nuevas en español: GCP ACE → LPIC-1 → AZ-104 | PARCIAL (2026-10-16, `catalog_coverage.py` sobre `0de27ad`: faltan +113 de práctica y +821 reservadas) | `catalog_coverage.py`: práctica y reserva al 100 % por certificación; `test_certification_blueprints.py` |
 | 37.11 | **3** | **Proyectos multi-paso**: 10 por track ejecutable (hoy 0; catálogo §1) | BLOCKED (37.6) | Cada proyecto con tests de… |
 | 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | → §I (criterio archivado por 20.10) |
 | 37.13 | **3** | **Scorecard ADR-54** (absorbe 25.13): `scripts/catalog_coverage.py` + `scripts/metas_catalogo.json` + `backend/tests/test_cobertura_plan.py` | **PARCIAL** | Hecho 2026-10-01 para ADR-54 (script, metas, 21 tests con mutación). Falta: cifras en `/evidence` y re-puntuar Contenido en el teardown al cambiar de tramo |
