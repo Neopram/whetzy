@@ -76,6 +76,9 @@ STATES = (
     "REGRESION",
     # Filas de incidente (`22x`, `24.5x`, `28x`…): la serie 16 las mete en la
     # misma tabla con cuatro celdas en vez de cinco y con estados propios.
+    # `22x`, `25x` y `28x` no llevan punto y `_ROW` no las lee: quedan fuera de
+    # banda a proposito (incidentes cerrados en 2026-09, sin trabajo pendiente;
+    # Oleada 0, 2026-10-16). `24.5x` y `17.1x` si se leen.
     "RESUELTA",
     "CORREGIDA",
     "TODO",

@@ -65,8 +65,8 @@
 | 19 | Lo que Educative y las tiendas exigen — social login, bootcamps, proy… | 2/8 | 29 % | 19.2, 19.3, 19.7, 19.8, 19.9, 19.10 |
 | 18 | Techo de código — todo el catálogo, sin racionar | 1/5 | 20 % | 18.9, 18.10, 18.11, 18.12 |
 | 17 | De quiz a escuela + release definitivo | 0/5 | 0 % | 17.5, 17.6, 17.7, 17.10, 17.14 |
-| 16 | CI en rojo | 0/4 | 0 % | 14.10 |
-| 14 | La cuña | 0/5 | 0 % | 14.7, 14.8, 14.9, 14.13, 14.14 |
+| 16 | CI en rojo | 0/3 | 0 % | — |
+| 14 | La cuña | 0/6 | 0 % | 14.7, 14.8, 14.9, 14.10, 14.13, 14.14 |
 | 11 | Superioridad medible | 1/3 | 50 % | 11.8, 11.9 |
 
 ---
@@ -89,6 +89,7 @@
 | 14.7 | 3 | **PCEP** — primera certificación del carril 1 (decisión #25) | TODO | → LEDGER_HISTORY.md §E |
 | 14.8 | 4 | **Predictor beta-binomial de aprobado** con calibración pública | BLOCKED (11.8 · H.10) | → LEDGER_HISTORY.md §E · simulado `5dc7f6b` (#97) → §R |
 | 14.9 | 4 | **Informe de dominio verificable** por URL | BLOCKED (11.8 · H.10) | → LEDGER_HISTORY.md §E · aritmética `432bdd2` (#97) → §R |
+| 14.10 | 5 | **IRT (θ) — el modelo de Vicks** | BLOCKED (datos) | → LEDGER_HISTORY.md §E · JMLE simulado `b43424c` (#97) → §R |
 | 14.13 | 2 | **Cuatro tracks nuevos: Linux/CLI · SQL y bases de datos · Frameworks web (FastAPI) · Data engineering** | TODO | →… |
 | 14.14 | 3 | **~50 animaciones Manim para los conceptos que un texto no explica** | TODO | → LEDGER_HISTORY.md §E |
 ### 16 — CI en rojo (PRI 0 · sesión ao). Las 3 jobs fallan desde el lote F15–F22
@@ -104,7 +105,6 @@
 | 24.5x | **2** | 24.5x | **RESUELTA** | **RESUELTA** `ed680ef` (2026-09-19) → §I |
 | 17.1x | **2** | 17.1x | **RESUELTA** | **RESUELTA** `17dc7b7` (2026-09-24) → §I |
 
-| 14.10 | 5 | **IRT (θ) — el modelo de Vicks** | BLOCKED (datos) | → LEDGER_HISTORY.md §E · JMLE simulado `b43424c` (#97) → §R |
 
 ### 17. De quiz a escuela + release definitivo (web · App Store · Play Store)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
@@ -160,7 +160,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 18. Techo de código — todo el catálogo, sin racionar (abierta 2026-09-16, sesión au)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE… | **DONE** | **DONE** (2026-09-18) → §I |
+| 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE** | `bec734c` (2026-09-18) → §I |
 | 18.9 | **4** | **Vídeo explicativo — piloto que decide** | TODO | → LEDGER_HISTORY.md §E |
 | 18.10 | **4** | **Resto del catálogo: tracks 24-26, 28-31 y certs P2-P3** | **PARCIAL** | 26/28/29/30 en `1d76762`+`6e2778a` (1.200 Q, 80 lecciones); faltan 24, 25, 31 y relleno a 300 → §E |
 | 18.11 | **2** | **Store-ready sin cuenta** | **PARCIAL** | `docs/STORE_LISTING.md` consolidado (iOS + Android), precios IAP actualizados a ADR-41/49, checklist actualizado (A3 age gate DONE por 19.11). Cuenta delete: endpoint + pantalla DONE. Privacy/Terms: DONE. Falta: screenshots con Playwright (necesita backend local), `codemagic.yaml` iOS build (H.14 macOS runner). |
@@ -186,8 +186,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 21. Legal y fiscal a coste cero — investigación, borradores, gates humanos (abierta 2026-09-18, sesión bf — **H.20 SIGUE ABIERTO** — el…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; la entidad y la jurisdicción están sin decidir, H.29. Se conserva el enunciado… | | → §I (criterio archivado por 20.10) |
-| 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | | → §I (criterio archivado por 20.10) |
+| 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; destino Chipre por ADR-61 §22, sin entidad constituida; el código sigue en Grecia, H.54. Se conserva el enunciado… | BLOCKED (H.54) | → §I (criterio archivado por 20.10) |
+| 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | BLOCKED (H.54) | → §I (criterio archivado por 20.10) |
 | 21.5 | **2** | **AI Act, DSA, EAA**: obligaciones de *deployer* del tutor… | **PARCIAL** | **PARCIAL** `5f7bd7b` (2026-09-19) → §I |
 | 21.6 | **2** | **Propiedad intelectual**: búsqueda de marca «Whetzy» (EUIPO,… | **PARCIAL** | **PARCIAL** `8e7812a` (2026-09-19) → §I |
 
@@ -607,3 +607,5 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ## 6. Cadena de sesiones
 
 > → `docs/archive/LEDGER_HISTORY.md` §G
+
+- 2026-10-16 · Oleada 0 (serie 41), rama `claude/ultracode-0-docs-sync`
