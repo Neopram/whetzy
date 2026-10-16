@@ -111,16 +111,18 @@ describe('enlaces y parámetros', () => {
 
 describe('/checkout', () => {
   it('sin sesión manda a iniciar sesión y vuelve al mismo pago', async () => {
+    // `replace` (2026-10-16): con `assign`, «atrás» desde el acceso volvía a
+    // /checkout, que redirigía otra vez al acceso.
     me.mockRejectedValue(new ApiError('Unauthorized', 401));
-    const assign = vi.fn();
+    const replace = vi.fn();
     vi.spyOn(window, 'location', 'get').mockReturnValue({
       ...window.location,
       pathname: '/checkout',
       search: '?plan=plus',
-      assign,
+      replace,
     } as Location);
     await renderAt('?plan=plus');
-    await waitFor(() => expect(assign).toHaveBeenCalledWith('/auth?next=%2Fcheckout%3Fplan%3Dplus'));
+    await waitFor(() => expect(replace).toHaveBeenCalledWith('/auth?next=%2Fcheckout%3Fplan%3Dplus'));
     expect(open).not.toHaveBeenCalled();
   });
 

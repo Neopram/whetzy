@@ -2,6 +2,7 @@
 import { useTranslation } from 'react-i18next';
 import { ApiError, auth, type OAuthProvider, type RegisterPayload } from '../services/api';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
+import { initialAuthMode } from '../lib/authRedirect';
 import { BrandMark } from '../components/common/BrandMark';
 import styles from './AuthScreen.module.css';
 
@@ -39,7 +40,8 @@ interface Props {
 }
 
 export function AuthScreen({ onAuthed }: Props) {
-  const [mode, setMode] = useState<Mode>('register');
+  // /login abre «Iniciar sesión»: es la puerta de quien ya tiene cuenta.
+  const [mode, setMode] = useState<Mode>(() => initialAuthMode(window.location.pathname));
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
