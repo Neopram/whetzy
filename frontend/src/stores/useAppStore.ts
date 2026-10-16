@@ -27,7 +27,11 @@ interface UserProfile {
   grantedUntil: string | null;
   /** Recibir correos de ofertas (la baja se hace desde Ajustes o desde el correo). */
   marketingEmails: boolean;
-  is_admin: boolean;
+  /** «Instructor» en Perfil: solo creadores (plan Creador, dueño o admin). */
+  canCreateCourses: boolean;
+  /** «Admin» en Perfil: solo el dueño. `/auth/me` no mandaba `is_admin`, así
+   *  que el enlace no se veía nunca (auditoría de pantallas, 2026-10-16). */
+  isOwner: boolean;
   language: Language;
   league: LeagueTier;
 }
@@ -153,7 +157,8 @@ function mapApiUser(u: UserRead): UserProfile {
     grantedTier: u.granted_tier ?? null,
     grantedUntil: u.granted_tier_expires_at ?? null,
     marketingEmails: !u.marketing_emails_opt_out,
-    is_admin: u.is_admin ?? false,
+    canCreateCourses: u.can_create_courses ?? false,
+    isOwner: u.is_owner ?? false,
     language: u.language,
     league: 'bronze',
   };
@@ -182,7 +187,8 @@ const defaultUser: UserProfile = {
   grantedTier: null,
   grantedUntil: null,
   marketingEmails: true,
-  is_admin: false,
+  canCreateCourses: false,
+  isOwner: false,
   language: 'es',
   league: 'gold',
 };

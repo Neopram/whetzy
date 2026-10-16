@@ -100,6 +100,21 @@ class User(Base):
     @property
     def active_granted_until(self) -> datetime | None:
         return self.granted_tier_expires_at if self.active_granted_tier else None
+
+    @property
+    def is_owner(self) -> bool:
+        """El panel de administración es solo del dueño (#202)."""
+        return self.role == "owner"
+
+    @property
+    def can_create_courses(self) -> bool:
+        """«Instructor» es para creadores (dueño, 2026-10-16): plan Creador, o el
+        dueño y los admins, que montan el catálogo propio. La misma regla que
+        `create_course` aplica con `CREATOR_PLAN_REQUIRED`. El import va aquí
+        porque entitlements importa este módulo."""
+        from app.core.entitlements import user_meets_tier
+
+        return self.is_admin or self.is_owner or user_meets_tier(self, "creator")
     role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
 
     # Onboarding (24.3 / 34.11): índice de la opción elegida en cada pregunta

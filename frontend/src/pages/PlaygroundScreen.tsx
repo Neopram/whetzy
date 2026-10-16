@@ -217,7 +217,9 @@ export function PlaygroundScreen() {
                   {t('playground.clearHistory')}
                 </button>
               )}
-              <button className={styles.closeBtn} onClick={() => setShowHistory(false)}>✕</button>
+              <button className={styles.closeBtn} onClick={() => setShowHistory(false)} aria-label={t('common.close')}>
+                <span aria-hidden="true">✕</span>
+              </button>
             </div>
           </div>
           {history.length === 0 ? (

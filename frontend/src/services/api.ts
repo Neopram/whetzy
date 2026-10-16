@@ -210,7 +210,10 @@ export interface UserRead {
   granted_tier_expires_at?: string | null;
   /** true si se dio de baja de los correos de ofertas. */
   marketing_emails_opt_out?: boolean;
-  is_admin?: boolean;
+  /** «Instructor» en Perfil: plan Creador, o dueño/admin (2026-10-16). */
+  can_create_courses?: boolean;
+  /** «Admin» en Perfil: el panel es solo del dueño (#202). */
+  is_owner?: boolean;
   /** D-20: la ruta elegida en el onboarding. */
   target_track_id?: string | null;
 }

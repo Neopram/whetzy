@@ -99,7 +99,7 @@ export default function StatusPage() {
 
   return (
     <div className={styles.screen}>
-      <h1 className={styles.title}>Whetzy System Status</h1>
+      <h1 className={styles.title}>Whetzy · {t('statusTitle')}</h1>
 
       <div className={styles.overallCard}>
         <span className={`${styles.dot} ${overallDot}`} aria-hidden="true" />

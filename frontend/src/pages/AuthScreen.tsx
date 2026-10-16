@@ -245,7 +245,7 @@ export function AuthScreen({ onAuthed }: Props) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="tu@correo.com"
+            placeholder={t('auth.emailPlaceholder')}
             autoComplete="email"
             inputMode="email"
           />

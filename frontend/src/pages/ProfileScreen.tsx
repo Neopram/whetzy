@@ -244,15 +244,19 @@ export function ProfileScreen() {
             <span className={styles.settingLabel}>{t('profile.goCatalog')}</span>
             <span aria-hidden="true">→</span>
           </button>
-          <button
-            type="button"
-            className={styles.setting}
-            onClick={() => setScreen('instructor')}
-          >
-            <span className={styles.settingLabel}>{t('profile.goInstructor')}</span>
-            <span aria-hidden="true">→</span>
-          </button>
-          {useAppStore.getState().user?.is_admin && (
+          {/* «Instructor» es para creadores, no para suscripciones regulares
+              (dueño, 2026-10-16); «Admin», solo para el dueño (#202). */}
+          {user.canCreateCourses && (
+            <button
+              type="button"
+              className={styles.setting}
+              onClick={() => setScreen('instructor')}
+            >
+              <span className={styles.settingLabel}>{t('profile.goInstructor')}</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          )}
+          {user.isOwner && (
             <button
               type="button"
               className={styles.setting}
