@@ -27,13 +27,28 @@ class IRTItem:
     max_exposure: int = 50
 
 
+#: Rejilla de theta para la estimacion EAP: de -4 a 4 en pasos de 0,05, el
+#: mismo rango al que antes se recortaba el resultado de Newton.
+THETA_GRID: tuple[float, ...] = tuple(-4.0 + 0.05 * i for i in range(161))
+
+
+def _log_prior(theta: float) -> float:
+    """Normal(0, 1) en logits: la poblacion de partida, sin la constante."""
+    return -0.5 * theta * theta
+
+
 @dataclass
 class PlacementState:
     ability_estimate: float = 0.0
-    ability_se: float = 1.0  # standard error
+    ability_se: float = 1.0  # desviacion tipica a posteriori
     responses: list[tuple[str, bool]] = field(default_factory=list)
     administered_ids: set[str] = field(default_factory=set)
     skill_estimates: dict[str, dict[str, int]] = field(default_factory=dict)
+    #: Log-posterior de theta sobre `THETA_GRID`. Cada respuesta suma su
+    #: termino, asi que actualizar cuesta lo mismo con 1 que con 50.
+    log_posterior: list[float] = field(
+        default_factory=lambda: [_log_prior(t) for t in THETA_GRID]
+    )
 
 
 class PlacementEngine:
@@ -128,7 +143,17 @@ class PlacementEngine:
         return scored[0][0]
 
     def update_ability(self, state: PlacementState, item: IRTItem, correct: bool) -> None:
-        """MLE update of ability estimate via Newton-Raphson."""
+        """Estimacion EAP (media a posteriori) con prior Normal(0, 1).
+
+        Antes era Newton-Raphson de maxima verosimilitud sin proteccion: con 12
+        aciertos de 50 —el azar con cuatro opciones— divergia y daba theta = +4
+        («Avanzado») tanto con dificultades sembradas por nivel como con todas
+        iguales (2026-10-16, `tests/unit/test_placement_theta.py`). La EAP no
+        puede divergir, siempre devuelve un valor dentro de la rejilla, sube con
+        cada acierto y baja con cada fallo, y con pocas respuestas se queda
+        cerca del centro en vez de saltar a un extremo. `ability_se` es la
+        desviacion tipica a posteriori, que es lo que mira `should_stop`.
+        """
         state.responses.append((item.item_id, correct))
         state.administered_ids.add(item.item_id)
         item.exposure_count += 1
@@ -140,37 +165,17 @@ class PlacementEngine:
             if correct:
                 state.skill_estimates[sid]["correct"] += 1
 
-        theta = state.ability_estimate
-        for _ in range(10):
-            dl = 0.0
-            d2l = 0.0
-            for resp_id, resp_correct in state.responses:
-                resp_item = self.items[resp_id]
-                p = self.probability_correct(theta, resp_item)
-                p = max(1e-6, min(1 - 1e-6, p))
+        for j, theta in enumerate(THETA_GRID):
+            p = min(1.0 - 1e-9, max(1e-9, self.probability_correct(theta, item)))
+            state.log_posterior[j] += math.log(p if correct else 1.0 - p)
 
-                a = resp_item.discrimination
-                q_term = (p - resp_item.guessing) / (1.0 - resp_item.guessing)
-                q_term = max(1e-6, q_term)
-
-                w = q_term / p
-                outcome = 1.0 if resp_correct else 0.0
-
-                dl += a * w * (outcome - p)
-                d2l -= a ** 2 * w * ((1.0 - p) * w + (outcome - p) * (w - a * q_term * (1.0 - q_term) / p))
-
-            if abs(d2l) < 1e-10:
-                break
-            theta -= dl / d2l
-
-        theta = max(-4.0, min(4.0, theta))
-        state.ability_estimate = theta
-
-        info_sum = sum(
-            self.fisher_information(theta, self.items[rid])
-            for rid, _ in state.responses
-        )
-        state.ability_se = 1.0 / math.sqrt(max(1e-6, info_sum))
+        top = max(state.log_posterior)
+        weights = [math.exp(lp - top) for lp in state.log_posterior]
+        total = sum(weights)
+        mean = sum(t * w for t, w in zip(THETA_GRID, weights, strict=True)) / total
+        variance = sum((t - mean) ** 2 * w for t, w in zip(THETA_GRID, weights, strict=True)) / total
+        state.ability_estimate = mean
+        state.ability_se = math.sqrt(max(variance, 1e-12))
 
     def should_stop(self, state: PlacementState) -> bool:
         n = len(state.responses)
