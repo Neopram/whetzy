@@ -561,6 +561,144 @@ check(
     "sin mapear: " + ", ".join(_missing_map[:20]) if _missing_map else "no se pudo leer el mapa o el código",
 )
 
+# ---------------------------------------------------------------------------
+# [15]-[23] Oleada 0 del plan ultracode (serie 41, 2026-10-16): una guarda por cada
+# contradicción doc ↔ código que el barrido cerró. Cada una se probó mutando el doc.
+# ---------------------------------------------------------------------------
+
+
+def _live_md(skip_files: set[str] = frozenset()) -> list[Path]:
+    """Los .md vivos: fuera de archive/, node_modules, corpus y salidas de herramientas."""
+    out = []
+    for _md in sorted(ROOT.rglob("*.md")):
+        _parts = set(_md.relative_to(ROOT).parts)
+        if _SKIP_DIRS & _parts or "test-results" in _parts or _md.name in skip_files:
+            continue
+        out.append(_md)
+    return out
+
+
+def _stale_lines(
+    pattern: re.Pattern[str], files: list[Path], allow: re.Pattern[str] = _HISTORY_MARK, around: int = 2
+) -> list[str]:
+    """Líneas que casan `pattern` sin marca de historia (o de negación) a ±`around` líneas."""
+    hits = []
+    for _md in files:
+        _lines = _md.read_text(encoding="utf-8", errors="replace").splitlines()
+        for _i, _ln in enumerate(_lines):
+            if pattern.search(_ln) and not allow.search(" ".join(_lines[max(0, _i - around) : _i + around + 1])):
+                hits.append(f"{_md.relative_to(ROOT).as_posix()}:{_i + 1}")
+    return hits
+
+
+_DECISIONS_TEXT = (_DOCS / "DECISIONS.md").read_text(encoding="utf-8")
+_LIVE = _live_md({"STATUS.md", "CHANGELOG.md", "DECISIONS.md"})
+
+print("\n[15] Toda ADR citada en un doc vivo existe en DECISIONS.md (ADR-61 se citó 4 veces sin existir)")
+_adr_heads = set(re.findall(r"^## ADR-(\d+)\b", _DECISIONS_TEXT, re.M))
+_adr_ghost = []
+for _md in _LIVE:
+    for _i, _ln in enumerate(_md.read_text(encoding="utf-8", errors="replace").splitlines()):
+        for _n in re.findall(r"\bADR-(\d+)\b", _ln):
+            if _n not in _adr_heads:
+                _adr_ghost.append(f"{_md.relative_to(ROOT).as_posix()}:{_i + 1} ADR-{_n}")
+check(
+    "Cada «ADR-NN» de un doc vivo tiene su cabecera `## ADR-NN` en DECISIONS.md",
+    bool(_adr_heads) and not _adr_ghost,
+    ", ".join(_adr_ghost[:20]),
+)
+
+print("\n[16] Molde de track vigente = ADR-54 (32 × 10), no el viejo 20 skills · 300 Q")
+_old_mould = _stale_lines(re.compile(r"20\s*skills\s*[·,/y×x]\s*300|300\s*Q\s*(por|/)\s*track", re.I), _LIVE)
+check("Ningún doc vivo da como vigente «20 skills · 300 Q»", not _old_mould, ", ".join(_old_mould[:20]))
+
+print("\n[17] Precio de la certificación = CERT_EXAM_USD (pago único, ADR-49)")
+_prices_py = (BACKEND / "app" / "core" / "prices.py").read_text(encoding="utf-8")
+_cert = re.search(r'CERT_EXAM_USD\s*=\s*Decimal\("([\d.]+)"\)', _prices_py)
+_cert_es = _cert.group(1).replace(".", ",") if _cert else "?"
+# ECONOMIA.md no da precio a la certificación; si algún día lo da, tiene que ser este.
+_eco_prices = re.findall(r"certificaci[oó]n[^|\n]{0,60}?(\d+[.,]\d\d)\s*\$", (_DOCS / "ECONOMIA.md").read_text(encoding="utf-8"), re.I)
+check(
+    f"Si ECONOMIA.md da precio a la certificación, es {_cert_es} $ (prices.py)",
+    bool(_cert) and all(p.replace(".", ",") == _cert_es for p in _eco_prices),
+    ", ".join(_eco_prices),
+)
+_cert49 = _stale_lines(
+    re.compile(r"\$\s*49\s*/\s*(año|year)|49\s*\$\s*/\s*año|49\s*USD\s*/\s*año|Certs?\b.{0,40}\$\s*49\b", re.I), _LIVE
+)
+check("Ningún doc vivo vende la certificación a «$49/año»", not _cert49, ", ".join(_cert49[:20]))
+
+print("\n[18] Qué elige la pregunta: skill por 1,1 − dominio y Elo, no un bandit")
+_bandit = re.compile(r"bandit\w*.{0,60}\b(decide|elige|escoge|selecciona|selects?|picks?|chooses?)\b|\b(decide|elige)\b.{0,40}bandit", re.I)
+_bandit_hits = _stale_lines(_bandit, [ROOT / "README.md", _DOCS / "ORCHESTRATOR.md"])
+check("README.md y ORCHESTRATOR.md no dicen que un bandit decide la pregunta", not _bandit_hits, ", ".join(_bandit_hits))
+_placement_py = (BACKEND / "app" / "services" / "engine" / "placement.py").read_text(encoding="utf-8")
+_thompson_docs = [m.relative_to(ROOT).as_posix() for m in _LIVE if "Thompson" in m.read_text(encoding="utf-8", errors="replace")]
+check(
+    "Si un doc vivo cita Thompson, existe en engine/placement.py (gammavariate)",
+    not _thompson_docs or "gammavariate" in _placement_py,
+    "citan Thompson: " + ", ".join(_thompson_docs[:10]),
+)
+
+print("\n[19] Los créditos no compran cursos, simulacros ni bootcamps (ADR-58)")
+_credit_buys = re.compile(r"cr[eé]ditos?\b.{0,60}\b(cursos?|simulacros?|bootcamps?)\b|\b(cursos?|simulacros?|bootcamps?)\b.{0,40}\bcon\s+cr[eé]ditos", re.I)
+_credit_ok = re.compile(r"\bno\b|\bnunca\b|\bni\b|ADR-58|sustitu[ií]d|hist[oó]ric", re.I)
+_credit_hits = _stale_lines(_credit_buys, [_DOCS / "MARKETPLACE.md", _DOCS / "DISTRIBUCION.md"], _credit_ok, around=0)
+check("MARKETPLACE.md y DISTRIBUCION.md no dicen que los créditos pagan cursos/simulacros/bootcamps", not _credit_hits, ", ".join(_credit_hits))
+
+print("\n[20] Duelos: asíncronos, estados pending | in_progress | completed (models/duel.py)")
+_duel_py = (BACKEND / "app" / "models" / "duel.py").read_text(encoding="utf-8")
+check("models/duel.py sigue con pending | in_progress | completed", '"pending" | "in_progress" | "completed"' in _duel_py)
+_duel_live = _stale_lines(re.compile(r"duel(?:o|os|s)?\s+en\s+(vivo|directo|tiempo\s+real)|\blive\s+duels?\b|pending\s*[/|,]\s*active", re.I), _LIVE)
+check("Ningún doc vivo dice «duelos en vivo» ni el estado `active`", not _duel_live, ", ".join(_duel_live[:20]))
+
+print("\n[21] STATUS.md y CHANGELOG.md llegan, al menos, a la última ADR")
+_adr_dates = re.findall(r"^## ADR-\d+\b.*?(20\d\d-\d\d-\d\d)", _DECISIONS_TEXT, re.M)
+_last_adr = max(_adr_dates) if _adr_dates else ""
+_status_dates = re.findall(r"^## (20\d\d-\d\d-\d\d)", (_DOCS / "STATUS.md").read_text(encoding="utf-8"), re.M)
+_changelog_dates = re.findall(r"^## \[[^\]]+\] — (20\d\d-\d\d-\d\d)", (_DOCS / "CHANGELOG.md").read_text(encoding="utf-8"), re.M)
+check(
+    f"Última entrada de STATUS.md ≥ última ADR ({_last_adr})",
+    bool(_status_dates) and max(_status_dates) >= _last_adr,
+    f"STATUS {max(_status_dates) if _status_dates else '?'}",
+)
+check(
+    f"Última entrada de CHANGELOG.md ≥ última ADR ({_last_adr})",
+    bool(_changelog_dates) and max(_changelog_dates) >= _last_adr,
+    f"CHANGELOG {max(_changelog_dates) if _changelog_dates else '?'}",
+)
+
+print("\n[22] INVENTARIO_DOCS.md: el resumen cuadra con sus filas y todo .md vivo tiene fila")
+_inv_rows = re.findall(r"^\| `([^`]+)` \| ([a-zA-Zé\-]+) \|", _inv_text, re.M)
+_inv_counts: dict[str, int] = {}
+for _path, _cls in _inv_rows:
+    _inv_counts[_cls] = _inv_counts.get(_cls, 0) + 1
+_summary = dict(re.findall(r"^\| ([a-zé\-]+) \| (\d+) \|", _inv_text, re.M))
+_mismatch = [f"{c}: resumen {_summary.get(c)} ≠ filas {n}" for c, n in sorted(_inv_counts.items()) if str(n) != _summary.get(c)]
+_total = re.search(r"^\| \*\*Total\*\* \| \*\*(\d+)\*\* \|", _inv_text, re.M)
+if not _total or int(_total.group(1)) != len(_inv_rows):
+    _mismatch.append(f"Total: resumen {_total.group(1) if _total else '?'} ≠ filas {len(_inv_rows)}")
+check("El resumen de INVENTARIO_DOCS.md cuadra con sus filas", not _mismatch, "; ".join(_mismatch))
+_inv_paths = {p for p, _ in _inv_rows}
+_tracked = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT, capture_output=True, text=True).stdout.split()
+_no_row = [
+    f for f in _tracked
+    if not f.startswith("docs/archive/") and "node_modules" not in f and "test-results" not in f and not f.startswith("corpus/")
+    and f not in _inv_paths
+]
+check("Todo .md vivo del repo tiene fila en INVENTARIO_DOCS.md", bool(_tracked) and not _no_row, "sin fila: " + ", ".join(_no_row[:20]))
+
+print("\n[23] Toda fila DONE del ledger dice dónde está su evidencia")
+sys.path.insert(0, str(Path(__file__).parent))
+import ledger as _ledger_mod  # noqa: E402
+
+_done_bare = [
+    t.id
+    for t in _ledger_mod.parse().tasks
+    if t.state == "DONE" and not re.search(r"`[0-9a-f]{7,40}`|→\s*(§|STATUS)|#\d+|DONE\s+—", t.criterion + " " + t.state_raw)
+]
+check("Cada fila DONE cita un hash, un PR o un puntero «→ §»", not _done_bare, f"{len(_done_bare)} sin evidencia: " + ", ".join(_done_bare[:30]))
+
 print()
 if errors:
     head = f"{len(errors)} check(s) FAILED:"
