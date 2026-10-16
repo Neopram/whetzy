@@ -18,6 +18,7 @@ import { ReportQuestion } from '../components/quiz/ReportQuestion';
 import { useRuntime, runtimeForQuestion } from '../hooks/useRuntime';
 import { useGlossary } from '../hooks/useGlossary';
 import { parseQuestion } from '../lib/question';
+import { useBackGuard } from '../lib/screenHistory';
 import styles from './QuizScreen.module.css';
 
 // Monaco is ~2 MB — lazy-load so the initial bundle stays small.
@@ -361,6 +362,8 @@ export function QuizScreen() {
     if (index > 0 || feedback) setConfirmExit(true);
     else handleClose();
   }, [index, feedback, handleClose]);
+  // «Atrás» del navegador o de Android abre el mismo diálogo que la ✕.
+  useBackGuard(requestClose);
 
   // Teclado: 1–4 o A–D eligen opción; Enter pasa a la siguiente. Un solo
   // listener que llama siempre al manejador del último render (se actualiza en

@@ -14,6 +14,8 @@ import { ExamSitting } from '../components/exam/ExamSitting';
 import { CERTIFICATION_PRICE_USD } from '../lib/plans';
 import { checkoutHref } from '../lib/paddle';
 import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
+import { showToast } from '../components/common/Toast';
+import { useBackGuard } from '../lib/screenHistory';
 import styles from './MockExamScreen.module.css';
 
 type Phase = 'intro' | 'running' | 'grading' | 'result';
@@ -38,6 +40,12 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [report, setReport] = useState<MockExamReport | null>(null);
+  // Con el examen en marcha «atrás» no sale (el reloj sigue en el servidor);
+  // antes de empezar y con el resultado, sí.
+  useBackGuard(() => {
+    if (phase === 'running' || phase === 'grading') showToast(t('mockExam.backBlocked'), 'info');
+    else onExit?.();
+  });
   const [expired, setExpired] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);

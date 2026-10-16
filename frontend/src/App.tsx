@@ -14,6 +14,7 @@ import { useGestures } from './hooks/useGestures';
 import { safeNext } from './lib/paddle';
 import { useRedirectIfSignedIn } from './lib/authRedirect';
 import { IMMERSIVE_SCREENS, navigationTargetForSwipe } from './lib/immersiveScreens';
+import { useScreenHistory } from './lib/screenHistory';
 
 // Every screen is loaded on demand. Statically importing them put the whole
 // app — quiz, Pyodide, Lottie, duels — into the landing page's first bundle,
@@ -434,6 +435,10 @@ function App() {
       setAuthState('unauthed');
     }
   }, [userId, authState]);
+
+  // «Atrás» y recarga dentro de la app: cada pantalla principal tiene su URL
+  // (lib/screenHistory.ts). Va aquí, encima de los returns, como el resto.
+  useScreenHistory(authState === 'authed' && !showOnboarding);
 
   function finishOnboarding() {
     try {
