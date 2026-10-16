@@ -101,39 +101,27 @@ export function formatViolations(violations: AxeViolation[]): string {
 
 /**
  * Answers whatever question is currently on screen in QuizScreen and waits
- * for the feedback panel. Handles both MCQ questions (click an option) and
- * exec-type questions (fill_blank_exec / fix_bug: run up to 3 times — the
- * app auto-submits as incorrect on the 3rd attempt, so this always reaches
- * feedback without needing Pyodide to actually produce the right answer).
+ * for the feedback panel. The answer need not be right: any graded answer
+ * reaches the feedback panel, which is all these specs wait for.
+ * - MCQ: click the first option.
+ * - every other type but fill_blank: «No lo sé». The old path ran
+ *   the code up to three times expecting the app to auto-submit on the third;
+ *   it no longer does — after a run it shows «Confirmar» with the same
+ *   `btnRun_` class, and the locator hit two buttons (2026-10-16).
+ * - fill_blank (no «No lo sé»): type something and press Enter; its submit
+ *   button stays disabled while the input is empty.
  */
 export async function answerCurrentQuestion(page: Page) {
   const options = page.locator('[class*="options_"] button');
+  const dontKnow = page.getByRole('button', { name: /^(No lo sé|I don't know)$/ });
   if (await options.count() > 0) {
     await options.first().click();
+  } else if (await dontKnow.count() > 0) {
+    await dontKnow.click();
   } else {
-    // `fill_blank` (and `fill_blank_exec` with a code template) render a text
-    // input, and their submit button stays disabled while it is empty. Typing
-    // something is what enables it — without this the helper sat on a disabled
-    // "✓ Confirmar" until the test timed out, which is how the 373 fill_blank
-    // questions activated in F17 started breaking any spec that answers a quiz.
-    // The value need not be right: a wrong answer still reaches the feedback
-    // panel, which is all these specs wait for.
-    const blankInput = page.locator('[class*="blankInput_"]');
-    if (await blankInput.count() > 0) {
-      await blankInput.first().fill('42');
-    }
-    const runBtn = page.locator('[class*="btnRun_"]');
-    const explanation = page.locator('[class*="explanation_"]');
-    await expect(runBtn).toBeVisible({ timeout: 10_000 });
-    for (let attempt = 0; attempt < 3; attempt++) {
-      // Whichever comes first: a run that already got the answer graded («⏳ Enviando…»
-      // and then no Run button at all), or the button free for the next attempt.
-      // Waiting only for an enabled Run button sat out the 60 s test timeout in CI.
-      await expect(explanation.or(runBtn.and(page.locator(':enabled')))).toBeVisible({ timeout: 60_000 });
-      if (await explanation.isVisible()) break;
-      await runBtn.click();
-      await page.waitForTimeout(500);
-    }
+    const blankInput = page.locator('[class*="blankInput_"]').first();
+    await blankInput.fill('42');
+    await blankInput.press('Enter');
   }
   await expect(page.locator('[class*="explanation_"]')).toBeVisible({ timeout: 10_000 });
 }
@@ -164,9 +152,9 @@ export async function registerAndCompleteAQuiz(page: Page, opts: { username: str
   await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
   for (let i = 0; i < 10; i++) {
     await answerCurrentQuestion(page);
-    await page.locator('[class*="btnNext_"]').click();
+    await page.getByRole('button', { name: /^(SIGUIENTE|VER RESULTADOS)$/ }).click();
   }
   await expect(page.locator('[class*="summaryGrade_"]')).toBeVisible({ timeout: 10_000 });
-  await page.locator('[class*="btnStudy_"]').click();
+  await page.getByRole('button', { name: 'CONTINUAR' }).click();
   await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible();
 }
