@@ -7,7 +7,7 @@
 > Idempotente. Cualquier sesión que lo lea sabe dónde está el proyecto leyendo
 > `docs/AUTONOMOUS_STATE.md`, y sabe dónde dejarlo escribiendo ahí mismo.
 >
-> **Se ejecuta sin intervención.** Modelo (Sonnet 4.6) y permisos (bypass)
+> **Se ejecuta sin intervención.** Modelo (Sonnet 5) y permisos (bypass)
 > vienen de `~/.claude/settings.json`. La continuidad la garantiza un scheduled
 > task recurrente `whetzy-orch-*` que este archivo mantiene vivo y borra cuando
 > termina. Nadie pulsa nada entre sesiones.
@@ -38,12 +38,12 @@ mentimos sobre lo que dominas. Cuando no sabes, te explicamos con fuente.
 
 ### Modelo de negocio
 Freemium: **Gratis · Pro $14,99 · Pro Max $19,99** al mes, y **Creador $99,99** para publicar
-bootcamps con reparto 80/20 (ADR-45, decisión del dueño del 2026-09-24 posterior a ADR-43,
+bootcamps con reparto 80/20 (ADR-41, decisión del dueño del 2026-09-24 posterior a ADR-47,
 cuya fila de precios enmienda). La landing los muestra y, desde el 2026-10-01, Pro, Pro Max y la
 certificación se compran en la web con Paddle (Merchant of Record) en `/checkout`; cobrar
 de verdad espera a que Paddle termine el alta de la cuenta y apruebe whetzy.com (H.29).
 Creador no se cobra por Paddle: su política prohíbe los marketplaces. Sin Stripe (H.29).
-Anual, tarifa regional y qué añade Pro Max: H.38. Nativo con RevenueCat (17.14). Entidad y jurisdicción: **sin decidir** (H.29; la premisa griega de
+Anual, tarifa regional y qué añade Pro Max: H.35. Nativo con RevenueCat (17.14). Entidad y jurisdicción: **Chipre**, entidad aún no constituida (ADR-61 §22, sustituye a «Grecia» en H.29; la premisa griega de
 ADR-16 queda suspendida). Cancelar en dos toques.
 
 ### Decisiones cerradas — no se reabren
@@ -114,7 +114,7 @@ ADR-16 queda suspendida). Cancelar en dos toques.
 | Revisión de stores | Aprobada a la primera | Checklists 9.5 / 9.6 completos con evidencia |
 | Motor adaptativo con evidencia | DKT AUC ≥ 0,70 y > BKT en benchmark público | `app/ml/benchmark_kt.py` (11.3), no el eval interno con 3 secuencias |
 | Tutor grounded en prod | ≥ 95 % self-retrieval top-3; `grounded` refleja un hit real | Test de 11.1 contra la DB de contenido |
-| Posición competitiva | Score honesto ≥ 60/100 | `docs/competitive-teardown.md`, sección de recálculo más reciente (§11 el 18-sep: **44**; techo sin usuarios **61**; con tiendas + social login + 30 beta ≈ **66**; Educative ≈ 51). Los pesos están fijados en §7.1 — **no se tocan entre mediciones**, o la serie 30 → 36 → 42 deja de ser comparable y el marcador vuelve a ser opinión |
+| Posición competitiva | Score honesto ≥ 60/100 | `docs/competitive-teardown.md`, sección de recálculo más reciente (§14 el 30-sep, sin re-puntuar: **44**; techo sin usuarios **61**; con tiendas + social login + 30 beta ≈ **66**; Educative ≈ 51). Los pesos están fijados en §7.1 — **no se tocan entre mediciones**, o la serie 30 → 36 → 42 deja de ser comparable y el marcador vuelve a ser opinión |
 
 ### Cómo decide un dueño cuando hay tensión
 1. Estabilidad de producción por encima de todo.
@@ -155,7 +155,7 @@ Cada `DONE` pasa antes por el **verificador adversario** de `PROTOCOLO_VERIFICAC
 
 ## MODELOS
 
-El hilo principal corre en el modelo que fije `settings.json` (Sonnet 4.6). No lo
+El hilo principal corre en el modelo que fije `settings.json` (Sonnet 5). No lo
 cambies desde una sesión. Política vigente del dueño: **ADR-52** (2026-09-27; resumen en
 `CLAUDE.md`, «Modelos»). **Opus y Fable están prohibidos en sesiones autónomas**
 (ADR-14, propuesta del dueño 2026-09-18: cupo semanal y presupuesto incierto; ninguna
@@ -287,7 +287,7 @@ vale, y que cada sesión que pegue evidencia local está construyendo sobre aren
 Si el paso 6 sale `False`, el frontend desplegado es anterior al `index.html`
 actual: abre `https://whetzy.com/landing` y comprueba qué pantalla pinta de verdad.
 
-Después: `Read docs/AUTONOMOUS_STATE.md`. Escéptico — el ledger dice lo que la
+Después: `python scripts/ledger.py next` (el ledger entero no se lee). Escéptico — el ledger dice lo que la
 sesión anterior *creyó*; producción dice lo que *es*.
 
 ### 5. Mirada de dueño
@@ -391,7 +391,7 @@ git commit -m "<fase>.<id>: <qué cambió>
 <evidencia en 1-3 líneas>
 
 Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
-git push -u origin <tu-rama>        # nunca master: lo fusiona el dueño (ADR-41)
+git push -u origin <tu-rama>        # nunca master: lo fusiona el dueño (ADR-45)
 ```
 
 ### 6. Actualizar el ledger
