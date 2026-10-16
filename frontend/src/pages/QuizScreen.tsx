@@ -5,6 +5,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
 import { quiz as quizApi, progress as progressApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
 import { enqueue, offlineEventId } from '../services/offlineQueue';
+import { Button } from '../components/common/Button';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { BandChip } from '../components/common/BandChip';
@@ -476,12 +477,12 @@ export function QuizScreen() {
         <div className={styles.exitConfirm} role="alertdialog" aria-label={t('quiz.exitConfirm')}>
           <p>{t('quiz.exitConfirm')}</p>
           <div className={styles.exitActions}>
-            <button type="button" className={styles.btnGhost} onClick={() => setConfirmExit(false)} autoFocus>
+            <Button type="button" variant="ghost" size="sm" className={styles.exitBtn} onClick={() => setConfirmExit(false)} autoFocus>
               {t('quiz.exitStay')}
-            </button>
-            <button type="button" className={styles.btnLeave} onClick={handleClose}>
+            </Button>
+            <Button type="button" variant="danger" size="sm" className={styles.exitBtn} onClick={handleClose}>
               {t('quiz.exitLeave')}
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -572,9 +573,9 @@ export function QuizScreen() {
       {aiExplanations && <WhyButton questionId={question.id} isPremium={isPremium} onUpgrade={handleUpgrade} />}
       <ReportQuestion key={question.id} questionId={question.id} />
 
-      <button type="button" className={styles.btnNext} onClick={handleNext}>
+      <Button type="button" full onClick={handleNext}>
         {index + 1 >= TARGET_QUESTIONS || !feedback.next_question ? t('quiz.seeResults') : t('quiz.next')}
-      </button>
+      </Button>
     </motion.div>
   );
 
@@ -877,9 +878,9 @@ function QuizError({
       <p className={styles.summaryAccuracy}>{message}</p>
       <div className={styles.summaryActions}>
         {actionLabel && onAction && (
-          <button type="button" className={styles.btnPrimary} onClick={onAction}>{actionLabel}</button>
+          <Button type="button" full onClick={onAction}>{actionLabel}</Button>
         )}
-        <button type="button" className={styles.btnStudy} onClick={onClose}>{t('back')}</button>
+        <Button type="button" variant="ghost" full onClick={onClose}>{t('back')}</Button>
       </div>
     </div>
   );
@@ -969,15 +970,15 @@ function SessionSummary({
 
       <div className={styles.summaryActions}>
         {weakest && weakest.p_known < 0.4 ? (
-          <button type="button" className={styles.btnPrimary} onClick={() => startLesson(weakest.skill_id)}>
+          <Button type="button" full onClick={() => startLesson(weakest.skill_id)}>
             {t('quiz.reviewLesson', { name: lang === 'es' ? weakest.name_es : weakest.name_en })}
-          </button>
+          </Button>
         ) : (
-          <button type="button" className={styles.btnPrimary} onClick={() => startQuiz('study', 10)}>
+          <Button type="button" full onClick={() => startQuiz('study', 10)}>
             {t('quiz.anotherSession')}
-          </button>
+          </Button>
         )}
-        <button type="button" className={styles.btnStudy} onClick={onClose}>{t('quiz.continue')}</button>
+        <Button type="button" variant="ghost" full onClick={onClose}>{t('quiz.continue')}</Button>
       </div>
     </motion.div>
   );

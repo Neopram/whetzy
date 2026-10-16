@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
+import { Button } from '../components/common/Button';
+import btn from '../components/common/Button.module.css';
 import { Card } from '../components/common/Card';
 import { TwoFactorSettings } from '../components/profile/TwoFactorSettings';
 import { ProgressBar } from '../components/common/ProgressBar';
@@ -10,6 +12,10 @@ import { API_BASE_URL, auth, billing, gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
 import { checkoutHref } from '../lib/paddle';
 import styles from './ProfileScreen.module.css';
+
+// Los enlaces de compra llevan el aspecto del Button común (serie 34).
+const LINK_PRIMARY = `${btn.btn} ${btn.primary} ${btn.md} ${btn.full}`;
+const LINK_SECONDARY = `${btn.btn} ${btn.secondary} ${btn.md} ${btn.full}`;
 
 export function ProfileScreen() {
   const user = useAppStore((s) => s.user);
@@ -141,14 +147,14 @@ export function ProfileScreen() {
           <h2 className={styles.proTitle}>Whetzy Pro</h2>
           <p className={styles.proDesc}>{t('profile.proDesc')}</p>
           <div className={styles.proActions}>
-            <a className={styles.proBtn} href={checkoutHref('plus')}>{t('profile.proBuy')}</a>
-            <a className={styles.secondaryBtn} href={checkoutHref('pro')}>{t('profile.proMaxBuy')}</a>
+            <a className={LINK_PRIMARY} href={checkoutHref('plus')}>{t('profile.proBuy')}</a>
+            <a className={LINK_SECONDARY} href={checkoutHref('pro')}>{t('profile.proMaxBuy')}</a>
           </div>
           {paddleCfg.data?.prices.plus_annual && (
             <div className={styles.proActions}>
-              <a className={styles.proBtn} href={checkoutHref('plus_annual')}>{t('profile.proBuyAnnual')}</a>
+              <a className={LINK_PRIMARY} href={checkoutHref('plus_annual')}>{t('profile.proBuyAnnual')}</a>
               {paddleCfg.data.prices.pro_annual && (
-                <a className={styles.secondaryBtn} href={checkoutHref('pro_annual')}>{t('profile.proMaxBuyAnnual')}</a>
+                <a className={LINK_SECONDARY} href={checkoutHref('pro_annual')}>{t('profile.proMaxBuyAnnual')}</a>
               )}
             </div>
           )}
@@ -175,20 +181,20 @@ export function ProfileScreen() {
             <>
               <p className={styles.muted}>{t('profile.cancelConfirm')}</p>
               <div className={styles.proActions}>
-                <button type="button" className={styles.dangerBtn} disabled={cancelState === 'busy'} onClick={() => void handleCancel()}>
+                <Button type="button" variant="danger" full disabled={cancelState === 'busy'} onClick={() => void handleCancel()}>
                   {t('profile.cancelYes')}
-                </button>
-                <button type="button" className={styles.secondaryBtn} disabled={cancelState === 'busy'} onClick={() => setCancelState('idle')}>
+                </Button>
+                <Button type="button" variant="ghost" full disabled={cancelState === 'busy'} onClick={() => setCancelState('idle')}>
                   {t('profile.cancelNo')}
-                </button>
+                </Button>
               </div>
             </>
           ) : (
             <>
               {cancelState === 'error' && <p className={styles.muted} role="alert">{t('profile.cancelError')}</p>}
-              <button type="button" className={styles.secondaryBtn} onClick={() => setCancelState('confirm')}>
+              <Button type="button" variant="ghost" full onClick={() => setCancelState('confirm')}>
                 {t('profile.cancel')}
-              </button>
+              </Button>
             </>
           )}
         </Card>
@@ -330,7 +336,7 @@ export function ProfileScreen() {
         </div>
       </Card>
 
-      <button type="button" className={styles.signOut} onClick={signOut}>{t('profile.signOut')}</button>
+      <Button type="button" variant="ghost" full onClick={signOut}>{t('profile.signOut')}</Button>
 
       <div className={styles.legalLinks}>
         <a href="/privacy" className={styles.legalLink}>{t('profile.privacy')}</a>
