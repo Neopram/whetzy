@@ -38,7 +38,7 @@ verificación**. De ahí las cinco reglas de §1.
    facturación (H.13/H.17) ⇒ la evidencia se llama `CI-LOCAL`, nunca «CI verde».
    Producción sin credenciales de prueba ⇒ «sin verificar en prod», nunca «desplegado».
 5. **Nada de producción, nada de gasto, nada irreversible.** Igual que el contrato de
-   autonomía de `ORCHESTRATOR.md`: DB de prod, Railway, Stripe live, tiendas, DNS,
+   autonomía de `ORCHESTRATOR.md`: DB de prod, Railway, Stripe/Paddle live, tiendas, DNS,
    secretos y `~/.claude/settings.json` son del humano. La verificación **lee**
    producción por HTTP público; jamás se registra ni escribe en ella.
 
@@ -62,7 +62,7 @@ verificación**. De ahí las cinco reglas de §1.
    (HUMAN-BLOCKED) y las **últimas 3 filas** de `## 6`. Nunca el fichero entero.
    La tarea 20.6 lo adelgaza a < 60 KB moviendo la evidencia histórica a
    `docs/archive/LEDGER_HISTORY.md`.
-2. `STATUS.md` (62 KB) y `docs/archive/` **no se leen** en sesiones autónomas.
+2. `STATUS.md` (~200 KB) y `docs/archive/` **no se leen** en sesiones autónomas.
 3. Un worker recibe **rutas exactas y el criterio de aceptación**, nunca «lee el repo».
 4. Un worker devuelve **≤ 300 palabras + la salida de los comandos**, no prosa.
 5. Bloques de contenido: `Workflow` por fichero con escritor, revisor y corrector Sonnet 5 distintos (ADR-59); el orquestador no lee los
@@ -86,7 +86,7 @@ hizo qué (`## 6` del ledger).
 
 ```
 mcp__scheduled-tasks__list_task_runs  →  si hay OTRO run en `running`, sal.
-Test-Path .session.lock  →  si existe y su timestamp < 6 h y no es tu sessionId, sal.
+Test-Path .session.lock  (bash: test -f .session.lock)  →  si existe y su timestamp < 6 h y no es tu sessionId, sal.
 Escribe .session.lock = { sessionId, startedAt (ISO), model }.  Bórralo en tu último paso.
 ```
 
@@ -95,7 +95,7 @@ Escribe .session.lock = { sessionId, startedAt (ISO), model }.  Bórralo en tu �
 
 **Corte por límite de uso:** no hay nada que hacer *durante* el corte. La protección
 es *antes*: cada tarea cierra con su commit (ledger incluido) y ningún worker escribe
-fuera de sus rutas. Así el siguiente disparo del cron (`23 */6 * * *`) encuentra un
+fuera de sus rutas. Así el siguiente disparo del cron (`23 */4 * * *`) encuentra un
 árbol limpio o, como mucho, WIP de una sola tarea identificable por `git status`, que
 el pre-flight 1 revisa, commitea con `git commit -- <rutas>` o descarta, y anota.
 
@@ -113,12 +113,12 @@ es el almacén de evidencia; lo que manda es la corrección aplicada al doc vivo
 | `ARCHITECTURE.md` | Módulos, capas, flujos, tablas | `Get-ChildItem backend/app -Recurse -Filter *.py` vs. los módulos nombrados; `alembic heads` y nº de migraciones; tablas nombradas vs. `backend/app/models/*.py` |
 | `API.md` | Endpoints, métodos, auth, cuerpos | `python -c "import json;print(len(json.load(open('openapi.json'))['paths']))"` tras `Invoke-RestMethod $B/api/v1/openapi.json`; diff **bidireccional** rutas doc ↔ OpenAPI = 0; cada gotcha (`.question.id`, JSON en registro) reproducido con una llamada real contra **local** |
 | `RUNBOOK.md`, `RELEASE.md` | Comandos de deploy, migración, backup, restore, build nativo | Cada comando se ejecuta en local o se etiqueta «requiere cuenta/humano (H.x)»; ninguno queda sin una de las dos |
-| `DECISIONS.md` | ADR vigentes y su reflejo en código | Por ADR, el `grep` o test que demuestra que el código lo cumple (p. ej. ADR-13: existe el provider `apple` y el hook; ADR-11: `check_content_sources.py` PASS; línea roja 5: `check-no-third-party` PASS) |
+| `DECISIONS.md` | ADR vigentes y su reflejo en código | Por ADR, el `grep` o test que demuestra que el código lo cumple (p. ej. ADR-13: debe existir el provider `apple` y el hook (hoy no existe: H.2); ADR-11: `check_content_sources.py` PASS; línea roja 5: `check-no-third-party` PASS) |
 | `CATALOGO_MAESTRO.md` | Nº de tracks/Q/skills/lecciones/términos (§1); fuentes y licencias (§2.1, §2.2); certs (§3); coste (§6) | `python scripts/check_question_bank.py`; `python scripts/check_docs.py`; **cada URL** de §2.1/§2.2 resuelve (HTTP 200) y **la licencia declarada coincide con el `LICENSE` del repo** (script de 20.5); §6 recalculado con el conteo real |
 | `ORCHESTRATOR.md`, `../CLAUDE.md` | Invariantes (HEAD de Alembic, modelo LLM, puertos, URLs), reglas de modelos | `alembic heads`; `grep GROQ_MODEL backend/app/core/config.py`; `docker ps`; coherencia con este protocolo y ADR-14 |
 | `competitive-teardown.md` | Pesos §7.1 fijos; serie 30→36→42→43→44; evidencias por dimensión | Los pesos **no se tocan**; cada movimiento de la serie cita una fila del ledger que existe; ninguna dimensión puntúa capacidad sin usuarios (memoria del dueño) |
 | `store/*.md` | Permisos, Data Safety, checklist 4.8/3.1.1, IDs de app | `frontend/capacitor.config.*`, `AndroidManifest.xml`, `PrivacyInfo.xcprivacy` vs. lo declarado; ADR-13 vs. checklist |
-| `legal/*.md` | Nombre del servicio, planes y precios, procesadores, derechos, edad mínima, ley aplicable | Nombre = «Whetzy» (hoy dice «Learning Engine»); planes = los de `entitlements` y `billing` en código (hoy lista un «English Track $19.99-29.99» que **no existe**); procesadores = servicios reales del código (Railway, Cloudflare, Groq, proveedor de email, Stripe test); todo lo que no coincida se corrige **como error de hecho**; lo que sea criterio jurídico va a la Serie 21 y queda marcado `BORRADOR` |
+| `legal/*.md` | Nombre del servicio, planes y precios, procesadores, derechos, edad mínima, ley aplicable | Nombre = «Whetzy» (antes decía «Learning Engine»); planes = los de `entitlements` y `billing` en código (antes listaba un «English Track $19.99-29.99» que **no existe**); procesadores = servicios reales del código (Railway, Cloudflare, Groq, proveedor de email, Stripe test); todo lo que no coincida se corrige **como error de hecho**; lo que sea criterio jurídico va a la Serie 21 y queda marcado `BORRADOR` |
 | `AUTONOMOUS_STATE.md` | Cada fila | §5 de este protocolo |
 | `STATUS.md`, `CHANGELOG.md` | Narrativa histórica | **No se reescriben hacia atrás.** Solo se añade una entrada de la verificación con lo encontrado |
 
@@ -223,7 +223,7 @@ Reglas:
 
 Mientras `gh run list` muestre runs que mueren en < 10 s por facturación:
 
-- `scripts/verify_ci_local.ps1` (tarea 20.7) ejecuta **exactamente** los pasos de
+- `scripts/verify_ci_local.ps1` (tarea 20.7; en bash, `scripts/ci_local.sh`) ejecuta **exactamente** los pasos de
   `.github/workflows/ci.yml`, en el mismo orden, con las mismas versiones, y escribe
   `ci-local-<fecha>.log` en el scratchpad. La fila del ledger cita `CI-LOCAL <fecha>
   <exit code>` **y** el run id de Actions que falló, para que nadie lo confunda con CI.
