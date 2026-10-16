@@ -319,6 +319,8 @@ esconde); dos productos separados (duplica todo).
 
 ## ADR-18 — Despliegue autónomo: un solo push verificado por sesión (ACEPTADA 2026-09-18; resuelve H.16)
 
+> **Sustituida por ADR-45 (2026-09-24)**: las sesiones no hacen push a `master`; trabajan en rama + PR y solo el dueño fusiona. Nota añadida el 2026-10-16 por ADR-61 §27.
+
 **Decisión:** Las sesiones autónomas commitean en `master` **en local** y hacen
 **un único `git push origin master` al final de la sesión**, solo con las cuatro
 guardias en verde (`pytest tests/content`, `check_question_bank.py`, `check_docs.py`,
@@ -482,6 +484,8 @@ regional y el corte gratis/Pro (H.35). ORCHESTRATOR.md decía $9.99; corregido e
 
 ## ADR-29 — Marketplace de instructores: revenue share 70/30 (2026-09-18)
 
+> **Enmendada por ADR-41 (2026-09-24)**: el reparto es 80/20 a favor del instructor (`CREATOR_REVENUE_SHARE = 0.80`, `backend/app/core/prices.py:19`). Nota añadida el 2026-10-16 por ADR-61 §27.
+
 **Decisión:** Marketplace abierto a instructores externos con revenue share 70% instructor / 30% Whetzy. Todo contenido pasa el quality gate §7 antes de publicarse. Sin exclusividad requerida. Ver `docs/MARKETPLACE.md` para spec completo. Serie 28 implementa.
 
 **Razón:** Multiplica la velocidad de generación de contenido sin multiplicar el costo. 20 instructores activos = 20x más contenido. 70% es más generoso que Udemy (25-37%) y Teachable (cobra plataforma). El motor adaptativo convierte el contenido del instructor en un producto mejor que el que ellos podrían ofrecer solos.
@@ -568,6 +572,8 @@ propio. Ambos son HUMAN-BLOCKED con € (ADR-15).
 
 ## ADR-34 — Créditos Whetzy: economía cerrada, sin valor externo (ACEPTADA 2026-09-18)
 
+> **Enmendada por ADR-58 (2026-10-02)**: los créditos ya no compran simulacros ni cursos del marketplace; el acceso lo da el plan. Nota añadida el 2026-10-16 por ADR-61 §27.
+
 **Decisión:** Whetzy tiene una moneda promocional cerrada («créditos») que se **gana
 aprendiendo** y se **gasta en consumibles** dentro de la app (simulacros, congelar
 racha, informes, bootcamps async, cursos del marketplace, seats extra para empresas).
@@ -589,6 +595,8 @@ saldo sin caducidad (pasivo contable, sin urgencia).
 ---
 
 ## ADR-35 — Referidos por activación y códigos autogenerados de cinco tipos (ACEPTADA 2026-09-18)
+
+> **Enmendada por ADR-57 y ADR-41**: ver esas ADR para los premios y los precios vigentes. Nota añadida el 2026-10-16 por ADR-61 §27.
 
 **Decisión:** Programa de referidos de doble cara que **paga por activación, nunca
 por registro** (activación = email verificado + diagnóstico + primer módulo + racha
@@ -916,6 +924,8 @@ proyección competitiva de §12 (su tabla sumaba 49 donde decía 44).
 
 ## ADR-47 — Valores por defecto de la cola humana, para que la sesión no se detenga (ACEPTADA 2026-09-24; numerada 47 el 2026-09-25 porque `master` ya tenía ADR-41…44 ocupadas por decisiones paralelas del dueño)
 
+> **Enmendada**: modelos por ADR-52; entidad y jurisdicción por ADR-61 §22 (Chipre como destino, sin entidad constituida; H.54); marca por la aprobación del dueño del 2026-10-13 (colores del logo, #197). Nota añadida el 2026-10-16 por ADR-61 §27.
+
 **Aceptada por el dueño** el 2026-09-24 («eso lo dejo para el final»): las decisiones que
 solo él puede tomar quedan en `HUMAN-BLOCKED`, pero cada una lleva un **valor por
 defecto** que la sesión asume mientras él no lo vete. Nada de esto gasta dinero ni
@@ -1014,6 +1024,8 @@ dueño y ahora, además, coincide con el precio de la certificación. Se limpia 
 ---
 
 ## ADR-50 — Aprobación en bloque del dueño y decisiones de la noche del 2026-09-26 (DUEÑO en bloque; valores elegidos por la sesión)
+
+> **Enmendada por ADR-52 (2026-09-27)** en las decisiones de modelos. Nota añadida el 2026-10-16 por ADR-61 §27.
 
 **Origen.** Mensajes del dueño en la sesión interactiva del 2026-09-26, citados tal cual:
 «DESBLOQUEA TODO, MI DESICIONES SON A TODO APROBADO!», «HAZLO TODO SI ESTA EN TUS MANOS»,
