@@ -103,10 +103,7 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
     }
     await onboarding.getByRole('button', { name: /Español/ }).click();
 
-    await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
-    await page.getByRole('button', { name: 'Ir a las lecciones' }).click();
-    await page.locator('[aria-expanded="false"]').first().click();
-    await page.getByRole('button', { name: /Aprender/ }).first().click();
+    // D-20: el principiante entra directo a su primera lección.
     const closeLesson = page.getByRole('button', { name: 'Cerrar' });
     await expect(closeLesson).toBeVisible({ timeout: 15_000 });
     await closeLesson.click();

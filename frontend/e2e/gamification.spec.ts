@@ -54,7 +54,10 @@ function pickSkill(): { skill: string; key: Map<string, number> } {
 // Las capturas son evidencia del PR, no del repo (sin binarios): van a test-results/.
 const SHOTS = process.env.E2E_SHOTS_DIR ?? path.resolve(HERE, '../test-results/39.5-gamification');
 
-test('gamificación: 10/10 deja XP, racha, liga e insignia visibles (39.5)', async ({ page }) => {
+test('gamificación: 10/10 deja XP, racha, liga e insignia visibles (39.5)', async ({ page, baseURL }) => {
+  // Las llamadas de API llevan la cookie de sesión de la página: un POST con
+  // cookie tiene que traer un Origin permitido (CSRF, S.13) o devuelve 403.
+  const ORIGIN = { Origin: new URL(baseURL!).origin };
   fs.mkdirSync(SHOTS, { recursive: true });
   const username = uniqueUsername('e2e_gami_');
   await registerUser(page, { username, displayName: 'Ada Lovelace' });
@@ -62,7 +65,7 @@ test('gamificación: 10/10 deja XP, racha, liga e insignia visibles (39.5)', asy
   const { skill, key } = pickSkill();
   // 32.4 gates "study" mode on having viewed this skill's lesson first.
   await markLessonSeen(page, skill);
-  const start = await page.request.post('/api/v1/quiz/start', { data: { skill_id: skill, mode: 'study' } });
+  const start = await page.request.post('/api/v1/quiz/start', { headers: ORIGIN, data: { skill_id: skill, mode: 'study' } });
   expect(start.ok(), await start.text()).toBeTruthy();
   const body = await start.json();
   const sessionId: string = body.session_id;
@@ -73,6 +76,7 @@ test('gamificación: 10/10 deja XP, racha, liga e insignia visibles (39.5)', asy
     const ci = key.get(question!.id);
     expect(ci, `clave desconocida para ${question!.id}`).toBeDefined();
     const r = await page.request.post('/api/v1/quiz/answer', {
+      headers: ORIGIN,
       data: { session_id: sessionId, question_id: question!.id, selected_index: ci, response_time_ms: 4000 },
     });
     expect(r.ok(), await r.text()).toBeTruthy();
@@ -81,7 +85,7 @@ test('gamificación: 10/10 deja XP, racha, liga e insignia visibles (39.5)', asy
     xp += a.xp_earned;
     question = a.next_question;
   }
-  const end = await page.request.post('/api/v1/quiz/end', { data: { session_id: sessionId } });
+  const end = await page.request.post('/api/v1/quiz/end', { headers: ORIGIN, data: { session_id: sessionId } });
   expect(end.ok()).toBeTruthy();
   expect(xp).toBeGreaterThan(0);
 

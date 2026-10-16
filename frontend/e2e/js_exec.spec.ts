@@ -53,9 +53,11 @@ test('js_exec — Worker sandbox executes and returns correct output', async ({ 
   await expect(outputPre).toBeVisible({ timeout: 15_000 });
   await expect(outputPre).toHaveText(new RegExp(EXPECTED_OUTPUT.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 
+  // Ejecutar ya no entrega: muestra la salida y pide «Confirmar» (la
+  // etiqueta dice «Salida» hasta entonces). Al confirmar se corrige.
+  await page.getByRole('button', { name: /^(Confirmar|Confirm)$/ }).click();
   const outputLabel = page.locator('[class*="outputLabel_"]').first();
-  // Sin emoji desde el port v2 del Quiz: la etiqueta lo dice con palabras.
-  await expect(outputLabel).toContainText('¡Correcto! Salida esperada');
+  await expect(outputLabel).toContainText('¡Correcto!', { timeout: 15_000 });
 
   expect(pageErrors, `Uncaught page errors: ${pageErrors.join('; ')}`).toHaveLength(0);
 });

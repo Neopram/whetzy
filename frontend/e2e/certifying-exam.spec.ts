@@ -9,7 +9,7 @@ import { registerUser, uniqueUsername } from './helpers';
  * `CERTIFICATION_PAYWALL` apagado (hasta H.19) cualquiera puede presentarse.
  */
 test.describe('certifying exam', () => {
-  test('se presenta desde la ruta y declara el resultado', async ({ page }) => {
+  test('se llega desde la ruta y, sin banco reservado, avisa de que aún no está disponible', async ({ page }) => {
     const username = uniqueUsername('e2e_cert_');
     await registerUser(page, { username, displayName: 'E2E Cert' });
 
@@ -24,21 +24,13 @@ test.describe('certifying exam', () => {
     await expect(section.getByText(/Pago único de 39,99 \$/)).toBeVisible();
     await page.screenshot({ path: 'test-results/certifying-intro.png', fullPage: true });
 
-    await section.getByRole('button', { name: /PRESENTAR EXAMEN CERTIFICADOR/ }).click();
-    await expect(page.getByRole('radiogroup')).toBeVisible({ timeout: 30_000 });
-    await expect(page.getByText(/de 65/)).toBeVisible();
-
-    for (let i = 0; i < 64; i++) {
-      await page.getByRole('button', { name: /^Siguiente$/ }).click();
-    }
-    await page.getByRole('button', { name: /^ENTREGAR$/ }).click();
-    // Quedan preguntas en blanco: la entrega pide confirmación (design/v2, §F).
-    await page.getByRole('alertdialog').getByRole('button', { name: /Entregar igualmente|Submit anyway/ }).click();
-
-    await expect(page.getByText('Resultado del examen certificador')).toBeVisible({ timeout: 30_000 });
-    await expect(page.getByText(/No aprobado/)).toBeVisible();
-    await expect(page.getByText(/no sustituye al examen oficial del proveedor/)).toBeVisible();
-    await expect(page.getByRole('button', { name: /VOLVER A PRESENTARLO/ })).toBeVisible();
-    await page.screenshot({ path: 'test-results/certifying-result.png', fullPage: true });
+    // Cerrado a propósito hasta que el banco reservado esté completo (9b470b9,
+    // `MOCK_EXAM_RESERVED_POOL_ENABLED=False`): el alumno ve el aviso y el
+    // botón deshabilitado, no un examen hecho con preguntas que ya practicó.
+    // Cuando se encienda el flag, el recorrido completo (presentarlo, 65
+    // preguntas, entregar y el resultado) vuelve: está en el historial de
+    // este fichero (2026-10-16, antes de este cambio).
+    await expect(section.getByRole('note')).toContainText('Todavía no está disponible');
+    await expect(section.getByRole('button', { name: /PRESENTAR EXAMEN CERTIFICADOR/ })).toBeDisabled();
   });
 });

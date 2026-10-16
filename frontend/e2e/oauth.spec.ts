@@ -114,7 +114,10 @@ test.describe('19.1 — OAuth test provider flow', () => {
 test.describe('19.1 — OAuth buttons UI', () => {
   test('GitHub and Google buttons are visible on auth screen', async ({ page }) => {
     await page.goto('/auth');
-    await page.waitForLoadState('networkidle');
+    // No `networkidle`: /auth pregunta por la sesión (/auth/me, /auth/refresh,
+    // #215) y Playwright no da por cerradas esas respuestas 401, así que la red
+    // nunca quedaba «inactiva». Se espera a lo que importa: los botones.
+    await expect(page.locator('button', { hasText: /GitHub/i })).toBeVisible({ timeout: 15_000 });
 
     await expect(page.locator('button', { hasText: /GitHub/i })).toBeVisible();
     await expect(page.locator('button', { hasText: /Google/i })).toBeVisible();
@@ -123,7 +126,10 @@ test.describe('19.1 — OAuth buttons UI', () => {
   test('GitHub button redirects to OAuth start endpoint', async ({ page }) => {
     // We intercept the navigation instead of following it (would go to GitHub)
     await page.goto('/auth');
-    await page.waitForLoadState('networkidle');
+    // No `networkidle`: /auth pregunta por la sesión (/auth/me, /auth/refresh,
+    // #215) y Playwright no da por cerradas esas respuestas 401, así que la red
+    // nunca quedaba «inactiva». Se espera a lo que importa: los botones.
+    await expect(page.locator('button', { hasText: /GitHub/i })).toBeVisible({ timeout: 15_000 });
 
     let navigatedUrl = '';
     page.on('framenavigated', (frame) => {
