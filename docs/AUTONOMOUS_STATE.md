@@ -41,9 +41,9 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 45 | Alta con correo | 0/4 | 0 % | 45.1, 45.2, 45.3, 45.4 |
+| 45 | Alta con correo | 4/4 | 100 % | — |
 | 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
-| 43 | Flujo del alumno listo para pruebas | 1/8 | 12 % | 43.1, 43.3, 43.4, 43.5, 43.6, 43.7 +1 |
+| 43 | Flujo del alumno listo para pruebas | 5/8 | 62 % | 43.4, 43.5, 43.6 |
 | 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
 | 41 | Documentación al día con el código | 5/6 | 83 % | 41.3 |
 | 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
@@ -556,14 +556,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | BLOCKED (evidencia; fusionado #226 y #233; §7 ×3 «no reproducible»: el verificador `Explore` es de solo lectura y no corre un e2e que levanta servidores y escribe en la base; el e2e no prueba `SameSite=None` frente a la ITP → recorrido a mano en iPhone, §6) | e2e con cookies de terceros bloqueadas: registro → Hoy |
+| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | DONE 2026-10-17 (#226, #233; §7 no reproducible: el dueño acepta el e2e del orquestador, verde en `3d10daa`; no prueba la ITP de Safari → recorrido a mano en iPhone, §6) | e2e con cookies de terceros bloqueadas: registro → Hoy |
 | 43.2 | **0** | Registro sin fricción: errores por campo, email en minúsculas, filtro por palabra (D10) | DONE 2026-10-17 (#227; §7: pytest 5/5, vitest 8/8, `Maria@Gmail.COM`→minúsculas, i18n ES/EN; hallazgos fuera del criterio en #231) | `Maria@Gmail.COM` entra en minúsculas; 409 traducido |
-| 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | DOING (PR #230; migración 61) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
-| 43.4 | **0** | Ruta activa (D5) y Hoy filtrado por ella (D6); readiness de 42.6 | TODO (tras 43.3) | cambio de ruta persiste; Hoy solo de la ruta activa |
-| 43.5 | **0** | Lección primero (D7) | TODO (tras 43.4; H.60 decidida) | «Estudiar» abre la lección; sin lección vista no hay práctica |
-| 43.6 | **1** | Proyectos dentro del track, con progreso y validación en servidor (D8; dueño 2026-10-17: SQL en servidor, Python/JS en navegador sin verificar) | DOING (#237) | progreso sobrevive a salir; `passed=true` sin tests no completa |
-| 43.7 | **1** | Playground contextual desde la lección (D9) | DOING (#238) | «Probar este código» abre el ejemplo; el fragmento reaparece |
-| 43.8 | **0** | Puerta «lista para pruebas»: `e2e/alumno.spec.ts` y specs en verde | DOING (#239) | el spec en Chromium y con cookies de terceros bloqueadas |
+| 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | DONE 2026-10-17 (#230; §7 confirmada; e2e del orquestador) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
+| 43.4 | **0** | Ruta activa (D5) y Hoy filtrado por ella (D6); readiness de 42.6 | TODO (§7 refutada: repasos de Hoy de todas las rutas; arreglo #248) | cambio de ruta persiste; Hoy solo de la ruta activa |
+| 43.5 | **0** | Lección primero (D7) | TODO (§7 refutada: «Estudiar» con el currículo cargando lanza quiz; arreglo #249; salvo H.60) | «Estudiar» abre la lección; sin lección vista no hay práctica |
+| 43.6 | **1** | Proyectos dentro del track, con progreso y validación en servidor (D8; dueño 2026-10-17: SQL en servidor, Python/JS en navegador sin verificar) | TODO (§7 refutada: `/*` sin cerrar se tragaba el test SQL; arreglo #247) | progreso sobrevive a salir; `passed=true` sin tests no completa |
+| 43.7 | **1** | Playground contextual desde la lección (D9) | DONE 2026-10-17 (#238; §7 confirmada; e2e del orquestador) | «Probar este código» abre el ejemplo; el fragmento reaparece |
+| 43.8 | **0** | Puerta «lista para pruebas»: `e2e/alumno.spec.ts` y specs en verde | DONE 2026-10-17 (#239; §7 confirmada; e2e del orquestador; seguimiento: sonda 401 solo en entre-sitios) | el spec en Chromium y con cookies de terceros bloqueadas |
 
 ### 44. Back-office de soporte (plan del dueño 2026-10-17; `PLAN_BACKOFFICE.md`)
 
@@ -578,14 +578,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 45. Alta con correo (plan del dueño 2026-10-17; `PLAN_CORREO_ALTA.md`; ADR-66)
 
-> **Estado:** `ABIERTA`. **PRI:** 0. Con la 43 en `master` y **antes de la 44**. Una rama y un PR por fila; sin migraciones ni `content/**`.
+> **Estado:** `HECHA` (falta fusionar #242–#244 y #246). **PRI:** 0. Con la 43 en `master` y **antes de la 44**. Una rama y un PR por fila; sin migraciones ni `content/**`.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 45.1 | **0** | E1, E6: idioma del alta (`?lang` → `whetzy_lang` → navegador; portada y OAuth `start?lang=`); errores OAuth en i18n | TODO (tras la 43) | `whetzy_lang=es` + navegador `en` → `language:'es'`; OAuth cuenta nueva con su `lang` |
-| 45.2 | **0** | E2: un solo correo al registrarse (verificación); bienvenida al verificar, una vez; `verify_url` con `&lang=` | TODO (tras 45.1) | registro `es` → 1 correo «Verifica tu email en Whetzy»; verificar → bienvenida 1 vez |
-| 45.3 | **0** | E4: franja «verifica tu correo» con Reenviar (60 s) y ×; `UserRead.email_verified` | TODO (tras 45.2) | aparece con `false`, no con `true`; e2e registro → franja |
-| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Continuar» → `/` o «Iniciar sesión» → `/login?lang=` | TODO (tras 45.3) | e2e ES con navegador EN: correo ES → franja → verificar → sin franja (Chromium y entre-sitios) |
+| 45.1 | **0** | E1, E6: idioma del alta (`?lang` → `whetzy_lang` → navegador; portada y OAuth `start?lang=`); errores OAuth en i18n | DONE 2026-10-17 (#242; §7 confirmada) | `whetzy_lang=es` + navegador `en` → `language:'es'`; OAuth cuenta nueva con su `lang` |
+| 45.2 | **0** | E2: un solo correo al registrarse (verificación); bienvenida al verificar, una vez; `verify_url` con `&lang=` | DONE 2026-10-17 (#243; §7 confirmada; verificar atómico) | registro `es` → 1 correo «Verifica tu email en Whetzy»; verificar → bienvenida 1 vez |
+| 45.3 | **0** | E4: franja «verifica tu correo» con Reenviar (60 s) y ×; `UserRead.email_verified` | DONE 2026-10-17 (#244; §7 confirmada) | aparece con `false`, no con `true`; e2e registro → franja |
+| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Continuar» → `/` o «Iniciar sesión» → `/login?lang=` | DONE 2026-10-17 (#246; §7 no reproducible: el dueño acepta el e2e del orquestador) | e2e ES con navegador EN: correo ES → franja → verificar → sin franja (Chromium y entre-sitios) |
 
 ## 3. Cola HUMAN-BLOCKED
 
