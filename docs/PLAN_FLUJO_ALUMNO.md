@@ -12,6 +12,13 @@
 > el test-out por módulo de ADR-61 §9, que el código ofrece (`services/placement.py:343`, `can_skip`). Quien sale
 > «avanzado» tendría que leer todas las lecciones antes de practicar. Lo decide el dueño antes de 43.5.
 
+> **Nota de la Oleada 0 a D1 (comprobado en el código, 2026-10-17):** Safari también bloquea como de terceros la
+> cookie de *refresh*. Con «el refresh sigue por cookie», la sesión en iPhone duraría 30 min
+> (`ACCESS_TOKEN_EXPIRE_MINUTES`, `config.py:68`), no «lo que dura la pestaña». El backend ya acepta el refresh en
+> el cuerpo de `POST /auth/refresh` (`auth.py:283`), y el login y el registro ya devuelven los dos tokens en JSON
+> (`schemas/user.py:96-99`). Por eso 43.1 guarda en memoria los dos tokens y manda el refresh en el cuerpo, que
+> es el efecto que D1 pide.
+
 ## 0. Respuesta corta: ¿es posible?
 
 **Sí, casi todo, en la misma sesión que hace la Oleada 0. Hay dos excepciones que no dependen del código:**

@@ -1695,6 +1695,13 @@ transcriben sin cambios. Las filas son la serie 43. El número 64 queda libre: l
 | D9 | **Playground** contextual: «Probar este código» en cada lección (las 730 tienen `example_code`), fragmentos guardados por skill y acceso secundario desde Rutas. Sale de Hoy. |
 | D10 | Registro sin fricción: errores 409/422 traducidos y por campo; email normalizado a minúsculas (antes, comprobar colisiones en la base); filtro de palabras por palabra completa para los términos cortos; «onboarding hecho» en servidor. |
 
+> **Nota de la Oleada 0 a D1 (comprobado en el código, 2026-10-17):** Safari también bloquea como de terceros la
+> cookie de *refresh*. Con «el refresh sigue por cookie», la sesión en iPhone duraría 30 min
+> (`ACCESS_TOKEN_EXPIRE_MINUTES`, `config.py:68`), no «lo que dura la pestaña». El backend ya acepta el refresh en
+> el cuerpo de `POST /auth/refresh` (`auth.py:283`), y el login y el registro ya devuelven los dos tokens en JSON
+> (`schemas/user.py:96-99`). Por eso 43.1 guarda en memoria los dos tokens y manda el refresh en el cuerpo, que
+> es el efecto que D1 pide.
+
 > **Choque abierto (H.60), anotado por la Oleada 0:** D7 (la práctica exige la lección vista; se quita
 > `attempts > 0` de `lesson_gate.py`) junto con D4 (la prueba no marca lecciones vistas) deja sin efecto el test-out
 > por módulo de ADR-61 §9, que el código ofrece (`backend/app/services/placement.py:343`, `can_skip`). Recomendado: un
