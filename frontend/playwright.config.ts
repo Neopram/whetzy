@@ -34,7 +34,9 @@ export default defineConfig({
     // API en `*.up.railway.app`. Su frontend es el de :5198, con la API absoluta.
     {
       name: 'entre-sitios',
-      testMatch: /entre-sitios\.spec\.ts/,
+      // 43.8: la puerta del alumno corre también aquí (§6 del anexo: «y con
+      // cookies de terceros bloqueadas»); en `chromium` corre en el mismo sitio.
+      testMatch: /(entre-sitios|alumno)\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         locale: 'es-ES',
