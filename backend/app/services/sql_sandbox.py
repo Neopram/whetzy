@@ -1,0 +1,85 @@
+"""43.6 (ADR-65 D8): los pasos SQL de un proyecto se validan en el servidor.
+
+Misma regla que el worker del navegador (`frontend/public/sql-worker.js`): el
+código del alumno y el `test_code` del paso se ejecutan juntos en una base
+SQLite nueva en memoria, y el paso pasa si no hay error ni se agota el tiempo.
+
+Encierro:
+- sin ficheros: el autorizador deniega ATTACH/DETACH (que es también lo que
+  pide `VACUUM INTO 'fichero'`) y los PRAGMA fuera de una lista de consulta;
+  las extensiones están desactivadas por defecto en `sqlite3`;
+- sin red: SQLite no tiene funciones de red;
+- con tiempo: el manejador de progreso aborta la sentencia al pasar el límite;
+- con tamaño: `max_page_count` acota la base y `SQLITE_LIMIT_LENGTH` cada valor.
+
+Python y JS no se ejecutan aquí: no hay sandbox para ellos (decisión del
+dueño, 2026-10-17).
+"""
+
+from __future__ import annotations
+
+import asyncio
+import sqlite3
+import time
+from dataclasses import dataclass
+
+TIME_LIMIT_S = 2.0
+MAX_CODE_CHARS = 20_000
+MAX_PAGES = 2_560  # 10 MB con páginas de 4 KB
+MAX_VALUE_BYTES = 1_000_000
+_PROGRESS_EVERY = 1_000  # instrucciones de la VM entre comprobaciones del reloj
+
+# Lo que un ejercicio de SQL puede querer mirar; nada que cambie el motor.
+_READ_PRAGMAS = frozenset(
+    {"table_info", "table_xinfo", "index_list", "index_info", "foreign_key_list"}
+)
+_DENIED = frozenset({sqlite3.SQLITE_ATTACH, sqlite3.SQLITE_DETACH})
+
+
+@dataclass(frozen=True)
+class SqlCheck:
+    passed: bool
+    error: str | None = None
+    timed_out: bool = False
+
+
+def _authorizer(action: int, arg1: str | None, *_: object) -> int:
+    if action in _DENIED:
+        return sqlite3.SQLITE_DENY
+    if action == sqlite3.SQLITE_PRAGMA and (arg1 or "").lower() not in _READ_PRAGMAS:
+        return sqlite3.SQLITE_DENY
+    return sqlite3.SQLITE_OK
+
+
+def check_sql(code: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
+    """Ejecuta `code` en una base nueva en memoria; pasa si no hay error."""
+    if len(code) > MAX_CODE_CHARS:
+        return SqlCheck(passed=False, error="code too long")
+    conn = sqlite3.connect(":memory:", isolation_level=None, check_same_thread=False)
+    deadline = time.monotonic() + time_limit_s
+    expired = False
+
+    def _progress() -> int:
+        nonlocal expired
+        expired = time.monotonic() > deadline
+        return 1 if expired else 0
+
+    try:
+        conn.execute(f"PRAGMA max_page_count = {MAX_PAGES}")
+        conn.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, MAX_VALUE_BYTES)
+        conn.setlimit(sqlite3.SQLITE_LIMIT_ATTACHED, 0)
+        conn.set_authorizer(_authorizer)
+        conn.set_progress_handler(_progress, _PROGRESS_EVERY)
+        conn.executescript(code)
+    except sqlite3.Error as exc:
+        if expired:
+            return SqlCheck(passed=False, timed_out=True)
+        return SqlCheck(passed=False, error=str(exc))
+    finally:
+        conn.close()
+    return SqlCheck(passed=True)
+
+
+async def check_sql_async(code: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
+    """`check_sql` en un hilo: el límite de tiempo lo pone el propio SQLite."""
+    return await asyncio.to_thread(check_sql, code, time_limit_s)

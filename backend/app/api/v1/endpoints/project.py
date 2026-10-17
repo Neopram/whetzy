@@ -1,8 +1,15 @@
-"""Project endpoints: multi-step guided projects with browser-side tests (18.8 / 19.6)."""
+"""Project endpoints: multi-step guided projects (18.8 / 19.6).
+
+43.6 (ADR-65 D8): `submit-step` ya no se cree al cliente. El paso enviado tiene
+que ser el actual; el código se guarda siempre; los pasos SQL los ejecuta el
+servidor (`sql_sandbox`) y el `passed` del cliente se ignora; los de Python/JS
+siguen en el navegador y su finalización queda sin verificar.
+"""
 
 from __future__ import annotations
 
 import uuid
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
@@ -17,8 +24,10 @@ from app.schemas.project import (
     ProjectDetail,
     ProjectRead,
     StepSubmitRequest,
+    StepSubmitResult,
     SubmissionRead,
 )
+from app.services.sql_sandbox import check_sql_async
 
 router = APIRouter()
 
@@ -105,13 +114,13 @@ async def get_project_progress(
     return submission
 
 
-@router.post("/{slug}/submit-step", response_model=SubmissionRead)
+@router.post("/{slug}/submit-step", response_model=StepSubmitResult)
 async def submit_step(
     slug: str,
     body: StepSubmitRequest,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-) -> ProjectSubmission:
+) -> StepSubmitResult:
     result = await db.execute(
         select(Project)
         .where(Project.slug == slug)
@@ -130,18 +139,41 @@ async def submit_step(
     submission = sub.scalar_one_or_none()
     if submission is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "not started")
+    if submission.completed:
+        raise HTTPException(status.HTTP_409_CONFLICT, "already completed")
+    if body.step_number != submission.current_step:
+        raise HTTPException(status.HTTP_409_CONFLICT, "not the current step")
+    step = next((s for s in project.steps if s.step_number == body.step_number), None)
+    if step is None:
+        raise HTTPException(status.HTTP_409_CONFLICT, "step not found")
 
-    if not body.passed:
-        return submission
+    # Se guarda también lo que no pasa: salir y volver no pierde el trabajo.
+    submission.step_code = {**(submission.step_code or {}), str(step.step_number): body.code}
 
-    total_steps = len(project.steps)
-    if body.step_number >= total_steps:
-        submission.completed = True
-        from sqlalchemy.sql import func
-        submission.completed_at = func.now()
+    error: str | None = None
+    timed_out = False
+    if project.runtime == "sql":
+        check = await check_sql_async(f"{body.code}\n\n{step.test_code}")
+        passed, error, timed_out = check.passed, check.error, check.timed_out
     else:
-        submission.current_step = body.step_number + 1
+        # Sin sandbox para Python/JS: el resultado es el del navegador, pero el
+        # código de partida sin tocar no cuenta como paso hecho.
+        passed = body.passed and body.code.strip() not in ("", step.starter_code.strip())
+
+    if passed:
+        last = max(s.step_number for s in project.steps)
+        if step.step_number >= last:
+            submission.completed = True
+            submission.completed_at = datetime.now(UTC)
+            submission.verified = project.runtime == "sql"
+        else:
+            submission.current_step = step.step_number + 1
 
     await db.commit()
     await db.refresh(submission)
-    return submission
+    return StepSubmitResult(
+        **SubmissionRead.model_validate(submission).model_dump(),
+        step_passed=passed,
+        error=error,
+        timed_out=timed_out,
+    )

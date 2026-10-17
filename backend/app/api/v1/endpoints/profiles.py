@@ -74,7 +74,12 @@ async def get_public_profile(
     project_rows = await db.execute(
         select(ProjectSubmission, Project)
         .join(Project, Project.id == ProjectSubmission.project_id)
-        .where(ProjectSubmission.user_id == user.id, ProjectSubmission.completed.is_(True))
+        .where(
+            ProjectSubmission.user_id == user.id,
+            ProjectSubmission.completed.is_(True),
+            # 43.6: solo lo validado en el servidor es evidencia pública.
+            ProjectSubmission.verified.is_(True),
+        )
         .order_by(ProjectSubmission.completed_at.desc())
     )
     projects_completed = [

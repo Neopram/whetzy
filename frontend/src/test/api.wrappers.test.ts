@@ -94,10 +94,10 @@ const CASOS: Caso[] = [
   ['projects.progress', () => projects.progress('p'), 'GET', '/projects/p/progress'],
   [
     'projects.submitStep',
-    () => projects.submitStep('p', 2, true),
+    () => projects.submitStep('p', 2, 'SELECT 1;', true),
     'POST',
     '/projects/p/submit-step',
-    { step_number: 2, passed: true },
+    { step_number: 2, code: 'SELECT 1;', passed: true },
   ],
   ['privacy.ccpaOptOut', () => privacy.ccpaOptOut(), 'POST', '/privacy/ccpa-opt-out'],
   ['privacy.ccpaOptIn', () => privacy.ccpaOptIn(), 'DELETE', '/privacy/ccpa-opt-out'],

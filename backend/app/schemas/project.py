@@ -5,7 +5,9 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+
+from app.services.sql_sandbox import MAX_CODE_CHARS
 
 
 class ProjectStepRead(BaseModel):
@@ -51,8 +53,18 @@ class SubmissionRead(BaseModel):
     completed: bool
     started_at: datetime
     completed_at: datetime | None
+    step_code: dict[str, str] = {}
+    verified: bool = False
 
 
 class StepSubmitRequest(BaseModel):
     step_number: int
-    passed: bool
+    code: str = Field(default="", max_length=MAX_CODE_CHARS)
+    # Solo cuenta en Python/JS (navegador). En SQL lo decide el servidor (43.6).
+    passed: bool = False
+
+
+class StepSubmitResult(SubmissionRead):
+    step_passed: bool
+    error: str | None = None
+    timed_out: bool = False

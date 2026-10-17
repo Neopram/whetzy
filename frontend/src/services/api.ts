@@ -1532,6 +1532,16 @@ export interface ProjectSubmissionRead {
   completed: boolean;
   started_at: string;
   completed_at: string | null;
+  /** 43.6: código guardado por número de paso ("1", "2", …). */
+  step_code?: Record<string, string>;
+  /** 43.6: todos los pasos validados en el servidor (hoy, solo SQL). */
+  verified?: boolean;
+}
+
+export interface StepSubmitResult extends ProjectSubmissionRead {
+  step_passed: boolean;
+  error: string | null;
+  timed_out: boolean;
 }
 
 export const projects = {
@@ -1556,10 +1566,12 @@ export const projects = {
     return request<ProjectSubmissionRead>(`/projects/${slug}/progress`);
   },
 
-  async submitStep(slug: string, stepNumber: number, passed: boolean) {
-    return request<ProjectSubmissionRead>(`/projects/${slug}/submit-step`, {
+  /** 43.6: en SQL el servidor ejecuta `code` y no mira `passed`; en Python/JS
+   *  `passed` es el resultado del navegador. Solo vale el paso actual (409). */
+  async submitStep(slug: string, stepNumber: number, code: string, passed: boolean) {
+    return request<StepSubmitResult>(`/projects/${slug}/submit-step`, {
       method: 'POST',
-      body: JSON.stringify({ step_number: stepNumber, passed }),
+      body: JSON.stringify({ step_number: stepNumber, code, passed }),
     });
   },
 };

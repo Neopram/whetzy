@@ -130,6 +130,10 @@ interface AppState {
   /** Abre Rutas en el catálogo (para cambiar de ruta), no en el detalle. */
   browseTracks: () => void;
   tracksBrowse: boolean;
+  /** 43.6 (ADR-65 D8): Proyectos abierto desde el detalle de una ruta enseña
+   *  solo los de esa ruta; desde Hoy, todos (null). */
+  projectsTrackId: string | null;
+  openProjects: (trackId: string | null) => void;
   openTrack: (trackId: string) => void;
 
   // Missions
@@ -347,6 +351,9 @@ export const useAppStore = create<AppState>()(
       selectedTrackId: 'track01',
       activeTrackId: null,
       tracksBrowse: false,
+      projectsTrackId: null,
+      openProjects: (trackId) =>
+        set((s) => ({ projectsTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'projects' })),
       browseTracks: () =>
         set((s) => ({ tracksBrowse: true, previousScreen: s.currentScreen, currentScreen: 'tracks' })),
       setActiveTrack: (trackId) => {
