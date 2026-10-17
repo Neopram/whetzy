@@ -307,8 +307,8 @@ def test_sandbox_acota_la_memoria_de_una_ordenacion():
     pronto, como error del paso."""
     t0 = time.monotonic()
     r = check_sql(
-        "WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n LIMIT 3000) "
-        "SELECT randomblob(900000) AS b FROM n ORDER BY b;",
+        "WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n LIMIT 20000) "
+        "SELECT randomblob(15000) AS b FROM n ORDER BY b;",
         NO_OP,
     )
     assert not r.passed and not r.timed_out
@@ -316,3 +316,19 @@ def test_sandbox_acota_la_memoria_de_una_ordenacion():
     assert time.monotonic() - t0 < 1.5
     # El límite no estorba a un ejercicio normal.
     assert check_sql(SQL_OK_1, SQL_TEST_1).passed
+
+
+def test_sandbox_acota_el_coste_de_una_sola_llamada():
+    """Cuarto §7 de 43.6 (2026-10-17): el reloj solo se mira entre instrucciones
+    de la VM, y un `replace` sobre un valor de ~1 MB tardaba 6 s en una sola
+    instrucción con el límite en 2 s (medido). Con los valores acotados a
+    `MAX_VALUE_BYTES` cada llamada cuesta milisegundos."""
+    big = check_sql("SELECT randomblob(16001);", NO_OP)
+    assert not big.passed and "too big" in (big.error or "")
+    t0 = time.monotonic()
+    check_sql(
+        "SELECT length(replace(printf('%.*c', 999000, 'a'), "
+        "printf('%.*c', 499000, 'a') || 'b', 'x'));",
+        NO_OP,
+    )
+    assert time.monotonic() - t0 < 1.0
