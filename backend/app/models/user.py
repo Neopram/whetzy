@@ -123,9 +123,19 @@ class User(Base):
     onboarding_experience: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     onboarding_goal: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     onboarding_weekly_time: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    # 43.3 (ADR-65 D2): cuándo terminó el onboarding. Antes era una marca en
+    # el localStorage y otro navegador lo repetía.
+    onboarding_completed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     # D-20 (dueño, 2026-10-12): la ruta que eligió en el onboarding, en el
     # servidor. Antes solo vivía en el localStorage del dispositivo.
     target_track_id: Mapped[str | None] = mapped_column(
+        String(20), ForeignKey("tracks.id", ondelete="SET NULL"), nullable=True
+    )
+    # 43.3 (D2): la certificación relacionada que eligió en el onboarding,
+    # aparte de la ruta de aprendizaje.
+    target_certification_id: Mapped[str | None] = mapped_column(
         String(20), ForeignKey("tracks.id", ondelete="SET NULL"), nullable=True
     )
     # D-23: de dónde vino el alta (utm / referral / paid / direct), primer

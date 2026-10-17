@@ -22,6 +22,7 @@ import pytest
 from sqlalchemy import select
 
 from app.models.user import UserSkillState
+from app.services.placement import SEED_PRIOR
 
 BASE = "/api/v1/placement"
 
@@ -375,7 +376,8 @@ async def test_placement_p_known_capped_on_perfect_score(
 async def test_placement_wrong_answer_seeds_low_p_known(
     client, user, auth_headers, db_session, content_seed
 ):
-    """C2: a wrong answer seeds p_known near 0 (accuracy 0/1 → p_known = 0.0)."""
+    """C2 + 43.3 (D4): a wrong answer seeds p_known below the prior, shrunk
+    toward it — 0/1 is not proof of zero (before: p_known = 0.0)."""
     start = await _start_session(client, auth_headers, content_seed["track_id"])
     await client.post(
         f"{BASE}/answer",
@@ -395,6 +397,6 @@ async def test_placement_wrong_answer_seeds_low_p_known(
         )
     )
     assert state is not None
-    assert state.p_known == 0.0
+    assert 0.0 < state.p_known < SEED_PRIOR
     assert state.attempts == 1
     assert state.correct_count == 0

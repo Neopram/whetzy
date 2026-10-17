@@ -26,7 +26,7 @@ test('quien vuelve entra por «Entrar» y «atrás» no le devuelve al formulari
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
   await page.getByRole('button', { name: 'ENTRAR' }).click();
-  await suppressOnboarding(page);
+  await suppressOnboarding(page, { maybeDone: true });
   await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
 
   // «Atrás» vuelve a la landing, no al formulario de acceso.

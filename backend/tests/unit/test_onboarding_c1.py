@@ -43,11 +43,11 @@ async def test_onboarding_goal_certificacion_aceptado(client: AsyncClient) -> No
 
 @pytest.mark.asyncio
 async def test_onboarding_goal_fuera_de_rango_rechazado(client: AsyncClient) -> None:
-    """goal=4 sigue fuera de rango (le=3)."""
+    """goal=5 queda fuera de rango (le=4; 43.3 añadió 4 = «las dos cosas»)."""
     auth_headers = await _registrar(client)
     r = await client.patch(
         "/api/v1/auth/me",
-        json={"onboarding_goal": 4},
+        json={"onboarding_goal": 5},
         headers=auth_headers,
     )
     assert r.status_code == 422

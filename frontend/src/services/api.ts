@@ -272,6 +272,14 @@ async function request<T>(path: string, options: RequestInit = {}, retry = true)
         : detail && typeof detail === 'object' && typeof (detail as { code?: unknown }).code === 'string'
           ? (detail as { code: string }).code
           : `HTTP ${res.status}`;
+    // Cuenta desactivada (borrado con 30 días de gracia): el servidor contesta
+    // 403 «Inactive user» a todo. Es una sesión terminada, como el 401 de
+    // arriba; antes «atrás» tras borrar la cuenta volvía a Hoy (iPhone del
+    // dueño, 2026-10-17). /auth/logout se excluye: lo llama signOut() y
+    // avisar desde ahí haría un bucle.
+    if (res.status === 403 && detail === 'Inactive user' && path !== '/auth/logout') {
+      onSessionExpired?.();
+    }
     throw new ApiError(message, res.status, detail);
   }
 
@@ -304,6 +312,12 @@ export interface UserRead {
   is_owner?: boolean;
   /** D-20: la ruta elegida en el onboarding. */
   target_track_id?: string | null;
+  /** 43.3 (D2): certificación relacionada elegida en el onboarding. */
+  target_certification_id?: string | null;
+  /** 43.3 (D2): cuándo terminó el onboarding; null si no lo ha hecho. */
+  onboarding_completed_at?: string | null;
+  /** Horas por semana (0 <3 h, 1 3-10 h, 2 >10 h); desde 43.3 se elige en Perfil. */
+  onboarding_weekly_time?: number | null;
 }
 
 /** Respuesta de `/auth/login` cuando la cuenta tiene 2FA: falta el código. */
@@ -327,12 +341,17 @@ export interface UpdateMePayload {
   language?: 'es' | 'en';
   /** Índice de la opción elegida en el onboarding (0-2). */
   onboarding_experience?: number;
+  /** 0 aprender, 3 certificarme, 4 las dos cosas (43.3; 1-2 eran del onboarding anterior). */
   onboarding_goal?: number;
   onboarding_weekly_time?: number;
   /** D-20: la ruta elegida, guardada en el servidor. */
   target_track_id?: string;
   /** D-23: origen del alta; el servidor solo guarda el primero. */
   signup_attribution?: SignupAttribution;
+  /** 43.3 (D2): certificación relacionada, opcional. */
+  target_certification_id?: string;
+  /** 43.3 (D2): el onboarding terminó; el servidor guarda la primera vez. */
+  onboarding_completed?: boolean;
 }
 
 export type OAuthProvider = 'github' | 'google';

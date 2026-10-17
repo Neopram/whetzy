@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { answerCurrentQuestion, uniqueUsername } from './helpers';
+import { completeOnboarding, uniqueUsername } from './helpers';
 
 /**
  * English mirror of onboarding.spec.ts (24.3's own criterion: "e2e ES y EN" —
@@ -30,25 +30,13 @@ test('onboarding (EN): landing → first answered question in < 60 s', async ({ 
   await page.getByLabel('I confirm I am 13 years old or older').check();
   await page.getByRole('button', { name: 'START LEARNING' }).click();
 
-  const onboarding = page.getByTestId('onboarding');
-  await expect(onboarding).toBeVisible({ timeout: 15_000 });
-  for (let i = 0; i < 3; i++) {
-    await onboarding.locator('button.option').first().click();
-    await page.waitForTimeout(700);
-  }
-  await onboarding.getByRole('button', { name: /English/ }).click();
+  // 43.3 (D2): goal → track → experience → placement test, in English.
+  await completeOnboarding(page, { lang: 'en', takeTest: true });
 
-  // D-20: a beginner lands straight in the first lesson of their track;
-  // opening it records the view and lifts the lesson gate (32.4).
-  const closeLesson = page.getByRole('button', { name: 'Close' });
-  await expect(closeLesson).toBeVisible({ timeout: 15_000 });
-  await closeLesson.click();
-
-  await page.getByRole('button', { name: 'Today', exact: true }).click();
-  await page.getByRole('button', { name: 'STUDY NOW' }).click();
-
-  await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
-  await answerCurrentQuestion(page);
+  await page.getByRole('button', { name: 'START EXAM' }).click();
+  await expect(page.getByText('Question 1 of 20')).toBeVisible({ timeout: 15_000 });
+  await page.getByTestId('placement-option').first().click();
+  await expect(page.getByText('Question 2 of 20')).toBeVisible({ timeout: 15_000 });
 
   const elapsed = (Date.now() - start) / 1000;
   expect(elapsed, `Took ${elapsed.toFixed(1)}s — must be < 60s`).toBeLessThan(60);

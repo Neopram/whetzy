@@ -40,7 +40,9 @@ Se resuelven en `App()` antes de cualquier hook; no necesitan sesión salvo dond
 ## 2. Pantallas dentro de la app (tipo `Screen`, sin URL)
 
 Navegación inferior de 5 pestañas (design/v2): **Hoy · Rutas · Practicar · Ranking · Yo**.
-Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario).
+Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario; desde 43.3 lo recuerda el servidor,
+`onboarding_completed_at`, y no el navegador): objetivo → ruta de aprendizaje (24, agrupadas) → certificación
+relacionada opcional → experiencia → prueba de nivel de 20 o «empiezo de cero» → Hoy.
 
 | `Screen` | Pantalla | Se llega desde | Subvistas | Especificación |
 |---|---|---|---|---|

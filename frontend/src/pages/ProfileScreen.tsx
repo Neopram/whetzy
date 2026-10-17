@@ -109,6 +109,12 @@ export function ProfileScreen() {
     void auth.updateMe({ language: lang }).catch(() => { /* sin red: se reintenta al volver a cambiarlo */ });
     void i18nInst.changeLanguage(lang);
   }
+  // 43.3 (D2): las horas por semana salieron del onboarding y viven aquí.
+  function handleWeeklyTime(value: number) {
+    updateUser({ weeklyTime: value });
+    void auth.updateMe({ onboarding_weekly_time: value }).catch(() => { /* sin red: se reintenta al volver a cambiarlo */ });
+  }
+
 
   const allBadges = badges.data ?? [];
 
@@ -283,6 +289,16 @@ export function ProfileScreen() {
             <div className={styles.langToggle}>
               <button type="button" aria-pressed={language === 'es'} className={`${styles.langBtn} ${language === 'es' ? styles.langActive : ''}`} onClick={() => handleLangChange('es')}>ES</button>
               <button type="button" aria-pressed={language === 'en'} className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`} onClick={() => handleLangChange('en')}>EN</button>
+            </div>
+          </div>
+          <div className={styles.setting}>
+            <span className={styles.settingLabel} id="weekly-time-label">{t('profile.weeklyTime')}</span>
+            <div className={styles.langToggle} role="group" aria-labelledby="weekly-time-label">
+              {[0, 1, 2].map((v) => (
+                <button key={v} type="button" aria-pressed={user.weeklyTime === v} className={`${styles.langBtn} ${user.weeklyTime === v ? styles.langActive : ''}`} onClick={() => handleWeeklyTime(v)}>
+                  {t(`profile.weeklyTimeOptions.${v}`)}
+                </button>
+              ))}
             </div>
           </div>
           <div className={styles.setting}>

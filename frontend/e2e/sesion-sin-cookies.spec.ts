@@ -1,5 +1,5 @@
 import { test, expect, request, type Page } from '@playwright/test';
-import { uniqueUsername } from './helpers';
+import { completeOnboarding, uniqueUsername } from './helpers';
 
 /**
  * 43.1 (ADR-65 D1): Safari en iPhone no manda las cookies de la API desde
@@ -58,16 +58,9 @@ test('sin cookies de la API (Safari), registrarse llega a Hoy sin volver a la po
   await expect(onboarding).toBeVisible({ timeout: 15_000 });
   expect(await page.context().cookies()).toEqual([]);
 
-  for (let i = 0; i < 3; i++) {
-    await onboarding.locator('button.option').first().click();
-    await page.waitForTimeout(700);
-  }
-  await onboarding.getByRole('button', { name: /Español/ }).click();
-
-  const closeLesson = page.getByRole('button', { name: 'Cerrar' });
-  await expect(closeLesson).toBeVisible({ timeout: 15_000 });
-  await closeLesson.click();
-  await page.getByRole('button', { name: 'Hoy', exact: true }).click();
+  // 43.3 (D2): «empiezo de cero» va directo a Hoy. El onboarding guarda la
+  // ruta con `PATCH /auth/me`, que también tiene que ir con el token.
+  await completeOnboarding(page);
 
   await expect(page.getByRole('button', { name: 'ESTUDIAR AHORA' })).toBeVisible({ timeout: 15_000 });
   await expect(page.getByRole('button', { name: 'Crear cuenta' })).toHaveCount(0);

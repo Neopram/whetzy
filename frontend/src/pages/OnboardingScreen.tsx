@@ -1,117 +1,77 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '../stores/useAppStore'
-import { auth, economy, progress as progressApi } from '../services/api'
+import { auth, content, economy, type TrackRead } from '../services/api'
 import { readAttribution } from '../lib/attribution'
 import { retiredCertificationFor } from '../lib/retiredCertifications'
+import { TRACK_GROUPS, relatedCerts } from '../lib/trackGroups'
 import '../styles/onboarding.css'
 
-interface SegmentQuestion {
-  id: string
-  es: string
-  en: string
-  options: { es: string; en: string }[]
-}
+/**
+ * 43.3 (ADR-65 D2): objetivo → ruta de aprendizaje (agrupadas) → certificación
+ * relacionada (opcional) → experiencia → prueba de nivel o «empiezo de cero»
+ * → Hoy.
+ *
+ * Antes: tres preguntas de segmento (experiencia, objetivo, horas), la ruta
+ * deducida del objetivo (aprender → Python, trabajo → Ingeniería de Software)
+ * y una pregunta de idioma que ya se había contestado al registrarse. Las
+ * horas por semana ya no se preguntan aquí.
+ */
 
-const SEGMENT_QUESTIONS: SegmentQuestion[] = [
-  {
-    id: 'exp',
-    es: '¿Cuál es tu experiencia con programación?',
-    en: 'What is your programming experience?',
-    options: [
-      { es: 'Soy principiante', en: 'I am a beginner' },
-      { es: 'Tengo algo de experiencia', en: 'I have some experience' },
-      { es: 'Soy profesional', en: 'I am a professional' }
-    ]
-  },
-  {
-    id: 'goal',
-    es: '¿Cuál es tu objetivo principal?',
-    en: 'What is your main goal?',
-    options: [
-      { es: 'Aprender fundamentos', en: 'Learn fundamentals' },
-      { es: 'Conseguir trabajo', en: 'Get a job' },
-      { es: 'Avanzar en mi carrera', en: 'Advance my career' },
-      { es: 'Preparar una certificación', en: 'Prepare for a certification' },
-    ]
-  },
-  {
-    id: 'time',
-    es: '¿Cuánto tiempo puedes dedicar por semana?',
-    en: 'How much time can you dedicate per week?',
-    options: [
-      { es: '<3 horas', en: '<3 hours' },
-      { es: '3-10 horas', en: '3-10 hours' },
-      { es: '>10 horas', en: '>10 hours' }
-    ]
-  }
-]
+/** Valores de `onboarding_goal`. 0 y 3 conservan el significado de antes
+ *  (aprender fundamentos, preparar una certificación); 4 es «las dos cosas». */
+export const GOAL = { learn: 0, certify: 3, both: 4 } as const
+type Goal = (typeof GOAL)[keyof typeof GOAL]
 
-interface CertTrack { id: string; es: string; en: string }
-
-const CERT_TRACKS: CertTrack[] = [
-  { id: 'track08', es: 'AWS Cloud Practitioner (CLF-C02)', en: 'AWS Cloud Practitioner (CLF-C02)' },
-  { id: 'track09', es: 'PCEP — Python Nivel Básico', en: 'PCEP — Python Entry-Level' },
-  { id: 'track10', es: 'AWS Solutions Architect (SAA-C03)', en: 'AWS Solutions Architect (SAA-C03)' },
-  { id: 'track11', es: 'AWS AI Practitioner (AIF-C01)', en: 'AWS AI Practitioner (AIF-C01)' },
-  { id: 'track40', es: 'ISC2 CC — Ciberseguridad', en: 'ISC2 CC — Cybersecurity' },
-  { id: 'track41', es: 'PCAP — Python Nivel Asociado', en: 'PCAP — Python Associate' },
-  { id: 'track43', es: 'AWS ML Engineer (MLA-C01)', en: 'AWS ML Engineer (MLA-C01)' },
-  { id: 'track44', es: 'Azure Fundamentals (AZ-900)', en: 'Azure Fundamentals (AZ-900)' },
-  { id: 'track45', es: 'Azure AI Fundamentals (AI-901)', en: 'Azure AI Fundamentals (AI-901)' },
-]
-
-// goal 0 (learn fundamentals) → Python Basics (track01)
-// goal 1 (get a job) / goal 2 (advance career) → Software Engineering (track04)
-// goal 3 (certification) → the cert the user picked, or track01 as fallback
-export function _placementTrack(goal: number, certTrackId: string | null): string {
-  if (goal === 3 && certTrackId) return certTrackId
-  if (goal === 1 || goal === 2) return 'track04'
-  return 'track01'
-}
+type Step = 'goal' | 'track' | 'cert' | 'experience' | 'start'
 
 export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const { i18n, t } = useTranslation()
-  const setUserLanguage = useAppStore((s) => s.setLanguage)
-  const updateUser = useAppStore((s) => s.updateUser)
   const startPlacement = useAppStore((s) => s.startPlacement)
-  const startLesson = useAppStore((s) => s.startLesson)
-  const [step, setStep] = useState(0)
-  const [answers, setAnswers] = useState<Record<number, number>>({})
-  const [certTrackId, setCertTrackId] = useState<string | null>(null)
+  const setScreen = useAppStore((s) => s.setScreen)
+  const updateUser = useAppStore((s) => s.updateUser)
+  const lang = i18n.language === 'en' ? 'en' : 'es'
 
-  const lang = i18n.language as 'es' | 'en'
-  const question = SEGMENT_QUESTIONS[step]
-  const isAnswered = step < SEGMENT_QUESTIONS.length && step in answers
+  const [step, setStep] = useState<Step>('goal')
+  const [goal, setGoal] = useState<Goal | null>(null)
+  const [trackId, setTrackId] = useState<string | null>(null)
+  const [certId, setCertId] = useState<string | null>(null)
+  const [experience, setExperience] = useState<number | null>(null)
+  const [tracks, setTracks] = useState<TrackRead[] | null>(null)
+  const [tracksFailed, setTracksFailed] = useState(false)
 
-  const handleAnswer = (optIndex: number) => {
-    setAnswers((prev) => ({ ...prev, [step]: optIndex }))
-    setTimeout(() => {
-      if (step < SEGMENT_QUESTIONS.length - 1) {
-        setStep(step + 1)
-      } else {
-        setStep(SEGMENT_QUESTIONS.length)
-      }
-    }, 600)
+  useEffect(() => {
+    let alive = true
+    content
+      .tracks()
+      .then((r) => { if (alive) setTracks(r) })
+      .catch(() => { if (alive) setTracksFailed(true) })
+    return () => { alive = false }
+  }, [])
+
+  const byId = useMemo(() => new Map((tracks ?? []).map((tr) => [tr.id, tr])), [tracks])
+  const name = (id: string) => {
+    const tr = byId.get(id)
+    return tr ? (lang === 'en' ? tr.name_en : tr.name_es) : id
+  }
+  const certsFor = (id: string) => relatedCerts(id).filter((c) => byId.get(c)?.is_certification)
+
+  const pickTrack = (id: string) => {
+    setTrackId(id)
+    setStep(goal !== GOAL.learn && certsFor(id).length > 0 ? 'cert' : 'experience')
   }
 
-  // Antes el idioma solo cambiaba la UI local y las respuestas no iban a
-  // ninguna parte (34.11). Ahora se guardan en el perfil y deciden el primer
-  // paso: quien ya programa va a la prueba de nivel para saltarse lo que sabe.
-  const handleLanguageSelect = (selectedLang: 'es' | 'en') => {
-    setUserLanguage(selectedLang)
-    updateUser({ language: selectedLang })
-    void i18n.changeLanguage(selectedLang)
-    // D-20: la ruta elegida se guarda en el servidor y es la de este dispositivo.
-    const targetTrack = _placementTrack(answers[1] ?? 0, certTrackId)
-    useAppStore.setState({ selectedTrackId: targetTrack })
+  const finish = (takeTest: boolean) => {
+    if (!trackId) return
+    useAppStore.setState({ selectedTrackId: trackId })
+    updateUser({ onboardingCompleted: true })
     void auth
       .updateMe({
-        language: selectedLang,
-        onboarding_experience: answers[0],
-        onboarding_goal: answers[1],
-        onboarding_weekly_time: answers[2],
-        target_track_id: targetTrack,
+        onboarding_goal: goal ?? undefined,
+        onboarding_experience: experience ?? undefined,
+        target_track_id: trackId,
+        target_certification_id: certId ?? undefined,
+        onboarding_completed: true,
         // D-23: se lee antes de que el referido de abajo borre `whetzy_ref`.
         signup_attribution: readAttribution(),
       })
@@ -124,94 +84,113 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
       }
     } catch { /* private mode: no localStorage */ }
     onDone()
-    if ((answers[0] ?? 0) >= 1) {
-      startPlacement(targetTrack)
-    } else {
-      // D-20 (B.2/B.3 del plan): quien empieza de cero va directo a la primera
-      // lección de su ruta, no a un panel vacío. Sin red, se queda en Hoy.
-      void progressApi
-        .skills(targetTrack)
-        .then((skills) => { if (skills[0]) startLesson(skills[0].skill_id) })
-        .catch(() => { /* sin red: el panel ya ofrece estudiar */ })
-    }
+    if (takeTest) startPlacement(trackId)
+    else setScreen('home')
   }
 
-  // Regular questions
-  if (step < SEGMENT_QUESTIONS.length) {
-    return (
-      <div className="onboarding" data-testid="onboarding">
-        <div className="progress">
-          <div className="bar" style={{ width: `${(step + 1) / SEGMENT_QUESTIONS.length * 100}%` }}></div>
-        </div>
+  const hasCertStep = goal !== GOAL.learn && trackId !== null && certsFor(trackId).length > 0
+  const steps: Step[] = ['goal', 'track', ...(hasCertStep ? ['cert' as Step] : []), 'experience', 'start']
+  const position = steps.indexOf(step) + 1
 
-        <div className="question-card">
-          <p className="step-indicator">{t('onboarding.question', 'Pregunta')} {step + 1} / {SEGMENT_QUESTIONS.length}</p>
-          <h2>{question[lang]}</h2>
-
-          <div className="options">
-            {question.options.map((opt, i) => (
-              <button
-                key={i}
-                className="option"
-                onClick={() => handleAnswer(i)}
-                disabled={isAnswered && answers[step] !== i}
-              >
-                {opt[lang]}
-              </button>
-            ))}
-          </div>
-
-          {isAnswered && (
-            <p className="feedback">{t('onboarding.next', 'Próxima pregunta en 1s...')}</p>
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  // Cert picker: only shown when goal === 3 and no cert chosen yet
-  if ((answers[1] ?? 0) === 3 && certTrackId === null) {
-    return (
-      <div className="onboarding" data-testid="onboarding">
-        <div className="question-card">
-          <h2>
-            {lang === 'es'
-              ? '¿Qué certificación quieres preparar?'
-              : 'Which certification do you want to prepare for?'}
-          </h2>
-          <div className="options">
-            {CERT_TRACKS.map((ct) => (
-              <button
-                key={ct.id}
-                className="option"
-                data-testid={`cert-${ct.id}`}
-                onClick={() => setCertTrackId(ct.id)}
-              >
-                {ct[lang]}
-                {retiredCertificationFor(ct.id) && ` · ${t('tracks.certRetiredBadge')}`}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Language picker
   return (
-    <div className="onboarding language-choice" data-testid="onboarding">
-      <h2>{t('onboarding.language', 'Elige tu idioma')}</h2>
-      <p>{t('onboarding.langDesc', 'Puedes cambiar esto después en Ajustes')}</p>
-
-      <div className="language-buttons">
-        <button className="lang-btn" onClick={() => handleLanguageSelect('es')}>
-          🇪🇸 Español
-        </button>
-        <button className="lang-btn" onClick={() => handleLanguageSelect('en')}>
-          🇺🇸 English
-        </button>
+    <div className="onboarding" data-testid="onboarding">
+      <div className="progress">
+        <div className="bar" style={{ width: `${(position / steps.length) * 100}%` }}></div>
       </div>
+      <div className="question-card">
+        <p className="step-indicator">{t('onboarding.step', { n: position, total: steps.length })}</p>
 
+        {step === 'goal' && (
+          <>
+            <h2>{t('onboarding.goalTitle')}</h2>
+            <div className="options">
+              {([['learn', GOAL.learn], ['certify', GOAL.certify], ['both', GOAL.both]] as const).map(([key, value]) => (
+                <button
+                  key={key}
+                  className="option"
+                  onClick={() => { setGoal(value); setStep('track') }}
+                >
+                  {t(`onboarding.goal.${key}`)}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+
+        {step === 'track' && (
+          <>
+            <h2>{t('onboarding.trackTitle')}</h2>
+            {tracksFailed && <p role="alert">{t('onboarding.tracksFailed')}</p>}
+            {!tracks && !tracksFailed && <p>{t('common.loading')}</p>}
+            {tracks && TRACK_GROUPS.map((g) => {
+              const available = g.tracks.filter((id) => byId.has(id))
+              if (available.length === 0) return null
+              return (
+                <section key={g.id} className="track-group" aria-labelledby={`grp-${g.id}`}>
+                  <h3 id={`grp-${g.id}`}>{t(`onboarding.groups.${g.id}`)}</h3>
+                  <div className="options track-grid">
+                    {available.map((id) => (
+                      <button key={id} className="option" data-testid={`track-${id}`} onClick={() => pickTrack(id)}>
+                        <span aria-hidden="true">{byId.get(id)?.icon}</span> {name(id)}
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )
+            })}
+          </>
+        )}
+
+        {step === 'cert' && trackId && (
+          <>
+            <h2>{t('onboarding.certTitle')}</h2>
+            <div className="options">
+              {certsFor(trackId).map((id) => (
+                <button
+                  key={id}
+                  className="option"
+                  data-testid={`cert-${id}`}
+                  onClick={() => { setCertId(id); setStep('experience') }}
+                >
+                  {name(id)}
+                  {retiredCertificationFor(id) && ` · ${t('tracks.certRetiredBadge')}`}
+                </button>
+              ))}
+              <button className="option" onClick={() => { setCertId(null); setStep('experience') }}>
+                {t('onboarding.certNone')}
+              </button>
+            </div>
+          </>
+        )}
+
+        {step === 'experience' && (
+          <>
+            <h2>{t('onboarding.expTitle', { track: trackId ? name(trackId) : '' })}</h2>
+            <div className="options">
+              {[0, 1, 2].map((i) => (
+                <button
+                  key={i}
+                  className="option"
+                  onClick={() => { setExperience(i); setStep('start') }}
+                >
+                  {t(`onboarding.exp.${i}`)}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+
+        {step === 'start' && trackId && (
+          <>
+            <h2>{t('onboarding.startTitle')}</h2>
+            <p>{t('onboarding.startDesc', { track: name(trackId) })}</p>
+            <div className="options">
+              <button className="option" onClick={() => finish(true)}>{t('onboarding.startTest')}</button>
+              <button className="option" onClick={() => finish(false)}>{t('onboarding.startZero')}</button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }
