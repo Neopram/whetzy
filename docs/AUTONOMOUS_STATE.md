@@ -559,7 +559,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 43.2 | **0** | Registro sin fricción: errores por campo, email en minúsculas, filtro por palabra (D10) | DONE 2026-10-17 (#227; §7: pytest 5/5, vitest 8/8, `Maria@Gmail.COM`→minúsculas, i18n ES/EN; hallazgos fuera del criterio en #231) | `Maria@Gmail.COM` entra en minúsculas; 409 traducido |
 | 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | DOING (PR #230; migración 61) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
 | 43.4 | **0** | Ruta activa (D5) y Hoy filtrado por ella (D6); readiness de 42.6 | TODO (tras 43.3) | cambio de ruta persiste; Hoy solo de la ruta activa |
-| 43.5 | **0** | Lección primero (D7) | TODO (tras 43.4 y H.60) | «Estudiar» abre la lección; sin lección vista no hay práctica |
+| 43.5 | **0** | Lección primero (D7) | TODO (tras 43.4; H.60 decidida) | «Estudiar» abre la lección; sin lección vista no hay práctica |
 | 43.6 | **1** | Proyectos dentro del track, con progreso y validación en servidor (D8) | TODO | progreso sobrevive a salir; `passed=true` sin tests no completa |
 | 43.7 | **1** | Playground contextual desde la lección (D9) | TODO | «Probar este código» abre el ejemplo; el fragmento reaparece |
 | 43.8 | **0** | Puerta «lista para pruebas»: `e2e/alumno.spec.ts` y specs en verde | TODO (cierra la serie) | el spec en Chromium y con cookies de terceros bloqueadas |
@@ -620,7 +620,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.58 | Las 119 preguntas del barrido de la Oleada 0 (`docs/archive/verificacion/claims-2026-10-16.md`, «Escalados»), con la opción recomendada primero | Dueño |
 | H.59 | DNS `api.whetzy.com` → servicio `api` de Railway y `VITE_API_URL` — **hecho 2026-10-17** (#228; CNAME sin proxy, `/health` 200 [V]). Queda H.61 | Dueño |
 | H.61 | `COOKIE_DOMAIN=.whetzy.com` en Railway tras desplegar #228 (dueño). Con él, según #228: `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com`; antes del deploy rompería el login | Dueño |
-| H.60 | ADR-65 D7 + D4 anulan el test-out de ADR-61 §9 (`placement.py:343`). Recomendado: un módulo con test-out aprobado o ≥ 70 % en la prueba cuenta como «lección vista» | Dueño |
+| H.60 | **Decidida** 2026-10-17 (dueño): test-out aprobado o ≥ 70 % en la prueba desbloquea la práctica del módulo sin abrir sus lecciones, que no se marcan vistas (ADR-65, nota H.60) | Dueño |
 | H.62 | **Hecha** 2026-10-17 — verificación en dos pasos activa en la cuenta del dueño (requisito B7 de 44.1; `PLAN_BACKOFFICE.md` §4) | Dueño |
 | H.63 | **Resuelta** 2026-10-17 en #229 — la política publicada dice para qué abre el titular una cuenta (`legal.privacySupportAccess`, ES/EN); «y queda registrado» llega con 44.4 | Dueño |
 

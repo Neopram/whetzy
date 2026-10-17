@@ -1712,3 +1712,7 @@ transcriben sin cambios. Las filas son la serie 43. El número 64 queda libre: l
 > por módulo de ADR-61 §9, que el código ofrece (`backend/app/services/placement.py:343`, `can_skip`). Recomendado: un
 > módulo con test-out aprobado, o con ≥ 70 % en la prueba, cuenta como «lección vista». Hay que decidirlo antes de
 > 43.5.
+>
+> **Decidido por el dueño el 2026-10-17 (H.60):** la opción recomendada. Un módulo con test-out aprobado, o con
+> ≥ 70 % en la prueba de nivel (los que en 43.3 «empiezan con ventaja»: ≥ 70 % de ≥ 2 preguntas), desbloquea la
+> práctica de sus skills sin abrir las lecciones. Las lecciones no se marcan como vistas: siguen disponibles.
