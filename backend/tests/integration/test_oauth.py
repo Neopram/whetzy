@@ -58,10 +58,14 @@ async def test_start_unknown_provider_returns_404(client):
     assert r.status_code == 404
 
 
-async def test_start_github_unconfigured_returns_503(client):
-    # In the test environment GITHUB_CLIENT_ID is "" → 503
+async def test_start_github_unconfigured_returns_404(client):
+    # In the test environment GITHUB_CLIENT_ID is "". A provider this server has
+    # no credentials for doesn't exist here: 404, like an unknown provider. It was
+    # 503, which Sentry reports as an error: an old link or a bot hitting
+    # /github/start paged the team (2026-10-17).
     r = await client.get(f"{OAUTH}/github/start", headers=_h(), follow_redirects=False)
-    assert r.status_code == 503
+    assert r.status_code == 404
+    assert "not configured" in r.json()["detail"]
 
 
 async def test_start_test_provider_redirects_to_callback(client):
