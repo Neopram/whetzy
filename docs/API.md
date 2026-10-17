@@ -43,7 +43,7 @@ POST /auth/verify-email           → {message} (200) — body {token}
 POST /auth/resend-verification    → {message} (200)
 
 GET  /auth/oauth/providers            → {providers: ["github"|"google"]} solo los configurados (200)
-GET  /auth/oauth/{provider}/start     → 302 redirect to provider — PKCE (S256) + cookie HttpOnly con el `state` (41.14)
+GET  /auth/oauth/{provider}/start     → 302 redirect to provider (`?lang=es|en` opcional) — PKCE (S256) + cookie HttpOnly con el `state` (41.14); `lang` va en otra cookie corta y solo se usa si el callback **crea** la cuenta (45.1, ADR-66 E1; uno no válido se ignora)
 GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend — 400 si la cookie del `state` no coincide con el de la query (41.14)
 ```
 
