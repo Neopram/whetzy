@@ -381,6 +381,7 @@ async def _find_or_create_user(
     # 2. Existing user with this email → link accounts, pero solo si esa
     # cuenta ya tiene el email verificado (ver _UnverifiedEmailConflict).
     user = await user_by_email(db, email)
+    created = user is None
 
     if user is not None and not user.email_verified:
         raise _UnverifiedEmailConflict(email)
@@ -418,4 +419,9 @@ async def _find_or_create_user(
     )
     await db.commit()
     await db.refresh(user)
+    if created:
+        # 45.2 (ADR-66 E2): la cuenta llega verificada, así que la bienvenida sale ya.
+        from app.services import email as email_svc
+
+        email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
     return user

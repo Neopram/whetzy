@@ -480,7 +480,9 @@ def send_welcome(to: str, name: str, lang: str = "es") -> None:
 def send_email_verification(to: str, name: str, token: str, lang: str = "es") -> None:
     from app.core.config import settings
 
-    verify_url = f"{settings.FRONTEND_BASE_URL}/verify-email?token={token}"
+    # 45.2 (ADR-66 E5): el enlace lleva el idioma, para que la página salga en él.
+    link_lang = lang if lang in ("es", "en") else "es"
+    verify_url = f"{settings.FRONTEND_BASE_URL}/verify-email?token={token}&lang={link_lang}"
     subject, html = _render("email_verification", lang, name=name, verify_url=verify_url)
     _dispatch(to, subject, html)
 
