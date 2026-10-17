@@ -619,7 +619,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.57 | Modelos: CLAUDE.md dice Haiku 4.5 y prohíbe Fable; el entorno ofrece otros. La tabla no se cambia hasta que decidas | Dueño |
 | H.58 | Las 119 preguntas del barrido de la Oleada 0 (`docs/archive/verificacion/claims-2026-10-16.md`, «Escalados»), con la opción recomendada primero | Dueño |
 | H.59 | DNS `api.whetzy.com` → servicio `api` de Railway y `VITE_API_URL` — **hecho 2026-10-17** (#228; CNAME sin proxy, `/health` 200 [V]). Queda H.61 | Dueño |
-| H.61 | `COOKIE_DOMAIN=.whetzy.com` en Railway tras desplegar #228 (dueño). Con él, según #228: `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com`; antes del deploy rompería el login | Dueño |
+| H.61 | **Hecha** 2026-10-17 (dueño) — en Railway: `COOKIE_DOMAIN=.whetzy.com`, `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com` (tras desplegar #228). Dicho por el dueño; esta sesión no lee variables de producción | Dueño |
 | H.60 | **Decidida** 2026-10-17 (dueño): test-out aprobado o ≥ 70 % en la prueba desbloquea la práctica del módulo sin abrir sus lecciones, que no se marcan vistas (ADR-65, nota H.60) | Dueño |
 | H.62 | **Hecha** 2026-10-17 — verificación en dos pasos activa en la cuenta del dueño (requisito B7 de 44.1; `PLAN_BACKOFFICE.md` §4) | Dueño |
 | H.63 | **Resuelta** 2026-10-17 en #229 — la política publicada dice para qué abre el titular una cuenta (`legal.privacySupportAccess`, ES/EN); «y queda registrado» llega con 44.4 | Dueño |
