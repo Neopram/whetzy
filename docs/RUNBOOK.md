@@ -430,6 +430,16 @@ guarda los dos tokens en `sessionStorage` y los manda como `Authorization: Beare
 `PW_CHROMIUM_EXECUTABLE=/opt/pw-browsers/chromium npx playwright test e2e/sesion-entre-sitios.spec.ts`. Mientras la cookie no sea de `.whetzy.com` (H.61), Safari sigue entrando por
 aquí.
 
+Dos límites de ese e2e (verificador §7, 2026-10-17):
+- **CORS de :5198.** El origen solo entra por la env del `webServer` de `playwright.config.ts`. Con
+  `E2E_BASE_URL`, o con un backend ya levantado en :8000 (`reuseExistingServer`), hay que arrancarlo con
+  `BACKEND_CORS_ORIGINS='["http://localhost:5199","http://127.0.0.1:5199","http://localhost:5198","http://localhost:5173","http://127.0.0.1:5173"]'`.
+  Si no, el preflight de `/auth/register` da 400 y el registro se queda en el formulario.
+- **Lo que no prueba.** En local las cookies salen `SameSite=Lax` (`backend/app/core/cookies.py`), así que
+  ya no viajan de `localhost:5198` a `127.0.0.1:8000` aunque Chromium no las bloquee. El e2e prueba que, sin
+  cookie, el puente entra. No prueba los atributos de producción (`SameSite=None; Secure`) frente a la ITP
+  de Safari: eso es el recorrido a mano desde un iPhone de §6.
+
 **Arreglo definitivo:**
 1. ~~Railway: dominio propio `api.whetzy.com`; Cloudflare: `CNAME api` en «DNS only»; `VITE_API_URL`~~ — hecho por
    el dueño el 2026-10-17 (#228). Comprobado ese día: `/health` 200 y CNAME a `n8r3nbqo.up.railway.app` sin proxy.
