@@ -60,10 +60,8 @@ Migración: `downgrade` probado y HEAD triple (CLAUDE.md, ledger, RUNBOOK) en el
 
 ## 4. Filas H (dueño)
 
-- **H.62**: activar la verificación en dos pasos en la cuenta del dueño antes de desplegar 44.1.
-- **H.63**: que la política de privacidad publicada diga que el titular accede a los datos de
-  una cuenta solo para dar soporte, y que queda registrado. Es texto legal (S4/dueño, ADR-55):
-  ninguna sesión lo edita.
+- **H.62** (hecha el 2026-10-17: el dueño la activó, «Two-step verification is on», 10 códigos de respaldo): verificación en dos pasos en la cuenta del dueño antes de desplegar 44.1.
+- **H.63** (resuelta el 2026-10-17 en el mismo PR que este plan, aprobada por el dueño al fusionarlo): la política publicada dice para qué abre el titular una cuenta (`legal.privacySupportAccess`, ES/EN, en `LegalScreen.tsx`). La fila 44.4 le añade «y queda registrado» cuando el registro de administración esté en producción; antes no sería verdad.
 
 ## 5. Verificación de extremo a extremo
 
