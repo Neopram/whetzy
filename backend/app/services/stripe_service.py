@@ -82,7 +82,7 @@ def verify_webhook(payload: bytes, sig_header: str) -> dict[str, Any]:
     if not settings.STRIPE_WEBHOOK_SECRET:
         raise RuntimeError("Stripe webhook secret not configured: set STRIPE_WEBHOOK_SECRET")
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    event = stripe.Webhook.construct_event(  # type: ignore[no-untyped-call]  # stripe sin tipos aquí
+    event = stripe.Webhook.construct_event(
         payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
     )
     # Desde stripe 15 sus objetos no son dict: `dict(event)` lanza TypeError.
