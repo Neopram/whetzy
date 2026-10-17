@@ -1672,3 +1672,31 @@ ADR-60 define «evidencia insuficiente» como «< 7 respuestas en el módulo o s
    - prueba de nivel: siembra una vez;
    - test-out: por documentar leyendo `exams.py:395`;
    - onboarding: solo prior.
+
+---
+
+## ADR-65 — Flujo del alumno listo para pruebas (DECIDIDO por delegación expresa del dueño, 2026-10-17)
+
+**Origen.** Anexo del dueño al plan ultracode (`docs/PLAN_FLUJO_ALUMNO.md`), pegado en la sesión de la Oleada 0 el
+2026-10-17. Sus §5.3 dicen «redacta ADR-65 … como DECIDIDO por delegación expresa del dueño». Las decisiones se
+transcriben sin cambios. Las filas son la serie 43. El número 64 queda libre: la Oleada 0 no encontró en
+`LEDGER_HISTORY` §J las D-xx que el prompt pedía transcribir en ADR-64.
+
+| # | Decisión |
+|---|---|
+| D1 | Sesión en iPhone. Definitivo: API en `api.whetzy.com` + `COOKIE_DOMAIN` (dueño). Puente inmediato: el frontend guarda el **access token en memoria** y lo manda como `Authorization: Bearer` (el backend ya lo acepta: `security.py:174-181` [V]); el refresh sigue por cookie. En Safari sin DNS, la sesión dura lo que la pestaña. |
+| D2 | Onboarding: registro → objetivo (aprender / certificarme / ambos) → **elegir track de aprendizaje** (rejilla de los 24 tracks agrupados) → certificación opcional relacionada → experiencia → **prueba de nivel del track** (o «empiezo de cero») → resultado → **Hoy**. Se quita la pregunta de idioma (ya está en el registro) y la de horas pasa al perfil. |
+| D3 | Prueba de nivel de **20 preguntas**: 15 estratificadas (5 básicas, 5 intermedias y 5 avanzadas, repartidas por módulos) + 5 adaptativas en la banda frontera. Banda de una pregunta: su `difficulty_tier` si lo tiene; si no, el tercio del módulo dentro del track (16 tracks no tienen tier [V]). θ con la EAP de #219. |
+| D4 | Siembra tras la prueba, por módulo y no por pregunta suelta. Un módulo con ≥ 70 % deja sus skills en 0,6 (practicables, no «dominadas»); el resto, con encogimiento hacia 0,1. Nunca baja una skill con historial (D-18). La prueba **no** marca lecciones como vistas. |
+| D5 | **Ruta activa** = `target_track_id` en servidor. Se cambia desde Rutas/catálogo («Hacer esta mi ruta») y desde Yo. Al cambiar a un track sin progreso, se ofrece su prueba de nivel. Nunca se borra progreso: todo vive por skill y por track [V `models/user.py:168`]. |
+| D6 | **Hoy filtrado por la ruta activa**: cabecera «Tu ruta: <nombre>» con «Cambiar». La banda de preparación, el siguiente paso, los repasos y el territorio salen solo de ese track. «Otras rutas en curso» va abajo. |
+| D7 | **Lección primero**, siempre, fuera de exámenes y quizzes de evaluación. «Estudiar» abre la siguiente lección no vista del track; si están todas vistas, practica. Desbloquear la práctica exige la lección vista (se quita `attempts > 0` de `lesson_gate.py:54` [V]). Los duelos, solo sobre skills con la lección vista por los dos. |
+| D8 | **Proyectos** dentro de cada track, como cierre de módulo (tras sus lecciones), visibles solo si el track tiene proyectos. El progreso se guarda en servidor, y los pasos con tests deterministas se validan en servidor. |
+| D9 | **Playground** contextual: «Probar este código» en cada lección (las 730 tienen `example_code`), fragmentos guardados por skill y acceso secundario desde Rutas. Sale de Hoy. |
+| D10 | Registro sin fricción: errores 409/422 traducidos y por campo; email normalizado a minúsculas (antes, comprobar colisiones en la base); filtro de palabras por palabra completa para los términos cortos; «onboarding hecho» en servidor. |
+
+> **Choque abierto (H.60), anotado por la Oleada 0:** D7 (la práctica exige la lección vista; se quita
+> `attempts > 0` de `lesson_gate.py`) junto con D4 (la prueba no marca lecciones vistas) deja sin efecto el test-out
+> por módulo de ADR-61 §9, que el código ofrece (`backend/app/services/placement.py:343`, `can_skip`). Recomendado: un
+> módulo con test-out aprobado, o con ≥ 70 % en la prueba, cuenta como «lección vista». Hay que decidirlo antes de
+> 43.5.

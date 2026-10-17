@@ -2470,3 +2470,9 @@ tenía), con un puntero «→ §T» aquí.
 | 37.24 | **1** | Poblar el banco de simulacro reservado (2× la longitud del examen… | PARCIAL — 219/1.040 integradas (2026-10-13: +73 corregidas por Sonnet y re-revisadas; AIF-C01 116/130, CLF-C02 96/130) y 986 escritas; flag sigue en `False`; estado, pendientes y cómo retomar en `scripts/content_qa/reservadas_37_24/README.md` | 8 certificaciones con L publicada con reservadas ≥ 2× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/1.040 reservadas a la meta — autoría de contenido (ADR-59), no una tarea de código |
 | 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (tra… | **PARCIAL** | (2026-09-29) 10/12 reescritas y verificadas en Python real, quitadas de `KNOWN`. 2 nunca fueron duplicados: ciego del checker (solo `question_es`, ignora `code`) → 39.40. `tests/content` 70.277; guarda mutada rojo/verde → §I |
 | 39.33 | **1** | Claves sospechosas previas: la explicación se parece más a otra op… | **PARCIAL** | 86 + 26 más (`a17a7c8`, ya en esta rama): sk130104/204/304 (track13) tenían >50% mal — RACI inventado, "menor privilegio" al revés. Verificadas leyendo las 60 preguntas de las 3 skills en vivo esta sesión: ninguna queda mal. Tracks hermanos del mismo commit masivo: solo `q120302mc002` revisado. TODO: resto sin muestrear |
+
+### §T (5) — H.29 tal como estaba antes de citar ADR-61 §22 (2026-10-16)
+
+| H | Texto | Quién |
+|---|---|---|
+| H.29 | DECIDIDO 2026-10-01 (dueño): Grecia; web = Paddle, tiendas = IAP/Play Billing vía RevenueCat; sin Stripe. Web: `/checkout` hecho; falta alta Paddle y dominio |

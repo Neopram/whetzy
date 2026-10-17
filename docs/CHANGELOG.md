@@ -5,6 +5,24 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-17 (Plan del flujo del alumno)
+
+**ES**
+
+- **Plan para dejar la app lista para probadores** (`docs/PLAN_FLUJO_ALUMNO.md`, ADR-65, serie 43): sesión en
+  iPhone, registro, onboarding con prueba de nivel, ruta activa, lección primero, proyectos y playground. Es solo
+  documentación; el código va en PR posteriores.
+
+---
+
+**EN**
+
+- **Plan to make the app ready for testers** (`docs/PLAN_FLUJO_ALUMNO.md`, ADR-65, series 43): iPhone sessions,
+  sign-up, onboarding with a placement test, active route, lesson first, projects and playground. Documentation
+  only; the code comes in later PRs.
+
+---
+
 ## [Unreleased] — 2026-10-16 (Sincronización total de la documentación)
 
 **ES**

@@ -22,12 +22,12 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 
 | Clase | Ficheros |
 |---|---|
-| normativo-vivo | 20 |
+| normativo-vivo | 21 |
 | referencia-viva | 64 |
 | histórico | 47 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **176** |
+| **Total** | **177** |
 
 ## Raíz del repo y otras carpetas
 
@@ -101,6 +101,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/archive/PROMPT_CIERRE_2026-09-30.md` | histórico | prompt de un solo uso para cerrar el #34, ya ejecutado (#34 fusionado el 2026-10-01) | archivado el 2026-10-01 | 2026-09-30 |
 | `docs/PROMPT_CONTROL_TOTAL.md` | normativo-vivo | prompt de arranque con control total | se queda; ruta de i18n-audit actualizada | 2026-09-30 |
 | `docs/PLAN_ULTRACODE.md` | normativo-vivo | plan del dueño del 2026-10-16: Oleada 0 (documentación) y oleadas 1-9 de código, sin contenido; series 41 y 42 | se queda; las oleadas ya hechas en `master` las marca su §0 | 2026-10-16 |
+| `docs/PLAN_FLUJO_ALUMNO.md` | normativo-vivo | anexo del dueño del 2026-10-17: flujo del alumno listo para pruebas (serie 43, ADR-65) | se queda | 2026-10-17 |
 | `docs/PROTOCOLO_VERIFICACION.md` | normativo-vivo | protocolo de verificación | se queda | 2026-09-27 |
 | `docs/README.md` | normativo-vivo | índice de documentos vivos | se queda; filas de los archivados actualizadas | 2026-09-30 |
 | `docs/RELEASE.md` | normativo-vivo | guía de release | se queda [sin verificar] paso a paso | 2026-09-25 |

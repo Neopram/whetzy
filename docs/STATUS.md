@@ -2856,3 +2856,18 @@ GitHub, `pulls?state=closed`):
 | #222 | 2026-10-16 | `fcebf4e` | Colores a tokens: sin rgba() en los .module.css, con guarda (serie 34) |
 | #223 | 2026-10-16 | `613be04` | Catálogo y perfil público con CSS en módulos, no en hojas globales |
 | #224 | 2026-10-16 | `0de27ad` | Plan ultracode: documentación al día antes que código (Oleada 0), sin contenido |
+
+## 2026-10-17 — Anexo «flujo del alumno» (serie 43, ADR-65)
+
+El dueño añadió al plan ultracode un anexo para dejar la app lista para probadores (`docs/PLAN_FLUJO_ALUMNO.md`).
+Contiene:
+- sesión en iPhone;
+- registro sin fricción;
+- onboarding con prueba de nivel de 20;
+- ruta activa y Hoy filtrado por ella;
+- lección primero, proyectos y playground;
+- una puerta E2E.
+
+Entra en el mismo PR de la Oleada 0: ADR-65 (D1-D10, decididas por delegación expresa), serie 43, H.59 (DNS
+`api.whetzy.com`, dueño) y H.60 (choque de D7 con el test-out de ADR-61 §9). No hay código todavía: la serie 43
+empieza después de este PR.

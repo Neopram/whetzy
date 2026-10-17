@@ -41,6 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
+| 43 | Flujo del alumno listo para pruebas | 0/8 | 0 % | 43.1, 43.2, 43.3, 43.4, 43.5, 43.6 +2 |
 | 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
 | 41 | Documentación al día con el código | 0/6 | 0 % | 41.1, 41.2, 41.3, 41.4, 41.5, 41.6 |
 | 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
@@ -533,19 +534,34 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 42.1 | **0** | Prueba de nivel: estimador EAP con prior | PARCIAL (EAP hecho, #219; falta log en `_rebuild_state`, simulación SE, `prior_mean`) | test rojo antes y verde después; simulación de la parada por SE adjunta |
+| 42.1 | **0** | Prueba de nivel: estimador EAP con prior | PARCIAL (EAP hecho, #219; la siembra pasa a 43.3) | test rojo antes y verde después; simulación de la parada por SE adjunta |
 | 42.2 | **0** | Puerta E2E: origen 5199, paso e2e en `ci_local.sh`, guarda de contrato | PARCIAL (5199 hecho, #220; falta el paso y la guarda) | `npx playwright test` sin rojos; paso en `ci_local.sh` |
 | 42.3 | **1** | E2E: specs desfasados y `/auth` colgado | PARCIAL (54/56, #217 y #220) | 2 saltados con causa; traza de los colgados |
 | 42.4 | **1** | Duelos 3a: 202 ≠ «Perdiste», feedback, opt-out, cotas, desempate, copy | TODO (tras 41.6) | tests rojos antes (202, opt-out, cota) y verdes después |
 | 42.5 | **1** | Duelos 3b: el retador reanuda; caducidad | TODO (tras 42.4 y H.52) | reanudación y tercero rechazado con test |
-| 42.6 | **1** | Readiness sobre todas las skills del dominio; una definición de do… | TODO (tras 42.4) | test de cobertura rojo antes; guarda de literales |
+| 42.6 | **1** | Readiness sobre todas las skills del dominio; una definición de do… | TODO (se hace dentro de 43.4) | test de cobertura rojo antes; guarda de literales |
 | 42.7 | **1** | `exam_pass_predictor`: retirar o conectar tras bandera | TODO (tras H.53) | sin importadores en `backend/app`, o endpoint con test |
-| 42.8 | **1** | Prior del onboarding y siembra con encogimiento | TODO (tras H.51) | 1/1 deja de dar 0,94; prior por experiencia con test |
+| 42.8 | **1** | Prior del onboarding y siembra con encogimiento | BLOCKED (sustituida por 43.3: siembra por módulo, ADR-65 D4) | 1/1 deja de dar 0,94; prior por experiencia con test |
 | 42.9 | **1** | Evidencia por fuente: función única y contadores | TODO (tras 42.8) | `test_evidence_policy.py`; migración con datos OK |
 | 42.10 | **2** | Historial de pantallas; atrás de Android | PARCIAL (`pushState`, #218; falta Android) | unit + e2e de pila; Android en cola humana |
 | 42.11 | **1** | Offline: la cola no se vacía hasta confirmar; `declaredUnknown` | TODO | red caída en `flush` conserva la cola; test rojo antes |
 | 42.12 | **2** | Blueprint mínimo en `Track` (`code`, `exam_guide`, versión) | TODO | loader persiste; migración con datos; `content/` sin cambios |
 | 42.13 | **2** | Higiene: retirar `getPricingPlans`; jurisdicción según H.54 | TODO (tras H.54) | sin usos; test de precios visibles |
+
+### 43. Flujo del alumno listo para pruebas (anexo del dueño 2026-10-17; `PLAN_FLUJO_ALUMNO.md`; ADR-65)
+
+> **Estado:** `ABIERTA`. **PRI:** 0. Tras la Oleada 0 y antes del resto de la 42. Sin contenido (ADR-62). Puerta: `PLAN_FLUJO_ALUMNO.md` §6.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | TODO (tras 41.6) | e2e con cookies de terceros bloqueadas: registro → Hoy |
+| 43.2 | **0** | Registro sin fricción: errores por campo, email en minúsculas, filtro por palabra (D10) | TODO | `Maria@Gmail.COM` entra en minúsculas; 409 traducido |
+| 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | TODO (tras 43.2) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
+| 43.4 | **0** | Ruta activa (D5) y Hoy filtrado por ella (D6); readiness de 42.6 | TODO (tras 43.3) | cambio de ruta persiste; Hoy solo de la ruta activa |
+| 43.5 | **0** | Lección primero (D7) | TODO (tras 43.4 y H.60) | «Estudiar» abre la lección; sin lección vista no hay práctica |
+| 43.6 | **1** | Proyectos dentro del track, con progreso y validación en servidor (D8) | TODO | progreso sobrevive a salir; `passed=true` sin tests no completa |
+| 43.7 | **1** | Playground contextual desde la lección (D9) | TODO | «Probar este código» abre el ejemplo; el fragmento reaparece |
+| 43.8 | **0** | Puerta «lista para pruebas»: `e2e/alumno.spec.ts` y specs en verde | TODO (cierra la serie) | el spec en Chromium y con cookies de terceros bloqueadas |
 
 ## 3. Cola HUMAN-BLOCKED
 
@@ -569,7 +585,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.25 | Activar payouts de instructores en producción (28.7) |
 | H.27 | cNFT de certificados en Solana (29.10, opcional; ADR-37): wa… |
 | H.28 | Grant / bounty de la Solana Foundation o Superteam para trac… |
-| H.29 | DECIDIDO 2026-10-01 (web = Paddle, tiendas = RevenueCat, sin Stripe). Entidad: ADR-61 §22 (2026-10-09) pasa de Grecia a Chipre como destino, sin entidad constituida; el código sigue en Grecia → H.54 | Dueño |
+| H.29 | DECIDIDO 2026-10-01 (web = Paddle, tiendas = RevenueCat, sin Stripe). Web: `/checkout` hecho; falta alta Paddle y dominio. Entidad: ADR-61 §22 (2026-10-09) pasa de Grecia a Chipre como destino, sin entidad constituida; el código sigue en Grecia → H.54 | Dueño |
 | H.35 | **PARCIAL** (2026-09-25): mensuales fijados (ADR-41, ADR-49); faltan anual, tarifa regional, base del 80 %, cupo de Pro y la cert 39,99 $ → §J |
 | H.38 | Afiliación con Python Institute y CompTIA (38.3) |
 | H.39 | 3 pilotos B2B gratuitos (38.2, ADR-22) |
@@ -590,6 +606,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.56 | «Panel de equipo» prometido en `docs/legal/b2b_pilot_offer_*.md` sin producto. Recomendado: retirar la promesa (S4) | Dueño |
 | H.57 | Modelos: CLAUDE.md dice Haiku 4.5 y prohíbe Fable; el entorno ofrece otros. La tabla no se cambia hasta que decidas | Dueño |
 | H.58 | Las 119 preguntas del barrido de la Oleada 0 (`docs/archive/verificacion/claims-2026-10-16.md`, «Escalados»), con la opción recomendada primero | Dueño |
+| H.59 | DNS `api.whetzy.com` → servicio `api` de Railway, y `COOKIE_DOMAIN=.whetzy.com` y `VITE_API_URL` (definitivo de ADR-65 D1; 10 min) | Dueño |
+| H.60 | ADR-65 D7 + D4 anulan el test-out de ADR-61 §9 (`placement.py:343`). Recomendado: un módulo con test-out aprobado o ≥ 70 % en la prueba cuenta como «lección vista» | Dueño |
 
 ## 5. Bitácora de decisiones
 
