@@ -21,6 +21,34 @@ function getOAuthError(): string | null {
 
 type Mode = 'login' | 'register' | 'forgot';
 
+// 43.2 (ADR-65 D10): el error del servidor se enseña traducido y diciendo qué
+// campo falla. Antes salía el texto crudo: «email_taken», «HTTP 422» o
+// «Incorrect email or password» en inglés también en la pantalla en español.
+const FIELD_ERROR: Record<string, string> = {
+  email: 'auth.errEmail',
+  password: 'auth.errPassword',
+  display_name: 'auth.errName',
+  username: 'auth.errUsername',
+};
+
+function authErrorKey(err: unknown): string {
+  if (!(err instanceof ApiError)) return 'auth.errGeneric';
+  if (err.status === 401) return 'auth.errCredentials';
+  if (err.status === 409) {
+    const code = (err.detail as { code?: unknown } | null)?.code;
+    if (code === 'email_taken') return 'auth.errEmailTaken';
+    if (code === 'username_taken') return 'auth.errUsernameTaken';
+  }
+  if (err.status === 422 && Array.isArray(err.detail)) {
+    for (const item of err.detail as { loc?: unknown[]; msg?: unknown }[]) {
+      const field = item.loc?.[item.loc.length - 1];
+      if (typeof item.msg === 'string' && item.msg.includes("isn't allowed")) return 'auth.errNameNotAllowed';
+      if (typeof field === 'string' && FIELD_ERROR[field]) return FIELD_ERROR[field];
+    }
+  }
+  return 'auth.errGeneric';
+}
+
 // Vuelta de OAuth con 2FA activada: el backend dejó el token del segundo paso
 // en una cookie HttpOnly y redirige aquí con ?mfa=1 para pedir el código.
 function arrivedForMfa(): boolean {
@@ -119,7 +147,7 @@ export function AuthScreen({ onAuthed }: Props) {
     // Client-side validation mirrors the backend schema constraints.
     if (mode === 'register') {
       if (displayName.trim().length < 1) return setError(t('auth.errName'));
-      if (!/^[a-zA-Z0-9_.-]{3,50}$/.test(username)) return setError(t('auth.errUsername'));
+      if (!/^[a-zA-Z0-9_.-]{3,50}$/.test(username.trim())) return setError(t('auth.errUsername'));
     }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return setError(t('auth.errEmail'));
     if (password.length < 8) return setError(t('auth.errPassword'));
@@ -148,7 +176,7 @@ export function AuthScreen({ onAuthed }: Props) {
       }
       onAuthed();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('auth.errGeneric'));
+      setError(t(authErrorKey(err)));
     } finally {
       setLoading(false);
     }

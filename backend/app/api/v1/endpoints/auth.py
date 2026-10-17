@@ -10,7 +10,7 @@ from datetime import UTC, datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr, Field, field_validator
-from sqlalchemy import or_, select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.cookies import clear_auth_cookies, set_auth_cookies
@@ -96,6 +96,19 @@ class ChangePasswordRequest(BaseModel):
     new_password: str = Field(min_length=8, max_length=128)
 
 
+
+async def _user_by_email(db: AsyncSession, email: str) -> User | None:
+    """Busca por email sin caja (43.2). Las cuentas creadas antes de normalizar
+    guardan la caja original; si dos solo difieren en la caja, gana la más
+    antigua, en vez de reventar con `MultipleResultsFound`."""
+    result = await db.execute(
+        select(User)
+        .where(func.lower(User.email) == email.strip().lower())
+        .order_by(User.created_at)
+        .limit(1)
+    )
+    return result.scalar_one_or_none()
+
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(
     payload: UserCreate,
@@ -108,13 +121,18 @@ async def register(
             detail="Age confirmation is required (must be 13 or older)",
         )
 
-    existing = await db.execute(
-        select(User).where(or_(User.email == payload.email, User.username == payload.username))
-    )
-    if existing.scalar_one_or_none() is not None:
+    # 43.2: el 409 dice qué campo choca (la UI lo traduce), y el email se
+    # compara sin caja: las cuentas de antes guardaban la caja original.
+    if await _user_by_email(db, payload.email) is not None:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="A user with that email or username already exists",
+            detail={"code": "email_taken", "field": "email"},
+        )
+    taken = await db.execute(select(User.id).where(User.username == payload.username))
+    if taken.scalar_one_or_none() is not None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={"code": "username_taken", "field": "username"},
         )
 
     user = User(
@@ -205,7 +223,8 @@ async def login(
     user_agent = request.headers.get("user-agent", "")
 
     # OAuth2PasswordRequestForm's `username` field carries the user's email.
-    email = form_data.username
+    # 43.2: sin espacios y en minúsculas, como se guarda desde el registro.
+    email = form_data.username.strip().lower()
 
     # Check if account is locked out
     is_locked = await check_lockout(email, client_ip, db)
@@ -225,8 +244,7 @@ async def login(
             detail="Account temporarily locked due to too many failed login attempts",
         )
 
-    result = await db.execute(select(User).where(User.email == email))
-    user = result.scalar_one_or_none()
+    user = await _user_by_email(db, email)
 
     # Always call verify_password to prevent timing-based user enumeration (ASVS V2.2).
     # OAuth-only accounts have hashed_password=None — treat as wrong password.
@@ -538,8 +556,7 @@ async def resend_verification(
 ) -> dict[str, str]:
     """Resend the email verification link (rate limited: max 1 pending token per user)."""
     _require_outbound_email()
-    result = await db.execute(select(User).where(User.email == payload.email))
-    user = result.scalar_one_or_none()
+    user = await _user_by_email(db, payload.email)
 
     if user and user.is_active and not user.email_verified:
         # Invalidate any existing unused tokens.
@@ -576,8 +593,7 @@ async def forgot_password(
 ) -> dict[str, str]:
     """Request a password reset. Always returns 200 to prevent user enumeration."""
     _require_outbound_email()
-    result = await db.execute(select(User).where(User.email == payload.email))
-    user = result.scalar_one_or_none()
+    user = await _user_by_email(db, payload.email)
 
     if user and user.is_active:
         raw_token = secrets.token_urlsafe(32)
