@@ -1721,3 +1721,21 @@ transcriben sin cambios. Las filas son la serie 43. El número 64 queda libre: l
 > (SQLite en memoria, sin red ni ficheros y con límite de tiempo) y el `passed` del cliente se ignora. Python y JS
 > siguen en el navegador: el servidor impone el orden de los pasos y guarda el código, pero esas finalizaciones
 > no cuentan como verificadas (no salen en el perfil público) hasta que haya un sandbox para ellos.
+
+## ADR-66 — Alta con correo (DECIDIDO por el dueño, 2026-10-17, al fusionar #240)
+
+**Origen.** Prueba del dueño en iPhone el 2026-10-17: el registro mandó dos correos (bienvenida y verificación), los dos
+en inglés, y la app nunca dijo «verifica tu correo». Plan en `docs/PLAN_CORREO_ALTA.md`; las filas son la serie 45, que
+va con la 43 en `master` y antes de la 44.
+
+| # | Decisión |
+|---|---|
+| E1 | El idioma de la cuenta es el que ve el alumno al registrarse: `?lang=`, luego `whetzy_lang`, luego el navegador. Vale para el formulario, la portada y OAuth. Después solo lo cambia el alumno en Yo. |
+| E2 | Al registrarse sale un solo correo, el de verificación. La bienvenida sale al verificar, una vez. Con OAuth (cuenta ya verificada) sale al crearla. |
+| E3 | La app no se bloquea por no verificar: tras registrarse se entra al onboarding. |
+| E4 | Mientras no esté verificado, una franja en el armazón de la app: «Te enviamos un enlace a fe***@… · Reenviar · ×». Reenviar usa el endpoint público con 60 s entre reenvíos en el cliente; la × la oculta en esa sesión del navegador. |
+| E5 | El enlace del correo lleva el idioma (`/verify-email?token=…&lang=`). Con sesión, «Continuar» lleva a `/` y refresca `/auth/me`; sin sesión, «Iniciar sesión» lleva a `/login?lang=`. |
+| E6 | Los errores de OAuth del formulario pasan a i18n ES/EN. |
+
+**Lo que no cambia.** Estar verificado sigue afectando solo a las recompensas por invitar y a algunos correos
+periódicos. Sin migraciones y sin `content/**`.

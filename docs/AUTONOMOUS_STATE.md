@@ -41,6 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
+| 45 | Alta con correo | 0/4 | 0 % | 45.1, 45.2, 45.3, 45.4 |
 | 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
 | 43 | Flujo del alumno listo para pruebas | 1/8 | 12 % | 43.1, 43.3, 43.4, 43.5, 43.6, 43.7 +1 |
 | 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
@@ -566,7 +567,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 44. Back-office de soporte (plan del dueño 2026-10-17; `PLAN_BACKOFFICE.md`)
 
-> **Estado:** `ABIERTA`. **PRI:** 0. Tras cerrar la 43 (43.8 en verde) y antes del resto de la 42. Una rama y un PR por fila.
+> **Estado:** `ABIERTA`. **PRI:** 0. Tras cerrar la 43 (43.8 en verde) **y la 45**, y antes del resto de la 42. Una rama y un PR por fila.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
@@ -574,6 +575,17 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 44.2 | **0** | `POST /admin/users/{id}/actions/{accion}`: las cinco acciones de B4, con motivo y fila en el registro | TODO (tras 44.1) | un test por acción; motivo vacío 422; plan regalado > 90 días 422; suspender invalida la sesión |
 | 44.3 | **0** | Pestañas «Usuarios» y «Registro» en `AdminScreen`; i18n ES/EN | TODO (tras 44.2) | vitest de búsqueda, ficha y acción; e2e `admin.spec.ts`; un alumno no ve la pestaña |
 | 44.4 | **1** | Docs de soporte (MAPA_PRODUCTO, ARCHITECTURE, RUNBOOK) y «queda registrado» en `legal.privacySupportAccess` | TODO (tras 44.3) | `check_docs.py` verde |
+
+### 45. Alta con correo (plan del dueño 2026-10-17; `PLAN_CORREO_ALTA.md`; ADR-66)
+
+> **Estado:** `ABIERTA`. **PRI:** 0. Con la 43 en `master` y **antes de la 44**. Una rama y un PR por fila; sin migraciones ni `content/**`.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 45.1 | **0** | E1, E6: idioma del alta (`?lang` → `whetzy_lang` → navegador; portada y OAuth `start?lang=`); errores OAuth en i18n | TODO (tras la 43) | `whetzy_lang=es` + navegador `en` → `language:'es'`; OAuth cuenta nueva con su `lang` |
+| 45.2 | **0** | E2: un solo correo al registrarse (verificación); bienvenida al verificar, una vez; `verify_url` con `&lang=` | TODO (tras 45.1) | registro `es` → 1 correo «Verifica tu email en Whetzy»; verificar → bienvenida 1 vez |
+| 45.3 | **0** | E4: franja «verifica tu correo» con Reenviar (60 s) y ×; `UserRead.email_verified` | TODO (tras 45.2) | aparece con `false`, no con `true`; e2e registro → franja |
+| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Continuar» → `/` o «Iniciar sesión» → `/login?lang=` | TODO (tras 45.3) | e2e ES con navegador EN: correo ES → franja → verificar → sin franja (Chromium y entre-sitios) |
 
 ## 3. Cola HUMAN-BLOCKED
 
