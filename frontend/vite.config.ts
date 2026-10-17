@@ -304,9 +304,11 @@ function requireApiUrl(): Plugin {
       // 2026-09-24: el bundle salio con 'https://whetzy.com' como API. Es un
       // origen absoluto y paso el guardia, pero es el propio frontend: el
       // login iba a Cloudflare y volvia 405. La API nunca vive en el dominio
-      // del SPA y su ruta siempre acaba en /api/v1.
+      // del SPA y su ruta siempre acaba en /api/v1. Un subdominio propio
+      // (`api.whetzy.com`, 2026-10-17) si vale: es otro host, y comparte sitio
+      // con el SPA, que es lo que deja viva la cookie de sesion en Safari.
       const { hostname, pathname } = new URL(url);
-      if (/(^|\.)whetzy\.com$/.test(hostname) || !/\/api\/v1\/?$/.test(pathname)) {
+      if (/^(www\.)?whetzy\.com$|\.pages\.dev$/.test(hostname) || !/\/api\/v1\/?$/.test(pathname)) {
         throw new Error(
           `VITE_API_URL es ${JSON.stringify(url)}: tiene que ser el origen del backend ` +
             '(no el dominio del frontend) terminado en /api/v1.'

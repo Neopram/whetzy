@@ -18,7 +18,9 @@ from urllib.parse import urlparse
 RAIZ = Path(__file__).resolve().parents[2]
 FRONTEND = RAIZ / "frontend"
 FUNCION_API = FRONTEND / "functions" / "api" / "[[path]].js"
-DOMINIO_FRONTEND = "whetzy.com"
+# Hosts que sirven el SPA. La API puede vivir en un subdominio propio
+# (`api.whetzy.com`, 2026-10-17), pero nunca en uno de estos.
+HOSTS_FRONTEND = {"whetzy.com", "www.whetzy.com"}
 
 
 def test_no_hay_functions_en_la_raiz() -> None:
@@ -40,10 +42,30 @@ def test_la_api_de_produccion_no_es_el_frontend() -> None:
     assert m, "frontend/.env.production sin VITE_API_URL"
     url = urlparse(m.group(1))
     assert url.scheme == "https", m.group(1)
-    assert url.hostname and not url.hostname.endswith(DOMINIO_FRONTEND), (
+    assert url.hostname, m.group(1)
+    assert url.hostname not in HOSTS_FRONTEND and not url.hostname.endswith(".pages.dev"), (
         f"{m.group(1)} es el propio frontend: el login daría 405"
     )
     assert url.path.rstrip("/").endswith("/api/v1"), f"{m.group(1)} no acaba en /api/v1"
+
+
+def test_la_csp_deja_hablar_con_la_api() -> None:
+    """Cada `connect-src` de `public/_headers` incluye el origen de `VITE_API_URL`.
+
+    Cambiar la URL de la API sin tocar la CSP deja el bundle apuntando a un
+    origen que el navegador bloquea: todas las llamadas fallan sin respuesta
+    del servidor (2026-10-17, paso a `api.whetzy.com`).
+    """
+    env = (FRONTEND / ".env.production").read_text(encoding="utf-8")
+    m = re.search(r"^VITE_API_URL=(\S+)$", env, re.MULTILINE)
+    assert m, "frontend/.env.production sin VITE_API_URL"
+    url = urlparse(m.group(1))
+    origen = f"{url.scheme}://{url.netloc}"
+    cabeceras = (FRONTEND / "public" / "_headers").read_text(encoding="utf-8")
+    politicas = re.findall(r"connect-src ([^;]+);", cabeceras)
+    assert politicas, "public/_headers sin connect-src"
+    sin_api = [p for p in politicas if origen not in p.split()]
+    assert not sin_api, f"connect-src sin {origen}: {sin_api}"
 
 
 def test_hay_package_lock() -> None:
