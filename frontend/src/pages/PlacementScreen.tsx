@@ -21,7 +21,15 @@ import styles from './PlacementScreen.module.css';
  * se estaba usando.
  *
  * Ahora la pantalla no calcula: pregunta, muestra y se aparta.
+ *
+ * 43.3 (ADR-65 D3/D4): la prueba tiene 20 preguntas exactas
+ * (`PLACEMENT_LENGTH` en `backend/app/services/placement.py`) y un módulo con
+ * buen acierto «empieza con ventaja»: sus skills quedan practicables, no
+ * dominadas. Al acabar se va a Hoy.
  */
+
+/** Las mismas 20 de `PLACEMENT_LENGTH`; lo vigila `test_placement_regla_visible.py`. */
+export const PLACEMENT_LENGTH = 20;
 
 /** El motor devuelve theta en logits (~-3..3); la barra necesita 0..1. */
 function thetaAPorcentaje(theta: number): number {
@@ -149,7 +157,7 @@ export function PlacementScreen({ trackId }: Props) {
           </div>
         </div>
         <button className={styles.startBtn} onClick={empezar}>{t('placement.start')}</button>
-        <button className={styles.skipBtn} onClick={() => setScreen('tracks')}>
+        <button className={styles.skipBtn} onClick={() => setScreen('home')}>
           {t('placement.skip')}
         </button>
       </div>
@@ -165,7 +173,7 @@ export function PlacementScreen({ trackId }: Props) {
       <div className={styles.intro}>
         <span className={styles.introIcon}>⚠️</span>
         <p className={styles.introDesc} role="alert">{fallo}</p>
-        <button className={styles.skipBtn} onClick={() => setScreen('tracks')}>
+        <button className={styles.skipBtn} onClick={() => setScreen('home')}>
           {t('placement.skip')}
         </button>
       </div>
@@ -201,10 +209,11 @@ export function PlacementScreen({ trackId }: Props) {
             <p className={styles.resultDesc}>
               {t('placement.canSkipCount', { count: saltables.length })}
             </p>
-            {/* El porqué del salto (35.2). Umbral y mínimo son los de
-                backend/app/services/engine/placement.py; los vigila
+            {/* El porqué de la ventaja (35.2, D4). Umbral y mínimo son
+                MODULE_STRONG_ACCURACY y MODULE_STRONG_MIN de
+                backend/app/services/placement.py; los vigila
                 backend/tests/test_placement_regla_visible.py. */}
-            <p className={styles.resultDesc}>{t('placement.skipRule', { pct: 70, min: 8 })}</p>
+            <p className={styles.resultDesc}>{t('placement.skipRule', { pct: 70, min: 2 })}</p>
             <ul className={styles.skipList}>
               {saltables.map((m) => (
                 <li key={m.module_id} className={styles.skipItem}>
@@ -221,7 +230,7 @@ export function PlacementScreen({ trackId }: Props) {
           <p className={styles.resultDesc}>{t('placement.noSkips')}</p>
         )}
 
-        <button className={styles.startBtn} onClick={() => setScreen('tracks')}>
+        <button className={styles.startBtn} onClick={() => setScreen('home')}>
           {t('placement.startLearning')}
         </button>
       </div>
@@ -232,10 +241,9 @@ export function PlacementScreen({ trackId }: Props) {
   return (
     <div className={styles.screen}>
       <div className={styles.header}>
-        {/* El CAT no tiene un total fijo: para cuando la estimacion se
-            estabiliza. Se enseña cuantas van, no una barra que miente. */}
+        {/* 43.3 (D3): total fijo de 20, así que ya se puede decir cuántas quedan. */}
         <span className={styles.headerLabel}>
-          {t('placement.answered', { n: respondidas })}
+          {t('placement.questionOf', { n: Math.min(respondidas + 1, PLACEMENT_LENGTH), total: PLACEMENT_LENGTH })}
         </span>
       </div>
 

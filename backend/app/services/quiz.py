@@ -393,7 +393,7 @@ async def _select_skill(
             .where(
                 StudySession.user_id == user.id,
                 # Same evidence as the BKT arm (C3): placement answers seed
-                # UserSkillState once (`_seed_skill_states`) and never go
+                # UserSkillState once (`_seed_by_module`) and never go
                 # through `bkt.update`, so the DKT arm must not read them either
                 # or the A/B compares two different histories.
                 StudySession.mode != "placement",

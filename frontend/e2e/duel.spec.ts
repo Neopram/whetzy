@@ -119,10 +119,10 @@ test.describe('duel', () => {
     await oppPage.getByLabel('Contraseña').fill('e2e-test-pass-123');
     await oppPage.getByRole('button', { name: 'ENTRAR' }).click();
 
-    // Second browser context: the onboarding flag lives in localStorage, so the
-    // opponent gets the first-run screen here even though the account already
-    // exists — logging in is not enough to skip it.
-    await suppressOnboarding(oppPage);
+    // Second browser context. Since 43.3 the onboarding flag also lives on the
+    // server, so the opponent usually goes straight to Hoy; `maybeDone` covers
+    // both (the server write is fire-and-forget after the first context).
+    await suppressOnboarding(oppPage, { maybeDone: true });
     await expect(oppPage.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
 
     // Navigate to duels and play

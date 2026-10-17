@@ -36,6 +36,6 @@ describe('RetiredCertNotice (D-19)', () => {
 
   it('el onboarding marca la certificación retirada al elegirla', () => {
     const src = readFileSync(join(process.cwd(), 'src/pages/OnboardingScreen.tsx'), 'utf8');
-    expect(src).toContain("retiredCertificationFor(ct.id)");
+    expect(src).toContain("retiredCertificationFor(id)");
   });
 });

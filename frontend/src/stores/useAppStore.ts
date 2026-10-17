@@ -32,6 +32,10 @@ interface UserProfile {
   /** «Admin» en Perfil: solo el dueño. `/auth/me` no mandaba `is_admin`, así
    *  que el enlace no se veía nunca (auditoría de pantallas, 2026-10-16). */
   isOwner: boolean;
+  /** 43.3 (D2): el servidor guarda que terminó el onboarding (`onboarding_completed_at`). */
+  onboardingCompleted: boolean;
+  /** 43.3 (D2): horas por semana (0 <3 h, 1 3-10 h, 2 >10 h); se elige en Perfil. */
+  weeklyTime: number | null;
   language: Language;
   league: LeagueTier;
 }
@@ -159,6 +163,8 @@ function mapApiUser(u: UserRead): UserProfile {
     marketingEmails: !u.marketing_emails_opt_out,
     canCreateCourses: u.can_create_courses ?? false,
     isOwner: u.is_owner ?? false,
+    onboardingCompleted: Boolean(u.onboarding_completed_at),
+    weeklyTime: u.onboarding_weekly_time ?? null,
     language: u.language,
     league: 'bronze',
   };
@@ -189,6 +195,8 @@ const defaultUser: UserProfile = {
   marketingEmails: true,
   canCreateCourses: false,
   isOwner: false,
+  onboardingCompleted: false,
+  weeklyTime: null,
   language: 'es',
   league: 'gold',
 };

@@ -30,7 +30,9 @@ POST  /auth/register              → Token (201)
 POST  /auth/login                 → Token | {mfa_required, mfa_token} (200, form-urlencoded) — con 2FA activada no abre sesión: devuelve el reto (5 min) para `/auth/2fa/login`
 POST  /auth/refresh               → Token (200)
 GET   /auth/me                    → UserRead (200) 🔒
-PATCH /auth/me                    → UserRead (200) 🔒  — update profile (language, display_name)
+PATCH /auth/me                    → UserRead (200) 🔒  — update profile (language, display_name, onboarding answers,
+                                     target_track_id, target_certification_id — certification tracks only, else 422 —
+                                     and onboarding_completed: true, which sets onboarding_completed_at once; 43.3)
 DELETE /auth/me/account           → {message} (200) 🔒
 POST  /auth/logout                 → {message} (200) 🔒  — sube `jwt_version` (41.18): cualquier access/refresh emitido antes queda inválido, igual que ya hace el cambio de contraseña
 PATCH /auth/me/password           → {message} (200) 🔒  — body {current_password, new_password}
@@ -73,7 +75,9 @@ GET  /progress/thresholds         → canonical domain thresholds (mastery, modu
 
 ```
 POST /placement/start             → {session_id, question} 🔒
-POST /placement/answer            → next question or {finished: true, result} 🔒
+POST /placement/answer            → next question or {finished: true, result} 🔒  — exactly 20 questions (43.3, ADR-65 D3):
+                                     5 basic, 5 intermediate, 5 advanced, then 5 in the frontier band; on finish it seeds
+                                     p_known per module (D4: ≥ 70 % of ≥ 2 → 0.6, else shrunk toward 0.1; never lowers history)
 GET  /placement/result            → placement result (last completed placement) 🔒
 ```
 

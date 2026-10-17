@@ -1,7 +1,7 @@
 """Motor conectado como dice que está (plan 2026-10-13, fase 2).
 
 - C3: la cohorte DKT no lee respuestas de la prueba de nivel; el brazo BKT
-  tampoco las procesa (`_seed_skill_states` siembra una vez), así que el A/B
+  tampoco las procesa (`_seed_by_module` siembra una vez), así que el A/B
   comparaba dos historias distintas.
 - D3: P(G) sale del formato del ítem: verdadero/falso es 0,5 y n opciones 1/n;
   con 0,25 para todo, un acierto de verdadero/falso subía el dominio como uno de
