@@ -298,3 +298,21 @@ def test_has_statement_ve_la_sentencia_tras_los_comentarios(test):
     assert has_statement(test)
     assert check_sql(SQL_OK_1, test).passed
 
+
+
+def test_sandbox_acota_la_memoria_de_una_ordenacion():
+    """Tercer §7 de 43.6 (2026-10-17): ordenar blobs grandes crece en memoria sin
+    que `max_page_count` lo vea (~550 MB en 2 s, medido); sin memoria libre
+    `MemoryError` escapaba y el endpoint daba 500. Con `hard_heap_limit` falla
+    pronto, como error del paso."""
+    t0 = time.monotonic()
+    r = check_sql(
+        "WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n LIMIT 3000) "
+        "SELECT randomblob(900000) AS b FROM n ORDER BY b;",
+        NO_OP,
+    )
+    assert not r.passed and not r.timed_out
+    assert r.error == "out of memory"
+    assert time.monotonic() - t0 < 1.5
+    # El límite no estorba a un ejercicio normal.
+    assert check_sql(SQL_OK_1, SQL_TEST_1).passed
