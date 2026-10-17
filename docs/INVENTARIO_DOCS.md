@@ -22,12 +22,12 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 
 | Clase | Ficheros |
 |---|---|
-| normativo-vivo | 21 |
+| normativo-vivo | 22 |
 | referencia-viva | 64 |
 | histórico | 47 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **177** |
+| **Total** | **178** |
 
 ## Raíz del repo y otras carpetas
 
@@ -84,6 +84,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/AUTONOMOUS_STATE.md` | normativo-vivo | ledger, fuente de verdad (ADR-40); ledger.py check | se queda | 2026-09-30 |
 | `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
+| `docs/PLAN_BACKOFFICE.md` | normativo-vivo | plan del dueño del 2026-10-17: back-office de soporte (búsqueda, ficha, 5 acciones, registro de administración); serie 44, tras la 43 | se queda | 2026-10-17 |
 | `docs/PLAN_CONTENIDO.md` | normativo-vivo | método de autoría desde la fuente, piloto 37.25, orden y organización (ADR-59) | se queda | 2026-10-03 |
 | `docs/PLAN_MAESTRO.md` | normativo-vivo | norte del producto: tesis, flujos por actor, arquitectura, oleadas A–H con criterio de salida, cola del dueño (aprobado 2026-10-04) | se queda | 2026-10-04 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
