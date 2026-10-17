@@ -19,6 +19,10 @@ test.describe('duel', () => {
       },
     });
     expect(registerRes.ok(), await registerRes.text()).toBeTruthy();
+    // 43.5 (ADR-65 D7): un duelo va sobre una skill con la lección vista por
+    // los dos. `request` guarda la sesión del registro del rival.
+    const oppLesson = await request.get(`${baseURL}/api/v1/lessons/sk010101`);
+    expect(oppLesson.ok(), await oppLesson.text()).toBeTruthy();
 
     // Challenging requires skill history — complete a study session first.
     await registerAndCompleteAQuiz(page, { username: challengerUsername, displayName: 'E2E Challenger' });
@@ -67,6 +71,9 @@ test.describe('duel', () => {
       },
     });
     expect(oppReg.ok(), await oppReg.text()).toBeTruthy();
+    // 43.5 (D7): la lección del rival, como arriba.
+    const oppLesson = await request.get(`${baseURL}/api/v1/lessons/sk010101`);
+    expect(oppLesson.ok(), await oppLesson.text()).toBeTruthy();
 
     // ── Context 1: Challenger ────────────────────────────────────────────────
     const chalContext = await browser.newContext();

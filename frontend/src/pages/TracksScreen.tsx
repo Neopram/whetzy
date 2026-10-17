@@ -21,6 +21,7 @@ import {
   type TrackExamBlueprint,
   type TrackRead,
 } from '../services/api';
+import { canPractice } from '../lib/nextStep';
 import styles from './TracksScreen.module.css';
 
 type View = 'curriculum' | 'map' | 'glossary';
@@ -370,7 +371,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
                 if (mod.status === 'locked') return;
                 // 32.4: sin ninguna lección vista en el módulo, el backend
                 // bloquearía el quiz igual: directo a la lección.
-                if (!mod.skills.some((s) => s.lesson_seen)) startLesson(weakestSkill(mod.skills));
+                if (!mod.skills.some(canPractice)) startLesson(weakestSkill(mod.skills));
                 else startQuiz('study', 10, { trackId: track.id });
               }}
             />
@@ -458,7 +459,7 @@ function ModuleItem({
   // 32.4: el backend exige haber visto la lección de al menos una habilidad
   // del módulo antes de dejar practicar: botón desactivado con su motivo, no
   // un «Practicar» que acaba en el 200 vacío de /quiz/start.
-  const needsLesson = !locked && !m.skills.some((s) => s.lesson_seen);
+  const needsLesson = !locked && !m.skills.some(canPractice);
   const masteredCount = m.skills.filter((s) => s.mastered).length;
   const sub = locked
     ? prerequisite

@@ -64,7 +64,9 @@ GET  /quiz/review-due             → {questions[], count} 🔒  — FSRS review
 ```
 GET  /progress/dashboard          → overall stats 🔒
 GET  /progress/skills             → skill mastery list (?track_id= filter) 🔒
-GET  /progress/curriculum         → module/skill tree with BKT gates (?track_id= filter) 🔒
+GET  /progress/curriculum         → module/skill tree with BKT gates (?track_id= filter); per skill `lesson_seen`
+                                     (lesson opened) and `practice_unlocked` (lesson seen, passed test-out or a module
+                                     with a head start in the placement test; 43.5, ADR-65 D7/H.60) 🔒
 GET  /progress/predictions        → DKT probability per skill (?track_id= filter) 🔒
 GET  /progress/risk               → churn risk score 🔒
 GET  /progress/decaying           → skills whose FSRS stability is decaying (?track_id= filter, 43.4) 🔒
@@ -84,7 +86,8 @@ GET  /placement/result            → placement result (last completed placement
 ## Duel endpoints
 
 ```
-POST /duels/challenge                → {duel_id, questions[]} 🔒
+POST /duels/challenge                → {duel_id, questions[]} 🔒  — 409 {code: needs_lesson | opponent_needs_lesson}
+                                     when either player can't practise the skill yet (43.5, D7)
 GET  /duels/my                       → list of my duels 🔒
 GET  /duels/{duel_id}/join           → join a duel (returns questions) 🔒
 POST /duels/{duel_id}/answer         → {answered, completed} 🔒
@@ -195,7 +198,8 @@ List and detail are unauthenticated; start, progress and submit-step require log
 ## Lessons endpoints
 
 ```
-GET  /lessons/{skill_id}   → {skill_id, lesson_es, lesson_en, example_code} 🔒
+GET  /lessons/{skill_id}   → {skill_id, lesson_es, lesson_en, example_code} 🔒  — records the lesson as seen; since
+                            43.5 practising (study/review) a skill requires it, a passed test-out or placement head start
 ```
 
 ## Badges & missions endpoints

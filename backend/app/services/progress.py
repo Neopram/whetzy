@@ -199,7 +199,10 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
     # 32.4: qué skills de este track ya tienen la lección abierta, para que el
     # frontend pueda avisar antes de mandar a un "Practicar" que el backend
     # igual va a bloquear en /quiz/start.
-    seen_skill_ids = await lesson_gate.viewed_skill_ids(db, user.id, all_skill_ids)
+    # 43.5 (H.60): «lección vista» es solo lo abierto; la práctica además se
+    # desbloquea por test-out o por ventaja en la prueba de nivel.
+    seen_skill_ids = await lesson_gate.lesson_viewed_skill_ids(db, user.id, all_skill_ids)
+    unlocked_skill_ids = await lesson_gate.practice_unlocked_skill_ids(db, user.id, all_skill_ids)
 
     def module_avg(module: Module) -> float:
         skills = sorted(module.skills, key=lambda s: s.order)
@@ -236,6 +239,7 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
                 mastered=mastery_by_skill.get(s.id, 0.0) >= MASTERY_THRESHOLD,
                 attempts=attempts_by_skill.get(s.id, 0),
                 lesson_seen=s.id in seen_skill_ids,
+                practice_unlocked=s.id in unlocked_skill_ids,
             )
             for s in sorted(module.skills, key=lambda s: s.order)
         ]

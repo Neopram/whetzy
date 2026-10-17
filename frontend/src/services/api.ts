@@ -641,6 +641,8 @@ export interface CurriculumSkill {
   attempts: number;
   /** 32.4: si ya abrió la lección de este skill — el backend bloquea el quiz si no. */
   lesson_seen: boolean;
+  /** 43.5 (H.60): se puede practicar sin abrir la lección. */
+  practice_unlocked?: boolean;
 }
 
 export interface CurriculumModule {

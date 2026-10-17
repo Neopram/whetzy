@@ -72,6 +72,9 @@ class CurriculumSkill(BaseModel):
     # 32.4: si el frontend debe dejar practicar este skill sin haber abierto
     # su lección primero (el backend igual lo exige en /quiz/start).
     lesson_seen: bool
+    # 43.5 (H.60): se puede practicar sin abrir la lección (test-out aprobado o
+    # ventaja en la prueba de nivel). Siempre True si `lesson_seen`.
+    practice_unlocked: bool = False
 
 
 class CurriculumModule(BaseModel):

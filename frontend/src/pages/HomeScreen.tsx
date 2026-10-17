@@ -8,6 +8,7 @@ import { useApi } from '../hooks/useApi';
 import { progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
 import { listVariants, listItemVariants } from '../lib/motion';
 import { bandForSkill, overallBand, MIN_EVIDENCE_ANSWERS, type EvidenceBand } from '../lib/evidenceBand';
+import { nextLessonSkillId } from '../lib/nextStep';
 import styles from './HomeScreen.module.css';
 
 // Saludo entero por clave: «Buenos» + «noches» salía «Buenos noches».
@@ -33,6 +34,7 @@ export function HomeScreen() {
   // los repasos y el territorio salen solo de ella; antes mezclaban todas.
   const activeTrackId = useAppStore((s) => s.activeTrackId);
   const browseTracks = useAppStore((s) => s.browseTracks);
+  const startLesson = useAppStore((s) => s.startLesson);
   const lang = user.language;
   const { t } = useTranslation();
 
@@ -40,6 +42,14 @@ export function HomeScreen() {
   const missions = useApi(() => gamification.missions(), []);
   const decaying = useApi(() => progressApi.decaying(7, 5, activeTrackId ?? undefined), [activeTrackId]);
   const skills = useApi(() => progressApi.skills(activeTrackId ?? undefined), [activeTrackId]);
+  // 43.5 (ADR-65 D7): «Estudiar» abre la siguiente lección pendiente de la
+  // ruta activa; solo cuando no queda ninguna, practica.
+  const cur = useApi(
+    () => (activeTrackId ? progressApi.curriculum(activeTrackId) : Promise.resolve(null)),
+    [activeTrackId],
+  );
+  const nextLessonId = cur.data ? nextLessonSkillId(cur.data) : null;
+  const nextLesson = cur.data?.modules.flatMap((m) => m.skills).find((s) => s.skill_id === nextLessonId);
 
   const activeTrack = (dash.data?.tracks ?? []).find((tr) => tr.track_id === activeTrackId);
   // Solo las rutas con algo practicado: el panel devuelve las 35, y promediar
@@ -106,11 +116,18 @@ export function HomeScreen() {
 
         <motion.section className={styles.next} variants={listItemVariants} aria-label={t('home.nextStep')}>
           <p className={styles.nextLabel}>{t('home.nextStep')}</p>
-          <p className={styles.nextName}>{t('home.nextStudy')}</p>
-          <p className={styles.nextHint}>{t('home.nextHint')}</p>
+          <p className={styles.nextName} data-testid="home-next">
+            {nextLesson
+              ? t('home.nextLesson', { name: lang === 'es' ? nextLesson.name_es : nextLesson.name_en })
+              : t('home.nextStudy')}
+          </p>
+          <p className={styles.nextHint}>{nextLesson ? t('home.nextLessonHint') : t('home.nextHint')}</p>
           <motion.button
             className={styles.btnStudy}
-            onClick={() => startQuiz('study', 10, activeTrackId ? { trackId: activeTrackId } : undefined)}
+            onClick={() => {
+              if (nextLessonId) startLesson(nextLessonId);
+              else startQuiz('study', 10, activeTrackId ? { trackId: activeTrackId } : undefined);
+            }}
             whileTap={{ scale: 0.98 }}
           >
             {t('home.studyNow')}
