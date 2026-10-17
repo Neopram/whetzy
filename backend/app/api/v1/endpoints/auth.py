@@ -10,7 +10,7 @@ from datetime import UTC, datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr, Field, field_validator
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.cookies import clear_auth_cookies, set_auth_cookies
@@ -36,6 +36,7 @@ from app.models.password_reset import PasswordResetToken
 from app.models.user import User
 from app.schemas.user import RefreshRequest, Token, UserCreate, UserRead
 from app.services import account_deletion, attribution
+from app.services.user_lookup import user_by_email, username_taken
 from app.services.username_filter import contains_blocked_word
 
 router = APIRouter()
@@ -97,17 +98,8 @@ class ChangePasswordRequest(BaseModel):
 
 
 
-async def _user_by_email(db: AsyncSession, email: str) -> User | None:
-    """Busca por email sin caja (43.2). Las cuentas creadas antes de normalizar
-    guardan la caja original; si dos solo difieren en la caja, gana la más
-    antigua, en vez de reventar con `MultipleResultsFound`."""
-    result = await db.execute(
-        select(User)
-        .where(func.lower(User.email) == email.strip().lower())
-        .order_by(User.created_at)
-        .limit(1)
-    )
-    return result.scalar_one_or_none()
+# 43.2: compartido con OAuth (`services/user_lookup.py`).
+_user_by_email = user_by_email
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(
@@ -128,8 +120,7 @@ async def register(
             status_code=status.HTTP_409_CONFLICT,
             detail={"code": "email_taken", "field": "email"},
         )
-    taken = await db.execute(select(User.id).where(User.username == payload.username))
-    if taken.scalar_one_or_none() is not None:
+    if await username_taken(db, payload.username):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail={"code": "username_taken", "field": "username"},
@@ -414,6 +405,7 @@ async def read_current_user(current_user: User = Depends(get_current_user)) -> U
 
 @router.delete("/me/account", status_code=status.HTTP_200_OK)
 async def delete_account(
+    response: Response,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
@@ -423,6 +415,9 @@ async def delete_account(
     (`account_deletion.restore_if_pending`).
     """
     purge_at = await account_deletion.request_deletion(db, current_user)
+    # La cuenta ya no vale (403), pero sin esto el navegador seguía guardando
+    # la sesión: «atrás» volvía a Hoy (iPhone del dueño, 2026-10-17).
+    clear_auth_cookies(response)
     return {
         "message": (
             "Cuenta desactivada. Se borrará permanentemente en 30 días; "

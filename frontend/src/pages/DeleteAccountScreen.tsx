@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL as BASE_URL } from '../services/api';
+import { useAppStore } from '../stores/useAppStore';
 import { Button } from '../components/common/Button';
 import styles from './DeleteAccountScreen.module.css';
 
@@ -57,6 +58,9 @@ export function DeleteAccountScreen() {
         credentials: 'include',
       });
       if (!res.ok) throw new Error(t('deleteAccount.deleteFailed'));
+      // La cuenta ya está desactivada: se cierra también la sesión de este
+      // navegador, o «atrás» vuelve a Hoy con el usuario guardado (2026-10-17).
+      useAppStore.getState().signOut();
       setPhase('done');
     } catch (err: unknown) {
       setErrorMsg(err instanceof Error ? err.message : t('deleteAccount.networkError'));

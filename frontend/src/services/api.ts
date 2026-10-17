@@ -272,6 +272,14 @@ async function request<T>(path: string, options: RequestInit = {}, retry = true)
         : detail && typeof detail === 'object' && typeof (detail as { code?: unknown }).code === 'string'
           ? (detail as { code: string }).code
           : `HTTP ${res.status}`;
+    // Cuenta desactivada (borrado con 30 días de gracia): el servidor contesta
+    // 403 «Inactive user» a todo. Es una sesión terminada, como el 401 de
+    // arriba; antes «atrás» tras borrar la cuenta volvía a Hoy (iPhone del
+    // dueño, 2026-10-17). /auth/logout se excluye: lo llama signOut() y
+    // avisar desde ahí haría un bucle.
+    if (res.status === 403 && detail === 'Inactive user' && path !== '/auth/logout') {
+      onSessionExpired?.();
+    }
     throw new ApiError(message, res.status, detail);
   }
 
