@@ -24,12 +24,16 @@ timeout congelaba el bucle de eventos entero.
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import smtplib
 import ssl
+import time
+import uuid
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from html import escape as _escape_html
+from pathlib import Path
 
 logger = logging.getLogger("whetzy.email")
 
@@ -349,6 +353,22 @@ def _send_log(to: str, subject: str, html: str) -> None:
     logger.info(
         "EMAIL (log-only) to=%s subject=%r body_chars=%d",
         to, subject, len(html),
+    )
+    _write_outbox(to, subject, html)
+
+
+def _write_outbox(to: str, subject: str, html: str) -> None:
+    """45.4: el e2e lee aquí el enlace del correo. Solo fuera de producción."""
+    from app.core.config import settings
+
+    if not settings.EMAIL_OUTBOX_DIR or settings.ENVIRONMENT == "production":
+        return
+    outbox = Path(settings.EMAIL_OUTBOX_DIR)
+    outbox.mkdir(parents=True, exist_ok=True)
+    name = f"{time.time_ns()}-{uuid.uuid4().hex[:8]}.json"
+    (outbox / name).write_text(
+        json.dumps({"to": to, "subject": subject, "html": html}, ensure_ascii=False),
+        encoding="utf-8",
     )
 
 

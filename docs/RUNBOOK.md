@@ -267,6 +267,11 @@ PADDLE_PRICE_CERTIFICATION=<pri_…>     # certificación 39,99 $, pago único
 # SMTP_USER=... SMTP_PASSWORD=...   # alternativa a Resend (hacen falta las dos)
 ```
 
+`EMAIL_OUTBOX_DIR` **no se pone en producción**: es el buzón de prueba del e2e (45.4). Con el proveedor `log`, cada
+correo se guarda como JSON en esa carpeta para que `e2e/correoAlta.spec.ts` lea el enlace de verificación
+(`playwright.config.ts` la pasa al backend; por defecto `<tmp>/whetzy-e2e-outbox`, o `E2E_OUTBOX_DIR`). Con
+`ENVIRONMENT=production` no escribe aunque esté puesta.
+
 ### Cuenta de dueño (acceso a `/admin`)
 
 `scripts/start.sh` corre `python -m app.services.bootstrap_owner` en cada arranque.

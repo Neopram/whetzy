@@ -195,6 +195,10 @@ class Settings(BaseSettings):
     RESEND_API_KEY: str = ""
     EMAIL_FROM_ADDRESS: str = "noreply@whetzy.com"
     EMAIL_FROM_NAME: str = "Whetzy"
+    # 45.4: buzón de prueba. Con el proveedor `log`, cada correo se guarda como JSON
+    # en esta carpeta para que el e2e lea el enlace. Vacío = apagado; en producción
+    # no escribe nunca (`email._send_log`).
+    EMAIL_OUTBOX_DIR: str = ""
     FRONTEND_BASE_URL: str = "https://whetzy.com"
     # Base pública de esta API: el enlace de baja de un correo (RFC 8058) tiene
     # que aceptar un POST, así que apunta aquí y no al frontend.
