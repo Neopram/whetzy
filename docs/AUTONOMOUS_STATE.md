@@ -555,7 +555,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | BLOCKED (evidencia; fusionado #226; §7 2026-10-17 «no reproducible»: el e2e simula terceros en el mismo origen y no corre sin escribir config; 43.1b) | e2e con cookies de terceros bloqueadas: registro → Hoy |
+| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | BLOCKED (evidencia; fusionado #226 y #233; §7 ×3 «no reproducible»: el verificador `Explore` es de solo lectura y no corre un e2e que levanta servidores y escribe en la base; el e2e no prueba `SameSite=None` frente a la ITP → recorrido a mano en iPhone, §6) | e2e con cookies de terceros bloqueadas: registro → Hoy |
 | 43.2 | **0** | Registro sin fricción: errores por campo, email en minúsculas, filtro por palabra (D10) | DONE 2026-10-17 (#227; §7: pytest 5/5, vitest 8/8, `Maria@Gmail.COM`→minúsculas, i18n ES/EN; hallazgos fuera del criterio en #231) | `Maria@Gmail.COM` entra en minúsculas; 409 traducido |
 | 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | DOING (PR #230; migración 61) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
 | 43.4 | **0** | Ruta activa (D5) y Hoy filtrado por ella (D6); readiness de 42.6 | TODO (tras 43.3) | cambio de ruta persiste; Hoy solo de la ruta activa |
