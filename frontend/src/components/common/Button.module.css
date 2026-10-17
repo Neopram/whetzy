@@ -35,7 +35,10 @@
 /* ── Sizes ─────────────────────────────────────────────────────────────────── */
 .xs { padding: 4px 10px;  font-size: var(--le-fs-xs);   border-radius: var(--le-radius-sm); }
 .sm { padding: 8px 16px;  font-size: var(--le-fs-sm);  }
-.md { padding: 12px 24px; font-size: var(--le-fs-base); }
+/* 44 px: objetivo táctil mínimo (34.3, WCAG 2.5.5). Con 12 px arriba y abajo y una
+   línea de texto se quedaba en ~43 px según la métrica de la fuente, y
+   touchTargets.spec.ts lo veía en rojo unas veces sí y otras no (43.8). */
+.md { padding: 12px 24px; font-size: var(--le-fs-base); min-height: 44px; }
 .lg { padding: 16px 32px; font-size: var(--le-fs-md);  border-radius: var(--le-radius-lg); }
 .xl { padding: 18px 40px; font-size: var(--le-fs-lg);  border-radius: var(--le-radius-lg); }
 
