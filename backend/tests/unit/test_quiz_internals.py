@@ -527,6 +527,7 @@ class TestCandidateSkillIds:
     @pytest.mark.asyncio
     async def test_review_mode_returns_due_skills(self, db_session, user: User) -> None:
         await build_track(db_session)
+        await mark_lesson_seen(db_session, user.id, "trkA_m0_s0")
         db_session.add(
             UserSkillState(
                 user_id=user.id,
@@ -539,6 +540,59 @@ class TestCandidateSkillIds:
         got, reason = await _candidate_skill_ids(db_session, user, "review", None, None)
         assert got == ["trkA_m0_s0"]
         assert reason == "spaced_repetition_due"
+
+    @pytest.mark.asyncio
+    async def test_review_mode_does_not_serve_a_due_skill_without_its_lesson(
+        self, db_session, user: User
+    ) -> None:
+        """§7 de 43.5 (dueño, 2026-10-17, sin excepción): un repaso vencido de
+        una skill cuya lección no se ha visto no se sirve. El repaso vencido
+        puede venir de un simulacro respondido sin lección."""
+        await build_track(db_session)
+        db_session.add(
+            UserSkillState(
+                user_id=user.id,
+                skill_id="trkA_m0_s0",
+                p_known=0.5,
+                fsrs_due=datetime.now(UTC) - timedelta(days=1),
+            )
+        )
+        await db_session.commit()
+        got, reason = await _candidate_skill_ids(db_session, user, "review", None, None)
+        assert got == []
+        assert reason == "needs_lesson"
+
+    @pytest.mark.asyncio
+    async def test_exam_mode_without_any_lesson_seen_needs_lesson(
+        self, db_session, user: User
+    ) -> None:
+        """§7 de 43.5: el simulacro también es práctica; sin lección, no."""
+        await build_track(db_session)
+        got, reason = await _candidate_skill_ids(db_session, user, "exam", "trkA", None)
+        assert got == []
+        assert reason == "needs_lesson"
+        got, reason = await _candidate_skill_ids(db_session, user, "exam", None, "trkA_m0_s0")
+        assert got == []
+        assert reason == "needs_lesson"
+
+    @pytest.mark.asyncio
+    async def test_exam_mode_offers_only_skills_with_a_seen_lesson(
+        self, db_session, user: User
+    ) -> None:
+        await build_track(db_session)
+        await mark_lesson_seen(db_session, user.id, "trkA_m0_s1")
+        got, _ = await _candidate_skill_ids(db_session, user, "exam", "trkA", None)
+        assert got == ["trkA_m0_s1"]
+
+    @pytest.mark.asyncio
+    async def test_placement_mode_stays_open_without_lessons(
+        self, db_session, user: User
+    ) -> None:
+        """La prueba de nivel es la que desbloquea práctica sin lección (H.60):
+        exigirle lección la haría imposible en el onboarding."""
+        await build_track(db_session)
+        got, _ = await _candidate_skill_ids(db_session, user, "placement", "trkA", None)
+        assert set(got) == {"trkA_m0_s0", "trkA_m0_s1"}
 
     @pytest.mark.asyncio
     async def test_review_mode_falls_through_when_nothing_is_due(

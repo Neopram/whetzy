@@ -247,9 +247,11 @@ async def _is_module_unlocked(db: AsyncSession, user_id: uuid.UUID, module: Modu
 
 
 # 32.4: modos que exigen haber abierto la lección del skill antes de darle
-# preguntas nuevas de ese skill. "placement" y "exam" quedan fuera a
-# propósito: miden lo que el alumno ya sabe, no lo que acaba de aprender.
-_LESSON_GATED_MODES = frozenset({"study", "review"})
+# preguntas de ese skill. El simulacro ("exam") también, desde el §7 de 43.5
+# (dueño, 2026-10-17: «sin lección vista no hay práctica», sin excepción).
+# Solo "placement" queda fuera: la prueba de nivel es la que desbloquea
+# práctica sin lección (H.60) y exigírsela la haría imposible al empezar.
+_LESSON_GATED_MODES = frozenset({"study", "review", "exam"})
 
 
 async def _candidate_skill_ids(
@@ -280,6 +282,11 @@ async def _candidate_skill_ids(
             ).where(Module.track_id == track_id)
         result = await db.execute(query)
         due = [row[0] for row in result.all()]
+        if due:
+            # Un repaso vencido no basta: su lección tiene que estar vista
+            # (§7 de 43.5; el repaso pudo programarlo un simulacro).
+            seen_due = await lesson_gate.practice_unlocked_skill_ids(db, user.id, due)
+            due = [sid for sid in due if sid in seen_due]
         if due:
             return due, "spaced_repetition_due"
         # fall through to study-mode selection if nothing is due
@@ -336,10 +343,10 @@ async def _candidate_skill_ids(
 
     if mode in _LESSON_GATED_MODES:
         # 32.4: llegar aquí en modo "review" ya significa que no había nada
-        # pendiente y se cayó al estudio de material nuevo, así que se exige
-        # la lección igual que en "study". "placement"/"exam" evalúan lo que
-        # el alumno ya sabe -- exigir la lección primero rompería el propio
-        # propósito del examen de nivel.
+        # pendiente con lección vista y se cayó al estudio de material nuevo,
+        # así que se exige la lección igual que en "study" y en "exam".
+        # "placement" no: exigir la lección primero rompería el propio
+        # propósito del examen de nivel (H.60).
         seen = await lesson_gate.practice_unlocked_skill_ids(db, user.id, unlocked_skill_ids)
         gated = [sid for sid in unlocked_skill_ids if sid in seen]
         if not gated:
