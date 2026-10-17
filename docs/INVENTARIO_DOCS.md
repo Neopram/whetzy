@@ -22,12 +22,12 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 
 | Clase | Ficheros |
 |---|---|
-| normativo-vivo | 21 |
+| normativo-vivo | 22 |
 | referencia-viva | 64 |
 | histórico | 47 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **177** |
+| **Total** | **178** |
 
 ## Raíz del repo y otras carpetas
 
