@@ -62,8 +62,12 @@ export function useScreenHistory(enabled: boolean): void {
   useEffect(() => {
     if (!enabled || started.current) return;
     started.current = true;
+    // «/» no pide ninguna pantalla en concreto: manda la que la app ya eligió
+    // (43.3: el onboarding abre la prueba de nivel justo antes de arrancar
+    // esto, y antes se pisaba con Hoy). `currentScreen` no se persiste, así
+    // que al cargar la página sigue siendo 'home'.
     const fromUrl = screenForPath(window.location.pathname);
-    const screen = fromUrl ?? useAppStore.getState().currentScreen;
+    const screen = fromUrl && fromUrl !== 'home' ? fromUrl : useAppStore.getState().currentScreen;
     window.history.replaceState({ whetzyScreen: screen } satisfies Entry, '', pathForScreen(screen) + window.location.search);
     if (screen !== useAppStore.getState().currentScreen) useAppStore.getState().setScreen(screen);
   }, [enabled]);

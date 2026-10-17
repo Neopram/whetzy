@@ -100,7 +100,35 @@
     "next": "Next question in 1s…",
     "language": "Choose your language",
     "langDesc": "You can change this later in Settings",
-    "referralCode": "Referral code (optional)"
+    "referralCode": "Referral code (optional)",
+    "step": "Step {{n}} of {{total}}",
+    "goalTitle": "What do you want to achieve?",
+    "goal": {
+      "learn": "Learn",
+      "certify": "Get certified",
+      "both": "Both"
+    },
+    "trackTitle": "Choose your learning track",
+    "tracksFailed": "The tracks could not be loaded. Check your connection and try again.",
+    "groups": {
+      "programming": "Programming",
+      "software": "Software development",
+      "dataAi": "Data and AI",
+      "cloudInfra": "Cloud and infrastructure",
+      "security": "Security and networks"
+    },
+    "certTitle": "Do you also want to prepare for a certification?",
+    "certNone": "Not now",
+    "expTitle": "How much do you already know about {{track}}?",
+    "exp": {
+      "0": "I'm starting from zero",
+      "1": "I've seen some of it",
+      "2": "I use it often"
+    },
+    "startTitle": "Shall we take the placement test?",
+    "startDesc": "20 questions on {{track}}, about 10 minutes. What you get right lets Today start where you are, not with what you already know.",
+    "startTest": "Take the test",
+    "startZero": "I'm starting from zero"
   },
   "home": {
     "greetingMorning": "Good morning",
@@ -207,7 +235,7 @@
     "map": "Map",
     "learn": "Learn",
     "placementCta": "Already know some of this?",
-    "placementSub": "Take the placement test and skip what you already know",
+    "placementSub": "Take the placement test: 20 questions and you start where you are",
     "allTracks": "All tracks",
     "filter_all": "All",
     "filter_learn": "Learn",
@@ -259,6 +287,8 @@
     "noBadges": "No achievements yet. Start studying!",
     "settings": "Settings",
     "langLabel": "Language",
+    "weeklyTime": "Time per week",
+    "weeklyTimeOptions": { "0": "<3 h", "1": "3-10 h", "2": ">10 h" },
     "darkMode": "Dark mode",
     "streakReminders": "Streak reminders",
     "signOut": "Sign out",
@@ -459,18 +489,18 @@
   },
   "placement": {
     "title": "Placement Exam",
-    "algorithm": "Adaptive algorithm (BanditCAT)",
+    "algorithm": "20 questions: 15 across three levels and 5 that adapt to your answers",
     "levelResult": "Level: {{level}}",
     "questionOf": "Question {{n}} of {{total}}",
     "estimatedLevel": "Estimated level",
     "start": "START EXAM",
-    "skip": "Back to home",
-    "introDesc": "We'll estimate your current level in this track with adaptive questions: each one adjusts to your previous answers.",
-    "timeEst": "~15 minutes estimated",
-    "skipModules": "70% correct in a module lets you skip it",
+    "skip": "Go to Today",
+    "introDesc": "We'll see what you already know in this track so Today doesn't start with what you've mastered.",
+    "timeEst": "~10 minutes",
+    "skipModules": "A module you answer well starts with a head start",
     "descHigh": "You can skip the basic modules and go straight to advanced content.",
     "descLow": "We've personalized your learning path based on your results.",
-    "startLearning": "START LEARNING",
+    "startLearning": "GO TO TODAY",
     "pctAccuracy": "{{pct}}% accuracy ({{correct}}/{{total}})",
     "levels": {
       "advanced": "Advanced",
@@ -573,15 +603,15 @@
     },
     "answered": "Questions answered: {{n}}",
     "abilityResult": "Your estimated level: {{level}}",
-    "noSkips": "Start from the beginning — you have not mastered a full module yet.",
+    "noSkips": "No module gets a head start yet: you start from the beginning, at your own pace.",
     "lowReliability": "This estimate is still unreliable: the questions ran out before it settled, so treat it as a rough guide.",
     "noItems": "This track has no multiple-choice questions, so no placement test can be built from it.",
     "errorStart": "The test could not be started.",
     "errorAnswer": "Your answer could not be sent.",
     "errorResult": "The result could not be calculated.",
-    "canSkipCount_one": "You can skip 1 module",
-    "canSkipCount_other": "You can skip {{count}} modules",
-    "skipRule": "A module counts as known when you get at least {{pct}}% of {{min}} or more of its questions right. Your mastery of those skills already counts in the engine, and spaced review will keep checking it.",
+    "canSkipCount_one": "1 module starts with a head start",
+    "canSkipCount_other": "{{count}} modules start with a head start",
+    "skipRule": "A module gets a head start when you answer at least {{pct}}% of {{min}} or more of its questions correctly. Its skills become ready to practise, not mastered: practice will keep confirming it.",
     "skipCorrect": "{{correct}} of {{total}}"
   },
   "mockExam": {
@@ -1110,7 +1140,7 @@
     "howTitle": "From zero to proving it, in three steps.",
     "s1": {
       "title": "Placement",
-      "body": "An adaptive placement test finds what you already know and lets you skip whole modules."
+      "body": "A 20-question placement test sees what you already know, and the modules you answer well get a head start."
     },
     "s2": {
       "title": "Short adaptive sessions",

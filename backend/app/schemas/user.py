@@ -86,7 +86,9 @@ class UserRead(UserBase):
     onboarding_experience: int | None = None
     onboarding_goal: int | None = None
     onboarding_weekly_time: int | None = None
+    onboarding_completed_at: datetime | None = None
     target_track_id: str | None = None
+    target_certification_id: str | None = None
     # Qué enlaces ve en Perfil (auditoría de pantallas, 2026-10-16): «Instructor»
     # solo para creadores y «Admin» solo para el dueño. Calculados del modelo.
     can_create_courses: bool = False

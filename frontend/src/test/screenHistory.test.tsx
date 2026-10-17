@@ -46,6 +46,14 @@ describe('cada pantalla principal tiene su URL', () => {
     expect(store().currentScreen).toBe('league');
   });
 
+  it('en / se queda la pantalla que la app ya eligió (43.3: onboarding → prueba de nivel)', () => {
+    // El onboarding llama a startPlacement justo antes de que el historial
+    // arranque; la URL sigue en «/» y antes eso devolvía al alumno a Hoy.
+    act(() => store().startPlacement('track01'));
+    renderHook(() => useScreenHistory(true));
+    expect(store().currentScreen).toBe('placement');
+  });
+
   it('sin sesión no toca el historial', () => {
     renderHook(() => useScreenHistory(false));
     const before = window.history.length;

@@ -60,12 +60,22 @@ export async function registerUser(page: Page, opts: { username: string; display
  *
  * It waits for the onboarding screen's own `data-testid="onboarding"` (the
  * redesigned onboarding of 24.3 has no CSS-module headline to key on; the old
- * `[class*="headline_"]` wait is what turned 27 e2e tests red). The wait is
- * deliberately strict: if onboarding ever stops appearing for a new context,
- * this should fail loudly instead of skipping silently.
+ * `[class*="headline_"]` wait is what turned 27 e2e tests red).
+ *
+ * 43.3 (D2): once the flag is set here, the app also saves it on the server
+ * (`onboarding_completed_at`), so the same account logging in from another
+ * context goes straight to Hoy. Pass `{ maybeDone: true }` there: it waits for
+ * either screen and only clears onboarding if it shows up. Without it the wait
+ * stays strict, so a brand-new account that skips onboarding still fails loudly.
  */
-export async function suppressOnboarding(page: Page): Promise<void> {
-  await expect(page.getByTestId('onboarding')).toBeVisible({ timeout: 15_000 });
+export async function suppressOnboarding(page: Page, opts: { maybeDone?: boolean } = {}): Promise<void> {
+  const onboarding = page.getByTestId('onboarding');
+  if (opts.maybeDone) {
+    const home = page.getByRole('button', { name: /^(Hoy|Today)$/ });
+    await expect(onboarding.or(home)).toBeVisible({ timeout: 15_000 });
+    if (!(await onboarding.isVisible())) return;
+  }
+  await expect(onboarding).toBeVisible({ timeout: 15_000 });
 
   await page.evaluate(() => {
     try {
@@ -78,6 +88,29 @@ export async function suppressOnboarding(page: Page): Promise<void> {
     } catch { /* storage unavailable */ }
   });
   await page.reload();
+}
+
+/**
+ * 43.3 (D2): walks the onboarding as a new learner would: goal «Aprender»,
+ * Python Básico, «Empiezo de cero» as experience, then either the placement
+ * test or «Empiezo de cero» again (straight to Hoy).
+ */
+export async function completeOnboarding(
+  page: Page,
+  opts: { lang?: 'es' | 'en'; takeTest?: boolean } = {},
+): Promise<void> {
+  const en = opts.lang === 'en';
+  const onboarding = page.getByTestId('onboarding');
+  await expect(onboarding).toBeVisible({ timeout: 15_000 });
+  await onboarding.getByRole('button', { name: en ? 'Learn' : 'Aprender', exact: true }).click();
+  await onboarding.getByTestId('track-track01').click();
+  await onboarding.getByRole('button', { name: en ? "I'm starting from zero" : 'Empiezo de cero' }).click();
+  if (opts.takeTest) {
+    await onboarding.getByRole('button', { name: en ? 'Take the test' : 'Hacer la prueba' }).click();
+  } else {
+    await onboarding.getByRole('button', { name: en ? "I'm starting from zero" : 'Empiezo de cero' }).click();
+  }
+  await expect(onboarding).toHaveCount(0);
 }
 
 /** Unique-enough username per test run so re-runs don't collide on a shared DB. */

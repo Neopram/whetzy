@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { answerCurrentQuestion, uniqueUsername } from './helpers';
+import { completeOnboarding, uniqueUsername } from './helpers';
 
 /**
  * 34.4's own criterion: "390 px sin scroll horizontal" on the funnel that
@@ -45,7 +45,7 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
     await expectNoHorizontalScroll(page, 'Auth EN — login');
   });
 
-  test('Onboarding (ES): las 3 preguntas de segmento y el paso de idioma', async ({ page }) => {
+  test('Onboarding (ES): objetivo, rejilla de rutas, experiencia y prueba', async ({ page }) => {
     const username = uniqueUsername('e2e_scroll_es_');
     await page.goto('/auth');
     await page.getByLabel('Nombre').fill('Scroll Test');
@@ -55,17 +55,22 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
     await page.getByLabel('Confirmo que tengo 13 años o más').check();
     await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
+    // 43.3 (D2): cada paso, sobre todo la rejilla de 24 rutas agrupadas.
     const onboarding = page.getByTestId('onboarding');
     await expect(onboarding).toBeVisible({ timeout: 15_000 });
-    await expectNoHorizontalScroll(page, 'Onboarding ES — pregunta 1');
-    for (let i = 0; i < 3; i++) {
-      await onboarding.locator('button.option').first().click();
-      await page.waitForTimeout(700);
-    }
-    await expectNoHorizontalScroll(page, 'Onboarding ES — paso de idioma');
+    await expectNoHorizontalScroll(page, 'Onboarding ES — objetivo');
+    await onboarding.getByRole('button', { name: 'Las dos cosas' }).click();
+    await expect(onboarding.getByTestId('track-track01')).toBeVisible({ timeout: 15_000 });
+    await expectNoHorizontalScroll(page, 'Onboarding ES — rutas');
+    await onboarding.getByTestId('track-track01').click();
+    await expectNoHorizontalScroll(page, 'Onboarding ES — certificación');
+    await onboarding.getByRole('button', { name: 'Ahora no' }).click();
+    await expectNoHorizontalScroll(page, 'Onboarding ES — experiencia');
+    await onboarding.getByRole('button', { name: 'Empiezo de cero' }).click();
+    await expectNoHorizontalScroll(page, 'Onboarding ES — prueba de nivel');
   });
 
-  test('Onboarding (EN): the 3 segment questions and the language step', async ({ page }) => {
+  test('Onboarding (EN): goal, track grid, experience and test', async ({ page }) => {
     const username = uniqueUsername('e2e_scroll_en_');
     await page.goto('/auth?lang=en');
     await page.getByLabel('Name', { exact: true }).fill('Scroll Test EN');
@@ -77,15 +82,19 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
 
     const onboarding = page.getByTestId('onboarding');
     await expect(onboarding).toBeVisible({ timeout: 15_000 });
-    await expectNoHorizontalScroll(page, 'Onboarding EN — question 1');
-    for (let i = 0; i < 3; i++) {
-      await onboarding.locator('button.option').first().click();
-      await page.waitForTimeout(700);
-    }
-    await expectNoHorizontalScroll(page, 'Onboarding EN — language step');
+    await expectNoHorizontalScroll(page, 'Onboarding EN — goal');
+    await onboarding.getByRole('button', { name: 'Both' }).click();
+    await expect(onboarding.getByTestId('track-track01')).toBeVisible({ timeout: 15_000 });
+    await expectNoHorizontalScroll(page, 'Onboarding EN — tracks');
+    await onboarding.getByTestId('track-track01').click();
+    await expectNoHorizontalScroll(page, 'Onboarding EN — certification');
+    await onboarding.getByRole('button', { name: 'Not now' }).click();
+    await expectNoHorizontalScroll(page, 'Onboarding EN — experience');
+    await onboarding.getByRole('button', { name: "I'm starting from zero" }).click();
+    await expectNoHorizontalScroll(page, 'Onboarding EN — placement test');
   });
 
-  test('Home (ES): tras terminar el onboarding y la primera pregunta', async ({ page }) => {
+  test('Home (ES): tras el onboarding, y la primera pregunta de la prueba de nivel', async ({ page }) => {
     const username = uniqueUsername('e2e_scroll_home_');
     await page.goto('/auth');
     await page.getByLabel('Nombre').fill('Scroll Home');
@@ -95,25 +104,18 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
     await page.getByLabel('Confirmo que tengo 13 años o más').check();
     await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
-    const onboarding = page.getByTestId('onboarding');
-    await expect(onboarding).toBeVisible({ timeout: 15_000 });
-    for (let i = 0; i < 3; i++) {
-      await onboarding.locator('button.option').first().click();
-      await page.waitForTimeout(700);
-    }
-    await onboarding.getByRole('button', { name: /Español/ }).click();
-
-    // D-20: el principiante entra directo a su primera lección.
-    const closeLesson = page.getByRole('button', { name: 'Cerrar' });
-    await expect(closeLesson).toBeVisible({ timeout: 15_000 });
-    await closeLesson.click();
-
-    await page.getByRole('button', { name: 'Hoy', exact: true }).click();
+    // 43.3 (D2): «empiezo de cero» va a Hoy.
+    await completeOnboarding(page);
+    await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
     await expectNoHorizontalScroll(page, 'Home ES');
-    await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
-    await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
-    await expectNoHorizontalScroll(page, 'Quiz ES');
-    await answerCurrentQuestion(page);
-    await expectNoHorizontalScroll(page, 'Quiz ES — feedback');
+
+    // La primera pregunta, la de la prueba de nivel de su ruta (Rutas → prueba).
+    await page.getByRole('button', { name: 'Rutas' }).click();
+    await page.getByRole('button', { name: /¿Ya sabes algo de esto\?/ }).click();
+    await page.getByRole('button', { name: 'COMENZAR EXAMEN' }).click();
+    await expect(page.getByTestId('placement-option').first()).toBeVisible({ timeout: 15_000 });
+    await expectNoHorizontalScroll(page, 'Prueba de nivel ES');
+    await page.getByTestId('placement-option').first().click();
+    await expectNoHorizontalScroll(page, 'Prueba de nivel ES — respuesta');
   });
 });

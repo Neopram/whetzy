@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { answerCurrentQuestion, suppressOnboarding, uniqueUsername } from './helpers';
+import { completeOnboarding, suppressOnboarding, uniqueUsername } from './helpers';
 
 test('onboarding: landing → first answered question in < 60 s', async ({ page }) => {
   const start = Date.now();
@@ -16,38 +16,15 @@ test('onboarding: landing → first answered question in < 60 s', async ({ page 
   await page.getByLabel('Confirmo que tengo 13 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
-  // Onboarding (24.3): three segment questions that auto-advance, then the
-  // language choice, then home. It must appear — not the home screen directly.
-  const onboarding = page.getByTestId('onboarding');
-  await expect(onboarding).toBeVisible({ timeout: 15_000 });
-  for (let i = 0; i < 3; i++) {
-    await onboarding.locator('button.option').first().click();
-    await page.waitForTimeout(700); // the screen advances itself after 600 ms
-  }
-  await onboarding.getByRole('button', { name: /Español/ }).click();
+  // 43.3 (D2): objetivo → ruta → experiencia → prueba de nivel. Tiene que
+  // aparecer el onboarding, no Hoy directamente, y ya no pregunta el idioma.
+  await completeOnboarding(page, { takeTest: true });
 
-  // D-20: quien empieza de cero va directo a la primera lección de su ruta
-  // (OnboardingScreen.handleLanguageSelect); abrirla ya registra la vista y
-  // levanta la puerta de lecciones (32.4). Antes el spec pasaba por «ESTUDIAR
-  // AHORA» → «Ir a las lecciones» → «Aprender», un camino que ya no existe.
-  const closeLesson = page.getByRole('button', { name: 'Cerrar' });
-  await expect(closeLesson).toBeVisible({ timeout: 15_000 });
-  await closeLesson.click(); // onExit → 'tracks' (App.tsx)
-
-  // Back to Home, now unblocked.
-  await page.getByRole('button', { name: 'Hoy', exact: true }).click();
-  await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
-
-  // First question must appear
-  await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
-
-  // Answer the first question. Which *kind* of question gets drawn depends on the
-  // learner's state and on row order in the content DB, so this must handle an
-  // exec question too: one click on "Run" does not necessarily reach feedback
-  // (Pyodide has to boot, and the app only auto-submits on the 3rd attempt).
-  // answerCurrentQuestion encapsulates exactly that, and is what every other
-  // spec uses.
-  await answerCurrentQuestion(page);
+  // La primera pregunta que contesta es la primera de la prueba de nivel de su ruta.
+  await page.getByRole('button', { name: 'COMENZAR EXAMEN' }).click();
+  await expect(page.getByText('Pregunta 1 de 20')).toBeVisible({ timeout: 15_000 });
+  await page.getByTestId('placement-option').first().click();
+  await expect(page.getByText('Pregunta 2 de 20')).toBeVisible({ timeout: 15_000 });
 
   const elapsed = (Date.now() - start) / 1000;
   expect(elapsed, `Took ${elapsed.toFixed(1)}s — must be < 60s`).toBeLessThan(60);
@@ -87,4 +64,35 @@ test('onboarding is skipped for returning users', async ({ page }) => {
   // the registration button. (An earlier version asserted this with a
   // `.catch(() => {})` tacked on, which made it incapable of ever failing.)
   await expect(page.getByTestId('onboarding')).toHaveCount(0);
+});
+
+test('otro navegador no repite el onboarding (43.3, D2)', async ({ browser }) => {
+  const username = uniqueUsername('e2e_ob2_');
+  const first = await browser.newContext();
+  const page = await first.newPage();
+  await page.goto('/auth');
+  await page.getByLabel('Nombre').fill('Dos Navegadores');
+  await page.getByLabel('Usuario').fill(username);
+  await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
+  await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
+  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  const saved = page.waitForResponse(
+    (r) => r.url().endsWith('/auth/me') && r.request().method() === 'PATCH' && r.ok(),
+  );
+  await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
+  await completeOnboarding(page);
+  await saved;
+  await expect(page.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
+  await first.close();
+
+  // Un contexto nuevo no tiene nada en localStorage: lo que decide es el servidor.
+  const second = await browser.newContext();
+  const other = await second.newPage();
+  await other.goto('/login');
+  await other.getByLabel('Correo electrónico').fill(`${username}@example.com`);
+  await other.getByLabel('Contraseña').fill('e2e-test-pass-123');
+  await other.getByRole('button', { name: 'ENTRAR' }).click();
+  await expect(other.getByRole('button', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 15_000 });
+  await expect(other.getByTestId('onboarding')).toHaveCount(0);
+  await second.close();
 });

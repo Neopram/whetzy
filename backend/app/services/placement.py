@@ -9,7 +9,10 @@ horizontally scalable (no in-memory session affinity required).
 
 from __future__ import annotations
 
+import random
 import uuid
+from collections import Counter
+from dataclasses import dataclass
 from datetime import UTC, datetime
 
 from fastapi import HTTPException, status
@@ -50,9 +53,35 @@ def _elo_to_irt_difficulty(elo_rating: float) -> float:
 _TIPOS_RESPONDIBLES = ("mcq", "multiple_choice", "true_false", "code_output")
 
 
-async def _track_item_pool(db: AsyncSession, track_id: str) -> list[IRTItem]:
+#: 43.3 (ADR-65 D3): 20 preguntas exactas. Las 15 primeras van estratificadas,
+#: 5 por banda y en orden (básica, intermedia, avanzada), repartidas por
+#: módulos; las 5 últimas son adaptativas en la banda frontera.
+PLACEMENT_LENGTH = 20
+PER_BAND = 5
+BANDS = ("basic", "intermediate", "advanced")
+_STRATIFIED = PER_BAND * len(BANDS)
+_TIER_BAND = {"easy": "basic", "medium": "intermediate", "hard": "advanced", "expert": "advanced"}
+#: Una banda «se supera» con 3 de 5 o más.
+_BAND_PASS = 0.6
+
+
+@dataclass(frozen=True)
+class PoolItem:
+    item: IRTItem
+    band: str
+    module_id: str
+
+
+async def _track_pool(db: AsyncSession, track_id: str) -> list[PoolItem]:
+    """Preguntas respondibles del track con su banda y su módulo.
+
+    La banda es el `difficulty_tier` si el track tiene preguntas de las tres
+    bandas, al menos `PER_BAND` de cada una. Si no, es el tercio del módulo
+    dentro del track: 16 tracks del banco no traen tier y el loader les pone
+    «medium» a todas, así que el tier no distingue nada.
+    """
     result = await db.execute(
-        select(Question)
+        select(Question, Module.id, Module.order)
         .join(Skill, Skill.id == Question.skill_id)
         .join(Module, Module.id == Skill.module_id)
         .where(Module.track_id == track_id)
@@ -70,17 +99,70 @@ async def _track_item_pool(db: AsyncSession, track_id: str) -> list[IRTItem]:
         # quiz.py/_select_question y duels.py/_pick_questions.
         .where(Question.pool != "simulacro")
     )
-    questions = result.scalars().all()
+    rows = result.all()
+    module_order = sorted({(order, mid) for _, mid, order in rows})
+    third = {mid: BANDS[i * len(BANDS) // len(module_order)] for i, (_, mid) in enumerate(module_order)}
+    tier_counts = Counter(_TIER_BAND.get(q.difficulty_tier, "intermediate") for q, _, _ in rows)
+    by_tier = all(tier_counts[b] >= PER_BAND for b in BANDS)
     return [
-        IRTItem(
-            item_id=q.id,
-            difficulty=_elo_to_irt_difficulty(q.elo_rating),
-            discrimination=q.discrimination,
-            guessing=q.guessing,
-            skill_ids=[q.skill_id],
+        PoolItem(
+            item=IRTItem(
+                item_id=q.id,
+                difficulty=_elo_to_irt_difficulty(q.elo_rating),
+                discrimination=q.discrimination,
+                guessing=q.guessing,
+                skill_ids=[q.skill_id],
+            ),
+            band=_TIER_BAND.get(q.difficulty_tier, "intermediate") if by_tier else third[mid],
+            module_id=mid,
         )
-        for q in questions
+        for q, mid, _ in rows
     ]
+
+
+async def _track_item_pool(db: AsyncSession, track_id: str) -> list[IRTItem]:
+    return [p.item for p in await _track_pool(db, track_id)]
+
+
+def _frontier_band(pool: dict[str, PoolItem], responses: list[tuple[str, bool]]) -> str:
+    """La primera banda que no se supera en las estratificadas; si se superan
+    todas, la avanzada."""
+    for band in BANDS:
+        seen = [ok for qid, ok in responses[:_STRATIFIED] if qid in pool and pool[qid].band == band]
+        if seen and sum(seen) / len(seen) < _BAND_PASS:
+            return band
+    return BANDS[-1]
+
+
+def _by_band_distance(available: list[PoolItem], band: str) -> list[PoolItem]:
+    """Las disponibles de la banda pedida o, si no queda ninguna, de la más cercana."""
+    target = BANDS.index(band)
+    for distance in range(len(BANDS)):
+        near = [p for p in available if abs(BANDS.index(p.band) - target) == distance]
+        if near:
+            return near
+    return []
+
+
+def _next_item(
+    pool: list[PoolItem], engine: PlacementEngine, state: PlacementState
+) -> IRTItem | None:
+    n = len(state.responses)
+    available = [p for p in pool if p.item.item_id not in state.administered_ids]
+    if n >= PLACEMENT_LENGTH or not available:
+        return None
+    by_id = {p.item.item_id: p for p in pool}
+    if n < _STRATIFIED:
+        candidates = _by_band_distance(available, BANDS[n // PER_BAND])
+        # Repartidas por módulos: el que menos preguntas lleva en la prueba.
+        used = Counter(by_id[qid].module_id for qid, _ in state.responses if qid in by_id)
+        fewest = min(used[p.module_id] for p in candidates)
+        return random.choice([p for p in candidates if used[p.module_id] == fewest]).item
+    candidates = _by_band_distance(available, _frontier_band(by_id, state.responses))
+    # Adaptativas: la más informativa para la theta de ahora, dentro de la banda.
+    return max(
+        candidates, key=lambda p: engine.fisher_information(state.ability_estimate, p.item)
+    ).item
 
 
 async def _questions_by_id(db: AsyncSession, question_ids: list[str]) -> dict[str, Question]:
@@ -153,8 +235,8 @@ async def start_placement(db: AsyncSession, user: User, track_id: str) -> Placem
     db.add(session)
     await db.flush()
 
-    items = await _track_item_pool(db, track_id)
-    if not items:
+    pool = await _track_pool(db, track_id)
+    if not pool:
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             f"Track {track_id} has no questions that can be answered by choosing "
@@ -165,9 +247,9 @@ async def start_placement(db: AsyncSession, user: User, track_id: str) -> Placem
     # interfaz enseña esa fiabilidad; inventarse aqui un minimo rechazaba
     # sesiones que funcionan.
 
-    engine = PlacementEngine(items=items)
+    engine = PlacementEngine(items=[p.item for p in pool])
     state = PlacementState()
-    first_item = engine.select_next_item(state)
+    first_item = _next_item(pool, engine, state)
 
     question_public = None
     if first_item:
@@ -186,60 +268,87 @@ async def start_placement(db: AsyncSession, user: User, track_id: str) -> Placem
     )
 
 
-_P_KNOWN_CAP = 0.94  # C2: tope < 0.95 so mastered skills stay in practice
+#: 43.3 (ADR-65 D4): siembra por módulo, no por pregunta suelta. Un módulo con
+#: al menos `MODULE_STRONG_MIN` preguntas y `MODULE_STRONG_ACCURACY` de acierto
+#: deja todas sus skills en `SEED_STRONG`: practicables, no «dominadas». El
+#: resto se encoge hacia el prior con `SEED_SHRINK` respuestas ficticias.
+MODULE_STRONG_ACCURACY = 0.70
+MODULE_STRONG_MIN = 2
+SEED_STRONG = 0.60
+SEED_PRIOR = 0.10
+SEED_SHRINK = 2
 
 
-async def _seed_skill_states(
+def _module_seed(correct: int, total: int) -> float:
+    if total >= MODULE_STRONG_MIN and correct / total >= MODULE_STRONG_ACCURACY:
+        return SEED_STRONG
+    return min((correct + SEED_SHRINK * SEED_PRIOR) / (total + SEED_SHRINK), SEED_STRONG)
+
+
+def _is_strong(correct: int, total: int) -> bool:
+    return _module_seed(correct, total) == SEED_STRONG and total >= MODULE_STRONG_MIN
+
+
+async def _seed_by_module(
     db: AsyncSession,
     user_id: uuid.UUID,
-    skill_estimates: dict[str, dict[str, int]],
+    modules: dict[str, list[str]],
+    answers: dict[str, tuple[int, int]],
 ) -> None:
-    """Upsert UserSkillState.p_known from placement accuracy for each tested skill (C2).
+    """Siembra `p_known` de todas las skills de cada módulo con preguntas en la prueba.
 
-    Skills that scored 0/0 (never shown) are not touched: their prior stays 0.1.
-    p_known is capped at _P_KNOWN_CAP (< 0.95) so every skill remains in the
-    practice queue — a placement score of 100 % must not retire the skill.
-    A skill with history keeps the higher of its own p_known and the placement's
-    (D-18): placement adds evidence, it never erases mastery already earned.
+    `modules` va de módulo a sus skills; `answers`, de skill a (aciertos, total)
+    en la prueba. Un módulo sin preguntas no se toca. Una skill con historial
+    se queda con el mayor de los dos valores (D-18): la prueba añade evidencia,
+    nunca borra dominio ganado. Los intentos solo suman en las skills que
+    salieron. La prueba no marca lecciones como vistas.
     """
-    if not skill_estimates:
+    all_skills = [sid for skills in modules.values() for sid in skills]
+    if not all_skills:
         return
-    skill_ids = list(skill_estimates.keys())
-    existing_rows = (
-        await db.scalars(
-            select(UserSkillState).where(
-                UserSkillState.user_id == user_id,
-                UserSkillState.skill_id.in_(skill_ids),
-            )
-        )
-    ).all()
-    existing: dict[str, UserSkillState] = {row.skill_id: row for row in existing_rows}
-
-    for skill_id, counts in skill_estimates.items():
-        total = counts.get("total", 0)
-        correct = counts.get("correct", 0)
-        if total == 0:
-            continue
-        new_p = min(correct / total, _P_KNOWN_CAP)
-        if skill_id in existing:
-            row = existing[skill_id]
-            # D-18 (dueño, 2026-10-12): la prueba de nivel aporta evidencia
-            # inicial y nunca rebaja una skill con historial. Sobrescribir
-            # borraba en tres preguntas el dominio ganado en semanas de práctica.
-            # Una fila sin intentos todavía es solo el prior: ahí manda la prueba.
-            row.p_known = max(row.p_known, new_p) if row.attempts > 0 else new_p
-            row.attempts += total
-            row.correct_count += correct
-        else:
-            db.add(
-                UserSkillState(
-                    user_id=user_id,
-                    skill_id=skill_id,
-                    p_known=new_p,
-                    attempts=total,
-                    correct_count=correct,
+    existing = {
+        row.skill_id: row
+        for row in (
+            await db.scalars(
+                select(UserSkillState).where(
+                    UserSkillState.user_id == user_id,
+                    UserSkillState.skill_id.in_(all_skills),
                 )
             )
+        ).all()
+    }
+    for skills in modules.values():
+        correct = sum(answers.get(sid, (0, 0))[0] for sid in skills)
+        total = sum(answers.get(sid, (0, 0))[1] for sid in skills)
+        if total == 0:
+            continue
+        new_p = _module_seed(correct, total)
+        for sid in skills:
+            ok, n = answers.get(sid, (0, 0))
+            row = existing.get(sid)
+            if row is None:
+                db.add(
+                    UserSkillState(
+                        user_id=user_id, skill_id=sid, p_known=new_p,
+                        attempts=n, correct_count=ok,
+                    )
+                )
+                continue
+            # D-18 (dueño, 2026-10-12): una fila sin intentos es solo el prior,
+            # ahí manda la prueba; con historial, nunca baja.
+            row.p_known = max(row.p_known, new_p) if row.attempts > 0 else new_p
+            row.attempts += n
+            row.correct_count += ok
+
+
+async def _track_modules(db: AsyncSession, track_id: str) -> list[Module]:
+    result = await db.execute(
+        select(Module)
+        .options(selectinload(Module.skills))
+        .where(Module.track_id == track_id)
+        .order_by(Module.order)
+    )
+    return list(result.scalars().all())
 
 
 async def answer_placement(
@@ -280,28 +389,31 @@ async def answer_placement(
     )
     await db.flush()
 
-    items = await _track_item_pool(db, track_id)
-    engine = PlacementEngine(items=items)
+    pool = await _track_pool(db, track_id)
+    engine = PlacementEngine(items=[p.item for p in pool])
     state = await _rebuild_state(db, engine, session.id)
 
-    finished = engine.should_stop(state)
+    next_item = _next_item(pool, engine, state)
+    finished = next_item is None
     next_question_public = None
-
-    if not finished:
-        next_item = engine.select_next_item(state)
-        if next_item is None:
-            finished = True
-        else:
-            questions = await _questions_by_id(db, [next_item.item_id])
-            q = questions.get(next_item.item_id)
-            if q:
-                next_question_public = QuestionPublic.model_validate(q)
+    if next_item is not None:
+        q = (await _questions_by_id(db, [next_item.item_id])).get(next_item.item_id)
+        if q:
+            next_question_public = QuestionPublic.model_validate(q)
 
     session.questions_answered = len(state.responses)
     session.correct_count = sum(1 for _, c in state.responses if c)
     if finished and session.ended_at is None:
         session.ended_at = _now()
-        await _seed_skill_states(db, user.id, state.skill_estimates)
+        modules = await _track_modules(db, track_id)
+        await _seed_by_module(
+            db,
+            user.id,
+            modules={m.id: [sk.id for sk in m.skills] for m in modules},
+            answers={
+                sid: (c["correct"], c["total"]) for sid, c in state.skill_estimates.items()
+            },
+        )
 
     await db.commit()
 
@@ -323,15 +435,12 @@ async def get_placement_result(
     if track_id is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "No answers recorded for this session yet")
 
-    items = await _track_item_pool(db, track_id)
-    engine = PlacementEngine(items=items)
+    pool = await _track_pool(db, track_id)
+    engine = PlacementEngine(items=[p.item for p in pool])
     state = await _rebuild_state(db, engine, session.id)
     result = engine.get_placement_result(state)
 
-    modules_result = await db.execute(
-        select(Module).options(selectinload(Module.skills)).where(Module.track_id == track_id).order_by(Module.order)
-    )
-    modules = modules_result.scalars().all()
+    modules = await _track_modules(db, track_id)
 
     recommendations: list[ModuleSkipRecommendation] = []
     for module in modules:
@@ -340,7 +449,6 @@ async def get_placement_result(
         total = sum(r["total"] for r in relevant)
         correct = sum(r["correct"] for r in relevant)
         accuracy = correct / total if total else 0.0
-        can_skip = engine.can_skip_module(state, skill_ids)
         recommendations.append(
             ModuleSkipRecommendation(
                 module_id=module.id,
@@ -348,7 +456,8 @@ async def get_placement_result(
                 module_name_en=module.name_en,
                 accuracy=round(accuracy, 3),
                 questions_seen=total,
-                can_skip=can_skip,
+                # D4: el módulo arranca con ventaja (skills en SEED_STRONG).
+                can_skip=_is_strong(correct, total),
             )
         )
 

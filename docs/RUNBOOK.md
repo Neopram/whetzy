@@ -188,7 +188,7 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `20261012_user_beta_fields` (60 migrations, single head —
+Current Alembic HEAD: `20261017_onboarding_completed` (61 migrations, single head —
 verified 2026-10-12 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains
 after `20261012_question_elo_updates` (59), then `20261012_paddle_events` (58), which chains
 after `20261010_tutor_tokens`, which chains after `20261010_oauth_pkce` (#177: both were

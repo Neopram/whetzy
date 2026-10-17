@@ -3,7 +3,7 @@ import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
 import { useAppStore, DEFAULT_USER_ID } from './stores/useAppStore';
-import { ApiError, logout, setOnSessionExpired } from './services/api';
+import { ApiError, auth, logout, setOnSessionExpired } from './services/api';
 import { TopBar } from './components/layout/TopBar';
 import { BottomNav } from './components/layout/BottomNav';
 import { Toast } from './components/common/Toast';
@@ -187,12 +187,20 @@ function StandaloneReport({ code }: { code: string }) {
   return <Screen><MasteryReportScreen code={code} /></Screen>;
 }
 
-function needsOnboarding(userId: string): boolean {
+// 43.3 (ADR-65 D2): el onboarding hecho vive en el servidor
+// (`onboarding_completed_at`), así que otro navegador no lo repite. La marca
+// antigua del localStorage sigue valiendo para quien lo terminó sin red: se
+// sube al servidor la primera vez que se ve.
+function needsOnboarding(userId: string, completedOnServer: boolean): boolean {
+  if (completedOnServer) return false;
+  let local = false;
   try {
-    return !localStorage.getItem(`whetzy_onboarded_${userId}`);
+    local = Boolean(localStorage.getItem(`whetzy_onboarded_${userId}`));
   } catch {
     return false;
   }
+  if (local) void auth.updateMe({ onboarding_completed: true }).catch(() => { /* se reintenta en el próximo arranque */ });
+  return !local;
 }
 
 function normalizePath(pathname: string): string {
@@ -386,8 +394,8 @@ function App() {
           window.location.replace(pending);
           return;
         }
-        const userId = useAppStore.getState().user.id;
-        setShowOnboarding(needsOnboarding(userId));
+        const { id: userId, onboardingCompleted } = useAppStore.getState().user;
+        setShowOnboarding(needsOnboarding(userId, onboardingCompleted));
         setAuthState('authed');
       })
       .catch((err: unknown) => {

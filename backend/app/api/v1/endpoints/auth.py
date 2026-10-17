@@ -69,10 +69,16 @@ class UpdateProfileRequest(BaseModel):
     language: str | None = Field(default=None, pattern="^(es|en)$")
     # Respuestas del onboarding (índice de opción, 0-2). 34.11.
     onboarding_experience: int | None = Field(default=None, ge=0, le=2)
-    onboarding_goal: int | None = Field(default=None, ge=0, le=3)
+    # 0-3: el onboarding anterior; 43.3 (D2) usa 0 aprender, 3 certificarme, 4 ambos.
+    onboarding_goal: int | None = Field(default=None, ge=0, le=4)
     onboarding_weekly_time: int | None = Field(default=None, ge=0, le=2)
     # D-20: la ruta elegida en el onboarding, guardada en el servidor.
     target_track_id: str | None = Field(default=None, max_length=20)
+    # 43.3 (D2): el onboarding terminó. Solo cuenta la primera vez.
+    onboarding_completed: bool | None = None
+    # 43.3 (D2): certificación relacionada, opcional; tiene que ser un track
+    # de certificación.
+    target_certification_id: str | None = Field(default=None, max_length=20)
     # D-23: origen del alta; solo cuenta la primera vez que llega.
     signup_attribution: SignupAttribution | None = None
 
@@ -429,6 +435,13 @@ async def update_profile(
         if await db.get(Track, payload.target_track_id) is None:
             raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Unknown track")
         current_user.target_track_id = payload.target_track_id
+    if payload.target_certification_id is not None:
+        cert = await db.get(Track, payload.target_certification_id)
+        if cert is None or not cert.is_certification:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Unknown certification")
+        current_user.target_certification_id = payload.target_certification_id
+    if payload.onboarding_completed and current_user.onboarding_completed_at is None:
+        current_user.onboarding_completed_at = datetime.now(UTC)
     if payload.signup_attribution is not None and current_user.signup_source is None:
         a = payload.signup_attribution
         current_user.signup_source, current_user.signup_campaign = attribution.classify(
