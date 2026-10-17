@@ -207,7 +207,11 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
           setTestResult('fail');
           if (res.timed_out) setError(t('playground.timedOut'));
           else if (res.error) setError(res.error);
-          else if (clientPassed) setError(t('project.serverFailed'));
+          else if (clientPassed) {
+            // En SQL el servidor ejecutó los tests; en Python/JS no los ejecuta y
+            // solo rechaza el código de partida sin tocar.
+            setError(t(runtime === 'sql' ? 'project.serverFailed' : 'project.starterUnchanged'));
+          }
         }
       } catch {
         setSyncFailed(true);
@@ -219,7 +223,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
     }
     setIsRunning(false);
     outputRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [runCode, isRunning, step, getCode, currentStep, t, submission, slug]);
+  }, [runCode, isRunning, step, getCode, currentStep, t, submission, slug, runtime]);
 
   if (project.loading) {
     return (

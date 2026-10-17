@@ -5,7 +5,7 @@ código del alumno y el `test_code` del paso se ejecutan juntos en una base
 SQLite nueva en memoria, y el paso pasa si no hay error ni se agota el tiempo.
 
 Encierro:
-- sin ficheros: el autorizador deniega ATTACH/DETACH (que es también lo que
+- sin ficheros: `temp_store = MEMORY` y el autorizador deniega ATTACH/DETACH (que es también lo que
   pide `VACUUM INTO 'fichero'`) y los PRAGMA fuera de una lista de consulta;
   las extensiones están desactivadas por defecto en `sqlite3`;
 - sin red: SQLite no tiene funciones de red;
@@ -24,7 +24,8 @@ import time
 from dataclasses import dataclass
 
 TIME_LIMIT_S = 2.0
-MAX_CODE_CHARS = 20_000
+MAX_CODE_CHARS = 20_000  # lo que envía el alumno (lo valida el schema)
+MAX_SCRIPT_CHARS = 100_000  # alumno + test_code del paso
 MAX_PAGES = 2_560  # 10 MB con páginas de 4 KB
 MAX_VALUE_BYTES = 1_000_000
 _PROGRESS_EVERY = 1_000  # instrucciones de la VM entre comprobaciones del reloj
@@ -53,7 +54,7 @@ def _authorizer(action: int, arg1: str | None, *_: object) -> int:
 
 def check_sql(code: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
     """Ejecuta `code` en una base nueva en memoria; pasa si no hay error."""
-    if len(code) > MAX_CODE_CHARS:
+    if len(code) > MAX_SCRIPT_CHARS:
         return SqlCheck(passed=False, error="code too long")
     conn = sqlite3.connect(":memory:", isolation_level=None, check_same_thread=False)
     deadline = time.monotonic() + time_limit_s
@@ -66,6 +67,8 @@ def check_sql(code: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
 
     try:
         conn.execute(f"PRAGMA max_page_count = {MAX_PAGES}")
+        # Ordenaciones e índices temporales en memoria, no en ficheros de /tmp.
+        conn.execute("PRAGMA temp_store = MEMORY")
         conn.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, MAX_VALUE_BYTES)
         conn.setlimit(sqlite3.SQLITE_LIMIT_ATTACHED, 0)
         conn.set_authorizer(_authorizer)

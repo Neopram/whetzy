@@ -118,6 +118,17 @@ describe('Proyectos con progreso en el servidor', () => {
     expect((screen.getByRole('button', { name: '2' }) as HTMLButtonElement).disabled).toBe(false);
   });
 
+  it('en Python, con el código de partida, no dice que el servidor ejecutó tests', async () => {
+    m(projectsApi.get).mockResolvedValue({ ...project, runtime: 'python' });
+    m(projectsApi.progress).mockResolvedValue(sub());
+    runCode.mockResolvedValue({ output: '', error: null, timedOut: false });
+    m(projectsApi.submitStep).mockResolvedValue({ ...sub(), step_passed: false, error: null, timed_out: false });
+    await open();
+    fireEvent.click(screen.getByRole('button', { name: 'Probar' }));
+    expect(await screen.findByText(/Cambia el código de partida/)).toBeTruthy();
+    expect(screen.queryByText(/El servidor ha ejecutado los tests/)).toBeNull();
+  });
+
   it('completado sin verificar avisa de que no cuenta como evidencia', async () => {
     m(projectsApi.get).mockResolvedValue({ ...project, runtime: 'python' });
     m(projectsApi.progress).mockResolvedValue(sub({ current_step: 3, completed: true, verified: false }));
