@@ -601,9 +601,10 @@ for _md in _LIVE:
     for _i, _ln in enumerate(_md.read_text(encoding="utf-8", errors="replace").splitlines()):
         # «ADR-43 (hoy ADR-47)»: número viejo de antes de la renumeración del 2026-09-25. El viejo se
         # perdona solo si el nuevo existe (si no, «ADR-77 (hoy ADR-99)» blanquearía cualquier cita).
+        # Solo la renumeración real (ADR-41…44 del PR #7 → 45…48) cuenta como número viejo.
         for _old, _new in re.findall(r"\bADR-(\d+)\s*\(hoy ADR-(\d+)\)", _ln):
-            if _new not in _adr_heads:
-                _adr_ghost.append(f"{_md.relative_to(ROOT).as_posix()}:{_i + 1} ADR-{_new}")
+            if _new not in _adr_heads or _old not in {"41", "42", "43", "44"}:
+                _adr_ghost.append(f"{_md.relative_to(ROOT).as_posix()}:{_i + 1} ADR-{_old} (hoy ADR-{_new})")
         for _n in re.findall(r"(?<!hoy )\bADR-(\d+)\b(?!\s*\(hoy ADR-)", _ln):
             if _n not in _adr_heads:
                 _adr_ghost.append(f"{_md.relative_to(ROOT).as_posix()}:{_i + 1} ADR-{_n}")
@@ -615,7 +616,7 @@ check(
 
 print("\n[16] Molde de track vigente = ADR-54 (32 × 10), no el viejo 20 skills · 300 Q")
 _old_mould = _stale_lines(
-    re.compile(r"20\s*skills\s*[·,/y×x]\s*300|300\s*Q\s*(por|/)\s*track", re.I),
+    re.compile(r"20\s*(skills|habilidades)\s*[·,/y×x]\s*300|300\s*(Q|preguntas)\s*(por|/)\s*track", re.I),
     _LIVE,
     re.compile(r"sustitu[ií]d|hist[oó]ric|antigu", re.I),
 )
@@ -633,12 +634,12 @@ check(
     ", ".join(_eco_prices),
 )
 _cert49 = _stale_lines(
-    re.compile(r"\$\s*49\s*/\s*(año|year)|49\s*\$\s*/\s*año|49\s*USD\s*/\s*año|Certs?\b.{0,40}\$\s*49\b", re.I), _LIVE
+    re.compile(r"\$\s*49\s*/\s*(año|year)|49\s*\$\s*/\s*año|49\s*USD\s*/\s*año|Certs?\b.{0,40}\$\s*49\b|\b49\s*(\$|USD)?\s*al\s+año|\$\s*49\s+al\s+año", re.I), _LIVE
 )
 check("Ningún doc vivo vende la certificación a «$49/año»", not _cert49, ", ".join(_cert49[:20]))
 
 print("\n[18] Qué elige la pregunta: skill por 1,1 − dominio y Elo, no un bandit")
-_bandit = re.compile(r"bandit\w*.{0,60}\b(decide|elige|escoge|selecciona|selects?|picks?|chooses?)\b|\b(decide|elige)\b.{0,40}bandit", re.I)
+_bandit = re.compile(r"bandit\w*.{0,60}\b(decide|determina|elige|escoge|selecciona|selects?|picks?|chooses?)\b|\b(decide|elige)\b.{0,40}bandit", re.I)
 _bandit_hits = _stale_lines(_bandit, [ROOT / "README.md", _DOCS / "ORCHESTRATOR.md"])
 check("README.md y ORCHESTRATOR.md no dicen que un bandit decide la pregunta", not _bandit_hits, ", ".join(_bandit_hits))
 _placement_py = (BACKEND / "app" / "services" / "engine" / "placement.py").read_text(encoding="utf-8")
@@ -658,7 +659,7 @@ check("MARKETPLACE.md y DISTRIBUCION.md no dicen que los créditos pagan cursos/
 print("\n[20] Duelos: asíncronos, estados pending | in_progress | completed (models/duel.py)")
 _duel_py = (BACKEND / "app" / "models" / "duel.py").read_text(encoding="utf-8")
 check("models/duel.py sigue con pending | in_progress | completed", '"pending" | "in_progress" | "completed"' in _duel_py)
-_duel_live = _stale_lines(re.compile(r"duel(?:o|os|s)?\s+en\s+(vivo|directo|tiempo\s+real)|\blive\s+duels?\b|pending\s*[/|,]\s*active", re.I), _LIVE)
+_duel_live = _stale_lines(re.compile(r"duel(?:o|os|s)?\s+(?:son\s+|es\s+)?en\s+(vivo|directo|tiempo\s+real)|\blive\s+duels?\b|pending\s*[/|,]\s*active", re.I), _LIVE)
 check("Ningún doc vivo dice «duelos en vivo» ni el estado `active`", not _duel_live, ", ".join(_duel_live[:20]))
 
 print("\n[21] STATUS.md y CHANGELOG.md llegan, al menos, a la última ADR")

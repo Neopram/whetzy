@@ -43,7 +43,7 @@
 |---|---|---|---|---|
 | 43 | Flujo del alumno listo para pruebas | 0/8 | 0 % | 43.1, 43.2, 43.3, 43.4, 43.5, 43.6 +2 |
 | 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
-| 41 | Documentación al día con el código | 0/6 | 0 % | 41.1, 41.2, 41.3, 41.4, 41.5, 41.6 |
+| 41 | Documentación al día con el código | 5/6 | 83 % | 41.3 |
 | 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
 | 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 31/41 | 76 % | 39.8, 39.9, 39.10, 39.13, 39.26, 39.27 +2 |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
@@ -521,12 +521,12 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 41.1 | **0** | Liberar ≥ 6 KB del ledger (evidencias de DONE →… | TODO | [8] con margen ≥ 6 KB; `ledger.py check` OK |
-| 41.2 | **0** | Inventario y contraste doc ↔ código ↔ sesiones de todo el corpus vivo | TODO (tras 41.1) | `archive/verificacion/claims-<fecha>.md` con veredicto y `file:line` por doc |
-| 41.3 | **0** | Corregir en sitio las contradicciones conocidas y las nuevas | TODO (tras 41.2) | antes/después/`file:line` por cambio; `check_docs.py` verde |
-| 41.4 | **0** | Una guarda en `check_docs.py` por contradicción cerrada | TODO (tras 41.3) | cada guarda roja al mutar y verde al revertir, en el PR |
-| 41.5 | **0** | STATUS y CHANGELOG al día; ADR-61/62/63; ledger al día | TODO (tras 41.3) | `ledger.py check` OK; nada reescrito hacia atrás |
-| 41.6 | **0** | Escalar decisiones (H.51…H.57) y archivar el prompt ejecutado | TODO (tras 41.5) | prompt en `docs/archive/`; INVENTARIO y README al día |
+| 41.1 | **0** | Liberar ≥ 6 KB del ledger (evidencias de DONE →… | DONE — `643ab4c` — margen 6.427 B; §7 OK (2026-10-17) | [8] con margen ≥ 6 KB; `ledger.py check` OK |
+| 41.2 | **0** | Inventario y contraste doc ↔ código ↔ sesiones de todo el corpus vivo | DONE — `643ab4c` — claims: 115/115 docs; §7 OK | `archive/verificacion/claims-<fecha>.md` con veredicto y `file:line` por doc |
+| 41.3 | **0** | Corregir en sitio las contradicciones conocidas y las nuevas | PARCIAL (325/441; 116 abiertas en el claims file) | antes/después/`file:line` por cambio; `check_docs.py` verde |
+| 41.4 | **0** | Una guarda en `check_docs.py` por contradicción cerrada | DONE — [15]-[23] rojo/verde; §7 OK tras 2 refutaciones | cada guarda roja al mutar y verde al revertir, en el PR |
+| 41.5 | **0** | STATUS y CHANGELOG al día; ADR-61/62/63; ledger al día | DONE — STATUS, CHANGELOG, ADR-61/62/63/65; §7 OK | `ledger.py check` OK; nada reescrito hacia atrás |
+| 41.6 | **0** | Escalar decisiones (H.51…H.57) y archivar el prompt ejecutado | DONE — H.51-H.60, prompt archivado; §7 OK | prompt en `docs/archive/`; INVENTARIO y README al día |
 
 ### 42. Ultracode: código tras la sincronización (oleadas 1-9; dueño 2026-10-16; `PLAN_ULTRACODE.md` §5-§6)
 
