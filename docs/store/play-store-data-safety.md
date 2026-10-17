@@ -24,7 +24,7 @@ prueba): `BUILD SUCCESSFUL`, APK de 14,5 MB generado. No se pudo probar `bundleR
 **Yes.**
 
 ### 2.2 Is all of the data collected by your app encrypted in transit?
-**Yes** — all traffic goes to `https://api-production-9751.up.railway.app` (TLS).
+**Yes** — all traffic goes to `https://api.whetzy.com` (TLS, served by Railway).
 
 ### 2.3 Do you provide a way for users to request that their data is deleted?
 **Yes** — `DELETE /api/v1/auth/me/account` endpoint (bajo `/auth`, no `/me` a secas); link in ProfileScreen → `/delete-account`.

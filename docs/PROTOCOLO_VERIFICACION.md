@@ -258,7 +258,7 @@ python scripts/check_source_licenses.py             # LICENSE del clon == licenc
 # Idiomas (23.1)
 python scripts/check_i18n_parity.py                 # sin fallback silencioso ES↔EN
 # Producción (solo lectura)
-$B="https://api-production-9751.up.railway.app"; Invoke-RestMethod "$B/health"; Invoke-RestMethod "$B/health/ready"
+$B="https://api.whetzy.com"; Invoke-RestMethod "$B/health"; Invoke-RestMethod "$B/health/ready"
 (Invoke-RestMethod "$B/api/v1/openapi.json").paths.PSObject.Properties.Name.Count
 (Invoke-WebRequest "https://whetzy.com/" -UseBasicParsing).Content -match 'canonical'
 ```

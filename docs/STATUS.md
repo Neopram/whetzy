@@ -2871,3 +2871,13 @@ Contiene:
 Entra en el mismo PR de la Oleada 0: ADR-65 (D1-D10, decididas por delegación expresa), serie 43, H.59 (DNS
 `api.whetzy.com`, dueño) y H.60 (choque de D7 con el test-out de ADR-61 §9). No hay código todavía: la serie 43
 empieza después de este PR.
+
+**Adenda (2026-10-17, tras #228).** El dueño pasó la API a `https://api.whetzy.com` (#228, fusionado
+01:05 UTC). Comprobado: `/health` 200 en los dos hosts; `api.whetzy.com` es un CNAME a
+`n8r3nbqo.up.railway.app` sin proxy (`server: railway-hikari`, sin `cf-ray`). Los docs vivos que dan la URL
+vigente apuntan ya al dominio nuevo (CLAUDE.md, README, RUNBOOK, ARCHITECTURE, ORCHESTRATOR, RELEASE,
+PROTOCOLO, LANZAMIENTO_PILOTO, cloudflare-config, capacity, legal, ficha de Play, ledger); quedan las
+menciones al host de Railway como alias vivo o como medida fechada. H.59 hecha salvo las variables, que
+pasan a H.61 (`COOKIE_DOMAIN=.whetzy.com` y, según #228, `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL`,
+solo tras el deploy). Fuera de este PR (son código): los valores por defecto de `scripts/estado.py` y
+`scripts/smoke_post_deploy.sh` siguen en el host de Railway, que responde.

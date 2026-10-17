@@ -401,7 +401,7 @@ brew install k6  # macOS
 k6 run backend/tests/load/baseline.js --vus 100 --duration 60s
 
 # Or with a specific base URL
-BASE_URL=https://api-production-9751.up.railway.app k6 run baseline.js
+BASE_URL=https://api.whetzy.com k6 run baseline.js
 ```
 
 ### Metrics to Monitor

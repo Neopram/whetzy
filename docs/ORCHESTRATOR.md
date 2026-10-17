@@ -258,7 +258,7 @@ nuevo en espera (ADR-62 propuesto).
 git status --short
 
 # 2. Producción responde y coincide con el ledger
-$B = "https://api-production-9751.up.railway.app"
+$B = "https://api.whetzy.com"
 Invoke-RestMethod "$B/health"
 (Invoke-RestMethod "$B/api/v1/openapi.json").paths.PSObject.Properties.Name.Count
 

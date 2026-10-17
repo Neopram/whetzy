@@ -78,7 +78,7 @@ respuestas literales, no tu resumen.
 
 1. Inicia sesión en `whetzy.com` con tu cuenta de dueño.
 2. En el mismo navegador abre
-   `https://api-production-9751.up.railway.app/api/v1/admin/metrics/funnel`.
+   `https://api.whetzy.com/api/v1/admin/metrics/funnel`.
 3. Lee `total_users`: es el número de cuentas de la tabla `users`.
 
 Por qué funciona:

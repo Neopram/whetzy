@@ -4,11 +4,11 @@ Zero-cost DDoS, WAF, rate limiting, and performance caching via Cloudflare.
 
 ## Overview
 
-Whetzy uses Cloudflare's free tier as the DNS and WAF layer in front of the frontend (Cloudflare Pages). The backend (Railway) is NOT behind Cloudflare: the API is served directly from `api-production-9751.up.railway.app` (`docs/RUNBOOK.md`, 22.5 section C, checked 2026-10-02).
+Whetzy uses Cloudflare's free tier as the DNS and WAF layer in front of the frontend (Cloudflare Pages). The backend (Railway) is NOT behind Cloudflare: the API is served directly from Railway at `api.whetzy.com` since 2026-10-17 (#228): a DNS-only CNAME to `n8r3nbqo.up.railway.app`, so responses carry `server: railway-hikari` and no `cf-ray` (checked 2026-10-17). `api-production-9751.up.railway.app` still answers (`docs/RUNBOOK.md`, 22.5 section C).
 
 **Domains**:
 - `whetzy.com` (apex): Cloudflare Pages → frontend (SPA)
-- `api-production-9751.up.railway.app`: backend (FastAPI), direct to Railway, not proxied by Cloudflare
+- `api.whetzy.com`: backend (FastAPI), CNAME to Railway, DNS only (not proxied by Cloudflare); `api-production-9751.up.railway.app` is the same service
 
 ## Managed WAF Rule Sets
 

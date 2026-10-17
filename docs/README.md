@@ -99,9 +99,9 @@ banco viven en la fila `Contenido` de `AUTONOMOUS_STATE.md` y en
 
 | Superficie | URL |
 |---|---|
-| API | https://api-production-9751.up.railway.app |
+| API | https://api.whetzy.com (desde el 2026-10-17; el host de Railway sigue activo) |
 | Frontend | https://whetzy.com |
-| OpenAPI | https://api-production-9751.up.railway.app/api/v1/openapi.json |
+| OpenAPI | https://api.whetzy.com/api/v1/openapi.json |
 
 `git push origin master` **despliega los dos**: el backend en Railway (verificado
 2026-09-16) y el frontend en Cloudflare Pages, que está conectado a Git (verificado

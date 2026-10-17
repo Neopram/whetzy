@@ -7,7 +7,7 @@ Frontend (React + Capacitor)          whetzy.com / whetzy.pages.dev
         │
         │ HTTPS / REST
         ▼
-Backend (FastAPI)              api-production-9751.up.railway.app
+Backend (FastAPI)              api.whetzy.com (Railway; api-production-9751.up.railway.app sigue vivo)
         │
         ├── PostgreSQL (Railway)       primary data store
         ├── BM25 index (in-memory)     RAG retrieval, built at startup from the DB

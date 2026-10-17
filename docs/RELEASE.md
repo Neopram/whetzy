@@ -80,7 +80,7 @@ python ../scripts/check_docs.py                     # docs = código
 # Si hay migración: backup de prod ANTES del push (RUNBOOK → DB backup / restore)
 ```
 
-Verificar después: `curl https://api-production-9751.up.railway.app/health` →
+Verificar después: `curl https://api.whetzy.com/health` →
 `{"status":"healthy"}`; si hubo contenido nuevo, `GET /api/v1/glossary/<track>` lo sirve.
 
 ---

@@ -17,7 +17,7 @@
 
 | Invariante | Valor |
 |---|---|
-| Backend prod | `https://api-production-9751.up.railway.app` |
+| Backend prod | `https://api.whetzy.com` (#228; Railway sigue activo) |
 | Frontend prod | `https://whetzy.com` / `https://whetzy.pages.dev` — **deploy AUTOMÁTICO desde `master`** (Cloudflare Pages conectado a… |
 | Repo | `github.com/Neopram/whetzy` branch `master` |
 | Autonomía | **ADR-45 (2026-09-24): la sesión trabaja en su rama y abre un PR por oleada; NUNCA `git push origin master` ni fusiona.… |
@@ -606,7 +606,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.56 | «Panel de equipo» prometido en `docs/legal/b2b_pilot_offer_*.md` sin producto. Recomendado: retirar la promesa (S4) | Dueño |
 | H.57 | Modelos: CLAUDE.md dice Haiku 4.5 y prohíbe Fable; el entorno ofrece otros. La tabla no se cambia hasta que decidas | Dueño |
 | H.58 | Las 119 preguntas del barrido de la Oleada 0 (`docs/archive/verificacion/claims-2026-10-16.md`, «Escalados»), con la opción recomendada primero | Dueño |
-| H.59 | DNS `api.whetzy.com` → servicio `api` de Railway, y `COOKIE_DOMAIN=.whetzy.com` y `VITE_API_URL` (definitivo de ADR-65 D1; 10 min) | Dueño |
+| H.59 | DNS `api.whetzy.com` → servicio `api` de Railway y `VITE_API_URL` — **hecho 2026-10-17** (#228; CNAME sin proxy, `/health` 200 [V]). Queda H.61 | Dueño |
+| H.61 | `COOKIE_DOMAIN=.whetzy.com` en Railway tras desplegar #228 (dueño). Con él, según #228: `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com`; antes del deploy rompería el login | Dueño |
 | H.60 | ADR-65 D7 + D4 anulan el test-out de ADR-61 §9 (`placement.py:343`). Recomendado: un módulo con test-out aprobado o ≥ 70 % en la prueba cuenta como «lección vista» | Dueño |
 
 ## 5. Bitácora de decisiones
