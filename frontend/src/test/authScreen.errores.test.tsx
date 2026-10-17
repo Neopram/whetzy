@@ -92,6 +92,23 @@ describe('AuthScreen — errores traducidos y por campo (43.2)', () => {
     expect(register.mock.calls[0][0].username).toBe('maria_43');
   });
 
+  // Verificador §7 (2026-10-17): «la regex mira el email sin recortar». No
+  // pasa: el campo es `type="email"` y su saneado de valor (HTML) ya quita los
+  // espacios de los bordes. Este caso vigila que siga así si el campo cambia.
+  it('el email con un espacio detrás (autocompletado del móvil) pasa y viaja recortado', async () => {
+    register.mockResolvedValue({ access_token: 'a', refresh_token: 'r' });
+    const onAuthed = vi.fn();
+    render(<AuthScreen onAuthed={onAuthed} />);
+    fireEvent.change(screen.getByLabelText(i18n.t('auth.nameLabel')), { target: { value: 'María' } });
+    fireEvent.change(screen.getByLabelText(i18n.t('auth.usernameLabel')), { target: { value: 'maria_43' } });
+    fireEvent.change(screen.getByLabelText(i18n.t('auth.emailLabel')), { target: { value: 'maria@example.com ' } });
+    fireEvent.change(screen.getByLabelText(i18n.t('auth.passwordLabel')), { target: { value: 'Str0ng!Pass' } });
+    fireEvent.click(screen.getByRole('checkbox'));
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('auth.registerCta') }));
+    await vi.waitFor(() => expect(onAuthed).toHaveBeenCalled());
+    expect(register.mock.calls[0][0].email).toBe('maria@example.com');
+  });
+
   it.each(['es', 'en'] as const)('login con credenciales malas en %s', async (lang) => {
     await setLang(lang);
     login.mockRejectedValue(new ApiError('Incorrect email or password', 401, 'Incorrect email or password'));
