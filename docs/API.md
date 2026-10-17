@@ -67,7 +67,7 @@ GET  /progress/skills             → skill mastery list (?track_id= filter) �
 GET  /progress/curriculum         → module/skill tree with BKT gates (?track_id= filter) 🔒
 GET  /progress/predictions        → DKT probability per skill (?track_id= filter) 🔒
 GET  /progress/risk               → churn risk score 🔒
-GET  /progress/decaying           → skills whose FSRS stability is decaying 🔒
+GET  /progress/decaying           → skills whose FSRS stability is decaying (?track_id= filter, 43.4) 🔒
 GET  /progress/thresholds         → canonical domain thresholds (mastery, module unlock) 🔒
 ```
 
@@ -128,7 +128,7 @@ GET  /exams/module/{module_id}/test-out/blueprint → {module_id, skills, questi
 POST /exams/module/{module_id}/test-out/start → module test-out (17.2)
 POST /exams/track/{attempt_id}/submit       → per-skill report + verdict + certificate
 
-GET  /exams/certification/{track_id}/readiness → readiness score + domain gaps 🔒
+GET  /exams/certification/{track_id}/readiness → readiness score + domain gaps (domain mean over every skill, unassessed = 0; 43.4) 🔒
 GET  /exams/certification/{track_id}/access    → price, paywall on/off, purchased, can_start (38.7) 🔒
 POST /exams/certification/{track_id}/start     → certifying exam: mock blueprint + Whetzy pass mark (38.7) 🔒
 GET  /exams/certificates/{code}             → PUBLIC, no auth

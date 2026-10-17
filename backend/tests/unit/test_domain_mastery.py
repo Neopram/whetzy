@@ -19,15 +19,25 @@ from app.services.domain_mastery import (
 # ── compute_domain_mastery ───────────────────────────────────────────────────
 
 
-def test_mean_is_over_assessed_skills_only() -> None:
+def test_mean_is_over_every_skill_of_the_domain() -> None:
+    """42.6 (PLAN_ULTRACODE §4, dentro de 43.4): una skill sin estado cuenta 0.
+    Antes la media iba solo sobre las evaluadas, así que practicar 1 de 10
+    skills al 0,9 daba un dominio «listo» al 0,9."""
     mastery = compute_domain_mastery(
         "d1", weight_pct=30.0, skill_ids=["s1", "s2", "s3"],
-        p_known_by_skill={"s1": 0.9, "s2": 0.7},  # s3 never attempted
+        p_known_by_skill={"s1": 0.9, "s2": 0.6},  # s3 never attempted
     )
-    assert mastery.p_known_mean == pytest.approx(0.8)  # (0.9 + 0.7) / 2, NOT / 3
+    assert mastery.p_known_mean == pytest.approx(0.5)  # (0.9 + 0.6 + 0) / 3
     assert mastery.skills_assessed == 2
     assert mastery.skills_total == 3
     assert mastery.has_data is True
+
+
+def test_one_strong_skill_does_not_make_a_big_domain_ready() -> None:
+    skills = [f"s{i}" for i in range(10)]
+    mastery = compute_domain_mastery("d1", 20.0, skills, {"s0": 0.95})
+    assert mastery.p_known_mean == pytest.approx(0.095)
+    assert is_domain_ready(mastery) is False
 
 
 def test_an_untouched_domain_reports_no_data_not_a_fabricated_number() -> None:

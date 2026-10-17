@@ -61,10 +61,15 @@ def compute_domain_mastery(
 ) -> DomainMastery:
     """`skill_ids` is every skill in the domain (for `skills_total`);
     `p_known_by_skill` holds only skills the learner actually has a
-    `UserSkillState` row for — a skill missing from it is "never attempted",
-    not "attempted and scored 0"."""
+    `UserSkillState` row for.
+
+    42.6 (PLAN_ULTRACODE §4, hecho en 43.4): la media va sobre TODAS las
+    skills del dominio y una sin estado cuenta 0. Antes iba solo sobre las
+    evaluadas, así que una skill al 0,9 entre diez dejaba el dominio «listo».
+    Un dominio sin ninguna evaluada sigue siendo «sin datos» (None), no 0: la
+    cobertura la dice `skills_assessed`."""
     assessed_values = [p_known_by_skill[sid] for sid in skill_ids if sid in p_known_by_skill]
-    mean_p = sum(assessed_values) / len(assessed_values) if assessed_values else None
+    mean_p = sum(assessed_values) / len(skill_ids) if assessed_values else None
     return DomainMastery(
         domain_id=domain_id,
         weight_pct=weight_pct,
