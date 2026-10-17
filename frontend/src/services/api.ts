@@ -107,11 +107,91 @@ export async function logout(): Promise<void> {
     await request('/auth/logout', { method: 'POST' }, false);
   } catch {
     /* la sesión ya no era válida, o no hay red: no hay nada más que hacer aquí */
+  } finally {
+    forgetTokens();
+  }
+}
+
+/** 43.1 (ADR-65 D1; el dueño eligió `sessionStorage` el 2026-10-17). Safari en
+ *  iPhone no manda las cookies de la API desde `whetzy.com`, porque para él son
+ *  de terceros. Tras el registro, `/auth/me` llegaba sin sesión y la app volvía
+ *  a la portada.
+ *
+ *  Puente hasta que la cookie sea de `.whetzy.com` (H.61; la API ya está en
+ *  `api.whetzy.com` desde #228): tras el login,
+ *  `bridgeIfCookiesBlocked` prueba `/auth/me` solo con la cookie.
+ *  - Si responde, no se guarda nada: la sesión sigue en cookies HttpOnly.
+ *  - Si da 401, los tokens que el login ya devuelve en el JSON se guardan en
+ *    `sessionStorage` (dura la pestaña y sobrevive a la recarga de página
+ *    completa de `App.tsx`) y viajan como `Authorization: Bearer`, que el
+ *    backend lee antes que la cookie. Nunca en `localStorage`: ver
+ *    `clearLegacyTokens`. */
+const BRIDGE_KEY = 'whetzy_session_bridge';
+let accessToken: string | null = null;
+let refreshToken: string | null = null;
+
+(function loadBridge() {
+  try {
+    const raw = sessionStorage.getItem(BRIDGE_KEY);
+    if (raw) {
+      const b = JSON.parse(raw) as { access?: unknown; refresh?: unknown };
+      if (typeof b.access === 'string' && typeof b.refresh === 'string') {
+        accessToken = b.access;
+        refreshToken = b.refresh;
+      }
+    }
+  } catch {
+    /* storage unavailable */
+  }
+})();
+
+function tokensOf(body: unknown): { access: string; refresh: string } | null {
+  const b = body as { access_token?: unknown; refresh_token?: unknown } | null;
+  return b && typeof b.access_token === 'string' && typeof b.refresh_token === 'string'
+    ? { access: b.access_token, refresh: b.refresh_token }
+    : null;
+}
+
+function storeBridge(t: { access: string; refresh: string }): void {
+  accessToken = t.access;
+  refreshToken = t.refresh;
+  try {
+    sessionStorage.setItem(BRIDGE_KEY, JSON.stringify(t));
+  } catch {
+    /* modo privado: queda en memoria */
+  }
+}
+
+function forgetTokens(): void {
+  accessToken = null;
+  refreshToken = null;
+  try {
+    sessionStorage.removeItem(BRIDGE_KEY);
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+/** Tras un login: si la cookie recién puesta no llega a la API, activa el puente. */
+async function bridgeIfCookiesBlocked(body: unknown): Promise<void> {
+  const t = tokensOf(body);
+  if (!t) return;
+  forgetTokens();
+  try {
+    const probe = await fetch(`${BASE_URL}/auth/me`, {
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    });
+    if (probe.status === 401) storeBridge(t);
+  } catch {
+    /* sin red: no se sabe; la cookie sigue siendo la vía */
   }
 }
 
 function getHeaders(): HeadersInit {
-  return { 'Content-Type': 'application/json' };
+  return accessToken
+    ? { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` }
+    : { 'Content-Type': 'application/json' };
 }
 
 /** 0.13: App.tsx se suscribe aquí una vez, al montar, para enterarse de un
@@ -130,12 +210,20 @@ export function setOnSessionExpired(cb: (() => void) | null): void {
 
 async function tryRefresh(): Promise<boolean> {
   try {
+    // Sin cookie de refresh (Safari, 43.1) el refresh va en el cuerpo; el
+    // backend acepta las dos vías (`auth.py`, `POST /auth/refresh`).
     const res = await fetch(`${BASE_URL}/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
+      ...(refreshToken ? { body: JSON.stringify({ refresh_token: refreshToken }) } : {}),
     });
-    if (!res.ok) return false;
+    if (!res.ok) {
+      forgetTokens();
+      return false;
+    }
+    const fresh = tokensOf(await res.json().catch(() => null));
+    if (fresh && refreshToken) storeBridge(fresh); // solo si el puente estaba activo
     return true;
   } catch {
     return false;
@@ -251,10 +339,12 @@ export type OAuthProvider = 'github' | 'google';
 
 export const auth = {
   async register(payload: RegisterPayload) {
-    return request<{ access_token: string; refresh_token: string }>('/auth/register', {
+    const tokens = await request<{ access_token: string; refresh_token: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
+    await bridgeIfCookiesBlocked(tokens);
+    return tokens;
   },
 
   async login(email: string, password: string) {
@@ -272,15 +362,19 @@ export const auth = {
       throw new Error(typeof body.detail === 'string' ? body.detail : 'Incorrect email or password');
     }
     // Con 2FA la contraseña sola no abre sesión: llega el reto del segundo paso.
-    return (await res.json()) as { access_token: string; refresh_token: string } | MfaChallenge;
+    const body = (await res.json()) as { access_token: string; refresh_token: string } | MfaChallenge;
+    await bridgeIfCookiesBlocked(body);
+    return body;
   },
 
   /** Segundo paso del login con 2FA. Sin `mfaToken` lo toma de la cookie (OAuth). */
   async login2fa(code: string, mfaToken?: string) {
-    return request<{ access_token: string; refresh_token: string }>('/auth/2fa/login', {
+    const tokens = await request<{ access_token: string; refresh_token: string }>('/auth/2fa/login', {
       method: 'POST',
       body: JSON.stringify({ code: code.trim(), mfa_token: mfaToken }),
     });
+    await bridgeIfCookiesBlocked(tokens);
+    return tokens;
   },
 
   twoFactor: {
