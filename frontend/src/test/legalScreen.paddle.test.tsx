@@ -40,5 +40,7 @@ describe('Política de privacidad — lo que exige el art. 13 RGPD', () => {
     expect(screen.getByText(i18n.t('legal.privacyGdprDesc'))).toBeTruthy();
     expect(screen.getByText(i18n.t('legal.privacyCookies'))).toBeTruthy();
     expect(screen.getByText(i18n.t('legal.privacyCoppaDesc'))).toBeTruthy();
+    // H.63 (dueño, 2026-10-17): la política dice para qué abre el titular una cuenta.
+    expect(screen.getByText(i18n.t('legal.privacySupportAccess'))).toBeTruthy();
   });
 });
