@@ -296,10 +296,11 @@ function App() {
     );
   }
   if (path === '/verify-email') {
-    const token = new URLSearchParams(window.location.search).get('token') || '';
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token') || '';
     return (
       <Screen>
-        <VerifyEmailPage token={token} />
+        <VerifyEmailPage token={token} lang={params.get('lang')} />
       </Screen>
     );
   }

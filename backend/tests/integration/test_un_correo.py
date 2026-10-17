@@ -9,6 +9,7 @@ sale al crearla, y solo entonces.
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import itertools
 import re
@@ -17,9 +18,13 @@ import urllib.parse
 from datetime import UTC, datetime, timedelta
 
 import pytest
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.core.cookies import OAUTH_STATE_COOKIE
+from app.core.db import get_db
+from app.main import app
 from app.models.email_verification import EmailVerificationToken
 from app.models.user import User
 from app.services import email as email_svc
@@ -158,3 +163,28 @@ async def test_oauth_linking_an_existing_verified_account_sends_nothing(client, 
 
     await _oauth(client, code)
     assert sent == []
+
+
+async def test_two_simultaneous_clicks_send_one_welcome(client, db_engine, sent) -> None:
+    """45.4: dos `verify-email` a la vez con el mismo enlace (doble toque, un
+    cliente de correo que abre el enlace antes, o el doble efecto de React en
+    desarrollo) mandaban dos bienvenidas: cada uno leía «sin verificar» antes
+    de que el otro guardara. Con una sesión por petición, como en producción."""
+    payload = _payload("v4", "es")
+    assert (await client.post(f"{AUTH}/register", json=payload, headers=_h())).status_code == 201
+    token = _verify_link(sent[0][2])[1]["token"]
+    sent.clear()
+
+    factory = async_sessionmaker(bind=db_engine, class_=AsyncSession, expire_on_commit=False)
+
+    async def _fresh_session():
+        async with factory() as s:
+            yield s
+
+    app.dependency_overrides[get_db] = _fresh_session
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as c:
+        codes = await asyncio.gather(
+            *(c.post(f"{AUTH}/verify-email", json={"token": token}, headers=_h()) for _ in range(2))
+        )
+    assert sorted(r.status_code for r in codes) == [200, 400]
+    assert [s for _, s, _ in sent] == ["Bienvenido/a a Whetzy, Prueba!"]
