@@ -41,7 +41,8 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 43 | Flujo del alumno listo para pruebas | 0/8 | 0 % | 43.1, 43.2, 43.3, 43.4, 43.5, 43.6 +2 |
+| 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
+| 43 | Flujo del alumno listo para pruebas | 1/8 | 12 % | 43.1, 43.3, 43.4, 43.5, 43.6, 43.7 +1 |
 | 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
 | 41 | Documentación al día con el código | 5/6 | 83 % | 41.3 |
 | 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
@@ -554,14 +555,25 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | TODO (tras 41.6) | e2e con cookies de terceros bloqueadas: registro → Hoy |
-| 43.2 | **0** | Registro sin fricción: errores por campo, email en minúsculas, filtro por palabra (D10) | TODO | `Maria@Gmail.COM` entra en minúsculas; 409 traducido |
-| 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | TODO (tras 43.2) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
+| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | BLOCKED (evidencia; fusionado #226; §7 2026-10-17 «no reproducible»: el e2e simula terceros en el mismo origen y no corre sin escribir config; 43.1b) | e2e con cookies de terceros bloqueadas: registro → Hoy |
+| 43.2 | **0** | Registro sin fricción: errores por campo, email en minúsculas, filtro por palabra (D10) | DONE 2026-10-17 (#227; §7: pytest 5/5, vitest 8/8, `Maria@Gmail.COM`→minúsculas, i18n ES/EN; hallazgos fuera del criterio en #231) | `Maria@Gmail.COM` entra en minúsculas; 409 traducido |
+| 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | DOING (PR #230; migración 61) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
 | 43.4 | **0** | Ruta activa (D5) y Hoy filtrado por ella (D6); readiness de 42.6 | TODO (tras 43.3) | cambio de ruta persiste; Hoy solo de la ruta activa |
 | 43.5 | **0** | Lección primero (D7) | TODO (tras 43.4 y H.60) | «Estudiar» abre la lección; sin lección vista no hay práctica |
 | 43.6 | **1** | Proyectos dentro del track, con progreso y validación en servidor (D8) | TODO | progreso sobrevive a salir; `passed=true` sin tests no completa |
 | 43.7 | **1** | Playground contextual desde la lección (D9) | TODO | «Probar este código» abre el ejemplo; el fragmento reaparece |
 | 43.8 | **0** | Puerta «lista para pruebas»: `e2e/alumno.spec.ts` y specs en verde | TODO (cierra la serie) | el spec en Chromium y con cookies de terceros bloqueadas |
+
+### 44. Back-office de soporte (plan del dueño 2026-10-17; `PLAN_BACKOFFICE.md`)
+
+> **Estado:** `ABIERTA`. **PRI:** 0. Tras cerrar la 43 (43.8 en verde) y antes del resto de la 42. Una rama y un PR por fila.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 44.1 | **0** | `GET /admin/users?q=` y `/admin/users/{id}`; tabla `admin_action_log`; registro de `view`; exige 2FA (B7) | TODO (tras 43.8) | no-owner 403; owner sin 2FA 403; `q` de 2 caracteres 422; ficha crea fila `view`; email enmascarado |
+| 44.2 | **0** | `POST /admin/users/{id}/actions/{accion}`: las cinco acciones de B4, con motivo y fila en el registro | TODO (tras 44.1) | un test por acción; motivo vacío 422; plan regalado > 90 días 422; suspender invalida la sesión |
+| 44.3 | **0** | Pestañas «Usuarios» y «Registro» en `AdminScreen`; i18n ES/EN | TODO (tras 44.2) | vitest de búsqueda, ficha y acción; e2e `admin.spec.ts`; un alumno no ve la pestaña |
+| 44.4 | **1** | Docs de soporte (MAPA_PRODUCTO, ARCHITECTURE, RUNBOOK) y «queda registrado» en `legal.privacySupportAccess` | TODO (tras 44.3) | `check_docs.py` verde |
 
 ## 3. Cola HUMAN-BLOCKED
 
@@ -609,6 +621,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.59 | DNS `api.whetzy.com` → servicio `api` de Railway y `VITE_API_URL` — **hecho 2026-10-17** (#228; CNAME sin proxy, `/health` 200 [V]). Queda H.61 | Dueño |
 | H.61 | `COOKIE_DOMAIN=.whetzy.com` en Railway tras desplegar #228 (dueño). Con él, según #228: `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com`; antes del deploy rompería el login | Dueño |
 | H.60 | ADR-65 D7 + D4 anulan el test-out de ADR-61 §9 (`placement.py:343`). Recomendado: un módulo con test-out aprobado o ≥ 70 % en la prueba cuenta como «lección vista» | Dueño |
+| H.62 | **Hecha** 2026-10-17 — verificación en dos pasos activa en la cuenta del dueño (requisito B7 de 44.1; `PLAN_BACKOFFICE.md` §4) | Dueño |
+| H.63 | **Resuelta** 2026-10-17 en #229 — la política publicada dice para qué abre el titular una cuenta (`legal.privacySupportAccess`, ES/EN); «y queda registrado» llega con 44.4 | Dueño |
 
 ## 5. Bitácora de decisiones
 
