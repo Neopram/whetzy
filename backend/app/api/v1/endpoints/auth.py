@@ -155,7 +155,7 @@ async def register(
     email_svc.send_email_verification(
         to=user.email, name=user.display_name, token=raw_token, lang=user.language
     )
-    email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
+    # 45.2 (ADR-66 E2): un solo correo al registrarse. La bienvenida sale al verificar.
 
     token = Token(
         access_token=create_access_token(user.id, jwt_version=user.jwt_version),
@@ -520,9 +520,15 @@ async def verify_email(
     if user is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid token")
 
+    first_time = not user.email_verified
     user.email_verified = True
     evt.used = True
     await db.commit()
+    if first_time:
+        # 45.2 (ADR-66 E2): la bienvenida sale al verificar, una sola vez.
+        from app.services import email as email_svc
+
+        email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
     return {"message": "Email verified. You now have full access."}
 
 

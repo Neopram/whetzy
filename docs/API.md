@@ -26,7 +26,7 @@ Full interactive spec: `/api/v1/openapi.json` (dev: http://localhost:8000/docs)
 ## Auth endpoints
 
 ```
-POST  /auth/register              → Token (201)
+POST  /auth/register              → Token (201)  — manda un solo correo, el de verificación (`/verify-email?token=…&lang=es|en`); la bienvenida no (45.2, ADR-66 E2)
 POST  /auth/login                 → Token | {mfa_required, mfa_token} (200, form-urlencoded) — con 2FA activada no abre sesión: devuelve el reto (5 min) para `/auth/2fa/login`
 POST  /auth/refresh               → Token (200)
 GET   /auth/me                    → UserRead (200) 🔒
@@ -39,7 +39,7 @@ PATCH /auth/me/password           → {message} (200) 🔒  — body {current_pa
 
 POST /auth/forgot-password        → {message} (200) — no enumeration
 POST /auth/reset-password         → {message} (200) — body {token, new_password}
-POST /auth/verify-email           → {message} (200) — body {token}
+POST /auth/verify-email           → {message} (200) — body {token}; la primera vez que verifica la cuenta manda la bienvenida, una sola vez (45.2). OAuth la manda al crear la cuenta, que ya llega verificada
 POST /auth/resend-verification    → {message} (200)
 
 GET  /auth/oauth/providers            → {providers: ["github"|"google"]} solo los configurados (200)
