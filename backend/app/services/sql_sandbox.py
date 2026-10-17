@@ -52,9 +52,14 @@ def _authorizer(action: int, arg1: str | None, *_: object) -> int:
     return sqlite3.SQLITE_OK
 
 
-def check_sql(code: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
-    """Ejecuta `code` en una base nueva en memoria; pasa si no hay error."""
-    if len(code) > MAX_SCRIPT_CHARS:
+def check_sql(code: str, test: str = "", time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
+    """Ejecuta `code` y luego `test` en una base nueva en memoria; pasa si no hay error.
+
+    Son dos scripts sobre la misma conexión, no uno concatenado: un `/*` sin
+    cerrar en el código del alumno convertía el test del paso en comentario y
+    el paso pasaba sin ejecutar nada (§7 de 43.6, 2026-10-17).
+    """
+    if len(code) + len(test) > MAX_SCRIPT_CHARS:
         return SqlCheck(passed=False, error="code too long")
     conn = sqlite3.connect(":memory:", isolation_level=None, check_same_thread=False)
     deadline = time.monotonic() + time_limit_s
@@ -74,6 +79,8 @@ def check_sql(code: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
         conn.set_authorizer(_authorizer)
         conn.set_progress_handler(_progress, _PROGRESS_EVERY)
         conn.executescript(code)
+        if test:
+            conn.executescript(test)
     except sqlite3.Error as exc:
         if expired:
             return SqlCheck(passed=False, timed_out=True)
@@ -83,6 +90,8 @@ def check_sql(code: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
     return SqlCheck(passed=True)
 
 
-async def check_sql_async(code: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
+async def check_sql_async(
+    code: str, test: str = "", time_limit_s: float = TIME_LIMIT_S
+) -> SqlCheck:
     """`check_sql` en un hilo: el límite de tiempo lo pone el propio SQLite."""
-    return await asyncio.to_thread(check_sql, code, time_limit_s)
+    return await asyncio.to_thread(check_sql, code, test, time_limit_s)

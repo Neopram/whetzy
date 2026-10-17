@@ -84,6 +84,27 @@ async def test_sql_passed_true_con_codigo_que_no_pasa_no_avanza(client, auth_hea
     assert body["current_step"] == 1 and body["completed"] is False
 
 
+@pytest.mark.parametrize(
+    "code",
+    [
+        "/* no escribo nada",  # comentario sin cerrar: se tragaba el test del paso
+        "/* a medias */ /*",
+        "CREATE TABLE pets(name TEXT); /*",
+    ],
+)
+async def test_sql_un_comentario_sin_cerrar_no_se_traga_el_test(
+    client, auth_headers, sql_project, code
+):
+    """§7 de 43.6 (2026-10-17): el código del alumno y el test del paso iban
+    concatenados en un solo script; un `/*` sin cerrar convertía el test en
+    comentario y el paso pasaba sin ejecutar ningún test."""
+    await client.post(f"{BASE}/sql-pets/start", headers=auth_headers)
+    r = await _submit(client, auth_headers, "sql-pets", 1, code, True)
+    assert r.status_code == 200, r.text
+    assert r.json()["step_passed"] is False
+    assert r.json()["current_step"] == 1 and r.json()["completed"] is False
+
+
 async def test_sql_el_servidor_aprueba_aunque_el_cliente_diga_que_no(
     client, auth_headers, sql_project
 ):
@@ -228,3 +249,12 @@ def test_el_autorizador_deniega_attach_por_si_solo():
     with pytest.raises(sqlite3.DatabaseError):
         conn.execute("ATTACH DATABASE ':memory:' AS x")
     conn.close()
+
+
+def test_sandbox_ejecuta_el_test_aparte_del_codigo_del_alumno():
+    """El test del paso corre como script propio sobre la misma base: nada del
+    alumno (un comentario o una cadena sin cerrar) puede tragárselo."""
+    assert check_sql(SQL_OK_1, SQL_TEST_1).passed
+    assert not check_sql("/* nada", SQL_TEST_1).passed
+    assert not check_sql("CREATE TABLE pets(name TEXT); /*", SQL_TEST_1).passed
+    assert not check_sql(SQL_OK_1, "SELECT json('roto');").passed
