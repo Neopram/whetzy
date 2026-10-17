@@ -165,5 +165,7 @@ class LessonRead(BaseModel):
     body_en: str
     example_code: str | None = None
     example_output: str | None = None
+    # 43.7: runtime del playground para «Probar este código» (None: no se ofrece).
+    code_runtime: str | None = None
     source: str
     order: int = 1

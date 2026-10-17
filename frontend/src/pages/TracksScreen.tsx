@@ -199,6 +199,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
   // 43.6 (ADR-65 D8): la entrada a Proyectos sale solo si la ruta tiene alguno.
   const trackProjects = useApi(() => projectsApi.list(track.id), [track.id]);
   const openProjects = useAppStore((s) => s.openProjects);
+  const openPlayground = useAppStore((s) => s.openPlayground);
   // The blueprint is derived from that track's skills, so the figures on the
   // final-exam card are the ones the exam will actually use (17.2).
   const { data: blueprint } = useApi<TrackExamBlueprint>(
@@ -355,6 +356,16 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
             </span>
           </button>
         )}
+        {/* 43.7 (ADR-65 D9): acceso secundario al playground libre. */}
+        <button
+          type="button"
+          className={styles.examCard}
+          data-testid="track-playground"
+          onClick={() => openPlayground(null)}
+        >
+          <span className={styles.examTitle}>{t('playground.openPlayground')}</span>
+          <span className={styles.examMeta}>Python · SQL · JS</span>
+        </button>
       </div>
 
       <div className={styles.viewToggle} role="tablist" aria-label={name}>

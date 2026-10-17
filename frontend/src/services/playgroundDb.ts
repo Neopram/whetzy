@@ -7,6 +7,8 @@ export interface PlaygroundEntry {
   output: string;
   error: string | null;
   timestamp: string;
+  /** 43.7: skill de la lección desde la que se abrió (fragmentos por skill). */
+  skill_id?: string;
 }
 
 interface PlaygroundDB extends DBSchema {
@@ -58,4 +60,12 @@ export async function getPlaygroundHistory(
 export async function clearPlaygroundHistory(): Promise<void> {
   const db = await getPlaygroundDB();
   await db.clear('history');
+}
+
+/** 43.7 (ADR-65 D9): el último fragmento ejecutado para una skill, o null. */
+export async function getLatestForSkill(skillId: string): Promise<PlaygroundEntry | null> {
+  const db = await getPlaygroundDB();
+  const all = (await db.getAll('history')).filter((e) => e.skill_id === skillId);
+  all.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  return all[0] ?? null;
 }

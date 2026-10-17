@@ -95,4 +95,11 @@ describe('Hoy: lección primero', () => {
     expect(startQuiz).toHaveBeenCalledWith('study', 10, { trackId: 'track01' });
     expect(startLesson).not.toHaveBeenCalled();
   });
+
+  it('43.7 (D9): Hoy ya no ofrece el playground', async () => {
+    m(progressApi.curriculum).mockResolvedValue(cur([mod('m1', 1, [sk('a1', 1)])]));
+    render(<HomeScreen />);
+    expect(await screen.findByText('Lección: ES a1')).toBeTruthy();
+    expect(screen.queryByText('Playground')).toBeNull();
+  });
 });

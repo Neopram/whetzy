@@ -729,6 +729,8 @@ export interface LessonRead {
   body_en: string;
   example_code: string | null;
   example_output: string | null;
+  /** 43.7: runtime del playground para «Probar este código»; null si no se puede. */
+  code_runtime?: 'python' | 'sql' | 'js' | null;
   source: string;
   order: number;
 }

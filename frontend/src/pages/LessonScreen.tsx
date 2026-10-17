@@ -18,6 +18,7 @@ interface Props {
 export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
   const { t } = useTranslation();
   const language = useAppStore((s) => s.user.language);
+  const openPlayground = useAppStore((s) => s.openPlayground);
 
   const [lessons, setLessons] = useState<LessonRead[]>([]);
   const [step, setStep] = useState(0);
@@ -31,7 +32,15 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
     setStep(0);
     lessonsApi
       .forSkill(skillId)
-      .then((data) => setLessons(data))
+      .then((data) => {
+        setLessons(data);
+        // 43.7: de vuelta del playground, al paso del ejemplo y no al primero.
+        const back = useAppStore.getState().lessonReturn;
+        if (back?.skillId === skillId) {
+          setStep(back.step);
+          useAppStore.setState({ lessonReturn: null });
+        }
+      })
       .catch((e) => {
         // Free-tier daily quota (39.4/39.34): a friendly message with the
         // reset time instead of the generic load-error copy.
@@ -153,6 +162,23 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
             ) : (
               <>
                 <pre className={styles.code}><code>{lesson.example_code}</code></pre>
+                {lesson.example_code && lesson.code_runtime && (
+                  // 43.7 (ADR-65 D9): el ejemplo se abre en el playground, en su runtime.
+                  <button
+                    type="button"
+                    className={styles.btnGhost}
+                    onClick={() => {
+                      useAppStore.setState({ lessonReturn: { skillId, step } });
+                      openPlayground({
+                        runtime: lesson.code_runtime!,
+                        code: lesson.example_code!,
+                        skillId: lesson.skill_id,
+                      });
+                    }}
+                  >
+                    <span aria-hidden="true">▶</span> {t('lesson.tryCode')}
+                  </button>
+                )}
                 {lesson.example_output && (
                   showOutput ? (
                     <div className={styles.output}>
