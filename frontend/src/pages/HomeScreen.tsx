@@ -49,6 +49,7 @@ export function HomeScreen() {
     () => (activeTrackId ? progressApi.curriculum(activeTrackId) : Promise.resolve(null)),
     [activeTrackId],
   );
+  const curFailed = Boolean(activeTrackId) && !cur.loading && cur.error !== null;
   const nextLessonId = cur.data ? nextLessonSkillId(cur.data) : null;
   const nextLesson = cur.data?.modules.flatMap((m) => m.skills).find((s) => s.skill_id === nextLessonId);
 
@@ -122,7 +123,17 @@ export function HomeScreen() {
               ? t('home.nextLesson', { name: lang === 'es' ? nextLesson.name_es : nextLesson.name_en })
               : t('home.nextStudy')}
           </p>
-          <p className={styles.nextHint}>{nextLesson ? t('home.nextLessonHint') : t('home.nextHint')}</p>
+          <p className={styles.nextHint}>
+            {curFailed ? t('home.curriculumError') : nextLesson ? t('home.nextLessonHint') : t('home.nextHint')}
+          </p>
+          {curFailed ? (
+            // Segundo §7 de 43.5: si el currículo no carga no hay forma de
+            // saber la siguiente lección; lanzar un quiz entonces es lo mismo
+            // que pulsar mientras carga. Se ofrece reintentar.
+            <motion.button className={styles.btnStudy} onClick={cur.reload} whileTap={{ scale: 0.98 }}>
+              {t('home.retry')}
+            </motion.button>
+          ) : (
           <motion.button
             className={styles.btnStudy}
             // §7 de 43.5: mientras carga el currículo de la ruta activa no se
@@ -139,6 +150,7 @@ export function HomeScreen() {
           >
             {t('home.studyNow')}
           </motion.button>
+          )}
         </motion.section>
       </div>
 

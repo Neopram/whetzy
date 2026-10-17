@@ -109,6 +109,26 @@ describe('Hoy: lección primero', () => {
     expect(startLesson).not.toHaveBeenCalled();
   });
 
+  it('si el currículo no carga, «Estudiar» no lanza un quiz: ofrece reintentar (segundo §7 de 43.5)', async () => {
+    const startLesson = vi.fn();
+    const startQuiz = vi.fn();
+    useAppStore.setState({ startLesson, startQuiz });
+    m(progressApi.curriculum).mockRejectedValueOnce(new Error('500'));
+    m(progressApi.curriculum).mockResolvedValue(cur([mod('m1', 1, [sk('a1', 1)])]));
+    render(<HomeScreen />);
+    const retry = await screen.findByRole('button', { name: 'Reintentar' });
+    expect(screen.queryByRole('button', { name: 'ESTUDIAR AHORA' })).toBeNull();
+    expect(screen.getByText('No se pudo cargar tu ruta.')).toBeInTheDocument();
+    fireEvent.click(retry);
+    expect(startQuiz).not.toHaveBeenCalled();
+    expect(startLesson).not.toHaveBeenCalled();
+    // Al reintentar con éxito vuelve «Estudiar», que abre la primera lección.
+    fireEvent.click(await screen.findByRole('button', { name: 'ESTUDIAR AHORA' }));
+    expect(progressApi.curriculum).toHaveBeenCalledTimes(2);
+    expect(startLesson).toHaveBeenCalledWith('a1');
+    expect(startQuiz).not.toHaveBeenCalled();
+  });
+
   it('43.7 (D9): Hoy ya no ofrece el playground', async () => {
     m(progressApi.curriculum).mockResolvedValue(cur([mod('m1', 1, [sk('a1', 1)])]));
     render(<HomeScreen />);
