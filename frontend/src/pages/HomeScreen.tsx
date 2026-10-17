@@ -146,7 +146,7 @@ export function HomeScreen() {
                 <p className={styles.reviewCount}>
                   <strong>{reviewsDue}</strong> {t('home.reviewsPending')}
                 </p>
-                <button type="button" className={styles.btnSecondary} onClick={() => startQuiz('review', reviewsDue)}>
+                <button type="button" className={styles.btnSecondary} onClick={() => startQuiz('review', reviewsDue, activeTrackId ? { trackId: activeTrackId } : undefined)}>
                   {t('home.review')}
                 </button>
               </>

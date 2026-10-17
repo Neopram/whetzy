@@ -481,15 +481,21 @@ async def _to_question_public(question: Question) -> QuestionPublic:
     return QuestionPublic.model_validate(question)
 
 
-async def count_due_reviews(db: AsyncSession, user: User) -> int:
+async def count_due_reviews(db: AsyncSession, user: User, track_id: str | None = None) -> int:
+    """Repasos vencidos; con `track_id`, solo los de esa ruta (43.4, Hoy)."""
     now = _now()
-    result = await db.execute(
-        select(func.count(UserSkillState.id)).where(
-            UserSkillState.user_id == user.id,
-            UserSkillState.fsrs_due.is_not(None),
-            UserSkillState.fsrs_due <= now,
-        )
+    query = select(func.count(UserSkillState.id)).where(
+        UserSkillState.user_id == user.id,
+        UserSkillState.fsrs_due.is_not(None),
+        UserSkillState.fsrs_due <= now,
     )
+    if track_id:
+        query = (
+            query.join(Skill, Skill.id == UserSkillState.skill_id)
+            .join(Module, Module.id == Skill.module_id)
+            .where(Module.track_id == track_id)
+        )
+    result = await db.execute(query)
     return int(result.scalar_one() or 0)
 
 
