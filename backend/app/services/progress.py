@@ -68,7 +68,8 @@ async def get_dashboard(db: AsyncSession, user: User) -> DashboardResponse:
             )
         )
 
-    reviews_due = await count_due_reviews(db, user)
+    # 43.4 (D6): Hoy es de la ruta activa; sin ruta, cuenta todas.
+    reviews_due = await count_due_reviews(db, user, user.target_track_id)
 
     sessions_result = await db.execute(
         select(
