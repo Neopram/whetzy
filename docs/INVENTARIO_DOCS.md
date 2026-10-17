@@ -66,6 +66,7 @@ está roto.
 | `docs/AUTONOMOUS_STATE.md` | normativo-vivo | ledger, fuente de verdad (ADR-40); ledger.py check | se queda | 2026-09-30 |
 | `docs/archive/BALANCE-12-DIAS.md` | histórico | balance narrativo escrito el 2026-09-20 («no es un plan ni un informe de estado») | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/CATALOGO_MAESTRO.md` | normativo-vivo | alcance del producto; ADR-54 en #51/#52 | se queda | 2026-09-30 |
+| `docs/PLAN_BACKOFFICE.md` | normativo-vivo | plan del dueño del 2026-10-17: back-office de soporte (búsqueda, ficha, 5 acciones, registro de administración); serie 44, tras la 43 | se queda | 2026-10-17 |
 | `docs/PLAN_CONTENIDO.md` | normativo-vivo | método de autoría desde la fuente, piloto 37.25, orden y organización (ADR-59) | se queda | 2026-10-03 |
 | `docs/PLAN_MAESTRO.md` | normativo-vivo | norte del producto: tesis, flujos por actor, arquitectura, oleadas A–H con criterio de salida, cola del dueño (aprobado 2026-10-04) | se queda | 2026-10-04 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
@@ -83,7 +84,6 @@ está roto.
 | `docs/archive/PROMPT_CIERRE_2026-09-30.md` | histórico | prompt de un solo uso para cerrar el #34, ya ejecutado (#34 fusionado el 2026-10-01) | archivado el 2026-10-01 | 2026-09-30 |
 | `docs/PROMPT_CONTROL_TOTAL.md` | normativo-vivo | prompt de arranque con control total | se queda; ruta de i18n-audit actualizada | 2026-09-30 |
 | `docs/PLAN_ULTRACODE.md` | normativo-vivo | plan del dueño del 2026-10-16: Oleada 0 (documentación) y oleadas 1-9 de código, sin contenido; series 41 y 42 | se queda; las oleadas ya hechas en `master` las marca su §0 | 2026-10-16 |
-| `docs/PLAN_BACKOFFICE.md` | normativo-vivo | plan del dueño del 2026-10-17: back-office de soporte (búsqueda, ficha, 5 acciones, registro de administración); serie 44, tras la 43 | se queda | 2026-10-17 |
 | `docs/PROMPT_SINCRONIZACION_DOCS.md` | normativo-vivo | prompt de un solo uso de la Oleada 0 (serie 41): poner toda la documentación al día con el código y las sesiones | se archiva en `docs/archive/` al ejecutarse | 2026-10-16 |
 | `docs/PROTOCOLO_VERIFICACION.md` | normativo-vivo | protocolo de verificación | se queda | 2026-09-27 |
 | `docs/README.md` | normativo-vivo | índice de documentos vivos | se queda; filas de los archivados actualizadas | 2026-09-30 |
