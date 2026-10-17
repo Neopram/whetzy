@@ -21,11 +21,13 @@ import pytest
 from sqlalchemy import select
 
 from app.models.project import Project, ProjectStep, ProjectSubmission
-from app.services.sql_sandbox import check_sql
+from app.services.sql_sandbox import check_sql, has_statement
 
 BASE = "/api/v1/projects"
 
 SQL_TEST_1 = "SELECT CASE WHEN (SELECT COUNT(*) FROM pets) = 2 THEN 1 ELSE json('roto') END;"
+# Para los tests del encierro: lo que vigilan está en el código, no en el test.
+NO_OP = "SELECT 1;"
 SQL_TEST_2 = (
     "SELECT CASE WHEN (SELECT name FROM pets ORDER BY age DESC LIMIT 1) = 'Rex' "
     "THEN 1 ELSE json('roto') END;"
@@ -103,6 +105,18 @@ async def test_sql_un_comentario_sin_cerrar_no_se_traga_el_test(
     assert r.status_code == 200, r.text
     assert r.json()["step_passed"] is False
     assert r.json()["current_step"] == 1 and r.json()["completed"] is False
+
+
+@pytest.mark.parametrize("test", ["", "-- falta el test"])
+async def test_sql_un_paso_sin_test_no_se_aprueba(client, auth_headers, db_session, test):
+    """Segundo §7 de 43.6: un paso con `test_code` vacío o solo comentarios
+    pasaba con cualquier código, aunque el cliente dijera `passed: true`."""
+    await _project(db_session, "sql-sin-test", "sql", [test])
+    await client.post(f"{BASE}/sql-sin-test/start", headers=auth_headers)
+    r = await _submit(client, auth_headers, "sql-sin-test", 1, SQL_OK_1, True)
+    assert r.status_code == 200, r.text
+    assert r.json()["step_passed"] is False
+    assert r.json()["completed"] is False
 
 
 async def test_sql_el_servidor_aprueba_aunque_el_cliente_diga_que_no(
@@ -190,8 +204,8 @@ async def test_codigo_demasiado_largo_es_422(client, auth_headers, sql_project):
 
 
 def test_sandbox_pasa_y_falla_como_el_worker():
-    assert check_sql(SQL_OK_1 + "\n\n" + SQL_TEST_1).passed
-    falla = check_sql("CREATE TABLE pets(name TEXT);\n\n" + SQL_TEST_1)
+    assert check_sql(SQL_OK_1, SQL_TEST_1).passed
+    falla = check_sql("CREATE TABLE pets(name TEXT);", SQL_TEST_1)
     assert not falla.passed and falla.error
 
 
@@ -200,6 +214,7 @@ def test_sandbox_corta_un_bucle_infinito():
     r = check_sql(
         "WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n) "
         "SELECT COUNT(*) FROM n;",
+        NO_OP,
         time_limit_s=0.5,
     )
     assert r.timed_out and not r.passed
@@ -216,21 +231,22 @@ def test_sandbox_corta_un_bucle_infinito():
 )
 def test_sandbox_no_escribe_ficheros(sql, tmp_path):
     f = tmp_path / "fuga.db"
-    r = check_sql(sql.format(f=f))
+    r = check_sql(sql.format(f=f), NO_OP)
     assert not r.passed
     assert not os.path.exists(f)
 
 
 def test_sandbox_deniega_pragmas_que_cambian_el_motor_y_deja_los_de_consulta():
-    assert not check_sql("PRAGMA max_page_count = 100000000;").passed
-    assert not check_sql("PRAGMA writable_schema = ON;").passed
-    assert check_sql("CREATE TABLE t(a); PRAGMA table_info(t);").passed
+    assert not check_sql("PRAGMA max_page_count = 100000000;", NO_OP).passed
+    assert not check_sql("PRAGMA writable_schema = ON;", NO_OP).passed
+    assert check_sql("CREATE TABLE t(a); PRAGMA table_info(t);", NO_OP).passed
 
 
 def test_sandbox_acota_el_tamano():
     r = check_sql(
         "CREATE TABLE t(a); WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n "
         "LIMIT 200000) INSERT INTO t SELECT randomblob(500) FROM n;",
+        NO_OP,
         time_limit_s=10,
     )
     assert not r.passed and not r.timed_out
@@ -258,3 +274,27 @@ def test_sandbox_ejecuta_el_test_aparte_del_codigo_del_alumno():
     assert not check_sql("/* nada", SQL_TEST_1).passed
     assert not check_sql("CREATE TABLE pets(name TEXT); /*", SQL_TEST_1).passed
     assert not check_sql(SQL_OK_1, "SELECT json('roto');").passed
+
+
+@pytest.mark.parametrize("test", ["", "   ", ";", "-- sin test", "/* nada */", "/* a */ -- b\n ;"])
+def test_sandbox_sin_test_ejecutable_no_aprueba(test):
+    """Segundo §7 de 43.6 (2026-10-17): con el test del paso vacío, en blanco o
+    solo comentarios, el paso pasaba sin comprobar nada. Sin test que ejecutar,
+    el servidor no aprueba."""
+    r = check_sql(SQL_OK_1, test)
+    assert not r.passed
+    assert r.error
+
+
+def test_sandbox_un_caracter_nulo_falla_sin_500():
+    """Un `\\x00` en el código hacía saltar `ValueError` sin capturar (500)."""
+    r = check_sql("CREATE TABLE pets(a);\x00 x", SQL_TEST_1)
+    assert not r.passed
+    assert r.error
+
+
+@pytest.mark.parametrize("test", ["SELECT 1", "-- comprueba\nSELECT 1;", "/* x */ SELECT '--';"])
+def test_has_statement_ve_la_sentencia_tras_los_comentarios(test):
+    assert has_statement(test)
+    assert check_sql(SQL_OK_1, test).passed
+

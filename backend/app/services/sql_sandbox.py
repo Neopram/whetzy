@@ -1,7 +1,7 @@
 """43.6 (ADR-65 D8): los pasos SQL de un proyecto se validan en el servidor.
 
 Misma regla que el worker del navegador (`frontend/public/sql-worker.js`): el
-código del alumno y el `test_code` del paso se ejecutan juntos en una base
+código del alumno y luego el `test_code` del paso se ejecutan en una base
 SQLite nueva en memoria, y el paso pasa si no hay error ni se agota el tiempo.
 
 Encierro:
@@ -52,15 +52,40 @@ def _authorizer(action: int, arg1: str | None, *_: object) -> int:
     return sqlite3.SQLITE_OK
 
 
-def check_sql(code: str, test: str = "", time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
+def has_statement(sql: str) -> bool:
+    """True si a `sql` le queda algo que ejecutar fuera de blancos, `;` y comentarios.
+
+    Basta el primer carácter fuera de un comentario: `SELECT '--'` cuenta.
+    """
+    i, n = 0, len(sql)
+    while i < n:
+        c = sql[i]
+        if c.isspace() or c == ";":
+            i += 1
+        elif sql.startswith("--", i):
+            end = sql.find("\n", i)
+            i = n if end < 0 else end + 1
+        elif sql.startswith("/*", i):
+            end = sql.find("*/", i + 2)
+            i = n if end < 0 else end + 2
+        else:
+            return True
+    return False
+
+
+def check_sql(code: str, test: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
     """Ejecuta `code` y luego `test` en una base nueva en memoria; pasa si no hay error.
 
     Son dos scripts sobre la misma conexión, no uno concatenado: un `/*` sin
     cerrar en el código del alumno convertía el test del paso en comentario y
-    el paso pasaba sin ejecutar nada (§7 de 43.6, 2026-10-17).
+    el paso pasaba sin ejecutar nada (§7 de 43.6, 2026-10-17). Y sin test que
+    ejecutar no se aprueba: un paso con el test vacío, en blanco o solo
+    comentarios pasaba sin comprobar nada (segundo §7, mismo día).
     """
     if len(code) + len(test) > MAX_SCRIPT_CHARS:
         return SqlCheck(passed=False, error="code too long")
+    if not has_statement(test):
+        return SqlCheck(passed=False, error="step has no test")
     conn = sqlite3.connect(":memory:", isolation_level=None, check_same_thread=False)
     deadline = time.monotonic() + time_limit_s
     expired = False
@@ -79,11 +104,13 @@ def check_sql(code: str, test: str = "", time_limit_s: float = TIME_LIMIT_S) -> 
         conn.set_authorizer(_authorizer)
         conn.set_progress_handler(_progress, _PROGRESS_EVERY)
         conn.executescript(code)
-        if test:
-            conn.executescript(test)
+        conn.executescript(test)
     except sqlite3.Error as exc:
         if expired:
             return SqlCheck(passed=False, timed_out=True)
+        return SqlCheck(passed=False, error=str(exc))
+    except ValueError as exc:
+        # `executescript` rechaza un carácter nulo con ValueError, no sqlite3.Error.
         return SqlCheck(passed=False, error=str(exc))
     finally:
         conn.close()
@@ -91,7 +118,7 @@ def check_sql(code: str, test: str = "", time_limit_s: float = TIME_LIMIT_S) -> 
 
 
 async def check_sql_async(
-    code: str, test: str = "", time_limit_s: float = TIME_LIMIT_S
+    code: str, test: str, time_limit_s: float = TIME_LIMIT_S
 ) -> SqlCheck:
     """`check_sql` en un hilo: el límite de tiempo lo pone el propio SQLite."""
     return await asyncio.to_thread(check_sql, code, test, time_limit_s)
