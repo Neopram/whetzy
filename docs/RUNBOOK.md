@@ -424,8 +424,10 @@ que `whetzy.com`. Safari (ITP) trata sus cookies como de terceros y no las manda
 
 **Puente que ya trae el código (43.1).** Tras el login, el frontend prueba `/auth/me` solo con la cookie. Si da 401,
 guarda los dos tokens en `sessionStorage` y los manda como `Authorization: Bearer`; el refresh va en el cuerpo
-(`frontend/src/services/api.ts`). La sesión dura lo que la pestaña. Lo vigilan `e2e/sesion-sin-cookies.spec.ts` y
-`src/test/api.puenteSesion.test.ts`. Mientras la cookie no sea de `.whetzy.com` (H.61), Safari sigue entrando por
+(`frontend/src/services/api.ts`). La sesión dura lo que la pestaña. Lo vigilan `e2e/sesion-entre-sitios.spec.ts` (proyecto `entre-sitios`: API en
+`127.0.0.1:8000`, frontend en `localhost:5198`, Chromium bloqueando cookies de terceros),
+`e2e/sesion-sin-cookies.spec.ts` y `src/test/api.puenteSesion.test.ts`. Con un Chromium propio:
+`PW_CHROMIUM_EXECUTABLE=/opt/pw-browsers/chromium npx playwright test e2e/sesion-entre-sitios.spec.ts`. Mientras la cookie no sea de `.whetzy.com` (H.61), Safari sigue entrando por
 aquí.
 
 **Arreglo definitivo:**

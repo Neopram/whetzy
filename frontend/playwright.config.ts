@@ -1,5 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Chromium propio de la máquina (p. ej. /opt/pw-browsers/chromium en el
+// contenedor de las sesiones): sin esto hacía falta escribir un config local,
+// y un verificador de solo lectura (PROTOCOLO_VERIFICACION §7) no podía correr
+// el e2e (2026-10-17, 43.1).
+const executablePath = process.env.PW_CHROMIUM_EXECUTABLE || undefined;
+
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
@@ -18,7 +24,24 @@ export default defineConfig({
     // es-ES: los tests están escritos contra la UI en español, y desde 34.11
     // /auth y la landing eligen idioma por el del navegador (en-US por defecto
     // en Chromium headless). Los tests bilingües fijan el inglés ellos mismos.
-    { name: 'chromium', use: { ...devices['Desktop Chrome'], locale: 'es-ES' } },
+    {
+      name: 'chromium',
+      testIgnore: /entre-sitios\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'], locale: 'es-ES', launchOptions: { executablePath } },
+    },
+    // 43.1 (ADR-65 D1): la API en otro sitio (127.0.0.1 frente a localhost) y
+    // Chromium bloqueando las cookies de terceros, como Safari en iPhone con la
+    // API en `*.up.railway.app`. Su frontend es el de :5198, con la API absoluta.
+    {
+      name: 'entre-sitios',
+      testMatch: /entre-sitios\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        locale: 'es-ES',
+        baseURL: 'http://localhost:5198',
+        launchOptions: { executablePath, args: ['--test-third-party-cookie-phaseout'] },
+      },
+    },
   ],
   // Skipped when E2E_BASE_URL is set (local runs against servers already
   // started by hand); CI always starts fresh so both come up from a clean,
@@ -48,7 +71,7 @@ export default defineConfig({
         // JSON before the field validator ever sees it, and the backend
         // refused to start with the comma form.
         BACKEND_CORS_ORIGINS: JSON.stringify([
-          'http://localhost:5199', 'http://127.0.0.1:5199',
+          'http://localhost:5199', 'http://127.0.0.1:5199', 'http://localhost:5198',
           'http://localhost:5173', 'http://127.0.0.1:5173',
         ]),
       },
@@ -58,6 +81,14 @@ export default defineConfig({
       url: 'http://localhost:5199',
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
+    },
+    {
+      // El proyecto `entre-sitios`: la API en otro origen y otro sitio.
+      command: 'npm run dev -- --port 5198 --strictPort',
+      url: 'http://localhost:5198',
+      reuseExistingServer: !process.env.CI,
+      timeout: 30_000,
+      env: { VITE_API_URL: 'http://127.0.0.1:8000/api/v1' },
     },
   ],
 });
