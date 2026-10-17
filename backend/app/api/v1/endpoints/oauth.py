@@ -36,6 +36,7 @@ from app.core.security import create_access_token, create_refresh_token
 from app.models.oauth import OAuthAccount, OAuthState
 from app.models.user import User
 from app.services import account_deletion
+from app.services.user_lookup import normalize_email, user_by_email, username_taken
 
 router = APIRouter()
 
@@ -342,6 +343,8 @@ async def _find_or_create_user(
     provider: str,
     provider_user_id: str,
 ) -> User:
+    # 43.2: el email se guarda y se busca en minúsculas, como en el registro.
+    email = normalize_email(email)
     # 1. Existing OAuthAccount link → return that user
     result = await db.execute(
         select(OAuthAccount).where(
@@ -356,8 +359,7 @@ async def _find_or_create_user(
 
     # 2. Existing user with this email → link accounts, pero solo si esa
     # cuenta ya tiene el email verificado (ver _UnverifiedEmailConflict).
-    user_result = await db.execute(select(User).where(User.email == email))
-    user = user_result.scalar_one_or_none()
+    user = await user_by_email(db, email)
 
     if user is not None and not user.email_verified:
         raise _UnverifiedEmailConflict(email)
@@ -368,8 +370,7 @@ async def _find_or_create_user(
         username = base
         suffix = 1
         while True:
-            taken = await db.execute(select(User).where(User.username == username))
-            if taken.scalar_one_or_none() is None:
+            if not await username_taken(db, username):
                 break
             username = f"{base[:36]}_{suffix}"
             suffix += 1
