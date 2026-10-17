@@ -125,6 +125,12 @@ export function HomeScreen() {
           <p className={styles.nextHint}>{nextLesson ? t('home.nextLessonHint') : t('home.nextHint')}</p>
           <motion.button
             className={styles.btnStudy}
+            // §7 de 43.5: mientras carga el currículo de la ruta activa no se
+            // sabe cuál es la siguiente lección; pulsar entonces lanzaba un quiz
+            // y el backend respondía `needs_lesson`. Sin ruta activa no hay
+            // «siguiente lección»: decide el backend (practica si hay lección
+            // vista; si no, «Empieza por la lección» → «Ir a las lecciones»).
+            disabled={Boolean(activeTrackId) && cur.loading}
             onClick={() => {
               if (nextLessonId) startLesson(nextLessonId);
               else startQuiz('study', 10, activeTrackId ? { trackId: activeTrackId } : undefined);

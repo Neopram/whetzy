@@ -96,6 +96,19 @@ describe('Hoy: lección primero', () => {
     expect(startLesson).not.toHaveBeenCalled();
   });
 
+  it('mientras carga el currículo, «Estudiar» espera: no lanza un quiz (§7 de 43.5)', async () => {
+    const startLesson = vi.fn();
+    const startQuiz = vi.fn();
+    useAppStore.setState({ startLesson, startQuiz });
+    m(progressApi.curriculum).mockReturnValue(new Promise(() => {}));
+    render(<HomeScreen />);
+    const btn = await screen.findByRole('button', { name: 'ESTUDIAR AHORA' });
+    expect(btn).toBeDisabled();
+    fireEvent.click(btn);
+    expect(startQuiz).not.toHaveBeenCalled();
+    expect(startLesson).not.toHaveBeenCalled();
+  });
+
   it('43.7 (D9): Hoy ya no ofrece el playground', async () => {
     m(progressApi.curriculum).mockResolvedValue(cur([mod('m1', 1, [sk('a1', 1)])]));
     render(<HomeScreen />);
