@@ -117,7 +117,8 @@ export async function logout(): Promise<void> {
  *  de terceros. Tras el registro, `/auth/me` llegaba sin sesión y la app volvía
  *  a la portada.
  *
- *  Puente hasta que la API responda en `api.whetzy.com` (H.59): tras el login,
+ *  Puente hasta que la cookie sea de `.whetzy.com` (H.61; la API ya está en
+ *  `api.whetzy.com` desde #228): tras el login,
  *  `bridgeIfCookiesBlocked` prueba `/auth/me` solo con la cookie.
  *  - Si responde, no se guarda nada: la sesión sigue en cookies HttpOnly.
  *  - Si da 401, los tokens que el login ya devuelve en el JSON se guardan en

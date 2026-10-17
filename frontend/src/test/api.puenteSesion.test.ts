@@ -4,7 +4,7 @@
  * `whetzy.com`, porque para él son de terceros. Tras registrarse, `GET /auth/me`
  * llegaba sin sesión (401 en los logs de Railway) y la app volvía a la portada.
  *
- * Puente hasta que exista `api.whetzy.com` (H.59):
+ * Puente hasta que la cookie sea de `.whetzy.com` (H.61):
  * - El login y el registro ya devuelven los dos tokens en el JSON (`Token`).
  * - Justo después se prueba `/auth/me` solo con la cookie.
  *   - Si la cookie funciona (Chrome, escritorio, local), no se guarda nada y la

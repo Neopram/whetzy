@@ -11,7 +11,7 @@ import { uniqueUsername } from './helpers';
  * el navegador nunca llega a tener cookie de sesión. El registro tiene que
  * llegar a Hoy igual, y seguir ahí tras recargar: al ver que la cookie no llega,
  * los tokens se guardan en `sessionStorage` y viajan como `Authorization`. Es un
- * puente hasta que exista `api.whetzy.com` (H.59).
+ * puente hasta que la cookie sea de `.whetzy.com` (H.61).
  */
 async function dropApiCookies(page: Page) {
   // `route.fetch()` comparte el tarro de cookies del navegador y guardaría el

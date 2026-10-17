@@ -412,32 +412,29 @@ Opciones:
 **Firmada como ADR-59 (2026-10-03):** escribe Sonnet 5 desde la fuente, por `Workflow`, en
 paralelo al piloto con alumnos. El resto de ADR-52 sigue igual.
 
-## Sesión en iPhone/Safari: `api.whetzy.com` (H.59, ADR-65 D1; lo hace el dueño, ~10 min)
+## Sesión en iPhone/Safari: `api.whetzy.com` (ADR-65 D1; H.59 hecha, queda H.61)
 
-**Por qué.** En producción la API responde en `api-production-9751.up.railway.app`, otro dominio que `whetzy.com`.
-Safari (ITP) trata sus cookies como de terceros y no las manda: tras registrarse, `GET /auth/me` da 401 y la app
-vuelve a la portada.
+**Por qué.** Hasta el 2026-10-17 la API respondía solo en `api-production-9751.up.railway.app`, otro dominio
+que `whetzy.com`. Safari (ITP) trata sus cookies como de terceros y no las manda: tras registrarse,
+`GET /auth/me` daba 401 y la app volvía a la portada.
 
 **Puente que ya trae el código (43.1).** Tras el login, el frontend prueba `/auth/me` solo con la cookie. Si da 401,
 guarda los dos tokens en `sessionStorage` y los manda como `Authorization: Bearer`; el refresh va en el cuerpo
 (`frontend/src/services/api.ts`). La sesión dura lo que la pestaña. Lo vigilan `e2e/sesion-sin-cookies.spec.ts` y
-`src/test/api.puenteSesion.test.ts`.
+`src/test/api.puenteSesion.test.ts`. Mientras la cookie no sea de `.whetzy.com` (H.61), Safari sigue entrando por
+aquí.
 
-**Arreglo definitivo**, que deja de necesitar el puente:
-1. **Railway** → servicio `api` → Settings → Networking → *Custom Domain*: `api.whetzy.com`. Railway da el destino
-   del CNAME.
-2. **Cloudflare DNS** de `whetzy.com`: `CNAME api → <destino de Railway>`, en modo «DNS only» hasta que Railway
-   valide el certificado.
-3. **Variables:**
-   - Railway, servicio `api`:
-     - `COOKIE_DOMAIN=.whetzy.com`: `core/cookies.py` vuelve a `SameSite=Lax`, primera parte;
-     - `BACKEND_CORS_ORIGINS`: debe seguir incluyendo `https://whetzy.com`.
-   - Frontend: `VITE_API_URL=https://api.whetzy.com/api/v1`, en `frontend/.env.production`. Cambiarlo es un PR
-     normal, porque el prerender lee la API del fichero.
-4. **Comprobar.**
-   - `curl -sI https://api.whetzy.com/health` → 200.
+**Arreglo definitivo:**
+1. ~~Railway: dominio propio `api.whetzy.com`; Cloudflare: `CNAME api` en «DNS only»; `VITE_API_URL`~~ — hecho por
+   el dueño el 2026-10-17 (#228). Comprobado ese día: `/health` 200 y CNAME a `n8r3nbqo.up.railway.app` sin proxy.
+2. **H.61, solo después del deploy de #228** (antes rompería el login de todos): en Railway, servicio `api`,
+   `COOKIE_DOMAIN=.whetzy.com` (`core/cookies.py` vuelve a `SameSite=Lax`, primera parte), y según #228
+   `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com`. `BACKEND_CORS_ORIGINS` debe
+   seguir incluyendo `https://whetzy.com`.
+3. **Comprobar.**
    - Tras el deploy, `node scripts/check-deployed.mjs` (desde `frontend/`) en PASS.
-   - En un iPhone: registro → Hoy sin volver a la portada.
+   - En un iPhone: registro → Hoy sin volver a la portada, y `sessionStorage` sin `whetzy_session_bridge`
+     (la cookie ya llega; el puente no se activa).
    - En Railway, `POST /auth/register` 201 seguido de `GET /auth/me` 200.
 
 ## Troubleshoot
