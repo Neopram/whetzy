@@ -41,7 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 45 | Alta con correo | 0/4 | 0 % | 45.1, 45.2, 45.3, 45.4 |
+| 45 | Alta con correo | 4/4 | 100 % | — |
 | 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
 | 43 | Flujo del alumno listo para pruebas | 1/8 | 12 % | 43.1, 43.3, 43.4, 43.5, 43.6, 43.7 +1 |
 | 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
@@ -578,14 +578,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 45. Alta con correo (plan del dueño 2026-10-17; `PLAN_CORREO_ALTA.md`; ADR-66)
 
-> **Estado:** `ABIERTA`. **PRI:** 0. Con la 43 en `master` y **antes de la 44**. Una rama y un PR por fila; sin migraciones ni `content/**`.
+> **Estado:** `HECHA` (falta fusionar #242–#244 y #246). **PRI:** 0. Con la 43 en `master` y **antes de la 44**. Una rama y un PR por fila; sin migraciones ni `content/**`.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 45.1 | **0** | E1, E6: idioma del alta (`?lang` → `whetzy_lang` → navegador; portada y OAuth `start?lang=`); errores OAuth en i18n | TODO (tras la 43) | `whetzy_lang=es` + navegador `en` → `language:'es'`; OAuth cuenta nueva con su `lang` |
-| 45.2 | **0** | E2: un solo correo al registrarse (verificación); bienvenida al verificar, una vez; `verify_url` con `&lang=` | TODO (tras 45.1) | registro `es` → 1 correo «Verifica tu email en Whetzy»; verificar → bienvenida 1 vez |
-| 45.3 | **0** | E4: franja «verifica tu correo» con Reenviar (60 s) y ×; `UserRead.email_verified` | TODO (tras 45.2) | aparece con `false`, no con `true`; e2e registro → franja |
-| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Continuar» → `/` o «Iniciar sesión» → `/login?lang=` | TODO (tras 45.3) | e2e ES con navegador EN: correo ES → franja → verificar → sin franja (Chromium y entre-sitios) |
+| 45.1 | **0** | E1, E6: idioma del alta (`?lang` → `whetzy_lang` → navegador; portada y OAuth `start?lang=`); errores OAuth en i18n | DONE 2026-10-17 (#242; §7 confirmada) | `whetzy_lang=es` + navegador `en` → `language:'es'`; OAuth cuenta nueva con su `lang` |
+| 45.2 | **0** | E2: un solo correo al registrarse (verificación); bienvenida al verificar, una vez; `verify_url` con `&lang=` | DONE 2026-10-17 (#243; §7 confirmada; verificar atómico) | registro `es` → 1 correo «Verifica tu email en Whetzy»; verificar → bienvenida 1 vez |
+| 45.3 | **0** | E4: franja «verifica tu correo» con Reenviar (60 s) y ×; `UserRead.email_verified` | DONE 2026-10-17 (#244; §7 confirmada) | aparece con `false`, no con `true`; e2e registro → franja |
+| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Continuar» → `/` o «Iniciar sesión» → `/login?lang=` | DONE 2026-10-17 (#246; §7 no reproducible: el dueño acepta el e2e del orquestador) | e2e ES con navegador EN: correo ES → franja → verificar → sin franja (Chromium y entre-sitios) |
 
 ## 3. Cola HUMAN-BLOCKED
 
