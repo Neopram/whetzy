@@ -649,6 +649,8 @@ export interface CurriculumSkill {
   attempts: number;
   /** 32.4: si ya abrió la lección de este skill — el backend bloquea el quiz si no. */
   lesson_seen: boolean;
+  /** 43.5 (H.60): se puede practicar sin abrir la lección. */
+  practice_unlocked?: boolean;
 }
 
 export interface CurriculumModule {
@@ -692,8 +694,10 @@ export const progress = {
   async dashboard() {
     return request<DashboardResponse>('/progress/dashboard');
   },
-  async decaying(withinDays = 7, limit = 5) {
-    return request<DecayingSkill[]>(`/progress/decaying?within_days=${withinDays}&limit=${limit}`);
+  /** 43.4: con `trackId`, solo las skills de esa ruta. */
+  async decaying(withinDays = 7, limit = 5, trackId?: string) {
+    const track = trackId ? `&track_id=${encodeURIComponent(trackId)}` : '';
+    return request<DecayingSkill[]>(`/progress/decaying?within_days=${withinDays}&limit=${limit}${track}`);
   },
   async skills(trackId?: string, moduleId?: string) {
     const qs = new URLSearchParams();

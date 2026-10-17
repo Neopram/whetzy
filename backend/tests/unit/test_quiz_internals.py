@@ -476,17 +476,18 @@ class TestCandidateSkillIds:
         assert reason == "low_mastery"
 
     @pytest.mark.asyncio
-    async def test_study_mode_legacy_practice_is_not_gated(
+    async def test_study_mode_practice_alone_is_gated(
         self, db_session, user: User
     ) -> None:
-        """2026-09-30: quien practicó antes de que existiera el bloqueo no tiene
-        filas en `lesson_completions`; su práctica cuenta como lección vista."""
+        """43.5 (ADR-65 D7): practicar ya no cuenta como lección vista. El
+        historial de antes del bloqueo (2026-09-30) lo rellena la migración
+        `20261017_lesson_backfill` en `lesson_completions`."""
         await build_track(db_session)
         db_session.add(UserSkillState(user_id=user.id, skill_id="trkA_m0_s1", attempts=4))
         await db_session.commit()
         got, reason = await _candidate_skill_ids(db_session, user, "study", None, None)
-        assert got == ["trkA_m0_s1"]
-        assert reason == "low_mastery"
+        assert got == []
+        assert reason == "needs_lesson"
 
     @pytest.mark.asyncio
     async def test_no_content_returns_empty(self, db_session, user: User) -> None:

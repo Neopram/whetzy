@@ -60,12 +60,14 @@ async def skills_breakdown(
 async def decaying_skills(
     within_days: int = Query(default=7, ge=1, le=90),
     limit: int = Query(default=5, ge=1, le=20),
+    track_id: str | None = Query(default=None, max_length=20),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> list[DecayingSkill]:
-    """Skills about to decay, soonest first — FSRS made visible."""
+    """Skills about to decay, soonest first — FSRS made visible. Con
+    `track_id`, solo las de esa ruta (43.4: Hoy enseña la ruta activa)."""
     return await progress_service.get_decaying_skills(
-        db, current_user, within_days=within_days, limit=limit
+        db, current_user, within_days=within_days, limit=limit, track_id=track_id
     )
 
 

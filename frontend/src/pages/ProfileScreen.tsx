@@ -8,7 +8,7 @@ import { TwoFactorSettings } from '../components/profile/TwoFactorSettings';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { useApi } from '../hooks/useApi';
 import { usePushNotifications } from '../hooks/usePushNotifications';
-import { API_BASE_URL, auth, billing, gamification } from '../services/api';
+import { API_BASE_URL, auth, billing, content, gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
 import { checkoutHref } from '../lib/paddle';
 import styles from './ProfileScreen.module.css';
@@ -30,6 +30,11 @@ export function ProfileScreen() {
   const { t, i18n: i18nInst } = useTranslation();
 
   const badges = useApi(() => gamification.badges(), []);
+  // 43.4 (D5): la ruta activa también se cambia desde Yo.
+  const activeTrackId = useAppStore((s) => s.activeTrackId);
+  const browseTracks = useAppStore((s) => s.browseTracks);
+  const tracksList = useApi(() => content.tracks(), []);
+  const activeTrack = tracksList.data?.find((tr) => tr.id === activeTrackId);
   // Solo quien paga por la web (Paddle) cancela aquí; App Store y Google Play
   // se cancelan desde la tienda.
   const subscription = useApi(
@@ -290,6 +295,22 @@ export function ProfileScreen() {
               <button type="button" aria-pressed={language === 'es'} className={`${styles.langBtn} ${language === 'es' ? styles.langActive : ''}`} onClick={() => handleLangChange('es')}>ES</button>
               <button type="button" aria-pressed={language === 'en'} className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`} onClick={() => handleLangChange('en')}>EN</button>
             </div>
+          </div>
+          <div className={styles.setting}>
+            <span className={styles.settingLabel}>
+              {t('profile.activeTrack')}
+              {': '}
+              <strong data-testid="profile-active-track">
+                {activeTrack ? (language === 'es' ? activeTrack.name_es : activeTrack.name_en) : (activeTrackId ?? t('profile.noActiveTrack'))}
+              </strong>
+            </span>
+            <button
+              type="button"
+              className={styles.langBtn}
+              onClick={browseTracks}
+            >
+              {activeTrackId ? t('profile.changeTrack') : t('profile.chooseTrack')}
+            </button>
           </div>
           <div className={styles.setting}>
             <span className={styles.settingLabel} id="weekly-time-label">{t('profile.weeklyTime')}</span>

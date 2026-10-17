@@ -199,7 +199,10 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
     # 32.4: qué skills de este track ya tienen la lección abierta, para que el
     # frontend pueda avisar antes de mandar a un "Practicar" que el backend
     # igual va a bloquear en /quiz/start.
-    seen_skill_ids = await lesson_gate.viewed_skill_ids(db, user.id, all_skill_ids)
+    # 43.5 (H.60): «lección vista» es solo lo abierto; la práctica además se
+    # desbloquea por test-out o por ventaja en la prueba de nivel.
+    seen_skill_ids = await lesson_gate.lesson_viewed_skill_ids(db, user.id, all_skill_ids)
+    unlocked_skill_ids = await lesson_gate.practice_unlocked_skill_ids(db, user.id, all_skill_ids)
 
     def module_avg(module: Module) -> float:
         skills = sorted(module.skills, key=lambda s: s.order)
@@ -236,6 +239,7 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
                 mastered=mastery_by_skill.get(s.id, 0.0) >= MASTERY_THRESHOLD,
                 attempts=attempts_by_skill.get(s.id, 0),
                 lesson_seen=s.id in seen_skill_ids,
+                practice_unlocked=s.id in unlocked_skill_ids,
             )
             for s in sorted(module.skills, key=lambda s: s.order)
         ]
@@ -320,7 +324,12 @@ async def get_predictions(db: AsyncSession, user: User, track_id: str) -> Predic
 
 
 async def get_decaying_skills(
-    db: AsyncSession, user: User, *, within_days: int = 7, limit: int = 5
+    db: AsyncSession,
+    user: User,
+    *,
+    within_days: int = 7,
+    limit: int = 5,
+    track_id: str | None = None,
 ) -> list[DecayingSkill]:
     """Skills whose FSRS review falls due inside the window, soonest first.
 
@@ -337,7 +346,7 @@ async def get_decaying_skills(
     now = _now()
     cutoff = now + timedelta(days=within_days)
 
-    result = await db.execute(
+    query = (
         select(UserSkillState, Skill, Module.track_id)
         .join(Skill, Skill.id == UserSkillState.skill_id)
         .join(Module, Module.id == Skill.module_id)
@@ -347,12 +356,13 @@ async def get_decaying_skills(
             UserSkillState.fsrs_due <= cutoff,
             UserSkillState.attempts > 0,
         )
-        .order_by(UserSkillState.fsrs_due)
-        .limit(limit)
     )
+    if track_id is not None:
+        query = query.where(Module.track_id == track_id)
+    result = await db.execute(query.order_by(UserSkillState.fsrs_due).limit(limit))
 
     decaying: list[DecayingSkill] = []
-    for state, skill, track_id in result.all():
+    for state, skill, skill_track_id in result.all():
         due = state.fsrs_due
         if due is None:
             continue
@@ -363,7 +373,7 @@ async def get_decaying_skills(
                 skill_id=skill.id,
                 name_es=skill.name_es,
                 name_en=skill.name_en,
-                track_id=track_id,
+                track_id=skill_track_id,
                 p_known=state.p_known,
                 due_at=due,
                 # Truncated toward zero: something due in 20 hours is "today",

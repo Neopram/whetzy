@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { content as contentApi, progress as progressApi, type TrackRead } from '../services/api';
+import { nextLessonSkillId } from '../lib/nextStep';
 import styles from './MarketplaceScreen.module.css';
 
 /**
@@ -19,6 +20,16 @@ export function MarketplaceScreen() {
   const lang = useAppStore((s) => s.user.language);
   const setScreen = useAppStore((s) => s.setScreen);
   const startQuiz = useAppStore((s) => s.startQuiz);
+  const startLesson = useAppStore((s) => s.startLesson);
+  // 43.5 (ADR-65 D7): estudiar una ruta empieza por su siguiente lección
+  // pendiente; sin ninguna, practica. Sin red, practica (el backend decide).
+  const study = async (trackId: string) => {
+    try {
+      const next = nextLessonSkillId(await progressApi.curriculum(trackId));
+      if (next) return startLesson(next);
+    } catch { /* sin red */ }
+    startQuiz('study', 10, { trackId });
+  };
 
   const tracks = useApi<TrackRead[]>(() => contentApi.tracks(), []);
   const dash = useApi(() => progressApi.dashboard(), []);
@@ -150,7 +161,7 @@ export function MarketplaceScreen() {
                   <button
                     type="button"
                     className={`${styles.mktBtn} ${styles.mktBtnPrimary}`}
-                    onClick={() => startQuiz('study', 10, { trackId: tr.id })}
+                    onClick={() => void study(tr.id)}
                   >
                     {empezado ? t('marketplace.continue') : t('marketplace.start')}
                   </button>

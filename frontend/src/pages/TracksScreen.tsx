@@ -21,6 +21,7 @@ import {
   type TrackExamBlueprint,
   type TrackRead,
 } from '../services/api';
+import { canPractice } from '../lib/nextStep';
 import styles from './TracksScreen.module.css';
 
 type View = 'curriculum' | 'map' | 'glossary';
@@ -45,7 +46,12 @@ export function TracksScreen() {
   const selectedTrackId = useAppStore((s) => s.selectedTrackId);
   const openTrack = useAppStore((s) => s.openTrack);
   const { t } = useTranslation();
-  const [browsing, setBrowsing] = useState(false);
+  // «Cambiar» (Hoy, Yo) abre el catálogo; el aviso se consume al montar.
+  const [browsing, setBrowsing] = useState(() => {
+    const browse = useAppStore.getState().tracksBrowse;
+    if (browse) useAppStore.setState({ tracksBrowse: false });
+    return browse;
+  });
   const { data: tracks, loading: tracksLoading, error: tracksError } =
     useApi<TrackRead[]>(() => contentApi.tracks(), []);
   const trackList = tracks ?? [];
@@ -183,6 +189,10 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
   const startTrackExam = useAppStore((s) => s.startTrackExam);
   const startReadiness = useAppStore((s) => s.startReadiness);
   const startPlacement = useAppStore((s) => s.startPlacement);
+  const activeTrackId = useAppStore((s) => s.activeTrackId);
+  const setActiveTrack = useAppStore((s) => s.setActiveTrack);
+  // 43.4 (D5): al hacer tuya una ruta sin progreso se ofrece su prueba de nivel.
+  const [offerPlacement, setOfferPlacement] = useState(false);
   const [view, setView] = useState<View>('curriculum');
   const cur = useApi(() => progressApi.curriculum(track.id), [track.id]);
   // The blueprint is derived from that track's skills, so the figures on the
@@ -243,6 +253,37 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
           color="var(--le-green)"
           height={4}
         />
+      )}
+
+      {/* 43.4 (D5): la ruta activa se cambia aquí. Nunca borra progreso. */}
+      <div className={styles.activeRow}>
+        {activeTrackId === track.id ? (
+          <p className={styles.activeBadge} data-testid="track-is-active">{t('tracks.isYourTrack')}</p>
+        ) : (
+          <button
+            type="button"
+            className={styles.makeActive}
+            onClick={() => {
+              setActiveTrack(track.id);
+              setOfferPlacement(practised.length === 0);
+            }}
+          >
+            {t('tracks.makeActive')}
+          </button>
+        )}
+      </div>
+      {offerPlacement && activeTrackId === track.id && (
+        <div className={styles.placementOffer} role="status">
+          <p>{t('tracks.offerPlacement')}</p>
+          <div className={styles.placementOfferActions}>
+            <button type="button" className={styles.makeActive} onClick={() => startPlacement(track.id)}>
+              {t('tracks.offerPlacementYes')}
+            </button>
+            <button type="button" className={styles.back} onClick={() => setOfferPlacement(false)}>
+              {t('tracks.offerPlacementNo')}
+            </button>
+          </div>
+        </div>
       )}
 
       {/* La prueba de nivel es por ruta, así que vive en su detalle. */}
@@ -330,7 +371,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
                 if (mod.status === 'locked') return;
                 // 32.4: sin ninguna lección vista en el módulo, el backend
                 // bloquearía el quiz igual: directo a la lección.
-                if (!mod.skills.some((s) => s.lesson_seen)) startLesson(weakestSkill(mod.skills));
+                if (!mod.skills.some(canPractice)) startLesson(weakestSkill(mod.skills));
                 else startQuiz('study', 10, { trackId: track.id });
               }}
             />
@@ -418,7 +459,7 @@ function ModuleItem({
   // 32.4: el backend exige haber visto la lección de al menos una habilidad
   // del módulo antes de dejar practicar: botón desactivado con su motivo, no
   // un «Practicar» que acaba en el 200 vacío de /quiz/start.
-  const needsLesson = !locked && !m.skills.some((s) => s.lesson_seen);
+  const needsLesson = !locked && !m.skills.some(canPractice);
   const masteredCount = m.skills.filter((s) => s.mastered).length;
   const sub = locked
     ? prerequisite

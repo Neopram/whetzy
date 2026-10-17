@@ -260,7 +260,7 @@ async def _candidate_skill_ids(
     skill_id: str | None,
 ) -> tuple[list[str], str]:
     if skill_id:
-        if mode in _LESSON_GATED_MODES and not await lesson_gate.viewed_skill_ids(
+        if mode in _LESSON_GATED_MODES and not await lesson_gate.practice_unlocked_skill_ids(
             db, user.id, [skill_id]
         ):
             return [], "needs_lesson"
@@ -340,7 +340,7 @@ async def _candidate_skill_ids(
         # la lección igual que en "study". "placement"/"exam" evalúan lo que
         # el alumno ya sabe -- exigir la lección primero rompería el propio
         # propósito del examen de nivel.
-        seen = await lesson_gate.viewed_skill_ids(db, user.id, unlocked_skill_ids)
+        seen = await lesson_gate.practice_unlocked_skill_ids(db, user.id, unlocked_skill_ids)
         gated = [sid for sid in unlocked_skill_ids if sid in seen]
         if not gated:
             return [], "needs_lesson"

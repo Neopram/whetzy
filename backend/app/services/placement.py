@@ -341,6 +341,29 @@ async def _seed_by_module(
             row.correct_count += ok
 
 
+async def strong_module_ids(db: AsyncSession, user_id: uuid.UUID) -> set[str]:
+    """Módulos que empezaron con ventaja en alguna prueba de nivel terminada del
+    usuario (`_is_strong`, la misma regla que la siembra). H.60: desbloquean la
+    práctica de sus skills sin marcar lecciones vistas."""
+    rows = await db.execute(
+        select(StudySession.id, Skill.module_id, Response.correct)
+        .join(Response, Response.session_id == StudySession.id)
+        .join(Question, Question.id == Response.question_id)
+        .join(Skill, Skill.id == Question.skill_id)
+        .where(
+            StudySession.user_id == user_id,
+            StudySession.mode == "placement",
+            StudySession.ended_at.is_not(None),
+        )
+    )
+    tally: dict[tuple[uuid.UUID, str], list[int]] = {}
+    for session_id, module_id, correct in rows.all():
+        counts = tally.setdefault((session_id, module_id), [0, 0])
+        counts[0] += 1 if correct else 0
+        counts[1] += 1
+    return {module_id for (_, module_id), (ok, n) in tally.items() if _is_strong(ok, n)}
+
+
 async def _track_modules(db: AsyncSession, track_id: str) -> list[Module]:
     result = await db.execute(
         select(Module)

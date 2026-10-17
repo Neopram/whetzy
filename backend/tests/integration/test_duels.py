@@ -24,6 +24,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import create_access_token, get_password_hash
 from app.models.content import Module, Question, Skill, Track
+from app.models.lesson_completion import LessonCompletion
 from app.models.user import User
 
 BASE = "/api/v1/duels"
@@ -35,7 +36,7 @@ _DUEL_Q_COUNT = 5  # must match _DUEL_QUESTIONS in duels.py
 
 
 @pytest_asyncio.fixture
-async def duel_seed(db_session: AsyncSession) -> dict:
+async def duel_seed(db_session: AsyncSession, user: User) -> dict:
     """Minimal content hierarchy with exactly _DUEL_Q_COUNT MCQ questions + an opponent user.
 
     The challenger user comes from the conftest ``user`` fixture (shared db_session).
@@ -97,6 +98,12 @@ async def duel_seed(db_session: AsyncSession) -> dict:
         language="es",
     )
     db_session.add(opponent)
+    # 43.5 (ADR-65 D7): un duelo solo va sobre una skill con la lección vista
+    # por los dos.
+    db_session.add_all([
+        LessonCompletion(user_id=user.id, skill_id=_SKILL_ID),
+        LessonCompletion(user_id=opponent.id, skill_id=_SKILL_ID),
+    ])
     await db_session.commit()
 
     return {
@@ -781,3 +788,40 @@ async def test_join_after_completion_is_conflict(
 
     resp = await client.get(f"{BASE}/{duel_id}/join", headers=opponent_headers)
     assert resp.status_code == 409
+
+
+# ── 43.5 (ADR-65 D7): duelo solo con la lección vista por los dos ────────────
+
+
+async def test_challenge_needs_the_challengers_lesson(
+    client: AsyncClient, auth_headers: dict, duel_seed: dict, db_session: AsyncSession, user: User
+) -> None:
+    from sqlalchemy import delete
+
+    await db_session.execute(delete(LessonCompletion).where(LessonCompletion.user_id == user.id))
+    await db_session.commit()
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 409
+    assert resp.json()["detail"]["code"] == "needs_lesson"
+
+
+async def test_challenge_needs_the_opponents_lesson(
+    client: AsyncClient, auth_headers: dict, duel_seed: dict, db_session: AsyncSession
+) -> None:
+    from sqlalchemy import delete
+
+    await db_session.execute(
+        delete(LessonCompletion).where(LessonCompletion.user_id == duel_seed["opponent"].id)
+    )
+    await db_session.commit()
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 409
+    assert resp.json()["detail"]["code"] == "opponent_needs_lesson"
