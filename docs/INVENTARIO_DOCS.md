@@ -22,12 +22,12 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 
 | Clase | Ficheros |
 |---|---|
-| normativo-vivo | 23 |
+| normativo-vivo | 25 |
 | referencia-viva | 64 |
 | histórico | 47 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **179** |
+| **Total** | **181** |
 
 ## Raíz del repo y otras carpetas
 
@@ -87,6 +87,8 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/PLAN_BACKOFFICE.md` | normativo-vivo | plan del dueño del 2026-10-17: back-office de soporte (búsqueda, ficha, 5 acciones, registro de administración); serie 44, tras la 43 | se queda | 2026-10-17 |
 | `docs/PLAN_CONTENIDO.md` | normativo-vivo | método de autoría desde la fuente, piloto 37.25, orden y organización (ADR-59) | se queda | 2026-10-03 |
 | `docs/PLAN_CORREO_ALTA.md` | normativo-vivo | plan del dueño del 2026-10-17: alta con correo (idioma de la cuenta, un solo correo, franja «verifica tu correo», página de verificación); serie 45, tras la 43 y antes de la 44 | se queda | 2026-10-17 |
+| `docs/PLAN_UI_AVANZADA.md` | normativo-vivo | plan del dueño del 2026-10-17: interfaz y experiencia al nivel de Brilliant/Duolingo (feedback del quiz, haptics y sonido opt-in, widgets 40.1–40.4, tutor 40.5–40.6, tokens únicos, regresión visual, medición); serie 46, tras la 45 | se queda | 2026-10-17 |
+| `docs/PROMPT_UI_AVANZADA.md` | normativo-vivo | prompt literal de la serie 46 para la sesión que la ejecuta; pasa a archive/ al cerrar la serie | se queda | 2026-10-17 |
 | `docs/PLAN_MAESTRO.md` | normativo-vivo | norte del producto: tesis, flujos por actor, arquitectura, oleadas A–H con criterio de salida, cola del dueño (aprobado 2026-10-04) | se queda | 2026-10-04 |
 | `docs/CHANGELOG.md` | histórico | registro por versión; solo se añade | se queda (6.4: 0 enlaces rotos) | 2026-09-30 |
 | `docs/CIERRE_2026-09-30.md` | referencia-viva | registro de la pausa (levantada el 2026-10-01, ADR-56); §2 scorecard y §7 trampas del entorno; check_docs [11] | se queda | 2026-09-30 |
