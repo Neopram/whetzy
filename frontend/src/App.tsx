@@ -10,6 +10,7 @@ import { Toast } from './components/common/Toast';
 import { BrandMark } from './components/common/BrandMark';
 import './styles/global.css';
 import { OfflineIndicator } from './components/common/OfflineIndicator';
+import { VerifyEmailBanner } from './components/common/VerifyEmailBanner';
 import { useGestures } from './hooks/useGestures';
 import { safeNext } from './lib/paddle';
 import { useRedirectIfSignedIn } from './lib/authRedirect';
@@ -560,6 +561,9 @@ function App() {
     <MotionConfig reducedMotion="user">
       <TopBar />
       <main className="app-content">
+        {/* 45.3: dentro de <main>, que ya deja sitio a la TopBar fija; fuera de
+            él quedaba debajo de la barra y no se podía pulsar. */}
+        <VerifyEmailBanner />
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={currentScreen}
