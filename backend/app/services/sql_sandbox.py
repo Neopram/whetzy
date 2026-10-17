@@ -39,7 +39,11 @@ MAX_PAGES = 2_560  # 10 MB con páginas de 4 KB
 # (cuarto §7 de 43.6, 2026-10-17, medido).
 MAX_VALUE_BYTES = 16_000
 MAX_HEAP_BYTES = 64 * 1024 * 1024
-_PROGRESS_EVERY = 1_000  # instrucciones de la VM entre comprobaciones del reloj
+# Instrucciones de la VM entre comprobaciones del reloj. Con 1000, un bucle de
+# llamadas caras (`trim` de 16 KB, ~45 ms) metía ~100 entre dos comprobaciones
+# y pasaba de 2 s a ~4 s; con 100 el exceso medido es ≤ 0,15 s y una ordenación
+# de 1e6 filas pasa de ~0,35 s a ~0,45 s (quinto §7 de 43.6, 2026-10-17).
+_PROGRESS_EVERY = 100
 
 # Lo que un ejercicio de SQL puede querer mirar; nada que cambie el motor.
 _READ_PRAGMAS = frozenset(
