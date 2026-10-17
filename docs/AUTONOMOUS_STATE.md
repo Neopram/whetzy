@@ -561,7 +561,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 43.4 | **0** | Ruta activa (D5) y Hoy filtrado por ella (D6); readiness de 42.6 | TODO (tras 43.3) | cambio de ruta persiste; Hoy solo de la ruta activa |
 | 43.5 | **0** | Lección primero (D7) | TODO (tras 43.4; H.60 decidida) | «Estudiar» abre la lección; sin lección vista no hay práctica |
 | 43.6 | **1** | Proyectos dentro del track, con progreso y validación en servidor (D8; dueño 2026-10-17: SQL en servidor, Python/JS en navegador sin verificar) | DOING (#237) | progreso sobrevive a salir; `passed=true` sin tests no completa |
-| 43.7 | **1** | Playground contextual desde la lección (D9) | TODO | «Probar este código» abre el ejemplo; el fragmento reaparece |
+| 43.7 | **1** | Playground contextual desde la lección (D9) | DOING (#238) | «Probar este código» abre el ejemplo; el fragmento reaparece |
 | 43.8 | **0** | Puerta «lista para pruebas»: `e2e/alumno.spec.ts` y specs en verde | TODO (cierra la serie) | el spec en Chromium y con cookies de terceros bloqueadas |
 
 ### 44. Back-office de soporte (plan del dueño 2026-10-17; `PLAN_BACKOFFICE.md`)
