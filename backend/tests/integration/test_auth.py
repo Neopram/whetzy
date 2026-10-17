@@ -295,6 +295,22 @@ async def test_delete_account_happy_path(client, auth_headers):
     assert "message" in data
 
 
+async def test_delete_account_clears_session_cookies(client, auth_headers):
+    """2026-10-17, iPhone del dueño: tras borrar la cuenta, «atrás» volvía a Hoy
+    con la sesión aún en el navegador. El servidor ya la rechaza (403), pero la
+    respuesta del borrado también tiene que tirar las cookies de sesión."""
+    r = await client.delete(f"{AUTH}/me/account", headers=_h(auth_headers))
+    assert r.status_code == 200
+    borradas = [
+        h for h in r.headers.get_list("set-cookie")
+        if ("Max-Age=0" in h or "expires=Thu, 01 Jan 1970" in h)
+    ]
+    nombres = {h.split("=", 1)[0] for h in borradas}
+    from app.core.cookies import ACCESS_COOKIE, REFRESH_COOKIE
+
+    assert {ACCESS_COOKIE, REFRESH_COOKIE} <= nombres, r.headers.get_list("set-cookie")
+
+
 async def test_delete_account_no_token_returns_401(client):
     r = await client.delete(f"{AUTH}/me/account", headers=_h())
     assert r.status_code == 401

@@ -408,6 +408,7 @@ async def read_current_user(current_user: User = Depends(get_current_user)) -> U
 
 @router.delete("/me/account", status_code=status.HTTP_200_OK)
 async def delete_account(
+    response: Response,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
@@ -417,6 +418,9 @@ async def delete_account(
     (`account_deletion.restore_if_pending`).
     """
     purge_at = await account_deletion.request_deletion(db, current_user)
+    # La cuenta ya no vale (403), pero sin esto el navegador seguía guardando
+    # la sesión: «atrás» volvía a Hoy (iPhone del dueño, 2026-10-17).
+    clear_auth_cookies(response)
     return {
         "message": (
             "Cuenta desactivada. Se borrará permanentemente en 30 días; "
