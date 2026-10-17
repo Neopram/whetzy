@@ -310,6 +310,8 @@ export interface UserRead {
   can_create_courses?: boolean;
   /** «Admin» en Perfil: el panel es solo del dueño (#202). */
   is_owner?: boolean;
+  /** 45.3 (ADR-66 E4): sin verificar, la app muestra la franja «verifica tu correo». */
+  email_verified?: boolean;
   /** D-20: la ruta elegida en el onboarding. */
   target_track_id?: string | null;
   /** 43.3 (D2): certificación relacionada elegida en el onboarding. */

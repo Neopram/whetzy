@@ -460,6 +460,7 @@ Dos límites de ese e2e (verificador §7, 2026-10-17):
 | 503 on /health/ready | DB connection — check DATABASE_URL and pg is up |
 | 401 on all requests | SECRET_KEY mismatch between instances |
 | Email not sending | EMAIL_PROVIDER, SMTP_USER/RESEND_API_KEY, check logs for `email_failed` |
+| «No me llega el correo de verificación» | El alumno pulsa «Reenviar» en la franja de la app (45.3; 60 s entre envíos) y mira en spam. Si sigue sin llegar: logs de Railway (`email_sent ... subject='Verifica tu email en Whetzy'` o `email_failed`) y el panel de Resend (entregado, rebotado, bloqueado) |
 | AI tutor returns `provider=fallback` | GROQ_API_KEY not set or invalid |
 | RAG not used (`grounded=false`) | BM25 index not built yet — it starts async in `main.py`; check logs for `rag_ready` |
 | Rate limit 429 in tests | Each test must use a unique X-Forwarded-For header |

@@ -44,6 +44,10 @@ Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario;
 `onboarding_completed_at`, y no el navegador): objetivo → ruta de aprendizaje (24, agrupadas) → certificación
 relacionada opcional → experiencia → prueba de nivel de 20 o «empiezo de cero» → Hoy.
 
+Mientras la cuenta no tenga el correo verificado, todas las pantallas con sesión muestran arriba la franja
+`VerifyEmailBanner` (45.3, ADR-66 E4): «Te enviamos un enlace a fe***@gmail.com», «Reenviar» (endpoint público
+`/auth/resend-verification`, 60 s entre envíos) y × (la oculta durante la sesión del navegador). No bloquea nada (E3).
+
 | `Screen` | Pantalla | Se llega desde | Subvistas | Especificación |
 |---|---|---|---|---|
 | `home` | `HomeScreen` | pestaña Hoy | «Tu ruta» con «Cambiar» (43.4: preparación, siguiente paso, repaso FSRS y territorio solo de la ruta activa), racha, otras rutas en curso, misiones, herramientas | E2: `design/v2/brief-msg1.md` |
