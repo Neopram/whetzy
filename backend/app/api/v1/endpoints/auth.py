@@ -10,7 +10,7 @@ from datetime import UTC, datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr, Field, field_validator
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.cookies import clear_auth_cookies, set_auth_cookies
@@ -520,10 +520,28 @@ async def verify_email(
     if user is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid token")
 
-    first_time = not user.email_verified
-    user.email_verified = True
-    evt.used = True
+    # 45.4: dos clics a la vez con el mismo enlace leían los dos «sin usar» y
+    # «sin verificar» antes de que el otro guardara, y salían dos bienvenidas.
+    # Los dos UPDATE condicionales son atómicos: solo uno gana cada fila.
+    claimed = await db.execute(
+        update(EmailVerificationToken)
+        .where(EmailVerificationToken.id == evt.id, EmailVerificationToken.used.is_(False))
+        .values(used=True)
+    )
+    if claimed.rowcount != 1:  # type: ignore[attr-defined]
+        await db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired verification link",
+        )
+    verified_now = await db.execute(
+        update(User)
+        .where(User.id == user.id, User.email_verified.is_(False))
+        .values(email_verified=True)
+    )
+    first_time = verified_now.rowcount == 1  # type: ignore[attr-defined]
     await db.commit()
+    await db.refresh(user)
     if first_time:
         # 45.2 (ADR-66 E2): la bienvenida sale al verificar, una sola vez.
         from app.services import email as email_svc
