@@ -25,13 +25,15 @@ type Lang = 'es' | 'en';
 
 const FAQ_KEYS = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'] as const;
 
-/** ?lang=en|es manda; si no, el idioma del navegador. En el pre-render (sin
- *  window) sale español, que es lo que se sirve como HTML estático. */
-function resolveLandingLang(): Lang {
+/** ?lang=en|es manda; si no, el de i18n: lo guardado en `whetzy_lang` o, sin
+ *  nada guardado, el del navegador (45.1, ADR-66 E1; antes se saltaba lo
+ *  guardado). En el pre-render (sin window) sale español, que es lo que se
+ *  sirve como HTML estático. */
+function resolveLandingLang(current: string): Lang {
   if (typeof window === 'undefined') return 'es';
   const q = new URLSearchParams(window.location.search).get('lang');
   if (q === 'es' || q === 'en') return q;
-  return (navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+  return current.startsWith('en') ? 'en' : 'es';
 }
 
 const featureIcons = [
@@ -117,7 +119,7 @@ export default function LandingScreen() {
   const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
-    const l = resolveLandingLang();
+    const l = resolveLandingLang(i18n.language);
     setLang(l);
     if (i18n.language !== l) void i18n.changeLanguage(l);
     document.documentElement.lang = l;
@@ -144,7 +146,9 @@ export default function LandingScreen() {
   // Las CTA son enlaces, no botones con onClick: navegan aunque el JS aún no
   // haya cargado (la landing se sirve pre-renderizada) y son lo que un lector
   // de pantalla espera de algo que lleva a otra página.
-  const ctaHref = hasSession ? '/' : '/auth';
+  // 45.1: /auth y /login abren en el idioma de la portada (y la cuenta se crea en él).
+  const ctaHref = hasSession ? '/' : `/auth?lang=${lang}`;
+  const loginHref = `/login?lang=${lang}`;
   const nf = new Intl.NumberFormat(lang === 'es' ? 'es-ES' : 'en-US');
   const counts = { tracks: CATALOG_TRACKS, questions: nf.format(CATALOG_QUESTIONS) };
   const features = (['f1', 'f2', 'f3'] as const).map((k, i) => ({
@@ -214,7 +218,7 @@ export default function LandingScreen() {
             {/* La puerta de quien ya tiene cuenta (2026-10-16): todas las demás
                 llamadas a la acción abren el registro. */}
             {!hasSession && (
-              <a className={styles.loginLink} href="/login">{t('landing.nav.login')}</a>
+              <a className={styles.loginLink} href={loginHref}>{t('landing.nav.login')}</a>
             )}
             <a className={styles.headerCta} href={ctaHref}>
               {hasSession ? t('landing.nav.dashboard') : t('landing.nav.start')}

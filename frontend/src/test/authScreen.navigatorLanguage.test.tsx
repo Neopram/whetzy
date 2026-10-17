@@ -7,6 +7,11 @@
  * lo cubre: navegador en inglés → UI en inglés sin `?lang`; navegador en
  * español (o cualquier otro idioma) → se queda en español, el arranque por
  * defecto de `i18n.ts`.
+ *
+ * 45.1 (ADR-66 E1) cambia el orden: `?lang`, luego lo guardado en
+ * `whetzy_lang` (lo elegido en la portada) y solo sin nada guardado el
+ * navegador. Ese último paso lo hace `detectLanguage` al arrancar i18n
+ * (`idiomaAlta.test.tsx`); /auth ya no mira el navegador por su cuenta.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
@@ -34,8 +39,15 @@ beforeEach(async () => {
 afterEach(cleanup);
 
 describe('AuthScreen — idioma inicial por navigator.language (34.11 b)', () => {
-  it('navegador en inglés, sin ?lang → la UI arranca en inglés', async () => {
+  it('navegador en inglés con «es» guardado, sin ?lang → se queda en español (45.1)', async () => {
     stubNavigatorLanguage('en-US');
+    render(<AuthScreen onAuthed={() => {}} />);
+    await screen.findByText('El motor que te aprende mientras aprendes');
+    expect(i18n.language).toBe('es');
+  });
+
+  it('i18n arrancó en inglés (nada guardado y navegador en inglés) → /auth en inglés', async () => {
+    await i18n.changeLanguage('en');
     render(<AuthScreen onAuthed={() => {}} />);
     await screen.findByText('The engine that learns you while you learn');
     expect(i18n.language).toBe('en');

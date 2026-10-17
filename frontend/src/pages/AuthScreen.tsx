@@ -7,6 +7,22 @@ import { BrandMark } from '../components/common/BrandMark';
 import { Button } from '../components/common/Button';
 import styles from './AuthScreen.module.css';
 
+// 45.1 (ADR-66 E6): los códigos de oauth_error, traducidos.
+const OAUTH_ERROR_KEYS: Record<string, string> = {
+  email_required: 'auth.oauthErrors.emailRequired',
+  provider_error: 'auth.oauthErrors.providerError',
+  account_inactive: 'auth.oauthErrors.accountInactive',
+  email_unverified: 'auth.oauthErrors.emailUnverified',
+};
+
+function initialLanguage(current: string): 'es' | 'en' {
+  try {
+    const q = new URLSearchParams(window.location.search).get('lang');
+    if (q === 'es' || q === 'en') return q;
+  } catch { /* sin window */ }
+  return current.startsWith('en') ? 'en' : 'es';
+}
+
 // Surface any oauth_error the backend placed in the URL (e.g. email_required).
 function getOAuthError(): string | null {
   try {
@@ -76,17 +92,19 @@ export function AuthScreen({ onAuthed }: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [ageConfirmed, setAgeConfirmed] = useState(false);
-  const [language, setLanguage] = useState<'es' | 'en'>('es');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(() => {
-    const oauthErr = getOAuthError();
-    if (oauthErr === 'email_required') return 'El proveedor no compartió un correo verificado.';
-    if (oauthErr === 'provider_error') return 'Error al comunicarse con el proveedor de identidad.';
-    if (oauthErr === 'account_inactive') return 'Esta cuenta está desactivada.';
-    return oauthErr ?? null;
-  });
-
   const { t, i18n: i18nInst } = useTranslation();
+  // 45.1 (ADR-66 E1): el idioma de la cuenta es el que ve el alumno. ?lang=es|en
+  // manda; si no, el de i18n, que ya es lo guardado en whetzy_lang (la portada)
+  // o, sin nada guardado, el del navegador. Antes se saltaba lo guardado y
+  // miraba el navegador: con la portada en «ES» un iPhone en inglés se
+  // registraba en inglés.
+  const [language, setLanguage] = useState<'es' | 'en'>(() => initialLanguage(i18nInst.language));
+  const [loading, setLoading] = useState(false);
+  // E6: el error de OAuth se traduce al pintarlo (sigue al idioma si se cambia) y
+  // se descarta al enviar el formulario. Uno desconocido se enseña tal cual.
+  const [oauthError, setOauthError] = useState<string | null>(getOAuthError);
+  const [formError, setError] = useState<string | null>(null);
+  const error = formError ?? (oauthError ? (OAUTH_ERROR_KEYS[oauthError] ? t(OAUTH_ERROR_KEYS[oauthError]) : oauthError) : null);
 
   // Segundo paso del login con 2FA (contraseña correcta, falta el código).
   const [mfaStep, setMfaStep] = useState<boolean>(arrivedForMfa);
@@ -131,18 +149,16 @@ export function AuthScreen({ onAuthed }: Props) {
     void i18nInst.changeLanguage(lang);
   }
 
-  // Idioma inicial: ?lang=es|en, o el del navegador. Antes /auth salía siempre
-  // en español porque i18n arranca con lng: 'es' (34.11).
+  // La UI sigue al idioma inicial (con ?lang puede no coincidir con el de i18n).
   useEffect(() => {
-    const q = new URLSearchParams(window.location.search).get('lang');
-    const initial = q === 'es' || q === 'en' ? q : (navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
-    if (initial !== 'es') handleLangChange(initial);
+    if (!i18nInst.language.startsWith(language)) void i18nInst.changeLanguage(language);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setOauthError(null);
 
     // Client-side validation mirrors the backend schema constraints.
     if (mode === 'register') {
@@ -351,7 +367,7 @@ export function AuthScreen({ onAuthed }: Props) {
         <button
           type="button"
           className={styles.socialBtn}
-          onClick={() => auth.startOAuth('github')}
+          onClick={() => auth.startOAuth('github', language)}
           disabled={loading}
           aria-label={t('auth.continueWithGitHub')}
         >
@@ -366,7 +382,7 @@ export function AuthScreen({ onAuthed }: Props) {
         <button
           type="button"
           className={styles.socialBtn}
-          onClick={() => auth.startOAuth('google')}
+          onClick={() => auth.startOAuth('google', language)}
           disabled={loading}
           aria-label={t('auth.continueWithGoogle')}
         >

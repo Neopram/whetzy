@@ -437,8 +437,10 @@ export const auth = {
   },
 
   /** Navigate the browser to the OAuth provider start URL (full page redirect, no SDK). */
-  startOAuth(provider: OAuthProvider) {
-    window.location.href = `${BASE_URL}/auth/oauth/${provider}/start`;
+  startOAuth(provider: OAuthProvider, lang?: 'es' | 'en') {
+    // 45.1 (ADR-66 E1): una cuenta nueva por OAuth se crea en el idioma de la pantalla.
+    const q = lang ? `?lang=${lang}` : '';
+    window.location.href = `${BASE_URL}/auth/oauth/${provider}/start${q}`;
   },
 
   async requestPasswordReset(email: string) {

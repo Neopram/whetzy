@@ -19,7 +19,8 @@ test('quien vuelve entra por «Entrar» y «atrás» no le devuelve al formulari
   const page = await ctx.newPage();
   await page.goto('/landing/');
   await page.getByRole('link', { name: 'Entrar' }).click();
-  await expect(page).toHaveURL(/\/login$/);
+  // 45.1 (ADR-66 E1): «Entrar» lleva el idioma de la portada.
+  await expect(page).toHaveURL(/\/login\?lang=es$/);
   // /login abre «Iniciar sesión»: sin el campo de nombre del registro.
   await expect(page.getByLabel('Nombre')).toHaveCount(0);
 
