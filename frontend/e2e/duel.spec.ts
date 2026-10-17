@@ -37,11 +37,11 @@ test.describe('duel', () => {
     // Challenge accepted -> straight into the 5-question duel quiz.
     await expect(page.locator('text=/Pregunta 1 de 5/')).toBeVisible({ timeout: 15_000 });
 
-    // DuelScreen renders answer options as plain <button> elements with
-    // inline styles (no CSS modules, no test ids) — before an answer is
-    // selected they're the only buttons on screen, so the first one is safe.
+    // Las opciones llevan `data-testid="duel-option"`: «el primer botón de la
+    // pantalla» dejó de ser una opción cuando la franja de verificar el correo
+    // (45.3) entró en el armazón.
     for (let i = 0; i < 5; i++) {
-      await page.getByRole('button').first().click();
+      await page.getByTestId('duel-option').first().click();
       const nextOrFinish = page.getByRole('button', { name: /Siguiente|Finalizar/ });
       await expect(nextOrFinish).toBeVisible({ timeout: 10_000 });
       await nextOrFinish.click();
@@ -91,7 +91,7 @@ test.describe('duel', () => {
 
     // Challenger answers all 5 questions
     for (let i = 0; i < 5; i++) {
-      await chalPage.getByRole('button').first().click();
+      await chalPage.getByTestId('duel-option').first().click();
       const nextOrFinish = chalPage.getByRole('button', { name: /Siguiente|Finalizar/ });
       await expect(nextOrFinish).toBeVisible({ timeout: 10_000 });
       await nextOrFinish.click();
@@ -141,7 +141,7 @@ test.describe('duel', () => {
 
     // Opponent answers all 5 questions
     for (let i = 0; i < 5; i++) {
-      await oppPage.getByRole('button').first().click();
+      await oppPage.getByTestId('duel-option').first().click();
       const nextOrFinish = oppPage.getByRole('button', { name: /Siguiente|Finalizar/ });
       await expect(nextOrFinish).toBeVisible({ timeout: 10_000 });
       await nextOrFinish.click();
