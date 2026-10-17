@@ -58,7 +58,8 @@ in the Railway dashboard.
    - **Deleted** → recreate from the repo root `Dockerfile` (Railway must
      auto-detect Docker; if it falls back to Railpack the build fails).
    - **Exists and running but the domain 404s** → the domain is unlinked:
-     re-attach `api-production-9751.up.railway.app` to the service.
+     re-attach `api.whetzy.com` (custom domain, CNAME in Cloudflare, DNS only) and
+     `api-production-9751.up.railway.app` to the service.
 2. Required env vars (see `.env.example`): `SECRET_KEY`, `DATABASE_URL`,
    `ENVIRONMENT=production`, `BACKEND_CORS_ORIGINS`. `GROQ_API_KEY` is
    optional — without it the tutor answers from the canonical explanation
@@ -66,11 +67,11 @@ in the Railway dashboard.
 3. Deploy the latest `master`.
 4. Verify, in this order:
    ```bash
-   curl https://api-production-9751.up.railway.app/health
-   curl -s https://api-production-9751.up.railway.app/api/v1/openapi.json | head -c 200
+   curl https://api.whetzy.com/health
+   curl -s https://api.whetzy.com/api/v1/openapi.json | head -c 200
    ```
    `/health` must return `{"status":"healthy"}` and the OpenAPI document must
-   list **71** paths.
+   list **164** paths.
 5. In the deploy logs, confirm `start.sh` got through all four stages:
    `alembic upgrade head` → `content loaded` → `gamification seeded` →
    `launching gunicorn`. Content load should report **0 skipped** questions;
@@ -78,7 +79,7 @@ in the Railway dashboard.
    unknown skill_id — check the deploy log for the traceback.
 
 **Note on question count:** the bank grows over time. Verify the loaded count
-matches `check_question_bank.py` output (currently 6233), not a hardcoded
+matches `check_question_bank.py` output (currently 12037), not a hardcoded
 number. Any non-zero `skipped` count means a question references a skill_id
 that does not exist in `curriculum/tracks.json`.
 
@@ -228,7 +229,7 @@ python -m pytest tests/ --tb=short
 COVERAGE_FILE=/tmp/.coverage_whetzy python -m pytest tests/ --tb=short
 ```
 
-No external services needed. 739+ tests against SQLite in-memory (Alembic migrations are Postgres-only; tests use `Base.metadata.create_all` on SQLite).
+No external services needed. 1966+ tests against SQLite in-memory (Alembic migrations are Postgres-only; tests use `Base.metadata.create_all` on SQLite).
 
 ## Load question bank (dev)
 
@@ -317,7 +318,7 @@ de nada, en silencio).
 
 ```bash
 TOKEN=<token de una cuenta con role=owner>
-API=https://api-production-9751.up.railway.app/api/v1
+API=https://api.whetzy.com/api/v1
 curl -s -H "Authorization: Bearer $TOKEN" $API/admin/email/status
 curl -s -X POST -H "Authorization: Bearer $TOKEN" $API/admin/email/test
 ```
@@ -380,7 +381,9 @@ producción en el runner y con los jobs de PRs de Dependabot fuera del runner pr
 
 Hecho que cambia la tarea (comprobado el 2026-10-02 con `curl -D -`): `whetzy.com` responde con
 `server: cloudflare`, pero la API responde desde `api-production-9751.up.railway.app` con
-`server: railway-hikari`, y `frontend/.env.production` apunta ahí. **Ninguna regla WAF de la zona
+`server: railway-hikari`, y `frontend/.env.production` apuntaba ahí. (2026-10-17: la API pasó a
+`api.whetzy.com`, #228; es un CNAME sin proxy y responde `server: railway-hikari`, así que lo que
+sigue vale igual.) **Ninguna regla WAF de la zona
 `whetzy.com` ve una sola petición a `/auth/*` ni a `/tutor/*`.** Y el plan Free trae **una** regla
 de rate limiting, con periodo y bloqueo de 10 s
 ([doc](https://developers.cloudflare.com/waf/rate-limiting-rules/), consultada el 2026-10-02);
@@ -391,7 +394,8 @@ Super Bot Fight Mode es de Pro en adelante
 Opciones:
 
 1. **API detrás de Cloudflare** — dominio propio `api.whetzy.com` en Railway con el DNS en
-   *proxied*; `VITE_API_URL` y CORS pasan a ese origen. Entonces, en Free: **Bot Fight Mode** on;
+   *proxied*; `VITE_API_URL` y CORS pasan a ese origen (2026-10-17: el dominio y `VITE_API_URL` ya
+   están, #228, pero el CNAME sigue *DNS only*: falta solo poner el proxy). Entonces, en Free: **Bot Fight Mode** on;
    la regla única de rate limiting como
    `(http.host eq "api.whetzy.com" and starts_with(http.request.uri.path, "/api/v1/auth/") and http.request.method eq "POST")`,
    característica IP, 5 peticiones / 10 s, acción Block 10 s; cache rule para `GET` públicos
@@ -411,6 +415,31 @@ Opciones:
 
 **Firmada como ADR-59 (2026-10-03):** escribe Sonnet 5 desde la fuente, por `Workflow`, en
 paralelo al piloto con alumnos. El resto de ADR-52 sigue igual.
+
+## Sesión en iPhone/Safari: `api.whetzy.com` (ADR-65 D1; H.59 hecha, queda H.61)
+
+**Por qué.** Hasta el 2026-10-17 la API respondía solo en `api-production-9751.up.railway.app`, otro dominio
+que `whetzy.com`. Safari (ITP) trata sus cookies como de terceros y no las manda: tras registrarse,
+`GET /auth/me` daba 401 y la app volvía a la portada.
+
+**Puente que ya trae el código (43.1).** Tras el login, el frontend prueba `/auth/me` solo con la cookie. Si da 401,
+guarda los dos tokens en `sessionStorage` y los manda como `Authorization: Bearer`; el refresh va en el cuerpo
+(`frontend/src/services/api.ts`). La sesión dura lo que la pestaña. Lo vigilan `e2e/sesion-sin-cookies.spec.ts` y
+`src/test/api.puenteSesion.test.ts`. Mientras la cookie no sea de `.whetzy.com` (H.61), Safari sigue entrando por
+aquí.
+
+**Arreglo definitivo:**
+1. ~~Railway: dominio propio `api.whetzy.com`; Cloudflare: `CNAME api` en «DNS only»; `VITE_API_URL`~~ — hecho por
+   el dueño el 2026-10-17 (#228). Comprobado ese día: `/health` 200 y CNAME a `n8r3nbqo.up.railway.app` sin proxy.
+2. **H.61, solo después del deploy de #228** (antes rompería el login de todos): en Railway, servicio `api`,
+   `COOKIE_DOMAIN=.whetzy.com` (`core/cookies.py` vuelve a `SameSite=Lax`, primera parte), y según #228
+   `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com`. `BACKEND_CORS_ORIGINS` debe
+   seguir incluyendo `https://whetzy.com`.
+3. **Comprobar.**
+   - Tras el deploy, `node scripts/check-deployed.mjs` (desde `frontend/`) en PASS.
+   - En un iPhone: registro → Hoy sin volver a la portada, y `sessionStorage` sin `whetzy_session_bridge`
+     (la cookie ya llega; el puente no se activa).
+   - En Railway, `POST /auth/register` 201 seguido de `GET /auth/me` 200.
 
 ## Troubleshoot
 

@@ -29,7 +29,7 @@ exponer un secreto, así que es **H**. Leer sus nombres en el panel lo hace el d
 |---|---|---|---|---|---|
 | **Railway** | Proyecto `whetzy`, entorno `production`, servicios `api` y `Postgres` | Deploy `b64e2a9a` en `SUCCESS` (10:46 UTC); log `[owner] unchanged: admin@whetzy.com` | Verificar despliegues sin adivinar: logs de arranque (`alembic`, `content_loader`, `[owner]`), estado, errores HTTP, latencia, diagnóstico de deploys fallidos | `get-status`, `list-deployments`, `get-logs` (con `filter`: el stream trae mucho ruido de OpenTelemetry), `get-deployment-diagnosis`, `http-error-rate`, `http-response-time`, `get-service-metrics`, `search-docs` | `set-variables`, `list-variables`, `redeploy`, `restart-service`, `accept-deploy`, `create-*`, `delete-*`, dominios, volúmenes, `update-service`, `railway-agent` con cambios |
 | **GitHub** (herramientas de la sesión, no conector de claude.ai) | `Neopram/whetzy` | — | PR por oleada, checks, revisiones | Leer; crear y actualizar el PR de la rama de la sesión | Fusionar, push a `master` (ADR-45) |
-| **Sentry** | Organización `whetzy`, región `de.sentry.io` | **Proyecto `whetzy-backend` (python-fastapi) creado el 2026-09-26** por aprobación en bloque (ADR-50k); `SENTRY_DSN` en Railway; deploy `f097361c` registra `Sentry initialised (env=production)`. El frontend aún no tiene SDK | Errores del backend en producción, y del frontend cuando se instale su SDK | `search_issues`, `search_events`, `get_sentry_resource`, `analyze_issue_with_seer`; E: `update_issue` (asignar, resolver) | Crear proyectos, monitores de uptime o alertas con coste; tocar la variable (H.41 ya resuelta) |
+| **Sentry** | Organización `whetzy`, región `de.sentry.io` | **Proyecto `whetzy-backend` (python-fastapi) creado el 2026-09-26** por aprobación en bloque (ADR-50k); `SENTRY_DSN` en Railway; deploy `f097361c` registra `Sentry initialised (env=production)`. El frontend aún no tiene SDK | Errores del backend en producción, y del frontend cuando se instale su SDK | `search_issues`, `search_errors`, `get_sentry_resource`, `analyze_issue_with_seer`; E: `update_issue` (asignar, resolver) | Crear proyectos, monitores de uptime o alertas con coste; tocar la variable (H.41 ya resuelta) |
 | **PostHog** | Proyecto «Default project» (id 285042), creado el 2026-09-26 | `ingested_event: false`. El frontend no tiene SDK | Analítica propia primero (`analytics_events`, ADR-50j revisada): PostHog **no** va en el navegador; solo como destino server-side si el dueño lo pide y con la privacidad actualizada | Consultas (`read-data-schema` antes de cada una), `query-*`; E: insights, dashboards, notebooks, cohortes, flags **al 0 % o apagados** | Flags o experimentos que cambien lo que ve un usuario real, lanzar encuestas, borrar datos; elegir herramienta (**H.42**) |
 | **Mixpanel** | Proyecto «Whetzy IKE» (id 4067601) | Sin SDK en el frontend | Duplica a PostHog. No se instrumentan las dos (**H.42**) | Lectura | Todo lo demás |
 | **Cloudflare Developer Platform** | Cuenta con 0 Workers | Sus herramientas cubren Workers, KV, R2, D1, Hyperdrive y documentación, **no Pages**. Pages sigue desplegando por Git (`README.md`) | Buscar en la documentación de Cloudflare; KV, R2 o D1 si una fila lo pide | `workers_list`, `search_cloudflare_documentation` | Crear o borrar Workers, KV, R2 o D1 |
@@ -46,13 +46,13 @@ exponer un secreto, así que es **H**. Leer sus nombres en el panel lo hace el d
 | **FMP** | — | Datos de mercados financieros | Ninguno en Whetzy. Se puede desactivar en el chat | — | — |
 | **Lovable** | — | Constructor de apps con su propia base de código | **No se usa sobre este repo**: crea otro proyecto y consume créditos | — | — |
 
-**A medio conectar** (`connect_incomplete`): **Firecrawl** (útil para 37.1, inventario
-de la industria con URL fechada: 1.000 páginas al mes gratis), **Amplitude** (sería una
+**A medio conectar** (`connect_incomplete`): **Firecrawl** (útil para 37.1, temario
+de referencia por track (ADR-54): 1.000 páginas al mes gratis), **Amplitude** (sería una
 tercera analítica: no hace falta), **Intuit Mailchimp** y **Lusha** (prospección B2B, sin
 uso hoy). Terminarlos o quitarlos es cosa del dueño en claude.ai.
 
-**El correo de la app no depende de un conector.** H.30 (el correo no sale) se arregla
-con un proveedor SMTP o API en las variables de Railway. El conector de Resend, si se
+**El correo de la app no depende de un conector.** H.30 (el correo no sale) se resolvió el
+2026-10-01: Resend en producción. El conector de Resend, si se
 conecta, sirve para ver entregas y rebotes, no para enviar desde el backend.
 
 ## 3. Rutinas remotas

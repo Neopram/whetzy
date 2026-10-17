@@ -20,8 +20,8 @@ Presentar Whetzy como plataforma de aprendizaje adaptativo en 2 minutos. Target:
 - **Narración:** "Whetzy usa un motor adaptativo con tecnología de testing adaptativos (BKT). Cada pregunta se calibra a *tu* nivel exacto."
 - **Transición:** Animación de pregunta respondida correctamente, barra de dominio sube
 
-- **Visual:** Wallet de créditos, logro desbloqueado, duelo en vivo
-- **Narración:** "Gamificación real: racha, duelos en vivo contra otros, misiones diarias. Aprender se siente como un juego que importa."
+- **Visual:** Wallet de créditos, logro desbloqueado, duelo contra otro alumno
+- **Narración:** "Gamificación real: racha, duelos por turnos contra otros, misiones diarias. Aprender se siente como un juego que importa."
 
 - **Visual:** Certificado verificable, código QR, LinkedIn share
 - **Narración:** "Cuando dominas una ruta, obtienes certificado verificable. Prueba a los empleadores que no solo lo viste."

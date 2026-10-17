@@ -95,9 +95,8 @@ Todo contenido de instructor pasa el mismo §7 del CATALOGO_MAESTRO.md:
   descuento a sus alumnos en **su** curso y atribuye esas ventas al instructor en su
   panel. Canje solo en web. No da créditos al instructor: su incentivo es visibilidad
   (ranking por completion rate) y revenue.
-- Los alumnos pueden pagar cursos del marketplace también con créditos (`ECONOMIA.md`
-  §2.3): el 80 % del instructor (ADR-41) se liquida al valor nominal desde la bolsa de
-  marketing de Whetzy, nunca del alumno.
+- Los cursos del marketplace **no** se pagan con créditos (ADR-58, 2026-10-02): tienen precio
+  propio (`price_cents`) y reparto 80/20 por venta (ADR-41).
 
 ### Creación de contenido
 - Editor web para lecciones (Markdown + preview)
@@ -149,7 +148,7 @@ Todo contenido de instructor pasa el mismo §7 del CATALOGO_MAESTRO.md:
 
 | Tarea | Descripción |
 |---|---|
-| 28.0 | Schema DB: tablas `instructor_profiles`, `marketplace_courses`, `course_purchases`, `instructor_payouts` |
+| 28.0 | Schema DB: tablas `instructors`, `instructor_courses`, `instructor_enrollments`, `instructor_payouts` |
 | 28.1 | API endpoints: CRUD cursos instructor, upload contenido, métricas; código de instructor (29.4) |
 | 28.2 | Quality gate pipeline: `scripts/instructor_quality_gate.py` integrado en upload |
 | 28.3 | Panel de instructor: React pages con rol-guard `instructor` |

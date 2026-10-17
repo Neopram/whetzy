@@ -9,9 +9,9 @@ Free, open-source dependency and code security controls for the learning engine.
 All Python dependencies are pinned in `backend/requirements.txt` to exact versions:
 
 ```
-fastapi==0.115.6
-sqlalchemy[asyncio]==2.0.36
-asyncpg==0.30.0
+fastapi==0.143.0
+sqlalchemy[asyncio]==2.1.4
+asyncpg==0.32.0
 # ... all other deps pinned
 ```
 
@@ -21,8 +21,8 @@ asyncpg==0.30.0
 1. Run `pip list --outdated` to check available updates
 2. Update `backend/requirements.txt` with new versions
 3. Test locally: `pytest tests/ -v`
-4. Test in CI: Push to feature branch, verify all GitHub Actions pass
-5. Merge to master, which auto-deploys to production (Railway)
+4. Test with the local gate: `scripts/ci_local.sh` (GitHub Actions has had no runner since 2026-10-01, H.13)
+5. The owner merges to master (ADR-45), which auto-deploys to production (Railway)
 
 ### Automated Dependency Scanning
 
@@ -71,7 +71,7 @@ This generates:
 
 Output files contain machine-readable inventory of all dependencies, versions, and license metadata. Used by security scanners and compliance audits.
 
-**Setup**: `cyclonedx-bom` is pinned in `backend/requirements.txt` (v7.4.0). The script installs it if missing and uses the `cyclonedx-py` CLI tool.
+**Setup**: `cyclonedx-bom` is pinned in `backend/requirements.txt` (v7.5.0). The script installs it if missing and uses the `cyclonedx-py` CLI tool.
 
 **When to generate**: Before each production release (see `docs/RELEASE.md`). CI/CD pipelines should run this and commit or archive the SBOMs as build artifacts.
 
@@ -146,6 +146,6 @@ blocking) and the owner merging by hand (ADR-45).
 2. If new: create a GitHub issue or PR
 3. Update the vulnerable package to a patched version
 4. Run tests locally and in CI to verify the fix
-5. Merge and deploy (automatic to production on master)
+5. The owner merges (ADR-45); master deploys automatically to production
 
 **Resource**: [CVE Details](https://www.cvedetails.com), [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/), [Snyk](https://snyk.io)

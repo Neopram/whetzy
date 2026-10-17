@@ -53,7 +53,7 @@ código los carga):
 
 | Proveedor | Uso | Prueba |
 |---|---|---|
-| Railway | servidores y PostgreSQL | la API vive en `api-production-9751.up.railway.app` |
+| Railway | servidores y PostgreSQL | la API vive en `api.whetzy.com` (dominio propio servido por Railway) |
 | Cloudflare | web (Pages) y correo entrante (Email Routing) | MX de whetzy.com → `route*.mx.cloudflare.net` |
 | Groq | explicaciones del tutor con IA, sin nombre ni correo | `backend/app/services/ai/provider.py` |
 | Resend | correos de la cuenta | log de producción «Email: proveedor resend» |

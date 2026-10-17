@@ -159,7 +159,7 @@ GET  /glossary/{track_id}  → [{term_es, term_en, definition_es, definition_en}
 GET  /profiles/{username}  → {username, display_name, avatar_emoji, joined_at, current_streak, mastery_avg, skills_mastered, certificates: [{code, track_name_es, track_name_en, issued_at}], projects_completed: [{slug, name_es, name_en, completed_at}]}  PUBLIC, no auth
 ```
 
-404 for an unknown or inactive `username` (0.3) — no privacy opt-out column yet
+404 for an unknown or inactive `username` (0.3), and always while `PUBLIC_PROFILES_ENABLED` is false (default) — no privacy opt-out column yet
 (same shape as `GET /exams/certificates/{code}`, unauthenticated by the same
 logic: a public identifier is enough). `mastery_avg`/`skills_mastered` come
 from `UserSkillState`/`MASTERY_THRESHOLD`; `certificates` excludes revoked;
@@ -254,7 +254,7 @@ POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session 
 GET  /billing/subscription → {is_premium, subscription_status, subscription_tier, subscription_provider, stripe_customer_id, stripe_subscription_id} 🔒 — subscription_provider: "stripe" | "revenuecat" | "paddle" | null
 POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC). **Sin uso** (H.29)
 POST /billing/revenuecat/webhook → RevenueCat webhook (17.14, mobile IAP, sandbox) — Authorization header secret, 503 until REVENUECAT_WEBHOOK_AUTHORIZATION is set
-GET  /billing/paddle/config → {enabled, environment, client_token, prices{plus,pro,certification}} — público: lo que la web necesita para abrir Paddle.js (H.29); enabled=false hasta configurar PADDLE_CLIENT_TOKEN y un precio
+GET  /billing/paddle/config → {enabled, environment, client_token, prices{plus,pro,certification,plus_annual,pro_annual}} — público: lo que la web necesita para abrir Paddle.js (H.29); enabled=false hasta configurar PADDLE_CLIENT_TOKEN y un precio
 POST /billing/paddle/cancel → {cancel_requested, access_until} 🔒 — cancela la suscripción de Paddle al final del periodo pagado (H.29); 404 si no tiene una, 502 si Paddle no la acepta. El estado lo escribe el webhook
 ```
 
@@ -322,7 +322,7 @@ usuario cae siempre del mismo lado aunque se pierda la fila.
 POST /webhooks/paddle → {received} — público; Paddle Billing: cabecera Paddle-Signature (ts=..;h1=..), HMAC-SHA256 de "ts:cuerpo" con PADDLE_WEBHOOK_SECRET, 5 s de tolerancia; 401 firma mala, 503 sin secreto, 500 si falla al procesar (Paddle reintenta)
 ```
 
-Sin `PADDLE_API_KEY` configurada **rechaza** con 401. Falla cerrado a propósito:
+Sin `PADDLE_WEBHOOK_SECRET` configurado **rechaza** con 503. Falla cerrado a propósito:
 lo que no se puede verificar no se acepta.
 
 ## Content endpoints (admin)
@@ -456,19 +456,19 @@ GET  /              → {name, status, version}
 
 | Path prefix | Limit |
 |---|---|
-| `/api/v1/auth/*` | 12 req/min per IP |
-| `/api/v1/tutor/*` | 12 req/min per IP |
+| `/api/v1/auth/{login,register,forgot-password,reset-password,resend-verification,verify-email,oauth,2fa}*` | 60 req/min per IP (`AUTH_RATE_LIMIT`) |
+| `/api/v1/tutor/*` | 60 req/min per IP (`AUTH_RATE_LIMIT`) |
 | All other routes | 120 req/min per IP |
 
 429 responses include `Retry-After` header.
 
 ## Route count
 
-157 paths (153 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **166 method+path endpoints** total.
-Verified locally on `claude/ecstatic-meitner-2x08pf` tras `git merge origin/master`:
+164 paths (160 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **174 method+path endpoints** total.
+Verified locally on `claude/ultracode-0-docs-sync` (base `0de27ad`):
 `python -c "from app.main import app; spec=app.openapi(); print(len(spec['paths']), sum(len(v) for v in spec['paths'].values()))"`
-→ `157 166`.
+→ `164 174`.
 
 
 

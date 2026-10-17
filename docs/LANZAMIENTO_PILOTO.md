@@ -10,7 +10,7 @@ sin probar contra producción.
 
 ## 0. Antes de enviar nada
 
-1. **Fusiona los PRs del lanzamiento**, que arreglan lo que vería un piloto en su primera
+1. **Fusiona los PRs del lanzamiento** (ya fusionados), que arreglan lo que vería un piloto en su primera
    sesión (recorrido de alta en local, ES y EN, 2026-10-01):
    - #45: CI en verde. Sin él, el resto sale en rojo.
    - #46: 11 rutas mostraban el nombre del icono en texto («cloud Microsoft Azure»).
@@ -78,13 +78,13 @@ respuestas literales, no tu resumen.
 
 1. Inicia sesión en `whetzy.com` con tu cuenta de dueño.
 2. En el mismo navegador abre
-   `https://api-production-9751.up.railway.app/api/v1/admin/metrics/funnel`.
+   `https://api.whetzy.com/api/v1/admin/metrics/funnel`.
 3. Lee `total_users`: es el número de cuentas de la tabla `users`.
 
 Por qué funciona:
 - `GET /admin/metrics/funnel` cuenta `User.id` sin filtro (`backend/app/api/v1/endpoints/admin.py:93-143`) [V].
-- Solo responde a una cuenta con rol `owner` o `admin` (`admin.py:31-37`) [V].
-- La API acepta la cookie de sesión además del token (`backend/app/core/security.py:151`) [V].
+- Solo responde a una cuenta con rol `owner`; el rol `admin` ya no abre nada (`admin.py:31-37`) [V].
+- La API acepta la cookie de sesión además del token (`backend/app/core/security.py:177-180`) [V].
 - Que la cookie viaje al abrir la URL directamente no lo he probado en producción [P]. Si da
   `401`, inicia sesión otra vez en `whetzy.com` y repite.
 
@@ -92,12 +92,12 @@ Por qué funciona:
 alguien de pruebas se registra entretanto, réstalo a mano.
 
 **No uses la tarjeta «Total usuarios» del panel de admin**: sale siempre vacía [V]. La
-pestaña Métricas pide `/admin/metrics/users` (`frontend/src/pages/AdminScreen.tsx:50`), que no
+pestaña Métricas pide `/admin/metrics/users` (`frontend/src/pages/AdminScreen.tsx:52`), que no
 devuelve `total_users`. Está en la lista del dueño; no se arregla aquí por el veto de 31.5.
 
 **Vía alternativa: los logs HTTP de Railway** (panel → proyecto `whetzy` → servicio `api` →
 logs HTTP). Cada `POST /api/v1/auth/register` con estado `201` es un registro
-(`auth.py:63` responde `201 Created`) [V], con su IP. Descarta la tuya. La retención visible
+(`auth.py:93` responde `201 Created`) [V], con su IP. Descarta la tuya. La retención visible
 de esos logs es de unos 7 días (`CIERRE_2026-09-30.md` §1.1) [P].
 
 ## 5. Cuándo volver a llamar a una sesión

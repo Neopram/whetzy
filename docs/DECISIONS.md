@@ -319,6 +319,8 @@ esconde); dos productos separados (duplica todo).
 
 ## ADR-18 — Despliegue autónomo: un solo push verificado por sesión (ACEPTADA 2026-09-18; resuelve H.16)
 
+> **Sustituida por ADR-45 (2026-09-24)**: las sesiones no hacen push a `master`; trabajan en rama + PR y solo el dueño fusiona. Nota añadida el 2026-10-16 por ADR-61 §27.
+
 **Decisión:** Las sesiones autónomas commitean en `master` **en local** y hacen
 **un único `git push origin master` al final de la sesión**, solo con las cuatro
 guardias en verde (`pytest tests/content`, `check_question_bank.py`, `check_docs.py`,
@@ -482,6 +484,8 @@ regional y el corte gratis/Pro (H.35). ORCHESTRATOR.md decía $9.99; corregido e
 
 ## ADR-29 — Marketplace de instructores: revenue share 70/30 (2026-09-18)
 
+> **Enmendada por ADR-41 (2026-09-24)**: el reparto es 80/20 a favor del instructor (`CREATOR_REVENUE_SHARE = 0.80`, `backend/app/core/prices.py:19`). Nota añadida el 2026-10-16 por ADR-61 §27.
+
 **Decisión:** Marketplace abierto a instructores externos con revenue share 70% instructor / 30% Whetzy. Todo contenido pasa el quality gate §7 antes de publicarse. Sin exclusividad requerida. Ver `docs/MARKETPLACE.md` para spec completo. Serie 28 implementa.
 
 **Razón:** Multiplica la velocidad de generación de contenido sin multiplicar el costo. 20 instructores activos = 20x más contenido. 70% es más generoso que Udemy (25-37%) y Teachable (cobra plataforma). El motor adaptativo convierte el contenido del instructor en un producto mejor que el que ellos podrían ofrecer solos.
@@ -568,6 +572,8 @@ propio. Ambos son HUMAN-BLOCKED con € (ADR-15).
 
 ## ADR-34 — Créditos Whetzy: economía cerrada, sin valor externo (ACEPTADA 2026-09-18)
 
+> **Enmendada por ADR-58 (2026-10-02)**: los créditos ya no compran simulacros ni cursos del marketplace; el acceso lo da el plan. Nota añadida el 2026-10-16 por ADR-61 §27.
+
 **Decisión:** Whetzy tiene una moneda promocional cerrada («créditos») que se **gana
 aprendiendo** y se **gasta en consumibles** dentro de la app (simulacros, congelar
 racha, informes, bootcamps async, cursos del marketplace, seats extra para empresas).
@@ -589,6 +595,8 @@ saldo sin caducidad (pasivo contable, sin urgencia).
 ---
 
 ## ADR-35 — Referidos por activación y códigos autogenerados de cinco tipos (ACEPTADA 2026-09-18)
+
+> **Enmendada por ADR-57 y ADR-41**: ver esas ADR para los premios y los precios vigentes. Nota añadida el 2026-10-16 por ADR-61 §27.
 
 **Decisión:** Programa de referidos de doble cara que **paga por activación, nunca
 por registro** (activación = email verificado + diagnóstico + primer módulo + racha
@@ -916,6 +924,8 @@ proyección competitiva de §12 (su tabla sumaba 49 donde decía 44).
 
 ## ADR-47 — Valores por defecto de la cola humana, para que la sesión no se detenga (ACEPTADA 2026-09-24; numerada 47 el 2026-09-25 porque `master` ya tenía ADR-41…44 ocupadas por decisiones paralelas del dueño)
 
+> **Enmendada**: modelos por ADR-52; entidad y jurisdicción por ADR-61 §22 (Chipre como destino, sin entidad constituida; H.54); marca por la aprobación del dueño del 2026-10-13 (colores del logo, #197). Nota añadida el 2026-10-16 por ADR-61 §27.
+
 **Aceptada por el dueño** el 2026-09-24 («eso lo dejo para el final»): las decisiones que
 solo él puede tomar quedan en `HUMAN-BLOCKED`, pero cada una lleva un **valor por
 defecto** que la sesión asume mientras él no lo vete. Nada de esto gasta dinero ni
@@ -1014,6 +1024,8 @@ dueño y ahora, además, coincide con el precio de la certificación. Se limpia 
 ---
 
 ## ADR-50 — Aprobación en bloque del dueño y decisiones de la noche del 2026-09-26 (DUEÑO en bloque; valores elegidos por la sesión)
+
+> **Enmendada por ADR-52 (2026-09-27)** en las decisiones de modelos. Nota añadida el 2026-10-16 por ADR-61 §27.
 
 **Origen.** Mensajes del dueño en la sesión interactiva del 2026-09-26, citados tal cual:
 «DESBLOQUEA TODO, MI DESICIONES SON A TODO APROBADO!», «HAZLO TODO SI ESTA EN TUS MANOS»,
@@ -1569,3 +1581,134 @@ será un producto propio que puede reutilizar las piezas, no una extensión del 
 
 **Criterio de entrada al roadmap:** al menos dos certificaciones con banco completo y pool de
 simulacro activo, y un mínimo de 100 alumnos con datos reales de uso (condición de Ola 5).
+
+---
+
+## ADR-61 — Decisiones del dueño tras la auditoría de integración y de docs (DUEÑO, 2026-10-09; transcrito el 2026-10-16 por la Oleada 0, pendiente de que el dueño confirme que es fiel)
+
+**Origen.** Texto propuesto «para S5 como ADR-61» en el issue #89
+(<https://github.com/Neopram/whetzy/issues/89#issuecomment-6075139738>, 2026-10-09 05:48 UTC,
+`[COORD] DECISIONES DEL DUEÑO`), con la precisión a §22 del comentario siguiente
+(<https://github.com/Neopram/whetzy/issues/89#issuecomment-6075158638>). Ninguna sesión lo llegó a
+escribir aquí, aunque `CATALOGO_MAESTRO.md` cita sus puntos §22, §23 y §25 como «ADR-61 … prop.».
+Se transcribe sin cambios. El número 60 lo ocupó después ADR-60 (2026-10-10), no las decisiones
+del 2026-10-04/05 que el texto original le atribuía.
+
+> **Precisión del dueño a §22 (2026-10-09):** todavía no existe ninguna entidad. Chipre es el
+> destino, pero no está constituida. Hoy no hay sociedad, así que no hay régimen fiscal propio ni
+> payouts posibles, y `GRECIA_TAX_RATE` no corresponde a ninguna entidad real. Paddle sigue en
+> producción como está (§3).
+>
+> **Choque abierto (H.54):** §22 sustituye a «Grecia» en H.29, pero el código sigue en Grecia
+> (`backend/app/services/payment_service.py:22`) y la Oleada 0 no lo toca. Lo decide el dueño.
+
+**Seguridad, dinero y cumplimiento**
+1. Edad mínima en el alta por OAuth: pantalla de confirmación en el primer inicio con Google o GitHub. Edad mínima: 13 años, sujeta a la revisión de S4 y del abogado (H.20).
+2. Analítica: los eventos individuales se borran a los 30 días y se conservan solo agregados. Así se cumple lo publicado en el DPA.
+3. Paddle sigue en producción a propósito. La certificación no se cobra hasta cumplir el punto 4 y 37.24. Los flags `CERTIFICATION_PAYWALL`, `CREATOR_PLAN_REQUIRED`, `FREE_DAILY_QUOTA_ENABLED` y `ANNUAL_PLAN_ENABLED` siguen **apagados** durante el piloto.
+4. AZ-900, AI-901 y DP-900: simulacro gratuito con «formato Whetzy» declarado y la duración oficial. Su examen certificador **no se vende** hasta tener la cifra oficial de preguntas.
+5. Marketplace de pago: `enroll` bloqueado ya (41.6) y se envían a Paddle las 13 preguntas de 44.18 antes de diseñar los payouts.
+6. Perfil público (opt-in, decisión del 2026-10-04): muestra solo nombre visible, avatar y certificados verificables. No muestra dominio medio, racha ni proyectos.
+7. El antifraude por huella sigue apagado. `ANTIFRAUD_SALT` pasa a ser obligatoria y desaparece el valor por defecto del código.
+8. Lo que ve gente de fuera se retira o se corrige antes de publicar o enviar nada: guiones de vídeo, fichas de tienda, `Whetzy.pdf` (fuera del repo) y las marcas ✅ de `COMPETENCIA.md`. `docs/analisis-estrategico/` pasa a `docs/archive/` con aviso de fecha.
+
+**Producto y motor**
+9. Prueba de nivel: fija un punto de partida por módulo, siempre por debajo de 0,95 (`MASTERY_THRESHOLD`), **y además** ofrece el test-out de cada módulo marcado `can_skip`. Resuelve B.4.
+10. El simulacro no actualiza BKT. Su resultado se muestra en la pantalla de preparación.
+11. Contenido escrito por IA (ADR-59): aviso visible en la app y campo de procedencia en cada pregunta.
+12. Posicionamiento confirmado (la cuña del 2026-10-04): certificaciones técnicas para particulares.
+13. Onboarding más fino (5 niveles, tecnologías conocidas): después del piloto.
+14. Modo Enfoque/Competitivo/Social: no por ahora. Basta con `leagues_opt_out`.
+15. XP separado y `Module.level` renombrado, como recomienda S3 (C.3 del plan de UI/UX).
+16. CORS para la app nativa (41.10): cuando exista el proyecto iOS o Android.
+
+**Infraestructura (D1–D4 de S5)**
+17. D1: se vacía `REDIS_URL`. 18. D2: staging se da de alta antes de abrir a usuarios de pago. 19. D3: el worker sigue igual. 20. D4: el contenido se carga en el pre-deploy de Railway.
+21. El detector de duplicados se corre fuera de producción como script con `sentence-transformers`. En Railway se retira el camino de vectores aleatorios.
+
+**Documentación y gobierno**
+22. **Entidad y jurisdicción: Chipre, a la que se llegará más adelante.** Sustituye a «Grecia» en H.29 y a «sin decidir» en ADR-47. Concuerda con ADR-33. Queda por definir el régimen hasta que se constituya la entidad; mientras tanto no se pagan payouts (punto 5). La retención griega del código (`payment_service.py:26`, `GRECIA_TAX_RATE = 0.22`) deja de ser válida y se revisa antes del primer payout.
+23. «Ejecutable» se reserva para las preguntas que se ejecutan de verdad (`fill_blank_exec`, `fix_bug`, `sql_exec`, `js_exec`; 612). «Con código» abarca además `code_output` (1.377).
+24. CC BY-SA no se reutiliza (ADR-47).
+25. En licencias manda `content/sources/index.json`. Se corrige `CATALOGO_MAESTRO.md` y se comprueba que ninguna pregunta copia texto de OWASP Top 10 ni de los RFC (los dos son «cita»).
+26. Clasificación por edad en tiendas: 12+ (iOS) y Teen (Android), a confirmar con el cuestionario de cada tienda.
+27. S5 escribe ADR-60 y este ADR-61, y añade notas «sustituida/enmendada por» a ADR-18, 29, 34, 35, 47 (marca), 50 y 14.
+28. Sobre quién escribe qué fichero manda `docs/SESIONES.md`; se corrigen sus líneas 36-38.
+
+---
+
+## ADR-62 — Contenido nuevo en espera por consumo de tokens; el contenido de estudio queda como deuda registrada (PROPUESTA de la sesión, 2026-10-16; pendiente de firma del DUEÑO)
+
+**Origen.** Petición del dueño del 2026-10-16 (plan ultracode, `PLAN_ULTRACODE.md` §7). Enmienda
+ADR-59 y el punto «el contenido corre en paralelo» de ADR-54.
+
+**Decisión propuesta.**
+1. Hasta nueva orden no se escriben preguntas, lecciones ni términos ni se amplían tracks;
+   `PLAN_CONTENIDO.md` y la FASE 2 punto 3 de `PROMPT_CONTROL_TOTAL.md` quedan en espera.
+   Excepción: retirar (no reescribir) un ítem con error de hecho.
+2. La forma del catálogo (ADR-54) sigue siendo la meta.
+3. Deuda registrada: H.55 (contenido de estudio frente a banco de preguntas).
+
+---
+
+## ADR-63 — Política de evidencia por fuente y prior del onboarding (PROPUESTA de la sesión, 2026-10-16; pendiente de firma del DUEÑO)
+
+**Origen.** Plan ultracode del dueño (`PLAN_ULTRACODE.md` §7). Subordinada a ADR-60 UX-DEC-01.
+
+**Contexto.** Hay una fila `UserSkillState` por (usuario, skill), y la escriben con reglas
+distintas la práctica, el duelo, el test-out y la prueba de nivel. El onboarding se guarda
+(`auth.py`), pero el punto de partida es fijo: `p_l0 = 0,1` (`backend/app/services/engine/bkt.py:22`).
+ADR-60 define «evidencia insuficiente» como «< 7 respuestas en el módulo o sin repaso diferido».
+
+**Propuesta.**
+1. Prior por experiencia: 0/1/2 → 0,10/0,20/0,30 (a calibrar). No suma intentos.
+2. Siembra de la prueba con encogimiento, k = 4 y tope 0,94; D-18 se mantiene. Con eso, 1/1 pasa
+   de 0,94 a 0,28 y 8/8 da 0,70.
+3. «Dominada» = `p_known` ≥ 0,95 y ≥ 7 respuestas de práctica. El duelo, la prueba y el test-out
+   mueven `p_known`, pero no cuentan para la puerta y no pasan de 0,94 por sí solos.
+4. Tabla por fuente:
+   - práctica: BKT sin tope, cuenta para la puerta, FSRS;
+   - duelo: BKT con tope 0,94, no cuenta, FSRS como hoy;
+   - prueba de nivel: siembra una vez;
+   - test-out: por documentar leyendo `exams.py:395`;
+   - onboarding: solo prior.
+
+---
+
+## ADR-65 — Flujo del alumno listo para pruebas (DECIDIDO por delegación expresa del dueño, 2026-10-17)
+
+**Origen.** Anexo del dueño al plan ultracode (`docs/PLAN_FLUJO_ALUMNO.md`), pegado en la sesión de la Oleada 0 el
+2026-10-17. Sus §5.3 dicen «redacta ADR-65 … como DECIDIDO por delegación expresa del dueño». Las decisiones se
+transcriben sin cambios. Las filas son la serie 43. El número 64 queda libre: la Oleada 0 no encontró en
+`LEDGER_HISTORY` §J las D-xx que el prompt pedía transcribir en ADR-64.
+
+| # | Decisión |
+|---|---|
+| D1 | Sesión en iPhone. Definitivo: API en `api.whetzy.com` + `COOKIE_DOMAIN` (dueño). Puente inmediato: el frontend guarda el **access token en memoria** y lo manda como `Authorization: Bearer` (el backend ya lo acepta: `security.py:174-181` [V]); el refresh sigue por cookie. En Safari sin DNS, la sesión dura lo que la pestaña. |
+| D2 | Onboarding: registro → objetivo (aprender / certificarme / ambos) → **elegir track de aprendizaje** (rejilla de los 24 tracks agrupados) → certificación opcional relacionada → experiencia → **prueba de nivel del track** (o «empiezo de cero») → resultado → **Hoy**. Se quita la pregunta de idioma (ya está en el registro) y la de horas pasa al perfil. |
+| D3 | Prueba de nivel de **20 preguntas**: 15 estratificadas (5 básicas, 5 intermedias y 5 avanzadas, repartidas por módulos) + 5 adaptativas en la banda frontera. Banda de una pregunta: su `difficulty_tier` si lo tiene; si no, el tercio del módulo dentro del track (16 tracks no tienen tier [V]). θ con la EAP de #219. |
+| D4 | Siembra tras la prueba, por módulo y no por pregunta suelta. Un módulo con ≥ 70 % deja sus skills en 0,6 (practicables, no «dominadas»); el resto, con encogimiento hacia 0,1. Nunca baja una skill con historial (D-18). La prueba **no** marca lecciones como vistas. |
+| D5 | **Ruta activa** = `target_track_id` en servidor. Se cambia desde Rutas/catálogo («Hacer esta mi ruta») y desde Yo. Al cambiar a un track sin progreso, se ofrece su prueba de nivel. Nunca se borra progreso: todo vive por skill y por track [V `models/user.py:168`]. |
+| D6 | **Hoy filtrado por la ruta activa**: cabecera «Tu ruta: <nombre>» con «Cambiar». La banda de preparación, el siguiente paso, los repasos y el territorio salen solo de ese track. «Otras rutas en curso» va abajo. |
+| D7 | **Lección primero**, siempre, fuera de exámenes y quizzes de evaluación. «Estudiar» abre la siguiente lección no vista del track; si están todas vistas, practica. Desbloquear la práctica exige la lección vista (se quita `attempts > 0` de `lesson_gate.py:54` [V]). Los duelos, solo sobre skills con la lección vista por los dos. |
+| D8 | **Proyectos** dentro de cada track, como cierre de módulo (tras sus lecciones), visibles solo si el track tiene proyectos. El progreso se guarda en servidor, y los pasos con tests deterministas se validan en servidor. |
+| D9 | **Playground** contextual: «Probar este código» en cada lección (las 730 tienen `example_code`), fragmentos guardados por skill y acceso secundario desde Rutas. Sale de Hoy. |
+| D10 | Registro sin fricción: errores 409/422 traducidos y por campo; email normalizado a minúsculas (antes, comprobar colisiones en la base); filtro de palabras por palabra completa para los términos cortos; «onboarding hecho» en servidor. |
+
+> **Nota de la Oleada 0 a D1 (comprobado en el código, 2026-10-17):** Safari también bloquea como de terceros la
+> cookie de *refresh*. Con «el refresh sigue por cookie», la sesión en iPhone duraría 30 min
+> (`ACCESS_TOKEN_EXPIRE_MINUTES`, `config.py:68`), no «lo que dura la pestaña». El backend ya acepta el refresh en
+> el cuerpo de `POST /auth/refresh` (`auth.py:283`), y el login y el registro ya devuelven los dos tokens en JSON
+> (`schemas/user.py:96-99`). Por eso 43.1 manda el refresh en el cuerpo.
+>
+> **Decisión del dueño (2026-10-17, en la sesión).** «Solo en memoria» tampoco basta: tras el login, la app recarga
+> la página entera (`App.tsx:222`, `window.location.replace(next)`), y la memoria se pierde ahí y en cada
+> recarga. El dueño eligió esto: tras el login se prueba `/auth/me` solo con la cookie, y si da 401 los dos tokens
+> van a `sessionStorage` (dura la pestaña) como `Authorization: Bearer`. Nunca en `localStorage`. Coste aceptado:
+> en Safari, un XSS podría leerlos mientras la pestaña esté abierta. PR #226.
+
+> **Choque abierto (H.60), anotado por la Oleada 0:** D7 (la práctica exige la lección vista; se quita
+> `attempts > 0` de `lesson_gate.py`) junto con D4 (la prueba no marca lecciones vistas) deja sin efecto el test-out
+> por módulo de ADR-61 §9, que el código ofrece (`backend/app/services/placement.py:343`, `can_skip`). Recomendado: un
+> módulo con test-out aprobado, o con ≥ 70 % en la prueba, cuenta como «lección vista». Hay que decidirlo antes de
+> 43.5.

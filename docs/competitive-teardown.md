@@ -96,7 +96,7 @@ In-browser sandboxed Python execution (Pyodide + SharedArrayBuffer + import-bloc
 
 ### GAP-7: k6 load test not run against Railway prod (LOW)
 Local 4-worker uvicorn ≠ Railway free tier (single dyno, cold-start ~3s).  
-**Action**: Run `k6 run` against `https://api-production-9751.up.railway.app` once prod is warm. Adjust `P95_BUDGET_MS` threshold to 3000 for prod baseline.
+**Action**: Run `k6 run` against `https://api.whetzy.com` once prod is warm. Adjust `P95_BUDGET_MS` threshold to 3000 for prod baseline.
 
 ---
 

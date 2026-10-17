@@ -79,7 +79,7 @@ cuentas reales)
 - [ ] Antes de publicar: reconfirmar que `FREE_DAILY_QUOTA_ENABLED` en producción
       coincide con lo que ya anuncia la landing ("5 lessons and 30 new questions
       per day", `frontend/src/i18n/{es,en}/common.json`). El flag por defecto en
-      el código es `False` (`backend/app/core/config.py:244`); si producción lo
+      el código es `False` (`backend/app/core/config.py:299`); si producción lo
       tiene distinto a lo que la landing dice, el primer comentario de arriba
       (que ahora cita esa misma cifra) deja de ser cierto hasta que se corrija
       uno de los dos lados

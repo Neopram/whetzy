@@ -143,7 +143,7 @@ docs/SESIONES.md
 ### 4.6 S6 — marketing y crecimiento
 
 ```
-content/blog/**   docs/distribucion-assets/**   store/**   frontend/src/pages/marketing/**
+content/blog/**   docs/distribucion-assets/**   docs/store/**   frontend/src/pages/marketing/**
 frontend/src/i18n/{es,en}/marketing.json
 un endpoint NUEVO de newsletter con su test (si lleva migración, regla de §5)
 ```

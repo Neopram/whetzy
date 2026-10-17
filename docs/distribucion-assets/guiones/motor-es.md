@@ -7,7 +7,7 @@ Explicar la tecnología detrás de Whetzy: BKT, FSRS, adaptatividad. Target: té
 
 ### Intro (0:00-0:20)
 - **Visual:** Línea de código compilando, terminal con salida limpia
-- **Narración:** "¿Cómo logra una plataforma de 2 millones de usuarios educar a cada uno de forma diferente? Hoy revelamos el motor."
+- **Narración:** "¿Cómo logra una plataforma educar a cada usuario de forma diferente? Hoy revelamos el motor."
 - **Superposición:** "El Corazón Adaptativo de Whetzy"
 
 ### 1. El Problema de la Escala (0:20-0:45)
@@ -45,7 +45,7 @@ Explicar la tecnología detrás de Whetzy: BKT, FSRS, adaptatividad. Target: té
   - "Opción A: Fácil (p_known=0.9) — Aburrida"
   - "Opción B: Media (p_known=0.5) — 'Just right'"
   - "Opción C: Difícil (p_known=0.2) — Frustrante"
-- **Narración:** "Seleccionamos la que sea desafiante pero no imposible. Eso maximiza aprendizaje. Whetzy busca el 50% de tasa de acierto."
+- **Narración:** "Seleccionamos la que sea desafiante pero no imposible. Eso maximiza aprendizaje. Whetzy busca el 75% de tasa de acierto."
 
 ### 5. Verificación: E2E Testing (4:30-4:55)
 - **Visual:** Terminal corriendo `pytest tests/content/test_exec_questions.py` — PASS

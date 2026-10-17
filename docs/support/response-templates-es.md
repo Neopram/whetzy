@@ -28,7 +28,6 @@ Para cambiar el idioma de tu cuenta en Whetzy:
 1. Abre tu perfil (icono de usuario en la parte inferior)
 2. Busca "Idioma" o "Language"
 3. Selecciona español (ES) o inglés (EN)
-4. Guarda los cambios
 
 El cambio se aplicará inmediatamente en toda la plataforma.
 

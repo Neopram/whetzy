@@ -20,18 +20,18 @@
 
 ## 2. Decisiones Whetzy
 
-### Color Primario: Sky Blue #1CB0F6
+### Color Primario: Sky Blue #1CB0F6 (sustituido el 2026-10-13 por el cian del logo `#00BFFF`; valores vigentes en `frontend/src/styles/design-tokens.css` y `design/brand/README.md`)
 - Accessible WCAG AA, modern, technical
 - Dark mode DEFAULT (como Educative, DataCamp, freeCodeCamp)
 
-### Full Color System:
+### Full Color System (sustituido el 2026-10-13: ver `design-tokens.css`; fondo oscuro hoy `#0A0E1A`, claro `#F5F7FB`):
 - Primary: #1CB0F6 (hover #1A90D2)
 - Success: #10B981 (SOLO para éxito)
 - Dark bg: #0F172A | Light bg: #F9FAFB
 - Text light: #1F2937 | Text dark: #E5E7EB
 - Accent: #6366F1 | Warning: #F59E0B | Error: #DC2626
 
-### Tipografía:
+### Tipografía (sustituida: hoy Inter / Bricolage Grotesque / JetBrains Mono, `--le-font*`):
 - Headlines/Body: System sans (-apple-system, Roboto)
 - Code: Monospace (Monaco, Fira Code)
 - NO serif (developer-first, not math-first)

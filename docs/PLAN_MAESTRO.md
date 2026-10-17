@@ -23,16 +23,9 @@ Comprobado sobre `master` = `4d8b533` el 2026-10-12.
 | Qué | Estado comprobado | Hasta que exista |
 |---|---|---|
 | **Número de ADR de las decisiones del 2026-10-04/05** (perfil público opt-in, la cuña, lecciones corta/extensa, login Google + Apple, orden; D-a … D-f, §6) | **Choca con el ADR-60 real**: `docs/DECISIONS.md` ya tiene un ADR-60 distinto (Knowledge/Retention/Readiness, 2026-10-10) [V]. Este plan las llamaba «ADR-60» | Las decisiones valen; el número lo asigna S5 (propuesto en el PR de esta enmienda) |
-| **Series 41**, **42** y **43** | IDs **propuestos** («(prop.)»); el número real es el que les dé S5 | — |
-| **Migraciones de la beta** | 58 `paddle_events`, 59 `question_elo_updates` y 60 `user_beta_fields` en PR, encadenadas; `master` está en la 57 (`20261010_tutor_tokens`) [V] | Se fusionan de una en una (SESIONES §5) |
+| **Series 41**, **42** y **43** | IDs **propuestos** («(prop.)»); **colisionan con las series 41 («Documentación al día») y 42 («Ultracode») ya abiertas en el ledger**; el número real es el que les dé S5 | — |
+| **Migraciones de la beta** | 58 `paddle_events`, 59 `question_elo_updates` y 60 `user_beta_fields` ya están en `master` (HEAD `20261012_user_beta_fields`, 60 migraciones) [V] | Se fusionan de una en una (SESIONES §5) |
 
----|---|---|
-| **ADR-60**: decisiones del dueño del 2026-10-04 (perfil público opt-in, la cuña, lecciones corta/extensa, login Google + Apple, orden) y del 2026-10-05 (D-a … D-f, §6) | **No existe**: `docs/DECISIONS.md` termina en ADR-59 [V] | Las decisiones valen (las tomó el dueño en la sesión coordinadora), pero el número puede cambiar al aplicarse |
-| **Series 41** (Oleada S), **42** (Oleada 0 y flujo de estudio) y **43** (partes B–J fusionadas) | **0 filas en el ledger**: `ledger.py series 41|42|43` no devuelve nada [V] | Los IDs de este plan son **propuestos** («(prop.)»); el número real es el que les dé S5 |
-| **Migración 56** (perfil público opt-in) | No existe; la 55 (#127) tampoco está fusionada [V] | Orden fijado: 55 = #127, 56 = opt-in |
-
-El texto exacto de ADR-60 y de las series va en la sección «Delta del ledger» del PR que trae esta
-enmienda (SESIONES §3). S5 lo aplica después de volver a ejecutar los comandos.
 
 ---
 
@@ -57,8 +50,8 @@ enmienda (SESIONES §3). S5 lo aplica después de volver a ejecutar los comandos
 3. **Migraciones de una en una** (SESIONES §5). El PR que trae una migración actualiza las tres líneas
    del HEAD: «HEAD actual» de `CLAUDE.md`, la fila «Alembic HEAD» del ledger y «Current Alembic HEAD»
    de `docs/RUNBOOK.md`. Antes de abrirlo, se avisa en el #89.
-   - **Hoy: 55 = `20261004_study_session_current_question`** (#127, S.4) [V].
-   - Orden fijado: **56 = perfil público opt-in** (#144 rehecho).
+   - **55 = `20261004_current_question_id`** (#127, S.4), ya en `master` [V].
+   - 56 = `20261010_oauth_pkce`, 57 = `20261010_tutor_tokens`, 58–60 = `20261012_*` (cadena en `down_revision`).
    - Las demás van detrás, en el orden en que se fusionen.
 4. **Nunca `create_all`, y nunca borrar ni renombrar tracks o skills sin un mapa de progreso.** Desde la
    54, `content_loader` retira un track con `is_active=false` en vez de borrarlo
@@ -68,7 +61,7 @@ enmienda (SESIONES §3). S5 lo aplica después de volver a ejecutar los comandos
    1. contiene `master`;
    2. nivel 1 en verde (`.githooks/pre-push`);
    3. **`python scripts/check_docs.py` en verde, ejecutado a mano.** El pre-push solo lo corre si el
-      push toca `docs/`, `content/`, un `.md`, `ledger.py` o `check_docs.py` (`.githooks/pre-push:183-184`),
+      push toca `docs/`, `content/`, un `.md`, `ledger.py` o `check_docs.py` (`.githooks/pre-push:197`),
       y `scripts/ci_local.sh` **no lo corre nunca** [V]. Así llegó el #145 con `check_docs` en rojo:
       su push solo tocaba código;
    4. nivel 2 en VERDE (`scripts/ci_local.sh --carril <x> --sha <sha>`).
@@ -135,14 +128,14 @@ Comprobado sobre `master` = `4d8b533` el 2026-10-12. Las filas que dependen de u
 
 | Paso | Hoy | Hueco | Fila |
 |---|---|---|---|
-| Alta y verificación | `POST /api/v1/auth/verify-email` usa `VerifyEmailRequest` (`backend/app/api/v1/endpoints/auth.py:443`) y la página está en `docs/MAPA_PRODUCTO.md` (`VerifyEmailPage`) [V] | — | 42.1 (prop.), hecho |
+| Alta y verificación | `POST /api/v1/auth/verify-email` usa `VerifyEmailRequest` (`backend/app/api/v1/endpoints/auth.py:467`) y la página está en `docs/MAPA_PRODUCTO.md` (`VerifyEmailPage`) [V] | — | 42.1 (prop.), hecho |
 | Login social | GitHub y Google con **PKCE** (`oauth.py:45`, `:139`) y `state` atado a una cookie (`set_oauth_state_cookie`, `:157`) [V]; **sin Apple** [V] | Apple antes de la App Store (ADR-13) | 41.14 (prop.) |
-| Onboarding | 3 preguntas más la certificación si el objetivo es certificarse. `_placementTrack` usa el objetivo: certificación → su track, trabajo/carrera → `track04`, fundamentos → `track01` (`OnboardingScreen.tsx:65`) [V] | Guardar la ruta elegida en el servidor y llevar al principiante a su primera lección: **en PR** (D-20, migración 60) | 42.3 (prop.) |
+| Onboarding | 3 preguntas más la certificación si el objetivo es certificarse. `_placementTrack` usa el objetivo: certificación → su track, trabajo/carrera → `track04`, fundamentos → `track01` (`OnboardingScreen.tsx:67`) [V] | Guardar la ruta elegida en el servidor y llevar al principiante a su primera lección: **en PR** (D-20, migración 60) | 42.3 (prop.) |
 | Especialidad activa | `selectedTrackId` solo vive en el `localStorage` del dispositivo (`useAppStore.ts`, `persist`) [V] | `users.target_track_id`: **en PR** (D-20, migración 60) | 42.3 (prop.) |
-| Estudiar | «Estudiar» llama a `startQuiz('study', 10)` (`HomeScreen.tsx:87`); la lección es puerta real (`_LESSON_GATED_MODES`, `quiz.py:237`) [V] | Al principiante, la lección como paso 1: **en PR** (D-20) | 42.4 (prop.) |
+| Estudiar | «Estudiar» llama a `startQuiz('study', 10)` (`HomeScreen.tsx:98`); la lección es puerta real (`_LESSON_GATED_MODES`, `quiz.py:252`) [V] | Al principiante, la lección como paso 1: **en PR** (D-20) | 42.4 (prop.) |
 | Lección | Una por skill, 150–300 palabras por idioma (`backend/tests/content/test_lessons.py`) [V] | Versión extensa a elegir | 42.5 (prop.), oleada C |
-| Panel | Igual para todos; la marca de «primera vez» es `whetzy_onboarded_<id>` en `localStorage` (`App.tsx:189`, `:432`) [V]. Muestra porcentajes del modelo, que ADR-60 prohíbe hasta calibrar | Bandas con evidencia: **en PR** (D-16/D-17) | 42.6, 42.7 (prop.) |
-| Simulacro | En todos los planes (ADR-58). Hay **146** preguntas con `pool: "simulacro"` en el banco [V]; `MOCK_EXAM_RESERVED_POOL_ENABLED=False` por defecto (`config.py:310`) [V] | 37.24: completar las reservadas (meta ADR-54) | 43.10 (prop.) |
+| Panel | Igual para todos; la marca de «primera vez» es `whetzy_onboarded_<id>` en `localStorage` (`App.tsx:192`, `:445`) [V]. Muestra porcentajes del modelo, que ADR-60 prohíbe hasta calibrar | Bandas con evidencia: **en PR** (D-16/D-17) | 42.6, 42.7 (prop.) |
+| Simulacro | En todos los planes (ADR-58). Hay **219** preguntas con `pool: "simulacro"` en el banco [V]; `MOCK_EXAM_RESERVED_POOL_ENABLED=False` por defecto (`config.py:310`) [V] | 37.24: completar las reservadas (meta ADR-54) | 43.10 (prop.) |
 | Certificación | 39,99 $ pago único (ADR-49); Paddle cobra en producción (`/billing/paddle/config`: `enabled: true`, `environment: production`) [V]. El examen certificador solo se ofrece con el banco reservado encendido (`_certification_available`, `certification.py:59`, #180) [V]. `CERTIFICATION_PAYWALL=False` por defecto (`config.py:294`); su valor en Railway lo lee el dueño | Webhooks con deduplicación y orden: **en PR** (D-10, migración 58) | Oleada E |
 | Perfil público | Apagado por defecto: `PUBLIC_PROFILES_ENABLED=False` (`config.py:371`) y `profiles.py:40` devuelve 404 [V]; el valor en Railway lo lee el dueño (D-14) | Opt-in antes de encenderlo | 42.2 (prop.) |
 
@@ -151,7 +144,7 @@ Comprobado sobre `master` = `4d8b533` el 2026-10-12. Las filas que dependen de u
 | Paso | Hoy | Hueco | Fila |
 |---|---|---|---|
 | Plan Creador | 99,99 $ (ADR-41). `CREATOR_PLAN_REQUIRED=False` [def] (`config.py:266`). En Paddle de producción **no hay precio de Creador**, solo `plus`, `pro` y `certification` [V] | Precio en Paddle y flag | Oleada E |
-| Inscripción en un curso de pago | `enroll_student` (`backend/app/api/v1/endpoints/instructor_marketplace.py:200`) dice «Sin pasarela todavía» (`:211`). `enroll_student_in_course` (`backend/app/services/instructor_service.py`) suma `price_cents` a `revenue_cents` y al payout **sin ningún cobro** [V] | Exigir compra confirmada antes de inscribir. **Urgente**: Paddle ya está en producción | 41.6 (prop.) |
+| Inscripción en un curso de pago | `enroll_student` (`backend/app/api/v1/endpoints/instructor_marketplace.py:200`) responde 402 (`PaymentRequired`, `:241`) si el curso es de pago, y su docstring aún dice «Sin pasarela todavia» (`:212`). `enroll_student_in_course` (`backend/app/services/instructor_service.py:156`) lanza `PaymentRequired` antes de sumar nada [V] | Exigir compra confirmada antes de inscribir. **Urgente**: Paddle ya está en producción | 41.6 (prop.) |
 | Payout | `process_monthly_payouts` (`backend/app/services/periodic.py:281-312`) **solo pasa a `processing`** las liquidaciones pendientes de ≥ 50 € el día 15; **el pago lo hace el dueño a mano** desde esa lista, sin mover dinero [V]. Lo llaman `periodic_jobs_loop` (cada hora) y el job `run_payouts` (`backend/app/services/job_worker.py:168-175`) [V] | Activar (H.25) | H.25 |
 
 ### 2.3 Empresa
@@ -196,7 +189,7 @@ Comprobado sobre `master` = `4d8b533` el 2026-10-12. Las filas que dependen de u
 | 2 | **D4:** `alembic upgrade head && python -m app.services.content_loader` como pre-deploy de Railway, y `start.sh` solo arranca gunicorn. Antes, leer la documentación de Railway sobre pre-deploy | Dueño (panel) + S5 (PR) | Menos caída por despliegue |
 | 3 | **D2:** entorno `staging` en Railway, ya aprobado en ADR-50p. **Antes de cambiar nada del cobro**, que ya está en producción | Dueño (clic) + S5 (RUNBOOK) | Un entorno |
 | 4 | **D3:** worker aparte | — | No hasta que haya trabajos pesados reales |
-| 5 | **Copias:** `scripts/db_backup.sh`, `db_restore.sh` y `db_restore_test.sh` (`docs/RUNBOOK.md`, «DB backup / restore»), con ensayo mensual (33.1, DONE). **RPO ≤ 24 h y RTO ≤ 60 min están sin medir** (`docs/RUNBOOK.md:454-455`) [P] | S5 | Medirlos ya: el cobro está activo |
+| 5 | **Copias:** `scripts/db_backup.sh`, `db_restore.sh` y `db_restore_test.sh` (`docs/RUNBOOK.md`, «DB backup / restore»), con ensayo mensual (33.1, DONE). **RPO ≤ 24 h y RTO ≤ 60 min están sin medir** (`docs/RUNBOOK.md:475-476`) [P] | S5 | Medirlos ya: el cobro está activo |
 
 ---
 
@@ -211,7 +204,7 @@ marcado **(D)** es una decisión del dueño, y no se implementa sin ella. Los ID
 **A.1 · 41.4 (prop.) · `/quiz/answer` solo acepta la pregunta servida, y una sola vez.** PR #127.
 - Hecho: `down_revision = "20261004_tracks_is_active"` (migración 55), las tres líneas del HEAD al
   día, `git merge origin/master` repetido tras cada ronda de revisión del dueño (el PR se queda
-  atrás cada vez que fusiona algo nuevo mientras este sigue abierto). Fusión pendiente del dueño.
+  atrás cada vez que fusiona algo nuevo mientras este sigue abierto). Fusionado: la migración 55 está en `master`.
 - Test: responder dos veces la misma pregunta → 409; responder una pregunta que no se sirvió → 409.
 
 **A.2 · 41.5 (prop.) · El tutor no ayuda en un examen ni con preguntas reservadas, y no cobra cupo si no respondió la IA.**
@@ -224,7 +217,7 @@ marcado **(D)** es una decisión del dueño, y no se implementa sin ella. Los ID
   - `MockExamAttempt` está en `backend/app/models/exam.py:24`;
   - `NullProvider.name = "fallback"` (`backend/app/services/ai/provider.py:32-36`);
   - `complete_named` devuelve el nombre del proveedor (`provider.py:134`; se usa en `services/ai/tutor.py:189-191`).
-  - Ninguno de los dos ficheros mira `pool` ni `MockExamAttempt`.
+  - Antes de este cambio ninguno de los dos ficheros miraba `pool` ni `MockExamAttempt`; hoy `endpoints/tutor.py:69-76` sí.
 - Cambio:
   1. 403 si `question.pool == "simulacro"`.
   2. 403 si hay un `MockExamAttempt` en curso que contiene esa pregunta.
@@ -236,7 +229,7 @@ marcado **(D)** es una decisión del dueño, y no se implementa sin ella. Los ID
 - **Ya:** un curso con `price_cents > 0` responde **402**, sin fila de inscripción ni de payout. Un
   curso gratis sigue como hoy.
 - **Después:** la inscripción la crea el webhook de Paddle, igual que `certification_purchase` en
-  `backend/app/api/v1/endpoints/webhooks.py:121`. Lleva el id de transacción como referencia externa e
+  `backend/app/api/v1/endpoints/webhooks.py:181`. Lleva el id de transacción como referencia externa e
   idempotencia por evento. Hace falta un precio en Paddle (oleada E).
 - Test: sin compra → 402 y el payout no cambia; curso gratis → 201. Mutación: quitar el 402 → rojo.
 
@@ -263,15 +256,14 @@ marcado **(D)** es una decisión del dueño, y no se implementa sin ella. Los ID
 
 **A.6 · 41.18 (prop.) · El logout invalida de verdad.**
 - Hechos [V]:
-  - `logout` (`backend/app/api/v1/endpoints/auth.py:336`) solo audita y borra cookies;
-  - `/auth/refresh` (`auth.py:253`) usa un refresh JWT con `jvs`;
+  - `logout` (`backend/app/api/v1/endpoints/auth.py:353`) sube `jwt_version` (`:371`), audita y borra cookies;
+  - `/auth/refresh` (`auth.py:271`) usa un refresh JWT con `jvs`;
   - en `backend/app/core/security.py:316-410` hay refresh opacos con rotación
     (`create_opaque_refresh_token`, `verify_opaque_refresh_token`, `refresh_token_rotation`), **sin usar
     fuera de `security.py`**. Además **tienen un defecto**: `refresh_token_rotation` emite
-    `create_access_token(user_id)` **sin `jwt_version`** (`security.py:403`), y `security.py:211`
+    `create_access_token(user_id)` **sin `jwt_version`** (`security.py:404`), y `security.py:211`
     rechaza cualquier token cuyo `jvs` no coincida con el del usuario;
-  - hoy **no existe** «cerrar sesión en todos»: `jwt_version` solo sube al cambiar la contraseña
-    (`auth.py:419`), al restablecerla (`:581`) y al borrar la cuenta.
+  - `jwt_version` sube al cerrar sesión (`auth.py:371`), al cambiar la contraseña (`:459`), al restablecerla (`:628`) y al borrar la cuenta; **no existe** un endpoint «cerrar sesión en todos» aparte.
 - Cambio [O]:
   1. Corregir `refresh_token_rotation` para que pase `jwt_version`, con test.
   2. `/auth/refresh` pasa a los refresh opacos.
@@ -301,7 +293,7 @@ la revisión de COORD no encuentra ninguna ruta que cree dinero o acceso de pago
    - e2e `frontend/e2e/onboarding.spec.ts`: elegir AZ-900 lleva al examen de nivel de AZ-900;
    - integración: cambiar la especialidad no toca `user_skill_states`.
 
-**B.3 · 42.4 (prop.) · La lección como paso 1 visible.** «Estudiar» (`HomeScreen.tsx:87`) abre la lección
+**B.3 · 42.4 (prop.) · La lección como paso 1 visible.** «Estudiar» (`HomeScreen.tsx:98`) abre la lección
 de la skill siguiente si no está vista (`backend/app/services/lesson_gate.py`, `viewed_skill_ids`), en
 vez de pasar por el `QuizError` con botón. Test e2e con un alumno nuevo.
 
@@ -354,12 +346,12 @@ Decisión del dueño (ADR-60 prop.): **el alumno elige** entre la versión corta
 ### Oleada E: verificar y completar el cobro, que ya está en producción (dueño + S1/S5)
 
 **Hecho [V]:** Paddle está en `production`, con token `live` y precios `plus`, `pro` y `certification`;
-**sin** precios anuales ni de Creador. Existe la página `/checkout` (`frontend/src/App.tsx:241`).
+**sin** precios anuales ni de Creador. Existe la página `/checkout` (`frontend/src/App.tsx:252`).
 **Hay que actualizar el ledger:** H.29 sigue diciendo «falta alta Paddle y dominio».
 
 **Sin leer** (valores en Railway): `CERTIFICATION_PAYWALL`, `CREATOR_PLAN_REQUIRED`,
 `FREE_DAILY_QUOTA_ENABLED` y `ANNUAL_PLAN_ENABLED`. Solo se conocen sus valores por defecto, todos
-`False` [def] (`config.py:285`, `:266`, `:290`, `:348`). Que los precios anuales salgan `null` encaja con
+`False` [def] (`config.py:294`, `:266`, `:299`, `:357`). Que los precios anuales salgan `null` encaja con
 `ANNUAL_PLAN_ENABLED` apagado, pero no lo prueba.
 
 **Hay código de Stripe** (`backend/app/api/v1/endpoints/billing.py:67` checkout y `:90` webhook) [V],
@@ -403,8 +395,8 @@ pero el cobro es Paddle (H.29). No se construye nada nuevo sobre Stripe.
 
 - **Lo pendiente** lo da `catalog_coverage.py`: 4.118 el 2026-10-04, repartidas en
   2.610 + 468 + 1.040 (ver `PLAN_CONTENIDO.md` §1).
-- **Orden de `PLAN_CONTENIDO.md` §5.1 y de la fila 37.10:** **MLA-C01** (faltan 131) y **AI-901**
-  (faltan 224), las dos certificaciones de la cuña que siguen pendientes.
+- **Orden de `PLAN_CONTENIDO.md` §5.1 y de la fila 37.10:** **MLA-C01** (práctica cumplida, faltan 127 reservadas) y **AI-901**
+  (práctica cumplida, reservadas pendientes), las dos certificaciones de la cuña que siguen pendientes.
 - **Web3 y la reorganización de los tracks:** decididas el 2026-10-05 (§6.1 y §6.2). Web3 va detrás de las certificaciones de la cuña.
 
 ---
@@ -474,7 +466,7 @@ detallada. Pasan a ADR-60 (prop.) como sus puntos 7 a 12; el texto va en el «De
    | Desarrollo web | JS Frontend → Backend → Git → QA → Docker/K8s |
    | Web3 | Fundamentos de blockchain → Solidity/EVM → Solana |
 
-4. **`frontend/src/pages/TracksScreen.tsx`:** hoy filtra `all | learn | cert` (`:25`) [V]. Pasa a mostrar
+4. **`frontend/src/pages/TracksScreen.tsx`:** hoy filtra `all | learn | cert` (`:27`) [V]. Pasa a mostrar
    secciones desplegables por área, con «solo certificaciones» como filtro encima.
 5. **Onboarding (B.2):** ofrece una **ruta**, y `User.focus_path_id` sustituye a `focus_track_id` en la
    misma migración. El examen de nivel es del primer track de la ruta que no esté dominado.
@@ -518,7 +510,7 @@ Cada track pasa el piloto de 10 de ADR-59. **No se anuncia** en la web ni en el 
 **Orden:**
 1. **Base (41.14 prop., oleada A):** PKCE S256, `nonce`, `state` en cookie HttpOnly, y un registro de
    proveedores en `backend/app/api/v1/endpoints/oauth.py`.
-2. **Hoja de acceso** (frontend, S1), sustituye a `frontend/src/pages/AuthScreen.tsx` (363 líneas) [V]:
+2. **Hoja de acceso** (frontend, S1), sustituye a `frontend/src/pages/AuthScreen.tsx` (361 líneas) [V]:
    - un solo «Entrar» que en móvil abre una hoja inferior y en escritorio un diálogo, accesible según
      el patrón de diálogo modal del W3C (foco dentro, Esc, el foco vuelve al botón, `aria-labelledby`);
    - **los pasos se despliegan dentro de la hoja:**

@@ -5,7 +5,7 @@
 > secciones §5-§10 son las del plan del dueño, sin reescribir. Los números ADR-61…64 y H.51…H.57 son
 > provisionales: la sesión que ejecute los confirma con
 > `grep -n '^## ADR-' docs/DECISIONS.md | tail -1` y `grep -n '^| H\.' docs/AUTONOMOUS_STATE.md | tail -1`.
-> Prompt de la Oleada 0: `docs/PROMPT_SINCRONIZACION_DOCS.md`. Serie 41 y 42 del ledger.
+> Prompt de la Oleada 0: `docs/archive/PROMPT_SINCRONIZACION_DOCS.md` (ejecutado el 2026-10-16). Serie 41 y 42 del ledger.
 
 ## 0. Diferencias con `e85900b` (comprobadas sobre `fa1af50`)
 

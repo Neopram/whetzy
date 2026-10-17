@@ -1,6 +1,6 @@
 # Whetzy — Estado real / Honest Status
 
-_Última actualización del cuerpo: 2026-09-08. Evaluación técnica brutalmente honesta._
+_Última actualización del cuerpo: 2026-10-16 (entrada de la Oleada 0 al final). Evaluación técnica brutalmente honesta._
 
 > **Aviso añadido el 2026-09-14 (sesión am). Lee esto antes de citar nada de aquí.**
 >
@@ -2653,3 +2653,231 @@ y listo para que el dueño lo fusione a mano; ninguna sesión autónoma ejecuta
 `docs/ORCHESTRATOR.md` sin instrucción explícita suya hasta que el dueño levante la pausa.
 `CLAUDE.md` y `docs/ORCHESTRATOR.md` llevan el aviso; `scripts/check_docs.py` lo exige como
 guarda (mutada rojo/verde). Ledger: fila 31.7.
+
+## 2026-10-16 — Puesta al día del registro 2026-10-01 → 2026-10-16 (Oleada 0 del plan ultracode, serie 41)
+
+Este registro se quedó en el 2026-09-30, y el CHANGELOG en el 2026-10-01, mientras seguían entrando las ADR-56…60 y
+175 PR. Esta entrada no reescribe las anteriores: añade la lista de lo fusionado y una fe de erratas.
+
+**Qué cambió en la documentación hoy** (rama `claude/ultracode-0-docs-sync`, base `0de27ad`):
+- Barrido de los 115 documentos vivos: 1.532 afirmaciones contrastadas con el código. Resultado en
+  `docs/archive/verificacion/claims-2026-10-16.md`.
+- Las correcciones van en sitio, cada una refutada por un agente que no la escribió.
+- Nueve guardas nuevas en `check_docs.py`, [15] a [23].
+- ADR-61 transcrito del #89 (decisiones del dueño del 2026-10-09, entre ellas Chipre como destino de la entidad) y
+  ADR-62 y ADR-63 como propuestas.
+- 119 preguntas para el dueño (H.58).
+
+**Fe de erratas** (lo que una entrada vieja de este fichero dice y hoy no es así):
+- La entrada de los duelos (línea 662) da los estados `pending`/`active`/`completed`. El código usa
+  `pending | in_progress | completed` (`backend/app/models/duel.py:43`), y el duelo es asíncrono, no «en vivo».
+- La cabecera dice «Última actualización del cuerpo: 2026-09-08». El cuerpo recibió entradas hasta el 2026-09-30, y
+  esta del 2026-10-16.
+- Las entradas del 2026-09 que dicen que la sesión hace `git push origin master` quedan sustituidas por ADR-45
+  (2026-09-24): rama + PR y solo el dueño fusiona.
+
+**PR fusionados del 2026-10-01 al 2026-10-16** (número, fecha de fusión, commit de fusión y título; salida de la API de
+GitHub, `pulls?state=closed`):
+
+| PR | Fusión | Commit | Título |
+|---|---|---|---|
+| #34 | 2026-10-01 | `80cd3ad` | Noche 26/27-09: cuota Free (39.4), gamificación (39.5), coletillas (39.28 completa), login roto (30.9), limitador en abierto (39.35), ADR-52 |
+| #43 | 2026-10-01 | `5406527` | build(deps): Bump actions/checkout from 4 to 7 |
+| #44 | 2026-10-01 | `81bf259` | 19.12: borrado de cuenta con purga real a los 30 días (lo que prometen los textos legales) |
+| #45 | 2026-10-01 | `e8957fe` | CI verde: Node 22, brace-expansion y los 4 fallos del primer CI real |
+| #46 | 2026-10-01 | `42bd9af` | Rutas: 11 tracks mostraban el nombre del icono como texto |
+| #47 | 2026-10-01 | `510f467` | Quiz: una sesión no repite preguntas mientras queden otras |
+| #48 | 2026-10-01 | `e8f1c9d` | Quiz: el primer ESTUDIAR AHORA dice «Empieza por la lección» |
+| #49 | 2026-10-01 | `6d3c027` | Perfil: «Enviar comentario» para que los pilotos digan qué les frena |
+| #50 | 2026-10-01 | `ad88139` | Piloto: kit para enseñar whetzy.com a 20-50 personas (31.8) |
+| #51 | 2026-10-01 | `02df8d1` | ADR-54 (PR A): catálogo uniforme 32 × 10 — decisión, script y tests |
+| #52 | 2026-10-01 | `d0be5ce` | ADR-54 (PR B): propagar la forma 32 × 10 a los docs vivos + guarda |
+| #53 | 2026-10-01 | `8bc2e1c` | Auditoría documental: inventario de los 126 .md + guarda de índice y enlaces |
+| #54 | 2026-10-01 | `026a156` | Auditoría documental: 12 documentos obsoletos o históricos a archive/ |
+| #55 | 2026-10-01 | `b6ffcdf` | fix(tutor): proveedor que rechaza la llamada → 503 tutor_unavailable, no 500 |
+| #56 | 2026-10-01 | `3297f9a` | test(e2e): answerCurrentQuestion espera explicación o «Ejecutar», lo que llegue antes |
+| #57 | 2026-10-01 | `efefbc4` | Auditoría 6.5: tres afirmaciones falsas en docs vivos + guarda del HEAD de RUNBOOK |
+| #58 | 2026-10-01 | `302bf0e` | H.29: Paddle Billing como pago web — firma real del webhook, planes, certificación y cancelar al borrar la cuenta |
+| #59 | 2026-10-01 | `8e5445f` | Llevar a master el #52 (ADR-54 en los docs vivos) + arreglar check_docs rojo en master (HEAD de RUNBOOK) |
+| #60 | 2026-10-01 | `ad7dc1c` | docs(RUNBOOK): HEAD de Alembic 47 — master tiene check_docs en rojo |
+| #61 | 2026-10-01 | `d32d72d` | test(e2e): answerCurrentQuestion espera explicación o «Ejecutar», lo … |
+| #62 | 2026-10-01 | `d735044` | Conecta la ruta /reset-password en el SPA |
+| #63 | 2026-10-01 | `14e5491` | H.29: recortar espacios alrededor de los valores de Paddle |
+| #64 | 2026-10-01 | `fec34cd` | H.29: pago web con Paddle — página /checkout, botones de compra, cancelar y política de reembolsos |
+| #65 | 2026-10-01 | `723949b` | Privacidad: nombrar a Paddle como procesador de pagos web (H.29) |
+| #66 | 2026-10-01 | `9720c17` | Claude/funny franklin uf0pqb |
+| #67 | 2026-10-01 | `7f673c9` | design/v2 pasos 4–5 (Rutas y Lección) + 4 preguntas code_output con la respuesta mal marcada |
+| #68 | 2026-10-01 | `4e4b872` | Docs y legal: fuente legal única (ADR-55), fin de la pausa (ADR-56), docs obsoletos fuera y test de bloqueo estable |
+| #69 | 2026-10-02 | `d6e8cc4` | Mapa del producto + design/v2 6–8 + referidos, 2FA, economía completa y periódicos |
+| #70 | 2026-10-02 | `dae847a` | Ejercicios: 229 reparados (gratis o imposibles) y el servidor corrige sin creer al navegador |
+| #71 | 2026-10-02 | `4ff8d91` | build(deps): Bump the python-minor-patch group in /backend with 8 updates |
+| #72 | 2026-10-02 | `df6f629` | build(deps): Bump the npm-minor-patch group in /frontend with 6 updates |
+| #73 | 2026-10-02 | `e4b0e5e` | build(deps): Bump gunicorn from 23.0.0 to 26.2.0 in /backend |
+| #74 | 2026-10-02 | `be9bb1a` | build(deps): Bump pyodide from 0.26.2 to 314.0.7 in /frontend |
+| #75 | 2026-10-02 | `63527f8` | build(deps): Bump stripe from 11.4.1 to 15.6.1 in /backend |
+| #76 | 2026-10-02 | `a612794` | build(deps): Bump bcrypt from 4.0.1 to 5.0.0 in /backend |
+| #77 | 2026-10-02 | `fef0e4c` | build(deps-dev): Bump vite from 6.4.3 to 8.3.1 in /frontend |
+| #78 | 2026-10-02 | `4d71393` | build(deps): Bump groq from 0.13.1 to 1.7.0 in /backend |
+| #79 | 2026-10-02 | `c718951` | build(deps-dev): Bump @vitest/coverage-v8 from 4.1.11 to 5.0.2 in /frontend |
+| #80 | 2026-10-02 | `9a9402b` | build(deps-dev): Bump @testing-library/jest-dom from 6.9.1 to 7.0.1 in /frontend |
+| #81 | 2026-10-02 | `97d1a01` | URGENTE: master no arranca tras la ola de Dependabot (bcrypt 5, vite 8, pyodide 314) + barra inferior que se aparta + privacidad |
+| #82 | 2026-10-02 | `3f95462` | build(deps): Bump the npm-minor-patch group in /frontend with 2 updates |
+| #83 | 2026-10-02 | `0852fb4` | build(deps-dev): Bump typescript from 5.5.4 to 7.0.2 in /frontend |
+| #84 | 2026-10-02 | `f44ccfb` | build(deps): Bump cyclonedx-bom from 7.4.0 to 7.5.0 in /backend in the python-minor-patch group |
+| #85 | 2026-10-02 | `f4e127c` | build(deps): Bump react-router-dom from 6.30.6 to 7.18.4 in /frontend |
+| #86 | 2026-10-02 | `60953cd` | build(deps): Bump redis from 5.2.1 to 8.1.0 in /backend |
+| #87 | 2026-10-02 | `fde2705` | Ejercicios: 24 que nadie podía resolver en el navegador + guarda en Pyodide; mypy con redis 8; Dependabot sin majors |
+| #88 | 2026-10-02 | `42ec740` | build(deps): Bump fastapi from 0.141.1 to 0.142.0 in /backend in the python-minor-patch group |
+| #90 | 2026-10-02 | `c0c1c95` | FASE 0 · PR B — check-deployed con SHA, tsc en el build, gunicorn, nivel 2, §1 del ledger generada |
+| #91 | 2026-10-02 | `01a200c` | [S4] docs(legal): H.29, AI Act/DSA/EAA, marca, 19.11, paquete del abogado (H.20) |
+| #92 | 2026-10-03 | `ba3c2fd` | [S1][MIGRACIÓN] Tracks: aviso de certificación retirada + 19.11 moderación mínima de UGC |
+| #93 | 2026-10-03 | `0b2a426` | marketing: kit de distribución + blog wave 1 (23.3, 26.x, 27.x) |
+| #94 | 2026-10-03 | `ab75f36` | feat(newsletter): alta pública con doble opt-in vía Resend (26.10) |
+| #95 | 2026-10-02 | `fbb30df` | FASE 0 · andamios — SESIONES.md S1–S6, i18n por rol, rutas de marketing, guarda de Dependabot |
+| #96 | 2026-10-03 | `29494c7` | [S2] content(39.24): migrar track45 de AI-900 (retirado) al blueprint AI-901 |
+| #97 | 2026-10-03 | `0120e4d` | [S3] motor: 39.32, 14.8, 14.9, 14.10, 32.2 — todo mi ORDEN |
+| #98 | 2026-10-03 | `15b6bb1` | [S1] 39.14: icono accesible por sección en la plantilla de lección (apilado sobre #92) |
+| #99 | 2026-10-03 | `c6d0545` | [S2] content(39.25): ampliar track43 con GenAI/RAG/agentes/Bedrock (MLA-C01→C02) |
+| #100 | 2026-10-03 | `c66b8da` | [S1] 28.8: conectar InstructorScreen (perfil) a la API real (apilado sobre #98) |
+| #101 | 2026-10-04 | `a5500fc` | [S1] Login en Safari: la API acepta el dominio propio por configuración (apilado sobre #100) |
+| #102 | 2026-10-03 | `dbca5c3` | [S2] content(37.22): migrar track40 (ISC2 CC) al outline del 2026-09-01 |
+| #103 | 2026-10-04 | `b52266d` | [S1] 40.9: plan anual tras ANNUAL_PLAN_ENABLED (apilado sobre #101) |
+| #104 | 2026-10-03 | `a376f40` | content(39.9): explicaciones débiles en track15/16/17 + corrección de bug en track16 |
+| #106 | 2026-10-03 | `1be6eed` | content(37.10/37.6): track01 completo a la forma ADR-54 (primer track "en forma") |
+| #107 | 2026-10-03 | `c592916` | ci(local): carriles de nivel 2 por PR + SESIONES con las excepciones del #89 |
+| #108 | 2026-10-03 | `423be66` | ledger: delta del #90 (30.5 y 35.9 DONE, 30.2 PARCIAL) con dieta a §Q |
+| #109 | 2026-10-03 | `c2add2a` | test(metrics): NOW por test — TestCurr daba 3 rojos al cruzar las 00:00 UTC |
+| #110 | 2026-10-03 | `13d4590` | [S5] SESIONES: cada PR con migración actualiza sus tres líneas del HEAD; ci_local avisa si faltan los stubs de mypy |
+| #111 | 2026-10-03 | `94c6667` | [S3] fix(motor): RAGIndex.retrieve() subcuadrático + muestra fija — 39.32 (solo este tema) |
+| #112 | 2026-10-03 | `0fb17b8` | [S5] fix(auth): created_at del intento de login con el reloj de la app — test_2fa_login fallaba al azar |
+| #113 | 2026-10-03 | `06fa56f` | [COORD] docs: ADR-59 — escribe Sonnet desde la fuente, por Workflow, en paralelo al piloto |
+| #114 | 2026-10-03 | `5ba7c83` | [S5] ledger: delta de las fusiones del 2026-10-03 + scipy explícito en requirements |
+| #115 | 2026-10-03 | `b076fa9` | content(37.25): piloto ADR-59 — 10 preguntas AZ-900 (Azure Storage) escritas por Sonnet desde la fuente |
+| #116 | 2026-10-03 | `c1ee1d5` | Seguimientos 14.8/14.9/14.10/32.2: revisión adversaria del #97 |
+| #117 | 2026-10-04 | `7898ae7` | [S5] ledger: delta de la tarde del 2026-10-03 (#93, #100, #102, #106, #115) + 39.32 DONE; SESIONES con la coordinadora |
+| #118 | 2026-10-04 | `69dcdc5` | [S5] test(quiz): render dentro de act en quizScreen.evidence — fallaba al azar con carga |
+| #119 | 2026-10-04 | `b35cf49` | content(37.10): track44 AZ-900 +190 preguntas desde Microsoft Learn (ADR-59, Sonnet) |
+| #120 | 2026-10-04 | `8a4f5fd` | [S1] S.1: /auth/refresh no comprobaba jvs contra jwt_version |
+| #121 | 2026-10-04 | `371ebd4` | S.2: /ml/rollback y /ml/ab-stats pasan a solo admin |
+| #122 | 2026-10-04 | `d11e103` | [S4] legal: 7 propuestas verificadas sobre Términos/Privacidad/Reembolsos (Oleada 0.12/D.8) |
+| #123 | 2026-10-04 | `bf97fbf` | [S1] S.3: QuestionPublic leaba la respuesta de fill_blank antes de responder |
+| #124 | 2026-10-04 | `d966f53` | [S5] [MIGRACIÓN] S.12: retirar un track con is_active=false, nunca borrarlo (migración 54) |
+| #125 | 2026-10-04 | `feeceba` | S.9: el corte del test-out nunca es 0, y aprobado no baja dominio |
+| #126 | 2026-10-04 | `dd07690` | marketing: 0.14 páginas vacías (/blog real, /carrera y /empresas honestas) + E.7 |
+| #127 | 2026-10-10 | `d1b4923` | [S1][MIGRACIÓN] S.4: /quiz/answer solo la pregunta servida, una vez |
+| #128 | 2026-10-04 | `7729aec` | C.1: umbrales de dominio en un solo módulo, servido por la API |
+| #129 | 2026-10-04 | `2426d3d` | [S5] S.16: en producción, el arranque falla con una SECRET_KEY de ejemplo o corta |
+| #130 | 2026-10-04 | `41fb6bf` | C.2: una sola función de dominio de ruta, "sin datos" en vez de 0.1 |
+| #131 | 2026-10-04 | `2cb61aa` | [S5] S.13: CSRF, con cookie de sesión solo un origen de la lista cambia estado |
+| #132 | 2026-10-04 | `7314184` | [S5] G: la cola de trabajos se reclama por lotes con FOR UPDATE SKIP LOCKED |
+| #133 | 2026-10-10 | `7c9d84c` | B.11: readiness con umbral explícito de "listo para el simulacro" |
+| #134 | 2026-10-04 | `71575b8` | [S5] I.6/J.13: matriz de autorización generada y en el pre-push |
+| #135 | 2026-10-04 | `c03555d` | [S5] test(lesson): render dentro de act en lessonScreen.icons (fallaba al azar con carga) |
+| #136 | 2026-10-04 | `247b3d9` | I.4: elimina el N+1 de _candidate_skill_ids en /quiz/start y /quiz/answer |
+| #137 | 2026-10-04 | `1e04513` | content(37.10): track46 DP-900 +208 preguntas desde Microsoft Learn (ADR-59, Sonnet) |
+| #138 | 2026-10-04 | `7e33a57` | [S1] S.7: webhooks de Paddle -- cancelar por id, reembolsos, carrera en certification.grant |
+| #139 | 2026-10-04 | `6b802f6` | [S1] S.6: un instructor podía inscribirse en su propio curso y generarse un payout |
+| #140 | 2026-10-04 | `6fe99f6` | [S1] S.8: email.py metía display_name sin escapar en el cuerpo HTML |
+| #141 | 2026-10-04 | `bee3cd4` | [S1] S.14: OAuth enlazaba a una cuenta existente sin comprobar que su email estuviera verificado |
+| #142 | 2026-10-04 | `28a2481` | [S1] S.15: push -- validar el endpoint (SSRF), webpush fuera del bucle con timeout, tope por usuario |
+| #143 | 2026-10-04 | `e70313d` | [S1] S.5/S.17: tutor -- conversation_history sin filtrar (inyección de prompt) y carrera en el cupo |
+| #144 | 2026-10-10 | `a3d29eb` | [S1] 0.3: perfil público mostraba datos 100% inventados para cualquier handle |
+| #145 | 2026-10-10 | `d95b8ef` | [S1] 0.2: /verify-email sin página en el frontend, y el endpoint rechazaba el único cuerpo correcto |
+| #146 | 2026-10-04 | `05b46b1` | [COORD] docs: pendiente medido (4.118) y lecciones corta/extensa en PLAN_CONTENIDO |
+| #147 | 2026-10-05 | `28dc378` | fix(pwa): generar los iconos reales de manifest.json (0.5) |
+| #148 | 2026-10-05 | `a49e263` | fix(theme): index.html pintaba claro antes de que corriera ningún JS (0.6) |
+| #149 | 2026-10-05 | `69d0f29` | fix(gestures): un swipe se perdía si App.tsx se re-renderizaba a mitad (0.8) |
+| #150 | 2026-10-04 | `bb1d28d` | [COORD] docs: PLAN_MAESTRO.md — norte del producto aprobado por el dueño |
+| #151 | 2026-10-05 | `fac2e0c` | fix(nav): el swipe global salía de un examen/duelo sin confirmar (0.9) |
+| #152 | 2026-10-04 | `f55ce29` | [COORD] docs: enmienda del PLAN_MAESTRO — 16 incoherencias corregidas (defaults ≠ producción, ADR-60/41–43 propuestos) |
+| #153 | 2026-10-05 | `0fae04a` | fix(api): red caída ≠ sesión caducada, y un 401 a mitad de sesión no mandaba a ningún sitio (0.13) |
+| #154 | 2026-10-05 | `01a2209` | fix(sw): service worker versionado por el commit del build, no a mano (0.15) |
+| #155 | 2026-10-05 | `5d22bf7` | [COORD] docs(PLAN_MAESTRO): decisiones del dueño D-a…D-f — rutas por metadatos, Web3 en 3 tracks, acceso email-first |
+| #156 | 2026-10-05 | `8f54083` | fix(status): /status nunca distinguía "caída" de "solo la base de datos" (0.16) |
+| #157 | 2026-10-11 | `00dd19a` | feat(estado): informe de GitHub, Railway y Cloudflare en un comando, solo lectura |
+| #158 | 2026-10-11 | `6a08a77` | chore(deps): Bump the python-minor-patch group in /backend with 2 updates |
+| #159 | 2026-10-11 | `306fe80` | chore(deps): Bump the npm-minor-patch group in /frontend with 9 updates |
+| #160 | 2026-10-11 | `e9b2a2a` | [COORD] 44.57: catálogo y plan de contenido, cifras y licencias al día |
+| #161 | 2026-10-11 | `2cd3e37` | [COORD] 44.60: COMPETENCIA y teardown contrastados con el código |
+| #162 | 2026-10-11 | `416b0c3` | [COORD] content 37.10: MLA-C01 +162 y AI-901 +240 escritas por Sonnet desde la fuente |
+| #163 | 2026-10-11 | `4d70b09` | content(37.24): 146 reservadas de simulacro + trabajo en curso guardado (parcial) |
+| #164 | 2026-10-10 | `9c27912` | fix(B2+A1+A2+E3) + ADR-60: honestidad del motor + seguridad exec |
+| #165 | 2026-10-10 | `05d35b4` | hotfix: migration rev ID demasiado largo → producción CAÍDA |
+| #166 | 2026-10-11 | `ffcb4ef` | [S1][41.6] enroll_student_in_course: 402 sin cobro confirmado |
+| #167 | 2026-10-11 | `b3c955e` | [S1][41.18] logout invalida el refresh de verdad (sube jwt_version) |
+| #168 | 2026-10-11 | `b4f0420` | [S1][41.5] tutor: 403 en examen en curso y banco reservado; no cobra cupo al NullProvider |
+| #169 | 2026-10-10 | `cf869a6` | fix(C1+E1): onboarding reads goal → placement track; duel answers update UserSkillState |
+| #170 | 2026-10-11 | `f0bb2a4` | [S1][41.14] OAuth: state atado a cookie + PKCE |
+| #171 | 2026-10-10 | `24ed012` | fix(duels): E2 — suggest practice skill after duel loss/draw |
+| #172 | 2026-10-11 | `fd6199c` | B1 + C2: instructor marketplace gate + placement seeds UserSkillState |
+| #173 | 2026-10-11 | `cb4adc4` | [S1][41.17] Tutor: cupo por tokens sin TOCTOU + suelta la sesión antes del LLM |
+| #174 | 2026-10-11 | `54df957` | C1: route placement track by onboarding goal (goals 1/2 → track04) |
+| #177 | 2026-10-11 | `ec42a7d` | [HOTFIX P0] Alembic: una sola head — producción en 502 |
+| #178 | 2026-10-12 | `92fc326` | [COORD] Guardas tras la caída del 2026-10-11 + master en verde |
+| #179 | 2026-10-12 | `1985865` | [COORD] Privacidad y legal: perfil público, MIT, badge, borrado, exportar |
+| #180 | 2026-10-12 | `4d8b533` | [COORD] El examen certificador espera al banco reservado |
+| #181 | 2026-10-12 | `0c99326` | [COORD] Cadenas: practicar tras la prueba de nivel daba 500; offline perdía respuestas |
+| #182 | 2026-10-12 | `5cf2688` | [COORD] Ejecutables: el cliente ya no juzga; «no lo sé» y tiempo límite en SQL |
+| #184 | 2026-10-13 | `2c0efec` | placement no rebaja el dominio ganado (D-18) |
+| #185 | 2026-10-13 | `f6fc192` | landing y evidencia sin promesas falsas (D-6, D-7, D-8, D-13) |
+| #186 | 2026-10-13 | `510e46d` | [MIGRACIÓN 58] webhooks de Paddle: deduplicación, orden y reembolso de suscripción (D-10) |
+| #187 | 2026-10-13 | `6fc960d` | [MIGRACIÓN 59] Elo: el aprendizaje del ítem es inmutable para el contenido |
+| #188 | 2026-10-13 | `3422783` | [MIGRACIÓN 60] ruta elegida y origen del alta en el servidor; primera lección al empezar (D-20, D-23) |
+| #189 | 2026-10-13 | `40c2a71` | Hoy y Preparación sin porcentajes del modelo; aviso de MLA-C01 donde se usa (D-16, D-17, D-19) |
+| #190 | 2026-10-13 | `3db0560` | retención D1/D7/D30 sobre su cohorte cerrada y sobre activados; instrumento H4 (D-31, D-24) |
+| #191 | 2026-10-13 | `87b5b53` | arranque: tareas a boot_tasks.sh, listo para el pre-deploy de Railway (D-4) |
+| #192 | 2026-10-13 | `19319b6` | raíz sin basura y PLAN_MAESTRO al día (D-27, D-29) |
+| #193 | 2026-10-13 | `1ac4317` | Claude/youthful allen i8k7zb muerto |
+| #194 | 2026-10-13 | `372247e` | motor conectado: DKT sin prueba de nivel, P(G) por formato, duelo sin rama del cliente |
+| #195 | 2026-10-13 | `be7c10f` | términos que dicen la verdad: planes encendidos y qué recibe Groq |
+| #196 | 2026-10-13 | `07809ae` | 37.24: +73 reservadas de simulacro corregidas y re-revisadas (219/1.040) |
+| #197 | 2026-10-13 | `e7af5e9` | Logo nuevo y colores de la app a los del logo (azul noche y cian) |
+| #198 | 2026-10-13 | `c26688a` | generate-icons: quita una constante sin usar (oxlint en rojo tras #197) |
+| #199 | 2026-10-14 | `93c5f7f` | Llama de la racha en ámbar y capturas del hero con la marca nueva |
+| #200 | 2026-10-15 | `276a4d7` | landing más profesional sin promesas inventadas |
+| #201 | 2026-10-15 | `c9c47f2` | FAQ de la landing: sin «certificación oficial» (master en rojo tras #200) |
+| #202 | 2026-10-15 | `1ae5ca5` | panel de administración solo para el dueño (decisión del 2026-10-15) |
+| #203 | 2026-10-15 | `ef6c42c` | master en rojo tras #202: test de la cola de reportes con el dueño |
+| #204 | 2026-10-15 | `e6795c2` | Bandas de ADR-60 en el resto de pantallas (PR 1 del plan de páginas) |
+| #205 | 2026-10-15 | `e6cb9ec` | Hoy: fixes from the 2026-10-15 screen review (PR 1b) |
+| #206 | 2026-10-16 | `687c51d` | Evidencia sin notas propias a competidores; la certificación no se cobra con el paywall apagado (PR 2) |
+| #207 | 2026-10-16 | `c2a51c2` | Perfil: «Instructor» solo para creadores y «Admin» solo para el dueño; botones de icono con nombre (PR 3) |
+| #208 | 2026-10-16 | `6cf4838` | bands.evidence en plural: «1 respuesta · 1 acierto», no «1 respuestas · 1 aciertos» |
+| #209 | 2026-10-16 | `56e7001` | Borrar cuenta con tokens, el Button común y campos con su etiqueta (serie 34, PR 4a) |
+| #213 | 2026-10-16 | `7354d38` | Bump the npm-minor-patch group in /frontend with 10 updates |
+| #214 | 2026-10-16 | `161d343` | Acciones principales de Auth, contraseña, verificación y Duelo con el Button común (serie 34, PR 4b) |
+| #215 | 2026-10-16 | `9e32059` | «Atrás» y la entrada a la app: sin el acceso en el historial, /auth con sesión → app, /login abre «Iniciar sesión», «Entrar» en la landing (PR A) |
+| #216 | 2026-10-16 | `e85900b` | Perfil y Quiz con el Button común; el resumen del quiz cabe en 390 px |
+| #217 | 2026-10-16 | `0cfbf85` | E2E: los botones de Quiz se buscan por su nombre, no por la clase que borró #216 |
+| #218 | 2026-10-16 | `1258442` | «Atrás» dentro de la app: cada pantalla principal con su URL (PR B) |
+| #219 | 2026-10-16 | `c21438c` | Prueba de nivel: theta por EAP con prior; con Newton decía «Avanzado» a quien respondía al azar |
+| #220 | 2026-10-16 | `861660e` | E2E en verde de punta a punta (54/56) y una URL de fuente que ensanchaba el quiz |
+| #221 | 2026-10-16 | `fa1af50` | Dependencias del backend: #210, #211 y #212 juntas (OpenTelemetry tiene que ir en pareja) |
+| #222 | 2026-10-16 | `fcebf4e` | Colores a tokens: sin rgba() en los .module.css, con guarda (serie 34) |
+| #223 | 2026-10-16 | `613be04` | Catálogo y perfil público con CSS en módulos, no en hojas globales |
+| #224 | 2026-10-16 | `0de27ad` | Plan ultracode: documentación al día antes que código (Oleada 0), sin contenido |
+
+## 2026-10-17 — Anexo «flujo del alumno» (serie 43, ADR-65)
+
+El dueño añadió al plan ultracode un anexo para dejar la app lista para probadores (`docs/PLAN_FLUJO_ALUMNO.md`).
+Contiene:
+- sesión en iPhone;
+- registro sin fricción;
+- onboarding con prueba de nivel de 20;
+- ruta activa y Hoy filtrado por ella;
+- lección primero, proyectos y playground;
+- una puerta E2E.
+
+Entra en el mismo PR de la Oleada 0: ADR-65 (D1-D10, decididas por delegación expresa), serie 43, H.59 (DNS
+`api.whetzy.com`, dueño) y H.60 (choque de D7 con el test-out de ADR-61 §9). No hay código todavía: la serie 43
+empieza después de este PR.
+
+**Adenda (2026-10-17, tras #228).** El dueño pasó la API a `https://api.whetzy.com` (#228, fusionado
+01:05 UTC). Comprobado: `/health` 200 en los dos hosts; `api.whetzy.com` es un CNAME a
+`n8r3nbqo.up.railway.app` sin proxy (`server: railway-hikari`, sin `cf-ray`). Los docs vivos que dan la URL
+vigente apuntan ya al dominio nuevo (CLAUDE.md, README, RUNBOOK, ARCHITECTURE, ORCHESTRATOR, RELEASE,
+PROTOCOLO, LANZAMIENTO_PILOTO, cloudflare-config, capacity, legal, ficha de Play, ledger); quedan las
+menciones al host de Railway como alias vivo o como medida fechada. H.59 hecha salvo las variables, que
+pasan a H.61 (`COOKIE_DOMAIN=.whetzy.com` y, según #228, `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL`,
+solo tras el deploy). Fuera de este PR (son código): los valores por defecto de `scripts/estado.py` y
+`scripts/smoke_post_deploy.sh` siguen en el host de Railway, que responde.

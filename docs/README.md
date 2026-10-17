@@ -13,11 +13,14 @@ Frontend: React + Capacitor.
 |---|---|
 | Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad; `python scripts/ledger.py next`) |
 | Operar una sesión (rama + PR, sin `master`; ADR-45) | `ORCHESTRATOR.md`, **`PROMPT_CONTROL_TOTAL.md`** y `../CLAUDE.md` |
-| Poner la documentación al día con el código antes de tocar código (Oleada 0, serie 41; plan sin contenido del 2026-10-16) | **`PROMPT_SINCRONIZACION_DOCS.md`** y `PLAN_ULTRACODE.md` |
+| Plan ultracode del 2026-10-16: oleadas de código sin contenido (serie 42); la Oleada 0 de documentación ya se ejecutó (prompt en `archive/`) | **`PLAN_ULTRACODE.md`** |
+| Flujo del alumno listo para pruebas (serie 43, ADR-65; anexo del 2026-10-17) | **`PLAN_FLUJO_ALUMNO.md`** |
 | Verificar una afirmación, cerrar una tarea, elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
 | Trabajar en paralelo: qué ficheros escribe cada sesión, ficheros compartidos, migraciones, i18n por rol | **`SESIONES.md`** |
 | Decisiones irreversibles (ADR) | `DECISIONS.md` |
-| Por qué se pausó el 2026-09-30, el scorecard (§2) y las trampas del entorno (§7). **Pausa levantada el 2026-10-01** (ADR-56) | `CIERRE_2026-09-30.md` |
+| Plan maestro de la beta: las decisiones D-xx del dueño y su estado | `PLAN_MAESTRO.md` |
+| Informe de estado generado (`scripts/estado.py`) | `ESTADO_AUTOMATICO.md` |
+| Por qué se pausó el 2026-09-30, las decisiones del dueño (§2) y las trampas del entorno (§7). **Pausa levantada el 2026-10-01** (ADR-56) | `CIERRE_2026-09-30.md` |
 
 **Producto y mercado**
 
@@ -40,6 +43,9 @@ Frontend: React + Capacitor.
 | Quieres… | Lee |
 |---|---|
 | Entender el sistema | `ARCHITECTURE.md`, `API.md` |
+| Cada pantalla, ruta y `Screen` del frontend, y dónde se especifica (`check_docs.py` [14]) | `MAPA_PRODUCTO.md` |
+| Experimentos y calibraciones del motor (BKT/DKT, IRT, beta-binomial, RAG) | `ml/` |
+| Simulacro de restauración de la base de datos (lo escribe `scripts/db_restore_test.sh`) | `restore_log.md` |
 | Desplegar (Cloudflare y Railway, automáticos desde `master`), migrar, backup, incidentes | `RUNBOOK.md`, `RELEASE.md` |
 | Qué servicios externos toca una sesión y qué hace sin preguntar | **`CONECTORES.md`** |
 | Capacidad, Cloudflare, cadena de suministro, A/B, diseño | `capacity.md`, `cloudflare-config.md`, `supply-chain.md`, `ab-framework.md`, `design/` |
@@ -50,6 +56,7 @@ Frontend: React + Capacitor.
 |---|---|
 | Textos legales: lo publicado manda (claves i18n `legal.*`; ADR-55), qué hay en `legal/` y procesadores verificados | **`legal/README.md`** |
 | Tiendas (ficha, privacidad, checklist de Apple 4.8 / 3.1.1) | `STORE_LISTING.md` (resumen) y `store/` (detalle) |
+| Respuestas de soporte ES/EN | `support/` |
 
 **Historia e inventario**
 
@@ -66,7 +73,7 @@ documento vivo, gana el vivo. Un plan que no sea una fila de `AUTONOMOUS_STATE.m
 ```bash
 docker compose up -d                          # Postgres en :5433
 cd backend && pip install -r requirements.txt
-cp .env.example .env
+cp ../.env.example .env
 python -m alembic upgrade head
 python -m app.services.content_loader         # carga tracks, preguntas, glosario y lecciones
 uvicorn app.main:app --reload                 # http://localhost:8000/api/v1/openapi.json
@@ -92,9 +99,9 @@ banco viven en la fila `Contenido` de `AUTONOMOUS_STATE.md` y en
 
 | Superficie | URL |
 |---|---|
-| API | https://api-production-9751.up.railway.app |
+| API | https://api.whetzy.com (desde el 2026-10-17; el host de Railway sigue activo) |
 | Frontend | https://whetzy.com |
-| OpenAPI | https://api-production-9751.up.railway.app/api/v1/openapi.json |
+| OpenAPI | https://api.whetzy.com/api/v1/openapi.json |
 
 `git push origin master` **despliega los dos**: el backend en Railway (verificado
 2026-09-16) y el frontend en Cloudflare Pages, que está conectado a Git (verificado

@@ -2290,3 +2290,189 @@ Re-ejecutado por S5 el 2026-10-03 sobre `master` `1be6eed`:
 - **28.8 → PARCIAL** (#100, `cb40bcd`; el PR proponía DONE, y la primera versión de este delta también lo puso: corregido tras el verificador adversario). El criterio archivado (§I, más arriba: «contra `instructor_marketplace.py`; flag `MARKETPLACE_PUBLIC=false` oculta el catálogo público», e2e «instructor crea curso → admin aprueba → aparece en catálogo con el flag; sin flag, 404») no se cumple: `git grep MARKETPLACE_PUBLIC` fuera de `docs/archive/` → 0 resultados; `instructor_marketplace.py` solo tiene `POST/GET /courses`, inscripción, `/analytics`, `/payouts` y `GET/PATCH /profile`, todas autenticadas, sin ruta de aprobación ni catálogo público. Lo que sí está: `ProfileTab.tsx` llama a `instructor.profile()` (l. 11) e `instructor.updateProfile()` (l. 34); las cuatro pestañas de `InstructorScreen` usan la API; `pytest tests/integration/test_instructor_profile.py` → `5 passed`; `npx vitest run src/test/profileTab.test.tsx` → `3 passed`. `MarketplaceScreen.tsx` usa la API real (`contentApi.tracks()`, `progressApi.dashboard()`, l. 23-24), pero lista tracks de estudio, no cursos de instructor.
 - **23.3, 26.1, 26.9, 27.2 y 27.10 → PARCIAL** (#93, `3497429`), como proponía el PR. Existen `docs/store/android/listing.md`, 4 artículos por idioma en `content/blog/{es,en}/` (3 de los 5 planeados más la comparativa de 27.10), `docs/distribucion-assets/{show-hn,product-hunt,prs-repos-externos,universidades}/`. `frontend/src/pages/marketing/BlogPage.tsx` sigue siendo el marcador vacío de la fase 0 (devuelve `null`): el blog tiene contenido pero no ruta. 26.2, 26.3, 26.6, 27.1 y 27.3 quedan como estaban: el texto está listo y publicarlo es del dueño (H.23).
 - **37.25** ya estaba DONE (lo escribió el propio #115) y **#106** no traía «Delta del ledger» (track01 es el primer track «en forma», contado en 37.6/37.10, que siguen TODO): sin cambio.
+
+## §T — Filas DONE compactadas en §2 el 2026-10-16 (guarda de tamaño, fila 41.1; Oleada 0)
+
+Filas tal como estaban en `AUTONOMOUS_STATE.md` (`master` `0de27ad`) antes de compactarlas. En §2
+queda cada fila con su ID, PRI, el título recortado, el estado y el hash de la evidencia (si lo
+tenía), con un puntero «→ §T» aquí.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 11.6 | 3 | Tiempo hasta primera pregunta **< 60 s contra prod** con 4G simulado | **DONE** — `5e306fb` | → §N |
+| 19.11 | **1** | **Moderación de UGC mínima (App Store 1.2/1.2.1)** | **DONE** | `395d20f`+`62353e6` (#92): filtro de nombres, reportar/bloquear, liga y duelos; 150 passed (2026-10-03, en `c6d0545`) → §R |
+| 19.12 | **2** | **Borrado de cuenta con purga real a los 30 días** (textos legales §4/§8.3) | **DONE** | **DONE** `b2e3159`+`025aa0b` (2026-10-01; verificador 2.ª ronda CONFIRMADA): `services/account_deletion.py` — solicitud en `gdpr_requests`, gracia de 30 días (login, OAuth o panel la cancelan), purga cada 6 h que borra datos personales y de aprendizaje y anonimiza `users` (sin migración). 13 tests, 10 mutaciones en rojo, purga probada en Postgres 16 real |
+| 20.7 | **1** | CI ciego: `verify_ci_local.ps1` replica `ci.yml` paso a paso | **DONE** | `d4de5d2`, verificador CONFIRMADA: pin de ruff, oxlint y `check:i18n` verificados por `grep`; 6/6 backend, 10/10 frontend → §I |
+| 23.1 | **1** | **Auditoría E2E por idioma**: cada pantalla, email, push, PDF/certificado,… | **DONE** | `c0a5af6`: Forgot/ResetPassword y `/evidence` sin i18n, push racha/duelo fijo en inglés → `push_service.localize()` → §I |
+| 23.5 | **1** | **Las dos guardias de i18n daban números falsos y la que cita el protocolo no existía**: `audit_i18n.py` buscaba… | **DONE** | **DONE** `d991fe4` (2026-09-19) → §I |
+| 24.7 | **2** | **Panel de certificación**: readiness por dominio (18.1), simulacros (comprables con créditos), certificado… | **DONE** | ReadinessScreen + MockExamScreen + CertificateScreen + CertificateCard, endpoints, i18n ES/EN → §I |
+| 28.2 | **4** | Quality gate pipeline para instructores: `scripts/instructor_quality_gate.py` corriendo en upload | **DONE** | → §N |
+| 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | **DONE** | `docs/legal/instructor_recruitment_kit_{es,en}.md` → §I |
+| 29.0 | **1** | **Schema**: `credit_ledger`, `promo_codes`, `promo_redemptions`,… | **DONE** | **DONE** (2026-09-25) → §I |
+| 29.1 | **1** | **Servicio de créditos** `services/economy/credits.py`: abono con lote y… | **DONE** | **DONE** (2026-09-25) → §I |
+| 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json`… | **DONE** | **DONE** (2026-09-25) → §I |
+| 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I · 2026-10-01 (ADR-57): nada activaba ni abonaba; cableados job, 4 condiciones, abono a 7 días, escalera §3.3 y `granted_tier` |
+| 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | 3 endpoints: `/economy/credits`, `/economy/referrals`, `/economy/k-factor` → §I |
+| 29.7 | **3** | **Reactivación automática**: job de 14 días de inactividad | **DONE** | → §N · 2026-10-02: nada encolaba el job; ahora `periodic_jobs_loop`, 200 créditos/60 días (ECONOMIA §2.2), baja de un clic |
+| 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **DONE** | `be07294`, verificador CONFIRMADA: Node 22 tiene `navigator.language` real; `detectLanguage()` fuerza `es` sin `window` → §I |
+| 30.5 | **2** | El script `build` ya no corría `tsc -b` (`8a0dce0`) | **DONE** | `5c3ab12` (#90): `vite build` con error de tipos → exit 1; restaurado 0 (2026-10-03, en `01a200c`) → §Q |
+| 30.9 | **0** | Login válido devolvía a la landing (cookie cross-site + host-only; `logout()` no llamaba a `/auth/logout`) → STATUS.md | **DONE** | `395e8a1`, verificador CONFIRMADA. Safari (ITP) sin probar → §I |
+| 31.4 | **0** | **Migración sin datos dejó sin preguntas a los usuarios con historial** (dueño, 2026-09-30) | **DONE** | `1225a29` (push directo a `master`, excepción ADR-45) → §N |
+| 31.7 | **0** | **Pausa de sesiones autónomas y cierre**, 2026-09-30 → `docs/CIERRE_2026-09-30.md` | **DONE** | `check_docs.py` [11] exige PAUSA+cita, mutado rojo/verde |
+| 31.9 | **0** | 229 ejecutables gratis o imposibles reparados; corrige el servidor | DONE | `TestNoFreeAnswers` |
+| 32.3 | **2** | «¿Por qué esta pregunta?»: el scheduler devuelve sus razones (dominio, repaso… | **DONE** | **DONE** `d92e164` → §I |
+| 32.4 | **2** | **La lección bloquea el quiz** (decisión del dueño 2026-09-27) | **DONE** | `b860e83` → §N |
+| 33.1 | **2** | Ensayo de restauración mensual con `scripts/db_restore_test.sh` y registro de… | **DONE** | **DONE** `5cd5ed8` → §I |
+| 34.11 | **1** | **Hallazgos de comportamiento vistos al rediseñar (no son estilo):** (a)… | **DONE** | `be2e83b`, verificador CONFIRMADA (2ª ronda; 1ª REFUTADA por (b) sin test) → §I |
+| 34.12 | **2** | Plural e idioma en la UI: `HomeScreen.tsx` sin `count`, `/evidence` en inglés fijo | **DONE** | `772fe5d`, verificador CONFIRMADA: plurales `_one`/`_other`, `/evidence` traducida (~60 cadenas) → §I |
+| 34.1 | **0** | **Devolver el estilo a las 13 pantallas rotas**: por fichero,… | **DONE** | `e58b6b2` → §N |
+| 34.5 | **1** | **Aprendizaje**: Home, Tracks, Lesson y Quiz (con Monaco, WhyButton, GlossaryText, TermCard) | **DONE** | **DONE** (2026-09-29) → §N |
+| 35.1 | **1** | **Comparativa pública verificada en la landing**: solo cifras re-descargadas y fechadas, `null` = no comprobado | **DONE**… | |
+| 35.4 | **2** | **Ligas opt-in visible**: interruptor en la propia pantalla de ligas («totalmente opcional») | **DONE** — 2026-09-24:… | |
+| 35.8 | **2** | **Cada deploy de Railway deja ~1 min de 502/503.** Medido 2026-09-24: tras los pushes `a6a5a91` y `f2ea9cb`, `/health` dio… | **DONE** | railway.toml healthcheckPath=/health 120s + lifespan shutdown handler con close_db() → §I |
+| 35.9 | **2** | El nivel 2 (`ci_local.sh`) corría sobre el árbol y quedaba «CORRIENDO» | **DONE** | `7fe4303` (#90): TERM → `INTERRUMPIDO`; KILL → `--estado` lo detecta (2026-10-03, en `01a200c`) → §Q |
+| 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | **DONE** `fbf9baf` (2026-09-25) → §I |
+| 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | `46764ff` (2026-09-26) → §N |
+| 37.18 | **1** | **Banco de simulacro reservado**: `"pool": "simulacro"`; ninguna vía fuera del simulacro lo sirve | **DONE** | `20260930_question_pool`, corregido 2026-09-30 (incondicional en las 4 vías) → §N |
+| 37.19 | **1** | **Formato de examen del proveedor**: AIF-C01 65 Q / 90 min (repo 85/120); MLA-C01 65/130 (repo lleva el de C02, 85/170); duración de AZ-900 y DP-900 | **DONE** | **DONE** `764b06b` (2026-09-30) → §N |
+| 37.22 | **1** | **ISC2 CC al outline del 2026-09-01** (CAT 100–125 ítems; D2 Governance nuevo; `mod4002` BC/DR no mapea 1:1) | **DONE** | `84fb47c` (#102): 5 `exam_domains` del outline 2026, 23 skills con dominio, test ISC2 pasa; dominio por skill, no por módulo (dueño, 2026-10-03) → §S |
+| 37.20 | **1** | **Métricas de producto con meta** (ADR-53 §8): D1 ≥ 15 %, D7 ≥ 7 %, D30 ≥ 4 %, conversión D35 ≥ 2,1 %, CURR, ≥ 30 min/semana, completion de pago, calibración del simulacro | **DONE** | (2026-09-30) D30/CURR/conversion_d35/30min-pagadores en `analytics.py`; corregido ×2 (CURR a la definición literal de Duolingo, días UTC completos) → §N, STATUS.md |
+| 37.25 | **1** | **Piloto de autoría (ADR-59)**: 10 ítems de una skill de track44, escritos por Sonnet desde un fragmento `reusar` | DONE | puerta §7 PASS; ≤ 3/10 `blocker`/`major` tras revisión; coste por ítem aceptado anotado en `PLAN_CONTENIDO.md` §7 |
+| 38.1 | **2** | **Precios: una sola fuente = ADR-41 (dueño)**: Pro 14,99 $ · Pro Max 19,99 $ ·… | **DONE** | **DONE** `cf2fc58` → §I |
+| 38.5 | **3** | **Página `/evidence` como única prueba social** (19.8, 30.1): cifras del banco y del motor calculadas en build, cero… | **DONE** | **DONE**: EvidenceScreen.tsx + CSS module + ruta registrada en App.tsx → §I |
+| 38.6 | **2** | **Pro Max = tutor IA ilimitado; Pro con cupo diario** (ADR-49). `POST`… | **DONE** | `843015e` (2026-09-25) → §I |
+| 38.7 | **2** | **Certificación a 39,99 $ de pago único** (ADR-49). Hoy los tracks… | **DONE** | `843015e` (2026-09-25) → §I |
+| 39.0 | **0** | **Producción caída 09:35–10:48 UTC tras `ec97405`**: `content_loader`… | DONE | → §M |
+| 39.28 | **0** | Segunda familia de coletillas («como concepto principal» 982, «sin e… | DONE | → §O |
+| 39.30 | **1** | Datos personales en el contenido: `l260101` enseñaba el nombre y correo del dueño | DONE | → §M |
+| 39.31 | **2** | `user_meets_tier` no mira `subscription_expires_at` | **DONE** | `749e07f`: cancelación no reseteaba `subscription_tier`; vencido → «free». Verificador CONFIRMADA, mutado → §I |
+| 39.32 | **3** | `test_rag_self_retrieval` tarda ~28 min (cuadrático en el banco) | **DONE** | `8934dd2` (#111): 186 s, 95,60/95,33 %; suite + lento ≈ 12,8 min, aceptado por el dueño el 2026-10-03 (`[COORD]` en #89) → §R, §S |
+| 39.34 | **2** | Texto de UI del cupo Free (ES/EN) antes de encender `FREE_DAILY_QUOTA_ENABLED` | **DONE** | `e754b50` → §N |
+| 39.35 | **0** | El limitador de peticiones de producción fallaba en abierto:… | DONE | → §M. Post-DONE `95cdfbf`: `except` no cazaba `RuntimeError`/`OSError` — 204 tests rotos → 0 |
+| 39.36 | **1** | `options_en` escritas en español en track21 (194 preguntas) y track44-46 (46, 33, 49) | **DONE** | 295 preguntas → §N |
+| 39.14 | **3** | Plantilla de lección con formato (ADR-50d) | **DONE** | `4e8d941` (#98): `lessonScreen.icons.test.tsx` 3 passed (2026-10-03, en `c6d0545`) |
+| 39.25 | **1** | **MLA-C01 retirado: ampliar track43 sin reestructurar** | **DONE** | `a6fe453` (#99): +7 skills `sk430121`–`127`, los 4 dominios intactos (2026-10-03, en `c6d0545`) → §R |
+| 39.24 | **1** | **AI-900 retirado: track45 a AI-901** | **DONE** | `7522e23` (#96): track45 = AI-901 con 2 dominios; contenido 70341 passed (2026-10-03, en `c6d0545`) → §R |
+
+### §T (2) — Filas actualizadas el 2026-10-16 con las fusiones #187-#223 (Oleada 0), tal como estaban
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía… | **PARCIAL** | 6/51 `.module.css` con hex literal → 0/51, guarda mutada; `docs/design/identidad.md` escrito. Falta: aprobación del dueño → §I |
+| 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | e2e en inglés (`onboarding.en.spec.ts`), bug propio hallado y arreglado (`getByLabel('Name')` ambigua). Mutado rojo/verde. Falta: abandono por paso en admin (22.1) → §I
+| 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como… | **PARCIAL** | Elo real visible (el nivel mostrado era XP); sin intentos no se muestra nada (evita el 1500 inventado). 4 tests, mutado. Falta: fuente por número, vista por segmento → §I |
+| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** (2026-09-28): 0 `var(--x, #hex)` en `src/` (era 1, `--color-cyan` no existía en ningún fichero, caía al respaldo) → `var(--color-primary)` real. Guarda `tokens.noHexFallback` mutada. Falta: modo claro por el dueño → §I |
+| 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | Foco visible y objetivos táctiles arreglados y verificados (`touchTargets.spec.ts`, 0 <44px). Detalle → §I |
+| 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** (2026-09-28): 390px sin scroll horizontal en Auth/Onboarding/Home ES+EN (5 e2e, mutado); TTFQ ES 14.7s, EN 12.9s (esta rama, local). `ttfq-prod.spec.ts` NO se corrió contra producción (cuenta real, fuera de alcance sin el dueño) → §I
+| 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
+| 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** — pantallas del bloque revisadas… | (2026-09-29) `ProfileTab`/`CourseTab`: mismo bug de 34.3 fuera de `pages/`, invisible al guard hex-only (`rgba` no hex) — `:focus`→`:focus-visible`+`color-mix` 35%, verificado en Chromium real → §I |
+| 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | **PARCIAL** → §I |
+| 37.10 | **1** | **Certificaciones a la regla de ADR-54**: 100 % de objetivos, práctica ≥ máx(300, 3 × L), reservadas 2 × L; primero MLA-C01 y las 3 de Microsoft; nuevas en español: GCP ACE → LPIC-1 → AZ-104 | TODO | `catalog_coverage.py`: práctica y reserva al 100 % por certificación; `test_certification_blueprints.py` |
+
+### §T (3) — Títulos recortados en §2 y filas H resueltas u obsoletas retiradas de §3 el 2026-10-16 (guarda de tamaño, 41.1), tal como estaban
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 14.13 | 2 | **Cuatro tracks nuevos: Linux/CLI · SQL y bases de datos · Frameworks web (FastAPI) · Data engineering** | TODO | →… |
+| 17.14 | **1** | **Compras dentro de la app (la antigua 7.6, sin fila desde hace meses; `legal/h21-decision.md:58`)**: RevenueCat +… | **PARCIAL** | **PARCIAL** (2026-09-27): mitad backend — `POST /billing/revenuecat/webhook` (sandbox, auth verificado en vivo contra doc de RevenueCat), mismo entitlement que Stripe, `subscription_provider` nuevo. Falta: SDK/UI nativa (Capacitor) — HUMAN-BLOCKED (H.2, H.3) → §I |
+| 19.2 | **1** | **Sign in with Apple** — 19.1 (GitHub/Google OAuth) ya está en vivo sin flag (confirmado 2026-09-30: `oauth.py`, botones en `AuthScreen.tsx`), así que 4.8 exige esto **ahora**, no «en cuanto exista 19.1» | HUMAN-BLOCKED (H.2) | Necesita… |
+| 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | → §I (criterio archivado por 20.10) |
+| 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; destino Chipre por ADR-61 §22, sin entidad constituida; el código sigue en Grecia, H.54. Se conserva el enunciado… | BLOCKED (H.54) | → §I (criterio archivado por 20.10) |
+| 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | BLOCKED (H.54) | → §I (criterio archivado por 20.10) |
+| 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | → §I (criterio archivado por 20.10) |
+| 23.2 | **2** | **Landing y SEO por segmento**: `/es` y `/en` con copy nativo (no traducido), `hreflang` (existe), `sitemap` por idioma,… | | → §I (criterio archivado por 20.10) |
+| 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas,… | **PARCIAL** | `3497429` (#93) → §S |
+| 24.9 | **2** | **Panel B2B** (`SEGMENTOS.md` segmento 5): progreso por empleado, tiempo, certificaciones, comparativa anónima, import… | | → §I (criterio archivado por 20.10) |
+| 26.0 | **4** | Canal YouTube ES creado: banner, descripción, links, 3 videos demo subidos (grabados en 24.13); **cada vídeo con su código… | | → §I (criterio archivado por 20.10) |
+| 26.1 | **4** | 5 artículos en Dev.to / Hashnode ES sobre el motor técnico (BKT, FSRS, gap de mercado) | **PARCIAL** | `3497429` (#93) → §S |
+| 26.2 | **4** | PR en `EbookFoundation/free-programming-books` agregando Whetzy en sección Python ES | TODO (redactar/construir; publicar… | → §I (criterio archivado por 20.10) |
+| 26.4 | **4** | Página de landing para segmento career-switcher ES (dentro de whetzy.com/es/carrera) | TODO (redactar/construir; publicar… | → §I (criterio archivado por 20.10) |
+| 26.7 | **4** | Perfiles en comunidades ES: Python Argentina Discord, Dev En Español, LatamDevs | HUMAN-BLOCKED (H.23: perfiles… | |
+| 26.8 | **4** | **Superteam LATAM (México, Argentina, Brasil) como canal** (ADR-38): presencia en sus Discord/eventos, 1 charla o taller… | | → §I (criterio archivado por 20.10) |
+| 26.9 | **3** | **Blog `/blog` ES/EN** (SEO orgánico, `archive/SPEC_WEB.md:152`): Markdown en `content/blog/`, prerender en `vite build`… | **PARCIAL** | `3497429` (#93) → §S |
+| 26.10 | **3** | **Newsletter** (`archive/EXECUTION_PLAN_25-29.md:87`): alta con doble opt-in vía Resend (H.30), ES o EN según usuario,… | | → §I (criterio archivado por 20.10) |
+| 27.0 | **4** | Canal YouTube EN creado: banner, descripción, 3 videos EN (mismo contenido que 24.13 pero grabado en inglés nativo, no… | | → §I (criterio archivado por 20.10) |
+| 27.1 | **4** | Show HN EN: "I built an adaptive Python→AI learning engine in Spanish because no one else did" | TODO (redactar/construir;… | → §I (criterio archivado por 20.10) |
+| 27.3 | **4** | PR en `jwasham/coding-interview-university` y `donnemartin/system-design-primer` READMEs | TODO (redactar/construir;… | → §I (criterio archivado por 20.10) |
+| 27.4 | **4** | Product Hunt preparación: assets, lista de 100 upvoters confirmados, tagline | TODO (redactar/construir; publicar = H.23)… | → §I (criterio archivado por 20.10) |
+| 27.6 | **4** | Reddit strategy EN: 10 respuestas de valor en r/learnpython, r/cscareerquestions | HUMAN-BLOCKED (H.23: cuenta y karma… | |
+| 27.9 | **4** | **Superteam global / Solana developer communities EN** (ADR-38): Solana Stack Exchange y Discord oficial con respuestas de… | | → §I (criterio archivado por 20.10) |
+| 27.10 | **3** | **Comparativa honesta frente a Coursera/Udemy** (`DECISIONS.md` ADR-24, sin fila hasta hoy): página `/en/compare` y… | **PARCIAL** | `3497429` (#93) → §S |
+| 28.1 | **4** | API: CRUD cursos instructor, upload contenido JSON, preview; **código de… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | **PARCIAL** — Verificado 2026-09-25 contra el… | → §I (criterio archivado por 20.10) |
+| 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | → §I (criterio archivado por 20.10) |
+| 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | **PARCIAL** | `cb40bcd` (#100): panel de instructor por API; faltan flag `MARKETPLACE_PUBLIC`, catálogo público y aprobación (criterio en §I) → §S |
+| 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | → §I (criterio archivado por 20.10) |
+| 31.1 | **0** | Staging: un preview de Cloudflare Pages y un servicio de Railway de staging; `master` solo por PR verde | HUMAN-BLOCKED… | 2026-09-30: #34 fusiona 2 migraciones directo contra producción sin ensayarlas ahí — sin staging, cada fusión repite ese riesgo |
+| 31.5 | **0** | **Regla del dueño 2026-09-30**: PRs pequeños, veto a analítica hasta ≥ 100 registrados reales, ningún `DONE` sin verificador de §7 → texto completo §N | DOING | mismo texto en `ORCHESTRATOR.md`; cumplido desde esta fila |
+| 31.6 | **2** | **Tests de analítica sobre Postgres real**, no solo SQLite — D1/D7/CURR (2026-09-30): SQLite oculta diferencias de dialecto que los tests nunca vieron. Espera a que 31.5 libere analítica | TODO | `test_product_metrics.py` también contra Postgres real, en verde |
+| 31.8 | **0** | **Lanzamiento piloto** (prompt del dueño 2026-10-01): kit `docs/LANZAMIENTO_PILOTO.md`; PRs #45-#49 | PARCIAL | kit escrito; invitar, día 4 y recuento = dueño |
+| 32.2 | **3** | A/B BKT contra DKT con el framework 24.14 (asignación estable por usuario) | BLOCKED (H.10) | DKT se adopta solo si AUC ≥… · potencia `e7ebd9a` (#97) → §R |
+| 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | 2026-10-16: `Button` común en Auth, Duelo, Perfil y Quiz (#214, #216); botones de icono con nombre (#207) → §T |
+| 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | 2026-10-16: E2E 54/56 en local (#220) y selectores por nombre con guarda (#217). Faltan capturas aprobadas (D-28) y axe por ruta → §T |
+| 34.9 | **2** | **Verificación y re-puntuación**: verificador adversario (protocolo §7) de 34.0–34.8 y fila nueva en el teardown… | | → §I (criterio archivado por 20.10) |
+| 35.6 | **2** | **Refresco trimestral de §A.1**: re-descargar las páginas de precios, cambiar cifras y `COMPARISON_CHECKED_ON` | TODO —… | → §I (criterio archivado por 20.10) |
+| 37.1 | **1** | **Temario de referencia por track** (ADR-54: solo elige qué 32 skills entran): `scripts/metas_catalogo.json`, 45 tracks y 11 certificaciones, leídos el 2026-09-30 | **PARCIAL** | Falta temario de track22, 23, 39, 47, 54, 55 y 56, objetivos de SY0-701 y longitud de examen de Microsoft; `catalog_coverage.py --check` PASS |
+| 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
+| 37.6 | **2** | **Tracks construidos a la forma 32 × 10**: A primero (02, 03, 12, 14, 15, 18, 22, 26, 27, 28, 30), luego B (19, 23) y C | TODO | `catalog_coverage.py`: el track sin pendientes; 37.0 y puerta §7 en verde; un track = un PR |
+| 37.7 | **2** | **track24 y track25 reconstruidos con la forma 32 × 10** desde la cuarentena (nivel B) | TODO | ídem, fuera de `_quarantine` y `question_diversity.py` sin línea base |
+| 37.8 | **2** | **Tracks nuevos por demanda** (`CATALOGO_MAESTRO.md` §2.0): A (38, 33, 34) → B (37, 47, 48, 35, 36, 39, 31) → C (49, 50, 53, 54, 32, 52, 51, 55, 56) solo con todos los A y B en el suelo | TODO | ídem por track; `metas_catalogo.json` lo pasa a «construido» en el mismo commit |
+| 37.10 | **1** | **Certificaciones a la regla de ADR-54**: 100 % de objetivos, práctica ≥ máx(300, 3 × L), reservadas 2 × L; primero MLA-C01 y las 3 de Microsoft; nuevas en español: GCP ACE → LPIC-1 → AZ-104 | PARCIAL (2026-10-16, `catalog_coverage.py` sobre `0de27ad`: faltan +113 de práctica y +821 reservadas) | `catalog_coverage.py`: práctica y reserva al 100 % por certificación; `test_certification_blueprints.py` |
+| 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | → §I (criterio archivado por 20.10) |
+| 37.13 | **3** | **Scorecard ADR-54** (absorbe 25.13): `scripts/catalog_coverage.py` + `scripts/metas_catalogo.json` + `backend/tests/test_cobertura_plan.py` | **PARCIAL** | Hecho 2026-10-01 para ADR-54 (script, metas, 21 tests con mutación). Falta: cifras en `/evidence` y re-puntuar Contenido en el teardown al cambiar de tramo |
+| 37.21 | **3** | **Mapa skill → nodo del temario**, para elegir las 32 skills de cada track (el ideal por temario quedó sustituido, ADR-54) | TODO (tras 37.6) | cada skill con su nodo |
+| 37.23 | **2** | **Alineación lección↔quiz** (heredera de la 37.1 vieja, antes de ADR-53; los commits `22a01a8`…`4f1ab26` dicen «37.1» por ese motivo — ver STATUS.md): `audit_lesson_quiz_alignment.py` sobre 8 tracks señalados el 2026-09-28 | **PARCIAL** | (2026-09-29) 8 tracks revisados, track08+22+11+23+10+44+45+46 cerrados (39.39 DONE). 4/4 bugs de contenido corregidos. track44: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas. Queda la expansión de catálogo hacia ADR-53 (37.6-37.8), no una corrección → STATUS.md |
+| 37.24 | **1** | **Poblar el banco de simulacro reservado** (2× la longitud del examen, ADR-54; `"pool": "simulacro"`) y encender `MOCK_EXAM_RESERVED_POOL_ENABLED` (mecanismo DONE en 37.18, apagado por defecto) | PARCIAL — 219/1.040 integradas (2026-10-13: +73 corregidas por Sonnet y re-revisadas; AIF-C01 116/130, CLF-C02 96/130) y 986 escritas; flag sigue en `False`; estado, pendientes y cómo retomar en `scripts/content_qa/reservadas_37_24/README.md` | 8 certificaciones con L publicada con reservadas ≥ 2× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/1.040 reservadas a la meta — autoría de contenido (ADR-59), no una tarea de código |
+| 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (track01 ×3, track09 ×5, track41 ×4) | **PARCIAL** | (2026-09-29) 10/12 reescritas y verificadas en Python real, quitadas de `KNOWN`. 2 nunca fueron duplicados: ciego del checker (solo `question_es`, ignora `code`) → 39.40. `tests/content` 70.277; guarda mutada rojo/verde → §I |
+| 39.33 | **1** | Claves sospechosas previas: la explicación se parece más a otra opción (`check_expl_key`) | **PARCIAL** | 86 + 26 más (`a17a7c8`, ya en esta rama): sk130104/204/304 (track13) tenían >50% mal — RACI inventado, "menor privilegio" al revés. Verificadas leyendo las 60 preguntas de las 3 skills en vivo esta sesión: ninguna queda mal. Tracks hermanos del mismo commit masivo: solo `q120302mc002` revisado. TODO: resto sin muestrear |
+| 39.43 | **2** | **Cuarta familia de coletillas**: cláusula de marketing cloud pegada a opciones cortas (track10 98, track06 18…) | **TODO** | Revisión pregunta a pregunta (no regex: ~150 candidatas, la mayoría gerundios legítimos), vía `Workflow` (ADR-52) → §Q |
+| 40.1 | **2** | **Tipo `interactive`**: `{widget, params, target, checker}`; checker en cliente y servidor; alimenta BKT/Elo/FSRS | TODO | esquema en `check_question_bank.py`; test de discrepancia cliente↔servidor en rojo al mutar |
+| 40.3 | **3** | **Biblioteca de 15 widgets** mapeados a dominios de cert (IAM, Git DAG, TCP, CPU…) | TODO (tras 40.2) | contrato `render/serialize/check` testeado por widget; cada uno suma al readiness |
+| 40.5 | **3** | **Tutor que señala**: acciones estructuradas (resaltar línea, marcar nodo) validadas por esquema, con texto accesible | TODO (tras 40.2) | acción fuera de esquema rechazada (test); sin grounding lo dice (línea roja 2) |
+| 40.6 | **3** | **Tutor por voz ES/EN**: TTS `speechSynthesis`; STT por Groq `/audio/transcriptions` (H.49); pulsar para hablar, audio no guardado | TODO (tras 40.5) | WER en ES medido con muestras propias; retención de audio de Groq leída con URL; consentimiento ES/EN; cuenta contra 38.6 y 39.11 |
+| 40.7 | **3** | **Comunidad con contexto**: hilos por pregunta/lección, soluciones tras resolver, salas ES/EN, denuncias + antifraude | TODO (construir; abrir con ≥ 100 activos) | e2e: la solución ajena no se ve antes de resolver; notificación y retirada ES/EN |
+| 40.8 | **4** | **Grupos de estudio por cert + revisión por pares** de proyectos (revisor con Open Badge del track) | TODO (tras 40.7, 37.11) | readiness de grupo sin datos personales (test) |
+| 40.9 | **2** | **Plan anual** junto al mensual; solo esos dos, sin vitalicio ni familiar (dueño, 2026-09-28). Precio anual y reembolso como la competencia directa (`COMPETENCIA.md` §A); responde H.35 (1) | TODO | precio anual con su referente citado; cancelar en 2 toques (línea roja 7) y aviso de renovación (21.4) |
+| 40.10 | **4** | **Ruta Analista de datos ejecutable** (pandas en Pyodide + SQL, datasets abiertos) | TODO | cert confirmada con URL; fuentes ADR-11 |
+| 40.13 | **3** | **Medir la superación**: tabla criterio a criterio frente a Brilliant y Kodree, re-capturada con fecha | TODO (cierra la serie) | cada «mejor que» con evidencia ejecutable o URL; sin ella no sale a la landing (línea roja 9) |
+| 41.1 | **0** | Liberar ≥ 6 KB del ledger (evidencias de DONE → `LEDGER_HISTORY.md` §T) | TODO | [8] con margen ≥ 6 KB; `ledger.py check` OK |
+| 42.6 | **1** | Readiness sobre todas las skills del dominio; una definición de dominio | TODO (tras 42.4) | test de cobertura rojo antes; guarda de literales |
+
+| H | Texto | Quién |
+|---|---|---|
+| H.15 | **RESUELTA** (ADR-50n) — proxy a `127.0.0.1:8000` + guarda `pretest:e2e` |
+| H.4 | OBSOLETA 2026-10-01: sin Stripe (H.29) |
+| H.8 | **OBSOLETA 2026-10-02**: bloqueo falso (13.2); P.8 y 10.2, lo único que bloqueaba, están DONE (LEDGER_HISTORY). La rotación de la clave es H.12 |
+| H.19 | RESUELTA por H.29 (2026-10-01) |
+| H.22 | RESUELTA 2026-10-01 (dueño): OWASP CC BY-SA no se usa (ADR-47); seguridad con NIST + MITRE |
+| H.24 | **OBSOLETA 2026-10-02**: la serie 28 ya está abierta en §2 (9 filas) |
+| H.26 | **OBSOLETA 2026-10-02**: la serie 29 ya está abierta en §2 (8 filas) |
+| H.30 | RESUELTA 2026-10-01: Resend en producción (log «Email: proveedor resend») |
+| H.31 | **RESUELTA** (ADR-50m) — landing servida 2026-09-26 sin testimonios ni «1.2M» |
+| H.32 | **RESUELTA** `e40ba75` (2026-09-24): la API sale solo de `.env.production` y el prerender va en todo `vite build` → §J |
+| H.33 | **RESUELTA 2026-09-26** — log Railway `b64e2a9a`/`f097361c`: `[owner] unchanged: admin@whetzy.com` (falta solo login `/admin` de 30.8) |
+| H.34 | **RESUELTA 2026-09-26** — conector Railway activo; permisos en `CONECTORES.md` |
+| H.41 | **RESUELTA 2026-09-26** (aprobación en bloque, ADR-50k) — proyecto Sentry `whetzy-backend` + `SENTRY_DSN` en Railway; deploy `f097361c`: `Sentry initialised (env=production)` |
+| H.43 | RESUELTA 2026-10-01: Hugging Face conectado |
+
+### §T (4) — Filas PARCIAL con la evidencia larga recortada en §2 el 2026-10-16 (41.1), tal como estaban
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 17.14 | **1** | Compras dentro de la app (la antigua 7.6, sin fila desde hace mese… | **PARCIAL** | **PARCIAL** (2026-09-27): mitad backend — `POST /billing/revenuecat/webhook` (sandbox, auth verificado en vivo contra doc de RevenueCat), mismo entitlement que Stripe, `subscription_provider` nuevo. Falta: SDK/UI nativa (Capacitor) — HUMAN-BLOCKED (H.2, H.3) → §I |
+| 18.11 | **2** | **Store-ready sin cuenta** | **PARCIAL** | `docs/STORE_LISTING.md` consolidado (iOS + Android), precios IAP actualizados a ADR-41/49, checklist actualizado (A3 age gate DONE por 19.11). Cuenta delete: endpoint + pantalla DONE. Privacy/Terms: DONE. Falta: screenshots con Playwright (necesita backend local), `codemagic.yaml` iOS build (H.14 macOS runner). |
+| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8… | **PARCIAL** | 21 capturas landing+precios de 7/8. Reintento Platzi: firewall nuevo, tratado como bloqueo. Falta: onboarding/dashboard/gamificación (cuenta), Exercism/Platzi (bloqueados), `decisiones-24.0.md` → §I |
+| 37.15 | **1** | Fuentes sin indexar: 3.906 de 6.305 preguntas… | **PARCIAL** | (2026-09-29, `Workflow` 10 agentes) 4.450→3.903 sin indexar (10.949 preguntas). 267 citas RFC/PEP con URL canónica verificada en vivo; 8 dominios nuevos en `index.json` (peps.python.org reusar/CC0, Wikipedia/Deep Learning book/OWASP cheatsheets cita). `tests/content` 70.057 verde → STATUS.md |
+| 37.17 | **1** | Inglés dentro del español y ejecutables con atajo… | **PARCIAL** | (2026-09-29, `Workflow`) recuento real: 699 preguntas exec (no ~2.900, cifra vieja errónea). 219 revisadas a fondo en 4 tracks, 10 bugs de ambigüedad reales arreglados y verificados, 1 estructural sin arreglar (`q060203ex012`). Quedan ~480 sin revisar → STATUS.md |
+| 37.23 | **2** | Alineación lección↔quiz (heredera de la 37.1 vieja, antes de ADR-5… | **PARCIAL** | (2026-09-29) 8 tracks revisados, track08+22+11+23+10+44+45+46 cerrados (39.39 DONE). 4/4 bugs de contenido corregidos. track44: `l440202`/`l440204` reasignados (skill_id), 5 preguntas nuevas. Queda la expansión de catálogo hacia ADR-53 (37.6-37.8), no una corrección → STATUS.md |
+| 37.24 | **1** | Poblar el banco de simulacro reservado (2× la longitud del examen… | PARCIAL — 219/1.040 integradas (2026-10-13: +73 corregidas por Sonnet y re-revisadas; AIF-C01 116/130, CLF-C02 96/130) y 986 escritas; flag sigue en `False`; estado, pendientes y cómo retomar en `scripts/content_qa/reservadas_37_24/README.md` | 8 certificaciones con L publicada con reservadas ≥ 2× su `exam_question_count`; flag en `True`; `catalog_coverage.py` pasa de 0/1.040 reservadas a la meta — autoría de contenido (ADR-59), no una tarea de código |
+| 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (tra… | **PARCIAL** | (2026-09-29) 10/12 reescritas y verificadas en Python real, quitadas de `KNOWN`. 2 nunca fueron duplicados: ciego del checker (solo `question_es`, ignora `code`) → 39.40. `tests/content` 70.277; guarda mutada rojo/verde → §I |
+| 39.33 | **1** | Claves sospechosas previas: la explicación se parece más a otra op… | **PARCIAL** | 86 + 26 más (`a17a7c8`, ya en esta rama): sk130104/204/304 (track13) tenían >50% mal — RACI inventado, "menor privilegio" al revés. Verificadas leyendo las 60 preguntas de las 3 skills en vivo esta sesión: ninguna queda mal. Tracks hermanos del mismo commit masivo: solo `q120302mc002` revisado. TODO: resto sin muestrear |
+
+### §T (5) — H.29 tal como estaba antes de citar ADR-61 §22 (2026-10-16)
+
+| H | Texto | Quién |
+|---|---|---|
+| H.29 | DECIDIDO 2026-10-01 (dueño): Grecia; web = Paddle, tiendas = IAP/Play Billing vía RevenueCat; sin Stripe. Web: `/checkout` hecho; falta alta Paddle y dominio |

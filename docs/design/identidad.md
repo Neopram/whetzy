@@ -9,9 +9,9 @@ serie 34 — paleta "Obsidian", ADR-47). No narrativa RPG, no plantilla genéric
 `frontend/src/theme/tokens.css` (namespace `--color-*`, `--bg-dark-*`,
 `--text-*`, `--border-color`) es anterior a `design-tokens.css` y sigue en uso
 en algunos ficheros (`LandingScreen.module.css`, `PlaygroundScreen.module.css`
-y 10 más — `grep -rl "var(--color-" frontend/src --include="*.module.css" | wc -l`
-da 12; `--le-*` da 41). Ambos se cargan siempre (los dos entran por
-`src/index.css`), así que no hay bug de runtime, pero es deuda de identidad:
+y 8 más — `grep -rl "var(--color-" frontend/src --include="*.module.css" | wc -l`
+da 10; `--le-*` da 67). Ambos se cargan siempre (los dos entran por
+`src/styles/global.css`), así que no hay bug de runtime, pero es deuda de identidad:
 un componente nuevo debe usar `--le-*`; no se ha migrado el resto por ser un
 cambio grande fuera del alcance mecánico de 24.1 (quitar colores hex
 literales), que sí está cerrado.
@@ -23,7 +23,7 @@ Tema por defecto: **oscuro** (`:root` en `design-tokens.css`, sin
 usuario lo pide — antes era al revés y la landing (oscura, cian) y la app
 (clara, azul cielo) parecían dos productos distintos.
 
-- **Marca:** `--le-brand` (cian `#06B6D4`) para CTAs, hero, logo, acentos.
+- **Marca:** `--le-brand` (cian `#00BFFF`) para CTAs, hero, logo, acentos.
   `--le-brand-text` para texto/glifos (el fill no pasa AA como texto).
 - **Éxito:** `--le-green`/`--le-success-text` — significa solo acierto,
   nunca otra cosa (línea roja).
@@ -36,7 +36,7 @@ usuario lo pide — antes era al revés y la landing (oscura, cian) y la app
 - **Semántico:** `--le-danger`/`--le-danger-text`, `--le-warning-text`,
   `--le-orange`, `--le-gold`, `--le-purple`, cada uno con variante `-dark`/
   `-light`/`-on-tint` cuando hace falta un par con contraste AA verificado
-  (`src/test/tokens.contraste.test.ts`, 36 parejas, mutado en rojo antes de
+  (`src/test/tokens.contraste.test.ts`, mutado en rojo antes de
   aceptarlo — vigila la regresión real de 2026-09-20: cuatro combinaciones a
   1.08–2.75:1 de contraste en producción).
 
@@ -62,9 +62,9 @@ namespace):
 
 ## Tipografía
 
-`system-ui` con fallback nativo (`-apple-system, sans-serif` o
-`Roboto` según el componente) — sin fuente cargada aparte, sin serif. Código:
-`'JetBrains Mono', 'Fira Code', monospace`. Escala en `--le-fs-*`
+Inter para la interfaz (`--le-font`), Bricolage Grotesque para títulos
+(`--le-font-display`) y JetBrains Mono para cifras y código (`--le-font-mono`),
+autoalojadas en `global.css`. Escala en `--le-fs-*`
 (`xs`→`xl`), peso en `--le-fw-*` (`bold`, `black`).
 
 ## Espaciado y radios

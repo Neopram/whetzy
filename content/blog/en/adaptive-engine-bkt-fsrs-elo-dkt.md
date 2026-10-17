@@ -54,9 +54,9 @@ actually being tested against the baseline with, today, is the EWMA
 heuristic, not the LSTM its own name implies. We're not claiming DKT "powers
 Whetzy" — it powers one experiment arm, running as a simpler model than its
 docstring suggests, and whether it beats the baseline is exactly what the
-A/B test is there to answer. (A proper power analysis for that comparison —
-how many users you need before the result means anything — is tracked in our
-own backlog as a separate, not-yet-started piece of work.)
+A/B test is there to answer. (A power analysis for that comparison — how many
+users you need before the result means anything — now exists as a design-only
+document, `docs/ml/ab_bkt_vs_dkt_32_2.md`; the experiment itself stays blocked.)
 
 ## Why this split matters more than the model names
 

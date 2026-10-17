@@ -41,10 +41,10 @@
 
 Mismo texto que `docs/store/ios/listing.md` §"Descripción larga" (ES y EN), con un solo cambio:
 donde la ficha de iOS dice «RevenueCat + StoreKit», la de Android dice «RevenueCat + Google Play
-Billing». El resto — motor adaptativo, código ejecutable, bilingüe nativo, 35 tracks / 727
+Billing». El resto — motor adaptativo, código ejecutable, bilingüe nativo, 35 tracks / 730
 habilidades, certificaciones — es el mismo producto, así que es el mismo texto. Mantenerlo en un
 solo sitio (`ios/listing.md`) y apuntar aquí evita que las dos fichas se desincronicen con el
-tiempo, que es justo lo que pasó con los iconos de los tracks (H.46: 11 rutas mostraban el nombre
+tiempo, que es justo lo que pasó con los iconos de los tracks (#46: 11 rutas mostraban el nombre
 del icono en texto en vez del emoji).
 
 ---
