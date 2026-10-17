@@ -48,7 +48,7 @@ Cubre el camino completo: desde las primeras líneas de Python hasta arquitectur
 - **Motor adaptativo.** BKT + FSRS deciden qué practicas y cuándo repasas. No adivinamos: lo calculamos.
 - **Código que se ejecuta.** Los ejemplos de Python, SQL y JavaScript corren de verdad en la app, sin servidor externo, sin copiar y pegar.
 - **Bilingüe nativo.** Todo el contenido está escrito en español e inglés por separado — no es una traducción automática.
-- **35 tracks. 727 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
+- **35 tracks. 730 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
 - **Sin anuncios. Sin rastreo publicitario de terceros.**
 
 **Cómo funciona**
@@ -71,7 +71,7 @@ It covers the full path: from your first lines of Python to microservice archite
 - **Adaptive engine.** BKT + FSRS decide what you practice and when you review. We don't guess: we calculate it.
 - **Code that runs.** Python, SQL and JavaScript examples actually execute inside the app — no external server, no copy-paste.
 - **Natively bilingual.** All content is written in Spanish and English separately — not machine-translated.
-- **35 tracks. 727 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
+- **35 tracks. 730 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
 - **No ads. No third-party ad tracking.**
 
 **How it works**
@@ -134,7 +134,7 @@ Generar con Playwright (`npm run screenshots:ios`) o manualmente en simulador.
 
 **Notas:**
 - La app requiere creación de cuenta para acceder al contenido principal (sistema de progreso adaptativo).
-- El pago (subscripción Plus) usa RevenueCat + StoreKit — no Stripe (cumple App Store Review Guideline 3.1.1).
+- El pago (suscripción Pro) usa RevenueCat + StoreKit — no Stripe (cumple App Store Review Guideline 3.1.1).
 - Sin chat ni comentarios entre usuarios. **Sí hay** contenido generado por
   usuarios: el plan Creador deja publicar cursos que otros usuarios compran y
   cursan (`instructor_marketplace.py`, pantallas `InstructorScreen` y

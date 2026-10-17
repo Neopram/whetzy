@@ -9,7 +9,7 @@ Admin-only dashboard at `/admin` (owner role, code-split route) with 7 analytics
 - **Route**: `/admin` (FastAPI `GET /admin/` SSE + React SPA)
 - **Auth**: Owner role only (`role == "owner"`)
 - **Code-split**: Lazy-loaded React component
-- **Database**: New tables: `auth_events`, `login_attempts`, `user_sessions`, `promo_codes`, `credit_ledger`, `referrals`, `gdpr_requests`
+- **Database**: New tables: `audit_log`, `login_attempts`, `user_sessions`, `promo_codes`, `credit_ledger`, `referrals`, `gdpr_requests`
 - **API Endpoints**: RESTful, all under `/api/v1/admin/*`
 
 ---
@@ -63,7 +63,7 @@ Credit Ledger, Referral Attribution, K-Factor
 All under `/api/v1/admin/*`. Rate limit: 1 req/sec per endpoint (owner only). CORS: `https://whetzy.pages.dev`.
 
 ### Metrics
-- `GET /api/v1/admin/metrics/users?range=7d|30d|90d`
+- `GET /api/v1/admin/metrics/users?range_days=7` (1-365)
 - `GET /api/v1/admin/metrics/funnel?segment=es|en`
 - `GET /api/v1/admin/metrics/ttfq?segment=es|en`
 
@@ -88,7 +88,7 @@ All under `/api/v1/admin/*`. Rate limit: 1 req/sec per endpoint (owner only). CO
 
 ### Revenue
 - `GET /api/v1/admin/revenue/mrr?month=2026-09`
-- `GET /api/v1/admin/revenue/conversions?range=7d`
+- `GET /api/v1/admin/revenue/conversions?range_days=7`
 - `GET /api/v1/admin/revenue/churn?window=30d`
 
 ### Economy

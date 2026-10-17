@@ -7,7 +7,7 @@ Deep-dive into Whetzy's tech: BKT, FSRS, adaptive selection. Target: technical a
 
 ### Intro (0:00-0:20)
 - **Visual:** Code compiling, clean terminal output
-- **Narration:** "How does a learning platform with millions of users teach each person differently? Today we reveal the engine."
+- **Narration:** "How does a learning platform teach each person differently? Today we reveal the engine."
 - **Overlay:** "The Adaptive Brain of Whetzy"
 
 ### 1. The Scale Problem (0:20-0:45)
@@ -45,7 +45,7 @@ Deep-dive into Whetzy's tech: BKT, FSRS, adaptive selection. Target: technical a
   - "Option A: Easy (p_known=0.9) — Boring"
   - "Option B: Medium (p_known=0.5) — Just right"
   - "Option C: Hard (p_known=0.2) — Frustrating"
-- **Narration:** "We select the one that's challenging but not impossible. That maximizes learning. Whetzy targets a 50% success rate."
+- **Narration:** "We select the one that's challenging but not impossible. That maximizes learning. Whetzy targets a 75% success rate."
 
 ### 5. Verification: E2E Testing (4:30-4:55)
 - **Visual:** Terminal running `pytest tests/content/test_exec_questions.py` — PASS

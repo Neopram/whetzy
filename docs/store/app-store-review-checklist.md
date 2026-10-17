@@ -12,8 +12,8 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 |---|---|---|---|
 | 1.1 | Objectionable Content | ✅ | Educational quiz app; no offensive material; content is AI-generated and QA-reviewed |
 | 1.1.1 | Realistic portrayals of harm | ✅ | No violence, weapons, drug content |
-| 1.2 | User Generated Content | ⚠️ | Las preguntas son admin-curadas (sin UGC), pero `username`/`display_name` son texto libre elegido por el usuario y **sí** son visibles para otro usuario: `duels.py` los usa para retar por `username` y en la notificación push del reto («X te retó a un duelo»); las ligas también exponen `display_name`. Confirmado en vivo (2026-09-30) que no existe filtro de palabras, ni reportar, ni bloquear usuario — `admin.py` no tiene nada de esto. Fila nueva 41.x (sin código todavía) |
-| 1.2.1 | UGC moderation | ❌ | Sin filtro de perfanidad en `username`/`display_name`, sin endpoint de reportar ni de bloquear. Apple exige al menos uno de: filtrar contenido objetable, mecanismo de reporte, capacidad de bloquear, información de contacto publicada — hoy no hay ninguno |
+| 1.2 | User Generated Content | ⚠️ | Las preguntas son admin-curadas (sin UGC), pero `username`/`display_name` son texto libre elegido por el usuario y **sí** son visibles para otro usuario: `duels.py` los usa para retar por `username` y en la notificación push del reto («X te retó a un duelo»); las ligas también exponen `display_name`. Confirmado en vivo (2026-09-30) que no existe filtro de palabras, ni reportar, ni bloquear usuario — `admin.py` no tiene nada de esto. Fila nueva 41.x (sin código todavía; sustituido el 2026-10-02 por 395d20f: filtro de nombres y reportar/bloquear en el backend, sin UI) |
+| 1.2.1 | UGC moderation | ❌ | Filtro de nombres en `username`/`display_name` y endpoints `POST /moderation/report` y `POST /moderation/block` en el backend (395d20f, 2026-10-02), pero sin UI que los llame. Apple exige al menos uno de: filtrar contenido objetable, mecanismo de reporte, capacidad de bloquear, información de contacto publicada — hoy no hay ninguno |
 | 1.3 | Kids Category | ✅ | App not targeting under-13; not submitted to Kids category; no COPPA obligation |
 | 1.4 | Physical Harm | N/A | No health/medical advice beyond quiz content |
 | 1.4.1 | Medical / Dangerous content | N/A | — |
@@ -44,7 +44,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 
 | # | Guideline | Status | Evidence / Notes |
 |---|---|---|---|
-| **3.1.1** | **In-App Purchase (IAP)** | **❌ BLOCKER** | Whetzy currently uses Stripe (web checkout) for subscriptions. Apple requires all digital goods and subscriptions that unlock features *within the app* to use StoreKit/IAP. **Stripe web checkout = App Store rejection.** Fix: implement RevenueCat IAP (task 17.14) before iOS submission. **2026-09-27:** backend half done — `POST /billing/revenuecat/webhook` (RevenueCat → entitlements, sandbox-only, `REVENUECAT_WEBHOOK_AUTHORIZATION` unset in prod) writes the same `subscription_tier`/`is_premium`/`subscription_expires_at` Stripe already gates on. Still blocking: no client-side purchase UI/SDK (StoreKit + `@revenuecat/purchases-capacitor` on Android) — nothing to trigger the webhook from a real device yet, and live keys are H.2/H.3 (owner). |
+| **3.1.1** | **In-App Purchase (IAP)** | **❌ BLOCKER** | Whetzy currently uses Paddle (web checkout) for subscriptions. Apple requires all digital goods and subscriptions that unlock features *within the app* to use StoreKit/IAP. **Paddle web checkout = App Store rejection.** Fix: implement RevenueCat IAP (task 17.14) before iOS submission. **2026-09-27:** backend half done — `POST /billing/revenuecat/webhook` (RevenueCat → entitlements, sandbox-only, `REVENUECAT_WEBHOOK_AUTHORIZATION` unset in prod) writes the same `subscription_tier`/`is_premium`/`subscription_expires_at` Stripe already gates on. Still blocking: no client-side purchase UI/SDK (StoreKit + `@revenuecat/purchases-capacitor` on Android) — nothing to trigger the webhook from a real device yet, and live keys are H.2/H.3 (owner). |
 | 3.1.1.a | Reader app exception | ⚠️ | If Whetzy qualifies as a "reader app" (consuming previously purchased content), external payment link may be allowed via [StoreKit External Purchase](https://developer.apple.com/documentation/storekit/appstore/externalpurchaselinkconfiguration). Evaluate post-17.14. |
 | 3.1.2 | Subscriptions | ❌ | Same as 3.1.1 — must use IAP for in-app subscription upsell |
 | 3.1.3 | Loot Boxes | N/A | No loot boxes; XP/badges earned through gameplay, not purchased |
@@ -93,7 +93,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 
 | ID | Issue | Fix |
 |---|---|---|
-| B1 | Stripe web checkout used for in-app subscription upsell (3.1.1) | Implement RevenueCat StoreKit IAP (task 17.14). Do not submit to App Store until 17.14 is DONE. |
+| B1 | Paddle web checkout used for in-app subscription upsell (3.1.1) | Implement RevenueCat StoreKit IAP (task 17.14). Do not submit to App Store until 17.14 is DONE. |
 
 ### ⚠️ Required Before Submission
 
@@ -102,7 +102,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 | A1 | No actual screenshots (9.3 pending) | Complete task 9.3; capture on iPhone 15 Pro Max (6.7") and iPhone SE (4.7") |
 | A2 | App Store Connect metadata not created | Create listing in App Store Connect; fill EN + ES localizations |
 | ~~A3~~ | ~~Age gate / minors~~ | ✅ DONE (19.11) — age confirmation in registration |
-| A4 | Source coverage for all questions | 100% of questions must have non-empty `source` field (monitor via `GET /api/v1/content/questions?source=null`) |
+| A4 | Source coverage for all questions | 100% of questions must have non-empty `source` field (se comprueba con `python scripts/check_question_bank.py`) |
 | A5 | Privacy policy URL in App Store Connect | Enter `https://whetzy.com/privacy` in the ASC app record |
 | A6 | Support URL and email in App Store Connect | Enter `https://whetzy.com` and support email |
 | A7 | Sign in with Apple (4.8) once any other social login exists | Ship 19.2 together with (or before) 19.1 in the iOS build; requires H.2 |

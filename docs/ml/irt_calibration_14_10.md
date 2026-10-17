@@ -17,7 +17,7 @@ respuestas»; `--seed N` corre una sola semilla suelta, para iterar rápido).
 `app/services/engine/placement.py` (`PlacementEngine`) ya hace la mitad de
 IRT en producción: dados los parámetros de un ítem (dificultad,
 discriminación, adivinación) **fijos**, estima la habilidad θ del alumno por
-máxima verosimilitud (Newton-Raphson, `update_ability`) — eso es lo que
+EAP con prior N(0,1) (`update_ability`, desde #219; antes Newton-Raphson) — eso es lo que
 necesita la prueba de nivelación adaptativa mientras corre.
 
 Lo que falta, y lo que pide 14.10, es la otra mitad: estimar los parámetros

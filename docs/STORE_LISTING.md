@@ -15,7 +15,7 @@
 | Application ID (Android) | app.whetzy |
 | Categoría primaria | Educación / Education |
 | Categoría secundaria | Productividad / Productivity |
-| Clasificación de contenido | 4+ (iOS) / Everyone (Android) |
+| Clasificación de contenido | No es 4+ / Everyone: ver la nota en `store/ios/listing.md` y `store/android/listing.md` |
 | Idiomas | ES, EN (bilingüe nativo) |
 
 ---
@@ -110,7 +110,7 @@ Detalle completo en `docs/store/play-store-data-safety.md`.
 
 **Datos recopilados:** email, username (display), quiz performance, subscription status, push token (opcional).  
 **Datos NO recopilados:** ubicación, fotos, cámara, contactos, IDFA, salud.  
-**Terceros:** Stripe (pagos), Groq (IA — solo texto de preguntas, sin PII), Sentry (opcional, crash logs).  
+**Terceros:** RevenueCat / Paddle (pagos), Groq (IA — texto de preguntas y la pregunta del alumno al tutor, sin nombre ni email), Sentry (opcional, crash logs).  
 **Borrado:** `DELETE /api/v1/auth/me/account` + pantalla `/delete-account`.  
 **Export:** `GET /api/v1/export/data` (GDPR Art. 20).
 

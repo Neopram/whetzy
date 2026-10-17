@@ -16,14 +16,18 @@ está roto.
 
 ## Resumen
 
+Recontado el 2026-10-16 (Oleada 0) con las filas de las tablas de abajo. `check_docs.py` [22]
+lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes decía 128 con
+117 filas, y 19 `.md` no tenían ninguna.
+
 | Clase | Ficheros |
 |---|---|
-| normativo-vivo | 17 |
-| referencia-viva | 37 |
-| histórico | 34 |
-| legal | 34 |
+| normativo-vivo | 21 |
+| referencia-viva | 64 |
+| histórico | 47 |
+| legal | 39 |
 | obsoleto | 6 |
-| **Total** | **128** |
+| **Total** | **177** |
 
 ## Raíz del repo y otras carpetas
 
@@ -53,6 +57,20 @@ está roto.
 | `docs/legal/security-breach-procedure.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | movido desde `legal/` (raíz) el 2026-10-01 (ADR-55) | 2026-09-26 |
 | `docs/archive/legal-borradores/raiz-terms-of-service.md` | legal | borradores legales de la raíz (el README de docs/ dice que no mandan) | archivado el 2026-10-01: duplicado de lo publicado (ADR-55) | 2026-09-26 |
 | `scripts/content_qa/README.md` | referencia-viva | herramientas de QA de contenido | se queda | 2026-09-26 |
+| `content/blog/README.md` | referencia-viva | cómo se publica el blog `/blog` ES/EN (26.9); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `content/blog/en/adaptive-engine-bkt-fsrs-elo-dkt.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `content/blog/en/from-0-to-10000-questions.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `content/blog/en/honest-comparison.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `content/blog/en/math-behind-fsrs.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `content/blog/es/comparativa-honesta.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `content/blog/es/de-0-a-10000-preguntas.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `content/blog/es/matematica-de-fsrs.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `content/blog/es/motor-adaptativo-bkt-fsrs-elo-dkt.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `design/brand/README.md` | referencia-viva | marca: logo y colores (#197) | se queda | 2026-10-13 |
+| `design/v2/GUIA.md` | referencia-viva | guía visual v2 de la app | se queda | 2026-10-13 |
+| `design/v2/brief-msg1.md` | histórico | brief de diseño enviado a la herramienta de diseño, fechado | se queda; no se reescribe | 2026-10-01 |
+| `design/v2/brief-msg2.md` | histórico | brief de diseño enviado a la herramienta de diseño, fechado | se queda; no se reescribe | 2026-10-01 |
+| `scripts/content_qa/reservadas_37_24/README.md` | referencia-viva | estado y cómo retomar las reservadas de 37.24 | se queda; dueño de contenido | 2026-10-13 |
 
 ## `docs/` — vivos
 
@@ -83,7 +101,7 @@ está roto.
 | `docs/archive/PROMPT_CIERRE_2026-09-30.md` | histórico | prompt de un solo uso para cerrar el #34, ya ejecutado (#34 fusionado el 2026-10-01) | archivado el 2026-10-01 | 2026-09-30 |
 | `docs/PROMPT_CONTROL_TOTAL.md` | normativo-vivo | prompt de arranque con control total | se queda; ruta de i18n-audit actualizada | 2026-09-30 |
 | `docs/PLAN_ULTRACODE.md` | normativo-vivo | plan del dueño del 2026-10-16: Oleada 0 (documentación) y oleadas 1-9 de código, sin contenido; series 41 y 42 | se queda; las oleadas ya hechas en `master` las marca su §0 | 2026-10-16 |
-| `docs/PROMPT_SINCRONIZACION_DOCS.md` | normativo-vivo | prompt de un solo uso de la Oleada 0 (serie 41): poner toda la documentación al día con el código y las sesiones | se archiva en `docs/archive/` al ejecutarse | 2026-10-16 |
+| `docs/PLAN_FLUJO_ALUMNO.md` | normativo-vivo | anexo del dueño del 2026-10-17: flujo del alumno listo para pruebas (serie 43, ADR-65) | se queda | 2026-10-17 |
 | `docs/PROTOCOLO_VERIFICACION.md` | normativo-vivo | protocolo de verificación | se queda | 2026-09-27 |
 | `docs/README.md` | normativo-vivo | índice de documentos vivos | se queda; filas de los archivados actualizadas | 2026-09-30 |
 | `docs/RELEASE.md` | normativo-vivo | guía de release | se queda [sin verificar] paso a paso | 2026-09-25 |
@@ -98,6 +116,9 @@ está roto.
 | `docs/restore_log.md` | referencia-viva | registro del simulacro de restauración; lo escribe scripts/db_restore_test.sh | se queda | 2026-09-26 |
 | `docs/supply-chain.md` | referencia-viva | seguridad de la cadena de suministro (22.4) | se queda [sin verificar] | 2026-09-26 |
 | `docs/ESTADO_AUTOMATICO.md` | referencia-viva | informe de estado automático (`scripts/estado.py`), dónde programarlo y foto de las sesiones del 2026-10-05 | se queda | 2026-10-05 |
+| `docs/SESIONES.md` | normativo-vivo | sesiones en paralelo S1–S6: qué ficheros escribe cada una (bus #89) | se queda | 2026-10-04 |
+| `docs/STATUS.md` | histórico | registro por sesión; no se reescribe hacia atrás (solo se añaden entradas) | se queda | 2026-09-30 |
+| `docs/CHANGELOG.md` | histórico | cambios por versión, ES y EN; solo se añaden entradas | se queda | 2026-10-01 |
 
 ## `docs/` — subcarpetas
 
@@ -142,6 +163,13 @@ está roto.
 | `docs/ml/irt_calibration_14_10.md` | referencia-viva | 14.10: calibración JMLE de dificultad/discriminación de ítems IRT validada por simulación (recuperación de parámetros), el bug de `OverflowError` en `fisher_information` que encontró, y por qué `update_ability` no sirve para recalcular una historia completa | se queda | 2026-10-02 |
 | `docs/ml/ab_bkt_vs_dkt_32_2.md` | referencia-viva | 32.2: diseño del experimento A/B BKT vs DKT (framework 24.14, regla de adopción literal del ledger) y análisis de potencia (D7 y AUC, fórmula cerrada cruzada con Monte Carlo) — preparado, sin activar, bloqueado por H.10 | se queda | 2026-10-02 |
 | `docs/ml/domain_report_14_9.md` | referencia-viva | 14.9: la aritmética del informe de dominio verificable (N de M skills, respuestas/semanas, % a la primera) lista y probada; por qué la URL pública en sí (token + migración + endpoint) queda fuera de mi terreno, con un NECESITO a S1 | se queda | 2026-10-02 |
+| `docs/ui-snapshots/34.1/README.md` | histórico | capturas aprobadas de la serie 34.1, fechadas | se queda; no se reescribe | 2026-09-28 |
+| `docs/ui-snapshots/design-v2/README.md` | histórico | capturas del diseño v2, fechadas | se queda; no se reescribe | 2026-10-01 |
+| `docs/analisis-estrategico/00-auditoria-e2e.html` | histórico | análisis fechado de la sesión bf (2026-09-22); sus cifras no mandan: vigente en `ECONOMIA.md` y ADR-49 | se queda con aviso; ADR-61 §8 manda archivarlo (H.54) | 2026-09-22 |
+| `docs/analisis-estrategico/01-como-funciona-y-competencia.html` | histórico | análisis fechado de la sesión bf (2026-09-22); sus cifras no mandan: vigente en `ECONOMIA.md` y ADR-49 | se queda con aviso; ADR-61 §8 manda archivarlo (H.54) | 2026-09-22 |
+| `docs/analisis-estrategico/02-proyeccion-ingresos-1k-20k.html` | histórico | análisis fechado de la sesión bf (2026-09-22); sus cifras no mandan: vigente en `ECONOMIA.md` y ADR-49 | se queda con aviso; ADR-61 §8 manda archivarlo (H.54) | 2026-09-22 |
+| `docs/analisis-estrategico/03-hito-1M-usuarios.html` | histórico | análisis fechado de la sesión bf (2026-09-22); sus cifras no mandan: vigente en `ECONOMIA.md` y ADR-49 | se queda con aviso; ADR-61 §8 manda archivarlo (H.54) | 2026-09-22 |
+| `docs/analisis-estrategico/04-coste-desbloqueo-total.html` | histórico | análisis fechado de la sesión bf (2026-09-22); sus cifras no mandan: vigente en `ECONOMIA.md` y ADR-49 | se queda con aviso; ADR-61 §8 manda archivarlo (H.54) | 2026-09-22 |
 
 ## `docs/legal/`
 
@@ -177,6 +205,7 @@ está roto.
 
 | Documento | Clase | Por qué | Acción | Último commit |
 |---|---|---|---|---|
+| `docs/archive/PROMPT_SINCRONIZACION_DOCS.md` | histórico | prompt de un solo uso de la Oleada 0 (serie 41), ya ejecutado | archivado el 2026-10-16 | 2026-10-16 |
 | `docs/archive/26-PLANNING.md` | histórico | archivo: no manda (README) | se queda | 2026-09-24 |
 | `docs/archive/28-INTEGRATION.md` | histórico | archivo: no manda (README) | se queda | 2026-09-24 |
 | `docs/archive/28-PLANNING.md` | histórico | archivo: no manda (README) | se queda | 2026-09-24 |

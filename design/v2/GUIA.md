@@ -64,8 +64,9 @@ temas, y cambiar las fuentes. Las 28 pantallas cambian de piel de golpe. Tabla:
 | `--le-font` | `--font-body`; añadir `--font-display` |
 | `--le-font-mono` | `--font-mono` |
 
-Además: `theme.ts:20` pinta `#1CB0F6` en `meta[theme-color]`, que hay que cambiar a `--bg`,
-y `@fontsource-variable/nunito` sale de `package.json` en ese mismo PR.
+Además: `theme.ts:20` pinta `#1CB0F6` en `meta[theme-color]`, que hay que cambiar a `--bg`
+(hecho: `frontend/src/theme.ts:21` pinta `#0A0E1A`/`#F5F7FB`),
+y `@fontsource-variable/nunito` sale de `package.json` en ese mismo PR (hecho).
 
 **PR 2 en adelante:** una pantalla o flujo por PR (≤ ~500 líneas netas, regla de
 `docs/CIERRE_2026-09-30.md` §2). En cada uno:
@@ -135,8 +136,8 @@ Traducciones:
 
 | Bug (auditoría 2026-10-01) | Dónde se cierra |
 |---|---|
-| El atrás del navegador o de Android saca de la app | PR de estructura: rutas reales con `react-router-dom`, más `@capacitor/app` para el botón atrás |
-| Perfil público `/u/<handle>` 100 % inventado | PR de Yo/Ranking. Hace falta endpoint de backend, que hoy no existe |
+| El atrás del navegador o de Android saca de la app | PR de estructura: rutas reales con `react-router-dom`, más `@capacitor/app` para el botón atrás (el historial de pantallas ya está: #218, `frontend/src/lib/screenHistory.ts`) |
+| Perfil público `/u/<handle>` 100 % inventado | PR de Yo/Ranking. El endpoint ya existe (`backend/app/api/v1/endpoints/profiles.py:35`, tras `PUBLIC_PROFILES_ENABLED`, hoy `False`) |
 | Cartera muestra identificadores crudos («onboarding done», `wallet.10/month`) | PR de Yo/Cartera |
 | Admin «Contenido»: paridad ES/EN, mal conectado y además stub | Fuera del rediseño (backend `admin.py:300-317` y frontend `AdminScreen.tsx:80`) |
 | `/login` abre en registro, 422 sin detalle, onboarding repetido | Fuera del rediseño: PR pequeño propio |

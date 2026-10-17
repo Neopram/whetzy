@@ -127,7 +127,7 @@ Misma estrategia, orientada a CTOs y L&D managers globales.
 | r/learnpython | 900K+ | Responder preguntas frecuentes con demos de Whetzy |
 | r/learnprogramming | 4M+ | Tutoriales, recursos, no spam |
 | r/cscareerquestions | 900K+ | Datos del gap AI engineer, rutas de aprendizaje |
-| r/cybersecurity | 1M+ | Contenido de tracks 13/24/25 |
+| r/cybersecurity | 1M+ | Contenido de track13 (track24 y track25, en cuarentena, 37.7) |
 | r/MachineLearning | 2M+ | Técnico, papers implementados |
 | r/Python | 1.5M+ | Tips avanzados, proyectos |
 
@@ -155,7 +155,7 @@ Misma estrategia, orientada a CTOs y L&D managers globales.
 | LatamDevs | Discord | 8K+ | Career-switcher content |
 | Colombia Dev | Telegram | 4K+ | Recursos Python/IA |
 | Dev En Español | Discord | 10K+ | Presencia activa |
-| Superteam México / Argentina / Brasil | Discord + eventos presenciales | — (verificar) | track32 Solana en español; códigos `ST-MX`/`ST-AR`/`ST-BR`; taller «Solana en español con Whetzy» (26.8) |
+| Superteam México / Argentina / Brasil | Discord + eventos presenciales | — (verificar) | track32 Solana en español (aún sin construir: nivel C, 37.8); códigos `ST-MX`/`ST-AR`/`ST-BR`; taller «Solana en español con Whetzy» (26.8) |
 
 ### 5.2 Inglés
 
@@ -307,4 +307,4 @@ partir del mes 6; objetivo en §10.
 
 Ninguna campaña promete, menciona ni insinúa token, airdrop, staking ni recompensa
 convertible en dinero. Cualquier pieza que lo haga se retira. Los créditos se
-describen siempre como «créditos para simulacros y bootcamps dentro de Whetzy».
+describen siempre como «créditos para comodines de racha e informes de dominio dentro de Whetzy».

@@ -20,7 +20,7 @@ Series 22.2 Status: **Security headers completed**, CORS configuration fixed, te
 
 #### Threat: JWT Token Forgery
 - **Risk**: MEDIUM
-- **Current Gap**: HS256 (symmetric) — if signing key compromised, attacker forges any token
+- **Current Gap**: HS256 (symmetric) is still the default; RS256 is used only if `JWT_PRIVATE_KEY` is set (`security.py:73-77`) — if the HS256 key is compromised, attacker forges any token
 - **Fix**: Migrate to RS256 (asymmetric); keep private key server-side only
 - **Timeline**: Phase 2 (non-breaking, requires key rotation)
 
@@ -30,10 +30,8 @@ Series 22.2 Status: **Security headers completed**, CORS configuration fixed, te
 
 #### Threat: OAuth Token in Browser History
 - **Risk**: CRITICAL
-- **Current Gap**: Redirect uses `?oauth_token=XXX` in query string (logged by browser, proxy, CDN)
-- **Attack**: Attacker reads browser history or proxy logs → steals OAuth token
-- **Fix**: Use `#oauth_token=XXX` (fragment, never sent to server); process client-side only
-- **Code**: `backend/app/api/v1/endpoints/oauth.py` → redirect response
+- **Status**: IMPLEMENTED: the callback sets both tokens in HttpOnly cookies (`set_auth_cookies`), never in the URL
+- **Code**: `backend/app/api/v1/endpoints/oauth.py` (module docstring, lines 6-9)
 
 ---
 
@@ -52,11 +50,8 @@ Series 22.2 Status: **Security headers completed**, CORS configuration fixed, te
 
 #### Threat: Tokens in localStorage (XSS Vulnerable)
 - **Risk**: CRITICAL
-- **Current Gap**: Access token + refresh token stored in `localStorage` (accessible to any XSS)
-- **Attack**: Script injection steals all tokens; attacker impersonates user indefinitely
-- **Fix**: Move to `HttpOnly Secure SameSite=Strict` cookies; never store in localStorage
-- **Code**: `frontend/src/services/api.ts` → replace localStorage with cookie-based auth
-- **Timeline**: Phase 3 (requires frontend rewrite, CSRF token for POST)
+- **Status**: IMPLEMENTED (22.15): tokens in HttpOnly cookies, never in localStorage
+- **Code**: `backend/app/core/cookies.py` (`set_auth_cookies`); `frontend/src/services/api.ts` only removes the legacy keys
 
 #### Threat: Admin Key in Plaintext Header
 - **Risk**: CRITICAL
@@ -118,11 +113,11 @@ Series 22.2 Status: **Security headers completed**, CORS configuration fixed, te
 ## Testing — Series 22.2
 
 ### Security Headers Tests
-- **File**: `backend/tests/unit/test_security_headers.py` (8 tests)
+- **File**: `backend/tests/unit/test_security_headers.py` (6 tests)
 - **Coverage**: Verify all security headers present, CSP validation, HSTS check, cache-control, no server header leakage
 
 ### CORS Tests
-- **File**: `backend/tests/integration/test_cors_security.py` (7 tests)
+- **File**: `backend/tests/integration/test_cors_security.py` (10 tests)
 - **Coverage**: Allowed origins (whetzy.com, whetzy.pages.dev, localhost), rejection of unauthorized origins, no wildcard subdomains, credentials handling, preflight
 
 ---
@@ -131,7 +126,7 @@ Series 22.2 Status: **Security headers completed**, CORS configuration fixed, te
 
 | Priority | Count | Threats | Status |
 |----------|-------|---------|--------|
-| **CRITICAL** | 6 | Refresh token abuse, OAuth in history, Audit logging, Tokens in localStorage, Admin key plaintext, Account lockout | 3 implemented, 3 in roadmap |
+| **CRITICAL** | 6 | Refresh token abuse, OAuth in history, Audit logging, Tokens in localStorage, Admin key plaintext, Account lockout | 5 implemented, 1 in roadmap |
 | **HIGH** | 6 | Email verification brute-force, Password reset brute-force, HS256 vs RS256, Session hijacking, CORS too broad, Weak password policy | 3 implemented, 1 fixed (CORS), 2 in roadmap |
 | **MEDIUM** | 3 | Error message leakage, Timing attacks on token validation, SQL injection (unlikely with ORM) | Deferred |
 
@@ -158,7 +153,7 @@ Series 22.2 Status: **Security headers completed**, CORS configuration fixed, te
 - ( ) Tighten lockout thresholds (5 attempts → exponential)
 - ( ) Enforce HMAC signing (reject unsigned requests)
 - ( ) Migrate JWT to RS256 (gradual key rotation)
-- ( ) Move tokens to HttpOnly cookies (requires frontend rewrite)
+- ✓ Move tokens to HttpOnly cookies (done, 22.15)
 
 ---
 

@@ -8,7 +8,7 @@
 
 ## SEMANA 1: RENDERIZADO
 
-### Videos (26.1)
+### Videos (26.0)
 
 - [ ] **LUN** Scripts aprobados por owner
 - [ ] **MAR** YT-ES-PROD renderizado (2 min, 1080p H.264, codec AAC)
@@ -31,7 +31,7 @@
 
 ## SEMANA 2: YOUTUBE + DEV.TO
 
-### YouTube ES Uploads (26.1)
+### YouTube ES Uploads (26.0)
 
 - [ ] **LUN** Upload YT-ES-PROD (programa para MAR 10:00 CET)
   - URL final: youtube.com/channel/[CHANNEL_ID]/videos?sort=dd
@@ -49,7 +49,7 @@
 - [ ] Respond to top 5 comments (ES, profesional)
 - [ ] Pin top comment con CTA: "Código: YT-ES-PROD en descripción"
 
-### Dev.to Articles (26.2)
+### Dev.to Articles (26.1)
 
 - [ ] **JUE** Publish Article #1: "Motor adaptativo de Whetzy: arquitectura interna"
   - Wordcount: 1,500+

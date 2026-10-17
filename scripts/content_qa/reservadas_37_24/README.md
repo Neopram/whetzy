@@ -1,6 +1,6 @@
 # 37.24 — banco reservado de simulacro: estado al cierre del 2026-10-10
 
-**Estado: PARCIAL. 146 de 1.040 integradas. `MOCK_EXAM_RESERVED_POOL_ENABLED` sigue en `False`
+**Estado: PARCIAL. 146 de 1.040 integradas (219 desde el 2026-10-13, ver el final). `MOCK_EXAM_RESERVED_POOL_ENABLED` sigue en `False`
 y debe seguir así**: con este banco, ninguna certificación llega a 2 × su examen, y encender el flag
 dejaría simulacros cortos o vacíos.
 

@@ -24,10 +24,10 @@ prueba): `BUILD SUCCESSFUL`, APK de 14,5 MB generado. No se pudo probar `bundleR
 **Yes.**
 
 ### 2.2 Is all of the data collected by your app encrypted in transit?
-**Yes** — all traffic goes to `https://api-production-9751.up.railway.app` (TLS).
+**Yes** — all traffic goes to `https://api.whetzy.com` (TLS, served by Railway).
 
 ### 2.3 Do you provide a way for users to request that their data is deleted?
-**Yes** — `DELETE /api/v1/auth/me/account` endpoint (bajo `/auth`, no `/me` a secas); link in ProfileScreen → LegalScreen → `/delete-account`.
+**Yes** — `DELETE /api/v1/auth/me/account` endpoint (bajo `/auth`, no `/me` a secas); link in ProfileScreen → `/delete-account`.
 
 ---
 
@@ -86,12 +86,12 @@ Calendar events · Health data · Fitness data · Web browsing history · Other 
 | Third Party | Data shared | Purpose | Link |
 |---|---|---|---|
 | **RevenueCat / Google Play Billing** | Subscription status, billing timestamps | Payment processing | revenuecat.com/privacy |
-| **Groq** | Question text and the user's own question to the AI tutor (no name/email) | AI content generation / QA, and live tutor explanations (`/tutor`, Plus tier and up) | groq.com/privacy |
+| **Groq** | Question text and the user's own question to the AI tutor (no name/email) | AI content generation / QA, and live tutor explanations (`/tutor`, Pro tier and up) | groq.com/privacy |
 | **Sentry** | Anonymized crash logs | Error monitoring | sentry.io/privacy |
 | **VAPID / Browser Push** | Push endpoint URL | Notification routing via user's own browser push service | — |
 
 > Groq receives the text of questions being generated or reviewed, and — separately — the text
-> of a live tutor question when a Plus-tier-or-above user asks the in-app AI tutor
+> of a live tutor question when a Pro-tier-or-above user asks the in-app AI tutor
 > (`app/api/v1/endpoints/tutor.py`, `app/services/ai/tutor.py`) — never any user's name, email,
 > or account data either way.
 
@@ -105,7 +105,7 @@ Calendar events · Health data · Fitness data · Web browsing history · Other 
 | Encryption at rest | Postgres managed by Railway (Railway encrypts volume at rest) |
 | Data retention | Auth tokens expire; push subscriptions deleted on user unsubscribe or 410 Gone; user data deleted on account deletion |
 | Data portability | `GET /api/v1/export/data` → JSON download (GDPR Art. 20) |
-| Account deletion | `DELETE /api/v1/auth/me`; all user rows cascade-deleted |
+| Account deletion | `DELETE /api/v1/auth/me/account`; all user rows cascade-deleted |
 
 ---
 
@@ -142,5 +142,5 @@ Calendar events · Health data · Fitness data · Web browsing history · Other 
 - [x] Sentry is **active** in production (confirmed `docs/legal/README.md` §"Procesadores verificados", 2026-10-01) — already listed above, no DPA action pending here
 - [ ] If FCM push notifications are added (replacing Web Push), declare `POST_NOTIFICATIONS` permission
 - [ ] Verify Play Console → Store listing → "Privacy policy URL" points to `https://whetzy.com/privacy`
-- [x] The AI tutor (`/tutor`, Plus tier+) already sends user question text to Groq in
+- [x] The AI tutor (`/tutor`, Pro tier+) already sends user question text to Groq in
       production — listed above as its own row, separate from content generation/QA

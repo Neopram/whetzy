@@ -4,11 +4,11 @@ Zero-cost DDoS, WAF, rate limiting, and performance caching via Cloudflare.
 
 ## Overview
 
-Whetzy uses Cloudflare''s free tier as the DNS and WAF layer in front of the backend (Railway) and frontend (Cloudflare Pages).
+Whetzy uses Cloudflare's free tier as the DNS and WAF layer in front of the frontend (Cloudflare Pages). The backend (Railway) is NOT behind Cloudflare: the API is served directly from Railway at `api.whetzy.com` since 2026-10-17 (#228): a DNS-only CNAME to `n8r3nbqo.up.railway.app`, so responses carry `server: railway-hikari` and no `cf-ray` (checked 2026-10-17). `api-production-9751.up.railway.app` still answers (`docs/RUNBOOK.md`, 22.5 section C).
 
 **Domains**:
 - `whetzy.com` (apex): Cloudflare Pages → frontend (SPA)
-- `api-*.up.railway.app`: DNS CNAME → backend (FastAPI)
+- `api.whetzy.com`: backend (FastAPI), CNAME to Railway, DNS only (not proxied by Cloudflare); `api-production-9751.up.railway.app` is the same service
 
 ## Managed WAF Rule Sets
 
@@ -18,7 +18,7 @@ Enable in **Cloudflare Dashboard** → **whetzy.com** → **Security** → **WAF
    - Protects against: SQL injection, XSS, RFI, LFI, code injection
    - Action: Block with HTTP 403
 
-2. **Rate Limiting Rules** (free, 20 rules max on free tier)
+2. **Rate Limiting Rules** (Free plan: one rule, 10 s period; see `docs/RUNBOOK.md` 22.5 section C)
    - See section below
 
 3. **Zone Lockdown** (free) — restrict access by IP/country
@@ -123,9 +123,9 @@ Cache Key: Include query string
 Audience: Public (cache in all edge locations)
 ```
 
-**Headers set by backend** (see `docs/cache-headers.md`):
+**Headers set by backend** (see `backend/app/api/v1/endpoints/glossary.py:28`):
 ```
-Cache-Control: public, max-age=300
+Cache-Control: public, max-age=7200, stale-while-revalidate=86400
 ```
 
 ### Rule 2: Track Listing (5-minute cache)
@@ -226,10 +226,10 @@ Enable in **Notifications** → **Email Notifications**:
 - [ ] Whetzy domain configured as Cloudflare nameserver (CNAME or NS records)
 - [ ] Cloudflare Managed Ruleset enabled (WAF)
 - [ ] 4 rate-limiting rules created (/auth, /tutor, /questions, /api/v1/*)
-- [ ] Bot Fight Mode enabled (Super Bot Fight Mode: On)
+- [ ] Bot Fight Mode enabled (Free plan)
 - [ ] Cache rules configured for /glossary, /tracks, landing page, no cache for /auth
-- [ ] Backend sends appropriate Cache-Control headers (see `app/core/cache.py`)
-- [ ] Turnstile integration ready (code present but disabled; enable via abuse threshold)
+- [ ] Backend sends appropriate Cache-Control headers (set per endpoint, e.g. `app/api/v1/endpoints/glossary.py`)
+- [ ] Turnstile integration (not implemented: no Turnstile code in backend or frontend; add only if abuse is detected)
 - [ ] Email alerts enabled for DDoS and attacks
 - [ ] GitHub issue #22.5 closed upon verification
 

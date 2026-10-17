@@ -20,8 +20,7 @@ CREATE TABLE login_attempts (
   email VARCHAR(255) NOT NULL,
   ip INET NOT NULL,
   success BOOLEAN NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  PRIMARY KEY (email, ip, created_at)
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 CREATE INDEX idx_login_email_ip ON login_attempts(email, ip, created_at DESC);
 ```

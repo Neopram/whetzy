@@ -4,8 +4,8 @@
 
 Bilingual (ES/EN, natively authored) school of computing: Python, software
 engineering, AI/ML, SQL, cybersecurity, cloud certifications. A layered adaptive
-engine (BKT + FSRS + Elo + Thompson-sampling bandit, DKT with fallback) selects the
-next question that maximizes learning, gated by mastery-verified prerequisites. Code
+engine (BKT + FSRS + Elo, DKT with fallback; Thompson sampling only in the placement
+test) picks the skill by mastery and the question by Elo, gated by mastery-verified prerequisites. Code
 runs in the browser (Python via Pyodide, SQL via sql.js, JavaScript in a Worker
 sandbox) — no execution server.
 
@@ -20,7 +20,7 @@ sandbox) — no execution server.
 ```bash
 cp .env.example .env      # then set a strong SECRET_KEY and POSTGRES_PASSWORD
 docker compose up --build
-# API on http://localhost:8000  (docs at /docs)
+# API on http://localhost:8000  (OpenAPI at /api/v1/openapi.json)
 ```
 The API boots, ingests `content/` and seeds gamification automatically.
 
@@ -46,19 +46,18 @@ npm run dev     # Vite proxies /api -> http://127.0.0.1:8000 (see vite.config.ts
 
 ## Repository layout
 ```
-backend/    FastAPI app — engine/, services/, api/, models/, schemas/
+backend/    FastAPI app — services/ (engine/ inside), api/, models/, schemas/
 frontend/   React PWA — pages/, components/, services/api.ts, stores/
 content/    curriculum (tracks.json) + questions + lessons + glossary + placement exam
 docs/       ledger (AUTONOMOUS_STATE.md), catalog, runbook, ADRs, competitive teardown
-legal/      privacy policy, terms of service
 docker-compose.yml, .github/workflows/ci.yml, .env.example
 ```
 
 ## Status
 Start at `docs/README.md`. The source of truth for progress and human blockers is
 `docs/AUTONOMOUS_STATE.md`; the scope is `docs/CATALOGO_MAESTRO.md`; the honest
-competitive position (fixed weights, latest recalculation in §11) is
+competitive position (fixed weights, latest recalculation in §14) is
 `docs/competitive-teardown.md`. `docs/STATUS.md` is a historical per-session log.
 
 ## License
-Code: proprietary, all rights reserved. Original educational content in `content/`: CC BY-NC-ND 4.0 (Terms of Service §3.1). Third-party material keeps its own licence (`content/sources/index.json`). Details in [`LICENSE`](LICENSE).
+Code: proprietary, all rights reserved. Original educational content in `content/`: CC BY-NC-ND 4.0 (`LICENSE` §2). Third-party material keeps its own licence (`content/sources/index.json`). Details in [`LICENSE`](LICENSE).

@@ -646,7 +646,7 @@ la plataforma; no vende exposición a ella.
 | Cloud certs | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Gamificación | ✅ S24 | ✅✅ | ❌ | ❌ | ❌ |
 | B2B ready | ❌ (2026-10-09: sin organizaciones, equipos ni asientos en `backend/app`) | ❌ | ✅✅ | ✅ | ✅ |
-| Marketplace | ⚠️ parcial (2026-10-09: el creador publica y ve sus cursos; no hay catálogo para el comprador y `POST /instructor/courses/{id}/enroll` inscribe y anota el reparto sin cobrar) | ❌ | ❌ | ❌ | ❌ |
+| Marketplace | ⚠️ parcial (2026-10-09: el creador publica y ve sus cursos; no hay catálogo para el comprador y `POST /instructor/courses/{id}/enroll` inscribe y anota el reparto sin cobrar; sustituido el 2026-10-10 (41.6): un curso de pago responde 402 `PaymentRequired`) | ❌ | ❌ | ❌ | ❌ |
 | Créditos cerrados + referidos por activación | ✅ S29 | gemas (sin datos de referidos) | XP (sin datos) | sin datos | ❌ |
 | Pago en USDC liquidado en fiat (LATAM) | ❌ (sin código; ADR-36 dependía de Stripe *Pay with Crypto* y H.29 eligió Paddle, sin Stripe) | ❌ | ❌ | ❌ | ❌ |
 | Credenciales verificables (Open Badges 3.0) | ✅ S29 | ❌ | ❌ | ❌ | ❌ |

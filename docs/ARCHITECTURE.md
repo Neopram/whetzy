@@ -7,7 +7,7 @@ Frontend (React + Capacitor)          whetzy.com / whetzy.pages.dev
         │
         │ HTTPS / REST
         ▼
-Backend (FastAPI)              api-production-9751.up.railway.app
+Backend (FastAPI)              api.whetzy.com (Railway; api-production-9751.up.railway.app sigue vivo)
         │
         ├── PostgreSQL (Railway)       primary data store
         ├── BM25 index (in-memory)     RAG retrieval, built at startup from the DB
@@ -27,7 +27,7 @@ Backend (FastAPI)              api-production-9751.up.railway.app
 
 ```
 app/
-├── api/v1/endpoints/     # HTTP layer — thin, delegates to services. 67 routes (+4 root: /, /health, /health/live, /health/ready) = 71 total.
+├── api/v1/endpoints/     # HTTP layer — thin, delegates to services. 170 routes (+4 root: /, /health, /health/live, /health/ready) = 174 total.
 │   ├── auth.py           # register, login, refresh, me, password reset, email verify, delete
 │   ├── quiz.py           # start, answer, end, review-due
 │   ├── progress.py       # dashboard, skills, curriculum, DKT predictions, churn risk
@@ -116,7 +116,7 @@ were removed on 2026-10-13: nothing in the API used them.
 Live numbers come from `python scripts/check_docs.py` (they are also the `Contenido`
 row of `docs/AUTONOMOUS_STATE.md`); as of 2026-10-13: **12,037 questions / 35 tracks /
 730 skills / 730 lessons / 1,058 glossary terms**, every question with a canonical
-`source`. Five certification tracks (AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC)
+`source`. Eleven certification tracks (AWS CLF-C02, SAA-C03, AIF-C01, MLA-C01, PCEP, PCAP, ISC2 CC, Security+, AZ-900, AI-901, DP-900)
 carry official domains with verified weights (`exam_domain` + `exam_weight_pct`).
 Executable questions (`fill_blank_exec` / `fix_bug` / `sql_exec` / `js_exec`) have
 their expected output verified in CI by actually running the reference code in
@@ -142,16 +142,18 @@ never rewrites history.
 
 ## Middleware stack (LIFO applied, so listed outer→inner)
 
-1. `CORSMiddleware` — configured origins
-2. `RequestIDMiddleware` — UUID per request, X-Request-ID header, JSON access log
-3. `RateLimitMiddleware` — 12/min for /auth + /tutor; 120/min default
-4. `SecurityHeadersMiddleware` — HSTS, CSP, X-Frame-Options, etc.
+1. `SecurityHeadersMiddleware` — HSTS, CSP, X-Frame-Options, etc.
+2. `RateLimitMiddleware` — 60/min (`AUTH_RATE_LIMIT`) for sensitive /auth routes + /tutor; 120/min default
+3. `RequestIDMiddleware` — UUID per request, X-Request-ID header, JSON access log
+4. `MetricsMiddleware` — only if `METRICS_ENABLED`
+5. `CORSMiddleware` — configured origins
+6. `CSRFOriginMiddleware`
 
 ## Invariants (never break)
 
 - Railway deploy is **automatic** from `master` (verified 2026-09-16, ledger H.16): a commit reaching `master` — merged by the owner, ADR-45 — runs migrations + `content_loader` in production. Push only with `pytest tests/content` and `check_question_bank.py` green.
 - Cloudflare Pages is **Git-connected**: a push to `master` builds and publishes to production (verified 2026-09-24); other branches get previews. Manual `npx wrangler pages deploy dist --project-name whetzy --branch main` from `frontend/` still works (RUNBOOK §1). `node scripts/check-deployed.mjs` must PASS after every deploy.
-- Auth is email + password today; social login lands in Serie 19 (GitHub/Google web → Sign in with Apple → Google native), and Sign in with Apple is mandatory before any App Store submission once another OAuth exists (ADR-13).
+- Auth is email + password plus GitHub/Google OAuth (live, `endpoints/oauth.py`, 19.1); Sign in with Apple and native Google land in Serie 19, and Sign in with Apple is mandatory before any App Store submission once another OAuth exists (ADR-13).
 - Alembic migrations via `alembic revision --autogenerate`, **never** `Base.metadata.create_all` in production.
 - JWT secret lives in `SECRET_KEY` env var. Access tokens expire in 30 min; refresh tokens in 30 days.
 - Raw password reset / email verification tokens never stored — only SHA-256 hash.
@@ -162,8 +164,8 @@ never rewrites history.
 | Categoría | Amenaza concreta en Whetzy | Activo | Mitigación hoy | Dónde está en el código | Estado |
 |---|---|---|---|---|---|
 | **Spoofing** | Suplantación mediante JWT fraudulento | Cuenta de usuario | JWT firmado con `SECRET_KEY` + verificación en `get_current_user`; timeout 30 min + refresh en 30 días | `backend/app/core/security.py:_create_token`, `backend/app/core/security.py:get_current_user` | MITIGADO |
-| **Spoofing** | Timing attack en validación de password | Contraseña | Dummy hash para comparación constante (ASVS V2.2) | `backend/app/core/security.py:31-32 (_DUMMY_HASH)` | MITIGADO |
-| **Spoofing** | Credential stuffing contra /auth/login | Contraseña | Rate limit 12 req/min en /auth endpoints | `backend/app/core/security_middleware.py:54-56` | PARCIAL |
+| **Spoofing** | Timing attack en validación de password | Contraseña | Dummy hash para comparación constante (ASVS V2.2) | `backend/app/core/security.py:44 (_DUMMY_HASH)` | MITIGADO |
+| **Spoofing** | Credential stuffing contra /auth/login | Contraseña | Rate limit 60 req/min por IP en rutas sensibles de /auth (`AUTH_RATE_LIMIT`) | `backend/app/core/security_middleware.py:63-72, 113` | PARCIAL |
 | **Spoofing** | Account takeover via password reset | Reset token | Tokens single-use con SHA-256 hash (nunca plain) | `backend/app/models/auth.py`, `backend/app/core/security.py` | MITIGADO |
 | **Tampering** | MITM en tránsito HTTP → HTTPS | Datos en tránsito | HSTS `max-age=63072000; includeSubDomains; preload` en producción | `backend/app/core/security_middleware.py:49` | MITIGADO |
 | **Tampering** | Clickjacking (X-Frame-Options) | UI del navegador | `X-Frame-Options: DENY` en todos los responses | `backend/app/core/security_middleware.py:25` | MITIGADO |
@@ -173,14 +175,14 @@ never rewrites history.
 | **Repudiation** | Negación de transacciones / cambios | Auditoría de cambios | Event log en `analytics_events` para todas las sesiones; password reset tokens son single-use y registrados | `backend/app/models/analytics.py`, `backend/app/services/analytics.py` | MITIGADO |
 | **Repudiation** | Negación de consumo de Groq API | Facturas de IA | Logs de requests a Groq en `audit_log` (estructura preparada en `backend/app/models/auth.py:AuditLog`) | `backend/app/models/auth.py:AuditLog` (la tabla existe; **no hay ajuste que lo active ni escritor que registre las llamadas a Groq** — `grep -rn AUDIT_LOG_ENABLED backend/` sale vacio) | PARCIAL |
 | **Information Disclosure** | Información sensible en Referrer header | Tokens en URL | `Referrer-Policy: strict-origin-when-cross-origin` (JWT nunca en URL, siempre en Authorization) | `backend/app/core/security_middleware.py:27` | MITIGADO |
-| **Information Disclosure** | Exposición de OpenAPI en producción | Documentación de API | `/docs` y `/redoc` deshabilitados fuera de DEBUG mode | `backend/app/main.py:62-63` | MITIGADO |
+| **Information Disclosure** | Exposición de OpenAPI en producción | Documentación de API | `/docs` y `/redoc` deshabilitados fuera de DEBUG mode | `backend/app/main.py:93-94` | MITIGADO |
 | **Information Disclosure** | Fuga de datos via X-Admin-Key en logs | Admin key expuesta | `X-Admin-Key` solo en header (no en URL), log access solo con AUTH_RATE_LIMIT | `backend/app/api/v1/endpoints/content.py:26-29` | MITIGADO |
 | **Information Disclosure** | CSP weakening (inline scripts / data URLs) | XSS | CSP `default-src 'none'; frame-ancestors 'none'; base-uri 'none'` en API responses | `backend/app/core/security_middleware.py:31` | MITIGADO |
-| **Information Disclosure** | CSP del frontend (JavaScript/assets) | Frontend XSS | `_headers` Cloudflare sin CSP nativa de nivel aplicación | `frontend/public/_headers` | SIN REVISAR |
-| **Denial of Service** | Brute-force en /auth/login | Credencial válida | Rate limit 12 req/min por IP | `backend/app/core/security_middleware.py:54-56, 83` | PARCIAL |
+| **Information Disclosure** | CSP del frontend (JavaScript/assets) | Frontend XSS | `_headers` Cloudflare declara CSP (`default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; ... frame-ancestors 'none'`) | `frontend/public/_headers:9` | MITIGADO |
+| **Denial of Service** | Brute-force en /auth/login | Credencial válida | Rate limit 60 req/min por IP (`AUTH_RATE_LIMIT`) | `backend/app/core/security_middleware.py:63-72, 113` | PARCIAL |
 | **Denial of Service** | Flood en /quiz/answer o /tutor | Groq API cost | Rate limit 120 req/min default; sin límite per-user en token spending | `backend/app/core/security_middleware.py:66, 83` | PARCIAL |
 | **Denial of Service** | Queries caras sin límite (ranking, búsqueda) | DB load | Sin límite de timeout ni per-user query budget; búsqueda por BM25 es O(n) | `backend/app/services/ai/rag.py` | SIN MITIGAR |
-| **Denial of Service** | Consumo de Groq sin cuota | LLM spend | Sin metering per-user de tokens consumidos en /tutor | `backend/app/services/ai/provider.py` | SIN MITIGAR |
+| **Denial of Service** | Consumo de Groq sin cuota | LLM spend | Cupo diario por usuario de explicaciones y de tokens en /tutor (41.17) | `backend/app/services/tutor_quota.py`, `backend/app/core/config.py:290` | PARCIAL |
 | **Elevation of Privilege** | Acceso a panel /admin sin role=owner | Admin data | `require_owner` decorator en cada ruta `/admin/*` | `backend/app/api/v1/endpoints/admin.py:37-44` | MITIGADO |
 | **Elevation of Privilege** | Escalada via X-Admin-Key débil | Content ingest | `CONTENT_ADMIN_KEY` es secreto env (32+ chars mínimo en secrets, no en código) | `backend/app/core/config.py`, `backend/app/api/v1/endpoints/content.py:27-29` | MITIGADO |
 | **Elevation of Privilege** | Role tampering en JWT payload | Privilejos | JWT decode verifica firma; role viene de DB en `get_current_user`, no de token | `backend/app/core/security.py:get_current_user` (refresh desde DB) | MITIGADO |
@@ -191,7 +193,7 @@ never rewrites history.
 - **Credential stuffing (PARCIAL)**: Rate limit 12/min/IP blunta ataques pero no los detiene por completo. Alternativa futura: CAPTCHA en X intentos o 2FA. [Cerrado: 2FA TOTP y sesiones por dispositivo en `endpoints/auth_hardening.py`, fila 22x del ledger]
 - **DoS en queries caras (SIN MITIGAR)**: Ranking, búsqueda y BM25 sin timeout. Impacto: Groq API no es activo (no afecta plataforma central). Aceptado porque: (1) RAG es O(n) en ~1300 docs = <100ms típico, (2) sin datos de abuso en logs. Cierra: timeout en `/tutor` + cuota de tokens por usuario en la fila **22.16**
 - **Consumo de Groq sin cuota (SIN MITIGAR)**: `/tutor` no tiene metering. Impacto: runaway spend. Aceptado: Groq rate limit + costo bajo (qwen3.8). Cierra: contador de tokens en analytics_events + alertas (fila **22.16**)
-- **CSP del frontend (SIN REVISAR)**: Cloudflare `_headers` no declara CSP script nativa. Riesgo bajo (Capacitor + React no usan eval), pero necesita auditoría. Cierra: fila **22.2** (cabeceras de seguridad y CSP)
+- **CSP del frontend (MITIGADO)**: Cloudflare `_headers:9` declara CSP. Riesgo bajo (Capacitor + React no usan eval), pero necesita auditoría. Cierra: fila **22.2** (cabeceras de seguridad y CSP)
 
 ### Cómo se comprueba
 
@@ -223,6 +225,6 @@ grep -n "require_owner\|require_admin" backend/app/api/v1/endpoints/admin.py
 # CSP API
 grep -n "Content-Security-Policy" backend/app/core/security_middleware.py
 
-# No cookies (verificación de que no hay cookies)
-grep -rn "set_cookie" backend/app/ || echo "OK: No se encontraron cookies"
+# Cookies: solo las de core/cookies.py (HttpOnly, 22.15)
+grep -rn "set_cookie" backend/app/
 ```

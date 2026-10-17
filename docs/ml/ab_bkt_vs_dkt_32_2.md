@@ -97,8 +97,8 @@ una tasa peor específica:
 | Margen de "no empeora" | n/brazo (fórmula cerrada, no inf.) | n/brazo (Monte Carlo, confirma) | n/brazo (de dos lados, para comparar) |
 |---|---|---|---|
 | 5 pp (DKT no más de 5pp peor que 20%) | 792 | 990 | 906 |
-| 8 pp | 310 | 387 | — |
-| 12 pp | 138 | 138 | 329 |
+| 8 pp | 310 | 387 | 329 |
+| 12 pp | 138 | 138 | 131 |
 
 (La columna de Monte Carlo a veces sale un escalón por encima de la fórmula
 cerrada por el redondeo de la tabla de candidatos probados —p. ej. a 5pp la
@@ -108,8 +108,8 @@ las dos fórmulas discrepen de fondo; que caigan en el mismo orden de
 magnitud es la confirmación que importa, igual que antes.)
 
 Reproducible: `cd backend && python scripts/power_analysis_bkt_vs_dkt.py`
-(la tabla completa, con las tres columnas, es la salida real del script, no
-aritmética copiada a mano).
+(las dos primeras columnas son la salida real del script; la de dos lados es
+`two_proportion_n_closed_form(0.20, 0.20 - margen)`, definida en el script pero no impresa).
 
 ### AUC: SUPERIORIDAD — respuestas y usuarios por brazo para detectar el margen BKT→DKT (criterio 11.3)
 
