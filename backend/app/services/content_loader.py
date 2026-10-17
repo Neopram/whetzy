@@ -7,6 +7,7 @@ so it is safe to run on every deploy or manually via `python -m app.services.con
 
 from __future__ import annotations
 
+import ast
 import asyncio
 import json
 import os
@@ -246,6 +247,32 @@ async def _upsert_glossary_term(db: AsyncSession, t: dict[str, Any], order: int)
     return True
 
 
+# 43.7 (ADR-65 D9): runtimes del playground del navegador. Lo demás (shell,
+# yaml, http, dockerfile, texto) no se ejecuta aquí y la lección no ofrece
+# «Probar este código».
+_LESSON_RUNTIMES = {"python": "python", "sql": "sql", "javascript": "js"}
+
+
+def lesson_code_runtime(data: dict[str, Any]) -> str | None:
+    """Runtime en el que se puede probar el ejemplo de una lección, o None.
+
+    Sin `language` (218 de 730 lecciones) el ejemplo cuenta como Python solo si
+    `ast.parse` lo acepta: todas las de esas rutas son Python (medido el
+    2026-10-17), y lo que no lo sea se queda sin botón en vez de fallar.
+    """
+    code = data.get("example_code")
+    if not code:
+        return None
+    language = data.get("language")
+    if language is not None:
+        return _LESSON_RUNTIMES.get(str(language).lower())
+    try:
+        ast.parse(code)
+    except SyntaxError:
+        return None
+    return "python"
+
+
 async def _upsert_lesson(db: AsyncSession, data: dict[str, Any]) -> bool:
     """Returns True if ingested, False if skipped (unknown skill)."""
     skill = await db.get(Skill, data["skill_id"])
@@ -263,6 +290,7 @@ async def _upsert_lesson(db: AsyncSession, data: dict[str, Any]) -> bool:
     lesson.body_en = data["body_en"]
     lesson.example_code = data.get("example_code")
     lesson.example_output = data.get("example_output")
+    lesson.code_runtime = lesson_code_runtime(data)
     lesson.source = data["source"]
     lesson.order = data.get("order", 1)
     return True

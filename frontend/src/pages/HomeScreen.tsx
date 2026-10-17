@@ -325,11 +325,8 @@ export function HomeScreen() {
       <motion.section className={styles.section} variants={listItemVariants}>
         <h2 className={styles.sectionTitle}>{t('home.tools')}</h2>
         <div className={styles.tools}>
-          <button type="button" className={styles.tool} onClick={() => setScreen('playground')}>
-            <span aria-hidden="true">💻</span>
-            <span className={styles.toolName}>{t('playground.openPlayground')}</span>
-            <span className={styles.toolMeta}>Python · SQL · JS</span>
-          </button>
+          {/* 43.7 (ADR-65 D9): el playground sale de Hoy; se abre desde la lección
+              («Probar este código») y, libre, desde Rutas. */}
           <button type="button" className={styles.tool} onClick={() => openProjects(null)}>
             <span aria-hidden="true">🏗️</span>
             <span className={styles.toolName}>{t('project.title')}</span>

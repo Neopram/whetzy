@@ -134,6 +134,12 @@ interface AppState {
    *  solo los de esa ruta; desde Hoy, todos (null). */
   projectsTrackId: string | null;
   openProjects: (trackId: string | null) => void;
+  /** 43.7 (ADR-65 D9): ejemplo con el que se abre el playground desde una
+   *  lección; null desde Rutas (playground libre). */
+  playgroundSeed: { runtime: 'python' | 'sql' | 'js'; code: string; skillId: string } | null;
+  openPlayground: (seed: { runtime: 'python' | 'sql' | 'js'; code: string; skillId: string } | null) => void;
+  /** 43.7: paso de la lección desde el que se abrió el playground, para volver a él. */
+  lessonReturn: { skillId: string; step: number } | null;
   openTrack: (trackId: string) => void;
 
   // Missions
@@ -352,6 +358,10 @@ export const useAppStore = create<AppState>()(
       activeTrackId: null,
       tracksBrowse: false,
       projectsTrackId: null,
+      playgroundSeed: null,
+      lessonReturn: null,
+      openPlayground: (seed) =>
+        set((s) => ({ playgroundSeed: seed, previousScreen: s.currentScreen, currentScreen: 'playground' })),
       openProjects: (trackId) =>
         set((s) => ({ projectsTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'projects' })),
       browseTracks: () =>

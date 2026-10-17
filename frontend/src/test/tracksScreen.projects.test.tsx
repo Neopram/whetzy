@@ -59,4 +59,12 @@ describe('Rutas → Proyectos (43.6)', () => {
     await waitFor(() => expect(projectsApi.list).toHaveBeenCalledWith('track06'));
     expect(screen.queryByTestId('track-projects')).toBeNull();
   });
+
+  it('ofrece el playground libre (43.7: sale de Hoy)', async () => {
+    m(projectsApi.list).mockResolvedValue([]);
+    render(<TracksScreen />);
+    fireEvent.click(await screen.findByTestId('track-playground'));
+    expect(useAppStore.getState().currentScreen).toBe('playground');
+    expect(useAppStore.getState().playgroundSeed).toBeNull();
+  });
 });

@@ -226,6 +226,8 @@ class Lesson(Base):
     body_en: Mapped[str] = mapped_column(Text, nullable=False)
     example_code: Mapped[str | None] = mapped_column(Text, nullable=True)
     example_output: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # 43.7: python | sql | js si el ejemplo se puede probar en el playground.
+    code_runtime: Mapped[str | None] = mapped_column(String(16), nullable=True)
     source: Mapped[str] = mapped_column(Text, nullable=False)
     order: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 

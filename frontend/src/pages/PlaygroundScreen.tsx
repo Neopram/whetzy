@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, lazy, Suspense } from 'react';
+import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useRuntime, type RuntimeType } from '../hooks/useRuntime';
@@ -7,6 +7,7 @@ import {
   savePlaygroundEntry,
   getPlaygroundHistory,
   clearPlaygroundHistory,
+  getLatestForSkill,
   type PlaygroundEntry,
 } from '../services/playgroundDb';
 import styles from './PlaygroundScreen.module.css';
@@ -45,13 +46,31 @@ const MONACO_LANG: Record<RuntimeType, string> = {
 export function PlaygroundScreen() {
   const { t } = useTranslation();
   const setScreen = useAppStore((s) => s.setScreen);
+  const previousScreen = useAppStore((s) => s.previousScreen);
+  // 43.7 (ADR-65 D9): abierto desde una lección, empieza en su ejemplo y su runtime.
+  const seed = useAppStore((s) => s.playgroundSeed);
 
-  const [activeRuntime, setActiveRuntime] = useState<RuntimeType>('python');
-  const [codes, setCodes] = useState<Record<RuntimeType, string>>({
+  const [activeRuntime, setActiveRuntime] = useState<RuntimeType>(seed?.runtime ?? 'python');
+  const [codes, setCodes] = useState<Record<RuntimeType, string>>(() => ({
     python: RUNTIMES[0].defaultCode,
     sql: RUNTIMES[1].defaultCode,
     js: RUNTIMES[2].defaultCode,
-  });
+    ...(seed ? { [seed.runtime]: seed.code } : {}),
+  }));
+
+  // Si el alumno ya probó algo para esta skill, reaparece su último fragmento.
+  useEffect(() => {
+    if (!seed) return;
+    let alive = true;
+    getLatestForSkill(seed.skillId)
+      .then((entry) => {
+        if (alive && entry && entry.runtime === seed.runtime) {
+          setCodes((prev) => ({ ...prev, [seed.runtime]: entry.code }));
+        }
+      })
+      .catch(() => { /* sin IndexedDB: se queda el ejemplo */ });
+    return () => { alive = false; };
+  }, [seed]);
   const [output, setOutput] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -90,6 +109,7 @@ export function PlaygroundScreen() {
           output: result.output,
           error: result.error ?? (result.timedOut ? 'Timeout' : null),
           timestamp: new Date().toISOString(),
+          ...(seed && activeRuntime === seed.runtime ? { skill_id: seed.skillId } : {}),
         });
       } catch {
         // IndexedDB not available — history won't persist
@@ -100,7 +120,7 @@ export function PlaygroundScreen() {
       setIsRunning(false);
       outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-  }, [codes, activeRuntime, isRunning, runCode, t]);
+  }, [codes, activeRuntime, isRunning, runCode, t, seed]);
 
   const handleLoadHistory = useCallback(async () => {
     try {
@@ -151,11 +171,31 @@ export function PlaygroundScreen() {
       transition={{ duration: 0.25 }}
     >
       <header className={styles.header}>
-        <button className={styles.backBtn} onClick={() => setScreen('home')} aria-label={t('common.back')}>
-          ←
+        <button
+          className={styles.backBtn}
+          onClick={() => setScreen(previousScreen === 'playground' ? 'home' : previousScreen)}
+          aria-label={t('common.back')}
+        >
+          <span aria-hidden="true">←</span>
         </button>
         <h1 className={styles.title}>{t('playground.title')}</h1>
       </header>
+
+      {seed && (
+        <div className={styles.seedBar}>
+          <span>{t('playground.fromLesson')}</span>
+          <button
+            type="button"
+            className={styles.historyBtn}
+            onClick={() => {
+              setCodes((prev) => ({ ...prev, [seed.runtime]: seed.code }));
+              setActiveRuntime(seed.runtime);
+            }}
+          >
+            {t('playground.restoreExample')}
+          </button>
+        </div>
+      )}
 
       <div className={styles.runtimeTabs}>
         {RUNTIMES.map((rt) => (
