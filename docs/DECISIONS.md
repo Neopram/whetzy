@@ -1699,8 +1699,13 @@ transcriben sin cambios. Las filas son la serie 43. El número 64 queda libre: l
 > cookie de *refresh*. Con «el refresh sigue por cookie», la sesión en iPhone duraría 30 min
 > (`ACCESS_TOKEN_EXPIRE_MINUTES`, `config.py:68`), no «lo que dura la pestaña». El backend ya acepta el refresh en
 > el cuerpo de `POST /auth/refresh` (`auth.py:283`), y el login y el registro ya devuelven los dos tokens en JSON
-> (`schemas/user.py:96-99`). Por eso 43.1 guarda en memoria los dos tokens y manda el refresh en el cuerpo, que
-> es el efecto que D1 pide.
+> (`schemas/user.py:96-99`). Por eso 43.1 manda el refresh en el cuerpo.
+>
+> **Decisión del dueño (2026-10-17, en la sesión).** «Solo en memoria» tampoco basta: tras el login, la app recarga
+> la página entera (`App.tsx:222`, `window.location.replace(next)`), y la memoria se pierde ahí y en cada
+> recarga. El dueño eligió esto: tras el login se prueba `/auth/me` solo con la cookie, y si da 401 los dos tokens
+> van a `sessionStorage` (dura la pestaña) como `Authorization: Bearer`. Nunca en `localStorage`. Coste aceptado:
+> en Safari, un XSS podría leerlos mientras la pestaña esté abierta. PR #226.
 
 > **Choque abierto (H.60), anotado por la Oleada 0:** D7 (la práctica exige la lección vista; se quita
 > `attempts > 0` de `lesson_gate.py`) junto con D4 (la prueba no marca lecciones vistas) deja sin efecto el test-out
