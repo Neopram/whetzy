@@ -27,6 +27,7 @@ from app.schemas.duel import (
     DuelResultResponse,
     DuelSummary,
 )
+from app.services import lesson_gate
 from app.services.blocklist import blocked_user_ids, is_blocked_pair
 from app.services.quiz import apply_answer_to_skill_state
 
@@ -61,8 +62,18 @@ async def _load_user_by_username(db: AsyncSession, username: str) -> User:
     return user
 
 
-async def _pick_skill(db: AsyncSession, challenger: User, skill_id: str | None) -> str:
+async def _pick_skill(
+    db: AsyncSession, challenger: User, opponent: User, skill_id: str | None
+) -> str:
+    # 43.5 (ADR-65 D7): solo skills que los dos pueden practicar (lección vista,
+    # o test-out / ventaja en la prueba de nivel, H.60).
     if skill_id:
+        if not await lesson_gate.practice_unlocked_skill_ids(db, challenger.id, [skill_id]):
+            raise HTTPException(status_code=409, detail={"code": "needs_lesson", "skill_id": skill_id})
+        if not await lesson_gate.practice_unlocked_skill_ids(db, opponent.id, [skill_id]):
+            raise HTTPException(
+                status_code=409, detail={"code": "opponent_needs_lesson", "skill_id": skill_id}
+            )
         return skill_id
     # Pick a skill the challenger has attempted
     result = await db.execute(
@@ -71,7 +82,11 @@ async def _pick_skill(db: AsyncSession, challenger: User, skill_id: str | None) 
         .order_by(UserSkillState.attempts.desc())
         .limit(10)
     )
-    skill_ids = [row[0] for row in result.all()]
+    attempted = [row[0] for row in result.all()]
+    both = await lesson_gate.practice_unlocked_skill_ids(
+        db, challenger.id, attempted
+    ) & await lesson_gate.practice_unlocked_skill_ids(db, opponent.id, attempted)
+    skill_ids = [sid for sid in attempted if sid in both]
     if not skill_ids:
         raise HTTPException(
             status_code=422,
@@ -157,7 +172,7 @@ async def challenge(
     if await is_blocked_pair(db, current_user.id, opponent.id):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This challenge isn't allowed")
 
-    skill_id = await _pick_skill(db, current_user, payload.skill_id)
+    skill_id = await _pick_skill(db, current_user, opponent, payload.skill_id)
     questions = await _pick_questions(db, skill_id)
 
     duel = Duel(

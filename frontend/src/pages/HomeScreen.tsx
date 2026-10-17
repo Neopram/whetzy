@@ -8,6 +8,7 @@ import { useApi } from '../hooks/useApi';
 import { progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
 import { listVariants, listItemVariants } from '../lib/motion';
 import { bandForSkill, overallBand, MIN_EVIDENCE_ANSWERS, type EvidenceBand } from '../lib/evidenceBand';
+import { nextLessonSkillId } from '../lib/nextStep';
 import styles from './HomeScreen.module.css';
 
 // Saludo entero por clave: «Buenos» + «noches» salía «Buenos noches».
@@ -29,17 +30,33 @@ export function HomeScreen() {
   const startQuiz = useAppStore((s) => s.startQuiz);
   const setScreen = useAppStore((s) => s.setScreen);
   const openTrack = useAppStore((s) => s.openTrack);
+  // 43.4 (ADR-65 D6): Hoy es de la ruta activa. La banda, el siguiente paso,
+  // los repasos y el territorio salen solo de ella; antes mezclaban todas.
+  const activeTrackId = useAppStore((s) => s.activeTrackId);
+  const browseTracks = useAppStore((s) => s.browseTracks);
+  const startLesson = useAppStore((s) => s.startLesson);
   const lang = user.language;
   const { t } = useTranslation();
 
   const dash = useApi(() => progressApi.dashboard(), []);
   const missions = useApi(() => gamification.missions(), []);
-  const decaying = useApi(() => progressApi.decaying(), []);
-  const skills = useApi(() => progressApi.skills(), []);
+  const decaying = useApi(() => progressApi.decaying(7, 5, activeTrackId ?? undefined), [activeTrackId]);
+  const skills = useApi(() => progressApi.skills(activeTrackId ?? undefined), [activeTrackId]);
+  // 43.5 (ADR-65 D7): «Estudiar» abre la siguiente lección pendiente de la
+  // ruta activa; solo cuando no queda ninguna, practica.
+  const cur = useApi(
+    () => (activeTrackId ? progressApi.curriculum(activeTrackId) : Promise.resolve(null)),
+    [activeTrackId],
+  );
+  const nextLessonId = cur.data ? nextLessonSkillId(cur.data) : null;
+  const nextLesson = cur.data?.modules.flatMap((m) => m.skills).find((s) => s.skill_id === nextLessonId);
 
+  const activeTrack = (dash.data?.tracks ?? []).find((tr) => tr.track_id === activeTrackId);
   // Solo las rutas con algo practicado: el panel devuelve las 35, y promediar
   // sobre las que nunca se abrieron hundía el dominio a 0 % con progreso real.
+  // La activa va en la cabecera, no aquí: esto son «otras rutas en curso».
   const tracks = (dash.data?.tracks ?? [])
+    .filter((tr) => tr.track_id !== activeTrackId)
     .filter((tr) => tr.average_mastery > 0 || tr.skills_mastered > 0)
     .sort((a, b) => b.average_mastery - a.average_mastery);
   const shownTracks = tracks.slice(0, 5);
@@ -63,6 +80,14 @@ export function HomeScreen() {
       <motion.header className={styles.head} variants={listItemVariants}>
         <p className={styles.eyebrow}>{t(greetingKey())}, {user.displayName.split(' ')[0]}</p>
         <h1 className={styles.title}>{t('home.heroTitle')}</h1>
+        <p className={styles.activeTrack} data-testid="home-active-track">
+          {activeTrackId
+            ? <span>{t('home.activeTrack', { name: activeTrack ? (lang === 'es' ? activeTrack.name_es : activeTrack.name_en) : activeTrackId })}</span>
+            : <span>{t('home.noActiveTrack')}</span>}
+          <button type="button" className={styles.link} onClick={browseTracks}>
+            {activeTrackId ? t('home.changeTrack') : t('home.chooseTrack')}
+          </button>
+        </p>
       </motion.header>
 
       {/* Preparación + siguiente paso: lo único que hay que hacer, arriba. */}
@@ -91,11 +116,18 @@ export function HomeScreen() {
 
         <motion.section className={styles.next} variants={listItemVariants} aria-label={t('home.nextStep')}>
           <p className={styles.nextLabel}>{t('home.nextStep')}</p>
-          <p className={styles.nextName}>{t('home.nextStudy')}</p>
-          <p className={styles.nextHint}>{t('home.nextHint')}</p>
+          <p className={styles.nextName} data-testid="home-next">
+            {nextLesson
+              ? t('home.nextLesson', { name: lang === 'es' ? nextLesson.name_es : nextLesson.name_en })
+              : t('home.nextStudy')}
+          </p>
+          <p className={styles.nextHint}>{nextLesson ? t('home.nextLessonHint') : t('home.nextHint')}</p>
           <motion.button
             className={styles.btnStudy}
-            onClick={() => startQuiz('study', 10)}
+            onClick={() => {
+              if (nextLessonId) startLesson(nextLessonId);
+              else startQuiz('study', 10, activeTrackId ? { trackId: activeTrackId } : undefined);
+            }}
             whileTap={{ scale: 0.98 }}
           >
             {t('home.studyNow')}
@@ -183,7 +215,7 @@ export function HomeScreen() {
       {shownTracks.length > 0 && (
         <motion.section className={styles.section} variants={listItemVariants}>
           <div className={styles.cardHeader}>
-            <h2 className={styles.sectionTitle}>{t('home.yourTracks')}</h2>
+            <h2 className={styles.sectionTitle}>{activeTrackId ? t('home.otherTracks') : t('home.yourTracks')}</h2>
             <button type="button" className={styles.link} onClick={() => setScreen('tracks')}>
               {t('home.allTracks')} →
             </button>

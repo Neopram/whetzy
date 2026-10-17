@@ -121,6 +121,15 @@ interface AppState {
    *  simulacro o de una lección, la pantalla se monta de nuevo y antes caía
    *  siempre en track01, aunque vinieras de AWS. */
   selectedTrackId: string;
+  /** 43.4 (ADR-65 D5): la ruta activa, la de `target_track_id` en el servidor.
+   *  Distinta de `selectedTrackId`, que es la que se está mirando en Rutas:
+   *  abrir una ruta para verla no la hace tuya. null hasta que se elige. */
+  activeTrackId: string | null;
+  /** Hace de `trackId` la ruta activa y la guarda en el servidor. */
+  setActiveTrack: (trackId: string) => void;
+  /** Abre Rutas en el catálogo (para cambiar de ruta), no en el detalle. */
+  browseTracks: () => void;
+  tracksBrowse: boolean;
   openTrack: (trackId: string) => void;
 
   // Missions
@@ -237,12 +246,12 @@ export const useAppStore = create<AppState>()(
         const apiUser = await auth.me();
         // D-20: la ruta elegida vive en el servidor; el localStorage solo la recuerda.
         set(apiUser.target_track_id
-          ? { user: mapApiUser(apiUser), selectedTrackId: apiUser.target_track_id }
-          : { user: mapApiUser(apiUser) });
+          ? { user: mapApiUser(apiUser), selectedTrackId: apiUser.target_track_id, activeTrackId: apiUser.target_track_id }
+          : { user: mapApiUser(apiUser), activeTrackId: null });
       },
       signOut: () => {
         apiLogout();
-        set({ user: defaultUser, currentScreen: 'home' });
+        set({ user: defaultUser, currentScreen: 'home', activeTrackId: null });
       },
       addXp: (amount) =>
         set((s) => {
@@ -336,6 +345,15 @@ export const useAppStore = create<AppState>()(
         set((s) => ({ placementTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'placement' })),
 
       selectedTrackId: 'track01',
+      activeTrackId: null,
+      tracksBrowse: false,
+      browseTracks: () =>
+        set((s) => ({ tracksBrowse: true, previousScreen: s.currentScreen, currentScreen: 'tracks' })),
+      setActiveTrack: (trackId) => {
+        set({ activeTrackId: trackId, selectedTrackId: trackId });
+        // Nunca se borra progreso al cambiar: todo vive por skill y por track.
+        void auth.updateMe({ target_track_id: trackId }).catch(() => { /* sin red: vale en este dispositivo */ });
+      },
       openTrack: (trackId) =>
         set((s) => ({ selectedTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'tracks' })),
 
@@ -368,6 +386,7 @@ export const useAppStore = create<AppState>()(
         hapticEnabled: state.hapticEnabled,
         missions: state.missions,
         selectedTrackId: state.selectedTrackId,
+        activeTrackId: state.activeTrackId,
       }),
     }
   )

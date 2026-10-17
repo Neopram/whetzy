@@ -46,7 +46,7 @@ relacionada opcional → experiencia → prueba de nivel de 20 o «empiezo de ce
 
 | `Screen` | Pantalla | Se llega desde | Subvistas | Especificación |
 |---|---|---|---|---|
-| `home` | `HomeScreen` | pestaña Hoy | preparación, siguiente paso, repaso FSRS, racha, tus rutas, misiones, territorio, herramientas | E2: `design/v2/brief-msg1.md` |
+| `home` | `HomeScreen` | pestaña Hoy | «Tu ruta» con «Cambiar» (43.4: preparación, siguiente paso, repaso FSRS y territorio solo de la ruta activa), racha, otras rutas en curso, misiones, herramientas | E2: `design/v2/brief-msg1.md` |
 | `tracks` | `TracksScreen` | pestaña Rutas, filas de «Tus rutas» | catálogo (filtros Todas / Aprender / Certificaciones) y detalle (vistas Currículo / Mapa / Glosario; en cada módulo disponible, la prueba para saltarlo si el backend puede montarla, O1.4) | E2: `design/v2/brief-msg2.md` §A–B |
 | `lesson` | `LessonScreen` | «Aprender», una habilidad en Rutas | pasos de texto + paso de ejemplo | E2: `design/v2/brief-msg2.md` §C |
 | `quiz` | `QuizScreen` | pestaña Practicar, «Practicar», repaso | pregunta, ejecución de código, feedback, tutor («¿Por qué?», con etiqueta de IA y «Reportar esta explicación»; se apaga en Ajustes), «Reportar un problema» con la pregunta | E2: `design/v2/brief-msg2.md` §D |
