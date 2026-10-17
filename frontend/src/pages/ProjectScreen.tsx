@@ -1,12 +1,14 @@
-import { useState, useCallback, useRef, lazy, Suspense } from 'react';
+import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { useRuntime, type RuntimeType } from '../hooks/useRuntime';
 import {
+  ApiError,
   projects as projectsApi,
   type ProjectStepRead,
+  type ProjectSubmissionRead,
 } from '../services/api';
 import styles from './ProjectScreen.module.css';
 
@@ -34,7 +36,9 @@ function ProjectList({ onSelect }: { onSelect: (slug: string) => void }) {
   const { t } = useTranslation();
   const lang = useAppStore((s) => s.user.language);
   const setScreen = useAppStore((s) => s.setScreen);
-  const listing = useApi(() => projectsApi.list(), []);
+  // 43.6: desde el detalle de una ruta, solo los de esa ruta.
+  const trackId = useAppStore((s) => s.projectsTrackId);
+  const listing = useApi(() => projectsApi.list(trackId ?? undefined), [trackId]);
 
   const runtimeClass: Record<string, string> = {
     python: styles.runtimePython,
@@ -92,22 +96,57 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
   const [error, setError] = useState('');
   const [testResult, setTestResult] = useState<'pass' | 'fail' | null>(null);
   const [isRunning, setIsRunning] = useState(false);
-  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
-  const [projectCompleted, setProjectCompleted] = useState(false);
+  // 43.6 (ADR-65 D8): el progreso es el del servidor. Antes vivía solo aquí y
+  // se perdía al salir; el servidor nunca se enteraba.
+  const [submission, setSubmission] = useState<ProjectSubmissionRead | null>(null);
+  const [syncFailed, setSyncFailed] = useState(false);
+  const positioned = useRef(false);
   const outputRef = useRef<HTMLDivElement>(null);
 
   const runtime: RuntimeType = project.data?.runtime ?? 'python';
   const { status: runtimeStatus, runCode } = useRuntime(runtime);
 
-  const step: ProjectStepRead | undefined = project.data?.steps[currentStep];
+  const steps = project.data?.steps ?? [];
+  const step: ProjectStepRead | undefined = steps[currentStep];
+  const serverStep = submission?.current_step ?? 1;
+  const projectCompleted = submission?.completed ?? false;
+  const isDone = (s: ProjectStepRead) => projectCompleted || s.step_number < serverStep;
+  const isOpen = (s: ProjectStepRead) => projectCompleted || s.step_number <= serverStep;
+
+  useEffect(() => {
+    let alive = true;
+    projectsApi
+      .progress(slug)
+      .catch((e: unknown) => {
+        if (!(e instanceof ApiError && e.status === 404)) throw e;
+        // Si otra petición lo empezó a la vez (StrictMode, dos pestañas), 409:
+        // el progreso ya existe y se lee.
+        return projectsApi.start(slug).catch((err: unknown) => {
+          if (err instanceof ApiError && err.status === 409) return projectsApi.progress(slug);
+          throw err;
+        });
+      })
+      .then((sub) => { if (alive) setSubmission(sub); })
+      .catch(() => { if (alive) setSyncFailed(true); });
+    return () => { alive = false; };
+  }, [slug]);
+
+  // Se abre en el paso donde se dejó, una vez, cuando llegan los dos datos.
+  useEffect(() => {
+    if (positioned.current || !submission || steps.length === 0) return;
+    positioned.current = true;
+    const idx = steps.findIndex((s) => s.step_number === submission.current_step);
+    setCurrentStep(submission.completed || idx < 0 ? steps.length - 1 : idx);
+  }, [submission, steps]);
 
   const getCode = useCallback(
     (stepIdx: number) => {
       if (codes[stepIdx] !== undefined) return codes[stepIdx];
       const s = project.data?.steps[stepIdx];
-      return s?.starter_code ?? '';
+      const saved = s ? submission?.step_code?.[String(s.step_number)] : undefined;
+      return saved ?? s?.starter_code ?? '';
     },
-    [codes, project.data]
+    [codes, project.data, submission]
   );
 
   const handleRun = useCallback(async () => {
@@ -144,25 +183,47 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
     const combined = `${userCode}\n\n${testCode}`;
 
     const result = await runCode(combined, 15000);
+    const clientPassed = !result.timedOut && !result.error;
 
     if (result.timedOut) {
       setError(t('playground.timedOut'));
-      setTestResult('fail');
     } else if (result.error) {
       setError(result.error);
       setOutput(result.output);
-      setTestResult('fail');
     } else {
       setOutput(result.output);
-      setTestResult('pass');
-      setCompletedSteps((prev) => new Set(prev).add(currentStep));
-      if (project.data && currentStep === project.data.steps.length - 1) {
-        setProjectCompleted(true);
+    }
+
+    if (submission && !submission.completed && step.step_number === submission.current_step) {
+      // El paso actual cuenta solo si el servidor lo acepta: en SQL ejecuta él
+      // los tests; en Python/JS guarda el código y el resultado del navegador.
+      try {
+        const res = await projectsApi.submitStep(slug, step.step_number, userCode, clientPassed);
+        setSubmission(res);
+        setSyncFailed(false);
+        if (res.step_passed) {
+          setTestResult('pass');
+        } else {
+          setTestResult('fail');
+          if (res.timed_out) setError(t('playground.timedOut'));
+          else if (res.error) setError(res.error);
+          else if (clientPassed) {
+            // En SQL el servidor ejecutó los tests; en Python/JS no los ejecuta y
+            // solo rechaza el código de partida sin tocar.
+            setError(t(runtime === 'sql' ? 'project.serverFailed' : 'project.starterUnchanged'));
+          }
+        }
+      } catch {
+        setSyncFailed(true);
+        setTestResult(null);
       }
+    } else {
+      // Repasar un paso ya hecho: solo la comprobación del navegador.
+      setTestResult(clientPassed ? 'pass' : 'fail');
     }
     setIsRunning(false);
     outputRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [runCode, isRunning, step, getCode, currentStep, t, project.data]);
+  }, [runCode, isRunning, step, getCode, currentStep, t, submission, slug, runtime]);
 
   if (project.loading) {
     return (
@@ -196,21 +257,27 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
           {lang === 'es' ? project.data.name_es : project.data.name_en}
         </span>
         <span className={styles.badge}>
-          {completedSteps.size}/{totalSteps}
+          {steps.filter(isDone).length}/{totalSteps}
         </span>
       </div>
 
       {projectCompleted && (
         <div className={styles.completedBanner}>
-          {t('project.completed')} 🎉
+          {t('project.completed')} <span aria-hidden="true">🎉</span>
+          {!submission?.verified && <p className={styles.note}>{t('project.unverified')}</p>}
         </div>
       )}
+      {syncFailed && <p role="alert" className={styles.errorOutput}>{t('project.syncFailed')}</p>}
+      {!projectCompleted && submission && <p className={styles.note}>{t('project.saved')}</p>}
 
       <div className={styles.stepTabs}>
         {project.data.steps.map((s, idx) => (
           <button
             key={s.id}
-            className={`${styles.stepTab} ${idx === currentStep ? styles.active : ''} ${completedSteps.has(idx) ? styles.completed : ''}`}
+            className={`${styles.stepTab} ${idx === currentStep ? styles.active : ''} ${isDone(s) ? styles.completed : ''}`}
+            disabled={!isOpen(s)}
+            title={isOpen(s) ? undefined : t('project.lockedStep')}
+            aria-label={isDone(s) ? `${idx + 1} ✓` : String(idx + 1)}
             onClick={() => {
               setCurrentStep(idx);
               setOutput('');
@@ -218,7 +285,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
               setTestResult(null);
             }}
           >
-            {completedSteps.has(idx) ? '✓' : idx + 1}
+            <span aria-hidden="true">{isDone(s) ? '✓' : idx + 1}</span>
           </button>
         ))}
       </div>

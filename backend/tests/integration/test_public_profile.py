@@ -146,6 +146,31 @@ async def test_incomplete_project_submissions_are_not_shown(client, db_session) 
 
 
 @pytest.mark.asyncio
+async def test_unverified_completed_project_is_not_shown(client, db_session) -> None:
+    """43.6: un proyecto Python/JS se valida en el navegador; hasta que haya
+    sandbox su finalización no es evidencia y no sale en la página pública."""
+    from datetime import UTC, datetime
+
+    user = await _user(db_session)
+    project = Project(
+        id=uuid.uuid4(), slug="rest-api-fastapi", track_id="track01", runtime="python",
+        name_es="API REST con FastAPI", name_en="REST API with FastAPI",
+    )
+    db_session.add(project)
+    await db_session.flush()
+    db_session.add(
+        ProjectSubmission(
+            project_id=project.id, user_id=user.id, completed=True,
+            completed_at=datetime.now(UTC), verified=False,
+        )
+    )
+    await db_session.commit()
+
+    res = await client.get(f"{BASE}/{user.username}")
+    assert res.json()["projects_completed"] == []
+
+
+@pytest.mark.asyncio
 async def test_completed_project_submission_is_shown(client, db_session) -> None:
     from datetime import UTC, datetime
 
@@ -159,7 +184,7 @@ async def test_completed_project_submission_is_shown(client, db_session) -> None
     db_session.add(
         ProjectSubmission(
             project_id=project.id, user_id=user.id, completed=True,
-            completed_at=datetime.now(UTC),
+            completed_at=datetime.now(UTC), verified=True,
         )
     )
     await db_session.commit()

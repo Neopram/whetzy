@@ -15,6 +15,7 @@ import {
   exams as examsApi,
   progress as progressApi,
   glossary as glossaryApi,
+  projects as projectsApi,
   type CurriculumModule,
   type CurriculumSkill,
   type TestOutBlueprint,
@@ -195,6 +196,9 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
   const [offerPlacement, setOfferPlacement] = useState(false);
   const [view, setView] = useState<View>('curriculum');
   const cur = useApi(() => progressApi.curriculum(track.id), [track.id]);
+  // 43.6 (ADR-65 D8): la entrada a Proyectos sale solo si la ruta tiene alguno.
+  const trackProjects = useApi(() => projectsApi.list(track.id), [track.id]);
+  const openProjects = useAppStore((s) => s.openProjects);
   // The blueprint is derived from that track's skills, so the figures on the
   // final-exam card are the ones the exam will actually use (17.2).
   const { data: blueprint } = useApi<TrackExamBlueprint>(
@@ -335,6 +339,19 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
                 minutes: blueprint.duration_minutes,
                 pass: blueprint.pass_pct,
               })}
+            </span>
+          </button>
+        )}
+        {(trackProjects.data?.length ?? 0) > 0 && (
+          <button
+            type="button"
+            className={styles.examCard}
+            data-testid="track-projects"
+            onClick={() => openProjects(track.id)}
+          >
+            <span className={styles.examTitle}>{t('project.fromTrack')}</span>
+            <span className={styles.examMeta}>
+              {t('project.count', { count: trackProjects.data?.length ?? 0 })}
             </span>
           </button>
         )}

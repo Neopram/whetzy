@@ -81,11 +81,13 @@ async def test_project_crud(client: AsyncClient, db_session: AsyncSession, auth_
     r = await client.post(
         "/api/v1/projects/test-hello-world/submit-step",
         headers=auth_headers,
-        json={"step_number": 1, "passed": True},
+        # 43.6: Python se valida en el navegador; el código de partida no cuenta.
+        json={"step_number": 1, "code": "print('hola')", "passed": True},
     )
     assert r.status_code == 200
     result = r.json()
     assert result["completed"] is True
+    assert result["verified"] is False
 
     r = await client.get("/api/v1/projects?track_id=track01")
     assert r.status_code == 200

@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, String, Text
+from sqlalchemy import JSON, Boolean, DateTime, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -79,6 +79,15 @@ class ProjectSubmission(Base):
     )
     completed_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
+    )
+    # 43.6: el código de cada paso ({"1": "...", ...}) para retomar donde se dejó.
+    step_code: Mapped[dict[str, str]] = mapped_column(
+        JSON, nullable=False, default=dict, server_default="{}"
+    )
+    # 43.6: completado con todos los pasos validados en el servidor (hoy, solo SQL).
+    # Python/JS se validan en el navegador y no cuentan como evidencia.
+    verified: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default="false"
     )
 
     project: Mapped[Project] = relationship(back_populates="submissions")

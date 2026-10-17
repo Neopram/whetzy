@@ -29,6 +29,7 @@ export function HomeScreen() {
   const user = useAppStore((s) => s.user);
   const startQuiz = useAppStore((s) => s.startQuiz);
   const setScreen = useAppStore((s) => s.setScreen);
+  const openProjects = useAppStore((s) => s.openProjects);
   const openTrack = useAppStore((s) => s.openTrack);
   // 43.4 (ADR-65 D6): Hoy es de la ruta activa. La banda, el siguiente paso,
   // los repasos y el territorio salen solo de ella; antes mezclaban todas.
@@ -329,7 +330,7 @@ export function HomeScreen() {
             <span className={styles.toolName}>{t('playground.openPlayground')}</span>
             <span className={styles.toolMeta}>Python · SQL · JS</span>
           </button>
-          <button type="button" className={styles.tool} onClick={() => setScreen('projects')}>
+          <button type="button" className={styles.tool} onClick={() => openProjects(null)}>
             <span aria-hidden="true">🏗️</span>
             <span className={styles.toolName}>{t('project.title')}</span>
             <span className={styles.toolMeta}>{t('home.projectsMeta')}</span>
