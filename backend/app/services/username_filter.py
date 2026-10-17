@@ -53,6 +53,16 @@ def _normalize(text: str) -> str:
     return _SEPARATORS.sub("", folded.lower().translate(_LEET))
 
 
+#: 43.2 (ADR-65 D10): los términos de hasta 4 letras se comparan por palabra
+#: completa, no como substring. «computo» (⊃ «puto»), «nazionale» (⊃ «nazi») y
+#: cualquier palabra real que los contenga por casualidad dejan de dar 422 sin
+#: tener que añadirlas una a una a `ALLOWED_WORDS`. Se sigue pillando el término
+#: solo, con separadores («p-u-t-a») o con números pegados («puta123»). Coste
+#: aceptado: «fuckyou» pegado ya no se bloquea.
+_SHORT = 4
+_EDGE_DIGITS = re.compile(r"^\d+|\d+$")
+
+
 def contains_blocked_word(text: str) -> bool:
     # Cada palabra separada por espacio se juzga por su cuenta: así "mi
     # reputation" no se lee pegado como "mireputation" antes de mirar la
@@ -62,6 +72,13 @@ def contains_blocked_word(text: str) -> bool:
         normalized = _normalize(raw_word)
         if normalized in ALLOWED_WORDS:
             continue
-        if any(word in normalized for word in BLOCKED_WORDS):
-            return True
+        bare = _normalize(_EDGE_DIGITS.sub("", _SEPARATORS.sub("", raw_word)))
+        # «fuck_you», «puta.123»: cada trozo entre separadores cuenta como palabra.
+        pieces = {_normalize(_EDGE_DIGITS.sub("", p)) for p in _SEPARATORS.split(raw_word) if p}
+        for word in BLOCKED_WORDS:
+            if len(word) <= _SHORT:
+                if word in (normalized, bare) or word in pieces:
+                    return True
+            elif word in normalized:
+                return True
     return False

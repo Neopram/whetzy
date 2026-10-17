@@ -32,6 +32,19 @@ class UserCreate(UserBase):
     password: str = Field(min_length=8, max_length=128)
     age_confirmed: bool = False
 
+    # 43.2 (ADR-65 D10): antes de validar, fuera los espacios que deja el
+    # autocompletado del móvil, y el email en minúsculas: `Maria@Gmail.COM` se
+    # guardaba tal cual y quien entraba con `maria@gmail.com` no la encontraba.
+    @field_validator("email", "username", "display_name", mode="before")
+    @classmethod
+    def _recortar(cls, value: object) -> object:
+        return value.strip() if isinstance(value, str) else value
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def _email_en_minusculas(cls, value: object) -> object:
+        return value.lower() if isinstance(value, str) else value
+
     # Solo al escribir (19.11): `UserRead` también hereda de `UserBase` pero
     # lee de `from_attributes`, y un filtro aquí reventaría leer una cuenta ya
     # existente si la lista de palabras cambia después de crearla.

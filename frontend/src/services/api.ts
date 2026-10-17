@@ -359,7 +359,7 @@ export const auth = {
     });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
-      throw new Error(typeof body.detail === 'string' ? body.detail : 'Incorrect email or password');
+      throw new ApiError(typeof body.detail === 'string' ? body.detail : 'Incorrect email or password', res.status, body.detail);
     }
     // Con 2FA la contraseña sola no abre sesión: llega el reto del segundo paso.
     const body = (await res.json()) as { access_token: string; refresh_token: string } | MfaChallenge;
