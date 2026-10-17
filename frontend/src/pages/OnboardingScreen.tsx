@@ -63,7 +63,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
 
   const finish = (takeTest: boolean) => {
     if (!trackId) return
-    useAppStore.setState({ selectedTrackId: trackId })
+    useAppStore.setState({ selectedTrackId: trackId, activeTrackId: trackId })
     updateUser({ onboardingCompleted: true })
     void auth
       .updateMe({
