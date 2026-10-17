@@ -33,6 +33,11 @@ async def test_practicar_tras_la_prueba_de_nivel_no_rompe(
     )
     assert answer.status_code == 200 and answer.json()["finished"], answer.text
 
+    # 43.5 (D7, H.60): una prueba de 1 pregunta no desbloquea la práctica (hace
+    # falta ≥ 70 % de ≥ 2 en el módulo); se abre la lección, como haría el alumno.
+    lesson = await client.get(f"/api/v1/lessons/{content_seed['skill_id']}", headers=auth_headers)
+    assert lesson.status_code == 200, lesson.text
+
     quiz = await client.post(
         "/api/v1/quiz/start",
         json={"mode": "study", "skill_id": content_seed["skill_id"]},

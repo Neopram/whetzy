@@ -19,6 +19,7 @@ from unittest.mock import AsyncMock, patch
 from sqlalchemy import select
 
 from app.core.security import create_access_token
+from app.models.lesson_completion import LessonCompletion
 from app.models.push_subscription import PushSubscription
 from app.models.user import User
 
@@ -275,6 +276,12 @@ async def test_duel_challenge_sends_push_to_opponent(
         language="es",
     )
     db_session.add(opponent)
+    await db_session.flush()
+    # 43.5 (D7): un duelo solo sale sobre una skill con la lección vista por los dos.
+    db_session.add_all([
+        LessonCompletion(user_id=user.id, skill_id=content_seed["skill_id"]),
+        LessonCompletion(user_id=opponent.id, skill_id=content_seed["skill_id"]),
+    ])
     await db_session.commit()
 
     push_mock = AsyncMock(return_value=1)
