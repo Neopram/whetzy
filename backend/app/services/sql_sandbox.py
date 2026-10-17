@@ -10,7 +10,8 @@ Encierro:
   las extensiones están desactivadas por defecto en `sqlite3`;
 - sin red: SQLite no tiene funciones de red;
 - con tiempo: el manejador de progreso aborta la sentencia al pasar el límite;
-- con tamaño: `max_page_count` acota la base y `SQLITE_LIMIT_LENGTH` cada valor;
+- con tamaño: `max_page_count` acota la base y `SQLITE_LIMIT_LENGTH` cada valor,
+  que además acota el tiempo de una sola llamada;
 - con memoria: `hard_heap_limit` acota lo que SQLite reserva (ordenaciones y
   tablas temporales en memoria, que `max_page_count` no ve). Es un límite del
   proceso, no de la conexión: el backend solo usa SQLite aquí, y dos
@@ -31,7 +32,12 @@ TIME_LIMIT_S = 2.0
 MAX_CODE_CHARS = 20_000  # lo que envía el alumno (lo valida el schema)
 MAX_SCRIPT_CHARS = 100_000  # alumno + test_code del paso
 MAX_PAGES = 2_560  # 10 MB con páginas de 4 KB
-MAX_VALUE_BYTES = 1_000_000
+# Tope de cada valor. El reloj solo se mira entre instrucciones de la VM, así
+# que el coste de UNA llamada (un `replace` es cuadrático) tiene que ser
+# pequeño: con 1 MB, un solo `replace` tardaba 6 s con el límite en 2 s; con
+# 16 KB, el peor caso que cabe en 20.000 caracteres de código tarda ~0,8 s
+# (cuarto §7 de 43.6, 2026-10-17, medido).
+MAX_VALUE_BYTES = 16_000
 MAX_HEAP_BYTES = 64 * 1024 * 1024
 _PROGRESS_EVERY = 1_000  # instrucciones de la VM entre comprobaciones del reloj
 
