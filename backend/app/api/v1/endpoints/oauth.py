@@ -115,7 +115,7 @@ async def oauth_providers(response: Response) -> dict[str, list[str]]:
     """Proveedores con credenciales configuradas en este servidor.
 
     El frontend pinta solo los botones que salen aquí: un «Continuar con
-    Google» que responde 503 al pulsarlo es peor que ningún botón.
+    Google» que responde 404 al pulsarlo es peor que ningún botón.
     """
     response.headers["Cache-Control"] = "public, max-age=3600"
     return {"providers": [name for name, cfg in _PROVIDERS.items() if cfg["client_id"]()]}
@@ -134,8 +134,10 @@ async def oauth_start(
     cfg = _get_provider(provider)
 
     if provider != "test" and not cfg["client_id"]():
+        # 404, como un proveedor desconocido: en este servidor no existe. Era 503,
+        # que Sentry reporta como error y avisaba por un enlace viejo o un bot.
         raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=f"{provider} login is not configured on this server",
         )
 
