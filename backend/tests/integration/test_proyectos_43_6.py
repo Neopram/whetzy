@@ -352,3 +352,21 @@ def test_sandbox_mira_el_reloj_a_menudo():
         worst = max(worst, time.monotonic() - t0)
         assert r.timed_out and not r.passed
     assert worst < 1.0
+
+
+def test_sandbox_corta_una_fila_con_muchas_llamadas_caras():
+    """Sexto §7 de 43.6 (2026-10-18): SQLite no mira el reloj entre las
+    expresiones de una misma fila, así que una fila con muchas llamadas caras
+    (aquí 20 `LIKE` de un patrón de 7.800 caracteres sobre 15.800) no se cortaba:
+    3,8 s con el límite en 2 s y aprobaba; con 100 llamadas, 19 s (medido). El
+    límite lo pone ahora un proceso hijo que se mata al vencer el plazo."""
+    likes = ", ".join(["v LIKE p"] * 20)
+    code = (
+        "WITH s(v, p) AS (SELECT hex(zeroblob(7900)), "
+        "'%' || substr(hex(zeroblob(7900)), 1, 7800) || 'x') "
+        f"SELECT {likes} FROM s;"
+    )
+    t0 = time.monotonic()
+    r = check_sql(code, NO_OP, time_limit_s=0.5)
+    assert r.timed_out and not r.passed
+    assert time.monotonic() - t0 < 1.5

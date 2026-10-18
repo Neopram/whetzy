@@ -1289,3 +1289,18 @@ async def test_answer_event_id_of_another_user_does_not_leak_the_answer(
     )
     assert r.status_code == 409, r.text
     assert "correct_index" not in r.text
+
+
+async def test_quiz_start_rejects_placement_mode(client, auth_headers, content_seed):
+    """§7 de 43.5 (2026-10-17): `/quiz/start` con `mode=placement` abría un quiz
+    sin puerta de lección que, al terminar, contaba como prueba de nivel para
+    H.60 (`strong_module_ids` solo mira `mode == "placement"`): dos aciertos
+    desbloqueaban la práctica de un módulo sin lección, y `/quiz/answer`
+    devuelve la respuesta correcta para reintentar. La prueba de nivel va por
+    `/placement/*`; este endpoint ya no acepta ese modo."""
+    r = await client.post(
+        f"{QUIZ}/start",
+        json={"track_id": content_seed["track_id"], "mode": "placement"},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 422, r.text
