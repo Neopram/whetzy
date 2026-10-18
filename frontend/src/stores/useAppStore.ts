@@ -390,7 +390,8 @@ export const useAppStore = create<AppState>()(
 
       language: 'es',
       setLanguage: (lang) => set({ language: lang }),
-      soundEnabled: true,
+      // Apagado por defecto (46.2, plan §6.0; D3 del dueño puede cambiarlo).
+      soundEnabled: false,
       toggleSound: () => set((s) => ({ soundEnabled: !s.soundEnabled })),
       aiExplanations: true,
       toggleAiExplanations: () => set((s) => ({ aiExplanations: !s.aiExplanations })),
@@ -399,6 +400,14 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'learning-engine-store',
+      // v1 (46.2): hasta aquí `soundEnabled` se guardaba en true sin que nada
+      // sonara ni hubiera interruptor; nadie lo eligió, así que se apaga.
+      version: 1,
+      migrate: (persisted, version) => {
+        const state = (persisted ?? {}) as Record<string, unknown>;
+        if (version < 1) state.soundEnabled = false;
+        return state as unknown as AppState;
+      },
       partialize: (state) => ({
         user: state.user,
         language: state.language,
