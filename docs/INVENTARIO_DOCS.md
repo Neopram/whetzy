@@ -24,10 +24,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 |---|---|
 | normativo-vivo | 23 |
 | referencia-viva | 65 |
-| histórico | 51 |
+| histórico | 52 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **184** |
+| **Total** | **185** |
 
 ## Raíz del repo y otras carpetas
 
