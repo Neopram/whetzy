@@ -5,9 +5,20 @@ import { bandForDomain, bandForSkill, examBand, overallBand, MIN_EVIDENCE_ANSWER
 describe('bandas de evidencia (ADR-60)', () => {
   it('por debajo de 7 respuestas es «evidencia insuficiente», acierte o no', () => {
     expect(MIN_EVIDENCE_ANSWERS).toBe(7);
-    expect(bandForSkill({ attempts: 6, p_known: 0.99 })).toBe('insufficient');
-    expect(bandForSkill({ attempts: 7, p_known: 0.99 })).toBe('strong');
-    expect(bandForSkill({ attempts: 20, p_known: 0.6 })).toBe('developing');
+    expect(bandForSkill({ attempts: 6, p_known: 0.99, correct_count: 6 })).toBe('insufficient');
+    expect(bandForSkill({ attempts: 7, p_known: 0.99, correct_count: 7 })).toBe('strong');
+    expect(bandForSkill({ attempts: 20, p_known: 0.6, correct_count: 14 })).toBe('developing');
+  });
+
+  it('«Fuerte» no contradice los aciertos que la tarjeta enseña (e2e, 2026-10-18)', () => {
+    // Medido en local: 10 respuestas, 4 aciertos y p_known 0,971 — BKT pesa lo
+    // último y tres aciertos seguidos tras fallos lo suben de ~0,23 a ~0,97.
+    expect(bandForSkill({ attempts: 10, p_known: 0.971, correct_count: 4 })).toBe('developing');
+    // El suelo es 7 de cada 10, inclusive.
+    expect(bandForSkill({ attempts: 10, p_known: 0.99, correct_count: 6 })).toBe('developing');
+    expect(bandForSkill({ attempts: 10, p_known: 0.99, correct_count: 7 })).toBe('strong');
+    // Precisión alta no basta sin que el motor la dé por dominada.
+    expect(bandForSkill({ attempts: 10, p_known: 0.9, correct_count: 10 })).toBe('developing');
   });
 
   it('un dominio necesita evidencia además de estar listo', () => {

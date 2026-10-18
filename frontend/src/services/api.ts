@@ -651,6 +651,8 @@ export interface CurriculumSkill {
   p_known: number;
   mastered: boolean;
   attempts: number;
+  /** La banda «Fuerte» exige además precisión (evidenceBand.ts). */
+  correct_count: number;
   /** 32.4: si ya abrió la lección de este skill — el backend bloquea el quiz si no. */
   lesson_seen: boolean;
   /** 43.5 (H.60): se puede practicar sin abrir la lección. */
