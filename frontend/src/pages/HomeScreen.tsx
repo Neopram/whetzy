@@ -10,6 +10,7 @@ import { listVariants, listItemVariants } from '../lib/motion';
 import { bandForSkill, overallBand, MIN_EVIDENCE_ANSWERS, type EvidenceBand } from '../lib/evidenceBand';
 import { nextLessonSkillId } from '../lib/nextStep';
 import styles from './HomeScreen.module.css';
+import { TrackIcon } from '../components/common/AppIcon';
 
 // Saludo entero por clave: «Buenos» + «noches» salía «Buenos noches».
 function greetingKey(): 'home.greetingMorning' | 'home.greetingAfternoon' | 'home.greetingEvening' {
@@ -242,7 +243,7 @@ export function HomeScreen() {
           <div className={styles.trackList}>
             {shownTracks.map((tr) => (
               <button key={tr.track_id} type="button" className={styles.trackRow} onClick={() => openTrack(tr.track_id)}>
-                <span className={styles.trackIcon} aria-hidden="true">{tr.icon}</span>
+                <span className={styles.trackIcon} aria-hidden="true"><TrackIcon trackId={tr.track_id} fallback={tr.icon} size={28} /></span>
                 <span className={styles.trackBody}>
                   <span className={styles.trackName}>{lang === 'es' ? tr.name_es : tr.name_en}</span>
                   {/* Sin ninguna dominada, una barra vacía no dice nada: basta el recuento. */}

@@ -5,6 +5,7 @@ import { useApi } from '../hooks/useApi';
 import { content as contentApi, progress as progressApi, type TrackRead } from '../services/api';
 import { nextLessonSkillId } from '../lib/nextStep';
 import styles from './MarketplaceScreen.module.css';
+import { TrackIcon } from '../components/common/AppIcon';
 
 /**
  * Catálogo de lo que se puede estudiar.
@@ -121,7 +122,7 @@ export function MarketplaceScreen() {
             return (
               <li key={tr.id} className={styles.mktCard} style={{ ['--mkt-accent' as string]: tr.color }}>
                 <div className={styles.mktCardTop}>
-                  <span className={styles.mktIcon} aria-hidden="true">{tr.icon}</span>
+                  <span className={styles.mktIcon} aria-hidden="true"><TrackIcon trackId={tr.id} fallback={tr.icon} size={32} /></span>
                   {tr.is_certification && (
                     <span className={styles.mktBadge}>{tr.cert_provider ?? t('marketplace.certification')}</span>
                   )}

@@ -24,6 +24,7 @@ import {
 } from '../services/api';
 import { canPractice } from '../lib/nextStep';
 import styles from './TracksScreen.module.css';
+import { TrackIcon } from '../components/common/AppIcon';
 
 type View = 'curriculum' | 'map' | 'glossary';
 type Filter = 'all' | 'learn' | 'cert';
@@ -147,7 +148,7 @@ function Catalogue({
                 onClick={() => onPick(tr.id)}
               >
                 <span className={styles.trackIcon} aria-hidden="true">
-                  {tr.icon || ICON_FALLBACK}
+                  <TrackIcon trackId={tr.id} fallback={tr.icon || ICON_FALLBACK} size={28} />
                   <span className={styles.hue} style={{ background: tr.color }} />
                 </span>
                 <span className={styles.trackBody}>
@@ -229,7 +230,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
       )}
 
       <header className={styles.hero}>
-        <span className={styles.heroIcon} aria-hidden="true">{track.icon || ICON_FALLBACK}</span>
+        <span className={styles.heroIcon} aria-hidden="true"><TrackIcon trackId={track.id} fallback={track.icon || ICON_FALLBACK} size={56} /></span>
         <div className={styles.heroBody}>
           <p className={styles.eyebrow}>
             {track.is_certification
