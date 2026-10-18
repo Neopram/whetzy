@@ -333,6 +333,17 @@
 .missionXp { color: var(--le-text-muted); }
 .missionDone { color: var(--le-success-text); }
 
+/* 46.3b: misión completada desde la última visita: check que se dibuja. */
+.check {
+  margin-right: 4px;
+  vertical-align: -2px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .territoryGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -364,6 +375,20 @@
   font-variant-numeric: tabular-nums;
 }
 .dominated .nodeMastery { color: var(--le-success-text); }
+
+/* 46.3b: skill que subió de banda desde la última visita: el borde late una
+   vez en el color de su banda. Con movimiento reducido, solo el borde. */
+.bandUp { border-color: var(--le-brand); }
+.bandUp.dominated { border-color: var(--le-success-text); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .bandUp { animation: bandUp 600ms ease-out 1; }
+}
+
+@keyframes bandUp {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--le-brand) 45%, transparent); }
+  100% { box-shadow: 0 0 0 8px transparent; }
+}
 
 .tools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--le-space-xs); }
 
