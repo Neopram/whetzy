@@ -24,9 +24,11 @@ dueño, 2026-10-17).
 from __future__ import annotations
 
 import asyncio
+import multiprocessing
 import sqlite3
 import time
 from dataclasses import dataclass
+from multiprocessing.connection import Connection
 
 TIME_LIMIT_S = 2.0
 MAX_CODE_CHARS = 20_000  # lo que envía el alumno (lo valida el schema)
@@ -88,6 +90,14 @@ def has_statement(sql: str) -> bool:
     return False
 
 
+# Margen sobre el límite antes de matar el proceso hijo: el manejador de
+# progreso corta casi todo antes y devuelve `timed_out` con su propio mensaje.
+_KILL_GRACE_S = 0.5
+# forkserver: el hijo nace de un proceso limpio, no del worker con hilos y
+# conexiones abiertas (fork desde un hilo de asyncio.to_thread no es seguro).
+_CTX = multiprocessing.get_context("forkserver")
+
+
 def check_sql(code: str, test: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCheck:
     """Ejecuta `code` y luego `test` en una base nueva en memoria; pasa si no hay error.
 
@@ -96,11 +106,45 @@ def check_sql(code: str, test: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCh
     el paso pasaba sin ejecutar nada (§7 de 43.6, 2026-10-17). Y sin test que
     ejecutar no se aprueba: un paso con el test vacío, en blanco o solo
     comentarios pasaba sin comprobar nada (segundo §7, mismo día).
+
+    Corre en un proceso hijo que se mata al vencer el plazo: SQLite no mira el
+    reloj entre las expresiones de una misma fila, y una fila con muchas
+    llamadas caras tardaba 19 s con el límite en 2 s (sexto §7, 2026-10-18).
+    De paso, `hard_heap_limit` acota la memoria de ese hijo y no la del worker.
     """
     if len(code) + len(test) > MAX_SCRIPT_CHARS:
         return SqlCheck(passed=False, error="code too long")
     if not has_statement(test):
         return SqlCheck(passed=False, error="step has no test")
+    receiver, sender = _CTX.Pipe(duplex=False)
+    child = _CTX.Process(
+        target=_check_in_child, args=(code, test, time_limit_s, sender), daemon=True
+    )
+    child.start()
+    sender.close()
+    try:
+        if receiver.poll(time_limit_s + _KILL_GRACE_S):
+            result: SqlCheck = receiver.recv()
+            return result
+        return SqlCheck(passed=False, timed_out=True)
+    except EOFError:
+        # El hijo murió sin responder (memoria del sistema, señal): falla el paso.
+        return SqlCheck(passed=False, error="sandbox crashed")
+    finally:
+        if child.is_alive():
+            child.kill()
+        child.join()
+        receiver.close()
+
+
+def _check_in_child(code: str, test: str, time_limit_s: float, sender: Connection) -> None:
+    try:
+        sender.send(_check_here(code, test, time_limit_s))
+    finally:
+        sender.close()
+
+
+def _check_here(code: str, test: str, time_limit_s: float) -> SqlCheck:
     conn = sqlite3.connect(":memory:", isolation_level=None, check_same_thread=False)
     deadline = time.monotonic() + time_limit_s
     expired = False
@@ -140,5 +184,5 @@ def check_sql(code: str, test: str, time_limit_s: float = TIME_LIMIT_S) -> SqlCh
 async def check_sql_async(
     code: str, test: str, time_limit_s: float = TIME_LIMIT_S
 ) -> SqlCheck:
-    """`check_sql` en un hilo: el límite de tiempo lo pone el propio SQLite."""
+    """`check_sql` en un hilo, para no bloquear el bucle mientras espera al hijo."""
     return await asyncio.to_thread(check_sql, code, test, time_limit_s)
