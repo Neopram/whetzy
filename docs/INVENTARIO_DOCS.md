@@ -24,10 +24,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 |---|---|
 | normativo-vivo | 23 |
 | referencia-viva | 65 |
-| histórico | 49 |
+| histórico | 50 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **182** |
+| **Total** | **183** |
 
 ## Raíz del repo y otras carpetas
 
@@ -159,6 +159,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/support/response-templates-en.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/support/response-templates-es.md` | referencia-viva | plantillas de respuesta de soporte ES/EN | se queda | 2026-09-23 |
 | `docs/ui-snapshots/34.1/README.md` | histórico | evidencia de capturas de 34.1 | se queda (junto a sus PNG) | 2026-09-28 |
+| `docs/ui-snapshots/46.1/README.md` | histórico | evidencia de capturas de la fila 46.1 (respuesta del quiz con la animación dentro de la tarjeta) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/46.2/README.md` | histórico | evidencia de capturas de la fila 46.2 (interruptores de sonido y vibración en Perfil) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/46.3a/README.md` | histórico | evidencia de capturas de la fila 46.3a (estados comunes con tokens `--le-*`, hover de «Reintentar» en modo claro) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useLayoutEffect, useRef, lazy, Suspense } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
@@ -8,6 +8,8 @@ import { enqueue, offlineEventId } from '../services/offlineQueue';
 import { Button } from '../components/common/Button';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
+import { ComboRing, COMBO_STEPS } from '../components/quiz/ComboRing';
+import { emit as emitFx, emitMany as emitFxMany } from '../lib/feedbackFx';
 import { BandChip } from '../components/common/BandChip';
 import { bandForSkill } from '../lib/evidenceBand';
 import { WhyButton } from '../components/quiz/WhyButton';
@@ -71,6 +73,9 @@ export function QuizScreen() {
   const [summary, setSummary] = useState<QuizEndResponse | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [lottieSrc, setLottieSrc] = useState<string | null>(null);
+  // 46.1: con movimiento reducido no se monta el Player de Lottie.
+  const reduceMotion = useReducedMotion();
+  const [xpPop, setXpPop] = useState<{ key: number; xp: number } | null>(null);
   // Dominio de la skill que se esta practicando, tal y como lo devuelve el
   // motor BKT al corregir. Empieza en null a proposito: hasta la primera
   // respuesta no hay medicion, y una barra a medias inventada es peor que
@@ -201,6 +206,8 @@ export function QuizScreen() {
         setCombo(res.combo);
         setXpEarned((x) => x + res.xp_earned);
         // Admitting ignorance is not a failure, so it gets no failure animation.
+        // 46.1: la animación va dentro de la tarjeta de respuesta, no en un
+        // overlay que tapaba el código 1,4 s.
         setLottieSrc(
           declaredUnknown
             ? null
@@ -211,10 +218,18 @@ export function QuizScreen() {
                 : '/lottie/incorrect.json'
         );
         setTimeout(() => setLottieSrc(null), 1400);
+        // Sonido y vibración (46.2): un evento por nivel; el combo solo al
+        // cruzar un umbral del servidor (×2/×3/×5).
+        const crossed = COMBO_STEPS.find(([at]) => at === res.combo);
+        if (declaredUnknown) emitFx({ type: 'idk' });
+        else if (crossed) emitFxMany([{ type: 'correct' }, { type: 'combo', value: crossed[1] }]);
+        else emitFx({ type: res.correct ? 'correct' : 'wrong' });
         if (declaredUnknown) {
           showToast(t('quiz.unknownAck'), 'info');
         } else if (res.correct) {
-          showToast(`+${res.xp_earned} XP${res.combo >= 3 ? ` · ${t('quiz.comboLabel', { n: res.combo })}` : ''}`, 'success');
+          // El «+XP» sale junto al marcador de XP, no en un toast que pisaba
+          // la barra de progreso (46.1).
+          setXpPop({ key: Date.now(), xp: res.xp_earned });
         } else {
           showToast(t('quiz.incorrect'), 'error');
         }
@@ -334,6 +349,7 @@ export function QuizScreen() {
       setIndex((i) => i + 1);
       setSelected(null);
       setFeedback(null);
+      setLottieSrc(null);
       setTimer(30);
       questionStart.current = Date.now();
     } else {
@@ -495,8 +511,21 @@ export function QuizScreen() {
   const statsBar = (
     <div className={styles.statsBar}>
       <span className={`${styles.diffBadge} ${diffClass}`}>{t(`quiz.diff.${question.difficulty_tier}`)}</span>
-      {combo > 0 && <span className={styles.combo}>{t('quiz.comboLabel', { n: combo })}</span>}
-      <span className={styles.xpBadge}><b>{xpEarned}</b> XP</span>
+      {combo > 0 && <ComboRing combo={combo} />}
+      <span className={styles.xpBadge}>
+        <b>{xpEarned}</b> XP
+        {xpPop && (
+          <motion.span
+            key={xpPop.key}
+            className={styles.xpPop}
+            role="status"
+            initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            +{xpPop.xp} XP
+          </motion.span>
+        )}
+      </span>
     </div>
   );
 
@@ -560,9 +589,16 @@ export function QuizScreen() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
     >
-      <p className={styles.explanationHeader}>
-        {feedback.correct ? t('quiz.correct') : t('quiz.explanation')}
-      </p>
+      <div className={styles.explanationTop}>
+        {lottieSrc && !reduceMotion && (
+          <span className={styles.feedbackAnim} aria-hidden="true">
+            <Player src={lottieSrc} autoplay loop={false} style={{ width: 36, height: 36 }} />
+          </span>
+        )}
+        <p className={styles.explanationHeader}>
+          {feedback.correct ? t('quiz.correct') : t('quiz.explanation')}
+        </p>
+      </div>
       <p className={styles.explanationText}>
         <GlossaryText
           text={viewLang === 'es' ? feedback.explanation_es : feedback.explanation_en}
@@ -835,12 +871,6 @@ export function QuizScreen() {
                   : `▶ ${t('quiz.runToVerify')}`}
             </button>
           )}
-        </div>
-      )}
-
-      {lottieSrc && (
-        <div className={styles.lottie} aria-hidden="true">
-          <Player src={lottieSrc} autoplay loop={false} style={{ width: 160, height: 160 }} />
         </div>
       )}
 
