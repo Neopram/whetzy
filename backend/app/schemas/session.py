@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -81,6 +82,19 @@ class QuizAnswerRequest(BaseModel):
     event_id: str | None = Field(default=None, max_length=64)
 
 
+class FxEvent(BaseModel):
+    """Un hito que cruzó esta respuesta (46.1b, `docs/PLAN_UI_AVANZADA.md` §6.3).
+
+    El cliente lo celebra (`lib/feedbackFx.ts`); no lo adivina. `payload`:
+    level_up {level_before, level} · badge_earned {badge_id} ·
+    mission_completed {mission_id} · combo_multiplier {multiplier: 2|3|5} ·
+    streak_milestone {days: 7|30|100}.
+    """
+
+    type: Literal["level_up", "badge_earned", "mission_completed", "combo_multiplier", "streak_milestone"]
+    payload: dict[str, Any]
+
+
 class QuizAnswerResponse(BaseModel):
     correct: bool
     correct_index: int | None = None
@@ -98,6 +112,8 @@ class QuizAnswerResponse(BaseModel):
     next_selection_reason: SelectionReason | None = None
     # Cupo Free agotado (39.4): no hay `next_question` hasta mañana UTC.
     quota_reached: bool = False
+    # Hitos de esta respuesta, sin repetidos (46.1b). Vacío en la reentrega idempotente.
+    events: list[FxEvent] = Field(default_factory=list)
 
 
 class QuizEndRequest(BaseModel):

@@ -361,9 +361,13 @@ async def award_badges(db: AsyncSession, user: User) -> list[str]:
 
 async def apply_quiz_event(
     db: AsyncSession, user: User, correct: bool, xp_earned: int, combo: int
-) -> None:
+) -> tuple[list[str], list[str]]:
     """Advance today's mission progress after a quiz answer, auto-assigning
-    today's missions first if this is the user's first event of the day."""
+    today's missions first if this is the user's first event of the day.
+
+    Devuelve (misiones completadas ahora, insignias concedidas ahora): los
+    hitos de `QuizAnswerResponse.events` (46.1b)."""
+    completed_now: list[str] = []
     rows = await _ensure_today_missions(db, user)
     for um, mission in rows:
         if um.completed:
@@ -380,6 +384,7 @@ async def apply_quiz_event(
         if um.progress >= mission.target_value:
             um.progress = mission.target_value
             um.completed = True
+            completed_now.append(mission.id)
 
     # Grant any badges the user just qualified for (streak, xp, level, etc.).
-    await award_badges(db, user)
+    return completed_now, await award_badges(db, user)
