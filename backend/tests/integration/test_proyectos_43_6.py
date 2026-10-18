@@ -332,3 +332,23 @@ def test_sandbox_acota_el_coste_de_una_sola_llamada():
         NO_OP,
     )
     assert time.monotonic() - t0 < 1.0
+
+
+def test_sandbox_mira_el_reloj_a_menudo():
+    """Quinto §7 de 43.6 (2026-10-17): con el reloj mirado cada 1000
+    instrucciones, un bucle de `trim` caros (~45 ms cada uno con valores de
+    16 KB) metía ~100 llamadas entre dos comprobaciones y pasaba de 2 s a ~4 s
+    (medido). Tres pasadas con un límite de 0,3 s: el exceso depende de dónde
+    caiga la comprobación, y una sola podría acertar por suerte."""
+    code = (
+        "WITH RECURSIVE c(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM c WHERE i < 100000) "
+        "SELECT count(trim(substr(replace(hex(zeroblob(7999)), '0', 'a'), 1, 15998 + i * 0), "
+        "replace(hex(zeroblob(575)), '0', 'b') || 'a')) FROM c;"
+    )
+    worst = 0.0
+    for _ in range(3):
+        t0 = time.monotonic()
+        r = check_sql(code, NO_OP, time_limit_s=0.3)
+        worst = max(worst, time.monotonic() - t0)
+        assert r.timed_out and not r.passed
+    assert worst < 1.0
