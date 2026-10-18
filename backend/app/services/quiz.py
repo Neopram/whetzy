@@ -649,6 +649,14 @@ async def submit_answer(
             )
         ).scalar_one_or_none()
         if dup is not None:
+            # El `event_id` es único en toda la tabla: uno ajeno no se repite,
+            # y devolverlo filtraba la respuesta correcta y la explicación de
+            # otra persona (§7 de 43.5, 2026-10-18).
+            owner = await db.scalar(
+                select(StudySession.user_id).where(StudySession.id == dup.session_id)
+            )
+            if owner != user.id:
+                raise HTTPException(status_code=409, detail="event_id already used")
             q = (await db.execute(select(Question).where(Question.id == dup.question_id))).scalar_one()
             state = await _get_or_create_skill_state(db, user.id, q.skill_id)
             return QuizAnswerResponse(
