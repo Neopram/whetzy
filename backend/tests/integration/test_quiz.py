@@ -1262,6 +1262,35 @@ async def test_next_question_respects_the_lesson_gate(
         assert nxt is None
 
 
+async def test_answer_event_id_of_another_user_does_not_leak_the_answer(
+    client, auth_headers, user, plus_user, plus_auth_headers, db_session, content_seed
+):
+    """§7 de 43.5 (2026-10-18): la idempotencia buscaba el `event_id` sin mirar
+    de quién era la respuesta, y devolvía su `correct_index` y su explicación a
+    cualquiera que reenviara ese id. Un `event_id` ajeno es un conflicto."""
+    session_a, question_a = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
+    event_id = str(uuid.uuid4())
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={"session_id": session_a, "question_id": question_a, "selected_index": 1,
+              "response_time_ms": 1500, "event_id": event_id},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200, r.text
+
+    session_b, question_b = await _start_quiz(
+        client, plus_auth_headers, content_seed["skill_id"], db_session, plus_user
+    )
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={"session_id": session_b, "question_id": question_b, "selected_index": 1,
+              "response_time_ms": 1500, "event_id": event_id},
+        headers=_h(plus_auth_headers),
+    )
+    assert r.status_code == 409, r.text
+    assert "correct_index" not in r.text
+
+
 async def test_quiz_start_rejects_placement_mode(client, auth_headers, content_seed):
     """§7 de 43.5 (2026-10-17): `/quiz/start` con `mode=placement` abría un quiz
     sin puerta de lección que, al terminar, contaba como prueba de nivel para
