@@ -1218,3 +1218,45 @@ async def test_session_reuses_questions_only_when_the_skill_runs_out(client, aut
         assert nxt is not None
         assert nxt["id"] != current
         current = nxt["id"]
+
+
+@pytest.mark.parametrize("lesson_kept", [True, False], ids=["con-leccion", "sin-leccion"])
+async def test_next_question_respects_the_lesson_gate(
+    client, auth_headers, user, db_session, content_seed, lesson_kept
+):
+    """§7 de 43.5 (2026-10-17): si la puerta de lección se cierra a mitad de
+    sesión (una sesión abierta antes de que su modo la exigiera, o la lección
+    deja de contar), `/quiz/answer` volvía a la skill recién respondida
+    (`next_skill_id or question.skill_id`) y servía otra pregunta suya sin
+    lección vista. Con la puerta cerrada no hay siguiente pregunta."""
+    from sqlalchemy import delete as _delete
+
+    from app.models.content import Question
+
+    db_session.add(
+        Question(
+            id="q010101002", skill_id=content_seed["skill_id"], type="mcq",
+            difficulty_tier="easy", question_es="¿2?", question_en="2?",
+            options_es=["a", "b"], options_en=["a", "b"], correct_index=0,
+            explanation_es="x", explanation_en="x", source="test", elo_rating=1200.0,
+        )
+    )
+    await db_session.commit()
+    session_id, question_id = await _start_quiz(
+        client, auth_headers, content_seed["skill_id"], db_session, user
+    )
+    if not lesson_kept:
+        await db_session.execute(_delete(LessonCompletion).where(LessonCompletion.user_id == user.id))
+        await db_session.commit()
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={"session_id": session_id, "question_id": question_id,
+              "selected_index": 0, "response_time_ms": 1500},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200, r.text
+    nxt = r.json()["next_question"]
+    if lesson_kept:
+        assert nxt is not None and nxt["id"] != question_id
+    else:
+        assert nxt is None

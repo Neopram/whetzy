@@ -840,6 +840,10 @@ async def submit_answer(
         candidate_skill_ids, pool = await _candidate_skill_ids(
             db, user, session.mode, session.track_id, session.skill_id
         )
+    # Con la puerta de lección cerrada no hay siguiente pregunta: el respaldo
+    # de abajo (`or question.skill_id`) servía otra de la skill recién
+    # respondida sin lección vista (§7 de 43.5, 2026-10-17).
+    if not quota_reached and pool != "needs_lesson":
         next_skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
         next_skill_id = next_skill_id or question.skill_id
         served = set(
