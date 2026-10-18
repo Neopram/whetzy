@@ -5,10 +5,11 @@ import { RankingTabs } from '../components/layout/RankingTabs';
 import { useApi } from '../hooks/useApi';
 import { ApiError, league as leagueApi, type LeagueStandingsResponse } from '../services/api';
 import styles from './LeagueScreen.module.css';
+import { GameIcon, type GameIconName } from '../components/common/AppIcon';
 
-const TIER_META: Record<string, { icon: string }> = {
-  bronze: { icon: '🥉' }, silver: { icon: '🥈' }, gold: { icon: '🥇' },
-  platinum: { icon: '💎' }, diamond: { icon: '👑' },
+const TIER_META: Record<string, { icon: GameIconName }> = {
+  bronze: { icon: 'bronce' }, silver: { icon: 'plata' }, gold: { icon: 'oro' },
+  platinum: { icon: 'gema' }, diamond: { icon: 'corona' },
 };
 
 export function LeagueScreen() {
@@ -54,7 +55,7 @@ export function LeagueScreen() {
   }
   if (!data) return <div className={styles.screen}><RankingTabs /><p className={styles.loading}>{t('league.notOpen')}</p></div>;
 
-  const tier = TIER_META[data.league.tier] ?? { icon: '🏆' };
+  const tier = TIER_META[data.league.tier] ?? { icon: 'trofeo' as const };
   // `data.league.name` is a Spanish-only internal label ("Bronce", "Platino"),
   // so rendering it directly showed "League Platino" to English users. The
   // tier key is language-neutral, so the display name comes from i18n; the
@@ -69,7 +70,7 @@ export function LeagueScreen() {
     <div className={styles.screen}>
       <RankingTabs />
       <div className={styles.leagueHeader}>
-        <span className={styles.leagueIcon}>{tier.icon}</span>
+        <span className={styles.leagueIcon}><GameIcon name={tier.icon} size={48} /></span>
         <h1 className={styles.leagueName}>{t('league.league')} {leagueName}</h1>
         {data.participating && <p className={styles.leagueInfo}>{t('league.rules')}</p>}
         <label className={styles.optToggle}>
@@ -97,13 +98,13 @@ export function LeagueScreen() {
           {[top3[1], top3[0], top3[2]].map((p, i) => {
             if (!p) return <div key={i} className={styles.podiumSlot} />;
             const heights = [85, 110, 70];
-            const medals = ['🥈', '🥇', '🥉'];
+            const medals: GameIconName[] = ['plata', 'oro', 'bronce'];
             return (
               <div key={p.user_id} className={styles.podiumSlot}>
                 <span className={styles.podiumAvatar}>{p.avatar_emoji}</span>
                 <span className={styles.podiumName}>{p.display_name.split(' ')[0]}</span>
                 <span className={styles.podiumXp}>{p.xp_earned.toLocaleString()} XP</span>
-                <div className={styles.podiumBar} style={{ height: heights[i] }}><span className={styles.podiumMedal}>{medals[i]}</span></div>
+                <div className={styles.podiumBar} style={{ height: heights[i] }}><span className={styles.podiumMedal}><GameIcon name={medals[i]} size={28} /></span></div>
               </div>
             );
           })}

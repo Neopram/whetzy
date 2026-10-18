@@ -121,12 +121,14 @@ async def test_free_user_stops_after_the_daily_new_questions(client, auth_header
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("mode", ["review", "placement"])
-async def test_review_and_placement_are_exempt(client, auth_headers, user, db_session, bank, quota_on, mode) -> None:
+async def test_review_is_exempt(client, auth_headers, user, db_session, bank, quota_on) -> None:
     await _see(db_session, user.id, "skq1")
     await _answer_n(client, auth_headers, 2)
     assert (await _start(client, auth_headers)).status_code == 429
-    assert (await _start(client, auth_headers, mode=mode)).status_code == 200
+    assert (await _start(client, auth_headers, mode="review")).status_code == 200
+    # «placement» ya no entra por /quiz/start (§7 de 43.5): ni salta el cupo ni
+    # cuenta como prueba de nivel. La prueba de verdad va por /placement/*.
+    assert (await _start(client, auth_headers, mode="placement")).status_code == 422
 
 
 @pytest.mark.asyncio

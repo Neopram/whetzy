@@ -8,6 +8,7 @@ import {
 } from '../services/api';
 import { parseQuestion, splitInlineCode } from '../lib/question';
 import styles from './PlacementScreen.module.css';
+import { GameIcon } from '../components/common/AppIcon';
 
 /**
  * Prueba de nivel adaptativa.
@@ -139,12 +140,12 @@ export function PlacementScreen({ trackId }: Props) {
   if (fase === 'intro') {
     return (
       <div className={styles.intro}>
-        <span className={styles.introIcon}>🎓</span>
+        <span className={styles.introIcon}><GameIcon name="graduacion" size={64} /></span>
         <h1 className={styles.introTitle}>{t('placement.title')}</h1>
         <p className={styles.introDesc}>{t('placement.introDesc')}</p>
         <div className={styles.introFeatures}>
           <div className={styles.introFeature}>
-            <span>🧠</span>
+            <GameIcon name="cerebro" size={22} />
             <span>{t('placement.algorithm')}</span>
           </div>
           <div className={styles.introFeature}>
@@ -152,7 +153,7 @@ export function PlacementScreen({ trackId }: Props) {
             <span>{t('placement.timeEst')}</span>
           </div>
           <div className={styles.introFeature}>
-            <span>🎯</span>
+            <GameIcon name="diana" size={22} />
             <span>{t('placement.skipModules')}</span>
           </div>
         </div>
@@ -190,7 +191,7 @@ export function PlacementScreen({ trackId }: Props) {
 
     return (
       <div className={styles.result}>
-        <span className={styles.resultIcon}>{pct >= 70 ? '🏆' : pct >= 50 ? '💪' : '📚'}</span>
+        <span className={styles.resultIcon}><GameIcon name={pct >= 70 ? 'trofeo' : pct >= 50 ? 'musculo' : 'libro'} size={64} /></span>
         <h1 className={styles.resultTitle}>
           {t('placement.abilityResult', { level: t(`placement.levels.${nivelDeTheta(resultado.ability_estimate)}`) })}
         </h1>

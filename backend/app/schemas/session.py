@@ -37,7 +37,10 @@ class ResponseRead(BaseModel):
 class QuizStartRequest(BaseModel):
     track_id: str | None = None
     skill_id: str | None = None
-    mode: str = Field(default="study", pattern="^(study|review|placement|exam)$")
+    # Sin "placement": la prueba de nivel va por /placement/* (§7 de 43.5,
+    # 2026-10-17). Un quiz «placement» abierto aquí no pasaba la puerta de
+    # lección y, terminado, contaba como prueba para H.60.
+    mode: str = Field(default="study", pattern="^(study|review|exam)$")
     # Dev/E2E only: serve this exact question instead of running selection.
     # Rejected outside ENVIRONMENT != "production" (see quiz.py start_session).
     force_question_id: str | None = None
