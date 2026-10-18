@@ -41,6 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
+| 46 | Experiencia avanzada | 0/10 | 0 % | 46.0, 46.1, 46.1b, 46.2, 46.2b, 46.3 +4 |
 | 45 | Alta con correo | 4/4 | 100 % | — |
 | 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
 | 43 | Flujo del alumno listo para pruebas | 5/8 | 62 % | 43.4, 43.5, 43.6 |
@@ -163,7 +164,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 18. Techo de código — todo el catálogo, sin racionar (abierta 2026-09-16, sesión au)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE** | `bec734c` (2026-09-18) → §I |
+| 18.4 | **2** | … | DONE — `bec734c` → §T (6) | → §T (6) |
 | 18.9 | **4** | **Vídeo explicativo — piloto que decide** | TODO | → LEDGER_HISTORY.md §E |
 | 18.10 | **4** | **Resto del catálogo: tracks 24-26, 28-31 y certs P2-P3** | **PARCIAL** | 26/28/29/30 en `1d76762`+`6e2778a` (1.200 Q, 80 lecciones); faltan 24, 25, 31 y relleno a 300 → §E |
 | 18.11 | **2** | **Store-ready sin cuenta** | **PARCIAL** | listing, borrado de cuenta y textos hechos; faltan capturas y build iOS (H.14) → §T |
@@ -360,7 +361,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 33. Operación medible — SLO, restauración y offline idempotente (del plan del 2026-09-24; ídem)
 
-> **Estado:** `TODO`. **PRI:** 2. **Relación:** 22.6 y 22.7 cubren cola, caché y página de estado; esto añade objetivos numéricos y ensayos.
+> **Estado:** `HECHA` (1/1). **PRI:** 2.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
@@ -438,7 +439,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 38. Negocio medible — KPIs, pilotos B2B, instructores, afiliados (ADR-47; abierta 2026-09-24)
 
-> **Estado:** `ABIERTA`. **PRI:** 2. Todo lo que aquí exige hablar con personas o crear cuentas lo prepara la sesión y lo ejecuta el dueño…
+> **Estado:** `HECHA` (6/6). **PRI:** 2.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
@@ -523,12 +524,12 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 41.1 | **0** | Liberar ≥ 6 KB del ledger (evidencias de DONE →… | DONE — `643ab4c` — margen 6.427 B; §7 OK (2026-10-17) | [8] con margen ≥ 6 KB; `ledger.py check` OK |
-| 41.2 | **0** | Inventario y contraste doc ↔ código ↔ sesiones de todo el corpus vivo | DONE — `643ab4c` — claims: 115/115 docs; §7 OK | `archive/verificacion/claims-<fecha>.md` con veredicto y `file:line` por doc |
+| 41.1 | **0** | Liberar ≥ 6 KB del ledger (evidencias… | DONE — `643ab4c` → §T (6) | → §T (6) |
+| 41.2 | **0** | Inventario y contraste doc ↔ código ↔… | DONE — `643ab4c` → §T (6) | → §T (6) |
 | 41.3 | **0** | Corregir en sitio las contradicciones conocidas y las nuevas | PARCIAL (325/441; 116 abiertas en el claims file) | antes/después/`file:line` por cambio; `check_docs.py` verde |
-| 41.4 | **0** | Una guarda en `check_docs.py` por contradicción cerrada | DONE — [15]-[23] rojo/verde; §7 OK tras 2 refutaciones | cada guarda roja al mutar y verde al revertir, en el PR |
-| 41.5 | **0** | STATUS y CHANGELOG al día; ADR-61/62/63; ledger al día | DONE — STATUS, CHANGELOG, ADR-61/62/63/65; §7 OK | `ledger.py check` OK; nada reescrito hacia atrás |
-| 41.6 | **0** | Escalar decisiones (H.51…H.57) y archivar el prompt ejecutado | DONE — H.51-H.60, prompt archivado; §7 OK | prompt en `docs/archive/`; INVENTARIO y README al día |
+| 41.4 | **0** | Una guarda en `check_docs.py` por cont… | DONE — → §T (6) | → §T (6) |
+| 41.5 | **0** | STATUS y CHANGELOG al día; ADR-61/62/6… | DONE — → §T (6) | → §T (6) |
+| 41.6 | **0** | Escalar decisiones (H.51…H.57) y archi… | DONE — → §T (6) | → §T (6) |
 
 ### 42. Ultracode: código tras la sincronización (oleadas 1-9; dueño 2026-10-16; `PLAN_ULTRACODE.md` §5-§6)
 
@@ -556,14 +557,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | DONE 2026-10-17 (#226, #233; §7 no reproducible: el dueño acepta el e2e del orquestador, verde en `3d10daa`; no prueba la ITP de Safari → recorrido a mano en iPhone, §6) | e2e con cookies de terceros bloqueadas: registro → Hoy |
-| 43.2 | **0** | Registro sin fricción: errores por campo, email en minúsculas, filtro por palabra (D10) | DONE 2026-10-17 (#227; §7: pytest 5/5, vitest 8/8, `Maria@Gmail.COM`→minúsculas, i18n ES/EN; hallazgos fuera del criterio en #231) | `Maria@Gmail.COM` entra en minúsculas; 409 traducido |
-| 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | DONE 2026-10-17 (#230; §7 confirmada; e2e del orquestador) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
+| 43.1 | **0** | Sesión en iPhone: token en memoria +… | DONE — #226 → §T (6) | → §T (6) |
+| 43.2 | **0** | Registro sin fricción: errores por cam… | DONE — #227 → §T (6) | → §T (6) |
+| 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siem… | DONE — #230 → §T (6) | → §T (6) |
 | 43.4 | **0** | Ruta activa (D5) y Hoy filtrado por ella (D6); readiness de 42.6 | TODO (§7 refutada: repasos de Hoy de todas las rutas; arreglo #248) | cambio de ruta persiste; Hoy solo de la ruta activa |
 | 43.5 | **0** | Lección primero (D7) | TODO (§7 refutada: «Estudiar» con el currículo cargando lanza quiz; arreglo #249; salvo H.60) | «Estudiar» abre la lección; sin lección vista no hay práctica |
 | 43.6 | **1** | Proyectos dentro del track, con progreso y validación en servidor (D8; dueño 2026-10-17: SQL en servidor, Python/JS en navegador sin verificar) | TODO (§7 refutada: `/*` sin cerrar se tragaba el test SQL; arreglo #247) | progreso sobrevive a salir; `passed=true` sin tests no completa |
-| 43.7 | **1** | Playground contextual desde la lección (D9) | DONE 2026-10-17 (#238; §7 confirmada; e2e del orquestador) | «Probar este código» abre el ejemplo; el fragmento reaparece |
-| 43.8 | **0** | Puerta «lista para pruebas»: `e2e/alumno.spec.ts` y specs en verde | DONE 2026-10-17 (#239; §7 confirmada; e2e del orquestador; seguimiento: sonda 401 solo en entre-sitios) | el spec en Chromium y con cookies de terceros bloqueadas |
+| 43.7 | **1** | Playground contextual desde la lección… | DONE — #238 → §T (6) | → §T (6) |
+| 43.8 | **0** | Puerta «lista para pruebas»:… | DONE — #239 → §T (6) | → §T (6) |
 
 ### 44. Back-office de soporte (plan del dueño 2026-10-17; `PLAN_BACKOFFICE.md`)
 
@@ -578,14 +579,31 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 ### 45. Alta con correo (plan del dueño 2026-10-17; `PLAN_CORREO_ALTA.md`; ADR-66)
 
-> **Estado:** `HECHA` (falta fusionar #242–#244 y #246). **PRI:** 0. Con la 43 en `master` y **antes de la 44**. Una rama y un PR por fila; sin migraciones ni `content/**`.
+> **Estado:** `HECHA` (4/4 en `master`). **PRI:** 0.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 45.1 | **0** | E1, E6: idioma del alta (`?lang` → `whetzy_lang` → navegador; portada y OAuth `start?lang=`); errores OAuth en i18n | DONE 2026-10-17 (#242; §7 confirmada) | `whetzy_lang=es` + navegador `en` → `language:'es'`; OAuth cuenta nueva con su `lang` |
-| 45.2 | **0** | E2: un solo correo al registrarse (verificación); bienvenida al verificar, una vez; `verify_url` con `&lang=` | DONE 2026-10-17 (#243; §7 confirmada; verificar atómico) | registro `es` → 1 correo «Verifica tu email en Whetzy»; verificar → bienvenida 1 vez |
-| 45.3 | **0** | E4: franja «verifica tu correo» con Reenviar (60 s) y ×; `UserRead.email_verified` | DONE 2026-10-17 (#244; §7 confirmada) | aparece con `false`, no con `true`; e2e registro → franja |
-| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Continuar» → `/` o «Iniciar sesión» → `/login?lang=` | DONE 2026-10-17 (#246; §7 no reproducible: el dueño acepta el e2e del orquestador) | e2e ES con navegador EN: correo ES → franja → verificar → sin franja (Chromium y entre-sitios) |
+| 45.1 | **0** | E1, E6: idioma del alta (`?lang` →… | DONE — #242 → §T (6) | → §T (6) |
+| 45.2 | **0** | E2: un solo correo al registrarse (ver… | DONE — #243 → §T (6) | → §T (6) |
+| 45.3 | **0** | E4: franja «verifica tu correo» con Re… | DONE — #244 → §T (6) | → §T (6) |
+| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Con… | DONE — #246 → §T (6) | → §T (6) |
+
+### 46. Experiencia avanzada (dueño 2026-10-18; `PLAN_UI_AVANZADA.md`, #245)
+
+> **Estado:** `ABIERTA`. **PRI:** 1. Orden: 46.0, 46.2, 46.1b, 46.1, 46.3, 46.7, D1–D4, 40.1–40.6, 46.4–46.6.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 46.0 | **0** | Dieta del ledger y alta de la 46 | DOING | ≤ 59.400 B; checks verdes |
+| 46.1 | **1** | Feedback del quiz sin tapar | TODO | plan §2 y §6.4 |
+| 46.1b | **1** | `events[]` en `QuizAnswerResponse` | TODO | plan §6.3 |
+| 46.2 | **1** | `feedbackFx.ts`: bus, sonido, vibración | TODO | plan §6.0–6.1 |
+| 46.2b | **2** | `@capacitor/haptics` | TODO (D4) | PR propio |
+| 46.3 | **1** | Estados vacíos y momentos de Home | TODO | plan §2 y §6.2 |
+| 46.4 | **2** | Un solo sistema de tokens | TODO | 0 `var(--color-` |
+| 46.5 | **2** | Regresión visual en nivel 2 | TODO | rojo al mutar un token |
+| 46.6 | **2** | Medición y re-puntuación | TODO | tabla con evidencia |
+| 46.7 | **1** | Resumen y ceremonias | TODO | plan §6.4 |
 
 ## 3. Cola HUMAN-BLOCKED
 
@@ -630,11 +648,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.56 | «Panel de equipo» prometido en `docs/legal/b2b_pilot_offer_*.md` sin producto. Recomendado: retirar la promesa (S4) | Dueño |
 | H.57 | Modelos: CLAUDE.md dice Haiku 4.5 y prohíbe Fable; el entorno ofrece otros. La tabla no se cambia hasta que decidas | Dueño |
 | H.58 | Las 119 preguntas del barrido de la Oleada 0 (`docs/archive/verificacion/claims-2026-10-16.md`, «Escalados»), con la opción recomendada primero | Dueño |
-| H.59 | DNS `api.whetzy.com` → servicio `api` de Railway y `VITE_API_URL` — **hecho 2026-10-17** (#228; CNAME sin proxy, `/health` 200 [V]). Queda H.61 | Dueño |
-| H.61 | **Hecha** 2026-10-17 (dueño) — en Railway: `COOKIE_DOMAIN=.whetzy.com`, `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com` (tras desplegar #228). Dicho por el dueño; esta sesión no lee variables de producción | Dueño |
-| H.60 | **Decidida** 2026-10-17 (dueño): test-out aprobado o ≥ 70 % en la prueba desbloquea la práctica del módulo sin abrir sus lecciones, que no se marcan vistas (ADR-65, nota H.60) | Dueño |
 | H.62 | **Hecha** 2026-10-17 — verificación en dos pasos activa en la cuenta del dueño (requisito B7 de 44.1; `PLAN_BACKOFFICE.md` §4) | Dueño |
-| H.63 | **Resuelta** 2026-10-17 en #229 — la política publicada dice para qué abre el titular una cuenta (`legal.privacySupportAccess`, ES/EN); «y queda registrado» llega con 44.4 | Dueño |
 
 ## 5. Bitácora de decisiones
 

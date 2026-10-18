@@ -2476,3 +2476,27 @@ tenía), con un puntero «→ §T» aquí.
 | H | Texto | Quién |
 |---|---|---|
 | H.29 | DECIDIDO 2026-10-01 (dueño): Grecia; web = Paddle, tiendas = IAP/Play Billing vía RevenueCat; sin Stripe. Web: `/checkout` hecho; falta alta Paddle y dominio |
+
+### §T (6) — Filas DONE (y H resueltas de §3) con la evidencia larga recortada en §2 el 2026-10-18 (46.0), tal como estaban
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE** | `bec734c` (2026-09-18) → §I |
+| 41.1 | **0** | Liberar ≥ 6 KB del ledger (evidencias de DONE →… | DONE — `643ab4c` — margen 6.427 B; §7 OK (2026-10-17) | [8] con margen ≥ 6 KB; `ledger.py check` OK |
+| 41.2 | **0** | Inventario y contraste doc ↔ código ↔ sesiones de todo el corpus vivo | DONE — `643ab4c` — claims: 115/115 docs; §7 OK | `archive/verificacion/claims-<fecha>.md` con veredicto y `file:line` por doc |
+| 41.4 | **0** | Una guarda en `check_docs.py` por contradicción cerrada | DONE — [15]-[23] rojo/verde; §7 OK tras 2 refutaciones | cada guarda roja al mutar y verde al revertir, en el PR |
+| 41.5 | **0** | STATUS y CHANGELOG al día; ADR-61/62/63; ledger al día | DONE — STATUS, CHANGELOG, ADR-61/62/63/65; §7 OK | `ledger.py check` OK; nada reescrito hacia atrás |
+| 41.6 | **0** | Escalar decisiones (H.51…H.57) y archivar el prompt ejecutado | DONE — H.51-H.60, prompt archivado; §7 OK | prompt en `docs/archive/`; INVENTARIO y README al día |
+| 43.1 | **0** | Sesión en iPhone: token en memoria + `Authorization` (D1) | DONE 2026-10-17 (#226, #233; §7 no reproducible: el dueño acepta el e2e del orquestador, verde en `3d10daa`; no prueba la ITP de Safari → recorrido a mano en iPhone, §6) | e2e con cookies de terceros bloqueadas: registro → Hoy |
+| 43.2 | **0** | Registro sin fricción: errores por campo, email en minúsculas, filtro por palabra (D10) | DONE 2026-10-17 (#227; §7: pytest 5/5, vitest 8/8, `Maria@Gmail.COM`→minúsculas, i18n ES/EN; hallazgos fuera del criterio en #231) | `Maria@Gmail.COM` entra en minúsculas; 409 traducido |
+| 43.3 | **0** | Onboarding D2, prueba de 20 (D3), siembra por módulo (D4), onboarding en servidor | DONE 2026-10-17 (#230; §7 confirmada; e2e del orquestador) | 5/5/5 + 5; siembra por módulo; otro navegador no repite |
+| 43.7 | **1** | Playground contextual desde la lección (D9) | DONE 2026-10-17 (#238; §7 confirmada; e2e del orquestador) | «Probar este código» abre el ejemplo; el fragmento reaparece |
+| 43.8 | **0** | Puerta «lista para pruebas»: `e2e/alumno.spec.ts` y specs en verde | DONE 2026-10-17 (#239; §7 confirmada; e2e del orquestador; seguimiento: sonda 401 solo en entre-sitios) | el spec en Chromium y con cookies de terceros bloqueadas |
+| 45.1 | **0** | E1, E6: idioma del alta (`?lang` → `whetzy_lang` → navegador; portada y OAuth `start?lang=`); errores OAuth en i18n | DONE 2026-10-17 (#242; §7 confirmada) | `whetzy_lang=es` + navegador `en` → `language:'es'`; OAuth cuenta nueva con su `lang` |
+| 45.2 | **0** | E2: un solo correo al registrarse (verificación); bienvenida al verificar, una vez; `verify_url` con `&lang=` | DONE 2026-10-17 (#243; §7 confirmada; verificar atómico) | registro `es` → 1 correo «Verifica tu email en Whetzy»; verificar → bienvenida 1 vez |
+| 45.3 | **0** | E4: franja «verifica tu correo» con Reenviar (60 s) y ×; `UserRead.email_verified` | DONE 2026-10-17 (#244; §7 confirmada) | aparece con `false`, no con `true`; e2e registro → franja |
+| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Continuar» → `/` o «Iniciar sesión» → `/login?lang=` | DONE 2026-10-17 (#246; §7 no reproducible: el dueño acepta el e2e del orquestador) | e2e ES con navegador EN: correo ES → franja → verificar → sin franja (Chromium y entre-sitios) |
+| H.59 | DNS `api.whetzy.com` → servicio `api` de Railway y `VITE_API_URL` — **hecho 2026-10-17** (#228; CNAME sin proxy, `/health` 200 [V]). Queda H.61 | Dueño |
+| H.61 | **Hecha** 2026-10-17 (dueño) — en Railway: `COOKIE_DOMAIN=.whetzy.com`, `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL` = `https://api.whetzy.com` (tras desplegar #228). Dicho por el dueño; esta sesión no lee variables de producción | Dueño |
+| H.63 | **Resuelta** 2026-10-17 en #229 — la política publicada dice para qué abre el titular una cuenta (`legal.privacySupportAccess`, ES/EN); «y queda registrado» llega con 44.4 | Dueño |
+| H.60 | **Decidida** 2026-10-17 (dueño): test-out aprobado o ≥ 70 % en la prueba desbloquea la práctica del módulo sin abrir sus lecciones, que no se marcan vistas (ADR-65, nota H.60) | Dueño |
