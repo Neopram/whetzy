@@ -8,6 +8,7 @@ import { LoadingState } from '../components/common/LoadingState';
 import { EmptyState } from '../components/common/EmptyState';
 import { ErrorState } from '../components/common/ErrorState';
 import styles from './LessonScreen.module.css';
+import { GameIcon } from '../components/common/AppIcon';
 
 interface Props {
   skillId: string;
@@ -102,7 +103,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
     return (
       <div className={styles.screen}>
         <EmptyState
-          icon="📚"
+          icon={<GameIcon name="libro" size={48} />}
           title={t('lesson.noContentTitle', 'Sin contenido disponible')}
           description={t('lesson.noContent', 'No hay lecciones para esta habilidad todavía.')}
           actionLabel={t('lesson.back', '← Volver')}
@@ -142,7 +143,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
 
       <main className={styles.main}>
         <p className={styles.eyebrow}>
-          <span aria-hidden="true">{current.kind === 'example' ? '🧪' : '💡'}</span>
+          {current.kind === 'example' ? <span aria-hidden="true">🧪</span> : <GameIcon name="bombilla" size={18} />}
           {current.kind === 'example' ? t('lesson.example') : t('lesson.concept')}
         </p>
         <h1 className={styles.title}>{title}</h1>

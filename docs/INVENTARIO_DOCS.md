@@ -23,11 +23,11 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | Clase | Ficheros |
 |---|---|
 | normativo-vivo | 23 |
-| referencia-viva | 64 |
+| referencia-viva | 65 |
 | histórico | 47 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **179** |
+| **Total** | **180** |
 
 ## Raíz del repo y otras carpetas
 
@@ -66,6 +66,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `content/blog/es/de-0-a-10000-preguntas.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
 | `content/blog/es/matematica-de-fsrs.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
 | `content/blog/es/motor-adaptativo-bkt-fsrs-elo-dkt.md` | referencia-viva | artículo publicado del blog (26.9/27.10); dueño S6 | se queda; hechos con aviso en #89 | 2026-10-03 |
+| `design/iconos/PROCEDENCIA.md` | referencia-viva | procedencia de los iconos propios generados con IA (Canva) y cómo se regeneran | se queda | 2026-10-18 |
 | `design/brand/README.md` | referencia-viva | marca: logo y colores (#197) | se queda | 2026-10-13 |
 | `design/v2/GUIA.md` | referencia-viva | guía visual v2 de la app | se queda | 2026-10-13 |
 | `design/v2/brief-msg1.md` | histórico | brief de diseño enviado a la herramienta de diseño, fechado | se queda; no se reescribe | 2026-10-01 |

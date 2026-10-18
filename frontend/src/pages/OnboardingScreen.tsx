@@ -6,6 +6,7 @@ import { readAttribution } from '../lib/attribution'
 import { retiredCertificationFor } from '../lib/retiredCertifications'
 import { TRACK_GROUPS, relatedCerts } from '../lib/trackGroups'
 import '../styles/onboarding.css'
+import { TrackIcon } from '../components/common/AppIcon';
 
 /**
  * 43.3 (ADR-65 D2): objetivo → ruta de aprendizaje (agrupadas) → certificación
@@ -131,7 +132,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
                   <div className="options track-grid">
                     {available.map((id) => (
                       <button key={id} className="option" data-testid={`track-${id}`} onClick={() => pickTrack(id)}>
-                        <span aria-hidden="true">{byId.get(id)?.icon}</span> {name(id)}
+                        <span aria-hidden="true"><TrackIcon trackId={id} fallback={byId.get(id)?.icon} size={22} /></span> {name(id)}
                       </button>
                     ))}
                   </div>

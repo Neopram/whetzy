@@ -6,6 +6,7 @@ import { bandForSkill } from '../lib/evidenceBand';
 import { useApi } from '../hooks/useApi';
 import { progress as progressApi } from '../services/api';
 import styles from './StatsScreen.module.css';
+import { TrackIcon } from '../components/common/AppIcon';
 
 // ADR-60: ni la ruta ni la skill se enseñan como % del modelo mientras no
 // esté calibrado. La ruta, por skills dominadas (un hecho); la skill, por banda.
@@ -58,7 +59,7 @@ export function StatsScreen() {
               <li key={tr.track_id}>
                 <button type="button" className={styles.row} onClick={() => openTrack(tr.track_id)}>
                   <span className={styles.rowHead}>
-                    <span className={styles.rowName}>{tr.icon} {name}</span>
+                    <span className={styles.rowName}><TrackIcon trackId={tr.track_id} fallback={tr.icon} size={20} /> {name}</span>
                   </span>
                   {/* Sin ninguna dominada, una barra vacía no dice nada: basta el recuento. */}
                   {tr.skills_mastered > 0 && (
