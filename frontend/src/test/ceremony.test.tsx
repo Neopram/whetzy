@@ -39,8 +39,8 @@ describe('Ceremony', () => {
     expect(screen.getByRole('dialog', { name: '¡Subes a nivel 3!' })).toBeInTheDocument();
     expect(emit).toHaveBeenCalledTimes(1);
     expect(emit).toHaveBeenCalledWith({ type: 'level_up' });
-    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Saltar' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Saltar' }));
     expect(onDone).toHaveBeenCalledTimes(1);
     expect(onDone).toHaveBeenCalledWith(true);
   });
@@ -68,7 +68,7 @@ describe('Ceremony', () => {
     await i18n.changeLanguage('en');
     render(<Ceremony event={level} onDone={() => {}} />);
     expect(screen.getByRole('dialog', { name: 'Level 3!' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Continue' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Skip' })).toBeInTheDocument();
   });
 });
 
