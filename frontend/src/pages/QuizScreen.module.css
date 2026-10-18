@@ -82,7 +82,6 @@
 }
 
 .diffBadge,
-.combo,
 .xpBadge {
   padding: 2px var(--le-space-xs);
   border: 1px solid var(--le-border);
@@ -95,7 +94,6 @@
 .diffMedium { color: var(--le-warning-text); }
 .diffHard { color: var(--le-danger-text); }
 
-.combo { color: var(--le-text-secondary); }
 
 .xpBadge {
   margin-left: auto;
@@ -377,6 +375,7 @@
 /* ── Explicación ──────────────────────────────────────────────────────── */
 
 .explanation {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--le-space-sm);
@@ -406,14 +405,28 @@
 }
 
 
-.lottie {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
+.explanationTop {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: var(--le-space-xs);
+}
+
+/* 46.1: dentro de la tarjeta (≤ 72 px), en su esquina y fuera del flujo:
+   no tapa el código ni empuja el texto, y al acabar no deja hueco. */
+.feedbackAnim {
+  position: absolute;
+  top: var(--le-space-xs);
+  right: var(--le-space-xs);
+  width: 36px;
+  height: 36px;
   pointer-events: none;
+}
+
+.xpBadge { position: relative; }
+
+.xpPop {
+  margin-left: 4px;
+  color: var(--le-success-text);
 }
 
 /* ── Resumen, carga y error ───────────────────────────────────────────── */
