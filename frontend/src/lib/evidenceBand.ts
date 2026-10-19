@@ -8,12 +8,20 @@ export type EvidenceBand = 'strong' | 'developing' | 'insufficient';
 /** ADR-60: «Evidencia insuficiente» por debajo de 7 respuestas. */
 export const MIN_EVIDENCE_ANSWERS = 7;
 
-/** Una skill es «Fuerte» cuando el motor la da por dominada (BKT ≥ 0,95). */
+/** Una skill es «Fuerte» cuando el motor la da por dominada (BKT ≥ 0,95)… */
 const STRONG_P_KNOWN = 0.95;
 
-export function bandForSkill(s: { attempts: number; p_known: number }): EvidenceBand {
+/** …y además los aciertos que la tarjeta enseña lo sostienen. BKT pesa lo
+ *  último: con los parámetros por defecto, tres aciertos seguidos tras una
+ *  racha de fallos llevan p_known de ~0,23 a ~0,97, y en local se midió
+ *  «Fuerte — 10 respuestas · 4 aciertos» (2026-10-18). ADR-60 pide que la
+ *  banda no contradiga la evidencia que se muestra a su lado. */
+const STRONG_MIN_ACCURACY = 0.7;
+
+export function bandForSkill(s: { attempts: number; p_known: number; correct_count: number }): EvidenceBand {
   if (s.attempts < MIN_EVIDENCE_ANSWERS) return 'insufficient';
-  return s.p_known >= STRONG_P_KNOWN ? 'strong' : 'developing';
+  const accurate = s.correct_count / s.attempts >= STRONG_MIN_ACCURACY;
+  return s.p_known >= STRONG_P_KNOWN && accurate ? 'strong' : 'developing';
 }
 
 /** Un dominio del examen: el backend ya decide `ready`; aquí solo se exige evidencia. */

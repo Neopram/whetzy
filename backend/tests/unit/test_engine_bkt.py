@@ -205,3 +205,38 @@ class TestUpdateUnknown:
         for _ in range(5):
             model.update_unknown(state)
         assert state.p_known < 0.35
+
+
+class TestRecencyOverAccuracy:
+    """BKT estima el estado de AHORA, no la precisión acumulada. Con los
+    parámetros por defecto (p_t = 0,2) una racha de fallos solo baja p_known
+    hasta ~0,23, y tres aciertos seguidos lo suben por encima de 0,95. Es el
+    caso medido en local el 2026-10-18 («Fuerte — 10 respuestas · 4
+    aciertos», p_known 0,971): no es un parámetro roto, es el modelo. Por eso
+    la banda «Fuerte» (frontend/src/lib/evidenceBand.ts) exige además
+    precisión; si esto deja de ser cierto, ese suelo se puede revisar."""
+
+    @staticmethod
+    def _run(model: BKTModel, answers: list[bool]) -> SkillState:
+        state = model.init_state("sk01")
+        for correct in answers:
+            model.update(state, correct, p_guess=0.25)
+        return state
+
+    def test_four_of_ten_with_correct_answers_last_crosses_mastery(self, model: BKTModel) -> None:
+        f, c = False, True
+        state = self._run(model, [f, f, f, c, f, f, f, c, c, c])
+        assert (state.attempts, state.correct) == (10, 4)
+        assert state.p_known == pytest.approx(0.972, abs=1e-3)
+        assert model.is_mastered(state)
+
+    def test_six_failures_then_four_correct_crosses_mastery(self, model: BKTModel) -> None:
+        state = self._run(model, [False] * 6 + [True] * 4)
+        assert state.correct == 4
+        assert state.p_known >= 0.95
+
+    def test_failures_floor_at_the_learn_rate(self, model: BKTModel) -> None:
+        # Tras un fallo el posterior cae cerca de 0, pero la transición suma
+        # p_t: por mucho que falle, p_known no baja de ~0,2.
+        state = self._run(model, [False] * 20)
+        assert 0.2 < state.p_known < 0.25

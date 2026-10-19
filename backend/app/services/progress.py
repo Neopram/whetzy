@@ -186,16 +186,21 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
     all_skill_ids = [s.id for m in modules for s in m.skills]
     mastery_by_skill: dict[str, float] = {}
     attempts_by_skill: dict[str, int] = {}
+    correct_by_skill: dict[str, int] = {}
     if all_skill_ids:
         states_result = await db.execute(
-            select(UserSkillState.skill_id, UserSkillState.p_known, UserSkillState.attempts).where(
+            select(
+                UserSkillState.skill_id, UserSkillState.p_known,
+                UserSkillState.attempts, UserSkillState.correct_count,
+            ).where(
                 UserSkillState.user_id == user.id,
                 UserSkillState.skill_id.in_(all_skill_ids),
             )
         )
-        for skill_id, p_known, attempts in states_result.all():
+        for skill_id, p_known, attempts, correct in states_result.all():
             mastery_by_skill[skill_id] = p_known
             attempts_by_skill[skill_id] = attempts
+            correct_by_skill[skill_id] = correct
 
     # 32.4: qué skills de este track ya tienen la lección abierta, para que el
     # frontend pueda avisar antes de mandar a un "Practicar" que el backend
@@ -239,6 +244,7 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
                 p_known=round(mastery_by_skill.get(s.id, 0.0), 4),
                 mastered=mastery_by_skill.get(s.id, 0.0) >= MASTERY_THRESHOLD,
                 attempts=attempts_by_skill.get(s.id, 0),
+                correct_count=correct_by_skill.get(s.id, 0),
                 lesson_seen=s.id in seen_skill_ids,
                 practice_unlocked=s.id in unlocked_skill_ids,
             )

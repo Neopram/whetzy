@@ -1545,6 +1545,12 @@ modelo corresponden a rendimiento real (Ola 5, serie D7).
 
 **Qué prohíbe:** mostrar `Knowledge: 84 %` o `Readiness: 72 %` antes de esa calibración.
 
+**Enmienda del dueño (2026-10-18).** *Fuerte* por skill exige ≥ 7 respuestas, `p_known` ≥ 0,95
+**y** aciertos/respuestas ≥ 0,7 (`frontend/src/lib/evidenceBand.ts`). BKT pesa lo último: con los
+parámetros por defecto, tres aciertos seguidos tras fallos llevan `p_known` de ~0,23 a ~0,97, y en
+local se vio «Fuerte — 10 respuestas · 4 aciertos». Los parámetros del motor no se tocan sin datos
+de calibración (`backend/tests/unit/test_engine_bkt.py::TestRecencyOverAccuracy`).
+
 ---
 
 ### PRODUCT-PRINCIPLE-01 — El algoritmo navega al usuario hacia su siguiente acción relevante

@@ -179,6 +179,27 @@ async def test_curriculum_lesson_seen_reflects_lesson_completions(
 
 
 @pytest.mark.asyncio
+async def test_curriculum_reports_correct_count(client, user, auth_headers, db_session, content_seed):
+    """Rutas pinta la banda de evidencia con `bandForSkill`, que exige aciertos
+    además de p_known: BKT puede dar 0,97 con 4 de 10 si los últimos van seguidos."""
+    from app.models.user import UserSkillState
+
+    db_session.add(UserSkillState(
+        user_id=user.id, skill_id=content_seed["skill_id"],
+        p_known=0.971, attempts=10, correct_count=4,
+    ))
+    await db_session.commit()
+
+    resp = await client.get(
+        f"{BASE}/curriculum",
+        params={"track_id": content_seed["track_id"]},
+        headers=auth_headers,
+    )
+    skill = resp.json()["modules"][0]["skills"][0]
+    assert (skill["attempts"], skill["correct_count"]) == (10, 4)
+
+
+@pytest.mark.asyncio
 async def test_curriculum_unknown_track_returns_empty(client, user, auth_headers):
     """Service returns an empty CurriculumResponse for unknown tracks (no 404)."""
     resp = await client.get(

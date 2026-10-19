@@ -69,6 +69,9 @@ class CurriculumSkill(BaseModel):
     p_known: float
     mastered: bool
     attempts: int
+    # La banda «Fuerte» del frontend exige además precisión (evidenceBand.ts):
+    # BKT puede dar 0,97 con 4 aciertos de 10 si los últimos van seguidos.
+    correct_count: int = 0
     # 32.4: si el frontend debe dejar practicar este skill sin haber abierto
     # su lección primero (el backend igual lo exige en /quiz/start).
     lesson_seen: bool
