@@ -604,7 +604,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.5 | **2** | Regresión visual en nivel 2 | TODO | rojo al mutar un token |
 | 46.6 | **2** | Medición y re-puntuación | TODO | tabla con evidencia |
 | 46.7 | **1** | Resumen y ceremonias | DOING — #269; falta recuento y `fx_emitted` | plan §6.4 |
-| 46.8 | **2** | Mascota SVG + Lottie | TODO | capturas aprobadas (ADR-67 D2) |
+| 46.8 | **2** | Mascota: brief para ilustrador | TODO | brief y 3 direcciones (ADR-67 D2) |
 | 46.9 | **1** | Sonido encendido por defecto | TODO | sin preferencia → on (ADR-67 D3) |
 
 ## 3. Cola HUMAN-BLOCKED
