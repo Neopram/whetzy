@@ -146,6 +146,9 @@ olas es estricto; dentro de una ola, las filas pueden ir en paralelo si no compa
 
 Se preguntan en un solo mensaje al cerrar 46.3, antes de la ola 2. Ninguna se asume.
 
+**Decididas el 2026-10-19 (ADR-67):** D1 sin excepción (demostración fuera de `content/`); D2 mascota sí, con la
+guía enmendada (fila 46.8); D3 sonido encendido por defecto (fila 46.9); D4 `@capacitor/haptics` sí (fila 46.2b).
+
 - **D1 — ADR-62 y el piloto.** Los 30 ítems `interactive` de 40.2 son contenido nuevo. Opciones:
   excepción expresa para el piloto, o firmar ADR-62 con esa excepción, o no. Sin D1, 40.2 se
   queda en los 3 widgets con un ítem de demostración cada uno, no persistido en `content/`.

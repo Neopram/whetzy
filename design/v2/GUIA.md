@@ -18,8 +18,11 @@ mismo sistema.
   (BKT), repaso espaciado (FSRS) y preparación por dominio oficial del examen. En español
   primero. Sale de `docs/COMPETENCIA.md` §A.3.
 - **Promesa:** «Afila lo que sabes. Llega listo al examen.»
-- **Personalidad:** precisa, tranquila, honesta, técnica. Sin mascota, sin confeti, sin
+- **Personalidad:** precisa, tranquila, honesta, técnica. Sin confeti y sin
   urgencias falsas (§A.4).
+- **Mascota (enmienda del 2026-10-19, ADR-67 D2):** el dueño decide que sí la haya, en SVG + Lottie. Sustituye el
+  «sin mascota» de esta guía. Tiene que casar con la personalidad de arriba: tranquila y técnica, no una caricatura
+  ruidosa; entra en la app solo con las capturas aprobadas por el dueño.
 - **Color (sustituido el 2026-10-13):** la app adopta los colores del logo nuevo, decisión
   del dueño: azul noche `#0A0E1A` con el cian `#00BFFF` de acento (`design/brand/README.md`).
   Lo que sigue es el registro de la decisión anterior.

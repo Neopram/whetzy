@@ -57,7 +57,8 @@ Nivel como rank visual (icono + número + barra hacia siguiente nivel)
 ---
 
 ## 4. Qué NO Haremos
-- ❌ Mascota tipo Duolingo
+- ❌ Mascota tipo Duolingo — *enmendado el 2026-10-19 (ADR-67 D2): habrá mascota, en SVG + Lottie, tranquila y
+  técnica como pide `design/v2/GUIA.md`; lo que sigue fuera es una caricatura ruidosa al estilo Duolingo.*
 - ❌ Neon colors tipo Codecademy
 - ❌ Lifestyle photos tipo Udemy
 - ❌ Corporate navy tipo Coursera
