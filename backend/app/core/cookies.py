@@ -150,8 +150,25 @@ def set_oauth_state_cookie(response: Response, state: str, max_age_seconds: int)
     )
 
 
+OAUTH_LANG_COOKIE = "whetzy_oauth_lang"
+
+
+def set_oauth_lang_cookie(response: Response, lang: str, max_age_seconds: int) -> None:
+    """45.1 (ADR-66 E1): el idioma de la pantalla desde la que se pulsó «Continuar
+    con…». Viaja junto al `state` y solo se usa si el callback crea la cuenta."""
+    secure, samesite = _cookie_policy()
+    response.set_cookie(
+        key=OAUTH_LANG_COOKIE,
+        value=lang,
+        max_age=max_age_seconds,
+        **_cookie_kwargs(secure, samesite),  # type: ignore[arg-type]
+    )
+
+
 def clear_oauth_state_cookie(response: Response) -> None:
+    """Borra la cookie del `state` y la del idioma (45.1): las dos son del mismo flujo."""
     opts: dict[str, object] = {"path": "/"}
     if settings.COOKIE_DOMAIN:
         opts["domain"] = settings.COOKIE_DOMAIN
     response.delete_cookie(key=OAUTH_STATE_COOKIE, **opts)  # type: ignore[arg-type]
+    response.delete_cookie(key=OAUTH_LANG_COOKIE, **opts)  # type: ignore[arg-type]

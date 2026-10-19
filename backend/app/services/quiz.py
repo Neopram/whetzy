@@ -31,6 +31,7 @@ from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
 from app.schemas.content import QuestionPublic
 from app.schemas.session import (
+    FxEvent,
     QuizAnswerRequest,
     QuizAnswerResponse,
     QuizEndRequest,
@@ -247,9 +248,11 @@ async def _is_module_unlocked(db: AsyncSession, user_id: uuid.UUID, module: Modu
 
 
 # 32.4: modos que exigen haber abierto la lección del skill antes de darle
-# preguntas nuevas de ese skill. "placement" y "exam" quedan fuera a
-# propósito: miden lo que el alumno ya sabe, no lo que acaba de aprender.
-_LESSON_GATED_MODES = frozenset({"study", "review"})
+# preguntas de ese skill. El simulacro ("exam") también, desde el §7 de 43.5
+# (dueño, 2026-10-17: «sin lección vista no hay práctica», sin excepción).
+# Solo "placement" queda fuera: la prueba de nivel es la que desbloquea
+# práctica sin lección (H.60) y exigírsela la haría imposible al empezar.
+_LESSON_GATED_MODES = frozenset({"study", "review", "exam"})
 
 
 async def _candidate_skill_ids(
@@ -280,6 +283,11 @@ async def _candidate_skill_ids(
             ).where(Module.track_id == track_id)
         result = await db.execute(query)
         due = [row[0] for row in result.all()]
+        if due:
+            # Un repaso vencido no basta: su lección tiene que estar vista
+            # (§7 de 43.5; el repaso pudo programarlo un simulacro).
+            seen_due = await lesson_gate.practice_unlocked_skill_ids(db, user.id, due)
+            due = [sid for sid in due if sid in seen_due]
         if due:
             return due, "spaced_repetition_due"
         # fall through to study-mode selection if nothing is due
@@ -336,10 +344,10 @@ async def _candidate_skill_ids(
 
     if mode in _LESSON_GATED_MODES:
         # 32.4: llegar aquí en modo "review" ya significa que no había nada
-        # pendiente y se cayó al estudio de material nuevo, así que se exige
-        # la lección igual que en "study". "placement"/"exam" evalúan lo que
-        # el alumno ya sabe -- exigir la lección primero rompería el propio
-        # propósito del examen de nivel.
+        # pendiente con lección vista y se cayó al estudio de material nuevo,
+        # así que se exige la lección igual que en "study" y en "exam".
+        # "placement" no: exigir la lección primero rompería el propio
+        # propósito del examen de nivel (H.60).
         seen = await lesson_gate.practice_unlocked_skill_ids(db, user.id, unlocked_skill_ids)
         gated = [sid for sid in unlocked_skill_ids if sid in seen]
         if not gated:
@@ -481,15 +489,21 @@ async def _to_question_public(question: Question) -> QuestionPublic:
     return QuestionPublic.model_validate(question)
 
 
-async def count_due_reviews(db: AsyncSession, user: User) -> int:
+async def count_due_reviews(db: AsyncSession, user: User, track_id: str | None = None) -> int:
+    """Repasos vencidos; con `track_id`, solo los de esa ruta (43.4, Hoy)."""
     now = _now()
-    result = await db.execute(
-        select(func.count(UserSkillState.id)).where(
-            UserSkillState.user_id == user.id,
-            UserSkillState.fsrs_due.is_not(None),
-            UserSkillState.fsrs_due <= now,
-        )
+    query = select(func.count(UserSkillState.id)).where(
+        UserSkillState.user_id == user.id,
+        UserSkillState.fsrs_due.is_not(None),
+        UserSkillState.fsrs_due <= now,
     )
+    if track_id:
+        query = (
+            query.join(Skill, Skill.id == UserSkillState.skill_id)
+            .join(Module, Module.id == Skill.module_id)
+            .where(Module.track_id == track_id)
+        )
+    result = await db.execute(query)
     return int(result.scalar_one() or 0)
 
 
@@ -577,6 +591,37 @@ def _calculate_xp(correct: bool, combo: int, grade: int) -> int:
     return base * multiplier + bonus
 
 
+# Combos en los que `_calculate_xp` sube de multiplicador, y rachas que se
+# celebran (46.1b, plan §6.0: niveles 2 y 4).
+COMBO_MULTIPLIERS = {3: 2, 7: 3, 15: 5}
+STREAK_MILESTONES = (7, 30, 100)
+
+
+def _fx_events(
+    *,
+    combo: int,
+    level_before: int,
+    level: int,
+    streak_before: int,
+    streak: int,
+    missions_done: list[str],
+    badges_new: list[str],
+) -> list[FxEvent]:
+    """Hitos que cruzó esta respuesta, cada uno una vez (46.1b). El combo cuenta
+    aciertos seguidos de uno en uno (un fallo lo deja en 0), así que cruza un
+    umbral justo al igualarlo."""
+    events: list[FxEvent] = []
+    if combo in COMBO_MULTIPLIERS:
+        events.append(FxEvent(type="combo_multiplier", payload={"multiplier": COMBO_MULTIPLIERS[combo]}))
+    events += [FxEvent(type="mission_completed", payload={"mission_id": m}) for m in dict.fromkeys(missions_done)]
+    if level > level_before:
+        events.append(FxEvent(type="level_up", payload={"level_before": level_before, "level": level}))
+    events += [FxEvent(type="badge_earned", payload={"badge_id": b}) for b in dict.fromkeys(badges_new)]
+    if streak > streak_before and streak in STREAK_MILESTONES:
+        events.append(FxEvent(type="streak_milestone", payload={"days": streak}))
+    return events
+
+
 def _level_from_xp(total_xp: int) -> int:
     return max(1, total_xp // 500 + 1)
 
@@ -636,6 +681,14 @@ async def submit_answer(
             )
         ).scalar_one_or_none()
         if dup is not None:
+            # El `event_id` es único en toda la tabla: uno ajeno no se repite,
+            # y devolverlo filtraba la respuesta correcta y la explicación de
+            # otra persona (§7 de 43.5, 2026-10-18).
+            owner = await db.scalar(
+                select(StudySession.user_id).where(StudySession.id == dup.session_id)
+            )
+            if owner != user.id:
+                raise HTTPException(status_code=409, detail="event_id already used")
             q = (await db.execute(select(Question).where(Question.id == dup.question_id))).scalar_one()
             state = await _get_or_create_skill_state(db, user.id, q.skill_id)
             return QuizAnswerResponse(
@@ -800,6 +853,7 @@ async def submit_answer(
     session.max_combo = max(session.max_combo, combo)
     session.xp_earned += xp
 
+    level_before, streak_before = user.level, user.current_streak
     user.total_xp += xp
     user.level = _level_from_xp(user.total_xp)
     _update_streak(user, now)
@@ -827,6 +881,10 @@ async def submit_answer(
         candidate_skill_ids, pool = await _candidate_skill_ids(
             db, user, session.mode, session.track_id, session.skill_id
         )
+    # Con la puerta de lección cerrada no hay siguiente pregunta: el respaldo
+    # de abajo (`or question.skill_id`) servía otra de la skill recién
+    # respondida sin lección vista (§7 de 43.5, 2026-10-17).
+    if not quota_reached and pool != "needs_lesson":
         next_skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
         next_skill_id = next_skill_id or question.skill_id
         served = set(
@@ -854,7 +912,16 @@ async def submit_answer(
     session_accuracy = session.correct_count / max(1, session.questions_answered)
 
     session.current_question_id = next_question.id if next_question else None
-    await apply_quiz_event(db, user, correct, xp, combo)
+    missions_done, badges_new = await apply_quiz_event(db, user, correct, xp, combo)
+    events = _fx_events(
+        combo=combo,
+        level_before=level_before,
+        level=user.level,
+        streak_before=streak_before,
+        streak=user.current_streak,
+        missions_done=missions_done,
+        badges_new=badges_new,
+    )
     await db.commit()
 
     return QuizAnswerResponse(
@@ -873,6 +940,7 @@ async def submit_answer(
         next_question=next_question_public,
         next_selection_reason=next_reason,
         quota_reached=quota_reached,
+        events=events,
     )
 
 

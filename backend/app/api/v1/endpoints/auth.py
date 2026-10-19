@@ -10,7 +10,7 @@ from datetime import UTC, datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr, Field, field_validator
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.cookies import clear_auth_cookies, set_auth_cookies
@@ -155,7 +155,7 @@ async def register(
     email_svc.send_email_verification(
         to=user.email, name=user.display_name, token=raw_token, lang=user.language
     )
-    email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
+    # 45.2 (ADR-66 E2): un solo correo al registrarse. La bienvenida sale al verificar.
 
     token = Token(
         access_token=create_access_token(user.id, jwt_version=user.jwt_version),
@@ -520,9 +520,33 @@ async def verify_email(
     if user is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid token")
 
-    user.email_verified = True
-    evt.used = True
+    # 45.4: dos clics a la vez con el mismo enlace leían los dos «sin usar» y
+    # «sin verificar» antes de que el otro guardara, y salían dos bienvenidas.
+    # Los dos UPDATE condicionales son atómicos: solo uno gana cada fila.
+    claimed = await db.execute(
+        update(EmailVerificationToken)
+        .where(EmailVerificationToken.id == evt.id, EmailVerificationToken.used.is_(False))
+        .values(used=True)
+    )
+    if claimed.rowcount != 1:  # type: ignore[attr-defined]
+        await db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired verification link",
+        )
+    verified_now = await db.execute(
+        update(User)
+        .where(User.id == user.id, User.email_verified.is_(False))
+        .values(email_verified=True)
+    )
+    first_time = verified_now.rowcount == 1  # type: ignore[attr-defined]
     await db.commit()
+    await db.refresh(user)
+    if first_time:
+        # 45.2 (ADR-66 E2): la bienvenida sale al verificar, una sola vez.
+        from app.services import email as email_svc
+
+        email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
     return {"message": "Email verified. You now have full access."}
 
 

@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { Card } from '../components/common/Card';
@@ -9,7 +10,10 @@ import { progress as progressApi, gamification, type SkillMasteryDetail } from '
 import { listVariants, listItemVariants } from '../lib/motion';
 import { bandForSkill, overallBand, MIN_EVIDENCE_ANSWERS, type EvidenceBand } from '../lib/evidenceBand';
 import { nextLessonSkillId } from '../lib/nextStep';
+import { bandMoments, missionMoments } from '../lib/homeMoments';
+import { emit as emitFx } from '../lib/feedbackFx';
 import styles from './HomeScreen.module.css';
+import { TrackIcon } from '../components/common/AppIcon';
 
 // Saludo entero por clave: «Buenos» + «noches» salía «Buenos noches».
 function greetingKey(): 'home.greetingMorning' | 'home.greetingAfternoon' | 'home.greetingEvening' {
@@ -49,6 +53,7 @@ export function HomeScreen() {
     () => (activeTrackId ? progressApi.curriculum(activeTrackId) : Promise.resolve(null)),
     [activeTrackId],
   );
+  const curFailed = Boolean(activeTrackId) && !cur.loading && cur.error !== null;
   const nextLessonId = cur.data ? nextLessonSkillId(cur.data) : null;
   const nextLesson = cur.data?.modules.flatMap((m) => m.skills).find((s) => s.skill_id === nextLessonId);
 
@@ -72,6 +77,27 @@ export function HomeScreen() {
   const bandCount = (b: EvidenceBand) => skillBands.filter((x) => x === b).length;
   const answers = practicedSkills.reduce((sum, s) => sum + s.attempts, 0);
   const correct = practicedSkills.reduce((sum, s) => sum + s.correct_count, 0);
+  // 46.3b: lo que cambió desde la última visita se celebra una vez (foto en
+  // localStorage, lib/homeMoments.ts). Sin foto previa no se celebra nada.
+  const reduceMotion = useReducedMotion();
+  const [missionsJustDone, setMissionsJustDone] = useState<string[]>([]);
+  const [skillsJustUp, setSkillsJustUp] = useState<string[]>([]);
+  useEffect(() => {
+    if (!missions.data) return;
+    const today = new Date().toISOString().slice(0, 10);
+    const done = missionMoments(
+      user.id, today, missions.data.map((m) => ({ id: m.mission.id, completed: m.completed })),
+    );
+    setMissionsJustDone(done);
+    if (done.length > 0) emitFx({ type: 'mission' });
+  }, [missions.data, user.id]);
+  useEffect(() => {
+    if (!skills.data) return;
+    setSkillsJustUp(
+      bandMoments(user.id, skills.data.filter((s) => s.attempts > 0).map((s) => ({ id: s.skill_id, band: bandForSkill(s) }))),
+    );
+  }, [skills.data, user.id]);
+
   const avgElo = practicedSkills.length > 0
     ? Math.round(practicedSkills.reduce((sum, s) => sum + s.elo_rating, 0) / practicedSkills.length)
     : undefined;
@@ -122,9 +148,25 @@ export function HomeScreen() {
               ? t('home.nextLesson', { name: lang === 'es' ? nextLesson.name_es : nextLesson.name_en })
               : t('home.nextStudy')}
           </p>
-          <p className={styles.nextHint}>{nextLesson ? t('home.nextLessonHint') : t('home.nextHint')}</p>
+          <p className={styles.nextHint}>
+            {curFailed ? t('home.curriculumError') : nextLesson ? t('home.nextLessonHint') : t('home.nextHint')}
+          </p>
+          {curFailed ? (
+            // Segundo §7 de 43.5: si el currículo no carga no hay forma de
+            // saber la siguiente lección; lanzar un quiz entonces es lo mismo
+            // que pulsar mientras carga. Se ofrece reintentar.
+            <motion.button className={styles.btnStudy} onClick={cur.reload} whileTap={{ scale: 0.98 }}>
+              {t('home.retry')}
+            </motion.button>
+          ) : (
           <motion.button
             className={styles.btnStudy}
+            // §7 de 43.5: mientras carga el currículo de la ruta activa no se
+            // sabe cuál es la siguiente lección; pulsar entonces lanzaba un quiz
+            // y el backend respondía `needs_lesson`. Sin ruta activa no hay
+            // «siguiente lección»: decide el backend (practica si hay lección
+            // vista; si no, «Empieza por la lección» → «Ir a las lecciones»).
+            disabled={Boolean(activeTrackId) && cur.loading}
             onClick={() => {
               if (nextLessonId) startLesson(nextLessonId);
               else startQuiz('study', 10, activeTrackId ? { trackId: activeTrackId } : undefined);
@@ -133,6 +175,7 @@ export function HomeScreen() {
           >
             {t('home.studyNow')}
           </motion.button>
+          )}
         </motion.section>
       </div>
 
@@ -146,7 +189,7 @@ export function HomeScreen() {
                 <p className={styles.reviewCount}>
                   <strong>{reviewsDue}</strong> {t('home.reviewsPending')}
                 </p>
-                <button type="button" className={styles.btnSecondary} onClick={() => startQuiz('review', reviewsDue)}>
+                <button type="button" className={styles.btnSecondary} onClick={() => startQuiz('review', reviewsDue, activeTrackId ? { trackId: activeTrackId } : undefined)}>
                   {t('home.review')}
                 </button>
               </>
@@ -224,7 +267,7 @@ export function HomeScreen() {
           <div className={styles.trackList}>
             {shownTracks.map((tr) => (
               <button key={tr.track_id} type="button" className={styles.trackRow} onClick={() => openTrack(tr.track_id)}>
-                <span className={styles.trackIcon} aria-hidden="true">{tr.icon}</span>
+                <span className={styles.trackIcon} aria-hidden="true"><TrackIcon trackId={tr.track_id} fallback={tr.icon} size={28} /></span>
                 <span className={styles.trackBody}>
                   <span className={styles.trackName}>{lang === 'es' ? tr.name_es : tr.name_en}</span>
                   {/* Sin ninguna dominada, una barra vacía no dice nada: basta el recuento. */}
@@ -275,6 +318,16 @@ export function HomeScreen() {
                     />
                   </div>
                   <span className={m.completed ? styles.missionDone : styles.missionXp}>
+                    {missionsJustDone.includes(m.mission.id) && (
+                      <svg className={styles.check} viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" data-testid="mission-check">
+                        <motion.path
+                          d="M3 8.5 6.5 12 13 4.5"
+                          initial={reduceMotion ? false : { pathLength: 0 }}
+                          animate={{ pathLength: 1 }}
+                          transition={{ duration: 0.3, ease: 'easeOut' }}
+                        />
+                      </svg>
+                    )}
                     {m.completed ? t('home.done') : `+${m.mission.xp_reward} XP`}
                   </span>
                 </div>
@@ -308,7 +361,8 @@ export function HomeScreen() {
                 return (
                   <div
                     key={s.skill_id}
-                    className={`${styles.node} ${styles[BAND_CLASS[skillBand]]}`}
+                    className={`${styles.node} ${styles[BAND_CLASS[skillBand]]} ${skillsJustUp.includes(s.skill_id) ? styles.bandUp : ''}`}
+                    data-band-up={skillsJustUp.includes(s.skill_id) || undefined}
                     role="group"
                     aria-label={`${name}: ${t(`bands.${skillBand}`)} (${evidence})`}
                   >

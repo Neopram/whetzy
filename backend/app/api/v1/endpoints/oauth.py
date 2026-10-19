@@ -27,8 +27,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.cookies import (
+    OAUTH_LANG_COOKIE,
     OAUTH_STATE_COOKIE,
     clear_oauth_state_cookie,
+    set_oauth_lang_cookie,
     set_oauth_state_cookie,
 )
 from app.core.db import get_db
@@ -113,7 +115,7 @@ async def oauth_providers(response: Response) -> dict[str, list[str]]:
     """Proveedores con credenciales configuradas en este servidor.
 
     El frontend pinta solo los botones que salen aquí: un «Continuar con
-    Google» que responde 503 al pulsarlo es peor que ningún botón.
+    Google» que responde 404 al pulsarlo es peor que ningún botón.
     """
     response.headers["Cache-Control"] = "public, max-age=3600"
     return {"providers": [name for name, cfg in _PROVIDERS.items() if cfg["client_id"]()]}
@@ -126,13 +128,16 @@ async def oauth_providers(response: Response) -> dict[str, list[str]]:
 @router.get("/{provider}/start")
 async def oauth_start(
     provider: str,
+    lang: str | None = Query(None),
     db: AsyncSession = Depends(get_db),
 ) -> RedirectResponse:
     cfg = _get_provider(provider)
 
     if provider != "test" and not cfg["client_id"]():
+        # 404, como un proveedor desconocido: en este servidor no existe. Era 503,
+        # que Sentry reporta como error y avisaba por un enlace viejo o un bot.
         raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=f"{provider} login is not configured on this server",
         )
 
@@ -156,6 +161,7 @@ async def oauth_start(
             status_code=302,
         )
         set_oauth_state_cookie(redirect, state, _STATE_TTL_MINUTES * 60)
+        _remember_lang(redirect, lang)
         return redirect
 
     params: dict[str, str] = {
@@ -173,6 +179,7 @@ async def oauth_start(
     auth_url = cfg["auth_url"] + "?" + urllib.parse.urlencode(params)
     redirect = RedirectResponse(url=auth_url, status_code=302)
     set_oauth_state_cookie(redirect, state, _STATE_TTL_MINUTES * 60)
+    _remember_lang(redirect, lang)
     return redirect
 
 
@@ -240,7 +247,10 @@ async def oauth_callback(
         return error_redirect
 
     try:
-        user = await _find_or_create_user(db, email, provider, provider_user_id)
+        user = await _find_or_create_user(
+            db, email, provider, provider_user_id,
+            language=_valid_lang(request.cookies.get(OAUTH_LANG_COOKIE)),
+        )
     except _UnverifiedEmailConflict:
         error_redirect = RedirectResponse(
             url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=email_unverified",
@@ -337,11 +347,24 @@ async def _get_user_info(
     return data.get("email"), provider_user_id
 
 
+def _valid_lang(lang: str | None) -> str | None:
+    return lang if lang in ("es", "en") else None
+
+
+def _remember_lang(response: RedirectResponse, lang: str | None) -> None:
+    # 45.1 (ADR-66 E1): un `lang` no válido se ignora; la cuenta nueva queda con
+    # el valor por defecto de la columna.
+    valid = _valid_lang(lang)
+    if valid:
+        set_oauth_lang_cookie(response, valid, _STATE_TTL_MINUTES * 60)
+
+
 async def _find_or_create_user(
     db: AsyncSession,
     email: str,
     provider: str,
     provider_user_id: str,
+    language: str | None = None,
 ) -> User:
     # 43.2: el email se guarda y se busca en minúsculas, como en el registro.
     email = normalize_email(email)
@@ -360,6 +383,7 @@ async def _find_or_create_user(
     # 2. Existing user with this email → link accounts, pero solo si esa
     # cuenta ya tiene el email verificado (ver _UnverifiedEmailConflict).
     user = await user_by_email(db, email)
+    created = user is None
 
     if user is not None and not user.email_verified:
         raise _UnverifiedEmailConflict(email)
@@ -382,6 +406,9 @@ async def _find_or_create_user(
             display_name=base[:100],
             email_verified=True,  # provider has already verified it
         )
+        # 45.1: solo al crear la cuenta. Una que ya existe guarda el suyo (E1).
+        if language:
+            user.language = language
         db.add(user)
         await db.flush()
 
@@ -394,4 +421,9 @@ async def _find_or_create_user(
     )
     await db.commit()
     await db.refresh(user)
+    if created:
+        # 45.2 (ADR-66 E2): la cuenta llega verificada, así que la bienvenida sale ya.
+        from app.services import email as email_svc
+
+        email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
     return user

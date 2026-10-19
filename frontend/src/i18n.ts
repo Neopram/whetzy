@@ -20,7 +20,9 @@ import esProducto from './i18n/es/producto.json';
  *  silencio. Se usan con `useTranslation('marketing')` o `t('marketing:clave')`. */
 export const ROLE_NAMESPACES = ['producto', 'contenido', 'motor', 'legal', 'marketing'] as const;
 
-function detectLanguage(): string {
+/** Idioma al arrancar: lo guardado en `whetzy_lang` (lo elegido en la portada o
+ *  en /auth), y si no el navegador. 45.1 (ADR-66 E1) la usa como respaldo de `?lang`. */
+export function detectLanguage(): string {
   // No `window` in Node (the landing prerender, scripts/prerender-landing.mjs)
   // regardless of Node version. `navigator` is NOT a safe proxy for that: Node
   // 21+ ships its own global `navigator` with a real `.language` derived from

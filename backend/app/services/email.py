@@ -24,12 +24,16 @@ timeout congelaba el bucle de eventos entero.
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import smtplib
 import ssl
+import time
+import uuid
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from html import escape as _escape_html
+from pathlib import Path
 
 logger = logging.getLogger("whetzy.email")
 
@@ -350,6 +354,22 @@ def _send_log(to: str, subject: str, html: str) -> None:
         "EMAIL (log-only) to=%s subject=%r body_chars=%d",
         to, subject, len(html),
     )
+    _write_outbox(to, subject, html)
+
+
+def _write_outbox(to: str, subject: str, html: str) -> None:
+    """45.4: el e2e lee aquí el enlace del correo. Solo fuera de producción."""
+    from app.core.config import settings
+
+    if not settings.EMAIL_OUTBOX_DIR or settings.ENVIRONMENT == "production":
+        return
+    outbox = Path(settings.EMAIL_OUTBOX_DIR)
+    outbox.mkdir(parents=True, exist_ok=True)
+    name = f"{time.time_ns()}-{uuid.uuid4().hex[:8]}.json"
+    (outbox / name).write_text(
+        json.dumps({"to": to, "subject": subject, "html": html}, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
 
 # ── Public API ─────────────────────────────────────────────────────────────────
@@ -480,7 +500,9 @@ def send_welcome(to: str, name: str, lang: str = "es") -> None:
 def send_email_verification(to: str, name: str, token: str, lang: str = "es") -> None:
     from app.core.config import settings
 
-    verify_url = f"{settings.FRONTEND_BASE_URL}/verify-email?token={token}"
+    # 45.2 (ADR-66 E5): el enlace lleva el idioma, para que la página salga en él.
+    link_lang = lang if lang in ("es", "en") else "es"
+    verify_url = f"{settings.FRONTEND_BASE_URL}/verify-email?token={token}&lang={link_lang}"
     subject, html = _render("email_verification", lang, name=name, verify_url=verify_url)
     _dispatch(to, subject, html)
 

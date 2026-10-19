@@ -22,7 +22,7 @@ Se resuelven en `App()` antes de cualquier hook; no necesitan sesión salvo dond
 | `/landing` | `LandingScreen` | Portada pública, ES/EN, hero pre-renderizado | E1: `docs/design/identidad.md`, `competitive-teardown.md` |
 | `/auth`, `/login`, `/register` | `AuthScreen` (modos login / register / forgot → `ForgotPasswordPage`) | Acceso, registro, recuperar contraseña, OAuth GitHub/Google, segundo paso con código si la cuenta tiene 2FA (O1.3) | E1: `docs/design/auth-hardening.md`, `docs/API.md` |
 | `/reset-password?token=` | `ResetPasswordPage` | Nueva contraseña desde el correo | E0: `docs/API.md` (endpoint) |
-| `/verify-email?token=` | `VerifyEmailPage` | Confirma el correo desde el enlace enviado al registrarse (0.2, PR #145) | E0: `docs/API.md` (endpoint) |
+| `/verify-email?token=&lang=` | `VerifyEmailPage` | Confirma el correo desde el enlace enviado al registrarse (0.2, PR #145). Sale en el idioma del enlace; con sesión, «Continuar» a `/` (la franja de 45.3 desaparece); sin sesión, «Iniciar sesión» a `/login?lang=` (45.4, ADR-66 E5) | E1: `docs/PLAN_CORREO_ALTA.md`, `docs/API.md` (endpoint) |
 | `/delete-account` | `DeleteAccountScreen` | Borrado de cuenta (GDPR, purga a 30 días) | E1: política publicada (`legal.privacy*`, ADR-55), `RUNBOOK.md` |
 | `/privacy`, `/terms`, `/refund` | `LegalScreen doc=…` | Textos legales publicados (claves i18n `legal.*`) | E1: las propias claves `legal.*` (ADR-55; los borradores, en `docs/archive/legal-borradores/`) |
 | `/evidence` | `EvidenceScreen` | Cifras reales del producto | E0: ledger 38.5 |
@@ -43,6 +43,10 @@ Navegación inferior de 5 pestañas (design/v2): **Hoy · Rutas · Practicar · 
 Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario; desde 43.3 lo recuerda el servidor,
 `onboarding_completed_at`, y no el navegador): objetivo → ruta de aprendizaje (24, agrupadas) → certificación
 relacionada opcional → experiencia → prueba de nivel de 20 o «empiezo de cero» → Hoy.
+
+Mientras la cuenta no tenga el correo verificado, todas las pantallas con sesión muestran arriba la franja
+`VerifyEmailBanner` (45.3, ADR-66 E4): «Te enviamos un enlace a fe***@gmail.com», «Reenviar» (endpoint público
+`/auth/resend-verification`, 60 s entre envíos) y × (la oculta durante la sesión del navegador). No bloquea nada (E3).
 
 | `Screen` | Pantalla | Se llega desde | Subvistas | Especificación |
 |---|---|---|---|---|

@@ -1218,3 +1218,89 @@ async def test_session_reuses_questions_only_when_the_skill_runs_out(client, aut
         assert nxt is not None
         assert nxt["id"] != current
         current = nxt["id"]
+
+
+@pytest.mark.parametrize("lesson_kept", [True, False], ids=["con-leccion", "sin-leccion"])
+async def test_next_question_respects_the_lesson_gate(
+    client, auth_headers, user, db_session, content_seed, lesson_kept
+):
+    """§7 de 43.5 (2026-10-17): si la puerta de lección se cierra a mitad de
+    sesión (una sesión abierta antes de que su modo la exigiera, o la lección
+    deja de contar), `/quiz/answer` volvía a la skill recién respondida
+    (`next_skill_id or question.skill_id`) y servía otra pregunta suya sin
+    lección vista. Con la puerta cerrada no hay siguiente pregunta."""
+    from sqlalchemy import delete as _delete
+
+    from app.models.content import Question
+
+    db_session.add(
+        Question(
+            id="q010101002", skill_id=content_seed["skill_id"], type="mcq",
+            difficulty_tier="easy", question_es="¿2?", question_en="2?",
+            options_es=["a", "b"], options_en=["a", "b"], correct_index=0,
+            explanation_es="x", explanation_en="x", source="test", elo_rating=1200.0,
+        )
+    )
+    await db_session.commit()
+    session_id, question_id = await _start_quiz(
+        client, auth_headers, content_seed["skill_id"], db_session, user
+    )
+    if not lesson_kept:
+        await db_session.execute(_delete(LessonCompletion).where(LessonCompletion.user_id == user.id))
+        await db_session.commit()
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={"session_id": session_id, "question_id": question_id,
+              "selected_index": 0, "response_time_ms": 1500},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200, r.text
+    nxt = r.json()["next_question"]
+    if lesson_kept:
+        assert nxt is not None and nxt["id"] != question_id
+    else:
+        assert nxt is None
+
+
+async def test_answer_event_id_of_another_user_does_not_leak_the_answer(
+    client, auth_headers, user, plus_user, plus_auth_headers, db_session, content_seed
+):
+    """§7 de 43.5 (2026-10-18): la idempotencia buscaba el `event_id` sin mirar
+    de quién era la respuesta, y devolvía su `correct_index` y su explicación a
+    cualquiera que reenviara ese id. Un `event_id` ajeno es un conflicto."""
+    session_a, question_a = await _start_quiz(client, auth_headers, content_seed["skill_id"], db_session, user)
+    event_id = str(uuid.uuid4())
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={"session_id": session_a, "question_id": question_a, "selected_index": 1,
+              "response_time_ms": 1500, "event_id": event_id},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200, r.text
+
+    session_b, question_b = await _start_quiz(
+        client, plus_auth_headers, content_seed["skill_id"], db_session, plus_user
+    )
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={"session_id": session_b, "question_id": question_b, "selected_index": 1,
+              "response_time_ms": 1500, "event_id": event_id},
+        headers=_h(plus_auth_headers),
+    )
+    assert r.status_code == 409, r.text
+    assert "correct_index" not in r.text
+
+
+async def test_quiz_start_rejects_placement_mode(client, auth_headers, content_seed):
+    """§7 de 43.5 (2026-10-17): `/quiz/start` con `mode=placement` abría un quiz
+    sin puerta de lección que, al terminar, contaba como prueba de nivel para
+    H.60 (`strong_module_ids` solo mira `mode == "placement"`): dos aciertos
+    desbloqueaban la práctica de un módulo sin lección, y `/quiz/answer`
+    devuelve la respuesta correcta para reintentar. La prueba de nivel va por
+    `/placement/*`; este endpoint ya no acepta ese modo."""
+    r = await client.post(
+        f"{QUIZ}/start",
+        json={"track_id": content_seed["track_id"], "mode": "placement"},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 422, r.text

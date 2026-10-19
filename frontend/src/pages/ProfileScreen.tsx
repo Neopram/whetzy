@@ -25,6 +25,10 @@ export function ProfileScreen() {
   const updateUser = useAppStore((s) => s.updateUser);
   const aiExplanations = useAppStore((s) => s.aiExplanations);
   const toggleAiExplanations = useAppStore((s) => s.toggleAiExplanations);
+  const soundEnabled = useAppStore((s) => s.soundEnabled);
+  const toggleSound = useAppStore((s) => s.toggleSound);
+  const hapticEnabled = useAppStore((s) => s.hapticEnabled);
+  const toggleHaptic = useAppStore((s) => s.toggleHaptic);
   const signOut = useAppStore((s) => s.signOut);
   const [theme, setTheme] = useState<Theme>(getStoredTheme());
   const { t, i18n: i18nInst } = useTranslation();
@@ -337,6 +341,32 @@ export function ProfileScreen() {
               role="switch"
               aria-checked={aiExplanations}
               aria-label={t('profile.aiExplanations')}
+            >
+              <span className={styles.track}><span className={styles.toggleThumb} /></span>
+            </button>
+          </div>
+          <div className={styles.setting}>
+            <span className={styles.settingLabel}>{t('producto:fx.sound')}</span>
+            <button
+              className={`${styles.toggle} ${soundEnabled ? styles.toggleOn : ''}`}
+              type="button"
+              onClick={toggleSound}
+              role="switch"
+              aria-checked={soundEnabled}
+              aria-label={t('producto:fx.sound')}
+            >
+              <span className={styles.track}><span className={styles.toggleThumb} /></span>
+            </button>
+          </div>
+          <div className={styles.setting}>
+            <span className={styles.settingLabel}>{t('producto:fx.haptics')}</span>
+            <button
+              className={`${styles.toggle} ${hapticEnabled ? styles.toggleOn : ''}`}
+              type="button"
+              onClick={toggleHaptic}
+              role="switch"
+              aria-checked={hapticEnabled}
+              aria-label={t('producto:fx.haptics')}
             >
               <span className={styles.track}><span className={styles.toggleThumb} /></span>
             </button>

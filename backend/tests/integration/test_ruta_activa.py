@@ -78,3 +78,33 @@ async def test_cambiar_de_ruta_no_toca_el_progreso_anterior(client, db_session):
     assert despues == antes
     assert despues[0]["attempts"] == 4
     assert await db_session.get(User, uuid.UUID(user_id)) is not None
+
+
+async def _due_in_both(db, user_id) -> None:
+    """Un repaso vencido en cada una de las dos rutas."""
+    from sqlalchemy import update
+
+    await _two_tracks(db, user_id)
+    await db.execute(
+        update(UserSkillState)
+        .where(UserSkillState.user_id == user_id)
+        .values(fsrs_due=datetime.now(UTC) - timedelta(hours=1))
+    )
+    await db.commit()
+
+
+async def test_hoy_cuenta_solo_los_repasos_de_la_ruta_activa(client, db_session):
+    """§7 de 43.4 (2026-10-17): la tarjeta de repaso de Hoy contaba los
+    repasos vencidos de todas las rutas, no los de la activa."""
+    import uuid
+
+    headers = await _register(client)
+    user_id = uuid.UUID((await client.get(f"{BASE}/auth/me", headers=headers)).json()["id"])
+    await _due_in_both(db_session, user_id)
+
+    sin_ruta = await client.get(f"{BASE}/progress/dashboard", headers=headers)
+    assert sin_ruta.json()["reviews_due"] == 2  # sin ruta activa, todas
+
+    await client.patch(f"{BASE}/auth/me", json={"target_track_id": "ra_a"}, headers=headers)
+    con_ruta = await client.get(f"{BASE}/progress/dashboard", headers=headers)
+    assert con_ruta.json()["reviews_due"] == 1

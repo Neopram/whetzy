@@ -310,6 +310,8 @@ export interface UserRead {
   can_create_courses?: boolean;
   /** «Admin» en Perfil: el panel es solo del dueño (#202). */
   is_owner?: boolean;
+  /** 45.3 (ADR-66 E4): sin verificar, la app muestra la franja «verifica tu correo». */
+  email_verified?: boolean;
   /** D-20: la ruta elegida en el onboarding. */
   target_track_id?: string | null;
   /** 43.3 (D2): certificación relacionada elegida en el onboarding. */
@@ -437,8 +439,10 @@ export const auth = {
   },
 
   /** Navigate the browser to the OAuth provider start URL (full page redirect, no SDK). */
-  startOAuth(provider: OAuthProvider) {
-    window.location.href = `${BASE_URL}/auth/oauth/${provider}/start`;
+  startOAuth(provider: OAuthProvider, lang?: 'es' | 'en') {
+    // 45.1 (ADR-66 E1): una cuenta nueva por OAuth se crea en el idioma de la pantalla.
+    const q = lang ? `?lang=${lang}` : '';
+    window.location.href = `${BASE_URL}/auth/oauth/${provider}/start${q}`;
   },
 
   async requestPasswordReset(email: string) {
@@ -516,6 +520,15 @@ export interface QuizStartResponse {
   selection_reason: SelectionReason | null;
 }
 
+/** Hito que cruzó una respuesta (46.1b): el servidor lo calcula y el cliente
+ *  lo celebra con `lib/feedbackFx.ts`; no se adivina comparando fotos. */
+export type ServerFxEvent =
+  | { type: 'level_up'; payload: { level_before: number; level: number } }
+  | { type: 'badge_earned'; payload: { badge_id: string } }
+  | { type: 'mission_completed'; payload: { mission_id: string } }
+  | { type: 'combo_multiplier'; payload: { multiplier: 2 | 3 | 5 } }
+  | { type: 'streak_milestone'; payload: { days: 7 | 30 | 100 } };
+
 export interface QuizAnswerResponse {
   correct: boolean;
   correct_index: number | null;
@@ -533,6 +546,8 @@ export interface QuizAnswerResponse {
   next_selection_reason: SelectionReason | null;
   /** Free daily quota used up (39.4): no next question until the next UTC day. */
   quota_reached?: boolean;
+  /** Hitos de esta respuesta, sin repetidos (46.1b). */
+  events?: ServerFxEvent[];
 }
 
 export interface QuizEndResponse {

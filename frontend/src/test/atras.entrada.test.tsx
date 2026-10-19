@@ -79,6 +79,8 @@ describe('ninguna navegación interna apila la entrada anterior', () => {
 
   it('la landing tiene un «Entrar» que lleva a /login', () => {
     const landing = readFileSync(join(SRC, 'pages', 'LandingScreen.tsx'), 'utf8');
-    expect(landing).toMatch(/href="\/login"[^>]*>\{t\('landing\.nav\.login'\)\}/);
+    // 45.1: el enlace lleva el idioma de la portada (`/login?lang=es|en`).
+    expect(landing).toMatch(/href=\{loginHref\}[^>]*>\{t\('landing\.nav\.login'\)\}/);
+    expect(landing).toMatch(/const loginHref = `\/login\?lang=\$\{lang\}`/);
   });
 });

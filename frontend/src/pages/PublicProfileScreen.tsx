@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { profiles, type PublicProfile } from '../services/api'
 import styles from './PublicProfileScreen.module.css';
+import { GameIcon } from '../components/common/AppIcon';
 
 export default function PublicProfileScreen({ handle }: { handle: string }) {
   const { i18n, t } = useTranslation()
@@ -65,7 +66,7 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
           <span className={styles.statLabel}>{t('profile.skills', 'Habilidades')}</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statValue}>{profile.current_streak}<span aria-hidden="true">🔥</span></span>
+          <span className={styles.statValue}>{profile.current_streak}<GameIcon name="racha" size={20} /></span>
           <span className={styles.statLabel}>{t('profile.streak', 'Racha')}</span>
         </div>
       </div>
@@ -78,7 +79,7 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
           <div className={styles.certsList}>
             {profile.certificates.map((cert) => (
               <div key={cert.code} className={styles.certBadge}>
-                <span className={styles.certIcon} aria-hidden="true">🏆</span>
+                <span className={styles.certIcon}><GameIcon name="trofeo" size={28} /></span>
                 <div className={styles.certInfo}>
                   <p className={styles.certName}>{lang === 'es' ? cert.track_name_es : cert.track_name_en}</p>
                   <p className={styles.certDate}>{new Date(cert.issued_at).toLocaleDateString()}</p>

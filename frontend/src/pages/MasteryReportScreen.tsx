@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 
 import { masteryReports, type MasteryReport } from '../services/api';
 import styles from './MasteryReportScreen.module.css';
+import { TrackIcon } from '../components/common/AppIcon';
 
 type State = { status: 'loading' } | { status: 'found'; report: MasteryReport } | { status: 'missing' };
 
@@ -70,7 +71,7 @@ export function MasteryReportScreen({ code }: { code: string }) {
           {s.tracks.map((tr) => (
             <li key={tr.track_id} className={styles.track}>
               <h2 className={styles.trackName}>
-                {tr.icon && <span aria-hidden="true">{tr.icon} </span>}
+                <span aria-hidden="true"><TrackIcon trackId={tr.track_id} fallback={tr.icon} size={24} /> </span>
                 {es ? tr.name_es : tr.name_en}
               </h2>
               <p className={styles.trackMeta}>

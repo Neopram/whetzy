@@ -32,6 +32,8 @@ interface UserProfile {
   /** «Admin» en Perfil: solo el dueño. `/auth/me` no mandaba `is_admin`, así
    *  que el enlace no se veía nunca (auditoría de pantallas, 2026-10-16). */
   isOwner: boolean;
+  /** 45.3 (ADR-66 E4): false → franja «verifica tu correo» (`VerifyEmailBanner`). */
+  emailVerified: boolean;
   /** 43.3 (D2): el servidor guarda que terminó el onboarding (`onboarding_completed_at`). */
   onboardingCompleted: boolean;
   /** 43.3 (D2): horas por semana (0 <3 h, 1 3-10 h, 2 >10 h); se elige en Perfil. */
@@ -182,6 +184,7 @@ function mapApiUser(u: UserRead): UserProfile {
     marketingEmails: !u.marketing_emails_opt_out,
     canCreateCourses: u.can_create_courses ?? false,
     isOwner: u.is_owner ?? false,
+    emailVerified: u.email_verified ?? true,
     onboardingCompleted: Boolean(u.onboarding_completed_at),
     weeklyTime: u.onboarding_weekly_time ?? null,
     language: u.language,
@@ -214,6 +217,7 @@ const defaultUser: UserProfile = {
   marketingEmails: true,
   canCreateCourses: false,
   isOwner: false,
+  emailVerified: true,
   onboardingCompleted: false,
   weeklyTime: null,
   language: 'es',
@@ -386,7 +390,8 @@ export const useAppStore = create<AppState>()(
 
       language: 'es',
       setLanguage: (lang) => set({ language: lang }),
-      soundEnabled: true,
+      // Apagado por defecto (46.2, plan §6.0; D3 del dueño puede cambiarlo).
+      soundEnabled: false,
       toggleSound: () => set((s) => ({ soundEnabled: !s.soundEnabled })),
       aiExplanations: true,
       toggleAiExplanations: () => set((s) => ({ aiExplanations: !s.aiExplanations })),
@@ -395,6 +400,14 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'learning-engine-store',
+      // v1 (46.2): hasta aquí `soundEnabled` se guardaba en true sin que nada
+      // sonara ni hubiera interruptor; nadie lo eligió, así que se apaga.
+      version: 1,
+      migrate: (persisted, version) => {
+        const state = (persisted ?? {}) as Record<string, unknown>;
+        if (version < 1) state.soundEnabled = false;
+        return state as unknown as AppState;
+      },
       partialize: (state) => ({
         user: state.user,
         language: state.language,

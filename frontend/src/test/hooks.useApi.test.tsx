@@ -62,4 +62,22 @@ describe('useApi', () => {
     // Just verify no exception thrown
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
+
+  it('una respuesta de reload() no pisa la de unos deps nuevos (segundo §7 de 43.5)', async () => {
+    // Falla la ruta A → «Reintentar» → se cambia a la ruta B antes de que A
+    // responda: la respuesta tardía de A no debe quedarse como datos de B.
+    const pending: Record<string, (v: string) => void> = {};
+    const fetcher = vi.fn((k: string) => new Promise<string>((r) => { pending[k] = r; }));
+    const { result, rerender } = renderHook(({ k }) => useApi(() => fetcher(k), [k]), {
+      initialProps: { k: 'A' },
+    });
+    result.current.reload();
+    rerender({ k: 'B' });
+    pending.A('datos de A');
+    await new Promise((r) => setTimeout(r, 20));
+    expect(result.current.data).toBeNull();
+    expect(result.current.loading).toBe(true);
+    pending.B('datos de B');
+    await waitFor(() => expect(result.current.data).toBe('datos de B'));
+  });
 });

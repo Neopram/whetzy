@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { OUTBOX_DIR } from './e2e/outbox';
 
 // Chromium propio de la máquina (p. ej. /opt/pw-browsers/chromium en el
 // contenedor de las sesiones): sin esto hacía falta escribir un config local,
@@ -36,7 +37,8 @@ export default defineConfig({
       name: 'entre-sitios',
       // 43.8: la puerta del alumno corre también aquí (§6 del anexo: «y con
       // cookies de terceros bloqueadas»); en `chromium` corre en el mismo sitio.
-      testMatch: /(entre-sitios|alumno)\.spec\.ts/,
+      // 45.4: la puerta de la serie 45 (correoAlta) también corre entre sitios.
+      testMatch: /(entre-sitios|alumno|correoAlta)\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         locale: 'es-ES',
@@ -64,6 +66,7 @@ export default defineConfig({
         // registered user back on the landing — the intermittent reds of
         // 2026-09-24 (a different 1-3 tests failing on every full run).
         DEFAULT_RATE_LIMIT: '5000',
+        EMAIL_OUTBOX_DIR: OUTBOX_DIR,
         // The suite's frontend runs on :5199, which is not in the default
         // origin list (only :3000 and :5173). The CSRF middleware rejected
         // every POST carrying a session cookie from it (`POST /quiz/start`,

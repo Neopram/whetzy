@@ -11,6 +11,7 @@ import {
   type ProjectSubmissionRead,
 } from '../services/api';
 import styles from './ProjectScreen.module.css';
+import { GameIcon } from '../components/common/AppIcon';
 
 const MonacoCodeEditor = lazy(
   () => import('../components/quiz/MonacoCodeEditor').then((m) => ({ default: m.MonacoCodeEditor }))
@@ -71,7 +72,11 @@ function ProjectList({ onSelect }: { onSelect: (slug: string) => void }) {
               {lang === 'es' ? p.name_es : p.name_en}
             </p>
             <p className={styles.projectMeta}>
-              {p.difficulty === 1 ? '⭐' : p.difficulty === 2 ? '⭐⭐' : '⭐⭐⭐'}
+              <span role="img" aria-label={`${p.difficulty}/3`}>
+                {Array.from({ length: Math.min(Math.max(p.difficulty, 1), 3) }, (_, k) => (
+                  <GameIcon key={k} name="estrella" size={14} />
+                ))}
+              </span>
               {' · '}
               {p.source_license}
             </p>
@@ -263,7 +268,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
 
       {projectCompleted && (
         <div className={styles.completedBanner}>
-          {t('project.completed')} <span aria-hidden="true">🎉</span>
+          {t('project.completed')} <GameIcon name="confeti" size={22} />
           {!submission?.verified && <p className={styles.note}>{t('project.unverified')}</p>}
         </div>
       )}

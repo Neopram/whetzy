@@ -39,8 +39,10 @@ describe('LessonScreen — icono accesible por sección (39.14)', () => {
     // El texto de la lección sigue verbatim — no se tocó contenido.
     expect(screen.getByText(sentence.trim(), { exact: false })).toBeInTheDocument();
 
-    const icons = [...decorativeIcons()].map((n) => n.textContent);
-    expect(icons).toContain('💡');
+    // Desde 2026-10-18 el icono de concepto es un SVG propio (bombilla), no el
+    // emoji 💡: sigue siendo decorativo.
+    const icons = [...decorativeIcons()].map((n) => n.getAttribute('src'));
+    expect(icons).toContain('/iconos/gamificacion/bombilla.svg');
   });
 
   it('el paso de ejemplo marca su icono y el de la salida como decorativos', async () => {

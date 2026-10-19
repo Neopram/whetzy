@@ -70,6 +70,18 @@ describe('Hoy de la ruta activa (D6)', () => {
     expect(screen.queryAllByText('Ciberseguridad')).toHaveLength(0);
   });
 
+  it('«Repasar» arranca el repaso de la ruta activa (§7 de 43.4)', async () => {
+    m(progressApi.dashboard).mockResolvedValue({
+      level: 1, total_xp: 0, current_streak: 0, max_streak: 0, streak_freeze_available: 0,
+      last_active: null, reviews_due: 3, total_sessions: 3, tracks: [mastery('track13', 'Ciberseguridad', 1)],
+    });
+    const startQuiz = vi.fn();
+    useAppStore.setState({ startQuiz });
+    render(<HomeScreen />);
+    fireEvent.click(await screen.findByRole('button', { name: i18n.t('home.review') }));
+    expect(startQuiz).toHaveBeenCalledWith('review', 3, { trackId: 'track13' });
+  });
+
   it('«Estudiar ahora» arranca la sesión en la ruta activa', async () => {
     const startQuiz = vi.fn();
     useAppStore.setState({ startQuiz });

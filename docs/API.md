@@ -26,7 +26,7 @@ Full interactive spec: `/api/v1/openapi.json` (dev: http://localhost:8000/docs)
 ## Auth endpoints
 
 ```
-POST  /auth/register              → Token (201)
+POST  /auth/register              → Token (201)  — manda un solo correo, el de verificación (`/verify-email?token=…&lang=es|en`); la bienvenida no (45.2, ADR-66 E2)
 POST  /auth/login                 → Token | {mfa_required, mfa_token} (200, form-urlencoded) — con 2FA activada no abre sesión: devuelve el reto (5 min) para `/auth/2fa/login`
 POST  /auth/refresh               → Token (200)
 GET   /auth/me                    → UserRead (200) 🔒
@@ -39,11 +39,11 @@ PATCH /auth/me/password           → {message} (200) 🔒  — body {current_pa
 
 POST /auth/forgot-password        → {message} (200) — no enumeration
 POST /auth/reset-password         → {message} (200) — body {token, new_password}
-POST /auth/verify-email           → {message} (200) — body {token}
+POST /auth/verify-email           → {message} (200) — body {token}; la primera vez que verifica la cuenta manda la bienvenida, una sola vez (45.2). OAuth la manda al crear la cuenta, que ya llega verificada
 POST /auth/resend-verification    → {message} (200)
 
 GET  /auth/oauth/providers            → {providers: ["github"|"google"]} solo los configurados (200)
-GET  /auth/oauth/{provider}/start     → 302 redirect to provider — PKCE (S256) + cookie HttpOnly con el `state` (41.14)
+GET  /auth/oauth/{provider}/start     → 302 redirect to provider (`?lang=es|en` opcional) — PKCE (S256) + cookie HttpOnly con el `state` (41.14); `lang` va en otra cookie corta y solo se usa si el callback **crea** la cuenta (45.1, ADR-66 E1; uno no válido se ignora)
 GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend — 400 si la cookie del `state` no coincide con el de la query (41.14)
 ```
 
@@ -54,7 +54,7 @@ Sign in with Apple is mandatory before any App Store submission once another OAu
 
 ```
 POST /quiz/start                  → {session_id, question} 🔒
-POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒 — body: session_id, question_id, response_time_ms y, según el tipo, selected_index (opciones), exec_output (fill_blank_exec, fix_bug, sql_exec, js_exec: la salida que dio el código) o answer_text (fill_blank: lo escrito; se compara recortado y sin mayúsculas). Sin exec_output/answer_text la respuesta es incorrecta: el servidor no cree al cliente
+POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒 — body: session_id, question_id, response_time_ms y, según el tipo, selected_index (opciones), exec_output (fill_blank_exec, fix_bug, sql_exec, js_exec: la salida que dio el código) o answer_text (fill_blank: lo escrito; se compara recortado y sin mayúsculas). Sin exec_output/answer_text la respuesta es incorrecta: el servidor no cree al cliente. `events[]` (46.1b): hitos que cruzó esa respuesta, cada uno una vez — `level_up {level_before, level}`, `badge_earned {badge_id}`, `mission_completed {mission_id}`, `combo_multiplier {multiplier: 2|3|5}` (al llegar el combo a 3, 7 o 15) y `streak_milestone {days: 7|30|100}`; vacío en la reentrega idempotente de un `event_id`
 POST /quiz/end                    → {total_questions, correct, accuracy, max_combo, xp_earned, duration_seconds, credits_earned} 🔒 — `credits_earned`: lo que la sesión dejó ganado (módulo, racha, diagnóstico; ECONOMIA §2.2)
 GET  /quiz/review-due             → {questions[], count} 🔒  — FSRS review queue
 ```

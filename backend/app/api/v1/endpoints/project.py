@@ -153,7 +153,7 @@ async def submit_step(
     error: str | None = None
     timed_out = False
     if project.runtime == "sql":
-        check = await check_sql_async(f"{body.code}\n\n{step.test_code}")
+        check = await check_sql_async(body.code, step.test_code)
         passed, error, timed_out = check.passed, check.error, check.timed_out
     else:
         # Sin sandbox para Python/JS: el resultado es el del navegador, pero el

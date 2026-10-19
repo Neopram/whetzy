@@ -202,13 +202,14 @@ export function DuelScreen() {
           {code && <pre className={styles.code}><code>{code}</code></pre>}
         </div>
 
-        {/* Ningún botón antes de las opciones: la primera opción es el primer
-            botón de la vista (e2e/duel.spec.ts responde así). */}
+        {/* e2e/duel.spec.ts responde por `duel-option`: «el primer botón de la
+            vista» dejó de ser una opción con la franja de 45.3 en el armazón. */}
         <div className={styles.options}>
           {options.map((opt, i) => (
             <button
               key={i}
               type="button"
+              data-testid="duel-option"
               className={`${styles.option} ${selected === i ? styles.optionSelected : ''}`}
               onClick={() => handleAnswer(i)}
               disabled={selected !== null || submitting}
