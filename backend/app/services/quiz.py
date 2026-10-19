@@ -15,11 +15,12 @@ import logging
 import random
 import uuid
 from datetime import UTC, datetime, timedelta
+from typing import Any
 
 logger = logging.getLogger("whetzy.quiz")
 
 from fastapi import HTTPException, status
-from sqlalchemy import func, or_, select
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -52,6 +53,7 @@ from app.services.engine import (
 )
 from app.services.engine.domain_thresholds import MASTERY_THRESHOLD
 from app.services.gamification import apply_quiz_event, get_or_create_current_entry
+from app.services.widgets import checkers as widget_checkers
 
 bkt = BKTModel()
 elo = EloRating()
@@ -450,6 +452,8 @@ async def _select_question(
         or_(
             Question.correct_index.is_not(None),
             Question.type.in_(list(_EXEC_TYPES)),
+            # 40.1: un `interactive` sin especificación no se puede corregir.
+            and_(Question.type == "interactive", Question.interactive.is_not(None)),
         ),
         Question.pool != "simulacro",
         # Ni practica ni repaso sirven preguntas de un track retirado de
@@ -483,6 +487,13 @@ async def _select_question(
     top_n = scored[:CANDIDATE_POOL_SIZE]
     chosen = random.choice(top_n)
     return chosen[0], round(chosen[2], 3)
+
+
+def _widget_target(question: Question) -> Any:
+    """The `interactive` target, sent only once the question is answered (40.1)."""
+    if question.type != "interactive" or not question.interactive:
+        return None
+    return question.interactive.get("target")
 
 
 async def _to_question_public(question: Question) -> QuestionPublic:
@@ -703,6 +714,7 @@ async def submit_answer(
                 user_elo=state.elo_rating,
                 skill_mastery={q.skill_id: state.p_known},
                 session_accuracy=0.0,
+                widget_target=_widget_target(q),
             )
 
     session_result = await db.execute(
@@ -764,6 +776,12 @@ async def submit_answer(
             correct = submitted.strip().casefold() == expected.strip().casefold()
         else:
             correct = submitted.strip() == expected.strip()
+    elif question.type == "interactive":
+        # 40.1: the server re-runs the checker on the widget's state; the
+        # client's own verdict is never sent, let alone trusted.
+        if req.widget_state is None:
+            logger.warning("interactive question %s answered without widget_state — graded as wrong", question.id)
+        correct = widget_checkers.check(question.interactive, req.widget_state)
     else:
         correct = req.selected_index is not None and req.selected_index == question.correct_index
     now = _now()
@@ -941,6 +959,7 @@ async def submit_answer(
         next_selection_reason=next_reason,
         quota_reached=quota_reached,
         events=events,
+        widget_target=_widget_target(question),
     )
 
 
