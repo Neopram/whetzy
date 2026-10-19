@@ -6,12 +6,14 @@ import { ProgressBar } from '../components/common/ProgressBar';
 import { Card } from '../components/common/Card';
 import { StreakFreezeShop } from '../components/home/StreakFreezeShop';
 import { useApi } from '../hooks/useApi';
-import { progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
+import { content as contentApi, exams, progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
 import { listVariants, listItemVariants } from '../lib/motion';
 import { bandForSkill, overallBand, MIN_EVIDENCE_ANSWERS, type EvidenceBand } from '../lib/evidenceBand';
 import { nextLessonSkillId } from '../lib/nextStep';
 import { bandMoments, missionMoments } from '../lib/homeMoments';
 import { emit as emitFx } from '../lib/feedbackFx';
+import { biggestLever } from '../lib/readinessLever';
+import { LeverCard } from '../components/readiness/LeverCard';
 import styles from './HomeScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
 
@@ -54,6 +56,23 @@ export function HomeScreen() {
     [activeTrackId],
   );
   const curFailed = Boolean(activeTrackId) && !cur.loading && cur.error !== null;
+  // 46.3c: «Tu mayor palanca» sube aquí desde Preparación. Solo hay dominios
+  // de examen en una certificación: la ruta activa si lo es y, si no, la
+  // certificación elegida en el onboarding (que deja activa la ruta de
+  // aprendizaje). Sin ninguna de las dos no se pide nada.
+  const trackList = useApi(() => contentApi.tracks(), []);
+  const isCertTrack = (id: string | null) => Boolean(id && trackList.data?.find((tr) => tr.id === id)?.is_certification);
+  const certTrackId = isCertTrack(activeTrackId) ? activeTrackId : isCertTrack(user.targetCertificationId) ? user.targetCertificationId : null;
+  const certTrack = trackList.data?.find((tr) => tr.id === certTrackId);
+  const readiness = useApi(
+    () => (certTrackId ? exams.certificationReadiness(certTrackId) : Promise.resolve(null)),
+    [certTrackId],
+  );
+  // Sin ninguna respuesta en esa certificación la palanca solo sería «el
+  // dominio que más pesa», y practicar llevaría a «Empieza por la lección»
+  // (needs_lesson, medido en local): lo primero sigue siendo la lección.
+  const certAnswers = readiness.data?.domains.reduce((sum, d) => sum + (d.answers ?? 0), 0) ?? 0;
+  const lever = readiness.data && certAnswers > 0 ? biggestLever(readiness.data.domains) : undefined;
   const nextLessonId = cur.data ? nextLessonSkillId(cur.data) : null;
   const nextLesson = cur.data?.modules.flatMap((m) => m.skills).find((s) => s.skill_id === nextLessonId);
 
@@ -116,6 +135,15 @@ export function HomeScreen() {
           </button>
         </p>
       </motion.header>
+
+      {lever && certTrackId && (
+        <LeverCard
+          lever={lever}
+          name={lang === 'es' ? lever.name_es : lever.name_en}
+          examName={certTrack ? (lang === 'es' ? certTrack.name_es : certTrack.name_en) : undefined}
+          onPractice={() => startQuiz('study', 10, { trackId: certTrackId })}
+        />
+      )}
 
       {/* Preparación + siguiente paso: lo único que hay que hacer, arriba. */}
       <div className={styles.topGrid}>
