@@ -567,3 +567,32 @@
 @media (prefers-reduced-motion: reduce) {
   .loaderDot { animation: none; }
 }
+
+/* 46.7b: «Saltar recuento», a la vista desde el primer fotograma. */
+.summarySkip {
+  align-self: flex-end;
+  min-height: 44px;
+  padding: var(--le-space-xs) var(--le-space-md);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  color: var(--le-text-secondary);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-semibold);
+}
+
+.summarySkip:hover { color: var(--le-text); border-color: var(--le-text-muted); }
+
+.creditCoin { display: inline-block; vertical-align: middle; }
+
+/* Skill que cambió de banda en esta sesión: brilla una vez. */
+.movedChanged { animation: movedGlow 900ms ease-out 1; border-radius: var(--le-radius-sm); }
+
+@keyframes movedGlow {
+  0% { box-shadow: 0 0 0 0 transparent; }
+  40% { box-shadow: 0 0 0 3px var(--le-brand); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .movedChanged { animation: none; }
+}

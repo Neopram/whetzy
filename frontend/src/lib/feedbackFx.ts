@@ -26,7 +26,8 @@ export type FxTier = 0 | 1 | 2 | 3 | 4;
 
 export interface FxEvent {
   type: FxType;
-  /** combo: multiplicador cruzado (2, 3 o 5); streak: días del hito. */
+  /** combo: multiplicador cruzado (2, 3 o 5); streak: días del hito;
+   *  session_end: la nota de la sesión (`GRADE_RANK`). */
   value?: number;
 }
 
@@ -108,17 +109,45 @@ const NOTE: Record<string, number> = {
   C5: 523.25, E5: 659.25, G5: 783.99, C6: 1046.5, E6: 1318.51, G6: 1567.98,
 };
 
-function tone(ac: AudioContext, freq: number, start: number, dur: number, wave: OscillatorType) {
+// Lo programado del recuento (46.7b), para poder cortarlo si se salta.
+let pending: OscillatorNode[] = [];
+
+function tone(ac: AudioContext, freq: number, start: number, dur: number, wave: OscillatorType, gainValue = 0.2) {
   const osc = ac.createOscillator();
   const gain = ac.createGain();
   osc.type = wave;
   osc.frequency.value = freq;
   // Ganancia maestra 0,2 con caída exponencial: sin clics al cortar.
-  gain.gain.setValueAtTime(0.2, start);
+  gain.gain.setValueAtTime(gainValue, start);
   gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
   osc.connect(gain).connect(ac.destination);
   osc.start(start);
   osc.stop(start + dur);
+  return osc;
+}
+
+/** Nota S–F → rango para `session_end` (S suena más alto y más largo). */
+export const GRADE_RANK = { F: 0, C: 1, B: 2, A: 3, S: 4 } as const;
+
+/** Duración del recuento del resumen (§6.2): los tics duran lo mismo. */
+export const COUNT_MS = 1000;
+
+/** Tic a 12 Hz durante el recuento y una nota final según la nota (§6.1). */
+function sessionEnd(ac: AudioContext, rank: number) {
+  const { C5, E5, G5, C6, E6 } = NOTE;
+  const t0 = ac.currentTime;
+  const ticks = Math.round((COUNT_MS / 1000) * 12);
+  for (let i = 0; i < ticks; i++) pending.push(tone(ac, 2000, t0 + i / 12, 0.02, 'sine', 0.05));
+  const finale = [[C5], [C5, E5], [E5, G5], [G5, C6], [G5, C6, E6]][Math.max(0, Math.min(4, rank))];
+  finale.forEach((f, i) => pending.push(tone(ac, f, t0 + COUNT_MS / 1000 + i * 0.12, 0.12, 'triangle')));
+}
+
+/** Corta lo que quede del recuento (el alumno pulsó «Saltar recuento»). */
+export function cancelFx(): void {
+  for (const osc of pending) {
+    try { osc.stop(); } catch { /* ya terminado */ }
+  }
+  pending = [];
 }
 
 function sequence(ac: AudioContext, notes: number[], step: number, wave: OscillatorType = 'triangle') {
@@ -154,7 +183,10 @@ function play(ac: AudioContext, e: FxEvent): boolean {
       return true;
     }
     case 'mission': sequence(ac, [G5, C6, E6], 0.08); return true;
-    case 'session_end': sequence(ac, [G5, C6], 0.15); return true;
+    case 'session_end':
+      if (e.value === undefined) sequence(ac, [G5, C6], 0.15);
+      else sessionEnd(ac, e.value);
+      return true;
     case 'level_up':
     case 'badge': sequence(ac, [C5, E5, G5, C6, G6], 0.12); return true;
     case 'streak': chispa(ac); tone(ac, C6, ac.currentTime + 0.2, 0.2, 'triangle'); return true;
@@ -212,5 +244,6 @@ export function _resetFeedbackFx(): void {
   armed = false;
   ctx = null;
   ceremonies.length = 0;
+  pending = [];
   listeners.clear();
 }
