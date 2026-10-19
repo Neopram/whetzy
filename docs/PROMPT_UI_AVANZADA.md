@@ -15,9 +15,11 @@ distintas, mandan ellos y lo anotas en el PR.
 
 1. Termina **45.4** y abre su PR como tenías previsto. La serie 46 empieza después, con una sola
    excepción: **46.0** (dieta del ledger y alta de las filas 46.x) puede ir ya en un worktree aparte.
-2. Después, ola por ola, en el orden del plan: 46.1 → 46.2 (+ 46.2b) → 46.3 → **pregunta D1–D4** →
+2. Después, ola por ola, en el orden del plan: 46.2 (+ 46.2b) → 46.1b → 46.1 → 46.3 → 46.7 → **pregunta D1–D4** →
    40.1 → 40.2 → 40.3/40.4 → 40.5 → 40.6 → 46.4 → 46.5 → 46.6. Dentro de una ola puedes paralelizar
    filas que no compartan ficheros; entre olas, no.
+   La ceremonia de ascenso de liga queda bloqueada hasta que el servidor aplique ascensos;
+   anótalo como fila H.<n> si no existe (`PLAN_UI_AVANZADA.md` §6.2).
 3. La serie 44 (`PLAN_BACKOFFICE.md`) no la mezcles con la 46 en el mismo worktree ni en la misma
    rama; si el dueño te la pide, va en su propio worktree y en PRs separados.
 
