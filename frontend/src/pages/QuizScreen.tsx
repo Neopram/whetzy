@@ -3,12 +3,13 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, progress as progressApi, isQuotaError, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
+import { quiz as quizApi, progress as progressApi, gamification, isQuotaError, type ServerFxEvent, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
 import { enqueue, offlineEventId } from '../services/offlineQueue';
 import { Button } from '../components/common/Button';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { ComboRing, COMBO_STEPS } from '../components/quiz/ComboRing';
+import { Ceremony, CeremonyCards, pickCeremony, type CeremonyEvent } from '../components/quiz/Ceremony';
 import { emit as emitFx, emitMany as emitFxMany } from '../lib/feedbackFx';
 import { BandChip } from '../components/common/BandChip';
 import { bandForSkill } from '../lib/evidenceBand';
@@ -86,6 +87,11 @@ export function QuizScreen() {
   // (antes → después). /quiz/end no lo devuelve; se lee de /progress/skills.
   const [skillsBefore, setSkillsBefore] = useState<Map<string, SkillMasteryDetail> | null>(null);
   const practiced = useRef<Set<string>>(new Set());
+  // 46.7: hitos que el servidor dio en esta sesión (`events[]`, 46.1b); al
+  // cerrarla, como mucho una ceremonia y el resto como tarjetas.
+  const sessionEvents = useRef<ServerFxEvent[]>([]);
+  const [ceremony, setCeremony] = useState<{ event: CeremonyEvent | null; cards: CeremonyEvent[] } | null>(null);
+  const [badgeNames, setBadgeNames] = useState<Map<string, string>>(new Map());
   const [confirmExit, setConfirmExit] = useState(false);
 
   // Which language this question is *shown* in. Separate from the app language
@@ -201,6 +207,7 @@ export function QuizScreen() {
         // `selectedIndex` ya no basta para dar por buena una respuesta (2026-10-01).
         const res = await quizApi.answer(sessionId, question.id, selectedIndex, rt, declaredUnknown, undefined, evidence);
         setFeedback(res);
+        sessionEvents.current.push(...(res.events ?? []));
         practiced.current.add(question.skill_id);
         setMastery((prev) => res.skill_mastery[question.skill_id] ?? prev);
         setCombo(res.combo);
@@ -339,6 +346,20 @@ export function QuizScreen() {
     setVerifyLoading(false);
   }, [question, verifyLoading, language, runCode, t]);
 
+  // Cierre de sesión (46.7): nivel 3 (nota de fin) si no hay ceremonia; si la
+  // hay, ella suena. Los nombres de las insignias salen de /badges.
+  const openSummary = useCallback((end: QuizEndResponse) => {
+    const picked = pickCeremony(sessionEvents.current);
+    setCeremony(picked.ceremony || picked.cards.length > 0 ? { event: picked.ceremony, cards: picked.cards } : null);
+    if (!picked.ceremony) emitFx({ type: 'session_end' });
+    if (sessionEvents.current.some((e) => e.type === 'badge_earned')) {
+      gamification.badges()
+        .then((list) => setBadgeNames(new Map(list.map((b) => [b.badge.id, language === 'es' ? b.badge.name_es : b.badge.name_en]))))
+        .catch(() => {});
+    }
+    setSummary(end);
+  }, [language]);
+
   // ── Next question ──────────────────────────────────────────────────────
   const handleNext = useCallback(async () => {
     if (!feedback || !sessionId) return;
@@ -355,13 +376,13 @@ export function QuizScreen() {
     } else {
       try {
         const end = await quizApi.end(sessionId);
-        setSummary(end);
+        openSummary(end);
         void hydrateFromApi();
       } catch {
-        setSummary({ total_questions: index + 1, correct: 0, accuracy: 0, max_combo: combo, xp_earned: xpEarned, duration_seconds: 0 });
+        openSummary({ total_questions: index + 1, correct: 0, accuracy: 0, max_combo: combo, xp_earned: xpEarned, duration_seconds: 0 });
       }
     }
-  }, [feedback, sessionId, index, combo, xpEarned, hydrateFromApi]);
+  }, [feedback, sessionId, index, combo, xpEarned, hydrateFromApi, openSummary]);
 
   // Salir a mitad: el servidor ya sumó el XP de lo respondido, así que el
   // usuario se refresca aquí también (antes solo al terminar, y Yo y la barra
@@ -422,13 +443,23 @@ export function QuizScreen() {
   if (error) return <QuizError message={error} onClose={handleClose} />;
   if (summary) {
     return (
-      <SessionSummary
-        summary={summary}
-        before={skillsBefore}
-        practiced={[...practiced.current]}
-        lang={language}
-        onClose={handleClose}
-      />
+      <>
+        <SessionSummary
+          summary={summary}
+          before={skillsBefore}
+          practiced={[...practiced.current]}
+          lang={language}
+          onClose={handleClose}
+          extra={ceremony && <CeremonyCards cards={ceremony.cards} badgeNames={badgeNames} />}
+        />
+        {ceremony?.event && (
+          <Ceremony
+            event={ceremony.event}
+            badgeName={ceremony.event.type === 'badge_earned' ? badgeNames.get(ceremony.event.payload.badge_id) : undefined}
+            onDone={() => setCeremony((c) => (c ? { ...c, event: null } : c))}
+          />
+        )}
+      </>
     );
   }
   if (!question) {
@@ -921,13 +952,14 @@ function QuizError({
 
 
 function SessionSummary({
-  summary, before, practiced, lang, onClose,
+  summary, before, practiced, lang, onClose, extra,
 }: {
   summary: QuizEndResponse;
   before: Map<string, SkillMasteryDetail> | null;
   practiced: string[];
   lang: 'es' | 'en';
   onClose: () => void;
+  extra?: React.ReactNode;
 }) {
   const { t } = useTranslation();
   const startLesson = useAppStore((s) => s.startLesson);
@@ -976,6 +1008,8 @@ function SessionSummary({
       {(summary.credits_earned ?? 0) > 0 && (
         <p className={styles.summaryAccuracy}>{t('quiz.creditsEarned', { count: summary.credits_earned })}</p>
       )}
+
+      {extra}
 
       {moved.length > 0 && (
         <section className={styles.moved} aria-label={t('quiz.skillsMoved')}>
