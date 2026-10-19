@@ -21,7 +21,7 @@ import pytest
 from sqlalchemy import select
 
 from app.models.project import Project, ProjectStep, ProjectSubmission
-from app.services.sql_sandbox import check_sql, has_statement
+from app.services.sql_sandbox import _check_here, check_sql, has_statement
 
 BASE = "/api/v1/projects"
 
@@ -339,7 +339,15 @@ def test_sandbox_mira_el_reloj_a_menudo():
     instrucciones, un bucle de `trim` caros (~45 ms cada uno con valores de
     16 KB) metía ~100 llamadas entre dos comprobaciones y pasaba de 2 s a ~4 s
     (medido). Tres pasadas con un límite de 0,3 s: el exceso depende de dónde
-    caiga la comprobación, y una sola podría acertar por suerte."""
+    caiga la comprobación, y una sola podría acertar por suerte.
+
+    Se mide `_check_here`, en este proceso: desde que `check_sql` corre en un
+    hijo (sexto §7), su tiempo suma el arranque del hijo y el margen de 0,5 s
+    antes de matarlo, y bajo la carga de la suite entera pasó de 1 s (1,08 s,
+    nivel 2 del 2026-10-18) sin que el reloj se mirase menos. El corte por
+    proceso tiene su propio test, el siguiente. Aquí, con seis a la vez en 4
+    CPU, lo peor fue 0,8 s; mirando el reloj cada 1000 instrucciones, 2,45 s
+    sin carga (medido): 1,5 s separa los dos casos con holgura."""
     code = (
         "WITH RECURSIVE c(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM c WHERE i < 100000) "
         "SELECT count(trim(substr(replace(hex(zeroblob(7999)), '0', 'a'), 1, 15998 + i * 0), "
@@ -348,10 +356,10 @@ def test_sandbox_mira_el_reloj_a_menudo():
     worst = 0.0
     for _ in range(3):
         t0 = time.monotonic()
-        r = check_sql(code, NO_OP, time_limit_s=0.3)
+        r = _check_here(code, NO_OP, time_limit_s=0.3)
         worst = max(worst, time.monotonic() - t0)
         assert r.timed_out and not r.passed
-    assert worst < 1.0
+    assert worst < 1.5
 
 
 def test_sandbox_corta_una_fila_con_muchas_llamadas_caras():

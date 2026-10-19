@@ -31,6 +31,7 @@ from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
 from app.schemas.content import QuestionPublic
 from app.schemas.session import (
+    FxEvent,
     QuizAnswerRequest,
     QuizAnswerResponse,
     QuizEndRequest,
@@ -590,6 +591,37 @@ def _calculate_xp(correct: bool, combo: int, grade: int) -> int:
     return base * multiplier + bonus
 
 
+# Combos en los que `_calculate_xp` sube de multiplicador, y rachas que se
+# celebran (46.1b, plan §6.0: niveles 2 y 4).
+COMBO_MULTIPLIERS = {3: 2, 7: 3, 15: 5}
+STREAK_MILESTONES = (7, 30, 100)
+
+
+def _fx_events(
+    *,
+    combo: int,
+    level_before: int,
+    level: int,
+    streak_before: int,
+    streak: int,
+    missions_done: list[str],
+    badges_new: list[str],
+) -> list[FxEvent]:
+    """Hitos que cruzó esta respuesta, cada uno una vez (46.1b). El combo cuenta
+    aciertos seguidos de uno en uno (un fallo lo deja en 0), así que cruza un
+    umbral justo al igualarlo."""
+    events: list[FxEvent] = []
+    if combo in COMBO_MULTIPLIERS:
+        events.append(FxEvent(type="combo_multiplier", payload={"multiplier": COMBO_MULTIPLIERS[combo]}))
+    events += [FxEvent(type="mission_completed", payload={"mission_id": m}) for m in dict.fromkeys(missions_done)]
+    if level > level_before:
+        events.append(FxEvent(type="level_up", payload={"level_before": level_before, "level": level}))
+    events += [FxEvent(type="badge_earned", payload={"badge_id": b}) for b in dict.fromkeys(badges_new)]
+    if streak > streak_before and streak in STREAK_MILESTONES:
+        events.append(FxEvent(type="streak_milestone", payload={"days": streak}))
+    return events
+
+
 def _level_from_xp(total_xp: int) -> int:
     return max(1, total_xp // 500 + 1)
 
@@ -821,6 +853,7 @@ async def submit_answer(
     session.max_combo = max(session.max_combo, combo)
     session.xp_earned += xp
 
+    level_before, streak_before = user.level, user.current_streak
     user.total_xp += xp
     user.level = _level_from_xp(user.total_xp)
     _update_streak(user, now)
@@ -879,7 +912,16 @@ async def submit_answer(
     session_accuracy = session.correct_count / max(1, session.questions_answered)
 
     session.current_question_id = next_question.id if next_question else None
-    await apply_quiz_event(db, user, correct, xp, combo)
+    missions_done, badges_new = await apply_quiz_event(db, user, correct, xp, combo)
+    events = _fx_events(
+        combo=combo,
+        level_before=level_before,
+        level=user.level,
+        streak_before=streak_before,
+        streak=user.current_streak,
+        missions_done=missions_done,
+        badges_new=badges_new,
+    )
     await db.commit()
 
     return QuizAnswerResponse(
@@ -898,6 +940,7 @@ async def submit_answer(
         next_question=next_question_public,
         next_selection_reason=next_reason,
         quota_reached=quota_reached,
+        events=events,
     )
 
 
