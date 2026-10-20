@@ -10,7 +10,10 @@ import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { ComboRing, COMBO_STEPS } from '../components/quiz/ComboRing';
 import { Ceremony, CeremonyCards, pickCeremony, type CeremonyEvent } from '../components/quiz/Ceremony';
-import { emit as emitFx, emitMany as emitFxMany } from '../lib/feedbackFx';
+import { cancelFx, COUNT_MS, emit as emitFx, emitMany as emitFxMany, GRADE_RANK } from '../lib/feedbackFx';
+import { CountUp } from '../components/quiz/CountUp';
+import { GameIcon } from '../components/common/AppIcon';
+import { listItemVariants, listVariants } from '../lib/motion';
 import { BandChip } from '../components/common/BandChip';
 import { bandForSkill } from '../lib/evidenceBand';
 import { WhyButton } from '../components/quiz/WhyButton';
@@ -354,7 +357,7 @@ export function QuizScreen() {
   const openSummary = useCallback((end: QuizEndResponse) => {
     const picked = pickCeremony(sessionEvents.current);
     setCeremony(picked.ceremony || picked.cards.length > 0 ? { event: picked.ceremony, cards: picked.cards } : null);
-    if (!picked.ceremony) emitFx({ type: 'session_end' });
+    if (!picked.ceremony) emitFx({ type: 'session_end', value: GRADE_RANK[gradeFor(end.accuracy)] });
     if (sessionEvents.current.some((e) => e.type === 'badge_earned')) {
       gamification.badges()
         .then((list) => setBadgeNames(new Map(list.map((b) => [b.badge.id, language === 'es' ? b.badge.name_es : b.badge.name_en]))))
@@ -454,6 +457,7 @@ export function QuizScreen() {
           lang={language}
           onClose={handleClose}
           extra={ceremony && <CeremonyCards cards={ceremony.cards} badgeNames={badgeNames} />}
+          waiting={Boolean(ceremony?.event)}
         />
         {ceremony?.event && (
           <Ceremony
@@ -979,8 +983,17 @@ function QuizError({
 }
 
 
+/** Nota de la sesión por precisión; la misma que se estampa en el resumen. */
+function gradeFor(accuracy: number): keyof typeof GRADE_RANK {
+  const pct = Math.round(accuracy * 100);
+  return pct >= 90 ? 'S' : pct >= 80 ? 'A' : pct >= 70 ? 'B' : pct >= 60 ? 'C' : 'F';
+}
+
+// Recuento + sello de la nota: el nivel 3 de §6.0 pide ≤ 2,5 s.
+const STAMP_MS = 400;
+
 function SessionSummary({
-  summary, before, practiced, lang, onClose, extra,
+  summary, before, practiced, lang, onClose, extra, waiting = false,
 }: {
   summary: QuizEndResponse;
   before: Map<string, SkillMasteryDetail> | null;
@@ -988,8 +1001,32 @@ function SessionSummary({
   lang: 'es' | 'en';
   onClose: () => void;
   extra?: React.ReactNode;
+  /** 46.7b: con una ceremonia abierta el recuento espera a que se cierre. */
+  waiting?: boolean;
 }) {
   const { t } = useTranslation();
+  const reduce = useReducedMotion();
+  // 46.7b (§6.2): recuento de aciertos, precisión y XP, y la nota se estampa
+  // al final. Con movimiento reducido no hay recuento; «Saltar recuento» lo
+  // termina desde el primer fotograma y corta los tics que queden.
+  const [phase, setPhase] = useState<'waiting' | 'counting' | 'done'>(reduce ? 'done' : waiting ? 'waiting' : 'counting');
+  const [skipped, setSkipped] = useState(false);
+  useEffect(() => {
+    if (phase !== 'waiting' || waiting) return;
+    setPhase('counting');
+  }, [phase, waiting]);
+  useEffect(() => {
+    if (phase !== 'counting') return;
+    const id = window.setTimeout(() => setPhase('done'), COUNT_MS + STAMP_MS);
+    return () => window.clearTimeout(id);
+  }, [phase]);
+  const skip = () => {
+    cancelFx();
+    setSkipped(true);
+    setPhase('done');
+  };
+  const counting = phase === 'counting';
+  const finished = phase === 'done';
   const startLesson = useAppStore((s) => s.startLesson);
   const startQuiz = useAppStore((s) => s.startQuiz);
   const [after, setAfter] = useState<SkillMasteryDetail[] | null>(null);
@@ -1003,7 +1040,10 @@ function SessionSummary({
   }, []);
 
   const accuracy = Math.round(summary.accuracy * 100);
-  const grade = accuracy >= 90 ? 'S' : accuracy >= 80 ? 'A' : accuracy >= 70 ? 'B' : accuracy >= 60 ? 'C' : 'F';
+  const grade = gradeFor(summary.accuracy);
+  const count = (value: number, testId: string, format?: (n: number) => string) => (
+    <CountUp value={value} format={format} state={finished ? 'done' : counting ? 'run' : 'idle'} durationMs={COUNT_MS} testId={testId} />
+  );
   const moved = (after ?? [])
     .filter((s) => practiced.includes(s.skill_id))
     .sort((a, b) => a.p_known - b.p_known);
@@ -1016,12 +1056,29 @@ function SessionSummary({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
     >
-      <div className={styles.summaryGrade} data-grade={grade} aria-hidden="true">{grade}</div>
+      {counting && (
+        <button type="button" className={styles.summarySkip} onClick={skip}>
+          {t('producto:fx.summary.skip')}
+        </button>
+      )}
+      <motion.div
+        className={styles.summaryGrade}
+        data-grade={grade}
+        data-testid="summary-grade"
+        aria-hidden="true"
+        // El sello: entra grande y se asienta con una sacudida corta al acabar
+        // el recuento. Si se salta o no hay movimiento, ya está puesto.
+        initial={reduce || skipped ? false : { scale: 1.6, opacity: 0 }}
+        animate={phase === 'waiting' ? { scale: 1.6, opacity: 0 } : { scale: 1, opacity: 1, x: counting ? [0, -4, 4, 0] : 0 }}
+        transition={{ delay: counting ? COUNT_MS / 1000 : 0, duration: STAMP_MS / 1000, ease: 'easeOut' }}
+      >
+        {grade}
+      </motion.div>
       <h1 className={styles.summaryTitle}>{accuracy >= 80 ? t('quiz.excellent') : accuracy >= 60 ? t('quiz.goodJob') : t('quiz.keepGoing')}</h1>
-      <p className={styles.summaryAccuracy}>{accuracy}% {t('quiz.accuracyLabel')}</p>
+      <p className={styles.summaryAccuracy}>{count(accuracy, 'count-accuracy', (n) => `${n}%`)} {t('quiz.accuracyLabel')}</p>
       <div className={styles.summaryStats}>
         <div className={styles.summaryStat}>
-          <span className={styles.summaryStatVal}>{summary.correct}/{summary.total_questions}</span>
+          <span className={styles.summaryStatVal}>{count(summary.correct, 'count-correct', (n) => `${n}/${summary.total_questions}`)}</span>
           <span className={styles.summaryStatLabel}>{t('quiz.correctLabel')}</span>
         </div>
         <div className={styles.summaryStat}>
@@ -1029,12 +1086,23 @@ function SessionSummary({
           <span className={styles.summaryStatLabel}>{t('quiz.maxCombo')}</span>
         </div>
         <div className={styles.summaryStat}>
-          <span className={styles.summaryStatVal}>{summary.xp_earned}</span>
+          <span className={styles.summaryStatVal}>{count(summary.xp_earned, 'count-xp')}</span>
           <span className={styles.summaryStatLabel}>{t('quiz.xpEarned')}</span>
         </div>
       </div>
       {(summary.credits_earned ?? 0) > 0 && (
-        <p className={styles.summaryAccuracy}>{t('quiz.creditsEarned', { count: summary.credits_earned })}</p>
+        <p className={styles.summaryAccuracy}>
+          {/* Moneda que cae solo si hubo créditos (§6.2). */}
+          <motion.span
+            className={styles.creditCoin}
+            initial={reduce ? false : { y: -14, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: reduce ? 0 : COUNT_MS / 1000, type: 'spring', stiffness: 300, damping: 18 }}
+          >
+            <GameIcon name="gema" size={18} />
+          </motion.span>{' '}
+          {t('quiz.creditsEarned', { count: summary.credits_earned })}
+        </p>
       )}
 
       {extra}
@@ -1042,24 +1110,31 @@ function SessionSummary({
       {moved.length > 0 && (
         <section className={styles.moved} aria-label={t('quiz.skillsMoved')}>
           <h2 className={styles.movedTitle}>{t('quiz.skillsMoved')}</h2>
-          <ul className={styles.movedList}>
+          <motion.ul className={styles.movedList} variants={listVariants} initial={reduce ? false : 'initial'} animate="animate">
             {moved.map((s) => {
               // Sin intentos previos no hay medida «antes»: es nueva, no un 0 %.
               const prev = before?.get(s.skill_id);
               const bBand = prev && prev.attempts > 0 ? bandForSkill(prev) : undefined;
               const name = lang === 'es' ? s.name_es : s.name_en;
+              // Cambió de banda en esta sesión: brilla una vez (§6.2).
+              const changed = bBand !== undefined && bBand !== bandForSkill(s);
               return (
-                <li key={s.skill_id} className={styles.movedItem}>
+                <motion.li
+                  key={s.skill_id}
+                  variants={listItemVariants}
+                  className={`${styles.movedItem} ${changed ? styles.movedChanged : ''}`}
+                  data-changed={changed || undefined}
+                >
                   <span className={styles.movedName}>{name}</span>
                   <span className={styles.movedPct}>
                     {bBand === undefined ? t('quiz.skillNew') : <BandChip band={bBand} />}
                     {' → '}
                     <BandChip band={bandForSkill(s)} />
                   </span>
-                </li>
+                </motion.li>
               );
             })}
-          </ul>
+          </motion.ul>
         </section>
       )}
 
