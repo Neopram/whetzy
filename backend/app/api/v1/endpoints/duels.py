@@ -25,6 +25,7 @@ from app.schemas.duel import (
     DuelChallengeResponse,
     DuelPlayerResult,
     DuelResultResponse,
+    DuelRivalAnswer,
     DuelSummary,
 )
 from app.services import lesson_gate
@@ -385,11 +386,20 @@ async def answer_duel(
         duel.opponent_completed_at is not None if is_challenger else duel.challenger_completed_at is not None
     )
 
+    rival: DuelRivalAnswer | None = None
+    if opponent_completed:
+        rival_answers = (duel.opponent_answers if is_challenger else duel.challenger_answers) or []
+        theirs = next((a for a in rival_answers if a["question_id"] == payload.question_id), None)
+        if theirs is not None:
+            # Solo acierto y tiempo: la opción que eligió (`selected_index`) no sale.
+            rival = DuelRivalAnswer.model_validate(theirs)
+
     return DuelAnswerResponse(
         duel_id=str(duel.id),
         answers_so_far=len(my_answers),
         completed=len(my_answers) == _DUEL_QUESTIONS,
         opponent_completed=opponent_completed,
+        rival=rival,
     )
 
 
