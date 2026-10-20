@@ -323,7 +323,8 @@ Rigen las mismas líneas rojas de §6.0. El orden de cada fila es siempre el mis
   - un test de integración manda un lote mixto y comprueba que las filas no llevan `user_id`;
   - un campo de más da `422`;
   - el cálculo de la tasa queda fijado por un test;
-  - un test del cliente comprueba que, con el interruptor de analítica apagado o sin sesión, no hay ningún `fetch`.
+  - un test del cliente comprueba que, sin sesión o con Global Privacy Control o Do Not Track activados en el
+    navegador, no hay ningún `fetch`.
 
 ### 7.3 Lo que faltaba del §6 (46.10–46.13)
 
