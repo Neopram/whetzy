@@ -5,23 +5,13 @@ import { useApi } from '../hooks/useApi';
 import { bandForDomain, examBand, MIN_EVIDENCE_ANSWERS } from '../lib/evidenceBand';
 import { content as contentApi, exams, type CertificationReadiness, type DomainReadiness, type TrackRead } from '../services/api';
 import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
+import { LeverCard } from '../components/readiness/LeverCard';
+import { biggestLever } from '../lib/readinessLever';
 import styles from './ReadinessScreen.module.css';
 
 interface Props {
   trackId: string;
   onExit: () => void;
-}
-
-// El mismo umbral que usa el backend para marcar un dominio «listo»
-// (exams.py, READY_THRESHOLD). Solo ordena la palanca: no se enseña (ADR-60).
-const READY_THRESHOLD = 0.75;
-
-/** El dominio que más acerca al aprobado: peso × lo que le falta hasta el
- *  umbral. Un dominio pesado a medias gana a uno ligero a cero. */
-function biggestLever(domains: DomainReadiness[]): DomainReadiness | undefined {
-  return [...domains]
-    .filter((d) => !d.ready)
-    .sort((a, b) => b.weight_pct * (READY_THRESHOLD - (b.p_known_mean ?? 0)) - a.weight_pct * (READY_THRESHOLD - (a.p_known_mean ?? 0)))[0];
 }
 
 export function ReadinessScreen({ trackId, onExit }: Props) {
@@ -102,18 +92,7 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
         </p>
       </section>
 
-      {lever && (
-        <section className={styles.lever} aria-label={t('readiness.lever')}>
-          <p className={styles.leverLabel}>{t('readiness.lever')}</p>
-          <p className={styles.leverBody}>
-            {t('readiness.leverBody', { name: name(lever), weight: lever.weight_pct, band: t(`bands.${bandForDomain(lever)}`) })}
-          </p>
-          <button type="button" className={styles.btnPrimary} onClick={() => startQuiz('study', 10, { trackId })}>
-            {t('readiness.practice')}
-          </button>
-          <p className={styles.hint}>{t('readiness.practiceHint')}</p>
-        </section>
-      )}
+      {lever && <LeverCard lever={lever} name={name(lever)} onPractice={() => startQuiz('study', 10, { trackId })} />}
 
       <ul className={styles.domainList}>
         {domains.map((d) => (
