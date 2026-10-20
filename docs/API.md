@@ -389,6 +389,7 @@ GET  /admin/gdpr/exports                 → pending data export requests
 POST /admin/gdpr/deletions/{user_id}/cancel → cancel deletion request
 GET  /admin/users ?q&page                → {items[], page, page_size: 20, total} 🔒 owner con 2FA (403 `2fa_required` sin ella) — busca por email, usuario o prefijo de id (`q` ≥ 3 caracteres, 422 si no); cada item: id, username, `email_masked` (`fe***@gmail.com`), created_at, status (active|suspended). No queda en el registro (44.1)
 GET  /admin/users/{user_id}              → {account, plan, progress, security, gdpr} 🔒 owner con 2FA — la ficha (PLAN_BACKOFFICE B3), con el email completo y sin contraseñas; abrirla escribe una fila `view` en `admin_action_log`; 404 si no existe (44.1)
+POST /admin/users/{user_id}/actions/{action} → {ok, action, data} 🔒 owner con 2FA — B4 (44.2): `resend_verification` (409 si ya está verificado; 503 sin proveedor de correo en producción), `close_sessions` (`jwt_version` + refrescos revocados), `unlock` (borra sus intentos fallidos; `data.cleared`), `grant_plan` (`tier` plus|pro, `days` 1–90), `suspend` (cierra también las sesiones; 409 contra uno mismo) y `reactivate`. Body `{reason}` obligatorio (422 vacío o en blanco); cada una deja fila en `admin_action_log` con motivo y datos; acción desconocida o usuario inexistente 404
 ```
 
 ### Metrics & analytics
