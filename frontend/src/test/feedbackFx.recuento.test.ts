@@ -25,10 +25,14 @@ class FakeNode {
 }
 class FakeAudioContext {
   currentTime = 0;
+  sampleRate = 8000;
   state = 'running';
   destination = {};
   createOscillator() { oscillators++; return new FakeNode(); }
   createGain() { return new FakeNode(); }
+  // El búfer mudo con que 46.2c despierta el audio en el primer toque.
+  createBufferSource() { return new FakeNode(); }
+  createBuffer(_c: number, len: number) { return { getChannelData: () => new Float32Array(len) }; }
   resume() { return Promise.resolve(); }
 }
 
