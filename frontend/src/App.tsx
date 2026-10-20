@@ -16,6 +16,7 @@ import { safeNext } from './lib/paddle';
 import { useRedirectIfSignedIn } from './lib/authRedirect';
 import { IMMERSIVE_SCREENS, navigationTargetForSwipe } from './lib/immersiveScreens';
 import { useScreenHistory } from './lib/screenHistory';
+import { PageEnter } from './components/common/PageEnter';
 
 // Every screen is loaded on demand. Statically importing them put the whole
 // app — quiz, Pyodide, Lottie, duels — into the landing page's first bundle,
@@ -224,13 +225,15 @@ function AuthRoute() {
   return (
     <>
       <Screen>
-        <AuthScreen
-          onAuthed={() => {
-            try { sessionStorage.removeItem(NEXT_KEY); } catch { /* modo privado */ }
-            // `replace`: con `assign`, «atrás» desde el panel volvía al formulario.
-            window.location.replace(safeNext(new URLSearchParams(window.location.search).get('next')));
-          }}
-        />
+        <PageEnter>
+          <AuthScreen
+            onAuthed={() => {
+              try { sessionStorage.removeItem(NEXT_KEY); } catch { /* modo privado */ }
+              // `replace`: con `assign`, «atrás» desde el panel volvía al formulario.
+              window.location.replace(safeNext(new URLSearchParams(window.location.search).get('next')));
+            }}
+          />
+        </PageEnter>
       </Screen>
       <Toast />
     </>
@@ -291,7 +294,7 @@ function App() {
     const token = new URLSearchParams(window.location.search).get('token') || '';
     return (
       <Screen>
-        <ResetPasswordPage token={token} onSuccess={() => { window.location.replace('/login'); }} />
+        <PageEnter><ResetPasswordPage token={token} onSuccess={() => { window.location.replace('/login'); }} /></PageEnter>
       </Screen>
     );
   }
@@ -300,7 +303,7 @@ function App() {
     const token = params.get('token') || '';
     return (
       <Screen>
-        <VerifyEmailPage token={token} lang={params.get('lang')} />
+        <PageEnter><VerifyEmailPage token={token} lang={params.get('lang')} /></PageEnter>
       </Screen>
     );
   }

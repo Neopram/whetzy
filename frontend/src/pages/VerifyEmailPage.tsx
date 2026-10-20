@@ -6,6 +6,7 @@ import { Button } from '../components/common/Button';
 import btn from '../components/common/Button.module.css';
 import styles from './AuthScreen.module.css';
 import { Loading } from '../components/common/Loading';
+import { DrawnCheck } from '../components/common/DrawnCheck';
 
 interface Props {
   token: string;
@@ -98,6 +99,8 @@ export function VerifyEmailPage({ token, lang }: Props) {
   if (status === 'ok') {
     return (
       <div className={styles.screen}>
+        {/* 46.15 A: el servidor confirmó el correo. */}
+        <DrawnCheck />
         <p>{t('verifyEmail.success')}</p>
         {/* Un enlace con el aspecto del Button común: navegar es un <a>, no un <button>. */}
         {signedIn ? (
