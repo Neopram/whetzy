@@ -154,3 +154,30 @@ def test_mascara_de_email(email, masked):
     from app.api.v1.endpoints.admin_users import mask_email
 
     assert mask_email(email) == masked
+
+
+# ── B6: leer el registro (44.3, pestaña «Registro») ───────────────────────────
+
+LOG = "/api/v1/admin/action-log"
+
+
+async def test_el_registro_se_lee_del_mas_nuevo_al_mas_viejo(client, db_session, owner):
+    await _with_2fa(db_session, owner)
+    ana = await _alumno(db_session, "analog", "ana.log@example.com")
+    await client.get(f"{USERS}/{ana.id}", headers=_h(owner))
+    await client.post(f"{USERS}/{ana.id}/actions/unlock", json={"reason": "probando"}, headers=_h(owner))
+
+    r = await client.get(LOG, headers=_h(owner))
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["total"] == 2
+    assert [i["action"] for i in body["items"]] == ["unlock", "view"]
+    first = body["items"][0]
+    assert (first["actor_username"], first["target_username"], first["reason"]) == (owner.username, "analog", "probando")
+    assert first["data"] == {"cleared": 0}
+
+
+async def test_el_registro_es_solo_del_dueno_con_2fa(client, db_session, owner, user):
+    assert (await client.get(LOG, headers=_h(user))).status_code == 403
+    r = await client.get(LOG, headers=_h(owner))
+    assert (r.status_code, r.json()["detail"]) == (403, "2fa_required")

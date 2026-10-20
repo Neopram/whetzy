@@ -1721,3 +1721,84 @@ export const profiles = {
   /** Público (0.3): cualquier `username` existente y activo, sin autenticación. */
   get: (username: string) => request<PublicProfile>(`/profiles/${encodeURIComponent(username)}`),
 };
+
+// ── Back-office de soporte (serie 44, docs/PLAN_BACKOFFICE.md) ──────────────
+// Solo el dueño con la verificación en dos pasos activa: sin ella, 403 con
+// `detail: '2fa_required'`.
+
+export interface AdminUserListItem {
+  id: string;
+  username: string;
+  email_masked: string;
+  created_at: string;
+  status: 'active' | 'suspended';
+}
+
+export interface AdminUserDetail {
+  id: string;
+  account: {
+    username: string;
+    display_name: string;
+    email: string;
+    email_verified: boolean;
+    language: string;
+    status: 'active' | 'suspended';
+    role: string;
+    created_at: string;
+    last_active: string | null;
+  };
+  plan: {
+    subscription_tier: string | null;
+    subscription_status: string | null;
+    subscription_expires_at: string | null;
+    subscription_provider: string | null;
+    paddle_subscription_id: string | null;
+    granted_tier: string | null;
+    granted_tier_expires_at: string | null;
+    certification_purchases: { track_id: string; source: string; created_at: string }[];
+  };
+  progress: {
+    target_track_id: string | null;
+    target_certification_id: string | null;
+    skills_practiced: number;
+    answers: number;
+    level: number;
+    current_streak: number;
+  };
+  security: { recent_events: { action: string; result: string; timestamp: string }[] };
+  gdpr: { pending: { type: string; status: string; created_at: string }[] };
+}
+
+export type AdminUserAction =
+  | 'resend_verification' | 'close_sessions' | 'unlock' | 'grant_plan' | 'suspend' | 'reactivate';
+
+export interface AdminLogItem {
+  id: number;
+  created_at: string;
+  action: string;
+  reason: string | null;
+  data: Record<string, unknown> | null;
+  actor_username: string | null;
+  target_user_id: string | null;
+  target_username: string | null;
+}
+
+interface Page<T> { items: T[]; page: number; page_size: number; total: number }
+
+export const adminUsers = {
+  search(q: string, page = 1) {
+    return request<Page<AdminUserListItem>>(`/admin/users?q=${encodeURIComponent(q)}&page=${page}`);
+  },
+  detail(id: string) {
+    return request<AdminUserDetail>(`/admin/users/${id}`);
+  },
+  act(id: string, action: AdminUserAction, body: { reason: string; tier?: 'plus' | 'pro'; days?: number }) {
+    return request<{ ok: boolean; action: string; data: Record<string, unknown> }>(
+      `/admin/users/${id}/actions/${action}`,
+      { method: 'POST', body: JSON.stringify(body) },
+    );
+  },
+  log(page = 1) {
+    return request<Page<AdminLogItem>>(`/admin/action-log?page=${page}`);
+  },
+};
