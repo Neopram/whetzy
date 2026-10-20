@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { masteryReports, type MasteryReport } from '../services/api';
+import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './MasteryReportScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
 
@@ -67,9 +68,9 @@ export function MasteryReportScreen({ code }: { code: string }) {
       {s.tracks.length === 0 ? (
         <p className={styles.muted}>{t('report.noTracks')}</p>
       ) : (
-        <ul className={styles.tracks}>
+        <StaggerList className={styles.tracks} data-testid="report-tracks">
           {s.tracks.map((tr) => (
-            <li key={tr.track_id} className={styles.track}>
+            <StaggerItem key={tr.track_id} className={styles.track}>
               <h2 className={styles.trackName}>
                 <span aria-hidden="true"><TrackIcon trackId={tr.track_id} fallback={tr.icon} size={24} /> </span>
                 {es ? tr.name_es : tr.name_en}
@@ -84,9 +85,9 @@ export function MasteryReportScreen({ code }: { code: string }) {
                   ))}
                 </ul>
               )}
-            </li>
+            </StaggerItem>
           ))}
-        </ul>
+        </StaggerList>
       )}
 
       <p className={styles.note}>{t('report.method')}</p>

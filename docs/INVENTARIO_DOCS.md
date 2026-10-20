@@ -24,10 +24,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 |---|---|
 | normativo-vivo | 25 |
 | referencia-viva | 66 |
-| histórico | 53 |
+| histórico | 54 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **189** |
+| **Total** | **190** |
 
 ## Raíz del repo y otras carpetas
 
@@ -168,6 +168,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/46.3a/README.md` | histórico | evidencia de capturas de la fila 46.3a (estados comunes con tokens `--le-*`, hover de «Reintentar» en modo claro) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/46.7/README.md` | histórico | evidencia de capturas de la fila 46.7 (una ceremonia por sesión y el resto como tarjetas) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/46.15a/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque A (error que tiembla, check dibujado, pasos del alta, contraste del error de Auth) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.15d/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque D (insignia nueva, barras que crecen, listas escalonadas, sello del certificado) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |
 | `docs/MAPA_PRODUCTO.md` | referencia-viva | inventario de rutas, pantallas y subvistas con el documento que especifica cada una y sus huecos; `check_docs.py` exige que nombre todo lo que existe | se queda | 2026-10-01 |
 | `docs/ml/rag_scaling_39_32.md` | referencia-viva | 39.32: por qué `test_rag_self_retrieval` era O(N²) y las cifras reales antes/después del índice invertido + muestra fija en `RAGIndex.retrieve()` | se queda | 2026-10-02 |

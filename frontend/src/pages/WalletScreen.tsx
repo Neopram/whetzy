@@ -8,6 +8,7 @@ import {
   type CreditPrices,
   type ReferralCodeInfo,
 } from '../services/api';
+import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './WalletScreen.module.css';
 
 export default function WalletScreen() {
@@ -122,9 +123,9 @@ export default function WalletScreen() {
       {earn.length > 0 && (
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>{t('wallet.earnCredits')}</h2>
-          <ul className={styles.list}>
+          <StaggerList className={styles.list}>
             {earn.map((g) => (
-              <li key={g.event} className={styles.row}>
+              <StaggerItem key={g.event} className={styles.row}>
                 <span className={styles.rowBody}>
                   <span className={styles.rowName}>{t(`wallet.earn.${g.event}`)}</span>
                   {g.event === 'referral_activated' && (
@@ -146,9 +147,9 @@ export default function WalletScreen() {
                   )}
                 </span>
                 <span className={styles.amount}>+{g.credits}</span>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggerList>
           {prices?.learning_monthly_cap ? (
             <p className={styles.muted}>{t('wallet.learningCap', { cap: prices.learning_monthly_cap })}</p>
           ) : null}
@@ -158,9 +159,9 @@ export default function WalletScreen() {
       {spend.length > 0 && (
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>{t('wallet.spendCredits')}</h2>
-          <ul className={styles.list}>
+          <StaggerList className={styles.list}>
             {spend.map((s) => (
-              <li key={s.item} className={styles.row}>
+              <StaggerItem key={s.item} className={styles.row}>
                 <span className={styles.rowBody}>
                   <span className={styles.rowName}>{t(`wallet.spend.${s.item}`)}</span>
                   {s.item === 'mastery_report' && (
@@ -178,9 +179,9 @@ export default function WalletScreen() {
                     {t('wallet.reportCta')}
                   </button>
                 )}
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggerList>
           {reportCode && (
             <p className={styles.muted} role="status">
               {t('wallet.reportReady')}{' '}

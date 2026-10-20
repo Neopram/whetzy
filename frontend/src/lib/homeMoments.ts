@@ -58,3 +58,16 @@ export function bandMoments(
   if (!before) return [];
   return skills.filter((s) => s.id in before && RANK[s.band] > RANK[before[s.id]]).map((s) => s.id);
 }
+
+/**
+ * 46.15 D: insignias ganadas desde la última visita a Perfil. Como en las
+ * bandas, sin foto previa no se celebra nada.
+ */
+export function badgeMoments(userId: string, earned: string[]): string[] {
+  const key = `whetzy_fx_badges_${userId}`;
+  const before = read<string[]>(key);
+  write(key, earned);
+  if (!before) return [];
+  const seen = new Set(before);
+  return earned.filter((id) => !seen.has(id));
+}
