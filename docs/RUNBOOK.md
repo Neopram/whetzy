@@ -458,6 +458,75 @@ Dos límites de ese e2e (verificador §7, 2026-10-17):
      (la cookie ya llega; el puente no se activa).
    - En Railway, `POST /auth/register` 201 seguido de `GET /auth/me` 200.
 
+## App Android de depuración (D.1, 2026-10-20)
+
+Un APK de depuración se instala en cualquier Android **sin cuenta de desarrollador** y sin Play Console
+(H.3). No es la versión de tienda: va firmado con la clave de depuración, así que para pasar luego a la
+de tienda hay que desinstalarlo antes (mismo `app.whetzy`, otra firma).
+
+**Antes de nada, en producción (lo hace el dueño, Railway → servicio `api` → Variables).** La app nativa
+llama a la API desde `https://app.whetzy.com` (Android) y `capacitor://app.whetzy.com` (iOS), no desde
+`localhost` (`frontend/capacitor.config.ts`, `server.hostname`; producción descarta los orígenes loopback,
+22.2). Si `BACKEND_CORS_ORIGINS` está definida en Railway, debe incluir esos dos además de los de la web;
+si no está, ya vienen en el valor por defecto de `config.py`. Comprobación, desde cualquier máquina:
+
+    curl -s -o /dev/null -w '%{http_code}\n' -X OPTIONS https://api.whetzy.com/api/v1/auth/login \
+      -H 'Origin: https://app.whetzy.com' -H 'Access-Control-Request-Method: POST'
+
+Tiene que dar `200`. El 2026-10-20 (antes de este cambio) daba `400` también para `https://localhost` y
+`capacitor://localhost`: con el APK tal cual, el login fallaba en el preflight.
+
+**Construirlo en local** (medido el 2026-10-20 en Linux; JDK 21 y Gradle del wrapper, 8.11.1):
+
+1. SDK de Android **fuera del proyecto** (no entra en git): descargar `commandlinetools-linux-*_latest.zip`
+   de <https://dl.google.com/android/repository/repository2-3.xml>, descomprimir en
+   `$ANDROID_HOME/cmdline-tools/latest` y
+   `sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-36" "build-tools;36.0.0"`
+   (≈ 450 MB; `compileSdk`/`targetSdk` 36 en `frontend/android/variables.gradle`).
+2. Desde `frontend/`: `npm ci && npm run build && npx cap sync android`.
+3. Desde `frontend/android/`: `ANDROID_HOME=… ./gradlew assembleDebug`.
+   Si Maven Central responde `429 Too Many Requests`, es límite de peticiones: repetir; lo ya bajado queda
+   en la caché de Gradle (pasó el 2026-10-20 en el primer intento).
+4. El APK queda en **`frontend/android/app/build/outputs/apk/debug/app-debug.apk`** (≈ 14,8 MB).
+5. `npx cap sync` reescribe `frontend/android/capacitor.settings.gradle` si `node_modules` es un enlace a otra
+   ruta: ese cambio no se commitea.
+
+**Sin máquina propia: Codemagic.** El flujo `android-debug` de `codemagic.yaml` (máquina `mac_mini_m2`, la de los
+500 minutos gratis; sin keystore ni publicación) solo arranca a mano desde la web de Codemagic y deja el
+mismo APK como artefacto. Límites del plan gratuito, con fuente y fecha: `docs/STORE_LISTING.md` §7.
+
+**Comprobar el APK antes de instalarlo** (`build-tools/36.0.0/aapt2`):
+
+    aapt2 dump badging app-debug.apk | grep -E "^package|targetSdk|uses-permission|application:"
+
+Lo esperado (APK del 2026-10-20): `package: name='app.whetzy'`, `targetSdkVersion:'36'`, etiqueta `Whetzy`, y
+solo estos permisos: `INTERNET`, `VIBRATE` (vibración), `ACCESS_NETWORK_STATE`, `POST_NOTIFICATIONS`,
+`WAKE_LOCK` y `com.google.android.c2dm.permission.RECEIVE` (estos tres, del plugin de avisos y Firebase), más
+`app.whetzy.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` (interno de AndroidX). Ni cámara, ni micrófono, ni
+ubicación (ADR «NO voz, NO OCR»); la guarda de la fuente es `frontend/src/test/android.permisos.test.ts`.
+
+**Instalarlo en el teléfono.**
+- Con cable: activar *Opciones de desarrollador → Depuración USB* y `adb install -r app-debug.apk`.
+- Sin cable: pasar el `.apk` al teléfono (correo, Drive, descarga), abrirlo y permitir *Instalar apps
+  desconocidas* para la app con la que se abre (Ajustes → Apps → acceso especial). Android avisa de que la
+  app no viene de Play: es lo normal en un APK de depuración.
+
+**Smoke en el dispositivo** (lo que decide si 17.15 pasa a `DONE`; anotar resultado por punto con fecha,
+modelo de teléfono y versión de Android, y abrir fila nueva por cada fallo):
+
+| # | Paso | Qué mirar |
+|---|---|---|
+| 1 | Icono y arranque | El icono del cajón es la W de Whetzy (no la de Capacitor) y el splash es el símbolo sobre `#0A0E1A` |
+| 2 | Login con email | Entra y llega a Hoy; si se queda en el formulario, mirar el preflight de arriba |
+| 3 | Un quiz | Contestar 1–2 preguntas, la corrección llega y vibra al acertar (si la vibración está activada) |
+| 4 | Un ejercicio con Pyodide | «Ejecutar» corre el código: el WebView carga el worker y el runtime desde la propia app |
+| 5 | `/certificate/<código>` | Abre la página pública del certificado (y en el idioma del dispositivo) |
+| 6 | Cambio de idioma | Perfil → idioma: la interfaz cambia y se mantiene al reabrir la app |
+
+**Lo que se sabe que no funciona aún.** Los avisos: la app solo tiene Web Push (`usePushNotifications`,
+service worker + `PushManager`), que el WebView de Android no ofrece, así que el interruptor no aparece. Los
+avisos nativos (FCM, `google-services.json`, `@capacitor/push-notifications`) están sin cablear: fila 17.16.
+
 ## Soporte: atender a un alumno desde el back-office (serie 44)
 
 Admin → **Usuarios** y **Registro** (`docs/PLAN_BACKOFFICE.md`). Solo el dueño, y solo
