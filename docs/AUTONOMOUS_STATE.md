@@ -41,7 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 46 | Experiencia avanzada | 3/10 | 30 % | 46.1, 46.2b, 46.3, 46.4, 46.5, 46.6 +1 |
+| 46 | Experiencia avanzada | 3/12 | 25 % | 46.1, 46.2b, 46.3, 46.4, 46.5, 46.6 +3 |
 | 45 | Alta con correo | 4/4 | 100 % | — |
 | 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
 | 43 | Flujo del alumno listo para pruebas | 5/8 | 62 % | 43.4, 43.5, 43.6 |
@@ -598,12 +598,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.1 | **1** | Feedback del quiz sin tapar | DOING — #266; falta e2e «×3» | plan §2 y §6.4 |
 | 46.1b | **1** | `events[]` en `QuizAnswerResponse` | DONE — #265 `2840689`, §7 10-19 | plan §6.3 |
 | 46.2 | **1** | `feedbackFx.ts`: bus, sonido, vibración | DONE — #263 `0449034`, §7 10-19 | plan §6.0–6.1 |
-| 46.2b | **2** | `@capacitor/haptics` | TODO (D4) | PR propio |
+| 46.2b | **2** | `@capacitor/haptics` | TODO | PR propio (ADR-67 D4) |
 | 46.3 | **1** | Estados vacíos y momentos de Home | DOING — #264, #267; falta 46.3c | plan §2 y §6.2 |
 | 46.4 | **2** | Un solo sistema de tokens | TODO | 0 `var(--color-` |
 | 46.5 | **2** | Regresión visual en nivel 2 | TODO | rojo al mutar un token |
 | 46.6 | **2** | Medición y re-puntuación | TODO | tabla con evidencia |
 | 46.7 | **1** | Resumen y ceremonias | DOING — #269; falta recuento y `fx_emitted` | plan §6.4 |
+| 46.8 | **2** | Mascota: brief para ilustrador | TODO | brief y 3 direcciones (ADR-67 D2) |
+| 46.9 | **1** | Sonido encendido por defecto | TODO | sin preferencia → on (ADR-67 D3) |
 
 ## 3. Cola HUMAN-BLOCKED
 

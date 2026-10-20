@@ -1745,3 +1745,18 @@ va con la 43 en `master` y antes de la 44.
 
 **Lo que no cambia.** Estar verificado sigue afectando solo a las recompensas por invitar y a algunos correos
 periódicos. Sin migraciones y sin `content/**`.
+
+## ADR-67 — Decisiones D1–D4 de la serie 46 (DECIDIDO por el dueño, 2026-10-19)
+
+**Origen.** `docs/PLAN_UI_AVANZADA.md` §4: cuatro decisiones que solo toma el dueño, preguntadas en un solo mensaje
+al cerrar la ola 1 (46.0–46.7), antes de la ola 2. Respondidas en la sesión del 2026-10-19.
+
+| # | Decisión |
+|---|---|
+| D1 | **Sin excepción a ADR-62.** El piloto 40.2 sale con los 3 widgets (búsqueda binaria, CIDR, JOIN) y un ítem de demostración cada uno, no persistido en `content/`. Los 30 ítems `interactive` esperan a que ADR-62 permita contenido nuevo. |
+| D2 | **Mascota, sí.** SVG + Lottie (ya en el bundle); **no Rive**. Sustituye la línea «sin mascota» de `design/v2/GUIA.md` y la de `docs/design/decisiones-24.0.md` §4, enmendadas con esta fecha. Tiene que casar con la personalidad de la guía (precisa, tranquila, técnica): nada de caricatura ruidosa. **La dibuja una persona** (segunda respuesta del dueño, mismo día): lo que hace una IA no es exclusivo ni registrable como marca (`design/iconos/PROCEDENCIA.md`). La sesión entrega un brief con tres direcciones bocetadas con IA (`design/mascota/`, fila 46.8); la mascota entra en la app cuando el dueño tenga el diseño final del ilustrador, con capturas aprobadas en su PR. |
+| D3 | **Sonido encendido por defecto.** Para quien no tiene preferencia guardada; quien ya la tiene la conserva. Sigue sin sonar antes del primer gesto (política de autoplay) y se apaga en Perfil (fila 46.9). |
+| D4 | **`@capacitor/haptics`, sí**, en su propio PR (46.2b) con `package.json` y lockfile, y la licencia comprobada antes. En web sigue `navigator.vibrate`. |
+
+**Lo que no cambia.** Ninguna ceremonia celebra un ascenso de liga mientras el servidor no lo aplique (§6.2). Sin
+migraciones y sin `content/**`.
