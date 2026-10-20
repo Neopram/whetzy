@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { motion, useReducedMotion } from 'framer-motion'
+import { DUR } from '../lib/motion'
 import { useAppStore } from '../stores/useAppStore'
 import { auth, content, economy, type TrackRead } from '../services/api'
 import { readAttribution } from '../lib/attribution'
@@ -28,6 +30,7 @@ type Step = 'goal' | 'track' | 'cert' | 'experience' | 'start'
 
 export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const { i18n, t } = useTranslation()
+  const reduce = useReducedMotion()
   const startPlacement = useAppStore((s) => s.startPlacement)
   const setScreen = useAppStore((s) => s.setScreen)
   const updateUser = useAppStore((s) => s.updateUser)
@@ -100,6 +103,17 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
       </div>
       <div className="question-card">
         <p className="step-indicator">{t('onboarding.step', { n: position, total: steps.length })}</p>
+
+        {/* Solo entrada: con salida (`mode="wait"`) el paso nuevo esperaba a que
+            el viejo terminase de irse y el toque parecía no responder. */}
+        <motion.div
+          key={step}
+          data-testid="onboarding-step"
+          data-fx={reduce ? undefined : 'slide'}
+          initial={reduce ? false : { opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: DUR.response / 2 }}
+        >
 
         {step === 'goal' && (
           <>
@@ -191,6 +205,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
             </div>
           </>
         )}
+        </motion.div>
       </div>
     </div>
   )

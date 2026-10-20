@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { auth } from '../services/api';
 import { Button } from '../components/common/Button';
 import styles from './AuthScreen.module.css';
+import { FormError } from '../components/common/FormError';
+import { DrawnCheck } from '../components/common/DrawnCheck';
 
 interface Props {
   onBack: () => void;
@@ -35,6 +37,8 @@ export function ForgotPasswordPage({ onBack }: Props) {
     return (
       <div className={styles.screen}>
         <div className={styles.brand}>
+          {/* 46.15 A: el servidor aceptó la petición del enlace. */}
+          <DrawnCheck />
           <h1 className={styles.brandName}>{t('forgotPassword.checkEmailTitle')}</h1>
           <p className={styles.tagline}>{t('forgotPassword.checkEmailBody', { email })}</p>
         </div>
@@ -63,7 +67,7 @@ export function ForgotPasswordPage({ onBack }: Props) {
             inputMode="email"
           />
         </label>
-        {error && <p className={styles.error}>⚠️ {error}</p>}
+        {error && <FormError className={styles.error} message={error}>⚠️ {error}</FormError>}
         <Button type="submit" size="lg" full disabled={loading} className={styles.submit}>{loading ? t('auth.loading') : t('forgotPassword.submit')}</Button>
       </form>
       <button type="button" className={styles.forgotLink} onClick={onBack}>{t('forgotPassword.back')}</button>
