@@ -1,7 +1,7 @@
 import { useEffect, useState, lazy, Suspense, useRef } from 'react';
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import i18n from './i18n';
+import i18n, { detectLanguage } from './i18n';
 import { useAppStore, DEFAULT_USER_ID } from './stores/useAppStore';
 import { ApiError, auth, logout, setOnSessionExpired } from './services/api';
 import { TopBar } from './components/layout/TopBar';
@@ -119,14 +119,31 @@ type AuthState = 'checking' | 'retrying' | 'unauthed' | 'authed';
  * stayed wrong with it. Giving them their own component means the language is
  * applied before anything is painted.
  */
-function StandalonePage({ path }: { path: string }) {
+/** Idioma de una página que se abre sin cuenta: `?lang=` si viene; con sesión,
+ *  el del usuario; sin ella, el de `detectLanguage` (lo guardado en
+ *  `whetzy_lang` y, si no, el navegador). Antes usaban siempre `user.language`,
+ *  y sin sesión ese es el `'es'` del perfil de muestra: el certificado salía en
+ *  español con el navegador en inglés (2026-10-20, 46.15 D). */
+function useStandaloneLanguage(): string {
+  const userId = useAppStore((s) => s.user.id);
   const userLanguage = useAppStore((s) => s.user.language);
-  const { t } = useTranslation();
+  const wanted = new URLSearchParams(window.location.search).get('lang');
+  const language =
+    wanted === 'es' || wanted === 'en' ? wanted
+      : userId !== DEFAULT_USER_ID ? userLanguage
+        : detectLanguage();
 
   useEffect(() => {
-    void i18n.changeLanguage(userLanguage);
-    document.documentElement.lang = userLanguage;
-  }, [userLanguage]);
+    void i18n.changeLanguage(language);
+    document.documentElement.lang = language;
+  }, [language]);
+
+  return language;
+}
+
+function StandalonePage({ path }: { path: string }) {
+  const userLanguage = useStandaloneLanguage();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const doc = STANDALONE_DOC[path];
@@ -163,12 +180,7 @@ function StandalonePage({ path }: { path: string }) {
 const CERTIFICATE_PATH = '/certificate/';
 
 function StandaloneCertificate({ code }: { code: string }) {
-  const userLanguage = useAppStore((s) => s.user.language);
-
-  useEffect(() => {
-    void i18n.changeLanguage(userLanguage);
-    document.documentElement.lang = userLanguage;
-  }, [userLanguage]);
+  useStandaloneLanguage();
 
   return <Screen><CertificateScreen code={code} /></Screen>;
 }
@@ -178,12 +190,7 @@ function StandaloneCertificate({ code }: { code: string }) {
 const REPORT_PATH = '/report/';
 
 function StandaloneReport({ code }: { code: string }) {
-  const userLanguage = useAppStore((s) => s.user.language);
-
-  useEffect(() => {
-    void i18n.changeLanguage(userLanguage);
-    document.documentElement.lang = userLanguage;
-  }, [userLanguage]);
+  useStandaloneLanguage();
 
   return <Screen><MasteryReportScreen code={code} /></Screen>;
 }
