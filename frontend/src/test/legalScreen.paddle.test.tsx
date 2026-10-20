@@ -43,4 +43,11 @@ describe('Política de privacidad — lo que exige el art. 13 RGPD', () => {
     // H.63 (dueño, 2026-10-17): la política dice para qué abre el titular una cuenta.
     expect(screen.getByText(i18n.t('legal.privacySupportAccess'))).toBeTruthy();
   });
+
+  // 44.4: cada apertura de una ficha queda en `admin_action_log`; la política lo dice.
+  it.each([['es', /queda registrado/], ['en', /it is logged/]])('%s: el acceso del titular queda registrado', async (lang, phrase) => {
+    await i18n.changeLanguage(lang as string);
+    render(<LegalScreen doc="privacy" />);
+    expect(screen.getByText(phrase as RegExp)).toBeTruthy();
+  });
 });
