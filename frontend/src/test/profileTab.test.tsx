@@ -38,7 +38,10 @@ describe('ProfileTab — perfil de instructor real (28.8)', () => {
     updateProfile.mockResolvedValue({ ...PROFILE, bio: 'Updated bio.' });
     render(<ProfileTab />);
 
-    const bio = await screen.findByLabelText(/Biografía|Bio/);
+    // Esperar al valor cargado: si se escribe antes de que el perfil llene el
+    // formulario, la carga pisa lo escrito y el PATCH sale con la bio vieja
+    // (falló 1 de cada 3 veces en el nivel 2 del 2026-10-19).
+    const bio = await screen.findByDisplayValue(PROFILE.bio!);
     fireEvent.change(bio, { target: { value: 'Updated bio.' } });
     fireEvent.click(screen.getByRole('button', { name: /Guardar|Save/ }));
 
