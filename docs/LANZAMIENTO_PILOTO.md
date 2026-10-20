@@ -2,8 +2,8 @@
 
 Para enseñar `whetzy.com` a 20–50 personas reales, escuchar qué les frena y convertir eso en
 el siguiente backlog. Viene de `CIERRE_2026-09-30.md` §2.6 («usuarios antes que tiendas y que
-catálogo») y §5.2, y de la fila 31.8 del ledger. No añade analítica nueva: el veto de 31.5 sigue
-hasta ≥ 100 registrados reales.
+catálogo») y §5.2, y de la fila 31.8 del ledger. No añadía analítica nueva por el veto de 31.5,
+que el dueño levantó el 2026-10-20 (ADR-68).
 
 Etiquetas: **[V]** comprobado en código o en vivo el 2026-10-01 · **[P]** inferencia fuerte,
 sin probar contra producción.
