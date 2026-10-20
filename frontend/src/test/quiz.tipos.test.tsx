@@ -41,17 +41,19 @@ describe('como decide el quiz que pintar', () => {
   })
 
   it('la rama de opciones no enumera tipos', () => {
-    // `isExecType` es la unica condicion que separa las dos formas de
-    // responder. Si apareciera algo como `type === 'mcq'` decidiendo si se
-    // pintan opciones, `multiple_choice` se quedaria sin ellas.
+    // `isExecType` e `isInteractive` (40.1, el widget) son las unicas
+    // condiciones que apartan una pregunta de las opciones. Si apareciera algo
+    // como `type === 'mcq'` decidiendo si se pintan opciones,
+    // `multiple_choice` se quedaria sin ellas.
     expect(FUENTE).toContain('const isExecType = question != null && EXEC_TYPES.has(question.type)')
-    expect(FUENTE).toMatch(/\{!isExecType && \(/)
+    expect(FUENTE).toContain("const isInteractive = question?.type === 'interactive'")
+    expect(FUENTE).toMatch(/\{!isExecType && !isInteractive && \(/)
   })
 
   it('el union de QuestionPublic conoce los dos nombres del mismo formato', () => {
     const api = readFileSync(join(RAIZ, 'src/services/api.ts'), 'utf8')
     const union = api.slice(api.indexOf('export interface QuestionPublic'))
-    for (const tipo of [...CON_OPCIONES, ...EJECUTABLES]) {
+    for (const tipo of [...CON_OPCIONES, ...EJECUTABLES, 'interactive']) {
       expect(union, `falta '${tipo}' en QuestionPublic['type']`).toContain(`'${tipo}'`)
     }
   })

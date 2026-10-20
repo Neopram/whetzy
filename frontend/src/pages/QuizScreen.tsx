@@ -21,6 +21,7 @@ import { GlossaryText } from '../components/quiz/GlossaryText';
 import { TermCard } from '../components/quiz/TermCard';
 import { SourceLine } from '../components/quiz/SourceLine';
 import { ReportQuestion } from '../components/quiz/ReportQuestion';
+import { InteractiveQuestion } from '../components/quiz/InteractiveQuestion';
 import { useRuntime, runtimeForQuestion } from '../hooks/useRuntime';
 import { useGlossary } from '../hooks/useGlossary';
 import { parseQuestion } from '../lib/question';
@@ -120,6 +121,8 @@ export function QuizScreen() {
   const pyodideStatus = runtimeStatus;
 
   const isExecType = question != null && EXEC_TYPES.has(question.type);
+  // 40.1: un widget se manipula a su ritmo, como un ejecutable: sin cuenta atrás.
+  const isInteractive = question?.type === 'interactive';
 
   // ── Session start ──────────────────────────────────────────────────────
   useEffect(() => {
@@ -183,12 +186,12 @@ export function QuizScreen() {
   useEffect(() => {
     // Pausado mientras se decide si salir: el tiempo no corre contra una
     // pregunta que el alumno no está mirando.
-    if (feedback || summary || loading || !question || isExecType || confirmExit) return;
+    if (feedback || summary || loading || !question || isExecType || isInteractive || confirmExit) return;
     if (timer <= 0) { void submitAnswer(null); return; }
     const id = setTimeout(() => setTimer((v) => v - 1), 1000);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timer, feedback, summary, loading, question, isExecType, confirmExit]);
+  }, [timer, feedback, summary, loading, question, isExecType, isInteractive, confirmExit]);
 
   // ── Reset timer when question changes ──────────────────────────────────
   useEffect(() => {
@@ -521,7 +524,7 @@ export function QuizScreen() {
           />
         </div>
         <span className={styles.progressLabel}>{index + 1} / {TARGET_QUESTIONS}</span>
-        {!isExecType && (
+        {!isExecType && !isInteractive && (
           <span className={`${styles.timer} ${timer <= 5 ? styles.timerDanger : ''}`} aria-label={t('quiz.timeLeft', { s: timer })}>
             {timer}s
           </span>
@@ -652,6 +655,31 @@ export function QuizScreen() {
       </Button>
     </motion.div>
   );
+
+  // ── interactive (40.1): el widget, y el servidor corrige su estado ──────
+  if (isInteractive) {
+    return (
+      <div className={styles.screen}>
+        {header}
+        {statsBar}
+        {questionCard}
+        {question.interactive ? (
+          <InteractiveQuestion
+            key={question.id}
+            spec={question.interactive}
+            lang={viewLang}
+            feedback={feedback}
+            submitting={submitting}
+            onSubmit={(widgetState) => void submitAnswer(null, false, { widgetState })}
+            onUnknown={handleUnknown}
+          />
+        ) : (
+          <p role="alert">{t('interactive.unavailable', { ns: 'producto' })}</p>
+        )}
+        {feedbackPanel}
+      </div>
+    );
+  }
 
   // ── Exec question render ───────────────────────────────────────────────
   if (isExecType) {

@@ -58,6 +58,36 @@ const VIBRATION: Partial<Record<FxType, number[]>> = {
   streak: [50, 30, 50],
 };
 
+// 46.2b (ADR-67 D4): en la app nativa, `@capacitor/haptics` en vez de
+// `navigator.vibrate` (que en el WebView de iOS no existe). Impacto para lo
+// corto, notificación para fallo y ceremonias. Mismos eventos que VIBRATION.
+type NativeHaptic = { impact: 'LIGHT' | 'MEDIUM' | 'HEAVY' } | { notification: 'SUCCESS' | 'WARNING' };
+const NATIVE_HAPTIC: Partial<Record<FxType, NativeHaptic>> = {
+  correct: { impact: 'LIGHT' },
+  wrong: { notification: 'WARNING' },
+  combo: { impact: 'MEDIUM' },
+  mission: { impact: 'MEDIUM' },
+  level_up: { notification: 'SUCCESS' },
+  badge: { notification: 'SUCCESS' },
+  streak: { notification: 'SUCCESS' },
+};
+
+function isNative(): boolean {
+  const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor;
+  return Boolean(cap?.isNativePlatform?.());
+}
+
+// Import perezoso: el bundle web no carga el plugin.
+let hapticsModule: Promise<typeof import('@capacitor/haptics') | null> | null = null;
+function nativeHaptic(h: NativeHaptic): void {
+  hapticsModule ??= import('@capacitor/haptics').catch(() => null);
+  void hapticsModule.then((m) => {
+    if (!m) return;
+    if ('impact' in h) return m.Haptics.impact({ style: h.impact as never });
+    return m.Haptics.notification({ type: h.notification as never });
+  }).catch(() => { /* sin motor de vibración: no pasa nada */ });
+}
+
 export interface FxResult {
   tier: FxTier;
   sounded: boolean;
@@ -209,7 +239,11 @@ export function emit(event: FxEvent): FxResult {
     }
   }
   const pattern = VIBRATION[event.type];
-  if (gestured && hapticEnabled && pattern && typeof navigator.vibrate === 'function') {
+  const nativeHapticFor = NATIVE_HAPTIC[event.type];
+  if (gestured && hapticEnabled && nativeHapticFor && isNative()) {
+    nativeHaptic(nativeHapticFor);
+    result.vibrated = true;
+  } else if (gestured && hapticEnabled && pattern && typeof navigator.vibrate === 'function') {
     result.vibrated = navigator.vibrate(pattern);
   }
   listeners.forEach((l) => l(event, result));
@@ -245,5 +279,6 @@ export function _resetFeedbackFx(): void {
   ctx = null;
   ceremonies.length = 0;
   pending = [];
+  hapticsModule = null;
   listeners.clear();
 }

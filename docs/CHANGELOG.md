@@ -5,6 +5,24 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-19 (Serie 46: decisiones del dueño D1–D4)
+
+**ES**
+
+- **Decisiones de la experiencia avanzada** (ADR-67, `docs/PLAN_UI_AVANZADA.md` §4): el piloto de widgets sale sin
+  contenido nuevo; habrá mascota (SVG + Lottie), dibujada por un ilustrador y con la guía de diseño enmendada; el sonido viene encendido por
+  defecto; y la app nativa vibrará con `@capacitor/haptics`. Es solo documentación; el código va en sus PR.
+
+---
+
+**EN**
+
+- **Advanced-experience decisions** (ADR-67, `docs/PLAN_UI_AVANZADA.md` §4): the widget pilot ships without new
+  content; there will be a mascot (SVG + Lottie), drawn by an illustrator, with the design guide amended; sound is on by default; and the
+  native app will vibrate through `@capacitor/haptics`. Documentation only; the code comes in its own PRs.
+
+---
+
 ## [Unreleased] — 2026-10-17 (Plan del flujo del alumno)
 
 **ES**

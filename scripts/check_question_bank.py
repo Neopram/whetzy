@@ -66,6 +66,42 @@ PLACEHOLDER_KNOWN = Path(__file__).resolve().parent / "placeholder_known.json"
 EN_LEAK_ES = re.compile(r"\bel blank\b", re.IGNORECASE)
 
 
+@lru_cache(maxsize=1)
+def _widget_checkers():
+    """`checkers.py` del backend, cargado por ruta: los mismos checkers que corrigen en el servidor."""
+    import importlib.util
+
+    path = ROOT / "backend" / "app" / "services" / "widgets" / "checkers.py"
+    spec = importlib.util.spec_from_file_location("whetzy_widget_checkers", path)
+    assert spec and spec.loader, path
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+WIDGET_REGISTRY = ROOT / "frontend" / "src" / "widgets" / "registry.ts"
+
+
+@lru_cache(maxsize=1)
+def registered_widgets() -> frozenset[str]:
+    """Las claves de `WIDGETS` en el registro del cliente: los widgets que el alumno puede usar."""
+    text = WIDGET_REGISTRY.read_text(encoding="utf-8")
+    m = re.search(r"export const WIDGETS: Record<string, WidgetLoader> = \{(.*?)\};", text, re.DOTALL)
+    if m is None:
+        raise SystemExit(f"no encuentro `export const WIDGETS` en {WIDGET_REGISTRY}")
+    return frozenset(re.findall(r"^\s*(\w+)\s*:\s*\(\)\s*=>\s*import\(", m.group(1), re.MULTILINE))
+
+
+def interactive_problems(q: dict) -> list[str]:
+    """Por qué un `interactive` no se puede contestar o corregir; vacío si se puede (40.1)."""
+    spec = q.get("interactive")
+    problems = list(_widget_checkers().spec_problems(spec))
+    widget = spec.get("widget") if isinstance(spec, dict) else None
+    if isinstance(widget, str) and widget and widget not in registered_widgets():
+        problems.append(f"widget {widget!r} no esta en frontend/src/widgets/registry.ts: nadie podria contestarla")
+    return problems
+
+
 def is_placeholder(q: dict) -> bool:
     """Una pregunta de relleno de generador, no una pregunta (37.14, 39.37)."""
     opts = [str(o).strip() for o in (q.get("options_es") or [])]
@@ -97,9 +133,14 @@ def is_placeholder(q: dict) -> bool:
 # vez de desaparecer en silencio de algun filtro. Anadir uno obliga a mirar
 # quien filtra por tipo (backend: placement, quiz, duels; frontend:
 # QuizScreen y el union de QuestionPublic).
+#
+#   WIDGET_TYPES  se contestan manipulando un widget -> interactive (40.1):
+#                 {widget, params, target, checker}, corregido con
+#                 backend/app/services/widgets/checkers.py
 OPTION_TYPES = {"mcq", "multiple_choice", "true_false", "code_output"}
 FREE_TYPES = {"fill_blank", "fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
-KNOWN_TYPES = OPTION_TYPES | FREE_TYPES
+WIDGET_TYPES = {"interactive"}
+KNOWN_TYPES = OPTION_TYPES | FREE_TYPES | WIDGET_TYPES
 KNOWN_POOLS = {"practica", "simulacro"}
 SKEW_MAX_SHARE = 0.45
 MIN_PER_SKILL = 6
@@ -424,7 +465,11 @@ def main() -> int:
                 f"{sorted(KNOWN_POOLS)}"
             )
 
-        if qtype in OPTION_TYPES:
+        if qtype in WIDGET_TYPES:
+            # Sin especificación valida el servidor la corrige siempre como fallo.
+            for problem in interactive_problems(q):
+                problems.append(f"{path.name} {qid}: interactive - {problem}")
+        elif qtype in OPTION_TYPES:
             opts_es, opts_en = q.get("options_es"), q.get("options_en")
             ci = q.get("correct_index")
             if not opts_es or not opts_en:
