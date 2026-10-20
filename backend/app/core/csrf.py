@@ -14,6 +14,13 @@ La regla: `POST`, `PUT`, `PATCH` o `DELETE` con cookie de sesión exige que
 `settings.active_cors_origins`, la misma lista que CORS. Sin cookie no hay
 credencial ambiental que robar: los webhooks y los clientes con
 `Authorization: Bearer` pasan sin mirar.
+
+Una excepción, por ruta exacta (`exempt_posts`): el `POST` con que vuelve
+Sign in with Apple (`/auth/oauth/apple/callback`, `form_post`) llega con
+`Origin: https://appleid.apple.com` y, si el navegador aún guarda una sesión
+con `SameSite=None`, con su cookie. Esa ruta no actúa con la sesión que
+traiga: solo abre la de quien demuestre el `state` de su cookie y de la base
+de datos, con un `id_token` firmado por Apple para el `nonce` de ese intento.
 """
 
 from __future__ import annotations
@@ -47,11 +54,16 @@ def request_origin(request: Request) -> str | None:
 
 
 class CSRFOriginMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app: ASGIApp, allowed_origins: Iterable[str]) -> None:
+    def __init__(
+        self, app: ASGIApp, allowed_origins: Iterable[str], exempt_posts: Iterable[str] = ()
+    ) -> None:
         super().__init__(app)
         self.allowed_origins = frozenset(o.rstrip("/") for o in allowed_origins)
+        self.exempt_posts = frozenset(exempt_posts)
 
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+        if request.method == "POST" and request.url.path in self.exempt_posts:
+            return await call_next(request)
         if request.method in UNSAFE_METHODS and any(c in request.cookies for c in SESSION_COOKIES):
             origin = request_origin(request)
             # `Origin: null` (iframe con sandbox, redirecciones) tampoco vale.

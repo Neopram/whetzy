@@ -136,12 +136,24 @@ def clear_mfa_cookie(response: Response) -> None:
 OAUTH_STATE_COOKIE = "whetzy_oauth_state"
 
 
-def set_oauth_state_cookie(response: Response, state: str, max_age_seconds: int) -> None:
+def _oauth_policy(cross_site_post: bool) -> tuple[bool, SameSite]:
+    """Apple vuelve con un `POST` desde appleid.apple.com (`form_post`): con
+    `SameSite=Lax` el navegador no manda la cookie en esa petición y el
+    callback no podría comparar el `state`. Para ese proveedor va `None` (que
+    exige `Secure`)."""
+    if cross_site_post:
+        return True, "none"
+    return _cookie_policy()
+
+
+def set_oauth_state_cookie(
+    response: Response, state: str, max_age_seconds: int, *, cross_site_post: bool = False
+) -> None:
     """41.14: el `state` de OAuth solo vivía en la base de datos — un `state`
     válido y sin consumir se aceptaba desde cualquier navegador, no solo el
     que lo pidió. Esta cookie HttpOnly lleva el mismo valor; `/callback` la
     compara contra el `state` de la query antes de aceptarlo."""
-    secure, samesite = _cookie_policy()
+    secure, samesite = _oauth_policy(cross_site_post)
     response.set_cookie(
         key=OAUTH_STATE_COOKIE,
         value=state,
@@ -153,10 +165,12 @@ def set_oauth_state_cookie(response: Response, state: str, max_age_seconds: int)
 OAUTH_LANG_COOKIE = "whetzy_oauth_lang"
 
 
-def set_oauth_lang_cookie(response: Response, lang: str, max_age_seconds: int) -> None:
+def set_oauth_lang_cookie(
+    response: Response, lang: str, max_age_seconds: int, *, cross_site_post: bool = False
+) -> None:
     """45.1 (ADR-66 E1): el idioma de la pantalla desde la que se pulsó «Continuar
     con…». Viaja junto al `state` y solo se usa si el callback crea la cuenta."""
-    secure, samesite = _cookie_policy()
+    secure, samesite = _oauth_policy(cross_site_post)
     response.set_cookie(
         key=OAUTH_LANG_COOKIE,
         value=lang,

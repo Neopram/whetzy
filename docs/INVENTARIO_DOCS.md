@@ -23,11 +23,11 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | Clase | Ficheros |
 |---|---|
 | normativo-vivo | 25 |
-| referencia-viva | 66 |
+| referencia-viva | 67 |
 | histórico | 52 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **188** |
+| **Total** | **189** |
 
 ## Raíz del repo y otras carpetas
 
@@ -37,6 +37,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/archive/COMPETITIVE_RESEARCH.md` | obsoleto | investigación de 8 plataformas del 2026-09-23, sin referencias; la sustituye docs/COMPETENCIA.md (URL y fecha) | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/archive/EVALUACION_COMPLETA_WHETZY.md` | histórico | evaluación fechada con notas «Superado»; no manda | archivado el 2026-10-01 (histórico, sin referencias vivas) | 2026-09-30 |
 | `README.md` | referencia-viva | presentación del repo (raíz) | se queda | 2026-09-26 |
+| `frontend/ios/App/CapApp-SPM/README.md` | referencia-viva | lo genera `npx cap add ios` (Capacitor 8): paquete SPM de los plugins; no se edita a mano | se queda (generado) | 2026-10-20 |
 | `docs/archive/SERIE_28_STATUS.md` | obsoleto | estado de la serie 28 del 2026-09-19; ADR-48 archiva los SERIE*_STATUS y el ledger es el único plan | archivado el 2026-10-01 | 2026-09-23 |
 | `docs/archive/IMPLEMENTATION_GUIDE_22_6.md` | referencia-viva | guía de integración de 22.6 (rate limit, paginación, caché, jobs) | archivado el 2026-10-01: su lista de 13 tareas sigue sin marcar aunque varias existen (worker de jobs, docs que pedía crear) | 2026-09-23 |
 | `content/_quarantine/README.md` | normativo-vivo | regla de la carpeta en cuarentena (no se carga ni se mide) | se queda | 2026-09-23 |

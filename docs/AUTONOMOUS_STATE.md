@@ -66,7 +66,7 @@
 | 22 | Blindaje, admin y preparación para un millón — todo a coste cero | 0/1 | 0 % | 22.5 |
 | 21 | Legal y fiscal a coste cero — investigación, borradores, gates humanos | 0/4 | 0 % | 21.1, 21.2, 21.5, 21.6 |
 | 20 | Verificación masiva código ↔ docs ↔ prod | 1/1 | 100 % | — |
-| 19 | Lo que Educative y las tiendas exigen — social login, bootcamps, proy… | 2/8 | 29 % | 19.2, 19.3, 19.7, 19.8, 19.9, 19.10 |
+| 19 | Lo que Educative y las tiendas exigen — social login, bootcamps, proy… | 2/9 | 22 % | 19.2, 19.3, 19.7, 19.8, 19.9, 19.10 +1 |
 | 18 | Techo de código — todo el catálogo, sin racionar | 1/5 | 20 % | 18.9, 18.10, 18.11, 18.12 |
 | 17 | De quiz a escuela + release definitivo | 0/5 | 0 % | 17.5, 17.6, 17.7, 17.10, 17.14 |
 | 16 | CI en rojo | 0/3 | 0 % | — |
@@ -173,7 +173,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 19. Lo que Educative y las tiendas exigen — social login, bootcamps, proyectos, autoría con fuentes libres (abierta 2026-09-18, sesión…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 19.2 | **1** | Sign in with Apple — 19.1 (GitHub/Google OAuth) ya está en vivo si… | HUMAN-BLOCKED (H.2) | Necesita… |
+| 19.2 | **1** | Sign in with Apple — 19.1 (GitHub/Google OAuth) ya está en vivo si… | PARCIAL (preparado, no verificado: H.2) | Código y tests con claves propias; RUNBOOK «App iOS» |
 | 19.3 | **2** | Android: Google Sign-In nativo + Google Play Billing vía RevenueCa… |  | → §I (criterio archivado por 20.10) |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
 | 19.8 | **3** | **Landing y SEO de whetzy.com al nivel de Educative** | TODO | → LEDGER_HISTORY.md §E |
@@ -181,6 +181,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.10 | **4** | **Vídeo: Manim + Remotion (`editor-pro-max`)** — absorbe 18.9 | TODO | → LEDGER_HISTORY.md §E |
 | 19.11 | **1** | Moderación de UGC mínima (App Store 1.2/1.2.1) | **DONE** | `395d20f` → §T |
 | 19.12 | **2** | Borrado de cuenta con purga real a los 30 días (textos leg… | **DONE** | `b2e3159` → §T |
+| 19.13 | **1** | Proyecto de Xcode en git (`frontend/ios/`), iconos y splash de Whetzy | PARCIAL (preparado, no verificado: H.2, sin Mac) | RUNBOOK «App iOS» |
 
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |

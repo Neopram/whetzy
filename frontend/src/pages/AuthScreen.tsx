@@ -13,6 +13,7 @@ const OAUTH_ERROR_KEYS: Record<string, string> = {
   provider_error: 'auth.oauthErrors.providerError',
   account_inactive: 'auth.oauthErrors.accountInactive',
   email_unverified: 'auth.oauthErrors.emailUnverified',
+  cancelled: 'auth.oauthErrors.cancelled',
 };
 
 function initialLanguage(current: string): 'es' | 'en' {
@@ -363,6 +364,24 @@ export function AuthScreen({ onAuthed }: Props) {
       </div>
 
       <div className={styles.socialButtons}>
+        {/* 19.2 (ADR-13): Sign in with Apple, primero, como piden las guías de
+            Apple cuando hay otros proveedores. Solo si el servidor tiene las
+            cuatro variables (H.2); hasta entonces /providers no lo devuelve. */}
+        {providers.includes('apple') && (
+        <button
+          type="button"
+          className={styles.socialBtn}
+          onClick={() => auth.startOAuth('apple', language)}
+          disabled={loading}
+          aria-label={t('auth.continueWithApple')}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <path d="M16.37 1.43c0 1.14-.42 2.2-1.25 3.04-.85.87-1.87 1.37-2.98 1.29-.04-1.1.45-2.25 1.25-3.06.85-.86 2.04-1.39 2.98-1.27zM20.5 17.1c-.55 1.27-.82 1.84-1.53 2.96-.99 1.56-2.39 3.5-4.12 3.51-1.54.02-1.93-1-4.02-.99-2.09.01-2.52 1.01-4.06.99-1.73-.02-3.06-1.77-4.05-3.33C-.07 15.88-.36 10.8 1.4 8.1c1.25-1.92 3.22-3.04 5.07-3.04 1.88 0 3.07 1.03 4.63 1.03 1.51 0 2.43-1.03 4.6-1.03 1.65 0 3.39.9 4.63 2.45-4.07 2.23-3.41 8.04.17 9.59z" />
+          </svg>
+          {t('auth.continueWithApple')}
+        </button>
+        )}
+
         {providers.includes('github') && (
         <button
           type="button"
