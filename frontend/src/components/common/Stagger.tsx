@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { Children, type ReactNode } from 'react';
 import { motion, useReducedMotion, type HTMLMotionProps, type Variants } from 'framer-motion';
 import { DUR } from '../../lib/motion';
 
@@ -8,7 +8,14 @@ import { DUR } from '../../lib/motion';
  * repetir las variantes en cada pantalla. Con movimiento reducido, la lista
  * aparece entera y sin `data-enter`.
  */
-const LIST: Variants = { hidden: {}, shown: { transition: { staggerChildren: 0.04 } } };
+/**
+ * Retraso entre elementos: 0,04 s, salvo en listas largas, donde el total se
+ * recorta a `DUR.response`. Con las 35 rutas del catálogo, 0,04 s fijos eran
+ * 1,4 s esperando a la última tarjeta (y axe medía tarjetas a medio aparecer).
+ */
+export function staggerFor(count: number): number {
+  return Math.min(0.04, DUR.response / Math.max(count, 1));
+}
 const ITEM: Variants = {
   hidden: { opacity: 0, y: 6 },
   shown: { opacity: 1, y: 0, transition: { duration: DUR.response / 2 } },
@@ -26,7 +33,7 @@ export function StaggerList({
     <Tag
       {...rest}
       data-enter={reduce ? undefined : 'stagger'}
-      variants={LIST}
+      variants={{ hidden: {}, shown: { transition: { staggerChildren: staggerFor(Children.count(children)) } } }}
       initial={reduce ? false : 'hidden'}
       animate="shown"
     >

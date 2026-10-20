@@ -194,3 +194,13 @@ describe('Certificado público (46.15 D)', () => {
     expect(screen.queryByTestId('drawn-check')).toBeNull();
   });
 });
+
+describe('Stagger — presupuesto (46.15 D)', () => {
+  it('una lista larga no alarga la entrada: el escalonado total cabe en DUR.response', async () => {
+    const { staggerFor } = await import('../components/common/Stagger');
+    const { DUR } = await import('../lib/motion');
+    expect(staggerFor(3)).toBeCloseTo(0.04);
+    // 35 rutas del catálogo a 0,04 s eran 1,4 s de espera antes de la última.
+    expect(staggerFor(35) * 35).toBeLessThanOrEqual(DUR.response + 1e-9);
+  });
+});
