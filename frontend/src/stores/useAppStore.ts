@@ -163,6 +163,9 @@ interface AppState {
   toggleAiExplanations: () => void;
   hapticEnabled: boolean;
   toggleHaptic: () => void;
+  /** 46.11: cuándo gastó el servidor un comodín (escudo en la TopBar). No se guarda. */
+  streakShieldAt: number | null;
+  showStreakShield: () => void;
 }
 
 function xpForNextLevel(level: number): number {
@@ -406,6 +409,8 @@ export const useAppStore = create<AppState>()(
       toggleAiExplanations: () => set((s) => ({ aiExplanations: !s.aiExplanations })),
       hapticEnabled: true,
       toggleHaptic: () => set((s) => ({ hapticEnabled: !s.hapticEnabled })),
+      streakShieldAt: null,
+      showStreakShield: () => set({ streakShieldAt: Date.now() }),
     }),
     {
       name: 'learning-engine-store',

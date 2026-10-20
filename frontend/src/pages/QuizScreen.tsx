@@ -233,6 +233,8 @@ export function QuizScreen() {
         setFeedback(res);
         setDeclaredIdk(declaredUnknown);
         sessionEvents.current.push(...(res.events ?? []));
+        // 46.11: el comodín gastado lo dice el servidor; la TopBar pone el escudo.
+        if (res.events?.some((e) => e.type === 'streak_freeze_used')) useAppStore.getState().showStreakShield();
         practiced.current.add(question.skill_id);
         setMastery((prev) => res.skill_mastery[question.skill_id] ?? prev);
         setCombo(res.combo);
