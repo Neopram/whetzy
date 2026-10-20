@@ -1103,11 +1103,18 @@ export interface DuelAnswerRequest {
   response_time_ms: number;
 }
 
+export interface DuelRivalAnswer {
+  correct: boolean;
+  response_time_ms: number;
+}
+
 export interface DuelAnswerResponse {
   duel_id: string;
   answers_so_far: number;
   completed: boolean;
   opponent_completed: boolean;
+  /** Solo si el rival ya terminó: cómo le fue en esta misma pregunta. */
+  rival?: DuelRivalAnswer | null;
 }
 
 export interface DuelPlayerResult {
