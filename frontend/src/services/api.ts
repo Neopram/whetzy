@@ -488,7 +488,8 @@ export interface QuestionPublic {
     | 'fill_blank_exec'
     | 'fix_bug'
     | 'sql_exec'
-    | 'js_exec';
+    | 'js_exec'
+    | 'interactive';
   difficulty_tier: 'easy' | 'medium' | 'hard' | 'expert';
   question_es: string;
   question_en: string;
@@ -502,7 +503,16 @@ export interface QuestionPublic {
    *  question_es/question_en instead, so these stay absent for them. */
   code_es?: string | null;
   code_en?: string | null;
+  /** `interactive` (40.1): lo que el widget necesita para pintarse. El
+   *  `target` no viene: llega en `QuizAnswerResponse.widget_target`. */
+  interactive?: InteractivePublic | null;
   expected_time_ms: number;
+}
+
+export interface InteractivePublic {
+  widget: string;
+  params: Record<string, unknown>;
+  checker: string;
 }
 
 export interface SelectionReason {
@@ -548,6 +558,8 @@ export interface QuizAnswerResponse {
   quota_reached?: boolean;
   /** Hitos de esta respuesta, sin repetidos (46.1b). */
   events?: ServerFxEvent[];
+  /** `interactive` (40.1): el objetivo, ya respondida, para volver a corregir en el cliente. */
+  widget_target?: unknown;
 }
 
 export interface QuizEndResponse {
@@ -569,6 +581,8 @@ export interface QuizEndResponse {
 export interface AnswerEvidence {
   execOutput?: string;
   answerText?: string;
+  /** `interactive` (40.1): el estado serializado del widget. */
+  widgetState?: unknown;
 }
 
 export const quiz = {
@@ -599,6 +613,7 @@ export const quiz = {
         ...(eventId ? { event_id: eventId } : {}),
         ...(evidence.execOutput !== undefined ? { exec_output: evidence.execOutput } : {}),
         ...(evidence.answerText !== undefined ? { answer_text: evidence.answerText } : {}),
+        ...(evidence.widgetState !== undefined ? { widget_state: evidence.widgetState } : {}),
       }),
     });
   },

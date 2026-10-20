@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
@@ -114,6 +116,20 @@ _SERVER_GRADED_TYPES: frozenset[str] = frozenset(
 )
 
 
+class InteractivePublic(BaseModel):
+    """Lo que el widget necesita para pintarse (40.1); `target` no viaja.
+
+    Como `correct_index`, el objetivo se queda en el servidor hasta que el
+    alumno responde: con él delante, el estado correcto se escribe solo. Llega
+    después en `QuizAnswerResponse.widget_target`, para que el cliente vuelva a
+    corregir y avise si su veredicto no es el del servidor.
+    """
+
+    widget: str
+    params: dict[str, Any]
+    checker: str
+
+
 class QuestionPublic(BaseModel):
     """Question payload sent to the client before it is answered.
 
@@ -140,6 +156,8 @@ class QuestionPublic(BaseModel):
     correct_answer_en: str | None = None
     code_es: str | None = None
     code_en: str | None = None
+    # Sin `target`: `InteractivePublic` no tiene ese campo y Pydantic lo descarta.
+    interactive: InteractivePublic | None = None
     expected_time_ms: int
 
     @model_validator(mode="after")

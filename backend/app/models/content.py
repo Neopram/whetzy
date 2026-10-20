@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from sqlalchemy import JSON, Boolean, Float, ForeignKey, Integer, String, Text, true
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -173,6 +175,10 @@ class Question(Base):
     # question_es/question_en as a fenced block instead (so these stay NULL).
     code_es: Mapped[str | None] = mapped_column(Text, nullable=True)
     code_en: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # `interactive` (40.1): {widget, params, target, checker}. El servidor corrige
+    # el `widget_state` del alumno contra `target` (services/widgets/checkers.py);
+    # NULL en los demás tipos.
+    interactive: Mapped[dict[str, Any] | None] = mapped_column(JSON(none_as_null=True), nullable=True)
     explanation_es: Mapped[str] = mapped_column(Text, default="", nullable=False)
     explanation_en: Mapped[str] = mapped_column(Text, default="", nullable=False)
     # Canonical source citation (CPython docs, a PEP, a named book+edition, etc.).
