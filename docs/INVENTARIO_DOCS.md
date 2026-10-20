@@ -24,10 +24,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 |---|---|
 | normativo-vivo | 25 |
 | referencia-viva | 66 |
-| histórico | 58 |
+| histórico | 59 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **194** |
+| **Total** | **195** |
 
 ## Raíz del repo y otras carpetas
 
@@ -173,6 +173,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/46.3c/README.md` | histórico | evidencia de capturas de la fila 46.3c (prueba de nivel en el onboarding y «Tu mayor palanca» como primera tarjeta de Hoy) | se queda (junto a sus PNG) | 2026-10-19 |
 | `docs/ui-snapshots/46.10/README.md` | histórico | evidencia de capturas de la fila 46.10 (la opción late o tiembla y el «+XP» vuela al marcador) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.11/README.md` | histórico | evidencia de capturas de la fila 46.11 (la llama de la racha en tres tamaños y el escudo del comodín) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.13/README.md` | histórico | evidencia de capturas de la fila 46.13 (Liga y Preparación escalonadas, sin ceremonia de ascenso) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |
 | `docs/MAPA_PRODUCTO.md` | referencia-viva | inventario de rutas, pantallas y subvistas con el documento que especifica cada una y sus huecos; `check_docs.py` exige que nombre todo lo que existe | se queda | 2026-10-01 |
 | `docs/ml/rag_scaling_39_32.md` | referencia-viva | 39.32: por qué `test_rag_self_retrieval` era O(N²) y las cifras reales antes/después del índice invertido + muestra fija en `RAGIndex.retrieve()` | se queda | 2026-10-02 |

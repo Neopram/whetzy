@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, useReducedMotion } from 'framer-motion';
+import { listItemVariants, listVariants } from '../lib/motion';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { bandForDomain, examBand, MIN_EVIDENCE_ANSWERS } from '../lib/evidenceBand';
@@ -16,6 +18,7 @@ interface Props {
 
 export function ReadinessScreen({ trackId, onExit }: Props) {
   const { t } = useTranslation();
+  const reduce = useReducedMotion();
   const lang = useAppStore((s) => s.user.language);
   const startMockExam = useAppStore((s) => s.startMockExam);
   const startQuiz = useAppStore((s) => s.startQuiz);
@@ -94,9 +97,13 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
 
       {lever && <LeverCard lever={lever} name={name(lever)} onPractice={() => startQuiz('study', 10, { trackId })} />}
 
-      <ul className={styles.domainList}>
+      {/* 46.13: los dominios entran escalonados (plan §6.2). */}
+      <motion.ul
+        className={styles.domainList}
+        {...(reduce ? {} : { 'data-enter': 'stagger', variants: listVariants, initial: 'initial', animate: 'animate' })}
+      >
         {domains.map((d) => (
-          <li key={d.domain_id} className={styles.domain}>
+          <motion.li key={d.domain_id} className={styles.domain} variants={listItemVariants}>
             <div className={styles.domainTop}>
               <span className={styles.domainName}>{name(d)}</span>
               <span className={`${styles.badge} ${bandForDomain(d) === 'strong' ? styles.badgeReady : ''}`}>
@@ -108,9 +115,9 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
               <span>{t('readiness.skillsAssessed', { assessed: d.skills_assessed, total: d.skills_total })}</span>
               <b>{(d.answers ?? 0) > 0 ? t('bands.evidence', { answers: d.answers, correct: d.correct }) : t('readiness.notPractised')}</b>
             </p>
-          </li>
+          </motion.li>
         ))}
-      </ul>
+      </motion.ul>
 
       <button
         type="button"
