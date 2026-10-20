@@ -11,6 +11,7 @@ import { usePushNotifications } from '../hooks/usePushNotifications';
 import { API_BASE_URL, auth, billing, content, gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
 import { checkoutHref } from '../lib/paddle';
+import { preview } from '../lib/feedbackFx';
 import styles from './ProfileScreen.module.css';
 
 // Los enlaces de compra llevan el aspecto del Button común (serie 34).
@@ -350,7 +351,7 @@ export function ProfileScreen() {
             <button
               className={`${styles.toggle} ${soundEnabled ? styles.toggleOn : ''}`}
               type="button"
-              onClick={toggleSound}
+              onClick={() => { toggleSound(); preview('sound'); }}
               role="switch"
               aria-checked={soundEnabled}
               aria-label={t('producto:fx.sound')}
@@ -363,7 +364,7 @@ export function ProfileScreen() {
             <button
               className={`${styles.toggle} ${hapticEnabled ? styles.toggleOn : ''}`}
               type="button"
-              onClick={toggleHaptic}
+              onClick={() => { toggleHaptic(); preview('haptic'); }}
               role="switch"
               aria-checked={hapticEnabled}
               aria-label={t('producto:fx.haptics')}
