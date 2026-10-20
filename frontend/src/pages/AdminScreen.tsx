@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
 import { ReferralClawback } from '../components/admin/ReferralClawback';
+import { UsersPanel } from '../components/admin/UsersPanel';
+import { ActionLogPanel } from '../components/admin/ActionLogPanel';
 import styles from './AdminScreen.module.css';
 import { API_BASE_URL } from '../services/api';
 
@@ -21,7 +23,7 @@ interface Metrics {
   count?: number;
 }
 
-type Tab = 'metrics' | 'security' | 'content' | 'ops' | 'gdpr' | 'revenue' | 'economy';
+type Tab = 'metrics' | 'users' | 'log' | 'security' | 'content' | 'ops' | 'gdpr' | 'revenue' | 'economy';
 
 export function AdminScreen() {
   const { t } = useTranslation();
@@ -176,11 +178,20 @@ export function AdminScreen() {
       case 'economy':
         fetchEconomy();
         break;
+      case 'users':
+      case 'log':
+        // Cargan sus propios datos: que no se quede el error de otra pestaña.
+        setError(null);
+        setLoading(false);
+        break;
     }
   }, [activeTab]);
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'metrics', label: t('admin.tabs.metrics') },
+    // 44.3: los paneles de usuarios y registro cargan solos (services/api).
+    { id: 'users', label: t('admin.tabs.users') },
+    { id: 'log', label: t('admin.tabs.log') },
     { id: 'security', label: t('admin.tabs.security') },
     { id: 'content', label: t('admin.tabs.content') },
     { id: 'ops', label: t('admin.tabs.ops') },
@@ -211,6 +222,20 @@ export function AdminScreen() {
       <div className={styles.content}>
         {loading && <LoadingState message={t('admin.loading', 'Cargando datos del panel...')} />}
         {error && <ErrorState message={error} onRetry={() => {}} />}
+
+        {activeTab === 'users' && (
+          <div className={styles.panel}>
+            <h2>{t('admin.panel.users')}</h2>
+            <UsersPanel />
+          </div>
+        )}
+
+        {activeTab === 'log' && (
+          <div className={styles.panel}>
+            <h2>{t('admin.panel.log')}</h2>
+            <ActionLogPanel />
+          </div>
+        )}
 
         {!loading && !error && activeTab === 'metrics' && (
           <div className={styles.panel}>

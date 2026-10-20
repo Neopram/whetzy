@@ -17,6 +17,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import String, cast, delete, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
 from app.api.v1.endpoints.admin import require_owner
 from app.api.v1.endpoints.auth import require_outbound_email, send_verification_link
@@ -30,6 +31,9 @@ from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
 
 router = APIRouter()
+# `GET /admin/action-log`: la pestaña «Registro» (44.3). Router aparte porque
+# `/admin/users/{user_id}` se tragaría `/admin/users/log`.
+log_router = APIRouter()
 
 PAGE_SIZE = 20
 RECENT_EVENTS = 10
@@ -281,3 +285,46 @@ async def user_action(
     )
     await db.commit()
     return {"ok": True, "action": action, "data": data}
+
+
+# ── B6: leer el registro (44.3) ──────────────────────────────────────────────
+
+
+@log_router.get("")
+async def action_log(
+    page: int = Query(default=1, ge=1, le=1000),
+    _: User = Depends(require_owner_2fa),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Del más nuevo al más viejo, 20 por página, con el usuario del actor y del afectado."""
+    actor = aliased(User)
+    target = aliased(User)
+    total = await db.scalar(select(func.count()).select_from(AdminActionLog)) or 0
+    rows = (
+        await db.execute(
+            select(AdminActionLog, actor.username, target.username)
+            .outerjoin(actor, actor.id == AdminActionLog.actor_id)
+            .outerjoin(target, target.id == AdminActionLog.target_user_id)
+            .order_by(AdminActionLog.created_at.desc(), AdminActionLog.id.desc())
+            .offset((page - 1) * PAGE_SIZE)
+            .limit(PAGE_SIZE)
+        )
+    ).all()
+    return {
+        "items": [
+            {
+                "id": row.id,
+                "created_at": row.created_at,
+                "action": row.action,
+                "reason": row.reason,
+                "data": row.data,
+                "actor_username": actor_name,
+                "target_user_id": str(row.target_user_id) if row.target_user_id else None,
+                "target_username": target_name,
+            }
+            for row, actor_name, target_name in rows
+        ],
+        "page": page,
+        "page_size": PAGE_SIZE,
+        "total": total,
+    }
