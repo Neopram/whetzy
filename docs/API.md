@@ -42,9 +42,10 @@ POST /auth/reset-password         → {message} (200) — body {token, new_passw
 POST /auth/verify-email           → {message} (200) — body {token}; la primera vez que verifica la cuenta manda la bienvenida, una sola vez (45.2). OAuth la manda al crear la cuenta, que ya llega verificada
 POST /auth/resend-verification    → {message} (200)
 
-GET  /auth/oauth/providers            → {providers: ["github"|"google"]} solo los configurados (200)
+GET  /auth/oauth/providers            → {providers: ["github"|"google"|"apple"]} solo los configurados (200; apple, con las cuatro APPLE_*)
 GET  /auth/oauth/{provider}/start     → 302 redirect to provider (`?lang=es|en` opcional) — PKCE (S256) + cookie HttpOnly con el `state` (41.14); `lang` va en otra cookie corta y solo se usa si el callback **crea** la cuenta (45.1, ADR-66 E1; uno no válido se ignora)
 GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend — 400 si la cookie del `state` no coincide con el de la query (41.14)
+POST /auth/oauth/apple/callback      → `form_post` de Sign in with Apple (`code`, `state`; sin `code` → 302 `?oauth_error=cancelled`). Identidad del `id_token` canjeado y verificado (firma, iss, aud, exp, nonce); GET aquí → 405; exento del control de Origin (19.2, preparado sin verificar: H.2)
 ```
 
 OAuth providers: `github`, `google`.

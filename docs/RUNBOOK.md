@@ -568,6 +568,44 @@ management»): `GET /admin/users ?q&page`, `GET /admin/users/{id}`,
 | Rate limit 429 in tests | Each test must use a unique X-Forwarded-For header |
 | Alembic error "target database is not up to date" | Run `alembic upgrade head` |
 
+## App iOS: lo que hay y qué falta para probarla en un iPhone (D.2, 2026-10-20)
+
+**Lo que hay en el repo.** `frontend/ios/` es el proyecto de Xcode que genera `npx cap add ios` (Capacitor 8.5.3,
+Swift Package Manager, sin CocoaPods): funciona en Linux (comprobado el 2026-10-20), pero compilarlo exige Xcode,
+que solo existe en macOS. Bundle `app.whetzy`, nombre `Whetzy`, `UIUserInterfaceStyle` oscuro y ninguna clave
+`NS…UsageDescription` (guarda `frontend/src/test/ios.proyecto.test.ts`). Icono de 1024 y splash los escribe
+`frontend/scripts/generate-icons.mjs` desde `design/brand/`. Lo generado al sincronizar
+(`App/App/public`, `capacitor.config.json`) no entra en git.
+
+**Cuidado al sincronizar.** `npx cap sync ios` escribe en `ios/App/CapApp-SPM/Package.swift` la ruta real de
+`node_modules`. Si es un enlace a otra carpeta, la ruta sale de esa máquina: tiene que quedar
+`../../../node_modules/@capacitor/…` (la guarda lo vigila).
+
+**Probarla en un iPhone propio sin pagar.** Con una cuenta de Apple gratuita, Xcode firma con un «Personal Team»:
+hasta 3 dispositivos y 10 App IDs, que caducan a los 7 días; hasta 3 apps por dispositivo; el perfil caduca a los
+7 días y hay que recompilar e instalar otra vez (<https://developer.apple.com/support/compare-memberships/>,
+consultada el 2026-10-20). Hace falta:
+
+1. **Un Mac con Xcode** (y el iPhone por cable la primera vez). **Si el dueño no tiene Mac, esto está bloqueado**:
+   Codemagic tiene máquinas macOS en el plan gratuito, pero instalar en un iPhone exige firmar con un equipo de
+   Apple y su `ios-release` necesita la clave de App Store Connect, que solo da el programa de pago (H.2).
+2. En el Mac: `cd frontend && npm ci && npm run build && npx cap sync ios`, abrir
+   `ios/App/App.xcodeproj` (Xcode resuelve los paquetes de Swift), *Signing & Capabilities* → Team: la cuenta
+   personal. Si `app.whetzy` ya está cogido por otro equipo, cambiarlo **solo en local** (no se commitea).
+3. Conectar el iPhone, elegirlo como destino y *Run*. En el iPhone: Ajustes → General → VPN y gestión de
+   dispositivos → confiar en el desarrollador.
+4. Mismo requisito de CORS que Android: `capacitor://app.whetzy.com` aprobado en producción (RUNBOOK, «App Android
+   de depuración»; llega con el PR de D.1).
+
+**Sign in with Apple (19.2): preparado, no verificado (H.2).** El código está (`backend/app/services/apple_signin.py`,
+`POST /auth/oauth/apple/callback`, botón en `AuthScreen` solo si `/auth/oauth/providers` lo devuelve) y probado
+con claves de test, nunca contra Apple. Para encenderlo, tras H.2: crear un Services ID con el dominio
+`api.whetzy.com` y la URL de retorno `https://api.whetzy.com/api/v1/auth/oauth/apple/callback`, una clave de Sign in
+with Apple (.p8), y en Railway `APPLE_CLIENT_ID` (el Services ID), `APPLE_TEAM_ID`, `APPLE_KEY_ID` y
+`APPLE_PRIVATE_KEY` (el PEM en una línea, con `\n`). Con las cuatro, el botón aparece solo. ADR-13 lo exige antes
+de enviar a App Store porque ya hay Google y GitHub. La forma del botón no sigue aún las guías de Apple al
+píxel: revisarla antes del envío.
+
 ## Rollback a bad deploy
 
 1. In Railway: Deployments → click the last-good deploy → "Redeploy"

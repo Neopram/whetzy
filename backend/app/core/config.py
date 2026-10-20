@@ -249,6 +249,12 @@ class Settings(BaseSettings):
     GITHUB_CLIENT_SECRET: str = ""
     GOOGLE_CLIENT_ID: str = ""
     GOOGLE_CLIENT_SECRET: str = ""
+    # Sign in with Apple (19.2): Services ID, Team ID, Key ID y la clave .p8 (PEM;
+    # en una línea con «\n»). Las cuatro o ninguna. No existen hasta H.2.
+    APPLE_CLIENT_ID: str = ""
+    APPLE_TEAM_ID: str = ""
+    APPLE_KEY_ID: str = ""
+    APPLE_PRIVATE_KEY: str = ""
     # Base URL used to build OAuth callback URIs (should be the backend origin).
     OAUTH_REDIRECT_BASE_URL: str = "https://api-production-9751.up.railway.app"
 

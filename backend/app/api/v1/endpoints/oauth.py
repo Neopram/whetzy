@@ -1,4 +1,4 @@
-"""OAuth 2.0 social login — GitHub and Google (redirect flow, no third-party JS SDK).
+"""OAuth 2.0 social login — GitHub, Google and Apple (redirect flow, no third-party JS SDK).
 
 Flow:
   1. Browser → GET /auth/oauth/{provider}/start
@@ -8,6 +8,12 @@ Flow:
      finds or creates user, issues JWT pair and redirects to FRONTEND_BASE_URL
      with both tokens in HttpOnly cookies (`set_auth_cookies`), never in the URL.
   3. Frontend loads with the session cookie already set, like after a password login.
+
+Apple (19.2) differs in two places: it returns with a form `POST` to
+`/apple/callback` (`response_mode=form_post`, required when asking for the
+email), and the identity comes from its signed `id_token`, checked against
+Apple's public keys (`app/services/apple_signin.py`). Prepared, not verified
+against Apple: needs H.2.
 """
 from __future__ import annotations
 
@@ -15,12 +21,22 @@ import base64
 import hashlib
 import re
 import secrets
+import time
 import urllib.parse
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    Form,
+    HTTPException,
+    Query,
+    Request,
+    Response,
+    status,
+)
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -37,7 +53,7 @@ from app.core.db import get_db
 from app.core.security import create_access_token, create_refresh_token
 from app.models.oauth import OAuthAccount, OAuthState
 from app.models.user import User
-from app.services import account_deletion
+from app.services import account_deletion, apple_signin
 from app.services.user_lookup import normalize_email, user_by_email, username_taken
 
 router = APIRouter()
@@ -87,7 +103,20 @@ _PROVIDERS: dict[str, dict[str, Any]] = {
         "client_id": lambda: settings.GOOGLE_CLIENT_ID,
         "client_secret": lambda: settings.GOOGLE_CLIENT_SECRET,
     },
+    "apple": {
+        "auth_url": apple_signin.AUTH_URL,
+        "token_url": apple_signin.TOKEN_URL,
+        "scope": "name email",
+        # Vacío si falta alguna de las cuatro variables: sin botón ni /start.
+        "client_id": lambda: settings.APPLE_CLIENT_ID if apple_signin.configured() else "",
+        "client_secret": lambda: apple_signin.client_secret(int(time.time())),
+    },
 }
+
+
+def _http_client() -> httpx.AsyncClient:
+    """Un punto donde los tests cambian el transporte (Apple, sin red)."""
+    return httpx.AsyncClient(timeout=10)
 
 # Test provider: available only outside production for E2E testing
 _TEST_PROVIDER: dict[str, Any] = {
@@ -175,11 +204,22 @@ async def oauth_start(
     if provider == "google":
         params["response_type"] = "code"
         params["access_type"] = "offline"
+    apple = provider == "apple"
+    if apple:
+        # Apple no lista PKCE entre sus parámetros; el `nonce` (derivado del
+        # verifier guardado) ata el `id_token` a este intento.
+        del params["code_challenge"], params["code_challenge_method"]
+        params["response_type"] = "code"
+        params["response_mode"] = "form_post"
+        params["nonce"] = apple_signin.nonce_for(code_verifier)
 
-    auth_url = cfg["auth_url"] + "?" + urllib.parse.urlencode(params)
+    # Apple pide los espacios del `scope` como %20 («scope=name%20email»); los
+    # demás siguen como estaban.
+    quote = urllib.parse.quote if apple else urllib.parse.quote_plus
+    auth_url = cfg["auth_url"] + "?" + urllib.parse.urlencode(params, quote_via=quote)
     redirect = RedirectResponse(url=auth_url, status_code=302)
-    set_oauth_state_cookie(redirect, state, _STATE_TTL_MINUTES * 60)
-    _remember_lang(redirect, lang)
+    set_oauth_state_cookie(redirect, state, _STATE_TTL_MINUTES * 60, cross_site_post=apple)
+    _remember_lang(redirect, lang, cross_site_post=apple)
     return redirect
 
 
@@ -194,6 +234,35 @@ async def oauth_callback(
     code: str = Query(...),
     state: str = Query(...),
     db: AsyncSession = Depends(get_db),
+) -> RedirectResponse:
+    if provider == "apple":
+        # Apple solo vuelve por POST (form_post); un GET aquí no viene de Apple.
+        raise HTTPException(status_code=status.HTTP_405_METHOD_NOT_ALLOWED, detail="Use POST")
+    return await _complete(request, provider, code, state, db)
+
+
+@router.post("/apple/callback")
+async def oauth_apple_callback(
+    request: Request,
+    state: str = Form(...),
+    code: str | None = Form(None),
+    db: AsyncSession = Depends(get_db),
+) -> RedirectResponse:
+    """`form_post` de Apple: `code`, `state`, `id_token` y, la primera vez,
+    `user` (nombre). Sin `code` (el usuario canceló: `error=user_cancelled_authorize`)
+    se vuelve a la app. El `id_token` del formulario no se usa: el que vale es
+    el que devuelve /auth/token al canjear el código, de servidor a servidor.
+    Exento del control de Origin (csrf.py): lo protegen el `state` (cookie y
+    BD), el `nonce` y la firma de Apple."""
+    if not code:
+        cancelled = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=cancelled", status_code=302)
+        clear_oauth_state_cookie(cancelled)
+        return cancelled
+    return await _complete(request, "apple", code, state, db)
+
+
+async def _complete(
+    request: Request, provider: str, code: str, state: str, db: AsyncSession
 ) -> RedirectResponse:
     _get_provider(provider)  # validates name
 
@@ -226,17 +295,24 @@ async def oauth_callback(
         email: str | None = f"oauth-{code}@example.com"
         provider_user_id = f"test-{code}"
     else:
-        async with httpx.AsyncClient(timeout=10) as client:
+        async with _http_client() as client:
             token_data = await _exchange_code(client, provider, code, code_verifier)
-            provider_token = token_data.get("access_token")
-            if not provider_token:
+            identity: tuple[str | None, str] | None = None
+            if provider == "apple":
+                try:
+                    identity = await _apple_identity(client, token_data, code_verifier)
+                except apple_signin.InvalidAppleToken:
+                    identity = None
+            elif token_data.get("access_token"):
+                identity = await _get_user_info(client, provider, token_data["access_token"])
+            if identity is None:
                 error_redirect = RedirectResponse(
                     url=f"{settings.FRONTEND_BASE_URL}/?oauth_error=provider_error",
                     status_code=302,
                 )
                 clear_oauth_state_cookie(error_redirect)
                 return error_redirect
-            email, provider_user_id = await _get_user_info(client, provider, provider_token)
+            email, provider_user_id = identity
 
     if not email:
         error_redirect = RedirectResponse(
@@ -303,8 +379,11 @@ async def _exchange_code(
         "code": code,
         "redirect_uri": _callback_uri(provider),
     }
-    if provider == "google":
+    if provider in ("google", "apple"):
         data["grant_type"] = "authorization_code"
+    if provider == "apple":
+        # Apple no usa PKCE (ver /start): el verifier solo sirvió para el nonce.
+        code_verifier = None
     # PKCE (41.14): el code_verifier generado en /start. None solo si la fila
     # de oauth_states quedó sin él (una en vuelo en el momento del deploy que
     # añadió la columna) — el proveedor no lo exige si /start no mandó
@@ -347,16 +426,31 @@ async def _get_user_info(
     return data.get("email"), provider_user_id
 
 
+async def _apple_identity(
+    client: httpx.AsyncClient, token_data: dict[str, Any], code_verifier: str | None
+) -> tuple[str | None, str]:
+    """Email verificado y `sub` del `id_token` que Apple devuelve al canjear el
+    código, tras comprobar firma, `iss`, `aud`, `exp` y `nonce`."""
+    id_token = token_data.get("id_token")
+    if not isinstance(id_token, str) or not id_token:
+        raise apple_signin.InvalidAppleToken("sin id_token")
+    keys = await client.get(apple_signin.KEYS_URL)
+    keys.raise_for_status()
+    nonce = apple_signin.nonce_for(code_verifier) if code_verifier else None
+    claims = apple_signin.verify_id_token(id_token, keys.json(), nonce)
+    return apple_signin.verified_email(claims), str(claims["sub"])
+
+
 def _valid_lang(lang: str | None) -> str | None:
     return lang if lang in ("es", "en") else None
 
 
-def _remember_lang(response: RedirectResponse, lang: str | None) -> None:
+def _remember_lang(response: RedirectResponse, lang: str | None, *, cross_site_post: bool = False) -> None:
     # 45.1 (ADR-66 E1): un `lang` no válido se ignora; la cuenta nueva queda con
     # el valor por defecto de la columna.
     valid = _valid_lang(lang)
     if valid:
-        set_oauth_lang_cookie(response, valid, _STATE_TTL_MINUTES * 60)
+        set_oauth_lang_cookie(response, valid, _STATE_TTL_MINUTES * 60, cross_site_post=cross_site_post)
 
 
 async def _find_or_create_user(

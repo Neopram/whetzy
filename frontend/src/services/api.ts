@@ -356,7 +356,7 @@ export interface UpdateMePayload {
   onboarding_completed?: boolean;
 }
 
-export type OAuthProvider = 'github' | 'google';
+export type OAuthProvider = 'github' | 'google' | 'apple';
 
 export const auth = {
   async register(payload: RegisterPayload) {

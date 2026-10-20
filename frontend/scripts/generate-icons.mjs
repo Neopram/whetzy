@@ -13,6 +13,7 @@
  *   frontend/public/favicon.svg, frontend/public/icons/icon-*.png (PWA),
  *   frontend/public/og-image.png (vista previa al compartir, 1200×630),
  *   frontend/android/app/src/main/res/  mipmap-*  y  drawable*  /splash.png,
+ *   frontend/ios/App/App/Assets.xcassets/ (AppIcon y Splash), si existe el proyecto de iOS,
  *   docs/store/icons/  (iOS AppIcon.appiconset y Android, para las tiendas),
  *   design/brand/whetzy-logo-*.png (logos horizontales).
  *
@@ -21,7 +22,7 @@
  * diga CHROME_PATH si la versión de Playwright no coincide con la instalada.
  */
 import { chromium } from '@playwright/test';
-import { copyFileSync, mkdirSync, readFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -29,6 +30,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const BRAND = join(ROOT, 'design', 'brand');
 const RES = join(ROOT, 'frontend', 'android', 'app', 'src', 'main', 'res');
 const STORE = join(ROOT, 'docs', 'store', 'icons');
+const XCASSETS = join(ROOT, 'frontend', 'ios', 'App', 'App', 'Assets.xcassets');
 
 /** Fondo de la app (--le-bg). El del icono (#0D1525) va dentro de whetzy-app-icon.svg. */
 const APP_BG = '#0A0E1A';
@@ -157,6 +159,21 @@ try {
       `<div style="width:${width}px;height:${height}px;background:${APP_BG};display:flex;align-items:center;justify-content:center">` +
       `<img src="${MARK}" width="${mark}" height="${Math.round((mark * 110) / 135)}"></div>`;
     await render(page, { width, height, body, out: join(RES, dir, 'splash.png') });
+  }
+
+  // Proyecto de Xcode (lo crea `npx cap add ios` con iconos y splash de plantilla
+  // de Capacitor): un solo AppIcon de 1024, opaco, y la misma pantalla de arranque
+  // que Android a 2732 en las tres escalas que pide Splash.imageset.
+  if (existsSync(XCASSETS)) {
+    await render(page, { width: 1024, height: 1024, body: icon(APP_ICON, 1024), out: join(XCASSETS, 'AppIcon.appiconset', 'AppIcon-512@2x.png') });
+    const side = 2732;
+    const mark = Math.round(side * 0.32);
+    const body =
+      `<div style="width:${side}px;height:${side}px;background:${APP_BG};display:flex;align-items:center;justify-content:center">` +
+      `<img src="${MARK}" width="${mark}" height="${Math.round((mark * 110) / 135)}"></div>`;
+    for (const name of ['splash-2732x2732.png', 'splash-2732x2732-1.png', 'splash-2732x2732-2.png']) {
+      await render(page, { width: side, height: side, body, out: join(XCASSETS, 'Splash.imageset', name) });
+    }
   }
 
   // Logos horizontales para usar fuera de la app (redes, prensa, tiendas).

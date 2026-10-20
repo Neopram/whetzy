@@ -99,7 +99,12 @@ app = FastAPI(
 # S.13: con cookie de sesión, solo los orígenes de CORS pueden cambiar estado.
 # Va antes que CORS en el código, así que queda por dentro: el 403 sale con las
 # cabeceras de CORS que correspondan y los preflight no llegan aquí.
-app.add_middleware(CSRFOriginMiddleware, allowed_origins=settings.active_cors_origins)
+app.add_middleware(
+    CSRFOriginMiddleware,
+    allowed_origins=settings.active_cors_origins,
+    # 19.2: el form_post de Sign in with Apple (ver csrf.py).
+    exempt_posts=[f"{settings.API_V1_PREFIX}/auth/oauth/apple/callback"],
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.active_cors_origins,  # 22.2: sin loopback en produccion
