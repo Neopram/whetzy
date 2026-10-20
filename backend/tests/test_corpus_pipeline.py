@@ -19,6 +19,10 @@ from scripts.corpus import clean, index, verify_license
 from scripts.corpus.common import write_meta
 
 MIT = "MIT License\n\nPermission is hereby granted, free of charge, to any person obtaining a copy"
+CC_BY_4 = ("Attribution 4.0 International\n\nCreative Commons Attribution 4.0 International Public "
+           "License\n...\nCreative Commons may elect to apply one of its public licenses to material it "
+           "publishes; the text of the Creative Commons public licenses is dedicated to the public domain "
+           "under the CC0 Public Domain Dedication.")
 PSF = ("PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2\n...\n(1) GPL-compatible doesn't mean that "
        "we're distributing Python under the GPL.")
 
@@ -49,6 +53,9 @@ def _source(tmp_path: Path, name: str, files: dict[str, str]) -> Path:
         ({"LICENSE": "Copyright (c) 2020 X. All rights reserved.\n\n" + MIT}, True, "MIT"),
         ({"LICENSE": "Copyright X. All rights reserved.\nAttribution-NonCommercial 4.0"}, False, "NonCommercial"),
         ({"LICENSE": "Do whatever, I guess"}, False, "no reconocida"),
+        ({"LICENSE": "Creative Commons Legal Code\n\nCC0 1.0 Universal"}, True, "CC0-1.0"),
+        # El texto de CC BY 4.0 nombra CC0 en su aviso final: sigue siendo CC BY.
+        ({"LICENSE": CC_BY_4}, True, "CC-BY"),
     ],
 )
 def test_verify_license(tmp_path, files, accepted, spdx_or_reason) -> None:
