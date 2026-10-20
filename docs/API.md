@@ -251,6 +251,8 @@ Admin routes require `X-Admin-Key` header.
 ```
 GET  /analytics/dashboard  → funnel + retention dashboard (admin)
 GET  /analytics/funnel     → per-step funnel counts (admin)
+GET  /analytics/fx ?days   → skip rate per fx tier + downgrade flag (admin, 46.6a)
+POST /analytics/client-events → 202 {accepted}; batch of 1–50 fx_emitted / fx_skipped / sound_toggled / haptic_toggled, closed schema (422 otherwise), stored without user_id or IP (ADR-68), 30 batches/min per user 🔒
 ```
 
 Admin routes require `X-Admin-Key` header.

@@ -1643,6 +1643,23 @@ export interface PrivacyRights {
   contact: string;
 }
 
+// 46.6a (ADR-68): efectos del cliente. El servidor los guarda sin usuario ni IP.
+export type ClientEvent =
+  | { type: 'fx_emitted'; tier: 0 | 1 | 2 | 3 | 4; fx: string; sounded: boolean; vibrated: boolean }
+  | { type: 'fx_skipped'; tier: 3 | 4; fx: string }
+  | { type: 'sound_toggled' | 'haptic_toggled'; enabled: boolean };
+
+export const clientEvents = {
+  /** Sin reintento tras un 401: una métrica no debe cerrar la sesión de nadie. */
+  send(events: ClientEvent[], keepalive = false) {
+    return request<{ accepted: number }>(
+      '/analytics/client-events',
+      { method: 'POST', body: JSON.stringify({ events }), keepalive },
+      false,
+    );
+  },
+};
+
 export const privacy = {
   ccpaOptOut: () => request<CcpaOptOutResponse>('/privacy/ccpa-opt-out', { method: 'POST' }),
   ccpaOptIn: () => request<CcpaOptOutResponse>('/privacy/ccpa-opt-out', { method: 'DELETE' }),
