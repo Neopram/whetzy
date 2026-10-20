@@ -15,6 +15,7 @@
  * Fuera del navegador (prerender de la landing, SSR) no hace nada.
  */
 import { useAppStore } from '../stores/useAppStore';
+import { DUR } from './motion';
 
 export type FxType =
   | 'tap' | 'correct' | 'wrong' | 'idk'
@@ -40,11 +41,11 @@ export const TIER: Record<FxType, FxTier> = {
 
 /** Duración máxima (ms), si bloquea la entrada y si suena, por nivel. */
 export const TIER_BUDGET: Record<FxTier, { maxMs: number; blocks: boolean; sound: boolean }> = {
-  0: { maxMs: 120, blocks: false, sound: false },
-  1: { maxMs: 400, blocks: false, sound: true },
-  2: { maxMs: 700, blocks: false, sound: true },
-  3: { maxMs: 2500, blocks: true, sound: true },
-  4: { maxMs: 3000, blocks: true, sound: true },
+  0: { maxMs: DUR.micro * 1000, blocks: false, sound: false },
+  1: { maxMs: DUR.response * 1000, blocks: false, sound: true },
+  2: { maxMs: DUR.milestone * 1000, blocks: false, sound: true },
+  3: { maxMs: DUR.close * 1000, blocks: true, sound: true },
+  4: { maxMs: DUR.ceremony * 1000, blocks: true, sound: true },
 };
 
 const VIBRATION: Partial<Record<FxType, number[]>> = {

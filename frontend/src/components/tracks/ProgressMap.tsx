@@ -1,3 +1,4 @@
+import { DUR } from '../../lib/motion';
 import { useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -76,7 +77,7 @@ export function ProgressMap({ modules, lang, onSelect }: ProgressMapProps) {
             d={progressPath}
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 1.2, ease: 'easeInOut', delay: 0.3 }}
+            transition={{ duration: DUR.milestone, ease: 'easeInOut', delay: 0.3 }}
           />
         )}
 
@@ -112,6 +113,7 @@ export function ProgressMap({ modules, lang, onSelect }: ProgressMapProps) {
                   strokeWidth={2}
                   strokeOpacity={0.3}
                   animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.1, 0.4] }}
+                  // fx-budget: pulso del nodo actual, la única espera en bucle (plan §7.6).
                   transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                   style={{ transformOrigin: `${cx}px ${cy}px` }}
                 />
@@ -142,7 +144,7 @@ export function ProgressMap({ modules, lang, onSelect }: ProgressMapProps) {
                   strokeDasharray={`0 ${circleLen}`}
                   strokeDashoffset={circleLen * 0.25}
                   animate={{ strokeDasharray: `${circleLen * mastery} ${circleLen}` }}
-                  transition={{ duration: 0.8, delay: i * 0.05 + 0.4, ease: 'easeOut' }}
+                  transition={{ duration: DUR.milestone, delay: i * 0.05 + 0.4, ease: 'easeOut' }}
                 />
               )}
               {locked ? (

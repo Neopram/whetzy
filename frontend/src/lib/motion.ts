@@ -1,5 +1,16 @@
 import type { Variants, Transition } from 'framer-motion';
 
+// ── Duraciones por nivel (46.16, plan §6.0) ─────────────────────────────────
+// Segundos. El presupuesto de feedbackFx (`TIER_BUDGET`) sale de aquí, y
+// `test/motionGuard.test.ts` no deja pasar de `milestone` sin anotación.
+export const DUR = {
+  micro: 0.12,     // nivel 0: tocar, enfocar
+  response: 0.4,   // nivel 1: acierto / fallo
+  milestone: 0.7,  // nivel 2: combo, misión
+  close: 2.5,      // nivel 3: resumen, saltable
+  ceremony: 3,     // nivel 4: ceremonia, saltable
+} as const;
+
 // ── Spring presets ──────────────────────────────────────────────────────────
 export const springs = {
   snappy:  { type: 'spring', stiffness: 420, damping: 30 } as Transition,
@@ -82,6 +93,7 @@ export const pulseVariants: Variants = {
       '0 0 0 0px rgba(28,176,246,0.4)',
       '0 0 0 8px rgba(28,176,246,0)',
     ],
+    // fx-budget: pulso del nodo actual del mapa, la única espera en bucle (plan §7.6).
     transition: { duration: 1.8, repeat: Infinity, ease: 'easeInOut' },
   },
 };
