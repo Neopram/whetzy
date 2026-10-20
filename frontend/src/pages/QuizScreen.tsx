@@ -15,6 +15,8 @@ import { CountUp } from '../components/quiz/CountUp';
 import { GameIcon } from '../components/common/AppIcon';
 import { listItemVariants, listVariants } from '../lib/motion';
 import { BandChip } from '../components/common/BandChip';
+import { correctVariants, wrongVariants, XP_FLIGHT } from '../lib/motion';
+import type { Variants } from 'framer-motion';
 import { bandForSkill } from '../lib/evidenceBand';
 import { WhyButton } from '../components/quiz/WhyButton';
 import { GlossaryText } from '../components/quiz/GlossaryText';
@@ -53,6 +55,18 @@ function resolveCode(
   return parseQuestion(text);
 }
 
+
+/** Entrada de las opciones y su reacción a la respuesta (46.10). La reacción
+ *  repite `opacity` e `y` de `shown`: framer devuelve al `initial` (oculto) todo
+ *  valor que la variante nueva no nombra, y la opción desaparecía. */
+const SHOWN = { opacity: 1, y: 0 };
+const OPTION_VARIANTS: Variants = {
+  hidden: { opacity: 0, y: 6 },
+  shown: SHOWN,
+  pulse: { ...SHOWN, ...(correctVariants.animate as object) },
+  shake: { ...SHOWN, ...(wrongVariants.animate as object) },
+};
+
 export function QuizScreen() {
   const mode = useAppStore((s) => s.quiz.mode);
   const trackId = useAppStore((s) => s.quiz.trackId);
@@ -80,7 +94,10 @@ export function QuizScreen() {
   const [lottieSrc, setLottieSrc] = useState<string | null>(null);
   // 46.1: con movimiento reducido no se monta el Player de Lottie.
   const reduceMotion = useReducedMotion();
-  const [xpPop, setXpPop] = useState<{ key: number; xp: number } | null>(null);
+  // 46.10: el «+XP» nace en la tarjeta (`landed: false`) y aterriza en el marcador.
+  const [xpPop, setXpPop] = useState<{ key: number; xp: number; landed: boolean } | null>(null);
+  // «No lo sé» no castiga: ni la opción tiembla ni la correcta late (46.10).
+  const [declaredIdk, setDeclaredIdk] = useState(false);
   // Dominio de la skill que se esta practicando, tal y como lo devuelve el
   // motor BKT al corregir. Empieza en null a proposito: hasta la primera
   // respuesta no hay medicion, y una barra a medias inventada es peor que
@@ -200,6 +217,7 @@ export function QuizScreen() {
     // wording is a decision taken per question, not a mode you fall into.
     setViewLang(language);
     setPickedTerm(null);
+    setDeclaredIdk(false);
   }, [question?.id, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Core answer submission ─────────────────────────────────────────────
@@ -213,6 +231,7 @@ export function QuizScreen() {
         // `selectedIndex` ya no basta para dar por buena una respuesta (2026-10-01).
         const res = await quizApi.answer(sessionId, question.id, selectedIndex, rt, declaredUnknown, undefined, evidence);
         setFeedback(res);
+        setDeclaredIdk(declaredUnknown);
         sessionEvents.current.push(...(res.events ?? []));
         practiced.current.add(question.skill_id);
         setMastery((prev) => res.skill_mastery[question.skill_id] ?? prev);
@@ -242,7 +261,11 @@ export function QuizScreen() {
         } else if (res.correct) {
           // El «+XP» sale junto al marcador de XP, no en un toast que pisaba
           // la barra de progreso (46.1).
-          setXpPop({ key: Date.now(), xp: res.xp_earned });
+          const key = Date.now();
+          setXpPop({ key, xp: res.xp_earned, landed: Boolean(reduceMotion) });
+          if (!reduceMotion) {
+            setTimeout(() => setXpPop((p) => (p && p.key === key ? { ...p, landed: true } : p)), XP_FLIGHT.departMs);
+          }
         } else {
           showToast(t('quiz.incorrect'), 'error');
         }
@@ -550,20 +573,26 @@ export function QuizScreen() {
     <div className={styles.statsBar}>
       <span className={`${styles.diffBadge} ${diffClass}`}>{t(`quiz.diff.${question.difficulty_tier}`)}</span>
       {combo > 0 && <ComboRing combo={combo} />}
-      <span className={styles.xpBadge}>
+      <motion.span
+        className={styles.xpBadge}
+        data-testid="xp-badge"
+        // Late una vez cuando aterriza el «+XP» (46.10).
+        animate={xpPop?.landed && !reduceMotion ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+        transition={{ duration: 0.12 }}
+      >
         <b>{xpEarned}</b> XP
-        {xpPop && (
+        {xpPop?.landed && (
           <motion.span
             key={xpPop.key}
+            layoutId="xp-fly"
             className={styles.xpPop}
             role="status"
-            initial={reduceMotion ? false : { opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
+            transition={XP_FLIGHT.flight}
           >
             +{xpPop.xp} XP
           </motion.span>
         )}
-      </span>
+      </motion.span>
     </div>
   );
 
@@ -622,6 +651,7 @@ export function QuizScreen() {
 
   const feedbackPanel = answered && feedback && (
     <motion.div
+      data-testid="feedback-panel"
       className={`${styles.explanation} ${feedback.correct ? styles.explanationOk : ''}`}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -636,6 +666,11 @@ export function QuizScreen() {
         <p className={styles.explanationHeader}>
           {feedback.correct ? t('quiz.correct') : t('quiz.explanation')}
         </p>
+        {xpPop && !xpPop.landed && (
+          <motion.span key={xpPop.key} layoutId="xp-fly" className={styles.xpChip} aria-hidden="true">
+            +{xpPop.xp} XP
+          </motion.span>
+        )}
       </div>
       <p className={styles.explanationText}>
         <GlossaryText
@@ -880,6 +915,15 @@ export function QuizScreen() {
           } else if (i === selected) {
             cls += ` ${styles.selected}`;
           }
+          // 46.10: con la respuesta del servidor, la correcta late y la elegida mal tiembla.
+          const reaction =
+            !answered || !feedback || declaredIdk || reduceMotion
+              ? undefined
+              : i === feedback.correct_index
+                ? 'pulse'
+                : i === selected
+                  ? 'shake'
+                  : undefined;
           return (
             <motion.button
               key={i}
@@ -887,8 +931,10 @@ export function QuizScreen() {
               className={cls}
               onClick={() => handleAnswer(i)}
               disabled={answered || submitting}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
+              data-fx={reaction}
+              variants={OPTION_VARIANTS}
+              initial="hidden"
+              animate={reaction ?? 'shown'}
               transition={{ delay: i * 0.05, duration: 0.15 }}
               whileTap={{ scale: answered ? 1 : 0.97 }}
             >
