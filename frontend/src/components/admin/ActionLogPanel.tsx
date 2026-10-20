@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ApiError, adminUsers, type AdminLogItem } from '../../services/api';
 import { Button } from '../common/Button';
+import { Loading } from '../common/Loading';
 import styles from './UsersPanel.module.css';
 
 /**
@@ -28,7 +29,7 @@ export function ActionLogPanel() {
   }, [page, t]);
 
   if (error) return <p className={styles.error} role="alert">{error}</p>;
-  if (!items) return <p className={styles.hint}>{t('admin.users.loading')}</p>;
+  if (!items) return <Loading label={t('admin.users.loading')} shape="list" />;
   if (items.length === 0) return <p className={styles.hint}>{t('admin.log.empty')}</p>;
 
   const pages = Math.max(1, Math.ceil(total / 20));
