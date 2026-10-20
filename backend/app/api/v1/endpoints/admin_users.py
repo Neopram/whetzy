@@ -3,27 +3,28 @@
 Solo el dueño (B1) y solo con la verificación en dos pasos activa (B7). El
 listado enmascara el email (B2); la ficha (B3) sí lo da, para «copiar email»
 (B8), y abrirla queda en `admin_action_log` como `view` (B6). Nunca se ve ni se
-cambia una contraseña, ni se entra como el usuario (B5). Las acciones sobre la
-cuenta son 44.2.
+cambia una contraseña, ni se entra como el usuario (B5). Las cinco acciones
+sobre la cuenta (B4, 44.2) exigen motivo y dejan su fila en el registro.
 """
 
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
-from pydantic import BaseModel
-from sqlalchemy import String, cast, func, or_, select
+from pydantic import BaseModel, Field, field_validator
+from sqlalchemy import String, cast, delete, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.v1.endpoints.admin import require_owner
+from app.api.v1.endpoints.auth import require_outbound_email, send_verification_link
 from app.core.db import get_db
 from app.core.security import user_has_2fa
 from app.core.security_middleware import client_ip
 from app.models.admin import AdminActionLog, GDPRRequest
-from app.models.auth import AuditLog
+from app.models.auth import AuditLog, LoginAttempt, RefreshToken
 from app.models.exam import CertificationPurchase
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
@@ -32,6 +33,7 @@ router = APIRouter()
 
 PAGE_SIZE = 20
 RECENT_EVENTS = 10
+MAX_GRANT_DAYS = 90
 
 
 async def require_owner_2fa(
@@ -201,3 +203,81 @@ async def user_detail(
             ],
         },
     }
+
+
+# ── B4: acciones (44.2) ──────────────────────────────────────────────────────
+
+Action = Literal["resend_verification", "close_sessions", "unlock", "grant_plan", "suspend", "reactivate"]
+
+
+class ActionRequest(BaseModel):
+    reason: str = Field(max_length=500)
+    # Solo `grant_plan`: plan y días (B4: como mucho 90).
+    tier: Literal["plus", "pro"] | None = None
+    days: int | None = Field(default=None, ge=1, le=MAX_GRANT_DAYS)
+
+    @field_validator("reason")
+    @classmethod
+    def _reason_not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("reason is required")
+        return v.strip()
+
+
+async def _close_sessions(db: AsyncSession, u: User) -> None:
+    """Invalida los tokens de acceso (`jwt_version`) y revoca los de refresco."""
+    u.jwt_version += 1
+    await db.execute(update(RefreshToken).where(RefreshToken.user_id == u.id).values(revoked=True))
+
+
+@router.post("/{user_id}/actions/{action}")
+async def user_action(
+    user_id: uuid.UUID,
+    action: str,
+    payload: ActionRequest,
+    request: Request,
+    owner: User = Depends(require_owner_2fa),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    if action not in Action.__args__:  # type: ignore[attr-defined]
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unknown action")
+    u = await db.get(User, user_id)
+    if u is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    data: dict[str, Any] = {}
+    if action == "resend_verification":
+        if u.email_verified:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="already_verified")
+        require_outbound_email()
+        await send_verification_link(db, u)
+    elif action == "close_sessions":
+        await _close_sessions(db, u)
+    elif action == "unlock":
+        cleared = await db.execute(
+            delete(LoginAttempt).where(LoginAttempt.email == u.email, LoginAttempt.success.is_(False))
+        )
+        data["cleared"] = cleared.rowcount  # type: ignore[attr-defined]
+    elif action == "grant_plan":
+        if payload.tier is None or payload.days is None:
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="tier and days are required")
+        u.granted_tier = payload.tier
+        u.granted_tier_expires_at = datetime.now(UTC) + timedelta(days=payload.days)
+        data = {"tier": payload.tier, "days": payload.days, "expires_at": u.granted_tier_expires_at.isoformat()}
+    elif action == "suspend":
+        if u.id == owner.id:
+            # Suspenderse a uno mismo cierra la única puerta del back-office.
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="cannot_suspend_self")
+        u.is_active = False
+        await _close_sessions(db, u)
+    else:  # reactivate
+        u.is_active = True
+
+    db.add(
+        AdminActionLog(
+            actor_id=owner.id, target_user_id=u.id, action=action, reason=payload.reason,
+            data=data or None, ip=client_ip(request),
+        )
+    )
+    await db.commit()
+    return {"ok": True, "action": action, "data": data}

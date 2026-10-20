@@ -166,27 +166,27 @@ class TestLaPantallaNoMiente:
     ) -> None:
         from fastapi import HTTPException
 
-        from app.api.v1.endpoints.auth import _require_outbound_email
+        from app.api.v1.endpoints.auth import require_outbound_email
 
         monkeypatch.setattr(settings, "ENVIRONMENT", "production")
         with pytest.raises(HTTPException) as exc:
-            _require_outbound_email()
+            require_outbound_email()
         assert exc.value.status_code == 503
         assert exc.value.detail == "email_not_configured"
 
     def test_con_proveedor_no_bloquea(
         self, sin_credenciales: None, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        from app.api.v1.endpoints.auth import _require_outbound_email
+        from app.api.v1.endpoints.auth import require_outbound_email
 
         monkeypatch.setattr(settings, "ENVIRONMENT", "production")
         monkeypatch.setattr(settings, "RESEND_API_KEY", "re_test_key")
-        _require_outbound_email()
+        require_outbound_email()
 
     def test_fuera_de_produccion_el_log_sigue_valiendo(
         self, sin_credenciales: None, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        from app.api.v1.endpoints.auth import _require_outbound_email
+        from app.api.v1.endpoints.auth import require_outbound_email
 
         monkeypatch.setattr(settings, "ENVIRONMENT", "development")
-        _require_outbound_email()
+        require_outbound_email()
