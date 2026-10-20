@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../common/Button';
 import { GameIcon, type GameIconName } from '../common/AppIcon';
 import { emit } from '../../lib/feedbackFx';
+import { trackFxSkipped } from '../../lib/fxAnalytics';
 import { springs } from '../../lib/motion';
 import type { ServerFxEvent } from '../../services/api';
 import styles from './Ceremony.module.css';
@@ -77,6 +78,8 @@ export function Ceremony({
   const close = (skipped: boolean) => {
     if (done.current) return;
     done.current = true;
+    // 46.6a: «Saltar» cuenta para la tasa de salto del nivel 4 (plan §6.0 punto 5).
+    if (skipped) trackFxSkipped(FX[event.type]);
     onDone(skipped);
   };
 

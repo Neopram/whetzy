@@ -7,6 +7,7 @@ import { initTheme } from './theme'
 import { useAppStore } from './stores/useAppStore'
 import { captureAttribution } from './lib/attribution'
 import { armFeedbackFx } from './lib/feedbackFx'
+import { startFxAnalytics } from './lib/fxAnalytics'
 
 // Solo en desarrollo: permite a scripts/ui-snapshots.mjs abrir cada pantalla
 // sin pasar por la navegación (currentScreen no se persiste). Vite elimina
@@ -19,6 +20,8 @@ initTheme()
 captureAttribution(window.location.search)
 // 46.2: el sonido y la vibración esperan al primer gesto (política de autoplay).
 armFeedbackFx()
+// 46.6a (ADR-68): tasa de salto por nivel, anónima.
+startFxAnalytics()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
