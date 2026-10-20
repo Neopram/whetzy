@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, useReducedMotion } from 'framer-motion';
+import { DUR } from '../lib/motion';
+import { emit as emitFx } from '../lib/feedbackFx';
 import {
   ApiError,
   exams,
@@ -139,6 +142,12 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
     [],
   );
 
+  // 46.15 C: el resultado del servidor cierra la sesión (nivel 3), una vez.
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    if (phase === 'result' && report) emitFx({ type: 'session_end' });
+  }, [phase, report]);
+
   if (phase === 'intro' || (phase === 'grading' && !exam)) {
     return (
       <div className={styles.screen}>
@@ -194,10 +203,18 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
         </p>
 
         {report.passed != null && (
-          <p className={styles.note} role="status">
+          <motion.p
+            className={styles.note}
+            role="status"
+            data-testid="exam-verdict"
+            data-fx={reduce ? undefined : 'reveal'}
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: DUR.response }}
+          >
             <strong>{report.passed ? t('mockExam.certPassed') : t('mockExam.certFailed')}</strong>{' '}
             {isSpanish ? report.pass_note_es : report.pass_note_en}
-          </p>
+          </motion.p>
         )}
         {certificate && <CertificateCard certificate={certificate} />}
 

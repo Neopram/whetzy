@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, useReducedMotion } from 'framer-motion';
+import { DUR } from '../lib/motion';
+import { emit as emitFx } from '../lib/feedbackFx';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { Button } from '../components/common/Button';
@@ -141,6 +144,12 @@ export function DuelScreen() {
   };
 
   // ── Render ────────────────────────────────────────────────────────────────
+  // 46.15 C: el resultado del servidor cierra la sesión (nivel 3), una vez.
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    if (duelResult) emitFx({ type: 'session_end' });
+  }, [duelResult]);
+
   if (view === 'challenge-modal') {
     return (
       <div className={styles.screen}>
@@ -237,13 +246,19 @@ export function DuelScreen() {
         <h1 className={styles.title}>{t('duel.completed')}</h1>
         {duelResult ? (
           <>
-            <p className={styles.resultOutcome}>
+            <motion.p
+              className={styles.resultOutcome}
+              data-fx={reduce ? undefined : 'reveal'}
+              initial={reduce ? false : { opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: DUR.response }}
+            >
               {duelResult.is_draw
                 ? t('duel.draw')
                 : duelResult.winner_id === currentUser.id
                   ? t('duel.won')
                   : t('duel.lost')}
-            </p>
+            </motion.p>
             {duelResult.weak_skill_id && (
               <p className={styles.practiceHint}>
                 {t('duel.practiceHint', { skill: weakSkillName ?? duelResult.weak_skill_id })}

@@ -11,8 +11,11 @@
  * looks like a different product depending on which exam it is would be the
  * kind of inconsistency the design standard exists to prevent.
  */
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, useReducedMotion } from 'framer-motion';
+import { DUR } from '../lib/motion';
+import { emit as emitFx } from '../lib/feedbackFx';
 
 import {
   exams,
@@ -90,6 +93,12 @@ export function TrackExamScreen({
 
   // ── Intro ─────────────────────────────────────────────────────────────────
 
+  // 46.15 C: el resultado del servidor cierra la sesión (nivel 3), una vez.
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    if (exam.phase === 'result' && exam.report) emitFx({ type: 'session_end' });
+  }, [exam.phase, exam.report]);
+
   if (exam.phase === 'intro' || (exam.phase === 'grading' && !exam.sitting)) {
     return (
       <div className={styles.screen}>
@@ -140,9 +149,15 @@ export function TrackExamScreen({
       <div className={styles.screen}>
         {/* The verdict is a heading, not a colour: pass/fail must survive both
             a screen reader and colour-blindness (red line 6). */}
-        <h1 className={report.passed ? own.verdictPass : own.verdictFail}>
+        <motion.h1
+          className={report.passed ? own.verdictPass : own.verdictFail}
+          data-fx={reduce ? undefined : 'reveal'}
+          initial={reduce ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: DUR.response }}
+        >
           {report.passed ? t(`${ns}.passed`) : t(`${ns}.failed`)}
-        </h1>
+        </motion.h1>
 
         <p className={styles.score}>
           {t('trackExam.yourScore', { score: report.raw_pct })}
