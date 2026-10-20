@@ -370,13 +370,17 @@ Rigen las mismas líneas rojas de §6.0. El orden de cada fila es siempre el mis
 
 ### 7.6 Orden sin excepciones (46.16)
 
-- **Tokens.** Duración y curva salen de un único sitio: `lib/motion.ts` exporta `dur` y `ease` atados a
-  `TIER_BUDGET`, y el CSS usa `--le-dur-*` y `--le-ease-*`.
-- **Guarda** `src/test/motionGuard.test.ts`, que falla si:
-  - un `duration` literal pasa del presupuesto de su nivel;
-  - un `@keyframes` vive en un `.module.css` sin su bloque `prefers-reduced-motion`;
-  - aparece un `repeat: Infinity` fuera de la lista blanca, que es el pulso del nodo actual.
-- **Mutación.** La guarda se comprueba en rojo: se rompe una de esas reglas, se ve fallar y se restaura.
+- **Tokens.** Las duraciones salen de un solo sitio: `lib/motion.ts` exporta `DUR`, y el presupuesto de `TIER_BUDGET`
+  sale de ahí.
+- **La guarda `src/test/motionGuard.test.ts` falla si:**
+  - desaparece el bloque global de movimiento reducido de `styles/global.css`;
+  - App deja de envolver la app en `MotionConfig reducedMotion="user"`;
+  - una duración de framer pasa de 0,7 s, o algo se repite sin fin, sin una anotación `fx-budget:` que diga por qué;
+  - el presupuesto por nivel deja de coincidir con los tokens.
+- **Se comprueba con mutaciones:** cada regla se rompe a propósito, se ve fallar la guarda y se restaura.
+- **Enmienda del 2026-10-20, al implementarla:** se descarta pedir un bloque `prefers-reduced-motion` en cada fichero
+  con `@keyframes`. El bloque global de `global.css:102` ya apaga todas las animaciones CSS
+  (`animation-duration: 0.01ms !important`), así que lo que hay que vigilar es que ese bloque siga ahí.
 
 ### 7.7 Orden de ejecución
 
