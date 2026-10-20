@@ -1,0 +1,205 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+}
+
+.search {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-xs);
+}
+
+.searchRow {
+  display: flex;
+  gap: var(--le-space-sm);
+  flex-wrap: wrap;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-xs);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+}
+
+.input {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: var(--le-space-sm);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-surface);
+  color: var(--le-text);
+  font: inherit;
+}
+
+.hint,
+.muted {
+  color: var(--le-text-secondary);
+  font-size: var(--le-fs-sm);
+  margin: 0;
+}
+
+.error {
+  color: var(--le-danger-text);
+  margin: 0;
+}
+
+.notice {
+  color: var(--le-success-text);
+  margin: 0;
+}
+
+.h3,
+.h4 {
+  margin: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-xs);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto auto;
+  gap: var(--le-space-sm);
+  align-items: center;
+  width: 100%;
+  padding: var(--le-space-sm);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-surface);
+  color: var(--le-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.row:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--le-brand);
+  outline-offset: 2px;
+}
+
+.username {
+  font-weight: var(--le-fw-bold);
+}
+
+.ok {
+  color: var(--le-success-text);
+  font-size: var(--le-fs-sm);
+}
+
+.warn {
+  color: var(--le-warning-text);
+  font-size: var(--le-fs-sm);
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+}
+
+.detailHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--le-space-sm);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--le-space-xs) var(--le-space-md);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.grid dt {
+  color: var(--le-text-secondary);
+}
+
+.grid dd {
+  margin: 0;
+}
+
+.link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--le-brand);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.events {
+  margin: 0;
+  padding-left: var(--le-space-lg);
+  font-size: var(--le-fs-sm);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--le-space-sm);
+}
+
+.grantRow {
+  display: flex;
+  gap: var(--le-space-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--le-space-sm);
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  /* A 390 px la etiqueta va encima del valor: el email cabe en su línea. */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grid dd {
+    margin-bottom: var(--le-space-sm);
+  }
+}
+
+/* Campos del diálogo de acción: ancho completo, alto natural. */
+.control {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--le-space-sm);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  background: var(--le-surface);
+  color: var(--le-text);
+  font: inherit;
+}
+
+.grantRow .label {
+  flex: 1 1 120px;
+}
+
+.email {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--le-space-xs) var(--le-space-sm);
+  align-items: baseline;
+}
+
+/* Fila del registro: se lee, no se pulsa. */
+.static {
+  cursor: default;
+}
