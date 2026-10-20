@@ -226,6 +226,7 @@ export function PlaygroundScreen() {
           className={styles.runBtn}
           onClick={handleRun}
           disabled={!runtimeReady || isRunning}
+          aria-busy={isRunning}
         >
           {isRunning
             ? t('playground.running')

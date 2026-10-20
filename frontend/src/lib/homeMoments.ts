@@ -19,7 +19,12 @@ export interface HomeMoments {
 }
 
 const missionsKey = (userId: string, day: string) => `whetzy_fx_missions_${userId}_${day}`;
-const bandsKey = (userId: string) => `whetzy_fx_bands_${userId}`;
+// 46.15 B: Rutas guarda su propia foto. Con una sola, la pantalla que se
+// abriese primero se comería la subida y la otra no la vería nunca. La de Hoy
+// conserva su clave de siempre para no perder las fotos ya guardadas.
+export type BandScope = 'home' | 'tracks';
+const bandsKey = (userId: string, scope: BandScope) =>
+  scope === 'home' ? `whetzy_fx_bands_${userId}` : `whetzy_fx_bands_${scope}_${userId}`;
 
 function read<T>(key: string): T | null {
   try {
@@ -52,9 +57,10 @@ export function missionMoments(
 export function bandMoments(
   userId: string,
   skills: { id: string; band: EvidenceBand }[],
+  scope: BandScope = 'home',
 ): string[] {
-  const before = read<Record<string, EvidenceBand>>(bandsKey(userId));
-  write(bandsKey(userId), { ...before, ...Object.fromEntries(skills.map((s) => [s.id, s.band])) });
+  const before = read<Record<string, EvidenceBand>>(bandsKey(userId, scope));
+  write(bandsKey(userId, scope), { ...before, ...Object.fromEntries(skills.map((s) => [s.id, s.band])) });
   if (!before) return [];
   return skills.filter((s) => s.id in before && RANK[s.band] > RANK[before[s.id]]).map((s) => s.id);
 }
