@@ -2,23 +2,32 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.v1.endpoints.content import _require_admin_key
 from app.core.db import get_db
+from app.core.rate_limiter import InMemoryRateLimiter
+from app.core.security import get_current_user
+from app.models.user import User
+from app.schemas.client_events import ClientEventBatch
 from app.services.analytics import (
     PRODUCT_METRIC_TARGETS,
     conversion_d35,
     curr,
     engagement,
     funnel,
+    fx_skip_rates,
     skill_mastery_stats,
+    track,
     unseen_first_attempt_accuracy,
     weekly_30min_rate_among_payers,
 )
 
 router = APIRouter()
+
+# 46.6a: un alumno real manda, como mucho, un lote cada 10 s y otro al cerrar.
+_client_events_limiter = InMemoryRateLimiter()
 
 
 @router.get("/funnel", dependencies=[Depends(_require_admin_key)])
@@ -99,3 +108,34 @@ async def get_dashboard(
         },
         "targets": PRODUCT_METRIC_TARGETS,
     }
+
+
+@router.post("/client-events", status_code=status.HTTP_202_ACCEPTED)
+async def post_client_events(
+    batch: ClientEventBatch,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, int]:
+    """46.6a (ADR-68): efectos del cliente, en lote.
+
+    La sesión solo sirve para limitar el ritmo: las filas se guardan **sin
+    `user_id`** ni IP (ADR-68 punto 3).
+    """
+    if not await _client_events_limiter.is_allowed(
+        f"client-events:{current_user.id}", limit=30, window_seconds=60
+    ):
+        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="rate_limited")
+    for e in batch.events:
+        props = e.model_dump(exclude={"type"})
+        await track(db, e.type, user_id=None, properties=props)
+    await db.commit()
+    return {"accepted": len(batch.events)}
+
+
+@router.get("/fx", dependencies=[Depends(_require_admin_key)])
+async def get_fx(
+    days: int = Query(default=7, ge=1, le=90),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, object]:
+    """46.6a: tasa de salto por nivel y si toca rebajarlo (plan §6.0 punto 5)."""
+    return await fx_skip_rates(db, days=days)

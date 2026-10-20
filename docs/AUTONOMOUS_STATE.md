@@ -41,13 +41,13 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 46 | Experiencia avanzada | 3/12 | 25 % | 46.1, 46.2b, 46.3, 46.4, 46.5, 46.6 +3 |
+| 46 | Experiencia avanzada | 6/20 | 30 % | 46.1, 46.3, 46.4, 46.5, 46.6, 46.6a +8 |
 | 45 | Alta con correo | 4/4 | 100 % | — |
 | 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
 | 43 | Flujo del alumno listo para pruebas | 5/8 | 62 % | 43.4, 43.5, 43.6 |
 | 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
 | 41 | Documentación al día con el código | 5/6 | 83 % | 41.3 |
-| 40 | Superar a Brilliant y Kodree donde hoy ganan | 0/13 | 0 % | 40.1, 40.2, 40.3, 40.4, 40.5, 40.6 +7 |
+| 40 | Superar a Brilliant y Kodree donde hoy ganan | 1/13 | 8 % | 40.2, 40.3, 40.4, 40.5, 40.6, 40.7 +6 |
 | 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 31/41 | 76 % | 39.8, 39.9, 39.10, 39.13, 39.26, 39.27 +2 |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
 | 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 7/23 | 30 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +10 |
@@ -345,7 +345,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 31.1 | **0** | Staging: un preview de Cloudflare Pages y un servicio de Railway d… | HUMAN-BLOCKED… | 2026-09-30: #34 fusiona 2 migraciones directo contra producción sin ensayarlas ahí — sin staging, cada fusión repite ese riesgo |
 | 31.4 | **0** | Migración sin datos dejó sin preguntas a los usuarios con… | **DONE** | `1225a29` → §T |
-| 31.5 | **0** | Regla del dueño 2026-09-30: PRs pequeños, veto a analítica hasta ≥… | DOING | mismo texto en `ORCHESTRATOR.md`; cumplido desde esta fila |
+| 31.5 | **0** | Regla del dueño 2026-09-30: PRs pequeños (veto a analítica levantado, ADR-68) | DOING | mismo texto en `ORCHESTRATOR.md` |
 | 31.6 | **2** | Tests de analítica sobre Postgres real, no solo SQLite — D1/D7/CUR… | TODO | `test_product_metrics.py` también contra Postgres real, en verde |
 | 31.7 | **0** | Pausa de sesiones autónomas y cierre, 2026-09-30 →… | **DONE** | → §T |
 | 31.8 | **0** | Lanzamiento piloto (prompt del dueño 2026-10-01): kit… | PARCIAL | kit escrito; invitar, día 4 y recuento = dueño |
@@ -506,8 +506,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 40.1 | **2** | Tipo `interactive`: `{widget, params, target, checker}`; checker e… | TODO | esquema en `check_question_bank.py`; test de discrepancia cliente↔servidor en rojo al mutar |
-| 40.2 | **2** | **Piloto 3 widgets** (búsqueda binaria, CIDR, JOIN) × 10 ítems ES/EN | TODO (tras 40.1) | e2e móvil+escritorio, axe 0, ≤ 30 KB gz/widget, LCP < 2,5 s 4G; sin piloto verde no hay 40.3 |
+| 40.1 | **2** | Tipo `interactive`: `{widget, params, target, checker}`; checker e… | DONE — #278 `2409729`, §7 10-20 | esquema en `check_question_bank.py`; test de discrepancia cliente↔servidor en rojo al mutar |
+| 40.2 | **2** | **Piloto 3 widgets** (búsqueda binaria, CIDR, JOIN) × 10 ítems ES/EN | TODO (ADR-67 D1: sin los 30 ítems; 1 demostración por widget fuera de `content/`) | e2e móvil+escritorio, axe 0, ≤ 30 KB gz/widget, LCP < 2,5 s 4G; sin piloto verde no hay 40.3 |
 | 40.3 | **3** | Biblioteca de 15 widgets mapeados a dominios de cert (IAM, Git DAG… | TODO (tras 40.2) | contrato `render/serialize/check` testeado por widget; cada uno suma al readiness |
 | 40.4 | **3** | **Widget ↔ código** en los dos sentidos (Pyodide, sql.js, Worker JS) | TODO (tras 40.2) | e2e: editar el widget cambia el código y ejecutar el código anima el widget |
 | 40.5 | **3** | Tutor que señala: acciones estructuradas (resaltar línea, marcar n… | TODO (tras 40.2) | acción fuera de esquema rechazada (test); sin grounding lo dice (línea roja 2) |
@@ -600,14 +600,22 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.1 | **1** | Feedback del quiz sin tapar | DOING — #266; falta e2e «×3» | plan §2 y §6.4 |
 | 46.1b | **1** | `events[]` en `QuizAnswerResponse` | DONE — #265 `2840689`, §7 10-19 | plan §6.3 |
 | 46.2 | **1** | `feedbackFx.ts`: bus, sonido, vibración | DONE — #263 `0449034`, §7 10-19 | plan §6.0–6.1 |
-| 46.2b | **2** | `@capacitor/haptics` | TODO | PR propio (ADR-67 D4) |
+| 46.2b | **2** | `@capacitor/haptics` | DONE — #276 `00e52a5`, §7 10-20 | PR propio (ADR-67 D4) |
 | 46.3 | **1** | Estados vacíos y momentos de Home | DOING — #264, #267; falta 46.3c | plan §2 y §6.2 |
 | 46.4 | **2** | Un solo sistema de tokens | TODO | 0 `var(--color-` |
 | 46.5 | **2** | Regresión visual en nivel 2 | TODO | rojo al mutar un token |
 | 46.6 | **2** | Medición y re-puntuación | TODO | tabla con evidencia |
 | 46.7 | **1** | Resumen y ceremonias | DOING — #269; falta recuento y `fx_emitted` | plan §6.4 |
-| 46.8 | **2** | Mascota: brief para ilustrador | TODO | brief y 3 direcciones (ADR-67 D2) |
-| 46.9 | **1** | Sonido encendido por defecto | TODO | sin preferencia → on (ADR-67 D3) |
+| 46.8 | **2** | Mascota: brief para ilustrador | DONE — #277 `b15f062`, §7 10-20 | brief y 3 direcciones (ADR-67 D2) |
+| 46.9 | **1** | Sonido encendido por defecto | DONE — #275 `e5f5e5a`, §7 10-20 | sin preferencia → on (ADR-67 D3) |
+| 46.6a | **1** | Analítica fx anónima (ADR-68) | TODO | plan §7.2 |
+| 46.10 | **1** | Quiz: opción late/tiembla, «+XP» vuela | TODO | plan §7.3 |
+| 46.11 | **1** | Llama de racha en 3 tamaños + escudo | TODO | plan §7.3 |
+| 46.12 | **1** | Home: contadores y banda con `AnimatePresence` | TODO | plan §7.3 |
+| 46.13 | **2** | Liga y Preparación escalonadas | TODO | plan §7.3 |
+| 46.14 | **1** | Transiciones de ruta y esqueletos de carga | TODO | plan §7.4 |
+| 46.15 | **2** | Movimiento en las 27 pantallas sin él | TODO | plan §7.5 |
+| 46.16 | **2** | Tokens de movimiento y guarda | TODO | plan §7.6 |
 
 ## 3. Cola HUMAN-BLOCKED
 

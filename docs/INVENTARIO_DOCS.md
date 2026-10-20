@@ -24,10 +24,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 |---|---|
 | normativo-vivo | 25 |
 | referencia-viva | 66 |
-| histórico | 52 |
+| histórico | 68 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **188** |
+| **Total** | **204** |
 
 ## Raíz del repo y otras carpetas
 
@@ -167,6 +167,22 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/46.3b/README.md` | histórico | evidencia de capturas de la fila 46.3b (misión completada en Hoy, celebrada una vez) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/46.3a/README.md` | histórico | evidencia de capturas de la fila 46.3a (estados comunes con tokens `--le-*`, hover de «Reintentar» en modo claro) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/46.7/README.md` | histórico | evidencia de capturas de la fila 46.7 (una ceremonia por sesión y el resto como tarjetas) | se queda (junto a sus PNG) | 2026-10-18 |
+| `docs/ui-snapshots/44.3/README.md` | histórico | evidencia de capturas de la fila 44.3 (pestaña «Usuarios» del back-office: ficha y diálogo de regalar plan) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.12/README.md` | histórico | evidencia de capturas de la fila 46.12 (Hoy cuenta misiones y rutas desde la última visita) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.7b/README.md` | histórico | evidencia de capturas de la fila 46.7b (recuento del resumen de sesión, saltable, y la versión con movimiento reducido) | se queda (junto a sus PNG) | 2026-10-19 |
+| `docs/ui-snapshots/46.3c/README.md` | histórico | evidencia de capturas de la fila 46.3c (prueba de nivel en el onboarding y «Tu mayor palanca» como primera tarjeta de Hoy) | se queda (junto a sus PNG) | 2026-10-19 |
+| `docs/ui-snapshots/46.10/README.md` | histórico | evidencia de capturas de la fila 46.10 (la opción late o tiembla y el «+XP» vuela al marcador) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.11/README.md` | histórico | evidencia de capturas de la fila 46.11 (la llama de la racha en tres tamaños y el escudo del comodín) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.13/README.md` | histórico | evidencia de capturas de la fila 46.13 (Liga y Preparación escalonadas, sin ceremonia de ascenso) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.14/README.md` | histórico | evidencia de capturas de la fila 46.14 (esqueletos de carga y su CLS medido) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.15a/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque A (error que tiembla, check dibujado, pasos del alta, contraste del error de Auth) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.15b/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque B (copiar el ejemplo, banda que sube en Rutas, paso de proyecto aceptado) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.15c/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque C (reloj de examen a 5 minutos, veredicto, desenlace del duelo) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.15d/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque D (insignia nueva, barras que crecen, listas escalonadas, sello del certificado) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.15e/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque E (catálogo escalonado; éxito del checkout solo con el servidor) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/certificado-idioma/README.md` | histórico | evidencia del certificado público (y legales) en el idioma del visitante sin cuenta | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/editor-contraste/README.md` | histórico | evidencia del tema propio del editor de código: cada token a ≥ 4,5:1 y axe sin excluir Monaco | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/duelo-grabado/README.md` | histórico | evidencia del duelo con la partida grabada del rival (acierto y tiempo tras cada pregunta) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |
 | `docs/MAPA_PRODUCTO.md` | referencia-viva | inventario de rutas, pantallas y subvistas con el documento que especifica cada una y sus huecos; `check_docs.py` exige que nombre todo lo que existe | se queda | 2026-10-01 |
 | `docs/ml/rag_scaling_39_32.md` | referencia-viva | 39.32: por qué `test_rag_self_retrieval` era O(N²) y las cifras reales antes/después del índice invertido + muestra fija en `RAGIndex.retrieve()` | se queda | 2026-10-02 |

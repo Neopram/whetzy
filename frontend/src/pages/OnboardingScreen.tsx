@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { motion, useReducedMotion } from 'framer-motion'
+import { DUR } from '../lib/motion'
 import { useAppStore } from '../stores/useAppStore'
 import { auth, content, economy, type TrackRead } from '../services/api'
 import { readAttribution } from '../lib/attribution'
@@ -7,6 +9,7 @@ import { retiredCertificationFor } from '../lib/retiredCertifications'
 import { TRACK_GROUPS, relatedCerts } from '../lib/trackGroups'
 import '../styles/onboarding.css'
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 /**
  * 43.3 (ADR-65 D2): objetivo → ruta de aprendizaje (agrupadas) → certificación
@@ -28,6 +31,7 @@ type Step = 'goal' | 'track' | 'cert' | 'experience' | 'start'
 
 export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const { i18n, t } = useTranslation()
+  const reduce = useReducedMotion()
   const startPlacement = useAppStore((s) => s.startPlacement)
   const setScreen = useAppStore((s) => s.setScreen)
   const updateUser = useAppStore((s) => s.updateUser)
@@ -65,7 +69,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const finish = (takeTest: boolean) => {
     if (!trackId) return
     useAppStore.setState({ selectedTrackId: trackId, activeTrackId: trackId })
-    updateUser({ onboardingCompleted: true })
+    updateUser({ onboardingCompleted: true, targetCertificationId: certId })
     void auth
       .updateMe({
         onboarding_goal: goal ?? undefined,
@@ -101,6 +105,17 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
       <div className="question-card">
         <p className="step-indicator">{t('onboarding.step', { n: position, total: steps.length })}</p>
 
+        {/* Solo entrada: con salida (`mode="wait"`) el paso nuevo esperaba a que
+            el viejo terminase de irse y el toque parecía no responder. */}
+        <motion.div
+          key={step}
+          data-testid="onboarding-step"
+          data-fx={reduce ? undefined : 'slide'}
+          initial={reduce ? false : { opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: DUR.response / 2 }}
+        >
+
         {step === 'goal' && (
           <>
             <h2>{t('onboarding.goalTitle')}</h2>
@@ -122,7 +137,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
           <>
             <h2>{t('onboarding.trackTitle')}</h2>
             {tracksFailed && <p role="alert">{t('onboarding.tracksFailed')}</p>}
-            {!tracks && !tracksFailed && <p>{t('common.loading')}</p>}
+            {!tracks && !tracksFailed && <Loading label={t('common.loading')} shape="line" />}
             {tracks && TRACK_GROUPS.map((g) => {
               const available = g.tracks.filter((id) => byId.has(id))
               if (available.length === 0) return null
@@ -191,6 +206,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
             </div>
           </>
         )}
+        </motion.div>
       </div>
     </div>
   )

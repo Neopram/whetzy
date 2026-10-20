@@ -5,6 +5,24 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-20 (Serie 46: analítica de efectos y movimiento en toda la app)
+
+**ES**
+
+- **Plan de movimiento para las 33 pantallas** (ADR-68, `docs/PLAN_UI_AVANZADA.md` §7): qué se mueve en cada una, con
+  qué dato y qué se queda quieto a propósito. También levanta el veto a la analítica: los efectos se medirán de forma
+  anónima, sin usuario ni IP. Es solo documentación; el código va en sus PR.
+
+---
+
+**EN**
+
+- **Motion plan for all 33 screens** (ADR-68, `docs/PLAN_UI_AVANZADA.md` §7): what moves on each one, driven by which
+  data, and what stays still on purpose. It also lifts the analytics veto: effects will be measured anonymously, with
+  no user or IP. Documentation only; the code comes in its own PRs.
+
+---
+
 ## [Unreleased] — 2026-10-19 (Serie 46: decisiones del dueño D1–D4)
 
 **ES**

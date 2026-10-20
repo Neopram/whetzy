@@ -11,8 +11,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { CertificateCard } from '../components/certificate/CertificateCard';
+import { DrawnCheck } from '../components/common/DrawnCheck';
 import { certificates, type CertificatePublic } from '../services/api';
 import styles from './CertificateScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 interface Props {
   code: string;
@@ -47,7 +49,7 @@ export function CertificateScreen({ code }: Props) {
   if (state.status === 'loading') {
     return (
       <div className={styles.screen}>
-        <p className={styles.muted}>{t('loading')}</p>
+        <Loading label={t('loading')} shape="card" />
       </div>
     );
   }
@@ -66,6 +68,8 @@ export function CertificateScreen({ code }: Props) {
   return (
     <div className={styles.screen}>
       <h1 className={styles.title}>{t('certificate.verifyTitle')}</h1>
+      {/* 46.15 D: el sello se dibuja solo si el servidor lo da por válido. */}
+      {!state.certificate.revoked && <DrawnCheck />}
       {!state.certificate.revoked && (
         <p className={styles.verified} role="status">
           {t('certificate.verifyIntro')}

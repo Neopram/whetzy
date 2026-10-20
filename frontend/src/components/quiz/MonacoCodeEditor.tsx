@@ -6,10 +6,16 @@
 // URLs (self-hosted, no CDN) before Monaco initialises.
 import '../../lib/monacoSetup';
 
-import Editor from '@monaco-editor/react';
+import Editor, { type BeforeMount } from '@monaco-editor/react';
 import type { editor } from 'monaco-editor';
 import { useRef } from 'react';
 import styles from './MonacoCodeEditor.module.css';
+import { WHETZY_DARK, whetzyDarkTheme } from '../../lib/monacoTheme';
+
+// `defineTheme` es global e idempotente: volver a llamarlo en cada montaje no cuesta nada.
+const defineTheme: BeforeMount = (monaco) => {
+  monaco.editor.defineTheme(WHETZY_DARK, whetzyDarkTheme);
+};
 
 interface Props {
   value: string;
@@ -55,7 +61,8 @@ export function MonacoCodeEditor({
       <Editor
         value={value}
         language={language}
-        theme="vs-dark"
+        theme={WHETZY_DARK}
+        beforeMount={defineTheme}
         onMount={handleMount}
         onChange={(v) => onChange?.(v ?? '')}
         options={{

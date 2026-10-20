@@ -38,6 +38,8 @@ interface UserProfile {
   onboardingCompleted: boolean;
   /** 43.3 (D2): horas por semana (0 <3 h, 1 3-10 h, 2 >10 h); se elige en Perfil. */
   weeklyTime: number | null;
+  /** 43.3 (D2): la certificación elegida en el onboarding. Hoy enseña su «mayor palanca» (46.3c). */
+  targetCertificationId: string | null;
   language: Language;
   league: LeagueTier;
 }
@@ -161,6 +163,9 @@ interface AppState {
   toggleAiExplanations: () => void;
   hapticEnabled: boolean;
   toggleHaptic: () => void;
+  /** 46.11: cuándo gastó el servidor un comodín (escudo en la TopBar). No se guarda. */
+  streakShieldAt: number | null;
+  showStreakShield: () => void;
 }
 
 function xpForNextLevel(level: number): number {
@@ -190,6 +195,7 @@ function mapApiUser(u: UserRead): UserProfile {
     emailVerified: u.email_verified ?? true,
     onboardingCompleted: Boolean(u.onboarding_completed_at),
     weeklyTime: u.onboarding_weekly_time ?? null,
+    targetCertificationId: u.target_certification_id ?? null,
     language: u.language,
     league: 'bronze',
   };
@@ -223,6 +229,7 @@ const defaultUser: UserProfile = {
   emailVerified: true,
   onboardingCompleted: false,
   weeklyTime: null,
+  targetCertificationId: null,
   language: 'es',
   league: 'gold',
 };
@@ -402,6 +409,8 @@ export const useAppStore = create<AppState>()(
       toggleAiExplanations: () => set((s) => ({ aiExplanations: !s.aiExplanations })),
       hapticEnabled: true,
       toggleHaptic: () => set((s) => ({ hapticEnabled: !s.hapticEnabled })),
+      streakShieldAt: null,
+      showStreakShield: () => set({ streakShieldAt: Date.now() }),
     }),
     {
       name: 'learning-engine-store',

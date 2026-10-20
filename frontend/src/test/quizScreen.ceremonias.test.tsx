@@ -77,7 +77,7 @@ describe('QuizScreen — ceremonias al cerrar (46.7)', () => {
       expect(screen.getByRole('region', { name: 'También en esta sesión' })).toHaveTextContent('Nueva insignia: Constante'),
     );
     expect(emit).toHaveBeenCalledWith({ type: 'level_up' });
-    expect(emit).not.toHaveBeenCalledWith({ type: 'session_end' });
+    expect(emit).not.toHaveBeenCalledWith(expect.objectContaining({ type: 'session_end' }));
     fireEvent.click(screen.getByRole('button', { name: 'Saltar' }));
     expect(screen.queryByRole('dialog')).toBeNull();
   });
@@ -85,7 +85,8 @@ describe('QuizScreen — ceremonias al cerrar (46.7)', () => {
   it('sin hitos de nivel 4: sin ceremonia, suena el cierre de sesión', async () => {
     await sesionDeUna([{ type: 'combo_multiplier', payload: { multiplier: 2 } }]);
     await screen.findByText('Habilidades de esta sesión').catch(() => null);
-    await waitFor(() => expect(emit).toHaveBeenCalledWith({ type: 'session_end' }));
+    // 46.7b: el cierre lleva la nota de la sesión (1/1 → S).
+    await waitFor(() => expect(emit).toHaveBeenCalledWith({ type: 'session_end', value: fx.GRADE_RANK.S }));
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(screen.queryByRole('region', { name: 'También en esta sesión' })).toBeNull();
   });

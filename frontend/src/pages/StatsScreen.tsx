@@ -5,8 +5,10 @@ import { BandChip } from '../components/common/BandChip';
 import { bandForSkill } from '../lib/evidenceBand';
 import { useApi } from '../hooks/useApi';
 import { progress as progressApi } from '../services/api';
+import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './StatsScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 // ADR-60: ni la ruta ni la skill se enseñan como % del modelo mientras no
 // esté calibrado. La ruta, por skills dominadas (un hecho); la skill, por banda.
@@ -50,13 +52,13 @@ export function StatsScreen() {
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('stats.byTrack')}</h2>
-        {dash.loading && <p className={styles.muted}>{t('stats.loading')}</p>}
+        {dash.loading && <Loading label={t('stats.loading')} shape="line" />}
         {!dash.loading && started.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
-        <ul className={styles.list}>
+        <StaggerList className={styles.list}>
           {started.map((tr) => {
             const name = lang === 'es' ? tr.name_es : tr.name_en;
             return (
-              <li key={tr.track_id}>
+              <StaggerItem key={tr.track_id}>
                 <button type="button" className={styles.row} onClick={() => openTrack(tr.track_id)}>
                   <span className={styles.rowHead}>
                     <span className={styles.rowName}><TrackIcon trackId={tr.track_id} fallback={tr.icon} size={20} /> {name}</span>
@@ -69,14 +71,15 @@ export function StatsScreen() {
                       label={t('a11y.progressMastered', { name })}
                       color="var(--le-blue)"
                       height={4}
+                      grow
                     />
                   )}
                   <span className={styles.rowMeta}>{tr.skills_mastered}/{tr.total_skills} {t('stats.skillsMastered')}</span>
                 </button>
-              </li>
+              </StaggerItem>
             );
           })}
-        </ul>
+        </StaggerList>
         {allTracks.length > started.length && (
           <p className={styles.muted}>{t('stats.notStarted', { count: allTracks.length - started.length })}</p>
         )}
@@ -84,13 +87,13 @@ export function StatsScreen() {
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('stats.bySkill')}</h2>
-        {skills.loading && <p className={styles.muted}>{t('stats.loading')}</p>}
+        {skills.loading && <Loading label={t('stats.loading')} shape="line" />}
         {!skills.loading && attemptedSkills.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
-        <ul className={styles.list}>
+        <StaggerList className={styles.list}>
           {attemptedSkills.slice(0, 12).map((s) => {
             const name = lang === 'es' ? s.name_es : s.name_en;
             return (
-              <li key={s.skill_id} className={styles.item}>
+              <StaggerItem key={s.skill_id} className={styles.item}>
                 <span className={styles.rowHead}>
                   <span className={styles.rowName}>{name}</span>
                   <BandChip band={bandForSkill(s)} />
@@ -100,10 +103,10 @@ export function StatsScreen() {
                   {/* ADR-60: el Elo de la skill, solo para depurar. */}
                   {import.meta.env.DEV && ` · Elo ${Math.round(s.elo_rating)}`}
                 </span>
-              </li>
+              </StaggerItem>
             );
           })}
-        </ul>
+        </StaggerList>
       </section>
     </div>
   );

@@ -11,6 +11,16 @@ import { QuizScreen } from '../pages/QuizScreen';
 import { useAppStore } from '../stores/useAppStore';
 import { quiz as quizApi, progress as progressApi, type QuestionPublic } from '../services/api';
 
+// 46.7b: el número del resumen cuenta hacia arriba en una parte decorativa
+// (`aria-hidden`) y el valor final va aparte para el lector de pantalla. Se
+// comprueba lo que lee el lector: el párrafo sin la parte decorativa.
+function readable(el: Element): string {
+  const clone = el.cloneNode(true) as Element;
+  clone.querySelectorAll('[aria-hidden="true"]').forEach((n) => n.remove());
+  return (clone.textContent ?? '').replace(/\s+/g, ' ').trim();
+}
+const accuracyText = (text: string) => (_: string, el: Element | null) => el?.tagName === 'P' && readable(el) === text;
+
 vi.mock('../services/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/api')>();
   return {
@@ -82,7 +92,7 @@ describe('QuizScreen v2', () => {
     const moved = await screen.findByRole('region', { name: i18n.t('quiz.skillsMoved') });
     expect([...moved.querySelectorAll('[data-band]')].map((e) => e.getAttribute('data-band'))).toEqual(['insufficient', 'insufficient']);
     expect(moved.textContent).not.toMatch(/%/);
-    expect(screen.getByText(/100% de precisión/)).toBeInTheDocument();
+    expect(screen.getByText(accuracyText('100% de precisión'))).toBeInTheDocument();
   });
 
   it('el resumen dice los créditos ganados en la sesión, y nada si no hay', async () => {
@@ -104,7 +114,7 @@ describe('QuizScreen v2', () => {
     fireEvent.keyDown(window, { key: '2' });
     await screen.findByText('Uno más uno es dos.');
     fireEvent.keyDown(window, { key: 'Enter' });
-    await screen.findByText(/100% de precisión/);
+    await screen.findByText(accuracyText('100% de precisión'));
     // Ni el texto ni la clave cruda de i18n («quiz.creditsEarned»).
     expect(screen.queryByText(/cr[eé]dit/i)).toBeNull();
   });

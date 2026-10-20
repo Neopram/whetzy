@@ -27,11 +27,21 @@ class DuelAnswerRequest(BaseModel):
     response_time_ms: int
 
 
+class DuelRivalAnswer(BaseModel):
+    """Lo que hizo el rival en esta misma pregunta (su partida ya grabada)."""
+
+    correct: bool
+    response_time_ms: int
+
+
 class DuelAnswerResponse(BaseModel):
     duel_id: str
     answers_so_far: int
     completed: bool
     opponent_completed: bool
+    # Solo si el rival ya terminó: quien juega segundo ve, tras contestar cada
+    # pregunta, cómo le fue al otro en ella. Nunca antes de contestarla.
+    rival: DuelRivalAnswer | None = None
 
 
 class DuelPlayerResult(BaseModel):
