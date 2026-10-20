@@ -1,5 +1,10 @@
 # Codemagic CI/CD — Whetzy mobile builds
-# Free tier: 500 build minutes/month  (https://codemagic.io/pricing/)
+# Plan gratuito (cuenta personal), comprobado el 2026-10-20 en
+# https://docs.codemagic.io/billing/pricing/ (actualizada el 2026-09-21):
+#   500 minutos/mes SOLO en macOS M2 (`mac_mini_m2`); Linux y Windows NO tienen
+#   minutos gratis (0,045 $/min). Las máquinas macOS traen el SDK de Android,
+#   Gradle y JDK 17 (https://docs.codemagic.io/specs-macos/xcode-26-4, 2026-09-06),
+#   así que el APK de depuración también sale de los minutos gratis.
 # iOS requires Apple Developer Program (H.2) — certificates set up via Codemagic UI
 # Android signing keystore configured via Codemagic environment variables
 #
@@ -65,15 +70,16 @@ workflows:
         submit_as_draft: true
 
   # ── iOS release ─────────────────────────────────────────────────────────────
-  # BLOCKED: requires macOS runner (paid plan) or Codemagic Mac mini
-  # Free tier only runs Linux — iOS builds need to be triggered from a Mac
-  # or upgrade to paid plan ($299/month for Mac mini fleet).
-  # ALTERNATIVE (free): GitHub Actions with self-hosted macOS runner (your own Mac)
-  # or use EAS Build (Expo) if migrating to Expo — free tier 30 builds/month.
+  # BLOQUEADO por H.2, no por Codemagic: `mac_mini_m2` es justo la máquina de los
+  # 500 minutos gratis (ver cabecera). Lo que falta es firmar: certificado,
+  # perfil de aprovisionamiento y clave de App Store Connect, que solo da el
+  # Apple Developer Program de pago. (El comentario anterior decía que el plan
+  # gratuito era solo Linux y que esta máquina era de pago; la página de precios
+  # de 2026-09-21 dice lo contrario.)
   ios-release:
-    name: iOS — Release IPA  [REQUIRES PAID PLAN or Mac runner]
+    name: iOS — Release IPA  [BLOQUEADO por H.2]
     max_build_duration: 90
-    instance_type: mac_mini_m2   # paid
+    instance_type: mac_mini_m2
     environment:
       groups:
         - ios_credentials  # APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY
@@ -118,17 +124,19 @@ workflows:
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
 
-  # ── Android CI (on every PR) ─────────────────────────────────────────────────
-  android-ci:
-    name: Android — PR build check
+  # ── Android debug (manual) ───────────────────────────────────────────────────
+  # APK de depuración para instalar a mano en un teléfono (docs/RUNBOOK.md, «App
+  # Android de depuración»). Sin keystore, sin publicar, sin Play Console (H.3).
+  # Sin `triggering`: solo arranca a mano desde la web de Codemagic, para no
+  # gastar los 500 minutos en cada PR. Sustituye a `android-ci`, que corría en
+  # linux_x2 (sin minutos gratis) en cada pull request.
+  android-debug:
+    name: Android — APK de depuración
     max_build_duration: 30
-    instance_type: linux_x2
+    instance_type: mac_mini_m2
     environment:
       node: 20
       java: 17
-    triggering:
-      events:
-        - pull_request
     scripts:
       - *node_setup
       - name: Debug build

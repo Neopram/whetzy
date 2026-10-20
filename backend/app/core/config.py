@@ -95,6 +95,10 @@ class Settings(BaseSettings):
             "https://whetzy.com",
             "https://www.whetzy.com",
             "https://whetzy.pages.dev",
+            # La app de Capacitor (frontend/capacitor.config.ts, `server.hostname`):
+            # Android la sirve por https y iOS por su esquema propio.
+            "https://app.whetzy.com",
+            "capacitor://app.whetzy.com",
         ]
     )
 

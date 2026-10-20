@@ -68,7 +68,7 @@
 | 20 | Verificación masiva código ↔ docs ↔ prod | 1/1 | 100 % | — |
 | 19 | Lo que Educative y las tiendas exigen — social login, bootcamps, proy… | 2/8 | 29 % | 19.2, 19.3, 19.7, 19.8, 19.9, 19.10 |
 | 18 | Techo de código — todo el catálogo, sin racionar | 1/5 | 20 % | 18.9, 18.10, 18.11, 18.12 |
-| 17 | De quiz a escuela + release definitivo | 0/5 | 0 % | 17.5, 17.6, 17.7, 17.10, 17.14 |
+| 17 | De quiz a escuela + release definitivo | 0/7 | 0 % | 17.5, 17.6, 17.7, 17.10, 17.14, 17.15 +1 |
 | 16 | CI en rojo | 0/3 | 0 % | — |
 | 14 | La cuña | 0/6 | 0 % | 14.7, 14.8, 14.9, 14.10, 14.13, 14.14 |
 | 11 | Superioridad medible | 1/3 | 50 % | 11.8, 11.9 |
@@ -117,7 +117,9 @@
 | 17.6 | **2** | **UI de clase mundial, medida** | TODO | → LEDGER_HISTORY.md §E |
 | 17.7 | **4** | **Vídeos explicativos generados desde código** | TODO | → LEDGER_HISTORY.md §E |
 | 17.10 | **3** | **Re-puntuar frente a la competencia con lo anterior hecho** | TODO | → LEDGER_HISTORY.md §E |
-| 17.14 | **1** | Compras dentro de la app (la antigua 7.6, sin fila desde hace mese… | **PARCIAL** | backend hecho (`POST /billing/revenuecat/webhook`, 2026-09-27); falta SDK/UI nativa (H.2, H.3) → §T |
+| 17.14 | **1** | Compras dentro de la app (la antigua 7.6, sin fila desde hace mese… | **PARCIAL** | backend hecho (webhook RevenueCat); SDK/UI: Test Store sin consolas, espera decisión del dueño (STORE_LISTING §4) → §T |
+| 17.15 | **1** | APK de depuración instalable sin Play Console (D.1) | PARCIAL (preparado, no verificado: smoke en dispositivo) | RUNBOOK «App Android de depuración» |
+| 17.16 | **2** | Avisos nativos (FCM/APNs): la app solo tiene Web Push | TODO | RUNBOOK «App Android de depuración» |
 
 **Verdad que condiciona toda la serie:** H.11 cerrado 2026-09-18 (frontend desplegado). Hasta que el dueño cierre **H.SEED** (cargar el…
 
