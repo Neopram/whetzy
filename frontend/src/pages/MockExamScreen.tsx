@@ -17,6 +17,7 @@ import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
 import { showToast } from '../components/common/Toast';
 import { useBackGuard } from '../lib/screenHistory';
 import styles from './MockExamScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 type Phase = 'intro' | 'running' | 'grading' | 'result';
 /** `mock` rehearses the real exam; `certifying` is the paid sitting that can earn a certificate (38.7). */
@@ -262,7 +263,7 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
   }
 
   if (!current) {
-    return <div className={styles.screen}><p className={styles.intro}>{t('loading')}</p></div>;
+    return <div className={styles.screen}><Loading label={t('loading')} shape="card" /></div>;
   }
 
   return (

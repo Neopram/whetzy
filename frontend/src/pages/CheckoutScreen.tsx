@@ -5,6 +5,7 @@ import { ApiError, auth, billing, exams, type UserRead } from '../services/api';
 import { loadPaddle, parseCheckoutRequest, type PaddleEvent } from '../lib/paddle';
 import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
 import styles from './CheckoutScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 /**
  * Página de pago (H.29): `/checkout?plan=plus|pro` o
@@ -174,7 +175,7 @@ export function CheckoutScreen() {
       <h1 className={styles.title}>{t('checkout.title', { plan: planName })}</h1>
       {request.current?.plan === 'certification' && <RetiredCertNotice trackId={request.current.trackId} />}
 
-      {phase === 'loading' && <p className={styles.body}>{t('checkout.loading')}</p>}
+      {phase === 'loading' && <Loading label={t('checkout.loading')} shape="line" />}
       {phase === 'consent' && (
         <>
           {request.current?.plan !== 'certification' && <p className={styles.body}>{t('checkout.renewalNotice')}</p>}

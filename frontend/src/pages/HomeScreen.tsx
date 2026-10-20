@@ -17,6 +17,7 @@ import { biggestLever } from '../lib/readinessLever';
 import { LeverCard } from '../components/readiness/LeverCard';
 import styles from './HomeScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 // Saludo entero por clave: «Buenos» + «noches» salía «Buenos noches».
 function greetingKey(): 'home.greetingMorning' | 'home.greetingAfternoon' | 'home.greetingEvening' {
@@ -360,7 +361,7 @@ export function HomeScreen() {
                 />
               )}
             </div>
-            {missions.loading && <p className={styles.muted}>{t('home.loading')}</p>}
+            {missions.loading && <Loading label={t('home.loading')} shape="line" />}
             {missions.data?.map((m) => {
               const name = lang === 'es' ? m.mission.name_es : m.mission.name_en;
               return (

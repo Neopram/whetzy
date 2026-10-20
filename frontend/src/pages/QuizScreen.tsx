@@ -29,6 +29,7 @@ import { useGlossary } from '../hooks/useGlossary';
 import { parseQuestion } from '../lib/question';
 import { useBackGuard } from '../lib/screenHistory';
 import styles from './QuizScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 // Monaco is ~2 MB — lazy-load so the initial bundle stays small.
 const MonacoCodeEditor = lazy(() =>
@@ -997,7 +998,7 @@ function QuizLoader() {
   return (
     <div className={styles.summary} role="status">
       <span className={styles.loaderDot} aria-hidden="true" />
-      <p className={styles.summaryAccuracy}>{t('loading')}</p>
+      <Loading label={t('loading')} shape="card" />
     </div>
   );
 }

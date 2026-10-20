@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useApi } from '../../hooks/useApi'
 import { instructor } from '../../services/api'
 import styles from './AnalyticsTab.module.css'
+import { Loading } from '../common/Loading'
 
 export default function AnalyticsTab() {
   const { t } = useTranslation()
@@ -9,7 +10,7 @@ export default function AnalyticsTab() {
 
   const formatPrice = (cents: number) => `€${(cents / 100).toFixed(2)}`
 
-  if (loading) return <div className={styles.loading}>{t('instructor.common.loading')}</div>
+  if (loading) return <Loading label={t('instructor.common.loading')} shape="line" />
   if (error || !data) return <div className={styles.loading}>{t('instructor.common.error')}</div>
 
   const metricas = [

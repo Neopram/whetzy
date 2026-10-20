@@ -25,6 +25,7 @@ import {
 import { canPractice } from '../lib/nextStep';
 import styles from './TracksScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 type View = 'curriculum' | 'map' | 'glossary';
 type Filter = 'all' | 'learn' | 'cert';
@@ -133,7 +134,7 @@ function Catalogue({
         ))}
       </div>
 
-      {loading && <p className={styles.muted}>{t('tracks.loading')}</p>}
+      {loading && <Loading label={t('tracks.loading')} shape="line" />}
 
       <ul className={styles.catalogue}>
         {shown.map((tr) => {
@@ -224,7 +225,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
       </button>
 
       {retiredCert && (
-        <p className={styles.certRetiredNotice} role="status">
+        <p className={styles.certRetiredNotice} role="status" data-testid="retired-cert-notice">
           {t('tracks.certRetiredNotice', { code: retiredCert.code, replacement: retiredCert.replacement })}
         </p>
       )}
@@ -389,9 +390,9 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
           {view === 'glossary' ? (
             <GlossaryView track={track.id} lang={lang} />
           ) : cur.loading ? (
-            <p className={styles.muted}>{t('tracks.loading')}</p>
+            <Loading label={t('tracks.loading')} shape="line" />
           ) : cur.error || !cur.data ? (
-            <p className={styles.muted}>{cur.error ?? t('tracks.loading')}</p>
+            cur.error ? <p className={styles.muted}>{cur.error}</p> : <Loading label={t('tracks.loading')} shape="line" />
           ) : view === 'map' ? (
             <ProgressMap
               modules={modules}
@@ -656,7 +657,7 @@ function GlossaryView({ track, lang }: { track: string; lang: 'es' | 'en' }) {
     );
   }, [gloss.data, q]);
 
-  if (gloss.loading) return <p className={styles.muted}>{t('tracks.loading')}</p>;
+  if (gloss.loading) return <Loading label={t('tracks.loading')} shape="line" />;
   if (gloss.error) return <p className={styles.muted}>{gloss.error}</p>;
 
   return (

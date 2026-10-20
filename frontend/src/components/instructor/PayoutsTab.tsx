@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useApi } from '../../hooks/useApi'
 import { instructor } from '../../services/api'
 import styles from './PayoutsTab.module.css'
+import { Loading } from '../common/Loading'
 
 export default function PayoutsTab() {
   const { t, i18n } = useTranslation()
@@ -13,7 +14,7 @@ export default function PayoutsTab() {
       year: 'numeric',
     })
 
-  if (loading) return <div className={styles.container}>{t('instructor.common.loading')}</div>
+  if (loading) return <Loading label={t('instructor.common.loading')} shape="line" />
   if (error) return <div className={styles.container}>{t('instructor.common.error')}</div>
 
   return (

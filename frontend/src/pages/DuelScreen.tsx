@@ -15,6 +15,7 @@ import { parseQuestion } from '../lib/question';
 import { showToast } from '../components/common/Toast';
 import { RankingTabs } from '../components/layout/RankingTabs';
 import styles from './DuelScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 type View = 'list' | 'challenge-modal' | 'playing' | 'result';
 
@@ -271,7 +272,7 @@ export function DuelScreen() {
       </div>
 
       {loading ? (
-        <p className={styles.muted} role="status">{t('duel.loading')}</p>
+        <Loading label={t('duel.loading')} shape="list" />
       ) : myDuels.length === 0 ? (
         <p className={styles.empty}>{t('duel.noDuels')}</p>
       ) : (

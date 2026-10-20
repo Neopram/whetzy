@@ -7,6 +7,7 @@ import { retiredCertificationFor } from '../lib/retiredCertifications'
 import { TRACK_GROUPS, relatedCerts } from '../lib/trackGroups'
 import '../styles/onboarding.css'
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 /**
  * 43.3 (ADR-65 D2): objetivo → ruta de aprendizaje (agrupadas) → certificación
@@ -122,7 +123,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
           <>
             <h2>{t('onboarding.trackTitle')}</h2>
             {tracksFailed && <p role="alert">{t('onboarding.tracksFailed')}</p>}
-            {!tracks && !tracksFailed && <p>{t('common.loading')}</p>}
+            {!tracks && !tracksFailed && <Loading label={t('common.loading')} shape="line" />}
             {tracks && TRACK_GROUPS.map((g) => {
               const available = g.tracks.filter((id) => byId.has(id))
               if (available.length === 0) return null

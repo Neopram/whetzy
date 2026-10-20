@@ -10,6 +10,7 @@ import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
 import { LeverCard } from '../components/readiness/LeverCard';
 import { biggestLever } from '../lib/readinessLever';
 import styles from './ReadinessScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 interface Props {
   trackId: string;
@@ -44,7 +45,7 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
   if (loading) {
     return (
       <div className={styles.screen}>
-        <p className={styles.muted} role="status">{t('loading')}</p>
+        <Loading label={t('loading')} shape="card" />
       </div>
     );
   }

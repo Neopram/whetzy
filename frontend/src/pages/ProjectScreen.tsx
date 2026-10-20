@@ -12,6 +12,7 @@ import {
 } from '../services/api';
 import styles from './ProjectScreen.module.css';
 import { GameIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 const MonacoCodeEditor = lazy(
   () => import('../components/quiz/MonacoCodeEditor').then((m) => ({ default: m.MonacoCodeEditor }))
@@ -54,7 +55,7 @@ function ProjectList({ onSelect }: { onSelect: (slug: string) => void }) {
         <h1 className={styles.title}>{t('project.title')}</h1>
       </div>
 
-      {listing.loading && <p className={styles.loading}>{t('home.loading')}</p>}
+      {listing.loading && <Loading label={t('home.loading')} shape="line" />}
 
       {listing.data && listing.data.length === 0 && (
         <p className={styles.empty}>{t('project.noProjects')}</p>
@@ -235,8 +236,8 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
       <div className={styles.screen}>
         <div className={styles.header}>
           <button className={styles.backBtn} onClick={onBack} aria-label={t('common.back')}><span aria-hidden="true">←</span></button>
-          <span className={styles.title}>{t('home.loading')}</span>
         </div>
+        <Loading label={t('home.loading')} shape="card" />
       </div>
     );
   }

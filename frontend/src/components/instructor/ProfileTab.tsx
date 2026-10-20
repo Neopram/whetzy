@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useApi } from '../../hooks/useApi'
 import { instructor, type InstructorProfile } from '../../services/api'
 import styles from './ProfileTab.module.css'
+import { Loading } from '../common/Loading'
 
 const EMPTY: InstructorProfile = { display_name: '', bio: null, avatar_url: null, website: null }
 
@@ -41,7 +42,7 @@ export default function ProfileTab() {
     }
   }
 
-  if (fetching) return <div className={styles.container}>{t('instructor.common.loading')}</div>
+  if (fetching) return <Loading label={t('instructor.common.loading')} shape="line" />
   if (loadError) return <div className={styles.container}>{t('instructor.common.error')}</div>
 
   return (
