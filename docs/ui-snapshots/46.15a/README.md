@@ -19,6 +19,16 @@ Evidencia del PR de la fila 46.15, bloque A (`docs/PLAN_UI_AVANZADA.md` §7.5).
   - Cada paso entra desplazándose (~0,2 s).
   - Solo hay entrada, sin salida: con salida, el paso nuevo esperaba a que el viejo se fuera y el toque parecía no responder. Dos tests del alta lo cazaron.
 
+- **`prueba-puntos-es-390.png`:** la prueba de nivel tras la primera respuesta.
+  - Hay un punto por pregunta respondida. El último se llena con un pulso.
+  - Los puntos son decorativos (`aria-hidden`), porque «Pregunta n de 20» ya lo dice en texto.
+  - El e2e exige que el punto lleno tenga color: el primer intento usaba un token que no existe (`--le-primary`) y ningún test lo veía.
+  - Al terminar, el nivel en palabras (ADR-60) aparece con un desplazamiento corto. Está cubierto en vitest; no hay captura porque exige contestar las 20.
+
+**Lo que del bloque A no se hace, y por qué**
+- **Check dibujado en la tarjeta elegida del alta:** el paso avanza al tocar. Para ver el check habría que añadir una pausa a cada paso, y el alta es el camino a la primera pregunta (TTFQ). El cambio de paso ya confirma el toque.
+- **Botón «enviando» sin cambiar de tamaño:** el botón ya es de ancho completo (`full`), así que el ancho no cambia. El alto no lo he medido.
+
 **Arreglo de contraste encontrado aquí (no lo introdujo este PR)**
 
 | Tema | `.error` en `master` (`--le-red-dark`) | Con `--le-danger-text` |

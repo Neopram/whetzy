@@ -5,6 +5,8 @@
  * - Verificar el correo y «te enviamos el enlace» dibujan un check cuando el
  *   servidor lo confirma.
  * - El alta cambia de paso con un desplazamiento lateral.
+ * - La prueba de nivel marca un punto por pregunta respondida y el nivel
+ *   estimado (en palabras, ADR-60) aparece al terminar.
  * Con movimiento reducido no tiembla, no se dibuja y no se desplaza nada.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -14,7 +16,8 @@ import { AuthScreen } from '../pages/AuthScreen';
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
 import { VerifyEmailPage } from '../pages/VerifyEmailPage';
 import OnboardingScreen from '../pages/OnboardingScreen';
-import { ApiError, auth, content } from '../services/api';
+import { PlacementScreen } from '../pages/PlacementScreen';
+import { ApiError, auth, content, placement } from '../services/api';
 
 let reduce = false;
 vi.mock('framer-motion', async (importOriginal) => {
@@ -27,6 +30,7 @@ vi.mock('../services/api', async (importOriginal) => {
     ...actual,
     auth: { ...actual.auth, oauthProviders: vi.fn(), login: vi.fn(), register: vi.fn(), requestPasswordReset: vi.fn(), verifyEmail: vi.fn(), resendVerification: vi.fn() },
     content: { ...actual.content, tracks: vi.fn() },
+    placement: { start: vi.fn(), answer: vi.fn(), result: vi.fn() },
   };
 });
 
@@ -83,5 +87,54 @@ describe('Entrada (46.15 A)', () => {
   it('el alta cambia de paso con desplazamiento', async () => {
     render(<OnboardingScreen onDone={() => {}} />);
     expect(await screen.findByTestId('onboarding-step')).toHaveAttribute('data-fx', 'slide');
+  });
+});
+
+const pq = (id: string) => ({
+  id, skill_id: 'sk010101', type: 'mcq' as const, difficulty_tier: 'easy' as const,
+  question_es: `Enunciado ${id}`, question_en: `Stem ${id}`,
+  options_es: ['uno', 'dos'], options_en: ['one', 'two'],
+  correct_answer_es: null, correct_answer_en: null, expected_time_ms: 30000,
+});
+
+async function placementAnswered(finished: boolean) {
+  const mock = (f: unknown) => f as ReturnType<typeof vi.fn>;
+  mock(placement.start).mockResolvedValue({ session_id: 's1', track_id: 'track01', question: pq('q1'), questions_answered: 0 });
+  mock(placement.answer).mockResolvedValue({
+    correct: true, ability_estimate: 0.4, ability_se: 0.5, questions_answered: 1,
+    finished, next_question: finished ? null : pq('q2'),
+  });
+  mock(placement.result).mockResolvedValue({
+    session_id: 's1', track_id: 'track01', ability_estimate: 0.4, ability_se: 0.3, reliability: 0.9,
+    total_questions: 20, correct: 14, accuracy: 0.7, module_recommendations: [],
+  });
+  render(<PlacementScreen trackId="track01" />);
+  fireEvent.click(screen.getByRole('button', { name: /comenzar|empezar/i }));
+  fireEvent.click(await screen.findByRole('button', { name: /dos/ }));
+}
+
+describe('Prueba de nivel (46.15 A)', () => {
+  it('un punto por pregunta respondida; el último se llena con efecto', async () => {
+    await placementAnswered(false);
+    const dots = await screen.findByTestId('placement-dots');
+    await waitFor(() => expect(dots.querySelectorAll('[data-done]')).toHaveLength(1));
+    expect(dots.children).toHaveLength(20);
+    expect(dots).toHaveAttribute('aria-hidden', 'true'); // «Pregunta n de 20» ya lo dice en texto
+    expect(dots.querySelector('[data-done]')).toHaveAttribute('data-fx', 'fill');
+  });
+
+  it('al terminar, el nivel en palabras aparece con efecto', async () => {
+    await placementAnswered(true);
+    const level = await screen.findByTestId('placement-level', {}, { timeout: 2000 });
+    expect(level).toHaveAttribute('data-fx', 'reveal');
+    expect(level.textContent).not.toMatch(/%/);
+  });
+
+  it('con movimiento reducido, puntos y nivel sin efecto', async () => {
+    reduce = true;
+    await placementAnswered(true);
+    await waitFor(() => expect(screen.getByTestId('placement-dots').querySelectorAll('[data-done]')).toHaveLength(1));
+    expect(screen.getByTestId('placement-dots').querySelector('[data-done]')).not.toHaveAttribute('data-fx');
+    expect(await screen.findByTestId('placement-level', {}, { timeout: 2000 })).not.toHaveAttribute('data-fx');
   });
 });

@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { formatViolations, uniqueUsername } from './helpers';
+import { completeOnboarding, formatViolations, uniqueUsername } from './helpers';
 
 /**
  * 46.15 bloque A (docs/PLAN_UI_AVANZADA.md §7.5): las pantallas de entrada,
@@ -9,6 +9,7 @@ import { formatViolations, uniqueUsername } from './helpers';
  * - Entrar con una contraseña mala: el error tiembla y se anuncia (`role=alert`).
  * - «Te enviamos el enlace» y «correo verificado»: un check que se dibuja.
  * - El alta cambia de paso con un desplazamiento lateral.
+ * - La prueba de nivel marca un punto por pregunta respondida.
  * Con movimiento reducido no tiembla, no se dibuja y no se desplaza.
  */
 const SHOTS = '../docs/ui-snapshots/46.15a';
@@ -103,4 +104,28 @@ test('movimiento reducido: el error no tiembla y el check sale ya dibujado', asy
   await page.goto('/verify-email?token=e2e');
   await expect(page.getByTestId('drawn-check')).toBeVisible();
   await expect(page.getByTestId('drawn-check')).not.toHaveAttribute('data-fx', /.+/);
+});
+
+test('prueba de nivel: un punto por pregunta respondida (es, 390 px)', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  const username = uniqueUsername('e2e_puntos_');
+  await page.goto('/auth');
+  await page.getByLabel('Nombre').fill('Puntos');
+  await page.getByLabel('Usuario').fill(username);
+  await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
+  await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
+  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
+  await completeOnboarding(page, { takeTest: true });
+  await page.getByRole('button', { name: 'COMENZAR EXAMEN' }).click();
+  await page.getByTestId('placement-option').first().click();
+  await expect(page.getByText('Pregunta 2 de 20')).toBeVisible({ timeout: 15_000 });
+  const done = page.getByTestId('placement-dots').locator('[data-done]');
+  await expect(done).toHaveCount(1);
+  await expect(done).toHaveAttribute('data-fx', 'fill');
+  // El punto lleno tiene color de verdad: un token inexistente lo dejaría transparente.
+  await expect(done).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: `${SHOTS}/prueba-puntos-es-390.png` });
+  await axe0(page);
 });

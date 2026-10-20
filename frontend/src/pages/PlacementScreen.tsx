@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, useReducedMotion } from 'framer-motion';
+import { DUR } from '../lib/motion';
 import { useAppStore } from '../stores/useAppStore';
 import {
   placement as placementApi,
@@ -55,6 +57,7 @@ export function PlacementScreen({ trackId }: Props) {
   const setScreen = useAppStore((s) => s.setScreen);
   const lang = useAppStore((s) => s.user.language);
   const { t } = useTranslation();
+  const reduce = useReducedMotion();
 
   const [fase, setFase] = useState<'intro' | 'cargando' | 'test' | 'resultado' | 'error'>('intro');
   const [fallo, setFallo] = useState<string | null>(null);
@@ -192,9 +195,17 @@ export function PlacementScreen({ trackId }: Props) {
     return (
       <div className={styles.result}>
         <span className={styles.resultIcon}><GameIcon name={pct >= 70 ? 'trofeo' : pct >= 50 ? 'musculo' : 'libro'} size={64} /></span>
-        <h1 className={styles.resultTitle}>
+        {/* 46.15 A: el nivel (en palabras, ADR-60) aparece; no se cuenta, no es una cifra. */}
+        <motion.h1
+          className={styles.resultTitle}
+          data-testid="placement-level"
+          data-fx={reduce ? undefined : 'reveal'}
+          initial={reduce ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: DUR.response }}
+        >
           {t('placement.abilityResult', { level: t(`placement.levels.${nivelDeTheta(resultado.ability_estimate)}`) })}
-        </h1>
+        </motion.h1>
         <p className={styles.resultPct}>
           {t('placement.pctAccuracy', { pct, correct: resultado.correct, total: resultado.total_questions })}
         </p>
@@ -246,6 +257,24 @@ export function PlacementScreen({ trackId }: Props) {
         <span className={styles.headerLabel}>
           {t('placement.questionOf', { n: Math.min(respondidas + 1, PLACEMENT_LENGTH), total: PLACEMENT_LENGTH })}
         </span>
+        {/* 46.15 A: un punto por pregunta respondida. Decorativo: el texto de
+            arriba ya lo dice para el lector de pantalla. */}
+        <div className={styles.dots} data-testid="placement-dots" aria-hidden="true">
+          {Array.from({ length: PLACEMENT_LENGTH }, (_, i) => {
+            const done = i < respondidas;
+            const last = i === respondidas - 1;
+            return (
+              <motion.span
+                key={i}
+                className={done ? `${styles.dot} ${styles.dotDone}` : styles.dot}
+                data-done={done || undefined}
+                data-fx={last && !reduce ? 'fill' : undefined}
+                animate={last && !reduce ? { scale: [1, 1.5, 1] } : undefined}
+                transition={{ duration: DUR.response * 0.75 }}
+              />
+            );
+          })}
+        </div>
       </div>
 
       <div className={styles.abilityIndicator}>
