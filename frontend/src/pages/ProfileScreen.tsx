@@ -12,6 +12,7 @@ import { API_BASE_URL, auth, billing, content, gamification } from '../services/
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
 import { checkoutHref } from '../lib/paddle';
 import styles from './ProfileScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 // Los enlaces de compra llevan el aspecto del Button común (serie 34).
 const LINK_PRIMARY = `${btn.btn} ${btn.primary} ${btn.md} ${btn.full}`;
@@ -220,7 +221,7 @@ export function ProfileScreen() {
           <h2 className={styles.cardTitle}>{t('profile.badges')}</h2>
           <span className={styles.badgeCount}>{earnedIds.size}</span>
         </div>
-        {badges.loading && <p className={styles.muted}>{t('profile.loading')}</p>}
+        {badges.loading && <Loading label={t('profile.loading')} shape="line" />}
         {!badges.loading && allBadges.length === 0 && <p className={styles.muted}>{t('profile.noBadges')}</p>}
         <div className={styles.achievements}>
           {allBadges.map((b) => (

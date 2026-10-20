@@ -5,6 +5,7 @@ import { auth } from '../services/api';
 import { Button } from '../components/common/Button';
 import btn from '../components/common/Button.module.css';
 import styles from './AuthScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 interface Props {
   token: string;
@@ -91,7 +92,7 @@ export function VerifyEmailPage({ token, lang }: Props) {
   }
 
   if (status === 'checking') {
-    return <div className={styles.screen}>{t('auth.loading')}</div>;
+    return <Loading label={t('auth.loading')} shape="card" />;
   }
 
   if (status === 'ok') {

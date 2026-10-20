@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useApi } from '../../hooks/useApi'
 import { instructor, type InstructorCourse } from '../../services/api'
 import styles from './CourseTab.module.css'
+import { Loading } from '../common/Loading'
 
 /**
  * Cursos del instructor autenticado.
@@ -64,7 +65,7 @@ export default function CourseTab() {
     [enviando, formData, reload, t]
   )
 
-  if (loading) return <div className={styles.container}>{t('instructor.common.loading')}</div>
+  if (loading) return <Loading label={t('instructor.common.loading')} shape="line" />
   if (error) return <div className={styles.container}>{t('instructor.common.error')}</div>
 
   const cursos = data ?? []

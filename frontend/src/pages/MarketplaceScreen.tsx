@@ -6,6 +6,7 @@ import { content as contentApi, progress as progressApi, type TrackRead } from '
 import { nextLessonSkillId } from '../lib/nextStep';
 import styles from './MarketplaceScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 /**
  * Catálogo de lo que se puede estudiar.
@@ -65,7 +66,7 @@ export function MarketplaceScreen() {
   }, [tracks.data, tipo, query]);
 
   if (tracks.loading) {
-    return <p className={styles.mktState}>{t('marketplace.loading')}</p>;
+    return <Loading label={t('marketplace.loading')} shape="list" />;
   }
   if (tracks.error) {
     return <p className={`${styles.mktState} ${styles.mktStateError}`}>{t('marketplace.error')}</p>;

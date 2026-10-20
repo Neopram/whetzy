@@ -9,6 +9,7 @@ import {
   type ReferralCodeInfo,
 } from '../services/api';
 import styles from './WalletScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 export default function WalletScreen() {
   const { t, i18n } = useTranslation();
@@ -93,7 +94,7 @@ export default function WalletScreen() {
   }
 
   if (loading) {
-    return <div className={styles.screen}><p className={styles.muted} role="status">{t('common.loading')}</p></div>;
+    return <div className={styles.screen}><Loading label={t('common.loading')} shape="list" /></div>;
   }
 
   // Cada fila lleva su texto propio: el identificador del backend («module_done»,

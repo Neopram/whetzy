@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { CertificateCard } from '../components/certificate/CertificateCard';
 import { certificates, type CertificatePublic } from '../services/api';
 import styles from './CertificateScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 interface Props {
   code: string;
@@ -47,7 +48,7 @@ export function CertificateScreen({ code }: Props) {
   if (state.status === 'loading') {
     return (
       <div className={styles.screen}>
-        <p className={styles.muted}>{t('loading')}</p>
+        <Loading label={t('loading')} shape="card" />
       </div>
     );
   }

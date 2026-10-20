@@ -6,6 +6,7 @@ import { useApi } from '../hooks/useApi';
 import { ApiError, league as leagueApi, type LeagueStandingsResponse } from '../services/api';
 import styles from './LeagueScreen.module.css';
 import { GameIcon, type GameIconName } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 const TIER_META: Record<string, { icon: GameIconName }> = {
   bronze: { icon: 'bronce' }, silver: { icon: 'plata' }, gold: { icon: 'oro' },
@@ -43,7 +44,7 @@ export function LeagueScreen() {
     }
   }
 
-  if (loading) return <div className={styles.screen}><RankingTabs /><p className={styles.loading}>{t('league.loading')}</p></div>;
+  if (loading) return <div className={styles.screen}><RankingTabs /><Loading label={t('league.loading')} shape="list" /></div>;
   if (error) {
     return (
       <div className={styles.screen}>

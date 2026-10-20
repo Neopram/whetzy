@@ -6,6 +6,7 @@ import { bandForDomain, examBand, MIN_EVIDENCE_ANSWERS } from '../lib/evidenceBa
 import { content as contentApi, exams, type CertificationReadiness, type DomainReadiness, type TrackRead } from '../services/api';
 import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
 import styles from './ReadinessScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 interface Props {
   trackId: string;
@@ -51,7 +52,7 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
   if (loading) {
     return (
       <div className={styles.screen}>
-        <p className={styles.muted} role="status">{t('loading')}</p>
+        <Loading label={t('loading')} shape="card" />
       </div>
     );
   }

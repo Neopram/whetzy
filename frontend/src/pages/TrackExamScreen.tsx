@@ -27,6 +27,7 @@ import { showToast } from '../components/common/Toast';
 import { useBackGuard } from '../lib/screenHistory';
 import styles from './MockExamScreen.module.css';
 import own from './TrackExamScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 interface Props {
   /** A track final ('track_final') or a module test-out ('test_out'). */
@@ -217,7 +218,7 @@ export function TrackExamScreen({
   if (!current) {
     return (
       <div className={styles.screen}>
-        <p className={styles.intro}>{t('loading')}</p>
+        <Loading label={t('loading')} shape="card" />
       </div>
     );
   }

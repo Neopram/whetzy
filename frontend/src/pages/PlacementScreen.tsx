@@ -9,6 +9,7 @@ import {
 import { parseQuestion, splitInlineCode } from '../lib/question';
 import styles from './PlacementScreen.module.css';
 import { GameIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 /**
  * Prueba de nivel adaptativa.
@@ -166,7 +167,7 @@ export function PlacementScreen({ trackId }: Props) {
   }
 
   if (fase === 'cargando') {
-    return <div className={styles.intro}><p>{t('common.loading')}</p></div>;
+    return <div className={styles.intro}><Loading label={t('common.loading')} shape="card" /></div>;
   }
 
   if (fase === 'error') {

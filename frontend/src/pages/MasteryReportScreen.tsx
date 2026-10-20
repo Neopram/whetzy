@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { masteryReports, type MasteryReport } from '../services/api';
 import styles from './MasteryReportScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 type State = { status: 'loading' } | { status: 'found'; report: MasteryReport } | { status: 'missing' };
 
@@ -33,7 +34,7 @@ export function MasteryReportScreen({ code }: { code: string }) {
   }, [code]);
 
   if (state.status === 'loading') {
-    return <div className={styles.screen}><p className={styles.muted}>{t('loading')}</p></div>;
+    return <div className={styles.screen}><Loading label={t('loading')} shape="card" /></div>;
   }
   if (state.status === 'missing') {
     return (
