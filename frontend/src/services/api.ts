@@ -537,7 +537,9 @@ export type ServerFxEvent =
   | { type: 'badge_earned'; payload: { badge_id: string } }
   | { type: 'mission_completed'; payload: { mission_id: string } }
   | { type: 'combo_multiplier'; payload: { multiplier: 2 | 3 | 5 } }
-  | { type: 'streak_milestone'; payload: { days: 7 | 30 | 100 } };
+  | { type: 'streak_milestone'; payload: { days: 7 | 30 | 100 } }
+  // 46.11: el servidor gastó un comodín en esta respuesta (escudo en la TopBar).
+  | { type: 'streak_freeze_used'; payload: { days: number } };
 
 export interface QuizAnswerResponse {
   correct: boolean;
