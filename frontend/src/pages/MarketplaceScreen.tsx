@@ -4,6 +4,7 @@ import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { content as contentApi, progress as progressApi, type TrackRead } from '../services/api';
 import { nextLessonSkillId } from '../lib/nextStep';
+import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './MarketplaceScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
 
@@ -113,14 +114,14 @@ export function MarketplaceScreen() {
       {visibles.length === 0 ? (
         <p className={styles.mktState}>{t('marketplace.no_courses')}</p>
       ) : (
-        <ul className={styles.mktGrid}>
+        <StaggerList className={styles.mktGrid}>
           {visibles.map((tr) => {
             const m = masteryPorTrack.get(tr.id);
             // ADR-60: progreso por skills dominadas, no por un % del modelo.
             const empezado = (m?.total ?? 0) > 0 && (m?.mastered ?? 0) > 0;
             const pct = m && m.total > 0 ? Math.round((m.mastered / m.total) * 100) : 0;
             return (
-              <li key={tr.id} className={styles.mktCard} style={{ ['--mkt-accent' as string]: tr.color }}>
+              <StaggerItem key={tr.id} className={styles.mktCard} style={{ ['--mkt-accent' as string]: tr.color }}>
                 <div className={styles.mktCardTop}>
                   <span className={styles.mktIcon} aria-hidden="true"><TrackIcon trackId={tr.id} fallback={tr.icon} size={32} /></span>
                   {tr.is_certification && (
@@ -174,10 +175,10 @@ export function MarketplaceScreen() {
                     {t('marketplace.see_syllabus')}
                   </button>
                 </div>
-              </li>
+              </StaggerItem>
             );
           })}
-        </ul>
+        </StaggerList>
       )}
     </div>
   );

@@ -4,6 +4,7 @@ import i18n from '../i18n';
 import { ApiError, auth, billing, exams, type UserRead } from '../services/api';
 import { loadPaddle, parseCheckoutRequest, type PaddleEvent } from '../lib/paddle';
 import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
+import { DrawnCheck } from '../components/common/DrawnCheck';
 import styles from './CheckoutScreen.module.css';
 
 /**
@@ -198,6 +199,9 @@ export function CheckoutScreen() {
       {phase === 'already' && <p className={styles.body}>{t('checkout.already')}</p>}
       {phase === 'closed' && <p className={styles.body}>{t('checkout.closed')}</p>}
       {phase === 'activating' && <p className={styles.body} role="status">{t('checkout.activating')}</p>}
+      {/* 46.15 E: el éxito se dibuja cuando el servidor confirma el plan, no
+          cuando Paddle dice `checkout.completed` («activando» no lleva check). */}
+      {phase === 'active' && <DrawnCheck />}
       {phase === 'active' && <p className={styles.body} role="status">{t('checkout.active', { plan: planName })}</p>}
       {phase === 'pending' && <p className={styles.body} role="status">{t('checkout.pending')}</p>}
       {phase === 'error' && (
