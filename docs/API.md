@@ -387,6 +387,8 @@ POST /admin/promo/batch ?code_type&credits&count&max_uses&language&campaign_id&e
 GET  /admin/gdpr/deletions               → pending deletion requests
 GET  /admin/gdpr/exports                 → pending data export requests
 POST /admin/gdpr/deletions/{user_id}/cancel → cancel deletion request
+GET  /admin/users ?q&page                → {items[], page, page_size: 20, total} 🔒 owner con 2FA (403 `2fa_required` sin ella) — busca por email, usuario o prefijo de id (`q` ≥ 3 caracteres, 422 si no); cada item: id, username, `email_masked` (`fe***@gmail.com`), created_at, status (active|suspended). No queda en el registro (44.1)
+GET  /admin/users/{user_id}              → {account, plan, progress, security, gdpr} 🔒 owner con 2FA — la ficha (PLAN_BACKOFFICE B3), con el email completo y sin contraseñas; abrirla escribe una fila `view` en `admin_action_log`; 404 si no existe (44.1)
 ```
 
 ### Metrics & analytics

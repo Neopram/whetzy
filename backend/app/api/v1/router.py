@@ -6,6 +6,7 @@ from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
     admin,
+    admin_users,
     analytics,
     auth,
     auth_hardening,
@@ -63,6 +64,7 @@ api_router.include_router(analytics.router, prefix="/analytics", tags=["analytic
 api_router.include_router(billing.router, prefix="/billing", tags=["billing"])
 api_router.include_router(push.router, prefix="/push", tags=["push"])
 api_router.include_router(admin.router, prefix="/admin", tags=["admin"])
+api_router.include_router(admin_users.router, prefix="/admin/users", tags=["admin"])
 api_router.include_router(instructor_marketplace.router, prefix="/instructor", tags=["instructor"])
 api_router.include_router(economy.router, prefix="/economy", tags=["economy"])
 api_router.include_router(experiments.router, prefix="/experiments", tags=["experiments"])
