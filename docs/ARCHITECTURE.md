@@ -110,6 +110,7 @@ were removed on 2026-10-13: nothing in the API used them.
 | `analytics_events` | Funnel/retention event stream |
 | `push_subscriptions` | Web push endpoints (VAPID) |
 | `question_reports` | User-reported broken questions |
+| `admin_action_log` | Back-office: who opened which account and what they did, with the reason and IP (44.1); append-only |
 
 ## Content
 
@@ -173,6 +174,7 @@ never rewrites history.
 | **Tampering** | Inyección en código ejecutable (fill_blank_exec / fix_bug / sql_exec) | Verificación de ejercicios | Ejecución en CI sobre código de referencia; Pyodide/sql.js en sandbox WASM aislado del DOM | `backend/tests/content/test_exec_questions.py`, `frontend/src/hooks/useRuntime.ts` | MITIGADO |
 | **Tampering** | JWT token falsificado (sin verificar firma) | JWT forjado | JWT verificado con `jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])`; `jose` verifica la firma por defecto y un `JWTError` se traduce en 401 | `backend/app/core/security.py:get_token_payload` | MITIGADO |
 | **Repudiation** | Negación de transacciones / cambios | Auditoría de cambios | Event log en `analytics_events` para todas las sesiones; password reset tokens son single-use y registrados | `backend/app/models/analytics.py`, `backend/app/services/analytics.py` | MITIGADO |
+| **Repudiation** | El dueño niega haber abierto o tocado una cuenta | Datos de un alumno | `admin_action_log` solo de añadir: abrir una ficha (`view`) y cada una de las cinco acciones (con motivo obligatorio) dejan actor, afectado, IP y fecha; ninguna ruta lo edita ni lo borra (44.1–44.3) | `backend/app/models/admin.py:AdminActionLog`, `backend/app/api/v1/endpoints/admin_users.py` | MITIGADO |
 | **Repudiation** | Negación de consumo de Groq API | Facturas de IA | Logs de requests a Groq en `audit_log` (estructura preparada en `backend/app/models/auth.py:AuditLog`) | `backend/app/models/auth.py:AuditLog` (la tabla existe; **no hay ajuste que lo active ni escritor que registre las llamadas a Groq** — `grep -rn AUDIT_LOG_ENABLED backend/` sale vacio) | PARCIAL |
 | **Information Disclosure** | Información sensible en Referrer header | Tokens en URL | `Referrer-Policy: strict-origin-when-cross-origin` (JWT nunca en URL, siempre en Authorization) | `backend/app/core/security_middleware.py:27` | MITIGADO |
 | **Information Disclosure** | Exposición de OpenAPI en producción | Documentación de API | `/docs` y `/redoc` deshabilitados fuera de DEBUG mode | `backend/app/main.py:93-94` | MITIGADO |
@@ -184,6 +186,7 @@ never rewrites history.
 | **Denial of Service** | Queries caras sin límite (ranking, búsqueda) | DB load | Sin límite de timeout ni per-user query budget; búsqueda por BM25 es O(n) | `backend/app/services/ai/rag.py` | SIN MITIGAR |
 | **Denial of Service** | Consumo de Groq sin cuota | LLM spend | Cupo diario por usuario de explicaciones y de tokens en /tutor (41.17) | `backend/app/services/tutor_quota.py`, `backend/app/core/config.py:290` | PARCIAL |
 | **Elevation of Privilege** | Acceso a panel /admin sin role=owner | Admin data | `require_owner` decorator en cada ruta `/admin/*` | `backend/app/api/v1/endpoints/admin.py:37-44` | MITIGADO |
+| **Elevation of Privilege** | Sesión robada del dueño → datos de personas | Back-office de usuarios | `require_owner_2fa`: además de `role=owner`, exige la verificación en dos pasos activa (403 `2fa_required`); el listado enmascara el email | `backend/app/api/v1/endpoints/admin_users.py:require_owner_2fa` | MITIGADO (con H.62 hecha) |
 | **Elevation of Privilege** | Escalada via X-Admin-Key débil | Content ingest | `CONTENT_ADMIN_KEY` es secreto env (32+ chars mínimo en secrets, no en código) | `backend/app/core/config.py`, `backend/app/api/v1/endpoints/content.py:27-29` | MITIGADO |
 | **Elevation of Privilege** | Role tampering en JWT payload | Privilejos | JWT decode verifica firma; role viene de DB en `get_current_user`, no de token | `backend/app/core/security.py:get_current_user` (refresh desde DB) | MITIGADO |
 | **Elevation of Privilege** | DKT (PyTorch) RCE si el modelo es malicioso | ML models | DKT es opcional (fallback a EMA); carga de checkpoints verificada contra `backend/app/ml/registry.py` hashes | `backend/app/ml/registry.py`, `backend/app/services/dkt.py` | MITIGADO |
@@ -221,6 +224,9 @@ grep -n "DEFAULT_RATE_LIMIT\|AUTH_RATE_LIMIT" backend/app/core/config.py
 
 # Elevation of Privilege: require_owner en admin
 grep -n "require_owner\|require_admin" backend/app/api/v1/endpoints/admin.py
+
+# Back-office: dueño con 2FA y registro de administración (44.1-44.3)
+grep -n "require_owner_2fa\|AdminActionLog(" backend/app/api/v1/endpoints/admin_users.py
 
 # CSP API
 grep -n "Content-Security-Policy" backend/app/core/security_middleware.py

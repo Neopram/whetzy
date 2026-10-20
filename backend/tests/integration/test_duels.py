@@ -683,6 +683,60 @@ async def test_full_duel_flow(
     assert data["winner_id"] == data["challenger"]["user_id"]
 
 
+async def test_answer_shows_the_rivals_recorded_answer_only_once_they_finished(
+    client: AsyncClient,
+    auth_headers: dict,
+    opponent_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """Partida grabada: quien juega segundo ve, tras contestar cada pregunta,
+    cómo le fue al rival en ESA pregunta (acierto y tiempo). Quien juega primero
+    no ve nada mientras el rival no haya terminado, aunque ya haya contestado
+    alguna."""
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    duel_id = challenge.json()["duel_id"]
+    question_ids = [q["id"] for q in challenge.json()["questions"]]
+
+    # El rival contesta la primera pero no termina: su respuesta existe y aun
+    # así no se enseña, porque su partida no está grabada entera.
+    first = question_ids[0]
+    resp = await client.post(
+        f"{BASE}/{duel_id}/answer",
+        json={"question_id": first, "selected_index": 1, "response_time_ms": 3000},
+        headers=opponent_headers,
+    )
+    assert resp.status_code == 200, resp.text
+    assert resp.json()["rival"] is None
+
+    # El retador acierta las pares (correct_index=0) y tarda distinto en cada una.
+    recorded = {}
+    for i, q_id in enumerate(question_ids):
+        selected, ms = (0 if i % 2 == 0 else 2), 1000 + 250 * i
+        recorded[q_id] = {"correct": selected == 0, "response_time_ms": ms}
+        resp = await client.post(
+            f"{BASE}/{duel_id}/answer",
+            json={"question_id": q_id, "selected_index": selected, "response_time_ms": ms},
+            headers=auth_headers,
+        )
+        assert resp.status_code == 200, resp.text
+        assert resp.json()["rival"] is None
+
+    # El rival juega segundo, en otro orden: cada respuesta trae la del retador
+    # a esa misma pregunta, no a otra.
+    for q_id in reversed(question_ids[1:]):
+        resp = await client.post(
+            f"{BASE}/{duel_id}/answer",
+            json={"question_id": q_id, "selected_index": 1, "response_time_ms": 3000},
+            headers=opponent_headers,
+        )
+        assert resp.status_code == 200, resp.text
+        assert resp.json()["rival"] == recorded[q_id]
+
+
 # ── GET /{id}/join ────────────────────────────────────────────────────────────
 
 

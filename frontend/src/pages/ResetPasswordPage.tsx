@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { auth } from '../services/api';
 import { Button } from '../components/common/Button';
 import styles from './AuthScreen.module.css';
+import { FormError } from '../components/common/FormError';
 
 interface Props {
   token: string;
@@ -57,7 +58,7 @@ export function ResetPasswordPage({ token, onSuccess }: Props) {
             autoComplete="new-password"
           />
         </label>
-        {error && <p className={styles.error}>⚠️ {error}</p>}
+        {error && <FormError className={styles.error} message={error}>⚠️ {error}</FormError>}
         <Button type="submit" size="lg" full disabled={loading} className={styles.submit}>{loading ? t('auth.loading') : t('resetPassword.submit')}</Button>
       </form>
     </div>

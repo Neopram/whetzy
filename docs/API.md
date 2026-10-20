@@ -55,7 +55,7 @@ Sign in with Apple is mandatory before any App Store submission once another OAu
 
 ```
 POST /quiz/start                  → {session_id, question} 🔒
-POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒 — body: session_id, question_id, response_time_ms y, según el tipo, selected_index (opciones), exec_output (fill_blank_exec, fix_bug, sql_exec, js_exec: la salida que dio el código) o answer_text (fill_blank: lo escrito; se compara recortado y sin mayúsculas) o widget_state (interactive, 40.1: el estado serializado del widget, ≤ 20.000 caracteres en JSON; el servidor lo corrige con el checker de la pregunta, `exact` o `unordered`). Sin exec_output/answer_text/widget_state la respuesta es incorrecta: el servidor no cree al cliente. `widget_target` (interactive): el objetivo, solo ya respondida, para que el cliente vuelva a corregir; null en los demás tipos. La pregunta servida trae `interactive: {widget, params, checker}`, sin `target`. `events[]` (46.1b): hitos que cruzó esa respuesta, cada uno una vez — `level_up {level_before, level}`, `badge_earned {badge_id}`, `mission_completed {mission_id}`, `combo_multiplier {multiplier: 2|3|5}` (al llegar el combo a 3, 7 o 15) y `streak_milestone {days: 7|30|100}`; vacío en la reentrega idempotente de un `event_id`
+POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒 — body: session_id, question_id, response_time_ms y, según el tipo, selected_index (opciones), exec_output (fill_blank_exec, fix_bug, sql_exec, js_exec: la salida que dio el código) o answer_text (fill_blank: lo escrito; se compara recortado y sin mayúsculas) o widget_state (interactive, 40.1: el estado serializado del widget, ≤ 20.000 caracteres en JSON; el servidor lo corrige con el checker de la pregunta, `exact` o `unordered`). Sin exec_output/answer_text/widget_state la respuesta es incorrecta: el servidor no cree al cliente. `widget_target` (interactive): el objetivo, solo ya respondida, para que el cliente vuelva a corregir; null en los demás tipos. La pregunta servida trae `interactive: {widget, params, checker}`, sin `target`. `events[]` (46.1b): hitos que cruzó esa respuesta, cada uno una vez — `level_up {level_before, level}`, `badge_earned {badge_id}`, `mission_completed {mission_id}`, `combo_multiplier {multiplier: 2|3|5}` (al llegar el combo a 3, 7 o 15) `streak_milestone {days: 7|30|100}` y `streak_freeze_used {days}` (46.11: esta respuesta gastó un comodín para salvar la racha); vacío en la reentrega idempotente de un `event_id`
 POST /quiz/end                    → {total_questions, correct, accuracy, max_combo, xp_earned, duration_seconds, credits_earned} 🔒 — `credits_earned`: lo que la sesión dejó ganado (módulo, racha, diagnóstico; ECONOMIA §2.2)
 GET  /quiz/review-due             → {questions[], count} 🔒  — FSRS review queue
 ```
@@ -252,6 +252,8 @@ Admin routes require `X-Admin-Key` header.
 ```
 GET  /analytics/dashboard  → funnel + retention dashboard (admin)
 GET  /analytics/funnel     → per-step funnel counts (admin)
+GET  /analytics/fx ?days   → skip rate per fx tier + downgrade flag (admin, 46.6a)
+POST /analytics/client-events → 202 {accepted}; batch of 1–50 fx_emitted / fx_skipped / sound_toggled / haptic_toggled, closed schema (422 otherwise), stored without user_id or IP (ADR-68), 30 batches/min per user 🔒
 ```
 
 Admin routes require `X-Admin-Key` header.
@@ -390,6 +392,8 @@ GET  /admin/gdpr/exports                 → pending data export requests
 POST /admin/gdpr/deletions/{user_id}/cancel → cancel deletion request
 GET  /admin/users ?q&page                → {items[], page, page_size: 20, total} 🔒 owner con 2FA (403 `2fa_required` sin ella) — busca por email, usuario o prefijo de id (`q` ≥ 3 caracteres, 422 si no); cada item: id, username, `email_masked` (`fe***@gmail.com`), created_at, status (active|suspended). No queda en el registro (44.1)
 GET  /admin/users/{user_id}              → {account, plan, progress, security, gdpr} 🔒 owner con 2FA — la ficha (PLAN_BACKOFFICE B3), con el email completo y sin contraseñas; abrirla escribe una fila `view` en `admin_action_log`; 404 si no existe (44.1)
+POST /admin/users/{user_id}/actions/{action} → {ok, action, data} 🔒 owner con 2FA — B4 (44.2): `resend_verification` (409 si ya está verificado; 503 sin proveedor de correo en producción), `close_sessions` (`jwt_version` + refrescos revocados), `unlock` (borra sus intentos fallidos; `data.cleared`), `grant_plan` (`tier` plus|pro, `days` 1–90), `suspend` (cierra también las sesiones; 409 contra uno mismo) y `reactivate`. Body `{reason}` obligatorio (422 vacío o en blanco); cada una deja fila en `admin_action_log` con motivo y datos; acción desconocida o usuario inexistente 404
+GET  /admin/action-log ?page              → {items[], page, page_size: 20, total} 🔒 owner con 2FA — el registro de administración (pestaña «Registro», 44.3), del más nuevo al más viejo: id, created_at, action, reason, data, actor_username, target_user_id, target_username
 ```
 
 ### Metrics & analytics

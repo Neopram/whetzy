@@ -4,7 +4,9 @@ import i18n from '../i18n';
 import { ApiError, auth, billing, exams, type UserRead } from '../services/api';
 import { loadPaddle, parseCheckoutRequest, type PaddleEvent } from '../lib/paddle';
 import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
+import { DrawnCheck } from '../components/common/DrawnCheck';
 import styles from './CheckoutScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 /**
  * Página de pago (H.29): `/checkout?plan=plus|pro` o
@@ -174,7 +176,7 @@ export function CheckoutScreen() {
       <h1 className={styles.title}>{t('checkout.title', { plan: planName })}</h1>
       {request.current?.plan === 'certification' && <RetiredCertNotice trackId={request.current.trackId} />}
 
-      {phase === 'loading' && <p className={styles.body}>{t('checkout.loading')}</p>}
+      {phase === 'loading' && <Loading label={t('checkout.loading')} shape="line" />}
       {phase === 'consent' && (
         <>
           {request.current?.plan !== 'certification' && <p className={styles.body}>{t('checkout.renewalNotice')}</p>}
@@ -198,6 +200,9 @@ export function CheckoutScreen() {
       {phase === 'already' && <p className={styles.body}>{t('checkout.already')}</p>}
       {phase === 'closed' && <p className={styles.body}>{t('checkout.closed')}</p>}
       {phase === 'activating' && <p className={styles.body} role="status">{t('checkout.activating')}</p>}
+      {/* 46.15 E: el éxito se dibuja cuando el servidor confirma el plan, no
+          cuando Paddle dice `checkout.completed` («activando» no lleva check). */}
+      {phase === 'active' && <DrawnCheck />}
       {phase === 'active' && <p className={styles.body} role="status">{t('checkout.active', { plan: planName })}</p>}
       {phase === 'pending' && <p className={styles.body} role="status">{t('checkout.pending')}</p>}
       {phase === 'error' && (

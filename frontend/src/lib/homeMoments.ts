@@ -19,7 +19,13 @@ export interface HomeMoments {
 }
 
 const missionsKey = (userId: string, day: string) => `whetzy_fx_missions_${userId}_${day}`;
-const bandsKey = (userId: string) => `whetzy_fx_bands_${userId}`;
+// 46.15 B: Rutas guarda su propia foto. Con una sola, la pantalla que se
+// abriese primero se comería la subida y la otra no la vería nunca. La de Hoy
+// conserva su clave de siempre para no perder las fotos ya guardadas.
+export type BandScope = 'home' | 'tracks';
+const bandsKey = (userId: string, scope: BandScope) =>
+  scope === 'home' ? `whetzy_fx_bands_${userId}` : `whetzy_fx_bands_${scope}_${userId}`;
+const tracksKey = (userId: string) => `whetzy_fx_tracks_${userId}`;
 
 function read<T>(key: string): T | null {
   try {
@@ -52,9 +58,37 @@ export function missionMoments(
 export function bandMoments(
   userId: string,
   skills: { id: string; band: EvidenceBand }[],
+  scope: BandScope = 'home',
 ): string[] {
-  const before = read<Record<string, EvidenceBand>>(bandsKey(userId));
-  write(bandsKey(userId), { ...before, ...Object.fromEntries(skills.map((s) => [s.id, s.band])) });
+  const before = read<Record<string, EvidenceBand>>(bandsKey(userId, scope));
+  write(bandsKey(userId, scope), { ...before, ...Object.fromEntries(skills.map((s) => [s.id, s.band])) });
   if (!before) return [];
   return skills.filter((s) => s.id in before && RANK[s.band] > RANK[before[s.id]]).map((s) => s.id);
+}
+
+/** 46.12: rutas cuyas skills dominadas subieron desde la última foto, con el
+ *  valor anterior (desde donde cuenta el número). Sin foto, nada. */
+export function trackMoments(
+  userId: string,
+  tracks: { id: string; mastered: number }[],
+): Record<string, number> {
+  const before = read<Record<string, number>>(tracksKey(userId));
+  write(tracksKey(userId), { ...before, ...Object.fromEntries(tracks.map((t) => [t.id, t.mastered])) });
+  if (!before) return {};
+  return Object.fromEntries(
+    tracks.filter((t) => t.id in before && t.mastered > before[t.id]).map((t) => [t.id, before[t.id]]),
+  );
+}
+
+/**
+ * 46.15 D: insignias ganadas desde la última visita a Perfil. Como en las
+ * bandas, sin foto previa no se celebra nada.
+ */
+export function badgeMoments(userId: string, earned: string[]): string[] {
+  const key = `whetzy_fx_badges_${userId}`;
+  const before = read<string[]>(key);
+  write(key, earned);
+  if (!before) return [];
+  const seen = new Set(before);
+  return earned.filter((id) => !seen.has(id));
 }

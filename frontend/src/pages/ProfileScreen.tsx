@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { Button } from '../components/common/Button';
@@ -11,7 +12,11 @@ import { usePushNotifications } from '../hooks/usePushNotifications';
 import { API_BASE_URL, auth, billing, content, gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
 import { checkoutHref } from '../lib/paddle';
+import { preview } from '../lib/feedbackFx';
+import { badgeMoments } from '../lib/homeMoments';
+import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './ProfileScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 // Los enlaces de compra llevan el aspecto del Button común (serie 34).
 const LINK_PRIMARY = `${btn.btn} ${btn.primary} ${btn.md} ${btn.full}`;
@@ -34,6 +39,13 @@ export function ProfileScreen() {
   const { t, i18n: i18nInst } = useTranslation();
 
   const badges = useApi(() => gamification.badges(), []);
+  // 46.15 D: la insignia ganada desde la última visita brilla una vez.
+  const reduceMotion = useReducedMotion();
+  const [newBadges, setNewBadges] = useState<ReadonlySet<string>>(new Set());
+  useEffect(() => {
+    if (!badges.data) return;
+    setNewBadges(new Set(badgeMoments(user.id, badges.data.map((b) => b.badge.id))));
+  }, [badges.data, user.id]);
   // 43.4 (D5): la ruta activa también se cambia desde Yo.
   const activeTrackId = useAppStore((s) => s.activeTrackId);
   const browseTracks = useAppStore((s) => s.browseTracks);
@@ -220,16 +232,24 @@ export function ProfileScreen() {
           <h2 className={styles.cardTitle}>{t('profile.badges')}</h2>
           <span className={styles.badgeCount}>{earnedIds.size}</span>
         </div>
-        {badges.loading && <p className={styles.muted}>{t('profile.loading')}</p>}
+        {badges.loading && <Loading label={t('profile.loading')} shape="line" />}
         {!badges.loading && allBadges.length === 0 && <p className={styles.muted}>{t('profile.noBadges')}</p>}
-        <div className={styles.achievements}>
-          {allBadges.map((b) => (
-            <div key={b.badge.id} className={styles.achievement}>
-              <span className={styles.achIcon}>{b.badge.icon}</span>
-              <span className={styles.achName}>{language === 'es' ? b.badge.name_es : b.badge.name_en}</span>
-            </div>
-          ))}
-        </div>
+        <StaggerList as="div" className={styles.achievements} data-testid="badges-grid">
+          {allBadges.map((b) => {
+            const fresh = newBadges.has(b.badge.id) && !reduceMotion;
+            return (
+              <StaggerItem
+                as="div"
+                key={b.badge.id}
+                className={fresh ? `${styles.achievement} ${styles.achievementNew}` : styles.achievement}
+                data-fx={fresh ? 'new' : undefined}
+              >
+                <span className={styles.achIcon}>{b.badge.icon}</span>
+                <span className={styles.achName}>{language === 'es' ? b.badge.name_es : b.badge.name_en}</span>
+              </StaggerItem>
+            );
+          })}
+        </StaggerList>
       </Card>
 
       <Card>
@@ -350,7 +370,7 @@ export function ProfileScreen() {
             <button
               className={`${styles.toggle} ${soundEnabled ? styles.toggleOn : ''}`}
               type="button"
-              onClick={toggleSound}
+              onClick={() => { toggleSound(); preview('sound'); }}
               role="switch"
               aria-checked={soundEnabled}
               aria-label={t('producto:fx.sound')}
@@ -363,7 +383,7 @@ export function ProfileScreen() {
             <button
               className={`${styles.toggle} ${hapticEnabled ? styles.toggleOn : ''}`}
               type="button"
-              onClick={toggleHaptic}
+              onClick={() => { toggleHaptic(); preview('haptic'); }}
               role="switch"
               aria-checked={hapticEnabled}
               aria-label={t('producto:fx.haptics')}

@@ -110,7 +110,8 @@ describe('QuizScreen — respuesta sin tapar (46.1)', () => {
     await responder({ combo: 2 });
     expect(emit).toHaveBeenCalledWith({ type: 'correct' });
     expect(emitMany).not.toHaveBeenCalled();
-    expect(screen.getByRole('status')).toHaveTextContent('+10 XP');
+    // 46.10: llega al marcador tras salir de la tarjeta (XP_FLIGHT.departMs).
+    expect(await screen.findByRole('status')).toHaveTextContent('+10 XP');
     expect(toastSpy).not.toHaveBeenCalledWith(expect.stringContaining('XP'), 'success');
   });
 

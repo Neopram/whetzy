@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { profiles, type PublicProfile } from '../services/api'
 import styles from './PublicProfileScreen.module.css';
 import { GameIcon } from '../components/common/AppIcon';
+import { StaggerItem, StaggerList } from '../components/common/Stagger';
 
 export default function PublicProfileScreen({ handle }: { handle: string }) {
   const { i18n, t } = useTranslation()
@@ -76,17 +77,17 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
         {profile.certificates.length === 0 ? (
           <p className={styles.empty}>{t('profile.no_certs', 'Todavía sin certificaciones')}</p>
         ) : (
-          <div className={styles.certsList}>
+          <StaggerList as="div" className={styles.certsList} data-testid="public-certs">
             {profile.certificates.map((cert) => (
-              <div key={cert.code} className={styles.certBadge}>
+              <StaggerItem as="div" key={cert.code} className={styles.certBadge}>
                 <span className={styles.certIcon}><GameIcon name="trofeo" size={28} /></span>
                 <div className={styles.certInfo}>
                   <p className={styles.certName}>{lang === 'es' ? cert.track_name_es : cert.track_name_en}</p>
                   <p className={styles.certDate}>{new Date(cert.issued_at).toLocaleDateString()}</p>
                 </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerList>
         )}
       </section>
 
@@ -95,15 +96,15 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
         {profile.projects_completed.length === 0 ? (
           <p className={styles.empty}>{t('profile.no_projects', 'Todavía sin proyectos')}</p>
         ) : (
-          <div className={styles.projectsGrid}>
+          <StaggerList as="div" className={styles.projectsGrid} data-testid="public-projects">
             {profile.projects_completed.map((proj) => (
               // Sin enlace: `/project/<slug>` no es una ruta de la app y llevaba a
               // un 404 (auditoría de pantallas, 2026-10-16).
-              <div key={proj.slug} className={styles.projectCard}>
+              <StaggerItem as="div" key={proj.slug} className={styles.projectCard}>
                 <h3>{lang === 'es' ? proj.name_es : proj.name_en}</h3>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerList>
         )}
       </section>
     </div>

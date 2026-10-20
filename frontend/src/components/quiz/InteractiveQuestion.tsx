@@ -12,6 +12,7 @@ import { check, type Json } from '../../widgets/checkers';
 import { loadWidget, type WidgetDefinition } from '../../widgets/registry';
 import { Button } from '../common/Button';
 import styles from './InteractiveQuestion.module.css';
+import { Loading } from '../common/Loading';
 
 type Load = { status: 'loading' } | { status: 'missing' } | { status: 'ready'; widget: WidgetDefinition };
 
@@ -60,7 +61,7 @@ export function InteractiveQuestion({
   }, [feedback, spec.checker]);
 
   if (load.status === 'loading') {
-    return <p className={styles.note} role="status">{t('interactive.loading')}</p>;
+    return <Loading label={t('interactive.loading')} shape="line" />;
   }
   if (load.status === 'missing') {
     return <p className={styles.note} role="alert">{t('interactive.unavailable')}</p>;

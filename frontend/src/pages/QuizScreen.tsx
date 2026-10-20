@@ -10,8 +10,13 @@ import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { ComboRing, COMBO_STEPS } from '../components/quiz/ComboRing';
 import { Ceremony, CeremonyCards, pickCeremony, type CeremonyEvent } from '../components/quiz/Ceremony';
-import { emit as emitFx, emitMany as emitFxMany } from '../lib/feedbackFx';
+import { cancelFx, COUNT_MS, emit as emitFx, emitMany as emitFxMany, GRADE_RANK } from '../lib/feedbackFx';
+import { CountUp } from '../components/quiz/CountUp';
+import { GameIcon } from '../components/common/AppIcon';
+import { listItemVariants, listVariants } from '../lib/motion';
 import { BandChip } from '../components/common/BandChip';
+import { correctVariants, wrongVariants, XP_FLIGHT } from '../lib/motion';
+import type { Variants } from 'framer-motion';
 import { bandForSkill } from '../lib/evidenceBand';
 import { WhyButton } from '../components/quiz/WhyButton';
 import { GlossaryText } from '../components/quiz/GlossaryText';
@@ -24,6 +29,7 @@ import { useGlossary } from '../hooks/useGlossary';
 import { parseQuestion } from '../lib/question';
 import { useBackGuard } from '../lib/screenHistory';
 import styles from './QuizScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 // Monaco is ~2 MB — lazy-load so the initial bundle stays small.
 const MonacoCodeEditor = lazy(() =>
@@ -49,6 +55,18 @@ function resolveCode(
   if (explicit) return { prose: text, code: explicit };
   return parseQuestion(text);
 }
+
+
+/** Entrada de las opciones y su reacción a la respuesta (46.10). La reacción
+ *  repite `opacity` e `y` de `shown`: framer devuelve al `initial` (oculto) todo
+ *  valor que la variante nueva no nombra, y la opción desaparecía. */
+const SHOWN = { opacity: 1, y: 0 };
+const OPTION_VARIANTS: Variants = {
+  hidden: { opacity: 0, y: 6 },
+  shown: SHOWN,
+  pulse: { ...SHOWN, ...(correctVariants.animate as object) },
+  shake: { ...SHOWN, ...(wrongVariants.animate as object) },
+};
 
 export function QuizScreen() {
   const mode = useAppStore((s) => s.quiz.mode);
@@ -77,7 +95,10 @@ export function QuizScreen() {
   const [lottieSrc, setLottieSrc] = useState<string | null>(null);
   // 46.1: con movimiento reducido no se monta el Player de Lottie.
   const reduceMotion = useReducedMotion();
-  const [xpPop, setXpPop] = useState<{ key: number; xp: number } | null>(null);
+  // 46.10: el «+XP» nace en la tarjeta (`landed: false`) y aterriza en el marcador.
+  const [xpPop, setXpPop] = useState<{ key: number; xp: number; landed: boolean } | null>(null);
+  // «No lo sé» no castiga: ni la opción tiembla ni la correcta late (46.10).
+  const [declaredIdk, setDeclaredIdk] = useState(false);
   // Dominio de la skill que se esta practicando, tal y como lo devuelve el
   // motor BKT al corregir. Empieza en null a proposito: hasta la primera
   // respuesta no hay medicion, y una barra a medias inventada es peor que
@@ -197,6 +218,7 @@ export function QuizScreen() {
     // wording is a decision taken per question, not a mode you fall into.
     setViewLang(language);
     setPickedTerm(null);
+    setDeclaredIdk(false);
   }, [question?.id, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Core answer submission ─────────────────────────────────────────────
@@ -210,7 +232,10 @@ export function QuizScreen() {
         // `selectedIndex` ya no basta para dar por buena una respuesta (2026-10-01).
         const res = await quizApi.answer(sessionId, question.id, selectedIndex, rt, declaredUnknown, undefined, evidence);
         setFeedback(res);
+        setDeclaredIdk(declaredUnknown);
         sessionEvents.current.push(...(res.events ?? []));
+        // 46.11: el comodín gastado lo dice el servidor; la TopBar pone el escudo.
+        if (res.events?.some((e) => e.type === 'streak_freeze_used')) useAppStore.getState().showStreakShield();
         practiced.current.add(question.skill_id);
         setMastery((prev) => res.skill_mastery[question.skill_id] ?? prev);
         setCombo(res.combo);
@@ -239,7 +264,11 @@ export function QuizScreen() {
         } else if (res.correct) {
           // El «+XP» sale junto al marcador de XP, no en un toast que pisaba
           // la barra de progreso (46.1).
-          setXpPop({ key: Date.now(), xp: res.xp_earned });
+          const key = Date.now();
+          setXpPop({ key, xp: res.xp_earned, landed: Boolean(reduceMotion) });
+          if (!reduceMotion) {
+            setTimeout(() => setXpPop((p) => (p && p.key === key ? { ...p, landed: true } : p)), XP_FLIGHT.departMs);
+          }
         } else {
           showToast(t('quiz.incorrect'), 'error');
         }
@@ -354,7 +383,7 @@ export function QuizScreen() {
   const openSummary = useCallback((end: QuizEndResponse) => {
     const picked = pickCeremony(sessionEvents.current);
     setCeremony(picked.ceremony || picked.cards.length > 0 ? { event: picked.ceremony, cards: picked.cards } : null);
-    if (!picked.ceremony) emitFx({ type: 'session_end' });
+    if (!picked.ceremony) emitFx({ type: 'session_end', value: GRADE_RANK[gradeFor(end.accuracy)] });
     if (sessionEvents.current.some((e) => e.type === 'badge_earned')) {
       gamification.badges()
         .then((list) => setBadgeNames(new Map(list.map((b) => [b.badge.id, language === 'es' ? b.badge.name_es : b.badge.name_en]))))
@@ -454,6 +483,7 @@ export function QuizScreen() {
           lang={language}
           onClose={handleClose}
           extra={ceremony && <CeremonyCards cards={ceremony.cards} badgeNames={badgeNames} />}
+          waiting={Boolean(ceremony?.event)}
         />
         {ceremony?.event && (
           <Ceremony
@@ -546,20 +576,26 @@ export function QuizScreen() {
     <div className={styles.statsBar}>
       <span className={`${styles.diffBadge} ${diffClass}`}>{t(`quiz.diff.${question.difficulty_tier}`)}</span>
       {combo > 0 && <ComboRing combo={combo} />}
-      <span className={styles.xpBadge}>
+      <motion.span
+        className={styles.xpBadge}
+        data-testid="xp-badge"
+        // Late una vez cuando aterriza el «+XP» (46.10).
+        animate={xpPop?.landed && !reduceMotion ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+        transition={{ duration: 0.12 }}
+      >
         <b>{xpEarned}</b> XP
-        {xpPop && (
+        {xpPop?.landed && (
           <motion.span
             key={xpPop.key}
+            layoutId="xp-fly"
             className={styles.xpPop}
             role="status"
-            initial={reduceMotion ? false : { opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
+            transition={XP_FLIGHT.flight}
           >
             +{xpPop.xp} XP
           </motion.span>
         )}
-      </span>
+      </motion.span>
     </div>
   );
 
@@ -618,6 +654,7 @@ export function QuizScreen() {
 
   const feedbackPanel = answered && feedback && (
     <motion.div
+      data-testid="feedback-panel"
       className={`${styles.explanation} ${feedback.correct ? styles.explanationOk : ''}`}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -632,6 +669,11 @@ export function QuizScreen() {
         <p className={styles.explanationHeader}>
           {feedback.correct ? t('quiz.correct') : t('quiz.explanation')}
         </p>
+        {xpPop && !xpPop.landed && (
+          <motion.span key={xpPop.key} layoutId="xp-fly" className={styles.xpChip} aria-hidden="true">
+            +{xpPop.xp} XP
+          </motion.span>
+        )}
       </div>
       <p className={styles.explanationText}>
         <GlossaryText
@@ -876,6 +918,15 @@ export function QuizScreen() {
           } else if (i === selected) {
             cls += ` ${styles.selected}`;
           }
+          // 46.10: con la respuesta del servidor, la correcta late y la elegida mal tiembla.
+          const reaction =
+            !answered || !feedback || declaredIdk || reduceMotion
+              ? undefined
+              : i === feedback.correct_index
+                ? 'pulse'
+                : i === selected
+                  ? 'shake'
+                  : undefined;
           return (
             <motion.button
               key={i}
@@ -883,8 +934,10 @@ export function QuizScreen() {
               className={cls}
               onClick={() => handleAnswer(i)}
               disabled={answered || submitting}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
+              data-fx={reaction}
+              variants={OPTION_VARIANTS}
+              initial="hidden"
+              animate={reaction ?? 'shown'}
               transition={{ delay: i * 0.05, duration: 0.15 }}
               whileTap={{ scale: answered ? 1 : 0.97 }}
             >
@@ -945,7 +998,7 @@ function QuizLoader() {
   return (
     <div className={styles.summary} role="status">
       <span className={styles.loaderDot} aria-hidden="true" />
-      <p className={styles.summaryAccuracy}>{t('loading')}</p>
+      <Loading label={t('loading')} shape="card" />
     </div>
   );
 }
@@ -979,8 +1032,17 @@ function QuizError({
 }
 
 
+/** Nota de la sesión por precisión; la misma que se estampa en el resumen. */
+function gradeFor(accuracy: number): keyof typeof GRADE_RANK {
+  const pct = Math.round(accuracy * 100);
+  return pct >= 90 ? 'S' : pct >= 80 ? 'A' : pct >= 70 ? 'B' : pct >= 60 ? 'C' : 'F';
+}
+
+// Recuento + sello de la nota: el nivel 3 de §6.0 pide ≤ 2,5 s.
+const STAMP_MS = 400;
+
 function SessionSummary({
-  summary, before, practiced, lang, onClose, extra,
+  summary, before, practiced, lang, onClose, extra, waiting = false,
 }: {
   summary: QuizEndResponse;
   before: Map<string, SkillMasteryDetail> | null;
@@ -988,8 +1050,32 @@ function SessionSummary({
   lang: 'es' | 'en';
   onClose: () => void;
   extra?: React.ReactNode;
+  /** 46.7b: con una ceremonia abierta el recuento espera a que se cierre. */
+  waiting?: boolean;
 }) {
   const { t } = useTranslation();
+  const reduce = useReducedMotion();
+  // 46.7b (§6.2): recuento de aciertos, precisión y XP, y la nota se estampa
+  // al final. Con movimiento reducido no hay recuento; «Saltar recuento» lo
+  // termina desde el primer fotograma y corta los tics que queden.
+  const [phase, setPhase] = useState<'waiting' | 'counting' | 'done'>(reduce ? 'done' : waiting ? 'waiting' : 'counting');
+  const [skipped, setSkipped] = useState(false);
+  useEffect(() => {
+    if (phase !== 'waiting' || waiting) return;
+    setPhase('counting');
+  }, [phase, waiting]);
+  useEffect(() => {
+    if (phase !== 'counting') return;
+    const id = window.setTimeout(() => setPhase('done'), COUNT_MS + STAMP_MS);
+    return () => window.clearTimeout(id);
+  }, [phase]);
+  const skip = () => {
+    cancelFx();
+    setSkipped(true);
+    setPhase('done');
+  };
+  const counting = phase === 'counting';
+  const finished = phase === 'done';
   const startLesson = useAppStore((s) => s.startLesson);
   const startQuiz = useAppStore((s) => s.startQuiz);
   const [after, setAfter] = useState<SkillMasteryDetail[] | null>(null);
@@ -1003,7 +1089,10 @@ function SessionSummary({
   }, []);
 
   const accuracy = Math.round(summary.accuracy * 100);
-  const grade = accuracy >= 90 ? 'S' : accuracy >= 80 ? 'A' : accuracy >= 70 ? 'B' : accuracy >= 60 ? 'C' : 'F';
+  const grade = gradeFor(summary.accuracy);
+  const count = (value: number, testId: string, format?: (n: number) => string) => (
+    <CountUp value={value} format={format} state={finished ? 'done' : counting ? 'run' : 'idle'} durationMs={COUNT_MS} testId={testId} />
+  );
   const moved = (after ?? [])
     .filter((s) => practiced.includes(s.skill_id))
     .sort((a, b) => a.p_known - b.p_known);
@@ -1016,12 +1105,29 @@ function SessionSummary({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
     >
-      <div className={styles.summaryGrade} data-grade={grade} aria-hidden="true">{grade}</div>
+      {counting && (
+        <button type="button" className={styles.summarySkip} onClick={skip}>
+          {t('producto:fx.summary.skip')}
+        </button>
+      )}
+      <motion.div
+        className={styles.summaryGrade}
+        data-grade={grade}
+        data-testid="summary-grade"
+        aria-hidden="true"
+        // El sello: entra grande y se asienta con una sacudida corta al acabar
+        // el recuento. Si se salta o no hay movimiento, ya está puesto.
+        initial={reduce || skipped ? false : { scale: 1.6, opacity: 0 }}
+        animate={phase === 'waiting' ? { scale: 1.6, opacity: 0 } : { scale: 1, opacity: 1, x: counting ? [0, -4, 4, 0] : 0 }}
+        transition={{ delay: counting ? COUNT_MS / 1000 : 0, duration: STAMP_MS / 1000, ease: 'easeOut' }}
+      >
+        {grade}
+      </motion.div>
       <h1 className={styles.summaryTitle}>{accuracy >= 80 ? t('quiz.excellent') : accuracy >= 60 ? t('quiz.goodJob') : t('quiz.keepGoing')}</h1>
-      <p className={styles.summaryAccuracy}>{accuracy}% {t('quiz.accuracyLabel')}</p>
+      <p className={styles.summaryAccuracy}>{count(accuracy, 'count-accuracy', (n) => `${n}%`)} {t('quiz.accuracyLabel')}</p>
       <div className={styles.summaryStats}>
         <div className={styles.summaryStat}>
-          <span className={styles.summaryStatVal}>{summary.correct}/{summary.total_questions}</span>
+          <span className={styles.summaryStatVal}>{count(summary.correct, 'count-correct', (n) => `${n}/${summary.total_questions}`)}</span>
           <span className={styles.summaryStatLabel}>{t('quiz.correctLabel')}</span>
         </div>
         <div className={styles.summaryStat}>
@@ -1029,12 +1135,23 @@ function SessionSummary({
           <span className={styles.summaryStatLabel}>{t('quiz.maxCombo')}</span>
         </div>
         <div className={styles.summaryStat}>
-          <span className={styles.summaryStatVal}>{summary.xp_earned}</span>
+          <span className={styles.summaryStatVal}>{count(summary.xp_earned, 'count-xp')}</span>
           <span className={styles.summaryStatLabel}>{t('quiz.xpEarned')}</span>
         </div>
       </div>
       {(summary.credits_earned ?? 0) > 0 && (
-        <p className={styles.summaryAccuracy}>{t('quiz.creditsEarned', { count: summary.credits_earned })}</p>
+        <p className={styles.summaryAccuracy}>
+          {/* Moneda que cae solo si hubo créditos (§6.2). */}
+          <motion.span
+            className={styles.creditCoin}
+            initial={reduce ? false : { y: -14, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: reduce ? 0 : COUNT_MS / 1000, type: 'spring', stiffness: 300, damping: 18 }}
+          >
+            <GameIcon name="gema" size={18} />
+          </motion.span>{' '}
+          {t('quiz.creditsEarned', { count: summary.credits_earned })}
+        </p>
       )}
 
       {extra}
@@ -1042,24 +1159,31 @@ function SessionSummary({
       {moved.length > 0 && (
         <section className={styles.moved} aria-label={t('quiz.skillsMoved')}>
           <h2 className={styles.movedTitle}>{t('quiz.skillsMoved')}</h2>
-          <ul className={styles.movedList}>
+          <motion.ul className={styles.movedList} variants={listVariants} initial={reduce ? false : 'initial'} animate="animate">
             {moved.map((s) => {
               // Sin intentos previos no hay medida «antes»: es nueva, no un 0 %.
               const prev = before?.get(s.skill_id);
               const bBand = prev && prev.attempts > 0 ? bandForSkill(prev) : undefined;
               const name = lang === 'es' ? s.name_es : s.name_en;
+              // Cambió de banda en esta sesión: brilla una vez (§6.2).
+              const changed = bBand !== undefined && bBand !== bandForSkill(s);
               return (
-                <li key={s.skill_id} className={styles.movedItem}>
+                <motion.li
+                  key={s.skill_id}
+                  variants={listItemVariants}
+                  className={`${styles.movedItem} ${changed ? styles.movedChanged : ''}`}
+                  data-changed={changed || undefined}
+                >
                   <span className={styles.movedName}>{name}</span>
                   <span className={styles.movedPct}>
                     {bBand === undefined ? t('quiz.skillNew') : <BandChip band={bBand} />}
                     {' → '}
                     <BandChip band={bandForSkill(s)} />
                   </span>
-                </li>
+                </motion.li>
               );
             })}
-          </ul>
+          </motion.ul>
         </section>
       )}
 

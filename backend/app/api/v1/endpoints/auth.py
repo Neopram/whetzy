@@ -554,7 +554,7 @@ class ResendVerificationRequest(BaseModel):
     email: str
 
 
-def _require_outbound_email() -> None:
+def require_outbound_email() -> None:
     """H.30: in production with no provider, the `log` fallback sends nothing.
 
     Answering 200 there told users a link was on its way when none ever would be.
@@ -574,35 +574,42 @@ async def resend_verification(
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     """Resend the email verification link (rate limited: max 1 pending token per user)."""
-    _require_outbound_email()
+    require_outbound_email()
     user = await _user_by_email(db, payload.email)
 
     if user and user.is_active and not user.email_verified:
-        # Invalidate any existing unused tokens.
-        existing = await db.execute(
-            select(EmailVerificationToken).where(
-                EmailVerificationToken.user_id == user.id,
-                EmailVerificationToken.used == False,
-            )
-        )
-        for tok in existing.scalars().all():
-            tok.used = True
-
-        raw_token = secrets.token_urlsafe(32)
-        token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
-        evt = EmailVerificationToken(
-            user_id=user.id,
-            token_hash=token_hash,
-            expires_at=datetime.now(UTC) + timedelta(hours=24),
-        )
-        db.add(evt)
-        await db.commit()
-        from app.services import email as email_svc
-        email_svc.send_email_verification(
-            to=user.email, name=user.display_name, token=raw_token, lang=user.language
-        )
+        await send_verification_link(db, user)
 
     return {"message": "If that email is registered and unverified, a new link has been sent."}
+
+
+async def send_verification_link(db: AsyncSession, user: User) -> None:
+    """Invalida los enlaces sin usar y manda uno nuevo de 24 h.
+
+    La usan «reenviar» del alumno y la acción del back-office (44.2).
+    """
+    existing = await db.execute(
+        select(EmailVerificationToken).where(
+            EmailVerificationToken.user_id == user.id,
+            EmailVerificationToken.used == False,
+        )
+    )
+    for tok in existing.scalars().all():
+        tok.used = True
+
+    raw_token = secrets.token_urlsafe(32)
+    token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
+    evt = EmailVerificationToken(
+        user_id=user.id,
+        token_hash=token_hash,
+        expires_at=datetime.now(UTC) + timedelta(hours=24),
+    )
+    db.add(evt)
+    await db.commit()
+    from app.services import email as email_svc
+    email_svc.send_email_verification(
+        to=user.email, name=user.display_name, token=raw_token, lang=user.language
+    )
 
 
 @router.post("/forgot-password", status_code=status.HTTP_200_OK)
@@ -611,7 +618,7 @@ async def forgot_password(
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     """Request a password reset. Always returns 200 to prevent user enumeration."""
-    _require_outbound_email()
+    require_outbound_email()
     user = await _user_by_email(db, payload.email)
 
     if user and user.is_active:

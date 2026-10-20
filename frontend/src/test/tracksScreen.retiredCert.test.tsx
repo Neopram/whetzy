@@ -49,6 +49,7 @@ beforeEach(async () => {
 });
 afterEach(cleanup);
 
+// 46.14: el esqueleto de carga también es role="status"; el aviso se busca por su testid.
 describe('TracksScreen — aviso de certificación retirada (39.24/39.25, UI)', () => {
   it('el catálogo marca con insignia solo la ruta retirada', async () => {
     render(<TracksScreen />);
@@ -65,13 +66,13 @@ describe('TracksScreen — aviso de certificación retirada (39.24/39.25, UI)', 
   it('el detalle no avisa para una ruta normal', async () => {
     render(<TracksScreen />);
     await screen.findByText('Python');
-    expect(screen.queryByRole('status')).toBeNull();
+    expect(screen.queryByTestId('retired-cert-notice')).toBeNull();
   });
 
   it('el detalle avisa con el código y su sustituto para la ruta retirada', async () => {
     useAppStore.setState({ selectedTrackId: 'track43' });
     render(<TracksScreen />);
-    const notice = await screen.findByRole('status');
+    const notice = await screen.findByTestId('retired-cert-notice');
     expect(notice).toHaveTextContent('MLA-C01');
     expect(notice).toHaveTextContent('MLA-C02');
   });
@@ -85,14 +86,14 @@ describe('TracksScreen — aviso de certificación retirada (39.24/39.25, UI)', 
     useAppStore.setState({ selectedTrackId: 'track45' });
     render(<TracksScreen />);
     await screen.findAllByText('Azure AI');
-    expect(screen.queryByRole('status')).toBeNull();
+    expect(screen.queryByTestId('retired-cert-notice')).toBeNull();
   });
 
   it('en inglés, el aviso cita MLA-C01/MLA-C02 para track43', async () => {
     await i18n.changeLanguage('en');
     useAppStore.setState({ selectedTrackId: 'track43' });
     render(<TracksScreen />);
-    const notice = await screen.findByRole('status');
+    const notice = await screen.findByTestId('retired-cert-notice');
     expect(notice).toHaveTextContent('MLA-C01');
     expect(notice).toHaveTextContent('MLA-C02');
     expect(notice).toHaveTextContent(/replace|retired/i);

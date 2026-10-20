@@ -29,7 +29,7 @@ Se resuelven en `App()` antes de cualquier hook; no necesitan sesión salvo dond
 | `/status` | `StatusPage` | Estado público del servicio | E0: ledger 22.7 |
 | `/es/carrera`, `/en/career`, `/es/empresas`, `/en/enterprise`, `/blog` | `marketing/CareerPage`, `marketing/EnterprisePage`, `marketing/BlogPage` | **Reservadas y vacías** (fase 0, 2026-10-02): las rellena S6 (marketing) | E0: `docs/SESIONES.md` |
 | `/checkout?plan=&track=` | `CheckoutScreen` | Pago web con Paddle (cabeceras propias, sin COEP) | E1: ledger H.29, `docs/API.md` |
-| `/admin` | `AdminScreen` (7 pestañas: metrics, security, content, ops, gdpr, revenue, economy) | Panel del dueño (`role=owner`) | E2: `docs/design/admin-spec.md` |
+| `/admin` | `AdminScreen` (9 pestañas: metrics, users, log, security, content, ops, gdpr, revenue, economy; «Usuarios» y «Registro» exigen además 2FA, serie 44) | Panel del dueño (`role=owner`) | E2: `docs/design/admin-spec.md` |
 | `/certificate/<código>`, `/verify/<código>` | `CertificateScreen` | Verificación pública de un certificado | E1: `docs/ECONOMIA.md` §11, ADR-37 |
 | `/report/<código>` | `MasteryReportScreen` | Informe de dominio público comprado con 300 créditos: instantánea con fecha, «Guardar como PDF» por la impresión del navegador | E1: `docs/ECONOMIA.md` §2.3 |
 | `/u/<usuario>` | `PublicProfileScreen` | Perfil público opt-in | E0: `SEGMENTOS.md`, `ECONOMIA.md` |
@@ -67,7 +67,7 @@ Mientras la cuenta no tenga el correo verificado, todas las pantallas con sesió
 | `marketplace` | `MarketplaceScreen` | Yo → Marketplace; deslizar a la izquierda en móvil | catálogo con filtros Todos / Aprender / Certificación | E1: `docs/MARKETPLACE.md` |
 | `playground` | `PlaygroundScreen` | Hoy → Herramientas | editor Python / SQL / JS | E0: CHANGELOG (serie 19) |
 | `projects` | `ProjectScreen` | Hoy → Herramientas | proyecto multi-paso, pasa / falla | E0: CHANGELOG |
-| `admin` | `AdminScreen` | Yo → Admin (solo owner) | las 7 pestañas de `/admin` | E2: `docs/design/admin-spec.md` |
+| `admin` | `AdminScreen` | Yo → Admin (solo owner) | las 9 pestañas de `/admin`: buscar usuarios, su ficha y las acciones de soporte con motivo (44.3) | E2: `docs/design/admin-spec.md` |
 
 Total: **14 rutas URL en producción** (más `/_ui` en desarrollo y la redirección `/r/`),
 **18 pantallas** del tipo `Screen` más el onboarding, **33 ficheros** en `frontend/src/pages/`.

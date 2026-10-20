@@ -537,7 +537,9 @@ export type ServerFxEvent =
   | { type: 'badge_earned'; payload: { badge_id: string } }
   | { type: 'mission_completed'; payload: { mission_id: string } }
   | { type: 'combo_multiplier'; payload: { multiplier: 2 | 3 | 5 } }
-  | { type: 'streak_milestone'; payload: { days: 7 | 30 | 100 } };
+  | { type: 'streak_milestone'; payload: { days: 7 | 30 | 100 } }
+  // 46.11: el servidor gastó un comodín en esta respuesta (escudo en la TopBar).
+  | { type: 'streak_freeze_used'; payload: { days: number } };
 
 export interface QuizAnswerResponse {
   correct: boolean;
@@ -1101,11 +1103,18 @@ export interface DuelAnswerRequest {
   response_time_ms: number;
 }
 
+export interface DuelRivalAnswer {
+  correct: boolean;
+  response_time_ms: number;
+}
+
 export interface DuelAnswerResponse {
   duel_id: string;
   answers_so_far: number;
   completed: boolean;
   opponent_completed: boolean;
+  /** Solo si el rival ya terminó: cómo le fue en esta misma pregunta. */
+  rival?: DuelRivalAnswer | null;
 }
 
 export interface DuelPlayerResult {
@@ -1643,6 +1652,23 @@ export interface PrivacyRights {
   contact: string;
 }
 
+// 46.6a (ADR-68): efectos del cliente. El servidor los guarda sin usuario ni IP.
+export type ClientEvent =
+  | { type: 'fx_emitted'; tier: 0 | 1 | 2 | 3 | 4; fx: string; sounded: boolean; vibrated: boolean }
+  | { type: 'fx_skipped'; tier: 3 | 4; fx: string }
+  | { type: 'sound_toggled' | 'haptic_toggled'; enabled: boolean };
+
+export const clientEvents = {
+  /** Sin reintento tras un 401: una métrica no debe cerrar la sesión de nadie. */
+  send(events: ClientEvent[], keepalive = false) {
+    return request<{ accepted: number }>(
+      '/analytics/client-events',
+      { method: 'POST', body: JSON.stringify({ events }), keepalive },
+      false,
+    );
+  },
+};
+
 export const privacy = {
   ccpaOptOut: () => request<CcpaOptOutResponse>('/privacy/ccpa-opt-out', { method: 'POST' }),
   ccpaOptIn: () => request<CcpaOptOutResponse>('/privacy/ccpa-opt-out', { method: 'DELETE' }),
@@ -1720,4 +1746,85 @@ export interface PublicProfile {
 export const profiles = {
   /** Público (0.3): cualquier `username` existente y activo, sin autenticación. */
   get: (username: string) => request<PublicProfile>(`/profiles/${encodeURIComponent(username)}`),
+};
+
+// ── Back-office de soporte (serie 44, docs/PLAN_BACKOFFICE.md) ──────────────
+// Solo el dueño con la verificación en dos pasos activa: sin ella, 403 con
+// `detail: '2fa_required'`.
+
+export interface AdminUserListItem {
+  id: string;
+  username: string;
+  email_masked: string;
+  created_at: string;
+  status: 'active' | 'suspended';
+}
+
+export interface AdminUserDetail {
+  id: string;
+  account: {
+    username: string;
+    display_name: string;
+    email: string;
+    email_verified: boolean;
+    language: string;
+    status: 'active' | 'suspended';
+    role: string;
+    created_at: string;
+    last_active: string | null;
+  };
+  plan: {
+    subscription_tier: string | null;
+    subscription_status: string | null;
+    subscription_expires_at: string | null;
+    subscription_provider: string | null;
+    paddle_subscription_id: string | null;
+    granted_tier: string | null;
+    granted_tier_expires_at: string | null;
+    certification_purchases: { track_id: string; source: string; created_at: string }[];
+  };
+  progress: {
+    target_track_id: string | null;
+    target_certification_id: string | null;
+    skills_practiced: number;
+    answers: number;
+    level: number;
+    current_streak: number;
+  };
+  security: { recent_events: { action: string; result: string; timestamp: string }[] };
+  gdpr: { pending: { type: string; status: string; created_at: string }[] };
+}
+
+export type AdminUserAction =
+  | 'resend_verification' | 'close_sessions' | 'unlock' | 'grant_plan' | 'suspend' | 'reactivate';
+
+export interface AdminLogItem {
+  id: number;
+  created_at: string;
+  action: string;
+  reason: string | null;
+  data: Record<string, unknown> | null;
+  actor_username: string | null;
+  target_user_id: string | null;
+  target_username: string | null;
+}
+
+interface Page<T> { items: T[]; page: number; page_size: number; total: number }
+
+export const adminUsers = {
+  search(q: string, page = 1) {
+    return request<Page<AdminUserListItem>>(`/admin/users?q=${encodeURIComponent(q)}&page=${page}`);
+  },
+  detail(id: string) {
+    return request<AdminUserDetail>(`/admin/users/${id}`);
+  },
+  act(id: string, action: AdminUserAction, body: { reason: string; tier?: 'plus' | 'pro'; days?: number }) {
+    return request<{ ok: boolean; action: string; data: Record<string, unknown> }>(
+      `/admin/users/${id}/actions/${action}`,
+      { method: 'POST', body: JSON.stringify(body) },
+    );
+  },
+  log(page = 1) {
+    return request<Page<AdminLogItem>>(`/admin/action-log?page=${page}`);
+  },
 };

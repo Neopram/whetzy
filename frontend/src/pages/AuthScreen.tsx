@@ -6,6 +6,7 @@ import { initialAuthMode } from '../lib/authRedirect';
 import { BrandMark } from '../components/common/BrandMark';
 import { Button } from '../components/common/Button';
 import styles from './AuthScreen.module.css';
+import { FormError } from '../components/common/FormError';
 
 // 45.1 (ADR-66 E6): los códigos de oauth_error, traducidos.
 const OAUTH_ERROR_KEYS: Record<string, string> = {
@@ -218,7 +219,7 @@ export function AuthScreen({ onAuthed }: Props) {
               autoFocus
             />
           </label>
-          {error && <p className={styles.error} role="alert">{error}</p>}
+          {error && <FormError className={styles.error} message={error} />}
           <Button type="submit" size="lg" full disabled={loading} className={styles.submit}>
             {loading ? t('auth.loading') : t('auth.mfaCta')}
           </Button>
@@ -349,7 +350,7 @@ export function AuthScreen({ onAuthed }: Props) {
           </label>
         )}
 
-        {error && <p className={styles.error} role="alert">⚠️ {error}</p>}
+        {error && <FormError className={styles.error} message={error}>⚠️ {error}</FormError>}
 
         <Button type="submit" size="lg" full disabled={loading} className={styles.submit}>
           {loading ? t('auth.loading') : mode === 'register' ? t('auth.registerCta') : t('auth.loginCta')}

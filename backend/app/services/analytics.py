@@ -588,3 +588,53 @@ async def unseen_first_attempt_accuracy(db: AsyncSession, window: int = H4_WINDO
         "early_rate": round(early_ok / total, 4) if total else None,
         "late_rate": round(late_ok / total, 4) if total else None,
     }
+
+
+# ---------------------------------------------------------------------------
+# 46.6a (ADR-68): efectos del cliente
+# ---------------------------------------------------------------------------
+
+# docs/PLAN_UI_AVANZADA.md §6.0 punto 5: un nivel que se salta más del 60 % de
+# las veces se rebaja. Con pocas emisiones la tasa no dice nada: hace falta n.
+FX_MAX_SKIP_RATE = 0.6
+FX_MIN_EMITTED = 30
+
+
+async def fx_skip_rates(db: AsyncSession, days: int = 7) -> dict[str, object]:
+    """Emitidos, saltados y tasa de salto por nivel en los últimos `days` días.
+
+    Las filas no llevan `user_id` (ADR-68 punto 3): es un recuento, no un perfil.
+    """
+    since = datetime.now(UTC) - timedelta(days=days)
+    tier = AnalyticsEvent.properties["tier"].as_integer()
+    rows = (
+        await db.execute(
+            select(AnalyticsEvent.event_type, tier, func.count())
+            .where(
+                AnalyticsEvent.event_type.in_(("fx_emitted", "fx_skipped")),
+                AnalyticsEvent.created_at >= since,
+            )
+            .group_by(AnalyticsEvent.event_type, tier)
+        )
+    ).all()
+    counts: dict[int, dict[str, int]] = defaultdict(lambda: {"fx_emitted": 0, "fx_skipped": 0})
+    for event_type, t, n in rows:
+        counts[int(t)][event_type] = int(n)
+    tiers = []
+    for t in sorted(counts):
+        emitted, skipped = counts[t]["fx_emitted"], counts[t]["fx_skipped"]
+        rate = round(skipped / emitted, 4) if emitted else 0.0
+        tiers.append(
+            {
+                "tier": t,
+                "emitted": emitted,
+                "skipped": skipped,
+                "skip_rate": rate,
+                "downgrade": emitted >= FX_MIN_EMITTED and rate > FX_MAX_SKIP_RATE,
+            }
+        )
+    return {
+        "days": days,
+        "tiers": tiers,
+        "rule": {"max_skip_rate": FX_MAX_SKIP_RATE, "min_emitted": FX_MIN_EMITTED},
+    }

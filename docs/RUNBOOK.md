@@ -458,6 +458,34 @@ Dos límites de ese e2e (verificador §7, 2026-10-17):
      (la cookie ya llega; el puente no se activa).
    - En Railway, `POST /auth/register` 201 seguido de `GET /auth/me` 200.
 
+## Soporte: atender a un alumno desde el back-office (serie 44)
+
+Admin → **Usuarios** y **Registro** (`docs/PLAN_BACKOFFICE.md`). Solo el dueño, y solo
+con la verificación en dos pasos activa en su cuenta (H.62): sin ella las dos pestañas
+dicen «El back-office exige la verificación en dos pasos» y el backend responde 403
+`2fa_required`. La 2FA se activa en Yo → Perfil (alta con QR).
+
+Cada vez que abres una ficha y cada acción que haces quedan en el **Registro**
+(`admin_action_log`): quién, a quién, qué, por qué, cuándo y desde qué IP. No se puede
+borrar ni editar. Escribe el motivo como lo leería el alumno si pidiera sus datos.
+
+| El alumno escribe… | Qué miras en la ficha | Qué haces |
+|---|---|---|
+| «No puedo entrar» | Seguridad: intentos fallidos recientes; «Email verificado» | Si está bloqueado: **Desbloquear inicio de sesión**. Si no verificó el correo: **Reenviar verificación**. La contraseña no se ve ni se cambia aquí: que use «¿Olvidaste tu contraseña?» |
+| «No me llega el correo de verificación» | «Email verificado: No» | **Reenviar verificación** (409 si ya está verificado; 503 si en producción no hay proveedor de correo, ver «Correo» arriba) |
+| «Pagué y no tengo el plan» | Plan: `subscription_tier`, estado, id de Paddle | Busca el pago en Paddle con ese id. Mientras se aclara, **Regalar plan** (1–90 días) con el motivo «pago pendiente de revisar en Paddle» |
+| «Me han robado la cuenta» / «perdí el móvil» | Seguridad: últimos eventos | **Cerrar todas las sesiones** (invalida tokens de acceso y de refresco) y pídele que cambie la contraseña |
+| Abuso (duelos, reportes falsos, spam) | Seguridad y progreso | **Suspender cuenta** (cierra también sus sesiones); **Reactivar cuenta** cuando esté aclarado. No puedes suspender tu propia cuenta |
+| «Borrad mi cuenta» | RGPD pendiente | Va por la cola RGPD que ya existe (pestaña GDPR), no por estas acciones |
+
+**Nunca, por diseño (B5):** ver o cambiar contraseñas, entrar como el alumno, exportar
+listas de emails ni tocar su progreso o su dominio. Si una petición lo necesita, no se
+atiende desde la app.
+
+Por la API, lo mismo que hace la pantalla (`docs/API.md`, sección «GDPR & user
+management»): `GET /admin/users ?q&page`, `GET /admin/users/{id}`,
+`POST /admin/users/{id}/actions/{action}` con `{reason}` y `GET /admin/action-log ?page`.
+
 ## Troubleshoot
 
 | Symptom | Check |
