@@ -92,6 +92,9 @@ _KEPT_TABLES: dict[str, str] = {
     "fraud_review_queue": "antifraude",
     "duels": "también es del otro alumno",
     "gdpr_requests": "prueba de que la solicitud se cumplió",
+    # 44.1 (PLAN_BACKOFFICE B6): solo de añadir; es la prueba de qué hizo el
+    # titular con cada cuenta, la que promete la política («queda registrado»).
+    "admin_action_log": "registro de accesos del titular",
 }
 _HANDLED_IN_PURGE: frozenset[str] = frozenset(
     {"responses", "study_sessions", "user_blocks", "user_reports", "instructors"}
