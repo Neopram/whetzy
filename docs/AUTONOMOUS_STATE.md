@@ -41,7 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 46 | Experiencia avanzada | 6/12 | 50 % | 46.1, 46.3, 46.4, 46.5, 46.6, 46.7 |
+| 46 | Experiencia avanzada | 6/20 | 30 % | 46.1, 46.3, 46.4, 46.5, 46.6, 46.6a +8 |
 | 45 | Alta con correo | 4/4 | 100 % | — |
 | 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
 | 43 | Flujo del alumno listo para pruebas | 5/8 | 62 % | 43.4, 43.5, 43.6 |
@@ -343,7 +343,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 31.1 | **0** | Staging: un preview de Cloudflare Pages y un servicio de Railway d… | HUMAN-BLOCKED… | 2026-09-30: #34 fusiona 2 migraciones directo contra producción sin ensayarlas ahí — sin staging, cada fusión repite ese riesgo |
 | 31.4 | **0** | Migración sin datos dejó sin preguntas a los usuarios con… | **DONE** | `1225a29` → §T |
-| 31.5 | **0** | Regla del dueño 2026-09-30: PRs pequeños, veto a analítica hasta ≥… | DOING | mismo texto en `ORCHESTRATOR.md`; cumplido desde esta fila |
+| 31.5 | **0** | Regla del dueño 2026-09-30: PRs pequeños (veto a analítica levantado, ADR-68) | DOING | mismo texto en `ORCHESTRATOR.md` |
 | 31.6 | **2** | Tests de analítica sobre Postgres real, no solo SQLite — D1/D7/CUR… | TODO | `test_product_metrics.py` también contra Postgres real, en verde |
 | 31.7 | **0** | Pausa de sesiones autónomas y cierre, 2026-09-30 →… | **DONE** | → §T |
 | 31.8 | **0** | Lanzamiento piloto (prompt del dueño 2026-10-01): kit… | PARCIAL | kit escrito; invitar, día 4 y recuento = dueño |
@@ -606,6 +606,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.7 | **1** | Resumen y ceremonias | DOING — #269; falta recuento y `fx_emitted` | plan §6.4 |
 | 46.8 | **2** | Mascota: brief para ilustrador | DONE — #277 `b15f062`, §7 10-20 | brief y 3 direcciones (ADR-67 D2) |
 | 46.9 | **1** | Sonido encendido por defecto | DONE — #275 `e5f5e5a`, §7 10-20 | sin preferencia → on (ADR-67 D3) |
+| 46.6a | **1** | Analítica fx anónima (ADR-68) | TODO | plan §7.2 |
+| 46.10 | **1** | Quiz: opción late/tiembla, «+XP» vuela | TODO | plan §7.3 |
+| 46.11 | **1** | Llama de racha en 3 tamaños + escudo | TODO | plan §7.3 |
+| 46.12 | **1** | Home: contadores y banda con `AnimatePresence` | TODO | plan §7.3 |
+| 46.13 | **2** | Liga y Preparación escalonadas | TODO | plan §7.3 |
+| 46.14 | **1** | Transiciones de ruta y esqueletos de carga | TODO | plan §7.4 |
+| 46.15 | **2** | Movimiento en las 27 pantallas sin él | TODO | plan §7.5 |
+| 46.16 | **2** | Tokens de movimiento y guarda | TODO | plan §7.6 |
 
 ## 3. Cola HUMAN-BLOCKED
 

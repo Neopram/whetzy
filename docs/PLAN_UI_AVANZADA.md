@@ -266,3 +266,120 @@ Test: una respuesta que cruza combo 7 trae `combo_multiplier{3}`; una que comple
 Orden dentro de la ola 1: 46.2 (motor) → 46.1b (backend, en paralelo) → 46.1 → 46.3 → 46.7. La
 mascota (D2) entra en 46.1/46.7 solo si el dueño dice sí; sin ella, los mismos momentos usan el
 icono de la racha y el check.
+
+## 7. Pase de movimiento por toda la app (ADR-68, 2026-10-20)
+
+### 7.1 Punto de partida, medido en `master` `00e52a5`
+
+- Las pantallas internas ya cambian con una transición de eje compartido: `App.tsx:568`, `AnimatePresence`, ±24 px
+  según la dirección, 200 ms. `MotionConfig reducedMotion="user"` la apaga para quien lo pide.
+- Movimiento **propio** de verdad solo tienen Hoy (25 `motion.`) y Quiz (8). Tracks, Lección, Playground y Proyecto
+  tienen 2–4 usos sueltos. **Las otras 27 pantallas no tienen ninguno.**
+- `components/common/Skeleton` existe, pero solo lo usa `/_ui`. Doce pantallas cargan con un texto «Cargando…».
+- En `lib/motion.ts` hay variantes escritas que no usa nadie: `correctVariants`, `wrongVariants`, `xpBurstVariants`
+  y `pulseVariants`.
+- De la comparación del §6 con el código (sesión del 2026-10-20) faltan:
+  - la analítica (§6.0, punto 5);
+  - el pulso y la sacudida de la opción;
+  - el «+XP» que vuela;
+  - la llama de racha en 3 tamaños con escudo;
+  - los contadores de Hoy y la banda con `AnimatePresence`;
+  - la entrada escalonada de Liga y Preparación.
+
+  Del resumen animado se encarga #273, y de la palanca, #272.
+
+**Principio del pase.** Cada movimiento cuenta algo que ha pasado de verdad: un dato del servidor, un cambio
+respecto a la última visita o una acción del alumno. Si no cuenta nada, la pantalla se queda quieta a propósito.
+Rigen las mismas líneas rojas de §6.0. El orden de cada fila es siempre el mismo:
+1. el test en rojo;
+2. el cambio;
+3. las capturas ES/EN a 390 y 1280 px en `docs/ui-snapshots/<fila>/`;
+4. axe 0.
+
+### 7.2 Analítica de efectos (46.6a)
+
+- **Ingesta.** `POST /analytics/client-events`:
+  - con sesión iniciada y con el limitador que ya existe;
+  - hasta 50 eventos por lote;
+  - el esquema es cerrado, y cualquier campo o tipo fuera de él da `422`.
+- **Tipos de evento:**
+
+  | Tipo | Propiedades |
+  |---|---|
+  | `fx_emitted` | `{tier 0–4, type ∈ FxType, sounded, vibrated}` |
+  | `fx_skipped` | `{tier 3–4, type}` |
+  | `sound_toggled` | `{enabled}` |
+  | `haptic_toggled` | `{enabled}` |
+
+- **Privacidad.** Se guarda en `analytics_events` **sin `user_id` ni IP** (ADR-68 punto 3).
+- **Cliente.** `lib/fxAnalytics.ts` se suscribe a `onFx()`:
+  - agrupa en memoria y envía cada 10 s y en `pagehide` (`fetch` con `keepalive`);
+  - no envía nada sin sesión, ni durante el prerender, ni en los tests;
+  - el «Saltar» de las ceremonias y del recuento emite `fx_skipped`.
+- **Lectura.** `GET /analytics/fx?days=7` (admin) devuelve, por nivel:
+  - emitidos, saltados y tasa de salto;
+  - `downgrade: true` cuando la tasa pasa del 60 % con n ≥ 30 (la regla de §6.0, punto 5).
+- **Hecho cuando:**
+  - un test de integración manda un lote mixto y comprueba que las filas no llevan `user_id`;
+  - un campo de más da `422`;
+  - el cálculo de la tasa queda fijado por un test;
+  - un test del cliente comprueba que, con el interruptor de analítica apagado o sin sesión, no hay ningún `fetch`.
+
+### 7.3 Lo que faltaba del §6 (46.10–46.13)
+
+| Fila | Qué | Dato que lo dispara | Hecho cuando |
+|---|---|---|---|
+| 46.10 | Opción acertada: `correctVariants` (pulso de 1,04, 300 ms). Fallada: `wrongVariants` (sacudida de ±6 px, 3 ciclos, 300 ms). «+XP» vuela de la tarjeta al marcador (`layoutId` compartido, `springs.bouncy`) y el marcador hace `pulseVariants` al llegar | `feedback.correct`, `res.xp_earned` | test: con reduced-motion no hay `x` ni `scale` y solo cambia la opacidad; e2e: «+N XP» acaba dentro de `xpBadge` |
+| 46.11 | Llama de la TopBar en 3 tamaños: 1–6 días a 16 px, 7–29 a 20 px con brillo, ≥ 30 a 24 px con brillo y halo. Escudo que la cubre 600 ms el día que se gasta un comodín | `currentStreak`, `streak_freeze_used` del servidor | test de los tres umbrales; sin comodín no hay escudo |
+| 46.12 | Hoy: el «2/3» de misiones y `skills_mastered` cuentan desde la última foto con el `CountUp` de #273. La etiqueta de banda cambia con `AnimatePresence` y el icono de la ruta hace `tapScale` | la foto de `homeMoments` | sin foto previa, nada cuenta ni late (test) |
+| 46.13 | Liga: podio y filas entran escalonados (`listVariants`) y la ▲ de zona de ascenso late una vez. Preparación: las bandas por dominio entran escalonadas | datos de la pantalla | ninguna ceremonia de ascenso (test, §6.2) |
+
+### 7.4 Transiciones y carga (46.14)
+
+- **Esqueletos.** Las 12 pantallas que cargan con un texto pasan a un `Skeleton` con la forma de lo que viene:
+  - **con `aria-busy`** y el texto «Cargando» solo para el lector de pantalla;
+  - **sin brillo** con reduced-motion;
+  - **sin parpadeo:** si los datos llegan en menos de 150 ms, el esqueleto no llega a pintarse.
+- **Páginas sueltas.** Auth, Landing, Verificar, Restablecer y Estado entran con la misma transición de eje que las
+  pantallas internas. Hoy cambian de golpe.
+- **Hecho cuando:**
+  - ninguna pantalla interna muestra un «Cargando…» suelto (guarda que lo busca);
+  - un e2e con la red frenada ve el esqueleto y después el contenido, sin saltos de layout (CLS 0 en el tramo medido).
+
+### 7.5 Las 27 pantallas sin movimiento propio (46.15, un PR por bloque)
+
+| Bloque | Pantalla | Qué se mueve y con qué dato | A propósito quieto |
+|---|---|---|---|
+| A. Entrada | Auth | error de campo con sacudida de nivel 0 y sin sonido; el botón pasa a «enviando» sin cambiar de tamaño | — |
+| | Onboarding | barra de pasos que se llena; la tarjeta elegida se marca con un check dibujado; pasos con eje compartido | — |
+| | Prueba de nivel | puntos de progreso por pregunta respondida; la banda estimada aparece con `AnimatePresence`, sin % (ADR-60) | — |
+| | Verificar, Restablecer, Olvidé | check dibujado cuando el servidor confirma | — |
+| B. Aprender | Lección | las secciones aparecen al entrar en pantalla (IntersectionObserver, una vez); «Copiado» en los bloques de código | — |
+| | Tracks | el nodo que subió de banda desde la última visita late con la foto de `homeMoments` | — |
+| | Playground, Proyecto | botón «Ejecutar» con estado en curso; los resultados de los tests entran escalonados; todos en verde → `emit('correct')` | — |
+| C. Competir | Duelo | barra del rival en vivo; anillo de cuenta atrás; resultado del servidor como nivel 3 (`session_end`) | — |
+| | Simulacro, Examen de ruta | navegador de preguntas con puntos; el anillo del tiempo late una vez al entrar en los 5 últimos minutos, sin sonido; el resultado del servidor se cuenta como en el resumen, con la banda de aprobado o no | — |
+| D. Progreso | Perfil | insignias escalonadas; la insignia nueva desde la última foto brilla una vez | — |
+| | Stats | las barras crecen desde 0 al entrar; cifras con `CountUp` | — |
+| | Cartera | el saldo cuenta al cambiar; movimientos escalonados | — |
+| | Informe de dominio, Perfil público | bandas escalonadas | — |
+| | Certificado público | el sello se dibuja solo si el servidor lo da por válido | — |
+| E. Comprar | Checkout, Marketplace | la tarjeta del plan elegida se eleva; las tarjetas del catálogo entran escalonadas; el éxito solo con confirmación del servidor | — |
+| F. Leer | Legal, Evidencia, Estado, Borrar cuenta, Admin, Instructor | — | **quietas**: se leen, se deciden o son internas. Solo esqueletos (46.14) |
+
+### 7.6 Orden sin excepciones (46.16)
+
+- **Tokens.** Duración y curva salen de un único sitio: `lib/motion.ts` exporta `dur` y `ease` atados a
+  `TIER_BUDGET`, y el CSS usa `--le-dur-*` y `--le-ease-*`.
+- **Guarda** `src/test/motionGuard.test.ts`, que falla si:
+  - un `duration` literal pasa del presupuesto de su nivel;
+  - un `@keyframes` vive en un `.module.css` sin su bloque `prefers-reduced-motion`;
+  - aparece un `repeat: Infinity` fuera de la lista blanca, que es el pulso del nodo actual.
+- **Mutación.** La guarda se comprueba en rojo: se rompe una de esas reglas, se ve fallar y se restaura.
+
+### 7.7 Orden de ejecución
+
+46.6a → 46.10 → 46.11 → 46.12 → 46.13 → 46.14 → 46.16 → 46.15 (bloques A–E).
+
+- **Por qué la guarda va antes de los bloques:** así los cinco bloques ya nacen dentro de las reglas.
+- **Cuándo cerrar:** la serie se cierra al rehacer la tabla de §7.5 contra el código, con capturas.
