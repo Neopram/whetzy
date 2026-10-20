@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, useReducedMotion } from 'framer-motion';
+import { DUR } from '../lib/motion';
+import { emit as emitFx } from '../lib/feedbackFx';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { Button } from '../components/common/Button';
@@ -9,12 +12,14 @@ import {
   type DuelSummary,
   type DuelChallengeResponse,
   type DuelResultResponse,
+  type DuelRivalAnswer,
   type QuestionPublic,
 } from '../services/api';
 import { parseQuestion } from '../lib/question';
 import { showToast } from '../components/common/Toast';
 import { RankingTabs } from '../components/layout/RankingTabs';
 import styles from './DuelScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 type View = 'list' | 'challenge-modal' | 'playing' | 'result';
 
@@ -47,6 +52,10 @@ export function DuelScreen() {
   const [submitting, setSubmitting] = useState(false);
   const [playingDuelId, setPlayingDuelId] = useState<string | null>(null);
   const [duelResult, setDuelResult] = useState<DuelResultResponse | null>(null);
+  // Partida grabada: si el rival ya jugó, tras cada respuesta se ve cómo le fue
+  // a él en esa misma pregunta. Lo decide el servidor (`rival` solo llega
+  // cuando el otro terminó); aquí no se adivina nada.
+  const [rival, setRival] = useState<DuelRivalAnswer | null>(null);
   // Se reinicia con cada pregunta: antes se fijaba al montar la pantalla y el
   // tiempo de respuesta que llega al motor crecía pregunta a pregunta.
   const questionStart = useRef(Date.now());
@@ -70,6 +79,7 @@ export function DuelScreen() {
     setActiveDuel(res);
     setQIndex(0);
     setSelected(null);
+    setRival(null);
     setPlayingDuelId(res.duel_id);
     questionStart.current = Date.now();
     setView('playing');
@@ -110,11 +120,12 @@ export function DuelScreen() {
     const rt = Date.now() - questionStart.current;
     const q = activeDuel.questions[qIndex];
     try {
-      await duelsApi.answer(playingDuelId, {
+      const res = await duelsApi.answer(playingDuelId, {
         question_id: q.id,
         selected_index: choice,
         response_time_ms: rt,
       });
+      setRival(res.rival ?? null);
     } catch {
       /* continue anyway */
     } finally {
@@ -127,6 +138,7 @@ export function DuelScreen() {
     if (qIndex + 1 < activeDuel.questions.length) {
       setQIndex((i) => i + 1);
       setSelected(null);
+      setRival(null);
       questionStart.current = Date.now();
     } else {
       setDuelResult(null);
@@ -140,6 +152,12 @@ export function DuelScreen() {
   };
 
   // ── Render ────────────────────────────────────────────────────────────────
+  // 46.15 C: el resultado del servidor cierra la sesión (nivel 3), una vez.
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    if (duelResult) emitFx({ type: 'session_end' });
+  }, [duelResult]);
+
   if (view === 'challenge-modal') {
     return (
       <div className={styles.screen}>
@@ -220,6 +238,18 @@ export function DuelScreen() {
           ))}
         </div>
 
+        {rival && (
+          <p className={styles.rival} role="status" data-testid="duel-rival">
+            <span className={rival.correct ? styles.won : styles.lost} aria-hidden="true">
+              {rival.correct ? '✓' : '✗'}
+            </span>{' '}
+            {t(rival.correct ? 'duel.rivalCorrect' : 'duel.rivalWrong', {
+              username: activeDuel.opponent_username,
+              s: (rival.response_time_ms / 1000).toLocaleString(language, { maximumFractionDigits: 1 }),
+            })}
+          </p>
+        )}
+
         {selected !== null && (
           <Button type="button" onClick={handleNext}>
             {isLast ? t('duel.finish') : t('duel.next')}
@@ -236,13 +266,19 @@ export function DuelScreen() {
         <h1 className={styles.title}>{t('duel.completed')}</h1>
         {duelResult ? (
           <>
-            <p className={styles.resultOutcome}>
+            <motion.p
+              className={styles.resultOutcome}
+              data-fx={reduce ? undefined : 'reveal'}
+              initial={reduce ? false : { opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: DUR.response }}
+            >
               {duelResult.is_draw
                 ? t('duel.draw')
                 : duelResult.winner_id === currentUser.id
                   ? t('duel.won')
                   : t('duel.lost')}
-            </p>
+            </motion.p>
             {duelResult.weak_skill_id && (
               <p className={styles.practiceHint}>
                 {t('duel.practiceHint', { skill: weakSkillName ?? duelResult.weak_skill_id })}
@@ -271,7 +307,7 @@ export function DuelScreen() {
       </div>
 
       {loading ? (
-        <p className={styles.muted} role="status">{t('duel.loading')}</p>
+        <Loading label={t('duel.loading')} shape="list" />
       ) : myDuels.length === 0 ? (
         <p className={styles.empty}>{t('duel.noDuels')}</p>
       ) : (

@@ -1,31 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, useReducedMotion } from 'framer-motion';
+import { listItemVariants, listVariants } from '../lib/motion';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { bandForDomain, examBand, MIN_EVIDENCE_ANSWERS } from '../lib/evidenceBand';
 import { content as contentApi, exams, type CertificationReadiness, type DomainReadiness, type TrackRead } from '../services/api';
 import { RetiredCertNotice } from '../components/common/RetiredCertNotice';
+import { LeverCard } from '../components/readiness/LeverCard';
+import { biggestLever } from '../lib/readinessLever';
 import styles from './ReadinessScreen.module.css';
+import { Loading } from '../components/common/Loading';
 
 interface Props {
   trackId: string;
   onExit: () => void;
 }
 
-// El mismo umbral que usa el backend para marcar un dominio «listo»
-// (exams.py, READY_THRESHOLD). Solo ordena la palanca: no se enseña (ADR-60).
-const READY_THRESHOLD = 0.75;
-
-/** El dominio que más acerca al aprobado: peso × lo que le falta hasta el
- *  umbral. Un dominio pesado a medias gana a uno ligero a cero. */
-function biggestLever(domains: DomainReadiness[]): DomainReadiness | undefined {
-  return [...domains]
-    .filter((d) => !d.ready)
-    .sort((a, b) => b.weight_pct * (READY_THRESHOLD - (b.p_known_mean ?? 0)) - a.weight_pct * (READY_THRESHOLD - (a.p_known_mean ?? 0)))[0];
-}
-
 export function ReadinessScreen({ trackId, onExit }: Props) {
   const { t } = useTranslation();
+  const reduce = useReducedMotion();
   const lang = useAppStore((s) => s.user.language);
   const startMockExam = useAppStore((s) => s.startMockExam);
   const startQuiz = useAppStore((s) => s.startQuiz);
@@ -51,7 +45,7 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
   if (loading) {
     return (
       <div className={styles.screen}>
-        <p className={styles.muted} role="status">{t('loading')}</p>
+        <Loading label={t('loading')} shape="card" />
       </div>
     );
   }
@@ -102,22 +96,15 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
         </p>
       </section>
 
-      {lever && (
-        <section className={styles.lever} aria-label={t('readiness.lever')}>
-          <p className={styles.leverLabel}>{t('readiness.lever')}</p>
-          <p className={styles.leverBody}>
-            {t('readiness.leverBody', { name: name(lever), weight: lever.weight_pct, band: t(`bands.${bandForDomain(lever)}`) })}
-          </p>
-          <button type="button" className={styles.btnPrimary} onClick={() => startQuiz('study', 10, { trackId })}>
-            {t('readiness.practice')}
-          </button>
-          <p className={styles.hint}>{t('readiness.practiceHint')}</p>
-        </section>
-      )}
+      {lever && <LeverCard lever={lever} name={name(lever)} onPractice={() => startQuiz('study', 10, { trackId })} />}
 
-      <ul className={styles.domainList}>
+      {/* 46.13: los dominios entran escalonados (plan §6.2). */}
+      <motion.ul
+        className={styles.domainList}
+        {...(reduce ? {} : { 'data-enter': 'stagger', variants: listVariants, initial: 'initial', animate: 'animate' })}
+      >
         {domains.map((d) => (
-          <li key={d.domain_id} className={styles.domain}>
+          <motion.li key={d.domain_id} className={styles.domain} variants={listItemVariants}>
             <div className={styles.domainTop}>
               <span className={styles.domainName}>{name(d)}</span>
               <span className={`${styles.badge} ${bandForDomain(d) === 'strong' ? styles.badgeReady : ''}`}>
@@ -129,9 +116,9 @@ export function ReadinessScreen({ trackId, onExit }: Props) {
               <span>{t('readiness.skillsAssessed', { assessed: d.skills_assessed, total: d.skills_total })}</span>
               <b>{(d.answers ?? 0) > 0 ? t('bands.evidence', { answers: d.answers, correct: d.correct }) : t('readiness.notPractised')}</b>
             </p>
-          </li>
+          </motion.li>
         ))}
-      </ul>
+      </motion.ul>
 
       <button
         type="button"

@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { Badge } from '../components/common/Badge';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { BandChip } from '../components/common/BandChip';
 import { ProgressMap } from '../components/tracks/ProgressMap';
 import { useApi } from '../hooks/useApi';
-import { pageVariants } from '../lib/motion';
+import { DUR, pageVariants } from '../lib/motion';
+import { bandMoments } from '../lib/homeMoments';
 import { retiredCertificationFor } from '../lib/retiredCertifications';
 import { bandForSkill, overallBand } from '../lib/evidenceBand';
 import {
@@ -25,6 +26,7 @@ import {
 import { canPractice } from '../lib/nextStep';
 import styles from './TracksScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 type View = 'curriculum' | 'map' | 'glossary';
 type Filter = 'all' | 'learn' | 'cert';
@@ -133,7 +135,7 @@ function Catalogue({
         ))}
       </div>
 
-      {loading && <p className={styles.muted}>{t('tracks.loading')}</p>}
+      {loading && <Loading label={t('tracks.loading')} shape="line" />}
 
       <ul className={styles.catalogue}>
         {shown.map((tr) => {
@@ -192,6 +194,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
   const startReadiness = useAppStore((s) => s.startReadiness);
   const startPlacement = useAppStore((s) => s.startPlacement);
   const activeTrackId = useAppStore((s) => s.activeTrackId);
+  const userId = useAppStore((s) => s.user.id);
   const setActiveTrack = useAppStore((s) => s.setActiveTrack);
   // 43.4 (D5): al hacer tuya una ruta sin progreso se ofrece su prueba de nivel.
   const [offerPlacement, setOfferPlacement] = useState(false);
@@ -213,6 +216,20 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
   const skillCount = modules.reduce((n, m) => n + m.skills.length, 0);
   const practised = modules.flatMap((m) => m.skills).filter((s) => s.attempts > 0);
   const trackBand = overallBand(practised.map(bandForSkill));
+  // 46.15 B: lo que subió de banda desde la última visita a Rutas (foto propia,
+  // lib/homeMoments.ts). Con movimiento reducido no se marca nada.
+  const reduceMotion = useReducedMotion();
+  const [risen, setRisen] = useState<ReadonlySet<string>>(new Set());
+  useEffect(() => {
+    if (!cur.data) return;
+    const up = bandMoments(
+      userId,
+      cur.data.modules.flatMap((m) => m.skills).filter((s) => s.attempts > 0)
+        .map((s) => ({ id: s.skill_id, band: bandForSkill(s) })),
+      'tracks',
+    );
+    setRisen(new Set(reduceMotion ? [] : up));
+  }, [cur.data, userId, reduceMotion]);
   const name = lang === 'es' ? track.name_es : track.name_en;
   const certReady = track.is_certification && track.exam_question_count && track.exam_duration_minutes;
   const retiredCert = retiredCertificationFor(track.id);
@@ -224,7 +241,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
       </button>
 
       {retiredCert && (
-        <p className={styles.certRetiredNotice} role="status">
+        <p className={styles.certRetiredNotice} role="status" data-testid="retired-cert-notice">
           {t('tracks.certRetiredNotice', { code: retiredCert.code, replacement: retiredCert.replacement })}
         </p>
       )}
@@ -389,9 +406,9 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
           {view === 'glossary' ? (
             <GlossaryView track={track.id} lang={lang} />
           ) : cur.loading ? (
-            <p className={styles.muted}>{t('tracks.loading')}</p>
+            <Loading label={t('tracks.loading')} shape="line" />
           ) : cur.error || !cur.data ? (
-            <p className={styles.muted}>{cur.error ?? t('tracks.loading')}</p>
+            cur.error ? <p className={styles.muted}>{cur.error}</p> : <Loading label={t('tracks.loading')} shape="line" />
           ) : view === 'map' ? (
             <ProgressMap
               modules={modules}
@@ -412,6 +429,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
               lang={lang}
               startQuiz={startQuiz}
               startLesson={startLesson}
+              risen={risen}
             />
           )}
         </motion.div>
@@ -421,7 +439,7 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
 }
 
 function Curriculum({
-  track, modules, threshold, lang, startQuiz, startLesson,
+  track, modules, threshold, lang, startQuiz, startLesson, risen,
 }: {
   track: string;
   modules: CurriculumModule[];
@@ -429,6 +447,7 @@ function Curriculum({
   lang: 'es' | 'en';
   startQuiz: StartQuiz;
   startLesson: (skillId: string) => void;
+  risen: ReadonlySet<string>;
 }) {
   const { t } = useTranslation();
   const [openModule, setOpenModule] = useState<string | null>(null);
@@ -460,6 +479,7 @@ function Curriculum({
                   lang={lang}
                   onLesson={startLesson}
                   onPractice={() => startQuiz('study', 10, { trackId: track })}
+                  risen={risen}
                 />
               ))}
             </ol>
@@ -472,7 +492,7 @@ function Curriculum({
 }
 
 function ModuleItem({
-  module: m, prerequisite, open, onToggle, lang, onLesson, onPractice,
+  module: m, prerequisite, open, onToggle, lang, onLesson, onPractice, risen,
 }: {
   module: CurriculumModule;
   prerequisite: CurriculumModule | undefined;
@@ -481,9 +501,12 @@ function ModuleItem({
   lang: 'es' | 'en';
   onLesson: (skillId: string) => void;
   onPractice: () => void;
+  risen: ReadonlySet<string>;
 }) {
   const { t } = useTranslation();
   const locked = m.status === 'locked';
+  // Cerrado, el módulo avisa de que dentro algo subió de banda.
+  const rose = m.skills.some((s) => risen.has(s.skill_id));
   const name = lang === 'es' ? m.name_es : m.name_en;
   // 32.4: el backend exige haber visto la lección de al menos una habilidad
   // del módulo antes de dejar practicar: botón desactivado con su motivo, no
@@ -500,10 +523,21 @@ function ModuleItem({
 
   return (
     <li className={`${styles.module} ${styles[m.status]}`}>
-      <button type="button" className={styles.moduleHeader} onClick={onToggle} aria-expanded={open}>
-        <span className={styles.step} aria-hidden="true">
+      <button
+        type="button"
+        className={styles.moduleHeader}
+        onClick={onToggle}
+        aria-expanded={open}
+        data-fx={rose ? 'band-up' : undefined}
+      >
+        <motion.span
+          className={styles.step}
+          aria-hidden="true"
+          animate={rose ? { scale: [1, 1.25, 1] } : undefined}
+          transition={{ duration: DUR.response, repeat: 1 }}
+        >
           {m.status === 'completed' ? '✓' : locked ? <LockIcon /> : m.order}
-        </span>
+        </motion.span>
         <span className={styles.moduleInfo}>
           <span className={styles.moduleName}>{name}</span>
           <span className={styles.moduleSub}>{sub}</span>
@@ -536,7 +570,9 @@ function ModuleItem({
               <p className={styles.moduleDesc}>{lang === 'es' ? m.description_es : m.description_en}</p>
             )}
             <ul className={styles.skills}>
-              {m.skills.map((s) => <SkillRow key={s.skill_id} skill={s} lang={lang} locked={locked} onLesson={onLesson} />)}
+              {m.skills.map((s) => (
+                <SkillRow key={s.skill_id} skill={s} lang={lang} locked={locked} onLesson={onLesson} rose={risen.has(s.skill_id)} />
+              ))}
             </ul>
             {!locked && (
               <div className={styles.actions}>
@@ -595,12 +631,13 @@ function TestOutOffer({ moduleId }: { moduleId: string }) {
 
 // ADR-60: la skill practicada lleva su banda; sin intentos no hay nada que decir.
 function SkillRow({
-  skill: s, lang, locked, onLesson,
+  skill: s, lang, locked, onLesson, rose,
 }: {
   skill: CurriculumSkill;
   lang: 'es' | 'en';
   locked: boolean;
   onLesson: (skillId: string) => void;
+  rose: boolean;
 }) {
   const { t } = useTranslation();
   const name = lang === 'es' ? s.name_es : s.name_en;
@@ -612,7 +649,17 @@ function SkillRow({
       </span>
       <span className={styles.skillName}>{name}</span>
       {needsReview && <span className={styles.reviewTag}>{t('tracks.needsReview')}</span>}
-      {s.attempts > 0 && <BandChip band={bandForSkill(s)} />}
+      {s.attempts > 0 && (
+        <motion.span
+          className={styles.skillBand}
+          data-testid="skill-band"
+          data-fx={rose ? 'band-up' : undefined}
+          animate={rose ? { scale: [1, 1.15, 1] } : undefined}
+          transition={{ duration: DUR.response }}
+        >
+          <BandChip band={bandForSkill(s)} />
+        </motion.span>
+      )}
     </>
   );
   return (
@@ -656,7 +703,7 @@ function GlossaryView({ track, lang }: { track: string; lang: 'es' | 'en' }) {
     );
   }, [gloss.data, q]);
 
-  if (gloss.loading) return <p className={styles.muted}>{t('tracks.loading')}</p>;
+  if (gloss.loading) return <Loading label={t('tracks.loading')} shape="line" />;
   if (gloss.error) return <p className={styles.muted}>{gloss.error}</p>;
 
   return (

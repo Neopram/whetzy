@@ -617,6 +617,7 @@ def _fx_events(
     streak: int,
     missions_done: list[str],
     badges_new: list[str],
+    freeze_used: bool = False,
 ) -> list[FxEvent]:
     """Hitos que cruzó esta respuesta, cada uno una vez (46.1b). El combo cuenta
     aciertos seguidos de uno en uno (un fallo lo deja en 0), así que cruza un
@@ -630,6 +631,9 @@ def _fx_events(
     events += [FxEvent(type="badge_earned", payload={"badge_id": b}) for b in dict.fromkeys(badges_new)]
     if streak > streak_before and streak in STREAK_MILESTONES:
         events.append(FxEvent(type="streak_milestone", payload={"days": streak}))
+    if freeze_used:
+        # 46.11: el escudo de la TopBar; el cliente no lo deduce de los saldos.
+        events.append(FxEvent(type="streak_freeze_used", payload={"days": streak}))
     return events
 
 
@@ -644,7 +648,11 @@ def _level_from_xp(total_xp: int) -> int:
 WEEKLY_FREE_FREEZES = 1
 
 
-def _update_streak(user: User, now: datetime) -> None:
+def _update_streak(user: User, now: datetime) -> bool:
+    """Actualiza la racha. Devuelve si gastó un comodín (46.11): el saldo no
+    basta para saberlo, porque el comodín semanal puede llegar y gastarse en la
+    misma respuesta (0 → 1 → 0)."""
+    freeze_used = False
     today = now.date()
     if user.last_active is None:
         user.current_streak = 1
@@ -659,10 +667,12 @@ def _update_streak(user: User, now: datetime) -> None:
         elif user.streak_freeze_available > 0 and last_day == today - timedelta(days=2):
             user.streak_freeze_available -= 1
             user.current_streak += 1
+            freeze_used = True
         else:
             user.current_streak = 1
     user.max_streak = max(user.max_streak, user.current_streak)
     user.last_active = now
+    return freeze_used
 
 
 async def _current_combo(db: AsyncSession, session_id: uuid.UUID) -> int:
@@ -874,7 +884,7 @@ async def submit_answer(
     level_before, streak_before = user.level, user.current_streak
     user.total_xp += xp
     user.level = _level_from_xp(user.total_xp)
-    _update_streak(user, now)
+    freeze_used = _update_streak(user, now)
 
     # Fuera de las ligas (35.4) no se crea ni se suma entrada de liga.
     league_entry = None if user.leagues_opt_out else await get_or_create_current_entry(db, user)
@@ -939,6 +949,7 @@ async def submit_answer(
         streak=user.current_streak,
         missions_done=missions_done,
         badges_new=badges_new,
+        freeze_used=freeze_used,
     )
     await db.commit()
 

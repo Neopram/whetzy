@@ -2892,3 +2892,13 @@ ledger), #263 (`feedbackFx`), #264 y #267 (estados y momentos de Hoy), #265 (`ev
 El dueño respondió las cuatro decisiones de §4 (ADR-67): D1 sin excepción a ADR-62; D2 mascota sí, con la guía de
 diseño enmendada; D3 sonido encendido por defecto; D4 `@capacitor/haptics` en su PR. Filas nuevas 46.8 (mascota) y
 46.9 (sonido por defecto); 46.2b deja de esperar.
+
+## 2026-10-20 — Fin del veto a la analítica y pase de movimiento por toda la app (ADR-68)
+
+El dueño pidió completar el movimiento de la app, empezando por la analítica de efectos. La regla 31.5 vetaba la
+analítica hasta 100 registrados. Preguntado con tres opciones, el dueño la levantó entera (ADR-68); los PRs pequeños
+siguen. La analítica de efectos se guarda sin `user_id` ni IP.
+
+La comparación del §6 del plan con el código (`master` `00e52a5`) dejó en `PLAN_UI_AVANZADA.md` §7:
+- un inventario de las 33 pantallas: solo Hoy y Quiz tienen movimiento propio, y 12 cargan con texto;
+- las filas 46.6a y 46.10–46.16.

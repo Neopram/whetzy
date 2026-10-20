@@ -20,11 +20,13 @@ from app.core.config import settings
 from app.models.content import Module, Question, Skill, Track
 from app.models.lesson_completion import LessonCompletion
 from app.models.user import User, UserSkillState
+from app.schemas.session import FxEvent
 from app.services.quiz import (
     _calculate_xp,
     _candidate_skill_ids,
     _current_combo,
     _ensure_aware,
+    _fx_events,
     _grade_from_response,
     _is_module_unlocked,
     _level_from_xp,
@@ -805,3 +807,31 @@ class TestReservedPoolExcludedFromSelection:
             assert question is not None
             seen.add(question.id)
         assert seen == {"q_practica"}
+
+
+# ── 46.11: el comodín gastado lo dice el servidor ────────────────────────────
+
+
+class TestStreakFreezeUsed:
+    def test_update_streak_dice_si_gasto_un_comodin(self) -> None:
+        # Martes con último día el domingo de la semana anterior: llega el comodín
+        # semanal y se gasta en el lunes perdido. El saldo queda igual (0 → 1 → 0):
+        # por eso el aviso sale de `_update_streak`, no de comparar saldos.
+        u = make_user(last_active=NOW - timedelta(days=2), current_streak=9, max_streak=9)
+        assert _update_streak(u, NOW) is True
+        assert u.streak_freeze_available == 0
+
+    def test_sin_hueco_no_se_gasta_nada(self) -> None:
+        u = make_user(last_active=NOW - timedelta(days=1), current_streak=4, streak_freeze_available=2)
+        assert _update_streak(u, NOW) is False
+        assert u.streak_freeze_available == 2
+
+    def test_evento_streak_freeze_used(self) -> None:
+        common: dict[str, object] = {
+            "combo": 0, "level_before": 1, "level": 1, "streak_before": 9, "streak": 10,
+            "missions_done": [], "badges_new": [],
+        }
+        assert _fx_events(**common, freeze_used=True) == [  # type: ignore[arg-type]
+            FxEvent(type="streak_freeze_used", payload={"days": 10})
+        ]
+        assert _fx_events(**common, freeze_used=False) == []  # type: ignore[arg-type]

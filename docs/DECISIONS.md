@@ -1760,3 +1760,20 @@ al cerrar la ola 1 (46.0–46.7), antes de la ola 2. Respondidas en la sesión d
 
 **Lo que no cambia.** Ninguna ceremonia celebra un ascenso de liga mientras el servidor no lo aplique (§6.2). Sin
 migraciones y sin `content/**`.
+
+## ADR-68 — Fin del veto a la analítica y pase de movimiento por toda la app (DECIDIDO por el dueño, 2026-10-20)
+
+**Origen.** Sesión del 2026-10-20. El dueño pidió instrumentar `fx_emitted` (plan §6.0 punto 5) y completar el
+movimiento de la app «sin dejar nada detrás», empezando por la analítica. La regla del 2026-09-30 (ledger 31.5,
+`ORCHESTRATOR.md`) vetaba la analítica hasta tener ≥ 100 registrados reales; preguntado expresamente con tres
+opciones, el dueño eligió **levantar el veto entero**.
+
+| # | Decisión |
+|---|---|
+| 1 | **El veto de 31.5 a la analítica y las métricas deja de aplicar**, sin condición de registrados. La otra mitad de 31.5 (PRs pequeños: una fila u oleada ≤ 500 líneas netas) **sigue en vigor**. |
+| 2 | La analítica sigue siendo **propia** (`analytics_events`, ADR-50j revisada): ni SDK de terceros en el navegador ni PostHog/Mixpanel en el cliente. |
+| 3 | Los eventos de efectos (`fx_emitted`, `fx_skipped`, `sound_toggled`, `haptic_toggled`) se guardan **sin `user_id` ni IP**: la tasa de salto por nivel es un recuento agregado y no necesita saber quién. Así no amplían lo que la política de privacidad publicada dice que se trata (ADR-55). |
+| 4 | El pase de movimiento cubre las 33 pantallas (`PLAN_UI_AVANZADA.md` §7) con las líneas rojas de §6.0 intactas: presupuesto por nivel, `prefers-reduced-motion`, nada antes del primer gesto, sin azar ni recompensas que el servidor no haya dado, sin porcentajes del modelo. |
+
+**Lo que no cambia.** `legal.*` lo fija el dueño (ADR-55); la mascota espera al ilustrador (ADR-67 D2); ninguna
+ceremonia celebra un ascenso de liga que el servidor no aplique.

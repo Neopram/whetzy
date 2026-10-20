@@ -103,10 +103,12 @@ class FxEvent(BaseModel):
     El cliente lo celebra (`lib/feedbackFx.ts`); no lo adivina. `payload`:
     level_up {level_before, level} · badge_earned {badge_id} ·
     mission_completed {mission_id} · combo_multiplier {multiplier: 2|3|5} ·
-    streak_milestone {days: 7|30|100}.
+    streak_milestone {days: 7|30|100} · streak_freeze_used {days} (46.11).
     """
 
-    type: Literal["level_up", "badge_earned", "mission_completed", "combo_multiplier", "streak_milestone"]
+    type: Literal[
+        "level_up", "badge_earned", "mission_completed", "combo_multiplier", "streak_milestone", "streak_freeze_used"
+    ]
     payload: dict[str, Any]
 
 

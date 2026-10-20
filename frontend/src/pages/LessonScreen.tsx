@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
@@ -163,6 +163,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
             ) : (
               <>
                 <pre className={styles.code}><code>{lesson.example_code}</code></pre>
+                {lesson.example_code && <CopyCode code={lesson.example_code} />}
                 {lesson.example_code && lesson.code_runtime && (
                   // 43.7 (ADR-65 D9): el ejemplo se abre en el playground, en su runtime.
                   <button
@@ -235,6 +236,40 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
           </button>
         )}
       </footer>
+    </div>
+  );
+}
+
+/**
+ * 46.15 B: copiar el ejemplo. «Copiado» es texto con `role="status"`, así que
+ * lo oye el lector de pantalla y se ve igual con movimiento reducido. Si el
+ * navegador no deja copiar, se dice; no se finge.
+ */
+function CopyCode({ code }: { code: string }) {
+  const { t } = useTranslation();
+  const [state, setState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setState('copied');
+    } catch {
+      setState('failed');
+    }
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setState('idle'), 1500);
+  };
+
+  return (
+    <div className={styles.copyRow}>
+      <button type="button" className={styles.btnGhost} onClick={copy}>
+        {t('lesson.copyCode')}
+      </button>
+      <span role="status" className={styles.copyStatus}>
+        {state === 'copied' ? t('lesson.copied') : state === 'failed' ? t('lesson.copyFailed') : ''}
+      </span>
     </div>
   );
 }

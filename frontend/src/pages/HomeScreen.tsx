@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { Card } from '../components/common/Card';
 import { StreakFreezeShop } from '../components/home/StreakFreezeShop';
 import { useApi } from '../hooks/useApi';
-import { progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
+import { content as contentApi, exams, progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
 import { listVariants, listItemVariants } from '../lib/motion';
 import { bandForSkill, overallBand, MIN_EVIDENCE_ANSWERS, type EvidenceBand } from '../lib/evidenceBand';
 import { nextLessonSkillId } from '../lib/nextStep';
-import { bandMoments, missionMoments } from '../lib/homeMoments';
+import { bandMoments, missionMoments, trackMoments } from '../lib/homeMoments';
+import { CountUp } from '../components/quiz/CountUp';
 import { emit as emitFx } from '../lib/feedbackFx';
+import { biggestLever } from '../lib/readinessLever';
+import { LeverCard } from '../components/readiness/LeverCard';
 import styles from './HomeScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 // Saludo entero por clave: «Buenos» + «noches» salía «Buenos noches».
 function greetingKey(): 'home.greetingMorning' | 'home.greetingAfternoon' | 'home.greetingEvening' {
@@ -54,6 +58,23 @@ export function HomeScreen() {
     [activeTrackId],
   );
   const curFailed = Boolean(activeTrackId) && !cur.loading && cur.error !== null;
+  // 46.3c: «Tu mayor palanca» sube aquí desde Preparación. Solo hay dominios
+  // de examen en una certificación: la ruta activa si lo es y, si no, la
+  // certificación elegida en el onboarding (que deja activa la ruta de
+  // aprendizaje). Sin ninguna de las dos no se pide nada.
+  const trackList = useApi(() => contentApi.tracks(), []);
+  const isCertTrack = (id: string | null) => Boolean(id && trackList.data?.find((tr) => tr.id === id)?.is_certification);
+  const certTrackId = isCertTrack(activeTrackId) ? activeTrackId : isCertTrack(user.targetCertificationId) ? user.targetCertificationId : null;
+  const certTrack = trackList.data?.find((tr) => tr.id === certTrackId);
+  const readiness = useApi(
+    () => (certTrackId ? exams.certificationReadiness(certTrackId) : Promise.resolve(null)),
+    [certTrackId],
+  );
+  // Sin ninguna respuesta en esa certificación la palanca solo sería «el
+  // dominio que más pesa», y practicar llevaría a «Empieza por la lección»
+  // (needs_lesson, medido en local): lo primero sigue siendo la lección.
+  const certAnswers = readiness.data?.domains.reduce((sum, d) => sum + (d.answers ?? 0), 0) ?? 0;
+  const lever = readiness.data && certAnswers > 0 ? biggestLever(readiness.data.domains) : undefined;
   const nextLessonId = cur.data ? nextLessonSkillId(cur.data) : null;
   const nextLesson = cur.data?.modules.flatMap((m) => m.skills).find((s) => s.skill_id === nextLessonId);
 
@@ -82,6 +103,12 @@ export function HomeScreen() {
   const reduceMotion = useReducedMotion();
   const [missionsJustDone, setMissionsJustDone] = useState<string[]>([]);
   const [skillsJustUp, setSkillsJustUp] = useState<string[]>([]);
+  // 46.12: rutas con más skills dominadas que en la foto, con su valor anterior.
+  const [tracksFrom, setTracksFrom] = useState<Record<string, number>>({});
+  useEffect(() => {
+    if (!dash.data) return;
+    setTracksFrom(trackMoments(user.id, dash.data.tracks.map((tr) => ({ id: tr.track_id, mastered: tr.skills_mastered }))));
+  }, [dash.data, user.id]);
   useEffect(() => {
     if (!missions.data) return;
     const today = new Date().toISOString().slice(0, 10);
@@ -116,6 +143,15 @@ export function HomeScreen() {
           </button>
         </p>
       </motion.header>
+
+      {lever && certTrackId && (
+        <LeverCard
+          lever={lever}
+          name={lang === 'es' ? lever.name_es : lever.name_en}
+          examName={certTrack ? (lang === 'es' ? certTrack.name_es : certTrack.name_en) : undefined}
+          onPractice={() => startQuiz('study', 10, { trackId: certTrackId })}
+        />
+      )}
 
       {/* Preparación + siguiente paso: lo único que hay que hacer, arriba. */}
       <div className={styles.topGrid}>
@@ -267,7 +303,17 @@ export function HomeScreen() {
           <div className={styles.trackList}>
             {shownTracks.map((tr) => (
               <button key={tr.track_id} type="button" className={styles.trackRow} onClick={() => openTrack(tr.track_id)}>
-                <span className={styles.trackIcon} aria-hidden="true"><TrackIcon trackId={tr.track_id} fallback={tr.icon} size={28} /></span>
+                <motion.span
+                  className={styles.trackIcon}
+                  aria-hidden="true"
+                  data-testid={`track-icon-${tr.track_id}`}
+                  // 46.12: un toque (tapScale) cuando la ruta sumó skills dominadas.
+                  data-fx={tr.track_id in tracksFrom && !reduceMotion ? 'tap' : undefined}
+                  animate={tr.track_id in tracksFrom && !reduceMotion ? { scale: [1, 0.94, 1] } : undefined}
+                  transition={{ duration: 0.12, delay: 0.6 }}
+                >
+                  <TrackIcon trackId={tr.track_id} fallback={tr.icon} size={28} />
+                </motion.span>
                 <span className={styles.trackBody}>
                   <span className={styles.trackName}>{lang === 'es' ? tr.name_es : tr.name_en}</span>
                   {/* Sin ninguna dominada, una barra vacía no dice nada: basta el recuento. */}
@@ -281,7 +327,15 @@ export function HomeScreen() {
                     />
                   )}
                   <span className={styles.trackNumbers}>
-                    <span>{tr.skills_mastered}/{tr.total_skills} {t('home.skillsMastered')}</span>
+                    <span
+                      data-testid={`track-mastered-${tr.track_id}`}
+                      data-from={tr.track_id in tracksFrom && !reduceMotion ? tracksFrom[tr.track_id] : undefined}
+                    >
+                      {tr.track_id in tracksFrom && !reduceMotion
+                        ? <CountUp value={tr.skills_mastered} from={tracksFrom[tr.track_id]} state="run" durationMs={600} />
+                        : tr.skills_mastered}
+                      /{tr.total_skills} {t('home.skillsMastered')}
+                    </span>
                   </span>
                 </span>
               </button>
@@ -297,12 +351,17 @@ export function HomeScreen() {
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>{t('home.missions')}</h2>
               {missions.data && (
-                <span className={styles.badge}>
-                  {missions.data.filter((m) => m.completed).length}/{missions.data.length}
-                </span>
+                <MissionsCount
+                  done={missions.data.filter((m) => m.completed).length}
+                  total={missions.data.length}
+                  // 46.12: cuenta desde las que ya estaban completas en la foto.
+                  from={missionsJustDone.length > 0 && !reduceMotion
+                    ? missions.data.filter((m) => m.completed).length - missionsJustDone.length
+                    : undefined}
+                />
               )}
             </div>
-            {missions.loading && <p className={styles.muted}>{t('home.loading')}</p>}
+            {missions.loading && <Loading label={t('home.loading')} shape="line" />}
             {missions.data?.map((m) => {
               const name = lang === 'es' ? m.mission.name_es : m.mission.name_en;
               return (
@@ -367,7 +426,19 @@ export function HomeScreen() {
                     aria-label={`${name}: ${t(`bands.${skillBand}`)} (${evidence})`}
                   >
                     <span className={styles.nodeName}>{name}</span>
-                    <span className={styles.nodeMastery}>{t(`bands.${skillBand}`)}</span>
+                    {/* 46.12: la banda nueva entra con AnimatePresence si subió desde la foto. */}
+                    <AnimatePresence initial={false} mode="popLayout">
+                      <motion.span
+                        key={skillBand}
+                        className={styles.nodeMastery}
+                        data-band-enter={skillsJustUp.includes(s.skill_id) || undefined}
+                        initial={skillsJustUp.includes(s.skill_id) && !reduceMotion ? { opacity: 0, y: 6 } : false}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
+                      >
+                        {t(`bands.${skillBand}`)}
+                      </motion.span>
+                    </AnimatePresence>
                     <span className={styles.nodeEvidence}>{evidence}</span>
                   </div>
                 );
@@ -389,5 +460,14 @@ export function HomeScreen() {
         </div>
       </motion.section>
     </motion.div>
+  );
+}
+
+/** «n/m» de las misiones (46.12): si hay `from`, cuenta desde ahí. */
+function MissionsCount({ done, total, from }: { done: number; total: number; from?: number }) {
+  return (
+    <span className={styles.badge} data-testid="missions-count" data-from={from}>
+      {from === undefined ? done : <CountUp value={done} from={from} state="run" durationMs={600} />}/{total}
+    </span>
   );
 }

@@ -10,6 +10,8 @@
  */
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, useReducedMotion } from 'framer-motion';
+import { DUR } from '../../lib/motion';
 import type { QuestionPublic } from '../../services/api';
 import { parseQuestion } from '../../lib/question';
 import { formatClock } from '../../hooks/useTimedExam';
@@ -35,6 +37,7 @@ export function ExamSitting({
   const isSpanish = i18n.language.startsWith('es');
   const [flagged, setFlagged] = useState<Set<string>>(new Set());
   const [confirming, setConfirming] = useState(false);
+  const reduce = useReducedMotion();
 
   const current = questions[index];
   if (!current) return null;
@@ -68,9 +71,20 @@ export function ExamSitting({
         <span className={styles.counter}>
           {t('mockExam.question', { current: index + 1, total: questions.length })}
         </span>
-        <span className={urgent ? styles.clockUrgent : styles.clock} role="timer" aria-live="off" aria-label={t('mockExam.timeLeft')}>
+        {/* 46.15 C: al entrar en los 5 últimos minutos el reloj late una vez (la
+            `key` lo remonta solo en ese cambio). Sin sonido: avisa, no asusta. */}
+        <motion.span
+          key={urgent ? 'urgent' : 'calm'}
+          className={urgent ? styles.clockUrgent : styles.clock}
+          role="timer"
+          aria-live="off"
+          aria-label={t('mockExam.timeLeft')}
+          data-fx={urgent && !reduce ? 'urgent' : undefined}
+          animate={urgent && !reduce ? { scale: [1, 1.15, 1] } : undefined}
+          transition={{ duration: DUR.response }}
+        >
           {timeUp ? t('mockExam.timeUp') : formatClock(secondsLeft ?? 0)}
-        </span>
+        </motion.span>
       </div>
 
       <div className={styles.question}>

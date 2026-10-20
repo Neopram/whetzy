@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import { DUR } from '../lib/motion';
+import { emit as emitFx } from '../lib/feedbackFx';
 import { useAppStore } from '../stores/useAppStore';
 import { useApi } from '../hooks/useApi';
 import { useRuntime, type RuntimeType } from '../hooks/useRuntime';
@@ -12,6 +14,7 @@ import {
 } from '../services/api';
 import styles from './ProjectScreen.module.css';
 import { GameIcon } from '../components/common/AppIcon';
+import { Loading } from '../components/common/Loading';
 
 const MonacoCodeEditor = lazy(
   () => import('../components/quiz/MonacoCodeEditor').then((m) => ({ default: m.MonacoCodeEditor }))
@@ -54,7 +57,7 @@ function ProjectList({ onSelect }: { onSelect: (slug: string) => void }) {
         <h1 className={styles.title}>{t('project.title')}</h1>
       </div>
 
-      {listing.loading && <p className={styles.loading}>{t('home.loading')}</p>}
+      {listing.loading && <Loading label={t('home.loading')} shape="line" />}
 
       {listing.data && listing.data.length === 0 && (
         <p className={styles.empty}>{t('project.noProjects')}</p>
@@ -101,6 +104,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
   const [error, setError] = useState('');
   const [testResult, setTestResult] = useState<'pass' | 'fail' | null>(null);
   const [isRunning, setIsRunning] = useState(false);
+  const reduce = useReducedMotion();
   // 43.6 (ADR-65 D8): el progreso es el del servidor. Antes vivía solo aquí y
   // se perdía al salir; el servidor nunca se enteraba.
   const [submission, setSubmission] = useState<ProjectSubmissionRead | null>(null);
@@ -208,6 +212,8 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
         setSyncFailed(false);
         if (res.step_passed) {
           setTestResult('pass');
+          // 46.15 B: el acierto lo da el servidor, nunca el navegador solo.
+          emitFx({ type: 'correct' });
         } else {
           setTestResult('fail');
           if (res.timed_out) setError(t('playground.timedOut'));
@@ -235,8 +241,8 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
       <div className={styles.screen}>
         <div className={styles.header}>
           <button className={styles.backBtn} onClick={onBack} aria-label={t('common.back')}><span aria-hidden="true">←</span></button>
-          <span className={styles.title}>{t('home.loading')}</span>
         </div>
+        <Loading label={t('home.loading')} shape="card" />
       </div>
     );
   }
@@ -321,6 +327,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
               className={styles.runBtn}
               onClick={handleRun}
               disabled={isRunning || runtimeStatus !== 'ready'}
+              aria-busy={isRunning}
             >
               {isRunning ? t('playground.running') : t('playground.run')}
             </button>
@@ -336,7 +343,15 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
           {(output || error || testResult) && (
             <div className={styles.outputPanel} ref={outputRef}>
               {testResult === 'pass' && (
-                <p className={styles.passOutput}>{t('project.testsPassed')}</p>
+                <motion.p
+                  className={styles.passOutput}
+                  data-fx={reduce ? undefined : 'pass'}
+                  initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: DUR.response / 2 }}
+                >
+                  {t('project.testsPassed')}
+                </motion.p>
               )}
               {error && <pre className={styles.errorOutput}>{error}</pre>}
               {output && <pre className={styles.stdOutput}>{output}</pre>}
