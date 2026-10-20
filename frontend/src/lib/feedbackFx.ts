@@ -112,6 +112,7 @@ export function armFeedbackFx(): void {
   armed = true;
   const unlock = () => {
     gestured = true;
+    primeAudio();
     window.removeEventListener('pointerdown', unlock, true);
     window.removeEventListener('keydown', unlock, true);
   };
@@ -132,6 +133,24 @@ function audio(): AudioContext | null {
   if (!Ctor) return null;
   ctx = new Ctor();
   return ctx;
+}
+
+/**
+ * 46.2c: el sonido sale cuando el servidor contesta, ya fuera del toque. Safari
+ * de iOS deja mudo un AudioContext creado o reanudado fuera de un gesto, así
+ * que se crea, se reanuda y se desbloquea con un búfer mudo dentro del primer
+ * toque. En Chrome no hace falta (lo permite la activación previa del usuario),
+ * pero no estorba. Con el sonido apagado no se crea nada.
+ */
+function primeAudio(): void {
+  if (!useAppStore.getState().soundEnabled) return;
+  const ac = audio();
+  if (!ac) return;
+  if (ac.state === 'suspended') void ac.resume().catch(() => { /* lo reintenta emit() */ });
+  const silent = ac.createBufferSource();
+  silent.buffer = ac.createBuffer(1, 1, ac.sampleRate);
+  silent.connect(ac.destination);
+  silent.start();
 }
 
 const NOTE: Record<string, number> = {
@@ -216,6 +235,28 @@ export function emit(event: FxEvent): FxResult {
   }
   listeners.forEach((l) => l(event, result));
   return result;
+}
+
+/**
+ * Muestra al encender un interruptor de Perfil (46.2c): suena o vibra en ese
+ * mismo toque, así el alumno comprueba al momento si su aparato lo hace (en
+ * Safari no existe `navigator.vibrate`). Devuelve si hizo algo.
+ */
+export function preview(channel: 'sound' | 'haptic'): boolean {
+  if (typeof window === 'undefined') return false;
+  const { soundEnabled, hapticEnabled } = useAppStore.getState();
+  if (channel === 'sound') {
+    if (!soundEnabled) return false;
+    primeAudio();
+    const ac = audio();
+    return ac ? play(ac, { type: 'correct' }) : false;
+  }
+  if (!hapticEnabled) return false;
+  if (isNative()) {
+    nativeHaptic(NATIVE_HAPTIC.correct!);
+    return true;
+  }
+  return typeof navigator.vibrate === 'function' && navigator.vibrate(VIBRATION.correct!);
 }
 
 // ── Coalescencia ────────────────────────────────────────────────────────────
