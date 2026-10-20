@@ -24,10 +24,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 |---|---|
 | normativo-vivo | 25 |
 | referencia-viva | 66 |
-| histórico | 57 |
+| histórico | 58 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **193** |
+| **Total** | **194** |
 
 ## Raíz del repo y otras carpetas
 
@@ -168,6 +168,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/46.3a/README.md` | histórico | evidencia de capturas de la fila 46.3a (estados comunes con tokens `--le-*`, hover de «Reintentar» en modo claro) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/46.7/README.md` | histórico | evidencia de capturas de la fila 46.7 (una ceremonia por sesión y el resto como tarjetas) | se queda (junto a sus PNG) | 2026-10-18 |
 | `docs/ui-snapshots/44.3/README.md` | histórico | evidencia de capturas de la fila 44.3 (pestaña «Usuarios» del back-office: ficha y diálogo de regalar plan) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.12/README.md` | histórico | evidencia de capturas de la fila 46.12 (Hoy cuenta misiones y rutas desde la última visita) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.7b/README.md` | histórico | evidencia de capturas de la fila 46.7b (recuento del resumen de sesión, saltable, y la versión con movimiento reducido) | se queda (junto a sus PNG) | 2026-10-19 |
 | `docs/ui-snapshots/46.3c/README.md` | histórico | evidencia de capturas de la fila 46.3c (prueba de nivel en el onboarding y «Tu mayor palanca» como primera tarjeta de Hoy) | se queda (junto a sus PNG) | 2026-10-19 |
 | `docs/ui-snapshots/46.10/README.md` | histórico | evidencia de capturas de la fila 46.10 (la opción late o tiembla y el «+XP» vuela al marcador) | se queda (junto a sus PNG) | 2026-10-20 |

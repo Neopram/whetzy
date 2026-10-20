@@ -20,6 +20,7 @@ export interface HomeMoments {
 
 const missionsKey = (userId: string, day: string) => `whetzy_fx_missions_${userId}_${day}`;
 const bandsKey = (userId: string) => `whetzy_fx_bands_${userId}`;
+const tracksKey = (userId: string) => `whetzy_fx_tracks_${userId}`;
 
 function read<T>(key: string): T | null {
   try {
@@ -57,4 +58,18 @@ export function bandMoments(
   write(bandsKey(userId), { ...before, ...Object.fromEntries(skills.map((s) => [s.id, s.band])) });
   if (!before) return [];
   return skills.filter((s) => s.id in before && RANK[s.band] > RANK[before[s.id]]).map((s) => s.id);
+}
+
+/** 46.12: rutas cuyas skills dominadas subieron desde la última foto, con el
+ *  valor anterior (desde donde cuenta el número). Sin foto, nada. */
+export function trackMoments(
+  userId: string,
+  tracks: { id: string; mastered: number }[],
+): Record<string, number> {
+  const before = read<Record<string, number>>(tracksKey(userId));
+  write(tracksKey(userId), { ...before, ...Object.fromEntries(tracks.map((t) => [t.id, t.mastered])) });
+  if (!before) return {};
+  return Object.fromEntries(
+    tracks.filter((t) => t.id in before && t.mastered > before[t.id]).map((t) => [t.id, before[t.id]]),
+  );
 }
