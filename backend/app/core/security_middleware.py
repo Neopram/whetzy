@@ -34,6 +34,23 @@ _SECURITY_HEADERS = {
 }
 
 
+def client_ip(request: Request) -> str:
+    """IP del cliente, sin dejar que el cliente la elija.
+
+    ``X-Forwarded-For`` se lee **por la derecha**, saltando tantas
+    entradas como proxies de confianza haya. La usan el limitador y el
+    registro de administración (44.1).
+    """
+    if settings.TRUST_PROXY_HEADERS:
+        fwd = request.headers.get("x-forwarded-for")
+        if fwd:
+            partes = [p.strip() for p in fwd.split(",") if p.strip()]
+            saltos = max(1, settings.TRUSTED_PROXY_HOPS)
+            if len(partes) >= saltos:
+                return partes[-saltos]
+            return partes[0]
+    return request.client.host if request.client else "unknown"
+
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     def __init__(self, app: Any, enable_hsts: bool = False) -> None:
         super().__init__(app)
@@ -88,20 +105,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         )
 
     def _client_key(self, request: Request) -> str:
-        """IP del cliente, sin dejar que el cliente la elija.
-
-        ``X-Forwarded-For`` se lee **por la derecha**, saltando tantas
-        entradas como proxies de confianza haya.
-        """
-        if settings.TRUST_PROXY_HEADERS:
-            fwd = request.headers.get("x-forwarded-for")
-            if fwd:
-                partes = [p.strip() for p in fwd.split(",") if p.strip()]
-                saltos = max(1, settings.TRUSTED_PROXY_HOPS)
-                if len(partes) >= saltos:
-                    return partes[-saltos]
-                return partes[0]
-        return request.client.host if request.client else "unknown"
+        return client_ip(request)
 
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         path = request.url.path

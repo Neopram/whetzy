@@ -11,7 +11,7 @@ oauth, payment— que tenian migraciones aplicadas y datos en produccion.
 """
 
 from app.core.db import Base
-from app.models.admin import GDPRRequest
+from app.models.admin import AdminActionLog, GDPRRequest
 from app.models.analytics import AnalyticsEvent
 from app.models.antifraud import DeviceFingerprint, FraudReviewQueue
 from app.models.auth import AuditLog, LoginAttempt, RefreshToken, User2FA, UserSession
@@ -61,6 +61,7 @@ from app.models.tutor_usage import TutorUsage
 from app.models.user import User, UserBadge, UserSkillState
 
 __all__ = [
+    "AdminActionLog",
     "AnalyticsEvent",
     "AuditLog",
     "Badge",
