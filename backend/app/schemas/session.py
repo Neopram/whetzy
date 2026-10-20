@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import json
 import uuid
 from datetime import datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, JsonValue, field_validator
 
 from app.schemas.content import QuestionPublic
+
+WIDGET_STATE_MAX_CHARS = 20_000
 
 
 class StudySessionRead(BaseModel):
@@ -77,9 +80,21 @@ class QuizAnswerRequest(BaseModel):
     # For `fill_blank`: the text the learner typed. The server compares it with
     # the stored answer (trimmed, case-insensitive); without it the answer is wrong.
     answer_text: str | None = Field(default=None, max_length=2_000)
+    # For `interactive` (40.1): the widget's serialized state. The server grades
+    # it against the stored `target` with the question's checker; without it the
+    # answer is wrong.
+    widget_state: JsonValue | None = None
     # Client-generated UUID for offline queue idempotency (33.2).
     # La columna es String(64): más largo debe ser 422, no un 500 de la base.
     event_id: str | None = Field(default=None, max_length=64)
+
+    @field_validator("widget_state")
+    @classmethod
+    def _widget_state_size(cls, v: JsonValue | None) -> JsonValue | None:
+        # Same ceiling as exec_output: the checkers walk the whole value.
+        if v is not None and len(json.dumps(v, ensure_ascii=False)) > WIDGET_STATE_MAX_CHARS:
+            raise ValueError(f"widget_state over {WIDGET_STATE_MAX_CHARS} characters")
+        return v
 
 
 class FxEvent(BaseModel):
@@ -114,6 +129,9 @@ class QuizAnswerResponse(BaseModel):
     quota_reached: bool = False
     # Hitos de esta respuesta, sin repetidos (46.1b). Vacío en la reentrega idempotente.
     events: list[FxEvent] = Field(default_factory=list)
+    # `interactive` (40.1): the target, once answered, so the client re-checks
+    # with its own checker and flags a disagreement. Null for every other type.
+    widget_target: JsonValue | None = None
 
 
 class QuizEndRequest(BaseModel):

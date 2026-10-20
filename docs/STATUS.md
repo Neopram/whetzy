@@ -2881,3 +2881,14 @@ menciones al host de Railway como alias vivo o como medida fechada. H.59 hecha s
 pasan a H.61 (`COOKIE_DOMAIN=.whetzy.com` y, según #228, `API_PUBLIC_BASE_URL` y `OAUTH_REDIRECT_BASE_URL`,
 solo tras el deploy). Fuera de este PR (son código): los valores por defecto de `scripts/estado.py` y
 `scripts/smoke_post_deploy.sh` siguen en el host de Railway, que responde.
+
+## 2026-10-19 — Serie 46, ola 1 cerrada en código y decisiones D1–D4 (ADR-67)
+
+La ola 1 de `docs/PLAN_UI_AVANZADA.md` (46.0–46.7) entró en `master` entre el 2026-10-18 y el 19: #262 (dieta del
+ledger), #263 (`feedbackFx`), #264 y #267 (estados y momentos de Hoy), #265 (`events[]`), #266 (feedback del quiz),
+#269 (ceremonias), #271 (ledger) y #245 (el plan con su §6). Abiertos: #272 (46.3c, «Tu mayor palanca» en Hoy) y
+#273 (46.7b, recuento del resumen).
+
+El dueño respondió las cuatro decisiones de §4 (ADR-67): D1 sin excepción a ADR-62; D2 mascota sí, con la guía de
+diseño enmendada; D3 sonido encendido por defecto; D4 `@capacitor/haptics` en su PR. Filas nuevas 46.8 (mascota) y
+46.9 (sonido por defecto); 46.2b deja de esperar.

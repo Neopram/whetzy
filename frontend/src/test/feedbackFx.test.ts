@@ -2,8 +2,8 @@
  * 46.2 (docs/PLAN_UI_AVANZADA.md §6): el bus de sonido y vibración. Lo que
  * vigila: sin gesto previo o con el interruptor apagado no se crea ni un
  * AudioContext ni se llama a `vibrate`; un evento por nivel; como mucho una
- * ceremonia por sesión; y quien tenía `soundEnabled` guardado sin haberlo
- * elegido pasa a apagado.
+ * ceremonia por sesión; y, desde 46.9 (ADR-67 D3), el sonido viene encendido salvo que el alumno
+ * lo haya apagado él.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
@@ -128,16 +128,33 @@ describe('feedbackFx — coalescencia', () => {
 });
 
 describe('preferencias guardadas', () => {
-  it('el sonido arranca apagado', () => {
-    expect(useAppStore.getInitialState().soundEnabled).toBe(false);
+  it('46.9 (ADR-67 D3): el sonido arranca encendido y sin elección registrada', () => {
+    expect(useAppStore.getInitialState().soundEnabled).toBe(true);
+    expect(useAppStore.getInitialState().soundChosen).toBe(false);
   });
 
-  it('migración v0 → v1: un soundEnabled guardado en true (nadie lo eligió) pasa a false', async () => {
+  it('tocar el interruptor registra que el alumno eligió', () => {
+    useAppStore.setState({ soundEnabled: true, soundChosen: false });
+    useAppStore.getState().toggleSound();
+    expect(useAppStore.getState()).toMatchObject({ soundEnabled: false, soundChosen: true });
+  });
+
+  it('migración v0 → v2: el true guardado antes de 46.2 (nadie lo eligió) queda encendido', async () => {
     const migrate = useAppStore.persist.getOptions().migrate!;
-    const out = (await migrate({ soundEnabled: true, hapticEnabled: true, language: 'en' }, 0)) as {
-      soundEnabled: boolean; hapticEnabled: boolean; language: string;
-    };
-    expect(out).toMatchObject({ soundEnabled: false, hapticEnabled: true, language: 'en' });
-    expect(useAppStore.persist.getOptions().version).toBe(1);
+    const out = (await migrate({ soundEnabled: true, hapticEnabled: true, language: 'en' }, 0)) as Record<string, unknown>;
+    expect(out).toMatchObject({ soundEnabled: true, soundChosen: false, hapticEnabled: true, language: 'en' });
+  });
+
+  it('migración v1 → v2: el false de 46.2 no distingue elección de valor forzado y pasa a encendido; el true se queda', async () => {
+    const migrate = useAppStore.persist.getOptions().migrate!;
+    expect(await migrate({ soundEnabled: false, language: 'es' }, 1)).toMatchObject({ soundEnabled: true, soundChosen: false });
+    expect(await migrate({ soundEnabled: true, language: 'es' }, 1)).toMatchObject({ soundEnabled: true, soundChosen: false });
+    expect(useAppStore.persist.getOptions().version).toBe(2);
+  });
+
+  it('la elección se guarda con el resto de preferencias', () => {
+    const partialize = useAppStore.persist.getOptions().partialize!;
+    const saved = partialize({ ...useAppStore.getState(), soundEnabled: false, soundChosen: true }) as Record<string, unknown>;
+    expect(saved).toMatchObject({ soundEnabled: false, soundChosen: true });
   });
 });

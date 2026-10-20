@@ -154,6 +154,9 @@ interface AppState {
   language: Language;
   setLanguage: (lang: Language) => void;
   soundEnabled: boolean;
+  /** 46.9: true en cuanto el alumno toca el interruptor; un cambio futuro del
+   *  valor por defecto no pisa una elección. */
+  soundChosen: boolean;
   toggleSound: () => void;
   /** Mostrar el «¿Por qué?» del tutor IA (Ajustes). Solo afecta a este dispositivo. */
   aiExplanations: boolean;
@@ -394,9 +397,11 @@ export const useAppStore = create<AppState>()(
 
       language: 'es',
       setLanguage: (lang) => set({ language: lang }),
-      // Apagado por defecto (46.2, plan §6.0; D3 del dueño puede cambiarlo).
-      soundEnabled: false,
-      toggleSound: () => set((s) => ({ soundEnabled: !s.soundEnabled })),
+      // Encendido por defecto (46.9, ADR-67 D3); aun así no suena antes del
+      // primer gesto (`lib/feedbackFx`).
+      soundEnabled: true,
+      soundChosen: false,
+      toggleSound: () => set((s) => ({ soundEnabled: !s.soundEnabled, soundChosen: true })),
       aiExplanations: true,
       toggleAiExplanations: () => set((s) => ({ aiExplanations: !s.aiExplanations })),
       hapticEnabled: true,
@@ -404,18 +409,24 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'learning-engine-store',
-      // v1 (46.2): hasta aquí `soundEnabled` se guardaba en true sin que nada
-      // sonara ni hubiera interruptor; nadie lo eligió, así que se apaga.
-      version: 1,
+      // v1 (46.2): el `soundEnabled` guardado se forzó a false (nadie lo había
+      // elegido). v2 (46.9, ADR-67 D3): encendido por defecto. Un false de v1
+      // no distingue elección de valor forzado, así que pasa a encendido; un
+      // true solo pudo ser elección y se queda. Desde v2, `soundChosen` lo dice.
+      version: 2,
       migrate: (persisted, version) => {
         const state = (persisted ?? {}) as Record<string, unknown>;
-        if (version < 1) state.soundEnabled = false;
+        if (version < 2) {
+          state.soundEnabled = true;
+          state.soundChosen = false;
+        }
         return state as unknown as AppState;
       },
       partialize: (state) => ({
         user: state.user,
         language: state.language,
         soundEnabled: state.soundEnabled,
+        soundChosen: state.soundChosen,
         aiExplanations: state.aiExplanations,
         hapticEnabled: state.hapticEnabled,
         missions: state.missions,

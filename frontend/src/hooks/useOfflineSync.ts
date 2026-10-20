@@ -43,7 +43,7 @@ export function useOfflineSync(): OfflineSyncState {
           item.responseTimeMs,
           false,
           item.id,
-          { execOutput: item.execOutput, answerText: item.answerText },
+          { execOutput: item.execOutput, answerText: item.answerText, widgetState: item.widgetState },
         );
       } catch {
         // Best-effort: if the session expired, we can't recover. Skip it.
