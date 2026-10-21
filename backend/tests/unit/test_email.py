@@ -24,7 +24,9 @@ from app.services.email import (
     send_welcome,
 )
 
-TEMPLATE_NAMES = ("welcome", "email_verification", "password_reset")
+# Todas, no una lista a mano: con tres nombres fijos, las otras seis plantillas
+# (soporte, reactivación, créditos, renovación, boletín) no tenían paridad ES/EN.
+TEMPLATE_NAMES = tuple(_TEMPLATES)
 
 
 @pytest.fixture
@@ -68,6 +70,17 @@ class TestTemplates:
             return out
 
         assert fields(_TEMPLATES[name]["es"]) == fields(_TEMPLATES[name]["en"])
+
+    @pytest.mark.parametrize("name", TEMPLATE_NAMES)
+    def test_both_languages_point_to_the_same_whetzy_addresses(self, name: str) -> None:
+        """Una dirección traducida («soporte@») es otro buzón: el alumno en ES
+        escribía a uno que no sale en ningún otro sitio (support_resolved, 2026-10-21)."""
+        import re
+
+        def addresses(tpl: dict[str, str]) -> set[str]:
+            return set(re.findall(r"[\w.+-]+@whetzy\.com", tpl["subject"] + tpl["html"]))
+
+        assert addresses(_TEMPLATES[name]["es"]) == addresses(_TEMPLATES[name]["en"])
 
 
 class TestRender:

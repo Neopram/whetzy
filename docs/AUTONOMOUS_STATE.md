@@ -41,9 +41,9 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 46 | Experiencia avanzada | 6/20 | 30 % | 46.1, 46.3, 46.4, 46.5, 46.6, 46.6a +8 |
+| 46 | Experiencia avanzada | 11/20 | 55 % | 46.1, 46.3, 46.4, 46.5, 46.6, 46.6a +3 |
 | 45 | Alta con correo | 4/4 | 100 % | — |
-| 44 | Back-office de soporte | 0/4 | 0 % | 44.1, 44.2, 44.3, 44.4 |
+| 44 | Back-office de soporte | 4/4 | 100 % | — |
 | 43 | Flujo del alumno listo para pruebas | 5/8 | 62 % | 43.4, 43.5, 43.6 |
 | 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
 | 41 | Documentación al día con el código | 5/6 | 83 % | 41.3 |
@@ -175,7 +175,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 19. Lo que Educative y las tiendas exigen — social login, bootcamps, proyectos, autoría con fuentes libres (abierta 2026-09-18, sesión…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 19.2 | **1** | Sign in with Apple — 19.1 (GitHub/Google OAuth) ya está en vivo si… | PARCIAL (preparado, no verificado: H.2) | Código y tests con claves propias; RUNBOOK «App iOS» |
+| 19.2 | **1** | Sign in with Apple — obligatoria: Google en vivo (21-10)… | PARCIAL (preparado, no verificado: H.2) | Código y tests con claves propias; RUNBOOK «App iOS» |
 | 19.3 | **2** | Android: Google Sign-In nativo + Google Play Billing vía RevenueCa… |  | → §I (criterio archivado por 20.10) |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
 | 19.8 | **3** | **Landing y SEO de whetzy.com al nivel de Educative** | TODO | → LEDGER_HISTORY.md §E |
@@ -575,10 +575,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 44.1 | **0** | `GET /admin/users?q=` y `/admin/users/{id}`; tabla `admin_action_log`; registro de `view`; exige 2FA (B7) | TODO (tras 43.8) | no-owner 403; owner sin 2FA 403; `q` de 2 caracteres 422; ficha crea fila `view`; email enmascarado |
-| 44.2 | **0** | `POST /admin/users/{id}/actions/{accion}`: las cinco acciones de B4, con motivo y fila en el registro | TODO (tras 44.1) | un test por acción; motivo vacío 422; plan regalado > 90 días 422; suspender invalida la sesión |
-| 44.3 | **0** | Pestañas «Usuarios» y «Registro» en `AdminScreen`; i18n ES/EN | TODO (tras 44.2) | vitest de búsqueda, ficha y acción; e2e `admin.spec.ts`; un alumno no ve la pestaña |
-| 44.4 | **1** | Docs de soporte (MAPA_PRODUCTO, ARCHITECTURE, RUNBOOK) y «queda registrado» en `legal.privacySupportAccess` | TODO (tras 44.3) | `check_docs.py` verde |
+| 44.1 | **0** | `GET /admin/users?q=` y `/admin/users/{id}`; tabla `admin_action_log`; registro de `view`; exige 2FA (B7) | DONE — #282 `6e631b7`, §7 10-21 | no-owner 403; owner sin 2FA 403; `q` de 2 caracteres 422; ficha crea fila `view`; email enmascarado |
+| 44.2 | **0** | `POST /admin/users/{id}/actions/{accion}`: las cinco acciones de B4, con motivo y fila en el registro | DONE — #283 `086f802`, §7 10-21 | un test por acción; motivo vacío 422; plan regalado > 90 días 422; suspender invalida la sesión |
+| 44.3 | **0** | Pestañas «Usuarios» y «Registro» en `AdminScreen`; i18n ES/EN | DONE — #284 `086f802`, §7 10-21 | vitest de búsqueda, ficha y acción; e2e `admin.spec.ts`; un alumno no ve la pestaña |
+| 44.4 | **1** | Docs de soporte (MAPA_PRODUCTO, ARCHITECTURE, RUNBOOK) y «queda registrado» en `legal.privacySupportAccess` | DONE — #285 `086f802`, §7 10-21 | `check_docs.py` verde |
 
 ### 45. Alta con correo (plan del dueño 2026-10-17; `PLAN_CORREO_ALTA.md`; ADR-66)
 
@@ -602,21 +602,21 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.1b | **1** | `events[]` en `QuizAnswerResponse` | DONE — #265 `2840689`, §7 10-19 | plan §6.3 |
 | 46.2 | **1** | `feedbackFx.ts`: bus, sonido, vibración | DONE — #263 `0449034`, §7 10-19 | plan §6.0–6.1 |
 | 46.2b | **2** | `@capacitor/haptics` | DONE — #276 `00e52a5`, §7 10-20 | PR propio (ADR-67 D4) |
-| 46.3 | **1** | Estados vacíos y momentos de Home | DOING — #264, #267; falta 46.3c | plan §2 y §6.2 |
+| 46.3 | **1** | Estados vacíos y momentos de Home | DOING — #264, #267, #272; falta e2e de misión | plan §2 y §6.2 |
 | 46.4 | **2** | Un solo sistema de tokens | TODO | 0 `var(--color-` |
 | 46.5 | **2** | Regresión visual en nivel 2 | TODO | rojo al mutar un token |
 | 46.6 | **2** | Medición y re-puntuación | TODO | tabla con evidencia |
-| 46.7 | **1** | Resumen y ceremonias | DOING — #269; falta recuento y `fx_emitted` | plan §6.4 |
+| 46.7 | **1** | Resumen y ceremonias | DOING — #269, #273, #288; falta e2e nivel 4 | plan §6.4 |
 | 46.8 | **2** | Mascota: brief para ilustrador | DONE — #277 `b15f062`, §7 10-20 | brief y 3 direcciones (ADR-67 D2) |
 | 46.9 | **1** | Sonido encendido por defecto | DONE — #275 `e5f5e5a`, §7 10-20 | sin preferencia → on (ADR-67 D3) |
-| 46.6a | **1** | Analítica fx anónima (ADR-68) | TODO | plan §7.2 |
-| 46.10 | **1** | Quiz: opción late/tiembla, «+XP» vuela | TODO | plan §7.3 |
-| 46.11 | **1** | Llama de racha en 3 tamaños + escudo | TODO | plan §7.3 |
-| 46.12 | **1** | Home: contadores y banda con `AnimatePresence` | TODO | plan §7.3 |
-| 46.13 | **2** | Liga y Preparación escalonadas | TODO | plan §7.3 |
-| 46.14 | **1** | Transiciones de ruta y esqueletos de carga | TODO | plan §7.4 |
-| 46.15 | **2** | Movimiento en las 27 pantallas sin él | TODO | plan §7.5 |
-| 46.16 | **2** | Tokens de movimiento y guarda | TODO | plan §7.6 |
+| 46.6a | **1** | Analítica fx anónima (ADR-68) | DOING — #288; falta `fx_skipped` al saltar el recuento | plan §7.2 |
+| 46.10 | **1** | Quiz: opción late/tiembla, «+XP» vuela | DONE — #289, §7 10-21 | plan §7.3 |
+| 46.11 | **1** | Llama de racha en 3 tamaños + escudo | DONE — #290, §7 10-21 | plan §7.3 |
+| 46.12 | **1** | Home: contadores y banda con `AnimatePresence` | DONE — #291, §7 10-21 | plan §7.3 |
+| 46.13 | **2** | Liga y Preparación escalonadas | DONE — #292, §7 10-21 | plan §7.3 |
+| 46.14 | **1** | Transiciones de ruta y esqueletos de carga | DOING — #293, #295; faltan Estado y Landing (§7.4) | plan §7.4 |
+| 46.15 | **2** | Movimiento en las 27 pantallas sin él | DOING — #295–#299; falta tabla §7.5 y check en Restablecer | plan §7.5 |
+| 46.16 | **2** | Tokens de movimiento y guarda | DONE — #294, §7 10-21 | plan §7.6 |
 
 ## 3. Cola HUMAN-BLOCKED
 
