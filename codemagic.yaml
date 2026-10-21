@@ -36,11 +36,13 @@ workflows:
   android-release:
     name: Android — Release AAB
     max_build_duration: 60
-    instance_type: linux_x2
+    # mac_mini_m2: la cuenta gratuita solo da minutos en macOS M2 (STORE_LISTING §7); Linux se paga.
+    instance_type: mac_mini_m2
     environment:
       groups:
         - android_credentials  # KEYSTORE_FILE, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD
-      node: 20
+      # 22: @capacitor/cli 8.5 exige Node >= 22 para `cap sync` (como ci.yml).
+      node: 22
       java: 17
     triggering:
       events:
@@ -84,9 +86,9 @@ workflows:
       groups:
         - ios_credentials  # APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY
         - certificate_credentials  # CERTIFICATE_PRIVATE_KEY, PROVISIONING_PROFILE
-      node: 20
+      # 22: @capacitor/cli 8.5 exige Node >= 22 para `cap sync` (como ci.yml).
+      node: 22
       xcode: latest
-      cocoapods: default
     triggering:
       events:
         - tag
@@ -113,7 +115,7 @@ workflows:
         script: |
           cd frontend/ios
           xcode-project build-ipa \
-            --workspace App/App.xcworkspace \
+            --project App/App.xcodeproj \
             --scheme App
     artifacts:
       - build/ios/ipa/*.ipa
@@ -135,7 +137,8 @@ workflows:
     max_build_duration: 30
     instance_type: mac_mini_m2
     environment:
-      node: 20
+      # 22: @capacitor/cli 8.5 exige Node >= 22 para `cap sync` (como ci.yml).
+      node: 22
       java: 17
     scripts:
       - *node_setup

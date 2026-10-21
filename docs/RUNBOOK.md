@@ -476,6 +476,16 @@ si no está, ya vienen en el valor por defecto de `config.py`. Comprobación, de
 Tiene que dar `200`. El 2026-10-20 (antes de este cambio) daba `400` también para `https://localhost` y
 `capacitor://localhost`: con el APK tal cual, el login fallaba en el preflight.
 
+**Hecho el 2026-10-21.** El dueño puso en Railway
+`BACKEND_CORS_ORIGINS=["https://whetzy.com","https://www.whetzy.com","https://whetzy.pages.dev","https://app.whetzy.com","capacitor://app.whetzy.com"]`
+(deploy `cfc02a67`, SUCCESS). Preflight comprobado ese día contra producción:
+- `https://app.whetzy.com` → 200;
+- `capacitor://app.whetzy.com` → 200;
+- `https://whetzy.com` → 200;
+- un origen ajeno (`https://evil.example.com`) → 400.
+
+Un origen nuevo se añade a esa lista; borrar la variable volvería al valor por defecto de `config.py`.
+
 **Construirlo en local** (medido el 2026-10-20 en Linux; JDK 21 y Gradle del wrapper, 8.11.1):
 
 1. SDK de Android **fuera del proyecto** (no entra en git): descargar `commandlinetools-linux-*_latest.zip`
@@ -595,7 +605,7 @@ consultada el 2026-10-20). Hace falta:
 3. Conectar el iPhone, elegirlo como destino y *Run*. En el iPhone: Ajustes → General → VPN y gestión de
    dispositivos → confiar en el desarrollador.
 4. Mismo requisito de CORS que Android: `capacitor://app.whetzy.com` aprobado en producción (RUNBOOK, «App Android
-   de depuración»; llega con el PR de D.1).
+   de depuración»; el origen lo trajo el #305 y está aprobado en producción desde el 2026-10-21).
 
 **Sign in with Apple (19.2): preparado, no verificado (H.2).** El código está (`backend/app/services/apple_signin.py`,
 `POST /auth/oauth/apple/callback`, botón en `AuthScreen` solo si `/auth/oauth/providers` lo devuelve) y probado
@@ -603,8 +613,46 @@ con claves de test, nunca contra Apple. Para encenderlo, tras H.2: crear un Serv
 `api.whetzy.com` y la URL de retorno `https://api.whetzy.com/api/v1/auth/oauth/apple/callback`, una clave de Sign in
 with Apple (.p8), y en Railway `APPLE_CLIENT_ID` (el Services ID), `APPLE_TEAM_ID`, `APPLE_KEY_ID` y
 `APPLE_PRIVATE_KEY` (el PEM en una línea, con `\n`). Con las cuatro, el botón aparece solo. ADR-13 lo exige antes
-de enviar a App Store porque ya hay Google y GitHub. La forma del botón no sigue aún las guías de Apple al
-píxel: revisarla antes del envío.
+de enviar a App Store porque Google está encendido en producción desde el 2026-10-21 (GitHub tiene el código pero
+no credenciales). La forma del botón no sigue aún las guías de Apple al píxel: revisarla antes del envío.
+
+## Inicio de sesión con Google (encendido el 2026-10-21)
+
+El código existía desde 19.1. En producción el botón no salía porque Railway no tenía credenciales:
+`GET /auth/oauth/providers` solo lista un proveedor con `client_id` no vacío (`oauth.py`, `oauth_providers`).
+Lo encendió el dueño el 2026-10-21:
+
+1. **Google Cloud → Google Auth Platform.**
+   - Público: «Usuarios externos». La app empieza en modo de prueba: solo entran las cuentas de «Usuarios de
+     prueba» hasta pulsar «Publicar app».
+   - Cliente de OAuth, tipo «Aplicación web».
+   - Origen de JavaScript: `https://whetzy.com`, sin ruta ni `/` final; Google rechaza cualquier otra forma.
+   - URIs de redireccionamiento:
+     - `https://api.whetzy.com/api/v1/auth/oauth/google/callback`, la que usa producción;
+     - `https://api-production-9751.up.railway.app/api/v1/auth/oauth/google/callback`, de reserva.
+
+     Sale de `_callback_uri()`: `OAUTH_REDIRECT_BASE_URL` + `/api/v1/auth/oauth/<proveedor>/callback`.
+2. **Railway, servicio `api`.** `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET`, y luego **Redeploy**. El proceso
+   solo lee las variables al arrancar: con ellas guardadas y sin redeploy, `/providers` seguía en `[]`.
+3. **Comprobado el 2026-10-21, tras el redeploy de las 04:55 UTC:**
+   - `/providers` → `["google"]`;
+   - `/google/start` → 302 a `accounts.google.com` con `redirect_uri` en `api.whetzy.com`;
+   - Google responde 200 con su pantalla de elegir cuenta, sin `redirect_uri_mismatch`;
+   - el dueño entró de punta a punta con su cuenta.
+
+`/providers` va con `Cache-Control: max-age=3600`: un navegador con la página abierta tarda hasta una hora en
+ver el botón; en una ventana privada sale al momento.
+
+Qué hace al entrar (`_find_or_create_user`):
+- si ya hay un vínculo con esa cuenta de Google, entra en ese usuario;
+- si hay un usuario con el mismo email y verificado, vincula y entra;
+- si el email existe sin verificar, rechaza con `oauth_error=email_unverified`;
+- si no hay nadie con ese email, crea la cuenta.
+
+Pendiente:
+- [Suposición] Google bloquea su login dentro de un WebView embebido, así que en la app nativa haría falta el
+  login nativo (19.3). Sin comprobar en dispositivo.
+- Encender Google obliga a tener Sign in with Apple antes de enviar a App Store (ADR-13, fila 19.2).
 
 ## Rollback a bad deploy
 

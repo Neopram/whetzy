@@ -64,8 +64,8 @@ ADR-16 queda suspendida). Cancelar en dos toques.
   MIT / Apache / BSD / CC BY / CC0 / PSF / dominio público; CC BY-SA espera H.LIC;
   lo CC BY-NC y lo propietario se lee y se cita. Sin libros de pago, sin PDFs piratas.
 - Registro obligatorio. Sin modo invitado. **Social login antes de tiendas** (ADR-13):
-  GitHub + Google en web → **Sign in with Apple, obligatorio por App Store 4.8** en
-  cuanto exista otro OAuth → Google nativo en Android. Ninguna submission sin 19.1 + 19.2 + 17.14.
+  Google en web (encendido el 2026-10-21; GitHub tiene código, sin credenciales) → **Sign in with
+  Apple, obligatorio por App Store 4.8** en cuanto exista otro OAuth → Google nativo en Android. Ninguna submission sin 19.1 + 19.2 + 17.14.
 - Herramientas externas (`claude-webkit`, `banana-claude`, `editor-pro-max`) solo
   fuera de la app; `notebooklm-mcp` no se instala (ADR-12).
 - Forma por track (ADR-54, catálogo §2): **32 skills × 10 Q, con ≥ 3 ejecutables por skill**
@@ -390,7 +390,7 @@ git commit -m "<fase>.<id>: <qué cambió>
 
 <evidencia en 1-3 líneas>
 
-Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git push -u origin <tu-rama>        # nunca master: lo fusiona el dueño (ADR-45)
 ```
 

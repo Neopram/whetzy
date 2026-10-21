@@ -191,6 +191,6 @@ Lo que no lleva URL y fecha aquí es memoria y no vale (regla de la tarea D).
 - [ ] Cuenta de Play Console (H.3, 25 USD una vez)
 - [ ] Clave de firma de *release* (keystore) creada y guardada fuera del repo; grupo `android_credentials` en Codemagic
 - [ ] **Prueba cerrada: 12 testers durante 14 días seguidos** antes de poder pedir Producción (cuenta personal; §7)
-- [ ] `BACKEND_CORS_ORIGINS` de Railway con `https://app.whetzy.com` (RUNBOOK, «App Android de depuración»)
+- [x] `BACKEND_CORS_ORIGINS` de Railway con `https://app.whetzy.com` y `capacitor://app.whetzy.com`: hecho y comprobado el 2026-10-21 (RUNBOOK, «App Android de depuración»)
 - [ ] Avisos nativos (FCM): hoy la app solo tiene Web Push, que el WebView de Android no ofrece
 - [ ] AAB firmado subido a Play Console
