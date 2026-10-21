@@ -100,7 +100,10 @@ test.describe('offline', () => {
 
       // The app must advance rather than freeze: a toast, plus the synthetic
       // feedback panel that lets the learner keep going.
-      await expect(page.getByRole('status')).toBeVisible({ timeout: 10_000 });
+      // El aviso, no cualquier `role=status`: con el correo sin verificar también
+      // está la franja de 45.3, y `getByRole('status')` a secas chocaba en modo
+      // estricto (CI del 2026-10-21).
+      await expect(page.getByRole('status').filter({ hasText: /sin conexión|offline/i })).toBeVisible({ timeout: 10_000 });
       await expect(
         page.getByText(/guardado sin conexión|saved offline/i).first(),
       ).toBeVisible({ timeout: 10_000 });
