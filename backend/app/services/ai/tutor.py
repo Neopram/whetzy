@@ -17,7 +17,7 @@ and three memory layers:
 from __future__ import annotations
 
 import uuid
-from typing import Any
+from typing import Any, Literal
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -45,6 +45,42 @@ _SYSTEM = {
         "Be concise (max 5 sentences); use a short code example when it helps."
     ),
 }
+
+
+# Ola 2 (2026-10-21): tres modos. `why` es el tutor de siempre; `how` enseña el
+# procedimiento; `deep` (solo Pro Max, decisión del dueño) se extiende y cita.
+TutorMode = Literal["why", "how", "deep"]
+
+_MODE = {
+    "es": {
+        "why": "",
+        "how": (
+            " MODO «¿CÓMO?»: no expliques solo por qué; enseña los pasos para llegar "
+            "a la respuesta (máx 6 pasos numerados, uno por línea)."
+        ),
+        "deep": (
+            " MODO «A FONDO»: olvida el límite de 5 frases. Estructura la respuesta en: "
+            "1) el concepto, 2) por qué la respuesta correcta lo es y las otras no, "
+            "3) un ejemplo, 4) errores típicos. Cita las fuentes del CONTEXTO "
+            "RELACIONADO cuando las uses y no añadas ninguna que no esté ahí."
+        ),
+    },
+    "en": {
+        "why": "",
+        "how": (
+            " \"HOW?\" MODE: don't just explain why; teach the steps to reach the "
+            "answer (max 6 numbered steps, one per line)."
+        ),
+        "deep": (
+            " \"IN DEPTH\" MODE: ignore the 5-sentence limit. Structure the answer as: "
+            "1) the concept, 2) why the correct answer is right and the others are not, "
+            "3) an example, 4) common mistakes. Cite the sources in the RELATED CONTEXT "
+            "when you use them and never add one that is not there."
+        ),
+    },
+}
+
+MAX_TOKENS = {"why": 500, "how": 500, "deep": 1200}
 
 
 async def _times_missed(db: AsyncSession, user_id: uuid.UUID, question_id: str) -> int:
@@ -114,6 +150,7 @@ async def explain_question(
     user: User,
     question_id: str,
     conversation_history: list[dict[str, Any]] | None = None,
+    mode: TutorMode = "why",
 ) -> dict[str, Any]:
     question = (
         await db.execute(select(Question).where(Question.id == question_id))
@@ -156,7 +193,7 @@ async def explain_question(
 
     # --- Long-term memory: weak skills context ---
     weak_skills = await _get_weak_skills(db, user.id)
-    system_prompt = _SYSTEM[lang]
+    system_prompt = _SYSTEM[lang] + _MODE[lang][mode]
     if weak_skills:
         names = [s.name_es if lang == "es" else s.name_en for s in weak_skills]
         weak_ctx = (
@@ -205,10 +242,12 @@ async def explain_question(
 
     if complete_named is not None:
         explanation, provider_name, tokens_used = await complete_named(
-            system_prompt, user_prompt, max_tokens=500, history=history
+            system_prompt, user_prompt, max_tokens=MAX_TOKENS[mode], history=history
         )
     else:
-        explanation = await provider.complete(system_prompt, user_prompt, max_tokens=500, history=history)
+        explanation = await provider.complete(
+            system_prompt, user_prompt, max_tokens=MAX_TOKENS[mode], history=history
+        )
         provider_name = provider.name
         tokens_used = 0
 

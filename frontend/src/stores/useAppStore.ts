@@ -32,6 +32,8 @@ interface UserProfile {
   /** «Admin» en Perfil: solo el dueño. `/auth/me` no mandaba `is_admin`, así
    *  que el enlace no se veía nunca (auditoría de pantallas, 2026-10-16). */
   isOwner: boolean;
+  /** Ola 2: «A fondo» del tutor (Pro Max o superior), lo decide el servidor. */
+  tutorDeepAccess: boolean;
   /** 45.3 (ADR-66 E4): false → franja «verifica tu correo» (`VerifyEmailBanner`). */
   emailVerified: boolean;
   /** 43.3 (D2): el servidor guarda que terminó el onboarding (`onboarding_completed_at`). */
@@ -192,6 +194,7 @@ function mapApiUser(u: UserRead): UserProfile {
     marketingEmails: !u.marketing_emails_opt_out,
     canCreateCourses: u.can_create_courses ?? false,
     isOwner: u.is_owner ?? false,
+    tutorDeepAccess: u.tutor_deep_access ?? false,
     emailVerified: u.email_verified ?? true,
     onboardingCompleted: Boolean(u.onboarding_completed_at),
     weeklyTime: u.onboarding_weekly_time ?? null,
@@ -226,6 +229,7 @@ const defaultUser: UserProfile = {
   marketingEmails: true,
   canCreateCourses: false,
   isOwner: false,
+  tutorDeepAccess: false,
   emailVerified: true,
   onboardingCompleted: false,
   weeklyTime: null,
