@@ -1,4 +1,4 @@
-"""46.6a (ADR-68, docs/PLAN_UI_AVANZADA.md §7.2): eventos de efectos del cliente.
+"""46.6a y 46.6 (ADR-68, docs/PLAN_UI_AVANZADA.md §7.2): eventos del cliente.
 
 Esquema cerrado: cualquier campo o tipo fuera de aquí es un 422, para que el
 navegador no pueda colar en `analytics_events` nada que la política de
@@ -65,7 +65,28 @@ class Toggled(_Closed):
     enabled: bool
 
 
-ClientEvent = Annotated[FxEmitted | FxSkipped | Toggled, Field(discriminator="type")]
+# 46.6: los planes son los de `PaddlePlan` (`frontend/src/lib/paddle.ts`).
+CheckoutPlan = Literal["plus", "pro", "plus_annual", "pro_annual", "certification"]
+SurveyAnswer = Literal["a_lot", "somewhat", "not_really"]
+
+
+class CheckoutStep(_Closed):
+    """46.6: ver el pago (precio y consentimiento a la vista) y abrir Paddle."""
+
+    type: Literal["checkout_viewed", "checkout_opened"]
+    plan: CheckoutPlan
+
+
+class FirstSessionSurvey(_Closed):
+    """46.6: «¿te ha servido?» tras la primera sesión. Sin texto libre."""
+
+    type: Literal["first_session_survey"]
+    answer: SurveyAnswer
+
+
+ClientEvent = Annotated[
+    FxEmitted | FxSkipped | Toggled | CheckoutStep | FirstSessionSurvey, Field(discriminator="type")
+]
 
 
 class ClientEventBatch(_Closed):

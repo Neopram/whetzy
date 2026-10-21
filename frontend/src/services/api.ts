@@ -1652,11 +1652,16 @@ export interface PrivacyRights {
   contact: string;
 }
 
-// 46.6a (ADR-68): efectos del cliente. El servidor los guarda sin usuario ni IP.
+// 46.6a y 46.6 (ADR-68): eventos del cliente. El servidor los guarda sin usuario ni IP.
 export type ClientEvent =
   | { type: 'fx_emitted'; tier: 0 | 1 | 2 | 3 | 4; fx: string; sounded: boolean; vibrated: boolean }
   | { type: 'fx_skipped'; tier: 3 | 4; fx: string }
-  | { type: 'sound_toggled' | 'haptic_toggled'; enabled: boolean };
+  | { type: 'sound_toggled' | 'haptic_toggled'; enabled: boolean }
+  // 46.6: embudo de pago y encuesta de la primera sesión, también sin usuario.
+  | { type: 'checkout_viewed' | 'checkout_opened'; plan: 'plus' | 'pro' | 'plus_annual' | 'pro_annual' | 'certification' }
+  | { type: 'first_session_survey'; answer: SurveyAnswer };
+
+export type SurveyAnswer = 'a_lot' | 'somewhat' | 'not_really';
 
 export const clientEvents = {
   /** Sin reintento tras un 401: una métrica no debe cerrar la sesión de nadie. */
