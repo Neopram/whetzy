@@ -34,13 +34,19 @@ for (const lang of ['es', 'en'] as const) {
         { skill_id: 'sk010101', name_es: 'Variables', name_en: 'Variables', module_id: 'mod0101', p_known: 0.95, elo_rating: 1500, attempts: 14, correct_count: 13, accuracy: 0.93, mastered: true, fsrs_due: null },
       ]));
       const today = new Date().toISOString().slice(0, 10);
-      await page.evaluate(([id, day, l]) => {
+      await page.evaluate((l) => {
+        (window as unknown as { __whetzyStore: { setState: (f: (s: { user: object }) => object) => void } })
+          .__whetzyStore.setState((s) => ({ user: { ...s.user, language: l } }));
+      }, lang);
+      // La foto se escribe justo antes de que la app arranque tras recargar. Con
+      // page.evaluate, Hoy (aún montada y ya con las rutas simuladas) podía
+      // volver a pedir las misiones al cambiar de idioma y sobrescribir la foto
+      // con m1 completa: en CI, solo en inglés, `data-from` salía vacío.
+      await page.addInitScript(([id, day]) => {
         localStorage.setItem(`whetzy_fx_missions_${id}_${day}`, JSON.stringify({ m1: false, m2: false }));
         localStorage.setItem(`whetzy_fx_tracks_${id}`, JSON.stringify({ track01: 3, track02: 2 }));
         localStorage.setItem(`whetzy_fx_bands_${id}`, JSON.stringify({ sk010101: 'developing' }));
-        (window as unknown as { __whetzyStore: { setState: (f: (s: { user: object }) => object) => void } })
-          .__whetzyStore.setState((s) => ({ user: { ...s.user, language: l } }));
-      }, [userId, today, lang] as const);
+      }, [userId, today] as const);
       await page.reload();
       await expect(page.getByTestId('missions-count')).toHaveAttribute('data-from', '0');
       await expect(page.getByTestId('track-mastered-track01')).toHaveAttribute('data-from', '3');
