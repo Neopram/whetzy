@@ -75,6 +75,7 @@ export function Ceremony({
   const title = useCeremonyTitle();
   const reduce = useReducedMotion();
   const done = useRef(false);
+  const sounded = useRef(false);
   const close = (skipped: boolean) => {
     if (done.current) return;
     done.current = true;
@@ -84,7 +85,9 @@ export function Ceremony({
   };
 
   useEffect(() => {
-    emit({ type: FX[event.type] });
+    // StrictMode monta dos veces en desarrollo: sin la guarda, `fx_emitted` contaba doble.
+    if (!sounded.current) emit({ type: FX[event.type] });
+    sounded.current = true;
     const id = window.setTimeout(() => close(false), AUTO_CLOSE_MS);
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(true); };
     window.addEventListener('keydown', onKey);

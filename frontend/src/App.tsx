@@ -87,6 +87,11 @@ const ProjectScreen = lazy(() =>
 // Public, unauthenticated status page — checked before any auth machinery so
 // it stays reachable even when the backend is down.
 const StatusPage = lazy(() => import('./pages/StatusPage'));
+
+/** Landing con la transición de eje, solo con transform: no oculta el hero prerenderizado (LCP; ver PageEnter). */
+function LandingPage() {
+  return <PageEnter fade={false}><LandingScreen /></PageEnter>;
+}
 // Rutas de marketing reservadas en la fase 0 (docs/SESIONES.md): las rellena
 // S6 (marketing); hasta entonces sus componentes estan vacios.
 const CareerPage = lazy(() => import('./pages/marketing/CareerPage'));
@@ -136,7 +141,7 @@ function StandalonePage({ path }: { path: string }) {
   if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
   if (path === '/refund') return <Screen><LegalScreen doc="refund" /></Screen>;
   if (path === '/evidence') return <Screen><EvidenceScreen /></Screen>;
-  if (path === '/landing') return <Screen><LandingScreen /></Screen>;
+  if (path === '/landing') return <Screen><LandingPage /></Screen>;
 
   if (path === '/admin') {
     return (
@@ -148,7 +153,7 @@ function StandalonePage({ path }: { path: string }) {
     );
   }
 
-  return <Screen><LandingScreen /></Screen>;
+  return <Screen><LandingPage /></Screen>;
 }
 
 /** `/certificate/<code>` — the public verification page (17.2).
@@ -235,7 +240,7 @@ function App() {
   // Public marketing + auth sit above every hook: a visitor on /landing must
   // never enter the session machine, and Cloudflare's 308 to /landing/ used
   // to miss the exact-match and hydrate the register form instead.
-  if (path === '/landing') return <Screen><LandingScreen /></Screen>;
+  if (path === '/landing') return <Screen><LandingPage /></Screen>;
 
   if (path === '/admin') {
     return (
@@ -254,7 +259,7 @@ function App() {
 
   // Public status page: no auth, no store, reachable even if the backend
   // that the rest of the app depends on is the very thing that's down.
-  if (path === '/status') return <Screen><StatusPage /></Screen>;
+  if (path === '/status') return <Screen><PageEnter><StatusPage /></PageEnter></Screen>;
 
   // Marketing publico, sin sesion (reservado en la fase 0; docs/SESIONES.md).
   if (path === '/es/carrera') return <Screen><CareerPage lang="es" /></Screen>;
@@ -462,7 +467,7 @@ function App() {
     // page is what an anonymous visitor actually sees. OAuth error returns
     // still land on `/` with a query flag and must show the form.
     if (path === '/' && !oauthError) {
-      return <Screen><LandingScreen /></Screen>;
+      return <Screen><LandingPage /></Screen>;
     }
     return (
       <>

@@ -4,6 +4,7 @@ import { auth } from '../services/api';
 import { Button } from '../components/common/Button';
 import styles from './AuthScreen.module.css';
 import { FormError } from '../components/common/FormError';
+import { DrawnCheck } from '../components/common/DrawnCheck';
 
 interface Props {
   token: string;
@@ -16,6 +17,7 @@ export function ResetPasswordPage({ token, onSuccess }: Props) {
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -25,12 +27,23 @@ export function ResetPasswordPage({ token, onSuccess }: Props) {
     setLoading(true);
     try {
       await auth.resetPassword(token, password);
+      setDone(true);
       setTimeout(onSuccess, 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('auth.errGeneric'));
     } finally {
       setLoading(false);
     }
+  }
+
+  if (done) {
+    return (
+      <div className={styles.screen}>
+        {/* 46.15 A: el servidor aceptó el cambio; en un segundo pasa al login. */}
+        <DrawnCheck />
+        <p role="status">{t('resetPassword.success')}</p>
+      </div>
+    );
   }
 
   return (

@@ -4,6 +4,7 @@
  * que mandó el servidor (`events[]`, 46.1b).
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { StrictMode } from 'react';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import i18n from '../i18n';
 import { Ceremony, CeremonyCards, pickCeremony, type CeremonyEvent } from '../components/quiz/Ceremony';
@@ -43,6 +44,12 @@ describe('Ceremony', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Saltar' }));
     expect(onDone).toHaveBeenCalledTimes(1);
     expect(onDone).toHaveBeenCalledWith(true);
+  });
+
+  it('en StrictMode (desarrollo y e2e) tampoco suena dos veces: la analítica cuenta una', () => {
+    const emit = vi.spyOn(fx, 'emit');
+    render(<StrictMode><Ceremony event={level} onDone={() => {}} /></StrictMode>);
+    expect(emit).toHaveBeenCalledTimes(1);
   });
 
   it('se cierra sola a los 3 s sin contar como saltada', () => {

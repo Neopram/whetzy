@@ -10,6 +10,7 @@ import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { ComboRing, COMBO_STEPS } from '../components/quiz/ComboRing';
 import { Ceremony, CeremonyCards, pickCeremony, type CeremonyEvent } from '../components/quiz/Ceremony';
+import { trackFxSkipped } from '../lib/fxAnalytics';
 import { cancelFx, COUNT_MS, emit as emitFx, emitMany as emitFxMany, GRADE_RANK } from '../lib/feedbackFx';
 import { CountUp } from '../components/quiz/CountUp';
 import { GameIcon } from '../components/common/AppIcon';
@@ -1071,6 +1072,8 @@ function SessionSummary({
   }, [phase]);
   const skip = () => {
     cancelFx();
+    // 46.6a: «Saltar recuento» cuenta para la tasa de salto del nivel 3 (plan §6.0 punto 5).
+    trackFxSkipped('session_end');
     setSkipped(true);
     setPhase('done');
   };

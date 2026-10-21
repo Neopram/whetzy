@@ -12,6 +12,7 @@ import { QuizScreen } from '../pages/QuizScreen';
 import { useAppStore } from '../stores/useAppStore';
 import { quiz as quizApi, progress as progressApi, gamification, type QuestionPublic } from '../services/api';
 import * as fx from '../lib/feedbackFx';
+import * as fxAnalytics from '../lib/fxAnalytics';
 
 const motionPrefs = vi.hoisted(() => ({ reduce: false }));
 vi.mock('framer-motion', async (importOriginal) => {
@@ -90,6 +91,15 @@ describe('Resumen de sesión con recuento (46.7b)', () => {
     expect(visible('count-xp')).toBe('70');
     expect(cancel).toHaveBeenCalled();
     expect(screen.queryByRole('button', { name: 'Saltar recuento' })).toBeNull();
+  });
+
+  it('«Saltar recuento» cuenta como fx_skipped del cierre de sesión (46.6a, nivel 3)', async () => {
+    const skipped = vi.spyOn(fxAnalytics, 'trackFxSkipped');
+    await cerrarSesion();
+    expect(skipped).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Saltar recuento' }));
+    expect(skipped).toHaveBeenCalledTimes(1);
+    expect(skipped).toHaveBeenCalledWith('session_end');
   });
 
   it('el lector de pantalla lee el número final, no los intermedios', async () => {
