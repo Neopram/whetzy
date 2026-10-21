@@ -182,6 +182,10 @@ async def send_reactivation_offers(db: AsyncSession, now: datetime | None = None
             campaign_id=str(user.id),
             created_by="reactivation_job",
         )
+        # La fecha del código es la del `now` con el que se decide, no la del reloj: la
+        # deduplicación de 60 días compara contra `created_at`, y mezclar los dos hacía
+        # que el test (con `now` fijo) fallara a partir de cierta hora real (2026-10-21).
+        codes[0].created_at = now
         token = create_unsubscribe_token(user.id)
         send_reactivation(
             to=user.email,
