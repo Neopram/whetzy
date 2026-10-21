@@ -46,7 +46,9 @@ def test_precios_adr41_unica_fuente() -> None:
     allowed |= {"0.00", "0.99"}  # edge values that are not plan prices
 
     src = Path(__file__).resolve().parents[2] / "frontend" / "src"
-    price_re = re.compile(r"\$(\d+\.\d{2})")
+    # «$14.99» (EN) y «14,99 $» (ES, 2026-10-21): la guarda solo miraba la forma inglesa,
+    # y el checkout pinta ya el precio en español desde `landing.*`.
+    price_re = re.compile(r"\$(\d+\.\d{2})|(\d+),(\d{2})\s*\$")
 
     violations = []
     for f in src.rglob("*"):
@@ -56,7 +58,7 @@ def test_precios_adr41_unica_fuente() -> None:
             if line.lstrip().startswith("//") or line.lstrip().startswith("*"):
                 continue
             for m in price_re.finditer(line):
-                val = m.group(1)
+                val = m.group(1) or f"{m.group(2)}.{m.group(3)}"
                 if val not in allowed:
                     violations.append(f"{f.relative_to(src)}:{n} → ${val}")
     assert violations == [], f"Prices not from ADR-41: {violations}"
