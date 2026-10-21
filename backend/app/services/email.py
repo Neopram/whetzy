@@ -248,7 +248,7 @@ border-radius:6px;text-decoration:none;">Confirm subscription</a></p>
 <p>Tu ticket de soporte (#{ticket_id}) ha sido marcado como resuelto.</p>
 <p><strong>Solución:</strong></p>
 <p>{resolution}</p>
-<p>Si tienes más preguntas, responde a este email o contáctanos en soporte@whetzy.com</p>
+<p>Si tienes más preguntas, responde a este email o contáctanos en support@whetzy.com</p>
 <p>Gracias por tu paciencia.</p>""",
         },
         "en": {
