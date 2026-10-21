@@ -354,6 +354,18 @@ if [ -d "$ARBOL/frontend/node_modules" ]; then
   # podian resolverse en el navegador: hilos, asyncio.run, sqlite3, tempfile.
   # Este los corre en el Pyodide del build, detras del sandbox del worker.
   correr "frontend: ejercicios resolubles en Pyodide" "$ARBOL/frontend" npm run -s check:exec-pyodide
+  # 46.5: regresión visual (64 capturas, API simulada, sin backend). Solo aquí,
+  # nunca en el hook: ~4 min. Las baselines van por plataforma (el antialiasing
+  # del texto cambia entre sistemas); sin carpeta para esta, se avisa y se
+  # salta en vez de dar rojo por «no hay baseline». Regenerar tras un cambio de
+  # diseño a propósito: `npx playwright test -c playwright.visual.config.ts -u`.
+  VIS_PLAT=linux
+  case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) VIS_PLAT=win32 ;; Darwin) VIS_PLAT=darwin ;; esac
+  if [ -d "$ARBOL/frontend/e2e/__screenshots__/$VIS_PLAT" ]; then
+    correr "frontend: regresión visual" "$ARBOL/frontend" npx playwright test -c playwright.visual.config.ts
+  else
+    echo "[--] regresión visual: sin baselines de $VIS_PLAT en e2e/__screenshots__/; me la salto"
+  fi
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi
