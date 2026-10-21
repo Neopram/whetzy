@@ -1,0 +1,23 @@
+/* Piezas comunes de los widgets de `interactive` (40.2). Solo tokens `--le-*`. */
+.area { display: flex; flex-direction: column; gap: var(--le-space-md); }
+.hint { margin: 0; color: var(--le-text-secondary); font-size: var(--le-fs-sm); }
+.status { margin: 0; min-height: 1.5em; font-size: var(--le-fs-sm); color: var(--le-text); }
+.log { margin: 0; padding-left: var(--le-space-xl); list-style: decimal; font-size: var(--le-fs-sm); color: var(--le-text); }
+.mono { font-family: var(--le-font-mono); background: var(--le-code-bg); color: var(--le-code-text); }
+.code { composes: mono; margin: 0; padding: var(--le-space-sm); border-radius: var(--le-radius-md); overflow-x: auto; font-size: var(--le-fs-sm); }
+.btn {
+  min-height: 44px; min-width: 44px; padding: 0 var(--le-space-md);
+  border: 2px solid var(--le-border); border-radius: var(--le-radius-md);
+  background: var(--le-surface); color: var(--le-text);
+  font: inherit; font-weight: var(--le-fw-semibold); cursor: pointer;
+}
+.btn:focus-visible, .input:focus-visible { outline: 3px solid var(--le-brand-dark); outline-offset: 2px; }
+.btn:disabled { cursor: default; color: var(--le-text-secondary); }
+.input {
+  min-height: 44px; width: 100%; box-sizing: border-box; padding: 0 var(--le-space-sm);
+  border: 2px solid var(--le-border); border-radius: var(--le-radius-md);
+  background: var(--le-surface); color: var(--le-text); font-family: var(--le-font-mono); font-size: var(--le-fs-base);
+}
+.field { display: flex; flex-direction: column; gap: var(--le-space-2xs); font-size: var(--le-fs-sm); font-weight: var(--le-fw-semibold); }
+.scroll { overflow-x: auto; }
+.visuallyHidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
