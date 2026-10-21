@@ -590,7 +590,7 @@ function Screen({ children }: { children: React.ReactNode }) {
 
 function BootSplash() {
   return (
-    <div style={{
+    <div data-boot-splash style={{
       minHeight: '100dvh',
       display: 'flex',
       alignItems: 'center',
