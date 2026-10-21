@@ -15,12 +15,28 @@ import { registerUser, markLessonSeen, answerCurrentQuestion, uniqueUsername } f
 const VIEWPORT = { width: 390, height: 844 };
 const MIN = 44;
 
-type Finding = { where: string; role: string; name: string; width: number; height: number };
+type Finding = { where: string; role: string; name: string; width: number; height: number; layout: string };
 
 async function auditTargets(page: import('@playwright/test').Page, where: string): Promise<Finding[]> {
+  // getBoundingClientRect incluye los transform: si una transición de pantalla
+  // sigue a medias (App.tsx entra con `scale: 0.985`), un botón de 44 px mide
+  // 43,x. El CI de 8fa7180 (#316) y 13f38c9 (#317) dio 147x44 en las pestañas
+  // de /auth con `min-height: 44px` servido, y en el re-run pasó. Se espera a
+  // que el tamaño en pantalla coincida con el de maquetación (offset*), que solo
+  // difieren con un transform en curso; un objetivo pequeño de verdad sigue
+  // siendo pequeño en los dos y la guarda lo marca igual.
+  await page.waitForFunction(() => {
+    for (const el of document.querySelectorAll<HTMLElement>('button, a[href], input, select, textarea, [role="button"]')) {
+      if (getComputedStyle(el).display === 'inline') continue;
+      const r = el.getBoundingClientRect();
+      if (r.width === 0 && r.height === 0) continue;
+      if (Math.abs(r.height - el.offsetHeight) > 0.5 || Math.abs(r.width - el.offsetWidth) > 0.5) return false;
+    }
+    return true;
+  }, undefined, { timeout: 3_000 }).catch(() => { /* se mide igual y el informe lleva los dos tamaños */ });
   return page.evaluate(({ where, min }) => {
     const selectors = 'button, a[href], input, select, textarea, [role="button"]';
-    const out: { where: string; role: string; name: string; width: number; height: number }[] = [];
+    const out: { where: string; role: string; name: string; width: number; height: number; layout: string }[] = [];
     document.querySelectorAll<HTMLElement>(selectors).forEach((el) => {
       const style = getComputedStyle(el);
       if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) return;
@@ -46,6 +62,7 @@ async function auditTargets(page: import('@playwright/test').Page, where: string
           name: el.getAttribute('aria-label') || el.textContent?.trim().slice(0, 40) || '(sin nombre)',
           width: Math.round(rect.width),
           height: Math.round(rect.height),
+          layout: `${el.offsetWidth}x${el.offsetHeight}`,
         });
       }
     });
@@ -92,7 +109,7 @@ test.describe('34.3: objetivos tactiles >= 44x44px a 390px', () => {
     allFindings.push(...await auditTargets(page, 'Quiz — feedback'));
 
     const summary = allFindings
-      .map((f) => `  ${f.where}: <${f.role}> "${f.name}" — ${f.width}x${f.height}px`)
+      .map((f) => `  ${f.where}: <${f.role}> "${f.name}" — ${f.width}x${f.height}px (maquetación ${f.layout})`)
       .join('\n');
     console.log(allFindings.length === 0
       ? 'Sin objetivos por debajo de 44x44px.'
