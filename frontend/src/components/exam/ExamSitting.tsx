@@ -89,7 +89,7 @@ export function ExamSitting({
 
       <div className={styles.question}>
         <p className={styles.prose}>{prose}</p>
-        {code && <pre className={styles.code}><code>{code}</code></pre>}
+        {code && <pre className={styles.code} tabIndex={0}><code>{code}</code></pre>}
       </div>
 
       <div className={styles.options} role="radiogroup" aria-label={title}>
