@@ -300,7 +300,7 @@ export function PlacementScreen({ trackId }: Props) {
             )
           )}
         </h2>
-        {codigo && <pre className={styles.codeBlock}><code>{codigo}</code></pre>}
+        {codigo && <pre className={styles.codeBlock} tabIndex={0}><code>{codigo}</code></pre>}
       </div>
 
       <div className={styles.options}>

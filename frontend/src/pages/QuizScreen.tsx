@@ -646,7 +646,7 @@ export function QuizScreen() {
       <h2 className={styles.questionText}>
         <GlossaryText text={prose} terms={glossaryTerms} lang={viewLang} onPick={setPickedTerm} />
       </h2>
-      {code && !isExecType && <pre className={styles.codeBlock}><code>{code}</code></pre>}
+      {code && !isExecType && <pre className={styles.codeBlock} tabIndex={0}><code>{code}</code></pre>}
       {pickedTerm && (
         <TermCard term={pickedTerm} lang={viewLang} onClose={() => setPickedTerm(null)} />
       )}
@@ -752,7 +752,7 @@ export function QuizScreen() {
             <>
               {/* «¿Qué imprime?» con respuesta escrita: el código tiene que verse.
                   Antes no se pintaba y 11 preguntas pedían adivinar un código oculto. */}
-              {code && <pre className={styles.codeBlock}><code>{code}</code></pre>}
+              {code && <pre className={styles.codeBlock} tabIndex={0}><code>{code}</code></pre>}
               <input
                 className={styles.blankInput}
                 type="text"
@@ -790,7 +790,7 @@ export function QuizScreen() {
 
           {(question.type === 'fill_blank_exec' || question.type === 'js_exec') && code && (
             <>
-              <pre className={styles.codeBlock}>
+              <pre className={styles.codeBlock} tabIndex={0}>
                 <code>{code.replace('___', `[${t('quiz.yourAnswer')}]`)}</code>
               </pre>
               <input
@@ -807,7 +807,7 @@ export function QuizScreen() {
 
           {question.type === 'sql_exec' && code && (
             <>
-              <pre className={styles.codeBlock}>
+              <pre className={styles.codeBlock} tabIndex={0}>
                 <code>{code.replace('___', `[${t('quiz.yourAnswer')}]`)}</code>
               </pre>
               <label htmlFor="sql-exec-answer" className="visually-hidden">
@@ -861,7 +861,7 @@ export function QuizScreen() {
                       ? t('quiz.outputError')
                       : t('quiz.output')}
               </span>
-              <pre className={styles.outputPre}>
+              <pre className={styles.outputPre} tabIndex={0}>
                 {runResult.timedOut
                   ? t('quiz.timeoutMsg')
                   : runResult.error
@@ -968,7 +968,7 @@ export function QuizScreen() {
           {verifyOutput != null ? (
             <div className={styles.outputBox}>
               <span className={styles.outputLabel}>{t('quiz.actualOutput')}</span>
-              <pre className={styles.outputPre}>{verifyOutput}</pre>
+              <pre className={styles.outputPre} tabIndex={0}>{verifyOutput}</pre>
             </div>
           ) : (
             <button
