@@ -24,10 +24,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 |---|---|
 | normativo-vivo | 25 |
 | referencia-viva | 67 |
-| histórico | 68 |
+| histórico | 69 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **205** |
+| **Total** | **206** |
 
 ## Raíz del repo y otras carpetas
 
@@ -171,6 +171,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/44.3/README.md` | histórico | evidencia de capturas de la fila 44.3 (pestaña «Usuarios» del back-office: ficha y diálogo de regalar plan) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.12/README.md` | histórico | evidencia de capturas de la fila 46.12 (Hoy cuenta misiones y rutas desde la última visita) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.7b/README.md` | histórico | evidencia de capturas de la fila 46.7b (recuento del resumen de sesión, saltable, y la versión con movimiento reducido) | se queda (junto a sus PNG) | 2026-10-19 |
+| `docs/ui-snapshots/catalogo-campos/README.md` | histórico | evidencia del catálogo por los cinco campos del onboarding, combinado con Aprender/Certificaciones; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/46.3c/README.md` | histórico | evidencia de capturas de la fila 46.3c (prueba de nivel en el onboarding y «Tu mayor palanca» como primera tarjeta de Hoy) | se queda (junto a sus PNG) | 2026-10-19 |
 | `docs/ui-snapshots/46.10/README.md` | histórico | evidencia de capturas de la fila 46.10 (la opción late o tiembla y el «+XP» vuela al marcador) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.11/README.md` | histórico | evidencia de capturas de la fila 46.11 (la llama de la racha en tres tamaños y el escudo del comodín) | se queda (junto a sus PNG) | 2026-10-20 |

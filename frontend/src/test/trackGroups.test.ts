@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import tracksJson from '../../../content/curriculum/tracks.json';
-import { RELATED_CERTS, TRACK_GROUPS } from '../lib/trackGroups';
+import { CERT_FIELDS, RELATED_CERTS, TRACK_GROUPS, fieldOf } from '../lib/trackGroups';
 
 interface TrackDef { id: string; is_certification?: boolean }
 const tracks = (tracksJson as { tracks: TrackDef[] }).tracks;
@@ -20,5 +20,16 @@ describe('grupos de tracks del onboarding (43.3, D2)', () => {
       expect(learning, trackId).toContain(trackId);
       for (const c of list) expect(certs.has(c), `${trackId} → ${c}`).toBe(true);
     }
+  });
+});
+
+describe('campos del catálogo (ola 2)', () => {
+  it('cada certificación tiene campo, y solo las certificaciones están en CERT_FIELDS', () => {
+    expect(Object.keys(CERT_FIELDS).sort()).toEqual([...certs].sort());
+  });
+
+  it('toda ruta del catálogo tiene exactamente un campo de los cinco', () => {
+    const ids = new Set(TRACK_GROUPS.map((g) => g.id));
+    for (const t of tracks) expect(ids.has(fieldOf(t.id)!), t.id).toBe(true);
   });
 });
