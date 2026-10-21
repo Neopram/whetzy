@@ -47,6 +47,10 @@ const REQUIRED = [
     why: 'the per-domain readiness bands (ADR-60) — the landing promises bands, not a percentage, and the static HTML must show them',
   },
   {
+    needle: '"@type":"SoftwareApplication"',
+    why: 'the schema.org JSON-LD (ola 2, 2026-10-21) — search engines read it from the static HTML, so it must be prerendered, not injected by JS',
+  },
+  {
     needle: 'LandingScreen',
     why: "the route-level stylesheet link — without it the hero paints at the browser's default size and repaints larger once the JS applies the real CSS, and Chrome reports that second, bigger paint as the LCP",
   },
