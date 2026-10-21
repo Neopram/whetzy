@@ -217,7 +217,7 @@ export function DuelScreen() {
 
         <div className={styles.questionCard}>
           <p className={styles.questionText}>{prose}</p>
-          {code && <pre className={styles.code}><code>{code}</code></pre>}
+          {code && <pre className={styles.code} tabIndex={0}><code>{code}</code></pre>}
         </div>
 
         {/* e2e/duel.spec.ts responde por `duel-option`: «el primer botón de la
