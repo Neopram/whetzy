@@ -20,7 +20,7 @@ async function axe0(page: Page) {
 }
 
 const COPY = {
-  es: { login: 'ENTRAR', email: 'Correo electrónico', password: 'Contraseña', forgot: '¿Olvidó su contraseña?' },
+  es: { login: 'ENTRAR', email: 'Correo electrónico', password: 'Contraseña', forgot: '¿Olvidaste tu contraseña?' },
   en: { login: 'LOG IN', email: 'Email', password: 'Password', forgot: 'Forgot your password?' },
 } as const;
 
