@@ -307,3 +307,35 @@ class InstructorService:
             }
             for p in payouts
         ]
+
+    @staticmethod
+    async def list_public_courses(
+        db: AsyncSession,
+        limit: int = 50,
+        offset: int = 0,
+    ) -> list[dict[str, Any]]:
+        """Catálogo público: cursos `published`, el más popular primero (28.8).
+
+        Sin vídeo/materiales en la respuesta -- son el contenido de pago, no
+        algo que mostrar antes de inscribirse.
+        """
+        stmt = (
+            select(InstructorCourse, Instructor.display_name)
+            .join(Instructor, Instructor.id == InstructorCourse.instructor_id)
+            .where(InstructorCourse.status == "published")
+            .order_by(InstructorCourse.enrolled_count.desc(), InstructorCourse.created_at.desc())
+            .limit(limit)
+            .offset(offset)
+        )
+        result = await db.execute(stmt)
+        return [
+            {
+                "id": str(course.id),
+                "instructor_display_name": instructor_display_name,
+                "title": course.title,
+                "description": course.description,
+                "price_cents": int(course.price_cents),
+                "enrolled_count": int(course.enrolled_count or 0),
+            }
+            for course, instructor_display_name in result.all()
+        ]

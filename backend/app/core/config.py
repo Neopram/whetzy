@@ -383,6 +383,10 @@ class Settings(BaseSettings):
     # recojan la política de privacidad: hoy publicaría dominio, racha y
     # certificados de cualquier alumno sin login ni consentimiento.
     PUBLIC_PROFILES_ENABLED: bool = False
+    # Gate for the public course catalog (28.8), independent of
+    # INSTRUCTOR_MARKETPLACE_ENABLED: a course can be browsable before
+    # enrollment/payment is live. Off by default — nothing is published yet.
+    MARKETPLACE_PUBLIC: bool = False
 
     # --- A/B experiments -----------------------------------------------------
     # Fraction of users assigned to the DKT skill-selection cohort (0.0–1.0).
