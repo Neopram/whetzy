@@ -2902,3 +2902,35 @@ siguen. La analítica de efectos se guarda sin `user_id` ni IP.
 La comparación del §6 del plan con el código (`master` `00e52a5`) dejó en `PLAN_UI_AVANZADA.md` §7:
 - un inventario de las 33 pantallas: solo Hoy y Quiz tienen movimiento propio, y 12 cargan con texto;
 - las filas 46.6a y 46.10–46.16.
+
+## 2026-10-20 / 21 — Integración, apps móviles, Google en producción y auditoría de coherencia
+
+- **Lo que entró en `master` y se desplegó.** Lo comprobé en cada caso: Railway SUCCESS, `/health` 200 y
+  `check-deployed` PASS.
+  - #307: 21 PRs juntos, con un nivel 2 y 63/63 e2e sobre la suma.
+  - #305: Android D.1.
+  - #306: iOS D.2 y Sign in with Apple, preparado y sin verificar (H.2).
+- **Lo que hizo el dueño en Railway el 21-10.**
+  - `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET`, más redeploy. Resultado: `/providers` devuelve `["google"]`;
+    el dueño entró con Google de punta a punta.
+  - `BACKEND_CORS_ORIGINS` con `https://app.whetzy.com` y `capacitor://app.whetzy.com`. El preflight da 200 a
+    los dos y a la web, y 400 a un origen ajeno.
+  - Pasos en RUNBOOK, «Inicio de sesión con Google» y «App Android de depuración».
+- **Regla nueva del dueño (20-10): la base de todo PR es `master`** (`docs/SESIONES.md` §8). Es la lección de
+  #283–#285, que se fusionaron en ramas intermedias y hubo que rescatar con el #304.
+- **Auditoría docs ↔ código ↔ PRs ↔ ledger (21-10).** Dos auditores y un verificador adversario; cada hallazgo
+  lo comprobé yo.
+  - Arreglado en este PR:
+    - la plantilla `support_resolved` en ES escribía `soporte@`, y la paridad ES/EN solo cubría 3 de las 9
+      plantillas de correo; ahora las cubre todas;
+    - RUNBOOK, ORCHESTRATOR, API y PROTOCOLO hablaban de un GitHub OAuth que no tiene credenciales, o de un
+      Apple que «no existe»;
+    - `.env.example` llevaba un comodín `*.pages.dev` que CORS no entiende y no tenía los orígenes de la app;
+    - en `codemagic.yaml`, iOS pedía CocoaPods y un `.xcworkspace` que el proyecto SPM no tiene;
+      `android-release` iba en Linux, de pago; los flujos usaban Node 20 aunque la CLI de Capacitor pide 22.
+  - Ledger:
+    - DONE: 44.1–44.4 y 46.10–46.13, 46.16.
+    - DOING: 46.6a, refutado porque saltar el recuento no emite `fx_skipped`; 46.14, faltan Estado y Landing;
+      46.15, falta la tabla §7.5.
+    - Notas de 46.3 y 46.7 al día.
+  - El ledger queda a 12 bytes de su tope: la próxima fila nueva pide antes otra dieta.

@@ -48,7 +48,7 @@ GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend —
 POST /auth/oauth/apple/callback      → `form_post` de Sign in with Apple (`code`, `state`; sin `code` → 302 `?oauth_error=cancelled`). Identidad del `id_token` canjeado y verificado (firma, iss, aud, exp, nonce); GET aquí → 405; exento del control de Origin (19.2, preparado sin verificar: H.2)
 ```
 
-OAuth providers: `github`, `google`.
+OAuth providers: `github`, `google`, `apple`. Only those with credentials appear in `/providers`: in production, `google` since 2026-10-21; `apple` is prepared but unverified (H.2); `github` has no credentials.
 Sign in with Apple is mandatory before any App Store submission once another OAuth provider exists (ADR-13).
 
 ## Quiz endpoints
