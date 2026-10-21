@@ -127,6 +127,12 @@ async function mockBackend(page: Page, opts: TutorMockOptions) {
     if (p.endsWith('/progress/skills') || p.endsWith('/progress/decaying')) {
       return route.fulfill({ json: [] });
     }
+    // 46.3c (2026-10-19): Home pide el catálogo para «Tu mayor palanca»; con el
+    // `{}` de abajo, `tracks.find` lanzaba y Home se remontaba sin parar (el
+    // botón «Estudiar ahora» se soltaba del DOM antes del clic).
+    if (p.endsWith('/content/tracks')) {
+      return route.fulfill({ json: [] });
+    }
     if (p.endsWith('/badges')) {
       return route.fulfill({ json: [] });
     }
