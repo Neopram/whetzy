@@ -16,8 +16,7 @@ de `design/v2/GUIA.md` §1. Lo demás de esa guía (tipografía, navegación, to
 | Punto | `#FF1493` |
 | Texto del logo sobre blanco | `#1A1A2E` |
 
-En la interfaz se usan por sus tokens (`frontend/src/styles/design-tokens.css`,
-`frontend/src/theme/tokens.css`), nunca como literales. `test/tokens.contraste.test.ts` fija
+En la interfaz se usan por sus tokens (`frontend/src/styles/design-tokens.css`), nunca como literales. `test/tokens.contraste.test.ts` fija
 el contraste AA de cada pareja en los dos temas. El blanco sobre el cian se queda en
 2,12:1, así que el texto sobre un relleno de marca va en `--le-text-inverse` (oscuro).
 

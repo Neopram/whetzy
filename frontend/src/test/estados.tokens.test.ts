@@ -2,7 +2,7 @@
  * 46.3a (docs/PLAN_UI_AVANZADA.md §2): los estados vacío, de carga, de error y
  * el esqueleto forman una sola familia y pintan solo con los tokens canónicos
  * `--le-*` (`styles/design-tokens.css`), no con los del sistema viejo
- * (`theme/tokens.css`, `--color-*`, `--text-*`, `--bg-*`, `--border-color`).
+ * (`theme/tokens.css`, borrado en 46.4; `--color-*`, `--text-*`, `--bg-*`, `--border-color`).
  *
  * El caso que lo motivó: «Reintentar» al pasar el ratón ponía el texto en
  * `--bg-light`, que en modo claro vale #F5F7FB: texto casi blanco sobre un
