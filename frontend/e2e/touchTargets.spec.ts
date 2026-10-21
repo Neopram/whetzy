@@ -19,21 +19,29 @@ type Finding = { where: string; role: string; name: string; width: number; heigh
 
 async function auditTargets(page: import('@playwright/test').Page, where: string): Promise<Finding[]> {
   // getBoundingClientRect incluye los transform: si una transición de pantalla
-  // sigue a medias (App.tsx entra con `scale: 0.985`), un botón de 44 px mide
-  // 43,x. El CI de 8fa7180 (#316) y 13f38c9 (#317) dio 147x44 en las pestañas
-  // de /auth con `min-height: 44px` servido, y en el re-run pasó. Se espera a
-  // que el tamaño en pantalla coincida con el de maquetación (offset*), que solo
-  // difieren con un transform en curso; un objetivo pequeño de verdad sigue
-  // siendo pequeño en los dos y la guarda lo marca igual.
+  // sigue a medias (App.tsx entra con `scale: 0.985`, un muelle de
+  // framer-motion), un botón de 44 px mide 43,x. El CI de 8fa7180 (#316),
+  // 13f38c9 (#317) y b80a872 (#312) dio 147x44 en las pestañas de /auth con
+  // `min-height: 44px` servido. Una tolerancia de 0,5 px no bastaba (b80a872:
+  // maquetación 147x44, pantalla 43,x): el muelle pasa mucho rato cerca de 1.
+  // Se espera a que ningún ancestro de un objetivo tenga escala distinta de 1;
+  // un objetivo pequeño de verdad sigue siendo pequeño sin transform.
   await page.waitForFunction(() => {
+    const scaled = (el: Element | null): boolean => {
+      for (let n = el; n; n = n.parentElement) {
+        const t = getComputedStyle(n).transform;
+        if (t && t !== 'none') {
+          const m = new DOMMatrixReadOnly(t);
+          if (m.a !== 1 || m.d !== 1) return true;
+        }
+      }
+      return false;
+    };
     for (const el of document.querySelectorAll<HTMLElement>('button, a[href], input, select, textarea, [role="button"]')) {
-      if (getComputedStyle(el).display === 'inline') continue;
-      const r = el.getBoundingClientRect();
-      if (r.width === 0 && r.height === 0) continue;
-      if (Math.abs(r.height - el.offsetHeight) > 0.5 || Math.abs(r.width - el.offsetWidth) > 0.5) return false;
+      if (scaled(el)) return false;
     }
     return true;
-  }, undefined, { timeout: 3_000 }).catch(() => { /* se mide igual y el informe lleva los dos tamaños */ });
+  }, undefined, { timeout: 5_000 }).catch(() => { /* se mide igual y el informe lleva los dos tamaños */ });
   return page.evaluate(({ where, min }) => {
     const selectors = 'button, a[href], input, select, textarea, [role="button"]';
     const out: { where: string; role: string; name: string; width: number; height: number; layout: string }[] = [];
@@ -62,7 +70,7 @@ async function auditTargets(page: import('@playwright/test').Page, where: string
           name: el.getAttribute('aria-label') || el.textContent?.trim().slice(0, 40) || '(sin nombre)',
           width: Math.round(rect.width),
           height: Math.round(rect.height),
-          layout: `${el.offsetWidth}x${el.offsetHeight}`,
+          layout: `${el.offsetWidth}x${el.offsetHeight}; exacto ${rect.width.toFixed(2)}x${rect.height.toFixed(2)}`,
         });
       }
     });
