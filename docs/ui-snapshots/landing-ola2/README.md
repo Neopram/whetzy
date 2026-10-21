@@ -4,7 +4,10 @@ Evidencia del primer PR de landing de la ola 2 (2026-10-21).
 
 **Cómo se capturaron.** Playwright (Chromium) contra `vite` en local, el 2026-10-21, en
 `/landing?lang=es`. `antes-*` es `master` (`4389cde`) y `despues-*` es esta rama. La cabecera va
-con el tema oscuro y el claro; el hero, solo con el oscuro. Todo a 1440 y a 390 px.
+con el tema oscuro y el claro; el hero, solo con el oscuro. Todo a 1440 y a 390 px. El tema se fija
+con `whetzy_theme` en el almacenamiento local, que es lo que lee la app (la preferencia del sistema
+no cuenta). La primera tanda de este PR se hizo con la preferencia del sistema, y sus capturas
+«claras» salieron oscuras; estas las sustituyen.
 
 **Lo que cambia en `despues-*`:**
 - **Banderas.** El selector de idioma dibuja las banderas en SVG; antes eran los emoji 🇪🇸 y 🇬🇧.
