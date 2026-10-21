@@ -879,6 +879,10 @@ export interface LeagueStandingsResponse {
   total_members: number;
   /** false = salió de las ligas (35.4): `standings` viene vacío. */
   participating: boolean;
+  /** Cómo acabó la semana pasada (2026-10-21): el servidor ya aplica el ascenso
+   *  (top 5) y el descenso (últimos 5) de las ligas de 10 o más. `null` sin
+   *  semana inmediatamente anterior. */
+  last_week_movement?: 'promoted' | 'demoted' | 'stayed' | null;
 }
 
 export interface UserMissionRead {

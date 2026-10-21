@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
+from typing import Literal
 
-from sqlalchemy import func, select
+from sqlalchemy import ColumnElement, func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -29,6 +30,8 @@ DEMOTION_ZONE_SIZE = 5
 MIN_LEAGUE_SIZE_FOR_ZONES = 10
 DEFAULT_DAILY_MISSION_COUNT = 3
 
+Movement = Literal["promoted", "demoted", "stayed"]
+
 
 def week_start_of(d: date) -> date:
     """Monday of the ISO week containing `d`."""
@@ -38,6 +41,64 @@ def week_start_of(d: date) -> date:
 async def _lowest_tier_league(db: AsyncSession) -> League | None:
     result = await db.execute(select(League).order_by(League.min_xp.asc()).limit(1))
     return result.scalar_one_or_none()
+
+
+async def _tiers_in_order(db: AsyncSession) -> list[League]:
+    result = await db.execute(select(League).order_by(League.min_xp.asc()))
+    return list(result.scalars().all())
+
+
+async def _movement(db: AsyncSession, prev: LeagueEntry) -> Movement:
+    """Cómo acabó `prev` en su liga y semana: «promoted», «demoted» o «stayed».
+
+    Mismas reglas que las zonas que se pintan (`get_current_standings`): solo con
+    `MIN_LEAGUE_SIZE_FOR_ZONES` miembros o más, sin contar a quien salió de las
+    ligas. Rango = 1 + quienes sacaron estrictamente más XP, y lo mismo por abajo:
+    un empate en la frontera no castiga a nadie.
+    """
+    same_cohort = (
+        LeagueEntry.league_id == prev.league_id,
+        LeagueEntry.week_start == prev.week_start,
+        User.leagues_opt_out.is_(False),
+    )
+
+    async def count(*extra: ColumnElement[bool]) -> int:
+        q = select(func.count()).select_from(LeagueEntry).join(User, User.id == LeagueEntry.user_id)
+        return int((await db.execute(q.where(*same_cohort, *extra))).scalar_one())
+
+    if await count() < MIN_LEAGUE_SIZE_FOR_ZONES:
+        return "stayed"
+    if await count(LeagueEntry.xp_earned > prev.xp_earned) < PROMOTION_ZONE_SIZE:
+        return "promoted"
+    if await count(LeagueEntry.xp_earned < prev.xp_earned) < DEMOTION_ZONE_SIZE:
+        return "demoted"
+    return "stayed"
+
+
+async def _league_after(db: AsyncSession, prev: LeagueEntry, movement: Movement) -> str:
+    tiers = await _tiers_in_order(db)
+    ids = [t.id for t in tiers]
+    if prev.league_id not in ids:
+        return prev.league_id
+    i = ids.index(prev.league_id)
+    if movement == "promoted":
+        i = min(i + 1, len(ids) - 1)
+    elif movement == "demoted":
+        i = max(i - 1, 0)
+    return ids[i]
+
+
+async def last_week_movement(db: AsyncSession, user: User, week: date) -> Movement | None:
+    """El movimiento que llevó a `user` a su liga de `week`; None si no viene de la semana
+    inmediatamente anterior (primera semana, o vuelta tras semanas fuera)."""
+    prev = (
+        await db.execute(
+            select(LeagueEntry).where(
+                LeagueEntry.user_id == user.id, LeagueEntry.week_start == week - timedelta(weeks=1)
+            )
+        )
+    ).scalar_one_or_none()
+    return await _movement(db, prev) if prev is not None else None
 
 
 async def get_or_create_current_entry(db: AsyncSession, user: User) -> LeagueEntry | None:
@@ -52,8 +113,10 @@ async def get_or_create_current_entry(db: AsyncSession, user: User) -> LeagueEnt
     if entry is not None:
         return entry
 
-    # Carry over the league from the most recent prior week, if any; else start
-    # at the lowest tier.
+    # La liga de la semana anterior, con su ascenso o descenso aplicado
+    # (2026-10-21; antes se copiaba tal cual y las zonas no hacían nada). Si la
+    # última semana jugada no es la inmediatamente anterior, se retoma esa liga.
+    # Sin semanas previas, el nivel más bajo.
     prev_result = await db.execute(
         select(LeagueEntry)
         .where(LeagueEntry.user_id == user.id, LeagueEntry.week_start < today_week)
@@ -62,6 +125,8 @@ async def get_or_create_current_entry(db: AsyncSession, user: User) -> LeagueEnt
     )
     prev_entry = prev_result.scalar_one_or_none()
     league_id = prev_entry.league_id if prev_entry else None
+    if prev_entry is not None and prev_entry.week_start == today_week - timedelta(weeks=1):
+        league_id = await _league_after(db, prev_entry, await _movement(db, prev_entry))
 
     if league_id is None:
         league = await _lowest_tier_league(db)
@@ -168,6 +233,7 @@ async def get_current_standings(db: AsyncSession, user: User) -> LeagueStandings
         promotion_zone=zone_size,
         demotion_zone=demotion_size,
         total_members=total_members,
+        last_week_movement=await last_week_movement(db, user, entry.week_start),
     )
 
 
