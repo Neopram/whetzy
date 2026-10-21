@@ -10,7 +10,8 @@
 ## 1. Web (Cloudflare Pages)
 
 ### Pre-requisitos
-- Node 20, `npm ci` limpio
+- Node 20 para el build web (`frontend/.nvmrc`, `20.19.0`), `npm ci` limpio. El CI y Codemagic usan 22, porque
+  `@capacitor/cli` 8.5 exige Node >= 22 para `cap sync`; el build web no ejecuta la CLI de Capacitor
 - **`VITE_API_URL` vive en `frontend/.env.production`, commiteada.** Desde 2026-09-24
   `vite.config.ts` ignora cualquier otro valor (el panel de Cloudflare tenía
   `https://whetzy.com`, origen del 405 del login) y lo avisa en el log del build.

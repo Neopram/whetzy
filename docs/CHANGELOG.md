@@ -5,6 +5,28 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-21 (Google en producción, apps móviles y coherencia de la documentación)
+
+**ES**
+
+- **Entrar con Google** ya funciona en whetzy.com.
+- **Las apps de Android e iOS** ya pueden llamar a la API: sus orígenes están aprobados en producción.
+- **El correo de «ticket resuelto»** en español apuntaba a `soporte@whetzy.com`; ahora usa `support@whetzy.com`,
+  como el resto de la app. Además, la prueba de idiomas cubre las 9 plantillas de correo y no solo 3.
+- **Documentación al día con el código.** El dueño fija que todo PR va contra `master`.
+
+---
+
+**EN**
+
+- **Sign in with Google** now works on whetzy.com.
+- **The Android and iOS apps** can now reach the API: their origins are approved in production.
+- **The Spanish "ticket resolved" email** pointed to `soporte@whetzy.com`; it now uses `support@whetzy.com`, like the
+  rest of the app. The language-parity test now covers all 9 email templates, not just 3.
+- **Docs brought in line with the code.** The owner sets that every PR targets `master`.
+
+---
+
 ## [Unreleased] — 2026-10-20 (Serie 46: analítica de efectos y movimiento en toda la app)
 
 **ES**

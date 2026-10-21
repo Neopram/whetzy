@@ -203,3 +203,10 @@ real) · Riesgos al desplegar · Delta del ledger · Fuera de alcance · Solo el
 que cuenta es **«Cloudflare Pages»**; los jobs de Actions mueren sin runner (H.13) y no son ni
 fallo ni aprobado. Al abrirlo: `[S<n>] ENTREGADO: <qué> — #<PR>` en el #89. Solo el dueño
 fusiona (ADR-45).
+
+**La base de todo PR es `master`** (decisión del dueño, 2026-10-20). Nunca la rama de otro PR:
+si un PR depende de otro, la rama sale de `master` con el otro fusionado dentro (`git merge
+origin/<rama-del-otro>`) y la descripción lo dice en una línea, «Depende de #N: fusionar
+después». Por qué: el 2026-10-20 el dueño fusionó #283–#285, apilados, en sus ramas
+intermedias y no en `master`; hubo que rescatarlos con el #304 y reapuntar el resto. Con base
+`master`, basta fusionar en orden: al entrar el primero, el diff del segundo se queda en lo suyo.
