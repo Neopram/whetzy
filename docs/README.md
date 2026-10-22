@@ -49,7 +49,7 @@ Frontend: React + Capacitor.
 | Desplegar (Cloudflare y Railway, automáticos desde `master`), migrar, backup, incidentes | `RUNBOOK.md`, `RELEASE.md` |
 | Qué servicios externos toca una sesión y qué hace sin preguntar | **`CONECTORES.md`** |
 | Capacidad, Cloudflare, cadena de suministro, A/B, diseño | `capacity.md`, `cloudflare-config.md`, `supply-chain.md`, `ab-framework.md`, `design/` |
-| Qué tan a la altura está cada track frente a su referencia (forma ADR-54, ejecutables, lecciones, glosario) | `auditoria-tracks/2026-10-22/resumen.md` (lo genera `scripts/audit_tracks.py`) |
+| Qué tan a la altura está cada track frente a su referencia (forma ADR-54, ejecutables, lecciones, glosario) | `auditoria-tracks/2026-10-22/resumen.md` (lo genera `scripts/audit_tracks.py`); piloto de referencias y defectos verificados: `auditoria-tracks/2026-10-22/piloto.md` |
 
 **Legal y tiendas**
 

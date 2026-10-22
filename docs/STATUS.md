@@ -2934,3 +2934,15 @@ La comparación del §6 del plan con el código (`master` `00e52a5`) dejó en `P
       46.15, falta la tabla §7.5.
     - Notas de 46.3 y 46.7 al día.
   - El ledger queda a 12 bytes de su tope: la próxima fila nueva pide antes otra dieta.
+
+## 2026-10-22 — Auditoría de tracks: fase 1 y piloto de la fase 2 (PARCIAL)
+
+Rama `claude/youthful-allen-i8k7zb-auditoria-tracks`, desde `origin/master` (no desde la rama de trabajo local, que estaba 17 commits atrás y daba 11.416 preguntas en vez de 12.037).
+
+- **Fase 1, hecha:** `scripts/audit_tracks.py` escribe `docs/auditoria-tracks/2026-10-22/` (resumen, una ficha por track construido, `inventario.json`). Sin modelos; cada recomendación sale de una regla con nombre. Tests en `backend/tests/content/test_audit_tracks.py` (10); cuatro reglas mutadas a propósito, las cuatro en rojo. Cifras de `origin/master` comprobadas: 12.037 preguntas, 730 lecciones, 1.058 términos; 22 de 35 construidos sin ejecutable estricto; 1 de 24 tracks de aprendizaje en la forma ADR-54.
+- **Fase 2, piloto de 3 tracks (track01, track12, track16):** `piloto.md`. Referencias CS50P, CS50 SQL y MIT 6.006: las tres son CC BY-NC-SA 4.0 (verificado con curl), así que solo sirven como mapa de temario.
+- **Defectos de contenido verificados** (no corregidos; ADR-62): `q120102mc003` marca como correcta una respuesta falsa para SQLite; `q160101003` tiene dos opciones correctas; `q160101ex004` es una pregunta de Big O con respuesta `10`; `l160301` tiene un merge sort con `pop(0)` y comentario O(n log n). Muestra de 20 preguntas por track: no es una tasa.
+- **Cambios en el guard:** `check_docs.py` excluye la salida generada `docs/auditoria-tracks/` de la comprobación de índice de INVENTARIO; `resumen.md` queda indexado en `docs/README.md`.
+- **Decisiones tomadas por defecto (la fase 0 pide al dueño):** rúbrica con los pesos propuestos sin firmar; análisis sí, contenido no (ADR-62); piloto con track01, track12 y track16.
+- **Ledger:** sin fila nueva; falta decidir la serie. El ledger está al límite de su tope (61440 bytes).
+- **Pendiente:** fase 2 completa (32 + 19 tracks), sección en `competitive-teardown.md`, corrección de los defectos, decisión del dueño sobre la rúbrica.
