@@ -1659,6 +1659,8 @@ ADR-59 y el punto «el contenido corre en paralelo» de ADR-54.
 
 ## ADR-63 — Política de evidencia por fuente y prior del onboarding (PROPUESTA de la sesión, 2026-10-16; pendiente de firma del DUEÑO)
 
+**Firmada por delegación el 2026-10-22 (ADR-69 #5)** con los valores recomendados: prior 0,10/0,20/0,30, k = 4 y tope 0,94, puerta solo con práctica.
+
 **Origen.** Plan ultracode del dueño (`PLAN_ULTRACODE.md` §7). Subordinada a ADR-60 UX-DEC-01.
 
 **Contexto.** Hay una fila `UserSkillState` por (usuario, skill), y la escriben con reglas
@@ -1777,3 +1779,32 @@ opciones, el dueño eligió **levantar el veto entero**.
 
 **Lo que no cambia.** `legal.*` lo fija el dueño (ADR-55); la mascota espera al ilustrador (ADR-67 D2); ninguna
 ceremonia celebra un ascenso de liga que el servidor no aplique.
+
+## ADR-69 — Decisiones delegadas del 2026-10-22: cola humana con su valor recomendado (DECIDIDO por delegación expresa del dueño)
+
+**Origen.** Sesión del 2026-10-22. El dueño: «toma todas las decisiones excepto: rotar la clave de Groq (H.12);
+Paddle T1, anual y tarifa regional (H.35); tiendas; cohorte beta (H.10); contenido. Concluye todo lo demás en un
+PR unificado». La sesión toma, en cada fila, el valor recomendado que ya estaba escrito en el ledger. Ninguna
+decisión de esta tabla reabre una ADR del dueño.
+
+| # | Fila | Decisión |
+|---|---|---|
+| 1 | PYSEC-2026-4298 | Se cambia python-jose por **PyJWT** (sin ignorar el aviso en el CI). La guarda de confusión de algoritmo se queda. |
+| 2 | #318 | Los enlaces legales de `/auth` siguen **en línea dentro de la frase** (excepción de WCAG 2.5.8); `touchTargets` la reconoce. |
+| 3 | #315 | Se cierra: su único commit va en #321. |
+| 4 | PR unificado | Los PR #309–#314 y #316–#321 se integran en un solo PR; los individuales se cierran como sustituidos cuando el unificado esté en verde. |
+| 5 | H.51 | **Se firma ADR-63** con los valores recomendados: prior 0,10/0,20/0,30 por experiencia, encogimiento k = 4 con tope 0,94, y la puerta de «dominada» (≥ 0,95 y ≥ 7 respuestas) solo con práctica. |
+| 6 | H.52 | Duelos: con el opt-out de ligas no se reta ni se es retado; un reto caduca a los 7 días; los duelos no dan XP; el desempate es por tiempo de servidor. |
+| 7 | H.53 | `exam_pass_predictor` sale de `backend/app/services/` a `backend/app/ml/` (ningún código de la app lo importa; solo su test y un script de calibración). |
+| 8 | H.56 | Se retira de `docs/legal/b2b_pilot_offer_*.md` la promesa de un «panel de equipo» que no existe. |
+| 9 | H.57 | La tabla de modelos de `CLAUDE.md` no cambia. |
+| 10 | H.44 | Firecrawl, Amplitude, Mailchimp y Lusha se quitan. Desconectarlos es un paso del dueño en los ajustes de conectores de claude.ai; ningún código los usa. |
+| 11 | H.46 | No se activa el monitor de uptime de Sentry: puede gastar cuota de pago. |
+| 12 | H.47 | El correo de contacto de `/evidence` se queda hasta que exista un alias (`support@`), que depende de Cloudflare Email Routing (cuenta del dueño). |
+| 13 | H.58 | Las preguntas escaladas por el barrido de la Oleada 0 se resuelven con su opción recomendada, que es la primera de cada una. |
+
+**Lo que sigue en manos del dueño.**
+- Lo que él mismo excluyó: H.12, H.35, tiendas (H.2, H.3, H.5, H.14), H.10 y el contenido.
+- H.54 (jurisdicción): depende de la entidad legal, la misma cuestión que Paddle T1.
+- H.16 (proteger `master` en GitHub): la integración de esta sesión no tiene permiso sobre la protección de ramas (`GET …/branches/master/protection` → 403); se hace en Settings → Branches.
+- Lo que exige cuentas o personas: publicar en redes (H.23), la revisión legal profesional (H.20), los pagos a instructores (H.25), el staging con coste (31.1) y reconectar GitHub en Railway tras su incidente del 2026-10-21.

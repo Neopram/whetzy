@@ -10,7 +10,7 @@ Reproducible: `cd backend && python scripts/beta_binomial_calibration.py`
 
 ## El modelo
 
-`backend/app/services/exam_pass_predictor.py`. La precisión real de un
+`backend/app/ml/exam_pass_predictor.py`. La precisión real de un
 alumno en preguntas de examen se modela como una probabilidad desconocida
 θ con prior Beta(0.5, 0.5) (Jeffreys — mínimamente informativo, simétrico:
 no sesga la primera predicción hacia "va a aprobar" ni hacia "va a

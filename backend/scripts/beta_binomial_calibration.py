@@ -33,7 +33,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from app.services.exam_pass_predictor import predict_pass_probability
+from app.ml.exam_pass_predictor import predict_pass_probability
 
 N_EXAM_QUESTIONS = 50
 PASS_PCT = 70.0
