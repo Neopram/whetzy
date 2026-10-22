@@ -2934,3 +2934,18 @@ La comparación del §6 del plan con el código (`master` `00e52a5`) dejó en `P
       46.15, falta la tabla §7.5.
     - Notas de 46.3 y 46.7 al día.
   - El ledger queda a 12 bytes de su tope: la próxima fila nueva pide antes otra dieta.
+
+## 2026-10-22 — PR unificado y decisiones delegadas (ADR-69)
+
+- **Encargo del dueño.** Tomar todas las decisiones salvo H.12, H.35, tiendas, H.10 y el contenido, y concluir lo
+  demás en un PR unificado (#322).
+- **Integración.** #321 (base de CI) y los PR #309–#314 y #316–#320 en una sola rama. Los conflictos eran de unión
+  (inventario de docs, claves i18n hermanas, una regla CSS con tokens y ancho a la vez). En local: tsc y oxlint a
+  0, vitest 1219/1219, `check_docs.py` y `ledger.py check` en verde. #315 cerrado: su commit va en #321.
+- **ADR-69.** 13 decisiones con el valor recomendado del ledger: python-jose → PyJWT, ADR-63 firmada, duelos (H.52),
+  `exam_pass_predictor` a `app/ml`, fuera la promesa de «panel de equipo» en la oferta B2B, entre otras.
+- **Incidente de Railway (21-10).** Builds en pausa y aviso de seguridad sobre variables de entorno. Producción
+  sigue respondiendo (`/health` 200 el 22-10). El despliegue automático desde GitHub necesita reconectar GitHub
+  en Railway cuando vuelvan los builds; es paso del dueño.
+- **H.16** (proteger `master`): la integración de la sesión recibe 403 en la protección de ramas; queda para el
+  dueño en Settings → Branches.

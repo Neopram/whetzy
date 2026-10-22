@@ -5,6 +5,24 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-22 (PR unificado y decisiones delegadas)
+
+**ES**
+
+- **Inicio de sesión más seguro por dentro.** Los tokens de sesión y el acceso con Apple usan ahora PyJWT en lugar
+  de una librería con un fallo conocido sin arreglo.
+- **La oferta de pilotos para empresas** ya no promete un panel de equipo que todavía no existe.
+
+---
+
+**EN**
+
+- **Safer sign-in under the hood.** Session tokens and Sign in with Apple now use PyJWT instead of a library with a
+  known, unfixed flaw.
+- **The company pilot offer** no longer promises a team dashboard that doesn't exist yet.
+
+---
+
 ## [Unreleased] — 2026-10-21 (Google en producción, apps móviles y coherencia de la documentación)
 
 **ES**
