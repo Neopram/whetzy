@@ -213,7 +213,7 @@ GET  /missions             → active missions + progress 🔒
 ## League endpoints
 
 ```
-GET  /league/current       → current week's league standings 🔒
+GET  /league/current       → current week's league standings 🔒 — `last_week_movement`: `promoted` | `demoted` | `stayed` | null (top 5 / bottom 5 of a league of ≥ 10 move one tier when the new week starts; 2026-10-21)
 GET  /league/history       → past league results for current user 🔒
 PUT  /league/participation {participate: bool} → current standings + {participating} 🔒 — ligas opcionales (35.4): fuera, `standings` vacío y nadie te ve; XP, nivel y racha siguen
 ```

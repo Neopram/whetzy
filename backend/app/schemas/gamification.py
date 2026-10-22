@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import date, datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
@@ -48,6 +49,9 @@ class LeagueStandingsResponse(BaseModel):
     total_members: int = 0
     # False = el usuario salió de las ligas (35.4): standings vacío.
     participating: bool = True
+    # Cómo acabó la semana pasada (2026-10-21): «promoted», «demoted», «stayed», o
+    # None si no hubo semana inmediatamente anterior. Lo cuenta el cliente.
+    last_week_movement: Literal["promoted", "demoted", "stayed"] | None = None
 
 
 class LeagueHistoryEntry(BaseModel):
