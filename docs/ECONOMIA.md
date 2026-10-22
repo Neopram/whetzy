@@ -316,8 +316,8 @@ Así se sabe qué vídeo, qué artículo y qué comunidad convierten, sin tercer
 | `GET /economy/referral/code` y `POST /economy/referral/activate` | usuario | código, enlace y activación |
 | `GET /economy/prices` | público | grifos y sumideros que el código cablea de verdad (2026-10-01: referidos y comodín de racha); la Cartera la pinta tal cual |
 | `POST /admin/promo/batch` | owner | genera lote (CSV descargable) |
-| `GET /admin/economy/attribution` | owner | canjes → activaciones → pagos por código/canal/campaña |
-| `GET /admin/economy/referrals` y `GET /admin/economy/k-factor` | owner | K-factor, % registros vía referido, cola de revisión, fraude |
+| `GET /admin/economy/attribution` | owner | **pendiente (serie 29), aún no existe en `admin.py`**: canjes → activaciones → pagos por código/canal/campaña |
+| `GET /admin/economy/referrals` y `GET /admin/economy/k-factor` | owner | K-factor, % registros vía referido, cola de revisión (solo lectura: aprobar/rechazar está **pendiente de construir**; hoy solo hay clawback), fraude |
 | `POST /admin/economy/referrals/{id}/clawback` | owner | clawback |
 
 Todo en `/api/v1`, documentado en `API.md` (guardia 20.3) y con tests de autorización.

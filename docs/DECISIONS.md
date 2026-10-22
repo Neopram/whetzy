@@ -22,6 +22,8 @@
 
 ## ADR-3 — Alembic with auto-stamp in start.sh (2026-09-08)
 
+> **Sustituida:** el arranque ya no hace `alembic stamp head`; solo `alembic upgrade head` (`backend/scripts/boot_tasks.sh`). Nota añadida el 2026-10-22 por ADR-69 #13 (H.58).
+
 **Decision:** `start.sh` runs `alembic stamp head && alembic upgrade head` at startup.
 
 **Reason:** Pre-existing production DB had no `alembic_version` row. Stamp avoids "target database is not up to date" on first deploy.

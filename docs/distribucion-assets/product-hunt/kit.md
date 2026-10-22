@@ -37,9 +37,8 @@ porqué, no solo el qué)
 > Whetzy is bilingual from the ground up — not machine-translated, written
 > natively in both languages — and code examples run right in the browser
 > (Python and SQL via WebAssembly, JS in a sandboxed Web Worker), so you're
-> never copy-pasting into an external sandbox. Free tier: 5 lessons and 30
-> new questions a day, spaced-repetition reviews unlimited, no credit card
-> needed.
+> never copy-pasting into an external sandbox. Free tier with spaced-repetition
+> reviews unlimited, no credit card needed.
 >
 > Would love PH's take on what's missing from "serious" coding education, and
 > where this breaks if you push on it. I'll be around all day to answer
@@ -81,5 +80,6 @@ cuentas reales)
       per day", `frontend/src/i18n/{es,en}/common.json`). El flag por defecto en
       el código es `False` (`backend/app/core/config.py:299`); si producción lo
       tiene distinto a lo que la landing dice, el primer comentario de arriba
-      (que ahora cita esa misma cifra) deja de ser cierto hasta que se corrija
+      no debe citar la cifra. El 2026-10-22 (H.58) se quitó del comentario mientras el
+      cupo esté apagado; vuelve solo cuando se active
       uno de los dos lados

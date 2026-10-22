@@ -1,6 +1,6 @@
 # PR a EbookFoundation/free-programming-books — ledger 26.2
 
-**Solo el texto. No abro el PR** (regla de hierro S6 / `docs/DISTRIBUCION.md`).
+**Solo el texto. No abro el PR** (`docs/CONECTORES.md` §1, clase H: publicar es pregunta al dueño).
 
 ## Aviso antes de usar esto: riesgo real de rechazo
 

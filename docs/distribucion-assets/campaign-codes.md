@@ -25,13 +25,19 @@ YT    = YouTube channel marker
 | Short | ES | `YT-ES-SHORT` | 60s | `whetzy-short-es.mp4` | 26.0 |
 | Short | EN | `YT-EN-SHORT` | 60s | `whetzy-short-en.mp4` | 27.0 |
 
-## Integration with 29.4 (Referral System)
+## Atribución real (reescrito el 2026-10-22, H.58)
 
-When a user signs up via `?ref=YT-ES-PROD`:
-1. Frontend captures URL param via `useSearchParams()` in `AuthScreen`
-2. Sends to `/auth/register` payload: `"referral_code": "YT-ES-PROD"`
-3. Backend creates `UserReferral` entry linking user → campaign code
-4. Admin panel (22.1) shows: `Referrals: {YT-ES-PROD: 142, YT-EN-PROD: 89, ...}`
+El flujo `?ref=<código>` → `referral_code` en el registro → `UserReferral` que describía esta
+sección **no existe**. Lo que el código hace hoy (D-23, 2026-10-12):
+
+1. El frontend guarda el **primer contacto**: los `utm_source`, `utm_medium` y `utm_campaign` de
+   la URL de llegada (`frontend/src/lib/attribution.ts`, `captureAttribution`).
+2. Un enlace `whetzy.com/r/<código>` (`frontend/src/App.tsx`) marca la visita como referida.
+3. En el onboarding se envía una sola vez y el servidor la clasifica en `signup_source`
+   (`referral`, `paid`, `utm`, `direct`) y `signup_campaign` (`backend/app/services/attribution.py`).
+
+Por eso cada vídeo debe enlazar con `?utm_source=youtube&utm_campaign=YT-ES-PROD` (o el código que
+toque): el código de campaña viaja como `utm_campaign`, no como código de referido.
 
 ## Super Placement (1:30-1:45 before end)
 

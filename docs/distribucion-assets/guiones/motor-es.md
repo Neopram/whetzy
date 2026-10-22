@@ -42,9 +42,9 @@ Explicar la tecnología detrás de Whetzy: BKT, FSRS, adaptatividad. Target: té
 - **Visual:** Quiz screen: 3 opciones de preguntas
 - **Narración:** "Ahora que sabemos el estado de Johan en cada habilidad, ¿qué pregunta hacemos?"
 - **Opciones visibles:**
-  - "Opción A: Fácil (p_known=0.9) — Aburrida"
-  - "Opción B: Media (p_known=0.5) — 'Just right'"
-  - "Opción C: Difícil (p_known=0.2) — Frustrante"
+  - "Opción A: Fácil (95 % de acierto) — Aburrida"
+  - "Opción B: Media (~75 % de acierto) — 'Just right'"
+  - "Opción C: Difícil (30 % de acierto) — Frustrante"
 - **Narración:** "Seleccionamos la que sea desafiante pero no imposible. Eso maximiza aprendizaje. Whetzy busca el 75% de tasa de acierto."
 
 ### 5. Verificación: E2E Testing (4:30-4:55)

@@ -61,7 +61,7 @@ app/
 │   ├── duplicate_detector.py  # embedding cosine similarity over the bank
 │   ├── content_loader.py # idempotent ingest from content/*.json
 │   ├── analytics.py      # event tracking + funnel/retention aggregation
-│   ├── churn.py          # logistic churn scorer (AUC 0.91 on synthetic)
+│   ├── churn.py          # logistic churn scorer (AUC > 0.7 en 100 usuarios sintéticos)
 │   ├── ab_harness.py     # deterministic cohort split, BKT vs DKT
 │   ├── stripe_service.py # checkout sessions + webhook handling
 │   ├── push_service.py   # pywebpush sender, 410 Gone cleanup
@@ -172,11 +172,11 @@ never rewrites history.
 | **Tampering** | Clickjacking (X-Frame-Options) | UI del navegador | `X-Frame-Options: DENY` en todos los responses | `backend/app/core/security_middleware.py:25` | MITIGADO |
 | **Tampering** | Content-Type sniffing (MIME type bypass) | Ejecución de scripts | `X-Content-Type-Options: nosniff` | `backend/app/core/security_middleware.py:24` | MITIGADO |
 | **Tampering** | Inyección en código ejecutable (fill_blank_exec / fix_bug / sql_exec) | Verificación de ejercicios | Ejecución en CI sobre código de referencia; Pyodide/sql.js en sandbox WASM aislado del DOM | `backend/tests/content/test_exec_questions.py`, `frontend/src/hooks/useRuntime.ts` | MITIGADO |
-| **Tampering** | JWT token falsificado (sin verificar firma) | JWT forjado | JWT verificado con `jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])`; `jose` verifica la firma por defecto y un `JWTError` se traduce en 401 | `backend/app/core/security.py:get_token_payload` | MITIGADO |
+| **Tampering** | JWT token falsificado (sin verificar firma) | JWT forjado | `verify_token` prueba en orden las claves de `_verification_keys()` (RS256 con `JWT_PUBLIC_KEY` si está configurada; después `SECRET_KEY` con `JWT_ALGORITHM` para los tokens anteriores a la migración); PyJWT verifica la firma y, si ninguna clave valida, responde 401 | `backend/app/core/security.py:_verification_keys`, `backend/app/core/security.py:verify_token` | MITIGADO |
 | **Repudiation** | Negación de transacciones / cambios | Auditoría de cambios | Event log en `analytics_events` para todas las sesiones; password reset tokens son single-use y registrados | `backend/app/models/analytics.py`, `backend/app/services/analytics.py` | MITIGADO |
 | **Repudiation** | El dueño niega haber abierto o tocado una cuenta | Datos de un alumno | `admin_action_log` solo de añadir: abrir una ficha (`view`) y cada una de las cinco acciones (con motivo obligatorio) dejan actor, afectado, IP y fecha; ninguna ruta lo edita ni lo borra (44.1–44.3) | `backend/app/models/admin.py:AdminActionLog`, `backend/app/api/v1/endpoints/admin_users.py` | MITIGADO |
 | **Repudiation** | Negación de consumo de Groq API | Facturas de IA | Logs de requests a Groq en `audit_log` (estructura preparada en `backend/app/models/auth.py:AuditLog`) | `backend/app/models/auth.py:AuditLog` (la tabla existe; **no hay ajuste que lo active ni escritor que registre las llamadas a Groq** — `grep -rn AUDIT_LOG_ENABLED backend/` sale vacio) | PARCIAL |
-| **Information Disclosure** | Información sensible en Referrer header | Tokens en URL | `Referrer-Policy: strict-origin-when-cross-origin` (JWT nunca en URL, siempre en Authorization) | `backend/app/core/security_middleware.py:27` | MITIGADO |
+| **Information Disclosure** | Información sensible en Referrer header | Tokens en URL | `Referrer-Policy: strict-origin-when-cross-origin` (JWT nunca en URL: cabecera Authorization o cookie HttpOnly, `backend/app/core/cookies.py`) | `backend/app/core/security_middleware.py:27` | MITIGADO |
 | **Information Disclosure** | Exposición de OpenAPI en producción | Documentación de API | `/docs` y `/redoc` deshabilitados fuera de DEBUG mode | `backend/app/main.py:93-94` | MITIGADO |
 | **Information Disclosure** | Fuga de datos via X-Admin-Key en logs | Admin key expuesta | `X-Admin-Key` solo en header (no en URL), log access solo con AUTH_RATE_LIMIT | `backend/app/api/v1/endpoints/content.py:26-29` | MITIGADO |
 | **Information Disclosure** | CSP weakening (inline scripts / data URLs) | XSS | CSP `default-src 'none'; frame-ancestors 'none'; base-uri 'none'` en API responses | `backend/app/core/security_middleware.py:31` | MITIGADO |
