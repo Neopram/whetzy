@@ -4,8 +4,8 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { dequeueAll, pendingCount } from '../services/offlineQueue';
-import { quiz as quizApi } from '../services/api';
+import { discard, peekAll, pendingCount, remove } from '../services/offlineQueue';
+import { ApiError, quiz as quizApi } from '../services/api';
 
 export interface OfflineSyncState {
   isOnline: boolean;
@@ -25,11 +25,14 @@ export function useOfflineSync(): OfflineSyncState {
     setPending(c);
   };
 
+  // Cada respuesta sale de la cola solo cuando el servidor la confirma (42.11):
+  // antes se vaciaba entera antes de enviar y un `catch {}` tragaba la caída de
+  // la red, así que lo que no llegaba se perdía.
   const flush = async () => {
     if (syncingRef.current) return;
-    const items = await dequeueAll();
+    const items = await peekAll();
     if (items.length === 0) {
-      setPending(0);
+      await refreshCount();
       return;
     }
     syncingRef.current = true;
@@ -41,17 +44,27 @@ export function useOfflineSync(): OfflineSyncState {
           item.questionId,
           item.selectedIndex,
           item.responseTimeMs,
-          false,
+          item.declaredUnknown ?? false,
           item.id,
           { execOutput: item.execOutput, answerText: item.answerText, widgetState: item.widgetState },
         );
-      } catch {
-        // Best-effort: if the session expired, we can't recover. Skip it.
+        await remove(item.id);
+      } catch (e) {
+        // 409: ese `event_id` ya está registrado, así que no hay nada que reenviar.
+        if (e instanceof ApiError && e.status === 409) {
+          await remove(item.id);
+          continue;
+        }
+        // Sin red, 5xx, 401 (sesión por renovar) o 429: se conserva esta y el
+        // resto, en orden, para el próximo `online`.
+        if (!(e instanceof ApiError) || e.esTransitorio || e.status === 401 || e.status === 429) break;
+        // Cualquier otro 4xx no se arregla reintentando: a descartes.
+        await discard(item, e.status);
       }
     }
     syncingRef.current = false;
     setIsSyncing(false);
-    setPending(0);
+    await refreshCount();
   };
 
   useEffect(() => {
