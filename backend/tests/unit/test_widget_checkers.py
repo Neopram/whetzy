@@ -94,10 +94,11 @@ def test_check_question_bank_valida_interactive(tmp_path: Path) -> None:
     import check_question_bank as cqb
 
     assert "interactive" in cqb.KNOWN_TYPES
-    # Hasta 40.2 no hay widgets registrados: ninguna pregunta puede nombrar uno.
-    assert cqb.registered_widgets() == frozenset()
-    assert cqb.interactive_problems({"interactive": SPEC}) == [
-        "widget 'binarySearch' no esta en frontend/src/widgets/registry.ts: nadie podria contestarla"
+    # El piloto de 40.2 registra tres widgets; uno que no está en el registro no se puede contestar.
+    assert cqb.registered_widgets() == frozenset({"binarySearch", "cidr", "sqlJoin"})
+    assert cqb.interactive_problems({"interactive": SPEC}) == []
+    assert cqb.interactive_problems({"interactive": {**SPEC, "widget": "fantasma"}}) == [
+        "widget 'fantasma' no esta en frontend/src/widgets/registry.ts: nadie podria contestarla"
     ]
     cqb.registered_widgets.cache_clear()
     real = cqb.WIDGET_REGISTRY
@@ -105,11 +106,12 @@ def test_check_question_bank_valida_interactive(tmp_path: Path) -> None:
         fake = tmp_path / "registry.ts"
         fake.write_text(
             "export const WIDGETS: Record<string, WidgetLoader> = {\n"
-            "  binarySearch: () => import('./binarySearch'),\n};\n",
+            "  fantasma: () => import('./fantasma'),\n};\n",
             "utf-8",
         )
         cqb.WIDGET_REGISTRY = fake
-        assert cqb.interactive_problems({"interactive": SPEC}) == []
+        assert cqb.interactive_problems({"interactive": {**SPEC, "widget": "fantasma"}}) == []
+        assert cqb.interactive_problems({"interactive": SPEC}) != []
     finally:
         cqb.WIDGET_REGISTRY = real
         cqb.registered_widgets.cache_clear()
