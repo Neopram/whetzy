@@ -310,6 +310,8 @@ export interface UserRead {
   can_create_courses?: boolean;
   /** «Admin» en Perfil: el panel es solo del dueño (#202). */
   is_owner?: boolean;
+  /** Ola 2: el tutor ofrece «A fondo» (Pro Max o superior). */
+  tutor_deep_access?: boolean;
   /** 45.3 (ADR-66 E4): sin verificar, la app muestra la franja «verifica tu correo». */
   email_verified?: boolean;
   /** D-20: la ruta elegida en el onboarding. */
@@ -900,18 +902,22 @@ export interface UserBadgeWithDetail {
   earned_at: string;
 }
 
+/** Ola 2: «¿Por qué?», «¿Cómo?» y «A fondo» (este, solo Pro Max). */
+export type TutorMode = 'why' | 'how' | 'deep';
+
 export interface ExplainResponse {
   explanation: string;
   provider: string;
   grounded: boolean;
   times_missed: number;
+  mode?: TutorMode;
 }
 
 export const tutor = {
-  async explain(questionId: string) {
+  async explain(questionId: string, mode: TutorMode = 'why') {
     return request<ExplainResponse>('/tutor/explain', {
       method: 'POST',
-      body: JSON.stringify({ question_id: questionId }),
+      body: JSON.stringify({ question_id: questionId, mode }),
     });
   },
 };

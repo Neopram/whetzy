@@ -176,6 +176,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/landing-ola2/README.md` | histórico | evidencia de la landing de la ola 2: banderas en SVG, contenedor de 80rem, JSON-LD y tabla comparativa con foco; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/auth-ola2/README.md` | histórico | evidencia de /auth en la ola 2: Apple y Google antes del formulario con colores de marca, enlaces legales y tuteo; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/catalogo-campos/README.md` | histórico | evidencia del catálogo por los cinco campos del onboarding, combinado con Aprender/Certificaciones; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/tutor-modos/README.md` | histórico | evidencia del tutor por modos (¿Por qué?, ¿Cómo?, A fondo solo Pro Max) y del contraste del aviso info; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/46.3c/README.md` | histórico | evidencia de capturas de la fila 46.3c (prueba de nivel en el onboarding y «Tu mayor palanca» como primera tarjeta de Hoy) | se queda (junto a sus PNG) | 2026-10-19 |
 | `docs/ui-snapshots/46.10/README.md` | histórico | evidencia de capturas de la fila 46.10 (la opción late o tiembla y el «+XP» vuela al marcador) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.11/README.md` | histórico | evidencia de capturas de la fila 46.11 (la llama de la racha en tres tamaños y el escudo del comodín) | se queda (junto a sus PNG) | 2026-10-20 |

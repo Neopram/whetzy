@@ -107,6 +107,13 @@ class User(Base):
         return self.role == "owner"
 
     @property
+    def tutor_deep_access(self) -> bool:
+        """«A fondo» del tutor: solo Pro Max o superior (dueño, 2026-10-21)."""
+        from app.core.entitlements import user_meets_tier
+
+        return user_meets_tier(self, "pro")
+
+    @property
     def can_create_courses(self) -> bool:
         """«Instructor» es para creadores (dueño, 2026-10-16): plan Creador, o el
         dueño y los admins, que montan el catálogo propio. La misma regla que

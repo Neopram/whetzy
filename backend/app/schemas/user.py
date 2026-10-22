@@ -106,6 +106,8 @@ class UserRead(UserBase):
     # solo para creadores y «Admin» solo para el dueño. Calculados del modelo.
     can_create_courses: bool = False
     is_owner: bool = False
+    # Ola 2: si el tutor le ofrece «A fondo» (Pro Max o superior).
+    tutor_deep_access: bool = False
 
 
 class Token(BaseModel):

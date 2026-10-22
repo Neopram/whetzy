@@ -13,13 +13,14 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
-from app.core.entitlements import require_tier
+from app.core.entitlements import require_tier, user_meets_tier
 from app.core.security import get_current_user
 from app.models.content import Question
 from app.models.exam import MockExamAttempt
 from app.models.user import User
 from app.services import tutor_quota
 from app.services.ai import tutor as tutor_service
+from app.services.ai.tutor import TutorMode
 
 router = APIRouter()
 logger = logging.getLogger("whetzy.llm")
@@ -36,8 +37,13 @@ QUESTION_RESERVED = "question_reserved"
 EXAM_IN_PROGRESS = "exam_in_progress"
 
 
+# Ola 2: «A fondo» es de Pro Max (decisión del dueño, 2026-10-21).
+DEEP_REQUIRES_PRO_MAX = "deep_requires_pro_max"
+
+
 class ExplainRequest(BaseModel):
     question_id: str
+    mode: TutorMode = "why"
     # Short-term memory: prior turns from the current tutoring session.
     # Each entry must have "role" ("user"|"assistant") and "content".
     conversation_history: list[dict[str, Any]] | None = None
@@ -48,6 +54,7 @@ class ExplainResponse(BaseModel):
     provider: str
     grounded: bool
     times_missed: int = 0
+    mode: TutorMode = "why"
 
 
 @router.post("/explain", response_model=ExplainResponse)
@@ -57,6 +64,10 @@ async def explain(
     db: AsyncSession = Depends(get_db),
     _tier: None = Depends(require_tier("plus")),
 ) -> ExplainResponse:
+    # Antes de reservar cupo: pedir «A fondo» sin Pro Max no gasta nada.
+    if payload.mode == "deep" and not user_meets_tier(current_user, "pro"):
+        raise HTTPException(status.HTTP_403_FORBIDDEN, detail=DEEP_REQUIRES_PRO_MAX)
+
     # 41.5: ni la pregunta de un examen en curso ni ninguna del banco
     # reservado (pool == "simulacro") pasan por el tutor — explicarla
     # mientras cuenta para la nota, o explicar una que el alumno todavía no
@@ -119,6 +130,7 @@ async def explain(
             current_user,
             payload.question_id,
             conversation_history=payload.conversation_history,
+            mode=payload.mode,
         )
     except httpx.HTTPStatusError as exc:
         # Solo cuenta lo que de verdad se sirvió: un fallo del proveedor no
@@ -145,4 +157,4 @@ async def explain(
     else:
         await tutor_quota.release(db, current_user.id, day, token_estimate=token_estimate)
     await db.commit()
-    return ExplainResponse(**result)
+    return ExplainResponse(**result, mode=payload.mode)
