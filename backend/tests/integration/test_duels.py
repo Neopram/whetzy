@@ -751,19 +751,41 @@ async def test_join_requires_auth(client: AsyncClient, duel_seed: dict, auth_hea
     assert resp.status_code == 401
 
 
-async def test_join_only_opponent_can_join(
+async def test_join_lets_the_challenger_resume_and_rejects_a_third_user(
     client: AsyncClient,
     auth_headers: dict,
     duel_seed: dict,
+    db_session: AsyncSession,
 ) -> None:
-    """The challenger calling /join on their own duel gets 403."""
+    """42.5: the challenger who closed the app mid-duel can come back to it
+    (before, /join was opponent-only and the duel was lost for good); the
+    answered ones come back so the client resumes at the next. Anyone else
+    is still refused."""
     challenge = await client.post(
         f"{BASE}/challenge",
         json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
         headers=auth_headers,
     )
     duel_id = challenge.json()["duel_id"]
+    first = challenge.json()["questions"][0]["id"]
+    await client.post(
+        f"{BASE}/{duel_id}/answer",
+        json={"question_id": first, "selected_index": 0, "response_time_ms": 1000},
+        headers=auth_headers,
+    )
     resp = await client.get(f"{BASE}/{duel_id}/join", headers=auth_headers)
+    assert resp.status_code == 200, resp.text
+    assert resp.json()["answered_question_ids"] == [first]
+    assert resp.json()["opponent_username"] == duel_seed["opponent"].username
+
+    third = User(
+        id=uuid.uuid4(), email=f"third-{uuid.uuid4().hex[:8]}@whetzy.test",
+        username=f"third{uuid.uuid4().hex[:6]}", hashed_password="x", display_name="Third",
+    )
+    db_session.add(third)
+    await db_session.commit()
+    third_headers = {"Authorization": f"Bearer {create_access_token(third.id)}"}
+    resp = await client.get(f"{BASE}/{duel_id}/join", headers=third_headers)
     assert resp.status_code == 403
 
 
@@ -879,3 +901,181 @@ async def test_challenge_needs_the_opponents_lesson(
     )
     assert resp.status_code == 409
     assert resp.json()["detail"]["code"] == "opponent_needs_lesson"
+
+
+# ── 42.4 / 42.5 / H.52 (ADR-69 #6, 2026-10-22) ─────────────────────────────────
+
+
+async def _challenge(client: AsyncClient, headers: dict, duel_seed: dict) -> dict:
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=headers,
+    )
+    assert resp.status_code == 201, resp.text
+    return resp.json()
+
+
+async def test_answer_returns_feedback(
+    client: AsyncClient, auth_headers: dict, duel_seed: dict
+) -> None:
+    """42.4: after answering, the player learns whether they were right, which
+    option was, and why — before, the duel never said."""
+    duel = await _challenge(client, auth_headers, duel_seed)
+    resp = await client.post(
+        f"{BASE}/{duel['duel_id']}/answer",
+        json={"question_id": duel["questions"][0]["id"], "selected_index": 2, "response_time_ms": 900},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 200, resp.text
+    body = resp.json()
+    assert body["correct"] is False
+    assert body["correct_index"] == 0
+    assert body["explanation_es"] == "La respuesta es A."
+    assert body["explanation_en"] == "The answer is A."
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"selected_index": 0, "response_time_ms": -1},
+        {"selected_index": 0, "response_time_ms": 300_001},
+        {"selected_index": -1, "response_time_ms": 1000},
+        {"selected_index": 3, "response_time_ms": 1000},  # the seed questions have 3 options
+    ],
+)
+async def test_answer_out_of_bounds_is_422(
+    client: AsyncClient, auth_headers: dict, duel_seed: dict, payload: dict
+) -> None:
+    duel = await _challenge(client, auth_headers, duel_seed)
+    resp = await client.post(
+        f"{BASE}/{duel['duel_id']}/answer",
+        json={"question_id": duel["questions"][0]["id"], **payload},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 422, resp.text
+
+
+async def test_tie_is_broken_by_server_time_not_by_what_the_client_claims(
+    client: AsyncClient,
+    auth_headers: dict,
+    opponent_headers: dict,
+    duel_seed: dict,
+    db_session: AsyncSession,
+) -> None:
+    """42.4 / H.52: both get 5/5; the opponent claims 0 ms on every answer but
+    took longer on the server's clock. Before, the claimed 0 ms won."""
+    from datetime import timedelta
+
+    from app.models.duel import Duel
+
+    duel = await _challenge(client, auth_headers, duel_seed)
+    duel_id = duel["duel_id"]
+    for q in duel["questions"]:
+        await client.post(
+            f"{BASE}/{duel_id}/answer",
+            json={"question_id": q["id"], "selected_index": 0, "response_time_ms": 5000},
+            headers=auth_headers,
+        )
+    await client.get(f"{BASE}/{duel_id}/join", headers=opponent_headers)
+    # The opponent was served the questions an hour before they finished.
+    row = await db_session.get(Duel, uuid.UUID(duel_id))
+    assert row is not None and row.opponent_started_at is not None
+    row.opponent_started_at = row.opponent_started_at - timedelta(hours=1)
+    await db_session.commit()
+    for q in duel["questions"]:
+        await client.post(
+            f"{BASE}/{duel_id}/answer",
+            json={"question_id": q["id"], "selected_index": 0, "response_time_ms": 0},
+            headers=opponent_headers,
+        )
+    result = (await client.get(f"{BASE}/{duel_id}/result", headers=auth_headers)).json()
+    assert result["is_draw"] is False
+    assert result["winner_id"] == result["challenger"]["user_id"]
+
+
+async def test_opted_out_of_leagues_cannot_challenge_nor_be_challenged(
+    client: AsyncClient,
+    auth_headers: dict,
+    duel_seed: dict,
+    user: User,
+    db_session: AsyncSession,
+) -> None:
+    """H.52: whoever left leagues is out of duels too, both ways."""
+    opponent = duel_seed["opponent"]
+    opponent.leagues_opt_out = True
+    db_session.add(opponent)
+    await db_session.commit()
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": opponent.username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 403
+
+    opponent.leagues_opt_out = False
+    user.leagues_opt_out = True
+    db_session.add_all([opponent, user])
+    await db_session.commit()
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": opponent.username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 403
+    assert resp.json()["detail"]["code"] == "duels_opt_out"
+
+
+async def test_a_duel_gives_no_xp(
+    client: AsyncClient,
+    auth_headers: dict,
+    opponent_headers: dict,
+    duel_seed: dict,
+    user: User,
+    db_session: AsyncSession,
+) -> None:
+    """H.52: duels give no XP (nor league points, which are XP)."""
+    xp_before = user.total_xp
+    duel = await _challenge(client, auth_headers, duel_seed)
+    for headers in (auth_headers, opponent_headers):
+        for q in duel["questions"]:
+            await client.post(
+                f"{BASE}/{duel['duel_id']}/answer",
+                json={"question_id": q["id"], "selected_index": 0, "response_time_ms": 1000},
+                headers=headers,
+            )
+    await db_session.refresh(user)
+    assert user.total_xp == xp_before
+
+
+async def test_a_duel_expires_after_seven_days(
+    client: AsyncClient,
+    auth_headers: dict,
+    opponent_headers: dict,
+    duel_seed: dict,
+    db_session: AsyncSession,
+) -> None:
+    """42.5 / H.52: an unfinished duel expires at 7 days — no winner, and it
+    can no longer be joined or answered."""
+    from datetime import timedelta
+
+    from app.models.duel import Duel
+
+    duel = await _challenge(client, auth_headers, duel_seed)
+    duel_id = duel["duel_id"]
+    row = await db_session.get(Duel, uuid.UUID(duel_id))
+    assert row is not None
+    row.created_at = row.created_at - timedelta(days=7, minutes=1)
+    await db_session.commit()
+
+    assert (await client.get(f"{BASE}/{duel_id}/join", headers=opponent_headers)).status_code == 410
+    resp = await client.post(
+        f"{BASE}/{duel_id}/answer",
+        json={"question_id": duel["questions"][0]["id"], "selected_index": 0, "response_time_ms": 1000},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 410
+    mine = (await client.get(f"{BASE}/my", headers=auth_headers)).json()
+    assert [d["status"] for d in mine] == ["expired"]
+    assert mine[0]["is_your_turn"] is False
+    assert mine[0]["winner_id"] is None

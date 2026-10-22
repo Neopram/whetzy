@@ -26,7 +26,7 @@ from app.schemas.profile import (
     PublicProfileRead,
     PublicProjectRead,
 )
-from app.services.engine.domain_thresholds import MASTERY_THRESHOLD
+from app.services.engine.domain_thresholds import mastered_clause
 
 router = APIRouter()
 
@@ -51,7 +51,7 @@ async def get_public_profile(
     skills_mastered = await db.scalar(
         select(func.count(UserSkillState.id)).where(
             UserSkillState.user_id == user.id,
-            UserSkillState.p_known >= MASTERY_THRESHOLD,
+            mastered_clause(UserSkillState),
         )
     )
 

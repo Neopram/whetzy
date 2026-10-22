@@ -392,6 +392,12 @@ class Settings(BaseSettings):
     # --- Gamification tuning -------------------------------------------------
     MASTERY_THRESHOLD: float = 0.95
     DEFAULT_MODULE_UNLOCK_MASTERY: float = 0.7
+    # ADR-63 §3: «dominada» pide además esta cantidad de respuestas de PRÁCTICA
+    # (la misma cifra que `MIN_EVIDENCE_ANSWERS` de `frontend/src/lib/evidenceBand.ts`;
+    # `test_domain_thresholds_guard.py` las ata), y el duelo, el test-out y la
+    # prueba de nivel no suben `p_known` por encima de este tope por sí solos.
+    MIN_EVIDENCE_ANSWERS: int = 7
+    NON_PRACTICE_MASTERY_CAP: float = 0.94
 
 
 @lru_cache

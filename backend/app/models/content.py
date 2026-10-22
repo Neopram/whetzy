@@ -36,6 +36,15 @@ class Track(Base):
     exam_question_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
     exam_duration_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
     passing_score_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    # 42.12: which blueprint this is — the vendor's exam code, the guide it was
+    # transcribed from, and a fingerprint of what `tracks.json` declares for it
+    # (`content_loader.blueprint_fingerprint`). The fingerprint changes when the
+    # blueprint does, so a figure computed against an older one can be told
+    # apart. NULL for learning tracks.
+    cert_code: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    exam_guide: Mapped[str | None] = mapped_column(String(300), nullable=True)
+    exam_guide_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    blueprint_version: Mapped[str | None] = mapped_column(String(16), nullable=True)
     # Un track que sale de `tracks.json` se retira (False), no se borra: el
     # borrado iba en cascada hasta respuestas, intentos y certificados (S.12).
     is_active: Mapped[bool] = mapped_column(

@@ -20,15 +20,35 @@ about under motor-owned names, read-only).
 `tests/unit/test_domain_thresholds_guard.py` fails if a threshold-shaped
 literal shows up in a motor file outside this one.
 
-NOT in scope here: `backend/app/services/gamification/service.py:315`
-hardcodes the same `0.95` independently (`UserSkillState.p_known >= 0.95`)
-but is S1's file, not the motor's (SESIONES.md §4.3) — flagged as a
-NECESITO to S1 rather than fixed here.
+`gamification/service.py` hardcoded the same `0.95` on its own until 42.6
+(2026-10-22); it now asks `is_mastered`, like progress.
+
+42.6 / ADR-63 §3: there is ONE definition of a mastered skill, `is_mastered`
+below — mastery at or above the threshold AND `MIN_EVIDENCE_ANSWERS` practice
+answers. A duel, a test-out or the placement test move `p_known` but never
+count as that evidence (`evidence_policy.py`).
 """
 
 from __future__ import annotations
+
+from typing import Any
+
+from sqlalchemy import ColumnElement, and_
 
 from app.core.config import settings
 
 MASTERY_THRESHOLD: float = settings.MASTERY_THRESHOLD
 DEFAULT_MODULE_UNLOCK_MASTERY: float = settings.DEFAULT_MODULE_UNLOCK_MASTERY
+MIN_EVIDENCE_ANSWERS: int = settings.MIN_EVIDENCE_ANSWERS
+
+
+def is_mastered(p_known: float, practice_attempts: int) -> bool:
+    return p_known >= MASTERY_THRESHOLD and practice_attempts >= MIN_EVIDENCE_ANSWERS
+
+
+def mastered_clause(state: Any) -> ColumnElement[bool]:
+    """`is_mastered` as a SQL condition on `UserSkillState` (or an alias of it)."""
+    return and_(
+        state.p_known >= MASTERY_THRESHOLD,
+        state.practice_attempts >= MIN_EVIDENCE_ANSWERS,
+    )

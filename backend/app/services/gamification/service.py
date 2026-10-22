@@ -24,6 +24,7 @@ from app.schemas.gamification import (
     UserMissionRead,
 )
 from app.services.blocklist import blocked_user_ids
+from app.services.engine.domain_thresholds import mastered_clause
 
 PROMOTION_ZONE_SIZE = 5
 DEMOTION_ZONE_SIZE = 5
@@ -378,7 +379,7 @@ async def award_badges(db: AsyncSession, user: User) -> list[str]:
     skills_mastered = (
         await db.execute(
             select(func.count(UserSkillState.id)).where(
-                UserSkillState.user_id == user.id, UserSkillState.p_known >= 0.95
+                UserSkillState.user_id == user.id, mastered_clause(UserSkillState)
             )
         )
     ).scalar_one() or 0

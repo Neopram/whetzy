@@ -1105,6 +1105,8 @@ export interface DuelChallengeResponse {
   skill_id: string;
   questions: QuestionPublic[];
   opponent_username: string;
+  /** 42.5: al volver a un duelo a medias, las ya contestadas. */
+  answered_question_ids?: string[];
 }
 
 export interface DuelAnswerRequest {
@@ -1123,6 +1125,11 @@ export interface DuelAnswerResponse {
   answers_so_far: number;
   completed: boolean;
   opponent_completed: boolean;
+  /** 42.4: corrección inmediata, como en la práctica. */
+  correct: boolean;
+  correct_index: number | null;
+  explanation_es: string;
+  explanation_en: string;
   /** Solo si el rival ya terminó: cómo le fue en esta misma pregunta. */
   rival?: DuelRivalAnswer | null;
 }
@@ -1180,8 +1187,12 @@ export const duels = {
   async join(duelId: string) {
     return request<DuelChallengeResponse>(`/duels/${duelId}/join`);
   },
-  async result(duelId: string) {
-    return request<DuelResultResponse>(`/duels/${duelId}/result`);
+  /** `null` mientras el rival no termina. El backend contesta 202, que para
+   *  `fetch` es `ok`, con un cuerpo `{detail}`: antes ese cuerpo se pintaba como
+   *  un resultado sin ganador y salía «Perdiste» (42.4). */
+  async result(duelId: string): Promise<DuelResultResponse | null> {
+    const body = await request<DuelResultResponse | { detail: unknown }>(`/duels/${duelId}/result`);
+    return 'duel_id' in body ? body : null;
   },
 };
 

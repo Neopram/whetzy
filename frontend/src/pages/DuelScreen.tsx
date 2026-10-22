@@ -10,6 +10,7 @@ import {
   duels as duelsApi,
   progress as progressApi,
   type DuelSummary,
+  type DuelAnswerResponse,
   type DuelChallengeResponse,
   type DuelResultResponse,
   type DuelRivalAnswer,
@@ -56,6 +57,8 @@ export function DuelScreen() {
   // a él en esa misma pregunta. Lo decide el servidor (`rival` solo llega
   // cuando el otro terminó); aquí no se adivina nada.
   const [rival, setRival] = useState<DuelRivalAnswer | null>(null);
+  // 42.4: tras contestar, si acertó, cuál era la buena y por qué.
+  const [feedback, setFeedback] = useState<DuelAnswerResponse | null>(null);
   // Se reinicia con cada pregunta: antes se fijaba al montar la pantalla y el
   // tiempo de respuesta que llega al motor crecía pregunta a pregunta.
   const questionStart = useRef(Date.now());
@@ -76,10 +79,14 @@ export function DuelScreen() {
   }, [fetchDuels]);
 
   const startPlaying = (res: DuelChallengeResponse) => {
+    // 42.5: quien vuelve a un duelo a medias sigue por la primera sin contestar.
+    const answered = new Set(res.answered_question_ids ?? []);
+    const next = res.questions.findIndex((x) => !answered.has(x.id));
     setActiveDuel(res);
-    setQIndex(0);
+    setQIndex(next === -1 ? 0 : next);
     setSelected(null);
     setRival(null);
+    setFeedback(null);
     setPlayingDuelId(res.duel_id);
     questionStart.current = Date.now();
     setView('playing');
@@ -126,6 +133,7 @@ export function DuelScreen() {
         response_time_ms: rt,
       });
       setRival(res.rival ?? null);
+      setFeedback(res);
     } catch {
       /* continue anyway */
     } finally {
@@ -139,6 +147,7 @@ export function DuelScreen() {
       setQIndex((i) => i + 1);
       setSelected(null);
       setRival(null);
+      setFeedback(null);
       questionStart.current = Date.now();
     } else {
       setDuelResult(null);
@@ -228,7 +237,9 @@ export function DuelScreen() {
               key={i}
               type="button"
               data-testid="duel-option"
-              className={`${styles.option} ${selected === i ? styles.optionSelected : ''}`}
+              className={`${styles.option} ${selected === i ? styles.optionSelected : ''} ${
+                feedback?.correct_index === i ? styles.optionCorrect : ''
+              }`}
               onClick={() => handleAnswer(i)}
               disabled={selected !== null || submitting}
             >
@@ -238,16 +249,32 @@ export function DuelScreen() {
           ))}
         </div>
 
-        {rival && (
-          <p className={styles.rival} role="status" data-testid="duel-rival">
-            <span className={rival.correct ? styles.won : styles.lost} aria-hidden="true">
-              {rival.correct ? '✓' : '✗'}
-            </span>{' '}
-            {t(rival.correct ? 'duel.rivalCorrect' : 'duel.rivalWrong', {
-              username: activeDuel.opponent_username,
-              s: (rival.response_time_ms / 1000).toLocaleString(language, { maximumFractionDigits: 1 }),
-            })}
-          </p>
+        {/* Una sola región viva: el veredicto, la explicación y, si el rival ya
+            jugó, cómo le fue en esta pregunta (42.4). */}
+        {(feedback || rival) && (
+          <div className={styles.feedback} role="status" data-testid="duel-feedback">
+            {feedback && (
+              <p className={feedback.correct ? styles.won : styles.lost}>
+                {t(feedback.correct ? 'duel.youGotIt' : 'duel.youMissedIt')}
+              </p>
+            )}
+            {feedback && (language === 'en' ? feedback.explanation_en : feedback.explanation_es) && (
+              <p className={styles.muted}>
+                {language === 'en' ? feedback.explanation_en : feedback.explanation_es}
+              </p>
+            )}
+            {rival && (
+              <p className={styles.rival} data-testid="duel-rival">
+                <span className={rival.correct ? styles.won : styles.lost} aria-hidden="true">
+                  {rival.correct ? '✓' : '✗'}
+                </span>{' '}
+                {t(rival.correct ? 'duel.rivalCorrect' : 'duel.rivalWrong', {
+                  username: activeDuel.opponent_username,
+                  s: (rival.response_time_ms / 1000).toLocaleString(language, { maximumFractionDigits: 1 }),
+                })}
+              </p>
+            )}
+          </div>
         )}
 
         {selected !== null && (
@@ -345,6 +372,7 @@ function DuelCard({
   const statusLabel =
     duel.status === 'pending' ? t('duel.status_pending')
     : duel.status === 'in_progress' ? t('duel.status_in_progress')
+    : duel.status === 'expired' ? t('duel.status_expired')
     : t('duel.status_completed');
 
   return (

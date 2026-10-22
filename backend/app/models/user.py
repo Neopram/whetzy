@@ -205,6 +205,12 @@ class UserSkillState(Base):
     unknown_count: Mapped[int] = mapped_column(
         Integer, default=0, nullable=False, server_default="0"
     )
+    # 42.9 / ADR-63: the share of `attempts` that came from practice — the only
+    # source that counts for the evidence gate (`domain_thresholds.is_mastered`).
+    # Duels, test-outs and the placement test add to `attempts` only.
+    practice_attempts: Mapped[int] = mapped_column(
+        Integer, default=0, nullable=False, server_default="0"
+    )
 
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False

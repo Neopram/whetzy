@@ -50,8 +50,10 @@ from app.services.engine import (
     EloRating,
     FSRSScheduler,
     SkillState,
+    evidence_policy,
 )
-from app.services.engine.domain_thresholds import MASTERY_THRESHOLD
+from app.services.engine.domain_thresholds import is_mastered
+from app.services.engine.evidence_policy import EvidenceSource
 from app.services.gamification import apply_quiz_event, get_or_create_current_entry
 from app.services.widgets import checkers as widget_checkers
 
@@ -136,42 +138,60 @@ async def _get_or_create_skill_state(
         return result.scalar_one()
 
 
-async def apply_answer_to_skill_state(
-    db: AsyncSession,
-    user_id: uuid.UUID,
+def _apply_engines(
+    state: UserSkillState,
     question: Question,
     correct: bool,
     response_time_ms: int,
-    now: datetime | None = None,
-) -> None:
-    """Apply BKT/Elo/FSRS updates for a single answered question.
+    expected_time_ms: int,
+    now: datetime,
+    *,
+    source: EvidenceSource,
+    declared_unknown: bool = False,
+) -> tuple[int, float]:
+    """THE Elo/BKT/FSRS update for one answer, whatever its source (42.9).
 
-    Used by duel answers which share the same model logic as quiz answers but
-    have no StudySession and cannot create a Response row (session_id NOT NULL).
-    Callers are responsible for committing the transaction.
+    Practice, duels and test-outs each carried their own copy of this block,
+    and none of them knew where the answer came from. Now there is one, and
+    `evidence_policy.bound` decides what the source may do with `p_known`:
+    practice moves it freely and counts for the evidence gate; a duel or a
+    test-out moves it too, but cannot take it past the non-practice cap on
+    its own (ADR-63 §3-4). Returns the FSRS grade and Elo's expected score.
     """
-    now = now or _now()
-    state = await _get_or_create_skill_state(db, user_id, question.skill_id)
+    p_known_before = state.p_known
 
+    # --- Elo: two-sided update between user's per-skill ability and item difficulty ---
     user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
     item_entity = EloEntity(rating=question.elo_rating, interactions=question.elo_updates)
-    user_entity, item_entity, _expected_p = elo.update(user_entity, item_entity, correct)
+    user_entity, item_entity, expected_p = elo.update(user_entity, item_entity, correct)
     state.elo_rating = user_entity.rating
-    question.elo_rating = item_entity.rating
-    question.elo_updates += 1
+    if not declared_unknown:
+        question.elo_rating = item_entity.rating
+        question.elo_updates += 1
+    # On "I don't know" the learner's rating still falls — they could not answer,
+    # and the selector should ease off. The item's rating is left alone: nobody
+    # attempted it, so the interaction says nothing about how hard it is.
 
+    # --- BKT: skill mastery update, bounded by the source's rule ---
     bkt_state = SkillState(
         skill_id=question.skill_id,
         p_known=state.p_known,
         attempts=state.attempts,
         correct=state.correct_count,
     )
-    bkt.update(bkt_state, correct, p_guess=guess_rate(question))
-    state.p_known = bkt_state.p_known
+    if declared_unknown:
+        bkt.update_unknown(bkt_state)
+        state.unknown_count += 1
+    else:
+        bkt.update(bkt_state, correct, p_guess=guess_rate(question))
+    state.p_known = evidence_policy.bound(source, p_known_before, bkt_state.p_known)
     state.attempts = bkt_state.attempts
     state.correct_count = bkt_state.correct
+    if evidence_policy.RULES[source].counts_for_gate:
+        state.practice_attempts += 1
 
-    grade = _grade_from_response(correct, response_time_ms, question.expected_time_ms or response_time_ms)
+    # --- FSRS: skill-level spaced-repetition scheduling ---
+    grade = _grade_from_response(correct, response_time_ms, expected_time_ms)
     card = Card(
         stability=state.fsrs_stability,
         difficulty=state.fsrs_difficulty,
@@ -186,8 +206,28 @@ async def apply_answer_to_skill_state(
     state.fsrs_stability = card.stability
     state.fsrs_difficulty = card.difficulty
     state.fsrs_due = card.due
+    return grade, expected_p
 
+
+async def apply_evidence(
+    db: AsyncSession,
+    user_id: uuid.UUID,
+    question: Question,
+    correct: bool,
+    response_time_ms: int,
+    *,
+    source: EvidenceSource,
+    now: datetime | None = None,
+) -> float:
+    """One answer with no `Response` row behind it (duels have no StudySession,
+    and `session_id` is NOT NULL). Callers commit. Returns the new `p_known`."""
+    state = await _get_or_create_skill_state(db, user_id, question.skill_id)
+    _apply_engines(
+        state, question, correct, response_time_ms,
+        question.expected_time_ms or response_time_ms, now or _now(), source=source,
+    )
     await db.flush()
+    return state.p_known
 
 
 def _module_unlock_decision(
@@ -357,15 +397,18 @@ async def _candidate_skill_ids(
         unlocked_skill_ids = gated
 
     states_result = await db.execute(
-        select(UserSkillState.skill_id, UserSkillState.p_known).where(
+        select(
+            UserSkillState.skill_id, UserSkillState.p_known, UserSkillState.practice_attempts
+        ).where(
             UserSkillState.user_id == user.id,
             UserSkillState.skill_id.in_(unlocked_skill_ids),
         )
     )
-    mastery_by_skill = {row[0]: row[1] for row in states_result.all()}
+    evidence_by_skill = {row[0]: (row[1], row[2]) for row in states_result.all()}
 
     not_mastered = [
-        sid for sid in unlocked_skill_ids if mastery_by_skill.get(sid, 0.0) < MASTERY_THRESHOLD
+        sid for sid in unlocked_skill_ids
+        if not is_mastered(*evidence_by_skill.get(sid, (0.0, 0)))
     ]
     if not_mastered:
         return not_mastered, "low_mastery"
@@ -800,51 +843,10 @@ async def submit_answer(
 
     p_known_before = state.p_known
     elo_before = state.elo_rating
-
-    # --- Elo: two-sided update between user's per-skill ability and item difficulty ---
-    user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
-    item_entity = EloEntity(rating=question.elo_rating, interactions=question.elo_updates)
-    user_entity, item_entity, expected_p = elo.update(user_entity, item_entity, correct)
-    state.elo_rating = user_entity.rating
-    if not declared_unknown:
-        question.elo_rating = item_entity.rating
-        question.elo_updates += 1
-    # On "I don't know" the learner's rating still falls — they could not answer,
-    # and the selector should ease off. The item's rating is left alone: nobody
-    # attempted it, so the interaction says nothing about how hard it is.
-
-    # --- BKT: skill mastery update ---
-    bkt_state = SkillState(
-        skill_id=question.skill_id,
-        p_known=state.p_known,
-        attempts=state.attempts,
-        correct=state.correct_count,
+    grade, expected_p = _apply_engines(
+        state, question, correct, req.response_time_ms, question.expected_time_ms, now,
+        source="practice", declared_unknown=declared_unknown,
     )
-    if declared_unknown:
-        bkt.update_unknown(bkt_state)
-        state.unknown_count += 1
-    else:
-        bkt.update(bkt_state, correct, p_guess=guess_rate(question))
-    state.p_known = bkt_state.p_known
-    state.attempts = bkt_state.attempts
-    state.correct_count = bkt_state.correct
-
-    # --- FSRS: skill-level spaced-repetition scheduling ---
-    grade = _grade_from_response(correct, req.response_time_ms, question.expected_time_ms)
-    card = Card(
-        stability=state.fsrs_stability,
-        difficulty=state.fsrs_difficulty,
-        reps=max(0, bkt_state.attempts - 1),
-        due=_ensure_aware(state.fsrs_due),
-        last_review=_ensure_aware(state.updated_at),
-        # Sin estabilidad FSRS no hay repaso previo que actualizar: la prueba de
-        # nivel suma `attempts` sin tocar FSRS, y `pow(0, -w)` tumbaba la respuesta.
-        state="new" if bkt_state.attempts <= 1 or state.fsrs_stability <= 0 else "review",
-    )
-    card, _log = fsrs.review(card, grade, now)
-    state.fsrs_stability = card.stability
-    state.fsrs_difficulty = card.difficulty
-    state.fsrs_due = card.due
 
     # --- Persist the raw response event ---
     response = Response(
@@ -1034,6 +1036,10 @@ async def apply_exam_evidence(
     move on the true correctness of the answer, since neither is the "dominio"
     number the product shows the learner.
 
+    Since 42.9 both rules live in `evidence_policy` ("test_out"): the floor,
+    and the non-practice cap — a test-out alone never reaches "dominada", and
+    never counts towards the practice evidence the gate asks for (ADR-63 §3).
+
     No `Response` row is written and no XP is awarded: an exam is an assessment,
     not a study session, and counting it as both would inflate streaks and the
     answered-question totals that the analytics of 5.4 report.
@@ -1041,40 +1047,8 @@ async def apply_exam_evidence(
     Returns the skill's mastery after the update.
     """
     state = await _get_or_create_skill_state(db, user.id, question.skill_id)
-    mastery_before_this_attempt = state.p_known
-
-    user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
-    item_entity = EloEntity(rating=question.elo_rating, interactions=question.elo_updates)
-    user_entity, item_entity, _expected = elo.update(user_entity, item_entity, correct)
-    state.elo_rating = user_entity.rating
-    question.elo_rating = item_entity.rating
-    question.elo_updates += 1
-
-    bkt_state = SkillState(
-        skill_id=question.skill_id,
-        p_known=state.p_known,
-        attempts=state.attempts,
-        correct=state.correct_count,
+    _apply_engines(
+        state, question, correct, response_time_ms, question.expected_time_ms, _now(),
+        source="test_out",
     )
-    bkt.update(bkt_state, correct, p_guess=guess_rate(question))
-    state.p_known = max(bkt_state.p_known, mastery_before_this_attempt)
-    state.attempts = bkt_state.attempts
-    state.correct_count = bkt_state.correct
-
-    grade = _grade_from_response(correct, response_time_ms, question.expected_time_ms)
-    card = Card(
-        stability=state.fsrs_stability,
-        difficulty=state.fsrs_difficulty,
-        reps=max(0, bkt_state.attempts - 1),
-        due=_ensure_aware(state.fsrs_due),
-        last_review=_ensure_aware(state.updated_at),
-        # Sin estabilidad FSRS no hay repaso previo que actualizar: la prueba de
-        # nivel suma `attempts` sin tocar FSRS, y `pow(0, -w)` tumbaba la respuesta.
-        state="new" if bkt_state.attempts <= 1 or state.fsrs_stability <= 0 else "review",
-    )
-    card, _log = fsrs.review(card, grade, _now())
-    state.fsrs_stability = card.stability
-    state.fsrs_difficulty = card.difficulty
-    state.fsrs_due = card.due
-
     return state.p_known

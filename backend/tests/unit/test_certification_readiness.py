@@ -196,3 +196,21 @@ async def test_readiness_reports_the_observable_evidence_per_domain(
     by_id = {d["domain_id"]: d for d in r.json()["domains"]}
     assert (by_id[dom_a_id]["answers"], by_id[dom_a_id]["correct"]) == (9, 6)
     assert (by_id[dom_b_id]["answers"], by_id[dom_b_id]["correct"]) == (0, 0)
+
+
+async def test_readiness_names_the_blueprint_it_measures_against(
+    client: AsyncClient, db_session: AsyncSession, user: User, auth_headers: dict
+) -> None:
+    """42.12: readiness says which exam, guide and blueprint version it is for."""
+    await _seed_cert_track(db_session)
+    track = await db_session.get(Track, CERT_TRACK_ID)
+    assert track is not None
+    track.cert_code, track.exam_guide = "TST-01", "Test Exam Guide, Version 2.1"
+    track.exam_guide_url, track.blueprint_version = "https://example.org/guide.pdf", "0123456789ab"
+    await db_session.commit()
+    body = (
+        await client.get(f"/api/v1/exams/certification/{CERT_TRACK_ID}/readiness", headers=auth_headers)
+    ).json()
+    assert (body["cert_code"], body["exam_guide"], body["exam_guide_url"], body["blueprint_version"]) == (
+        "TST-01", "Test Exam Guide, Version 2.1", "https://example.org/guide.pdf", "0123456789ab",
+    )
