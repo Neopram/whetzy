@@ -13,8 +13,13 @@
  * - Salir de una inmersiva por su propia UI hacia la pantalla de la que vino
  *   retrocede el historial en vez de apilar: si no, «atrás» desde Hoy volvería
  *   a un quiz que ya no existe.
+ * - En la app Android (42.10), el botón «atrás» del sistema no llega a la
+ *   WebView como un «atrás» del navegador: sin listener cierra la app.
+ *   `installNativeBackButton` lo convierte en `history.back()` mientras haya
+ *   historial, y solo sin él cierra la app.
  */
 import { useEffect, useRef } from 'react';
+import { Capacitor, type PluginListenerHandle } from '@capacitor/core';
 import { useAppStore, type Screen } from '../stores/useAppStore';
 import { isImmersiveScreen } from './immersiveScreens';
 
@@ -125,4 +130,38 @@ export function useBackGuard(handler: () => void): void {
     window.addEventListener(BACK_EVENT, onBack);
     return () => window.removeEventListener(BACK_EVENT, onBack);
   }, []);
+}
+
+// ── Botón «atrás» de Android (42.10) ───────────────────────────────────────
+// Un único listener por proceso: llamarla otra vez reutiliza el mismo.
+let nativeBack: Promise<PluginListenerHandle | null> | null = null;
+
+/** En la app nativa, el botón «atrás» del sistema vuelve de pantalla
+ *  (`history.back()`, que recoge el `popstate` de `useScreenHistory`, incluido
+ *  el aviso de las pantallas protegidas) y solo cierra la app sin historial.
+ *  En web no registra nada. Devuelve la función que quita el listener. */
+export function installNativeBackButton(): Promise<() => void> {
+  if (!Capacitor.isNativePlatform()) return Promise.resolve(() => {});
+  // Import perezoso, como el de haptics: el bundle web no carga el plugin.
+  nativeBack ??= import('@capacitor/app')
+    .then(({ App }) =>
+      App.addListener('backButton', ({ canGoBack }) => {
+        if (canGoBack) window.history.back();
+        else void App.exitApp();
+      }),
+    )
+    .catch(() => null);
+  const mine = nativeBack;
+  const off = () => {
+    // Solo quita el suyo: si ya se quitó y se volvió a instalar, no toca el nuevo.
+    if (nativeBack !== mine) return;
+    nativeBack = null;
+    void mine.then((h) => h?.remove());
+  };
+  return mine.then(() => off);
+}
+
+/** Solo para tests: olvida el listener sin quitarlo. */
+export function _resetNativeBackButton(): void {
+  nativeBack = null;
 }
