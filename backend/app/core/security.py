@@ -13,9 +13,9 @@ from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
 import bcrypt
+import jwt
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -154,7 +154,7 @@ def verify_token(token: str, expected_type: TokenType = "access") -> TokenPayloa
         try:
             payload = jwt.decode(token, key, algorithms=algorithms)
             break
-        except JWTError:
+        except jwt.PyJWTError:
             continue
 
     if payload is None:

@@ -33,15 +33,12 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pip-audit pytest-cov mypy==2.3.1 ruff==0.16.8 types-python-jose types-passlib
+          pip install -r requirements.txt pip-audit pytest-cov mypy==2.3.1 ruff==0.16.8 types-passlib
 
       - name: Dependency audit (pip-audit)
         # Fails the build if any known vulnerability is found.
         # starlette CVEs require FastAPI major upgrade — deferred to 7.1 security audit.
         # ecdsa CVE has no fix version available upstream yet.
-        # PYSEC-2026-4298 (python-jose <= 3.5.0, no fix upstream): HS256 forged with a
-        # DER public key. Not reachable here: the public key only verifies RS256 and
-        # HS256 uses SECRET_KEY; tests/unit/test_jwt_alg_confusion.py guards both.
         run: |
           pip-audit --progress-spinner off \
             --ignore-vuln PYSEC-2026-161 \
@@ -51,8 +48,7 @@ jobs:
             --ignore-vuln PYSEC-2026-1941 \
             --ignore-vuln PYSEC-2026-2281 \
             --ignore-vuln PYSEC-2026-2280 \
-            --ignore-vuln PYSEC-2026-1325 \
-            --ignore-vuln PYSEC-2026-4298
+            --ignore-vuln PYSEC-2026-1325
 
       # Runs from the repo root, not backend/: it validates content/, which is
       # shared. No network, so a docs-site outage cannot turn the build red -
