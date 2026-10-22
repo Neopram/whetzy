@@ -452,6 +452,9 @@ for _md in sorted(_DOCS.rglob("*.md")):
     _rel = _md.relative_to(_DOCS).as_posix()
     if _rel.startswith("archive/") or _rel in {"README.md", "INVENTARIO_DOCS.md"}:
         continue
+    # Fichas generadas por scripts/audit_tracks.py (una por track): las indexa su resumen.md.
+    if _rel.startswith("auditoria-tracks/") and "/tracks/" in _rel:
+        continue
     if _rel not in _index_text and f"docs/{_rel}" not in _inv_text:
         _unindexed.append(f"docs/{_rel}")
 check(
@@ -695,6 +698,8 @@ _no_row = [
     f for f in _tracked
     if not f.startswith("docs/archive/") and "node_modules" not in f and "test-results" not in f and not f.startswith("corpus/")
     and f not in _inv_paths
+    # Salida generada por scripts/audit_tracks.py: resumen.md lo indexa docs/README.md y las fichas, resumen.md.
+    and not f.startswith("docs/auditoria-tracks/")
 ]
 check("Todo .md vivo del repo tiene fila en INVENTARIO_DOCS.md", bool(_tracked) and not _no_row, "sin fila: " + ", ".join(_no_row[:20]))
 
