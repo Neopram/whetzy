@@ -13,7 +13,7 @@ Introduce Whetzy as an adaptive learning platform in 2 minutes. Target: career-s
 ### Problem (0:15-0:35)
 - **Visual:** Quick montage: Generic competitor, slow competitor, surface-level competitor
 - **Narration:** "Most platforms teach everyone the same way. They bore you with what you know and skip over what you need."
-- **Stat on-screen:** "47% dropout in first month"
+- **Stat on-screen:** none (the "47% dropout in first month" figure was removed on 2026-10-22, H.58: no source in the repo)
 
 ### Solution (0:35-1:20)
 - **Visual:** Whetzy dashboard, skill mastery map (territory), active streak

@@ -26,10 +26,9 @@ class PublicProjectRead(BaseModel):
 class PublicProfileRead(BaseModel):
     """Perfil público de un alumno por `username` (0.3).
 
-    Sin columna de privacidad todavía (sería otra migración; la 54 -- S.4 --
-    no está en master, una a la vez): cualquier `username` existente y activo
-    es visible, igual que ya lo es un certificado por su código
-    (`GET /exams/certificates/{code}`), también sin autenticación.
+    Privado por defecto (24.8): solo se sirve si la persona activó
+    `User.public_profile_opt_in` y el flag global lo permite. Nunca lleva el
+    correo. Sin autenticación, como un certificado por su código.
     """
 
     model_config = ConfigDict(from_attributes=True)

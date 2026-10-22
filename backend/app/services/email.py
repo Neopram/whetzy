@@ -240,6 +240,28 @@ border-radius:6px;text-decoration:none;">Confirm subscription</a></p>
 <p>If you didn't ask for this, ignore this email: nobody gets subscribed without confirming.</p>""",
         },
     },
+    "newsletter_monthly": {
+        "es": {
+            "subject": "Whetzy — tu newsletter mensual",
+            "html": """\
+<h2>Hola:</h2>
+<p>Gracias por seguir <strong>Whetzy</strong>. Aquí tienes tu enlace para seguir
+practicando cuando quieras.</p>
+<p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Ir a Whetzy</a></p>
+<p style="font-size:12px;color:#888;">Recibes este correo porque confirmaste tu suscripción al newsletter. <a href="{unsubscribe_url}">Darte de baja</a> con un clic.</p>""",
+        },
+        "en": {
+            "subject": "Whetzy — your monthly newsletter",
+            "html": """\
+<h2>Hello,</h2>
+<p>Thanks for following <strong>Whetzy</strong>. Here is your link to keep
+practicing whenever you like.</p>
+<p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Go to Whetzy</a></p>
+<p style="font-size:12px;color:#888;">You get this email because you confirmed your newsletter subscription. <a href="{unsubscribe_url}">Unsubscribe</a> in one click.</p>""",
+        },
+    },
     "support_resolved": {
         "es": {
             "subject": "Tu ticket de soporte {ticket_id} ha sido resuelto",
@@ -562,6 +584,16 @@ def send_newsletter_confirmation(to: str, token: str, lang: str = "es") -> None:
     confirm_url = f"{settings.API_PUBLIC_BASE_URL}/api/v1/newsletter/confirm?token={token}"
     subject, html = _render("newsletter_confirm", lang, confirm_url=confirm_url)
     _dispatch(to, subject, html)
+
+
+def send_newsletter_monthly(to: str, unsubscribe_url: str, lang: str = "es") -> None:
+    """Newsletter mensual (26.10). Marketing: lleva baja de un clic (RFC 8058)."""
+    from app.core.config import settings
+
+    subject, html = _render(
+        "newsletter_monthly", lang, base_url=settings.FRONTEND_BASE_URL, unsubscribe_url=unsubscribe_url
+    )
+    _dispatch(to, subject, html, unsubscribe_url)
 
 
 def send_renewal_reminder(

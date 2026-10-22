@@ -79,7 +79,10 @@ async def build_track(
 
 
 async def set_mastery(db, user_id: uuid.UUID, skill_id: str, p_known: float) -> None:
-    db.add(UserSkillState(user_id=user_id, skill_id=skill_id, p_known=p_known))
+    # 42.6: «dominada» pide además 7 respuestas de práctica (ADR-63 §3).
+    db.add(UserSkillState(
+        user_id=user_id, skill_id=skill_id, p_known=p_known, attempts=7, practice_attempts=7,
+    ))
     await db.commit()
 
 

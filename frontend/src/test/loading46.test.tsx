@@ -46,14 +46,41 @@ describe('guarda: sin «Cargando…» suelto (46.14)', () => {
   };
   walk(join(root, 'pages'));
   walk(join(root, 'components'));
-  const BARE = /<(p|div|span)\b[^>]*>\s*\{(?:cur\.error \?\? )?t\(['"][\w.]*loading['"]\)\}\s*<\/\1>/;
+  // La clave acaba en «loading» o lleva sufijo («playground.loadingEditor») y la
+  // llamada puede traer texto de respaldo: `t('common.loading', 'Cargando...')`.
+  // La regex anterior pedía `loading')}` pelado y no veía ninguno de los dos.
+  const BARE = /<(p|div|span)\b[^>]*>\s*\{(?:cur\.error \?\? )?t\(['"][\w.]*[lL]oading\w*['"](?:\s*,\s*(?:'[^']*'|"[^"]*"))?\)\}\s*<\/\1>/;
+
+  // Un esqueleto con su etiqueta solo para el lector de pantalla no es un «Cargando…» suelto.
+  const suelto = (line: string) => BARE.test(line) && !line.includes('visually-hidden');
+
+  it('la regex ve las variantes con sufijo, con respaldo y dentro de un fallback', () => {
+    expect(BARE.test(`return <div className={s.a}>{t('common.loading', 'Cargando...')}</div>`)).toBe(true);
+    expect(BARE.test(`<Suspense fallback={<div className={s.a}>{t('playground.loadingEditor')}</div>}>`)).toBe(true);
+    expect(BARE.test(`<Suspense fallback={<p className={s.loading}>{t('playground.loadingEditor')}</p>}>`)).toBe(true);
+    expect(BARE.test(`<span>{t('x.loading')}</span>`)).toBe(true);
+    expect(BARE.test(`<button>{busy ? t('x.sending') : t('x.send')}</button>`)).toBe(false);
+    expect(suelto(`<span className="visually-hidden">{t('quiz.why.loadingSr')}</span>`)).toBe(false);
+    expect(BARE.test(`<Loading label={t('home.loading')} shape="line" />`)).toBe(false);
+  });
 
   it('pages/ y components/', () => {
     const hits = files.flatMap((f) =>
       readFileSync(f, 'utf-8').split('\n')
-        .map((line, i) => (BARE.test(line) ? `${relative(root, f)}:${i + 1}` : null))
+        .map((line, i) => (suelto(line) ? `${relative(root, f)}:${i + 1}` : null))
         .filter((x): x is string => x !== null),
     );
     expect(hits).toEqual([]);
+  });
+
+  // Un spinner con texto («Cargando…») solo en la galería de componentes: las
+  // pantallas usan el esqueleto `Loading` con la forma de lo que viene.
+  it('ninguna pantalla importa LoadingState (salvo la galería UiKit)', () => {
+    const pages = files.filter((f) => f.includes(`${join('src', 'pages')}`) || f.includes(`${join('pages')}`));
+    const importers = pages
+      .filter((f) => !f.endsWith('UiKitScreen.tsx'))
+      .filter((f) => readFileSync(f, 'utf-8').includes("LoadingState'"))
+      .map((f) => relative(root, f));
+    expect(importers).toEqual([]);
   });
 });

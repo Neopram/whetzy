@@ -37,10 +37,17 @@ class Duel(Base):
     opponent_completed_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    # 42.4 / H.52: the tie-break is the server's clock, not the client's
+    # `response_time_ms`. All five questions are served at once, so the clock
+    # starts when they are: `created_at` for the challenger, the opponent's
+    # first /join for them.
+    opponent_started_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     winner_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )
-    # "pending" | "in_progress" | "completed"
+    # "pending" | "in_progress" | "completed" | "expired" (7 days, H.52)
     status: Mapped[str] = mapped_column(String(20), default="pending", nullable=False, index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False

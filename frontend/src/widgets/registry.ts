@@ -30,7 +30,11 @@ export interface WidgetDefinition<S = unknown> {
 
 type WidgetLoader = () => Promise<{ default: WidgetDefinition }>;
 
-export const WIDGETS: Record<string, WidgetLoader> = {};
+export const WIDGETS: Record<string, WidgetLoader> = {
+  binarySearch: () => import('./binarySearch/BinarySearch'),
+  cidr: () => import('./cidr/Cidr'),
+  sqlJoin: () => import('./sqlJoin/SqlJoin'),
+};
 
 export async function loadWidget(name: string): Promise<WidgetDefinition | null> {
   const loader = Object.hasOwn(WIDGETS, name) ? WIDGETS[name] : undefined;

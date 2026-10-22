@@ -227,10 +227,13 @@ class InstructorService:
         instructor_id: str,
     ) -> dict[str, Any]:
         """Get instructor analytics dashboard (earnings, payouts, students)."""
+        # Como en get_or_create_instructor: con texto, SQLite (los tests) falla con
+        # «'str' object has no attribute 'hex'» (28.3 lo destapó en /analytics).
+        uid = instructor_id if isinstance(instructor_id, uuid.UUID) else uuid.UUID(instructor_id)
         # Total earnings (sum of all completed payouts)
         stmt_completed = (
             select(func.sum(InstructorPayout.earnings_cents))
-            .where(InstructorPayout.instructor_id == instructor_id)
+            .where(InstructorPayout.instructor_id == uid)
             .where(InstructorPayout.status == "completed")
         )
         result = await db.execute(stmt_completed)
@@ -239,7 +242,7 @@ class InstructorService:
         # Pending payouts
         stmt_pending = (
             select(func.sum(InstructorPayout.earnings_cents))
-            .where(InstructorPayout.instructor_id == instructor_id)
+            .where(InstructorPayout.instructor_id == uid)
             .where(InstructorPayout.status == "pending")
         )
         result = await db.execute(stmt_pending)
@@ -248,7 +251,7 @@ class InstructorService:
         # Active courses
         stmt_courses = (
             select(func.count(InstructorCourse.id))
-            .where(InstructorCourse.instructor_id == instructor_id)
+            .where(InstructorCourse.instructor_id == uid)
             .where(InstructorCourse.status == "published")
         )
         result = await db.execute(stmt_courses)
@@ -258,7 +261,7 @@ class InstructorService:
         stmt_students = (
             select(func.count(func.distinct(InstructorEnrollment.user_id)))
             .join(InstructorCourse)
-            .where(InstructorCourse.instructor_id == instructor_id)
+            .where(InstructorCourse.instructor_id == uid)
         )
         result = await db.execute(stmt_students)
         total_students = result.scalar() or 0
@@ -267,7 +270,7 @@ class InstructorService:
         stmt_completion = (
             select(func.avg(InstructorEnrollment.progress_percent))
             .join(InstructorCourse)
-            .where(InstructorCourse.instructor_id == instructor_id)
+            .where(InstructorCourse.instructor_id == uid)
         )
         result = await db.execute(stmt_completion)
         avg_completion = result.scalar() or 0.0
@@ -287,9 +290,12 @@ class InstructorService:
         limit: int = 12,
     ) -> list[dict[str, Any]]:
         """Get instructor payout history (last N months)."""
+        # Como en get_or_create_instructor: con texto, SQLite (los tests) falla con
+        # «'str' object has no attribute 'hex'» (28.3 lo destapó en /analytics).
+        uid = instructor_id if isinstance(instructor_id, uuid.UUID) else uuid.UUID(instructor_id)
         stmt = (
             select(InstructorPayout)
-            .where(InstructorPayout.instructor_id == instructor_id)
+            .where(InstructorPayout.instructor_id == uid)
             .order_by(InstructorPayout.period_start.desc())
             .limit(limit)
         )

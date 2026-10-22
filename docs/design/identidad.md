@@ -4,17 +4,19 @@ Documenta lo que el código tiene HOY, no un rediseño nuevo. Fuente de verdad:
 `frontend/src/styles/design-tokens.css` (namespace `--le-*`, canónico desde la
 serie 34 — paleta "Obsidian", ADR-47). No narrativa RPG, no plantilla genérica.
 
-## Dos ficheros de tokens, uno canónico
+## Un solo fichero de tokens
 
-`frontend/src/theme/tokens.css` (namespace `--color-*`, `--bg-dark-*`,
-`--text-*`, `--border-color`) es anterior a `design-tokens.css` y sigue en uso
-en algunos ficheros (`LandingScreen.module.css`, `PlaygroundScreen.module.css`
-y 8 más — `grep -rl "var(--color-" frontend/src --include="*.module.css" | wc -l`
-da 10; `--le-*` da 67). Ambos se cargan siempre (los dos entran por
-`src/styles/global.css`), así que no hay bug de runtime, pero es deuda de identidad:
-un componente nuevo debe usar `--le-*`; no se ha migrado el resto por ser un
-cambio grande fuera del alcance mecánico de 24.1 (quitar colores hex
-literales), que sí está cerrado.
+`frontend/src/styles/design-tokens.css` (namespace `--le-*`) es el único
+sistema. El anterior, `theme/tokens.css` (`--color-*`, `--bg-dark-*`, `--text-*`,
+`--border-color`, `--space-*`…), se migró y se borró en 46.4 (2026-10-21):
+`grep -rl "var(--color-" frontend/src` da 0 y nada importa ya ese fichero.
+Equivalencias, por si se lee código o historia vieja: `--color-primary` →
+`--le-brand`, `--color-accent` → `--le-blue`, `--color-error` → `--le-red`,
+`--bg-dark` → `--le-bg`, `--bg-dark-secondary` → `--le-surface`,
+`--bg-dark-tertiary` → `--le-surface-2` (nuevo: en claro es #E9EDF5, no el blanco
+de `--le-bg-elevated`), `--text-primary/secondary/tertiary/inverse` →
+`--le-text`/`-secondary`/`-muted`/`-inverse`, `--border-color` → `--le-border`,
+`--space-N` → `--le-space-*`, `--radius-*` → `--le-radius-*`.
 
 ## Color
 
@@ -28,7 +30,7 @@ usuario lo pide — antes era al revés y la landing (oscura, cian) y la app
 - **Éxito:** `--le-green`/`--le-success-text` — significa solo acierto,
   nunca otra cosa (línea roja).
 - **Superficies:** `--le-bg`, `--le-bg-elevated`, `--le-surface`,
-  `--le-border`/`--le-border-light` — todas cambian con el tema.
+  `--le-surface-2`, `--le-border`/`--le-border-light` — todas cambian con el tema.
 - **Texto:** `--le-text`, `--le-text-secondary`, `--le-text-muted`,
   `--le-text-inverse` (esta última se INVIERTE con el tema — casi negro en
   oscuro, blanco en claro; no vale para un fondo que no sigue el tema, ver
@@ -45,14 +47,13 @@ usuario lo pide — antes era al revés y la landing (oscura, cian) y la app
 Un puñado de superficies deben verse igual en claro y oscuro: el logo de un
 lenguaje de programación no cambia de azul porque el usuario cambie de tema.
 Viven en el bloque `:root` de `design-tokens.css` sin redefinirse en
-`[data-theme="light"]` (o en `theme/tokens.css` si el componente ya usaba ese
-namespace):
+`[data-theme="light"]`:
 
 - `--brand-python`, `--brand-sql`, `--brand-js`/`--brand-js-bg` — identidad
   de marca de terceros (`ProjectScreen.module.css`).
 - `--le-code-bg`/`--le-code-text` — editor de código, siempre oscuro como
   Monaco/VS Code (`LessonScreen.module.css`).
-- `--editor-loading-bg`/`--editor-loading-text` (namespace `theme/tokens.css`)
+- `--le-editor-loading-bg`/`--le-editor-loading-text`
   — placeholder de Monaco mientras carga (`PlaygroundScreen.module.css`).
 - `--le-pro-card-from`/`--le-pro-card-to` — tarjeta "Pro" con `!important`
   (`ProfileScreen.module.css`).
@@ -89,7 +90,5 @@ criterio); ahora 0 de 51 (100 %).
 
 ## Pendiente (no lo cubre esta fila)
 
-- Consolidar `theme/tokens.css` en `design-tokens.css` (deuda documentada
-  arriba, cambio grande, no mecánico).
 - Aprobación del dueño registrada — este documento describe el sistema
   actual; no sustituye esa firma.

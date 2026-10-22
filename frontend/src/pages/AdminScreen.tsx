@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LoadingState } from '../components/common/LoadingState';
+import { Loading } from '../components/common/Loading';
 import { ErrorState } from '../components/common/ErrorState';
 import { ReferralClawback } from '../components/admin/ReferralClawback';
 import { UsersPanel } from '../components/admin/UsersPanel';
@@ -220,7 +220,7 @@ export function AdminScreen() {
       </div>
 
       <div className={styles.content}>
-        {loading && <LoadingState message={t('admin.loading', 'Cargando datos del panel...')} />}
+        {loading && <Loading label={t('admin.loading', 'Cargando datos del panel...')} shape="list" />}
         {error && <ErrorState message={error} onRetry={() => {}} />}
 
         {activeTab === 'users' && (

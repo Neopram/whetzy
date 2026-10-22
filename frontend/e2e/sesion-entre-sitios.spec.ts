@@ -29,7 +29,13 @@ test('API en otro sitio y cookies de terceros bloqueadas: registro → Hoy, y si
       }).catch(() => { /* la petición murió con la recarga */ }),
     );
   };
-  page.on('request', onRequest);
+  // Las cabeceras se leen al terminar la petición. Con `request`, el CI del
+  // 2026-10-21 (#321) se quedó 56 s en `Promise.all`: la traza muestra seis
+  // peticiones a la API abortadas por `page.reload()` (status -1) y su
+  // `allHeaders()` sin resolver en el headless shell del runner. En local
+  // (Chromium y headless shell 1194) no se reproduce. Una petición abortada no
+  // dispara `requestfinished`; las que llegan a la API sí, y son las que importan.
+  page.on('requestfinished', onRequest);
 
   const username = uniqueUsername('e2e_xsite_');
   await page.goto('/auth');
@@ -37,7 +43,7 @@ test('API en otro sitio y cookies de terceros bloqueadas: registro → Hoy, y si
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
   // El onboarding solo aparece si `/auth/me` respondió con el usuario: hay
@@ -52,8 +58,12 @@ test('API en otro sitio y cookies de terceros bloqueadas: registro → Hoy, y si
   await page.reload();
   await expect(study).toBeVisible({ timeout: 15_000 });
 
-  page.off('request', onRequest);
-  await Promise.all(pending);
+  page.off('requestfinished', onRequest);
+  const settled = await Promise.race([
+    Promise.all(pending).then(() => true),
+    new Promise<boolean>((r) => setTimeout(() => r(false), 10_000)),
+  ]);
+  expect(settled, 'las cabeceras de las peticiones a la API se leyeron').toBe(true);
   expect(await page.context().cookies(API)).toEqual([]);
   expect(sentCookie, 'ninguna petición a la API lleva cookie').toEqual([]);
   expect(bearerOnMe.length).toBeGreaterThan(0);

@@ -1,5 +1,6 @@
 /**
- * Analítica de efectos (46.6a, ADR-68, docs/PLAN_UI_AVANZADA.md §7.2).
+ * Analítica de efectos (46.6a, ADR-68, docs/PLAN_UI_AVANZADA.md §7.2), y desde
+ * 46.6 también los pasos de pago y la encuesta de la primera sesión.
  *
  * Escucha `onFx()` de feedbackFx y los interruptores de sonido y vibración, y
  * manda los eventos en lote a `POST /analytics/client-events`. El servidor los
@@ -11,7 +12,8 @@
  * - sin sesión iniciada;
  * - si el navegador pide no ser seguido (Global Privacy Control o Do Not Track).
  */
-import { clientEvents, type ClientEvent } from '../services/api';
+import { clientEvents, type ClientEvent, type SurveyAnswer } from '../services/api';
+import type { PaddlePlan } from './paddle';
 import { DEFAULT_USER_ID, useAppStore } from '../stores/useAppStore';
 import { onFx, TIER, type FxType } from './feedbackFx';
 
@@ -29,14 +31,15 @@ function trackingRefused(): boolean {
   return nav.globalPrivacyControl === true || nav.doNotTrack === '1' || win.doNotTrack === '1';
 }
 
-function allowed(): boolean {
+/** `signedIn`: quien llama ya comprobó la sesión con el servidor (el pago, fuera del store). */
+function allowed(signedIn: boolean): boolean {
   if (typeof window === 'undefined') return false;
-  if (useAppStore.getState().user.id === DEFAULT_USER_ID) return false;
+  if (!signedIn && useAppStore.getState().user.id === DEFAULT_USER_ID) return false;
   return !trackingRefused();
 }
 
-function enqueue(e: ClientEvent): void {
-  if (!allowed()) return;
+function enqueue(e: ClientEvent, signedIn = false): void {
+  if (!allowed(signedIn)) return;
   queue.push(e);
   if (queue.length >= MAX_BATCH) {
     flushFx();
@@ -63,6 +66,24 @@ export function trackFxSkipped(fx: FxType): void {
   const tier = TIER[fx];
   if (tier !== 3 && tier !== 4) return;
   enqueue({ type: 'fx_skipped', tier, fx });
+}
+
+/**
+ * 46.6: ver el pago y abrir Paddle. La página de pago ya pidió `/auth/me`, así
+ * que no depende de que el store tenga al usuario.
+ */
+export function trackCheckout(step: 'checkout_viewed' | 'checkout_opened', plan: PaddlePlan): void {
+  enqueue({ type: step, plan }, true);
+}
+
+/** Si lo que se mande ahora llegaría: la encuesta no se enseña si su respuesta se tiraría. */
+export function analyticsAllowed(): boolean {
+  return allowed(false);
+}
+
+/** 46.6: la respuesta a «¿te ha servido?» tras la primera sesión. */
+export function trackFirstSessionSurvey(answer: SurveyAnswer): void {
+  enqueue({ type: 'first_session_survey', answer });
 }
 
 /** Engancha los oyentes una sola vez; idempotente. */

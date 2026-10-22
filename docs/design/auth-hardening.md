@@ -365,6 +365,8 @@ def verify_2fa(user_id: UUID, totp_code: str) -> bool:
 
 ## 5. Audit Logging (Immutable)
 
+> **No implementado** (2026-10-22, H.58): en el código, `audit_log` no es inmutable; esta sección es el diseño, no el estado.
+
 ### Schema
 
 ```sql
@@ -441,7 +443,7 @@ def log_audit_event(
 ### Phase 3: Full Enforcement (Week 4)
 - Tighten lockout thresholds (5 failed attempts → exponential)
 - Enforce max 5 sessions per user
-- Require 2FA for admin accounts
+- Require 2FA for admin accounts — **no implementado** (2026-10-22, H.58): el código no exige 2FA a las cuentas admin
 - Enable session/device tracking UI
 - Measure security improvements: lockout prevents N attacks, replay detection works
 

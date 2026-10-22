@@ -27,7 +27,7 @@ test('onboarding (EN): landing → first answered question in < 60 s', async ({ 
   await page.getByLabel('Username').fill(username);
   await page.getByLabel('Email').fill(`${username}@example.com`);
   await page.getByLabel('Password').fill('e2e-test-pass-123');
-  await page.getByLabel('I confirm I am 13 years old or older').check();
+  await page.getByLabel('I confirm I am 16 years old or older').check();
   await page.getByRole('button', { name: 'START LEARNING' }).click();
 
   // 43.3 (D2): goal → track → experience → placement test, in English.

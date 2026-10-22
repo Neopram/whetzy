@@ -29,16 +29,51 @@ describe('offlineQueue — IDB happy path', () => {
     expect(await pendingCount()).toBe(2);
   });
 
-  it('dequeueAll returns items sorted by timestamp and clears the store', async () => {
-    const { enqueue, dequeueAll, pendingCount } = await import('../services/offlineQueue');
+  it('peekAll returns items sorted by timestamp and does NOT clear the store (42.11)', async () => {
+    const { enqueue, peekAll, pendingCount } = await import('../services/offlineQueue');
     await enqueue({ ...makeAnswer('b1'), timestamp: 2000 });
     await enqueue({ ...makeAnswer('b2'), timestamp: 1000 });
-    const items = await dequeueAll();
+    const items = await peekAll();
     // Sorted by timestamp ascending
     expect(items[0].id).toBe('b2');
     expect(items[1].id).toBe('b1');
-    // Store cleared
+    // Store intact until each one is confirmed
+    expect(await pendingCount()).toBe(2);
+  });
+
+  it('remove deletes only that item', async () => {
+    const { enqueue, remove, peekAll } = await import('../services/offlineQueue');
+    await enqueue({ ...makeAnswer('c1'), timestamp: 1 });
+    await enqueue({ ...makeAnswer('c2'), timestamp: 2 });
+    await remove('c1');
+    expect((await peekAll()).map((p) => p.id)).toEqual(['c2']);
+  });
+
+  it('discard moves the item out of the queue into the discarded store', async () => {
+    const { enqueue, discard, pendingCount, discardedCount } = await import('../services/offlineQueue');
+    const a = makeAnswer('d1');
+    await enqueue(a);
+    await discard(a, 404);
     expect(await pendingCount()).toBe(0);
+    expect(await discardedCount()).toBe(1);
+  });
+
+  it('upgrades a v1 database without losing pending answers', async () => {
+    // Una BD v1 (solo `pending_answers`) con una respuesta dentro.
+    await new Promise<void>((resolve, reject) => {
+      const req = indexedDB.open('whetzy_offline', 1);
+      req.onupgradeneeded = () => req.result.createObjectStore('pending_answers', { keyPath: 'id' });
+      req.onsuccess = () => {
+        const tx = req.result.transaction('pending_answers', 'readwrite');
+        tx.objectStore('pending_answers').put(makeAnswer('v1'));
+        tx.oncomplete = () => { req.result.close(); resolve(); };
+        tx.onerror = () => reject(tx.error);
+      };
+      req.onerror = () => reject(req.error);
+    });
+    const { peekAll, discardedCount } = await import('../services/offlineQueue');
+    expect((await peekAll()).map((p) => p.id)).toEqual(['v1']);
+    expect(await discardedCount()).toBe(0);
   });
 
   it('pendingCount returns 0 for empty store', async () => {
@@ -46,8 +81,8 @@ describe('offlineQueue — IDB happy path', () => {
     expect(await pendingCount()).toBe(0);
   });
 
-  it('dequeueAll returns [] for empty store', async () => {
-    const { dequeueAll } = await import('../services/offlineQueue');
-    expect(await dequeueAll()).toEqual([]);
+  it('peekAll returns [] for empty store', async () => {
+    const { peekAll } = await import('../services/offlineQueue');
+    expect(await peekAll()).toEqual([]);
   });
 });

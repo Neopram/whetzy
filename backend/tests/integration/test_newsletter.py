@@ -137,6 +137,40 @@ class TestSubscribe:
         assert r.status_code == 202, r.text
 
 
+class TestSubscribeSinCorreoConfigurado:
+    """26.10: sin proveedor de correo el alta se acepta y queda registrada, pero no
+    sale nada de la máquina (solo el marcador `email_not_configured` en el log)."""
+
+    async def test_alta_aceptada_y_registrada_sin_enviar_nada(
+        self, client, db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        import asyncio
+
+        from app.core.config import settings
+        from app.services import email as email_service
+
+        monkeypatch.setattr(settings, "EMAIL_PROVIDER", "auto")
+        monkeypatch.setattr(settings, "RESEND_API_KEY", "")
+        monkeypatch.setattr(settings, "SMTP_USER", "")
+        monkeypatch.setattr(settings, "SMTP_PASSWORD", "")
+        assert email_service.resolve_provider() == "log"
+        salidas: list[str] = []
+        for nombre in ("_send_now", "_send_resend", "_send_smtp"):
+            monkeypatch.setattr(email_service, nombre, lambda *a, _n=nombre, **k: salidas.append(_n))
+
+        with caplog.at_level("ERROR"):
+            r = await client.post(f"{NEWS}/subscribe", json={"email": "Sin@example.com", "language": "en"})
+            if email_service._en_vuelo:
+                await asyncio.gather(*email_service._en_vuelo)
+
+        assert r.status_code == 202, r.text
+        assert r.json() == {"status": "pending_confirmation"}
+        row = await _subscriber(db_session, "sin@example.com")
+        assert (row.confirmed, row.language) == (False, "en")
+        assert salidas == []
+        assert "email_not_configured" in caplog.text
+
+
 class TestConfirm:
     async def test_get_no_muta_nada(
         self, client, db_session: AsyncSession, correos_mandados: list[tuple[str, str, str]]

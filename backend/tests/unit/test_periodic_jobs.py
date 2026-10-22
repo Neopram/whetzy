@@ -113,9 +113,34 @@ async def test_renewal_reminder_skips_what_will_not_renew_soon(
 # ── Reactivación (ECONOMIA §2.2: 200 créditos, 72 h, uno cada 60 días) ─────
 
 
+@pytest.fixture
+def reactivation_on(monkeypatch: pytest.MonkeyPatch) -> None:
+    """39.13: el envío está detrás de `REACTIVATION_EMAILS_ENABLED` (apagado por defecto)."""
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "REACTIVATION_EMAILS_ENABLED", True)
+
+
+@pytest.mark.asyncio
+async def test_reactivation_off_by_default_sends_nothing(db_session: AsyncSession, outbox: list):
+    """Con el flag por defecto (apagado) no sale ningún correo ni se crea ningún código,
+    ni llamando a la función ni por la vuelta de `run_periodic_jobs`."""
+    from app.core.config import settings
+
+    assert settings.REACTIVATION_EMAILS_ENABLED is False
+    db_session.add(_user(email_verified=True, last_active=NOW - timedelta(days=20)))
+    await db_session.flush()
+
+    assert await send_reactivation_offers(db_session, NOW) == 0
+    results = await run_periodic_jobs(db_session, NOW)
+    assert results["reactivation_offers"] == 0
+    assert outbox == []
+    assert (await db_session.execute(select(PromoCode))).scalars().all() == []
+
+
 @pytest.mark.asyncio
 async def test_reactivation_sends_a_200_credit_code_with_one_click_unsubscribe(
-    db_session: AsyncSession, outbox: list
+    db_session: AsyncSession, outbox: list, reactivation_on: None
 ):
     u = _user(email_verified=True, last_active=NOW - timedelta(days=20))
     db_session.add(u)
@@ -147,7 +172,7 @@ async def test_reactivation_sends_a_200_credit_code_with_one_click_unsubscribe(
     ],
 )
 async def test_reactivation_respects_consent_and_activity(
-    db_session: AsyncSession, outbox: list, override: dict[str, object]
+    db_session: AsyncSession, outbox: list, reactivation_on: None, override: dict[str, object]
 ):
     fields: dict[str, object] = {"email_verified": True, "last_active": NOW - timedelta(days=20)}
     fields.update(override)

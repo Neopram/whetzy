@@ -1,5 +1,8 @@
 # Whetzy — UI/UX redesign prototype (frontend-only). Message 1 of 3.
 
+> **Congelado** (nota del 2026-10-22, H.58): prompt histórico. El dueño sustituyó el acento por el cian
+> `#00BFFF` el 2026-10-13; los colores vigentes están en `frontend/src/styles/design-tokens.css`.
+
 You are designing the new interface of Whetzy, a bilingual (Spanish-first, English) web/mobile app where people learn programming and prepare IT certifications. This prototype will be PORTED by hand into an existing React 19 + Vite codebase that uses CSS Modules (not Tailwind), so the design system must be expressed as CSS variables. Credits are scarce: get it right in one pass, no placeholders, no lorem ipsum.
 
 ## 1. Brand decisions (final — do not reinterpret)

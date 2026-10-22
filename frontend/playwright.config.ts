@@ -27,7 +27,10 @@ export default defineConfig({
     // en Chromium headless). Los tests bilingües fijan el inglés ellos mismos.
     {
       name: 'chromium',
-      testIgnore: /entre-sitios\.spec\.ts/,
+      // 46.5: visual.spec.ts tiene su propio config (playwright.visual.config.ts,
+      // baselines por plataforma) y solo corre desde el nivel 2. Aquí, sin sus
+      // baselines, fallaban las 64 capturas en el CI de 94bf684 (#314).
+      testIgnore: /(entre-sitios|visual)\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], locale: 'es-ES', launchOptions: { executablePath } },
     },
     // 43.1 (ADR-65 D1): la API en otro sitio (127.0.0.1 frente a localhost) y

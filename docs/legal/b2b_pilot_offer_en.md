@@ -20,7 +20,6 @@ before committing. Each pilot includes:
 | **Duration** | 90 days |
 | **Seats** | Up to 25 users |
 | **Access** | Full Pro Max plan (unlimited AI tutor, all tracks) |
-| **Team dashboard** | Per-employee progress, study time, skills mastered |
 | **Support** | Dedicated channel with the Whetzy team |
 | **Cost** | $0 during the pilot |
 
@@ -61,8 +60,7 @@ issued remain verifiable.
    - Estimated number of participants.
    - Tracks of interest (Python, SQL, Data Engineering, Cloud, etc.).
 
-2. Within 48 hours we will send team dashboard access and credentials for
-   participants.
+2. Within 48 hours we will send credentials for participants.
 
 3. The pilot begins when the first user logs in.
 

@@ -129,7 +129,8 @@ describe('/checkout', () => {
   it('no abre Paddle sin la casilla; con ella, manda el user_id y la renuncia', async () => {
     me.mockResolvedValue(USER);
     await renderAt('?plan=pro');
-    const pay = await screen.findByRole('button', { name: 'Ir al pago' });
+    // El botón lleva el importe desde el rediseño (checkout.rediseno.test.tsx).
+    const pay = await screen.findByRole('button', { name: 'Pagar 19,99 $ al mes' });
 
     fireEvent.click(pay);
     expect(open).not.toHaveBeenCalled();
@@ -171,7 +172,7 @@ describe('/checkout', () => {
     expect(screen.queryByRole('button', { name: 'Ir al pago' })).toBeNull();
   });
 
-  it('un error de Paddle se muestra con su código', async () => {
+  it('un error de Paddle se explica y deja su código plegado', async () => {
     me.mockResolvedValue(USER);
     const { loadPaddle } = await import('../lib/paddle');
     let emit: (e: { name: string; code?: string; detail?: string }) => void = () => {};
@@ -181,10 +182,12 @@ describe('/checkout', () => {
     });
     await renderAt('?plan=plus');
     fireEvent.click(await screen.findByRole('checkbox'));
-    fireEvent.click(screen.getByRole('button', { name: 'Ir al pago' }));
-    // Forma real del evento con la cuenta sin terminar de dar de alta.
+    fireEvent.click(screen.getByRole('button', { name: /Pagar/ }));
+    // Forma real del evento con la cuenta sin terminar de dar de alta. El código sigue
+    // a la vista para soporte, pero plegado; el aviso va en palabras.
     act(() => emit({ name: 'checkout.error', code: 'validation', detail: 'transaction_checkout_not_enabled' }));
-    expect(screen.getByRole('alert')).toHaveTextContent('(transaction_checkout_not_enabled)');
+    expect(screen.getByRole('alert')).toHaveTextContent('Los pagos aún no están activos');
+    expect(screen.getByText('transaction_checkout_not_enabled')).toBeInTheDocument();
   });
 
   it('sin Paddle configurado no ofrece pagar', async () => {
@@ -214,6 +217,10 @@ describe('public/_headers', () => {
   }
   const csp = (rule: string) =>
     (rules.get(rule) ?? []).find((h) => h.startsWith('Content-Security-Policy:')) ?? '';
+
+  it('/u/* no se indexa mientras los perfiles públicos estén apagados (24.8)', () => {
+    expect(rules.get('/u/*')).toContain('X-Robots-Tag: noindex');
+  });
 
   it('el resto del sitio no deja entrar a Paddle y conserva COEP', () => {
     expect(csp('/*')).not.toContain('paddle');

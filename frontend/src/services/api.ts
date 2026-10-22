@@ -208,7 +208,22 @@ export function setOnSessionExpired(cb: (() => void) | null): void {
   onSessionExpired = cb;
 }
 
-async function tryRefresh(): Promise<boolean> {
+/** 42.3: el refresh en curso, compartido. Con el access token caducado, Home
+ *  pide varias cosas a la vez y cada 401 lanzaba su propio `POST
+ *  /auth/refresh` con el mismo refresh token; si el backend lo rota, el
+ *  segundo llega con uno gastado, da 401 y `forgetTokens()` tira la sesión que
+ *  el primero acababa de renovar. Ahora todas esperan al mismo, y se suelta al
+ *  terminar (bien o mal) para que el próximo 401 vuelva a intentarlo. */
+let refreshInFlight: Promise<boolean> | null = null;
+
+function tryRefresh(): Promise<boolean> {
+  refreshInFlight ??= doRefresh().finally(() => {
+    refreshInFlight = null;
+  });
+  return refreshInFlight;
+}
+
+async function doRefresh(): Promise<boolean> {
   try {
     // Sin cookie de refresh (Safari, 43.1) el refresh va en el cuerpo; el
     // backend acepta las dos vías (`auth.py`, `POST /auth/refresh`).
@@ -306,10 +321,16 @@ export interface UserRead {
   granted_tier_expires_at?: string | null;
   /** true si se dio de baja de los correos de ofertas. */
   marketing_emails_opt_out?: boolean;
+  /** 24.8: la persona publicó su perfil (`/u/<handle>`); privado por defecto. */
+  public_profile_opt_in?: boolean;
+  /** 24.8: el servidor permite perfiles públicos (flag global); sin esto no se ofrece el interruptor. */
+  public_profiles_enabled?: boolean;
   /** «Instructor» en Perfil: plan Creador, o dueño/admin (2026-10-16). */
   can_create_courses?: boolean;
   /** «Admin» en Perfil: el panel es solo del dueño (#202). */
   is_owner?: boolean;
+  /** Ola 2: el tutor ofrece «A fondo» (Pro Max o superior). */
+  tutor_deep_access?: boolean;
   /** 45.3 (ADR-66 E4): sin verificar, la app muestra la franja «verifica tu correo». */
   email_verified?: boolean;
   /** D-20: la ruta elegida en el onboarding. */
@@ -338,6 +359,8 @@ export interface RegisterPayload {
 }
 
 export interface UpdateMePayload {
+  /** 24.8: publicar (true) o quitar (false) el perfil público. */
+  public_profile_opt_in?: boolean;
   display_name?: string;
   avatar_emoji?: string;
   language?: 'es' | 'en';
@@ -879,6 +902,10 @@ export interface LeagueStandingsResponse {
   total_members: number;
   /** false = salió de las ligas (35.4): `standings` viene vacío. */
   participating: boolean;
+  /** Cómo acabó la semana pasada (2026-10-21): el servidor ya aplica el ascenso
+   *  (top 5) y el descenso (últimos 5) de las ligas de 10 o más. `null` sin
+   *  semana inmediatamente anterior. */
+  last_week_movement?: 'promoted' | 'demoted' | 'stayed' | null;
 }
 
 export interface UserMissionRead {
@@ -896,18 +923,22 @@ export interface UserBadgeWithDetail {
   earned_at: string;
 }
 
+/** Ola 2: «¿Por qué?», «¿Cómo?» y «A fondo» (este, solo Pro Max). */
+export type TutorMode = 'why' | 'how' | 'deep';
+
 export interface ExplainResponse {
   explanation: string;
   provider: string;
   grounded: boolean;
   times_missed: number;
+  mode?: TutorMode;
 }
 
 export const tutor = {
-  async explain(questionId: string) {
+  async explain(questionId: string, mode: TutorMode = 'why') {
     return request<ExplainResponse>('/tutor/explain', {
       method: 'POST',
-      body: JSON.stringify({ question_id: questionId }),
+      body: JSON.stringify({ question_id: questionId, mode }),
     });
   },
 };
@@ -1095,6 +1126,8 @@ export interface DuelChallengeResponse {
   skill_id: string;
   questions: QuestionPublic[];
   opponent_username: string;
+  /** 42.5: al volver a un duelo a medias, las ya contestadas. */
+  answered_question_ids?: string[];
 }
 
 export interface DuelAnswerRequest {
@@ -1113,6 +1146,11 @@ export interface DuelAnswerResponse {
   answers_so_far: number;
   completed: boolean;
   opponent_completed: boolean;
+  /** 42.4: corrección inmediata, como en la práctica. */
+  correct: boolean;
+  correct_index: number | null;
+  explanation_es: string;
+  explanation_en: string;
   /** Solo si el rival ya terminó: cómo le fue en esta misma pregunta. */
   rival?: DuelRivalAnswer | null;
 }
@@ -1170,8 +1208,12 @@ export const duels = {
   async join(duelId: string) {
     return request<DuelChallengeResponse>(`/duels/${duelId}/join`);
   },
-  async result(duelId: string) {
-    return request<DuelResultResponse>(`/duels/${duelId}/result`);
+  /** `null` mientras el rival no termina. El backend contesta 202, que para
+   *  `fetch` es `ok`, con un cuerpo `{detail}`: antes ese cuerpo se pintaba como
+   *  un resultado sin ganador y salía «Perdiste» (42.4). */
+  async result(duelId: string): Promise<DuelResultResponse | null> {
+    const body = await request<DuelResultResponse | { detail: unknown }>(`/duels/${duelId}/result`);
+    return 'duel_id' in body ? body : null;
   },
 };
 
@@ -1652,11 +1694,16 @@ export interface PrivacyRights {
   contact: string;
 }
 
-// 46.6a (ADR-68): efectos del cliente. El servidor los guarda sin usuario ni IP.
+// 46.6a y 46.6 (ADR-68): eventos del cliente. El servidor los guarda sin usuario ni IP.
 export type ClientEvent =
   | { type: 'fx_emitted'; tier: 0 | 1 | 2 | 3 | 4; fx: string; sounded: boolean; vibrated: boolean }
   | { type: 'fx_skipped'; tier: 3 | 4; fx: string }
-  | { type: 'sound_toggled' | 'haptic_toggled'; enabled: boolean };
+  | { type: 'sound_toggled' | 'haptic_toggled'; enabled: boolean }
+  // 46.6: embudo de pago y encuesta de la primera sesión, también sin usuario.
+  | { type: 'checkout_viewed' | 'checkout_opened'; plan: 'plus' | 'pro' | 'plus_annual' | 'pro_annual' | 'certification' }
+  | { type: 'first_session_survey'; answer: SurveyAnswer };
+
+export type SurveyAnswer = 'a_lot' | 'somewhat' | 'not_really';
 
 export const clientEvents = {
   /** Sin reintento tras un 401: una métrica no debe cerrar la sesión de nadie. */

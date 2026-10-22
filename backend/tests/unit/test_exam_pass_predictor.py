@@ -14,7 +14,7 @@ import random
 
 import pytest
 
-from app.services.exam_pass_predictor import (
+from app.ml.exam_pass_predictor import (
     DEFAULT_PRIOR_ALPHA,
     DEFAULT_PRIOR_BETA,
     predict_pass_probability,

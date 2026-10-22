@@ -73,7 +73,7 @@
 
 ## SEMANA 3: LINKEDIN + MEDICIÓN
 
-### LinkedIn Posts (26.3)
+### LinkedIn Posts (sin fila en el ledger: 26.3 es el email a universidades)
 
 **Horario:** 9:00 CET (máximo alcance LATAM)
 
@@ -83,7 +83,7 @@
   - Length: 200-300 caracteres
   - Image: Stat graphic o screenshot (1200x628px)
 
-- [ ] **MAR** Post #2: "Whetzy: AI + pedagogía = 60% retención. Las cifras."
+- [ ] **MAR** Post #2: "Whetzy: AI + pedagogía. Las cifras." (sin cifra de retención hasta tener evidencia; H.58)
   - Tone: Data-driven, humilde
   - CTA: Link whetzy.com (rotate ref=LI-ES-1)
   - Engage: Invite debate en comments

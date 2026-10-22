@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { lessonsApi, isQuotaError, type LessonRead } from '../services/api';
 import { lessonSteps, parseSource } from '../lib/lessonSteps';
-import { LoadingState } from '../components/common/LoadingState';
+import { Loading } from '../components/common/Loading';
 import { EmptyState } from '../components/common/EmptyState';
 import { ErrorState } from '../components/common/ErrorState';
 import styles from './LessonScreen.module.css';
@@ -82,7 +82,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
   if (loading) {
     return (
       <div className={styles.screen}>
-        <LoadingState message={t('lesson.loading', 'Cargando lección…')} fullScreen />
+        <Loading label={t('lesson.loading', 'Cargando lección…')} shape="card" />
       </div>
     );
   }
@@ -162,7 +162,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
               <p className={styles.body}>{current.text}</p>
             ) : (
               <>
-                <pre className={styles.code}><code>{lesson.example_code}</code></pre>
+                <pre className={styles.code} tabIndex={0}><code>{lesson.example_code}</code></pre>
                 {lesson.example_code && <CopyCode code={lesson.example_code} />}
                 {lesson.example_code && lesson.code_runtime && (
                   // 43.7 (ADR-65 D9): el ejemplo se abre en el playground, en su runtime.
@@ -188,7 +188,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
                         <span aria-hidden="true">📤</span>
                         {t('lesson.output')}
                       </span>
-                      <pre className={styles.outputPre}>{lesson.example_output}</pre>
+                      <pre className={styles.outputPre} tabIndex={0}>{lesson.example_output}</pre>
                     </div>
                   ) : (
                     <div className={styles.predict}>

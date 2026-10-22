@@ -84,7 +84,7 @@ Backend runs Gunicorn with `uvicorn.workers.UvicornWorker` (see `backend/scripts
 
 ```python
 # Number of worker processes (set via UVICORN_WORKERS env var)
-UVICORN_WORKERS = 4  # Railway default; can increase to 8
+UVICORN_WORKERS = 2  # producción: `--workers 2` en backend/scripts/start.sh
 
 # Each worker handles concurrent requests:
 # - Default: 1000 max concurrent connections per worker
@@ -93,8 +93,9 @@ UVICORN_WORKERS = 4  # Railway default; can increase to 8
 
 **Throughput estimate**:
 ```
-4 workers × 1000 connections/worker = 4,000 concurrent requests capacity
-Avg response time: 50ms → ~80 requests/sec per worker = 320 req/sec total
+2 workers × 1000 connections/worker = 2,000 concurrent requests capacity
+Avg response time: 50ms → ~80 requests/sec per worker = ~160 req/sec total
+(recalculado el 2026-10-22 con los 2 workers de producción; estimación, no medición)
 
 If spikes exceed this: Cloudflare queues requests, returns 429 to excess
 ```
@@ -216,7 +217,7 @@ Backend sends `Cache-Control` headers (set per endpoint, e.g. `backend/app/api/v
 
 ```python
 # GET /api/v1/glossary (static reference data)
-response.headers["Cache-Control"] = "public, max-age=300"  # 5 min cache
+response.headers["Cache-Control"] = "public, max-age=7200, stale-while-revalidate=86400"  # 2 h + SWR 24 h
 
 # GET /api/v1/tracks (occasional updates)
 response.headers["Cache-Control"] = "public, max-age=300"
@@ -414,7 +415,7 @@ BASE_URL=https://api.whetzy.com k6 run baseline.js
 **Expected results** (baseline, 1,000 VUs):
 - p95 latency: <500ms (API is responsive)
 - Error rate: <1% (requests succeeding)
-- Throughput: ~320 req/sec (with 50ms avg response time)
+- Throughput: ~160 req/sec (2 workers, with 50ms avg response time)
 
 ---
 

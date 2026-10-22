@@ -11,8 +11,11 @@ import {
 import { TUTOR_DAILY_LIMIT_PRO } from '../lib/plans';
 import { checkoutHref } from '../lib/paddle';
 import { BrandMark } from '../components/common/BrandMark';
+import { LangFlag } from '../components/common/LangFlag';
+import { landingJsonLd, serializeJsonLd } from '../lib/structuredData';
 import { HeroQuizMock } from '../components/landing/HeroQuizMock';
 import { ReadinessBandsMock } from '../components/landing/ReadinessBandsMock';
+import { NewsletterForm } from '../components/landing/NewsletterForm';
 
 /* La landing (30.1, 2026-09-24) solo afirma lo que el producto hace hoy:
    cifras de lib/catalog.ts (vigiladas por scripts/check_docs.py), maquetas de
@@ -183,6 +186,8 @@ export default function LandingScreen() {
 
   return (
     <div className={styles.page}>
+      {/* schema.org para buscadores; va en el HTML pre-renderizado. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(landingJsonLd(lang)) }} />
       <header className={styles.header}>
         <nav className={styles.navContainer}>
           <div className={styles.brandGroup}>
@@ -203,16 +208,18 @@ export default function LandingScreen() {
                 onClick={() => handleLangChange('es')}
                 title="Español"
                 aria-label="Español"
+                aria-pressed={lang === 'es'}
               >
-                🇪🇸
+                <LangFlag lang="es" />
               </button>
               <button
                 className={`${styles.langBtn} ${lang === 'en' ? styles.active : ''}`}
                 onClick={() => handleLangChange('en')}
                 title="English"
                 aria-label="English"
+                aria-pressed={lang === 'en'}
               >
-                🇬🇧
+                <LangFlag lang="en" />
               </button>
             </div>
             {/* La puerta de quien ya tiene cuenta (2026-10-16): todas las demás
@@ -338,7 +345,8 @@ export default function LandingScreen() {
             <h2 className={styles.sectionHeading}>{t('landing.compareTitle')}</h2>
             <p className={styles.sectionSubheading}>{t('landing.compareNote', { date: checkedOn })}</p>
           </div>
-          <div className={styles.tableWrapper}>
+          {/* A 390 px la tabla se desplaza en horizontal: con foco, el teclado también llega. */}
+          <div className={styles.tableWrapper} tabIndex={0} role="region" aria-label={t('landing.compareTitle')}>
             <table className={styles.compareTable}>
               <thead>
                 <tr>
@@ -459,6 +467,9 @@ export default function LandingScreen() {
             <a href="/terms" className={styles.navLink}>{t('landing.terms')}</a>
             <a href="/refund" className={styles.navLink}>{t('landing.refund')}</a>
           </nav>
+        </div>
+        <div className={styles.footerNewsletter}>
+          <NewsletterForm />
         </div>
         <p className={styles.footerCopyright}>{t('landing.footer')}</p>
       </footer>

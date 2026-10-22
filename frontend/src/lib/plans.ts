@@ -6,6 +6,10 @@
 /** Tutor explanations per UTC day on Pro (`plus`); Pro Max has no cap. */
 export const TUTOR_DAILY_LIMIT_PRO = 20;
 
+/** Monthly prices of Pro and Pro Max (ADR-41), for the landing's structured data. */
+export const PRO_MONTHLY_USD = 14.99;
+export const PRO_MAX_MONTHLY_USD = 19.99;
+
 /** One-time price of a certification's certifying exam, retakes included. */
 export const CERTIFICATION_PRICE_USD = 39.99;
 

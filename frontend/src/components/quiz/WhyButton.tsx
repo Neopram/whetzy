@@ -1,10 +1,13 @@
 import { useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ApiError, reports, tutor as tutorApi, type ExplainResponse } from '../../services/api';
+import { ApiError, reports, tutor as tutorApi, type ExplainResponse, type TutorMode } from '../../services/api';
+import { useAppStore } from '../../stores/useAppStore';
 import { TUTOR_DAILY_LIMIT_PRO } from '../../lib/plans';
 import styles from './WhyButton.module.css';
 
-type Status = 'idle' | 'upsell' | 'loading' | 'result' | 'error' | 'limit';
+type Status = 'idle' | 'upsell' | 'deepUpsell' | 'loading' | 'result' | 'error' | 'limit';
+
+const MODES: TutorMode[] = ['why', 'how', 'deep'];
 
 interface WhyButtonProps {
   /** The current question's id — the panel resets whenever this changes. */
@@ -28,6 +31,8 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
   const [status, setStatus] = useState<Status>('idle');
   const [result, setResult] = useState<ExplainResponse | null>(null);
   const [aiReport, setAiReport] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [mode, setMode] = useState<TutorMode>('why');
+  const deepAccess = useAppStore((s) => s.user.tutorDeepAccess);
   const panelId = useId();
 
   // A new question means a clean slate — never show a stale explanation.
@@ -35,6 +40,7 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
     setStatus('idle');
     setResult(null);
     setAiReport('idle');
+    setMode('why');
   }, [questionId]);
 
   // Reportar la explicación (AI Act art. 50 y la «revisión humana» de la nota de
@@ -52,10 +58,11 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
 
   const expanded = status !== 'idle';
 
-  async function fetchExplanation() {
+  async function fetchExplanation(next: TutorMode = mode) {
     setStatus('loading');
+    setAiReport('idle');
     try {
-      const res = await tutorApi.explain(questionId);
+      const res = await tutorApi.explain(questionId, next);
       setResult(res);
       setStatus('result');
     } catch (err) {
@@ -65,12 +72,24 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
     }
   }
 
+  // Ola 2: «A fondo» es de Pro Max. Sin acceso se explica, sin llamar al servidor.
+  function chooseMode(next: TutorMode) {
+    setMode(next);
+    if (next === 'deep' && !deepAccess) {
+      setResult(null);
+      setStatus('deepUpsell');
+      return;
+    }
+    void fetchExplanation(next);
+  }
+
   function handleToggle() {
     if (status === 'idle') {
       if (!isPremium) {
         setStatus('upsell');
       } else {
-        void fetchExplanation();
+        setMode('why');
+        void fetchExplanation('why');
       }
     } else {
       setStatus('idle');
@@ -108,6 +127,35 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
             </svg>
           </button>
 
+          {isPremium && status !== 'upsell' && (
+            <div className={styles.modes} role="group" aria-label={t('quiz.why.modesLabel')}>
+              {MODES.map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  className={styles.modeBtn}
+                  aria-pressed={mode === m}
+                  disabled={status === 'loading'}
+                  onClick={() => chooseMode(m)}
+                >
+                  {t(`quiz.why.modes.${m}`)}
+                  {m === 'deep' && !deepAccess && <span className={styles.modeTag}>{t('quiz.why.proMaxTag')}</span>}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {status === 'deepUpsell' && (
+            <div className={styles.upsell}>
+              <span className={styles.upsellBadge}>{t('quiz.why.proMaxTag')}</span>
+              <p className={styles.upsellTitle}>{t('quiz.why.deepUpsellTitle')}</p>
+              <p className={styles.upsellBody}>{t('quiz.why.deepUpsellBody')}</p>
+              <button type="button" className={styles.upsellCta} onClick={onUpgrade}>
+                {t('quiz.why.limitCta')}
+              </button>
+            </div>
+          )}
+
           {status === 'upsell' && (
             <div className={styles.upsell}>
               <span className={styles.upsellBadge}>{t('quiz.why.upsellBadge')}</span>
@@ -141,7 +189,7 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
           {status === 'error' && (
             <div className={styles.errorBox} role="alert">
               <p className={styles.errorText}>{t('quiz.why.error')}</p>
-              <button type="button" className={styles.retryBtn} onClick={() => void fetchExplanation()}>
+              <button type="button" className={styles.retryBtn} onClick={() => void fetchExplanation(mode)}>
                 {t('quiz.why.retry')}
               </button>
             </div>

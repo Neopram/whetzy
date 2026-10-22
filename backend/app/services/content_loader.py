@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import ast
 import asyncio
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -39,6 +40,20 @@ def _content_root() -> Path:
     return Path(__file__).resolve().parents[3] / "content"
 
 
+def blueprint_fingerprint(data: dict[str, Any]) -> str | None:
+    """12 hex chars of SHA-256 over the track's `certification` block and its
+    `exam_domains`, canonically serialised (42.12). Same content, same value;
+    any change to the blueprint, a different one. None without a blueprint."""
+    cert = data.get("certification")
+    if not cert:
+        return None
+    canonical = json.dumps(
+        {"certification": cert, "exam_domains": data.get("exam_domains") or []},
+        sort_keys=True, ensure_ascii=False, separators=(",", ":"),
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:12]
+
+
 async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
     track = await db.get(Track, data["id"])
     if track is None:
@@ -63,6 +78,10 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
         track.exam_question_count = cert.get("exam_question_count")
         track.exam_duration_minutes = cert.get("exam_duration_minutes")
         track.passing_score_pct = cert.get("passing_score_pct")
+    track.cert_code = cert.get("code") if cert else None
+    track.exam_guide = cert.get("exam_guide") if cert else None
+    track.exam_guide_url = cert.get("exam_guide_url") if cert else None
+    track.blueprint_version = blueprint_fingerprint(data)
 
     # A learning module and an exam domain are two different axes, and a track
     # that declares `exam_domains` says so: the modules stay cut by subject (the

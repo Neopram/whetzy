@@ -14,10 +14,10 @@ import time
 import urllib.parse
 
 import httpx
+import jwt
 import pytest
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import ec, rsa
-from jose import jwk, jwt
 
 from app.core.cookies import ACCESS_COOKIE, OAUTH_STATE_COOKIE
 from app.services import apple_signin
@@ -43,10 +43,7 @@ _OTRA = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 
 
 def _jwks(key: rsa.RSAPrivateKey, kid: str = "AK1") -> dict:
-    pub = key.public_key().public_bytes(
-        serialization.Encoding.PEM, serialization.PublicFormat.SubjectPublicKeyInfo
-    ).decode()
-    k = jwk.construct(pub, "RS256").to_dict()
+    k = jwt.algorithms.RSAAlgorithm.to_jwk(key.public_key(), as_dict=True)
     k.update(kid=kid, use="sig", alg="RS256")
     return {"keys": [k]}
 

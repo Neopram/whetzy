@@ -25,7 +25,7 @@ from __future__ import annotations
 import hashlib
 from typing import Any
 
-from jose import JWTError, jwt
+import jwt
 
 from app.core.config import settings
 
@@ -71,15 +71,21 @@ class InvalidAppleToken(Exception):
 
 
 def verify_id_token(id_token: str, keys: dict[str, Any], nonce: str | None) -> dict[str, Any]:
+    """``keys`` es el JWKS de Apple tal cual (``{"keys": [...]}``): la clave se
+    elige por el ``kid`` de la cabecera, y solo se acepta RS256."""
     try:
+        kid = jwt.get_unverified_header(id_token).get("kid")
+        if not isinstance(kid, str):
+            raise InvalidAppleToken("kid")
+        key = jwt.PyJWKSet.from_dict(keys)[kid]
         claims: dict[str, Any] = jwt.decode(
             id_token,
-            keys,
+            key,
             algorithms=["RS256"],
             audience=settings.APPLE_CLIENT_ID,
             issuer=ISSUER,
         )
-    except JWTError as exc:
+    except (jwt.PyJWTError, KeyError) as exc:
         raise InvalidAppleToken(str(exc)) from exc
     if nonce is not None and claims.get("nonce") != nonce:
         raise InvalidAppleToken("nonce")

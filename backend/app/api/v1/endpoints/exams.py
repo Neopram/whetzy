@@ -210,8 +210,8 @@ async def get_certification_readiness(
     """BKT-based domain readiness for a certification track.
 
     For each exam domain returns the user's mean p_known (BKT posterior)
-    across the skills in that domain the learner has actually attempted,
-    weighted by exam_weight_pct, via `app.services.domain_mastery` (C.2) -
+    over EVERY skill in that domain, an unattempted one counting 0 (42.6,
+    see `compute_domain_mastery`), weighted by exam_weight_pct, via `app.services.domain_mastery` (C.2) -
     the single function also meant to back a domain-mastery breakdown on
     Hoy, Rutas and Estadísticas. A domain is marked 'ready' when
     p_known_mean >= DOMAIN_READY_THRESHOLD. A domain with zero attempted
@@ -301,6 +301,10 @@ async def get_certification_readiness(
         domains=domain_results,
         overall_p_known=compute_weighted_overall_mastery(masteries),
         ready_for_simulacro=is_ready_for_simulacro(masteries),
+        cert_code=track.cert_code,
+        exam_guide=track.exam_guide,
+        exam_guide_url=track.exam_guide_url,
+        blueprint_version=track.blueprint_version,
     )
 
 

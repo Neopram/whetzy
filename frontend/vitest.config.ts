@@ -18,6 +18,10 @@ export default defineConfig({
     pool: 'threads',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
+    // Por encima del plazo de findBy/waitFor (5 s, src/test/setup.ts): con los
+    // dos iguales, una espera que agota su plazo agotaba también el test entero
+    // (quizScreen.ceremonias, CI de #322 en 3b08648).
+    testTimeout: 15_000,
     // e2e/** and e2e-prod/** are Playwright tests (test.describe/test from
     // @playwright/test, a different runner) — vitest's default glob would
     // otherwise pick them up and fail on the unfamiliar test.describe() call.

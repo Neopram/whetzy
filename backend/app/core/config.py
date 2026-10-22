@@ -203,6 +203,11 @@ class Settings(BaseSettings):
     # en esta carpeta para que el e2e lea el enlace. Vacío = apagado; en producción
     # no escribe nunca (`email._send_log`).
     EMAIL_OUTBOX_DIR: str = ""
+    # 39.13: oferta de reactivación (código de 200 créditos a quien lleva ≥ 14 días sin
+    # estudiar). Es marketing a usuarios reales: apagada hasta que el dueño la encienda.
+    REACTIVATION_EMAILS_ENABLED: bool = False
+    # 26.10: newsletter mensual a los suscritos con doble opt-in. Apagado por defecto.
+    NEWSLETTER_MONTHLY_ENABLED: bool = False
     FRONTEND_BASE_URL: str = "https://whetzy.com"
     # Base pública de esta API: el enlace de baja de un correo (RFC 8058) tiene
     # que aceptar un POST, así que apunta aquí y no al frontend.
@@ -392,6 +397,12 @@ class Settings(BaseSettings):
     # --- Gamification tuning -------------------------------------------------
     MASTERY_THRESHOLD: float = 0.95
     DEFAULT_MODULE_UNLOCK_MASTERY: float = 0.7
+    # ADR-63 §3: «dominada» pide además esta cantidad de respuestas de PRÁCTICA
+    # (la misma cifra que `MIN_EVIDENCE_ANSWERS` de `frontend/src/lib/evidenceBand.ts`;
+    # `test_domain_thresholds_guard.py` las ata), y el duelo, el test-out y la
+    # prueba de nivel no suben `p_known` por encima de este tope por sí solos.
+    MIN_EVIDENCE_ANSWERS: int = 7
+    NON_PRACTICE_MASTERY_CAP: float = 0.94
 
 
 @lru_cache

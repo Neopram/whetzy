@@ -6,8 +6,8 @@ literals that should instead import from
 `app.services.engine.domain_thresholds` — the single source of truth this
 PR introduces. Scoped to S3's own territory, not the whole repo: a sibling
 file outside this list (e.g. `app/services/gamification/service.py`, S1's)
-can still hardcode its own copy, and this guard will not see it — that one
-is flagged as a NECESITO instead of fixed or enforced here.
+can still hardcode its own copy, and this first guard will not see it; since
+42.6 the repo-wide test at the bottom of this file does.
 
 Parses each file with `ast` rather than grepping its text, specifically so
 a docstring or comment that quotes "p_known >= 0.95" as prose (this file's
@@ -127,3 +127,57 @@ def test_the_canonical_module_is_excluded_from_the_scan() -> None:
     one file the scan skips rather than flagging itself."""
     assert CANONICAL_FILE.exists()
     assert CANONICAL_FILE not in _scanned_files()
+
+
+# --- 42.6 (2026-10-22): one definition of "mastered", repo-wide ------------------
+#
+# The scan above is the motor's own territory. A "mastered" count elsewhere
+# (gamification's badges, the public profile) kept its own `p_known >= 0.95`
+# and ignored the practice-evidence half of ADR-63 §3. So this one walks the
+# whole of `app/`: outside the canonical module, nobody compares a mastery
+# value with `MASTERY_THRESHOLD` or with a bare 0.95 — they ask `is_mastered`
+# or `mastered_clause`.
+
+APP_DIR = BACKEND / "app"
+
+
+def _mastered_check_violations(path: Path) -> list[str]:
+    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    found: list[str] = []
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Compare) and len(node.comparators) == 1):
+            continue
+        left, right = node.left, node.comparators[0]
+        for a, b in ((left, right), (right, left)):
+            names_threshold = (isinstance(b, ast.Name) and b.id == "MASTERY_THRESHOLD") or (
+                isinstance(b, ast.Attribute) and b.attr == "MASTERY_THRESHOLD"
+            )
+            if (names_threshold or _is_const(b, _MASTERY_VALUE)) and _mentions_mastery(a):
+                found.append(f"{path.relative_to(BACKEND)}:{node.lineno}")
+    return found
+
+
+SHARED_DEFINITION = APP_DIR / "core" / "mastery.py"
+
+
+def test_mastered_is_decided_in_one_place() -> None:
+    files = [p for p in APP_DIR.rglob("*.py") if p not in (CANONICAL_FILE, SHARED_DEFINITION)]
+    violations = [v for path in files for v in _mastered_check_violations(path)]
+    assert violations == [], (
+        "a mastery value is compared with the threshold outside domain_thresholds.py; "
+        "use is_mastered()/mastered_clause(), which also ask for practice evidence:\n"
+        + "\n".join(violations)
+    )
+
+
+def test_the_frontend_evidence_bar_is_the_backend_one() -> None:
+    """`evidenceBand.ts` shows «evidencia insuficiente» below the same number of
+    answers the backend asks for before calling a skill mastered."""
+    import re
+
+    from app.core.config import settings
+
+    ts = (BACKEND.parent / "frontend" / "src" / "lib" / "evidenceBand.ts").read_text(encoding="utf-8")
+    match = re.search(r"export const MIN_EVIDENCE_ANSWERS = (\d+);", ts)
+    assert match, "MIN_EVIDENCE_ANSWERS no está en evidenceBand.ts"
+    assert int(match.group(1)) == settings.MIN_EVIDENCE_ANSWERS

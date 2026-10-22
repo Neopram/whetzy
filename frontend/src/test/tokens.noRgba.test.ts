@@ -7,7 +7,7 @@
  * escribe con `color-mix(in srgb, var(--le-…) N%, transparent)`, que sigue el
  * tema; los velos y sombras, con sus tokens.
  *
- * Los ficheros de tokens (`styles/design-tokens.css`, `theme/tokens.css`) no
+ * Los ficheros de tokens (`styles/design-tokens.css`) no
  * son `.module.css`: ahí es donde se definen esos valores.
  */
 

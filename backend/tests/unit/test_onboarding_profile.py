@@ -115,3 +115,43 @@ async def test_el_origen_es_el_primer_contacto_y_no_se_reescribe(client: AsyncCl
     headers = await _registrar(client)
     assert await _origen(client, db_session, headers, {"utm_campaign": "primera"}) == ("utm", "primera")
     assert await _origen(client, db_session, headers, {"utm_campaign": "segunda"}) == ("utm", "primera")
+
+
+# ── 24.8: perfil público con opt-in ──────────────────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_patch_me_activa_y_quita_el_perfil_publico(client: AsyncClient) -> None:
+    auth_headers = await _registrar(client)
+    me = (await client.get("/api/v1/auth/me", headers=auth_headers)).json()
+    assert me["public_profile_opt_in"] is False  # privado por defecto
+
+    r = await client.patch("/api/v1/auth/me", json={"public_profile_opt_in": True}, headers=auth_headers)
+    assert r.status_code == 200, r.text
+    assert r.json()["public_profile_opt_in"] is True
+    me = (await client.get("/api/v1/auth/me", headers=auth_headers)).json()
+    assert me["public_profile_opt_in"] is True
+
+    # False es un valor, no «ausente»: tiene que poder quitarse.
+    r = await client.patch("/api/v1/auth/me", json={"public_profile_opt_in": False}, headers=auth_headers)
+    assert r.json()["public_profile_opt_in"] is False
+
+    # Otro PATCH sin el campo no lo toca.
+    await client.patch("/api/v1/auth/me", json={"public_profile_opt_in": True}, headers=auth_headers)
+    r = await client.patch("/api/v1/auth/me", json={"language": "en"}, headers=auth_headers)
+    assert r.json()["public_profile_opt_in"] is True
+
+
+@pytest.mark.asyncio
+async def test_me_dice_si_los_perfiles_publicos_estan_disponibles(
+    client: AsyncClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.core.config import settings
+
+    auth_headers = await _registrar(client)
+    monkeypatch.setattr(settings, "PUBLIC_PROFILES_ENABLED", False)
+    me = (await client.get("/api/v1/auth/me", headers=auth_headers)).json()
+    assert me["public_profiles_enabled"] is False
+    monkeypatch.setattr(settings, "PUBLIC_PROFILES_ENABLED", True)
+    me = (await client.get("/api/v1/auth/me", headers=auth_headers)).json()
+    assert me["public_profiles_enabled"] is True

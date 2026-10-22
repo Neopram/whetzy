@@ -51,3 +51,15 @@ describe('Política de privacidad — lo que exige el art. 13 RGPD', () => {
     expect(screen.getByText(phrase as RegExp)).toBeTruthy();
   });
 });
+
+/**
+ * 2026-10-21: /terms, /privacy y /refund son rutas sueltas, fuera del <main> de la app, y desde
+ * entonces salen pre-renderizadas para la revisión de dominio de Paddle. axe marcaba las tres
+ * (landmark-one-main, region): la página tiene que ser su propio <main>.
+ */
+describe('Páginas legales — punto de referencia principal', () => {
+  it.each(['terms', 'privacy', 'refund'] as const)('/%s se pinta dentro de un <main>', (doc) => {
+    render(<LegalScreen doc={doc} />);
+    expect(screen.getByRole('main')).toContainElement(screen.getByRole('heading', { level: 1 }));
+  });
+});

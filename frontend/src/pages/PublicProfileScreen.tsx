@@ -4,6 +4,15 @@ import { profiles, type PublicProfile } from '../services/api'
 import styles from './PublicProfileScreen.module.css';
 import { GameIcon } from '../components/common/AppIcon';
 import { StaggerItem, StaggerList } from '../components/common/Stagger';
+import { Loading } from '../components/common/Loading';
+import { useNoIndexMeta } from './marketing/useNoIndexMeta';
+
+/** 24.8: mientras no haya un perfil público que enseñar (cargando, inexistente
+ *  o sin opt-in) la página lleva `noindex`; con perfil cargado se quita. */
+function NoIndex({ title, lang }: { title: string; lang: 'es' | 'en' }) {
+  useNoIndexMeta(title, lang)
+  return null
+}
 
 export default function PublicProfileScreen({ handle }: { handle: string }) {
   const { i18n, t } = useTranslation()
@@ -35,12 +44,18 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
   }, [handle])
 
   if (loading) {
-    return <div className={styles.publicProfileLoading}>{t('common.loading', 'Cargando...')}</div>
+    return (
+      <div className={styles.publicProfileLoading}>
+        <NoIndex title="Whetzy" lang={lang} />
+        <Loading label={t('common.loading', 'Cargando...')} shape="card" />
+      </div>
+    )
   }
 
   if (!profile) {
     return (
       <div className={styles.publicProfilePrivate}>
+        <NoIndex title="Whetzy" lang={lang} />
         {t('profile.notFound', 'No existe ningún perfil con ese nombre de usuario')}
       </div>
     )
