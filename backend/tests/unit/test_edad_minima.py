@@ -51,3 +51,15 @@ def test_el_backend_rechaza_el_alta_con_la_misma_edad() -> None:
     )
     assert f"must be {EDAD} or older" in src
     assert f"must be {ANTERIOR} or older" not in src
+
+
+def test_las_fichas_de_tienda_dicen_la_misma_edad() -> None:
+    """Las notas de Android e iOS son el texto que se envía a las tiendas (ADR-70 §4)."""
+    for ficha in ("android", "ios"):
+        texto = (ROOT / "docs" / "store" / ficha / "listing.md").read_text(
+            encoding="utf-8"
+        )
+        assert f"≥{EDAD}" in texto, f"{ficha}: la ficha no dice ≥{EDAD}"
+        assert f"≥{ANTERIOR}" not in texto, (
+            f"{ficha}: la ficha sigue diciendo ≥{ANTERIOR}"
+        )

@@ -20,7 +20,7 @@
 
 > **Nota sobre la clasificación de contenido (hallazgo de [S4], revisión legal, 2026-10-03):**
 > "PEGI 3 / Everyone" no encaja con el propio producto: el registro exige
-> autocertificación de edad ≥13 (`backend/app/models/user.py`,
+> autocertificación de edad ≥16 (`backend/app/models/user.py`,
 > `backend/app/api/v1/endpoints/auth.py`), y el plan Creador deja a cualquier
 > usuario publicar cursos que otros compran y cursan
 > (`instructor_marketplace.py`) — contenido generado por usuarios sin la
